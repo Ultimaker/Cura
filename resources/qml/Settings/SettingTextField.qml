@@ -60,7 +60,7 @@ SettingItem
         color: {
             if(!enabled)
             {
-                return UM.Theme.getColor("text_field")
+                return UM.Theme.getColor("setting_control_disabled")
             }
             switch(propertyProvider.properties.validationState)
             {

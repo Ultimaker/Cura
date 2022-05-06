@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 4.13\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2021-12-10 11:59+0000\n"
-"PO-Revision-Date: 2021-12-17 21:11+0100\n"
+"POT-Creation-Date: 2022-04-13 10:49+0000\n"
+"PO-Revision-Date: 2022-05-02 22:27+0200\n"
 "Last-Translator: Miroslav Šustek <sustmidown@centrum.cz>\n"
 "Language-Team: DenyCZ <www.github.com/DenyCZ>\n"
 "Language: cs_CZ\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #: fdmprinter.def.json
 msgctxt "machine_settings label"
@@ -465,8 +465,8 @@ msgstr "Polygon hlavy a větráku zařízení"
 
 #: fdmprinter.def.json
 msgctxt "machine_head_with_fans_polygon description"
-msgid "A 2D silhouette of the print head (fan caps included)."
-msgstr "2D silueta tiskové hlavy (včetně krytů ventilátoru)."
+msgid "The shape of the print head. These are coordinates relative to the position of the print head, which is usually the position of its first extruder. The dimensions left and in front of the print head must be negative coordinates."
+msgstr "Tvar tiskové hlavy. Toto jsou souřadnice relativně k pozici tiskové hlavy, což je obvykle pozice jejího prvního extruderu. Rozměry vlevo a před tiskovou hlavou musí být negativní souřadnice."
 
 #: fdmprinter.def.json
 msgctxt "gantry_height label"
@@ -739,6 +739,16 @@ msgid "The diameter of the wheel that drives the material in the feeder."
 msgstr "Průměr kola, který pohání materiál v podavači."
 
 #: fdmprinter.def.json
+msgctxt "machine_scale_fan_speed_zero_to_one label"
+msgid "Scale Fan Speed To 0-1"
+msgstr "Odstupňovat rychlost ventilátoru mezi 0–1"
+
+#: fdmprinter.def.json
+msgctxt "machine_scale_fan_speed_zero_to_one description"
+msgid "Scale the fan speed to be between 0 and 1 instead of between 0 and 256."
+msgstr "Změnit stupnici rychlosti ventilátoru na 0 až 1, namísto 0 až 256."
+
+#: fdmprinter.def.json
 msgctxt "resolution label"
 msgid "Quality"
 msgstr "Kvalita"
@@ -791,17 +801,17 @@ msgstr "Šířka jedné stěny."
 #: fdmprinter.def.json
 msgctxt "wall_line_width_0 label"
 msgid "Outer Wall Line Width"
-msgstr "Vnější šířka čáry stěny"
+msgstr "Šířka čáry vnější stěny"
 
 #: fdmprinter.def.json
 msgctxt "wall_line_width_0 description"
 msgid "Width of the outermost wall line. By lowering this value, higher levels of detail can be printed."
-msgstr "Šířka vnější stěny. Snížením této hodnoty lze vytisknout vyšší úrovně detailů."
+msgstr "Šířka čáry nejkrajnější stěny. Snížením této hodnoty lze vytisknout vyšší úrovně detailů."
 
 #: fdmprinter.def.json
 msgctxt "wall_line_width_x label"
 msgid "Inner Wall(s) Line Width"
-msgstr "Vnitřní šířka čáry stěn(y)"
+msgstr "Šířka čáry vnitřních stěn"
 
 #: fdmprinter.def.json
 msgctxt "wall_line_width_x description"
@@ -916,7 +926,7 @@ msgstr "Extruder zdi"
 #: fdmprinter.def.json
 msgctxt "wall_extruder_nr description"
 msgid "The extruder train used for printing the walls. This is used in multi-extrusion."
-msgstr "Vytlačovací stroj používaný pro tisk stěn. To se používá při vícenásobném vytlačování."
+msgstr "Vytlačovací souprava použitá pro tisk stěn. Používá se při vícenásobném vytlačování."
 
 #: fdmprinter.def.json
 msgctxt "wall_0_extruder_nr label"
@@ -926,7 +936,7 @@ msgstr "Extruder vnější zdi"
 #: fdmprinter.def.json
 msgctxt "wall_0_extruder_nr description"
 msgid "The extruder train used for printing the outer wall. This is used in multi-extrusion."
-msgstr "Vytlačovací souprava použitá pro tisk vnější stěny. To se používá při vícenásobném vytlačování."
+msgstr "Vytlačovací souprava použitá pro tisk vnější stěny. Používá se při vícenásobném vytlačování."
 
 #: fdmprinter.def.json
 msgctxt "wall_x_extruder_nr label"
@@ -936,7 +946,7 @@ msgstr "Extruder vnitřní zdi"
 #: fdmprinter.def.json
 msgctxt "wall_x_extruder_nr description"
 msgid "The extruder train used for printing the inner walls. This is used in multi-extrusion."
-msgstr "Vytlačovací souprava použitá pro tisk vnitřních stěn. To se používá při vícenásobném vytlačování."
+msgstr "Vytlačovací souprava použitá pro tisk vnitřních stěn. Používá se při vícenásobném vytlačování."
 
 #: fdmprinter.def.json
 msgctxt "wall_thickness label"
@@ -957,6 +967,56 @@ msgstr "Počet čar zdi"
 msgctxt "wall_line_count description"
 msgid "The number of walls. When calculated by the wall thickness, this value is rounded to a whole number."
 msgstr "Počet stěn. Při výpočtu podle tloušťky stěny je tato hodnota zaokrouhlena na celé číslo."
+
+#: fdmprinter.def.json
+msgctxt "wall_transition_length label"
+msgid "Wall Transition Length"
+msgstr "Délka změny počtu čar zdí"
+
+#: fdmprinter.def.json
+msgctxt "wall_transition_length description"
+msgid "When transitioning between different numbers of walls as the part becomes thinner, a certain amount of space is allotted to split or join the wall lines."
+msgstr "Když dochází k přechodu mezi různými počty čar zdí v místě, kde se část stává užší, je určitý prostor vyhrazen pro rozdělení nebo spojení čar zdí."
+
+#: fdmprinter.def.json
+msgctxt "wall_distribution_count label"
+msgid "Wall Distribution Count"
+msgstr "Počet čar zdí měnících šířku"
+
+#: fdmprinter.def.json
+msgctxt "wall_distribution_count description"
+msgid "The number of walls, counted from the center, over which the variation needs to be spread. Lower values mean that the outer walls don't change in width."
+msgstr "Počet čar zdí od středu, které mají měnit svou šířku při změně počtu čar zdí. Nižší hodnoty znamenají, že vnější stěny nebudou měnit svou šířku."
+
+#: fdmprinter.def.json
+msgctxt "wall_transition_angle label"
+msgid "Wall Transitioning Threshold Angle"
+msgstr "Prahový úhel pro změnu počtu čar zdí"
+
+#: fdmprinter.def.json
+msgctxt "wall_transition_angle description"
+msgid "When to create transitions between even and odd numbers of walls. A wedge shape with an angle greater than this setting will not have transitions and no walls will be printed in the center to fill the remaining space. Reducing this setting reduces the number and length of these center walls, but may leave gaps or overextrude."
+msgstr "Určuje, kdy se bude měnit počet čar zdí. Pokud se v modelu vyskytuje tvar klínu s úhlem přesahujícím hodnotu tohoto nastavení, nebudou se pro vyplnění prostoru uprostřed používat sbíhající se čáry zdí s proměnlivou šířkou. Snížením této hodnoty se snižuje počet a délka těchto prostředních zdí, ale může zůstávat více mezer nebo nadměrná extruze."
+
+#: fdmprinter.def.json
+msgctxt "wall_transition_filter_distance label"
+msgid "Wall Transitioning Filter Distance"
+msgstr "Minimální vzdálenost změny počtu čar zdí"
+
+#: fdmprinter.def.json
+msgctxt "wall_transition_filter_distance description"
+msgid "If it would be transitioning back and forth between different numbers of walls in quick succession, don't transition at all. Remove transitions if they are closer together than this distance."
+msgstr "Pokud by se mělo rychle za sebou přecházet tam a zpět mezi různými počty zdí, nebude se sbíhání provádět. Nastavení odstraní přechody mezi různými počty čar zdí, pokud by byly blíže než tato vzdálenost."
+
+#: fdmprinter.def.json
+msgctxt "wall_transition_filter_deviation label"
+msgid "Wall Transitioning Filter Margin"
+msgstr "Rezerva pro změnu počtu čar zdí"
+
+#: fdmprinter.def.json
+msgctxt "wall_transition_filter_deviation description"
+msgid "Prevent transitioning back and forth between one extra wall and one less. This margin extends the range of line widths which follow to [Minimum Wall Line Width - Margin, 2 * Minimum Wall Line Width + Margin]. Increasing this margin reduces the number of transitions, which reduces the number of extrusion starts/stops and travel time. However, large line width variation can lead to under- or overextrusion problems."
+msgstr "Zabraňuje přecházení tam a zpět mezi o jednu více a o jednu méně čarami zdí. Tato rezerva rozšíří rozsah možných šířek čar na [Minimální šířka čáry zdi - Rezerva, 2 * Minimální šířka čáry zdi + Rezerva]. Zvýšení této rezervy omezí počet přechodů mezi různými počty čar zdí, což sníží počet rozjezdů/zastavení a také čas cestování. Velké výkyvy v šířce čar však mohou vést k problémům s nedostatečnou nebo přílišnou extruzí."
 
 #: fdmprinter.def.json
 msgctxt "wall_0_wipe_dist label"
@@ -989,14 +1049,24 @@ msgid "Optimize the order in which walls are printed so as to reduce the number 
 msgstr "Optimalizujte pořadí, ve kterém se stěny tisknou, aby se snížil počet retrakcí a ujetá vzdálenost. Většina částí bude mít z tohoto povolení prospěch, ale některé mohou ve skutečnosti trvat déle, proto porovnejte odhady doby tisku s optimalizací a bez ní. První vrstva není optimalizována při výběru okraje jako adhezního typu desky."
 
 #: fdmprinter.def.json
-msgctxt "outer_inset_first label"
-msgid "Outer Before Inner Walls"
-msgstr "Vnější stěny před vnitřními"
+msgctxt "inset_direction label"
+msgid "Wall Ordering"
+msgstr "Pořadí tisku zdí"
 
 #: fdmprinter.def.json
-msgctxt "outer_inset_first description"
-msgid "Prints walls in order of outside to inside when enabled. This can help improve dimensional accuracy in X and Y when using a high viscosity plastic like ABS; however it can decrease outer surface print quality, especially on overhangs."
-msgstr "Když je povoleno, tiskne stěny v pořadí od vnějšku dovnitř. To může pomoci zlepšit rozměrovou přesnost v X a Y při použití plastu s vysokou viskozitou, jako je ABS; může však snížit kvalitu tisku vnějšího povrchu, zejména na převisy."
+msgctxt "inset_direction description"
+msgid "Determines the order in which walls are printed. Printing outer walls earlier helps with dimensional accuracy, as faults from inner walls cannot propagate to the outside. However printing them later allows them to stack better when overhangs are printed."
+msgstr "Určuje pořadí, v jakém budou tištěny zdi. Tištění vnějších zdí jako prvních pomáhá s rozměrovou přesností, jelikož se vady z vnitřních stěn nemohou přenášet na vnějšek. Naproti tomu tištění vnějších zdí nakonec dovoluje jejich lepší vrstvení při tištění převisů."
+
+#: fdmprinter.def.json
+msgctxt "inset_direction option inside_out"
+msgid "Inside To Outside"
+msgstr "Zevnitř ven"
+
+#: fdmprinter.def.json
+msgctxt "inset_direction option outside_in"
+msgid "Outside To Inside"
+msgstr "Zvenku dovnitř"
 
 #: fdmprinter.def.json
 msgctxt "alternate_extra_perimeter label"
@@ -1009,84 +1079,54 @@ msgid "Prints an extra wall at every other layer. This way infill gets caught be
 msgstr "Vytiskne další stěnu na každou další vrstvu. Tímto způsobem se výplň zachytí mezi těmito stěnami, což má za následek silnější výtisky."
 
 #: fdmprinter.def.json
-msgctxt "travel_compensate_overlapping_walls_enabled label"
-msgid "Compensate Wall Overlaps"
-msgstr "Kompenzujte překrytí stěn"
+msgctxt "min_wall_line_width label"
+msgid "Minimum Wall Line Width"
+msgstr "Minimální šířka čáry zdi"
 
 #: fdmprinter.def.json
-msgctxt "travel_compensate_overlapping_walls_enabled description"
-msgid "Compensate the flow for parts of a wall being printed where there is already a wall in place."
-msgstr "Vykompenzujte tok částí tisku, které se tisknou tam, kde je již zeď na místě."
+msgctxt "min_wall_line_width description"
+msgid "For thin structures around once or twice the nozzle size, the line widths need to be altered to adhere to the thickness of the model. This setting controls the minimum line width allowed for the walls. The minimum line widths inherently also determine the maximum line widths, since we transition from N to N+1 walls at some geometry thickness where the N walls are wide and the N+1 walls are narrow. The widest possible wall line is twice the Minimum Wall Line Width."
+msgstr "Pro struktury o šířce okolo jedno až dvojnásobku velikosti trysky musí být šířky čar upravovány, aby to se dodržovala správná tloušťka modelu. Toto nastavení ovládá minimální dovolenou šířku čáry pro zdi. Z minimální šířky čáry se také odvozuje maximální šířka, jelikož při určité tloušťce tvaru se přechází z N na N + 1 zdí, kdy je N zdí širokých, zatímco N + 1 zdi jsou úzké. Nejvyšší možná šířka čáry zdi je tedy dvojnásobek tohoto nastavení."
 
 #: fdmprinter.def.json
-msgctxt "travel_compensate_overlapping_walls_0_enabled label"
-msgid "Compensate Outer Wall Overlaps"
-msgstr "Kompenzujte překrytí vnější stěny"
+msgctxt "min_even_wall_line_width label"
+msgid "Minimum Even Wall Line Width"
+msgstr "Minimální šířka párové čáry zdi"
 
 #: fdmprinter.def.json
-msgctxt "travel_compensate_overlapping_walls_0_enabled description"
-msgid "Compensate the flow for parts of an outer wall being printed where there is already a wall in place."
-msgstr "Vykompenzujte tok částí tisknuté vnější stěny, kde již je zeď na místě."
+msgctxt "min_even_wall_line_width description"
+msgid "The minimum line width for normal polygonal walls. This setting determines at which model thickness we switch from printing a single thin wall line, to printing two wall lines. A higher Minimum Even Wall Line Width leads to a higher maximum odd wall line width. The maximum even wall line width is calculated as Outer Wall Line Width + 0.5 * Minimum Odd Wall Line Width."
+msgstr "Minimální šířka čáry pro běžné mnohoúhelníkové zdi. Toto nastavení určuje tloušťku, při které se přepne z tisku jedné tenké čáry zdi na tisk dvou čar zdi. Vyšší hodnota Minimální šířky párové čáry zdi vede k vyšší maximální šířce nepárové čáry zdi. Maximální šířka párové čáry zdi je spočítána jako Šířka čáry vnější stěny + 0,5 * Minimální šířka nepárové čáry zdi."
 
 #: fdmprinter.def.json
-msgctxt "travel_compensate_overlapping_walls_x_enabled label"
-msgid "Compensate Inner Wall Overlaps"
-msgstr "Kompenzujte překrytí vnitřní stěny"
+msgctxt "wall_split_middle_threshold label"
+msgid "Split Middle Line Threshold"
+msgstr "Mez pro rozdělení prostřední čáry"
 
 #: fdmprinter.def.json
-msgctxt "travel_compensate_overlapping_walls_x_enabled description"
-msgid "Compensate the flow for parts of an inner wall being printed where there is already a wall in place."
-msgstr "Kompenzujte tok částí tisknuté vnitřní stěny, kde již je zeď na místě."
+msgctxt "wall_split_middle_threshold description"
+msgid "The smallest line width, as a factor of the normal line width, above which the middle line (if there is one) will be split into two. Reduce this setting to use more, thinner lines. Increase to use fewer, wider lines. Note that this applies -as if- the entire shape should be filled with wall, so the middle here refers to the middle of the object between two outer edges of the shape, even if there actually is fill or (other) skin in the print instead of wall."
+msgstr "Nejnižší šířka čáry, zadaná jako procento běžné šířky čáry, nad kterou bude prostřední nepárová čára (pokud nějaká je) rozdělena na dvě párové čáry. Snižte toto nastavení, aby se používalo více tenkých čar. Zvyšte toto nastavení pro použití méně a širších čar. Je třeba si uvědomit, že toto nastavení se použije, jako kdyby byl celý tvar vyplněn zdmi. Takže termín prostřední zde znamená prostředek objektu mezi dvěma vnějšími hranami tvaru, a to i v případě, že se namísto zdi tiskne výplň nebo jiný povrch."
 
 #: fdmprinter.def.json
-msgctxt "wall_min_flow label"
-msgid "Minimum Wall Flow"
-msgstr "Minimální průtok zdi"
+msgctxt "min_odd_wall_line_width label"
+msgid "Minimum Odd Wall Line Width"
+msgstr "Minimální šířka nepárové čáry zdi"
 
 #: fdmprinter.def.json
-msgctxt "wall_min_flow description"
-msgid "Minimum allowed percentage flow for a wall line. The wall overlap compensation reduces a wall's flow when it lies close to an existing wall. Walls whose flow is less than this value will be replaced with a travel move. When using this setting, you must enable the wall overlap compensation and print the outer wall before inner walls."
-msgstr "Minimální povolený procentuální průtok pro linii stěny. Kompenzace překrytí stěny snižuje průtok stěny, když leží blízko ke stávající zdi. Stěny, jejichž průtok je menší než tato hodnota, budou nahrazeny pohybem. Při použití tohoto nastavení musíte povolit kompenzaci překrytí stěny a vnější stěnu vytisknout před vnitřními stěnami."
+msgctxt "min_odd_wall_line_width description"
+msgid "The minimum line width for middle line gap filler polyline walls. This setting determines at which model thickness we switch from printing two wall lines, to printing two outer walls and a single central wall in the middle. A higher Minimum Odd Wall Line Width leads to a higher maximum even wall line width. The maximum odd wall line width is calculated as 2 * Minimum Even Wall Line Width,"
+msgstr "Minimální šířka čáry použité jako výplň mezi párovými čárami zdi. Toto nastavení určuje tloušťku modelu, při které se přepíná z tisku dvou čar zdi na tisk dvou vnějších čar zdi a jedné centrální čáry zdi mezi nimi. Vyšší hodnota Minimální šířky nepárové čáry zdi vede k vyšší maximální šířce párové čáry zdi. Maximální šířka nepárové čáry zdi je vypočtena jako 2 * Minimální šířka párové čáry zdi,"
 
 #: fdmprinter.def.json
-msgctxt "wall_min_flow_retract label"
-msgid "Prefer Retract"
-msgstr "Preferovat retrakci"
+msgctxt "wall_add_middle_threshold label"
+msgid "Add Middle Line Threshold"
+msgstr "Mez pro přidání prostřední čáry"
 
 #: fdmprinter.def.json
-msgctxt "wall_min_flow_retract description"
-msgid "If enabled, retraction is used rather than combing for travel moves that replace walls whose flow is below the minimum flow threshold."
-msgstr "Je-li tato funkce povolena, je pro retrakční pohyby, které nahrazují stěny, jejichž průtok je pod prahem minimálního průtoku, používáno spíše zatahování."
-
-#: fdmprinter.def.json
-msgctxt "fill_perimeter_gaps label"
-msgid "Fill Gaps Between Walls"
-msgstr "Vyplnit mezery mezi stěnami"
-
-#: fdmprinter.def.json
-msgctxt "fill_perimeter_gaps description"
-msgid "Fills the gaps between walls where no walls fit."
-msgstr "Vyplní mezery mezi stěnami, kde se žádné stěny nehodí."
-
-#: fdmprinter.def.json
-msgctxt "fill_perimeter_gaps option nowhere"
-msgid "Nowhere"
-msgstr "Nikde"
-
-#: fdmprinter.def.json
-msgctxt "fill_perimeter_gaps option everywhere"
-msgid "Everywhere"
-msgstr "Všude"
-
-#: fdmprinter.def.json
-msgctxt "filter_out_tiny_gaps label"
-msgid "Filter Out Tiny Gaps"
-msgstr "Vyfiltrujte drobné mezery"
-
-#: fdmprinter.def.json
-msgctxt "filter_out_tiny_gaps description"
-msgid "Filter out tiny gaps to reduce blobs on outside of model."
-msgstr "Filtrujte drobné mezery, abyste zmenšili kuličky na vnější straně modelu."
+msgctxt "wall_add_middle_threshold description"
+msgid "The smallest line width, as a factor of the normal line width, above which a middle line (if there wasn't one already) will be added. Reduce this setting to use more, thinner lines. Increase to use fewer, wider lines. Note that this applies -as if- the entire shape should be filled with wall, so the middle here refers to the middle of the object between two outer edges of the shape, even if there actually is fill or (other) skin in the print instead of wall."
+msgstr "Nejnižší šířka čáry, zadaná jako procento běžné šířky čáry, nad kterou bude přidána prostřední nepárová čára mezi dvě párové čáry (pokud mezi nimi ještě nebyla). Snižte toto nastavení, aby se používalo více tenkých čar. Zvyšte toto nastavení pro použití méně a širších čar. Je třeba si uvědomit, že toto nastavení se použije, jako kdyby byl celý tvar vyplněn zdmi. Takže termín prostřední zde znamená prostředek objektu mezi dvěma vnějšími hranami tvaru, a to i v případě, že se namísto zdi tiskne výplň nebo jiný povrch."
 
 #: fdmprinter.def.json
 msgctxt "fill_outline_gaps label"
@@ -1097,6 +1137,26 @@ msgstr "Tisk tenkých stěn"
 msgctxt "fill_outline_gaps description"
 msgid "Print pieces of the model which are horizontally thinner than the nozzle size."
 msgstr "Tiskněte kousky modelu, které jsou vodorovně tenčí než velikost trysek."
+
+#: fdmprinter.def.json
+msgctxt "min_feature_size label"
+msgid "Minimum Feature Size"
+msgstr "Minimální velikost částí"
+
+#: fdmprinter.def.json
+msgctxt "min_feature_size description"
+msgid "Minimum thickness of thin features. Model features that are thinner than this value will not be printed, while features thicker than the Minimum Feature Size will be widened to the Minimum Wall Line Width."
+msgstr "Minimální tloušťka tenkých částí. Části modelu, které jsou tenčí než tato hodnota nebudou tištěny, zatímco části širší než tato hodnota budou rozšířeny na Minimální šířku čáry zdi."
+
+#: fdmprinter.def.json
+msgctxt "min_bead_width label"
+msgid "Minimum Thin Wall Line Width"
+msgstr "Minimální šířka tenkých stěn"
+
+#: fdmprinter.def.json
+msgctxt "min_bead_width description"
+msgid "Width of the wall that will replace thin features (according to the Minimum Feature Size) of the model. If the Minimum Wall Line Width is thinner than the thickness of the feature, the wall will become as thick as the feature itself."
+msgstr "Šířka zdi, která nahradí tenké části modelu (v souladu s nastavením Minimální velikost částí). Pokud je Minimální šířka tenkých stěn nižší, než část určitá modelu, bude zeď tištěna skutečnou tloušťkou této části."
 
 #: fdmprinter.def.json
 msgctxt "xy_offset label"
@@ -1291,7 +1351,7 @@ msgstr "Nejvyšší povrchový extrudér"
 #: fdmprinter.def.json
 msgctxt "roofing_extruder_nr description"
 msgid "The extruder train used for printing the top most skin. This is used in multi-extrusion."
-msgstr "Vytlačovací stroj používaný pro tisk nejvyššího povrchu. To se používá při vícenásobném vytlačování."
+msgstr "Vytlačovací souprava použitá pro tisk nejvyššího povrchu. Používá se při vícenásobném vytlačování."
 
 #: fdmprinter.def.json
 msgctxt "roofing_layer_count label"
@@ -1311,7 +1371,7 @@ msgstr "Vrchní/spodní extruder"
 #: fdmprinter.def.json
 msgctxt "top_bottom_extruder_nr description"
 msgid "The extruder train used for printing the top and bottom skin. This is used in multi-extrusion."
-msgstr "Vytlačovací souprava použitá pro tisk horní a spodní pokožky. To se používá při vícenásobném vytlačování."
+msgstr "Vytlačovací souprava použitá pro tisk horní a spodní pokožky. Používá se při vícenásobném vytlačování."
 
 #: fdmprinter.def.json
 msgctxt "top_bottom_thickness label"
@@ -1701,7 +1761,7 @@ msgstr "Výplňový extrudér"
 #: fdmprinter.def.json
 msgctxt "infill_extruder_nr description"
 msgid "The extruder train used for printing infill. This is used in multi-extrusion."
-msgstr "Vytlačovací souprava použitá pro tisk výplně. To se používá při vícenásobném vytlačování."
+msgstr "Vytlačovací souprava použitá pro tisk výplně. Používá se při vícenásobném vytlačování."
 
 #: fdmprinter.def.json
 msgctxt "infill_sparse_density label"
@@ -2196,6 +2256,26 @@ msgstr "Faktor zvětšení pro kompenzaci smrštění"
 msgctxt "material_shrinkage_percentage description"
 msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor."
 msgstr "Model bude zvětšen tímto faktorem, aby bylo kompenzováno smrštění materiálu po vychladnutí."
+
+#: fdmprinter.def.json
+msgctxt "material_shrinkage_percentage_xy label"
+msgid "Horizontal Scaling Factor Shrinkage Compensation"
+msgstr "Horizontální faktor zvětšení pro kompenzaci smrštění"
+
+#: fdmprinter.def.json
+msgctxt "material_shrinkage_percentage_xy description"
+msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor in the XY-direction (horizontally)."
+msgstr "Model bude zvětšen tímto faktorem ve směru XY (horizontálně), aby bylo kompenzováno smrštění materiálu po vychladnutí."
+
+#: fdmprinter.def.json
+msgctxt "material_shrinkage_percentage_z label"
+msgid "Vertical Scaling Factor Shrinkage Compensation"
+msgstr "Vertikální faktor zvětšení pro kompenzaci smrštění"
+
+#: fdmprinter.def.json
+msgctxt "material_shrinkage_percentage_z description"
+msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor in the Z-direction (vertically)."
+msgstr "Model bude zvětšen tímto faktorem ve směru Z (vertikálně), aby bylo kompenzováno smrštění materiálu po vychladnutí."
 
 #: fdmprinter.def.json
 msgctxt "material_crystallinity label"
@@ -2708,24 +2788,14 @@ msgid "The first few layers are printed slower than the rest of the model, to ge
 msgstr "Prvních několik vrstev je vytištěno pomaleji než zbytek modelu, aby se dosáhlo lepší přilnavosti k sestavovací desce a zlepšila se celková úspěšnost tisků. Rychlost se v těchto vrstvách postupně zvyšuje."
 
 #: fdmprinter.def.json
-msgctxt "speed_equalize_flow_enabled label"
-msgid "Equalize Filament Flow"
-msgstr "Vyrovnat tok vlákna"
+msgctxt "speed_equalize_flow_width_factor label"
+msgid "Flow Equalization Ratio"
+msgstr "Míra vyrovnávání toku"
 
 #: fdmprinter.def.json
-msgctxt "speed_equalize_flow_enabled description"
-msgid "Print thinner than normal lines faster so that the amount of material extruded per second remains the same. Thin pieces in your model might require lines printed with smaller line width than provided in the settings. This setting controls the speed changes for such lines."
-msgstr "Tiskněte tenčí než normální čáry rychleji, takže množství materiálu vytlačovaného za sekundu zůstává stejné. Tenké kousky ve vašem modelu mohou vyžadovat čáry vytištěné s menší šířkou čáry, než je uvedeno v nastavení. Toto nastavení řídí změny rychlosti těchto linek."
-
-#: fdmprinter.def.json
-msgctxt "speed_equalize_flow_max label"
-msgid "Maximum Speed for Flow Equalization"
-msgstr "Maximální rychlost pro vyrovnávání průtoku"
-
-#: fdmprinter.def.json
-msgctxt "speed_equalize_flow_max description"
-msgid "Maximum print speed when adjusting the print speed in order to equalize flow."
-msgstr "Maximální rychlost tisku při úpravě rychlosti tisku za účelem vyrovnání toku."
+msgctxt "speed_equalize_flow_width_factor description"
+msgid "Extrusion width based correction factor on the speed. At 0% the movement speed is kept constant at the Print Speed. At 100% the movement speed is adjusted so that the flow (in mm³/s) is kept constant, i.e. lines half the normal Line Width are printed twice as fast and lines twice as wide are printed half as fast. A value larger than 100% can help to compensate for the higher pressure required to extrude wide lines."
+msgstr "Faktor korekce rychlosti v závislosti na šířce extruze. Při 0 % je rychlost pohybu konstantně na hodnotě Rychlost tisku. Při 100 % je rychlost pohybu upravena tak, aby byl tok (v mm³/s) konstantní. To znamená, že čáry o šířce poloviny nastavení Šířka čáry jsou tištěny dvojnásobnou rychlostí a čáry dvojnásobné šířky jsou tištěny poloviční rychlostí. Hodnota vyšší než 100 % může pomoci kompenzovat vysoký tlak potřebný k extruzi širokých čar."
 
 #: fdmprinter.def.json
 msgctxt "acceleration_enabled label"
@@ -3530,7 +3600,7 @@ msgstr "Extruder pro podpory"
 #: fdmprinter.def.json
 msgctxt "support_extruder_nr description"
 msgid "The extruder train to use for printing the support. This is used in multi-extrusion."
-msgstr "Vytlačovací stroj se používá pro tisk nosiče. To se používá při vícenásobném vytlačování."
+msgstr "Vytlačovací souprava použitá pro tisk podpory. Používá se při vícenásobném vytlačování."
 
 #: fdmprinter.def.json
 msgctxt "support_infill_extruder_nr label"
@@ -3540,7 +3610,7 @@ msgstr "Extruder pro vnitřní podpory"
 #: fdmprinter.def.json
 msgctxt "support_infill_extruder_nr description"
 msgid "The extruder train to use for printing the infill of the support. This is used in multi-extrusion."
-msgstr "Vytlačovací stroj se používá pro tisk výplně nosiče. To se používá při vícenásobném vytlačování."
+msgstr "Vytlačovací souprava použitá pro tisk výplně podpory. Používá se při vícenásobném vytlačování."
 
 #: fdmprinter.def.json
 msgctxt "support_extruder_nr_layer_0 label"
@@ -3550,7 +3620,7 @@ msgstr "Extruder pro první vrstvu"
 #: fdmprinter.def.json
 msgctxt "support_extruder_nr_layer_0 description"
 msgid "The extruder train to use for printing the first layer of support infill. This is used in multi-extrusion."
-msgstr "Vytlačovací stroj se používá pro tisk první vrstvy výplně podpěry. To se používá při vícenásobném vytlačování."
+msgstr "Vytlačovací souprava použitá pro tisk první vrstvy výplně podpory. Používá se při vícenásobném vytlačování."
 
 #: fdmprinter.def.json
 msgctxt "support_interface_extruder_nr label"
@@ -3560,7 +3630,7 @@ msgstr "Extruder pro rozhraní podpor"
 #: fdmprinter.def.json
 msgctxt "support_interface_extruder_nr description"
 msgid "The extruder train to use for printing the roofs and floors of the support. This is used in multi-extrusion."
-msgstr "Vytlačovací stroj se používá pro tisk střech a podlah podpěry. To se používá při vícenásobném vytlačování."
+msgstr "Vytlačovací souprava použitá pro tisk střech a podlah podpory. Používá se při vícenásobném vytlačování."
 
 #: fdmprinter.def.json
 msgctxt "support_roof_extruder_nr label"
@@ -3570,7 +3640,7 @@ msgstr "Extruder pro podporu střech"
 #: fdmprinter.def.json
 msgctxt "support_roof_extruder_nr description"
 msgid "The extruder train to use for printing the roofs of the support. This is used in multi-extrusion."
-msgstr "Vytlačovací stroj se používá pro tisk střech nosiče. To se používá při vícenásobném vytlačování."
+msgstr "Vytlačovací souprava použitá pro tisk střech podpory. Používá se při vícenásobném vytlačování."
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_extruder_nr label"
@@ -3580,7 +3650,7 @@ msgstr "Extruder pro podporu podlahy"
 #: fdmprinter.def.json
 msgctxt "support_bottom_extruder_nr description"
 msgid "The extruder train to use for printing the floors of the support. This is used in multi-extrusion."
-msgstr "Vytlačovací stroj se používá pro tisk podlah podpěry. To se používá při vícenásobném vytlačování."
+msgstr "Vytlačovací souprava použitá pro tisk podlah podpory. Používá se při vícenásobném vytlačování."
 
 #: fdmprinter.def.json
 msgctxt "support_structure label"
@@ -4460,7 +4530,47 @@ msgstr "Extruder pro adhezi podložky"
 #: fdmprinter.def.json
 msgctxt "adhesion_extruder_nr description"
 msgid "The extruder train to use for printing the skirt/brim/raft. This is used in multi-extrusion."
-msgstr "Vytlačovací stroj se používá pro tisk límce / okraje / raftu. To se používá při vícenásobném vytlačování."
+msgstr "Vytlačovací souprava použitá pro tisk límce / okraje / raftu. Používá se při vícenásobném vytlačování."
+
+#: fdmprinter.def.json
+msgctxt "skirt_brim_extruder_nr label"
+msgid "Skirt/Brim Extruder"
+msgstr "Extruder okraje/límce"
+
+#: fdmprinter.def.json
+msgctxt "skirt_brim_extruder_nr description"
+msgid "The extruder train to use for printing the skirt or brim. This is used in multi-extrusion."
+msgstr "Vytlačovací souprava použitá pro tisk okraje nebo límce. Používá se při vícenásobném vytlačování."
+
+#: fdmprinter.def.json
+msgctxt "raft_base_extruder_nr label"
+msgid "Raft Base Extruder"
+msgstr "Extruder základny raftu"
+
+#: fdmprinter.def.json
+msgctxt "raft_base_extruder_nr description"
+msgid "The extruder train to use for printing the first layer of the raft. This is used in multi-extrusion."
+msgstr "Vytlačovací souprava použitá pro tisk první vrstvy raftu. Používá se při vícenásobném vytlačování."
+
+#: fdmprinter.def.json
+msgctxt "raft_interface_extruder_nr label"
+msgid "Raft Middle Extruder"
+msgstr "Extruder vnitřku raftu"
+
+#: fdmprinter.def.json
+msgctxt "raft_interface_extruder_nr description"
+msgid "The extruder train to use for printing the middle layer of the raft. This is used in multi-extrusion."
+msgstr "Vytlačovací souprava použitá pro tisk vnitřních vrstev raftu. Používá se při vícenásobném vytlačování."
+
+#: fdmprinter.def.json
+msgctxt "raft_surface_extruder_nr label"
+msgid "Raft Top Extruder"
+msgstr "Extruder povrchu raftu"
+
+#: fdmprinter.def.json
+msgctxt "raft_surface_extruder_nr description"
+msgid "The extruder train to use for printing the top layer(s) of the raft. This is used in multi-extrusion."
+msgstr "Vytlačovací souprava použitá pro tisk horní vrstvy (vrstev) raftu. Používá se při vícenásobném vytlačování."
 
 #: fdmprinter.def.json
 msgctxt "skirt_line_count label"
@@ -4625,6 +4735,16 @@ msgstr "Mezera ve horních vrstvách raftu"
 msgctxt "raft_surface_line_spacing description"
 msgid "The distance between the raft lines for the top raft layers. The spacing should be equal to the line width, so that the surface is solid."
 msgstr "Vzdálenost mezi liniemi raftů pro horní vrstvy raftů. Rozestup by měl být roven šířce čáry, takže povrch je pevný."
+
+#: fdmprinter.def.json
+msgctxt "raft_interface_layers label"
+msgid "Raft Middle Layers"
+msgstr "Počet středních vrstev raftu"
+
+#: fdmprinter.def.json
+msgctxt "raft_interface_layers description"
+msgid "The number of layers between the base and the surface of the raft. These comprise the main thickness of the raft. Increasing this creates a thicker, sturdier raft."
+msgstr "Počet vrstev mezi základnou a povrchem raftu. Tyto vrstvy tvoří hlavní část tloušťky raftu. Vyšší hodnota vytvoří tlustší a robustnější raft."
 
 #: fdmprinter.def.json
 msgctxt "raft_interface_thickness label"
@@ -5125,6 +5245,16 @@ msgstr "Maximální odchylka"
 msgctxt "meshfix_maximum_deviation description"
 msgid "The maximum deviation allowed when reducing the resolution for the Maximum Resolution setting. If you increase this, the print will be less accurate, but the g-code will be smaller. Maximum Deviation is a limit for Maximum Resolution, so if the two conflict the Maximum Deviation will always be held true."
 msgstr "Maximální odchylka povolená při snižování rozlišení pro nastavení Maximální rozlišení. Pokud toto zvýšíte, bude tisk méně přesný, ale g-kód bude menší. Maximální odchylka je limit pro maximální rozlišení, takže pokud dojde ke konfliktu, bude maximální odchylka vždy platná."
+
+#: fdmprinter.def.json
+msgctxt "meshfix_maximum_extrusion_area_deviation label"
+msgid "Maximum Extrusion Area Deviation"
+msgstr "Maximální odchylka plochy extruze"
+
+#: fdmprinter.def.json
+msgctxt "meshfix_maximum_extrusion_area_deviation description"
+msgid "The maximum extrusion area deviation allowed when removing intermediate points from a straight line. An intermediate point may serve as width-changing point in a long straight line. Therefore, if it is removed, it will cause the line to have a uniform width and, as a result, lose (or gain) a bit of extrusion area. If you increase this you may notice slight under- (or over-) extrusion in between straight parallel walls, as more intermediate width-changing points will be allowed to be removed. Your print will be less accurate, but the g-code will be smaller."
+msgstr "Maximální dovolená odchylka plochy extruze při odstraňování mezilehlých bodů na rovné čáře. Mezilehlý bod může sloužit jako místo, kde se mění tloušťka dlouhé přímé čáry. Proto, pokud je odstraněn, bude mít tato čára jednotnou šířku a následkem toho ztratí (nebo získá) kousek plochy extruze. Při zvýšení tohoto nastavení můžete zaznamenat mírnou podextruzi nebo nadměrnou extruzi mezi rovnými rovnoběžnými zdmi, jelikož bude dovoleno odstranit více mezilehlých bodů měnících šířku čáry. Vaše výtisky budou méně přesně, ale g-kód bude menší."
 
 #: fdmprinter.def.json
 msgctxt "blackmagic label"
@@ -6393,32 +6523,62 @@ msgstr "Otvory a obrysy součástí s průměrem menším, než je tento, budou 
 #: fdmprinter.def.json
 msgctxt "small_feature_max_length label"
 msgid "Small Feature Max Length"
-msgstr "Maximální délka malých funkcí"
+msgstr "Maximální délka malých částí"
 
 #: fdmprinter.def.json
 msgctxt "small_feature_max_length description"
 msgid "Feature outlines that are shorter than this length will be printed using Small Feature Speed."
-msgstr "Obrysy funkcí, které jsou kratší než tato délka, budou vytištěny pomocí funkce Rychlost malých funkcí."
+msgstr "Obrysy částí, které jsou kratší než tato délka, budou vytištěny pomocí funkce Rychlost malých částí."
 
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor label"
 msgid "Small Feature Speed"
-msgstr "Rychlost malých funkcí"
+msgstr "Rychlost malých částí"
 
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor description"
 msgid "Small features will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
-msgstr "Drobné funkce budou vytištěny v procentech jejich normální rychlosti tisku. Pomalejší tisk může pomoci s přilnavostí a přesností."
+msgstr "Drobné části budou vytištěny v procentech jejich normální rychlosti tisku. Pomalejší tisk může pomoci s přilnavostí a přesností."
 
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 label"
 msgid "Small Feature Initial Layer Speed"
-msgstr "Počáteční rychlost vrstev malých funkcí"
+msgstr "Rychlost malých částí v počáteční vrstvě"
 
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 description"
 msgid "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
-msgstr "Malé funkce v první vrstvě budou vytištěny při tomto procentuálním poměru jejich normální rychlosti tisku. Pomalejší tisk může pomoci s přilnavostí a přesností."
+msgstr "Malé části v první vrstvě budou vytištěny při tomto procentuálním poměru jejich normální rychlosti tisku. Pomalejší tisk může pomoci s přilnavostí a přesností."
+
+#: fdmprinter.def.json
+msgctxt "material_alternate_walls label"
+msgid "Alternate Wall Directions"
+msgstr "Střídat směr zdí"
+
+#: fdmprinter.def.json
+msgctxt "material_alternate_walls description"
+msgid "Alternate wall directions every other layer and inset. Useful for materials that can build up stress, like for metal printing."
+msgstr "Střídat směr zdí s každou vrstvou. Je užitečné pro materiály, ve kterých se může hromadit napětí, jako například kovové materiály."
+
+#: fdmprinter.def.json
+msgctxt "raft_remove_inside_corners label"
+msgid "Remove Raft Inside Corners"
+msgstr "Odstranit vnitřní rohy raftu"
+
+#: fdmprinter.def.json
+msgctxt "raft_remove_inside_corners description"
+msgid "Remove inside corners from the raft, causing the raft to become convex."
+msgstr "Odstranit vnitřní rohy raftu a změnit tak raft v konvexní (vypouklý) tvar."
+
+#: fdmprinter.def.json
+msgctxt "raft_base_wall_count label"
+msgid "Raft Base Wall Count"
+msgstr "Počet zdí raftu"
+
+#: fdmprinter.def.json
+msgctxt "raft_base_wall_count description"
+msgid "The number of contours to print around the linear pattern in the base layer of the raft."
+msgstr "Kolik obrysových čar se má tisknout okolo lineárního vzoru v základně raftu."
 
 #: fdmprinter.def.json
 msgctxt "command_line_settings label"
@@ -6479,6 +6639,98 @@ msgstr "Matice rotace sítě"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "Transformační matice, která se použije na model při načítání ze souboru."
+
+#~ msgctxt "machine_head_with_fans_polygon description"
+#~ msgid "A 2D silhouette of the print head (fan caps included)."
+#~ msgstr "2D silueta tiskové hlavy (včetně krytů ventilátoru)."
+
+#~ msgctxt "outer_inset_first label"
+#~ msgid "Outer Before Inner Walls"
+#~ msgstr "Vnější stěny před vnitřními"
+
+#~ msgctxt "outer_inset_first description"
+#~ msgid "Prints walls in order of outside to inside when enabled. This can help improve dimensional accuracy in X and Y when using a high viscosity plastic like ABS; however it can decrease outer surface print quality, especially on overhangs."
+#~ msgstr "Když je povoleno, tiskne stěny v pořadí od vnějšku dovnitř. To může pomoci zlepšit rozměrovou přesnost v X a Y při použití plastu s vysokou viskozitou, jako je ABS; může však snížit kvalitu tisku vnějšího povrchu, zejména na převisy."
+
+#~ msgctxt "travel_compensate_overlapping_walls_enabled label"
+#~ msgid "Compensate Wall Overlaps"
+#~ msgstr "Kompenzujte překrytí stěn"
+
+#~ msgctxt "travel_compensate_overlapping_walls_enabled description"
+#~ msgid "Compensate the flow for parts of a wall being printed where there is already a wall in place."
+#~ msgstr "Vykompenzujte tok částí tisku, které se tisknou tam, kde je již zeď na místě."
+
+#~ msgctxt "travel_compensate_overlapping_walls_0_enabled label"
+#~ msgid "Compensate Outer Wall Overlaps"
+#~ msgstr "Kompenzujte překrytí vnější stěny"
+
+#~ msgctxt "travel_compensate_overlapping_walls_0_enabled description"
+#~ msgid "Compensate the flow for parts of an outer wall being printed where there is already a wall in place."
+#~ msgstr "Vykompenzujte tok částí tisknuté vnější stěny, kde již je zeď na místě."
+
+#~ msgctxt "travel_compensate_overlapping_walls_x_enabled label"
+#~ msgid "Compensate Inner Wall Overlaps"
+#~ msgstr "Kompenzujte překrytí vnitřní stěny"
+
+#~ msgctxt "travel_compensate_overlapping_walls_x_enabled description"
+#~ msgid "Compensate the flow for parts of an inner wall being printed where there is already a wall in place."
+#~ msgstr "Kompenzujte tok částí tisknuté vnitřní stěny, kde již je zeď na místě."
+
+#~ msgctxt "wall_min_flow label"
+#~ msgid "Minimum Wall Flow"
+#~ msgstr "Minimální průtok zdi"
+
+#~ msgctxt "wall_min_flow description"
+#~ msgid "Minimum allowed percentage flow for a wall line. The wall overlap compensation reduces a wall's flow when it lies close to an existing wall. Walls whose flow is less than this value will be replaced with a travel move. When using this setting, you must enable the wall overlap compensation and print the outer wall before inner walls."
+#~ msgstr "Minimální povolený procentuální průtok pro linii stěny. Kompenzace překrytí stěny snižuje průtok stěny, když leží blízko ke stávající zdi. Stěny, jejichž průtok je menší než tato hodnota, budou nahrazeny pohybem. Při použití tohoto nastavení musíte povolit kompenzaci překrytí stěny a vnější stěnu vytisknout před vnitřními stěnami."
+
+#~ msgctxt "wall_min_flow_retract label"
+#~ msgid "Prefer Retract"
+#~ msgstr "Preferovat retrakci"
+
+#~ msgctxt "wall_min_flow_retract description"
+#~ msgid "If enabled, retraction is used rather than combing for travel moves that replace walls whose flow is below the minimum flow threshold."
+#~ msgstr "Je-li tato funkce povolena, je pro retrakční pohyby, které nahrazují stěny, jejichž průtok je pod prahem minimálního průtoku, používáno spíše zatahování."
+
+#~ msgctxt "fill_perimeter_gaps label"
+#~ msgid "Fill Gaps Between Walls"
+#~ msgstr "Vyplnit mezery mezi stěnami"
+
+#~ msgctxt "fill_perimeter_gaps description"
+#~ msgid "Fills the gaps between walls where no walls fit."
+#~ msgstr "Vyplní mezery mezi stěnami, kde se žádné stěny nehodí."
+
+#~ msgctxt "fill_perimeter_gaps option nowhere"
+#~ msgid "Nowhere"
+#~ msgstr "Nikde"
+
+#~ msgctxt "fill_perimeter_gaps option everywhere"
+#~ msgid "Everywhere"
+#~ msgstr "Všude"
+
+#~ msgctxt "filter_out_tiny_gaps label"
+#~ msgid "Filter Out Tiny Gaps"
+#~ msgstr "Vyfiltrujte drobné mezery"
+
+#~ msgctxt "filter_out_tiny_gaps description"
+#~ msgid "Filter out tiny gaps to reduce blobs on outside of model."
+#~ msgstr "Filtrujte drobné mezery, abyste zmenšili kuličky na vnější straně modelu."
+
+#~ msgctxt "speed_equalize_flow_enabled label"
+#~ msgid "Equalize Filament Flow"
+#~ msgstr "Vyrovnat tok vlákna"
+
+#~ msgctxt "speed_equalize_flow_enabled description"
+#~ msgid "Print thinner than normal lines faster so that the amount of material extruded per second remains the same. Thin pieces in your model might require lines printed with smaller line width than provided in the settings. This setting controls the speed changes for such lines."
+#~ msgstr "Tiskněte tenčí než normální čáry rychleji, takže množství materiálu vytlačovaného za sekundu zůstává stejné. Tenké kousky ve vašem modelu mohou vyžadovat čáry vytištěné s menší šířkou čáry, než je uvedeno v nastavení. Toto nastavení řídí změny rychlosti těchto linek."
+
+#~ msgctxt "speed_equalize_flow_max label"
+#~ msgid "Maximum Speed for Flow Equalization"
+#~ msgstr "Maximální rychlost pro vyrovnávání průtoku"
+
+#~ msgctxt "speed_equalize_flow_max description"
+#~ msgid "Maximum print speed when adjusting the print speed in order to equalize flow."
+#~ msgstr "Maximální rychlost tisku při úpravě rychlosti tisku za účelem vyrovnání toku."
 
 #~ msgctxt "machine_max_feedrate_e label"
 #~ msgid "Maximum Feedrate"
