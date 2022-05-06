@@ -603,7 +603,10 @@ Item
                     decimals: model.unit == "mm" ? 2 : 0
                     enabled: base.editingEnabled
 
-                    editingFinishedFunction: materialPropertyProvider.setPropertyValue("value", value)
+                    editingFinishedFunction: function()
+                    {
+                        materialPropertyProvider.setPropertyValue("value", parseFloat(valueText.replace(",", ".")))
+                    }
                 }
 
                 UM.ContainerPropertyProvider
