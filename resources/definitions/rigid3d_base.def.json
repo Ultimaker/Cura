@@ -129,7 +129,6 @@
         "retraction_amount": { "value": 1.5 },
         "retraction_min_travel": { "value": 1.5 },
         "travel_retract_before_outer_wall": { "value": "True" },
-        "retract_at_layer_change": { "value": "True" },
         "retraction_combing": { "value": "'all'" },
         "retraction_combing_max_distance": { "value": 30 },
 
