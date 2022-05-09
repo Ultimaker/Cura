@@ -218,8 +218,6 @@ Item
                         materialColor: model.color
                         extruderEnabled: model.enabled
                         iconVariant: "default"
-                        height: parent.height
-                        width: height
                     }
                 }
                 onClicked:
