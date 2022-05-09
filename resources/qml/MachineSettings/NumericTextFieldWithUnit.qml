@@ -90,6 +90,7 @@ UM.TooltipArea
         {
             anchors.fill: parent
 
+            borderColor: (textFieldWithUnit.hovered || textFieldWithUnit.activeFocus) ? UM.Theme.getColor("text_field_border_hovered") : "transparent"
             liningColor:
             {
                 if (!textFieldWithUnit.enabled)
@@ -109,7 +110,7 @@ UM.TooltipArea
                 // Validation is OK.
                 if (textFieldWithUnit.hovered || textFieldWithUnit.activeFocus)
                 {
-                    return UM.Theme.getColor("border_main")
+                    return UM.Theme.getColor("text_field_border_hovered")
                 }
                 return UM.Theme.getColor("border_field_light")
             }
