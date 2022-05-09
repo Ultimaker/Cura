@@ -900,4 +900,42 @@ UM.MainWindow
         var str = obj.toString();
         return str.indexOf(class_name + "(") == 0 || str.indexOf(class_name + "_QML") == 0;
     }
+
+    ScrollView {
+        id: a
+        width: 200
+        height: 200
+        ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+        ScrollBar.vertical.policy: ScrollBar.AlwaysOn
+        ScrollBar.vertical.interactive: true
+        UM.Label {
+            text: "A"
+            font.pixelSize: 500
+        }
+    }
+    ScrollView {
+        id: b
+        anchors.left: a.right
+        width: 200
+        height: 200
+        ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+        ScrollBar.vertical.policy: ScrollBar.AlwaysOn
+        ScrollBar.vertical.interactive: true
+        UM.Label {
+            text: "B"
+            font.pixelSize: 500
+        }
+    }
+    ScrollView {
+        id: c
+        anchors.left: b.right
+        width: 200
+        height: 200
+        ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+        ScrollBar.vertical.policy: ScrollBar.AlwaysOn
+        UM.Label {
+            text: "C"
+            font.pixelSize: 500
+        }
+    }
 }
