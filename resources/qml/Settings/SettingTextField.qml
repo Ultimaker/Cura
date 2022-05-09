@@ -32,6 +32,7 @@ SettingItem
 
         anchors.fill: parent
 
+        borderColor: (hovered || input.activeFocus) ? UM.Theme.getColor("text_field_border_hovered") : "transparent"
         liningColor:
         {
             if(!enabled)

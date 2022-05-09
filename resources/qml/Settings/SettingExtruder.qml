@@ -125,15 +125,16 @@ SettingItem
                 }
                 return UM.Theme.getColor("setting_control")
             }
+            borderColor: (base.hovered || control.activeFocus) ? UM.Theme.getSize("text_field_border_hovered") : "transparent"
             liningColor:
             {
                 if (!enabled)
                 {
                     return UM.Theme.getColor("setting_control_disabled_border")
                 }
-                if (control.hovered || control.activeFocus)
+                if (base.hovered || control.activeFocus)
                 {
-                    return UM.Theme.getColor("border_main")
+                    return UM.Theme.getColor("text_field_border_hovered")
                 }
                 return UM.Theme.getColor("border_field_light")
             }
