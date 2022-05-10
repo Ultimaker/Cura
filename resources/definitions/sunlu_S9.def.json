@@ -1,6 +1,6 @@
 {
     "name": "Sunlu S-9",
-    "version": 1,
+    "version": 2,
     "inherits": "sunlu_base",
     "metadata": {
         "quality_definition": "sunlu_base",
@@ -15,8 +15,7 @@
             "default_value": [
                 [[-117.5, 117.5], [-117.5, 108], [117.5, 108], [117.5, 117.5]],
                 [[-117.5, -108], [-117.5, -117.5], [117.5, -117.5], [117.5, -108]]
-          ]
-        },
+          ]},
         "machine_head_with_fans_polygon": { "default_value": [
                 [-26, 34],
                 [-26, -32],
