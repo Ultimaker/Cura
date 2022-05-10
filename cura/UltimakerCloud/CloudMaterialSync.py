@@ -1,8 +1,8 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject, QUrl
-from PyQt5.QtGui import QDesktopServices
+from PyQt6.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject, QUrl
+from PyQt6.QtGui import QDesktopServices
 from typing import Dict, Optional, TYPE_CHECKING
 import zipfile  # To export all materials in a .zip archive.
 
@@ -57,6 +57,7 @@ class CloudMaterialSync(QObject):
         self.sync_all_dialog.setProperty("syncModel", self)
         self.sync_all_dialog.setProperty("pageIndex", 0)  # Return to first page.
         self.sync_all_dialog.setProperty("hasExportedUsb", False)  # If the user exported USB before, reset that page.
+        self.sync_all_dialog.setProperty("syncStatusText", "")  # Reset any previous error messages.
         self.sync_all_dialog.show()
 
     def _showSyncNewMaterialsMessage(self) -> None:
@@ -70,7 +71,7 @@ class CloudMaterialSync(QObject):
 
         sync_materials_message.addAction(
                 "sync",
-                name = catalog.i18nc("@action:button", "Sync materials with printers"),
+                name = catalog.i18nc("@action:button", "Sync materials"),
                 icon = "",
                 description = "Sync your newly installed materials with your printers.",
                 button_align = Message.ActionButtonAlignment.ALIGN_RIGHT

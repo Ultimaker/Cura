@@ -6,7 +6,7 @@ import re
 import unicodedata
 from typing import Any, List, Dict, TYPE_CHECKING, Optional, cast, Set
 
-from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, QTimer
+from PyQt6.QtCore import QObject, pyqtProperty, pyqtSignal, QTimer
 
 from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
@@ -855,7 +855,6 @@ class MachineManager(QObject):
             caution_message = Message(
                 catalog.i18nc("@info:message Followed by a list of settings.",
                               "Settings have been changed to match the current availability of extruders:") + " [{settings_list}]".format(settings_list = ", ".join(add_user_changes)),
-                lifetime = 0,
                 title = catalog.i18nc("@info:title", "Settings updated"))
             caution_message.show()
 
@@ -1536,7 +1535,7 @@ class MachineManager(QObject):
         machine_node = ContainerTree.getInstance().machines.get(machine_definition_id)
         variant_node = machine_node.variants.get(variant_name)
         if variant_node is None:
-            Logger.error("There is no variant with the name {variant_name}.")
+            Logger.error(f"There is no variant with the name {variant_name}.")
             return
         self.setVariant(position, variant_node)
 

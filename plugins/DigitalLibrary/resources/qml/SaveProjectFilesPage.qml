@@ -1,12 +1,11 @@
-// Copyright (C) 2021 Ultimaker B.V.
+//Copyright (C) 2022 Ultimaker B.V.
+//Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.10
+import QtQuick 2.15
 import QtQuick.Window 2.2
-import QtQuick.Controls 1.4 as OldControls // TableView doesn't exist in the QtQuick Controls 2.x in 5.10, so use the old one
 import QtQuick.Controls 2.3
-import QtQuick.Controls.Styles 1.4
 
-import UM 1.2 as UM
+import UM 1.6 as UM
 import Cura 1.6 as Cura
 
 import DigitalFactory 1.0 as DF
@@ -17,7 +16,9 @@ Item
     id: base
     width: parent.width
     height: parent.height
+
     property var fileModel: manager.digitalFactoryFileModel
+    property var modelRows: manager.digitalFactoryFileModel.items
 
     signal savePressed()
     signal selectDifferentProjectPressed()
@@ -61,17 +62,23 @@ Item
         anchors.left: parent.left
         anchors.top: fileNameLabel.bottom
         anchors.topMargin: UM.Theme.getSize("thin_margin").height
-        validator: RegExpValidator
+        validator: RegularExpressionValidator
         {
-            regExp: /^[\w\-\. ()]{0,255}$/
+            regularExpression: /^[\w\-\. ()]{0,255}$/
         }
 
         text: PrintInformation.jobName
-        font: UM.Theme.getFont("medium")
+        font: fontMetrics.font
+        height: fontMetrics.height + 2 * UM.Theme.getSize("thin_margin").height
         placeholderText: "Enter the name of the file."
         onAccepted: { if (saveButton.enabled) {saveButton.clicked()}}
     }
 
+    FontMetrics
+    {
+        id: fontMetrics
+        font: UM.Theme.getFont("medium")
+    }
 
     Rectangle
     {
@@ -86,35 +93,20 @@ Item
         border.width: UM.Theme.getSize("default_lining").width
         border.color: UM.Theme.getColor("lining")
 
-
+        // This is not backwards compatible with Cura < 5.0 due to QT.labs being removed in PyQt6
         Cura.TableView
         {
             id: filesTableView
             anchors.fill: parent
-            model: manager.digitalFactoryFileModel
-            visible: model.count != 0 && manager.retrievingFileStatus != DF.RetrievalStatus.InProgress
-            selectionMode: OldControls.SelectionMode.NoSelection
+            anchors.margins: parent.border.width
 
-            OldControls.TableViewColumn
+            allowSelection: false
+            columnHeaders: ["Name", "Uploaded by", "Uploaded at"]
+            model: UM.TableModel
             {
-                id: fileNameColumn
-                role: "fileName"
-                title: "@tableViewColumn:title", "Name"
-                width: Math.round(filesTableView.width / 3)
-            }
-
-            OldControls.TableViewColumn
-            {
-                id: usernameColumn
-                role: "username"
-                title: "Uploaded by"
-                width: Math.round(filesTableView.width / 3)
-            }
-
-            OldControls.TableViewColumn
-            {
-                role: "uploadedAt"
-                title: "Uploaded at"
+                id: tableModel
+                headers: ["fileName", "username", "uploadedAt"]
+                rows: manager.digitalFactoryFileModel.items
             }
         }
 
@@ -173,8 +165,7 @@ Item
             function onItemsChanged()
             {
                 // Make sure no files are selected when the file model changes
-                filesTableView.currentRow = -1
-                filesTableView.selection.clear()
+                filesTableView.currentRow = -1;
             }
         }
     }
@@ -228,7 +219,7 @@ Item
         width: childrenRect.width
         spacing: UM.Theme.getSize("default_margin").width
 
-        Cura.CheckBox
+        UM.CheckBox
         {
             id: asProjectCheckbox
             height: UM.Theme.getSize("checkbox").height
@@ -238,7 +229,7 @@ Item
             font: UM.Theme.getFont("medium")
         }
 
-        Cura.CheckBox
+        UM.CheckBox
         {
             id: asSlicedCheckbox
             height: UM.Theme.getSize("checkbox").height
@@ -255,5 +246,11 @@ Item
     {
         saveButton.clicked.connect(base.savePressed)
         selectDifferentProjectButton.clicked.connect(base.selectDifferentProjectPressed)
+    }
+
+    onModelRowsChanged:
+    {
+        tableModel.clear()
+        tableModel.rows = modelRows
     }
 }

@@ -10,9 +10,9 @@ from enum import IntEnum
 from pathlib import Path
 from typing import Optional, List, Dict, Any, cast
 
-from PyQt5.QtCore import pyqtSignal, QObject, pyqtSlot, pyqtProperty, Q_ENUMS, QTimer, QUrl
-from PyQt5.QtNetwork import QNetworkReply
-from PyQt5.QtQml import qmlRegisterType, qmlRegisterUncreatableType
+from PyQt6.QtCore import pyqtSignal, QObject, pyqtSlot, pyqtProperty, pyqtEnum, QTimer, QUrl, QMetaObject
+from PyQt6.QtNetwork import QNetworkReply
+from PyQt6.QtQml import qmlRegisterType, qmlRegisterUncreatableMetaObject
 
 from UM.FileHandler.FileHandler import FileHandler
 from UM.Logger import Logger
@@ -31,26 +31,6 @@ from .DigitalFactoryFileResponse import DigitalFactoryFileResponse
 from .DigitalFactoryProjectModel import DigitalFactoryProjectModel
 from .DigitalFactoryProjectResponse import DigitalFactoryProjectResponse
 
-
-class RetrievalStatus(IntEnum):
-    """
-    The status of an http get request.
-
-    This is not an enum, because we want to use it in QML and QML doesn't recognize Python enums.
-    """
-    Idle = 0
-    InProgress = 1
-    Success = 2
-    Failed = 3
-
-
-class DFRetrievalStatus(QObject):
-    """
-    Used as an intermediate QObject that registers the RetrievalStatus as a recognizable enum in QML, so that it can
-    be used within QML objects as DigitalFactory.RetrievalStatus.<status>
-    """
-
-    Q_ENUMS(RetrievalStatus)
 
 
 class DigitalFactoryController(QObject):
@@ -98,6 +78,19 @@ class DigitalFactoryController(QObject):
     """Signal to inform whether the user is allowed to create more Library projects."""
     userCanCreateNewLibraryProjectChanged = pyqtSignal(bool)
 
+    class RetrievalStatus(IntEnum):
+        """
+        The status of an http get request.
+
+        This is not an enum, because we want to use it in QML and QML doesn't recognize Python enums.
+        """
+        Idle = 0
+        InProgress = 1
+        Success = 2
+        Failed = 3
+
+    pyqtEnum(RetrievalStatus)
+
     def __init__(self, application: CuraApplication) -> None:
         super().__init__(parent = None)
 
@@ -139,9 +132,9 @@ class DigitalFactoryController(QObject):
         self._erase_temp_files_lock = threading.Lock()
 
         # The statuses which indicate whether Cura is waiting for a response from the DigitalFactory API
-        self.retrieving_files_status = RetrievalStatus.Idle
-        self.retrieving_projects_status = RetrievalStatus.Idle
-        self.creating_new_project_status = RetrievalStatus.Idle
+        self.retrieving_files_status = self.RetrievalStatus.Idle
+        self.retrieving_projects_status = self.RetrievalStatus.Idle
+        self.creating_new_project_status = self.RetrievalStatus.Idle
 
         self._application.engineCreatedSignal.connect(self._onEngineCreated)
         self._application.initializationFinished.connect(self._applicationInitializationFinished)
@@ -155,9 +148,9 @@ class DigitalFactoryController(QObject):
         self._has_preselected_project = False
         self.preselectedProjectChanged.emit()
 
-        self.setRetrievingFilesStatus(RetrievalStatus.Idle)
-        self.setRetrievingProjectsStatus(RetrievalStatus.Idle)
-        self.setCreatingNewProjectStatus(RetrievalStatus.Idle)
+        self.setRetrievingFilesStatus(self.RetrievalStatus.Idle)
+        self.setRetrievingProjectsStatus(self.RetrievalStatus.Idle)
+        self.setCreatingNewProjectStatus(self.RetrievalStatus.Idle)
 
         self.setSelectedProjectIndex(-1)
 
@@ -182,7 +175,7 @@ class DigitalFactoryController(QObject):
         self.clear()
 
         if self._account.isLoggedIn and self.userAccountHasLibraryAccess():
-            self.setRetrievingProjectsStatus(RetrievalStatus.InProgress)
+            self.setRetrievingProjectsStatus(self.RetrievalStatus.InProgress)
             if preselected_project_id:
                 self._api.getProject(preselected_project_id, on_finished = self.setProjectAsPreselected, failed = self._onGetProjectFailed)
             else:
@@ -199,8 +192,8 @@ class DigitalFactoryController(QObject):
         self._project_model.setProjects([df_project])
         self.setSelectedProjectIndex(0)
         self.setHasPreselectedProject(True)
-        self.setRetrievingProjectsStatus(RetrievalStatus.Success)
-        self.setCreatingNewProjectStatus(RetrievalStatus.Success)
+        self.setRetrievingProjectsStatus(self.RetrievalStatus.Success)
+        self.setCreatingNewProjectStatus(self.RetrievalStatus.Success)
 
     def _onGetProjectFailed(self, reply: QNetworkReply, error: QNetworkReply.NetworkError) -> None:
         reply_string = bytes(reply.readAll()).decode()
@@ -216,7 +209,7 @@ class DigitalFactoryController(QObject):
         """
         self.setHasMoreProjectsToLoad(self._api.hasMoreProjectsToLoad())
         self._project_model.setProjects(df_projects)
-        self.setRetrievingProjectsStatus(RetrievalStatus.Success)
+        self.setRetrievingProjectsStatus(self.RetrievalStatus.Success)
 
     @pyqtSlot()
     def loadMoreProjects(self) -> None:
@@ -224,7 +217,7 @@ class DigitalFactoryController(QObject):
         Initiates the process of retrieving the next page of the projects list from the API.
         """
         self._api.getMoreProjects(on_finished = self.loadMoreProjectsFinished, failed = self._onGetProjectsFailed)
-        self.setRetrievingProjectsStatus(RetrievalStatus.InProgress)
+        self.setRetrievingProjectsStatus(self.RetrievalStatus.InProgress)
 
     def loadMoreProjectsFinished(self, df_projects: List[DigitalFactoryProjectResponse]) -> None:
         """
@@ -235,13 +228,13 @@ class DigitalFactoryController(QObject):
         """
         self.setHasMoreProjectsToLoad(self._api.hasMoreProjectsToLoad())
         self._project_model.extendProjects(df_projects)
-        self.setRetrievingProjectsStatus(RetrievalStatus.Success)
+        self.setRetrievingProjectsStatus(self.RetrievalStatus.Success)
 
     def _onGetProjectsFailed(self, reply: QNetworkReply, error: QNetworkReply.NetworkError) -> None:
         """
         Error function, called whenever the retrieval of projects fails.
         """
-        self.setRetrievingProjectsStatus(RetrievalStatus.Failed)
+        self.setRetrievingProjectsStatus(self.RetrievalStatus.Failed)
         Logger.log("w", "Failed to retrieve the list of projects from the Digital Library. Error encountered: {}".format(error))
 
     def getProjectFilesFinished(self, df_files_in_project: List[DigitalFactoryFileResponse]) -> None:
@@ -255,14 +248,17 @@ class DigitalFactoryController(QObject):
         # Filter to show only the files that can be opened in Cura
         self._file_model.setFilters({"file_name": lambda x: Path(x).suffix[1:].lower() in self._supported_file_types})  # the suffix is in format '.xyz', so omit the dot at the start
         self._file_model.setFiles(df_files_in_project)
-        self.setRetrievingFilesStatus(RetrievalStatus.Success)
+        self.setRetrievingFilesStatus(self.RetrievalStatus.Success)
 
     def getProjectFilesFailed(self, reply: QNetworkReply, error: QNetworkReply.NetworkError) -> None:
         """
         Error function, called whenever the retrieval of the files in a library project fails.
         """
-        Logger.log("w", "Failed to retrieve the list of files in project '{}' from the Digital Library".format(self._project_model._projects[self._selected_project_idx]))
-        self.setRetrievingFilesStatus(RetrievalStatus.Failed)
+        try:
+            Logger.warning(f"Failed to retrieve the list of files in project '{self._project_model._projects[self._selected_project_idx]}' from the Digital Library")
+        except IndexError:
+            Logger.warning(f"Failed to retrieve the list of files in a project from the Digital Library. And failed to get the project too.")
+        self.setRetrievingFilesStatus(self.RetrievalStatus.Failed)
 
     @pyqtSlot()
     def clearProjectSelection(self) -> None:
@@ -294,7 +290,7 @@ class DigitalFactoryController(QObject):
         self.selectedFileIndicesChanged.emit([])
         if 0 <= project_idx < len(self._project_model.items):
             library_project_id = self._project_model.items[project_idx]["libraryProjectId"]
-            self.setRetrievingFilesStatus(RetrievalStatus.InProgress)
+            self.setRetrievingFilesStatus(self.RetrievalStatus.InProgress)
             self._api.getListOfFilesInProject(library_project_id, on_finished = self.getProjectFilesFinished, failed = self.getProjectFilesFailed)
 
     @pyqtProperty(int, fset = setSelectedProjectIndex, notify = selectedProjectIndexChanged)
@@ -378,7 +374,7 @@ class DigitalFactoryController(QObject):
         """
         if project_name:
             self._api.createNewProject(project_name, self.setProjectAsPreselected, self._createNewLibraryProjectFailed)
-            self.setCreatingNewProjectStatus(RetrievalStatus.InProgress)
+            self.setCreatingNewProjectStatus(self.RetrievalStatus.InProgress)
         else:
             Logger.log("w", "No project name provided while attempting to create a new project. Aborting the project creation.")
 
@@ -392,7 +388,7 @@ class DigitalFactoryController(QObject):
                 self._project_creation_error_text = "Error while creating the new project: {}".format(reply_dict["errors"][0]["title"])
         self.projectCreationErrorTextChanged.emit()
 
-        self.setCreatingNewProjectStatus(RetrievalStatus.Failed)
+        self.setCreatingNewProjectStatus(self.RetrievalStatus.Failed)
         Logger.log("e", "Something went wrong while trying to create a new a project. Error: {}".format(reply_string))
 
     def setRetrievingProjectsStatus(self, new_status: RetrievalStatus) -> None:
@@ -436,7 +432,7 @@ class DigitalFactoryController(QObject):
 
     @staticmethod
     def _onEngineCreated() -> None:
-        qmlRegisterUncreatableType(DFRetrievalStatus, "DigitalFactory", 1, 0, "RetrievalStatus", "Could not create RetrievalStatus enum type")
+        qmlRegisterUncreatableMetaObject(DigitalFactoryController.staticMetaObject, "DigitalFactory", 1, 0, "RetrievalStatus", "RetrievalStatus is an Enum-only type")
 
     def _applicationInitializationFinished(self) -> None:
         self._supported_file_types = self._application.getInstance().getMeshFileHandler().getSupportedFileTypesRead()
@@ -562,7 +558,7 @@ class DigitalFactoryController(QObject):
             self.setSelectedProjectIndex(-1)
             self._api.getProjectsFirstPage(search_filter = self._project_filter, on_finished = self._onGetProjectsFirstPageFinished, failed = self._onGetProjectsFailed)
             self._api.checkUserCanCreateNewLibraryProject(callback = self.setCanCreateNewLibraryProject)
-            self.setRetrievingProjectsStatus(RetrievalStatus.InProgress)
+            self.setRetrievingProjectsStatus(self.RetrievalStatus.InProgress)
         self._has_preselected_project = new_has_preselected_project
         self.preselectedProjectChanged.emit()
 

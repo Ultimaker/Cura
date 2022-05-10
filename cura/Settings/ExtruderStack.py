@@ -3,7 +3,7 @@
 
 from typing import Any, Dict, TYPE_CHECKING, Optional
 
-from PyQt5.QtCore import pyqtProperty, pyqtSignal
+from PyQt6.QtCore import pyqtProperty, pyqtSignal
 
 from UM.Decorators import override
 from UM.MimeTypeDatabase import MimeType, MimeTypeDatabase

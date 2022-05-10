@@ -1,5 +1,5 @@
-# Copyright (c) 2021 Ultimaker B.V.
-# Cura is released under the terms of the LGPLv3 or higher.
+#  Copyright (c) 2021-2022 Ultimaker B.V.
+#  Cura is released under the terms of the LGPLv3 or higher.
 
 import numpy
 from string import Formatter
@@ -7,8 +7,8 @@ from enum import IntEnum
 import time
 from typing import Any, cast, Dict, List, Optional, Set
 import re
-import Arcus #For typing.
-from PyQt5.QtCore import QCoreApplication
+import pyArcus as Arcus  # For typing.
+from PyQt6.QtCore import QCoreApplication
 
 from UM.Job import Job
 from UM.Logger import Logger
@@ -94,7 +94,7 @@ class StartSliceJob(Job):
         super().__init__()
 
         self._scene = CuraApplication.getInstance().getController().getScene() #type: Scene
-        self._slice_message = slice_message #type: Arcus.PythonMessage
+        self._slice_message: Arcus.PythonMessage = slice_message
         self._is_cancelled = False #type: bool
         self._build_plate_number = None #type: Optional[int]
 
@@ -205,6 +205,13 @@ class StartSliceJob(Job):
         # Get the objects in their groups to print.
         object_groups = []
         if stack.getProperty("print_sequence", "value") == "one_at_a_time":
+            modifier_mesh_nodes = []
+
+            for node in DepthFirstIterator(self._scene.getRoot()):
+                build_plate_number = node.callDecoration("getBuildPlateNumber")
+                if node.callDecoration("isNonPrintingMesh") and build_plate_number == self._build_plate_number:
+                    modifier_mesh_nodes.append(node)
+
             for node in OneAtATimeIterator(self._scene.getRoot()):
                 temp_list = []
 
@@ -221,7 +228,7 @@ class StartSliceJob(Job):
                         temp_list.append(child_node)
 
                 if temp_list:
-                    object_groups.append(temp_list)
+                    object_groups.append(temp_list + modifier_mesh_nodes)
                 Job.yieldThread()
             if len(object_groups) == 0:
                 Logger.log("w", "No objects suitable for one at a time found, or no correct order found")

@@ -86,15 +86,6 @@
         },
         "machine_acceleration": {
             "default_value": 3000
-        },
-        "infill_before_walls": {
-            "value": false
-        },
-        "retraction_combing": {
-            "value": "'no_outer_surfaces'"
-        },
-        "skin_monotonic" : {
-            "value": true
         }
     }
 }

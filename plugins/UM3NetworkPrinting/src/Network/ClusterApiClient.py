@@ -4,8 +4,8 @@ import json
 from json import JSONDecodeError
 from typing import Callable, List, Optional, Dict, Union, Any, Type, cast, TypeVar, Tuple
 
-from PyQt5.QtCore import QUrl
-from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
+from PyQt6.QtCore import QUrl
+from PyQt6.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
 
 from UM.Logger import Logger
 
@@ -118,9 +118,8 @@ class ClusterApiClient:
         """
         url = QUrl("http://" + self._address + path)
         request = QNetworkRequest(url)
-        request.setAttribute(QNetworkRequest.FollowRedirectsAttribute, True)
         if content_type:
-            request.setHeader(QNetworkRequest.ContentTypeHeader, content_type)
+            request.setHeader(QNetworkRequest.KnownHeaders.ContentTypeHeader, content_type)
         return request
 
     @staticmethod
@@ -130,7 +129,7 @@ class ClusterApiClient:
         :param reply: The reply from the server.
         :return: A tuple with a status code and a dictionary.
         """
-        status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
+        status_code = reply.attribute(QNetworkRequest.Attribute.HttpStatusCodeAttribute)
         try:
             response = bytes(reply.readAll()).decode()
             return status_code, json.loads(response)
@@ -173,10 +172,10 @@ class ClusterApiClient:
             self._anti_gc_callbacks.remove(parse)
 
             # Don't try to parse the reply if we didn't get one
-            if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) is None:
+            if reply.attribute(QNetworkRequest.Attribute.HttpStatusCodeAttribute) is None:
                 return
 
-            if reply.error() > 0:
+            if reply.error() != QNetworkReply.NetworkError.NoError:
                 self._on_error(reply.errorString())
                 return
 

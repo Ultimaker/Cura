@@ -136,7 +136,6 @@
         "layer_height_0":                               { "resolve": "max(0.2, min(extruderValues('layer_height')))" },
         "line_width":                                   { "value": "machine_nozzle_size * 1.125" },
         "wall_line_width":                              { "value": "machine_nozzle_size" },
-        "fill_perimeter_gaps":                          { "default_value": "nowhere" },
         "fill_outline_gaps":                            { "default_value": true },
         "meshfix_maximum_resolution":                   { "default_value": 0.01 },
         "infill_before_walls":                          { "default_value": false },

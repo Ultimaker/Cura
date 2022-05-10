@@ -6,7 +6,7 @@ import math
 import os
 from typing import Dict, List, Optional, TYPE_CHECKING
 
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty, pyqtSlot, QTimer
+from PyQt6.QtCore import QObject, pyqtSignal, pyqtProperty, pyqtSlot, QTimer
 
 from UM.Logger import Logger
 from UM.Qt.Duration import Duration
@@ -132,7 +132,7 @@ class PrintInformation(QObject):
             self._updateJobName()
             self.preSlicedChanged.emit()
 
-    @pyqtProperty(Duration, notify = currentPrintTimeChanged)
+    @pyqtProperty(QObject, notify = currentPrintTimeChanged)
     def currentPrintTime(self) -> Duration:
         return self._current_print_time[self._active_build_plate]
 

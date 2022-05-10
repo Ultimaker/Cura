@@ -3,7 +3,7 @@
 
 import QtQuick 2.10
 import QtQuick.Controls 2.0
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 // We show a nice overlay on the 3D viewer when the current output device has no monitor view
@@ -90,7 +90,7 @@ Rectangle
         visible: monitorViewComponent.sourceComponent == null
 
         // CASE 2: CAN MONITOR & NOT CONNECTED
-        Label
+        UM.Label
         {
             anchors
             {
@@ -99,14 +99,10 @@ Rectangle
             visible: isNetworkConfigured && !isConnected
             text: catalog.i18nc("@info", "Please make sure your printer has a connection:\n- Check if the printer is turned on.\n- Check if the printer is connected to the network.\n- Check if you are signed in to discover cloud-connected printers.")
             font: UM.Theme.getFont("medium")
-            color: UM.Theme.getColor("text")
-            wrapMode: Text.WordWrap
-            lineHeight: UM.Theme.getSize("monitor_text_line_large").height
-            lineHeightMode: Text.FixedHeight
             width: contentWidth
         }
 
-        Label
+        UM.Label
         {
             id: noNetworkLabel
             anchors
@@ -116,11 +112,7 @@ Rectangle
             visible: !isNetworkConfigured && isNetworkConfigurable
             text: catalog.i18nc("@info", "Please connect your printer to the network.")
             font: UM.Theme.getFont("medium")
-            color: UM.Theme.getColor("text")
-            wrapMode: Text.WordWrap
             width: contentWidth
-            lineHeight: UM.Theme.getSize("monitor_text_line_large").height
-            lineHeightMode: Text.FixedHeight
         }
         Item
         {
@@ -129,17 +121,16 @@ Rectangle
                 left: noNetworkLabel.left
             }
             visible: !isNetworkConfigured && isNetworkConfigurable
-            height: UM.Theme.getSize("monitor_text_line").height
             width: childrenRect.width
 
-            UM.RecolorImage
+            UM.ColorImage
             {
                 id: externalLinkIcon
                 anchors.verticalCenter: parent.verticalCenter
                 color: UM.Theme.getColor("text_link")
                 source: UM.Theme.getIcon("LinkExternal")
-                width: UM.Theme.getSize("monitor_external_link_icon").width
-                height: UM.Theme.getSize("monitor_external_link_icon").height
+                width: UM.Theme.getSize("icon_indicator").width
+                height: UM.Theme.getSize("icon_indicator").height
             }
             Label
             {

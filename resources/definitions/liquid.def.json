@@ -144,7 +144,6 @@
         "retraction_prime_speed": { "value": "35" },
         
         "skin_overlap": { "value": "10" },
-        "speed_equalize_flow_enabled": { "value": "True" },
         "speed_layer_0": { "value": "20" },
         "speed_prime_tower": { "value": "speed_topbottom" },
         "speed_print": { "value": "35" },

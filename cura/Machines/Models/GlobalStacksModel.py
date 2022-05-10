@@ -1,8 +1,8 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import Qt, QTimer, pyqtProperty, pyqtSignal
-from typing import Optional
+from PyQt6.QtCore import Qt, QTimer, pyqtProperty, pyqtSignal
+from typing import List, Optional
 
 from UM.Qt.ListModel import ListModel
 from UM.i18n import i18nCatalog
@@ -11,17 +11,18 @@ from UM.Util import parseBool
 from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 from cura.Settings.GlobalStack import GlobalStack
+from cura.UltimakerCloud.UltimakerCloudConstants import META_CAPABILITIES  # To filter on the printer's capabilities.
 
 
 class GlobalStacksModel(ListModel):
-    NameRole = Qt.UserRole + 1
-    IdRole = Qt.UserRole + 2
-    HasRemoteConnectionRole = Qt.UserRole + 3
-    ConnectionTypeRole = Qt.UserRole + 4
-    MetaDataRole = Qt.UserRole + 5
-    DiscoverySourceRole = Qt.UserRole + 6  # For separating local and remote printers in the machine management page
-    RemovalWarningRole = Qt.UserRole + 7
-    IsOnlineRole = Qt.UserRole + 8
+    NameRole = Qt.ItemDataRole.UserRole + 1
+    IdRole = Qt.ItemDataRole.UserRole + 2
+    HasRemoteConnectionRole = Qt.ItemDataRole.UserRole + 3
+    ConnectionTypeRole = Qt.ItemDataRole.UserRole + 4
+    MetaDataRole = Qt.ItemDataRole.UserRole + 5
+    DiscoverySourceRole = Qt.ItemDataRole.UserRole + 6  # For separating local and remote printers in the machine management page
+    RemovalWarningRole = Qt.ItemDataRole.UserRole + 7
+    IsOnlineRole = Qt.ItemDataRole.UserRole + 8
 
     def __init__(self, parent = None) -> None:
         super().__init__(parent)
@@ -42,6 +43,7 @@ class GlobalStacksModel(ListModel):
 
         self._filter_connection_type = None  # type: Optional[ConnectionType]
         self._filter_online_only = False
+        self._filter_capabilities: List[str] = []  # Required capabilities that all listed printers must have.
 
         # Listen to changes
         CuraContainerRegistry.getInstance().containerAdded.connect(self._onContainerChanged)
@@ -50,8 +52,13 @@ class GlobalStacksModel(ListModel):
         self._updateDelayed()
 
     filterConnectionTypeChanged = pyqtSignal()
+    filterCapabilitiesChanged = pyqtSignal()
+    filterOnlineOnlyChanged = pyqtSignal()
+
     def setFilterConnectionType(self, new_filter: Optional[ConnectionType]) -> None:
-        self._filter_connection_type = new_filter
+        if self._filter_connection_type != new_filter:
+            self._filter_connection_type = new_filter
+            self.filterConnectionTypeChanged.emit()
 
     @pyqtProperty(int, fset = setFilterConnectionType, notify = filterConnectionTypeChanged)
     def filterConnectionType(self) -> int:
@@ -65,9 +72,10 @@ class GlobalStacksModel(ListModel):
             return -1
         return self._filter_connection_type.value
 
-    filterOnlineOnlyChanged = pyqtSignal()
     def setFilterOnlineOnly(self, new_filter: bool) -> None:
-        self._filter_online_only = new_filter
+        if self._filter_online_only != new_filter:
+            self._filter_online_only = new_filter
+            self.filterOnlineOnlyChanged.emit()
 
     @pyqtProperty(bool, fset = setFilterOnlineOnly, notify = filterOnlineOnlyChanged)
     def filterOnlineOnly(self) -> bool:
@@ -75,6 +83,20 @@ class GlobalStacksModel(ListModel):
         Whether to filter the global stacks to show only printers that are online.
         """
         return self._filter_online_only
+
+    def setFilterCapabilities(self, new_filter: List[str]) -> None:
+        if self._filter_capabilities != new_filter:
+            self._filter_capabilities = new_filter
+            self.filterCapabilitiesChanged.emit()
+
+    @pyqtProperty("QStringList", fset = setFilterCapabilities, notify = filterCapabilitiesChanged)
+    def filterCapabilities(self) -> List[str]:
+        """
+        Capabilities to require on the list of printers.
+
+        Only printers that have all of these capabilities will be shown in this model.
+        """
+        return self._filter_capabilities
 
     def _onContainerChanged(self, container) -> None:
         """Handler for container added/removed events from registry"""
@@ -108,8 +130,12 @@ class GlobalStacksModel(ListModel):
             if self._filter_online_only and not is_online:
                 continue
 
+            capabilities = set(container_stack.getMetaDataEntry(META_CAPABILITIES, "").split(","))
+            if set(self._filter_capabilities) - capabilities:  # Not all required capabilities are met.
+                continue
+
             device_name = container_stack.getMetaDataEntry("group_name", container_stack.getName())
-            section_name = "Connected printers" if has_remote_connection else "Preset printers"
+            section_name = self._catalog.i18nc("@label", "Connected printers") if has_remote_connection else self._catalog.i18nc("@label", "Preset printers")
             section_name = self._catalog.i18nc("@info:title", section_name)
 
             default_removal_warning = self._catalog.i18nc(

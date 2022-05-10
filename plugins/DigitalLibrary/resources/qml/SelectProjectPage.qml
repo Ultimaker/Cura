@@ -1,15 +1,13 @@
-// Copyright (C) 2021 Ultimaker B.V.
-// Cura is released under the terms of the LGPLv3 or higher.
+//Copyright (C) 2022 Ultimaker B.V.
+//Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
 import QtQuick.Window 2.2
-import QtQuick.Controls 1.4 as OldControls // TableView doesn't exist in the QtQuick Controls 2.x in 5.10, so use the old one
 import QtQuick.Controls 2.3
-import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.1
 
-import UM 1.2 as UM
-import Cura 1.6 as Cura
+import UM 1.6 as UM
+import Cura 1.7 as Cura
 
 import DigitalFactory 1.0 as DF
 
@@ -44,32 +42,13 @@ Item
         height: childrenRect.height
         spacing: UM.Theme.getSize("default_margin").width
 
-        Cura.TextField
+        Cura.SearchBar
         {
             id: searchBar
             Layout.fillWidth: true
             implicitHeight: createNewProjectButton.height
-            leftPadding: searchIcon.width + UM.Theme.getSize("default_margin").width * 2
-
+            focus: true
             onTextEdited: manager.projectFilter = text //Update the search filter when editing this text field.
-
-            placeholderText: "Search"
-
-            UM.RecolorImage
-            {
-                id: searchIcon
-
-                anchors
-                {
-                    verticalCenter: parent.verticalCenter
-                    left: parent.left
-                    leftMargin: UM.Theme.getSize("default_margin").width
-                }
-                source: UM.Theme.getIcon("search")
-                height: UM.Theme.getSize("small_button_icon").height
-                width: height
-                color: UM.Theme.getColor("text")
-            }
         }
 
         Cura.SecondaryButton
@@ -77,7 +56,7 @@ Item
             id: createNewProjectButton
 
             text: "New Library project"
-            visible: createNewProjectButtonVisible && manager.userAccountCanCreateNewLibraryProject && (manager.retrievingProjectsStatus == DF.RetrievalStatus.Success || manager.retrievingProjectsStatus == DF.RetrievalStatus.Failed)
+            visible: createNewProjectButtonVisible && manager.userAccountCanCreateNewLibraryProject && (manager.retrievingProjectsStatus == 2 || manager.retrievingProjectsStatus == 3) // Status is succeeded or failed
 
             onClicked:
             {
@@ -120,7 +99,7 @@ Item
             {
                 id: digitalFactoryImage
                 anchors.horizontalCenter: parent.horizontalCenter
-                source: searchBar.text === "" ? "../images/digital_factory.svg" : "../images/projects_not_found.svg"
+                source: Qt.resolvedUrl(searchBar.text === "" ? "../images/digital_factory.svg" : "../images/projects_not_found.svg")
                 fillMode: Image.PreserveAspectFit
                 width: parent.width - 2 * UM.Theme.getSize("thick_margin").width
             }
@@ -169,29 +148,7 @@ Item
             contentHeight: projectsListView.implicitHeight
             anchors.fill: parent
 
-            ScrollBar.vertical: ScrollBar
-            {
-                // Vertical ScrollBar, styled similarly to the scrollBar in the settings panel
-                id: verticalScrollBar
-                visible: flickableView.contentHeight > flickableView.height
-
-                background: Rectangle
-                {
-                    implicitWidth: UM.Theme.getSize("scrollbar").width
-                    radius: Math.round(implicitWidth / 2)
-                    color: UM.Theme.getColor("scrollbar_background")
-                }
-
-                contentItem: Rectangle
-                {
-                    id: scrollViewHandle
-                    implicitWidth: UM.Theme.getSize("scrollbar").width
-                    radius: Math.round(implicitWidth / 2)
-
-                    color: verticalScrollBar.pressed ? UM.Theme.getColor("scrollbar_handle_down") : verticalScrollBar.hovered ? UM.Theme.getColor("scrollbar_handle_hover") : UM.Theme.getColor("scrollbar_handle")
-                    Behavior on color { ColorAnimation { duration: 50; } }
-                }
-            }
+            ScrollBar.vertical: UM.ScrollBar { id: verticalScrollBar }
 
             Column
             {
@@ -221,7 +178,7 @@ Item
                 LoadMoreProjectsCard
                 {
                     id: loadMoreProjectsCard
-                    height: UM.Theme.getSize("toolbox_thumbnail_small").height
+                    height: UM.Theme.getSize("card_icon").height
                     width: parent.width
                     visible: manager.digitalFactoryProjectModel.count > 0
                     hasMoreProjectsToLoad: manager.hasMoreProjectsToLoad

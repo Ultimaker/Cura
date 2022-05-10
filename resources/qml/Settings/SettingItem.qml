@@ -13,12 +13,9 @@ import "."
 Item
 {
     id: base
-
-    height: UM.Theme.getSize("section").height
+    height: enabled ? UM.Theme.getSize("section").height + UM.Theme.getSize("narrow_margin").height : 0
     anchors.left: parent.left
     anchors.right: parent.right
-    // To avoid overlapping with the scrollBars
-    anchors.rightMargin: 2 * UM.Theme.getSize("thin_margin").width
 
     property alias contents: controlContainer.children
     property alias hovered: mouse.containsMouse
@@ -65,13 +62,19 @@ Item
         var affected_by_list = ""
         for (var i in affected_by)
         {
-            affected_by_list += "<li>%1</li>\n".arg(affected_by[i].label)
+            if(affected_by[i].label != "")
+            {
+                affected_by_list += "<li>%1</li>\n".arg(affected_by[i].label)
+            }
         }
 
         var affects_list = ""
         for (var i in affects)
         {
-            affects_list += "<li>%1</li>\n".arg(affects[i].label)
+            if(affects[i].label != "")
+            {
+                affects_list += "<li>%1</li>\n".arg(affects[i].label)
+            }
         }
 
         var tooltip = "<b>%1</b>\n<p>%2</p>".arg(definition.label).arg(definition.description)
@@ -137,7 +140,7 @@ Item
             id: label
 
             anchors.left: parent.left
-            anchors.leftMargin: doDepthIndentation ? Math.round(UM.Theme.getSize("thin_margin").width + ((definition.depth - 1) * UM.Theme.getSize("setting_control_depth_margin").width)) : 0
+            anchors.leftMargin: doDepthIndentation ? Math.round(UM.Theme.getSize("thin_margin").width + ((definition.depth - 1) * UM.Theme.getSize("default_margin").width)) : 0
             anchors.right: settingControls.left
             anchors.verticalCenter: parent.verticalCenter
 

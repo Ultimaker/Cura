@@ -22,8 +22,8 @@
     "machine_heated_bed":     { "default_value": false },
     "machine_center_is_zero": { "default_value": true },
 
-    "machine_start_gcode":    { "default_value": "G21\nG90 \nM107\nG28\nG92 E0\nG1 F200 E3\nG92 E0" },
-    "machine_end_gcode":      { "default_value": "M104 S0\nG28\nG91\nG1 E-6 F300\nM84\nG90" },
+    "machine_start_gcode":    { "default_value": "G21\nG90 \nM107\nG28\nG1 Y-110 Z15\nG0 Z{layer_height_0}\nG92 E0\nG1 F200 Y-100 E6\nG92 E0" },
+    "machine_end_gcode":      { "default_value": "G28\nG91\nG1 E-6 F300\nM104 S0\nG1 E-1000 F5000\nM84\nG90" },
 
     "layer_height": { "default_value": 0.2 },
     "default_material_print_temperature": { "default_value": 210 },

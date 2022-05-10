@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import Any, cast, Dict, Optional, TYPE_CHECKING
-from PyQt5.QtCore import pyqtSlot, QObject, Qt, QTimer
+from PyQt6.QtCore import pyqtSlot, QObject, Qt, QTimer
 
 from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
@@ -29,13 +29,13 @@ if TYPE_CHECKING:
 class QualityManagementModel(ListModel):
     """This the QML model for the quality management page."""
 
-    NameRole = Qt.UserRole + 1
-    IsReadOnlyRole = Qt.UserRole + 2
-    QualityGroupRole = Qt.UserRole + 3
-    QualityTypeRole = Qt.UserRole + 4
-    QualityChangesGroupRole = Qt.UserRole + 5
-    IntentCategoryRole = Qt.UserRole + 6
-    SectionNameRole = Qt.UserRole + 7
+    NameRole = Qt.ItemDataRole.UserRole + 1
+    IsReadOnlyRole = Qt.ItemDataRole.UserRole + 2
+    QualityGroupRole = Qt.ItemDataRole.UserRole + 3
+    QualityTypeRole = Qt.ItemDataRole.UserRole + 4
+    QualityChangesGroupRole = Qt.ItemDataRole.UserRole + 5
+    IntentCategoryRole = Qt.ItemDataRole.UserRole + 6
+    SectionNameRole = Qt.ItemDataRole.UserRole + 7
 
     def __init__(self, parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)
@@ -361,8 +361,15 @@ class QualityManagementModel(ListModel):
                 "section_name": catalog.i18nc("@label", intent_translations.get(intent_category, {}).get("name", catalog.i18nc("@label", "Unknown"))),
             })
         # Sort by quality_type for each intent category
+        intent_translations_list = list(intent_translations)
 
-        result = sorted(result, key = lambda x: (list(intent_translations).index(x["intent_category"]), x["quality_type"]))
+        def getIntentWeight(intent_category):
+            try:
+                return intent_translations_list.index(intent_category)
+            except ValueError:
+                return 99
+
+        result = sorted(result, key = lambda x: (getIntentWeight(x["intent_category"]), x["quality_type"]))
         item_list += result
 
         # Create quality_changes group items

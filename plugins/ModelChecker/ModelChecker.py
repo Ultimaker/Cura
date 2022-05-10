@@ -3,7 +3,7 @@
 
 import os
 
-from PyQt5.QtCore import QObject, pyqtSlot, pyqtSignal, pyqtProperty, QTimer
+from PyQt6.QtCore import QObject, pyqtSlot, pyqtSignal, pyqtProperty, QTimer
 
 from UM.Application import Application
 from UM.Extension import Extension

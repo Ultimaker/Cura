@@ -1,5 +1,5 @@
-# Copyright (c) 2015 Ultimaker B.V.
-# Uranium is released under the terms of the LGPLv3 or higher.
+#  Copyright (c) 2015-2022 Ultimaker B.V.
+#  Cura is released under the terms of the LGPLv3 or higher.
 from typing import Optional
 
 from UM.Mesh.MeshWriter import MeshWriter
@@ -10,8 +10,12 @@ from UM.Application import Application
 from UM.Scene.SceneNode import SceneNode
 
 from cura.CuraApplication import CuraApplication
+from cura.Utils.Threading import call_on_qt_thread
+from cura.Snapshot import Snapshot
 
-import Savitar
+from PyQt6.QtCore import QBuffer
+
+import pySavitar as Savitar
 
 import numpy
 import datetime
@@ -149,6 +153,22 @@ class ThreeMFWriter(MeshWriter):
             relations_element = ET.Element("Relationships", xmlns = self._namespaces["relationships"])
             model_relation_element = ET.SubElement(relations_element, "Relationship", Target = "/3D/3dmodel.model", Id = "rel0", Type = "http://schemas.microsoft.com/3dmanufacturing/2013/01/3dmodel")
 
+            # Attempt to add a thumbnail
+            snapshot = self._createSnapshot()
+            if snapshot:
+                thumbnail_buffer = QBuffer()
+                thumbnail_buffer.open(QBuffer.OpenModeFlag.ReadWrite)
+                snapshot.save(thumbnail_buffer, "PNG")
+
+                thumbnail_file = zipfile.ZipInfo("Metadata/thumbnail.png")
+                # Don't try to compress snapshot file, because the PNG is pretty much as compact as it will get
+                archive.writestr(thumbnail_file, thumbnail_buffer.data())
+
+                # Add PNG to content types file
+                thumbnail_type = ET.SubElement(content_types, "Default", Extension = "png", ContentType = "image/png")
+                # Add thumbnail relation to _rels/.rels file
+                thumbnail_relation_element = ET.SubElement(relations_element, "Relationship", Target = "/Metadata/thumbnail.png", Id = "rel1", Type = "http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail")
+
             savitar_scene = Savitar.Scene()
 
             metadata_to_store = CuraApplication.getInstance().getController().getScene().getMetaData()
@@ -212,3 +232,17 @@ class ThreeMFWriter(MeshWriter):
                 self._archive = archive
 
         return True
+
+    @call_on_qt_thread  # must be called from the main thread because of OpenGL
+    def _createSnapshot(self):
+        Logger.log("d", "Creating thumbnail image...")
+        if not CuraApplication.getInstance().isVisible:
+            Logger.log("w", "Can't create snapshot when renderer not initialized.")
+            return None
+        try:
+            snapshot = Snapshot.snapshot(width = 300, height = 300)
+        except:
+            Logger.logException("w", "Failed to create snapshot image")
+            return None
+
+        return snapshot

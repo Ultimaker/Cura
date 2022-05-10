@@ -6,7 +6,7 @@ import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
 import QtQuick.Window 2.2
 
-import UM 1.1 as UM
+import UM 1.5 as UM
 import Cura 1.1 as Cura
 
 UM.Dialog
@@ -17,11 +17,8 @@ UM.Dialog
     minimumWidth: UM.Theme.getSize("popup_dialog").width
     minimumHeight: UM.Theme.getSize("popup_dialog").height
     width: minimumWidth
-    height: Math.max(dialogSummaryItem.height + 2 * buttonsItem.height, minimumHeight) // 2 * button height to also have some extra space around the button relative to the button size
-
-    property int comboboxHeight: 15 * screenScaleFactor
-    property int spacerHeight: 10 * screenScaleFactor
-    property int doubleSpacerHeight: 20 * screenScaleFactor
+    
+    property int comboboxHeight: UM.Theme.getSize("default_margin").height
 
     onClosing: manager.notifyClosed()
     onVisibleChanged:
@@ -46,10 +43,6 @@ UM.Dialog
             id: catalog
             name: "cura"
         }
-        SystemPalette
-        {
-            id: palette
-        }
 
         ListModel
         {
@@ -68,45 +61,39 @@ UM.Dialog
         {
             width: parent.width
             height: childrenRect.height
-            spacing: 2 * screenScaleFactor
-            Label
+            spacing: UM.Theme.getSize("default_margin").height
+
+            Column
             {
-                id: titleLabel
-                text: catalog.i18nc("@action:title", "Summary - Cura Project")
-                font.pointSize: 18
-            }
-            Rectangle
-            {
-                id: separator
-                color: palette.text
                 width: parent.width
-                height: 1
-            }
-            Item // Spacer
-            {
-                height: doubleSpacerHeight
-                width: height
+                height: childrenRect.height
+
+                UM.Label
+                {
+                    id: titleLabel
+                    text: catalog.i18nc("@action:title", "Summary - Cura Project")
+                    font: UM.Theme.getFont("large")
+                }
+
+                Rectangle
+                {
+                    id: separator
+                    color: UM.Theme.getColor("text")
+                    width: parent.width
+                    height: UM.Theme.getSize("default_lining").height
+                }
             }
 
-            Row
+            Item
             {
-                height: childrenRect.height
                 width: parent.width
-                Label
-                {
-                    text: catalog.i18nc("@action:label", "Printer settings")
-                    font.bold: true
-                    width: (parent.width / 3) | 0
-                }
-                Item
-                {
-                    // spacer
-                    height: spacerHeight
-                    width: (parent.width / 3) | 0
-                }
+                height: childrenRect.height
+
                 UM.TooltipArea
                 {
                     id: machineResolveStrategyTooltip
+                    anchors.top: parent.top
+                    anchors.right: parent.right
                     width: (parent.width / 3) | 0
                     height: visible ? comboboxHeight : 0
                     visible: base.visible && machineResolveComboBox.model.count > 1
@@ -157,64 +144,65 @@ UM.Dialog
                         }
                     }
                 }
-            }
-            Row
-            {
-                width: parent.width
-                height: childrenRect.height
-                Label
+
+                Column
                 {
-                    text: catalog.i18nc("@action:label", "Type")
-                    width: (parent.width / 3) | 0
-                }
-                Label
-                {
-                    text: manager.machineType
-                    width: (parent.width / 3) | 0
+                    width: parent.width
+                    height: childrenRect.height
+
+                    UM.Label
+                    {
+                        id: printer_settings_label
+                        text: catalog.i18nc("@action:label", "Printer settings")
+                        font: UM.Theme.getFont("default_bold")
+                    }
+
+                    Row
+                    {
+                        width: parent.width
+                        height: childrenRect.height
+
+                        UM.Label
+                        {
+                            text: catalog.i18nc("@action:label", "Type")
+                            width: (parent.width / 3) | 0
+                        }
+                        UM.Label
+                        {
+                            text: manager.machineType
+                            width: (parent.width / 3) | 0
+                        }
+                    }
+
+                    Row
+                    {
+                        width: parent.width
+                        height: childrenRect.height
+
+                        UM.Label
+                        {
+                            text: catalog.i18nc("@action:label", manager.isPrinterGroup ? "Printer Group" : "Printer Name")
+                            width: (parent.width / 3) | 0
+                        }
+                        UM.Label
+                        {
+                            text: manager.machineName
+                            width: (parent.width / 3) | 0
+                            wrapMode: Text.WordWrap
+                        }
+                    }
                 }
             }
 
-            Row
+            Item
             {
                 width: parent.width
                 height: childrenRect.height
-                Label
-                {
-                    text: catalog.i18nc("@action:label", manager.isPrinterGroup ? "Printer Group" : "Printer Name")
-                    width: (parent.width / 3) | 0
-                }
-                Label
-                {
-                    text: manager.machineName
-                    width: (parent.width / 3) | 0
-                    wrapMode: Text.WordWrap
-                }
-            }
 
-            Item // Spacer
-            {
-                height: doubleSpacerHeight
-                width: height
-            }
-            Row
-            {
-                height: childrenRect.height
-                width: parent.width
-                Label
-                {
-                    text: catalog.i18nc("@action:label", "Profile settings")
-                    font.bold: true
-                    width: (parent.width / 3) | 0
-                }
-                Item
-                {
-                    // spacer
-                    height: spacerHeight
-                    width: (parent.width / 3) | 0
-                }
                 UM.TooltipArea
                 {
-                    id: qualityChangesResolveTooltip
+                    anchors.right: parent.right
+                    anchors.top: parent.top
                     width: (parent.width / 3) | 0
                     height: visible ? comboboxHeight : 0
                     visible: manager.qualityChangesConflict
@@ -232,96 +220,105 @@ UM.Dialog
                         }
                     }
                 }
+
+                Column
+                {
+                    width: parent.width
+                    height: childrenRect.height
+
+                    UM.Label
+                    {
+                        text: catalog.i18nc("@action:label", "Profile settings")
+                        font: UM.Theme.getFont("default_bold")
+                    }
+
+                    Row
+                    {
+                        width: parent.width
+                        height: childrenRect.height
+
+                        UM.Label
+                        {
+                            text: catalog.i18nc("@action:label", "Name")
+                            width: (parent.width / 3) | 0
+                        }
+                        UM.Label
+                        {
+                            text: manager.qualityName
+                            width: (parent.width / 3) | 0
+                            wrapMode: Text.WordWrap
+                        }
+                    }
+
+                    Row
+                    {
+                        width: parent.width
+                        height: childrenRect.height
+
+                        UM.Label
+                        {
+                            text: catalog.i18nc("@action:label", "Intent")
+                            width: (parent.width / 3) | 0
+                        }
+                        UM.Label
+                        {
+                            text: manager.intentName
+                            width: (parent.width / 3) | 0
+                            wrapMode: Text.WordWrap
+                        }
+                    }
+
+                    Row
+                    {
+                        width: parent.width
+                        height: childrenRect.height
+
+                        UM.Label
+                        {
+                            text: catalog.i18nc("@action:label", "Not in profile")
+                            visible: manager.numUserSettings != 0
+                            width: (parent.width / 3) | 0
+                        }
+                        UM.Label
+                        {
+                            text: catalog.i18ncp("@action:label", "%1 override", "%1 overrides", manager.numUserSettings).arg(manager.numUserSettings)
+                            visible: manager.numUserSettings != 0
+                            width: (parent.width / 3) | 0
+                        }
+                    }
+
+                    Row
+                    {
+                        width: parent.width
+                        height: childrenRect.height
+
+                        UM.Label
+                        {
+                            text: catalog.i18nc("@action:label", "Derivative from")
+                            visible: manager.numSettingsOverridenByQualityChanges != 0
+                            width: (parent.width / 3) | 0
+                        }
+                        UM.Label
+                        {
+                            text: catalog.i18ncp("@action:label", "%1, %2 override", "%1, %2 overrides", manager.numSettingsOverridenByQualityChanges).arg(manager.qualityType).arg(manager.numSettingsOverridenByQualityChanges)
+                            width: (parent.width / 3) | 0
+                            visible: manager.numSettingsOverridenByQualityChanges != 0
+                            wrapMode: Text.WordWrap
+                        }
+                    }
+                }
             }
-            Row
+
+            Item
             {
                 width: parent.width
                 height: childrenRect.height
-                Label
-                {
-                    text: catalog.i18nc("@action:label", "Name")
-                    width: (parent.width / 3) | 0
-                }
-                Label
-                {
-                    text: manager.qualityName
-                    width: (parent.width / 3) | 0
-                    wrapMode: Text.WordWrap
-                }
-            }
-            Row
-            {
-                width: parent.width
-                height: childrenRect.height
-                Label
-                {
-                    text: catalog.i18nc("@action:label", "Intent")
-                    width: (parent.width / 3) | 0
-                }
-                Label
-                {
-                    text: manager.intentName
-                    width: (parent.width / 3) | 0
-                    wrapMode: Text.WordWrap
-                }
-            }
-            Row
-            {
-                width: parent.width
-                height: manager.numUserSettings != 0 ? childrenRect.height : 0
-                Label
-                {
-                    text: catalog.i18nc("@action:label", "Not in profile")
-                    width: (parent.width / 3) | 0
-                }
-                Label
-                {
-                    text: catalog.i18ncp("@action:label", "%1 override", "%1 overrides", manager.numUserSettings).arg(manager.numUserSettings)
-                    width: (parent.width / 3) | 0
-                }
-                visible: manager.numUserSettings != 0
-            }
-            Row
-            {
-                width: parent.width
-                height: manager.numSettingsOverridenByQualityChanges != 0 ? childrenRect.height : 0
-                Label
-                {
-                    text: catalog.i18nc("@action:label", "Derivative from")
-                    width: (parent.width / 3) | 0
-                }
-                Label
-                {
-                    text: catalog.i18ncp("@action:label", "%1, %2 override", "%1, %2 overrides", manager.numSettingsOverridenByQualityChanges).arg(manager.qualityType).arg(manager.numSettingsOverridenByQualityChanges)
-                    width: (parent.width / 3) | 0
-                    wrapMode: Text.WordWrap
-                }
-                visible: manager.numSettingsOverridenByQualityChanges != 0
-            }
-            Item // Spacer
-            {
-                height: doubleSpacerHeight
-                width: height
-            }
-            Row
-            {
-                height: childrenRect.height
-                width: parent.width
-                Label
-                {
-                    text: catalog.i18nc("@action:label", "Material settings")
-                    font.bold: true
-                    width: (parent.width / 3) | 0
-                }
-                Item
-                {
-                    // spacer
-                    height: spacerHeight
-                    width: (parent.width / 3) | 0
-                }
+
                 UM.TooltipArea
                 {
                     id: materialResolveTooltip
+                    anchors.right: parent.right
+                    anchors.top: parent.top
                     width: (parent.width / 3) | 0
                     height: visible ? comboboxHeight : 0
                     visible: manager.materialConflict
@@ -339,91 +336,104 @@ UM.Dialog
                         }
                     }
                 }
-            }
 
-            Repeater
-            {
-                model: manager.materialLabels
-                delegate: Row
+                Column
                 {
                     width: parent.width
                     height: childrenRect.height
-                    Label
+                    Row
                     {
-                        text: catalog.i18nc("@action:label", "Name")
-                        width: (parent.width / 3) | 0
+                        height: childrenRect.height
+                        width: parent.width
+                        spacing: UM.Theme.getSize("narrow_margin").width
+
+                        UM.Label
+                        {
+                            text: catalog.i18nc("@action:label", "Material settings")
+                            font: UM.Theme.getFont("default_bold")
+                            width: (parent.width / 3) | 0
+                        }
                     }
-                    Label
+
+                    Repeater
                     {
-                        text: modelData
-                        width: (parent.width / 3) | 0
-                        wrapMode: Text.WordWrap
+                        model: manager.materialLabels
+                        delegate: Row
+                        {
+                            width: parent.width
+                            height: childrenRect.height
+                            UM.Label
+                            {
+                                text: catalog.i18nc("@action:label", "Name")
+                                width: (parent.width / 3) | 0
+                            }
+                            UM.Label
+                            {
+                                text: modelData
+                                width: (parent.width / 3) | 0
+                                wrapMode: Text.WordWrap
+                            }
+                        }
                     }
                 }
             }
 
-            Item // Spacer
+            Column
             {
-                height: doubleSpacerHeight
-                width: height
+                width: parent.width
+                height: childrenRect.height
+
+                UM.Label
+                {
+                    text: catalog.i18nc("@action:label", "Setting visibility")
+                    font: UM.Theme.getFont("default_bold")
+                }
+                Row
+                {
+                    width: parent.width
+                    height: childrenRect.height
+                    UM.Label
+                    {
+                        text: catalog.i18nc("@action:label", "Mode")
+                        width: (parent.width / 3) | 0
+                    }
+                    UM.Label
+                    {
+                        text: manager.activeMode
+                        width: (parent.width / 3) | 0
+                    }
+                }
+                Row
+                {
+                    width: parent.width
+                    height: childrenRect.height
+                    visible: manager.hasVisibleSettingsField
+                    UM.Label
+                    {
+                        text: catalog.i18nc("@action:label", "Visible settings:")
+                        width: (parent.width / 3) | 0
+                    }
+                    UM.Label
+                    {
+                        text: catalog.i18nc("@action:label", "%1 out of %2" ).arg(manager.numVisibleSettings).arg(manager.totalNumberOfSettings)
+                        width: (parent.width / 3) | 0
+                    }
+                }
             }
 
-            Label
-            {
-                text: catalog.i18nc("@action:label", "Setting visibility")
-                font.bold: true
-            }
-            Row
-            {
-                width: parent.width
-                height: childrenRect.height
-                Label
-                {
-                    text: catalog.i18nc("@action:label", "Mode")
-                    width: (parent.width / 3) | 0
-                }
-                Label
-                {
-                    text: manager.activeMode
-                    width: (parent.width / 3) | 0
-                }
-            }
-            Row
-            {
-                width: parent.width
-                height: childrenRect.height
-                visible: manager.hasVisibleSettingsField
-                Label
-                {
-                    text: catalog.i18nc("@action:label", "Visible settings:")
-                    width: (parent.width / 3) | 0
-                }
-                Label
-                {
-                    text: catalog.i18nc("@action:label", "%1 out of %2" ).arg(manager.numVisibleSettings).arg(manager.totalNumberOfSettings)
-                    width: (parent.width / 3) | 0
-                }
-            }
-            Item // Spacer
-            {
-                height: spacerHeight
-                width: height
-            }
             Row
             {
                 width: parent.width
                 height: childrenRect.height
                 visible: manager.hasObjectsOnPlate
-                UM.RecolorImage
+                UM.ColorImage
                 {
                     width: warningLabel.height
                     height: width
-
                     source: UM.Theme.getIcon("Information")
-                    color: palette.text
-
+                    color: UM.Theme.getColor("text")
                 }
-                Label
+                UM.Label
                 {
                     id: warningLabel
                     text: catalog.i18nc("@action:warning", "Loading a project will clear all models on the build plate.")
@@ -432,44 +442,22 @@ UM.Dialog
             }
         }
     }
-    Item
-    {
-        id: buttonsItem
-        width: parent.width
-        height: childrenRect.height
-        anchors.bottom: parent.bottom
-        anchors.right: parent.right
-        Button
+
+    buttonSpacing: UM.Theme.getSize("default_margin").width
+
+    rightButtons: [
+        Cura.TertiaryButton
         {
-            id: cancel_button
-            text: catalog.i18nc("@action:button","Cancel");
-            onClicked: { manager.onCancelButtonClicked() }
-            enabled: true
-            anchors.bottom: parent.bottom
-            anchors.right: ok_button.left
-            anchors.rightMargin: 2 * screenScaleFactor
-        }
-        Button
+            text: catalog.i18nc("@action:button", "Cancel")
+            onClicked: reject()
+        },
+        Cura.PrimaryButton
         {
-            id: ok_button
-            anchors.right: parent.right
-            anchors.bottom: parent.bottom
-            text: catalog.i18nc("@action:button","Open");
-            onClicked: { manager.closeBackend(); manager.onOkButtonClicked() }
+            text: catalog.i18nc("@action:button", "Open")
+            onClicked: accept()
         }
-    }
+    ]
 
-
-    function accept() {
-        manager.closeBackend();
-        manager.onOkButtonClicked();
-        base.visible = false;
-        base.accept();
-    }
-
-    function reject() {
-        manager.onCancelButtonClicked();
-        base.visible = false;
-        base.rejected();
-    }
+    onRejected: manager.onCancelButtonClicked()
+    onAccepted: manager.onOkButtonClicked()
 }
