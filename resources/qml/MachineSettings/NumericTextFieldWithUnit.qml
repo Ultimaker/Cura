@@ -91,12 +91,12 @@ UM.TooltipArea
         {
             anchors.fill: parent
 
-            borderColor: (textFieldWithUnit.hovered || textFieldWithUnit.activeFocus) ? UM.Theme.getColor("text_field_border_hovered") : "transparent"
+            borderColor: textFieldWithUnit.activeFocus ? UM.Theme.getColor("text_field_border_active") : "transparent"
             liningColor:
             {
                 if (!textFieldWithUnit.enabled)
                 {
-                    return UM.Theme.getColor("setting_control_disabled_border")
+                    return UM.Theme.getColor("setting_control_disabled_border");
                 }
                 switch (propertyProvider.properties.validationState)
                 {
@@ -109,11 +109,15 @@ UM.TooltipArea
                         return UM.Theme.getColor("setting_validation_warning")
                 }
                 // Validation is OK.
-                if (textFieldWithUnit.hovered || textFieldWithUnit.activeFocus)
+                if(textFieldWithUnit.activeFocus)
                 {
-                    return UM.Theme.getColor("text_field_border_hovered")
+                    return UM.Theme.getColor("text_field_border_active");
                 }
-                return UM.Theme.getColor("border_field_light")
+                if(textFieldWithUnit.hovered)
+                {
+                    return UM.Theme.getColor("text_field_border_hovered");
+                }
+                return UM.Theme.getColor("border_field_light");
             }
 
             color:
