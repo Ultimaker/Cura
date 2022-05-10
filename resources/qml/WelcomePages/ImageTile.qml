@@ -4,7 +4,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 
-import UM 1.5 as UM
+import UM 1.3 as UM
 
 
 //
@@ -18,7 +18,7 @@ Column
     property alias text: label.text
     property alias imageSource: image.source
 
-    UM.Label
+    Label
     {
         id: label
         width: image.width
@@ -26,6 +26,9 @@ Column
         horizontalAlignment: Text.AlignHCenter
         text: ""
         wrapMode: Text.WordWrap
+        font: UM.Theme.getFont("default")
+        color: UM.Theme.getColor("text")
+        renderType: Text.NativeRendering
     }
 
     Image

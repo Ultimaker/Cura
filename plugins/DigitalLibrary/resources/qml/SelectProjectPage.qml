@@ -104,12 +104,13 @@ Item
                 width: parent.width - 2 * UM.Theme.getSize("thick_margin").width
             }
 
-            UM.Label
+            Label
             {
                 id: noLibraryProjectsLabel
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: searchBar.text === "" ? "It appears that you don't have any projects in the Library yet." : "No projects found that match the search query."
                 font: UM.Theme.getFont("medium")
+                color: UM.Theme.getColor("text")
             }
 
             Cura.TertiaryButton

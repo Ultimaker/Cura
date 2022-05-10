@@ -56,9 +56,13 @@ Rectangle
                         color: UM.Theme.getColor("text")
                     }
 
-                    UM.Label
+                    Label
                     {
+
                         anchors.verticalCenter: downloadsIcon.verticalCenter
+
+                        color: UM.Theme.getColor("text")
+                        font: UM.Theme.getFont("default")
                         text: packageData.downloadCount
                     }
                 }
@@ -74,22 +78,25 @@ Rectangle
             topPadding: 0
             spacing: UM.Theme.getSize("default_margin").height
 
-            UM.Label
+            Label
             {
                 width: parent.width - parent.padding * 2
 
                 text: catalog.i18nc("@header", "Description")
                 font: UM.Theme.getFont("medium_bold")
+                color: UM.Theme.getColor("text")
                 elide: Text.ElideRight
             }
 
-            UM.Label
+            Label
             {
                 width: parent.width - parent.padding * 2
 
                 text: packageData.formattedDescription
                 font: UM.Theme.getFont("medium")
+                color: UM.Theme.getColor("text")
                 linkColor: UM.Theme.getColor("text_link")
+                wrapMode: Text.Wrap
                 textFormat: Text.RichText
 
                 onLinkActivated: UM.UrlUtil.openUrl(link, ["http", "https"])
@@ -103,12 +110,13 @@ Rectangle
                 visible: packageData.packageType === "material"
                 spacing: 0
 
-                UM.Label
+                Label
                 {
                     width: parent.width
 
                     text: catalog.i18nc("@header", "Compatible printers")
                     font: UM.Theme.getFont("medium_bold")
+                    color: UM.Theme.getColor("text")
                     elide: Text.ElideRight
                 }
 
@@ -116,23 +124,25 @@ Rectangle
                 {
                     model: packageData.compatiblePrinters
 
-                    UM.Label
+                    Label
                     {
                         width: compatiblePrinterColumn.width
 
                         text: modelData
                         font: UM.Theme.getFont("medium")
+                        color: UM.Theme.getColor("text")
                         elide: Text.ElideRight
                     }
                 }
 
-                UM.Label
+                Label
                 {
                     width: parent.width
 
                     visible: packageData.compatiblePrinters.length == 0
                     text: "(" + catalog.i18nc("@info", "No compatibility information") + ")"
                     font: UM.Theme.getFont("medium")
+                    color: UM.Theme.getColor("text")
                     elide: Text.ElideRight
                 }
             }
@@ -145,12 +155,13 @@ Rectangle
                 visible: packageData.packageType === "material"
                 spacing: 0
 
-                UM.Label
+                Label
                 {
                     width: parent.width
 
                     text: catalog.i18nc("@header", "Compatible support materials")
                     font: UM.Theme.getFont("medium_bold")
+                    color: UM.Theme.getColor("text")
                     elide: Text.ElideRight
                 }
 
@@ -158,23 +169,25 @@ Rectangle
                 {
                     model: packageData.compatibleSupportMaterials
 
-                    UM.Label
+                    Label
                     {
                         width: compatibleSupportMaterialColumn.width
 
                         text: modelData
                         font: UM.Theme.getFont("medium")
+                        color: UM.Theme.getColor("text")
                         elide: Text.ElideRight
                     }
                 }
 
-                UM.Label
+                Label
                 {
                     width: parent.width
 
                     visible: packageData.compatibleSupportMaterials.length == 0
                     text: "(" + catalog.i18nc("@info No materials", "None") + ")"
                     font: UM.Theme.getFont("medium")
+                    color: UM.Theme.getColor("text")
                     elide: Text.ElideRight
                 }
             }
@@ -186,21 +199,23 @@ Rectangle
                 visible: packageData.packageType === "material"
                 spacing: 0
 
-                UM.Label
+                Label
                 {
                     width: parent.width
 
                     text: catalog.i18nc("@header", "Compatible with Material Station")
                     font: UM.Theme.getFont("medium_bold")
+                    color: UM.Theme.getColor("text")
                     elide: Text.ElideRight
                 }
 
-                UM.Label
+                Label
                 {
                     width: parent.width
 
                     text: packageData.isCompatibleMaterialStation ? catalog.i18nc("@info", "Yes") : catalog.i18nc("@info", "No")
                     font: UM.Theme.getFont("medium")
+                    color: UM.Theme.getColor("text")
                     elide: Text.ElideRight
                 }
             }
@@ -212,21 +227,23 @@ Rectangle
                 visible: packageData.packageType === "material"
                 spacing: 0
 
-                UM.Label
+                Label
                 {
                     width: parent.width
 
                     text: catalog.i18nc("@header", "Optimized for Air Manager")
                     font: UM.Theme.getFont("medium_bold")
+                    color: UM.Theme.getColor("text")
                     elide: Text.ElideRight
                 }
 
-                UM.Label
+                Label
                 {
                     width: parent.width
 
                     text: packageData.isCompatibleAirManager ? catalog.i18nc("@info", "Yes") : catalog.i18nc("@info", "No")
                     font: UM.Theme.getFont("medium")
+                    color: UM.Theme.getColor("text")
                     elide: Text.ElideRight
                 }
             }

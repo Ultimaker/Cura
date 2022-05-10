@@ -218,6 +218,7 @@ Item
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
                 text: catalog.i18nc("@label", "Troubleshooting")
+                font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text_link")
             }
 

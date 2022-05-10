@@ -38,7 +38,7 @@ Item
             bottomMargin: UM.Theme.getSize("default_margin").height
         }
 
-        UM.Label
+        Label
         {
             id: titleLabel
             anchors.top: parent.top
@@ -47,6 +47,7 @@ Item
             text: catalog.i18nc("@label", "Add a Cloud printer")
             color: UM.Theme.getColor("primary_button")
             font: UM.Theme.getFont("huge")
+            renderType: Text.NativeRendering
         }
 
         // Component that contains a busy indicator and a message, while it waits for Cura to discover a cloud printer
@@ -64,7 +65,7 @@ Item
                 running: searchingForCloudPrinters
                 palette.dark: UM.Theme.getColor("text")
             }
-            UM.Label
+            Label
             {
                 id: waitingLabel
                 anchors.top: waitingIndicator.bottom
@@ -72,8 +73,10 @@ Item
                 horizontalAlignment: Text.AlignHCenter
                 text: catalog.i18nc("@label", "Waiting for Cloud response")
                 font: UM.Theme.getFont("large")
+                renderType: Text.NativeRendering
+                color: UM.Theme.getColor("text")
             }
-            UM.Label
+            Label
             {
                 id: noPrintersFoundLabel
                 anchors.top: waitingLabel.bottom
@@ -82,8 +85,9 @@ Item
                 horizontalAlignment: Text.AlignHCenter
                 text: catalog.i18nc("@label", "No printers found in your account?")
                 font: UM.Theme.getFont("medium")
+                color: UM.Theme.getColor("text")
             }
-            UM.Label
+            Label
             {
                 text: "Sign in with a different account"
                 anchors.top: noPrintersFoundLabel.bottom
@@ -108,7 +112,7 @@ Item
         }
 
         // Label displayed when a new cloud printer is discovered
-        UM.Label
+        Label
         {
             anchors.top: titleLabel.bottom
             anchors.topMargin: 2 * UM.Theme.getSize("default_margin").height
@@ -117,6 +121,7 @@ Item
             text: catalog.i18nc("@label", "The following printers in your account have been added in Cura:")
             height: contentHeight + 2 * UM.Theme.getSize("default_margin").height
             visible: discoveredCloudPrintersModel.count > 0
+            color: UM.Theme.getColor("text")
         }
 
         // The scrollView that contains the list of newly discovered Ultimaker Cloud printers. Visible only when
@@ -148,29 +153,32 @@ Item
                 Column
                 {
                     id: contentColumn
-                    UM.Label
+                    Label
                     {
                         id: cloudPrinterNameLabel
                         leftPadding: UM.Theme.getSize("default_margin").width
                         text: model.name ? model.name : ""
                         font: UM.Theme.getFont("large_bold")
+                        color: UM.Theme.getColor("text")
                         elide: Text.ElideRight
                     }
-                    UM.Label
+                    Label
                     {
                         id: cloudPrinterTypeLabel
                         leftPadding: 2 * UM.Theme.getSize("default_margin").width
                         topPadding: UM.Theme.getSize("thin_margin").height
-                        text: "Type: " + model.machine_type
+                        text: {"Type: " + model.machine_type}
                         font: UM.Theme.getFont("medium")
+                        color: UM.Theme.getColor("text")
                         elide: Text.ElideRight
                     }
-                    UM.Label
+                    Label
                     {
                         id: cloudPrinterFirmwareVersionLabel
                         leftPadding: 2 * UM.Theme.getSize("default_margin").width
-                        text: "Firmware version: " + model.firmware_version
+                        text: {"Firmware version: " + model.firmware_version}
                         font: UM.Theme.getFont("medium")
+                        color: UM.Theme.getColor("text")
                         elide: Text.ElideRight
                     }
                 }

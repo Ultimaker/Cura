@@ -90,6 +90,7 @@ UM.PointingRectangle
             y: UM.Theme.getSize("tooltip_margins").height
             width: textScroll.width - 2 * UM.Theme.getSize("tooltip_margins").width
 
+            wrapMode: Text.Wrap
             textFormat: Text.RichText
             color: UM.Theme.getColor("tooltip_text")
         }

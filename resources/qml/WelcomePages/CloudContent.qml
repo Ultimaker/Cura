@@ -4,7 +4,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 
-import UM 1.5 as UM
+import UM 1.3 as UM
 import Cura 1.1 as Cura
 
 
@@ -56,7 +56,7 @@ Item
 
             spacing: UM.Theme.getSize("thick_margin").height
 
-            UM.Label
+            Label
             {
                 id: titleLabel
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -64,6 +64,7 @@ Item
                 text: catalog.i18nc("@label", "Sign in to the Ultimaker platform")
                 color: UM.Theme.getColor("primary_button")
                 font: UM.Theme.getFont("huge")
+                renderType: Text.NativeRendering
             }
 
             // Filler item
@@ -115,13 +116,17 @@ Item
                         sourceSize.width: width
                         sourceSize.height: height
                     }
-                    UM.Label
+                    Label
                     {
                         id: marketplaceTextLabel
                         anchors.horizontalCenter: parent.horizontalCenter
                         width: parent.width
                         text: catalog.i18nc("@text", "Add material settings and plugins from the Marketplace")
+                        wrapMode: Text.Wrap
                         horizontalAlignment: Text.AlignHCenter
+                        color: UM.Theme.getColor("text")
+                        font: UM.Theme.getFont("default")
+                        renderType: Text.NativeRendering
                     }
                 }
 
@@ -141,13 +146,17 @@ Item
                         sourceSize.width: width
                         sourceSize.height: height
                     }
-                    UM.Label
+                    Label
                     {
                         id: syncTextLabel
                         anchors.horizontalCenter: parent.horizontalCenter
                         width: parent.width
                         text: catalog.i18nc("@text", "Backup and sync your material settings and plugins")
+                        wrapMode: Text.Wrap
                         horizontalAlignment: Text.AlignHCenter
+                        color: UM.Theme.getColor("text")
+                        font: UM.Theme.getFont("default")
+                        renderType: Text.NativeRendering
                     }
                 }
 
@@ -167,13 +176,17 @@ Item
                         sourceSize.width: width
                         sourceSize.height: height
                     }
-                    UM.Label
+                    Label
                     {
                         id: communityTextLabel
                         anchors.horizontalCenter: communityColumn.horizontalCenter
                         width: parent.width
                         text: catalog.i18nc("@text", "Share ideas and get help from 48,000+ users in the Ultimaker Community")
+                        wrapMode: Text.Wrap
                         horizontalAlignment: Text.AlignHCenter
+                        color: UM.Theme.getColor("text")
+                        font: UM.Theme.getFont("default")
+                        renderType: Text.NativeRendering
                     }
                 }
             }

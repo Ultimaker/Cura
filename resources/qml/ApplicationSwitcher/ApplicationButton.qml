@@ -82,6 +82,7 @@ Button
 
             height: base.height - applicationIcon.height - 2 * UM.Theme.getSize("default_margin").width  // Account for the top and bottom margins
             horizontalAlignment: Text.AlignHCenter
+            wrapMode: Text.Wrap
             elide: Text.ElideRight
         }
     }

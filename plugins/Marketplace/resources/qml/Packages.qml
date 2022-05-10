@@ -40,7 +40,7 @@ ListView
 
         color: UM.Theme.getColor("detail_background")
 
-        UM.Label
+        Label
         {
             id: sectionHeaderText
             anchors.verticalCenter: parent.verticalCenter
@@ -48,6 +48,7 @@ ListView
 
             text: section
             font: UM.Theme.getFont("large")
+            color: UM.Theme.getColor("text")
         }
     }
 

@@ -4,7 +4,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 
-import UM 1.5 as UM
+import UM 1.3 as UM
 import Cura 1.1 as Cura
 
 
@@ -15,7 +15,7 @@ Item
 {
     UM.I18nCatalog { id: catalog; name: "cura" }
 
-    UM.Label
+    Label
     {
         id: titleLabel
         anchors.top: parent.top
@@ -24,6 +24,7 @@ Item
         text: catalog.i18nc("@label", "Help us to improve Ultimaker Cura")
         color: UM.Theme.getColor("primary_button")
         font: UM.Theme.getFont("huge")
+        renderType: Text.NativeRendering
     }
 
     // Area where the cloud contents can be put. Pictures, texts and such.
@@ -47,7 +48,7 @@ Item
 
             spacing: UM.Theme.getSize("wide_margin").height
 
-            UM.Label
+            Label
             {
                 id: topLabel
                 width: parent.width
@@ -56,6 +57,8 @@ Item
                 text: catalog.i18nc("@text", "Ultimaker Cura collects anonymous data to improve print quality and user experience, including:")
                 wrapMode: Text.WordWrap
                 font: UM.Theme.getFont("medium")
+                color: UM.Theme.getColor("text")
+                renderType: Text.NativeRendering
             }
 
             Grid {
@@ -88,7 +91,7 @@ Item
                 }
             }
 
-            UM.Label
+            Label
             {
                 id: bottomLabel
                 width: parent.width
@@ -104,8 +107,10 @@ Item
                 textFormat: Text.RichText
                 wrapMode: Text.WordWrap
                 font: UM.Theme.getFont("medium")
+                color: UM.Theme.getColor("text")
                 linkColor: UM.Theme.getColor("text_link")
                 onLinkActivated: CuraApplication.showMoreInformationDialogForAnonymousDataCollection()
+                renderType: Text.NativeRendering
             }
         }
     }

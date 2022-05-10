@@ -147,6 +147,8 @@ Cura.MachineAction
                             return catalog.i18nc("@label","Firmware update failed due to missing firmware.");
                     }
                 }
+
+                wrapMode: Text.Wrap
             }
 
             UM.ProgressBar

@@ -62,12 +62,15 @@ UM.TooltipArea
         watchedProperties: [ "value", "description" ]
     }
 
-    UM.Label
+    Label
     {
         id: fieldLabel
         anchors.left: parent.left
         anchors.verticalCenter: textFieldWithUnit.verticalCenter
         visible: text != ""
+        font: UM.Theme.getFont("default")
+        color: UM.Theme.getColor("text")
+        renderType: Text.NativeRendering
     }
 
     TextField

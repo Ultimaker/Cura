@@ -183,6 +183,7 @@ Item
             UM.Label
             {
                 width: parent.width - (2 * UM.Theme.getSize("default_margin").width)
+                wrapMode: Text.Wrap
                 text: base.getMachineName()
                 color: UM.Theme.getColor("primary_button")
                 font: UM.Theme.getFont("huge")

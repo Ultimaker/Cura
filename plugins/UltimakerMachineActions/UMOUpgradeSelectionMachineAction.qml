@@ -20,7 +20,7 @@ Cura.MachineAction
         anchors.topMargin: UM.Theme.getSize("default_margin").width * 5
         anchors.leftMargin: UM.Theme.getSize("default_margin").width * 4
 
-        UM.Label
+        Label
         {
             id: pageDescription
             anchors.top: parent.top
@@ -29,6 +29,8 @@ Cura.MachineAction
             wrapMode: Text.WordWrap
             text: catalog.i18nc("@label","Please select any upgrades made to this Ultimaker Original")
             font: UM.Theme.getFont("medium")
+            color: UM.Theme.getColor("text")
+            renderType: Text.NativeRendering
         }
 
         UM.CheckBox

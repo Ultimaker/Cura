@@ -132,7 +132,7 @@ Rectangle
                 width: UM.Theme.getSize("icon_indicator").width
                 height: UM.Theme.getSize("icon_indicator").height
             }
-            UM.Label
+            Label
             {
                 id: manageQueueText
                 anchors
@@ -144,6 +144,7 @@ Rectangle
                 color: UM.Theme.getColor("text_link")
                 font: UM.Theme.getFont("medium")
                 text: catalog.i18nc("@label link to technical assistance", "View user manuals online")
+                renderType: Text.NativeRendering
             }
             MouseArea
             {
@@ -154,13 +155,14 @@ Rectangle
                 onExited: manageQueueText.font.underline = false
             }
         }
-        UM.Label
+        Label
         {
             id: noConnectionLabel
             anchors.horizontalCenter: parent.horizontalCenter
             visible: !isNetworkConfigurable
             text: catalog.i18nc("@info", "In order to monitor your print from Cura, please connect the printer.")
             font: UM.Theme.getFont("medium")
+            color: UM.Theme.getColor("text")
             wrapMode: Text.WordWrap
             width: contentWidth
         }

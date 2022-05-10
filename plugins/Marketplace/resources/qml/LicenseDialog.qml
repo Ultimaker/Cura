@@ -42,13 +42,16 @@ UM.Dialog
                 source: UM.Theme.getIcon("Certificate", "high")
             }
 
-            UM.Label
+            Label
             {
                 text: catalog.i18nc("@text", "Please read and agree with the plugin licence.")
+                color: UM.Theme.getColor("text")
                 font: UM.Theme.getFont("large")
                 anchors.verticalCenter: icon.verticalCenter
                 height: UM.Theme.getSize("marketplace_large_icon").height
                 verticalAlignment: Qt.AlignmentFlag.AlignVCenter
+                wrapMode: Text.Wrap
+                renderType: Text.NativeRendering
             }
         }
 

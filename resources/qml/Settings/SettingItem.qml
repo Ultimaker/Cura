@@ -5,7 +5,7 @@ import QtQuick 2.7
 import QtQuick.Layouts 1.2
 import QtQuick.Controls 2.0
 
-import UM 1.5 as UM
+import UM 1.1 as UM
 import Cura 1.0 as Cura
 
 import "."
@@ -135,7 +135,7 @@ Item
             }
         }
 
-        UM.Label
+        Label
         {
             id: label
 
@@ -146,6 +146,7 @@ Item
 
             text: definition.label
             elide: Text.ElideMiddle
+            renderType: Text.NativeRendering
             textFormat: Text.PlainText
 
             color: UM.Theme.getColor("setting_control_text")

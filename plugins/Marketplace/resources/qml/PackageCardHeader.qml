@@ -87,10 +87,11 @@ Item
             Layout.preferredWidth: parent.width
             Layout.preferredHeight: childrenRect.height
 
-            UM.Label
+            Label
             {
                 text: packageData.displayName
                 font: UM.Theme.getFont("medium_bold")
+                color: UM.Theme.getColor("text")
                 verticalAlignment: Text.AlignTop
             }
             VerifiedIcon
@@ -99,10 +100,12 @@ Item
                 visible: packageData.isCheckedByUltimaker
             }
 
-            UM.Label
+            Label
             {
                 id: packageVersionLabel
                 text: packageData.packageVersion
+                font: UM.Theme.getFont("default")
+                color: UM.Theme.getColor("text")
                 Layout.fillWidth: true
             }
 
@@ -152,11 +155,14 @@ Item
             spacing: UM.Theme.getSize("narrow_margin").width
 
             // label "By"
-            UM.Label
+            Label
             {
                 id: authorBy
                 Layout.alignment: Qt.AlignCenter
+
                 text: catalog.i18nc("@label", "By")
+                font: UM.Theme.getFont("default")
+                color: UM.Theme.getColor("text")
             }
 
             // clickable author name
