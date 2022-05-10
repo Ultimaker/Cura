@@ -59,7 +59,7 @@ UM.ManagementPage
     scrollviewCaption: catalog.i18nc("@label", "Profiles compatible with active printer:") + "<br><b>" + Cura.MachineManager.activeMachine.name + "</b>"
 
     hamburgerButtonVisible: hasCurrentItem
-    onHamburgeButtonClicked: {
+    onHamburgeButtonClicked: (hamburger_button) => {
         const hamburerButtonHeight = hamburger_button.height;
         menu.popup(hamburger_button, -menu.width + hamburger_button.width / 2, hamburger_button.height);
 

@@ -45,13 +45,23 @@ TextField
         },
         State
         {
+            name: "active"
+            when: control.activeFocus
+            PropertyChanges
+            {
+                target: backgroundRectangle
+                liningColor: UM.Theme.getColor("text_field_border_active")
+                borderColor: UM.Theme.getColor("text_field_border_active")
+            }
+        },
+        State
+        {
             name: "hovered"
-            when: control.hovered || control.activeFocus
+            when: control.hovered && !control.activeFocus
             PropertyChanges
             {
                 target: backgroundRectangle
                 liningColor: UM.Theme.getColor("text_field_border_hovered")
-                borderColor: UM.Theme.getColor("text_field_border_hovered")
             }
         }
     ]

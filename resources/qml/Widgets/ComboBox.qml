@@ -31,12 +31,22 @@ ComboBox
         },
         State
         {
-            name: "highlighted"
-            when: base.hovered || control.hovered || control.activeFocus
+            name: "active"
+            when: control.activeFocus
             PropertyChanges
             {
                 target: background
-                borderColor: UM.Theme.getColor("text_field_border_hovered")
+                borderColor: UM.Theme.getColor("text_field_border_active")
+                liningColor: UM.Theme.getColor("text_field_border_active")
+            }
+        },
+        State
+        {
+            name: "highlighted"
+            when: (base.hovered || control.hovered) && !control.activeFocus
+            PropertyChanges
+            {
+                target: background
                 liningColor: UM.Theme.getColor("text_field_border_hovered")
             }
         }

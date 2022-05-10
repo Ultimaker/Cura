@@ -32,12 +32,12 @@ SettingItem
 
         anchors.fill: parent
 
-        borderColor: (hovered || input.activeFocus) ? UM.Theme.getColor("text_field_border_hovered") : "transparent"
+        borderColor: input.activeFocus ? UM.Theme.getColor("text_field_border_active") : "transparent"
         liningColor:
         {
             if(!enabled)
             {
-                return UM.Theme.getColor("text_field_border_disabled")
+                return UM.Theme.getColor("text_field_border_disabled");
             }
             switch(propertyProvider.properties.validationState)
             {
@@ -51,11 +51,15 @@ SettingItem
                     return UM.Theme.getColor("setting_validation_warning");
             }
             //Validation is OK.
-            if(hovered || input.activeFocus)
+            if(input.activeFocus)
             {
-                return UM.Theme.getColor("text_field_border_hovered")
+                return UM.Theme.getColor("text_field_border_active");
             }
-            return UM.Theme.getColor("text_field_border")
+            if(hovered)
+            {
+                return UM.Theme.getColor("text_field_border_hovered");
+            }
+            return UM.Theme.getColor("text_field_border");
         }
 
         color: {
