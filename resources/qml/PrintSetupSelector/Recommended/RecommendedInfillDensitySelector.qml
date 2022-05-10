@@ -133,7 +133,6 @@ Item
                             visible: (index % 20) == 0 // Only show steps of 20%
                             anchors.horizontalCenter: parent.horizontalCenter
                             y: UM.Theme.getSize("thin_margin").height
-                            renderType: Text.NativeRendering
                             color: UM.Theme.getColor("quality_slider_available")
                         }
                     }
