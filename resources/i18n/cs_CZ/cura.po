@@ -6563,41 +6563,69 @@ msgctxt "name"
 msgid "USB printing"
 msgstr "USB tisk"
 
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/resources/qml/MultipleLicenseDialog.qml:35
+msgctxt "@label"
+msgid "You need to accept the license to install the package"
+msgstr "Pro instalaci balíčku musíte přijmout licenční ujednání"
+
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/CloudSync/CloudPackageChecker.py:145
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/CloudSync/DownloadPresenter.py:95
+msgctxt "@info:title"
+msgid "Changes detected from your Ultimaker account"
+msgstr "Zjištěny změny z vašeho účtu Ultimaker"
+
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/resources/qml/CompatibilityDialog.qml:15
+msgctxt "@title"
+msgid "Changes from your account"
+msgstr "Změny z vašeho účtu"
+
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/resources/qml/CompatibilityDialog.qml:24
+msgctxt "@button"
+msgid "Dismiss"
+msgstr "Schovat"
+
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/CloudSync/LicensePresenter.py:42
+msgctxt "@button"
+msgid "Decline and remove from account"
+msgstr "Odmítnout a odstranit z účtu"
+
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/CloudSync/CloudPackageChecker.py:144
+msgctxt "@info:generic"
+msgid "Do you want to sync material and software packages with your account?"
+msgstr "Chcete synchronizovat materiálové a softwarové balíčky s vaším účtem?"
+
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/CloudSync/DownloadPresenter.py:91
+msgctxt "@info:generic"
+msgid "Syncing..."
+msgstr "Synchronizuji..."
+
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/resources/qml/CompatibilityDialog.qml:52
+msgctxt "@label"
+msgid "The following packages will be added:"
+msgstr "Následující balíčky byly přidány:"
+
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/CloudSync/RestartApplicationPresenter.py:22
+msgctxt "@info:generic"
+msgid "You need to quit and restart {} before changes have effect."
+msgstr "Než se změny projeví, musíte ukončit a restartovat {}."
+
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/CloudSync/SyncOrchestrator.py:79
+msgctxt "@info:generic"
+msgid "{} plugins failed to download"
+msgstr "Nepovedlo se stáhnout {} zásuvných modulů"
+
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/CloudSync/LicenseModel.py:77
+msgctxt "@title:window"
+msgid "Plugin License Agreement"
+msgstr "Licenční ujednání zásuvného modulu"
+
 #~ msgctxt "@action:button"
 #~ msgid "Sync materials with printers"
 #~ msgstr "Synchronizovat materiály s tiskárnami"
 
-#~ msgctxt "@info:generic"
-#~ msgid "You need to quit and restart {} before changes have effect."
-#~ msgstr "Než se změny projeví, musíte ukončit a restartovat {}."
-
-#~ msgctxt "@info:generic"
-#~ msgid "Syncing..."
-#~ msgstr "Synchronizuji..."
-
-#~ msgctxt "@info:title"
-#~ msgid "Changes detected from your Ultimaker account"
-#~ msgstr "Zjištěny změny z vašeho účtu Ultimaker"
-
-#~ msgctxt "@info:generic"
-#~ msgid "Do you want to sync material and software packages with your account?"
-#~ msgstr "Chcete synchronizovat materiál a softwarové balíčky s vaším účtem?"
-
 #~ msgctxt "@action:button"
 #~ msgid "Sync"
 #~ msgstr "Synchronizovat"
-
-#~ msgctxt "@button"
-#~ msgid "Decline and remove from account"
-#~ msgstr "Odmítnout a odstranit z účtu"
-
-#~ msgctxt "@info:generic"
-#~ msgid "{} plugins failed to download"
-#~ msgstr "Nepovedlo se stáhnout {} zásuvných modulů"
-
-#~ msgctxt "@title:window"
-#~ msgid "Plugin License Agreement"
-#~ msgstr "Licenční ujednání zásuvného modulu"
 
 #~ msgctxt "@title:window"
 #~ msgid "Convert Image..."
@@ -6786,22 +6814,6 @@ msgstr "USB tisk"
 #~ msgctxt "@info"
 #~ msgid "Could not connect to the Cura Package database. Please check your connection."
 #~ msgstr "Nelze se připojit k databázi balíčku Cura. Zkontrolujte připojení."
-
-#~ msgctxt "@label"
-#~ msgid "You need to accept the license to install the package"
-#~ msgstr "Pro instalaci balíčku musíte přijmout licenční ujednání"
-
-#~ msgctxt "@title"
-#~ msgid "Changes from your account"
-#~ msgstr "Změny z vašeho účtu"
-
-#~ msgctxt "@button"
-#~ msgid "Dismiss"
-#~ msgstr "Schovat"
-
-#~ msgctxt "@label"
-#~ msgid "The following packages will be added:"
-#~ msgstr "Následující balíčky byly přidány:"
 
 #~ msgctxt "@label"
 #~ msgid "The following packages can not be installed because of an incompatible Cura version:"
@@ -7232,22 +7244,6 @@ msgstr "USB tisk"
 #~ msgctxt "@button"
 #~ msgid "Create an account"
 #~ msgstr "Vytvořit účet"
-
-#~ msgctxt "@info:generic"
-#~ msgid ""
-#~ "\n"
-#~ "Do you want to sync material and software packages with your account?"
-#~ msgstr ""
-#~ "\n"
-#~ "Chcete synchronizovat materiálové a softwarové balíčky s vaším účtem?"
-
-#~ msgctxt "@info:generic"
-#~ msgid ""
-#~ "\n"
-#~ "Syncing..."
-#~ msgstr ""
-#~ "\n"
-#~ "Synchronizuji..."
 
 #~ msgctxt "@info:status"
 #~ msgid "Nothing to slice because none of the models fit the build volume or are assigned to a disabled extruder. Please scale or rotate models to fit, or enable an extruder."

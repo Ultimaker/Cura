@@ -6803,41 +6803,69 @@ msgctxt "name"
 msgid "USB printing"
 msgstr "Impresión USB"
 
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/resources/qml/MultipleLicenseDialog.qml:35
+msgctxt "@label"
+msgid "You need to accept the license to install the package"
+msgstr "Tiene que aceptar la licencia para instalar el paquete"
+
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/CloudSync/CloudPackageChecker.py:145
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/CloudSync/DownloadPresenter.py:95
+msgctxt "@info:title"
+msgid "Changes detected from your Ultimaker account"
+msgstr "Se han detectado cambios desde su cuenta de Ultimaker"
+
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/resources/qml/CompatibilityDialog.qml:15
+msgctxt "@title"
+msgid "Changes from your account"
+msgstr "Cambios desde su cuenta"
+
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/resources/qml/CompatibilityDialog.qml:24
+msgctxt "@button"
+msgid "Dismiss"
+msgstr "Descartar"
+
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/CloudSync/LicensePresenter.py:42
+msgctxt "@button"
+msgid "Decline and remove from account"
+msgstr "Rechazar y eliminar de la cuenta"
+
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/CloudSync/CloudPackageChecker.py:144
+msgctxt "@info:generic"
+msgid "Do you want to sync material and software packages with your account?"
+msgstr "¿Desea sincronizar el material y los paquetes de software con su cuenta?"
+
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/CloudSync/DownloadPresenter.py:91
+msgctxt "@info:generic"
+msgid "Syncing..."
+msgstr "Sincronizando..."
+
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/resources/qml/CompatibilityDialog.qml:52
+msgctxt "@label"
+msgid "The following packages will be added:"
+msgstr "Se añadirán los siguientes paquetes:"
+
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/CloudSync/RestartApplicationPresenter.py:22
+msgctxt "@info:generic"
+msgid "You need to quit and restart {} before changes have effect."
+msgstr "Tiene que salir y reiniciar {} para que los cambios surtan efecto."
+
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/CloudSync/SyncOrchestrator.py:79
+msgctxt "@info:generic"
+msgid "{} plugins failed to download"
+msgstr "Error al descargar los complementos {}"
+
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/CloudSync/LicenseModel.py:77
+msgctxt "@title:window"
+msgid "Plugin License Agreement"
+msgstr "Acuerdo de licencia de complemento"
+
 #~ msgctxt "@action:button"
 #~ msgid "Sync materials with printers"
 #~ msgstr "Sincronizar materiales"
 
-#~ msgctxt "@info:generic"
-#~ msgid "You need to quit and restart {} before changes have effect."
-#~ msgstr "Tiene que salir y reiniciar {} para que los cambios surtan efecto."
-
-#~ msgctxt "@info:generic"
-#~ msgid "Syncing..."
-#~ msgstr "Sincronizando..."
-
-#~ msgctxt "@info:title"
-#~ msgid "Changes detected from your Ultimaker account"
-#~ msgstr "Se han detectado cambios desde su cuenta de Ultimaker"
-
-#~ msgctxt "@info:generic"
-#~ msgid "Do you want to sync material and software packages with your account?"
-#~ msgstr "¿Desea sincronizar el material y los paquetes de software con su cuenta?"
-
 #~ msgctxt "@action:button"
 #~ msgid "Sync"
 #~ msgstr "Sincronizar"
-
-#~ msgctxt "@button"
-#~ msgid "Decline and remove from account"
-#~ msgstr "Rechazar y eliminar de la cuenta"
-
-#~ msgctxt "@info:generic"
-#~ msgid "{} plugins failed to download"
-#~ msgstr "Error al descargar los complementos {}"
-
-#~ msgctxt "@title:window"
-#~ msgid "Plugin License Agreement"
-#~ msgstr "Acuerdo de licencia de complemento"
 
 #~ msgctxt "@title:window"
 #~ msgid "Convert Image..."
@@ -7026,22 +7054,6 @@ msgstr "Impresión USB"
 #~ msgctxt "@info"
 #~ msgid "Could not connect to the Cura Package database. Please check your connection."
 #~ msgstr "No se ha podido conectar con la base de datos del Paquete Cura. Compruebe la conexión."
-
-#~ msgctxt "@label"
-#~ msgid "You need to accept the license to install the package"
-#~ msgstr "Tiene que aceptar la licencia para instalar el paquete"
-
-#~ msgctxt "@title"
-#~ msgid "Changes from your account"
-#~ msgstr "Cambios desde su cuenta"
-
-#~ msgctxt "@button"
-#~ msgid "Dismiss"
-#~ msgstr "Descartar"
-
-#~ msgctxt "@label"
-#~ msgid "The following packages will be added:"
-#~ msgstr "Se añadirán los siguientes paquetes:"
 
 #~ msgctxt "@label"
 #~ msgid "The following packages can not be installed because of an incompatible Cura version:"
@@ -7468,22 +7480,6 @@ msgstr "Impresión USB"
 #~ msgctxt "@button"
 #~ msgid "Create an account"
 #~ msgstr "Crear una cuenta"
-
-#~ msgctxt "@info:generic"
-#~ msgid ""
-#~ "\n"
-#~ "Do you want to sync material and software packages with your account?"
-#~ msgstr ""
-#~ "\n"
-#~ "¿Desea sincronizar el material y los paquetes de software con su cuenta?"
-
-#~ msgctxt "@info:generic"
-#~ msgid ""
-#~ "\n"
-#~ "Syncing..."
-#~ msgstr ""
-#~ "\n"
-#~ "Sincronizando..."
 
 #~ msgctxt "@info:status"
 #~ msgid "Nothing to slice because none of the models fit the build volume or are assigned to a disabled extruder. Please scale or rotate models to fit, or enable an extruder."
