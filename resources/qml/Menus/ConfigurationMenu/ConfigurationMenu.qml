@@ -58,7 +58,7 @@ Cura.ExpandablePopup
                     Layout.preferredHeight: headerBase.height
                     Layout.maximumHeight: headerBase.height
                     Layout.fillHeight: true
-                    Layout.alignment: Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter
+                    Layout.alignment: Qt.AlignCenter
 
                     property var extruderStack: activeMachine ? activeMachine.extruderList[model.index]: null
                     property bool valueWarning: !Cura.ExtruderManager.getExtruderHasQualityForMaterial(extruderStack)
