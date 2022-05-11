@@ -70,7 +70,6 @@ Cura.ExpandablePopup
                         id: extruderIcon
                         materialColor: model.color
                         extruderEnabled: model.enabled
-                        anchors.horizontalCenter: parent.horizontalCenter
                         anchors.verticalCenter: parent.verticalCenter
                     }
 
