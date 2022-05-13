@@ -28,33 +28,31 @@ def parsePOFile(filename: str) -> List[Msg]:
     messages = []
     with open(filename) as f:
         iterator = iter(f.readlines())
-        while True:
-            try:
-                line = next(iterator)
-                if line[0:7] == "msgctxt":
-                    #  Start of a translation item block
-                    msg = Msg()
-                    msg.msgctxt = line
+        for line in iterator:
+            if line.startswith("msgctxt"):
+                #  Start of a translation item block
+                msg = Msg()
+                msg.msgctxt = line
 
-                    while True:
-                        line = next(iterator)
-                        if line[0:5] == "msgid":
-                            msg.msgid = line
-                            break
+                while True:
+                    line = next(iterator)
+                    if line.startswith("msgid"):
+                        msg.msgid = line
+                        break
 
-                    while True:
-                        #  msgstr can be split over multiple lines
-                        line = next(iterator)
-                        if line == "\n":
-                            break
-                        if line[0:6] == "msgstr":
-                            msg.msgstr = line
-                        else:
-                            msg.msgstr += line
+                while True:
+                    #  msgstr can be split over multiple lines
+                    line = next(iterator)
+                    if line == "\n":
+                        break
+                    if line.startswith("msgstr"):
+                        msg.msgstr = line
+                    else:
+                        msg.msgstr += line
 
-                    messages.append(msg)
-            except StopIteration:
-                return messages
+                messages.append(msg)
+
+        return messages
 
 
 def getDifferentMessages(messages_original: List[Msg], messages_new: List[Msg]) -> List[Msg]:
@@ -75,32 +73,27 @@ def updatePOFile(input_filename: str, output_filename: str, messages: List[Msg])
     # Takes a list of changed messages and writes a copy of input file with updated message strings
     with open(input_filename, "r") as input_file, open(output_filename, "w") as output_file:
         iterator = iter(input_file.readlines())
-        while True:
-            try:
-                line = next(iterator)
-                output_file.write(line)
-                if line[0: 7] == "msgctxt":
-                    #  Start of translation block
-                    msgctxt = line
+        for line in iterator:
+            output_file.write(line)
+            if line.startswith("msgctxt"):
+                #  Start of translation block
+                msgctxt = line
 
-                    msgid = next(iterator)
-                    output_file.write(msgid)
+                msgid = next(iterator)
+                output_file.write(msgid)
 
-                    #  Check for updated version of msgstr
-                    message = list(filter(lambda m: m.msgctxt == msgctxt and m.msgid == msgid, messages))
-                    if message and message[0]:
-                        #  Write update translation
-                        output_file.write(message[0].msgstr)
+                #  Check for updated version of msgstr
+                message = list(filter(lambda m: m.msgctxt == msgctxt and m.msgid == msgid, messages))
+                if message and message[0]:
+                    #  Write update translation
+                    output_file.write(message[0].msgstr)
 
-                        # Skip lines until next translation. This should skip multiline msgstr
-                        while True:
-                            line = next(iterator)
-                            if line == "\n":
-                                output_file.write(line)
-                                break
-
-            except StopIteration:
-                return
+                    # Skip lines until next translation. This should skip multiline msgstr
+                    while True:
+                        line = next(iterator)
+                        if line == "\n":
+                            output_file.write(line)
+                            break
 
 
 if __name__ == "__main__":
