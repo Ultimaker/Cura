@@ -71,7 +71,7 @@ def getDifferentMessages(messages_original: List[Msg], messages_new: List[Msg]) 
     return different_messages
 
 
-def update_po_file(input_filename: str, output_filename: str, messages: List[Msg]):
+def updatePOFile(input_filename: str, output_filename: str, messages: List[Msg]) -> None:
     # Takes a list of changed messages and writes a copy of input file with updated message strings
     with open(input_filename, "r") as input_file, open(output_filename, "w") as output_file:
         iterator = iter(input_file.readlines())
