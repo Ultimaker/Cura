@@ -15,7 +15,7 @@ from typing import List
 
 
 class Msg:
-    def __init__(self, msgctxt: str = "", msgid: str = "", msgstr: str = ""):
+    def __init__(self, msgctxt: str = "", msgid: str = "", msgstr: str = "") -> None:
         self.msgctxt = msgctxt
         self.msgid = msgid
         self.msgstr = msgstr
