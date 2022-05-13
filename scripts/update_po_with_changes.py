@@ -15,7 +15,7 @@ from typing import List
 
 
 class Msg:
-    def __init__(self, msgctxt: str = "", msgid: str = "", msgstr: str = ""):
+    def __init__(self, msgctxt: str = "", msgid: str = "", msgstr: str = "") -> None:
         self.msgctxt = msgctxt
         self.msgid = msgid
         self.msgstr = msgstr
@@ -24,7 +24,7 @@ class Msg:
         return self.msgctxt + self.msgid + self.msgstr
 
 
-def parse_po_file(filename: str) -> List[Msg]:
+def parsePOFile(filename: str) -> List[Msg]:
     messages = []
     with open(filename) as f:
         iterator = iter(f.readlines())
@@ -57,7 +57,7 @@ def parse_po_file(filename: str) -> List[Msg]:
                 return messages
 
 
-def get_different_messages(messages_original: List[Msg], messages_new: List[Msg]) -> List[Msg]:
+def getDifferentMessages(messages_original: List[Msg], messages_new: List[Msg]) -> List[Msg]:
     #  Return messages that have changed in messages_new
     different_messages = []
 
@@ -71,7 +71,7 @@ def get_different_messages(messages_original: List[Msg], messages_new: List[Msg]
     return different_messages
 
 
-def update_po_file(input_filename: str, output_filename: str, messages: List[Msg]):
+def updatePOFile(input_filename: str, output_filename: str, messages: List[Msg]) -> None:
     # Takes a list of changed messages and writes a copy of input file with updated message strings
     with open(input_filename, "r") as input_file, open(output_filename, "w") as output_file:
         iterator = iter(input_file.readlines())
