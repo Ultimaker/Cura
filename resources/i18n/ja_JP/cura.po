@@ -6750,6 +6750,11 @@ msgctxt "name"
 msgid "USB printing"
 msgstr "USBプリンティング"
 
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/resources/qml/OnboardBanner.qml:35
+msgctxt "@button:label"
+msgid "Learn More"
+msgstr "詳しく見る"
+
 #: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/resources/qml/MultipleLicenseDialog.qml:35
 msgctxt "@label"
 msgid "You need to accept the license to install the package"
