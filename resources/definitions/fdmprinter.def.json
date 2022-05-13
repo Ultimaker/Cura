@@ -3322,6 +3322,17 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
+                "acceleration_travel_enabled":
+                {
+                    "label": "Enable Travel Acceleration",
+                    "description": "Use a separate acceleration rate for travel moves. If disabled, travel moves will use the acceleration value of the printed line at their destination.",
+                    "type": "bool",
+                    "default_value": true,
+                    "resolve": "any(extruderValues('acceleration_travel_enabled'))",
+                    "enabled": "acceleration_enabled",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
                 "acceleration_print":
                 {
                     "label": "Print Acceleration",
@@ -3541,7 +3552,7 @@
                     "minimum_value_warning": "100",
                     "maximum_value_warning": "10000",
                     "value": "acceleration_print if magic_spiralize else 5000",
-                    "enabled": "resolveOrValue('acceleration_enabled')",
+                    "enabled": "resolveOrValue('acceleration_enabled') and resolveOrValue('acceleration_travel_enabled')",
                     "settable_per_mesh": false
                 },
                 "acceleration_layer_0":
@@ -3584,7 +3595,7 @@
                             "minimum_value": "0.1",
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "10000",
-                            "enabled": "resolveOrValue('acceleration_enabled')",
+                            "enabled": "resolveOrValue('acceleration_enabled') and resolveOrValue('acceleration_travel_enabled')",
                             "settable_per_extruder": true,
                             "settable_per_mesh": false
                         }
@@ -3612,6 +3623,17 @@
                     "type": "bool",
                     "default_value": false,
                     "resolve": "any(extruderValues('jerk_enabled'))",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "jerk_travel_enabled":
+                {
+                    "label": "Enable Travel Jerk",
+                    "description": "Use a separate acceleration rate for travel moves. If disabled, travel moves will use the acceleration value of the printed line at their destination.",
+                    "type": "bool",
+                    "default_value": true,
+                    "resolve": "any(extruderValues('jerk_travel_enabled'))",
+                    "enabled": "jerk_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
@@ -3820,7 +3842,7 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "50",
                     "value": "jerk_print if magic_spiralize else 30",
-                    "enabled": "resolveOrValue('jerk_enabled')",
+                    "enabled": "resolveOrValue('jerk_enabled') and resolveOrValue('jerk_travel_enabled')",
                     "settable_per_mesh": false
                 },
                 "jerk_layer_0":
@@ -3860,7 +3882,7 @@
                             "value": "jerk_layer_0 * jerk_travel / jerk_print",
                             "minimum_value": "0",
                             "maximum_value_warning": "50",
-                            "enabled": "resolveOrValue('jerk_enabled')",
+                            "enabled": "resolveOrValue('jerk_enabled') and resolveOrValue('jerk_travel_enabled')",
                             "settable_per_extruder": true,
                             "settable_per_mesh": false
                         }
