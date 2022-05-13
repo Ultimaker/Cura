@@ -24,7 +24,7 @@ class Msg:
         return self.msgctxt + self.msgid + self.msgstr
 
 
-def parse_po_file(filename: str) -> List[Msg]:
+def parsePOFile(filename: str) -> List[Msg]:
     messages = []
     with open(filename) as f:
         iterator = iter(f.readlines())
