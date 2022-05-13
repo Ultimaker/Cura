@@ -108,7 +108,7 @@ if __name__ == "__main__":
     parser.add_argument("updated_file", type=str, help="Input .po file with updated translations added")
     args = parser.parse_args()
 
-    messages_updated = parse_po_file(args.updated_file)
-    messages_original = parse_po_file(args.original_file)
-    different_messages = get_different_messages(messages_original, messages_updated)
-    update_po_file(args.original_file, "updated.po", different_messages)
+    messages_updated = parsePOFile(args.updated_file)
+    messages_original = parsePOFile(args.original_file)
+    different_messages = getDifferentMessages(messages_original, messages_updated)
+    updatePOFile(args.original_file, "updated.po", different_messages)
