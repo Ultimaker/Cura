@@ -57,7 +57,7 @@ def parse_po_file(filename: str) -> List[Msg]:
                 return messages
 
 
-def get_different_messages(messages_original: List[Msg], messages_new: List[Msg]) -> List[Msg]:
+def getDifferentMessages(messages_original: List[Msg], messages_new: List[Msg]) -> List[Msg]:
     #  Return messages that have changed in messages_new
     different_messages = []
 
