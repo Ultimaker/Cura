@@ -1676,7 +1676,7 @@ msgstr "所提供的状态不正确。"
 #: /home/remco/dev/code/ulti/trans/Cura/cura/OAuth2/AuthorizationRequestHandler.py:80
 msgctxt "@message"
 msgid "Timeout when authenticating with the account server."
-msgstr "Timeout when authenticating with the account server."
+msgstr "使用帐户服务器进行身份验证超时。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/cura/OAuth2/AuthorizationRequestHandler.py:97
 msgctxt "@message"
@@ -3939,7 +3939,7 @@ msgstr "管理设置可见性..."
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Menus/SettingsMenu.qml:34
 msgctxt "@title:menu"
 msgid "&Material"
-msgstr "材料（&M）"
+msgstr "材料(&M)"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Menus/SettingsMenu.qml:49
 msgctxt "@action:inmenu"
@@ -3984,7 +3984,7 @@ msgstr "文件(&F)"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Menus/FileMenu.qml:44
 msgctxt "@title:menu menubar:file"
 msgid "&Save Project..."
-msgstr "保存项目(＆S)..."
+msgstr "保存项目(&S)..."
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Menus/FileMenu.qml:77
 msgctxt "@title:menu menubar:file"
@@ -3999,17 +3999,17 @@ msgstr "导出选择..."
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Menus/PreferencesMenu.qml:21
 msgctxt "@title:menu menubar:toplevel"
 msgid "P&references"
-msgstr "偏好设置（&R）"
+msgstr "偏好设置(&R)"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Menus/EditMenu.qml:12
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Edit"
-msgstr "编辑（&E）"
+msgstr "编辑(&E)"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Menus/PrinterMenu.qml:13
 msgctxt "@title:menu menubar:settings"
 msgid "&Printer"
-msgstr "打印机（&P）"
+msgstr "打印机(&P)"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Menus/PrinterMenu.qml:17
 msgctxt "@label:category menu label"
@@ -4696,7 +4696,7 @@ msgstr "要自动将材料配置文件与连接到 Digital Factory 的所有打�
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:587
 msgctxt "@button"
 msgid "Sync materials with USB"
-msgstr "Sync materials with USB"
+msgstr "使用 USB 同步材料"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:190
 msgctxt "@title:header"
@@ -5868,12 +5868,12 @@ msgstr "显示联机故障排除"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Actions.qml:88
 msgctxt "@action:inmenu"
 msgid "Toggle Full Screen"
-msgstr "切换完整界面"
+msgstr "切换全屏"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Actions.qml:96
 msgctxt "@action:inmenu"
 msgid "Exit Full Screen"
-msgstr "退出完整界面"
+msgstr "退出全屏"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Actions.qml:103
 msgctxt "@action:inmenu menubar:edit"
@@ -5950,17 +5950,17 @@ msgstr "从市场添加更多材料"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Actions.qml:223
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Update profile with current settings/overrides"
-msgstr "使用当前设置 / 重写值更新配置文件（&U）"
+msgstr "使用当前设置 / 重写值更新配置文件(&U)"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Actions.qml:231
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Discard current changes"
-msgstr "舍弃当前更改（&D）"
+msgstr "舍弃当前更改(&D)"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Actions.qml:243
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Create profile from current settings/overrides..."
-msgstr "从当前设置 / 重写值创建配置文件（&C）..."
+msgstr "从当前设置 / 重写值创建配置文件(&C)..."
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Actions.qml:249
 msgctxt "@action:inmenu menubar:profile"
@@ -6010,12 +6010,12 @@ msgstr "删除模型"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Actions.qml:330
 msgctxt "@action:inmenu"
 msgid "Ce&nter Model on Platform"
-msgstr "使模型居于平台中央（&N）"
+msgstr "使模型居于平台中央(&N)"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Actions.qml:336
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Group Models"
-msgstr "绑定模型（&G）"
+msgstr "绑定模型(&G)"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Actions.qml:356
 msgctxt "@action:inmenu menubar:edit"
@@ -6025,12 +6025,12 @@ msgstr "拆分模型"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Actions.qml:366
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Merge Models"
-msgstr "合并模型（&M）"
+msgstr "合并模型(&M)"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Actions.qml:376
 msgctxt "@action:inmenu"
 msgid "&Multiply Model..."
-msgstr "复制模型…（&M）"
+msgstr "复制模型(&M)…"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Actions.qml:383
 msgctxt "@action:inmenu menubar:edit"
@@ -6070,12 +6070,12 @@ msgstr "复位所有模型的变动"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Actions.qml:443
 msgctxt "@action:inmenu menubar:file"
 msgid "&Open File(s)..."
-msgstr "打开文件（&O）..."
+msgstr "打开文件(&O)..."
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Actions.qml:453
 msgctxt "@action:inmenu menubar:file"
 msgid "&New Project..."
-msgstr "新建项目（&N）..."
+msgstr "新建项目(&N)..."
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Actions.qml:460
 msgctxt "@action:inmenu menubar:help"
