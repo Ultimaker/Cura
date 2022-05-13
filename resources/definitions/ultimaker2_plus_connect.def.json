@@ -81,7 +81,7 @@
         "material_bed_temperature_layer_0": { "maximum_value": 110 },
         "material_print_temperature": { "maximum_value": 260 },
         "meshfix_maximum_resolution": { "value": "(speed_wall_0 + speed_wall_x) / 60" },
-        "meshfix_maximum_deviation": { "value": "layer_height / 3 if magic_spiralize else layer_height / 4" },
+        "meshfix_maximum_deviation": { "value": "(layer_height / 3) if magic_spiralize else (layer_height / 4)" },
         "meshfix_maximum_travel_resolution": { "value": 0.5 },
         "prime_blob_enable": { "enabled": true, "default_value": true, "value": "resolveOrValue('print_sequence') != 'one_at_a_time'" },
         "retraction_prime_speed": { "value": "15" },
