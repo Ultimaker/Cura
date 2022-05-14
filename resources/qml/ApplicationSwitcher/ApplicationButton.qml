@@ -45,7 +45,7 @@ Button
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
 
-        UM.RecolorImage
+        UM.ColorImage
         {
             id: applicationIcon
             anchors.horizontalCenter: parent.horizontalCenter
@@ -54,7 +54,7 @@ Button
             width: UM.Theme.getSize("application_switcher_icon").width
             height: width
 
-            UM.RecolorImage
+            UM.ColorImage
             {
                 id: externalLinkIndicatorIcon
                 visible: base.isExternalLink

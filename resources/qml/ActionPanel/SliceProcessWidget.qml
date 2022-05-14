@@ -119,6 +119,7 @@ Column
 
             text: widget.waitingForSliceToStart ? catalog.i18nc("@button", "Processing"): catalog.i18nc("@button", "Slice")
             tooltip: catalog.i18nc("@label", "Start the slicing process")
+            hoverEnabled: !widget.waitingForSliceToStart
             enabled: widget.backendState != UM.Backend.Error && !widget.waitingForSliceToStart
             visible: widget.backendState == UM.Backend.NotStarted || widget.backendState == UM.Backend.Error
             onClicked: {

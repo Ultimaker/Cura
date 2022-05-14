@@ -31,15 +31,30 @@ ComboBox
         },
         State
         {
+            name: "active"
+            when: control.activeFocus
+            PropertyChanges
+            {
+                target: background
+                borderColor: UM.Theme.getColor("text_field_border_active")
+                liningColor: UM.Theme.getColor("text_field_border_active")
+            }
+        },
+        State
+        {
             name: "highlighted"
-            when: control.hovered || control.activeFocus
-            PropertyChanges { target: background; liningColor: UM.Theme.getColor("border_main")}
+            when: (base.hovered || control.hovered) && !control.activeFocus
+            PropertyChanges
+            {
+                target: background
+                liningColor: UM.Theme.getColor("text_field_border_hovered")
+            }
         }
     ]
 
     background: UM.UnderlineBackground{}
 
-    indicator: UM.RecolorImage
+    indicator: UM.ColorImage
     {
         id: downArrow
         x: control.width - width - control.rightPadding
@@ -48,8 +63,6 @@ ComboBox
         source: UM.Theme.getIcon("ChevronSingleDown")
         width: UM.Theme.getSize("standard_arrow").width
         height: UM.Theme.getSize("standard_arrow").height
-        sourceSize.width: width + 5 * screenScaleFactor
-        sourceSize.height: width + 5 * screenScaleFactor
 
         color: UM.Theme.getColor("setting_control_button")
     }

@@ -2,8 +2,8 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import TYPE_CHECKING
 
-from PyQt5.QtCore import QUrl
-from PyQt5.QtGui import QDesktopServices
+from PyQt6.QtCore import QUrl
+from PyQt6.QtGui import QDesktopServices
 
 from UM import i18nCatalog
 from UM.Message import Message

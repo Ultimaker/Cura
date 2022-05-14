@@ -1124,15 +1124,28 @@
                 },
                 "wall_transition_filter_distance":
                 {
-                    "label": "Wall Transition Distance Filter",
+                    "label": "Wall Transitioning Filter Distance",
                     "description": "If it would be transitioning back and forth between different numbers of walls in quick succession, don't transition at all. Remove transitions if they are closer together than this distance.",
                     "type": "float",
                     "unit": "mm",
-                    "default_value": 1.4,
-                    "value": "4 * math.cos(wall_transition_angle / 180 * math.pi) * wall_line_width_x",
+                    "value": "100",
+                    "enabled": false,
+                    "default_value": 100,
                     "minimum_value": "wall_transition_length",
                     "minimum_value_warning": "math.cos(wall_transition_angle / 180 * math.pi) * wall_line_width_x",
-                    "maximum_value_warning": "10 * math.cos(wall_transition_angle / 180 * math.pi) * wall_line_width_x"
+                    "maximum_value": "999999"
+                },
+                "wall_transition_filter_deviation":
+                {
+                    "label": "Wall Transitioning Filter Margin",
+                    "description": "Prevent transitioning back and forth between one extra wall and one less. This margin extends the range of line widths which follow to [Minimum Wall Line Width - Margin, 2 * Minimum Wall Line Width + Margin]. Increasing this margin reduces the number of transitions, which reduces the number of extrusion starts/stops and travel time. However, large line width variation can lead to under- or overextrusion problems.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 0.1,
+                    "value": ".25 * machine_nozzle_size",
+                    "minimum_value": "0",
+                    "minimum_value_warning": ".01",
+                    "maximum_value_warning": "machine_nozzle_size"
                 },
                 "wall_0_wipe_dist":
                 {
@@ -1197,7 +1210,7 @@
                     "minimum_value_warning": ".5 * max(wall_line_width_0, wall_line_width_x)",
                     "maximum_value_warning": "min(wall_line_width_0, wall_line_width_x)",
                     "default_value": 0.3,
-                    "value": "machine_nozzle_size * .75",
+                    "value": "machine_nozzle_size * .85",
                     "type": "float",
                     "settable_per_mesh": true,
                     "children":
@@ -1281,7 +1294,7 @@
                     "label": "Minimum Thin Wall Line Width",
                     "description": "Width of the wall that will replace thin features (according to the Minimum Feature Size) of the model. If the Minimum Wall Line Width is thinner than the thickness of the feature, the wall will become as thick as the feature itself.",
                     "unit": "mm",
-                    "value": "machine_nozzle_size * .75",
+                    "value": "min_wall_line_width",
                     "default_value": 0.2,
                     "minimum_value": "0.001",
                     "minimum_value_warning": "min_feature_size",
@@ -2534,7 +2547,7 @@
                     "unit": "%",
                     "type": "float",
                     "default_value": 100.0,
-                    "enabled": false,
+                    "enabled": true,
                     "minimum_value": "0.001",
                     "minimum_value_warning": "100",
                     "maximum_value_warning": "120",
@@ -2550,7 +2563,7 @@
                             "unit": "%",
                             "type": "float",
                             "default_value": 100.0,
-                            "enabled": false,
+                            "enabled": true,
                             "minimum_value": "0.001",
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "120",
@@ -2566,7 +2579,7 @@
                             "unit": "%",
                             "type": "float",
                             "default_value": 100.0,
-                            "enabled": false,
+                            "enabled": true,
                             "minimum_value": "0.001",
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "120",

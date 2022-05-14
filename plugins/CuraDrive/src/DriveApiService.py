@@ -3,7 +3,7 @@
 
 from typing import Any, Optional, List, Dict, Callable
 
-from PyQt5.QtNetwork import QNetworkReply
+from PyQt6.QtNetwork import QNetworkReply
 
 from UM.Logger import Logger
 from UM.Signal import Signal, signalemitter
