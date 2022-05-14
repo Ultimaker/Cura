@@ -47,8 +47,12 @@
         "machine_max_jerk_e": { "value": 5 },
 
         "material_diameter": { "default_value": 1.75 },
-        "material_print_temperature_layer_0": { "value": "material_print_temperature + 5"},
+        "material_print_temperature": { "maximum_value_warning": 260 },
+        "material_print_temperature_layer_0": { "value": "material_print_temperature + 5", "maximum_value_warning": 260 },
         "material_final_print_temperature": { "value": "material_print_temperature" },
+        "material_bed_temperature": { "maximum_value_warning": 110 },
+        "material_bed_temperature_layer_0": { "maximum_value_warning": 110 },
+
         "material_flow": { "value": 100 },
 
         "top_bottom_thickness": { "value":  "layer_height_0 + layer_height * math.floor(1.2 / layer_height)" },
