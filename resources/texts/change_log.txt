@@ -25,7 +25,7 @@ Ultimaker Cura 5.0 is now compatible with Apple M1.
 - Incomplete languages are now shown in the language drop-down menu
 - Improved the visibility of the checkboxes
 
-* Bug fixes:																																		
+* Bug fixes:
 - Added the Scale Fan Speed From 0 to 1 setting for printers that interpreted fan speed as percentages
 - Fixed a bug with extra travel moves increased the printing time, contributed by BagelOrb
 - Fixed a bug where Monotonic Ironing breaks Ironing, contributed by BagelOrb
