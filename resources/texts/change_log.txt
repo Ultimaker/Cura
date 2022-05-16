@@ -11,7 +11,7 @@ We have streamlined the workflow for accessing the Ultimaker Marketplace inside 
 The new slicing engine in Ultimaker Cura 5.0 has helped us to improve our print profiles. This means that users of Ultimaker printers can achieve speed increases of up to 20%.
 
 * Upgrade from Qt5 to Qt6
-Ultimaker Cura 5.0 is now compatible with Apple M1
+Ultimaker Cura 5.0 is now compatible with Apple M1.
 
 * Other new features and improvements:
 - New Cura icon
@@ -27,6 +27,16 @@ Ultimaker Cura 5.0 is now compatible with Apple M1
 - Improved the visibility of the checkboxes
 
 * Bug fixes:
+- Fixed a bug where Retraction Distance couldn't have small values
+- Fixed a bug where there were duplicated themes
+- Fixed a bug where there were scrollbars showing on tooltips
+- Fixed a bug where drag and drop was not working on the first run of Cura
+- Fixed a bug where Infill Percentages are not lined up correctly in Recommended mode
+- Fixed a bug where it wasn't clear if the textfield was active
+- Fixed a bug where highlighted text in text fiels is unreadable
+- Fixed missing icons, contributed by fieldOfView
+- Fixed a bug where scrolling through long material list was not possible
+- Fixed a bug where multiply was not possible, contributed by fieldOfView
 - Fixed a bug where micro segments are causing blobs
 - Fixed a bug where there was over extrusion when printing with gradual infill
 - Fixed a bug where error values could slice 
