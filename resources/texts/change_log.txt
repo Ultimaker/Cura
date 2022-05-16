@@ -22,37 +22,10 @@ Ultimaker Cura 5.0 is now compatible with Apple M1.
 - Shrinkage compensation is now available for PLA, tPLA and PETG
 - Improved default Line Widths for Spiralize
 - Decrease resolution to remove some buffer underruns
-- Removed the setting Center Last from Wall Ordering
 - Incomplete languages are now shown in the language drop-down menu
 - Improved the visibility of the checkboxes
 
-* Bug fixes:
-- Fixed a bug where Retraction Distance couldn't have small values
-- Fixed a bug where there were duplicated themes
-- Fixed a bug where there were scrollbars showing on tooltips
-- Fixed a bug where drag and drop was not working on the first run of Cura
-- Fixed a bug where Infill Percentages are not lined up correctly in Recommended mode
-- Fixed a bug where it wasn't clear if the textfield was active
-- Fixed a bug where highlighted text in text fiels is unreadable
-- Fixed missing icons, contributed by fieldOfView
-- Fixed a bug where scrolling through long material list was not possible
-- Fixed a bug where multiply was not possible, contributed by fieldOfView
-- Fixed a bug where micro segments are causing blobs
-- Fixed a bug where there was over extrusion when printing with gradual infill
-- Fixed a bug where error values could slice 
-- Fixed a bug where the CPU was high when Cura was idle
-- Fixed a bug where an existing gcode file was overwritten when you select no to overwrite
-- Fixed a crash when selecting extruders
-- Fixed a bug where exporting profiles didn't work
-- Fixed a slicing error
-- Fixed a bug where printing via USB stops during the print
-- Fixed a bug where the toolgrips where missing, contributed by fieldOfView
-- Fixed a bug where the print values didn't save when closing the page, contributed by fieldOfView
-- Fixed the width of a Menu to fit the widest MenuItem, contributed by fieldOfView
-- Fixed a bug where Use Single Instance of Cura in Preferences crashes upon restart
-- Fixed a bug where travels would go through the model with printing PVA
-- Fixed a bug where Concentric ironing was affecting the print quality		
-- Fixed a bug where there were missing infill layers																																			
+* Bug fixes:																																		
 - Added the Scale Fan Speed From 0 to 1 setting for printers that interpreted fan speed as percentages
 - Fixed a bug with extra travel moves increased the printing time, contributed by BagelOrb
 - Fixed a bug where Monotonic Ironing breaks Ironing, contributed by BagelOrb
@@ -75,6 +48,34 @@ Ultimaker Cura 5.0 is now compatible with Apple M1.
 - Changed the possibility for 100% Infill Bottom Layer for Spiralize, contributed by BagelOrb
 - Fixed disallowed areas for Brim gap, contributed by BagelOrb
 
+* Bug fixes after the 5.0 beta:
+- Fixed a bug where Retraction Distance couldn't have small values
+- Fixed a bug where there were duplicated themes
+- Fixed a bug where there were scrollbars showing on tooltips
+- Fixed a bug where drag and drop was not working on the first run of Cura
+- Fixed a bug where Infill Percentages are not lined up correctly in Recommended mode
+- Fixed a bug where it wasn't clear if the textfield was active
+- Fixed a bug where highlighted text in text fiels is unreadable
+- Fixed missing icons, contributed by fieldOfView
+- Fixed a bug where scrolling through long material list was not possible
+- Fixed a bug where multiply was not possible, contributed by fieldOfView
+- Fixed a bug where micro segments are causing blobs
+- Fixed a bug where there was over extrusion when printing with gradual infill
+- Fixed a bug where error values could slice 
+- Fixed a bug where the CPU was high when Cura was idle
+- Fixed a bug where an existing gcode file was overwritten when you select no to overwrite
+- Fixed a crash when selecting extruders
+- Fixed a bug where exporting profiles didn't work
+- Fixed a slicing error with certain infill patterns
+- Fixed a bug where printing via USB stops during the print
+- Fixed a bug where the toolgrips where missing, contributed by fieldOfView
+- Fixed a bug where the print values didn't save when closing the page, contributed by fieldOfView
+- Fixed the width of a Menu to fit the widest MenuItem, contributed by fieldOfView
+- Fixed a bug where Use Single Instance of Cura in Preferences crashes upon restart
+- Fixed a bug where travels would go through the model with printing PVA
+- Fixed a bug where Concentric ironing was affecting the print quality		
+- Fixed a bug where there were missing infill layers
+
 * Printer definitions, profiles and materials:
 - Added Atom 3 and Atom 3 Lite printer definitions, contributed by Daniel-Kurth
 - Added Layer One Black PLA, Dark Grey PLA and White PLA, contributed by Daniel-Kurth 
@@ -95,7 +96,7 @@ Ultimaker Cura 5.0 is now compatible with Apple M1.
 - Updated the Czech translation, contributed by sustmi
 - Updated some of the Chinese translation, contributed by iBral
 
-<i>From version 5.0 onwards - Ultimaker Cura is only supported on operating systems actively maintained by their software manufacturer or community. This means Windows 7 and MacOS 10.14 will no longer be supported. Technically this means Ultimaker will stop testing and developing for such operating systems. However, even though it is no longer supported, there is still a high likelihood the application keeps functioning.
+<i>From version 5.0 onwards - Ultimaker Cura is only supported on operating systems actively maintained by their software manufacturer or community. This means Windows 7 and MacOS 10.14 will no longer be supported. 
 Ubuntu 18.04 is also no longer supported because of the update to Qt6.</i>
 
 [4.13.1]
