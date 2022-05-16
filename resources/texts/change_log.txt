@@ -94,7 +94,7 @@ Ultimaker Cura 5.0 is now compatible with Apple M1.
 * Community translations:
 - Updated the Brazilian Portuguese translation, contributed by Patola
 - Updated the Czech translation, contributed by sustmi
-- Updated some of the Chinese translation, contributed by iBral
+- Updated some of the Simplified Chinese translation, contributed by iBral
 
 <i>From version 5.0 onwards - Ultimaker Cura is only supported on operating systems actively maintained by their software manufacturer or community. This means Windows 7 and MacOS 10.14 will no longer be supported. 
 Ubuntu 18.04 is also no longer supported because of the update to Qt6.</i>
