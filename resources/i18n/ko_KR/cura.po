@@ -6752,41 +6752,74 @@ msgctxt "name"
 msgid "USB printing"
 msgstr "USB 프린팅"
 
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/resources/qml/OnboardBanner.qml:35
+msgctxt "@button:label"
+msgid "Learn More"
+msgstr "자세히 알아보기"
+
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/resources/qml/MultipleLicenseDialog.qml:35
+msgctxt "@label"
+msgid "You need to accept the license to install the package"
+msgstr "패키지를 설치하려면 라이선스를 수락해야 합니다"
+
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/CloudSync/CloudPackageChecker.py:145
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/CloudSync/DownloadPresenter.py:95
+msgctxt "@info:title"
+msgid "Changes detected from your Ultimaker account"
+msgstr "Ultimaker 계정에서 변경 사항이 감지되었습니다"
+
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/resources/qml/CompatibilityDialog.qml:15
+msgctxt "@title"
+msgid "Changes from your account"
+msgstr "계정의 변경 사항"
+
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/resources/qml/CompatibilityDialog.qml:24
+msgctxt "@button"
+msgid "Dismiss"
+msgstr "취소"
+
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/CloudSync/LicensePresenter.py:42
+msgctxt "@button"
+msgid "Decline and remove from account"
+msgstr "계정에서 거절 및 제거"
+
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/CloudSync/CloudPackageChecker.py:144
+msgctxt "@info:generic"
+msgid "Do you want to sync material and software packages with your account?"
+msgstr "귀하의 계정으로 재료와 소프트웨어 패키지를 동기화하시겠습니까?"
+
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/CloudSync/DownloadPresenter.py:91
+msgctxt "@info:generic"
+msgid "Syncing..."
+msgstr "동기화 중..."
+
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/resources/qml/CompatibilityDialog.qml:52
+msgctxt "@label"
+msgid "The following packages will be added:"
+msgstr "다음 패키지가 추가됩니다:"
+
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/CloudSync/RestartApplicationPresenter.py:22
+msgctxt "@info:generic"
+msgid "You need to quit and restart {} before changes have effect."
+msgstr "변경 사항이 적용되기 전에 {}을(를) 멈추고 다시 시작해야 합니다."
+
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/CloudSync/SyncOrchestrator.py:79
+msgctxt "@info:generic"
+msgid "{} plugins failed to download"
+msgstr "{}개의 플러그인을 다운로드하지 못했습니다"
+
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/CloudSync/LicenseModel.py:77
+msgctxt "@title:window"
+msgid "Plugin License Agreement"
+msgstr "플러그인 사용 계약"
+
 #~ msgctxt "@action:button"
 #~ msgid "Sync materials with printers"
 #~ msgstr "재료를 프린터와 동기화"
 
-#~ msgctxt "@info:generic"
-#~ msgid "You need to quit and restart {} before changes have effect."
-#~ msgstr "변경 사항이 적용되기 전에 {}을(를) 멈추고 다시 시작해야 합니다."
-
-#~ msgctxt "@info:generic"
-#~ msgid "Syncing..."
-#~ msgstr "동기화 중..."
-
-#~ msgctxt "@info:title"
-#~ msgid "Changes detected from your Ultimaker account"
-#~ msgstr "Ultimaker 계정에서 변경 사항이 감지되었습니다"
-
-#~ msgctxt "@info:generic"
-#~ msgid "Do you want to sync material and software packages with your account?"
-#~ msgstr "귀하의 계정으로 재료와 소프트웨어 패키지를 동기화하시겠습니까?"
-
 #~ msgctxt "@action:button"
 #~ msgid "Sync"
 #~ msgstr "동기화"
-
-#~ msgctxt "@button"
-#~ msgid "Decline and remove from account"
-#~ msgstr "계정에서 거절 및 제거"
-
-#~ msgctxt "@info:generic"
-#~ msgid "{} plugins failed to download"
-#~ msgstr "{}개의 플러그인을 다운로드하지 못했습니다"
-
-#~ msgctxt "@title:window"
-#~ msgid "Plugin License Agreement"
-#~ msgstr "플러그인 사용 계약"
 
 #~ msgctxt "@title:window"
 #~ msgid "Convert Image..."
@@ -6975,22 +7008,6 @@ msgstr "USB 프린팅"
 #~ msgctxt "@info"
 #~ msgid "Could not connect to the Cura Package database. Please check your connection."
 #~ msgstr "Cura 패키지 데이터베이스에 연결할 수 없습니다. 연결을 확인하십시오."
-
-#~ msgctxt "@label"
-#~ msgid "You need to accept the license to install the package"
-#~ msgstr "패키지를 설치하려면 라이선스를 수락해야 합니다"
-
-#~ msgctxt "@title"
-#~ msgid "Changes from your account"
-#~ msgstr "계정의 변경 사항"
-
-#~ msgctxt "@button"
-#~ msgid "Dismiss"
-#~ msgstr "취소"
-
-#~ msgctxt "@label"
-#~ msgid "The following packages will be added:"
-#~ msgstr "다음 패키지가 추가됩니다:"
 
 #~ msgctxt "@label"
 #~ msgid "The following packages can not be installed because of an incompatible Cura version:"

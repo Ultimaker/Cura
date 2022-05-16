@@ -6750,41 +6750,74 @@ msgctxt "name"
 msgid "USB printing"
 msgstr "USBプリンティング"
 
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/resources/qml/OnboardBanner.qml:35
+msgctxt "@button:label"
+msgid "Learn More"
+msgstr "詳しく見る"
+
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/resources/qml/MultipleLicenseDialog.qml:35
+msgctxt "@label"
+msgid "You need to accept the license to install the package"
+msgstr "パッケージをインストールするにはライセンスに同意する必要があります"
+
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/CloudSync/CloudPackageChecker.py:145
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/CloudSync/DownloadPresenter.py:95
+msgctxt "@info:title"
+msgid "Changes detected from your Ultimaker account"
+msgstr "Ultimakerアカウントから変更が検出されました"
+
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/resources/qml/CompatibilityDialog.qml:15
+msgctxt "@title"
+msgid "Changes from your account"
+msgstr "アカウントにおける変更"
+
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/resources/qml/CompatibilityDialog.qml:24
+msgctxt "@button"
+msgid "Dismiss"
+msgstr "無視"
+
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/CloudSync/LicensePresenter.py:42
+msgctxt "@button"
+msgid "Decline and remove from account"
+msgstr "拒否してアカウントから削除"
+
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/CloudSync/CloudPackageChecker.py:144
+msgctxt "@info:generic"
+msgid "Do you want to sync material and software packages with your account?"
+msgstr "材料パッケージとソフトウェアパッケージをアカウントと同期しますか？"
+
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/CloudSync/DownloadPresenter.py:91
+msgctxt "@info:generic"
+msgid "Syncing..."
+msgstr "同期中..."
+
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/resources/qml/CompatibilityDialog.qml:52
+msgctxt "@label"
+msgid "The following packages will be added:"
+msgstr "次のパッケージが追加されます:"
+
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/CloudSync/RestartApplicationPresenter.py:22
+msgctxt "@info:generic"
+msgid "You need to quit and restart {} before changes have effect."
+msgstr "変更を有効にするために{}を終了して再始動する必要があります。"
+
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/CloudSync/SyncOrchestrator.py:79
+msgctxt "@info:generic"
+msgid "{} plugins failed to download"
+msgstr "{}プラグインのダウンロードに失敗しました"
+
+#: /Users/j.delarago/development/cura_installation/Cura/plugins/Marketplace/CloudSync/LicenseModel.py:77
+msgctxt "@title:window"
+msgid "Plugin License Agreement"
+msgstr "プラグインライセンス同意書"
+
 #~ msgctxt "@action:button"
 #~ msgid "Sync materials with printers"
 #~ msgstr "材料をプリンターと同期"
 
-#~ msgctxt "@info:generic"
-#~ msgid "You need to quit and restart {} before changes have effect."
-#~ msgstr "変更を有効にするために{}を終了して再始動する必要があります。"
-
-#~ msgctxt "@info:generic"
-#~ msgid "Syncing..."
-#~ msgstr "同期中..."
-
-#~ msgctxt "@info:title"
-#~ msgid "Changes detected from your Ultimaker account"
-#~ msgstr "Ultimakerアカウントから変更が検出されました"
-
-#~ msgctxt "@info:generic"
-#~ msgid "Do you want to sync material and software packages with your account?"
-#~ msgstr "材料パッケージとソフトウェアパッケージをアカウントと同期しますか？"
-
 #~ msgctxt "@action:button"
 #~ msgid "Sync"
 #~ msgstr "同期"
-
-#~ msgctxt "@button"
-#~ msgid "Decline and remove from account"
-#~ msgstr "拒否してアカウントから削除"
-
-#~ msgctxt "@info:generic"
-#~ msgid "{} plugins failed to download"
-#~ msgstr "{}プラグインのダウンロードに失敗しました"
-
-#~ msgctxt "@title:window"
-#~ msgid "Plugin License Agreement"
-#~ msgstr "プラグインライセンス同意書"
 
 #~ msgctxt "@title:window"
 #~ msgid "Convert Image..."
@@ -6973,22 +7006,6 @@ msgstr "USBプリンティング"
 #~ msgctxt "@info"
 #~ msgid "Could not connect to the Cura Package database. Please check your connection."
 #~ msgstr "Curaパッケージデータベースに接続できません。接続を確認してください。"
-
-#~ msgctxt "@label"
-#~ msgid "You need to accept the license to install the package"
-#~ msgstr "パッケージをインストールするにはライセンスに同意する必要があります"
-
-#~ msgctxt "@title"
-#~ msgid "Changes from your account"
-#~ msgstr "アカウントにおける変更"
-
-#~ msgctxt "@button"
-#~ msgid "Dismiss"
-#~ msgstr "無視"
-
-#~ msgctxt "@label"
-#~ msgid "The following packages will be added:"
-#~ msgstr "次のパッケージが追加されます:"
 
 #~ msgctxt "@label"
 #~ msgid "The following packages can not be installed because of an incompatible Cura version:"
@@ -9528,10 +9545,6 @@ msgstr "USBプリンティング"
 #~ msgctxt "@info"
 #~ msgid "Cura collects anonymised slicing statistics. You can disable this in the preferences."
 #~ msgstr "Curaが非特定なスライスされた数字を集めました。プレファレンス内で無効にできます。"
-
-#~ msgctxt "@action:button"
-#~ msgid "Dismiss"
-#~ msgstr "却下する"
 
 #~ msgctxt "@menuitem"
 #~ msgid "Global"

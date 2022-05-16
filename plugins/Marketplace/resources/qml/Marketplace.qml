@@ -6,7 +6,7 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Window 2.2
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.6 as Cura
 
 Window
@@ -67,7 +67,7 @@ Window
                 Layout.preferredWidth: parent.width
                 Layout.preferredHeight: childrenRect.height + UM.Theme.getSize("default_margin").height
 
-                Label
+                UM.Label
                 {
                     id: pageTitle
                     anchors
@@ -80,7 +80,6 @@ Window
                     }
 
                     font: UM.Theme.getFont("large")
-                    color: UM.Theme.getColor("text")
                     text: content.item ? content.item.pageTitle: catalog.i18nc("@title", "Loading...")
                 }
             }

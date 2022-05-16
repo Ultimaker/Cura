@@ -87,11 +87,10 @@ Item
             Layout.preferredWidth: parent.width
             Layout.preferredHeight: childrenRect.height
 
-            Label
+            UM.Label
             {
                 text: packageData.displayName
                 font: UM.Theme.getFont("medium_bold")
-                color: UM.Theme.getColor("text")
                 verticalAlignment: Text.AlignTop
             }
             VerifiedIcon
@@ -100,12 +99,10 @@ Item
                 visible: packageData.isCheckedByUltimaker
             }
 
-            Label
+            UM.Label
             {
                 id: packageVersionLabel
                 text: packageData.packageVersion
-                font: UM.Theme.getFont("default")
-                color: UM.Theme.getColor("text")
                 Layout.fillWidth: true
             }
 
@@ -155,7 +152,7 @@ Item
             spacing: UM.Theme.getSize("narrow_margin").width
 
             // label "By"
-            Label
+            UM.Label
             {
                 id: authorBy
                 Layout.alignment: Qt.AlignCenter
