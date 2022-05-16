@@ -5,7 +5,7 @@ import QtQuick 2.2
 import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.1
-import QtQuick.Dialogs 6.0 // For filedialog
+import QtQuick.Dialogs // For filedialog
 
 import UM 1.5 as UM
 import Cura 1.0 as Cura
