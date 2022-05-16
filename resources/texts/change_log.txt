@@ -55,7 +55,7 @@ Ultimaker Cura 5.0 is now compatible with Apple M1.
 - Fixed a bug where drag and drop was not working on the first run of Cura
 - Fixed a bug where Infill Percentages are not lined up correctly in Recommended mode
 - Fixed a bug where it wasn't clear if the textfield was active
-- Fixed a bug where highlighted text in text fiels is unreadable
+- Fixed a bug where highlighted text in text field is unreadable
 - Fixed missing icons, contributed by fieldOfView
 - Fixed a bug where scrolling through long material list was not possible
 - Fixed a bug where multiply was not possible, contributed by fieldOfView
