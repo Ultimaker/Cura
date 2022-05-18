@@ -1,0 +1,57 @@
+{
+    "version": 2,
+    "name": "Troodon 400mm",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "VIVEDINO",
+        "manufacturer": "VIVEDINO",
+        "category": "Other",
+        "file_formats": "text/x-gcode",
+        "has_materials": true,
+        "machine_extruder_trains":
+        {
+            "0": "Troodon_400mm_0"
+        }
+    },
+
+    "overrides": {
+        "machine_name": { "default_value": "Troodon 400mm" },
+        "machine_width": {
+            "default_value": 408
+        },
+        "machine_height": {
+            "default_value": 500
+        },
+        "machine_depth": {
+            "default_value": 400
+        },
+        "machine_center_is_zero": {
+            "default_value": false
+        },
+        "machine_heated_bed": {
+            "default_value": true
+        },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [ -40, 55 ],
+                [ -40, -45 ],
+                [ 60, 55 ],
+                [ 60, -45 ]
+            ]
+        },
+        "gantry_height": {
+            "default_value": 25
+        },
+        "machine_gcode_flavor": {
+            "default_value": "RepRap (Marlin/Sprinter)"
+        },
+        "machine_start_gcode": {
+            "default_value": "M42 P25 S0\nM42 P26 S0\nM42 P24 S255\nM280 P7 S160\nT0\nG92 E0\nG1 E-10 F1800\nG32\nG29\nG1 X0 Y0 F4800\nG92 E0\nG1 E10 F540\nG92 E0\nG1 E-3.0000 F1800\nG1 Z0.200 F1000\nG1 X400 Y0 E43.5631 F1000\nG92 E0\nG1 E-8.0000 F5400\nG1 X205 Y200 F18000\nG1 E0 F5400\n"
+        },
+        "machine_end_gcode": {
+            "default_value": "G91\nG1 Z+1.00 X+20.0 Y+20.0 F20000\nG1 Z+10.00  F20000\nG90\nG1 X400 Y400\nG90\nM104 S0\nM140 S0\nM106 S0\nM84\nM42 P24 S0\nM42 P25 S0\nM42 P26 S255\n"
+        }
+    }
+}
