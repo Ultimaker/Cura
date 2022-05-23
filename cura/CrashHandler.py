@@ -261,7 +261,7 @@ class CrashHandler:
         opengl_instance = OpenGL.getInstance()
         if not opengl_instance:
             self.data["opengl"] = {"version": "n/a", "vendor": "n/a", "type": "n/a"}
-            return catalog.i18nc("@label", "Not yet initialized<br/>")
+            return catalog.i18nc("@label", "Not yet initialized") + "<br />"
 
         info = "<ul>"
         info += catalog.i18nc("@label OpenGL version", "<li>OpenGL Version: {version}</li>").format(version = opengl_instance.getOpenGLVersion())
