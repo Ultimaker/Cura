@@ -33,6 +33,7 @@ Cura.Menu
         id: openFilesMenu
 
         shouldBeVisible: base.fileProviderModel.count > 1
+        enabled: shouldBeVisible
     }
 
     RecentFilesMenu { }

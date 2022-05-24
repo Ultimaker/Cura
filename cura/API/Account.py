@@ -1,8 +1,8 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-
+import enum
 from datetime import datetime
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, pyqtProperty, QTimer, Q_ENUMS
+from PyQt6.QtCore import QObject, pyqtSignal, pyqtSlot, pyqtProperty, QTimer, pyqtEnum
 from typing import Any, Optional, Dict, TYPE_CHECKING, Callable
 
 from UM.Logger import Logger
@@ -18,7 +18,7 @@ if TYPE_CHECKING:
 i18n_catalog = i18nCatalog("cura")
 
 
-class SyncState:
+class SyncState(enum.IntEnum):
     """QML: Cura.AccountSyncState"""
     SYNCING = 0
     SUCCESS = 1
@@ -41,7 +41,7 @@ class Account(QObject):
 
     # The interval in which sync services are automatically triggered
     SYNC_INTERVAL = 60.0  # seconds
-    Q_ENUMS(SyncState)
+    pyqtEnum(SyncState)
 
     loginStateChanged = pyqtSignal(bool)
     """Signal emitted when user logged in or out"""
@@ -269,10 +269,10 @@ class Account(QObject):
         return self._authorization_service.getAccessToken()
 
     @pyqtProperty("QVariantMap", notify = userProfileChanged)
-    def userProfile(self) -> Optional[Dict[str, Optional[str]]]:
+    def userProfile(self) -> Dict[str, Optional[str]]:
         """None if no user is logged in otherwise the logged in  user as a dict containing containing user_id, username and profile_image_url """
         if not self._user_profile:
-            return None
+            return {}
         return self._user_profile.__dict__
 
     @pyqtProperty(str, notify=lastSyncDateTimeChanged)

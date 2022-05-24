@@ -1,11 +1,10 @@
 //Copyright (c) 2022 Ultimaker B.V.
 //Cura is released under the terms of the LGPLv3 or higher.
 
-import Qt.labs.qmlmodels 1.0
 import QtQuick 2.1
 import QtQuick.Controls 2.15
 
-import UM 1.5 as UM
+import UM 1.6 as UM
 import Cura 1.6 as Cura
 
 UM.Dialog
@@ -77,11 +76,9 @@ UM.Dialog
                 Cura.MachineManager.activeQualityDisplayNameMap["main"],
                 catalog.i18nc("@title:column", "Current changes")
             ]
-            model: TableModel
+            model: UM.TableModel
             {
-                TableModelColumn { display: "label" }
-                TableModelColumn { display: "original_value" }
-                TableModelColumn { display: "user_value" }
+                headers: ["label", "original_value", "user_value"]
                 rows: userChangesModel.items
             }
             sectionRole: "category"

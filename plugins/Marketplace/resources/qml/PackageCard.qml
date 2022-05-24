@@ -29,16 +29,13 @@ Rectangle
 
             anchors.fill: parent
 
-            Label
+            UM.Label
             {
                 id: descriptionLabel
                 width: parent.width
 
                 text: packageData.description
-                font: UM.Theme.getFont("default")
-                color: UM.Theme.getColor("text")
                 maximumLineCount: 2
-                wrapMode: Text.Wrap
                 elide: Text.ElideRight
                 visible: text !== ""
             }

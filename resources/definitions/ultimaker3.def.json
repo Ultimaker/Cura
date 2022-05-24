@@ -111,7 +111,6 @@
         "jerk_support_infill": {"minimum_value_warning": 20 },
         "jerk_support_interface": { "value": "math.ceil(jerk_print * 5 / 20)"},
         "jerk_prime_tower": { "value": "jerk_print", "minimum_value_warning": 20 },
-        "jerk_travel": {"minimum_value_warning": 20 },
         "jerk_layer_0": { "value": "jerk_topbottom", "minimum_value_warning": 20},
         "jerk_print_layer_0": {"minimum_value_warning": 20 },
         "jerk_travel_layer_0": {"minimum_value_warning": 20 },

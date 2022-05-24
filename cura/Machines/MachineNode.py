@@ -129,7 +129,7 @@ class MachineNode(ContainerNode):
             if name not in groups_by_name:
                 # CURA-6599
                 # For some reason, QML will get null or fail to convert type for MachineManager.activeQualityChangesGroup() to
-                # a QObject. Setting the object ownership to QQmlEngine.CppOwnership doesn't work, but setting the object
+                # a QObject. Setting the object ownership to QQmlEngine.ObjectOwnership.CppOwnership doesn't work, but setting the object
                 # parent to application seems to work.
                 from cura.CuraApplication import CuraApplication
                 groups_by_name[name] = QualityChangesGroup(name, quality_type = quality_changes["quality_type"],

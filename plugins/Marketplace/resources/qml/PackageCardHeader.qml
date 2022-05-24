@@ -47,23 +47,21 @@ Item
             sourceSize.width: width
         }
 
-        UM.RecolorImage
+        UM.ColorImage
         {
             visible: !parent.packageHasIcon
             anchors.fill: parent
-            sourceSize.height: height
-            sourceSize.width: width
             color: UM.Theme.getColor("text")
             source:
             {
                 switch (packageData.packageType)
                 {
                     case "plugin":
-                        return "../images/Plugin.svg";
+                        return Qt.resolvedUrl("../images/Plugin.svg");
                     case "material":
-                        return "../images/Spool.svg";
+                        return Qt.resolvedUrl("../images/Spool.svg");
                     default:
-                        return "../images/placeholder.svg";
+                        return Qt.resolvedUrl("../images/placeholder.svg");
                 }
             }
         }
@@ -89,11 +87,10 @@ Item
             Layout.preferredWidth: parent.width
             Layout.preferredHeight: childrenRect.height
 
-            Label
+            UM.Label
             {
                 text: packageData.displayName
                 font: UM.Theme.getFont("medium_bold")
-                color: UM.Theme.getColor("text")
                 verticalAlignment: Text.AlignTop
             }
             VerifiedIcon
@@ -102,12 +99,10 @@ Item
                 visible: packageData.isCheckedByUltimaker
             }
 
-            Label
+            UM.Label
             {
                 id: packageVersionLabel
                 text: packageData.packageVersion
-                font: UM.Theme.getFont("default")
-                color: UM.Theme.getColor("text")
                 Layout.fillWidth: true
             }
 
@@ -121,9 +116,9 @@ Item
                 topPadding: UM.Theme.getSize("narrow_margin").width
                 bottomPadding: UM.Theme.getSize("narrow_margin").width
 
-                Layout.preferredWidth: UM.Theme.getSize("card_tiny_icon").width + 2 * padding
-                Layout.preferredHeight: UM.Theme.getSize("card_tiny_icon").width + 2 * padding
-                contentItem: UM.RecolorImage
+                width: UM.Theme.getSize("card_tiny_icon").width + 2 * padding
+                height: UM.Theme.getSize("card_tiny_icon").width + 2 * padding
+                contentItem: UM.ColorImage
                 {
                     source: UM.Theme.getIcon("LinkExternal")
                     color: UM.Theme.getColor("icon")
@@ -157,12 +152,12 @@ Item
             spacing: UM.Theme.getSize("narrow_margin").width
 
             // label "By"
-            Label
+            UM.Label
             {
                 id: authorBy
                 Layout.alignment: Qt.AlignCenter
 
-                text: catalog.i18nc("@label", "By")
+                text: catalog.i18nc("@label Is followed by the name of an author", "By")
                 font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text")
             }

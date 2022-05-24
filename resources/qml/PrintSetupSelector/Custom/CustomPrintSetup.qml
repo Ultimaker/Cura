@@ -129,7 +129,7 @@ Item
             background: UM.UnderlineBackground
             {
                 id: backgroundItem
-                liningColor: intentSelection.hovered ? UM.Theme.getColor("border_main") : UM.Theme.getColor("border_field_light")
+                liningColor: intentSelection.hovered ? UM.Theme.getColor("text_field_border_hovered") : UM.Theme.getColor("border_field_light")
             }
 
             UM.SimpleButton
@@ -159,7 +159,7 @@ Item
                 }
                 onExited: base.hideTooltip()
             }
-            UM.RecolorImage
+            UM.ColorImage
             {
                 id: downArrow
 
@@ -218,8 +218,6 @@ Item
                         materialColor: model.color
                         extruderEnabled: model.enabled
                         iconVariant: "default"
-                        height: parent.height
-                        width: height
                     }
                 }
                 onClicked:

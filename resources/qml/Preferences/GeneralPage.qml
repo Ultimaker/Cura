@@ -141,7 +141,7 @@ UM.PreferencesPage
         ScrollBar.vertical: UM.ScrollBar
         {
             id: preferencesScrollBar
-            parent: preferencesScrollView
+            parent: preferencesScrollView.parent
             anchors
             {
                 top: parent.top
@@ -201,7 +201,6 @@ UM.PreferencesPage
                         append({ text: "Русский", code: "ru_RU" })
                         append({ text: "Türkçe", code: "tr_TR" })
                         append({ text: "简体中文", code: "zh_CN" })
-                        append({ text: "正體字", code: "zh_TW" })
 
                         var date_object = new Date();
                         if (date_object.getUTCMonth() == 8 && date_object.getUTCDate() == 19) //Only add Pirate on the 19th of September.
@@ -211,6 +210,7 @@ UM.PreferencesPage
 
                         // incomplete and/or abandoned
                         append({ text: catalog.i18nc("@heading", "-- incomplete --"), code: "" })
+                        append({ text: "正體字", code: "zh_TW" })
                         append({ text: "Magyar", code: "hu_HU" })
                         append({ text: "Suomi", code: "fi_FI" })
                         append({ text: "Polski", code: "pl_PL" })
@@ -224,7 +224,7 @@ UM.PreferencesPage
                     textRole: "text"
                     model: languageList
                     implicitWidth: UM.Theme.getSize("combobox").width
-                    implicitHeight: currencyField.height
+                    height: currencyField.height
 
                     function setCurrentIndex() {
                         var code = UM.Preferences.getValue("general/language");
@@ -264,6 +264,7 @@ UM.PreferencesPage
                     selectByMouse: true
                     text: UM.Preferences.getValue("cura/currency")
                     implicitWidth: UM.Theme.getSize("combobox").width
+                    implicitHeight: UM.Theme.getSize("setting_control").height
                     onTextChanged: UM.Preferences.setValue("cura/currency", text)
                 }
 
@@ -293,7 +294,7 @@ UM.PreferencesPage
                     model: themeList
                     textRole: "text"
                     implicitWidth: UM.Theme.getSize("combobox").width
-                    implicitHeight: currencyField.height
+                    height: currencyField.height
 
                     currentIndex:
                     {
