@@ -45,7 +45,7 @@ Item
         anchors.centerIn: printJobPreview
         color: UM.Theme.getColor("monitor_placeholder_image")
         height: printJobPreview.height
-        source: "../svg/ultibot.svg"
+        source: Qt.resolvedUrl("../svg/ultibot.svg")
         /* Since print jobs ALWAYS have an image url, we have to check if that image URL errors or
             not in order to determine if we show the placeholder (ultibot) image instead. */
         visible: printJob && previewImage.status == Image.Error

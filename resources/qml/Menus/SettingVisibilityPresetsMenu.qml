@@ -33,7 +33,7 @@ Cura.Menu
         }
 
         onObjectAdded: function(index, object) { menu.insertItem(index, object) }
-        onObjectRemoved: function(object) { menu.removeItem(object)}
+        onObjectRemoved: function(index, object) { menu.removeItem(object)}
     }
 
     Cura.MenuSeparator {}

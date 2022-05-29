@@ -1,20 +1,18 @@
 # Cura
-# Copyright (C) 2021 Ultimaker B.V.
+# Copyright (C) 2022 Ultimaker B.V.
 # This file is distributed under the same license as the Cura package.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.13\n"
+"Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2021-12-10 12:00+0000\n"
-"PO-Revision-Date: 2021-04-16 15:03+0200\n"
-"Last-Translator: Bothof <info@bothof.nl>\n"
-"Language-Team: Turkish\n"
-"Language: tr_TR\n"
+"POT-Creation-Date: 2022-04-13 10:49+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.4.1\n"
 
 #: fdmextruder.def.json
 msgctxt "machine_settings label"
@@ -53,7 +51,9 @@ msgstr "Nozül Çapı"
 
 #: fdmextruder.def.json
 msgctxt "machine_nozzle_size description"
-msgid "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size."
+msgid ""
+"The inner diameter of the nozzle. Change this setting when using a non-"
+"standard nozzle size."
 msgstr "Nozül iç çapı. Standart olmayan nozül boyutu kullanırken bu ayarı değiştirin."
 
 #: fdmextruder.def.json
@@ -93,7 +93,9 @@ msgstr "Ekstruderin Mutlak Başlangıç Konumu"
 
 #: fdmextruder.def.json
 msgctxt "machine_extruder_start_pos_abs description"
-msgid "Make the extruder starting position absolute rather than relative to the last-known location of the head."
+msgid ""
+"Make the extruder starting position absolute rather than relative to the "
+"last-known location of the head."
 msgstr "Ekstruder başlama konumunu, yazıcı başlığının son konumuna göre ayarlamak yerine mutlak olarak ayarlayın."
 
 #: fdmextruder.def.json
@@ -133,7 +135,9 @@ msgstr "Ekstruderin Mutlak Bitiş Konumu"
 
 #: fdmextruder.def.json
 msgctxt "machine_extruder_end_pos_abs description"
-msgid "Make the extruder ending position absolute rather than relative to the last-known location of the head."
+msgid ""
+"Make the extruder ending position absolute rather than relative to the last-"
+"known location of the head."
 msgstr "Ekstruder bitiş konumunu, yazıcı başlığının son konumuna göre ayarlamak yerine mutlak olarak ayarlayın."
 
 #: fdmextruder.def.json
@@ -163,7 +167,9 @@ msgstr "Ekstruder İlk Z konumu"
 
 #: fdmextruder.def.json
 msgctxt "extruder_prime_pos_z description"
-msgid "The Z coordinate of the position where the nozzle primes at the start of printing."
+msgid ""
+"The Z coordinate of the position where the nozzle primes at the start of "
+"printing."
 msgstr "Nozül yazdırma işlemini başlatmaya hazırlandığında konumun Z koordinatı."
 
 #: fdmextruder.def.json
@@ -173,7 +179,10 @@ msgstr "Ekstrüder Yazıcı Soğutma Fanı"
 
 #: fdmextruder.def.json
 msgctxt "machine_extruder_cooling_fan_number description"
-msgid "The number of the print cooling fan associated with this extruder. Only change this from the default value of 0 when you have a different print cooling fan for each extruder."
+msgid ""
+"The number of the print cooling fan associated with this extruder. Only "
+"change this from the default value of 0 when you have a different print "
+"cooling fan for each extruder."
 msgstr "Bu ekstrüdere bağlı yazıcı soğutma fanı sayısı. Yalnızca her bir ekstrüder için farklı yazıcı soğutma fanınız varsa bunu 0 varsayılan değeri olarak değiştirin."
 
 #: fdmextruder.def.json
@@ -193,7 +202,9 @@ msgstr "Extruder İlk X konumu"
 
 #: fdmextruder.def.json
 msgctxt "extruder_prime_pos_x description"
-msgid "The X coordinate of the position where the nozzle primes at the start of printing."
+msgid ""
+"The X coordinate of the position where the nozzle primes at the start of "
+"printing."
 msgstr "Nozül yazdırma işlemini başlatmaya hazırlandığında konumun X koordinatı."
 
 #: fdmextruder.def.json
@@ -203,7 +214,9 @@ msgstr "Extruder İlk Y konumu"
 
 #: fdmextruder.def.json
 msgctxt "extruder_prime_pos_y description"
-msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
+msgid ""
+"The Y coordinate of the position where the nozzle primes at the start of "
+"printing."
 msgstr "Nozül yazdırma işlemini başlatmaya hazırlandığında konumun Y koordinatı."
 
 #: fdmextruder.def.json
@@ -223,7 +236,9 @@ msgstr "Çap"
 
 #: fdmextruder.def.json
 msgctxt "material_diameter description"
-msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
+msgid ""
+"Adjusts the diameter of the filament used. Match this value with the "
+"diameter of the used filament."
 msgstr "Kullanılan filamanın çapını ayarlar. Bu değeri kullanılan filaman çapı ile eşitleyin."
 
 #~ msgctxt "machine_extruder_start_code description"

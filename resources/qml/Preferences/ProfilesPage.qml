@@ -13,6 +13,7 @@ import Cura 1.6 as Cura
 UM.ManagementPage
 {
     id: base
+    Item { enabled: false; UM.I18nCatalog { id: catalog; name: "cura"} }
 
     property var extrudersModel: CuraApplication.getExtrudersModel()
     property var qualityManagementModel: CuraApplication.getQualityManagementModel()
@@ -58,7 +59,7 @@ UM.ManagementPage
     scrollviewCaption: catalog.i18nc("@label", "Profiles compatible with active printer:") + "<br><b>" + Cura.MachineManager.activeMachine.name + "</b>"
 
     hamburgerButtonVisible: hasCurrentItem
-    onHamburgeButtonClicked: {
+    onHamburgeButtonClicked: (hamburger_button) => {
         const hamburerButtonHeight = hamburger_button.height;
         menu.popup(hamburger_button, -menu.width + hamburger_button.width / 2, hamburger_button.height);
 
@@ -354,8 +355,13 @@ UM.ManagementPage
             currentFolder: CuraApplication.getDefaultPath("dialog_profile_path")
             onAccepted:
             {
+
+                // If nameFilters contains only 1 item, the index of selectedNameFilter will always be -1
+                // This fetches the nameFilter at index selectedNameFilter.index if it is positive
+                const nameFilterString = selectedNameFilter.index >= 0 ? nameFilters[selectedNameFilter.index] : nameFilters[0];
+
                 var result = Cura.ContainerManager.exportQualityChangesGroup(base.currentItem.quality_changes_group,
-                                                                             fileUrl, selectedNameFilter);
+                                                                             selectedFile, nameFilterString);
 
                 if (result && result.status == "error")
                 {
@@ -365,7 +371,7 @@ UM.ManagementPage
                 }
 
                 // else pop-up Message thing from python code
-                CuraApplication.setDefaultPath("dialog_profile_path", folder);
+                CuraApplication.setDefaultPath("dialog_profile_path", currentFolder);
             }
         }
 
@@ -385,7 +391,7 @@ UM.ManagementPage
 
             title: catalog.i18nc("@title:window", "Confirm Remove")
             text: catalog.i18nc("@label (%1 is object name)", "Are you sure you wish to remove %1? This cannot be undone!").arg(base.currentItemName)
-            standardButtons: StandardButton.Yes | StandardButton.No
+            standardButtons: Dialog.Yes | Dialog.No
             modal: true
 
             onAccepted:
@@ -419,7 +425,7 @@ UM.ManagementPage
             currentFolder: CuraApplication.getDefaultPath("dialog_profile_path")
             onAccepted:
             {
-                var result = Cura.ContainerManager.importProfile(fileUrl);
+                var result = Cura.ContainerManager.importProfile(selectedFile);
                 messageDialog.title = catalog.i18nc("@title:window", "Import Profile")
                 messageDialog.text = result.message;
                 messageDialog.open();

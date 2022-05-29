@@ -44,14 +44,13 @@ Item
         cardMouseAreaEnabled: false
     }
 
-    Label
+    UM.Label
     {
         id: fileNameLabel
         anchors.top: projectSummaryCard.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         text: "Cura project name"
         font: UM.Theme.getFont("medium")
-        color: UM.Theme.getColor("text")
     }
 
 
@@ -110,13 +109,12 @@ Item
             }
         }
 
-        Label
+        UM.Label
         {
             id: emptyProjectLabel
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
             text: "Select a project to view its files."
-            font: UM.Theme.getFont("default")
             color: UM.Theme.getColor("setting_category_text")
 
             Connections
@@ -129,14 +127,13 @@ Item
             }
         }
 
-        Label
+        UM.Label
         {
             id: noFilesInProjectLabel
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
             visible: (manager.digitalFactoryFileModel.count == 0 && !emptyProjectLabel.visible && !retrievingFilesBusyIndicator.visible)
             text: "No supported files in this project."
-            font: UM.Theme.getFont("default")
             color: UM.Theme.getColor("setting_category_text")
         }
 

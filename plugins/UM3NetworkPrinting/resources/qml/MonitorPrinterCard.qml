@@ -252,7 +252,7 @@ Item
                 bottom: parent.bottom
                 bottomMargin: 20 * screenScaleFactor // TODO: Theme!
             }
-            iconSource: "../svg/icons/CameraPhoto.svg"
+            iconSource: Qt.resolvedUrl("../svg/icons/CameraPhoto.svg")
             enabled: !cloudConnection
             visible: printer
         }

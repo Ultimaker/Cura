@@ -23,6 +23,8 @@ TextField
     selectByMouse: true
     font: UM.Theme.getFont("default")
     color: UM.Theme.getColor("text_field_text")
+    selectedTextColor: UM.Theme.getColor("text_field_text")
+    placeholderTextColor: UM.Theme.getColor("text_field_text_disabled")
     renderType: Text.NativeRendering
     selectionColor: UM.Theme.getColor("text_selection")
     leftPadding: iconLeft.visible ? iconLeft.width + UM.Theme.getSize("default_margin").width * 2 : UM.Theme.getSize("thin_margin").width
@@ -43,9 +45,24 @@ TextField
         },
         State
         {
+            name: "active"
+            when: control.activeFocus
+            PropertyChanges
+            {
+                target: backgroundRectangle
+                liningColor: UM.Theme.getColor("text_field_border_active")
+                borderColor: UM.Theme.getColor("text_field_border_active")
+            }
+        },
+        State
+        {
             name: "hovered"
-            when: control.hovered || control.activeFocus
-            PropertyChanges { target: backgroundRectangle; liningColor: UM.Theme.getColor("text_field_border_hovered")}
+            when: control.hovered && !control.activeFocus
+            PropertyChanges
+            {
+                target: backgroundRectangle
+                liningColor: UM.Theme.getColor("text_field_border_hovered")
+            }
         }
     ]
 

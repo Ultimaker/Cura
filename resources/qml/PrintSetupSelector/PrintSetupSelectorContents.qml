@@ -15,9 +15,8 @@ Item
     id: content
 
     property int absoluteMinimumHeight: 200 * screenScaleFactor
-    implicitWidth: UM.Theme.getSize("print_setup_widget").width - 2 * UM.Theme.getSize("default_margin").width
+    implicitWidth: UM.Theme.getSize("print_setup_widget").width
     implicitHeight: contents.height + buttonRow.height
-
     enum Mode
     {
         Recommended = 0,

@@ -5,7 +5,7 @@ import QtQuick 2.10
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
 
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.1 as Cura
 
 
@@ -51,12 +51,10 @@ Item
 
             spacing: base.columnSpacing
 
-            Label   // Title Label
+            UM.Label   // Title Label
             {
                 text: catalog.i18nc("@title:label", "Printer Settings")
                 font: UM.Theme.getFont("medium_bold")
-                color: UM.Theme.getColor("text")
-                renderType: Text.NativeRendering
                 width: parent.width
                 elide: Text.ElideRight
             }
@@ -182,12 +180,10 @@ Item
 
             spacing: base.columnSpacing
 
-            Label   // Title Label
+            UM.Label   // Title Label
             {
                 text: catalog.i18nc("@title:label", "Printhead Settings")
                 font: UM.Theme.getFont("medium_bold")
-                color: UM.Theme.getColor("text")
-                renderType: Text.NativeRendering
                 width: parent.width
                 elide: Text.ElideRight
             }

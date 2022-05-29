@@ -231,7 +231,6 @@ Window
                     {
                         id: syncStatusLabel
                         anchors.left: parent.left
-                        wrapMode: Text.Wrap
                         elide: Text.ElideRight
                         visible: text !== ""
                         font: UM.Theme.getFont("medium")
@@ -559,7 +558,6 @@ Window
                     text: catalog.i18nc("@text", "It seems like you don't have any compatible printers connected to Digital Factory. Make sure your printer is connected and it's running the latest firmware.")
                     Layout.fillWidth: true
                     horizontalAlignment: Text.AlignHCenter
-                    wrapMode: Text.Wrap
                 }
 
                 Item
@@ -633,7 +631,6 @@ Window
                 {
                     text: catalog.i18nc("@text In the UI this is followed by a list of steps the user needs to take.", "Follow the following steps to load the new material profiles to your printer.")
                     font: UM.Theme.getFont("medium")
-                    wrapMode: Text.Wrap
                     Layout.fillWidth: true
                 }
 
@@ -701,7 +698,7 @@ Window
                         {
                             if(!materialsSyncDialog.hasExportedUsb)
                             {
-                                exportUsbDialog.folder = syncModel.getPreferredExportAllPath();
+                                exportUsbDialog.currentFolder = syncModel.getPreferredExportAllPath();
                                 exportUsbDialog.open();
                             }
                             else
@@ -733,9 +730,10 @@ Window
     {
         title: catalog.i18nc("@title:window", "Export All Materials")
         nameFilters: ["Material archives (*.umm)", "All files (*)"]
+        fileMode: FileDialog.SaveFile
         onAccepted:
         {
-            syncModel.exportAll(fileUrl);
+            syncModel.exportAll(selectedFile);
             CuraApplication.setDefaultPath("dialog_material_path", folder);
             materialsSyncDialog.hasExportedUsb = true;
         }

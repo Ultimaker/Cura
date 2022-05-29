@@ -313,7 +313,7 @@
         "setting_control_text": [35, 35, 35, 255],
         "setting_control_button": [102, 102, 102, 255],
         "setting_control_button_hover": [8, 7, 63, 255],
-        "setting_control_disabled": [245, 245, 245, 255],
+        "setting_control_disabled": "background_2",
         "setting_control_disabled_text": [127, 127, 127, 255],
         "setting_control_disabled_border": [127, 127, 127, 255],
         "setting_unit": [127, 127, 127, 255],
@@ -364,7 +364,8 @@
         "text_field": "background_1",
         "text_field_border": [180, 180, 180, 255],
         "text_field_border_hovered": "border_main",
-        "text_field_border_disabled": "border_main",
+        "text_field_border_active": "border_accent_2",
+        "text_field_border_disabled": "background_2",
         "text_field_text": "text_default",
         "text_field_text_disabled": "text_disabled",
 
