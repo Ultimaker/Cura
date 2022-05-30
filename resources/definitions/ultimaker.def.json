@@ -94,6 +94,9 @@
         },
         "acceleration_travel": {
             "value": "acceleration_wall"
+        },
+        "skin_edge_support_thickness": {
+            "value": "4 * layer_height if infill_sparse_density < 30 else 0"
         }
     }
 }
