@@ -5,8 +5,8 @@ import re
 from enum import Enum
 from typing import Any, cast, Dict, List, Optional
 
-from PyQt5.QtCore import pyqtProperty, QObject, pyqtSignal, pyqtSlot
-from PyQt5.QtQml import QQmlEngine
+from PyQt6.QtCore import pyqtProperty, QObject, pyqtSignal, pyqtSlot
+from PyQt6.QtQml import QQmlEngine
 
 from cura.CuraApplication import CuraApplication
 from cura.CuraPackageManager import CuraPackageManager
@@ -31,7 +31,7 @@ class PackageModel(QObject):
         :param parent: The parent QML object that controls the lifetime of this model (normally a PackageList).
         """
         super().__init__(parent)
-        QQmlEngine.setObjectOwnership(self, QQmlEngine.CppOwnership)
+        QQmlEngine.setObjectOwnership(self, QQmlEngine.ObjectOwnership.CppOwnership)
         self._package_manager: CuraPackageManager = cast(CuraPackageManager, CuraApplication.getInstance().getPackageManager())
         self._plugin_registry: PluginRegistry = CuraApplication.getInstance().getPluginRegistry()
 

@@ -60,13 +60,13 @@
             "value": "'no_outer_surfaces'"
         },
         "roofing_layer_count": {
-            "value": "1"
+            "value": "0"
         },
         "roofing_material_flow": {
             "value": "material_flow"
         },
         "skin_material_flow": {
-            "value": "0.95 * material_flow"
+            "value": "0.97 * material_flow"
         },
         "skin_monotonic" : {
             "value": true
@@ -81,7 +81,19 @@
             "value": "math.ceil(round(bottom_thickness / resolveOrValue('layer_height'), 4))"
         },
         "xy_offset": {
-            "value": "-layer_height * 0.2"
+            "value": "-layer_height * 0.1"
+        },
+        "meshfix_maximum_resolution": {
+            "value": "max(speed_wall_0 / 75, 0.5)"
+        },
+        "meshfix_maximum_deviation": {
+            "value": "machine_nozzle_size / 10"
+        },
+        "jerk_travel": {
+            "value": "jerk_print"
+        },
+        "acceleration_travel": {
+            "value": "acceleration_wall"
         },
         "bridge_settings_enabled": {
             "value": false
@@ -143,6 +155,5 @@
         "bridge_fan_speed_3": {
              "value": "cool_fan_speed_min"
         }
-
     }
 }

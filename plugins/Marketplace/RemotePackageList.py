@@ -1,8 +1,8 @@
 #  Copyright (c) 2021 Ultimaker B.V.
 #  Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot
-from PyQt5.QtNetwork import QNetworkReply
+from PyQt6.QtCore import pyqtProperty, pyqtSignal, pyqtSlot
+from PyQt6.QtNetwork import QNetworkReply
 from typing import Optional, TYPE_CHECKING
 
 from UM.i18n import i18nCatalog
@@ -14,7 +14,7 @@ from .PackageList import PackageList
 from .PackageModel import PackageModel  # The contents of this list.
 
 if TYPE_CHECKING:
-    from PyQt5.QtCore import QObject
+    from PyQt6.QtCore import QObject
 
 catalog = i18nCatalog("cura")
 
@@ -138,9 +138,10 @@ class RemotePackageList(PackageList):
         :param reply: The reply with packages. This will most likely be incomplete and should be ignored.
         :param error: The error status of the request.
         """
-        if error == QNetworkReply.NetworkError.OperationCanceledError:
+        if error == QNetworkReply.NetworkError.OperationCanceledError or error == QNetworkReply.NetworkError.ProtocolUnknownError:
             Logger.debug("Cancelled request for packages.")
             self._ongoing_requests["get_packages"] = None
+            self.setIsLoading(False)
             return  # Don't show an error about this to the user.
         Logger.error("Could not reach Marketplace server.")
         self.setErrorMessage(catalog.i18nc("@info:error", "Could not reach Marketplace."))

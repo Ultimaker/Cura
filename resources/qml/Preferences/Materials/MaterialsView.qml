@@ -3,8 +3,8 @@
 
 import QtQuick 2.7
 import QtQuick.Controls 2.15
-import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.3
+import QtQuick.Dialogs
 
 import UM 1.5 as UM
 import Cura 1.0 as Cura
@@ -206,7 +206,8 @@ Item
                     {
                         height: informationPage.rowHeight
                         width: informationPage.columnWidth
-                        verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Color")
+                        verticalAlignment: Qt.AlignVCenter
+                        text: catalog.i18nc("@label", "Color")
                     }
 
                     Row
@@ -573,11 +574,11 @@ Item
                     elide: Text.ElideRight
                     verticalAlignment: Qt.AlignVCenter
                 }
-                Cura.SpinBox
+                Cura.NumericTextFieldWithUnit
                 {
                     id: spinBox
                     anchors.left: label.right
-                    value:
+                    valueText:
                     {
                         // In case the setting is not in the material...
                         if (!isNaN(parseFloat(materialPropertyProvider.properties.value)))
@@ -597,11 +598,15 @@ Item
                         return 0;
                     }
                     width: settingsPage.columnWidth
-                    suffix: " " + model.unit
-                    to: 99999
+                    maximum: 99999
+                    unitText: model.unit
                     decimals: model.unit == "mm" ? 2 : 0
+                    enabled: base.editingEnabled
 
-                    onEditingFinished: materialPropertyProvider.setPropertyValue("value", value)
+                    editingFinishedFunction: function()
+                    {
+                        materialPropertyProvider.setPropertyValue("value", parseFloat(valueText.replace(",", ".")))
+                    }
                 }
 
                 UM.ContainerPropertyProvider

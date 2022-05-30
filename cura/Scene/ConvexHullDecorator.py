@@ -1,7 +1,7 @@
 # Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import QTimer
+from PyQt6.QtCore import QTimer
 
 from UM.Application import Application
 from UM.Math.Polygon import Polygon
@@ -383,9 +383,9 @@ class ConvexHullDecorator(SceneNodeDecorator):
         # Shrinkage compensation.
         if not self._global_stack:  # Should never happen.
             return convex_hull
-        scale_factor = self._global_stack.getProperty("material_shrinkage_percentage", "value") / 100.0
+        scale_factor = self._global_stack.getProperty("material_shrinkage_percentage_xy", "value") / 100.0
         result = convex_hull
-        if scale_factor != 1.0 and not self.getNode().callDecoration("isGroup"):
+        if scale_factor != 1.0 and scale_factor > 0 and not self.getNode().callDecoration("isGroup"):
             center = None
             if self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time":
                 # Find the root node that's placed in the scene; the root of the mesh group.
@@ -498,7 +498,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
         "adhesion_type", "raft_margin", "print_sequence",
         "skirt_gap", "skirt_line_count", "skirt_brim_line_width", "skirt_distance", "brim_line_count"]
 
-    _influencing_settings = {"xy_offset", "xy_offset_layer_0", "mold_enabled", "mold_width", "anti_overhang_mesh", "infill_mesh", "cutting_mesh", "material_shrinkage_percentage"}
+    _influencing_settings = {"xy_offset", "xy_offset_layer_0", "mold_enabled", "mold_width", "anti_overhang_mesh", "infill_mesh", "cutting_mesh", "material_shrinkage_percentage_xy"}
     """Settings that change the convex hull.
 
     If these settings change, the convex hull should be recalculated.

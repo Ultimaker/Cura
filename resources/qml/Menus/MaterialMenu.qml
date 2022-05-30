@@ -66,8 +66,8 @@ Cura.Menu
             checked: model.root_material_id === materialMenu.currentRootMaterialId
             onTriggered: Cura.MachineManager.setMaterial(extruderIndex, model.container_node)
         }
-        onObjectAdded: materialMenu.insertItem(index + 1, object)
-        onObjectRemoved: materialMenu.removeItem(index)
+        onObjectAdded: function(index, object) { materialMenu.insertItem(index + 1, object) }
+        onObjectRemoved: function(index, object) { materialMenu.removeItem(index) }
     }
 
     Cura.MenuSeparator { visible: favoriteMaterialsModel.items.length > 0}
@@ -88,8 +88,8 @@ Cura.Menu
                 checked: model.root_material_id === materialMenu.currentRootMaterialId
                 onTriggered: Cura.MachineManager.setMaterial(extruderIndex, model.container_node)
             }
-            onObjectAdded: genericMenu.insertItem(index, object)
-            onObjectRemoved: genericMenu.removeItem(index)
+            onObjectAdded: function(index, object) { genericMenu.insertItem(index, object)}
+            onObjectRemoved: function(index, object) {genericMenu.removeItem(index) }
         }
     }
 
@@ -98,45 +98,12 @@ Cura.Menu
     Instantiator
     {
         model: brandModel
-        Cura.Menu
+        delegate: Cura.MaterialBrandMenu
         {
-            id: brandMenu
-            title: brandName
-            property string brandName: model.name
-            property var brandMaterials: model.material_types
-
-            Instantiator
-            {
-                model: brandMaterials
-                delegate: Cura.Menu
-                {
-                    id: brandMaterialsMenu
-                    title: materialName
-                    property string materialName: model.name
-                    property var brandMaterialColors: model.colors
-
-                    Instantiator
-                    {
-                        model: brandMaterialColors
-                        delegate: Cura.MenuItem
-                        {
-                            text: model.name
-                            checkable: true
-                            enabled: isActiveExtruderEnabled
-                            checked: model.id === materialMenu.activeMaterialId
-
-                            onTriggered: Cura.MachineManager.setMaterial(extruderIndex, model.container_node)
-                        }
-                        onObjectAdded: brandMaterialsMenu.insertItem(index, object)
-                        onObjectRemoved: brandMaterialsMenu.removeItem(object)
-                    }
-                }
-                onObjectAdded: brandMenu.insertMenu(index, object)
-                onObjectRemoved: brandMenu.removeMenu(object)
-            }
+            materialTypesModel: model
         }
-        onObjectAdded: materialMenu.insertMenu(index + 4, object)
-        onObjectRemoved: materialMenu.removeMenu(object)
+        onObjectAdded: function(index, object) { materialMenu.insertItem(index + 4, object)}
+        onObjectRemoved: function(index, object) { materialMenu.removeItem(index) }
     }
 
     Cura.MenuSeparator {}

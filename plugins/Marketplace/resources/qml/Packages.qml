@@ -1,9 +1,10 @@
-// Copyright (c) 2021 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-import UM 1.4 as UM
+
+import UM 1.6 as UM
 
 
 ListView
@@ -39,7 +40,7 @@ ListView
 
         color: UM.Theme.getColor("detail_background")
 
-        Label
+        UM.Label
         {
             id: sectionHeaderText
             anchors.verticalCenter: parent.verticalCenter
@@ -47,27 +48,10 @@ ListView
 
             text: section
             font: UM.Theme.getFont("large")
-            color: UM.Theme.getColor("text")
         }
     }
 
-    ScrollBar.vertical: ScrollBar
-    {
-        // Vertical ScrollBar, styled similarly to the scrollBar in the settings panel
-        id: verticalScrollBar
-        visible: packages.contentHeight > packages.height
-        anchors.right: parent.right
-        background: Item {}
-
-        contentItem: Rectangle
-        {
-            id: scrollViewHandle
-            implicitWidth: UM.Theme.getSize("scrollbar").width
-            radius: Math.round(implicitWidth / 2)
-            color: verticalScrollBar.pressed ? UM.Theme.getColor("scrollbar_handle_down") : verticalScrollBar.hovered ? UM.Theme.getColor("scrollbar_handle_hover") : UM.Theme.getColor("scrollbar_handle")
-            Behavior on color { ColorAnimation { duration: 50; } }
-        }
-    }
+    ScrollBar.vertical: UM.ScrollBar { id: verticalScrollBar }
 
     delegate: MouseArea
     {
@@ -213,7 +197,7 @@ ListView
                         status: UM.StatusIcon.Status.ERROR
                         visible: false
                     }
-                    UM.RecolorImage
+                    UM.ColorImage
                     {
                         id: loadMoreIcon
                         anchors.fill: parent

@@ -426,7 +426,7 @@ UM.Dialog
                 width: parent.width
                 height: childrenRect.height
                 visible: manager.hasObjectsOnPlate
-                UM.RecolorImage
+                UM.ColorImage
                 {
                     width: warningLabel.height
                     height: width
@@ -437,7 +437,6 @@ UM.Dialog
                 {
                     id: warningLabel
                     text: catalog.i18nc("@action:warning", "Loading a project will clear all models on the build plate.")
-                    wrapMode: Text.Wrap
                 }
             }
         }

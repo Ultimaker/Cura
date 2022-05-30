@@ -3,7 +3,7 @@ import urllib.parse
 from configparser import ConfigParser
 from typing import List
 
-from PyQt5.QtCore import pyqtProperty, QObject, pyqtSignal
+from PyQt6.QtCore import pyqtProperty, QObject, pyqtSignal
 
 from UM.Logger import Logger
 from UM.MimeTypeDatabase import MimeTypeDatabase

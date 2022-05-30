@@ -4,7 +4,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.6 as Cura
 import ".."
 
@@ -111,7 +111,7 @@ Item
                 }
                 height: intentCategoryLabel.height
 
-                Label
+                UM.Label
                 {
                     id: intentCategoryLabel
                     text: model.name
@@ -119,8 +119,6 @@ Item
                     anchors.left: parent.left
                     anchors.leftMargin: UM.Theme.getSize("section_icon").width + UM.Theme.getSize("narrow_margin").width
                     font: UM.Theme.getFont("medium")
-                    color: UM.Theme.getColor("text")
-                    renderType: Text.NativeRendering
                     elide: Text.ElideRight
                 }
 

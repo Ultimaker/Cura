@@ -3,7 +3,7 @@
 
 import QtQuick 2.3
 import QtQuick.Controls 2.0
-import UM 1.3 as UM
+import UM 1.5 as UM
 
 /**
  * A MonitorInfoBlurb is an extension of the GenericPopUp used to show static information (vs. interactive context
@@ -31,7 +31,7 @@ Item
             id: contentWrapper
             implicitWidth: childrenRect.width
             implicitHeight: innerLabel.contentHeight + 2 * innerLabel.padding
-            Label
+            UM.Label
             {
                 id: innerLabel
                 padding: 12 * screenScaleFactor // TODO: Theme!
@@ -39,7 +39,6 @@ Item
                 wrapMode: Text.WordWrap
                 width: 240 * screenScaleFactor // TODO: Theme!
                 color: UM.Theme.getColor("monitor_tooltip_text")
-                font: UM.Theme.getFont("default")
             }
         }
     }

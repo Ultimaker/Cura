@@ -13,37 +13,44 @@ Row // Sync state icon + message
     height: childrenRect.height
     spacing: UM.Theme.getSize("narrow_margin").height
 
+    // These are the enums from cura/API/account.py
+    // somehow exposing these enums from python to QML doesn't work properly anymore
+    property var _Cura_AccountSyncState_SYNCING: 0
+    property var _Cura_AccountSyncState_SUCCESS: 1
+    property var _Cura_AccountSyncState_ERROR: 2
+    property var _Cura_AccountSyncState_IDLE: 3
+
     states: [
         State
         {
             name: "idle"
-            when: syncState == Cura.AccountSyncState.IDLE
+            when: syncState == _Cura_AccountSyncState_IDLE
             PropertyChanges { target: icon; source: UM.Theme.getIcon("ArrowDoubleCircleRight")}
         },
         State
         {
             name: "syncing"
-            when: syncState == Cura.AccountSyncState.SYNCING
+            when: syncState == _Cura_AccountSyncState_SYNCING
             PropertyChanges { target: icon; source: UM.Theme.getIcon("ArrowDoubleCircleRight") }
             PropertyChanges { target: stateLabel; text: catalog.i18nc("@label", "Checking...")}
         },
         State
         {
             name: "up_to_date"
-            when: syncState == Cura.AccountSyncState.SUCCESS
+            when: syncState == _Cura_AccountSyncState_SUCCESS
             PropertyChanges { target: icon; source: UM.Theme.getIcon("CheckCircle") }
             PropertyChanges { target: stateLabel; text: catalog.i18nc("@label", "Account synced")}
         },
         State
         {
             name: "error"
-            when: syncState == Cura.AccountSyncState.ERROR
+            when: syncState == _Cura_AccountSyncState_ERROR
             PropertyChanges { target: icon; source: UM.Theme.getIcon("Warning") }
             PropertyChanges { target: stateLabel; text: catalog.i18nc("@label", "Something went wrong...")}
         }
     ]
 
-    UM.RecolorImage
+    UM.ColorImage
     {
         id: icon
         width: 20 * screenScaleFactor

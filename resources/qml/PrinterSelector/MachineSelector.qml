@@ -108,7 +108,7 @@ Cura.ExpandablePopup
         iconColor: UM.Theme.getColor("machine_selector_printer_icon")
         iconSize: source != "" ? UM.Theme.getSize("machine_selector_icon").width: 0
 
-        UM.RecolorImage
+        UM.ColorImage
         {
             id: connectionStatusImage
             anchors
@@ -192,9 +192,8 @@ Cura.ExpandablePopup
     contentItem: Item
     {
         id: popup
-        width: UM.Theme.getSize("machine_selector_widget_content").width
-        height: Math.min(machineSelectorList.contentHeight + separator.height + buttonRow.height, UM.Theme.getSize("machine_selector_widget_content").height) //Maximum height is the theme entry.
-
+        implicitWidth: UM.Theme.getSize("machine_selector_widget_content").width
+        implicitHeight: Math.min(machineSelectorList.contentHeight + separator.height + buttonRow.height, UM.Theme.getSize("machine_selector_widget_content").height) //Maximum height is the theme entry.
         MachineSelectorList
         {
             id: machineSelectorList

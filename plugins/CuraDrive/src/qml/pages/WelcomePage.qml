@@ -23,7 +23,7 @@ Column
     {
         id: profileImage
         fillMode: Image.PreserveAspectFit
-        source: "../images/backup.svg"
+        source: Qt.resolvedUrl("../images/backup.svg")
         anchors.horizontalCenter: parent.horizontalCenter
         width: Math.round(parent.width / 4)
     }
