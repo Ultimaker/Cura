@@ -45,8 +45,7 @@ class MaterialManagementModel(QObject):
         for package_id, package_data in application.getPackageManager().getPackagesInstalledOnStartup().items():
             if package_data["package_info"]["package_type"] == "material":
                 # At least one new material was installed
-                # TODO: This should be enabled again once CURA-8609 is merged
-                #self._showSyncNewMaterialsMessage()
+                self._showSyncNewMaterialsMessage()
                 break
 
     def _showSyncNewMaterialsMessage(self) -> None:
