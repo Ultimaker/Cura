@@ -582,7 +582,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         # Getting missing required package ids
         package_metadata = self._parse_packages_metadata(archive)
-        missing_package_ids = self._get_missing_package_ids(package_metadata)
+        missing_package_metadata = self._filter_missing_package_metadata(package_metadata)
 
         # Show the dialog, informing the user what is about to happen.
         self._dialog.setMachineConflict(machine_conflict)
@@ -604,7 +604,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._dialog.setExtruders(extruders)
         self._dialog.setVariantType(variant_type_name)
         self._dialog.setHasObjectsOnPlate(Application.getInstance().platformActivity)
-        self._dialog.setRequiredPackages(missing_package_ids)
+        self._dialog.setMissingPackagesMetadata(missing_package_metadata)
         self._dialog.show()
 
         # Block until the dialog is closed.
@@ -1261,13 +1261,14 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
 
     @staticmethod
-    def _get_missing_package_ids(package_metadata: List[Dict[str, str]]) -> List[str]:
+    def _filter_missing_package_metadata(package_metadata: List[Dict[str, str]]) -> List[Dict[str, str]]:
+        """Filters out installed packages from package_metadata"""
         missing_packages = []
         package_manager = cast(CuraPackageManager, CuraApplication.getInstance().getPackageManager())
 
         for package in package_metadata:
             package_id = package["id"]
             if not package_manager.isPackageInstalled(package_id):
-                missing_packages.append(package_id)
+                missing_packages.append(package)
 
         return missing_packages
