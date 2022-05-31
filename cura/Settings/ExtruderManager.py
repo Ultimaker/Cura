@@ -382,7 +382,7 @@ class ExtruderManager(QObject):
     # "fdmextruder". We need to check a machine here so its extruder definition is correct according to this.
     def fixSingleExtrusionMachineExtruderDefinition(self, global_stack: "GlobalStack") -> None:
         container_registry = ContainerRegistry.getInstance()
-        expected_extruder_stack = global_stack.getMetadataEntry("machine_extruder_trains")
+        expected_extruder_stack = global_stack.getMetaDataEntry("machine_extruder_trains")
         if expected_extruder_stack is None:
             return
         expected_extruder_definition_0_id = expected_extruder_stack["0"]
