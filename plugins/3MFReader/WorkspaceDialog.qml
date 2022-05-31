@@ -17,7 +17,7 @@ UM.Dialog
     minimumWidth: UM.Theme.getSize("popup_dialog").width
     minimumHeight: UM.Theme.getSize("popup_dialog").height
     width: minimumWidth
-    
+    margin: UM.Theme.getSize("default_margin").width
     property int comboboxHeight: UM.Theme.getSize("default_margin").height
 
     onClosing: manager.notifyClosed()
@@ -442,17 +442,35 @@ UM.Dialog
         }
     }
 
+    property bool warning: true
+
+    buttonWarningText: "The material used in this project is currently not installed in Cura.<br/>Install the material profile and reopen the project."
+    buttonWarning: warning
     buttonSpacing: UM.Theme.getSize("default_margin").width
 
     rightButtons: [
         Cura.TertiaryButton
         {
+            visible: !warning
             text: catalog.i18nc("@action:button", "Cancel")
             onClicked: reject()
         },
         Cura.PrimaryButton
         {
+            visible: !warning
             text: catalog.i18nc("@action:button", "Open")
+            onClicked: accept()
+        },
+        Cura.TertiaryButton
+        {
+            visible: warning
+            text: catalog.i18nc("@action:button", "Open project anyway")
+            onClicked: reject()
+        },
+        Cura.PrimaryButton
+        {
+            visible: warning
+            text: catalog.i18nc("@action:button", "Install missing Material")
             onClicked: accept()
         }
     ]
