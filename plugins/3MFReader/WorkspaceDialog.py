@@ -278,6 +278,11 @@ class WorkspaceDialog(QObject):
     def setMissingPackagesMetadata(self, missing_package_metadata):
         self._missing_package_metadata = missing_package_metadata
 
+    @pyqtProperty("QVariantList")
+    def missingPackages(self):
+        return self._missing_package_metadata
+
+
     def getResult(self) -> Dict[str, Optional[str]]:
         if "machine" in self._result and self.updatableMachinesModel.count <= 1:
             self._result["machine"] = None
