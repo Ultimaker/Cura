@@ -10,6 +10,8 @@ from cura.Settings.GlobalStack import GlobalStack
 from UM.PackageManager import PackageManager  # The class we're extending.
 from UM.Resources import Resources  # To find storage paths for some resource types.
 from UM.i18n import i18nCatalog
+from plugins.XmlMaterialProfile.XmlMaterialProfile import XmlMaterialProfile
+
 catalog = i18nCatalog("cura")
 
 if TYPE_CHECKING:
@@ -59,13 +61,14 @@ class CuraPackageManager(PackageManager):
 
             for root, _, file_names in os.walk(material_package.path):
                 if file_name not in file_names:
-                    #File with the name we are looking for is not in this directory
+                    # File with the name we are looking for is not in this directory
                     continue
 
                 with open(root + "/" + file_name, encoding="utf-8") as f:
                     # Make sure the file we found has the same guid as our material
                     # Parsing this xml would be better but the namespace is needed to search it.
-                    if guid in f.read():
+                    parsed_guid = XmlMaterialProfile.getMetadataFromSerialized(f.read(), "GUID")
+                    if guid == parsed_guid:
                         return package_id
                     continue
 

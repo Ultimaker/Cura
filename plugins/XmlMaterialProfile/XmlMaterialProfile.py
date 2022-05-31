@@ -480,6 +480,15 @@ class XmlMaterialProfile(InstanceContainer):
 
         return version * 1000000 + setting_version
 
+    @classmethod
+    def getMetadataFromSerialized(cls, serialized: str, property_name: str) -> str:
+        data = ET.fromstring(serialized)
+        metadata = data.find("./um:metadata", cls.__namespaces)
+        property = metadata.find("./um:" + property_name, cls.__namespaces)
+
+        # This is a necessary property != None check, xml library overrides __bool__ to return False in cases when Element is not None.
+        return property.text if property != None else ""
+
     def deserialize(self, serialized, file_name = None):
         """Overridden from InstanceContainer"""
 

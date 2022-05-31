@@ -201,10 +201,14 @@ class UFPWriter(MeshWriter):
         package_manager = cast(CuraPackageManager, CuraApplication.getInstance().getPackageManager())
 
         for extruder in CuraApplication.getInstance().getExtruderManager().getActiveExtruderStacks():
+            if not extruder.isEnabled:
+                # Don't export materials not in use
+                continue
+
             package_id = package_manager.getMaterialFilePackageId(extruder.material.getFileName(), extruder.material.getMetaDataEntry("GUID"))
             package_data = package_manager.getInstalledPackageInfo(package_id)
 
-            if package_data.get("is_bundled"):
+            if not package_data or package_data.get("is_bundled"):
                 continue
 
             material_metadata = {"id": package_id,
