@@ -344,7 +344,7 @@ class XmlMaterialProfile(InstanceContainer):
         return stream.getvalue().decode("utf-8")
 
     def getFileName(self):
-        return self.getMetaDataEntry("base_file") + ".xml.fdm_material"
+        return (self.getMetaDataEntry("base_file") + ".xml.fdm_material").replace(" ", "+")
 
     # Recursively resolve loading inherited files
     def _resolveInheritance(self, file_name):
