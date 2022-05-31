@@ -23,6 +23,7 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
 from UM.Job import Job
 from UM.Preferences import Preferences
+from cura.CuraPackageManager import CuraPackageManager
 
 from cura.Machines.ContainerTree import ContainerTree
 from cura.Settings.CuraStackBuilder import CuraStackBuilder
@@ -579,6 +580,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 is_printer_group = True
                 machine_name = group_name
 
+        # Getting missing required package ids
+        package_metadata = self._parse_packages_metadata(archive)
+        missing_package_ids = self._get_missing_package_ids(package_metadata)
+
         # Show the dialog, informing the user what is about to happen.
         self._dialog.setMachineConflict(machine_conflict)
         self._dialog.setIsPrinterGroup(is_printer_group)
@@ -599,6 +604,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._dialog.setExtruders(extruders)
         self._dialog.setVariantType(variant_type_name)
         self._dialog.setHasObjectsOnPlate(Application.getInstance().platformActivity)
+        self._dialog.setRequiredPackages(missing_package_ids)
         self._dialog.show()
 
         # Block until the dialog is closed.
@@ -1243,3 +1249,25 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         metadata = data.iterfind("./um:metadata/um:name/um:label", {"um": "http://www.ultimaker.com/material"})
         for entry in metadata:
             return entry.text
+
+    @staticmethod
+    def _parse_packages_metadata(archive: zipfile.ZipFile) -> List[Dict[str, str]]:
+        try:
+            package_metadata = json.loads(archive.open("Metadata/packages.json").read().decode("utf-8"))
+            return package_metadata["packages"]
+        except Exception:
+            Logger.error("Failed to load packes metadata from .3mf file")
+        return []
+
+
+    @staticmethod
+    def _get_missing_package_ids(package_metadata: List[Dict[str, str]]) -> List[str]:
+        missing_packages = []
+        package_manager = cast(CuraPackageManager, CuraApplication.getInstance().getPackageManager())
+
+        for package in package_metadata:
+            package_id = package["id"]
+            if not package_manager.isPackageInstalled(package_id):
+                missing_packages.append(package_id)
+
+        return missing_packages

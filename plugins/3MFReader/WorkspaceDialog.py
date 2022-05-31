@@ -59,6 +59,7 @@ class WorkspaceDialog(QObject):
         self._objects_on_plate = False
         self._is_printer_group = False
         self._updatable_machines_model = UpdatableMachinesModel(self)
+        self._missing_package_ids = []
 
     machineConflictChanged = pyqtSignal()
     qualityChangesConflictChanged = pyqtSignal()
@@ -273,6 +274,9 @@ class WorkspaceDialog(QObject):
         if self._has_quality_changes_conflict != quality_changes_conflict:
             self._has_quality_changes_conflict = quality_changes_conflict
             self.qualityChangesConflictChanged.emit()
+
+    def setRequiredPackages(self, missing_package_ids):
+        self._missing_package_ids = missing_package_ids
 
     def getResult(self) -> Dict[str, Optional[str]]:
         if "machine" in self._result and self.updatableMachinesModel.count <= 1:
