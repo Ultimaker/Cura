@@ -16,14 +16,13 @@ from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
 from UM.PluginRegistry import PluginRegistry  # To get the g-code writer.
 
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
+from UM.Scene.SceneNode import SceneNode
 from cura.CuraApplication import CuraApplication
-from cura.CuraPackageManager import CuraPackageManager
 from cura.Utils.Threading import call_on_qt_thread
 
 from UM.i18n import i18nCatalog
 
 METADATA_OBJECTS_PATH = "metadata/objects"
-METADATA_MATERIALS_PATH = "metadata/packages"
 
 catalog = i18nCatalog("cura")
 
@@ -50,7 +49,7 @@ class UFPWriter(MeshWriter):
         archive.openStream(stream, "application/x-ufp", OpenMode.WriteOnly)
 
         try:
-            self._writeMetadata(archive)
+            self._writeObjectList(archive)
 
             # Store the g-code from the scene.
             archive.addContentType(extension = "gcode", mime_type = "text/x-gcode")
@@ -164,60 +163,30 @@ class UFPWriter(MeshWriter):
         return True
 
     @staticmethod
-    def _writeMetadata(archive: VirtualFile):
-        material_metadata = UFPWriter._getMaterialPackageMetadata()
-        object_metadata = UFPWriter._getObjectMetadata()
+    def _writeObjectList(archive):
+        """Write a json list of object names to the METADATA_OBJECTS_PATH metadata field
 
-        data = {METADATA_MATERIALS_PATH: material_metadata,
-                METADATA_OBJECTS_PATH: object_metadata}
+        To retrieve, use: `archive.getMetadata(METADATA_OBJECTS_PATH)`
+        """
 
+        objects_model = CuraApplication.getInstance().getObjectsModel()
+        object_metas = []
+
+        for item in objects_model.items:
+            object_metas.extend(UFPWriter._getObjectMetadata(item["node"]))
+
+        data = {METADATA_OBJECTS_PATH: object_metas}
         archive.setMetadata(data)
 
     @staticmethod
-    def _getObjectMetadata() -> List[Dict[str, str]]:
+    def _getObjectMetadata(node: SceneNode) -> List[Dict[str, str]]:
         """Get object metadata to write for a Node.
 
         :return: List of object metadata dictionaries.
+                 Might contain > 1 element in case of a group node.
+                 Might be empty in case of nonPrintingMesh
         """
-        metadata = []
 
-        objects_model = CuraApplication.getInstance().getObjectsModel()
-
-        for item in objects_model.items:
-            for node in DepthFirstIterator(item["node"]):
-                if node.getMeshData() is not None and not node.callDecoration("isNonPrintingMesh"):
-                    metadata.extend({"name": node.getName()})
-
-        return metadata
-
-    @staticmethod
-    def _getMaterialPackageMetadata() -> List[Dict[str, str]]:
-        """Get metadata for installed materials in active extruder stack, this does not include bundled materials.
-
-        :return: List of material metadata dictionaries.
-        """
-        metadata = []
-
-        package_manager = cast(CuraPackageManager, CuraApplication.getInstance().getPackageManager())
-
-        for extruder in CuraApplication.getInstance().getExtruderManager().getActiveExtruderStacks():
-            if not extruder.isEnabled:
-                # Don't export materials not in use
-                continue
-
-            package_id = package_manager.getMaterialFilePackageId(extruder.material.getFileName(), extruder.material.getMetaDataEntry("GUID"))
-            package_data = package_manager.getInstalledPackageInfo(package_id)
-
-            if not package_data or package_data.get("is_bundled"):
-                continue
-
-            material_metadata = {"id": package_id,
-                                 "display_name": package_data.get("display_name"),
-                                 "website": package_data.get("website"),
-                                 "package_version": package_data.get("package_version"),
-                                 "sdk_version_semver": package_data.get("sdk_version_semver")}
-
-            metadata.append(material_metadata)
-
-        return metadata
-
+        return [{"name": item.getName()}
+                for item in DepthFirstIterator(node)
+                if item.getMeshData() is not None and not item.callDecoration("isNonPrintingMesh")]
