@@ -271,7 +271,7 @@ class ThreeMFWriter(MeshWriter):
             package_data = package_manager.getInstalledPackageInfo(package_id)
 
             if not package_data:
-                message = Message(catalog.i18nc("@error:uninstall",
+                message = Message(catalog.i18nc("@error:material",
                                                 "It was not possible to store material package information in project file: {material}. This project may not open correctly on other systems.".format(material=extruder.getName())),
                                   title=catalog.i18nc("@info:title", "Failed to save material package information"),
                                   message_type=Message.MessageType.WARNING)
