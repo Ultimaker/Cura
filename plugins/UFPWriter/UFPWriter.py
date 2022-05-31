@@ -215,7 +215,7 @@ class UFPWriter(MeshWriter):
                                  "display_name": package_data.get("display_name"),
                                  "website": package_data.get("website"),
                                  "package_version": package_data.get("package_version"),
-                                 "sdk_version_semver": package_data.get("package_version_semver")}
+                                 "sdk_version_semver": package_data.get("sdk_version_semver")}
 
             metadata.append(material_metadata)
 
