@@ -1,15 +1,19 @@
 #  Copyright (c) 2015-2022 Ultimaker B.V.
 #  Cura is released under the terms of the LGPLv3 or higher.
-from typing import Optional
+import json
+
+from typing import Optional, cast, List, Dict
 
 from UM.Mesh.MeshWriter import MeshWriter
 from UM.Math.Vector import Vector
 from UM.Logger import Logger
 from UM.Math.Matrix import Matrix
 from UM.Application import Application
+from UM.Message import Message
 from UM.Scene.SceneNode import SceneNode
 
 from cura.CuraApplication import CuraApplication
+from cura.CuraPackageManager import CuraPackageManager
 from cura.Utils.Threading import call_on_qt_thread
 from cura.Snapshot import Snapshot
 
@@ -34,6 +38,9 @@ import UM.Application
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
+THUMBNAIL_PATH = "Metadata/thumbnail.png"
+MODEL_PATH = "3D/3dmodel.model"
+PACKAGE_METADATA_PATH = "Metadata/packages.json"
 
 class ThreeMFWriter(MeshWriter):
     def __init__(self):
@@ -46,7 +53,7 @@ class ThreeMFWriter(MeshWriter):
         }
 
         self._unit_matrix_string = self._convertMatrixToString(Matrix())
-        self._archive = None  # type: Optional[zipfile.ZipFile]
+        self._archive: Optional[zipfile.ZipFile] = None
         self._store_archive = False
 
     def _convertMatrixToString(self, matrix):
@@ -132,11 +139,11 @@ class ThreeMFWriter(MeshWriter):
     def getArchive(self):
         return self._archive
 
-    def write(self, stream, nodes, mode = MeshWriter.OutputMode.BinaryMode):
+    def write(self, stream, nodes, mode = MeshWriter.OutputMode.BinaryMode) -> bool:
         self._archive = None # Reset archive
         archive = zipfile.ZipFile(stream, "w", compression = zipfile.ZIP_DEFLATED)
         try:
-            model_file = zipfile.ZipInfo("3D/3dmodel.model")
+            model_file = zipfile.ZipInfo(MODEL_PATH)
             # Because zipfile is stupid and ignores archive-level compression settings when writing with ZipInfo.
             model_file.compress_type = zipfile.ZIP_DEFLATED
 
@@ -151,7 +158,7 @@ class ThreeMFWriter(MeshWriter):
             relations_file = zipfile.ZipInfo("_rels/.rels")
             relations_file.compress_type = zipfile.ZIP_DEFLATED
             relations_element = ET.Element("Relationships", xmlns = self._namespaces["relationships"])
-            model_relation_element = ET.SubElement(relations_element, "Relationship", Target = "/3D/3dmodel.model", Id = "rel0", Type = "http://schemas.microsoft.com/3dmanufacturing/2013/01/3dmodel")
+            model_relation_element = ET.SubElement(relations_element, "Relationship", Target = "/" + MODEL_PATH, Id = "rel0", Type = "http://schemas.microsoft.com/3dmanufacturing/2013/01/3dmodel")
 
             # Attempt to add a thumbnail
             snapshot = self._createSnapshot()
@@ -160,28 +167,32 @@ class ThreeMFWriter(MeshWriter):
                 thumbnail_buffer.open(QBuffer.OpenModeFlag.ReadWrite)
                 snapshot.save(thumbnail_buffer, "PNG")
 
-                thumbnail_file = zipfile.ZipInfo("Metadata/thumbnail.png")
+                thumbnail_file = zipfile.ZipInfo(THUMBNAIL_PATH)
                 # Don't try to compress snapshot file, because the PNG is pretty much as compact as it will get
                 archive.writestr(thumbnail_file, thumbnail_buffer.data())
 
                 # Add PNG to content types file
                 thumbnail_type = ET.SubElement(content_types, "Default", Extension = "png", ContentType = "image/png")
                 # Add thumbnail relation to _rels/.rels file
-                thumbnail_relation_element = ET.SubElement(relations_element, "Relationship", Target = "/Metadata/thumbnail.png", Id = "rel1", Type = "http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail")
+                thumbnail_relation_element = ET.SubElement(relations_element, "Relationship", Target = "/" + THUMBNAIL_PATH, Id = "rel1", Type = "http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail")
+
+            # Write material metadata
+            material_metadata = self._getMaterialPackageMetadata()
+            self._storeMetadataJson({"packages": material_metadata}, archive, PACKAGE_METADATA_PATH)
 
             savitar_scene = Savitar.Scene()
 
-            metadata_to_store = CuraApplication.getInstance().getController().getScene().getMetaData()
+            scene_metadata = CuraApplication.getInstance().getController().getScene().getMetaData()
 
-            for key, value in metadata_to_store.items():
+            for key, value in scene_metadata.items():
                 savitar_scene.setMetaDataEntry(key, value)
 
             current_time_string = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            if "Application" not in metadata_to_store:
+            if "Application" not in scene_metadata:
                 # This might sound a bit strange, but this field should store the original application that created
                 # the 3mf. So if it was already set, leave it to whatever it was.
                 savitar_scene.setMetaDataEntry("Application", CuraApplication.getInstance().getApplicationDisplayName())
-            if "CreationDate" not in metadata_to_store:
+            if "CreationDate" not in scene_metadata:
                 savitar_scene.setMetaDataEntry("CreationDate", current_time_string)
 
             savitar_scene.setMetaDataEntry("ModificationDate", current_time_string)
@@ -232,6 +243,53 @@ class ThreeMFWriter(MeshWriter):
                 self._archive = archive
 
         return True
+
+    @staticmethod
+    def _storeMetadataJson(metadata: Dict[str, List[Dict[str, str]]], archive: zipfile.ZipFile, path: str) -> None:
+        """Stores metadata inside archive path as json file"""
+        metadata_file = zipfile.ZipInfo(path)
+        # We have to set the compress type of each file as well (it doesn't keep the type of the entire archive)
+        metadata_file.compress_type = zipfile.ZIP_DEFLATED
+        archive.writestr(metadata_file, json.dumps(metadata, separators=(", ", ": "), indent=4, skipkeys=True, ensure_ascii=False))
+
+    @staticmethod
+    def _getMaterialPackageMetadata() -> List[Dict[str, str]]:
+        """Get metadata for installed materials in active extruder stack, this does not include bundled materials.
+
+        :return: List of material metadata dictionaries.
+        """
+        metadata = {}
+
+        package_manager = cast(CuraPackageManager, CuraApplication.getInstance().getPackageManager())
+
+        for extruder in CuraApplication.getInstance().getExtruderManager().getActiveExtruderStacks():
+            if not extruder.isEnabled:
+                # Don't export materials not in use
+                continue
+
+            package_id = package_manager.getMaterialFilePackageId(extruder.material.getFileName(), extruder.material.getMetaDataEntry("GUID"))
+            package_data = package_manager.getInstalledPackageInfo(package_id)
+
+            if not package_data:
+                message = Message(catalog.i18nc("@error:material",
+                                                "It was not possible to store material package information in project file: {material}. This project may not open correctly on other systems.".format(material=extruder.getName())),
+                                  title=catalog.i18nc("@info:title", "Failed to save material package information"),
+                                  message_type=Message.MessageType.WARNING)
+                message.show()
+
+            if package_data.get("is_bundled"):
+                continue
+
+            material_metadata = {"id": package_id,
+                                 "display_name": package_data.get("display_name") if package_data.get("display_name") else "",
+                                 "website": package_data.get("website") if package_data.get("website") else "",
+                                 "package_version": package_data.get("package_version") if package_data.get("package_version") else "",
+                                 "sdk_version_semver": package_data.get("sdk_version_semver") if package_data.get("sdk_version_semver") else ""}
+
+            metadata[package_id] = material_metadata
+
+        # Storing in a dict and fetching values to avoid duplicates
+        return list(metadata.values())
 
     @call_on_qt_thread  # must be called from the main thread because of OpenGL
     def _createSnapshot(self):
