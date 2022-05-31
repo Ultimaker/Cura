@@ -4,6 +4,7 @@ import os
 
 from typing import Any, cast, Dict, List, Set, Tuple, TYPE_CHECKING, Optional
 
+from UM.Logger import Logger
 from cura.CuraApplication import CuraApplication  # To find some resource types.
 from cura.Settings.GlobalStack import GlobalStack
 
@@ -70,9 +71,9 @@ class CuraPackageManager(PackageManager):
                     parsed_guid = XmlMaterialProfile.getMetadataFromSerialized(f.read(), "GUID")
                     if guid == parsed_guid:
                         return package_id
-                    continue
 
-
+        Logger.error("Could not find package_id for file: {} with GUID: {} ".format(file_name, guid))
+        return ""
 
     def getMachinesUsingPackage(self, package_id: str) -> Tuple[List[Tuple[GlobalStack, str, str]], List[Tuple[GlobalStack, str, str]]]:
         """Returns a list of where the package is used

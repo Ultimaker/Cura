@@ -9,6 +9,7 @@ from UM.Math.Vector import Vector
 from UM.Logger import Logger
 from UM.Math.Matrix import Matrix
 from UM.Application import Application
+from UM.Message import Message
 from UM.Scene.SceneNode import SceneNode
 
 from cura.CuraApplication import CuraApplication
@@ -269,7 +270,14 @@ class ThreeMFWriter(MeshWriter):
             package_id = package_manager.getMaterialFilePackageId(extruder.material.getFileName(), extruder.material.getMetaDataEntry("GUID"))
             package_data = package_manager.getInstalledPackageInfo(package_id)
 
-            if not package_data or package_data.get("is_bundled"):
+            if not package_data:
+                message = Message(catalog.i18nc("@error:uninstall",
+                                                "It was not possible to store material package information in project file: {material}. This project may not open correctly on other systems.".format(material=extruder.getName())),
+                                  title=catalog.i18nc("@info:title", "Failed to save material package information"),
+                                  message_type=Message.MessageType.WARNING)
+                message.show()
+
+            if package_data.get("is_bundled"):
                 continue
 
             material_metadata = {"id": package_id,
