@@ -53,7 +53,7 @@ class CuraPackageManager(PackageManager):
         super().initialize()
 
     def getMaterialFilePackageId(self, file_name: str, guid: str) -> str:
-        """Get the id of the material package that contains file_name"""
+        """Get the id of the installed material package that contains file_name"""
         for material_package in [f for f in os.scandir(self._installation_dirs_dict["materials"]) if f.is_dir()]:
             package_id = material_package.name
 
