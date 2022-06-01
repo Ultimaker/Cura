@@ -469,7 +469,7 @@ UM.Dialog
         {
             visible: buttonWarning
             text: catalog.i18nc("@action:button", "Install missing Material")
-            onClicked: accept()
+            onClicked: manager.installMissingPackages()
         }
     ]
 

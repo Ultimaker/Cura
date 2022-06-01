@@ -9,6 +9,7 @@ from UM.Application import Application
 from UM.i18n import i18nCatalog
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from cura.Settings.GlobalStack import GlobalStack
+from plugins.Marketplace.InstallMissingPackagesDialog import InstallMissingPackageDialog
 from .UpdatableMachinesModel import UpdatableMachinesModel
 
 import os
@@ -60,6 +61,8 @@ class WorkspaceDialog(QObject):
         self._is_printer_group = False
         self._updatable_machines_model = UpdatableMachinesModel(self)
         self._missing_package_metadata: List[Dict[str, str]] = []
+        self._plugin_registry: PluginRegistry = CuraApplication.getInstance().getPluginRegistry()
+        self._install_missing_package_dialog: Optional[QObject] = None
 
     machineConflictChanged = pyqtSignal()
     qualityChangesConflictChanged = pyqtSignal()
@@ -284,6 +287,10 @@ class WorkspaceDialog(QObject):
     def missingPackages(self):
         return self._missing_package_metadata
 
+    @pyqtSlot()
+    def installMissingPackages(self):
+        self._install_missing_package_dialog = InstallMissingPackageDialog(self._missing_package_metadata)
+        self._install_missing_package_dialog.show()
 
     def getResult(self) -> Dict[str, Optional[str]]:
         if "machine" in self._result and self.updatableMachinesModel.count <= 1:
