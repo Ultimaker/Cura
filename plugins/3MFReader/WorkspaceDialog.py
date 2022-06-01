@@ -59,7 +59,7 @@ class WorkspaceDialog(QObject):
         self._objects_on_plate = False
         self._is_printer_group = False
         self._updatable_machines_model = UpdatableMachinesModel(self)
-        self._missing_package_metadata = []
+        self._missing_package_metadata: List[Dict[str, str]] = []
 
     machineConflictChanged = pyqtSignal()
     qualityChangesConflictChanged = pyqtSignal()
@@ -275,7 +275,7 @@ class WorkspaceDialog(QObject):
             self._has_quality_changes_conflict = quality_changes_conflict
             self.qualityChangesConflictChanged.emit()
 
-    def setMissingPackagesMetadata(self, missing_package_metadata):
+    def setMissingPackagesMetadata(self, missing_package_metadata: List[Dict[str, str]]) -> None:
         self._missing_package_metadata = missing_package_metadata
 
     @pyqtProperty("QVariantList")
