@@ -442,34 +442,32 @@ UM.Dialog
         }
     }
 
-    property bool warning: true
-
     buttonWarningText: "The material used in this project is currently not installed in Cura.<br/>Install the material profile and reopen the project."
-    buttonWarning: warning
+    buttonWarning: manager.missingPackages.length > 0
     buttonSpacing: UM.Theme.getSize("default_margin").width
 
     rightButtons: [
         Cura.TertiaryButton
         {
-            visible: !warning
+            visible: !buttonWarning
             text: catalog.i18nc("@action:button", "Cancel")
             onClicked: reject()
         },
         Cura.PrimaryButton
         {
-            visible: !warning
+            visible: !buttonWarning
             text: catalog.i18nc("@action:button", "Open")
             onClicked: accept()
         },
         Cura.TertiaryButton
         {
-            visible: warning
+            visible: buttonWarning
             text: catalog.i18nc("@action:button", "Open project anyway")
             onClicked: reject()
         },
         Cura.PrimaryButton
         {
-            visible: warning
+            visible: buttonWarning
             text: catalog.i18nc("@action:button", "Install missing Material")
             onClicked: accept()
         }
