@@ -80,6 +80,7 @@ class WorkspaceDialog(QObject):
     variantTypeChanged = pyqtSignal()
     extrudersChanged = pyqtSignal()
     isPrinterGroupChanged = pyqtSignal()
+    missingPackagesChanged = pyqtSignal()
 
     @pyqtProperty(bool, notify = isPrinterGroupChanged)
     def isPrinterGroup(self) -> bool:
@@ -277,8 +278,9 @@ class WorkspaceDialog(QObject):
 
     def setMissingPackagesMetadata(self, missing_package_metadata: List[Dict[str, str]]) -> None:
         self._missing_package_metadata = missing_package_metadata
+        self.missingPackagesChanged.emit()
 
-    @pyqtProperty("QVariantList")
+    @pyqtProperty("QVariantList", notify=missingPackagesChanged)
     def missingPackages(self):
         return self._missing_package_metadata
 
