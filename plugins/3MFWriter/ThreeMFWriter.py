@@ -282,7 +282,6 @@ class ThreeMFWriter(MeshWriter):
 
             material_metadata = {"id": package_id,
                                  "display_name": package_data.get("display_name") if package_data.get("display_name") else "",
-                                 "website": package_data.get("website") if package_data.get("website") else "",
                                  "package_version": package_data.get("package_version") if package_data.get("package_version") else "",
                                  "sdk_version_semver": package_data.get("sdk_version_semver") if package_data.get("sdk_version_semver") else ""}
 
