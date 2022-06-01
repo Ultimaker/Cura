@@ -103,6 +103,9 @@ class Marketplace(Extension, QObject):
         self.setTabShown(1)
 
     def checkIfRestartNeeded(self) -> None:
+        if self._window is None:
+            return
+
         if self._package_manager.hasPackagesToRemoveOrInstall or \
                 cast(PluginRegistry, self._plugin_registry).getCurrentSessionActivationChangedPlugins():
             self._restart_needed = True
