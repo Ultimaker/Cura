@@ -2256,7 +2256,7 @@
                     "maximum_value": "machine_height",
                     "maximum_value_warning": "resolveOrValue('infill_sparse_thickness') * 10",
                     "type": "float",
-                    "value": "0 if infill_sparse_density > 0 else 0",
+                    "value": "0",
                     "limit_to_extruder": "infill_extruder_nr",
                     "enabled": "infill_sparse_density > 0",
                     "settable_per_mesh": true,
