@@ -152,9 +152,6 @@
         "bridge_fan_speed_3": {
              "value": "cool_fan_speed_min"
         },
-        "bridge_fan_speed_3": {
-             "value": "cool_fan_speed_min"
-        },
         "jerk_print": {
             "value": "20",
             "minimum_value_warning": 20
