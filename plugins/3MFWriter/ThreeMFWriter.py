@@ -276,6 +276,7 @@ class ThreeMFWriter(MeshWriter):
                                   title=catalog.i18nc("@info:title", "Failed to save material package information"),
                                   message_type=Message.MessageType.WARNING)
                 message.show()
+                continue
 
             if package_data.get("is_bundled"):
                 continue
