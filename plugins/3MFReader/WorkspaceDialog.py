@@ -2,7 +2,9 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import List, Optional, Dict, cast
 
-from PyQt6.QtCore import pyqtSignal, QObject, pyqtProperty, QCoreApplication
+from PyQt6.QtCore import pyqtSignal, QObject, pyqtProperty, QCoreApplication, QUrl
+from PyQt6.QtGui import QDesktopServices
+
 from UM.FlameProfiler import pyqtSlot
 from UM.PluginRegistry import PluginRegistry
 from UM.Application import Application
@@ -387,7 +389,32 @@ class WorkspaceDialog(QObject):
             title=i18n_catalog.i18nc("@info:title", "Material profiles not installed"),
             message_type=Message.MessageType.WARNING
         )
+        result_message.addAction(
+                "learn_more",
+                name=i18n_catalog.i18nc("@action:button", "Learn more"),
+                icon="",
+                description="Learn more about project materials.",
+                button_align=Message.ActionButtonAlignment.ALIGN_LEFT,
+                button_style=Message.ActionButtonStyle.LINK
+        )
+        result_message.addAction(
+                "install_materials",
+                name=i18n_catalog.i18nc("@action:button", "Install Materials"),
+                icon="",
+                description="Install missing materials from project file.",
+                button_align=Message.ActionButtonAlignment.ALIGN_RIGHT,
+                button_style=Message.ActionButtonStyle.DEFAULT
+        )
+        result_message.actionTriggered.connect(self._onMessageActionTriggered)
         result_message.show()
+
+    def _onMessageActionTriggered(self, message: Message, sync_message_action: str):
+        if sync_message_action == "install_materials":
+            self.installMissingPackages()
+            message.hide()
+        elif sync_message_action == "learn_more":
+            QDesktopServices.openUrl(QUrl("https://support.ultimaker.com/hc/en-us/articles/360011968360-Using-the-Ultimaker-Marketplace"))
+
 
     def __show(self) -> None:
         if self._view is None:
