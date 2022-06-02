@@ -17,16 +17,10 @@ if TYPE_CHECKING:
 catalog = i18nCatalog("cura")
 
 class MissingPackageList(RemotePackageList):
-    def __init__(self, parent: Optional["QObject"] = None) -> None:
+    def __init__(self, packages: List[Dict[str, str]], parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)
         self._package_metadata: List[Dict[str, str]] = []
         # self.packageTypeFilter = None # This will be our new filter
         self._package_type_filter = "material"
-
-    def setPackageIds(self, packages: List[Dict[str, str]]) -> None:
-        self._package_metadata = packages
-        search_string = ", ".join(map(lambda package: package["id"], packages))
-        # self.setSearchString(search_string)
-        self.setSearchString("ABS")
-
-
+        self._search_type = "package_ids"
+        self._requested_search_string = ",".join(map(lambda package: package["id"], packages))

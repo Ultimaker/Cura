@@ -26,8 +26,7 @@ class InstallMissingPackageDialog(QObject):
         self._restart_needed = False
         self._package_metadata: List[Dict[str, str]] = packages_metadata
 
-        self._package_model = MissingPackageList()
-        self._package_model.setPackageIds(packages_metadata)
+        self._package_model = MissingPackageList(packages_metadata)
 
     def show(self):
         plugin_path = self._plugin_registry.getPluginPath("Marketplace")
