@@ -101,9 +101,6 @@
         "acceleration_travel_enabled": {
             "value": false
         },
-        "jerk_travel": {
-            "value": "jerk_print"
-        },
         "acceleration_travel": {
             "value": "acceleration_wall"
         },
