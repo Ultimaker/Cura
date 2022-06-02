@@ -1,14 +1,18 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+import os
 
 from typing import Any, cast, Dict, List, Set, Tuple, TYPE_CHECKING, Optional
 
+from UM.Logger import Logger
 from cura.CuraApplication import CuraApplication  # To find some resource types.
 from cura.Settings.GlobalStack import GlobalStack
 
 from UM.PackageManager import PackageManager  # The class we're extending.
 from UM.Resources import Resources  # To find storage paths for some resource types.
 from UM.i18n import i18nCatalog
+from plugins.XmlMaterialProfile.XmlMaterialProfile import XmlMaterialProfile
+
 catalog = i18nCatalog("cura")
 
 if TYPE_CHECKING:
@@ -50,6 +54,26 @@ class CuraPackageManager(PackageManager):
         self._installation_dirs_dict["qualities"] = Resources.getStoragePath(CuraApplication.ResourceTypes.QualityInstanceContainer)
 
         super().initialize()
+
+    def getMaterialFilePackageId(self, file_name: str, guid: str) -> str:
+        """Get the id of the installed material package that contains file_name"""
+        for material_package in [f for f in os.scandir(self._installation_dirs_dict["materials"]) if f.is_dir()]:
+            package_id = material_package.name
+
+            for root, _, file_names in os.walk(material_package.path):
+                if file_name not in file_names:
+                    # File with the name we are looking for is not in this directory
+                    continue
+
+                with open(root + "/" + file_name, encoding="utf-8") as f:
+                    # Make sure the file we found has the same guid as our material
+                    # Parsing this xml would be better but the namespace is needed to search it.
+                    parsed_guid = XmlMaterialProfile.getMetadataFromSerialized(f.read(), "GUID")
+                    if guid == parsed_guid:
+                        return package_id
+
+        Logger.error("Could not find package_id for file: {} with GUID: {} ".format(file_name, guid))
+        return ""
 
     def getMachinesUsingPackage(self, package_id: str) -> Tuple[List[Tuple[GlobalStack, str, str]], List[Tuple[GlobalStack, str, str]]]:
         """Returns a list of where the package is used

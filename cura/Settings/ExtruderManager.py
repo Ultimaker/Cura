@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt6.QtCore import pyqtSignal, pyqtProperty, QObject, QVariant  # For communicating data and events to Qt.
@@ -382,7 +382,10 @@ class ExtruderManager(QObject):
     # "fdmextruder". We need to check a machine here so its extruder definition is correct according to this.
     def fixSingleExtrusionMachineExtruderDefinition(self, global_stack: "GlobalStack") -> None:
         container_registry = ContainerRegistry.getInstance()
-        expected_extruder_definition_0_id = global_stack.getMetaDataEntry("machine_extruder_trains")["0"]
+        expected_extruder_stack = global_stack.getMetaDataEntry("machine_extruder_trains")
+        if expected_extruder_stack is None:
+            return
+        expected_extruder_definition_0_id = expected_extruder_stack["0"]
         try:
             extruder_stack_0 = global_stack.extruderList[0]
         except IndexError:
