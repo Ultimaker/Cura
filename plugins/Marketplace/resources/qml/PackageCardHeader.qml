@@ -19,7 +19,7 @@ Item
     property bool showInstallButton: false
     property bool showUpdateButton: false
 
-    property string missingPackageReadMoreUrl: "https://support.ultimaker.com"
+    property string missingPackageReadMoreUrl: "https://ultimaker.atlassian.net/wiki/spaces/SD/pages/1231916580/Campaign+links+from+Cura+to+the+Ultimaker+domain"
 
 
     width: parent.width
