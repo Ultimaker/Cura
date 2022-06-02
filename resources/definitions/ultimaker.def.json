@@ -60,13 +60,13 @@
             "value": "'no_outer_surfaces'"
         },
         "roofing_layer_count": {
-            "value": "0"
+            "value": "1"
         },
         "roofing_material_flow": {
             "value": "material_flow"
         },
         "skin_material_flow": {
-            "value": "0.97 * material_flow"
+            "value": "0.95 * material_flow"
         },
         "support_interface_material_flow": {
             "value": "skin_material_flow"
