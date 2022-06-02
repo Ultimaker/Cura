@@ -154,7 +154,6 @@
         "switch_extruder_prime_speed": { "value": "15" },
         "switch_extruder_retraction_amount": { "value": "8" },
         "top_bottom_thickness": { "value": "1" },
-        "travel_avoid_supports": { "value": "True" },
         "travel_avoid_distance": { "value": "3 if extruders_enabled_count > 1 else machine_nozzle_tip_outer_diameter / 2 * 1.5" },
         "wall_0_inset": { "value": "0" },
         "initial_layer_line_width_factor": { "value": "120" },

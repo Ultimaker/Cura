@@ -1611,7 +1611,7 @@ class MachineManager(QObject):
         if intent_category != "default":
             intent_display_name = IntentCategoryModel.translation(intent_category,
                                                                   "name",
-                                                                  catalog.i18nc("@label", "Unknown"))
+                                                                  intent_category.title())
             display_name = "{intent_name} - {the_rest}".format(intent_name = intent_display_name,
                                                                the_rest = display_name)
 
