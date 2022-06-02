@@ -89,6 +89,31 @@ Item
             Layout.preferredWidth: parent.width
             Layout.preferredHeight: childrenRect.height
 
+            UM.ColorImage
+            {
+                id: badge
+
+                width: UM.Theme.getSize("section_icon").width
+                height: UM.Theme.getSize("section_icon").height
+
+                visible: packageData.isMissingPackageInformation
+
+                source: UM.Theme.getIcon("WarningBadge", "low")
+                color: UM.Theme.getColor("warning")
+
+                // Make a themable circle in the background so we can change it in other themes
+                Rectangle
+                {
+                    id: iconBackground
+                    color: UM.Theme.getColor("warning_badge_background")
+                    anchors.centerIn: parent
+                    width: parent.width - 1.5  //1.5 pixels smaller, (at least sqrt(2), regardless of screen pixel scale) so that the circle doesn't show up behind the icon due to anti-aliasing.
+                    height: parent.height - 1.5
+                    radius: width / 2
+                    z: parent.z - 1
+                }
+            }
+
             UM.Label
             {
                 text: packageData.displayName
