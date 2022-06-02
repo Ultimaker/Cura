@@ -89,6 +89,12 @@
         "meshfix_maximum_deviation": {
             "value": "machine_nozzle_size / 10"
         },
+        "jerk_travel_enabled": {
+            "value": false
+        },
+        "acceleration_travel_enabled": {
+            "value": false
+        },
         "acceleration_travel": {
             "value": "acceleration_wall"
         },
