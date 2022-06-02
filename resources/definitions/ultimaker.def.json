@@ -68,6 +68,9 @@
         "skin_material_flow": {
             "value": "0.97 * material_flow"
         },
+        "support_interface_material_flow": {
+            "value": "skin_material_flow"
+        },
         "skin_monotonic" : {
             "value": true
         },
