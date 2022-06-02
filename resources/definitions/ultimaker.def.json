@@ -92,9 +92,6 @@
         "meshfix_maximum_deviation": {
             "value": "machine_nozzle_size / 10"
         },
-        "jerk_travel": {
-            "value": "jerk_print"
-        },
         "acceleration_travel": {
             "value": "acceleration_wall"
         },
@@ -157,6 +154,53 @@
         },
         "bridge_fan_speed_3": {
              "value": "cool_fan_speed_min"
+        },
+        "jerk_print": {
+            "value": "20",
+            "minimum_value_warning": 20
+        },
+        "jerk_infill": {
+            "minimum_value_warning": 20
+        },
+        "jerk_wall": {
+            "minimum_value_warning": 20
+        },
+        "jerk_wall_0": {
+            "minimum_value_warning": 20
+        },
+        "jerk_roofing": {
+            "minimum_value_warning": 20
+        },
+        "jerk_topbottom": {
+            "minimum_value_warning": 20
+        },
+        "jerk_support": {
+            "minimum_value_warning": 20
+        },
+        "jerk_support_infill": {
+            "minimum_value_warning": 20
+        },
+        "jerk_support_interface": {
+            "minimum_value_warning": 20
+        },
+        "jerk_prime_tower": {
+            "minimum_value_warning": 20
+        },
+        "jerk_layer_0": {
+            "minimum_value_warning": 20
+        },
+        "jerk_print_layer_0": {
+            "minimum_value_warning": 20
+        },
+        "jerk_travel": {
+            "value": "jerk_print",
+            "minimum_value_warning": 20
+        },
+        "jerk_travel_layer_0": {
+            "minimum_value_warning": 20
+        },
+        "jerk_skirt_brim": {
+            "minimum_value_warning": 20
         }
     }
 }
