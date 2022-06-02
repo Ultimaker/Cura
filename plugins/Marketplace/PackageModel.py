@@ -84,6 +84,20 @@ class PackageModel(QObject):
 
         self._is_busy = False
 
+        self._is_missing_package_information = False
+
+    @classmethod
+    def fromIncompletePackageInformation(cls, display_name: str, package_version: str, package_type: str):
+        package_data = {
+            "display_name": display_name,
+            "package_version": package_version,
+            "package_type": package_type,
+            "description": "The material package associated with the Cura project could not be found on the Ultimaker marketplace. Use the partial material profile definition stored in the Cura project file at your own risk."
+        }
+        package_model = cls(package_data)
+        package_model.setIsMissingPackageInformation(True)
+        return package_model
+
     @pyqtSlot()
     def _processUpdatedPackages(self):
         self.setCanUpdate(self._package_manager.checkIfPackageCanUpdate(self._package_id))
@@ -385,3 +399,11 @@ class PackageModel(QObject):
     def canUpdate(self) -> bool:
         """Flag indicating if the package can be updated"""
         return self._can_update
+
+    def setIsMissingPackageInformation(self, isMissingPackageInformation: bool):
+        self._is_missing_package_information = isMissingPackageInformation
+
+    @pyqtProperty(bool)
+    def isMissingPackageInformation(self) -> bool:
+        """Flag indicating if the package can be updated"""
+        return self._is_missing_package_information
