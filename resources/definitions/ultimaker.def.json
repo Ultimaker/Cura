@@ -213,7 +213,7 @@
         },
         "jerk_skirt_brim": {
             "minimum_value_warning": 20
-        }
+        },
         "support_wall_count": {
             "value": 0
         },
