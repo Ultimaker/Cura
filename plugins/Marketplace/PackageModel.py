@@ -400,10 +400,13 @@ class PackageModel(QObject):
         """Flag indicating if the package can be updated"""
         return self._can_update
 
+    isMissingPackageInformationChanged = pyqtSignal()
+
     def setIsMissingPackageInformation(self, isMissingPackageInformation: bool):
         self._is_missing_package_information = isMissingPackageInformation
+        self.isMissingPackageInformationChanged.emit()
 
-    @pyqtProperty(bool)
+    @pyqtProperty(bool, notify=isMissingPackageInformationChanged)
     def isMissingPackageInformation(self) -> bool:
         """Flag indicating if the package can be updated"""
         return self._is_missing_package_information
