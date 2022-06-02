@@ -154,6 +154,46 @@
         },
         "bridge_fan_speed_3": {
              "value": "cool_fan_speed_min"
+        },
+
+        "support_wall_count": {
+            "value": 0
+        },
+        "zig_zaggify_support": {
+            "value": true
+        },
+        "support_infill_rate": {
+            "value": 80
+        },
+        "support_offset": {
+            "value": "=2*line_width"
+        },
+        "support_xy_distance": {
+            "value": "=support_offset"
+        },
+        "support_join_distance": {
+            "value": 0
+        },
+        "gradual_support_infill_steps": {
+            "value": 2
+        },
+        "gradual_support_infill_step_height": {
+            "value": "=4*layer_height"
+        },
+        "minimum_support_area": {
+            "value": "=pow((0.15+support_offset), 2)"
+        },
+        "support_interface_height": {
+            "value": "=2*layer_height"
+        },
+        "support_interface_pattern": {
+            "value": "zigzag"
+        },
+        "minimum_interface_area": {
+            "value": "=minimum_support_area"
+        },
+        "support_interface_offset": {
+            "value": "=support_offset"
         }
     }
 }
