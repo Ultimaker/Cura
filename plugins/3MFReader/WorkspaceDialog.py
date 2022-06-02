@@ -11,6 +11,7 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 from cura.Settings.GlobalStack import GlobalStack
 from plugins.Marketplace.InstallMissingPackagesDialog import InstallMissingPackageDialog
 from .UpdatableMachinesModel import UpdatableMachinesModel
+from UM.Message import Message
 
 import os
 import threading
@@ -377,6 +378,16 @@ class WorkspaceDialog(QObject):
                 while self._visible:
                     time.sleep(1 / 50)
                     QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
+
+    @pyqtSlot()
+    def showMissingMaterialsWarning(self) -> None:
+        result_message = Message(
+            i18n_catalog.i18nc("@info:status", "The material used in this project relies on some material definitions not available in Cura, this might produce undesirable print results. We highly recommend installing the full material package from the Marketplace."),
+            lifetime=0,
+            title=i18n_catalog.i18nc("@info:title", "Material profiles not installed"),
+            message_type=Message.MessageType.WARNING
+        )
+        result_message.show()
 
     def __show(self) -> None:
         if self._view is None:

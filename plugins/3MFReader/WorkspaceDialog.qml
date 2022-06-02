@@ -463,7 +463,10 @@ UM.Dialog
         {
             visible: buttonWarning
             text: catalog.i18nc("@action:button", "Open project anyway")
-            onClicked: reject()
+            onClicked: {
+                manager.showMissingMaterialsWarning();
+                accept();
+            }
         },
         Cura.PrimaryButton
         {
