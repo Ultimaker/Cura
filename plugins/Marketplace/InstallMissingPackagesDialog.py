@@ -42,10 +42,7 @@ class InstallMissingPackageDialog(QObject):
         if self._dialog is None:
             return
 
-        if self._package_manager.hasPackagesToRemoveOrInstall:
-            self._restart_needed = True
-        else:
-            self._restart_needed = False
+        self._restart_needed = self._package_manager.hasPackagesToRemoveOrInstall
         self.showRestartChanged.emit()
 
     showRestartChanged = pyqtSignal()
