@@ -18,6 +18,8 @@ Rectangle
     height: childrenRect.height
     color: UM.Theme.getColor("main_background")
     radius: UM.Theme.getSize("default_radius").width
+    border.color: packageData.isMissingPackageInformation ? UM.Theme.getColor("warning") : "transparent"
+    border.width: packageData.isMissingPackageInformation ? 1 : 0
 
     PackageCardHeader
     {
