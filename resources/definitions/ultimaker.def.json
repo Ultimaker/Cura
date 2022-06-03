@@ -221,19 +221,22 @@
             "value": true
         },
         "support_infill_rate": {
-            "value": "80 if support_enable and support_structure == 'normal' else 0 if support_enable and support_structure == 'tree' else 80"
+            "value": "0 if support_enable and support_structure == 'tree' else (80 if support_interface_enable else 15)"
         },
         "support_offset": {
-            "value": "2*line_width"
+            "value": "2*line_width if support_interface_enable else 0"
         },
         "support_xy_distance": {
             "value": "support_offset"
+        },
+        "support_xy_distance_overhang": {
+            "value": "wall_line_width_0"
         },
         "support_join_distance": {
             "value": 0
         },
         "gradual_support_infill_steps": {
-            "value": 2
+            "value": "2 if support_interface_enable else 0"
         },
         "gradual_support_infill_step_height": {
             "value": "4*layer_height"
@@ -247,14 +250,17 @@
         "support_interface_pattern": {
             "value": "'zigzag'"
         },
-        "support_interface_enable": {
-            "value": true
-        },
-        "minimum_interface_area": {
+         "minimum_interface_area": {
             "value": "minimum_support_area"
         },
         "support_interface_offset": {
             "value": "support_offset"
+        },
+        "support_use_towers": {
+            "value": false
+        },
+        "support_z_distance": {
+            "value": "0"
         }
     }
 }
