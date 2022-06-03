@@ -480,7 +480,7 @@ UM.Dialog
         Cura.PrimaryButton
         {
             visible: buttonWarning
-            text: catalog.i18nc("@action:button", "Install missing Material")
+            text: catalog.i18nc("@action:button", "Install missing material")
             onClicked: manager.installMissingPackages()
         }
     ]
