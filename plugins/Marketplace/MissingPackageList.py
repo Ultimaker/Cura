@@ -32,7 +32,7 @@ class MissingPackageList(RemotePackageList):
         if not self.hasMore:
             self._addPackagesMissingFromRequest()
 
-    def _addPackagesMissingFromRequest(self):
+    def _addPackagesMissingFromRequest(self) -> None:
         """Create cards for packages the user needs to install that could not be found"""
         returned_packages_ids = [item["package"].packageId for item in self._items]
 

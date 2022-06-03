@@ -27,7 +27,7 @@ i18n_catalog = i18nCatalog("cura")
 class WorkspaceDialog(QObject):
     showDialogSignal = pyqtSignal()
 
-    def __init__(self, parent = None):
+    def __init__(self, parent = None) -> None:
         super().__init__(parent)
         self._component = None
         self._context = None
@@ -287,11 +287,11 @@ class WorkspaceDialog(QObject):
         self.missingPackagesChanged.emit()
 
     @pyqtProperty("QVariantList", notify=missingPackagesChanged)
-    def missingPackages(self):
+    def missingPackages(self) -> List[Dict[str, str]]:
         return self._missing_package_metadata
 
     @pyqtSlot()
-    def installMissingPackages(self):
+    def installMissingPackages(self) -> None:
         self._install_missing_package_dialog = InstallMissingPackageDialog(self._missing_package_metadata)
         self._install_missing_package_dialog.show()
 
@@ -408,7 +408,7 @@ class WorkspaceDialog(QObject):
         result_message.actionTriggered.connect(self._onMessageActionTriggered)
         result_message.show()
 
-    def _onMessageActionTriggered(self, message: Message, sync_message_action: str):
+    def _onMessageActionTriggered(self, message: Message, sync_message_action: str) -> None:
         if sync_message_action == "install_materials":
             self.installMissingPackages()
             message.hide()

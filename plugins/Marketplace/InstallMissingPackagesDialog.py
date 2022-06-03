@@ -11,7 +11,7 @@ from plugins.Marketplace.MissingPackageList import MissingPackageList
 
 class InstallMissingPackageDialog(QObject):
     """Dialog used to display packages that need to be installed to load 3mf file materials"""
-    def __init__(self, packages_metadata: List[Dict[str, str]]):
+    def __init__(self, packages_metadata: List[Dict[str, str]]) -> None:
         """Initialize
 
         :param packages_metadata: List of dictionaries containing information about missing packages.
@@ -26,9 +26,9 @@ class InstallMissingPackageDialog(QObject):
         self._restart_needed = False
         self._package_metadata: List[Dict[str, str]] = packages_metadata
 
-        self._package_model = MissingPackageList(packages_metadata)
+        self._package_model: MissingPackageList = MissingPackageList(packages_metadata)
 
-    def show(self):
+    def show(self) -> None:
         plugin_path = self._plugin_registry.getPluginPath("Marketplace")
         if plugin_path is None:
             plugin_path = os.path.dirname(__file__)
@@ -52,5 +52,5 @@ class InstallMissingPackageDialog(QObject):
         return self._restart_needed
 
     @pyqtProperty(QObject)
-    def model(self):
+    def model(self) -> MissingPackageList:
         return self._package_model
