@@ -220,6 +220,9 @@
         "zig_zaggify_support": {
             "value": true
         },
+        "support_pattern": {
+            "value": "'zigzag'"
+        },
         "support_infill_rate": {
             "value": "0 if support_enable and support_structure == 'tree' else (80 if support_interface_enable else 15)"
         },
