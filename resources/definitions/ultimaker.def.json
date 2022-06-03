@@ -221,7 +221,7 @@
             "value": true
         },
         "support_infill_rate": {
-            "value": 80
+            "value": "=80 if support_enable and support_structure == 'normal' else 0 if support_enable and support_structure == 'tree' else 80"
         },
         "support_offset": {
             "value": "=2*line_width"
@@ -246,6 +246,9 @@
         },
         "support_interface_pattern": {
             "value": "zigzag"
+        },
+        "support_interface_enable": {
+            "value": true
         },
         "minimum_interface_area": {
             "value": "=minimum_support_area"
