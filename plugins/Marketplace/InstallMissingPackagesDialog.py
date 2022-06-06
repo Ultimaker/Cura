@@ -1,17 +1,22 @@
 import os
 
-from PyQt6.QtCore import QObject, pyqtSignal, pyqtProperty
-from typing import Optional, List, Dict, cast
+from PyQt6.QtCore import QObject, pyqtSignal, pyqtProperty, QUrl
+from PyQt6.QtGui import QDesktopServices
+from typing import Optional, List, Dict, cast, Callable
 from cura.CuraApplication import CuraApplication
 from UM.PluginRegistry import PluginRegistry
 from cura.CuraPackageManager import CuraPackageManager
+from UM.Message import Message
+from UM.i18n import i18nCatalog
 
+from UM.FlameProfiler import pyqtSlot
 from plugins.Marketplace.MissingPackageList import MissingPackageList
 
+i18n_catalog = i18nCatalog("cura")
 
 class InstallMissingPackageDialog(QObject):
     """Dialog used to display packages that need to be installed to load 3mf file materials"""
-    def __init__(self, packages_metadata: List[Dict[str, str]]) -> None:
+    def __init__(self, packages_metadata: List[Dict[str, str]], show_missing_materials_warning: Callable[[], None]) -> None:
         """Initialize
 
         :param packages_metadata: List of dictionaries containing information about missing packages.
@@ -27,6 +32,7 @@ class InstallMissingPackageDialog(QObject):
         self._package_metadata: List[Dict[str, str]] = packages_metadata
 
         self._package_model: MissingPackageList = MissingPackageList(packages_metadata)
+        self._show_missing_materials_warning = show_missing_materials_warning
 
     def show(self) -> None:
         plugin_path = self._plugin_registry.getPluginPath("Marketplace")
@@ -54,3 +60,7 @@ class InstallMissingPackageDialog(QObject):
     @pyqtProperty(QObject)
     def model(self) -> MissingPackageList:
         return self._package_model
+
+    @pyqtSlot()
+    def showMissingMaterialsWarning(self) -> None:
+        self._show_missing_materials_warning()

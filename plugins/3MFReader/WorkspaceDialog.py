@@ -292,7 +292,7 @@ class WorkspaceDialog(QObject):
 
     @pyqtSlot()
     def installMissingPackages(self) -> None:
-        self._install_missing_package_dialog = InstallMissingPackageDialog(self._missing_package_metadata)
+        self._install_missing_package_dialog = InstallMissingPackageDialog(self._missing_package_metadata, self.showMissingMaterialsWarning)
         self._install_missing_package_dialog.show()
 
     def getResult(self) -> Dict[str, Optional[str]]:

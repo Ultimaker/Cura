@@ -16,4 +16,6 @@ Marketplace
     pageContentsSource: "MissingPackages.qml"
     showSearchHeader: false
     showOnboadBanner: false
+
+    onClosing: manager.showMissingMaterialsWarning()
 }
