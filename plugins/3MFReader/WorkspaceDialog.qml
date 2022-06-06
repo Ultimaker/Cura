@@ -451,26 +451,72 @@ UM.Dialog
         }
     }
 
-    buttonWarningText: "The material used in this project is currently not installed in Cura.<br/>Install the material profile and reopen the project."
-    buttonWarning: manager.missingPackages.length > 0
+    property bool warning: manager.missingPackages.length > 0
+
+    footerComponent: Rectangle
+    {
+        color: warning ? UM.Theme.getColor("warning") : "transparent"
+        anchors.bottom: parent.bottom
+        width: parent.width
+        height: childrenRect.height + 2 * base.margin
+
+        Column
+        {
+            height: childrenRect.height
+            spacing: base.margin
+
+            anchors.margins: base.margin
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: parent.top
+
+            RowLayout
+            {
+                id: warningRow
+                height: childrenRect.height
+                visible: warning
+                spacing: base.margin
+                UM.ColorImage
+                {
+                    width: UM.Theme.getSize("extruder_icon").width
+                    height: UM.Theme.getSize("extruder_icon").height
+                    source: UM.Theme.getIcon("Warning")
+                }
+
+                UM.Label
+                {
+                    id: warningText
+                    text: "The material used in this project is currently not installed in Cura.<br/>Install the material profile and reopen the project."
+                }
+            }
+
+            Loader
+            {
+                width: parent.width
+                height: childrenRect.height
+                sourceComponent: buttonRow
+            }
+        }
+    }
+
     buttonSpacing: UM.Theme.getSize("default_margin").width
 
     rightButtons: [
         Cura.TertiaryButton
         {
-            visible: !buttonWarning
+            visible: !warning
             text: catalog.i18nc("@action:button", "Cancel")
             onClicked: reject()
         },
         Cura.PrimaryButton
         {
-            visible: !buttonWarning
+            visible: !warning
             text: catalog.i18nc("@action:button", "Open")
             onClicked: accept()
         },
         Cura.TertiaryButton
         {
-            visible: buttonWarning
+            visible: warning
             text: catalog.i18nc("@action:button", "Open project anyway")
             onClicked: {
                 manager.showMissingMaterialsWarning();
@@ -479,7 +525,7 @@ UM.Dialog
         },
         Cura.PrimaryButton
         {
-            visible: buttonWarning
+            visible: warning
             text: catalog.i18nc("@action:button", "Install missing material")
             onClicked: manager.installMissingPackages()
         }
