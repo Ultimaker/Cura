@@ -87,7 +87,7 @@ class PackageModel(QObject):
         self._is_missing_package_information = False
 
     @classmethod
-    def fromIncompletePackageInformation(cls, display_name: str, package_version: str, package_type: str) -> PackageModel:
+    def fromIncompletePackageInformation(cls, display_name: str, package_version: str, package_type: str) -> "PackageModel":
         package_data = {
             "display_name": display_name,
             "package_version": package_version,
