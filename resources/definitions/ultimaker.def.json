@@ -245,10 +245,13 @@
             "value": "4*layer_height"
         },
         "minimum_support_area": {
-            "value": "pow((1.5 + support_offset), 2)"
+            "value": "pow((2 + support_offset), 2)"
         },
         "support_interface_height": {
             "value": "2*layer_height"
+        },
+        "support_interface_skip_height": {
+            "value": "layer_height"
         },
         "support_interface_pattern": {
             "value": "'zigzag'"
