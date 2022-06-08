@@ -245,7 +245,7 @@
             "value": "4*layer_height"
         },
         "minimum_support_area": {
-            "value": "pow((0.15+support_offset), 2)"
+            "value": "pow((1.5 + support_offset), 2)"
         },
         "support_interface_height": {
             "value": "2*layer_height"
