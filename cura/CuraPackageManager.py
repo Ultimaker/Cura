@@ -60,6 +60,8 @@ class CuraPackageManager(PackageManager):
     def isMaterialBundled(self, file_name: str, guid: str):
         """ Check if there is a bundled material name with file_name and guid """
         for path in Resources.getSecureSearchPaths():
+            # Secure search paths are install directory paths, if a material is in here it must be bundled.
+
             paths = [Path(p) for p in glob.glob(path + '/**/*.xml.fdm_material')]
             for material in paths:
                 if material.name == file_name:
