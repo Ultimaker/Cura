@@ -28,6 +28,7 @@ class RemotePackageList(PackageList):
         self._package_type_filter = ""
         self._requested_search_string = ""
         self._current_search_string = ""
+        self._search_type = "search"
         self._request_url = self._initialRequestUrl()
         self._ongoing_requests["get_packages"] = None
         self.isLoadingChanged.connect(self._onLoadingChanged)
@@ -100,7 +101,7 @@ class RemotePackageList(PackageList):
         if self._package_type_filter != "":
             request_url += f"&package_type={self._package_type_filter}"
         if self._current_search_string != "":
-            request_url += f"&search={self._current_search_string}"
+            request_url += f"&{self._search_type}={self._current_search_string}"
         return request_url
 
     def _parseResponse(self, reply: "QNetworkReply") -> None:

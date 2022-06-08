@@ -5,13 +5,13 @@ import os
 from typing import Any, cast, Dict, List, Set, Tuple, TYPE_CHECKING, Optional
 
 from UM.Logger import Logger
+from UM.PluginRegistry import PluginRegistry
 from cura.CuraApplication import CuraApplication  # To find some resource types.
 from cura.Settings.GlobalStack import GlobalStack
 
 from UM.PackageManager import PackageManager  # The class we're extending.
 from UM.Resources import Resources  # To find storage paths for some resource types.
 from UM.i18n import i18nCatalog
-from plugins.XmlMaterialProfile.XmlMaterialProfile import XmlMaterialProfile
 
 catalog = i18nCatalog("cura")
 
@@ -68,7 +68,8 @@ class CuraPackageManager(PackageManager):
                 with open(root + "/" + file_name, encoding="utf-8") as f:
                     # Make sure the file we found has the same guid as our material
                     # Parsing this xml would be better but the namespace is needed to search it.
-                    parsed_guid = XmlMaterialProfile.getMetadataFromSerialized(f.read(), "GUID")
+                    parsed_guid = PluginRegistry.getInstance().getPluginObject("XmlMaterialProfile").getMetadataFromSerialized(
+                        f.read(), "GUID")
                     if guid == parsed_guid:
                         return package_id
 
