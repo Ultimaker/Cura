@@ -233,7 +233,7 @@
             "value": "2*line_width if support_interface_enable else 0"
         },
         "support_xy_distance": {
-            "value": "support_offset"
+            "value": "1"
         },
         "support_xy_distance_overhang": {
             "value": "wall_line_width_0"
