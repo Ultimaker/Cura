@@ -1,7 +1,9 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+import glob
 import os
 
+from pathlib import Path
 from typing import Any, cast, Dict, List, Set, Tuple, TYPE_CHECKING, Optional
 
 from UM.Logger import Logger
@@ -54,6 +56,24 @@ class CuraPackageManager(PackageManager):
         self._installation_dirs_dict["qualities"] = Resources.getStoragePath(CuraApplication.ResourceTypes.QualityInstanceContainer)
 
         super().initialize()
+
+    def isMaterialBundled(self, file_name: str, guid: str):
+        """ Check if there is a bundled material name with file_name and guid """
+        for path in Resources.getSecureSearchPaths():
+            paths = [Path(p) for p in glob.glob(path + '/**/*.xml.fdm_material')]
+            for material in paths:
+                if material.name == file_name:
+                    with open(str(material), encoding="utf-8") as f:
+                        # Make sure the file we found has the same guid as our material
+                        # Parsing this xml would be better but the namespace is needed to search it.
+                        parsed_guid = PluginRegistry.getInstance().getPluginObject(
+                            "XmlMaterialProfile").getMetadataFromSerialized(
+                            f.read(), "GUID")
+                        if guid == parsed_guid:
+                            # The material we found matches both filename and GUID
+                            return True
+
+        return False
 
     def getMaterialFilePackageId(self, file_name: str, guid: str) -> str:
         """Get the id of the installed material package that contains file_name"""
