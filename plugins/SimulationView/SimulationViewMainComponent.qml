@@ -2,9 +2,6 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.4
-import QtQuick.Controls 1.2
-import QtQuick.Layouts 1.1
-import QtQuick.Controls.Styles 1.1
 
 import UM 1.4 as UM
 import Cura 1.0 as Cura
@@ -78,7 +75,7 @@ Item
     UM.SimpleButton
     {
         id: playButton
-        iconSource: !isSimulationPlaying ? "./resources/Play.svg": "./resources/Pause.svg"
+        iconSource: Qt.resolvedUrl(!isSimulationPlaying ? "./resources/Play.svg": "./resources/Pause.svg")
         width: UM.Theme.getSize("small_button").width
         height: UM.Theme.getSize("small_button").height
         hoverColor: UM.Theme.getColor("slider_handle_active")

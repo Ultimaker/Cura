@@ -4,7 +4,7 @@
 import os
 from typing import Optional, Dict, List, Tuple, TYPE_CHECKING
 
-from PyQt5.QtCore import pyqtProperty, pyqtSlot
+from PyQt6.QtCore import pyqtProperty, pyqtSlot
 
 from UM.Logger import Logger
 from UM.Resources import Resources
@@ -12,7 +12,7 @@ from UM.Resources import Resources
 from cura.UI.WelcomePagesModel import WelcomePagesModel
 
 if TYPE_CHECKING:
-    from PyQt5.QtCore import QObject
+    from PyQt6.QtCore import QObject
     from cura.CuraApplication import CuraApplication
 
 

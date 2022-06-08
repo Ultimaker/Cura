@@ -2,8 +2,7 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.11
-import QtQuick.Controls 1.1
-import UM 1.2 as UM
+import UM 1.5 as UM
 
 Item
 {
@@ -16,7 +15,7 @@ Item
     property color materialColor
     property alias textColor: extruderNumberText.color
     property bool extruderEnabled: true
-    property alias iconSize: mainIcon.sourceSize
+    property var iconSize
     property string iconVariant: "medium"
 
     Item
@@ -25,36 +24,35 @@ Item
         anchors.fill: parent
         layer.enabled: true // Prevent weird opacity effects.
 
-        UM.RecolorImage
+        UM.ColorImage
         {
             anchors.fill: parent
-            sourceSize: mainIcon.sourceSize
+            width: mainIcon.width
+            height: mainIcon.height
 
             source: UM.Theme.getIcon("ExtruderColor", iconVariant)
             color: materialColor
         }
-        UM.RecolorImage
+        UM.ColorImage
         {
             id: mainIcon
             anchors.fill: parent
-            sourceSize: UM.Theme.getSize("extruder_icon")
+            width: UM.Theme.getSize("extruder_icon").width
+            height: UM.Theme.getSize("extruder_icon").height
 
             source: UM.Theme.getIcon("Extruder", iconVariant)
             color: extruderNumberText.color
         }
 
-        Label
+        UM.Label
         {
             id: extruderNumberText
             anchors.centerIn: parent
             text: index + 1
             font: UM.Theme.getFont("small_emphasis")
-            color: UM.Theme.getColor("text")
             width: contentWidth
             height: contentHeight
-            renderType: Text.NativeRendering
             horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
         }
     }
 }

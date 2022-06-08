@@ -1,18 +1,18 @@
-// Copyright (c) 2016 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Uranium is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
 import QtQuick.Controls 2.0
 
-import UM 1.1 as UM
-import Cura 1.0 as Cura
+import UM 1.5 as UM
+import Cura 1.5 as Cura
 
 SettingItem
 {
     id: base
     property var focusItem: control
 
-    contents: ComboBox
+    contents: Cura.ComboBox
     {
         id: control
         anchors.fill: parent
@@ -98,7 +98,7 @@ SettingItem
             when: control.model.items.length > 0
         }
 
-        indicator: UM.RecolorImage
+        indicator: UM.ColorImage
         {
             id: downArrow
             x: control.width - width - control.rightPadding
@@ -107,13 +107,11 @@ SettingItem
             source: UM.Theme.getIcon("ChevronSingleDown")
             width: UM.Theme.getSize("standard_arrow").width
             height: UM.Theme.getSize("standard_arrow").height
-            sourceSize.width: width + 5 * screenScaleFactor
-            sourceSize.height: width + 5 * screenScaleFactor
 
             color: UM.Theme.getColor("setting_control_button");
         }
 
-        background: Rectangle
+        background: UM.UnderlineBackground
         {
             color:
             {
@@ -127,23 +125,26 @@ SettingItem
                 }
                 return UM.Theme.getColor("setting_control")
             }
-            radius: UM.Theme.getSize("setting_control_radius").width
-            border.width: UM.Theme.getSize("default_lining").width
-            border.color:
+            borderColor: control.activeFocus ? UM.Theme.getSize("text_field_border_active") : "transparent"
+            liningColor:
             {
-                if (!enabled)
+                if(!enabled)
                 {
-                    return UM.Theme.getColor("setting_control_disabled_border")
+                    return UM.Theme.getColor("setting_control_disabled_border");
                 }
-                if (control.hovered || control.activeFocus)
+                if(control.activeFocus)
                 {
-                    return UM.Theme.getColor("setting_control_border_highlight")
+                    return UM.Theme.getColor("text_field_border_active");
                 }
-                return UM.Theme.getColor("setting_control_border")
+                if(base.hovered)
+                {
+                    return UM.Theme.getColor("text_field_border_hovered");
+                }
+                return UM.Theme.getColor("border_field_light");
             }
         }
 
-        contentItem: Label
+        contentItem: UM.Label
         {
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
@@ -153,17 +154,12 @@ SettingItem
 
             text: control.currentText
             textFormat: Text.PlainText
-            renderType: Text.NativeRendering
-            font: UM.Theme.getFont("default")
             color: enabled ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
-
-            elide: Text.ElideLeft
-            verticalAlignment: Text.AlignVCenter
 
             background: Rectangle
             {
                 id: swatch
-                height: Math.round(parent.height / 2)
+                height: UM.Theme.getSize("standard_arrow").width
                 width: height
                 radius: Math.round(width / 2)
                 anchors.right: parent.right
@@ -183,12 +179,12 @@ SettingItem
 
             contentItem: ListView
             {
-                clip: true
                 implicitHeight: contentHeight
+
+                ScrollBar.vertical: UM.ScrollBar {}
+                clip: true
                 model: control.popup.visible ? control.delegateModel : null
                 currentIndex: control.highlightedIndex
-
-                ScrollIndicator.vertical: ScrollIndicator { }
             }
 
             background: Rectangle
@@ -204,27 +200,15 @@ SettingItem
             height: control.height
             highlighted: control.highlightedIndex == index
 
-            contentItem: Label
+            contentItem: UM.Label
             {
                 anchors.fill: parent
                 anchors.leftMargin: UM.Theme.getSize("setting_unit_margin").width
                 anchors.rightMargin: UM.Theme.getSize("setting_unit_margin").width
 
                 text: model.name
-                renderType: Text.NativeRendering
-                color:
-                {
-                    if (model.enabled)
-                    {
-                        UM.Theme.getColor("setting_control_text")
-                    } else
-                    {
-                        UM.Theme.getColor("action_button_disabled_text");
-                    }
-                }
-                font: UM.Theme.getFont("default")
+                color: model.enabled ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("action_button_disabled_text")
                 elide: Text.ElideRight
-                verticalAlignment: Text.AlignVCenter
                 rightPadding: swatch.width + UM.Theme.getSize("setting_unit_margin").width
 
                 background: Rectangle
@@ -244,7 +228,6 @@ SettingItem
             background: Rectangle
             {
                 color: parent.highlighted ? UM.Theme.getColor("setting_control_highlight") : "transparent"
-                border.color: parent.highlighted ? UM.Theme.getColor("setting_control_border_highlight") : "transparent"
             }
         }
     }

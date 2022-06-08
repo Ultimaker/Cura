@@ -343,6 +343,9 @@ class XmlMaterialProfile(InstanceContainer):
 
         return stream.getvalue().decode("utf-8")
 
+    def getFileName(self) -> str:
+        return (self.getMetaDataEntry("base_file") + ".xml.fdm_material").replace(" ", "+")
+
     # Recursively resolve loading inherited files
     def _resolveInheritance(self, file_name):
         xml = self._loadFile(file_name)
@@ -476,6 +479,15 @@ class XmlMaterialProfile(InstanceContainer):
             setting_version = cls.xmlVersionToSettingVersion("1.2")
 
         return version * 1000000 + setting_version
+
+    @classmethod
+    def getMetadataFromSerialized(cls, serialized: str, property_name: str) -> str:
+        data = ET.fromstring(serialized)
+        metadata = data.find("./um:metadata", cls.__namespaces)
+        property = metadata.find("./um:" + property_name, cls.__namespaces)
+
+        # This is a necessary property != None check, xml library overrides __bool__ to return False in cases when Element is not None.
+        return property.text if property != None else ""
 
     def deserialize(self, serialized, file_name = None):
         """Overridden from InstanceContainer"""
@@ -650,7 +662,6 @@ class XmlMaterialProfile(InstanceContainer):
                 machine_id_list = product_id_map.get(identifier.get("product"), [])
                 if not machine_id_list:
                     machine_id_list = self.getPossibleDefinitionIDsFromName(identifier.get("product"))
-
                 for machine_id in machine_id_list:
                     definitions = ContainerRegistry.getInstance().findDefinitionContainersMetadata(id = machine_id)
                     if not definitions:
@@ -1068,6 +1079,8 @@ class XmlMaterialProfile(InstanceContainer):
         id_list = {name.lower().replace(" ", ""),  # simply removing all spaces
                    name.lower().replace(" ", "_"),  # simply replacing all spaces with underscores
                    "_".join(merged_name_parts),
+                   name.replace(" ", ""),
+                   name.replace(" ", "_")
                    }
         id_list = list(id_list)
         return id_list

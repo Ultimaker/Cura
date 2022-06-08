@@ -31,7 +31,7 @@ from cura.Settings.GlobalStack import GlobalStack
 from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Settings.ExtruderManager import ExtruderManager
 
-from PyQt5.QtCore import QTimer
+from PyQt6.QtCore import QTimer
 
 
 if TYPE_CHECKING:
@@ -72,7 +72,7 @@ class BuildVolume(SceneNode):
 
         self._origin_mesh = None  # type: Optional[MeshData]
         self._origin_line_length = 20
-        self._origin_line_width = 1.5
+        self._origin_line_width = 1
         self._enabled = False
 
         self._grid_mesh = None   # type: Optional[MeshData]
@@ -601,6 +601,7 @@ class BuildVolume(SceneNode):
         if self._adhesion_type == "raft":
             self._raft_thickness = (
                 self._global_container_stack.getProperty("raft_base_thickness", "value") +
+                self._global_container_stack.getProperty("raft_interface_layers", "value") *
                 self._global_container_stack.getProperty("raft_interface_thickness", "value") +
                 self._global_container_stack.getProperty("raft_surface_layers", "value") *
                 self._global_container_stack.getProperty("raft_surface_thickness", "value") +
@@ -848,10 +849,10 @@ class BuildVolume(SceneNode):
         """
 
         result = {}
-        adhesion_extruder = None #type: ExtruderStack
+        skirt_brim_extruder: ExtruderStack = None
         for extruder in used_extruders:
-            if int(extruder.getProperty("extruder_nr", "value")) == int(self._global_container_stack.getProperty("adhesion_extruder_nr", "value")):
-                adhesion_extruder = extruder
+            if int(extruder.getProperty("extruder_nr", "value")) == int(self._global_container_stack.getProperty("skirt_brim_extruder_nr", "value")):
+                skirt_brim_extruder = extruder
             result[extruder.getId()] = []
 
         # Currently, the only normally printed object is the prime tower.
@@ -865,11 +866,11 @@ class BuildVolume(SceneNode):
                 prime_tower_x = prime_tower_x - machine_width / 2 #Offset by half machine_width and _depth to put the origin in the front-left.
                 prime_tower_y = prime_tower_y + machine_depth / 2
 
-            if adhesion_extruder is not None and self._global_container_stack.getProperty("prime_tower_brim_enable", "value") and self._global_container_stack.getProperty("adhesion_type", "value") != "raft":
+            if skirt_brim_extruder is not None and self._global_container_stack.getProperty("prime_tower_brim_enable", "value") and self._global_container_stack.getProperty("adhesion_type", "value") != "raft":
                 brim_size = (
-                    adhesion_extruder.getProperty("brim_line_count", "value") *
-                    adhesion_extruder.getProperty("skirt_brim_line_width", "value") / 100.0 *
-                    adhesion_extruder.getProperty("initial_layer_line_width_factor", "value")
+                    skirt_brim_extruder.getProperty("brim_line_count", "value") *
+                    skirt_brim_extruder.getProperty("skirt_brim_line_width", "value") / 100.0 *
+                    skirt_brim_extruder.getProperty("initial_layer_line_width_factor", "value")
                 )
                 prime_tower_x -= brim_size
                 prime_tower_y += brim_size
@@ -1100,19 +1101,20 @@ class BuildVolume(SceneNode):
         # with the adhesion extruder, but it also prints one extra line by all other extruders. As such, the
         # setting does *not* have a limit_to_extruder setting (which means that we can't ask the global extruder what
         # the value is.
-        adhesion_extruder = self._global_container_stack.getProperty("adhesion_extruder_nr", "value")
+        skirt_brim_extruder_nr = self._global_container_stack.getProperty("skirt_brim_extruder_nr", "value")
         try:
-            adhesion_stack = self._global_container_stack.extruderList[int(adhesion_extruder)]
+            skirt_brim_stack = self._global_container_stack.extruderList[int(skirt_brim_extruder_nr)]
         except IndexError:
-            Logger.warning(f"Couldn't find extruder with index '{adhesion_extruder}', defaulting to 0 instead.")
-            adhesion_stack = self._global_container_stack.extruderList[0]
-        skirt_brim_line_width = adhesion_stack.getProperty("skirt_brim_line_width", "value")
+            Logger.warning(f"Couldn't find extruder with index '{skirt_brim_extruder_nr}', defaulting to 0 instead.")
+            skirt_brim_stack = self._global_container_stack.extruderList[0]
+        skirt_brim_line_width = skirt_brim_stack.getProperty("skirt_brim_line_width", "value")
 
-        initial_layer_line_width_factor = adhesion_stack.getProperty("initial_layer_line_width_factor", "value")
+        initial_layer_line_width_factor = skirt_brim_stack.getProperty("initial_layer_line_width_factor", "value")
         # Use brim width if brim is enabled OR the prime tower has a brim.
         if adhesion_type == "brim":
-            brim_line_count = self._global_container_stack.getProperty("brim_line_count", "value")
-            bed_adhesion_size = skirt_brim_line_width * brim_line_count * initial_layer_line_width_factor / 100.0
+            brim_line_count = skirt_brim_stack.getProperty("brim_line_count", "value")
+            brim_gap = skirt_brim_stack.getProperty("brim_gap", "value")
+            bed_adhesion_size = brim_gap + skirt_brim_line_width * brim_line_count * initial_layer_line_width_factor / 100.0
 
             for extruder_stack in used_extruders:
                 bed_adhesion_size += extruder_stack.getProperty("skirt_brim_line_width", "value") * extruder_stack.getProperty("initial_layer_line_width_factor", "value") / 100.0
@@ -1120,8 +1122,8 @@ class BuildVolume(SceneNode):
             # We don't create an additional line for the extruder we're printing the brim with.
             bed_adhesion_size -= skirt_brim_line_width * initial_layer_line_width_factor / 100.0
         elif adhesion_type == "skirt":
-            skirt_distance = self._global_container_stack.getProperty("skirt_gap", "value")
-            skirt_line_count = self._global_container_stack.getProperty("skirt_line_count", "value")
+            skirt_distance = skirt_brim_stack.getProperty("skirt_gap", "value")
+            skirt_line_count = skirt_brim_stack.getProperty("skirt_line_count", "value")
 
             bed_adhesion_size = skirt_distance + (
                         skirt_brim_line_width * skirt_line_count) * initial_layer_line_width_factor / 100.0
@@ -1132,7 +1134,7 @@ class BuildVolume(SceneNode):
             # We don't create an additional line for the extruder we're printing the skirt with.
             bed_adhesion_size -= skirt_brim_line_width * initial_layer_line_width_factor / 100.0
         elif adhesion_type == "raft":
-            bed_adhesion_size = self._global_container_stack.getProperty("raft_margin", "value")
+            bed_adhesion_size = self._global_container_stack.getProperty("raft_margin", "value")  # Should refer to the raft extruder if set.
         elif adhesion_type == "none":
             bed_adhesion_size = 0
         else:
@@ -1213,14 +1215,14 @@ class BuildVolume(SceneNode):
         return max(min(value, max_value), min_value)
 
     _machine_settings = ["machine_width", "machine_depth", "machine_height", "machine_shape", "machine_center_is_zero"]
-    _skirt_settings = ["adhesion_type", "skirt_gap", "skirt_line_count", "skirt_brim_line_width", "brim_width", "brim_line_count", "raft_margin", "draft_shield_enabled", "draft_shield_dist", "initial_layer_line_width_factor"]
-    _raft_settings = ["adhesion_type", "raft_base_thickness", "raft_interface_thickness", "raft_surface_layers", "raft_surface_thickness", "raft_airgap", "layer_0_z_overlap"]
+    _skirt_settings = ["adhesion_type", "skirt_gap", "skirt_line_count", "skirt_brim_line_width", "brim_gap", "brim_width", "brim_line_count", "raft_margin", "draft_shield_enabled", "draft_shield_dist", "initial_layer_line_width_factor"]
+    _raft_settings = ["adhesion_type", "raft_base_thickness", "raft_interface_layers", "raft_interface_thickness", "raft_surface_layers", "raft_surface_thickness", "raft_airgap", "layer_0_z_overlap"]
     _extra_z_settings = ["retraction_hop_enabled", "retraction_hop"]
     _prime_settings = ["extruder_prime_pos_x", "extruder_prime_pos_y", "prime_blob_enable"]
     _tower_settings = ["prime_tower_enable", "prime_tower_size", "prime_tower_position_x", "prime_tower_position_y", "prime_tower_brim_enable"]
     _ooze_shield_settings = ["ooze_shield_enabled", "ooze_shield_dist"]
     _distance_settings = ["infill_wipe_dist", "travel_avoid_distance", "support_offset", "support_enable", "travel_avoid_other_parts", "travel_avoid_supports", "wall_line_count", "wall_line_width_0", "wall_line_width_x"]
-    _extruder_settings = ["support_enable", "support_bottom_enable", "support_roof_enable", "support_infill_extruder_nr", "support_extruder_nr_layer_0", "support_bottom_extruder_nr", "support_roof_extruder_nr", "brim_line_count", "adhesion_extruder_nr", "adhesion_type"] #Settings that can affect which extruders are used.
-    _limit_to_extruder_settings = ["wall_extruder_nr", "wall_0_extruder_nr", "wall_x_extruder_nr", "top_bottom_extruder_nr", "infill_extruder_nr", "support_infill_extruder_nr", "support_extruder_nr_layer_0", "support_bottom_extruder_nr", "support_roof_extruder_nr", "adhesion_extruder_nr"]
+    _extruder_settings = ["support_enable", "support_bottom_enable", "support_roof_enable", "support_infill_extruder_nr", "support_extruder_nr_layer_0", "support_bottom_extruder_nr", "support_roof_extruder_nr", "brim_line_count", "skirt_brim_extruder_nr", "raft_base_extruder_nr", "raft_interface_extruder_nr", "raft_surface_extruder_nr", "adhesion_type"] #Settings that can affect which extruders are used.
+    _limit_to_extruder_settings = ["wall_extruder_nr", "wall_0_extruder_nr", "wall_x_extruder_nr", "top_bottom_extruder_nr", "infill_extruder_nr", "support_infill_extruder_nr", "support_extruder_nr_layer_0", "support_bottom_extruder_nr", "support_roof_extruder_nr", "skirt_brim_extruder_nr", "raft_base_extruder_nr", "raft_interface_extruder_nr", "raft_surface_extruder_nr"]
     _material_size_settings = ["material_shrinkage_percentage", "material_shrinkage_percentage_xy", "material_shrinkage_percentage_z"]
     _disallowed_area_settings = _skirt_settings + _prime_settings + _tower_settings + _ooze_shield_settings + _distance_settings + _extruder_settings + _material_size_settings

@@ -1,8 +1,8 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject, QUrl
-from PyQt5.QtGui import QDesktopServices
+from PyQt6.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject, QUrl
+from PyQt6.QtGui import QDesktopServices
 from typing import Dict, Optional, TYPE_CHECKING
 import zipfile  # To export all materials in a .zip archive.
 
@@ -71,7 +71,7 @@ class CloudMaterialSync(QObject):
 
         sync_materials_message.addAction(
                 "sync",
-                name = catalog.i18nc("@action:button", "Sync materials with printers"),
+                name = catalog.i18nc("@action:button", "Sync materials"),
                 icon = "",
                 description = "Sync your newly installed materials with your printers.",
                 button_align = Message.ActionButtonAlignment.ALIGN_RIGHT

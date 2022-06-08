@@ -2,8 +2,8 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import copy  # To duplicate materials.
-from PyQt5.QtCore import pyqtSignal, pyqtSlot, QObject, QUrl
-from PyQt5.QtGui import QDesktopServices
+from PyQt6.QtCore import pyqtSignal, pyqtSlot, QObject, QUrl
+from PyQt6.QtGui import QDesktopServices
 from typing import Any, Dict, Optional, TYPE_CHECKING
 import uuid  # To generate new GUIDs for new materials.
 
@@ -45,8 +45,7 @@ class MaterialManagementModel(QObject):
         for package_id, package_data in application.getPackageManager().getPackagesInstalledOnStartup().items():
             if package_data["package_info"]["package_type"] == "material":
                 # At least one new material was installed
-                # TODO: This should be enabled again once CURA-8609 is merged
-                #self._showSyncNewMaterialsMessage()
+                self._showSyncNewMaterialsMessage()
                 break
 
     def _showSyncNewMaterialsMessage(self) -> None:
@@ -60,7 +59,7 @@ class MaterialManagementModel(QObject):
 
         sync_materials_message.addAction(
                 "sync",
-                name = catalog.i18nc("@action:button", "Sync materials with printers"),
+                name = catalog.i18nc("@action:button", "Sync materials"),
                 icon = "",
                 description = "Sync your newly installed materials with your printers.",
                 button_align = Message.ActionButtonAlignment.ALIGN_RIGHT
