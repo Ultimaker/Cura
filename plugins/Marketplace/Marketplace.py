@@ -41,6 +41,7 @@ class Marketplace(Extension, QObject):
 
         self._tab_shown: int = 0
         self._restart_needed = False
+        self.missingPackageDialog = None
 
     def getTabShown(self) -> int:
         return self._tab_shown
@@ -128,5 +129,5 @@ class Marketplace(Extension, QObject):
         :param ignore_warning_callback: A callback that gets executed when the user ignores the pop-up, to show them a
         warning.
         """
-        dialog = InstallMissingPackageDialog(packages_metadata, ignore_warning_callback)
-        dialog.show()
+        self.missingPackageDialog = InstallMissingPackageDialog(packages_metadata, ignore_warning_callback)
+        self.missingPackageDialog.show()
