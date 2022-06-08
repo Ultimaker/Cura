@@ -3,15 +3,15 @@
 
 import os.path
 from PyQt6.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject
-from typing import Optional, cast
+from typing import Callable, cast, Dict, List, Optional
 
 from cura.CuraApplication import CuraApplication  # Creating QML objects and managing packages.
-
 from UM.Extension import Extension  # We are implementing the main object of an extension here.
 from UM.PluginRegistry import PluginRegistry  # To find out where we are stored (the proper way).
 
-from .RemotePackageList import RemotePackageList  # To register this type with QML.
+from .InstallMissingPackagesDialog import InstallMissingPackageDialog  # To allow creating this dialogue from outside of the plug-in.
 from .LocalPackageList import LocalPackageList  # To register this type with QML.
+from .RemotePackageList import RemotePackageList  # To register this type with QML.
 
 
 class Marketplace(Extension, QObject):
@@ -118,3 +118,15 @@ class Marketplace(Extension, QObject):
     @pyqtProperty(bool, notify=showRestartNotificationChanged)
     def showRestartNotification(self) -> bool:
         return self._restart_needed
+
+    def showInstallMissingPackageDialog(self, packages_metadata: List[Dict[str, str]], ignore_warning_callback: Callable[[], None]) -> None:
+        """
+        Show a dialog that prompts the user to install certain packages.
+
+        The dialog is worded for packages that are missing and required for a certain operation.
+        :param packages_metadata: The metadata of the packages that are missing.
+        :param ignore_warning_callback: A callback that gets executed when the user ignores the pop-up, to show them a
+        warning.
+        """
+        dialog = InstallMissingPackageDialog(packages_metadata, ignore_warning_callback)
+        dialog.show()

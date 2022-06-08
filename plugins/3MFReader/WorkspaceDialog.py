@@ -1,19 +1,20 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from typing import List, Optional, Dict, cast
 
 from PyQt6.QtCore import pyqtSignal, QObject, pyqtProperty, QCoreApplication, QUrl
 from PyQt6.QtGui import QDesktopServices
+from typing import List, Optional, Dict, cast
 
-from UM.FlameProfiler import pyqtSlot
-from UM.PluginRegistry import PluginRegistry
-from UM.Application import Application
-from UM.i18n import i18nCatalog
-from UM.Settings.ContainerRegistry import ContainerRegistry
 from cura.Settings.GlobalStack import GlobalStack
-from plugins.Marketplace.InstallMissingPackagesDialog import InstallMissingPackageDialog
-from .UpdatableMachinesModel import UpdatableMachinesModel
+from UM.Application import Application
+from UM.FlameProfiler import pyqtSlot
+from UM.i18n import i18nCatalog
+from UM.Logger import Logger
 from UM.Message import Message
+from UM.PluginRegistry import PluginRegistry
+from UM.Settings.ContainerRegistry import ContainerRegistry
+
+from .UpdatableMachinesModel import UpdatableMachinesModel
 
 import os
 import threading
@@ -292,8 +293,10 @@ class WorkspaceDialog(QObject):
 
     @pyqtSlot()
     def installMissingPackages(self) -> None:
-        self._install_missing_package_dialog = InstallMissingPackageDialog(self._missing_package_metadata, self.showMissingMaterialsWarning)
-        self._install_missing_package_dialog.show()
+        marketplace_plugin = PluginRegistry.getInstance().getPluginObject("Marketplace")
+        if not marketplace_plugin:
+            Logger.warning("Could not show dialog to install missing plug-ins. Is Marketplace plug-in not available?")
+        marketplace_plugin.showInstallMissingPackageDialog(self._missing_package_metadata, self.showMissingMaterialsWarning)  # type: ignore
 
     def getResult(self) -> Dict[str, Optional[str]]:
         if "machine" in self._result and self.updatableMachinesModel.count <= 1:
