@@ -1,16 +1,17 @@
+# Copyright (c) 2022 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 import os
 
-from PyQt6.QtCore import QObject, pyqtSignal, pyqtProperty, QUrl
-from PyQt6.QtGui import QDesktopServices
+from PyQt6.QtCore import QObject, pyqtSignal, pyqtProperty
 from typing import Optional, List, Dict, cast, Callable
 from cura.CuraApplication import CuraApplication
 from UM.PluginRegistry import PluginRegistry
 from cura.CuraPackageManager import CuraPackageManager
-from UM.Message import Message
 from UM.i18n import i18nCatalog
 
 from UM.FlameProfiler import pyqtSlot
-from plugins.Marketplace.MissingPackageList import MissingPackageList
+from .MissingPackageList import MissingPackageList
 
 i18n_catalog = i18nCatalog("cura")
 
