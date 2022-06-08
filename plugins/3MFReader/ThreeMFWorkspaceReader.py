@@ -1255,8 +1255,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         try:
             package_metadata = json.loads(archive.open("Metadata/packages.json").read().decode("utf-8"))
             return package_metadata["packages"]
+        except KeyError:
+            Logger.warning("No package metadata was found in .3mf file.")
         except Exception:
             Logger.error("Failed to load packes metadata from .3mf file")
+
         return []
 
 
