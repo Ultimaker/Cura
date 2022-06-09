@@ -62,8 +62,11 @@ ListView
         hoverEnabled: true
         onClicked:
         {
-            packages.selectedPackage = model.package;
-            contextStack.push(packageDetailsComponent);
+            if (!model.package.isMissingPackageInformation)
+            {
+                packages.selectedPackage = model.package;
+                contextStack.push(packageDetailsComponent);
+            }
         }
 
         PackageCard

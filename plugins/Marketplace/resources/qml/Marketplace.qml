@@ -16,6 +16,10 @@ Window
 
     signal searchStringChanged(string new_search)
 
+    property alias showOnboadBanner: onBoardBanner.visible
+    property alias showSearchHeader: searchHeader.visible
+    property alias pageContentsSource: content.source
+
     minimumWidth: UM.Theme.getSize("modal_window_minimum").width
     minimumHeight: UM.Theme.getSize("modal_window_minimum").height
     width: minimumWidth
@@ -86,6 +90,7 @@ Window
 
             OnboardBanner
             {
+                id: onBoardBanner
                 visible: content.item && content.item.bannerVisible
                 text: content.item && content.item.bannerText
                 icon: content.item && content.item.bannerIcon
@@ -100,6 +105,7 @@ Window
             // Search & Top-Level Tabs
             Item
             {
+                id: searchHeader
                 implicitHeight: childrenRect.height
                 implicitWidth: parent.width - 2 * UM.Theme.getSize("default_margin").width
                 Layout.alignment: Qt.AlignHCenter
@@ -186,7 +192,7 @@ Window
             {
                 text: catalog.i18nc("@info", "Search in the browser")
                 iconSource: UM.Theme.getIcon("LinkExternal")
-                visible: pageSelectionTabBar.currentItem.hasSearch
+                visible: pageSelectionTabBar.currentItem.hasSearch && searchHeader.visible
                 isIconOnRightSide: true
                 height: fontMetrics.height
                 textFont: fontMetrics.font

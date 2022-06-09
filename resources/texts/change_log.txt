@@ -75,6 +75,7 @@ Ultimaker Cura 5.0 is now compatible with Apple M1.
 - Fixed a bug where travels would go through the model with printing PVA
 - Fixed a bug where Concentric ironing was affecting the print quality		
 - Fixed a bug where there were missing infill layers
+- Fixed AppRun permissions, contributed by probonopd
 
 * Printer definitions, profiles and materials:
 - Added Atom 3 and Atom 3 Lite printer definitions, contributed by Daniel-Kurth
