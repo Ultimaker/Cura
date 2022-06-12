@@ -7654,7 +7654,6 @@
                     "default_value": 100,
                     "type": "float",
                     "minimum_value": "5",
-                    "maximum_value": "100",
                     "minimum_value_warning": "20",
                     "maximum_value_warning": "100",
                     "enabled": "bridge_settings_enabled",
