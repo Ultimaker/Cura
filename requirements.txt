@@ -130,6 +130,12 @@ jeepney==0.7.1; \
     sys_platform=="linux" \
     --hash=sha256:1b5a0ea5c0e7b166b2f5895b91a08c14de8915afda4407fb5022a195224958ac \
     --hash=sha256:fa9e232dfa0c498bd0b8a3a73b8d8a31978304dcef0515adc859d4e096f96f4f
+SecretStorage==3.3.1 \
+    --hash=sha256:422d82c36172d88d6a0ed5afdec956514b189ddbfb72fefab0c8a1cee4eaf71f \
+    --hash=sha256:fd666c51a6bf200643495a04abb261f83229dcb6fd8472ec393df7ffc8b6f195
+keyring==23.0.1 \
+    --hash=sha256:045703609dd3fccfcdb27da201684278823b72af515aedec1a8515719a038cb8 \
+    --hash=sha256:8f607d7d1cc502c43a932a275a56fe47db50271904513a379d39df1af277ac48
 pywin32==303; \
     sys_platform=="win32" \
     --hash=sha256:51cb52c5ec6709f96c3f26e7795b0bf169ee0d8395b2c1d7eb2c029a5008ed51
