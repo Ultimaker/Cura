@@ -1,0 +1,24 @@
+"main":
+  git:
+    fdm_materials:
+      url: "https://github.com/Ultimaker/fdm_materials.git"
+      branch: "master"
+      directory: "resources/materials/fdm_materials"
+      private: False
+  conan:
+    curaengine: "curaengine/latest@ultimaker/cura-9365"
+    arcus: "arcus/latest@ultimaker/cura-9365"
+    savitar: "savitar/latest@ultimaker/cura-9365"
+    pynest2d: "pynest2d/latest@ultimaker/cura-9365"
+"5.1.0-alpha.1":
+  git:
+    fdm_materials:
+      url: "https://github.com/Ultimaker/fdm_materials.git"
+      branch: "5.1"
+      directory: "resources/materials/fdm_materials"
+      private: False
+  conan:
+    curaengine: "curaengine/latest@ultimaker/cura-9365"
+    arcus: "arcus/latest@ultimaker/cura-9365"
+    savitar: "savitar/latest@ultimaker/cura-9365"
+    pynest2d: "pynest2d/latest@ultimaker/cura-9365"

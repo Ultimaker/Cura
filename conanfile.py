@@ -50,8 +50,11 @@ class CuraConan(ConanFile):
     }
 
     def set_version(self):
-        if not self.version and "CURA_VERSION" in os.environ:
-            self.version = os.environ["CURA_VERSION"]
+        if not self.version:
+            if "CURA_VERSION" in os.environ:
+                self.version = os.environ["CURA_VERSION"]
+            else:
+                self.version = "main"
 
     @property
     def _cloud_api_root(self):
@@ -84,14 +87,28 @@ class CuraConan(ConanFile):
 
     def validate(self):
         if self.version:
-            if tools.Version(self.version) <= tools.Version("4"):
+            if self.version != "main" and tools.Version(self.version) <= tools.Version("4"):
                 raise ConanInvalidConfiguration("Only versions 5+ are support")
 
     def requirements(self):
-        self.requires("curaengine/latest@ultimaker/cura-9365")  # FIXME: change to ultimaker/stable once the curaengine PR for CURA-9365 has been merged
-        self.requires("arcus/latest@ultimaker/cura-9365")  # FIXME: change to ultimaker/stable once the arcus PR for CURA-9365 has been merged
-        self.requires("savitar/latest@ultimaker/cura-9365")  # FIXME: change to ultimaker/stable once the savitar PR for CURA-9365 has been merged
-        self.requires("pynest2d/latest@ultimaker/cura-9365")  # FIXME: change to ultimaker/stable once the pynest2d PR for CURA-9365 has been merged
+        for req in self.conan_data[self.version]["conan"].values():
+            self.requires(req)
+
+    def source(self):
+        username = os.environ.get("GIT_USERNAME", None)
+        password = os.environ.get("GIT_PASSWORD", None)
+        for git_src in self.conan_data[self.version]["git"].values():
+            folder = Path(self.source_folder, git_src["directory"])
+            should_clone = folder.exists()
+            git = tools.Git(folder = folder, username = username, password = password)
+            if should_clone:
+                git.checkout(git_src["branch"])
+            else:
+                if username and password:
+                    url = git.get_url_with_credentials(git_src["url"])
+                else:
+                    url = git_src["url"]
+                git.clone(url = url, branch = git_src["branch"], shallow = True)
 
     def generate(self):
         with open(Path(self.source_folder, "cura", "CuraVersion.py.jinja"), "r") as f:
@@ -101,7 +118,7 @@ class CuraConan(ConanFile):
             f.write(cura_version_py.render(
                 cura_app_name = self.name,
                 cura_app_display_name = self.options.display_name,
-                cura_version = self.version if self.version else "master",
+                cura_version = self.version if self.version else "main",
                 cura_build_type = "Enterprise" if self.options.enterprise else "",
                 cura_debug_mode = self.settings.build_type != "Release",
                 cura_cloud_api_root = self._cloud_api_root,
