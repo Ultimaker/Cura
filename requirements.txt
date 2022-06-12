@@ -127,7 +127,6 @@ typing-extensions==3.10.0.2 \
     --hash=sha256:49f75d16ff11f1cd258e1b988ccff82a3ca5570217d7ad8c5f48205dd99a677e \
     --hash=sha256:f1d25edafde516b146ecd0613dabcc61409817af4766fbbcfb8d1ad4ec441a34
 jeepney==0.7.1; \
-    sys_platform=="linux" \
     --hash=sha256:1b5a0ea5c0e7b166b2f5895b91a08c14de8915afda4407fb5022a195224958ac \
     --hash=sha256:fa9e232dfa0c498bd0b8a3a73b8d8a31978304dcef0515adc859d4e096f96f4f
 SecretStorage==3.3.1 \
