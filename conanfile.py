@@ -26,18 +26,16 @@ class CuraConan(ConanFile):
     generators = "VirtualPythonEnv"
     options = {
         "python_version": "ANY",
-        "enterprise": [True, False],
-        "staging": [True, False],
-        "external_engine": [True, False],
+        "enterprise": ["True", "False", "true", "false"],
+        "staging": ["True", "False", "true", "false"],
         "devtools": [True, False],
         "cloud_api_version": "ANY",
         "display_name": "ANY"
     }
     default_options = {
         "python_version": "system",
-        "enterprise": False,
-        "staging": False,
-        "external_engine": False,
+        "enterprise": "False",
+        "staging": "False",
         "devtools": False,
         "cloud_api_version": "1",
         "display_name": "Ultimaker Cura"
@@ -57,20 +55,28 @@ class CuraConan(ConanFile):
                 self.version = "main"
 
     @property
+    def _staging(self):
+        return self.options.staging in ["True", 'true']
+
+    @property
+    def _enterprise(self):
+        return self.options.enterprise in ["True", 'true']
+
+    @property
     def _cloud_api_root(self):
-        return "https://api-staging.ultimaker.com" if self.options.staging else "https://api.ultimaker.com"
+        return "https://api-staging.ultimaker.com" if self._staging else "https://api.ultimaker.com"
 
     @property
     def _cloud_account_api_root(self):
-        return "https://account-staging.ultimaker.com" if self.options.staging else "https://account.ultimaker.com"
+        return "https://account-staging.ultimaker.com" if self._staging else "https://account.ultimaker.com"
 
     @property
     def _marketplace_root(self):
-        return "https://marketplace-staging.ultimaker.com" if self.options.staging else "https://marketplace.ultimaker.com"
+        return "https://marketplace-staging.ultimaker.com" if self._staging else "https://marketplace.ultimaker.com"
 
     @property
     def _digital_factory_url(self):
-        return "https://digitalfactory-staging.ultimaker.com" if self.options.staging else "https://digitalfactory.ultimaker.com"
+        return "https://digitalfactory-staging.ultimaker.com" if self._staging else "https://digitalfactory.ultimaker.com"
 
     @property
     def requirements_txts(self):
@@ -119,7 +125,7 @@ class CuraConan(ConanFile):
                 cura_app_name = self.name,
                 cura_app_display_name = self.options.display_name,
                 cura_version = self.version if self.version else "main",
-                cura_build_type = "Enterprise" if self.options.enterprise else "",
+                cura_build_type = "Enterprise" if self._enterprise else "",
                 cura_debug_mode = self.settings.build_type != "Release",
                 cura_cloud_api_root = self._cloud_api_root,
                 cura_cloud_api_version = self.options.cloud_api_version,
