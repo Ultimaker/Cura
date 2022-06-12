@@ -1,6 +1,9 @@
 import os
+from pathlib import Path
 
 from platform import python_version
+
+from jinja2 import Template
 
 from conan import ConanFile
 from conans import tools
@@ -26,14 +29,18 @@ class CuraConan(ConanFile):
         "enterprise": [True, False],
         "staging": [True, False],
         "external_engine": [True, False],
-        "devtools": [True, False]
+        "devtools": [True, False],
+        "cloud_api_version": "ANY",
+        "display_name": "ANY"
     }
     default_options = {
         "python_version": "system",
         "enterprise": False,
         "staging": False,
         "external_engine": False,
-        "devtools": False
+        "devtools": False,
+        "cloud_api_version": "1",
+        "display_name": "Ultimaker Cura"
     }
     scm = {
         "type": "git",
@@ -41,6 +48,26 @@ class CuraConan(ConanFile):
         "url": "auto",
         "revision": "auto"
     }
+
+    def set_version(self):
+        if not self.version and "CURA_VERSION" in os.environ:
+            self.version = os.environ["CURA_VERSION"]
+
+    @property
+    def _cloud_api_root(self):
+        return "https://api-staging.ultimaker.com" if self.options.staging else "https://api.ultimaker.com"
+
+    @property
+    def _cloud_account_api_root(self):
+        return "https://account-staging.ultimaker.com" if self.options.staging else "https://account.ultimaker.com"
+
+    @property
+    def _marketplace_root(self):
+        return "https://marketplace-staging.ultimaker.com" if self.options.staging else "https://marketplace.ultimaker.com"
+
+    @property
+    def _digital_factory_url(self):
+        return "https://digitalfactory-staging.ultimaker.com" if self.options.staging else "https://digitalfactory.ultimaker.com"
 
     @property
     def requirements_txts(self):
@@ -67,7 +94,21 @@ class CuraConan(ConanFile):
         self.requires("pynest2d/latest@ultimaker/cura-9365")  # FIXME: change to ultimaker/stable once the pynest2d PR for CURA-9365 has been merged
 
     def generate(self):
-        pass
+        with open(Path(self.source_folder, "cura", "CuraVersion.py.jinja"), "r") as f:
+            cura_version_py = Template(f.read())
+
+        with open(Path(self.source_folder, "cura", "CuraVersion.py"), "w") as f:
+            f.write(cura_version_py.render(
+                cura_app_name = self.name,
+                cura_app_display_name = self.options.display_name,
+                cura_version = self.version if self.version else "master",
+                cura_build_type = "Enterprise" if self.options.enterprise else "",
+                cura_debug_mode = self.settings.build_type != "Release",
+                cura_cloud_api_root = self._cloud_api_root,
+                cura_cloud_api_version = self.options.cloud_api_version,
+                cura_cloud_account_api_root = self._cloud_account_api_root,
+                cura_marketplace_root = self._marketplace_root,
+                cura_digital_factory_url = self._digital_factory_url))
 
     def layout(self):
         self.folders.source = "."
