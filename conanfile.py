@@ -189,9 +189,9 @@ class CuraConan(ConanFile):
         self.folders.generators = os.path.join(self.folders.build, "conan")
 
         # FIXME: Once libCharon en Uranium are also Packages
-        self.runenv_info.append_path("PYTHONPATH", self.source_folder)
-        self.runenv_info.append_path("PYTHONPATH", str(Path(self.source_folder).parent.joinpath("uranium")))
-        self.runenv_info.append_path("PYTHONPATH", str(Path(self.source_folder).parent.joinpath("libcharon")))
+        self.runenv_info.append_path("PYTHONPATH", str(Path(__file__).parent))
+        self.runenv_info.append_path("PYTHONPATH", str(Path(__file__).parent.parent.joinpath("uranium")))
+        self.runenv_info.append_path("PYTHONPATH", str(Path(__file__).parent.parent.joinpath("libcharon")))
 
     def imports(self):
         self.copy("CuraEngine.exe", root_package = "curaengine", src = "@bindirs", dst = self.source_folder, keep_path = False)
