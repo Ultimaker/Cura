@@ -214,20 +214,14 @@
         "jerk_skirt_brim": {
             "minimum_value_warning": 20
         },
-        "support_pattern": {
-            "value": "'zigzag'"
-        },
         "support_wall_count": {
             "value": "1 if support_structure == 'tree' else 0"
         },
         "zig_zaggify_support": {
             "value": true
         },
-        "support_connect_zigzags": {
-            "value": true
-        },
         "support_infill_rate": {
-            "value": "80 if support_interface_enable else 15"
+            "value": "80 if gradual_support_infill_steps != 0 else 15"
         },
         "gradual_support_infill_steps": {
             "value": "2 if support_interface_enable else 0"
@@ -248,13 +242,13 @@
             "value": "wall_line_width_0"
         },
         "minimum_support_area": {
-            "value": "pow((2 + support_offset), 2)"
+            "value": "(2 + support_offset)**2"
         },
         "support_interface_skip_height": {
             "value": "layer_height"
         },
         "support_interface_pattern": {
-            "value": "'zigzag'"
+            "value": "'concentric'"
         },
         "support_interface_offset": {
             "value": "support_offset"
