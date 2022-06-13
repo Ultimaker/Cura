@@ -100,7 +100,7 @@ class CuraConan(ConanFile):
         for req in self.conan_data[self.version]["conan"].values():
             self.requires(req)
 
-    def source(self):
+    def generate(self):
         for source in self.conan_data[self.version]["sources"].values():
             src_path = Path(self.source_folder, source["root"], source["src"])
             if not src_path.exists():
@@ -120,7 +120,6 @@ class CuraConan(ConanFile):
             else:
                 shutil.copytree(src_path, dst_root_path)
 
-    def generate(self):
         with open(Path(self.source_folder, "cura", "CuraVersion.py.jinja"), "r") as f:
             cura_version_py = Template(f.read())
 
