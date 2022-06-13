@@ -31,6 +31,17 @@ Item
         sourceSize.width: width
         sourceSize.height: height
     }
+
+    UM.Label
+    {
+        id: extra_version_label
+        anchors.left: logo.right
+        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+        anchors.verticalCenter: parent.verticalCenter
+
+        text: "BUILD: " + CuraApplication.extraVersionText
+    }
+
     ButtonGroup
     {
         buttons: stagesListContainer.children

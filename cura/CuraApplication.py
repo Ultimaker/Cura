@@ -271,6 +271,10 @@ class CuraApplication(QtApplication):
     def ultimakerDigitalFactoryUrl(self) -> str:
         return UltimakerCloudConstants.CuraDigitalFactoryURL
 
+    @pyqtProperty(str, constant = True)
+    def extraVersionText(self) -> str:
+        return ApplicationMetadata.CuraBuildType if ApplicationMetadata.IsAlternateVersion else ""
+
     def addCommandLineOptions(self):
         """Adds command line options to the command line parser.
 
