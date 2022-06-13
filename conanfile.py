@@ -1,4 +1,5 @@
 import os
+import shutil
 from pathlib import Path
 
 from platform import python_version
@@ -22,7 +23,6 @@ class CuraConan(ConanFile):
     build_policy = "missing"
     exports = "LICENSE*"
     settings = "os", "compiler", "build_type", "arch"
-    short_paths = True
     generators = "VirtualPythonEnv"
     options = {
         "python_version": "ANY",
@@ -101,20 +101,24 @@ class CuraConan(ConanFile):
             self.requires(req)
 
     def source(self):
-        username = os.environ.get("GIT_USERNAME", None)
-        password = os.environ.get("GIT_PASSWORD", None)
-        for git_src in self.conan_data[self.version]["git"].values():
-            folder = Path(self.source_folder, git_src["directory"])
-            should_clone = folder.exists()
-            git = tools.Git(folder = folder, username = username, password = password)
-            if should_clone:
-                git.checkout(git_src["branch"])
+        for source in self.conan_data[self.version]["sources"].values():
+            src_path = Path(self.source_folder, source["root"], source["src"])
+            if not src_path.exists():
+                continue
+            dst_root_path = Path(self.source_folder, source["dst"])
+            if dst_root_path.exists():
+                shutil.rmtree(dst_root_path, ignore_errors = True)
+            dst_root_path.mkdir(parents = True)
+            if "filter" in source:
+                for pattern in source["filter"]:
+                    for file in src_path.glob(pattern):
+                        rel_file = file.relative_to(src_path)
+                        dst_file = dst_root_path.joinpath(rel_file)
+                        if not dst_file.parent.exists():
+                            dst_file.parent.mkdir(parents = True)
+                        shutil.copy(file, dst_file)
             else:
-                if username and password:
-                    url = git.get_url_with_credentials(git_src["url"])
-                else:
-                    url = git_src["url"]
-                git.clone(url = url, branch = git_src["branch"], shallow = True)
+                shutil.copytree(src_path, dst_root_path)
 
     def generate(self):
         with open(Path(self.source_folder, "cura", "CuraVersion.py.jinja"), "r") as f:
@@ -133,14 +137,61 @@ class CuraConan(ConanFile):
                 cura_marketplace_root = self._marketplace_root,
                 cura_digital_factory_url = self._digital_factory_url))
 
+        if self.options.devtools:
+            # Create the Ultimaker-Cura.spec based on the data in the conandata.yml
+            with open(Path(self.source_folder, "Ultimaker-Cura.spec.jinja"), "r") as f:
+                pyinstaller = Template(f.read())
+
+            pyinstaller_metadata = self.conan_data[self.version]["pyinstaller"]
+            datas = []
+            for data in pyinstaller_metadata["datas"].values():
+                if "package" in data:  # get the paths from conan package
+                    src_path = Path(self.deps_cpp_info[data["package"]].rootpath, data["src"])
+                elif "root" in data:  # get the paths relative from the sourcefolder
+                    src_path = Path(self.source_folder, data["root"], data["src"])
+                else:
+                    continue
+                if src_path.exists():
+                    datas.append((str(src_path), data["dst"]))
+
+            binaries = []
+            for binary in pyinstaller_metadata["binaries"].values():
+                if "package" in binary:  # get the paths from conan package
+                    src_path = Path(self.deps_cpp_info[binary["package"]].rootpath, binary["src"])
+                elif "root" in binary:  # get the paths relative from the sourcefolder
+                    src_path = Path(self.source_folder, binary["root"], binary["src"])
+                else:
+                    continue
+                if not src_path.exists():
+                    continue
+                for bin in src_path.glob(binary["binary"] + ".*[exe|dll|so|dylib]"):
+                    binaries.append((str(bin), binary["dst"]))
+                for bin in src_path.glob(binary["binary"]):
+                    binaries.append((str(bin), binary["dst"]))
+
+            pathex = [str(Path(self.source_folder, p)) for p in pyinstaller_metadata["pathex"]]
+
+            with open(Path(self.source_folder, "Ultimaker-Cura.spec"), "w") as f:
+                f.write(pyinstaller.render(
+                    name = str(self.options.display_name).replace(" ", "-"),
+                    entrypoint = str(Path(self.source_folder, "cura_app.py")),
+                    datas = datas,
+                    binaries = binaries,
+                    hiddenimports = pyinstaller_metadata["hiddenimports"],
+                    collect_all = pyinstaller_metadata["collect_all"],
+                    pathex = pathex,
+                    icon = str(Path(self.source_folder, pyinstaller_metadata["icon"]))
+                ))
+
     def layout(self):
         self.folders.source = "."
         self.folders.build = "venv"
         self.folders.generators = os.path.join(self.folders.build, "conan")
 
         # FIXME: Once libCharon en Uranium are also Packages
-        if "PYTHONPATH" in os.environ:
-            self.runenv_info.append_path("PYTHONPATH", os.environ["PYTHONPATH"])
+        self.runenv_info.append_path("PYTHONPATH", self.source_folder)
+        self.runenv_info.append_path("PYTHONPATH", str(Path(self.source_folder).parent.joinpath("uranium")))
+        self.runenv_info.append_path("PYTHONPATH", str(Path(self.source_folder).parent.joinpath("libcharon")))
 
     def imports(self):
         self.copy("CuraEngine.exe", root_package = "curaengine", src = "@bindirs", dst = self.source_folder, keep_path = False)

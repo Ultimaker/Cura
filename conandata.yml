@@ -1,24 +1,138 @@
 "dev":
-  git:
-    fdm_materials:
-      url: "https://github.com/Ultimaker/fdm_materials.git"
-      branch: "master"
-      directory: "resources/materials/fdm_materials"
-      private: False
   conan:
     curaengine: "curaengine/latest@ultimaker/cura-9365"
     arcus: "arcus/latest@ultimaker/cura-9365"
     savitar: "savitar/latest@ultimaker/cura-9365"
     pynest2d: "pynest2d/latest@ultimaker/cura-9365"
+  sources:
+    fdm_materials:
+      root: "../fdm_materials"
+      src: "."
+      dst: "resources/materials/fdm_materials"
+      filter: [ "**/*.fdm_material", "**/*.sig" ]
+  pyinstaller:
+    datas:
+      cura_plugins:
+        root: "."
+        src: "plugins"
+        dst: "share/cura/plugins"
+      cura_resources:
+        root: "."
+        src: "resources"
+        dst: "share/cura/resources"
+      uranium_plugins:
+        root: "../uranium"
+        src: "plugins"
+        dst: "share/uranium/plugins"
+      uranium_resources:
+        root: "../uranium"
+        src: "resources"
+        dst: "share/uranium/resources"
+      uranium_um_qt_qml_um:
+        root: "../uranium"
+        src: "UM/Qt/qml/UM"
+        dst: "PyQt6/qt6/qml/UM"
+      cura_binary_data:
+        root: "../cura-binary-data"
+        src: "cura/resources"
+        dst: "share/cura/resources"
+      uranium_binary_data:
+        root: "../cura-binary-data"
+        src: "uranium/resources"
+        dst: "share/uranium/resources"
+    binaries:
+      curaengine:
+        package: "curaengine"
+        src: "bin"
+        dst: "."
+        binary: "CuraEngine"
+    hiddenimports:
+      - "pySavitar"
+      - "pyArcus"
+      - "pynest2d"
+      - "PyQt6.QtNetwork"
+      - "logging.handlers"
+      - "zeroconf"
+      - "fcntl"
+    collect_all:
+      - "cura"
+      - "UM"
+      - "serial"
+      - "Charon"
+      - "sqlite3"
+      - "trimesh"
+      - "win32ctypes"
+    pathex:
+      - "."
+      - "../uranium"
+      - "../libcharon"
+    icon: "./icons/Cura.ico"
 "5.1.0-alpha.1":
-  git:
-    fdm_materials:
-      url: "https://github.com/Ultimaker/fdm_materials.git"
-      branch: "5.1"
-      directory: "resources/materials/fdm_materials"
-      private: False
   conan:
     curaengine: "curaengine/latest@ultimaker/cura-9365"
     arcus: "arcus/latest@ultimaker/cura-9365"
     savitar: "savitar/latest@ultimaker/cura-9365"
     pynest2d: "pynest2d/latest@ultimaker/cura-9365"
+  sources:
+    fdm_materials:
+      root: "../fdm_materials"
+      src: "."
+      dst: "resources/materials/fdm_materials"
+      filter: [ "**/*.fdm_material", "**/*.sig" ]
+  pyinstaller:
+    datas:
+      cura_plugins:
+        root: "."
+        src: "plugins"
+        dst: "share/cura/plugins"
+      cura_resources:
+        root: "."
+        src: "resources"
+        dst: "share/cura/resources"
+      uranium_plugins:
+        root: "../uranium"
+        src: "plugins"
+        dst: "share/uranium/plugins"
+      uranium_resources:
+        root: "../uranium"
+        src: "resources"
+        dst: "share/uranium/resources"
+      uranium_um_qt_qml_um:
+        root: "../uranium"
+        src: "UM/Qt/qml/UM"
+        dst: "PyQt6/qt6/qml/UM"
+      cura_binary_data:
+        root: "../cura-binary-data"
+        src: "cura/resources"
+        dst: "share/cura/resources"
+      uranium_binary_data:
+        root: "../cura-binary-data"
+        src: "uranium/resources"
+        dst: "share/uranium/resources"
+    binaries:
+      curaengine:
+        package: "curaengine"
+        src: "bin"
+        dst: "."
+        binary: "CuraEngine"
+    hiddenimports:
+      - "pySavitar"
+      - "pyArcus"
+      - "pynest2d"
+      - "PyQt6.QtNetwork"
+      - "logging.handlers"
+      - "zeroconf"
+      - "fcntl"
+    collect_all:
+      - "cura"
+      - "UM"
+      - "serial"
+      - "Charon"
+      - "sqlite3"
+      - "trimesh"
+      - "win32ctypes"
+    pathex:
+      - "."
+      - "../uranium"
+      - "../libcharon"
+    icon: "./icons/Cura.ico"
