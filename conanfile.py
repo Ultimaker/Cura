@@ -52,7 +52,7 @@ class CuraConan(ConanFile):
             if "CURA_VERSION" in os.environ:
                 self.version = os.environ["CURA_VERSION"]
             else:
-                self.version = "main"
+                self.version = "dev"
 
     @property
     def _staging(self):
@@ -93,7 +93,7 @@ class CuraConan(ConanFile):
 
     def validate(self):
         if self.version:
-            if self.version != "main" and tools.Version(self.version) <= tools.Version("4"):
+            if self.version != "dev" and tools.Version(self.version) <= tools.Version("4"):
                 raise ConanInvalidConfiguration("Only versions 5+ are support")
 
     def requirements(self):

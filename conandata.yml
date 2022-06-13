@@ -1,4 +1,4 @@
-"main":
+"dev":
   git:
     fdm_materials:
       url: "https://github.com/Ultimaker/fdm_materials.git"
