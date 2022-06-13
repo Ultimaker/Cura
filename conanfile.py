@@ -47,6 +47,14 @@ class CuraConan(ConanFile):
         "revision": "auto"
     }
 
+    @property
+    def conandata_version(self):
+        version = tools.Version(self.version)
+        version = f"{version.major}.{version.minor}.{version.patch}-{version.prerelease}"
+        if version in self.conan_data:
+            return version
+        return "dev"
+
     def set_version(self):
         if not self.version:
             if "CURA_VERSION" in os.environ:
@@ -97,11 +105,11 @@ class CuraConan(ConanFile):
                 raise ConanInvalidConfiguration("Only versions 5+ are support")
 
     def requirements(self):
-        for req in self.conan_data[self.version]["conan"].values():
+        for req in self.conan_data[self.conandata_version]["conan"].values():
             self.requires(req)
 
     def generate(self):
-        for source in self.conan_data[self.version]["sources"].values():
+        for source in self.conan_data[self.conandata_version]["sources"].values():
             src_path = Path(self.source_folder, source["root"], source["src"])
             if not src_path.exists():
                 continue
@@ -127,7 +135,7 @@ class CuraConan(ConanFile):
             f.write(cura_version_py.render(
                 cura_app_name = self.name,
                 cura_app_display_name = self.options.display_name,
-                cura_version = self.version if self.version else "main",
+                cura_version = self.version if self.version else "dev",
                 cura_build_type = "Enterprise" if self._enterprise else "",
                 cura_debug_mode = self.settings.build_type != "Release",
                 cura_cloud_api_root = self._cloud_api_root,
@@ -141,7 +149,7 @@ class CuraConan(ConanFile):
             with open(Path(self.source_folder, "Ultimaker-Cura.spec.jinja"), "r") as f:
                 pyinstaller = Template(f.read())
 
-            pyinstaller_metadata = self.conan_data[self.version]["pyinstaller"]
+            pyinstaller_metadata = self.conan_data[self.conandata_version]["pyinstaller"]
             datas = []
             for data in pyinstaller_metadata["datas"].values():
                 if "package" in data:  # get the paths from conan package

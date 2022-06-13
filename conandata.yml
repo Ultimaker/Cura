@@ -67,7 +67,7 @@
       - "../uranium"
       - "../libcharon"
     icon: "./icons/Cura.ico"
-"5.1.0-alpha.1":
+"5.1.0-CURA-9365":
   conan:
     curaengine: "curaengine/latest@ultimaker/cura-9365"
     arcus: "arcus/latest@ultimaker/cura-9365"
