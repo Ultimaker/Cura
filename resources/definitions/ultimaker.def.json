@@ -50,23 +50,29 @@
         "wall_thickness": {
             "value": "wall_line_width_0 + wall_line_width_x"
         },
-        "infill_before_walls": {
-            "value": "False"
-        },
         "infill_material_flow": {
             "value": "(1.95-infill_sparse_density / 100 if infill_sparse_density > 95 else 1) * material_flow"
         },
         "retraction_combing": {
             "value": "'no_outer_surfaces'"
         },
+        "retraction_count_max": {
+            "value": 25
+        },
+        "retraction_extrusion_window": {
+            "value": 1
+        },
         "roofing_layer_count": {
-            "value": "0"
+            "value": "1"
         },
         "roofing_material_flow": {
             "value": "material_flow"
         },
         "skin_material_flow": {
-            "value": "0.97 * material_flow"
+            "value": "0.95 * material_flow"
+        },
+        "support_interface_material_flow": {
+            "value": "skin_material_flow"
         },
         "skin_monotonic" : {
             "value": true
@@ -89,11 +95,124 @@
         "meshfix_maximum_deviation": {
             "value": "machine_nozzle_size / 10"
         },
-        "jerk_travel": {
-            "value": "jerk_print"
+        "jerk_travel_enabled": {
+            "value": false
+        },
+        "acceleration_travel_enabled": {
+            "value": false
         },
         "acceleration_travel": {
             "value": "acceleration_wall"
+        },
+        "skin_edge_support_thickness": {
+            "value": "4 * layer_height if infill_sparse_density < 30 else 0"
+        },
+        "bridge_settings_enabled": {
+            "value": false
+        },
+        "bridge_wall_min_length": {
+            "value": 0
+        },
+        "bridge_skin_support_threshold": {
+            "value": 50
+        },
+        "bridge_sparse_infill_max_density": {
+            "value": 0
+        },
+        "bridge_wall_coast": {
+            "value": 0
+        },
+        "bridge_wall_speed": {
+            "value": "speed_wall"
+        },
+        "bridge_wall_material_flow": {
+            "value": "wall_material_flow"
+        },
+        "bridge_skin_speed": {
+            "value": "speed_topbottom"
+        },
+        "bridge_skin_material_flow": {
+            "value": "skin_material_flow"
+        },
+        "bridge_skin_density": {
+            "value": "80"
+        },
+        "bridge_fan_speed": {
+             "value": "cool_fan_speed_max"
+        },
+        "bridge_enable_more_layers": {
+            "value": false
+        },
+        "bridge_skin_speed_2": {
+            "value": "speed_topbottom"
+        },
+        "bridge_skin_material_flow_2": {
+            "value": "skin_material_flow"
+        },
+        "bridge_skin_density_2": {
+            "value": 100
+        },
+        "bridge_fan_speed_2": {
+            "value": "cool_fan_speed_min"
+        },
+        "bridge_skin_speed_3": {
+             "value": "speed_topbottom"
+        },
+        "bridge_skin_material_flow_3": {
+            "value": "skin_material_flow"
+        },
+        "bridge_skin_density_3": {
+             "value": 100
+        },
+        "bridge_fan_speed_3": {
+             "value": "cool_fan_speed_min"
+        },
+        "jerk_print": {
+            "value": "20",
+            "minimum_value_warning": 20
+        },
+        "jerk_infill": {
+            "minimum_value_warning": 20
+        },
+        "jerk_wall": {
+            "minimum_value_warning": 20
+        },
+        "jerk_wall_0": {
+            "minimum_value_warning": 20
+        },
+        "jerk_roofing": {
+            "minimum_value_warning": 20
+        },
+        "jerk_topbottom": {
+            "minimum_value_warning": 20
+        },
+        "jerk_support": {
+            "minimum_value_warning": 20
+        },
+        "jerk_support_infill": {
+            "minimum_value_warning": 20
+        },
+        "jerk_support_interface": {
+            "minimum_value_warning": 20
+        },
+        "jerk_prime_tower": {
+            "minimum_value_warning": 20
+        },
+        "jerk_layer_0": {
+            "minimum_value_warning": 20
+        },
+        "jerk_print_layer_0": {
+            "minimum_value_warning": 20
+        },
+        "jerk_travel": {
+            "value": "jerk_print",
+            "minimum_value_warning": 20
+        },
+        "jerk_travel_layer_0": {
+            "minimum_value_warning": 20
+        },
+        "jerk_skirt_brim": {
+            "minimum_value_warning": 20
         }
     }
 }

@@ -210,12 +210,11 @@ Item
         width: toolHint.width + UM.Theme.getSize("default_margin").width
         height: toolHint.height;
         color: UM.Theme.getColor("tooltip")
-        Label
+        UM.Label
         {
             id: toolHint
             text: UM.ActiveTool.properties.getValue("ToolHint") != undefined ? UM.ActiveTool.properties.getValue("ToolHint") : ""
             color: UM.Theme.getColor("tooltip_text")
-            font: UM.Theme.getFont("default")
             anchors.horizontalCenter: parent.horizontalCenter
         }
 

@@ -45,14 +45,13 @@ Item
             iconSize: height - leftPadding * 2
         }
 
-        Label
+        UM.Label
         {
             Layout.alignment: Qt.AlignmentFlag.AlignVCenter
             Layout.fillWidth: true
 
             text: detailPage.title
             font: UM.Theme.getFont("large")
-            color: UM.Theme.getColor("text")
         }
     }
 
