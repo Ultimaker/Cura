@@ -189,6 +189,9 @@ class SolidView(View):
                 self._xray_composite_shader.setUniformValue("u_background_color", Color(*theme.getColor("viewport_background").getRgb()))
                 self._xray_composite_shader.setUniformValue("u_outline_color", Color(*theme.getColor("model_selection_outline").getRgb()))
                 self._xray_composite_shader.setUniformValue("u_flat_error_color_mix", 0.)  # Don't show flat error color in solid-view.
+                from cura import ApplicationMetadata
+                if ApplicationMetadata.IsAlternateVersion:
+                    self._xray_composite_shader.setUniformValue("u_background_color_alt", Color(0.0, 0.05, 0.15))
 
             renderer = self.getRenderer()
             if not self._composite_pass or not 'xray' in self._composite_pass.getLayerBindings():

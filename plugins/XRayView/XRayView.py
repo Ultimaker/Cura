@@ -95,6 +95,9 @@ class XRayView(CuraView):
                 self._xray_composite_shader.setUniformValue("u_background_color", Color(*theme.getColor("viewport_background").getRgb()))
                 self._xray_composite_shader.setUniformValue("u_outline_color", Color(*theme.getColor("model_selection_outline").getRgb()))
                 self._xray_composite_shader.setUniformValue("u_flat_error_color_mix", 1.)  # Show flat error color _only_ in xray-view.
+                from cura import ApplicationMetadata
+                if ApplicationMetadata.IsAlternateVersion:
+                    self._xray_composite_shader.setUniformValue("u_background_color_alt", Color(0.0, 0.05, 0.15))
 
             if not self._composite_pass:
                 self._composite_pass = self.getRenderer().getRenderPass("composite")

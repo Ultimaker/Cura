@@ -658,6 +658,9 @@ class SimulationView(CuraView):
                 if theme is not None:
                     self._simulationview_composite_shader.setUniformValue("u_background_color", Color(*theme.getColor("viewport_background").getRgb()))
                     self._simulationview_composite_shader.setUniformValue("u_outline_color", Color(*theme.getColor("model_selection_outline").getRgb()))
+                from cura import ApplicationMetadata
+                if ApplicationMetadata.IsAlternateVersion:
+                    self._xray_composite_shader.setUniformValue("u_background_color_alt", Color(0.0, 0.05, 0.15))
 
             if not self._composite_pass:
                 self._composite_pass = cast(CompositePass, renderer.getRenderPass("composite"))

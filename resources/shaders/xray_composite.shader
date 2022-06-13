@@ -29,6 +29,7 @@ fragment =
     uniform float u_outline_strength;
     uniform vec4 u_outline_color;
     uniform vec4 u_background_color;
+    uniform vec4 u_background_color_alt;
     uniform float u_xray_error_strength;
     uniform float u_flat_error_color_mix;
 
@@ -60,7 +61,7 @@ fragment =
         kernel[3] = 1.0; kernel[4] = -4.0; kernel[5] = 1.0;
         kernel[6] = 0.0; kernel[7] = 1.0; kernel[8] = 0.0;
 
-        vec4 result = u_background_color;
+        vec4 result = fract((v_uvs.x + v_uvs.y) * 20.0) < 0.5 ? u_background_color : u_background_color - u_background_color_alt;
         vec4 layer0 = texture2D(u_layer0, v_uvs);
 
         float hue_shift = (layer0.a - 0.333) * 6.2831853;
@@ -122,6 +123,7 @@ fragment41core =
     uniform float u_outline_strength;
     uniform vec4 u_outline_color;
     uniform vec4 u_background_color;
+    uniform vec4 u_background_color_alt;
     uniform float u_xray_error_strength;
     uniform float u_flat_error_color_mix;
 
@@ -154,7 +156,7 @@ fragment41core =
         kernel[3] = 1.0; kernel[4] = -4.0; kernel[5] = 1.0;
         kernel[6] = 0.0; kernel[7] = 1.0; kernel[8] = 0.0;
 
-        vec4 result = u_background_color;
+        vec4 result = fract((v_uvs.x + v_uvs.y) * 20.0) < 0.5 ? u_background_color : u_background_color - u_background_color_alt;
         vec4 layer0 = texture(u_layer0, v_uvs);
 
         float hue_shift = (layer0.a - 0.333) * 6.2831853;
@@ -196,6 +198,7 @@ u_layer0 = 0
 u_layer1 = 1
 u_layer2 = 2
 u_background_color = [0.965, 0.965, 0.965, 1.0]
+u_background_color_alt = [0.0, 0.0, 0.0, 0.0]
 u_outline_strength = 1.0
 u_outline_color = [0.05, 0.66, 0.89, 1.0]
 u_flat_error_color_mix = 0.5
