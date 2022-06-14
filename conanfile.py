@@ -188,7 +188,7 @@ class CuraConan(ConanFile):
                     hiddenimports = pyinstaller_metadata["hiddenimports"],
                     collect_all = pyinstaller_metadata["collect_all"],
                     pathex = pathex,
-                    icon = str(Path(self.source_folder, pyinstaller_metadata["icon"]))
+                    icon = pyinstaller_metadata["icon"][str(self.settings.os)]
                 ))
 
     def layout(self):
