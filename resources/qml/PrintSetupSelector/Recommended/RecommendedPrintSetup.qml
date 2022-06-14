@@ -3,8 +3,8 @@
 
 import QtQuick 2.10
 
-import UM 1.2 as UM
-import Cura 1.0 as Cura
+import UM 1.6 as UM
+import Cura 1.6 as Cura
 
 Item
 {
@@ -13,11 +13,11 @@ Item
     height: childrenRect.height + 2 * padding
 
     property bool settingsEnabled: Cura.ExtruderManager.activeExtruderStackId || extrudersEnabledCount.properties.value == 1
-    property real padding: UM.Theme.getSize("thick_margin").width
+    property real padding: UM.Theme.getSize("default_margin").width
 
     Column
     {
-        spacing: UM.Theme.getSize("wide_margin").height
+        spacing: UM.Theme.getSize("default_margin").height
 
         anchors
         {
@@ -30,11 +30,26 @@ Item
         // TODO
         property real firstColumnWidth: Math.round(width / 3)
 
+        UM.Label
+        {
+            text: catalog.i18nc("@label", "Profiles")
+            font: UM.Theme.getFont("medium")
+        }
+
         RecommendedQualityProfileSelector
         {
             width: parent.width
-            // TODO Create a reusable component with these properties to not define them separately for each component
-            labelColumnWidth: parent.firstColumnWidth
+        }
+
+        RecommendedResolutionSelector
+        {
+            width: parent.width
+        }
+
+        UM.Label
+        {
+            text: catalog.i18nc("@label", "Print settings")
+            font: UM.Theme.getFont("medium")
         }
 
         RecommendedInfillDensitySelector
