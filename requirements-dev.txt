@@ -1,2 +1,3 @@
 pytest
 pyinstaller
+sip==6.5.1
