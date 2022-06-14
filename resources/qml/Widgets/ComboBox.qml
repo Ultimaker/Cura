@@ -164,4 +164,9 @@ ComboBox
             text: delegateLabel.truncated ? delegateItem.text : ""
         }
     }
+
+    function pulse()
+    {
+        //TODO: Initiate a pulse of colour.
+    }
 }

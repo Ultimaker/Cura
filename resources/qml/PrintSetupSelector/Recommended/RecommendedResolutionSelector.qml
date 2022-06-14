@@ -8,9 +8,11 @@ import Cura 1.7 as Cura
 
 Item
 {
+    id: recommendedResolutionSelector
     height: childrenRect.height
 
     property real labelColumnWidth: Math.round(width / 3)
+    property string _previousResolution: Cura.MachineManager.activeQualityType  //Internal variable to detect changes.
 
     Cura.IconWithText
     {
@@ -61,6 +63,19 @@ Item
         {
             var selected_item = model.getItem(currentIndex)
             Cura.IntentManager.selectIntent(selected_item.intent_category, selected_item.quality_type)
+        }
+
+        Connections
+        {
+            target: Cura.IntentManager
+            function onIntentCategoryChanged()
+            {
+                if(recommendedResolutionSelector._previousResolution !== Cura.MachineManager.activeQualityType)
+                {
+                    visibilityPreset.pulse();
+                }
+                recommendedResolutionSelector._previousResolution = Cura.MachineManager.activeQualityType;
+            }
         }
     }
 }
