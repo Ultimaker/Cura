@@ -16,9 +16,9 @@ Rectangle
     Layout.fillWidth: true
     color: mouseArea.containsMouse || selected ? UM.Theme.getColor("um_blue_1") : UM.Theme.getColor("background_1")
 
-    property alias iconSource: intentIcon.source
-    property alias text: qualityLabel.text
     property bool selected: false
+    property string profileName: ""
+    property string icon: ""
 
     signal clicked()
 
@@ -38,21 +38,52 @@ Rectangle
             top: parent.top
             bottom: qualityLabel.top
             horizontalCenter: parent.horizontalCenter
+            topMargin: UM.Theme.getSize("narrow_margin").height
         }
 
-        UM.ColorImage
+        Item
         {
             id: intentIcon
             width: UM.Theme.getSize("recommended_button_icon").width
-            height: width
-            anchors.centerIn: parent
-            color: UM.Theme.getColor("icon")
+            height: UM.Theme.getSize("recommended_button_icon").height
+            UM.ColorImage
+            {
+                anchors.fill: parent
+                anchors.centerIn: parent
+                visible: icon != ""
+                source: UM.Theme.getIcon(icon)
+                color: UM.Theme.getColor("icon")
+            }
+
+            Rectangle
+            {
+                id: circle
+                anchors.fill: parent
+                radius: width
+                anchors.verticalCenter: parent.verticalCenter
+                visible: icon == ""
+                color: transparent
+                border.width: UM.Theme.getSize("thick_lining").width
+                border.color: UM.Theme.getColor("text")
+
+                UM.Label
+                {
+                    id: initialLabel
+                    anchors.centerIn: parent
+                    text: profileName.charAt(0).toUpperCase()
+                    font: UM.Theme.getFont("small_bold")
+                    horizontalAlignment: Text.AlignHCenter
+                }
+            }
+
+
         }
     }
 
     UM.Label
     {
         id: qualityLabel
+        text: profileName
         anchors
         {
             bottom: parent.bottom

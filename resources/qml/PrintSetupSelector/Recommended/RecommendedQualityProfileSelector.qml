@@ -25,8 +25,8 @@ Item
 
             RecommendedQualityProfileSelectorButton
             {
-                text: model.name
-                iconSource: UM.Theme.getIcon(model.icon)
+                profileName: model.name
+                icon: model.icon
 
 
                 selected: Cura.MachineManager.activeIntentCategory == model.intent_category

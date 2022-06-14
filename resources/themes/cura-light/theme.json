@@ -133,6 +133,11 @@
             "weight": 400,
             "family": "Noto Sans"
         },
+        "small_bold": {
+            "size": 0.9,
+            "weight": 700,
+            "family": "Noto Sans"
+        },
         "small_ja_JP": {
             "size": 0.9,
             "weight": 400,
