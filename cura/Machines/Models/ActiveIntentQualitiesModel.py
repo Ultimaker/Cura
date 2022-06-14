@@ -33,6 +33,8 @@ class ActiveIntentQualitiesModel(ListModel):
         self._intent_category = ""
 
         IntentManager.intentCategoryChangedSignal.connect(self._update)
+        machine_manager = cura.CuraApplication.CuraApplication.getInstance().getMachineManager()
+        machine_manager.activeQualityGroupChanged.connect(self._update)
 
         self._update_timer = QTimer()
         self._update_timer.setInterval(100)
