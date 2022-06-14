@@ -369,6 +369,9 @@ class StartSliceJob(Job):
         result["material_name"] = stack.material.getMetaDataEntry("name", "")
         result["material_brand"] = stack.material.getMetaDataEntry("brand", "")
 
+        result["quality_name"] = stack.quality.getMetaDataEntry("name", "")
+        result["quality_changes_name"] = stack.qualityChanges.getMetaDataEntry("name")
+
         # Renamed settings.
         result["print_bed_temperature"] = result["material_bed_temperature"]
         result["print_temperature"] = result["material_print_temperature"]
