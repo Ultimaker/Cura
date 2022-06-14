@@ -37,16 +37,16 @@ class DFFileExportAndUploadManager:
                  formats: List[str],
                  on_upload_error: Callable[[], Any],
                  on_upload_success: Callable[[], Any],
-                 on_upload_finished: Callable[[], Any] ,
+                 on_upload_finished: Callable[[], Any],
                  on_upload_progress: Callable[[int], Any]) -> None:
 
-        self._file_handlers = file_handlers  # type: Dict[str, FileHandler]
-        self._nodes = nodes  # type: List[SceneNode]
-        self._library_project_id = library_project_id  # type: str
-        self._library_project_name = library_project_name  # type: str
-        self._file_name = file_name  # type: str
-        self._upload_jobs = []  # type: List[ExportFileJob]
-        self._formats = formats  # type: List[str]
+        self._file_handlers: Dict[str, FileHandler] = file_handlers
+        self._nodes: List[SceneNode] = nodes
+        self._library_project_id: str = library_project_id
+        self._library_project_name: str = library_project_name
+        self._file_name: str = file_name
+        self._upload_jobs: List[ExportFileJob] = []
+        self._formats: List[str] = formats
         self._api = DigitalFactoryApiClient(application = CuraApplication.getInstance(), on_error = lambda error: Logger.log("e", str(error)))
 
         # Functions of the parent class that should be called based on the upload process output
@@ -59,7 +59,7 @@ class DFFileExportAndUploadManager:
         # show the success message (once both upload jobs are done)
         self._message_lock = threading.Lock()
 
-        self._file_upload_job_metadata = self.initializeFileUploadJobMetadata()  # type: Dict[str, Dict[str, Any]]
+        self._file_upload_job_metadata: Dict[str, Dict[str, Any]] = self.initializeFileUploadJobMetadata()
 
         self.progress_message = Message(
                 title = "Uploading...",
