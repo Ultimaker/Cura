@@ -12,7 +12,8 @@ Item
     height: childrenRect.height
 
     property real labelColumnWidth: Math.round(width / 3)
-    property string _previousResolution: Cura.MachineManager.activeQualityType  //Internal variable to detect changes.
+    property string _previousResolution: ""  //Internal variable to detect changes.
+    Component.onCompleted: _previousResolution = Cura.MachineManager.activeQualityType;
 
     Cura.IconWithText
     {
