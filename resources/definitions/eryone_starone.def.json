@@ -1,5 +1,5 @@
 {
-    "version": 2,
+    "version": 1,
     "name": "Eryone StarOne",
     "inherits": "fdmprinter",
     "metadata": {
