@@ -15,6 +15,8 @@ Item
     property string _previousResolution: ""  //Internal variable to detect changes.
     Component.onCompleted: _previousResolution = Cura.MachineManager.activeQualityType;
 
+    visible: visibilityPreset.count > 0 //Only show if there are quality types to select from.
+
     Cura.IconWithText
     {
         id: resolutionTitle

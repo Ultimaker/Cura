@@ -1,5 +1,5 @@
-// Copyright (c) 2018 Ultimaker B.V.
-// Cura is released under the terms of the LGPLv3 or higher.
+//Copyright (c) 2022 Ultimaker B.V.
+//Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
 
@@ -39,11 +39,21 @@ Item
         RecommendedQualityProfileSelector
         {
             width: parent.width
+
+            visible: recommendedResolutionSelector.visible
         }
 
         RecommendedResolutionSelector
         {
+            id: recommendedResolutionSelector
             width: parent.width
+        }
+
+        UnsupportedProfileIndication
+        {
+            width: parent.width
+
+            visible: !recommendedResolutionSelector.visible
         }
 
         //Line between the sections.
