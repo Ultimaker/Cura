@@ -39,6 +39,7 @@ Item
         anchors.leftMargin: UM.Theme.getSize("default_margin").width
         anchors.verticalCenter: parent.verticalCenter
 
+        color: "yellow"
         text: "BUILD: " + CuraApplication.extraVersionText
     }
 
