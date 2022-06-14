@@ -54,7 +54,34 @@ ComboBox
         }
     ]
 
-    background: UM.UnderlineBackground{}
+    background: UM.UnderlineBackground
+    {
+        //Rectangle for highlighting when this combobox needs to pulse.
+        Rectangle
+        {
+            anchors.fill: parent
+            opacity: 0
+            color: UM.Theme.getColor("warning")
+
+            SequentialAnimation on opacity
+            {
+                id: pulseAnimation
+                running: false
+                loops: 1
+                alwaysRunToEnd: true
+                PropertyAnimation
+                {
+                    to: 1
+                    duration: 300
+                }
+                PropertyAnimation
+                {
+                    to: 0
+                    duration : 2000
+                }
+            }
+        }
+    }
 
     indicator: UM.ColorImage
     {
@@ -167,6 +194,6 @@ ComboBox
 
     function pulse()
     {
-        //TODO: Initiate a pulse of colour.
+        pulseAnimation.restart();
     }
 }
