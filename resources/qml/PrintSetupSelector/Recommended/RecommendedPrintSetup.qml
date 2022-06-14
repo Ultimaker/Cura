@@ -46,6 +46,15 @@ Item
             width: parent.width
         }
 
+        //Line between the sections.
+        Rectangle
+        {
+            width: parent.width
+            height: UM.Theme.getSize("default_lining").height
+
+            color: UM.Theme.getColor("lining")
+        }
+
         UM.Label
         {
             text: catalog.i18nc("@label", "Print settings")
