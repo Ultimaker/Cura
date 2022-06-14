@@ -23,7 +23,6 @@ class CuraConan(ConanFile):
     build_policy = "missing"
     exports = "LICENSE*"
     settings = "os", "compiler", "build_type", "arch"
-    generators = "VirtualPythonEnv"
     options = {
         "python_version": "ANY",
         "enterprise": ["True", "False", "true", "false"],
