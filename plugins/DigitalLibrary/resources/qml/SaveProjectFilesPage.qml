@@ -66,7 +66,7 @@ Item
         anchors.topMargin: UM.Theme.getSize("thin_margin").height
         validator: RegularExpressionValidator
         {
-//            regularExpression: /^[\w\-\. ()]{0,255}$/
+            regularExpression: /^[\w\-\. ()]{0,255}$/
         }
 
         text: PrintInformation.jobName
