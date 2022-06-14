@@ -8,6 +8,7 @@ from UM.Logger import Logger
 from UM.Settings.InstanceContainer import InstanceContainer
 
 import cura.CuraApplication
+from UM.Signal import Signal
 from cura.Machines.ContainerTree import ContainerTree
 from cura.Settings.cura_empty_instance_containers import empty_intent_container
 
@@ -29,6 +30,7 @@ class IntentManager(QObject):
         return cls.__instance
 
     intentCategoryChanged = pyqtSignal() #Triggered when we switch categories.
+    intentCategoryChangedSignal = Signal()
 
     def intentMetadatas(self, definition_id: str, nozzle_name: str, material_base_file: str) -> List[Dict[str, Any]]:
         """Gets the metadata dictionaries of all intent profiles for a given
@@ -189,3 +191,4 @@ class IntentManager(QObject):
         application.getMachineManager().setQualityGroupByQualityType(quality_type)
         if old_intent_category != intent_category:
             self.intentCategoryChanged.emit()
+            self.intentCategoryChangedSignal.emit()
