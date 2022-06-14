@@ -37,6 +37,7 @@ Item
         }
 
         textRole: "display_text"
+        textFormat: Text.StyledText
 
         model: Cura.ActiveIntentQualitiesModel{}
 

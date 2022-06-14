@@ -113,7 +113,7 @@ class ActiveIntentQualitiesModel(ListModel):
                 if intent_node.intent_category != self._intent_category:
                     continue
                 extruder_intents.append({"name": quality_group.name,
-                                         "display_text": f"{quality_group.name} - {layer_height}mm",
+                                         "display_text": f"<b>{quality_group.name}</b> - {layer_height}mm",
                                          "quality_type": quality_group.quality_type,
                                          "layer_height": layer_height,
                                          "intent_category": self._intent_category
