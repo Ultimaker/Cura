@@ -267,18 +267,20 @@ class ThreeMFWriter(MeshWriter):
                 # Don't export materials not in use
                 continue
 
+            if package_manager.isMaterialBundled(extruder.material.getFileName(), extruder.material.getMetaDataEntry("GUID")):
+                # Don't export bundled materials
+                continue
+
             package_id = package_manager.getMaterialFilePackageId(extruder.material.getFileName(), extruder.material.getMetaDataEntry("GUID"))
             package_data = package_manager.getInstalledPackageInfo(package_id)
 
             if not package_data:
+                # We failed to find the package for this material
                 message = Message(catalog.i18nc("@error:material",
                                                 "It was not possible to store material package information in project file: {material}. This project may not open correctly on other systems.".format(material=extruder.getName())),
                                   title=catalog.i18nc("@info:title", "Failed to save material package information"),
                                   message_type=Message.MessageType.WARNING)
                 message.show()
-                continue
-
-            if package_data.get("is_bundled"):
                 continue
 
             material_metadata = {"id": package_id,
