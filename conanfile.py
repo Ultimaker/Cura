@@ -49,6 +49,8 @@ class CuraConan(ConanFile):
 
     @property
     def conandata_version(self):
+        if not self.version or self.version == "dev":
+            return "dev"
         version = tools.Version(self.version)
         version = f"{version.major}.{version.minor}.{version.patch}-{version.prerelease}"
         if version in self.conan_data:
