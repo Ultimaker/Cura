@@ -49,6 +49,6 @@ Column
         iconSource: UM.Theme.getIcon("LinkExternal")
         isIconOnRightSide: true
 
-        onClicked: Qt.openUrlExternally("https://support.ultimaker.com/hc/en-us/articles/360012909099-How-to-check-why-a-profile-is-Not-supported") //TODO: Add tags?
+        onClicked: Qt.openUrlExternally("https://support.ultimaker.com/hc/en-us/articles/360012909099")
     }
 }
