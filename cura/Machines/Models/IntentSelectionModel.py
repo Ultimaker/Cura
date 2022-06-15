@@ -2,9 +2,9 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import collections
-from typing import OrderedDict
+from typing import OrderedDict, Optional
 
-from PyQt6.QtCore import Qt, QTimer
+from PyQt6.QtCore import Qt, QTimer, QObject
 
 import cura
 from UM import i18nCatalog
@@ -25,7 +25,7 @@ class IntentSelectionModel(ListModel):
     DescriptionRole = Qt.ItemDataRole.UserRole + 4
     IconRole = Qt.ItemDataRole.UserRole + 5
 
-    def __init__(self, parent = None) -> None:
+    def __init__(self, parent: Optional[QObject] = None) -> None:
         super().__init__(parent)
 
         self.addRoleName(self.NameRole, "name")
