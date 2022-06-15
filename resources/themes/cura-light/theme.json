@@ -133,6 +133,11 @@
             "weight": 400,
             "family": "Noto Sans"
         },
+        "small_bold": {
+            "size": 0.9,
+            "weight": 700,
+            "family": "Noto Sans"
+        },
         "small_ja_JP": {
             "size": 0.9,
             "weight": 400,
@@ -637,6 +642,10 @@
 
         "marketplace_large_icon": [4.0, 4.0],
 
-        "preferences_page_list_item": [8.0, 2.0]
+        "preferences_page_list_item": [8.0, 2.0],
+
+        "recommended_button_icon": [1.7, 1.7],
+
+        "reset_profile_icon": [1, 1]
     }
 }
