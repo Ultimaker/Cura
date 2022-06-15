@@ -59,10 +59,12 @@ class CuraPackageManager(PackageManager):
 
     def isMaterialBundled(self, file_name: str, guid: str):
         """ Check if there is a bundled material name with file_name and guid """
+        Logger.error(f"Paths: {list(Resources.getSecureSearchPaths())}")
         for path in Resources.getSecureSearchPaths():
             # Secure search paths are install directory paths, if a material is in here it must be bundled.
 
             paths = [Path(p) for p in glob.glob(path + '/**/*.xml.fdm_material')]
+            Logger.error(f"Paths: {[(material.name, str(material)) for material in paths]}")
             for material in paths:
                 if material.name == file_name:
                     with open(str(material), encoding="utf-8") as f:
@@ -73,12 +75,14 @@ class CuraPackageManager(PackageManager):
                             f.read(), "GUID")
                         if guid == parsed_guid:
                             # The material we found matches both filename and GUID
+                            Logger.error("MATERIAL IS BUNDLED")
                             return True
 
         return False
 
     def getMaterialFilePackageId(self, file_name: str, guid: str) -> str:
         """Get the id of the installed material package that contains file_name"""
+        Logger.error(f'Material package search paths {[f for f in os.scandir(self._installation_dirs_dict["materials"]) if f.is_dir()]}')
         for material_package in [f for f in os.scandir(self._installation_dirs_dict["materials"]) if f.is_dir()]:
             package_id = material_package.name
 
@@ -87,7 +91,7 @@ class CuraPackageManager(PackageManager):
                     # File with the name we are looking for is not in this directory
                     continue
 
-                with open(root + "/" + file_name, encoding="utf-8") as f:
+                with open(os.path.join(root, file_name), encoding="utf-8") as f:
                     # Make sure the file we found has the same guid as our material
                     # Parsing this xml would be better but the namespace is needed to search it.
                     parsed_guid = PluginRegistry.getInstance().getPluginObject("XmlMaterialProfile").getMetadataFromSerialized(
