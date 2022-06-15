@@ -64,7 +64,7 @@ class ActiveIntentQualitiesModel(ListModel):
 
         material_nodes = self._getActiveMaterials()
 
-        added_quality_type_set = set()  # type: Set[str]
+        added_quality_type_set: Set[str] = set()
         for material_node in material_nodes:
             intents = self._getIntentsForMaterial(material_node, quality_groups)
             for intent in intents:
