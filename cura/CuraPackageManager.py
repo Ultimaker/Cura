@@ -65,7 +65,7 @@ class CuraPackageManager(PackageManager):
             paths = [Path(p) for p in glob.glob(path + '/**/*.xml.fdm_material')]
             for material in paths:
                 if material.name == file_name:
-                    with open(str(material), encoding="utf-8") as f:
+                    with open(material, encoding="utf-8") as f:
                         # Make sure the file we found has the same guid as our material
                         # Parsing this xml would be better but the namespace is needed to search it.
                         parsed_guid = PluginRegistry.getInstance().getPluginObject(
@@ -87,7 +87,7 @@ class CuraPackageManager(PackageManager):
                     # File with the name we are looking for is not in this directory
                     continue
 
-                with open(root + "/" + file_name, encoding="utf-8") as f:
+                with open(os.path.join(root, file_name), encoding="utf-8") as f:
                     # Make sure the file we found has the same guid as our material
                     # Parsing this xml would be better but the namespace is needed to search it.
                     parsed_guid = PluginRegistry.getInstance().getPluginObject("XmlMaterialProfile").getMetadataFromSerialized(
