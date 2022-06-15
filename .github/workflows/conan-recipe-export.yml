@@ -1,0 +1,92 @@
+name: Export Conan Recipe to server
+
+on:
+    workflow_call:
+        inputs:
+            recipe_id_full:
+                required: true
+                type: string
+
+            recipe_id_latest:
+                required: false
+                type: string
+
+            runs_on:
+                required: true
+                type: string
+
+            python_version:
+                required: true
+                type: string
+
+            conan_config_branch:
+                required: false
+                type: string
+
+            conan_logging_level:
+                required: false
+                type: string
+
+        outputs:
+            recipe_id_full:
+                description: 'The full Conan recipe id: <name>/<version>@<user>/<channel>'
+                value: ${{ jobs.get-semver.outputs.recipe_id_full }}
+
+            recipe_id_latest:
+                description: 'The full Conan recipe aliased (latest) id: <name>/(latest)@<user>/<channel>'
+                value: ${{ inputs.project_name }}/latest@${{ jobs.get-semver.outputs.user }}/${{ jobs.get-semver.outputs.channel }}
+
+            recipe_semver_full:
+                description: 'The full semver <Major>.<Minor>.<Patch>-<PreReleaseTag>+<BuildMetaData>'
+                value: ${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}.${{ steps.git-tool.outputs.Patch }}-${{ steps.prereleasetag.outputs.PreReleaseTag }}+${{ steps.git-tool.outputs.BuildMetaData }}
+
+env:
+    CONAN_LOGIN_USERNAME_ULTIMAKER: ${{ secrets.CONAN_USER }}
+    CONAN_PASSWORD_ULTIMAKER: ${{ secrets.CONAN_PASS }}
+    CONAN_LOG_RUN_TO_OUTPUT: 1
+    CONAN_LOGGING_LEVEL: ${{ inputs.conan_logging_level }}
+    CONAN_NON_INTERACTIVE: 1
+
+jobs:
+    package-export:
+        runs-on: ${{ inputs.runs-on }}
+
+        steps:
+            -   name: Checkout project
+                uses: actions/checkout@v3
+
+            -   name: Setup Python and pip
+                uses: actions/setup-python@v4
+                with:
+                    python-version: ${{ inputs.python_version }}
+                    cache: 'pip'
+                    cache-dependency-path: .github/workflows/requirements-conan-package.txt
+
+            -   name: Install Python requirements and Create default Conan profile
+                run: |
+                    pip install --require-hashes -r .github/workflows/requirements-conan-package.txt
+                    conan profile new default --detect
+
+            -   name: Get Conan configuration from branch
+                if: "${{ inputs.conan_config_branch == '' }}"
+                run: conan config install https://github.com/Ultimaker/conan-config.git -a "-b ${{ inputs.conan_config_branch }}"
+
+            -   name: Get Conan configuration
+                if: "${{ inputs.conan_config_branch != '' }}"
+                run: conan config install https://github.com/Ultimaker/conan-config.git
+
+            -   name: Cache Conan local repository packages
+                uses: actions/cache@v3
+                with:
+                    path: $HOME/.conan/data
+                    key: ${{ runner.os }}-conan
+
+            -   name: Export the Package
+                run: conan export . ${{ recipe_id_full }}
+
+            -   name: Create the latest alias
+                if: "${{ inputs.recipe_id_latest == '' }}"
+                run: conan alias ${{ inputs.recipe_id_latest }} ${{ inputs.recipe_id_full }}
+
+            -   name: Upload the Package(s)
+                run: conan upload "*" -r ultimaker --all -c
