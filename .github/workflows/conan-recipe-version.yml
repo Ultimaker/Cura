@@ -1,0 +1,84 @@
+name: Get Conan Recipe Version
+
+on:
+    workflow_call:
+        inputs:
+            project_name:
+                required: true
+                type: string
+
+        outputs:
+            recipe_id_full:
+                description: "The full Conan recipe id: <name>/<version>@<user>/<channel>"
+                value: ${{ jobs.get-semver.outputs.recipe_id_full }}
+
+            recipe_id_latest:
+                description: "The full Conan recipe aliased (latest) id: <name>/(latest)@<user>/<channel>"
+                value: ${{ jobs.get-semver.outputs.recipe_id_latest }}
+
+            recipe_semver_full:
+                description: "The full semver <Major>.<Minor>.<Patch>-<PreReleaseTag>+<BuildMetaData>"
+                value: ${{ jobs.get-semver.outputs.semver_full }}
+
+jobs:
+    get-semver:
+
+        runs-on: ubuntu-latest
+
+        outputs:
+            recipe_id_full: ${{ inputs.project_name }}/${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}.${{ steps.git-tool.outputs.Patch }}-${{ steps.prereleasetag.outputs.PreReleaseTag }}+${{ steps.git-tool.outputs.BuildMetaData }}@${{ steps.get-conan-broadcast-data.outputs.user }}/${{ steps.get-conan-broadcast-data.outputs.channel }}
+            recipe_id_latest: ${{ steps.latest-alias.outputs.recipe_id_latest }}
+            semver_full: ${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}.${{ steps.git-tool.outputs.Patch }}-${{ steps.prereleasetag.outputs.PreReleaseTag }}+${{ steps.git-tool.outputs.BuildMetaData }}
+            user: ${{ steps.get-conan-broadcast-data.outputs.user }}
+            channel: ${{ steps.get-conan-broadcast-data.outputs.channel }}
+
+        steps:
+            -   name: Checkout repo
+                uses: actions/checkout@v3
+                with:
+                    ref: ${{ github.head_ref }}
+                    fetch-depth: 0
+
+            -   name: Install GitVersion
+                uses: gittools/actions/gitversion/setup@v0.9.13
+                with:
+                    versionSpec: '5.x'
+
+            -   name: GitTools
+                id: git-tool
+                uses: gittools/actions/gitversion/execute@v0.9.13
+
+            -   name: Get short PreReleaseTag
+                id: prereleasetag
+                run: |
+                    long_pre_release_tag=${{ steps.git-tool.outputs.PreReleaseTag }}
+                    echo "::set-output name=PreReleaseTag::${long_pre_release_tag:0:9}"
+
+            -   id: get-conan-broadcast-data
+                name: Get Conan broadcast data
+                run: |
+                    echo ${{ github.repository_owner }} | awk '{print "::set-output name=user::"tolower($0)}'
+                    
+                    if [ "${{ github.ref_name == 'main' }}" = "true" ]; then
+                      echo ${{ github.repository_owner }} | awk '{print "::set-output name=user::"tolower($0)}'
+                      echo '::set-output name=channel::stable'
+                    elif [ "${{ steps.git-tool.outputs.fullSemVer == steps.git-tool.outputs.MajorMinorPatch }}" = "true" ]; then
+                      echo '::set-output name=user::_'
+                      echo '::set-output name=channel::_'
+                    elif [ "${{ github.event_name == 'merge' || github.event_name == 'pull_request' }}" = "true" ]; then
+                      echo ${{ github.repository_owner }} | awk '{print "::set-output name=user::"tolower($0)}'
+                      echo '::set-output name=channel::testing'
+                    else
+                      echo ${{ github.repository_owner }} | awk '{print "::set-output name=user::"tolower($0)}'
+                      echo ${{ github.ref_name }} | awk '{print "::set-output name=channel::"substr(tolower($0),0,9)}'
+                    fi
+
+            -   name: Get latest alias
+                id: latest-alias
+                run: |
+                    # FIXME: Remove once merged to main
+                    if [ "${{ github.ref_name == 'main' }}" = "true" || "${{ github.ref_name == 'CURA-8160_fix_main' }}" ]; then
+                      echo "::set-output name=recipe_id_latest::${{ inputs.project_name }}/latest@${{ steps.get-conan-broadcast-data.outputs.user }}/${{ steps.get-conan-broadcast-data.outputs.channel }}"
+                    else
+                      echo "::set-output name=recipe_id_latest::''"
+                    fi
