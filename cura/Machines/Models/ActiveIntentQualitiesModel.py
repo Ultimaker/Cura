@@ -107,11 +107,16 @@ class ActiveIntentQualitiesModel(ListModel):
             if quality_node.quality_type not in quality_groups:  # Don't add the empty quality type (or anything else that would crash, defensively).
                 continue
             quality_group = quality_groups[quality_node.quality_type]
+
+            if not quality_group.is_available:
+                continue
+
             layer_height = fetchLayerHeight(quality_group)
 
             for intent_id, intent_node in quality_node.intents.items():
                 if intent_node.intent_category != self._intent_category:
                     continue
+
                 extruder_intents.append({"name": quality_group.name,
                                          "display_text": f"<b>{quality_group.name}</b> - {layer_height}mm",
                                          "quality_type": quality_group.quality_type,
