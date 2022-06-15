@@ -96,6 +96,7 @@ class CuraPackageManager(PackageManager):
                         return package_id
 
         Logger.error("Could not find package_id for file: {} with GUID: {} ".format(file_name, guid))
+        Logger.error(f"Bundled paths searched: {list(Resources.getSecureSearchPaths())}")
         return ""
 
     def getMachinesUsingPackage(self, package_id: str) -> Tuple[List[Tuple[GlobalStack, str, str]], List[Tuple[GlobalStack, str, str]]]:
