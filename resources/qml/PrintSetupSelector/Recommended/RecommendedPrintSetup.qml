@@ -2,6 +2,7 @@
 //Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
+import QtQuick.Layouts 1.1
 
 import UM 1.6 as UM
 import Cura 1.6 as Cura
@@ -15,7 +16,7 @@ Item
     property bool settingsEnabled: Cura.ExtruderManager.activeExtruderStackId || extrudersEnabledCount.properties.value == 1
     property real padding: UM.Theme.getSize("default_margin").width
 
-    Column
+    ColumnLayout
     {
         spacing: UM.Theme.getSize("default_margin").height
 
@@ -39,21 +40,27 @@ Item
         RecommendedQualityProfileSelector
         {
             width: parent.width
-
             visible: recommendedResolutionSelector.visible
         }
 
         RecommendedResolutionSelector
         {
             id: recommendedResolutionSelector
+            Layout.fillWidth: true
             width: parent.width
         }
 
         UnsupportedProfileIndication
         {
             width: parent.width
-
             visible: !recommendedResolutionSelector.visible
+        }
+
+
+        ProfileWarningReset
+        {
+            width: parent.width
+            Layout.fillWidth: true
         }
 
         //Line between the sections.
@@ -61,7 +68,9 @@ Item
         {
             width: parent.width
             height: UM.Theme.getSize("default_lining").height
-
+            Layout.topMargin: UM.Theme.getSize("narrow_margin").height
+            Layout.bottomMargin: UM.Theme.getSize("narrow_margin").height
+            Layout.fillWidth: true
             color: UM.Theme.getColor("lining")
         }
 
@@ -76,6 +85,9 @@ Item
             width: parent.width
             // TODO Create a reusable component with these properties to not define them separately for each component
             labelColumnWidth: parent.firstColumnWidth
+            Layout.fillWidth: true
+            Layout.leftMargin: UM.Theme.getSize("default_margin").width
+            Layout.rightMargin: UM.Theme.getSize("default_margin").width
         }
 
         RecommendedSupportSelector
@@ -83,6 +95,7 @@ Item
             width: parent.width
             // TODO Create a reusable component with these properties to not define them separately for each component
             labelColumnWidth: parent.firstColumnWidth
+            Layout.leftMargin: UM.Theme.getSize("default_margin").width
         }
 
         RecommendedAdhesionSelector
@@ -90,6 +103,7 @@ Item
             width: parent.width
             // TODO Create a reusable component with these properties to not define them separately for each component
             labelColumnWidth: parent.firstColumnWidth
+            Layout.leftMargin: UM.Theme.getSize("default_margin").width
         }
     }
 
