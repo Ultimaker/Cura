@@ -55,7 +55,7 @@ class ActiveIntentQualitiesModel(ListModel):
         if active_extruder_stack:
             self._intent_category = active_extruder_stack.intent.getMetaDataEntry("intent_category", "")
 
-        new_items = []  # type: List[Dict[str, Any]]
+        new_items: List[Dict[str, Any]] = []
         global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         if not global_stack:
             self.setItems(new_items)
