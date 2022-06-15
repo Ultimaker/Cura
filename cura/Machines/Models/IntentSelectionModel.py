@@ -46,7 +46,7 @@ class IntentSelectionModel(ListModel):
         extruder_manager = application.getExtruderManager()
         extruder_manager.extrudersChanged.connect(self._update)
 
-        self._update_timer = QTimer()  # type: QTimer
+        self._update_timer: QTimer = QTimer()
         self._update_timer.setInterval(100)
         self._update_timer.setSingleShot(True)
         self._update_timer.timeout.connect(self._update)
