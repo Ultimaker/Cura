@@ -36,7 +36,7 @@ env:
 
 jobs:
     package-export:
-        runs-on: ${{ inputs.runs-on }}
+        runs-on: ${{ inputs.runs_on }}
 
         steps:
             -   name: Checkout project

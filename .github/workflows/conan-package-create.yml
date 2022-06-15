@@ -32,7 +32,7 @@ env:
 
 jobs:
     conan-package-create:
-        runs-on: ${{ inputs.runs-on }}
+        runs-on: ${{ inputs.runs_on }}
 
         steps:
             -   name: Checkout CuraEngine
