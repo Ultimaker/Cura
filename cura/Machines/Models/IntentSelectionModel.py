@@ -25,7 +25,7 @@ class IntentSelectionModel(ListModel):
     DescriptionRole = Qt.ItemDataRole.UserRole + 4
     IconRole = Qt.ItemDataRole.UserRole + 5
 
-    def __init__(self, parent=QAbstractListModel) -> None:
+    def __init__(self, parent = None) -> None:
         super().__init__(parent)
 
         self.addRoleName(self.NameRole, "name")

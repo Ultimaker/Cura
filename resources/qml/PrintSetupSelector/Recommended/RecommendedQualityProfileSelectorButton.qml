@@ -14,7 +14,7 @@ Rectangle
     id: base
     height: 60
     Layout.fillWidth: true
-    color: mouseArea.containsMouse || selected ? UM.Theme.getColor("um_blue_1") : UM.Theme.getColor("background_1")
+    color: mouseArea.containsMouse || selected ? UM.Theme.getColor("background_3") : UM.Theme.getColor("background_1")
 
     property bool selected: false
     property string profileName: ""
