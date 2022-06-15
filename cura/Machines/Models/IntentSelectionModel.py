@@ -87,7 +87,7 @@ class IntentSelectionModel(ListModel):
     def _onChange(self) -> None:
         self._update_timer.start()
 
-    def _update(self):
+    def _update(self) -> None:
         Logger.log("d", "Updating {model_class_name}.".format(model_class_name = self.__class__.__name__))
 
         global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
