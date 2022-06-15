@@ -62,7 +62,6 @@ Rectangle
                 radius: width
                 anchors.verticalCenter: parent.verticalCenter
                 visible: icon == ""
-                color: "transparent"
                 border.width: UM.Theme.getSize("thick_lining").width
                 border.color: UM.Theme.getColor("text")
 
