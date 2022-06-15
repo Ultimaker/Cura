@@ -27,19 +27,6 @@ on:
                 required: false
                 type: string
 
-        outputs:
-            recipe_id_full:
-                description: 'The full Conan recipe id: <name>/<version>@<user>/<channel>'
-                value: ${{ jobs.get-semver.outputs.recipe_id_full }}
-
-            recipe_id_latest:
-                description: 'The full Conan recipe aliased (latest) id: <name>/(latest)@<user>/<channel>'
-                value: ${{ inputs.project_name }}/latest@${{ jobs.get-semver.outputs.user }}/${{ jobs.get-semver.outputs.channel }}
-
-            recipe_semver_full:
-                description: 'The full semver <Major>.<Minor>.<Patch>-<PreReleaseTag>+<BuildMetaData>'
-                value: ${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}.${{ steps.git-tool.outputs.Patch }}-${{ steps.prereleasetag.outputs.PreReleaseTag }}+${{ steps.git-tool.outputs.BuildMetaData }}
-
 env:
     CONAN_LOGIN_USERNAME_ULTIMAKER: ${{ secrets.CONAN_USER }}
     CONAN_PASSWORD_ULTIMAKER: ${{ secrets.CONAN_PASS }}
