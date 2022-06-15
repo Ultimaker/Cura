@@ -17,6 +17,8 @@ ComboBox
 
     property var defaultTextOnEmptyModel: catalog.i18nc("@label", "No items to select from")  // Text displayed in the combobox when the model is empty
     property var defaultTextOnEmptyIndex: ""  // Text displayed in the combobox when the model has items but no item is selected
+    property alias textFormat: contentLabel.textFormat
+
     enabled: delegateModel.count > 0
 
     onVisibleChanged: { popup.close() }
@@ -52,7 +54,34 @@ ComboBox
         }
     ]
 
-    background: UM.UnderlineBackground{}
+    background: UM.UnderlineBackground
+    {
+        //Rectangle for highlighting when this combobox needs to pulse.
+        Rectangle
+        {
+            anchors.fill: parent
+            opacity: 0
+            color: UM.Theme.getColor("warning")
+
+            SequentialAnimation on opacity
+            {
+                id: pulseAnimation
+                running: false
+                loops: 1
+                alwaysRunToEnd: true
+                PropertyAnimation
+                {
+                    to: 1
+                    duration: 300
+                }
+                PropertyAnimation
+                {
+                    to: 0
+                    duration : 2000
+                }
+            }
+        }
+    }
 
     indicator: UM.ColorImage
     {
@@ -146,7 +175,7 @@ ComboBox
             anchors.rightMargin: UM.Theme.getSize("setting_unit_margin").width
 
             text: delegateItem.text
-            textFormat: Text.PlainText
+            textFormat: control.textFormat
             color: UM.Theme.getColor("setting_control_text")
             elide: Text.ElideRight
             wrapMode: Text.NoWrap
@@ -161,5 +190,10 @@ ComboBox
             }
             text: delegateLabel.truncated ? delegateItem.text : ""
         }
+    }
+
+    function pulse()
+    {
+        pulseAnimation.restart();
     }
 }
