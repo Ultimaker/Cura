@@ -213,6 +213,51 @@
         },
         "jerk_skirt_brim": {
             "minimum_value_warning": 20
+        },
+        "support_wall_count": {
+            "value": "1 if support_structure == 'tree' else 0"
+        },
+        "zig_zaggify_support": {
+            "value": true
+        },
+        "support_infill_rate": {
+            "value": "80 if gradual_support_infill_steps != 0 else 15"
+        },
+        "gradual_support_infill_steps": {
+            "value": "2 if support_interface_enable else 0"
+        },
+        "gradual_support_infill_step_height": {
+            "value": "4*layer_height"
+        },
+        "support_interface_height": {
+            "value": "2*layer_height"
+        },
+        "support_offset": {
+            "value": "2*line_width if support_interface_enable else 0"
+        },
+        "support_xy_distance": {
+            "value": "1"
+        },
+        "support_xy_distance_overhang": {
+            "value": "wall_line_width_0"
+        },
+        "minimum_support_area": {
+            "value": "(2 + support_offset)**2"
+        },
+        "support_interface_skip_height": {
+            "value": "layer_height"
+        },
+        "support_interface_pattern": {
+            "value": "'concentric'"
+        },
+        "support_interface_offset": {
+            "value": "support_offset"
+        },
+        "support_use_towers": {
+            "value": false
+        },
+        "support_z_distance": {
+            "value": "0"
         }
     }
 }
