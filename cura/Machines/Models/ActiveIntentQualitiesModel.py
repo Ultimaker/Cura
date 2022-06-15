@@ -46,7 +46,7 @@ class ActiveIntentQualitiesModel(ListModel):
     def _updateDelayed(self):
         self._update_timer.start()
 
-    def _onChanged(self, container):
+    def _onChanged(self, container: ContainerStack) -> None:
         if container.getMetaDataEntry("type") == "intent":
             self._updateDelayed()
 
