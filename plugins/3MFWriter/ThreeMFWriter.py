@@ -278,7 +278,6 @@ class ThreeMFWriter(MeshWriter):
             if not package_data:
                 # We failed to find the package for this material
 
-                Logger.info(f"Secure resource paths searched for: {Resources.getSecureSearchPaths()}")
                 message = Message(catalog.i18nc("@error:material",
                                                 "It was not possible to store material package information in project file: {material}. This project may not open correctly on other systems.".format(material=extruder.getName())),
                                   title=catalog.i18nc("@info:title", "Failed to save material package information"),
