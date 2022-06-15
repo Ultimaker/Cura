@@ -51,7 +51,7 @@ jobs:
 
             -   name: Install Python requirements and Create default Conan profile
                 run: |
-                    pip install --require-hashes -r .github/workflows/requirements-conan-package.txt
+                    pip install -r .github/workflows/requirements-conan-package.txt
                     conan profile new default --detect
 
             -   name: Get Conan configuration from branch
