@@ -1,0 +1,81 @@
+name: Create and Upload Conan package
+
+on:
+    workflow_call:
+        inputs:
+            recipe_id_full:
+                required: true
+                type: string
+
+            runs_on:
+                required: true
+                type: string
+
+            python_version:
+                required: true
+                type: string
+
+            conan_config_branch:
+                required: false
+                type: string
+
+            conan_logging_level:
+                required: false
+                type: string
+
+env:
+    CONAN_LOGIN_USERNAME_ULTIMAKER: ${{ secrets.CONAN_USER }}
+    CONAN_PASSWORD_ULTIMAKER: ${{ secrets.CONAN_PASS }}
+    CONAN_LOG_RUN_TO_OUTPUT: 1
+    CONAN_LOGGING_LEVEL: ${{ inputs.conan_logging_level }}
+    CONAN_NON_INTERACTIVE: 1
+
+jobs:
+    conan-package-create:
+        runs-on: ${{ inputs.runs-on }}
+
+        steps:
+            -   name: Checkout CuraEngine
+                uses: actions/checkout@v3
+
+            -   name: Setup Python and pip
+                uses: actions/setup-python@v4
+                with:
+                    python-version: ${{ inputs.python_version }}
+                    cache: 'pip'
+                    cache-dependency-path: .github/workflows/requirements-conan-package.txt
+
+            -   name: Install Python requirements and Create default Conan profile
+                run: |
+                    pip install --require-hashes -r .github/workflows/requirements-conan-package.txt
+                    conan profile new default --detect
+
+            -   name: Get Conan configuration from branch
+                if: "${{ inputs.conan_config_branch == '' }}"
+                run: conan config install https://github.com/Ultimaker/conan-config.git -a "-b ${{ inputs.conan_config_branch }}"
+
+            -   name: Get Conan configuration
+                if: "${{ inputs.conan_config_branch != '' }}"
+                run: conan config install https://github.com/Ultimaker/conan-config.git
+
+            -   name: Cache Conan local repository packages (Bash)
+                uses: actions/cache@v3
+                if: ${{ runner.os != 'Windows' }}
+                with:
+                    path: $HOME/.conan/data
+                    key: ${{ runner.os }}-conan
+
+            -   name: Cache Conan local repository packages (Powershell)
+                uses: actions/cache@v3
+                if: ${{ runner.os == 'Windows' }}
+                with:
+                    path: |
+                        C:\Users\runneradmin\.conan\data
+                        C:\.conan
+                    key: ${{ runner.os }}-conan
+
+            -   name: Create the Packages
+                run: conan install ${{ inputs.recipe_id_full }} -pr:b cura_build.jinja -pr:h cura_release.jinja --build=missing --update
+
+            -   name: Upload the Package(s)
+                run: conan upload "*" -r ultimaker --all -c
