@@ -101,7 +101,7 @@ class ActiveIntentQualitiesModel(ListModel):
         return nodes
 
     def _getIntentsForMaterial(self, active_material_node: "MaterialNode", quality_groups: Dict[str, "QualityGroup"]) -> List[Dict[str, Any]]:
-        extruder_intents = []  # type: List[Dict[str, Any]]
+        extruder_intents: List[Dict[str, Any]] = []
 
         for quality_id, quality_node in active_material_node.qualities.items():
             if quality_node.quality_type not in quality_groups:  # Don't add the empty quality type (or anything else that would crash, defensively).
