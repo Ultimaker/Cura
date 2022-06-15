@@ -48,6 +48,7 @@ class DFFileExportAndUploadManager:
         self._upload_jobs: List[ExportFileJob] = []
         self._formats: List[str] = formats
         self._api = DigitalFactoryApiClient(application = CuraApplication.getInstance(), on_error = lambda error: Logger.log("e", str(error)))
+        self._source_file_id: Optional[str] = None
 
         # Functions of the parent class that should be called based on the upload process output
         self._on_upload_error = on_upload_error
@@ -113,7 +114,8 @@ class DFFileExportAndUploadManager:
                 content_type = job.getMimeType(),
                 job_name = job.getFileName(),
                 file_size = len(job.getOutput()),
-                library_project_id = self._library_project_id
+                library_project_id = self._library_project_id,
+                source_file_id = self._source_file_id
         )
         self._api.requestUploadUFP(request, on_finished = self._uploadFileData, on_error = self._onRequestUploadPrintFileFailed)
 
@@ -125,6 +127,9 @@ class DFFileExportAndUploadManager:
         """
         if isinstance(file_upload_response, DFLibraryFileUploadResponse):
             file_name = file_upload_response.file_name
+
+            # store the `file_id` so it can be as `source_file_id` when uploading the print file
+            self._source_file_id = file_upload_response.file_id
         elif isinstance(file_upload_response, DFPrintJobUploadResponse):
             file_name = file_upload_response.job_name if file_upload_response.job_name is not None else ""
         else:
@@ -144,6 +149,8 @@ class DFFileExportAndUploadManager:
                                          on_success = self._onUploadSuccess,
                                          on_progress = self._onUploadProgress,
                                          on_error = self._onUploadError)
+
+        self._handleNextUploadJob()
 
     def _onUploadProgress(self, filename: str, progress: int) -> None:
         """
@@ -325,8 +332,13 @@ class DFFileExportAndUploadManager:
             message.hide()
 
     def start(self) -> None:
-        for job in self._upload_jobs:
-            job.start()
+        self._handleNextUploadJob()
+
+    def _handleNextUploadJob(self):
+        match self._upload_jobs:
+            case [job, *jobs]:
+                job.start()
+                self._upload_jobs = jobs
 
     def initializeFileUploadJobMetadata(self) -> Dict[str, Any]:
         metadata = {}
