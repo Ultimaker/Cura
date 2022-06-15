@@ -84,7 +84,7 @@ class ActiveIntentQualitiesModel(ListModel):
 
         container_tree = ContainerTree.getInstance()
         machine_node = container_tree.machines[global_stack.definition.getId()]
-        nodes = set()  # type: Set[MaterialNode]
+        nodes: Set[MaterialNode] = set()
 
         for extruder in global_stack.extruderList:
             active_variant_name = extruder.variant.getMetaDataEntry("name")
