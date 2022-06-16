@@ -66,6 +66,11 @@ Item
         {
             var selected_item = model.getItem(currentIndex)
             Cura.IntentManager.selectIntent(selected_item.intent_category, selected_item.quality_type)
+
+            if (Cura.IntentManager.currentIntentCategory == selected_item.intent_category)
+            {
+                recommendedResolutionSelector._previousResolution = selected_item.quality_type;
+            }
         }
 
         Connections
