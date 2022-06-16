@@ -31,6 +31,7 @@ Item
     UM.Label
     {
         id: warning
+        width: parent.width - warningIcon.width - resetToDefaultQualityButton.width
         anchors
         {
             left: warningIcon.right
@@ -38,7 +39,7 @@ Item
             leftMargin: UM.Theme.getSize("thin_margin").width
         }
 
-        text: ""
+        wrapMode: Text.WordWrap
 
         states: [
             State
