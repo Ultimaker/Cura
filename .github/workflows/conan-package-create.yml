@@ -24,7 +24,7 @@ on:
                 type: string
 
             # FIXME: Once we have the new JFrog server up and running
-            conan_update:
+            conan_no_update:
                 required: false
                 type: boolean
 
@@ -80,14 +80,14 @@ jobs:
                     key: ${{ runner.os }}-conan
 
             -   name: Create the Packages
-                if: ${{ inputs.conan_update != 'false' }}  # FIXME: Once we have the new JFrog server up and running
+                if: ${{ inputs.conan_no_update != 'true' }}  # FIXME: Once we have the new JFrog server up and running
                 run: conan install ${{ inputs.recipe_id_full }} -pr:b cura_build.jinja -pr:h cura_release.jinja --build=missing --update
 
                 # FIXME: Once we have the new JFrog server up and running
             -   name: Create the Packages
-                if: ${{ inputs.conan_update == 'false' }}
+                if: ${{ inputs.conan_no_update == 'true' }}
                 run: conan install ${{ inputs.recipe_id_full }} -pr:b cura_build.jinja -pr:h cura_release.jinja --build=missing
 
             -   name: Upload the Package(s)
-                if: ${{ inputs.conan_update != 'false' }}  # FIXME: Once we have the new JFrog server up and running
+                if: ${{ inputs.conan_no_update == 'true' }}  # FIXME: Once we have the new JFrog server up and running
                 run: conan upload "*" -r ultimaker --all -c
