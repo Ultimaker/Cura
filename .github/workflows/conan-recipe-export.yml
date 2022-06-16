@@ -28,7 +28,7 @@ on:
                 type: string
 
             # FIXME: Once we have the new JFrog server up and running
-            conan_no_update:
+            conan_update:
                 required: false
                 type: boolean
 
@@ -81,5 +81,5 @@ jobs:
                 run: conan alias ${{ inputs.recipe_id_latest }} ${{ inputs.recipe_id_full }}
 
             -   name: Upload the Package(s)
-                if: ${{ inputs.conan_no_update == 'true' }}  # FIXME: Once we have the new JFrog server up and running
+                if: ${{ inputs.conan_update != 'false' }}  # FIXME: Once we have the new JFrog server up and running
                 run: conan upload "*" -r ultimaker --all -c
