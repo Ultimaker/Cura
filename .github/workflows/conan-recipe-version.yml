@@ -76,8 +76,8 @@ jobs:
             -   name: Get latest alias
                 id: latest-alias
                 run: |
-                    # FIXME: Remove once merged to main
-                    if [ "${{ github.ref_name == 'main' }}" = "true" || "${{ github.ref_name == 'CURA-8160_fix_main' }}" ]; then
+                    # FIXME: Remove the CURA-8160 clause once merged to main
+                    if [ "${{ github.ref_name == 'main' }}" = "true" || "${{ contains(github.ref_name, 'CURA-8160') }}" ]; then
                       echo "::set-output name=recipe_id_latest::${{ inputs.project_name }}/latest@${{ steps.get-conan-broadcast-data.outputs.user }}/${{ steps.get-conan-broadcast-data.outputs.channel }}"
                     else
                       echo "::set-output name=recipe_id_latest::''"
