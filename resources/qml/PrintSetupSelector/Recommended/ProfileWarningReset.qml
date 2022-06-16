@@ -3,13 +3,10 @@ import QtQuick 2.10
 import UM 1.6 as UM
 import Cura 1.6 as Cura
 
-Rectangle
+Item
 {
     height: visible ? UM.Theme.getSize("action_button_icon").height : 0
     visible: Cura.SimpleModeSettingsManager.isProfileCustomized || Cura.MachineManager.hasCustomQuality
-    anchors.topMargin: UM.Theme.getSize("default_margin")
-    anchors.bottomMargin: UM.Theme.getSize("default_margin")
-
 
     Rectangle
     {
@@ -34,6 +31,7 @@ Rectangle
     UM.Label
     {
         id: warning
+        width: parent.width - warningIcon.width - resetToDefaultQualityButton.width
         anchors
         {
             left: warningIcon.right
@@ -41,7 +39,7 @@ Rectangle
             leftMargin: UM.Theme.getSize("thin_margin").width
         }
 
-        text: ""
+        wrapMode: Text.WordWrap
 
         states: [
             State

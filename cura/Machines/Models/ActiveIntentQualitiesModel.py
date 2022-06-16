@@ -36,6 +36,8 @@ class ActiveIntentQualitiesModel(ListModel):
         IntentManager.intentCategoryChangedSignal.connect(self._update)
         machine_manager = cura.CuraApplication.CuraApplication.getInstance().getMachineManager()
         machine_manager.activeQualityGroupChanged.connect(self._update)
+        machine_manager.globalContainerChanged.connect(self._updateDelayed)
+        machine_manager.extruderChanged.connect(self._updateDelayed)  # We also need to update if an extruder gets disabled
 
         self._update_timer = QTimer()
         self._update_timer.setInterval(100)
