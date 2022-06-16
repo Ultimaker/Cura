@@ -23,6 +23,11 @@ on:
                 required: false
                 type: string
 
+            # FIXME: Once we have the new JFrog server up and running
+            conan_no_update:
+                required: false
+                type: boolean
+
 env:
     CONAN_LOGIN_USERNAME_ULTIMAKER: ${{ secrets.CONAN_USER }}
     CONAN_PASSWORD_ULTIMAKER: ${{ secrets.CONAN_PASS }}
@@ -51,11 +56,11 @@ jobs:
                     conan profile new default --detect
 
             -   name: Get Conan configuration from branch
-                if: "${{ inputs.conan_config_branch == '' }}"
+                if: ${{ inputs.conan_config_branch == '' }}
                 run: conan config install https://github.com/Ultimaker/conan-config.git -a "-b ${{ inputs.conan_config_branch }}"
 
             -   name: Get Conan configuration
-                if: "${{ inputs.conan_config_branch != '' }}"
+                if: ${{ inputs.conan_config_branch != '' }}
                 run: conan config install https://github.com/Ultimaker/conan-config.git
 
             -   name: Cache Conan local repository packages (Bash)
@@ -75,7 +80,14 @@ jobs:
                     key: ${{ runner.os }}-conan
 
             -   name: Create the Packages
+                if: ${{ inputs.conan_no_update != 'true' }}  # FIXME: Once we have the new JFrog server up and running
                 run: conan install ${{ inputs.recipe_id_full }} -pr:b cura_build.jinja -pr:h cura_release.jinja --build=missing --update
 
+                # FIXME: Once we have the new JFrog server up and running
+            -   name: Create the Packages
+                if: ${{ inputs.conan_no_update == 'true' }}
+                run: conan install ${{ inputs.recipe_id_full }} -pr:b cura_build.jinja -pr:h cura_release.jinja --build=missing
+
             -   name: Upload the Package(s)
+                if: ${{ inputs.conan_no_update == 'true' }}  # FIXME: Once we have the new JFrog server up and running
                 run: conan upload "*" -r ultimaker --all -c
