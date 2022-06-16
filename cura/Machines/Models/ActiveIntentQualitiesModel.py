@@ -7,6 +7,7 @@ from PyQt6.QtCore import Qt, QObject, QTimer
 import cura.CuraApplication
 from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
+from UM.Settings.ContainerStack import ContainerStack
 from cura.Machines.ContainerTree import ContainerTree
 from cura.Machines.Models.MachineModelUtils import fetchLayerHeight
 from cura.Machines.MaterialNode import MaterialNode
