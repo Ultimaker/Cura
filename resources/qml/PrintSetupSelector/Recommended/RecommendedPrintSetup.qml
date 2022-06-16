@@ -89,7 +89,6 @@ Item
             // TODO Create a reusable component with these properties to not define them separately for each component
             labelColumnWidth: parent.firstColumnWidth
             Layout.fillWidth: true
-            Layout.leftMargin: UM.Theme.getSize("default_margin").width
             Layout.rightMargin: UM.Theme.getSize("default_margin").width
         }
 
@@ -99,7 +98,6 @@ Item
             // TODO Create a reusable component with these properties to not define them separately for each component
             labelColumnWidth: parent.firstColumnWidth
             Layout.fillWidth: true
-            Layout.leftMargin: UM.Theme.getSize("default_margin").width
         }
 
         RecommendedAdhesionSelector
@@ -108,7 +106,6 @@ Item
             // TODO Create a reusable component with these properties to not define them separately for each component
             labelColumnWidth: parent.firstColumnWidth
             Layout.fillWidth: true
-            Layout.leftMargin: UM.Theme.getSize("default_margin").width
         }
     }
 
