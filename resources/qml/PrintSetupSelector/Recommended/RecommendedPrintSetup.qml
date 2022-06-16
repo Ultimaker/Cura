@@ -54,6 +54,7 @@ Item
         {
             width: parent.width
             visible: !recommendedResolutionSelector.visible
+            Layout.fillWidth: true
         }
 
 
@@ -95,6 +96,7 @@ Item
             width: parent.width
             // TODO Create a reusable component with these properties to not define them separately for each component
             labelColumnWidth: parent.firstColumnWidth
+            Layout.fillWidth: true
             Layout.leftMargin: UM.Theme.getSize("default_margin").width
         }
 
@@ -103,6 +105,7 @@ Item
             width: parent.width
             // TODO Create a reusable component with these properties to not define them separately for each component
             labelColumnWidth: parent.firstColumnWidth
+            Layout.fillWidth: true
             Layout.leftMargin: UM.Theme.getSize("default_margin").width
         }
     }
