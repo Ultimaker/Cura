@@ -1,0 +1,54 @@
+name: Get Conan Recipe Version
+
+on:
+    workflow_call:
+        inputs:
+            success:
+                required: true
+                type: boolean
+
+            success_title:
+                required: true
+                type: string
+
+            success_body:
+                required: true
+                type: boolean
+
+            failure_title:
+                required: true
+                type: string
+
+            failure_body:
+                required: true
+                type: boolean
+
+
+jobs:
+    slackNotification:
+        name: Slack Notification
+
+        runs-on: ubuntu-latest
+
+        steps:
+            -   name: Slack notify on-success
+                if: ${{ inputs.success == 'true' }}
+                uses: rtCamp/action-slack-notify@v2
+                env:
+                    SLACK_USERNAME: ${{ github.repository }}
+                    SLACK_COLOR: #00ff00
+                    SLACK_ICON: https://github.com/Ultimaker/Cura/blob/main/icons/cura-128.png?raw=true
+                    SLACK_TITLE: ${{ inputs.success_title }}
+                    SLACK_MESSAGE: ${{ inputs.success_body }}
+                    SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+
+            -   name: Slack notify on-failure
+                if: ${{ inputs.success == 'false' }}
+                uses: rtCamp/action-slack-notify@v2
+                env:
+                    SLACK_USERNAME: ${{ github.repository }}
+                    SLACK_COLOR: #ff0000
+                    SLACK_ICON: https://github.com/Ultimaker/Cura/blob/main/icons/cura-128.png?raw=true
+                    SLACK_TITLE: ${{ inputs.failure_title }}
+                    SLACK_MESSAGE: ${{ inputs.failure_body }}
+                    SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
