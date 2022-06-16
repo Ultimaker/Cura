@@ -15,7 +15,7 @@ block_cipher = None
 
 a = Analysis(
     ['{{ entrypoint }}'],
-    pathex={{ pathex }},
+    pathex=[],
     binaries=binaries,
     datas=datas,
     hiddenimports=hiddenimports,

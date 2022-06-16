@@ -1,5 +1,4 @@
 import os
-import shutil
 from pathlib import Path
 
 from platform import python_version
@@ -23,13 +22,15 @@ class CuraConan(ConanFile):
     build_policy = "missing"
     exports = "LICENSE*"
     settings = "os", "compiler", "build_type", "arch"
+    no_copy_source = True
     options = {
         "python_version": "ANY",
         "enterprise": ["True", "False", "true", "false"],
         "staging": ["True", "False", "true", "false"],
         "devtools": [True, False],
         "cloud_api_version": "ANY",
-        "display_name": "ANY"
+        "display_name": "ANY",
+        "cura_debug_mode": [True, False]
     }
     default_options = {
         "python_version": "system",
@@ -37,7 +38,8 @@ class CuraConan(ConanFile):
         "staging": "False",
         "devtools": False,
         "cloud_api_version": "1",
-        "display_name": "Ultimaker Cura"
+        "display_name": "Ultimaker Cura",
+        "cura_debug_mode": False
     }
     scm = {
         "type": "git",
@@ -47,21 +49,9 @@ class CuraConan(ConanFile):
     }
 
     @property
-    def conandata_version(self):
-        if not self.version or self.version == "dev":
-            return "dev"
+    def _conan_data_version(self):
         version = tools.Version(self.version)
-        version = f"{version.major}.{version.minor}.{version.patch}-{version.prerelease}"
-        if version in self.conan_data:
-            return version
-        return "dev"
-
-    def set_version(self):
-        if not self.version:
-            if "CURA_VERSION" in os.environ:
-                self.version = os.environ["CURA_VERSION"]
-            else:
-                self.version = "dev"
+        return f"{version.major}.{version.minor}.{version.patch}-{version.prerelease}"
 
     @property
     def _staging(self):
@@ -90,8 +80,8 @@ class CuraConan(ConanFile):
     @property
     def requirements_txts(self):
         if self.options.devtools:
-            return ["requirements.txt", "requirements-dev.txt"]
-        return "requirements.txt"
+            return ["requirements.txt", "requirements-ultimaker.txt", "requirements-dev.txt"]
+        return ["requirements.txt", "requirements-ultimaker.txt"]
 
     def config_options(self):
         if self.options.python_version == "system":
@@ -99,35 +89,25 @@ class CuraConan(ConanFile):
 
     def configure(self):
         self.options["*"].shared = True
+        self.options["*"].python_version = self.options.python_version
 
     def validate(self):
-        if self.version:
-            if self.version != "dev" and tools.Version(self.version) <= tools.Version("4"):
-                raise ConanInvalidConfiguration("Only versions 5+ are support")
+        if tools.Version(self.version) <= tools.Version("4"):
+            raise ConanInvalidConfiguration("Only versions 5+ are support")
 
     def requirements(self):
-        for req in self.conan_data[self.conandata_version]["conan"].values():
+        for req in self.conan_data["requirements"][self._conan_data_version]:
             self.requires(req)
 
+    def layout(self):
+        self.folders.source = "."
+        self.folders.build = "venv"
+        self.folders.generators = os.path.join(self.folders.build, "conan")
+
+        self.cpp.package.libdirs = ["site-packages"]
+
     def generate(self):
-        for source in self.conan_data[self.conandata_version]["sources"].values():
-            src_path = Path(self.source_folder, source["root"], source["src"])
-            if not src_path.exists():
-                continue
-            dst_root_path = Path(self.source_folder, source["dst"])
-            if dst_root_path.exists():
-                shutil.rmtree(dst_root_path, ignore_errors = True)
-            dst_root_path.mkdir(parents = True)
-            if "filter" in source:
-                for pattern in source["filter"]:
-                    for file in src_path.glob(pattern):
-                        rel_file = file.relative_to(src_path)
-                        dst_file = dst_root_path.joinpath(rel_file)
-                        if not dst_file.parent.exists():
-                            dst_file.parent.mkdir(parents = True)
-                        shutil.copy(file, dst_file)
-            else:
-                shutil.copytree(src_path, dst_root_path)
+        # TODO: handle materials when running from source and using the fdm_materials
 
         with open(Path(self.source_folder, "cura", "CuraVersion.py.jinja"), "r") as f:
             cura_version_py = Template(f.read())
@@ -136,75 +116,84 @@ class CuraConan(ConanFile):
             f.write(cura_version_py.render(
                 cura_app_name = self.name,
                 cura_app_display_name = self.options.display_name,
-                cura_version = self.version if self.version else "dev",
+                cura_version = self.version,
                 cura_build_type = "Enterprise" if self._enterprise else "",
-                cura_debug_mode = self.settings.build_type != "Release",
+                cura_debug_mode = self.options.cura_debug_mode,
                 cura_cloud_api_root = self._cloud_api_root,
                 cura_cloud_api_version = self.options.cloud_api_version,
                 cura_cloud_account_api_root = self._cloud_account_api_root,
                 cura_marketplace_root = self._marketplace_root,
                 cura_digital_factory_url = self._digital_factory_url))
 
-        if self.options.devtools:
-            # Create the Ultimaker-Cura.spec based on the data in the conandata.yml
-            with open(Path(self.source_folder, "Ultimaker-Cura.spec.jinja"), "r") as f:
-                pyinstaller = Template(f.read())
+        # Create the Ultimaker-Cura.spec
+        # TODO: Create a generator for this
+        # TODO: Create exception for not in_local_cache
+        # TODO: Allow for paths to be determine when installing from local cache without root_folder
+        with open(Path(self.source_folder, "Ultimaker-Cura.spec.jinja"), "r") as f:
+            pyinstaller = Template(f.read())
 
-            pyinstaller_metadata = self.conan_data[self.conandata_version]["pyinstaller"]
-            datas = []
-            for data in pyinstaller_metadata["datas"].values():
-                if "package" in data:  # get the paths from conan package
+        pyinstaller_metadata = self.conan_data["pyinstaller"][self._conan_data_version]
+        datas = []
+        for data in pyinstaller_metadata["datas"].values():
+            if "package" in data:  # get the paths from conan package
+                if data["package"] == self.name:
+                    src_path = Path(self.package_folder, data["src"])
+                else:
                     src_path = Path(self.deps_cpp_info[data["package"]].rootpath, data["src"])
-                elif "root" in data:  # get the paths relative from the sourcefolder
-                    src_path = Path(self.source_folder, data["root"], data["src"])
-                else:
-                    continue
-                if src_path.exists():
-                    datas.append((str(src_path), data["dst"]))
+            elif "root" in data:  # get the paths relative from the sourcefolder
+                src_path = Path(self.source_folder, data["root"], data["src"])
+            else:
+                continue
+            if src_path.exists():
+                datas.append((str(src_path), data["dst"]))
 
-            binaries = []
-            for binary in pyinstaller_metadata["binaries"].values():
-                if "package" in binary:  # get the paths from conan package
-                    src_path = Path(self.deps_cpp_info[binary["package"]].rootpath, binary["src"])
-                elif "root" in binary:  # get the paths relative from the sourcefolder
-                    src_path = Path(self.source_folder, binary["root"], binary["src"])
-                else:
-                    continue
-                if not src_path.exists():
-                    continue
-                for bin in src_path.glob(binary["binary"] + ".*[exe|dll|so|dylib]"):
-                    binaries.append((str(bin), binary["dst"]))
-                for bin in src_path.glob(binary["binary"]):
-                    binaries.append((str(bin), binary["dst"]))
+        binaries = []
+        for binary in pyinstaller_metadata["binaries"].values():
+            if "package" in binary:  # get the paths from conan package
+                src_path = Path(self.deps_cpp_info[binary["package"]].rootpath, binary["src"])
+            elif "root" in binary:  # get the paths relative from the sourcefolder
+                src_path = Path(self.source_folder, binary["root"], binary["src"])
+            else:
+                continue
+            if not src_path.exists():
+                continue
+            for bin in src_path.glob(binary["binary"] + ".*[exe|dll|so|dylib]"):
+                binaries.append((str(bin), binary["dst"]))
+            for bin in src_path.glob(binary["binary"]):
+                binaries.append((str(bin), binary["dst"]))
 
-            pathex = [str(Path(self.source_folder, p)) for p in pyinstaller_metadata["pathex"]]
-
-            with open(Path(self.source_folder, "Ultimaker-Cura.spec"), "w") as f:
-                f.write(pyinstaller.render(
-                    name = str(self.options.display_name).replace(" ", "-"),
-                    entrypoint = "cura_app.py",
-                    datas = datas,
-                    binaries = binaries,
-                    hiddenimports = pyinstaller_metadata["hiddenimports"],
-                    collect_all = pyinstaller_metadata["collect_all"],
-                    pathex = pathex,
-                    icon = pyinstaller_metadata["icon"][str(self.settings.os)]
-                ))
-
-    def layout(self):
-        self.folders.source = "."
-        self.folders.build = "venv"
-        self.folders.generators = os.path.join(self.folders.build, "conan")
-
-        # FIXME: Once libCharon en Uranium are also Packages
-        self.runenv_info.append_path("PYTHONPATH", str(Path(__file__).parent))
-        self.runenv_info.append_path("PYTHONPATH", str(Path(__file__).parent.parent.joinpath("uranium")))
-        self.runenv_info.append_path("PYTHONPATH", str(Path(__file__).parent.parent.joinpath("libcharon")))
+        with open(Path(self.generators_folder, "Ultimaker-Cura.spec"), "w") as f:
+            f.write(pyinstaller.render(
+                name = str(self.options.display_name).replace(" ", "-"),
+                entrypoint = "cura_app.py",
+                datas = datas,
+                binaries = binaries,
+                hiddenimports = pyinstaller_metadata["hiddenimports"],
+                collect_all = pyinstaller_metadata["collect_all"],
+                icon = pyinstaller_metadata["icon"][str(self.settings.os)]
+            ))
 
     def imports(self):
         self.copy("CuraEngine.exe", root_package = "curaengine", src = "@bindirs", dst = self.source_folder, keep_path = False)
         self.copy("CuraEngine", root_package = "curaengine", src = "@bindirs", dst = self.source_folder, keep_path = False)
-        self.copy("*.dll", src = "@bindirs", dst = os.path.join(self.folders.build, "Lib", "site-packages"))
-        self.copy("*.pyd", src = "@libdirs", dst = os.path.join(self.folders.build, "Lib", "site-packages"))
-        self.copy("*.pyi", src = "@libdirs", dst = os.path.join(self.folders.build, "Lib", "site-packages"))
-        self.copy("*.dylib", src = "@libdirs", dst = os.path.join(self.folders.build, "bin"))
+        self.copy("*.dll", src = "@bindirs", dst = os.path.join(self.build_folder, "Lib", "site-packages"))
+        self.copy("*.pyd", src = "@libdirs", dst = os.path.join(self.build_folder, "Lib", "site-packages"))
+        self.copy("*.pyi", src = "@libdirs", dst = os.path.join(self.build_folder, "Lib", "site-packages"))
+        self.copy("*.dylib", src = "@libdirs", dst = os.path.join(self.build_folder, "bin"))
+
+    def package(self):
+        self.copy("*", src = "cura", dst = os.path.join(self.cpp.package.libdirs[0], "cura"))
+        self.copy("*", src = "plugins", dst = os.path.join(self.cpp.package.libdirs[0], "plugins"))
+        self.copy("*", src = "resources", dst = os.path.join(self.cpp.package.resdirs[0], "resources"))
+
+    def package_info(self):
+        if self.in_local_cache:
+            self.runenv_info.append_path("PYTHONPATH", self.cpp_info.libdirs[0])
+        else:
+            self.runenv_info.append_path("PYTHONPATH", self.source_folder)
+
+    def package_id(self):
+        del self.info.settings.os
+        del self.info.settings.compiler
+        del self.info.settings.build_type
+        del self.info.settings.arch
