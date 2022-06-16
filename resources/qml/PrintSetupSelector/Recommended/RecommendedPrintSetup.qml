@@ -86,7 +86,6 @@ Item
         RecommendedInfillDensitySelector
         {
             width: parent.width
-            // TODO Create a reusable component with these properties to not define them separately for each component
             labelColumnWidth: parent.firstColumnWidth
             Layout.fillWidth: true
             Layout.rightMargin: UM.Theme.getSize("default_margin").width
@@ -95,7 +94,6 @@ Item
         RecommendedSupportSelector
         {
             width: parent.width
-            // TODO Create a reusable component with these properties to not define them separately for each component
             labelColumnWidth: parent.firstColumnWidth
             Layout.fillWidth: true
         }
@@ -103,7 +101,6 @@ Item
         RecommendedAdhesionSelector
         {
             width: parent.width
-            // TODO Create a reusable component with these properties to not define them separately for each component
             labelColumnWidth: parent.firstColumnWidth
             Layout.fillWidth: true
         }

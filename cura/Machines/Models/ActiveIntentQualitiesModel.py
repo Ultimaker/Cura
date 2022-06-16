@@ -54,7 +54,6 @@ class ActiveIntentQualitiesModel(ListModel):
             self._updateDelayed()
 
     def _update(self):
-        print("Updating")
         active_extruder_stack = cura.CuraApplication.CuraApplication.getInstance().getMachineManager().activeStack
         if active_extruder_stack:
             self._intent_category = active_extruder_stack.intent.getMetaDataEntry("intent_category", "")
