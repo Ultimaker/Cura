@@ -12,8 +12,11 @@ import ".."
 Item
 {
     id: qualityRow
+
+    property bool hasQualityOptions: true
+
     height: childrenRect.height
-    visible: intentSelectionRepeater.count > 1 //Only show selector if there's more options than just "default".
+    visible: intentSelectionRepeater.count > 1 && hasQualityOptions //Only show selector if there's more options than just "default".
 
     RowLayout
     {

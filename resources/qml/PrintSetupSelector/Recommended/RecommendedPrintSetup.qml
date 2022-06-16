@@ -40,7 +40,7 @@ Item
         RecommendedQualityProfileSelector
         {
             width: parent.width
-            visible: recommendedResolutionSelector.visible
+            hasQualityOptions: recommendedResolutionSelector.visible
         }
 
         RecommendedResolutionSelector
