@@ -4,6 +4,7 @@ from pathlib import Path
 from platform import python_version
 
 from jinja2 import Template
+from semver import *
 
 from conan import ConanFile
 from conan.tools import files
@@ -50,9 +51,18 @@ class CuraConan(ConanFile):
     }
 
     @property
-    def _conan_data_version(self):
-        version = tools.Version(self.version)
-        return f"{version.major}.{version.minor}.{version.patch}-{version.prerelease}"
+    def _conan_data(self):
+        data = {}
+        if self.version:
+            for k, vers in self.conan_data.items():
+                for v in vers:
+                    if v != "None":
+                        if satisfies(self.version, v, loose = True, include_prerelease = False):
+                            data[k] = vers[v]
+        else:
+            for k, ver in self.conan_data.items():
+                data[k] = ver["None"]
+        return data
 
     @property
     def _staging(self):
@@ -93,11 +103,11 @@ class CuraConan(ConanFile):
         self.options["*"].python_version = self.options.python_version
 
     def validate(self):
-        if tools.Version(self.version) <= tools.Version("4"):
+        if self.version and tools.Version(self.version) <= tools.Version("4"):
             raise ConanInvalidConfiguration("Only versions 5+ are support")
 
     def requirements(self):
-        for req in self.conan_data["requirements"][self._conan_data_version]:
+        for req in self._conan_data["requirements"]:
             self.requires(req)
 
     def layout(self):
@@ -133,7 +143,7 @@ class CuraConan(ConanFile):
         with open(Path(self.source_folder, "Ultimaker-Cura.spec.jinja"), "r") as f:
             pyinstaller = Template(f.read())
 
-        pyinstaller_metadata = self.conan_data["pyinstaller"][self._conan_data_version]
+        pyinstaller_metadata = self._conan_data["pyinstaller"]
         datas = []
         for data in pyinstaller_metadata["datas"].values():
             if "package" in data:  # get the paths from conan package
@@ -166,7 +176,7 @@ class CuraConan(ConanFile):
         with open(Path(self.generators_folder, "Ultimaker-Cura.spec"), "w") as f:
             f.write(pyinstaller.render(
                 name = str(self.options.display_name).replace(" ", "-"),
-                entrypoint = self.conan_data["runinfo"][self._conan_data_version]["entrypoint"],
+                entrypoint = self._conan_data["runinfo"]["entrypoint"],
                 datas = datas,
                 binaries = binaries,
                 hiddenimports = pyinstaller_metadata["hiddenimports"],
