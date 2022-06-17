@@ -1,0 +1,119 @@
+---
+name: conan-package
+
+# Exports the recipe, sources and binaries for Mac, Windows and Linux and upload these to the server such that these can
+# be used downstream.
+#
+# It should run on pushes against main or CURA-* branches, but it will only create the binaries for main and release
+# branches
+#
+# The version of the recipe has the following naming scheme:
+#   - Pushed to main: <package_name>/<major>.<minor>.<patch>-alpha+<commits_since_last_version_tag>@stable/utlimaker
+#   - Pushed to release branch: <package_name>/<major>.<minor>.<patch>-beta+<commits_since_last_version_tag>@stable/utlimaker
+#   - Release tag: <package_name>/<major>.<minor>.<patch>@_/_
+#   - Pushed to CURA-****_branch: <package_name>/<major>.<minor>.<patch>-CURA-****+<commits_since_last_version_tag>@testing/utlimaker
+#   - Merge request: <package_name>/<major>.<minor>.<patch>-merge-***+<commits_since_last_version_tag>@testing/utlimaker
+#   - Pull request: <package_name>/<major>.<minor>.<patch>-pull-***+<commits_since_last_version_tag>@testing/utlimaker
+
+on:
+    push:
+        paths:
+            - 'plugins/**'
+            - 'resources/**'
+            - 'cura/**'
+            - 'icons/**'
+            - 'tests/**'
+            - '.github/workflows/conan-package.yml'
+            - 'requirements*.txt'
+        branches:
+            - main
+            - 'CURA-*'
+            - '[4-9].[0-9]'
+
+    pull_request:
+        paths:
+            - 'plugins/**'
+            - 'resources/**'
+            - 'cura/**'
+            - 'icons/**'
+            - 'tests/**'
+            - '.github/workflows/conan-package.yml'
+            - 'requirements*.txt'
+        branches:
+            - main
+            - '[4-9].[0-9]'
+
+
+jobs:
+    conan-recipe-version:
+        uses: ultimaker/cura/.github/workflows/conan-recipe-version.yml@CURA-9365_fix_building_cura_main
+        with:
+            project_name: cura
+
+    conan-package-export:
+        needs: [ conan-recipe-version ]
+        uses: ultimaker/cura/.github/workflows/conan-recipe-export.yml@CURA-9365_fix_building_cura_main
+        with:
+            recipe_id_full: ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
+            recipe_id_latest: ${{ needs.conan-recipe-version.outputs.recipe_id_latest }}
+            runs_on: 'ubuntu-20.04'
+            python_version: '3.10.4'
+            conan_config_branch: 'CURA-9177_Fix_CI_CD'
+            conan_logging_level: 'info'
+        secrets: inherit
+
+    conan-package-create-macos:
+        # FIXME: Remove once merged to main
+        if: ${{ github.event_name == 'push' && (github.ref_name == 'main' || github.ref_name == 'CURA-9365_fix_building_cura_main') }}
+        needs: [ conan-recipe-version, conan-package-export ]
+
+        uses: ultimaker/cura/.github/workflows/conan-package-create.yml@CURA-9365_fix_building_cura_main
+        with:
+            recipe_id_full: ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
+            runs_on: 'macos-10.15'
+            python_version: '3.10.4'
+            conan_config_branch: 'CURA-9177_Fix_CI_CD'
+            conan_logging_level: 'info'
+        secrets: inherit
+
+    conan-package-create-windows:
+        # FIXME: Remove once merged to main
+        if: ${{ github.event_name == 'push' && (github.ref_name == 'main' || github.ref_name == 'CURA-9365_fix_building_cura_main') }}
+        needs: [ conan-recipe-version, conan-package-export ]
+
+        uses: ultimaker/cura/.github/workflows/conan-package-create.yml@CURA-9365_fix_building_cura_main
+        with:
+            recipe_id_full: ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
+            runs_on: 'windows-2022'
+            python_version: '3.10.4'
+            conan_config_branch: 'CURA-9177_Fix_CI_CD'
+            conan_logging_level: 'info'
+        secrets: inherit
+
+    conan-package-create-linux:
+        # FIXME: Remove once merged to main
+        if: ${{ github.event_name == 'push' && (github.ref_name == 'main' || github.ref_name == 'CURA-9365_fix_building_cura_main') }}
+        needs: [ conan-recipe-version, conan-package-export ]
+
+        uses: ultimaker/cura/.github/workflows/conan-package-create.yml@CURA-9365_fix_building_cura_main
+        with:
+            recipe_id_full: ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
+            runs_on: 'ubuntu-20.04'
+            python_version: '3.10.4'
+            conan_config_branch: 'CURA-9177_Fix_CI_CD'
+            conan_logging_level: 'info'
+        secrets: inherit
+
+    notify:
+        # FIXME: Remove once merged to main
+        if: ${{ always() }}
+        needs: [ conan-package-create-macos, conan-package-create-windows, conan-package-create-linux ]
+
+        uses: ultimaker/cura/.github/workflows/notify.yml@CURA-9365_fix_building_cura_main
+        with:
+            success: ${{ contains(join(needs.*.result, ','), 'success') }}
+            success_title: "New binaries created for ${{ github.repository }}"
+            success_body: "New binaries created for ${{ github.repository }}"
+            failure_title: "Failed to create binaries ${{ github.repository }}"
+            failure_body: "Failed to create binaries ${{ github.repository }}"
+        secrets: inherit
