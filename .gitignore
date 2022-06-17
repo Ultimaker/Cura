@@ -98,3 +98,4 @@ conan_imports_manifest.txt
 conanbuildinfo.txt
 graph_info.json
 Ultimaker-Cura.spec
+/.run/
