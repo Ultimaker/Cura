@@ -130,7 +130,6 @@
         "minimum_interface_area": { "value": 10 },
 
         "fill_outline_gaps": { "value": false },
-        "filter_out_tiny_gaps": { "value": false },
 
         "adhesion_type": { "value": "'skirt'" },
         "brim_replaces_support": { "value": false },
