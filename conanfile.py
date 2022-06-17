@@ -174,16 +174,16 @@ class CuraConan(ConanFile):
             ))
 
     def imports(self):
-        self.copy("CuraEngine.exe", root_package = "curaengine", src = "@bindirs", dst = self.source_folder, keep_path = False)
-        self.copy("CuraEngine", root_package = "curaengine", src = "@bindirs", dst = self.source_folder, keep_path = False)
+        self.copy("CuraEngine.exe", root_package = "curaengine", src = "@bindirs", dst = "", keep_path = False)
+        self.copy("CuraEngine", root_package = "curaengine", src = "@bindirs", dst = "", keep_path = False)
 
-        self.copy("*.fdm_material", root_package = "fdm_material", src = "@resdirs", dst = os.path.join(self.source_folder, "resources", "materials"), keep_path = False)
-        self.copy("*.sig", root_package = "fdm_material", src = "@resdirs", dst = os.path.join(self.source_folder, "resources", "materials"), keep_path = False)
+        self.copy("*.fdm_material", root_package = "fdm_materials", src = "@resdirs", dst = "resources/materials", keep_path = False)
+        self.copy("*.sig", root_package = "fdm_materials", src = "@resdirs", dst = "resources/materials", keep_path = False)
 
-        self.copy("*.dll", src = "@bindirs", dst = os.path.join(self.build_folder, "Lib", "site-packages"))
-        self.copy("*.pyd", src = "@libdirs", dst = os.path.join(self.build_folder, "Lib", "site-packages"))
-        self.copy("*.pyi", src = "@libdirs", dst = os.path.join(self.build_folder, "Lib", "site-packages"))
-        self.copy("*.dylib", src = "@libdirs", dst = os.path.join(self.build_folder, "bin"))
+        self.copy("*.dll", src = "@bindirs", dst = "venv/Lib/site-packages")
+        self.copy("*.pyd", src = "@libdirs", dst = "venv/Lib/site-packages")
+        self.copy("*.pyi", src = "@libdirs", dst = "venv/Lib/site-packages")
+        self.copy("*.dylib", src = "@libdirs", dst = "venv/bin")
 
     def package(self):
         self.copy("*", src = "cura", dst = os.path.join(self.cpp.package.libdirs[0], "cura"))
