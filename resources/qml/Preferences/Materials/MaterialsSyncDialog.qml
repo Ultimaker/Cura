@@ -402,7 +402,7 @@ Window
                                 UM.Label
                                 {
                                     Layout.fillWidth: true
-                                    Layout.alignment: Qt.AlignmentFlag.AlignVCenter
+                                    Layout.alignment: Qt.AlignVCenter
                                     text: catalog.i18nc("@text Asking the user whether printers are missing in a list.", "Printers missing?")
                                       + "\n"
                                       + catalog.i18nc("@text", "Make sure all your printers are turned ON and connected to Digital Factory.")
@@ -413,7 +413,7 @@ Window
                                 Cura.SecondaryButton
                                 {
                                     id: refreshListButton
-                                    Layout.alignment: Qt.AlignmentFlag.AlignVCenter
+                                    Layout.alignment: Qt.AlignVCenter
                                     text: catalog.i18nc("@button", "Refresh List")
                                     iconSource: UM.Theme.getIcon("ArrowDoubleCircleRight")
                                     onClicked: Cura.API.account.sync(true)

@@ -48,7 +48,7 @@ UM.Dialog
                 font: UM.Theme.getFont("large")
                 anchors.verticalCenter: icon.verticalCenter
                 height: UM.Theme.getSize("marketplace_large_icon").height
-                verticalAlignment: Qt.AlignmentFlag.AlignVCenter
+                verticalAlignment: Qt.AlignVCenter
             }
         }
 
