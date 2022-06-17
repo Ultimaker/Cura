@@ -3,8 +3,8 @@
     "name": "Extruder 2",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "elegoo_neptune_2",
-        "position": "0"
+        "machine": "elegoo_neptune_2D",
+        "position": "1"
     },
 
     "overrides": {
