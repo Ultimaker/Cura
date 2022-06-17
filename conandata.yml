@@ -15,6 +15,11 @@ requirements:
         - "uranium/[~5.1.0-cura_9365]@ultimaker/testing"
         - "fdm_materials/[~5.1.0-cura_9365]@ultimaker/testing"
         - "cura_binary_data/[~5.1.0-cura_9365]@ultimaker/testing"
+runinfo:
+    "5.1.0-beta":
+        entrypoint: "cura_app.py"
+    "5.1.0-cura_9365":
+        entrypoint: "cura_app.py"
 pyinstaller:
     "5.1.0-beta":
         datas:
