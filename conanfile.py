@@ -6,6 +6,7 @@ from platform import python_version
 from jinja2 import Template
 
 from conan import ConanFile
+from conan.tools import files
 from conans import tools
 from conan.errors import ConanInvalidConfiguration
 
@@ -177,6 +178,7 @@ class CuraConan(ConanFile):
         self.copy("CuraEngine.exe", root_package = "curaengine", src = "@bindirs", dst = "", keep_path = False)
         self.copy("CuraEngine", root_package = "curaengine", src = "@bindirs", dst = "", keep_path = False)
 
+        files.rmdir(self, "resources/materials")
         self.copy("*.fdm_material", root_package = "fdm_materials", src = "@resdirs", dst = "resources/materials", keep_path = False)
         self.copy("*.sig", root_package = "fdm_materials", src = "@resdirs", dst = "resources/materials", keep_path = False)
 
