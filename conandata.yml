@@ -1,20 +1,20 @@
 requirements:
     "5.1.0-beta":
-        - "arcus/5.1.0-beta@ultimaker/stable"
-        - "curaengine/5.1.0-beta@ultimaker/stable"
-        - "savitar/5.1.0-beta@ultimaker/stable"
-        - "pynest2d/5.1.0-beta@ultimaker/stable"
-        - "uranium/5.1.0-beta@ultimaker/stable"
-        - "fdm_materials/5.1.0-beta@ultimaker/stable"
-        - "cura_binary_data/5.1.0-beta@ultimaker/stable"
+        - "arcus/[~5.1.0-beta]@ultimaker/stable"
+        - "curaengine/[~5.1.0-beta]@ultimaker/stable"
+        - "savitar/[~5.1.0-beta]@ultimaker/stable"
+        - "pynest2d/[~5.1.0-beta]@ultimaker/stable"
+        - "uranium/[~5.1.0-beta]@ultimaker/stable"
+        - "fdm_materials/[~5.1.0-beta]@ultimaker/stable"
+        - "cura_binary_data/[~5.1.0-beta]@ultimaker/stable"
     "5.1.0-cura_9365":
-        - "arcus/5.1.0-cura_9365@ultimaker/testing"
-        - "curaengine/5.1.0-cura_9365@ultimaker/testing"
-        - "savitar/5.1.0-cura_9365@ultimaker/testing"
-        - "pynest2d/5.1.0-cura_9365@ultimaker/testing"
-        - "uranium/5.1.0-cura_9365@ultimaker/testing"
-        - "fdm_materials/5.1.0-cura_9365@ultimaker/testing"
-        - "cura_binary_data/5.1.0-cura_9365@ultimaker/testing"
+        - "arcus/~[5.1.0-cura_9365]@ultimaker/testing"
+        - "curaengine/[~5.1.0-cura_9365]@ultimaker/testing"
+        - "savitar/[~5.1.0-cura_9365]@ultimaker/testing"
+        - "pynest2d/[~5.1.0-cura_9365]@ultimaker/testing"
+        - "uranium/[~5.1.0-cura_9365]@ultimaker/testing"
+        - "fdm_materials/[~5.1.0-cura_9365]@ultimaker/testing"
+        - "cura_binary_data/[~5.1.0-cura_9365]@ultimaker/testing"
 pyinstaller:
     "5.1.0-beta":
         datas:
