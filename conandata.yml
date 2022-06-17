@@ -19,12 +19,12 @@ pyinstaller:
     "5.1.0-beta":
         datas:
             cura_plugins:
-                package: "cura"
-                src: "site-packages/plugins"
+                root: "."
+                src: "plugins"
                 dst: "share/cura/plugins"
             cura_resources:
-                root: "package"
-                src: "res/resources"
+                root: "."
+                src: "resources"
                 dst: "share/cura/resources"
             uranium_plugins:
                 package: "uranium"
@@ -79,12 +79,12 @@ pyinstaller:
     "5.1.0-cura_9365":
         datas:
             cura_plugins:
-                package: "cura"
-                src: "site-packages/plugins"
+                root: "."
+                src: "plugins"
                 dst: "share/cura/plugins"
             cura_resources:
-                root: "package"
-                src: "res/resources"
+                root: "."
+                src: "resources"
                 dst: "share/cura/resources"
             uranium_plugins:
                 package: "uranium"
