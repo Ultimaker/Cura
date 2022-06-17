@@ -40,7 +40,7 @@ Item
         RecommendedQualityProfileSelector
         {
             width: parent.width
-            visible: recommendedResolutionSelector.visible
+            hasQualityOptions: recommendedResolutionSelector.visible
         }
 
         RecommendedResolutionSelector
@@ -54,6 +54,7 @@ Item
         {
             width: parent.width
             visible: !recommendedResolutionSelector.visible
+            Layout.fillWidth: true
         }
 
 
@@ -61,6 +62,8 @@ Item
         {
             width: parent.width
             Layout.fillWidth: true
+            Layout.topMargin: UM.Theme.getSize("thin_margin").height
+            Layout.bottomMargin: UM.Theme.getSize("thin_margin").height
         }
 
         //Line between the sections.
@@ -83,27 +86,23 @@ Item
         RecommendedInfillDensitySelector
         {
             width: parent.width
-            // TODO Create a reusable component with these properties to not define them separately for each component
             labelColumnWidth: parent.firstColumnWidth
             Layout.fillWidth: true
-            Layout.leftMargin: UM.Theme.getSize("default_margin").width
             Layout.rightMargin: UM.Theme.getSize("default_margin").width
         }
 
         RecommendedSupportSelector
         {
             width: parent.width
-            // TODO Create a reusable component with these properties to not define them separately for each component
             labelColumnWidth: parent.firstColumnWidth
-            Layout.leftMargin: UM.Theme.getSize("default_margin").width
+            Layout.fillWidth: true
         }
 
         RecommendedAdhesionSelector
         {
             width: parent.width
-            // TODO Create a reusable component with these properties to not define them separately for each component
             labelColumnWidth: parent.firstColumnWidth
-            Layout.leftMargin: UM.Theme.getSize("default_margin").width
+            Layout.fillWidth: true
         }
     }
 
