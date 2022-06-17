@@ -176,6 +176,10 @@ class CuraConan(ConanFile):
     def imports(self):
         self.copy("CuraEngine.exe", root_package = "curaengine", src = "@bindirs", dst = self.source_folder, keep_path = False)
         self.copy("CuraEngine", root_package = "curaengine", src = "@bindirs", dst = self.source_folder, keep_path = False)
+
+        self.copy("*.fdm_material", root_package = "fdm_material", src = "@resdirs", dst = os.path.join(self.source_folder, "resources", "materials"), keep_path = False)
+        self.copy("*.sig", root_package = "fdm_material", src = "@resdirs", dst = os.path.join(self.source_folder, "resources", "materials"), keep_path = False)
+
         self.copy("*.dll", src = "@bindirs", dst = os.path.join(self.build_folder, "Lib", "site-packages"))
         self.copy("*.pyd", src = "@libdirs", dst = os.path.join(self.build_folder, "Lib", "site-packages"))
         self.copy("*.pyi", src = "@libdirs", dst = os.path.join(self.build_folder, "Lib", "site-packages"))
