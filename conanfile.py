@@ -4,7 +4,6 @@ from pathlib import Path
 from platform import python_version
 
 from jinja2 import Template
-from semver import *
 
 from conan import ConanFile
 from conan.tools import files
@@ -24,15 +23,21 @@ class CuraConan(ConanFile):
     build_policy = "missing"
     exports = "LICENSE*"
     settings = "os", "compiler", "build_type", "arch"
-    no_copy_source = True
+    no_copy_source = True  # We won't build so no need to copy sources to the build folder
+
+    # FIXME: Remove specific branch once merged to main
+    # Extending the conanfile with the UMBaseConanfile https://github.com/Ultimaker/conan-ultimaker-index/tree/CURA-9177_Fix_CI_CD/recipes/umbase
+    python_requires = "umbase/0.1@ultimaker/testing"
+    python_requires_extend = "umbase.UMBaseConanfile"
+
     options = {
         "python_version": "ANY",
-        "enterprise": ["True", "False", "true", "false"],
-        "staging": ["True", "False", "true", "false"],
-        "devtools": [True, False],
+        "enterprise": ["True", "False", "true", "false"],  # Workaround for GH Action passing boolean as lowercase string
+        "staging": ["True", "False", "true", "false"],  # Workaround for GH Action passing boolean as lowercase string
+        "devtools": [True, False],  # FIXME: Split this up in testing and (development / build (pyinstaller) / system installer) tools
         "cloud_api_version": "ANY",
-        "display_name": "ANY",
-        "cura_debug_mode": [True, False]
+        "display_name": "ANY",  # TODO: should this be an option??
+        "cura_debug_mode": [True, False]  # FIXME: Use profiles
     }
     default_options = {
         "python_version": "system",
@@ -49,20 +54,6 @@ class CuraConan(ConanFile):
         "url": "auto",
         "revision": "auto"
     }
-
-    @property
-    def _conan_data(self):
-        data = {}
-        if self.version:
-            for k, vers in self.conan_data.items():
-                for v in vers:
-                    if v != "None":
-                        if satisfies(self.version, v, loose = True, include_prerelease = False):
-                            data[k] = vers[v]
-        else:
-            for k, ver in self.conan_data.items():
-                data[k] = ver["None"]
-        return data
 
     @property
     def _staging(self):
@@ -107,7 +98,7 @@ class CuraConan(ConanFile):
             raise ConanInvalidConfiguration("Only versions 5+ are support")
 
     def requirements(self):
-        for req in self._conan_data["requirements"]:
+        for req in self._um_data(self.version)["requirements"]:
             self.requires(req)
 
     def layout(self):
@@ -143,7 +134,7 @@ class CuraConan(ConanFile):
         with open(Path(self.source_folder, "Ultimaker-Cura.spec.jinja"), "r") as f:
             pyinstaller = Template(f.read())
 
-        pyinstaller_metadata = self._conan_data["pyinstaller"]
+        pyinstaller_metadata = self._um_data(self.version)["pyinstaller"]
         datas = []
         for data in pyinstaller_metadata["datas"].values():
             if "package" in data:  # get the paths from conan package
@@ -176,7 +167,7 @@ class CuraConan(ConanFile):
         with open(Path(self.generators_folder, "Ultimaker-Cura.spec"), "w") as f:
             f.write(pyinstaller.render(
                 name = str(self.options.display_name).replace(" ", "-"),
-                entrypoint = self._conan_data["runinfo"]["entrypoint"],
+                entrypoint = self._um_data(self.version)["runinfo"]["entrypoint"],
                 datas = datas,
                 binaries = binaries,
                 hiddenimports = pyinstaller_metadata["hiddenimports"],
