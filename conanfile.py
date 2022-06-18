@@ -31,7 +31,6 @@ class CuraConan(ConanFile):
     python_requires_extend = "umbase.UMBaseConanfile"
 
     options = {
-        "python_version": "ANY",
         "enterprise": ["True", "False", "true", "false"],  # Workaround for GH Action passing boolean as lowercase string
         "staging": ["True", "False", "true", "false"],  # Workaround for GH Action passing boolean as lowercase string
         "devtools": [True, False],  # FIXME: Split this up in testing and (development / build (pyinstaller) / system installer) tools
@@ -40,7 +39,6 @@ class CuraConan(ConanFile):
         "cura_debug_mode": [True, False]  # FIXME: Use profiles
     }
     default_options = {
-        "python_version": "system",
         "enterprise": "False",
         "staging": "False",
         "devtools": False,
@@ -85,13 +83,8 @@ class CuraConan(ConanFile):
             return ["requirements.txt", "requirements-ultimaker.txt", "requirements-dev.txt"]
         return ["requirements.txt", "requirements-ultimaker.txt"]
 
-    def config_options(self):
-        if self.options.python_version == "system":
-            self.options.python_version = python_version()
-
     def configure(self):
         self.options["*"].shared = True
-        self.options["*"].python_version = self.options.python_version
 
     def validate(self):
         if self.version and tools.Version(self.version) <= tools.Version("4"):

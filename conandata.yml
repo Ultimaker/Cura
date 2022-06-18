@@ -7,6 +7,7 @@ requirements:
         - "uranium/(latest)@ultimaker/stable"
         - "fdm_materials/(latest)@ultimaker/stable"
         - "cura_binary_data/(latest)@ultimaker/stable"
+        - "cpython/3.10.4@ultimaker/testing"
     "5.1.0":
         - "arcus/5.1.0"
         - "curaengine/5.1.0"
@@ -15,6 +16,7 @@ requirements:
         - "uranium/5.1.0"
         - "fdm_materials/5.1.0"
         - "cura_binary_data/5.1.0"
+        - "cpython/3.10.4@ultimaker/testing"
     "5.1.0-beta":
         - "arcus/[5.1.0-beta]@ultimaker/stable"
         - "curaengine/[5.1.0-beta]@ultimaker/stable"
@@ -23,6 +25,7 @@ requirements:
         - "uranium/[5.1.0-beta]@ultimaker/stable"
         - "fdm_materials/[5.1.0-beta]@ultimaker/stable"
         - "cura_binary_data/[5.1.0-beta]@ultimaker/stable"
+        - "cpython/3.10.4@ultimaker/testing"
     "5.1.0-cura_9365":
         - "arcus/[5.1.0-cura_9365]@ultimaker/testing"
         - "curaengine/[5.1.0-cura_9365]@ultimaker/testing"
@@ -31,6 +34,7 @@ requirements:
         - "uranium/[5.1.0-cura_9365]@ultimaker/testing"
         - "fdm_materials/[5.1.0-cura_9365]@ultimaker/testing"
         - "cura_binary_data/[5.1.0-cura_9365]@ultimaker/testing"
+        - "cpython/3.10.4@ultimaker/testing"
 runinfo:
     "None":
         entrypoint: "cura_app.py"
