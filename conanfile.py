@@ -167,12 +167,12 @@ class CuraConan(ConanFile):
         with open(Path(self.generators_folder, "Ultimaker-Cura.spec"), "w") as f:
             f.write(pyinstaller.render(
                 name = str(self.options.display_name).replace(" ", "-"),
-                entrypoint = self._um_data(self.version)["runinfo"]["entrypoint"],
+                entrypoint = os.path.join("..", "..", self._um_data(self.version)["runinfo"]["entrypoint"]),
                 datas = datas,
                 binaries = binaries,
                 hiddenimports = pyinstaller_metadata["hiddenimports"],
                 collect_all = pyinstaller_metadata["collect_all"],
-                icon = pyinstaller_metadata["icon"][str(self.settings.os)]
+                icon = os.path.join("..", "..", pyinstaller_metadata["icon"][str(self.settings.os)])
             ))
 
     def imports(self):
