@@ -1,6 +1,26 @@
-Cura
-====
-Ultimaker Cura is a state-of-the-art slicer application to prepare your 3D models for printing with a 3D printer. With hundreds of settings and hundreds of community-managed print profiles, Ultimaker Cura is sure to lead your next project to a success.
+# Cura
+
+<p align="center">
+    <a href="https://github.com/Ultimaker/Cura/actions/workflows/unit-test.yml" alt="Unit Tests">
+        <img src="https://github.com/Ultimaker/Cura/actions/workflows/unit-test.yml/badge.svg" /></a>
+    <a href="https://github.com/Ultimaker/Cura/actions/workflows/conan-package.yml" alt="Unit Tests">
+        <img src="https://github.com/Ultimaker/Cura/actions/workflows/conan-package.yml/badge.svg" /></a>
+    <a href="https://github.com/Ultimaker/Cura/issues" alt="Open Issues">
+        <img src="https://img.shields.io/github/issues/ultimaker/cura" /></a>
+    <a href="https://github.com/Ultimaker/Cura/issues?q=is%3Aissue+is%3Aclosed" alt="Closed Issues">
+        <img src="https://img.shields.io/github/issues-closed/ultimaker/cura?color=g" /></a>
+    <a href="https://github.com/Ultimaker/Cura/pulls" alt="Pull Requests">
+        <img src="https://img.shields.io/github/issues-pr/ultimaker/cura" /></a>
+    <a href="https://github.com/Ultimaker/CuraEngine/graphs/contributors" alt="Contributors">
+        <img src="https://img.shields.io/github/contributors/ultimaker/cura" /></a>
+    <a href="https://github.com/Ultimaker/Cura" alt="Repo Size">
+        <img src="https://img.shields.io/github/repo-size/ultimaker/cura?style=flat" /></a>
+    <a href="https://github.com/Ultimaker/Cura/blob/master/LICENSE" alt="License">
+        <img src="https://img.shields.io/github/license/ultimaker/cura?style=flat" /></a>
+</p>
+
+Ultimaker Cura is a state-of-the-art slicer application to prepare your 3D models for printing with a 3D printer. With hundreds of settings
+and hundreds of community-managed print profiles, Ultimaker Cura is sure to lead your next project to a success.
 
 ![Screenshot](cura-logo.PNG)
 
@@ -10,16 +30,18 @@ For crashes and similar issues, please attach the following information:
 
 * (On Windows) The log as produced by dxdiag (start -> run -> dxdiag -> save output)
 * The Cura GUI log file, located at
-  * `%APPDATA%\cura\<Cura version>\cura.log` (Windows), or usually `C:\Users\<your username>\AppData\Roaming\cura\<Cura version>\cura.log`
-  * `$HOME/Library/Application Support/cura/<Cura version>/cura.log` (OSX)
-  * `$HOME/.local/share/cura/<Cura version>/cura.log` (Ubuntu/Linux)
+    * `%APPDATA%\cura\<Cura version>\cura.log` (Windows), or usually `C:\Users\<your username>\AppData\Roaming\cura\<Cura version>\cura.log`
+    * `$HOME/Library/Application Support/cura/<Cura version>/cura.log` (OSX)
+    * `$HOME/.local/share/cura/<Cura version>/cura.log` (Ubuntu/Linux)
 
 If the Cura user interface still starts, you can also reach this directory from the application menu in Help -> Show settings folder
 
-For additional support, you could also ask in the [#cura channel](https://web.libera.chat/#cura) on [libera.chat](https://libera.chat/). For help with development, there is also the [#cura-dev channel](https://web.libera.chat/#cura-dev).
+For additional support, you could also ask in the [#cura channel](https://web.libera.chat/#cura) on [libera.chat](https://libera.chat/). For
+help with development, there is also the [#cura-dev channel](https://web.libera.chat/#cura-dev).
 
 Dependencies
 ------------
+
 * [Uranium](https://github.com/Ultimaker/Uranium) Cura is built on top of the Uranium framework.
 * [CuraEngine](https://github.com/Ultimaker/CuraEngine) This will be needed at runtime to perform the actual slicing.
 * [fdm_materials](https://github.com/Ultimaker/fdm_materials) Required to load a printer that has swappable material profiles.
@@ -34,7 +56,9 @@ Build scripts
 -------------
 Please check out [cura-build](https://github.com/Ultimaker/cura-build) for detailed building instructions.
 
-If you want to build the entire environment from scratch before building Cura as well, [cura-build-environment](https://github.com/Ultimaker/cura-build-environment) might be a starting point before cura-build. (Again, see cura-build for more details.)
+If you want to build the entire environment from scratch before building Cura as
+well, [cura-build-environment](https://github.com/Ultimaker/cura-build-environment) might be a starting point before cura-build. (Again, see
+cura-build for more details.)
 
 Running from Source
 -------------
@@ -46,7 +70,8 @@ Please check our [Wiki page](https://github.com/Ultimaker/Cura/wiki/Plugin-Direc
 
 Supported printers
 -------------
-Please check our [Wiki page](https://github.com/Ultimaker/Cura/wiki/Adding-new-machine-profiles-to-Cura) for guidelines about adding support for new machines.
+Please check our [Wiki page](https://github.com/Ultimaker/Cura/wiki/Adding-new-machine-profiles-to-Cura) for guidelines about adding support
+for new machines.
 
 Configuring Cura
 ----------------
