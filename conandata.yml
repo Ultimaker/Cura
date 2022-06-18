@@ -16,13 +16,13 @@ requirements:
         - "fdm_materials/5.1.0"
         - "cura_binary_data/5.1.0"
     "5.1.0-beta":
-        - "arcus/[5.1.0-beta, include_prerelease=True]@ultimaker/stable"
-        - "curaengine/[5.1.0-beta, include_prerelease=True]@ultimaker/stable"
-        - "savitar/[5.1.0-beta, include_prerelease=True]@ultimaker/stable"
-        - "pynest2d/[5.1.0-beta, include_prerelease=True]@ultimaker/stable"
-        - "uranium/[5.1.0-beta, include_prerelease=True]@ultimaker/stable"
-        - "fdm_materials/[5.1.0-beta, include_prerelease=True]@ultimaker/stable"
-        - "cura_binary_data/[5.1.0-beta, include_prerelease=True]@ultimaker/stable"
+        - "arcus/[5.1.0-beta]@ultimaker/stable"
+        - "curaengine/[5.1.0-beta]@ultimaker/stable"
+        - "savitar/[5.1.0-beta]@ultimaker/stable"
+        - "pynest2d/[5.1.0-beta]@ultimaker/stable"
+        - "uranium/[5.1.0-beta]@ultimaker/stable"
+        - "fdm_materials/[5.1.0-beta]@ultimaker/stable"
+        - "cura_binary_data/[5.1.0-beta]@ultimaker/stable"
     "5.1.0-cura_9365":
         - "arcus/[5.1.0-cura_9365]@ultimaker/testing"
         - "curaengine/[5.1.0-cura_9365]@ultimaker/testing"
@@ -100,7 +100,7 @@ pyinstaller:
         icon:
             Windows: "./icons/Cura.ico"
             Macos: "./icons/cura.icns"
-            Linux: ".icons/cura-128.png"
+            Linux: "./icons/cura-128.png"
     "5.1.0":
         datas:
             cura_plugins:
@@ -160,7 +160,7 @@ pyinstaller:
         icon:
             Windows: "./icons/Cura.ico"
             Macos: "./icons/cura.icns"
-            Linux: ".icons/cura-128.png"
+            Linux: "./icons/cura-128.png"
     "5.1.0-beta":
         datas:
             cura_plugins:
@@ -220,7 +220,7 @@ pyinstaller:
         icon:
             Windows: "./icons/Cura.ico"
             Macos: "./icons/cura.icns"
-            Linux: ".icons/cura-128.png"
+            Linux: "./icons/cura-128.png"
     "5.1.0-cura_9365":
         datas:
             cura_plugins:
@@ -280,4 +280,4 @@ pyinstaller:
         icon:
             Windows: "./icons/Cura.ico"
             Macos: "./icons/cura.icns"
-            Linux: ".icons/cura-128.png"
+            Linux: "./icons/cura-128.png"
