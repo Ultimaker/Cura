@@ -27,6 +27,10 @@ on:
                 required: false
                 type: string
 
+            conan_export_binaries:
+                required: false
+                type: boolean
+
 env:
     CONAN_LOGIN_USERNAME_ULTIMAKER: ${{ secrets.CONAN_USER }}
     CONAN_PASSWORD_ULTIMAKER: ${{ secrets.CONAN_PASS }}
@@ -68,7 +72,12 @@ jobs:
                     path: $HOME/.conan/data
                     key: ${{ runner.os }}-conan
 
+            -   name: Export the Package (binaries)
+                if: "${{ inputs.conan_export_binaries == 'true' }}"
+                run: conan export-pkg . ${{ inputs.recipe_id_full }}
+
             -   name: Export the Package
+                if: "${{ inputs.conan_export_binaries != 'true' }}"
                 run: conan export . ${{ inputs.recipe_id_full }}
 
             -   name: Create the latest alias
