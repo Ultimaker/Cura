@@ -85,6 +85,8 @@ class CuraConan(ConanFile):
 
     def configure(self):
         self.options["*"].shared = True
+        if self.settings.os == "Windows":
+            self.options["mpdecimal"].cxx = False
 
     def validate(self):
         if self.version and tools.Version(self.version) <= tools.Version("4"):
