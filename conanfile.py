@@ -86,7 +86,10 @@ class CuraConan(ConanFile):
     def configure(self):
         self.options["*"].shared = True
         if self.settings.os == "Windows":
-            self.options["mpdecimal"].cxx = False
+            # Needed to compile CPython on Windows with our configuration voor Visual Studio
+            self.options["mpdecimal"].cxx = True
+            self.options["mpdecimal"].shared = False
+            self.options["libffi"].shared = False
 
     def validate(self):
         if self.version and tools.Version(self.version) <= tools.Version("4"):
