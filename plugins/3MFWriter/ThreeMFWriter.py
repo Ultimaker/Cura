@@ -41,7 +41,7 @@ catalog = i18nCatalog("cura")
 
 THUMBNAIL_PATH = "Metadata/thumbnail.png"
 MODEL_PATH = "3D/3dmodel.model"
-PACKAGE_METADATA_PATH = "Metadata/packages.json"
+PACKAGE_METADATA_PATH = "Cura/packages.json"
 
 class ThreeMFWriter(MeshWriter):
     def __init__(self):
