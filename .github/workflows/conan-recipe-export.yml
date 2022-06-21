@@ -83,6 +83,6 @@ jobs:
             -   name: Create the latest alias
                 if: "${{ inputs.recipe_id_latest == '' }}"
                 run: conan alias ${{ inputs.recipe_id_latest }} ${{ inputs.recipe_id_full }}
-# FIXME: Once new JFrog server is up and running
-#            -   name: Upload the Package(s)
-#                run: conan upload "*" -r ultimaker --all -c
+
+            -   name: Upload the Package(s)
+                run: conan upload "*" -r ultimaker --all -c
