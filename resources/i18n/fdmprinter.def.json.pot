@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2022-04-13 10:49+0000\n"
+"POT-Creation-Date: 2022-06-21 12:50+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -3272,6 +3272,18 @@ msgid ""
 msgstr ""
 
 #: fdmprinter.def.json
+msgctxt "acceleration_travel_enabled label"
+msgid "Enable Travel Acceleration"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "acceleration_travel_enabled description"
+msgid ""
+"Use a separate acceleration rate for travel moves. If disabled, travel moves "
+"will use the acceleration value of the printed line at their destination."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "acceleration_print label"
 msgid "Print Acceleration"
 msgstr ""
@@ -3471,6 +3483,18 @@ msgid ""
 "Enables adjusting the jerk of print head when the velocity in the X or Y "
 "axis changes. Increasing the jerk can reduce printing time at the cost of "
 "print quality."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "jerk_travel_enabled label"
+msgid "Enable Travel Jerk"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "jerk_travel_enabled description"
+msgid ""
+"Use a separate jerk rate for travel moves. If disabled, travel moves will "
+"use the jerk value of the printed line at their destination."
 msgstr ""
 
 #: fdmprinter.def.json
