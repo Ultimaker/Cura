@@ -84,7 +84,6 @@
         "wall_0_wipe_dist": { "value": 0.0 },
 
         "fill_outline_gaps": { "value": true },
-        "filter_out_tiny_gaps": { "value": true },
 
         "retraction_speed": {
             "maximum_value_warning": "machine_max_feedrate_e",
@@ -99,8 +98,7 @@
             "maximum_value_warning": "machine_max_feedrate_e",
             "maximum_value": 200
         },
-        
-        "retraction_hop_enabled": { "value": "True" },
+
         "retraction_hop": { "value": 0.2 },
         "retraction_combing": { "value": "'off' if retraction_hop_enabled else 'noskin'" },
         "retraction_combing_max_distance": { "value": 30 },
