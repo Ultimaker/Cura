@@ -24,6 +24,7 @@ on:
             - 'icons/**'
             - 'tests/**'
             - '.github/workflows/conan-package.yml'
+            - '.github/workflows/requirements-conan-package.txt'
             - 'requirements*.txt'
         branches:
             - main
@@ -38,6 +39,7 @@ on:
             - 'icons/**'
             - 'tests/**'
             - '.github/workflows/conan-package.yml'
+            - '.github/workflows/requirements-conan-package.txt'
             - 'requirements*.txt'
         branches:
             - main
