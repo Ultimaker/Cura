@@ -30,9 +30,9 @@ on:
         branches:
             - main
             - 'CURA-*'
-            - '^[\d]+.[\d]+$'
+            - '[\d]+.[\d]+'
         tags:
-            - '^[\d]+.[\d]+$'
+            - '[\d]+.[\d]+'
 
     pull_request:
         paths:
@@ -47,7 +47,7 @@ on:
             - 'requirements*.txt'
         branches:
             - main
-            - '^[\d]+.[\d]+$'
+            - '[\d]+.[\d]+'
 
 
 jobs:
