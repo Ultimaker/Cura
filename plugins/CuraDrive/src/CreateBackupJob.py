@@ -5,7 +5,7 @@ import threading
 from datetime import datetime
 from typing import Any, Dict, Optional
 
-from PyQt5.QtNetwork import QNetworkReply
+from PyQt6.QtNetwork import QNetworkReply
 
 from UM.Job import Job
 from UM.Logger import Logger

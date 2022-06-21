@@ -33,7 +33,6 @@ Item
         {
             id: outputDeviceNameLabel
             font: UM.Theme.getFont("large_bold")
-            color: UM.Theme.getColor("text")
             anchors.left: parent.left
             anchors.top: parent.top
             anchors.margins: UM.Theme.getSize("default_margin").width

@@ -5,8 +5,8 @@ import re
 from enum import Enum
 from typing import Any, cast, Dict, List, Optional
 
-from PyQt5.QtCore import pyqtProperty, QObject, pyqtSignal, pyqtSlot
-from PyQt5.QtQml import QQmlEngine
+from PyQt6.QtCore import pyqtProperty, QObject, pyqtSignal, pyqtSlot
+from PyQt6.QtQml import QQmlEngine
 
 from cura.CuraApplication import CuraApplication
 from cura.CuraPackageManager import CuraPackageManager
@@ -31,7 +31,7 @@ class PackageModel(QObject):
         :param parent: The parent QML object that controls the lifetime of this model (normally a PackageList).
         """
         super().__init__(parent)
-        QQmlEngine.setObjectOwnership(self, QQmlEngine.CppOwnership)
+        QQmlEngine.setObjectOwnership(self, QQmlEngine.ObjectOwnership.CppOwnership)
         self._package_manager: CuraPackageManager = cast(CuraPackageManager, CuraApplication.getInstance().getPackageManager())
         self._plugin_registry: PluginRegistry = CuraApplication.getInstance().getPluginRegistry()
 
@@ -83,6 +83,20 @@ class PackageModel(QObject):
         self._package_manager.packagesWithUpdateChanged.connect(self._processUpdatedPackages)
 
         self._is_busy = False
+
+        self._is_missing_package_information = False
+
+    @classmethod
+    def fromIncompletePackageInformation(cls, display_name: str, package_version: str, package_type: str) -> "PackageModel":
+        package_data = {
+            "display_name": display_name,
+            "package_version": package_version,
+            "package_type": package_type,
+            "description": "The material package associated with the Cura project could not be found on the Ultimaker marketplace. Use the partial material profile definition stored in the Cura project file at your own risk."
+        }
+        package_model = cls(package_data)
+        package_model.setIsMissingPackageInformation(True)
+        return package_model
 
     @pyqtSlot()
     def _processUpdatedPackages(self):
@@ -385,3 +399,14 @@ class PackageModel(QObject):
     def canUpdate(self) -> bool:
         """Flag indicating if the package can be updated"""
         return self._can_update
+
+    isMissingPackageInformationChanged = pyqtSignal()
+
+    def setIsMissingPackageInformation(self, isMissingPackageInformation: bool) -> None:
+        self._is_missing_package_information = isMissingPackageInformation
+        self.isMissingPackageInformationChanged.emit()
+
+    @pyqtProperty(bool, notify=isMissingPackageInformationChanged)
+    def isMissingPackageInformation(self) -> bool:
+        """Flag indicating if the package can be updated"""
+        return self._is_missing_package_information

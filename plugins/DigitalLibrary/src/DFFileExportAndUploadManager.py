@@ -5,9 +5,9 @@ import threading
 from json import JSONDecodeError
 from typing import List, Dict, Any, Callable, Union, Optional
 
-from PyQt5.QtCore import QUrl
-from PyQt5.QtGui import QDesktopServices
-from PyQt5.QtNetwork import QNetworkReply
+from PyQt6.QtCore import QUrl
+from PyQt6.QtGui import QDesktopServices
+from PyQt6.QtNetwork import QNetworkReply
 
 from UM.FileHandler.FileHandler import FileHandler
 from UM.Logger import Logger
@@ -37,17 +37,18 @@ class DFFileExportAndUploadManager:
                  formats: List[str],
                  on_upload_error: Callable[[], Any],
                  on_upload_success: Callable[[], Any],
-                 on_upload_finished: Callable[[], Any] ,
+                 on_upload_finished: Callable[[], Any],
                  on_upload_progress: Callable[[int], Any]) -> None:
 
-        self._file_handlers = file_handlers  # type: Dict[str, FileHandler]
-        self._nodes = nodes  # type: List[SceneNode]
-        self._library_project_id = library_project_id  # type: str
-        self._library_project_name = library_project_name  # type: str
-        self._file_name = file_name  # type: str
-        self._upload_jobs = []  # type: List[ExportFileJob]
-        self._formats = formats  # type: List[str]
+        self._file_handlers: Dict[str, FileHandler] = file_handlers
+        self._nodes: List[SceneNode] = nodes
+        self._library_project_id: str = library_project_id
+        self._library_project_name: str = library_project_name
+        self._file_name: str = file_name
+        self._upload_jobs: List[ExportFileJob] = []
+        self._formats: List[str] = formats
         self._api = DigitalFactoryApiClient(application = CuraApplication.getInstance(), on_error = lambda error: Logger.log("e", str(error)))
+        self._source_file_id: Optional[str] = None
 
         # Functions of the parent class that should be called based on the upload process output
         self._on_upload_error = on_upload_error
@@ -59,7 +60,7 @@ class DFFileExportAndUploadManager:
         # show the success message (once both upload jobs are done)
         self._message_lock = threading.Lock()
 
-        self._file_upload_job_metadata = self.initializeFileUploadJobMetadata()  # type: Dict[str, Dict[str, Any]]
+        self._file_upload_job_metadata: Dict[str, Dict[str, Any]] = self.initializeFileUploadJobMetadata()
 
         self.progress_message = Message(
                 title = "Uploading...",
@@ -113,7 +114,8 @@ class DFFileExportAndUploadManager:
                 content_type = job.getMimeType(),
                 job_name = job.getFileName(),
                 file_size = len(job.getOutput()),
-                library_project_id = self._library_project_id
+                library_project_id = self._library_project_id,
+                source_file_id = self._source_file_id
         )
         self._api.requestUploadUFP(request, on_finished = self._uploadFileData, on_error = self._onRequestUploadPrintFileFailed)
 
@@ -125,6 +127,9 @@ class DFFileExportAndUploadManager:
         """
         if isinstance(file_upload_response, DFLibraryFileUploadResponse):
             file_name = file_upload_response.file_name
+
+            # store the `file_id` so it can be as `source_file_id` when uploading the print file
+            self._source_file_id = file_upload_response.file_id
         elif isinstance(file_upload_response, DFPrintJobUploadResponse):
             file_name = file_upload_response.job_name if file_upload_response.job_name is not None else ""
         else:
@@ -144,6 +149,8 @@ class DFFileExportAndUploadManager:
                                          on_success = self._onUploadSuccess,
                                          on_progress = self._onUploadProgress,
                                          on_error = self._onUploadError)
+
+        self._handleNextUploadJob()
 
     def _onUploadProgress(self, filename: str, progress: int) -> None:
         """
@@ -325,8 +332,13 @@ class DFFileExportAndUploadManager:
             message.hide()
 
     def start(self) -> None:
-        for job in self._upload_jobs:
-            job.start()
+        self._handleNextUploadJob()
+
+    def _handleNextUploadJob(self):
+        match self._upload_jobs:
+            case [job, *jobs]:
+                job.start()
+                self._upload_jobs = jobs
 
     def initializeFileUploadJobMetadata(self) -> Dict[str, Any]:
         metadata = {}

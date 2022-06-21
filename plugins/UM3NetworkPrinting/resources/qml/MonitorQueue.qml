@@ -40,7 +40,7 @@ Item
         height: 18 * screenScaleFactor // TODO: Theme!
         width: childrenRect.width
 
-        UM.RecolorImage
+        UM.ColorImage
         {
             id: externalLinkIcon
             anchors.verticalCenter: manageQueueLabel.verticalCenter

@@ -6,7 +6,7 @@
         "type": "machine",
         "author": "Unknown",
         "manufacturer": "Unknown",
-        "setting_version": 19,
+        "setting_version": 20,
         "file_formats": "text/x-gcode;model/stl;application/x-wavefront-obj;application/x3g",
         "visible": false,
         "has_materials": true,
@@ -764,7 +764,7 @@
                     "label": "Scale Fan Speed To 0-1",
                     "description": "Scale the fan speed to be between 0 and 1 instead of between 0 and 256.",
                     "type": "bool",
-                    "default_value": true,
+                    "default_value": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
@@ -1088,21 +1088,6 @@
                         }
                     }
                 },
-                "beading_strategy_type":
-                {
-                    "label": "Variable Line Strategy",
-                    "description": "Strategy to use to print the width of a part with a number of walls. This determines how many walls it will use for a certain total width, and how wide each of these lines are. \"Center Deviation\" will print all walls at the nominal line width except the central one(s), causing big variations in the center but very consistent outsides. \"Distributed\" distributes the width equally over all walls. \"Inward Distributed\" is a balance between the other two, distributing the changes in width over all walls but keeping the walls on the outside slightly more consistent.",
-                    "type": "enum",
-                    "enabled": false,
-                    "options":
-                    {
-                        "center_deviation": "Center Deviation",
-                        "distributed": "Distributed",
-                        "inward_distributed": "Inward Distributed"
-                    },
-                    "default_value": "inward_distributed",
-                    "limit_to_extruder": "wall_0_extruder_nr"
-                },
                 "wall_transition_length":
                 {
                     "label": "Wall Transition Length",
@@ -1123,8 +1108,7 @@
                     "type": "int",
                     "maximum_value": "999999",
                     "default_value": 1,
-                    "minimum_value": "1",
-                    "enabled": "beading_strategy_type == 'inward_distributed'"
+                    "minimum_value": "1"
                 },
                 "wall_transition_angle":
                 {
@@ -1140,15 +1124,28 @@
                 },
                 "wall_transition_filter_distance":
                 {
-                    "label": "Wall Transition Distance Filter",
+                    "label": "Wall Transitioning Filter Distance",
                     "description": "If it would be transitioning back and forth between different numbers of walls in quick succession, don't transition at all. Remove transitions if they are closer together than this distance.",
                     "type": "float",
                     "unit": "mm",
-                    "default_value": 1.4,
-                    "value": "4 * math.cos(wall_transition_angle / 180 * math.pi) * wall_line_width_x",
+                    "value": "100",
+                    "enabled": false,
+                    "default_value": 100,
                     "minimum_value": "wall_transition_length",
                     "minimum_value_warning": "math.cos(wall_transition_angle / 180 * math.pi) * wall_line_width_x",
-                    "maximum_value_warning": "10 * math.cos(wall_transition_angle / 180 * math.pi) * wall_line_width_x"
+                    "maximum_value": "999999"
+                },
+                "wall_transition_filter_deviation":
+                {
+                    "label": "Wall Transitioning Filter Margin",
+                    "description": "Prevent transitioning back and forth between one extra wall and one less. This margin extends the range of line widths which follow to [Minimum Wall Line Width - Margin, 2 * Minimum Wall Line Width + Margin]. Increasing this margin reduces the number of transitions, which reduces the number of extrusion starts/stops and travel time. However, large line width variation can lead to under- or overextrusion problems.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 0.1,
+                    "value": ".25 * machine_nozzle_size",
+                    "minimum_value": "0",
+                    "minimum_value_warning": ".01",
+                    "maximum_value_warning": "machine_nozzle_size"
                 },
                 "wall_0_wipe_dist":
                 {
@@ -1205,15 +1202,6 @@
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
-                "filter_out_tiny_gaps":
-                {
-                    "label": "Filter Out Tiny Gaps",
-                    "description": "Filter out tiny gaps to reduce blobs on outside of model.",
-                    "type": "bool",
-                    "default_value": true,
-                    "limit_to_extruder": "wall_0_extruder_nr",
-                    "settable_per_mesh": true
-                },
                 "min_wall_line_width":
                 {
                     "label": "Minimum Wall Line Width",
@@ -1222,7 +1210,7 @@
                     "minimum_value_warning": ".5 * max(wall_line_width_0, wall_line_width_x)",
                     "maximum_value_warning": "min(wall_line_width_0, wall_line_width_x)",
                     "default_value": 0.3,
-                    "value": "machine_nozzle_size * .75",
+                    "value": "machine_nozzle_size * .85",
                     "type": "float",
                     "settable_per_mesh": true,
                     "children":
@@ -1306,7 +1294,7 @@
                     "label": "Minimum Thin Wall Line Width",
                     "description": "Width of the wall that will replace thin features (according to the Minimum Feature Size) of the model. If the Minimum Wall Line Width is thinner than the thickness of the feature, the wall will become as thick as the feature itself.",
                     "unit": "mm",
-                    "value": "machine_nozzle_size * .75",
+                    "value": "min_wall_line_width",
                     "default_value": 0.2,
                     "minimum_value": "0.001",
                     "minimum_value_warning": "min_feature_size",
@@ -2268,7 +2256,7 @@
                     "maximum_value": "machine_height",
                     "maximum_value_warning": "resolveOrValue('infill_sparse_thickness') * 10",
                     "type": "float",
-                    "value": "0 if infill_sparse_density > 0 else 0",
+                    "value": "0",
                     "limit_to_extruder": "infill_extruder_nr",
                     "enabled": "infill_sparse_density > 0",
                     "settable_per_mesh": true,
@@ -2559,7 +2547,7 @@
                     "unit": "%",
                     "type": "float",
                     "default_value": 100.0,
-                    "enabled": false,
+                    "enabled": true,
                     "minimum_value": "0.001",
                     "minimum_value_warning": "100",
                     "maximum_value_warning": "120",
@@ -2575,7 +2563,7 @@
                             "unit": "%",
                             "type": "float",
                             "default_value": 100.0,
-                            "enabled": false,
+                            "enabled": true,
                             "minimum_value": "0.001",
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "120",
@@ -2591,7 +2579,7 @@
                             "unit": "%",
                             "type": "float",
                             "default_value": 100.0,
-                            "enabled": false,
+                            "enabled": true,
                             "minimum_value": "0.001",
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "120",
@@ -3334,6 +3322,17 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
+                "acceleration_travel_enabled":
+                {
+                    "label": "Enable Travel Acceleration",
+                    "description": "Use a separate acceleration rate for travel moves. If disabled, travel moves will use the acceleration value of the printed line at their destination.",
+                    "type": "bool",
+                    "default_value": true,
+                    "resolve": "any(extruderValues('acceleration_travel_enabled'))",
+                    "enabled": "acceleration_enabled",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
                 "acceleration_print":
                 {
                     "label": "Print Acceleration",
@@ -3553,7 +3552,7 @@
                     "minimum_value_warning": "100",
                     "maximum_value_warning": "10000",
                     "value": "acceleration_print if magic_spiralize else 5000",
-                    "enabled": "resolveOrValue('acceleration_enabled')",
+                    "enabled": "resolveOrValue('acceleration_enabled') and resolveOrValue('acceleration_travel_enabled')",
                     "settable_per_mesh": false
                 },
                 "acceleration_layer_0":
@@ -3596,7 +3595,7 @@
                             "minimum_value": "0.1",
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "10000",
-                            "enabled": "resolveOrValue('acceleration_enabled')",
+                            "enabled": "resolveOrValue('acceleration_enabled') and resolveOrValue('acceleration_travel_enabled')",
                             "settable_per_extruder": true,
                             "settable_per_mesh": false
                         }
@@ -3624,6 +3623,17 @@
                     "type": "bool",
                     "default_value": false,
                     "resolve": "any(extruderValues('jerk_enabled'))",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "jerk_travel_enabled":
+                {
+                    "label": "Enable Travel Jerk",
+                    "description": "Use a separate jerk rate for travel moves. If disabled, travel moves will use the jerk value of the printed line at their destination.",
+                    "type": "bool",
+                    "default_value": true,
+                    "resolve": "any(extruderValues('jerk_travel_enabled'))",
+                    "enabled": "jerk_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
@@ -3832,7 +3842,7 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "50",
                     "value": "jerk_print if magic_spiralize else 30",
-                    "enabled": "resolveOrValue('jerk_enabled')",
+                    "enabled": "resolveOrValue('jerk_enabled') and resolveOrValue('jerk_travel_enabled')",
                     "settable_per_mesh": false
                 },
                 "jerk_layer_0":
@@ -3872,7 +3882,7 @@
                             "value": "jerk_layer_0 * jerk_travel / jerk_print",
                             "minimum_value": "0",
                             "maximum_value_warning": "50",
-                            "enabled": "resolveOrValue('jerk_enabled')",
+                            "enabled": "resolveOrValue('jerk_enabled') and resolveOrValue('jerk_travel_enabled')",
                             "settable_per_extruder": true,
                             "settable_per_mesh": false
                         }
@@ -7644,7 +7654,6 @@
                     "default_value": 100,
                     "type": "float",
                     "minimum_value": "5",
-                    "maximum_value": "100",
                     "minimum_value_warning": "20",
                     "maximum_value_warning": "100",
                     "enabled": "bridge_settings_enabled",

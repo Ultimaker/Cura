@@ -3,7 +3,7 @@
 
 from typing import Optional, TYPE_CHECKING
 
-from PyQt5.QtCore import pyqtProperty
+from PyQt6.QtCore import pyqtProperty
 
 import UM.i18n
 from UM.FlameProfiler import pyqtSlot
@@ -18,7 +18,7 @@ from cura.Settings.CuraStackBuilder import CuraStackBuilder
 from cura.Settings.cura_empty_instance_containers import isEmptyContainer
 
 if TYPE_CHECKING:
-    from PyQt5.QtCore import QObject
+    from PyQt6.QtCore import QObject
 
 catalog = UM.i18n.i18nCatalog("cura")
 
