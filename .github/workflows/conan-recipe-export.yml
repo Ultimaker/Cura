@@ -67,23 +67,23 @@ jobs:
                     key: ${{ runner.os }}-conan
 
             -   name: Get Conan configuration from branch
-                if: "${{ inputs.conan_config_branch == '' }}"
+                if: ${{ inputs.conan_config_branch != '' }}
                 run: conan config install https://github.com/Ultimaker/conan-config.git -a "-b ${{ inputs.conan_config_branch }}"
 
             -   name: Get Conan configuration
-                if: "${{ inputs.conan_config_branch != '' }}"
+                if: ${{ inputs.conan_config_branch == '' }}
                 run: conan config install https://github.com/Ultimaker/conan-config.git
 
             -   name: Export the Package (binaries)
-                if: "${{ inputs.conan_export_binaries == 'true' }}"
+                if: ${{ inputs.conan_export_binaries == 'true' }}
                 run: conan export-pkg . ${{ inputs.recipe_id_full }}
 
             -   name: Export the Package
-                if: "${{ inputs.conan_export_binaries != 'true' }}"
+                if: ${{ inputs.conan_export_binaries != 'true' }}
                 run: conan export . ${{ inputs.recipe_id_full }}
 
             -   name: Create the latest alias
-                if: "${{ inputs.recipe_id_latest == '' }}"
+                if: ${{ inputs.recipe_id_latest == '' }}
                 run: conan alias ${{ inputs.recipe_id_latest }} ${{ inputs.recipe_id_full }}
 
             -   name: Upload the Package(s)
