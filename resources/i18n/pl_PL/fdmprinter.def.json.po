@@ -1,10 +1,10 @@
 # Cura JSON setting files
-# Copyright (C) 2019 Ultimaker B.V.
+# Copyright (C) 2022 Ultimaker B.V.
 # This file is distributed under the same license as the Cura package.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.13\n"
+"Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
 "POT-Creation-Date: 2022-06-21 12:50+0000\n"
 "PO-Revision-Date: 2019-11-15 15:34+0100\n"
