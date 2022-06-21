@@ -23,7 +23,8 @@ on:
             - 'cura/**'
             - 'icons/**'
             - 'tests/**'
-            - '.github/workflows/conan-package.yml'
+            - '.github/workflows/conan-*.yml'
+            - '.github/workflows/notify.yml'
             - '.github/workflows/requirements-conan-package.txt'
             - 'requirements*.txt'
         branches:
@@ -38,7 +39,8 @@ on:
             - 'cura/**'
             - 'icons/**'
             - 'tests/**'
-            - '.github/workflows/conan-package.yml'
+            - '.github/workflows/conan-*.yml'
+            - '.github/workflows/notify.yml'
             - '.github/workflows/requirements-conan-package.txt'
             - 'requirements*.txt'
         branches:
