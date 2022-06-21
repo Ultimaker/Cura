@@ -77,7 +77,7 @@ jobs:
                 run: conan config install https://github.com/Ultimaker/conan-config.git
 
             -   name: Create the Packages
-                run: conan install ${{ inputs.recipe_id_full }} -pr:b cura_build.jinja -pr:h cura_release.jinja --build=missing --update
+                run: conan install ${{ inputs.recipe_id_full }} --build=missing --update
 
             -   name: Upload the Package(s)
                 run: |
