@@ -52,14 +52,6 @@ jobs:
                     pip install -r .github/workflows/requirements-conan-package.txt
                     conan profile new default --detect
 
-            -   name: Get Conan configuration from branch
-                if: "${{ inputs.conan_config_branch == '' }}"
-                run: conan config install https://github.com/Ultimaker/conan-config.git -a "-b ${{ inputs.conan_config_branch }}"
-
-            -   name: Get Conan configuration
-                if: "${{ inputs.conan_config_branch != '' }}"
-                run: conan config install https://github.com/Ultimaker/conan-config.git
-
             -   name: Cache Conan local repository packages (Bash)
                 uses: actions/cache@v3
                 if: ${{ runner.os != 'Windows' }}
@@ -75,6 +67,14 @@ jobs:
                         C:\Users\runneradmin\.conan\data
                         C:\.conan
                     key: ${{ runner.os }}-conan
+
+            -   name: Get Conan configuration from branch
+                if: "${{ inputs.conan_config_branch == '' }}"
+                run: conan config install https://github.com/Ultimaker/conan-config.git -a "-b ${{ inputs.conan_config_branch }}"
+
+            -   name: Get Conan configuration
+                if: "${{ inputs.conan_config_branch != '' }}"
+                run: conan config install https://github.com/Ultimaker/conan-config.git
 
             -   name: Create the Packages
                 run: conan install ${{ inputs.recipe_id_full }} -pr:b cura_build.jinja -pr:h cura_release.jinja --build=missing --update
