@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.0\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2022-04-13 10:49+0000\n"
+"POT-Creation-Date: 2022-06-21 12:50+0000\n"
 "PO-Revision-Date: 2022-05-02 12:04+0200\n"
 "Last-Translator: Cláudio Sampaio <patola@gmail.com>\n"
 "Language-Team: Cláudio Sampaio <patola@gmail.com>\n"
@@ -2810,6 +2810,16 @@ msgid "Enables adjusting the print head acceleration. Increasing the acceleratio
 msgstr "Permite ajustar a aceleração da cabeça de impressão. Aumentar as acelerações pode reduzir tempo de impressão ao custo de qualidade de impressão."
 
 #: fdmprinter.def.json
+msgctxt "acceleration_travel_enabled label"
+msgid "Enable Travel Acceleration"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "acceleration_travel_enabled description"
+msgid "Use a separate acceleration rate for travel moves. If disabled, travel moves will use the acceleration value of the printed line at their destination."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "acceleration_print label"
 msgid "Print Acceleration"
 msgstr "Aceleração da Impressão"
@@ -2998,6 +3008,16 @@ msgstr "Habilitar Controle de Jerk"
 msgctxt "jerk_enabled description"
 msgid "Enables adjusting the jerk of print head when the velocity in the X or Y axis changes. Increasing the jerk can reduce printing time at the cost of print quality."
 msgstr "Permite ajustar o jerk da cabeça de impressão quando a velocidade nos eixos X ou Y muda. Aumentar o jerk pode reduzir o tempo de impressão ao custo de qualidade de impressão."
+
+#: fdmprinter.def.json
+msgctxt "jerk_travel_enabled label"
+msgid "Enable Travel Jerk"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "jerk_travel_enabled description"
+msgid "Use a separate jerk rate for travel moves. If disabled, travel moves will use the jerk value of the printed line at their destination."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "jerk_print label"

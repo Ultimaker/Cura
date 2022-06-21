@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 4.13\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2022-04-13 10:49+0000\n"
+"POT-Creation-Date: 2022-06-21 12:50+0000\n"
 "PO-Revision-Date: 2020-03-24 09:43+0100\n"
 "Last-Translator: Nagy Attila <vokroot@gmail.com>\n"
 "Language-Team: AT-VLOG\n"
@@ -2810,6 +2810,16 @@ msgid "Enables adjusting the print head acceleration. Increasing the acceleratio
 msgstr "A nyomtatófej mozgási gyorsulás szabályzás engedélyezése. Ha növeljük a gyorsulást, csökken a nyomtatási idő, viszont a nyomtatás minősége is."
 
 #: fdmprinter.def.json
+msgctxt "acceleration_travel_enabled label"
+msgid "Enable Travel Acceleration"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "acceleration_travel_enabled description"
+msgid "Use a separate acceleration rate for travel moves. If disabled, travel moves will use the acceleration value of the printed line at their destination."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "acceleration_print label"
 msgid "Print Acceleration"
 msgstr "Nyomtatási gyorsulás"
@@ -2998,6 +3008,16 @@ msgstr "Löket vezérlés engedélyezése"
 msgctxt "jerk_enabled description"
 msgid "Enables adjusting the jerk of print head when the velocity in the X or Y axis changes. Increasing the jerk can reduce printing time at the cost of print quality."
 msgstr "Engedéylezi a nyomtatófej X és Y tengelyen való löketének (sebesség) változásának vezérlését. Ha a löketet növeljük, az csökkenti a nyomtatási időt a minőség terhére."
+
+#: fdmprinter.def.json
+msgctxt "jerk_travel_enabled label"
+msgid "Enable Travel Jerk"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "jerk_travel_enabled description"
+msgid "Use a separate jerk rate for travel moves. If disabled, travel moves will use the jerk value of the printed line at their destination."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "jerk_print label"
