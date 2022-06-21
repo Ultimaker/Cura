@@ -96,6 +96,7 @@ jobs:
                 run: conan install ${{ inputs.recipe_id_full }} --build=missing --update
 
             -   name: Upload the Package(s)
+                if: always()
                 run: |
                     conan upload "*" -r cura --all -c
                     conan upload "*" -r cura-ce -c
