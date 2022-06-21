@@ -24,8 +24,10 @@ on:
                 type: string
 
 env:
-    CONAN_LOGIN_USERNAME_ULTIMAKER: ${{ secrets.CONAN_USER }}
-    CONAN_PASSWORD_ULTIMAKER: ${{ secrets.CONAN_PASS }}
+    CONAN_LOGIN_USERNAME_CURA: ${{ secrets.CONAN_USER }}
+    CONAN_PASSWORD_CURA: ${{ secrets.CONAN_PASS }}
+    CONAN_LOGIN_USERNAME_CURA_CE: ${{ secrets.CONAN_USER }}
+    CONAN_PASSWORD_CURA_CE: ${{ secrets.CONAN_PASS }}
     CONAN_LOG_RUN_TO_OUTPUT: 1
     CONAN_LOGGING_LEVEL: ${{ inputs.conan_logging_level }}
     CONAN_NON_INTERACTIVE: 1
@@ -78,4 +80,6 @@ jobs:
                 run: conan install ${{ inputs.recipe_id_full }} -pr:b cura_build.jinja -pr:h cura_release.jinja --build=missing --update
 
             -   name: Upload the Package(s)
-                run: conan upload "*" -r ultimaker --all -c
+                run: |
+                    conan upload "*" -r cura --all -c
+                    conan upload "*" -r cura-ce -c
