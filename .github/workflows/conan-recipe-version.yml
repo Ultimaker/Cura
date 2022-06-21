@@ -63,9 +63,7 @@ jobs:
 
             -   id: get-conan-broadcast-data
                 name: Get Conan broadcast data
-                run: |
-                    echo ${{ github.repository_owner }} | awk '{print "::set-output name=user::"tolower($0)}'
-                    
+                run: |                   
                     if [ "${{ github.ref_name == 'main' }}" = "true" ]; then
                       echo ${{ github.repository_owner }} | awk '{print "::set-output name=user::"tolower($0)}'
                       echo '::set-output name=channel::stable'
@@ -73,7 +71,7 @@ jobs:
                       echo '::set-output name=user::_'
                       echo '::set-output name=channel::_'
                     else
-                      echo ${{ github.repository_owner }} | awk '{print "::set-output name=user::"tolower($0//-/_)}'
+                      echo ${{ github.repository_owner }} | awk '{print "::set-output name=user::"tolower($0)}'
                       echo '::set-output name=channel::testing'
                     fi
 
