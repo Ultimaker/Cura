@@ -24,7 +24,7 @@ Item
     property alias wrapMode: label.wrapMode
     property real spacing: UM.Theme.getSize("narrow_margin").width
 
-    property string tooltipText
+    property string tooltipText: ""
 
     // These properties can be used in combination with layouts.
     readonly property real contentWidth: icon.width + margin + label.contentWidth
@@ -71,7 +71,7 @@ Item
 
     MouseArea
     {
-        enabled: tooltipText != null
+        enabled: tooltipText != ""
         anchors.fill: parent
         hoverEnabled: true
         onEntered: base.showTooltip(parent, Qt.point(-UM.Theme.getSize("thick_margin").width, 0), tooltipText)
