@@ -52,7 +52,14 @@ jobs:
                 id: prereleasetag
                 run: |
                     long_pre_release_tag=${{ steps.git-tool.outputs.PreReleaseTag }}
-                    echo "::set-output name=PreReleaseTag::${long_pre_release_tag:0:9}"
+                    sanitized_pre_release_tag="${long_pre_release_tag//-/_}"
+                    if [ "${{ github.event_name == 'merge' }}" = "true" ]; then
+                        echo $sanitized_pre_release_tag | awk '{print "::set-output name=PreReleaseTag::m_"substr(tolower($0),5,9)}'
+                    elif [ "${{ github.event_name == 'pull_request' }}" = "true" ]; then
+                        echo $sanitized_pre_release_tag | awk '{print "::set-output name=PreReleaseTag::pr_"substr(tolower($0),5,9)}'
+                    else
+                        echo $sanitized_pre_release_tag | awk '{print "::set-output name=PreReleaseTag::"substr(tolower($0),0,9)}'
+                    fi
 
             -   id: get-conan-broadcast-data
                 name: Get Conan broadcast data
