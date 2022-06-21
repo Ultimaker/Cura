@@ -56,7 +56,7 @@ jobs:
                     if [ "${{ github.event_name == 'merge' }}" = "true" ]; then
                         echo $sanitized_pre_release_tag | awk '{print "::set-output name=PreReleaseTag::m_"substr(tolower($0),5,9)}'
                     elif [ "${{ github.event_name == 'pull_request' }}" = "true" ]; then
-                        echo $sanitized_pre_release_tag | awk '{print "::set-output name=PreReleaseTag::pr_"substr(tolower($0),5,9)}'
+                        echo $sanitized_pre_release_tag | awk '{print "::set-output name=PreReleaseTag::pr_"substr(tolower($0),12,21)}'
                     else
                         echo $sanitized_pre_release_tag | awk '{print "::set-output name=PreReleaseTag::"substr(tolower($0),0,9)}'
                     fi
@@ -72,19 +72,16 @@ jobs:
                     elif [ "${{ steps.git-tool.outputs.fullSemVer == steps.git-tool.outputs.MajorMinorPatch }}" = "true" ]; then
                       echo '::set-output name=user::_'
                       echo '::set-output name=channel::_'
-                    elif [ "${{ github.event_name == 'merge' || github.event_name == 'pull_request' }}" = "true" ]; then
-                      echo ${{ github.repository_owner }} | awk '{print "::set-output name=user::"tolower($0)}'
-                      echo '::set-output name=channel::testing'
                     else
-                      echo ${{ github.repository_owner }} | awk '{print "::set-output name=user::"tolower($0)}'
-                      echo ${{ github.ref_name }} | awk '{print "::set-output name=channel::"substr(tolower($0),0,9)}'
+                      echo ${{ github.repository_owner }} | awk '{print "::set-output name=user::"tolower($0//-/_)}'
+                      echo '::set-output name=channel::testing'
                     fi
 
             -   name: Get latest alias
                 id: latest-alias
                 run: |
-                    # FIXME: Remove the CURA-8160 clause once merged to main
-                    if [ "${{ github.ref_name == 'main' }}" = "true" || "${{ contains(github.ref_name, 'CURA-8160') }}" ]; then
+                    # FIXME: Remove the CURA-9365 clause once merged to main
+                    if [ "${{ github.ref_name == 'main' }}" = "true" || "${{ contains(github.ref_name, 'CURA-9365') }}" ]; then
                       echo "::set-output name=recipe_id_latest::${{ inputs.project_name }}/latest@${{ steps.get-conan-broadcast-data.outputs.user }}/${{ steps.get-conan-broadcast-data.outputs.channel }}"
                     else
                       echo "::set-output name=recipe_id_latest::''"
