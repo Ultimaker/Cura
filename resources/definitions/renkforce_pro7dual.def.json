@@ -15,8 +15,10 @@
     "metadata": {
         "machine_extruder_trains": {
             "0": "renkforce_pro7dual_1st",
-            "1": "renkforce_pro7dual_2st"
+            "1": "renkforce_pro7dual_2nd"
         },
+        "author": "Woosh (based on RF100.ini by Conrad Electronic SE)",
+        "manufacturer": "Renkforce",
         "visible": true
     }
 }
