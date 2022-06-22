@@ -26,9 +26,9 @@ jobs:
         runs-on: ubuntu-latest
 
         outputs:
-            recipe_id_full: ${{ inputs.project_name }}/${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}.${{ steps.git-tool.outputs.Patch }}-${{ steps.git-tool.outputs.PreReleaseTag }}+${{ steps.git-tool.outputs.BuildMetaData }}@${{ steps.get-conan-broadcast-data.outputs.user }}/${{ steps.get-conan-broadcast-data.outputs.channel }}
+            recipe_id_full: ${{ inputs.project_name }}/${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}.${{ steps.git-tool.outputs.Patch }}-${{ steps.git-tool.outputs.PreReleaseLabel }}+${{ steps.git-tool.outputs.BuildMetaData }}@${{ steps.get-conan-broadcast-data.outputs.user }}/${{ steps.get-conan-broadcast-data.outputs.channel }}
             recipe_id_latest: ${{ steps.latest-alias.outputs.recipe_id_latest }}
-            semver_full: ${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}.${{ steps.git-tool.outputs.Patch }}-${{ steps.git-tool.outputs.PreReleaseTag }}+${{ steps.git-tool.outputs.BuildMetaData }}
+            semver_full: ${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}.${{ steps.git-tool.outputs.Patch }}-${{ steps.git-tool.outputs.PreReleaseLabel }}+${{ steps.git-tool.outputs.BuildMetaData }}
             user: ${{ steps.get-conan-broadcast-data.outputs.user }}
             channel: ${{ steps.get-conan-broadcast-data.outputs.channel }}
 
@@ -65,9 +65,9 @@ jobs:
                       sanitized_branch="${branch//-/_}"
                     
                       if [ "${{ github.event_name == 'merge' }}" = "true" ]; then
-                            echo $sanitized_branch | awk '{print "::set-output name=channel::m_"substr(tolower($0),0,9)}'
+                            echo $sanitized_branch | awk '{print "::set-output name=channel::m_"substr(tolower($0),0,5)}'
                       elif [ "${{ github.event_name == 'pull_request' }}" = "true" ]; then
-                            echo $sanitized_branch | awk '{print "::set-output name=channel::pr_"substr(tolower($0),0,9)}'
+                            echo $sanitized_branch | awk '{print "::set-output name=channel::pr_"substr(tolower($0),0,5)}'
                       else
                         echo $sanitized_branch | awk '{print "::set-output name=channel::"substr(tolower($0),0,9)}'
                       fi
