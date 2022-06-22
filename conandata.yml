@@ -1,6 +1,6 @@
 "None":
     requirements:
-        - "arcus/(latest)@ultimaker/stable"
+        - "arcus/[5.1.0-alpha.1]@ultimaker/cura_9365"
         - "curaengine/(latest)@ultimaker/stable"
         - "savitar/(latest)@ultimaker/stable"
         - "pynest2d/(latest)@ultimaker/stable"
