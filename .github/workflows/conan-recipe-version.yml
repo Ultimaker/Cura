@@ -26,9 +26,9 @@ jobs:
         runs-on: ubuntu-latest
 
         outputs:
-            recipe_id_full: ${{ inputs.project_name }}/${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}.${{ steps.git-tool.outputs.Patch }}-${{ steps.prereleasetag.outputs.PreReleaseTag }}+${{ steps.git-tool.outputs.BuildMetaData }}@${{ steps.get-conan-broadcast-data.outputs.user }}/${{ steps.get-conan-broadcast-data.outputs.channel }}
+            recipe_id_full: ${{ inputs.project_name }}/${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}.${{ steps.git-tool.outputs.Patch }}-${{ steps.git-tool.outputs.PreReleaseTag }}+${{ steps.git-tool.outputs.BuildMetaData }}@${{ steps.get-conan-broadcast-data.outputs.user }}/${{ steps.get-conan-broadcast-data.outputs.channel }}
             recipe_id_latest: ${{ steps.latest-alias.outputs.recipe_id_latest }}
-            semver_full: ${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}.${{ steps.git-tool.outputs.Patch }}-${{ steps.prereleasetag.outputs.PreReleaseTag }}+${{ steps.git-tool.outputs.BuildMetaData }}
+            semver_full: ${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}.${{ steps.git-tool.outputs.Patch }}-${{ ssteps.git-tool.outputs.PreReleaseTag }}+${{ steps.git-tool.outputs.BuildMetaData }}
             user: ${{ steps.get-conan-broadcast-data.outputs.user }}
             channel: ${{ steps.get-conan-broadcast-data.outputs.channel }}
 
@@ -48,31 +48,29 @@ jobs:
                 id: git-tool
                 uses: gittools/actions/gitversion/execute@v0.9.13
 
-            -   name: Get short PreReleaseTag
-                id: prereleasetag
-                run: |
-                    long_pre_release_tag=${{ steps.git-tool.outputs.PreReleaseTag }}
-                    sanitized_pre_release_tag="${long_pre_release_tag//-/_}"
-                    if [ "${{ github.event_name == 'merge' }}" = "true" ]; then
-                        echo $sanitized_pre_release_tag | awk '{print "::set-output name=PreReleaseTag::m_"substr(tolower($0),5,9)}'
-                    elif [ "${{ github.event_name == 'pull_request' }}" = "true" ]; then
-                        echo $sanitized_pre_release_tag | awk '{print "::set-output name=PreReleaseTag::pr_"substr(tolower($0),12,21)}'
-                    else
-                        echo $sanitized_pre_release_tag | awk '{print "::set-output name=PreReleaseTag::"substr(tolower($0),0,9)}'
-                    fi
-
             -   id: get-conan-broadcast-data
                 name: Get Conan broadcast data
-                run: |                   
-                    if [ "${{ github.ref_name == 'main' }}" = "true" ]; then
-                      echo ${{ github.repository_owner }} | awk '{print "::set-output name=user::"tolower($0)}'
-                      echo '::set-output name=channel::stable'
-                    elif [ "${{ steps.git-tool.outputs.fullSemVer == steps.git-tool.outputs.MajorMinorPatch }}" = "true" ]; then
+                run: |
+                    if [ "${{ github.ref_type == 'tag' }}" = "true" ]; then
                       echo '::set-output name=user::_'
                       echo '::set-output name=channel::_'
+                    elif [ "${{ github.ref_name == 'main' || github.ref_name == '5.1' }}" = "true" ]; then
+                      # FIXME: For release branches
+                      echo ${{ github.repository_owner }} | awk '{print "::set-output name=user::"tolower($0)}'
+                      echo '::set-output name=channel::stable'
                     else
                       echo ${{ github.repository_owner }} | awk '{print "::set-output name=user::"tolower($0)}'
-                      echo '::set-output name=channel::testing'
+                    
+                      branch=${{ github.ref_name }}
+                      sanitized_branch="${branch//-/_}"
+                    
+                      if [ "${{ github.event_name == 'merge' }}" = "true" ]; then
+                            echo $sanitized_branch | awk '{print "::set-output name=channel::m_"substr(tolower($0),0,9)}'
+                      elif [ "${{ github.event_name == 'pull_request' }}" = "true" ]; then
+                            echo $sanitized_branch | awk '{print "::set-output name=channel::pr_"substr(tolower($0),0,9)}'
+                      else
+                        echo $sanitized_branch | awk '{print "::set-output name=channel::"substr(tolower($0),0,9)}'
+                      fi
                     fi
 
             -   name: Get latest alias
