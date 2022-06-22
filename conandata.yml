@@ -9,7 +9,7 @@
         - "cura_binary_data/(latest)@ultimaker/stable"
         - "cpython/3.10.4"
         - "libffi/3.2.1"
-        - "mpdecimal/2.5.1"
+        - "mpdecimal/2.5.0"
         - "tcl/8.6.10"
         - "tk/8.6.10"
     runinfo:
@@ -85,7 +85,7 @@
         - "cura_binary_data/5.1.0"
         - "cpython/3.10.4"
         - "libffi/3.2.1"
-        - "mpdecimal/2.5.1"
+        - "mpdecimal/2.5.0"
         - "tcl/8.6.10"
         - "tk/8.6.10"
     runinfo:
@@ -161,7 +161,7 @@
         - "cura_binary_data/[5.1.0-beta]@ultimaker/stable"
         - "cpython/3.10.4"
         - "libffi/3.2.1"
-        - "mpdecimal/2.5.1"
+        - "mpdecimal/2.5.0"
         - "tcl/8.6.10"
         - "tk/8.6.10"
     runinfo:
@@ -237,7 +237,7 @@
         - "cura_binary_data/5.1.0-alpha+25@ultimaker/stable"
         - "cpython/3.10.4"
         - "libffi/3.2.1"
-        - "mpdecimal/2.5.1"
+        - "mpdecimal/2.5.0"
         - "tcl/8.6.10"
         - "tk/8.6.10"
     runinfo:
