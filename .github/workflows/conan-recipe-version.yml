@@ -28,7 +28,7 @@ jobs:
         outputs:
             recipe_id_full: ${{ inputs.project_name }}/${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}.${{ steps.git-tool.outputs.Patch }}-${{ steps.git-tool.outputs.PreReleaseTag }}+${{ steps.git-tool.outputs.BuildMetaData }}@${{ steps.get-conan-broadcast-data.outputs.user }}/${{ steps.get-conan-broadcast-data.outputs.channel }}
             recipe_id_latest: ${{ steps.latest-alias.outputs.recipe_id_latest }}
-            semver_full: ${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}.${{ steps.git-tool.outputs.Patch }}-${{ ssteps.git-tool.outputs.PreReleaseTag }}+${{ steps.git-tool.outputs.BuildMetaData }}
+            semver_full: ${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}.${{ steps.git-tool.outputs.Patch }}-${{ steps.git-tool.outputs.PreReleaseTag }}+${{ steps.git-tool.outputs.BuildMetaData }}
             user: ${{ steps.get-conan-broadcast-data.outputs.user }}
             channel: ${{ steps.get-conan-broadcast-data.outputs.channel }}
 
