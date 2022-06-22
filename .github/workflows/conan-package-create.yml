@@ -62,7 +62,7 @@ jobs:
                 if: ${{ runner.os != 'Windows' }}
                 with:
                     path: $HOME/.conan/data
-                    key: ${{ runner.os }}-conan
+                    key: conan-${{ runner.os }}-${{ runner.arch }}
 
             -   name: Cache Conan local repository packages (Powershell)
                 uses: actions/cache@v3
@@ -71,7 +71,7 @@ jobs:
                     path: |
                         C:\Users\runneradmin\.conan\data
                         C:\.conan
-                    key: ${{ runner.os }}-conan
+                    key: conan-${{ runner.os }}-${{ runner.arch }}
 
             -   name: Install MacOS system requirements
                 if:  ${{ runner.os == 'Macos' }}
