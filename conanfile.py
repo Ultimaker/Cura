@@ -27,7 +27,7 @@ class CuraConan(ConanFile):
 
     # FIXME: Remove specific branch once merged to main
     # Extending the conanfile with the UMBaseConanfile https://github.com/Ultimaker/conan-ultimaker-index/tree/CURA-9177_Fix_CI_CD/recipes/umbase
-    python_requires = "umbase/0.1@ultimaker/testing"
+    python_requires = "umbase/[>=0.1.1]@ultimaker/testing"
     python_requires_extend = "umbase.UMBaseConanfile"
 
     options = {
