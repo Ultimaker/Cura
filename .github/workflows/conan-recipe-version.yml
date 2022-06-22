@@ -77,7 +77,7 @@ jobs:
                 id: latest-alias
                 run: |
                     # FIXME: Remove the CURA-9365 clause once merged to main
-                    if [ "${{ github.ref_name == 'main' }}" = "true" || "${{ contains(github.ref_name, 'CURA-9365') }}" ]; then
+                    if [ "${{ github.ref_name == 'main' || ${{ contains(github.ref_name, 'CURA-9365') }}  }}" = "true" ]; then
                       echo "::set-output name=recipe_id_latest::${{ inputs.project_name }}/latest@${{ steps.get-conan-broadcast-data.outputs.user }}/${{ steps.get-conan-broadcast-data.outputs.channel }}"
                     else
                       echo "::set-output name=recipe_id_latest::''"
