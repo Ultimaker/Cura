@@ -27,6 +27,8 @@ on:
             - '.github/workflows/notify.yml'
             - '.github/workflows/requirements-conan-package.txt'
             - 'requirements*.txt'
+            - 'conanfile.py'
+            - 'conandata.yml'
         branches:
             - main
             - 'CURA-*'
@@ -44,6 +46,8 @@ on:
             - '.github/workflows/notify.yml'
             - '.github/workflows/requirements-conan-package.txt'
             - 'requirements*.txt'
+            - 'conanfile.py'
+            - 'conandata.yml'
         branches:
             - main
 
