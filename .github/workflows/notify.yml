@@ -43,7 +43,7 @@ jobs:
                     SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
 
             -   name: Slack notify on-failure
-                if: ${{ inputs.success }}
+                if: ${{ !inputs.success }}
                 uses: rtCamp/action-slack-notify@v2
                 env:
                     SLACK_USERNAME: ${{ github.repository }}
