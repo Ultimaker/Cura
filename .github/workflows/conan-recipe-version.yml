@@ -72,17 +72,19 @@ jobs:
                       # pull request events are considered unstable and are for testing purposes
                       # name/major.minor.patch-beta+build@ultimaker/pr_<number>
                       echo ${{ github.repository_owner }} | awk '{print "::set-output name=user::"tolower($0)}'
-                      echo "::set-output name=channel::m_${{ github.event.issue.number }}"
+                      echo "::set-output name=channel::pr_$PR_NUMBER"
                     else
                       # commits on other branches are considered unstable and for development purposes only
                       # Use the Cura branch naming scheme CURA-1234_foo_bar
                       # we use the first 9 characters of the branch name
                       # name/major.minor.patch-beta+build@ultimaker/cura_<jira_number>
-                    
+                      echo ${{ github.repository_owner }} | awk '{print "::set-output name=user::"tolower($0)}'
                       branch=${{ github.ref_name }}
                       sanitized_branch="${branch//-/_}"
                       echo $sanitized_branch | awk '{print "::set-output name=channel::"substr(tolower($0),0,9)}'
                     fi
+                env:
+                    PR_NUMBER: ${{ github.event.issue.number }}
 
             -   name: Get latest alias
                 id: latest-alias
