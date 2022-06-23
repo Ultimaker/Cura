@@ -4,18 +4,24 @@ name: conan-package
 # Exports the recipe, sources and binaries for Mac, Windows and Linux and upload these to the server such that these can
 # be used downstream.
 #
-# It should run on pushes against main or CURA-* branches, but it will only create the binaries for main and release
-# branches
-#
-# The version of the recipe has the following naming scheme:
-#   - Pushed to main: <package_name>/<major>.<minor>.<patch>-alpha+<commits_since_last_version_tag>@stable/utlimaker
-#   - Pushed to release branch: <package_name>/<major>.<minor>.<patch>-beta+<commits_since_last_version_tag>@stable/utlimaker
-#   - Release tag: <package_name>/<major>.<minor>.<patch>@_/_
-#   - Pushed to CURA-****_branch: <package_name>/<major>.<minor>.<patch>-CURA-****+<commits_since_last_version_tag>@testing/utlimaker
-#   - Merge request: <package_name>/<major>.<minor>.<patch>-merge-***+<commits_since_last_version_tag>@testing/utlimaker
-#   - Pull request: <package_name>/<major>.<minor>.<patch>-pull-***+<commits_since_last_version_tag>@testing/utlimaker
+# It should run on pushes against main or CURA-* branches, but it will only create the binaries for main and release branches
 
 on:
+    workflow_dispatch:
+        inputs:
+            create_binaries_windows:
+                required: true
+                default: false
+                description: 'create binaries Windows'
+            create_binaries_linux:
+                required: true
+                default: false
+                description: 'create binaries Linux'
+            create_binaries_macos:
+                required: true
+                default: false
+                description: 'create binaries Macos'
+
     push:
         paths:
             - 'plugins/**'
@@ -75,8 +81,8 @@ jobs:
         secrets: inherit
 
     conan-package-create-macos:
-        # FIXME: Remove once merged to main
-        if: ${{ github.event_name == 'push' && (github.ref_name == 'main' || github.ref_name == 'CURA-9365_fix_building_cura_main') }}
+        # FIXME: For release branches: maybe rename the branch to release/**
+        if: ${{ (github.event_name == 'push' && (github.ref_name == 'main' || github.ref_name == '5.1')) || github.event == 'workflow_dispatch' || inputs.create_binaries_macos }}
         needs: [ conan-recipe-version, conan-package-export ]
 
         uses: ultimaker/cura/.github/workflows/conan-package-create.yml@CURA-9365_fix_building_cura_main
@@ -89,8 +95,8 @@ jobs:
         secrets: inherit
 
     conan-package-create-windows:
-        # FIXME: Remove once merged to main
-        if: ${{ github.event_name == 'push' && (github.ref_name == 'main' || github.ref_name == 'CURA-9365_fix_building_cura_main') }}
+        # FIXME: For release branches: maybe rename the branch to release/**
+        if: ${{ (github.event_name == 'push' && (github.ref_name == 'main' || github.ref_name == '5.1')) || github.event == 'workflow_dispatch' || inputs.create_binaries_windows }}
         needs: [ conan-recipe-version, conan-package-export ]
 
         uses: ultimaker/cura/.github/workflows/conan-package-create.yml@CURA-9365_fix_building_cura_main
@@ -103,8 +109,8 @@ jobs:
         secrets: inherit
 
     conan-package-create-linux:
-        # FIXME: Remove once merged to main
-        if: ${{ github.event_name == 'push' && (github.ref_name == 'main' || github.ref_name == 'CURA-9365_fix_building_cura_main') }}
+        # FIXME: For release branches: maybe rename the branch to release/**
+        if: ${{ (github.event_name == 'push' && (github.ref_name == 'main' || github.ref_name == '5.1')) || github.event == 'workflow_dispatch' || inputs.create_binaries_linux }}
         needs: [ conan-recipe-version, conan-package-export ]
 
         uses: ultimaker/cura/.github/workflows/conan-package-create.yml@CURA-9365_fix_building_cura_main
@@ -117,7 +123,6 @@ jobs:
         secrets: inherit
 
     notify:
-        # FIXME: Remove once merged to main
         if: ${{ always() }}
         needs: [ conan-package-create-macos, conan-package-create-windows, conan-package-create-linux ]
 
