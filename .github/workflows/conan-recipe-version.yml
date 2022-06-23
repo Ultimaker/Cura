@@ -28,6 +28,7 @@ jobs:
         outputs:
             recipe_id_full: ${{ inputs.project_name }}/${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}.${{ steps.git-tool.outputs.Patch }}-${{ steps.git-tool.outputs.PreReleaseLabel }}+${{ steps.git-tool.outputs.BuildMetaData }}@${{ steps.get-conan-broadcast-data.outputs.user }}/${{ steps.get-conan-broadcast-data.outputs.channel }}
             recipe_id_latest: ${{ steps.latest-alias.outputs.recipe_id_latest }}
+            recipe_id_pr: ${{ steps.pr-alias.outputs.recipe_id_pr }}
             semver_full: ${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}.${{ steps.git-tool.outputs.Patch }}-${{ steps.git-tool.outputs.PreReleaseLabel }}+${{ steps.git-tool.outputs.BuildMetaData }}
             user: ${{ steps.get-conan-broadcast-data.outputs.user }}
             channel: ${{ steps.get-conan-broadcast-data.outputs.channel }}
@@ -68,11 +69,6 @@ jobs:
                       # FIXME: For release branches: maybe rename the branch to release/**
                       echo ${{ github.repository_owner }} | awk '{print "::set-output name=user::"tolower($0)}'
                       echo '::set-output name=channel::stable'                    
-                    elif [ "${{ github.event_name == 'pull_request' }}" = "true" ]; then
-                      # pull request events are considered unstable and are for testing purposes
-                      # name/major.minor.patch-beta+build@ultimaker/pr_<number>
-                      echo ${{ github.repository_owner }} | awk '{print "::set-output name=user::"tolower($0)}'
-                      echo "::set-output name=channel::pr_$PR_NUMBER"
                     else
                       # commits on other branches are considered unstable and for development purposes only
                       # Use the Cura branch naming scheme CURA-1234_foo_bar
@@ -82,6 +78,17 @@ jobs:
                       branch=${{ github.ref_name }}
                       sanitized_branch="${branch//-/_}"
                       echo $sanitized_branch | awk '{print "::set-output name=channel::"substr(tolower($0),0,9)}'
+                    fi
+
+            -   name: Get pull request alias
+                id: pr-alias
+                run: |
+                    if [ "${{ github.event_name == 'pull_request' }}" = "true" ]; then
+                      # pull request events are considered unstable and are for testing purposes
+                      # name/latest@ultimaker/pr_<number>
+                      echo "::set-output name=recipe_id_pr::${{ inputs.project_name }}/latest@${{ steps.get-conan-broadcast-data.outputs.user }}/pr_$PR_NUMBER"
+                    else
+                      echo "::set-output name=recipe_id_pr::''"
                     fi
                 env:
                     PR_NUMBER: ${{ github.event.issue.number }}

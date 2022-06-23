@@ -11,6 +11,10 @@ on:
                 required: false
                 type: string
 
+            recipe_id_pr:
+                required: false
+                type: string
+
             runs_on:
                 required: true
                 type: string
@@ -79,14 +83,19 @@ jobs:
                 run: conan export-pkg . ${{ inputs.recipe_id_full }}
 
             -   name: Export the Package
-                if: ${{ inputs.conan_export_binaries != 'true' }}
+                if: ${{ inputs.conan_export_binaries != 'true' && github.event_name != 'pull_request' }}
                 run: conan export . ${{ inputs.recipe_id_full }}
 
             -   name: Create the latest alias
-                if: ${{ inputs.recipe_id_latest == '' }}
+                if: ${{ inputs.recipe_id_latest != '' && github.event_name != 'pull_request' }}
+                run: conan alias ${{ inputs.recipe_id_latest }} ${{ inputs.recipe_id_full }}
+
+            -   name: Create the pull request alias
+                if: ${{ inputs.recipe_id_pr != '' && github.event_name == 'pull_request' }}
                 run: conan alias ${{ inputs.recipe_id_latest }} ${{ inputs.recipe_id_full }}
 
             -   name: Upload the Package(s)
                 run: |
+                    # Only use --all (upload binaries) for the cura repository
                     conan upload "*" -r cura --all -c
                     conan upload "*" -r cura-ce -c

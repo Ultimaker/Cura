@@ -74,6 +74,7 @@ jobs:
         with:
             recipe_id_full: ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
             recipe_id_latest: ${{ needs.conan-recipe-version.outputs.recipe_id_latest }}
+            recipe_id_pr: ${{ needs.conan-recipe-version.outputs.recipe_id_pr }}
             runs_on: 'ubuntu-20.04'
             python_version: '3.10.4'
             conan_config_branch: 'CURA-9177_Fix_CI_CD'
@@ -82,7 +83,7 @@ jobs:
 
     conan-package-create-macos:
         # FIXME: For release branches: maybe rename the branch to release/**
-        if: ${{ (github.event_name == 'push' && (github.ref_name == 'main' || github.ref_name == '5.1')) || github.event == 'workflow_dispatch' || inputs.create_binaries_macos }}
+        if: ${{ (github.event_name == 'push' && (github.ref_name == 'main' || github.ref_name == '5.1')) || (github.event_name == 'workflow_dispatch' && inputs.create_binaries_macos) }}
         needs: [ conan-recipe-version, conan-package-export ]
 
         uses: ultimaker/cura/.github/workflows/conan-package-create.yml@CURA-9365_fix_building_cura_main
@@ -96,7 +97,7 @@ jobs:
 
     conan-package-create-windows:
         # FIXME: For release branches: maybe rename the branch to release/**
-        if: ${{ (github.event_name == 'push' && (github.ref_name == 'main' || github.ref_name == '5.1')) || github.event == 'workflow_dispatch' || inputs.create_binaries_windows }}
+        if: ${{ (github.event_name == 'push' && (github.ref_name == 'main' || github.ref_name == '5.1')) || (github.event_name == 'workflow_dispatch' && inputs.create_binaries_windows) }}
         needs: [ conan-recipe-version, conan-package-export ]
 
         uses: ultimaker/cura/.github/workflows/conan-package-create.yml@CURA-9365_fix_building_cura_main
@@ -110,7 +111,7 @@ jobs:
 
     conan-package-create-linux:
         # FIXME: For release branches: maybe rename the branch to release/**
-        if: ${{ (github.event_name == 'push' && (github.ref_name == 'main' || github.ref_name == '5.1')) || github.event == 'workflow_dispatch' || inputs.create_binaries_linux }}
+        if: ${{ (github.event_name == 'push' && (github.ref_name == 'main' || github.ref_name == '5.1')) || (github.event_name == 'workflow_dispatch' && inputs.create_binaries_linux) }}
         needs: [ conan-recipe-version, conan-package-export ]
 
         uses: ultimaker/cura/.github/workflows/conan-package-create.yml@CURA-9365_fix_building_cura_main
