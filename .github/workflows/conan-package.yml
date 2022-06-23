@@ -43,25 +43,6 @@ on:
         tags:
             - '[1-9]+.[0-9]+.[0-9]+'
 
-    pull_request:
-        paths:
-            - 'plugins/**'
-            - 'resources/**'
-            - 'cura/**'
-            - 'icons/**'
-            - 'tests/**'
-            - '.github/workflows/conan-*.yml'
-            - '.github/workflows/notify.yml'
-            - '.github/workflows/requirements-conan-package.txt'
-            - 'requirements*.txt'
-            - 'conanfile.py'
-            - 'conandata.yml'
-            - 'GitVersion.yml'
-        branches:
-            - main
-            - '[1-9]+.[0-9]+'
-
-
 jobs:
     conan-recipe-version:
         uses: ultimaker/cura/.github/workflows/conan-recipe-version.yml@CURA-9365_fix_building_cura_main
@@ -123,15 +104,29 @@ jobs:
             conan_logging_level: 'info'
         secrets: inherit
 
-    notify:
+    notify-export:
         if: ${{ always() }}
+        needs: [ conan-package-export ]
+
+        uses: ultimaker/cura/.github/workflows/notify.yml@CURA-9365_fix_building_cura_main
+        with:
+            success: ${{ contains(join(needs.*.result, ','), 'success') }}
+            success_title: "New Conan recipe exported in ${{ github.repository }}"
+            success_body: "Exported ${{ needs.conan-recipe-version.outputs.recipe_id_full }}"
+            failure_title: "Failed to export Conan Export in ${{ github.repository }}"
+            failure_body: "Failed to exported ${{ needs.conan-recipe-version.outputs.recipe_id_full }}"
+        secrets: inherit
+
+    notify-create:
+        # FIXME: For release branches: maybe rename the branch to release/**
+        if: ${{ always() && ((github.event_name == 'push' && (github.ref_name == 'main' || github.ref_name == '5.1')) || (github.event_name == 'workflow_dispatch' && inputs.create_binaries_linux)) }}
         needs: [ conan-package-create-macos, conan-package-create-windows, conan-package-create-linux ]
 
         uses: ultimaker/cura/.github/workflows/notify.yml@CURA-9365_fix_building_cura_main
         with:
             success: ${{ contains(join(needs.*.result, ','), 'success') }}
-            success_title: "New binaries created for ${{ github.repository }}"
-            success_body: "New binaries created for ${{ github.repository }}"
-            failure_title: "Failed to create binaries ${{ github.repository }}"
-            failure_body: "Failed to create binaries ${{ github.repository }}"
+            success_title: "New binaries created in ${{ github.repository }}"
+            success_body: "Created binaries for ${{ needs.conan-recipe-version.outputs.recipe_id_full }}"
+            failure_title: "Failed to create binaries in ${{ github.repository }}"
+            failure_body: "Failed to created binaries for ${{ needs.conan-recipe-version.outputs.recipe_id_full }}"
         secrets: inherit
