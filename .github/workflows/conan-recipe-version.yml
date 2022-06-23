@@ -51,26 +51,37 @@ jobs:
             -   id: get-conan-broadcast-data
                 name: Get Conan broadcast data
                 run: |
-                    if [ "${{ github.ref_type == 'tag' }}" = "true" ]; then
+                    if [ "${{ github.ref_type == 'tag' && github.ref_name == '5.1' }}" = "true" ]; then
+                      # tagged commits on a release branch are actual released version and should have no user and channel
+                      # name/major.minor.patch@_/_
+                      # FIXME: For release branches: maybe rename the branch to release/**
                       echo '::set-output name=user::_'
                       echo '::set-output name=channel::_'
-                    elif [ "${{ github.ref_name == 'main' || github.ref_name == '5.1' }}" = "true" ]; then
-                      # FIXME: For release branches
+                    elif [ "${{ github.ref_name == 'main' }}" = "true" ]; then
+                      # commits on main are alpha's (nightlies) and are considered stable
+                      # name/major.minor.patch-alpha+build@ultimaker/stable
                       echo ${{ github.repository_owner }} | awk '{print "::set-output name=user::"tolower($0)}'
                       echo '::set-output name=channel::stable'
-                    else
+                    elif [ "${{ github.ref_name == '5.1' }}" = "true" ]; then
+                      # commits on release branches are beta's and are considered stable
+                      # name/major.minor.patch-beta+build@ultimaker/stable
+                      # FIXME: For release branches: maybe rename the branch to release/**
                       echo ${{ github.repository_owner }} | awk '{print "::set-output name=user::"tolower($0)}'
+                      echo '::set-output name=channel::stable'                    
+                    elif [ "${{ github.event_name == 'pull_request' }}" = "true" ]; then
+                      # pull request events are considered unstable and are for testing purposes
+                      # name/major.minor.patch-beta+build@ultimaker/pr_<number>
+                      echo ${{ github.repository_owner }} | awk '{print "::set-output name=user::"tolower($0)}'
+                      echo "::set-output name=channel::m_${{ github.event.issue.number }}"
+                    else
+                      # commits on other branches are considered unstable and for development purposes only
+                      # Use the Cura branch naming scheme CURA-1234_foo_bar
+                      # we use the first 9 characters of the branch name
+                      # name/major.minor.patch-beta+build@ultimaker/cura_<jira_number>
                     
                       branch=${{ github.ref_name }}
                       sanitized_branch="${branch//-/_}"
-                    
-                      if [ "${{ github.event_name == 'merge' }}" = "true" ]; then
-                            echo $sanitized_branch | awk '{print "::set-output name=channel::m_"substr(tolower($0),0,5)}'
-                      elif [ "${{ github.event_name == 'pull_request' }}" = "true" ]; then
-                            echo $sanitized_branch | awk '{print "::set-output name=channel::pr_"substr(tolower($0),0,5)}'
-                      else
-                        echo $sanitized_branch | awk '{print "::set-output name=channel::"substr(tolower($0),0,9)}'
-                      fi
+                      echo $sanitized_branch | awk '{print "::set-output name=channel::"substr(tolower($0),0,9)}'
                     fi
 
             -   name: Get latest alias
