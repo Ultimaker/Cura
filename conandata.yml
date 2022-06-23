@@ -240,6 +240,7 @@
         - "mpdecimal/2.5.0"
         - "tcl/8.6.10"
         - "tk/8.6.10"
+        - "zlib/1.2.12"
     runinfo:
         entrypoint: "cura_app.py"
     pyinstaller:
