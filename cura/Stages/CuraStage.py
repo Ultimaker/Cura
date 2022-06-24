@@ -15,6 +15,8 @@ from UM.Stage import Stage
 class CuraStage(Stage):
     def __init__(self, parent = None) -> None:
         super().__init__(parent)
+        # True if the toolbar should be visible when this stage is active
+        self._toolbarEnabled = False
 
     @pyqtProperty(str, constant = True)
     def stageId(self) -> str:
@@ -27,6 +29,10 @@ class CuraStage(Stage):
     @pyqtProperty(QUrl, constant = True)
     def stageMenuComponent(self) -> QUrl:
         return self.getDisplayComponent("menu")
+
+    @pyqtProperty(bool, constant = True)
+    def toolbarEnabled(self) -> bool:
+        return self._toolbarEnabled
 
 
 __all__ = ["CuraStage"]

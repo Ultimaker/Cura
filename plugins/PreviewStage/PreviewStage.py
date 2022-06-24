@@ -25,6 +25,7 @@ class PreviewStage(CuraStage):
         self._application = application
         self._application.engineCreatedSignal.connect(self._engineCreated)
         self._previously_active_view = None  # type: Optional[View]
+        self._toolbarEnabled = True
 
     def onStageSelected(self) -> None:
         """When selecting the stage, remember which was the previous view so that

@@ -13,6 +13,7 @@ class PrepareStage(CuraStage):
     def __init__(self, parent = None):
         super().__init__(parent)
         Application.getInstance().engineCreatedSignal.connect(self._engineCreated)
+        self._toolbarEnabled = True
 
     def _engineCreated(self):
         menu_component_path = os.path.join(PluginRegistry.getInstance().getPluginPath("PrepareStage"), "PrepareMenu.qml")

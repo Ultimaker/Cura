@@ -318,7 +318,7 @@ UM.MainWindow
                     verticalCenter: tallerThanParent ? undefined : parent.verticalCenter
                     left: parent.left
                 }
-                visible: CuraApplication.platformActivity && !PrintInformation.preSliced
+                visible: CuraApplication.platformActivity && !PrintInformation.preSliced && UM.Controller.activeStage.toolbarEnabled
             }
 
             // A hint for the loaded content view. Overlay items / controls can safely be placed in this area
