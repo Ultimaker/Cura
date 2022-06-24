@@ -12,6 +12,8 @@ from UM.Application import Application
 from UM.Message import Message
 from UM.Resources import Resources
 from UM.Scene.SceneNode import SceneNode
+from UM.Settings.ContainerRegistry import ContainerRegistry
+from UM.Settings.EmptyInstanceContainer import EmptyInstanceContainer
 
 from cura.CuraApplication import CuraApplication
 from cura.CuraPackageManager import CuraPackageManager
@@ -266,6 +268,10 @@ class ThreeMFWriter(MeshWriter):
         for extruder in CuraApplication.getInstance().getExtruderManager().getActiveExtruderStacks():
             if not extruder.isEnabled:
                 # Don't export materials not in use
+                continue
+
+            if isinstance(extruder.material, type(ContainerRegistry.getInstance().getEmptyInstanceContainer())):
+                # This is an empty material container, no material to export
                 continue
 
             if package_manager.isMaterialBundled(extruder.material.getFileName(), extruder.material.getMetaDataEntry("GUID")):
