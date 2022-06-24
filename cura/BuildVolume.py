@@ -983,6 +983,9 @@ class BuildVolume(SceneNode):
             half_machine_width = self._global_container_stack.getProperty("machine_width", "value") / 2
             half_machine_depth = self._global_container_stack.getProperty("machine_depth", "value") / 2
 
+            # We need at a minimum a very small border around the edge so that models can't go off the build plate
+            border_size = max(border_size, 0.1)
+
             if self._shape != "elliptic":
                 if border_size - left_unreachable_border > 0:
                     result[extruder_id].append(Polygon(numpy.array([
