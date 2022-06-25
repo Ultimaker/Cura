@@ -87,6 +87,7 @@ class CuraConan(ConanFile):
         self.options["arcus"].shared = True
         self.options["savitar"].shared = True
         self.options["pynest2d"].shared = True
+        self.options["cpython"].shared = True
 
     def validate(self):
         if self.version and tools.Version(self.version) <= tools.Version("4"):
