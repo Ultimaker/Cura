@@ -8,10 +8,6 @@
         - "fdm_materials/(latest)@ultimaker/stable"
         - "cura_binary_data/(latest)@ultimaker/stable"
         - "cpython/3.10.4"
-        - "libffi/3.2.1"
-        - "mpdecimal/2.5.0"
-        - "tcl/8.6.10"
-        - "tk/8.6.10"
     runinfo:
         entrypoint: "cura_app.py"
     pyinstaller:
@@ -84,10 +80,6 @@
         - "fdm_materials/5.1.0"
         - "cura_binary_data/5.1.0"
         - "cpython/3.10.4"
-        - "libffi/3.2.1"
-        - "mpdecimal/2.5.0"
-        - "tcl/8.6.10"
-        - "tk/8.6.10"
     runinfo:
         entrypoint: "cura_app.py"
     pyinstaller:
@@ -160,10 +152,6 @@
         - "fdm_materials/(latest)@ultimaker/stable"
         - "cura_binary_data/(latest)@ultimaker/stable"
         - "cpython/3.10.4"
-        - "libffi/3.2.1"
-        - "mpdecimal/2.5.0"
-        - "tcl/8.6.10"
-        - "tk/8.6.10"
     runinfo:
         entrypoint: "cura_app.py"
     pyinstaller:
@@ -236,11 +224,6 @@
         - "fdm_materials/(latest)@ultimaker/cura_9365"
         - "cura_binary_data/(latest)@ultimaker/cura_9365"
         - "cpython/3.10.4"
-        - "libffi/3.2.1"
-        - "mpdecimal/2.5.0"
-        - "tcl/8.6.10"
-        - "tk/8.6.10"
-        - "zlib/1.2.12"
     runinfo:
         entrypoint: "cura_app.py"
     pyinstaller:

@@ -84,20 +84,9 @@ class CuraConan(ConanFile):
         return ["requirements.txt", "requirements-ultimaker.txt"]
 
     def configure(self):
-        self.options["*"].shared = True
-        self.options["bzip2"].shared = False
-        self.options["expat"].shared = False
-        self.options["openssl"].shared = False
-        self.options["sqlite3"].shared = False
-        self.options["tcl"].shared = False
-        self.options["tk"].shared = False
-        self.options["xz_utils"].shared = False
-        self.options["zlib"].shared = False
-        if self.settings.os == "Windows":
-            # Needed to compile CPython on Windows with our configuration for Visual Studio
-            self.options["mpdecimal"].cxx = True
-            self.options["mpdecimal"].shared = False
-            self.options["libffi"].shared = False
+        self.options["arcus"].shared = True
+        self.options["savitar"].shared = True
+        self.options["pynest2d"].shared = True
 
     def validate(self):
         if self.version and tools.Version(self.version) <= tools.Version("4"):
