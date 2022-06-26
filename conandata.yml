@@ -58,6 +58,7 @@
             - "logging.handlers"
             - "zeroconf"
             - "fcntl"
+            - "stl"
         collect_all:
             - "cura"
             - "UM"
@@ -130,6 +131,7 @@
             - "logging.handlers"
             - "zeroconf"
             - "fcntl"
+            - "stl"
         collect_all:
             - "cura"
             - "UM"
@@ -202,6 +204,7 @@
             - "logging.handlers"
             - "zeroconf"
             - "fcntl"
+            - "stl"
         collect_all:
             - "cura"
             - "UM"
@@ -274,6 +277,7 @@
             - "logging.handlers"
             - "zeroconf"
             - "fcntl"
+            - "stl"
         collect_all:
             - "cura"
             - "UM"
