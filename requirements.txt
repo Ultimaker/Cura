@@ -110,6 +110,12 @@ pyserial==3.4 \
 ### Indirect requirements ###
 numpy-stl==2.10.1 \
     --hash=sha256:f6b529b8a8112dfe456d4f7697c7aee0aca62be5a873879306afe4b26fca963c
+python-utils==2.3.0 \
+    --hash=sha256:34aaf26b39b0b86628008f2ae0ac001b30e7986a8d303b61e1357dfcdad4f6d3 \
+    --hash=sha256:e25f840564554eaded56eaa395bca507b0b9e9f0ae5ecb13a8cb785305c56d25
+six==1.12.0 \
+    --hash=sha256:3350809f0555b11f552448330d0b52d5f24c91a322ea4a15ef22629740f3761c \
+    --hash=sha256:d16a0141ec1a18405cd4ce8b4613101da75da0e9a7aec5bdd4fa804d0e0eba73
 shapely==1.8.2 \
     --hash=sha256:572af9d5006fd5e3213e37ee548912b0341fb26724d6dc8a4e3950c10197ebb6 \
     --hash=sha256:c60f3758212ec480675b820b13035dda8af8f7cc560d2cc67999b2717fb8faef \
