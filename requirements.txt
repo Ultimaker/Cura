@@ -108,6 +108,8 @@ pyserial==3.4 \
     --hash=sha256:e0770fadba80c31013896c7e6ef703f72e7834965954a78e71a3049488d4d7d8
 
 ### Indirect requirements ###
+numpy-stl==2.10.1 \
+    --hash=sha256:f6b529b8a8112dfe456d4f7697c7aee0aca62be5a873879306afe4b26fca963c
 shapely==1.8.2 \
     --hash=sha256:572af9d5006fd5e3213e37ee548912b0341fb26724d6dc8a4e3950c10197ebb6 \
     --hash=sha256:c60f3758212ec480675b820b13035dda8af8f7cc560d2cc67999b2717fb8faef \
