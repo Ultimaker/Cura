@@ -1,5 +1,8 @@
 import os
+import sys
 from pathlib import Path
+
+from io import StringIO
 
 from platform import python_version
 
@@ -7,8 +10,9 @@ from jinja2 import Template
 
 from conan import ConanFile
 from conan.tools import files
+from conan.tools.env import VirtualRunEnv
 from conans import tools
-from conan.errors import ConanInvalidConfiguration
+from conan.errors import ConanInvalidConfiguration, ConanException
 
 required_conan_version = ">=1.47.0"
 
@@ -21,8 +25,7 @@ class CuraConan(ConanFile):
     description = "3D printer / slicing GUI built on top of the Uranium framework"
     topics = ("conan", "python", "pyqt5", "qt", "qml", "3d-printing", "slicer")
     build_policy = "missing"
-    exports = "LICENSE*", "Ultimaker-Cura.spec.jinja"
-    exports_sources = "CuraVersion.py.jinja"
+    exports = "LICENSE*", "Ultimaker-Cura.spec.jinja", "CuraVersion.py.jinja", "requirements.txt", "requirements-dev.txt", "requirements-ultimaker.txt"
     settings = "os", "compiler", "build_type", "arch"
     no_copy_source = True  # We won't build so no need to copy sources to the build folder
 
@@ -53,6 +56,12 @@ class CuraConan(ConanFile):
         "url": "auto",
         "revision": "auto"
     }
+
+    @property
+    def _venv_path(self):
+        if self.settings.os == "Windows":
+            return "Scripts"
+        return "bin"
 
     @property
     def _staging(self):
@@ -183,18 +192,84 @@ class CuraConan(ConanFile):
         self.copy("*.dylib", src = "@libdirs", dst = "venv/bin")
 
     def deploy(self):
-        self.copy_deps("CuraEngine.exe", root_package = "curaengine", src = "@bindirs", dst = "", keep_path = False)
-        self.copy_deps("CuraEngine", root_package = "curaengine", src = "@bindirs", dst = "", keep_path = False)
+        # Setup the Virtual Python Environment in the user space
+        python_interpreter = Path(self.deps_user_info["cpython"].python)
 
-        self.copy_deps("*.fdm_material", root_package = "fdm_materials", src = "@resdirs", dst = "resources/materials", keep_path = False)
-        self.copy_deps("*.sig", root_package = "fdm_materials", src = "@resdirs", dst = "resources/materials", keep_path = False)
+        # When on Windows execute as Windows Path
+        if self.settings.os == "Windows":
+            python_interpreter = Path(*[f'"{p}"' if " " in p else p for p in python_interpreter.parts])
 
+        # Create the virtual environment
+        self.run(f"""{python_interpreter} -m venv {self.install_folder}""", run_environment = True, env = "conanrun")
+
+        # Make sure there executable is named the same on all three OSes this allows it to be called with `python`
+        # simplifying GH Actions steps
+        if self.settings.os != "Windows":
+            python_venv_interpreter = Path(self.install_folder, self._venv_path, "python")
+            if not python_venv_interpreter.exists():
+                python_venv_interpreter.hardlink_to(Path(self.install_folder, self._venv_path, Path(sys.executable).stem + Path(sys.executable).suffix))
+        else:
+            python_venv_interpreter = Path(self.install_folder, self._venv_path, Path(sys.executable).stem + Path(sys.executable).suffix)
+
+        if not python_venv_interpreter.exists():
+            raise ConanException(f"Virtual environment Python interpreter not found at: {python_venv_interpreter}")
+        if self.settings.os == "Windows":
+            python_venv_interpreter = Path(*[f'"{p}"' if " " in p else p for p in python_venv_interpreter.parts])
+
+        buffer = StringIO()
+        outer = '"' if self.settings.os == "Windows" else "'"
+        inner = "'" if self.settings.os == "Windows" else '"'
+        self.run(f"{python_venv_interpreter} -c {outer}import sysconfig; print(sysconfig.get_path({inner}purelib{inner})){outer}",
+                 env = "conanrun",
+                 output = buffer)
+        pythonpath = buffer.getvalue().splitlines()[-1]
+
+        run_env = VirtualRunEnv(self)
+        env = run_env.environment()
+
+        env.define_path("VIRTUAL_ENV", self.install_folder)
+        env.prepend_path("PATH", os.path.join(self.install_folder, self._venv_path))
+        env.prepend_path("PYTHONPATH", pythonpath)
+        env.unset("PYTHONHOME")
+
+        envvars = env.vars(self.conanfile, scope = "run")
+
+        # Install some base_packages
+        self.run(f"""{python_venv_interpreter} -m pip install wheel setuptools""", run_environment = True, env = "conanrun")
+
+        # Install the requirements*.text
+        # TODO: loop through dependencies and go over each requirement file per dependency (maybe we should add this to the conandata, or
+        # define cpp_user_info in dependencies
+
+        # Copy CuraEngine.exe to bindirs of Virtual Python Environment
+        # TODO: Fix source such that it will get the curaengine relative from the executable (Python bindir in this case)
+        self.copy_deps("CuraEngine.exe", root_package = "curaengine", src = "@bindirs",
+                       dst = os.path.join(self.install_folder, self._venv_path), keep_path = False)
+        self.copy_deps("CuraEngine", root_package = "curaengine", src = "@bindirs",
+                       dst = os.path.join(self.install_folder, self._venv_path), keep_path = False)
+
+        # Copy resources of Cura (keep folder structure)
+        self.copy_deps("*", root_package = "cura", src = "@resdirs", dst = os.path.join(self.install_folder, "share", "cura", "resources"),
+                       keep_path = True)
+
+        # Copy materials (flat)
+        self.copy_deps("*.fdm_material", root_package = "fdm_materials", src = "@resdirs",
+                       dst = os.path.join(self.install_folder, "share", "cura", "resources", "materials"), keep_path = False)
+        self.copy_deps("*.sig", root_package = "fdm_materials", src = "@resdirs",
+                       dst = os.path.join(self.install_folder, "share", "cura", "resources", "materials"), keep_path = False)
+
+        # Copy resources of Uranium (keep folder structure)
+        self.copy_deps("*", root_package = "uranium", src = "@resdirs",
+                       dst = os.path.join(self.install_folder, "share", "cura", "resources"), keep_path = True)
+
+        # Copy dynamic libs to site-packages
         self.copy_deps("*.dll", src = "@bindirs", dst = "venv/Lib/site-packages")
         self.copy_deps("*.pyd", src = "@libdirs", dst = "venv/Lib/site-packages")
         self.copy_deps("*.pyi", src = "@libdirs", dst = "venv/Lib/site-packages")
         self.copy_deps("*.dylib", src = "@libdirs", dst = "venv/bin")
 
-        with open(Path("CuraVersion.py.jinja"), "r") as f:
+        # Make sure the CuraVersion.py is up to date with the correct settings
+        with open(Path(Path(__file__).parent, "CuraVersion.py.jinja"), "r") as f:
             cura_version_py = Template(f.read())
 
         # TODO: Extend
