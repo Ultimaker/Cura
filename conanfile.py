@@ -280,6 +280,7 @@ class CuraConan(ConanFile):
         self.copy("*", src = "resources", dst = os.path.join(self.cpp.package.resdirs[0], "resources"))
 
     def package_info(self):
+        self.user_info.requirements_txts = ["requirements.txt", "requirements-dev.txt", "requirements-ultimaker.txt"]
         if self.in_local_cache:
             self.runenv_info.append_path("PYTHONPATH", self.cpp_info.libdirs[0])
         else:
