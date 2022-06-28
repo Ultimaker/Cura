@@ -277,6 +277,7 @@ class ThreeMFWriter(MeshWriter):
 
             # We failed to find the package for this material
             if not package_data:
+                Logger.info(f"Could not find package for material in extruder {extruder.id}, skipping.")
                 continue
 
             material_metadata = {"id": package_id,
