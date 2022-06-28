@@ -6,166 +6,171 @@
     "fonts": {
         "large": {
             "size": 1.35,
-            "weight": 40,
+            "weight": 400,
             "family": "Noto Sans"
         },
         "large_ja_JP": {
             "size": 1.35,
-            "weight": 50,
+            "weight": 400,
             "family": "Noto Sans"
         },
         "large_zh_CN": {
             "size": 1.35,
-            "weight": 50,
+            "weight": 400,
             "family": "Noto Sans"
         },
         "large_zh_TW": {
             "size": 1.35,
-            "weight": 50,
+            "weight": 400,
             "family": "Noto Sans"
         },
         "large_bold": {
             "size": 1.35,
-            "weight": 63,
+            "weight": 600,
             "family": "Noto Sans"
         },
         "huge": {
             "size": 1.8,
-            "weight": 50,
+            "weight": 400,
             "family": "Noto Sans"
         },
         "huge_bold": {
             "size": 1.8,
-            "weight": 63,
+            "weight": 600,
             "family": "Noto Sans"
         },
         "medium": {
             "size": 1.16,
-            "weight": 40,
+            "weight": 400,
             "family": "Noto Sans"
         },
         "medium_ja_JP": {
             "size": 1.16,
-            "weight": 50,
+            "weight": 400,
             "family": "Noto Sans"
         },
         "medium_zh_CN": {
             "size": 1.16,
-            "weight": 50,
+            "weight": 400,
             "family": "Noto Sans"
         },
         "medium_zh_TW": {
             "size": 1.16,
-            "weight": 50,
+            "weight": 400,
             "family": "Noto Sans"
         },
         "medium_bold": {
             "size": 1.16,
-            "weight": 63,
+            "weight": 600,
             "family": "Noto Sans"
         },
         "default": {
             "size": 0.95,
-            "weight": 40,
+            "weight": 400,
             "family": "Noto Sans"
         },
         "default_ja_JP": {
             "size": 1.0,
-            "weight": 50,
+            "weight": 400,
             "family": "Noto Sans"
         },
         "default_zh_CN": {
             "size": 1.0,
-            "weight": 50,
+            "weight": 400,
             "family": "Noto Sans"
         },
         "default_zh_TW": {
             "size": 1.0,
-            "weight": 50,
+            "weight": 400,
             "family": "Noto Sans"
         },
         "default_bold": {
             "size": 0.95,
-            "weight": 63,
+            "weight": 600,
             "family": "Noto Sans"
         },
         "default_bold_ja_JP": {
             "size": 1.0,
-            "weight": 63,
+            "weight": 600,
             "family": "Noto Sans"
         },
         "default_bold_zh_CN": {
             "size": 1.0,
-            "weight": 63,
+            "weight": 600,
             "family": "Noto Sans"
         },
         "default_bold_zh_TW": {
             "size": 1.0,
-            "weight": 63,
+            "weight": 600,
             "family": "Noto Sans"
         },
         "default_italic": {
             "size": 0.95,
-            "weight": 40,
+            "weight": 400,
             "italic": true,
             "family": "Noto Sans"
         },
         "default_italic_ja_JP": {
             "size": 1.0,
-            "weight": 50,
+            "weight": 400,
             "italic": true,
             "family": "Noto Sans"
         },
         "default_italic_zh_CN": {
             "size": 1.0,
-            "weight": 50,
+            "weight": 400,
             "italic": true,
             "family": "Noto Sans"
         },
         "default_italic_zh_TW": {
             "size": 1.0,
-            "weight": 50,
+            "weight": 400,
             "italic": true,
             "family": "Noto Sans"
         },
         "small": {
             "size": 0.9,
-            "weight": 40,
+            "weight": 400,
+            "family": "Noto Sans"
+        },
+        "small_bold": {
+            "size": 0.9,
+            "weight": 700,
             "family": "Noto Sans"
         },
         "small_ja_JP": {
             "size": 0.9,
-            "weight": 50,
+            "weight": 400,
             "family": "Noto Sans"
         },
         "small_zh_CN": {
             "size": 0.9,
-            "weight": 50,
+            "weight": 400,
             "family": "Noto Sans"
         },
         "small_zh_TW": {
             "size": 0.9,
-            "weight": 50,
+            "weight": 400,
             "family": "Noto Sans"
         },
         "small_emphasis": {
             "size": 0.9,
-            "weight": 100,
+            "weight": 700,
             "family": "Noto Sans"
         },
         "small_emphasis_ja_JP": {
             "size": 0.9,
-            "weight": 100,
+            "weight": 700,
             "family": "Noto Sans"
         },
         "small_emphasis_zh_CN": {
             "size": 0.9,
-            "weight": 100,
+            "weight": 700,
             "family": "Noto Sans"
         },
         "small_emphasis_zh_TW": {
             "size": 0.9,
-            "weight": 100,
+            "weight": 700,
             "family": "Noto Sans"
         }
     },
@@ -299,12 +304,12 @@
         "scrollbar_handle_hover": [50, 130, 255, 255],
         "scrollbar_handle_down": [50, 130, 255, 255],
 
-        "setting_category": [240, 240, 240, 255],
+        "setting_category": "background_1",
         "setting_category_disabled": [255, 255, 255, 255],
-        "setting_category_hover": [232, 242, 252, 255],
-        "setting_category_text": [35, 35, 35, 255],
+        "setting_category_hover": "background_2",
+        "setting_category_text": "text_default",
         "setting_category_disabled_text": [24, 41, 77, 101],
-        "setting_category_active_text": [35, 35, 35, 255],
+        "setting_category_active_text": "text_default",
 
         "setting_control": "background_2",
         "setting_control_highlight": "background_3",
@@ -313,7 +318,7 @@
         "setting_control_text": [35, 35, 35, 255],
         "setting_control_button": [102, 102, 102, 255],
         "setting_control_button_hover": [8, 7, 63, 255],
-        "setting_control_disabled": [245, 245, 245, 255],
+        "setting_control_disabled": "background_2",
         "setting_control_disabled_text": [127, 127, 127, 255],
         "setting_control_disabled_border": [127, 127, 127, 255],
         "setting_unit": [127, 127, 127, 255],
@@ -364,7 +369,8 @@
         "text_field": "background_1",
         "text_field_border": [180, 180, 180, 255],
         "text_field_border_hovered": "border_main",
-        "text_field_border_disabled": "border_main",
+        "text_field_border_active": "border_accent_2",
+        "text_field_border_disabled": "background_2",
         "text_field_text": "text_default",
         "text_field_text_disabled": "text_disabled",
 
@@ -431,8 +437,6 @@
         "layerview_nozzle": [224, 192, 16, 64],
         "layerview_starts": [255, 255, 255, 255],
 
-        "favorites_header_bar": [245, 245, 245, 255],
-        "favorites_row_selected": [196, 239, 255, 255],
 
         "monitor_printer_family_tag": [228, 228, 242, 255],
         "monitor_text_disabled": [238, 238, 238, 255],
@@ -525,8 +529,10 @@
         "extruder_icon": [2.5, 2.5],
 
         "section": [0.0, 2],
+        "section_header": [0.0, 2.5],
+
         "section_control": [0, 1],
-        "section_icon": [2, 2],
+        "section_icon": [1.5, 1.5],
         "section_icon_column": [2.5, 2.5],
 
         "setting": [25.0, 1.8],
@@ -560,10 +566,6 @@
 
         "context_menu": [20, 2],
 
-        "favorites_row": [2, 2],
-        "favorites_button": [2, 2],
-        "favorites_button_icon": [1.2, 1.2],
-
         "icon_indicator": [1, 1],
 
         "printer_status_icon": [1.0, 1.0],
@@ -591,7 +593,8 @@
         "checkbox_radius": [0.25, 0.25],
 
         "spinbox": [6.0, 3.0],
-        "combobox_wide": [14, 2],
+        "combobox": [14, 2],
+        "combobox_wide": [22, 2],
 
         "tooltip": [20.0, 10.0],
         "tooltip_margins": [1.0, 1.0],
@@ -639,6 +642,10 @@
 
         "marketplace_large_icon": [4.0, 4.0],
 
-        "preferences_page_list_item": [8.0, 2.0]
+        "preferences_page_list_item": [8.0, 2.0],
+
+        "recommended_button_icon": [1.7, 1.7],
+
+        "reset_profile_icon": [1, 1]
     }
 }

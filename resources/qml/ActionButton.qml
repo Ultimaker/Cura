@@ -3,7 +3,6 @@
 
 import QtQuick 2.7
 import QtQuick.Controls 2.1
-import QtGraphicalEffects 1.0 // For the dropshadow
 
 import UM 1.5 as UM
 import Cura 1.0 as Cura
@@ -45,52 +44,9 @@ Button
     // but it can exceed a maximum, then this value have to be set.
     property int maximumWidth: 0
 
-    // These properties are deprecated.
-    // To (maybe) prevent a major SDK upgrade, mark them as deprecated instead of just outright removing them.
-    // Note, if you still want rounded corners, use (something based on) Cura.RoundedRectangle.
-    property alias cornerSide: deprecatedProperties.cornerSide
-    property alias shadowColor: deprecatedProperties.shadowColor
-    property alias shadowEnabled: deprecatedProperties.shadowEnabled
-
-    Item
-    {
-        id: deprecatedProperties
-
-        visible: false
-        enabled: false
-        width: 0
-        height: 0
-
-        property var cornerSide: null
-        property var shadowColor: null
-        property var shadowEnabled: null
-
-        onCornerSideChanged:
-        {
-            if (cornerSide != null)
-            {
-                CuraApplication.writeToLog("w", "'ActionButton.cornerSide' is deprecated since 4.11. Rounded corners can still be made with 'Cura.RoundedRectangle'.");
-            }
-        }
-        onShadowColorChanged:
-        {
-            if (shadowColor != null)
-            {
-                CuraApplication.writeToLog("w", "'ActionButton.shadowColor' is deprecated since 4.11.")
-            }
-        }
-        onShadowEnabledChanged:
-        {
-            if (shadowEnabled != null)
-            {
-                CuraApplication.writeToLog("w", "'ActionButton.shadowEnabled' is deprecated since 4.11.")
-            }
-        }
-    }
-
     leftPadding: UM.Theme.getSize("default_margin").width
     rightPadding: UM.Theme.getSize("default_margin").width
-    height: UM.Theme.getSize("action_button").height
+    implicitHeight: UM.Theme.getSize("action_button").height
     hoverEnabled: true
 
     onHoveredChanged:
@@ -106,14 +62,12 @@ Button
         spacing: UM.Theme.getSize("narrow_margin").width
         height: button.height
         //Left side icon. Only displayed if !isIconOnRightSide.
-        UM.RecolorImage
+        UM.ColorImage
         {
             id: buttonIconLeft
             source: ""
             height: visible ? button.iconSize : 0
             width: visible ? height : 0
-            sourceSize.width: width
-            sourceSize.height: height
             color: button.enabled ? (button.hovered ? button.textHoverColor : button.textColor) : button.textDisabledColor
             visible: source != "" && !button.isIconOnRightSide
             anchors.verticalCenter: parent.verticalCenter
@@ -153,30 +107,24 @@ Button
         }
 
         //Right side icon. Only displayed if isIconOnRightSide.
-        UM.RecolorImage
+        UM.ColorImage
         {
             id: buttonIconRight
             source: buttonIconLeft.source
             height: visible ? button.iconSize : 0
             width: visible ? height : 0
-            sourceSize.width: width
-            sourceSize.height: height
             color: buttonIconLeft.color
             visible: source != "" && button.isIconOnRightSide
             anchors.verticalCenter: buttonIconLeft.verticalCenter
         }
     }
 
-    background: Cura.RoundedRectangle
+    background: Rectangle
     {
         id: backgroundRect
         color: button.enabled ? (button.hovered ? button.hoverColor : button.color) : button.disabledColor
         border.width: UM.Theme.getSize("default_lining").width
         border.color: button.enabled ? (button.hovered ? button.outlineHoverColor : button.outlineColor) : button.outlineDisabledColor
-
-        // Disable the rounded-ness of this rectangle. We can't use a normal Rectangle here yet, as the API/SDK has only just been deprecated.
-        radius: 0
-        cornerSide: Cura.RoundedRectangle.Direction.None
     }
 
     UM.ToolTip
@@ -207,6 +155,7 @@ Button
         height: parent.height
 
         visible: false
+        running: visible
 
         RotationAnimator
         {

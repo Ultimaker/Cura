@@ -67,6 +67,8 @@ UM.TooltipArea
             font: UM.Theme.getFont("fixed")
             renderType: Text.NativeRendering
             color: UM.Theme.getColor("text")
+            selectionColor: UM.Theme.getColor("text_selection")
+            selectedTextColor: UM.Theme.getColor("text")
             wrapMode: TextEdit.NoWrap
 
             onActiveFocusChanged:
@@ -91,7 +93,7 @@ UM.TooltipArea
                     }
                     if (gcodeTextArea.hovered || gcodeTextArea.activeFocus)
                     {
-                        return UM.Theme.getColor("border_main")
+                        return UM.Theme.getColor("text_field_border_active")
                     }
                     return UM.Theme.getColor("border_field_light")
                 }

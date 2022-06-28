@@ -20,11 +20,18 @@ UM.Dialog
 
     property bool dontShowAgain: true
 
-    onClosing: UM.Preferences.setValue("cura/dialog_on_project_save", !dontShowAgainCheckbox.checked)
+    function storeDontShowAgain()
+    {
+        UM.Preferences.setValue("cura/dialog_on_project_save", !dontShowAgainCheckbox.checked)
+        UM.Preferences.setValue("asked_dialog_on_project_save", true)
+    }
 
+    onClosing: storeDontShowAgain()
+    onRejected: storeDontShowAgain()
+    onAccepted: storeDontShowAgain()
     onVisibleChanged:
     {
-        if(visible)
+        if(visible && UM.Preferences.getValue("cura/asked_dialog_on_project_save"))
         {
             dontShowAgain = !UM.Preferences.getValue("cura/dialog_on_project_save")
         }
@@ -67,7 +74,7 @@ UM.Dialog
 
             ScrollBar.vertical: UM.ScrollBar
             {
-                parent: scroll
+                parent: scroll.parent
                 anchors
                 {
                     top: parent.top

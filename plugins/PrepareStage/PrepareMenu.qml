@@ -91,13 +91,11 @@ Item
             height: parent.height
             width: visible ? (headerPadding * 3 + UM.Theme.getSize("button_icon").height + iconSize) : 0
 
-            headerItem: UM.RecolorImage
+            headerItem: UM.ColorImage
             {
                 id: menuIcon
                 source: UM.Theme.getIcon("Folder", "medium")
                 color: UM.Theme.getColor("icon")
-
-                sourceSize.height: height
             }
 
             contentItem: Item
@@ -108,26 +106,34 @@ Item
                 {
                     id: openProviderColumn
 
-                    //The column doesn't automatically listen to its children rect if the children change internally, so we need to explicitly update the size.
-                    onChildrenRectChanged:
+                    // Automatically set the width to fit the widest MenuItem
+                    // Based on https://martin.rpdev.net/2018/03/13/qt-quick-controls-2-automatically-set-the-width-of-menus.html
+                    function setWidth()
                     {
-                        popup.height = childrenRect.height
-                        popup.width = childrenRect.width
+                        var result = 0;
+                        var padding = 0;
+                        for (var i = 0; i < fileProviderRepeater.count; ++i) {
+                            var item = fileProviderRepeater.itemAt(i);
+                            if (item.hasOwnProperty("implicitWidth"))
+                            {
+                                var itemWidth = item.implicitWidth;
+                                result = Math.max(itemWidth, result);
+                                padding = Math.max(item.padding, padding);
+                            }
+                        }
+                        return result + padding * 2;
                     }
-                    onPositioningComplete:
-                    {
-                        popup.height = childrenRect.height
-                        popup.width = childrenRect.width
-                    }
+                    width: setWidth()
 
                     Repeater
                     {
+                        id: fileProviderRepeater
                         model: prepareMenu.fileProviderModel
                         delegate: Button
                         {
                             leftPadding: UM.Theme.getSize("default_margin").width
                             rightPadding: UM.Theme.getSize("default_margin").width
-                            width: contentItem.width + leftPadding + rightPadding
+                            width: openProviderColumn.width
                             height: UM.Theme.getSize("action_button").height
                             hoverEnabled: true
 
@@ -177,7 +183,7 @@ Item
 
             contentItem: Item
             {
-                UM.RecolorImage
+                UM.ColorImage
                 {
                     id: buttonIcon
                     source: UM.Theme.getIcon("Folder", "medium")
@@ -185,8 +191,6 @@ Item
                     width: UM.Theme.getSize("button_icon").width
                     height: UM.Theme.getSize("button_icon").height
                     color: UM.Theme.getColor("icon")
-
-                    sourceSize.height: height
                 }
             }
 

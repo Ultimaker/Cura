@@ -22,6 +22,7 @@ Item
     property alias elide: label.elide
     property real margin: UM.Theme.getSize("narrow_margin").width
     property alias wrapMode: label.wrapMode
+    property real spacing: UM.Theme.getSize("narrow_margin").width
 
     // These properties can be used in combination with layouts.
     readonly property real contentWidth: icon.width + margin + label.contentWidth
@@ -35,7 +36,7 @@ Item
     implicitWidth: icon.width + 100
     implicitHeight: icon.height
 
-    UM.RecolorImage
+    UM.ColorImage
     {
         id: icon
         width: UM.Theme.getSize("section_icon").width
@@ -61,6 +62,7 @@ Item
             top: parent.top
             bottom: parent.bottom
             rightMargin: 0
+            leftMargin: spacing
             margins: margin
         }
     }

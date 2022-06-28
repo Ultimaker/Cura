@@ -188,7 +188,7 @@
         "adhesion_type": {"default_value": "skirt"},
        
         "gantry_height": {"value": 2},
-        "machine_start_gcode": {"default_value": ";Trimaker Nebula Start Code\n G21; Unidades en mm\n G90; Posicion absoluta\n M82; Extrusor en modo absoluto\n M107; Fan apagado\n G28 X Y Z; Enviamos a home a todos los ejes\n M900 K=0; Linear advance desactivado\n M104 S110; Precalentamos el extrusor hasta 110 grados\n M190 S{material_bed_temperature_layer_0}; Calentamos cama y esperamos\n M109 S{material_print_temperature}; Calentamos extrusor y esperamos\n G92 E0; E=0\n G1 F200 X0.5 Y0.5 Z0.300\n G1 F900 X0.5 Y51.5 E2.56436; Hacemos una linea para limpiar extrusor\n"},
+        "machine_start_gcode": {"default_value": ";Trimaker Nebula Start Code\n G21; Unidades en mm\n G90; Posicion absoluta\n M82; Extrusor en modo absoluto\n M107; Fan apagado\n G28 X Y Z; Enviamos a home a todos los ejes\n M900 K=0; Linear advance desactivado\n M104 S110; Precalentamos el extrusor hasta 110 grados\n M190 S{material_bed_temperature_layer_0}; Calentamos cama y esperamos\n G29; Senso la cama\n M500\n G1 F5000 X0.5 Y0.5\n M109 S{material_print_temperature}; Calentamos extrusor y esperamos\n G92 E0; E=0\n G1 F200 X0.5 Y0.5 Z0.300\n G1 F900 X0.5 Y51.5 E2.56436; Hacemos una linea para limpiar extrusor\n"},
         "machine_end_gcode": {"default_value": ";Trimaker Nebula End Code\n M107; Apagamos fan\n G90\n G92 E0\n G1 X0 Y200\n G91\n G1 Z5\n G92 E0\n M140 S0; Enfriamos\n M104 S0; Enfriamos\n M84\n G90\n M117 Impresion finalizada\n M300 S440 P700\n"},
         "machine_heated_bed": {"default_value": true},
         "material_diameter": {"default_value": 1.75},

@@ -6,7 +6,7 @@
         "type": "machine",
         "author": "Unknown",
         "manufacturer": "Unknown",
-        "setting_version": 19,
+        "setting_version": 20,
         "file_formats": "text/x-gcode;model/stl;application/x-wavefront-obj;application/x3g",
         "visible": false,
         "has_materials": true,
@@ -758,6 +758,16 @@
                     "default_value": 10.0,
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
+                },
+                "machine_scale_fan_speed_zero_to_one":
+                {
+                    "label": "Scale Fan Speed To 0-1",
+                    "description": "Scale the fan speed to be between 0 and 1 instead of between 0 and 256.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
                 }
             }
         },
@@ -1078,52 +1088,6 @@
                         }
                     }
                 },
-                "beading_strategy_type":
-                {
-                    "label": "Variable Line Strategy",
-                    "description": "Strategy to use to print the width of a part with a number of walls. This determines how many walls it will use for a certain total width, and how wide each of these lines are. \"Center Deviation\" will print all walls at the nominal line width except the central one(s), causing big variations in the center but very consistent outsides. \"Distributed\" distributes the width equally over all walls. \"Inward Distributed\" is a balance between the other two, distributing the changes in width over all walls but keeping the walls on the outside slightly more consistent.",
-                    "type": "enum",
-                    "options":
-                    {
-                        "center_deviation": "Center Deviation",
-                        "distributed": "Distributed",
-                        "inward_distributed": "Inward Distributed"
-                    },
-                    "default_value": "inward_distributed",
-                    "limit_to_extruder": "wall_0_extruder_nr"
-                },
-                "wall_transition_threshold": {
-                    "label": "Middle Line Threshold",
-                    "description": "The smallest line width, as a factor of the normal line width, below which it will choose to use fewer, but wider lines to fill the available space the wall needs to occupy. Reduce this setting to use more, thinner lines. Increase to use fewer, wider lines. Note that this applies -as if- the entire shape should be filled with wall, so the middle here refers to the middle of the object between two outer edges of the shape, even if there actually is fill or (other) skin in the print instead of wall.",
-                    "type": "float",
-                    "unit": "%",
-                    "default_value": 90,
-                    "minimum_value": "1",
-                    "maximum_value": "99",
-                    "children":
-                    {
-                        "wall_split_middle_threshold": {
-                            "label": "Split Middle Line Threshold",
-                            "description": "The smallest line width, as a factor of the normal line width, above which the middle line (if there is one) will be split into two. Reduce this setting to use more, thinner lines. Increase to use fewer, wider lines. Note that this applies -as if- the entire shape should be filled with wall, so the middle here refers to the middle of the object between two outer edges of the shape, even if there actually is fill or (other) skin in the print instead of wall.",
-                            "type": "float",
-                            "unit": "%",
-                            "default_value": 90,
-                            "value": "wall_transition_threshold",
-                            "minimum_value": "1",
-                            "maximum_value": "99"
-                        },
-                        "wall_add_middle_threshold": {
-                            "label": "Add Middle Line Threshold",
-                            "description": "The smallest line width, as a factor of the normal line width, above which a middle line (if there wasn't one already) will be added. Reduce this setting to use more, thinner lines. Increase to use fewer, wider lines. Note that this applies -as if- the entire shape should be filled with wall, so the middle here refers to the middle of the object between two outer edges of the shape, even if there actually is fill or (other) skin in the print instead of wall.",
-                            "type": "float",
-                            "unit": "%",
-                            "default_value": 80,
-                            "value": "wall_transition_threshold * 8 / 9",
-                            "minimum_value": "1",
-                            "maximum_value": "99"
-                        }
-                    }
-                },
                 "wall_transition_length":
                 {
                     "label": "Wall Transition Length",
@@ -1144,13 +1108,12 @@
                     "type": "int",
                     "maximum_value": "999999",
                     "default_value": 1,
-                    "minimum_value": "1",
-                    "enabled": "beading_strategy_type == 'inward_distributed'"
+                    "minimum_value": "1"
                 },
                 "wall_transition_angle":
                 {
-                    "label": "Wall Transition Angle",
-                    "description": "When transitioning between different numbers of walls as the part becomes thinner, two adjacent walls will join together at this angle. This can make the walls come together faster than what the Wall Transition Length indicates, filling the space better.",
+                    "label": "Wall Transitioning Threshold Angle",
+                    "description": "When to create transitions between even and odd numbers of walls. A wedge shape with an angle greater than this setting will not have transitions and no walls will be printed in the center to fill the remaining space. Reducing this setting reduces the number and length of these center walls, but may leave gaps or overextrude.",
                     "type": "float",
                     "unit": "°",
                     "default_value": 10,
@@ -1161,15 +1124,28 @@
                 },
                 "wall_transition_filter_distance":
                 {
-                    "label": "Wall Transition Distance Filter",
+                    "label": "Wall Transitioning Filter Distance",
                     "description": "If it would be transitioning back and forth between different numbers of walls in quick succession, don't transition at all. Remove transitions if they are closer together than this distance.",
                     "type": "float",
                     "unit": "mm",
-                    "default_value": 1.4,
-                    "value": "4 * math.cos(wall_transition_angle / 180 * math.pi) * wall_line_width_x",
+                    "value": "100",
+                    "enabled": false,
+                    "default_value": 100,
                     "minimum_value": "wall_transition_length",
                     "minimum_value_warning": "math.cos(wall_transition_angle / 180 * math.pi) * wall_line_width_x",
-                    "maximum_value_warning": "10 * math.cos(wall_transition_angle / 180 * math.pi) * wall_line_width_x"
+                    "maximum_value": "999999"
+                },
+                "wall_transition_filter_deviation":
+                {
+                    "label": "Wall Transitioning Filter Margin",
+                    "description": "Prevent transitioning back and forth between one extra wall and one less. This margin extends the range of line widths which follow to [Minimum Wall Line Width - Margin, 2 * Minimum Wall Line Width + Margin]. Increasing this margin reduces the number of transitions, which reduces the number of extrusion starts/stops and travel time. However, large line width variation can lead to under- or overextrusion problems.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 0.1,
+                    "value": ".25 * machine_nozzle_size",
+                    "minimum_value": "0",
+                    "minimum_value_warning": ".01",
+                    "maximum_value_warning": "machine_nozzle_size"
                 },
                 "wall_0_wipe_dist":
                 {
@@ -1212,10 +1188,9 @@
                     "type": "enum",
                     "options": {
                         "inside_out": "Inside To Outside",
-                        "outside_in": "Outside To Inside",
-                        "center_last": "Center Last"
+                        "outside_in": "Outside To Inside"
                     },
-                    "default_value": "center_last",
+                    "default_value": "outside_in",
                     "settable_per_mesh": true
                 },
                 "alternate_extra_perimeter":
@@ -1227,14 +1202,70 @@
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
-                "filter_out_tiny_gaps":
+                "min_wall_line_width":
                 {
-                    "label": "Filter Out Tiny Gaps",
-                    "description": "Filter out tiny gaps to reduce blobs on outside of model.",
-                    "type": "bool",
-                    "default_value": true,
-                    "limit_to_extruder": "wall_0_extruder_nr",
-                    "settable_per_mesh": true
+                    "label": "Minimum Wall Line Width",
+                    "description": "For thin structures around once or twice the nozzle size, the line widths need to be altered to adhere to the thickness of the model. This setting controls the minimum line width allowed for the walls. The minimum line widths inherently also determine the maximum line widths, since we transition from N to N+1 walls at some geometry thickness where the N walls are wide and the N+1 walls are narrow. The widest possible wall line is twice the Minimum Wall Line Width.",
+                    "unit": "mm",
+                    "minimum_value_warning": ".5 * max(wall_line_width_0, wall_line_width_x)",
+                    "maximum_value_warning": "min(wall_line_width_0, wall_line_width_x)",
+                    "default_value": 0.3,
+                    "value": "machine_nozzle_size * .85",
+                    "type": "float",
+                    "settable_per_mesh": true,
+                    "children":
+                    {
+                        "min_even_wall_line_width":
+                        {
+                            "label": "Minimum Even Wall Line Width",
+                            "description": "The minimum line width for normal polygonal walls. This setting determines at which model thickness we switch from printing a single thin wall line, to printing two wall lines. A higher Minimum Even Wall Line Width leads to a higher maximum odd wall line width. The maximum even wall line width is calculated as Outer Wall Line Width + 0.5 * Minimum Odd Wall Line Width.",
+                            "unit": "mm",
+                            "minimum_value_warning": ".5 * max(wall_line_width_0, wall_line_width_x)",
+                            "maximum_value_warning": "min(wall_line_width_0, wall_line_width_x)",
+                            "default_value": 0.3,
+                            "value": "min_wall_line_width",
+                            "type": "float",
+                            "settable_per_mesh": true,
+                            "children":
+                            {
+                                "wall_split_middle_threshold": {
+                                    "label": "Split Middle Line Threshold",
+                                    "description": "The smallest line width, as a factor of the normal line width, above which the middle line (if there is one) will be split into two. Reduce this setting to use more, thinner lines. Increase to use fewer, wider lines. Note that this applies -as if- the entire shape should be filled with wall, so the middle here refers to the middle of the object between two outer edges of the shape, even if there actually is fill or (other) skin in the print instead of wall.",
+                                    "type": "float",
+                                    "unit": "%",
+                                    "default_value": 50,
+                                    "value": "max(1, min(99, 100 * (2 * min_even_wall_line_width - wall_line_width_0) / wall_line_width_0))",
+                                    "minimum_value": "1",
+                                    "maximum_value": "99"
+                                }
+                            }
+                        },
+                        "min_odd_wall_line_width":
+                        {
+                            "label": "Minimum Odd Wall Line Width",
+                            "description": "The minimum line width for middle line gap filler polyline walls. This setting determines at which model thickness we switch from printing two wall lines, to printing two outer walls and a single central wall in the middle. A higher Minimum Odd Wall Line Width leads to a higher maximum even wall line width. The maximum odd wall line width is calculated as 2 * Minimum Even Wall Line Width,",
+                            "unit": "mm",
+                            "minimum_value_warning": ".5 * max(wall_line_width_0, wall_line_width_x)",
+                            "maximum_value_warning": "min(wall_line_width_0, wall_line_width_x)",
+                            "default_value": 0.3,
+                            "value": "min_wall_line_width",
+                            "type": "float",
+                            "settable_per_mesh": true,
+                            "children":
+                            {
+                                "wall_add_middle_threshold": {
+                                    "label": "Add Middle Line Threshold",
+                                    "description": "The smallest line width, as a factor of the normal line width, above which a middle line (if there wasn't one already) will be added. Reduce this setting to use more, thinner lines. Increase to use fewer, wider lines. Note that this applies -as if- the entire shape should be filled with wall, so the middle here refers to the middle of the object between two outer edges of the shape, even if there actually is fill or (other) skin in the print instead of wall.",
+                                    "type": "float",
+                                    "unit": "%",
+                                    "default_value": 75,
+                                    "value": "max(1, min(99, 100 * min_odd_wall_line_width / wall_line_width_x))",
+                                    "minimum_value": "1",
+                                    "maximum_value": "99"
+                                }
+                            }
+                        }
+                    }
                 },
                 "fill_outline_gaps": {
                     "label": "Print Thin Walls",
@@ -1260,10 +1291,10 @@
                 },
                 "min_bead_width":
                 {
-                    "label": "Minimum Wall Line Width",
+                    "label": "Minimum Thin Wall Line Width",
                     "description": "Width of the wall that will replace thin features (according to the Minimum Feature Size) of the model. If the Minimum Wall Line Width is thinner than the thickness of the feature, the wall will become as thick as the feature itself.",
                     "unit": "mm",
-                    "value": "wall_line_width_0 * (100.0 + wall_split_middle_threshold)/200",
+                    "value": "min_wall_line_width",
                     "default_value": 0.2,
                     "minimum_value": "0.001",
                     "minimum_value_warning": "min_feature_size",
@@ -1521,7 +1552,7 @@
                                     "default_value": 6,
                                     "maximum_value": "999999",
                                     "type": "int",
-                                    "value": "999999 if infill_sparse_density == 100 else math.ceil(round(bottom_thickness / resolveOrValue('layer_height'), 4))",
+                                    "value": "999999 if infill_sparse_density == 100 and not magic_spiralize else math.ceil(round(bottom_thickness / resolveOrValue('layer_height'), 4))",
                                     "limit_to_extruder": "top_bottom_extruder_nr",
                                     "settable_per_mesh": true
                                 },
@@ -2225,7 +2256,7 @@
                     "maximum_value": "machine_height",
                     "maximum_value_warning": "resolveOrValue('infill_sparse_thickness') * 10",
                     "type": "float",
-                    "value": "0 if infill_sparse_density > 0 else 0",
+                    "value": "0",
                     "limit_to_extruder": "infill_extruder_nr",
                     "enabled": "infill_sparse_density > 0",
                     "settable_per_mesh": true,
@@ -2516,7 +2547,7 @@
                     "unit": "%",
                     "type": "float",
                     "default_value": 100.0,
-                    "enabled": false,
+                    "enabled": true,
                     "minimum_value": "0.001",
                     "minimum_value_warning": "100",
                     "maximum_value_warning": "120",
@@ -2532,7 +2563,7 @@
                             "unit": "%",
                             "type": "float",
                             "default_value": 100.0,
-                            "enabled": false,
+                            "enabled": true,
                             "minimum_value": "0.001",
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "120",
@@ -2548,7 +2579,7 @@
                             "unit": "%",
                             "type": "float",
                             "default_value": 100.0,
-                            "enabled": false,
+                            "enabled": true,
                             "minimum_value": "0.001",
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "120",
@@ -3291,6 +3322,17 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
+                "acceleration_travel_enabled":
+                {
+                    "label": "Enable Travel Acceleration",
+                    "description": "Use a separate acceleration rate for travel moves. If disabled, travel moves will use the acceleration value of the printed line at their destination.",
+                    "type": "bool",
+                    "default_value": true,
+                    "resolve": "any(extruderValues('acceleration_travel_enabled'))",
+                    "enabled": "acceleration_enabled",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
                 "acceleration_print":
                 {
                     "label": "Print Acceleration",
@@ -3510,7 +3552,7 @@
                     "minimum_value_warning": "100",
                     "maximum_value_warning": "10000",
                     "value": "acceleration_print if magic_spiralize else 5000",
-                    "enabled": "resolveOrValue('acceleration_enabled')",
+                    "enabled": "resolveOrValue('acceleration_enabled') and resolveOrValue('acceleration_travel_enabled')",
                     "settable_per_mesh": false
                 },
                 "acceleration_layer_0":
@@ -3553,7 +3595,7 @@
                             "minimum_value": "0.1",
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "10000",
-                            "enabled": "resolveOrValue('acceleration_enabled')",
+                            "enabled": "resolveOrValue('acceleration_enabled') and resolveOrValue('acceleration_travel_enabled')",
                             "settable_per_extruder": true,
                             "settable_per_mesh": false
                         }
@@ -3581,6 +3623,17 @@
                     "type": "bool",
                     "default_value": false,
                     "resolve": "any(extruderValues('jerk_enabled'))",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "jerk_travel_enabled":
+                {
+                    "label": "Enable Travel Jerk",
+                    "description": "Use a separate jerk rate for travel moves. If disabled, travel moves will use the jerk value of the printed line at their destination.",
+                    "type": "bool",
+                    "default_value": true,
+                    "resolve": "any(extruderValues('jerk_travel_enabled'))",
+                    "enabled": "jerk_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
@@ -3789,7 +3842,7 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "50",
                     "value": "jerk_print if magic_spiralize else 30",
-                    "enabled": "resolveOrValue('jerk_enabled')",
+                    "enabled": "resolveOrValue('jerk_enabled') and resolveOrValue('jerk_travel_enabled')",
                     "settable_per_mesh": false
                 },
                 "jerk_layer_0":
@@ -3829,7 +3882,7 @@
                             "value": "jerk_layer_0 * jerk_travel / jerk_print",
                             "minimum_value": "0",
                             "maximum_value_warning": "50",
-                            "enabled": "resolveOrValue('jerk_enabled')",
+                            "enabled": "resolveOrValue('jerk_enabled') and resolveOrValue('jerk_travel_enabled')",
                             "settable_per_extruder": true,
                             "settable_per_mesh": false
                         }
@@ -4366,6 +4419,7 @@
                             "default_value": "0",
                             "value": "support_extruder_nr",
                             "enabled": "(support_enable or support_meshes_present) and extruders_enabled_count > 1",
+                            "resolve": "max(extruderValues('support_interface_extruder_nr'))",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false,
                             "children":
@@ -4378,6 +4432,7 @@
                                     "default_value": "0",
                                     "value": "support_interface_extruder_nr",
                                     "enabled": "(support_enable or support_meshes_present) and extruders_enabled_count > 1",
+                                    "resolve": "max(extruderValues('support_roof_extruder_nr'))",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": false
                                 },
@@ -4389,6 +4444,7 @@
                                     "default_value": "0",
                                     "value": "support_interface_extruder_nr",
                                     "enabled": "(support_enable or support_meshes_present) and extruders_enabled_count > 1",
+                                    "resolve": "max(extruderValues('support_bottom_extruder_nr'))",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": false
                                 }
@@ -5421,6 +5477,7 @@
                     "default_value": "0",
                     "value": "int(defaultExtruderPosition())",
                     "enabled": "extruders_enabled_count > 1 and (resolveOrValue('adhesion_type') != 'none' or resolveOrValue('prime_tower_brim_enable'))",
+                    "resolve": "max(extruderValues('adhesion_extruder_nr'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "children":
@@ -5444,6 +5501,7 @@
                             "default_value": "0",
                             "value": "adhesion_extruder_nr",
                             "enabled": "extruders_enabled_count > 1 and resolveOrValue('adhesion_type') == 'raft'",
+                            "resolve": "max(extruderValues('raft_base_extruder_nr'))",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false
                         },
@@ -5455,6 +5513,7 @@
                             "default_value": "0",
                             "value": "adhesion_extruder_nr",
                             "enabled": "extruders_enabled_count > 1 and resolveOrValue('adhesion_type') == 'raft'",
+                            "resolve": "max(extruderValues('raft_interface_extruder_nr'))",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false
                         },
@@ -5466,6 +5525,7 @@
                             "default_value": "0",
                             "value": "adhesion_extruder_nr",
                             "enabled": "extruders_enabled_count > 1 and resolveOrValue('adhesion_type') == 'raft'",
+                            "resolve": "max(extruderValues('raft_surface_extruder_nr'))",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false
                         }
@@ -6411,8 +6471,10 @@
                     "description": "The maximum extrusion area deviation allowed when removing intermediate points from a straight line. An intermediate point may serve as width-changing point in a long straight line. Therefore, if it is removed, it will cause the line to have a uniform width and, as a result, lose (or gain) a bit of extrusion area. If you increase this you may notice slight under- (or over-) extrusion in between straight parallel walls, as more intermediate width-changing points will be allowed to be removed. Your print will be less accurate, but the g-code will be smaller.",
                     "type": "float",
                     "unit": "μm²",
-                    "default_value": 50000,
+                    "default_value": 2000,
                     "minimum_value": "0",
+                    "minimum_value_warning": "500",
+                    "maximum_value_warning": "50000",
                     "settable_per_mesh": true
                 }
             }
@@ -7592,7 +7654,6 @@
                     "default_value": 100,
                     "type": "float",
                     "minimum_value": "5",
-                    "maximum_value": "100",
                     "minimum_value_warning": "20",
                     "maximum_value_warning": "100",
                     "enabled": "bridge_settings_enabled",

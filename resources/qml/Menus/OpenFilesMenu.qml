@@ -34,8 +34,8 @@ Cura.Menu
             }
             shortcut: model.shortcut
         }
-        onObjectAdded: openFilesMenu.insertItem(index, object)
+        onObjectAdded: function(index, object) { openFilesMenu.insertItem(index, object)}
 
-        onObjectRemoved: openFilesMenu.removeItem(object)
+        onObjectRemoved: function(index, object) { openFilesMenu.removeItem(object) }
     }
 }

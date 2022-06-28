@@ -141,12 +141,20 @@ UM.PreferencesPage
         ScrollBar.vertical: UM.ScrollBar
         {
             id: preferencesScrollBar
-            parent: preferencesScrollView
+            parent: preferencesScrollView.parent
             anchors
             {
                 top: parent.top
                 bottom: parent.bottom
                 right: parent.right
+            }
+
+            onPositionChanged: {
+                // This removes focus from items when scrolling.
+                // This fixes comboboxes staying open and scrolling container
+                if (!activeFocus) {
+                    forceActiveFocus();
+                }
             }
         }
 
@@ -193,7 +201,6 @@ UM.PreferencesPage
                         append({ text: "Русский", code: "ru_RU" })
                         append({ text: "Türkçe", code: "tr_TR" })
                         append({ text: "简体中文", code: "zh_CN" })
-                        append({ text: "正體字", code: "zh_TW" })
 
                         var date_object = new Date();
                         if (date_object.getUTCMonth() == 8 && date_object.getUTCDate() == 19) //Only add Pirate on the 19th of September.
@@ -203,6 +210,7 @@ UM.PreferencesPage
 
                         // incomplete and/or abandoned
                         append({ text: catalog.i18nc("@heading", "-- incomplete --"), code: "" })
+                        append({ text: "正體字", code: "zh_TW" })
                         append({ text: "Magyar", code: "hu_HU" })
                         append({ text: "Suomi", code: "fi_FI" })
                         append({ text: "Polski", code: "pl_PL" })
@@ -215,8 +223,8 @@ UM.PreferencesPage
 
                     textRole: "text"
                     model: languageList
-                    implicitWidth: UM.Theme.getSize("setting_control").width
-                    implicitHeight: currencyField.height
+                    implicitWidth: UM.Theme.getSize("combobox").width
+                    height: currencyField.height
 
                     function setCurrentIndex() {
                         var code = UM.Preferences.getValue("general/language");
@@ -255,7 +263,8 @@ UM.PreferencesPage
                     id: currencyField
                     selectByMouse: true
                     text: UM.Preferences.getValue("cura/currency")
-                    implicitWidth: UM.Theme.getSize("setting_control").width
+                    implicitWidth: UM.Theme.getSize("combobox").width
+                    implicitHeight: UM.Theme.getSize("setting_control").height
                     onTextChanged: UM.Preferences.setValue("cura/currency", text)
                 }
 
@@ -284,8 +293,8 @@ UM.PreferencesPage
 
                     model: themeList
                     textRole: "text"
-                    implicitWidth: UM.Theme.getSize("setting_control").width
-                    implicitHeight: currencyField.height
+                    implicitWidth: UM.Theme.getSize("combobox").width
+                    height: currencyField.height
 
                     currentIndex:
                     {
@@ -554,8 +563,8 @@ UM.PreferencesPage
 
                         model: comboBoxList
                         textRole: "text"
-                        width: UM.Theme.getSize("combobox_wide").width
-                        height: UM.Theme.getSize("combobox_wide").height
+                        width: UM.Theme.getSize("combobox").width
+                        height: UM.Theme.getSize("combobox").height
 
                         currentIndex:
                         {
@@ -711,8 +720,8 @@ UM.PreferencesPage
                     Cura.ComboBox
                     {
                         id: choiceOnOpenProjectDropDownButton
-                        width: UM.Theme.getSize("combobox_wide").width
-                        height: UM.Theme.getSize("combobox_wide").height
+                        width: UM.Theme.getSize("combobox").width
+                        height: UM.Theme.getSize("combobox").height
 
                         model: ListModel
                         {

@@ -57,6 +57,7 @@ class TestCalculateBedAdhesionSize:
                              "machine_depth": {"value": 200},
                              "skirt_line_count": {"value": 0},
                              "skirt_gap": {"value": 0},
+                             "brim_gap": {"value": 0},
                              "raft_margin": {"value": 0},
                              "material_shrinkage_percentage": {"value": 100.0},
                              "material_shrinkage_percentage_xy": {"value": 100.0},

@@ -1,7 +1,7 @@
 // Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
+import QtQuick 2.15
 import QtQuick.Controls 2.15
 
 import UM 1.5 as UM
@@ -28,14 +28,13 @@ Item
 
     property bool editable: true
 
-    property var validator: RegExpValidator
+    property var validator: RegularExpressionValidator
     {
-        regExp: new RegExp("^" + prefix + "([0-9]+[.|,]?[0-9]*)?" + suffix + "$")
+        regularExpression: new RegExp("^" + prefix + "([0-9]+[.|,]?[0-9]*)?" + suffix + "$")
     }
 
     signal editingFinished()
-    implicitWidth: spinBox.implicitWidth
-    implicitHeight: spinBox.implicitHeight
+    height: UM.Theme.getSize("setting_control").height
 
     SpinBox
     {
@@ -44,8 +43,8 @@ Item
         editable: base.editable
         topPadding: 0
         bottomPadding: 0
-        padding: UM.Theme.getSize("narrow_margin").width
-
+        leftPadding: down.indicator.width + UM.Theme.getSize("narrow_margin").width
+        rightPadding: up.indicator.width + UM.Theme.getSize("narrow_margin").width
         // The stepSize of the SpinBox is intentionally set to be always `1`
         // As SpinBoxes can only contain integer values the `base.stepSize` is concidered the precision/resolution
         // increasing the spinBox.value by one increases the actual/real value of the component by `base.stepSize`
@@ -70,6 +69,18 @@ Item
         onValueModified:
         {
             base.value = value * base.stepSize;
+        }
+
+        // This forces TextField to commit typed values before incrementing with buttons.
+        // This fixes the typed value not being incremented when the textField has active focus.
+        up.onPressedChanged:
+        {
+            base.forceActiveFocus()
+        }
+
+        down.onPressedChanged:
+        {
+            base.forceActiveFocus()
         }
 
         background: Item {}
@@ -98,7 +109,7 @@ Item
                 color: spinBox.down.pressed ? spinBox.palette.mid : UM.Theme.getColor("detail_background")
             }
 
-            UM.RecolorImage
+            UM.ColorImage
             {
                 anchors.centerIn: parent
                 height: parent.height / 2.5
@@ -118,7 +129,7 @@ Item
                 color: spinBox.up.pressed ? spinBox.palette.mid : UM.Theme.getColor("detail_background")
             }
 
-            UM.RecolorImage
+            UM.ColorImage
             {
                 anchors.centerIn: parent
                 height: parent.height / 2.5

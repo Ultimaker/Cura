@@ -1,15 +1,15 @@
-# Copyright (c) 2021 Ultimaker B.V.
-# Cura is released under the terms of the LGPLv3 or higher.
+#  Copyright (c) 2021-2022 Ultimaker B.V.
+#  Cura is released under the terms of the LGPLv3 or higher.
 
 import argparse #To run the engine in debug mode if the front-end is in debug mode.
 from collections import defaultdict
 import os
-from PyQt5.QtCore import QObject, QTimer, QUrl, pyqtSlot
+from PyQt6.QtCore import QObject, QTimer, QUrl, pyqtSlot
 import sys
 from time import time
 from typing import Any, cast, Dict, List, Optional, Set, TYPE_CHECKING
 
-from PyQt5.QtGui import QDesktopServices, QImage
+from PyQt6.QtGui import QDesktopServices, QImage
 
 from UM.Backend.Backend import Backend, BackendState
 from UM.Scene.SceneNode import SceneNode
@@ -31,7 +31,7 @@ from cura.Utils.Threading import call_on_qt_thread
 from .ProcessSlicedLayersJob import ProcessSlicedLayersJob
 from .StartSliceJob import StartSliceJob, StartJobResult
 
-import Arcus
+import pyArcus as Arcus
 
 if TYPE_CHECKING:
     from cura.Machines.Models.MultiBuildPlateModel import MultiBuildPlateModel
@@ -60,7 +60,7 @@ class CuraEngineBackend(QObject, Backend):
         executable_name = "CuraEngine"
         if Platform.isWindows():
             executable_name += ".exe"
-        default_engine_location = executable_name
+        self._default_engine_location = executable_name
 
         search_path = [
             os.path.abspath(os.path.dirname(sys.executable)),
@@ -74,29 +74,29 @@ class CuraEngineBackend(QObject, Backend):
         for path in search_path:
             engine_path = os.path.join(path, executable_name)
             if os.path.isfile(engine_path):
-                default_engine_location = engine_path
+                self._default_engine_location = engine_path
                 break
 
-        if Platform.isLinux() and not default_engine_location:
+        if Platform.isLinux() and not self._default_engine_location:
             if not os.getenv("PATH"):
                 raise OSError("There is something wrong with your Linux installation.")
             for pathdir in cast(str, os.getenv("PATH")).split(os.pathsep):
                 execpath = os.path.join(pathdir, executable_name)
                 if os.path.exists(execpath):
-                    default_engine_location = execpath
+                    self._default_engine_location = execpath
                     break
 
         application = CuraApplication.getInstance() #type: CuraApplication
         self._multi_build_plate_model = None #type: Optional[MultiBuildPlateModel]
         self._machine_error_checker = None #type: Optional[MachineErrorChecker]
 
-        if not default_engine_location:
+        if not self._default_engine_location:
             raise EnvironmentError("Could not find CuraEngine")
 
-        Logger.log("i", "Found CuraEngine at: %s", default_engine_location)
+        Logger.log("i", "Found CuraEngine at: %s", self._default_engine_location)
 
-        default_engine_location = os.path.abspath(default_engine_location)
-        application.getPreferences().addPreference("backend/location", default_engine_location)
+        self._default_engine_location = os.path.abspath(self._default_engine_location)
+        application.getPreferences().addPreference("backend/location", self._default_engine_location)
 
         # Workaround to disable layer view processing if layer view is not active.
         self._layer_view_active = False #type: bool
@@ -215,7 +215,12 @@ class CuraEngineBackend(QObject, Backend):
         This is useful for debugging and used to actually start the engine.
         :return: list of commands and args / parameters.
         """
-        command = [CuraApplication.getInstance().getPreferences().getValue("backend/location"), "connect", "127.0.0.1:{0}".format(self._port), ""]
+        from cura import ApplicationMetadata
+        if ApplicationMetadata.IsEnterpriseVersion:
+            command = [self._default_engine_location]
+        else:
+            command = [CuraApplication.getInstance().getPreferences().getValue("backend/location")]
+        command += ["connect", "127.0.0.1:{0}".format(self._port), ""]
 
         parser = argparse.ArgumentParser(prog = "cura", add_help = False)
         parser.add_argument("--debug", action = "store_true", default = False, help = "Turn on the debug mode by setting this option.")
