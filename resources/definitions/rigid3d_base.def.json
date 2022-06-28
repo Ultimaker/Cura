@@ -102,6 +102,7 @@
         "z_seam_position": { "value": "'backleft'" },
 
         "top_bottom_pattern": { "value": "'zigzag'" },
+        "skin_monotonic": { "value": "True" },
         "expand_skins_expand_distance": { "value": 0.3 },
         "infill_sparse_density": { "value": 10 },
         "infill_pattern": { "value": "'zigzag'" },
