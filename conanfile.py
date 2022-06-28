@@ -25,13 +25,13 @@ class CuraConan(ConanFile):
     description = "3D printer / slicing GUI built on top of the Uranium framework"
     topics = ("conan", "python", "pyqt5", "qt", "qml", "3d-printing", "slicer")
     build_policy = "missing"
-    exports = "LICENSE*", "Ultimaker-Cura.spec.jinja", "CuraVersion.py.jinja", "requirements.txt", "requirements-dev.txt", "requirements-ultimaker.txt"
+    exports = "LICENSE*", "Ultimaker-Cura.spec.jinja", "CuraVersion.py.jinja"
     settings = "os", "compiler", "build_type", "arch"
     no_copy_source = True  # We won't build so no need to copy sources to the build folder
 
     # FIXME: Remove specific branch once merged to main
     # Extending the conanfile with the UMBaseConanfile https://github.com/Ultimaker/conan-ultimaker-index/tree/CURA-9177_Fix_CI_CD/recipes/umbase
-    python_requires = "umbase/0.1.1@ultimaker/testing"
+    python_requires = "umbase/0.1.2@ultimaker/testing"
     python_requires_extend = "umbase.UMBaseConanfile"
 
     options = {
@@ -56,12 +56,6 @@ class CuraConan(ConanFile):
         "url": "auto",
         "revision": "auto"
     }
-
-    @property
-    def _venv_path(self):
-        if self.settings.os == "Windows":
-            return "Scripts"
-        return "bin"
 
     @property
     def _staging(self):
@@ -130,7 +124,7 @@ class CuraConan(ConanFile):
         self.folders.generators = os.path.join(self.folders.build, "conan")
 
         self.cpp.package.libdirs = ["site-packages"]
-        self.cpp.package.resdirs = ["res"]
+        self.cpp.package.resdirs = ["res", "pip_requirements"]  # Note: pip_requirements should be the last item in the list
 
     def generate(self):
         if self.options.devtools:
@@ -193,60 +187,55 @@ class CuraConan(ConanFile):
 
     def deploy(self):
         # Setup the Virtual Python Environment in the user space
-        python_interpreter = Path(self.deps_user_info["cpython"].python)
+        self._generate_virtual_python_env("wheel", "setuptools")
 
-        # When on Windows execute as Windows Path
-        if self.settings.os == "Windows":
-            python_interpreter = Path(*[f'"{p}"' if " " in p else p for p in python_interpreter.parts])
+        # TODO: Maybe we should create one big requirement.txt at this stage looping over the individual requirements from this conanfile
+        #  and the dependencies, has less fine-grained results. If there is a duplicate dependency is installed over the previous installed version
 
-        # Create the virtual environment
-        self.run(f"""{python_interpreter} -m venv {self.install_folder}""", run_environment = True, env = "conanrun")
+        # Install the requirements*.txt for Cura her dependencies
+        # Note: can't you lists in user_info, that why it's split up
+        for dep_name in self.deps_user_info:
+            dep_user_info = self.deps_user_info[dep_name]
+            pip_req_paths = [req_path for req_path in self.deps_cpp_info[dep_name].resdirs if req_path == "pip_requirements"]
+            if len(pip_req_paths) != 1:
+                continue
+            pip_req_base_path = Path(pip_req_paths[0])
+            if hasattr(dep_user_info, "pip_requirements"):
+                req_txt = pip_req_base_path.joinpath(dep_user_info.pip_requirements)
+                if req_txt.exists():
+                    self.run(f"{self._py_venv_interp} -m pip install -r {req_txt}", run_environment = True, env = "conanrun")
+                    self.output.success(f"Dependency {dep_name} specifies pip_requirements in user_info installed!")
+                else:
+                    self.output.warn(f"Dependency {dep_name} specifies pip_requirements in user_info but {req_txt} can't be found!")
 
-        # Make sure there executable is named the same on all three OSes this allows it to be called with `python`
-        # simplifying GH Actions steps
-        if self.settings.os != "Windows":
-            python_venv_interpreter = Path(self.install_folder, self._venv_path, "python")
-            if not python_venv_interpreter.exists():
-                python_venv_interpreter.hardlink_to(Path(self.install_folder, self._venv_path, Path(sys.executable).stem + Path(sys.executable).suffix))
-        else:
-            python_venv_interpreter = Path(self.install_folder, self._venv_path, Path(sys.executable).stem + Path(sys.executable).suffix)
+            if hasattr(dep_user_info, "pip_requirements_git"):
+                req_txt = pip_req_base_path.joinpath(dep_user_info.pip_requirements_git)
+                if req_txt.exists():
+                    self.run(f"{self._py_venv_interp} -m pip install -r {req_txt}", run_environment = True, env = "conanrun")
+                    self.output.success(f"Dependency {dep_name} specifies pip_requirements_git in user_info installed!")
+                else:
+                    self.output.warn(f"Dependency {dep_name} specifies pip_requirements_git in user_info but {req_txt} can't be found!")
 
-        if not python_venv_interpreter.exists():
-            raise ConanException(f"Virtual environment Python interpreter not found at: {python_venv_interpreter}")
-        if self.settings.os == "Windows":
-            python_venv_interpreter = Path(*[f'"{p}"' if " " in p else p for p in python_venv_interpreter.parts])
+        # Install Cura requirements*.txt
+        pip_req_base_path = Path(self.cpp_info.rootpath, self.cpp_info.resdirs[-1])
+        # Add the dev reqs needed for pyinstaller
+        self.run(f"{self._py_venv_interp} -m pip install -r {pip_req_base_path.joinpath(self.user_info.pip_requirements_build)}",
+                 run_environment = True, env = "conanrun")
 
-        buffer = StringIO()
-        outer = '"' if self.settings.os == "Windows" else "'"
-        inner = "'" if self.settings.os == "Windows" else '"'
-        self.run(f"{python_venv_interpreter} -c {outer}import sysconfig; print(sysconfig.get_path({inner}purelib{inner})){outer}",
-                 env = "conanrun",
-                 output = buffer)
-        pythonpath = buffer.getvalue().splitlines()[-1]
-
-        run_env = VirtualRunEnv(self)
-        env = run_env.environment()
-
-        env.define_path("VIRTUAL_ENV", self.install_folder)
-        env.prepend_path("PATH", os.path.join(self.install_folder, self._venv_path))
-        env.prepend_path("PYTHONPATH", pythonpath)
-        env.unset("PYTHONHOME")
-
-        envvars = env.vars(self.conanfile, scope = "run")
-
-        # Install some base_packages
-        self.run(f"""{python_venv_interpreter} -m pip install wheel setuptools""", run_environment = True, env = "conanrun")
-
-        # Install the requirements*.text
-        # TODO: loop through dependencies and go over each requirement file per dependency (maybe we should add this to the conandata, or
-        # define cpp_user_info in dependencies
+        # Install the requirements.text for cura
+        self.run(f"{self._py_venv_interp} -m pip install -r {pip_req_base_path.joinpath(self.user_info.pip_requirements_git)}",
+                 run_environment = True, env = "conanrun")
+        # Do the final requirements last such that these dependencies takes precedence over possible previous installed Python modules.
+        # Since these are actually shipped with Cura and therefore require hashes and pinned version numbers in the requirements.txt
+        self.run(f"{self._py_venv_interp} -m pip install -r {pip_req_base_path.joinpath(self.user_info.pip_requirements)}",
+                 run_environment = True, env = "conanrun")
 
         # Copy CuraEngine.exe to bindirs of Virtual Python Environment
         # TODO: Fix source such that it will get the curaengine relative from the executable (Python bindir in this case)
         self.copy_deps("CuraEngine.exe", root_package = "curaengine", src = "@bindirs",
-                       dst = os.path.join(self.install_folder, self._venv_path), keep_path = False)
+                       dst = os.path.join(self.install_folder, self._python_venv_bin_path), keep_path = False)
         self.copy_deps("CuraEngine", root_package = "curaengine", src = "@bindirs",
-                       dst = os.path.join(self.install_folder, self._venv_path), keep_path = False)
+                       dst = os.path.join(self.install_folder, self._python_venv_bin_path), keep_path = False)
 
         # Copy resources of Cura (keep folder structure)
         self.copy_deps("*", root_package = "cura", src = "@resdirs", dst = os.path.join(self.install_folder, "share", "cura", "resources"),
@@ -278,9 +267,12 @@ class CuraConan(ConanFile):
         self.copy("*", src = "cura", dst = os.path.join(self.cpp.package.libdirs[0], "cura"))
         self.copy("*", src = "plugins", dst = os.path.join(self.cpp.package.libdirs[0], "plugins"))
         self.copy("*", src = "resources", dst = os.path.join(self.cpp.package.resdirs[0], "resources"))
+        self.copy("requirement*.txt", src = ".", dst = self.cpp.package.resdirs[1])
 
     def package_info(self):
-        self.user_info.requirements_txts = ["requirements.txt", "requirements-dev.txt", "requirements-ultimaker.txt"]
+        self.user_info.pip_requirements = "requirements.txt"
+        self.user_info.pip_requirements_git = "requirements-ultimaker.txt"
+        self.user_info.pip_requirements_build = "requirements-dev.txt"
         if self.in_local_cache:
             self.runenv_info.append_path("PYTHONPATH", self.cpp_info.libdirs[0])
         else:
