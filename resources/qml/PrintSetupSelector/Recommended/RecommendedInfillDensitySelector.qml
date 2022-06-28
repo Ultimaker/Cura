@@ -103,7 +103,6 @@ Item
                 id: backgroundLine
                 height: UM.Theme.getSize("print_setup_slider_groove").height
                 width: parent.width - UM.Theme.getSize("print_setup_slider_handle").width
-                implicitWidth: width
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter: parent.verticalCenter
                 color: infillSlider.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")

@@ -13,7 +13,7 @@ import Cura 1.0 as Cura
 Item
 {
     id: enableAdhesionRow
-    height: childrenRect.height
+    height: enableAdhesionContainer.height
 
     property real labelColumnWidth: Math.round(width / 3)
     property var curaRecommendedMode: Cura.RecommendedMode {}
