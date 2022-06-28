@@ -239,7 +239,7 @@
             "value": "1"
         },
         "support_xy_distance_overhang": {
-            "value": "wall_line_width_0"
+            "value": "0.2"
         },
         "minimum_support_area": {
             "value": "(2 + support_offset)**2"
