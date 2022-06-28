@@ -57,6 +57,7 @@ class CuraConan(ConanFile):
         "revision": "auto"
     }
 
+
     @property
     def _staging(self):
         return self.options.staging in ["True", 'true']
@@ -123,8 +124,8 @@ class CuraConan(ConanFile):
         self.folders.build = "venv"
         self.folders.generators = os.path.join(self.folders.build, "conan")
 
-        self.cpp.package.libdirs = ["site-packages"]
-        self.cpp.package.resdirs = ["res", "pip_requirements"]  # Note: pip_requirements should be the last item in the list
+        self.cpp.package.libdirs = [os.path.join("site-packages", "cura")]
+        self.cpp.package.resdirs = ["resources", "plugins", "pip_requirements"]  # Note: pip_requirements should be the last item in the list
 
     def generate(self):
         if self.options.devtools:
@@ -238,8 +239,9 @@ class CuraConan(ConanFile):
                        dst = os.path.join(self.install_folder, self._python_venv_bin_path), keep_path = False)
 
         # Copy resources of Cura (keep folder structure)
-        self.copy_deps("*", root_package = "cura", src = "@resdirs", dst = os.path.join(self.install_folder, "share", "cura", "resources"),
-                       keep_path = True)
+        self.copy("*", src = self.cpp_info.libdirs[0], dst = os.path.join(self._site_packages_path(self._py_venv_interp), "cura"), keep_path = True)
+        self.copy("*", src = self.cpp_info.resdirs[0], dst = os.path.join(self.install_folder, "share", "cura", "resources"), keep_path = True)
+        self.copy("*", src = self.cpp_info.resdirs[1], dst = os.path.join(self.install_folder, "share", "cura", "plugins"), keep_path = True)
 
         # Copy materials (flat)
         self.copy_deps("*.fdm_material", root_package = "fdm_materials", src = "@resdirs",
@@ -248,14 +250,19 @@ class CuraConan(ConanFile):
                        dst = os.path.join(self.install_folder, "share", "cura", "resources", "materials"), keep_path = False)
 
         # Copy resources of Uranium (keep folder structure)
-        self.copy_deps("*", root_package = "uranium", src = "@resdirs",
-                       dst = os.path.join(self.install_folder, "share", "cura", "resources"), keep_path = True)
+        self.copy_deps("*", root_package = "uranium", src = self.deps_cpp_info["uranium"].resdirs[0], dst = os.path.join(self.install_folder, "share", "uranium", "resources"), keep_path = True)
+        self.copy_deps("*", root_package = "uranium", src =  self.deps_cpp_info["uranium"].resdirs[1], dst = os.path.join(self.install_folder, "share", "uranium", "plugins"), keep_path = True)
+        self.copy_deps("*", root_package = "uranium", src =  self.deps_cpp_info["uranium"].libdirs[0], dst = o.path.join(self._site_packages_path(self._py_venv_interp), "UM"), keep_path = True)
+
+        # Add plugins to PYTHONPATH
+        self.runenv_info.append_path("PYTHONPATH", os.path.join(self.install_folder, "share", "cura", "plugins"))
+        self.runenv_info.append_path("PYTHONPATH", os.path.join(self.install_folder, "share", "uranium", "plugins"))
 
         # Copy dynamic libs to site-packages
-        self.copy_deps("*.dll", src = "@bindirs", dst = "venv/Lib/site-packages")
-        self.copy_deps("*.pyd", src = "@libdirs", dst = "venv/Lib/site-packages")
-        self.copy_deps("*.pyi", src = "@libdirs", dst = "venv/Lib/site-packages")
-        self.copy_deps("*.dylib", src = "@libdirs", dst = "venv/bin")
+        self.copy_deps("*.dll", src = "@bindirs", dst = self._site_packages_path(self._py_venv_interp))
+        self.copy_deps("*.pyd", src = "@libdirs", dst = self._site_packages_path(self._py_venv_interp))
+        self.copy_deps("*.pyi", src = "@libdirs", dst = self._site_packages_path(self._py_venv_interp))
+        self.copy_deps("*.dylib", src = "@libdirs", dst = self._site_packages_path(self._py_venv_interp))
 
         # Make sure the CuraVersion.py is up to date with the correct settings
         with open(Path(Path(__file__).parent, "CuraVersion.py.jinja"), "r") as f:
@@ -264,19 +271,21 @@ class CuraConan(ConanFile):
         # TODO: Extend
 
     def package(self):
-        self.copy("*", src = "cura", dst = os.path.join(self.cpp.package.libdirs[0], "cura"))
-        self.copy("*", src = "plugins", dst = os.path.join(self.cpp.package.libdirs[0], "plugins"))
-        self.copy("*", src = "resources", dst = os.path.join(self.cpp.package.resdirs[0], "resources"))
-        self.copy("requirement*.txt", src = ".", dst = self.cpp.package.resdirs[1])
+        self.copy("*", src = "cura", dst = self.cpp.package.libdirs[0])
+        self.copy("*", src = "resources", dst = self.cpp.package.resdirs[0])
+        self.copy("*", src = "plugins", dst = self.cpp.package.resdirs[1])
+        self.copy("requirement*.txt", src = ".", dst = self.cpp.package.resdirs[-1])
 
     def package_info(self):
         self.user_info.pip_requirements = "requirements.txt"
         self.user_info.pip_requirements_git = "requirements-ultimaker.txt"
         self.user_info.pip_requirements_build = "requirements-dev.txt"
         if self.in_local_cache:
-            self.runenv_info.append_path("PYTHONPATH", self.cpp_info.libdirs[0])
+            self.runenv_info.append_path("PYTHONPATH", str(Path(self.cpp_info.libdirs[0]).parent))
+            self.runenv_info.append_path("PYTHONPATH", self.cpp_info.resdirs[0])
         else:
             self.runenv_info.append_path("PYTHONPATH", self.source_folder)
+            self.runenv_info.append_path("PYTHONPATH", os.path.join(self.source_folder, "plugins"))
 
     def package_id(self):
         del self.info.settings.os
