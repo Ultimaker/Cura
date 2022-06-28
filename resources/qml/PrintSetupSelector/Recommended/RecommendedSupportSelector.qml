@@ -14,15 +14,14 @@ import Cura 1.0 as Cura
 Item
 {
     id: enableSupportRow
-    height: childrenRect.height
+    height: UM.Theme.getSize("print_setup_big_item").height
 
     property real labelColumnWidth: Math.round(width / 3)
 
     Item
     {
         id: enableSupportContainer
-        height: enableSupportCheckBox
-        width: childrenRect.width
+        width: labelColumnWidth + enableSupportCheckBox.width
 
         anchors
         {
@@ -30,7 +29,6 @@ Item
             top: parent.top
             bottom: parent.bottom
             rightMargin: UM.Theme.getSize("thick_margin").width
-            verticalCenter: parent.verticalCenter
         }
 
         Cura.IconWithText
