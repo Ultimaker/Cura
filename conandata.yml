@@ -72,6 +72,7 @@
             - "sqlite3"
             - "trimesh"
             - "win32ctypes"
+            - "PyQt6"
         icon:
             Windows: "./icons/Cura.ico"
             Macos: "./icons/cura.icns"
@@ -149,6 +150,7 @@
             - "sqlite3"
             - "trimesh"
             - "win32ctypes"
+            - "PyQt6"
         icon:
             Windows: "./icons/Cura.ico"
             Macos: "./icons/cura.icns"
@@ -227,6 +229,7 @@
             - "sqlite3"
             - "trimesh"
             - "win32ctypes"
+            - "PyQt6"
         icon:
             Windows: "./icons/Cura.ico"
             Macos: "./icons/cura.icns"
@@ -305,6 +308,7 @@
             - "sqlite3"
             - "trimesh"
             - "win32ctypes"
+            - "PyQt6"
         icon:
             Windows: "./icons/Cura.ico"
             Macos: "./icons/cura.icns"
