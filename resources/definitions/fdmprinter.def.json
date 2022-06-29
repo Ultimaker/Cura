@@ -2755,6 +2755,22 @@
                     "default_value": 0.940860215,
                     "enabled": false
                 },
+                "max_degradation_temperature":
+                {
+                    "label": "Max degradation temperature",
+                    "description": "Maximum temperature that the material can reach before it starts degrading and requiring a purge",
+                    "type": "float",
+                    "default_value": 265,
+                    "enabled": false
+                },
+                "recommended_cleaning_after_n_prints":
+                {
+                    "label": "Recommended Clean After Prints",
+                    "description": "After how many prints should the extruder be cleaned?",
+                    "type": "int",
+                    "default_value": 10,
+                    "enabled": false
+                },
                 "material_flow":
                 {
                     "label": "Flow",

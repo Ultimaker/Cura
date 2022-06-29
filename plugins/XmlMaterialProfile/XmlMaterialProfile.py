@@ -1139,7 +1139,9 @@ class XmlMaterialProfile(InstanceContainer):
         "maximum park duration": "material_maximum_park_duration",
         "no load move factor": "material_no_load_move_factor",
         "break speed": "material_break_speed",
-        "break temperature": "material_break_temperature"
+        "break temperature": "material_break_temperature",
+        "tainted print core max temperature": "max_degradation_temperature",
+        "recommend cleaning after n prints": "recommended_cleaning_after_n_prints"
     }  # type: Dict[str, str]
     __unmapped_settings = [
         "hardware compatible",
