@@ -233,13 +233,13 @@
             "value": "2*layer_height"
         },
         "support_offset": {
-            "value": "2*line_width if support_interface_enable else 0"
+            "value": "support_xy_distance if support_interface_enable else 0"
         },
         "support_xy_distance": {
             "value": "1"
         },
         "support_xy_distance_overhang": {
-            "value": "wall_line_width_0"
+            "value": "0.2"
         },
         "minimum_support_area": {
             "value": "(2 + support_offset)**2"

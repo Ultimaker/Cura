@@ -4910,7 +4910,7 @@
                     "default_value": 0,
                     "type": "int",
                     "minimum_value": "0",
-                    "maximum_value_warning": "1 if (support_pattern == 'cross' or support_pattern == 'lines' or support_pattern == 'zigzag' or support_pattern == 'concentric') else 5",
+                    "maximum_value_warning": "1 if (support_pattern == 'cross' or support_pattern == 'lines' or support_pattern == 'concentric') else 5",
                     "maximum_value": "999999 if support_line_distance == 0 else (20 - math.log(support_line_distance) / math.log(2))",
                     "enabled": "(support_enable or support_meshes_present) and support_infill_rate > 0",
                     "limit_to_extruder": "support_infill_extruder_nr",
@@ -4939,7 +4939,7 @@
                     "type": "float",
                     "default_value": 0.0,
                     "minimum_value": "0",
-                    "maximum_value_warning": "5",
+                    "maximum_value_warning": "10",
                     "enabled": "(support_enable or support_meshes_present) and support_structure == 'normal'",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": true
@@ -5191,7 +5191,6 @@
                     "type": "float",
                     "default_value": 1.0,
                     "minimum_value": "0",
-                    "minimum_value_warning": "minimum_support_area",
                     "limit_to_extruder": "support_interface_extruder_nr",
                     "enabled": "support_interface_enable and (support_enable or support_meshes_present)",
                     "settable_per_mesh": true,
@@ -5206,7 +5205,6 @@
                             "default_value": 1.0,
                             "value": "extruderValue(support_roof_extruder_nr, 'minimum_interface_area')",
                             "minimum_value": "0",
-                            "minimum_value_warning": "minimum_support_area",
                             "limit_to_extruder": "support_roof_extruder_nr",
                             "enabled": "support_roof_enable and (support_enable or support_meshes_present)",
                             "settable_per_mesh": true
@@ -5220,7 +5218,6 @@
                             "default_value": 1.0,
                             "value": "extruderValue(support_bottom_extruder_nr, 'minimum_interface_area')",
                             "minimum_value": "0",
-                            "minimum_value_warning": "minimum_support_area",
                             "limit_to_extruder": "support_bottom_extruder_nr",
                             "enabled": "support_bottom_enable and (support_enable or support_meshes_present)",
                             "settable_per_mesh": true
