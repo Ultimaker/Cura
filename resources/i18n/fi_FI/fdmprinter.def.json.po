@@ -1,12 +1,12 @@
 # Cura JSON setting files
-# Copyright (C) 2019 Ultimaker B.V.
+# Copyright (C) 2022 Ultimaker B.V.
 # This file is distributed under the same license as the Cura package.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.13\n"
+"Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2022-04-13 10:49+0000\n"
+"POT-Creation-Date: 2022-06-21 12:50+0000\n"
 "PO-Revision-Date: 2017-09-27 12:27+0200\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: Finnish\n"
@@ -2802,6 +2802,16 @@ msgid "Enables adjusting the print head acceleration. Increasing the acceleratio
 msgstr "Ottaa tulostuspään kiihtyvyyden säädön käyttöön. Kiihtyvyyksien suurentaminen saattaa vähentää tulostusaikaa tulostuslaadun kustannuksella."
 
 #: fdmprinter.def.json
+msgctxt "acceleration_travel_enabled label"
+msgid "Enable Travel Acceleration"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "acceleration_travel_enabled description"
+msgid "Use a separate acceleration rate for travel moves. If disabled, travel moves will use the acceleration value of the printed line at their destination."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "acceleration_print label"
 msgid "Print Acceleration"
 msgstr "Tulostuksen kiihtyvyys"
@@ -2990,6 +3000,16 @@ msgstr "Ota nykäisyn hallinta käyttöön"
 msgctxt "jerk_enabled description"
 msgid "Enables adjusting the jerk of print head when the velocity in the X or Y axis changes. Increasing the jerk can reduce printing time at the cost of print quality."
 msgstr "Ottaa tulostuspään nykäisyn säädön käyttöön X- tai Y-akselin nopeuden muuttuessa. Nykäisyn suurentaminen saattaa vähentää tulostusaikaa tulostuslaadun kustannuksella."
+
+#: fdmprinter.def.json
+msgctxt "jerk_travel_enabled label"
+msgid "Enable Travel Jerk"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "jerk_travel_enabled description"
+msgid "Use a separate jerk rate for travel moves. If disabled, travel moves will use the jerk value of the printed line at their destination."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "jerk_print label"

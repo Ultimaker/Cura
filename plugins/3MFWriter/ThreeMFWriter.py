@@ -12,6 +12,8 @@ from UM.Application import Application
 from UM.Message import Message
 from UM.Resources import Resources
 from UM.Scene.SceneNode import SceneNode
+from UM.Settings.ContainerRegistry import ContainerRegistry
+from UM.Settings.EmptyInstanceContainer import EmptyInstanceContainer
 
 from cura.CuraApplication import CuraApplication
 from cura.CuraPackageManager import CuraPackageManager
@@ -268,6 +270,10 @@ class ThreeMFWriter(MeshWriter):
                 # Don't export materials not in use
                 continue
 
+            if isinstance(extruder.material, type(ContainerRegistry.getInstance().getEmptyInstanceContainer())):
+                # This is an empty material container, no material to export
+                continue
+
             if package_manager.isMaterialBundled(extruder.material.getFileName(), extruder.material.getMetaDataEntry("GUID")):
                 # Don't export bundled materials
                 continue
@@ -275,14 +281,9 @@ class ThreeMFWriter(MeshWriter):
             package_id = package_manager.getMaterialFilePackageId(extruder.material.getFileName(), extruder.material.getMetaDataEntry("GUID"))
             package_data = package_manager.getInstalledPackageInfo(package_id)
 
+            # We failed to find the package for this material
             if not package_data:
-                # We failed to find the package for this material
-
-                message = Message(catalog.i18nc("@error:material",
-                                                "It was not possible to store material package information in project file: {material}. This project may not open correctly on other systems.".format(material=extruder.getName())),
-                                  title=catalog.i18nc("@info:title", "Failed to save material package information"),
-                                  message_type=Message.MessageType.WARNING)
-                message.show()
+                Logger.info(f"Could not find package for material in extruder {extruder.id}, skipping.")
                 continue
 
             material_metadata = {"id": package_id,
