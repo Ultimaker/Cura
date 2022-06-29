@@ -8,11 +8,11 @@ from platform import python_version
 
 from jinja2 import Template
 
+from conans import tools
 from conan import ConanFile
 from conan.tools import files
 from conan.tools.env import VirtualRunEnv
-from conans import tools
-from conan.errors import ConanInvalidConfiguration, ConanException
+from conan.errors import ConanInvalidConfiguration
 
 required_conan_version = ">=1.47.0"
 
@@ -48,7 +48,7 @@ class CuraConan(ConanFile):
         "devtools": False,
         "cloud_api_version": "1",
         "display_name": "Ultimaker Cura",
-        "cura_debug_mode": False
+        "cura_debug_mode": False  # Not yet implemented
     }
     scm = {
         "type": "git",
@@ -56,7 +56,6 @@ class CuraConan(ConanFile):
         "url": "auto",
         "revision": "auto"
     }
-
 
     @property
     def _staging(self):
@@ -87,6 +86,43 @@ class CuraConan(ConanFile):
         if self.options.devtools:
             return ["requirements.txt", "requirements-ultimaker.txt", "requirements-dev.txt"]
         return ["requirements.txt", "requirements-ultimaker.txt"]
+
+    @property
+    def _base_dir(self):
+        if self.install_folder is None:
+            if self.build_folder is not None:
+                return Path(self.build_folder)
+            return Path(os.getcwd(), "venv")
+
+        return Path(self.install_folder)  # TODO: add base dir for running from source
+
+    @property
+    def _share_dir(self):
+        return self._base_dir.joinpath("share")
+
+    @property
+    def _bin_dir(self):
+        return self._base_dir.joinpath("bin")
+
+    @property
+    def _script_dir(self):
+        if self.settings.os == "Windows":
+            return self._bin_dir.joinpath("Scripts")
+        return self._bin_dir.joinpath("bin")
+
+    @property
+    def _site_packages(self):
+        if self.settings.os == "Windows":
+            return self._bin_dir.joinpath("Lib", "site-packages")
+        py_version = tools.Version(self.deps_cpp_info["cpython"].version)
+        return self._bin_dir.joinpath("lib", f"python{py_version.major}.{py_version.minor}", "site-packages")
+
+    @property
+    def _py_interp(self):
+        py_interp = self._bin_dir.joinpath(Path(self.deps_user_info["cpython"].python).name)
+        if self.settings.os == "Windows":
+            py_interp = Path(*[f'"{p}"' if " " in p else p for p in py_interp.parts])
+        return py_interp
 
     def source(self):
         with open(Path(self.source_folder, "CuraVersion.py.jinja"), "r") as f:
@@ -122,12 +158,16 @@ class CuraConan(ConanFile):
     def layout(self):
         self.folders.source = "."
         self.folders.build = "venv"
-        self.folders.generators = os.path.join(self.folders.build, "conan")
+        self.folders.generators = str(self._base_dir.joinpath("conan"))
 
         self.cpp.package.libdirs = [os.path.join("site-packages", "cura")]
-        self.cpp.package.resdirs = ["resources", "plugins", "pip_requirements"]  # Note: pip_requirements should be the last item in the list
+        self.cpp.package.bindirs = ["bin"]
+        self.cpp.package.resdirs = ["resources", "plugins", "pip_requirements"]  # pip_requirements should be the last item in the list
 
     def generate(self):
+        vr = VirtualRunEnv(self)
+        vr.generate()
+
         if self.options.devtools:
             with open(Path(self.source_folder, "Ultimaker-Cura.spec.jinja"), "r") as f:
                 pyinstaller = Template(f.read())
@@ -181,20 +221,88 @@ class CuraConan(ConanFile):
         self.copy("*.fdm_material", root_package = "fdm_materials", src = "@resdirs", dst = "resources/materials", keep_path = False)
         self.copy("*.sig", root_package = "fdm_materials", src = "@resdirs", dst = "resources/materials", keep_path = False)
 
+        # Copy resources of cura_binary_data
+        self.copy("*", root_package = "cura_binary_data", src = self.deps_cpp_info["cura_binary_data"].resdirs[0],
+                       dst = "venv/share/cura", keep_path = True)
+        self.copy("*", root_package = "cura_binary_data", src = self.deps_cpp_info["cura_binary_data"].resdirs[1],
+                       dst = "venv/share/cura", keep_path = True)
+
         self.copy("*.dll", src = "@bindirs", dst = "venv/Lib/site-packages")
         self.copy("*.pyd", src = "@libdirs", dst = "venv/Lib/site-packages")
         self.copy("*.pyi", src = "@libdirs", dst = "venv/Lib/site-packages")
         self.copy("*.dylib", src = "@libdirs", dst = "venv/bin")
 
     def deploy(self):
-        # Setup the Virtual Python Environment in the user space
-        self._generate_virtual_python_env("wheel", "setuptools")
+        # Copy CuraEngine.exe to bindirs of Virtual Python Environment
+        # TODO: Fix source such that it will get the curaengine relative from the executable (Python bindir in this case)
+        self.copy_deps("CuraEngine.exe", root_package = "curaengine", src = self.deps_cpp_info["curaengine"].bindirs[0],
+                       dst = self._base_dir,
+                       keep_path = False)
+        self.copy_deps("CuraEngine", root_package = "curaengine", src = self.deps_cpp_info["curaengine"].bindirs[0], dst = self._base_dir,
+                       keep_path = False)
 
-        # TODO: Maybe we should create one big requirement.txt at this stage looping over the individual requirements from this conanfile
-        #  and the dependencies, has less fine-grained results. If there is a duplicate dependency is installed over the previous installed version
+        # Copy resources of Cura (keep folder structure)
+        self.copy("*", src = self.cpp_info.bindirs[0], dst = self._base_dir, keep_path = False)
+        self.copy("*", src = self.cpp_info.libdirs[0], dst = self._site_packages.joinpath("cura"), keep_path = True)
+        self.copy("*", src = self.cpp_info.resdirs[0], dst = self._share_dir.joinpath("cura", "resources"), keep_path = True)
+        self.copy("*", src = self.cpp_info.resdirs[1], dst = self._share_dir.joinpath("cura", "plugins"), keep_path = True)
+
+        # Copy materials (flat)
+        self.copy_deps("*.fdm_material", root_package = "fdm_materials", src = self.deps_cpp_info["fdm_materials"].resdirs[0],
+                       dst = self._share_dir.joinpath("cura", "resources", "materials"), keep_path = False)
+        self.copy_deps("*.sig", root_package = "fdm_materials", src = self.deps_cpp_info["fdm_materials"].resdirs[0],
+                       dst = self._share_dir.joinpath("cura", "resources", "materials"), keep_path = False)
+
+        # Copy resources of Uranium (keep folder structure)
+        self.copy_deps("*", root_package = "uranium", src = self.deps_cpp_info["uranium"].resdirs[0],
+                       dst = self._share_dir.joinpath("uranium", "resources"), keep_path = True)
+        self.copy_deps("*", root_package = "uranium", src = self.deps_cpp_info["uranium"].resdirs[1],
+                       dst = self._share_dir.joinpath("uranium", "plugins"), keep_path = True)
+        self.copy_deps("*", root_package = "uranium", src = self.deps_cpp_info["uranium"].libdirs[0],
+                       dst = self._site_packages.joinpath("UM"),
+                       keep_path = True)
+
+        # Copy resources of cura_binary_data
+        self.copy_deps("*", root_package = "cura_binary_data", src = self.deps_cpp_info["cura_binary_data"].resdirs[0],
+                       dst = self._share_dir.joinpath("cura"), keep_path = True)
+        self.copy_deps("*", root_package = "cura_binary_data", src = self.deps_cpp_info["cura_binary_data"].resdirs[1],
+                       dst = self._share_dir.joinpath("uranium"), keep_path = True)
+        if self.settings.os == "Windows":
+            self.copy_deps("*", root_package = "cura_binary_data", src = self.deps_cpp_info["cura_binary_data"].resdirs[2],
+                           dst = self._share_dir.joinpath("windows"), keep_path = True)
+
+        # Copy CPython to user space
+        self.copy_deps("*", root_package = "cpython", src = "@bindirs", dst = self._bin_dir, keep_path = True)
+
+        # Copy other shared libs and compiled python modules
+        self.copy_deps("*.dll", src = "@bindirs", dst = self._site_packages)
+        self.copy_deps("*.pyd", src = "@libdirs", dst = self._site_packages)
+        self.copy_deps("*.pyi", src = "@libdirs", dst = self._site_packages)
+        self.copy_deps("*.dylib", src = "@libdirs", dst = self._site_packages)
+
+        run_env = VirtualRunEnv(self)
+        env = run_env.environment()
+        env.define_path("PYTHONPATH", str(self._site_packages))
+        env.unset("PYTHONHOME")
+
+        for dy_path in [self._bin_dir, self._script_dir, self._site_packages, self._site_packages.joinpath("PyQt6", "Qt6", "bin")]:
+            env.prepend_path("PATH", str(dy_path))
+            env.prepend_path("LD_LIBRARY_PATH", str(dy_path))
+            env.prepend_path("DYLD_LIBRARY_PATH", str(dy_path))
+
+        envvars = env.vars(self, scope = "run")
+        envvars.save_ps1(str(self._base_dir.joinpath("cura_activate.ps1")))
+        envvars.save_bat(str(self._base_dir.joinpath("cura_activate.bat")))
+        envvars.save_sh(str(self._base_dir.joinpath("cura_activate.sh")))
 
         # Install the requirements*.txt for Cura her dependencies
-        # Note: can't you lists in user_info, that why it's split up
+        # Note: user_info only stores str()
+        self.run(f"{self._py_interp} -m pip install wheel setuptools sip==6.5.1 -t {str(self._site_packages)} --upgrade --isolated",
+                 run_environment = True, env = "conanrun")
+
+        # FIXME: PyQt6, somehow still finds the system Python lib. This cause it fail when importing QtNetwork
+        #  possible solution is to force pip to compile the binaries from source: `--no-binary :all:` but that currently fails with sip.
+        #  Maybe we should only compile PyQt6-*** deps
         for dep_name in self.deps_user_info:
             dep_user_info = self.deps_user_info[dep_name]
             pip_req_paths = [req_path for req_path in self.deps_cpp_info[dep_name].resdirs if req_path == "pip_requirements"]
@@ -204,7 +312,7 @@ class CuraConan(ConanFile):
             if hasattr(dep_user_info, "pip_requirements"):
                 req_txt = pip_req_base_path.joinpath(dep_user_info.pip_requirements)
                 if req_txt.exists():
-                    self.run(f"{self._py_venv_interp} -m pip install -r {req_txt}", run_environment = True, env = "conanrun")
+                    self.run(f"{self._py_interp} -m pip install -r {req_txt} -t {str(self._site_packages)} --upgrade --isolated", run_environment = True, env = "conanrun")
                     self.output.success(f"Dependency {dep_name} specifies pip_requirements in user_info installed!")
                 else:
                     self.output.warn(f"Dependency {dep_name} specifies pip_requirements in user_info but {req_txt} can't be found!")
@@ -212,7 +320,7 @@ class CuraConan(ConanFile):
             if hasattr(dep_user_info, "pip_requirements_git"):
                 req_txt = pip_req_base_path.joinpath(dep_user_info.pip_requirements_git)
                 if req_txt.exists():
-                    self.run(f"{self._py_venv_interp} -m pip install -r {req_txt}", run_environment = True, env = "conanrun")
+                    self.run(f"{self._py_interp} -m pip install -r {req_txt} -t {str(self._site_packages)} --upgrade --isolated", run_environment = True, env = "conanrun")
                     self.output.success(f"Dependency {dep_name} specifies pip_requirements_git in user_info installed!")
                 else:
                     self.output.warn(f"Dependency {dep_name} specifies pip_requirements_git in user_info but {req_txt} can't be found!")
@@ -220,92 +328,20 @@ class CuraConan(ConanFile):
         # Install Cura requirements*.txt
         pip_req_base_path = Path(self.cpp_info.rootpath, self.cpp_info.resdirs[-1])
         # Add the dev reqs needed for pyinstaller
-        self.run(f"{self._py_venv_interp} -m pip install -r {pip_req_base_path.joinpath(self.user_info.pip_requirements_build)}",
+        self.run(f"{self._py_interp} -m pip install -r {pip_req_base_path.joinpath(self.user_info.pip_requirements_build)} -t {str(self._site_packages)} --upgrade --isolated",
                  run_environment = True, env = "conanrun")
 
         # Install the requirements.text for cura
-        self.run(f"{self._py_venv_interp} -m pip install -r {pip_req_base_path.joinpath(self.user_info.pip_requirements_git)}",
+        self.run(f"{self._py_interp} -m pip install -r {pip_req_base_path.joinpath(self.user_info.pip_requirements_git)} -t {str(self._site_packages)} --upgrade --isolated",
                  run_environment = True, env = "conanrun")
         # Do the final requirements last such that these dependencies takes precedence over possible previous installed Python modules.
         # Since these are actually shipped with Cura and therefore require hashes and pinned version numbers in the requirements.txt
-        self.run(f"{self._py_venv_interp} -m pip install -r {pip_req_base_path.joinpath(self.user_info.pip_requirements)}",
-                 run_environment = True, env = "conanrun")
-
-        # Copy CuraEngine.exe to bindirs of Virtual Python Environment
-        # TODO: Fix source such that it will get the curaengine relative from the executable (Python bindir in this case)
-        self.copy_deps("CuraEngine.exe", root_package = "curaengine", src = "@bindirs",
-                       dst = os.path.join(self.install_folder, self._python_venv_bin_path), keep_path = False)
-        self.copy_deps("CuraEngine", root_package = "curaengine", src = "@bindirs",
-                       dst = os.path.join(self.install_folder, self._python_venv_bin_path), keep_path = False)
-
-        # Copy resources of Cura (keep folder structure)
-        self.copy("*", src = self.cpp_info.libdirs[0], dst = os.path.join(self._site_packages_path(self._py_venv_interp), "cura"),
-                  keep_path = True)
-        self.copy("*", src = self.cpp_info.resdirs[0], dst = os.path.join(self.install_folder, "share", "cura", "resources"),
-                  keep_path = True)
-        self.copy("*", src = self.cpp_info.resdirs[1], dst = os.path.join(self.install_folder, "share", "cura", "plugins"),
-                  keep_path = True)
-
-        # Copy materials (flat)
-        self.copy_deps("*.fdm_material", root_package = "fdm_materials", src = "@resdirs",
-                       dst = os.path.join(self.install_folder, "share", "cura", "resources", "materials"), keep_path = False)
-        self.copy_deps("*.sig", root_package = "fdm_materials", src = "@resdirs",
-                       dst = os.path.join(self.install_folder, "share", "cura", "resources", "materials"), keep_path = False)
-
-        # Copy resources of Uranium (keep folder structure)
-        self.copy_deps("*", root_package = "uranium", src = self.deps_cpp_info["uranium"].resdirs[0],
-                       dst = os.path.join(self.install_folder, "share", "uranium", "resources"), keep_path = True)
-        self.copy_deps("*", root_package = "uranium", src = self.deps_cpp_info["uranium"].resdirs[1],
-                       dst = os.path.join(self.install_folder, "share", "uranium", "plugins"), keep_path = True)
-        self.copy_deps("*", root_package = "uranium", src = self.deps_cpp_info["uranium"].libdirs[0],
-                       dst = os.path.join(self._site_packages_path(self._py_venv_interp), "UM"), keep_path = True)
-
-        # Copy resources of cura_binary_data
-        self.copy_deps("*", root_package = "cura_binary_data", src = self.deps_cpp_info["cura_binary_data"].resdirs[0],
-                       dst = os.path.join(self.install_folder, "share", "cura"), keep_path = True)
-        self.copy_deps("*", root_package = "cura_binary_data", src = self.deps_cpp_info["cura_binary_data"].resdirs[1],
-                       dst = os.path.join(self.install_folder, "share", "uranium"), keep_path = True)
-        if self.settings.os == "Windows":
-            self.copy_deps("*", root_package = "cura_binary_data", src = self.deps_cpp_info["cura_binary_data"].resdirs[2],
-                           dst = os.path.join(self.install_folder, "share", "windows"), keep_path = True)
-
-        # Add plugins to PYTHONPATH
-        self.runenv_info.append_path("PYTHONPATH", os.path.join(self.install_folder, "share", "cura", "plugins"))
-        self.runenv_info.append_path("PYTHONPATH", os.path.join(self.install_folder, "share", "uranium", "plugins"))
-
-        # Add PyQt6/Qt6/bin to PATH
-        # TODO: Check if Pqt6/Qt6/plugins should also be added to the PATH
-        self.runenv_info.append_path("PATH", os.path.join(self._site_packages_path(self._py_venv_interp), "PyQt6", "Qt6", "bin"))
-
-        # Copy dynamic libs to site-packages
-        self.copy_deps("*.dll", src = "@bindirs", dst = self._site_packages_path(self._py_venv_interp))
-        self.copy_deps("*.pyd", src = "@libdirs", dst = self._site_packages_path(self._py_venv_interp))
-        self.copy_deps("*.pyi", src = "@libdirs", dst = self._site_packages_path(self._py_venv_interp))
-        self.copy_deps("*.dylib", src = "@libdirs", dst = self._site_packages_path(self._py_venv_interp))
-
-        # Add the virtualrun_env from the dependencies
-        runenv = self.runenv_info
-        for _, dependency in self.dependencies.host.items():
-            runenv.compose_env(dependency.runenv_info)
-
-        # Add the dynamic lib paths from the environment
-        for bin_path in self.deps_cpp_info.bin_paths:
-            runenv.append_path("PATH", bin_path)
-            runenv.append_path("LD_LIBRARY_PATH", bin_path)
-            runenv.append_path("DYLD_LIBRARY_PATH", bin_path)
-
-        vars = runenv.vars(self, scope = "run")
-        vars.save_sh(os.path.join(self.install_folder, self._python_venv_bin_path, "activate"))
-        vars.save_bat(os.path.join(self.install_folder, self._python_venv_bin_path, "activate.bat"))
-        vars.save_ps1(os.path.join(self.install_folder, self._python_venv_bin_path, "Activate.ps1"))
-
-        # Make sure the CuraVersion.py is up to date with the correct settings
-        with open(Path(Path(__file__).parent, "CuraVersion.py.jinja"), "r") as f:
-            cura_version_py = Template(f.read())
-
-        # TODO: Extend
+        self.run(f"{self._py_interp} -m pip install -r {pip_req_base_path.joinpath(self.user_info.pip_requirements)} -t {str(self._site_packages)} --upgrade --isolated",
+                 run_environment = True,
+                 env = "conanrun")
 
     def package(self):
+        self.copy("cura_app.py", src = ".", dst = self.cpp.package.bindirs[0])
         self.copy("*", src = "cura", dst = self.cpp.package.libdirs[0])
         self.copy("*", src = "resources", dst = self.cpp.package.resdirs[0])
         self.copy("*", src = "plugins", dst = self.cpp.package.resdirs[1])
@@ -315,9 +351,10 @@ class CuraConan(ConanFile):
         self.user_info.pip_requirements = "requirements.txt"
         self.user_info.pip_requirements_git = "requirements-ultimaker.txt"
         self.user_info.pip_requirements_build = "requirements-dev.txt"
+
         if self.in_local_cache:
             self.runenv_info.append_path("PYTHONPATH", str(Path(self.cpp_info.lib_paths[0]).parent))
-            self.runenv_info.append_path("PYTHONPATH", self.cpp_info.res_paths[0])
+            self.runenv_info.append_path("PYTHONPATH", self.cpp_info.res_paths[1])  # Add plugins to PYTHONPATH
         else:
             self.runenv_info.append_path("PYTHONPATH", self.source_folder)
             self.runenv_info.append_path("PYTHONPATH", os.path.join(self.source_folder, "plugins"))
