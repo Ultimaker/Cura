@@ -54,6 +54,8 @@ class CuraPackageManager(PackageManager):
     def initialize(self) -> None:
         self._installation_dirs_dict["materials"] = Resources.getStoragePath(CuraApplication.ResourceTypes.MaterialInstanceContainer)
         self._installation_dirs_dict["qualities"] = Resources.getStoragePath(CuraApplication.ResourceTypes.QualityInstanceContainer)
+        self._installation_dirs_dict["intents"] = Resources.getStoragePath(CuraApplication.ResourceTypes.IntentInstanceContainer)
+        self._installation_dirs_dict["variants"] = Resources.getStoragePath(CuraApplication.ResourceTypes.VariantInstanceContainer)
 
         super().initialize()
 
