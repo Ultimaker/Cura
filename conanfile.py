@@ -239,9 +239,12 @@ class CuraConan(ConanFile):
                        dst = os.path.join(self.install_folder, self._python_venv_bin_path), keep_path = False)
 
         # Copy resources of Cura (keep folder structure)
-        self.copy("*", src = self.cpp_info.libdirs[0], dst = os.path.join(self._site_packages_path(self._py_venv_interp), "cura"), keep_path = True)
-        self.copy("*", src = self.cpp_info.resdirs[0], dst = os.path.join(self.install_folder, "share", "cura", "resources"), keep_path = True)
-        self.copy("*", src = self.cpp_info.resdirs[1], dst = os.path.join(self.install_folder, "share", "cura", "plugins"), keep_path = True)
+        self.copy("*", src = self.cpp_info.libdirs[0], dst = os.path.join(self._site_packages_path(self._py_venv_interp), "cura"),
+                  keep_path = True)
+        self.copy("*", src = self.cpp_info.resdirs[0], dst = os.path.join(self.install_folder, "share", "cura", "resources"),
+                  keep_path = True)
+        self.copy("*", src = self.cpp_info.resdirs[1], dst = os.path.join(self.install_folder, "share", "cura", "plugins"),
+                  keep_path = True)
 
         # Copy materials (flat)
         self.copy_deps("*.fdm_material", root_package = "fdm_materials", src = "@resdirs",
@@ -250,19 +253,51 @@ class CuraConan(ConanFile):
                        dst = os.path.join(self.install_folder, "share", "cura", "resources", "materials"), keep_path = False)
 
         # Copy resources of Uranium (keep folder structure)
-        self.copy_deps("*", root_package = "uranium", src = self.deps_cpp_info["uranium"].resdirs[0], dst = os.path.join(self.install_folder, "share", "uranium", "resources"), keep_path = True)
-        self.copy_deps("*", root_package = "uranium", src =  self.deps_cpp_info["uranium"].resdirs[1], dst = os.path.join(self.install_folder, "share", "uranium", "plugins"), keep_path = True)
-        self.copy_deps("*", root_package = "uranium", src =  self.deps_cpp_info["uranium"].libdirs[0], dst = o.path.join(self._site_packages_path(self._py_venv_interp), "UM"), keep_path = True)
+        self.copy_deps("*", root_package = "uranium", src = self.deps_cpp_info["uranium"].resdirs[0],
+                       dst = os.path.join(self.install_folder, "share", "uranium", "resources"), keep_path = True)
+        self.copy_deps("*", root_package = "uranium", src = self.deps_cpp_info["uranium"].resdirs[1],
+                       dst = os.path.join(self.install_folder, "share", "uranium", "plugins"), keep_path = True)
+        self.copy_deps("*", root_package = "uranium", src = self.deps_cpp_info["uranium"].libdirs[0],
+                       dst = os.path.join(self._site_packages_path(self._py_venv_interp), "UM"), keep_path = True)
+
+        # Copy resources of cura_binary_data
+        self.copy_deps("*", root_package = "cura_binary_data", src = self.deps_cpp_info["cura_binary_data"].resdirs[0],
+                       dst = os.path.join(self.install_folder, "share", "cura"), keep_path = True)
+        self.copy_deps("*", root_package = "cura_binary_data", src = self.deps_cpp_info["cura_binary_data"].resdirs[1],
+                       dst = os.path.join(self.install_folder, "share", "uranium"), keep_path = True)
+        if self.settings.os == "Windows":
+            self.copy_deps("*", root_package = "cura_binary_data", src = self.deps_cpp_info["cura_binary_data"].resdirs[2],
+                           dst = os.path.join(self.install_folder, "share", "windows"), keep_path = True)
 
         # Add plugins to PYTHONPATH
         self.runenv_info.append_path("PYTHONPATH", os.path.join(self.install_folder, "share", "cura", "plugins"))
         self.runenv_info.append_path("PYTHONPATH", os.path.join(self.install_folder, "share", "uranium", "plugins"))
+
+        # Add PyQt6/Qt6/bin to PATH
+        # TODO: Check if Pqt6/Qt6/plugins should also be added to the PATH
+        self.runenv_info.append_path("PATH", os.path.join(self._site_packages_path(self._py_venv_interp), "PyQt6", "Qt6", "bin"))
 
         # Copy dynamic libs to site-packages
         self.copy_deps("*.dll", src = "@bindirs", dst = self._site_packages_path(self._py_venv_interp))
         self.copy_deps("*.pyd", src = "@libdirs", dst = self._site_packages_path(self._py_venv_interp))
         self.copy_deps("*.pyi", src = "@libdirs", dst = self._site_packages_path(self._py_venv_interp))
         self.copy_deps("*.dylib", src = "@libdirs", dst = self._site_packages_path(self._py_venv_interp))
+
+        # Add the virtualrun_env from the dependencies
+        runenv = self.runenv_info
+        for _, dependency in self.dependencies.host.items():
+            runenv.compose_env(dependency.runenv_info)
+
+        # Add the dynamic lib paths from the environment
+        for bin_path in self.deps_cpp_info.bin_paths:
+            runenv.append_path("PATH", bin_path)
+            runenv.append_path("LD_LIBRARY_PATH", bin_path)
+            runenv.append_path("DYLD_LIBRARY_PATH", bin_path)
+
+        vars = runenv.vars(self, scope = "run")
+        vars.save_sh(os.path.join(self.install_folder, self._python_venv_bin_path, "activate"))
+        vars.save_bat(os.path.join(self.install_folder, self._python_venv_bin_path, "activate.bat"))
+        vars.save_ps1(os.path.join(self.install_folder, self._python_venv_bin_path, "Activate.ps1"))
 
         # Make sure the CuraVersion.py is up to date with the correct settings
         with open(Path(Path(__file__).parent, "CuraVersion.py.jinja"), "r") as f:
@@ -281,8 +316,8 @@ class CuraConan(ConanFile):
         self.user_info.pip_requirements_git = "requirements-ultimaker.txt"
         self.user_info.pip_requirements_build = "requirements-dev.txt"
         if self.in_local_cache:
-            self.runenv_info.append_path("PYTHONPATH", str(Path(self.cpp_info.libdirs[0]).parent))
-            self.runenv_info.append_path("PYTHONPATH", self.cpp_info.resdirs[0])
+            self.runenv_info.append_path("PYTHONPATH", str(Path(self.cpp_info.lib_paths[0]).parent))
+            self.runenv_info.append_path("PYTHONPATH", self.cpp_info.res_paths[0])
         else:
             self.runenv_info.append_path("PYTHONPATH", self.source_folder)
             self.runenv_info.append_path("PYTHONPATH", os.path.join(self.source_folder, "plugins"))
