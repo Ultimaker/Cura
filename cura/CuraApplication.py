@@ -355,9 +355,14 @@ class CuraApplication(QtApplication):
 
         Resources.addSecureSearchPath(os.path.join(self._app_install_dir, "share", "cura", "resources"))
         if not hasattr(sys, "frozen"):
-            Resources.addSecureSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "resources"))
-            Resources.addSecureSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "..", "resources"))
-            Resources.addSecureSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "..", "plugins"))
+            Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "resources"))
+
+            # local Conan cache
+            Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "..", "resources"))
+            Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "..", "plugins"))
+
+            # venv site-packages
+            Resources.addSearchPath(os.path.join(os.path.dirname(sys.executable), "..", "share", "cura", "resources"))
 
     @classmethod
     def _initializeSettingDefinitions(cls):
