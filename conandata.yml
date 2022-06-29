@@ -31,7 +31,7 @@
             uranium_um_qt_qml_um:
                 package: "uranium"
                 src: "site-packages/UM/Qt/qml/UM"
-                dst: "PyQt6/qt6/qml/UM"
+                dst: "PyQt6/Qt6/qml/UM"
             cura_binary_data:
                 package: "cura_binary_data"
                 src: "resources/cura/resources"
@@ -108,7 +108,7 @@
             uranium_um_qt_qml_um:
                 package: "uranium"
                 src: "site-packages/UM/Qt/qml/UM"
-                dst: "PyQt6/qt6/qml/UM"
+                dst: "PyQt6/Qt6/qml/UM"
             cura_binary_data:
                 package: "cura_binary_data"
                 src: "resources/cura/resources"
@@ -185,7 +185,7 @@
             uranium_um_qt_qml_um:
                 package: "uranium"
                 src: "site-packages/UM/Qt/qml/UM"
-                dst: "PyQt6/qt6/qml/UM"
+                dst: "PyQt6/Qt6/qml/UM"
             cura_binary_data:
                 package: "cura_binary_data"
                 src: "resources/cura/resources"
@@ -262,7 +262,7 @@
             uranium_um_qt_qml_um:
                 package: "uranium"
                 src: "site-packages/UM/Qt/qml/UM"
-                dst: "PyQt6/qt6/qml/UM"
+                dst: "PyQt6/Qt6/qml/UM"
             cura_binary_data:
                 package: "cura_binary_data"
                 src: "resources/cura/resources"
