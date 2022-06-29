@@ -158,7 +158,7 @@ class CuraConan(ConanFile):
     def layout(self):
         self.folders.source = "."
         self.folders.build = "venv"
-        self.folders.generators = str(self._base_dir.joinpath("conan"))
+        self.folders.generators = Path(self.folders.build, "conan")
 
         self.cpp.package.libdirs = [os.path.join("site-packages", "cura")]
         self.cpp.package.bindirs = ["bin"]
