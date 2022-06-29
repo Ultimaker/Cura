@@ -22,11 +22,11 @@
                 dst: "share/cura/resources"
             uranium_plugins:
                 package: "uranium"
-                src: "site-packages/plugins"
+                src: "plugins"
                 dst: "share/uranium/plugins"
             uranium_resources:
                 package: "uranium"
-                src: "res/resources"
+                src: "resources"
                 dst: "share/uranium/resources"
             uranium_um_qt_qml_um:
                 package: "uranium"
@@ -34,15 +34,19 @@
                 dst: "PyQt6/qt6/qml/UM"
             cura_binary_data:
                 package: "cura_binary_data"
-                src: "res/cura/resources"
+                src: "resources/cura/resources"
                 dst: "share/cura/resources"
             uranium_binary_data:
                 package: "cura_binary_data"
-                src: "res/uranium/resources"
+                src: "resources/uranium/resources"
                 dst: "share/uranium/resources"
+            windows_binary_data:
+                package: "cura_binary_data"
+                src: "windows"
+                dst: "share/windows"
             fdm_materials:
                 package: "fdm_materials"
-                src: "res/materials"
+                src: "materials"
                 dst: "share/cura/resources/materials"
         binaries:
             curaengine:
@@ -95,11 +99,11 @@
                 dst: "share/cura/resources"
             uranium_plugins:
                 package: "uranium"
-                src: "site-packages/plugins"
+                src: "plugins"
                 dst: "share/uranium/plugins"
             uranium_resources:
                 package: "uranium"
-                src: "res/resources"
+                src: "resources"
                 dst: "share/uranium/resources"
             uranium_um_qt_qml_um:
                 package: "uranium"
@@ -107,15 +111,19 @@
                 dst: "PyQt6/qt6/qml/UM"
             cura_binary_data:
                 package: "cura_binary_data"
-                src: "res/cura/resources"
+                src: "resources/cura/resources"
                 dst: "share/cura/resources"
             uranium_binary_data:
                 package: "cura_binary_data"
-                src: "res/uranium/resources"
+                src: "resources/uranium/resources"
                 dst: "share/uranium/resources"
+            windows_binary_data:
+                package: "cura_binary_data"
+                src: "windows"
+                dst: "share/windows"
             fdm_materials:
                 package: "fdm_materials"
-                src: "res/materials"
+                src: "materials"
                 dst: "share/cura/resources/materials"
         binaries:
             curaengine:
@@ -168,11 +176,11 @@
                 dst: "share/cura/resources"
             uranium_plugins:
                 package: "uranium"
-                src: "site-packages/plugins"
+                src: "plugins"
                 dst: "share/uranium/plugins"
             uranium_resources:
                 package: "uranium"
-                src: "res/resources"
+                src: "resources"
                 dst: "share/uranium/resources"
             uranium_um_qt_qml_um:
                 package: "uranium"
@@ -180,15 +188,19 @@
                 dst: "PyQt6/qt6/qml/UM"
             cura_binary_data:
                 package: "cura_binary_data"
-                src: "res/cura/resources"
+                src: "resources/cura/resources"
                 dst: "share/cura/resources"
             uranium_binary_data:
                 package: "cura_binary_data"
-                src: "res/uranium/resources"
+                src: "resources/uranium/resources"
                 dst: "share/uranium/resources"
+            windows_binary_data:
+                package: "cura_binary_data"
+                src: "windows"
+                dst: "share/windows"
             fdm_materials:
                 package: "fdm_materials"
-                src: "res/materials"
+                src: "materials"
                 dst: "share/cura/resources/materials"
         binaries:
             curaengine:
@@ -241,11 +253,11 @@
                 dst: "share/cura/resources"
             uranium_plugins:
                 package: "uranium"
-                src: "site-packages/plugins"
+                src: "plugins"
                 dst: "share/uranium/plugins"
             uranium_resources:
                 package: "uranium"
-                src: "res/resources"
+                src: "resources"
                 dst: "share/uranium/resources"
             uranium_um_qt_qml_um:
                 package: "uranium"
@@ -253,15 +265,19 @@
                 dst: "PyQt6/qt6/qml/UM"
             cura_binary_data:
                 package: "cura_binary_data"
-                src: "res/cura/resources"
+                src: "resources/cura/resources"
                 dst: "share/cura/resources"
             uranium_binary_data:
                 package: "cura_binary_data"
-                src: "res/uranium/resources"
+                src: "resources/uranium/resources"
                 dst: "share/uranium/resources"
+            windows_binary_data:
+                package: "cura_binary_data"
+                src: "windows"
+                dst: "share/windows"
             fdm_materials:
                 package: "fdm_materials"
-                src: "res/materials"
+                src: "materials"
                 dst: "share/cura/resources/materials"
         binaries:
             curaengine:
