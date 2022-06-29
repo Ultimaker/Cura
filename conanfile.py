@@ -225,7 +225,7 @@ class CuraConan(ConanFile):
         self.copy("*", root_package = "cura_binary_data", src = self.deps_cpp_info["cura_binary_data"].resdirs[0],
                        dst = "venv/share/cura", keep_path = True)
         self.copy("*", root_package = "cura_binary_data", src = self.deps_cpp_info["cura_binary_data"].resdirs[1],
-                       dst = "venv/share/cura", keep_path = True)
+                       dst = "venv/share/uranium", keep_path = True)
 
         self.copy("*.dll", src = "@bindirs", dst = "venv/Lib/site-packages")
         self.copy("*.pyd", src = "@libdirs", dst = "venv/Lib/site-packages")
@@ -260,6 +260,9 @@ class CuraConan(ConanFile):
                        dst = self._share_dir.joinpath("uranium", "plugins"), keep_path = True)
         self.copy_deps("*", root_package = "uranium", src = self.deps_cpp_info["uranium"].libdirs[0],
                        dst = self._site_packages.joinpath("UM"),
+                       keep_path = True)
+        self.copy_deps("*", root_package = "uranium", src = str(Path(self.deps_cpp_info["uranium"].libdirs[0], "Qt", "qml", "UM")),
+                       dst = self._site_packages.joinpath("PyQt6", "Qt6", "qml", "UM"),
                        keep_path = True)
 
         # Copy resources of cura_binary_data
