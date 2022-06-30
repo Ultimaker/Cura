@@ -231,11 +231,10 @@ class CuraConan(ConanFile):
         self.copy("*", root_package = "cura_binary_data", src = self.deps_cpp_info["cura_binary_data"].resdirs[1],
                        dst = "venv/share/uranium", keep_path = True)
 
-        for dep in ["arcus", "savitar", "pynest2d"]:
-            self.copy("*.dll", root_package = dep, src = "@bindirs", dst = self._site_packages)
-            self.copy("*.pyd", root_package = dep, src = "@libdirs", dst = self._site_packages)
-            self.copy("*.pyi", root_package = dep, src = "@libdirs", dst = self._site_packages)
-            self.copy("*.dylib", root_package = dep, src = "@libdirs", dst = self._script_dir)
+        self.copy_deps("*.dll", src = "@bindirs", dst = self._site_packages)
+        self.copy_deps("*.pyd", src = "@libdirs", dst = self._site_packages)
+        self.copy_deps("*.pyi", src = "@libdirs", dst = self._site_packages)
+        self.copy_deps("*.dylib", src = "@libdirs", dst = self._script_dir)
 
     def deploy(self):
         # Copy CuraEngine.exe to bindirs of Virtual Python Environment
