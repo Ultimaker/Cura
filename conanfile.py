@@ -214,8 +214,8 @@ class CuraConan(ConanFile):
 
         if self.options.devtools:
             self._generate_pyinstaller_spec(self.generators_folder,
-                                            os.path.join(self.source_folder, self._um_data(self.version)["runinfo"]["entrypoint"]),
-                                            os.path.join(self.source_folder, "packaging", self._um_data(self.version)["pyinstaller"]["icon"][str(self.settings.os)]))
+                                            Path(self.source_folder, self._um_data(self.version)["runinfo"]["entrypoint"]),
+                                            Path(self.source_folder, "packaging", self._um_data(self.version)["pyinstaller"]["icon"][str(self.settings.os)]))
 
     def imports(self):
         self.copy("CuraEngine.exe", root_package = "curaengine", src = "@bindirs", dst = "", keep_path = False)
@@ -289,8 +289,8 @@ class CuraConan(ConanFile):
 
         self._generate_cura_version(Path(self._site_packages, "cura"))
         self._generate_pyinstaller_spec(self._base_dir,
-                                        os.path.join(self.cpp_info.bindirs[0], self._um_data(self.version)["runinfo"]["entrypoint"]),
-                                        os.path.join(self.cpp_info.resdirs[2], self._um_data(self.version)["pyinstaller"]["icon"][str(self.settings.os)]))
+                                        Path(self.cpp_info.bin_paths[0], self._um_data(self.version)["runinfo"]["entrypoint"]),
+                                        Path(self.cpp_info.res_paths[2], self._um_data(self.version)["pyinstaller"]["icon"][str(self.settings.os)]))
 
 
     def package(self):
