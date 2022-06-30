@@ -1201,8 +1201,7 @@ class XmlMaterialProfile(InstanceContainer):
         "dwell time before break preparation move",
         "pressure release dwell time",
         "tainted print core max temperature",
-        "recommended cleaning after n prints",
-
+        "recommend cleaning after n prints",
         "maximum heated bed temperature",
         "material bed adhesion temperature",
         "maximum heated chamber temperature",
