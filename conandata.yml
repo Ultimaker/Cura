@@ -13,11 +13,11 @@
     pyinstaller:
         datas:
             cura_plugins:
-                root: "."
+                package: "cura"
                 src: "plugins"
                 dst: "share/cura/plugins"
             cura_resources:
-                root: "."
+                package: "cura"
                 src: "resources"
                 dst: "share/cura/resources"
             uranium_plugins:
@@ -92,11 +92,11 @@
     pyinstaller:
         datas:
             cura_plugins:
-                root: "."
+                package: "cura"
                 src: "plugins"
                 dst: "share/cura/plugins"
             cura_resources:
-                root: "."
+                package: "cura"
                 src: "resources"
                 dst: "share/cura/resources"
             uranium_plugins:
@@ -170,11 +170,11 @@
     pyinstaller:
         datas:
             cura_plugins:
-                root: "."
+                package: "cura"
                 src: "plugins"
                 dst: "share/cura/plugins"
             cura_resources:
-                root: "."
+                package: "cura"
                 src: "resources"
                 dst: "share/cura/resources"
             uranium_plugins:
@@ -249,11 +249,11 @@
     pyinstaller:
         datas:
             cura_plugins:
-                root: "."
+                package: "cura"
                 src: "plugins"
                 dst: "share/cura/plugins"
             cura_resources:
-                root: "."
+                package: "cura"
                 src: "resources"
                 dst: "share/cura/resources"
             uranium_plugins:
