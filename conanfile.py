@@ -173,9 +173,9 @@ class CuraConan(ConanFile):
             if dependency.ref.name == "cpython":
                 continue
             for bin_paths in dependency.cpp_info.bindirs:
-                conan_binaries.extend(Path(bin_paths).glob("**/*.dll"))
-                conan_binaries.extend(Path(bin_paths).glob("**/*.dylib"))
-                conan_binaries.extend(Path(bin_paths).glob("**/*.so"))
+                conan_binaries.extend([(p, ".") for p in Path(bin_paths).glob("**/*.dll")])
+                conan_binaries.extend([(p, ".") for p in Path(bin_paths).glob("**/*.dylib")])
+                conan_binaries.extend([(p, ".") for p in Path(bin_paths).glob("**/*.so")])
 
         with open(Path(__file__).parent.joinpath("Ultimaker-Cura.spec.jinja"), "r") as f:
             pyinstaller = Template(f.read())
