@@ -120,11 +120,11 @@ class CuraConan(ConanFile):
             py_interp = Path(*[f'"{p}"' if " " in p else p for p in py_interp.parts])
         return py_interp
 
-    def source(self):
+    def _generate_cura_version(self, location):
         with open(Path(self.source_folder, "CuraVersion.py.jinja"), "r") as f:
             cura_version_py = Template(f.read())
 
-        with open(Path(self.source_folder, "cura", "CuraVersion.py"), "w") as f:
+        with open(Path(location, "CuraVersion.py"), "w") as f:
             f.write(cura_version_py.render(
                 cura_app_name = self.name,
                 cura_app_display_name = self.options.display_name,
@@ -136,6 +136,54 @@ class CuraConan(ConanFile):
                 cura_cloud_account_api_root = self._cloud_account_api_root,
                 cura_marketplace_root = self._marketplace_root,
                 cura_digital_factory_url = self._digital_factory_url))
+
+    def _generate_pyinstaller_spec(self, location):
+        pyinstaller_metadata = self._um_data(self.version)["pyinstaller"]
+        datas = []
+        for data in pyinstaller_metadata["datas"].values():
+            if "package" in data:  # get the paths from conan package
+                if data["package"] == self.name:
+                    src_path = Path(self.package_folder, data["src"])
+                else:
+                    src_path = Path(self.deps_cpp_info[data["package"]].rootpath, data["src"])
+            elif "root" in data:  # get the paths relative from the sourcefolder
+                src_path = Path(self.source_folder, data["root"], data["src"])
+            else:
+                continue
+            if src_path.exists():
+                datas.append((str(src_path), data["dst"]))
+
+        binaries = []
+        for binary in pyinstaller_metadata["binaries"].values():
+            if "package" in binary:  # get the paths from conan package
+                src_path = Path(self.deps_cpp_info[binary["package"]].rootpath, binary["src"])
+            elif "root" in binary:  # get the paths relative from the sourcefolder
+                src_path = Path(self.source_folder, binary["root"], binary["src"])
+            else:
+                continue
+            if not src_path.exists():
+                continue
+            for bin in src_path.glob(binary["binary"] + ".*[exe|dll|so|dylib]"):
+                binaries.append((str(bin), binary["dst"]))
+            for bin in src_path.glob(binary["binary"]):
+                binaries.append((str(bin), binary["dst"]))
+
+        with open(Path(Path(__file__).parent, "Ultimaker-Cura.spec.jinja"), "r") as f:
+            pyinstaller = Template(f.read())
+
+        with open(Path(location, "Ultimaker-Cura.spec"), "w") as f:
+            f.write(pyinstaller.render(
+                name = str(self.options.display_name).replace(" ", "-"),
+                entrypoint = os.path.join("..", "..", self._um_data(self.version)["runinfo"]["entrypoint"]),
+                datas = datas,
+                binaries = binaries,
+                hiddenimports = pyinstaller_metadata["hiddenimports"],
+                collect_all = pyinstaller_metadata["collect_all"],
+                icon = os.path.join("..", "..", pyinstaller_metadata["icon"][str(self.settings.os)])
+            ))
+
+    def source(self):
+        self._generate_cura_version(Path(self.source_folder, "cura"))
 
     def configure(self):
         self.options["arcus"].shared = True
@@ -165,49 +213,7 @@ class CuraConan(ConanFile):
         vr.generate()
 
         if self.options.devtools:
-            with open(Path(self.source_folder, "Ultimaker-Cura.spec.jinja"), "r") as f:
-                pyinstaller = Template(f.read())
-
-            pyinstaller_metadata = self._um_data(self.version)["pyinstaller"]
-            datas = []
-            for data in pyinstaller_metadata["datas"].values():
-                if "package" in data:  # get the paths from conan package
-                    if data["package"] == self.name:
-                        src_path = Path(self.package_folder, data["src"])
-                    else:
-                        src_path = Path(self.deps_cpp_info[data["package"]].rootpath, data["src"])
-                elif "root" in data:  # get the paths relative from the sourcefolder
-                    src_path = Path(self.source_folder, data["root"], data["src"])
-                else:
-                    continue
-                if src_path.exists():
-                    datas.append((str(src_path), data["dst"]))
-
-            binaries = []
-            for binary in pyinstaller_metadata["binaries"].values():
-                if "package" in binary:  # get the paths from conan package
-                    src_path = Path(self.deps_cpp_info[binary["package"]].rootpath, binary["src"])
-                elif "root" in binary:  # get the paths relative from the sourcefolder
-                    src_path = Path(self.source_folder, binary["root"], binary["src"])
-                else:
-                    continue
-                if not src_path.exists():
-                    continue
-                for bin in src_path.glob(binary["binary"] + ".*[exe|dll|so|dylib]"):
-                    binaries.append((str(bin), binary["dst"]))
-                for bin in src_path.glob(binary["binary"]):
-                    binaries.append((str(bin), binary["dst"]))
-
-            with open(Path(self.generators_folder, "Ultimaker-Cura.spec"), "w") as f:
-                f.write(pyinstaller.render(
-                    name = str(self.options.display_name).replace(" ", "-"),
-                    entrypoint = os.path.join("..", "..", self._um_data(self.version)["runinfo"]["entrypoint"]),
-                    datas = datas,
-                    binaries = binaries,
-                    hiddenimports = pyinstaller_metadata["hiddenimports"],
-                    collect_all = pyinstaller_metadata["collect_all"],
-                    icon = os.path.join("..", "..", pyinstaller_metadata["icon"][str(self.settings.os)])
-                ))
+            self._generate_pyinstaller_spec(self.generators_folder)
 
     def imports(self):
         self.copy("CuraEngine.exe", root_package = "curaengine", src = "@bindirs", dst = "", keep_path = False)
@@ -279,6 +285,9 @@ class CuraConan(ConanFile):
 
         # Copy requirements.txt's
         self.copy("*.txt", src = self.cpp_info.resdirs[-1], dst = self._base_dir.joinpath("pip_requirements"))
+
+        self._generate_cura_version(Path(self._site_packages, "cura"))
+        self._generate_pyinstaller_spec(self._base_dir)
 
 
     def package(self):
