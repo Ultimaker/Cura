@@ -1139,14 +1139,36 @@ class XmlMaterialProfile(InstanceContainer):
         "maximum park duration": "material_maximum_park_duration",
         "no load move factor": "material_no_load_move_factor",
         "break speed": "material_break_speed",
-        "break temperature": "material_break_temperature",
-        "tainted print core max temperature": "max_degradation_temperature",
-        "recommend cleaning after n prints": "recommended_cleaning_after_n_prints"
+        "break temperature": "material_break_temperature"
     }  # type: Dict[str, str]
     __unmapped_settings = [
         "hardware compatible",
         "hardware recommended"
     ]
+    __keep_serialized_settings = {  # Settings irrelevant to Cura, but that could be present in the files so we must store them and keep them serialized.
+        "relative extrusion",
+        "flow sensor detection margin",
+        "different material purge volume",
+        "same material purge volume",
+        "end of print purge volume",
+        "end of filament purge volume",
+        "purge anti ooze retract position",
+        "purge drop retract position",
+        "purge retract speed",
+        "purge unretract speed",
+        "purge anti ooze dwell time",
+        "purge drop dwell time",
+        "dwell time before break preparation move",
+        "pressure release dwell time",
+        "tainted print core max temperature",
+        "recommended cleaning after n prints",
+
+        "maximum heated bed temperature",
+        "material bed adhesion temperature",
+        "maximum heated chamber temperature",
+        "shrinkage percentage",
+        "move to die distance",
+    }
     __material_properties_setting_map = {
         "diameter": "material_diameter"
     }
