@@ -127,15 +127,11 @@ jobs:
 
             -   name: Set Environment variables for Cura (bash)
                 if: ${{ runner.os != 'Windows' }}
-                run: |
-                    . activate_github_actions_env.sh
-                working-directory: cura_inst\bin
+                run: . ./cura_inst/bin/activate_github_actions_env.sh
 
             -   name: Set Environment variables for Cura (Powershell)
                 if: ${{ runner.os == 'Windows' }}
-                run: |
-                    .\activate_github_actions_env.ps1
-                working-directory: cura_inst\Scripts
+                run: .\cura_inst\Scripts\activate_github_actions_env.ps1
 
             -   name: Create the Cura dist
                 run: pyinstaller Ultimaker-Cura.spec
