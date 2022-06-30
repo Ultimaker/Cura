@@ -11,7 +11,7 @@ on:
             conan_config:
                 description: 'Conan config branch to use'
                 default: ''
-                required: true
+                required: false
             enterprise:
                 description: 'Build Cura as an Enterprise edition'
                 required: true
