@@ -36,6 +36,7 @@ on:
             - 'conanfile.py'
             - 'conandata.yml'
             - 'GitVersion.yml'
+            - '*.jinja'
         branches:
             - main
             - 'CURA-*'
