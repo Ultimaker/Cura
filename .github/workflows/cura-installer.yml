@@ -1,12 +1,37 @@
 name: Cura Installer
 
 on:
-  workflow_dispatch:
-    inputs:
-      cura_conan_version:
-        description: 'Cura Conan Version'
-        default: 'cura/latest@ultimaker/testing'
-        required: true
+    workflow_dispatch:
+        inputs:
+            cura_conan_version:
+                description: 'Cura Conan Version'
+                # Fixme: default to cura/latest@testing (which is main)
+                default: 'cura/latest@ultimaker/stable'
+                required: true
+            conan_config:
+                description: 'Conan config branch to use'
+                default: ''
+                required: true
+            enterprise:
+                description: 'Build Cura as an Enterprise edition'
+                required: true
+                default: false
+                type: boolean
+            staging:
+                description: 'Use staging API'
+                required: true
+                default: false
+                type: boolean
+            installer:
+                description: 'Create the installer'
+                required: true
+                default: false
+                type: boolean
+
+# Run the nightly at 5:25 UTC on working days
+    schedule:
+    - cron: '*/25 5 * * 1-5'
+
 env:
     CONAN_LOGIN_USERNAME_CURA: ${{ secrets.CONAN_USER }}
     CONAN_PASSWORD_CURA: ${{ secrets.CONAN_PASS }}
@@ -15,15 +40,18 @@ env:
     CONAN_LOG_RUN_TO_OUTPUT: 1
     CONAN_LOGGING_LEVEL: ${{ inputs.conan_logging_level }}
     CONAN_NON_INTERACTIVE: 1
+    CODESIGN_IDENTITY: ${{ secrets.CODESIGN_IDENTITY }}
+    NOTARIZE_USER: ${{ secrets.NOTARIZE_USER }}
+    NOTARIZE_PASSWORD: ${{ secrets.NOTARIZE_PASSWORD }}
 
 jobs:
-    conan-package-create:
+    cura-installer-create:
+        runs-on: ${{ matrix.os }}
+
         strategy:
+            fail-fast: false
             matrix:
-                version: [10, 12, 14]
-                os: [ubuntu-20.04, windows-2022, macos-10.15]
-                
-        runs-on: {{ matrix.os }}
+                os: [ macos-10.15, windows-2022, ubuntu-20.04 ]
 
         steps:
             -   name: Checkout
@@ -89,10 +117,56 @@ jobs:
                 run: conan config install https://github.com/Ultimaker/conan-config.git
 
             -   name: Create the Packages
-                run: conan install ${{ inputs.cura_conan_version }} --build=missing --update -g VirtualPythonEnv
+                run: conan install ${{ inputs.cura_conan_version }} --build=missing --update -if cura_inst -g VirtualPythonEnv -o cura:enterprise=${{ inputs.enterprise }} -o cura:staging=${{ inputs.staging }}
 
             -   name: Upload the Package(s)
                 if: always()
                 run: |
                     conan upload "*" -r cura --all -c
                     conan upload "*" -r cura-ce -c
+
+            -   name: Set Environment variables for Cura (bash)
+                if: ${{ runner.os != 'Windows' }}
+                run: |
+                    . activate_github_actions_env.sh
+                working-directory: cura_inst
+
+            -   name: Set Environment variables for Cura (Powershell)
+                if: ${{ runner.os == 'Windows' }}
+                run: |
+                    .\activate_github_actions_env.ps1
+                working-directory: cura_inst
+
+            -   name: Create the Cura dist
+                run: pyinstaller Ultimaker-Cura.spec
+
+            -   name: Archive the artifacts (bash)
+                if: ${{ github.event.inputs.installer == 'false' && runner.os != 'Windows' }}
+                run: tar -zcf "./Ultimaker-Cura-${{ needs.get-semver.outputs.semver_full }}-${{ runner.os }}-${{ runner.arch }}.tar.gz" "./Ultimaker-Cura/"
+                working-directory: dist
+
+            -   name: Archive the artifacts (Powershell)
+                if: ${{ github.event.inputs.installer == 'false' && runner.os == 'Windows' }}
+                run: Compress-Archive -Path ".\Ultimaker-Cura" -DestinationPath ".\Ultimaker-Cura-${{ needs.get-semver.outputs.semver_full }}-${{ runner.os }}-${{ runner.arch }}.zip"
+                working-directory: dist
+
+# FIXME: When the NSIS resources and scripts are to Cura repo and packaged
+#            -   name: Create the Windows exe installer (Powershell)
+#                if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Windows' }}
+#                run: |
+#                    python "$Env:GITHUB_WORKSPACE\packaging\NSIS\nsis-configurator.py" um_path "$Env:GITHUB_WORKSPACE\packaging\NSIS\Ultimaker-Cura.nsi.jinja" "Ultimaker Cura" "Ultimaker-Cura.exe" "${{ needs.get-semver.outputs.semver_major }}" "${{ needs.get-semver.outputs.semver_minor }}" "${{ needs.get-semver.outputs.semver_patch }}" "0" "Ultimaker B.V." "https://ultimaker.com" "$Env:GITHUB_WORKSPACE\packaging\cura_license.txt" "LZMA" "$Env:GITHUB_WORKSPACE\packaging\cura_banner_nsis.bmp" "$Env:GITHUB_WORKSPACE\packaging\Cura.ico" "Ultimaker-Cura-${{ needs.get-semver.outputs.semver_full }}-${{ runner.os }}-${{ runner.arch }}.exe"
+#                    makensis /V2 /P4 Ultimaker-Cura.nsi
+#                working-directory: dist
+
+            -   name: Upload the artifacts
+                uses: actions/upload-artifact@v3
+                with:
+                    name: Ultimaker-Cura-${{ needs.get-semver.outputs.semver_full }}-${{ runner.os }}-${{ runner.arch }}
+                    path: |
+                        dist/*.tar.gz
+                        dist/*.zip
+                        dist/*.exe
+                        dist/*.msi
+                        dist/*.dmg
+                        dist/*.AppImage
+                    retention-days: 2
