@@ -2757,8 +2757,8 @@
                 },
                 "max_degradation_temperature":
                 {
-                    "label": "Max degradation temperature",
-                    "description": "Maximum temperature that the material can reach before it starts degrading and requiring a purge",
+                    "label": "Max Degradation Temperature",
+                    "description": "Maximum temperature that the material can reach before it starts degrading and requiring a purge.",
                     "type": "float",
                     "default_value": 265,
                     "enabled": false
