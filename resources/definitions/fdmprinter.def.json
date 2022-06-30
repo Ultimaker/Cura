@@ -8062,6 +8062,7 @@
                     "type": "int",
                     "default_value": 1,
                     "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                    "resolve": "max(extruderValues('raft_base_wall_count'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 }
