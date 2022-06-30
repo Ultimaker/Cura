@@ -48,6 +48,14 @@
                 package: "fdm_materials"
                 src: "materials"
                 dst: "share/cura/resources/materials"
+            tcl:
+                package: "tcl"
+                src: "lib/tcl8.6"
+                dst: "tcl"
+            tk:
+                package: "tk"
+                src: "lib/tk8.6"
+                dst: "tk"
         binaries:
             curaengine:
                 package: "curaengine"
@@ -130,6 +138,14 @@
                 package: "fdm_materials"
                 src: "materials"
                 dst: "share/cura/resources/materials"
+            tcl:
+                package: "tcl"
+                src: "lib/tcl8.6"
+                dst: "tcl"
+            tk:
+                package: "tk"
+                src: "lib/tk8.6"
+                dst: "tk"
         binaries:
             curaengine:
                 package: "curaengine"
@@ -212,6 +228,14 @@
                 package: "fdm_materials"
                 src: "materials"
                 dst: "share/cura/resources/materials"
+            tcl:
+                package: "tcl"
+                src: "lib/tcl8.6"
+                dst: "tcl"
+            tk:
+                package: "tk"
+                src: "lib/tk8.6"
+                dst: "tk"
         binaries:
             curaengine:
                 package: "curaengine"
@@ -294,6 +318,14 @@
                 package: "fdm_materials"
                 src: "materials"
                 dst: "share/cura/resources/materials"
+            tcl:
+                package: "tcl"
+                src: "lib/tcl8.6"
+                dst: "tcl"
+            tk:
+                package: "tk"
+                src: "lib/tk8.6"
+                dst: "tk"
         binaries:
             curaengine:
                 package: "curaengine"
