@@ -137,7 +137,7 @@ class CuraConan(ConanFile):
                 cura_marketplace_root = self._marketplace_root,
                 cura_digital_factory_url = self._digital_factory_url))
 
-    def _generate_pyinstaller_spec(self, location):
+    def _generate_pyinstaller_spec(self, location, entrypoint_location, icon_path):
         pyinstaller_metadata = self._um_data(self.version)["pyinstaller"]
         datas = []
         for data in pyinstaller_metadata["datas"].values():
@@ -174,12 +174,12 @@ class CuraConan(ConanFile):
         with open(Path(location, "Ultimaker-Cura.spec"), "w") as f:
             f.write(pyinstaller.render(
                 name = str(self.options.display_name).replace(" ", "-"),
-                entrypoint = os.path.join("..", "..", self._um_data(self.version)["runinfo"]["entrypoint"]),
+                entrypoint = entrypoint_location,
                 datas = datas,
                 binaries = binaries,
                 hiddenimports = pyinstaller_metadata["hiddenimports"],
                 collect_all = pyinstaller_metadata["collect_all"],
-                icon = os.path.join("..", "..", pyinstaller_metadata["icon"][str(self.settings.os)])
+                icon = icon_path
             ))
 
     def source(self):
@@ -206,14 +206,16 @@ class CuraConan(ConanFile):
 
         self.cpp.package.libdirs = [os.path.join("site-packages", "cura")]
         self.cpp.package.bindirs = ["bin"]
-        self.cpp.package.resdirs = ["resources", "plugins", "pip_requirements"]  # pip_requirements should be the last item in the list
+        self.cpp.package.resdirs = ["resources", "plugins", "packaging", "pip_requirements"]  # pip_requirements should be the last item in the list
 
     def generate(self):
         vr = VirtualRunEnv(self)
         vr.generate()
 
         if self.options.devtools:
-            self._generate_pyinstaller_spec(self.generators_folder)
+            self._generate_pyinstaller_spec(self.generators_folder,
+                                            os.path.join(self.source_folder, self._um_data(self.version)["runinfo"]["entrypoint"]),
+                                            os.path.join(self.source_folder, "packaging", self._um_data(self.version)["pyinstaller"]["icon"][str(self.settings.os)]))
 
     def imports(self):
         self.copy("CuraEngine.exe", root_package = "curaengine", src = "@bindirs", dst = "", keep_path = False)
@@ -287,7 +289,9 @@ class CuraConan(ConanFile):
         self.copy("*.txt", src = self.cpp_info.resdirs[-1], dst = self._base_dir.joinpath("pip_requirements"))
 
         self._generate_cura_version(Path(self._site_packages, "cura"))
-        self._generate_pyinstaller_spec(self._base_dir)
+        self._generate_pyinstaller_spec(self._base_dir,
+                                        os.path.join(self.cpp_info.bindirs[0], self._um_data(self.version)["runinfo"]["entrypoint"]),
+                                        os.path.join(self.cpp_info.resdirs[2], self._um_data(self.version)["pyinstaller"]["icon"][str(self.settings.os)]))
 
 
     def package(self):
@@ -296,6 +300,7 @@ class CuraConan(ConanFile):
         self.copy("*", src = "resources", dst = self.cpp.package.resdirs[0])
         self.copy("*", src = "plugins", dst = self.cpp.package.resdirs[1])
         self.copy("requirement*.txt", src = ".", dst = self.cpp.package.resdirs[-1])
+        self.copy("*", src = "packaging", dst = self.cpp.package.resdirs[2])
 
     def package_info(self):
         self.user_info.pip_requirements = "requirements.txt"
