@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import argparse  # Command line arguments parsing and help.
+from jinja2 import Template
 import os  # Finding installation directory.
 import os.path  # Finding files.
 import shutil  # Copying files.
@@ -12,7 +13,7 @@ def build_appimage(dist_path, version):
     """
     Creates an AppImage file from the build artefacts created so far.
     """
-    copy_metadata_files(dist_path)
+    copy_metadata_files(dist_path, version)
 
     appimage_filename = f"Ultimaker-Cura_{version}.AppImage"
     try:
@@ -24,13 +25,12 @@ def build_appimage(dist_path, version):
 
     sign_appimage(dist_path, appimage_filename)
 
-def copy_metadata_files(dist_path):
+def copy_metadata_files(dist_path, version):
     """
     Copy metadata files for the metadata of the AppImage.
     """
     copied_files = {
         "cura-icon_256x256.png": "cura-icon.png",
-        "cura.desktop": "cura.desktop",
         "cura.appdata.xml": "cura.appdata.xml",
         "AppRun": "AppRun"
     }
@@ -41,7 +41,17 @@ def copy_metadata_files(dist_path):
         shutil.copyfile(os.path.join(packaging_dir, source), os.path.join(dist_path, dest))
 
     # Ensure that AppRun has the proper permissions: 755 (user reads, writes and executes, group reads and executes, world reads and executes).
+    print("Changing permissions for AppRun")
     os.chmod(os.path.join(dist_path, "AppRun"), stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH)
+
+    # Provision the Desktop file with the correct version number.
+    template_path = os.path.join(packaging_dir, "cura.desktop.jinja")
+    desktop_path = os.path.join(dist_path, "cura.desktop")
+    print("Provisioning desktop file from", template_path, "to", desktop_path)
+    with open(template_path, "r") as f:
+        desktop_file = Template(f.read())
+    with open(desktop_path, "w") as f:
+        f.write(desktop_file.render(cura_version = version))
 
 def generate_appimage(dist_path, appimage_filename):
     appimage_path = os.path.join(dist_path, appimage_filename)
