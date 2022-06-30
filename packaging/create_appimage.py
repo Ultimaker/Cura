@@ -17,7 +17,7 @@ def build_appimage():
     copy_metadata_files()
 
     try:
-        shutil.rmtree(os.path.join(dist_path, appimage_filename))  # Ensure any old file is removed, if it exists.
+        os.remove(os.path.join(dist_path, appimage_filename))  # Ensure any old file is removed, if it exists.
     except FileNotFoundError:
         pass  # If it didn't exist, that's even better.
 
@@ -38,6 +38,7 @@ def copy_metadata_files():
 
     packaging_dir = os.path.dirname(__file__)
     for source, dest in copied_files.items():
+        print("Copying", os.path.join(packaging_dir, source), "to", os.path.join(dist_path, dest))
         shutil.copyfile(os.path.join(packaging_dir, source), os.path.join(dist_path, dest))
 
     # Ensure that AppRun has the proper permissions: 755 (user reads, writes and executes, group reads and executes, world reads and executes).
