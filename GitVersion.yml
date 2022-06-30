@@ -1,0 +1,42 @@
+mode: ContinuousDelivery
+next-version: 5.1
+branches:
+    main:
+        regex: ^main$
+        mode: ContinuousDelivery
+        tag: alpha
+        increment: None
+        prevent-increment-of-merged-branch-version: true
+        track-merge-target: false
+        source-branches: [ ]
+        tracks-release-branches: false
+        is-release-branch: false
+        is-mainline: true
+        pre-release-weight: 55000
+    develop:
+        regex: ^CURA-.*$
+        mode: ContinuousDelivery
+        tag: alpha
+        increment: None
+        prevent-increment-of-merged-branch-version: false
+        track-merge-target: true
+        source-branches: [ 'main' ]
+        tracks-release-branches: true
+        is-release-branch: false
+        is-mainline: false
+        pre-release-weight: 0
+    release:
+        regex: ^[\d].[\d]$
+        mode: ContinuousDelivery
+        tag: beta
+        increment: None
+        prevent-increment-of-merged-branch-version: true
+        track-merge-target: false
+        source-branches: [ 'main' ]
+        tracks-release-branches: false
+        is-release-branch: true
+        is-mainline: false
+        pre-release-weight: 30000
+ignore:
+    sha: [ ]
+merge-message-formats: { }
