@@ -227,10 +227,11 @@ class CuraConan(ConanFile):
         self.copy("*", root_package = "cura_binary_data", src = self.deps_cpp_info["cura_binary_data"].resdirs[1],
                        dst = "venv/share/uranium", keep_path = True)
 
-        self.copy("*.dll", src = "@bindirs", dst = "venv/Lib/site-packages")
-        self.copy("*.pyd", src = "@libdirs", dst = "venv/Lib/site-packages")
-        self.copy("*.pyi", src = "@libdirs", dst = "venv/Lib/site-packages")
-        self.copy("*.dylib", src = "@libdirs", dst = "venv/bin")
+        for dep in ["arcus", "savitar", "pynest2d"]:
+            self.copy("*.dll", root_package = dep, src = "@bindirs", dst = self._site_packages)
+            self.copy("*.pyd", root_package = dep, src = "@libdirs", dst = self._site_packages)
+            self.copy("*.pyi", root_package = dep, src = "@libdirs", dst = self._site_packages)
+            self.copy("*.dylib", root_package = dep, src = "@libdirs", dst = self._script_dir)
 
     def deploy(self):
         # Copy CuraEngine.exe to bindirs of Virtual Python Environment
@@ -274,74 +275,14 @@ class CuraConan(ConanFile):
             self.copy_deps("*", root_package = "cura_binary_data", src = self.deps_cpp_info["cura_binary_data"].resdirs[2],
                            dst = self._share_dir.joinpath("windows"), keep_path = True)
 
-        # Copy CPython to user space
-        self.copy_deps("*", root_package = "cpython", src = "@bindirs", dst = self._bin_dir, keep_path = True)
+        for dep in ["arcus", "savitar", "pynest2d"]:
+            self.copy_deps("*.dll", root_package = dep, src = "@bindirs", dst = self._site_packages)
+            self.copy_deps("*.pyd", root_package = dep, src = "@libdirs", dst = self._site_packages)
+            self.copy_deps("*.pyi", root_package = dep, src = "@libdirs", dst = self._site_packages)
+            self.copy_deps("*.dylib", root_package = dep, src = "@libdirs", dst = self._script_dir)
 
-        # Copy other shared libs and compiled python modules
-        self.copy_deps("*.dll", src = "@bindirs", dst = self._site_packages)
-        self.copy_deps("*.pyd", src = "@libdirs", dst = self._site_packages)
-        self.copy_deps("*.pyi", src = "@libdirs", dst = self._site_packages)
-        self.copy_deps("*.dylib", src = "@libdirs", dst = self._site_packages)
-
-        run_env = VirtualRunEnv(self)
-        env = run_env.environment()
-        env.define_path("PYTHONPATH", str(self._site_packages))
-        env.unset("PYTHONHOME")
-
-        for dy_path in [self._bin_dir, self._script_dir, self._site_packages, self._site_packages.joinpath("PyQt6", "Qt6", "bin")]:
-            env.prepend_path("PATH", str(dy_path))
-            env.prepend_path("LD_LIBRARY_PATH", str(dy_path))
-            env.prepend_path("DYLD_LIBRARY_PATH", str(dy_path))
-
-        envvars = env.vars(self, scope = "run")
-        envvars.save_ps1(str(self._base_dir.joinpath("cura_activate.ps1")))
-        envvars.save_bat(str(self._base_dir.joinpath("cura_activate.bat")))
-        envvars.save_sh(str(self._base_dir.joinpath("cura_activate.sh")))
-
-        # Install the requirements*.txt for Cura her dependencies
-        # Note: user_info only stores str()
-        self.run(f"{self._py_interp} -m pip install wheel setuptools sip==6.5.1 -t {str(self._site_packages)} --upgrade --isolated",
-                 run_environment = True, env = "conanrun")
-
-        # FIXME: PyQt6, somehow still finds the system Python lib. This cause it fail when importing QtNetwork
-        #  possible solution is to force pip to compile the binaries from source: `--no-binary :all:` but that currently fails with sip.
-        #  Maybe we should only compile PyQt6-*** deps
-        for dep_name in self.deps_user_info:
-            dep_user_info = self.deps_user_info[dep_name]
-            pip_req_paths = [req_path for req_path in self.deps_cpp_info[dep_name].resdirs if req_path == "pip_requirements"]
-            if len(pip_req_paths) != 1:
-                continue
-            pip_req_base_path = Path(pip_req_paths[0])
-            if hasattr(dep_user_info, "pip_requirements"):
-                req_txt = pip_req_base_path.joinpath(dep_user_info.pip_requirements)
-                if req_txt.exists():
-                    self.run(f"{self._py_interp} -m pip install -r {req_txt} -t {str(self._site_packages)} --upgrade --isolated", run_environment = True, env = "conanrun")
-                    self.output.success(f"Dependency {dep_name} specifies pip_requirements in user_info installed!")
-                else:
-                    self.output.warn(f"Dependency {dep_name} specifies pip_requirements in user_info but {req_txt} can't be found!")
-
-            if hasattr(dep_user_info, "pip_requirements_git"):
-                req_txt = pip_req_base_path.joinpath(dep_user_info.pip_requirements_git)
-                if req_txt.exists():
-                    self.run(f"{self._py_interp} -m pip install -r {req_txt} -t {str(self._site_packages)} --upgrade --isolated", run_environment = True, env = "conanrun")
-                    self.output.success(f"Dependency {dep_name} specifies pip_requirements_git in user_info installed!")
-                else:
-                    self.output.warn(f"Dependency {dep_name} specifies pip_requirements_git in user_info but {req_txt} can't be found!")
-
-        # Install Cura requirements*.txt
-        pip_req_base_path = Path(self.cpp_info.rootpath, self.cpp_info.resdirs[-1])
-        # Add the dev reqs needed for pyinstaller
-        self.run(f"{self._py_interp} -m pip install -r {pip_req_base_path.joinpath(self.user_info.pip_requirements_build)} -t {str(self._site_packages)} --upgrade --isolated",
-                 run_environment = True, env = "conanrun")
-
-        # Install the requirements.text for cura
-        self.run(f"{self._py_interp} -m pip install -r {pip_req_base_path.joinpath(self.user_info.pip_requirements_git)} -t {str(self._site_packages)} --upgrade --isolated",
-                 run_environment = True, env = "conanrun")
-        # Do the final requirements last such that these dependencies takes precedence over possible previous installed Python modules.
-        # Since these are actually shipped with Cura and therefore require hashes and pinned version numbers in the requirements.txt
-        self.run(f"{self._py_interp} -m pip install -r {pip_req_base_path.joinpath(self.user_info.pip_requirements)} -t {str(self._site_packages)} --upgrade --isolated",
-                 run_environment = True,
-                 env = "conanrun")
+        # Copy requirements.txt's
+        self.copy("*.txt", src = self.cpp_info.resdirs[-1], dst = self._base_dir.joinpath("pip_requirements"))
 
     def package(self):
         self.copy("cura_app.py", src = ".", dst = self.cpp.package.bindirs[0])
