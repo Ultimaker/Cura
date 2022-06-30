@@ -101,25 +101,21 @@ class CuraConan(ConanFile):
         return self._base_dir.joinpath("share")
 
     @property
-    def _bin_dir(self):
-        return self._base_dir.joinpath("bin")
-
-    @property
     def _script_dir(self):
         if self.settings.os == "Windows":
-            return self._bin_dir.joinpath("Scripts")
-        return self._bin_dir.joinpath("bin")
+            return self._base_dir.joinpath("Scripts")
+        return self._base_dir.joinpath("bin")
 
     @property
     def _site_packages(self):
         if self.settings.os == "Windows":
-            return self._bin_dir.joinpath("Lib", "site-packages")
+            return self._base_dir.joinpath("Lib", "site-packages")
         py_version = tools.Version(self.deps_cpp_info["cpython"].version)
-        return self._bin_dir.joinpath("lib", f"python{py_version.major}.{py_version.minor}", "site-packages")
+        return self._base_dir.joinpath("lib", f"python{py_version.major}.{py_version.minor}", "site-packages")
 
     @property
     def _py_interp(self):
-        py_interp = self._bin_dir.joinpath(Path(self.deps_user_info["cpython"].python).name)
+        py_interp = self._script_dir.joinpath(Path(self.deps_user_info["cpython"].python).name)
         if self.settings.os == "Windows":
             py_interp = Path(*[f'"{p}"' if " " in p else p for p in py_interp.parts])
         return py_interp
@@ -283,6 +279,7 @@ class CuraConan(ConanFile):
 
         # Copy requirements.txt's
         self.copy("*.txt", src = self.cpp_info.resdirs[-1], dst = self._base_dir.joinpath("pip_requirements"))
+
 
     def package(self):
         self.copy("cura_app.py", src = ".", dst = self.cpp.package.bindirs[0])
