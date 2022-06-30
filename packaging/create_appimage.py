@@ -47,13 +47,13 @@ def copy_metadata_files():
 def generate_appimage():
     appimage_path = os.path.join(dist_path, appimage_filename)
     command = ["appimagetool", "--appimage-extract-and-run", f"{dist_path}/", appimage_path]
-    result = subprocess.call(*command)
+    result = subprocess.call(command)
     if result != 0:
         raise RuntimeError(f"The AppImageTool command returned non-zero: {result}")
 
 def sign_appimage():
     appimage_path = os.path.join(dist_path, appimage_filename)
-    command = ["gpg", "--yes", "--armor", "--detach-sig", {appimage_path}]
-    result = subprocess.call(*command)
+    command = ["gpg", "--yes", "--armor", "--detach-sig", appimage_path]
+    result = subprocess.call(command)
     if result != 0:
         raise RuntimeError(f"The GPG command returned non-zero: {result}")
