@@ -152,12 +152,15 @@ class XmlMaterialProfile(InstanceContainer):
 
         ## Begin Metadata Block
         builder.start("metadata", {}) # type: ignore
-
         metadata = copy.deepcopy(self.getMetaData())
+
+        # Get the to reserialize keys from the metadata before they are deleted.
+        reserialize_settings = copy.deepcopy(metadata["reserialize_settings"])
+
         # setting_version is derived from the "version" tag in the schema, so don't serialize it into a file
         if ignored_metadata_keys is None:
             ignored_metadata_keys = set()
-        ignored_metadata_keys |= {"setting_version", "definition", "status", "variant", "type", "base_file", "approximate_diameter", "id", "container_type", "name", "compatible"}
+        ignored_metadata_keys |= {"setting_version", "definition", "status", "variant", "type", "base_file", "approximate_diameter", "id", "container_type", "name", "compatible", "reserialize_settings"}
         # remove the keys that we want to ignore in the metadata
         for key in ignored_metadata_keys:
             if key in metadata:
@@ -304,6 +307,12 @@ class XmlMaterialProfile(InstanceContainer):
                         buildplate_dict["buildplate_recommended"] = material_container.getMetaDataEntry("buildplate_recommended")
                         buildplate_dict["material_container"] = material_container
 
+                    hotend_reserialize_settings = material_container.getMetaDataEntry("reserialize_settings")
+                    for key, value in hotend_reserialize_settings.items():
+                        builder.start("setting", {"key": key})
+                        builder.data(value)
+                        builder.end("setting")
+
                     builder.end("hotend")
 
             if buildplate_dict:
@@ -325,9 +334,26 @@ class XmlMaterialProfile(InstanceContainer):
                         builder.data("yes" if recommended else "no")
                         builder.end("setting")
 
+                    buildplate_reserialize_settings = material_container.getMetaDataEntry("reserialize_settings")
+                    for key, value in buildplate_reserialize_settings.items():
+                        builder.start("setting", {"key": key})
+                        builder.data(value)
+                        builder.end("setting")
+
                     builder.end("buildplate")
 
+            machine_reserialize_settings = container.getMetaDataEntry("reserialize_settings")
+            for key, value in machine_reserialize_settings.items():
+                builder.start("setting", {"key": key})
+                builder.data(value)
+                builder.end("setting")
+
             builder.end("machine")
+
+        for key, value in reserialize_settings.items():
+            builder.start("setting", {"key": key})
+            builder.data(value)
+            builder.end("setting")
 
         builder.end("settings")
         ## End Settings Block
@@ -512,6 +538,7 @@ class XmlMaterialProfile(InstanceContainer):
         meta_data["status"] = "unknown"  # TODO: Add material verification
         meta_data["id"] = old_id
         meta_data["container_type"] = XmlMaterialProfile
+        meta_data["reserialize_settings"] = {}
 
         common_setting_values = {}
 
@@ -598,6 +625,8 @@ class XmlMaterialProfile(InstanceContainer):
             elif key in self.__unmapped_settings:
                 if key == "hardware compatible":
                     common_compatibility = self._parseCompatibleValue(entry.text)
+            elif key in self.__keep_serialized_settings:
+                meta_data["reserialize_settings"][key] = entry.text
 
         # Add namespaced Cura-specific settings
         settings = data.iterfind("./um:settings/cura:setting", self.__namespaces)
@@ -624,6 +653,7 @@ class XmlMaterialProfile(InstanceContainer):
             machine_compatibility = common_compatibility
             machine_setting_values = {}
             settings = machine.iterfind("./um:setting", self.__namespaces)
+            machine_reserialize_settings = {}
             for entry in settings:
                 key = entry.get("key")
                 if key in self.__material_settings_setting_map:
@@ -640,6 +670,8 @@ class XmlMaterialProfile(InstanceContainer):
                 elif key in self.__unmapped_settings:
                     if key == "hardware compatible":
                         machine_compatibility = self._parseCompatibleValue(entry.text)
+                elif key in self.__keep_serialized_settings:
+                    machine_reserialize_settings[key] = entry.text
                 else:
                     Logger.log("d", "Unsupported material setting %s", key)
 
@@ -694,6 +726,7 @@ class XmlMaterialProfile(InstanceContainer):
                     new_material.getMetaData()["compatible"] = machine_compatibility
                     new_material.getMetaData()["machine_manufacturer"] = machine_manufacturer
                     new_material.getMetaData()["definition"] = machine_id
+                    new_material.getMetaData()["reserialize_settings"] = machine_reserialize_settings
 
                     new_material.setCachedValues(cached_machine_setting_properties)
 
@@ -709,7 +742,7 @@ class XmlMaterialProfile(InstanceContainer):
                         if hotend_name is None:
                             continue
 
-                        hotend_mapped_settings, hotend_unmapped_settings = self._getSettingsDictForNode(hotend)
+                        hotend_mapped_settings, hotend_unmapped_settings, hotend_reserialize_settings = self._getSettingsDictForNode(hotend)
                         hotend_compatibility = hotend_unmapped_settings.get("hardware compatible", machine_compatibility)
 
                         # Generate container ID for the hotend-specific material container
@@ -732,6 +765,7 @@ class XmlMaterialProfile(InstanceContainer):
                         new_hotend_material.getMetaData()["compatible"] = hotend_compatibility
                         new_hotend_material.getMetaData()["machine_manufacturer"] = machine_manufacturer
                         new_hotend_material.getMetaData()["definition"] = machine_id
+                        new_hotend_material.getMetaData()["reserialize_settings"] = hotend_reserialize_settings
 
                         cached_hotend_setting_properties = cached_machine_setting_properties.copy()
                         cached_hotend_setting_properties.update(hotend_mapped_settings)
@@ -753,9 +787,10 @@ class XmlMaterialProfile(InstanceContainer):
             ContainerRegistry.getInstance().addContainer(container_to_add)
 
     @classmethod
-    def _getSettingsDictForNode(cls, node) -> Tuple[Dict[str,  Any], Dict[str, Any]]:
-        node_mapped_settings_dict = dict()  # type: Dict[str, Any]
-        node_unmapped_settings_dict = dict()  # type: Dict[str, Any]
+    def _getSettingsDictForNode(cls, node) -> Tuple[Dict[str,  Any], Dict[str, Any], Dict[str, Any]]:
+        node_mapped_settings_dict: Dict[str, Any] = dict()
+        node_unmapped_settings_dict: Dict[str, Any] = dict()
+        node_reserialize_settings_dict: Dict[str, Any] = dict()
 
         # Fetch settings in the "um" namespace
         um_settings = node.iterfind("./um:setting", cls.__namespaces)
@@ -781,6 +816,10 @@ class XmlMaterialProfile(InstanceContainer):
                 if setting_key in ("hardware compatible", "hardware recommended"):
                     node_unmapped_settings_dict[setting_key] = cls._parseCompatibleValue(um_setting_entry.text)
 
+            # Settings unused by Cura itself, but which need reserialization since they might be important to others.
+            elif setting_key in cls.__keep_serialized_settings:
+                node_reserialize_settings_dict[setting_key] = um_setting_entry.text
+
             # Unknown settings
             else:
                 Logger.log("w", "Unsupported material setting %s", setting_key)
@@ -798,7 +837,7 @@ class XmlMaterialProfile(InstanceContainer):
             # Cura settings are all mapped
             node_mapped_settings_dict[key] = value
 
-        return node_mapped_settings_dict, node_unmapped_settings_dict
+        return node_mapped_settings_dict, node_unmapped_settings_dict, node_reserialize_settings_dict
 
     @classmethod
     def deserializeMetadata(cls, serialized: str, container_id: str) -> List[Dict[str, Any]]:
@@ -988,7 +1027,7 @@ class XmlMaterialProfile(InstanceContainer):
                             if buildplate_name is None:
                                 continue
 
-                            buildplate_mapped_settings, buildplate_unmapped_settings = cls._getSettingsDictForNode(buildplate)
+                            buildplate_mapped_settings, buildplate_unmapped_settings, buildplate_reserialize_settings = cls._getSettingsDictForNode(buildplate)
                             buildplate_compatibility = buildplate_unmapped_settings.get("hardware compatible",
                                                                                         buildplate_map["buildplate_compatible"])
                             buildplate_recommended = buildplate_unmapped_settings.get("hardware recommended",
@@ -1005,6 +1044,7 @@ class XmlMaterialProfile(InstanceContainer):
                             new_hotend_and_buildplate_material_metadata["compatible"] = buildplate_compatibility
                             new_hotend_and_buildplate_material_metadata["buildplate_compatible"] = buildplate_compatibility
                             new_hotend_and_buildplate_material_metadata["buildplate_recommended"] = buildplate_recommended
+                            new_hotend_and_buildplate_material_metadata["reserialize_settings"] = buildplate_reserialize_settings
 
                             result_metadata.append(new_hotend_and_buildplate_material_metadata)
 
