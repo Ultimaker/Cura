@@ -231,10 +231,10 @@ class CuraConan(ConanFile):
         self.copy("*", root_package = "cura_binary_data", src = self.deps_cpp_info["cura_binary_data"].resdirs[1],
                        dst = "venv/share/uranium", keep_path = True)
 
-        self.copy_deps("*.dll", src = "@bindirs", dst = self._site_packages)
-        self.copy_deps("*.pyd", src = "@libdirs", dst = self._site_packages)
-        self.copy_deps("*.pyi", src = "@libdirs", dst = self._site_packages)
-        self.copy_deps("*.dylib", src = "@libdirs", dst = self._script_dir)
+        self.copy("*.dll", src = "@bindirs", dst = self._site_packages)
+        self.copy("*.pyd", src = "@libdirs", dst = self._site_packages)
+        self.copy("*.pyi", src = "@libdirs", dst = self._site_packages)
+        self.copy("*.dylib", src = "@libdirs", dst = self._script_dir)
 
     def deploy(self):
         # Copy CuraEngine.exe to bindirs of Virtual Python Environment
@@ -278,11 +278,10 @@ class CuraConan(ConanFile):
             self.copy_deps("*", root_package = "cura_binary_data", src = self.deps_cpp_info["cura_binary_data"].resdirs[2],
                            dst = self._share_dir.joinpath("windows"), keep_path = True)
 
-        for dep in ["arcus", "savitar", "pynest2d"]:
-            self.copy_deps("*.dll", root_package = dep, src = "@bindirs", dst = self._site_packages)
-            self.copy_deps("*.pyd", root_package = dep, src = "@libdirs", dst = self._site_packages)
-            self.copy_deps("*.pyi", root_package = dep, src = "@libdirs", dst = self._site_packages)
-            self.copy_deps("*.dylib", root_package = dep, src = "@libdirs", dst = self._script_dir)
+        self.copy_deps("*.dll", src = "@bindirs", dst = self._site_packages)
+        self.copy_deps("*.pyd", src = "@libdirs", dst = self._site_packages)
+        self.copy_deps("*.pyi", src = "@libdirs", dst = self._site_packages)
+        self.copy_deps("*.dylib", src = "@libdirs", dst = self._script_dir)
 
         # Copy requirements.txt's
         self.copy("*.txt", src = self.cpp_info.resdirs[-1], dst = self._base_dir.joinpath("pip_requirements"))
