@@ -57,3 +57,6 @@ def sign_appimage():
     result = subprocess.call(command)
     if result != 0:
         raise RuntimeError(f"The GPG command returned non-zero: {result}")
+
+if __name__ == "__main__":
+    build_appimage()
