@@ -117,7 +117,7 @@ jobs:
                 run: conan config install https://github.com/Ultimaker/conan-config.git
 
             -   name: Create the Packages
-                run: conan install ${{ inputs.cura_conan_version }} --build=missing --update -if cura_inst -g VirtualPythonEnv -o cura:enterprise=${{ inputs.enterprise }} -o cura:staging=${{ inputs.staging }}
+                run: conan install ${{ inputs.cura_conan_version }} --build=missing --update -c tools.env.virtualenv:powershell=True -if cura_inst -g VirtualPythonEnv -o cura:enterprise=${{ inputs.enterprise }} -o cura:staging=${{ inputs.staging }}
 
             -   name: Upload the Package(s)
                 if: always()
@@ -129,13 +129,13 @@ jobs:
                 if: ${{ runner.os != 'Windows' }}
                 run: |
                     . activate_github_actions_env.sh
-                working-directory: cura_inst
+                working-directory: cura_inst\bin
 
             -   name: Set Environment variables for Cura (Powershell)
                 if: ${{ runner.os == 'Windows' }}
                 run: |
                     .\activate_github_actions_env.ps1
-                working-directory: cura_inst
+                working-directory: cura_inst\Scripts
 
             -   name: Create the Cura dist
                 run: pyinstaller Ultimaker-Cura.spec
