@@ -170,6 +170,8 @@ class CuraConan(ConanFile):
 
         conan_binaries = []
         for _, dependency in self.dependencies.host.items():
+            if dependency.ref.name == "cpython":
+                continue
             for bin_paths in dependency.cpp_info.bindirs:
                 conan_binaries.extend(Path(bin_paths).glob("**/*.dll"))
                 conan_binaries.extend(Path(bin_paths).glob("**/*.dylib"))
