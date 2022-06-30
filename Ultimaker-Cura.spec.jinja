@@ -12,9 +12,11 @@ datas += tmp_ret[0]; binaries += tmp_ret[1]; hiddenimports += tmp_ret[2]
 
 block_cipher = None
 
+{% for conan_binary in conan_binaries %}binaries += r'{{ conan_binary }}'
+{% endfor %}
 
 a = Analysis(
-    ['{{ entrypoint }}'],
+    [r'{{ entrypoint }}'],
     pathex=[],
     binaries=binaries,
     datas=datas,
@@ -35,7 +37,7 @@ exe = EXE(
     a.scripts,
     [],
     exclude_binaries=True,
-    name='{{ name }}',
+    name=r'{{ name }}',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -56,5 +58,5 @@ coll = COLLECT(
     strip=False,
     upx=True,
     upx_exclude=[],
-    name='{{ name }}'
+    name=r'{{ name }}'
 )
