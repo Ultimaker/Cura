@@ -121,7 +121,7 @@ class CuraConan(ConanFile):
         return py_interp
 
     def _generate_cura_version(self, location):
-        with open(Path(self.source_folder, "CuraVersion.py.jinja"), "r") as f:
+        with open(Path(__file__).parent.joinpath("CuraVersion.py.jinja"), "r") as f:
             cura_version_py = Template(f.read())
 
         with open(Path(location, "CuraVersion.py"), "w") as f:
@@ -168,7 +168,7 @@ class CuraConan(ConanFile):
             for bin in src_path.glob(binary["binary"]):
                 binaries.append((str(bin), binary["dst"]))
 
-        with open(Path(Path(__file__).parent, "Ultimaker-Cura.spec.jinja"), "r") as f:
+        with open(Path(__file__).parent.joinpath("Ultimaker-Cura.spec.jinja"), "r") as f:
             pyinstaller = Template(f.read())
 
         with open(Path(location, "Ultimaker-Cura.spec"), "w") as f:
