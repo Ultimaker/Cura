@@ -157,6 +157,11 @@ jobs:
                     makensis /V2 /P4 Ultimaker-Cura.nsi
                 working-directory: dist
 
+            -   name: Create the Linux AppImage (Bash)
+                if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Linux' }}
+                run: python ./Ultimaker-Cura $CURA_VERSION_FULL
+                working-directory: dist
+
             -   name: Upload the artifacts
                 uses: actions/upload-artifact@v3
                 with:
