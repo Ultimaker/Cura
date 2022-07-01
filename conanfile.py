@@ -168,14 +168,13 @@ class CuraConan(ConanFile):
             for bin in src_path.glob(binary["binary"]):
                 binaries.append((str(bin), binary["dst"]))
 
-        conan_binaries = []
         for _, dependency in self.dependencies.host.items():
             if dependency.ref.name == "cpython":
                 continue
             for bin_paths in dependency.cpp_info.bindirs:
-                conan_binaries.extend([(f"{p}", ".") for p in Path(bin_paths).glob("**/*.dll")])
-                conan_binaries.extend([(f"{p}", ".") for p in Path(bin_paths).glob("**/*.dylib")])
-                conan_binaries.extend([(f"{p}", ".") for p in Path(bin_paths).glob("**/*.so")])
+                binaries.extend([(f"{p}", ".") for p in Path(bin_paths).glob("**/*.dll")])
+                binaries.extend([(f"{p}", ".") for p in Path(bin_paths).glob("**/*.dylib")])
+                binaries.extend([(f"{p}", ".") for p in Path(bin_paths).glob("**/*.so")])
 
         with open(Path(__file__).parent.joinpath("Ultimaker-Cura.spec.jinja"), "r") as f:
             pyinstaller = Template(f.read())
@@ -186,7 +185,6 @@ class CuraConan(ConanFile):
                 entrypoint = entrypoint_location,
                 datas = datas,
                 binaries = binaries,
-                conan_binaries = conan_binaries,
                 hiddenimports = pyinstaller_metadata["hiddenimports"],
                 collect_all = pyinstaller_metadata["collect_all"],
                 icon = icon_path
