@@ -300,7 +300,7 @@ class CuraConan(ConanFile):
         self._generate_pyinstaller_spec(self._base_dir,
                                         Path(self.cpp_info.bin_paths[0], self._um_data(self.version)["runinfo"]["entrypoint"]),
                                         Path(self.cpp_info.res_paths[2], self._um_data(self.version)["pyinstaller"]["icon"][str(self.settings.os)]),
-                                        Path(self.source_folder, "packaging", "dmg", "cura.entitlements" if self.settings.os == "Macos" else None))
+                                        Path(self.cpp_info.res_paths[2], "packaging", "dmg", "cura.entitlements" if self.settings.os == "Macos" else None))
 
     def package(self):
         self.copy("cura_app.py", src = ".", dst = self.cpp.package.bindirs[0])
