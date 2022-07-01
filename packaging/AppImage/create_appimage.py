@@ -30,7 +30,7 @@ def copy_metadata_files(dist_path, version):
     Copy metadata files for the metadata of the AppImage.
     """
     copied_files = {
-        "cura-icon_256x256.png": "cura-icon.png",
+        os.path.join("..", "icons", "cura-icon_256x256.png"): "cura-icon.png",
         "cura.appdata.xml": "cura.appdata.xml",
         "AppRun": "AppRun"
     }
