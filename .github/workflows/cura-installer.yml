@@ -47,7 +47,7 @@ env:
     MACOS_CERT_PASS: ${{ secrets.MACOS_CERT_PASS }}
     MACOS_CERT_USER: ${{ secrets.MACOS_CERT_USER }}
     GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
-    MACOS_CERT_PASSPHRASE: ${{ secrets.$MACOS_CERT_PASSPHRASE }}
+    MACOS_CERT_PASSPHRASE: ${{ secrets.MACOS_CERT_PASSPHRASE }}
 
 jobs:
     cura-installer-create:
