@@ -44,6 +44,7 @@ env:
     MAC_NOTARIZE_USER: ${{ secrets.MAC_NOTARIZE_USER }}
     MAC_NOTARIZE_PASS: ${{ secrets.MAC_NOTARIZE_PASS }}
     MACOS_CERT_P12: ${{ secrets.MACOS_CERT_P12 }}
+    GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
 
 jobs:
     cura-installer-create:
@@ -108,6 +109,10 @@ jobs:
                     wget --no-check-certificate --quiet https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage -O $GITHUB_WORKSPACE/appimagetool
                     chmod +x $GITHUB_WORKSPACE/appimagetool
                     echo "APPIMAGETOOL_LOCATION=$GITHUB_WORKSPACE/appimagetool" >> $GITHUB_ENV
+
+            -   name: Configure GPG Key Linux (Bash)
+                if: ${{ runner.os == 'Linux' }}
+                run: echo -n "GPG_PRIVATE_KEY" | base64 --decode | gpg --import
 
             -   name: Clean Conan local cache
                 if: ${{ inputs.conan_clean_local_cache }}
