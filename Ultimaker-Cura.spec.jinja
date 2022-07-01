@@ -46,7 +46,7 @@ exe = EXE(
     target_arch={{ target_arch }},
     codesign_identity=os.getenv('CODESIGN_IDENTITY', None),
     entitlements_file={{ entitlements_file }},
-    bundle_identifier='{{ osx_bundle_identifier }}'
+    bundle_identifier={{ osx_bundle_identifier }}
     icon='{{ icon }}'
 )
 coll = COLLECT(
