@@ -192,7 +192,7 @@ class CuraConan(ConanFile):
                 osx_bundle_identifier = "'nl.ultimaker.cura.dmg'" if self.settings.os == "Macos" else "None",
                 upx = str(self.settings.os == "Windows"),
                 strip = str(self.settings.os != "Windows"),
-                target_arch = "x86_64" if self.settings.os == "Macos" else "None",  # FIXME: Make this dependent on the settings.arch_target
+                target_arch = "'x86_64'" if self.settings.os == "Macos" else "None",  # FIXME: Make this dependent on the settings.arch_target
                 macos = "'{}'".format(str(self.settings.os == "Macos"))
             ))
 
@@ -304,7 +304,7 @@ class CuraConan(ConanFile):
 
         self._generate_cura_version(Path(self._site_packages, "cura"))
 
-        entitlements_file = "'{}'".format(Path(self.cpp_info.res_paths[2], "packaging", "dmg", "cura.entitlements"))
+        entitlements_file = "'{}'".format(Path(self.cpp_info.res_paths[2], "dmg", "cura.entitlements"))
         self._generate_pyinstaller_spec(location = self._base_dir,
                                         entrypoint_location = "'{}'".format(Path(self.cpp_info.bin_paths[0], self._um_data(self.version)["runinfo"]["entrypoint"])).replace("\\", "\\\\"),
                                         icon_path = "'{}'".format(Path(self.cpp_info.res_paths[2], self._um_data(self.version)["pyinstaller"]["icon"][str(self.settings.os)])).replace("\\", "\\\\"),
