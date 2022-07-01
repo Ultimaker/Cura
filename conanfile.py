@@ -188,7 +188,8 @@ class CuraConan(ConanFile):
                 hiddenimports = pyinstaller_metadata["hiddenimports"],
                 collect_all = pyinstaller_metadata["collect_all"],
                 icon = icon_path,
-                entitlements_file = entitlements_file
+                entitlements_file = entitlements_file,
+                upx = str(self.settings.os == "Windows")
             ))
 
     def source(self):
