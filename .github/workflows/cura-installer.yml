@@ -127,7 +127,7 @@ jobs:
 
             -   name: Unlock Macos keychain (Bash)
                 if: ${{ runner.os == 'Macos' }}
-                run: security unlock -p $TEMP_KEYCHAIN_PASSWORD signing_temp
+                run: security unlock -p $TEMP_KEYCHAIN_PASSWORD signing_temp.keychain
                 env:
                     TEMP_KEYCHAIN_PASSWORD: ${{  steps.macos-keychain.outputs.keychain-password }}
 
