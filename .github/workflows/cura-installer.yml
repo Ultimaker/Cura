@@ -103,7 +103,7 @@ jobs:
 
             -   name: Install MacOS system requirements
                 if:  ${{ runner.os == 'Macos' }}
-                run: brew install autoconf automake ninja
+                run: brew install autoconf automake ninja create-dmg
 
             -   name: Install Linux system requirements
                 if: ${{ runner.os == 'Linux' }}
@@ -185,7 +185,7 @@ jobs:
 
             -   name: Create the MacOS dmg (Bash) alternative
                 if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Macos' }}
-                run: create-dmg --window-pos 640 360 --volicon "../cura_inst/packaging/icons/VolumeIcons_Cura.icns" --window-size 690 503 --icon-size 90 --icon "Ultimaker-Cura.app" 169 272 --app-drop-link 520 272 --eula "../cura_inst/packaging/cura_license.txt" --background "../cura_inst/packaging/icons/cura_background_dmg.png" --rez Rez "./Ultimaker-Cura.dmg" "./Ultimaker-Cura.app"
+                run: create-dmg --window-pos 640 360 --volicon "../cura_inst/packaging/icons/VolumeIcons_Cura.icns" --window-size 690 503 --icon-size 90 --icon "Ultimaker-Cura.app" 169 272 --app-drop-link 520 272 --eula "../cura_inst/packaging/cura_license.txt" --background "../cura_inst/packaging/icons/cura_background_dmg.png" "./Ultimaker-Cura.dmg" "./Ultimaker-Cura.app"
                 working-directory: dist
 
             -   name: Sign the MacOS dmg (Bash) alternative
