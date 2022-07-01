@@ -60,7 +60,7 @@ coll = COLLECT(
     name=r'{{ name }}'
 )
 
-{% if macos == 'True' %}app = BUNDLE(
+{% if macos == true %}app = BUNDLE(
     coll,
     name='{{ name }}.app',
     icon='{{ icon }}',

@@ -196,7 +196,7 @@ class CuraConan(ConanFile):
                 upx = str(self.settings.os == "Windows"),
                 strip = str(self.settings.os != "Windows"),
                 target_arch = "'x86_64'" if self.settings.os == "Macos" else "None",  # FIXME: Make this dependent on the settings.arch_target
-                macos = "'{}'".format(str(self.settings.os == "Macos"))
+                macos = self.settings.os == "Macos"
             ))
 
     def source(self):
