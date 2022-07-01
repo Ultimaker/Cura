@@ -54,7 +54,7 @@ def copy_metadata_files(dist_path, version):
         f.write(desktop_file.render(cura_version = version))
 
 def generate_appimage(dist_path, appimage_filename):
-    appimage_path = os.path.join(dist_path, appimage_filename)
+    appimage_path = os.path.join(dist_path, "..", appimage_filename)
     appimagetool = os.getenv("APPIMAGETOOL_LOCATION", "appimagetool")
     command = [appimagetool, "--appimage-extract-and-run", f"{dist_path}/", appimage_path]
     result = subprocess.call(command)
@@ -62,7 +62,7 @@ def generate_appimage(dist_path, appimage_filename):
         raise RuntimeError(f"The AppImageTool command returned non-zero: {result}")
 
 def sign_appimage(dist_path, appimage_filename):
-    appimage_path = os.path.join(dist_path, appimage_filename)
+    appimage_path = os.path.join(dist_path, "..", appimage_filename)
     command = ["gpg", "--yes", "--armor", "--detach-sig", appimage_path]
     result = subprocess.call(command)
     if result != 0:
