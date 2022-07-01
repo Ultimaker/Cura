@@ -153,7 +153,7 @@ jobs:
             -   name: Create the Windows exe installer (Powershell)
                 if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Windows' }}
                 run: |
-                    python .\packaging\NSIS\nsis-configurator.py ".\Ultimaker-Cura" ".\packaging\NSIS\Ultimaker-Cura.nsi.jinja" "Ultimaker Cura" "Ultimaker-Cura.exe" "$Env:CURA_VERSION_MAJOR" "$Env:CURA_VERSION_MINOR" "$Env:CURA_VERSION_PATCH" "$Env:CURA_VERSION_BUILD" "Ultimaker B.V." "https://ultimaker.com" ".\packaging\cura_license.txt" "LZMA" ".\packaging\NSIS\cura_banner_nsis.bmp" ".\packaging\icons\Cura.ico" "Ultimaker-Cura-$Env:CURA_VERSION_FULL-${{ runner.os }}-${{ runner.arch }}.exe"
+                    python ..\cura_inst\packaging\NSIS\nsis-configurator.py ".\Ultimaker-Cura" "..\cura_inst\packaging\NSIS\Ultimaker-Cura.nsi.jinja" "Ultimaker Cura" "Ultimaker-Cura.exe" "$Env:CURA_VERSION_MAJOR" "$Env:CURA_VERSION_MINOR" "$Env:CURA_VERSION_PATCH" "$Env:CURA_VERSION_BUILD" "Ultimaker B.V." "https://ultimaker.com" "..\cura_inst\packaging\cura_license.txt" "LZMA" "..\cura_inst\packaging\NSIS\cura_banner_nsis.bmp" "..\cura_inst\packaging\icons\Cura.ico" "Ultimaker-Cura-$Env:CURA_VERSION_FULL-${{ runner.os }}-${{ runner.arch }}.exe"
                     makensis /V2 /P4 Ultimaker-Cura.nsi
                 working-directory: dist
 
