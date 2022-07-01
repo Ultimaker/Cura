@@ -1,6 +1,5 @@
 import os
 import subprocess
-import shutil
 
 SOURCE_DIR = os.environ.get("SOURCE_DIR", "..")
 DIST_DIR = os.environ.get("DIST_DIR", os.path.join(SOURCE_DIR, "dist"))
@@ -29,7 +28,7 @@ def build_dmg() -> None:
 
 def sign(file_path: str) -> None:
     codesign_executable = os.environ.get("CODESIGN", "codesign")
-    codesign_identity = os.environ.get("CODESIGN_IDENTITY", "A831301292FC30F84F3C137F2141401620EE5FA0")
+    codesign_identity = os.environ.get("CODESIGN_IDENTITY")
 
     arguments = [codesign_executable,
                  "-s", codesign_identity,
@@ -41,8 +40,8 @@ def sign(file_path: str) -> None:
 
 
 def notarize() -> None:
-    notarize_user = os.environ.get("NOTARIZE_USER")
-    notarize_password = os.environ.get("NOTARIZE_PASSWORD")
+    notarize_user = os.environ.get("MAC_NOTARIZE_USER")
+    notarize_password = os.environ.get("MAC_NOTARIZE_PASSWORD")
     altool_executable = os.environ.get("ALTOOL_EXECUTABLE", "altool")
 
     arguments = [
@@ -58,14 +57,9 @@ def notarize() -> None:
 
 
 if __name__ == "__main__":
-    try:
-        os.rename(os.path.join(DIST_DIR, "Ultimaker-Cura"), os.path.join(DIST_DIR, "Ultimaker-Cura.app"))
-    except:
-        pass
-    sign(APP_PATH)
     build_dmg()
     sign(DMG_PATH)
 
-    # notarize_dmg = bool(os.environ.get("NOTARIZE_DMG", "TRUE"))
-    # if notarize_dmg:
-    #     notarize()
+    notarize_dmg = bool(os.environ.get("NOTARIZE_DMG", "TRUE"))
+    if notarize_dmg:
+        notarize()
