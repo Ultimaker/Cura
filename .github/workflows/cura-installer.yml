@@ -112,7 +112,7 @@ jobs:
 
             -   name: Configure GPG Key Linux (Bash)
                 if: ${{ runner.os == 'Linux' }}
-                run: echo -n "GPG_PRIVATE_KEY" | base64 --decode | gpg --import
+                run: echo -n "$GPG_PRIVATE_KEY" | base64 --decode | gpg --import
 
             -   name: Clean Conan local cache
                 if: ${{ inputs.conan_clean_local_cache }}
