@@ -58,11 +58,11 @@ jobs:
                       # FIXME: For release branches: maybe rename the branch to release/**
                       echo '::set-output name=user::_'
                       echo '::set-output name=channel::_'
-                    elif [ "${{ github.ref_name == 'main' }}" = "true" ]; then
-                      # commits on main are alpha's (nightlies) and are considered stable
-                      # name/major.minor.patch-alpha+build@ultimaker/stable
+                    elif [ "${{ github.ref_name == 'main' || github.ref_name == 'master' }}" = "true" ]; then
+                      # commits on main/master are alpha's (nightlies) and are considered testing
+                      # name/major.minor.patch-alpha+build@ultimaker/testing
                       echo ${{ github.repository_owner }} | awk '{print "::set-output name=user::"tolower($0)}'
-                      echo '::set-output name=channel::stable'
+                      echo '::set-output name=channel::testing'
                     elif [ "${{ github.ref_name == '5.1' }}" = "true" ]; then
                       # commits on release branches are beta's and are considered stable
                       # name/major.minor.patch-beta+build@ultimaker/stable
