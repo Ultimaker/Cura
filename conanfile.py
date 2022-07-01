@@ -228,8 +228,8 @@ class CuraConan(ConanFile):
         if self.options.devtools:
             entitlements_file = "'{}'".format(Path(self.source_folder, "packaging", "dmg", "cura.entitlements"))
             self._generate_pyinstaller_spec(location = self.generators_folder,
-                                            entrypoint_location = str(Path(self.source_folder, self._um_data(self.version)["runinfo"]["entrypoint"])),
-                                            icon_path = str(Path(self.source_folder, "packaging", self._um_data(self.version)["pyinstaller"]["icon"][str(self.settings.os)])),
+                                            entrypoint_location = "'{}'".format(Path(self.source_folder, self._um_data(self.version)["runinfo"]["entrypoint"])).replace("\\", "\\\\"),
+                                            icon_path = "'{}'".format(Path(self.source_folder, "packaging", self._um_data(self.version)["pyinstaller"]["icon"][str(self.settings.os)])).replace("\\", "\\\\"),
                                             entitlements_file = entitlements_file if self.settings.os == "Macos" else "None")
 
     def imports(self):
@@ -305,8 +305,8 @@ class CuraConan(ConanFile):
 
         entitlements_file = "'{}'".format(Path(self.cpp_info.res_paths[2], "packaging", "dmg", "cura.entitlements"))
         self._generate_pyinstaller_spec(location = self._base_dir,
-                                        entrypoint_location = str(Path(self.cpp_info.bin_paths[0], self._um_data(self.version)["runinfo"]["entrypoint"])),
-                                        icon_path = str(Path(self.cpp_info.res_paths[2], self._um_data(self.version)["pyinstaller"]["icon"][str(self.settings.os)])),
+                                        entrypoint_location = "'{}'".format(Path(self.cpp_info.bin_paths[0], self._um_data(self.version)["runinfo"]["entrypoint"])).replace("\\", "\\\\"),
+                                        icon_path = "'{}'".format(Path(self.cpp_info.res_paths[2], self._um_data(self.version)["pyinstaller"]["icon"][str(self.settings.os)])).replace("\\", "\\\\"),
                                         entitlements_file = entitlements_file if self.settings.os == "Macos" else "None")
 
     def package(self):
