@@ -1,5 +1,6 @@
 # -*- mode: python ; coding: utf-8 -*-
 from PyInstaller.utils.hooks import collect_all
+import os
 
 datas = {{ datas }}
 binaries = {{ binaries }}
@@ -43,8 +44,8 @@ exe = EXE(
     disable_windowed_traceback=False,
     argv_emulation=False,
     target_arch=None,
-    codesign_identity=None,
-    entitlements_file=None,
+    codesign_identity=os.getenv('CODESIGN_IDENTITY', None),
+    entitlements_file={{ entitlements_file }},
     icon=r'{{ icon }}'
 )
 coll = COLLECT(
