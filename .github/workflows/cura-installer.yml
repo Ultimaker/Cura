@@ -41,8 +41,9 @@ env:
     CONAN_LOGGING_LEVEL: ${{ inputs.conan_logging_level }}
     CONAN_NON_INTERACTIVE: 1
     CODESIGN_IDENTITY: ${{ secrets.CODESIGN_IDENTITY }}
-    NOTARIZE_USER: ${{ secrets.NOTARIZE_USER }}
-    NOTARIZE_PASSWORD: ${{ secrets.NOTARIZE_PASSWORD }}
+    MAC_NOTARIZE_USER: ${{ secrets.MAC_NOTARIZE_USER }}
+    MAC_NOTARIZE_PASS: ${{ secrets.MAC_NOTARIZE_PASS }}
+    MACOS_CERT_P12: ${{ secrets.MACOS_CERT_P12 }}
 
 jobs:
     cura-installer-create:
