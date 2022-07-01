@@ -44,6 +44,7 @@ env:
     MAC_NOTARIZE_USER: ${{ secrets.MAC_NOTARIZE_USER }}
     MAC_NOTARIZE_PASS: ${{ secrets.MAC_NOTARIZE_PASS }}
     MACOS_CERT_P12: ${{ secrets.MACOS_CERT_P12 }}
+    MACOS_CERT_PASS: ${{ secrets.MACOS_CERT_PASS }}
     GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
 
 jobs:
@@ -113,6 +114,15 @@ jobs:
             -   name: Configure GPG Key Linux (Bash)
                 if: ${{ runner.os == 'Linux' }}
                 run: echo -n "$GPG_PRIVATE_KEY" | base64 --decode | gpg --import
+
+            -   name: Configure Macos keychain (Bash)
+                if: ${{ runner.os == 'Macos' }}
+                run: |
+                    CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+                    echo -n "$MACOS_CERT_P12" | base64 --decode --output $CERTIFICATE_PATH
+                    security create-keychain -p $MACOS_CERT_PASS $CERTIFICATE_PATH
+                    security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+                    security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
 
             -   name: Clean Conan local cache
                 if: ${{ inputs.conan_clean_local_cache }}
