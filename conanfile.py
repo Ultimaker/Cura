@@ -176,6 +176,9 @@ class CuraConan(ConanFile):
                 binaries.extend([(f"{p}", ".") for p in Path(bin_paths).glob("**/*.dylib")])
                 binaries.extend([(f"{p}", ".") for p in Path(bin_paths).glob("**/*.so")])
 
+        # Collect all dll's from PyQt6 and place them in the root
+        binaries.extend([(f"{p}", ".") for p in Path(self._site_packages, "PyQt6", "Qt6").glob("**/*.dll")])
+
         with open(Path(__file__).parent.joinpath("Ultimaker-Cura.spec.jinja"), "r") as f:
             pyinstaller = Template(f.read())
 
