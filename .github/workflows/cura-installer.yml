@@ -179,42 +179,17 @@ jobs:
 
             -   name: Create the MacOS dmg (Bash) alternative
                 if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Macos' }}
-                run: |
-                    create-dmg \
-                        --window-pos 640 360 \
-                        --volicon "../cura_inst/packaging/icons/VolumeIcons_Cura.icns" \
-                        --window-size 690 503 \
-                        --icon-size 90 \
-                        --icon "Ultimaker Cura.app" 169 272 \
-                        --app-drop-link 520 272 \
-                        --eula "../cura_inst/packaging/cura_license.txt" \
-                        --background "../cura_inst/packaging/icons/cura_background_dmg.png" \
-                        --rez Rez \
-                        "./Ultimaker-Cura.dmg" \
-                        "./Ultimaker-Cura.app"
-                      sync
+                run: create-dmg --window-pos 640 360 --volicon "../cura_inst/packaging/icons/VolumeIcons_Cura.icns" --window-size 690 503 --icon-size 90 --icon "Ultimaker-Cura.app" 169 272 --app-drop-link 520 272 --eula "../cura_inst/packaging/cura_license.txt" --background "../cura_inst/packaging/icons/cura_background_dmg.png" --rez Rez "./Ultimaker-Cura.dmg" "./Ultimaker-Cura.app"
                 working-directory: dist
 
             -   name: Sign the MacOS dmg (Bash) alternative
                 if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Macos' }}
-                run: |
-                    codesign -s "$CODESIGN_IDENTITY" \
-                        --timestamp \
-                        -i "nl.ultimaker.cura.dmg" \
-                        "./Ultimaker-Cura.dmg"
-                      sync
+                run: codesign -s "$CODESIGN_IDENTITY" --timestamp -i "nl.ultimaker.cura.dmg" "./Ultimaker-Cura.dmg"
                 working-directory: dist
 
             -   name: Notarize the MacOS dmg (Bash) alternative
                 if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Macos' }}
-                run: |
-                    xcrun altool \
-                    --notarize-app \
-                    --primary-bundle-id "nl.ultimaker.cura" \
-                    --username "$MAC_NOTARIZE_USER" \
-                    --password "$MAC_NOTARIZE_PASS" \
-                    --file "./Ultimaker-Cura.dmg"
-                  sync
+                run: xcrun altool --notarize-app --primary-bundle-id "nl.ultimaker.cura" --username "$MAC_NOTARIZE_USER" --password "$MAC_NOTARIZE_PASS" --file "./Ultimaker-Cura.dmg"
                 working-directory: dist
 
             -   name: Create the MacOS dmg (Bash)
