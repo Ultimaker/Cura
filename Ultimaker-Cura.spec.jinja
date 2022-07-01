@@ -14,7 +14,7 @@ datas += tmp_ret[0]; binaries += tmp_ret[1]; hiddenimports += tmp_ret[2]
 block_cipher = None
 
 a = Analysis(
-    [r'{{ entrypoint }}'],
+    ['{{ entrypoint }}'],
     pathex=[],
     binaries=binaries,
     datas=datas,
@@ -46,7 +46,7 @@ exe = EXE(
     target_arch=None,
     codesign_identity=os.getenv('CODESIGN_IDENTITY', None),
     entitlements_file={{ entitlements_file }},
-    icon=r'{{ icon }}'
+    icon='{{ icon }}'
 )
 coll = COLLECT(
     exe,

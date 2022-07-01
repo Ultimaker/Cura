@@ -222,10 +222,11 @@ class CuraConan(ConanFile):
         vr.generate()
 
         if self.options.devtools:
-            self._generate_pyinstaller_spec(self.generators_folder,
-                                            Path(self.source_folder, self._um_data(self.version)["runinfo"]["entrypoint"]),
-                                            Path(self.source_folder, "packaging", self._um_data(self.version)["pyinstaller"]["icon"][str(self.settings.os)]),
-                                            Path(self.source_folder, "packaging", "dmg", "cura.entitlements" if self.settings.os == "Macos" else None))
+            entitlements_file = "'{}'".format(Path(self.source_folder, "packaging", "dmg", "cura.entitlements"))
+            self._generate_pyinstaller_spec(location = self.generators_folder,
+                                            entrypoint_location = str(Path(self.source_folder, self._um_data(self.version)["runinfo"]["entrypoint"])),
+                                            icon_path = str(Path(self.source_folder, "packaging", self._um_data(self.version)["pyinstaller"]["icon"][str(self.settings.os)])),
+                                            entitlements_file = entitlements_file if self.settings.os == "Macos" else "None")
 
     def imports(self):
         self.copy("CuraEngine.exe", root_package = "curaengine", src = "@bindirs", dst = "", keep_path = False)
@@ -297,10 +298,12 @@ class CuraConan(ConanFile):
         self.copy("*.txt", src = self.cpp_info.resdirs[-1], dst = self._base_dir.joinpath("pip_requirements"))
 
         self._generate_cura_version(Path(self._site_packages, "cura"))
-        self._generate_pyinstaller_spec(self._base_dir,
-                                        Path(self.cpp_info.bin_paths[0], self._um_data(self.version)["runinfo"]["entrypoint"]),
-                                        Path(self.cpp_info.res_paths[2], self._um_data(self.version)["pyinstaller"]["icon"][str(self.settings.os)]),
-                                        Path(self.cpp_info.res_paths[2], "packaging", "dmg", "cura.entitlements" if self.settings.os == "Macos" else None))
+
+        entitlements_file = "'{}'".format(Path(self.cpp_info.res_paths[2], "packaging", "dmg", "cura.entitlements"))
+        self._generate_pyinstaller_spec(location = self._base_dir,
+                                        entrypoint_location = str(Path(self.cpp_info.bin_paths[0], self._um_data(self.version)["runinfo"]["entrypoint"])),
+                                        icon_path = str(Path(self.cpp_info.res_paths[2], self._um_data(self.version)["pyinstaller"]["icon"][str(self.settings.os)])),
+                                        entitlements_file = entitlements_file if self.settings.os == "Macos" else "None")
 
     def package(self):
         self.copy("cura_app.py", src = ".", dst = self.cpp.package.bindirs[0])
