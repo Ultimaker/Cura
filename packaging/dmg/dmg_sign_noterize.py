@@ -2,7 +2,7 @@ import os
 import subprocess
 import shutil
 
-SOURCE_DIR = os.environ.get("SOURCE_DIR", ".")
+SOURCE_DIR = os.environ.get("SOURCE_DIR", "..")
 DIST_DIR = os.environ.get("DIST_DIR", os.path.join(SOURCE_DIR, "dist"))
 DMG_PATH = "Ultimaker-Cura.dmg"
 APP_PATH = "Ultimaker-Cura.app"
