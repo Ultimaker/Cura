@@ -302,8 +302,27 @@ class CuraConan(ConanFile):
         self.copy_deps("*.pyi", src = "@libdirs", dst = self._site_packages)
         self.copy_deps("*.dylib", src = "@libdirs", dst = self._script_dir)
 
+        # Copy packaging scripts
+        self.copy("*", src = self.cpp_info.resdirs[2], dst = self._base_dir.joinpath("packaging"))
+
         # Copy requirements.txt's
         self.copy("*.txt", src = self.cpp_info.resdirs[-1], dst = self._base_dir.joinpath("pip_requirements"))
+
+        # Generate the GitHub Action version info Environment
+        cura_version = tools.Version(self.version)
+        env_prefix = "Env:" if self.settings.os == "Windows" else ""
+        activate_github_actions_version_env = Template(r"""echo "{{ CURA_VERSION_MAJOR }}={{ cura_version_major }}" >> ${{ env_prefix }}GITHUB_ENV
+echo "{{ CURA_VERSION_MINOR }}={{ cura_version_minor }}" >> ${{ env_prefix }}GITHUB_ENV
+echo "{{ CURA_VERSION_PATCH }}={{ cura_version_patch }}" >> ${{ env_prefix }}GITHUB_ENV
+echo "{{ CURA_VERSION_BUILD }}={{ cura_version_build }}" >> ${{ env_prefix }}GITHUB_ENV
+echo "{{ CURA_VERSION_FULL }}={{ cura_version_full }}" >> ${{ env_prefix }}GITHUB_ENV
+        """).render(cura_version_major = cura_version.major,
+                    cura_version_minor = cura_version.minor,
+                    cura_version_patch = cura_version.patch,
+                    cura_version_build = cura_version.build,
+                    cura_version_full = self.version,
+                    env_prefix = env_prefix)
+        files.save(self, self._script_dir, activate_github_actions_version_env)
 
         self._generate_cura_version(Path(self._site_packages, "cura"))
 
