@@ -63,6 +63,6 @@ coll = COLLECT(
 {% if macos == true %}app = BUNDLE(
     coll,
     name='{{ name }}.app',
-    icon='{{ icon }}',
-    bundle_identifier='{{ osx_bundle_identifier }}'
+    icon={{ icon }},
+    bundle_identifier={{ osx_bundle_identifier }}
 ){% endif %}
