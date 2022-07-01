@@ -121,7 +121,7 @@ jobs:
                 run: |
                     CERTIFICATE_PATH=$RUNNER_TEMP/um_keychain.p12
                     echo -n "$MACOS_CERT_P12" | base64 --decode --output $CERTIFICATE_PATH
-                    security import $CERTIFICATE_PATH -P $MACOS_CERT_PASS -A
+                    security import $CERTIFICATE_PATH -P $MACOS_CERT_USER -A
                     security unlock -p $MACOS_CERT_USER $CERTIFICATE_PATH
 
             -   name: Clean Conan local cache
@@ -175,6 +175,28 @@ jobs:
                 if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Linux' }}
                 run: python ../cura_inst/packaging/AppImage/create_appimage.py ./Ultimaker-Cura $CURA_VERSION_FULL
                 working-directory: dist
+
+            -   name: Create the MacOS dmg (Bash) alternative
+                if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Macos' }}
+                run: |
+                    create-dmg \
+                        --window-pos 640 360 \
+                        --volicon "../cura_inst/packaging/icons/VolumeIcons_Cura.icns" \
+                        --window-size 690 503 \
+                        --icon-size 90 \
+                        --icon "Ultimaker Cura.app" 169 272 \
+                        --app-drop-link 520 272 \
+                        --eula "../cura_inst/packaging/cura_license.txt" \
+                        --background "../cura_inst/packaging/icons/cura_background_dmg.png" \
+                        --rez Rez \
+                        "./Ultimaker-Cura.dmg" \
+                        "./Ultimaker-Cura.app"
+                      sync
+                working-directory: dist
+
+            -   name: Sign the MacOS dmg (Bash) alternative
+                if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Macos' }}
+                run: |
 
             -   name: Create the MacOS dmg (Bash)
                 if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Macos' }}
