@@ -253,9 +253,8 @@ class CuraConan(ConanFile):
         self.copy("*.dylib", src = "@libdirs", dst = self._script_dir)
 
     def deploy(self):
-        # Clean the install folder before hand
-        self._base_dir.unlink(missing_ok = True)
-
+        # Copy CuraEngine.exe to bindirs of Virtual Python Environment
+        # TODO: Fix source such that it will get the curaengine relative from the executable (Python bindir in this case)
         self.copy_deps("CuraEngine.exe", root_package = "curaengine", src = self.deps_cpp_info["curaengine"].bindirs[0],
                        dst = self._base_dir,
                        keep_path = False)
