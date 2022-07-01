@@ -1,10 +1,10 @@
 import os
 import subprocess
 
-SOURCE_DIR = os.environ.get("SOURCE_DIR", "..")
+SOURCE_DIR = os.environ.get("SOURCE_DIR", ".")
 DIST_DIR = os.environ.get("DIST_DIR", os.path.join(SOURCE_DIR, "dist"))
 DMG_PATH = "Ultimaker-Cura.dmg"
-APP_PATH = "Ultimaker-Cura.app"
+APP_PATH = os.path.join(DIST_DIR, "Ultimaker-Cura.app")
 ULTIMAKER_CURA_DOMAIN = os.environ.get("ULTIMAKER_CURA_DOMAIN", "nl.ultimaker.cura")
 
 
