@@ -84,6 +84,7 @@
             - "PyQt6"
             - "PyQt6.QtNetwork"
             - "PyQt6.sip"
+            - "stl"
         icon:
             Windows: "./icons/Cura.ico"
             Macos: "./icons/cura.icns"
@@ -174,6 +175,7 @@
             - "PyQt6"
             - "PyQt6.QtNetwork"
             - "PyQt6.sip"
+            - "stl"
         icon:
             Windows: "./icons/Cura.ico"
             Macos: "./icons/cura.icns"
@@ -264,6 +266,7 @@
             - "PyQt6"
             - "PyQt6.QtNetwork"
             - "PyQt6.sip"
+            - "stl"
         icon:
             Windows: "./icons/Cura.ico"
             Macos: "./icons/cura.icns"
@@ -354,6 +357,7 @@
             - "PyQt6"
             - "PyQt6.QtNetwork"
             - "PyQt6.sip"
+            - "stl"
         icon:
             Windows: "./icons/Cura.ico"
             Macos: "./icons/cura.icns"
