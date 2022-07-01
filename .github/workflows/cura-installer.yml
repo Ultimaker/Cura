@@ -160,7 +160,7 @@ jobs:
 
             -   name: Create the Linux AppImage (Bash)
                 if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Linux' }}
-                run: python ./Ultimaker-Cura $CURA_VERSION_FULL
+                run: python ../cura_inst/packaging/AppImage/create_appimage.py ./Ultimaker-Cura $CURA_VERSION_FULL
                 working-directory: dist
 
             -   name: Upload the artifacts
