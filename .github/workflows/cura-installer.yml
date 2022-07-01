@@ -47,6 +47,7 @@ env:
     MACOS_CERT_PASS: ${{ secrets.MACOS_CERT_PASS }}
     MACOS_CERT_USER: ${{ secrets.MACOS_CERT_USER }}
     GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+    MACOS_CERT_PASSPHRASE: ${{ secrets.$MACOS_CERT_PASSPHRASE }}
 
 jobs:
     cura-installer-create:
@@ -121,7 +122,7 @@ jobs:
                 run: |
                     CERTIFICATE_PATH=$RUNNER_TEMP/um_keychain.p12
                     echo -n "$MACOS_CERT_P12" | base64 --decode --output $CERTIFICATE_PATH
-                    security import $CERTIFICATE_PATH -P $MACOS_CERT_USER -A
+                    security import $CERTIFICATE_PATH -p $MACOS_CERT_PASSPHRASE -A
                     security unlock -p $MACOS_CERT_USER $CERTIFICATE_PATH
 
             -   name: Clean Conan local cache
@@ -197,6 +198,24 @@ jobs:
             -   name: Sign the MacOS dmg (Bash) alternative
                 if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Macos' }}
                 run: |
+                    codesign -s "$CODESIGN_IDENTITY" \
+                        --timestamp \
+                        -i "nl.ultimaker.cura.dmg" \
+                        "./Ultimaker-Cura.dmg"
+                      sync
+                working-directory: dist
+
+            -   name: Notarize the MacOS dmg (Bash) alternative
+                if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Macos' }}
+                run: |
+                    xcrun altool \
+                    --notarize-app \
+                    --primary-bundle-id "nl.ultimaker.cura" \
+                    --username "$MAC_NOTARIZE_USER" \
+                    --password "$MAC_NOTARIZE_PASS" \
+                    --file "./Ultimaker-Cura.dmg"
+                  sync
+                working-directory: dist
 
             -   name: Create the MacOS dmg (Bash)
                 if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Macos' }}
@@ -217,4 +236,5 @@ jobs:
                         dist/*.msi
                         dist/*.dmg
                         dist/*.AppImage
+                        dist/*.asc
                     retention-days: 2
