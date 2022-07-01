@@ -322,7 +322,9 @@ echo "{{ CURA_VERSION_FULL }}={{ cura_version_full }}" >> ${{ env_prefix }}GITHU
                     cura_version_build = cura_version.build,
                     cura_version_full = self.version,
                     env_prefix = env_prefix)
-        files.save(self, self._script_dir, activate_github_actions_version_env)
+
+        ext = ".sh" if self.settings.os != "Windows" else ".ps1"
+        files.save(self, self._script_dir.joinpath(f"activate_github_actions_version_env{ext}"), activate_github_actions_version_env)
 
         self._generate_cura_version(Path(self._site_packages, "cura"))
 
