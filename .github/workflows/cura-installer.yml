@@ -118,7 +118,7 @@ jobs:
             -   name: Configure Macos keychain (Bash)
                 if: ${{ runner.os == 'Macos' }}
                 run: |
-                    CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+                    CERTIFICATE_PATH=$RUNNER_TEMP/um_keychain.p12
                     echo -n "$MACOS_CERT_P12" | base64 --decode --output $CERTIFICATE_PATH
                     security create-keychain -p $MACOS_CERT_PASS $CERTIFICATE_PATH
                     security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
