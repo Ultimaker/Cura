@@ -124,7 +124,7 @@ jobs:
                     CERTIFICATE_PATH=$RUNNER_TEMP/um_keychain.p12
                     echo -n "$MACOS_CERT_P12" | base64 --decode --output $CERTIFICATE_PATH
                     security import $CERTIFICATE_PATH -P $MACOS_CERT_PASSPHRASE -A
-                    security unlock -p $MACOS_CERT_PASSPHRASE $CERTIFICATE_PATH
+                    security unlock -p $MACOS_CERT_PASSPHRASE $MACOS_CERT_ID
 
             -   name: Clean Conan local cache
                 if: ${{ inputs.conan_clean_local_cache }}
