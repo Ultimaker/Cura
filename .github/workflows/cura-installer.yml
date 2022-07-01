@@ -45,6 +45,7 @@ env:
     MAC_NOTARIZE_PASS: ${{ secrets.MAC_NOTARIZE_PASS }}
     MACOS_CERT_P12: ${{ secrets.MACOS_CERT_P12 }}
     MACOS_CERT_PASS: ${{ secrets.MACOS_CERT_PASS }}
+    MACOS_CERT_USER: ${{ secrets.MACOS_CERT_USER }}
     GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
 
 jobs:
@@ -120,9 +121,8 @@ jobs:
                 run: |
                     CERTIFICATE_PATH=$RUNNER_TEMP/um_keychain.p12
                     echo -n "$MACOS_CERT_P12" | base64 --decode --output $CERTIFICATE_PATH
-                    security create-keychain -p $MACOS_CERT_PASS $CERTIFICATE_PATH
-                    security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
-                    security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+                    security import $CERTIFICATE_PATH -P $MACOS_CERT_PASS -A
+                    security unlock -p $MACOS_CERT_USER $CERTIFICATE_PATH
 
             -   name: Clean Conan local cache
                 if: ${{ inputs.conan_clean_local_cache }}
