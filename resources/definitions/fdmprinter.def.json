@@ -1236,7 +1236,8 @@
                                     "default_value": 50,
                                     "value": "max(1, min(99, 100 * (2 * min_even_wall_line_width - wall_line_width_0) / wall_line_width_0))",
                                     "minimum_value": "1",
-                                    "maximum_value": "99"
+                                    "maximum_value": "99",
+                                    "enabled": false
                                 }
                             }
                         },
@@ -1261,7 +1262,8 @@
                                     "default_value": 75,
                                     "value": "max(1, min(99, 100 * min_odd_wall_line_width / wall_line_width_x))",
                                     "minimum_value": "1",
-                                    "maximum_value": "99"
+                                    "maximum_value": "99",
+                                    "enabled": false
                                 }
                             }
                         }
