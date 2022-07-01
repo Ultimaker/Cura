@@ -311,11 +311,11 @@ class CuraConan(ConanFile):
         # Generate the GitHub Action version info Environment
         cura_version = tools.Version(self.version)
         env_prefix = "Env:" if self.settings.os == "Windows" else ""
-        activate_github_actions_version_env = Template(r"""echo "{{ CURA_VERSION_MAJOR }}={{ cura_version_major }}" >> ${{ env_prefix }}GITHUB_ENV
-echo "{{ CURA_VERSION_MINOR }}={{ cura_version_minor }}" >> ${{ env_prefix }}GITHUB_ENV
-echo "{{ CURA_VERSION_PATCH }}={{ cura_version_patch }}" >> ${{ env_prefix }}GITHUB_ENV
-echo "{{ CURA_VERSION_BUILD }}={{ cura_version_build }}" >> ${{ env_prefix }}GITHUB_ENV
-echo "{{ CURA_VERSION_FULL }}={{ cura_version_full }}" >> ${{ env_prefix }}GITHUB_ENV
+        activate_github_actions_version_env = Template(r"""echo "CURA_VERSION_MAJOR={{ cura_version_major }}" >> ${{ env_prefix }}GITHUB_ENV
+echo "CURA_VERSION_MINOR={{ cura_version_minor }}" >> ${{ env_prefix }}GITHUB_ENV
+echo "CURA_VERSION_PATCH={{ cura_version_patch }}" >> ${{ env_prefix }}GITHUB_ENV
+echo "CURA_VERSION_BUILD={{ cura_version_build }}" >> ${{ env_prefix }}GITHUB_ENV
+echo "CURA_VERSION_FULL={{ cura_version_full }}" >> ${{ env_prefix }}GITHUB_ENV
         """).render(cura_version_major = cura_version.major,
                     cura_version_minor = cura_version.minor,
                     cura_version_patch = cura_version.patch,
