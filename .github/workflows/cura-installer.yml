@@ -62,7 +62,7 @@ jobs:
             -   name: Setup Python and pip
                 uses: actions/setup-python@v4
                 with:
-                    python-version: '3.10.4'
+                    python-version: '3.10.x'
                     cache: 'pip'
                     cache-dependency-path: .github/workflows/requirements-conan-package.txt
 
@@ -128,12 +128,6 @@ jobs:
 
             -   name: Create the Packages
                 run: conan install ${{ inputs.cura_conan_version }} --build=missing --update -c tools.env.virtualenv:powershell=True -if cura_inst -g VirtualPythonEnv -o cura:enterprise=${{ inputs.enterprise }} -o cura:staging=${{ inputs.staging }}
-
-            -   name: Upload the Package(s)
-                if: always()
-                run: |
-                    conan upload "*" -r cura --all -c
-                    conan upload "*" -r cura-ce -c
 
             -   name: Set Environment variables for Cura (bash)
                 if: ${{ runner.os != 'Windows' }}
