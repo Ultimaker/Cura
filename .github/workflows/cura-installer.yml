@@ -1,0 +1,171 @@
+name: Cura Installer
+
+on:
+    workflow_dispatch:
+        inputs:
+            cura_conan_version:
+                description: 'Cura Conan Version'
+                # Fixme: default to cura/latest@testing (which is main)
+                default: 'cura/latest@ultimaker/stable'
+                required: true
+            conan_config:
+                description: 'Conan config branch to use'
+                default: ''
+                required: false
+            enterprise:
+                description: 'Build Cura as an Enterprise edition'
+                required: true
+                default: false
+                type: boolean
+            staging:
+                description: 'Use staging API'
+                required: true
+                default: false
+                type: boolean
+            installer:
+                description: 'Create the installer'
+                required: true
+                default: false
+                type: boolean
+
+# Run the nightly at 5:25 UTC on working days
+    schedule:
+    - cron: '25 3 * * 1-5'
+
+env:
+    CONAN_LOGIN_USERNAME_CURA: ${{ secrets.CONAN_USER }}
+    CONAN_PASSWORD_CURA: ${{ secrets.CONAN_PASS }}
+    CONAN_LOGIN_USERNAME_CURA_CE: ${{ secrets.CONAN_USER }}
+    CONAN_PASSWORD_CURA_CE: ${{ secrets.CONAN_PASS }}
+    CONAN_LOG_RUN_TO_OUTPUT: 1
+    CONAN_LOGGING_LEVEL: ${{ inputs.conan_logging_level }}
+    CONAN_NON_INTERACTIVE: 1
+    CODESIGN_IDENTITY: ${{ secrets.CODESIGN_IDENTITY }}
+    NOTARIZE_USER: ${{ secrets.NOTARIZE_USER }}
+    NOTARIZE_PASSWORD: ${{ secrets.NOTARIZE_PASSWORD }}
+
+jobs:
+    cura-installer-create:
+        runs-on: ${{ matrix.os }}
+
+        strategy:
+            fail-fast: false
+            matrix:
+                os: [ macos-10.15, windows-2022, ubuntu-20.04 ]
+
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v3
+
+            -   name: Setup Python and pip
+                uses: actions/setup-python@v4
+                with:
+                    python-version: '3.10.4'
+                    cache: 'pip'
+                    cache-dependency-path: .github/workflows/requirements-conan-package.txt
+
+            -   name: Install Python requirements and Create default Conan profile
+                run: |
+                    pip install -r .github/workflows/requirements-conan-package.txt
+                    conan profile new default --detect
+
+            -   name: Use Conan download cache (Bash)
+                if: ${{ runner.os != 'Windows' }}
+                run: conan config set storage.download_cache="$HOME/.conan/conan_download_cache"
+
+            -   name: Use Conan download cache (Powershell)
+                if: ${{ runner.os == 'Windows' }}
+                run: conan config set storage.download_cache="C:\Users\runneradmin\.conan\conan_download_cache"
+
+            -   name: Cache Conan local repository packages (Bash)
+                uses: actions/cache@v3
+                if: ${{ runner.os != 'Windows' }}
+                with:
+                    path: |
+                        $HOME/.conan/data
+                        $HOME/.conan/conan_download_cache
+                    key: conan-${{ runner.os }}-${{ runner.arch }}
+
+            -   name: Cache Conan local repository packages (Powershell)
+                uses: actions/cache@v3
+                if: ${{ runner.os == 'Windows' }}
+                with:
+                    path: |
+                        C:\Users\runneradmin\.conan\data
+                        C:\.conan
+                        C:\Users\runneradmin\.conan\conan_download_cache
+                    key: conan-${{ runner.os }}-${{ runner.arch }}
+
+            -   name: Install MacOS system requirements
+                if:  ${{ runner.os == 'Macos' }}
+                run: brew install autoconf automake ninja
+
+            -   name: Install Linux system requirements
+                if: ${{ runner.os == 'Linux' }}
+                run: sudo apt install build-essential checkinstall zlib1g-dev libssl-dev ninja-build autoconf libx11-dev libx11-xcb-dev libfontenc-dev libice-dev libsm-dev libxau-dev libxaw7-dev libxcomposite-dev libxcursor-dev libxdamage-dev libxdmcp-dev libxext-dev libxfixes-dev libxi-dev libxinerama-dev libxkbfile-dev libxmu-dev libxmuu-dev libxpm-dev libxrandr-dev libxrender-dev libxres-dev libxss-dev libxt-dev libxtst-dev libxv-dev libxvmc-dev libxxf86vm-dev xtrans-dev libxcb-render0-dev libxcb-render-util0-dev libxcb-xkb-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev libxcb-randr0-dev libxcb-shape0-dev libxcb-sync-dev libxcb-xfixes0-dev libxcb-xinerama0-dev xkb-data libxcb-dri3-dev uuid-dev libxcb-util-dev -y
+
+            -   name: Clean Conan local cache
+                if: ${{ inputs.conan_clean_local_cache }}
+                run: conan remove "*" -f
+
+            -   name: Get Conan configuration from branch
+                if: ${{ inputs.conan_config_branch != '' }}
+                run: conan config install https://github.com/Ultimaker/conan-config.git -a "-b ${{ inputs.conan_config_branch }}"
+
+            -   name: Get Conan configuration
+                if: ${{ inputs.conan_config_branch == '' }}
+                run: conan config install https://github.com/Ultimaker/conan-config.git
+
+            -   name: Create the Packages
+                run: conan install ${{ inputs.cura_conan_version }} --build=missing --update -c tools.env.virtualenv:powershell=True -if cura_inst -g VirtualPythonEnv -o cura:enterprise=${{ inputs.enterprise }} -o cura:staging=${{ inputs.staging }}
+
+            -   name: Upload the Package(s)
+                if: always()
+                run: |
+                    conan upload "*" -r cura --all -c
+                    conan upload "*" -r cura-ce -c
+
+            -   name: Set Environment variables for Cura (bash)
+                if: ${{ runner.os != 'Windows' }}
+                run: |
+                    . ./cura_inst/bin/activate_github_actions_env.sh
+                    . ./cura_inst/bin/activate_github_actions_version_env.sh
+
+            -   name: Set Environment variables for Cura (Powershell)
+                if: ${{ runner.os == 'Windows' }}
+                run: |
+                    .\cura_inst\Scripts\activate_github_actions_env.ps1
+                    .\cura_inst\Scripts\activate_github_actions_version_env.ps1
+
+            -   name: Create the Cura dist
+                run: pyinstaller ./cura_inst/Ultimaker-Cura.spec
+
+            -   name: Archive the artifacts (bash)
+                if: ${{ github.event.inputs.installer == 'false' && runner.os != 'Windows' }}
+                run: tar -zcf "./Ultimaker-Cura-$CURA_VERSION_FULL-${{ runner.os }}-${{ runner.arch }}.tar.gz" "./Ultimaker-Cura/"
+                working-directory: dist
+
+            -   name: Archive the artifacts (Powershell)
+                if: ${{ github.event.inputs.installer == 'false' && runner.os == 'Windows' }}
+                run: Compress-Archive -Path ".\Ultimaker-Cura" -DestinationPath ".\Ultimaker-Cura-$Env:CURA_VERSION_FULL-${{ runner.os }}-${{ runner.arch }}.zip"
+                working-directory: dist
+
+            -   name: Create the Windows exe installer (Powershell)
+                if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Windows' }}
+                run: |
+                    python ..\cura_inst\packaging\NSIS\nsis-configurator.py ".\Ultimaker-Cura" "..\cura_inst\packaging\NSIS\Ultimaker-Cura.nsi.jinja" "Ultimaker Cura" "Ultimaker-Cura.exe" "$Env:CURA_VERSION_MAJOR" "$Env:CURA_VERSION_MINOR" "$Env:CURA_VERSION_PATCH" "$Env:CURA_VERSION_BUILD" "Ultimaker B.V." "https://ultimaker.com" "..\cura_inst\packaging\cura_license.txt" "LZMA" "..\cura_inst\packaging\NSIS\cura_banner_nsis.bmp" "..\cura_inst\packaging\icons\Cura.ico" "Ultimaker-Cura-$Env:CURA_VERSION_FULL-${{ runner.os }}-${{ runner.arch }}.exe"
+                    makensis /V2 /P4 Ultimaker-Cura.nsi
+                working-directory: dist
+
+            -   name: Upload the artifacts
+                uses: actions/upload-artifact@v3
+                with:
+                    name: Ultimaker-Cura-${{ env.CURA_VERSION_FULL }}-${{ runner.os }}-${{ runner.arch }}
+                    path: |
+                        dist/*.tar.gz
+                        dist/*.zip
+                        dist/*.exe
+                        dist/*.msi
+                        dist/*.dmg
+                        dist/*.AppImage
+                    retention-days: 2
