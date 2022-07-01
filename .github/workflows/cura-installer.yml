@@ -167,6 +167,14 @@ jobs:
                 run: python ../cura_inst/packaging/AppImage/create_appimage.py ./Ultimaker-Cura $CURA_VERSION_FULL
                 working-directory: dist
 
+            -   name: Create the MacOS dmg (Bash)
+                if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Macos' }}
+                run: python ../cura_inst/packaging/dmg/dmg_sign_notarize.py
+                working-directory: dist
+                env:
+                    SOURCE_DIR: ${{ env.GITHUB_WORKSPACE }}/cura_inst
+                    DIST_DIR: ${{ env.GITHUB_WORKSPACE }}/dist
+
             -   name: Upload the artifacts
                 uses: actions/upload-artifact@v3
                 with:
