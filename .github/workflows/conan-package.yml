@@ -29,6 +29,7 @@ on:
             - 'cura/**'
             - 'icons/**'
             - 'tests/**'
+            - 'packaging/**'
             - '.github/workflows/conan-*.yml'
             - '.github/workflows/notify.yml'
             - '.github/workflows/requirements-conan-package.txt'
