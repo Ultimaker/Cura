@@ -1,4 +1,7 @@
 pytest
-pyinstaller
+
+# Fix for signing the MacOS App
+git+https://github.com/jellespijker/pyinstaller@binaries_in_frameworks#egg=pyinstaller
+#pyinstaller
 pyinstaller-hooks-contrib
 sip==6.5.1
