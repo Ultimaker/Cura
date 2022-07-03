@@ -115,6 +115,8 @@ from . import CuraActions
 from . import PlatformPhysics
 from . import PrintJobPreviewImageProvider
 from .AutoSave import AutoSave
+from .Machines.Models.ActiveIntentQualitiesModel import ActiveIntentQualitiesModel
+from .Machines.Models.IntentSelectionModel import IntentSelectionModel
 from .SingleInstance import SingleInstance
 
 if TYPE_CHECKING:
@@ -257,6 +259,7 @@ class CuraApplication(QtApplication):
 
         from UM.CentralFileStorage import CentralFileStorage
         CentralFileStorage.setIsEnterprise(ApplicationMetadata.IsEnterpriseVersion)
+        Resources.setIsEnterprise(ApplicationMetadata.IsEnterpriseVersion)
 
     @pyqtProperty(str, constant=True)
     def ultimakerCloudApiRootUrl(self) -> str:
@@ -315,7 +318,7 @@ class CuraApplication(QtApplication):
     def initialize(self) -> None:
         self.__addExpectedResourceDirsAndSearchPaths()  # Must be added before init of super
 
-        super().initialize()
+        super().initialize(ApplicationMetadata.IsEnterpriseVersion)
 
         self._preferences.addPreference("cura/single_instance", False)
         self._use_single_instance = self._preferences.getValue("cura/single_instance") or self._cli_args.single_instance
@@ -348,12 +351,18 @@ class CuraApplication(QtApplication):
             Resources.addExpectedDirNameInData(dir_name)
 
         app_root = os.path.abspath(os.path.join(os.path.dirname(sys.executable)))
-        Resources.addSearchPath(os.path.join(app_root, "share", "cura", "resources"))
+        Resources.addSecureSearchPath(os.path.join(app_root, "share", "cura", "resources"))
 
-        Resources.addSearchPath(os.path.join(self._app_install_dir, "share", "cura", "resources"))
+        Resources.addSecureSearchPath(os.path.join(self._app_install_dir, "share", "cura", "resources"))
         if not hasattr(sys, "frozen"):
-            resource_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "resources")
-            Resources.addSearchPath(resource_path)
+            Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "resources"))
+
+            # local Conan cache
+            Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "..", "resources"))
+            Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "..", "plugins"))
+
+            # venv site-packages
+            Resources.addSearchPath(os.path.join(os.path.dirname(sys.executable), "..", "share", "cura", "resources"))
 
     @classmethod
     def _initializeSettingDefinitions(cls):
@@ -942,6 +951,7 @@ class CuraApplication(QtApplication):
         self._qml_import_paths.append(Resources.getPath(self.ResourceTypes.QmlFiles))
         self._setLoadingHint(self._i18n_catalog.i18nc("@info:progress", "Initializing engine..."))
         self.initializeEngine()
+        self.getTheme().setCheckIfTrusted(ApplicationMetadata.IsEnterpriseVersion)
 
         # Initialize UI state
         controller.setActiveStage("PrepareStage")
@@ -1190,6 +1200,8 @@ class CuraApplication(QtApplication):
         qmlRegisterType(NozzleModel, "Cura", 1, 0, "NozzleModel")
         qmlRegisterType(IntentModel, "Cura", 1, 6, "IntentModel")
         qmlRegisterType(IntentCategoryModel, "Cura", 1, 6, "IntentCategoryModel")
+        qmlRegisterType(IntentSelectionModel, "Cura", 1, 7, "IntentSelectionModel")
+        qmlRegisterType(ActiveIntentQualitiesModel, "Cura", 1, 7, "ActiveIntentQualitiesModel")
 
         self.processEvents()
         qmlRegisterType(MaterialSettingsVisibilityHandler, "Cura", 1, 0, "MaterialSettingsVisibilityHandler")

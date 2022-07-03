@@ -122,6 +122,7 @@ Rectangle
             }
             visible: !isNetworkConfigured && isNetworkConfigurable
             width: childrenRect.width
+            height: childrenRect.height
 
             UM.ColorImage
             {

@@ -2256,7 +2256,7 @@
                     "maximum_value": "machine_height",
                     "maximum_value_warning": "resolveOrValue('infill_sparse_thickness') * 10",
                     "type": "float",
-                    "value": "0 if infill_sparse_density > 0 else 0",
+                    "value": "0",
                     "limit_to_extruder": "infill_extruder_nr",
                     "enabled": "infill_sparse_density > 0",
                     "settable_per_mesh": true,
@@ -3629,7 +3629,7 @@
                 "jerk_travel_enabled":
                 {
                     "label": "Enable Travel Jerk",
-                    "description": "Use a separate acceleration rate for travel moves. If disabled, travel moves will use the acceleration value of the printed line at their destination.",
+                    "description": "Use a separate jerk rate for travel moves. If disabled, travel moves will use the jerk value of the printed line at their destination.",
                     "type": "bool",
                     "default_value": true,
                     "resolve": "any(extruderValues('jerk_travel_enabled'))",
@@ -4911,7 +4911,7 @@
                     "default_value": 0,
                     "type": "int",
                     "minimum_value": "0",
-                    "maximum_value_warning": "1 if (support_pattern == 'cross' or support_pattern == 'lines' or support_pattern == 'zigzag' or support_pattern == 'concentric') else 5",
+                    "maximum_value_warning": "1 if (support_pattern == 'cross' or support_pattern == 'lines' or support_pattern == 'concentric') else 5",
                     "maximum_value": "999999 if support_line_distance == 0 else (20 - math.log(support_line_distance) / math.log(2))",
                     "enabled": "(support_enable or support_meshes_present) and support_infill_rate > 0",
                     "limit_to_extruder": "support_infill_extruder_nr",
@@ -4940,7 +4940,7 @@
                     "type": "float",
                     "default_value": 0.0,
                     "minimum_value": "0",
-                    "maximum_value_warning": "5",
+                    "maximum_value_warning": "10",
                     "enabled": "(support_enable or support_meshes_present) and support_structure == 'normal'",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": true
@@ -5192,7 +5192,6 @@
                     "type": "float",
                     "default_value": 1.0,
                     "minimum_value": "0",
-                    "minimum_value_warning": "minimum_support_area",
                     "limit_to_extruder": "support_interface_extruder_nr",
                     "enabled": "support_interface_enable and (support_enable or support_meshes_present)",
                     "settable_per_mesh": true,
@@ -5207,7 +5206,6 @@
                             "default_value": 1.0,
                             "value": "extruderValue(support_roof_extruder_nr, 'minimum_interface_area')",
                             "minimum_value": "0",
-                            "minimum_value_warning": "minimum_support_area",
                             "limit_to_extruder": "support_roof_extruder_nr",
                             "enabled": "support_roof_enable and (support_enable or support_meshes_present)",
                             "settable_per_mesh": true
@@ -5221,7 +5219,6 @@
                             "default_value": 1.0,
                             "value": "extruderValue(support_bottom_extruder_nr, 'minimum_interface_area')",
                             "minimum_value": "0",
-                            "minimum_value_warning": "minimum_support_area",
                             "limit_to_extruder": "support_bottom_extruder_nr",
                             "enabled": "support_bottom_enable and (support_enable or support_meshes_present)",
                             "settable_per_mesh": true
@@ -7655,7 +7652,6 @@
                     "default_value": 100,
                     "type": "float",
                     "minimum_value": "5",
-                    "maximum_value": "100",
                     "minimum_value_warning": "20",
                     "maximum_value_warning": "100",
                     "enabled": "bridge_settings_enabled",
@@ -8055,6 +8051,7 @@
                     "description": "Remove inside corners from the raft, causing the raft to become convex.",
                     "type": "bool",
                     "default_value": false,
+                    "resolve": "any(extruderValues('raft_remove_inside_corners'))",
                     "enabled": "resolveOrValue('adhesion_type') == 'raft'",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
@@ -8066,6 +8063,7 @@
                     "type": "int",
                     "default_value": 1,
                     "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                    "resolve": "max(extruderValues('raft_base_wall_count'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 }

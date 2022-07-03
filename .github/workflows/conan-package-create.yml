@@ -1,0 +1,114 @@
+name: Create and Upload Conan package
+
+on:
+    workflow_call:
+        inputs:
+            recipe_id_full:
+                required: true
+                type: string
+
+            runs_on:
+                required: true
+                type: string
+
+            python_version:
+                required: true
+                type: string
+
+            conan_config_branch:
+                required: false
+                type: string
+
+            conan_logging_level:
+                required: false
+                type: string
+
+            conan_clean_local_cache:
+                required: false
+                type: boolean
+                default: false
+
+env:
+    CONAN_LOGIN_USERNAME_CURA: ${{ secrets.CONAN_USER }}
+    CONAN_PASSWORD_CURA: ${{ secrets.CONAN_PASS }}
+    CONAN_LOGIN_USERNAME_CURA_CE: ${{ secrets.CONAN_USER }}
+    CONAN_PASSWORD_CURA_CE: ${{ secrets.CONAN_PASS }}
+    CONAN_LOG_RUN_TO_OUTPUT: 1
+    CONAN_LOGGING_LEVEL: ${{ inputs.conan_logging_level }}
+    CONAN_NON_INTERACTIVE: 1
+
+jobs:
+    conan-package-create:
+        runs-on: ${{ inputs.runs_on }}
+
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v3
+
+            -   name: Setup Python and pip
+                uses: actions/setup-python@v4
+                with:
+                    python-version: ${{ inputs.python_version }}
+                    cache: 'pip'
+                    cache-dependency-path: .github/workflows/requirements-conan-package.txt
+
+            -   name: Install Python requirements and Create default Conan profile
+                run: |
+                    pip install -r .github/workflows/requirements-conan-package.txt
+                    conan profile new default --detect
+
+            -   name: Use Conan download cache (Bash)
+                if: ${{ runner.os != 'Windows' }}
+                run: conan config set storage.download_cache="$HOME/.conan/conan_download_cache"
+
+            -   name: Use Conan download cache (Powershell)
+                if: ${{ runner.os == 'Windows' }}
+                run: conan config set storage.download_cache="C:\Users\runneradmin\.conan\conan_download_cache"
+
+            -   name: Cache Conan local repository packages (Bash)
+                uses: actions/cache@v3
+                if: ${{ runner.os != 'Windows' }}
+                with:
+                    path: |
+                        $HOME/.conan/data
+                        $HOME/.conan/conan_download_cache
+                    key: conan-${{ runner.os }}-${{ runner.arch }}
+
+            -   name: Cache Conan local repository packages (Powershell)
+                uses: actions/cache@v3
+                if: ${{ runner.os == 'Windows' }}
+                with:
+                    path: |
+                        C:\Users\runneradmin\.conan\data
+                        C:\.conan
+                        C:\Users\runneradmin\.conan\conan_download_cache
+                    key: conan-${{ runner.os }}-${{ runner.arch }}
+
+            -   name: Install MacOS system requirements
+                if:  ${{ runner.os == 'Macos' }}
+                run: brew install autoconf automake ninja
+
+            -   name: Install Linux system requirements
+                if: ${{ runner.os == 'Linux' }}
+                run: sudo apt install build-essential checkinstall zlib1g-dev libssl-dev ninja-build autoconf libx11-dev libx11-xcb-dev libfontenc-dev libice-dev libsm-dev libxau-dev libxaw7-dev libxcomposite-dev libxcursor-dev libxdamage-dev libxdmcp-dev libxext-dev libxfixes-dev libxi-dev libxinerama-dev libxkbfile-dev libxmu-dev libxmuu-dev libxpm-dev libxrandr-dev libxrender-dev libxres-dev libxss-dev libxt-dev libxtst-dev libxv-dev libxvmc-dev libxxf86vm-dev xtrans-dev libxcb-render0-dev libxcb-render-util0-dev libxcb-xkb-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev libxcb-randr0-dev libxcb-shape0-dev libxcb-sync-dev libxcb-xfixes0-dev libxcb-xinerama0-dev xkb-data libxcb-dri3-dev uuid-dev libxcb-util-dev -y
+
+            -   name: Clean Conan local cache
+                if: ${{ inputs.conan_clean_local_cache }}
+                run: conan remove "*" -f
+
+            -   name: Get Conan configuration from branch
+                if: ${{ inputs.conan_config_branch != '' }}
+                run: conan config install https://github.com/Ultimaker/conan-config.git -a "-b ${{ inputs.conan_config_branch }}"
+
+            -   name: Get Conan configuration
+                if: ${{ inputs.conan_config_branch == '' }}
+                run: conan config install https://github.com/Ultimaker/conan-config.git
+
+            -   name: Create the Packages
+                run: conan install ${{ inputs.recipe_id_full }} --build=missing --update
+
+            -   name: Upload the Package(s)
+                if: always()
+                run: |
+                    conan upload "*" -r cura --all -c
+                    conan upload "*" -r cura-ce -c

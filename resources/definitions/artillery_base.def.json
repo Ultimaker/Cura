@@ -192,7 +192,6 @@
         "wall_0_wipe_dist": { "value": 0.0 },
 
         "fill_outline_gaps": { "value": false },
-        "filter_out_tiny_gaps": { "value": false },
 
         "retraction_speed": {
             "maximum_value_warning": "machine_max_feedrate_e if retraction_enable else float('inf')",

@@ -47,7 +47,7 @@ Item
         Column
         {
             Layout.fillWidth: true
-            Layout.alignment: Qt.AlignmentFlag.AlignTop
+            Layout.alignment: Qt.AlignTop
 
             spacing: base.columnSpacing
 
@@ -176,7 +176,7 @@ Item
         Column
         {
             Layout.fillWidth: true
-            Layout.alignment: Qt.AlignmentFlag.AlignTop
+            Layout.alignment: Qt.AlignTop
 
             spacing: base.columnSpacing
 
