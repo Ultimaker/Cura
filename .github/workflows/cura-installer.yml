@@ -28,7 +28,8 @@ on:
                 default: false
                 type: boolean
 
-# Run the nightly at 5:25 UTC on working days
+    # Run the nightly at 3:25 UTC on working days
+    #FIXME: Provide the same default values as the workflow dispatch
     schedule:
     - cron: '25 3 * * 1-5'
 
