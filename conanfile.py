@@ -300,7 +300,7 @@ class CuraConan(ConanFile):
         self.copy_deps("*.dll", src = "@bindirs", dst = self._site_packages)
         self.copy_deps("*.pyd", src = "@libdirs", dst = self._site_packages)
         self.copy_deps("*.pyi", src = "@libdirs", dst = self._site_packages)
-        self.copy_deps("*.dylib", src = "@libdirs", dst = self._script_dir)
+        self.copy_deps("*.dylib", src = "@libdirs", dst = self._base_dir.joinpath("lib"))
 
         # Copy packaging scripts
         self.copy("*", src = self.cpp_info.resdirs[2], dst = self._base_dir.joinpath("packaging"))
