@@ -192,7 +192,7 @@ class CuraConan(ConanFile):
                 collect_all = pyinstaller_metadata["collect_all"],
                 icon = icon_path,
                 entitlements_file = entitlements_file,
-                osx_bundle_identifier = "'nl.ultimaker.cura.dmg'" if self.settings.os == "Macos" else "None",
+                osx_bundle_identifier = "'nl.ultimaker.cura'" if self.settings.os == "Macos" else "None",
                 upx = str(self.settings.os == "Windows"),
                 strip = str(self.settings.os != "Windows"),
                 target_arch = "'x86_64'" if self.settings.os == "Macos" else "None",  # FIXME: Make this dependent on the settings.arch_target
