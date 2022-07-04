@@ -197,7 +197,7 @@ jobs:
 
             -   name: Sign the MacOS dmg (Bash) alternative
                 if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Macos' }}
-                run: codesign -s "$CODESIGN_IDENTITY" --timestamp -i "nl.ultimaker.cura.dmg" "./Ultimaker-Cura.dmg"
+                run: codesign -s "$CODESIGN_IDENTITY" --timestamp -i "nl.ultimaker.cura" "./Ultimaker-Cura.dmg"
                 working-directory: dist
 
             -   name: Notarize the MacOS dmg (Bash) alternative
