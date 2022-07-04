@@ -168,7 +168,7 @@ class CuraConan(ConanFile):
             for bin in src_path.glob(binary["binary"]):
                 binaries.append((str(bin), binary["dst"]))
 
-        for _, dependency in self.dependencies.host.items():
+        for _, dependency in self.dependencies.items():
             # if dependency.ref.name == "cpython":
             #     continue
             for bin_paths in dependency.cpp_info.bindirs:
