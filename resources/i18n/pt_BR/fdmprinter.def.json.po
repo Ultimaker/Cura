@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Cura 5.0\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
 "POT-Creation-Date: 2022-06-21 12:50+0000\n"
-"PO-Revision-Date: 2022-05-02 12:04+0200\n"
+"PO-Revision-Date: 2022-07-04 03:38+0200\n"
 "Last-Translator: Cláudio Sampaio <patola@gmail.com>\n"
 "Language-Team: Cláudio Sampaio <patola@gmail.com>\n"
 "Language: pt_BR\n"
@@ -2812,12 +2812,12 @@ msgstr "Permite ajustar a aceleração da cabeça de impressão. Aumentar as ace
 #: fdmprinter.def.json
 msgctxt "acceleration_travel_enabled label"
 msgid "Enable Travel Acceleration"
-msgstr ""
+msgstr "Habilitar Aceleração de Percurso"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_travel_enabled description"
 msgid "Use a separate acceleration rate for travel moves. If disabled, travel moves will use the acceleration value of the printed line at their destination."
-msgstr ""
+msgstr "Usar taxa de aceleração separada para movimentos de percurso. Se desabilitado, os movimentos de percurso usarão o valor de aceleração da linha impressa em seu destino."
 
 #: fdmprinter.def.json
 msgctxt "acceleration_print label"
@@ -3012,12 +3012,12 @@ msgstr "Permite ajustar o jerk da cabeça de impressão quando a velocidade nos 
 #: fdmprinter.def.json
 msgctxt "jerk_travel_enabled label"
 msgid "Enable Travel Jerk"
-msgstr ""
+msgstr "Habilitar Jerk de Percurso"
 
 #: fdmprinter.def.json
 msgctxt "jerk_travel_enabled description"
 msgid "Use a separate jerk rate for travel moves. If disabled, travel moves will use the jerk value of the printed line at their destination."
-msgstr ""
+msgstr "Usar taxa de jerk separada para movimentos de percurso. Se desabilitado, os movimentos de percurso usarão o valor de jerk da linha impressa em seu destino."
 
 #: fdmprinter.def.json
 msgctxt "jerk_print label"
