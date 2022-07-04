@@ -1190,7 +1190,7 @@
                         "inside_out": "Inside To Outside",
                         "outside_in": "Outside To Inside"
                     },
-                    "default_value": "outside_in",
+                    "default_value": "inside_out",
                     "settable_per_mesh": true
                 },
                 "alternate_extra_perimeter":
