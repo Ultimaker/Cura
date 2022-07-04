@@ -126,6 +126,12 @@ jobs:
                     p12-file-base64: ${{ secrets.MACOS_CERT_P12 }}
                     p12-password: ${{ secrets.MACOS_CERT_PASSPHRASE }}
 
+            -   name: Output security response
+                if: ${{ runner.os == 'Macos' }}
+                run: echo $security-response
+                env:
+                    SECURITY_RESPONSE: ${{ steps.macos-keychain.outputs.security-response }}
+
             -   name: Unlock Macos keychain (Bash)
                 if: ${{ runner.os == 'Macos' }}
                 run: security unlock -p $TEMP_KEYCHAIN_PASSWORD signing_temp.keychain
