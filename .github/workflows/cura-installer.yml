@@ -158,12 +158,16 @@ jobs:
                 run: |
                     . ./cura_inst/bin/activate_github_actions_env.sh
                     . ./cura_inst/bin/activate_github_actions_version_env.sh
+                    echo "CURA_VERSION_FULL=5.1.0-beta" >> $GITHUB_ENV
+                    echo "CURA_VERSION_BUILD=0" >> $GITHUB_ENV
 
             -   name: Set Environment variables for Cura (Powershell)
                 if: ${{ runner.os == 'Windows' }}
                 run: |
                     .\cura_inst\Scripts\activate_github_actions_env.ps1
                     .\cura_inst\Scripts\activate_github_actions_version_env.ps1
+                    echo "Env:CURA_VERSION_FULL=5.1.0-beta" >> $Env:GITHUB_ENV
+                    echo "Env:CURA_VERSION_BUILD=0" >> $Env:GITHUB_ENV
 
             -   name: Create the Cura dist
                 run: pyinstaller ./cura_inst/Ultimaker-Cura.spec
