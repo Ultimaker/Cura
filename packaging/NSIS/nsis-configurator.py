@@ -15,7 +15,7 @@ if __name__ == "__main__":
     - version_major: Major version number of Semver (e.g. 5).
     - version_minor: Minor version number of Semver (e.g. 0).
     - version_patch: Patch version number of Semver (e.g. 0).
-    - version_build: A version number that gets manually incremented at each build.
+    - version_build: (optional) A version number that gets manually incremented at each build.
     - company: Publisher of the application. Should be "Ultimaker B.V."
     - web_site: Website to find more information. Should be "https://ultimaker.com".
     - cura_license_file: Path to a license file in Cura. Should point to packaging/cura_license.txt in this repository.
@@ -50,23 +50,30 @@ if __name__ == "__main__":
     with open(jinja_template_path, "r") as f:
         template = Template(f.read())
 
+    if len(sys.argv) == 15:  # No version-build
+        version_build = ""
+        use_version_build = 0
+    else:
+        version_build = "." + sys.argv[8]
+        use_version_build = 1
+
     nsis_content = template.render(
         app_name = sys.argv[3],
         main_app = sys.argv[4],
         version_major = sys.argv[5],
         version_minor = sys.argv[6],
         version_patch = sys.argv[7],
-        version_build = sys.argv[8],
-        company = sys.argv[9],
-        web_site = sys.argv[10],
+        version_build = version_build,
+        company = sys.argv[8 + use_version_build],
+        web_site = sys.argv[9 + use_version_build],
         year = datetime.now().year,
-        cura_license_file = Path(sys.argv[11]),
-        compression_method = sys.argv[12],  # ZLIB, BZIP2 or LZMA
-        cura_banner_img = Path(sys.argv[13]),
-        cura_icon = Path(sys.argv[14]),
+        cura_license_file = Path(sys.argv[10 + use_version_build]),
+        compression_method = sys.argv[11 + use_version_build],  # ZLIB, BZIP2 or LZMA
+        cura_banner_img = Path(sys.argv[12 + use_version_build]),
+        cura_icon = Path(sys.argv[13 + use_version_build]),
         mapped_out_paths = mapped_out_paths,
         rmdir_paths = rmdir_paths,
-        destination = Path(sys.argv[15])
+        destination = Path(sys.argv[14 + use_version_build])
     )
 
     with open(dist_loc.parent.joinpath(jinja_template_path.stem), "w") as f:
