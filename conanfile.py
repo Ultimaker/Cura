@@ -319,7 +319,7 @@ echo "CURA_VERSION_FULL={{ cura_version_full }}" >> ${{ env_prefix }}GITHUB_ENV
         """).render(cura_version_major = cura_version.major,
                     cura_version_minor = cura_version.minor,
                     cura_version_patch = cura_version.patch,
-                    cura_version_build = cura_version.build,
+                    cura_version_build = cura_version.build if cura_version.build != "" else "0",
                     cura_version_full = self.version,
                     env_prefix = env_prefix)
 
