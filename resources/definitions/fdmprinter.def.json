@@ -1225,21 +1225,7 @@
                             "default_value": 0.3,
                             "value": "min_wall_line_width",
                             "type": "float",
-                            "settable_per_mesh": true,
-                            "children":
-                            {
-                                "wall_split_middle_threshold": {
-                                    "label": "Split Middle Line Threshold",
-                                    "description": "The smallest line width, as a factor of the normal line width, above which the middle line (if there is one) will be split into two. Reduce this setting to use more, thinner lines. Increase to use fewer, wider lines. Note that this applies -as if- the entire shape should be filled with wall, so the middle here refers to the middle of the object between two outer edges of the shape, even if there actually is fill or (other) skin in the print instead of wall.",
-                                    "type": "float",
-                                    "unit": "%",
-                                    "default_value": 50,
-                                    "value": "max(1, min(99, 100 * (2 * min_even_wall_line_width - wall_line_width_0) / wall_line_width_0))",
-                                    "minimum_value": "1",
-                                    "maximum_value": "99",
-                                    "enabled": false
-                                }
-                            }
+                            "settable_per_mesh": true
                         },
                         "min_odd_wall_line_width":
                         {
@@ -1251,21 +1237,7 @@
                             "default_value": 0.3,
                             "value": "min_wall_line_width",
                             "type": "float",
-                            "settable_per_mesh": true,
-                            "children":
-                            {
-                                "wall_add_middle_threshold": {
-                                    "label": "Add Middle Line Threshold",
-                                    "description": "The smallest line width, as a factor of the normal line width, above which a middle line (if there wasn't one already) will be added. Reduce this setting to use more, thinner lines. Increase to use fewer, wider lines. Note that this applies -as if- the entire shape should be filled with wall, so the middle here refers to the middle of the object between two outer edges of the shape, even if there actually is fill or (other) skin in the print instead of wall.",
-                                    "type": "float",
-                                    "unit": "%",
-                                    "default_value": 75,
-                                    "value": "max(1, min(99, 100 * min_odd_wall_line_width / wall_line_width_x))",
-                                    "minimum_value": "1",
-                                    "maximum_value": "99",
-                                    "enabled": false
-                                }
-                            }
+                            "settable_per_mesh": true
                         }
                     }
                 },
@@ -8051,7 +8023,7 @@
                     "label": "Remove Raft Inside Corners",
                     "description": "Remove inside corners from the raft, causing the raft to become convex.",
                     "type": "bool",
-                    "default_value": false,
+                    "default_value": true,
                     "resolve": "any(extruderValues('raft_remove_inside_corners'))",
                     "enabled": "resolveOrValue('adhesion_type') == 'raft'",
                     "settable_per_mesh": false,
