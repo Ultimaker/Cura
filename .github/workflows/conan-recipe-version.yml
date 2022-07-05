@@ -26,10 +26,10 @@ jobs:
         runs-on: ubuntu-latest
 
         outputs:
-            recipe_id_full: ${{ inputs.project_name }}/${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}.${{ steps.git-tool.outputs.Patch }}-${{ steps.git-tool.outputs.PreReleaseLabel }}+${{ steps.git-tool.outputs.BuildMetaData }}@${{ steps.get-conan-broadcast-data.outputs.user }}/${{ steps.get-conan-broadcast-data.outputs.channel }}
+            recipe_id_full: ${{ inputs.project_name }}/${{ steps.get-conan-broadcast-data.outputs.version }}@${{ steps.get-conan-broadcast-data.outputs.user }}/${{ steps.get-conan-broadcast-data.outputs.channel }}
             recipe_id_latest: ${{ steps.latest-alias.outputs.recipe_id_latest }}
             recipe_id_pr: ${{ steps.pr-alias.outputs.recipe_id_pr }}
-            semver_full: ${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}.${{ steps.git-tool.outputs.Patch }}-${{ steps.git-tool.outputs.PreReleaseLabel }}+${{ steps.git-tool.outputs.BuildMetaData }}
+            semver_full: ${{ steps.get-conan-broadcast-data.outputs.version }}
             user: ${{ steps.get-conan-broadcast-data.outputs.user }}
             channel: ${{ steps.get-conan-broadcast-data.outputs.channel }}
 
@@ -52,23 +52,31 @@ jobs:
             -   id: get-conan-broadcast-data
                 name: Get Conan broadcast data
                 run: |
-                    if [ "${{ github.ref_type == 'tag' && github.ref_name == '5.1' }}" = "true" ]; then
-                      # tagged commits on a release branch are actual released version and should have no user and channel
+                    if [ "${{ github.ref_type == 'tag' && github.ref_name == '${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}.${{ steps.git-tool.outputs.Patch }}' }}" = "true" ]; then
+                      # tagged commits on a release branch matching the major.minor.patch are actual released version and should have no user and channel
                       # name/major.minor.patch@_/_
-                      # FIXME: For release branches: maybe rename the branch to release/**
                       echo '::set-output name=user::_'
                       echo '::set-output name=channel::_'
+                      echo '::set-output name=version::${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}.${{ steps.git-tool.outputs.Patch }}'
+                    elif [ "${{ github.ref_type == 'tag' && github.ref_name == '${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}.${{ steps.git-tool.outputs.Patch }}-BETA' }}" = "true" ]; then
+                      # tagged commits with major.minor.patch-BETA on a release branch are actual released version and should have no user and channel
+                      # name/major.minor.patch-beta@_/_
+                      echo '::set-output name=user::_'
+                      echo '::set-output name=channel::_'
+                      echo '::set-output name=version::${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}.${{ steps.git-tool.outputs.Patch }}-${{ steps.git-tool.outputs.PreReleaseLabel }}'                    
                     elif [ "${{ github.ref_name == 'main' || github.ref_name == 'master' }}" = "true" ]; then
                       # commits on main/master are alpha's (nightlies) and are considered testing
                       # name/major.minor.patch-alpha+build@ultimaker/testing
                       echo ${{ github.repository_owner }} | awk '{print "::set-output name=user::"tolower($0)}'
                       echo '::set-output name=channel::testing'
+                      echo '::set-output name=version::${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}.${{ steps.git-tool.outputs.Patch }}-${{ steps.git-tool.outputs.PreReleaseLabel }}+${{ steps.git-tool.outputs.BuildMetaData }}'
                     elif [ "${{ github.ref_name == '5.1' }}" = "true" ]; then
                       # commits on release branches are beta's and are considered stable
                       # name/major.minor.patch-beta+build@ultimaker/stable
                       # FIXME: For release branches: maybe rename the branch to release/**
                       echo ${{ github.repository_owner }} | awk '{print "::set-output name=user::"tolower($0)}'
-                      echo '::set-output name=channel::stable'                    
+                      echo '::set-output name=channel::stable'    
+                      echo '::set-output name=version::${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}.${{ steps.git-tool.outputs.Patch }}-${{ steps.git-tool.outputs.PreReleaseLabel }}+${{ steps.git-tool.outputs.BuildMetaData }}'
                     else
                       # commits on other branches are considered unstable and for development purposes only
                       # Use the Cura branch naming scheme CURA-1234_foo_bar
@@ -78,6 +86,7 @@ jobs:
                       branch=${{ github.ref_name }}
                       sanitized_branch="${branch//-/_}"
                       echo $sanitized_branch | awk '{print "::set-output name=channel::"substr(tolower($0),0,9)}'
+                      echo '::set-output version=${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}.${{ steps.git-tool.outputs.Patch }}-${{ steps.git-tool.outputs.PreReleaseLabel }}+${{ steps.git-tool.outputs.BuildMetaData }}'
                     fi
 
             -   name: Get pull request alias
