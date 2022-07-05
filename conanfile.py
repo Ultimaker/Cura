@@ -176,6 +176,9 @@ class CuraConan(ConanFile):
                 binaries.extend([(f"{p}", ".") for p in Path(bin_paths).glob("**/*.dylib")])
                 binaries.extend([(f"{p}", ".") for p in Path(bin_paths).glob("**/*.so")])
 
+        # Copy dynamic libs from lib path
+        binaries.extend([(f"{p}", ".") for p in Path(self._base_dir.joinpath("lib")).glob("**/*.dylib")])
+
         # Collect all dll's from PyQt6 and place them in the root
         binaries.extend([(f"{p}", ".") for p in Path(self._site_packages, "PyQt6", "Qt6").glob("**/*.dll")])
 
