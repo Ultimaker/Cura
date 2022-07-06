@@ -8,7 +8,7 @@ decorator==4.4.0
 idna==2.8
 importlib-metadata==4.10.0
 keyring==23.0.1
-lxml==4.7.1
+lxml==4.9.1
 mypy==0.740
 netifaces==0.10.9
 networkx==2.6.2
