@@ -139,7 +139,7 @@ class CuraConan(ConanFile):
 
     def _generate_pyinstaller_spec(self, location, entrypoint_location, icon_path, entitlements_file):
         pyinstaller_metadata = self._um_data(self.version)["pyinstaller"]
-        datas = [(str(self._base_dir.joinpath("conan_install_info.json"), "."))]
+        datas = [(str(self._base_dir.joinpath("conan_install_info.json")), ".")]
         for data in pyinstaller_metadata["datas"].values():
             if "package" in data:  # get the paths from conan package
                 if data["package"] == self.name:
