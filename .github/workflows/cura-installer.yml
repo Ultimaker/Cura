@@ -186,7 +186,7 @@ jobs:
 
             -   name: Create the MacOS dmg (Bash)
                 if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Macos' }}
-                run: python ../cura_inst/packaging/dmg/dmg_sign_notarize.py "Ultimaker-Cura-$CURA_VERSION_FULL-${{ runner.os }}-${{ runner.arch }}.dmg"
+                run: python ../cura_inst/packaging/dmg/dmg_sign_noterize.py "Ultimaker-Cura-$CURA_VERSION_FULL-${{ runner.os }}-${{ runner.arch }}.dmg"
                 working-directory: dist
                 env:
                     SOURCE_DIR: ${{ env.GITHUB_WORKSPACE }}/cura_inst
