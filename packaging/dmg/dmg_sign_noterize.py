@@ -38,7 +38,7 @@ def sign(dist_path: str, filename: str) -> None:
 
 def notarize(dist_path: str, filename: str) -> None:
     notarize_user = os.environ.get("MAC_NOTARIZE_USER")
-    notarize_password = os.environ.get("MAC_NOTARIZE_PASSWORD")
+    notarize_password = os.environ.get("MAC_NOTARIZE_PASS")
     altool_executable = os.environ.get("ALTOOL_EXECUTABLE", "altool")
 
     arguments = [
