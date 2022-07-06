@@ -181,12 +181,12 @@ jobs:
 
             -   name: Create the Linux AppImage (Bash)
                 if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Linux' }}
-                run: python ../cura_inst/packaging/AppImage/create_appimage.py ./Ultimaker-Cura $CURA_VERSION_FULL "Ultimaker-Cura-$Env:CURA_VERSION_FULL-${{ runner.os }}-${{ runner.arch }}.AppImage"
+                run: python ../cura_inst/packaging/AppImage/create_appimage.py ./Ultimaker-Cura $CURA_VERSION_FULL "Ultimaker-Cura-$CURA_VERSION_FULL-${{ runner.os }}-${{ runner.arch }}.AppImage"
                 working-directory: dist
 
             -   name: Create the MacOS dmg (Bash)
                 if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Macos' }}
-                run: python ../cura_inst/packaging/dmg/dmg_sign_notarize.py "Ultimaker-Cura-$Env:CURA_VERSION_FULL-${{ runner.os }}-${{ runner.arch }}.dmg"
+                run: python ../cura_inst/packaging/dmg/dmg_sign_notarize.py "Ultimaker-Cura-$CURA_VERSION_FULL-${{ runner.os }}-${{ runner.arch }}.dmg"
                 working-directory: dist
                 env:
                     SOURCE_DIR: ${{ env.GITHUB_WORKSPACE }}/cura_inst
