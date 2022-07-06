@@ -197,7 +197,7 @@ class CuraConan(ConanFile):
                 entitlements_file = entitlements_file,
                 osx_bundle_identifier = "'nl.ultimaker.cura'" if self.settings.os == "Macos" else "None",
                 upx = str(self.settings.os == "Windows"),
-                strip = str(self.settings.os != "Windows"),
+                strip = False,  # This should be possible on Linux and MacOS but, it can also cause issues on some distributions. Safest is to disable it for now
                 target_arch = "'x86_64'" if self.settings.os == "Macos" else "None",  # FIXME: Make this dependent on the settings.arch_target
                 macos = self.settings.os == "Macos"
             ))
