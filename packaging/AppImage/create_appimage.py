@@ -9,13 +9,12 @@ import shutil  # Copying files.
 import stat  # For setting file permissions.
 import subprocess  # For calling system commands.
 
-def build_appimage(dist_path, version):
+def build_appimage(dist_path, version, appimage_filename):
     """
     Creates an AppImage file from the build artefacts created so far.
     """
     copy_metadata_files(dist_path, version)
 
-    appimage_filename = f"Ultimaker-Cura_{version}.AppImage"
     try:
         os.remove(os.path.join(dist_path, appimage_filename))  # Ensure any old file is removed, if it exists.
     except FileNotFoundError:
@@ -72,5 +71,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = "Create AppImages of Cura.")
     parser.add_argument("dist_path", type=str, help="Path to where PyInstaller installed the distribution of Cura.")
     parser.add_argument("version", type=str, help="Full version number of Cura (e.g. '5.1.0-beta')")
+    parser.add_argument("filename", type = str, help = "Filename of the AppImage (e.g. 'Ultimaker-Cura-5.1.0-beta-Linux-X64.AppImage')")
     args = parser.parse_args()
-    build_appimage(args.dist_path, args.version)
+    build_appimage(args.dist_path, args.version, args.filename)
