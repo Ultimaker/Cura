@@ -109,7 +109,7 @@ jobs:
                 run: conan config install https://github.com/Ultimaker/conan-config.git
 
             -   name: Install dependencies
-                run: conan install . ${{ needs.conan-recipe-version.outputs.recipe_id_full }} -o enable_testing=True -s build_type=Release --build=missing --update -g GitHubActionsRunEnv -g GitHubActionsBuildEnv -g VirtualRunEnv
+                run: conan install . ${{ needs.conan-recipe-version.outputs.recipe_id_full }} --build=missing --update -g VirtualRunEnv
 
             -   name: Upload the Dependency package(s)
                 run: conan upload "*" -r cura --all -c
