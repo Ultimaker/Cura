@@ -203,8 +203,8 @@ class CuraConan(ConanFile):
                 strip = False,  # This should be possible on Linux and MacOS but, it can also cause issues on some distributions. Safest is to disable it for now
                 target_arch = "'x86_64'" if self.settings.os == "Macos" else "None",  # FIXME: Make this dependent on the settings.arch_target
                 macos = self.settings.os == "Macos",
-                version = self.version,
-                short_version = f"{cura_version.major}.{cura_version.minor}.{cura_version.patch}",
+                version = f"'{self.version}'",
+                short_version = f"'{cura_version.major}.{cura_version.minor}.{cura_version.patch}'",
             ))
 
     def source(self):

@@ -255,13 +255,11 @@ app = UMBUNDLE(
         'CFBundleExecutable': '{{ name }}',
         'CFBundleInfoDictionaryVersion': '6.0',
         'CFBundlePackageType': 'APPL',
-        'CFBundleShortVersionString': '{{ short_version }}',
+        'CFBundleShortVersionString': {{ short_version }},
         'CFBundleDocumentTypes': [{
                 'CFBundleTypeRole': 'Viewer',
                 'CFBundleTypeExtensions': ['*'],
                 'CFBundleTypeName': 'Model Files',
-                'LSItemContentTypes': ['com.example.myformat'],
-                'LSHandlerRank': 'Owner'
             }]
         },
 ){% endif %}
