@@ -188,7 +188,7 @@ class CuraConan(ConanFile):
         with open(Path(__file__).parent.joinpath("Ultimaker-Cura.spec.jinja"), "r") as f:
             pyinstaller = Template(f.read())
 
-        cura_version = tools.Version(self.version)
+        cura_version = tools.Version(self.version) if self.version else tools.Version("0.0.0")
 
         with open(Path(location, "Ultimaker-Cura.spec"), "w") as f:
             f.write(pyinstaller.render(
