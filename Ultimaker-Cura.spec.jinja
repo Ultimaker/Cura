@@ -247,4 +247,21 @@ app = UMBUNDLE(
     name='{{ name }}.app',
     icon={{ icon }},
     bundle_identifier={{ osx_bundle_identifier }}
+    version={{ version }},
+    info_plist={
+        'CFBundleDisplayName': '{{ display_name }}',
+        'NSPrincipalClass': 'NSApplication',
+        'CFBundleDevelopmentRegion': 'English',
+        'CFBundleExecutable': '{{ name }}',
+        'CFBundleInfoDictionaryVersion': '6.0',
+        'CFBundlePackageType': 'APPL',
+        'CFBundleShortVersionString': '{{ short_version }}',
+        'CFBundleDocumentTypes': [{
+                'CFBundleTypeRole': 'Viewer',
+                'CFBundleTypeExtensions': ['*'],
+                'CFBundleTypeName': 'Model Files',
+                'LSItemContentTypes': ['com.example.myformat'],
+                'LSHandlerRank': 'Owner'
+            }]
+        },
 ){% endif %}

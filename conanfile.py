@@ -185,9 +185,12 @@ class CuraConan(ConanFile):
         with open(Path(__file__).parent.joinpath("Ultimaker-Cura.spec.jinja"), "r") as f:
             pyinstaller = Template(f.read())
 
+        cura_version = tools.Version(self.version)
+
         with open(Path(location, "Ultimaker-Cura.spec"), "w") as f:
             f.write(pyinstaller.render(
                 name = str(self.options.display_name).replace(" ", "-"),
+                display_name = self.options.display_name,
                 entrypoint = entrypoint_location,
                 datas = datas,
                 binaries = binaries,
@@ -199,7 +202,9 @@ class CuraConan(ConanFile):
                 upx = str(self.settings.os == "Windows"),
                 strip = False,  # This should be possible on Linux and MacOS but, it can also cause issues on some distributions. Safest is to disable it for now
                 target_arch = "'x86_64'" if self.settings.os == "Macos" else "None",  # FIXME: Make this dependent on the settings.arch_target
-                macos = self.settings.os == "Macos"
+                macos = self.settings.os == "Macos",
+                version = self.version,
+                short_version = f"{cura_version.major}.{cura_version.minor}.{cura_version.patch}",
             ))
 
     def source(self):
