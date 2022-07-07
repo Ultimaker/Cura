@@ -117,8 +117,8 @@ jobs:
             -   name: Set Environment variables for Cura (bash)
                 if: ${{ runner.os != 'Windows' }}
                 run: |
-                    . ./cura_inst/bin/activate_github_actions_env.sh
-                    . ./cura_inst/bin/activate_github_actions_version_env.sh
+                    . ./venv/bin/activate_github_actions_env.sh
+                    . ./venv/bin/activate_github_actions_version_env.sh
 
             -   name: Run Unit Test
                 id: run-test
