@@ -1,11 +1,14 @@
-# Copyright (c) 2021 Ultimaker B.V.
+# Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from datetime import datetime
 from typing import Optional, List, Dict, Any
 
 from .BaseModel import BaseModel
 from .DigitalFactoryFileResponse import DIGITAL_FACTORY_RESPONSE_DATETIME_FORMAT
 
+from UM.i18n import i18nCatalog
+catalog = i18nCatalog("cura")
 
 class DigitalFactoryProjectResponse(BaseModel):
     """Class representing a cloud project."""
@@ -13,8 +16,8 @@ class DigitalFactoryProjectResponse(BaseModel):
     def __init__(self,
                  library_project_id: str,
                  display_name: str,
-                 username: str,
-                 organization_shared: bool,
+                 username: str = catalog.i18nc("@text Placeholder for the username if it has been deleted", "deleted user"),
+                 organization_shared: bool = False,
                  last_updated: Optional[str] = None,
                  created_at: Optional[str] = None,
                  thumbnail_url: Optional[str] = None,
