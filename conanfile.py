@@ -143,7 +143,10 @@ class CuraConan(ConanFile):
         for data in pyinstaller_metadata["datas"].values():
             if "package" in data:  # get the paths from conan package
                 if data["package"] == self.name:
-                    src_path = Path(self.package_folder, data["src"])
+                    if self.in_local_cache:
+                        src_path = Path(self.package_folder, data["src"])
+                    else:
+                        src_path = Path(self.source_folder, data["src"])
                 else:
                     src_path = Path(self.deps_cpp_info[data["package"]].rootpath, data["src"])
             elif "root" in data:  # get the paths relative from the sourcefolder
