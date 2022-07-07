@@ -18,6 +18,8 @@ UM.Dialog
     width: minimumWidth
     height: minimumHeight
 
+    backgroundColor: UM.Theme.getColor("main_background")
+
     property bool dontShowAgain: true
 
     function storeDontShowAgain()
