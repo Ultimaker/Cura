@@ -96,19 +96,6 @@ jobs:
                       echo '::set-output version=${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}.${{ steps.git-tool.outputs.Patch }}-${{ steps.git-tool.outputs.PreReleaseLabel }}+${{ steps.git-tool.outputs.BuildMetaData }}'
                     fi
 
-            -   name: Get pull request alias
-                id: pr-alias
-                run: |
-                    if [ "${{ github.event_name == 'pull_request' }}" = "true" ]; then
-                      # pull request events are considered unstable and are for testing purposes
-                      # name/latest@ultimaker/pr_<number>
-                      echo "::set-output name=recipe_id_pr::${{ inputs.project_name }}/latest@${{ steps.get-conan-broadcast-data.outputs.user }}/pr_$PR_NUMBER"
-                    else
-                      echo "::set-output name=recipe_id_pr::''"
-                    fi
-                env:
-                    PR_NUMBER: ${{ github.event.issue.number }}
-
             -   name: Get latest alias
                 id: latest-alias
                 run: |
