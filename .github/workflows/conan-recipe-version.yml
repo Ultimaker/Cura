@@ -80,16 +80,16 @@ jobs:
                     elif [ "${{ github.event_name == 'pull_request' }}" = "true" ]; then
                       # Event triggered by a pull_request
                       echo ${{ github.repository_owner }} | awk '{print "::set-output name=user::"tolower($0)}'
-                      echo '::set-output channel=pr_${{ github.ref_name }}' | egrep -o '^[^/]+'
-                      echo '::set-output version=${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}.${{ steps.git-tool.outputs.Patch }}-${{ steps.git-tool.outputs.PreReleaseLabel }}+${{ steps.git-tool.outputs.BuildMetaData }}'
+                      echo '::set-output name=channel::pr_${{ github.ref_name }}' | egrep -o '^[^/]+'
+                      echo '::set-output name=version::${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}.${{ steps.git-tool.outputs.Patch }}-${{ steps.git-tool.outputs.PreReleaseLabel }}+${{ steps.git-tool.outputs.BuildMetaData }}'
                     else
                       # commits on other branches are considered unstable and for development purposes only
                       # Use the Cura branch naming scheme CURA-1234_foo_bar
                       # we use the first 9 characters of the branch name
                       # name/major.minor.patch-beta+build@ultimaker/cura_<jira_number>
                       echo ${{ github.repository_owner }} | awk '{print "::set-output name=user::"tolower($0)}'
-                      echo '::set-output channel=${{ github.ref_name }}' | egrep -o '^[^/|_]+'
-                      echo '::set-output version=${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}.${{ steps.git-tool.outputs.Patch }}-${{ steps.git-tool.outputs.PreReleaseLabel }}+${{ steps.git-tool.outputs.BuildMetaData }}'
+                      echo '::set-output name=channel::${{ github.ref_name }}' | egrep -o '^[^/|_]+'
+                      echo '::set-output name=version::${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}.${{ steps.git-tool.outputs.Patch }}-${{ steps.git-tool.outputs.PreReleaseLabel }}+${{ steps.git-tool.outputs.BuildMetaData }}'
                     fi
 
             -   name: Get latest alias
