@@ -22,7 +22,6 @@ class Marketplace(Extension, QObject):
         QObject.__init__(self, parent)
         Extension.__init__(self)
         self._window: Optional["QObject"] = None  # If the window has been loaded yet, it'll be cached in here.
-        self._plugin_registry: Optional[PluginRegistry] = None
         self._package_manager = CuraApplication.getInstance().getPackageManager()
 
         self._material_package_list: Optional[RemotePackageList] = None
@@ -81,9 +80,9 @@ class Marketplace(Extension, QObject):
         If the window hadn't been loaded yet into Qt, it will be created lazily.
         """
         if self._window is None:
-            self._plugin_registry = PluginRegistry.getInstance()
-            self._plugin_registry.pluginsEnabledOrDisabledChanged.connect(self.checkIfRestartNeeded)
-            plugin_path = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
+            plugin_registry = PluginRegistry.getInstance()
+            plugin_registry.pluginsEnabledOrDisabledChanged.connect(self.checkIfRestartNeeded)
+            plugin_path = plugin_registry.getPluginPath(self.getPluginId())
             if plugin_path is None:
                 plugin_path = os.path.dirname(__file__)
             path = os.path.join(plugin_path, "resources", "qml", "Marketplace.qml")
@@ -108,7 +107,7 @@ class Marketplace(Extension, QObject):
             return
 
         if self._package_manager.hasPackagesToRemoveOrInstall or \
-                cast(PluginRegistry, self._plugin_registry).getCurrentSessionActivationChangedPlugins():
+                PluginRegistry.getInstance().getCurrentSessionActivationChangedPlugins():
             self._restart_needed = True
         else:
             self._restart_needed = False
@@ -116,7 +115,7 @@ class Marketplace(Extension, QObject):
 
     showRestartNotificationChanged = pyqtSignal()
 
-    @pyqtProperty(bool, notify=showRestartNotificationChanged)
+    @pyqtProperty(bool, notify = showRestartNotificationChanged)
     def showRestartNotification(self) -> bool:
         return self._restart_needed
 
