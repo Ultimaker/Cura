@@ -70,7 +70,7 @@ jobs:
                       echo ${{ github.repository_owner }} | awk '{print "::set-output name=user::"tolower($0)}'
                       echo '::set-output name=channel::testing'
                       echo '::set-output name=version::${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}.${{ steps.git-tool.outputs.Patch }}-${{ steps.git-tool.outputs.PreReleaseLabel }}+${{ steps.git-tool.outputs.BuildMetaData }}'
-                    elif [ "${{ github.ref_name == '${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }} }}" = "true" ]; then
+                    elif [ "${{ github.ref_name == '${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}' }}" = "true" ]; then
                       # commits on release branches are beta's and are considered stable
                       # name/major.minor.patch-beta+build@ultimaker/stable
                       # FIXME: For release branches: maybe rename the branch to release/**
