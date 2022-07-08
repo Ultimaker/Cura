@@ -48,7 +48,7 @@ on:
 
 jobs:
     conan-recipe-version:
-        uses: ultimaker/cura/.github/workflows/conan-recipe-version.yml@5.1
+        uses: ultimaker/cura/.github/workflows/conan-recipe-version.yml@CURA-9365
         with:
             project_name: cura
 
