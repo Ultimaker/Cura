@@ -81,8 +81,8 @@ jobs:
                       # Event triggered by a pull_request
                       echo ${{ github.repository_owner }} | awk '{print "::set-output name=user::"tolower($0)}'
                       branch=${{ github.ref_name }}
-                      sanitized_branch=$(echo $branch | egrep -o '^[^/]+')
-                      echo $sanitized_branch | awk '{print "::set-output name=channel::"substr(tolower($0),0,9)}'
+                      sanitized_branch=$(echo pr_$branch | egrep -o '^[^/]+')
+                      echo '::set-output channel=$sanitized_branch'
                       echo '::set-output version=${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}.${{ steps.git-tool.outputs.Patch }}-${{ steps.git-tool.outputs.PreReleaseLabel }}+${{ steps.git-tool.outputs.BuildMetaData }}'
                     else
                       # commits on other branches are considered unstable and for development purposes only
