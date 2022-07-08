@@ -77,11 +77,10 @@ jobs:
                       echo ${{ github.repository_owner }} | awk '{print "::set-output name=user::"tolower($0)}'
                       echo '::set-output name=channel::stable'    
                       echo '::set-output name=version::${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}.${{ steps.git-tool.outputs.Patch }}-${{ steps.git-tool.outputs.PreReleaseLabel }}+${{ steps.git-tool.outputs.BuildMetaData }}'
-                    elif [ "${{ github.event_name == 'pull_request' }} = "true" ]; then
+                    elif [ "${{ github.event_name == 'pull_request' }}" = "true" ]; then
                       # Event triggered by a pull_request
                       echo ${{ github.repository_owner }} | awk '{print "::set-output name=user::"tolower($0)}'
-                      branch=${{ github.ref_name }}
-                      sanitized_branch=$(echo pr_$branch | egrep -o '^[^/]+')
+                      sanitized_branch=$(echo "${{ github.ref_name }}" | egrep -o "^[^/|_]+")
                       echo '::set-output channel=$sanitized_branch'
                       echo '::set-output version=${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}.${{ steps.git-tool.outputs.Patch }}-${{ steps.git-tool.outputs.PreReleaseLabel }}+${{ steps.git-tool.outputs.BuildMetaData }}'
                     else
@@ -90,8 +89,7 @@ jobs:
                       # we use the first 9 characters of the branch name
                       # name/major.minor.patch-beta+build@ultimaker/cura_<jira_number>
                       echo ${{ github.repository_owner }} | awk '{print "::set-output name=user::"tolower($0)}'
-                      branch=${{ github.ref_name }}
-                      sanitized_branch=$(echo $branch | egrep -o '^[^/|_]+')
+                      sanitized_branch=$(echo "${{ github.ref_name }}" | egrep -o "^[^/|_]+")
                       echo '::set-output channel=$sanitized_branch'
                       echo '::set-output version=${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}.${{ steps.git-tool.outputs.Patch }}-${{ steps.git-tool.outputs.PreReleaseLabel }}+${{ steps.git-tool.outputs.BuildMetaData }}'
                     fi
