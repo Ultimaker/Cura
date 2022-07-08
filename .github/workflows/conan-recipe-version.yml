@@ -77,7 +77,7 @@ jobs:
                       echo ${{ github.repository_owner }} | awk '{print "::set-output name=user::"tolower($0)}'
                       echo '::set-output name=channel::stable'    
                       echo '::set-output name=version::${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}.${{ steps.git-tool.outputs.Patch }}-${{ steps.git-tool.outputs.PreReleaseLabel }}+${{ steps.git-tool.outputs.BuildMetaData }}'
-                    elif [ "${{ github.event_name == 'pull_request' ]; then
+                    elif [ "${{ github.event_name == 'pull_request' }} ]; then
                       # Event triggered by a pull_request
                       echo ${{ github.repository_owner }} | awk '{print "::set-output name=user::"tolower($0)}'
                       branch=${{ github.ref_name }}
