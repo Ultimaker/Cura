@@ -158,14 +158,8 @@
         "acceleration_topbottom": { "value": "math.ceil(acceleration_print * 500 / 4000)" },
         "acceleration_wall": { "value": "math.ceil(acceleration_print * 1000 / 4000)" },
         "acceleration_wall_0": { "value": "math.ceil(acceleration_wall * 500 / 1000)" },
-        "jerk_enabled":
-        {
-            "default_value": true
-        },
-        "jerk_print":
-        {
-            "default_value": 12
-        },
+        "jerk_enabled": { "value": true },
+        "jerk_print": { "value": 12 },
         "jerk_travel":
         {
             "value": "jerk_print if magic_spiralize else 20"
