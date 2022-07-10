@@ -14,3 +14,7 @@ export QT_XKB_CONFIG_ROOT=/usr/share/X11/xkb
 export OPENSSL_CONF="$scriptdir/openssl.cnf"
 
 $scriptdir/Ultimaker-Cura "$@"
+
+# If this variable is set on Zorin OS 16 Cura would crash
+# unset `QT_STYLE_OVERRIDE` as a precaution
+unset QT_STYLE_OVERRIDE
