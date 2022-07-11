@@ -73,6 +73,7 @@
             - "zeroconf"
             - "fcntl"
             - "stl"
+            - "serial"
         collect_all:
             - "cura"
             - "UM"
@@ -164,6 +165,7 @@
             - "zeroconf"
             - "fcntl"
             - "stl"
+            - "serial"
         collect_all:
             - "cura"
             - "UM"
@@ -255,6 +257,7 @@
             - "zeroconf"
             - "fcntl"
             - "stl"
+            - "serial"
         collect_all:
             - "cura"
             - "UM"
