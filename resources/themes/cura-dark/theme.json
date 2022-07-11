@@ -48,7 +48,6 @@
         "lining": "border_main",
         "viewport_overlay": "background_1",
 
-        "primary": [12, 169, 227, 255],
         "primary_text": "text_default",
         "secondary": [95, 95, 95, 255],
 
