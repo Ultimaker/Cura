@@ -61,7 +61,7 @@ jobs:
                     - { os: macos-10.15, os_id: 'MacOS' }
                     - { os: windows-2022, os_id: 'Windows' }
                     - { os: ubuntu-20.04, os_id: 'Linux' }
-                    - { os: ubuntu-latest, os_id: 'Linux-latest' }
+                    - { os: ubuntu-22.04, os_id: 'Linux-latest' }
 
         steps:
             -   name: Checkout
