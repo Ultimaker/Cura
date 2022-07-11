@@ -57,7 +57,11 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                os: [ macos-10.15, windows-2022, ubuntu-20.04 ]
+                include:
+                    - { os: macos-10.15, os_id: 'MacOS' }
+                    - { os: windows-2022, os_id: 'Windows' }
+                    - { os: ubuntu-20.04, os_id: 'Linux' }
+                    - { os: ubuntu-latest, os_id: 'Linux-latest' }
 
         steps:
             -   name: Checkout
@@ -164,35 +168,35 @@ jobs:
 
             -   name: Archive the artifacts (bash)
                 if: ${{ github.event.inputs.installer == 'false' && runner.os != 'Windows' }}
-                run: tar -zcf "./Ultimaker-Cura-$CURA_VERSION_FULL-${{ runner.os }}-${{ runner.arch }}.tar.gz" "./Ultimaker-Cura/"
+                run: tar -zcf "./Ultimaker-Cura-$CURA_VERSION_FULL-${{ matrix.os_id }}-${{ runner.arch }}.tar.gz" "./Ultimaker-Cura/"
                 working-directory: dist
 
             -   name: Archive the artifacts (Powershell)
                 if: ${{ github.event.inputs.installer == 'false' && runner.os == 'Windows' }}
-                run: Compress-Archive -Path ".\Ultimaker-Cura" -DestinationPath ".\Ultimaker-Cura-$Env:CURA_VERSION_FULL-${{ runner.os }}-${{ runner.arch }}.zip"
+                run: Compress-Archive -Path ".\Ultimaker-Cura" -DestinationPath ".\Ultimaker-Cura-$Env:CURA_VERSION_FULL-${{ matrix.os_id }}-${{ runner.arch }}.zip"
                 working-directory: dist
 
             -   name: Create the Windows exe installer (Powershell)
                 if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Windows' }}
                 run: |
-                    python ..\cura_inst\packaging\NSIS\nsis-configurator.py ".\Ultimaker-Cura" "..\cura_inst\packaging\NSIS\Ultimaker-Cura.nsi.jinja" "Ultimaker Cura" "Ultimaker-Cura.exe" "$Env:CURA_VERSION_MAJOR" "$Env:CURA_VERSION_MINOR" "$Env:CURA_VERSION_PATCH" "$Env:CURA_VERSION_BUILD" "Ultimaker B.V." "https://ultimaker.com" "..\cura_inst\packaging\cura_license.txt" "LZMA" "..\cura_inst\packaging\NSIS\cura_banner_nsis.bmp" "..\cura_inst\packaging\icons\Cura.ico" "Ultimaker-Cura-$Env:CURA_VERSION_FULL-${{ runner.os }}-${{ runner.arch }}.exe"
+                    python ..\cura_inst\packaging\NSIS\nsis-configurator.py ".\Ultimaker-Cura" "..\cura_inst\packaging\NSIS\Ultimaker-Cura.nsi.jinja" "Ultimaker Cura" "Ultimaker-Cura.exe" "$Env:CURA_VERSION_MAJOR" "$Env:CURA_VERSION_MINOR" "$Env:CURA_VERSION_PATCH" "$Env:CURA_VERSION_BUILD" "Ultimaker B.V." "https://ultimaker.com" "..\cura_inst\packaging\cura_license.txt" "LZMA" "..\cura_inst\packaging\NSIS\cura_banner_nsis.bmp" "..\cura_inst\packaging\icons\Cura.ico" "Ultimaker-Cura-$Env:CURA_VERSION_FULL-${{ matrix.os_id }}-${{ runner.arch }}.exe"
                     makensis /V2 /P4 Ultimaker-Cura.nsi
                 working-directory: dist
 
             -   name: Create the Linux AppImage (Bash)
                 if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Linux' }}
-                run: python ../cura_inst/packaging/AppImage/create_appimage.py ./Ultimaker-Cura $CURA_VERSION_FULL "Ultimaker-Cura-$CURA_VERSION_FULL-${{ runner.os }}-${{ runner.arch }}.AppImage"
+                run: python ../cura_inst/packaging/AppImage/create_appimage.py ./Ultimaker-Cura $CURA_VERSION_FULL "Ultimaker-Cura-$CURA_VERSION_FULL-${{ matrix.os_id }}-${{ runner.arch }}.AppImage"
                 working-directory: dist
 
             -   name: Create the MacOS dmg (Bash)
                 if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Macos' }}
-                run: python ../cura_inst/packaging/dmg/dmg_sign_noterize.py ../cura_inst . "Ultimaker-Cura-$CURA_VERSION_FULL-${{ runner.os }}-${{ runner.arch }}.dmg"
+                run: python ../cura_inst/packaging/dmg/dmg_sign_noterize.py ../cura_inst . "Ultimaker-Cura-$CURA_VERSION_FULL-${{ matrix.os_id }}-${{ runner.arch }}.dmg"
                 working-directory: dist
 
             -   name: Upload the artifacts
                 uses: actions/upload-artifact@v3
                 with:
-                    name: Ultimaker-Cura-${{ env.CURA_VERSION_FULL }}-${{ runner.os }}-${{ runner.arch }}
+                    name: Ultimaker-Cura-${{ env.CURA_VERSION_FULL }}-${{ matrix.os_id }}-${{ runner.arch }}
                     path: |
                         dist/*.tar.gz
                         dist/*.zip
