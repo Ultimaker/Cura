@@ -68,7 +68,7 @@ jobs:
                     user = "${{ github.repository_owner }}"
                     project_name = "${{ inputs.project_name }}"
                     event_name = "${{ github.event_name }}"
-                    issue_number = "${{ github.event.issue.number }}"
+                    issue_number = "${{ github.ref }}".split('/')[2]
                     is_tag = "${{ github.ref_type }}" == "tag"
                     
                     # FIXME: for when we push a tag (such as an release)
