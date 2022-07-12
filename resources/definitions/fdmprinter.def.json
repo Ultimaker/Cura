@@ -8040,7 +8040,7 @@
                     "description": "Alternate wall directions every other layer and inset. Useful for materials that can build up stress, like for metal printing.",
                     "type": "bool",
                     "default_value": false,
-                    "enabled": false,
+                    "enabled": true,
                     "settable_per_mesh": true,
                     "settable_per_extruder": true
                 },
