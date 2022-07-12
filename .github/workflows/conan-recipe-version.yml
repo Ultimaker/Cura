@@ -126,17 +126,17 @@ jobs:
                                 actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-{latest_branch_version.prerelease.lower()}+{no_commits}"
                     
                     # %% print to output
-                    cmd_name = ["echo", f"'::set-output name=name::{project_name}'"]
+                    cmd_name = ["echo", f"::set-output name=name::{project_name}"]
                     subprocess.call(cmd_name)
-                    cmd_version = ["echo", f"'::set-output name=version::{actual_version}'"]
+                    cmd_version = ["echo", f"::set-output name=version::{actual_version}"]
                     subprocess.call(cmd_version)
-                    cmd_channel = ["echo", f"'::set-output name=channel::{channel}'"]
+                    cmd_channel = ["echo", f"::set-output name=channel::{channel}"]
                     subprocess.call(cmd_channel)
-                    cmd_id_full= ["echo", f"'::set-output name=recipe_id_full::{project_name}/{actual_version}@{user}/{channel}'"]
+                    cmd_id_full= ["echo", f"::set-output name=recipe_id_full::{project_name}/{actual_version}@{user}/{channel}"]
                     subprocess.call(cmd_id_full)
-                    cmd_id_latest = ["echo", f"'::set-output name=recipe_id_latest::{project_name}/latest@{user}/{channel}'"]
+                    cmd_id_latest = ["echo", f"::set-output name=recipe_id_latest::{project_name}/latest@{user}/{channel}"]
                     subprocess.call(cmd_id_latest)
-                    cmd_semver_full = ["echo", f"'::set-output name=semver_full::{actual_version}'"]
+                    cmd_semver_full = ["echo", f"::set-output name=semver_full::{actual_version}"]
                     subprocess.call(cmd_semver_full)
                     
                     print("::group::Conan Recipe Information")
