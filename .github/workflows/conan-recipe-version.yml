@@ -85,7 +85,7 @@ jobs:
                         elif repo.active_branch.name == "main" or repo.active_branch.name == "master":
                             channel = 'testing'
                         else:
-                            channel = repo.active_branch.name.split("_").replace("-", "_").lower()
+                            channel = repo.active_branch.name.split("_")[0].replace("-", "_").lower()
                     
                         if event_name == "pull_request":
                             channel = f"pr_{issue_number}"
