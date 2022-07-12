@@ -10,23 +10,23 @@ on:
         outputs:
             recipe_id_full:
                 description: "The full Conan recipe id: <name>/<version>@<user>/<channel>"
-                value: ${{ jobs.get-conan-broadcast-data.outputs.recipe_id_full }}
+                value: ${{ jobs.get-semver.outputs.recipe_id_full }}
 
             recipe_id_latest:
                 description: "The full Conan recipe aliased (latest) id: <name>/(latest)@<user>/<channel>"
-                value: ${{ jobs.get-conan-broadcast-data.outputs.recipe_id_latest }}
+                value: ${{ jobs.get-semver.outputs.recipe_id_latest }}
 
             recipe_semver_full:
                 description: "The full semver <Major>.<Minor>.<Patch>-<PreReleaseTag>+<BuildMetaData>"
-                value: ${{ jobs.get-conan-broadcast-data.outputs.semver_full }}
+                value: ${{ jobs.get-semver.outputs.semver_full }}
 
             recipe_user:
                 description: "The conan user"
-                value: ${{ jobs.get-conan-broadcast-data.outputs.user }}
+                value: ${{ jobs.get-semver.outputs.user }}
 
             recipe_channel:
                 description: "The conan channel"
-                value: ${{ jobs.get-conan-broadcast-data.outputs.channel }}
+                value: ${{ jobs.get-semver.outputs.channel }}
 
 jobs:
     get-semver:
@@ -60,6 +60,7 @@ jobs:
             -   id: get-conan-broadcast-data
                 name: Get Conan broadcast data
                 run: |
+                    import subprocess
                     from conans import tools
                     from conans.errors import ConanException
                     from git import Repo
@@ -125,13 +126,18 @@ jobs:
                                 actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-{latest_branch_version.prerelease.lower()}+{no_commits}"
                     
                     # %% print to output
-                    print(f"::set-output name=name::{project_name}")
-                    print(f"::set-output name=version::{actual_version}")
-                    print(f"::set-output name=user::{user}")
-                    print(f"::set-output name=channel::{channel}")
-                    print(f"::set-output name=recipe_id_full::{project_name}/{actual_version}@{user}/{channel}")
-                    print(f"::set-output name=recipe_id_latest::{project_name}/latest@{user}/{channel}")
-                    print(f"::set-output name=semver_full::{actual_version}")
+                    cmd_name = ["echo", f"'::set-output name=name::{project_name}'"]
+                    subprocess.call(cmd_name)
+                    cmd_version = ["echo", f"'::set-output name=version::{actual_version}'"]
+                    subprocess.call(cmd_version)
+                    cmd_channel = ["echo", f"'::set-output name=channel::{channel}'"]
+                    subprocess.call(cmd_channel)
+                    cmd_id_full= ["echo", f"'::set-output name=recipe_id_full::{project_name}/{actual_version}@{user}/{channel}'"]
+                    subprocess.call(cmd_id_full)
+                    cmd_id_latest = ["echo", f"'::set-output name=recipe_id_latest::{project_name}/latest@{user}/{channel}'"]
+                    subprocess.call(cmd_id_latest)
+                    cmd_semver_full = ["echo", f"'::set-output name=semver_full::{actual_version}'"]
+                    subprocess.call(cmd_semver_full)
                     
                     print("::group::Conan Recipe Information")
                     print(f"name = {project_name}")
