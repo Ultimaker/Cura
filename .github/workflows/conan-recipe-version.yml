@@ -66,7 +66,7 @@ jobs:
                     
                     repo = Repo('.')
                     user = "${{ github.repository_owner }}"
-                    project_name = "test"
+                    project_name = "${{ inputs.project_name }}"
                     event_name = "${{ github.event_name }}"
                     issue_number = "${{ github.event.issue.number }}"
                     is_tag = "${{ github.ref_type }}" == "tag"
