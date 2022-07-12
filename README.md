@@ -50,11 +50,11 @@ Please check our [Wiki page](https://github.com/Ultimaker/Cura/wiki/Adding-new-m
 
 Configuring Cura
 ----------------
-Please check out [Wiki page](https://github.com/Ultimaker/Cura/wiki/Cura-Settings) about configuration options for developers.
+Please check our [Wiki page](https://github.com/Ultimaker/Cura/wiki/Cura-Settings) about configuration options for developers.
 
 Translating Cura
 ----------------
-Please check out [Wiki page](https://github.com/Ultimaker/Cura/wiki/Translating-Cura) about how to translate Cura into other languages.
+Please check our [Wiki page](https://github.com/Ultimaker/Cura/wiki/Translating-Cura) about how to translate Cura into other languages.
 
 License
 ----------------
