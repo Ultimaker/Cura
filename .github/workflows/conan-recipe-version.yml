@@ -100,7 +100,7 @@ jobs:
                             continue
                         if version > latest_branch_version:
                             latest_branch_version = version
-                        if version.prerelease_tag is "":
+                        if version.prerelease is "":
                             latest_branch_tag = repo.tag(tag)
                     
                     # %% Get the actual version
