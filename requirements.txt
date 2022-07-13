@@ -50,7 +50,7 @@ keyring==23.0.1 \
 https://software.ultimaker.com/cura-binary-dependencies/numpy-1.21.5+mkl-cp310-cp310-win_amd64.whl; \
     sys_platform=="win32" \
     --hash=sha256:fbd5d5126b730a151134d21994a951fe28df06464e0c9a2cba2a4132e542a5fc
-numpy==1.21.5; \
+numpy==1.22.0; \
     sys_platform!="win32" \
     --hash=sha256:301e408a052fdcda5cdcf03021ebafc3c6ea093021bf9d1aa47c54d48bdad166 \
     --hash=sha256:a7e8f6216f180f3fd4efb73de5d1eaefb5f5a1ee5b645c67333033e39440e63a \
