@@ -5,7 +5,8 @@
     "metadata": {
         "author": "Cubicon R&D Center",
         "manufacturer": "Cubicon",
-        "visible": false
+        "visible": false,
+        "has_materials": true
     },
     "overrides": {
         "machine_start_gcode": {
@@ -20,6 +21,9 @@
         "machine_heated_bed": {
             "default_value": true
         },
+        "travel_compensate_overlapping_walls_enabled": {
+            "default_value": false
+        },
         "layer_height": {
             "default_value": 0.2
         },
@@ -30,6 +34,7 @@
             "default_value": "raft"
         },
         "top_bottom_pattern": { "default_value": "lines" },
+        "fill_perimeter_gaps": { "default_value": "everywhere" },
         "infill_sparse_density": { "default_value": 20 },
         "infill_before_walls": { "default_value": false },
         "top_bottom_thickness": {
@@ -47,6 +52,11 @@
         "cool_min_layer_time": { "default_value": 15 },
         "support_interface_pattern": { "default_value": "zigzag" },
         "support_pattern": { "default_value": "zigzag" },
-        "retraction_amount": { "default_value": 1.5 }
+        "retraction_amount": { "default_value": 1.5 },
+        "retraction_hop_enabled": {"default_value": true},
+        "retraction_hop": {"default_value": 0.3},
+        "material_bed_temp_wait":{
+            "default_value": true
+        }
     }
 }
