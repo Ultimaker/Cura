@@ -209,7 +209,7 @@ Item
                 height: UM.Theme.getSize("small_button_icon").height
                 width: height
 
-                color: UM.Theme.getColor("setting_control_button")
+                color: UM.Theme.getColor("accent_1")
                 hoverColor: UM.Theme.getColor("setting_control_button_hover")
 
                 iconSource: UM.Theme.getIcon("ArrowReset")

@@ -1,3 +1,42 @@
+[5.1]
+* Improved toolpath simplification algorithm
+The algorithm that reduces the resolution of the print has been rewritten, providing a more constant resolution to allow for greater precision without causing buffer underruns.
+
+* Adjusted combing boundaries to reduce scarring
+Travel moves through the inside of the models are adjusted so that they should keep more distance from the model where possible, yet allowing travels through narrow parts without retractions.
+
+* Reduced acceleration and jerk commands for travel moves
+We added the option to disable acceleration and jerk commands for travel moves. If disabled, they will take on the acceleration of the printed part of its destination. This greatly reduces file size and buffer underruns.
+
+* Project files know which packages they require
+Newly created project files will now store which packages they require from the Ultimaker Marketplace. If a project needs a material from there, the user will be prompted to download it.
+
+* Other new features and improvements:
+- Cura now links toolpaths to project files in the Digital Factory.
+- Improved performance of loading STL files on Linux.
+- Packages from the Marketplace can now contain intent profiles.
+- The application now makes heavy use of Conan to make it easier and faster to build releases of Cura.
+- Start and end g-code can now refer to the currently active profile with replacement keys.
+
+* Bug fixes:
+- Fix resetting configuration if it gets corrupt.
+- Monotonic ordering now works again for top surfaces.
+- Fixed a bug where Remove Raft Inside Corners didn't always remove all corners.
+- Fixed the position of the toolbar if the toolbar is too tall to fit.
+- Intents in the Recommended Mode now show a description again.
+- Remove Inside Corners and Raft Base Wall Count can now be changed per extruder, though they will affect the entire print.
+- Fixed opening STL files with special characters in their header.
+
+* Printer definitions, profiles and materials:
+- Improved profiles for PVA and support for Ultimaker printers.
+- Adjust retraction speed and distance for Voron.
+- Heat up extruder and build plate at the same time for Ender 3 Pro.
+- Add new Tough PLA colours.
+- Add DD0.4 print cores for Ultimaker printers.
+- Add MakerGear M2 printer.
+- Add Trimarker Nebula Plus printer.
+- Various small profile improvements.
+
 [5.0]
 <i><a href="https://youtu.be/kRj7pR4OkQA">Watch the launch event</a> to learn more about Ultimaker Cura 5.0.</i>
 

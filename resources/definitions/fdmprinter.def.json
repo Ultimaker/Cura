@@ -1190,7 +1190,7 @@
                         "inside_out": "Inside To Outside",
                         "outside_in": "Outside To Inside"
                     },
-                    "default_value": "outside_in",
+                    "default_value": "inside_out",
                     "settable_per_mesh": true
                 },
                 "alternate_extra_perimeter":
@@ -8062,6 +8062,7 @@
                     "type": "int",
                     "default_value": 1,
                     "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                    "resolve": "max(extruderValues('raft_base_wall_count'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 }

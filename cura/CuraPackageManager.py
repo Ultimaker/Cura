@@ -54,6 +54,8 @@ class CuraPackageManager(PackageManager):
     def initialize(self) -> None:
         self._installation_dirs_dict["materials"] = Resources.getStoragePath(CuraApplication.ResourceTypes.MaterialInstanceContainer)
         self._installation_dirs_dict["qualities"] = Resources.getStoragePath(CuraApplication.ResourceTypes.QualityInstanceContainer)
+        self._installation_dirs_dict["intents"] = Resources.getStoragePath(CuraApplication.ResourceTypes.IntentInstanceContainer)
+        self._installation_dirs_dict["variants"] = Resources.getStoragePath(CuraApplication.ResourceTypes.VariantInstanceContainer)
 
         super().initialize()
 
@@ -98,6 +100,7 @@ class CuraPackageManager(PackageManager):
                         return package_id
 
         Logger.error("Could not find package_id for file: {} with GUID: {} ".format(file_name, guid))
+        Logger.error(f"Bundled paths searched: {list(Resources.getSecureSearchPaths())}")
         return ""
 
     def getMachinesUsingPackage(self, package_id: str) -> Tuple[List[Tuple[GlobalStack, str, str]], List[Tuple[GlobalStack, str, str]]]:
