@@ -26,7 +26,7 @@ branches:
         is-mainline: false
         pre-release-weight: 0
     release:
-        regex: ^[\d].[\d]$
+        regex: ^[\d]+\.[\d]+$
         mode: ContinuousDelivery
         tag: beta
         increment: None
