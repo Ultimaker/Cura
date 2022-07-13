@@ -55,7 +55,9 @@ jobs:
                     cache-dependency-path: .github/workflows/requirements-conan-package.txt
 
             -   name: Install Python requirements and Create default Conan profile
-                run: pip install -r .github/workflows/requirements-conan-package.txt
+                run: |
+                    pip install -r .github/workflows/requirements-conan-package.txt
+                    pip install gitpython
 
             -   id: get-conan-broadcast-data
                 name: Get Conan broadcast data

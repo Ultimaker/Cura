@@ -1,3 +1,2 @@
 conan
 sip==6.5.1
-gitpython
