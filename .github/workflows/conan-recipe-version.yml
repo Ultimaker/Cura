@@ -20,16 +20,23 @@ on:
                 description: "The full semver <Major>.<Minor>.<Patch>-<PreReleaseTag>+<BuildMetaData>"
                 value: ${{ jobs.get-semver.outputs.semver_full }}
 
+            recipe_user:
+                description: "The conan user"
+                value: ${{ jobs.get-semver.outputs.user }}
+
+            recipe_channel:
+                description: "The conan channel"
+                value: ${{ jobs.get-semver.outputs.channel }}
+
 jobs:
     get-semver:
 
         runs-on: ubuntu-latest
 
         outputs:
-            recipe_id_full: ${{ inputs.project_name }}/${{ steps.get-conan-broadcast-data.outputs.version }}@${{ steps.get-conan-broadcast-data.outputs.user }}/${{ steps.get-conan-broadcast-data.outputs.channel }}
-            recipe_id_latest: ${{ steps.latest-alias.outputs.recipe_id_latest }}
-            recipe_id_pr: ${{ steps.pr-alias.outputs.recipe_id_pr }}
-            semver_full: ${{ steps.get-conan-broadcast-data.outputs.version }}
+            recipe_id_full: ${{ steps.get-conan-broadcast-data.outputs.recipe_id_full }}
+            recipe_id_latest: ${{ steps.get-conan-broadcast-data.outputs.recipe_id_latest }}
+            semver_full: ${{ steps.get-conan-broadcast-data.outputs.semver_full }}
             user: ${{ steps.get-conan-broadcast-data.outputs.user }}
             channel: ${{ steps.get-conan-broadcast-data.outputs.channel }}
 
@@ -40,69 +47,107 @@ jobs:
                     ref: ${{ github.head_ref }}
                     fetch-depth: 0
 
-            -   name: Install GitVersion
-                uses: gittools/actions/gitversion/setup@v0.9.13
+            -   name: Setup Python and pip
+                uses: actions/setup-python@v4
                 with:
-                    versionSpec: '5.x'
+                    python-version: "3.10.x"
+                    cache: 'pip'
+                    cache-dependency-path: .github/workflows/requirements-conan-package.txt
 
-            -   name: GitTools
-                id: git-tool
-                uses: gittools/actions/gitversion/execute@v0.9.13
+            -   name: Install Python requirements and Create default Conan profile
+                run: |
+                    pip install -r .github/workflows/requirements-conan-package.txt
+                    pip install gitpython
 
             -   id: get-conan-broadcast-data
                 name: Get Conan broadcast data
                 run: |
-                    if [ "${{ github.ref_type == 'tag' && github.ref_name == '${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}.${{ steps.git-tool.outputs.Patch }}' }}" = "true" ]; then
-                      # tagged commits on a release branch matching the major.minor.patch are actual released version and should have no user and channel
-                      # name/major.minor.patch@_/_
-                      echo '::set-output name=user::_'
-                      echo '::set-output name=channel::_'
-                      echo '::set-output name=version::${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}.${{ steps.git-tool.outputs.Patch }}'
-                    elif [ "${{ github.ref_type == 'tag' && github.ref_name == '${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}.${{ steps.git-tool.outputs.Patch }}-BETA' }}" = "true" ]; then
-                      # tagged commits with major.minor.patch-BETA on a release branch are actual released version and should have no user and channel
-                      # name/major.minor.patch-beta@_/_
-                      echo '::set-output name=user::_'
-                      echo '::set-output name=channel::_'
-                      echo '::set-output name=version::${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}.${{ steps.git-tool.outputs.Patch }}-${{ steps.git-tool.outputs.PreReleaseLabel }}'                    
-                    elif [ "${{ github.ref_name == 'main' || github.ref_name == 'master' }}" = "true" ]; then
-                      # commits on main/master are alpha's (nightlies) and are considered testing
-                      # name/major.minor.patch-alpha+build@ultimaker/testing
-                      echo ${{ github.repository_owner }} | awk '{print "::set-output name=user::"tolower($0)}'
-                      echo '::set-output name=channel::testing'
-                      echo '::set-output name=version::${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}.${{ steps.git-tool.outputs.Patch }}-${{ steps.git-tool.outputs.PreReleaseLabel }}+${{ steps.git-tool.outputs.BuildMetaData }}'
-                    elif [ "${{ github.ref_name == '5.1' }}" = "true" ]; then
-                      # commits on release branches are beta's and are considered stable
-                      # name/major.minor.patch-beta+build@ultimaker/stable
-                      # FIXME: For release branches: maybe rename the branch to release/**
-                      echo ${{ github.repository_owner }} | awk '{print "::set-output name=user::"tolower($0)}'
-                      echo '::set-output name=channel::stable'    
-                      echo '::set-output name=version::${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}.${{ steps.git-tool.outputs.Patch }}-${{ steps.git-tool.outputs.PreReleaseLabel }}+${{ steps.git-tool.outputs.BuildMetaData }}'
-                    else
-                      # commits on other branches are considered unstable and for development purposes only
-                      # Use the Cura branch naming scheme CURA-1234_foo_bar
-                      # we use the first 9 characters of the branch name
-                      # name/major.minor.patch-beta+build@ultimaker/cura_<jira_number>
-                      echo ${{ github.repository_owner }} | awk '{print "::set-output name=user::"tolower($0)}'
-                      branch=${{ github.ref_name }}
-                      sanitized_branch="${branch//-/_}"
-                      echo $sanitized_branch | awk '{print "::set-output name=channel::"substr(tolower($0),0,9)}'
-                      echo '::set-output version=${{ steps.git-tool.outputs.Major }}.${{ steps.git-tool.outputs.Minor }}.${{ steps.git-tool.outputs.Patch }}-${{ steps.git-tool.outputs.PreReleaseLabel }}+${{ steps.git-tool.outputs.BuildMetaData }}'
-                    fi
-
-            -   name: Get pull request alias
-                id: pr-alias
-                run: |
-                    if [ "${{ github.event_name == 'pull_request' }}" = "true" ]; then
-                      # pull request events are considered unstable and are for testing purposes
-                      # name/latest@ultimaker/pr_<number>
-                      echo "::set-output name=recipe_id_pr::${{ inputs.project_name }}/latest@${{ steps.get-conan-broadcast-data.outputs.user }}/pr_$PR_NUMBER"
-                    else
-                      echo "::set-output name=recipe_id_pr::''"
-                    fi
-                env:
-                    PR_NUMBER: ${{ github.event.issue.number }}
-
-            -   name: Get latest alias
-                id: latest-alias
-                run: |
-                    echo "::set-output name=recipe_id_latest::${{ inputs.project_name }}/latest@${{ steps.get-conan-broadcast-data.outputs.user }}/${{ steps.get-conan-broadcast-data.outputs.channel }}"
+                    import subprocess
+                    from conans import tools
+                    from conans.errors import ConanException
+                    from git import Repo
+                    
+                    repo = Repo('.')
+                    user = "${{ github.repository_owner }}"
+                    project_name = "${{ inputs.project_name }}"
+                    event_name = "${{ github.event_name }}"
+                    issue_number = "${{ github.ref }}".split('/')[2]
+                    is_tag = "${{ github.ref_type }}" == "tag"
+                    
+                    # FIXME: for when we push a tag (such as an release)
+                    if is_tag:
+                        branch_version = tools.Version("2.3.5")
+                    else:
+                        try:
+                            branch_version = tools.Version(repo.active_branch.name)
+                            channel = "stable"
+                        except ConanException:
+                            branch_version = tools.Version('0.0.0')
+                        if repo.active_branch.name == f"{branch_version.major}.{branch_version.minor}":
+                            channel = 'stable'
+                        elif repo.active_branch.name == "main" or repo.active_branch.name == "master":
+                            channel = 'testing'
+                        else:
+                            channel = repo.active_branch.name.split("_")[0].replace("-", "_").lower()
+                    
+                        if event_name == "pull_request":
+                            channel = f"pr_{issue_number}"
+                    
+                    # %% Get the actual version
+                    latest_branch_version = tools.Version("0.0.0")
+                    latest_branch_tag = None
+                    for tag in repo.git.tag(merged = True).splitlines():
+                        try:
+                            version = tools.Version(tag)
+                        except ConanException:
+                            continue
+                        if version > latest_branch_version:
+                            latest_branch_version = version
+                            latest_branch_tag = repo.tag(tag)
+                    
+                    # %% Get the actual version
+                    no_commits = 0
+                    for commit in repo.iter_commits("HEAD"):
+                        if commit == latest_branch_tag.commit:
+                            break
+                        no_commits += 1
+                    
+                    if no_commits == 0:
+                        # This is a release
+                        actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}"
+                        if channel == "stable":
+                            user = "_"
+                            channel = "_"
+                    else:
+                        if event_name == "pull_request":
+                            actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-{latest_branch_version.prerelease.lower()}+pr_{issue_number}_{no_commits}"
+                        else:
+                            if latest_branch_version.prerelease == "":
+                                actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-alpha+{no_commits}"
+                            else:
+                                actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-{latest_branch_version.prerelease.lower()}+{no_commits}"
+                    
+                    # %% print to output
+                    cmd_name = ["echo", f"::set-output name=name::{project_name}"]
+                    subprocess.call(cmd_name)
+                    cmd_version = ["echo", f"::set-output name=version::{actual_version}"]
+                    subprocess.call(cmd_version)
+                    cmd_channel = ["echo", f"::set-output name=channel::{channel}"]
+                    subprocess.call(cmd_channel)
+                    cmd_id_full= ["echo", f"::set-output name=recipe_id_full::{project_name}/{actual_version}@{user}/{channel}"]
+                    subprocess.call(cmd_id_full)
+                    cmd_id_latest = ["echo", f"::set-output name=recipe_id_latest::{project_name}/latest@{user}/{channel}"]
+                    subprocess.call(cmd_id_latest)
+                    cmd_semver_full = ["echo", f"::set-output name=semver_full::{actual_version}"]
+                    subprocess.call(cmd_semver_full)
+                    
+                    print("::group::Conan Recipe Information")
+                    print(f"name = {project_name}")
+                    print(f"version = {actual_version}")
+                    print(f"user = {user}")
+                    print(f"channel = {channel}")
+                    print(f"recipe_id_full = {project_name}/{actual_version}@{user}/{channel}")
+                    print(f"recipe_id_latest = {project_name}/latest@{user}/{channel}")
+                    print(f"semver_full = {actual_version}")
+                    print("::endgroup::")
+                shell: python
