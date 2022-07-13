@@ -174,8 +174,8 @@ jobs:
             -   name: Install OpenSSL shared (Bash)
                 if: ${{ runner.os != 'Windows' }}
                 run: |
-                    cp ./openssl/lib/*.so* ./cura_inst/bin/
-                    cp ./openssl/lib/*.dylib* ./cura_inst/bin/                    
+                    cp ./openssl/lib/*.so* ./cura_inst/bin/ || true
+                    cp ./openssl/lib/*.dylib* ./cura_inst/bin/ || true                    
 
             -   name: Install OpenSSL shared (Powershell)
                 if: ${{ runner.os == 'Windows' }}
