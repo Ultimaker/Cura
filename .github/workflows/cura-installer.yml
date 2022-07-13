@@ -167,13 +167,19 @@ jobs:
                 #  OpenSSL statically for CPython, but our Python Dependenies (such as PyQt6) require a shared library.
                 #  Because Conan won't allow for building the same library with two different options (easily) we need to install it explicitly
                 #  and do a manual copy to the VirtualEnv, such that Pyinstaller can find it.
-            -   name: Install OpenSSL shared
+            -   name: Install OpenSSL shared (Bash)
+                if: ${{ runner.os != 'Windows' }}
+                run: |
+                    conan install openssl/1.1.1l@_/_ --build=missing --update -o openssl:shared=True -g deploy
+                    cp openssl/lib/*.so* ./cura_inst/bin/ 2> /dev/null
+                    cp openssl/lib/*.dylib* ./cura_inst/bin/ 2> /dev/null                    
+
+            -   name: Install OpenSSL shared (Powershell)
+                if: ${{ runner.os == 'Windows' }}
                 run: |
                     conan install openssl/1.1.1l@_/_ --build=missing --update -o openssl:shared=True -g deploy
                     cp openssl/bin/*.dll ./cura_inst/Scripts/
                     cp openssl/lib/*.lib ./cura_inst/Lib/
-                    cp openssl/lib/*.so* ./cura_inst/bin/
-                    cp openssl/lib/*.dylib* ./cura_inst/bin/                    
 
             -   name: Create the Cura dist
                 run: pyinstaller ./cura_inst/Ultimaker-Cura.spec
