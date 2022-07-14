@@ -25,7 +25,7 @@ var SM_Folder
 ######################################################################
 
 VIProductVersion  "${VERSION}"
-VIAddVersionKey "ProductName"  "${APP_NAME}"
+VIAddVersionKey "ProductName"  "{{ app_name }}"
 VIAddVersionKey "CompanyName"  "${COMP_NAME}"
 VIAddVersionKey "LegalCopyright"  "${COPYRIGHT}"
 VIAddVersionKey "FileDescription"  "${DESCRIPTION}"
@@ -64,7 +64,7 @@ InstallDir "$PROGRAMFILES64\${APP_NAME}"
 
 !ifdef REG_START_MENU
 !define MUI_STARTMENUPAGE_NODISABLE
-!define MUI_STARTMENUPAGE_DEFAULTFOLDER "{{ app_name }}"
+!define MUI_STARTMENUPAGE_DEFAULTFOLDER "${APP_NAME}"
 !define MUI_STARTMENUPAGE_REGISTRY_ROOT "${REG_ROOT}"
 !define MUI_STARTMENUPAGE_REGISTRY_KEY "${UNINSTALL_PATH}"
 !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "${REG_START_MENU}"
