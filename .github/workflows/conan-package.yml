@@ -60,7 +60,7 @@ jobs:
             recipe_id_latest: ${{ needs.conan-recipe-version.outputs.recipe_id_latest }}
             recipe_id_pr: ${{ needs.conan-recipe-version.outputs.recipe_id_pr }}
             runs_on: 'macos-10.15'
-            python_version: '3.10.4'
+            python_version: '3.10.x'
             conan_config_branch: 'master'
             conan_logging_level: 'info'
             conan_export_binaries: true
@@ -74,7 +74,7 @@ jobs:
             recipe_id_latest: ${{ needs.conan-recipe-version.outputs.recipe_id_latest }}
             recipe_id_pr: ${{ needs.conan-recipe-version.outputs.recipe_id_pr }}
             runs_on: 'ubuntu-20.04'
-            python_version: '3.10.4'
+            python_version: '3.10.x'
             conan_config_branch: 'master'
             conan_logging_level: 'info'
             conan_export_binaries: true
@@ -88,7 +88,7 @@ jobs:
             recipe_id_latest: ${{ needs.conan-recipe-version.outputs.recipe_id_latest }}
             recipe_id_pr: ${{ needs.conan-recipe-version.outputs.recipe_id_pr }}
             runs_on: 'windows-2022'
-            python_version: '3.10.4'
+            python_version: '3.10.x'
             conan_config_branch: 'master'
             conan_logging_level: 'info'
             conan_export_binaries: true
@@ -96,7 +96,7 @@ jobs:
 
     notify-export:
         if: ${{ always() }}
-        needs: [ conan-package-export-linux, conan-package-export-macos, conan-package-export-windows ]
+        needs: [ conan-recipe-version, conan-package-export-linux, conan-package-export-macos, conan-package-export-windows ]
 
         uses: ultimaker/cura/.github/workflows/notify.yml@main
         with:
