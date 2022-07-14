@@ -175,13 +175,13 @@ jobs:
             -   name: Install OpenSSL shared
                 run: conan install openssl/1.1.1l@_/_ --build=missing --update -o openssl:shared=True -g deploy
 
-            -   name: Install OpenSSL shared (Bash)
+            -   name: Copy OpenSSL shared (Bash)
                 if: ${{ runner.os != 'Windows' }}
                 run: |
                     cp ./openssl/lib/*.so* ./cura_inst/bin/ || true
                     cp ./openssl/lib/*.dylib* ./cura_inst/bin/ || true                    
 
-            -   name: Install OpenSSL shared (Powershell)
+            -   name: Copy OpenSSL shared (Powershell)
                 if: ${{ runner.os == 'Windows' }}
                 run: |
                     cp openssl/bin/*.dll ./cura_inst/Scripts/
