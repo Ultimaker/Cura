@@ -6,7 +6,7 @@ on:
             cura_conan_version:
                 description: 'Cura Conan Version'
                 # Fixme: default to cura/latest@testing (which is main)
-                default: 'cura/latest@ultimaker/stable'
+                default: 'cura/latest@ultimaker/main'
                 required: true
             conan_config:
                 description: 'Conan config branch to use'
