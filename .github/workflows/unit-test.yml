@@ -71,7 +71,7 @@ jobs:
         needs: [ conan-recipe-version ]
 
         steps:
-            -   name: Checkout CuraEngine
+            -   name: Checkout
                 uses: actions/checkout@v3
 
             -   name: Setup Python and pip
