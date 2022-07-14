@@ -68,7 +68,7 @@ jobs:
                     from git import Repo
                     
                     repo = Repo('.')
-                    user = "${{ github.repository_owner }}"
+                    user = "${{ github.repository_owner }}".lower()
                     project_name = "${{ inputs.project_name }}"
                     event_name = "${{ github.event_name }}"
                     issue_number = "${{ github.ref }}".split('/')[2]
