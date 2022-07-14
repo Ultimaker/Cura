@@ -5,8 +5,7 @@ on:
         inputs:
             cura_conan_version:
                 description: 'Cura Conan Version'
-                # Fixme: default to cura/latest@testing (which is main)
-                default: 'cura/latest@ultimaker/main'
+                default: 'cura/latest@ultimaker/testing'
                 required: true
             conan_args:
                 description: 'Conan args: eq.: --require-override'
