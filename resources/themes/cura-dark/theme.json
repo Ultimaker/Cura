@@ -48,7 +48,6 @@
         "lining": "border_main",
         "viewport_overlay": "background_1",
 
-        "primary": [12, 169, 227, 255],
         "primary_text": "text_default",
         "secondary": [95, 95, 95, 255],
 
@@ -81,7 +80,7 @@
         "text": "text_default",
         "text_detail": [255, 255, 255, 172],
         "text_link": "accent_1",
-        "text_inactive": [255, 255, 255, 88],
+        "text_inactive": [118, 118, 118, 255],
         "text_hover": [255, 255, 255, 204],
         "text_scene": [255, 255, 255, 162],
         "text_scene_hover": [255, 255, 255, 204],

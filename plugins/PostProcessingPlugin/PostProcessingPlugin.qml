@@ -286,6 +286,7 @@ UM.Dialog
                 {
                     id: definitionsModel
                     containerId: manager.selectedScriptDefinitionId
+                    onContainerIdChanged: definitionsModel.setAllVisible(true)
                     showAll: true
                 }
 
