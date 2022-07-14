@@ -62,7 +62,7 @@ env:
 
 jobs:
     conan-recipe-version:
-        uses: ultimaker/cura/.github/workflows/conan-recipe-version.yml@CURA-9365
+        uses: ultimaker/cura/.github/workflows/conan-recipe-version.yml@main
         with:
             project_name: cura
 
@@ -71,7 +71,7 @@ jobs:
         needs: [ conan-recipe-version ]
 
         steps:
-            -   name: Checkout CuraEngine
+            -   name: Checkout
                 uses: actions/checkout@v3
 
             -   name: Setup Python and pip
