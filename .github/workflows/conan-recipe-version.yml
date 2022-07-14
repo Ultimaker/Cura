@@ -76,7 +76,7 @@ jobs:
                     
                     # FIXME: for when we push a tag (such as an release)
                     if is_tag:
-                        branch_version = tools.Version("2.3.5")
+                        branch_version = tools.Version("${{ github.ref_name }}")
                     else:
                         try:
                             branch_version = tools.Version(repo.active_branch.name)
