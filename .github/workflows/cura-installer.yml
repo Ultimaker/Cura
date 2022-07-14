@@ -9,7 +9,7 @@ on:
                 default: 'cura/latest@ultimaker/main'
                 required: true
             conan_args:
-                description: 'Conan args: eq.: --require-override=curaengine/5.1.0-beta+123@ultimaker/testing'
+                description: 'Conan args: eq.: --require-override'
                 default: ''
                 required: false
             conan_config:
