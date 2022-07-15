@@ -130,10 +130,14 @@ jobs:
                         if event_name == "pull_request":
                             actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-{latest_branch_version.prerelease.lower()}+pr_{issue_number}_{no_commits}"
                         else:
-                            if latest_branch_version.prerelease == "":
-                                actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-alpha+{no_commits}"
+                            if channel != "stable" or channel != "_" or channel != "":
+                                channel_metadata = f"{channel}_{no_commits}"
                             else:
-                                actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-{latest_branch_version.prerelease.lower()}+{no_commits}"
+                                channel_metadata = f"{no_commits}"
+                        if latest_branch_version.prerelease == "":
+                                actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-alpha+{channel_metadata}"
+                            else:
+                                actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-{latest_branch_version.prerelease.lower()}+{channel_metadata}"
                     
                     # %% print to output
                     cmd_name = ["echo", f"::set-output name=name::{project_name}"]
