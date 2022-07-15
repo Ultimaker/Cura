@@ -5529,7 +5529,7 @@ msgstr "配置不受支持"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/UnsupportedProfileIndication.qml:39
 msgctxt "@message:text %1 is the name the printer uses for 'nozzle'."
 msgid "No profiles are available for the selected material/%1 configuration. Please change your configuration."
-msgstr "对于所选材料 /%1 配置，无可用的配置文件。请更改配置。"
+msgstr "对于所选材料/%1 配置，无可用的配置文件。请更改配置。"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/UnsupportedProfileIndication.qml:47
 msgctxt "@button:label"
