@@ -286,7 +286,7 @@
             Windows: "./icons/Cura.ico"
             Macos: "./icons/cura.icns"
             Linux: "./icons/cura-128.png"
-"cura_9459":
+"cura_8665":
     requirements:
         - "arcus/(latest)@ultimaker/stable"
         - "curaengine/(latest)@ultimaker/stable"
