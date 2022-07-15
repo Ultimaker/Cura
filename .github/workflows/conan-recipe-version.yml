@@ -159,6 +159,6 @@ jobs:
                     print(f"recipe_id_full = {project_name}/{actual_version}@{user}/{channel}")
                     print(f"recipe_id_latest = {project_name}/latest@{user}/{channel}")
                     print(f"semver_full = {actual_version}")
-                    print(f"is_release_branch = {is_release_branch}")
+                    print(f"is_release_branch = {str(is_release_branch).lower()}")
                     print("::endgroup::")
                 shell: python
