@@ -134,7 +134,7 @@ jobs:
                                 channel_metadata = f"{channel}_{no_commits}"
                             else:
                                 channel_metadata = f"{no_commits}"
-                        if latest_branch_version.prerelease == "":
+                            if latest_branch_version.prerelease == "":
                                 actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-alpha+{channel_metadata}"
                             else:
                                 actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-{latest_branch_version.prerelease.lower()}+{channel_metadata}"
