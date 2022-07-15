@@ -36,7 +36,7 @@ jobs:
                 uses: rtCamp/action-slack-notify@v2
                 env:
                     SLACK_USERNAME: ${{ github.repository }}
-                    SLACK_COLOR: #00ff00
+                    SLACK_COLOR: green
                     SLACK_ICON: https://github.com/Ultimaker/Cura/blob/main/icons/cura-128.png?raw=true
                     SLACK_TITLE: ${{ inputs.success_title }}
                     SLACK_MESSAGE: ${{ inputs.success_body }}
@@ -47,7 +47,7 @@ jobs:
                 uses: rtCamp/action-slack-notify@v2
                 env:
                     SLACK_USERNAME: ${{ github.repository }}
-                    SLACK_COLOR: #ff0000
+                    SLACK_COLOR: red
                     SLACK_ICON: https://github.com/Ultimaker/Cura/blob/main/icons/cura-128.png?raw=true
                     SLACK_TITLE: ${{ inputs.failure_title }}
                     SLACK_MESSAGE: ${{ inputs.failure_body }}
