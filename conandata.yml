@@ -1,3 +1,15 @@
+---
+# Usage: defaults to None
+# If you're on a release branch create an entry for that **version**  e.q.: `5.1.0` update the requirements (use pinned versions, not latest)
+# also create a beta entry for that **version**  e.q.: `5.1.0-beta`, update the requirements (use the <dep_name>/(latest)@ultimaker/stable)
+#
+# If you're working on a feature/bugfix branch from a release branch, create an entry for that **channel**,  update the requirements (use
+# the <dep_name>/(latest)@ultimaker/stable)
+#
+# If you're working on a feature/bugfix branch from a main branch, it is optional to create an entry for that **channel**,  update the
+# requirements (use the <dep_name>/(latest)@ultimaker/testing)
+#
+# Subject to change in the future!
 "None":
     requirements:
         - "arcus/(latest)@ultimaker/testing"
