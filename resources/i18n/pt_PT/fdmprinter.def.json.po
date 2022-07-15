@@ -2810,12 +2810,13 @@ msgstr "Permite o ajuste da aceleração da cabeça de impressão. Aumentar as a
 #: fdmprinter.def.json
 msgctxt "acceleration_travel_enabled label"
 msgid "Enable Travel Acceleration"
-msgstr ""
+msgstr "Ativar a aceleração da viagem"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_travel_enabled description"
 msgid "Use a separate acceleration rate for travel moves. If disabled, travel moves will use the acceleration value of the printed line at their destination."
-msgstr ""
+msgstr "Utilizar uma taxa de aceleração separada para movimentos de viagem. Se desativados, os movimentos de viagem utilizarão o valor da aceleração da linha impressa"
+" no seu destino."
 
 #: fdmprinter.def.json
 msgctxt "acceleration_print label"
@@ -3010,12 +3011,13 @@ msgstr "Permite ajustar o jerk da cabeça de impressão quando a velocidade nos 
 #: fdmprinter.def.json
 msgctxt "jerk_travel_enabled label"
 msgid "Enable Travel Jerk"
-msgstr ""
+msgstr "Ativar Jerk de Viagem"
 
 #: fdmprinter.def.json
 msgctxt "jerk_travel_enabled description"
 msgid "Use a separate jerk rate for travel moves. If disabled, travel moves will use the jerk value of the printed line at their destination."
-msgstr ""
+msgstr "Utilizar uma taxa de jerk separada para movimentos de viagem. Se for desativado, os movimentos de viagem utilizarão o valor do jerk da linha impressa no"
+" seu destino."
 
 #: fdmprinter.def.json
 msgctxt "jerk_print label"
