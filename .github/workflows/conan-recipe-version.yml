@@ -20,9 +20,9 @@ on:
                 description: "The full semver <Major>.<Minor>.<Patch>-<PreReleaseTag>+<BuildMetaData>"
                 value: ${{ jobs.get-semver.outputs.semver_full }}
 
-            major_minor:
-                description: "The release branch name <Major>.<Minor>"
-                value: ${{ jobs.get-semver.outputs.major_minor }}
+            is_release_branch:
+                description: "is current branch a release branch?"
+                value: ${{ jobs.get-semver.outputs.release_branch }}
 
             recipe_user:
                 description: "The conan user"
@@ -41,7 +41,7 @@ jobs:
             recipe_id_full: ${{ steps.get-conan-broadcast-data.outputs.recipe_id_full }}
             recipe_id_latest: ${{ steps.get-conan-broadcast-data.outputs.recipe_id_latest }}
             semver_full: ${{ steps.get-conan-broadcast-data.outputs.semver_full }}
-            major_minor: ${{ steps.get-conan-broadcast-data.outputs.major_minor }}
+            is_release_branch: ${{ steps.get-conan-broadcast-data.outputs.is_release_branch }}
             user: ${{ steps.get-conan-broadcast-data.outputs.user }}
             channel: ${{ steps.get-conan-broadcast-data.outputs.channel }}
 
@@ -78,10 +78,12 @@ jobs:
                     event_name = "${{ github.event_name }}"
                     issue_number = "${{ github.ref }}".split('/')[2]
                     is_tag = "${{ github.ref_type }}" == "tag"
+                    is_release_branch = False
                     
                     # FIXME: for when we push a tag (such as an release)
                     if is_tag:
                         branch_version = tools.Version("${{ github.ref_name }}")
+                        is_release_branch = True
                     else:
                         try:
                             branch_version = tools.Version(repo.active_branch.name)
@@ -90,6 +92,7 @@ jobs:
                             branch_version = tools.Version('0.0.0')
                         if repo.active_branch.name == f"{branch_version.major}.{branch_version.minor}":
                             channel = 'stable'
+                            is_release_branch = True
                         elif repo.active_branch.name == "main" or repo.active_branch.name == "master":
                             channel = 'testing'
                         else:
@@ -132,8 +135,6 @@ jobs:
                             else:
                                 actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-{latest_branch_version.prerelease.lower()}+{no_commits}"
                     
-                    major_minor = f"{latest_branch_version.major}.{latest_branch_version.minor}"
-                    
                     # %% print to output
                     cmd_name = ["echo", f"::set-output name=name::{project_name}"]
                     subprocess.call(cmd_name)
@@ -147,8 +148,8 @@ jobs:
                     subprocess.call(cmd_id_latest)
                     cmd_semver_full = ["echo", f"::set-output name=semver_full::{actual_version}"]
                     subprocess.call(cmd_semver_full)
-                    cmd_major_minor = ["echo", f"::set-output name=major_minor::{major_minor}"]
-                    subprocess.call(cmd_major_minor)
+                    cmd_is_release_branch = ["echo", f"::set-output name=is_release_branch::{str(is_release_branch).lower()}"]
+                    subprocess.call(cmd_is_release_branch)
                     
                     print("::group::Conan Recipe Information")
                     print(f"name = {project_name}")
@@ -158,6 +159,6 @@ jobs:
                     print(f"recipe_id_full = {project_name}/{actual_version}@{user}/{channel}")
                     print(f"recipe_id_latest = {project_name}/latest@{user}/{channel}")
                     print(f"semver_full = {actual_version}")
-                    print(f"major_minor = {major_minor}")
+                    print(f"is_release_branch = {is_release_branch}")
                     print("::endgroup::")
                 shell: python
