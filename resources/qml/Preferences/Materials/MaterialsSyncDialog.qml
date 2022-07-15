@@ -8,9 +8,9 @@ import QtQuick.Layouts 1.15
 import QtQuick.Window 2.1
 
 import Cura 1.1 as Cura
-import UM 1.5 as UM
+import UM 1.6 as UM
 
-Window
+UM.Window
 {
     id: materialsSyncDialog
     property variant catalog: UM.I18nCatalog { name: "cura" }
