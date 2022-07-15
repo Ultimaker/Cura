@@ -38,13 +38,14 @@ def generate_nsi(source_path: str, dist_path: str, filename: str):
     with open(jinja_template_path, "r") as f:
         template = Template(f.read())
 
+
     nsis_content = template.render(
-        app_name = "Ultimaker Cura",
+        app_name = f"Ultimaker Cura {os.getenv('CURA_VERSION_FULL')}",
         main_app = "Ultimaker-Cura.exe",
+        version = os.getenv('CURA_VERSION_FULL'),
         version_major = os.environ.get("CURA_VERSION_MAJOR"),
         version_minor = os.environ.get("CURA_VERSION_MINOR"),
         version_patch = os.environ.get("CURA_VERSION_PATCH"),
-        version_build = os.environ.get("CURA_VERSION_BUILD"),
         company = "Ultimaker B.V.",
         web_site = "https://ultimaker.com",
         year = datetime.now().year,
