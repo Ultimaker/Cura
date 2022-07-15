@@ -820,6 +820,10 @@ class CuraApplication(QtApplication):
     def run(self):
         super().run()
 
+        if len(ApplicationMetadata.DEPENDENCY_INFO) > 0:
+            Logger.debug("Using Conan managed dependencies: " + ", ".join(
+                [dep["recipe"]["id"] for dep in ApplicationMetadata.DEPENDENCY_INFO["installed"] if dep["recipe"]["version"] != "latest"]))
+
         Logger.log("i", "Initializing machine error checker")
         self._machine_error_checker = MachineErrorChecker(self)
         self._machine_error_checker.initialize()
