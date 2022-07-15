@@ -2810,12 +2810,12 @@ msgstr "프린트 헤드 가속도를 활성화 합니다. 가속도를 높이�
 #: fdmprinter.def.json
 msgctxt "acceleration_travel_enabled label"
 msgid "Enable Travel Acceleration"
-msgstr ""
+msgstr "이동 가속 활성화"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_travel_enabled description"
 msgid "Use a separate acceleration rate for travel moves. If disabled, travel moves will use the acceleration value of the printed line at their destination."
-msgstr ""
+msgstr "이동할 때 별도의 가속도를 사용합니다. 비활성화된 경우 이동 시 프린팅된 라인의 목적지 기준 가속도 값을 사용합니다."
 
 #: fdmprinter.def.json
 msgctxt "acceleration_print label"
@@ -3010,12 +3010,12 @@ msgstr "X 또는 Y 축의 속도가 변경 될 때 프린트 헤드의 속도를
 #: fdmprinter.def.json
 msgctxt "jerk_travel_enabled label"
 msgid "Enable Travel Jerk"
-msgstr ""
+msgstr "이동 저크 활성화"
 
 #: fdmprinter.def.json
 msgctxt "jerk_travel_enabled description"
 msgid "Use a separate jerk rate for travel moves. If disabled, travel moves will use the jerk value of the printed line at their destination."
-msgstr ""
+msgstr "이동할 때 별도의 저크 속도를 사용합니다. 비활성화된 경우 이동 시 프린팅된 라인의 목적지 기준 저크 값을 사용합니다."
 
 #: fdmprinter.def.json
 msgctxt "jerk_print label"
