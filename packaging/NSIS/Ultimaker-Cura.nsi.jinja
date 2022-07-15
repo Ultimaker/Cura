@@ -1,10 +1,11 @@
 # Copyright (c) 2022 Ultimaker B.V.
 # Cura's build system is released under the terms of the AGPLv3 or higher.
 
-!define APP_NAME "{{ app_name }} {{ version_major }}.{{ version_minor }}.{{ version_patch }}"
+!define APP_NAME "{{ app_name }} {{ version_major }}.{{ version_minor }}.{{ version_patch }}.{{ version_build }}"
 !define COMP_NAME "{{ company }}"
 !define WEB_SITE "{{ web_site }}"
 !define VERSION "{{ version_major }}.{{ version_minor }}.{{ version_patch }}.{{ version_build }}"
+!define VIVERSION "{{ version_major }}.{{ version_minor }}.{{ version_patch }}.0"
 !define COPYRIGHT "Copyright (c) {{ year }} {{ company }}"
 !define DESCRIPTION "Application"
 !define LICENSE_TXT "{{ cura_license_file }}"
@@ -24,12 +25,12 @@ var SM_Folder
 
 ######################################################################
 
-VIProductVersion  "${VERSION}"
+VIProductVersion  "${VIVERSION}"
 VIAddVersionKey "ProductName"  "{{ app_name }}"
 VIAddVersionKey "CompanyName"  "${COMP_NAME}"
 VIAddVersionKey "LegalCopyright"  "${COPYRIGHT}"
 VIAddVersionKey "FileDescription"  "${DESCRIPTION}"
-VIAddVersionKey "FileVersion"  "${VERSION}"
+VIAddVersionKey "FileVersion"  "${VIVERSION}"
 
 ######################################################################
 
@@ -38,7 +39,6 @@ Name "${APP_NAME}"
 Caption "${APP_NAME}"
 OutFile "${INSTALLER_NAME}"
 BrandingText "${APP_NAME}"
-InstallDirRegKey "${REG_ROOT}" "${REG_APP_PATH}" ""
 InstallDir "$PROGRAMFILES64\${APP_NAME}"
 
 ######################################################################

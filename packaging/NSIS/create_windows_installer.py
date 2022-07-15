@@ -5,7 +5,6 @@ import argparse  # Command line arguments parsing and help.
 import subprocess
 
 import shutil
-import sys
 from datetime import datetime
 
 from pathlib import Path
