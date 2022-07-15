@@ -64,7 +64,7 @@ except ImportError:
 DEPENDENCY_INFO = {}
 try:
     from pathlib import Path
-    conan_install_info = Path(__file__).parent.joinpath("conan_install_info.json")
+    conan_install_info = Path(__file__).parent.parent.joinpath("conan_install_info.json")
     if conan_install_info.exists():
         import json
         with open(conan_install_info, "r") as f:
