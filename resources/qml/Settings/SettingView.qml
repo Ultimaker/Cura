@@ -1,7 +1,7 @@
 // Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.7
+import QtQuick
 import QtQuick.Controls 2.1
 
 import UM 1.5 as UM
@@ -178,7 +178,24 @@ Item
     ListView
     {
         id: contents
-        maximumFlickVelocity: 1000 * screenScaleFactor
+        maximumFlickVelocity: 2000 * screenScaleFactor
+        flickDeceleration: 4000 * screenScaleFactor
+//        Timer
+//        {
+//            id: flickTimer
+//            interval: 50
+//            onTriggered:
+//            {
+//                print("triggered")
+//                contents.cancelFlick()
+//            }
+//        }
+//
+//        onFlickStarted: {
+//            print("Start Flick")
+//            flickTimer.start()
+//        }
+
         anchors
         {
             top: filterContainer.bottom
@@ -199,6 +216,8 @@ Item
                     forceActiveFocus();
                 }
             }
+//            snapMode: ScrollBar.SnapAlways
+//            stepSize: 10
         }
 
         model: UM.SettingDefinitionsModel
