@@ -14,8 +14,8 @@ from jinja2 import Template
 
 
 def generate_nsi(source_path: str, dist_path: str, filename: str):
-    dist_loc = Path(dist_path)
-    source_loc = Path(source_path)
+    dist_loc = Path(os.getcwd(), dist_path)
+    source_loc = Path(os.getcwd(), source_path)
     instdir = Path("$INSTDIR")
     dist_paths = [p.relative_to(dist_loc.joinpath("Ultimaker-Cura")) for p in sorted(dist_loc.joinpath("Ultimaker-Cura").rglob("*")) if p.is_file()]
     mapped_out_paths = {}
@@ -35,7 +35,7 @@ def generate_nsi(source_path: str, dist_path: str, filename: str):
 
     rmdir_paths = sorted(list(rmdir_paths), reverse = True)[:-2]
 
-    jinja_template_path = Path(sys.argv[2])
+    jinja_template_path = Path(source_loc.joinpath("packaging", "NSIS", "Ultimaker-Cura.nsi.jinja"))
     with open(jinja_template_path, "r") as f:
         template = Template(f.read())
 
@@ -65,7 +65,7 @@ def generate_nsi(source_path: str, dist_path: str, filename: str):
 
 
 def build(dist_path: str):
-    dist_loc = Path(dist_path)
+    dist_loc = Path(os.getcwd(), dist_path)
     command = ["makensis", "/V2", "/P4", str(dist_loc.joinpath("Ultimaker-Cura.nsi"))]
     subprocess.run(command)
 
