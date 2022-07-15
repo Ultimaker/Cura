@@ -8,6 +8,10 @@ on:
                 # Fixme: default to cura/latest@testing (which is main)
                 default: 'cura/latest@ultimaker/stable'
                 required: true
+            conan_args:
+                description: 'Conan args: eq.: --require-override=curaengine/5.1.0-beta+123@ultimaker/testing'
+                default: ''
+                required: false
             conan_config:
                 description: 'Conan config branch to use'
                 default: ''
@@ -143,7 +147,7 @@ jobs:
                 run: conan config install https://github.com/Ultimaker/conan-config.git
 
             -   name: Create the Packages
-                run: conan install ${{ inputs.cura_conan_version }} --build=missing --update -if cura_inst -g VirtualPythonEnv -o cura:enterprise=${{ inputs.enterprise }} -o cura:staging=${{ inputs.staging }} --json "cura_inst/conan_install_info.json"
+                run: conan install ${{ inputs.cura_conan_version }} ${{ inputs.conan_args }} --build=missing --update -if cura_inst -g VirtualPythonEnv -o cura:enterprise=${{ inputs.enterprise }} -o cura:staging=${{ inputs.staging }} --json "cura_inst/conan_install_info.json"
 
             -   name: Set Environment variables for Cura (bash)
                 if: ${{ runner.os != 'Windows' }}
@@ -206,3 +210,16 @@ jobs:
                         dist/*.AppImage
                         dist/*.asc
                     retention-days: 2
+
+    notify-export:
+        if: ${{ always() }}
+        needs: [ cura-installer-create ]
+
+        uses: ultimaker/cura/.github/workflows/notify.yml@main
+        with:
+            success: ${{ contains(join(needs.*.result, ','), 'success') }}
+            success_title: "Create the Cura distributions"
+            success_body: "Installers for ${{ inputs.cura_conan_version }}"
+            failure_title: "Failed to create the Cura distributions"
+            failure_body: "Failed to create at least 1 installer for ${{ inputs.cura_conan_version }}"
+        secrets: inherit

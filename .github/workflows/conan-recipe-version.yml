@@ -55,7 +55,9 @@ jobs:
                     cache-dependency-path: .github/workflows/requirements-conan-package.txt
 
             -   name: Install Python requirements and Create default Conan profile
-                run: pip install -r .github/workflows/requirements-conan-package.txt
+                run: |
+                    pip install -r .github/workflows/requirements-conan-package.txt
+                    pip install gitpython
 
             -   id: get-conan-broadcast-data
                 name: Get Conan broadcast data
@@ -66,7 +68,7 @@ jobs:
                     from git import Repo
                     
                     repo = Repo('.')
-                    user = "${{ github.repository_owner }}"
+                    user = "${{ github.repository_owner }}".lower()
                     project_name = "${{ inputs.project_name }}"
                     event_name = "${{ github.event_name }}"
                     issue_number = "${{ github.ref }}".split('/')[2]
@@ -74,7 +76,7 @@ jobs:
                     
                     # FIXME: for when we push a tag (such as an release)
                     if is_tag:
-                        branch_version = tools.Version("2.3.5")
+                        branch_version = tools.Version("${{ github.ref_name }}")
                     else:
                         try:
                             branch_version = tools.Version(repo.active_branch.name)
