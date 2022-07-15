@@ -3913,7 +3913,7 @@ msgstr "Biblioteca de recorte de polígonos"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:155
 msgctxt "@label"
 msgid "JSON parser"
-msgstr "parser JSON"
+msgstr "Parser JSON"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:156
 msgctxt "@label"
