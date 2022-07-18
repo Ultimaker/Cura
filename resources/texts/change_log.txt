@@ -16,6 +16,7 @@ Newly created project files will now store which packages they require from the 
 
 * Other new features and improvements:
 - The interface to select the printing profile in Recommended Mode has been redesigned.
+- Implemented multi-threaded slicing for MacOS, to bring it in line with other operating systems.
 - Cura now links toolpaths to project files in the Digital Factory.
 - Improved performance of loading STL files on Linux.
 - Packages from the Marketplace can now contain intent profiles.
