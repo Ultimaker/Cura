@@ -81,19 +81,19 @@ jobs:
                     is_release_branch = False
                     
                     # FIXME: for when we push a tag (such as an release)
+                    channel = "testing"
                     if is_tag:
                         branch_version = tools.Version("${{ github.ref_name }}")
                         is_release_branch = True
                     else:
                         try:
                             branch_version = tools.Version(repo.active_branch.name)
-                            channel = "stable"
                         except ConanException:
                             branch_version = tools.Version('0.0.0')
-                        if repo.active_branch.name == f"{branch_version.major}.{branch_version.minor}":
+                        if "${{ github.ref_name }}" == f"{branch_version.major}.{branch_version.minor}":
                             channel = 'stable'
                             is_release_branch = True
-                        elif repo.active_branch.name == "main" or repo.active_branch.name == "master":
+                        elif "${{ github.ref_name }}" in ("main", "master"):
                             channel = 'testing'
                         else:
                             channel = repo.active_branch.name.split("_")[0].replace("-", "_").lower()
@@ -130,10 +130,15 @@ jobs:
                         if event_name == "pull_request":
                             actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-{latest_branch_version.prerelease.lower()}+pr_{issue_number}_{no_commits}"
                         else:
-                            if latest_branch_version.prerelease == "":
-                                actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-alpha+{no_commits}"
+                            if channel in ("stable", "_", ""):
+                                channel_metadata = f"{no_commits}"
                             else:
-                                actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-{latest_branch_version.prerelease.lower()}+{no_commits}"
+                                channel_metadata = f"{channel}_{no_commits}"
+                            # FIXME: for when we create a new release branch
+                            if latest_branch_version.prerelease == "":
+                                actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-alpha+{channel_metadata}"
+                            else:
+                                actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-{latest_branch_version.prerelease.lower()}+{channel_metadata}"
                     
                     # %% print to output
                     cmd_name = ["echo", f"::set-output name=name::{project_name}"]

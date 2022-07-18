@@ -2810,12 +2810,12 @@ msgstr "Yazıcı başlığı ivmesinin ayarlanmasını sağlar. İvmeleri artır
 #: fdmprinter.def.json
 msgctxt "acceleration_travel_enabled label"
 msgid "Enable Travel Acceleration"
-msgstr ""
+msgstr "Hareket İvmesini Etkinleştir"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_travel_enabled description"
 msgid "Use a separate acceleration rate for travel moves. If disabled, travel moves will use the acceleration value of the printed line at their destination."
-msgstr ""
+msgstr "Hareket hamleleri için farklı bir ivme oranı kullanın. Devre dışı bırakılırsa hareket hamleleri, varış noktasındaki yazdırılmış hattın ivme değerini kullanır."
 
 #: fdmprinter.def.json
 msgctxt "acceleration_print label"
@@ -3010,12 +3010,13 @@ msgstr "X veya Y eksenlerindeki hareket hızı değiştiğinde yazıcı başlı�
 #: fdmprinter.def.json
 msgctxt "jerk_travel_enabled label"
 msgid "Enable Travel Jerk"
-msgstr ""
+msgstr "Hareket Salınımını Etkinleştir"
 
 #: fdmprinter.def.json
 msgctxt "jerk_travel_enabled description"
 msgid "Use a separate jerk rate for travel moves. If disabled, travel moves will use the jerk value of the printed line at their destination."
-msgstr ""
+msgstr "Hareket hamleleri için farklı bir salınım oranı kullanın. Devre dışı bırakılırsa hareket hamleleri, varış noktasındaki yazdırılmış hattın salınım değerini"
+" kullanır."
 
 #: fdmprinter.def.json
 msgctxt "jerk_print label"

@@ -2810,12 +2810,12 @@ msgstr "Hiermee stelt u de printkopacceleratie in. Door het verhogen van de acce
 #: fdmprinter.def.json
 msgctxt "acceleration_travel_enabled label"
 msgid "Enable Travel Acceleration"
-msgstr ""
+msgstr "Bewegingsacceleratie inschakelen"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_travel_enabled description"
 msgid "Use a separate acceleration rate for travel moves. If disabled, travel moves will use the acceleration value of the printed line at their destination."
-msgstr ""
+msgstr "Gebruik een andere acceleratiesnelheid voor bewegingen. Indien uitgeschakeld, gebruikt de beweging de acceleratiewaarde van de geprinte lijn op de bestemming."
 
 #: fdmprinter.def.json
 msgctxt "acceleration_print label"
@@ -3010,12 +3010,12 @@ msgstr "Hiermee stelt u de schok van de printkop in wanneer de snelheid in de X-
 #: fdmprinter.def.json
 msgctxt "jerk_travel_enabled label"
 msgid "Enable Travel Jerk"
-msgstr ""
+msgstr "Bewegingsschok inschakelen"
 
 #: fdmprinter.def.json
 msgctxt "jerk_travel_enabled description"
 msgid "Use a separate jerk rate for travel moves. If disabled, travel moves will use the jerk value of the printed line at their destination."
-msgstr ""
+msgstr "Gebruik een andere bewegingsschok voor bewegingen. Indien uitgeschakeld, gebruikt de beweging de bewegingsschokwaarde van de geprinte lijn op de bestemming."
 
 #: fdmprinter.def.json
 msgctxt "jerk_print label"

@@ -2,6 +2,9 @@
 * Improved toolpath simplification algorithm
 The algorithm that reduces the resolution of the print has been rewritten, providing a more constant resolution to allow for greater precision without causing buffer underruns.
 
+* Added option to alternate wall direction
+A new setting causes the direction of printing walls to alternate between layers and adjacent walls, which reduces warping in the print.
+
 * Adjusted combing boundaries to reduce scarring
 Travel moves through the inside of the models are adjusted so that they should keep more distance from the model where possible, yet allowing travels through narrow parts without retractions.
 
@@ -12,6 +15,7 @@ We added the option to disable acceleration and jerk commands for travel moves. 
 Newly created project files will now store which packages they require from the Ultimaker Marketplace. If a project needs a material from there, the user will be prompted to download it.
 
 * Other new features and improvements:
+- The interface to select the printing profile in Recommended Mode has been redesigned.
 - Cura now links toolpaths to project files in the Digital Factory.
 - Improved performance of loading STL files on Linux.
 - Packages from the Marketplace can now contain intent profiles.
@@ -21,11 +25,25 @@ Newly created project files will now store which packages they require from the 
 * Bug fixes:
 - Fix resetting configuration if it gets corrupt.
 - Monotonic ordering now works again for top surfaces.
-- Fixed a bug where Remove Raft Inside Corners didn't always remove all corners.
-- Fixed the position of the toolbar if the toolbar is too tall to fit.
+- Fix a bug where Remove Raft Inside Corners didn't always remove all corners.
+- Fix the position of the toolbar if the toolbar is too tall to fit.
 - Intents in the Recommended Mode now show a description again.
 - Remove Inside Corners and Raft Base Wall Count can now be changed per extruder, though they will affect the entire print.
-- Fixed opening STL files with special characters in their header.
+- Fix opening STL files with special characters in their header.
+- Fix crash at start-up on newer Linux distributions.
+- Fix priming when printing a raft with a different extruder for some of its layers.
+- Fix a case where the inner wall ends up protruding through the outside of the model.
+- Improve some details on dark mode colouring.
+- Fix an error sometimes occurring when uninstalling plug-ins.
+- Fix a rendering issue with pop-up dialogues on MacOS.
+- Fix Discard or Keep Changes dialog showing an outdated setting value.
+- Horizontal Scaling Shrinkage Compensation no longer adjusts the size of the build volume, allowing the full size of the build plate to be used.
+- Fixed overextrusion when using gradual infill with thin strips of infill.
+- Fix opening STL files with special characters in their file header.
+- Fix slicing failure when using Randomize Infill Start in some cases.
+- Restore reminder to sync materials with your printer when using cloud printers with custom materials.
+- The tool bar should no longer show up in the monitor stage.
+- Exporting materials should now retain settings unknown to Cura as well.
 
 * Printer definitions, profiles and materials:
 - Improved profiles for PVA and support for Ultimaker printers.
