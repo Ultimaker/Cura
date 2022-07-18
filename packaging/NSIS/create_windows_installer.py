@@ -32,7 +32,7 @@ def generate_nsi(source_path: str, dist_path: str, filename: str):
             for rmdir in rmdir_p.parents:
                 rmdir_paths.add(rmdir)
 
-    rmdir_paths = sorted(list(rmdir_paths), reverse = True)[:-2]
+    rmdir_paths = sorted(list(rmdir_paths), reverse = True)[:-2]  # Removes the `.` and `..` from the list
 
     jinja_template_path = Path(source_loc.joinpath("packaging", "NSIS", "Ultimaker-Cura.nsi.jinja"))
     with open(jinja_template_path, "r") as f:
