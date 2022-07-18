@@ -171,15 +171,7 @@ class CuraConan(ConanFile):
             for bin in src_path.glob(binary["binary"]):
                 binaries.append((str(bin), binary["dst"]))
 
-        # Add dynamic libs in the venv bin/Script and lib Path. This is needed because we might copy some additional libs
-        # e.q.: OpenSSL 1.1.1l in that directory with a separate:
-        # `conan install openssl@1.1.1l -g deploy && cp openssl/bin/*.so cura_inst/bin`
-        for bin in self._script_dir.glob("*.[so|dll|dylib]"):
-            binaries.append(str(bin), ".")
-
         for _, dependency in self.dependencies.items():
-            # if dependency.ref.name == "cpython":
-            #     continue
             for bin_paths in dependency.cpp_info.bindirs:
                 binaries.extend([(f"{p}", ".") for p in Path(bin_paths).glob("**/*.dll")])
                 binaries.extend([(f"{p}", ".") for p in Path(bin_paths).glob("**/*.dylib")])
@@ -203,6 +195,7 @@ class CuraConan(ConanFile):
                 entrypoint = entrypoint_location,
                 datas = datas,
                 binaries = binaries,
+                venv_script_path = str(self._script_dir),
                 hiddenimports = pyinstaller_metadata["hiddenimports"],
                 collect_all = pyinstaller_metadata["collect_all"],
                 icon = icon_path,
