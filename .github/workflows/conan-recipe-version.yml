@@ -138,7 +138,7 @@ jobs:
                                 channel_metadata = f"{channel}_{no_commits}"
                             # FIXME: for when we create a new release branch
                             if latest_branch_version.prerelease == "":
-                                actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-alpha+{channel_metadata}"
+                                actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-beta+{channel_metadata}"
                             else:
                                 actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-{latest_branch_version.prerelease.lower()}+{channel_metadata}"
                     
