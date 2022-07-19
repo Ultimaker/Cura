@@ -83,11 +83,11 @@ class CuraPackageManager(PackageManager):
 
     def getMaterialFilePackageId(self, file_name: str, guid: str) -> str:
         """Get the id of the installed material package that contains file_name"""
+        file_name = unquote_plus(file_name)
         for material_package in [f for f in os.scandir(self._installation_dirs_dict["materials"]) if f.is_dir()]:
             package_id = material_package.name
 
             for root, _, file_names in os.walk(material_package.path):
-                file_name = unquote_plus(file_name)
                 if file_name not in file_names:
                     # File with the name we are looking for is not in this directory
                     continue
