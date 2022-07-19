@@ -68,7 +68,7 @@ jobs:
                 uses: actions/cache@v3
                 with:
                     path: $HOME/.conan/data
-                    key: ${{ runner.os }}-conan
+                    key: ${{ runner.os }}-conan-export-cache
 
             -   name: Get Conan configuration from branch
                 if: ${{ inputs.conan_config_branch != '' }}
