@@ -12,10 +12,10 @@
 # Subject to change in the future!
 "None":
     requirements:
-        - "arcus/(latest)@ultimaker/testing"
+        - "arcus/5.1.0"
         - "curaengine/(latest)@ultimaker/testing"
-        - "savitar/(latest)@ultimaker/testing"
-        - "pynest2d/(latest)@ultimaker/testing"
+        - "savitar/5.1.0"
+        - "pynest2d/5.1.0"
         - "uranium/(latest)@ultimaker/testing"
         - "fdm_materials/(latest)@ultimaker/testing"
         - "cura_binary_data/(latest)@ultimaker/testing"
@@ -196,10 +196,10 @@
             Linux: "./icons/cura-128.png"
 "5.1.0-beta":
     requirements:
-        - "arcus/5.1.0@ultimaker/stable"
+        - "arcus/5.1.0"
         - "curaengine/5.1.0@ultimaker/stable"
-        - "savitar/5.1.0@ultimaker/stable"
-        - "pynest2d/5.1.0@ultimaker/stable"
+        - "savitar/5.1.0"
+        - "pynest2d/5.1.0"
         - "uranium/5.1.0@ultimaker/stable"
         - "fdm_materials/5.1.0@ultimaker/stable"
         - "cura_binary_data/5.1.0@ultimaker/stable"
@@ -288,10 +288,10 @@
             Linux: "./icons/cura-128.png"
 "cura_8665":
     requirements:
-        - "arcus/(latest)@ultimaker/stable"
+        - "arcus/5.1.0"
         - "curaengine/(latest)@ultimaker/stable"
-        - "savitar/(latest)@ultimaker/stable"
-        - "pynest2d/(latest)@ultimaker/stable"
+        - "savitar/5.1.0"
+        - "pynest2d/5.1.0"
         - "uranium/(latest)@ultimaker/stable"
         - "fdm_materials/(latest)@ultimaker/stable"
         - "cura_binary_data/(latest)@ultimaker/stable"
