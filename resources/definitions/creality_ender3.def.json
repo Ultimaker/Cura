@@ -1,5 +1,5 @@
 {
-    "name": "Creality Ender-3",
+    "name": "Creality Ender-3 / Ender-3 v2",
     "version": 2,
     "inherits": "creality_base",
     "metadata": {
