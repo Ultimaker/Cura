@@ -1,4 +1,6 @@
 [5.1]
+<i>For an overview of the new features in Cura 5.1, please watch <a href="https://youtu.be/7jetjsHLIvk">our video</a>.</i>
+
 * Improved toolpath simplification algorithm
 The algorithm that reduces the resolution of the print has been rewritten, providing a more constant resolution to allow for greater precision without causing buffer underruns.
 
