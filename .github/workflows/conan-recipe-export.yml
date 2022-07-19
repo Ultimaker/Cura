@@ -68,7 +68,7 @@ jobs:
                 uses: actions/cache@v3
                 with:
                     path: $HOME/.conan/data
-                    key: ${{ runner.os }}-conan
+                    key: ${{ runner.os }}-conan-export-cache
 
             -   name: Get Conan configuration from branch
                 if: ${{ inputs.conan_config_branch != '' }}
@@ -100,7 +100,5 @@ jobs:
                 if: always()
                 run: |
                     # Only use --all (upload binaries) for the cura repository
-                    conan upload "*@ultimaker/*" -r cura --all -c
-                    conan upload "*@_/_" -r cura --all -c
-                    conan upload "*@ultimaker/*" -r cura-ce -c
-                    conan upload "*@_/_" -r cura-ce -c
+                    conan upload "*" -r cura --all -c
+                    conan upload "*" -r cura-ce -c
