@@ -100,5 +100,7 @@ jobs:
                 if: always()
                 run: |
                     # Only use --all (upload binaries) for the cura repository
-                    conan upload "*" -r cura --all -c
-                    conan upload "*" -r cura-ce -c
+                    conan upload "*@ultimaker/*" -r cura --all -c
+                    conan upload "*@_/_" -r cura --all -c
+                    conan upload "*@ultimaker/*" -r cura-ce -c
+                    conan upload "*@_/_" -r cura-ce -c
