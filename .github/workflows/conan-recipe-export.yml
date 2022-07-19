@@ -89,7 +89,6 @@ jobs:
             -   name: Create the latest alias
                 if: ${{ inputs.recipe_id_latest != '' }}
                 run: |
-                    conan remove ${{ inputs.recipe_id_latest }} -f
                     conan remove ${{ inputs.recipe_id_latest }} -r cura -f
                     conan remove ${{ inputs.recipe_id_latest }} -r cura-ce -f
                     conan alias ${{ inputs.recipe_id_latest }} ${{ inputs.recipe_id_full }}
