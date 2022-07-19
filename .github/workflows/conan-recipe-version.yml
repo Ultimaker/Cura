@@ -85,6 +85,8 @@ jobs:
                     if is_tag:
                         branch_version = tools.Version("${{ github.ref_name }}")
                         is_release_branch = True
+                        channel = "_"
+                        user = "_"
                     else:
                         try:
                             branch_version = tools.Version(repo.active_branch.name)
