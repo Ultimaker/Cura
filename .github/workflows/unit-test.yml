@@ -99,7 +99,7 @@ jobs:
                     path: |
                         $HOME/.conan/data
                         $HOME/.conan/conan_download_cache
-                    key: conan-${{ runner.os }}-${{ runner.arch }}
+                    key: conan-${{ runner.os }}-${{ runner.arch }}-unit-cache
 
             -   name: Install Linux system requirements
                 if: ${{ runner.os == 'Linux' }}
