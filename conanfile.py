@@ -138,7 +138,8 @@ class CuraConan(ConanFile):
                 cura_digital_factory_url = self._digital_factory_url))
 
     def _generate_pyinstaller_spec(self, location, entrypoint_location, icon_path, entitlements_file):
-        pyinstaller_metadata = self._um_data(self.version, self.channel)["pyinstaller"]
+        channel = "" if not self.channel else self.channel
+        pyinstaller_metadata = self._um_data(self.version, channel)["pyinstaller"]
         datas = [(str(self._base_dir.joinpath("conan_install_info.json")), ".")]
         for data in pyinstaller_metadata["datas"].values():
             if "package" in data:  # get the paths from conan package
@@ -223,7 +224,8 @@ class CuraConan(ConanFile):
             raise ConanInvalidConfiguration("Only versions 5+ are support")
 
     def requirements(self):
-        for req in self._um_data(self.version, self.channel)["requirements"]:
+        channel = "" if not self.channel else self.channel
+        for req in self._um_data(self.version, channel)["requirements"]:
             self.requires(req)
 
     def layout(self):
@@ -240,10 +242,11 @@ class CuraConan(ConanFile):
         vr.generate()
 
         if self.options.devtools:
+            channel = "" if not self.channel else self.channel
             entitlements_file = "'{}'".format(Path(self.source_folder, "packaging", "dmg", "cura.entitlements"))
             self._generate_pyinstaller_spec(location = self.generators_folder,
-                                            entrypoint_location = "'{}'".format(Path(self.source_folder, self._um_data(self.version, self.channel)["runinfo"]["entrypoint"])).replace("\\", "\\\\"),
-                                            icon_path = "'{}'".format(Path(self.source_folder, "packaging", self._um_data(self.version, self.channel)["pyinstaller"]["icon"][str(self.settings.os)])).replace("\\", "\\\\"),
+                                            entrypoint_location = "'{}'".format(Path(self.source_folder, self._um_data(self.version, channel)["runinfo"]["entrypoint"])).replace("\\", "\\\\"),
+                                            icon_path = "'{}'".format(Path(self.source_folder, "packaging", self._um_data(self.version, channel)["pyinstaller"]["icon"][str(self.settings.os)])).replace("\\", "\\\\"),
                                             entitlements_file = entitlements_file if self.settings.os == "Macos" else "None")
 
     def imports(self):
@@ -339,9 +342,10 @@ echo "CURA_VERSION_FULL={{ cura_version_full }}" >> ${{ env_prefix }}GITHUB_ENV
         self._generate_cura_version(Path(self._site_packages, "cura"))
 
         entitlements_file = "'{}'".format(Path(self.cpp_info.res_paths[2], "dmg", "cura.entitlements"))
+        channel = "" if not self.channel else self.channel
         self._generate_pyinstaller_spec(location = self._base_dir,
-                                        entrypoint_location = "'{}'".format(Path(self.cpp_info.bin_paths[0], self._um_data(self.version, self.channel)["runinfo"]["entrypoint"])).replace("\\", "\\\\"),
-                                        icon_path = "'{}'".format(Path(self.cpp_info.res_paths[2], self._um_data(self.version, self.channel)["pyinstaller"]["icon"][str(self.settings.os)])).replace("\\", "\\\\"),
+                                        entrypoint_location = "'{}'".format(Path(self.cpp_info.bin_paths[0], self._um_data(self.version, channel)["runinfo"]["entrypoint"])).replace("\\", "\\\\"),
+                                        icon_path = "'{}'".format(Path(self.cpp_info.res_paths[2], self._um_data(self.version, channel)["pyinstaller"]["icon"][str(self.settings.os)])).replace("\\", "\\\\"),
                                         entitlements_file = entitlements_file if self.settings.os == "Macos" else "None")
 
     def package(self):
