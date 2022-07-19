@@ -72,7 +72,7 @@ jobs:
                     path: |
                         $HOME/.conan/data
                         $HOME/.conan/conan_download_cache
-                    key: conan-${{ runner.os }}-${{ runner.arch }}
+                    key: conan-${{ runner.os }}-${{ runner.arch }}-create-cache
 
             -   name: Cache Conan local repository packages (Powershell)
                 uses: actions/cache@v3
@@ -82,7 +82,7 @@ jobs:
                         C:\Users\runneradmin\.conan\data
                         C:\.conan
                         C:\Users\runneradmin\.conan\conan_download_cache
-                    key: conan-${{ runner.os }}-${{ runner.arch }}
+                    key: conan-${{ runner.os }}-${{ runner.arch }}-create-cache
 
             -   name: Install MacOS system requirements
                 if:  ${{ runner.os == 'Macos' }}
