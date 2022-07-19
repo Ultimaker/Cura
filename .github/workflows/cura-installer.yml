@@ -116,7 +116,7 @@ jobs:
             -   name: Install Linux system requirements
                 if: ${{ runner.os == 'Linux' }}
                 run: |
-                    sudo apt install build-essential checkinstall libegl-dev zlib1g-dev libssl-dev ninja-build autoconf libx11-dev libx11-xcb-dev libfontenc-dev libice-dev libsm-dev libxau-dev libxaw7-dev libxcomposite-dev libxcursor-dev libxdamage-dev libxdmcp-dev libxext-dev libxfixes-dev libxi-dev libxinerama-dev libxkbfile-dev libxmu-dev libxmuu-dev libxpm-dev libxrandr-dev libxrender-dev libxres-dev libxss-dev libxt-dev libxtst-dev libxv-dev libxvmc-dev libxxf86vm-dev xtrans-dev libxcb-render0-dev libxcb-render-util0-dev libxcb-xkb-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev libxcb-randr0-dev libxcb-shape0-dev libxcb-sync-dev libxcb-xfixes0-dev libxcb-xinerama0-dev xkb-data libxcb-dri3-dev uuid-dev libxcb-util-dev libxkbcommon-x11-dev -y
+                    sudo apt install build-essential checkinstall libegl-dev zlib1g-dev libssl-dev ninja-build autoconf libx11-dev libx11-xcb-dev libfontenc-dev libice-dev libsm-dev libxau-dev libxaw7-dev libxcomposite-dev libxcursor-dev libxdamage-dev libxdmcp-dev libxext-dev libxfixes-dev libxi-dev libxinerama-dev libxkbfile-dev libxmu-dev libxmuu-dev libxpm-dev libxrandr-dev libxrender-dev libxres-dev libxss-dev libxt-dev libxtst-dev libxv-dev libxvmc-dev libxxf86vm-dev xtrans-dev libxcb-render0-dev libxcb-render-util0-dev libxcb-xkb-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev libxcb-randr0-dev libxcb-shape0-dev libxcb-sync-dev libxcb-xfixes0-dev libxcb-xinerama0-dev xkb-data libxcb-dri3-dev uuid-dev libxcb-util-dev libxkbcommon-x11-dev pkg-config -y
                     wget --no-check-certificate --quiet https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage -O $GITHUB_WORKSPACE/appimagetool
                     chmod +x $GITHUB_WORKSPACE/appimagetool
                     echo "APPIMAGETOOL_LOCATION=$GITHUB_WORKSPACE/appimagetool" >> $GITHUB_ENV
@@ -165,6 +165,26 @@ jobs:
                 run: security unlock -p $TEMP_KEYCHAIN_PASSWORD signing_temp.keychain
                 env:
                     TEMP_KEYCHAIN_PASSWORD: ${{  steps.macos-keychain.outputs.keychain-password }}
+
+                # FIXME: This is a workaround to ensure that we use and pack a shared library for OpenSSL 1.1.1l. We currently compile
+                #  OpenSSL statically for CPython, but our Python Dependenies (such as PyQt6) require a shared library.
+                #  Because Conan won't allow for building the same library with two different options (easily) we need to install it explicitly
+                #  and do a manual copy to the VirtualEnv, such that Pyinstaller can find it.
+
+            -   name: Install OpenSSL shared
+                run: conan install openssl/1.1.1l@_/_ --build=missing --update -o openssl:shared=True -g deploy
+
+            -   name: Copy OpenSSL shared (Bash)
+                if: ${{ runner.os != 'Windows' }}
+                run: |
+                    cp ./openssl/lib/*.so* ./cura_inst/bin/ || true
+                    cp ./openssl/lib/*.dylib* ./cura_inst/bin/ || true                    
+
+            -   name: Copy OpenSSL shared (Powershell)
+                if: ${{ runner.os == 'Windows' }}
+                run: |
+                    cp openssl/bin/*.dll ./cura_inst/Scripts/
+                    cp openssl/lib/*.lib ./cura_inst/Lib/
 
             -   name: Create the Cura dist
                 run: pyinstaller ./cura_inst/Ultimaker-Cura.spec

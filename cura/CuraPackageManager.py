@@ -14,6 +14,7 @@ from cura.Settings.GlobalStack import GlobalStack
 from UM.PackageManager import PackageManager  # The class we're extending.
 from UM.Resources import Resources  # To find storage paths for some resource types.
 from UM.i18n import i18nCatalog
+from urllib.parse import unquote_plus
 
 catalog = i18nCatalog("cura")
 
@@ -82,6 +83,7 @@ class CuraPackageManager(PackageManager):
 
     def getMaterialFilePackageId(self, file_name: str, guid: str) -> str:
         """Get the id of the installed material package that contains file_name"""
+        file_name = unquote_plus(file_name)
         for material_package in [f for f in os.scandir(self._installation_dirs_dict["materials"]) if f.is_dir()]:
             package_id = material_package.name
 
