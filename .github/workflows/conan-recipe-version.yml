@@ -139,7 +139,7 @@ jobs:
                             # FIXME: for when we create a new release branch
                             if latest_branch_version.prerelease == "":
                                 bump_up_minor = int(latest_branch_version.minor) + 1
-                                actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{bump_up_minor}-alpha+{channel_metadata}"
+                                actual_version = f"{latest_branch_version.major}.{bump_up_minor}.{latest_branch_version.patch}-alpha+{channel_metadata}"
                             else:
                                 actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-{latest_branch_version.prerelease.lower()}+{channel_metadata}"
                     
