@@ -14,6 +14,7 @@ from cura.Settings.GlobalStack import GlobalStack
 from UM.PackageManager import PackageManager  # The class we're extending.
 from UM.Resources import Resources  # To find storage paths for some resource types.
 from UM.i18n import i18nCatalog
+from urllib.parse import unquote_plus
 
 catalog = i18nCatalog("cura")
 
@@ -86,6 +87,7 @@ class CuraPackageManager(PackageManager):
             package_id = material_package.name
 
             for root, _, file_names in os.walk(material_package.path):
+                file_name = unquote_plus(file_name)
                 if file_name not in file_names:
                     # File with the name we are looking for is not in this directory
                     continue
