@@ -58,7 +58,6 @@ jobs:
         with:
             recipe_id_full: ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
             recipe_id_latest: ${{ needs.conan-recipe-version.outputs.recipe_id_latest }}
-            recipe_id_pr: ${{ needs.conan-recipe-version.outputs.recipe_id_pr }}
             runs_on: 'macos-10.15'
             python_version: '3.10.x'
             conan_logging_level: 'info'
@@ -71,7 +70,6 @@ jobs:
         with:
             recipe_id_full: ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
             recipe_id_latest: ${{ needs.conan-recipe-version.outputs.recipe_id_latest }}
-            recipe_id_pr: ${{ needs.conan-recipe-version.outputs.recipe_id_pr }}
             runs_on: 'ubuntu-20.04'
             python_version: '3.10.x'
             conan_logging_level: 'info'
@@ -84,7 +82,6 @@ jobs:
         with:
             recipe_id_full: ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
             recipe_id_latest: ${{ needs.conan-recipe-version.outputs.recipe_id_latest }}
-            recipe_id_pr: ${{ needs.conan-recipe-version.outputs.recipe_id_pr }}
             runs_on: 'windows-2022'
             python_version: '3.10.x'
             conan_logging_level: 'info'
