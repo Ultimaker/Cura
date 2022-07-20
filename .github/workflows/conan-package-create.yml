@@ -33,6 +33,11 @@ on:
                 default: true
                 type: boolean
 
+            create_from_source:
+                required: false
+                default: false
+                type: boolean
+
 env:
     CONAN_LOGIN_USERNAME_CURA: ${{ secrets.CONAN_USER }}
     CONAN_PASSWORD_CURA: ${{ secrets.CONAN_PASS }}
@@ -106,7 +111,12 @@ jobs:
                 run: conan config install https://github.com/Ultimaker/conan-config.git
 
             -   name: Create the Packages
+                if: ${{ !inputs.create_from_source }}
                 run: conan install ${{ inputs.recipe_id_full }} --build=missing --update
+
+            -   name: Create the Packages (from source)
+                if: ${{ inputs.create_from_source }}
+                run: conan install . ${{ inputs.recipe_id_full }} --build=missing --update
 
             -   name: Upload the Package(s)
                 if: always()
