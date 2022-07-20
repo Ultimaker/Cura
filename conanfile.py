@@ -172,8 +172,6 @@ class CuraConan(ConanFile):
                 binaries.append((str(bin), binary["dst"]))
 
         for _, dependency in self.dependencies.items():
-            # if dependency.ref.name == "cpython":
-            #     continue
             for bin_paths in dependency.cpp_info.bindirs:
                 binaries.extend([(f"{p}", ".") for p in Path(bin_paths).glob("**/*.dll")])
                 binaries.extend([(f"{p}", ".") for p in Path(bin_paths).glob("**/*.dylib")])
@@ -202,6 +200,7 @@ class CuraConan(ConanFile):
                 entrypoint = entrypoint_location,
                 datas = datas,
                 binaries = binaries,
+                venv_script_path = str(self._script_dir),
                 hiddenimports = pyinstaller_metadata["hiddenimports"],
                 collect_all = pyinstaller_metadata["collect_all"],
                 icon = icon_path,
