@@ -11,10 +11,6 @@ on:
                 required: false
                 type: string
 
-            recipe_id_pr:
-                required: false
-                type: string
-
             runs_on:
                 required: true
                 type: string

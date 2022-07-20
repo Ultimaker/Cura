@@ -7,6 +7,10 @@ on:
                 required: true
                 type: string
 
+            recipe_id_latest:
+                required: false
+                type: string
+
             runs_on:
                 required: true
                 type: string
@@ -117,6 +121,16 @@ jobs:
             -   name: Create the Packages (from source)
                 if: ${{ inputs.create_from_source }}
                 run: conan install . ${{ inputs.recipe_id_full }} --build=missing --update
+
+            -   name: Remove the latest alias
+                if: ${{ inputs.create_from_source && inputs.recipe_id_latest != '' && runner.os == 'Linux' }}
+                run: |
+                    conan remove ${{ inputs.recipe_id_latest }} -r cura -f || true
+                    conan remove ${{ inputs.recipe_id_latest }} -r cura-ce -f || true
+
+            -   name: Create the latest alias
+                if: ${{ inputs.create_from_source && inputs.recipe_id_latest != '' && always() }}
+                run: conan alias ${{ inputs.recipe_id_latest }} ${{ inputs.recipe_id_full }}
 
             -   name: Upload the Package(s)
                 if: always()
