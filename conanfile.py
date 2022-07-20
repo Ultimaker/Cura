@@ -185,6 +185,11 @@ class CuraConan(ConanFile):
         # Collect all dll's from PyQt6 and place them in the root
         binaries.extend([(f"{p}", ".") for p in Path(self._site_packages, "PyQt6", "Qt6").glob("**/*.dll")])
 
+        # Collect platform-support libs for Linux KDE and GTK.
+        if self.settings.os == "Linux":
+            binaries.append((str(Path("/usr/lib/x86_64-linux-gnu/libexec/xdg-desktop-portal-kde")), "."))
+            binaries.append((str(Path("/usr/lib/x86_64-linux-gnu/libexec/xdg-desktop-portal-gtk")), "."))
+
         with open(Path(__file__).parent.joinpath("Ultimaker-Cura.spec.jinja"), "r") as f:
             pyinstaller = Template(f.read())
 
