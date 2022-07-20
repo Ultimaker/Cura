@@ -18,7 +18,7 @@ Newly created project files will now store which packages they require from the 
 
 * Other new features and improvements:
 - The interface to select the printing profile in Recommended Mode has been redesigned.
-- Implemented multi-threaded slicing for MacOS, to bring it in line with other operating systems.
+- Implemented multi-threaded slicing for MacOS, to bring it in line with other operating systems, contributed by Piezoid.
 - Cura now links toolpaths to project files in the Digital Factory.
 - Improved performance of loading STL files on Linux.
 - Packages from the Marketplace can now contain intent profiles.
@@ -51,13 +51,17 @@ Newly created project files will now store which packages they require from the 
 
 * Printer definitions, profiles and materials:
 - Improved profiles for PVA and support for Ultimaker printers.
-- Adjust retraction speed and distance for Voron.
-- Heat up extruder and build plate at the same time for Ender 3 Pro.
+- Adjust retraction speed and distance for Voron, contributed by Haxk20 and Cbc02009
+- Heat up extruder and build plate at the same time for Ender 3 Pro, contributed by XDazld.
 - Add new Tough PLA colours.
 - Add DD0.4 print cores for Ultimaker printers.
-- Add MakerGear M2 printer.
-- Add Trimarker Nebula Plus printer.
+- Add MakerGear M2 printer, contributed by Wanders78746.
+- Add Trimarker Nebula Plus printer, contributed by MatiGabaglio.
 - Various small profile improvements.
+
+* Community translations:
+- Updated the Brazilian Portuguese translation, contributed by Patola.
+- Updated the Czech translation, contributed by sustmi.
 
 * Known critical issues:
 - The placement of the seam has gotten more scattered than in previous releases.

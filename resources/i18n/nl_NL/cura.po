@@ -3319,7 +3319,7 @@ msgid ""
 "- Back-up and sync your material profiles and plug-ins\n"
 "- Share ideas and get help from 48,000+ users in the Ultimaker community"
 msgstr ""
-"- Voeg materiaalprofielen en plug-ins toe uit de Marktplaats\n"
+"- Voeg materiaalprofielen en plug-ins toe uit de Marketplace\n"
 "- Maak back-ups van uw materiaalprofielen en plug-ins en synchroniseer deze\n"
 "- Deel ideeën met 48.000+ gebruikers in de Ultimaker-community of vraag hen om ondersteuning"
 
@@ -4140,7 +4140,7 @@ msgstr "Weet u zeker dat u een nieuw project wilt starten? Hiermee wordt het pla
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/MainWindow/MainWindowHeader.qml:135
 msgctxt "@action:button"
 msgid "Marketplace"
-msgstr "Marktplaats"
+msgstr "Marketplace"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Menus/ConfigurationMenu/AutoConfiguration.qml:18
 msgctxt "@header"
@@ -4155,7 +4155,7 @@ msgstr "Deze configuratie is niet beschikbaar omdat %1 niet wordt herkend. Ga na
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationItem.qml:138
 msgctxt "@label"
 msgid "Marketplace"
-msgstr "Marktplaats"
+msgstr "Marketplace"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationListView.qml:52
 msgctxt "@label"
@@ -5820,7 +5820,7 @@ msgstr "Release notes"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/CloudContent.qml:123
 msgctxt "@text"
 msgid "Add material settings and plugins from the Marketplace"
-msgstr "Voeg materiaalinstellingen en plugins uit de Marktplaats toe"
+msgstr "Voeg materiaalinstellingen en plugins uit de Marketplace toe"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/CloudContent.qml:149
 msgctxt "@text"
@@ -6122,7 +6122,7 @@ msgstr "Beheert extensies voor de toepassing en staat browsingextensies toe van 
 #: Marketplace/plugin.json
 msgctxt "name"
 msgid "Marketplace"
-msgstr "Marktplaats"
+msgstr "Marketplace"
 
 #: MonitorStage/plugin.json
 msgctxt "description"
@@ -6602,7 +6602,7 @@ msgstr "Röntgenweergave"
 
 #~ msgctxt "@title"
 #~ msgid "Marketplace"
-#~ msgstr "Marktplaats"
+#~ msgstr "Marketplace"
 
 #~ msgctxt "@info"
 #~ msgid "You will need to restart Cura before changes in packages have effect."
@@ -6880,7 +6880,7 @@ msgstr "Röntgenweergave"
 
 #~ msgctxt "@action:menu"
 #~ msgid "&Marketplace"
-#~ msgstr "&Marktplaats"
+#~ msgstr "&Marketplace"
 
 #~ msgctxt "description"
 #~ msgid "Find, manage and install new Cura packages."

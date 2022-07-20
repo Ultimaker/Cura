@@ -1243,7 +1243,7 @@
                         "min_odd_wall_line_width":
                         {
                             "label": "Minimum Odd Wall Line Width",
-                            "description": "The minimum line width for middle line gap filler polyline walls. This setting determines at which model thickness we switch from printing two wall lines, to printing two outer walls and a single central wall in the middle. A higher Minimum Odd Wall Line Width leads to a higher maximum even wall line width. The maximum odd wall line width is calculated as 2 * Minimum Even Wall Line Width,",
+                            "description": "The minimum line width for middle line gap filler polyline walls. This setting determines at which model thickness we switch from printing two wall lines, to printing two outer walls and a single central wall in the middle. A higher Minimum Odd Wall Line Width leads to a higher maximum even wall line width. The maximum odd wall line width is calculated as 2 * Minimum Even Wall Line Width.",
                             "unit": "mm",
                             "minimum_value_warning": ".5 * max(wall_line_width_0, wall_line_width_x)",
                             "maximum_value_warning": "min(wall_line_width_0, wall_line_width_x)",
