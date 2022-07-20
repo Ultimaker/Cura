@@ -120,7 +120,7 @@ jobs:
 
             -   name: Create the Packages (from source)
                 if: ${{ inputs.create_from_source }}
-                run: conan install . ${{ inputs.recipe_id_full }} --build=missing --update
+                run: conan create . ${{ inputs.recipe_id_full }} --build=missing --update
 
             -   name: Remove the latest alias
                 if: ${{ inputs.create_from_source && inputs.recipe_id_latest != '' && runner.os == 'Linux' }}
