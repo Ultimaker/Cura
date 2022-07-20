@@ -19,7 +19,7 @@
         "machine_name": {
             "default_value": "Hellbot Magna 1"
         },
-	"machine_heated_bed": { "default_value": true },
+        "machine_heated_bed": { "default_value": true },
         "machine_width": {
             "default_value": 220
         },

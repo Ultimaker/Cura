@@ -17,7 +17,7 @@ class CuraStackBuilder:
     """Contains helper functions to create new machines."""
 
     @classmethod
-    def createMachine(cls, name: str, definition_id: str, machine_extruder_count: Optional[int] = None) -> Optional[GlobalStack]:
+    def createMachine(cls, name: str, definition_id: str, machine_extruder_count: Optional[int] = None, show_warning_message: bool = True) -> Optional[GlobalStack]:
         """Create a new instance of a machine.
 
         :param name: The name of the new machine.
@@ -34,7 +34,8 @@ class CuraStackBuilder:
 
         definitions = registry.findDefinitionContainers(id = definition_id)
         if not definitions:
-            ConfigurationErrorMessage.getInstance().addFaultyContainers(definition_id)
+            if show_warning_message:
+                ConfigurationErrorMessage.getInstance().addFaultyContainers(definition_id)
             Logger.log("w", "Definition {definition} was not found!", definition = definition_id)
             return None
 
@@ -66,7 +67,7 @@ class CuraStackBuilder:
                 Logger.logException("e", "Failed to create an extruder stack for position {pos}: {err}".format(pos = position, err = str(e)))
                 return None
 
-        # If given, set the machine_extruder_count when creating the machine, or else the extruderList used bellow will
+        # If given, set the machine_extruder_count when creating the machine, or else the extruderList used below will
         # not return the correct extruder list (since by default, the machine_extruder_count is 1) in machines with
         # settable number of extruders.
         if machine_extruder_count and 0 <= machine_extruder_count <= len(extruder_dict):

@@ -80,6 +80,18 @@ class RemovableDriveOutputDevice(OutputDevice):
         if extension:  # Not empty string.
             extension = "." + extension
         file_name = os.path.join(self.getId(), file_name + extension)
+        self._performWrite(file_name, preferred_format, writer, nodes)
+
+    def _performWrite(self, file_name, preferred_format, writer, nodes):
+        """Writes the specified nodes to the removable drive. This is split from
+        requestWrite to allow interception in other plugins. See Ultimaker/Cura#10917.
+
+        :param file_name: File path to write to.
+        :param preferred_format: Preferred file format to write to.
+        :param writer: Writer for writing to the file.
+        :param nodes: A collection of scene nodes that should be written to the
+        file.
+        """
 
         try:
             Logger.log("d", "Writing to %s", file_name)
@@ -136,7 +148,7 @@ class RemovableDriveOutputDevice(OutputDevice):
                 self._stream.close()
                 self._stream = None
             except:
-                Logger.logException("w", "An execption occured while trying to write to removable drive.")
+                Logger.logException("w", "An exception occurred while trying to write to removable drive.")
                 message = Message(catalog.i18nc("@info:status", "Could not save to removable drive {0}: {1}").format(self.getName(),str(job.getError())),
                                   title = catalog.i18nc("@info:title", "Error"),
                                   message_type = Message.MessageType.ERROR)

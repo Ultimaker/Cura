@@ -1,21 +1,21 @@
 # Cura JSON setting files
-# Copyright (C) 2021 Ultimaker B.V.
+# Copyright (C) 2022 Ultimaker B.V.
 # This file is distributed under the same license as the Cura package.
-# Ruben Dulek <r.dulek@ultimaker.com>, 2021.
-# 
+# Ultimaker <plugins@ultimaker.com>, 2022.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.11\n"
-"Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2021-08-11 09:58+0000\n"
-"PO-Revision-Date: 2021-06-14 16:21+0800\n"
-"Last-Translator: Valen Chang <carf17771@gmail.com>\n"
-"Language-Team: Valen Chang <carf17771@gmail.com>/Zhang Heh Ji <dinowchang@gmail.com>\n"
+"Project-Id-Version: Cura 5.1\n"
+"Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
+"POT-Creation-Date: 2022-06-21 12:50+0000\n"
+"PO-Revision-Date: 2022-01-02 20:24+0800\n"
+"Last-Translator: Valen Chang  <carf17771@gmail.com>\n"
+"Language-Team: Valen Chang <carf17771@gmail.com>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Generator: Poedit 3.0\n"
 
 #: fdmprinter.def.json
 msgctxt "machine_settings label"
@@ -156,6 +156,16 @@ msgid "The depth (Y-direction) of the printable area."
 msgstr "機器可列印區域深度（Y 座標）"
 
 #: fdmprinter.def.json
+msgctxt "machine_height label"
+msgid "Machine Height"
+msgstr "機器高度"
+
+#: fdmprinter.def.json
+msgctxt "machine_height description"
+msgid "The height (Z-direction) of the printable area."
+msgstr "機器可列印區域高度（Z 座標）"
+
+#: fdmprinter.def.json
 msgctxt "machine_shape label"
 msgid "Build Plate Shape"
 msgstr "列印平台形狀"
@@ -194,16 +204,6 @@ msgstr "玻璃"
 msgctxt "machine_buildplate_type option aluminum"
 msgid "Aluminum"
 msgstr "鋁"
-
-#: fdmprinter.def.json
-msgctxt "machine_height label"
-msgid "Machine Height"
-msgstr "機器高度"
-
-#: fdmprinter.def.json
-msgctxt "machine_height description"
-msgid "The height (Z-direction) of the printable area."
-msgstr "機器可列印區域高度（Z 座標）"
 
 #: fdmprinter.def.json
 msgctxt "machine_heated_bed label"
@@ -467,8 +467,8 @@ msgstr "機器頭和風扇多邊形"
 
 #: fdmprinter.def.json
 msgctxt "machine_head_with_fans_polygon description"
-msgid "A 2D silhouette of the print head (fan caps included)."
-msgstr "列印頭 2D 輪廓圖（包含風扇蓋）。"
+msgid "The shape of the print head. These are coordinates relative to the position of the print head, which is usually the position of its first extruder. The dimensions left and in front of the print head must be negative coordinates."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "gantry_height label"
@@ -562,8 +562,8 @@ msgstr "Z 軸方向馬達的最大速度。"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e label"
-msgid "Maximum Feedrate"
-msgstr "最大進料速率"
+msgid "Maximum Speed E"
+msgstr "E 軸最大速度"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e description"
@@ -688,7 +688,7 @@ msgstr "每毫米的步數（E）"
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_e description"
 msgid "How many steps of the stepper motors will result in moving the feeder wheel by one millimeter around its circumference."
-msgstr ""
+msgstr "在擠出輪旋轉一毫米時，步進馬達所需移動的步數."
 
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_x label"
@@ -739,6 +739,16 @@ msgstr "進料輪直徑"
 msgctxt "machine_feeder_wheel_diameter description"
 msgid "The diameter of the wheel that drives the material in the feeder."
 msgstr "帶動進料器中線材的輪子的直徑。"
+
+#: fdmprinter.def.json
+msgctxt "machine_scale_fan_speed_zero_to_one label"
+msgid "Scale Fan Speed To 0-1"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "machine_scale_fan_speed_zero_to_one description"
+msgid "Scale the fan speed to be between 0 and 1 instead of between 0 and 256."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "resolution label"
@@ -961,6 +971,56 @@ msgid "The number of walls. When calculated by the wall thickness, this value is
 msgstr "牆壁的線條圈數，如果由壁厚計算，會四捨五入為一個整數值。"
 
 #: fdmprinter.def.json
+msgctxt "wall_transition_length label"
+msgid "Wall Transition Length"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_transition_length description"
+msgid "When transitioning between different numbers of walls as the part becomes thinner, a certain amount of space is allotted to split or join the wall lines."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_distribution_count label"
+msgid "Wall Distribution Count"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_distribution_count description"
+msgid "The number of walls, counted from the center, over which the variation needs to be spread. Lower values mean that the outer walls don't change in width."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_transition_angle label"
+msgid "Wall Transitioning Threshold Angle"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_transition_angle description"
+msgid "When to create transitions between even and odd numbers of walls. A wedge shape with an angle greater than this setting will not have transitions and no walls will be printed in the center to fill the remaining space. Reducing this setting reduces the number and length of these center walls, but may leave gaps or overextrude."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_transition_filter_distance label"
+msgid "Wall Transitioning Filter Distance"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_transition_filter_distance description"
+msgid "If it would be transitioning back and forth between different numbers of walls in quick succession, don't transition at all. Remove transitions if they are closer together than this distance."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_transition_filter_deviation label"
+msgid "Wall Transitioning Filter Margin"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_transition_filter_deviation description"
+msgid "Prevent transitioning back and forth between one extra wall and one less. This margin extends the range of line widths which follow to [Minimum Wall Line Width - Margin, 2 * Minimum Wall Line Width + Margin]. Increasing this margin reduces the number of transitions, which reduces the number of extrusion starts/stops and travel time. However, large line width variation can lead to under- or overextrusion problems."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "wall_0_wipe_dist label"
 msgid "Outer Wall Wipe Distance"
 msgstr "外壁擦拭噴頭長度"
@@ -991,14 +1051,24 @@ msgid "Optimize the order in which walls are printed so as to reduce the number 
 msgstr "最佳化列印牆壁的順序，以減少縮回次數和行進距離。啟用此功能對大多數的零件是有益的，但有些零件可能反而會更花時間，因此請比較列印時間的估計值評估是否進行最佳化。當列印平台附著類型設定為邊緣時，第一層不會進行最佳化。"
 
 #: fdmprinter.def.json
-msgctxt "outer_inset_first label"
-msgid "Outer Before Inner Walls"
-msgstr "先印外壁後印內壁"
+msgctxt "inset_direction label"
+msgid "Wall Ordering"
+msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "outer_inset_first description"
-msgid "Prints walls in order of outside to inside when enabled. This can help improve dimensional accuracy in X and Y when using a high viscosity plastic like ABS; however it can decrease outer surface print quality, especially on overhangs."
-msgstr "啟用時以從外向內的順序列印牆壁。當使用高黏度塑料如 ABS 時，這有助於提高 X 和 Y 的尺寸精度；但是，它可能會降低表面列印品質，尤其是在突出部分。"
+msgctxt "inset_direction description"
+msgid "Determines the order in which walls are printed. Printing outer walls earlier helps with dimensional accuracy, as faults from inner walls cannot propagate to the outside. However printing them later allows them to stack better when overhangs are printed."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "inset_direction option inside_out"
+msgid "Inside To Outside"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "inset_direction option outside_in"
+msgid "Outside To Inside"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "alternate_extra_perimeter label"
@@ -1011,84 +1081,54 @@ msgid "Prints an extra wall at every other layer. This way infill gets caught be
 msgstr "每兩層建立一個額外牆壁，這些額外的牆壁能更緊密地抓填充部分，產生較強壯的模型。"
 
 #: fdmprinter.def.json
-msgctxt "travel_compensate_overlapping_walls_enabled label"
-msgid "Compensate Wall Overlaps"
-msgstr "補償牆壁重疊"
+msgctxt "min_wall_line_width label"
+msgid "Minimum Wall Line Width"
+msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "travel_compensate_overlapping_walls_enabled description"
-msgid "Compensate the flow for parts of a wall being printed where there is already a wall in place."
-msgstr "彌補牆壁重疊部分的流量。"
+msgctxt "min_wall_line_width description"
+msgid "For thin structures around once or twice the nozzle size, the line widths need to be altered to adhere to the thickness of the model. This setting controls the minimum line width allowed for the walls. The minimum line widths inherently also determine the maximum line widths, since we transition from N to N+1 walls at some geometry thickness where the N walls are wide and the N+1 walls are narrow. The widest possible wall line is twice the Minimum Wall Line Width."
+msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "travel_compensate_overlapping_walls_0_enabled label"
-msgid "Compensate Outer Wall Overlaps"
-msgstr "補償外壁重疊"
+msgctxt "min_even_wall_line_width label"
+msgid "Minimum Even Wall Line Width"
+msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "travel_compensate_overlapping_walls_0_enabled description"
-msgid "Compensate the flow for parts of an outer wall being printed where there is already a wall in place."
-msgstr "列印外壁時如果該位置已經有牆壁存在，所進行的的流量補償。"
+msgctxt "min_even_wall_line_width description"
+msgid "The minimum line width for normal polygonal walls. This setting determines at which model thickness we switch from printing a single thin wall line, to printing two wall lines. A higher Minimum Even Wall Line Width leads to a higher maximum odd wall line width. The maximum even wall line width is calculated as Outer Wall Line Width + 0.5 * Minimum Odd Wall Line Width."
+msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "travel_compensate_overlapping_walls_x_enabled label"
-msgid "Compensate Inner Wall Overlaps"
-msgstr "補償內壁重疊"
+msgctxt "wall_split_middle_threshold label"
+msgid "Split Middle Line Threshold"
+msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "travel_compensate_overlapping_walls_x_enabled description"
-msgid "Compensate the flow for parts of an inner wall being printed where there is already a wall in place."
-msgstr "列印內壁時如果該位置已經有牆壁存在，所進行的的流量補償。"
+msgctxt "wall_split_middle_threshold description"
+msgid "The smallest line width, as a factor of the normal line width, above which the middle line (if there is one) will be split into two. Reduce this setting to use more, thinner lines. Increase to use fewer, wider lines. Note that this applies -as if- the entire shape should be filled with wall, so the middle here refers to the middle of the object between two outer edges of the shape, even if there actually is fill or (other) skin in the print instead of wall."
+msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "wall_min_flow label"
-msgid "Minimum Wall Flow"
-msgstr "最小牆壁流量"
+msgctxt "min_odd_wall_line_width label"
+msgid "Minimum Odd Wall Line Width"
+msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "wall_min_flow description"
-msgid "Minimum allowed percentage flow for a wall line. The wall overlap compensation reduces a wall's flow when it lies close to an existing wall. Walls whose flow is less than this value will be replaced with a travel move. When using this setting, you must enable the wall overlap compensation and print the outer wall before inner walls."
-msgstr "牆壁允許的最小流量百分比。當在已列印的牆壁旁列印牆壁時，「補償牆壁重疊」會減少線材流量。小於此設定流量的牆壁會被空跑取代。當啟用此設定時，必需啟用「補償牆壁重疊」並設定先列印外壁再列印內壁。"
+msgctxt "min_odd_wall_line_width description"
+msgid "The minimum line width for middle line gap filler polyline walls. This setting determines at which model thickness we switch from printing two wall lines, to printing two outer walls and a single central wall in the middle. A higher Minimum Odd Wall Line Width leads to a higher maximum even wall line width. The maximum odd wall line width is calculated as 2 * Minimum Even Wall Line Width,"
+msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "wall_min_flow_retract label"
-msgid "Prefer Retract"
-msgstr "回抽優先"
+msgctxt "wall_add_middle_threshold label"
+msgid "Add Middle Line Threshold"
+msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "wall_min_flow_retract description"
-msgid "If enabled, retraction is used rather than combing for travel moves that replace walls whose flow is below the minimum flow threshold."
-msgstr "當此功能開啟時，對於低於最小流量門檻值的牆壁，使用回抽取代而非梳理模式空跑。"
-
-#: fdmprinter.def.json
-msgctxt "fill_perimeter_gaps label"
-msgid "Fill Gaps Between Walls"
-msgstr "填充牆壁之間空隙"
-
-#: fdmprinter.def.json
-msgctxt "fill_perimeter_gaps description"
-msgid "Fills the gaps between walls where no walls fit."
-msgstr "填充牆壁之間空隙。"
-
-#: fdmprinter.def.json
-msgctxt "fill_perimeter_gaps option nowhere"
-msgid "Nowhere"
-msgstr "都不填充"
-
-#: fdmprinter.def.json
-msgctxt "fill_perimeter_gaps option everywhere"
-msgid "Everywhere"
-msgstr "全部填充"
-
-#: fdmprinter.def.json
-msgctxt "filter_out_tiny_gaps label"
-msgid "Filter Out Tiny Gaps"
-msgstr "濾除微小間隙"
-
-#: fdmprinter.def.json
-msgctxt "filter_out_tiny_gaps description"
-msgid "Filter out tiny gaps to reduce blobs on outside of model."
-msgstr "濾除微小間隙以減少模型外側的斑點 。"
+msgctxt "wall_add_middle_threshold description"
+msgid "The smallest line width, as a factor of the normal line width, above which a middle line (if there wasn't one already) will be added. Reduce this setting to use more, thinner lines. Increase to use fewer, wider lines. Note that this applies -as if- the entire shape should be filled with wall, so the middle here refers to the middle of the object between two outer edges of the shape, even if there actually is fill or (other) skin in the print instead of wall."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "fill_outline_gaps label"
@@ -1099,6 +1139,26 @@ msgstr "列印薄壁"
 msgctxt "fill_outline_gaps description"
 msgid "Print pieces of the model which are horizontally thinner than the nozzle size."
 msgstr "列印在水平面上比噴頭尺寸更薄的模型部件。"
+
+#: fdmprinter.def.json
+msgctxt "min_feature_size label"
+msgid "Minimum Feature Size"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "min_feature_size description"
+msgid "Minimum thickness of thin features. Model features that are thinner than this value will not be printed, while features thicker than the Minimum Feature Size will be widened to the Minimum Wall Line Width."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "min_bead_width label"
+msgid "Minimum Thin Wall Line Width"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "min_bead_width description"
+msgid "Width of the wall that will replace thin features (according to the Minimum Feature Size) of the model. If the Minimum Wall Line Width is thinner than the thickness of the feature, the wall will become as thick as the feature itself."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "xy_offset label"
@@ -1278,12 +1338,12 @@ msgstr "啟用時，Z 接縫座標為相對於各個部分中心的值。關閉�
 #: fdmprinter.def.json
 msgctxt "top_bottom label"
 msgid "Top/Bottom"
-msgstr "頂層"
+msgstr "頂層/底層"
 
 #: fdmprinter.def.json
 msgctxt "top_bottom description"
 msgid "Top/Bottom"
-msgstr "頂層"
+msgstr "頂層/底層"
 
 #: fdmprinter.def.json
 msgctxt "roofing_extruder_nr label"
@@ -1438,12 +1498,12 @@ msgstr "將頂部/底部表層路徑相鄰的位置連接。同心模式時啟�
 #: fdmprinter.def.json
 msgctxt "skin_monotonic label"
 msgid "Monotonic Top/Bottom Order"
-msgstr ""
+msgstr "單一化列印 頂層/底層 順序"
 
 #: fdmprinter.def.json
 msgctxt "skin_monotonic description"
 msgid "Print top/bottom lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
-msgstr ""
+msgstr "再列印頂層/底層線條時，命令相鄰線條於單方向重疊. 雖然會花更多時間列印，但會使平面更平整."
 
 #: fdmprinter.def.json
 msgctxt "skin_angles label"
@@ -1518,12 +1578,12 @@ msgstr "鋸齒狀"
 #: fdmprinter.def.json
 msgctxt "ironing_monotonic label"
 msgid "Monotonic Ironing Order"
-msgstr ""
+msgstr "單一化燙平順序"
 
 #: fdmprinter.def.json
 msgctxt "ironing_monotonic description"
 msgid "Print ironing lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
-msgstr ""
+msgstr "再使用燙平列印線條時，命令相鄰線條於單方向重疊。雖然會花更多時間列印，但會使平面更平整."
 
 #: fdmprinter.def.json
 msgctxt "ironing_line_spacing label"
@@ -1732,8 +1792,8 @@ msgstr "填充列印樣式"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
-msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
-msgstr "選擇填充線材的樣式。直線和鋸齒狀填充輪流在每一層交換方向，以降低線材成本。網格、三角形、三-六邊形、立方體、八面體、四分立方體、十字形和同心的列印樣式在每層完整列印。螺旋形、立方體、四分立方體和八面體填充隨每層變化，以在各個方向提供更均衡的强度分布。"
+msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the ceiling of the object."
+msgstr "內部填充層的圖案。線形、鋸齒形填充在交替層間交換方向，已降低材料成本。網格、三角形、三角-六邊形、立方體、八面體、四分立方體、十字和同心圖案每個層間皆有列印。螺旋型、立方體、四分立方體和八面體的填充隨著每一層而變化，以在每個方向上提供更均勻的強度分佈。閃電型填充透過僅支撐物體的頂層來最小化填充。"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1753,7 +1813,7 @@ msgstr "三角形"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option trihexagon"
 msgid "Tri-Hexagon"
-msgstr "三-六邊形"
+msgstr "三角-六邊形混和"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option cubic"
@@ -1799,6 +1859,11 @@ msgstr "立體十字形"
 msgctxt "infill_pattern option gyroid"
 msgid "Gyroid"
 msgstr "螺旋形"
+
+#: fdmprinter.def.json
+msgctxt "infill_pattern option lightning"
+msgid "Lightning"
+msgstr "閃電形"
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill label"
@@ -2015,6 +2080,46 @@ msgid "The number of infill layers that supports skin edges."
 msgstr "支撐表層邊緣的額外填充的層數。"
 
 #: fdmprinter.def.json
+msgctxt "lightning_infill_support_angle label"
+msgid "Lightning Infill Support Angle"
+msgstr "閃電形填充支撐堆疊角度"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_support_angle description"
+msgid "Determines when a lightning infill layer has to support anything above it. Measured in the angle given the thickness of a layer."
+msgstr "決定使用閃電形填充支撐時，層間堆疊的角度."
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_overhang_angle label"
+msgid "Lightning Infill Overhang Angle"
+msgstr "閃電形填充突出角度"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_overhang_angle description"
+msgid "Determines when a lightning infill layer has to support the model above it. Measured in the angle given the thickness."
+msgstr "決定使用閃電形填充支撐時，層間堆疊的角度."
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_prune_angle label"
+msgid "Lightning Infill Prune Angle"
+msgstr "閃電形填充生成角度"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_prune_angle description"
+msgid "The endpoints of infill lines are shortened to save on material. This setting is the angle of overhang of the endpoints of these lines."
+msgstr "內部填充線的端點已被縮減以節省線材. 這個設定用於調整突出線的角度."
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_straightening_angle label"
+msgid "Lightning Infill Straightening Angle"
+msgstr "閃電形填充層間垂直堆疊角度"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_straightening_angle description"
+msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
+msgstr "填充線被拉直用以節省列印時間. 這是填充線長度上允許的最大突出角度."
+
+#: fdmprinter.def.json
 msgctxt "material label"
 msgid "Material"
 msgstr "線材"
@@ -2153,6 +2258,26 @@ msgstr "收縮補償放大倍率"
 msgctxt "material_shrinkage_percentage description"
 msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor."
 msgstr "為了補償線材在冷卻時的收縮，模型會依此比例放大列印。"
+
+#: fdmprinter.def.json
+msgctxt "material_shrinkage_percentage_xy label"
+msgid "Horizontal Scaling Factor Shrinkage Compensation"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_shrinkage_percentage_xy description"
+msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor in the XY-direction (horizontally)."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_shrinkage_percentage_z label"
+msgid "Vertical Scaling Factor Shrinkage Compensation"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_shrinkage_percentage_z description"
+msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor in the Z-direction (vertically)."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_crystallinity label"
@@ -2472,7 +2597,7 @@ msgstr "列印速度"
 #: fdmprinter.def.json
 msgctxt "speed_print description"
 msgid "The speed at which printing happens."
-msgstr "開始列印的速度。"
+msgstr "開始列印時的速度。"
 
 #: fdmprinter.def.json
 msgctxt "speed_infill label"
@@ -2665,24 +2790,14 @@ msgid "The first few layers are printed slower than the rest of the model, to ge
 msgstr "前幾層的列印速度比模型的其他層慢，以便實現與列印平台的更好附著，並改善整體的列印成功率。該速度在這些層中會逐漸增加。"
 
 #: fdmprinter.def.json
-msgctxt "speed_equalize_flow_enabled label"
-msgid "Equalize Filament Flow"
-msgstr "均衡線材流量"
+msgctxt "speed_equalize_flow_width_factor label"
+msgid "Flow Equalization Ratio"
+msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "speed_equalize_flow_enabled description"
-msgid "Print thinner than normal lines faster so that the amount of material extruded per second remains the same. Thin pieces in your model might require lines printed with smaller line width than provided in the settings. This setting controls the speed changes for such lines."
-msgstr "以較快的速度列印比正常線條更細的線條，使每秒擠出的線材量保持相同。模型中較薄的部分可能需要以低於設定中所提供寬度的線寬來列印線條。該設定控制這些線條的速度變化。"
-
-#: fdmprinter.def.json
-msgctxt "speed_equalize_flow_max label"
-msgid "Maximum Speed for Flow Equalization"
-msgstr "流量均衡的最大速度"
-
-#: fdmprinter.def.json
-msgctxt "speed_equalize_flow_max description"
-msgid "Maximum print speed when adjusting the print speed in order to equalize flow."
-msgstr "調整列印速度以便均衡流量時的最大列印速度。"
+msgctxt "speed_equalize_flow_width_factor description"
+msgid "Extrusion width based correction factor on the speed. At 0% the movement speed is kept constant at the Print Speed. At 100% the movement speed is adjusted so that the flow (in mm³/s) is kept constant, i.e. lines half the normal Line Width are printed twice as fast and lines twice as wide are printed half as fast. A value larger than 100% can help to compensate for the higher pressure required to extrude wide lines."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "acceleration_enabled label"
@@ -2693,6 +2808,16 @@ msgstr "啟用加速度控制"
 msgctxt "acceleration_enabled description"
 msgid "Enables adjusting the print head acceleration. Increasing the accelerations can reduce printing time at the cost of print quality."
 msgstr "啟用調整噴頭的加速度。增加加速度可以減少列印時間卻會犧牲列印品質。"
+
+#: fdmprinter.def.json
+msgctxt "acceleration_travel_enabled label"
+msgid "Enable Travel Acceleration"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "acceleration_travel_enabled description"
+msgid "Use a separate acceleration rate for travel moves. If disabled, travel moves will use the acceleration value of the printed line at their destination."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "acceleration_print label"
@@ -2883,6 +3008,16 @@ msgstr "啟用加加速度控制"
 msgctxt "jerk_enabled description"
 msgid "Enables adjusting the jerk of print head when the velocity in the X or Y axis changes. Increasing the jerk can reduce printing time at the cost of print quality."
 msgstr "啟用當 X 或 Y 軸的速度變化時調整列印頭的加加速度。提高加加速度可以通過以列印品質為代價來縮短列印時間。"
+
+#: fdmprinter.def.json
+msgctxt "jerk_travel_enabled label"
+msgid "Enable Travel Jerk"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "jerk_travel_enabled description"
+msgid "Use a separate jerk rate for travel moves. If disabled, travel moves will use the jerk value of the printed line at their destination."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "jerk_print label"
@@ -3203,6 +3338,11 @@ msgstr "關"
 msgctxt "retraction_combing option all"
 msgid "All"
 msgstr "所有"
+
+#: fdmprinter.def.json
+msgctxt "retraction_combing option no_outer_surfaces"
+msgid "Not on Outer Surface"
+msgstr "不在外表面上"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing option noskin"
@@ -4415,6 +4555,46 @@ msgid "The extruder train to use for printing the skirt/brim/raft. This is used 
 msgstr "用於列印外圍/邊緣/木筏的擠出機組。在多擠出機情況下適用。"
 
 #: fdmprinter.def.json
+msgctxt "skirt_brim_extruder_nr label"
+msgid "Skirt/Brim Extruder"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "skirt_brim_extruder_nr description"
+msgid "The extruder train to use for printing the skirt or brim. This is used in multi-extrusion."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "raft_base_extruder_nr label"
+msgid "Raft Base Extruder"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "raft_base_extruder_nr description"
+msgid "The extruder train to use for printing the first layer of the raft. This is used in multi-extrusion."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "raft_interface_extruder_nr label"
+msgid "Raft Middle Extruder"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "raft_interface_extruder_nr description"
+msgid "The extruder train to use for printing the middle layer of the raft. This is used in multi-extrusion."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "raft_surface_extruder_nr label"
+msgid "Raft Top Extruder"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "raft_surface_extruder_nr description"
+msgid "The extruder train to use for printing the top layer(s) of the raft. This is used in multi-extrusion."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "skirt_line_count label"
 msgid "Skirt Line Count"
 msgstr "外圍線條數量"
@@ -4577,6 +4757,16 @@ msgstr "木筏頂部間距"
 msgctxt "raft_surface_line_spacing description"
 msgid "The distance between the raft lines for the top raft layers. The spacing should be equal to the line width, so that the surface is solid."
 msgstr "木筏頂部線條之間的距離。間距應等於線寬，以便打造堅固表面。"
+
+#: fdmprinter.def.json
+msgctxt "raft_interface_layers label"
+msgid "Raft Middle Layers"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "raft_interface_layers description"
+msgid "The number of layers between the base and the surface of the raft. These comprise the main thickness of the raft. Increasing this creates a thicker, sturdier raft."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "raft_interface_thickness label"
@@ -5079,6 +5269,16 @@ msgid "The maximum deviation allowed when reducing the resolution for the Maximu
 msgstr "降低「最高解析度」設定時允許的最大偏差範圍。假如你增加這個設定值，列印精度會降低，但 G-code 會較小。最大偏差是最高解析度的限制，所以當兩者衝突時，會以最大偏差成立為優先。"
 
 #: fdmprinter.def.json
+msgctxt "meshfix_maximum_extrusion_area_deviation label"
+msgid "Maximum Extrusion Area Deviation"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "meshfix_maximum_extrusion_area_deviation description"
+msgid "The maximum extrusion area deviation allowed when removing intermediate points from a straight line. An intermediate point may serve as width-changing point in a long straight line. Therefore, if it is removed, it will cause the line to have a uniform width and, as a result, lose (or gain) a bit of extrusion area. If you increase this you may notice slight under- (or over-) extrusion in between straight parallel walls, as more intermediate width-changing points will be allowed to be removed. Your print will be less accurate, but the g-code will be smaller."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "blackmagic label"
 msgid "Special Modes"
 msgstr "特殊模式"
@@ -5155,8 +5355,8 @@ msgstr "最小模具寬度"
 
 #: fdmprinter.def.json
 msgctxt "mold_width description"
-msgid "The minimal distance between the ouside of the mold and the outside of the model."
-msgstr "模具外側和模型外側之間的最小距離。"
+msgid "The minimal distance between the outside of the mold and the outside of the model."
+msgstr "模具外部與模型外部的最小距離."
 
 #: fdmprinter.def.json
 msgctxt "mold_roof_height label"
@@ -5326,12 +5526,12 @@ msgstr "鋸齒狀"
 #: fdmprinter.def.json
 msgctxt "roofing_monotonic label"
 msgid "Monotonic Top Surface Order"
-msgstr ""
+msgstr "頂層表面單一化列印順序"
 
 #: fdmprinter.def.json
 msgctxt "roofing_monotonic description"
 msgid "Print top surface lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
-msgstr ""
+msgstr "再列印頂層表面線條時，命令相鄰線條於單方向重疊. 雖然會花更多時間列印，但會使平面更平整."
 
 #: fdmprinter.def.json
 msgctxt "roofing_angles label"
@@ -6373,6 +6573,36 @@ msgid "Small features on the first layer will be printed at this percentage of t
 msgstr "第一層的細部模式將以正常列印速度的此百分比值列印。 較慢的列印有助於黏合和精度。"
 
 #: fdmprinter.def.json
+msgctxt "material_alternate_walls label"
+msgid "Alternate Wall Directions"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_alternate_walls description"
+msgid "Alternate wall directions every other layer and inset. Useful for materials that can build up stress, like for metal printing."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "raft_remove_inside_corners label"
+msgid "Remove Raft Inside Corners"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "raft_remove_inside_corners description"
+msgid "Remove inside corners from the raft, causing the raft to become convex."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "raft_base_wall_count label"
+msgid "Raft Base Wall Count"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "raft_base_wall_count description"
+msgid "The number of contours to print around the linear pattern in the base layer of the raft."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "command_line_settings label"
 msgid "Command Line Settings"
 msgstr "命令行設定"
@@ -6431,6 +6661,122 @@ msgstr "網格旋轉矩陣"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "在將模型從檔案中載入時套用在模型上的轉換矩陣。"
+
+#~ msgctxt "machine_head_with_fans_polygon description"
+#~ msgid "A 2D silhouette of the print head (fan caps included)."
+#~ msgstr "列印頭 2D 輪廓圖（包含風扇蓋）。"
+
+#~ msgctxt "outer_inset_first label"
+#~ msgid "Outer Before Inner Walls"
+#~ msgstr "先印外壁後印內壁"
+
+#~ msgctxt "outer_inset_first description"
+#~ msgid "Prints walls in order of outside to inside when enabled. This can help improve dimensional accuracy in X and Y when using a high viscosity plastic like ABS; however it can decrease outer surface print quality, especially on overhangs."
+#~ msgstr "啟用時以從外向內的順序列印牆壁。當使用高黏度塑料如 ABS 時，這有助於提高 X 和 Y 的尺寸精度；但是，它可能會降低表面列印品質，尤其是在突出部分。"
+
+#~ msgctxt "travel_compensate_overlapping_walls_enabled label"
+#~ msgid "Compensate Wall Overlaps"
+#~ msgstr "補償牆壁重疊"
+
+#~ msgctxt "travel_compensate_overlapping_walls_enabled description"
+#~ msgid "Compensate the flow for parts of a wall being printed where there is already a wall in place."
+#~ msgstr "彌補牆壁重疊部分的流量。"
+
+#~ msgctxt "travel_compensate_overlapping_walls_0_enabled label"
+#~ msgid "Compensate Outer Wall Overlaps"
+#~ msgstr "補償外壁重疊"
+
+#~ msgctxt "travel_compensate_overlapping_walls_0_enabled description"
+#~ msgid "Compensate the flow for parts of an outer wall being printed where there is already a wall in place."
+#~ msgstr "列印外壁時如果該位置已經有牆壁存在，所進行的的流量補償。"
+
+#~ msgctxt "travel_compensate_overlapping_walls_x_enabled label"
+#~ msgid "Compensate Inner Wall Overlaps"
+#~ msgstr "補償內壁重疊"
+
+#~ msgctxt "travel_compensate_overlapping_walls_x_enabled description"
+#~ msgid "Compensate the flow for parts of an inner wall being printed where there is already a wall in place."
+#~ msgstr "列印內壁時如果該位置已經有牆壁存在，所進行的的流量補償。"
+
+#~ msgctxt "wall_min_flow label"
+#~ msgid "Minimum Wall Flow"
+#~ msgstr "最小牆壁流量"
+
+#~ msgctxt "wall_min_flow description"
+#~ msgid "Minimum allowed percentage flow for a wall line. The wall overlap compensation reduces a wall's flow when it lies close to an existing wall. Walls whose flow is less than this value will be replaced with a travel move. When using this setting, you must enable the wall overlap compensation and print the outer wall before inner walls."
+#~ msgstr "牆壁允許的最小流量百分比。當在已列印的牆壁旁列印牆壁時，「補償牆壁重疊」會減少線材流量。小於此設定流量的牆壁會被空跑取代。當啟用此設定時，必需啟用「補償牆壁重疊」並設定先列印外壁再列印內壁。"
+
+#~ msgctxt "wall_min_flow_retract label"
+#~ msgid "Prefer Retract"
+#~ msgstr "回抽優先"
+
+#~ msgctxt "wall_min_flow_retract description"
+#~ msgid "If enabled, retraction is used rather than combing for travel moves that replace walls whose flow is below the minimum flow threshold."
+#~ msgstr "當此功能開啟時，對於低於最小流量門檻值的牆壁，使用回抽取代而非梳理模式空跑。"
+
+#~ msgctxt "fill_perimeter_gaps label"
+#~ msgid "Fill Gaps Between Walls"
+#~ msgstr "填充牆壁之間空隙"
+
+#~ msgctxt "fill_perimeter_gaps description"
+#~ msgid "Fills the gaps between walls where no walls fit."
+#~ msgstr "填充牆壁之間空隙。"
+
+#~ msgctxt "fill_perimeter_gaps option nowhere"
+#~ msgid "Nowhere"
+#~ msgstr "都不填充"
+
+#~ msgctxt "fill_perimeter_gaps option everywhere"
+#~ msgid "Everywhere"
+#~ msgstr "全部填充"
+
+#~ msgctxt "filter_out_tiny_gaps label"
+#~ msgid "Filter Out Tiny Gaps"
+#~ msgstr "濾除微小間隙"
+
+#~ msgctxt "filter_out_tiny_gaps description"
+#~ msgid "Filter out tiny gaps to reduce blobs on outside of model."
+#~ msgstr "濾除微小間隙以減少模型外側的斑點 。"
+
+#~ msgctxt "speed_equalize_flow_enabled label"
+#~ msgid "Equalize Filament Flow"
+#~ msgstr "均衡線材流量"
+
+#~ msgctxt "speed_equalize_flow_enabled description"
+#~ msgid "Print thinner than normal lines faster so that the amount of material extruded per second remains the same. Thin pieces in your model might require lines printed with smaller line width than provided in the settings. This setting controls the speed changes for such lines."
+#~ msgstr "以較快的速度列印比正常線條更細的線條，使每秒擠出的線材量保持相同。模型中較薄的部分可能需要以低於設定中所提供寬度的線寬來列印線條。該設定控制這些線條的速度變化。"
+
+#~ msgctxt "speed_equalize_flow_max label"
+#~ msgid "Maximum Speed for Flow Equalization"
+#~ msgstr "流量均衡的最大速度"
+
+#~ msgctxt "speed_equalize_flow_max description"
+#~ msgid "Maximum print speed when adjusting the print speed in order to equalize flow."
+#~ msgstr "調整列印速度以便均衡流量時的最大列印速度。"
+
+#~ msgctxt "machine_max_feedrate_e label"
+#~ msgid "Maximum Feedrate"
+#~ msgstr "最大進料速率"
+
+#~ msgctxt "infill_pattern description"
+#~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the (internal) roofs of the object. As such, the infill percentage is only 'valid' one layer below whatever it needs to support of the model."
+#~ msgstr "列印填充樣式；直線型與鋸齒狀填充於層間交替方向,減少線材消耗；網格型、三角形、三角-六邊形混和、立方體、八面體、四分立方體、十字形、同心於每層間皆完整列印；螺旋形、立方體、四分立方體及八面體填充於每層一間進行改變，確保每個方向都有相同的強度分配，閃電形填充透過只支撐物件內層頂部來最小化填充，因此填充百分比只對於下一層才有效果."
+
+#~ msgctxt "lightning_infill_prune_angle description"
+#~ msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the pruning of the outer extremities of trees. Measured in the angle given the thickness."
+#~ msgstr "閃電形填充層與其附著物間的生成角度."
+
+#~ msgctxt "lightning_infill_straightening_angle description"
+#~ msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the smoothing of trees. Measured in the angle given the thickness."
+#~ msgstr "設定閃電形填充層間垂直堆疊角度，調整樹狀堆疊的平滑度."
+
+#~ msgctxt "infill_pattern description"
+#~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
+#~ msgstr "選擇填充線材的樣式。直線和鋸齒狀填充輪流在每一層交換方向，以降低線材成本。網格、三角形、三-六邊形、立方體、八面體、四分立方體、十字形和同心的列印樣式在每層完整列印。螺旋形、立方體、四分立方體和八面體填充隨每層變化，以在各個方向提供更均衡的强度分布。"
+
+#~ msgctxt "mold_width description"
+#~ msgid "The minimal distance between the ouside of the mold and the outside of the model."
+#~ msgstr "模具外側和模型外側之間的最小距離。"
 
 #~ msgctxt "machine_steps_per_mm_e description"
 #~ msgid "How many steps of the stepper motors will result in one millimeter of extrusion."

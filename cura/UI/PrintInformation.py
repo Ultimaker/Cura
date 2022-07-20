@@ -6,13 +6,15 @@ import math
 import os
 from typing import Dict, List, Optional, TYPE_CHECKING
 
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty, pyqtSlot, QTimer
+from PyQt6.QtCore import QObject, pyqtSignal, pyqtProperty, pyqtSlot, QTimer
 
 from UM.Logger import Logger
 from UM.Qt.Duration import Duration
 from UM.Scene.SceneNode import SceneNode
 from UM.i18n import i18nCatalog
 from UM.MimeTypeDatabase import MimeTypeDatabase, MimeTypeNotFoundError
+from UM.OutputDevice.OutputDevice import OutputDevice
+from UM.OutputDevice.ProjectOutputDevice import ProjectOutputDevice
 
 if TYPE_CHECKING:
     from cura.CuraApplication import CuraApplication
@@ -68,6 +70,7 @@ class PrintInformation(QObject):
         self._application.globalContainerStackChanged.connect(self.setToZeroPrintInformation)
         self._application.fileLoaded.connect(self.setBaseName)
         self._application.workspaceLoaded.connect(self.setProjectName)
+        self._application.getOutputDeviceManager().writeStarted.connect(self._onOutputStart)
         self._application.getMachineManager().rootMaterialChanged.connect(self._onActiveMaterialsChanged)
         self._application.getInstance().getPreferences().preferenceChanged.connect(self._onPreferencesChanged)
 
@@ -129,7 +132,7 @@ class PrintInformation(QObject):
             self._updateJobName()
             self.preSlicedChanged.emit()
 
-    @pyqtProperty(Duration, notify = currentPrintTimeChanged)
+    @pyqtProperty(QObject, notify = currentPrintTimeChanged)
     def currentPrintTime(self) -> Duration:
         return self._current_print_time[self._active_build_plate]
 
@@ -439,3 +442,11 @@ class PrintInformation(QObject):
         """Listen to scene changes to check if we need to reset the print information"""
 
         self.setToZeroPrintInformation(self._active_build_plate)
+
+    def _onOutputStart(self, output_device: OutputDevice) -> None:
+        """If this is the sort of output 'device' (like local or online file storage, rather than a printer),
+           the user could have altered the file-name, and thus the project name should be altered as well."""
+        if isinstance(output_device, ProjectOutputDevice):
+            new_name = output_device.getLastOutputName()
+            if new_name is not None:
+                self.setJobName(os.path.splitext(os.path.basename(new_name))[0])

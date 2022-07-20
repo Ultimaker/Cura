@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from http.server import BaseHTTPRequestHandler
+from threading import Lock  # To turn an asynchronous call synchronous.
 from typing import Optional, Callable, Tuple, Dict, Any, List, TYPE_CHECKING
 from urllib.parse import parse_qs, urlparse
 
@@ -14,6 +15,7 @@ if TYPE_CHECKING:
 
 catalog = i18nCatalog("cura")
 
+
 class AuthorizationRequestHandler(BaseHTTPRequestHandler):
     """This handler handles all HTTP requests on the local web server.
 
@@ -24,11 +26,11 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
         super().__init__(request, client_address, server)
 
         # These values will be injected by the HTTPServer that this handler belongs to.
-        self.authorization_helpers = None  # type: Optional[AuthorizationHelpers]
-        self.authorization_callback = None  # type: Optional[Callable[[AuthenticationResponse], None]]
-        self.verification_code = None  # type: Optional[str]
+        self.authorization_helpers: Optional[AuthorizationHelpers] = None
+        self.authorization_callback: Optional[Callable[[AuthenticationResponse], None]] = None
+        self.verification_code: Optional[str] = None
 
-        self.state = None  # type: Optional[str]
+        self.state: Optional[str] = None
 
     # CURA-6609: Some browser seems to issue a HEAD instead of GET request as the callback.
     def do_HEAD(self) -> None:
@@ -70,13 +72,23 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
         if state != self.state:
             token_response = AuthenticationResponse(
                 success = False,
-                err_message=catalog.i18nc("@message",
-                                          "The provided state is not correct.")
+                err_message = catalog.i18nc("@message", "The provided state is not correct.")
             )
         elif code and self.authorization_helpers is not None and self.verification_code is not None:
+            token_response = AuthenticationResponse(
+                success = False,
+                err_message = catalog.i18nc("@message", "Timeout when authenticating with the account server.")
+            )
             # If the code was returned we get the access token.
-            token_response = self.authorization_helpers.getAccessTokenUsingAuthorizationCode(
-                code, self.verification_code)
+            lock = Lock()
+            lock.acquire()
+
+            def callback(response: AuthenticationResponse) -> None:
+                nonlocal token_response
+                token_response = response
+                lock.release()
+            self.authorization_helpers.getAccessTokenUsingAuthorizationCode(code, self.verification_code, callback)
+            lock.acquire(timeout = 60)  # Block thread until request is completed (which releases the lock). If not acquired, the timeout message stays.
 
         elif self._queryGet(query, "error_code") == "user_denied":
             # Otherwise we show an error message (probably the user clicked "Deny" in the auth dialog).

@@ -1,21 +1,19 @@
 # Cura
-# Copyright (C) 2021 Ultimaker B.V.
+# Copyright (C) 2022 Ultimaker B.V.
 # This file is distributed under the same license as the Cura package.
-# 
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.11\n"
-"Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2021-08-11 09:58+0000\n"
-"PO-Revision-Date: 2021-04-16 15:02+0200\n"
-"Last-Translator: Lionbridge <info@lionbridge.com>\n"
-"Language-Team: Korean <info@lionbridge.com>, Jinbum Kim <Jinbuhm.Kim@gmail.com>, Korean <info@bothof.nl>\n"
-"Language: ko_KR\n"
+"Project-Id-Version: Cura 5.1\n"
+"Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
+"POT-Creation-Date: 2022-06-21 12:50+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.4.1\n"
 
 #: fdmprinter.def.json
 msgctxt "machine_settings label"
@@ -156,6 +154,16 @@ msgid "The depth (Y-direction) of the printable area."
 msgstr "프린팅 가능 영역의 깊이 (Y 방향)"
 
 #: fdmprinter.def.json
+msgctxt "machine_height label"
+msgid "Machine Height"
+msgstr "기기 높이"
+
+#: fdmprinter.def.json
+msgctxt "machine_height description"
+msgid "The height (Z-direction) of the printable area."
+msgstr "프린팅 가능 영역의 높이 (Z 방향)입니다."
+
+#: fdmprinter.def.json
 msgctxt "machine_shape label"
 msgid "Build Plate Shape"
 msgstr "빌드 플레이트 모양"
@@ -194,16 +202,6 @@ msgstr "유리"
 msgctxt "machine_buildplate_type option aluminum"
 msgid "Aluminum"
 msgstr "알루미늄"
-
-#: fdmprinter.def.json
-msgctxt "machine_height label"
-msgid "Machine Height"
-msgstr "기기 높이"
-
-#: fdmprinter.def.json
-msgctxt "machine_height description"
-msgid "The height (Z-direction) of the printable area."
-msgstr "프린팅 가능 영역의 높이 (Z 방향)입니다."
 
 #: fdmprinter.def.json
 msgctxt "machine_heated_bed label"
@@ -467,8 +465,8 @@ msgstr "머신 헤드 및 팬 폴리곤"
 
 #: fdmprinter.def.json
 msgctxt "machine_head_with_fans_polygon description"
-msgid "A 2D silhouette of the print head (fan caps included)."
-msgstr "프린트 헤드의 2D 실루엣 (팬 뚜껑 포함)."
+msgid "The shape of the print head. These are coordinates relative to the position of the print head, which is usually the position of its first extruder. The dimensions left and in front of the print head must be negative coordinates."
+msgstr "프린트 헤드의 모양. 일반적으로 첫 번째 압출기의 위치인 프린트 헤드의 위치와 관련된 좌표입니다. 프린트 헤드의 왼쪽 및 앞쪽 치수는 음수 좌표여야 합니다."
 
 #: fdmprinter.def.json
 msgctxt "gantry_height label"
@@ -562,8 +560,8 @@ msgstr "Z 방향의 모터 최대 속도입니다."
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e label"
-msgid "Maximum Feedrate"
-msgstr "최대 이송 속도"
+msgid "Maximum Speed E"
+msgstr "최대 속도 E"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e description"
@@ -688,7 +686,7 @@ msgstr "밀리미터 당 스텝 수 (E)"
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_e description"
 msgid "How many steps of the stepper motors will result in moving the feeder wheel by one millimeter around its circumference."
-msgstr ""
+msgstr "둘레를 따라 1밀리미터씩 피더 휠을 움직이는 스텝 모터의 스텝 수."
 
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_x label"
@@ -739,6 +737,16 @@ msgstr "피더 휠 지름"
 msgctxt "machine_feeder_wheel_diameter description"
 msgid "The diameter of the wheel that drives the material in the feeder."
 msgstr "피더에서 재료를 구동시키는 휠의 지름."
+
+#: fdmprinter.def.json
+msgctxt "machine_scale_fan_speed_zero_to_one label"
+msgid "Scale Fan Speed To 0-1"
+msgstr "팬 속도를 0-1로 조정"
+
+#: fdmprinter.def.json
+msgctxt "machine_scale_fan_speed_zero_to_one description"
+msgid "Scale the fan speed to be between 0 and 1 instead of between 0 and 256."
+msgstr "팬 속도를 0 ~ 256이 아니라 0 ~ 1로 조정합니다."
 
 #: fdmprinter.def.json
 msgctxt "resolution label"
@@ -961,6 +969,56 @@ msgid "The number of walls. When calculated by the wall thickness, this value is
 msgstr "벽의 수. 벽 두께로 계산할 때 이 값은 반올림됩니다."
 
 #: fdmprinter.def.json
+msgctxt "wall_transition_length label"
+msgid "Wall Transition Length"
+msgstr "벽 전환 길이"
+
+#: fdmprinter.def.json
+msgctxt "wall_transition_length description"
+msgid "When transitioning between different numbers of walls as the part becomes thinner, a certain amount of space is allotted to split or join the wall lines."
+msgstr "부품이 얇아지면서 서로 다른 수의 벽 사이에서 전환될 때 벽 선을 분할하거나 결합하기 위해 일정 양의 공간이 할당됩니다."
+
+#: fdmprinter.def.json
+msgctxt "wall_distribution_count label"
+msgid "Wall Distribution Count"
+msgstr "벽 배포 개수"
+
+#: fdmprinter.def.json
+msgctxt "wall_distribution_count description"
+msgid "The number of walls, counted from the center, over which the variation needs to be spread. Lower values mean that the outer walls don't change in width."
+msgstr "중앙에서부터 계산되는 벽의 수로, 이를 통해 오차가 분산되어야 합니다. 값이 작다고 해서 외벽의 너비가 변경되지 않는 것은 아닙니다."
+
+#: fdmprinter.def.json
+msgctxt "wall_transition_angle label"
+msgid "Wall Transitioning Threshold Angle"
+msgstr "벽 전환 임계각"
+
+#: fdmprinter.def.json
+msgctxt "wall_transition_angle description"
+msgid "When to create transitions between even and odd numbers of walls. A wedge shape with an angle greater than this setting will not have transitions and no walls will be printed in the center to fill the remaining space. Reducing this setting reduces the number and length of these center walls, but may leave gaps or overextrude."
+msgstr "짝수 벽과 홀수 벽 사이에 전환을 생성할 때입니다. 이 설정보다 더 큰 각도의 웨지 모양은 전환이 없으며 나머지 공간을 채우기 위해 벽이 중앙에 프린트되지는 않습니다. 이 설정을 줄이면 이러한 중앙 벽의 수와 길이가 줄어들지만, 간격이 생기거나 과잉 압출될 수 있습니다."
+
+#: fdmprinter.def.json
+msgctxt "wall_transition_filter_distance label"
+msgid "Wall Transitioning Filter Distance"
+msgstr "벽 전환 필터 거리"
+
+#: fdmprinter.def.json
+msgctxt "wall_transition_filter_distance description"
+msgid "If it would be transitioning back and forth between different numbers of walls in quick succession, don't transition at all. Remove transitions if they are closer together than this distance."
+msgstr "서로 다른 수의 벽들 사이를 빠르게 연속적으로 왔다 갔다 하며 전환되는 경우에는 전환하지 마십시오. 이 거리보다 서로 더 가까운 경우에는 전환을 제거하십시오."
+
+#: fdmprinter.def.json
+msgctxt "wall_transition_filter_deviation label"
+msgid "Wall Transitioning Filter Margin"
+msgstr "벽 전환 필터 여백"
+
+#: fdmprinter.def.json
+msgctxt "wall_transition_filter_deviation description"
+msgid "Prevent transitioning back and forth between one extra wall and one less. This margin extends the range of line widths which follow to [Minimum Wall Line Width - Margin, 2 * Minimum Wall Line Width + Margin]. Increasing this margin reduces the number of transitions, which reduces the number of extrusion starts/stops and travel time. However, large line width variation can lead to under- or overextrusion problems."
+msgstr "하나의 여분 벽과 하나 더 적은 벽 사이를 왔다 갔다 하는 전환을 방지하십시오. 이 여백은 [최소 벽 선 너비 - 여백, 2 * 최소 벽 선 너비 + 여백]을 따르는 선 너비의 범위를 확장합니다. 이 여백을 늘리면 전환 횟수가 줄어들어, 압출 시작/중지 및 이동 시간이 줄어듭니다. 그러나 선 너비 변동이 크면 압출 미달 또는 과잉 문제가 발생할 수 있습니다."
+
+#: fdmprinter.def.json
 msgctxt "wall_0_wipe_dist label"
 msgid "Outer Wall Wipe Distance"
 msgstr "외벽 이동 거리"
@@ -991,14 +1049,24 @@ msgid "Optimize the order in which walls are printed so as to reduce the number 
 msgstr "수축 및 이동 거리를 줄이도록 벽이 인쇄되는 순서를 최적화합니다. 대부분의 부품은 이 기능을 사용하면 도움이 되지만 실제로는 시간이 오래 걸릴 수 있으므로, 최적화 여부와 관계없이 인쇄 시간을 비교하십시오. 빌드 플레이트 접착 유형을 Brim으로 선택하는 경우 첫 번째 층이 최적화되지 않습니다."
 
 #: fdmprinter.def.json
-msgctxt "outer_inset_first label"
-msgid "Outer Before Inner Walls"
-msgstr "내벽 앞부분 바깥 쪽"
+msgctxt "inset_direction label"
+msgid "Wall Ordering"
+msgstr "벽 순서 지정"
 
 #: fdmprinter.def.json
-msgctxt "outer_inset_first description"
-msgid "Prints walls in order of outside to inside when enabled. This can help improve dimensional accuracy in X and Y when using a high viscosity plastic like ABS; however it can decrease outer surface print quality, especially on overhangs."
-msgstr "활성화 되었을 때 외부에서 내부로 벽을 프린팅합니다. 이것은 ABS와 같은 고점도 플라스틱을 사용할 때 X와 Y의 치수 정확도를 향상시키는 데 도움이 됩니다. 그러나 특히 오버행의 경우 표면 프린팅 품질을 떨어 뜨릴 수 있습니다."
+msgctxt "inset_direction description"
+msgid "Determines the order in which walls are printed. Printing outer walls earlier helps with dimensional accuracy, as faults from inner walls cannot propagate to the outside. However printing them later allows them to stack better when overhangs are printed."
+msgstr "벽이 프린트되는 순서를 정의합니다. 이전에 외벽을 프린팅하면 내벽의 오류가 외부로 전파될 수 없으므로 치수 정확도가 향상됩니다. 그러나 나중에 프린팅하면 오버행(경사면)이 프린트될 때 더 잘 쌓일 수 있습니다."
+
+#: fdmprinter.def.json
+msgctxt "inset_direction option inside_out"
+msgid "Inside To Outside"
+msgstr "내부에서 외부로"
+
+#: fdmprinter.def.json
+msgctxt "inset_direction option outside_in"
+msgid "Outside To Inside"
+msgstr "외부에서 내부로"
 
 #: fdmprinter.def.json
 msgctxt "alternate_extra_perimeter label"
@@ -1011,84 +1079,54 @@ msgid "Prints an extra wall at every other layer. This way infill gets caught be
 msgstr "다른 모든 레이어에 여분의 벽을 프린팅합니다. 이렇게하면 내부채움이 여분의 벽 사이에 끼어 더 강하게 프린팅됩니다."
 
 #: fdmprinter.def.json
-msgctxt "travel_compensate_overlapping_walls_enabled label"
-msgid "Compensate Wall Overlaps"
-msgstr "벽 겹침 보정"
+msgctxt "min_wall_line_width label"
+msgid "Minimum Wall Line Width"
+msgstr "최소 벽 선 너비"
 
 #: fdmprinter.def.json
-msgctxt "travel_compensate_overlapping_walls_enabled description"
-msgid "Compensate the flow for parts of a wall being printed where there is already a wall in place."
-msgstr "이미 벽이있는 곳에 프린팅중인 벽의 부분에 대한 흐름을 보정하십시오."
+msgctxt "min_wall_line_width description"
+msgid "For thin structures around once or twice the nozzle size, the line widths need to be altered to adhere to the thickness of the model. This setting controls the minimum line width allowed for the walls. The minimum line widths inherently also determine the maximum line widths, since we transition from N to N+1 walls at some geometry thickness where the N walls are wide and the N+1 walls are narrow. The widest possible wall line is twice the Minimum Wall Line Width."
+msgstr "노즐 크기의 1~2배 정도의 얇은 구조물의 경우 모델의 두께에 맞게 선 너비를 변경해야 합니다. 이 설정은 벽에 허용되는 최소 선 너비를 제어합니다. N개의 벽이 넓고 N+1개의 벽이 좁은 일부 형상 두께에서는 N개의 벽에서 N+1개의 벽으로 전환하기 때문에, 최소 선 너비가 내재적으로 최대 선 너비를 결정합니다. 가장 넓을 가능성이 있는 벽 선은 최소 벽 선 너비의 두 배입니다."
 
 #: fdmprinter.def.json
-msgctxt "travel_compensate_overlapping_walls_0_enabled label"
-msgid "Compensate Outer Wall Overlaps"
-msgstr "외벽 겹침 보정"
+msgctxt "min_even_wall_line_width label"
+msgid "Minimum Even Wall Line Width"
+msgstr "최소 짝수 벽 선 너비"
 
 #: fdmprinter.def.json
-msgctxt "travel_compensate_overlapping_walls_0_enabled description"
-msgid "Compensate the flow for parts of an outer wall being printed where there is already a wall in place."
-msgstr "이미 벽이있는 곳에 프린팅되는 외벽 부분에 대한 흐름을 보정합니다."
+msgctxt "min_even_wall_line_width description"
+msgid "The minimum line width for normal polygonal walls. This setting determines at which model thickness we switch from printing a single thin wall line, to printing two wall lines. A higher Minimum Even Wall Line Width leads to a higher maximum odd wall line width. The maximum even wall line width is calculated as Outer Wall Line Width + 0.5 * Minimum Odd Wall Line Width."
+msgstr "일반 다각형 벽의 최소 선 너비 이 설정은 단일의 얇은 벽 선 프린팅에서 두 개의 벽 선 프린팅으로 전환하는 모델 두께를 결정합니다. 최소 짝수 벽 선 너비가 더 높을수록 최대 홀수 벽 선 너비가 높아집니다. 최대 짝수 벽 선 너비는 외벽 선 너비 + 0.5 * 최소 홀수 벽 선 너비로 계산됩니다."
 
 #: fdmprinter.def.json
-msgctxt "travel_compensate_overlapping_walls_x_enabled label"
-msgid "Compensate Inner Wall Overlaps"
-msgstr "내부 벽 겹침 보정"
+msgctxt "wall_split_middle_threshold label"
+msgid "Split Middle Line Threshold"
+msgstr "중간 선 임계값 분할"
 
 #: fdmprinter.def.json
-msgctxt "travel_compensate_overlapping_walls_x_enabled description"
-msgid "Compensate the flow for parts of an inner wall being printed where there is already a wall in place."
-msgstr "이미 벽이있는 곳에 프린팅되는 내부 벽 부분에 대한 흐름을 보정하십시오."
+msgctxt "wall_split_middle_threshold description"
+msgid "The smallest line width, as a factor of the normal line width, above which the middle line (if there is one) will be split into two. Reduce this setting to use more, thinner lines. Increase to use fewer, wider lines. Note that this applies -as if- the entire shape should be filled with wall, so the middle here refers to the middle of the object between two outer edges of the shape, even if there actually is fill or (other) skin in the print instead of wall."
+msgstr "일반적인 선 너비의 요인으로서 가장 작은 선 너비이며, 그 이상이면 중간 선(있는 경우)이 둘로 분할됩니다. 더 많고 얇은 선을 사용하려면 이 설정을 줄이십시오. 더 적고 넓은 선을 사용하려면 이 설정을 늘리십시오. 이 설정은 전체 모양이 벽으로 채워져야 하는 것처럼 적용된다는 점을 유념하십시오. 따라서 실제로 채워져 있거나 벽 대신 (다른) 스킨이 3D 객체에 있더라도, 여기에서 중간은 모양의 두 바깥쪽 가장자리 사이에 있는 객체의 중간을 나타냅니다."
 
 #: fdmprinter.def.json
-msgctxt "wall_min_flow label"
-msgid "Minimum Wall Flow"
-msgstr "최소 압출량"
+msgctxt "min_odd_wall_line_width label"
+msgid "Minimum Odd Wall Line Width"
+msgstr "최소 홀수 벽 선 너비"
 
 #: fdmprinter.def.json
-msgctxt "wall_min_flow description"
-msgid "Minimum allowed percentage flow for a wall line. The wall overlap compensation reduces a wall's flow when it lies close to an existing wall. Walls whose flow is less than this value will be replaced with a travel move. When using this setting, you must enable the wall overlap compensation and print the outer wall before inner walls."
-msgstr "벽 라인에 대한 최소 허용 백분율 흐름 벽 오버랩 보상이 기존 벽과 가까울 때 벽의 흐름을 줄입니다. 흐름이 이 값보다 작은 벽은 이동으로 대체됩니다. 이 설정을 사용하는 경우 벽 오버랩 보상을 사용하고 내벽 전에 외벽을 인쇄해야 합니다."
+msgctxt "min_odd_wall_line_width description"
+msgid "The minimum line width for middle line gap filler polyline walls. This setting determines at which model thickness we switch from printing two wall lines, to printing two outer walls and a single central wall in the middle. A higher Minimum Odd Wall Line Width leads to a higher maximum even wall line width. The maximum odd wall line width is calculated as 2 * Minimum Even Wall Line Width,"
+msgstr "중간 선 간격 충전재 폴리라인 벽의 최소 선 너비 이 설정은 두 개의 벽 선을 프린팅 하는 것에서 두 개의 외벽 및 가운데의 단일 중앙 벽 프린팅으로 전환하는 모델 두께를 결정합니다. 최소 짝수 벽 선 너비가 더 높을수록 최대 홀수 벽 선 너비가 높아집니다. 최대 홀수 벽 너비는 2 * 최소 짝수 벽 선 너비로 계산됩니다."
 
 #: fdmprinter.def.json
-msgctxt "wall_min_flow_retract label"
-msgid "Prefer Retract"
-msgstr "리트렉션 선호"
+msgctxt "wall_add_middle_threshold label"
+msgid "Add Middle Line Threshold"
+msgstr "중간 선 임계값 추가"
 
 #: fdmprinter.def.json
-msgctxt "wall_min_flow_retract description"
-msgid "If enabled, retraction is used rather than combing for travel moves that replace walls whose flow is below the minimum flow threshold."
-msgstr "이 옵션을 사용하면 흐름이 최소 흐름 임계 값보다 낮은 벽을 교체하는 이동에 대해 빗질 대신에 리트렉션을 사용합니다."
-
-#: fdmprinter.def.json
-msgctxt "fill_perimeter_gaps label"
-msgid "Fill Gaps Between Walls"
-msgstr "벽 사이의 간격 채우기"
-
-#: fdmprinter.def.json
-msgctxt "fill_perimeter_gaps description"
-msgid "Fills the gaps between walls where no walls fit."
-msgstr "벽이 딱 맞지 않는 벽 사이의 간격을 채웁니다."
-
-#: fdmprinter.def.json
-msgctxt "fill_perimeter_gaps option nowhere"
-msgid "Nowhere"
-msgstr "아무데도"
-
-#: fdmprinter.def.json
-msgctxt "fill_perimeter_gaps option everywhere"
-msgid "Everywhere"
-msgstr "어디에나"
-
-#: fdmprinter.def.json
-msgctxt "filter_out_tiny_gaps label"
-msgid "Filter Out Tiny Gaps"
-msgstr "매우 작은 간격 차단"
-
-#: fdmprinter.def.json
-msgctxt "filter_out_tiny_gaps description"
-msgid "Filter out tiny gaps to reduce blobs on outside of model."
-msgstr "매우 작은 간격을 차단하여 모델 외부의 얼룩을 줄입니다."
+msgctxt "wall_add_middle_threshold description"
+msgid "The smallest line width, as a factor of the normal line width, above which a middle line (if there wasn't one already) will be added. Reduce this setting to use more, thinner lines. Increase to use fewer, wider lines. Note that this applies -as if- the entire shape should be filled with wall, so the middle here refers to the middle of the object between two outer edges of the shape, even if there actually is fill or (other) skin in the print instead of wall."
+msgstr "일반적인 선 너비의 요인으로서 가장 작은 선 너비이며, 그 이상이면 중간 선(아직 없는 경우)이 추가됩니다. 더 많고 얇은 선을 사용하려면 이 설정을 줄이십시오. 더 적고 넓은 선을 사용하려면 이 설정을 늘리십시오. 이 설정은 전체 모양이 벽으로 채워져야 하는 것처럼 적용된다는 점을 유념하십시오. 따라서 실제로 채워져 있거나 벽 대신 (다른) 스킨이 3D 객체에 있더라도, 여기에서 중간은 모양의 두 바깥쪽 가장자리 사이에 있는 객체의 중간을 나타냅니다."
 
 #: fdmprinter.def.json
 msgctxt "fill_outline_gaps label"
@@ -1099,6 +1137,26 @@ msgstr "얇은 벽 프린팅"
 msgctxt "fill_outline_gaps description"
 msgid "Print pieces of the model which are horizontally thinner than the nozzle size."
 msgstr "노즐 크기보다 수평으로 더 얇은 모델 조각을 프린팅하십시오."
+
+#: fdmprinter.def.json
+msgctxt "min_feature_size label"
+msgid "Minimum Feature Size"
+msgstr "최소 피처 크기"
+
+#: fdmprinter.def.json
+msgctxt "min_feature_size description"
+msgid "Minimum thickness of thin features. Model features that are thinner than this value will not be printed, while features thicker than the Minimum Feature Size will be widened to the Minimum Wall Line Width."
+msgstr "얇은 피처의 최소 두께 이 값보다 더 얇은 모델 피처는 프린트되지 않으며, 최소 피처 크기보다 더 두꺼운 피처는 최소 벽 선 너비로 넓어집니다."
+
+#: fdmprinter.def.json
+msgctxt "min_bead_width label"
+msgid "Minimum Thin Wall Line Width"
+msgstr "얇은 벽 선 최소 너비"
+
+#: fdmprinter.def.json
+msgctxt "min_bead_width description"
+msgid "Width of the wall that will replace thin features (according to the Minimum Feature Size) of the model. If the Minimum Wall Line Width is thinner than the thickness of the feature, the wall will become as thick as the feature itself."
+msgstr "모델의 (최소 피처 크기에 따라) 얇은 피처를 대체할 벽의 너비 최소 벽 선 너비가 피처의 두께보다 더 얇다면 벽은 피처 자체만큼 두꺼워집니다."
 
 #: fdmprinter.def.json
 msgctxt "xy_offset label"
@@ -1438,12 +1496,12 @@ msgstr "스킨 경로가 나란히 이어지는 상단/하단 스킨 경로를 �
 #: fdmprinter.def.json
 msgctxt "skin_monotonic label"
 msgid "Monotonic Top/Bottom Order"
-msgstr ""
+msgstr "단면 상단/하단 순서"
 
 #: fdmprinter.def.json
 msgctxt "skin_monotonic description"
 msgid "Print top/bottom lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
-msgstr ""
+msgstr "한 방향으로 주변 라인들과 항상 겹치게 하기 위해 상단/하단 라인들을 배치하여 프린트하십시오. 이는 프린트하는 데 더 많은 시간이 소모되지만 평평한 면이 보다 일관적으로 보이게 합니다."
 
 #: fdmprinter.def.json
 msgctxt "skin_angles label"
@@ -1518,12 +1576,12 @@ msgstr "지그재그"
 #: fdmprinter.def.json
 msgctxt "ironing_monotonic label"
 msgid "Monotonic Ironing Order"
-msgstr ""
+msgstr "단면 다림질 순서"
 
 #: fdmprinter.def.json
 msgctxt "ironing_monotonic description"
 msgid "Print ironing lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
-msgstr ""
+msgstr "한 방향으로 주변 라인들과 항상 겹치게 하기 위해 다림질 라인들을 배치하여 프린트하십시오. 이는 프린트하는 데 더 많은 시간이 소모되지만 평평한 면이 보다 일관적으로 보이게 합니다."
 
 #: fdmprinter.def.json
 msgctxt "ironing_line_spacing label"
@@ -1732,8 +1790,8 @@ msgstr "내부채움 패턴"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
-msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
-msgstr "프린트 충진 재료의 패턴입니다. 선과 갈지자형 충진이 레이어를 하나 걸러서 방향을 바꾸므로 재료비가 절감됩니다. 격자, 삼각형, 삼육각형, 입방체, 옥텟, 4분 입방체, 십자, 동심원 패턴이 레이어마다 완전히 인쇄됩니다. 자이로이드, 입방체, 4분 입방체, 옥텟 충진이 레이어마다 변경되므로 각 방향으로 힘이 더 균등하게 분산됩니다."
+msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the ceiling of the object."
+msgstr "프린트 내부채움 재료의 패턴입니다. 선형과 지그재그형 내부채움이 서로 다른 레이어에서 방향을 바꾸므로 재료비가 절감됩니다. 격자, 삼각형, 트라이 헥사곤 (tri-hexagon), 큐빅, 옥텟 (octet), 쿼터 큐빅, 크로스, 동심원 패턴이 레이어마다 완전히 프린트됩니다. 자이로이드 (Gyroid), 큐빅, 쿼터 큐빅, 옥텟 (octet) 내부채움이 레이어마다 변경되므로 각 방향으로 힘이 더 균등하게 분산됩니다. 라이트닝 내부채움이 객체의 천장만 서포트하여 내부채움을 최소화합니다."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1799,6 +1857,11 @@ msgstr "십자형 3D"
 msgctxt "infill_pattern option gyroid"
 msgid "Gyroid"
 msgstr "자이로이드"
+
+#: fdmprinter.def.json
+msgctxt "infill_pattern option lightning"
+msgid "Lightning"
+msgstr "라이트닝"
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill label"
@@ -2015,6 +2078,46 @@ msgid "The number of infill layers that supports skin edges."
 msgstr "스킨 에지를 지원하는 내부채움 레이어의 수."
 
 #: fdmprinter.def.json
+msgctxt "lightning_infill_support_angle label"
+msgid "Lightning Infill Support Angle"
+msgstr "라이트닝 내부채움 서포트 각도"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_support_angle description"
+msgid "Determines when a lightning infill layer has to support anything above it. Measured in the angle given the thickness of a layer."
+msgstr "라이트닝 내부채움 레이어가 그 위에 있는 것을 서포트해야 할 부분을 결정합니다. 레이어 두께가 주어진 각도로 측정됩니다."
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_overhang_angle label"
+msgid "Lightning Infill Overhang Angle"
+msgstr "라이트닝 내부채움 오버행 각도"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_overhang_angle description"
+msgid "Determines when a lightning infill layer has to support the model above it. Measured in the angle given the thickness."
+msgstr "라이트닝 내부채움 레이어가 레이어 위에 있는 모델을 서포트해야 할 부분을 결정합니다. 두께가 주어진 각도로 측정됩니다."
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_prune_angle label"
+msgid "Lightning Infill Prune Angle"
+msgstr "라이트닝 내부채움 가지치기 각도"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_prune_angle description"
+msgid "The endpoints of infill lines are shortened to save on material. This setting is the angle of overhang of the endpoints of these lines."
+msgstr "내부채움 선의 종점이 재료를 절약하기 위해 단축됩니다. 이 설정은 해당 선의 종점에 대한 오버행(경사면)의 각도입니다."
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_straightening_angle label"
+msgid "Lightning Infill Straightening Angle"
+msgstr "라이트닝 내부채움 정리 각도"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_straightening_angle description"
+msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
+msgstr "내부채움 선이 인쇄 시간을 절약하기 위해 정리됩니다. 이는 내부채움 선 길이 전체에 허용되는 오버행(경사면)의 최대 각도입니다."
+
+#: fdmprinter.def.json
 msgctxt "material label"
 msgid "Material"
 msgstr "재료"
@@ -2153,6 +2256,26 @@ msgstr "확장 배율 수축 보상"
 msgctxt "material_shrinkage_percentage description"
 msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor."
 msgstr "냉각됨에 따라 재료 수축을 보상하기 위해 모델이 이 배율로 확장됩니다."
+
+#: fdmprinter.def.json
+msgctxt "material_shrinkage_percentage_xy label"
+msgid "Horizontal Scaling Factor Shrinkage Compensation"
+msgstr "수평 확장 배율 수축 보정"
+
+#: fdmprinter.def.json
+msgctxt "material_shrinkage_percentage_xy description"
+msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor in the XY-direction (horizontally)."
+msgstr "냉각됨에 따라 재료의 수축을 보정하기 위해 모델이 이 배율로 XY 방향으로(수평으로) 확장됩니다."
+
+#: fdmprinter.def.json
+msgctxt "material_shrinkage_percentage_z label"
+msgid "Vertical Scaling Factor Shrinkage Compensation"
+msgstr "수직 확장 배율 수축 보정"
+
+#: fdmprinter.def.json
+msgctxt "material_shrinkage_percentage_z description"
+msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor in the Z-direction (vertically)."
+msgstr "냉각됨에 따라 재료 수축을 보정하기 위해 모델이 이 배율로 Z 방향으로(수직으로) 확장됩니다."
 
 #: fdmprinter.def.json
 msgctxt "material_crystallinity label"
@@ -2665,24 +2788,14 @@ msgid "The first few layers are printed slower than the rest of the model, to ge
 msgstr "처음 몇 개의 레이어는 모델의 나머지 부분보다 느리게 프린팅되어 빌드 플레이트에 대한보다 나은 접착력을 얻고 출력물의 전체 성공률을 향상시킵니다. 속도는 이 층 위로 점진적으로 증가합니다."
 
 #: fdmprinter.def.json
-msgctxt "speed_equalize_flow_enabled label"
-msgid "Equalize Filament Flow"
-msgstr "필라멘트 흐름 균일화"
+msgctxt "speed_equalize_flow_width_factor label"
+msgid "Flow Equalization Ratio"
+msgstr "흐름 균일화 비율"
 
 #: fdmprinter.def.json
-msgctxt "speed_equalize_flow_enabled description"
-msgid "Print thinner than normal lines faster so that the amount of material extruded per second remains the same. Thin pieces in your model might require lines printed with smaller line width than provided in the settings. This setting controls the speed changes for such lines."
-msgstr "일반 라인보다 얇게 프린팅하여 초당 압출되는 재료의 양이 동일하게 유지되도록 하십시오. 모델의 얇은 부분에는 설정에서 제공 한 것보다 작은 선 너비로 선이 프린팅되어야 할 수 있습니다. 이 설정은 이러한 선의 속도 변경을 제어합니다."
-
-#: fdmprinter.def.json
-msgctxt "speed_equalize_flow_max label"
-msgid "Maximum Speed for Flow Equalization"
-msgstr "압출량 균등화를위한 최대 속도"
-
-#: fdmprinter.def.json
-msgctxt "speed_equalize_flow_max description"
-msgid "Maximum print speed when adjusting the print speed in order to equalize flow."
-msgstr "흐름을 균등하게 유지하기위해 조정되는 최대 프린팅 속도."
+msgctxt "speed_equalize_flow_width_factor description"
+msgid "Extrusion width based correction factor on the speed. At 0% the movement speed is kept constant at the Print Speed. At 100% the movement speed is adjusted so that the flow (in mm³/s) is kept constant, i.e. lines half the normal Line Width are printed twice as fast and lines twice as wide are printed half as fast. A value larger than 100% can help to compensate for the higher pressure required to extrude wide lines."
+msgstr "속도에 대한 압출 너비 기준 보정 계수. 0%에서는 이동 속도가 프린팅 속도로 일정하게 유지됩니다. 100%에서는 흐름(단위: mm³/s)이 일정하게 유지되도록 이동 속도가 조정됩니다. 즉 일반적인 선 너비의 절반인 선은 두 배로 빠르게 프린팅되고 너비가 두 배인 선은 절반 속도로 프린팅됩니다. 100%보다 큰 값은 넓은 선을 압출하기 위해 요구되는 더 높은 압력을 보정하는 데 도움이 될 수 있습니다."
 
 #: fdmprinter.def.json
 msgctxt "acceleration_enabled label"
@@ -2693,6 +2806,16 @@ msgstr "가속 제어 활성화"
 msgctxt "acceleration_enabled description"
 msgid "Enables adjusting the print head acceleration. Increasing the accelerations can reduce printing time at the cost of print quality."
 msgstr "프린트 헤드 가속도를 활성화 합니다. 가속도를 높이면 프린팅 품질을 저하시키지만 프린팅 시간을 줄일 수 있습니다."
+
+#: fdmprinter.def.json
+msgctxt "acceleration_travel_enabled label"
+msgid "Enable Travel Acceleration"
+msgstr "이동 가속 활성화"
+
+#: fdmprinter.def.json
+msgctxt "acceleration_travel_enabled description"
+msgid "Use a separate acceleration rate for travel moves. If disabled, travel moves will use the acceleration value of the printed line at their destination."
+msgstr "이동할 때 별도의 가속도를 사용합니다. 비활성화된 경우 이동 시 프린팅된 라인의 목적지 기준 가속도 값을 사용합니다."
 
 #: fdmprinter.def.json
 msgctxt "acceleration_print label"
@@ -2883,6 +3006,16 @@ msgstr "Jerk 컨트롤 사용"
 msgctxt "jerk_enabled description"
 msgid "Enables adjusting the jerk of print head when the velocity in the X or Y axis changes. Increasing the jerk can reduce printing time at the cost of print quality."
 msgstr "X 또는 Y 축의 속도가 변경 될 때 프린트 헤드의 속도를 조정할 수 있습니다. Jerk를 높이면 프린팅 품질을 저하시키면서 프린팅 시간을 줄일 수 있습니다."
+
+#: fdmprinter.def.json
+msgctxt "jerk_travel_enabled label"
+msgid "Enable Travel Jerk"
+msgstr "이동 저크 활성화"
+
+#: fdmprinter.def.json
+msgctxt "jerk_travel_enabled description"
+msgid "Use a separate jerk rate for travel moves. If disabled, travel moves will use the jerk value of the printed line at their destination."
+msgstr "이동할 때 별도의 저크 속도를 사용합니다. 비활성화된 경우 이동 시 프린팅된 라인의 목적지 기준 저크 값을 사용합니다."
 
 #: fdmprinter.def.json
 msgctxt "jerk_print label"
@@ -3203,6 +3336,11 @@ msgstr "끔"
 msgctxt "retraction_combing option all"
 msgid "All"
 msgstr "모두"
+
+#: fdmprinter.def.json
+msgctxt "retraction_combing option no_outer_surfaces"
+msgid "Not on Outer Surface"
+msgstr "외부 표면에 없음"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing option noskin"
@@ -4415,6 +4553,46 @@ msgid "The extruder train to use for printing the skirt/brim/raft. This is used 
 msgstr "스커트 / 브림 / 래프트 프린팅에 사용하는 익스트루더. 이것은 다중 압출에 사용됩니다."
 
 #: fdmprinter.def.json
+msgctxt "skirt_brim_extruder_nr label"
+msgid "Skirt/Brim Extruder"
+msgstr "스커트/브림 익스트루더"
+
+#: fdmprinter.def.json
+msgctxt "skirt_brim_extruder_nr description"
+msgid "The extruder train to use for printing the skirt or brim. This is used in multi-extrusion."
+msgstr "스커트 또는 브림 프린팅에 사용되는 익스트루더 트레인. 이것은 다중 압출에 사용됩니다."
+
+#: fdmprinter.def.json
+msgctxt "raft_base_extruder_nr label"
+msgid "Raft Base Extruder"
+msgstr "래프트 베이스 익스트루더"
+
+#: fdmprinter.def.json
+msgctxt "raft_base_extruder_nr description"
+msgid "The extruder train to use for printing the first layer of the raft. This is used in multi-extrusion."
+msgstr "스커트 또는 브림 프린팅에 사용되는 익스트루더 트레인. 이것은 다중 압출에 사용됩니다."
+
+#: fdmprinter.def.json
+msgctxt "raft_interface_extruder_nr label"
+msgid "Raft Middle Extruder"
+msgstr "래프트 중간 익스트루더"
+
+#: fdmprinter.def.json
+msgctxt "raft_interface_extruder_nr description"
+msgid "The extruder train to use for printing the middle layer of the raft. This is used in multi-extrusion."
+msgstr "래프트의 중간 레이어 프린팅에 사용되는 익스트루더 트레인. 이것은 다중 압출에 사용됩니다."
+
+#: fdmprinter.def.json
+msgctxt "raft_surface_extruder_nr label"
+msgid "Raft Top Extruder"
+msgstr "래프트 상단 익스트루더"
+
+#: fdmprinter.def.json
+msgctxt "raft_surface_extruder_nr description"
+msgid "The extruder train to use for printing the top layer(s) of the raft. This is used in multi-extrusion."
+msgstr "래프트의 상단 레이어 프린팅에 사용되는 익스트루더 트레인. 이것은 다중 압출에 사용됩니다."
+
+#: fdmprinter.def.json
 msgctxt "skirt_line_count label"
 msgid "Skirt Line Count"
 msgstr "스커트 선 수"
@@ -4577,6 +4755,16 @@ msgstr "래프트 상단 간격"
 msgctxt "raft_surface_line_spacing description"
 msgid "The distance between the raft lines for the top raft layers. The spacing should be equal to the line width, so that the surface is solid."
 msgstr "상단 래프트 레이어에 대한 래프트 사이의 거리. 간격은 선 너비와 동일해야 표면이 단색입니다."
+
+#: fdmprinter.def.json
+msgctxt "raft_interface_layers label"
+msgid "Raft Middle Layers"
+msgstr "래프트 중간 레이어"
+
+#: fdmprinter.def.json
+msgctxt "raft_interface_layers description"
+msgid "The number of layers between the base and the surface of the raft. These comprise the main thickness of the raft. Increasing this creates a thicker, sturdier raft."
+msgstr "래프트의 베이스와 표면 사이에 있는 레이어의 수. 이 수가 래프트의 주요 두께를 구성합니다. 이 수가 증가하면 래프트가 더 두껍고 튼튼해집니다."
 
 #: fdmprinter.def.json
 msgctxt "raft_interface_thickness label"
@@ -5079,6 +5267,16 @@ msgid "The maximum deviation allowed when reducing the resolution for the Maximu
 msgstr "최대 해상도 설정에 대한 해상도를 낮추면 최대 편차를 사용할 수 있습니다.  최대 편차를 높이면 프린트의 정확도는 감소하지만, G 코드도 감소합니다. 최대 편차는 최대 해상도의 한계이며, 따라서 두 항목이 충돌하면 항상 최대 편차가 우선합니다."
 
 #: fdmprinter.def.json
+msgctxt "meshfix_maximum_extrusion_area_deviation label"
+msgid "Maximum Extrusion Area Deviation"
+msgstr "최대 압출 영역 편차"
+
+#: fdmprinter.def.json
+msgctxt "meshfix_maximum_extrusion_area_deviation description"
+msgid "The maximum extrusion area deviation allowed when removing intermediate points from a straight line. An intermediate point may serve as width-changing point in a long straight line. Therefore, if it is removed, it will cause the line to have a uniform width and, as a result, lose (or gain) a bit of extrusion area. If you increase this you may notice slight under- (or over-) extrusion in between straight parallel walls, as more intermediate width-changing points will be allowed to be removed. Your print will be less accurate, but the g-code will be smaller."
+msgstr "직선에서 중간 점을 제거할 때 허용되는 최대 압출 영역 편차. 중간 점은 긴 직선에서 너비가 바뀌는 점의 역할을 할 수 있습니다. 따라서 중간 점이 제거되면 선의 너비가 균일해지고 그 결과, 약간의 압출 영역을 잃거나 얻게 됩니다. 이 값을 증가시키면 중간의 너비가 바뀌는 점이 더 많이 제거될 수 있으므로, 직선의 평행한 벽들 사이에 약간의 미달(또는 과잉) 압출이 발생할 수 있습니다. 프린트의 정확도는 감소하지만, G 코드도 감소합니다."
+
+#: fdmprinter.def.json
 msgctxt "blackmagic label"
 msgid "Special Modes"
 msgstr "특수 모드"
@@ -5155,8 +5353,8 @@ msgstr "최소 몰드 너비"
 
 #: fdmprinter.def.json
 msgctxt "mold_width description"
-msgid "The minimal distance between the ouside of the mold and the outside of the model."
-msgstr "몰드의 바깥 쪽과 모델의 바깥 쪽 사이의 최소 거리입니다."
+msgid "The minimal distance between the outside of the mold and the outside of the model."
+msgstr "몰드의 바깥쪽과 모델의 바깥쪽 사이의 최소 거리입니다."
 
 #: fdmprinter.def.json
 msgctxt "mold_roof_height label"
@@ -5326,12 +5524,12 @@ msgstr "지그재그"
 #: fdmprinter.def.json
 msgctxt "roofing_monotonic label"
 msgid "Monotonic Top Surface Order"
-msgstr ""
+msgstr "단면 상단 표면 순서"
 
 #: fdmprinter.def.json
 msgctxt "roofing_monotonic description"
 msgid "Print top surface lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
-msgstr ""
+msgstr "한 방향으로 주변 라인들과 항상 겹치게 하기 위해 상단 표면 라인들을 배치하여 프린트하십시오. 이는 프린트하는 데 더 많은 시간이 소모되지만 평평한 면이 보다 일관적으로 보이게 합니다."
 
 #: fdmprinter.def.json
 msgctxt "roofing_angles label"
@@ -6371,6 +6569,36 @@ msgid "Small features on the first layer will be printed at this percentage of t
 msgstr "첫 번째 레이어의 소형 피처는 정상적인 프린트 속도의 이 비율로 프린팅됩니다. 프린트 속도가 느리면 부착과 정확도가 개선됩니다."
 
 #: fdmprinter.def.json
+msgctxt "material_alternate_walls label"
+msgid "Alternate Wall Directions"
+msgstr "벽 방향 대체"
+
+#: fdmprinter.def.json
+msgctxt "material_alternate_walls description"
+msgid "Alternate wall directions every other layer and inset. Useful for materials that can build up stress, like for metal printing."
+msgstr "다른 레이어마다 벽 방향을 대체하고 삽입합니다. 금속 프린팅의 경우와 같이 응력을 증강시킬 수 있는 재료에 유용."
+
+#: fdmprinter.def.json
+msgctxt "raft_remove_inside_corners label"
+msgid "Remove Raft Inside Corners"
+msgstr "래프트 내부 모서리 제거"
+
+#: fdmprinter.def.json
+msgctxt "raft_remove_inside_corners description"
+msgid "Remove inside corners from the raft, causing the raft to become convex."
+msgstr "래프트가 볼록해지도록 래프트에서 내부 모서리를 제거합니다."
+
+#: fdmprinter.def.json
+msgctxt "raft_base_wall_count label"
+msgid "Raft Base Wall Count"
+msgstr "래프트 베이스 벽 개수"
+
+#: fdmprinter.def.json
+msgctxt "raft_base_wall_count description"
+msgid "The number of contours to print around the linear pattern in the base layer of the raft."
+msgstr "래프트의 베이스 레이어에 있는 선형 패턴 주위에 프린팅 할 윤곽의 수."
+
+#: fdmprinter.def.json
 msgctxt "command_line_settings label"
 msgid "Command Line Settings"
 msgstr "커맨드 라인 설정"
@@ -6429,6 +6657,130 @@ msgstr "메쉬 회전 행렬"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "파일로부터 로드 하는 경유, 모델에 적용될 변환 행렬입니다."
+
+#~ msgctxt "machine_head_with_fans_polygon description"
+#~ msgid "A 2D silhouette of the print head (fan caps included)."
+#~ msgstr "프린트 헤드의 2D 실루엣 (팬 뚜껑 포함)."
+
+#~ msgctxt "outer_inset_first label"
+#~ msgid "Outer Before Inner Walls"
+#~ msgstr "내벽 앞부분 바깥 쪽"
+
+#~ msgctxt "outer_inset_first description"
+#~ msgid "Prints walls in order of outside to inside when enabled. This can help improve dimensional accuracy in X and Y when using a high viscosity plastic like ABS; however it can decrease outer surface print quality, especially on overhangs."
+#~ msgstr "활성화 되었을 때 외부에서 내부로 벽을 프린팅합니다. 이것은 ABS와 같은 고점도 플라스틱을 사용할 때 X와 Y의 치수 정확도를 향상시키는 데 도움이 됩니다. 그러나 특히 오버행의 경우 표면 프린팅 품질을 떨어 뜨릴 수 있습니다."
+
+#~ msgctxt "travel_compensate_overlapping_walls_enabled label"
+#~ msgid "Compensate Wall Overlaps"
+#~ msgstr "벽 겹침 보정"
+
+#~ msgctxt "travel_compensate_overlapping_walls_enabled description"
+#~ msgid "Compensate the flow for parts of a wall being printed where there is already a wall in place."
+#~ msgstr "이미 벽이있는 곳에 프린팅중인 벽의 부분에 대한 흐름을 보정하십시오."
+
+#~ msgctxt "travel_compensate_overlapping_walls_0_enabled label"
+#~ msgid "Compensate Outer Wall Overlaps"
+#~ msgstr "외벽 겹침 보정"
+
+#~ msgctxt "travel_compensate_overlapping_walls_0_enabled description"
+#~ msgid "Compensate the flow for parts of an outer wall being printed where there is already a wall in place."
+#~ msgstr "이미 벽이있는 곳에 프린팅되는 외벽 부분에 대한 흐름을 보정합니다."
+
+#~ msgctxt "travel_compensate_overlapping_walls_x_enabled label"
+#~ msgid "Compensate Inner Wall Overlaps"
+#~ msgstr "내부 벽 겹침 보정"
+
+#~ msgctxt "travel_compensate_overlapping_walls_x_enabled description"
+#~ msgid "Compensate the flow for parts of an inner wall being printed where there is already a wall in place."
+#~ msgstr "이미 벽이있는 곳에 프린팅되는 내부 벽 부분에 대한 흐름을 보정하십시오."
+
+#~ msgctxt "wall_min_flow label"
+#~ msgid "Minimum Wall Flow"
+#~ msgstr "최소 압출량"
+
+#~ msgctxt "wall_min_flow description"
+#~ msgid "Minimum allowed percentage flow for a wall line. The wall overlap compensation reduces a wall's flow when it lies close to an existing wall. Walls whose flow is less than this value will be replaced with a travel move. When using this setting, you must enable the wall overlap compensation and print the outer wall before inner walls."
+#~ msgstr "벽 라인에 대한 최소 허용 백분율 흐름 벽 오버랩 보상이 기존 벽과 가까울 때 벽의 흐름을 줄입니다. 흐름이 이 값보다 작은 벽은 이동으로 대체됩니다. 이 설정을 사용하는 경우 벽 오버랩 보상을 사용하고 내벽 전에 외벽을 인쇄해야 합니다."
+
+#~ msgctxt "wall_min_flow_retract label"
+#~ msgid "Prefer Retract"
+#~ msgstr "리트렉션 선호"
+
+#~ msgctxt "wall_min_flow_retract description"
+#~ msgid "If enabled, retraction is used rather than combing for travel moves that replace walls whose flow is below the minimum flow threshold."
+#~ msgstr "이 옵션을 사용하면 흐름이 최소 흐름 임계 값보다 낮은 벽을 교체하는 이동에 대해 빗질 대신에 리트렉션을 사용합니다."
+
+#~ msgctxt "fill_perimeter_gaps label"
+#~ msgid "Fill Gaps Between Walls"
+#~ msgstr "벽 사이의 간격 채우기"
+
+#~ msgctxt "fill_perimeter_gaps description"
+#~ msgid "Fills the gaps between walls where no walls fit."
+#~ msgstr "벽이 딱 맞지 않는 벽 사이의 간격을 채웁니다."
+
+#~ msgctxt "fill_perimeter_gaps option nowhere"
+#~ msgid "Nowhere"
+#~ msgstr "아무데도"
+
+#~ msgctxt "fill_perimeter_gaps option everywhere"
+#~ msgid "Everywhere"
+#~ msgstr "어디에나"
+
+#~ msgctxt "filter_out_tiny_gaps label"
+#~ msgid "Filter Out Tiny Gaps"
+#~ msgstr "매우 작은 간격 차단"
+
+#~ msgctxt "filter_out_tiny_gaps description"
+#~ msgid "Filter out tiny gaps to reduce blobs on outside of model."
+#~ msgstr "매우 작은 간격을 차단하여 모델 외부의 얼룩을 줄입니다."
+
+#~ msgctxt "speed_equalize_flow_enabled label"
+#~ msgid "Equalize Filament Flow"
+#~ msgstr "필라멘트 흐름 균일화"
+
+#~ msgctxt "speed_equalize_flow_enabled description"
+#~ msgid "Print thinner than normal lines faster so that the amount of material extruded per second remains the same. Thin pieces in your model might require lines printed with smaller line width than provided in the settings. This setting controls the speed changes for such lines."
+#~ msgstr "일반 라인보다 얇게 프린팅하여 초당 압출되는 재료의 양이 동일하게 유지되도록 하십시오. 모델의 얇은 부분에는 설정에서 제공 한 것보다 작은 선 너비로 선이 프린팅되어야 할 수 있습니다. 이 설정은 이러한 선의 속도 변경을 제어합니다."
+
+#~ msgctxt "speed_equalize_flow_max label"
+#~ msgid "Maximum Speed for Flow Equalization"
+#~ msgstr "압출량 균등화를위한 최대 속도"
+
+#~ msgctxt "speed_equalize_flow_max description"
+#~ msgid "Maximum print speed when adjusting the print speed in order to equalize flow."
+#~ msgstr "흐름을 균등하게 유지하기위해 조정되는 최대 프린팅 속도."
+
+#~ msgctxt "machine_start_gcode description"
+#~ msgid "G-code commands to be executed at the very start - separated by \\n."
+#~ msgstr "시작과 동시에형실행될 G 코드 명령어 \\n."
+
+#~ msgctxt "machine_end_gcode description"
+#~ msgid "G-code commands to be executed at the very end - separated by \\n."
+#~ msgstr "맨 마지막에 실행될 G 코드 명령 \\n."
+
+#~ msgctxt "machine_max_feedrate_e label"
+#~ msgid "Maximum Feedrate"
+#~ msgstr "최대 이송 속도"
+
+#~ msgctxt "infill_pattern description"
+#~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the (internal) roofs of the object. As such, the infill percentage is only 'valid' one layer below whatever it needs to support of the model."
+#~ msgstr "프린트 내부채움 재료의 패턴입니다. 선과 지그재그형 내부채움이 레이어를 하나 걸러서 방향을 바꾸므로 재료비가 절감됩니다. 격자, 삼각형, 삼육각형, 큐빅, 옥텟, 쿼터 큐빅, 크로스, 동심원 패턴이 레이어마다 완전히 프린트됩니다. 자이로이드, 큐빅, 쿼터 큐빅, 옥텟 내부채움이 레이어마다 변경되므로 각 방향으로 힘이 더 균등하게 분산됩니다. 라이트닝 내부채움이 객체의 (내부) 지붕만 서포트하여 내부채움을 최소화합니다. 따라서 내부채움 비율은 모델을 서포트하는 데 필요한 것에 상관없이 한 레이어 아래에만 '유효'합니다."
+
+#~ msgctxt "lightning_infill_prune_angle description"
+#~ msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the pruning of the outer extremities of trees. Measured in the angle given the thickness."
+#~ msgstr "나무의 바깥쪽 가지치기에 대해 라이트닝 내부채움 레이어와 바로 위 레이어의 차이점입니다. 두께가 주어진 각도로 측정됩니다."
+
+#~ msgctxt "lightning_infill_straightening_angle description"
+#~ msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the smoothing of trees. Measured in the angle given the thickness."
+#~ msgstr "나무의 윤곽선을 부드럽게 하는 것에 관한 라이트닝 내부채움 레이어와 바로 위 레이어의 차이점입니다. 두께가 주어진 각도로 측정됩니다."
+
+#~ msgctxt "infill_pattern description"
+#~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
+#~ msgstr "프린트 충진 재료의 패턴입니다. 선과 갈지자형 충진이 레이어를 하나 걸러서 방향을 바꾸므로 재료비가 절감됩니다. 격자, 삼각형, 삼육각형, 입방체, 옥텟, 4분 입방체, 십자, 동심원 패턴이 레이어마다 완전히 인쇄됩니다. 자이로이드, 입방체, 4분 입방체, 옥텟 충진이 레이어마다 변경되므로 각 방향으로 힘이 더 균등하게 분산됩니다."
+
+#~ msgctxt "mold_width description"
+#~ msgid "The minimal distance between the ouside of the mold and the outside of the model."
+#~ msgstr "몰드의 바깥 쪽과 모델의 바깥 쪽 사이의 최소 거리입니다."
 
 #~ msgctxt "machine_steps_per_mm_e description"
 #~ msgid "How many steps of the stepper motors will result in one millimeter of extrusion."

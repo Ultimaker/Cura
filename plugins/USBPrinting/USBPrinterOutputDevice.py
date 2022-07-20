@@ -311,7 +311,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             if line == b"":
                 # An empty line means that the firmware is idle
                 # Multiple empty lines probably means that the firmware and Cura are waiting
-                # for eachother due to a missed "ok", so we keep track of empty lines
+                # for each other due to a missed "ok", so we keep track of empty lines
                 self._firmware_idle_count += 1
             else:
                 self._firmware_idle_count = 0

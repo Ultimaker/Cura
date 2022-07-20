@@ -4,7 +4,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.1 as Cura
 
 
@@ -20,7 +20,7 @@ Cura.MachineAction
         anchors.topMargin: UM.Theme.getSize("default_margin").width * 5
         anchors.leftMargin: UM.Theme.getSize("default_margin").width * 4
 
-        Label
+        UM.Label
         {
             id: pageDescription
             anchors.top: parent.top
@@ -29,11 +29,9 @@ Cura.MachineAction
             wrapMode: Text.WordWrap
             text: catalog.i18nc("@label","Please select any upgrades made to this Ultimaker Original")
             font: UM.Theme.getFont("medium")
-            color: UM.Theme.getColor("text")
-            renderType: Text.NativeRendering
         }
 
-        Cura.CheckBox
+        UM.CheckBox
         {
             anchors.top: pageDescription.bottom
             anchors.topMargin: UM.Theme.getSize("default_margin").height

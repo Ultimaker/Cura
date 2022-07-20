@@ -8,7 +8,7 @@ The build volume draws a cube (for rectangular build plates) that represents the
 
 The build volume also draws a grid underneath the build volume. The grid features 1cm lines which allows the user to roughly estimate how big its print is or the distance between prints. It also features a finer 1mm line pattern within that grid. The grid is drawn as a single quad. This quad is then sent to the graphical card with a specialised shader which draws the grid pattern.
 
-For elliptical build plates, the volume bounds are drawn as two circles, one at the top and one at the bottom of the available height. The build plate grid is drawn as a tesselated circle, but with the same shader.
+For elliptical build plates, the volume bounds are drawn as two circles, one at the top and one at the bottom of the available height. The build plate grid is drawn as a tessellated circle, but with the same shader.
 
 Disallowed areas
 ----

@@ -1,21 +1,19 @@
 # Cura
-# Copyright (C) 2021 Ultimaker B.V.
+# Copyright (C) 2022 Ultimaker B.V.
 # This file is distributed under the same license as the Cura package.
-# 
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.11\n"
-"Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2021-08-11 09:58+0000\n"
-"PO-Revision-Date: 2021-04-16 14:56+0200\n"
-"Last-Translator: Lionbridge <info@lionbridge.com>\n"
-"Language-Team: Portuguese <info@lionbridge.com>, Paulo Miranda <av@utopica3d.com>, Portuguese <info@bothof.nl>\n"
-"Language: pt_PT\n"
+"Project-Id-Version: Cura 5.1\n"
+"Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
+"POT-Creation-Date: 2022-06-21 12:50+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.4.1\n"
 
 #: fdmprinter.def.json
 msgctxt "machine_settings label"
@@ -156,6 +154,16 @@ msgid "The depth (Y-direction) of the printable area."
 msgstr "A profundidade (direção Y) da área de impressão."
 
 #: fdmprinter.def.json
+msgctxt "machine_height label"
+msgid "Machine Height"
+msgstr "Altura da Máquina"
+
+#: fdmprinter.def.json
+msgctxt "machine_height description"
+msgid "The height (Z-direction) of the printable area."
+msgstr "A altura (direção Z) da área de impressão."
+
+#: fdmprinter.def.json
 msgctxt "machine_shape label"
 msgid "Build Plate Shape"
 msgstr "Forma da Base de Construção"
@@ -194,16 +202,6 @@ msgstr "Vidro"
 msgctxt "machine_buildplate_type option aluminum"
 msgid "Aluminum"
 msgstr "Alumínio"
-
-#: fdmprinter.def.json
-msgctxt "machine_height label"
-msgid "Machine Height"
-msgstr "Altura da Máquina"
-
-#: fdmprinter.def.json
-msgctxt "machine_height description"
-msgid "The height (Z-direction) of the printable area."
-msgstr "A altura (direção Z) da área de impressão."
 
 #: fdmprinter.def.json
 msgctxt "machine_heated_bed label"
@@ -250,8 +248,6 @@ msgctxt "machine_extruder_count label"
 msgid "Number of Extruders"
 msgstr "Número de Extrusores"
 
-# train?
-# nucleo?
 #: fdmprinter.def.json
 msgctxt "machine_extruder_count description"
 msgid "Number of extruder trains. An extruder train is the combination of a feeder, bowden tube, and nozzle."
@@ -322,7 +318,6 @@ msgctxt "machine_nozzle_heat_up_speed label"
 msgid "Heat Up Speed"
 msgstr "Velocidade de aquecimento"
 
-# intervalo?
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_heat_up_speed description"
 msgid "The speed (°C/s) by which the nozzle heats up averaged over the window of normal printing temperatures and the standby temperature."
@@ -333,7 +328,6 @@ msgctxt "machine_nozzle_cool_down_speed label"
 msgid "Cool Down Speed"
 msgstr "Velocidade de arrefecimento"
 
-# intervalo?
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_cool_down_speed description"
 msgid "The speed (°C/s) by which the nozzle cools down averaged over the window of normal printing temperatures and the standby temperature."
@@ -471,8 +465,8 @@ msgstr "Polígono da cabeça e do ventilador da máquina"
 
 #: fdmprinter.def.json
 msgctxt "machine_head_with_fans_polygon description"
-msgid "A 2D silhouette of the print head (fan caps included)."
-msgstr "Uma silhueta 2D da cabeça de impressão (incluindo tampas do(s) ventilador(s))."
+msgid "The shape of the print head. These are coordinates relative to the position of the print head, which is usually the position of its first extruder. The dimensions left and in front of the print head must be negative coordinates."
+msgstr "A forma da cabeça de impressão. Estas coordenadas são relativas à posição da cabeça de impressão, que normalmente é a posição do primeiro extrusor. As coordenadas à esquerda e à frente da cabeça de impressão têm de ser valores negativos."
 
 #: fdmprinter.def.json
 msgctxt "gantry_height label"
@@ -566,8 +560,8 @@ msgstr "A velocidade máxima do motor da direção Z."
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e label"
-msgid "Maximum Feedrate"
-msgstr "Velocidade Máxima de Alimentação"
+msgid "Maximum Speed E"
+msgstr "Velocidade Máxima de E"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e description"
@@ -692,17 +686,13 @@ msgstr "Passos por Milímetro (E)"
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_e description"
 msgid "How many steps of the stepper motors will result in moving the feeder wheel by one millimeter around its circumference."
-msgstr ""
+msgstr "O número de passos do motor de passos (stepper motor) que irá resultar no movimento de um milímetro da roda do alimentador à volta da respetiva circunferência."
 
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_x label"
 msgid "X Endstop in Positive Direction"
 msgstr "Endstop X no Sentido Positivo"
 
-# rever!
-# contexto
-# Alta baixa?
-# em cima em baixo?
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_x description"
 msgid "Whether the endstop of the X axis is in the positive direction (high X coordinate) or negative (low X coordinate)."
@@ -733,7 +723,6 @@ msgctxt "machine_minimum_feedrate label"
 msgid "Minimum Feedrate"
 msgstr "Velocidade Mínima de Alimentação"
 
-# english string correct?
 #: fdmprinter.def.json
 msgctxt "machine_minimum_feedrate description"
 msgid "The minimal movement speed of the print head."
@@ -750,6 +739,16 @@ msgid "The diameter of the wheel that drives the material in the feeder."
 msgstr "O diâmetro da roda que conduz o material pelo alimentador."
 
 #: fdmprinter.def.json
+msgctxt "machine_scale_fan_speed_zero_to_one label"
+msgid "Scale Fan Speed To 0-1"
+msgstr "Ajustar a velocidade do ventilador entre 0-1"
+
+#: fdmprinter.def.json
+msgctxt "machine_scale_fan_speed_zero_to_one description"
+msgid "Scale the fan speed to be between 0 and 1 instead of between 0 and 256."
+msgstr "Ajustar a velocidade do ventilador para esta ser definida entre 0 e 1 em vez de entre 0 e 256."
+
+#: fdmprinter.def.json
 msgctxt "resolution label"
 msgid "Quality"
 msgstr "Qualidade"
@@ -764,8 +763,6 @@ msgctxt "layer_height label"
 msgid "Layer Height"
 msgstr "Espessura das Camadas"
 
-# Valores?  ou numeros? ou espessura?
-# mais elevadas ou maiores?
 #: fdmprinter.def.json
 msgctxt "layer_height description"
 msgid "The height of each layer in mm. Higher values produce faster prints in lower resolution, lower values produce slower prints in higher resolution."
@@ -781,10 +778,6 @@ msgctxt "layer_height_0 description"
 msgid "The height of the initial layer in mm. A thicker initial layer makes adhesion to the build plate easier."
 msgstr "A espessura da camada inicial em milímetros. Uma camada inicial mais espessa facilita a aderência à base de construção."
 
-# rever!
-# Diâmetro da linha?
-# ou
-# Largura da linha?
 #: fdmprinter.def.json
 msgctxt "line_width label"
 msgid "Line Width"
@@ -930,9 +923,6 @@ msgctxt "wall_extruder_nr label"
 msgid "Wall Extruder"
 msgstr "Extrusor Paredes"
 
-# Este é utilizado em extrusões múltiplas.   ??
-# Definição utilizada com múltiplos extrusores. ??
-# Definição para múltiplos extrusores.
 #: fdmprinter.def.json
 msgctxt "wall_extruder_nr description"
 msgid "The extruder train used for printing the walls. This is used in multi-extrusion."
@@ -979,6 +969,56 @@ msgid "The number of walls. When calculated by the wall thickness, this value is
 msgstr "O número de paredes. Quando calculado através da espessura das paredes, este valor é arredondado para um número inteiro."
 
 #: fdmprinter.def.json
+msgctxt "wall_transition_length label"
+msgid "Wall Transition Length"
+msgstr "Comprimento de transição de paredes"
+
+#: fdmprinter.def.json
+msgctxt "wall_transition_length description"
+msgid "When transitioning between different numbers of walls as the part becomes thinner, a certain amount of space is allotted to split or join the wall lines."
+msgstr "Quando uma peça fica mais fina e seja necessário haver uma transição entre um numero diferente de paredes, é reservado um espaço para se puder separar ou unir as linhas das paredes."
+
+#: fdmprinter.def.json
+msgctxt "wall_distribution_count label"
+msgid "Wall Distribution Count"
+msgstr "Número de paredes distribuídas"
+
+#: fdmprinter.def.json
+msgctxt "wall_distribution_count description"
+msgid "The number of walls, counted from the center, over which the variation needs to be spread. Lower values mean that the outer walls don't change in width."
+msgstr "O número de paredes, contadas a partir do centro, sobre as quais a variação tem de ser distribuída. Valores mais baixos significam que as paredes exteriores não mudam de diâmetro."
+
+#: fdmprinter.def.json
+msgctxt "wall_transition_angle label"
+msgid "Wall Transitioning Threshold Angle"
+msgstr "Ângulo do limiar de transição de paredes"
+
+#: fdmprinter.def.json
+msgctxt "wall_transition_angle description"
+msgid "When to create transitions between even and odd numbers of walls. A wedge shape with an angle greater than this setting will not have transitions and no walls will be printed in the center to fill the remaining space. Reducing this setting reduces the number and length of these center walls, but may leave gaps or overextrude."
+msgstr "Quando devem ser criadas transições entre números pares e ímpares de paredes. Uma forma em cunha com um ângulo superior a esta definição não terá transições e nenhuma parede será impressa no centro para preencher o espaço restante. Reduzir esta definição reduz o número e o comprimento destas paredes centrais, mas pode deixar lacunas ou provocar um excesso de extrusão."
+
+#: fdmprinter.def.json
+msgctxt "wall_transition_filter_distance label"
+msgid "Wall Transitioning Filter Distance"
+msgstr "Distância do filtro de transição de paredes"
+
+#: fdmprinter.def.json
+msgctxt "wall_transition_filter_distance description"
+msgid "If it would be transitioning back and forth between different numbers of walls in quick succession, don't transition at all. Remove transitions if they are closer together than this distance."
+msgstr "Se estiver a efetuar a transição para trás e para a frente entre diferentes números de paredes numa rápida sucessão, não efetuar qualquer transição. Remover as transições se estiverem mais juntas do que esta distância."
+
+#: fdmprinter.def.json
+msgctxt "wall_transition_filter_deviation label"
+msgid "Wall Transitioning Filter Margin"
+msgstr "Margem do filtro de transição de paredes"
+
+#: fdmprinter.def.json
+msgctxt "wall_transition_filter_deviation description"
+msgid "Prevent transitioning back and forth between one extra wall and one less. This margin extends the range of line widths which follow to [Minimum Wall Line Width - Margin, 2 * Minimum Wall Line Width + Margin]. Increasing this margin reduces the number of transitions, which reduces the number of extrusion starts/stops and travel time. However, large line width variation can lead to under- or overextrusion problems."
+msgstr "Evite a transição para trás e para a frente entre uma parede extra e uma a menos. Esta margem alarga o alcance dos diâmetros de linha que seguem [Diâmetro mínimo da linha da parede - Margem, 2 * Diâmetro mínimo de linha da parede + Margem]. O aumento desta margem reduz o número de transições, o que reduz o número de inícios/paragens de extrusão e o tempo de viagem. No entanto, a variação do diâmetro de linha grande pode levar a problemas de excesso ou defeito de extrusão."
+
+#: fdmprinter.def.json
 msgctxt "wall_0_wipe_dist label"
 msgid "Outer Wall Wipe Distance"
 msgstr "Distância Limpeza Parede Exterior"
@@ -988,9 +1028,6 @@ msgctxt "wall_0_wipe_dist description"
 msgid "Distance of a travel move inserted after the outer wall, to hide the Z seam better."
 msgstr "A distância de um movimento de deslocação inserido depois da parede exterior, para ocultar melhor a junta Z."
 
-# Inserção?
-# desvio?
-# Movimento?
 #: fdmprinter.def.json
 msgctxt "wall_0_inset label"
 msgid "Outer Wall Inset"
@@ -1001,9 +1038,6 @@ msgctxt "wall_0_inset description"
 msgid "Inset applied to the path of the outer wall. If the outer wall is smaller than the nozzle, and printed after the inner walls, use this offset to get the hole in the nozzle to overlap with the inner walls instead of the outside of the model."
 msgstr "Desvio aplicado à trajetória da parede exterior. Se a parede exterior for menor que o nozzle e impressa depois das paredes interiores, utilize este desvio para que o buraco do nozzle se sobreponha às paredes interiores e não ao exterior do modelo."
 
-# rever!
-# ordem de -impressão- das paredes?
-# incluir _Impressão_?
 #: fdmprinter.def.json
 msgctxt "optimize_wall_printing_order label"
 msgid "Optimize Wall Printing Order"
@@ -1014,110 +1048,85 @@ msgctxt "optimize_wall_printing_order description"
 msgid "Optimize the order in which walls are printed so as to reduce the number of retractions and the distance travelled. Most parts will benefit from this being enabled but some may actually take longer so please compare the print time estimates with and without optimization. First layer is not optimized when choosing brim as build plate adhesion type."
 msgstr "Otimizar a ordem pela qual as paredes são impressas de forma a reduzir o número de retrações e a distância percorrida. A maioria das peças irá beneficiar com a ativação desta opção, mas algumas podem na realidade demorar mais tempo, portanto, por favor compare as estimativas do tempo de impressão com e sem a otimização."
 
-# antes das interiores?
 #: fdmprinter.def.json
-msgctxt "outer_inset_first label"
-msgid "Outer Before Inner Walls"
-msgstr "Paredes Exteriores Primeiro"
+msgctxt "inset_direction label"
+msgid "Wall Ordering"
+msgstr "Ordenação de paredes"
 
 #: fdmprinter.def.json
-msgctxt "outer_inset_first description"
-msgid "Prints walls in order of outside to inside when enabled. This can help improve dimensional accuracy in X and Y when using a high viscosity plastic like ABS; however it can decrease outer surface print quality, especially on overhangs."
-msgstr "Quando ativado, imprime as paredes do exterior para o interior. Isto pode ajudar a melhorar a precisão dimensional em X e Y quando utilizar um plástico com alta viscosidade, como o ABS; no entanto, pode diminuir a qualidade de impressão da superfície exterior, especialmente em saliências."
+msgctxt "inset_direction description"
+msgid "Determines the order in which walls are printed. Printing outer walls earlier helps with dimensional accuracy, as faults from inner walls cannot propagate to the outside. However printing them later allows them to stack better when overhangs are printed."
+msgstr "Determina a ordem pela qual as paredes são impressas. Imprimir paredes externas antecipadamente ajuda em termos de precisão dimensional, uma vez que as falhas de paredes internas não se podem propagar para o exterior. No entanto, imprimi-las mais tarde permite empilhá-las melhor quando são impressas saliências."
+
+#: fdmprinter.def.json
+msgctxt "inset_direction option inside_out"
+msgid "Inside To Outside"
+msgstr "De dentro para fora"
+
+#: fdmprinter.def.json
+msgctxt "inset_direction option outside_in"
+msgid "Outside To Inside"
+msgstr "De fora para dentro"
 
 #: fdmprinter.def.json
 msgctxt "alternate_extra_perimeter label"
 msgid "Alternate Extra Wall"
 msgstr "Alternar Parede Adicional"
 
-# capturado?
-# integrado?
 #: fdmprinter.def.json
 msgctxt "alternate_extra_perimeter description"
 msgid "Prints an extra wall at every other layer. This way infill gets caught between these extra walls, resulting in stronger prints."
 msgstr "Imprimir uma parede adicional em camadas alternadas. Deste modo, o enchimento é \"capturado\" entre estas paredes adicionais, resultando em impressões mais robustas."
 
 #: fdmprinter.def.json
-msgctxt "travel_compensate_overlapping_walls_enabled label"
-msgid "Compensate Wall Overlaps"
-msgstr "Compensar Sobreposição Paredes"
+msgctxt "min_wall_line_width label"
+msgid "Minimum Wall Line Width"
+msgstr "Diâmetro mínimo de linha da parede"
 
 #: fdmprinter.def.json
-msgctxt "travel_compensate_overlapping_walls_enabled description"
-msgid "Compensate the flow for parts of a wall being printed where there is already a wall in place."
-msgstr "Compensar o fluxo em partes de uma parede a ser impressa, onde já exista uma parede."
+msgctxt "min_wall_line_width description"
+msgid "For thin structures around once or twice the nozzle size, the line widths need to be altered to adhere to the thickness of the model. This setting controls the minimum line width allowed for the walls. The minimum line widths inherently also determine the maximum line widths, since we transition from N to N+1 walls at some geometry thickness where the N walls are wide and the N+1 walls are narrow. The widest possible wall line is twice the Minimum Wall Line Width."
+msgstr "Para estruturas finas de cerca de uma ou duas vezes o tamanho do bocal, os diâmetros da linha têm de ser alterados para aderir à espessura do modelo. Esta definição controla o diâmetro mínimo da linha permitido para as paredes. Os diâmetros mínimos de linha determinam também os diâmetros máximos de linha, uma vez que fazemos a transição de paredes N para N+1 com uma determinada espessura da geometria em que as paredes N são largas e as paredes N+1 são estreitas. A linha de parede mais larga possível é o dobro do diâmetro mínimo de linha da parede."
 
 #: fdmprinter.def.json
-msgctxt "travel_compensate_overlapping_walls_0_enabled label"
-msgid "Compensate Outer Wall Overlaps"
-msgstr "Compensar Paredes Exteriores"
+msgctxt "min_even_wall_line_width label"
+msgid "Minimum Even Wall Line Width"
+msgstr "Diâmetro mínimo de linha da parede Par"
 
 #: fdmprinter.def.json
-msgctxt "travel_compensate_overlapping_walls_0_enabled description"
-msgid "Compensate the flow for parts of an outer wall being printed where there is already a wall in place."
-msgstr "Compensar o fluxo em partes de uma parede exterior a ser impressa, onde já exista uma parede."
+msgctxt "min_even_wall_line_width description"
+msgid "The minimum line width for normal polygonal walls. This setting determines at which model thickness we switch from printing a single thin wall line, to printing two wall lines. A higher Minimum Even Wall Line Width leads to a higher maximum odd wall line width. The maximum even wall line width is calculated as Outer Wall Line Width + 0.5 * Minimum Odd Wall Line Width."
+msgstr "O diâmetro mínimo da linha para as paredes poligonais normais. Esta definição determina a espessura do modelo em que passamos da impressão de uma única linha fina de parede para a impressão de duas linhas de parede. Um maior diâmetro mínimo de linha da parede Par causa um maior diâmetro máximo de linha da parede Ímpar. O diâmetro máximo de linha da parede Par é calculado como o diâmetro da linha da parede externa + 0,5 * diâmetro mínimo da linha da parede Ímpar."
 
 #: fdmprinter.def.json
-msgctxt "travel_compensate_overlapping_walls_x_enabled label"
-msgid "Compensate Inner Wall Overlaps"
-msgstr "Compensar Paredes Interiores"
+msgctxt "wall_split_middle_threshold label"
+msgid "Split Middle Line Threshold"
+msgstr "Dividir limiar da linha do meio"
 
 #: fdmprinter.def.json
-msgctxt "travel_compensate_overlapping_walls_x_enabled description"
-msgid "Compensate the flow for parts of an inner wall being printed where there is already a wall in place."
-msgstr "Compensar o fluxo em partes de uma parede interior a ser impressa, onde já exista uma parede."
+msgctxt "wall_split_middle_threshold description"
+msgid "The smallest line width, as a factor of the normal line width, above which the middle line (if there is one) will be split into two. Reduce this setting to use more, thinner lines. Increase to use fewer, wider lines. Note that this applies -as if- the entire shape should be filled with wall, so the middle here refers to the middle of the object between two outer edges of the shape, even if there actually is fill or (other) skin in the print instead of wall."
+msgstr "O diâmetro da linha mais pequena, como fator do diâmetro da linha normal, acima da qual a linha do meio (se existir uma) será dividida em duas. Reduza esta definição para utilizar mais linhas e mais finas. Aumente para utilizar menos linhas e mais largas. Tenha em atenção que esta regra se aplica como se toda a forma tivesse de ser preenchida com parede, pelo que o meio aqui se refere ao meio do objeto entre duas arestas exteriores da forma, mesmo que exista realmente enchimento ou (outro) revestimento na impressão em vez de parede."
 
 #: fdmprinter.def.json
-msgctxt "wall_min_flow label"
-msgid "Minimum Wall Flow"
-msgstr "Fluxo de parede mínimo"
+msgctxt "min_odd_wall_line_width label"
+msgid "Minimum Odd Wall Line Width"
+msgstr "Diâmetro mínimo de linha da parede Ímpar"
 
 #: fdmprinter.def.json
-msgctxt "wall_min_flow description"
-msgid "Minimum allowed percentage flow for a wall line. The wall overlap compensation reduces a wall's flow when it lies close to an existing wall. Walls whose flow is less than this value will be replaced with a travel move. When using this setting, you must enable the wall overlap compensation and print the outer wall before inner walls."
-msgstr "Fluxo percentual mínimo permitido para uma linha de parede. A compensação de substituição de paredes reduz o fluxo de uma parede quando se situa junto a uma parede existente. As paredes cujo fluxo é inferior a este valor serão substituídas com um movimento de deslocação. Ao utilizar esta definição, deve ativar a compensação de sobreposição de paredes e imprimir a parede exterior antes das paredes interiores."
+msgctxt "min_odd_wall_line_width description"
+msgid "The minimum line width for middle line gap filler polyline walls. This setting determines at which model thickness we switch from printing two wall lines, to printing two outer walls and a single central wall in the middle. A higher Minimum Odd Wall Line Width leads to a higher maximum even wall line width. The maximum odd wall line width is calculated as 2 * Minimum Even Wall Line Width,"
+msgstr "Diâmetro mínimo da linha para as paredes poligonais de enchimento de folgas das linhas do meio. Esta definição determina a espessura do modelo em que passamos da impressão de duas linhas da parede para a impressão de duas paredes exteriores e de uma única parede central no meio. Um diâmetro mínimo da parede Ímpar maior provoca um maior diâmetro máximo de linha da parede Par. O diâmetro máximo de linha da parede Ímpar é calculado como 2 * diâmetro mínimo de linha da parede Par,"
 
 #: fdmprinter.def.json
-msgctxt "wall_min_flow_retract label"
-msgid "Prefer Retract"
-msgstr "Preferir retração"
+msgctxt "wall_add_middle_threshold label"
+msgid "Add Middle Line Threshold"
+msgstr "Adicionar limiar da linha do meio"
 
 #: fdmprinter.def.json
-msgctxt "wall_min_flow_retract description"
-msgid "If enabled, retraction is used rather than combing for travel moves that replace walls whose flow is below the minimum flow threshold."
-msgstr "Se ativada, é utilizada retração em vez de combing para movimentos de deslocação que substituem paredes cujo fluxo está abaixo do limiar mínimo de fluxo."
-
-#: fdmprinter.def.json
-msgctxt "fill_perimeter_gaps label"
-msgid "Fill Gaps Between Walls"
-msgstr "Preencher Folgas Entre Paredes"
-
-# rever!
-# onde nenhuma parede cabe
-#: fdmprinter.def.json
-msgctxt "fill_perimeter_gaps description"
-msgid "Fills the gaps between walls where no walls fit."
-msgstr "Preencher as folgas entre as paredes onde não é possível criar paredes."
-
-#: fdmprinter.def.json
-msgctxt "fill_perimeter_gaps option nowhere"
-msgid "Nowhere"
-msgstr "Em lado nenhum"
-
-#: fdmprinter.def.json
-msgctxt "fill_perimeter_gaps option everywhere"
-msgid "Everywhere"
-msgstr "Em todo o lado"
-
-#: fdmprinter.def.json
-msgctxt "filter_out_tiny_gaps label"
-msgid "Filter Out Tiny Gaps"
-msgstr "Descartar Folgas Mínimas"
-
-#: fdmprinter.def.json
-msgctxt "filter_out_tiny_gaps description"
-msgid "Filter out tiny gaps to reduce blobs on outside of model."
-msgstr "Descartar folgas muito pequenas, entre paredes, para reduzir \"blobs\" (borrões) no exterior da impressão."
+msgctxt "wall_add_middle_threshold description"
+msgid "The smallest line width, as a factor of the normal line width, above which a middle line (if there wasn't one already) will be added. Reduce this setting to use more, thinner lines. Increase to use fewer, wider lines. Note that this applies -as if- the entire shape should be filled with wall, so the middle here refers to the middle of the object between two outer edges of the shape, even if there actually is fill or (other) skin in the print instead of wall."
+msgstr "O diâmetro da linha mais pequena, como fator do diâmetro da linha normal, acima da qual será adicionada uma linha do meio (se não existir já uma). Reduza esta definição para utilizar mais linhas e mais finas. Aumente para utilizar menos linhas e mais largas. Tenha em atenção que esta regra se aplica como se toda a forma tivesse de ser preenchida com parede, pelo que o meio aqui se refere ao meio do objeto entre duas arestas exteriores da forma, mesmo que exista realmente enchimento ou (outro) revestimento na impressão em vez de parede."
 
 #: fdmprinter.def.json
 msgctxt "fill_outline_gaps label"
@@ -1128,6 +1137,26 @@ msgstr "Imprimir Paredes Finas"
 msgctxt "fill_outline_gaps description"
 msgid "Print pieces of the model which are horizontally thinner than the nozzle size."
 msgstr "Imprimir paredes do modelo que são mais finas horizontalmente do que o tamanho do nozzle."
+
+#: fdmprinter.def.json
+msgctxt "min_feature_size label"
+msgid "Minimum Feature Size"
+msgstr "Tamanho mínimo da característica"
+
+#: fdmprinter.def.json
+msgctxt "min_feature_size description"
+msgid "Minimum thickness of thin features. Model features that are thinner than this value will not be printed, while features thicker than the Minimum Feature Size will be widened to the Minimum Wall Line Width."
+msgstr "Espessura mínima dos elementos finos. Os elementos do modelo mais finos do que este valor não serão impressos, enquanto que os elementos mais espessos do que o Tamanho mínimo do elemento serão alargados para o Diâmetro mínimo de linha da parede."
+
+#: fdmprinter.def.json
+msgctxt "min_bead_width label"
+msgid "Minimum Thin Wall Line Width"
+msgstr "Diâmetro mínimo de linha da parede fina"
+
+#: fdmprinter.def.json
+msgctxt "min_bead_width description"
+msgid "Width of the wall that will replace thin features (according to the Minimum Feature Size) of the model. If the Minimum Wall Line Width is thinner than the thickness of the feature, the wall will become as thick as the feature itself."
+msgstr "Diâmetro da parede que substituirá elementos finos (de acordo com o Tamanho mínimo do elemento) do modelo. Se o Diâmetro mínimo de linha da parede for mais fino do que a espessura do elemento, a parede tornar-se-á tão espessa como o próprio elemento."
 
 #: fdmprinter.def.json
 msgctxt "xy_offset label"
@@ -1144,8 +1173,6 @@ msgctxt "xy_offset_layer_0 label"
 msgid "Initial Layer Horizontal Expansion"
 msgstr "Expansão Horizontal Camada Inicial"
 
-# conhecido como?
-# o chamado ?
 #: fdmprinter.def.json
 msgctxt "xy_offset_layer_0 description"
 msgid "Amount of offset applied to all polygons in the first layer. A negative value can compensate for squishing of the first layer known as \"elephant's foot\"."
@@ -1166,7 +1193,6 @@ msgctxt "z_seam_type label"
 msgid "Z Seam Alignment"
 msgstr "Alinhamento da Junta-Z"
 
-# adoptar?
 #: fdmprinter.def.json
 msgctxt "z_seam_type description"
 msgid "Starting point of each path in a layer. When paths in consecutive layers start at the same point a vertical seam may show on the print. When aligning these near a user specified location, the seam is easiest to remove. When placed randomly the inaccuracies at the paths' start will be less noticeable. When taking the shortest path the print will be quicker."
@@ -1187,8 +1213,6 @@ msgctxt "z_seam_type option random"
 msgid "Random"
 msgstr "Aleatório"
 
-# canto? ou esquina? angulo?
-# acentuado? agudo?
 #: fdmprinter.def.json
 msgctxt "z_seam_type option sharpest_corner"
 msgid "Sharpest Corner"
@@ -1264,8 +1288,6 @@ msgctxt "z_seam_y description"
 msgid "The Y coordinate of the position near where to start printing each part in a layer."
 msgstr "A coordenada Y da posição próxima do local onde a impressão de cada parte de uma camada será iniciada."
 
-# rever!
-# canto? esquina? angulo?
 #: fdmprinter.def.json
 msgctxt "z_seam_corner label"
 msgid "Seam Corner Preference"
@@ -1281,22 +1303,16 @@ msgctxt "z_seam_corner option z_seam_corner_none"
 msgid "None"
 msgstr "Nenhum"
 
-# rever!
-# ocultar? esconder?
 #: fdmprinter.def.json
 msgctxt "z_seam_corner option z_seam_corner_inner"
 msgid "Hide Seam"
 msgstr "Ocultar Junta"
 
-# rever!
-# expor? mostrar?
 #: fdmprinter.def.json
 msgctxt "z_seam_corner option z_seam_corner_outer"
 msgid "Expose Seam"
 msgstr "Expor Junta"
 
-# rever!
-# ocultar ou esconder?
 #: fdmprinter.def.json
 msgctxt "z_seam_corner option z_seam_corner_any"
 msgid "Hide or Expose Seam"
@@ -1442,13 +1458,11 @@ msgctxt "top_bottom_pattern option zigzag"
 msgid "Zig Zag"
 msgstr "Ziguezague"
 
-# Is the English string correct? meaning?
 #: fdmprinter.def.json
 msgctxt "top_bottom_pattern_0 label"
 msgid "Bottom Pattern Initial Layer"
 msgstr "Padrão da Base na Camada Inicial"
 
-# Is the English string correct? meaning?
 #: fdmprinter.def.json
 msgctxt "top_bottom_pattern_0 description"
 msgid "The pattern on the bottom of the print on the first layer."
@@ -1482,12 +1496,12 @@ msgstr "Ligar caminhos de revestimento superiores/inferiores quando as trajetór
 #: fdmprinter.def.json
 msgctxt "skin_monotonic label"
 msgid "Monotonic Top/Bottom Order"
-msgstr ""
+msgstr "Ordem Superior/Inferior em \"Monotonic\""
 
 #: fdmprinter.def.json
 msgctxt "skin_monotonic description"
 msgid "Print top/bottom lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
-msgstr ""
+msgstr "Imprimir as linhas superiores/inferiores numa ordem que faz com que ocorra sempre uma sobreposição com as linhas adjacentes numa única direção. Este processo demora ligeiramente mais tempo a imprimir, mas torna o aspeto das superfícies planas mais consistente."
 
 #: fdmprinter.def.json
 msgctxt "skin_angles label"
@@ -1514,10 +1528,6 @@ msgctxt "skin_outline_count label"
 msgid "Extra Skin Wall Count"
 msgstr "Paredes Revestimento Extra"
 
-# rever!
-# tetos ? tectos?
-# iniciados? que começam?
-# materialde enchimento?
 #: fdmprinter.def.json
 msgctxt "skin_outline_count description"
 msgid "Replaces the outermost part of the top/bottom pattern with a number of concentric lines. Using one or two lines improves roofs that start on infill material."
@@ -1566,12 +1576,12 @@ msgstr "Ziguezague"
 #: fdmprinter.def.json
 msgctxt "ironing_monotonic label"
 msgid "Monotonic Ironing Order"
-msgstr ""
+msgstr "Ordem de Engomar em \"Monotonic\""
 
 #: fdmprinter.def.json
 msgctxt "ironing_monotonic description"
 msgid "Print ironing lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
-msgstr ""
+msgstr "Imprimir as linhas de engomar numa ordem que faz com que ocorra sempre uma sobreposição com as linhas adjacentes numa única direção. Este processo demora ligeiramente mais tempo a imprimir, mas torna o aspeto das superfícies planas mais consistente."
 
 #: fdmprinter.def.json
 msgctxt "ironing_line_spacing label"
@@ -1588,8 +1598,6 @@ msgctxt "ironing_flow label"
 msgid "Ironing Flow"
 msgstr "Fluxo de Engomar"
 
-# rever!
-# filled - abastecido? cheio?
 #: fdmprinter.def.json
 msgctxt "ironing_flow description"
 msgid "The amount of material, relative to a normal skin line, to extrude during ironing. Keeping the nozzle filled helps filling some of the crevices of the top surface, but too much results in overextrusion and blips on the side of the surface."
@@ -1630,8 +1638,6 @@ msgctxt "jerk_ironing label"
 msgid "Ironing Jerk"
 msgstr "Jerk de Engomar"
 
-# rever!
-# A velocidade máxima da alteração da velocidade instantânea
 #: fdmprinter.def.json
 msgctxt "jerk_ironing description"
 msgid "The maximum instantaneous velocity change while performing ironing."
@@ -1767,8 +1773,6 @@ msgctxt "infill_sparse_density description"
 msgid "Adjusts the density of infill of the print."
 msgstr "Ajusta a densidade do enchimento da impressão."
 
-# rever!
-# Distância? espaço? intervalo?
 #: fdmprinter.def.json
 msgctxt "infill_line_distance label"
 msgid "Infill Line Distance"
@@ -1786,8 +1790,8 @@ msgstr "Padrão de Enchimento"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
-msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
-msgstr "O padrão do material de enchimento da impressão. A direção de troca de enchimento de linha e ziguezague em camadas alternadas, reduzindo os custos de material. Os padrões de grelha, triângulo, tri-hexágono, cubo, octeto, quarto cúbico, cruz e concêntrico são totalmente impressos em cada camada. Os enchimentos Gyroid, cúbico, quarto cúbico e octeto são alterados a cada camada para fornecer uma distribuição mais uniforme da resistência em cada direção."
+msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the ceiling of the object."
+msgstr "O padrão do material de enchimento da impressão. A linha e o enchimento em ziguezague mudam de direção em camadas alternativas, o que reduz o custo do material. Os padrões de grelha, triângulo, tri-hexágono, cubo, octeto, quarto cúbico, cruz e concêntrico são totalmente impressos em cada camada. Os enchimentos gyroid, cúbico, quarto cúbico e octeto mudam em cada camada para proporcionar uma distribuição mais uniforme da resistência em cada direção. O enchimento relâmpago tenta minimizar o enchimento, ao suportar apenas a parte superior do objeto."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1855,6 +1859,11 @@ msgid "Gyroid"
 msgstr "Gyroid"
 
 #: fdmprinter.def.json
+msgctxt "infill_pattern option lightning"
+msgid "Lightning"
+msgstr "Relâmpago"
+
+#: fdmprinter.def.json
 msgctxt "zig_zaggify_infill label"
 msgid "Connect Infill Lines"
 msgstr "Ligar Linhas Enchimento"
@@ -1894,9 +1903,6 @@ msgctxt "infill_offset_x description"
 msgid "The infill pattern is moved this distance along the X axis."
 msgstr "O padrão geométrico de enchimento é deslocado por esta distância ao longo do eixo X."
 
-# Desvio?
-# Delocar? deslocamento
-# Mover?
 #: fdmprinter.def.json
 msgctxt "infill_offset_y label"
 msgid "Infill Y Offset"
@@ -2072,6 +2078,46 @@ msgid "The number of infill layers that supports skin edges."
 msgstr "O número de camadas de enchimento que suportam as arestas do revestimento."
 
 #: fdmprinter.def.json
+msgctxt "lightning_infill_support_angle label"
+msgid "Lightning Infill Support Angle"
+msgstr "Ângulo de suporte de enchimento relâmpago"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_support_angle description"
+msgid "Determines when a lightning infill layer has to support anything above it. Measured in the angle given the thickness of a layer."
+msgstr "Determina o momento em que uma camada de enchimento relâmpago tem de suportar algo acima da mesma. Medido como um ângulo conforme a espessura da camada."
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_overhang_angle label"
+msgid "Lightning Infill Overhang Angle"
+msgstr "Ângulo de saliência do enchimento relâmpago"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_overhang_angle description"
+msgid "Determines when a lightning infill layer has to support the model above it. Measured in the angle given the thickness."
+msgstr "Determina o momento em que uma camada de enchimento relâmpago tem de suportar o modelo acima da mesma. Medido como um ângulo conforme a espessura."
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_prune_angle label"
+msgid "Lightning Infill Prune Angle"
+msgstr "Ângulo de corte do enchimento relâmpago"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_prune_angle description"
+msgid "The endpoints of infill lines are shortened to save on material. This setting is the angle of overhang of the endpoints of these lines."
+msgstr "As extremidades das linhas de enchimento são encurtadas para poupar material. Esta definição é o ângulo da saliência das extremidades destas linhas."
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_straightening_angle label"
+msgid "Lightning Infill Straightening Angle"
+msgstr "Ângulo de alisamento do enchimento relâmpago"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_straightening_angle description"
+msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
+msgstr "As linhas de enchimento são simplificadas para poupar tempo de impressão. Este é o ângulo máximo permitido de saliência ao longo da linha de enchimento."
+
+#: fdmprinter.def.json
 msgctxt "material label"
 msgid "Material"
 msgstr "Material"
@@ -2086,11 +2132,6 @@ msgctxt "default_material_print_temperature label"
 msgid "Default Printing Temperature"
 msgstr "Temperatura Impressão Predefinida"
 
-# rever!
-# english string missing period
-# devem ter como base este valor.
-# devem ser baseadas neste valor.
-# devem utilizar desvios com base neste valor.
 #: fdmprinter.def.json
 msgctxt "default_material_print_temperature description"
 msgid "The default temperature used for printing. This should be the \"base\" temperature of a material. All other print temperatures should use offsets based on this value"
@@ -2215,6 +2256,26 @@ msgstr "Compensação de redução do fator de escala"
 msgctxt "material_shrinkage_percentage description"
 msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor."
 msgstr "Para compensar a redução do material quando arrefece, o modelo vai ser dimensionado com este fator."
+
+#: fdmprinter.def.json
+msgctxt "material_shrinkage_percentage_xy label"
+msgid "Horizontal Scaling Factor Shrinkage Compensation"
+msgstr "Compensação de contração do fator de dimensionamento horizontal"
+
+#: fdmprinter.def.json
+msgctxt "material_shrinkage_percentage_xy description"
+msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor in the XY-direction (horizontally)."
+msgstr "Para compensar a contração do material à medida que arrefece, o modelo será dimensionado com este fator na direção X/Y (horizontalmente)."
+
+#: fdmprinter.def.json
+msgctxt "material_shrinkage_percentage_z label"
+msgid "Vertical Scaling Factor Shrinkage Compensation"
+msgstr "Compensação de contração do fator de dimensionamento vertical"
+
+#: fdmprinter.def.json
+msgctxt "material_shrinkage_percentage_z description"
+msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor in the Z-direction (vertically)."
+msgstr "Para compensar a contração do material à medida que arrefece, o modelo será dimensionado com este fator na direção Z (verticalmente)."
 
 #: fdmprinter.def.json
 msgctxt "material_crystallinity label"
@@ -2531,11 +2592,6 @@ msgctxt "speed_print label"
 msgid "Print Speed"
 msgstr "Velocidade de Impressão"
 
-# rever!
-# a que
-# em que
-# com que ??
-# com qual
 #: fdmprinter.def.json
 msgctxt "speed_print description"
 msgid "The speed at which printing happens."
@@ -2546,11 +2602,6 @@ msgctxt "speed_infill label"
 msgid "Infill Speed"
 msgstr "Velocidade Enchimento"
 
-# rever!
-# a que
-# em que
-# com que ??
-# com qual
 #: fdmprinter.def.json
 msgctxt "speed_infill description"
 msgid "The speed at which infill is printed."
@@ -2571,8 +2622,6 @@ msgctxt "speed_wall_0 label"
 msgid "Outer Wall Speed"
 msgstr "Velocidade Parede Exterior"
 
-# rever!
-# english string correct? plural?
 #: fdmprinter.def.json
 msgctxt "speed_wall_0 description"
 msgid "The speed at which the outermost walls are printed. Printing the outer wall at a lower speed improves the final skin quality. However, having a large difference between the inner wall speed and the outer wall speed will affect quality in a negative way."
@@ -2583,8 +2632,6 @@ msgctxt "speed_wall_x label"
 msgid "Inner Wall Speed"
 msgstr "Velocidade Parede Interior"
 
-# rever!
-# É conveniente introduzir esta definição entre a velocidade de parede exterior e a velocidade de enchimento.
 #: fdmprinter.def.json
 msgctxt "speed_wall_x description"
 msgid "The speed at which all inner walls are printed. Printing the inner wall faster than the outer wall will reduce printing time. It works well to set this in between the outer wall speed and the infill speed."
@@ -2741,24 +2788,14 @@ msgid "The first few layers are printed slower than the rest of the model, to ge
 msgstr "As primeiras camadas são impressas mais lentamente do que o resto do modelo para obter uma melhor aderência à base de construção e melhorar a taxa de sucesso geral das impressões. A velocidade é aumentada gradualmente nessas camadas."
 
 #: fdmprinter.def.json
-msgctxt "speed_equalize_flow_enabled label"
-msgid "Equalize Filament Flow"
-msgstr "Equilibrar fluxo de filamento"
+msgctxt "speed_equalize_flow_width_factor label"
+msgid "Flow Equalization Ratio"
+msgstr "Proporção de equalização do fluxo"
 
 #: fdmprinter.def.json
-msgctxt "speed_equalize_flow_enabled description"
-msgid "Print thinner than normal lines faster so that the amount of material extruded per second remains the same. Thin pieces in your model might require lines printed with smaller line width than provided in the settings. This setting controls the speed changes for such lines."
-msgstr "Imprime linhas mais finas do que o normal de forma mais rápida, para que a quantidade de material extrudido por segundo permaneça o mesmo. As peças finas do modelo podem requerer linhas impressas com uma menor espessura de linha do que a especificada nas definições. Esta definição controla as mudanças de velocidade dessas linhas."
-
-#: fdmprinter.def.json
-msgctxt "speed_equalize_flow_max label"
-msgid "Maximum Speed for Flow Equalization"
-msgstr "Velocidade máxima para equilíbrio de fluxo"
-
-#: fdmprinter.def.json
-msgctxt "speed_equalize_flow_max description"
-msgid "Maximum print speed when adjusting the print speed in order to equalize flow."
-msgstr "A velocidade máxima de impressão ao ajustar a velocidade de impressão para equilibrar o fluxo."
+msgctxt "speed_equalize_flow_width_factor description"
+msgid "Extrusion width based correction factor on the speed. At 0% the movement speed is kept constant at the Print Speed. At 100% the movement speed is adjusted so that the flow (in mm³/s) is kept constant, i.e. lines half the normal Line Width are printed twice as fast and lines twice as wide are printed half as fast. A value larger than 100% can help to compensate for the higher pressure required to extrude wide lines."
+msgstr "Fator de correção baseado no diâmetro de extrusão sobre a velocidade. A 0% a velocidade de movimento mantém-se constante à Velocidade de impressão. A 100% a velocidade de movimento é ajustada de modo a que o fluxo (em mm³/s) seja mantido constante, ou seja, linhas metade do Diâmetro da linha normal são impressas duas vezes mais depressa e as linhas duas vezes mais largas são impressas a metade da rapidez. Um valor superior a 100% pode ajudar a compensar a pressão mais elevada necessária para efetuar a extrusão de linhas largas."
 
 #: fdmprinter.def.json
 msgctxt "acceleration_enabled label"
@@ -2769,6 +2806,17 @@ msgstr "Ativar controlo da aceleração"
 msgctxt "acceleration_enabled description"
 msgid "Enables adjusting the print head acceleration. Increasing the accelerations can reduce printing time at the cost of print quality."
 msgstr "Permite o ajuste da aceleração da cabeça de impressão. Aumentar as acelerações pode reduzir o tempo de impressão em detrimento da qualidade de impressão."
+
+#: fdmprinter.def.json
+msgctxt "acceleration_travel_enabled label"
+msgid "Enable Travel Acceleration"
+msgstr "Ativar a aceleração da viagem"
+
+#: fdmprinter.def.json
+msgctxt "acceleration_travel_enabled description"
+msgid "Use a separate acceleration rate for travel moves. If disabled, travel moves will use the acceleration value of the printed line at their destination."
+msgstr "Utilizar uma taxa de aceleração separada para movimentos de viagem. Se desativados, os movimentos de viagem utilizarão o valor da aceleração da linha impressa"
+" no seu destino."
 
 #: fdmprinter.def.json
 msgctxt "acceleration_print label"
@@ -2955,23 +3003,27 @@ msgctxt "jerk_enabled label"
 msgid "Enable Jerk Control"
 msgstr "Ativar Controlo do Jerk"
 
-# rever!
-# solavanco?
-# movimento brusco
 #: fdmprinter.def.json
 msgctxt "jerk_enabled description"
 msgid "Enables adjusting the jerk of print head when the velocity in the X or Y axis changes. Increasing the jerk can reduce printing time at the cost of print quality."
 msgstr "Permite ajustar o jerk da cabeça de impressão quando a velocidade nos eixos X ou Y muda. Aumentar o jerk pode reduzir o tempo de impressão em detrimento da qualidade de impressão."
 
 #: fdmprinter.def.json
+msgctxt "jerk_travel_enabled label"
+msgid "Enable Travel Jerk"
+msgstr "Ativar Jerk de Viagem"
+
+#: fdmprinter.def.json
+msgctxt "jerk_travel_enabled description"
+msgid "Use a separate jerk rate for travel moves. If disabled, travel moves will use the jerk value of the printed line at their destination."
+msgstr "Utilizar uma taxa de jerk separada para movimentos de viagem. Se for desativado, os movimentos de viagem utilizarão o valor do jerk da linha impressa no"
+" seu destino."
+
+#: fdmprinter.def.json
 msgctxt "jerk_print label"
 msgid "Print Jerk"
 msgstr "Jerk da Impressão"
 
-# rever!
-# all jerk strings
-# ver qual a trad é mais aproximada doo sentido original
-# tradução original  - A mudança de velocidade instantânea máxima da cabeça de impressão.
 #: fdmprinter.def.json
 msgctxt "jerk_print description"
 msgid "The maximum instantaneous velocity change of the print head."
@@ -3077,8 +3129,6 @@ msgctxt "jerk_support_roof description"
 msgid "The maximum instantaneous velocity change with which the roofs of support are printed."
 msgstr "A mudança de velocidade instantânea máxima com a qual os tectos de suporte são impressos."
 
-# rever!
-# piso?
 #: fdmprinter.def.json
 msgctxt "jerk_support_bottom label"
 msgid "Support Floor Jerk"
@@ -3149,13 +3199,6 @@ msgctxt "jerk_skirt_brim description"
 msgid "The maximum instantaneous velocity change with which the skirt and brim are printed."
 msgstr "A mudança de velocidade instantânea máxima com a qual o contorno e a aba são impressos."
 
-# rever!
-# Deslocação?
-# Deslocamento?
-# Movimento?
-# Viagem?
-# Trajectória?
-# Travel?
 #: fdmprinter.def.json
 msgctxt "travel label"
 msgid "Travel"
@@ -3206,21 +3249,11 @@ msgctxt "retraction_speed description"
 msgid "The speed at which the filament is retracted and primed during a retraction move."
 msgstr "A velocidade a que o filamento é retraído e preparado durante um movimento de retração."
 
-# rever!
-# retrair?
-# é retraido?
-# recuo?
-# recolhido?
 #: fdmprinter.def.json
 msgctxt "retraction_retract_speed label"
 msgid "Retraction Retract Speed"
 msgstr "Velocidade Retrair na Retração"
 
-# rever!
-# retrair?
-# é retraido?
-# recuo?
-# recolhido?
 #: fdmprinter.def.json
 msgctxt "retraction_retract_speed description"
 msgid "The speed at which the filament is retracted during a retraction move."
@@ -3271,7 +3304,6 @@ msgctxt "retraction_extrusion_window label"
 msgid "Minimum Extrusion Distance Window"
 msgstr "Intervalo Mínimo Distância Extrusão"
 
-# de forma a que o número de vezes que uma retração acontece na mesma área do material seja efetivamente limitado.
 #: fdmprinter.def.json
 msgctxt "retraction_extrusion_window description"
 msgid "The window in which the maximum retraction count is enforced. This value should be approximately the same as the retraction distance, so that effectively the number of times a retraction passes the same patch of material is limited."
@@ -3306,6 +3338,11 @@ msgstr "Desligado"
 msgctxt "retraction_combing option all"
 msgid "All"
 msgstr "Tudo"
+
+#: fdmprinter.def.json
+msgctxt "retraction_combing option no_outer_surfaces"
+msgid "Not on Outer Surface"
+msgstr "Não na Superfície Exterior"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing option noskin"
@@ -3417,16 +3454,11 @@ msgctxt "retraction_hop description"
 msgid "The height difference when performing a Z Hop."
 msgstr "A diferença de altura ao efetuar um salto Z."
 
-# rever!
-# Salto?
-# Pulo?
-# Rebaixar?
 #: fdmprinter.def.json
 msgctxt "retraction_hop_after_extruder_switch label"
 msgid "Z Hop After Extruder Switch"
 msgstr "Salto Z após mudança extrusor"
 
-# rever!
 #: fdmprinter.def.json
 msgctxt "retraction_hop_after_extruder_switch description"
 msgid "After the machine switched from one extruder to the other, the build plate is lowered to create clearance between the nozzle and the print. This prevents the nozzle from leaving oozed material on the outside of a print."
@@ -3442,11 +3474,6 @@ msgctxt "retraction_hop_after_extruder_switch_height description"
 msgid "The height difference when performing a Z Hop after extruder switch."
 msgstr "A diferença de altura ao efetuar um salto Z após uma mudança do extrusor."
 
-# rever!
-# todoas as strings de Arrefecimento
-# limiar?
-# intervalo?
-# limite?
 #: fdmprinter.def.json
 msgctxt "cooling label"
 msgid "Cooling"
@@ -3472,11 +3499,6 @@ msgctxt "cool_fan_speed label"
 msgid "Fan Speed"
 msgstr "Velocidade Ventiladores"
 
-# rever!
-#  ...giram.
-# A velocidade a que giram os ventiladores...
-# rotação?
-# A velocidade de rotação dos ventiladores...
 #: fdmprinter.def.json
 msgctxt "cool_fan_speed description"
 msgid "The speed at which the print cooling fans spin."
@@ -3812,9 +3834,6 @@ msgctxt "zig_zaggify_support label"
 msgid "Connect Support Lines"
 msgstr "Ligar Linhas de Suporte"
 
-# rever!
-# underext
-# gasto
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_support description"
 msgid "Connect the ends of the support lines together. Enabling this setting can make your support more sturdy and reduce underextrusion, but it will cost more material."
@@ -4250,14 +4269,11 @@ msgctxt "support_roof_pattern option zigzag"
 msgid "Zig Zag"
 msgstr "Ziguezague"
 
-# rever!
-# piso? chão? base?
 #: fdmprinter.def.json
 msgctxt "support_bottom_pattern label"
 msgid "Support Floor Pattern"
 msgstr "Padrão Piso Suporte"
 
-# pisos?
 #: fdmprinter.def.json
 msgctxt "support_bottom_pattern description"
 msgid "The pattern with which the floors of the support are printed."
@@ -4473,9 +4489,6 @@ msgctxt "prime_blob_enable label"
 msgid "Enable Prime Blob"
 msgstr "\"Blob\" de Preparação"
 
-# rever!
-# borrão?
-# antes de começar a impressão?
 #: fdmprinter.def.json
 msgctxt "prime_blob_enable description"
 msgid "Whether to prime the filament with a blob before printing. Turning this setting on will ensure that the extruder will have material ready at the nozzle before printing. Printing Brim or Skirt can act like priming too, in which case turning this setting off saves some time."
@@ -4540,6 +4553,46 @@ msgstr "Extrusor para Aderência"
 msgctxt "adhesion_extruder_nr description"
 msgid "The extruder train to use for printing the skirt/brim/raft. This is used in multi-extrusion."
 msgstr "O núcleo de extrusão utilizado para imprimir o Contorno/Aba/Raft. Definição usada com múltiplos extrusores."
+
+#: fdmprinter.def.json
+msgctxt "skirt_brim_extruder_nr label"
+msgid "Skirt/Brim Extruder"
+msgstr "Extrusor do contorno/aba"
+
+#: fdmprinter.def.json
+msgctxt "skirt_brim_extruder_nr description"
+msgid "The extruder train to use for printing the skirt or brim. This is used in multi-extrusion."
+msgstr "O núcleo de extrusão a utilizar para imprimir o contorno ou a aba. Isto é utilizado em impressoras com extrusores múltiplos."
+
+#: fdmprinter.def.json
+msgctxt "raft_base_extruder_nr label"
+msgid "Raft Base Extruder"
+msgstr "Extrusor da base do raft"
+
+#: fdmprinter.def.json
+msgctxt "raft_base_extruder_nr description"
+msgid "The extruder train to use for printing the first layer of the raft. This is used in multi-extrusion."
+msgstr "O núcleo de extrusão a utilizar para imprimir a primeira camada do raft. Isto é utilizado em impressoras com extrusores múltiplos."
+
+#: fdmprinter.def.json
+msgctxt "raft_interface_extruder_nr label"
+msgid "Raft Middle Extruder"
+msgstr "Extrusor do meio do raft"
+
+#: fdmprinter.def.json
+msgctxt "raft_interface_extruder_nr description"
+msgid "The extruder train to use for printing the middle layer of the raft. This is used in multi-extrusion."
+msgstr "O núcleo de extrusão a utilizar para imprimir a camada do meio do raft. Isto é utilizado em impressoras com extrusores múltiplos."
+
+#: fdmprinter.def.json
+msgctxt "raft_surface_extruder_nr label"
+msgid "Raft Top Extruder"
+msgstr "Extrusora superior do raft"
+
+#: fdmprinter.def.json
+msgctxt "raft_surface_extruder_nr description"
+msgid "The extruder train to use for printing the top layer(s) of the raft. This is used in multi-extrusion."
+msgstr "O núcleo de extrusão a utilizar para imprimir as camadas superiores do raft. Isto é utilizado em impressoras com extrusores múltiplos."
 
 #: fdmprinter.def.json
 msgctxt "skirt_line_count label"
@@ -4660,7 +4713,6 @@ msgctxt "layer_0_z_overlap label"
 msgid "Initial Layer Z Overlap"
 msgstr "Sobreposição Z Camada Inicial"
 
-# O valor da distância com que todos os modelos acima da primeira camada do modelo serão deslocados para baixo.
 #: fdmprinter.def.json
 msgctxt "layer_0_z_overlap description"
 msgid "Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount."
@@ -4705,6 +4757,16 @@ msgstr "Espaçamento Superior do Raft"
 msgctxt "raft_surface_line_spacing description"
 msgid "The distance between the raft lines for the top raft layers. The spacing should be equal to the line width, so that the surface is solid."
 msgstr "A distância entre linhas nas camadas superiores do raft. O espaçamento deve ser, igual ao Diâmetro da Linha, para que a superfície seja uniforme."
+
+#: fdmprinter.def.json
+msgctxt "raft_interface_layers label"
+msgid "Raft Middle Layers"
+msgstr "Camadas do meio do raft"
+
+#: fdmprinter.def.json
+msgctxt "raft_interface_layers description"
+msgid "The number of layers between the base and the surface of the raft. These comprise the main thickness of the raft. Increasing this creates a thicker, sturdier raft."
+msgstr "O número de camadas entre a base e a superfície do raft. Estas incluem a espessura principal do raft. Aumentar este valor cria um raft mais espesso e mais resistente."
 
 #: fdmprinter.def.json
 msgctxt "raft_interface_thickness label"
@@ -5006,7 +5068,6 @@ msgctxt "prime_tower_brim_enable description"
 msgid "Prime-towers might need the extra adhesion afforded by a brim even if the model doesn't. Presently can't be used with the 'Raft' adhesion-type."
 msgstr "As torres de preparação poderão necessitar de uma aderência adicional concedida por uma aba, ainda que o modelo não o necessite. Atualmente, não é possível utilizá-la com o tipo de aderência \"Raft\"."
 
-# rever!
 #: fdmprinter.def.json
 msgctxt "ooze_shield_enabled label"
 msgid "Enable Ooze Shield"
@@ -5037,8 +5098,6 @@ msgctxt "ooze_shield_dist description"
 msgid "Distance of the ooze shield from the print, in the X/Y directions."
 msgstr "A distância da proteção contra escorrimentos relativamente à impressão nas direções X/Y."
 
-# rever!
-# restantes retração srtings
 #: fdmprinter.def.json
 msgctxt "switch_extruder_retraction_amount label"
 msgid "Nozzle Switch Retraction Distance"
@@ -5089,10 +5148,6 @@ msgctxt "switch_extruder_extra_prime_amount description"
 msgid "Extra material to prime after nozzle switching."
 msgstr "Material extra a preparar após a substituição do nozzle."
 
-# rever!
-# correção? reparação?
-# correções? reparações?  Emendas?
-# objectos? mesh? malha?
 #: fdmprinter.def.json
 msgctxt "meshfix label"
 msgid "Mesh Fixes"
@@ -5123,10 +5178,6 @@ msgctxt "meshfix_union_all_remove_holes description"
 msgid "Remove the holes in each layer and keep only the outside shape. This will ignore any invisible internal geometry. However, it also ignores layer holes which can be viewed from above or below."
 msgstr "Remove os buracos em cada camada e mantém apenas a forma exterior. Isto irá ignorar qualquer geometria interna invisível. No entanto, também ignora buracos de camadas que podem ser vistos por cima ou por baixo."
 
-# rever!
-# english meaning
-# extensiva ou intensiva
-# coser extensivamente
 #: fdmprinter.def.json
 msgctxt "meshfix_extensive_stitching label"
 msgid "Extensive Stitching"
@@ -5137,10 +5188,6 @@ msgctxt "meshfix_extensive_stitching description"
 msgid "Extensive stitching tries to stitch up open holes in the mesh by closing the hole with touching polygons. This option can introduce a lot of processing time."
 msgstr "A costura extensiva tenta coser buracos abertos na malha, ao fechá-los com os polígonos adjacentes. Esta opção pode acrescentar bastante tempo de processamento."
 
-# rever!
-# desconectadas?
-# soltas?
-# Separadas?
 #: fdmprinter.def.json
 msgctxt "meshfix_keep_open_polygons label"
 msgid "Keep Disconnected Faces"
@@ -5151,9 +5198,6 @@ msgctxt "meshfix_keep_open_polygons description"
 msgid "Normally Cura tries to stitch up small holes in the mesh and remove parts of a layer with big holes. Enabling this option keeps those parts which cannot be stitched. This option should be used as a last resort option when everything else fails to produce proper g-code."
 msgstr "Geralmente, o Cura tenta remendar pequenos buracos na malha e remover partes de uma camada com buracos grandes. Ativar esta opção conserva as peças que não podem ser remendadas. Esta opção deve ser utilizada como último recurso quando tudo o resto não produz um G-code adequado."
 
-# rever!
-# does it apply only to Merged obkects (menu) or individual objects that touch
-# merged - combinadas? - fundidas?
 #: fdmprinter.def.json
 msgctxt "multiple_mesh_overlap label"
 msgid "Merged Meshes Overlap"
@@ -5169,7 +5213,6 @@ msgctxt "carve_multiple_volumes label"
 msgid "Remove Mesh Intersection"
 msgstr "Remover interceção de malhas"
 
-# rever!
 #: fdmprinter.def.json
 msgctxt "carve_multiple_volumes description"
 msgid "Remove areas where multiple meshes are overlapping with each other. This may be used if merged dual material objects overlap with each other."
@@ -5226,6 +5269,16 @@ msgid "The maximum deviation allowed when reducing the resolution for the Maximu
 msgstr "O desvio máximo permitido ao reduzir a resolução da definição de Resolução máxima. Se aumentar esta definição, a impressão será menos precisa, mas o G-code será menor. O Desvio máximo é um limite para a Resolução máxima, pelo que, se estiverem em conflito, o Desvio máximo é sempre considerado verdadeiro."
 
 #: fdmprinter.def.json
+msgctxt "meshfix_maximum_extrusion_area_deviation label"
+msgid "Maximum Extrusion Area Deviation"
+msgstr "Desvio máximo da área de extrusão"
+
+#: fdmprinter.def.json
+msgctxt "meshfix_maximum_extrusion_area_deviation description"
+msgid "The maximum extrusion area deviation allowed when removing intermediate points from a straight line. An intermediate point may serve as width-changing point in a long straight line. Therefore, if it is removed, it will cause the line to have a uniform width and, as a result, lose (or gain) a bit of extrusion area. If you increase this you may notice slight under- (or over-) extrusion in between straight parallel walls, as more intermediate width-changing points will be allowed to be removed. Your print will be less accurate, but the g-code will be smaller."
+msgstr "O desvio máximo da área de extrusão que é permitido quando se faz a remoção dos pontos intermédios de uma linha recta. Um ponto intermédio pode servir de ponto de alteração do diâmetro numa linha recta longa. Por isso, se for removido, fará com que a linha tenha um diâmetro uniforme e, como resultado, vai perder (ou ganhar) um pouco de área de extrusão. Se aumentar este valor, poderá notar um ligeiro excesso (ou defeito) de extrusão entre paredes paralelas retas, uma vez que os pontos de alteração dos diâmetros mais intermédios poderão ser removidos. A sua impressão será menos precisa, mas o G-code será mais pequeno."
+
+#: fdmprinter.def.json
 msgctxt "blackmagic label"
 msgid "Special Modes"
 msgstr "Modos Especiais"
@@ -5260,8 +5313,6 @@ msgctxt "infill_mesh label"
 msgid "Infill Mesh"
 msgstr "Objecto de Enchimento"
 
-# rever!
-# mesh - malha? - objecto? - modelo?
 #: fdmprinter.def.json
 msgctxt "infill_mesh description"
 msgid "Use this mesh to modify the infill of other meshes with which it overlaps. Replaces infill regions of other meshes with regions for this mesh. It's suggested to only print one Wall and no Top/Bottom Skin for this mesh."
@@ -5304,7 +5355,7 @@ msgstr "Largura mínima do molde"
 
 #: fdmprinter.def.json
 msgctxt "mold_width description"
-msgid "The minimal distance between the ouside of the mold and the outside of the model."
+msgid "The minimal distance between the outside of the mold and the outside of the model."
 msgstr "A distância mínima entre o exterior do molde e o exterior do modelo."
 
 #: fdmprinter.def.json
@@ -5377,8 +5428,6 @@ msgctxt "magic_spiralize label"
 msgid "Spiralize Outer Contour"
 msgstr "\"Spiralize\" Contorno Exterior"
 
-# rever!
-# um aumento em Z
 #: fdmprinter.def.json
 msgctxt "magic_spiralize description"
 msgid "Spiralize smooths out the Z move of the outer edge. This will create a steady Z increase over the whole print. This feature turns a solid model into a single walled print with a solid bottom. This feature should only be enabled when each layer only contains a single part."
@@ -5477,12 +5526,12 @@ msgstr "Ziguezague"
 #: fdmprinter.def.json
 msgctxt "roofing_monotonic label"
 msgid "Monotonic Top Surface Order"
-msgstr ""
+msgstr "Ordem da superfície superior em \"Monotonic\""
 
 #: fdmprinter.def.json
 msgctxt "roofing_monotonic description"
 msgid "Print top surface lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
-msgstr ""
+msgstr "Imprimir as linhas da superfície superior numa ordem que faz com que ocorra sempre uma sobreposição com linhas adjacentes numa única direção. Este processo demora ligeiramente mais tempo a imprimir, mas torna o aspeto das superfícies planas mais consistente."
 
 #: fdmprinter.def.json
 msgctxt "roofing_angles label"
@@ -5534,14 +5583,6 @@ msgctxt "minimum_polygon_circumference description"
 msgid "Polygons in sliced layers that have a circumference smaller than this amount will be filtered out. Lower values lead to higher resolution mesh at the cost of slicing time. It is meant mostly for high resolution SLA printers and very tiny 3D models with a lot of details."
 msgstr "Os polígonos em camadas seccionadas que apresentem uma circunferência mais pequena do que este valor serão filtrados. Valores mais reduzidos originam malhas de resolução superior à custa do tempo de seccionamento. Destina-se principalmente a impressoras SLA de alta resolução e a modelos 3D muito pequenos com muitos detalhes."
 
-# rever!
-# Is the english string correct? for the label?
-# -Break up
-# Partir?
-# Dividir?
-# -chunks
-# Partes?
-# Pedaços?
 #: fdmprinter.def.json
 msgctxt "support_skip_some_zags label"
 msgid "Break Up Support In Chunks"
@@ -5552,8 +5593,6 @@ msgctxt "support_skip_some_zags description"
 msgid "Skip some support line connections to make the support structure easier to break away. This setting is applicable to the Zig Zag support infill pattern."
 msgstr "Ignorar algumas ligações das linhas de suporte para facilitar a separação da estrutura de suporte. Esta definição é aplicável ao padrão em Ziguezague do enchimento de suporte."
 
-# rever!
-# Is the english string correct? for the label?
 #: fdmprinter.def.json
 msgctxt "support_skip_zag_per_mm label"
 msgid "Support Chunk Size"
@@ -5564,8 +5603,6 @@ msgctxt "support_skip_zag_per_mm description"
 msgid "Leave out a connection between support lines once every N millimeter to make the support structure easier to break away."
 msgstr "Omitir uma ligação entre as linhas de suporte a cada \"x\" milímetros para facilitar a separação da estrutura de suporte."
 
-# rever!
-# Is the english string correct? for the label?
 #: fdmprinter.def.json
 msgctxt "support_zag_skip_count label"
 msgid "Support Chunk Line Count"
@@ -5661,8 +5698,6 @@ msgctxt "coasting_enable label"
 msgid "Enable Coasting"
 msgstr "Ativar desaceleração"
 
-# rever!
-# fios soltos?
 #: fdmprinter.def.json
 msgctxt "coasting_enable description"
 msgid "Coasting replaces the last part of an extrusion path with a travel path. The oozed material is used to print the last piece of the extrusion path in order to reduce stringing."
@@ -6538,6 +6573,36 @@ msgid "Small features on the first layer will be printed at this percentage of t
 msgstr "Os elementos pequenos na primeira camada serão impressos a esta percentagem da respetiva velocidade de impressão normal. Uma impressão mais lenta pode ajudar em termos de aderência e precisão."
 
 #: fdmprinter.def.json
+msgctxt "material_alternate_walls label"
+msgid "Alternate Wall Directions"
+msgstr "Direções de parede alternadas"
+
+#: fdmprinter.def.json
+msgctxt "material_alternate_walls description"
+msgid "Alternate wall directions every other layer and inset. Useful for materials that can build up stress, like for metal printing."
+msgstr "Alterne as inserções e as direções das parede em camadas em cada camada. Útil para materiais que podem acumular tensão, como para a impressão de metal."
+
+#: fdmprinter.def.json
+msgctxt "raft_remove_inside_corners label"
+msgid "Remove Raft Inside Corners"
+msgstr "Remover cantos interiores do raft"
+
+#: fdmprinter.def.json
+msgctxt "raft_remove_inside_corners description"
+msgid "Remove inside corners from the raft, causing the raft to become convex."
+msgstr "Remover os cantos interiores do raft, fazendo com que o raft se torne convexo."
+
+#: fdmprinter.def.json
+msgctxt "raft_base_wall_count label"
+msgid "Raft Base Wall Count"
+msgstr "Número de paredes da base do raft"
+
+#: fdmprinter.def.json
+msgctxt "raft_base_wall_count description"
+msgid "The number of contours to print around the linear pattern in the base layer of the raft."
+msgstr "O número de contornos a imprimir em torno do padrão linear na camada base do raft."
+
+#: fdmprinter.def.json
 msgctxt "command_line_settings label"
 msgid "Command Line Settings"
 msgstr "Definições de linha de comando"
@@ -6596,6 +6661,133 @@ msgstr "Matriz Rotação do Objeto"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "Matriz de transformação a ser aplicada ao modelo quando abrir o ficheiro."
+
+#~ msgctxt "machine_head_with_fans_polygon description"
+#~ msgid "A 2D silhouette of the print head (fan caps included)."
+#~ msgstr "Uma silhueta 2D da cabeça de impressão (incluindo tampas do(s) ventilador(s))."
+
+# antes das interiores?
+#~ msgctxt "outer_inset_first label"
+#~ msgid "Outer Before Inner Walls"
+#~ msgstr "Paredes Exteriores Primeiro"
+
+#~ msgctxt "outer_inset_first description"
+#~ msgid "Prints walls in order of outside to inside when enabled. This can help improve dimensional accuracy in X and Y when using a high viscosity plastic like ABS; however it can decrease outer surface print quality, especially on overhangs."
+#~ msgstr "Quando ativado, imprime as paredes do exterior para o interior. Isto pode ajudar a melhorar a precisão dimensional em X e Y quando utilizar um plástico com alta viscosidade, como o ABS; no entanto, pode diminuir a qualidade de impressão da superfície exterior, especialmente em saliências."
+
+#~ msgctxt "travel_compensate_overlapping_walls_enabled label"
+#~ msgid "Compensate Wall Overlaps"
+#~ msgstr "Compensar Sobreposição Paredes"
+
+#~ msgctxt "travel_compensate_overlapping_walls_enabled description"
+#~ msgid "Compensate the flow for parts of a wall being printed where there is already a wall in place."
+#~ msgstr "Compensar o fluxo em partes de uma parede a ser impressa, onde já exista uma parede."
+
+#~ msgctxt "travel_compensate_overlapping_walls_0_enabled label"
+#~ msgid "Compensate Outer Wall Overlaps"
+#~ msgstr "Compensar Paredes Exteriores"
+
+#~ msgctxt "travel_compensate_overlapping_walls_0_enabled description"
+#~ msgid "Compensate the flow for parts of an outer wall being printed where there is already a wall in place."
+#~ msgstr "Compensar o fluxo em partes de uma parede exterior a ser impressa, onde já exista uma parede."
+
+#~ msgctxt "travel_compensate_overlapping_walls_x_enabled label"
+#~ msgid "Compensate Inner Wall Overlaps"
+#~ msgstr "Compensar Paredes Interiores"
+
+#~ msgctxt "travel_compensate_overlapping_walls_x_enabled description"
+#~ msgid "Compensate the flow for parts of an inner wall being printed where there is already a wall in place."
+#~ msgstr "Compensar o fluxo em partes de uma parede interior a ser impressa, onde já exista uma parede."
+
+#~ msgctxt "wall_min_flow label"
+#~ msgid "Minimum Wall Flow"
+#~ msgstr "Fluxo de parede mínimo"
+
+#~ msgctxt "wall_min_flow description"
+#~ msgid "Minimum allowed percentage flow for a wall line. The wall overlap compensation reduces a wall's flow when it lies close to an existing wall. Walls whose flow is less than this value will be replaced with a travel move. When using this setting, you must enable the wall overlap compensation and print the outer wall before inner walls."
+#~ msgstr "Fluxo percentual mínimo permitido para uma linha de parede. A compensação de substituição de paredes reduz o fluxo de uma parede quando se situa junto a uma parede existente. As paredes cujo fluxo é inferior a este valor serão substituídas com um movimento de deslocação. Ao utilizar esta definição, deve ativar a compensação de sobreposição de paredes e imprimir a parede exterior antes das paredes interiores."
+
+#~ msgctxt "wall_min_flow_retract label"
+#~ msgid "Prefer Retract"
+#~ msgstr "Preferir retração"
+
+#~ msgctxt "wall_min_flow_retract description"
+#~ msgid "If enabled, retraction is used rather than combing for travel moves that replace walls whose flow is below the minimum flow threshold."
+#~ msgstr "Se ativada, é utilizada retração em vez de combing para movimentos de deslocação que substituem paredes cujo fluxo está abaixo do limiar mínimo de fluxo."
+
+#~ msgctxt "fill_perimeter_gaps label"
+#~ msgid "Fill Gaps Between Walls"
+#~ msgstr "Preencher Folgas Entre Paredes"
+
+# rever!
+# onde nenhuma parede cabe
+#~ msgctxt "fill_perimeter_gaps description"
+#~ msgid "Fills the gaps between walls where no walls fit."
+#~ msgstr "Preencher as folgas entre as paredes onde não é possível criar paredes."
+
+#~ msgctxt "fill_perimeter_gaps option nowhere"
+#~ msgid "Nowhere"
+#~ msgstr "Em lado nenhum"
+
+#~ msgctxt "fill_perimeter_gaps option everywhere"
+#~ msgid "Everywhere"
+#~ msgstr "Em todo o lado"
+
+#~ msgctxt "filter_out_tiny_gaps label"
+#~ msgid "Filter Out Tiny Gaps"
+#~ msgstr "Descartar Folgas Mínimas"
+
+#~ msgctxt "filter_out_tiny_gaps description"
+#~ msgid "Filter out tiny gaps to reduce blobs on outside of model."
+#~ msgstr "Descartar folgas muito pequenas, entre paredes, para reduzir \"blobs\" (borrões) no exterior da impressão."
+
+#~ msgctxt "speed_equalize_flow_enabled label"
+#~ msgid "Equalize Filament Flow"
+#~ msgstr "Equilibrar fluxo de filamento"
+
+#~ msgctxt "speed_equalize_flow_enabled description"
+#~ msgid "Print thinner than normal lines faster so that the amount of material extruded per second remains the same. Thin pieces in your model might require lines printed with smaller line width than provided in the settings. This setting controls the speed changes for such lines."
+#~ msgstr "Imprime linhas mais finas do que o normal de forma mais rápida, para que a quantidade de material extrudido por segundo permaneça o mesmo. As peças finas do modelo podem requerer linhas impressas com uma menor espessura de linha do que a especificada nas definições. Esta definição controla as mudanças de velocidade dessas linhas."
+
+#~ msgctxt "speed_equalize_flow_max label"
+#~ msgid "Maximum Speed for Flow Equalization"
+#~ msgstr "Velocidade máxima para equilíbrio de fluxo"
+
+#~ msgctxt "speed_equalize_flow_max description"
+#~ msgid "Maximum print speed when adjusting the print speed in order to equalize flow."
+#~ msgstr "A velocidade máxima de impressão ao ajustar a velocidade de impressão para equilibrar o fluxo."
+
+#~ msgctxt "machine_start_gcode description"
+#~ msgid "G-code commands to be executed at the very start - separated by \\n."
+#~ msgstr "Comandos G-code a serem executados no início – separados por \\n."
+
+#~ msgctxt "machine_end_gcode description"
+#~ msgid "G-code commands to be executed at the very end - separated by \\n."
+#~ msgstr "Comandos G-code a serem executados no fim – separados por \\n."
+
+#~ msgctxt "machine_max_feedrate_e label"
+#~ msgid "Maximum Feedrate"
+#~ msgstr "Velocidade Máxima de Alimentação"
+
+#~ msgctxt "infill_pattern description"
+#~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the (internal) roofs of the object. As such, the infill percentage is only 'valid' one layer below whatever it needs to support of the model."
+#~ msgstr "O padrão do material de enchimento da impressão. A linha e o enchimento em ziguezague mudam de direção em camadas alternativas, o que reduz o custo do material. Os padrões em grelha, triângulo, tri-hexágono, octeto, quarto cúbico, cruz e concêntricos são totalmente impressos em cada camada. Os enchimentos gyroid, cúbico, quarto cúbico e octeto mudam em cada camada para proporcionar uma distribuição mais uniforme da resistência em cada direção. O enchimento relâmpago tenta minimizar o enchimento, ao suportar apenas as partes superiores (internas) do objeto. Como tal, a percentagem de enchimento só é \"válida\" uma camada abaixo do que for necessário para suportar o modelo."
+
+#~ msgctxt "lightning_infill_prune_angle description"
+#~ msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the pruning of the outer extremities of trees. Measured in the angle given the thickness."
+#~ msgstr "A diferença que uma camada de enchimento relâmpago pode ter com uma imediatamente acima no que diz respeito ao corte das extremidades exteriores das árvores. Medido como um ângulo conforme a espessura."
+
+#~ msgctxt "lightning_infill_straightening_angle description"
+#~ msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the smoothing of trees. Measured in the angle given the thickness."
+#~ msgstr "A diferença que uma camada de enchimento relâmpago pode ter com uma imediatamente acima no que diz respeito ao alisamento das árvores. Medido como um ângulo conforme a espessura."
+
+#~ msgctxt "infill_pattern description"
+#~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
+#~ msgstr "O padrão do material de enchimento da impressão. A direção de troca de enchimento de linha e ziguezague em camadas alternadas, reduzindo os custos de material. Os padrões de grelha, triângulo, tri-hexágono, cubo, octeto, quarto cúbico, cruz e concêntrico são totalmente impressos em cada camada. Os enchimentos Gyroid, cúbico, quarto cúbico e octeto são alterados a cada camada para fornecer uma distribuição mais uniforme da resistência em cada direção."
+
+#~ msgctxt "mold_width description"
+#~ msgid "The minimal distance between the ouside of the mold and the outside of the model."
+#~ msgstr "A distância mínima entre o exterior do molde e o exterior do modelo."
 
 #~ msgctxt "machine_steps_per_mm_e description"
 #~ msgid "How many steps of the stepper motors will result in one millimeter of extrusion."

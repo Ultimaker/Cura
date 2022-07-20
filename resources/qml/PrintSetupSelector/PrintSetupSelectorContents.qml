@@ -15,10 +15,8 @@ Item
     id: content
 
     property int absoluteMinimumHeight: 200 * screenScaleFactor
-
-    width: UM.Theme.getSize("print_setup_widget").width - 2 * UM.Theme.getSize("default_margin").width
-    height: contents.height + buttonRow.height
-
+    implicitWidth: UM.Theme.getSize("print_setup_widget").width
+    implicitHeight: contents.height + buttonRow.height
     enum Mode
     {
         Recommended = 0,
@@ -203,7 +201,7 @@ Item
                         h -= mouse_absolute_y - base.height;
                     }
                     // Enforce a minimum size (again).
-                    // This is a bit of a hackish way to do it, but we've seen some ocasional reports that the size
+                    // This is a bit of a hackish way to do it, but we've seen some occasional reports that the size
                     // could get below the the minimum height.
                     if(h < absoluteMinimumHeight)
                     {
@@ -227,7 +225,7 @@ Item
                     color: UM.Theme.getColor("lining")
                 }
 
-                UM.RecolorImage
+                UM.ColorImage
                 {
                     width: UM.Theme.getSize("drag_icon").width
                     height: UM.Theme.getSize("drag_icon").height

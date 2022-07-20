@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 import os
 from typing import Dict, TYPE_CHECKING, Set, List
-from PyQt5.QtNetwork import QNetworkReply, QNetworkRequest
+from PyQt6.QtNetwork import QNetworkReply, QNetworkRequest
 
 from UM.Job import Job
 from UM.Logger import Logger
@@ -133,6 +133,9 @@ class SendMaterialJob(Job):
         except FileNotFoundError:
             Logger.error("Unable to send material {material_id}, since it has been deleted in the meanwhile.".format(material_id = material_id))
             return
+        except EnvironmentError as e:
+            Logger.error(f"Unable to send material {material_id}. We can't open that file for reading: {str(e)}")
+            return
 
         # Add the material signature file if needed.
         signature_file_path = "{}.sig".format(file_path)
@@ -149,7 +152,7 @@ class SendMaterialJob(Job):
     def _sendingFinished(self, reply: QNetworkReply) -> None:
         """Check a reply from an upload to the printer and log an error when the call failed"""
 
-        if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) != 200:
+        if reply.attribute(QNetworkRequest.Attribute.HttpStatusCodeAttribute) != 200:
             Logger.log("w", "Error while syncing material: %s", reply.errorString())
             return
         body = reply.readAll().data().decode('utf8')

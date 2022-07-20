@@ -5,7 +5,7 @@ import QtQuick 2.7
 import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.3
 
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 import "../components"
@@ -35,7 +35,7 @@ RowLayout
         busy: CuraDrive.isCreatingBackup
     }
 
-    Cura.CheckBoxWithTooltip
+    UM.CheckBox
     {
         id: autoBackupEnabled
         checked: CuraDrive.autoBackupEnabled

@@ -59,7 +59,7 @@ class LayerPolygon:
         self._vertex_count = self._mesh_line_count + numpy.sum(self._types[1:] == self._types[:-1])
 
         # Buffering the colors shouldn't be necessary as it is not 
-        # re-used and can save alot of memory usage.
+        # re-used and can save a lot of memory usage.
         self._color_map = LayerPolygon.getColorMap()
         self._colors = self._color_map[self._types]  # type: numpy.ndarray
 
@@ -146,7 +146,7 @@ class LayerPolygon:
         # When the line type changes the index needs to be increased by 2.
         indices[self._index_begin:self._index_end, :] += numpy.cumsum(needed_points_list[line_mesh_mask.ravel(), 0], dtype = numpy.int32).reshape((-1, 1))
         # Each line segment goes from it's starting point p to p+1, offset by the vertex index. 
-        # The -1 is to compensate for the neccecarily True value of needed_points_list[0,0] which causes an unwanted +1 in cumsum above.
+        # The -1 is to compensate for the necessarily True value of needed_points_list[0,0] which causes an unwanted +1 in cumsum above.
         indices[self._index_begin:self._index_end, :] += numpy.array([self._vertex_begin - 1, self._vertex_begin])
 
         self._build_cache_line_mesh_mask = None

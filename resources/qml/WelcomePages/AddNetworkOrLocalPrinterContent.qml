@@ -1,10 +1,10 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.1 as Cura
 
 
@@ -15,7 +15,7 @@ Item
 {
     UM.I18nCatalog { id: catalog; name: "cura" }
 
-    Label
+    UM.Label
     {
         id: titleLabel
         anchors.top: parent.top
@@ -24,7 +24,6 @@ Item
         text: catalog.i18nc("@label", "Add a printer")
         color: UM.Theme.getColor("primary_button")
         font: UM.Theme.getFont("huge")
-        renderType: Text.NativeRendering
     }
 
     DropDownWidget
@@ -45,11 +44,9 @@ Item
         }
 
         contentComponent: networkPrinterListComponent
-
         Component
         {
             id: networkPrinterListComponent
-
             AddNetworkPrinterScrollView
             {
                 id: networkPrinterScrollView
@@ -95,20 +92,13 @@ Item
         }
 
         contentComponent: localPrinterListComponent
-
         Component
         {
             id: localPrinterListComponent
-
             AddLocalPrinterScrollView
             {
                 id: localPrinterView
-                property int childrenHeight: backButton.y - addLocalPrinterDropDown.y - UM.Theme.getSize("expandable_component_content_header").height - UM.Theme.getSize("default_margin").height
-
-                onChildrenHeightChanged:
-                {
-                    addLocalPrinterDropDown.children[1].height = childrenHeight
-                }
+                height: backButton.y - addLocalPrinterDropDown.y - UM.Theme.getSize("expandable_component_content_header").height - UM.Theme.getSize("default_margin").height
             }
         }
     }

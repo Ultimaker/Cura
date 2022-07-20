@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import List, Optional, TYPE_CHECKING
 
-from PyQt5.QtCore import QObject, QTimer, pyqtProperty, pyqtSignal
+from PyQt6.QtCore import QObject, QTimer, pyqtProperty, pyqtSignal
 from UM.FlameProfiler import pyqtSlot
 from UM.Application import Application
 from UM.Logger import Logger
@@ -60,6 +60,10 @@ class SettingInheritanceManager(QObject):
             if key in self._settings_with_inheritance_warning:
                 result.append(key)
         return result
+
+    @pyqtSlot(str, str, result = bool)
+    def hasOverrides(self, key: str, extruder_index: str):
+        return key in self.getOverridesForExtruder(key, extruder_index)
 
     @pyqtSlot(str, str, result = "QStringList")
     def getOverridesForExtruder(self, key: str, extruder_index: str) -> List[str]:

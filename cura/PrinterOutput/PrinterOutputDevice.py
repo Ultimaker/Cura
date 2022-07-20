@@ -1,11 +1,13 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from enum import IntEnum
 from typing import Callable, List, Optional, Union
 
-from PyQt5.QtCore import pyqtProperty, pyqtSignal, QObject, QTimer, QUrl
-from PyQt5.QtWidgets import QMessageBox
+from PyQt6.QtCore import pyqtProperty, pyqtSignal, QObject, QTimer, QUrl
+from PyQt6.QtWidgets import QMessageBox
 
+import cura.CuraApplication  # Imported like this to prevent circular imports.
 from UM.Logger import Logger
 from UM.Signal import signalemitter
 from UM.Qt.QtApplication import QtApplication
@@ -120,11 +122,26 @@ class PrinterOutputDevice(QObject, OutputDevice):
         callback(QMessageBox.Yes)
 
     def isConnected(self) -> bool:
-        return self._connection_state != ConnectionState.Closed and self._connection_state != ConnectionState.Error
+        """
+        Returns whether we could theoretically send commands to this printer.
+        :return: `True` if we are connected, or `False` if not.
+        """
+        return self.connectionState != ConnectionState.Closed and self.connectionState != ConnectionState.Error
 
     def setConnectionState(self, connection_state: "ConnectionState") -> None:
-        if self._connection_state != connection_state:
+        """
+        Store the connection state of the printer.
+
+        Causes everything that displays the connection state to update its QML models.
+        :param connection_state: The new connection state to store.
+        """
+        if self.connectionState != connection_state:
             self._connection_state = connection_state
+            application = cura.CuraApplication.CuraApplication.getInstance()
+            if application is not None:  # Might happen during the closing of Cura or in a test.
+                global_stack = application.getGlobalContainerStack()
+                if global_stack is not None:
+                    global_stack.setMetaDataEntry("is_online", self.isConnected())
             self.connectionStateChanged.emit(self._id)
 
     @pyqtProperty(int, constant = True)
@@ -133,6 +150,10 @@ class PrinterOutputDevice(QObject, OutputDevice):
 
     @pyqtProperty(int, notify = connectionStateChanged)
     def connectionState(self) -> "ConnectionState":
+        """
+        Get the connection state of the printer, e.g. whether it is connected, still connecting, error state, etc.
+        :return: The current connection state of this output device.
+        """
         return self._connection_state
 
     def _update(self) -> None:

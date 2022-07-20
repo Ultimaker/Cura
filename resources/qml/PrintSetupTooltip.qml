@@ -4,7 +4,7 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.3
 
-import UM 1.0 as UM
+import UM 1.5 as UM
 
 UM.PointingRectangle
 {
@@ -17,10 +17,12 @@ UM.PointingRectangle
     arrowSize: UM.Theme.getSize("default_arrow").width
 
     opacity: 0
+    // This should be disabled when invisible, otherwise it will catch mouse events.
+    enabled: opacity > 0
 
     Behavior on opacity
     {
-        NumberAnimation { duration: 100; }
+        NumberAnimation { duration: 200; }
     }
 
     property alias text: label.text
@@ -59,16 +61,19 @@ UM.PointingRectangle
         base.opacity = 0;
     }
 
-    MouseArea
+    ScrollView
     {
-        enabled: parent.opacity > 0
-        visible: enabled
-        anchors.fill: parent
-        acceptedButtons: Qt.NoButton
-        hoverEnabled: true
+        id: textScroll
+        width: parent.width
+        height: Math.min(label.height + UM.Theme.getSize("tooltip_margins").height, base.parent.height)
+
+        ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+        ScrollBar.vertical.policy: ScrollBar.AsNeeded
+
+        hoverEnabled: parent.opacity > 0
         onHoveredChanged:
         {
-            if(containsMouse && base.opacity > 0)
+            if(hovered && base.opacity > 0)
             {
                 base.show(Qt.point(target.x - 1, target.y - UM.Theme.getSize("tooltip_arrow_margins").height / 2)); //Same arrow position as before.
             }
@@ -78,29 +83,15 @@ UM.PointingRectangle
             }
         }
 
-        ScrollView
+        UM.Label
         {
-            id: textScroll
-            width: parent.width
-            height: Math.min(label.height, base.parent.height)
+            id: label
+            x: UM.Theme.getSize("tooltip_margins").width
+            y: UM.Theme.getSize("tooltip_margins").height
+            width: textScroll.width - 2 * UM.Theme.getSize("tooltip_margins").width
 
-            ScrollBar.horizontal: ScrollBar {
-                active: false //Only allow vertical scrolling. We should grow vertically only, but due to how the label is positioned it allocates space in the ScrollView horizontally.
-            }
-
-            Label
-            {
-                id: label
-                x: UM.Theme.getSize("tooltip_margins").width
-                y: UM.Theme.getSize("tooltip_margins").height
-                width: base.width - UM.Theme.getSize("tooltip_margins").width * 2
-
-                wrapMode: Text.Wrap;
-                textFormat: Text.RichText
-                font: UM.Theme.getFont("default");
-                color: UM.Theme.getColor("tooltip_text");
-                renderType: Text.NativeRendering
-            }
+            textFormat: Text.RichText
+            color: UM.Theme.getColor("tooltip_text")
         }
     }
 }

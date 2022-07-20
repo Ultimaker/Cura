@@ -1,10 +1,10 @@
-// Copyright (c) 2021 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.1 as Cura
 
 
@@ -13,65 +13,64 @@ import Cura 1.1 as Cura
 //
 TextField
 {
-    id: textField
+    id: control
 
     property alias leftIcon: iconLeft.source
 
-    UM.I18nCatalog { id: catalog; name: "cura" }
+    height: UM.Theme.getSize("setting_control").height
 
     hoverEnabled: true
     selectByMouse: true
     font: UM.Theme.getFont("default")
-    color: UM.Theme.getColor("text")
+    color: UM.Theme.getColor("text_field_text")
+    selectedTextColor: UM.Theme.getColor("text_field_text")
+    placeholderTextColor: UM.Theme.getColor("text_field_text_disabled")
     renderType: Text.NativeRendering
+    selectionColor: UM.Theme.getColor("text_selection")
     leftPadding: iconLeft.visible ? iconLeft.width + UM.Theme.getSize("default_margin").width * 2 : UM.Theme.getSize("thin_margin").width
 
     states: [
         State
         {
             name: "disabled"
-            when: !textField.enabled
-            PropertyChanges { target: backgroundRectangle.border; color: UM.Theme.getColor("setting_control_disabled_border")}
-            PropertyChanges { target: backgroundRectangle; color: UM.Theme.getColor("setting_control_disabled")}
+            when: !control.enabled
+            PropertyChanges { target: control; color: UM.Theme.getColor("text_field_text_disabled")}
+            PropertyChanges { target: backgroundRectangle; liningColor: UM.Theme.getColor("text_field_border_disabled")}
         },
         State
         {
             name: "invalid"
-            when: !textField.acceptableInput
-            PropertyChanges { target: backgroundRectangle.border; color: UM.Theme.getColor("setting_validation_error")}
+            when: !control.acceptableInput
             PropertyChanges { target: backgroundRectangle; color: UM.Theme.getColor("setting_validation_error_background")}
         },
         State
         {
+            name: "active"
+            when: control.activeFocus
+            PropertyChanges
+            {
+                target: backgroundRectangle
+                liningColor: UM.Theme.getColor("text_field_border_active")
+                borderColor: UM.Theme.getColor("text_field_border_active")
+            }
+        },
+        State
+        {
             name: "hovered"
-            when: textField.hovered || textField.activeFocus
-            PropertyChanges { target: backgroundRectangle.border; color: UM.Theme.getColor("setting_control_border_highlight") }
+            when: control.hovered && !control.activeFocus
+            PropertyChanges
+            {
+                target: backgroundRectangle
+                liningColor: UM.Theme.getColor("text_field_border_hovered")
+            }
         }
     ]
 
-    background: Rectangle
+    background: UM.UnderlineBackground
     {
         id: backgroundRectangle
-
-        color: UM.Theme.getColor("main_background")
-
-        radius: UM.Theme.getSize("setting_control_radius").width
-
-        border.color:
-        {
-            if (!textField.enabled)
-            {
-                return UM.Theme.getColor("setting_control_disabled_border")
-            }
-            if (textField.hovered || textField.activeFocus)
-            {
-                return UM.Theme.getColor("setting_control_border_highlight")
-            }
-            return UM.Theme.getColor("setting_control_border")
-        }
-
         //Optional icon added on the left hand side.
-        UM.RecolorImage
+        UM.ColorImage
         {
             id: iconLeft
 
@@ -85,7 +84,7 @@ TextField
             visible: source != ""
             height: UM.Theme.getSize("small_button_icon").height
             width: visible ? height : 0
-            color: textField.color
+            color: control.color
         }
     }
 }

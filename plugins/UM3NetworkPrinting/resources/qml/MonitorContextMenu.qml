@@ -1,10 +1,10 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.3
-import QtQuick.Controls 2.0
-import QtQuick.Dialogs 1.1
-import UM 1.3 as UM
+import QtQuick.Controls 2.15
+import UM 1.5 as UM
+import Cura 1.6 as Cura
 
 /**
  * A MonitorInfoBlurb is an extension of the GenericPopUp used to show static information (vs. interactive context
@@ -134,32 +134,29 @@ Item
         }
     }
 
-    MessageDialog {
+    Cura.MessageDialog
+    {
         id: sendToTopConfirmationDialog
-        Component.onCompleted: visible = false
-        icon: StandardIcon.Warning
-        onYes: OutputDevice.sendJobToTop(printJob.key)
-        standardButtons: StandardButton.Yes | StandardButton.No
+        onAccepted: OutputDevice.sendJobToTop(printJob.key)
+        standardButtons: Dialog.Yes | Dialog.No
         text: printJob && printJob.name ? catalog.i18nc("@label %1 is the name of a print job.", "Are you sure you want to move %1 to the top of the queue?").arg(printJob.name) : ""
         title: catalog.i18nc("@window:title", "Move print job to top")
     }
 
-    MessageDialog {
+    Cura.MessageDialog
+    {
         id: deleteConfirmationDialog
-        Component.onCompleted: visible = false
-        icon: StandardIcon.Warning
-        onYes: OutputDevice.deleteJobFromQueue(printJob.key)
-        standardButtons: StandardButton.Yes | StandardButton.No
+        onAccepted: OutputDevice.deleteJobFromQueue(printJob.key)
+        standardButtons: Dialog.Yes | Dialog.No
         text: printJob && printJob.name ? catalog.i18nc("@label %1 is the name of a print job.", "Are you sure you want to delete %1?").arg(printJob.name) : ""
         title: catalog.i18nc("@window:title", "Delete print job")
     }
 
-    MessageDialog {
+    Cura.MessageDialog
+    {
         id: abortConfirmationDialog
-        Component.onCompleted: visible = false
-        icon: StandardIcon.Warning
-        onYes: printJob.setState("abort")
-        standardButtons: StandardButton.Yes | StandardButton.No
+        onAccepted: printJob.setState("abort")
+        standardButtons: Dialog.Yes | Dialog.No
         text: printJob && printJob.name ? catalog.i18nc("@label %1 is the name of a print job.", "Are you sure you want to abort %1?").arg(printJob.name) : ""
         title: catalog.i18nc("@window:title", "Abort print")
     }

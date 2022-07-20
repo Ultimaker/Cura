@@ -1,7 +1,7 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, QVariant  # For communicating data and events to Qt.
+from PyQt6.QtCore import pyqtSignal, pyqtProperty, QObject, QVariant  # For communicating data and events to Qt.
 from UM.FlameProfiler import pyqtSlot
 
 import cura.CuraApplication # To get the global container stack to find the current machine.
@@ -12,6 +12,7 @@ from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Selection import Selection
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from UM.Settings.ContainerRegistry import ContainerRegistry  # Finding containers by ID.
+from cura.Machines.ContainerTree import ContainerTree
 
 from typing import Any, cast, Dict, List, Optional, TYPE_CHECKING, Union
 
@@ -30,9 +31,9 @@ class ExtruderManager(QObject):
 
         if ExtruderManager.__instance is not None:
             raise RuntimeError("Try to create singleton '%s' more than once" % self.__class__.__name__)
-        ExtruderManager.__instance = self
 
         super().__init__(parent)
+        ExtruderManager.__instance = self
 
         self._application = cura.CuraApplication.CuraApplication.getInstance()
 
@@ -258,11 +259,21 @@ class ExtruderManager(QObject):
             if support_roof_enabled:
                 used_extruder_stack_ids.add(self.extruderIds[self.extruderValueWithDefault(str(global_stack.getProperty("support_roof_extruder_nr", "value")))])
 
-        # The platform adhesion extruder. Not used if using none.
-        if global_stack.getProperty("adhesion_type", "value") != "none" or (
-                global_stack.getProperty("prime_tower_brim_enable", "value") and
-                global_stack.getProperty("adhesion_type", "value") != 'raft'):
-            extruder_str_nr = str(global_stack.getProperty("adhesion_extruder_nr", "value"))
+        # The platform adhesion extruders.
+        used_adhesion_extruders = set()
+        adhesion_type = global_stack.getProperty("adhesion_type", "value")
+        if adhesion_type == "skirt" and (global_stack.getProperty("skirt_line_count", "value") > 0 or global_stack.getProperty("skirt_brim_minimal_length", "value") > 0):
+            used_adhesion_extruders.add("skirt_brim_extruder_nr")  # There's a skirt.
+        if (adhesion_type == "brim" or global_stack.getProperty("prime_tower_brim_enable", "value")) and (global_stack.getProperty("brim_line_count", "value") > 0 or global_stack.getProperty("skirt_brim_minimal_length", "value") > 0):
+            used_adhesion_extruders.add("skirt_brim_extruder_nr")  # There's a brim or prime tower brim.
+        if adhesion_type == "raft":
+            used_adhesion_extruders.add("raft_base_extruder_nr")
+            if global_stack.getProperty("raft_interface_layers", "value") > 0:
+                used_adhesion_extruders.add("raft_interface_extruder_nr")
+            if global_stack.getProperty("raft_surface_layers", "value") > 0:
+                used_adhesion_extruders.add("raft_surface_extruder_nr")
+        for extruder_setting in used_adhesion_extruders:
+            extruder_str_nr = str(global_stack.getProperty(extruder_setting, "value"))
             if extruder_str_nr == "-1":
                 extruder_str_nr = self._application.getMachineManager().defaultExtruderPosition
             if extruder_str_nr in self.extruderIds:
@@ -285,8 +296,11 @@ class ExtruderManager(QObject):
         global_stack = application.getGlobalContainerStack()
 
         # Starts with the adhesion extruder.
-        if global_stack.getProperty("adhesion_type", "value") != "none":
-            return global_stack.getProperty("adhesion_extruder_nr", "value")
+        adhesion_type = global_stack.getProperty("adhesion_type", "value")
+        if adhesion_type in {"skirt", "brim"}:
+            return global_stack.getProperty("skirt_brim_extruder_nr", "value")
+        if adhesion_type == "raft":
+            return global_stack.getProperty("raft_base_extruder_nr", "value")
 
         # No adhesion? Well maybe there is still support brim.
         if (global_stack.getProperty("support_enable", "value") or global_stack.getProperty("support_structure", "value") == "tree") and global_stack.getProperty("support_brim_enable", "value"):
@@ -368,7 +382,10 @@ class ExtruderManager(QObject):
     # "fdmextruder". We need to check a machine here so its extruder definition is correct according to this.
     def fixSingleExtrusionMachineExtruderDefinition(self, global_stack: "GlobalStack") -> None:
         container_registry = ContainerRegistry.getInstance()
-        expected_extruder_definition_0_id = global_stack.getMetaDataEntry("machine_extruder_trains")["0"]
+        expected_extruder_stack = global_stack.getMetaDataEntry("machine_extruder_trains")
+        if expected_extruder_stack is None:
+            return
+        expected_extruder_definition_0_id = expected_extruder_stack["0"]
         try:
             extruder_stack_0 = global_stack.extruderList[0]
         except IndexError:
@@ -402,6 +419,35 @@ class ExtruderManager(QObject):
                 Logger.logException("e", msg)
                 raise IndexError(msg)
             extruder_stack_0.definition = extruder_definition
+
+    @pyqtSlot("QVariant", result = bool)
+    def getExtruderHasQualityForMaterial(self, extruder_stack: "ExtruderStack") -> bool:
+        """Checks if quality nodes exist for the variant/material combination."""
+        application = cura.CuraApplication.CuraApplication.getInstance()
+        global_stack = application.getGlobalContainerStack()
+        if not global_stack or not extruder_stack:
+            return False
+
+        if not global_stack.getMetaDataEntry("has_materials"):
+            return True
+
+        machine_node = ContainerTree.getInstance().machines[global_stack.definition.getId()]
+
+        active_variant_name = extruder_stack.variant.getMetaDataEntry("name")
+        if active_variant_name not in machine_node.variants:
+            Logger.log("w", "Could not find the variant %s", active_variant_name)
+            return True
+        active_variant_node = machine_node.variants[active_variant_name]
+        try:
+            active_material_node = active_variant_node.materials[extruder_stack.material.getMetaDataEntry("base_file")]
+        except KeyError:  # The material in this stack is not a supported material (e.g. wrong filament diameter, as loaded from a project file).
+            return False
+
+        active_material_node_qualities = active_material_node.qualities
+        if not active_material_node_qualities:
+            return False
+        return list(active_material_node_qualities.keys())[0] != "empty_quality"
+
 
     @pyqtSlot(str, result="QVariant")
     def getInstanceExtruderValues(self, key: str) -> List:

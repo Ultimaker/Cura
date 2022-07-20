@@ -4,7 +4,7 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.1
 
-import UM 1.1 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 Column
@@ -26,15 +26,14 @@ Column
         leftPadding: UM.Theme.getSize("default_margin").width
         rightPadding: UM.Theme.getSize("default_margin").width
 
-        Label
+        UM.Label
         {
             text: catalog.i18nc("@label", "Time estimation").toUpperCase()
             color: UM.Theme.getColor("primary")
             font: UM.Theme.getFont("default_bold")
-            renderType: Text.NativeRendering
         }
 
-        Label
+        UM.Label
         {
             id: byLineType
 
@@ -76,16 +75,13 @@ Column
                         Repeater
                         {
                             model: modelData
-                            Label
+                            UM.Label
                             {
                                 width: Math.round(byLineType.width * byLineType.columnWidthMultipliers[index])
                                 height: contentHeight
                                 horizontalAlignment: byLineType.columnHorizontalAligns[index]
-                                color: UM.Theme.getColor("text")
-                                font: UM.Theme.getFont("default")
                                 wrapMode: Text.WrapAnywhere
                                 text: modelData
-                                renderType: Text.NativeRendering
                             }
                         }
                     }
@@ -94,9 +90,6 @@ Column
 
             width: parent.width - 2 * UM.Theme.getSize("default_margin").width
             height: childrenRect.height
-            color: UM.Theme.getColor("text")
-            font: UM.Theme.getFont("default")
-            renderType: Text.NativeRendering
             textFormat: Text.RichText
         }
     }
@@ -109,15 +102,14 @@ Column
         leftPadding: UM.Theme.getSize("default_margin").width
         rightPadding: UM.Theme.getSize("default_margin").width
 
-        Label
+        UM.Label
         {
             text: catalog.i18nc("@label", "Material estimation").toUpperCase()
             color: UM.Theme.getColor("primary")
             font: UM.Theme.getFont("default_bold")
-            renderType: Text.NativeRendering
         }
         
-        Label
+        UM.Label
         {
             id: byMaterialType
 
@@ -180,16 +172,13 @@ Column
                         Repeater
                         {
                             model: modelData
-                            Label
+                            UM.Label
                             {
                                 width: Math.round(byMaterialType.width * byMaterialType.columnWidthMultipliers[index])
                                 height: contentHeight
                                 horizontalAlignment: byMaterialType.columnHorizontalAligns[index]
-                                color: UM.Theme.getColor("text")
-                                font: UM.Theme.getFont("default")
                                 wrapMode: Text.WrapAnywhere
                                 text: modelData
-                                renderType: Text.NativeRendering
                             }
                         }
                     }
@@ -198,9 +187,6 @@ Column
 
             width: parent.width - 2 * UM.Theme.getSize("default_margin").width
             height: childrenRect.height
-            color: UM.Theme.getColor("text")
-            font: UM.Theme.getFont("default")
-            renderType: Text.NativeRendering
             textFormat: Text.RichText
         }
     }

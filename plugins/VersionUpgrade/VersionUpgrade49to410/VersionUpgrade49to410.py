@@ -104,6 +104,25 @@ class VersionUpgrade49to410(VersionUpgrade):
         "g" : "D060"
     }
 
+    def upgradePreferences(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
+        """
+        Upgrades preferences to have the new version number.
+        :param serialized: The original contents of the preferences file.
+        :param filename: The file name of the preferences file.
+        :return: A list of new file names, and a list of the new contents for
+        those files.
+        """
+        parser = configparser.ConfigParser(interpolation = None)
+        parser.read_string(serialized)
+
+        # Update version number.
+        parser["metadata"]["setting_version"] = "17"
+
+        result = io.StringIO()
+        parser.write(result)
+        return [filename], [result.getvalue()]
+
+
     def upgradeInstanceContainer(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
         """Upgrades instance containers to have the new version number.
 

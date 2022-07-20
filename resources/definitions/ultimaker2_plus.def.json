@@ -34,9 +34,6 @@
         "layer_height_0": {
             "value": "round(machine_nozzle_size / 1.5, 2)"
         },
-        "line_width": {
-            "value": "round(machine_nozzle_size * 0.875, 2)"
-        },
         "speed_support": {
             "value": "speed_wall_0"
         },

@@ -122,7 +122,7 @@ class VersionUpgrade42to43(VersionUpgrade):
         # Update version number.
         parser["metadata"]["setting_version"] = "9"
         # Handle changes for the imade3d jellybox. The machine was split up into parts (eg; a 2 fan version and a single
-        # fan version. Perviously it used variants for this. The only upgrade we can do here is strip that variant.
+        # fan version. Previously it used variants for this. The only upgrade we can do here is strip that variant.
         # This is because we only upgrade per stack (and to fully do these changes, we'd need to switch out something
         # in the global container based on changes made to the extruder stack)
         if parser["containers"]["6"] == "imade3d_jellybox_extruder_0":

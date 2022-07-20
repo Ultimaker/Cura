@@ -3,7 +3,7 @@
 
 from typing import Optional, List
 
-from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject
+from PyQt6.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject
 
 from UM.Logger import Logger
 from UM.Preferences import Preferences
@@ -33,7 +33,7 @@ class SettingVisibilityPresetsModel(QObject):
         if basic_item is not None:
             basic_visibile_settings = ";".join(basic_item.settings)
         else:
-            Logger.log("w", "Unable to find the basic visiblity preset.")
+            Logger.log("w", "Unable to find the basic visibility preset.")
             basic_visibile_settings = ""
 
         self._preferences = preferences

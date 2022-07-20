@@ -7,7 +7,6 @@
         "author": "Creatable Labs",
         "manufacturer": "Ateam Ventures Co. Ltd.",
         "file_formats": "text/x-gcode",
-        "icon": "icon_ultimaker.png",
         "platform": "rostock_platform.3mf",
         "machine_extruder_trains":
         {
@@ -28,7 +27,7 @@
         "gantry_height": {"value": "43"},
         "layer_height": { "default_value": 0.1 },
         "relative_extrusion": { "value": "False" },
-        "retraction_combing": { "default_value": "off" },
+        "retraction_combing": { "value": "'off'" },
         "retraction_hop_enabled": { "default_value": true },
         "retraction_hop_only_when_collides": { "default_value": false },
         "retraction_speed": { "default_value": 100 },

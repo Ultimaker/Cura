@@ -1,12 +1,11 @@
-// Copyright (C) 2021 Ultimaker B.V.
+//Copyright (C) 2022 Ultimaker B.V.
+//Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.10
+import QtQuick 2.15
 import QtQuick.Window 2.2
-import QtQuick.Controls 1.4 as OldControls // TableView doesn't exist in the QtQuick Controls 2.x in 5.10, so use the old one
 import QtQuick.Controls 2.3
-import QtQuick.Controls.Styles 1.4
 
-import UM 1.2 as UM
+import UM 1.6 as UM
 import Cura 1.6 as Cura
 
 import DigitalFactory 1.0 as DF
@@ -15,9 +14,14 @@ import DigitalFactory 1.0 as DF
 Item
 {
     id: base
+
+    property variant catalog: UM.I18nCatalog { name: "cura" }
+
     width: parent.width
     height: parent.height
+
     property var fileModel: manager.digitalFactoryFileModel
+    property var modelRows: manager.digitalFactoryFileModel.items
 
     signal savePressed()
     signal selectDifferentProjectPressed()
@@ -43,14 +47,13 @@ Item
         cardMouseAreaEnabled: false
     }
 
-    Label
+    UM.Label
     {
         id: fileNameLabel
         anchors.top: projectSummaryCard.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         text: "Cura project name"
         font: UM.Theme.getFont("medium")
-        color: UM.Theme.getColor("text")
     }
 
 
@@ -61,17 +64,23 @@ Item
         anchors.left: parent.left
         anchors.top: fileNameLabel.bottom
         anchors.topMargin: UM.Theme.getSize("thin_margin").height
-        validator: RegExpValidator
+        validator: RegularExpressionValidator
         {
-            regExp: /^[\w\-\. ()]{0,255}$/
+            regularExpression: /^[\w\-\. ()]{0,255}$/
         }
 
         text: PrintInformation.jobName
-        font: UM.Theme.getFont("medium")
+        font: fontMetrics.font
+        height: fontMetrics.height + 2 * UM.Theme.getSize("thin_margin").height
         placeholderText: "Enter the name of the file."
         onAccepted: { if (saveButton.enabled) {saveButton.clicked()}}
     }
 
+    FontMetrics
+    {
+        id: fontMetrics
+        font: UM.Theme.getFont("medium")
+    }
 
     Rectangle
     {
@@ -86,45 +95,29 @@ Item
         border.width: UM.Theme.getSize("default_lining").width
         border.color: UM.Theme.getColor("lining")
 
-
+        // This is not backwards compatible with Cura < 5.0 due to QT.labs being removed in PyQt6
         Cura.TableView
         {
             id: filesTableView
             anchors.fill: parent
-            model: manager.digitalFactoryFileModel
-            visible: model.count != 0 && manager.retrievingFileStatus != DF.RetrievalStatus.InProgress
-            selectionMode: OldControls.SelectionMode.NoSelection
+            anchors.margins: parent.border.width
 
-            OldControls.TableViewColumn
+            allowSelection: false
+            columnHeaders: ["Name", "Uploaded by", "Uploaded at"]
+            model: UM.TableModel
             {
-                id: fileNameColumn
-                role: "fileName"
-                title: "@tableViewColumn:title", "Name"
-                width: Math.round(filesTableView.width / 3)
-            }
-
-            OldControls.TableViewColumn
-            {
-                id: usernameColumn
-                role: "username"
-                title: "Uploaded by"
-                width: Math.round(filesTableView.width / 3)
-            }
-
-            OldControls.TableViewColumn
-            {
-                role: "uploadedAt"
-                title: "Uploaded at"
+                id: tableModel
+                headers: ["fileName", "username", "uploadedAt"]
+                rows: manager.digitalFactoryFileModel.items
             }
         }
 
-        Label
+        UM.Label
         {
             id: emptyProjectLabel
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
             text: "Select a project to view its files."
-            font: UM.Theme.getFont("default")
             color: UM.Theme.getColor("setting_category_text")
 
             Connections
@@ -137,14 +130,13 @@ Item
             }
         }
 
-        Label
+        UM.Label
         {
             id: noFilesInProjectLabel
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
             visible: (manager.digitalFactoryFileModel.count == 0 && !emptyProjectLabel.visible && !retrievingFilesBusyIndicator.visible)
             text: "No supported files in this project."
-            font: UM.Theme.getFont("default")
             color: UM.Theme.getColor("setting_category_text")
         }
 
@@ -173,8 +165,7 @@ Item
             function onItemsChanged()
             {
                 // Make sure no files are selected when the file model changes
-                filesTableView.currentRow = -1
-                filesTableView.selection.clear()
+                filesTableView.currentRow = -1;
             }
         }
     }
@@ -200,60 +191,42 @@ Item
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         text: "Save"
-        enabled: (asProjectCheckbox.checked || asSlicedCheckbox.checked) && dfFilenameTextfield.text.length >= 1
+        enabled: (asProjectCheckbox.checked || asSlicedCheckbox.checked) && dfFilenameTextfield.text.length >= 1 && dfFilenameTextfield.state !== 'invalid'
 
-        onClicked:
-        {
-            let saveAsFormats = [];
-            if (asProjectCheckbox.checked)
-            {
-                saveAsFormats.push("3mf");
-            }
-            if (asSlicedCheckbox.checked)
-            {
-                saveAsFormats.push("ufp");
-            }
-            manager.saveFileToSelectedProject(dfFilenameTextfield.text, saveAsFormats);
-        }
+        onClicked: manager.saveFileToSelectedProject(dfFilenameTextfield.text, asProjectComboBox.currentValue)
         busy: false
     }
 
-    Row
+    Cura.ComboBox
     {
+        id: asProjectComboBox
 
-        id: saveAsFormatRow
+        width: UM.Theme.getSize("combobox_wide").width
+        height: saveButton.height
         anchors.verticalCenter: saveButton.verticalCenter
         anchors.right: saveButton.left
         anchors.rightMargin: UM.Theme.getSize("thin_margin").height
-        width: childrenRect.width
-        spacing: UM.Theme.getSize("default_margin").width
 
-        Cura.CheckBox
-        {
-            id: asProjectCheckbox
-            height: UM.Theme.getSize("checkbox").height
-            anchors.verticalCenter: parent.verticalCenter
-            checked: true
-            text: "Save Cura project"
-            font: UM.Theme.getFont("medium")
-        }
+        enabled: UM.Backend.state == UM.Backend.Done
+        currentIndex: UM.Backend.state == UM.Backend.Done ? 0 : 1
+        textRole: "text"
+        valueRole: "value"
 
-        Cura.CheckBox
-        {
-            id: asSlicedCheckbox
-            height: UM.Theme.getSize("checkbox").height
-            anchors.verticalCenter: parent.verticalCenter
-
-            enabled: UM.Backend.state == UM.Backend.Done
-            checked: UM.Backend.state == UM.Backend.Done
-            text: "Save print file"
-            font: UM.Theme.getFont("medium")
-        }
+        model: [
+            { text: catalog.i18nc("@option", "Save Cura project and print file"), key: "3mf_ufp", value: ["3mf", "ufp"] },
+            { text: catalog.i18nc("@option", "Save Cura project"), key: "3mf", value: ["3mf"] },
+        ]
     }
 
     Component.onCompleted:
     {
         saveButton.clicked.connect(base.savePressed)
         selectDifferentProjectButton.clicked.connect(base.selectDifferentProjectPressed)
+    }
+
+    onModelRowsChanged:
+    {
+        tableModel.clear()
+        tableModel.rows = modelRows
     }
 }

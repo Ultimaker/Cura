@@ -167,6 +167,10 @@
         "new_icon": "Check",
         "size": "default"
     },
+    "star": {
+        "new_icon": "StarFilled",
+        "size": "default"
+    },
     "pencil": {
         "new_icon": "Pen",
         "size": "default"
@@ -301,6 +305,98 @@
     },
     "translate": {
         "new_icon": "ArrowFourWay",
+        "size": "default"
+    },
+    "buildplate": {
+        "new_icon": "Buildplate",
+        "size": "default"
+    },
+    "basic": {
+        "new_icon": "PrintQuality",
+        "size": "default"
+    },
+    "category_shield": {
+        "new_icon": "Shield",
+        "size": "default"
+    },
+    "category_unknown": {
+        "new_icon": "Sputnik",
+        "size": "default"
+    },
+    "cross2": {
+        "new_icon": "CancelBlock",
+        "size": "default"
+    },
+    "drop_down_button": {
+        "new_icon": "ChevronSingleDown",
+        "size": "default"
+    },
+    "group": {
+        "new_icon": "People",
+        "size": "default"
+    },
+    "link": {
+        "new_icon": "Link",
+        "size": "default"
+    },
+    "play": {
+        "new_icon": "Play",
+        "size": "default"
+    },
+    "print_time": {
+        "new_icon": "Clock",
+        "size": "default"
+    },
+    "printer_cloud_connected": {
+        "new_icon": "CloudBadge",
+        "size": "low"
+    },
+    "printer_cloud_not_available": {
+        "new_icon": "CloudBadge",
+        "size": "low"
+    },
+    "printer_connected": {
+        "new_icon": "CheckBlueBG",
+        "size": "low"
+    },
+    "printsetup": {
+        "new_icon": "Sliders",
+        "size": "default"
+    },
+    "quick": {
+        "new_icon": "Quick",
+        "size": "default"
+    },
+    "scale_max": {
+        "new_icon": "ScaleMax",
+        "size": "default"
+    },
+    "setting_per_object": {
+        "new_icon": "MeshType",
+        "size": "default"
+    },
+    "star_empty": {
+        "new_icon": "Star",
+        "size": "default"
+    },
+    "star_filled": {
+        "new_icon": "StarFilled",
+        "size": "default"
+    },
+    "ulti": {
+        "new_icon": "PrintQuality",
+        "size": "default"
+    },
+    "view_xray": {
+        "new_icon": "CancelBlock",
+        "size": "default"
+    },
+    "view_normal": {
+        "new_icon": "Infill0",
+        "size": "default"
+    },
+    "viewmode": {
+        "new_icon": "Eye",
         "size": "default"
     }
 }
