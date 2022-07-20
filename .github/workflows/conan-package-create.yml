@@ -28,6 +28,11 @@ on:
                 type: boolean
                 default: false
 
+            conan_upload_community:
+                required: false
+                default: true
+                type: boolean
+
 env:
     CONAN_LOGIN_USERNAME_CURA: ${{ secrets.CONAN_USER }}
     CONAN_PASSWORD_CURA: ${{ secrets.CONAN_PASS }}
@@ -105,6 +110,8 @@ jobs:
 
             -   name: Upload the Package(s)
                 if: always()
-                run: |
-                    conan upload "*" -r cura --all -c
-                    conan upload "*" -r cura-ce -c
+                run: conan upload "*" -r cura --all -c
+
+            -   name: Upload the Package(s) community
+                if: ${{ always() && inputs.conan_upload_community == 'true' }}
+                run: conan upload "*" -r cura-ce -c
