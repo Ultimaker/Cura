@@ -11,10 +11,6 @@ on:
                 required: false
                 type: string
 
-            recipe_id_pr:
-                required: false
-                type: string
-
             runs_on:
                 required: true
                 type: string
@@ -33,6 +29,11 @@ on:
 
             conan_export_binaries:
                 required: false
+                type: boolean
+
+            conan_upload_community:
+                required: false
+                default: true
                 type: boolean
 
 env:
@@ -68,7 +69,7 @@ jobs:
                 uses: actions/cache@v3
                 with:
                     path: $HOME/.conan/data
-                    key: ${{ runner.os }}-conan
+                    key: ${{ runner.os }}-conan-export-cache
 
             -   name: Get Conan configuration from branch
                 if: ${{ inputs.conan_config_branch != '' }}
@@ -83,19 +84,23 @@ jobs:
                 run: conan export-pkg . ${{ inputs.recipe_id_full }}
 
             -   name: Export the Package
-                if: ${{ inputs.conan_export_binaries != 'true' && github.event_name != 'pull_request' }}
+                if: ${{ inputs.conan_export_binaries != 'true' }}
                 run: conan export . ${{ inputs.recipe_id_full }}
 
-            -   name: Create the latest alias
-                if: ${{ inputs.recipe_id_latest != '' && github.event_name != 'pull_request' }}
-                run: conan alias ${{ inputs.recipe_id_latest }} ${{ inputs.recipe_id_full }}
+            -   name: Remove the latest alias
+                if: ${{ inputs.recipe_id_latest != '' && runner.os == 'Linux' }}
+                run: |
+                    conan remove ${{ inputs.recipe_id_latest }} -r cura -f || true
+                    conan remove ${{ inputs.recipe_id_latest }} -r cura-ce -f || true
 
-            -   name: Create the pull request alias
-                if: ${{ inputs.recipe_id_pr != '' && github.event_name == 'pull_request' }}
+            -   name: Create the latest alias
+                if: ${{ inputs.recipe_id_latest != '' && always() }}
                 run: conan alias ${{ inputs.recipe_id_latest }} ${{ inputs.recipe_id_full }}
 
             -   name: Upload the Package(s)
-                run: |
-                    # Only use --all (upload binaries) for the cura repository
-                    conan upload "*" -r cura --all -c
-                    conan upload "*" -r cura-ce -c
+                if: always()
+                run: conan upload "*" -r cura --all -c
+
+            -   name: Upload the Package(s) community
+                if: ${{ always() && inputs.conan_upload_community == 'true' }}
+                run: conan upload "*" -r cura-ce -c

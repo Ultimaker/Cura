@@ -92,6 +92,7 @@ UM.ManagementPage
             minimumHeight: UM.Theme.getSize("modal_window_minimum").height
             maximumWidth: minimumWidth * 3
             maximumHeight: minimumHeight * 3
+            backgroundColor: UM.Theme.getColor("main_background")
         }
 
         UM.ConfirmRemoveDialog

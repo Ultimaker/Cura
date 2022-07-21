@@ -2810,12 +2810,13 @@ msgstr "Active le réglage de l'accélération de la tête d'impression. Augment
 #: fdmprinter.def.json
 msgctxt "acceleration_travel_enabled label"
 msgid "Enable Travel Acceleration"
-msgstr ""
+msgstr "Activer l'accélération de déplacement"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_travel_enabled description"
 msgid "Use a separate acceleration rate for travel moves. If disabled, travel moves will use the acceleration value of the printed line at their destination."
-msgstr ""
+msgstr "Utilisez un taux d'accélération différent pour les déplacements. Si cette option est désactivée, les déplacements utiliseront la même accélération que"
+" celle de la ligne imprimée à l'emplacement cible."
 
 #: fdmprinter.def.json
 msgctxt "acceleration_print label"
@@ -3010,12 +3011,13 @@ msgstr "Active le réglage de la saccade de la tête d'impression lorsque la vit
 #: fdmprinter.def.json
 msgctxt "jerk_travel_enabled label"
 msgid "Enable Travel Jerk"
-msgstr ""
+msgstr "Activer la saccade de déplacement"
 
 #: fdmprinter.def.json
 msgctxt "jerk_travel_enabled description"
 msgid "Use a separate jerk rate for travel moves. If disabled, travel moves will use the jerk value of the printed line at their destination."
-msgstr ""
+msgstr "Utilisez un taux de saccades différent pour les déplacements. Si cette option est désactivée, les déplacements utiliseront les mêmes saccades que celle"
+" de la ligne imprimée à l'emplacement cible."
 
 #: fdmprinter.def.json
 msgctxt "jerk_print label"
