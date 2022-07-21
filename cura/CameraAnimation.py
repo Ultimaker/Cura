@@ -9,7 +9,7 @@ from UM.Math.Vector import Vector
 
 
 class CameraAnimation(QVariantAnimation):
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         super().__init__(parent)
         self._camera_tool = None
         self.setDuration(300)
