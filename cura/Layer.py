@@ -72,7 +72,7 @@ class Layer:
         return self.createMeshOrJumps(False)
 
     # Defines the two triplets of local point indices to use to draw the two faces for each line segment in createMeshOrJump
-    __index_pattern = numpy.array([[0, 3, 2, 0, 1, 3]], dtype = numpy.int32 )
+    __index_pattern = numpy.array([[0, 3, 2, 0, 1, 3]], dtype=numpy.int32)
 
     def createMeshOrJumps(self, make_mesh: bool) -> MeshData:
         builder = MeshBuilder()
@@ -104,7 +104,7 @@ class Layer:
                 points[:, 1::3] += 0.01
 
             # Create an array with normals and tile 2 copies to match size of points variable
-            normals = numpy.tile( polygon.getNormals()[index_mask.ravel()], (1, 2))
+            normals = numpy.tile(polygon.getNormals()[index_mask.ravel()], (1, 2))
 
             # Scale all normals by the line width of the current line so we can easily offset.
             normals *= (polygon.lineWidths[index_mask.ravel()] / 2)
@@ -114,7 +114,7 @@ class Layer:
             f_points = numpy.concatenate((points-normals, points+normals), 1).reshape((-1, 3))
 
             # __index_pattern defines which points to use to draw the two faces for each lines egment, the following linesegment is offset by 4
-            f_indices = ( self.__index_pattern + numpy.arange(0, 4 * len(normals), 4, dtype=numpy.int32).reshape((-1, 1)) ).reshape((-1, 3))
+            f_indices = (self.__index_pattern + numpy.arange(0, 4 * len(normals), 4, dtype=numpy.int32).reshape((-1, 1))).reshape((-1, 3))
             f_colors = numpy.repeat(polygon.mapLineTypeToColor(line_types), 4, 0)
 
             builder.addFacesWithColor(f_points, f_indices, f_colors)
