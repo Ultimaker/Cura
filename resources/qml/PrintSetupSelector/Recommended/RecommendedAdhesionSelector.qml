@@ -13,7 +13,7 @@ import Cura 1.0 as Cura
 Item
 {
     id: enableAdhesionRow
-    height: childrenRect.height
+    height: enableAdhesionContainer.height
 
     property real labelColumnWidth: Math.round(width / 3)
     property var curaRecommendedMode: Cura.RecommendedMode {}
@@ -47,8 +47,6 @@ Item
             id: enableAdhesionCheckBox
             anchors.verticalCenter: parent.verticalCenter
 
-            property alias _hovered: adhesionMouseArea.containsMouse
-
             //: Setting enable printing build-plate adhesion helper checkbox
             enabled: recommendedPrintSetup.settingsEnabled
 
@@ -60,20 +58,23 @@ Item
                 id: adhesionMouseArea
                 anchors.fill: parent
                 hoverEnabled: true
-
-                onClicked:
-                {
-                    curaRecommendedMode.setAdhesion(!parent.checked)
-                }
-
-                onEntered:
-                {
-                    base.showTooltip(enableAdhesionCheckBox, Qt.point(-enableAdhesionContainer.x - UM.Theme.getSize("thick_margin").width, 0),
-                        catalog.i18nc("@label", "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards."));
-                }
-                onExited: base.hideTooltip()
+                // propagateComposedEvents used on adhesionTooltipMouseArea does not work with Controls Components.
+                // It only works with other MouseAreas, so this is required
+                onClicked: curaRecommendedMode.setAdhesion(!parent.checked)
             }
         }
+    }
+
+    MouseArea
+    {
+        id: adhesionTooltipMouseArea
+        anchors.fill: parent
+        propagateComposedEvents: true
+        hoverEnabled: true
+
+        onEntered:base.showTooltip(enableAdhesionCheckBox, Qt.point(-enableAdhesionContainer.x - UM.Theme.getSize("thick_margin").width, 0),
+                catalog.i18nc("@label", "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards."));
+        onExited: base.hideTooltip()
     }
 
     UM.SettingPropertyProvider

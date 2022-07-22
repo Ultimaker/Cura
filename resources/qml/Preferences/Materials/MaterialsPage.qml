@@ -11,7 +11,7 @@ import Cura 1.5 as Cura
 UM.ManagementPage
 {
     id: base
-
+    Item { enabled: false; UM.I18nCatalog { id: catalog; name: "cura"} }
     // Keep PreferencesDialog happy
     property var resetEnabled: false
     property var currentItem: null

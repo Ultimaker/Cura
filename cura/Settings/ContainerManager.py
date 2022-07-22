@@ -114,7 +114,7 @@ class ContainerManager(QObject):
             for _ in range(len(entries)):
                 item = item.get(entries.pop(0), {})
 
-            if item[entry_name] != entry_value:
+            if entry_name not in item or item[entry_name] != entry_value:
                 sub_item_changed = True
             item[entry_name] = entry_value
 

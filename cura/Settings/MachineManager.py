@@ -1611,7 +1611,7 @@ class MachineManager(QObject):
         if intent_category != "default":
             intent_display_name = IntentCategoryModel.translation(intent_category,
                                                                   "name",
-                                                                  catalog.i18nc("@label", "Unknown"))
+                                                                  intent_category.title())
             display_name = "{intent_name} - {the_rest}".format(intent_name = intent_display_name,
                                                                the_rest = display_name)
 
@@ -1778,3 +1778,31 @@ class MachineManager(QObject):
                 abbr_machine += stripped_word
 
         return abbr_machine
+
+    @pyqtSlot(str, str, result = bool)
+    def intentCategoryHasQuality(self, intent_category: str, quality_type: str) -> bool:
+        """ Checks if there are any quality groups for active extruders that have an intent category """
+        quality_groups = ContainerTree.getInstance().getCurrentQualityGroups()
+
+        if quality_type in quality_groups:
+            quality_group = quality_groups[quality_type]
+            for node in quality_group.nodes_for_extruders.values():
+                if any(intent.intent_category == intent_category for intent in node.intents.values()):
+                    return True
+
+        return False
+
+    @pyqtSlot(str, result = str)
+    def getDefaultQualityTypeForIntent(self, intent_category) -> str:
+        """ If there is an intent category for the default machine quality return it, otherwise return the first quality for this intent category """
+        machine = ContainerTree.getInstance().machines.get(self._global_container_stack.definition.getId())
+
+        if self.intentCategoryHasQuality(intent_category, machine.preferred_quality_type):
+            return machine.preferred_quality_type
+
+        for quality_type, quality_group in ContainerTree.getInstance().getCurrentQualityGroups().items():
+            for node in quality_group.nodes_for_extruders.values():
+                if any(intent.intent_category == intent_category for intent in node.intents.values()):
+                    return quality_type
+
+        return ""

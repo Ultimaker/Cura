@@ -169,7 +169,10 @@ class ClusterApiClient:
         """
 
         def parse() -> None:
-            self._anti_gc_callbacks.remove(parse)
+            try:
+                self._anti_gc_callbacks.remove(parse)
+            except ValueError:  # Already removed asynchronously.
+                return  # Then the rest of the function is also already executed.
 
             # Don't try to parse the reply if we didn't get one
             if reply.attribute(QNetworkRequest.Attribute.HttpStatusCodeAttribute) is None:

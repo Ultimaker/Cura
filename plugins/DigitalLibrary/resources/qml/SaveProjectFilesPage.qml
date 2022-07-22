@@ -14,6 +14,9 @@ import DigitalFactory 1.0 as DF
 Item
 {
     id: base
+
+    property variant catalog: UM.I18nCatalog { name: "cura" }
+
     width: parent.width
     height: parent.height
 
@@ -44,14 +47,13 @@ Item
         cardMouseAreaEnabled: false
     }
 
-    Label
+    UM.Label
     {
         id: fileNameLabel
         anchors.top: projectSummaryCard.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         text: "Cura project name"
         font: UM.Theme.getFont("medium")
-        color: UM.Theme.getColor("text")
     }
 
 
@@ -110,13 +112,12 @@ Item
             }
         }
 
-        Label
+        UM.Label
         {
             id: emptyProjectLabel
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
             text: "Select a project to view its files."
-            font: UM.Theme.getFont("default")
             color: UM.Theme.getColor("setting_category_text")
 
             Connections
@@ -129,14 +130,13 @@ Item
             }
         }
 
-        Label
+        UM.Label
         {
             id: noFilesInProjectLabel
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
             visible: (manager.digitalFactoryFileModel.count == 0 && !emptyProjectLabel.visible && !retrievingFilesBusyIndicator.visible)
             text: "No supported files in this project."
-            font: UM.Theme.getFont("default")
             color: UM.Theme.getColor("setting_category_text")
         }
 
@@ -193,53 +193,29 @@ Item
         text: "Save"
         enabled: (asProjectCheckbox.checked || asSlicedCheckbox.checked) && dfFilenameTextfield.text.length >= 1 && dfFilenameTextfield.state !== 'invalid'
 
-        onClicked:
-        {
-            let saveAsFormats = [];
-            if (asProjectCheckbox.checked)
-            {
-                saveAsFormats.push("3mf");
-            }
-            if (asSlicedCheckbox.checked)
-            {
-                saveAsFormats.push("ufp");
-            }
-            manager.saveFileToSelectedProject(dfFilenameTextfield.text, saveAsFormats);
-        }
+        onClicked: manager.saveFileToSelectedProject(dfFilenameTextfield.text, asProjectComboBox.currentValue)
         busy: false
     }
 
-    Row
+    Cura.ComboBox
     {
+        id: asProjectComboBox
 
-        id: saveAsFormatRow
+        width: UM.Theme.getSize("combobox_wide").width
+        height: saveButton.height
         anchors.verticalCenter: saveButton.verticalCenter
         anchors.right: saveButton.left
         anchors.rightMargin: UM.Theme.getSize("thin_margin").height
-        width: childrenRect.width
-        spacing: UM.Theme.getSize("default_margin").width
 
-        UM.CheckBox
-        {
-            id: asProjectCheckbox
-            height: UM.Theme.getSize("checkbox").height
-            anchors.verticalCenter: parent.verticalCenter
-            checked: true
-            text: "Save Cura project"
-            font: UM.Theme.getFont("medium")
-        }
+        enabled: UM.Backend.state == UM.Backend.Done
+        currentIndex: UM.Backend.state == UM.Backend.Done ? 0 : 1
+        textRole: "text"
+        valueRole: "value"
 
-        UM.CheckBox
-        {
-            id: asSlicedCheckbox
-            height: UM.Theme.getSize("checkbox").height
-            anchors.verticalCenter: parent.verticalCenter
-
-            enabled: UM.Backend.state == UM.Backend.Done
-            checked: UM.Backend.state == UM.Backend.Done
-            text: "Save print file"
-            font: UM.Theme.getFont("medium")
-        }
+        model: [
+            { text: catalog.i18nc("@option", "Save Cura project and print file"), key: "3mf_ufp", value: ["3mf", "ufp"] },
+            { text: catalog.i18nc("@option", "Save Cura project"), key: "3mf", value: ["3mf"] },
+        ]
     }
 
     Component.onCompleted:

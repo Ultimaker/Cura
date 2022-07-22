@@ -12,6 +12,7 @@ import Cura 1.0 as Cura
 UM.ManagementPage
 {
     id: base
+    Item { enabled: false; UM.I18nCatalog { id: catalog; name: "cura"} }
 
     title: catalog.i18nc("@title:tab", "Printers")
     detailsPlaneCaption: base.currentItem && base.currentItem.name ? base.currentItem.name : ""
@@ -91,9 +92,8 @@ UM.ManagementPage
             minimumHeight: UM.Theme.getSize("modal_window_minimum").height
             maximumWidth: minimumWidth * 3
             maximumHeight: minimumHeight * 3
+            backgroundColor: UM.Theme.getColor("main_background")
         }
-
-        UM.I18nCatalog { id: catalog; name: "cura"; }
 
         UM.ConfirmRemoveDialog
         {

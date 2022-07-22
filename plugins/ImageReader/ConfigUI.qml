@@ -31,7 +31,7 @@ UM.Dialog
             Layout.fillWidth: true
             Layout.minimumWidth: UM.Theme.getSize("setting_control").width
             text: catalog.i18nc("@action:label", "Height (mm)")
-            Layout.alignment: Qt.AlignmentFlag.AlignVCenter
+            Layout.alignment: Qt.AlignVCenter
 
             MouseArea {
                 id: peak_height_label
@@ -64,7 +64,7 @@ UM.Dialog
             Layout.fillWidth: true
             Layout.minimumWidth: UM.Theme.getSize("setting_control").width
             text: catalog.i18nc("@action:label", "Base (mm)")
-            Layout.alignment: Qt.AlignmentFlag.AlignVCenter
+            Layout.alignment: Qt.AlignVCenter
 
             MouseArea
             {
@@ -98,7 +98,7 @@ UM.Dialog
             Layout.fillWidth: true
             Layout.minimumWidth: UM.Theme.getSize("setting_control").width
             text: catalog.i18nc("@action:label", "Width (mm)")
-            Layout.alignment: Qt.AlignmentFlag.AlignVCenter
+            Layout.alignment: Qt.AlignVCenter
 
             MouseArea {
                 id: width_label
@@ -132,7 +132,7 @@ UM.Dialog
             Layout.fillWidth: true
             Layout.minimumWidth: UM.Theme.getSize("setting_control").width
             text: catalog.i18nc("@action:label", "Depth (mm)")
-            Layout.alignment: Qt.AlignmentFlag.AlignVCenter
+            Layout.alignment: Qt.AlignVCenter
 
             MouseArea {
                 id: depth_label
@@ -166,7 +166,7 @@ UM.Dialog
             Layout.fillWidth: true
             Layout.minimumWidth: UM.Theme.getSize("setting_control").width
             text: ""
-            Layout.alignment: Qt.AlignmentFlag.AlignVCenter
+            Layout.alignment: Qt.AlignVCenter
 
             MouseArea {
                 id: lighter_is_higher_label
@@ -203,7 +203,7 @@ UM.Dialog
             Layout.fillWidth: true
             Layout.minimumWidth: UM.Theme.getSize("setting_control").width
             text: catalog.i18nc("@action:label", "Color Model")
-            Layout.alignment: Qt.AlignmentFlag.AlignVCenter
+            Layout.alignment: Qt.AlignVCenter
 
             MouseArea {
                 id: color_model_label
@@ -240,7 +240,7 @@ UM.Dialog
             Layout.fillWidth: true
             Layout.minimumWidth: UM.Theme.getSize("setting_control").width
             text: catalog.i18nc("@action:label", "1mm Transmittance (%)")
-            Layout.alignment: Qt.AlignmentFlag.AlignVCenter
+            Layout.alignment: Qt.AlignVCenter
 
             MouseArea {
                 id: transmittance_label
@@ -272,7 +272,7 @@ UM.Dialog
             Layout.fillWidth: true
             Layout.minimumWidth: UM.Theme.getSize("setting_control").width
             text: catalog.i18nc("@action:label", "Smoothing")
-            Layout.alignment: Qt.AlignmentFlag.AlignVCenter
+            Layout.alignment: Qt.AlignVCenter
 
             MouseArea
             {

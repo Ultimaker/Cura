@@ -8,9 +8,9 @@ import QtQuick.Layouts 1.15
 import QtQuick.Window 2.1
 
 import Cura 1.1 as Cura
-import UM 1.5 as UM
+import UM 1.6 as UM
 
-Window
+UM.Window
 {
     id: materialsSyncDialog
     property variant catalog: UM.I18nCatalog { name: "cura" }
@@ -231,7 +231,6 @@ Window
                     {
                         id: syncStatusLabel
                         anchors.left: parent.left
-                        wrapMode: Text.Wrap
                         elide: Text.ElideRight
                         visible: text !== ""
                         font: UM.Theme.getFont("medium")
@@ -403,7 +402,7 @@ Window
                                 UM.Label
                                 {
                                     Layout.fillWidth: true
-                                    Layout.alignment: Qt.AlignmentFlag.AlignVCenter
+                                    Layout.alignment: Qt.AlignVCenter
                                     text: catalog.i18nc("@text Asking the user whether printers are missing in a list.", "Printers missing?")
                                       + "\n"
                                       + catalog.i18nc("@text", "Make sure all your printers are turned ON and connected to Digital Factory.")
@@ -414,7 +413,7 @@ Window
                                 Cura.SecondaryButton
                                 {
                                     id: refreshListButton
-                                    Layout.alignment: Qt.AlignmentFlag.AlignVCenter
+                                    Layout.alignment: Qt.AlignVCenter
                                     text: catalog.i18nc("@button", "Refresh List")
                                     iconSource: UM.Theme.getIcon("ArrowDoubleCircleRight")
                                     onClicked: Cura.API.account.sync(true)
@@ -559,7 +558,6 @@ Window
                     text: catalog.i18nc("@text", "It seems like you don't have any compatible printers connected to Digital Factory. Make sure your printer is connected and it's running the latest firmware.")
                     Layout.fillWidth: true
                     horizontalAlignment: Text.AlignHCenter
-                    wrapMode: Text.Wrap
                 }
 
                 Item
@@ -633,7 +631,6 @@ Window
                 {
                     text: catalog.i18nc("@text In the UI this is followed by a list of steps the user needs to take.", "Follow the following steps to load the new material profiles to your printer.")
                     font: UM.Theme.getFont("medium")
-                    wrapMode: Text.Wrap
                     Layout.fillWidth: true
                 }
 
