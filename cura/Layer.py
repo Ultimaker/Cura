@@ -78,12 +78,8 @@ class Layer:
         builder = MeshBuilder()
 
         line_count = 0
-        if make_mesh:
-            for polygon in self._polygons:
-                line_count += polygon.meshLineCount
-        else:
-            for polygon in self._polygons:
-                line_count += polygon.jumpCount
+        for polygon in self._polygons:
+            line_count += polygon.meshLineCount if make_mesh else polygon.jumpCount
 
         # Reserve the necessary space for the data upfront
         builder.reserveFaceAndVertexCount(2 * line_count, 4 * line_count)
