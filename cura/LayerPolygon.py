@@ -120,7 +120,7 @@ class LayerPolygon:
 
         # Index to the points we need to represent the line mesh. This is constructed by generating simple
         # start and end points for each line. For line segment n these are points n and n+1. Row n reads [n n+1]
-        # Then then the indices for the points we don't need are thrown away based on the pre-calculated list.
+        # Then the indices for the points we don't need are thrown away based on the pre-calculated list.
         index_list = (numpy.arange(len(self._types)).reshape((-1, 1)) + numpy.array([[0, 1]])).reshape((-1, 1))[needed_points_list.reshape((-1, 1))]
 
         # The relative values of begin and end indices have already been set in buildCache, so we only need to offset them to the parents offset.
