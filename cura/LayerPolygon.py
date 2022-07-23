@@ -226,10 +226,9 @@ class LayerPolygon:
         normals[:, 1] = 0.0  # We are only interested in 2D normals
 
         # Calculate the edges between points.
-        # The call to numpy.roll shifts the entire array by one so that
-        # we end up subtracting each next point from the current, wrapping
-        # around. This gives us the edges from the next point to the current
-        # point.
+        # The call to numpy.roll shifts the entire array by one
+        # so that we end up subtracting each next point from the current, wrapping around.
+        # This gives us the edges from the next point to the current point.
         normals = numpy.diff(normals, 1, 0)
 
         # Calculate the length of each edge using standard Pythagoras
