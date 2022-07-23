@@ -24,9 +24,12 @@ class LayerPolygon:
     PrimeTowerType = 11
     __number_of_types = 12
 
-    __jump_map = numpy.logical_or(numpy.logical_or(numpy.arange(__number_of_types) == NoneType, numpy.arange(__number_of_types) == MoveCombingType), numpy.arange(__number_of_types) == MoveRetractionType)
+    __jump_map = numpy.logical_or(numpy.logical_or(numpy.arange(__number_of_types) == NoneType,
+                                                   numpy.arange(__number_of_types) == MoveCombingType),
+                                                   numpy.arange(__number_of_types) == MoveRetractionType)
 
-    def __init__(self, extruder: int, line_types: numpy.ndarray, data: numpy.ndarray, line_widths: numpy.ndarray, line_thicknesses: numpy.ndarray, line_feedrates: numpy.ndarray) -> None:
+    def __init__(self, extruder: int, line_types: numpy.ndarray, data: numpy.ndarray,
+                 line_widths: numpy.ndarray, line_thicknesses: numpy.ndarray, line_feedrates: numpy.ndarray) -> None:
         """LayerPolygon, used in ProcessSlicedLayersJob
 
         :param extruder: The position of the extruder
@@ -58,14 +61,16 @@ class LayerPolygon:
         self._mesh_line_count = len(self._types) - self._jump_count
         self._vertex_count = self._mesh_line_count + numpy.sum(self._types[1:] == self._types[:-1])
 
-        # Buffering the colors shouldn't be necessary as it is not 
+        # Buffering the colors shouldn't be necessary as it is not
         # re-used and can save a lot of memory usage.
         self._color_map = LayerPolygon.getColorMap()
         self._colors = self._color_map[self._types]  # type: numpy.ndarray
 
-        # When type is used as index returns true if type == LayerPolygon.InfillType or type == LayerPolygon.SkinType or type == LayerPolygon.SupportInfillType
+        # When type is used as index returns true if type == LayerPolygon.InfillType
+        # or type == LayerPolygon.SkinType
+        # or type == LayerPolygon.SupportInfillType
         # Should be generated in better way, not hardcoded.
-        self._is_infill_or_skin_type_map = numpy.array([0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0], dtype = bool)
+        self._is_infill_or_skin_type_map = numpy.array([0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0], dtype=bool)
 
         self._build_cache_line_mesh_mask = None  # type: Optional[numpy.ndarray]
         self._build_cache_needed_points = None  # type: Optional[numpy.ndarray]
@@ -80,12 +85,14 @@ class LayerPolygon:
         # Only if the type of line segment changes do we need to add an extra vertex to change colors
         self._build_cache_needed_points[1:, 0][:, numpy.newaxis] = self._types[1:] != self._types[:-1]
         # Mark points as unneeded if they are of types we don't want in the line mesh according to the calculated mask
-        numpy.logical_and(self._build_cache_needed_points, self._build_cache_line_mesh_mask, self._build_cache_needed_points )
+        numpy.logical_and(self._build_cache_needed_points, self._build_cache_line_mesh_mask, self._build_cache_needed_points)
 
         self._vertex_begin = 0
         self._vertex_end = cast(int, numpy.sum(self._build_cache_needed_points))
 
-    def build(self, vertex_offset: int, index_offset: int, vertices: numpy.ndarray, colors: numpy.ndarray, line_dimensions: numpy.ndarray, feedrates: numpy.ndarray, extruders: numpy.ndarray, line_types: numpy.ndarray, indices: numpy.ndarray) -> None:
+    def build(self, vertex_offset: int, index_offset: int, vertices: numpy.ndarray,
+              colors: numpy.ndarray, line_dimensions: numpy.ndarray, feedrates: numpy.ndarray,
+              extruders: numpy.ndarray, line_types: numpy.ndarray, indices: numpy.ndarray) -> None:
         """Set all the arrays provided by the function caller, representing the LayerPolygon
 
         The arrays are either by vertex or by indices.
@@ -112,18 +119,18 @@ class LayerPolygon:
         needed_points_list = self._build_cache_needed_points
 
         # Index to the points we need to represent the line mesh. This is constructed by generating simple
-        # start and end points for each line. For line segment n these are points n and n+1. Row n reads [n n+1] 
-        # Then then the indices for the points we don't need are thrown away based on the pre-calculated list. 
-        index_list = ( numpy.arange(len(self._types)).reshape((-1, 1)) + numpy.array([[0, 1]]) ).reshape((-1, 1))[needed_points_list.reshape((-1, 1))]
+        # start and end points for each line. For line segment n these are points n and n+1. Row n reads [n n+1]
+        # Then then the indices for the points we don't need are thrown away based on the pre-calculated list.
+        index_list = (numpy.arange(len(self._types)).reshape((-1, 1)) + numpy.array([[0, 1]])).reshape((-1, 1))[needed_points_list.reshape((-1, 1))]
 
         # The relative values of begin and end indices have already been set in buildCache, so we only need to offset them to the parents offset.
         self._vertex_begin += vertex_offset
         self._vertex_end += vertex_offset
 
-        # Points are picked based on the index list to get the vertices needed. 
+        # Points are picked based on the index list to get the vertices needed.
         vertices[self._vertex_begin:self._vertex_end, :] = self._data[index_list, :]
 
-        # Create an array with colors for each vertex and remove the color data for the points that has been thrown away. 
+        # Create an array with colors for each vertex and remove the color data for the points that has been thrown away.
         colors[self._vertex_begin:self._vertex_end, :] = numpy.tile(self._colors, (1, 2)).reshape((-1, 4))[needed_points_list.ravel()]
 
         # Create an array with line widths and thicknesses for each vertex.
@@ -138,14 +145,15 @@ class LayerPolygon:
         # Convert type per vertex to type per line
         line_types[self._vertex_begin:self._vertex_end] = numpy.tile(self._types, (1, 2)).reshape((-1, 1))[needed_points_list.ravel()][:, 0]
 
-        # The relative values of begin and end indices have already been set in buildCache, so we only need to offset them to the parents offset.
+        # The relative values of begin and end indices have already been set in buildCache,
+        # so we only need to offset them to the parents offset.
         self._index_begin += index_offset
         self._index_end += index_offset
 
-        indices[self._index_begin:self._index_end, :] = numpy.arange(self._index_end-self._index_begin, dtype = numpy.int32).reshape((-1, 1))
+        indices[self._index_begin:self._index_end, :] = numpy.arange(self._index_end-self._index_begin, dtype=numpy.int32).reshape((-1, 1))
         # When the line type changes the index needs to be increased by 2.
         indices[self._index_begin:self._index_end, :] += numpy.cumsum(needed_points_list[line_mesh_mask.ravel(), 0], dtype = numpy.int32).reshape((-1, 1))
-        # Each line segment goes from it's starting point p to p+1, offset by the vertex index. 
+        # Each line segment goes from it's starting point p to p+1, offset by the vertex index.
         # The -1 is to compensate for the necessarily True value of needed_points_list[0,0] which causes an unwanted +1 in cumsum above.
         indices[self._index_begin:self._index_end, :] += numpy.array([self._vertex_begin - 1, self._vertex_begin])
 
@@ -214,7 +222,7 @@ class LayerPolygon:
         """
 
         normals = numpy.copy(self._data)
-        normals[:, 1] = 0.0 # We are only interested in 2D normals
+        normals[:, 1] = 0.0  # We are only interested in 2D normals
 
         # Calculate the edges between points.
         # The call to numpy.roll shifts the entire array by one so that
@@ -245,17 +253,17 @@ class LayerPolygon:
         if cls.__color_map is None:
             theme = cast(Theme, QtApplication.getInstance().getTheme())
             cls.__color_map = numpy.array([
-                theme.getColor("layerview_none").getRgbF(), # NoneType
-                theme.getColor("layerview_inset_0").getRgbF(), # Inset0Type
-                theme.getColor("layerview_inset_x").getRgbF(), # InsetXType
-                theme.getColor("layerview_skin").getRgbF(), # SkinType
-                theme.getColor("layerview_support").getRgbF(), # SupportType
-                theme.getColor("layerview_skirt").getRgbF(), # SkirtType
-                theme.getColor("layerview_infill").getRgbF(), # InfillType
-                theme.getColor("layerview_support_infill").getRgbF(), # SupportInfillType
-                theme.getColor("layerview_move_combing").getRgbF(), # MoveCombingType
-                theme.getColor("layerview_move_retraction").getRgbF(), # MoveRetractionType
-                theme.getColor("layerview_support_interface").getRgbF(),  # SupportInterfaceType
+                theme.getColor("layerview_none").getRgbF(),  # NoneType
+                theme.getColor("layerview_inset_0").getRgbF(),  # Inset0Type
+                theme.getColor("layerview_inset_x").getRgbF(),  # InsetXType
+                theme.getColor("layerview_skin").getRgbF(),  # SkinType
+                theme.getColor("layerview_support").getRgbF(),  # SupportType
+                theme.getColor("layerview_skirt").getRgbF(),  # SkirtType
+                theme.getColor("layerview_infill").getRgbF(),  # InfillType
+                theme.getColor("layerview_support_infill").getRgbF(),  # SupportInfillType
+                theme.getColor("layerview_move_combing").getRgbF(),  # MoveCombingType
+                theme.getColor("layerview_move_retraction").getRgbF(),  # MoveRetractionType
+                theme.getColor("layerview_support_interface").getRgbF(),   # SupportInterfaceType
                 theme.getColor("layerview_prime_tower").getRgbF()   # PrimeTowerType
             ])
 
