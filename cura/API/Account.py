@@ -5,7 +5,7 @@ from datetime import datetime
 import json
 from PyQt6.QtCore import QObject, pyqtSignal, pyqtSlot, pyqtProperty, QTimer, pyqtEnum
 from PyQt6.QtNetwork import QNetworkRequest
-from typing import Any, Callable, Dict, Optional, Set, TYPE_CHECKING
+from typing import Any, Callable, Dict, List, Optional, TYPE_CHECKING
 
 from UM.Logger import Logger
 from UM.Message import Message
@@ -84,7 +84,7 @@ class Account(QObject):
         self._logged_in = False
         self._user_profile: Optional[UserProfile] = None
         self._additional_rights: Dict[str, Any] = {}
-        self._permissions: Set[str] = set()  # Set of account permission keys, e.g. {"digital-factory.print-job.write"}
+        self._permissions: List[str] = []  # List of account permission keys, e.g. ["digital-factory.print-job.write"]
         self._sync_state = SyncState.IDLE
         self._manual_sync_enabled = False
         self._update_packages_enabled = False
@@ -330,9 +330,17 @@ class Account(QObject):
         """A dictionary which can be queried for additional account rights."""
         return self._additional_rights
 
+    permissionsChanged = pyqtSignal()
+    @pyqtProperty("QVariantList", notify = permissionsChanged)
+    def permissions(self) -> List[str]:
+        """
+        The permission keys that the user has in his account.
+        """
+        return self._permissions
+
     def _updatePermissions(self) -> None:
         """
-        Update the set of permissions that the user has.
+        Update the list of permissions that the user has.
         """
         def callback(reply: "QNetworkReply"):
             status_code = reply.attribute(QNetworkRequest.Attribute.HttpStatusCodeAttribute)
@@ -353,7 +361,10 @@ class Account(QObject):
                 return
 
             if "data" in reply_data and "permissions" in reply_data["data"]:
-                self._permissions = set(reply_data["data"]["permissions"])
+                permissions = sorted(reply_data["data"]["permissions"])
+                if permissions != self._permissions:
+                    self._permissions = permissions
+                    self.permissionsChanged.emit()
 
         def error_callback(reply: "QNetworkReply", error: "QNetworkReply.NetworkError"):
             Logger.error(f"Request for user permissions list failed. Network error: {error}")
