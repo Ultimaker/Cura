@@ -204,14 +204,14 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
         Whether this user can change things about print jobs made by other
         people.
         """
-        return False
+        return True
 
     @pyqtProperty(bool, constant = True)
     def canWriteOwnPrintJobs(self) -> bool:
         """
         Whether this user can change things about print jobs made by themself.
         """
-        return False
+        return True
 
     @pyqtSlot(name="openPrintJobControlPanel")
     def openPrintJobControlPanel(self) -> None:

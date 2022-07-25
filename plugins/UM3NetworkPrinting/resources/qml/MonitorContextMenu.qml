@@ -62,40 +62,65 @@ Item
                     }
                 }
 
-                PrintJobContextMenuItem {
-                    onClicked: {
+                PrintJobContextMenuItem
+                {
+                    onClicked:
+                    {
                         deleteConfirmationDialog.visible = true;
                         popUp.close();
                     }
                     text: catalog.i18nc("@label", "Delete");
-                    visible: {
-                        if (!printJob) {
+                    visible:
+                    {
+                        if(!printJob)
+                        {
                             return false;
+                        }
+                        if(printJob.isMine)
+                        {
+                            if(!OutputDevice.canWriteOwnPrintJobs)
+                            {
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            if(!OutputDevice.canWriteOthersPrintJobs)
+                            {
+                                return false;
+                            }
                         }
                         var states = ["queued", "error", "sent_to_printer"];
                         return states.indexOf(printJob.state) !== -1;
                     }
                 }
 
-                PrintJobContextMenuItem {
+                PrintJobContextMenuItem
+                {
                     enabled: visible && !(printJob.state == "pausing" || printJob.state == "resuming");
-                    onClicked: {
-                        if (printJob.state == "paused") {
+                    onClicked:
+                    {
+                        if (printJob.state == "paused")
+                        {
                             printJob.setState("resume");
                             popUp.close();
                             return;
                         }
-                        if (printJob.state == "printing") {
+                        if (printJob.state == "printing")
+                        {
                             printJob.setState("pause");
                             popUp.close();
                             return;
                         }
                     }
-                    text: {
-                        if (!printJob) {
+                    text:
+                    {
+                        if(!printJob)
+                        {
                             return "";
                         }
-                        switch(printJob.state) {
+                        switch(printJob.state)
+                        {
                             case "paused":
                                 return catalog.i18nc("@label", "Resume");
                             case "pausing":
@@ -106,25 +131,59 @@ Item
                                 catalog.i18nc("@label", "Pause");
                         }
                     }
-                    visible: {
-                        if (!printJob) {
+                    visible:
+                    {
+                        if(!printJob)
+                        {
                             return false;
+                        }
+                        if(printJob.isMine)
+                        {
+                            if(!OutputDevice.canWriteOwnPrintJobs)
+                            {
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            if(!OutputDevice.canWriteOthersPrintJobs)
+                            {
+                                return false;
+                            }
                         }
                         var states = ["printing", "pausing", "paused", "resuming"];
                         return states.indexOf(printJob.state) !== -1;
                     }
                 }
 
-                PrintJobContextMenuItem {
+                PrintJobContextMenuItem
+                {
                     enabled: visible && printJob.state !== "aborting";
-                    onClicked: {
+                    onClicked:
+                    {
                         abortConfirmationDialog.visible = true;
                         popUp.close();
                     }
                     text: printJob && printJob.state == "aborting" ? catalog.i18nc("@label", "Aborting...") : catalog.i18nc("@label", "Abort");
-                    visible: {
-                        if (!printJob) {
+                    visible:
+                    {
+                        if (!printJob)
+                        {
                             return false;
+                        }
+                        if(printJob.isMine)
+                        {
+                            if(!OutputDevice.canWriteOwnPrintJobs)
+                            {
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            if(!OutputDevice.canWriteOthersPrintJobs)
+                            {
+                                return false;
+                            }
                         }
                         var states = ["pre_print", "printing", "pausing", "paused", "resuming"];
                         return states.indexOf(printJob.state) !== -1;
