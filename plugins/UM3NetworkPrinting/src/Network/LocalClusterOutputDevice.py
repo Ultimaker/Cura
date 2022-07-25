@@ -96,6 +96,13 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
     def forceSendJob(self, print_job_uuid: str) -> None:
         self._getApiClient().forcePrintJob(print_job_uuid)
 
+    @pyqtProperty(bool, constant = True)
+    def supportsPrintJobQueue(self) -> bool:
+        """
+        Whether this printer knows about queueing print jobs.
+        """
+        return True  # This API always supports print job queueing.
+
     def setJobState(self, print_job_uuid: str, action: str) -> None:
         """Set the remote print job state.
 
