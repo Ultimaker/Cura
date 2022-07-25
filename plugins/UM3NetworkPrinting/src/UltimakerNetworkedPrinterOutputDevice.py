@@ -196,7 +196,7 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
         """
         Whether this user can read the list of print jobs and their properties.
         """
-        return True  # On LAN, the user can always read it.
+        return True
 
     @pyqtProperty(bool, constant = True)
     def canWriteOthersPrintJobs(self) -> bool:
@@ -204,14 +204,14 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
         Whether this user can change things about print jobs made by other
         people.
         """
-        return True  # On LAN, the user can always change this.
+        return False
 
     @pyqtProperty(bool, constant = True)
     def canWriteOwnPrintJobs(self) -> bool:
         """
         Whether this user can change things about print jobs made by themself.
         """
-        return True  # On LAN, the user can always change this.
+        return False
 
     @pyqtSlot(name="openPrintJobControlPanel")
     def openPrintJobControlPanel(self) -> None:

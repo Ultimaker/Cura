@@ -54,7 +54,7 @@ Item
                     text: catalog.i18nc("@label", "Move to top");
                     visible: {
                         if (printJob && (printJob.state == "queued" || printJob.state == "error") && !isAssigned(printJob)) {
-                            if (OutputDevice && OutputDevice.queuedPrintJobs[0]) {
+                            if (OutputDevice && OutputDevice.queuedPrintJobs[0] && OutputDevice.canWriteOthersPrintJobs) {
                                 return OutputDevice.queuedPrintJobs[0].key != printJob.key;
                             }
                         }
