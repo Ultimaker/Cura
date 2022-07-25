@@ -1,19 +1,25 @@
-# Copyright (c) 2021 Ultimaker B.V.
+# Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import enum
 from datetime import datetime
+import json
 from PyQt6.QtCore import QObject, pyqtSignal, pyqtSlot, pyqtProperty, QTimer, pyqtEnum
-from typing import Any, Optional, Dict, TYPE_CHECKING, Callable
+from PyQt6.QtNetwork import QNetworkRequest
+from typing import Any, Callable, Dict, Optional, Set, TYPE_CHECKING
 
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.i18n import i18nCatalog
+from UM.TaskManagement.HttpRequestManager import HttpRequestManager
+from UM.TaskManagement.HttpRequestScope import JsonDecoratorScope
 from cura.OAuth2.AuthorizationService import AuthorizationService
 from cura.OAuth2.Models import OAuth2Settings, UserProfile
 from cura.UltimakerCloud import UltimakerCloudConstants
+from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope
 
 if TYPE_CHECKING:
     from cura.CuraApplication import CuraApplication
+    from PyQt6.QtNetwork import QNetworkReply
 
 i18n_catalog = i18nCatalog("cura")
 
@@ -78,6 +84,7 @@ class Account(QObject):
         self._logged_in = False
         self._user_profile: Optional[UserProfile] = None
         self._additional_rights: Dict[str, Any] = {}
+        self._permissions: Set[str] = set()  # Set of account permission keys, e.g. {"digital-factory.print-job.write"}
         self._sync_state = SyncState.IDLE
         self._manual_sync_enabled = False
         self._update_packages_enabled = False
@@ -109,6 +116,7 @@ class Account(QObject):
 
         self._sync_services: Dict[str, int] = {}
         """contains entries "service_name" : SyncState"""
+        self.syncRequested.connect(self._updatePermissions)
 
     def initialize(self) -> None:
         self._authorization_service.initialize(self._application.getPreferences())
@@ -321,3 +329,40 @@ class Account(QObject):
     def additionalRights(self) -> Dict[str, Any]:
         """A dictionary which can be queried for additional account rights."""
         return self._additional_rights
+
+    def _updatePermissions(self) -> None:
+        """
+        Update the set of permissions that the user has.
+        """
+        def callback(reply: "QNetworkReply"):
+            status_code = reply.attribute(QNetworkRequest.Attribute.HttpStatusCodeAttribute)
+            if status_code is None:
+                Logger.error("Server did not respond to request to get list of permissions.")
+                return
+            if status_code >= 300:
+                Logger.error(f"Request to get list of permission resulted in HTTP error {status_code}")
+                return
+
+            try:
+                reply_data = json.loads(bytes(reply.readAll()).decode("UTF-8"))
+            except (UnicodeDecodeError, json.JSONDecodeError, ValueError) as e:
+                Logger.logException("e", f"Could not parse response to permission list request: {e}")
+                return
+            if "errors" in reply_data:
+                Logger.error(f"Request to get list of permission resulted in error response: {reply_data['errors']}")
+                return
+
+            if "data" in reply_data and "permissions" in reply_data["data"]:
+                self._permissions = set(reply_data["data"]["permissions"])
+
+        def error_callback(reply: "QNetworkReply", error: "QNetworkReply.NetworkError"):
+            Logger.error(f"Request for user permissions list failed. Network error: {error}")
+
+        HttpRequestManager.getInstance().get(
+            url = f"{self._oauth_root}/users/permissions",
+            scope = JsonDecoratorScope(UltimakerCloudScope(self._application)),
+            callback = callback,
+            error_callback = error_callback,
+            timeout = 10
+        )
+
