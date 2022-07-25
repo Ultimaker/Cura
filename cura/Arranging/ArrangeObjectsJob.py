@@ -35,7 +35,7 @@ class ArrangeObjectsJob(Job):
             Logger.logException("e", "Unable to arrange the objects on the buildplate. The arrange algorithm has crashed.")
 
         status_message.hide()
-        if found_solution_for_all is not None and not found_solution_for_all:
+        if not found_solution_for_all and found_solution_for_all is not None:
             no_full_solution_message = Message(
                     i18n_catalog.i18nc("@info:status",
                                        "Unable to find a location within the build volume for all objects"),
