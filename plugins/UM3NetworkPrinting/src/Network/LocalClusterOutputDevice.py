@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import os
 from typing import Optional, Dict, List, Callable, Any
@@ -102,6 +102,28 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         Whether this printer knows about queueing print jobs.
         """
         return True  # This API always supports print job queueing.
+
+    @pyqtProperty(bool, constant = True)
+    def canReadPrintJobs(self) -> bool:
+        """
+        Whether this user can read the list of print jobs and their properties.
+        """
+        return False  # On LAN, the user can always read it.
+
+    @pyqtProperty(bool, constant = True)
+    def canWriteOthersPrintJobs(self) -> bool:
+        """
+        Whether this user can change things about print jobs made by other
+        people.
+        """
+        return True  # On LAN, the user can always change this.
+
+    @pyqtProperty(bool, constant = True)
+    def canWriteOwnPrintJobs(self) -> bool:
+        """
+        Whether this user can change things about print jobs made by themself.
+        """
+        return True  # On LAN, the user can always change this.
 
     def setJobState(self, print_job_uuid: str, action: str) -> None:
         """Set the remote print job state.

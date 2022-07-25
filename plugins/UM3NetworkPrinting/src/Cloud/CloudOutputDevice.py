@@ -1,4 +1,4 @@
-# Copyright (c) 2021 Ultimaker B.V.
+# Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from time import time
@@ -96,6 +96,8 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
         # Trigger the printersChanged signal when the private signal is triggered.
         self.printersChanged.connect(self._cloudClusterPrintersChanged)
+        # Trigger the permissionsChanged signal when the account's permissions change.
+        self._account.permissionsChanged.connect(self.permissionsChanged)
 
         # Keep server string of the last generated time to avoid updating models more than once for the same response
         self._received_printers = None  # type: Optional[List[ClusterPrinterStatus]]
@@ -339,6 +341,30 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
     @pyqtSlot(name="openPrinterControlPanel")
     def openPrinterControlPanel(self) -> None:
         QDesktopServices.openUrl(QUrl(self.clusterCloudUrl + "?utm_source=cura&utm_medium=software&utm_campaign=monitor-manage-printer"))
+
+    permissionsChanged = pyqtSignal()
+
+    @pyqtProperty(bool, notify = permissionsChanged)
+    def canReadPrintJobs(self) -> bool:
+        """
+        Whether this user can read the list of print jobs and their properties.
+        """
+        return "digital-factory.print-job.read" in self._account.permissions
+
+    @pyqtProperty(bool, notify = permissionsChanged)
+    def canWriteOthersPrintJobs(self) -> bool:
+        """
+        Whether this user can change things about print jobs made by other
+        people.
+        """
+        return "digital-factory.print-job.write" in self._account.permissions
+
+    @pyqtProperty(bool, notify = permissionsChanged)
+    def canWriteOwnPrintJobs(self) -> bool:
+        """
+        Whether this user can change things about print jobs made by themself.
+        """
+        return "digital-factory.print-job.write.own" in self._account.permissions
 
     @property
     def clusterData(self) -> CloudClusterResponse:
