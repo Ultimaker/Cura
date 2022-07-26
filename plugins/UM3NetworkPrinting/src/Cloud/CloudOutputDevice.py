@@ -366,6 +366,13 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         """
         return "digital-factory.print-job.write.own" in self._account.permissions
 
+    @pyqtProperty(bool, constant = True)
+    def canReadPrinterDetails(self) -> bool:
+        """
+        Whether this user can read the status of the printer.
+        """
+        return "digital-factory.printer.read" in self._account.permissions
+
     @property
     def clusterData(self) -> CloudClusterResponse:
         """Gets the cluster response from which this device was created."""

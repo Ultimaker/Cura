@@ -213,6 +213,13 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
         """
         return True
 
+    @pyqtProperty(bool, constant = True)
+    def canReadPrinterDetails(self) -> bool:
+        """
+        Whether this user can read the status of the printer.
+        """
+        return True
+
     @pyqtSlot(name="openPrintJobControlPanel")
     def openPrintJobControlPanel(self) -> None:
         raise NotImplementedError("openPrintJobControlPanel must be implemented")
