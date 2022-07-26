@@ -88,7 +88,15 @@ UM.Window
                         {
                             if(Cura.API.account.isLoggedIn)
                             {
-                                swipeView.currentIndex += 2; //Skip sign in page.
+                                if(Cura.API.account.permissions.includes("digital-factory.printer.write"))
+                                {
+                                    swipeView.currentIndex += 2; //Skip sign in page. Continue to sync via cloud.
+                                }
+                                else
+                                {
+                                    //Logged in, but no permissions to start syncing. Direct them to USB.
+                                    swipeView.currentIndex = removableDriveSyncPage.SwipeView.index;
+                                }
                             }
                             else
                             {
@@ -112,7 +120,15 @@ UM.Window
                 {
                     if(is_logged_in && signinPage.SwipeView.isCurrentItem)
                     {
-                        swipeView.currentIndex += 1;
+                        if(Cura.API.account.permissions.includes("digital-factory.printer.write"))
+                        {
+                            swipeView.currentIndex += 1;
+                        }
+                        else
+                        {
+                            //Logged in, but no permissions to start syncing. Direct them to USB.
+                            swipeView.currentIndex = removableDriveSyncPage.SwipeView.index;
+                        }
                     }
                 }
             }
