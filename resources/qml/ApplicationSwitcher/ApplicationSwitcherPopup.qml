@@ -33,7 +33,6 @@ Popup
                     thumbnail: UM.Theme.getIcon("PrinterTriple", "high"),
                     description: catalog.i18nc("@tooltip:button", "Monitor printers in Ultimaker Digital Factory."),
                     link: "https://digitalfactory.ultimaker.com/app/printers?utm_source=cura&utm_medium=software&utm_campaign=switcher-digital-factory-printers",
-                    DFAccessRequired: true,
                     permissionsRequired: ["digital-factory.printer.read"]
                 },
                 {
@@ -41,7 +40,6 @@ Popup
                     thumbnail: UM.Theme.getIcon("Library", "high"),
                     description: catalog.i18nc("@tooltip:button", "Create print projects in Digital Library."),
                     link: "https://digitalfactory.ultimaker.com/app/library?utm_source=cura&utm_medium=software&utm_campaign=switcher-library",
-                    DFAccessRequired: true,
                     permissionsRequired: ["digital-factory.project.read.shared"]
                 },
                 {
@@ -49,7 +47,6 @@ Popup
                     thumbnail: UM.Theme.getIcon("FoodBeverages"),
                     description: catalog.i18nc("@tooltip:button", "Monitor print jobs and reprint from your print history."),
                     link: "https://digitalfactory.ultimaker.com/app/print-jobs?utm_source=cura&utm_medium=software&utm_campaign=switcher-digital-factory-printjobs",
-                    DFAccessRequired: true,
                     permissionsRequired: ["digital-factory.print-job.read"]
                 },
                 {
@@ -57,7 +54,6 @@ Popup
                     thumbnail: UM.Theme.getIcon("Shop", "high"),
                     description: catalog.i18nc("@tooltip:button", "Extend Ultimaker Cura with plugins and material profiles."),
                     link: "https://marketplace.ultimaker.com/?utm_source=cura&utm_medium=software&utm_campaign=switcher-marketplace-materials",
-                    DFAccessRequired: false,
                     permissionsRequired: []
                 },
                 {
@@ -65,7 +61,6 @@ Popup
                     thumbnail: UM.Theme.getIcon("Knowledge"),
                     description: catalog.i18nc("@tooltip:button", "Become a 3D printing expert with Ultimaker e-learning."),
                     link: "https://academy.ultimaker.com/?utm_source=cura&utm_medium=software&utm_campaign=switcher-academy",
-                    DFAccessRequired: false,
                     permissionsRequired: []
                 },
                 {
@@ -73,7 +68,6 @@ Popup
                     thumbnail: UM.Theme.getIcon("Help", "high"),
                     description: catalog.i18nc("@tooltip:button", "Learn how to get started with Ultimaker Cura."),
                     link: "https://support.ultimaker.com/?utm_source=cura&utm_medium=software&utm_campaign=switcher-support",
-                    DFAccessRequired: false,
                     permissionsRequired: []
                 },
                 {
@@ -81,7 +75,6 @@ Popup
                     thumbnail: UM.Theme.getIcon("Speak", "high"),
                     description: catalog.i18nc("@tooltip:button", "Consult the Ultimaker Community."),
                     link: "https://community.ultimaker.com/?utm_source=cura&utm_medium=software&utm_campaign=switcher-community",
-                    DFAccessRequired: false,
                     permissionsRequired: []
                 },
                 {
@@ -89,7 +82,6 @@ Popup
                     thumbnail: UM.Theme.getIcon("Bug", "high"),
                     description: catalog.i18nc("@tooltip:button", "Let developers know that something is going wrong."),
                     link: "https://github.com/Ultimaker/Cura/issues/new/choose",
-                    DFAccessRequired: false,
                     permissionsRequired: []
                 },
                 {
@@ -97,7 +89,6 @@ Popup
                     thumbnail: UM.Theme.getIcon("Browser"),
                     description: catalog.i18nc("@tooltip:button", "Visit the Ultimaker website."),
                     link: "https://ultimaker.com/?utm_source=cura&utm_medium=software&utm_campaign=switcher-umwebsite",
-                    DFAccessRequired: false,
                     permissionsRequired: []
                 }
             ]
@@ -110,10 +101,6 @@ Popup
                 isExternalLink: true
                 visible:
                 {
-                    if(modelData.DFAccessRequired && (!Cura.API.account.isLoggedIn || !Cura.API.account.additionalRights["df_access"]))
-                    {
-                        return false;
-                    }
                     try
                     {
                         modelData.permissionsRequired.forEach(function(permission)
