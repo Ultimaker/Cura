@@ -93,18 +93,19 @@ def test_sync_success():
     service1 = "test_service1"
     service2 = "test_service2"
 
-    account.setSyncState(service1, SyncState.SYNCING)
-    assert account.syncState == SyncState.SYNCING
+    with patch("UM.TaskManagement.HttpRequestManager.HttpRequestManager.getInstance"):  # Don't want triggers for account information to actually make HTTP requests.
+        account.setSyncState(service1, SyncState.SYNCING)
+        assert account.syncState == SyncState.SYNCING
 
-    account.setSyncState(service2, SyncState.SYNCING)
-    assert account.syncState == SyncState.SYNCING
+        account.setSyncState(service2, SyncState.SYNCING)
+        assert account.syncState == SyncState.SYNCING
 
-    account.setSyncState(service1, SyncState.SUCCESS)
-    # service2 still syncing
-    assert account.syncState == SyncState.SYNCING
+        account.setSyncState(service1, SyncState.SUCCESS)
+        # service2 still syncing
+        assert account.syncState == SyncState.SYNCING
 
-    account.setSyncState(service2, SyncState.SUCCESS)
-    assert account.syncState == SyncState.SUCCESS
+        account.setSyncState(service2, SyncState.SUCCESS)
+        assert account.syncState == SyncState.SUCCESS
 
 
 def test_sync_update_action():
@@ -114,23 +115,24 @@ def test_sync_update_action():
 
     mockUpdateCallback = MagicMock()
 
-    account.setSyncState(service1, SyncState.SYNCING)
-    assert account.syncState == SyncState.SYNCING
+    with patch("UM.TaskManagement.HttpRequestManager.HttpRequestManager.getInstance"):  # Don't want triggers for account information to actually make HTTP requests.
+        account.setSyncState(service1, SyncState.SYNCING)
+        assert account.syncState == SyncState.SYNCING
 
-    account.setUpdatePackagesAction(mockUpdateCallback)
-    account.onUpdatePackagesClicked()
-    mockUpdateCallback.assert_called_once_with()
-    account.setSyncState(service1, SyncState.SUCCESS)
+        account.setUpdatePackagesAction(mockUpdateCallback)
+        account.onUpdatePackagesClicked()
+        mockUpdateCallback.assert_called_once_with()
+        account.setSyncState(service1, SyncState.SUCCESS)
 
-    account.sync()  # starting a new sync resets the update action to None
+        account.sync()  # starting a new sync resets the update action to None
 
-    account.setSyncState(service1, SyncState.SYNCING)
-    assert account.syncState == SyncState.SYNCING
+        account.setSyncState(service1, SyncState.SYNCING)
+        assert account.syncState == SyncState.SYNCING
 
-    account.onUpdatePackagesClicked()  # Should not be connected to an action anymore
-    mockUpdateCallback.assert_called_once_with()  # No additional calls
-    assert account.updatePackagesEnabled is False
-    account.setSyncState(service1, SyncState.SUCCESS)
+        account.onUpdatePackagesClicked()  # Should not be connected to an action anymore
+        mockUpdateCallback.assert_called_once_with()  # No additional calls
+        assert account.updatePackagesEnabled is False
+        account.setSyncState(service1, SyncState.SUCCESS)
 
 
 
