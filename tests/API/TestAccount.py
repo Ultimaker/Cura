@@ -1,3 +1,6 @@
+# Copyright (c) 2022 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -26,7 +29,8 @@ def test_login():
     mocked_auth_service.startAuthorizationFlow.assert_called_once_with(False)
 
     # Fake a successful login
-    account._onLoginStateChanged(True)
+    with patch("UM.TaskManagement.HttpRequestManager.HttpRequestManager.getInstance"):  # Don't want triggers for account information to actually make HTTP requests.
+        account._onLoginStateChanged(True)
 
     # Attempting to log in again shouldn't change anything.
     account.login()
@@ -59,7 +63,8 @@ def test_logout():
     assert not account.isLoggedIn
 
     # Pretend the stage changed
-    account._onLoginStateChanged(True)
+    with patch("UM.TaskManagement.HttpRequestManager.HttpRequestManager.getInstance"):  # Don't want triggers for account information to actually make HTTP requests.
+        account._onLoginStateChanged(True)
     assert account.isLoggedIn
 
     account.logout()
@@ -72,12 +77,14 @@ def test_errorLoginState(application):
     account._authorization_service = mocked_auth_service
     account.loginStateChanged = MagicMock()
 
-    account._onLoginStateChanged(True, "BLARG!")
+    with patch("UM.TaskManagement.HttpRequestManager.HttpRequestManager.getInstance"):  # Don't want triggers for account information to actually make HTTP requests.
+        account._onLoginStateChanged(True, "BLARG!")
     # Even though we said that the login worked, it had an error message, so the login failed.
     account.loginStateChanged.emit.called_with(False)
 
-    account._onLoginStateChanged(True)
-    account._onLoginStateChanged(False, "OMGZOMG!")
+    with patch("UM.TaskManagement.HttpRequestManager.HttpRequestManager.getInstance"):
+        account._onLoginStateChanged(True)
+        account._onLoginStateChanged(False, "OMGZOMG!")
     account.loginStateChanged.emit.called_with(False)
 
 def test_sync_success():
