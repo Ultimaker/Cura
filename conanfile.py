@@ -209,9 +209,6 @@ class CuraConan(ConanFile):
                 short_version = f"'{cura_version.major}.{cura_version.minor}.{cura_version.patch}'",
             ))
 
-    def source(self):
-        self._generate_cura_version(Path(self.source_folder, "cura"))
-
     def configure(self):
         self.options["arcus"].shared = True
         self.options["savitar"].shared = True
@@ -238,6 +235,8 @@ class CuraConan(ConanFile):
     def generate(self):
         vr = VirtualRunEnv(self)
         vr.generate()
+
+        self._generate_cura_version(Path(self.source_folder, "cura"))
 
         if self.options.devtools:
             entitlements_file = "'{}'".format(Path(self.source_folder, "packaging", "dmg", "cura.entitlements"))
