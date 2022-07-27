@@ -38,6 +38,8 @@ class PrintInformation(QObject):
 
         self.initializeCuraMessagePrintTimeProperties()
 
+        self._slice_uuid: Optional[str] = None
+
         # Indexed by build plate number
         self._material_lengths = {}  # type: Dict[int, List[float]]
         self._material_weights = {}  # type: Dict[int, List[float]]
@@ -131,6 +133,14 @@ class PrintInformation(QObject):
             self._pre_sliced = pre_sliced
             self._updateJobName()
             self.preSlicedChanged.emit()
+
+    @property
+    def slice_uuid(self) -> Optional[str]:
+        return self._slice_uuid
+
+    @slice_uuid.setter
+    def slice_uuid(self, value: Optional[str]) -> None:
+        self._slice_uuid = value
 
     @pyqtProperty(QObject, notify = currentPrintTimeChanged)
     def currentPrintTime(self) -> Duration:
