@@ -224,7 +224,7 @@
             "value": true
         },
         "support_infill_rate": {
-            "value": "80 if gradual_support_infill_steps != 0 else 15"
+            "value": "0 if support_structure == 'tree' else 80 if gradual_support_infill_steps != 0 else 15"
         },
         "gradual_support_infill_steps": {
             "value": "2 if support_interface_enable else 0"
