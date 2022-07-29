@@ -133,6 +133,7 @@ class SliceInfo(QObject, Extension):
             data["is_logged_in"] = self._application.getCuraAPI().account.isLoggedIn
             data["organization_id"] = org_id if org_id else None
             data["subscriptions"] = user_profile.get("subscriptions", []) if user_profile else []
+            data["slice_uuid"] = print_information.slice_uuid
 
             active_mode = self._application.getPreferences().getValue("cura/active_mode")
             if active_mode == 0:

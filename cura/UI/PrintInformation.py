@@ -38,6 +38,8 @@ class PrintInformation(QObject):
 
         self.initializeCuraMessagePrintTimeProperties()
 
+        self.slice_uuid: Optional[str] = None
+
         # Indexed by build plate number
         self._material_lengths = {}  # type: Dict[int, List[float]]
         self._material_weights = {}  # type: Dict[int, List[float]]
