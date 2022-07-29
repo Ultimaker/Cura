@@ -1,2 +1,2 @@
-conan
+conan!=1.51.0
 sip==6.5.1
