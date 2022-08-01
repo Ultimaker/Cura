@@ -23,13 +23,14 @@ Item
     //So compute here the visibility of the menu items, so that we can use it for the visibility of the button.
     property bool sendToTopVisible:
     {
-        if (printJob && (printJob.state == "queued" || printJob.state == "error") && !isAssigned(printJob)) {
+        if (printJob && printJob.state in ("queued",  "error") && !isAssigned(printJob)) {
             if (OutputDevice && OutputDevice.queuedPrintJobs[0] && OutputDevice.canWriteOthersPrintJobs) {
                 return OutputDevice.queuedPrintJobs[0].key != printJob.key;
             }
         }
         return false;
     }
+    
     property bool deleteVisible:
     {
         if(!printJob)
@@ -53,6 +54,7 @@ Item
         var states = ["queued", "error", "sent_to_printer"];
         return states.indexOf(printJob.state) !== -1;
     }
+    
     property bool pauseVisible:
     {
         if(!printJob)
@@ -99,6 +101,7 @@ Item
         var states = ["pre_print", "printing", "pausing", "paused", "resuming"];
         return states.indexOf(printJob.state) !== -1;
     }
+
     property bool hasItems: sendToTopVisible || deleteVisible || pauseVisible || abortVisible
 
     GenericPopUp
