@@ -7,6 +7,7 @@ from PyQt6.QtCore import QObject, pyqtSignal, pyqtSlot, pyqtProperty, QTimer, py
 from PyQt6.QtNetwork import QNetworkRequest
 from typing import Any, Callable, Dict, List, Optional, TYPE_CHECKING
 
+from UM.Decorators import deprecated
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.i18n import i18nCatalog
@@ -319,12 +320,14 @@ class Account(QObject):
 
         self._authorization_service.deleteAuthData()
 
+    @deprecated("Get permissions from the 'permissions' property", since = "5.2.0")
     def updateAdditionalRight(self, **kwargs) -> None:
         """Update the additional rights of the account.
         The argument(s) are the rights that need to be set"""
         self._additional_rights.update(kwargs)
         self.additionalRightsChanged.emit(self._additional_rights)
 
+    @deprecated("Get permissions from the 'permissions' property", since = "5.2.0")
     @pyqtProperty("QVariantMap", notify = additionalRightsChanged)
     def additionalRights(self) -> Dict[str, Any]:
         """A dictionary which can be queried for additional account rights."""
