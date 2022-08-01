@@ -71,8 +71,6 @@ class DigitalFactoryApiClient:
                 has_access = response.library_max_private_projects == -1 or response.library_max_private_projects > 0
                 callback(has_access)
                 self._library_max_private_projects = response.library_max_private_projects
-                # update the account with the additional user rights
-                self._account.updateAdditionalRight(df_access = has_access)
             else:
                 Logger.warning(f"Digital Factory: Response is not a feature budget, likely an error: {str(response)}")
                 callback(False)

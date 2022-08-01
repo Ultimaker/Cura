@@ -206,7 +206,11 @@ Item
         onClicked: enabled ? contextMenu.switchPopupState() : {}
         visible:
         {
-            if (!printJob)
+            if(!printJob)
+            {
+                return false;
+            }
+            if(!contextMenu.hasItems)
             {
                 return false;
             }
