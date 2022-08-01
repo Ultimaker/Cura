@@ -78,6 +78,7 @@ Item
         var states = ["printing", "pausing", "paused", "resuming"];
         return states.indexOf(printJob.state) !== -1;
     }
+
     property bool abortVisible:
     {
         if(!printJob)
