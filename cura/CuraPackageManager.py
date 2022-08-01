@@ -55,8 +55,14 @@ class CuraPackageManager(PackageManager):
     def initialize(self) -> None:
         self._installation_dirs_dict["materials"] = Resources.getStoragePath(CuraApplication.ResourceTypes.MaterialInstanceContainer)
         self._installation_dirs_dict["qualities"] = Resources.getStoragePath(CuraApplication.ResourceTypes.QualityInstanceContainer)
-        self._installation_dirs_dict["intents"] = Resources.getStoragePath(CuraApplication.ResourceTypes.IntentInstanceContainer)
         self._installation_dirs_dict["variants"] = Resources.getStoragePath(CuraApplication.ResourceTypes.VariantInstanceContainer)
+
+        # Due to a bug in Cura 5.1.0 we needed to change the directory structure of the curapackage on the server side (See SD-3871).
+        # Although the material intent profiles will be installed in the `intent` folder, the curapackage from the server side will
+        # have an `intents` folder. For completeness, we will look in both locations of in the curapackage and map them both to the
+        # `intent` folder.
+        self._installation_dirs_dict["intents"] = Resources.getStoragePath(CuraApplication.ResourceTypes.IntentInstanceContainer)
+        self._installation_dirs_dict["intent"] = Resources.getStoragePath(CuraApplication.ResourceTypes.IntentInstanceContainer)
 
         super().initialize()
 
