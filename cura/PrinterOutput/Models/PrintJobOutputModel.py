@@ -92,6 +92,11 @@ class PrintJobOutputModel(QObject):
     def isMine(self) -> bool:
         """
         Returns whether this print job was sent by the currently logged in user.
+
+        This checks the owner of the print job with the owner of the currently
+        logged in account. Both of these are human-readable account names which
+        may be duplicate. In practice the harm here is limited, but it's the
+        best we can do with the information available to the API.
         """
         return self._owner == CuraApplication.getInstance().getCuraAPI().account.userName
 
