@@ -45,16 +45,12 @@ class MachineErrorChecker(QObject):
 
         self._start_time = 0.  # measure checking time
 
-        # This timer delays the starting of error check so we can react less frequently if the user is frequently
-        # changing settings.
-        self._error_check_timer = QTimer(self)
-        self._error_check_timer.setInterval(100)
-        self._error_check_timer.setSingleShot(True)
+        self._setCheckTimer()
 
         self._keys_to_check = set()  # type: Set[str]
 
         self._num_keys_to_check_per_update = 10
-
+    
     def initialize(self) -> None:
         self._error_check_timer.timeout.connect(self._rescheduleCheck)
 
@@ -65,6 +61,18 @@ class MachineErrorChecker(QObject):
         self._machine_manager.globalContainerChanged.connect(self.startErrorCheck)
 
         self._onMachineChanged()
+
+    def _setCheckTimer(self) -> None:
+        """A QTimer to regulate error check frequency
+
+        This timer delays the starting of error check
+        so we can react less frequently if the user is frequently
+        changing settings.
+        """
+
+        self._error_check_timer = QTimer(self)
+        self._error_check_timer.setInterval(100)
+        self._error_check_timer.setSingleShot(True)
 
     def _onMachineChanged(self) -> None:
         if self._global_stack:
