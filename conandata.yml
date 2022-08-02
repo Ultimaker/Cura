@@ -14,7 +14,7 @@
     requirements:
         - "pyarcus/(latest)@ultimaker/testing"
         - "curaengine/(latest)@ultimaker/testing"
-        - "savitar/5.1.0"
+        - "pysavitar/(latest)@ultimaker/testing"
         - "pynest2d/(latest)@ultimaker/testing"
         - "uranium/(latest)@ultimaker/testing"
         - "fdm_materials/(latest)@ultimaker/testing"
@@ -106,7 +106,7 @@
     requirements:
         - "pyarcus/(latest)@ultimaker/testing"
         - "curaengine/(latest)@ultimaker/testing"
-        - "savitar/5.1.0"
+        - "pysavitar/(latest)@ultimaker/testing"
         - "pynest2d/(latest)@ultimaker/testing"
         - "uranium/(latest)@ultimaker/testing"
         - "fdm_materials/(latest)@ultimaker/testing"
@@ -194,7 +194,6 @@
             Windows: "./icons/Cura.ico"
             Macos: "./icons/cura.icns"
             Linux: "./icons/cura-128.png"
-
 "5.1.0":
     requirements:
         - "arcus/5.1.0"
