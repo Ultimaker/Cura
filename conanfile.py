@@ -265,6 +265,9 @@ class CuraConan(ConanFile):
         self.cpp.package.bindirs = ["bin"]
         self.cpp.package.resdirs = ["resources", "plugins", "packaging", "pip_requirements"]  # pip_requirements should be the last item in the list
 
+    def build(self):
+        pass
+
     def generate(self):
         cura_run_envvars = self._cura_run_env.vars(self, scope = "run")
         ext = ".ps1" if self.settings.os == "Windows" else ".sh"
