@@ -43,7 +43,7 @@ class MachineErrorChecker(QObject):
         self._application = cura.CuraApplication.CuraApplication.getInstance()
         self._machine_manager = self._application.getMachineManager()
 
-        self._start_time = 0.  # measure checking time
+        self._start_time = time.time()  # measure checking time
 
         # This timer delays the starting of error check so we can react less frequently if the user is frequently
         # changing settings.
