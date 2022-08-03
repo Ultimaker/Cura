@@ -52,18 +52,6 @@ jobs:
         with:
             project_name: cura
 
-    conan-package-export-macos:
-        needs: [ conan-recipe-version ]
-        uses: ultimaker/cura/.github/workflows/conan-recipe-export.yml@main
-        with:
-            recipe_id_full: ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
-            recipe_id_latest: ${{ needs.conan-recipe-version.outputs.recipe_id_latest }}
-            runs_on: 'macos-11'
-            python_version: '3.10.x'
-            conan_logging_level: 'info'
-            conan_export_binaries: true
-        secrets: inherit
-
     conan-package-export-linux:
         needs: [ conan-recipe-version ]
         uses: ultimaker/cura/.github/workflows/conan-recipe-export.yml@main
@@ -76,21 +64,9 @@ jobs:
             conan_export_binaries: true
         secrets: inherit
 
-    conan-package-export-windows:
-        needs: [ conan-recipe-version ]
-        uses: ultimaker/cura/.github/workflows/conan-recipe-export.yml@main
-        with:
-            recipe_id_full: ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
-            recipe_id_latest: ${{ needs.conan-recipe-version.outputs.recipe_id_latest }}
-            runs_on: 'windows-2022'
-            python_version: '3.10.x'
-            conan_logging_level: 'info'
-            conan_export_binaries: true
-        secrets: inherit
-
     notify-export:
         if: ${{ always() }}
-        needs: [ conan-recipe-version, conan-package-export-linux, conan-package-export-macos, conan-package-export-windows ]
+        needs: [ conan-recipe-version, conan-package-export-linux ]
 
         uses: ultimaker/cura/.github/workflows/notify.yml@main
         with:
