@@ -11,7 +11,7 @@ from jinja2 import Template
 from conans import tools
 from conan import ConanFile
 from conan.tools import files
-from conan.tools.env import VirtualRunEnv
+from conan.tools.env import VirtualRunEnv, Environment
 from conan.errors import ConanInvalidConfiguration
 
 required_conan_version = ">=1.47.0"
@@ -56,6 +56,37 @@ class CuraConan(ConanFile):
         "url": "auto",
         "revision": "auto"
     }
+
+    # TODO: Add unit tests (but they need a different jinja template
+    _pycharm_targets = [{
+            "name": "cura",
+            "module_name": "Cura",
+            "script_name": "cura_app.py",
+        }, {
+            "name": "cura_external_engine",
+            "module_name": "Cura",
+            "script_name": "cura_app.py",
+            "parameters": "--external-backend"
+        }
+    ]
+
+    # FIXME: These env vars should be defined in the runenv.
+    _cura_env = None
+
+    @property
+    def _cura_run_env(self):
+        if self._cura_env:
+            return self._cura_env
+
+        self._cura_env = Environment()
+        self._cura_env.define("QML2_IMPORT_PATH", str(self._site_packages.joinpath("PyQt6", "Qt6", "qml")))
+        self._cura_env.define("QT_PLUGIN_PATH", str(self._site_packages.joinpath("PyQt6", "Qt6", "plugins")))
+
+        if self.settings.os == "Linux":
+            self._cura_env.define("QT_QPA_FONTDIR", "/usr/share/fonts")
+            self._cura_env.define("QT_QPA_PLATFORMTHEME", "xdgdesktopportal")
+            self._cura_env.define("QT_XKB_CONFIG_ROOT", "/usr/share/X11/xkb")
+        return self._cura_env
 
     @property
     def _staging(self):
@@ -235,6 +266,10 @@ class CuraConan(ConanFile):
         self.cpp.package.resdirs = ["resources", "plugins", "packaging", "pip_requirements"]  # pip_requirements should be the last item in the list
 
     def generate(self):
+        cura_run_envvars = self._cura_run_env.vars(self, scope = "run")
+        ext = ".ps1" if self.settings.os == "Windows" else ".sh"
+        cura_run_envvars.save_script(self.folders.generators.joinpath(f"cura_run_environment{ext}"))
+
         vr = VirtualRunEnv(self)
         vr.generate()
 
