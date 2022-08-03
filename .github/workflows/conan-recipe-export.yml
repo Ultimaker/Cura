@@ -80,11 +80,11 @@ jobs:
                 run: conan config install https://github.com/Ultimaker/conan-config.git
 
             -   name: Export the Package (binaries)
-                if: ${{ inputs.conan_export_binaries == 'true' }}
+                if: ${{ inputs.conan_export_binaries }}
                 run: conan export-pkg . ${{ inputs.recipe_id_full }}
 
             -   name: Export the Package
-                if: ${{ inputs.conan_export_binaries != 'true' }}
+                if: ${{ !inputs.conan_export_binaries }}
                 run: conan export . ${{ inputs.recipe_id_full }}
 
             -   name: Remove the latest alias
