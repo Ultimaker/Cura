@@ -81,7 +81,9 @@ jobs:
 
             -   name: Export the Package (binaries)
                 if: ${{ inputs.conan_export_binaries }}
-                run: conan export-pkg . ${{ inputs.recipe_id_full }}
+                run: |
+                    mkdir -p venv
+                    conan export-pkg . ${{ inputs.recipe_id_full }}
 
             -   name: Export the Package
                 if: ${{ !inputs.conan_export_binaries }}
