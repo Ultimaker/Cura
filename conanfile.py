@@ -210,8 +210,8 @@ class CuraConan(ConanFile):
             ))
 
     def configure(self):
-        self.options["arcus"].shared = True
-        self.options["savitar"].shared = True
+        self.options["pyarcus"].shared = True
+        self.options["pysavitar"].shared = True
         self.options["pynest2d"].shared = True
         self.options["cpython"].shared = True
 
