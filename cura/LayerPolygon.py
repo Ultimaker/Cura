@@ -39,10 +39,10 @@ class LayerPolygon:
 
         self._extruder = extruder
         self._types = line_types
-        for i in range(len(self._types)):
-            if self._types[i] >= self.__number_of_types: # Got faulty line data from the engine.
-                Logger.log("w", "Found an unknown line type: %s", i)
-                self._types[i] = self.NoneType
+        for idx, line_type in enumerate(self._types):
+            if line_type >= self.__number_of_types: # Got faulty line data from the engine.
+                Logger.log("w", "Found an unknown line type: %s", line_type)
+                self._types[idx] = self.NoneType
         self._data = data
         self._line_widths = line_widths
         self._line_thicknesses = line_thicknesses
