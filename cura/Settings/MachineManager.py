@@ -1342,8 +1342,8 @@ class MachineManager(QObject):
                 self._setMaterial(position_, new_material)
             else:
                 # The current material is not available, find the preferred one.
-                approximate_material_diameter = int(self._global_container_stack.extruderList[int(position_)].getApproximateMaterialDiameter())
-                material_node = nozzle_node.preferredMaterial(approximate_material_diameter)
+                material_diameter = int(self._global_container_stack.extruderList[int(position_)].getApproximateMaterialDiameter())
+                material_node = nozzle_node.preferredMaterial(material_diameter)
                 self._setMaterial(position_, material_node)
 
     @pyqtSlot(str)
