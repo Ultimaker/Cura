@@ -1319,9 +1319,9 @@ class MachineManager(QObject):
         else:
             position_list = [str(position) for position, _ in enumerate(self._global_container_stack.extruderList)]
 
-        for position_item in position_list:
+        for position_ in position_list:
             try:
-                extruder = self._global_container_stack.extruderList[int(position_item)]
+                extruder = self._global_container_stack.extruderList[int(position_)]
             except IndexError:
                 continue
 
@@ -1332,19 +1332,19 @@ class MachineManager(QObject):
             nozzle_node = ContainerTree.getInstance().machines[self._global_container_stack.definition.getId()].variants[current_nozzle_name]
             candidate_materials = nozzle_node.materials
             old_approximate_material_diameter = int(extruder.material.getMetaDataEntry("approximate_diameter", default = 3))
-            new_approximate_material_diameter = int(self._global_container_stack.extruderList[int(position_item)].getApproximateMaterialDiameter())
+            new_approximate_material_diameter = int(self._global_container_stack.extruderList[int(position_)].getApproximateMaterialDiameter())
 
             # Only switch to the old candidate material if the approximate material diameter of the extruder stays the
             # same.
             if new_approximate_material_diameter == old_approximate_material_diameter and \
                     current_material_base_name in candidate_materials:  # The current material is also available after the switch. Retain it.
                 new_material = candidate_materials[current_material_base_name]
-                self._setMaterial(position_item, new_material)
+                self._setMaterial(position_, new_material)
             else:
                 # The current material is not available, find the preferred one.
-                approximate_material_diameter = int(self._global_container_stack.extruderList[int(position_item)].getApproximateMaterialDiameter())
+                approximate_material_diameter = int(self._global_container_stack.extruderList[int(position_)].getApproximateMaterialDiameter())
                 material_node = nozzle_node.preferredMaterial(approximate_material_diameter)
-                self._setMaterial(position_item, material_node)
+                self._setMaterial(position_, material_node)
 
     @pyqtSlot(str)
     def switchPrinterType(self, machine_name: str) -> None:
