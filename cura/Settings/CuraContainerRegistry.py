@@ -139,7 +139,7 @@ class CuraContainerRegistry(ContainerRegistry):
             if os.path.exists(file_name):
                 result = QMessageBox.question(None, catalog.i18nc("@title:window", "File Already Exists"),
                                               catalog.i18nc("@label Don't translate the XML tag <filename>!", "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?").format(file_name))
-                if result == QMessageBox.ButtonRole.NoRole:
+                if result == QMessageBox.StandardButton.No:
                     return False
 
         profile_writer = self._findProfileWriter(extension, description)

@@ -111,7 +111,7 @@ class IntentCategoryModel(ListModel):
             except ValueError:
                 weight = 99
             result.append({
-                "name": IntentCategoryModel.translation(category, "name", category),
+                "name": IntentCategoryModel.translation(category, "name", category.title()),
                 "description": IntentCategoryModel.translation(category, "description", None),
                 "intent_category": category,
                 "weight": weight,

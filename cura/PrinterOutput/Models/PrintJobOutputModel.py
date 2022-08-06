@@ -1,10 +1,12 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import Optional, TYPE_CHECKING, List
 
 from PyQt6.QtCore import pyqtSignal, pyqtProperty, QObject, pyqtSlot, QUrl
 from PyQt6.QtGui import QImage
+
+from cura.CuraApplication import CuraApplication
 
 if TYPE_CHECKING:
     from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
@@ -86,6 +88,18 @@ class PrintJobOutputModel(QObject):
             self._owner = owner
             self.ownerChanged.emit()
 
+    @pyqtProperty(bool, notify = ownerChanged)
+    def isMine(self) -> bool:
+        """
+        Returns whether this print job was sent by the currently logged in user.
+
+        This checks the owner of the print job with the owner of the currently
+        logged in account. Both of these are human-readable account names which
+        may be duplicate. In practice the harm here is limited, but it's the
+        best we can do with the information available to the API.
+        """
+        return self._owner == CuraApplication.getInstance().getCuraAPI().account.userName
+
     @pyqtProperty(QObject, notify=assignedPrinterChanged)
     def assignedPrinter(self):
         return self._assigned_printer
@@ -119,16 +133,16 @@ class PrintJobOutputModel(QObject):
 
     @pyqtProperty(int, notify = timeTotalChanged)
     def timeTotal(self) -> int:
-        return self._time_total
+        return int(self._time_total)
 
     @pyqtProperty(int, notify = timeElapsedChanged)
     def timeElapsed(self) -> int:
-        return self._time_elapsed
+        return int(self._time_elapsed)
 
     @pyqtProperty(int, notify = timeElapsedChanged)
     def timeRemaining(self) -> int:
         # Never get a negative time remaining
-        return max(self.timeTotal - self.timeElapsed, 0)
+        return int(max(self.timeTotal - self.timeElapsed, 0))
 
     @pyqtProperty(float, notify = timeElapsedChanged)
     def progress(self) -> float:

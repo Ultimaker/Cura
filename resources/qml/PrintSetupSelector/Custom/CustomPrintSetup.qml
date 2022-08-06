@@ -47,18 +47,6 @@ Item
             font: UM.Theme.getFont("medium")
         }
 
-        NoIntentIcon
-        {
-            affected_extruders: Cura.MachineManager.extruderPositionsWithNonActiveIntent
-            intent_type: Cura.MachineManager.activeIntentCategory
-            anchors.right: intentSelection.left
-            anchors.rightMargin: UM.Theme.getSize("narrow_margin").width
-            width: Math.round(profileLabel.height * 0.5)
-            anchors.verticalCenter: parent.verticalCenter
-            height: width
-            visible: affected_extruders.length
-        }
-
         Button
         {
             id: intentSelection
@@ -129,7 +117,7 @@ Item
             background: UM.UnderlineBackground
             {
                 id: backgroundItem
-                liningColor: intentSelection.hovered ? UM.Theme.getColor("border_main") : UM.Theme.getColor("border_field_light")
+                liningColor: intentSelection.hovered ? UM.Theme.getColor("text_field_border_hovered") : UM.Theme.getColor("border_field_light")
             }
 
             UM.SimpleButton
@@ -218,8 +206,6 @@ Item
                         materialColor: model.color
                         extruderEnabled: model.enabled
                         iconVariant: "default"
-                        height: parent.height
-                        width: height
                     }
                 }
                 onClicked:

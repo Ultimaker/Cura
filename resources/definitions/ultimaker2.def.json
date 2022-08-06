@@ -86,6 +86,9 @@
         },
         "machine_acceleration": {
             "default_value": 3000
+        },
+        "support_z_distance": {
+            "value": "0.1"
         }
     }
 }

@@ -286,9 +286,7 @@ Cura.ExpandableComponent
                 UM.Label
                 {
                     text: label
-                    font: UM.Theme.getFont("default")
                     elide: Text.ElideRight
-                    renderType: Text.NativeRendering
                     color: UM.Theme.getColor("setting_control_text")
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.left: legendModelCheckBox.left

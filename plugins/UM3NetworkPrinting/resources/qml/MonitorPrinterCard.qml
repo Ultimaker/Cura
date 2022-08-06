@@ -209,8 +209,13 @@ Item
             onClicked: enabled ? contextMenu.switchPopupState() : {}
             visible:
             {
-                if (!printer || !printer.activePrintJob) {
-                    return false
+                if(!printer || !printer.activePrintJob)
+                {
+                    return false;
+                }
+                if(!contextMenu.hasItems)
+                {
+                    return false;
                 }
                 var states = ["queued", "error", "sent_to_printer", "pre_print", "printing", "pausing", "paused", "resuming"]
                 return states.indexOf(printer.activePrintJob.state) !== -1
@@ -252,7 +257,7 @@ Item
                 bottom: parent.bottom
                 bottomMargin: 20 * screenScaleFactor // TODO: Theme!
             }
-            iconSource: "../svg/icons/CameraPhoto.svg"
+            iconSource: Qt.resolvedUrl("../svg/icons/CameraPhoto.svg")
             enabled: !cloudConnection
             visible: printer
         }

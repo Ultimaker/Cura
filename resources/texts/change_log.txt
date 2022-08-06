@@ -1,3 +1,174 @@
+[5.1]
+<i>For an overview of the new features in Cura 5.1, please watch <a href="https://youtu.be/7jetjsHLIvk">our video</a>.</i>
+
+* Improved toolpath simplification algorithm
+The algorithm that reduces the resolution of the print has been rewritten, providing a more constant resolution to allow for greater precision without causing buffer underruns.
+
+* Added option to alternate wall direction
+A new setting causes the direction of printing walls to alternate between layers and adjacent walls, which reduces warping in the print.
+
+* Adjusted combing boundaries to reduce scarring
+Travel moves through the inside of the models are adjusted so that they should keep more distance from the model where possible, yet allowing travels through narrow parts without retractions.
+
+* Reduced acceleration and jerk commands for travel moves
+We added the option to disable acceleration and jerk commands for travel moves. If disabled, they will take on the acceleration of the printed part of its destination. This greatly reduces file size and buffer underruns.
+
+* Project files know which packages they require
+Newly created project files will now store which packages they require from the Ultimaker Marketplace. If a project needs a material from there, the user will be prompted to download it.
+
+* Other new features and improvements:
+- The interface to select the printing profile in Recommended Mode has been redesigned.
+- Implemented multi-threaded slicing for MacOS, to bring it in line with other operating systems, contributed by Piezoid.
+- Cura now links toolpaths to project files in the Digital Factory.
+- Improved performance of loading STL files on Linux.
+- Packages from the Marketplace can now contain intent profiles.
+- The application now makes heavy use of Conan to make it easier and faster to build releases of Cura.
+- Start and end g-code can now refer to the currently active profile with replacement keys.
+- To provide proper compatibility with both older and newer Linux distribution, this release contains two Linux builds.
+
+* Bug fixes:
+- Fix resetting configuration if it gets corrupt.
+- Monotonic ordering now works again for top surfaces.
+- Fix a bug where Remove Raft Inside Corners didn't always remove all corners.
+- Fix the position of the toolbar if the toolbar is too tall to fit.
+- Intents in the Recommended Mode now show a description again.
+- Remove Inside Corners and Raft Base Wall Count can now be changed per extruder, though they will affect the entire print.
+- Fix opening STL files with special characters in their header.
+- Fix crash at start-up on newer Linux distributions.
+- Fix priming when printing a raft with a different extruder for some of its layers.
+- Fix a case where the inner wall ends up protruding through the outside of the model.
+- Improve some details on dark mode colouring.
+- Fix an error sometimes occurring when uninstalling plug-ins.
+- Fix a rendering issue with pop-up dialogues on MacOS.
+- Fix Discard or Keep Changes dialog showing an outdated setting value.
+- Horizontal Scaling Shrinkage Compensation no longer adjusts the size of the build volume, allowing the full size of the build plate to be used.
+- Fixed overextrusion when using gradual infill with thin strips of infill.
+- Fix opening STL files with special characters in their file header.
+- Fix slicing failure when using Randomize Infill Start in some cases.
+- Restore reminder to sync materials with your printer when using cloud printers with custom materials.
+- The tool bar should no longer show up in the monitor stage.
+- Exporting materials should now retain settings unknown to Cura as well.
+
+* Printer definitions, profiles and materials:
+- Improved profiles for PVA and support for Ultimaker printers.
+- Adjust retraction speed and distance for Voron, contributed by Haxk20 and Cbc02009
+- Heat up extruder and build plate at the same time for Ender 3 Pro, contributed by XDazld.
+- Add new Tough PLA colours.
+- Add DD0.4 print cores for Ultimaker printers.
+- Add MakerGear M2 printer, contributed by Wanders78746.
+- Add Trimarker Nebula Plus printer, contributed by MatiGabaglio.
+- Various small profile improvements.
+
+* Community translations:
+- Updated the Brazilian Portuguese translation, contributed by Patola.
+- Updated the Czech translation, contributed by sustmi.
+
+* Known critical issues:
+- The placement of the seam has gotten more scattered than in previous releases.
+- Support is sometimes missing in detailed parts, where previous releases supported them properly.
+
+[5.0]
+<i><a href="https://youtu.be/kRj7pR4OkQA">Watch the launch event</a> to learn more about Ultimaker Cura 5.0.</i>
+
+* New slicing engine
+Following special beta releases to test the Arachne engine, we are pleased to announce our new slicing engine is here in Ultimaker Cura! This all-new engine uses variable line widths when preparing files for printing, meaning you can now print thin and intricate parts more accurately and with greater strength. 
+
+* Renewed the Ultimaker Cura Marketplace
+We have streamlined the workflow for accessing the Ultimaker Marketplace inside of Ultimaker Cura. The UI has been improved and it’s now easier and faster to find and install plugins and material profiles.
+
+* Improved print profiles for Ultimaker printers
+The new slicing engine in Ultimaker Cura 5.0 has helped us to improve our print profiles. This means that users of Ultimaker printers can achieve speed increases of up to 20%.
+
+* Upgrade from Qt5 to Qt6
+Ultimaker Cura 5.0 is now compatible with Apple M1.
+
+* Other new features and improvements:
+- New Cura icon
+- New Cura splash screen
+- Updated the digital build plates for Ultimaker printers
+- Introduce Minimum Wall Line Width, contributed by BagelOrb
+- Settings for metal printing implemented
+- Shrinkage compensation is now available for PLA, tPLA and PETG
+- Improved default Line Widths for Spiralize
+- Decrease resolution to remove some buffer underruns
+- Incomplete languages are now shown in the language drop-down menu
+- Improved the visibility of the checkboxes
+
+* Bug fixes:
+- Added the Scale Fan Speed From 0 to 1 setting for printers that interpreted fan speed as percentages
+- Fixed a bug with extra travel moves increased the printing time, contributed by BagelOrb
+- Fixed a bug where Monotonic Ironing breaks Ironing, contributed by BagelOrb
+- Changed the priority of CuraEngine
+- Fixed a bug where increasing Filter distances creates extremely wide lines, contributed by BagelOrb
+- Fixed double scroll bar, contributed by fieldOfView
+- Fixed a bug where maximum resolution/deviation was not applied to surface mode, contributed by BagelOrb
+- Fixed a bug where the seam placement was uneven
+- Fixed a bug where Top Surface Skin Layers didn't work
+- Fixed a bug where Speed in the flow setting were not respected
+- Fixed a bug with unnecessary retracted travel moves
+- Fixed a bug where the Ironing Inset didn't work
+- Fixed a bug where Support Layers were missing
+- Fixed a crash if Randomize Infill Start was used
+- Fixed a bug where Combing was in the wrong part with dual extrusion
+- Fixed a crash with Bridging and Top Surface Skin Layers
+- Fixed a bug where modifier meshes didn't work in one-at-a-time mode
+- Fixed a bug where Tree Support Branches where not being generated
+- Fixed a bug where less support was generated
+- Changed the possibility for 100% Infill Bottom Layer for Spiralize, contributed by BagelOrb
+- Fixed disallowed areas for Brim gap, contributed by BagelOrb
+
+* Bug fixes after the 5.0 beta:
+- Fixed a bug where Retraction Distance couldn't have small values
+- Fixed a bug where there were duplicated themes
+- Fixed a bug where there were scrollbars showing on tooltips
+- Fixed a bug where drag and drop was not working on the first run of Cura
+- Fixed a bug where Infill Percentages are not lined up correctly in Recommended mode
+- Fixed a bug where it wasn't clear if the textfield was active
+- Fixed a bug where highlighted text in text field is unreadable
+- Fixed missing icons, contributed by fieldOfView
+- Fixed a bug where scrolling through long material list was not possible
+- Fixed a bug where multiply was not possible, contributed by fieldOfView
+- Fixed a bug where micro segments are causing blobs
+- Fixed a bug where there was over extrusion when printing with gradual infill
+- Fixed a bug where error values could slice 
+- Fixed a bug where the CPU was high when Cura was idle
+- Fixed a bug where an existing gcode file was overwritten when you select no to overwrite
+- Fixed a crash when selecting extruders
+- Fixed a bug where exporting profiles didn't work
+- Fixed a slicing error with certain infill patterns
+- Fixed a bug where printing via USB stops during the print
+- Fixed a bug where the toolgrips where missing, contributed by fieldOfView
+- Fixed a bug where the print values didn't save when closing the page, contributed by fieldOfView
+- Fixed the width of a Menu to fit the widest MenuItem, contributed by fieldOfView
+- Fixed a bug where Use Single Instance of Cura in Preferences crashes upon restart
+- Fixed a bug where travels would go through the model with printing PVA
+- Fixed a bug where Concentric ironing was affecting the print quality		
+- Fixed a bug where there were missing infill layers
+- Fixed AppRun permissions, contributed by probonopd
+
+* Printer definitions, profiles and materials:
+- Added Atom 3 and Atom 3 Lite printer definitions, contributed by Daniel-Kurth
+- Added Layer One Black PLA, Dark Grey PLA and White PLA, contributed by Daniel-Kurth 
+- Added FLSUN Q5 printer definition, contributed by kreuzhofer
+- Added Creatlity CR100 printer definition, contributed by bodyboarder2528
+- Added Mixware Hyper-S printer definition, contributed by mixware011
+- Added Creality Sermoon D1 printer definition, contributed by felixstif
+- Added Volumic SH65, Stream30Pro MK3 and Stream30Ultra SC2 printer definitions, contributed by VOLUMIC
+- Updated Eryone Thinker and ER20 profiles, contributed by Eryone
+- Updated Atom 2 profile, contributed by lin-ycv
+- Added Hellbot Hidra and Magna series printer definitions, contributed by DevelopmentHellbot
+- Updated Snapmaker 2 End-Gcode, contributed by Rolzad73
+- Updated the Tinyboy Fabricator printer definitions, contributed by reibuehl
+- Updated the Creality Ender 5 printer profile, contributed by Rakhmanov
+														  
+* Community translations:
+- Updated the Brazilian Portuguese translation, contributed by Patola
+- Updated the Czech translation, contributed by sustmi
+- Updated some of the Simplified Chinese translation, contributed by iBral
+
+<i>From version 5.0 onwards - Ultimaker Cura is only supported on operating systems actively maintained by their software manufacturer or community. This means Windows 7 and MacOS 10.14 will no longer be supported. 
+Ubuntu 18.04 is also no longer supported because of the update to Qt6.</i>
+
 [4.13.1]
 * Bug fixes 
 - Fixed a bug where tree support could go through the model
@@ -200,63 +371,7 @@ When searching in the settings visibility menu you will also search in the descr
 
 *<i>From version 4.11 onwards - Ultimaker Cura is only supported on operating systems actively maintained by their software manufacturer or community. This means Windows 7 and MacOS 10.13 will no longer be supported. Technically this means Ultimaker will stop testing and developing for such operating systems. However, even though it is no longer supported, there is still a high likelihood the application keeps functioning.</i>
 
-[4.10.0]
-<i>For an overview of the new features in Cura 4.10, please watch <a href="https://www.youtube.com/watch?v=9PCVeJ_yytk">our video</a>.</i>
 
-*Native CAD import plugin
-Ultimaker Professional and Excellence subscribers can now directly import native CAD files into Ultimaker Cura.
-Enable this feature by downloading the Native CAD import plugin from the Ultimaker marketplace. 
+[4.10]
 
-*Flow visualization
-In preview mode you can now visualize the flow. Contributed by khani3s.
-
-*Show loading plugins on startup
-When starting Cura you will now see which plugins Cura is loading.
-
-*Add Z position parameter to FilamentChange
-With the FilamentChange script you can now control all 3 coordinates. 
-
-*Allow FilamentChange script to use Marlin M600 configuration
-Contributed by Sekisback.
-
-*Double click on file in Digital Factory
-When double clicking on a file in the open project dialog in Digital Factory it will now open in Cura. 
-
-* Bug Fixes
-- Fixed temperature exceptions for UM2+C material profiles.
-- Fixed a bug where pause at height stops all extrusion if relative extrusion is used.
-- Fixed authentication issues when logging into UM account. Contributed by fieldOfView.
-- Fixed the pause-at-height retract with Repetier-flavour.
-- Fixed erasing z-coordinate in the move tool to the value of 0. 
-- Fixed the limit range of layer view to only visible structures. 
-- Fixed a bug where Cura crashes when scaling a model on Linux. 
-- Fixed path minimum limit. 
-- Fixed a bug when using right to left language numbers were overlaying on text in the print settings.
-- Fixed edge case with disabling bridging.
-- Fixed a bug where some names with Unicode characters crashes Cura when trying to authorize. 
-- Fixed renaming groups. Contributed by fieldOfView. 
-- Fixed a bug when the seam was not placed in sharpest corner.
-- Fixed the gantry height for S-line printers. 
-- Fixed a bug where a model is partially below build plate if center selected model is used.
-- Fixed a bug where a tooltip arrow appeared when the "Manage printers" button is hovered.
-- Fixed a bug where assemblies were not arranged in the center of the build plate. 
-
-* Printer definitions, profiles and materials.
-- Add CC0.4 core and materials for S3 and S5.
-- Updated Axi machine start gcodes, contributed by Synsuiter.
-- Volumic 3D printer definitions, contributed by VOLUMIC.
-- Anycubic Mega X and Anycubic Mega S, contributed by NilsRo.
-- Updated Deltacomb printer profiles, contributed by kaleidoscopeit.
-- eMotionTech Strateo3D materials and profiles, contributed by ChronosTech.
-- Sovol SV03, contributed by balacij.
-- Two Trees Bluer, Bluer Plus, Sapphire Pro and Sapphire Plus, contributed by Lester3DGadgets.
-- Update Skriware 2, contributed by Lukkoz.
-- Longer LK1, LK1 Pro, LK1 Plus, LK4, LK4 Pro, LK5, LK5 Plus and Cube 2, contributed by lowkeyjoe. 
-- Mingda D3, D4 and Rock3, contributed by cataclism. 
-- JGAurora A6, contributed by CrissR.
-
-*<i>Please, be aware that after version 4.10 Ultimaker Cura will only be supported on operating systems actively maintained by their software manufacturer or community. This means Windows 7 and MacOS 10.13 will no longer be supported. Technically this means Ultimaker will stop testing and developing for such operating systems. However, even though it is no longer supported, there is still a high likelihood the application keeps functioning.</i>
-
-[4.9.1]
-
-The release notes of versions &lt;= 4.9.1 can be found in our <a href="https://github.com/Ultimaker/Cura/releases?page=2">releases GitHub page</a>.
+The release notes of versions &lt;= 4.10 can be found in our <a href="https://github.com/Ultimaker/Cura/releases?page=2">releases GitHub page</a>.

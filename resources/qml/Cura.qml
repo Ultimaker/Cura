@@ -309,10 +309,11 @@ UM.MainWindow
 
                 property int mouseX: base.mouseX
                 property int mouseY: base.mouseY
+                property bool tallerThanParent: height > parent.height
 
                 anchors
                 {
-                    verticalCenter: parent.verticalCenter
+                    verticalCenter: tallerThanParent ? undefined : parent.verticalCenter
                     left: parent.left
                 }
                 visible: CuraApplication.platformActivity && !PrintInformation.preSliced

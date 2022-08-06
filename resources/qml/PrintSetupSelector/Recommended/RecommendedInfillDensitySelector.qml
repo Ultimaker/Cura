@@ -65,6 +65,7 @@ Item
         font: UM.Theme.getFont("medium")
         width: labelColumnWidth
         iconSize: UM.Theme.getSize("medium_button_icon").width
+        tooltipText: catalog.i18nc("@label", "Gradual infill will gradually increase the amount of infill towards the top.")
     }
 
     Item
@@ -101,7 +102,7 @@ Item
             {
                 id: backgroundLine
                 height: UM.Theme.getSize("print_setup_slider_groove").height
-                width: infillSlider.width - UM.Theme.getSize("print_setup_slider_handle").width
+                width: parent.width - UM.Theme.getSize("print_setup_slider_handle").width
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter: parent.verticalCenter
                 color: infillSlider.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
@@ -120,8 +121,10 @@ Item
                         anchors.verticalCenter: parent.verticalCenter
 
                         // Do not use Math.round otherwise the tickmarks won't be aligned
-                        x: ((handleButton.width / 2) - (backgroundLine.implicitWidth / 2) + (index * ((repeater.width - handleButton.width) / (repeater.count-1))))
-                        radius: Math.round(backgroundLine.implicitWidth / 2)
+                        // (space between steps) * index of step
+                        x: (backgroundLine.width / (repeater.count - 1)) * index
+
+                        radius: Math.round(implicitWidth / 2)
                         visible: (index % 10) == 0 // Only show steps of 10%
 
                         UM.Label
@@ -130,7 +133,6 @@ Item
                             visible: (index % 20) == 0 // Only show steps of 20%
                             anchors.horizontalCenter: parent.horizontalCenter
                             y: UM.Theme.getSize("thin_margin").height
-                            renderType: Text.NativeRendering
                             color: UM.Theme.getColor("quality_slider_available")
                         }
                     }
@@ -172,7 +174,8 @@ Item
                     // same operation
                     const active_mode = UM.Preferences.getValue("cura/active_mode")
 
-                    if (active_mode == 0 || active_mode == "simple")
+                    if (visible  // Workaround: 'visible' is checked because on startup in Windows it spuriously gets an 'onValueChanged' with value '0' if this isn't checked.
+                        && (active_mode == 0 || active_mode == "simple"))
                     {
                         Cura.MachineManager.setSettingForAllExtruders("infill_sparse_density", "value", roundedSliderValue)
                         Cura.MachineManager.resetSettingForAllExtruders("infill_line_distance")

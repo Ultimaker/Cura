@@ -12,6 +12,8 @@ UM.PreferencesPage
 {
     title: catalog.i18nc("@title:tab", "Setting Visibility")
 
+    Item { enabled: false; UM.I18nCatalog { id: catalog; name: "cura"} }
+
     property QtObject settingVisibilityPresetsModel: CuraApplication.getSettingVisibilityPresetsModel()
 
     property int scrollToIndex: 0

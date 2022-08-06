@@ -23,7 +23,7 @@ UM.Dialog
     property string explanation: catalog.i18nc("@info", "Please provide a new name.")
 
     title: dialogTitle
-
+    backgroundColor: UM.Theme.getColor("main_background")
     minimumWidth: UM.Theme.getSize("small_popup_dialog").width
     minimumHeight: UM.Theme.getSize("small_popup_dialog").height
     width: minimumWidth
