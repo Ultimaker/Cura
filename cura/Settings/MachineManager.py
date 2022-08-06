@@ -1314,10 +1314,10 @@ class MachineManager(QObject):
         """
         if self._global_container_stack is None:
             return
-        if position is None:
-            position_list = [str(position) for position, _ in enumerate(self._global_container_stack.extruderList)]
-        else:
+        if position:
             position_list = [position]
+        else:
+            position_list = [str(position) for position, _ in enumerate(self._global_container_stack.extruderList)]
 
         for position_item in position_list:
             try:
