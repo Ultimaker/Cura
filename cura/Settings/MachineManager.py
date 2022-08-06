@@ -1331,12 +1331,12 @@ class MachineManager(QObject):
             # If we can keep the current material after the switch, try to do so.
             nozzle_node = ContainerTree.getInstance().machines[self._global_container_stack.definition.getId()].variants[current_nozzle_name]
             candidate_materials = nozzle_node.materials
-            old_approximate_material_diameter = int(extruder.material.getMetaDataEntry("approximate_diameter", default = 3))
-            new_approximate_material_diameter = int(self._global_container_stack.extruderList[int(position_)].getApproximateMaterialDiameter())
+            old_material_diameter = int(extruder.material.getMetaDataEntry("approximate_diameter", default = 3))
+            new_material_diameter = int(self._global_container_stack.extruderList[int(position_)].getApproximateMaterialDiameter())
 
             # Only switch to the old candidate material if the approximate material diameter of the extruder stays the
             # same.
-            if new_approximate_material_diameter == old_approximate_material_diameter and \
+            if new_material_diameter == old_material_diameter and \
                     current_material_base_name in candidate_materials:  # The current material is also available after the switch. Retain it.
                 new_material = candidate_materials[current_material_base_name]
                 self._setMaterial(position_, new_material)
