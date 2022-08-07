@@ -134,7 +134,7 @@ class X3DReader(MeshReader):
                 geometry = self.resolveDefUse(sub_node)
 
         # TODO: appearance is completely ignored. At least apply the material color...
-        if not geometry is None:
+        if geometry is not None:
             try:
                 self.verts = self.faces = [] # Safeguard
                 self.geometry_importers[geometry.tag](self, geometry)
