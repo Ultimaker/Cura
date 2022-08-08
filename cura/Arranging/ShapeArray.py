@@ -74,7 +74,7 @@ class ShapeArray:
         # If the child-nodes are included, adjust convex hulls as well:
         if include_children:
             children = node.getAllChildren()
-            if not children is None:
+            if children is not None:
                 for child in children:
                     # 'Inefficient' combination of convex hulls through known code rather than mess it up:
                     child_hull = child.callDecoration("getConvexHull")
