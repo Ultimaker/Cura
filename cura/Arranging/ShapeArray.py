@@ -81,7 +81,7 @@ class ShapeArray:
                     if child_hull is not None:
                         hull_verts = hull_verts.unionConvexHulls(child_hull)
                     child_hull_head = child.callDecoration("getConvexHullHead") or child_hull
-                    if not child_hull_head is None:
+                    if child_hull_head is not None:
                         hull_head_verts = hull_head_verts.unionConvexHulls(child_hull_head)
 
         offset_verts = hull_head_verts.getMinkowskiHull(Polygon.approximatedCircle(min_offset))
