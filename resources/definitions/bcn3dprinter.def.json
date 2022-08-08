@@ -165,7 +165,7 @@
             "mirror": "Mirror"
           },
           "default_value": "standard",
-          "enabled": "extruderValues('extruder_nr') == [0]",
+          "enabled": true,
           "resolve": "'standard' if [1] in extruderValues('extruder_nr') else None",
           "settable_per_extruder": false,
           "comments": "BCN3D setting"
