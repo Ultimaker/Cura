@@ -703,7 +703,7 @@ class X3DReader(MeshReader):
         for c in node:
             if c.tag == "Coordinate":
                 c = self.resolveDefUse(c)
-                if not c is None:
+                if c is not None:
                     pt = c.attrib.get("point")
                     if pt:
                         # allow the list of float values in 'point' attribute to
