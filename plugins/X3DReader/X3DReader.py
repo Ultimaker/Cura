@@ -498,7 +498,7 @@ class X3DReader(MeshReader):
 
             if scale:
                 mscale = scale[i] if len(scale) > 1 else scale[0]
-                if not mscale is None:
+                if mscale is not None:
                     m = m.dot(mscale)
 
             # First the cross-section 2-vector is scaled,
