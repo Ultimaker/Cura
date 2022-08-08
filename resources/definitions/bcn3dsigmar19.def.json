@@ -1,0 +1,17 @@
+{
+    "version": 2,
+    "name": "Sigma R19",
+    "inherits": "bcn3dsigma",
+    "metadata": {
+        "additional_info": "Or with R19 upgrade kit installed",
+        "weight": "5"
+    },
+    "overrides": {
+        "machine_name": { "default_value": "Sigma R19" },
+        "machine_acceleration": { "default_value": 600 },
+        "machine_max_jerk_xy": { "value": 12.5 },
+        "speed_travel": { "value": "150" },
+        "retraction_hop_after_extruder_switch_height": { "value": 1 },
+        "avoid_grinding_filament": { "value": false }
+    }
+}

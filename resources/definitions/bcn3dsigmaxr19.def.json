@@ -1,0 +1,16 @@
+{
+    "version": 2,
+    "name": "Sigmax R19",
+    "inherits": "bcn3dsigmar19",
+    "metadata": {
+        "weight": "4",
+        "platform": "bcn3dsigmax_bed.stl",
+        "quality_definition": "bcn3dsigmar19"
+    },
+    "overrides": {
+        "machine_name": { "default_value": "Sigmax R19" },
+        "machine_width": { "default_value": 420 },
+        "retraction_count_max": { "value": 10 },
+        "retraction_hop_after_extruder_switch_height": { "value": 2 }
+    }
+}
