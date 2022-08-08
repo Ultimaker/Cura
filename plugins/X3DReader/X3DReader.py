@@ -493,7 +493,7 @@ class X3DReader(MeshReader):
             # Columns are the unit vectors for the xz plane for the cross-section
             if orient:
                 mrot = orient[i] if len(orient) > 1 else orient[0]
-                if not mrot is None:
+                if mrot is not None:
                     m = m.dot(mrot)  # Tested against X3DOM, the result matches, still not sure :(
 
             if scale:
