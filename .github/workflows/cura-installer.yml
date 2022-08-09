@@ -77,10 +77,8 @@ jobs:
                     cache: 'pip'
                     cache-dependency-path: .github/workflows/requirements-conan-package.txt
 
-            -   name: Install Python requirements and Create default Conan profile
-                run: |
-                    pip install -r .github/workflows/requirements-conan-package.txt
-                    conan profile new default --detect
+            -   name: Install Python requirements for runner
+                run: pip install -r .github/workflows/requirements-conan-package.txt
 
             -   name: Use Conan download cache (Bash)
                 if: ${{ runner.os != 'Windows' }}
@@ -127,6 +125,9 @@ jobs:
             -   name: Install GCC-12 on ubuntu-22.04
                 if: ${{ matrix.os == 'ubuntu-22.04' }}
                 run: sudo apt install g++-12 gcc-12 -y
+
+            -   name: Create the default Conan profile
+                run:  conan profile new default --detect
 
             -   name: Configure GPG Key Linux (Bash)
                 if: ${{ runner.os == 'Linux' }}
