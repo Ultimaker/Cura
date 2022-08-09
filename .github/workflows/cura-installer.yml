@@ -127,7 +127,7 @@ jobs:
             -   name: Install GCC-12
                 if: ${{ matrix.os == 'ubuntu-22.04' }}
                 run: |
-                    if ! command -v <the_command> &> /dev/null
+                    if ! command -v gcc-12 &> /dev/null
                     then
                         git clone --branch releases/gcc-12 https://gcc.gnu.org/git/gcc.git gcc-source
                         ./gcc-source/contrib/download_prerequisites
