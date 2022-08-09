@@ -427,4 +427,4 @@ class _ContainerIndexes:
     }
 
     # Reverse lookup: type -> index
-    TypeIndexMap = dict([(v, k) for k, v in IndexTypeMap.items()])
+    TypeIndexMap = {v: k for k, v in IndexTypeMap.items()}
