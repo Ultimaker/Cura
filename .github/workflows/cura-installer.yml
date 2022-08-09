@@ -130,10 +130,12 @@ jobs:
                     if ! command -v gcc-12 &> /dev/null
                     then
                         git clone --branch releases/gcc-12 https://gcc.gnu.org/git/gcc.git gcc-source
-                        ./gcc-source/contrib/download_prerequisites
+                        cd gcc-source 
+                        ./contrib/download_prerequisites
+                        cd ..
                         mkdir gcc-12-build
                         cd gcc-12-build
-                        ./../gcc-source/configure --prefix=${{ runner.tool_cache }}/gcc-12 --enable-languages=c,c++
+                        ./../gcc-source/configure --prefix=${{ runner.tool_cache }}/gcc-12 --enable-languages=c,c++ --disable-multilib
                         make -j$(nproc)
                         sudo make install
                         echo "PATH=$PATH:${{ runner.tool_cache }}/gcc-12" >> $GITHUB_ENV
