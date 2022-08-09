@@ -315,16 +315,6 @@
     },
     "blackmagic": {
       "children": {
-        "initial_nozzle_temperature": {
-          "label": "Initial nozzle temperature",
-          "description": "Initial nozzle temperature based on printing temperature and initial layer printing temperature. Used internally.",
-          "type": "str",
-          "default_value": 200,
-          "value": "'{material_print_temperature_layer_0}' if float('{material_print_temperature_layer_0}') != 0 else '{material_print_temperature}'",
-          "enabled": false,
-          "settable_per_extruder": true,
-          "comments": "BCN3D setting"
-        },
         "material_type": {
           "label": "Material type",
           "description": "Type of material, used internally within BCN3D qualities.",
@@ -348,7 +338,7 @@
           "description": "GCode to purge in bucket each extruder.",
           "type": "str",
           "default_value": "",
-          "value": "'\\nG92 E0 \\t\\t;zero the extruded length \\nG1 E{start_purge_distance} F{start_purge_speed}\\nG92 E0\\nG4 S2 \\t\\t;stabilize hotend \\nG1 E-0.5 F1000 \\nG92 E0\\n'",
+          "value": "'\\nG92 E0 \\t\\t;zero the extruded length\\nG1 E{start_purge_distance} F{start_purge_speed}\\nG92 E0\\nG4 S2 \\t\\t;stabilize hotend\\nG1 E-0.5 F1000\\nG92 E0\\n'",
           "enabled": false,
           "settable_per_extruder": true,
           "comments": "BCN3D setting"
