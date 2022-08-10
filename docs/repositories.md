@@ -1,7 +1,7 @@
 Repositories
 ====
 Cura uses a number of repositories where parts of our source code are separated, in order to get a cleaner architecture. Those repositories are:
-* [Cura](https://github.com/Ultimaker/Cura), the main repository for the front-end of Cura. This contains:
+* [Cura](https://github.com/Ultimaker/Cura) is the main repository for the front-end of Cura. This contains:
     - all of the business logic for the front-end, including the specific types of profiles that are available
     -  the concept of 3D printers and materials
     -  specific tools for handling 3D printed models
