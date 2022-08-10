@@ -21,6 +21,7 @@ from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 
 from .CloudApiClient import CloudApiClient
 from ..ExportFileJob import ExportFileJob
+from ..Messages.PrintJobAwaitingApprovalMessage import PrintJobPendingApprovalMessage
 from ..UltimakerNetworkedPrinterOutputDevice import UltimakerNetworkedPrinterOutputDevice
 from ..Messages.PrintJobUploadBlockedMessage import PrintJobUploadBlockedMessage
 from ..Messages.PrintJobUploadErrorMessage import PrintJobUploadErrorMessage
@@ -30,7 +31,7 @@ from ..Models.Http.CloudClusterResponse import CloudClusterResponse
 from ..Models.Http.CloudClusterStatus import CloudClusterStatus
 from ..Models.Http.CloudPrintJobUploadRequest import CloudPrintJobUploadRequest
 from ..Models.Http.CloudPrintResponse import CloudPrintResponse
-from ..Models.Http.CloudPrintJobResponse import CloudPrintJobResponse
+from ..Models.Http.CloudPrintJobResponse import CloudPrintJobResponse, CloudUploadStatus
 from ..Models.Http.ClusterPrinterStatus import ClusterPrinterStatus
 from ..Models.Http.ClusterPrintJobStatus import ClusterPrintJobStatus
 
@@ -230,6 +231,10 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
         :param job_response: The response received from the cloud API.
         """
+
+        if job_response.status is CloudUploadStatus.WAIT_APPROVAL:
+            PrintJobPendingApprovalMessage().show()
+
         if not self._tool_path:
             return self._onUploadError()
         self._pre_upload_print_job = job_response  # store the last uploaded job to prevent re-upload of the same file

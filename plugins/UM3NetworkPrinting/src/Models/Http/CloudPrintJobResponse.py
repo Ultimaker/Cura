@@ -1,5 +1,6 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+from enum import Enum
 from typing import Optional
 
 from ..BaseModel import BaseModel
@@ -25,7 +26,7 @@ class CloudPrintJobResponse(BaseModel):
         """
 
         self.job_id = job_id
-        self.status = status
+        self.status: CloudUploadStatus = CloudUploadStatus(status)
         self.download_url = download_url
         self.job_name = job_name
         self.upload_url = upload_url
@@ -33,3 +34,9 @@ class CloudPrintJobResponse(BaseModel):
         self.status_description = status_description
         self.slicing_details = slicing_details
         super().__init__(**kwargs)
+
+
+class CloudUploadStatus(Enum):
+    FAILED = "failed",
+    QUEUED = "queued",
+    WAIT_APPROVAL = "wait_approval"
