@@ -7,7 +7,7 @@ Cura uses a number of repositories where parts of our source code are separated,
     -  specific tools for handling 3D printed models
     -  pretty much all of the GUI
     -  Ultimaker services such as the Marketplace and accounts.
-* [Uranium](https://github.com/Ultimaker/Uranium) is the underlying framework the Cura repository is built on. [Uranium](https://github.com/Ultimaker/Uranium) is a framework for desktop applications that handle 3D models and have a separate back-end. This provides Cura with:
+* [Uranium](https://github.com/Ultimaker/Uranium) is the underlying framework the Cura repository is built on. [Uranium](https://github.com/Ultimaker/Uranium) is a framework for desktop applications that handle 3D models. It has a separate back-end. This provides Cura with:
     - a basic GUI framework ([Qt](https://www.qt.io/))
     - a 3D scene, a rendering system
     - a plug-in system
