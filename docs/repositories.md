@@ -7,12 +7,12 @@ Cura uses a number of repositories where parts of our source code are separated,
     -  specific tools for handling 3D printed models
     -  pretty much all of the GUI
     -  Ultimaker services such as the Marketplace and accounts.
-* [Uranium](https://github.com/Ultimaker/Uranium) the underlying framework the Cura repository is built on. [Uranium](https://github.com/Ultimaker/Uranium) is a framework for desktop applications that handle 3D models and have a separate back-end. This provides Cura with:
+* [Uranium](https://github.com/Ultimaker/Uranium) is the underlying framework the Cura repository is built on. [Uranium](https://github.com/Ultimaker/Uranium) is a framework for desktop applications that handle 3D models and have a separate back-end. This provides Cura with:
     - a basic GUI framework ([Qt](https://www.qt.io/))
     - a 3D scene, a rendering system
     - a plug-in system
     - a system for stacked profiles that change settings.
-*  [CuraEngine](https://github.com/Ultimaker/CuraEngine) the slicer used by Cura in the background. This does the actual process that converts 3D models into a toolpath for the printer.
+*  [CuraEngine](https://github.com/Ultimaker/CuraEngine) is the slicer used by Cura in the background. This does the actual process that converts 3D models into a toolpath for the printer.
 * [libArcus](https://github.com/Ultimaker/libArcus) handles the communication to CuraEngine. [libArcus](https://github.com/Ultimaker/libArcus) is a small library that wraps around [Protobuf](https://developers.google.com/protocol-buffers/) in order to make it run over a local socket.
 * [cura-build](https://github.com/Ultimaker/cura-build): Cura's build scripts.  
 * [cura-build-environment](https://github.com/Ultimaker/cura-build-environment) build scripts for building dependencies.
