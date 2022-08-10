@@ -12,7 +12,7 @@ Cura uses a number of repositories where parts of our source code are separated,
     - a 3D scene, a rendering system
     - a plug-in system
     - a system for stacked profiles that change settings.
-*  [CuraEngine](https://github.com/Ultimaker/CuraEngine) is the slicer used by Cura in the background. This does the actual process that converts 3D models into a toolpath for the printer.
+* [CuraEngine](https://github.com/Ultimaker/CuraEngine) is the slicer used by Cura in the background. This does the actual process that converts 3D models into a toolpath for the printer.
 * [libArcus](https://github.com/Ultimaker/libArcus) handles the communication to CuraEngine. [libArcus](https://github.com/Ultimaker/libArcus) is a small library that wraps around [Protobuf](https://developers.google.com/protocol-buffers/) in order to make it run over a local socket.
 * [cura-build](https://github.com/Ultimaker/cura-build): Cura's build scripts.  
 * [cura-build-environment](https://github.com/Ultimaker/cura-build-environment) build scripts for building dependencies.
@@ -20,7 +20,7 @@ Cura uses a number of repositories where parts of our source code are separated,
 There are also a number of repositories under our control that are not integral parts of Cura's architecture, but more like separated side-gigs:
 * [libSavitar](https://github.com/Ultimaker/libSavitar) is used for loading and writing 3MF files.
 * [libCharon](https://github.com/Ultimaker/libCharon) is used for loading and writing UFP files.
-*  [cura-binary-data](https://github.com/Ultimaker/cura-binary-data) pre-compiled parts to make the build system a bit simpler. This holds things which would require considerable tooling to build automatically like:
+* [cura-binary-data](https://github.com/Ultimaker/cura-binary-data) pre-compiled parts to make the build system a bit simpler. This holds things which would require considerable tooling to build automatically like:
     - the machine-readable translation files
     - the Marlin builds for firmware updates
 * [Cura-squish-tests](https://github.com/Ultimaker/Cura-squish-tests): automated GUI tests.
