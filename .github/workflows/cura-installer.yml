@@ -124,7 +124,10 @@ jobs:
 
             -   name: Install GCC-12 on ubuntu-22.04
                 if: ${{ matrix.os == 'ubuntu-22.04' }}
-                run: sudo apt install g++-12 gcc-12 -y
+                run: |
+                    sudo apt install g++-12 gcc-12 -y
+                    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 12
+                    sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 12
 
             -   name: Create the default Conan profile
                 run:  conan profile new default --detect
