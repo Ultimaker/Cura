@@ -7,6 +7,11 @@ on:
                 required: true
                 type: string
 
+            additional_buildmetadata:
+                required: false
+                default: ""
+                type: string
+
         outputs:
             recipe_id_full:
                 description: "The full Conan recipe id: <name>/<version>@<user>/<channel>"
@@ -79,6 +84,7 @@ jobs:
                     issue_number = "${{ github.ref }}".split('/')[2]
                     is_tag = "${{ github.ref_type }}" == "tag"
                     is_release_branch = False
+                    buildmetadata = "" if "${{ inputs.additional_buildmetadata }}" == "" else "${{ inputs.additional_buildmetadata }}_"
                     
                     # FIXME: for when we push a tag (such as an release)
                     channel = "testing"
@@ -130,7 +136,7 @@ jobs:
                             channel = "_"
                     else:
                         if event_name == "pull_request":
-                            actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-{latest_branch_version.prerelease.lower()}+pr_{issue_number}_{no_commits}"
+                            actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-{latest_branch_version.prerelease.lower()}+{buildmetadata}pr_{issue_number}_{no_commits}"
                         else:
                             if channel in ("stable", "_", ""):
                                 channel_metadata = f"{no_commits}"
@@ -139,9 +145,9 @@ jobs:
                             # FIXME: for when we create a new release branch
                             if latest_branch_version.prerelease == "":
                                 bump_up_minor = int(latest_branch_version.minor) + 1
-                                actual_version = f"{latest_branch_version.major}.{bump_up_minor}.{latest_branch_version.patch}-alpha+{channel_metadata}"
+                                actual_version = f"{latest_branch_version.major}.{bump_up_minor}.{latest_branch_version.patch}-alpha+{buildmetadata}{channel_metadata}"
                             else:
-                                actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-{latest_branch_version.prerelease.lower()}+{channel_metadata}"
+                                actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-{latest_branch_version.prerelease.lower()}+{buildmetadata}{channel_metadata}"
                     
                     # %% print to output
                     cmd_name = ["echo", f"::set-output name=name::{project_name}"]
