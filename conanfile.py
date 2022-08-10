@@ -40,7 +40,8 @@ class CuraConan(ConanFile):
         "devtools": [True, False],  # FIXME: Split this up in testing and (development / build (pyinstaller) / system installer) tools
         "cloud_api_version": "ANY",
         "display_name": "ANY",  # TODO: should this be an option??
-        "cura_debug_mode": [True, False]  # FIXME: Use profiles
+        "cura_debug_mode": [True, False],  # FIXME: Use profiles
+        "internal": [True, False]
     }
     default_options = {
         "enterprise": "False",
@@ -48,7 +49,8 @@ class CuraConan(ConanFile):
         "devtools": False,
         "cloud_api_version": "1",
         "display_name": "Ultimaker Cura",
-        "cura_debug_mode": False  # Not yet implemented
+        "cura_debug_mode": False,  # Not yet implemented
+        "internal": False,
     }
     scm = {
         "type": "git",
@@ -157,11 +159,16 @@ class CuraConan(ConanFile):
         with open(Path(__file__).parent.joinpath("CuraVersion.py.jinja"), "r") as f:
             cura_version_py = Template(f.read())
 
+        cura_version = self.version
+        if self.options.internal:
+            version = tools.Version(self.version)
+            cura_version = f"{version.major}.{version.minor}.{version.patch}-{version.prerelease.replace('+', '+internal_')}"
+
         with open(Path(location, "CuraVersion.py"), "w") as f:
             f.write(cura_version_py.render(
                 cura_app_name = self.name,
                 cura_app_display_name = self.options.display_name,
-                cura_version = self.version,
+                cura_version = cura_version,
                 cura_build_type = "Enterprise" if self._enterprise else "",
                 cura_debug_mode = self.options.cura_debug_mode,
                 cura_cloud_api_root = self._cloud_api_root,
