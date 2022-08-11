@@ -52,28 +52,9 @@ class CuraConan(ConanFile):
         "revision": "auto"
     }
 
-    # TODO: Add unit tests (but they need a different jinja template
-    _pycharm_targets = [
-        {
-            "name": "cura",
-            "module_name": "Cura",
-            "script_name": "cura_app.py",
-            "jinja_path": ".run_templates/pycharm_cura_run.run.xml.jinja"
-        },
-        {
-            "name": "cura_external_engine",
-            "module_name": "Cura",
-            "script_name": "cura_app.py",
-            "parameters": "--external-backend",
-            "jinja_path": ".run_templates/pycharm_cura_run.run.xml.jinja"
-        },
-        {
-            "name": "cura_test",
-            "module_name": "Cura",
-            "script_name": "run_coverage.py",
-            "jinja_path": ".run_templates/pycharm_cura_test.run.xml.jinja"
-        },
-    ]
+    @property
+    def _pycharm_targets(self):
+        return self.conan_data["pycharm_targets"]
 
     # FIXME: These env vars should be defined in the runenv.
     _cura_env = None
