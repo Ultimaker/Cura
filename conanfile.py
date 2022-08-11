@@ -1,10 +1,5 @@
 import os
-import sys
 from pathlib import Path
-
-from io import StringIO
-
-from platform import python_version
 
 from jinja2 import Template
 
@@ -59,18 +54,9 @@ class CuraConan(ConanFile):
         "revision": "auto"
     }
 
-    # TODO: Add unit tests (but they need a different jinja template
-    _pycharm_targets = [{
-            "name": "cura",
-            "module_name": "Cura",
-            "script_name": "cura_app.py",
-        }, {
-            "name": "cura_external_engine",
-            "module_name": "Cura",
-            "script_name": "cura_app.py",
-            "parameters": "--external-backend"
-        }
-    ]
+    @property
+    def _pycharm_targets(self):
+        return self.conan_data["pycharm_targets"]
 
     # FIXME: These env vars should be defined in the runenv.
     _cura_env = None
