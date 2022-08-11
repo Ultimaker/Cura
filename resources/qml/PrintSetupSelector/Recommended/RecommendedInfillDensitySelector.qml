@@ -65,6 +65,7 @@ Item
         font: UM.Theme.getFont("medium")
         width: labelColumnWidth
         iconSize: UM.Theme.getSize("medium_button_icon").width
+        tooltipText: catalog.i18nc("@label", "Gradual infill will gradually increase the amount of infill towards the top.")
     }
 
     Item
@@ -102,7 +103,6 @@ Item
                 id: backgroundLine
                 height: UM.Theme.getSize("print_setup_slider_groove").height
                 width: parent.width - UM.Theme.getSize("print_setup_slider_handle").width
-                implicitWidth: width
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter: parent.verticalCenter
                 color: infillSlider.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")

@@ -1,6 +1,8 @@
 # Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+# For MSVC flags, will be ignored on non-Windows OS's and this project in general. Only needed for cura-build-environment.
+cmake_policy(SET CMP0091 NEW)
 project(cura)
 cmake_minimum_required(VERSION 3.18)
 

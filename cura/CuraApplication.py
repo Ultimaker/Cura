@@ -355,8 +355,14 @@ class CuraApplication(QtApplication):
 
         Resources.addSecureSearchPath(os.path.join(self._app_install_dir, "share", "cura", "resources"))
         if not hasattr(sys, "frozen"):
-            resource_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "resources")
-            Resources.addSecureSearchPath(resource_path)
+            Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "resources"))
+
+            # local Conan cache
+            Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "..", "resources"))
+            Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "..", "plugins"))
+
+            # venv site-packages
+            Resources.addSearchPath(os.path.join(app_root, "..", "share", "cura", "resources"))
 
     @classmethod
     def _initializeSettingDefinitions(cls):
@@ -813,6 +819,12 @@ class CuraApplication(QtApplication):
 
     def run(self):
         super().run()
+
+        if len(ApplicationMetadata.DEPENDENCY_INFO) > 0:
+            Logger.debug("Using Conan managed dependencies: " + ", ".join(
+                [dep["recipe"]["id"] for dep in ApplicationMetadata.DEPENDENCY_INFO["installed"] if dep["recipe"]["version"] != "latest"]))
+        else:
+            Logger.warning("Could not find conan_install_info.json")
 
         Logger.log("i", "Initializing machine error checker")
         self._machine_error_checker = MachineErrorChecker(self)

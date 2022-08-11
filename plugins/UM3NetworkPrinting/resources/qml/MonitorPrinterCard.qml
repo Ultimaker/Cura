@@ -209,8 +209,13 @@ Item
             onClicked: enabled ? contextMenu.switchPopupState() : {}
             visible:
             {
-                if (!printer || !printer.activePrintJob) {
-                    return false
+                if(!printer || !printer.activePrintJob)
+                {
+                    return false;
+                }
+                if(!contextMenu.hasItems)
+                {
+                    return false;
                 }
                 var states = ["queued", "error", "sent_to_printer", "pre_print", "printing", "pausing", "paused", "resuming"]
                 return states.indexOf(printer.activePrintJob.state) !== -1

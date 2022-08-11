@@ -62,7 +62,7 @@ Item
         {
             width: parent.width
             Layout.fillWidth: true
-            Layout.topMargin: UM.Theme.getSize("thin_margin").height
+            Layout.topMargin: UM.Theme.getSize("default_margin").height
             Layout.bottomMargin: UM.Theme.getSize("thin_margin").height
         }
 

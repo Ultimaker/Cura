@@ -304,7 +304,7 @@ msgstr "OpenGL"
 #: /home/trin/Gedeeld/Projects/Cura/cura/CrashHandler.py:264
 msgctxt "@label"
 msgid "Not yet initialized"
-msgstr ""
+msgstr "Henüz başlatılmadı"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/CrashHandler.py:267
 #, python-brace-format
@@ -884,17 +884,18 @@ msgstr "Özel"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.py:390
 msgctxt "@info:status"
 msgid "The material used in this project relies on some material definitions not available in Cura, this might produce undesirable print results. We highly recommend installing the full material package from the Marketplace."
-msgstr ""
+msgstr "Bu projede kullanılan malzeme, Cura'da bulunmayan birtakım malzeme tanımlarını temel alıyor ve bu durum, istenmeyen baskı sonuçlarına sebep olabilir. Mağazadan"
+" tam malzeme paketini kurmanızı öneririz."
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.py:392
 msgctxt "@info:title"
 msgid "Material profiles not installed"
-msgstr ""
+msgstr "Malzeme profilleri yüklü değil"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.py:405
 msgctxt "@action:button"
 msgid "Install Materials"
-msgstr ""
+msgstr "Malzeme Yükle"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/__init__.py:27
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/__init__.py:33
@@ -932,12 +933,12 @@ msgstr "3mf dosyasını yazarken hata oluştu."
 #, python-brace-format
 msgctxt "@error:material"
 msgid "It was not possible to store material package information in project file: {material}. This project may not open correctly on other systems."
-msgstr ""
+msgstr "{material} proje dosyasında malzeme paketi bilgileri saklanamadı. Bu proje diğer sistemlerde doğru şekilde açılmayabilir."
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFWriter/ThreeMFWriter.py:283
 msgctxt "@info:title"
 msgid "Failed to save material package information"
-msgstr ""
+msgstr "Malzeme paketi bilgileri kaydedilemedi"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFWriter/__init__.py:28
 msgctxt "@item:inlistbox"
@@ -2002,12 +2003,12 @@ msgstr "Aç"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:520
 msgctxt "@action:button"
 msgid "Open project anyway"
-msgstr ""
+msgstr "Projeyi yine de aç"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:529
 msgctxt "@action:button"
 msgid "Install missing material"
-msgstr ""
+msgstr "Eksik malzemeyi yükle"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/qml/components/BackupListFooter.qml:22
 msgctxt "@button"
@@ -2115,12 +2116,12 @@ msgstr "Giriş yap"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/DigitalLibrary/resources/qml/SaveProjectFilesPage.qml:216
 msgctxt "@option"
 msgid "Save Cura project and print file"
-msgstr ""
+msgstr "Cura projesini kaydet ve dosyayı yazdır"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/DigitalLibrary/resources/qml/SaveProjectFilesPage.qml:217
 msgctxt "@option"
 msgid "Save Cura project"
-msgstr ""
+msgstr "Cura projesini kaydet"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:31
 msgctxt "@title"
@@ -2492,7 +2493,7 @@ msgstr "Aşağıdaki paketler uyumsuz Cura sürümü nedeniyle yüklenemiyor:"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Marketplace/resources/qml/InstallMissingPackagesDialog.qml:15
 msgctxt "@title"
 msgid "Install missing Materials"
-msgstr ""
+msgstr "Eksik Malzemeleri yükle"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Marketplace/resources/qml/LicenseDialog.qml:15
 msgctxt "@button"
@@ -2579,7 +2580,7 @@ msgstr "Daha Fazla Bilgi Edinin"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Marketplace/resources/qml/PackageCardHeader.qml:172
 msgctxt "@label Is followed by the name of an author"
 msgid "By"
-msgstr ""
+msgstr "Oluşturan"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Marketplace/resources/qml/PackageCardHeader.qml:226
 msgctxt "@button"
@@ -4050,28 +4051,28 @@ msgstr "Poligon kırpma kitaplığı"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:155
 msgctxt "@label"
 msgid "JSON parser"
-msgstr ""
+msgstr "JSON ayrıştırıcı"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:156
 msgctxt "@label"
 msgid "Utility functions, including an image loader"
-msgstr ""
+msgstr "Kullanım işlevleri, bir resim yükleyici dâhil"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:157
 msgctxt "@label"
 msgid "Utility library, including Voronoi generation"
-msgstr ""
+msgstr "Kullanım kütüphanesi, Voronoi oluşturma dâhil"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:160
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:161
 msgctxt "@label"
 msgid "Root Certificates for validating SSL trustworthiness"
-msgstr ""
+msgstr "SSL güvenilirliğini doğrulamak için kök sertifikalar"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:162
 msgctxt "@label"
 msgid "Compatibility between Python 2 and 3"
-msgstr ""
+msgstr "Python 2 ve 3 arasında uyumluluk"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:163
 msgctxt "@label"
@@ -4121,17 +4122,17 @@ msgstr "ZeroConf keşif kitaplığı"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:174
 msgctxt "@label"
 msgid "Universal build system configuration"
-msgstr ""
+msgstr "Evrensel yapı sistemi yapılandırması"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:175
 msgctxt "@label"
 msgid "Dependency and package manager"
-msgstr ""
+msgstr "Bağımlılık ve paket yöneticisi"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:176
 msgctxt "@label"
 msgid "Packaging Python-applications"
-msgstr ""
+msgstr "Python uygulamalarını paketleme"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:177
 msgctxt "@label"
@@ -4141,7 +4142,7 @@ msgstr "Linux çapraz-dağıtım uygulama dağıtımı"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:178
 msgctxt "@label"
 msgid "Generating Windows installers"
-msgstr ""
+msgstr "Windows yükleyicileri oluşturma"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AskOpenAsProjectOrModelsDialog.qml:17
 msgctxt "@title:window"
@@ -5656,17 +5657,17 @@ msgstr "Deneysel"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/ProfileWarningReset.qml:54
 msgctxt "@info"
 msgid "custom profile is active and you overwrote some settings."
-msgstr ""
+msgstr "özel profili etkin ve bazı ayarların üstüne yazdınız."
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/ProfileWarningReset.qml:68
 msgctxt "@info"
 msgid "custom profile is overriding some settings."
-msgstr ""
+msgstr "özel profili bazı ayarları geçersiz kılıyor."
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/ProfileWarningReset.qml:79
 msgctxt "@info"
 msgid "Some settings were changed."
-msgstr ""
+msgstr "Bazı ayarlar değiştirildi."
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedAdhesionSelector.qml:27
 msgctxt "@label"
@@ -5691,7 +5692,7 @@ msgstr "Kademeli dolgu, yukarıya doğru dolgu miktarını kademeli olarak yüks
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedResolutionSelector.qml:26
 msgctxt "@label"
 msgid "Resolution"
-msgstr ""
+msgstr "Çözünürlük"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:28
 msgctxt "@label"
@@ -5706,17 +5707,17 @@ msgstr "Modellerin askıda kalan kısımlarını destekleyen yapılar oluşturun
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/UnsupportedProfileIndication.qml:31
 msgctxt "@error"
 msgid "Configuration not supported"
-msgstr ""
+msgstr "Yapılandırma desteklenmiyor"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/UnsupportedProfileIndication.qml:39
 msgctxt "@message:text %1 is the name the printer uses for 'nozzle'."
 msgid "No profiles are available for the selected material/%1 configuration. Please change your configuration."
-msgstr ""
+msgstr "Seçilen malzeme/%1 yapılandırması için kullanılabilecek profil yok. Lütfen yapılandırmanızı değiştirin."
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/UnsupportedProfileIndication.qml:47
 msgctxt "@button:label"
 msgid "Learn more"
-msgstr ""
+msgstr "Daha fazla bilgi edinin"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ProfileOverview.qml:36
 msgctxt "@title:column"

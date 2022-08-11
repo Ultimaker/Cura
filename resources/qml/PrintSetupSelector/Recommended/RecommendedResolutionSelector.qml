@@ -22,6 +22,7 @@ Item
         id: resolutionTitle
         anchors.top: parent.top
         anchors.left: parent.left
+        anchors.leftMargin: - UM.Theme.getSize("thick_lining").width
         source: UM.Theme.getIcon("PrintQuality")
         text: catalog.i18nc("@label", "Resolution")
         width: labelColumnWidth

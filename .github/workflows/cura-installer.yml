@@ -5,9 +5,12 @@ on:
         inputs:
             cura_conan_version:
                 description: 'Cura Conan Version'
-                # Fixme: default to cura/latest@testing (which is main)
-                default: 'cura/latest@ultimaker/stable'
+                default: 'cura/latest@ultimaker/testing'
                 required: true
+            conan_args:
+                description: 'Conan args: eq.: --require-override'
+                default: ''
+                required: false
             conan_config:
                 description: 'Conan config branch to use'
                 default: ''
@@ -28,7 +31,8 @@ on:
                 default: false
                 type: boolean
 
-# Run the nightly at 5:25 UTC on working days
+    # Run the nightly at 3:25 UTC on working days
+    #FIXME: Provide the same default values as the workflow dispatch
     schedule:
     - cron: '25 3 * * 1-5'
 
@@ -56,7 +60,11 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                os: [ macos-10.15, windows-2022, ubuntu-20.04 ]
+                include:
+                    - { os: macos-11, os_id: 'mac' }
+                    - { os: windows-2022, os_id: 'win64' }
+                    - { os: ubuntu-20.04, os_id: 'linux' }
+                    - { os: ubuntu-22.04, os_id: 'linux-modern' }
 
         steps:
             -   name: Checkout
@@ -69,10 +77,8 @@ jobs:
                     cache: 'pip'
                     cache-dependency-path: .github/workflows/requirements-conan-package.txt
 
-            -   name: Install Python requirements and Create default Conan profile
-                run: |
-                    pip install -r .github/workflows/requirements-conan-package.txt
-                    conan profile new default --detect
+            -   name: Install Python requirements for runner
+                run: pip install -r .github/workflows/requirements-conan-package.txt
 
             -   name: Use Conan download cache (Bash)
                 if: ${{ runner.os != 'Windows' }}
@@ -89,7 +95,7 @@ jobs:
                     path: |
                         $HOME/.conan/data
                         $HOME/.conan/conan_download_cache
-                    key: conan-${{ runner.os }}-${{ runner.arch }}
+                    key: conan-${{ runner.os }}-${{ runner.arch }}-installer-cache
 
             -   name: Cache Conan local repository packages (Powershell)
                 uses: actions/cache@v3
@@ -99,31 +105,44 @@ jobs:
                         C:\Users\runneradmin\.conan\data
                         C:\.conan
                         C:\Users\runneradmin\.conan\conan_download_cache
-                    key: conan-${{ runner.os }}-${{ runner.arch }}
+                    key: conan-${{ runner.os }}-${{ runner.arch }}-installer-cache
 
             -   name: Install MacOS system requirements
                 if:  ${{ runner.os == 'Macos' }}
-                run: brew install autoconf automake ninja
+                run: brew install autoconf automake ninja create-dmg
 
             -   name: Install Linux system requirements
                 if: ${{ runner.os == 'Linux' }}
                 run: |
-                    sudo apt install build-essential checkinstall zlib1g-dev libssl-dev ninja-build autoconf libx11-dev libx11-xcb-dev libfontenc-dev libice-dev libsm-dev libxau-dev libxaw7-dev libxcomposite-dev libxcursor-dev libxdamage-dev libxdmcp-dev libxext-dev libxfixes-dev libxi-dev libxinerama-dev libxkbfile-dev libxmu-dev libxmuu-dev libxpm-dev libxrandr-dev libxrender-dev libxres-dev libxss-dev libxt-dev libxtst-dev libxv-dev libxvmc-dev libxxf86vm-dev xtrans-dev libxcb-render0-dev libxcb-render-util0-dev libxcb-xkb-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev libxcb-randr0-dev libxcb-shape0-dev libxcb-sync-dev libxcb-xfixes0-dev libxcb-xinerama0-dev xkb-data libxcb-dri3-dev uuid-dev libxcb-util-dev -y
+                    sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+                    sudo apt update
+                    sudo apt upgrade
+                    sudo apt install build-essential checkinstall libegl-dev zlib1g-dev libssl-dev ninja-build autoconf libx11-dev libx11-xcb-dev libfontenc-dev libice-dev libsm-dev libxau-dev libxaw7-dev libxcomposite-dev libxcursor-dev libxdamage-dev libxdmcp-dev libxext-dev libxfixes-dev libxi-dev libxinerama-dev libxkbfile-dev libxmu-dev libxmuu-dev libxpm-dev libxrandr-dev libxrender-dev libxres-dev libxss-dev libxt-dev libxtst-dev libxv-dev libxvmc-dev libxxf86vm-dev xtrans-dev libxcb-render0-dev libxcb-render-util0-dev libxcb-xkb-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev libxcb-randr0-dev libxcb-shape0-dev libxcb-sync-dev libxcb-xfixes0-dev libxcb-xinerama0-dev xkb-data libxcb-dri3-dev uuid-dev libxcb-util-dev libxkbcommon-x11-dev pkg-config -y
                     wget --no-check-certificate --quiet https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage -O $GITHUB_WORKSPACE/appimagetool
                     chmod +x $GITHUB_WORKSPACE/appimagetool
                     echo "APPIMAGETOOL_LOCATION=$GITHUB_WORKSPACE/appimagetool" >> $GITHUB_ENV
+
+            -   name: Install GCC-12 on ubuntu-22.04
+                if: ${{ matrix.os == 'ubuntu-22.04' }}
+                run: |
+                    sudo apt install g++-12 gcc-12 -y
+                    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 12
+                    sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 12
+
+            -   name: Create the default Conan profile
+                run:  conan profile new default --detect
 
             -   name: Configure GPG Key Linux (Bash)
                 if: ${{ runner.os == 'Linux' }}
                 run: echo -n "$GPG_PRIVATE_KEY" | base64 --decode | gpg --import
 
             -   name: Configure Macos keychain (Bash)
+                id: macos-keychain
                 if: ${{ runner.os == 'Macos' }}
-                run: |
-                    CERTIFICATE_PATH=$RUNNER_TEMP/um_keychain.p12
-                    echo -n "$MACOS_CERT_P12" | base64 --decode --output $CERTIFICATE_PATH
-                    security import $CERTIFICATE_PATH -p $MACOS_CERT_PASSPHRASE -A
-                    security unlock -p $MACOS_CERT_USER $CERTIFICATE_PATH
+                uses: apple-actions/import-codesign-certs@v1
+                with:
+                    p12-file-base64: ${{ secrets.MACOS_CERT_P12 }}
+                    p12-password: ${{ secrets.MACOS_CERT_PASSPHRASE }}
 
             -   name: Clean Conan local cache
                 if: ${{ inputs.conan_clean_local_cache }}
@@ -138,7 +157,7 @@ jobs:
                 run: conan config install https://github.com/Ultimaker/conan-config.git
 
             -   name: Create the Packages
-                run: conan install ${{ inputs.cura_conan_version }} --build=missing --update -c tools.env.virtualenv:powershell=True -if cura_inst -g VirtualPythonEnv -o cura:enterprise=${{ inputs.enterprise }} -o cura:staging=${{ inputs.staging }}
+                run: conan install ${{ inputs.cura_conan_version }} ${{ inputs.conan_args }} --build=missing --update -if cura_inst -g VirtualPythonEnv -o cura:enterprise=${{ inputs.enterprise }} -o cura:staging=${{ inputs.staging }} --json "cura_inst/conan_install_info.json"
 
             -   name: Set Environment variables for Cura (bash)
                 if: ${{ runner.os != 'Windows' }}
@@ -152,58 +171,65 @@ jobs:
                     .\cura_inst\Scripts\activate_github_actions_env.ps1
                     .\cura_inst\Scripts\activate_github_actions_version_env.ps1
 
+            -   name: Unlock Macos keychain (Bash)
+                if: ${{ runner.os == 'Macos' }}
+                run: security unlock -p $TEMP_KEYCHAIN_PASSWORD signing_temp.keychain
+                env:
+                    TEMP_KEYCHAIN_PASSWORD: ${{  steps.macos-keychain.outputs.keychain-password }}
+
+                # FIXME: This is a workaround to ensure that we use and pack a shared library for OpenSSL 1.1.1l. We currently compile
+                #  OpenSSL statically for CPython, but our Python Dependenies (such as PyQt6) require a shared library.
+                #  Because Conan won't allow for building the same library with two different options (easily) we need to install it explicitly
+                #  and do a manual copy to the VirtualEnv, such that Pyinstaller can find it.
+
+            -   name: Install OpenSSL shared
+                run: conan install openssl/1.1.1l@_/_ --build=missing --update -o openssl:shared=True -g deploy
+
+            -   name: Copy OpenSSL shared (Bash)
+                if: ${{ runner.os != 'Windows' }}
+                run: |
+                    cp ./openssl/lib/*.so* ./cura_inst/bin/ || true
+                    cp ./openssl/lib/*.dylib* ./cura_inst/bin/ || true                    
+
+            -   name: Copy OpenSSL shared (Powershell)
+                if: ${{ runner.os == 'Windows' }}
+                run: |
+                    cp openssl/bin/*.dll ./cura_inst/Scripts/
+                    cp openssl/lib/*.lib ./cura_inst/Lib/
+
             -   name: Create the Cura dist
                 run: pyinstaller ./cura_inst/Ultimaker-Cura.spec
 
             -   name: Archive the artifacts (bash)
                 if: ${{ github.event.inputs.installer == 'false' && runner.os != 'Windows' }}
-                run: tar -zcf "./Ultimaker-Cura-$CURA_VERSION_FULL-${{ runner.os }}-${{ runner.arch }}.tar.gz" "./Ultimaker-Cura/"
+                run: tar -zcf "./Ultimaker-Cura-$CURA_VERSION_FULL-${{ matrix.os_id }}.tar.gz" "./Ultimaker-Cura/"
                 working-directory: dist
 
             -   name: Archive the artifacts (Powershell)
                 if: ${{ github.event.inputs.installer == 'false' && runner.os == 'Windows' }}
-                run: Compress-Archive -Path ".\Ultimaker-Cura" -DestinationPath ".\Ultimaker-Cura-$Env:CURA_VERSION_FULL-${{ runner.os }}-${{ runner.arch }}.zip"
+                run: Compress-Archive -Path ".\Ultimaker-Cura" -DestinationPath ".\Ultimaker-Cura-$Env:CURA_VERSION_FULL-${{ matrix.os_id }}.zip"
                 working-directory: dist
 
             -   name: Create the Windows exe installer (Powershell)
                 if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Windows' }}
                 run: |
-                    python ..\cura_inst\packaging\NSIS\nsis-configurator.py ".\Ultimaker-Cura" "..\cura_inst\packaging\NSIS\Ultimaker-Cura.nsi.jinja" "Ultimaker Cura" "Ultimaker-Cura.exe" "$Env:CURA_VERSION_MAJOR" "$Env:CURA_VERSION_MINOR" "$Env:CURA_VERSION_PATCH" "$Env:CURA_VERSION_BUILD" "Ultimaker B.V." "https://ultimaker.com" "..\cura_inst\packaging\cura_license.txt" "LZMA" "..\cura_inst\packaging\NSIS\cura_banner_nsis.bmp" "..\cura_inst\packaging\icons\Cura.ico" "Ultimaker-Cura-$Env:CURA_VERSION_FULL-${{ runner.os }}-${{ runner.arch }}.exe"
-                    makensis /V2 /P4 Ultimaker-Cura.nsi
+                    python ..\cura_inst\packaging\NSIS\create_windows_installer.py ../cura_inst . "Ultimaker-Cura-$Env:CURA_VERSION_FULL-${{ matrix.os_id }}.exe"
                 working-directory: dist
 
             -   name: Create the Linux AppImage (Bash)
                 if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Linux' }}
-                run: python ../cura_inst/packaging/AppImage/create_appimage.py ./Ultimaker-Cura $CURA_VERSION_FULL
-                working-directory: dist
-
-            -   name: Create the MacOS dmg (Bash) alternative
-                if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Macos' }}
-                run: create-dmg --window-pos 640 360 --volicon "../cura_inst/packaging/icons/VolumeIcons_Cura.icns" --window-size 690 503 --icon-size 90 --icon "Ultimaker-Cura.app" 169 272 --app-drop-link 520 272 --eula "../cura_inst/packaging/cura_license.txt" --background "../cura_inst/packaging/icons/cura_background_dmg.png" --rez Rez "./Ultimaker-Cura.dmg" "./Ultimaker-Cura.app"
-                working-directory: dist
-
-            -   name: Sign the MacOS dmg (Bash) alternative
-                if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Macos' }}
-                run: codesign -s "$CODESIGN_IDENTITY" --timestamp -i "nl.ultimaker.cura.dmg" "./Ultimaker-Cura.dmg"
-                working-directory: dist
-
-            -   name: Notarize the MacOS dmg (Bash) alternative
-                if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Macos' }}
-                run: xcrun altool --notarize-app --primary-bundle-id "nl.ultimaker.cura" --username "$MAC_NOTARIZE_USER" --password "$MAC_NOTARIZE_PASS" --file "./Ultimaker-Cura.dmg"
+                run: python ../cura_inst/packaging/AppImage/create_appimage.py ./Ultimaker-Cura $CURA_VERSION_FULL "Ultimaker-Cura-$CURA_VERSION_FULL-${{ matrix.os_id }}.AppImage"
                 working-directory: dist
 
             -   name: Create the MacOS dmg (Bash)
                 if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Macos' }}
-                run: python ../cura_inst/packaging/dmg/dmg_sign_notarize.py
+                run: python ../cura_inst/packaging/dmg/dmg_sign_noterize.py ../cura_inst . "Ultimaker-Cura-$CURA_VERSION_FULL-${{ matrix.os_id }}.dmg"
                 working-directory: dist
-                env:
-                    SOURCE_DIR: ${{ env.GITHUB_WORKSPACE }}/cura_inst
-                    DIST_DIR: ${{ env.GITHUB_WORKSPACE }}/dist
 
             -   name: Upload the artifacts
                 uses: actions/upload-artifact@v3
                 with:
-                    name: Ultimaker-Cura-${{ env.CURA_VERSION_FULL }}-${{ runner.os }}-${{ runner.arch }}
+                    name: Ultimaker-Cura-${{ env.CURA_VERSION_FULL }}-${{ matrix.os_id }}
                     path: |
                         dist/*.tar.gz
                         dist/*.zip
@@ -212,4 +238,17 @@ jobs:
                         dist/*.dmg
                         dist/*.AppImage
                         dist/*.asc
-                    retention-days: 2
+                    retention-days: 5
+
+    notify-export:
+        if: ${{ always() }}
+        needs: [ cura-installer-create ]
+
+        uses: ultimaker/cura/.github/workflows/notify.yml@main
+        with:
+            success: ${{ contains(join(needs.*.result, ','), 'success') }}
+            success_title: "Create the Cura distributions"
+            success_body: "Installers for ${{ inputs.cura_conan_version }}"
+            failure_title: "Failed to create the Cura distributions"
+            failure_body: "Failed to create at least 1 installer for ${{ inputs.cura_conan_version }}"
+        secrets: inherit
