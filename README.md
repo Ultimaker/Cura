@@ -42,6 +42,8 @@
 
 ![Showcase]
 
+</div>
+
 <br>
 <br>
 
@@ -59,17 +61,6 @@ If the Cura user interface still starts, you can also reach this directory from 
 An alternative is to install the [ExtensiveSupportLogging Plugin]
 this creates a zip folder of the relevant log files. If you're experiencing performance issues, we might ask you to connect the CPU profiler
 in this plugin and attach the collected data to your support ticket. 
-
-
-## License
-![Badge License] 
-Cura is released under terms of the LGPLv3 or higher. A copy of this license should be included with the software. Terms of the license can be found in the LICENSE file. Or at
-http://www.gnu.org/licenses/lgpl.html
-
-> But in general it boils down to:  
-> **You need to share the source of any Cura modifications**
-
-</div>
 
 <br>
 
