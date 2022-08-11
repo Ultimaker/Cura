@@ -34,6 +34,7 @@
 [![Button Plugins]][Plugins]   
 [![Button Machines]][Machines]
 
+[![Button Report]][Report]   
 [![Button Settings]][Settings]   
 [![Button Localize]][Localize]
 
@@ -45,29 +46,10 @@
 </div>
 
 <br>
-<br>
-
-## Logging Issues
-
-For crashes and similar issues, please attach the following information:
-
-* (On Windows) The log as produced by dxdiag (start -> run -> dxdiag -> save output)
-* The Cura GUI log file, located at
-    * `%APPDATA%\cura\<Cura version>\cura.log` (Windows), or usually `C:\Users\<your username>\AppData\Roaming\cura\<Cura version>\cura.log`
-    * `$HOME/Library/Application Support/cura/<Cura version>/cura.log` (OSX)
-    * `$HOME/.local/share/cura/<Cura version>/cura.log` (Ubuntu/Linux)
-
-If the Cura user interface still starts, you can also reach this directory from the application menu in Help -> Show settings folder.
-An alternative is to install the [ExtensiveSupportLogging Plugin]
-this creates a zip folder of the relevant log files. If you're experiencing performance issues, we might ask you to connect the CPU profiler
-in this plugin and attach the collected data to your support ticket. 
-
-<br>
 
 
 <!----------------------------------------------------------------------------->
 
-[ExtensiveSupportLogging Plugin]: https://marketplace.ultimaker.com/app/cura/plugins/UltimakerPackages/ExtensiveSupportLogging
 [Contributors]: https://github.com/Ultimaker/Cura/graphs/contributors
 [PullRequests]: https://github.com/Ultimaker/Cura/pulls
 [Machines]: https://github.com/Ultimaker/Cura/wiki/Adding-new-machine-profiles-to-Cura
@@ -82,6 +64,7 @@ in this plugin and attach the collected data to your support ticket.
 
 [Showcase]: cura-logo.PNG
 [License]: LICENSE
+[Report]: docs/Report.md
 [Logo]: resources/images/cura-icon.png
 [#]: #
 
@@ -105,5 +88,6 @@ in this plugin and attach the collected data to your support ticket.
 [Button Settings]: https://img.shields.io/badge/Configuration-00979D?style=for-the-badge&logoColor=white&logo=CodeReview
 [Button Building]: https://img.shields.io/badge/Building_Cura-blue?style=for-the-badge&logoColor=white&logo=GitBook
 [Button Plugins]: https://img.shields.io/badge/Plugin_Usage-569A31?style=for-the-badge&logoColor=white&logo=ROS
+[Button Report]: https://img.shields.io/badge/Report_Issues-C9284D?style=for-the-badge&logoColor=white&logo=Cliqz
 
 
