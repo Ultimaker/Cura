@@ -1,18 +1,22 @@
-# Cura
 
-<p align="center">
+<br>
 
-[![Badge Test]][Test]
-[![Badge Conan]][Conan]
-[![Badge Issues]][Issues]
+<div align = center>
+
+[![Badge Issues]][Issues]   
+[![Badge PullRequests]][PullRequests]   
 [![Badge Closed]][Closed]
-[![Badge PullRequests]][PullRequests]
-[![Badge Contributors]][Contributors]
-[![Badge Size]][#]
-[![Badge Test]][Test]
-[![Badge License]][License]
 
-</p>
+[![Badge Size]][#]   
+[![Badge License]][License]   
+[![Badge Contributors]][Contributors]
+
+[![Badge Test]][Test]   
+[![Badge Conan]][Conan]   
+
+<br>
+
+# Cura
 
 Ultimaker Cura is a state-of-the-art slicer application to prepare your 3D models for printing with a 3D printer. With hundreds of settings
 and hundreds of community-managed print profiles, Ultimaker Cura is sure to lead your next project to a success.
@@ -58,6 +62,10 @@ http://www.gnu.org/licenses/lgpl.html
 > But in general it boils down to:  
 > **You need to share the source of any Cura modifications**
 
+</div>
+
+<br>
+
 
 <!----------------------------------------------------------------------------->
 
@@ -81,13 +89,13 @@ http://www.gnu.org/licenses/lgpl.html
 
 <!---------------------------------[ Badges ]---------------------------------->
 
-[Badge Contributors]: https://img.shields.io/github/contributors/ultimaker/cura
-[Badge PullRequests]: https://img.shields.io/github/issues-pr/ultimaker/cura
-[Badge License]: https://img.shields.io/github/license/ultimaker/cura?style=flat
-[Badge Closed]: https://img.shields.io/github/issues-closed/ultimaker/cura?color=g
-[Badge Issues]: https://img.shields.io/github/issues/ultimaker/cura
-[Badge Conan]: https://github.com/Ultimaker/Cura/actions/workflows/conan-package.yml/badge.svg
-[Badge Test]: https://github.com/Ultimaker/Cura/actions/workflows/unit-test.yml/badge.svg
-[Badge Size]: https://img.shields.io/github/repo-size/ultimaker/cura?style=flat
+[Badge Contributors]: https://img.shields.io/github/contributors/ultimaker/cura?style=for-the-badge&logoColor=white&labelColor=e2467d&color=b43863&logo=
+[Badge PullRequests]: https://img.shields.io/github/issues-pr/ultimaker/cura?style=for-the-badge&logoColor=white&labelColor=yellow&color=bc9513&logo=
+[Badge License]: https://img.shields.io/badge/License-LGPL3-015d93.svg?style=for-the-badge&labelColor=blue&logoColor=white&logo=GNU
+[Badge Closed]: https://img.shields.io/github/issues-closed/ultimaker/cura?style=for-the-badge&logoColor=white&labelColor=569A31&color=457a27&logo=
+[Badge Issues]: https://img.shields.io/github/issues/ultimaker/cura?style=for-the-badge&logoColor=white&labelColor=C9284D&color=931d39&logo=
+[Badge Conan]: https://img.shields.io/github/workflow/status/Ultimaker/Cura/conan-package?style=for-the-badge&logoColor=white&labelColor=EF443B&color=bf362f&logo=&label=Conan%20Package
+[Badge Test]: https://img.shields.io/github/workflow/status/Ultimaker/Cura/unit-test?style=for-the-badge&logoColor=white&labelColor=00979D&color=007a7e&logo=&label=Unit%20Test
+[Badge Size]: https://img.shields.io/github/repo-size/ultimaker/cura?style=for-the-badge&logoColor=white&labelColor=66459B&color=50377a&logo=
 
 
