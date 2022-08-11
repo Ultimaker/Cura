@@ -15,6 +15,9 @@
 [![Badge Conan]][Conan]   
 
 <br>
+<br>
+
+![Logo]
 
 # Ultimaker Cura
 
@@ -88,6 +91,7 @@ http://www.gnu.org/licenses/lgpl.html
 
 [Showcase]: cura-logo.PNG
 [License]: LICENSE
+[Logo]: resources/images/cura-icon.png
 [#]: #
 
 
