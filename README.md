@@ -16,12 +16,31 @@
 
 <br>
 
-# Cura
+# Ultimaker Cura
 
-Ultimaker Cura is a state-of-the-art slicer application to prepare your 3D models for printing with a 3D printer. With hundreds of settings
-and hundreds of community-managed print profiles, Ultimaker Cura is sure to lead your next project to a success.
+*State-of-the-art slicer app to prepare* <br>
+*your 3D models for your 3D printer.*
+
+*With hundreds of settings & community-managed print profiles,* <br>
+*Ultimaker Cura is sure to lead your next project to a success.*
+
+<br>
+<br>
+
+[![Button Building]][Building]   
+[![Button Plugins]][Plugins]   
+[![Button Machines]][Machines]
+
+[![Button Settings]][Settings]   
+[![Button Localize]][Localize]
+
+<br>
+<br>
 
 ![Showcase]
+
+<br>
+<br>
 
 ## Logging Issues
 
@@ -38,21 +57,6 @@ An alternative is to install the [ExtensiveSupportLogging Plugin]
 this creates a zip folder of the relevant log files. If you're experiencing performance issues, we might ask you to connect the CPU profiler
 in this plugin and attach the collected data to your support ticket. 
 
-## Running from Source
-Please check our [Wiki page][Building] for details about running Cura from source.
-
-## Plugins
-Please check our [Wiki page][Plugins] for details about creating and using plugins.
-
-## Supported printers
-Please check our [Wiki page][Machines] for guidelines about adding support
-for new machines.
-
-## Configuring Cura
-Please check out [Wiki page][Settings] about configuration options for developers.
-
-## Translating Cura
-Please check out [Wiki page][Localize] about how to translate Cura into other languages.
 
 ## License
 ![Badge License] 
@@ -89,13 +93,22 @@ http://www.gnu.org/licenses/lgpl.html
 
 <!---------------------------------[ Badges ]---------------------------------->
 
-[Badge Contributors]: https://img.shields.io/github/contributors/ultimaker/cura?style=for-the-badge&logoColor=white&labelColor=e2467d&color=b43863&logo=
-[Badge PullRequests]: https://img.shields.io/github/issues-pr/ultimaker/cura?style=for-the-badge&logoColor=white&labelColor=yellow&color=bc9513&logo=
+[Badge Contributors]: https://img.shields.io/github/contributors/ultimaker/cura?style=for-the-badge&logoColor=white&labelColor=e2467d&color=a2325b&logo=GitHub
+[Badge PullRequests]: https://img.shields.io/github/issues-pr/ultimaker/cura?style=for-the-badge&logoColor=white&labelColor=yellow&color=a68311&logo=GitExtensions
 [Badge License]: https://img.shields.io/badge/License-LGPL3-015d93.svg?style=for-the-badge&labelColor=blue&logoColor=white&logo=GNU
-[Badge Closed]: https://img.shields.io/github/issues-closed/ultimaker/cura?style=for-the-badge&logoColor=white&labelColor=569A31&color=457a27&logo=
-[Badge Issues]: https://img.shields.io/github/issues/ultimaker/cura?style=for-the-badge&logoColor=white&labelColor=C9284D&color=931d39&logo=
-[Badge Conan]: https://img.shields.io/github/workflow/status/Ultimaker/Cura/conan-package?style=for-the-badge&logoColor=white&labelColor=EF443B&color=bf362f&logo=&label=Conan%20Package
-[Badge Test]: https://img.shields.io/github/workflow/status/Ultimaker/Cura/unit-test?style=for-the-badge&logoColor=white&labelColor=00979D&color=007a7e&logo=&label=Unit%20Test
-[Badge Size]: https://img.shields.io/github/repo-size/ultimaker/cura?style=for-the-badge&logoColor=white&labelColor=66459B&color=50377a&logo=
+[Badge Closed]: https://img.shields.io/github/issues-closed/ultimaker/cura?style=for-the-badge&logoColor=white&labelColor=569A31&color=457a27&logo=AddThis
+[Badge Issues]: https://img.shields.io/github/issues/ultimaker/cura?style=for-the-badge&logoColor=white&labelColor=C9284D&color=931d39&logo=AdBlock
+[Badge Conan]: https://img.shields.io/github/workflow/status/Ultimaker/Cura/conan-package?style=for-the-badge&logoColor=white&labelColor=EF443B&color=aa302a&logo=Conan&label=Conan%20Package
+[Badge Test]: https://img.shields.io/github/workflow/status/Ultimaker/Cura/unit-test?style=for-the-badge&logoColor=white&labelColor=00979D&color=007175&logo=Codacy&label=Unit%20Test
+[Badge Size]: https://img.shields.io/github/repo-size/ultimaker/cura?style=for-the-badge&logoColor=white&labelColor=66459B&color=50377a&logo=GoogleAnalytics
+
+
+<!---------------------------------[ Buttons ]--------------------------------->
+
+[Button Localize]: https://img.shields.io/badge/Help_Localize-e2467d?style=for-the-badge&logoColor=white&logo=GoogleTranslate
+[Button Machines]: https://img.shields.io/badge/Adding_Machines-yellow?style=for-the-badge&logoColor=white&logo=CloudFoundry
+[Button Settings]: https://img.shields.io/badge/Configuration-00979D?style=for-the-badge&logoColor=white&logo=CodeReview
+[Button Building]: https://img.shields.io/badge/Building_Cura-blue?style=for-the-badge&logoColor=white&logo=GitBook
+[Button Plugins]: https://img.shields.io/badge/Plugin_Usage-569A31?style=for-the-badge&logoColor=white&logo=ROS
 
 
