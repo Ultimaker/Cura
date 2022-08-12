@@ -167,7 +167,7 @@ class CuraConan(ConanFile):
         pyinstaller_metadata = self._um_data()["pyinstaller"]
         datas = [(str(self._base_dir.joinpath("conan_install_info.json")), ".")]
         for data in pyinstaller_metadata["datas"].values():
-            if not self.options.internal and ("internal" not in data or not data["internal"]):
+            if not self.options.internal and "internal" in data and not data["internal"]:
                 continue
 
             if "package" in data:  # get the paths from conan package
