@@ -4,7 +4,7 @@ Each setting in Cura has a number of properties. It's not just a key and a value
 
 * `key` (string): The identifier by which the setting is referenced. This is not a human-readable name, but just a reference string, such as `layer_height_0`. Typically these are named with the most significant category first, in order to sort them better, such as `material_print_temperature`. This is not actually a real property but just an identifier; it can't be changed.
 * `value` (optional): The current value of the setting. This can be a function, an arbitrary Python expression that depends on the values of other settings. If it's not present, the `default_value` is used.
-* `default_value`: A default value for the setting if `value` is undefined. This property is required however. It can't be a Python expression, but it can be any JSON type. This is made separate so that CuraEngine can read it out as well for its debugging mode via the command line, without needing a complete Python interpreter.
+* `default_value`: A default value for the setting if `value` is undefined. This property is required. It can't be a Python expression, but it can be any JSON type. This is made separate so that CuraEngine can read it out for its debugging mode via the command line, without needing a complete Python interpreter.
 * `label` (string): The human-readable name for the setting. This label is translated.
 * `description` (string): A longer description of what the setting does when you change it. This description is translated as well.
 * `type` (string): The type of value that this setting contains. Allowed types are: `bool`, `str`, `float`, `int`, `enum`, `category`, `[int]`, `vec3`, `polygon` and `polygons`.
