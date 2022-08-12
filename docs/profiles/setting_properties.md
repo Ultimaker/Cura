@@ -58,15 +58,15 @@ Each setting in Cura has a number of properties. It's not just a key and a value
    If it's not, this will be treated as a setting error and Cura will not allow the user to slice.  
    Only applies to string-type settings.
 * `warning_description` (optional string): A warning message to display when the setting has a warning value.  
-  This is currently unused by Cura.
+  *This is currently unused by Cura.*
 * `error_description` (optional string): An error message to display when the setting has an error value.  
-  This is currently unused by Cura.
+  *This is currently unused by Cura.*
 * `options` (dictionary): A list of values that the user can choose from.  
   The keys of this dictionary are keys that CuraEngine identifies the option with.  
   The values are human-readable strings and will be translated.  
   Only applies to (and only required for) enum-type settings.
 * `comments` (optional string): Comments to other programmers about the setting.  
-  This is not used by Cura.
+  *This is not used by Cura.*
 * `is_uuid` (optional boolean): Whether or not this setting indicates a UUID-4.  
   If it is, the setting will indicate an error if it's not in the correct format.  
   Only applies to string-type settings.
