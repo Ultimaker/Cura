@@ -66,7 +66,7 @@ Each setting in Cura has a number of properties. It's not just a key and a value
   The values are human-readable strings and will be translated.  
   Only applies to (and only required for) enum-type settings.
 * `comments` (optional string): Comments to other programmers about the setting.  
-  *This is not used by Cura.*
+  *This is currently unused by Cura.*
 * `is_uuid` (optional boolean): Whether or not this setting indicates a UUID-4.  
   If it is, the setting will indicate an error if it's not in the correct format.  
   Only applies to string-type settings.
