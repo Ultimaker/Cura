@@ -11,7 +11,7 @@ Each setting in Cura has a number of properties. It's not just a key and a value
   If it's not present, the `default_value` is used.
 * `default_value`: A default value for the setting if `value` is undefined.  
   This property is required.  
-  It can't be a Python expression, but it can be any JSON type. 
+  It can't be a Python expression, but it can be any JSON type.  
   This is made separate so that CuraEngine can read it out for its debugging mode via the command line, without needing a complete Python interpreter.
 * `label` (string): The human-readable name for the setting.  
   This label is translated.
@@ -36,15 +36,15 @@ Each setting in Cura has a number of properties. It's not just a key and a value
   By convention this is used to prevent setting values that are technically or physically impossible, such as a support overhang angle of more than 90 degrees.   
   This property only applies to numerical settings.
 * `minimum_value_warning` (optional): The threshold under which a warning is displayed to the user.  
-  By convention this is used to indicate that it will probably not print very nicely with such a low setting value. 
+  By convention this is used to indicate that it will probably not print very nicely with such a low setting value.   
   This property only applies to numerical settings.
 * `maximum_value_warning` (optional): The threshold above which a warning is displayed to the user.  
   By convention this is used to indicate that it will probably not print very nicely with such a high setting value.   
   This property only applies to numerical settings.
 * `settable_globally` (optional boolean): Whether the setting can be changed globally.  
   For some mesh-type settings such as `support_mesh` this doesn't make sense, so those can't be changed globally. They are not displayed in the main settings list then.
-* `settable_per_meshgroup` (optional boolean): Whether a setting can be changed per group of meshes. 
-  Currently unused in Cura.
+* `settable_per_meshgroup` (optional boolean): Whether a setting can be changed per group of meshes.  
+  *This is currently unused by Cura.*
 * `settable_per_extruder` (optional boolean): Whether a setting can be changed per extruder.  
   Some settings, like the build plate temperature, can't be adjusted separately for each extruder. An icon is shown in the interface to indicate this.  
   If the user changes these settings they are stored in the global stack.
