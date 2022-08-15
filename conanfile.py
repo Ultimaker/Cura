@@ -101,6 +101,10 @@ class CuraConan(ConanFile):
         return "https://digitalfactory-staging.ultimaker.com" if self._staging else "https://digitalfactory.ultimaker.com"
 
     @property
+    def _cura_latest_url(self):
+        return "https://raw.githubusercontent.com/Ultimaker/Uranium/CURA-9272_semver_postfix/tests/latest.json"
+
+    @property
     def requirements_txts(self):
         if self.options.devtools:
             return ["requirements.txt", "requirements-ultimaker.txt", "requirements-dev.txt"]
@@ -161,7 +165,8 @@ class CuraConan(ConanFile):
                 cura_cloud_api_version = self.options.cloud_api_version,
                 cura_cloud_account_api_root = self._cloud_account_api_root,
                 cura_marketplace_root = self._marketplace_root,
-                cura_digital_factory_url = self._digital_factory_url))
+                cura_digital_factory_url = self._digital_factory_url,
+                cura_latest_url = self._cura_latest_url))
 
     def _generate_pyinstaller_spec(self, location, entrypoint_location, icon_path, entitlements_file):
         pyinstaller_metadata = self._um_data()["pyinstaller"]
