@@ -83,7 +83,7 @@
         "speed_z_hop": { "value": 5 },
 
         "retraction_enable": { "value": true },
-        "retraction_amount": { "value": 2.5 },
+        "retraction_amount": { "value": 1.0 },
         "retraction_speed": { "value": 40 },
 	    
         "cool_fan_full_at_height": { "value": "layer_height_0 + 2 * layer_height" },
