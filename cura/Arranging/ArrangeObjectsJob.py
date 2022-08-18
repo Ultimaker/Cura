@@ -28,18 +28,20 @@ class ArrangeObjectsJob(Job):
                                  title = i18n_catalog.i18nc("@info:title", "Finding Location"))
         status_message.show()
 
-        found_solution_for_all = None
         try:
             found_solution_for_all = arrange(self._nodes, Application.getInstance().getBuildVolume(), self._fixed_nodes)
         except:  # If the thread crashes, the message should still close
+            found_solution_for_all = False
             Logger.logException("e", "Unable to arrange the objects on the buildplate. The arrange algorithm has crashed.")
 
         status_message.hide()
-        if found_solution_for_all is not None and not found_solution_for_all:
+
+        if not found_solution_for_all:
             no_full_solution_message = Message(
                     i18n_catalog.i18nc("@info:status",
                                        "Unable to find a location within the build volume for all objects"),
                     title = i18n_catalog.i18nc("@info:title", "Can't Find Location"),
                     message_type = Message.MessageType.ERROR)
             no_full_solution_message.show()
+
         self.finished.emit(self)
