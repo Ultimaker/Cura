@@ -268,27 +268,25 @@ class CuraStackBuilder:
         return definition_changes_container
 
     @classmethod
-    def createAbstractMachine(cls, name, definition_id):
-        # cls.createMachine(definition_id, definition_id)
-        """Create a new instance of a machine.
+    def createAbstractMachine(cls, definition_id) -> Optional[AbstractMachine]:
+        """Create a new instance of an abstract machine.
 
-                :param name: The name of the new machine.
-                :param definition_id: The ID of the machine definition to use.
-                :param machine_extruder_count: The number of extruders in the machine.
+        :param definition_id: The ID of the machine definition to use.
 
-                :return: The new global stack or None if an error occurred.
-                """
+        :return: The new Abstract Machine or None if an error occurred.
+        """
+        abstract_machine_id = definition_id + "_abstract_machine"
 
         from cura.CuraApplication import CuraApplication
         application = CuraApplication.getInstance()
         registry = application.getContainerRegistry()
         container_tree = ContainerTree.getInstance()
 
-        if registry.findContainerStacks(type="abstract_machine", id=definition_id):
+        if registry.findContainerStacks(type="abstract_machine", id=abstract_machine_id):
             # This abstract machine already exists
-            return
+            return None
 
-        match registry.findDefinitionContainers(id=definition_id):
+        match registry.findDefinitionContainers(type="machine", id=definition_id):
             case []:
                 # It should not be possible for the definition to be missing since an abstract machine will only
                 # be created as a result of a machine with definition_id being created.
@@ -296,26 +294,20 @@ class CuraStackBuilder:
                 return None
             case [machine_definition, *_definitions]:
                 machine_node = container_tree.machines[machine_definition.getId()]
+                name = machine_definition.getName()
 
-                generated_name = registry.createUniqueName("machine", "", name, machine_definition.getName())
-                # Make sure the new name does not collide with any definition or (quality) profile
-                # createUniqueName() only looks at other stacks, but not at definitions or quality profiles
-                # Note that we don't go for uniqueName() immediately because that function matches with ignore_case set to true
-                if registry.findContainersMetadata(id=generated_name):
-                    generated_name = registry.uniqueName(generated_name)
-
-                stack = AbstractMachine(generated_name)
+                stack = AbstractMachine(abstract_machine_id)
                 stack.setDefinition(machine_definition)
                 cls.createUserContainer(
-                    generated_name,
+                    name,
                     machine_definition,
+                    stack,
                     application.empty_variant_container,
                     application.empty_material_container,
                     machine_node.preferredGlobalQuality().container,
                 )
 
-                # FIXME: This should have a pretty name
-                stack.setName(generated_name)
+                stack.setName(name)
 
                 registry.addContainer(stack)
 
