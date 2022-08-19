@@ -405,6 +405,8 @@ class CloudOutputDeviceManager:
 
         self._setOutputDeviceMetadata(device, new_machine)
 
+        CuraStackBuilder.createAbstractMachine(new_machine)
+
         if activate:
             CuraApplication.getInstance().getMachineManager().setActiveMachine(new_machine.getId())
 
