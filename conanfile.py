@@ -1,10 +1,5 @@
 import os
-import sys
 from pathlib import Path
-
-from io import StringIO
-
-from platform import python_version
 
 from jinja2 import Template
 
@@ -14,7 +9,7 @@ from conan.tools import files
 from conan.tools.env import VirtualRunEnv, Environment
 from conan.errors import ConanInvalidConfiguration
 
-required_conan_version = ">=1.47.0"
+required_conan_version = ">=1.48.0"
 
 
 class CuraConan(ConanFile):
@@ -40,7 +35,8 @@ class CuraConan(ConanFile):
         "devtools": [True, False],  # FIXME: Split this up in testing and (development / build (pyinstaller) / system installer) tools
         "cloud_api_version": "ANY",
         "display_name": "ANY",  # TODO: should this be an option??
-        "cura_debug_mode": [True, False]  # FIXME: Use profiles
+        "cura_debug_mode": [True, False],  # FIXME: Use profiles
+        "internal": [True, False]
     }
     default_options = {
         "enterprise": "False",
@@ -48,7 +44,8 @@ class CuraConan(ConanFile):
         "devtools": False,
         "cloud_api_version": "1",
         "display_name": "Ultimaker Cura",
-        "cura_debug_mode": False  # Not yet implemented
+        "cura_debug_mode": False,  # Not yet implemented
+        "internal": False,
     }
     scm = {
         "type": "git",
@@ -57,18 +54,9 @@ class CuraConan(ConanFile):
         "revision": "auto"
     }
 
-    # TODO: Add unit tests (but they need a different jinja template
-    _pycharm_targets = [{
-            "name": "cura",
-            "module_name": "Cura",
-            "script_name": "cura_app.py",
-        }, {
-            "name": "cura_external_engine",
-            "module_name": "Cura",
-            "script_name": "cura_app.py",
-            "parameters": "--external-backend"
-        }
-    ]
+    @property
+    def _pycharm_targets(self):
+        return self.conan_data["pycharm_targets"]
 
     # FIXME: These env vars should be defined in the runenv.
     _cura_env = None
@@ -157,11 +145,16 @@ class CuraConan(ConanFile):
         with open(Path(__file__).parent.joinpath("CuraVersion.py.jinja"), "r") as f:
             cura_version_py = Template(f.read())
 
+        cura_version = self.version
+        if self.options.internal:
+            version = tools.Version(self.version)
+            cura_version = f"{version.major}.{version.minor}.{version.patch}-{version.prerelease.replace('+', '+internal_')}"
+
         with open(Path(location, "CuraVersion.py"), "w") as f:
             f.write(cura_version_py.render(
                 cura_app_name = self.name,
                 cura_app_display_name = self.options.display_name,
-                cura_version = self.version,
+                cura_version = cura_version,
                 cura_build_type = "Enterprise" if self._enterprise else "",
                 cura_debug_mode = self.options.cura_debug_mode,
                 cura_cloud_api_root = self._cloud_api_root,
@@ -174,6 +167,9 @@ class CuraConan(ConanFile):
         pyinstaller_metadata = self._um_data()["pyinstaller"]
         datas = [(str(self._base_dir.joinpath("conan_install_info.json")), ".")]
         for data in pyinstaller_metadata["datas"].values():
+            if not self.options.internal and data.get("internal", False):
+                continue
+
             if "package" in data:  # get the paths from conan package
                 if data["package"] == self.name:
                     if self.in_local_cache:
@@ -255,6 +251,9 @@ class CuraConan(ConanFile):
     def requirements(self):
         for req in self._um_data()["requirements"]:
             self.requires(req)
+        if self.options.internal:
+            for req in self._um_data()["internal_requirements"]:
+                self.requires(req)
 
     def layout(self):
         self.folders.source = "."
@@ -293,11 +292,17 @@ class CuraConan(ConanFile):
         self.copy("*.fdm_material", root_package = "fdm_materials", src = "@resdirs", dst = "resources/materials", keep_path = False)
         self.copy("*.sig", root_package = "fdm_materials", src = "@resdirs", dst = "resources/materials", keep_path = False)
 
+        if self.options.internal:
+            self.copy("*.fdm_material", root_package = "fdm_materials_private", src = "@resdirs", dst = "resources/materials", keep_path = False)
+            self.copy("*.sig", root_package = "fdm_materials_private", src = "@resdirs", dst = "resources/materials", keep_path = False)
+            self.copy("*", root_package = "cura_private_data", src = self.deps_cpp_info["cura_private_data"].resdirs[0],
+                           dst = self._share_dir.joinpath("cura", "resources"), keep_path = True)
+
         # Copy resources of cura_binary_data
         self.copy("*", root_package = "cura_binary_data", src = self.deps_cpp_info["cura_binary_data"].resdirs[0],
-                       dst = "venv/share/cura", keep_path = True)
+                       dst = self._share_dir.joinpath("cura", "resources"), keep_path = True)
         self.copy("*", root_package = "cura_binary_data", src = self.deps_cpp_info["cura_binary_data"].resdirs[1],
-                       dst = "venv/share/uranium", keep_path = True)
+                       dst =self._share_dir.joinpath("uranium", "resources"), keep_path = True)
 
         self.copy("*.dll", src = "@bindirs", dst = self._site_packages)
         self.copy("*.pyd", src = "@libdirs", dst = self._site_packages)
@@ -324,6 +329,15 @@ class CuraConan(ConanFile):
                        dst = self._share_dir.joinpath("cura", "resources", "materials"), keep_path = False)
         self.copy_deps("*.sig", root_package = "fdm_materials", src = self.deps_cpp_info["fdm_materials"].resdirs[0],
                        dst = self._share_dir.joinpath("cura", "resources", "materials"), keep_path = False)
+
+        # Copy internal resources
+        if self.options.internal:
+            self.copy_deps("*.fdm_material", root_package = "fdm_materials_private", src = self.deps_cpp_info["fdm_materials_private"].resdirs[0],
+                           dst = self._share_dir.joinpath("cura", "resources", "materials"), keep_path = False)
+            self.copy_deps("*.sig", root_package = "fdm_materials_private", src = self.deps_cpp_info["fdm_materials_private"].resdirs[0],
+                           dst = self._share_dir.joinpath("cura", "resources", "materials"), keep_path = False)
+            self.copy_deps("*", root_package = "cura_private_data", src = self.deps_cpp_info["cura_private_data"].resdirs[0],
+                           dst = self._share_dir.joinpath("cura", "resources"), keep_path = True)
 
         # Copy resources of Uranium (keep folder structure)
         self.copy_deps("*", root_package = "uranium", src = self.deps_cpp_info["uranium"].resdirs[0],
