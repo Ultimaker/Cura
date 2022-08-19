@@ -108,8 +108,7 @@ class CuraContainerRegistry(ContainerRegistry):
         :param container_type: :type{string} Type of the container (machine, quality, ...)
         :param container_name: :type{string} Name to check
         """
-        # FIXME: this should check for abstract machine
-        container_class = ContainerStack if container_type == "machine" else InstanceContainer
+        container_class = ContainerStack if container_type in "machine" else InstanceContainer
 
         return self.findContainersMetadata(container_type = container_class, id = container_name, type = container_type, ignore_case = True) or \
                 self.findContainersMetadata(container_type = container_class, name = container_name, type = container_type)
