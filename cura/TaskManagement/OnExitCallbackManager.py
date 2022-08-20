@@ -60,10 +60,11 @@ class OnExitCallbackManager:
             # Tell the application to exit
             self._application.callLater(self._application.closeApplication)
 
-    # This is the callback function which an on-exit callback should call when it finishes, it should provide the
-    # "should_proceed" flag indicating whether this check has "passed", or in other words, whether quitting the
-    # application should be blocked. If the last on-exit callback doesn't block the quitting, it will call the next
-    # registered on-exit callback if available.
+    # Callback function which an on-exit callback calls when it finishes.
+    # It provides a "should_proceed" flag indicating whether the check has "passed",
+    # or whether quitting the application should be blocked.
+    # If the last on-exit callback doesn't block quitting, it will call the next
+    # registered on-exit callback if one is available.
     def onCurrentCallbackFinished(self, should_proceed: bool = True) -> None:
         if not should_proceed:
             Logger.log("d", "on-app-exit callback finished and we should not proceed.")
