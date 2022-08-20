@@ -10,10 +10,13 @@ if TYPE_CHECKING:
 
 
 #
-# This class manages all registered upon-exit checks that need to be performed when the application tries to exit.
-# For example, show a confirmation dialog when there is USB printing in progress. All callbacks will be called
-# in the order of when they were registered. If all callbacks "pass", that is, for example, if the user clicks "yes"
-# on the exit confirmation dialog and nothing is blocking the exit, then the application will quit.
+# This class manages all registered upon-exit checks
+# that need to be performed when the application tries to exit.
+# For example, show a confirmation dialog when there is USB printing in progress.
+# All callbacks will be called in the order of when they were registered.
+# If all callbacks "pass", for example:
+# if the user clicks "yes" on the exit confirmation dialog
+# and nothing else is blocking the exit, then the application will quit.
 #
 class OnExitCallbackManager:
 
