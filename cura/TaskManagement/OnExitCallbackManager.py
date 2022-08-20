@@ -38,8 +38,10 @@ class OnExitCallbackManager:
     def getIsAllChecksPassed(self) -> bool:
         return self._is_all_checks_passed
 
-    # Trigger the next callback if available. If not, it means that all callbacks have "passed", which means we should
-    # not block the application to quit, and it will call the application to actually quit.
+    # Trigger the next callback if there is one.
+    # If not, all callbacks have "passed",
+    # which means we should not prevent the application from quitting,
+    # and we call the application to actually quit.
     def triggerNextCallback(self) -> None:
         # Get the next callback and schedule that if
         this_callback = None
