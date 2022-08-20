@@ -43,7 +43,7 @@ class OnExitCallbackManager:
     # which means we should not prevent the application from quitting,
     # and we call the application to actually quit.
     def triggerNextCallback(self) -> None:
-        # Get the next callback and schedule that if
+        # Get the next callback and schedule it
         this_callback = None
         if self._current_callback_idx < len(self._on_exit_callback_list):
             this_callback = self._on_exit_callback_list[self._current_callback_idx]
