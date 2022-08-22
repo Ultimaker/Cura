@@ -135,7 +135,7 @@ jobs:
                             user = "_"
                             channel = "_"
                     else:
-                        if not latest_branch_version.prerelease.contains("."):
+                        if not "." in latest_branch_version.prerelease:
                             # The prerealese did not contain a version number, default it to 1
                             latest_branch_version.prerelease.append(".1")
                         if event_name == "pull_request":
