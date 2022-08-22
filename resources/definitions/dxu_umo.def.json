@@ -1,0 +1,12 @@
+{
+    "version": 2,
+    "name": "UMO+ DXU",
+    "inherits": "dxu",
+    "overrides": {
+        "machine_disallowed_areas": {
+            "default_value": [
+                [[100,  -102.5], [ 110,  -102.5], [ 110,  -62.5], [100,  -62.5]]
+            ]
+        }
+    }
+}
