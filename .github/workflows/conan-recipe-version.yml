@@ -135,6 +135,9 @@ jobs:
                             user = "_"
                             channel = "_"
                     else:
+                        if not latest_branch_version.prerelease.contains("."):
+                            # The prerealese did not contain a version number, default it to 1
+                            latest_branch_version.prerelease.append(".1")
                         if event_name == "pull_request":
                             actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-{latest_branch_version.prerelease.lower()}+{buildmetadata}pr_{issue_number}_{no_commits}"
                         else:
