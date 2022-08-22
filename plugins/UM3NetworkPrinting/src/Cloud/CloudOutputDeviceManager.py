@@ -405,7 +405,7 @@ class CloudOutputDeviceManager:
 
         self._setOutputDeviceMetadata(device, new_machine)
 
-        CuraStackBuilder.createAbstractMachine(device.printerType)
+        _abstract_machine = CuraStackBuilder.createAbstractMachine(device.printerType)
 
         if activate:
             CuraApplication.getInstance().getMachineManager().setActiveMachine(new_machine.getId())
