@@ -1,7 +1,6 @@
 from typing import List
 
 from UM.Settings.ContainerStack import ContainerStack
-from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 from cura.Settings.GlobalStack import GlobalStack
 from UM.MimeTypeDatabase import MimeType, MimeTypeDatabase
@@ -16,6 +15,8 @@ class AbstractMachine(GlobalStack):
         self.setMetaDataEntry("type", "abstract_machine")
 
     def getMachines(self) -> List[ContainerStack]:
+        from cura.CuraApplication import CuraApplication
+
         application = CuraApplication.getInstance()
         registry = application.getContainerRegistry()
 
