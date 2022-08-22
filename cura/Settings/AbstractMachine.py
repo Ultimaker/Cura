@@ -1,6 +1,8 @@
 from typing import List
 
 from UM.Settings.ContainerStack import ContainerStack
+from cura.CuraApplication import CuraApplication
+from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 from cura.Settings.GlobalStack import GlobalStack
 from UM.MimeTypeDatabase import MimeType, MimeTypeDatabase
 from UM.Settings.ContainerRegistry import ContainerRegistry
@@ -14,13 +16,11 @@ class AbstractMachine(GlobalStack):
         self.setMetaDataEntry("type", "abstract_machine")
 
     def getMachines(self) -> List[ContainerStack]:
-        from cura.CuraApplication import CuraApplication
         application = CuraApplication.getInstance()
         registry = application.getContainerRegistry()
 
         printer_type = self.definition.getId()
-        cloud_printer_type = 3
-        return [machine for machine in registry.findContainerStacks(type="machine") if machine.definition.id == printer_type and cloud_printer_type in machine.configuredConnectionTypes]
+        return [machine for machine in registry.findContainerStacks(type="machine") if machine.definition.id == printer_type and ConnectionType.CloudConnection in machine.configuredConnectionTypes]
 
 
 ## private:
