@@ -9,6 +9,7 @@ from UM.Settings.Interfaces import DefinitionContainerInterface
 from UM.Settings.InstanceContainer import InstanceContainer
 
 from cura.Machines.ContainerTree import ContainerTree
+from cura.CuraApplication import CuraApplication
 from .AbstractMachine import AbstractMachine
 from .GlobalStack import GlobalStack
 from .ExtruderStack import ExtruderStack
@@ -277,7 +278,6 @@ class CuraStackBuilder:
         """
         abstract_machine_id = definition_id + "_abstract_machine"
 
-        from cura.CuraApplication import CuraApplication
         application = CuraApplication.getInstance()
         registry = application.getContainerRegistry()
         container_tree = ContainerTree.getInstance()
