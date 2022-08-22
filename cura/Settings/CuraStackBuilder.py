@@ -218,7 +218,7 @@ class CuraStackBuilder:
 
         # Create user container
         user_container = cls.createUserChangesContainer(new_stack_id + "_user", definition.getId(), new_stack_id,
-                                                        is_global_stack=True)
+                                                        is_global_stack = True)
 
         stack.definitionChanges = cls.createDefinitionChangesContainer(stack, new_stack_id + "_settings")
         stack.variant = variant_container
@@ -282,11 +282,11 @@ class CuraStackBuilder:
         registry = application.getContainerRegistry()
         container_tree = ContainerTree.getInstance()
 
-        if registry.findContainerStacks(type="abstract_machine", id=abstract_machine_id):
+        if registry.findContainerStacks(type = "abstract_machine", id = abstract_machine_id):
             # This abstract machine already exists
             return None
 
-        match registry.findDefinitionContainers(type="machine", id=definition_id):
+        match registry.findDefinitionContainers(type = "machine", id = definition_id):
             case []:
                 # It should not be possible for the definition to be missing since an abstract machine will only
                 # be created as a result of a machine with definition_id being created.
