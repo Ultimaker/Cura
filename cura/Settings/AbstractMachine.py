@@ -24,11 +24,11 @@ class AbstractMachine(GlobalStack):
 
 
 ## private:
-abstract_machine_mime = MimeType(
+_abstract_machine_mime = MimeType(
     name = "application/x-cura-abstract-machine",
     comment = "Cura Abstract Machine",
     suffixes = ["global.cfg"]
 )
 
-MimeTypeDatabase.addMimeType(abstract_machine_mime)
-ContainerRegistry.addContainerTypeByName(AbstractMachine, "abstract_machine", abstract_machine_mime.name)
+MimeTypeDatabase.addMimeType(_abstract_machine_mime)
+ContainerRegistry.addContainerTypeByName(AbstractMachine, "abstract_machine", _abstract_machine_mime.name)

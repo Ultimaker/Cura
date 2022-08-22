@@ -290,7 +290,7 @@ class CuraStackBuilder:
             case []:
                 # It should not be possible for the definition to be missing since an abstract machine will only
                 # be created as a result of a machine with definition_id being created.
-                Logger.error("w", "Definition {definition} was not found!", definition=definition_id)
+                Logger.error(f"Definition {definition_id} was not found!")
                 return None
             case [machine_definition, *_definitions]:
                 machine_node = container_tree.machines[machine_definition.getId()]
