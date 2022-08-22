@@ -400,7 +400,7 @@ class CloudOutputDeviceManager:
         # We do not use use MachineManager.addMachine here because we need to set the cluster ID before activating it.
         new_machine = CuraStackBuilder.createMachine(device.name, device.printerType, show_warning_message=False)
         if not new_machine:
-            Logger.log("e", "Failed creating a new machine")
+            Logger.error(f"Failed creating a new machine for {device.name}")
             return False
 
         self._setOutputDeviceMetadata(device, new_machine)
