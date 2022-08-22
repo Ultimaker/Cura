@@ -102,7 +102,7 @@ class CuraConan(ConanFile):
 
     @property
     def _cura_latest_url(self):
-        return "https://raw.githubusercontent.com/Ultimaker/Uranium/CURA-9272_semver_postfix/tests/latest.json"
+        return "https://software.ultimaker.com/latest.json"
 
     @property
     def requirements_txts(self):
