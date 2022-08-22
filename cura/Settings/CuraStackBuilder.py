@@ -210,7 +210,7 @@ class CuraStackBuilder:
                             stack: GlobalStack,
                             variant_container: "InstanceContainer",
                             material_container: "InstanceContainer",
-                            quality_container: "InstanceContainer"):
+                            quality_container: "InstanceContainer") -> None:
         from cura.CuraApplication import CuraApplication
         application = CuraApplication.getInstance()
 
@@ -268,7 +268,7 @@ class CuraStackBuilder:
         return definition_changes_container
 
     @classmethod
-    def createAbstractMachine(cls, definition_id) -> Optional[AbstractMachine]:
+    def createAbstractMachine(cls, definition_id: str) -> Optional[AbstractMachine]:
         """Create a new instance of an abstract machine.
 
         :param definition_id: The ID of the machine definition to use.

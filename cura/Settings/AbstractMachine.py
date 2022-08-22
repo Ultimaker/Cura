@@ -11,7 +11,7 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 class AbstractMachine(GlobalStack):
     """ Represents a group of machines of the same type. This allows the user to select settings before selecting a printer. """
 
-    def __init__(self, container_id: str):
+    def __init__(self, container_id: str) -> None:
         super().__init__(container_id)
         self.setMetaDataEntry("type", "abstract_machine")
 
