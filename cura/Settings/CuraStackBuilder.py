@@ -28,7 +28,7 @@ class CuraStackBuilder:
         :return: The new global stack or None if an error occurred.
         """
 
-        from cura.CuraApplication import CuraApplication
+        from cura.CuraApplication import CuraApplication  # inline import needed due to circular import
         application = CuraApplication.getInstance()
         registry = application.getContainerRegistry()
         container_tree = ContainerTree.getInstance()
@@ -92,7 +92,7 @@ class CuraStackBuilder:
         :param extruder_position: The position of the current extruder.
         """
 
-        from cura.CuraApplication import CuraApplication
+        from cura.CuraApplication import CuraApplication  # inline import needed due to circular import
         application = CuraApplication.getInstance()
         registry = application.getContainerRegistry()
 
