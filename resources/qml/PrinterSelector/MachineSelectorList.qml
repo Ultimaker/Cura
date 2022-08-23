@@ -11,7 +11,7 @@ ListView
 {
     id: listView
     model: Cura.MachineListModel {}
-    section.property: "section"
+    section.property: "isOnline"
     property real contentHeight: childrenRect.height
 
     ScrollBar.vertical: UM.ScrollBar
@@ -21,7 +21,7 @@ ListView
 
     section.delegate: UM.Label
     {
-        text: section == "true" ? catalog.i18nc("@label", "Connected printers") : catalog.i18nc("@label", "Preset printers")
+        text: section == "true" ? catalog.i18nc("@label", "Connected printers") : catalog.i18nc("@label", "Other printers")
         width: parent.width - scrollBar.width
         height: UM.Theme.getSize("action_button").height
         leftPadding: UM.Theme.getSize("default_margin").width

@@ -67,7 +67,6 @@ Button
                 right: parent.right
                 top: buttonText.top
                 bottom: buttonText.bottom
-                verticalCenter: parent.verticalCenter
             }
             visible: model.machineType == "abstract_machine"
 
