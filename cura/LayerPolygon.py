@@ -43,7 +43,7 @@ class LayerPolygon:
         if unknown_types:
             # Got faulty line data from the engine.
             for idx in unknown_types:
-                Logger.log("w", "Found an unknown line type at: %s", idx)
+                Logger.warn(f"Found an unknown line type at: {idx}")
                 self._types[idx] = self.NoneType
         self._data = data
         self._line_widths = line_widths
