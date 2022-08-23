@@ -20,6 +20,9 @@
         - "fdm_materials/(latest)@ultimaker/testing"
         - "cura_binary_data/(latest)@ultimaker/testing"
         - "cpython/3.10.4"
+    internal_requirements:
+        - "fdm_materials_private/(latest)@ultimaker/testing"
+        - "cura_private_data/(latest)@ultimaker/testing"
     runinfo:
         entrypoint: "cura_app.py"
     pyinstaller:
@@ -32,6 +35,11 @@
                 package: "cura"
                 src: "resources"
                 dst: "share/cura/resources"
+            cura_private_data:
+                package: "cura_private_data"
+                src: "resources"
+                dst: "share/cura/resources"
+                internal: true
             uranium_plugins:
                 package: "uranium"
                 src: "plugins"
@@ -60,6 +68,11 @@
                 package: "fdm_materials"
                 src: "materials"
                 dst: "share/cura/resources/materials"
+            fdm_materials_private:
+                package: "fdm_materials_private"
+                src: "resources/materials"
+                dst: "share/cura/resources/materials"
+                internal: true
             tcl:
                 package: "tcl"
                 src: "lib/tcl8.6"
@@ -112,6 +125,9 @@
         - "fdm_materials/(latest)@ultimaker/testing"
         - "cura_binary_data/(latest)@ultimaker/testing"
         - "cpython/3.10.4"
+    internal_requirements:
+        - "fdm_materials_private/(latest)@ultimaker/testing"
+        - "cura_private_data/(latest)@ultimaker/testing"
     runinfo:
         entrypoint: "cura_app.py"
     pyinstaller:
@@ -124,6 +140,11 @@
                 package: "cura"
                 src: "resources"
                 dst: "share/cura/resources"
+            cura_private_data:
+                package: "cura_private_data"
+                src: "resources"
+                dst: "share/cura/resources"
+                internal: true
             uranium_plugins:
                 package: "uranium"
                 src: "plugins"
@@ -152,6 +173,11 @@
                 package: "fdm_materials"
                 src: "materials"
                 dst: "share/cura/resources/materials"
+            fdm_materials_private:
+                package: "fdm_materials_private"
+                src: "resources/materials"
+                dst: "share/cura/resources/materials"
+                internal: true
             tcl:
                 package: "tcl"
                 src: "lib/tcl8.6"
