@@ -80,14 +80,14 @@ class MachineListModel(ListModel):
         if parseBool(container_stack.getMetaDataEntry("hidden", False)):
             return
 
-        isOnline = parseBool(container_stack.getMetaDataEntry("is_online", False))
+        is_online = parseBool(container_stack.getMetaDataEntry("is_online", False))
         if container_stack.getMetaDataEntry("type") == "abstract_machine":
-            isOnline = True
+            is_online = True
 
         self.appendItem({"name": container_stack.getName(),
                          "id": container_stack.getId(),
                          "metadata": container_stack.getMetaData().copy(),
-                         "isOnline": isOnline,
+                         "isOnline": is_online,
                          "machineType": container_stack.getMetaDataEntry("type"),
                          "machineCount": machine_count,
                          })
