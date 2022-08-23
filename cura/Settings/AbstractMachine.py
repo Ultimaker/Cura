@@ -16,10 +16,10 @@ class AbstractMachine(GlobalStack):
 
     @classmethod
     def getMachines(cls, abstract_machine: ContainerStack) -> List[ContainerStack]:
-        """ Fetches containers for all machines that match definition with an abstract machine.
+        """ Fetches all container stacks that match definition_id with an abstract machine.
 
         :param abstractMachine: The abstract machine stack.
-        :return: A list of Containers or an empty list if stack is not an "abstract_machine"
+        :return: A list of Containers or an empty list if abstract_machine is not an "abstract_machine"
         """
         if not abstract_machine.getMetaDataEntry("type") == "abstract_machine":
             return []
