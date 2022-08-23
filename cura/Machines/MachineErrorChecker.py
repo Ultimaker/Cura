@@ -212,4 +212,5 @@ class MachineErrorChecker(QObject):
         self._check_in_progress = False
         self.needToWaitForResultChanged.emit()
         self.errorCheckFinished.emit()
-        Logger.log("i", "Error check finished, result = %s, time = %0.1fs", result, time.time() - self._check_start_time)
+        execution_time = time.time() - self._check_start_time
+        Logger.info(f"Error check finished, result = {result}, time = {execution_time:.2f}s")
