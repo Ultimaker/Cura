@@ -9,6 +9,7 @@ from UM.Settings.Interfaces import DefinitionContainerInterface
 from UM.Settings.InstanceContainer import InstanceContainer
 
 from cura.Machines.ContainerTree import ContainerTree
+from .AbstractMachine import AbstractMachine
 from .GlobalStack import GlobalStack
 from .ExtruderStack import ExtruderStack
 
@@ -27,7 +28,7 @@ class CuraStackBuilder:
         :return: The new global stack or None if an error occurred.
         """
 
-        from cura.CuraApplication import CuraApplication
+        from cura.CuraApplication import CuraApplication  # inline import needed due to circular import
         application = CuraApplication.getInstance()
         registry = application.getContainerRegistry()
         container_tree = ContainerTree.getInstance()
@@ -91,7 +92,7 @@ class CuraStackBuilder:
         :param extruder_position: The position of the current extruder.
         """
 
-        from cura.CuraApplication import CuraApplication
+        from cura.CuraApplication import CuraApplication  # inline import needed due to circular import
         application = CuraApplication.getInstance()
         registry = application.getContainerRegistry()
 
@@ -199,13 +200,21 @@ class CuraStackBuilder:
 
         :return: A new Global stack instance with the specified parameters.
         """
-
-        from cura.CuraApplication import CuraApplication
-        application = CuraApplication.getInstance()
-        registry = application.getContainerRegistry()
-
         stack = GlobalStack(new_stack_id)
         stack.setDefinition(definition)
+        cls.createUserContainer(new_stack_id, definition, stack, variant_container, material_container, quality_container)
+        return stack
+
+    @classmethod
+    def createUserContainer(cls, new_stack_id: str, definition: DefinitionContainerInterface,
+                            stack: GlobalStack,
+                            variant_container: "InstanceContainer",
+                            material_container: "InstanceContainer",
+                            quality_container: "InstanceContainer") -> None:
+        from cura.CuraApplication import CuraApplication
+        application = CuraApplication.getInstance()
+
+        registry = application.getContainerRegistry()
 
         # Create user container
         user_container = cls.createUserChangesContainer(new_stack_id + "_user", definition.getId(), new_stack_id,
@@ -220,8 +229,6 @@ class CuraStackBuilder:
         stack.userChanges = user_container
 
         registry.addContainer(user_container)
-
-        return stack
 
     @classmethod
     def createUserChangesContainer(cls, container_name: str, definition_id: str, stack_id: str,
@@ -259,3 +266,49 @@ class CuraStackBuilder:
         container_stack.definitionChanges = definition_changes_container
 
         return definition_changes_container
+
+    @classmethod
+    def createAbstractMachine(cls, definition_id: str) -> Optional[AbstractMachine]:
+        """Create a new instance of an abstract machine.
+
+        :param definition_id: The ID of the machine definition to use.
+
+        :return: The new Abstract Machine or None if an error occurred.
+        """
+        abstract_machine_id = definition_id + "_abstract_machine"
+
+        from cura.CuraApplication import CuraApplication
+        application = CuraApplication.getInstance()
+        registry = application.getContainerRegistry()
+        container_tree = ContainerTree.getInstance()
+
+        if registry.findContainerStacks(type = "abstract_machine", id = abstract_machine_id):
+            # This abstract machine already exists
+            return None
+
+        match registry.findDefinitionContainers(type = "machine", id = definition_id):
+            case []:
+                # It should not be possible for the definition to be missing since an abstract machine will only
+                # be created as a result of a machine with definition_id being created.
+                Logger.error(f"Definition {definition_id} was not found!")
+                return None
+            case [machine_definition, *_definitions]:
+                machine_node = container_tree.machines[machine_definition.getId()]
+                name = machine_definition.getName()
+
+                stack = AbstractMachine(abstract_machine_id)
+                stack.setDefinition(machine_definition)
+                cls.createUserContainer(
+                    name,
+                    machine_definition,
+                    stack,
+                    application.empty_variant_container,
+                    application.empty_material_container,
+                    machine_node.preferredGlobalQuality().container,
+                )
+
+                stack.setName(name)
+
+                registry.addContainer(stack)
+
+                return stack
