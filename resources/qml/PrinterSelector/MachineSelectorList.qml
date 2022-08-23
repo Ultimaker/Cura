@@ -10,8 +10,8 @@ import Cura 1.0 as Cura
 ListView
 {
     id: listView
-    model: Cura.AbstractStacksModel {}
-    section.property: "hasRemoteConnection"
+    model: Cura.MachineListModel {}
+    section.property: "section"
     property real contentHeight: childrenRect.height
 
     ScrollBar.vertical: UM.ScrollBar
@@ -29,13 +29,10 @@ ListView
         color: UM.Theme.getColor("text_medium")
     }
 
-    delegate: MachineSelectorButton
+    delegate: MachineListButton
     {
         text: model.name ? model.name : ""
         width: listView.width - scrollBar.width
-        outputDevice: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
-
-        checked: Cura.MachineManager.activeMachine ? Cura.MachineManager.activeMachine.id == model.id : false
 
         onClicked:
         {

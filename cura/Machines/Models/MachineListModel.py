@@ -14,7 +14,8 @@ from cura.Settings.AbstractMachine import AbstractMachine
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 from cura.Settings.GlobalStack import GlobalStack
 
-class AbstractStacksModel(ListModel):
+
+class MachineListModel(ListModel):
     NameRole = Qt.ItemDataRole.UserRole + 1
     IdRole = Qt.ItemDataRole.UserRole + 2
     HasRemoteConnectionRole = Qt.ItemDataRole.UserRole + 3
@@ -24,6 +25,7 @@ class AbstractStacksModel(ListModel):
     RemovalWarningRole = Qt.ItemDataRole.UserRole + 7
     IsOnlineRole = Qt.ItemDataRole.UserRole + 8
     MachineTypeRole = Qt.ItemDataRole.UserRole + 9
+    MachineCountRole = Qt.ItemDataRole.UserRole + 10
 
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
@@ -37,6 +39,7 @@ class AbstractStacksModel(ListModel):
         self.addRoleName(self.DiscoverySourceRole, "discoverySource")
         self.addRoleName(self.IsOnlineRole, "isOnline")
         self.addRoleName(self.MachineTypeRole, "machineType")
+        self.addRoleName(self.MachineCountRole, "machineCount")
 
         self._change_timer = QTimer()
         self._change_timer.setInterval(200)
@@ -71,7 +74,7 @@ class AbstractStacksModel(ListModel):
 
 
             # Create item for abstract printer
-            items.append(self.createItem(abstract_machine))
+            items.append(self.createItem(abstract_machine, len(machine_stacks)))
 
             # Create list of printers that are children of the abstract printer
             for stack in machine_stacks:
@@ -81,7 +84,7 @@ class AbstractStacksModel(ListModel):
 
         self.setItems(items)
 
-    def createItem(self, container_stack: ContainerStack) -> Optional[Dict]:
+    def createItem(self, container_stack: ContainerStack, machine_count: int = 0) -> Optional[Dict]:
         if parseBool(container_stack.getMetaDataEntry("hidden", False)):
             return
 
@@ -105,4 +108,5 @@ class AbstractStacksModel(ListModel):
                 "removalWarning": container_stack.getMetaDataEntry("removal_warning", default_removal_warning),
                 "isOnline": container_stack.getMetaDataEntry("is_online", False),
                 "machineType": container_stack.getMetaDataEntry("type"),
+                "machineCount": machine_count,
                 }
