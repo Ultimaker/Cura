@@ -30,7 +30,7 @@ Button
             height: UM.Theme.getSize("medium_button").height
             width: UM.Theme.getSize("medium_button").width
             color: UM.Theme.getColor("machine_selector_printer_icon")
-            visible: model.machineType == "abstract_machine"
+            visible: model.machineType == "abstract_machine" || !model.isOnline
             source: model.machineType == "abstract_machine" ? UM.Theme.getIcon("PrinterTriple", "medium") : UM.Theme.getIcon("Printer", "medium")
 
             anchors
