@@ -192,7 +192,7 @@ Cura.ExpandablePopup
     contentItem: Item
     {
         id: popup
-        implicitWidth: UM.Theme.getSize("machine_selector_widget_content").width
+        implicitWidth: machineSelector.width
         implicitHeight: Math.min(machineSelectorList.contentHeight + separator.height + buttonRow.height, UM.Theme.getSize("machine_selector_widget_content").height) //Maximum height is the theme entry.
         MachineSelectorList
         {
