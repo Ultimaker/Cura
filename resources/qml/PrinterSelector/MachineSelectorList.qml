@@ -10,7 +10,7 @@ import Cura 1.0 as Cura
 ListView
 {
     id: listView
-    model: Cura.GlobalStacksModel {}
+    model: Cura.AbstractStacksModel {}
     section.property: "hasRemoteConnection"
     property real contentHeight: childrenRect.height
 

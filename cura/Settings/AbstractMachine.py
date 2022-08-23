@@ -14,13 +14,22 @@ class AbstractMachine(GlobalStack):
         super().__init__(container_id)
         self.setMetaDataEntry("type", "abstract_machine")
 
-    def getMachines(self) -> List[ContainerStack]:
-        from cura.CuraApplication import CuraApplication
+    @classmethod
+    def getMachines(cls, abstract_machine: ContainerStack) -> List[ContainerStack]:
+        """ Fetches containers for all machines that match definition with an abstract machine.
 
+        :param abstractMachine: The abstract machine stack.
+        :return: A list of Containers or an empty list if stack is not an "abstract_machine"
+        """
+        if not abstract_machine.getMetaDataEntry("type") == "abstract_machine":
+            return []
+
+        from cura.CuraApplication import CuraApplication  # In function to avoid circular import
         application = CuraApplication.getInstance()
         registry = application.getContainerRegistry()
 
-        printer_type = self.definition.getId()
+        printer_type = abstract_machine.definition.getId()
+
         return [machine for machine in registry.findContainerStacks(type="machine") if machine.definition.id == printer_type and ConnectionType.CloudConnection in machine.configuredConnectionTypes]
 
 

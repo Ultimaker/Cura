@@ -5,10 +5,12 @@ from PyQt6.QtCore import Qt, QTimer
 from typing import Optional, Dict
 
 from UM.Qt.ListModel import ListModel
+from UM.Settings.ContainerStack import ContainerStack
 from UM.i18n import i18nCatalog
 from UM.Util import parseBool
 
 from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
+from cura.Settings.AbstractMachine import AbstractMachine
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 from cura.Settings.GlobalStack import GlobalStack
 
@@ -62,8 +64,11 @@ class AbstractStacksModel(ListModel):
 
         abstract_machine_stacks = CuraContainerRegistry.getInstance().findContainerStacks(type="abstract_machine")
 
+        abstract_machine_stacks.sort(key=lambda machine: machine.getName(), reverse=True)
+
         for abstract_machine in abstract_machine_stacks:
-            machine_stacks = container_stacks  # FIXME: This should point to abstract_machine.getPrinters()
+            machine_stacks = AbstractMachine.getMachines(abstract_machine)
+
 
             # Create item for abstract printer
             items.append(self.createItem(abstract_machine))
@@ -76,7 +81,7 @@ class AbstractStacksModel(ListModel):
 
         self.setItems(items)
 
-    def createItem(self, container_stack: GlobalStack) -> Optional[Dict]:
+    def createItem(self, container_stack: ContainerStack) -> Optional[Dict]:
         if parseBool(container_stack.getMetaDataEntry("hidden", False)):
             return
 

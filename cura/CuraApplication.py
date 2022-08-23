@@ -115,6 +115,7 @@ from . import CuraActions
 from . import PlatformPhysics
 from . import PrintJobPreviewImageProvider
 from .AutoSave import AutoSave
+from .Machines.Models.AbstractStacksModel import AbstractStacksModel
 from .Machines.Models.ActiveIntentQualitiesModel import ActiveIntentQualitiesModel
 from .Machines.Models.IntentSelectionModel import IntentSelectionModel
 from .SingleInstance import SingleInstance
@@ -1194,6 +1195,7 @@ class CuraApplication(QtApplication):
         qmlRegisterType(InstanceContainer, "Cura", 1, 0, "InstanceContainer")
         qmlRegisterType(ExtrudersModel, "Cura", 1, 0, "ExtrudersModel")
         qmlRegisterType(GlobalStacksModel, "Cura", 1, 0, "GlobalStacksModel")
+        qmlRegisterType(AbstractStacksModel, "Cura", 1, 0, "AbstractStacksModel")
 
         self.processEvents()
         qmlRegisterType(FavoriteMaterialsModel, "Cura", 1, 0, "FavoriteMaterialsModel")
