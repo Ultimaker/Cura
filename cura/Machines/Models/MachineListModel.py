@@ -59,21 +59,28 @@ class MachineListModel(ListModel):
     def _update(self) -> None:
         self.setItems([])  # Clear items
 
+        other_machine_stacks = CuraContainerRegistry.getInstance().findContainerStacks(type="machine")
+
         abstract_machine_stacks = CuraContainerRegistry.getInstance().findContainerStacks(type = "abstract_machine")
         abstract_machine_stacks.sort(key = lambda machine: machine.getName(), reverse = True)
 
         for abstract_machine in abstract_machine_stacks:
             online_machine_stacks = AbstractMachine.getMachines(abstract_machine, online_only = True)
 
-            # Create item for abstract printer
+            # Create a list item for abstract machine
             self.addItem(abstract_machine, len(online_machine_stacks))
 
-            # Create list of printers that are children of the abstract printer
+            # Create list of machines that are children of the abstract machine
             for stack in online_machine_stacks:
                 self.addItem(stack)
+                # Remove this machine from the other stack list
+                other_machine_stacks.remove(stack)
 
-        offline_machine_stacks = CuraContainerRegistry.getInstance().findContainerStacks(type = "machine", is_online = "False")
-        for stack in offline_machine_stacks:
+
+        # Filtering must be done like this because searching with findContainerStacks(is_online = "True") does not return
+        # stacks that don't have is_online in their metadata. We still want to show these printers.
+        # offline_machine_stacks = [stack for stack in offline_machine_stacks if parseBool(stack.getMetaDataEntry("is_online", False))]
+        for stack in other_machine_stacks:
             self.addItem(stack)
 
     def addItem(self, container_stack: ContainerStack, machine_count: int = 0) -> None:
