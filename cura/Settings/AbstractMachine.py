@@ -29,14 +29,16 @@ class AbstractMachine(GlobalStack):
         application = CuraApplication.getInstance()
         registry = application.getContainerRegistry()
 
-        printer_type = abstract_machine.definition.getId()
-
-        machines = [machine for machine in registry.findContainerStacks(type="machine") if machine.definition.id == printer_type and ConnectionType.CloudConnection in machine.configuredConnectionTypes]
-
+        machines = registry.findContainerStacks(type="machine")
+        # Filter machines that match definition
+        machines = filter(lambda machine: machine.definition.id == abstract_machine.definition.getId(), machines)
+        # Filter only LAN and Cloud printers
+        machines = filter(lambda machine: ConnectionType.CloudConnection in machine.configuredConnectionTypes or ConnectionType.NetworkConnection in machine.configuredConnectionTypes, machines)
         if online_only:
-            machines = [machine for machine in machines if parseBool(machine.getMetaDataEntry("is_online", False))]
+            # LAN printers have is_online = False but should still be included
+            machines = filter(lambda machine: parseBool(machine.getMetaDataEntry("is_online", False) or ConnectionType.NetworkConnection in machine.configuredConnectionTypes), machines)
 
-        return machines
+        return list(machines)
 
 
 ## private:
