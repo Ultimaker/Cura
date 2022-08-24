@@ -297,6 +297,7 @@ class CuraStackBuilder:
                 name = machine_definition.getName()
 
                 stack = AbstractMachine(abstract_machine_id)
+                stack.setMetaDataEntry("is_online", True)
                 stack.setDefinition(machine_definition)
                 cls.createUserContainer(
                     name,
