@@ -102,5 +102,5 @@ jobs:
                 run: conan upload "*" -r cura --all -c
 
             -   name: Upload the Package(s) community
-                if: ${{ always() && inputs.conan_upload_community == 'true' }}
+                if: ${{ always() && inputs.conan_upload_community == true }}
                 run: conan upload "*" -r cura-ce -c
