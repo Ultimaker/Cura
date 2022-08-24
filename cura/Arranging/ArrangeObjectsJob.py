@@ -21,6 +21,7 @@ class ArrangeObjectsJob(Job):
         self._min_offset = min_offset
 
     def run(self):
+        found_solution_for_all = False
         status_message = Message(i18n_catalog.i18nc("@info:status", "Finding new location for objects"),
                                  lifetime = 0,
                                  dismissable = False,
@@ -31,7 +32,6 @@ class ArrangeObjectsJob(Job):
         try:
             found_solution_for_all = arrange(self._nodes, Application.getInstance().getBuildVolume(), self._fixed_nodes)
         except:  # If the thread crashes, the message should still close
-            found_solution_for_all = False
             Logger.logException("e", "Unable to arrange the objects on the buildplate. The arrange algorithm has crashed.")
 
         status_message.hide()
