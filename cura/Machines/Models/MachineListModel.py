@@ -76,10 +76,6 @@ class MachineListModel(ListModel):
                 # Remove this machine from the other stack list
                 other_machine_stacks.remove(stack)
 
-
-        # Filtering must be done like this because searching with findContainerStacks(is_online = "True") does not return
-        # stacks that don't have is_online in their metadata. We still want to show these printers.
-        # offline_machine_stacks = [stack for stack in offline_machine_stacks if parseBool(stack.getMetaDataEntry("is_online", False))]
         for stack in other_machine_stacks:
             self.addItem(stack)
 
