@@ -31,7 +31,7 @@ from ..Models.Http.CloudClusterResponse import CloudClusterResponse
 from ..Models.Http.CloudClusterStatus import CloudClusterStatus
 from ..Models.Http.CloudPrintJobUploadRequest import CloudPrintJobUploadRequest
 from ..Models.Http.CloudPrintResponse import CloudPrintResponse
-from ..Models.Http.CloudPrintJobResponse import CloudPrintJobResponse, CloudUploadStatus
+from ..Models.Http.CloudPrintJobResponse import CloudPrintJobResponse
 from ..Models.Http.ClusterPrinterStatus import ClusterPrinterStatus
 from ..Models.Http.ClusterPrintJobStatus import ClusterPrintJobStatus
 
@@ -232,7 +232,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         :param job_response: The response received from the cloud API.
         """
 
-        if job_response.status is CloudUploadStatus.WAIT_APPROVAL:
+        if job_response.status is "wait_approval":
             PrintJobPendingApprovalMessage().show()
 
         if not self._tool_path:

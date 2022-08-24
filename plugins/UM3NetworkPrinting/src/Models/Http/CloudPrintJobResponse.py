@@ -26,7 +26,7 @@ class CloudPrintJobResponse(BaseModel):
         """
 
         self.job_id = job_id
-        self.status: CloudUploadStatus = CloudUploadStatus(status)
+        self.status = status
         self.download_url = download_url
         self.job_name = job_name
         self.upload_url = upload_url
@@ -34,9 +34,3 @@ class CloudPrintJobResponse(BaseModel):
         self.status_description = status_description
         self.slicing_details = slicing_details
         super().__init__(**kwargs)
-
-
-class CloudUploadStatus(Enum):
-    FAILED = "failed",
-    QUEUED = "queued",
-    WAIT_APPROVAL = "wait_approval"
