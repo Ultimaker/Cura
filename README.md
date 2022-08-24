@@ -41,7 +41,8 @@
 <br>
 <br>
 
-![Showcase]
+![Showcase](./cura-logo.PNG#gh-dark-mode-only)
+![Showcase](./cura-logo-dark.PNG#gh-light-mode-only)
 
 </div>
 
@@ -62,7 +63,6 @@
 [Conan]: https://github.com/Ultimaker/Cura/actions/workflows/conan-package.yml
 [Test]: https://github.com/Ultimaker/Cura/actions/workflows/unit-test.yml
 
-[Showcase]: cura-logo.PNG
 [License]: LICENSE
 [Report]: docs/Report.md
 [Logo]: resources/images/cura-icon.png
