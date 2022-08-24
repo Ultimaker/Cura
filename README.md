@@ -41,8 +41,11 @@
 <br>
 <br>
 
-![Showcase](./cura-logo.PNG#gh-dark-mode-only)
-![Showcase](./cura-logo-dark.PNG#gh-light-mode-only)
+<picture>
+  <source media="(prefers-color-scheme: light)" srcset="./cura-logo.PNG">
+  <source media="(prefers-color-scheme: dark)" srcset="./cura-logo-dark.PNG">
+  <img alt="Shows cura open on the preview screen with a large benchy model in the center." src="./cura-logo.PNG">
+</picture>
 
 </div>
 
