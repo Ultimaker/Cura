@@ -3,7 +3,7 @@
 
 from time import time
 import os
-from typing import cast, List, Optional, TYPE_CHECKING
+from typing import cast, List, Optional
 
 from PyQt6.QtCore import QObject, QUrl, pyqtProperty, pyqtSignal, pyqtSlot
 from PyQt6.QtGui import QDesktopServices
@@ -21,7 +21,6 @@ from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 
 from .CloudApiClient import CloudApiClient
 from ..ExportFileJob import ExportFileJob
-from ..Messages.PrintJobAwaitingApprovalMessage import PrintJobPendingApprovalMessage
 from ..UltimakerNetworkedPrinterOutputDevice import UltimakerNetworkedPrinterOutputDevice
 from ..Messages.PrintJobUploadBlockedMessage import PrintJobUploadBlockedMessage
 from ..Messages.PrintJobUploadErrorMessage import PrintJobUploadErrorMessage
@@ -231,9 +230,6 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
         :param job_response: The response received from the cloud API.
         """
-
-        if job_response.status is "wait_approval":
-            PrintJobPendingApprovalMessage().show()
 
         if not self._tool_path:
             return self._onUploadError()

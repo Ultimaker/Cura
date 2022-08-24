@@ -16,6 +16,7 @@ from cura.CuraApplication import CuraApplication
 from cura.UltimakerCloud import UltimakerCloudConstants
 from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope
 from .ToolPathUploader import ToolPathUploader
+from ..Messages.PrintJobAwaitingApprovalMessage import PrintJobPendingApprovalMessage
 from ..Models.BaseModel import BaseModel
 from ..Models.Http.CloudClusterResponse import CloudClusterResponse
 from ..Models.Http.CloudClusterStatus import CloudClusterStatus
@@ -241,6 +242,8 @@ class CloudApiClient:
             status_code, response = self._parseReply(reply)
             if status_code >= 300 and on_error is not None:
                 on_error()
+            elif "data" in response and "status" in response["data"] and response["data"]["status"] == "wait_approval":
+                PrintJobPendingApprovalMessage().show()
             else:
                 self._parseModels(response, on_finished, model)
 
