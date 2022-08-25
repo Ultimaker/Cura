@@ -1,2 +1,4 @@
 conan!=1.51.0,!=1.51.1,!=1.51.2,!=1.51.3
 sip
+PyQt6-sip
+PyQt-Builder

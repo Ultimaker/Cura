@@ -20,6 +20,8 @@
         - "fdm_materials/(latest)@ultimaker/testing"
         - "cura_binary_data/(latest)@ultimaker/testing"
         - "cpython/3.10.4"
+        - "pyqt6/6.3.1@ultimaker/testing"
+        - "zlib/1.2.12"
     internal_requirements:
         - "fdm_materials_private/(latest)@ultimaker/testing"
         - "cura_private_data/(latest)@ultimaker/testing"
@@ -121,10 +123,12 @@
         - "curaengine/(latest)@ultimaker/testing"
         - "pysavitar/(latest)@ultimaker/testing"
         - "pynest2d/(latest)@ultimaker/testing"
-        - "uranium/(latest)@ultimaker/testing"
+        - "uranium/(latest)@ultimaker/cura_8831"
         - "fdm_materials/(latest)@ultimaker/testing"
         - "cura_binary_data/(latest)@ultimaker/testing"
         - "cpython/3.10.4"
+        - "pyqt6/6.3.1@ultimaker/testing"
+        - "zlib/1.2.12"
     internal_requirements:
         - "fdm_materials_private/(latest)@ultimaker/testing"
         - "cura_private_data/(latest)@ultimaker/testing"
