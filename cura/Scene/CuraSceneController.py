@@ -34,12 +34,8 @@ class CuraSceneController(QObject):
         Application.getInstance().getController().getScene().sceneChanged.connect(self.updateMaxBuildPlateDelayed)
 
     def updateMaxBuildPlateDelayed(self, *args):
-        if args:
-            source = args[0]
-        else:
-            source = None
-
-        if not isinstance(source, SceneNode) or isinstance(source, Camera):
+        source = args[0] if args else None
+        if type(source) not in (SceneNode, Camera): 
             return
         self._change_timer.start()
 
