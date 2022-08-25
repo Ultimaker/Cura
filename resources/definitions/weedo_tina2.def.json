@@ -1,0 +1,90 @@
+{
+  "name": "WEEDO TINA2",
+  "version": 2,
+  "inherits": "weedo_base",
+  "metadata": {
+    "visible": true,
+    "author": "WEEDO",
+    "manufacturer": "WEEDO",
+    "file_formats": "text/x-gcode",
+    "platform_offset": [
+      0,
+      0,
+      0
+    ]
+  },
+  "overrides": {
+    "machine_name": {
+      "default_value": "WEEDO TINA2"
+    },
+    "machine_start_gcode": {
+      "default_value": ";MachineType:WEEDO TINA2\n\n;(**** start.gcode for tina2****)\nM203 Z15\nM104 S150\nG28 Z\nG28 X Y; Home extruder\nG1 X55 Y55 F1000\nG29\nM107 ; Turn off fan\nG90 ; Absolute positioning\nM82 ; Extruder in absolute mode\nM109 S{material_print_temperature_layer_0}\nG92 E0 ; Reset extruder position\nG1 X90 Y6 Z0.27 F2000\nG1 X20 Y6 Z0.27 E15 F1000\nG92 E0 ; Reset extruder position\nM203 Z5"
+    },
+    "machine_end_gcode": {
+      "default_value": ";(**** end.gcode for tina2****)\nM203 Z15\nM104 S0\nM107\nG92 E0 (Reset after prime)\nG0 E-1 F300\nG28 Z F300\nG28 X0 Y0\nG1 Y90 F1000"
+    },
+    "material_print_temp_prepend": {
+      "default_value": false
+    },
+    "machine_width": {
+      "default_value": 100
+    },
+    "machine_depth": {
+      "default_value": 120
+    },
+    "machine_height": {
+      "default_value": 100
+    },
+    "machine_heated_bed": {
+      "default_value": false
+    },
+    "machine_extruder_count": {
+      "default_value": 1
+    },
+    "infill_pattern": {
+      "value": "'lines' if infill_sparse_density > 45 else 'grid'"
+    },
+    "speed_print": {
+      "value": 40.0
+    },
+    "speed_infill": {
+      "value": 40.0
+    },
+    "speed_wall": {
+      "value": 25.0
+    },
+    "speed_wall_0": {
+      "value": 20.0
+    },
+    "speed_wall_x": {
+      "value": 25.0
+    },
+    "speed_topbottom": {
+      "value": 30.0
+    },
+    "speed_support_infill": {
+      "value": 45.0
+    },
+    "speed_print_layer_0": {
+      "value": 22.0
+    },
+    "speed_travel_layer_0": {
+      "value": 60
+    },
+    "speed_travel": {
+      "value": 65.0
+    },
+    "speed_support_roof": {
+      "value": 30.0
+    },
+    "speed_support_bottom": {
+      "dvalue": 30.0
+    },
+    "speed_roofing": {
+      "value": 25.0
+    },
+    "raft_base_thickness": {
+      "default_value": 0.35
+    }
+  }
+}
