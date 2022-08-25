@@ -1,0 +1,8 @@
+{
+    "name": "Version Upgrade 5.0 to 5.2",
+    "author": "Ultimaker B.V.",
+    "version": "1.0.0",
+    "description": "Upgrades configurations from Cura 5.0 to Cura 5.2.",
+    "api": 8,
+    "i18n-catalog": "cura"
+}

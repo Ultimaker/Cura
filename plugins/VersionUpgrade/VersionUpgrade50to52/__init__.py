@@ -1,0 +1,32 @@
+# Copyright (c) 2022 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
+from typing import Any, Dict, TYPE_CHECKING
+
+from . import VersionUpgrade50to52
+
+if TYPE_CHECKING:
+    from UM.Application import Application
+
+upgrade = VersionUpgrade50to52.VersionUpgrade50to52()
+
+def getMetaData() -> Dict[str, Any]:
+    return {
+        "version_upgrade": {
+            ("machine_stack", 5000020): ("machine_stack", 5000021, upgrade.upgradeStack),
+        },
+        "sources": {
+            "machine_stack": {
+                "get_version": upgrade.getCfgVersion,
+                "location": {"./machine_instances"},
+            },
+            "abstract_machine": {
+                "get_version": upgrade.getCfgVersion,
+                "location": {"./abstract_machine_instances"},
+            },
+        },
+    }
+
+
+def register(_app: "Application") -> Dict[str, Any]:
+    return {"version_upgrade": upgrade}
