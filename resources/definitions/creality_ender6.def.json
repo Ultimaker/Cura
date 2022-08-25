@@ -14,8 +14,6 @@
         "infill_sparse_density": { "value": "10"},
         "infill_pattern": { "value": "'lines' if infill_sparse_density > 50 else 'grid'"},
         "infill_overlap":{"value": 10},    
-        "material_print_temperature":{"value": 220},
-        "material_bed_temperature":{"value": 50},
         "retraction_amount":{"value": 10},  
         "speed_travel": { "value": 80.0 },
         "coasting_enable": { "value": true},
