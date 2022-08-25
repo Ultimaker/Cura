@@ -29,5 +29,8 @@ class PrintJobPendingApprovalMessage(Message):
 
     def _onActionTriggered(self, message: Message, action: str):
         """ Callback function for the "Manage print jobs" button on the pending approval notification. """
-        if action == "manage_print_jobs":
-            QDesktopServices.openUrl(QUrl("https://ultimaker.com/"))
+        match action:
+            case "manage_print_jobs":
+                QDesktopServices.openUrl(QUrl("https://ultimaker.com/"))
+            case "learn_more":
+                QDesktopServices.openUrl(QUrl("https://ultimaker.com/"))
