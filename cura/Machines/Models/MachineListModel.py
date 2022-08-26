@@ -1,6 +1,10 @@
 # Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+# The MachineListModel is used to display the connected printers in the interface. Both the abstract machines and all
+# online cloud connected printers are represented within this ListModel. Additional information such as the number of
+# connected printers for each printer type is gathered.
+
 from PyQt6.QtCore import Qt, QTimer
 
 from UM.Qt.ListModel import ListModel
@@ -8,7 +12,6 @@ from UM.Settings.ContainerStack import ContainerStack
 from UM.i18n import i18nCatalog
 from UM.Util import parseBool
 
-from cura.Settings.AbstractMachine import AbstractMachine
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 from cura.Settings.GlobalStack import GlobalStack
 
@@ -19,8 +22,8 @@ class MachineListModel(ListModel):
     HasRemoteConnectionRole = Qt.ItemDataRole.UserRole + 3
     MetaDataRole = Qt.ItemDataRole.UserRole + 4
     IsOnlineRole = Qt.ItemDataRole.UserRole + 5
-    MachineTypeRole = Qt.ItemDataRole.UserRole + 6
-    MachineCountRole = Qt.ItemDataRole.UserRole + 7
+    MachineCountRole = Qt.ItemDataRole.UserRole + 6
+    IsAbstractMachine = Qt.ItemDataRole.UserRole + 7
 
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
@@ -32,8 +35,8 @@ class MachineListModel(ListModel):
         self.addRoleName(self.HasRemoteConnectionRole, "hasRemoteConnection")
         self.addRoleName(self.MetaDataRole, "metadata")
         self.addRoleName(self.IsOnlineRole, "isOnline")
-        self.addRoleName(self.MachineTypeRole, "machineType")
         self.addRoleName(self.MachineCountRole, "machineCount")
+        self.addRoleName(self.IsAbstractMachine, "isAbstractMachine")
 
         self._change_timer = QTimer()
         self._change_timer.setInterval(200)
@@ -61,14 +64,18 @@ class MachineListModel(ListModel):
 
         other_machine_stacks = CuraContainerRegistry.getInstance().findContainerStacks(type="machine")
 
-        abstract_machine_stacks = CuraContainerRegistry.getInstance().findContainerStacks(type = "abstract_machine")
+        abstract_machine_stacks = CuraContainerRegistry.getInstance().findContainerStacks(is_abstract_machine = "True")
         abstract_machine_stacks.sort(key = lambda machine: machine.getName(), reverse = True)
 
         for abstract_machine in abstract_machine_stacks:
-            online_machine_stacks = AbstractMachine.getMachines(abstract_machine, online_only = True)
+            definition_id = abstract_machine.definition.getId()
+            from cura.CuraApplication import CuraApplication
+            machines_manager = CuraApplication.getInstance().getMachineManager()
+            online_machine_stacks = machines_manager.getMachinesWithDefinition(definition_id, online_only = True)
 
             # Create a list item for abstract machine
             self.addItem(abstract_machine, len(online_machine_stacks))
+            other_machine_stacks.remove(abstract_machine)
 
             # Create list of machines that are children of the abstract machine
             for stack in online_machine_stacks:
@@ -87,6 +94,6 @@ class MachineListModel(ListModel):
                          "id": container_stack.getId(),
                          "metadata": container_stack.getMetaData().copy(),
                          "isOnline": parseBool(container_stack.getMetaDataEntry("is_online", False)),
-                         "machineType": container_stack.getMetaDataEntry("type"),
+                         "isAbstractMachine": parseBool(container_stack.getMetaDataEntry("is_abstract_machine", False)),
                          "machineCount": machine_count,
                          })

@@ -9,7 +9,6 @@ from UM.Settings.Interfaces import DefinitionContainerInterface
 from UM.Settings.InstanceContainer import InstanceContainer
 
 from cura.Machines.ContainerTree import ContainerTree
-from .AbstractMachine import AbstractMachine
 from .GlobalStack import GlobalStack
 from .ExtruderStack import ExtruderStack
 
@@ -268,21 +267,21 @@ class CuraStackBuilder:
         return definition_changes_container
 
     @classmethod
-    def createAbstractMachine(cls, definition_id: str) -> Optional[AbstractMachine]:
+    def createAbstractMachine(cls, definition_id: str) -> Optional[GlobalStack]:
         """Create a new instance of an abstract machine.
 
         :param definition_id: The ID of the machine definition to use.
 
         :return: The new Abstract Machine or None if an error occurred.
         """
-        abstract_machine_id = definition_id + "_abstract_machine"
+        abstract_machine_id = f"{definition_id}_abstract_machine"
 
         from cura.CuraApplication import CuraApplication
         application = CuraApplication.getInstance()
         registry = application.getContainerRegistry()
         container_tree = ContainerTree.getInstance()
 
-        if registry.findContainerStacks(type = "abstract_machine", id = abstract_machine_id):
+        if registry.findContainerStacks(is_abstract_machine = "True", id = abstract_machine_id):
             # This abstract machine already exists
             return None
 
@@ -296,7 +295,8 @@ class CuraStackBuilder:
                 machine_node = container_tree.machines[machine_definition.getId()]
                 name = machine_definition.getName()
 
-                stack = AbstractMachine(abstract_machine_id)
+                stack = GlobalStack(abstract_machine_id)
+                stack.setMetaDataEntry("is_abstract_machine", True)
                 stack.setMetaDataEntry("is_online", True)
                 stack.setDefinition(machine_definition)
                 cls.createUserContainer(

@@ -30,8 +30,8 @@ Button
             height: UM.Theme.getSize("medium_button").height
             width: UM.Theme.getSize("medium_button").width
             color: UM.Theme.getColor("machine_selector_printer_icon")
-            visible: model.machineType == "abstract_machine" || !model.isOnline
-            source: model.machineType == "abstract_machine" ? UM.Theme.getIcon("PrinterTriple", "medium") : UM.Theme.getIcon("Printer", "medium")
+            visible: model.isAbstractMachine || !model.isOnline
+            source: model.isAbstractMachine ? UM.Theme.getIcon("PrinterTriple", "medium") : UM.Theme.getIcon("Printer", "medium")
 
             anchors
             {
@@ -51,7 +51,7 @@ Button
                 leftMargin: UM.Theme.getSize("default_margin").width
             }
             text: machineListButton.text
-            font: model.machineType == "abstract_machine" ? UM.Theme.getFont("medium_bold") : UM.Theme.getFont("medium")
+            font: model.isAbstractMachine ? UM.Theme.getFont("medium_bold") : UM.Theme.getFont("medium")
             visible: text != ""
             elide: Text.ElideRight
         }
@@ -68,7 +68,7 @@ Button
                 top: buttonText.top
                 bottom: buttonText.bottom
             }
-            visible: model.machineType == "abstract_machine"
+            visible: model.isAbstractMachine
 
             UM.Label
             {
