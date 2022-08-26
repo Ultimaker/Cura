@@ -31,6 +31,6 @@ class PrintJobPendingApprovalMessage(Message):
         """ Callback function for the "Manage print jobs" button on the pending approval notification. """
         match action:
             case "manage_print_jobs":
-                QDesktopServices.openUrl(QUrl("https://ultimaker.com/"))
+                QDesktopServices.openUrl(QUrl("https://digitalfactory.ultimaker.com/app/jobs/"))
             case "learn_more":
-                QDesktopServices.openUrl(QUrl("https://ultimaker.com/"))
+                QDesktopServices.openUrl(QUrl("https://support.ultimaker.com/hc/en-us/articles/5329940078620"))
