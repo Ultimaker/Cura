@@ -564,6 +564,9 @@
         "medium_button": [2.5, 2.5],
         "medium_button_icon": [2, 2],
 
+        "large_button": [3.0, 3.0],
+        "large_button_icon": [2.8, 2.8],
+
         "context_menu": [20, 2],
 
         "icon_indicator": [1, 1],

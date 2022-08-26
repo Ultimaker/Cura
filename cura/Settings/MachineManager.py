@@ -19,6 +19,7 @@ from UM.Logger import Logger
 from UM.Message import Message
 
 from UM.Settings.SettingFunction import SettingFunction
+from UM.Settings.ContainerStack import ContainerStack
 from UM.Signal import postponeSignals, CompressTechnique
 
 import cura.CuraApplication  # Imported like this to prevent circular references.
@@ -185,6 +186,32 @@ class MachineManager(QObject):
                 self._printer_output_devices.append(printer_output_device)
 
         self.outputDevicesChanged.emit()
+
+    def getMachinesWithDefinition(self, definition_id: str, online_only=False) -> List[ContainerStack]:
+        """ Fetches all container stacks that match definition_id.
+
+        :param definition_id: The id of the machine definition.
+        :return: A list of Containers that match definition_id
+        """
+        from cura.CuraApplication import CuraApplication  # In function to avoid circular import
+        application = CuraApplication.getInstance()
+        registry = application.getContainerRegistry()
+
+        machines = registry.findContainerStacks(type="machine")
+        # Filter machines that match definition
+        machines = filter(lambda machine: machine.definition.id == definition_id, machines)
+        # Filter only LAN and Cloud printers
+        machines = filter(lambda machine: ConnectionType.CloudConnection in machine.configuredConnectionTypes or
+                                          ConnectionType.NetworkConnection in machine.configuredConnectionTypes,
+                          machines)
+        if online_only:
+            # LAN printers can have is_online = False but should still be included,
+            # their online status is only checked when they are the active printer.
+            machines = filter(lambda machine: parseBool(machine.getMetaDataEntry("is_online", False) or
+                                              ConnectionType.NetworkConnection in machine.configuredConnectionTypes),
+                              machines)
+
+        return list(machines)
 
     @pyqtProperty(QObject, notify = currentConfigurationChanged)
     def currentConfiguration(self) -> PrinterConfigurationModel:

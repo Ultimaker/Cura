@@ -115,6 +115,7 @@ from . import CuraActions
 from . import PlatformPhysics
 from . import PrintJobPreviewImageProvider
 from .AutoSave import AutoSave
+from .Machines.Models.MachineListModel import MachineListModel
 from .Machines.Models.ActiveIntentQualitiesModel import ActiveIntentQualitiesModel
 from .Machines.Models.IntentSelectionModel import IntentSelectionModel
 from .SingleInstance import SingleInstance
@@ -145,8 +146,6 @@ class CuraApplication(QtApplication):
         DefinitionChangesContainer = Resources.UserType + 10
         SettingVisibilityPreset = Resources.UserType + 11
         IntentInstanceContainer = Resources.UserType + 12
-        AbstractMachineStack = Resources.UserType + 13
-
 
     pyqtEnum(ResourceTypes)
 
@@ -425,7 +424,6 @@ class CuraApplication(QtApplication):
         Resources.addStorageType(self.ResourceTypes.DefinitionChangesContainer, "definition_changes")
         Resources.addStorageType(self.ResourceTypes.SettingVisibilityPreset, "setting_visibility")
         Resources.addStorageType(self.ResourceTypes.IntentInstanceContainer, "intent")
-        Resources.addStorageType(self.ResourceTypes.AbstractMachineStack, "abstract_machine_instances")
 
         self._container_registry.addResourceType(self.ResourceTypes.QualityInstanceContainer, "quality")
         self._container_registry.addResourceType(self.ResourceTypes.QualityChangesInstanceContainer, "quality_changes")
@@ -436,7 +434,6 @@ class CuraApplication(QtApplication):
         self._container_registry.addResourceType(self.ResourceTypes.MachineStack, "machine")
         self._container_registry.addResourceType(self.ResourceTypes.DefinitionChangesContainer, "definition_changes")
         self._container_registry.addResourceType(self.ResourceTypes.IntentInstanceContainer, "intent")
-        self._container_registry.addResourceType(self.ResourceTypes.AbstractMachineStack, "abstract_machine")
 
         Resources.addType(self.ResourceTypes.QmlFiles, "qml")
         Resources.addType(self.ResourceTypes.Firmware, "firmware")
@@ -485,7 +482,6 @@ class CuraApplication(QtApplication):
                 ("variant", InstanceContainer.Version * 1000000 + self.SettingVersion):                         (self.ResourceTypes.VariantInstanceContainer, "application/x-uranium-instancecontainer"),
                 ("setting_visibility", SettingVisibilityPresetsModel.Version * 1000000 + self.SettingVersion):  (self.ResourceTypes.SettingVisibilityPreset, "application/x-uranium-preferences"),
                 ("machine", 2):                                                                                 (Resources.DefinitionContainers, "application/x-uranium-definitioncontainer"),
-                ("abstract_machine", 1):                                                                        (Resources.DefinitionContainers, "application/x-uranium-definitioncontainer"),
                 ("extruder", 2):                                                                                    (Resources.DefinitionContainers, "application/x-uranium-definitioncontainer")
             }
         )
@@ -1194,6 +1190,7 @@ class CuraApplication(QtApplication):
         qmlRegisterType(InstanceContainer, "Cura", 1, 0, "InstanceContainer")
         qmlRegisterType(ExtrudersModel, "Cura", 1, 0, "ExtrudersModel")
         qmlRegisterType(GlobalStacksModel, "Cura", 1, 0, "GlobalStacksModel")
+        qmlRegisterType(MachineListModel, "Cura", 1, 0, "MachineListModel")
 
         self.processEvents()
         qmlRegisterType(FavoriteMaterialsModel, "Cura", 1, 0, "FavoriteMaterialsModel")
