@@ -12,6 +12,7 @@ Rectangle
     id: viewportOverlay
 
     property bool isConnected: Cura.MachineManager.activeMachineHasNetworkConnection || Cura.MachineManager.activeMachineHasCloudConnection
+    property bool isAbstractCloudPrinter: Cura.MachineManager.activeMachineIsAbstract // && Cura.MachineManager.activeMachineHasCloudRegistration
     property bool isNetworkConfigurable:
     {
         if(Cura.MachineManager.activeMachine === null)
@@ -96,7 +97,7 @@ Rectangle
             {
                 horizontalCenter: parent.horizontalCenter
             }
-            visible: isNetworkConfigured && !isConnected
+            visible: isNetworkConfigured && !isConnected && !isAbstractCloudPrinter
             text: catalog.i18nc("@info", "Please make sure your printer has a connection:\n- Check if the printer is turned on.\n- Check if the printer is connected to the network.\n- Check if you are signed in to discover cloud-connected printers.")
             font: UM.Theme.getFont("medium")
             width: contentWidth
@@ -109,11 +110,25 @@ Rectangle
             {
                 horizontalCenter: parent.horizontalCenter
             }
-            visible: !isNetworkConfigured && isNetworkConfigurable
+            visible: !isNetworkConfigured && isNetworkConfigurable && !isAbstractCloudPrinter
             text: catalog.i18nc("@info", "Please connect your printer to the network.")
             font: UM.Theme.getFont("medium")
             width: contentWidth
         }
+
+        UM.Label
+        {
+            id: sendToFactoryLabel
+            anchors
+            {
+                horizontalCenter: parent.horizontalCenter
+            }
+            visible: isAbstractCloudPrinter
+            text: catalog.i18nc("@info", "Please go to the Digital Factory. [PLACEHOLDER]")
+            font: UM.Theme.getFont("medium")
+            width: contentWidth
+        }
+
         Item
         {
             anchors
