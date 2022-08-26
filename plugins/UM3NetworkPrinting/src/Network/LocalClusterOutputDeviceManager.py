@@ -232,6 +232,9 @@ class LocalClusterOutputDeviceManager:
         self._connectToOutputDevice(device, new_machine)
         self._showCloudFlowMessage(device)
 
+        _abstract_machine = CuraStackBuilder.createAbstractMachine(device.printerType)
+
+
     def _storeManualAddress(self, address: str) -> None:
         """Add an address to the stored preferences."""
 
