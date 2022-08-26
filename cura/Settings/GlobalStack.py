@@ -42,13 +42,13 @@ class GlobalStack(CuraContainerStack):
         # details such as the um_network_key or some other identifier that's used by the underlying device plugin.
         self.setMetaDataEntry("group_id", str(uuid.uuid4()))  # Assign a new GlobalStack to a unique group by default
 
-        self._extruders = {}  # type: Dict[str, "ExtruderStack"]
+        self._extruders: Dict[str, "ExtruderStack"] = {}
 
         # This property is used to track which settings we are calculating the "resolve" for
         # and if so, to bypass the resolve to prevent an infinite recursion that would occur
         # if the resolve function tried to access the same property it is a resolve for.
         # Per thread we have our own resolving_settings, or strange things sometimes occur.
-        self._resolving_settings = defaultdict(set) #type: Dict[str, Set[str]] # keys are thread names
+        self._resolving_settings: Dict[str, Set[str]] = defaultdict(set) # keys are thread names
 
         # Since the metadatachanged is defined in container stack, we can't use it here as a notifier for pyqt
         # properties. So we need to tie them together like this.
@@ -212,7 +212,7 @@ class GlobalStack(CuraContainerStack):
             context.pushContainer(self)
 
         # Handle the "resolve" property.
-        #TODO: Why the hell does this involve threading?
+        # TODO: Why the hell does this involve threading?
         # Answer: Because if multiple threads start resolving properties that have the same underlying properties that's
         # related, without taking a note of which thread a resolve paths belongs to, they can bump into each other and
         # generate unexpected behaviours.
@@ -254,7 +254,7 @@ class GlobalStack(CuraContainerStack):
 
         raise Exceptions.InvalidOperationError("Global stack cannot have a next stack!")
 
-    # Determine whether or not we should try to get the "resolve" property instead of the
+    # Determine whether we should try to get the "resolve" property instead of the
     # requested property.
     def _shouldResolve(self, key: str, property_name: str, context: Optional[PropertyEvaluationContext] = None) -> bool:
         if property_name != "value":
