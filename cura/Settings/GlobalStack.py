@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from collections import defaultdict
@@ -8,10 +8,9 @@ import uuid
 
 from PyQt6.QtCore import pyqtProperty, pyqtSlot, pyqtSignal
 
-from UM.Decorators import deprecated, override
+from UM.Decorators import override
 from UM.MimeTypeDatabase import MimeType, MimeTypeDatabase
 from UM.Settings.ContainerStack import ContainerStack
-from UM.Settings.SettingInstance import InstanceState
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.Interfaces import PropertyEvaluationContext
 from UM.Logger import Logger
@@ -344,13 +343,36 @@ class GlobalStack(CuraContainerStack):
     def getName(self) -> str:
         return self._metadata.get("group_name", self._metadata.get("name", ""))
 
-    def setName(self, name: "str") -> None:
+    def setName(self, name: str) -> None:
         super().setName(name)
 
     nameChanged = pyqtSignal()
     name = pyqtProperty(str, fget=getName, fset=setName, notify=nameChanged)
 
 
+def getMachinesWithDefinition(definition_id: str, online_only = False) -> List[ContainerStack]:
+    """ Fetches all container stacks that match definition_id.
+
+    :param definition_id: The id of the machine definition.
+    :return: A list of Containers that match definition_id
+    """
+    from cura.CuraApplication import CuraApplication  # In function to avoid circular import
+    application = CuraApplication.getInstance()
+    registry = application.getContainerRegistry()
+
+    machines = registry.findContainerStacks(type="machine")
+    # Filter machines that match definition
+    machines = filter(lambda machine: machine.definition.id == definition_id, machines)
+    # Filter only LAN and Cloud printers
+    machines = filter(lambda machine: ConnectionType.CloudConnection in machine.configuredConnectionTypes or
+                                      ConnectionType.NetworkConnection in machine.configuredConnectionTypes, machines)
+    if online_only:
+        # LAN printers can have is_online = False but should still be included, their online status is only checked when
+        # they are the active printer.
+        machines = filter(lambda machine: parseBool(machine.getMetaDataEntry("is_online", False) or
+                                          ConnectionType.NetworkConnection in machine.configuredConnectionTypes), machines)
+
+    return list(machines)
 
 ## private:
 global_stack_mime = MimeType(
