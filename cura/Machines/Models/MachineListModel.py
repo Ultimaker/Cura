@@ -9,7 +9,7 @@ from UM.i18n import i18nCatalog
 from UM.Util import parseBool
 
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
-from cura.Settings.GlobalStack import GlobalStack, getMachinesWithDefinition
+from cura.Settings.GlobalStack import GlobalStack
 
 
 class MachineListModel(ListModel):
@@ -65,7 +65,9 @@ class MachineListModel(ListModel):
 
         for abstract_machine in abstract_machine_stacks:
             definition_id = abstract_machine.definition.getId()
-            online_machine_stacks = getMachinesWithDefinition(definition_id, online_only = True)
+            from cura.CuraApplication import CuraApplication
+            machines_manager = CuraApplication.getInstance().getMachineManager()
+            online_machine_stacks = machines_manager.getMachinesWithDefinition(definition_id, online_only = True)
 
             # Create a list item for abstract machine
             self.addItem(abstract_machine, len(online_machine_stacks))
