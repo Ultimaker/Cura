@@ -81,7 +81,8 @@ class MachineListModel(ListModel):
             for stack in online_machine_stacks:
                 self.addItem(stack)
                 # Remove this machine from the other stack list
-                other_machine_stacks.remove(stack)
+                if stack in other_machine_stacks:
+                    other_machine_stacks.remove(stack)
 
         for stack in other_machine_stacks:
             self.addItem(stack)
