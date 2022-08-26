@@ -1,6 +1,10 @@
 # Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+# The MachineListModel is used to display the connected printers in the interface. Both the abstract machines and all
+# online cloud connected printers are represented within this ListModel. Additional information such as the number of
+# connected printers for each printer type is gathered.
+
 from PyQt6.QtCore import Qt, QTimer
 
 from UM.Qt.ListModel import ListModel
