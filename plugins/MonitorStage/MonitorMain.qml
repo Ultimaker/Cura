@@ -120,16 +120,19 @@ Rectangle
         {
             id: sendToFactoryCard
             color: UM.Theme.getColor("detail_background")
-            height: childrenRect.height
-            width: childrenRect.width
+            height: childrenRect.height + UM.Theme.getSize("default_margin").height * 2
+            width: childrenRect.width + UM.Theme.getSize("wide_margin").width * 2
             Column
             {
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.verticalCenter: parent.verticalCenter
                 spacing: UM.Theme.getSize("default_margin").height
                 padding: UM.Theme.getSize("default_margin").width
                 topPadding: 0
 
                 Image
                 {
+                    id: sendToFactoryImage
                     anchors.horizontalCenter: parent.horizontalCenter
                     source: UM.Theme.getImage("first_run_ultimaker_cloud")
                 }
@@ -140,7 +143,10 @@ Rectangle
                     visible: isAbstractCloudPrinter
                     text: catalog.i18nc("@info", "Monitor your printers from everywhere using Ultimaker Digital Factory")
                     font: UM.Theme.getFont("medium")
-                    width: contentWidth
+                    width: sendToFactoryImage.width
+                    wrapMode: Text.WordWrap
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
                 }
 
                 Cura.PrimaryButton
