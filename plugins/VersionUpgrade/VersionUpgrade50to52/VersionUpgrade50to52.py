@@ -7,6 +7,7 @@ from typing import List, Tuple
 from UM.VersionUpgrade import VersionUpgrade
 from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 from cura.Settings.CuraStackBuilder import CuraStackBuilder
+from cura.Settings.GlobalStack import GlobalStack
 import io
 
 class VersionUpgrade50to52(VersionUpgrade):
@@ -29,6 +30,7 @@ class VersionUpgrade50to52(VersionUpgrade):
         parser.read_string(serialized)
 
         parser["metadata"]["setting_version"] = "6000020"
+        parser["general"]["version"] = "6"
 
         original_file = io.StringIO()
         parser.write(original_file)
@@ -43,7 +45,9 @@ class VersionUpgrade50to52(VersionUpgrade):
         if not any(connection_type in cloud_connection_types for connection_type in connection_types):
             return [original_filename], [original_data]
 
-        definition_id = "ultimaker_s5"  # TODO use actual definition id from machine here
+        stack = GlobalStack("")
+        stack.deserialize(original_data)
+        definition_id = stack.getDefinition().getId()
         abstract_machine = CuraStackBuilder.createAbstractMachine(definition_id)
 
         if abstract_machine:
