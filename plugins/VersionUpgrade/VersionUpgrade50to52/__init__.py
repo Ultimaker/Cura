@@ -20,10 +20,6 @@ def getMetaData() -> Dict[str, Any]:
                 "get_version": upgrade.getCfgVersion,
                 "location": {"./machine_instances"},
             },
-            "abstract_machine": {
-                "get_version": upgrade.getCfgVersion,
-                "location": {"./abstract_machine_instances"},
-            },
         },
     }
 
