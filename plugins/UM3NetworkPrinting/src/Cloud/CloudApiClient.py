@@ -16,7 +16,6 @@ from cura.CuraApplication import CuraApplication
 from cura.UltimakerCloud import UltimakerCloudConstants
 from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope
 from .ToolPathUploader import ToolPathUploader
-from ..Messages.PrintJobAwaitingApprovalMessage import PrintJobPendingApprovalMessage
 from ..Models.BaseModel import BaseModel
 from ..Models.Http.CloudClusterResponse import CloudClusterResponse
 from ..Models.Http.CloudClusterStatus import CloudClusterStatus
@@ -202,7 +201,6 @@ class CloudApiClient:
         if "data" in response:
             data = response["data"]
             if "status" in data and data["status"] == "wait_approval":
-                PrintJobPendingApprovalMessage().show()
                 on_finished_empty = cast(Callable[[List], Any], on_finished)
                 on_finished_empty([])
             elif isinstance(data, list):

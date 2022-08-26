@@ -21,6 +21,7 @@ from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 
 from .CloudApiClient import CloudApiClient
 from ..ExportFileJob import ExportFileJob
+from ..Messages.PrintJobAwaitingApprovalMessage import PrintJobPendingApprovalMessage
 from ..UltimakerNetworkedPrinterOutputDevice import UltimakerNetworkedPrinterOutputDevice
 from ..Messages.PrintJobUploadBlockedMessage import PrintJobUploadBlockedMessage
 from ..Messages.PrintJobUploadErrorMessage import PrintJobUploadErrorMessage
@@ -271,6 +272,8 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
             message.pyQtActionTriggered.connect(lambda message, action: (QDesktopServices.openUrl(QUrl(df_url)), message.hide()))
 
             message.show()
+        else:
+            PrintJobPendingApprovalMessage(self._cluster.cluster_id).show()
 
         self.writeFinished.emit()
 
