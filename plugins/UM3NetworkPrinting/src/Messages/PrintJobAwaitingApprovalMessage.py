@@ -27,7 +27,7 @@ class PrintJobPendingApprovalMessage(Message):
 
         self.actionTriggered.connect(self._onActionTriggered)
 
-    def _onActionTriggered(self, message: Message, action: str):
+    def _onActionTriggered(self, message: Message, action: str) -> None:
         """ Callback function for the "Manage print jobs" button on the pending approval notification. """
         match action:
             case "manage_print_jobs":
