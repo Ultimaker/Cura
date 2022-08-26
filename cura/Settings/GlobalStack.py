@@ -31,6 +31,8 @@ if TYPE_CHECKING:
 class GlobalStack(CuraContainerStack):
     """Represents the Global or Machine stack and its related containers."""
 
+    Version: int = 6
+
     def __init__(self, container_id: str) -> None:
         super().__init__(container_id)
 

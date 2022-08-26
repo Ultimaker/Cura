@@ -13,7 +13,7 @@ upgrade = VersionUpgrade50to52.VersionUpgrade50to52()
 def getMetaData() -> Dict[str, Any]:
     return {
         "version_upgrade": {
-            ("machine_stack", 5000020): ("machine_stack", 5000021, upgrade.upgradeStack),
+            ("machine_stack", 5000020): ("machine_stack", 6000020, upgrade.upgradeStack),
         },
         "sources": {
             "machine_stack": {
