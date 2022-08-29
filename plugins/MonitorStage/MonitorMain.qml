@@ -126,7 +126,7 @@ Rectangle
             {
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter: parent.verticalCenter
-                spacing: UM.Theme.getSize("default_margin").height
+                spacing: UM.Theme.getSize("wide_margin").height
                 padding: UM.Theme.getSize("default_margin").width
                 topPadding: 0
 
