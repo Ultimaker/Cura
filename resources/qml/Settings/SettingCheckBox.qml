@@ -15,7 +15,13 @@ SettingItem
     contents: MouseArea
     {
         id: control
-        anchors.fill: parent
+        anchors
+        {
+            top: parent.top
+            bottom: parent.bottom
+            left: parent.left
+        }
+        width: UM.Theme.getSize("checkbox").width
         hoverEnabled: true
 
         property bool checked:

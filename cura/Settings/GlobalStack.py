@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from collections import defaultdict
@@ -8,10 +8,9 @@ import uuid
 
 from PyQt6.QtCore import pyqtProperty, pyqtSlot, pyqtSignal
 
-from UM.Decorators import deprecated, override
+from UM.Decorators import override
 from UM.MimeTypeDatabase import MimeType, MimeTypeDatabase
 from UM.Settings.ContainerStack import ContainerStack
-from UM.Settings.SettingInstance import InstanceState
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.Interfaces import PropertyEvaluationContext
 from UM.Logger import Logger
@@ -344,13 +343,11 @@ class GlobalStack(CuraContainerStack):
     def getName(self) -> str:
         return self._metadata.get("group_name", self._metadata.get("name", ""))
 
-    def setName(self, name: "str") -> None:
+    def setName(self, name: str) -> None:
         super().setName(name)
 
     nameChanged = pyqtSignal()
     name = pyqtProperty(str, fget=getName, fset=setName, notify=nameChanged)
-
-
 
 ## private:
 global_stack_mime = MimeType(

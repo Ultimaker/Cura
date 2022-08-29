@@ -14,6 +14,7 @@ from cura.Settings.GlobalStack import GlobalStack
 from UM.PackageManager import PackageManager  # The class we're extending.
 from UM.Resources import Resources  # To find storage paths for some resource types.
 from UM.i18n import i18nCatalog
+from urllib.parse import unquote_plus
 
 catalog = i18nCatalog("cura")
 
@@ -54,6 +55,14 @@ class CuraPackageManager(PackageManager):
     def initialize(self) -> None:
         self._installation_dirs_dict["materials"] = Resources.getStoragePath(CuraApplication.ResourceTypes.MaterialInstanceContainer)
         self._installation_dirs_dict["qualities"] = Resources.getStoragePath(CuraApplication.ResourceTypes.QualityInstanceContainer)
+        self._installation_dirs_dict["variants"] = Resources.getStoragePath(CuraApplication.ResourceTypes.VariantInstanceContainer)
+
+        # Due to a bug in Cura 5.1.0 we needed to change the directory structure of the curapackage on the server side (See SD-3871).
+        # Although the material intent profiles will be installed in the `intent` folder, the curapackage from the server side will
+        # have an `intents` folder. For completeness, we will look in both locations of in the curapackage and map them both to the
+        # `intent` folder.
+        self._installation_dirs_dict["intents"] = Resources.getStoragePath(CuraApplication.ResourceTypes.IntentInstanceContainer)
+        self._installation_dirs_dict["intent"] = Resources.getStoragePath(CuraApplication.ResourceTypes.IntentInstanceContainer)
 
         super().initialize()
 
@@ -80,6 +89,7 @@ class CuraPackageManager(PackageManager):
 
     def getMaterialFilePackageId(self, file_name: str, guid: str) -> str:
         """Get the id of the installed material package that contains file_name"""
+        file_name = unquote_plus(file_name)
         for material_package in [f for f in os.scandir(self._installation_dirs_dict["materials"]) if f.is_dir()]:
             package_id = material_package.name
 
@@ -98,6 +108,7 @@ class CuraPackageManager(PackageManager):
                         return package_id
 
         Logger.error("Could not find package_id for file: {} with GUID: {} ".format(file_name, guid))
+        Logger.error(f"Bundled paths searched: {list(Resources.getSecureSearchPaths())}")
         return ""
 
     def getMachinesUsingPackage(self, package_id: str) -> Tuple[List[Tuple[GlobalStack, str, str]], List[Tuple[GlobalStack, str, str]]]:
