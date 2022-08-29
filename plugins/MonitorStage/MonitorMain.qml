@@ -12,7 +12,7 @@ Rectangle
     id: viewportOverlay
 
     property bool isConnected: Cura.MachineManager.activeMachineHasNetworkConnection || Cura.MachineManager.activeMachineHasCloudConnection
-    property bool isAbstractCloudPrinter: Cura.MachineManager.activeMachineIsAbstract // && Cura.MachineManager.activeMachineHasCloudRegistration
+    property bool isAbstractCloudPrinter: Cura.MachineManager.activeMachineIsAbstract
     property bool isNetworkConfigurable:
     {
         if(Cura.MachineManager.activeMachine === null)
