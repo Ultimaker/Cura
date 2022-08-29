@@ -134,7 +134,7 @@ Rectangle
                 {
                     id: sendToFactoryImage
                     anchors.horizontalCenter: parent.horizontalCenter
-                    source: UM.Theme.getImage("first_run_ultimaker_cloud")
+                    source: UM.Theme.getImage("illustration_connect_printers")
                 }
 
                 UM.Label
