@@ -24,6 +24,16 @@ UM.Dialog
 
     property var changesModel: Cura.UserChangesModel { id: userChangesModel }
 
+    // Hack to make sure that when the data of our model changes the tablemodel is also updated
+    // If we directly set the rows (So without the clear being called) it doesn't seem to
+    // get updated correctly.
+    property var modelRows: userChangesModel.items
+    onModelRowsChanged:
+    {
+        tableModel.clear()
+        tableModel.rows = modelRows
+    }
+
     onVisibilityChanged:
     {
         if(visible)
@@ -78,8 +88,9 @@ UM.Dialog
             ]
             model: UM.TableModel
             {
+                id: tableModel
                 headers: ["label", "original_value", "user_value"]
-                rows: userChangesModel.items
+                rows: modelRows
             }
             sectionRole: "category"
         }

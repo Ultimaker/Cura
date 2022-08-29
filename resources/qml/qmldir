@@ -2,6 +2,7 @@ module Cura
 
 MachineSelector 1.0 MachineSelector.qml
 MachineSelectorButton 1.0 MachineSelectorButton.qml
+MachineListButton 1.0 MachineListButton.qml
 CustomConfigurationSelector 1.0 CustomConfigurationSelector.qml
 PrintSetupSelector 1.0 PrintSetupSelector.qml
 ProfileOverview 1.6 ProfileOverview.qml

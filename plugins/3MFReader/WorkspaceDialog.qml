@@ -17,6 +17,7 @@ UM.Dialog
     minimumWidth: UM.Theme.getSize("popup_dialog").width
     minimumHeight: UM.Theme.getSize("popup_dialog").height
     width: minimumWidth
+    backgroundColor: UM.Theme.getColor("main_background")
     margin: UM.Theme.getSize("default_margin").width
     property int comboboxHeight: UM.Theme.getSize("default_margin").height
 
@@ -486,7 +487,7 @@ UM.Dialog
                 UM.Label
                 {
                     id: warningText
-                    text: "The material used in this project is currently not installed in Cura.<br/>Install the material profile and reopen the project."
+                    text: catalog.i18nc("@label", "The material used in this project is currently not installed in Cura.<br/>Install the material profile and reopen the project.")
                 }
             }
 

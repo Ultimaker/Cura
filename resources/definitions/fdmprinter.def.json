@@ -1190,7 +1190,7 @@
                         "inside_out": "Inside To Outside",
                         "outside_in": "Outside To Inside"
                     },
-                    "default_value": "outside_in",
+                    "default_value": "inside_out",
                     "settable_per_mesh": true
                 },
                 "alternate_extra_perimeter":
@@ -1225,45 +1225,19 @@
                             "default_value": 0.3,
                             "value": "min_wall_line_width",
                             "type": "float",
-                            "settable_per_mesh": true,
-                            "children":
-                            {
-                                "wall_split_middle_threshold": {
-                                    "label": "Split Middle Line Threshold",
-                                    "description": "The smallest line width, as a factor of the normal line width, above which the middle line (if there is one) will be split into two. Reduce this setting to use more, thinner lines. Increase to use fewer, wider lines. Note that this applies -as if- the entire shape should be filled with wall, so the middle here refers to the middle of the object between two outer edges of the shape, even if there actually is fill or (other) skin in the print instead of wall.",
-                                    "type": "float",
-                                    "unit": "%",
-                                    "default_value": 50,
-                                    "value": "max(1, min(99, 100 * (2 * min_even_wall_line_width - wall_line_width_0) / wall_line_width_0))",
-                                    "minimum_value": "1",
-                                    "maximum_value": "99"
-                                }
-                            }
+                            "settable_per_mesh": true
                         },
                         "min_odd_wall_line_width":
                         {
                             "label": "Minimum Odd Wall Line Width",
-                            "description": "The minimum line width for middle line gap filler polyline walls. This setting determines at which model thickness we switch from printing two wall lines, to printing two outer walls and a single central wall in the middle. A higher Minimum Odd Wall Line Width leads to a higher maximum even wall line width. The maximum odd wall line width is calculated as 2 * Minimum Even Wall Line Width,",
+                            "description": "The minimum line width for middle line gap filler polyline walls. This setting determines at which model thickness we switch from printing two wall lines, to printing two outer walls and a single central wall in the middle. A higher Minimum Odd Wall Line Width leads to a higher maximum even wall line width. The maximum odd wall line width is calculated as 2 * Minimum Even Wall Line Width.",
                             "unit": "mm",
                             "minimum_value_warning": ".5 * max(wall_line_width_0, wall_line_width_x)",
                             "maximum_value_warning": "min(wall_line_width_0, wall_line_width_x)",
                             "default_value": 0.3,
                             "value": "min_wall_line_width",
                             "type": "float",
-                            "settable_per_mesh": true,
-                            "children":
-                            {
-                                "wall_add_middle_threshold": {
-                                    "label": "Add Middle Line Threshold",
-                                    "description": "The smallest line width, as a factor of the normal line width, above which a middle line (if there wasn't one already) will be added. Reduce this setting to use more, thinner lines. Increase to use fewer, wider lines. Note that this applies -as if- the entire shape should be filled with wall, so the middle here refers to the middle of the object between two outer edges of the shape, even if there actually is fill or (other) skin in the print instead of wall.",
-                                    "type": "float",
-                                    "unit": "%",
-                                    "default_value": 75,
-                                    "value": "max(1, min(99, 100 * min_odd_wall_line_width / wall_line_width_x))",
-                                    "minimum_value": "1",
-                                    "maximum_value": "99"
-                                }
-                            }
+                            "settable_per_mesh": true
                         }
                     }
                 },
@@ -4910,7 +4884,7 @@
                     "default_value": 0,
                     "type": "int",
                     "minimum_value": "0",
-                    "maximum_value_warning": "1 if (support_pattern == 'cross' or support_pattern == 'lines' or support_pattern == 'zigzag' or support_pattern == 'concentric') else 5",
+                    "maximum_value_warning": "1 if (support_pattern == 'cross' or support_pattern == 'lines' or support_pattern == 'concentric') else 5",
                     "maximum_value": "999999 if support_line_distance == 0 else (20 - math.log(support_line_distance) / math.log(2))",
                     "enabled": "(support_enable or support_meshes_present) and support_infill_rate > 0",
                     "limit_to_extruder": "support_infill_extruder_nr",
@@ -4939,7 +4913,7 @@
                     "type": "float",
                     "default_value": 0.0,
                     "minimum_value": "0",
-                    "maximum_value_warning": "5",
+                    "maximum_value_warning": "10",
                     "enabled": "(support_enable or support_meshes_present) and support_structure == 'normal'",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": true
@@ -5191,7 +5165,6 @@
                     "type": "float",
                     "default_value": 1.0,
                     "minimum_value": "0",
-                    "minimum_value_warning": "minimum_support_area",
                     "limit_to_extruder": "support_interface_extruder_nr",
                     "enabled": "support_interface_enable and (support_enable or support_meshes_present)",
                     "settable_per_mesh": true,
@@ -5206,7 +5179,6 @@
                             "default_value": 1.0,
                             "value": "extruderValue(support_roof_extruder_nr, 'minimum_interface_area')",
                             "minimum_value": "0",
-                            "minimum_value_warning": "minimum_support_area",
                             "limit_to_extruder": "support_roof_extruder_nr",
                             "enabled": "support_roof_enable and (support_enable or support_meshes_present)",
                             "settable_per_mesh": true
@@ -5220,7 +5192,6 @@
                             "default_value": 1.0,
                             "value": "extruderValue(support_bottom_extruder_nr, 'minimum_interface_area')",
                             "minimum_value": "0",
-                            "minimum_value_warning": "minimum_support_area",
                             "limit_to_extruder": "support_bottom_extruder_nr",
                             "enabled": "support_bottom_enable and (support_enable or support_meshes_present)",
                             "settable_per_mesh": true
@@ -6471,10 +6442,10 @@
                     "description": "The maximum extrusion area deviation allowed when removing intermediate points from a straight line. An intermediate point may serve as width-changing point in a long straight line. Therefore, if it is removed, it will cause the line to have a uniform width and, as a result, lose (or gain) a bit of extrusion area. If you increase this you may notice slight under- (or over-) extrusion in between straight parallel walls, as more intermediate width-changing points will be allowed to be removed. Your print will be less accurate, but the g-code will be smaller.",
                     "type": "float",
                     "unit": "μm²",
-                    "default_value": 2000,
+                    "default_value": 50000,
                     "minimum_value": "0",
                     "minimum_value_warning": "500",
-                    "maximum_value_warning": "50000",
+                    "maximum_value_warning": "100000",
                     "settable_per_mesh": true
                 }
             }
@@ -8043,7 +8014,7 @@
                     "description": "Alternate wall directions every other layer and inset. Useful for materials that can build up stress, like for metal printing.",
                     "type": "bool",
                     "default_value": false,
-                    "enabled": false,
+                    "enabled": true,
                     "settable_per_mesh": true,
                     "settable_per_extruder": true
                 },
@@ -8052,7 +8023,8 @@
                     "label": "Remove Raft Inside Corners",
                     "description": "Remove inside corners from the raft, causing the raft to become convex.",
                     "type": "bool",
-                    "default_value": false,
+                    "default_value": true,
+                    "resolve": "any(extruderValues('raft_remove_inside_corners'))",
                     "enabled": "resolveOrValue('adhesion_type') == 'raft'",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
@@ -8064,6 +8036,7 @@
                     "type": "int",
                     "default_value": 1,
                     "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                    "resolve": "max(extruderValues('raft_base_wall_count'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 }

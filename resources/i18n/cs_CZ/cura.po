@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
 "POT-Creation-Date: 2022-06-21 12:50+0200\n"
-"PO-Revision-Date: 2022-04-25 20:15+0200\n"
+"PO-Revision-Date: 2022-07-07 19:34+0200\n"
 "Last-Translator: Miroslav Šustek <sustmidown@centrum.cz>\n"
 "Language-Team: DenyCZ <www.github.com/DenyCZ>\n"
 "Language: cs_CZ\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Poedit 3.1\n"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/DiscoveredPrintersModel.py:83
 msgctxt "@label"
@@ -306,7 +306,7 @@ msgstr "OpenGL"
 #: /home/trin/Gedeeld/Projects/Cura/cura/CrashHandler.py:264
 msgctxt "@label"
 msgid "Not yet initialized"
-msgstr ""
+msgstr "Neinicializováno"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/CrashHandler.py:267
 #, python-brace-format
@@ -886,17 +886,17 @@ msgstr "Vlastní"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.py:390
 msgctxt "@info:status"
 msgid "The material used in this project relies on some material definitions not available in Cura, this might produce undesirable print results. We highly recommend installing the full material package from the Marketplace."
-msgstr ""
+msgstr "Materiál použitý v tomto projektu závisí na jiných definicích materiálů, které nejsou dostupné v Cuře. To může způsobit nečekané problémy při tisku. Důrazně doporučujeme nainstalovat kompletní balíček materiálů z Obchodu."
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.py:392
 msgctxt "@info:title"
 msgid "Material profiles not installed"
-msgstr ""
+msgstr "Materiálové profily nejsou nainstalovány"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.py:405
 msgctxt "@action:button"
 msgid "Install Materials"
-msgstr ""
+msgstr "Instalovat materiály"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/__init__.py:27
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/__init__.py:33
@@ -934,12 +934,12 @@ msgstr "Chyba při zápisu 3mf file."
 #, python-brace-format
 msgctxt "@error:material"
 msgid "It was not possible to store material package information in project file: {material}. This project may not open correctly on other systems."
-msgstr ""
+msgstr "Nepodařilo se uložit informace o balíčku materiálů v souboru projektu: {material}. Tento projekt se nemusí otevřít správně na jiných systémech."
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFWriter/ThreeMFWriter.py:283
 msgctxt "@info:title"
 msgid "Failed to save material package information"
-msgstr ""
+msgstr "Nepodařilo se uložit informace o balíčku materiálů"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFWriter/__init__.py:28
 msgctxt "@item:inlistbox"
@@ -1293,7 +1293,7 @@ msgstr "Nelze přečíst odpověď serveru."
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Marketplace/RemotePackageList.py:148
 msgctxt "@info:error"
 msgid "Could not reach Marketplace."
-msgstr "Nelze se připojit k Obchodu"
+msgstr "Nelze se připojit k Obchodu."
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/MonitorStage/__init__.py:14
 msgctxt "@item:inmenu"
@@ -2013,12 +2013,12 @@ msgstr "Otevřít"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:520
 msgctxt "@action:button"
 msgid "Open project anyway"
-msgstr ""
+msgstr "Přesto otevřít projekt"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:529
 msgctxt "@action:button"
 msgid "Install missing material"
-msgstr ""
+msgstr "Nainstalovat chybějící materiál"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/qml/components/BackupListFooter.qml:22
 msgctxt "@button"
@@ -2126,12 +2126,12 @@ msgstr "Přihlásit se"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/DigitalLibrary/resources/qml/SaveProjectFilesPage.qml:216
 msgctxt "@option"
 msgid "Save Cura project and print file"
-msgstr ""
+msgstr "Uložit projekt Cura a tiskový soubor UFP"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/DigitalLibrary/resources/qml/SaveProjectFilesPage.qml:217
 msgctxt "@option"
 msgid "Save Cura project"
-msgstr ""
+msgstr "Uložit projekt Cura"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:31
 msgctxt "@title"
@@ -2503,7 +2503,7 @@ msgstr "Následující balíčky nelze nainstalovat z důvodu nekompatibilní ve
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Marketplace/resources/qml/InstallMissingPackagesDialog.qml:15
 msgctxt "@title"
 msgid "Install missing Materials"
-msgstr ""
+msgstr "Nainstalovat chybějící materiály"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Marketplace/resources/qml/LicenseDialog.qml:15
 msgctxt "@button"
@@ -2590,7 +2590,7 @@ msgstr "Zjistit Více"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Marketplace/resources/qml/PackageCardHeader.qml:172
 msgctxt "@label Is followed by the name of an author"
 msgid "By"
-msgstr ""
+msgstr "Od"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Marketplace/resources/qml/PackageCardHeader.qml:226
 msgctxt "@button"
@@ -4063,28 +4063,28 @@ msgstr "Knihovna pro výstřižky z mnohoúhelníků"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:155
 msgctxt "@label"
 msgid "JSON parser"
-msgstr ""
+msgstr "JSON parser"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:156
 msgctxt "@label"
 msgid "Utility functions, including an image loader"
-msgstr ""
+msgstr "Pomocné funkce zahrnující načítání obrázků"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:157
 msgctxt "@label"
 msgid "Utility library, including Voronoi generation"
-msgstr ""
+msgstr "Pomocná knihovna zahrnující Voronoi generátor"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:160
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:161
 msgctxt "@label"
 msgid "Root Certificates for validating SSL trustworthiness"
-msgstr ""
+msgstr "Kořenové certifikáty pro ověření důvěryhodnosti SSL"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:162
 msgctxt "@label"
 msgid "Compatibility between Python 2 and 3"
-msgstr ""
+msgstr "Kompatibilita mezi Python 2 a 3"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:163
 msgctxt "@label"
@@ -4134,17 +4134,17 @@ msgstr "Knihovna ZeroConf discovery"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:174
 msgctxt "@label"
 msgid "Universal build system configuration"
-msgstr ""
+msgstr "Univerzální konfigurace překladu programů"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:175
 msgctxt "@label"
 msgid "Dependency and package manager"
-msgstr ""
+msgstr "Správce závislostí a balíčků"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:176
 msgctxt "@label"
 msgid "Packaging Python-applications"
-msgstr ""
+msgstr "Vytváření balíčků Python aplikací"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:177
 msgctxt "@label"
@@ -4154,7 +4154,7 @@ msgstr "Linux cross-distribution application deployment"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:178
 msgctxt "@label"
 msgid "Generating Windows installers"
-msgstr ""
+msgstr "Generování instalátorů pro Windows"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AskOpenAsProjectOrModelsDialog.qml:17
 msgctxt "@title:window"
@@ -5671,17 +5671,17 @@ msgstr "Experimentální"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/ProfileWarningReset.qml:54
 msgctxt "@info"
 msgid "custom profile is active and you overwrote some settings."
-msgstr ""
+msgstr "– vlastní profil je aktivní a přepsali jste některá nastavení."
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/ProfileWarningReset.qml:68
 msgctxt "@info"
 msgid "custom profile is overriding some settings."
-msgstr ""
+msgstr "– vlastní profil přepisuje některá nastavení."
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/ProfileWarningReset.qml:79
 msgctxt "@info"
 msgid "Some settings were changed."
-msgstr ""
+msgstr "Některá nastavení byly změněna."
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedAdhesionSelector.qml:27
 msgctxt "@label"
@@ -5706,7 +5706,7 @@ msgstr "Postupná výplň postupně zvyšuje množství výplně směrem nahoru.
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedResolutionSelector.qml:26
 msgctxt "@label"
 msgid "Resolution"
-msgstr ""
+msgstr "Rozlišení"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:28
 msgctxt "@label"
@@ -5721,17 +5721,17 @@ msgstr "Vytvořte struktury pro podporu částí modelu, které mají přesahy. 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/UnsupportedProfileIndication.qml:31
 msgctxt "@error"
 msgid "Configuration not supported"
-msgstr ""
+msgstr "Konfigurace není podporována"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/UnsupportedProfileIndication.qml:39
 msgctxt "@message:text %1 is the name the printer uses for 'nozzle'."
 msgid "No profiles are available for the selected material/%1 configuration. Please change your configuration."
-msgstr ""
+msgstr "Pro vybranou konfiguraci materiál/%1 není dostupný žádný profil. Prosím změňte svou konfiguraci."
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/UnsupportedProfileIndication.qml:47
 msgctxt "@button:label"
 msgid "Learn more"
-msgstr ""
+msgstr "Zjistit více"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ProfileOverview.qml:36
 msgctxt "@title:column"
@@ -6385,7 +6385,7 @@ msgstr "Záznamník hlavy"
 #: SimulationView/plugin.json
 msgctxt "description"
 msgid "Provides the preview of sliced layerdata."
-msgstr "Poskytuje náhled slicovaných dat vrstev"
+msgstr "Poskytuje náhled slicovaných dat vrstev."
 
 #: SimulationView/plugin.json
 msgctxt "name"
