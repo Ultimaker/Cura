@@ -23,6 +23,7 @@ from cura.UltimakerCloud.UltimakerCloudConstants import META_CAPABILITIES, META_
 from .CloudApiClient import CloudApiClient
 from .CloudOutputDevice import CloudOutputDevice
 from ..Models.Http.CloudClusterResponse import CloudClusterResponse
+from ..Messages.NewPrinterDetectedMessage import NewPrinterDetectedMessage
 
 
 class CloudOutputDeviceManager:
@@ -230,27 +231,14 @@ class CloudOutputDeviceManager:
         online_cluster_names = {c.friendly_name.lower() for c in discovered_clusters if c.is_online and not c.friendly_name is None}
         new_output_devices.sort(key = lambda x: ("a{}" if x.name.lower() in online_cluster_names else "b{}").format(x.name.lower()))
 
-        message = Message(
-            title = self.i18n_catalog.i18ncp(
-                "info:status",
-                "New printer detected from your Ultimaker account",
-                "New printers detected from your Ultimaker account",
-                len(new_output_devices)
-            ),
-            progress = 0,
-            lifetime = 0,
-            message_type = Message.MessageType.POSITIVE
-        )
+        message = NewPrinterDetectedMessage(num_printers_found = len(new_output_devices))
         message.show()
 
         new_devices_added = []
 
         for idx, output_device in enumerate(new_output_devices):
-            message_text = self.i18n_catalog.i18nc("info:status Filled in with printer name and printer model.", "Adding printer {name} ({model}) from your account").format(name = output_device.name, model = output_device.printerTypeName)
-            message.setText(message_text)
-            if len(new_output_devices) > 1:
-                message.setProgress((idx / len(new_output_devices)) * 100)
-            CuraApplication.getInstance().processEvents()
+            message.updateDisplayText(output_device)
+
             self._remote_clusters[output_device.getId()] = output_device
 
             # If there is no active machine, activate the first available cloud printer
