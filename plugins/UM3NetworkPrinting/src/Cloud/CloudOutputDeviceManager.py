@@ -249,7 +249,6 @@ class CloudOutputDeviceManager:
 
         message.finalize(new_devices_added, new_output_devices)
 
-
     def _updateOnlinePrinters(self, printer_responses: Dict[str, CloudClusterResponse]) -> None:
         """
         Update the metadata of the printers to store whether they are online or not.
@@ -368,6 +367,7 @@ class CloudOutputDeviceManager:
         self._removed_printers_message.show()
 
     def _onDiscoveredDeviceRemoved(self, device_id: str) -> None:
+        """ Remove the CloudOutputDevices for printers that are offline"""
         device: Optional[CloudOutputDevice] = self._remote_clusters.pop(device_id, None)
         if not device:
             return
