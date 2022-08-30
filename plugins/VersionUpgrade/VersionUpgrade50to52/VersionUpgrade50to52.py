@@ -10,6 +10,7 @@ from cura.Settings.CuraStackBuilder import CuraStackBuilder
 from cura.Settings.GlobalStack import GlobalStack
 import io
 
+
 class VersionUpgrade50to52(VersionUpgrade):
     """
     Upgrades configurations from the state they were in at version 5.0 to the
@@ -22,8 +23,7 @@ class VersionUpgrade50to52(VersionUpgrade):
         Upgrades container stacks for FLSun Racer to change their profiles.
         :param serialized: The original contents of the container stack.
         :param original_filename: The file name of the container stack.
-        :return: A list of file names, and a list of the new contents for those
-        files.
+        :return: A list of file names, and a list of the new contents for those files.
         """
 
         parser = configparser.ConfigParser(interpolation = None)
@@ -38,7 +38,7 @@ class VersionUpgrade50to52(VersionUpgrade):
 
         connection_types = []
         if "metadata" in parser and "connection_type" in parser["metadata"]:
-            connection_types = [int(connection_type) for connection_type in parser["metadata"]["connection_type"].split(",")]
+            connection_types = [ConnectionType(connection_type) for connection_type in parser["metadata"]["connection_type"].split(",")]
 
         cloud_connection_types = ConnectionType.NetworkConnection, ConnectionType.CloudConnection
 
