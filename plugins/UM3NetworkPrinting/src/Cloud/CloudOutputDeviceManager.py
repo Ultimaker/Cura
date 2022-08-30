@@ -169,15 +169,15 @@ class CloudOutputDeviceManager:
         """**Synchronously** create machines for discovered devices
 
         Any new machines are made available to the user.
-        May take a long time to complete. As this code needs access to the Application
-        and blocks the GIL, creating a Job for this would not make sense.
-        Shows a Message informing the user of progress.
+        May take a long time to complete. This currently forcefully calls the "processEvents", which isn't
+        the nicest solution out there. We might need to consider moving this into a job later!
         """
         new_devices = []
         remote_clusters_added = False
         host_guid_map = {machine.getMetaDataEntry(self.META_HOST_GUID): device_cluster_id
                          for device_cluster_id, machine in self._um_cloud_printers.items()
                          if machine.getMetaDataEntry(self.META_HOST_GUID)}
+        
         machine_manager = CuraApplication.getInstance().getMachineManager()
 
         for cluster_data in clusters:
@@ -202,6 +202,8 @@ class CloudOutputDeviceManager:
             # from the account
             elif not parseBool(self._um_cloud_printers[device.key].getMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, "true")):
                 self._um_cloud_printers[device.key].setMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, True)
+            # As adding a lot of machines might take some time, ensure that the GUI (and progress message) is updated
+            CuraApplication.getInstance().processEvents()
 
         # Inform the Cloud printers model about new devices.
         new_devices_list_of_dicts = [{
