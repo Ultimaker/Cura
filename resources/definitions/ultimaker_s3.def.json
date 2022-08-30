@@ -98,7 +98,6 @@
         "layer_start_y": { "value": "sum(extruderValues('machine_extruder_start_pos_y')) / len(extruderValues('machine_extruder_start_pos_y'))" },
         "machine_min_cool_heat_time_window": { "value": "15" },
         "default_material_print_temperature": { "value": "200" },
-        "material_standby_temperature": { "value": "100" },
         "multiple_mesh_overlap": { "value": "0" },
         "optimize_wall_printing_order": { "value": "True" },
         "prime_tower_enable": { "value": "True" },

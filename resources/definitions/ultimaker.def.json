@@ -24,6 +24,7 @@
             "maximum_value_warning": "125"
         },
         "material_standby_temperature": {
+            "value": "material_print_temperature - 100",
             "minimum_value": "0"
         },
         "extruder_prime_pos_y":
