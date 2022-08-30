@@ -13,7 +13,7 @@ I18N_CATALOG = i18nCatalog("cura")
 class PrintJobPendingApprovalMessage(Message):
     """Message shown when waiting for approval on an uploaded print job."""
 
-     def __init__(self, cluster_id: str) -> None:
+    def __init__(self, cluster_id: str) -> None:
         super().__init__(
             text = I18N_CATALOG.i18nc("@info:status", "You will receive a confirmation via email when the print job is approved"),
             title=I18N_CATALOG.i18nc("@info:title", "The print job was successfully submitted"),
