@@ -172,12 +172,14 @@ class CloudOutputDeviceManager:
         May take a long time to complete. This currently forcefully calls the "processEvents", which isn't
         the nicest solution out there. We might need to consider moving this into a job later!
         """
-        new_devices = []
+        new_devices: List[CloudOutputDevice] = []
         remote_clusters_added = False
-        host_guid_map = {machine.getMetaDataEntry(self.META_HOST_GUID): device_cluster_id
-                         for device_cluster_id, machine in self._um_cloud_printers.items()
-                         if machine.getMetaDataEntry(self.META_HOST_GUID)}
-        
+
+        # Create a map that maps the HOST_GUID to the DEVICE_CLUSTER_ID
+        host_guid_map: Dict[str, str] = {machine.getMetaDataEntry(self.META_HOST_GUID): device_cluster_id
+                                         for device_cluster_id, machine in self._um_cloud_printers.items()
+                                         if machine.getMetaDataEntry(self.META_HOST_GUID)}
+
         machine_manager = CuraApplication.getInstance().getMachineManager()
 
         for cluster_data in clusters:
