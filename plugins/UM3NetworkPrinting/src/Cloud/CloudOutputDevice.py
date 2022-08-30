@@ -41,7 +41,7 @@ I18N_CATALOG = i18nCatalog("cura")
 class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
     """The cloud output device is a network output device that works remotely but has limited functionality.
 
-    Currently it only supports viewing the printer and print job status and adding a new job to the queue.
+    Currently, it only supports viewing the printer and print job status and adding a new job to the queue.
     As such, those methods have been implemented here.
     Note that this device represents a single remote cluster, not a list of multiple clusters.
     """
@@ -58,7 +58,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
     PRINT_JOB_ACTIONS_MIN_VERSION = Version("5.2.12")
 
     # Notify can only use signals that are defined by the class that they are in, not inherited ones.
-    # Therefore we create a private signal used to trigger the printersChanged signal.
+    # Therefore, we create a private signal used to trigger the printersChanged signal.
     _cloudClusterPrintersChanged = pyqtSignal()
 
     def __init__(self, api_client: CloudApiClient, cluster: CloudClusterResponse, parent: QObject = None) -> None:
@@ -202,7 +202,8 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         # Note that self.writeFinished is called in _onPrintUploadCompleted as well.
         if self._uploaded_print_job:
             Logger.log("i", "Current mesh is already attached to a print-job, immediately request reprint.")
-            self._api.requestPrint(self.key, self._uploaded_print_job.job_id, self._onPrintUploadCompleted, self._onPrintUploadSpecificError)
+            self._api.requestPrint(self.key, self._uploaded_print_job.job_id, self._onPrintUploadCompleted,
+                                   self._onPrintUploadSpecificError)
             return
 
         # Export the scene to the correct file type.
@@ -244,12 +245,15 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
         self._progress.update(100)
         print_job = cast(CloudPrintJobResponse, self._pre_upload_print_job)
-        if not print_job:  # It's possible that another print job is requested in the meanwhile, which then fails to upload with an error, which sets self._pre_uploaded_print_job to `None`.
+        if not print_job:
+            # It's possible that another print job is requested in the meanwhile, which then fails to upload with an
+            # error, which sets self._pre_uploaded_print_job to `None`.
             self._pre_upload_print_job = None
             self._uploaded_print_job = None
             Logger.log("w", "Interference from another job uploaded at roughly the same time, not uploading print!")
             return  # Prevent a crash.
-        self._api.requestPrint(self.key, print_job.job_id, self._onPrintUploadCompleted, self._onPrintUploadSpecificError)
+        self._api.requestPrint(self.key, print_job.job_id, self._onPrintUploadCompleted,
+                               self._onPrintUploadSpecificError)
 
     def _onPrintUploadCompleted(self, response: CloudPrintResponse) -> None:
         """Shows a message when the upload has succeeded
@@ -262,10 +266,13 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         message.addAction("monitor print",
                           name=I18N_CATALOG.i18nc("@action:button", "Monitor print"),
                           icon="",
-                          description=I18N_CATALOG.i18nc("@action:tooltip", "Track the print in Ultimaker Digital Factory"),
+                          description=I18N_CATALOG.i18nc("@action:tooltip",
+                                                         "Track the print in Ultimaker Digital Factory"),
                           button_align=message.ActionButtonAlignment.ALIGN_RIGHT)
-        df_url = f"https://digitalfactory.ultimaker.com/app/jobs/{self._cluster.cluster_id}?utm_source=cura&utm_medium=software&utm_campaign=message-printjob-sent"
-        message.pyQtActionTriggered.connect(lambda message, action: (QDesktopServices.openUrl(QUrl(df_url)), message.hide()))
+        df_url = f"https://digitalfactory.ultimaker.com/app/jobs/{self._cluster.cluster_id}" \
+                 f"?utm_source=cura&utm_medium=software&utm_campaign=message-printjob-sent"
+        message.pyQtActionTriggered.connect(lambda message, action: (QDesktopServices.openUrl(QUrl(df_url)),
+                                                                     message.hide()))
 
         message.show()
         self.writeFinished.emit()
@@ -278,7 +285,9 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         if error_code == 409:
             PrintJobUploadQueueFullMessage().show()
         else:
-            PrintJobUploadErrorMessage(I18N_CATALOG.i18nc("@error:send", "Unknown error code when uploading print job: {0}", error_code)).show()
+            PrintJobUploadErrorMessage(I18N_CATALOG.i18nc("@error:send",
+                                                          "Unknown error code when uploading print job: {0}",
+                                                          error_code)).show()
 
         Logger.log("w", "Upload of print job failed specifically with error code {}".format(error_code))
 
@@ -336,11 +345,13 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
     @pyqtSlot(name="openPrintJobControlPanel")
     def openPrintJobControlPanel(self) -> None:
-        QDesktopServices.openUrl(QUrl(self.clusterCloudUrl + "?utm_source=cura&utm_medium=software&utm_campaign=monitor-manage-browser"))
+        QDesktopServices.openUrl(QUrl(f"{self.clusterCloudUrl}?utm_source=cura&utm_medium=software&"
+                                      f"utm_campaign=monitor-manage-browser"))
 
     @pyqtSlot(name="openPrinterControlPanel")
     def openPrinterControlPanel(self) -> None:
-        QDesktopServices.openUrl(QUrl(self.clusterCloudUrl + "?utm_source=cura&utm_medium=software&utm_campaign=monitor-manage-printer"))
+        QDesktopServices.openUrl(QUrl(f"{self.clusterCloudUrl}?utm_source=cura&utm_medium=software"
+                                      f"&utm_campaign=monitor-manage-printer"))
 
     permissionsChanged = pyqtSignal()
 
@@ -362,7 +373,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
     @pyqtProperty(bool, notify = permissionsChanged)
     def canWriteOwnPrintJobs(self) -> bool:
         """
-        Whether this user can change things about print jobs made by themself.
+        Whether this user can change things about print jobs made by them.
         """
         return "digital-factory.print-job.write.own" in self._account.permissions
 
@@ -390,4 +401,4 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         """Gets the URL on which to monitor the cluster via the cloud."""
 
         root_url_prefix = "-staging" if self._account.is_staging else ""
-        return "https://digitalfactory{}.ultimaker.com/app/jobs/{}".format(root_url_prefix, self.clusterData.cluster_id)
+        return f"https://digitalfactory{root_url_prefix}.ultimaker.com/app/jobs/{self.clusterData.cluster_id}"
