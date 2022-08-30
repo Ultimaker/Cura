@@ -5,7 +5,7 @@
 # online cloud connected printers are represented within this ListModel. Additional information such as the number of
 # connected printers for each printer type is gathered.
 
-from PyQt6.QtCore import Qt, QTimer
+from PyQt6.QtCore import Qt, QTimer, pyqtSlot, pyqtProperty, pyqtSignal
 
 from UM.Qt.ListModel import ListModel
 from UM.Settings.ContainerStack import ContainerStack
@@ -29,6 +29,8 @@ class MachineListModel(ListModel):
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
 
+        self._show_cloud_printers = True
+
         self._catalog = i18nCatalog("cura")
 
         self.addRoleName(self.NameRole, "name")
@@ -49,6 +51,18 @@ class MachineListModel(ListModel):
         CuraContainerRegistry.getInstance().containerMetaDataChanged.connect(self._onContainerChanged)
         CuraContainerRegistry.getInstance().containerRemoved.connect(self._onContainerChanged)
         self._updateDelayed()
+
+    showCloutPrintersChanged = pyqtSignal(bool)
+
+    @pyqtProperty(bool, notify=showCloutPrintersChanged)
+    def showCloudPrinters(self) -> bool:
+        return self._show_cloud_printers
+
+    @pyqtSlot(bool, name="setShowCloudPrinters")
+    def set_show_cloud_printers(self, show_cloud_printers: bool) -> None:
+        self._show_cloud_printers = show_cloud_printers
+        self._updateDelayed()
+        self.showCloutPrintersChanged.emit(show_cloud_printers)
 
     def _onContainerChanged(self, container) -> None:
         """Handler for container added/removed events from registry"""
@@ -80,7 +94,8 @@ class MachineListModel(ListModel):
 
             # Create list of machines that are children of the abstract machine
             for stack in online_machine_stacks:
-                self.addItem(stack)
+                if self._show_cloud_printers:
+                    self.addItem(stack)
                 # Remove this machine from the other stack list
                 other_machine_stacks.remove(stack)
 

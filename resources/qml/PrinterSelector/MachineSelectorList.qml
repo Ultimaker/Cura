@@ -19,14 +19,42 @@ ListView
         id: scrollBar
     }
 
-    section.delegate: UM.Label
+    section.delegate: Item
     {
-        text: section == "true" ? catalog.i18nc("@label", "Connected printers") : catalog.i18nc("@label", "Other printers")
         width: parent.width - scrollBar.width
-        height: UM.Theme.getSize("action_button").height
-        leftPadding: UM.Theme.getSize("default_margin").width
-        font: UM.Theme.getFont("medium")
-        color: UM.Theme.getColor("text_medium")
+        height: childrenRect.height
+
+        UM.Label
+        {
+            visible: section == "true"
+            text: catalog.i18nc("@label", "Connected printers")
+            height: UM.Theme.getSize("action_button").height
+            leftPadding: UM.Theme.getSize("default_margin").width
+            font: UM.Theme.getFont("medium")
+            color: UM.Theme.getColor("text_medium")
+        }
+
+        Column
+        {
+            visible: section != "true"
+            height: childrenRect.height
+
+            Cura.TertiaryButton
+            {
+                text: listView.model.showCloudPrinters ? catalog.i18nc("@label", "Hide all connected printers") : catalog.i18nc("@label", "Show all connected printers")
+                onClicked: listView.model.setShowCloudPrinters(!listView.model.showCloudPrinters)
+                iconSource: listView.model.showCloudPrinters ? UM.Theme.getIcon("ChevronSingleUp") : UM.Theme.getIcon("ChevronSingleDown")
+            }
+
+            UM.Label
+            {
+                text: catalog.i18nc("@label", "Other printers")
+                height: UM.Theme.getSize("action_button").height
+                leftPadding: UM.Theme.getSize("default_margin").width
+                font: UM.Theme.getFont("medium")
+                color: UM.Theme.getColor("text_medium")
+            }
+        }
     }
 
     delegate: MachineListButton
