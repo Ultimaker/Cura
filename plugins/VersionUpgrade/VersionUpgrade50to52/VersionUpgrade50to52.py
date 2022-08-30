@@ -38,7 +38,7 @@ class VersionUpgrade50to52(VersionUpgrade):
 
         connection_types = []
         if "metadata" in parser and "connection_type" in parser["metadata"]:
-            connection_types = [ConnectionType(connection_type) for connection_type in parser["metadata"]["connection_type"].split(",")]
+            connection_types = [int(connection_type) for connection_type in parser["metadata"]["connection_type"].split(",")]
 
         cloud_connection_types = ConnectionType.NetworkConnection, ConnectionType.CloudConnection
 
