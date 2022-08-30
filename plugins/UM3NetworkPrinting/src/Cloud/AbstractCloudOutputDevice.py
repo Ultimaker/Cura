@@ -10,6 +10,7 @@ from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState
 from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 from .CloudApiClient import CloudApiClient
 from ..Models.Http.CloudClusterResponse import CloudClusterResponse
+from ..Models.Http.CloudClusterWithConfigResponse import CloudClusterWithConfigResponse
 from ..UltimakerNetworkedPrinterOutputDevice import UltimakerNetworkedPrinterOutputDevice
 
 I18N_CATALOG = i18nCatalog("cura")
@@ -36,7 +37,6 @@ class AbstractCloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
             parent=parent
         )
 
-        print("CREATING ABSTRACT CLOUD OUTPUT DEVIIICEEEEEE")
         self._setInterfaceElements()
 
     def connect(self) -> None:
@@ -79,9 +79,15 @@ class AbstractCloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         self.setDescription(I18N_CATALOG.i18nc("@properties:tooltip", "Print via cloud"))
         self.setConnectionText(I18N_CATALOG.i18nc("@info:status", "Connected via cloud"))
 
-    def _onCompleted(self, clusters: List[CloudClusterResponse]) -> None:
+    def _onCompleted(self, clusters: List[CloudClusterWithConfigResponse]) -> None:
         self._responseReceived()
-        # Todo: actually handle the data that we get back!
+
+        all_configurations = []
+        for resp in clusters:
+            if resp.configuration is not None:
+                # Usually when the printer is offline, it doesn't have a configuration...
+                all_configurations.append(resp.configuration)
+        self._updatePrinters(all_configurations)
 
     def _onError(self, reply: QNetworkReply, error: QNetworkReply.NetworkError) -> None:
         pass

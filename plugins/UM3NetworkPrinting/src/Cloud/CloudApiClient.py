@@ -17,6 +17,7 @@ from cura.UltimakerCloud import UltimakerCloudConstants
 from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope
 from .ToolPathUploader import ToolPathUploader
 from ..Models.BaseModel import BaseModel
+from ..Models.Http.CloudClusterWithConfigResponse import CloudClusterWithConfigResponse
 from ..Models.Http.CloudClusterResponse import CloudClusterResponse
 from ..Models.Http.CloudClusterStatus import CloudClusterStatus
 from ..Models.Http.CloudError import CloudError
@@ -76,7 +77,7 @@ class CloudApiClient:
                        error_callback = failed,
                        timeout = self.DEFAULT_REQUEST_TIMEOUT)
 
-    def getClustersByMachineType(self, machine_type, on_finished: Callable[[List[CloudClusterResponse]], Any], failed: Callable) -> None:
+    def getClustersByMachineType(self, machine_type, on_finished: Callable[[List[CloudClusterWithConfigResponse]], Any], failed: Callable) -> None:
         # HACK: There is something weird going on with the API, as it reports printer types in formats like
         # "ultimaker_s3", but wants "Ultimaker S3" when using the machine_variant filter query. So we need to do some
         # conversion!
@@ -90,7 +91,7 @@ class CloudApiClient:
         url = f"{self.CLUSTER_API_ROOT}/clusters?machine_variant={machine_type}"
         self._http.get(url,
                        scope=self._scope,
-                       callback=self._parseCallback(on_finished, CloudClusterResponse, failed),
+                       callback=self._parseCallback(on_finished, CloudClusterWithConfigResponse, failed),
                        error_callback=failed,
                        timeout=self.DEFAULT_REQUEST_TIMEOUT)
 

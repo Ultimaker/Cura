@@ -403,7 +403,6 @@ class CloudOutputDeviceManager:
             remote_abstract_cluster_copy: List[CloudOutputDevice] = list(self._abstract_clusters.values())
             for device in remote_abstract_cluster_copy:
                 if device.printerType == active_machine.definition.getId():
-                    print("Found the device to activate", device)
                     self._connectToAbstractOutputDevice(device, active_machine)
                 else:
                     output_device_manager.removeOutputDevice(device.key)
