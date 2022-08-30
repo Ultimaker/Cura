@@ -119,6 +119,7 @@ Rectangle
         Rectangle
         {
             id: sendToFactoryCard
+            visible: isAbstractCloudPrinter
             color: UM.Theme.getColor("detail_background")
             height: childrenRect.height + UM.Theme.getSize("default_margin").height * 2
             width: childrenRect.width + UM.Theme.getSize("wide_margin").width * 2
@@ -140,7 +141,6 @@ Rectangle
                 UM.Label
                 {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    visible: isAbstractCloudPrinter
                     text: catalog.i18nc("@info", "Monitor your printers from everywhere using Ultimaker Digital Factory")
                     font: UM.Theme.getFont("medium")
                     width: sendToFactoryImage.width
