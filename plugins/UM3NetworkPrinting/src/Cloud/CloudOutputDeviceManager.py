@@ -346,7 +346,7 @@ class CloudOutputDeviceManager:
             output_device_manager.removeOutputDevice(device.key)
 
     def _createMachineFromDiscoveredDevice(self, key: str, activate: bool = True) -> bool:
-        device = self._remote_clusters[key]
+        device = self._remote_clusters.get(key)
         if not device:
             return False
 
