@@ -130,8 +130,11 @@ class CloudOutputDeviceManager:
                     self._um_cloud_printers[device_id].setMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, True)
                 if not self._um_cloud_printers[device_id].getMetaDataEntry(META_CAPABILITIES, None):
                     self._um_cloud_printers[device_id].setMetaDataEntry(META_CAPABILITIES, ",".join(cluster_data.capabilities))
-        self._onDevicesDiscovered(new_clusters)
 
+        # We want a machine stack per remote printer that we discovered. Create them now!
+        self._createMachineStacksForDiscoveredClusters(new_clusters)
+
+        # Update the online vs offline status for all found devices
         self._updateOnlinePrinters(all_clusters)
 
         # Hide the current removed_printers_message, if there is any
@@ -165,7 +168,7 @@ class CloudOutputDeviceManager:
         self._syncing = False
         self._account.setSyncState(self.SYNC_SERVICE_NAME, SyncState.ERROR)
 
-    def _onDevicesDiscovered(self, discovered_clusters: List[CloudClusterResponse]) -> None:
+    def _createMachineStacksForDiscoveredClusters(self, discovered_clusters: List[CloudClusterResponse]) -> None:
         """**Synchronously** create machines for discovered devices
 
         Any new machines are made available to the user.
