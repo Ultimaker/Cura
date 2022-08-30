@@ -19,6 +19,7 @@ from cura.Settings.CuraContainerRegistry import CuraContainerRegistry  # To upda
 from cura.Settings.CuraStackBuilder import CuraStackBuilder
 from cura.Settings.GlobalStack import GlobalStack
 from cura.UltimakerCloud.UltimakerCloudConstants import META_CAPABILITIES, META_UM_LINKED_TO_ACCOUNT
+from .AbstractCloudOutputDevice import AbstractCloudOutputDevice
 from .CloudApiClient import CloudApiClient
 from .CloudOutputDevice import CloudOutputDevice
 from ..Messages.RemovedPrintersMessage import RemovedPrintersMessage
@@ -48,6 +49,8 @@ class CloudOutputDeviceManager:
     def __init__(self) -> None:
         # Persistent dict containing the remote clusters for the authenticated user.
         self._remote_clusters: Dict[str, CloudOutputDevice] = {}
+
+        self._abstract_clusters: Dict[str, AbstractCloudOutputDevice] = {}
 
         # Dictionary containing all the cloud printers loaded in Cura
         self._um_cloud_printers: Dict[str, GlobalStack] = {}
@@ -189,6 +192,10 @@ class CloudOutputDeviceManager:
 
         for cluster_data in discovered_clusters:
             output_device = CloudOutputDevice(self._api, cluster_data)
+
+            if cluster_data.printer_type not in self._abstract_clusters:
+                self._abstract_clusters[cluster_data.printer_type] = AbstractCloudOutputDevice(self._api, cluster_data.printer_type)
+
             # If the machine already existed before, it will be present in the host_guid_map
             if cluster_data.host_guid in host_guid_map:
                 machine = machine_manager.getMachine(output_device.printerType, {self.META_HOST_GUID: cluster_data.host_guid})
@@ -373,22 +380,33 @@ class CloudOutputDeviceManager:
         if not active_machine:
             return
 
+        # Check if we should directly connect with a "normal" CloudOutputDevice or that we should connect to an
+        # 'abstract' one
         output_device_manager = CuraApplication.getInstance().getOutputDeviceManager()
-        stored_cluster_id = active_machine.getMetaDataEntry(self.META_CLUSTER_ID)
-        local_network_key = active_machine.getMetaDataEntry(self.META_NETWORK_KEY)
+        if active_machine.getMetaDataEntry("is_abstract_machine") != "True":
+            stored_cluster_id = active_machine.getMetaDataEntry(self.META_CLUSTER_ID)
+            local_network_key = active_machine.getMetaDataEntry(self.META_NETWORK_KEY)
 
-        # Copy of the device list, to prevent modifying the list while iterating, if a device gets added asynchronously.
-        remote_cluster_copy: List[CloudOutputDevice] = list(self._remote_clusters.values())
-        for device in remote_cluster_copy:
-            if device.key == stored_cluster_id:
-                # Connect to it if the stored ID matches.
-                self._connectToOutputDevice(device, active_machine)
-            elif local_network_key and device.matchesNetworkKey(local_network_key):
-                # Connect to it if we can match the local network key that was already present.
-                self._connectToOutputDevice(device, active_machine)
-            elif device.key in output_device_manager.getOutputDeviceIds():
-                # Remove device if it is not meant for the active machine.
-                output_device_manager.removeOutputDevice(device.key)
+            # Copy of the device list, to prevent modifying the list while iterating, if a device gets added asynchronously.
+            remote_cluster_copy: List[CloudOutputDevice] = list(self._remote_clusters.values())
+            for device in remote_cluster_copy:
+                if device.key == stored_cluster_id:
+                    # Connect to it if the stored ID matches.
+                    self._connectToOutputDevice(device, active_machine)
+                elif local_network_key and device.matchesNetworkKey(local_network_key):
+                    # Connect to it if we can match the local network key that was already present.
+                    self._connectToOutputDevice(device, active_machine)
+                elif device.key in output_device_manager.getOutputDeviceIds():
+                    # Remove device if it is not meant for the active machine.
+                    output_device_manager.removeOutputDevice(device.key)
+        else:  # Abstract it is!
+            remote_abstract_cluster_copy: List[CloudOutputDevice] = list(self._abstract_clusters.values())
+            for device in remote_abstract_cluster_copy:
+                if device.printerType == active_machine.definition.getId():
+                    print("Found the device to activate", device)
+                    self._connectToAbstractOutputDevice(device, active_machine)
+                else:
+                    output_device_manager.removeOutputDevice(device.key)
 
     def _setOutputDeviceMetadata(self, device: CloudOutputDevice, machine: GlobalStack):
         machine.setName(device.name)
@@ -404,6 +422,15 @@ class CloudOutputDeviceManager:
             + "<br><br>" + self.i18n_catalog.i18nc("@message {printer_name} is replaced with the name of the printer", "Are you sure you want to remove {printer_name} temporarily?").format(printer_name = device.name)
         machine.setMetaDataEntry("removal_warning", removal_warning_string)
         machine.addConfiguredConnectionType(device.connectionType.value)
+
+    def _connectToAbstractOutputDevice(self, device: AbstractCloudOutputDevice, machine: GlobalStack) -> None:
+        if not device.isConnected():
+            device.connect()
+        machine.addConfiguredConnectionType(device.connectionType.value)
+
+        output_device_manager = CuraApplication.getInstance().getOutputDeviceManager()
+        if device.key not in output_device_manager.getOutputDeviceIds():
+            output_device_manager.addOutputDevice(device)
 
     def _connectToOutputDevice(self, device: CloudOutputDevice, machine: GlobalStack) -> None:
         """Connects to an output device and makes sure it is registered in the output device manager."""

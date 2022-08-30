@@ -61,7 +61,6 @@ class CloudApiClient:
     @property
     def account(self) -> Account:
         """Gets the account used for the API."""
-
         return self._account
 
     def getClusters(self, on_finished: Callable[[List[CloudClusterResponse]], Any], failed: Callable) -> None:
@@ -76,6 +75,24 @@ class CloudApiClient:
                        callback = self._parseCallback(on_finished, CloudClusterResponse, failed),
                        error_callback = failed,
                        timeout = self.DEFAULT_REQUEST_TIMEOUT)
+
+    def getClustersByMachineType(self, machine_type, on_finished: Callable[[List[CloudClusterResponse]], Any], failed: Callable) -> None:
+        # HACK: There is something weird going on with the API, as it reports printer types in formats like
+        # "ultimaker_s3", but wants "Ultimaker S3" when using the machine_variant filter query. So we need to do some
+        # conversion!
+
+        machine_type = machine_type.replace("_plus", "+")
+        machine_type = machine_type.replace("_", " ")
+        machine_type = machine_type.replace("ultimaker", "ultimaker ")
+        machine_type = machine_type.replace("  ", " ")
+        machine_type = machine_type.title()
+
+        url = f"{self.CLUSTER_API_ROOT}/clusters?machine_variant={machine_type}"
+        self._http.get(url,
+                       scope=self._scope,
+                       callback=self._parseCallback(on_finished, CloudClusterResponse, failed),
+                       error_callback=failed,
+                       timeout=self.DEFAULT_REQUEST_TIMEOUT)
 
     def getClusterStatus(self, cluster_id: str, on_finished: Callable[[CloudClusterStatus], Any]) -> None:
         """Retrieves the status of the given cluster.
