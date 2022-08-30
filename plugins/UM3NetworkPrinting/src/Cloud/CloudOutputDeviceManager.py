@@ -22,6 +22,7 @@ from cura.Settings.GlobalStack import GlobalStack
 from cura.UltimakerCloud.UltimakerCloudConstants import META_CAPABILITIES, META_UM_LINKED_TO_ACCOUNT
 from .CloudApiClient import CloudApiClient
 from .CloudOutputDevice import CloudOutputDevice
+from ..Messages.RemovedPrintersMessage import RemovedPrintersMessage
 from ..Models.Http.CloudClusterResponse import CloudClusterResponse
 from ..Messages.NewPrinterDetectedMessage import NewPrinterDetectedMessage
 
@@ -303,51 +304,12 @@ class CloudOutputDeviceManager:
         for device_id in removed_device_ids:
             if not parseBool(self._um_cloud_printers[device_id].getMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, "true")):
                 ignored_device_ids.add(device_id)
+
         # Keep the reported_device_ids list in a class variable, so that the message button actions can access it and
         # take the necessary steps to fulfill their purpose.
         self.reported_device_ids = removed_device_ids - ignored_device_ids
         if not self.reported_device_ids:
             return
-
-        # Generate message
-        self._removed_printers_message = Message(
-                title = self.i18n_catalog.i18ncp(
-                        "info:status",
-                        "A cloud connection is not available for a printer",
-                        "A cloud connection is not available for some printers",
-                        len(self.reported_device_ids)
-                ),
-            message_type = Message.MessageType.WARNING
-        )
-        device_names = "".join(["<li>{} ({})</li>".format(self._um_cloud_printers[device].name,
-                                                          self._um_cloud_printers[device].definition.name) for device in self.reported_device_ids])
-        message_text = self.i18n_catalog.i18ncp(
-                "info:status",
-                "This printer is not linked to the Digital Factory:",
-                "These printers are not linked to the Digital Factory:",
-                len(self.reported_device_ids)
-        )
-        message_text += "<br/><ul>{}</ul><br/>".format(device_names)
-        digital_factory_string = self.i18n_catalog.i18nc("info:name", "Ultimaker Digital Factory")
-        website_link = f"<a href='https://digitalfactory.ultimaker.com?utm_source=cura&" \
-                       f"utm_medium=software&utm_campaign=change-account-connect-printer'>{digital_factory_string}</a>."
-        message_text += self.i18n_catalog.i18nc(
-                "info:status",
-                f"To establish a connection, please visit the {website_link}"
-        )
-        self._removed_printers_message.setText(message_text)
-        self._removed_printers_message.addAction("keep_printer_configurations_action",
-                                                 name = self.i18n_catalog.i18nc("@action:button", "Keep printer configurations"),
-                                                 icon = "",
-                                                 description = "Keep cloud printers in Ultimaker Cura when not connected to your account.",
-                                                 button_align = Message.ActionButtonAlignment.ALIGN_RIGHT)
-        self._removed_printers_message.addAction("remove_printers_action",
-                                                 name = self.i18n_catalog.i18nc("@action:button", "Remove printers"),
-                                                 icon = "",
-                                                 description = "Remove cloud printer(s) which aren't linked to your account.",
-                                                 button_style = Message.ActionButtonStyle.SECONDARY,
-                                                 button_align = Message.ActionButtonAlignment.ALIGN_LEFT)
-        self._removed_printers_message.actionTriggered.connect(self._onRemovedPrintersMessageActionTriggered)
 
         output_device_manager = CuraApplication.getInstance().getOutputDeviceManager()
 
@@ -364,6 +326,12 @@ class CloudOutputDeviceManager:
             # Update the printer's metadata to mark it as not linked to the account
             global_stack.setMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, False)
 
+        # Generate message to show
+        device_names = "".join(["<li>{} ({})</li>".format(self._um_cloud_printers[device].name,
+                                                          self._um_cloud_printers[device].definition.name) for device in
+                                self.reported_device_ids])
+        self._removed_printers_message = RemovedPrintersMessage(self.reported_device_ids, device_names)
+        self._removed_printers_message.actionTriggered.connect(self._onRemovedPrintersMessageActionTriggered)
         self._removed_printers_message.show()
 
     def _onDiscoveredDeviceRemoved(self, device_id: str) -> None:
