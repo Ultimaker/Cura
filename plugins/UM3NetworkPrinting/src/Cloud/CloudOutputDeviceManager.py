@@ -156,6 +156,7 @@ class CloudOutputDeviceManager:
 
         if new_clusters or offline_device_keys or removed_device_keys:
             self.discoveredDevicesChanged.emit()
+
         if offline_device_keys:
             # If the removed device was active we should connect to the new active device
             self._connectToActiveMachine()
@@ -375,7 +376,10 @@ class CloudOutputDeviceManager:
         output_device_manager = CuraApplication.getInstance().getOutputDeviceManager()
         stored_cluster_id = active_machine.getMetaDataEntry(self.META_CLUSTER_ID)
         local_network_key = active_machine.getMetaDataEntry(self.META_NETWORK_KEY)
-        for device in list(self._remote_clusters.values()):  # Make a copy of the remote devices list, to prevent modifying the list while iterating, if a device gets added asynchronously.
+
+        # Copy of the device list, to prevent modifying the list while iterating, if a device gets added asynchronously.
+        remote_cluster_copy = list(self._remote_clusters.values())
+        for device in remote_cluster_copy:
             if device.key == stored_cluster_id:
                 # Connect to it if the stored ID matches.
                 self._connectToOutputDevice(device, active_machine)
