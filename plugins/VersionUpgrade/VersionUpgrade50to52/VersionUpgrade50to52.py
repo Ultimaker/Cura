@@ -8,6 +8,8 @@ from UM.VersionUpgrade import VersionUpgrade
 from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 from cura.Settings.CuraStackBuilder import CuraStackBuilder
 from cura.Settings.GlobalStack import GlobalStack
+from cura.Machines.ContainerTree import ContainerTree
+from cura.CuraApplication import CuraApplication
 import io
 
 
@@ -17,12 +19,47 @@ class VersionUpgrade50to52(VersionUpgrade):
     state they should be in at version 5.2.
     """
 
-    def upgradeStack(self, serialized: str, original_filename: str) -> Tuple[List[str], List[str]]:
+    def upgradeMachine(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
         """
         Upgrades container stacks to have the new version number.
         Upgrades container stacks for FLSun Racer to change their profiles.
         :param serialized: The original contents of the container stack.
-        :param original_filename: The file name of the container stack.
+        :param filename: The file name of the container stack.
+        :return: A list of file names, and a list of the new contents for those files.
+        """
+        [filename], [serialized] = self.upgradeStack(serialized, filename)
+        return [filename], [serialized]
+
+        parser = configparser.ConfigParser(interpolation = None)
+        parser.read_string(serialized)
+
+        connection_types = []
+        if "metadata" in parser and "connection_type" in parser["metadata"]:
+            connection_types = [int(connection_type) for connection_type in parser["metadata"]["connection_type"].split(",")]
+
+        cloud_connection_types = ConnectionType.NetworkConnection, ConnectionType.CloudConnection
+
+        if not any(connection_type in cloud_connection_types for connection_type in connection_types):
+            return [filename], [serialized]
+
+        stack = GlobalStack("")
+        stack.deserialize(serialized)
+        definition_id = stack.getDefinition().getId()
+        abstract_machine = CuraStackBuilder.createAbstractMachine(definition_id)
+
+        if abstract_machine:
+            abstract_machine_filename = abstract_machine_id
+            abstract_machine_serialized = abstract_machine.serialize()
+            return [filename, abstract_machine_filename], [serialized, abstract_machine_serialized]
+
+        return [filename], [serialized]
+
+    def upgradeStack(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
+        """
+        Upgrades container stacks to have the new version number.
+        Upgrades container stacks for FLSun Racer to change their profiles.
+        :param serialized: The original contents of the container stack.
+        :param filename: The file name of the container stack.
         :return: A list of file names, and a list of the new contents for those files.
         """
 
@@ -32,27 +69,9 @@ class VersionUpgrade50to52(VersionUpgrade):
         parser["metadata"]["setting_version"] = "6000020"
         parser["general"]["version"] = "6"
 
-        original_file = io.StringIO()
-        parser.write(original_file)
-        original_data = original_file.getvalue()
+        file = io.StringIO()
+        parser.write(file)
+        data = file.getvalue()
 
-        connection_types = []
-        if "metadata" in parser and "connection_type" in parser["metadata"]:
-            connection_types = [int(connection_type) for connection_type in parser["metadata"]["connection_type"].split(",")]
+        return [filename], [data]
 
-        cloud_connection_types = ConnectionType.NetworkConnection, ConnectionType.CloudConnection
-
-        if not any(connection_type in cloud_connection_types for connection_type in connection_types):
-            return [original_filename], [original_data]
-
-        stack = GlobalStack("")
-        stack.deserialize(original_data)
-        definition_id = stack.getDefinition().getId()
-        abstract_machine = CuraStackBuilder.createAbstractMachine(definition_id)
-
-        if abstract_machine:
-            file_name = f"{definition_id}_abstract_machine"
-            data = abstract_machine.serialize()
-            return [original_filename, file_name], [original_data, data]
-
-        return [original_filename], [original_data]
