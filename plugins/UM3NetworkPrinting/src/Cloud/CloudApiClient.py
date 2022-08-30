@@ -1,6 +1,7 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import json
+import urllib.parse
 from json import JSONDecodeError
 from time import time
 from typing import Callable, List, Type, TypeVar, Union, Optional, Tuple, Dict, Any, cast
@@ -87,7 +88,7 @@ class CloudApiClient:
         machine_type = machine_type.replace("ultimaker", "ultimaker ")
         machine_type = machine_type.replace("  ", " ")
         machine_type = machine_type.title()
-
+        machine_type = urllib.parse.quote_plus(machine_type)
         url = f"{self.CLUSTER_API_ROOT}/clusters?machine_variant={machine_type}"
         self._http.get(url,
                        scope=self._scope,
