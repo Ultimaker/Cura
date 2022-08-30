@@ -369,8 +369,8 @@ class CloudOutputDeviceManager:
 
         # Remove the output device from the printers
         for device_id in removed_device_ids:
-            device: Optional[GlobalStack] = self._um_cloud_printers.get(device_id, None)
-            if not device:
+            global_stack: Optional[GlobalStack] = self._um_cloud_printers.get(device_id, None)
+            if not global_stack:
                 continue
             if device_id in output_device_manager.getOutputDeviceIds():
                 output_device_manager.removeOutputDevice(device_id)
@@ -378,7 +378,7 @@ class CloudOutputDeviceManager:
                 del self._remote_clusters[device_id]
 
             # Update the printer's metadata to mark it as not linked to the account
-            device.setMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, False)
+            global_stack.setMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, False)
 
         self._removed_printers_message.show()
 
