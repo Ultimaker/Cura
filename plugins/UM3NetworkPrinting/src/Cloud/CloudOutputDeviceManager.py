@@ -257,13 +257,13 @@ class CloudOutputDeviceManager:
         max_disp_devices = 3
         if len(new_devices_added) > max_disp_devices:
             num_hidden = len(new_devices_added) - max_disp_devices
-            device_name_list = ["<li>{} ({})</li>".format(device.name, device.printerTypeName) for device in new_devices[0:max_disp_devices]]
+            device_name_list = ["<li>{} ({})</li>".format(device.name, device.printerTypeName) for device in new_devices[0: max_disp_devices]]
             device_name_list.append("<li>" + self.i18n_catalog.i18ncp("info:{0} gets replaced by a number of printers", "... and {0} other", "... and {0} others", num_hidden) + "</li>")
             device_names = "".join(device_name_list)
         else:
             device_names = "".join(["<li>{} ({})</li>".format(device.name, device.printerTypeName) for device in new_devices_added])
         if new_devices_added:
-            message_text = self.i18n_catalog.i18nc("info:status", "Printers added from Digital Factory:") + "<ul>" + device_names + "</ul>"
+            message_text = self.i18n_catalog.i18nc("info:status", "Printers added from Digital Factory:") + f"<ul>{device_names}</ul>"
             message.setText(message_text)
         else:
             message.hide()
@@ -291,7 +291,8 @@ class CloudOutputDeviceManager:
         old_cluster_id = outdated_machine.getMetaDataEntry(self.META_CLUSTER_ID)
         outdated_machine.setMetaDataEntry(self.META_CLUSTER_ID, new_cloud_output_device.key)
         outdated_machine.setMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, True)
-        # Cleanup the remainings of the old CloudOutputDevice(old_cluster_id)
+
+        # Cleanup the remains of the old CloudOutputDevice(old_cluster_id)
         self._um_cloud_printers[new_cloud_output_device.key] = self._um_cloud_printers.pop(old_cluster_id)
         output_device_manager = CuraApplication.getInstance().getOutputDeviceManager()
         if old_cluster_id in output_device_manager.getOutputDeviceIds():
@@ -337,7 +338,8 @@ class CloudOutputDeviceManager:
                 ),
             message_type = Message.MessageType.WARNING
         )
-        device_names = "".join(["<li>{} ({})</li>".format(self._um_cloud_printers[device].name, self._um_cloud_printers[device].definition.name) for device in self.reported_device_ids])
+        device_names = "".join(["<li>{} ({})</li>".format(self._um_cloud_printers[device].name,
+                                                          self._um_cloud_printers[device].definition.name) for device in self.reported_device_ids])
         message_text = self.i18n_catalog.i18ncp(
                 "info:status",
                 "This printer is not linked to the Digital Factory:",
@@ -346,10 +348,11 @@ class CloudOutputDeviceManager:
         )
         message_text += "<br/><ul>{}</ul><br/>".format(device_names)
         digital_factory_string = self.i18n_catalog.i18nc("info:name", "Ultimaker Digital Factory")
-
+        website_link = f"<a href='https://digitalfactory.ultimaker.com?utm_source=cura&" \
+                       f"utm_medium=software&utm_campaign=change-account-connect-printer'>{digital_factory_string}</a>."
         message_text += self.i18n_catalog.i18nc(
                 "info:status",
-                "To establish a connection, please visit the {website_link}".format(website_link = "<a href='https://digitalfactory.ultimaker.com?utm_source=cura&utm_medium=software&utm_campaign=change-account-connect-printer'>{}</a>.".format(digital_factory_string))
+                f"To establish a connection, please visit the {website_link}"
         )
         self._removed_printers_message.setText(message_text)
         self._removed_printers_message.addAction("keep_printer_configurations_action",
@@ -440,7 +443,8 @@ class CloudOutputDeviceManager:
         machine.setMetaDataEntry("group_name", device.name)
         machine.setMetaDataEntry("group_size", device.clusterSize)
         digital_factory_string = self.i18n_catalog.i18nc("info:name", "Ultimaker Digital Factory")
-        digital_factory_link = "<a href='https://digitalfactory.ultimaker.com?utm_source=cura&utm_medium=software&utm_campaign=change-account-remove-printer'>{digital_factory_string}</a>".format(digital_factory_string = digital_factory_string)
+        digital_factory_link = f"<a href='https://digitalfactory.ultimaker.com?utm_source=cura&utm_medium=software&" \
+                               f"utm_campaign=change-account-remove-printer'>{digital_factory_string}</a>"
         removal_warning_string = self.i18n_catalog.i18nc("@message {printer_name} is replaced with the name of the printer", "{printer_name} will be removed until the next account sync.").format(printer_name = device.name) \
             + "<br>" + self.i18n_catalog.i18nc("@message {printer_name} is replaced with the name of the printer", "To remove {printer_name} permanently, visit {digital_factory_link}").format(printer_name = device.name, digital_factory_link = digital_factory_link) \
             + "<br><br>" + self.i18n_catalog.i18nc("@message {printer_name} is replaced with the name of the printer", "Are you sure you want to remove {printer_name} temporarily?").format(printer_name = device.name)
@@ -483,12 +487,16 @@ class CloudOutputDeviceManager:
             question_title = self.i18n_catalog.i18nc("@title:window", "Remove printers?")
             question_content = self.i18n_catalog.i18ncp(
                 "@label",
-                "You are about to remove {0} printer from Cura. This action cannot be undone.\nAre you sure you want to continue?",
-                "You are about to remove {0} printers from Cura. This action cannot be undone.\nAre you sure you want to continue?",
+                "You are about to remove {0} printer from Cura. This action cannot be undone.\n"
+                "Are you sure you want to continue?",
+                "You are about to remove {0} printers from Cura. This action cannot be undone.\n"
+                "Are you sure you want to continue?",
                 len(remove_printers_ids)
             )
             if remove_printers_ids == all_ids:
-                question_content = self.i18n_catalog.i18nc("@label", "You are about to remove all printers from Cura. This action cannot be undone.\nAre you sure you want to continue?")
+                question_content = self.i18n_catalog.i18nc("@label", "You are about to remove all printers from Cura. "
+                                                                     "This action cannot be undone.\n"
+                                                                     "Are you sure you want to continue?")
             result = QMessageBox.question(None, question_title, question_content)
             if result == QMessageBox.StandardButton.No:
                 return
