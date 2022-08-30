@@ -48,7 +48,6 @@ class CloudApiClient:
         """Initializes a new cloud API client.
 
         :param app:
-        :param account: The user's account object
         :param on_error: The callback to be called whenever we receive errors from the server.
         """
         super().__init__()
@@ -57,7 +56,7 @@ class CloudApiClient:
         self._scope = JsonDecoratorScope(UltimakerCloudScope(app))
         self._http = HttpRequestManager.getInstance()
         self._on_error = on_error
-        self._upload = None  # type: Optional[ToolPathUploader]
+        self._upload: Optional[ToolPathUploader] = None
 
     @property
     def account(self) -> Account:
@@ -71,7 +70,7 @@ class CloudApiClient:
         :param on_finished: The function to be called after the result is parsed.
         """
 
-        url = "{}/clusters?status=active".format(self.CLUSTER_API_ROOT)
+        url = f"{self.CLUSTER_API_ROOT}/clusters?status=active"
         self._http.get(url,
                        scope = self._scope,
                        callback = self._parseCallback(on_finished, CloudClusterResponse, failed),
@@ -85,7 +84,7 @@ class CloudApiClient:
         :param on_finished: The function to be called after the result is parsed.
         """
 
-        url = "{}/clusters/{}/status".format(self.CLUSTER_API_ROOT, cluster_id)
+        url = f"{self.CLUSTER_API_ROOT}/clusters/{cluster_id}/status"
         self._http.get(url,
                        scope = self._scope,
                        callback = self._parseCallback(on_finished, CloudClusterStatus),
@@ -100,7 +99,7 @@ class CloudApiClient:
         :param on_finished: The function to be called after the result is parsed.
         """
 
-        url = "{}/jobs/upload".format(self.CURA_API_ROOT)
+        url = f"{self.CURA_API_ROOT}/jobs/upload"
         data = json.dumps({"data": request.toDict()}).encode()
 
         self._http.put(url,
@@ -131,7 +130,7 @@ class CloudApiClient:
     #  specific to sending print jobs) such as lost connection, unparsable responses, etc. are not returned here, but
     #  handled in a generic way by the CloudApiClient.
     def requestPrint(self, cluster_id: str, job_id: str, on_finished: Callable[[CloudPrintResponse], Any], on_error) -> None:
-        url = "{}/clusters/{}/print/{}".format(self.CLUSTER_API_ROOT, cluster_id, job_id)
+        url = f"{self.CLUSTER_API_ROOT}/clusters/{cluster_id}/print/{job_id}"
         self._http.post(url,
                        scope = self._scope,
                        data = b"",
@@ -150,7 +149,7 @@ class CloudApiClient:
         """
 
         body = json.dumps({"data": data}).encode() if data else b""
-        url = "{}/clusters/{}/print_jobs/{}/action/{}".format(self.CLUSTER_API_ROOT, cluster_id, cluster_job_id, action)
+        url = f"{self.CLUSTER_API_ROOT}/clusters/{cluster_id}/print_jobs/{cluster_job_id}/action/{action}"
         self._http.post(url,
                         scope = self._scope,
                         data = body,
@@ -159,7 +158,7 @@ class CloudApiClient:
     def _createEmptyRequest(self, path: str, content_type: Optional[str] = "application/json") -> QNetworkRequest:
         """We override _createEmptyRequest in order to add the user credentials.
 
-        :param url: The URL to request
+        :param path: The URL to request
         :param content_type: The type of the body contents.
         """
 
@@ -168,7 +167,7 @@ class CloudApiClient:
             request.setHeader(QNetworkRequest.KnownHeaders.ContentTypeHeader, content_type)
         access_token = self._account.accessToken
         if access_token:
-            request.setRawHeader(b"Authorization", "Bearer {}".format(access_token).encode())
+            request.setRawHeader(b"Authorization", f"Bearer {access_token}".encode())
         return request
 
     @staticmethod
