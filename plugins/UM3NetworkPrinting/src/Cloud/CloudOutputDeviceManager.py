@@ -165,14 +165,14 @@ class CloudOutputDeviceManager:
         self._syncing = False
         self._account.setSyncState(self.SYNC_SERVICE_NAME, SyncState.ERROR)
 
-    def _onDevicesDiscovered(self, clusters: List[CloudClusterResponse]) -> None:
+    def _onDevicesDiscovered(self, discovered_clusters: List[CloudClusterResponse]) -> None:
         """**Synchronously** create machines for discovered devices
 
         Any new machines are made available to the user.
         May take a long time to complete. This currently forcefully calls the "processEvents", which isn't
         the nicest solution out there. We might need to consider moving this into a job later!
         """
-        new_devices: List[CloudOutputDevice] = []
+        new_output_devices: List[CloudOutputDevice] = []
         remote_clusters_added = False
 
         # Create a map that maps the HOST_GUID to the DEVICE_CLUSTER_ID
@@ -182,28 +182,28 @@ class CloudOutputDeviceManager:
 
         machine_manager = CuraApplication.getInstance().getMachineManager()
 
-        for cluster_data in clusters:
-            device = CloudOutputDevice(self._api, cluster_data)
+        for cluster_data in discovered_clusters:
+            output_device = CloudOutputDevice(self._api, cluster_data)
             # If the machine already existed before, it will be present in the host_guid_map
             if cluster_data.host_guid in host_guid_map:
-                machine = machine_manager.getMachine(device.printerType, {self.META_HOST_GUID: cluster_data.host_guid})
-                if machine and machine.getMetaDataEntry(self.META_CLUSTER_ID) != device.key:
+                machine = machine_manager.getMachine(output_device.printerType, {self.META_HOST_GUID: cluster_data.host_guid})
+                if machine and machine.getMetaDataEntry(self.META_CLUSTER_ID) != output_device.key:
                     # If the retrieved device has a different cluster_id than the existing machine, bring the existing
                     # machine up-to-date.
-                    self._updateOutdatedMachine(outdated_machine = machine, new_cloud_output_device = device)
+                    self._updateOutdatedMachine(outdated_machine = machine, new_cloud_output_device = output_device)
 
             # Create a machine if we don't already have it. Do not make it the active machine.
             # We only need to add it if it wasn't already added by "local" network or by cloud.
-            if machine_manager.getMachine(device.printerType, {self.META_CLUSTER_ID: device.key}) is None \
-                    and machine_manager.getMachine(device.printerType, {self.META_NETWORK_KEY: cluster_data.host_name + "*"}) is None:  # The host name is part of the network key.
-                new_devices.append(device)
-            elif device.getId() not in self._remote_clusters:
-                self._remote_clusters[device.getId()] = device
+            if machine_manager.getMachine(output_device.printerType, {self.META_CLUSTER_ID: output_device.key}) is None \
+                    and machine_manager.getMachine(output_device.printerType, {self.META_NETWORK_KEY: cluster_data.host_name + "*"}) is None:  # The host name is part of the network key.
+                new_output_devices.append(output_device)
+            elif output_device.getId() not in self._remote_clusters:
+                self._remote_clusters[output_device.getId()] = output_device
                 remote_clusters_added = True
             # If a printer that was removed from the account is re-added, change its metadata to mark it not removed
             # from the account
-            elif not parseBool(self._um_cloud_printers[device.key].getMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, "true")):
-                self._um_cloud_printers[device.key].setMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, True)
+            elif not parseBool(self._um_cloud_printers[output_device.key].getMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, "true")):
+                self._um_cloud_printers[output_device.key].setMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, True)
             # As adding a lot of machines might take some time, ensure that the GUI (and progress message) is updated
             CuraApplication.getInstance().processEvents()
 
@@ -212,11 +212,11 @@ class CloudOutputDeviceManager:
                 "key": d.getId(),
                 "name": d.name,
                 "machine_type": d.printerTypeName,
-                "firmware_version": d.firmwareVersion} for d in new_devices]
+                "firmware_version": d.firmwareVersion} for d in new_output_devices]
         discovered_cloud_printers_model = CuraApplication.getInstance().getDiscoveredCloudPrintersModel()
         discovered_cloud_printers_model.addDiscoveredCloudPrinters(new_devices_list_of_dicts)
 
-        if not new_devices:
+        if not new_output_devices:
             if remote_clusters_added:
                 self._connectToActiveMachine()
             return
@@ -224,15 +224,15 @@ class CloudOutputDeviceManager:
         # Sort new_devices on online status first, alphabetical second.
         # Since the first device might be activated in case there is no active printer yet,
         # it would be nice to prioritize online devices
-        online_cluster_names = {c.friendly_name.lower() for c in clusters if c.is_online and not c.friendly_name is None}
-        new_devices.sort(key = lambda x: ("a{}" if x.name.lower() in online_cluster_names else "b{}").format(x.name.lower()))
+        online_cluster_names = {c.friendly_name.lower() for c in discovered_clusters if c.is_online and not c.friendly_name is None}
+        new_output_devices.sort(key = lambda x: ("a{}" if x.name.lower() in online_cluster_names else "b{}").format(x.name.lower()))
 
         message = Message(
             title = self.i18n_catalog.i18ncp(
                 "info:status",
                 "New printer detected from your Ultimaker account",
                 "New printers detected from your Ultimaker account",
-                len(new_devices)
+                len(new_output_devices)
             ),
             progress = 0,
             lifetime = 0,
@@ -242,26 +242,26 @@ class CloudOutputDeviceManager:
 
         new_devices_added = []
 
-        for idx, device in enumerate(new_devices):
-            message_text = self.i18n_catalog.i18nc("info:status Filled in with printer name and printer model.", "Adding printer {name} ({model}) from your account").format(name = device.name, model = device.printerTypeName)
+        for idx, output_device in enumerate(new_output_devices):
+            message_text = self.i18n_catalog.i18nc("info:status Filled in with printer name and printer model.", "Adding printer {name} ({model}) from your account").format(name = output_device.name, model = output_device.printerTypeName)
             message.setText(message_text)
-            if len(new_devices) > 1:
-                message.setProgress((idx / len(new_devices)) * 100)
+            if len(new_output_devices) > 1:
+                message.setProgress((idx / len(new_output_devices)) * 100)
             CuraApplication.getInstance().processEvents()
-            self._remote_clusters[device.getId()] = device
+            self._remote_clusters[output_device.getId()] = output_device
 
             # If there is no active machine, activate the first available cloud printer
             activate = not CuraApplication.getInstance().getMachineManager().activeMachine
 
-            if self._createMachineFromDiscoveredDevice(device.getId(), activate = activate):
-                new_devices_added.append(device)
+            if self._createMachineFromDiscoveredDevice(output_device.getId(), activate = activate):
+                new_devices_added.append(output_device)
 
         message.setProgress(None)
 
         max_disp_devices = 3
         if len(new_devices_added) > max_disp_devices:
             num_hidden = len(new_devices_added) - max_disp_devices
-            device_name_list = ["<li>{} ({})</li>".format(device.name, device.printerTypeName) for device in new_devices[0: max_disp_devices]]
+            device_name_list = ["<li>{} ({})</li>".format(device.name, device.printerTypeName) for device in new_output_devices[0: max_disp_devices]]
             device_name_list.append("<li>" + self.i18n_catalog.i18ncp("info:{0} gets replaced by a number of printers", "... and {0} other", "... and {0} others", num_hidden) + "</li>")
             device_names = "".join(device_name_list)
         else:
