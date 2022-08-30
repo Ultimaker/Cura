@@ -30,7 +30,7 @@ class CloudOutputDeviceManager:
     """The cloud output device manager is responsible for using the Ultimaker Cloud APIs to manage remote clusters.
 
     Keeping all cloud related logic in this class instead of the UM3OutputDevicePlugin results in more readable code.
-    API spec is available on https://api.ultimaker.com/docs/connect/spec/.
+    API spec is available on https://docs.api.ultimaker.com/connect/index.html.
     """
 
     META_CLUSTER_ID = "um_cloud_cluster_id"
