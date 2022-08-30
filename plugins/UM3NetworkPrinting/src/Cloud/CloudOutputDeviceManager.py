@@ -9,7 +9,6 @@ from PyQt6.QtWidgets import QMessageBox
 
 from UM import i18nCatalog
 from UM.Logger import Logger  # To log errors talking to the API.
-from UM.Message import Message
 from UM.Settings.Interfaces import ContainerInterface
 from UM.Signal import Signal
 from UM.Util import parseBool
@@ -56,7 +55,7 @@ class CloudOutputDeviceManager:
         self._account: Account = CuraApplication.getInstance().getCuraAPI().account
         self._api = CloudApiClient(CuraApplication.getInstance(), on_error = lambda error: Logger.log("e", str(error)))
         self._account.loginStateChanged.connect(self._onLoginStateChanged)
-        self._removed_printers_message: Optional[Message] = None
+        self._removed_printers_message: Optional[RemovedPrintersMessage] = None
 
         # Ensure we don't start twice.
         self._running = False
@@ -426,7 +425,7 @@ class CloudOutputDeviceManager:
             if container_cluster_id in self._remote_clusters.keys():
                 del self._remote_clusters[container_cluster_id]
 
-    def _onRemovedPrintersMessageActionTriggered(self, removed_printers_message: Message, action: str) -> None:
+    def _onRemovedPrintersMessageActionTriggered(self, removed_printers_message: RemovedPrintersMessage, action: str) -> None:
         if action == "keep_printer_configurations_action":
             removed_printers_message.hide()
         elif action == "remove_printers_action":
