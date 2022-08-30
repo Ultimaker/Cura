@@ -249,7 +249,8 @@ class CloudOutputDeviceManager:
 
         message.finalize(new_devices_added, new_output_devices)
 
-    def _updateOnlinePrinters(self, printer_responses: Dict[str, CloudClusterResponse]) -> None:
+    @staticmethod
+    def _updateOnlinePrinters(printer_responses: Dict[str, CloudClusterResponse]) -> None:
         """
         Update the metadata of the printers to store whether they are online or not.
         :param printer_responses: The responses received from the API about the printer statuses.
