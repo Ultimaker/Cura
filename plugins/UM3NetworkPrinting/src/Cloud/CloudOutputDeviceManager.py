@@ -378,7 +378,7 @@ class CloudOutputDeviceManager:
         local_network_key = active_machine.getMetaDataEntry(self.META_NETWORK_KEY)
 
         # Copy of the device list, to prevent modifying the list while iterating, if a device gets added asynchronously.
-        remote_cluster_copy = list(self._remote_clusters.values())
+        remote_cluster_copy: List[CloudOutputDevice] = list(self._remote_clusters.values())
         for device in remote_cluster_copy:
             if device.key == stored_cluster_id:
                 # Connect to it if the stored ID matches.
