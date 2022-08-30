@@ -46,15 +46,15 @@ class CloudOutputDeviceManager:
 
     def __init__(self) -> None:
         # Persistent dict containing the remote clusters for the authenticated user.
-        self._remote_clusters = {}  # type: Dict[str, CloudOutputDevice]
+        self._remote_clusters: Dict[str, CloudOutputDevice] = {}
 
         # Dictionary containing all the cloud printers loaded in Cura
-        self._um_cloud_printers = {}  # type: Dict[str, GlobalStack]
+        self._um_cloud_printers: Dict[str, GlobalStack] = {}
 
-        self._account = CuraApplication.getInstance().getCuraAPI().account  # type: Account
+        self._account: Account = CuraApplication.getInstance().getCuraAPI().account
         self._api = CloudApiClient(CuraApplication.getInstance(), on_error = lambda error: Logger.log("e", str(error)))
         self._account.loginStateChanged.connect(self._onLoginStateChanged)
-        self._removed_printers_message = None  # type: Optional[Message]
+        self._removed_printers_message: Optional[Message] = None
 
         # Ensure we don't start twice.
         self._running = False
@@ -113,8 +113,8 @@ class CloudOutputDeviceManager:
                                    CuraApplication.getInstance().getContainerRegistry().findContainerStacks(
                                        type = "machine") if m.getMetaDataEntry(self.META_CLUSTER_ID, None)}
         new_clusters = []
-        all_clusters = {c.cluster_id: c for c in clusters}  # type: Dict[str, CloudClusterResponse]
-        online_clusters = {c.cluster_id: c for c in clusters if c.is_online}  # type: Dict[str, CloudClusterResponse]
+        all_clusters: Dict[str, CloudClusterResponse] = {c.cluster_id: c for c in clusters}
+        online_clusters: Dict[str, CloudClusterResponse] = {c.cluster_id: c for c in clusters if c.is_online}
 
         # Add the new printers in Cura.
         for device_id, cluster_data in all_clusters.items():
@@ -369,7 +369,7 @@ class CloudOutputDeviceManager:
 
         # Remove the output device from the printers
         for device_id in removed_device_ids:
-            device = self._um_cloud_printers.get(device_id, None)  # type: Optional[GlobalStack]
+            device: Optional[GlobalStack] = self._um_cloud_printers.get(device_id, None)
             if not device:
                 continue
             if device_id in output_device_manager.getOutputDeviceIds():
@@ -383,7 +383,7 @@ class CloudOutputDeviceManager:
         self._removed_printers_message.show()
 
     def _onDiscoveredDeviceRemoved(self, device_id: str) -> None:
-        device = self._remote_clusters.pop(device_id, None)  # type: Optional[CloudOutputDevice]
+        device: Optional[CloudOutputDevice] = self._remote_clusters.pop(device_id, None)
         if not device:
             return
         device.close()
@@ -397,7 +397,7 @@ class CloudOutputDeviceManager:
             return False
 
         # Create a new machine.
-        # We do not use use MachineManager.addMachine here because we need to set the cluster ID before activating it.
+        # We do not use MachineManager.addMachine here because we need to set the cluster ID before activating it.
         new_machine = CuraStackBuilder.createMachine(device.name, device.printerType, show_warning_message=False)
         if not new_machine:
             Logger.error(f"Failed creating a new machine for {device.name}")
