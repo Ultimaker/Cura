@@ -60,7 +60,7 @@ class MachineListModel(ListModel):
     def showCloudPrinters(self) -> bool:
         return self._show_cloud_printers
 
-    @pyqtSlot(bool, name="setShowCloudPrinters")
+    @pyqtSlot(bool) 
     def setShowCloudPrinters(self, show_cloud_printers: bool) -> None:
         self._show_cloud_printers = show_cloud_printers
         self._updateDelayed()
