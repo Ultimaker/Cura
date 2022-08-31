@@ -531,6 +531,10 @@ class MachineManager(QObject):
         return bool(self._printer_output_devices)
 
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
+    def activeMachineIsAbstract(self) -> bool:
+        return (self.activeMachine is not None) and parseBool(self.activeMachine.getMetaDataEntry("is_abstract_machine", False))
+
+    @pyqtProperty(bool, notify = printerConnectedStatusChanged)
     def activeMachineIsGroup(self) -> bool:
         if self.activeMachine is None:
             return False
@@ -554,6 +558,8 @@ class MachineManager(QObject):
 
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
     def activeMachineHasCloudRegistration(self) -> bool:
+        if self.activeMachineIsAbstract:
+            return any(m.getMetaDataEntry("is_online", False) for m in self.getMachinesWithDefinition(self.activeMachine.definition.getId(), True))
         return self.activeMachine is not None and ConnectionType.CloudConnection in self.activeMachine.configuredConnectionTypes
 
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
