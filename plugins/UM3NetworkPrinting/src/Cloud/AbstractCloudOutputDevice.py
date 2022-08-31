@@ -22,13 +22,7 @@ class AbstractCloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
     def __init__(self, api_client: CloudApiClient, printer_type: str, parent: QObject = None) -> None:
 
         self._api = api_client
-        properties = {
-            #b"address": cluster.host_internal_ip.encode() if cluster.host_internal_ip else b"",
-           # b"name": cluster.friendly_name.encode() if cluster.friendly_name else b"",
-            ##b"firmware_version": cluster.host_version.encode() if cluster.host_version else b"",
-            b"printer_type": printer_type.encode()
-            #b"cluster_size": str(cluster.printer_count).encode() if cluster.printer_count else b"1"
-        }
+        properties = {b"printer_type": printer_type.encode()}
         super().__init__(
             device_id=f"ABSTRACT_{printer_type}",
             address="",
