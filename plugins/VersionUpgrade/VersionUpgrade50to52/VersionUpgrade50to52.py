@@ -44,14 +44,17 @@ class VersionUpgrade50to52(VersionUpgrade):
         stack = GlobalStack("")
         stack.deserialize(serialized)
         definition_id = stack.getDefinition().getId()
-        abstract_machine = CuraStackBuilder.createAbstractMachine(definition_id)
 
-        if abstract_machine:
-            abstract_machine_filename = f"{definition_id}_abstract_machine"
-            abstract_machine_serialized = abstract_machine.serialize()
-            return [filename, abstract_machine_filename], [serialized, abstract_machine_serialized]
+        abstract_machine_id = f"{definition_id}_abstract_machine"
+        abstract_machine = GlobalStack(abstract_machine_id)
+        abstract_machine.setMetaDataEntry("is_abstract_machine", True)
+        abstract_machine.setMetaDataEntry("is_online", True)
+        abstract_machine.setDefinition(stack.getDefinition())
+        abstract_machine.setName(stack.getDefinition().getName())
 
-        return [filename], [serialized]
+        abstract_machine_filename = abstract_machine_id
+        abstract_machine_serialized = abstract_machine.serialize()
+        return [filename, abstract_machine_filename], [serialized, abstract_machine_serialized]
 
     def upgradeStack(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
         """
