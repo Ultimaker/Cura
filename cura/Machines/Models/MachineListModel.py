@@ -77,7 +77,7 @@ class MachineListModel(ListModel):
         self._change_timer.start()
 
     def _update(self) -> None:
-        self.setItems([])  # Clear items
+        self.clear()
 
         other_machine_stacks = CuraContainerRegistry.getInstance().findContainerStacks(type="machine")
 
@@ -105,14 +105,19 @@ class MachineListModel(ListModel):
             if self._show_cloud_printers:
                 self.appendItem({ "listType": "HIDE_BUTTON",
                                   "isOnline": True,
+                                  "isAbstractMachine": False,
+                                  "machineCount": 0
                                  })
             else:
-                self.appendItem({ "listType": "SHOW_BUTTON",
+                self.appendItem({"listType": "SHOW_BUTTON",
                                   "isOnline": True,
+                                  "isAbstractMachine": False,
+                                  "machineCount": 0
                                  })
 
         for stack in other_machine_stacks:
             self.addItem(stack)
+        print(self.items)
 
     def addItem(self, container_stack: ContainerStack, machine_count: int = 0) -> None:
         if parseBool(container_stack.getMetaDataEntry("hidden", False)):
