@@ -25,6 +25,7 @@ class MachineListModel(ListModel):
     IsOnlineRole = Qt.ItemDataRole.UserRole + 5
     MachineCountRole = Qt.ItemDataRole.UserRole + 6
     IsAbstractMachine = Qt.ItemDataRole.UserRole + 7
+    ListTypeRole = Qt.ItemDataRole.UserRole + 8
 
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
@@ -40,6 +41,7 @@ class MachineListModel(ListModel):
         self.addRoleName(self.IsOnlineRole, "isOnline")
         self.addRoleName(self.MachineCountRole, "machineCount")
         self.addRoleName(self.IsAbstractMachine, "isAbstractMachine")
+        self.addRoleName(self.ListTypeRole, "listType")
 
         self._change_timer = QTimer()
         self._change_timer.setInterval(200)
@@ -99,6 +101,16 @@ class MachineListModel(ListModel):
                 # Remove this machine from the other stack list
                 other_machine_stacks.remove(stack)
 
+        if len(abstract_machine_stacks) > 0:
+            if self._show_cloud_printers:
+                self.appendItem({ "listType": "HIDE_BUTTON",
+                                  "isOnline": True,
+                                 })
+            else:
+                self.appendItem({ "listType": "SHOW_BUTTON",
+                                  "isOnline": True,
+                                 })
+
         for stack in other_machine_stacks:
             self.addItem(stack)
 
@@ -113,7 +125,9 @@ class MachineListModel(ListModel):
         for connection_type in [ConnectionType.NetworkConnection.value, ConnectionType.CloudConnection.value]:
             has_connection |= connection_type in container_stack.configuredConnectionTypes
 
-        self.appendItem({"name": container_stack.getName(),
+        self.appendItem({
+                        "listType": "MACHINE",
+                        "name": container_stack.getName(),
                          "id": container_stack.getId(),
                          "metadata": container_stack.getMetaData().copy(),
                          "isOnline": parseBool(container_stack.getMetaDataEntry("is_online", False)) and has_connection,
