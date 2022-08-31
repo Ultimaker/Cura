@@ -1,4 +1,4 @@
-# Copyright (c) 2021 Ultimaker B.V.
+# Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import time
@@ -359,6 +359,7 @@ class MachineManager(QObject):
         extruder_manager = ExtruderManager.getInstance()
         extruder_manager.fixSingleExtrusionMachineExtruderDefinition(global_stack)
         if not global_stack.isValid():
+            Logger.warning("Global stack isn't valid, adding it to faulty container list")
             # Mark global stack as invalid
             ConfigurationErrorMessage.getInstance().addFaultyContainers(global_stack.getId())
             return  # We're done here
@@ -530,9 +531,9 @@ class MachineManager(QObject):
     def printerConnected(self) -> bool:
         return bool(self._printer_output_devices)
 
-    @pyqtProperty(bool, notify = printerConnectedStatusChanged)
-    def activeMachineIsAbstract(self) -> bool:
-        return (self.activeMachine is not None) and parseBool(self.activeMachine.getMetaDataEntry("is_abstract_machine", False))
+    @pyqtProperty(bool, notify = globalContainerChanged)
+    def activeMachineIsAbstractCloudPrinter(self) -> bool:
+        return len(self._printer_output_devices) == 1 and self._printer_output_devices[0].__class__.__name__ == "AbstractCloudOutputDevice"
 
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
     def activeMachineIsGroup(self) -> bool:
@@ -558,8 +559,6 @@ class MachineManager(QObject):
 
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
     def activeMachineHasCloudRegistration(self) -> bool:
-        if self.activeMachineIsAbstract:
-            return any(m.getMetaDataEntry("is_online", False) for m in self.getMachinesWithDefinition(self.activeMachine.definition.getId(), True))
         return self.activeMachine is not None and ConnectionType.CloudConnection in self.activeMachine.configuredConnectionTypes
 
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)

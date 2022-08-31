@@ -30,7 +30,7 @@ class MachineListModel(ListModel):
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
 
-        self._show_cloud_printers = True
+        self._show_cloud_printers = False
 
         self._catalog = i18nCatalog("cura")
 
@@ -83,7 +83,6 @@ class MachineListModel(ListModel):
 
         abstract_machine_stacks = CuraContainerRegistry.getInstance().findContainerStacks(is_abstract_machine = "True")
         abstract_machine_stacks.sort(key = lambda machine: machine.getName(), reverse = True)
-
         for abstract_machine in abstract_machine_stacks:
             definition_id = abstract_machine.definition.getId()
             from cura.CuraApplication import CuraApplication
@@ -93,13 +92,16 @@ class MachineListModel(ListModel):
             # Create a list item for abstract machine
             self.addItem(abstract_machine, len(online_machine_stacks))
             other_machine_stacks.remove(abstract_machine)
+            if abstract_machine in online_machine_stacks:
+                online_machine_stacks.remove(abstract_machine)
 
             # Create list of machines that are children of the abstract machine
             for stack in online_machine_stacks:
                 if self._show_cloud_printers:
                     self.addItem(stack)
                 # Remove this machine from the other stack list
-                other_machine_stacks.remove(stack)
+                if stack in other_machine_stacks:
+                    other_machine_stacks.remove(stack)
 
         if len(abstract_machine_stacks) > 0:
             if self._show_cloud_printers:
