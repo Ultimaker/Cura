@@ -24,7 +24,7 @@ class MachineListModel(ListModel):
     MetaDataRole = Qt.ItemDataRole.UserRole + 4
     IsOnlineRole = Qt.ItemDataRole.UserRole + 5
     MachineCountRole = Qt.ItemDataRole.UserRole + 6
-    IsAbstractMachine = Qt.ItemDataRole.UserRole + 7
+    IsAbstractMachineRole = Qt.ItemDataRole.UserRole + 7
     ListTypeRole = Qt.ItemDataRole.UserRole + 8
 
     def __init__(self, parent=None) -> None:
@@ -40,7 +40,7 @@ class MachineListModel(ListModel):
         self.addRoleName(self.MetaDataRole, "metadata")
         self.addRoleName(self.IsOnlineRole, "isOnline")
         self.addRoleName(self.MachineCountRole, "machineCount")
-        self.addRoleName(self.IsAbstractMachine, "isAbstractMachine")
+        self.addRoleName(self.IsAbstractMachineRole, "isAbstractMachine")
         self.addRoleName(self.ListTypeRole, "listType")
 
         self._change_timer = QTimer()
