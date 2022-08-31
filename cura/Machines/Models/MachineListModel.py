@@ -54,9 +54,9 @@ class MachineListModel(ListModel):
         CuraContainerRegistry.getInstance().containerRemoved.connect(self._onContainerChanged)
         self._updateDelayed()
 
-    showCloutPrintersChanged = pyqtSignal(bool)
+    showCloudPrintersChanged = pyqtSignal(bool)
 
-    @pyqtProperty(bool, notify=showCloutPrintersChanged)
+    @pyqtProperty(bool, notify=showCloudPrintersChanged)
     def showCloudPrinters(self) -> bool:
         return self._show_cloud_printers
 
@@ -64,7 +64,7 @@ class MachineListModel(ListModel):
     def set_show_cloud_printers(self, show_cloud_printers: bool) -> None:
         self._show_cloud_printers = show_cloud_printers
         self._updateDelayed()
-        self.showCloutPrintersChanged.emit(show_cloud_printers)
+        self.showCloudPrintersChanged.emit(show_cloud_printers)
 
     def _onContainerChanged(self, container) -> None:
         """Handler for container added/removed events from registry"""
