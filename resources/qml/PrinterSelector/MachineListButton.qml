@@ -10,7 +10,6 @@ import Cura 1.0 as Cura
 Loader {
     id: loader
     width: parent.width
-    height: childrenRect.height
     sourceComponent: {
         switch (model.listType) {
             case "HIDE_BUTTON":
