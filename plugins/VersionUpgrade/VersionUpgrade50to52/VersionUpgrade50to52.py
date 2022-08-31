@@ -47,7 +47,7 @@ class VersionUpgrade50to52(VersionUpgrade):
         abstract_machine = CuraStackBuilder.createAbstractMachine(definition_id)
 
         if abstract_machine:
-            abstract_machine_filename = abstract_machine_id
+            abstract_machine_filename = f"{definition_id}_abstract_machine"
             abstract_machine_serialized = abstract_machine.serialize()
             return [filename, abstract_machine_filename], [serialized, abstract_machine_serialized]
 
