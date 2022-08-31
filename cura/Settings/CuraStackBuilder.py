@@ -1,7 +1,7 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Optional, cast, List
+from typing import Optional, cast
 
 from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from UM.Logger import Logger
@@ -11,7 +11,6 @@ from UM.Settings.InstanceContainer import InstanceContainer
 from cura.Machines.ContainerTree import ContainerTree
 from .GlobalStack import GlobalStack
 from .ExtruderStack import ExtruderStack
-from ..PrinterOutput.PrinterOutputDevice import ConnectionType
 
 
 class CuraStackBuilder:
@@ -268,26 +267,12 @@ class CuraStackBuilder:
         return definition_changes_container
 
     @classmethod
-    def createAbstractMachines(cls, stacks: List[GlobalStack]) -> None:
-        connection_types = ConnectionType.NetworkConnection, ConnectionType.CloudConnection
-
-        for stack in stacks:
-            try:
-                if not any(connection_type in stack.configuredConnectionTypes for connection_type in connection_types):
-                    continue  # This printer is not cloud or network connected. It doesn't need an abstract machine.
-
-                cls.createAbstractMachine(stack.getDefinition().getId())
-            except Exception as e:
-                Logger.error(f"Failed to add abstract printer for container stack: {stack.getName()} with error: {e}")
-
-
-    @classmethod
     def createAbstractMachine(cls, definition_id: str) -> Optional[GlobalStack]:
         """Create a new instance of an abstract machine.
 
         :param definition_id: The ID of the machine definition to use.
 
-        :return: The existing or new Abstract Machine or None if an error occurred.
+        :return: The new Abstract Machine or None if an error occurred.
         """
         abstract_machine_id = f"{definition_id}_abstract_machine"
         from cura.CuraApplication import CuraApplication
