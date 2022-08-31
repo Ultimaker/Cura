@@ -235,7 +235,7 @@ class ContainerManager(QObject):
         :return: :type{Dict} dict with a 'status' key containing the string 'success' or 'error', and a 'message' key
             containing a message for the user
         """
-
+        print("FILEURLSTRING: ", file_url_or_string)
         if not file_url_or_string:
             return {"status": "error", "message": "Invalid path"}
 

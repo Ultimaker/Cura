@@ -1,7 +1,7 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Optional, cast
+from typing import Optional
 
 from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from UM.Logger import Logger
@@ -201,11 +201,11 @@ class CuraStackBuilder:
         """
         stack = GlobalStack(new_stack_id)
         stack.setDefinition(definition)
-        cls.createUserContainer(new_stack_id, definition.getId(), stack, variant_container, material_container, quality_container)
+        cls.createUserContainer(new_stack_id, definition, stack, variant_container, material_container, quality_container)
         return stack
 
     @classmethod
-    def createUserContainer(cls, new_stack_id: str, definition_id: str,
+    def createUserContainer(cls, new_stack_id: str, definition: DefinitionContainerInterface,
                             stack: GlobalStack,
                             variant_container: "InstanceContainer",
                             material_container: "InstanceContainer",
@@ -216,7 +216,7 @@ class CuraStackBuilder:
         registry = application.getContainerRegistry()
 
         # Create user container
-        user_container = cls.createUserChangesContainer(new_stack_id + "_user", definition_id, new_stack_id,
+        user_container = cls.createUserChangesContainer(new_stack_id + "_user", definition.getId(), new_stack_id,
                                                         is_global_stack = True)
 
         stack.definitionChanges = cls.createDefinitionChangesContainer(stack, new_stack_id + "_settings")
@@ -292,27 +292,24 @@ class CuraStackBuilder:
                 Logger.error(f"Definition {definition_id} was not found!")
                 return None
             case [machine_definition, *_definitions]:
-                # machine_definition_id = machine_definition.getId()
-                # machine_node = container_tree.machines[machine_definition_id]
+                machine_node = container_tree.machines[machine_definition.getId()]
                 name = machine_definition.getName()
-
-                print("machine_definition", machine_definition)
 
                 stack = GlobalStack(abstract_machine_id)
                 stack.setMetaDataEntry("is_abstract_machine", True)
                 stack.setMetaDataEntry("is_online", True)
-                # stack.setDefinition(machine_definition)
+                stack.setDefinition(machine_definition)
                 cls.createUserContainer(
                     name,
-                    "ultimaker_s3",
+                    machine_definition,
                     stack,
                     application.empty_variant_container,
                     application.empty_material_container,
-                    application.empty_quality_changes_container,
+                    machine_node.preferredGlobalQuality().container,
                 )
 
-                # stack.setName(name)
+                stack.setName(name)
 
-                # registry.addContainer(stack)
+                registry.addContainer(stack)
 
                 return stack

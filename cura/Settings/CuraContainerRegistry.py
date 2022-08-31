@@ -62,7 +62,7 @@ class CuraContainerRegistry(ContainerRegistry):
         This will also try to convert a ContainerStack to either Extruder or
         Global stack based on metadata information.
         """
-
+        print("CONTAINERCONTAINER: ", container.getName())
         # Note: Intentional check with type() because we want to ignore subclasses
         if type(container) == ContainerStack:
             container = self._convertContainerStack(cast(ContainerStack, container))
@@ -371,11 +371,9 @@ class CuraContainerRegistry(ContainerRegistry):
 
     @override(ContainerRegistry)
     def load(self) -> None:
-        print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<LOAD>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
         super().load()
         self._registerSingleExtrusionMachinesExtruderStacks()
         self._connectUpgradedExtruderStacksToMachines()
-        self._registerAbstractMachines()
 
     @override(ContainerRegistry)
     def loadAllMetadata(self) -> None:
@@ -858,8 +856,8 @@ class CuraContainerRegistry(ContainerRegistry):
         machines = self.findInstanceContainers(type="machine")
 
         for machine in machines:
-            if not self.findInstanceContainers(is_abstract="True", definition_id=machine.getDefinition().getId()):
-                CuraStackBuilder.createAbstractMachine(machine.getDefinition().getId())
+            pass
+
 
     # Override just for the type.
     @classmethod
