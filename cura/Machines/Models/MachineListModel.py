@@ -103,21 +103,20 @@ class MachineListModel(ListModel):
 
         if len(abstract_machine_stacks) > 0:
             if self._show_cloud_printers:
-                self.appendItem({ "listType": "HIDE_BUTTON",
-                                  "isOnline": True,
-                                  "isAbstractMachine": False,
-                                  "machineCount": 0
+                self.appendItem({"listType": "HIDE_BUTTON",
+                                 "isOnline": True,
+                                 "isAbstractMachine": False,
+                                 "machineCount": 0
                                  })
             else:
                 self.appendItem({"listType": "SHOW_BUTTON",
-                                  "isOnline": True,
-                                  "isAbstractMachine": False,
-                                  "machineCount": 0
+                                 "isOnline": True,
+                                 "isAbstractMachine": False,
+                                 "machineCount": 0
                                  })
 
         for stack in other_machine_stacks:
             self.addItem(stack)
-        print(self.items)
 
     def addItem(self, container_stack: ContainerStack, machine_count: int = 0) -> None:
         if parseBool(container_stack.getMetaDataEntry("hidden", False)):
