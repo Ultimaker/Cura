@@ -82,6 +82,9 @@ class ContainerTree:
         currently_added = ContainerRegistry.getInstance().findContainerStacks()  # Find all currently added global stacks.
         JobQueue.getInstance().add(self._MachineNodeLoadJob(self, currently_added))
 
+        from cura.Settings.CuraStackBuilder import CuraStackBuilder  # Avoid circular import
+        CuraStackBuilder.createAbstractMachines(currently_added)
+
     class _MachineNodeMap:
         """Dictionary-like object that contains the machines.
 
