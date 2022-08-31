@@ -22,8 +22,8 @@ ListView
     section.delegate: UM.Label
     {
         text: section == "true" ? catalog.i18nc("@label", "Connected printers") : catalog.i18nc("@label", "Other printers")
-        width: parent.width - scrollBar.width
         height: UM.Theme.getSize("action_button").height
+        width: parent.width - scrollBar.width
         leftPadding: UM.Theme.getSize("default_margin").width
         font: UM.Theme.getFont("medium")
         color: UM.Theme.getColor("text_medium")
@@ -31,13 +31,23 @@ ListView
 
     delegate: MachineListButton
     {
-        text: model.name ? model.name : ""
         width: listView.width - scrollBar.width
 
-        onClicked:
+        onClicked: function()
         {
-            toggleContent()
-            Cura.MachineManager.setActiveMachine(model.id)
+            switch (model.componentType) {
+                case "HIDE_BUTTON":
+                    listView.model.setShowCloudPrinters(false);
+                    break;
+                case "SHOW_BUTTON":
+                    listView.model.setShowCloudPrinters(true);
+                    break;
+                case "MACHINE":
+                    toggleContent()
+                    Cura.MachineManager.setActiveMachine(model.id)
+                    break;
+                default:
+            }
         }
     }
 }
