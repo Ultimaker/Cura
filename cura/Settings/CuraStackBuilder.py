@@ -1,7 +1,7 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Optional
+from typing import Optional, cast
 
 from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from UM.Logger import Logger
@@ -292,8 +292,11 @@ class CuraStackBuilder:
                 Logger.error(f"Definition {definition_id} was not found!")
                 return None
             case [machine_definition, *_definitions]:
-                machine_node = container_tree.machines[machine_definition.getId()]
+                # machine_definition_id = machine_definition.getId()
+                # machine_node = container_tree.machines[machine_definition_id]
                 name = machine_definition.getName()
+
+                print("machine_definition", machine_definition)
 
                 stack = GlobalStack(abstract_machine_id)
                 stack.setMetaDataEntry("is_abstract_machine", True)
@@ -308,8 +311,8 @@ class CuraStackBuilder:
                     machine_node.preferredGlobalQuality().container,
                 )
 
-                stack.setName(name)
+                # stack.setName(name)
 
-                registry.addContainer(stack)
+                # registry.addContainer(stack)
 
                 return stack

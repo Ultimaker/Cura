@@ -388,11 +388,18 @@ class MachineManager(QObject):
             return
         for extruder in self._global_container_stack.extruderList:
             variant_name = extruder.variant.getName()
+            print("machine_node", machine_node)
+            print("ContainerTree.getInstance().machines", ContainerTree.getInstance().machines)
+            print("len(machine_node.variants)", len(machine_node.variants))
+
+            print("variant_name", variant_name)
             variant_node = machine_node.variants.get(variant_name)
+            print("variant_node", variant_node)
             if variant_node is None:
                 Logger.log("w", "An extruder has an unknown variant, switching it to the preferred variant")
                 self.setVariantByName(extruder.getMetaDataEntry("position"), machine_node.preferred_variant_name)
                 variant_node = machine_node.variants.get(machine_node.preferred_variant_name)
+            print("variant_node", variant_node)
 
             material_node = variant_node.materials.get(extruder.material.getMetaDataEntry("base_file"))
             if material_node is None:

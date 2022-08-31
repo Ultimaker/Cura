@@ -370,6 +370,7 @@ class CuraContainerRegistry(ContainerRegistry):
 
     @override(ContainerRegistry)
     def load(self) -> None:
+        print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<LOAD>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
         super().load()
         self._registerSingleExtrusionMachinesExtruderStacks()
         self._connectUpgradedExtruderStacksToMachines()
