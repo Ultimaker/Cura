@@ -64,7 +64,6 @@ class CloudOutputDeviceManager:
         self._running = False
 
         self._syncing = False
-
         CuraApplication.getInstance().getContainerRegistry().containerRemoved.connect(self._printerRemoved)
 
     def start(self):
@@ -375,7 +374,6 @@ class CloudOutputDeviceManager:
 
     def _connectToActiveMachine(self) -> None:
         """Callback for when the active machine was changed by the user"""
-
         active_machine = CuraApplication.getInstance().getGlobalContainerStack()
         if not active_machine:
             return
@@ -383,29 +381,29 @@ class CloudOutputDeviceManager:
         # Check if we should directly connect with a "normal" CloudOutputDevice or that we should connect to an
         # 'abstract' one
         output_device_manager = CuraApplication.getInstance().getOutputDeviceManager()
-        if active_machine.getMetaDataEntry("is_abstract_machine") != "True":
-            stored_cluster_id = active_machine.getMetaDataEntry(self.META_CLUSTER_ID)
-            local_network_key = active_machine.getMetaDataEntry(self.META_NETWORK_KEY)
+        stored_cluster_id = active_machine.getMetaDataEntry(self.META_CLUSTER_ID)
+        local_network_key = active_machine.getMetaDataEntry(self.META_NETWORK_KEY)
 
-            # Copy of the device list, to prevent modifying the list while iterating, if a device gets added asynchronously.
-            remote_cluster_copy: List[CloudOutputDevice] = list(self._remote_clusters.values())
-            for device in remote_cluster_copy:
-                if device.key == stored_cluster_id:
-                    # Connect to it if the stored ID matches.
-                    self._connectToOutputDevice(device, active_machine)
-                elif local_network_key and device.matchesNetworkKey(local_network_key):
-                    # Connect to it if we can match the local network key that was already present.
-                    self._connectToOutputDevice(device, active_machine)
-                elif device.key in output_device_manager.getOutputDeviceIds():
-                    # Remove device if it is not meant for the active machine.
-                    output_device_manager.removeOutputDevice(device.key)
-        else:  # Abstract it is!
-            remote_abstract_cluster_copy: List[CloudOutputDevice] = list(self._abstract_clusters.values())
-            for device in remote_abstract_cluster_copy:
-                if device.printerType == active_machine.definition.getId():
-                    self._connectToAbstractOutputDevice(device, active_machine)
-                elif device.key in output_device_manager.getOutputDeviceIds():
-                    output_device_manager.removeOutputDevice(device.key)
+        # Copy of the device list, to prevent modifying the list while iterating, if a device gets added asynchronously.
+        remote_cluster_copy: List[CloudOutputDevice] = list(self._remote_clusters.values())
+        for device in remote_cluster_copy:
+            if device.key == stored_cluster_id:
+                # Connect to it if the stored ID matches.
+                self._connectToOutputDevice(device, active_machine)
+            elif local_network_key and device.matchesNetworkKey(local_network_key):
+                # Connect to it if we can match the local network key that was already present.
+                self._connectToOutputDevice(device, active_machine)
+            elif device.key in output_device_manager.getOutputDeviceIds():
+                # Remove device if it is not meant for the active machine.
+                output_device_manager.removeOutputDevice(device.key)
+
+        # Update state of all abstract output devices
+        remote_abstract_cluster_copy: List[CloudOutputDevice] = list(self._abstract_clusters.values())
+        for device in remote_abstract_cluster_copy:
+            if device.printerType == active_machine.definition.getId() and parseBool(active_machine.getMetaDataEntry("is_abstract_machine", False)):
+                self._connectToAbstractOutputDevice(device, active_machine)
+            elif device.key in output_device_manager.getOutputDeviceIds():
+                output_device_manager.removeOutputDevice(device.key)
 
     def _setOutputDeviceMetadata(self, device: CloudOutputDevice, machine: GlobalStack):
         machine.setName(device.name)
