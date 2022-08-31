@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -12,7 +12,6 @@ Rectangle
     id: viewportOverlay
 
     property bool isConnected: Cura.MachineManager.activeMachineHasNetworkConnection || Cura.MachineManager.activeMachineHasCloudConnection
-    property bool isAbstractCloudPrinter: Cura.MachineManager.activeMachineIsAbstract
     property bool isNetworkConfigurable:
     {
         if(Cura.MachineManager.activeMachine === null)
@@ -97,7 +96,7 @@ Rectangle
             {
                 horizontalCenter: parent.horizontalCenter
             }
-            visible: isNetworkConfigured && !isConnected && !isAbstractCloudPrinter
+            visible: isNetworkConfigured && !isConnected
             text: catalog.i18nc("@info", "Please make sure your printer has a connection:\n- Check if the printer is turned on.\n- Check if the printer is connected to the network.\n- Check if you are signed in to discover cloud-connected printers.")
             font: UM.Theme.getFont("medium")
             width: contentWidth
@@ -110,53 +109,10 @@ Rectangle
             {
                 horizontalCenter: parent.horizontalCenter
             }
-            visible: !isNetworkConfigured && isNetworkConfigurable && !isAbstractCloudPrinter
+            visible: !isNetworkConfigured && isNetworkConfigurable
             text: catalog.i18nc("@info", "Please connect your printer to the network.")
             font: UM.Theme.getFont("medium")
             width: contentWidth
-        }
-
-        Rectangle
-        {
-            id: sendToFactoryCard
-            visible: isAbstractCloudPrinter
-            color: UM.Theme.getColor("detail_background")
-            height: childrenRect.height + UM.Theme.getSize("default_margin").height * 2
-            width: childrenRect.width + UM.Theme.getSize("wide_margin").width * 2
-            Column
-            {
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.verticalCenter: parent.verticalCenter
-                spacing: UM.Theme.getSize("wide_margin").height
-                padding: UM.Theme.getSize("default_margin").width
-                topPadding: 0
-
-                Image
-                {
-                    id: sendToFactoryImage
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    source: UM.Theme.getImage("illustration_connect_printers")
-                }
-
-                UM.Label
-                {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    text: catalog.i18nc("@info", "Monitor your printers from everywhere using Ultimaker Digital Factory")
-                    font: UM.Theme.getFont("medium")
-                    width: sendToFactoryImage.width
-                    wrapMode: Text.WordWrap
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                }
-
-                Cura.PrimaryButton
-                {
-                    id: sendToFactoryButton
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    text: catalog.i18nc("@button", "View printers in Digital Factory")
-                    onClicked: Qt.openUrlExternally("https://digitalfactory.ultimaker.com/app/print-jobs?utm_source=cura&utm_medium=software&utm_campaign=monitor-view-cloud-printer-type")
-                }
-            }
         }
 
         Item
@@ -165,7 +121,7 @@ Rectangle
             {
                 left: noNetworkLabel.left
             }
-            visible: !isNetworkConfigured && isNetworkConfigurable && !isAbstractCloudPrinter
+            visible: !isNetworkConfigured && isNetworkConfigurable
             width: childrenRect.width
             height: childrenRect.height
 
