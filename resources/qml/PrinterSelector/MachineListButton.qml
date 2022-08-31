@@ -11,7 +11,7 @@ Loader {
     id: loader
     width: parent.width
     sourceComponent: {
-        switch (model.listType) {
+        switch (model.componentType) {
             case "HIDE_BUTTON":
                 hideButtonComponent
                 break;

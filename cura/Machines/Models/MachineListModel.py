@@ -25,7 +25,7 @@ class MachineListModel(ListModel):
     IsOnlineRole = Qt.ItemDataRole.UserRole + 5
     MachineCountRole = Qt.ItemDataRole.UserRole + 6
     IsAbstractMachineRole = Qt.ItemDataRole.UserRole + 7
-    ListTypeRole = Qt.ItemDataRole.UserRole + 8
+    ComponentTypeRole = Qt.ItemDataRole.UserRole + 8
 
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
@@ -41,7 +41,7 @@ class MachineListModel(ListModel):
         self.addRoleName(self.IsOnlineRole, "isOnline")
         self.addRoleName(self.MachineCountRole, "machineCount")
         self.addRoleName(self.IsAbstractMachineRole, "isAbstractMachine")
-        self.addRoleName(self.ListTypeRole, "listType")
+        self.addRoleName(self.ComponentTypeRole, "componentType")
 
         self._change_timer = QTimer()
         self._change_timer.setInterval(200)
@@ -103,13 +103,13 @@ class MachineListModel(ListModel):
 
         if len(abstract_machine_stacks) > 0:
             if self._show_cloud_printers:
-                self.appendItem({"listType": "HIDE_BUTTON",
+                self.appendItem({"componentType": "HIDE_BUTTON",
                                  "isOnline": True,
                                  "isAbstractMachine": False,
                                  "machineCount": 0
                                  })
             else:
-                self.appendItem({"listType": "SHOW_BUTTON",
+                self.appendItem({"componentType": "SHOW_BUTTON",
                                  "isOnline": True,
                                  "isAbstractMachine": False,
                                  "machineCount": 0
@@ -130,7 +130,7 @@ class MachineListModel(ListModel):
             has_connection |= connection_type in container_stack.configuredConnectionTypes
 
         self.appendItem({
-                        "listType": "MACHINE",
+                        "componentType": "MACHINE",
                         "name": container_stack.getName(),
                          "id": container_stack.getId(),
                          "metadata": container_stack.getMetaData().copy(),

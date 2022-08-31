@@ -35,7 +35,7 @@ ListView
 
         onClicked: function()
         {
-            switch (model.listType) {
+            switch (model.componentType) {
                 case "HIDE_BUTTON":
                     listView.model.setShowCloudPrinters(false);
                     break;
