@@ -28,7 +28,6 @@ class VersionUpgrade50to52(VersionUpgrade):
         :return: A list of file names, and a list of the new contents for those files.
         """
         [filename], [serialized] = self.upgradeStack(serialized, filename)
-        return [filename], [serialized]
 
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialized)
