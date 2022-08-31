@@ -68,11 +68,11 @@ Button
                 top: buttonText.top
                 bottom: buttonText.bottom
             }
-            visible: model.isAbstractMachine
+            visible: model.isAbstractMachine ? model.isAbstractMachine : false
 
             UM.Label
             {
-                text: model.machineCount
+                text: model.machineCount ? model.machineCount : ""
                 anchors.centerIn: parent
                 font: UM.Theme.getFont("default_bold")
             }

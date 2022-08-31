@@ -90,7 +90,6 @@ class GlobalStack(CuraContainerStack):
     @pyqtProperty("QVariantList", notify=configuredConnectionTypesChanged)
     def configuredConnectionTypes(self) -> List[int]:
         """The configured connection types can be used to find out if the global
-
         stack is configured to be connected with a printer, without having to
         know all the details as to how this is exactly done (and without
         actually setting the stack to be active).

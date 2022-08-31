@@ -223,7 +223,6 @@ Cura.ExpandablePopup
             id: buttonRow
 
             anchors.bottom: parent.bottom
-            anchors.horizontalCenter: parent.horizontalCenter
             anchors.left: parent.left
             anchors.right: parent.right
 
