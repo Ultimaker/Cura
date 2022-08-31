@@ -404,7 +404,7 @@ class CloudOutputDeviceManager:
             for device in remote_abstract_cluster_copy:
                 if device.printerType == active_machine.definition.getId():
                     self._connectToAbstractOutputDevice(device, active_machine)
-                else:
+                elif device.key in output_device_manager.getOutputDeviceIds():
                     output_device_manager.removeOutputDevice(device.key)
 
     def _setOutputDeviceMetadata(self, device: CloudOutputDevice, machine: GlobalStack):
@@ -423,6 +423,7 @@ class CloudOutputDeviceManager:
         machine.addConfiguredConnectionType(device.connectionType.value)
 
     def _connectToAbstractOutputDevice(self, device: AbstractCloudOutputDevice, machine: GlobalStack) -> None:
+        Logger.debug(f"Attempting to connect to abstract machine {machine.id}")
         if not device.isConnected():
             device.connect()
         machine.addConfiguredConnectionType(device.connectionType.value)
