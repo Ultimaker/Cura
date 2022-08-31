@@ -30,7 +30,7 @@ class MachineListModel(ListModel):
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
 
-        self._show_cloud_printers = True
+        self._show_cloud_printers = False
 
         self._catalog = i18nCatalog("cura")
 
