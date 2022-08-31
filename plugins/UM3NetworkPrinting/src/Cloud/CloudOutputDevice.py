@@ -3,7 +3,7 @@
 
 from time import time
 import os
-from typing import cast, List, Optional, TYPE_CHECKING
+from typing import cast, List, Optional
 
 from PyQt6.QtCore import QObject, QUrl, pyqtProperty, pyqtSignal, pyqtSlot
 from PyQt6.QtGui import QDesktopServices
@@ -21,6 +21,7 @@ from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 
 from .CloudApiClient import CloudApiClient
 from ..ExportFileJob import ExportFileJob
+from ..Messages.PrintJobAwaitingApprovalMessage import PrintJobPendingApprovalMessage
 from ..UltimakerNetworkedPrinterOutputDevice import UltimakerNetworkedPrinterOutputDevice
 from ..Messages.PrintJobUploadBlockedMessage import PrintJobUploadBlockedMessage
 from ..Messages.PrintJobUploadErrorMessage import PrintJobUploadErrorMessage
@@ -231,6 +232,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
         :param job_response: The response received from the cloud API.
         """
+
         if not self._tool_path:
             return self._onUploadError()
         self._pre_upload_print_job = job_response  # store the last uploaded job to prevent re-upload of the same file
@@ -262,19 +264,21 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         """
         self._uploaded_print_job = self._pre_upload_print_job
         self._progress.hide()
-        message = PrintJobUploadSuccessMessage()
-        message.addAction("monitor print",
-                          name=I18N_CATALOG.i18nc("@action:button", "Monitor print"),
-                          icon="",
-                          description=I18N_CATALOG.i18nc("@action:tooltip",
-                                                         "Track the print in Ultimaker Digital Factory"),
-                          button_align=message.ActionButtonAlignment.ALIGN_RIGHT)
-        df_url = f"https://digitalfactory.ultimaker.com/app/jobs/{self._cluster.cluster_id}" \
-                 f"?utm_source=cura&utm_medium=software&utm_campaign=message-printjob-sent"
-        message.pyQtActionTriggered.connect(lambda message, action: (QDesktopServices.openUrl(QUrl(df_url)),
-                                                                     message.hide()))
 
-        message.show()
+        if response:
+            message = PrintJobUploadSuccessMessage()
+            message.addAction("monitor print",
+                              name=I18N_CATALOG.i18nc("@action:button", "Monitor print"),
+                              icon="",
+                              description=I18N_CATALOG.i18nc("@action:tooltip", "Track the print in Ultimaker Digital Factory"),
+                              button_align=message.ActionButtonAlignment.ALIGN_RIGHT)
+            df_url = f"https://digitalfactory.ultimaker.com/app/jobs/{self._cluster.cluster_id}?utm_source=cura&utm_medium=software&utm_campaign=message-printjob-sent"
+            message.pyQtActionTriggered.connect(lambda message, action: (QDesktopServices.openUrl(QUrl(df_url)), message.hide()))
+
+            message.show()
+        else:
+            PrintJobPendingApprovalMessage(self._cluster.cluster_id).show()
+
         self.writeFinished.emit()
 
     def _onPrintUploadSpecificError(self, reply: "QNetworkReply", _: "QNetworkReply.NetworkError"):

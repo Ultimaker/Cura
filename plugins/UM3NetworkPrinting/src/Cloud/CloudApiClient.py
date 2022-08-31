@@ -207,9 +207,9 @@ class CloudApiClient:
             Logger.logException("e", "Could not parse the stardust response: %s", error.toDict())
             return status_code, {"errors": [error.toDict()]}
 
-    def _parseModels(self, response: Dict[str, Any], on_finished: Union[Callable[[CloudApiClientModel], Any],
-                     Callable[[List[CloudApiClientModel]], Any]], model_class: Type[CloudApiClientModel]) -> None:
-        """Parses the given models and calls the correct callback depending on the result.
+    def _parseResponse(self, response: Dict[str, Any], on_finished: Union[Callable[[CloudApiClientModel], Any],
+                                                                          Callable[[List[CloudApiClientModel]], Any]], model_class: Type[CloudApiClientModel]) -> None:
+        """Parses the given response and calls the correct callback depending on the result.
 
         :param response: The response from the server, after being converted to a dict.
         :param on_finished: The callback in case the response is successful.
@@ -218,7 +218,10 @@ class CloudApiClient:
 
         if "data" in response:
             data = response["data"]
-            if isinstance(data, list):
+            if "status" in data and data["status"] == "wait_approval":
+                on_finished_empty = cast(Callable[[List], Any], on_finished)
+                on_finished_empty([])
+            elif isinstance(data, list):
                 results = [model_class(**c) for c in data]  # type: List[CloudApiClientModel]
                 on_finished_list = cast(Callable[[List[CloudApiClientModel]], Any], on_finished)
                 on_finished_list(results)
@@ -260,7 +263,7 @@ class CloudApiClient:
             if status_code >= 300 and on_error is not None:
                 on_error()
             else:
-                self._parseModels(response, on_finished, model)
+                self._parseResponse(response, on_finished, model)
 
         self._anti_gc_callbacks.append(parse)
         return parse

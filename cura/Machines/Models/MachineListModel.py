@@ -11,6 +11,7 @@ from UM.Qt.ListModel import ListModel
 from UM.Settings.ContainerStack import ContainerStack
 from UM.i18n import i18nCatalog
 from UM.Util import parseBool
+from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 from cura.Settings.GlobalStack import GlobalStack
@@ -91,10 +92,17 @@ class MachineListModel(ListModel):
         if parseBool(container_stack.getMetaDataEntry("hidden", False)):
             return
 
+        # This is required because machines loaded from projects have the is_online="True" but no connection type.
+        # We want to display them the same way as unconnected printers in this case.
+        has_connection = False
+        has_connection |= parseBool(container_stack.getMetaDataEntry("is_abstract_machine", False))
+        for connection_type in [ConnectionType.NetworkConnection.value, ConnectionType.CloudConnection.value]:
+            has_connection |= connection_type in container_stack.configuredConnectionTypes
+
         self.appendItem({"name": container_stack.getName(),
                          "id": container_stack.getId(),
                          "metadata": container_stack.getMetaData().copy(),
-                         "isOnline": parseBool(container_stack.getMetaDataEntry("is_online", False)),
+                         "isOnline": parseBool(container_stack.getMetaDataEntry("is_online", False)) and has_connection,
                          "isAbstractMachine": parseBool(container_stack.getMetaDataEntry("is_abstract_machine", False)),
                          "machineCount": machine_count,
                          })
