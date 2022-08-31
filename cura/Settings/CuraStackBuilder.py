@@ -201,11 +201,11 @@ class CuraStackBuilder:
         """
         stack = GlobalStack(new_stack_id)
         stack.setDefinition(definition)
-        cls.createUserContainer(new_stack_id, definition, stack, variant_container, material_container, quality_container)
+        cls.createUserContainer(new_stack_id, definition.getId(), stack, variant_container, material_container, quality_container)
         return stack
 
     @classmethod
-    def createUserContainer(cls, new_stack_id: str, definition: DefinitionContainerInterface,
+    def createUserContainer(cls, new_stack_id: str, definition_id: str,
                             stack: GlobalStack,
                             variant_container: "InstanceContainer",
                             material_container: "InstanceContainer",
@@ -216,7 +216,7 @@ class CuraStackBuilder:
         registry = application.getContainerRegistry()
 
         # Create user container
-        user_container = cls.createUserChangesContainer(new_stack_id + "_user", definition.getId(), new_stack_id,
+        user_container = cls.createUserChangesContainer(new_stack_id + "_user", definition_id, new_stack_id,
                                                         is_global_stack = True)
 
         stack.definitionChanges = cls.createDefinitionChangesContainer(stack, new_stack_id + "_settings")
@@ -301,14 +301,14 @@ class CuraStackBuilder:
                 stack = GlobalStack(abstract_machine_id)
                 stack.setMetaDataEntry("is_abstract_machine", True)
                 stack.setMetaDataEntry("is_online", True)
-                stack.setDefinition(machine_definition)
+                # stack.setDefinition(machine_definition)
                 cls.createUserContainer(
                     name,
-                    machine_definition,
+                    "ultimaker_s3",
                     stack,
                     application.empty_variant_container,
                     application.empty_material_container,
-                    machine_node.preferredGlobalQuality().container,
+                    application.empty_quality_changes_container,
                 )
 
                 # stack.setName(name)

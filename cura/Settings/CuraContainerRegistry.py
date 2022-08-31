@@ -32,6 +32,7 @@ from cura.Machines.ContainerTree import ContainerTree
 from cura.ReaderWriters.ProfileReader import NoProfileException, ProfileReader
 
 from UM.i18n import i18nCatalog
+from .CuraStackBuilder import CuraStackBuilder
 from .DatabaseHandlers.IntentDatabaseHandler import IntentDatabaseHandler
 from .DatabaseHandlers.QualityDatabaseHandler import QualityDatabaseHandler
 from .DatabaseHandlers.VariantDatabaseHandler import VariantDatabaseHandler
@@ -374,6 +375,7 @@ class CuraContainerRegistry(ContainerRegistry):
         super().load()
         self._registerSingleExtrusionMachinesExtruderStacks()
         self._connectUpgradedExtruderStacksToMachines()
+        self._registerAbstractMachines()
 
     @override(ContainerRegistry)
     def loadAllMetadata(self) -> None:
@@ -850,6 +852,14 @@ class CuraContainerRegistry(ContainerRegistry):
                 extruder_stack.setNextStack(machines[0])
             else:
                 Logger.log("w", "Could not find machine {machine} for extruder {extruder}", machine = extruder_stack.getMetaDataEntry("machine"), extruder = extruder_stack.getId())
+
+    def _registerAbstractMachines(self) -> None:
+        print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<_registerAbstractMachines>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+        machines = self.findInstanceContainers(type="machine")
+
+        for machine in machines:
+            if not self.findInstanceContainers(is_abstract="True", definition_id=machine.getDefinition().getId()):
+                CuraStackBuilder.createAbstractMachine(machine.getDefinition().getId())
 
     # Override just for the type.
     @classmethod
