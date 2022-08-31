@@ -99,7 +99,8 @@ class MachineListModel(ListModel):
                 if self._show_cloud_printers:
                     self.addItem(stack)
                 # Remove this machine from the other stack list
-                other_machine_stacks.remove(stack)
+                if stack in other_machine_stacks:
+                    other_machine_stacks.remove(stack)
 
         if len(abstract_machine_stacks) > 0:
             if self._show_cloud_printers:

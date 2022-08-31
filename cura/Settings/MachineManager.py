@@ -359,6 +359,7 @@ class MachineManager(QObject):
         extruder_manager = ExtruderManager.getInstance()
         extruder_manager.fixSingleExtrusionMachineExtruderDefinition(global_stack)
         if not global_stack.isValid():
+            Logger.warning("Global stack isn't valid, adding it to faulty container list")
             # Mark global stack as invalid
             ConfigurationErrorMessage.getInstance().addFaultyContainers(global_stack.getId())
             return  # We're done here

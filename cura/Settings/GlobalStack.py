@@ -292,7 +292,6 @@ class GlobalStack(CuraContainerStack):
         for extruder_train in extruder_trains:
             extruder_position = extruder_train.getMetaDataEntry("position")
             extruder_check_position.add(extruder_position)
-
         for check_position in range(machine_extruder_count):
             if str(check_position) not in extruder_check_position:
                 return False
