@@ -12,11 +12,6 @@ on:
                 default: ""
                 type: string
 
-            is_external_pr:
-                required: false
-                default: false
-                type: boolean
-
         outputs:
             recipe_id_full:
                 description: "The full Conan recipe id: <name>/<version>@<user>/<channel>"
@@ -58,14 +53,14 @@ jobs:
         steps:
             -   name: Checkout repo
                 uses: actions/checkout@v3
-                if: ${{ ! inputs.is_external_pr }}
+                if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
                 with:
                     fetch-depth: 0
                     ref: ${{ github.head_ref }}
 
             -   name: Checkout repo PR
                 uses: actions/checkout@v3
-                if: ${{ inputs.is_external_pr }}
+                if: ${{ github.event.pull_request.head.repo.full_name != github.repository }}
                 with:
                     fetch-depth: 0
                     ref: ${{ github.event.pull_request.head.ref }}
