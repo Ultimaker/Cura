@@ -53,9 +53,18 @@ jobs:
         steps:
             -   name: Checkout repo
                 uses: actions/checkout@v3
+                if: ${{ ! contains(github.event, 'pull_request') }}
                 with:
-                    ref: ${{ github.head_ref }}
                     fetch-depth: 0
+                    ref: ${{ github.head_ref }}
+
+            -   name: Checkout repo PR
+                uses: actions/checkout@v3
+                if: ${{ contains(github.event, 'pull_request') }}
+                with:
+                    fetch-depth: 0
+                    ref: ${{ github.event.pull_request.head.ref }}
+                    repository: ${{ github.event.pull_request.head.repo.full_name }}
 
             -   name: Setup Python and pip
                 uses: actions/setup-python@v4
@@ -106,7 +115,7 @@ jobs:
                         else:
                             channel = repo.active_branch.name.split("_")[0].replace("-", "_").lower()
                     
-                        if event_name == "pull_request":
+                        if "pull_request" in event_name:
                             channel = f"pr_{issue_number}"
                     
                     # %% Get the actual version
