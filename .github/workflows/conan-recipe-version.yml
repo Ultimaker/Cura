@@ -58,14 +58,14 @@ jobs:
         steps:
             -   name: Checkout repo
                 uses: actions/checkout@v3
-                if: ${{ ! is_external_pr }}
+                if: ${{ ! inputs.is_external_pr }}
                 with:
                     fetch-depth: 0
                     ref: ${{ github.head_ref }}
 
             -   name: Checkout repo PR
                 uses: actions/checkout@v3
-                if: ${{ is_external_pr }}
+                if: ${{ inputs.is_external_pr }}
                 with:
                     fetch-depth: 0
                     ref: ${{ github.event.pull_request.head.ref }}
