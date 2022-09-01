@@ -1,0 +1,14 @@
+{
+    "name": "VzBot Custom",
+    "version": 2,
+    "inherits": "vzbot_base",
+    "metadata":
+    {
+        "visible": true,
+        "quality_definition": "vzbot_base"
+    },
+    "overrides":
+    {
+        "machine_name":     { "default_value": "VzBot Custom" }
+    }
+}
