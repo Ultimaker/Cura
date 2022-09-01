@@ -75,12 +75,11 @@
         "infill_sparse_density": { "value": "15" },
         "infill_pattern": { "value": "'lines' if infill_sparse_density > 50 else 'cubic'" },
     
-        "material_print_temperature": { "value": "195" }, 
+        "default_material_print_temperature": { "value": "195" },
         "material_print_temperature_layer_0": { "value": "material_print_temperature" },       
         "material_initial_print_temperature": { "value": "material_print_temperature" },
         "material_final_print_temperature": { "value": "material_print_temperature" },
-        "material_bed_temperature": { "value": "55" },       
-        "material_bed_temperature_layer_0": { "value": "material_bed_temperature" },
+        "default_material_bed_temperature": { "value": "55" },
         "material_flow": { "value": 100 },
         "material_standby_temperature": { "value": "material_print_temperature" },
 

@@ -104,9 +104,6 @@
         "material_flow": {
             "value": "110"
         },
-        "material_print_temperature": {
-            "value": "210.0"
-        },
         "ooze_shield_enabled": {
             "value": "True"
         },
