@@ -15,7 +15,7 @@ class RemovedPrintersMessage(Message):
             "info:status",
             "This printer is not linked to the Digital Factory:",
             "These printers are not linked to the Digital Factory:",
-            len(self.removed_devices)
+            len(self._removed_devices)
         )
         message_text += "<br/><ul>{}</ul><br/>".format(device_names)
 

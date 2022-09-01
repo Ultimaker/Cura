@@ -86,7 +86,7 @@ Component
 
             visible: Cura.MachineManager.activeMachineIsAbstractCloudPrinter
 
-            color: UM.Theme.getColor("detail_background")
+            color: UM.Theme.getColor("monitor_stage_background")
             height: childrenRect.height + UM.Theme.getSize("default_margin").height * 2
             width: childrenRect.width + UM.Theme.getSize("wide_margin").width * 2
             anchors
