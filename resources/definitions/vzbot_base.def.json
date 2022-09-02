@@ -96,8 +96,6 @@
         "min_infill_area":                              { "default_value": 5.0 },
         "acceleration_enabled":                         { "default_value": false },
         "acceleration_print":                           { "default_value": 15000, "maximum_value_warning": 50000 },
-        "acceleration_infill":                          { "default_value": 15000, "maximum_value_warning": 50000 },
-        "acceleration_wall":                            { "default_value": 15000, "maximum_value_warning": 50000 },
         "acceleration_wall_0":                          { "value": 15000, "maximum_value_warning": 50000 },
         "acceleration_wall_x":                          { "value": 15000, "maximum_value_warning": 50000 },
         "acceleration_layer_0":                         { "value": 15000, "maximum_value_warning": 50000 },
