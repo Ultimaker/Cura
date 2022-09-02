@@ -172,6 +172,7 @@ class GlobalStacksModel(ListModel):
                           "metadata": container_stack.getMetaData().copy(),
                           "discoverySource": section_name,
                           "removalWarning": removal_warning,
-                          "isOnline": is_online})
+                          "isOnline": is_online,
+                          "isAbstractMachine": is_abstract_machine})
         items.sort(key=lambda i: (not i["hasRemoteConnection"], i["name"]))
         self.setItems(items)
