@@ -1,6 +1,6 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-
+import json
 from typing import cast, List, Dict
 
 from Charon.VirtualFile import VirtualFile  # To open UFP files.
@@ -10,6 +10,7 @@ from io import StringIO  # For converting g-code to bytes.
 
 from PyQt6.QtCore import QBuffer
 
+from UM.Application import Application
 from UM.Logger import Logger
 from UM.Mesh.MeshWriter import MeshWriter  # The writer we need to implement.
 from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
@@ -18,11 +19,13 @@ from UM.PluginRegistry import PluginRegistry  # To get the g-code writer.
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
 from cura.CuraApplication import CuraApplication
+from cura.Settings.GlobalStack import GlobalStack
 from cura.Utils.Threading import call_on_qt_thread
 
 from UM.i18n import i18nCatalog
 
 METADATA_OBJECTS_PATH = "metadata/objects"
+SETTINGS_PATH = "Cura/settings.json"
 
 catalog = i18nCatalog("cura")
 
@@ -68,6 +71,19 @@ class UFPWriter(MeshWriter):
             gcode = archive.getStream("/3D/model.gcode")
             gcode.write(gcode_textio.getvalue().encode("UTF-8"))
             archive.addRelation(virtual_path = "/3D/model.gcode", relation_type = "http://schemas.ultimaker.org/package/2018/relationships/gcode")
+        except EnvironmentError as e:
+            error_msg = catalog.i18nc("@info:error", "Can't write to UFP file:") + " " + str(e)
+            self.setInformation(error_msg)
+            Logger.error(error_msg)
+            return False
+
+        #Write settings
+        try:
+            archive.addContentType(extension="json", mime_type="application/json")
+            setting_textio = StringIO()
+            json.dump(self._getSettings(), setting_textio, separators=(", ", ": "), indent=4)
+            settings = archive.getStream(SETTINGS_PATH)
+            settings.write(setting_textio.getvalue().encode("UTF-8"))
         except EnvironmentError as e:
             error_msg = catalog.i18nc("@info:error", "Can't write to UFP file:") + " " + str(e)
             self.setInformation(error_msg)
@@ -163,6 +179,10 @@ class UFPWriter(MeshWriter):
         return True
 
     @staticmethod
+    def _writePluginMetadataToArchive() -> None:
+        pass
+
+    @staticmethod
     def _writeObjectList(archive):
         """Write a json list of object names to the METADATA_OBJECTS_PATH metadata field
 
@@ -190,3 +210,21 @@ class UFPWriter(MeshWriter):
         return [{"name": item.getName()}
                 for item in DepthFirstIterator(node)
                 if item.getMeshData() is not None and not item.callDecoration("isNonPrintingMesh")]
+
+    def _getSettings(self) -> Dict[str, Dict[str, Dict[str, str]]]:
+        container_registry = Application.getInstance().getContainerRegistry()
+
+        global_stack = cast(GlobalStack, Application.getInstance().getGlobalContainerStack())
+        quality_changes = global_stack.qualityChanges
+
+        settings = {
+            "extruder_1": {
+                "changes": {},
+                "default": {}
+            },
+            "extruder_2": {
+                "changes": {},
+                "default": {}
+            },
+        }
+        return settings
