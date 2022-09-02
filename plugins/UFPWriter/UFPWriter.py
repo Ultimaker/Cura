@@ -19,6 +19,7 @@ from UM.PluginRegistry import PluginRegistry  # To get the g-code writer.
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
 from cura.CuraApplication import CuraApplication
+from cura.Settings.CuraStackBuilder import CuraStackBuilder
 from cura.Settings.GlobalStack import GlobalStack
 from cura.Utils.Threading import call_on_qt_thread
 
@@ -212,19 +213,28 @@ class UFPWriter(MeshWriter):
                 if item.getMeshData() is not None and not item.callDecoration("isNonPrintingMesh")]
 
     def _getSettings(self) -> Dict[str, Dict[str, Dict[str, str]]]:
-        container_registry = Application.getInstance().getContainerRegistry()
+        settings = {
+            "global": {
+                "changes": {},
+                "default": {}
+            }
+        }
 
         global_stack = cast(GlobalStack, Application.getInstance().getGlobalContainerStack())
-        quality_changes = global_stack.qualityChanges
 
-        settings = {
-            "extruder_1": {
-                "changes": {},
-                "default": {}
-            },
-            "extruder_2": {
-                "changes": {},
-                "default": {}
-            },
-        }
+        for i, extruder in enumerate(global_stack.extruderList):
+            extruder_flattened_changes = CuraStackBuilder.createFlattenedContainerInstance(extruder.userChanges, extruder.qualityChanges)
+            settings[f"extruder_{i}"] = {}
+            settings[f"extruder_{i}"]["changes"] = {}
+            settings[f"extruder_{i}"]["default"] = {}
+            for setting in extruder_flattened_changes.getAllKeys():
+                settings[f"extruder_{i}"]["changes"][setting] = extruder_flattened_changes.getProperty(setting, "value")
+
+        settings["global"] = {}
+        settings["global"]["changes"] = {}
+        settings["global"]["default"] = {}
+        global_flattened_changes = CuraStackBuilder.createFlattenedContainerInstance(global_stack.userChanges, global_stack.qualityChanges)
+        for setting in global_flattened_changes.getAllKeys():
+            settings["global"]["changes"][setting] = global_flattened_changes.getProperty(setting, "value")
+
         return settings
