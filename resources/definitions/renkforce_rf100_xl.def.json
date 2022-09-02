@@ -92,9 +92,6 @@
         "material_bed_temperature": {
             "value": "70"
         },
-        "material_print_temperature": {
-            "value": "210.0"
-        },
         "ooze_shield_enabled": {
             "value": "True"
         },

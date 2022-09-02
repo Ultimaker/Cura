@@ -1184,7 +1184,7 @@
                 "inset_direction":
                 {
                     "label": "Wall Ordering",
-                    "description": "Determines the order in which walls are printed. Printing outer walls earlier helps with dimensional accuracy, as faults from inner walls cannot propagate to the outside. However printing them later allows them to stack better when overhangs are printed.",
+                    "description": "Determines the order in which walls are printed. Printing outer walls earlier helps with dimensional accuracy, as faults from inner walls cannot propagate to the outside. However printing them later allows them to stack better when overhangs are printed. When there is an uneven amount of total innner walls, the 'center last line' is always printed last.",
                     "type": "enum",
                     "options": {
                         "inside_out": "Inside To Outside",

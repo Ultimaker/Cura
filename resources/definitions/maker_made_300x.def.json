@@ -68,7 +68,6 @@
         "infill_support_enabled": {"value": false },
         "max_skin_angle_for_expansion": {"value": 90},
         "default_material_print_temperature": {"value": 220},
-        "material_print_temperature": {"value": 220},
         "material_print_temperature_layer_0": {"value": 220},
         "material_initial_print_temperature": {"value": 220},
         "material_final_print_temperature": {"value": 220},

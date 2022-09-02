@@ -138,7 +138,6 @@
             "value": "material_print_temperature"
         },
         "material_bed_temperature": {
-            "value": "default_material_bed_temperature",
             "maximum_value_warning": 100
         },
         "material_bed_temperature_layer_0": {
