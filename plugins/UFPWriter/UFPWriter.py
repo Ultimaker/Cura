@@ -1,6 +1,7 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import json
+import copy
 from typing import cast, List, Dict
 
 from Charon.VirtualFile import VirtualFile  # To open UFP files.
@@ -222,19 +223,21 @@ class UFPWriter(MeshWriter):
 
         global_stack = cast(GlobalStack, Application.getInstance().getGlobalContainerStack())
 
+        global_flattened_changes = CuraStackBuilder.createFlattenedContainerInstance(global_stack.userChanges, global_stack.qualityChanges)
+        # Add all global user or quality changes
+        for setting in global_flattened_changes.getAllKeys():
+            settings["global"]["changes"][setting] = global_flattened_changes.getProperty(setting, "value")
+
         for i, extruder in enumerate(global_stack.extruderList):
+            # Add all user or quality changes for each extruder
             extruder_flattened_changes = CuraStackBuilder.createFlattenedContainerInstance(extruder.userChanges, extruder.qualityChanges)
+
             settings[f"extruder_{i}"] = {}
             settings[f"extruder_{i}"]["changes"] = {}
             settings[f"extruder_{i}"]["default"] = {}
+
             for setting in extruder_flattened_changes.getAllKeys():
                 settings[f"extruder_{i}"]["changes"][setting] = extruder_flattened_changes.getProperty(setting, "value")
 
-        settings["global"] = {}
-        settings["global"]["changes"] = {}
-        settings["global"]["default"] = {}
-        global_flattened_changes = CuraStackBuilder.createFlattenedContainerInstance(global_stack.userChanges, global_stack.qualityChanges)
-        for setting in global_flattened_changes.getAllKeys():
-            settings["global"]["changes"][setting] = global_flattened_changes.getProperty(setting, "value")
 
         return settings
