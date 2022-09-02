@@ -89,11 +89,12 @@ class MachineListModel(ListModel):
             machines_manager = CuraApplication.getInstance().getMachineManager()
             online_machine_stacks = machines_manager.getMachinesWithDefinition(definition_id, online_only = True)
 
-            # Create a list item for abstract machine
-            self.addItem(abstract_machine, len(online_machine_stacks))
             other_machine_stacks.remove(abstract_machine)
             if abstract_machine in online_machine_stacks:
                 online_machine_stacks.remove(abstract_machine)
+
+            # Create a list item for abstract machine
+            self.addItem(abstract_machine, len(online_machine_stacks))
 
             # Create list of machines that are children of the abstract machine
             for stack in online_machine_stacks:
