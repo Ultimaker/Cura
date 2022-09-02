@@ -1,5 +1,7 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
+import copy
 
 from typing import Optional, cast
 
@@ -298,3 +300,23 @@ class CuraStackBuilder:
         stack.setMetaDataEntry("is_online", True)
 
         return stack
+
+    @classmethod
+    def createFlattenedContainerInstance(cls, instance_container1, instance_container2):
+        """Create a new container with container 2 as base and container 1 written over it."""
+
+        flat_container = InstanceContainer(instance_container2.getName())
+
+        # The metadata includes id, name and definition
+        flat_container.setMetaData(copy.deepcopy(instance_container2.getMetaData()))
+
+        if instance_container1.getDefinition():
+            flat_container.setDefinition(instance_container1.getDefinition().getId())
+
+        for key in instance_container2.getAllKeys():
+            flat_container.setProperty(key, "value", instance_container2.getProperty(key, "value"))
+
+        for key in instance_container1.getAllKeys():
+            flat_container.setProperty(key, "value", instance_container1.getProperty(key, "value"))
+
+        return flat_container
