@@ -3,16 +3,15 @@
 
 # TODO?: documentation
 
-from typing import Optional
+from typing import Optional, Dict
 
-from PyQt6.QtCore import Qt, QTimer, QObject, pyqtSlot, pyqtProperty, pyqtSignal
+from PyQt6.QtCore import Qt, QObject, pyqtSlot, pyqtProperty, pyqtSignal
 
 from UM.Qt.ListModel import ListModel
 from UM.Settings.ContainerStack import ContainerStack
 from UM.i18n import i18nCatalog
 from UM.Util import parseBool
 
-from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 
 
@@ -64,10 +63,19 @@ class CompatibleMachineModel(ListModel):
                 continue
             self.addItem(container_stack)
 
-    def addItem(self, container_stack: ContainerStack, machine_count: int = 0) -> None:
+    def addItem(self, container_stack: ContainerStack) -> None:
         extruders = CuraContainerRegistry.getInstance().findContainerStacks(type="extruder_train", machine=container_stack.getId())
         self.appendItem({
                          "name": container_stack.getName(),
                          "id": container_stack.getId(),
-                         "extruders": [extruder.getMetaData().copy() for extruder in extruders]
+                         "extruders": [self.getExtruderModel(extruder) for extruder in extruders]
                         })
+
+    def getExtruderModel(self, extruders: ContainerStack) -> Dict:
+        # Temp Dummy Data
+        extruder_model = {
+            "core": "AA 0.4",
+            "materials": [{"name": "Ultimaker Blue", "color": "blue"}, {"name": "Ultimaker Red", "color": "red"}, {"name": "Ultimaker Orange", "color": "orange"}]
+        }
+        return extruder_model
+

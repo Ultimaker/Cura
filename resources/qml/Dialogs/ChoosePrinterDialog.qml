@@ -3,6 +3,7 @@
 
 import QtQuick 2.2
 import QtQuick.Controls 2.9
+import QtQuick.Layouts 2.10
 
 import UM 1.5 as UM
 import Cura 1.0 as Cura
@@ -11,23 +12,31 @@ UM.Dialog
 {
     id: base
 
-    property string machine_id_filter: ""
+    backgroundColor: UM.Theme.getColor("background_2")
 
-    Column
+    property string machine_id_filter: ""
+    ScrollView
     {
         anchors.fill: parent
-
-        Repeater
+        Column
         {
-            id: contents
+            anchors.fill: parent
+            spacing: UM.Theme.getSize("default_margin").height
 
-            model: Cura.CompatibleMachineModel
+            Repeater
             {
-                filter: machine_id_filter
-            }
-            delegate: UM.Label
-            {
-                text: model.name
+                id: contents
+
+                model: Cura.CompatibleMachineModel
+                {
+                    filter: machine_id_filter
+                }
+
+                delegate: Cura.PrintSelectorCard
+                {
+                    name: model.name
+                    extruders: model.extruders
+                }
             }
         }
     }
