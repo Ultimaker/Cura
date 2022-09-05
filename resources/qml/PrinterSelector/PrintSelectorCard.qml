@@ -104,7 +104,7 @@ Rectangle {
 
         Button
         {
-            id: PrintButton
+            id: printButton
 
             implicitWidth: UM.Theme.getSize("medium_button").width
             implicitHeight: implicitWidth
