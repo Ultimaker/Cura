@@ -214,30 +214,38 @@ class UFPWriter(MeshWriter):
                 if item.getMeshData() is not None and not item.callDecoration("isNonPrintingMesh")]
 
     def _getSettings(self) -> Dict[str, Dict[str, Dict[str, str]]]:
+        """Get all changed settings and all settings. For each extruder and the global stack"""
         settings = {
             "global": {
                 "changes": {},
-                "default": {}
+                "all_settings": {}
             }
         }
 
         global_stack = cast(GlobalStack, Application.getInstance().getGlobalContainerStack())
 
+        # Add global user or quality changes
         global_flattened_changes = CuraStackBuilder.createFlattenedContainerInstance(global_stack.userChanges, global_stack.qualityChanges)
-        # Add all global user or quality changes
         for setting in global_flattened_changes.getAllKeys():
             settings["global"]["changes"][setting] = global_flattened_changes.getProperty(setting, "value")
 
-        for i, extruder in enumerate(global_stack.extruderList):
-            # Add all user or quality changes for each extruder
-            extruder_flattened_changes = CuraStackBuilder.createFlattenedContainerInstance(extruder.userChanges, extruder.qualityChanges)
+        # Get global all settings values without user or quality changes
+        for setting in global_stack.getAllKeys():
+            settings["global"]["all_settings"][setting] = global_stack.getProperty(setting, "value")
 
+        for i, extruder in enumerate(global_stack.extruderList):
+            # Add extruder fields to settings dictionary
             settings[f"extruder_{i}"] = {}
             settings[f"extruder_{i}"]["changes"] = {}
-            settings[f"extruder_{i}"]["default"] = {}
+            settings[f"extruder_{i}"]["all_settings"] = {}
 
+            # Add extruder user or quality changes
+            extruder_flattened_changes = CuraStackBuilder.createFlattenedContainerInstance(extruder.userChanges, extruder.qualityChanges)
             for setting in extruder_flattened_changes.getAllKeys():
                 settings[f"extruder_{i}"]["changes"][setting] = extruder_flattened_changes.getProperty(setting, "value")
 
+            # Get extruder all settings values without user or quality changes
+            for setting in extruder.getAllKeys():
+                settings[f"extruder_{i}"]["all_settings"][setting] = extruder.getProperty(setting, "value")
 
         return settings
