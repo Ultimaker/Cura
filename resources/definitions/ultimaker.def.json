@@ -72,6 +72,9 @@
         "roofing_material_flow": {
             "value": "material_flow"
         },
+        "roofing_pattern": {
+            "value": "'zigzag'"
+        },
         "skin_material_flow": {
             "value": "0.95 * material_flow"
         },
@@ -268,6 +271,9 @@
         },
         "support_z_distance": {
             "value": "0"
+        },
+        "top_bottom_pattern": {
+            "value": "'zigzag'"
         }
     }
 }
