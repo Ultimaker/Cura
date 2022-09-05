@@ -23,9 +23,9 @@ catalog = i18nCatalog("cura")
 
 
 class PrintInformation(QObject):
-    """A class for processing and the print times per build plate as well as managing the job name
+    """A class for processing the print times per build plate and managing the job name
 
-    This class also mangles the current machine name and the filename of the first loaded mesh into a job name.
+    This class also combines the current machine name and the filename of the first loaded mesh into a job name.
     This job name is requested by the JobSpecs qml file.
     """
 
@@ -392,7 +392,7 @@ class PrintInformation(QObject):
         return self._base_name
 
     def _defineAbbreviatedMachineName(self) -> None:
-        """Created an acronym-like abbreviated machine name from the currently active machine name.
+        """Creates an abbreviated machine name from the currently active machine name.
 
         Called each time the global stack is switched.
         """
@@ -446,7 +446,7 @@ class PrintInformation(QObject):
         self.setToZeroPrintInformation(self._active_build_plate)
 
     def _onOutputStart(self, output_device: OutputDevice) -> None:
-        """If this is the sort of output 'device' (like local or online file storage, rather than a printer),
+        """If this is a sort of output 'device' (like local or online file storage, rather than a printer),
            the user could have altered the file-name, and thus the project name should be altered as well."""
         if isinstance(output_device, ProjectOutputDevice):
             new_name = output_device.getLastOutputName()
