@@ -17,7 +17,7 @@ UM.ManagementPage
     title: catalog.i18nc("@title:tab", "Printers")
     detailsPlaneCaption: base.currentItem && base.currentItem.name ? base.currentItem.name : ""
 
-    model: Cura.GlobalStacksModel { }
+    model: Cura.GlobalStacksModel { filterAbstractMachines: false }
 
     sectionRole: "discoverySource"
 
@@ -139,7 +139,7 @@ UM.ManagementPage
             Cura.MenuItem
             {
                 text: catalog.i18nc("@action:button", "Remove")
-                enabled: base.currentItem != null && model.count > 1 && !base.currentItem.isAbstractMachine
+                enabled: base.currentItem != null && model.count > 1
                 onTriggered: confirmDialog.open()
             }
             Cura.MenuItem
