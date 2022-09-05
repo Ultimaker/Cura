@@ -3,7 +3,7 @@
 
 # TODO?: documentation
 
-from typing import Optional, Dict
+from typing import Optional, Dict, cast
 
 from PyQt6.QtCore import Qt, QObject, pyqtSlot, pyqtProperty, pyqtSignal
 
@@ -13,6 +13,7 @@ from UM.i18n import i18nCatalog
 from UM.Util import parseBool
 
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
+from cura.Settings.ExtruderStack import ExtruderStack
 
 
 class CompatibleMachineModel(ListModel):
@@ -68,13 +69,14 @@ class CompatibleMachineModel(ListModel):
         self.appendItem({
                          "name": container_stack.getName(),
                          "id": container_stack.getId(),
-                         "extruders": [self.getExtruderModel(extruder) for extruder in extruders]
+                         "extruders": [self.getExtruderModel(cast(ExtruderStack, extruder)) for extruder in extruders]
                         })
 
-    def getExtruderModel(self, extruders: ContainerStack) -> Dict:
+    def getExtruderModel(self, extruder: ExtruderStack) -> Dict:
         # Temp Dummy Data
+        # ExtruderConfigrationModel does what we want here
         extruder_model = {
-            "core": "AA 0.4",
+            "core": extruder.quality.getMetaDataEntry("variant", ""),
             "materials": [{"name": "Ultimaker Blue", "color": "blue"}, {"name": "Ultimaker Red", "color": "red"}, {"name": "Ultimaker Orange", "color": "orange"}]
         }
         return extruder_model
