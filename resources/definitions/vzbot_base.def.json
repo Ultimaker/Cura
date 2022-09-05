@@ -25,7 +25,7 @@
         "machine_width":                                { "default_value": 330 },
         "machine_depth":                                { "default_value": 330 },
         "machine_height":                               { "default_value": 400 },
-        "gantry_height":                                { "value": 30 },
+        "gantry_height":                                { "value": 34 },
         "machine_heated_bed":                           { "default_value": true },
         "machine_max_acceleration_x":                   { "default_value": 15000 },
         "machine_max_acceleration_y":                   { "default_value": 15000 },
