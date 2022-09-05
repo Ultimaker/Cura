@@ -866,13 +866,13 @@ def readIndex(node, attr):
     v = readIntArray(node, attr, [])
     chunks = []
     chunk = []
-    for i in range(len(v)):
-        if v[i] == -1:
+    for i in v:
+        if i == -1:
             if chunk:
                 chunks.append(chunk)
                 chunk = []
         else:
-            chunk.append(v[i])
+            chunk.append(i)
     if chunk:
         chunks.append(chunk)
     return chunks
