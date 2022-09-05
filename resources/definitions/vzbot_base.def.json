@@ -48,7 +48,7 @@
         "machine_start_gcode":                          { "default_value": "start_print B={material_bed_temperature_layer_0} H={material_print_temperature_layer_0} C={build_volume_temperature}" },
         "machine_end_gcode":                            { "default_value": "end_print" },
         "adhesion_type":                                { "default_value": "skirt" },
-        "retraction_amount":                            { "default_value": 0.75 },
+        "retraction_amount":                            { "default_value": 0.65 },
         "skirt_brim_minimal_length":                    { "default_value": 550 },
         "retraction_speed":                             { "default_value": 30, "maximum_value_warning": 130 },
         "retraction_retract_speed":                     { "maximum_value_warning": 130 },
