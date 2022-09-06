@@ -51,7 +51,6 @@
         "gantry_height": { "value": "25.0" },
         "skin_overlap": { "value": "10" },
 
-        "acceleration_enabled": { "value": "True" },
         "acceleration_layer_0": { "value": "acceleration_topbottom" },
         "acceleration_prime_tower": { "value": "math.ceil(acceleration_print * 2000 / 4000)" },
         "acceleration_print": { "value": "900" },

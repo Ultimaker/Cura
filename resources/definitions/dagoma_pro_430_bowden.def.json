@@ -25,7 +25,6 @@
         "machine_max_jerk_e": { "value": 5 },
         "machine_max_feedrate_e": { "default_value": 200 },
         "machine_steps_per_mm_e": { "default_value": 139.5 },
-        "acceleration_enabled": { "value": "True" },
         "acceleration_print": { "value": "1250", "maximum_value": 1500 },
         "acceleration_layer_0": { "value": "acceleration_topbottom", "maximum_value": 1500 },
         "acceleration_topbottom": { "value": "math.ceil(acceleration_print * 1000 / 1250)", "maximum_value": 1500 },

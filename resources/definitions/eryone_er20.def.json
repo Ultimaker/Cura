@@ -156,9 +156,6 @@
         "skirt_line_count": {
             "value": 3
         },
-        "speed_infill": {
-            "value": "speed_print"
-        },
         "speed_topbottom": {
             "value": "math.ceil(speed_print * 20 / 50)"
         },
