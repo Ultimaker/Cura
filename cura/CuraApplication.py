@@ -1445,7 +1445,7 @@ class CuraApplication(QtApplication):
                 bounding_box = node.getBoundingBox()
                 if bounding_box is None or bounding_box.width < self._volume.getBoundingBox().width or bounding_box.depth < self._volume.getBoundingBox().depth:
                     # Arrange only the unlocked nodes and keep the locked ones in place
-                    if UM.Util.parseBool(node.getSetting(SceneNodeSettings.LockPosition)):
+                    if node.getSetting(SceneNodeSettings.LockPosition):
                         locked_nodes.append(node)
                     else:
                         nodes_to_arrange.append(node)
