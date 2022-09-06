@@ -50,7 +50,7 @@
         "material_initial_print_temperature": { "value": "material_print_temperature" },
         "material_final_print_temperature": { "value": "material_print_temperature" },
         "z_seam_type": { "value": "'back'" },
-        "z_seam_corner": { "value": "'z_seam_corner_weighted'" }, ,
+        "z_seam_corner": { "value": "'z_seam_corner_weighted'" },
         "infill_pattern": { "value": "'lines'" },
         "infill_before_walls": { "value": false },
         "infill_overlap": { "value": 30.0 },
