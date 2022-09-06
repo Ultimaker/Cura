@@ -22,7 +22,7 @@
         "preferred_quality_type": "standard",
         "preferred_material": "generic_pla"
     },
-    
+
     "overrides":
     {
         "machine_name": { "default_value": "Koonovo KN5" },

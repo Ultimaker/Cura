@@ -426,9 +426,7 @@
                     "label": "Disallowed Areas",
                     "description": "A list of polygons with areas the print head is not allowed to enter.",
                     "type": "polygons",
-                    "default_value":
-                    [
-                    ],
+                    "default_value": [],
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
@@ -438,9 +436,7 @@
                     "label": "Nozzle Disallowed Areas",
                     "description": "A list of polygons with areas the nozzle is not allowed to enter.",
                     "type": "polygons",
-                    "default_value":
-                    [
-                    ],
+                    "default_value": [],
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
@@ -452,22 +448,10 @@
                     "type": "polygon",
                     "default_value":
                     [
-                        [
-                            -20,
-                            10
-                        ],
-                        [
-                            10,
-                            10
-                        ],
-                        [
-                            10,
-                            -10
-                        ],
-                        [
-                            -20,
-                            -10
-                        ]
+                        [ -20, 10 ],
+                        [ 10,  10 ],
+                        [ 10,  -10 ],
+                        [ -20, -10 ]
                     ],
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
@@ -1027,7 +1011,8 @@
                     "settable_per_meshgroup": true,
                     "settable_globally": true,
                     "enabled": "extruders_enabled_count > 1",
-                    "children": {
+                    "children":
+                    {
                         "wall_0_extruder_nr":
                         {
                             "label": "Outer Wall Extruder",
@@ -1186,7 +1171,8 @@
                     "label": "Wall Ordering",
                     "description": "Determines the order in which walls are printed. Printing outer walls earlier helps with dimensional accuracy, as faults from inner walls cannot propagate to the outside. However printing them later allows them to stack better when overhangs are printed. When there is an uneven amount of total innner walls, the 'center last line' is always printed last.",
                     "type": "enum",
-                    "options": {
+                    "options":
+                    {
                         "inside_out": "Inside To Outside",
                         "outside_in": "Outside To Inside"
                     },
@@ -1241,7 +1227,8 @@
                         }
                     }
                 },
-                "fill_outline_gaps": {
+                "fill_outline_gaps":
+                {
                     "label": "Print Thin Walls",
                     "description": "Print pieces of the model which are horizontally thinner than the nozzle size.",
                     "type": "bool",
@@ -1444,7 +1431,8 @@
                     "limit_to_extruder": "roofing_extruder_nr",
                     "settable_per_mesh": true,
                     "enabled": "top_layers > 0",
-                    "children": {
+                    "children":
+                    {
                         "roofing_line_width":
                         {
                             "label": "Top Surface Skin Line Width",
@@ -4418,7 +4406,8 @@
                     "enabled": "(support_enable or support_meshes_present) and extruders_enabled_count > 1",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
-                    "children": {
+                    "children":
+                    {
                         "support_infill_extruder_nr":
                         {
                             "label": "Support Infill Extruder",
@@ -8065,7 +8054,8 @@
             "description": "Settings which are only used if CuraEngine isn't called from the Cura frontend.",
             "type": "category",
             "enabled": false,
-            "children": {
+            "children":
+            {
                 "center_object":
                 {
                     "description": "Whether to center the object on the middle of the build platform (0,0), instead of using the coordinate system in which the object was saved.",
