@@ -99,7 +99,6 @@
         "travel_avoid_supports": { "value": true },
         "travel_retract_before_outer_wall": { "value": true },
 
-        "retraction_enable": { "value": true },
         "retraction_speed": { "value": 30 },
         "retraction_amount": { "value": 7 },
         "retraction_count_max": { "value": 100 },

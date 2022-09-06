@@ -159,7 +159,7 @@
         "travel_retract_before_outer_wall": { "value": true },
         
 		"retraction_amount": { "value": 2 },
-        "retraction_enable": { "value": true },
+
         "retraction_count_max": { "value": 100 },
         "retraction_extrusion_window": { "value": 10 },
         "retraction_min_travel": { "value": 1.5 },

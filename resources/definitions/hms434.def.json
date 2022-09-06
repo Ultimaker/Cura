@@ -124,10 +124,9 @@
         "switch_extruder_prime_speed":            {"value": "(retraction_prime_speed)"},
 
         "speed_print":             {"value": "50"},
-        "speed_infill":            {"value": "speed_print"},
-        "speed_wall":              {"value": "(speed_print/5*3) if speed_print > 45 else speed_print"},
+        "speed_wall":              {"value": "(speed_print/ 5 * 3) if speed_print > 45 else speed_print"},
         "speed_wall_x":            {"value": "speed_wall"},
-        "speed_layer_0":           {"value": "(speed_print/5*4) if speed_print > 45 else speed_print"},
+        "speed_layer_0":           {"value": "(speed_print / 5 * 4) if speed_print > 45 else speed_print"},
         "speed_topbottom":         {"value": "speed_layer_0"},
         "speed_travel":            {"value": "250"},
         "speed_travel_layer_0":    {"value": "speed_travel"},
@@ -165,7 +164,6 @@
         "skirt_gap":                 {"value": 1},
         "skirt_brim_minimal_length": {"value": 50},
 
-        "prime_tower_enable":         {"value": false },
         "prime_tower_size":           {"value": 20.6 },
         "prime_tower_position_x":     {"value": 125 },
         "prime_tower_position_y":     {"value": 70 },
