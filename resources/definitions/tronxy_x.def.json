@@ -133,7 +133,6 @@
         "support_wall_count": { "value": 0 },
         "support_brim_enable": { "value": true },
         "support_brim_width": { "value": 4 },
-        ,
         "support_interface_height": { "value": "layer_height * 4" },
         "support_interface_density": { "value": 33.333 },
         "support_interface_pattern": { "value": "'grid'" },
