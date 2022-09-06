@@ -143,7 +143,8 @@ class ExtruderStack(CuraContainerStack):
         limit_to_extruder = super().getProperty(key, "limit_to_extruder", context)
         if limit_to_extruder == -1:
             limit_to_extruder = cura.CuraApplication.CuraApplication.getInstance().getMachineManager().defaultExtruderPosition
-        if limit_to_extruder: limit_to_extruder = str(limit_to_extruder)
+        if limit_to_extruder:
+            limit_to_extruder = str(limit_to_extruder)
         if limit_to_extruder != self.getMetaDataEntry("position"): 
             try:
                 result = self.getNextStack().extruderList[int(limit_to_extruder)].getProperty(key, property_name, context)
