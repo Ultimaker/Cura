@@ -131,7 +131,7 @@ class MachineListModel(ListModel):
         for stack in other_machine_stacks:
             self.addItem(stack, False)
 
-    def addItem(self, container_stack: ContainerStack, is_online, machine_count: int = 0) -> None:
+    def addItem(self, container_stack: ContainerStack, is_online: bool, machine_count: int = 0) -> None:
         if parseBool(container_stack.getMetaDataEntry("hidden", False)):
             return
 
