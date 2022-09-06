@@ -904,7 +904,7 @@ class MachineManager(QObject):
 
         if self._global_container_stack is None \
                 or self._global_container_stack.getProperty(setting_key, "value") == new_value \
-                or self.numberExtrudersEnabled < 2:
+                or self._global_container_stack.definitionChanges.getProperty("extruders_enabled_count", "value") < 2:
             return
 
         user_changes_container = self._global_container_stack.userChanges
@@ -1009,7 +1009,7 @@ class MachineManager(QObject):
         for position, extruder in enumerate(self._global_container_stack.extruderList):
             if extruder.isEnabled and int(position) < machine_extruder_count:
                 extruder_count += 1
-        if self.numberExtrudersEnabled != extruder_count:
+        if self._global_container_stack.definitionChanges.getProperty("extruders_enabled_count", "value") != extruder_count:
             definition_changes_container.setProperty("extruders_enabled_count", "value", extruder_count)
             self.numberExtrudersEnabledChanged.emit()
 

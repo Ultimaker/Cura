@@ -28,7 +28,6 @@
         "speed_wall_x": { "value": "speed_print" },
         "speed_support": { "value": "speed_wall_0" },
         "speed_layer_0": { "value": "round(speed_print / 2.0, 2)" },
-        "speed_infill": { "value": "speed_print" },
         "speed_topbottom": {"value": "speed_print / 2"},
 
         "layer_height":
@@ -80,7 +79,6 @@
         "retraction_amount" : { "default_value": 4.5},
         "retraction_speed" : { "default_value": 40},
         "coasting_enable": { "default_value": true },
-        "prime_tower_enable": { "default_value": false},
         "speed_z_hop": {"default_value": 1.5}
     }
 }

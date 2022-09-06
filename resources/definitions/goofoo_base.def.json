@@ -59,16 +59,13 @@
         "acceleration_enabled": { "value": false },
         "jerk_enabled": { "value": false },
 
-        "speed_print": { "value": 40.0 } ,
-        "speed_infill": { "value": "speed_print" },
+        "speed_print": { "value": 40.0 },
         "speed_wall": { "value": "speed_print" },
-        "speed_wall_0": { "value": "speed_wall" },
         "speed_wall_x": { "value": "speed_wall" },
         "speed_topbottom": { "value": "speed_print" },
         "speed_roofing": { "value": "speed_topbottom" },
         "speed_travel": { "value": "80" },
         "speed_layer_0": { "value": 20.0 },
-        "speed_print_layer_0": { "value": "speed_layer_0" },
         "speed_travel_layer_0": { "value": "60" },
         "speed_prime_tower": { "value": "speed_topbottom" },
         "speed_support": { "value": "speed_wall_0" },
@@ -77,18 +74,15 @@
 
         "skirt_brim_speed": { "value": "speed_layer_0" },
 
-        "line_width": { "value": "machine_nozzle_size" },
 
         "optimize_wall_printing_order": { "value": "True" },
 
         "material_initial_print_temperature": { "value": "material_print_temperature" },
         "material_final_print_temperature": { "value": "material_print_temperature" },
-        "material_flow": { "value": 100 },
 
         "z_seam_type": { "value": "'back'" },
         "z_seam_corner": { "value": "'z_seam_corner_weighted'" },
-        
-        "infill_sparse_density": { "value": "20" },
+
         "infill_pattern": { "value": "'lines' if infill_sparse_density > 50 else 'cubic'" },
         "infill_before_walls": { "value": false },
         "infill_overlap": { "value": 30.0 },
@@ -110,26 +104,20 @@
             "maximum_value_warning": "machine_max_feedrate_e if retraction_enable else float('inf')",
             "maximum_value": 200
         },
-        
-        "retraction_hop_enabled": { "value": "False" },
+
         "retraction_hop": { "value": 0.2 },
         "retraction_combing": { "value": "'off' if retraction_hop_enabled else 'noskin'" },
         "retraction_combing_max_distance": { "value": 30 },
         "travel_avoid_other_parts": { "value": true },
         "travel_avoid_supports": { "value": true },
         "travel_retract_before_outer_wall": { "value": true },
-        
-        "retraction_enable": { "value": true },
+
         "retraction_count_max": { "value": 100 },
         "retraction_extrusion_window": { "value": 10 },
         "retraction_min_travel": { "value": 1.5 },
 
         "cool_fan_full_at_height": { "value": "3 * layer_height" },
-        "cool_fan_enabled": { "value": true },
         "cool_min_layer_time": { "value": 10 },
-
-        
-
         
         "top_bottom_thickness": {"value":  "layer_height_0 + layer_height * 3" },
         "wall_thickness": {"value": "line_width * 2" }
