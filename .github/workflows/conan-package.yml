@@ -41,10 +41,11 @@ on:
         branches:
             - main
             - 'CURA-*'
-            - '[1-9]+.[0-9]+'
+            - '[1-9].[0-9]'
+            - '[1-9].[0-9][0-9]'
         tags:
-            - '[0-9]+.[0-9]+.[0-9]+'
-            - '[0-9]+.[0-9]+-beta'
+            - '[1-9].[0-9].[0-9]+'
+            - '[1-9].[0-9][0-9].[0-9]+'
 
 jobs:
     conan-recipe-version:
@@ -52,48 +53,32 @@ jobs:
         with:
             project_name: cura
 
-    conan-package-export-macos:
+    conan-package-export:
         needs: [ conan-recipe-version ]
         uses: ultimaker/cura/.github/workflows/conan-recipe-export.yml@main
         with:
             recipe_id_full: ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
             recipe_id_latest: ${{ needs.conan-recipe-version.outputs.recipe_id_latest }}
-            recipe_id_pr: ${{ needs.conan-recipe-version.outputs.recipe_id_pr }}
-            runs_on: 'macos-10.15'
-            python_version: '3.10.x'
-            conan_logging_level: 'info'
-            conan_export_binaries: true
-        secrets: inherit
-
-    conan-package-export-linux:
-        needs: [ conan-recipe-version ]
-        uses: ultimaker/cura/.github/workflows/conan-recipe-export.yml@main
-        with:
-            recipe_id_full: ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
-            recipe_id_latest: ${{ needs.conan-recipe-version.outputs.recipe_id_latest }}
-            recipe_id_pr: ${{ needs.conan-recipe-version.outputs.recipe_id_pr }}
             runs_on: 'ubuntu-20.04'
             python_version: '3.10.x'
             conan_logging_level: 'info'
-            conan_export_binaries: true
         secrets: inherit
 
-    conan-package-export-windows:
-        needs: [ conan-recipe-version ]
-        uses: ultimaker/cura/.github/workflows/conan-recipe-export.yml@main
+    conan-package-create-linux:
+        if: ${{ (github.event_name == 'push' && (github.ref_name == 'main' || github.ref_name == 'master' || needs.conan-recipe-version.outputs.is_release_branch == 'true')) || (github.event_name == 'workflow_dispatch' && inputs.create_binaries_linux) }}
+        needs: [ conan-recipe-version, conan-package-export ]
+
+        uses: ultimaker/cura/.github/workflows/conan-package-create.yml@main
         with:
             recipe_id_full: ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
-            recipe_id_latest: ${{ needs.conan-recipe-version.outputs.recipe_id_latest }}
-            recipe_id_pr: ${{ needs.conan-recipe-version.outputs.recipe_id_pr }}
-            runs_on: 'windows-2022'
+            runs_on: 'ubuntu-20.04'
             python_version: '3.10.x'
             conan_logging_level: 'info'
-            conan_export_binaries: true
         secrets: inherit
 
     notify-export:
         if: ${{ always() }}
-        needs: [ conan-recipe-version, conan-package-export-linux, conan-package-export-macos, conan-package-export-windows ]
+        needs: [ conan-recipe-version, conan-package-export ]
 
         uses: ultimaker/cura/.github/workflows/notify.yml@main
         with:
@@ -102,4 +87,17 @@ jobs:
             success_body: "Exported ${{ needs.conan-recipe-version.outputs.recipe_id_full }}"
             failure_title: "Failed to export Conan Export in ${{ github.repository }}"
             failure_body: "Failed to exported ${{ needs.conan-recipe-version.outputs.recipe_id_full }}"
+        secrets: inherit
+
+    notify-create:
+        if: ${{ always() && ((github.event_name == 'push' && (github.ref_name == 'main' || github.ref_name == 'master' || needs.conan-recipe-version.outputs.is_release_branch == 'true')) || (github.event_name == 'workflow_dispatch' && inputs.create_binaries_linux)) }}
+        needs: [ conan-recipe-version, conan-package-create-linux ]
+
+        uses: ultimaker/cura/.github/workflows/notify.yml@main
+        with:
+            success: ${{ contains(join(needs.*.result, ','), 'success') }}
+            success_title: "New binaries created in ${{ github.repository }}"
+            success_body: "Created binaries for ${{ needs.conan-recipe-version.outputs.recipe_id_full }}"
+            failure_title: "Failed to create binaries in ${{ github.repository }}"
+            failure_body: "Failed to created binaries for ${{ needs.conan-recipe-version.outputs.recipe_id_full }}"
         secrets: inherit

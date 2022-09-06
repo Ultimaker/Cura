@@ -5,11 +5,10 @@ on:
         inputs:
             cura_conan_version:
                 description: 'Cura Conan Version'
-                # Fixme: default to cura/latest@testing (which is main)
-                default: 'cura/latest@ultimaker/stable'
+                default: 'cura/latest@ultimaker/testing'
                 required: true
             conan_args:
-                description: 'Conan args: eq.: --require-override=curaengine/5.1.0-beta+123@ultimaker/testing'
+                description: 'Conan args: eq.: --require-override'
                 default: ''
                 required: false
             conan_config:
@@ -62,10 +61,10 @@ jobs:
             fail-fast: false
             matrix:
                 include:
-                    - { os: macos-10.15, os_id: 'MacOS' }
-                    - { os: windows-2022, os_id: 'Windows' }
-                    - { os: ubuntu-20.04, os_id: 'Linux' }
-                    - { os: ubuntu-22.04, os_id: 'Linux-latest' }
+                    - { os: macos-11, os_id: 'mac' }
+                    - { os: windows-2022, os_id: 'win64' }
+                    - { os: ubuntu-20.04, os_id: 'linux' }
+                    - { os: ubuntu-22.04, os_id: 'linux-modern' }
 
         steps:
             -   name: Checkout
@@ -78,10 +77,8 @@ jobs:
                     cache: 'pip'
                     cache-dependency-path: .github/workflows/requirements-conan-package.txt
 
-            -   name: Install Python requirements and Create default Conan profile
-                run: |
-                    pip install -r .github/workflows/requirements-conan-package.txt
-                    conan profile new default --detect
+            -   name: Install Python requirements for runner
+                run: pip install -r .github/workflows/requirements-conan-package.txt
 
             -   name: Use Conan download cache (Bash)
                 if: ${{ runner.os != 'Windows' }}
@@ -117,10 +114,23 @@ jobs:
             -   name: Install Linux system requirements
                 if: ${{ runner.os == 'Linux' }}
                 run: |
+                    sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+                    sudo apt update
+                    sudo apt upgrade
                     sudo apt install build-essential checkinstall libegl-dev zlib1g-dev libssl-dev ninja-build autoconf libx11-dev libx11-xcb-dev libfontenc-dev libice-dev libsm-dev libxau-dev libxaw7-dev libxcomposite-dev libxcursor-dev libxdamage-dev libxdmcp-dev libxext-dev libxfixes-dev libxi-dev libxinerama-dev libxkbfile-dev libxmu-dev libxmuu-dev libxpm-dev libxrandr-dev libxrender-dev libxres-dev libxss-dev libxt-dev libxtst-dev libxv-dev libxvmc-dev libxxf86vm-dev xtrans-dev libxcb-render0-dev libxcb-render-util0-dev libxcb-xkb-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev libxcb-randr0-dev libxcb-shape0-dev libxcb-sync-dev libxcb-xfixes0-dev libxcb-xinerama0-dev xkb-data libxcb-dri3-dev uuid-dev libxcb-util-dev libxkbcommon-x11-dev pkg-config -y
                     wget --no-check-certificate --quiet https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage -O $GITHUB_WORKSPACE/appimagetool
                     chmod +x $GITHUB_WORKSPACE/appimagetool
                     echo "APPIMAGETOOL_LOCATION=$GITHUB_WORKSPACE/appimagetool" >> $GITHUB_ENV
+
+            -   name: Install GCC-12 on ubuntu-22.04
+                if: ${{ matrix.os == 'ubuntu-22.04' }}
+                run: |
+                    sudo apt install g++-12 gcc-12 -y
+                    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 12
+                    sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 12
+
+            -   name: Create the default Conan profile
+                run:  conan profile new default --detect
 
             -   name: Configure GPG Key Linux (Bash)
                 if: ${{ runner.os == 'Linux' }}
@@ -192,34 +202,34 @@ jobs:
 
             -   name: Archive the artifacts (bash)
                 if: ${{ github.event.inputs.installer == 'false' && runner.os != 'Windows' }}
-                run: tar -zcf "./Ultimaker-Cura-$CURA_VERSION_FULL-${{ matrix.os_id }}-${{ runner.arch }}.tar.gz" "./Ultimaker-Cura/"
+                run: tar -zcf "./Ultimaker-Cura-$CURA_VERSION_FULL-${{ matrix.os_id }}.tar.gz" "./Ultimaker-Cura/"
                 working-directory: dist
 
             -   name: Archive the artifacts (Powershell)
                 if: ${{ github.event.inputs.installer == 'false' && runner.os == 'Windows' }}
-                run: Compress-Archive -Path ".\Ultimaker-Cura" -DestinationPath ".\Ultimaker-Cura-$Env:CURA_VERSION_FULL-${{ matrix.os_id }}-${{ runner.arch }}.zip"
+                run: Compress-Archive -Path ".\Ultimaker-Cura" -DestinationPath ".\Ultimaker-Cura-$Env:CURA_VERSION_FULL-${{ matrix.os_id }}.zip"
                 working-directory: dist
 
             -   name: Create the Windows exe installer (Powershell)
                 if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Windows' }}
                 run: |
-                    python ..\cura_inst\packaging\NSIS\create_windows_installer.py ../cura_inst . "Ultimaker-Cura-$Env:CURA_VERSION_FULL-${{ matrix.os_id }}-${{ runner.arch }}.exe"
+                    python ..\cura_inst\packaging\NSIS\create_windows_installer.py ../cura_inst . "Ultimaker-Cura-$Env:CURA_VERSION_FULL-${{ matrix.os_id }}.exe"
                 working-directory: dist
 
             -   name: Create the Linux AppImage (Bash)
                 if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Linux' }}
-                run: python ../cura_inst/packaging/AppImage/create_appimage.py ./Ultimaker-Cura $CURA_VERSION_FULL "Ultimaker-Cura-$CURA_VERSION_FULL-${{ matrix.os_id }}-${{ runner.arch }}.AppImage"
+                run: python ../cura_inst/packaging/AppImage/create_appimage.py ./Ultimaker-Cura $CURA_VERSION_FULL "Ultimaker-Cura-$CURA_VERSION_FULL-${{ matrix.os_id }}.AppImage"
                 working-directory: dist
 
             -   name: Create the MacOS dmg (Bash)
                 if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Macos' }}
-                run: python ../cura_inst/packaging/dmg/dmg_sign_noterize.py ../cura_inst . "Ultimaker-Cura-$CURA_VERSION_FULL-${{ matrix.os_id }}-${{ runner.arch }}.dmg"
+                run: python ../cura_inst/packaging/dmg/dmg_sign_noterize.py ../cura_inst . "Ultimaker-Cura-$CURA_VERSION_FULL-${{ matrix.os_id }}.dmg"
                 working-directory: dist
 
             -   name: Upload the artifacts
                 uses: actions/upload-artifact@v3
                 with:
-                    name: Ultimaker-Cura-${{ env.CURA_VERSION_FULL }}-${{ matrix.os_id }}-${{ runner.arch }}
+                    name: Ultimaker-Cura-${{ env.CURA_VERSION_FULL }}-${{ matrix.os_id }}
                     path: |
                         dist/*.tar.gz
                         dist/*.zip
@@ -228,7 +238,7 @@ jobs:
                         dist/*.dmg
                         dist/*.AppImage
                         dist/*.asc
-                    retention-days: 2
+                    retention-days: 5
 
     notify-export:
         if: ${{ always() }}
