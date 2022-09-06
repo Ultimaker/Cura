@@ -108,8 +108,7 @@
 
         "default_material_print_temperature":     {"maximum_value": "401" },
         "material_print_temperature":             {"maximum_value": "401" },
-        "material_print_temperature_layer_0":     {"value": "material_print_temperature",
-                                                   "maximum_value": "401" },
+        "material_print_temperature_layer_0":     {"maximum_value": "401" },
         "material_initial_print_temperature":     {"value": "material_print_temperature",
                                                    "maximum_value_warning": "material_print_temperature + 15",
                                                    "maximum_value": "401" },

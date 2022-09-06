@@ -78,7 +78,6 @@
         "infill_pattern": { "value": "'lines' if infill_sparse_density > 50 else 'cubic'" },
     
         "default_material_print_temperature": { "value": "195" },
-        "material_print_temperature_layer_0": { "value": "material_print_temperature" },       
         "material_initial_print_temperature": { "value": "material_print_temperature" },
         "material_final_print_temperature": { "value": "material_print_temperature" },
         "material_standby_temperature": { "value": "material_print_temperature" },
