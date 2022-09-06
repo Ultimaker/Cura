@@ -89,15 +89,7 @@ class MachineListModel(ListModel):
             machines_manager = CuraApplication.getInstance().getMachineManager()
             online_machine_stacks = machines_manager.getMachinesWithDefinition(definition_id, online_only = True)
 
-            def online_machines_has_connection_filter(machine_stack):
-                # This is required because machines loaded from projects have the is_online="True" but no connection type.
-                # We want to display them the same way as unconnected printers in this case.
-                has_connection = False
-                for connection_type in [ConnectionType.NetworkConnection.value, ConnectionType.CloudConnection.value]:
-                    has_connection |= connection_type in machine_stack.configuredConnectionTypes
-                return has_connection
-
-            online_machine_stacks = list(filter(online_machines_has_connection_filter, online_machine_stacks))
+            online_machine_stacks = list(filter(lambda machine: machine.hasNetworkedConnection(), online_machine_stacks))
 
             other_machine_stacks.remove(abstract_machine)
             if abstract_machine in online_machine_stacks:
