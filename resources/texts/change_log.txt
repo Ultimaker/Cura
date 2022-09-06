@@ -1,3 +1,9 @@
+[5.1.1]
+* New features:
+- Added support for the Ultimaker S3 and Ultimaker S5 updated mainbord
+
+<i>MacOS 10.15 is no longer supported. Technically this means Ultimaker will stop testing and developing for such operating systems. However, even though it is no longer supported, there is still a high likelihood the application keeps functioning.</i>
+
 [5.1]
 <i>For an overview of the new features in Cura 5.1, please watch <a href="https://youtu.be/7jetjsHLIvk">our video</a>.</i>
 
