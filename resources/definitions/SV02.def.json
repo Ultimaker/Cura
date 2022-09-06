@@ -29,7 +29,6 @@
         "gantry_height": { "value": "30" },
         "speed_print": { "default_value": 50 },		
 	    "default_material_print_temperature": { "value": 195 },
-        "material_print_temperature_layer_0": { "value": "material_print_temperature" },
         "material_initial_print_temperature": { "value": "material_print_temperature" },
         "material_final_print_temperature": { "value": 195 },		
         "machine_max_feedrate_x": { "value": 500 },
