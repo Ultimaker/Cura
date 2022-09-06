@@ -18,13 +18,10 @@
       "default_value": "WEEDO ME40"
     },
     "machine_start_gcode": {
-      "default_value": ";MachineType:WEEDO ME40\n\n;(**** start.gcode for ME40****)\nM203 Z15\nM104 S170\nG28 ; Home extruder\nG29\nG1 Z15\nM107 ; Turn off fan\nG90 ; Absolute positioning\nM82 ; Extruder in absolute mode\nM109 S{material_print_temperature_layer_0}\nG92 E0 ; Reset extruder position\nG1 X140 Y7 Z0.27 F4000\nG1 X40 Y7 Z0.27 E23 F1000\nG92 E0\nM203 Z8"
+      "default_value": ";MachineType:{machine_name}\n;FilamentType:{material_type}\n;InfillDensity:{infill_sparse_density}\n;Extruder0Temperature:{material_print_temperature}\n;BedTemperature:{material_bed_temperature}\n\n;(**** start.gcode for ME40****)\nM203 Z15\nM104 S170\nG28 ; Home extruder\nG29\nG1 Z15\nM107 ; Turn off fan\nG90 ; Absolute positioning\nM82 ; Extruder in absolute mode\nM109 S{material_print_temperature_layer_0}\nG92 E0 ; Reset extruder position\nG1 X140 Y7 Z0.27 F4000\nG1 X40 Y7 Z0.27 E23 F1000\nG92 E0\nM203 Z8"
     },
     "machine_end_gcode": {
-      "default_value": ";(**** end.gcode for  ME40****)\nM203 Z15\nG1 X0 Y130 F3000\nG92 E0\nG1 E-1 F1680 ; Reduce filament pressure\nM107 ; Turn off fan\n; Disable all extruder\nM104 T0 S0\nG90 ; Absolute positioning\nG92 E0 ; Reset extruder position\nM140 S0 ; Disable heated bed\nM84 ; Turn steppers off"
-    },
-    "material_print_temp_prepend": {
-      "default_value": false
+      "default_value": ";(**** end.gcode for  ME40****)\nM203 Z15\nG1 X0 Y150 F3000\nG28 Z\nG92 E0\nG1 E-1 F1680 ; Reduce filament pressure\nM107 ; Turn off fan\n; Disable all extruder\nM104 T0 S0\nG90 ; Absolute positioning\nG92 E0 ; Reset extruder position\nM140 S0 ; Disable heated bed\nM84 ; Turn steppers off"
     },
     "machine_width": {
       "default_value": 300
@@ -34,12 +31,6 @@
     },
     "machine_height": {
       "default_value": 400
-    },
-    "machine_heated_bed": {
-      "default_value": true
-    },
-    "machine_extruder_count": {
-      "default_value": 1
     },
     "speed_print": {
       "default_value": 60.0

@@ -15,7 +15,157 @@
     "has_variants": false,
     "has_machine_quality": false,
     "preferred_quality_type": "draft",
-    "preferred_material": "generic_pla_175"
+    "preferred_material": "generic_pla_175",
+    "exclude_materials": [
+      "3D-Fuel_PLA_PRO_Black",
+      "3D-Fuel_PLA_SnapSupport",
+      "bestfilament_abs_skyblue",
+      "bestfilament_petg_orange",
+      "bestfilament_pla_green",
+      "leapfrog_abs_natural",
+      "leapfrog_epla_natural",
+      "leapfrog_pva_natural",
+      "generic_pc_175",
+      "goofoo_abs",
+      "goofoo_asa",
+      "goofoo_bronze_pla",
+      "goofoo_emarble_pla",
+      "goofoo_esilk_pla",
+      "goofoo_hips",
+      "goofoo_pa_cf",
+      "goofoo_pa",
+      "goofoo_pc",
+      "goofoo_peek",
+      "goofoo_petg",
+      "goofoo_pla",
+      "goofoo_pva",
+      "goofoo_tpe_83a",
+      "goofoo_tpu_87a",
+      "goofoo_tpu_95a",
+      "goofoo_wood_pla",
+      "emotiontech_abs",
+      "emotiontech_absx",
+      "emotiontech_acetate",
+      "emotiontech_asax",
+      "emotiontech_bvoh",
+      "emotiontech_copa",
+      "emotiontech_hips",
+      "emotiontech_nylon_1030",
+      "emotiontech_nylon_1030cf",
+      "emotiontech_nylon_1070",
+      "emotiontech_pc",
+      "emotiontech_pekk",
+      "emotiontech_petg",
+      "emotiontech_pla",
+      "emotiontech_pla_hr_870",
+      "emotiontech_pva-m",
+      "emotiontech_pva-s",
+      "emotiontech_tpu98a",
+      "eryone_petg",
+      "eryone_pla_glow",
+      "eryone_pla_matte",
+      "eryone_pla_wood",
+      "eryone_pla",
+      "eryone_tpu",
+      "eSUN_PETG_Black",
+      "eSUN_PETG_Grey",
+      "eSUN_PETG_Purple",
+      "eSUN_PLA_PRO_Black",
+      "eSUN_PLA_PRO_Grey",
+      "eSUN_PLA_PRO_Purple",
+      "eSUN_PLA_PRO_White",
+      "Extrudr_GreenTECPro_Anthracite_175",
+      "Extrudr_GreenTECPro_Black_175",
+      "Extrudr_GreenTECPro_Blue_175",
+      "Extrudr_GreenTECPro_Nature_175",
+      "Extrudr_GreenTECPro_Red_175",
+      "Extrudr_GreenTECPro_Silver_175",
+      "Extrudr_GreenTECPro_White_175",
+      "verbatim_bvoh_175",
+      "Vertex_Delta_ABS",
+      "Vertex_Delta_PET",
+      "Vertex_Delta_PLA",
+      "Vertex_Delta_TPU",
+      "chromatik_pla",
+      "dsm_arnitel2045_175",
+      "dsm_novamid1070_175",
+      "fabtotum_abs",
+      "fabtotum_nylon",
+      "fabtotum_pla",
+      "fabtotum_tpu",
+      "fdplast_abs_tomato",
+      "fdplast_petg_gray",
+      "fdplast_pla_olive",
+      "fiberlogy_hd_pla",
+      "filo3d_pla",
+      "filo3d_pla_green",
+      "filo3d_pla_red",
+      "imade3d_petg_green",
+      "imade3d_petg_pink",
+      "imade3d_pla_green",
+      "imade3d_pla_pink",
+      "imade3d_petg_175",
+      "imade3d_pla_175",
+      "innofill_innoflex60_175",
+      "layer_one_black_pla",
+      "layer_one_dark_gray_pla",
+      "layer_one_white_pla",
+      "octofiber_pla",
+      "polyflex_pla",
+      "polymax_pla",
+      "polyplus_pla",
+      "polywood_pla",
+      "redd_abs",
+      "redd_asa",
+      "redd_hips",
+      "redd_nylon",
+      "redd_petg",
+      "redd_pla",
+      "redd_tpe",
+      "tizyx_abs",
+      "tizyx_flex",
+      "tizyx_petg",
+      "tizyx_pla_bois",
+      "tizyx_pla",
+      "tizyx_pva",
+      "Vertex_Delta_ABS",
+      "Vertex_Delta_PET",
+      "Vertex_Delta_PLA_Glitter",
+      "Vertex_Delta_PLA_Mat",
+      "Vertex_Delta_PLA_Satin",
+      "Vertex_Delta_PLA_Wood",
+      "Vertex_Delta_PLA",
+      "Vertex_Delta_TPU",
+      "volumic_abs_ultra",
+      "volumic_arma_ultra",
+      "volumic_asa_ultra",
+      "volumic_br80_ultra",
+      "volumic_bumper_ultra",
+      "volumic_cu80_ultra",
+      "volumic_flex93_ultra",
+      "volumic_medical_ultra",
+      "volumic_nylon_ultra",
+      "volumic_pekk_carbone",
+      "volumic_petg_ultra",
+      "volumic_petgcarbone_ultra",
+      "volumic_pla_ultra",
+      "volumic_pp_ultra",
+      "volumic_strong_ultra",
+      "volumic_support_ultra",
+      "xyzprinting_abs",
+      "xyzprinting_antibact_pla",
+      "xyzprinting_carbon_fiber",
+      "xyzprinting_colorinkjet_pla",
+      "xyzprinting_flexible",
+      "xyzprinting_metallic_pla",
+      "xyzprinting_nylon",
+      "xyzprinting_petg",
+      "xyzprinting_pla",
+      "xyzprinting_tough_pla",
+      "xyzprinting_tpu",
+      "zyyx_pro_flex",
+      "zyyx_pro_pla"
+    ]
   },
   "overrides": {
     "machine_name": {
@@ -36,50 +186,23 @@
     "material_print_temp_wait": {
       "default_value": false
     },
-    "material_print_temp_prepend": {
-      "default_value": true
-    },
-    "material_bed_temp_prepend": {
-      "default_value": true
-    },
-    "machine_width": {
-      "default_value": 200.0
-    },
-    "machine_depth": {
-      "default_value": 150.0
-    },
-    "machine_height": {
-      "default_value": 150.0
-    },
     "machine_heated_bed": {
       "default_value": true
-    },
-    "machine_always_write_active_tool": {
-      "default_value": false
     },
     "machine_center_is_zero": {
       "default_value": false
     },
-    "machine_extruder_count": {
-      "default_value": 1
-    },
     "machine_nozzle_tip_outer_diameter": {
-      "default_value": 1
+      "default_value": 0.8
     },
     "machine_nozzle_heat_up_speed": {
       "default_value": 1.8
     },
     "machine_nozzle_cool_down_speed": {
-      "default_value": 2.0
+      "default_value": 0.67
     },
     "machine_min_cool_heat_time_window": {
       "default_value": 1200.0
-    },
-    "machine_gcode_flavor": {
-      "default_value": "RepRap (Marlin/Sprinter)"
-    },
-    "machine_nozzle_size": {
-      "default_value": 0.4
     },
     "machine_max_feedrate_x": {
       "default_value": 200
@@ -117,53 +240,20 @@
     "machine_max_jerk_e": {
       "default_value": 5.0
     },
-    "layer_height_0": {
-      "default_value": 0.3
-    },
-    "line_width": {
-      "default_value": 0.4
-    },
     "infill_line_width": {
       "value": "line_width*1.25"
     },
     "initial_layer_line_width_factor": {
-      "default_value": 100.0
-    },
-    "wall_thickness": {
-      "default_value": 0.8
+      "default_value": 110.0
     },
     "wall_0_wipe_dist": {
       "value": 0.0
     },
-    "wall_0_inset": {
-      "value": 0.0
-    },
-    "optimize_wall_printing_order": {
-      "default_value": false
-    },
-    "inset_direction": {
-      "default_value": "inside_out"
-    },
-    "roofing_layer_count": {
-      "default_value": 0
-    },
-    "z_seam_type": {
-      "default_value": "sharpest_corner"
-    },
-    "z_seam_x": {
-      "default_value": 100.0
-    },
-    "z_seam_y": {
-      "default_value": 400.0
-    },
     "z_seam_corner": {
-      "default_value": "z_seam_corner_weighted"
-    },
-    "z_seam_relative": {
-      "default_value": false
+      "default_value": "z_seam_corner_any"
     },
     "skin_outline_count": {
-      "default_value": 0
+      "value": "0"
     },
     "infill_sparse_density": {
       "default_value": 10.0
@@ -174,14 +264,11 @@
     "infill_before_walls": {
       "default_value": false
     },
-    "default_material_print_temperature": {
-      "default_value": 200.0
-    },
     "material_print_temperature": {
-      "default_value": 200.0
+      "maximum_value": "300"
     },
     "material_print_temperature_layer_0": {
-      "value": "material_print_temperature+15"
+      "value": "min(material_print_temperature+10,300)"
     },
     "material_initial_print_temperature": {
       "value": "material_print_temperature"
@@ -189,14 +276,8 @@
     "material_final_print_temperature": {
       "value": "material_print_temperature"
     },
-    "default_material_bed_temperature": {
-      "default_value": 60.0
-    },
     "material_bed_temperature": {
-      "value": 60.0
-    },
-    "material_bed_temperature_layer_0": {
-      "value": "material_bed_temperature"
+      "maximum_value_warning": "96"
     },
     "material_flow": {
       "default_value": 95.0
@@ -205,10 +286,10 @@
       "default_value": 95.0
     },
     "infill_material_flow": {
-      "value": "material_flow-5"
+      "value": "max(0,material_flow-5)"
     },
     "support_material_flow": {
-      "value": "material_flow-5"
+      "value": "max(0,material_flow-5)"
     },
     "speed_print": {
       "default_value": 70.0
@@ -255,12 +336,6 @@
     "skirt_brim_speed": {
       "value": 26.0
     },
-    "retraction_enable": {
-      "default_value": true
-    },
-    "retract_at_layer_change": {
-      "default_value": false
-    },
     "retraction_amount": {
       "default_value": 3
     },
@@ -269,9 +344,6 @@
     },
     "retraction_min_travel": {
       "default_value": 0.8
-    },
-    "retraction_count_max": {
-      "default_value": 90
     },
     "retraction_extrusion_window": {
       "value": 1.0
@@ -286,28 +358,10 @@
       "default_value": 28.0
     },
     "retraction_combing": {
-      "default_value": "off"
-    },
-    "retraction_hop_enabled": {
-      "default_value": false
-    },
-    "retraction_hop_only_when_collides": {
-      "default_value": false
-    },
-    "retraction_hop": {
-      "default_value": 0.0
+      "value": "off"
     },
     "retraction_hop_after_extruder_switch": {
       "default_value": false
-    },
-    "cool_fan_enabled": {
-      "default_value": true
-    },
-    "support_enable": {
-      "default_value": false
-    },
-    "support_type": {
-      "default_value": "everywhere"
     },
     "support_angle": {
       "default_value": 60.0
@@ -315,20 +369,11 @@
     "support_pattern": {
       "default_value": "zigzag"
     },
-    "support_wall_count": {
-      "default_value": 0
-    },
     "support_connect_zigzags": {
       "default_value": false
     },
-    "support_infill_rate": {
-      "default_value": 15.0
-    },
     "support_z_distance": {
       "default_value": 0.2
-    },
-    "support_xy_distance": {
-      "default_value": 0.7
     },
     "support_interface_enable": {
       "default_value": true
@@ -348,15 +393,6 @@
     "skirt_line_count": {
       "default_value": 2
     },
-    "skirt_gap": {
-      "default_value": 3.0
-    },
-    "brim_width": {
-      "default_value": 8.0
-    },
-    "brim_line_count": {
-      "default_value": 20
-    },
     "raft_margin": {
       "default_value": 8.0
     },
@@ -366,17 +402,8 @@
     "layer_0_z_overlap": {
       "value": 0.09
     },
-    "raft_surface_layers": {
-      "default_value": 2
-    },
     "raft_surface_thickness": {
       "value": 0.25
-    },
-    "raft_surface_line_width": {
-      "value": 0.4
-    },
-    "raft_surface_line_spacing": {
-      "value": "raft_surface_line_width"
     },
     "raft_interface_thickness": {
       "value": 0.27
@@ -384,17 +411,8 @@
     "raft_interface_line_width": {
       "value": 0.7
     },
-    "raft_interface_line_spacing": {
-      "value": "raft_interface_line_width + 0.2"
-    },
     "raft_base_thickness": {
       "value": 0.3
-    },
-    "raft_base_line_width": {
-      "value": "machine_nozzle_size * 2"
-    },
-    "raft_base_line_spacing": {
-      "value": "raft_base_line_width * 2"
     },
     "raft_surface_speed": {
       "value": 40.0
@@ -406,7 +424,7 @@
       "value": 20.0
     },
     "raft_surface_fan_speed": {
-      "value": 100.0
+      "value": "100.0 if cool_fan_enabled else 0.0"
     },
     "raft_interface_fan_speed": {
       "value": 0.0
@@ -414,38 +432,11 @@
     "raft_base_fan_speed": {
       "value": 0.0
     },
-    "prime_tower_enable": {
-      "default_value": false
-    },
     "prime_tower_size": {
       "default_value": 15.0
     },
     "prime_tower_min_volume": {
       "default_value": 10.0
-    },
-    "prime_tower_position_x": {
-      "default_value": 200.0
-    },
-    "prime_tower_position_y": {
-      "default_value": 200.0
-    },
-    "prime_tower_flow": {
-      "default_value": 100.0
-    },
-    "ooze_shield_enabled": {
-      "default_value": false
-    },
-    "ooze_shield_angle": {
-      "default_value": 60.0
-    },
-    "ooze_shield_dist": {
-      "default_value": 2.0
-    },
-    "roofing_line_width": {
-      "default_value": 0.4
-    },
-    "draft_shield_enabled": {
-      "default_value": false
     },
     "draft_shield_dist": {
       "default_value": 3

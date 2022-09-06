@@ -22,7 +22,7 @@
       "default_value": "WEEDO X40 V3"
     },
     "machine_start_gcode": {
-      "default_value": ";MachineType:WEEDO X40\n\n;(**** start.gcode for  X40 ****)\nM203 Z15\nM140 S{material_bed_temperature_layer_0}\nM104 S{material_print_temperature_layer_0} T{initial_extruder_nr}\nG28 ;This command will use tool0 to get the x endstop and setup coordinate system\nG29 ;Auto level\nM107 P0 ;Turn off fan\nM107 P1\nG90 ; Absolute positioning\nM82 ; Extruder in absolute mode\nG1 X-47 F3000\nG1 Z20 F600\nT{initial_extruder_nr} S ;Set start extruder nr after G28\nM109 S{material_print_temperature_layer_0} T{initial_extruder_nr}\nG92 E0\nG1 E22 F300\nG92 E0\nM203 Z2"
+      "default_value": ";MachineType:{machine_name}\n;FilamentType:{material_type}\n;InfillDensity:{infill_sparse_density}\n;BedTemperature:{material_bed_temperature}\n\n;(**** start.gcode for  X40 ****)\nM203 Z15\nM140 S{material_bed_temperature_layer_0}\nM104 S{material_print_temperature_layer_0} T{initial_extruder_nr}\nG28 ;This command will use tool0 to get the x endstop and setup coordinate system\nG29 ;Auto level\nM107 P0 ;Turn off fan\nM107 P1\nG90 ; Absolute positioning\nM82 ; Extruder in absolute mode\nG1 X-47 F3000\nG1 Z20 F600\nT{initial_extruder_nr} S ;Set start extruder nr after G28\nM109 S{material_print_temperature_layer_0} T{initial_extruder_nr}\nG92 E0\nG1 E22 F300\nG92 E0\nM203 Z2"
     },
     "machine_end_gcode": {
       "default_value": ";(*********end X40 End.gcode*******)\nM203 Z15\nM605 S1 ;Set to auto-park\nG28 X F3000\nG91 ; Relative positioning\nG1 E-1 ; Reduce filament pressure\nG90\nG1 Y300 F3000\nM104 S0 T0\nM104 S0 T1\nM140 S0\nM107 P0\nM107 P1\nM82"
@@ -53,6 +53,9 @@
     },
     "material_standby_temperature": {
       "value": "material_print_temperature-20"
+    },
+    "retraction_amount": {
+      "default_value": 4
     },
     "speed_print": {
       "default_value": 60.0
