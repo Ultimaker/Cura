@@ -53,7 +53,6 @@ env:
 
 jobs:
     conan-package-create:
-        if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
         runs-on: ${{ inputs.runs_on }}
 
         steps:
