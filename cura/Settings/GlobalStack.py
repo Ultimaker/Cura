@@ -347,6 +347,12 @@ class GlobalStack(CuraContainerStack):
     nameChanged = pyqtSignal()
     name = pyqtProperty(str, fget=getName, fset=setName, notify=nameChanged)
 
+    def hasNetworkedConnection(self) -> bool:
+        has_connection = False
+        for connection_type in [ConnectionType.NetworkConnection.value, ConnectionType.CloudConnection.value]:
+            has_connection |= connection_type in self.configuredConnectionTypes
+        return has_connection
+
 ## private:
 global_stack_mime = MimeType(
     name = "application/x-cura-globalstack",
