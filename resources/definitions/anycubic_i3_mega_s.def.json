@@ -53,8 +53,6 @@
         "material_bed_temperature": { "maximum_value_warning": 110 },
         "material_bed_temperature_layer_0": { "maximum_value_warning": 110 },
 
-        "material_flow": { "value": 100 },
-
         "top_bottom_thickness": { "value":  "layer_height_0 + layer_height * math.floor(1.2 / layer_height)" },
         "wall_thickness": { "value": "line_width * 3 if line_width < 0.6 else line_width * 2" },
 
@@ -70,15 +68,11 @@
         "jerk_enabled": { "value": true },
 
         "speed_print": { "value": 50.0 } ,
-        "speed_infill": { "value": "speed_print" },
-        "speed_wall": { "value": "speed_print / 2" },
-        "speed_wall_0": { "value": "speed_wall" },
+
         "speed_wall_x": { "value": "speed_wall" },
-        "speed_topbottom": { "value": "speed_print / 2" },
         "speed_roofing": { "value": "speed_topbottom" },
         "speed_travel": { "value": 100.0, "maximum_value_warning": 150.0, "maximum_value": 200.0 },
         "speed_layer_0": { "value": "speed_topbottom if speed_topbottom < 20 else 20" },
-        "speed_print_layer_0": { "value": "speed_layer_0" },
         "speed_travel_layer_0": { "value": "speed_travel" },
         "speed_prime_tower": { "value": "speed_topbottom" },
         "speed_support": { "value": "speed_wall_0" },
@@ -101,7 +95,7 @@
         "retraction_hop": { "value": 0.075 },
         "retraction_hop_only_when_collides": { "value": true },
         "retraction_amount": { "value": 6 },
-        "retraction_enable": { "value": true },
+
         "retraction_min_travel": { "value": 1.5 },
         "retraction_combing": { "value": "'off'" },
         "retraction_combing_max_distance": { "value": 30 },
@@ -114,7 +108,6 @@
         "cool_fan_speed": { "value": 100 },
         "cool_fan_speed_0": { "value": 30 },
 
-        "cool_fan_enabled": { "value": true },
         "cool_min_layer_time": { "value": 10 },
 
         "adhesion_type": { "value": "'none' if support_enable else 'skirt'" },

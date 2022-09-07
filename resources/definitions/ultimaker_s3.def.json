@@ -35,7 +35,7 @@
             "update_url": "https://ultimaker.com/firmware?utm_source=cura&utm_medium=software&utm_campaign=fw-update"
         },
         "bom_numbers": [
-            213482
+            213482, 213483
         ]
     },
 
@@ -75,7 +75,6 @@
             "value": "150"
         },
 
-        "acceleration_enabled": { "value": "True" },
         "acceleration_layer_0": { "value": "acceleration_topbottom" },
         "acceleration_prime_tower": { "value": "math.ceil(acceleration_print * 2000 / 3500)" },
         "acceleration_print": { "value": "3500" },
