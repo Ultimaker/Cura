@@ -42,8 +42,8 @@ class LayerPolygon:
 
         self._extruder = extruder
         self._types = line_types
-        unknown_types = numpy.where(self._types >= self.__number_of_types, self._types)
-        if unknown_types:
+        unknown_types = numpy.where(self._types >= self.__number_of_types, self._types, None)
+        if unknown_types.any():
             # Got faulty line data from the engine.
             for idx in unknown_types:
                 Logger.warning(f"Found an unknown line type at: {idx}")
