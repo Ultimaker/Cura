@@ -149,7 +149,7 @@ class CuraConan(ConanFile):
         with open(Path(__file__).parent.joinpath("CuraVersion.py.jinja"), "r") as f:
             cura_version_py = Template(f.read())
 
-        cura_version = self.conf_info.get("user.cura:version", default = self.version, check_type = str)
+        cura_version = self.conf.get("user.cura:version", default = self.version, check_type = str)
         if self.options.internal:
             version = Version(cura_version)
             cura_version = f"{version.major}.{version.minor}.{version.patch}-{version.prerelease.replace('+', '+internal_')}"
@@ -220,7 +220,7 @@ class CuraConan(ConanFile):
         with open(Path(__file__).parent.joinpath("Ultimaker-Cura.spec.jinja"), "r") as f:
             pyinstaller = Template(f.read())
 
-        version = self.conf_info.get("user.cura:version", default = self.version, check_type = str)
+        version = self.conf.get("user.cura:version", default = self.version, check_type = str)
         cura_version = Version(version)
 
         with open(Path(location, "Ultimaker-Cura.spec"), "w") as f:
@@ -255,7 +255,7 @@ class CuraConan(ConanFile):
         self.options["cpython"].shared = True
 
     def validate(self):
-        version = self.conf_info.get("user.cura:version", default = self.version, check_type = str)
+        version = self.conf.get("user.cura:version", default = self.version, check_type = str)
         if version and Version(version) <= Version("4"):
             raise ConanInvalidConfiguration("Only versions 5+ are support")
 
@@ -383,7 +383,7 @@ class CuraConan(ConanFile):
         self.copy("*.txt", src = self.cpp_info.resdirs[-1], dst = self._base_dir.joinpath("pip_requirements"))
 
         # Generate the GitHub Action version info Environment
-        version = self.conf_info.get("user.cura:version", default = self.version, check_type = str)
+        version = self.conf.get("user.cura:version", default = self.version, check_type = str)
         cura_version = Version(version)
         env_prefix = "Env:" if self.settings.os == "Windows" else ""
         activate_github_actions_version_env = Template(r"""echo "CURA_VERSION_MAJOR={{ cura_version_major }}" >> ${{ env_prefix }}GITHUB_ENV
