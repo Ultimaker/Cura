@@ -74,10 +74,14 @@ UM.ManagementPage
                     onClicked:
                     {
                         var currentItem = machineActionRepeater.model[index]
-                        actionDialog.loader.manager = currentItem
-                        actionDialog.loader.source = currentItem.qmlPath
-                        actionDialog.title = currentItem.label
-                        actionDialog.show()
+                        if (currentItem.openAsDialog()) {
+                            actionDialog.loader.manager = currentItem
+                            actionDialog.loader.source = currentItem.qmlPath
+                            actionDialog.title = currentItem.label
+                            actionDialog.show()
+                        } else {
+                            currentItem.execute()
+                        }
                     }
                 }
             }
