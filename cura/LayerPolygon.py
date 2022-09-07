@@ -42,7 +42,7 @@ class LayerPolygon:
 
         self._extruder = extruder
         self._types = line_types
-        unknown_types = numpy.where(self._types >= self.__number_of_types)
+        unknown_types = numpy.where(self._types >= self.__number_of_types, self._types)
         if unknown_types:
             # Got faulty line data from the engine.
             for idx in unknown_types:
