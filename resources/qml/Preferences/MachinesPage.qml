@@ -67,6 +67,7 @@ UM.ManagementPage
             {
                 width: Math.round(childrenRect.width + 2 * screenScaleFactor)
                 height: childrenRect.height
+                visible: machineActionRepeater.model[index].isVisible()
                 Cura.SecondaryButton
                 {
                     text: machineActionRepeater.model[index].label

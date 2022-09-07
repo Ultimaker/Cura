@@ -114,3 +114,15 @@ class MachineAction(QObject, PluginObject):
     @pyqtSlot(result = QObject)
     def getDisplayItem(self) -> Optional["QObject"]:
         return self._createViewFromQML()
+
+    @pyqtSlot(result = bool)
+    def isVisible(self) -> bool:
+        """Whether this action button will be visible.
+
+         Example: Show only when isLoggedIn
+
+        :return: Defaults to true to be in line with the old behaviour.
+        """
+
+        return True
+    
