@@ -53,9 +53,18 @@ jobs:
         steps:
             -   name: Checkout repo
                 uses: actions/checkout@v3
+                if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
                 with:
-                    ref: ${{ github.head_ref }}
                     fetch-depth: 0
+                    ref: ${{ github.head_ref }}
+
+            -   name: Checkout repo PR
+                uses: actions/checkout@v3
+                if: ${{ github.event.pull_request.head.repo.full_name != github.repository }}
+                with:
+                    fetch-depth: 0
+                    ref: ${{ github.event.pull_request.head.ref }}
+                    repository: ${{ github.event.pull_request.head.repo.full_name }}
 
             -   name: Setup Python and pip
                 uses: actions/setup-python@v4
@@ -106,7 +115,7 @@ jobs:
                         else:
                             channel = repo.active_branch.name.split("_")[0].replace("-", "_").lower()
                     
-                        if event_name == "pull_request":
+                        if "pull_request" in event_name:
                             channel = f"pr_{issue_number}"
                     
                     # %% Get the actual version
@@ -121,36 +130,40 @@ jobs:
                             latest_branch_version = version
                             latest_branch_tag = repo.tag(tag)
                     
-                    # %% Get the actual version
-                    no_commits = 0
-                    for commit in repo.iter_commits("HEAD"):
-                        if commit == latest_branch_tag.commit:
-                            break
-                        no_commits += 1
-                    
-                    if no_commits == 0:
-                        # This is a release
-                        actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}"
-                        if channel == "stable":
-                            user = "_"
-                            channel = "_"
-                    else:
-                        if latest_branch_version.prerelease and not "." in latest_branch_version.prerelease:
-                            # The prerealese did not contain a version number, default it to 1
-                            latest_branch_version.prerelease += ".1"
-                        if event_name == "pull_request":
-                            actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-{latest_branch_version.prerelease.lower()}+{buildmetadata}pr_{issue_number}_{no_commits}"
+                    if latest_branch_tag:
+                        # %% Get the actual version
+                        no_commits = 0
+                        for commit in repo.iter_commits("HEAD"):
+                            if commit == latest_branch_tag.commit:
+                                break
+                            no_commits += 1
+                        
+                        if no_commits == 0:
+                            # This is a release
+                            actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}"
+                            if channel == "stable":
+                                user = "_"
+                                channel = "_"
                         else:
-                            if channel in ("stable", "_", ""):
-                                channel_metadata = f"{no_commits}"
+                            if latest_branch_version.prerelease and not "." in latest_branch_version.prerelease:
+                                # The prerealese did not contain a version number, default it to 1
+                                latest_branch_version.prerelease += ".1"
+                            if event_name == "pull_request":
+                                actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-{latest_branch_version.prerelease.lower()}+{buildmetadata}pr_{issue_number}_{no_commits}"
                             else:
-                                channel_metadata = f"{channel}_{no_commits}"
-                            # FIXME: for when we create a new release branch
-                            if latest_branch_version.prerelease == "":
-                                bump_up_minor = int(latest_branch_version.minor) + 1
-                                actual_version = f"{latest_branch_version.major}.{bump_up_minor}.{latest_branch_version.patch}-alpha+{buildmetadata}{channel_metadata}"
-                            else:
-                                actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-{latest_branch_version.prerelease.lower()}+{buildmetadata}{channel_metadata}"
+                                if channel in ("stable", "_", ""):
+                                    channel_metadata = f"{no_commits}"
+                                else:
+                                    channel_metadata = f"{channel}_{no_commits}"
+                                # FIXME: for when we create a new release branch
+                                if latest_branch_version.prerelease == "":
+                                    bump_up_patch = int(latest_branch_version.patch) + 1
+                                    actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{bump_up_patch}-alpha+{buildmetadata}{channel_metadata}"
+                                else:
+                                    actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-{latest_branch_version.prerelease.lower()}+{buildmetadata}{channel_metadata}"
+                    else:
+                        # FIXME: for external PR's
+                        actual_version = f"5.2.0-alpha+{buildmetadata}pr_{issue_number}"
                     
                     # %% print to output
                     cmd_name = ["echo", f"::set-output name=name::{project_name}"]

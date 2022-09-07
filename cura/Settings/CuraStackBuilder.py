@@ -288,7 +288,7 @@ class CuraStackBuilder:
 
         if definitions:
             name = definitions[0].getName()
-        stack = cls.createMachine(abstract_machine_id, definition_id)
+        stack = cls.createMachine(abstract_machine_id, definition_id, show_warning_message=False)
         if not stack:
             return None
 

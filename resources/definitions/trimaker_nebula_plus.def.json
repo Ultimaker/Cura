@@ -32,7 +32,6 @@
         "machine_acceleration": { "default_value": 3000 },
         "machine_extruder_count": { "default_value": 1 },
 
-        "acceleration_enabled": { "value": "True" },
         "acceleration_layer_0": { "value": "acceleration_topbottom" },
         "acceleration_print": { "value": "4000" },
         "acceleration_support": { "value": "math.ceil(acceleration_print * 2000 / 4000)" },

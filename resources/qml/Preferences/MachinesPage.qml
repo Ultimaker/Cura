@@ -17,7 +17,7 @@ UM.ManagementPage
     title: catalog.i18nc("@title:tab", "Printers")
     detailsPlaneCaption: base.currentItem && base.currentItem.name ? base.currentItem.name : ""
 
-    model: Cura.GlobalStacksModel { }
+    model: Cura.GlobalStacksModel { filterAbstractMachines: false }
 
     sectionRole: "discoverySource"
 

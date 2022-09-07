@@ -194,6 +194,9 @@ class CloudOutputDeviceManager:
 
             if cluster_data.printer_type not in self._abstract_clusters:
                 self._abstract_clusters[cluster_data.printer_type] = AbstractCloudOutputDevice(self._api, cluster_data.printer_type)
+                # Ensure that the abstract machine is added (either because it was never added, or it somehow got
+                # removed)
+                _abstract_machine = CuraStackBuilder.createAbstractMachine(cluster_data.printer_type)
 
             # If the machine already existed before, it will be present in the host_guid_map
             if cluster_data.host_guid in host_guid_map:
@@ -364,8 +367,6 @@ class CloudOutputDeviceManager:
             return False
 
         self._setOutputDeviceMetadata(device, new_machine)
-
-        _abstract_machine = CuraStackBuilder.createAbstractMachine(device.printerType)
 
         if activate:
             CuraApplication.getInstance().getMachineManager().setActiveMachine(new_machine.getId())

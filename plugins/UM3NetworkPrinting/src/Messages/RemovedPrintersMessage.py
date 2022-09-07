@@ -15,7 +15,7 @@ class RemovedPrintersMessage(Message):
             "info:status",
             "This printer is not linked to the Digital Factory:",
             "These printers are not linked to the Digital Factory:",
-            len(self.removed_devices)
+            len(self._removed_devices)
         )
         message_text += "<br/><ul>{}</ul><br/>".format(device_names)
 
@@ -31,7 +31,7 @@ class RemovedPrintersMessage(Message):
         super().__init__(title=self.i18n_catalog.i18ncp("info:status",
                                                         "A cloud connection is not available for a printer",
                                                         "A cloud connection is not available for some printers",
-                                                        len(self.removed_devices)),
+                                                        len(self._removed_devices)),
                          message_type=Message.MessageType.WARNING,
                          text = message_text)
 

@@ -36,7 +36,6 @@
         "retraction_speed": { "default_value": 35},
         "travel_avoid_supports": { "value": true },
         "travel_retract_before_outer_wall": { "value": true },
-        "retraction_enable": { "value": true },
 
         "gantry_height": { "value": "55" },
         "speed_print": { "default_value": 60.0 } ,
@@ -48,8 +47,6 @@
         "machine_end_gcode": { "default_value": "G91 ;Relative positioning\nG1 E-1 F2700 ;Retract a bit\nG1 Z1 E-1 F2400 ;Retract and raise Z\nG1 Z2 ;Raise Z\nG90 ;Absolute positioning\nG12 P1;clean nozzle\nG1 X5 Y300 ;Return to Start Point\nM106 S0 ;Switch off part cooling fan\nM104 S0 ;turn off temperature\nM140 S0 ;turn off Heated Bed\nM84 X Y E ;Disable all steppers but Z\nM81 ;turn-off power" },
 
         "cool_fan_speed": { "value": 75 },
-        "cool_fan_enabled": { "value": true },
-
         "line_width": { "value": 0.38 },
         "travel_avoid_distance": { "value": 1 },
         "infill_before_walls": { "value": false }
