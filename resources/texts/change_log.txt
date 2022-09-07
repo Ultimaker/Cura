@@ -2,6 +2,7 @@
 * New features:
 - Added support for the Ultimaker S3 and Ultimaker S5 updated mainbord
 
+
 <i>MacOS 10.15 is no longer supported. Technically this means Ultimaker will stop testing and developing for such operating systems. However, even though it is no longer supported, there is still a high likelihood the application keeps functioning.</i>
 
 [5.1]
