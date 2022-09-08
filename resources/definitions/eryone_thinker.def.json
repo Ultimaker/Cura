@@ -249,9 +249,6 @@
         },
         "smooth_spiralized_contours": {
             "value": false
-        },
-        "roofing_monotonic": {
-            "value": true
         }
     }
 }
