@@ -27,10 +27,7 @@ UM.Dialog
             {
                 id: contents
 
-                model: Cura.CompatibleMachineModel
-                {
-                    filter: machine_id_filter
-                }
+                model: Cura.CompatibleMachineModel {}
 
                 delegate: Cura.PrintSelectorCard
                 {

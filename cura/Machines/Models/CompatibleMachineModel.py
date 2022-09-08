@@ -24,60 +24,61 @@ class CompatibleMachineModel(ListModel):
     def __init__(self, parent: Optional[QObject] = None) -> None:
         super().__init__(parent)
 
-        self._filter_on_definition_id: Optional[str] = None
-
         self._catalog = i18nCatalog("cura")
 
         self.addRoleName(self.NameRole, "name")
         self.addRoleName(self.IdRole, "id")
         self.addRoleName(self.ExtrudersRole, "extruders")
 
-    filterChanged = pyqtSignal(str)
-
-    @pyqtSlot(str)
-    def setFilter(self, abstract_machine_id: str) -> None:
-        # TODO??: defensive coding; check if machine is abstract & abort/log if not
-        self._filter_on_definition_id = abstract_machine_id
-
-        # Don't need a delayed update, since it's fire once on user click (either on 'print to cloud' or 'refresh').
-        # So, no signals that could come in (too) quickly.
-        self.filterChanged.emit(self._filter_on_definition_id)
         self._update()
-
-    @pyqtProperty(str, fset=setFilter, notify=filterChanged)
-    def filter(self) -> str:
-        return self._filter_on_definition_id
-
-    def _update(self) -> None:
-        self.clear()
-        if not self._filter_on_definition_id or self._filter_on_definition_id == "":
-            # TODO?: log
-            return
 
         from cura.CuraApplication import CuraApplication
         machine_manager = CuraApplication.getInstance().getMachineManager()
-        compatible_machines = machine_manager.getMachinesWithDefinition(self._filter_on_definition_id, online_only = True)
-        # TODO: Handle 0 compatible machines -> option to close window? Message in card? (remember  the design has a refresh button!)
+        machine_manager.globalContainerChanged.connect(self._update)
 
-        for container_stack in compatible_machines:
-            if parseBool(container_stack.getMetaDataEntry("hidden", False)) or parseBool(container_stack.getMetaDataEntry("is_abstract_machine", False)):
-                continue
-            self.addItem(container_stack)
+    def _update(self) -> None:
+        self.clear()
 
-    def addItem(self, container_stack: ContainerStack) -> None:
-        extruders = CuraContainerRegistry.getInstance().findContainerStacks(type="extruder_train", machine=container_stack.getId())
-        self.appendItem({
-                         "name": container_stack.getName(),
-                         "id": container_stack.getId(),
-                         "extruders": [self.getExtruderModel(cast(ExtruderStack, extruder)) for extruder in extruders]
+        from cura.CuraApplication import CuraApplication
+        machine_manager = CuraApplication.getInstance().getMachineManager()
+
+        # Need  to loop over the output-devices, not the stacks, since we need all applicable configurations, not just the current loaded one.
+        for output_device in machine_manager.printerOutputDevices:
+            for printer in output_device.printers:
+                extruder_configs = dict()
+
+                # initialize & add current active material:
+                for extruder in printer.extruders:
+                    materials = [] if not extruder.activeMaterial else [{
+                            "brand": extruder.activeMaterial.brand,
+                            "name": extruder.activeMaterial.name,
+                            "hexcolor": extruder.activeMaterial.color
+                        }]
+                    extruder_configs[extruder.getPosition()] = {
+                        "position": extruder.getPosition(),
+                        "core": extruder.hotendID,
+                        "materials": materials
+                    }
+
+                # add currently inactive, but possible materials:
+                for configuration in printer.availableConfigurations:
+                    print("    CONFIG !")
+                    for extruder in configuration.extruderConfigurations:
+
+                        if not extruder.position in extruder_configs:
+                            # TODO: log -- all extruders should be present in the init round, regardless of if a material was active
+                            continue
+
+                        extruder_configs[extruder.position]["materials"].append({
+                            "brand": extruder.material.brand,
+                            "name": extruder.material.name,
+                            "hexcolor": extruder.material.color
                         })
 
-    def getExtruderModel(self, extruder: ExtruderStack) -> Dict:
-        # Temp Dummy Data
-        # ExtruderConfigrationModel does what we want here
-        extruder_model = {
-            "core": extruder.quality.getMetaDataEntry("variant", ""),
-            "materials": [{"name": "Ultimaker Blue", "color": "blue"}, {"name": "Ultimaker Red", "color": "red"}, {"name": "Ultimaker Orange", "color": "orange"}]
-        }
-        return extruder_model
+                self.appendItem({
+                    "name": printer.name,
+                    "id": printer.uniqueName,
+                    "extruders": [extruder for extruder in extruder_configs.values()]
+                })
 
+        # TODO: Handle 0 compatible machines -> option to close window? Message in card? (remember  the design has a refresh button!)

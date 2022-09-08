@@ -1,3 +1,6 @@
+// Copyright (c) 2022 Ultimaker B.V.
+// Cura is released under the terms of the LGPLv3 or higher.
+
 import QtQuick 2.2
 import QtQuick.Controls 2.9
 import QtQuick.Layouts 2.10
@@ -5,7 +8,8 @@ import QtQuick.Layouts 2.10
 import UM 1.5 as UM
 import Cura 1.0 as Cura
 
-Rectangle {
+Rectangle
+{
     property alias name: printerTitle.text
     property var extruders
 
@@ -78,7 +82,7 @@ Rectangle {
                         id: singleMaterialText
                         anchors.left: extruderCore.right
                         anchors.verticalCenter: extruderCore.verticalCenter
-                        text: modelData.materials.length == 1 ? modelDatamaterials[0].name : "test"
+                        text: modelData.materials.length == 1 ? modelData.materials[0].brand + " " + modelData.materials[0].name : ""
                         visible: modelData.materials.length == 1
                     }
 
@@ -88,13 +92,13 @@ Rectangle {
                         anchors.top: extruderCore.bottom
                         anchors.left: extruderCore.left
                         anchors.topMargin: UM.Theme.getSize("narrow_margin").height
+                        visible: modelData.materials.length > 1
                         Repeater
                         {
                             model: modelData.materials
-                            visible: modelData.materials.length > 1
                             UM.Label
                             {
-                                text: modelData.name
+                                text: modelData.brand + " " + modelData.name
                             }
                         }
                     }
