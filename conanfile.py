@@ -149,9 +149,9 @@ class CuraConan(ConanFile):
         with open(Path(__file__).parent.joinpath("CuraVersion.py.jinja"), "r") as f:
             cura_version_py = Template(f.read())
 
-        cura_version = self.version
+        cura_version = self.conf_info.get("user.cura:version", default = self.version, check_type = str)
         if self.options.internal:
-            version = Version(self.version)
+            version = Version(cura_version)
             cura_version = f"{version.major}.{version.minor}.{version.patch}-{version.prerelease.replace('+', '+internal_')}"
 
         with open(Path(location, "CuraVersion.py"), "w") as f:
@@ -220,7 +220,8 @@ class CuraConan(ConanFile):
         with open(Path(__file__).parent.joinpath("Ultimaker-Cura.spec.jinja"), "r") as f:
             pyinstaller = Template(f.read())
 
-        cura_version = Version(self.version) if self.version else Version("0.0.0")
+        version = self.conf_info.get("user.cura:version", default = self.version, check_type = str)
+        cura_version = Version(version)
 
         with open(Path(location, "Ultimaker-Cura.spec"), "w") as f:
             f.write(pyinstaller.render(
@@ -239,7 +240,7 @@ class CuraConan(ConanFile):
                 strip = False,  # This should be possible on Linux and MacOS but, it can also cause issues on some distributions. Safest is to disable it for now
                 target_arch = "'x86_64'" if self.settings.os == "Macos" else "None",  # FIXME: Make this dependent on the settings.arch_target
                 macos = self.settings.os == "Macos",
-                version = f"'{self.version}'",
+                version = f"'{version}'",
                 short_version = f"'{cura_version.major}.{cura_version.minor}.{cura_version.patch}'",
             ))
 
@@ -254,7 +255,8 @@ class CuraConan(ConanFile):
         self.options["cpython"].shared = True
 
     def validate(self):
-        if self.version and Version(self.version) <= Version("4"):
+        version = self.conf_info.get("user.cura:version", default = self.version, check_type = str)
+        if version and Version(version) <= Version("4"):
             raise ConanInvalidConfiguration("Only versions 5+ are support")
 
     def requirements(self):
@@ -381,7 +383,8 @@ class CuraConan(ConanFile):
         self.copy("*.txt", src = self.cpp_info.resdirs[-1], dst = self._base_dir.joinpath("pip_requirements"))
 
         # Generate the GitHub Action version info Environment
-        cura_version = Version(self.version)
+        version = self.conf_info.get("user.cura:version", default = self.version, check_type = str)
+        cura_version = Version(version)
         env_prefix = "Env:" if self.settings.os == "Windows" else ""
         activate_github_actions_version_env = Template(r"""echo "CURA_VERSION_MAJOR={{ cura_version_major }}" >> ${{ env_prefix }}GITHUB_ENV
 echo "CURA_VERSION_MINOR={{ cura_version_minor }}" >> ${{ env_prefix }}GITHUB_ENV
