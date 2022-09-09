@@ -36,14 +36,17 @@ class CompatibleMachineModel(ListModel):
         from cura.CuraApplication import CuraApplication
         machine_manager = CuraApplication.getInstance().getMachineManager()
 
-        # Need  to loop over the output-devices, not the stacks, since we need all applicable configurations, not just the current loaded one.
+        # Loop over the output-devices, not the stacks; need all applicable configurations, not just the current loaded one.
         for output_device in machine_manager.printerOutputDevices:
             for printer in output_device.printers:
                 extruder_configs = dict()
 
                 # initialize & add current active material:
                 for extruder in printer.extruders:
-                    materials = [] if not extruder.activeMaterial else [{
+                    compatible_type = machine_manager.activeMachine.extruderList[extruder.getPosition()].material.getMetaDataEntry("material", "")
+                    has_compatible_material = extruder.activeMaterial and compatible_type in [extruder.activeMaterial.type, None, "None", "", "empty"]
+
+                    materials = [] if not has_compatible_material else [{
                             "brand": extruder.activeMaterial.brand,
                             "name": extruder.activeMaterial.name,
                             "hexcolor": extruder.activeMaterial.color
@@ -57,6 +60,9 @@ class CompatibleMachineModel(ListModel):
                 # add currently inactive, but possible materials:
                 for configuration in printer.availableConfigurations:
                     for extruder in configuration.extruderConfigurations:
+                        compatible_type = machine_manager.activeMachine.extruderList[extruder.position].material.getMetaDataEntry("material", "")
+                        if compatible_type not in [extruder.material.type, None, "None", "", "empty"]:
+                            continue
 
                         if not extruder.position in extruder_configs:
                             Logger.log("w", f"No active extruder for position {extruder.position}.")
@@ -68,8 +74,9 @@ class CompatibleMachineModel(ListModel):
                             "hexcolor": extruder.material.color
                         })
 
-                self.appendItem({
-                    "name": printer.name,
-                    "unique_id": printer.uniqueName,
-                    "extruders": [extruder for extruder in extruder_configs.values()]
-                })
+                if all([len(extruder["materials"]) > 0 for extruder in extruder_configs.values()]):
+                    self.appendItem({
+                        "name": printer.name,
+                        "unique_id": printer.uniqueName,
+                        "extruders": [extruder for extruder in extruder_configs.values()]
+                    })
