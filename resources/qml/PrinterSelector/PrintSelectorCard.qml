@@ -11,7 +11,9 @@ import Cura 1.0 as Cura
 Rectangle
 {
     property alias name: printerTitle.text
+    property string unique_id
     property var extruders
+    property var manager
 
     width: parent.width
     height: childrenRect.height + 2 * UM.Theme.getSize("default_margin").height
@@ -63,7 +65,7 @@ Rectangle
                         id: extruderIcon
                         anchors.top: parent.top
                         anchors.left: parent.left
-                        materialColor: modelData.materials.length == 1 ? modelData.materials[0].color : "white"
+                        materialColor: modelData.materials.length == 1 ? modelData.materials[0].hexcolor : "white"
                         iconSize: UM.Theme.getSize("medium_button_icon").width
                     }
 
@@ -82,6 +84,7 @@ Rectangle
                         id: singleMaterialText
                         anchors.left: extruderCore.right
                         anchors.verticalCenter: extruderCore.verticalCenter
+                        anchors.leftMargin: UM.Theme.getSize("default_margin").width
                         text: modelData.materials.length == 1 ? modelData.materials[0].brand + " " + modelData.materials[0].name : ""
                         visible: modelData.materials.length == 1
                     }
@@ -119,7 +122,7 @@ Rectangle
             {
                 border.width: UM.Theme.getSize("default_lining").width
                 border.color: UM.Theme.getColor("border_accent_1")
-                color: control.hovered ? UM.Theme.getColor("toolbar_button_hover"): UM.Theme.getColor("background_1")
+                color: printButton.hovered ? UM.Theme.getColor("toolbar_button_hover"): UM.Theme.getColor("background_1")
             }
 
             contentItem: Item
@@ -133,6 +136,8 @@ Rectangle
                     height: width
                 }
             }
+
+            onClicked: manager.printerSelected(unique_id)
         }
     }
 }

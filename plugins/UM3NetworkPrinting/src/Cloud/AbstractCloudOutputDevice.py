@@ -1,7 +1,7 @@
 from time import time
 from typing import List, Optional
 
-from PyQt6.QtCore import QObject
+from PyQt6.QtCore import QObject, pyqtSlot
 from PyQt6.QtNetwork import QNetworkReply
 
 from UM import i18nCatalog
@@ -48,7 +48,6 @@ class AbstractCloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         Logger.log("i", "Attempting to connect AbstractCloudOutputDevice %s", self.key)
         super().connect()
 
-        #CuraApplication.getInstance().getBackend().backendStateChange.connect(self._onBackendStateChange)
         self._update()
 
     def disconnect(self) -> None:
@@ -91,26 +90,28 @@ class AbstractCloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         self._updatePrinters(all_configurations)
 
     def _onError(self, reply: QNetworkReply, error: QNetworkReply.NetworkError) -> None:
-        # TODO!
+        Logger.log("w", f"Failed to get clusters by machine type: {str(error)}.")
+
+    @pyqtSlot(str)
+    def printerSelected(self, unique_id: str):
+        print(unique_id)
+        if self._on_print_dialog:
+            self._on_print_dialog.close()
+
+    @pyqtSlot()
+    def refresh(self):
+        print("-REFRESH-")
         pass
 
-    def _openChoosePrinterDialog(self, machine_filter_id: str) -> None:
+    def _openChoosePrinterDialog(self) -> None:
         if self._on_print_dialog is None:
             qml_path = Resources.getPath(CuraApplication.ResourceTypes.QmlFiles, "Dialogs", "ChoosePrinterDialog.qml")
             self._on_print_dialog = CuraApplication.getInstance().createQmlComponent(qml_path, {})
         if self._on_print_dialog is None:  # Failed to load QML file.
             return
-        self._on_print_dialog.setProperty("machine_id_filter", machine_filter_id)
+        self._on_print_dialog.setProperty("manager", self)
         self._on_print_dialog.show()
 
     def requestWrite(self, nodes: List[SceneNode], file_name: Optional[str] = None, limit_mimetypes: bool = False, file_handler: Optional[FileHandler] = None, **kwargs) -> None:
-
-        # TODO:
-        #  - Prettify (and make usable) dialog.
-        #    (Including extruders... their metadata is already in the model. Is that enough though. Does that contain configurations as well?)
-        #  - On button clicked, fetch/push to here selected printer, hide dialog
-        #  - Find correct output-device for selected printer maybe via `CuraApplication.getInstance().getOutputDeviceManager().getOutputDevices()`
-        #    Call 'requestWrite' of the selected output-device.
-
-        self._openChoosePrinterDialog(CuraApplication.getInstance().getGlobalContainerStack().definition.getId())
+        self._openChoosePrinterDialog()
 
