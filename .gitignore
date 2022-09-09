@@ -99,3 +99,4 @@ conanbuildinfo.txt
 graph_info.json
 Ultimaker-Cura.spec
 .run/
+/cmake-build-debug/

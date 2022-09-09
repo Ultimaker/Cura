@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from ..Script import Script
-
+import re
 from UM.Application import Application #To get the current printer's settings.
 from UM.Logger import Logger
 
@@ -195,14 +195,14 @@ class PauseAtHeight(Script):
                 "custom_gcode_before_pause":
                 {
                     "label": "G-code Before Pause",
-                    "description": "Any custom g-code to run before the pause, for example, M300 S440 P200 to beep.",
+                    "description": "Any custom g-code to run before the pause, for example, M300 S440 P200 to beep. Separate multiple commands with a comma.",
                     "type": "str",
                     "default_value": ""
                 },
                 "custom_gcode_after_pause":
                 {
                     "label": "G-code After Pause",
-                    "description": "Any custom g-code to run after the pause, for example, M300 S440 P200 to beep.",
+                    "description": "Any custom g-code to run after the pause, for example, M300 S440 P200 to beep. Separate multiple commands with a comma.",
                     "type": "str",
                     "default_value": ""
                 }
@@ -258,8 +258,8 @@ class PauseAtHeight(Script):
         control_temperatures = Application.getInstance().getGlobalContainerStack().getProperty("machine_nozzle_temp_enabled", "value")
         initial_layer_height = Application.getInstance().getGlobalContainerStack().getProperty("layer_height_0", "value")
         display_text = self.getSettingValueByKey("display_text")
-        gcode_before = self.getSettingValueByKey("custom_gcode_before_pause")
-        gcode_after = self.getSettingValueByKey("custom_gcode_after_pause")
+        gcode_before = re.sub("\\s*,\\s*", "\n", self.getSettingValueByKey("custom_gcode_before_pause"))
+        gcode_after = re.sub("\\s*,\\s*", "\n", self.getSettingValueByKey("custom_gcode_after_pause"))
 
         pause_method = self.getSettingValueByKey("pause_method")
         pause_command = {
