@@ -172,6 +172,13 @@ class CloudOutputDeviceManager:
         self._syncing = False
         self._account.setSyncState(self.SYNC_SERVICE_NAME, SyncState.ERROR)
 
+    def _requestWrite(self, unique_id: str, nodes: List["SceneNode"]):
+        for remote in self._remote_clusters.values():
+            if unique_id == remote.name:  # No other id-type would match. Assume cloud doesn't have duplicate names.
+                remote.requestWrite(nodes)
+                return
+        Logger.log("e", f"Failed writing to specific cloud printer: {unique_id} not in remote clusters.")
+
     def _createMachineStacksForDiscoveredClusters(self, discovered_clusters: List[CloudClusterResponse]) -> None:
         """**Synchronously** create machines for discovered devices
 
@@ -193,7 +200,7 @@ class CloudOutputDeviceManager:
             output_device = CloudOutputDevice(self._api, cluster_data)
 
             if cluster_data.printer_type not in self._abstract_clusters:
-                self._abstract_clusters[cluster_data.printer_type] = AbstractCloudOutputDevice(self._api, cluster_data.printer_type)
+                self._abstract_clusters[cluster_data.printer_type] = AbstractCloudOutputDevice(self._api, cluster_data.printer_type, self._requestWrite, self.refreshConnections)
                 # Ensure that the abstract machine is added (either because it was never added, or it somehow got
                 # removed)
                 _abstract_machine = CuraStackBuilder.createAbstractMachine(cluster_data.printer_type)

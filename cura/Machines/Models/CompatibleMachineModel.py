@@ -29,6 +29,7 @@ class CompatibleMachineModel(ListModel):
         from cura.CuraApplication import CuraApplication
         machine_manager = CuraApplication.getInstance().getMachineManager()
         machine_manager.globalContainerChanged.connect(self._update)
+        machine_manager.outputDevicesChanged.connect(self._update)
 
     def _update(self) -> None:
         self.clear()
@@ -77,6 +78,6 @@ class CompatibleMachineModel(ListModel):
                 if all([len(extruder["materials"]) > 0 for extruder in extruder_configs.values()]):
                     self.appendItem({
                         "name": printer.name,
-                        "unique_id": printer.uniqueName,
+                        "unique_id": printer.name,  # <- Can assume the cloud doesn't have duplicate names?
                         "extruders": [extruder for extruder in extruder_configs.values()]
                     })
