@@ -4,7 +4,7 @@
     "inherits": "bcn3dsigma",
     "metadata": {
         "weight": "6",
-        "platform": "bcn3dsigmax_bed.stl",
+        "platform": "bcn3dsigmax_bed.3mf",
         "quality_definition": "bcn3dsigma"
     },
     "overrides": {
