@@ -13,7 +13,6 @@
         "machine_max_jerk_xy": { "value": 12.5 },
         "machine_width": { "default_value": 420 },
         "machine_max_feedrate_e": { "default_value": 35 },
-        "avoid_grinding_filament": { "value": false },
         "retraction_count_max": { "value": 100 }
     }
 }

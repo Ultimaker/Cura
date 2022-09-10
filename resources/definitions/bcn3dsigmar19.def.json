@@ -11,7 +11,6 @@
         "machine_acceleration": { "default_value": 600 },
         "machine_max_jerk_xy": { "value": 12.5 },
         "speed_travel": { "value": "150" },
-        "retraction_hop_after_extruder_switch_height": { "value": 1 },
-        "avoid_grinding_filament": { "value": false }
+        "retraction_hop_after_extruder_switch_height": { "value": 1 }
     }
 }

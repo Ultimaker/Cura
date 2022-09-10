@@ -18,138 +18,155 @@
   },
   "overrides": {
     "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+    "machine_center_is_zero": { "default_value": false },
     "machine_extruder_count": { "default_value": 2 },
+    "machine_nozzle_temp_enabled": { "value": true },
+    "machine_heated_bed": { "default_value": true },
     "machine_head_with_fans_polygon": { "default_value": [[-22, 60], [-22, -25], [27, 60], [27, -25]]},
+    "material_bed_temp_wait": { "value": true },
+    "material_print_temp_wait": { "value": true },
+    "material_bed_temp_prepend": { "value": true },
+    "material_print_temp_prepend": { "value": true },
     "meshfix_maximum_resolution": { "value": "(speed_wall_0 + speed_wall_x) / 60" },
     "meshfix_maximum_deviation": { "value": "layer_height / 4" },
+    "acceleration_enabled": { "value": true },
+    "jerk_enabled": { "value": true },
+
+    "acceleration_layer_0": { "value": "acceleration_topbottom" },
+    "acceleration_support_interface": { "value": "acceleration_topbottom" },
+    "adhesion_type": { "value": "'skirt'" },
+    "coasting_min_volume": { "value": "coasting_volume" },
+    "cool_fan_enabled": { "value": true },
+    "cool_fan_full_at_height": { "value": "0 if adhesion_type == 'raft' else layer_height_0 + 4 * layer_height" },
+    "gradual_support_infill_step_height": { "value": "max(5 * layer_height, 1)" },
+    "infill_line_width": { "value": "machine_nozzle_size" },
+    "infill_overlap": { "value": 15 },
+    "infill_pattern": { "value": "'grid'" },
+    "infill_wipe_dist": { "value": 0 },
+    "initial_layer_line_width_factor": { "value": 120 },
+    "jerk_layer_0": { "value": "jerk_topbottom" },
+    "jerk_prime_tower": { "value": "jerk_wall" },
+    "jerk_print": { "value": "machine_max_jerk_xy" },
+    "jerk_support_interface": { "value": "jerk_topbottom" },
+    "jerk_support": { "value": "jerk_wall" },
+    "jerk_topbottom": { "value": "jerk_wall_x" },
+    "jerk_travel": { "value": "jerk_print if magic_spiralize else machine_max_jerk_xy" },
+    "jerk_wall_0": { "value": "jerk_wall * 0.5" },
+    "jerk_wall": { "value": "jerk_print * 0.75" },
+    "layer_height_0": { "value": "min(extruderValues('machine_nozzle_size')) / 2" },
+    "layer_start_x": { "value": "machine_width/2" },
+    "layer_start_y": { "value": "machine_depth" },
+    "line_width": { "value": "machine_nozzle_size" },
+    "material_final_print_temperature": { "value": "material_print_temperature + -2.5 if material_flow_dependent_temperature else material_print_temperature" },
+    "material_flow_dependent_temperature": { "enabled": true, "value": false },
+    "material_initial_print_temperature": { "value": "material_print_temperature + 0 if material_flow_dependent_temperature else material_print_temperature" },
+    "multiple_mesh_overlap": { "value": "0.375 * machine_nozzle_size - xy_offset" },
+    "ooze_shield_enabled": { "value": false },
+    "optimize_wall_printing_order": { "value": true },
+    "raft_airgap": { "value": "min(extruderValues('machine_nozzle_size')) * 0.55" },
+    "raft_base_line_spacing": { "value": "extruderValue(adhesion_extruder_nr, 'machine_nozzle_size') * 7.5" },
+    "raft_base_line_width": { "value": "extruderValue(adhesion_extruder_nr, 'machine_nozzle_size') * 2.5" },
+    "raft_base_thickness": { "value": "extruderValue(adhesion_extruder_nr, 'machine_nozzle_size') * 0.75" },
+    "raft_interface_line_width": { "value": "line_width * 1.5" },
+    "raft_interface_thickness": { "value": "extruderValue(adhesion_extruder_nr, 'machine_nozzle_size') * 0.7" },
+    "raft_margin": { "value": 3 },
+    "retract_at_layer_change": { "value": false },
+    "retraction_combing": { "value": "'all'" },
+    "retraction_extrusion_window": { "value": 1 },
     "retraction_hop_after_extruder_switch_height": { "value": 5 },
-    "prime_tower_enable": { "resolve":  "False if 'BVOH' in extruderValues('material_type') else any(extruderValues('prime_tower_enable'))" }
+    "retraction_hop_enabled": { "value": true },
+    "retraction_hop_only_when_collides": { "value": true },
+    "retraction_hop": { "value": "2 * layer_height" },
+    "retraction_min_travel": { "value": "3.75 * machine_nozzle_size" },
+    "retraction_prime_speed": { "maximum_value_warning": "machine_max_feedrate_e" },
+    "retraction_retract_speed": { "value": "min(retraction_speed, machine_max_feedrate_e)", "maximum_value_warning": "machine_max_feedrate_e" },
+    "skin_angles": { "value": "[45, -45]" },
+    "skin_overlap": { "value": 25 },
+    "skin_preshrink": { "value": "expand_skins_expand_distance" },
+    "skirt_brim_minimal_length": { "value": 500 },
+    "skirt_brim_speed": { "value": "speed_layer_0" },
+    "skirt_line_count": { "enabled": false, "value": 1 },
+    "speed_support_interface": { "value": "speed_wall" },
+    "speed_topbottom": { "value": "speed_wall_x" },
+    "speed_travel_layer_0": { "value": "round(speed_travel * speed_layer_0 / speed_print, 1)" },
+    "speed_wall_0": { "value": "speed_wall" },
+    "speed_wall_x": { "value": "round(speed_print - (speed_print - speed_wall) / 2, 1)" },
+    "support_angle": { "value": 60 },
+    "support_bottom_distance": { "value": "layer_height" },
+    "support_bottom_height": { "value": "3 * layer_height" },
+    "support_conical_min_width": { "value": 10 },
+    "support_infill_rate": { "value": 15 },
+    "support_interface_density": { "value": 75 },
+    "support_interface_enable": { "value": false },
+    "support_interface_height": { "value": "5 * layer_height" },
+    "support_interface_pattern": { "value": "'lines'" },
+    "support_interface_skip_height": { "value": "layer_height" },
+    "support_line_width": { "value": "infill_line_width" },
+    "support_offset": { "value": "machine_nozzle_size / 2" },
+    "support_tower_maximum_supported_diameter": { "value": 3.0 },
+    "support_xy_distance": { "value": "machine_nozzle_size * 2" },
+    "support_z_distance": { "value": "max(2 * layer_height, 0.15)" },
+    "top_bottom_pattern": { "value": "'zigzag'" },
+    "travel_avoid_other_parts": { "value": false },
+    "wall_0_inset": { "value": 0 },
+    "wall_line_width_x": { "value": "line_width - 0.05" },
+    "wall_line_width": { "value": "line_width" },
+    "z_seam_x": { "value": "machine_width//2 if idex_print_mode == 'standard' else machine_width//4 if idex_print_mode == 'duplication' else (machine_width - 54)//4" },
+    "z_seam_y": { "value": "machine_depth" }
   },
   "settings": {
-    "material": {
-      "children": {
-        "retraction_amount_multiplier": {
-          "label": "Retraction Distance Multiplier",
-          "description": "Multiplier for the length of material retracted during a retraction move. This setting compensates filament compressions in the bowden tube for different bowden types/lengths.",
-          "type": "float",
-          "default_value": 1,
-          "enabled": false,
-          "settable_per_mesh": false,
-          "settable_per_extruder": true,
-          "comments": "BCN3D setting"
-        },
-        "avoid_grinding_filament": {
-          "label": "Prevent Filament Grinding",
-          "description": "When retracting repeatedly, this option moves the hotend to the purge tray and primes the needed amount of filament to allow working on a new piece of it. Disabling this feature can flatten the filament and cause grinding issues.",
-          "type": "bool",
-          "default_value": false,
-          "enabled": false,
-          "settable_per_extruder": true,
-          "comments": "BCN3D setting"
-        },
-        "retraction_count_max_avoid_grinding_filament": {
-          "label": "Maximum Retraction Count",
-          "description": "Number of retractions occurring within the retraction distance. When the number of retractions is reached, active extruder will park, prime and come back.",
-          "type": "int",
-          "default_value": 1000,
-          "minimum_value": "0",
-          "maximum_value_warning": "500",
-          "enabled": "avoid_grinding_filament",
-          "value": "retraction_count_max",
-          "settable_per_extruder": true,
-          "comments": "BCN3D setting"
-        }
-      }
-    },
-    "travel": {
-      "children": {
-        "retraction_hop_after_prime_tower": {
-          "label": "Z Hop After Prime Tower",
-          "description": "After priming in the tower, the build plate is lowered to create clearance between the nozzle and the print. This prevents the nozzle from leaving oozed material on the outside of a print.",
-          "type": "bool",
-          "default_value": true,
-          "value": "retraction_hop_enabled",
-          "enabled": "retraction_hop_enabled and machine_extruder_count > 1 and idex_print_mode == 'standard' and prime_tower_enable",
-          "settable_per_mesh": false,
-          "settable_per_extruder": true,
-          "comments": "BCN3D Setting"
-        },
-        "hop_at_layer_change": {
-          "label": "Z Hop At Layer Change",
-          "description": "Perform a Z Hop when the nozzle is moving to the next layer.",
-          "type": "bool",
-          "default_value": false,
-          "value": "not magic_spiralize",
-          "settable_per_mesh": false,
-          "settable_per_extruder": true,
-          "comments": "BCN3D setting"
-        },
-        "retraction_hop_height_at_layer_change": {
-          "label": "Z Hop Height At Layer Change",
-          "description": "Distance to lift Z when the nozzle is moving to the next layer.",
-          "unit": "mm",
-          "type": "float",
-          "default_value": 2,
-          "minimum_value": "0",
-          "minimum_value_warning": "0",
-          "maximum_value_warning": "5",
-          "enabled": "hop_at_layer_change",
-          "settable_per_mesh": false,
-          "settable_per_extruder": true,
-          "comments": "BCN3D setting"
-        }
-      }
-    },
-    "cooling": {
-      "children": {
-        "clone_cool_fan": {
-          "label": "Clone Print Cooling",
-          "description": "Enables cooling fan for the idle extruder. This setting allows better temperature control for dual extruder prints.",
-          "type": "bool",
-          "default_value": false,
-          "enabled": false,
-          "settable_per_extruder": false,
-          "comments": "BCN3D setting"
-        },
-        "clone_cool_fan_gcode": {
-          "label": "Clone Print GCode",
-          "description": "GCode to enable cooling fan for the idle extruder.",
-          "type": "enum",
-          "options": {
-            "": "No",
-            "M108 P1      ;enable layer fan for the idle extruder": "Yes"
-          },
-          "default_value": "",
-          "value": "'M108 P1      ;enable layer fan for the idle extruder' if clone_cool_fan else ''",
-          "enabled": false,
-          "settable_per_extruder": false,
-          "comments": "BCN3D setting"
-        }
-      }
-    },
     "platform_adhesion": {
       "children": {
-        "start_purge_distance": {
-          "label": "Start Purge Distance",
-          "description": "Filament distance purged before extruder starts printing.",
-          "unit": "mm",
-          "type": "float",
-          "default_value": 10,
-          "minimum_value": "0",
-          "settable_per_extruder": true,
-          "comments": "BCN3D setting"
-        },
-        "start_purge_speed": {
-          "label": "Start Purge Speed",
-          "description": "The speed at which the filament is pushed by the extruder when purging in the purge tray.",
-          "unit": "mm/s",
-          "type": "float",
-          "default_value": 30,
-          "minimum_value": "0",
-          "maximum_value_warning": "45",
+        "purge_in_bucket_before_start": {
+          "label": "Purge At Start of Print",
+          "description": "Purge filamet before extruder starts printing.",
+          "type": "bool",
+          "default_value": true,
+          "enabled": true,
           "settable_per_mesh": false,
           "settable_per_extruder": true,
-          "comments": "BCN3D setting"
+          "comments": "BCN3D setting",
+          "children": {
+            "start_purge_distance": {
+              "label": "Start Purge Distance",
+              "description": "Filament distance purged before extruder starts printing.",
+              "unit": "mm",
+              "type": "float",
+              "default_value": 10,
+              "minimum_value": "0",
+              "enabled": "purge_in_bucket_before_start",
+              "settable_per_mesh": false,
+              "settable_per_extruder": true,
+              "comments": "BCN3D setting"
+            },
+            "start_purge_speed": {
+              "label": "Start Purge Speed",
+              "description": "The speed at which the filament is pushed by the extruder when purging in the purge tray.",
+              "unit": "mm/s",
+              "type": "float",
+              "default_value": 30,
+              "value": "round(max(40 * (machine_nozzle_size / material_diameter) ** 2, machine_nozzle_size * layer_height * speed_infill / (math.pi * ((material_diameter / 2) ** 2))), 2)",
+              "minimum_value": "1",
+              "maximum_value_warning": "45",
+              "maximum_value": "machine_max_feedrate_e",
+              "enabled": "purge_in_bucket_before_start",
+              "settable_per_mesh": false,
+              "settable_per_extruder": true,
+              "comments": "BCN3D setting"
+            },
+            "purge_in_bucket_before_start_gcode": {
+              "label": "Purge in bucket before start GCode",
+              "description": "GCode to purge in bucket each extruder.",
+              "type": "str",
+              "default_value": "",
+              "value": "'\\nG92 E0 \\t\\t;zero the extruded length\\nG1 E{start_purge_distance} F{start_purge_speed}\\nG92 E0\\nG4 S2 \\t\\t;stabilize hotend\\nG1 E-0.5 F1000\\nG92 E0\\n'",
+              "resolve": "None if purge_in_bucket_before_start else ';'",
+              "enabled": false,
+              "settable_per_mesh": false,
+              "settable_per_extruder": true,
+              "comments": "BCN3D setting"
+            }
+          }
         }
       }
     },
@@ -170,178 +187,54 @@
           "settable_per_extruder": false,
           "comments": "BCN3D setting"
         },
-        "fix_tool_change_travel": {
-          "label": "Fix Tool Change Travel",
-          "description": "Allows the new tool to go straight to the position where it has to print, instead of going to the last position before tool change and then travel to the position where it has to print.",
-          "type": "bool",
-          "default_value": false,
-          "enabled": false,
-          "settable_per_mesh": false,
-          "settable_per_extruder": false,
-          "comments": "BCN3D setting"
-        },
         "purge_in_bucket": {
           "label": "Purge At Tool Change",
           "description": "Add an extra prime amount in the bucket to compensate oozed material while the Extruder was idle. Disable Prime tower to save time and filament.",
           "type": "bool",
-          "default_value": false,
-          "enabled": false,
-          "settable_per_extruder": true,
-          "comments": "BCN3D setting"
-        },
-        "purge_distance": {
-          "label": "Purge Distance",
-          "description": "Filament distance purged at extruder change.",
-          "unit": "mm",
-          "type": "float",
-          "default_value": 2.5,
-          "minimum_value": "0",
-          "maximum_value_warning": "50",
-          "enabled": "purge_in_bucket and not smart_purge and idex_print_mode == 'standard'",
-          "settable_per_extruder": true,
-          "comments": "BCN3D setting"
-        },
-        "purge_in_bucket_enable_gcode": {
-          "label": "Purge At Tool Change Enable GCode",
-          "description": "GCode to enable Purge At Tool Change commands.",
-          "type": "enum",
-          "options": {
-            ";": "No",
-            "": "Yes"
-          },
-          "default_value": "",
-          "value": "'' if purge_in_bucket and not smart_purge else ';'",
-          "enabled": false,
-          "settable_per_extruder": true,
-          "comments": "BCN3D setting"
-        },
-        "smart_purge": {
-          "label": "Use Adaptive Purge Distance",
-          "description": "Make the purged distance variable according to idle time.",
-          "type": "bool",
-          "default_value": false,
-          "enabled": "purge_in_bucket and idex_print_mode == 'standard'",
+          "default_value": true,
+          "enabled": "idex_print_mode == 'standard'",
           "settable_per_extruder": true,
           "comments": "BCN3D setting",
           "children": {
-            "smart_purge_minimum_purge_distance": {
-              "label": "Minimum Purge Distance",
-              "description": "Minimum distance to purge when changing toolheads.",
+            "purge_distance": {
+              "label": "Purge Distance",
+              "description": "Filament distance purged at extruder change.",
               "unit": "mm",
               "type": "float",
-              "default_value": 0,
+              "default_value": 2.5,
               "minimum_value": "0",
-              "maximum_value": "smart_purge_maximum_purge_distance",
-              "minimum_value_warning": "0",
               "maximum_value_warning": "50",
-              "enabled": "smart_purge and purge_in_bucket and idex_print_mode == 'standard'",
+              "enabled": "purge_in_bucket and idex_print_mode == 'standard'",
+              "settable_per_mesh": false,
               "settable_per_extruder": true,
               "comments": "BCN3D setting"
             },
-            "smart_purge_maximum_purge_distance": {
-              "label": "Maximum Purge Distance",
-              "description": "Maximum distance to purge when changing toolheads.",
-              "unit": "mm",
-              "type": "float",
-              "default_value": 0,
-              "minimum_value": "smart_purge_minimum_purge_distance",
-              "minimum_value_warning": "0",
-              "maximum_value_warning": "50",
-              "enabled": "smart_purge and purge_in_bucket and idex_print_mode == 'standard'",
-              "settable_per_extruder": true,
-              "comments": "BCN3D setting"
-            },
-            "smart_purge_slope": {
-              "label": "Increase Distance by",
-              "description": "Distance to purge per minute idle. Purged distance will increase this amount each minute the toolhead remains idle. The real purged distance will never be shorter than the Minimum Purge Distance, or greater than the Maximum Purge Distance.",
-              "unit": "mm/min",
-              "type": "float",
-              "default_value": 0,
-              "minimum_value": "0",
-              "minimum_value_warning": "0",
-              "maximum_value_warning": "50",
-              "enabled": "smart_purge and purge_in_bucket and idex_print_mode == 'standard'",
-              "settable_per_extruder": true,
-              "comments": "BCN3D setting"
-            },
-            "smart_purge_slope_gcode": {
-              "label": "Distance Gradient",
-              "description": "GCode to send proper value to the machine.",
+            "purge_speed": {
+              "label": "Purge Speed",
+              "description": "The speed at which the filament is pushed by the extruder when purging in the purge tray.",
               "unit": "mm/s",
               "type": "float",
-              "default_value": 0,
-              "value": "smart_purge_slope / float(60)",
+              "default_value": 100,
+              "minimum_value": "0",
+              "maximum_value": "machine_max_feedrate_e",
+              "enabled": "purge_in_bucket and idex_print_mode == 'standard'",
+              "settable_per_mesh": false,
+              "settable_per_extruder": true,
+              "comments": "BCN3D setting"
+            },
+            "purge_in_bucket_at_switch_gcode": {
+              "label": "Purge in bucket before start GCode",
+              "description": "GCode to purge in bucket each extruder.",
+              "type": "str",
+              "default_value": "",
+              "value": "'G92 E-{switch_extruder_retraction_amount}\\nG1 E0 F{retraction_speed} ;Restore E position\\nG1 E{purge_distance} F{purge_speed} ;default purge\\nG92 E0\\nG4 S2\\nG1 E-{switch_extruder_retraction_amount} F{retraction_speed}\\nG92 E0\\n'",
+              "resolve": "None if purge_in_bucket and idex_print_mode == 'standard' else ';'",
               "enabled": false,
+              "settable_per_mesh": false,
               "settable_per_extruder": true,
               "comments": "BCN3D setting"
             }
           }
-        },
-        "smart_purge_enable_gcode": {
-          "label": "Smart Purge Enable GCode",
-          "description": "GCode to enable smart purge commands.",
-          "type": "enum",
-          "options": {
-            ";": "No",
-            "": "Yes"
-          },
-          "default_value": "",
-          "value": "'' if smart_purge and purge_in_bucket else ';'",
-          "enabled": false,
-          "settable_per_extruder": true,
-          "comments": "BCN3D setting"
-        },
-        "prime_tower_closest_to": {
-          "label": "Prime Tower Preferred Position",
-          "description": "Select the preferred area of the buildplate to automatically place the prime tower.",
-          "type": "enum",
-          "options": {
-            "top-left": "Top Left",
-            "top": "Top",
-            "top-right": "Top Right",
-            "right": "Right",
-            "bottom-right": "Bottom Right",
-            "bottom": "Bottom",
-            "bottom-left": "Bottom Left",
-            "left": "Left"
-          },
-          "default_value": "top-right",
-          "enabled": "resolveOrValue('prime_tower_enable')",
-          "settable_per_mesh": false,
-          "settable_per_extruder": false,
-          "comments": "BCN3D setting"
-        }
-      }
-    },
-    "blackmagic": {
-      "children": {
-        "material_type": {
-          "label": "Material type",
-          "description": "Type of material, used internally within BCN3D qualities.",
-          "type": "str",
-          "default_value": "material",
-          "enabled": false,
-          "settable_per_extruder": true,
-          "comments": "BCN3D setting"
-        },
-        "machine_nozzle_type": {
-          "label": "Nozzle type",
-          "description": "Type of nozzle, used internally within BCN3D variants.",
-          "type": "str",
-          "default_value": "",
-          "enabled": false,
-          "settable_per_extruder": true,
-          "comments": "BCN3D setting"
-        },
-        "purge_in_bucket_before_start_gcode": {
-          "label": "Purge in bucket before start GCode",
-          "description": "GCode to purge in bucket each extruder.",
-          "type": "str",
-          "default_value": "",
-          "value": "'\\nG92 E0 \\t\\t;zero the extruded length\\nG1 E{start_purge_distance} F{start_purge_speed}\\nG92 E0\\nG4 S2 \\t\\t;stabilize hotend\\nG1 E-0.5 F1000\\nG92 E0\\n'",
-          "enabled": false,
-          "settable_per_extruder": true,
-          "comments": "BCN3D setting"
         }
       }
     }

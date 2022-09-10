@@ -16,7 +16,7 @@
         },
         "machine_nozzle_offset_x": { "default_value": 0.0 },
         "machine_nozzle_offset_y": { "default_value": 0.0 },
-        "machine_extruder_start_code": { "default_value": "G91\nG1 Z{retraction_hop_after_extruder_switch_height} F12000\nG90\nG92 E-{switch_extruder_retraction_amount}\nG1 E0 F1000 ;Restore E position\nG1 E{purge_distance} F100;defaultpurge\nG92 E0\nG4 S3\nG1 E-{switch_extruder_retraction_amount} F1000\nG92 E0" },
+        "machine_extruder_start_code": { "value": "'G91\\nG1 Z{retraction_hop_after_extruder_switch_height} F12000\\nG90\\n{purge_in_bucket_at_switch_gcode}'" },
         "machine_extruder_start_pos_abs": { "default_value": false },
         "machine_extruder_start_pos_x": { "default_value": 0.0 },
         "machine_extruder_start_pos_y": { "default_value": 0.0 },

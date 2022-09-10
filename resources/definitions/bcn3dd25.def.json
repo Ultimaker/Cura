@@ -16,7 +16,6 @@
     },
     "overrides": {
         "machine_name": { "default_value": "Sigma D25" },
-        "machine_height": { "default_value": 200 },
-        "gantry_height": { "value": 12 }
+        "machine_height": { "default_value": 200 }
     }
 }
