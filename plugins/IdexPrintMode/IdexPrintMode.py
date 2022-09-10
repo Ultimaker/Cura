@@ -13,7 +13,7 @@ class IdexPrintMode(Extension):
         self._application.globalContainerStackChanged.connect(self._onGlobalContainerStackChanged)
         self._onGlobalContainerStackChanged()
 
-    def _onGlobalContainerStackChanged(self):
+    def _onGlobalContainerStackChanged(self) -> None:
         self._global_container_stack = self._application.getGlobalContainerStack()
         if self._global_container_stack:
             self._global_container_stack.propertyChanged.connect(self._onPropertyChanged)
@@ -39,7 +39,7 @@ class IdexPrintMode(Extension):
         left.enabledChanged.connect(self._onEnabledChangedLeft)
         right.enabledChanged.connect(self._onEnabledChangedRight)
 
-    def _onEnabledChangedLeft(self):
+    def _onEnabledChangedLeft(self) -> None:
         print_mode = self._global_container_stack.getProperty("idex_print_mode", "value")
         extruders = self._global_container_stack.extruderList
         if print_mode == None or len(extruders) != 2: return
@@ -47,7 +47,7 @@ class IdexPrintMode(Extension):
         if not extruders[0].isEnabled:  # force left extruder to stay on for mirror/duplication
             self._application.getMachineManager().setExtruderEnabled(0, True)
 
-    def _onEnabledChangedRight(self):
+    def _onEnabledChangedRight(self) -> None:
         print_mode = self._global_container_stack.getProperty("idex_print_mode", "value")
         extruders = self._global_container_stack.extruderList
         if print_mode == None or len(extruders) != 2: return
