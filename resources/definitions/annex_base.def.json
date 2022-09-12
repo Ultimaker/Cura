@@ -14,7 +14,7 @@
         "has_materials": true,
         "has_variants": true,
         "variants_name": "Toolhead",
-        "preferred_variant_name": "V6 0.40mm",
+        "preferred_variant_name": "0.40mm",
         "machine_extruder_trains": { "0": "annex_extruder_0" },
         "preferred_material": "generic_abs",
         "exclude_materials": []
