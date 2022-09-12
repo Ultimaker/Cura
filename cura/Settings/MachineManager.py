@@ -205,11 +205,7 @@ class MachineManager(QObject):
                                           ConnectionType.NetworkConnection in machine.configuredConnectionTypes,
                           machines)
         if online_only:
-            # LAN printers can have is_online = False but should still be included,
-            # their online status is only checked when they are the active printer.
-            machines = filter(lambda machine: parseBool(machine.getMetaDataEntry("is_online", False) or
-                                              ConnectionType.NetworkConnection in machine.configuredConnectionTypes),
-                              machines)
+            machines = filter(lambda machine: parseBool(machine.getMetaDataEntry("is_online", False)), machines)
 
         return list(machines)
 
