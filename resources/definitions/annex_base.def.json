@@ -1,6 +1,6 @@
 {
     "name": "Annex Base",
-    "version": 1,
+    "version": 2,
     "inherits": "fdmprinter",
     "metadata": 
     {

@@ -1,6 +1,6 @@
 {
     "name": "Annex K3",
-    "version": 1,
+    "version": 2,
     "inherits": "annex_base",
     "metadata":
     {
