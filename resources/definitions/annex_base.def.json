@@ -45,7 +45,7 @@
         "machine_max_feedrate_z":                       { "default_value": 40 },
         "machine_max_feedrate_e":                       { "default_value": 120 },
         "machine_gcode_flavor":                         { "default_value": "RepRap (RepRap)" },
-        "machine_start_gcode":                          { "default_value": "print_start" },
+        "machine_start_gcode":                          { "default_value": "M82 ;absolute extrusion mode\nM568 P0 R{material_standby_temperature} S{material_print_temperature_layer_0} A0 ;Set Standby and Active Temperature for the hotend\nM140 S{material_bed_temperature_layer_0} ; Set Bed Temperature\nM568 A1 ; Preheat Nozzle\nG4 S10 ; allow partial nozzle warmup\nG32 ; home all axes and Level the Gantry\nG29 S1 ; Load Mesh compensation\nG1 X0 Y0 F12000 ; Move to the Home Position to prevent oozing to stick to the center of the bed\nM568 A2 ; Heat Nozzle\nM116 ; Wait for temperatures to Stabilize\nM117 Purge extruder\nG92 E0 ; reset extruder\nG1 Z1.0 F3000 ; move z up little to prevent scratching of surface\nG1 X2 Y20 Z0.3 F5000.0 ; move to start-line position\nG1 X2 Y120.0 Z0.3 F1500.0 E15 ; draw 1st line\nG1 X2 Y120.0 Z0.4 F5000.0 ; move to side a little\nG1 X2 Y20 Z0.4 F1500.0 E30 ; draw 2nd line\nG92 E0 ; reset extruder\nG1 Z1.0 F3000 ; move z up little to prevent scratching of surface" },
         "machine_end_gcode":                            { "default_value": "M0" },
         "adhesion_type":                                { "default_value": "skirt" },
         "retraction_amount":                            { "default_value": 0.75 },
