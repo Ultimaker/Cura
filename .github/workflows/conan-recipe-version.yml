@@ -122,7 +122,7 @@ jobs:
                     latest_branch_version = tools.Version("0.0.0")
                     latest_branch_tag = None
                     for tag in repo.git.tag(merged = True).splitlines():
-                        if str(tag).startswith("firmware") of str(tag).startswith("master"):
+                        if str(tag).startswith("firmware") or str(tag).startswith("master"):
                             continue  # Quick-fix for the versioning scheme name of the embedded team in fdm_materials(_private) repo
                         try:
                             version = tools.Version(tag)
