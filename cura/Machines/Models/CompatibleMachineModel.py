@@ -79,5 +79,5 @@ class CompatibleMachineModel(ListModel):
                     self.appendItem({
                         "name": printer.name,
                         "unique_id": printer.name,  # <- Can assume the cloud doesn't have duplicate names?
-                        "extruders": [extruder for extruder in extruder_configs.values()]
+                        "extruders": extruder_configs.values()
                     })
