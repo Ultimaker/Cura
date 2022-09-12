@@ -153,6 +153,7 @@ jobs:
                                 latest_branch_version_prerelease = f"{latest_branch_version.prerelease}.1"
                             if event_name == "pull_request":
                                 actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-{latest_branch_version_prerelease.lower()}+{buildmetadata}pr_{issue_number}_{no_commits}"
+                                channel_metadata = f"{channel}_{no_commits}"
                             else:
                                 if channel in ("stable", "_", ""):
                                     channel_metadata = f"{no_commits}"
