@@ -25,7 +25,7 @@
     "metadata": {
         "visible": true,
         "quality_definition": "vivedino_trex2plus",
-        "platform": "vivedino_trex2.stl",
+        "platform": "vivedino_trex.stl",
         "machine_extruder_trains": {
             "0": "trex2_extruder_0",
             "1": "trex2_extruder_1"
