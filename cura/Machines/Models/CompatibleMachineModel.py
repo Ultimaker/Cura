@@ -47,11 +47,13 @@ class CompatibleMachineModel(ListModel):
                     compatible_type = machine_manager.activeMachine.extruderList[extruder.getPosition()].material.getMetaDataEntry("material", "")
                     has_compatible_material = extruder.activeMaterial and compatible_type in [extruder.activeMaterial.type, None, "None", "", "empty"]
 
-                    materials = [] if not has_compatible_material else [{
+                    materials = []
+                    if  has_compatible_material:
+                        materials.append({
                             "brand": extruder.activeMaterial.brand,
                             "name": extruder.activeMaterial.name,
-                            "hexcolor": extruder.activeMaterial.color
-                        }]
+                            "hexcolor": extruder.activeMaterial.color,
+                        })
                     extruder_configs[extruder.getPosition()] = {
                         "position": extruder.getPosition(),
                         "core": extruder.hotendID,
