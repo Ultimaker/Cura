@@ -85,7 +85,7 @@ Rectangle
                         anchors.left: extruderCore.right
                         anchors.verticalCenter: extruderCore.verticalCenter
                         anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                        text: modelData.materials.length == 1 ? modelData.materials[0].brand + " " + modelData.materials[0].name : ""
+                        text: modelData.materials.length == 1 ? `${modelData.materials[0].brand} ${modelData.materials[0].name}` : ""
                         visible: modelData.materials.length == 1
                     }
 
@@ -101,7 +101,7 @@ Rectangle
                             model: modelData.materials
                             UM.Label
                             {
-                                text: modelData.brand + " " + modelData.name
+                                text: `${modelData.brand} ${modelData.name}`
                             }
                         }
                     }
