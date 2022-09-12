@@ -48,7 +48,7 @@ class CompatibleMachineModel(ListModel):
                     has_compatible_material = extruder.activeMaterial and compatible_type in [extruder.activeMaterial.type, None, "None", "", "empty"]
 
                     materials = []
-                    if  has_compatible_material:
+                    if has_compatible_material:
                         materials.append({
                             "brand": extruder.activeMaterial.brand,
                             "name": extruder.activeMaterial.name,
@@ -77,9 +77,9 @@ class CompatibleMachineModel(ListModel):
                             "hexcolor": extruder.material.color
                         })
 
-                if all([len(extruder["materials"]) > 0 for extruder in extruder_configs.values()]):
+                if any([len(extruder["materials"]) > 0 for extruder in extruder_configs.values()]):
                     self.appendItem({
                         "name": printer.name,
                         "unique_id": printer.name,  # <- Can assume the cloud doesn't have duplicate names?
-                        "extruders": extruder_configs.values()
+                        "extruders": list(extruder_configs.values())
                     })
