@@ -101,7 +101,6 @@
         "default_material_print_temperature": { "value": "200" },
         "multiple_mesh_overlap": { "value": "0" },
         "prime_tower_enable": { "value": "True" },
-        "raft_airgap": { "value": "0" },
         "retraction_amount": { "value": "6.5" },
         "retraction_combing": { "value": "'no_outer_surfaces'"},
         "retraction_hop": { "value": "2" },
