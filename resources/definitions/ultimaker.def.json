@@ -239,6 +239,9 @@
         "gradual_support_infill_step_height": {
             "value": "4*layer_height"
         },
+        "raft_interface_line_width": {
+            "value": "(raft_base_line_width + raft_surface_line_width) / 2"
+        },
         "raft_interface_thickness": {
             "value": "(raft_base_thickness + raft_surface_thickness) / 2"
         },
