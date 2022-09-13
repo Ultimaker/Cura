@@ -71,14 +71,15 @@ class UFPWriter(MeshWriter):
         try:
             gcode = archive.getStream("/3D/model.gcode")
             gcode.write(gcode_textio.getvalue().encode("UTF-8"))
-            archive.addRelation(virtual_path = "/3D/model.gcode", relation_type = "http://schemas.ultimaker.org/package/2018/relationships/gcode")
+            archive.addRelation(virtual_path = "/3D/model.gcode",
+                                relation_type = "http://schemas.ultimaker.org/package/2018/relationships/gcode")
         except EnvironmentError as e:
             error_msg = catalog.i18nc("@info:error", "Can't write to UFP file:") + " " + str(e)
             self.setInformation(error_msg)
             Logger.error(error_msg)
             return False
 
-        #Write settings
+        # Write settings
         try:
             archive.addContentType(extension="json", mime_type="application/json")
             setting_textio = StringIO()
