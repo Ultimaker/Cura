@@ -1,7 +1,6 @@
-# Copyright (c) 2021 Ultimaker B.V.
+# Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import json
-import copy
 from typing import cast, List, Dict
 
 from Charon.VirtualFile import VirtualFile  # To open UFP files.
