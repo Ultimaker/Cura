@@ -182,10 +182,6 @@ class UFPWriter(MeshWriter):
         return True
 
     @staticmethod
-    def _writePluginMetadataToArchive() -> None:
-        pass
-
-    @staticmethod
     def _writeObjectList(archive):
         """Write a json list of object names to the METADATA_OBJECTS_PATH metadata field
 
