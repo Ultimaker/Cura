@@ -104,7 +104,6 @@
         "raft_airgap": { "value": "0" },
         "raft_base_speed": { "value": "20" },
         "raft_base_thickness": { "value": "0.3" },
-        "raft_interface_line_spacing": { "value": "0.5" },
         "raft_interface_speed": { "value": "20" },
         "raft_speed": { "value": "25" },
         "retraction_amount": { "value": "6.5" },
