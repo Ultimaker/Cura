@@ -245,6 +245,9 @@
         "raft_base_thickness": {
             "value": "min(machine_nozzle_size * 0.75, 0.3)"
         },
+        "raft_interface_fan_speed": {
+            "value": "(raft_base_fan_speed + raft_surface_fan_speed) / 2"
+        },
         "raft_interface_line_width": {
             "value": "(raft_base_line_width + raft_surface_line_width) / 2"
         },
@@ -256,6 +259,9 @@
         },
         "raft_speed": {
             "value": 15
+        },
+        "raft_surface_fan_speed": {
+            "value": "cool_fan_speed"
         },
         "raft_surface_speed": {
             "value": "speed_topbottom"
