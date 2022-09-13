@@ -108,7 +108,6 @@
         "raft_interface_line_width": { "value": "0.5" },
         "raft_interface_speed": { "value": "20" },
         "raft_interface_thickness": { "value": "0.2" },
-        "raft_margin": { "value": "10" },
         "raft_speed": { "value": "25" },
         "raft_surface_layers": { "value": "1" },
         "retraction_amount": { "value": "6.5" },
