@@ -18,6 +18,7 @@ from UM.PluginRegistry import PluginRegistry  # To get the g-code writer.
 
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
+from UM.Settings.InstanceContainer import InstanceContainer
 from cura.CuraApplication import CuraApplication
 from cura.Settings.CuraStackBuilder import CuraStackBuilder
 from cura.Settings.GlobalStack import GlobalStack
@@ -225,7 +226,7 @@ class UFPWriter(MeshWriter):
         global_stack = cast(GlobalStack, Application.getInstance().getGlobalContainerStack())
 
         # Add global user or quality changes
-        global_flattened_changes = CuraStackBuilder.createFlattenedContainerInstance(global_stack.userChanges, global_stack.qualityChanges)
+        global_flattened_changes = InstanceContainer.createMergedInstanceContainer(global_stack.userChanges, global_stack.qualityChanges)
         for setting in global_flattened_changes.getAllKeys():
             settings["global"]["changes"][setting] = global_flattened_changes.getProperty(setting, "value")
 
@@ -240,7 +241,7 @@ class UFPWriter(MeshWriter):
             settings[f"extruder_{i}"]["all_settings"] = {}
 
             # Add extruder user or quality changes
-            extruder_flattened_changes = CuraStackBuilder.createFlattenedContainerInstance(extruder.userChanges, extruder.qualityChanges)
+            extruder_flattened_changes = InstanceContainer.createMergedInstanceContainer(extruder.userChanges, extruder.qualityChanges)
             for setting in extruder_flattened_changes.getAllKeys():
                 settings[f"extruder_{i}"]["changes"][setting] = extruder_flattened_changes.getProperty(setting, "value")
 

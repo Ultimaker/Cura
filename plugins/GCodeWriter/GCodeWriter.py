@@ -127,22 +127,22 @@ class GCodeWriter(MeshWriter):
             container_with_profile.setDefinition(machine_definition_id_for_quality)
             container_with_profile.setMetaDataEntry("setting_version", stack.quality.getMetaDataEntry("setting_version"))
 
-        flat_global_container = CuraStackBuilder.createFlattenedContainerInstance(stack.userChanges, container_with_profile)
+        merged_global_instance_container = InstanceContainer.createMergedInstanceContainer(stack.userChanges, container_with_profile)
         # If the quality changes is not set, we need to set type manually
-        if flat_global_container.getMetaDataEntry("type", None) is None:
-            flat_global_container.setMetaDataEntry("type", "quality_changes")
+        if merged_global_instance_container.getMetaDataEntry("type", None) is None:
+            merged_global_instance_container.setMetaDataEntry("type", "quality_changes")
 
         # Ensure that quality_type is set. (Can happen if we have empty quality changes).
-        if flat_global_container.getMetaDataEntry("quality_type", None) is None:
-            flat_global_container.setMetaDataEntry("quality_type", stack.quality.getMetaDataEntry("quality_type", "normal"))
+        if merged_global_instance_container.getMetaDataEntry("quality_type", None) is None:
+            merged_global_instance_container.setMetaDataEntry("quality_type", stack.quality.getMetaDataEntry("quality_type", "normal"))
 
         # Get the machine definition ID for quality profiles
-        flat_global_container.setMetaDataEntry("definition", machine_definition_id_for_quality)
+        merged_global_instance_container.setMetaDataEntry("definition", machine_definition_id_for_quality)
 
-        serialized = flat_global_container.serialize()
+        serialized = merged_global_instance_container.serialize()
         data = {"global_quality": serialized}
 
-        all_setting_keys = flat_global_container.getAllKeys()
+        all_setting_keys = merged_global_instance_container.getAllKeys()
         for extruder in stack.extruderList:
             extruder_quality = extruder.qualityChanges
             if extruder_quality.getId() == "empty_quality_changes":
@@ -156,7 +156,7 @@ class GCodeWriter(MeshWriter):
                 extruder_quality.setDefinition(machine_definition_id_for_quality)
                 extruder_quality.setMetaDataEntry("setting_version", stack.quality.getMetaDataEntry("setting_version"))
 
-            flat_extruder_quality = CuraStackBuilder.createFlattenedContainerInstance(extruder.userChanges, extruder_quality)
+            flat_extruder_quality = InstanceContainer.createMergedInstanceContainer(extruder.userChanges, extruder_quality)
             # If the quality changes is not set, we need to set type manually
             if flat_extruder_quality.getMetaDataEntry("type", None) is None:
                 flat_extruder_quality.setMetaDataEntry("type", "quality_changes")
