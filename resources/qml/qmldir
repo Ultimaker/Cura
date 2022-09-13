@@ -17,6 +17,7 @@ PrinterTypeLabel 1.0 PrinterTypeLabel.qml
 ViewsSelector 1.0 ViewsSelector.qml
 SettingView 1.0 SettingView.qml
 ProfileMenu 1.0 ProfileMenu.qml
+PrintSelectorCard 1.0 PrintSelectorCard.qml
 
 
 # Cura/WelcomePages

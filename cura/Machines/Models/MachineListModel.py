@@ -5,10 +5,13 @@
 # online cloud connected printers are represented within this ListModel. Additional information such as the number of
 # connected printers for each printer type is gathered.
 
-from PyQt6.QtCore import Qt, QTimer, pyqtSlot, pyqtProperty, pyqtSignal
+from typing import Optional
+
+from PyQt6.QtCore import Qt, QTimer, QObject, pyqtSlot, pyqtProperty, pyqtSignal
 
 from UM.Qt.ListModel import ListModel
 from UM.Settings.ContainerStack import ContainerStack
+from UM.Settings.Interfaces import ContainerInterface
 from UM.i18n import i18nCatalog
 from UM.Util import parseBool
 from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
@@ -27,7 +30,7 @@ class MachineListModel(ListModel):
     IsAbstractMachineRole = Qt.ItemDataRole.UserRole + 7
     ComponentTypeRole = Qt.ItemDataRole.UserRole + 8
 
-    def __init__(self, parent=None) -> None:
+    def __init__(self, parent: Optional[QObject] = None) -> None:
         super().__init__(parent)
 
         self._show_cloud_printers = False
@@ -66,7 +69,7 @@ class MachineListModel(ListModel):
         self._updateDelayed()
         self.showCloudPrintersChanged.emit(show_cloud_printers)
 
-    def _onContainerChanged(self, container) -> None:
+    def _onContainerChanged(self, container: ContainerInterface) -> None:
         """Handler for container added/removed events from registry"""
 
         # We only need to update when the added / removed container GlobalStack
@@ -79,14 +82,15 @@ class MachineListModel(ListModel):
     def _update(self) -> None:
         self.clear()
 
+        from cura.CuraApplication import CuraApplication
+        machines_manager = CuraApplication.getInstance().getMachineManager()
+
         other_machine_stacks = CuraContainerRegistry.getInstance().findContainerStacks(type="machine")
 
         abstract_machine_stacks = CuraContainerRegistry.getInstance().findContainerStacks(is_abstract_machine = "True")
         abstract_machine_stacks.sort(key = lambda machine: machine.getName(), reverse = True)
         for abstract_machine in abstract_machine_stacks:
             definition_id = abstract_machine.definition.getId()
-            from cura.CuraApplication import CuraApplication
-            machines_manager = CuraApplication.getInstance().getMachineManager()
             online_machine_stacks = machines_manager.getMachinesWithDefinition(definition_id, online_only = True)
 
             online_machine_stacks = list(filter(lambda machine: machine.hasNetworkedConnection(), online_machine_stacks))
@@ -128,11 +132,11 @@ class MachineListModel(ListModel):
             return
 
         self.appendItem({
-                        "componentType": "MACHINE",
-                        "name": container_stack.getName(),
+                         "componentType": "MACHINE",
+                         "name": container_stack.getName(),
                          "id": container_stack.getId(),
                          "metadata": container_stack.getMetaData().copy(),
                          "isOnline": is_online,
                          "isAbstractMachine": parseBool(container_stack.getMetaDataEntry("is_abstract_machine", False)),
                          "machineCount": machine_count,
-                         })
+                        })
