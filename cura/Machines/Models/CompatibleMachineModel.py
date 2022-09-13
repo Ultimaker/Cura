@@ -44,7 +44,10 @@ class CompatibleMachineModel(ListModel):
 
                 # initialize & add current active material:
                 for extruder in printer.extruders:
-                    compatible_type = machine_manager.activeMachine.extruderList[extruder.getPosition()].material.getMetaDataEntry("material", "")
+                    if extruder.getPosition() in machine_manager.activeMachine.extruderList:
+                        compatible_type = machine_manager.activeMachine.extruderList[extruder.getPosition()].material.getMetaDataEntry("material", "")
+                    else:
+                        compatible_type = ""
                     has_compatible_material = extruder.activeMaterial and compatible_type in [extruder.activeMaterial.type, None, "None", "", "empty"]
 
                     materials = []
@@ -63,7 +66,10 @@ class CompatibleMachineModel(ListModel):
                 # add currently inactive, but possible materials:
                 for configuration in printer.availableConfigurations:
                     for extruder in configuration.extruderConfigurations:
-                        compatible_type = machine_manager.activeMachine.extruderList[extruder.position].material.getMetaDataEntry("material", "")
+                        if extruder.position in machine_manager.activeMachine.extruderList:
+                            compatible_type = machine_manager.activeMachine.extruderList[extruder.position].material.getMetaDataEntry("material", "")
+                        else:
+                            compatible_type = ""
                         if compatible_type not in [extruder.material.type, None, "None", "", "empty"]:
                             continue
 
