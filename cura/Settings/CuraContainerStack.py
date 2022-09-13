@@ -49,7 +49,7 @@ class CuraContainerStack(ContainerStack):
         self._empty_material = cura_empty_instance_containers.empty_material_container #type: InstanceContainer
         self._empty_variant = cura_empty_instance_containers.empty_variant_container #type: InstanceContainer
 
-        self._containers = [self._empty_instance_container for i in range(len(_ContainerIndexes.IndexTypeMap))] #type: List[ContainerInterface]
+        self._containers: List[ContainerInterface] = [self._empty_instance_container for i in _ContainerIndexes.IndexTypeMap]
         self._containers[_ContainerIndexes.QualityChanges] = self._empty_quality_changes
         self._containers[_ContainerIndexes.Quality] = self._empty_quality
         self._containers[_ContainerIndexes.Material] = self._empty_material

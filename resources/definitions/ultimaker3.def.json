@@ -82,7 +82,6 @@
 
         "prime_blob_enable": { "enabled": true, "default_value": true, "value": "resolveOrValue('print_sequence') != 'one_at_a_time'" },
 
-        "acceleration_enabled": { "value": "True" },
         "acceleration_layer_0": { "value": "acceleration_topbottom" },
         "acceleration_prime_tower": { "value": "math.ceil(acceleration_print * 2000 / 3500)" },
         "acceleration_print": { "value": "3500" },
@@ -117,7 +116,6 @@
         "raft_interface_line_spacing": { "value": "0.5" },
         "raft_interface_line_width": { "value": "0.5" },
         "raft_interface_thickness": { "value": "0.2" },
-        "raft_jerk": { "value": "jerk_layer_0" },
         "raft_margin": { "value": "10" },
         "raft_surface_layers": { "value": "1" },
         "retraction_amount": { "value": "6.5" },

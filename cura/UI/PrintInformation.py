@@ -186,7 +186,7 @@ class PrintInformation(QObject):
 
             if time != time:  # Check for NaN. Engine can sometimes give us weird values.
                 duration.setDuration(0)
-                Logger.log("w", "Received NaN for print duration message")
+                Logger.warning("Received NaN for print duration message")
                 continue
 
             total_estimated_time += time
@@ -368,7 +368,7 @@ class PrintInformation(QObject):
                 mime_type = MimeTypeDatabase.getMimeTypeForFile(name)
                 data = mime_type.stripExtension(name)
             except MimeTypeNotFoundError:
-                Logger.log("w", "Unsupported Mime Type Database file extension %s", name)
+                Logger.warning(f"Unsupported Mime Type Database file extension {name}")
 
             if data is not None and check_name is not None:
                 self._base_name = data

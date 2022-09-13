@@ -89,16 +89,19 @@ class MachineListModel(ListModel):
             machines_manager = CuraApplication.getInstance().getMachineManager()
             online_machine_stacks = machines_manager.getMachinesWithDefinition(definition_id, online_only = True)
 
-            # Create a list item for abstract machine
-            self.addItem(abstract_machine, len(online_machine_stacks))
+            online_machine_stacks = list(filter(lambda machine: machine.hasNetworkedConnection(), online_machine_stacks))
+
             other_machine_stacks.remove(abstract_machine)
             if abstract_machine in online_machine_stacks:
                 online_machine_stacks.remove(abstract_machine)
 
+            # Create a list item for abstract machine
+            self.addItem(abstract_machine, True, len(online_machine_stacks))
+
             # Create list of machines that are children of the abstract machine
             for stack in online_machine_stacks:
                 if self._show_cloud_printers:
-                    self.addItem(stack)
+                    self.addItem(stack, True)
                 # Remove this machine from the other stack list
                 if stack in other_machine_stacks:
                     other_machine_stacks.remove(stack)
@@ -118,25 +121,18 @@ class MachineListModel(ListModel):
                                  })
 
         for stack in other_machine_stacks:
-            self.addItem(stack)
+            self.addItem(stack, False)
 
-    def addItem(self, container_stack: ContainerStack, machine_count: int = 0) -> None:
+    def addItem(self, container_stack: ContainerStack, is_online: bool, machine_count: int = 0) -> None:
         if parseBool(container_stack.getMetaDataEntry("hidden", False)):
             return
-
-        # This is required because machines loaded from projects have the is_online="True" but no connection type.
-        # We want to display them the same way as unconnected printers in this case.
-        has_connection = False
-        has_connection |= parseBool(container_stack.getMetaDataEntry("is_abstract_machine", False))
-        for connection_type in [ConnectionType.NetworkConnection.value, ConnectionType.CloudConnection.value]:
-            has_connection |= connection_type in container_stack.configuredConnectionTypes
 
         self.appendItem({
                         "componentType": "MACHINE",
                         "name": container_stack.getName(),
                          "id": container_stack.getId(),
                          "metadata": container_stack.getMetaData().copy(),
-                         "isOnline": parseBool(container_stack.getMetaDataEntry("is_online", False)) and has_connection,
+                         "isOnline": is_online,
                          "isAbstractMachine": parseBool(container_stack.getMetaDataEntry("is_abstract_machine", False)),
                          "machineCount": machine_count,
                          })
