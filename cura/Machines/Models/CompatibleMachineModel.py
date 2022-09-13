@@ -44,19 +44,11 @@ class CompatibleMachineModel(ListModel):
 
                 # initialize & add current active material:
                 for extruder in printer.extruders:
-                    if extruder.getPosition() in machine_manager.activeMachine.extruderList:
-                        compatible_type = machine_manager.activeMachine.extruderList[extruder.getPosition()].material.getMetaDataEntry("material", "")
-                    else:
-                        compatible_type = ""
-                    has_compatible_material = extruder.activeMaterial and compatible_type in [extruder.activeMaterial.type, None, "None", "", "empty"]
-
-                    materials = []
-                    if has_compatible_material:
-                        materials.append({
-                            "brand": extruder.activeMaterial.brand,
-                            "name": extruder.activeMaterial.name,
-                            "hexcolor": extruder.activeMaterial.color,
-                        })
+                    materials = [{
+                        "brand": extruder.activeMaterial.brand,
+                        "name": extruder.activeMaterial.name,
+                        "hexcolor": extruder.activeMaterial.color,
+                    }]
                     extruder_configs[extruder.getPosition()] = {
                         "position": extruder.getPosition(),
                         "core": extruder.hotendID,
@@ -66,13 +58,6 @@ class CompatibleMachineModel(ListModel):
                 # add currently inactive, but possible materials:
                 for configuration in printer.availableConfigurations:
                     for extruder in configuration.extruderConfigurations:
-                        if extruder.position in machine_manager.activeMachine.extruderList:
-                            compatible_type = machine_manager.activeMachine.extruderList[extruder.position].material.getMetaDataEntry("material", "")
-                        else:
-                            compatible_type = ""
-                        if compatible_type not in [extruder.material.type, None, "None", "", "empty"]:
-                            continue
-
                         if not extruder.position in extruder_configs:
                             Logger.log("w", f"No active extruder for position {extruder.position}.")
                             continue
