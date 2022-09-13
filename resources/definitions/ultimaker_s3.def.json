@@ -108,7 +108,6 @@
         "raft_interface_speed": { "value": "20" },
         "raft_interface_thickness": { "value": "0.2" },
         "raft_speed": { "value": "25" },
-        "raft_surface_layers": { "value": "1" },
         "retraction_amount": { "value": "6.5" },
         "retraction_hop": { "value": "2" },
         "retraction_hop_enabled": { "value": "extruders_enabled_count > 1"  },
