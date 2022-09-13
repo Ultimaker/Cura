@@ -27,7 +27,7 @@ from cura.Utils.Threading import call_on_qt_thread
 from UM.i18n import i18nCatalog
 
 METADATA_OBJECTS_PATH = "metadata/objects"
-SETTINGS_PATH = "Cura/settings.json"
+SLICE_METADATA_PATH = "Cura/slicemetadata.json"
 
 catalog = i18nCatalog("cura")
 
@@ -84,9 +84,9 @@ class UFPWriter(MeshWriter):
         try:
             archive.addContentType(extension="json", mime_type="application/json")
             setting_textio = StringIO()
-            json.dump(self._getSettings(), setting_textio, separators=(", ", ": "), indent=4)
-            settings = archive.getStream(SETTINGS_PATH)
-            settings.write(setting_textio.getvalue().encode("UTF-8"))
+            json.dump(self._getSliceMetadata(), setting_textio, separators=(", ", ": "), indent=4)
+            steam = archive.getStream(SLICE_METADATA_PATH)
+            steam.write(setting_textio.getvalue().encode("UTF-8"))
         except EnvironmentError as e:
             error_msg = catalog.i18nc("@info:error", "Can't write to UFP file:") + " " + str(e)
             self.setInformation(error_msg)
@@ -210,12 +210,18 @@ class UFPWriter(MeshWriter):
                 for item in DepthFirstIterator(node)
                 if item.getMeshData() is not None and not item.callDecoration("isNonPrintingMesh")]
 
-    def _getSettings(self) -> Dict[str, Dict[str, Dict[str, str]]]:
+    def _getSliceMetadata(self) -> Dict[str, Dict[str, Dict[str, str]]]:
         """Get all changed settings and all settings. For each extruder and the global stack"""
+        print_information = CuraApplication.getInstance().getPrintInformation()
         settings = {
+            "material": {
+                "length": print_information.materialLengths,
+                "weight": print_information.materialWeights,
+                "cost": print_information.materialCosts,
+            },
             "global": {
                 "changes": {},
-                "all_settings": {}
+                "all_settings": {},
             }
         }
 
@@ -232,9 +238,10 @@ class UFPWriter(MeshWriter):
 
         for i, extruder in enumerate(global_stack.extruderList):
             # Add extruder fields to settings dictionary
-            settings[f"extruder_{i}"] = {}
-            settings[f"extruder_{i}"]["changes"] = {}
-            settings[f"extruder_{i}"]["all_settings"] = {}
+            settings[f"extruder_{i}"] = {
+                "changes": {},
+                "all_settings": {},
+            }
 
             # Add extruder user or quality changes
             extruder_flattened_changes = InstanceContainer.createMergedInstanceContainer(extruder.userChanges, extruder.qualityChanges)
