@@ -107,7 +107,6 @@
         "raft_interface_line_spacing": { "value": "0.5" },
         "raft_interface_line_width": { "value": "0.5" },
         "raft_interface_speed": { "value": "20" },
-        "raft_interface_thickness": { "value": "0.2" },
         "raft_speed": { "value": "25" },
         "retraction_amount": { "value": "6.5" },
         "retraction_combing": { "value": "'no_outer_surfaces'"},
