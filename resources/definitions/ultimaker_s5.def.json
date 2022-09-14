@@ -76,7 +76,7 @@
             "maximum_value": "150",
             "value": "150"
         },
-
+        "acceleration_enabled": { "value": true },
         "acceleration_layer_0": { "value": "acceleration_topbottom" },
         "acceleration_prime_tower": { "value": "math.ceil(acceleration_print * 2000 / 3500)" },
         "acceleration_print": { "value": "3500" },

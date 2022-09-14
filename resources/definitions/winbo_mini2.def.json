@@ -30,6 +30,7 @@
                 [ -52, 30 ],[ -52, -40 ],[ 13, -40 ],[ 13, 30 ]
             ]
         },
+        "acceleration_enabled": { "value": true },
         "machine_gcode_flavor": { "default_value": "Marlin" },
         "machine_max_feedrate_x": { "default_value": 250 },
         "machine_max_feedrate_y": { "default_value": 200 },

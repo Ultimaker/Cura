@@ -34,6 +34,7 @@
         "machine_max_feedrate_x": { "default_value": 300 },
         "machine_max_feedrate_y": { "default_value": 300 },
         "machine_max_feedrate_z": { "default_value": 40 },
+        "acceleration_enabled": { "value": true },
         "machine_acceleration": { "default_value": 2000 },
         "gantry_height": { "value": "80" },
         "machine_extruder_count": { "default_value": 1 },

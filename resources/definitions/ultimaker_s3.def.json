@@ -68,7 +68,7 @@
         "machine_start_gcode": { "default_value": "" },
         "machine_end_gcode": { "default_value": "" },
         "prime_blob_enable": { "enabled": true, "default_value": false },
-
+        "acceleration_enabled": { "value": true },
         "speed_travel":
         {
             "maximum_value": "150",

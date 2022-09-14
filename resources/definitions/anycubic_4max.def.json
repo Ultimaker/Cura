@@ -37,7 +37,7 @@
         "machine_max_jerk_xy": { "default_value": 11.0 },
         "machine_max_jerk_z": { "default_value": 0.4 }, 
         "machine_max_jerk_e": { "default_value": 11.0 },
-
+        "acceleration_enabled": { "value": true },
         "jerk_enabled": { "value": "True" },
         "jerk_layer_0": { "value": "jerk_topbottom" },
         "jerk_prime_tower": { "value": "math.ceil(jerk_print * 15 / 25)" },

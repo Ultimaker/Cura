@@ -109,7 +109,7 @@
         "machine_width": {"default_value": 230},
         "machine_depth": {"default_value": 230},
         "machine_height": {"default_value": 260},
-
+        "acceleration_enabled": { "value": true },
         "layer_height": {"default_value": 0.2},
         "material_flow": {"value": 100},
         "xy_offset": {"default_value": 0},
