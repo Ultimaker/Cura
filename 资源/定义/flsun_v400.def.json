@@ -7,11 +7,11 @@
         "author": "FLSUN, Guislain Cyril",
         "manufacturer": "Flsun",
         "file_formats": "text/x-gcode",
-		"platform": "flsun_v400.stl",
+	"platform": "flsun_v400.stl",
         "platform_offset": [0,-40.6455,-43.5],
         "has_materials": true,
         "has_machine_quality": true,
-        "machine_extruder_trains":{
+        "machine_extruder_trains": {
             "0": "flsun_v400_extruder_0"
         }
     },
@@ -28,7 +28,7 @@
         "machine_width": {
             "default_value": 300
         },
-		"machine_depth": {
+	"machine_depth": {
             "default_value": 300
         },
         "machine_height": {
@@ -53,9 +53,6 @@
         },
         "machine_shape": {
             "default_value": "elliptic"
-        },
-        "machine_nozzle_size": {
-            "default_value": 0.4
         },
         "material_diameter": {
             "default_value": 1.75
