@@ -27,7 +27,7 @@
         "machine_nozzle_size": { "default_value": 0.4 },
         "layer_height": { "default_value": 0.1 },
         "layer_height_0": { "default_value": 0.2 },
-        "retraction_amount": { "default_value": 0.5 },
+        "retraction_amount": { "default_value": 0.2 },
         "retraction_speed": { "default_value": 45 },
         "adhesion_type": { "default_value": "none" },
 		"infill_sparse_density": { "default_value": 25 },
