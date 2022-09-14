@@ -83,6 +83,7 @@
         "meshfix_maximum_travel_resolution": { "value": 0.5 },
         "prime_blob_enable": { "enabled": true, "default_value": true, "value": "resolveOrValue('print_sequence') != 'one_at_a_time'" },
         "retraction_prime_speed": { "value": "15" },
-        "retraction_speed": {"value": "45" }
+        "retraction_speed": {"value": "45" },
+        "speed_wall_x": { "value": "speed_wall" }
     }
 }
