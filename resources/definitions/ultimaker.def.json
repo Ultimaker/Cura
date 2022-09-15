@@ -112,10 +112,7 @@
             "value": "4 * layer_height if infill_sparse_density < 30 else 0"
         },
         "bridge_settings_enabled": {
-            "value": false
-        },
-        "bridge_wall_min_length": {
-            "value": 0
+            "value": true
         },
         "bridge_skin_support_threshold": {
             "value": 50
@@ -127,7 +124,7 @@
             "value": 0
         },
         "bridge_wall_speed": {
-            "value": "speed_wall"
+            "value": "bridge_skin_speed"
         },
         "bridge_wall_material_flow": {
             "value": "wall_material_flow"
