@@ -93,6 +93,13 @@ UM.ManagementPage
             maximumWidth: minimumWidth * 3
             maximumHeight: minimumHeight * 3
             backgroundColor: UM.Theme.getColor("main_background")
+            onVisibleChanged:
+            {
+                if(!visible)
+                {
+                    actionDialog.loader.item.focus = true
+                }
+            }
         }
 
         UM.ConfirmRemoveDialog
