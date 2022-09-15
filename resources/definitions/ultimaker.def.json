@@ -237,7 +237,7 @@
             "value": "2 if support_interface_enable else 0"
         },
         "gradual_support_infill_step_height": {
-            "value": "4*layer_height"
+            "value": "4 * layer_height"
         },
         "raft_base_speed": {
             "value": "raft_speed"
@@ -252,7 +252,7 @@
             "value": "(raft_base_line_width + raft_surface_line_width) / 2"
         },
         "raft_interface_speed": {
-            "value": "(raft_surface_speed + raft_base_speed) /2"
+            "value": "(raft_surface_speed + raft_base_speed) / 2"
         },
         "raft_interface_thickness": {
             "value": "(raft_base_thickness + raft_surface_thickness) / 2"
@@ -267,7 +267,7 @@
             "value": "speed_topbottom"
         },
         "support_interface_height": {
-            "value": "2*layer_height"
+            "value": "2 * layer_height"
         },
         "support_offset": {
             "value": "support_xy_distance if support_interface_enable else 0"
