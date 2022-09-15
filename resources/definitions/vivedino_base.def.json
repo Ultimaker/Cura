@@ -55,15 +55,8 @@
         "jerk_travel": { "value": "jerk_print" },
         "jerk_travel_layer_0": { "value": "jerk_travel" },
 
-        "acceleration_enabled": { "value": false },
-        "jerk_enabled": { "value": false },
-
         "speed_print": { "value": 50.0 } ,
-        "speed_infill": { "value": "speed_print" },
-        "speed_wall": { "value": "speed_print / 2" },
-        "speed_wall_0": { "value": "speed_wall" },
         "speed_wall_x": { "value": "speed_wall" },
-        "speed_topbottom": { "value": "speed_print / 2" },
         "speed_roofing": { "value": "speed_topbottom" },
         "speed_travel": { "value": "150.0 if speed_print < 60 else 250.0 if speed_print > 100 else speed_print * 2.5" },
         "speed_layer_0": { "value": 20.0 },
@@ -78,7 +71,7 @@
 
         "line_width": { "value": "machine_nozzle_size * 0.95" },
 
-        "optimize_wall_printing_order": { "value": "True" },
+        "optimize_wall_printing_order": { "value": true },
 
         "material_initial_print_temperature": { "value": "material_print_temperature" },
         "material_final_print_temperature": { "value": "material_print_temperature" },
@@ -86,8 +79,7 @@
 
         "z_seam_type": { "value": "'back'" },
         "z_seam_corner": { "value": "'z_seam_corner_weighted'" },
-        
-        "infill_sparse_density": { "value": "20" },
+
         "infill_pattern": { "value": "'lines' if infill_sparse_density > 50 else 'cubic'" },
         "infill_before_walls": { "value": false },
         "infill_overlap": { "value": 30.0 },
@@ -98,19 +90,16 @@
         "fill_outline_gaps": { "value": false },
 
         "retraction_speed": {
-            "maximum_value_warning": "machine_max_feedrate_e if retraction_enable else float('inf')",
             "maximum_value": 200
         },
         "retraction_retract_speed": {
-            "maximum_value_warning": "machine_max_feedrate_e if retraction_enable else float('inf')",
             "maximum_value": 200
         },
         "retraction_prime_speed": {
-            "maximum_value_warning": "machine_max_feedrate_e if retraction_enable else float('inf')",
             "maximum_value": 200
         },
         
-        "retraction_hop_enabled": { "value": "False" },
+        "retraction_hop_enabled": { "value": false },
         "retraction_hop": { "value": 0.2 },
         "retraction_combing": { "value": "'off' if retraction_hop_enabled else 'noskin'" },
         "retraction_combing_max_distance": { "value": 30 },
@@ -135,7 +124,7 @@
         "adaptive_layer_height_variation": { "value": 0.04 },
         "adaptive_layer_height_variation_step": { "value": 0.04 },
 
-        "meshfix_maximum_resolution": { "value": "0.25" },
+        "meshfix_maximum_resolution": { "value": 0.25 },
         "meshfix_maximum_travel_resolution": { "value": "meshfix_maximum_resolution" },
 
         "support_angle": { "value": "math.floor(math.degrees(math.atan(line_width/2.0/layer_height)))" },
@@ -159,7 +148,6 @@
         "minimum_interface_area": { "value": 10 },
         "top_bottom_thickness": {"value":  "layer_height_0 + layer_height * 3" },
         "wall_thickness": {"value": "line_width * 2" }
-
     }
 }
 
