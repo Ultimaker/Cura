@@ -40,7 +40,6 @@ Item
     property alias selectAll: selectAllAction
     property alias deleteAll: deleteAllAction
     property alias reloadAll: reloadAllAction
-    property alias arrangeAllBuildPlates: arrangeAllBuildPlatesAction
     property alias arrangeAll: arrangeAllAction
     property alias arrangeSelection: arrangeSelectionAction
     property alias resetAllTranslation: resetAllTranslationAction
@@ -405,13 +404,6 @@ Item
         icon.name: "document-revert"
         shortcut: "F5"
         onTriggered: CuraApplication.reloadAll()
-    }
-
-    Action
-    {
-        id: arrangeAllBuildPlatesAction
-        text: catalog.i18nc("@action:inmenu menubar:edit","Arrange All Models To All Build Plates")
-        onTriggered: Printer.arrangeObjectsToAllBuildPlates()
     }
 
     Action

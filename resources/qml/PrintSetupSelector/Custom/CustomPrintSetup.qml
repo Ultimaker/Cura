@@ -47,18 +47,6 @@ Item
             font: UM.Theme.getFont("medium")
         }
 
-        NoIntentIcon
-        {
-            affected_extruders: Cura.MachineManager.extruderPositionsWithNonActiveIntent
-            intent_type: Cura.MachineManager.activeIntentCategory
-            anchors.right: intentSelection.left
-            anchors.rightMargin: UM.Theme.getSize("narrow_margin").width
-            width: Math.round(profileLabel.height * 0.5)
-            anchors.verticalCenter: parent.verticalCenter
-            height: width
-            visible: affected_extruders.length
-        }
-
         Button
         {
             id: intentSelection
@@ -84,19 +72,19 @@ Item
                     Layout.maximumWidth: Math.floor(parent.width * 0.7)  // Always leave >= 30% for the rest of the row.
                     height: contentHeight
                     elide: Text.ElideRight
+                    wrapMode: Text.NoWrap
                 }
 
                 UM.Label
                 {
                     text: activeQualityDetailText()
-                    font: UM.Theme.getFont("default")
                     color: UM.Theme.getColor("text_detail")
                     Layout.margins: 0
                     Layout.fillWidth: true
 
                     height: contentHeight
                     elide: Text.ElideRight
-
+                    wrapMode: Text.NoWrap
                     function activeQualityDetailText()
                     {
                         var resultMap = Cura.MachineManager.activeQualityDisplayNameMap
@@ -129,7 +117,7 @@ Item
             background: UM.UnderlineBackground
             {
                 id: backgroundItem
-                liningColor: intentSelection.hovered ? UM.Theme.getColor("border_main") : UM.Theme.getColor("border_field_light")
+                liningColor: intentSelection.hovered ? UM.Theme.getColor("text_field_border_hovered") : UM.Theme.getColor("border_field_light")
             }
 
             UM.SimpleButton
@@ -159,7 +147,7 @@ Item
                 }
                 onExited: base.hideTooltip()
             }
-            UM.RecolorImage
+            UM.ColorImage
             {
                 id: downArrow
 
@@ -218,8 +206,6 @@ Item
                         materialColor: model.color
                         extruderEnabled: model.enabled
                         iconVariant: "default"
-                        height: parent.height
-                        width: height
                     }
                 }
                 onClicked:

@@ -17,6 +17,7 @@ UM.Dialog
     title: catalog.i18nc("@title:window", "Open project file")
     width: UM.Theme.getSize("small_popup_dialog").width
     height: UM.Theme.getSize("small_popup_dialog").height
+    backgroundColor: UM.Theme.getColor("main_background")
 
     maximumHeight: height
     maximumWidth: width
@@ -81,7 +82,6 @@ UM.Dialog
             id: questionText
             width: parent.width
             text: catalog.i18nc("@text:window", "This is a Cura project file. Would you like to open it as a project or import the models from it?")
-            font: UM.Theme.getFont("default")
             wrapMode: Text.WordWrap
         }
 

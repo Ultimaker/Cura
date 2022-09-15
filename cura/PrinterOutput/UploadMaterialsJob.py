@@ -5,7 +5,7 @@ import enum
 import functools  # For partial methods to use as callbacks with information pre-filled.
 import json  # To serialise metadata for API calls.
 import os  # To delete the archive when we're done.
-from PyQt5.QtCore import QUrl
+from PyQt6.QtCore import QUrl
 import tempfile  # To create an archive before we upload it.
 
 import cura.CuraApplication  # Imported like this to prevent circular imports.
@@ -21,7 +21,7 @@ from UM.TaskManagement.HttpRequestScope import JsonDecoratorScope
 
 from typing import Any, cast, Dict, List, Optional, TYPE_CHECKING
 if TYPE_CHECKING:
-    from PyQt5.QtNetwork import QNetworkReply
+    from PyQt6.QtNetwork import QNetworkReply
     from cura.UltimakerCloud.CloudMaterialSync import CloudMaterialSync
 
 catalog = i18nCatalog("cura")

@@ -1,7 +1,6 @@
 //Copyright (C) 2022 Ultimaker B.V.
 //Cura is released under the terms of the LGPLv3 or higher.
 
-import Qt.labs.qmlmodels 1.0
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
@@ -56,8 +55,9 @@ Item
                     font: UM.Theme.getFont("medium_bold")
                     elide: Text.ElideRight
                 }
-                Item //Resize handle.
+                Item
                 {
+                    //Resize handle.
                     anchors
                     {
                         right: parent.right
@@ -171,6 +171,12 @@ Item
 
                 acceptedButtons: Qt.LeftButton
                 text: (cellTextMetrics.elidedText == cellContent.text) ? "" : cellContent.text //Show full text in tooltip if it was elided.
+            }
+
+            MouseArea
+            {
+                anchors.fill: parent
+                propagateComposedEvents: true
                 onClicked:
                 {
                     if(tableBase.allowSelection)

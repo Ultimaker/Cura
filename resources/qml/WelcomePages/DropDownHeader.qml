@@ -57,7 +57,7 @@ Cura.RoundedRectangle
         color: base.hovered ? UM.Theme.getColor("small_button_text_hover") : UM.Theme.getColor("small_button_text")
     }
 
-    UM.RecolorImage
+    UM.ColorImage
     {
         id: rightIcon
         anchors.right: parent.right

@@ -151,42 +151,31 @@
             "value": "4"
         },
         "default_material_print_temperature": {
-            "maximum_value_warning": "470",
             "maximum_value": "470"
         },
         "material_print_temperature": {
-            "maximum_value_warning": "470",
             "maximum_value": "470"
         },
         "material_print_temperature_layer_0": {
             "value": "material_print_temperature",
-            "maximum_value_warning": "470",
             "maximum_value": "470"
         },
         "material_initial_print_temperature": {
             "value": "material_print_temperature",
-            "maximum_value_warning": "470",
             "maximum_value": "470"
         },
         "material_final_print_temperature": {
             "value": "material_print_temperature",
-            "maximum_value_warning": "470",
             "maximum_value": "470"
         },
         "default_material_bed_temperature": {
-            "maximum_value_warning": "150",
             "maximum_value": "150"
         },
         "material_bed_temperature": {
-            "maximum_value_warning": "150",
             "maximum_value": "150"
         },
         "material_bed_temperature_layer_0": {
-            "maximum_value_warning": "150",
             "maximum_value": "150"
-        },
-        "speed_infill": {
-            "value": "speed_print"
         },
         "speed_wall": {
             "value": "speed_print"

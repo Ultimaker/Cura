@@ -146,7 +146,7 @@ Button
                     labelText: perObjectSettingsCount.toString()
                 }
 
-                UM.RecolorImage
+                UM.ColorImage
                 {
                     id: meshTypeIcon
                     anchors

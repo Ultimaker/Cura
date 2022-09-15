@@ -200,7 +200,7 @@ Item
             height: troubleshootingLinkIcon.height
             width: troubleshootingLinkIcon.width + troubleshootingLabel.width + UM.Theme.getSize("thin_margin").width
 
-            UM.RecolorImage
+            UM.ColorImage
             {
                 id: troubleshootingLinkIcon
                 anchors.right: troubleshootingLabel.left
@@ -208,7 +208,6 @@ Item
                 anchors.verticalCenter: parent.verticalCenter
                 height: troubleshootingLabel.height
                 width: height
-                sourceSize.height: width
                 color: UM.Theme.getColor("text_link")
                 source: UM.Theme.getIcon("LinkExternal")
             }
@@ -219,7 +218,6 @@ Item
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
                 text: catalog.i18nc("@label", "Troubleshooting")
-                font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text_link")
             }
 

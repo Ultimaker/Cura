@@ -1,0 +1,175 @@
+---
+name: unit-test
+# FIXME: This should be a reusable workflow
+
+on:
+    push:
+        paths:
+            - 'plugins/**'
+            - 'resources/**'
+            - 'cura/**'
+            - 'icons/**'
+            - 'tests/**'
+            - 'packaging/**'
+            - '.github/workflows/conan-*.yml'
+            - '.github/workflows/unit-test.yml'
+            - '.github/workflows/notify.yml'
+            - '.github/workflows/requirements-conan-package.txt'
+            - 'requirements*.txt'
+            - 'conanfile.py'
+            - 'conandata.yml'
+            - 'GitVersion.yml'
+            - '*.jinja'
+        branches:
+            - main
+            - 'CURA-*'
+            - '[1-9]+.[0-9]+'
+        tags:
+            - '[0-9]+.[0-9]+.[0-9]+'
+            - '[0-9]+.[0-9]+-beta'
+    pull_request:
+        paths:
+            - 'plugins/**'
+            - 'resources/**'
+            - 'cura/**'
+            - 'icons/**'
+            - 'tests/**'
+            - 'packaging/**'
+            - '.github/workflows/conan-*.yml'
+            - '.github/workflows/unit-test.yml'
+            - '.github/workflows/notify.yml'
+            - '.github/workflows/requirements-conan-package.txt'
+            - 'requirements*.txt'
+            - 'conanfile.py'
+            - 'conandata.yml'
+            - 'GitVersion.yml'
+            - '*.jinja'
+        branches:
+            - main
+            - '[1-9]+.[0-9]+'
+        tags:
+            - '[0-9]+.[0-9]+.[0-9]+'
+            - '[0-9]+.[0-9]+-beta'
+
+env:
+    CONAN_LOGIN_USERNAME_CURA: ${{ secrets.CONAN_USER }}
+    CONAN_PASSWORD_CURA: ${{ secrets.CONAN_PASS }}
+    CONAN_LOGIN_USERNAME_CURA_CE: ${{ secrets.CONAN_USER }}
+    CONAN_PASSWORD_CURA_CE: ${{ secrets.CONAN_PASS }}
+    CONAN_LOG_RUN_TO_OUTPUT: 1
+    CONAN_LOGGING_LEVEL: info
+    CONAN_NON_INTERACTIVE: 1
+
+jobs:
+    conan-recipe-version:
+        uses: ultimaker/cura/.github/workflows/conan-recipe-version.yml@main
+        with:
+            project_name: cura
+
+    testing:
+        runs-on: ubuntu-20.04
+        needs: [ conan-recipe-version ]
+
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v3
+
+            -   name: Setup Python and pip
+                uses: actions/setup-python@v4
+                with:
+                    python-version: '3.10.x'
+                    architecture: 'x64'
+                    cache: 'pip'
+                    cache-dependency-path: .github/workflows/requirements-conan-package.txt
+
+            -   name: Install Python requirements and Create default Conan profile
+                run: |
+                    pip install -r requirements-conan-package.txt
+                    conan profile new default --detect
+                working-directory: .github/workflows/
+
+            -   name: Use Conan download cache (Bash)
+                if: ${{ runner.os != 'Windows' }}
+                run: conan config set storage.download_cache="$HOME/.conan/conan_download_cache"
+
+            -   name: Cache Conan local repository packages (Bash)
+                uses: actions/cache@v3
+                if: ${{ runner.os != 'Windows' }}
+                with:
+                    path: |
+                        $HOME/.conan/data
+                        $HOME/.conan/conan_download_cache
+                    key: conan-${{ runner.os }}-${{ runner.arch }}-unit-cache
+
+            -   name: Install Linux system requirements
+                if: ${{ runner.os == 'Linux' }}
+                run: |
+                    sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+                    sudo apt update
+                    sudo apt upgrade
+                    sudo apt install build-essential checkinstall libegl-dev zlib1g-dev libssl-dev ninja-build autoconf libx11-dev libx11-xcb-dev libfontenc-dev libice-dev libsm-dev libxau-dev libxaw7-dev libxcomposite-dev libxcursor-dev libxdamage-dev libxdmcp-dev libxext-dev libxfixes-dev libxi-dev libxinerama-dev libxkbfile-dev libxmu-dev libxmuu-dev libxpm-dev libxrandr-dev libxrender-dev libxres-dev libxss-dev libxt-dev libxtst-dev libxv-dev libxvmc-dev libxxf86vm-dev xtrans-dev libxcb-render0-dev libxcb-render-util0-dev libxcb-xkb-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev libxcb-randr0-dev libxcb-shape0-dev libxcb-sync-dev libxcb-xfixes0-dev libxcb-xinerama0-dev xkb-data libxcb-dri3-dev uuid-dev libxcb-util-dev libxkbcommon-x11-dev pkg-config -y
+
+            -   name: Install GCC-12 on ubuntu-22.04
+                if: ${{ startsWith(inputs.runs_on, 'ubuntu-22.04') }}
+                run: |
+                    sudo apt install g++-12 gcc-12 -y
+                    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 12
+                    sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 12
+
+            -   name: Get Conan configuration
+                run: conan config install https://github.com/Ultimaker/conan-config.git
+
+            -   name: Install dependencies
+                run: conan install . ${{ needs.conan-recipe-version.outputs.recipe_id_full }} --build=missing --update -o cura:devtools=True  -g VirtualPythonEnv -if venv
+
+            -   name: Upload the Dependency package(s)
+                run: conan upload "*" -r cura --all -c
+
+            -   name: Set Environment variables for Cura (bash)
+                if: ${{ runner.os != 'Windows' }}
+                run: |
+                    . ./venv/bin/activate_github_actions_env.sh
+
+            -   name: Run Unit Test
+                id: run-test
+                run: |
+                    pytest --junitxml=junit_cura.xml
+                working-directory: tests
+
+            -   name: Upload Test Results
+                if: always()
+                uses: actions/upload-artifact@v3
+                with:
+                    name: Test Results
+                    path: "tests/**/*.xml"
+
+    publish-test-results:
+        runs-on: ubuntu-20.04
+        needs: [ testing ]
+        if: success() || failure()
+
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v3
+
+            -   name: Setup Python and pip
+                uses: actions/setup-python@v4
+                with:
+                    python-version: '3.10.x'
+                    architecture: 'x64'
+                    cache: 'pip'
+                    cache-dependency-path: .github/workflows/requirements-conan-package.txt
+
+            -   name: Download Artifacts
+                uses: actions/download-artifact@v3
+                with:
+                    path: artifacts
+
+            -   name: Publish Unit Test Results
+                id: test-results
+                uses: EnricoMi/publish-unit-test-result-action@v1
+                with:
+                    files: "artifacts/**/*.xml"
+
+            -   name: Conclusion
+                run: echo "Conclusion is ${{ fromJSON( steps.test-results.outputs.json ).conclusion }}"

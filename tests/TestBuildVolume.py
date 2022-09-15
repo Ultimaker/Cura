@@ -57,6 +57,7 @@ class TestCalculateBedAdhesionSize:
                              "machine_depth": {"value": 200},
                              "skirt_line_count": {"value": 0},
                              "skirt_gap": {"value": 0},
+                             "brim_gap": {"value": 0},
                              "raft_margin": {"value": 0},
                              "material_shrinkage_percentage": {"value": 100.0},
                              "material_shrinkage_percentage_xy": {"value": 100.0},
@@ -145,7 +146,7 @@ class TestComputeDisallowedAreasStatic:
         build_volume._global_container_stack = mocked_stack
         with patch("cura.Settings.ExtruderManager.ExtruderManager.getInstance"):
             result = build_volume._computeDisallowedAreasStatic(0, [mocked_extruder])
-            assert result == {"zomg": [Polygon([[-84.0, 102.5], [-115.0, 102.5], [-200.0, 112.5], [-82.0, 112.5]])]}
+            assert result == {"zomg": [Polygon([[-84.0,102.5], [-115.0,102.5], [-200.0,112.5], [-82.0,112.5]]), Polygon([[-100.0,-100.0], [-100.0,100.0], [-99.9,99.9], [-99.9,-99.9]]), Polygon([[100.0,100.0], [100.0,-100.0], [99.9,-99.9], [99.9,99.9]]),  Polygon([[-100.0,100.0], [100.0,100.0], [99.9,99.9], [-99.9,99.9]]), Polygon([[100.0,-100.0], [-100.0,-100.0], [-99.9,-99.9], [99.9,-99.9]])]}
 
     def test_computeDisalowedAreasMutliExtruder(self, build_volume):
         mocked_stack = MagicMock()
@@ -159,7 +160,12 @@ class TestComputeDisallowedAreasStatic:
         build_volume._global_container_stack = mocked_stack
         with patch("cura.Settings.ExtruderManager.ExtruderManager.getInstance", MagicMock(return_value = extruder_manager)):
             result = build_volume._computeDisallowedAreasStatic(0, [mocked_extruder])
-            assert result == {"zomg": [Polygon([[-84.0, 102.5], [-115.0, 102.5], [-200.0, 112.5], [-82.0, 112.5]])]}
+            assert result == {"zomg": [Polygon([[-84.0, 102.5], [-115.0, 102.5], [-200.0, 112.5], [-82.0, 112.5]]),
+                                       Polygon([[-100.0, -100.0], [-100.0, 100.0], [-99.9, 99.9], [-99.9, -99.9]]),
+                                       Polygon([[100.0, 100.0], [100.0, -100.0], [99.9, -99.9], [99.9, 99.9]]),
+                                       Polygon([[-100.0, 100.0], [100.0, 100.0], [99.9, 99.9], [-99.9, 99.9]]),
+                                       Polygon([[100.0, -100.0], [-100.0, -100.0], [-99.9, -99.9], [99.9, -99.9]])]}
+
 
 class TestUpdateRaftThickness:
     setting_property_dict = {"raft_base_thickness": {"value": 1},

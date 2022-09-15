@@ -1,8 +1,8 @@
-# Copyright (c) 2021 Ultimaker B.V.
+# Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject, QUrl
-from PyQt5.QtGui import QDesktopServices
+from PyQt6.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject, QUrl
+from PyQt6.QtGui import QDesktopServices
 from typing import Dict, Optional, TYPE_CHECKING
 import zipfile  # To export all materials in a .zip archive.
 
@@ -17,6 +17,7 @@ from UM.Message import Message
 if TYPE_CHECKING:
     from UM.Signal import Signal
 catalog = i18nCatalog("cura")
+
 
 class CloudMaterialSync(QObject):
     """
@@ -44,7 +45,6 @@ class CloudMaterialSync(QObject):
                 break
 
     def openSyncAllWindow(self):
-
         self.reset()
 
         if self.sync_all_dialog is None:
