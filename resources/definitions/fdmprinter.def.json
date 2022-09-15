@@ -4571,6 +4571,44 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "support_conical_enabled": {
+                    "label": "Enable Conical Support",
+                    "description": "Make support areas smaller at the bottom than at the overhang.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "support_enable and support_structure != 'tree'",
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "settable_per_mesh": true,
+                    "children": {
+                        "support_conical_angle": {
+                            "label": "Conical Support Angle",
+                            "description": "The angle of the tilt of conical support. With 0 degrees being vertical, and 90 degrees being horizontal. Smaller angles cause the support to be more sturdy, but consist of more material. Negative angles cause the base of the support to be wider than the top.",
+                            "unit": "°",
+                            "type": "float",
+                            "minimum_value": "-90",
+                            "minimum_value_warning": "-45",
+                            "maximum_value_warning": "45",
+                            "maximum_value": "90",
+                            "default_value": 30,
+                            "enabled": "support_conical_enabled and support_enable and support_structure != 'tree'",
+                            "limit_to_extruder": "support_infill_extruder_nr",
+                            "settable_per_mesh": true
+                        },
+                        "support_conical_min_width": {
+                            "label": "Conical Support Minimum Width",
+                            "description": "Minimum width to which the base of the conical support area is reduced. Small widths can lead to unstable support structures.",
+                            "unit": "mm",
+                            "default_value": 5.0,
+                            "minimum_value": "0",
+                            "minimum_value_warning": "machine_nozzle_size * 3",
+                            "maximum_value_warning": "100.0",
+                            "type": "float",
+                            "enabled": "support_conical_enabled and support_enable and support_structure != 'tree' and support_conical_angle > 0",
+                            "limit_to_extruder": "support_infill_extruder_nr",
+                            "settable_per_mesh": true
+                        }
+                    }
+                },
                 "support_type":
                 {
                     "label": "Support Placement",
@@ -5367,45 +5405,6 @@
                     "default_value": true,
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "enabled": "support_enable and support_structure == 'normal'",
-                    "settable_per_mesh": true
-                },
-                "support_conical_enabled":
-                {
-                    "label": "Enable Conical Support",
-                    "description": "Make support areas smaller at the bottom than at the overhang.",
-                    "type": "bool",
-                    "default_value": false,
-                    "enabled": "support_enable and support_structure != 'tree'",
-                    "limit_to_extruder": "support_infill_extruder_nr",
-                    "settable_per_mesh": true
-                },
-                "support_conical_angle":
-                {
-                    "label": "Conical Support Angle",
-                    "description": "The angle of the tilt of conical support. With 0 degrees being vertical, and 90 degrees being horizontal. Smaller angles cause the support to be more sturdy, but consist of more material. Negative angles cause the base of the support to be wider than the top.",
-                    "unit": "°",
-                    "type": "float",
-                    "minimum_value": "-90",
-                    "minimum_value_warning": "-45",
-                    "maximum_value_warning": "45",
-                    "maximum_value": "90",
-                    "default_value": 30,
-                    "enabled": "support_conical_enabled and support_enable and support_structure != 'tree'",
-                    "limit_to_extruder": "support_infill_extruder_nr",
-                    "settable_per_mesh": true
-                },
-                "support_conical_min_width":
-                {
-                    "label": "Conical Support Minimum Width",
-                    "description": "Minimum width to which the base of the conical support area is reduced. Small widths can lead to unstable support structures.",
-                    "unit": "mm",
-                    "default_value": 5.0,
-                    "minimum_value": "0",
-                    "minimum_value_warning": "machine_nozzle_size * 3",
-                    "maximum_value_warning": "100.0",
-                    "type": "float",
-                    "enabled": "support_conical_enabled and support_enable and support_structure != 'tree' and support_conical_angle > 0",
-                    "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "support_tower_diameter":
