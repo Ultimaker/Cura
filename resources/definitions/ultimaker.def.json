@@ -24,6 +24,7 @@
             "maximum_value_warning": "125"
         },
         "material_standby_temperature": {
+            "value": "material_print_temperature - 100",
             "minimum_value": "0"
         },
         "extruder_prime_pos_y":
@@ -53,6 +54,9 @@
         "infill_material_flow": {
             "value": "(1.95-infill_sparse_density / 100 if infill_sparse_density > 95 else 1) * material_flow"
         },
+        "inset_direction": {
+            "value": "'outside_in'"
+        },
         "retraction_combing": {
             "value": "'no_outer_surfaces'"
         },
@@ -75,7 +79,7 @@
             "value": "skin_material_flow"
         },
         "skin_monotonic" : {
-            "value": true
+            "value": "roofing_layer_count == 0"
         },
         "speed_equalize_flow_width_factor": {
             "value": "110.0"
@@ -108,10 +112,7 @@
             "value": "4 * layer_height if infill_sparse_density < 30 else 0"
         },
         "bridge_settings_enabled": {
-            "value": false
-        },
-        "bridge_wall_min_length": {
-            "value": 0
+            "value": true
         },
         "bridge_skin_support_threshold": {
             "value": 50
@@ -123,7 +124,7 @@
             "value": 0
         },
         "bridge_wall_speed": {
-            "value": "speed_wall"
+            "value": "bridge_skin_speed"
         },
         "bridge_wall_material_flow": {
             "value": "wall_material_flow"
@@ -221,25 +222,58 @@
             "value": true
         },
         "support_infill_rate": {
-            "value": "80 if gradual_support_infill_steps != 0 else 15"
+            "value": "0 if support_structure == 'tree' else 80 if gradual_support_infill_steps != 0 else 15"
+        },
+        "support_line_distance": {
+            "minimum_value_warning": "0 if support_structure == 'tree' else support_line_width"
+        },
+        "support_initial_layer_line_distance": {
+            "minimum_value_warning": "0 if support_structure == 'tree' else support_line_width"
         },
         "gradual_support_infill_steps": {
             "value": "2 if support_interface_enable else 0"
         },
         "gradual_support_infill_step_height": {
-            "value": "4*layer_height"
+            "value": "4 * layer_height"
+        },
+        "raft_base_speed": {
+            "value": "raft_speed"
+        },
+        "raft_base_thickness": {
+            "value": "min(machine_nozzle_size * 0.75, 0.3)"
+        },
+        "raft_interface_fan_speed": {
+            "value": "(raft_base_fan_speed + raft_surface_fan_speed) / 2"
+        },
+        "raft_interface_line_width": {
+            "value": "(raft_base_line_width + raft_surface_line_width) / 2"
+        },
+        "raft_interface_speed": {
+            "value": "(raft_surface_speed + raft_base_speed) / 2"
+        },
+        "raft_interface_thickness": {
+            "value": "(raft_base_thickness + raft_surface_thickness) / 2"
+        },
+        "raft_speed": {
+            "value": 15
+        },
+        "raft_surface_fan_speed": {
+            "value": "cool_fan_speed"
+        },
+        "raft_surface_speed": {
+            "value": "speed_topbottom"
         },
         "support_interface_height": {
-            "value": "2*layer_height"
+            "value": "2 * layer_height"
         },
         "support_offset": {
-            "value": "2*line_width if support_interface_enable else 0"
+            "value": "support_xy_distance if support_interface_enable else 0"
         },
         "support_xy_distance": {
             "value": "1"
         },
         "support_xy_distance_overhang": {
-            "value": "wall_line_width_0"
+            "value": "0.2"
         },
         "minimum_support_area": {
             "value": "(2 + support_offset)**2"
@@ -258,6 +292,15 @@
         },
         "support_z_distance": {
             "value": "0"
+        },
+        "support_conical_enabled": {
+            "value": true
+        },
+        "support_conical_min_width": {
+            "value": 10
+        },
+        "top_bottom_pattern": {
+            "value": "'zigzag'"
         }
     }
 }

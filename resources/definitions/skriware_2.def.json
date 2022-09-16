@@ -30,8 +30,11 @@
     "support_skip_zag_per_mm": {
       "default_value": 10
     },
+    "default_material_bed_temperature":
+    {
+      "value": "50"
+    },
     "material_bed_temperature": {
-      "value": "50",
       "minimum_value_warning": "30",
       "resolve": "extruderValues('material_bed_temperature')[adhesion_extruder_nr] if resolveOrValue('adhesion_type') == 'raft' else max(extruderValues('material_bed_temperature'))"
     },
@@ -365,9 +368,6 @@
     },
     "z_seam_x": {
       "value": "115"
-    },
-    "material_print_temperature": {
-      "value": "195"
     },
     "material_bed_temperature_layer_0": {
       "value": "50",

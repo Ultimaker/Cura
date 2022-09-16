@@ -56,28 +56,30 @@ ComboBox
 
     background: UM.UnderlineBackground
     {
-        //Rectangle for highlighting when this combobox needs to pulse.
+        // Rectangle for highlighting when this combobox needs to pulse.
         Rectangle
         {
             anchors.fill: parent
             opacity: 0
-            color: UM.Theme.getColor("warning")
+            color: "transparent"
+
+            border.color: UM.Theme.getColor("text_field_border_active")
+            border.width: UM.Theme.getSize("default_lining").width
 
             SequentialAnimation on opacity
             {
                 id: pulseAnimation
                 running: false
-                loops: 1
-                alwaysRunToEnd: true
+                loops: 2
                 PropertyAnimation
                 {
                     to: 1
-                    duration: 300
+                    duration: 150
                 }
                 PropertyAnimation
                 {
                     to: 0
-                    duration : 2000
+                    duration : 150
                 }
             }
         }

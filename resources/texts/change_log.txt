@@ -1,3 +1,79 @@
+[5.1.1]
+* New features:
+- Added support for the Ultimaker S3 and Ultimaker S5 updated mainbord
+
+
+<i>MacOS 10.15 is no longer supported. Technically this means Ultimaker will stop testing and developing for such operating systems. However, even though it is no longer supported, there is still a high likelihood the application keeps functioning.</i>
+
+[5.1]
+<i>For an overview of the new features in Cura 5.1, please watch <a href="https://youtu.be/7jetjsHLIvk">our video</a>.</i>
+
+* Improved toolpath simplification algorithm
+The algorithm that reduces the resolution of the print has been rewritten, providing a more constant resolution to allow for greater precision without causing buffer underruns.
+
+* Added option to alternate wall direction
+A new setting causes the direction of printing walls to alternate between layers and adjacent walls, which reduces warping in the print.
+
+* Adjusted combing boundaries to reduce scarring
+Travel moves through the inside of the models are adjusted so that they should keep more distance from the model where possible, yet allowing travels through narrow parts without retractions.
+
+* Reduced acceleration and jerk commands for travel moves
+We added the option to disable acceleration and jerk commands for travel moves. If disabled, they will take on the acceleration of the printed part of its destination. This greatly reduces file size and buffer underruns.
+
+* Project files know which packages they require
+Newly created project files will now store which packages they require from the Ultimaker Marketplace. If a project needs a material from there, the user will be prompted to download it.
+
+* Other new features and improvements:
+- The interface to select the printing profile in Recommended Mode has been redesigned.
+- Implemented multi-threaded slicing for MacOS, to bring it in line with other operating systems, contributed by Piezoid.
+- Cura now links toolpaths to project files in the Digital Factory.
+- Improved performance of loading STL files on Linux.
+- Packages from the Marketplace can now contain intent profiles.
+- The application now makes heavy use of Conan to make it easier and faster to build releases of Cura.
+- Start and end g-code can now refer to the currently active profile with replacement keys.
+- To provide proper compatibility with both older and newer Linux distribution, this release contains two Linux builds.
+
+* Bug fixes:
+- Fix resetting configuration if it gets corrupt.
+- Monotonic ordering now works again for top surfaces.
+- Fix a bug where Remove Raft Inside Corners didn't always remove all corners.
+- Fix the position of the toolbar if the toolbar is too tall to fit.
+- Intents in the Recommended Mode now show a description again.
+- Remove Inside Corners and Raft Base Wall Count can now be changed per extruder, though they will affect the entire print.
+- Fix opening STL files with special characters in their header.
+- Fix crash at start-up on newer Linux distributions.
+- Fix priming when printing a raft with a different extruder for some of its layers.
+- Fix a case where the inner wall ends up protruding through the outside of the model.
+- Improve some details on dark mode colouring.
+- Fix an error sometimes occurring when uninstalling plug-ins.
+- Fix a rendering issue with pop-up dialogues on MacOS.
+- Fix Discard or Keep Changes dialog showing an outdated setting value.
+- Horizontal Scaling Shrinkage Compensation no longer adjusts the size of the build volume, allowing the full size of the build plate to be used.
+- Fixed overextrusion when using gradual infill with thin strips of infill.
+- Fix opening STL files with special characters in their file header.
+- Fix slicing failure when using Randomize Infill Start in some cases.
+- Restore reminder to sync materials with your printer when using cloud printers with custom materials.
+- The tool bar should no longer show up in the monitor stage.
+- Exporting materials should now retain settings unknown to Cura as well.
+
+* Printer definitions, profiles and materials:
+- Improved profiles for PVA and support for Ultimaker printers.
+- Adjust retraction speed and distance for Voron, contributed by Haxk20 and Cbc02009
+- Heat up extruder and build plate at the same time for Ender 3 Pro, contributed by XDazld.
+- Add new Tough PLA colours.
+- Add DD0.4 print cores for Ultimaker printers.
+- Add MakerGear M2 printer, contributed by Wanders78746.
+- Add Trimarker Nebula Plus printer, contributed by MatiGabaglio.
+- Various small profile improvements.
+
+* Community translations:
+- Updated the Brazilian Portuguese translation, contributed by Patola.
+- Updated the Czech translation, contributed by sustmi.
+
+* Known critical issues:
+- The placement of the seam has gotten more scattered than in previous releases.
+- Support is sometimes missing in detailed parts, where previous releases supported them properly.
+
 [5.0]
 <i><a href="https://youtu.be/kRj7pR4OkQA">Watch the launch event</a> to learn more about Ultimaker Cura 5.0.</i>
 

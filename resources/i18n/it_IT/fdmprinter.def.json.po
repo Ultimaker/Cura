@@ -2810,12 +2810,13 @@ msgstr "Abilita la regolazione dell’accelerazione della testina di stampa. Aum
 #: fdmprinter.def.json
 msgctxt "acceleration_travel_enabled label"
 msgid "Enable Travel Acceleration"
-msgstr ""
+msgstr "Abilita Accelerazione spostamenti"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_travel_enabled description"
 msgid "Use a separate acceleration rate for travel moves. If disabled, travel moves will use the acceleration value of the printed line at their destination."
-msgstr ""
+msgstr "Utilizza un tasso di accelerazione separato per i movimenti di spostamento. Se disabilitata, i movimenti di spostamento utilizzeranno il valore di accelerazione"
+" della linea stampata alla destinazione."
 
 #: fdmprinter.def.json
 msgctxt "acceleration_print label"
@@ -3010,12 +3011,13 @@ msgstr "Abilita la regolazione del jerk della testina di stampa quando la veloci
 #: fdmprinter.def.json
 msgctxt "jerk_travel_enabled label"
 msgid "Enable Travel Jerk"
-msgstr ""
+msgstr "Abilita jerk spostamenti"
 
 #: fdmprinter.def.json
 msgctxt "jerk_travel_enabled description"
 msgid "Use a separate jerk rate for travel moves. If disabled, travel moves will use the jerk value of the printed line at their destination."
-msgstr ""
+msgstr "Utilizza un tasso di jerk distinto per i movimenti di spostamento. Se disabilitato, i movimenti di spostamento utilizzeranno il valore di jerk della linea"
+" stampata alla destinazione."
 
 #: fdmprinter.def.json
 msgctxt "jerk_print label"

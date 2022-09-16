@@ -311,8 +311,6 @@ UM.MainWindow
                 property int mouseY: base.mouseY
                 property bool tallerThanParent: height > parent.height
 
-                z: 1 // Ensure toolbar and toolpanels are drawn on top
-
                 anchors
                 {
                     verticalCenter: tallerThanParent ? undefined : parent.verticalCenter

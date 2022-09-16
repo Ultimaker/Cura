@@ -192,7 +192,7 @@ Cura.ExpandablePopup
     contentItem: Item
     {
         id: popup
-        implicitWidth: UM.Theme.getSize("machine_selector_widget_content").width
+        implicitWidth: Math.max(machineSelector.width, UM.Theme.getSize("machine_selector_widget_content").width)
         implicitHeight: Math.min(machineSelectorList.contentHeight + separator.height + buttonRow.height, UM.Theme.getSize("machine_selector_widget_content").height) //Maximum height is the theme entry.
         MachineSelectorList
         {
@@ -223,7 +223,9 @@ Cura.ExpandablePopup
             id: buttonRow
 
             anchors.bottom: parent.bottom
-            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.left: parent.left
+            anchors.right: parent.right
+
             padding: UM.Theme.getSize("default_margin").width
             spacing: UM.Theme.getSize("default_margin").width
 
@@ -236,7 +238,7 @@ Cura.ExpandablePopup
                 // The maximum width of the button is half of the total space, minus the padding of the parent, the left
                 // padding of the component and half the spacing because of the space between buttons.
                 fixedWidthMode: true
-                width: UM.Theme.getSize("machine_selector_widget_content").width / 2 - leftPadding
+                width: buttonRow.width / 2 - leftPadding * 1.5
                 onClicked:
                 {
                     toggleContent()
@@ -253,7 +255,7 @@ Cura.ExpandablePopup
                 fixedWidthMode: true
                 // The maximum width of the button is half of the total space, minus the padding of the parent, the right
                 // padding of the component and half the spacing because of the space between buttons.
-                width: UM.Theme.getSize("machine_selector_widget_content").width / 2 - leftPadding
+                width: buttonRow.width / 2 - rightPadding * 1.5
                 onClicked:
                 {
                     toggleContent()

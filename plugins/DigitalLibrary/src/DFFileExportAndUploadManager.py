@@ -1,5 +1,6 @@
-# Copyright (c) 2021 Ultimaker B.V.
+# Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 import json
 import threading
 from json import JSONDecodeError
@@ -134,6 +135,9 @@ class DFFileExportAndUploadManager:
             file_name = file_upload_response.job_name if file_upload_response.job_name is not None else ""
         else:
             Logger.log("e", "Wrong response type received. Aborting uploading file to the Digital Library")
+            return
+        if file_name not in self._file_upload_job_metadata:
+            Logger.error(f"API response for uploading doesn't match the file name we just uploaded: {file_name} was never uploaded.")
             return
         with self._message_lock:
             self.progress_message.show()
@@ -335,10 +339,11 @@ class DFFileExportAndUploadManager:
         self._handleNextUploadJob()
 
     def _handleNextUploadJob(self):
-        match self._upload_jobs:
-            case [job, *jobs]:
-                job.start()
-                self._upload_jobs = jobs
+        try:
+            job = self._upload_jobs.pop(0)
+            job.start()
+        except IndexError:
+            pass  # Empty list, do nothing.
 
     def initializeFileUploadJobMetadata(self) -> Dict[str, Any]:
         metadata = {}

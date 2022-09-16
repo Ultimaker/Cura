@@ -7,13 +7,14 @@ msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
 "POT-Creation-Date: 2022-06-21 12:50+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2022-07-15 11:08+0200\n"
+"Last-Translator: \n"
 "Language-Team: LANGUAGE\n"
-"Language: \n"
+"Language: ru_RU\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.1.1\n"
 
 #: fdmprinter.def.json
 msgctxt "machine_settings label"
@@ -1116,7 +1117,7 @@ msgstr "Минимальная ширина линии нечетных стен
 #: fdmprinter.def.json
 msgctxt "min_odd_wall_line_width description"
 msgid "The minimum line width for middle line gap filler polyline walls. This setting determines at which model thickness we switch from printing two wall lines, to printing two outer walls and a single central wall in the middle. A higher Minimum Odd Wall Line Width leads to a higher maximum even wall line width. The maximum odd wall line width is calculated as 2 * Minimum Even Wall Line Width,"
-msgstr "Минимальная ширина линии для полилинейных стенок, заполняющих зазоры средней линии. Этот параметр определяет, при какой толщине модели выполняется переключение с печати стенки в две линии на печать двух внешних стенок и одной центральной стенки посередине. Чем выше значение минимальной ширины линии нечетной стенки, тем выше максимальная ширина линии четной стенки. Максимальная ширина линии нечетной стенки вычисляется по формуле: 2 * Ширина линии четной стенки."
+msgstr "Минимальная ширина линии для полилинейных стенок, заполняющих зазоры средней линии. Этот параметр определяет, при какой толщине модели выполняется переключение с печати стенки в две линии на печать двух внешних стенок и одной центральной стенки посередине. Чем выше значение минимальной ширины линии нечетной стенки, тем выше максимальная ширина линии четной стенки. Максимальная ширина линии нечетной стенки вычисляется по формуле: 2 * Ширина линии четной стенки,"
 
 #: fdmprinter.def.json
 msgctxt "wall_add_middle_threshold label"
@@ -2810,12 +2811,12 @@ msgstr "Разрешает регулирование ускорения гол�
 #: fdmprinter.def.json
 msgctxt "acceleration_travel_enabled label"
 msgid "Enable Travel Acceleration"
-msgstr ""
+msgstr "Включить ускорение перемещения"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_travel_enabled description"
 msgid "Use a separate acceleration rate for travel moves. If disabled, travel moves will use the acceleration value of the printed line at their destination."
-msgstr ""
+msgstr "Использовать отдельный коэффициент ускорения для перемещения. Если опция отключена, то при перемещении будет использоваться значение ускорения строки в пункте назначения."
 
 #: fdmprinter.def.json
 msgctxt "acceleration_print label"
@@ -3010,12 +3011,12 @@ msgstr "Разрешает управление скоростью измене�
 #: fdmprinter.def.json
 msgctxt "jerk_travel_enabled label"
 msgid "Enable Travel Jerk"
-msgstr ""
+msgstr "Включить рывок перемещения"
 
 #: fdmprinter.def.json
 msgctxt "jerk_travel_enabled description"
 msgid "Use a separate jerk rate for travel moves. If disabled, travel moves will use the jerk value of the printed line at their destination."
-msgstr ""
+msgstr "Использовать отдельный коэффициент рывка для перемещения. Если опция отключена, то при перемещении будет использоваться значение рывка строки в пункте назначения."
 
 #: fdmprinter.def.json
 msgctxt "jerk_print label"

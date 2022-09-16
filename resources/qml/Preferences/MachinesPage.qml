@@ -17,7 +17,7 @@ UM.ManagementPage
     title: catalog.i18nc("@title:tab", "Printers")
     detailsPlaneCaption: base.currentItem && base.currentItem.name ? base.currentItem.name : ""
 
-    model: Cura.GlobalStacksModel { }
+    model: Cura.GlobalStacksModel { filterAbstractMachines: false }
 
     sectionRole: "discoverySource"
 
@@ -92,6 +92,14 @@ UM.ManagementPage
             minimumHeight: UM.Theme.getSize("modal_window_minimum").height
             maximumWidth: minimumWidth * 3
             maximumHeight: minimumHeight * 3
+            backgroundColor: UM.Theme.getColor("main_background")
+            onVisibleChanged:
+            {
+                if(!visible)
+                {
+                    actionDialog.loader.item.focus = true
+                }
+            }
         }
 
         UM.ConfirmRemoveDialog

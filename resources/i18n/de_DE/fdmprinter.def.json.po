@@ -7,13 +7,14 @@ msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
 "POT-Creation-Date: 2022-06-21 12:50+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2022-07-15 11:04+0200\n"
+"Last-Translator: \n"
 "Language-Team: LANGUAGE\n"
-"Language: \n"
+"Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.1.1\n"
 
 #: fdmprinter.def.json
 msgctxt "machine_settings label"
@@ -746,7 +747,7 @@ msgstr "Skalierung der Lüftergeschwindigkeit auf 0–1"
 #: fdmprinter.def.json
 msgctxt "machine_scale_fan_speed_zero_to_one description"
 msgid "Scale the fan speed to be between 0 and 1 instead of between 0 and 256."
-msgstr "Skalieren der Lüftergeschwindigkeit auf einen Wert zwischen 0 und 1 statt zwischen 0 und 256"
+msgstr "Skalieren der Lüftergeschwindigkeit auf einen Wert zwischen 0 und 1 statt zwischen 0 und 256."
 
 #: fdmprinter.def.json
 msgctxt "resolution label"
@@ -2810,12 +2811,12 @@ msgstr "Ermöglicht die Justierung der Druckkopfbeschleunigung. Eine Erhöhung d
 #: fdmprinter.def.json
 msgctxt "acceleration_travel_enabled label"
 msgid "Enable Travel Acceleration"
-msgstr ""
+msgstr "Beschleunigung für Bewegung aktivieren"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_travel_enabled description"
 msgid "Use a separate acceleration rate for travel moves. If disabled, travel moves will use the acceleration value of the printed line at their destination."
-msgstr ""
+msgstr "Verwenden Sie eine separate Beschleunigungsrate für Bewegungen. Wenn diese Option deaktiviert ist, wird für Bewegungen der Beschleunigungswert der gedruckten Linie an der Zielposition verwendet."
 
 #: fdmprinter.def.json
 msgctxt "acceleration_print label"
@@ -3010,12 +3011,12 @@ msgstr "Ermöglicht die Justierung der Ruckfunktion des Druckkopfes bei Änderun
 #: fdmprinter.def.json
 msgctxt "jerk_travel_enabled label"
 msgid "Enable Travel Jerk"
-msgstr ""
+msgstr "Ruckfunktion für Bewegung aktivieren"
 
 #: fdmprinter.def.json
 msgctxt "jerk_travel_enabled description"
 msgid "Use a separate jerk rate for travel moves. If disabled, travel moves will use the jerk value of the printed line at their destination."
-msgstr ""
+msgstr "Verwenden Sie eine separate Ruckfunktionsrate für Bewegungen. Wenn diese Option deaktiviert ist, wird für Bewegungen der Ruckfunktionswert der gedruckten Linie an der Zielposition verwendet."
 
 #: fdmprinter.def.json
 msgctxt "jerk_print label"

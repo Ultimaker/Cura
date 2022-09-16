@@ -35,7 +35,7 @@
             "update_url": "https://ultimaker.com/firmware?utm_source=cura&utm_medium=software&utm_campaign=fw-update"
         },
         "bom_numbers": [
-            213482
+            213482, 213483
         ]
     },
 
@@ -68,14 +68,13 @@
         "machine_start_gcode": { "default_value": "" },
         "machine_end_gcode": { "default_value": "" },
         "prime_blob_enable": { "enabled": true, "default_value": false },
-
+        "acceleration_enabled": { "value": true },
         "speed_travel":
         {
             "maximum_value": "150",
             "value": "150"
         },
 
-        "acceleration_enabled": { "value": "True" },
         "acceleration_layer_0": { "value": "acceleration_topbottom" },
         "acceleration_prime_tower": { "value": "math.ceil(acceleration_print * 2000 / 3500)" },
         "acceleration_print": { "value": "3500" },
@@ -98,21 +97,9 @@
         "layer_start_y": { "value": "sum(extruderValues('machine_extruder_start_pos_y')) / len(extruderValues('machine_extruder_start_pos_y'))" },
         "machine_min_cool_heat_time_window": { "value": "15" },
         "default_material_print_temperature": { "value": "200" },
-        "material_standby_temperature": { "value": "100" },
         "multiple_mesh_overlap": { "value": "0" },
         "optimize_wall_printing_order": { "value": "True" },
         "prime_tower_enable": { "value": "True" },
-        "raft_airgap": { "value": "0" },
-        "raft_base_speed": { "value": "20" },
-        "raft_base_thickness": { "value": "0.3" },
-        "raft_interface_line_spacing": { "value": "0.5" },
-        "raft_interface_line_width": { "value": "0.5" },
-        "raft_interface_speed": { "value": "20" },
-        "raft_interface_thickness": { "value": "0.2" },
-        "raft_jerk": { "value": "jerk_layer_0" },
-        "raft_margin": { "value": "10" },
-        "raft_speed": { "value": "25" },
-        "raft_surface_layers": { "value": "1" },
         "retraction_amount": { "value": "6.5" },
         "retraction_hop": { "value": "2" },
         "retraction_hop_enabled": { "value": "extruders_enabled_count > 1"  },
@@ -134,7 +121,6 @@
         "switch_extruder_prime_speed": { "value": "15" },
         "switch_extruder_retraction_amount": { "value": "8" },
         "top_bottom_thickness": { "value": "1" },
-        "travel_avoid_supports": { "value": "True" },
         "travel_avoid_distance": { "value": "3 if extruders_enabled_count > 1 else machine_nozzle_tip_outer_diameter / 2 * 1.5" },
         "wall_0_inset": { "value": "0" },
         "initial_layer_line_width_factor": { "value": "120" },

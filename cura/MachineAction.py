@@ -94,7 +94,7 @@ class MachineAction(QObject, PluginObject):
 
         plugin_path = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
         if plugin_path is None:
-            Logger.log("e", "Cannot create QML view: cannot find plugin path for plugin [%s]", self.getPluginId())
+            Logger.error(f"Cannot create QML view: cannot find plugin path for plugin {self.getPluginId()}")
             return None
         path = os.path.join(plugin_path, self._qml_url)
 
@@ -106,7 +106,7 @@ class MachineAction(QObject, PluginObject):
     def qmlPath(self) -> "QUrl":
         plugin_path = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
         if plugin_path is None:
-            Logger.log("e", "Cannot create QML view: cannot find plugin path for plugin [%s]", self.getPluginId())
+            Logger.error(f"Cannot create QML view: cannot find plugin path for plugin {self.getPluginId()}")
             return QUrl("")
         path = os.path.join(plugin_path, self._qml_url)
         return QUrl.fromLocalFile(path)

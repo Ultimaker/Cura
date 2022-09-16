@@ -138,14 +138,10 @@
             "value": "material_print_temperature"
         },
         "material_bed_temperature": {
-            "value": "default_material_bed_temperature",
             "maximum_value_warning": 100
         },
         "material_bed_temperature_layer_0": {
             "value": "material_bed_temperature"
-        },
-        "speed_infill": {
-            "value": "speed_print"
         },
         "speed_wall": {
             "value": "speed_print"
@@ -253,9 +249,6 @@
         },
         "smooth_spiralized_contours": {
             "value": false
-        },
-        "roofing_monotonic": {
-            "value": true
         }
     }
 }
