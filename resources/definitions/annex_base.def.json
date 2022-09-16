@@ -16,8 +16,7 @@
         "variants_name": "Toolhead",
         "preferred_variant_name": "0.40mm",
         "machine_extruder_trains": { "0": "annex_extruder_0" },
-        "preferred_material": "generic_abs",
-        "exclude_materials": []
+        "preferred_material": "generic_abs"
     },
     "overrides":
     {
