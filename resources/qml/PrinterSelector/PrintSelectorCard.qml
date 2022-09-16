@@ -50,7 +50,7 @@ Rectangle
             Layout.fillWidth: true
             Layout.preferredWidth: parent.width / 2
             Layout.alignment: Qt.AlignTop
-            spacing: UM.Theme.getSize("default_margin").width
+            spacing: UM.Theme.getSize("narrow_margin").width
 
             Repeater
             {
@@ -88,7 +88,6 @@ Rectangle
                         text: modelData.materials.length == 1 ? `${modelData.materials[0].brand} ${modelData.materials[0].name}` : ""
                         visible: modelData.materials.length == 1
                     }
-
                     ColumnLayout
                     {
                         id: multiMaterialText
@@ -98,7 +97,7 @@ Rectangle
                         visible: modelData.materials.length > 1
                         Repeater
                         {
-                            model: modelData.materials
+                            model: modelData.materials.length > 1 ? modelData.materials: null
                             UM.Label
                             {
                                 text: `${modelData.brand} ${modelData.name}`
