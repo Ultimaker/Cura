@@ -11,9 +11,9 @@
             "has_machine_quality": true,
             "has_materials": true,
             "has_variants": true,
-            "preferred_variant_name": "IDEX420 Standard 0.6",
+            "preferred_variant_name": "IDEX420 Mirror Standard 0.4",
             "preferred_material": "emotiontech_pla",
-            "preferred_quality_type": "c",
+            "preferred_quality_type": "b",
             "variants_name": "Print Head",
             "machine_extruder_trains": 
                 { 
