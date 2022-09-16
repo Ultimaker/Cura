@@ -69,7 +69,6 @@
         "machine_acceleration": { "value": 500 },
         "acceleration_print": { "value": 500 },
         "acceleration_travel": { "value": 500 },
-        "acceleration_enabled": { "value": false },
 
         "machine_max_jerk_xy": { "value": 10 },
         "machine_max_jerk_z": { "value": 0.4 },
