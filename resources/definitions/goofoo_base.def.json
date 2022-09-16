@@ -77,8 +77,14 @@
 
         "optimize_wall_printing_order": { "value": "True" },
 
-        "material_initial_print_temperature": { "value": "material_print_temperature" },
-        "material_final_print_temperature": { "value": "material_print_temperature" },
+
+        "material_print_temperature": { "maximum_value_warning": "421", "maximum_value": "500" },
+        "material_print_temperature_layer_0": { "maximum_value_warning": "421", "maximum_value": "500" },
+        "material_standby_temperature": { "maximum_value_warning": "421", "maximum_value": "500" },
+        "material_initial_print_temperature": { "value": "material_print_temperature", "maximum_value_warning": "421", "maximum_value": "500" },
+        "material_final_print_temperature": { "value": "material_print_temperature", "maximum_value_warning": "421", "maximum_value": "500" },
+        "material_flow": { "value": 100 },
+
 
         "z_seam_type": { "value": "'back'" },
         "z_seam_corner": { "value": "'z_seam_corner_weighted'" },
