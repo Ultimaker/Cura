@@ -91,13 +91,11 @@
         "infill_before_walls":                          { "default_value": false },
         "zig_zaggify_infill":                           { "value": true },
         "min_infill_area":                              { "default_value": 5.0 },
-        "acceleration_enabled":                         { "default_value": false },
         "acceleration_print":                           { "default_value": 2200 },
         "acceleration_wall_0":                          { "value": 1800 },
         "acceleration_layer_0":                         { "value": 1800 },
         "acceleration_travel_layer_0":                  { "value": 1800 },
         "acceleration_roofing":                         { "value": 1800 },
-        "jerk_enabled":                                 { "default_value": false },
         "jerk_wall_0":                                  { "value": 10 },
         "jerk_roofing":                                 { "value": 10 }
     }
