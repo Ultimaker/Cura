@@ -76,7 +76,6 @@
         "jerk_print": { "value": 10 },
         "jerk_travel": { "value": "jerk_print" },
         "jerk_travel_layer_0": { "value": "jerk_travel" },
-        "jerk_enabled": { "value": false },
 
         "speed_print": { "value": 50.0 },
 
