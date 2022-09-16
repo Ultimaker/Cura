@@ -112,7 +112,7 @@ Rectangle
         {
             id: printButton
 
-            implicitWidth: UM.Theme.getSize("medium_button").width
+            implicitWidth: UM.Theme.getSize("large_button").width
             implicitHeight: implicitWidth
             Layout.alignment: Qt.AlignTop
             padding: 0
@@ -131,7 +131,7 @@ Rectangle
                     anchors.centerIn: parent
                     source: UM.Theme.getIcon("Printer")
                     color: UM.Theme.getColor("border_accent_1")
-                    width: UM.Theme.getSize("small_button_icon").width
+                    width: UM.Theme.getSize("medium_button_icon").width
                     height: width
                 }
             }
