@@ -24,11 +24,11 @@
 
         "gantry_height": { "value": 25 },
         
-        "speed_print": {"value": 50},
-        "speed_layer_0": {"value": 20},
+        "speed_print": { "value": 50 },
+        "speed_layer_0": { "value": 20 },
         "speed_travel": { "default_value": 120 },
-        "retraction_amount": {"value":  0.8},
-        "retraction_speed": { "default_value": 40}
-
+        
+        "retraction_amount": { "value":  0.8 },
+        "retraction_speed": { "default_value": 40 }
     }
 }
