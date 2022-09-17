@@ -28,6 +28,8 @@
                 [32, 34]
             ]
         },
+        "has_variants": true,
+        "preferred_variant_name": "0.4mm Nozzle",
         "gantry_height": {
             "value": 25
         },
@@ -39,6 +41,7 @@
         },
         "machine_end_gcode": {
             "default_value": "; -- END GCODE --\nG91 ;Relative positioning\nG1 E-2 F2700 ;Retract a bit\nG1 E-2 Z0.2 F2400 ;Retract and raise Z\nG1 X5 Y5 F3000 ;Wipe out\nG1 Z0.5 ;Raise Z more\nG90 ;Absolute positioning\n\nG1 X0 Y0 ;Present print\nM106 S0 ;Turn-off fan\nM104 S0 ;Turn-off hotend\nM140 S0 ;Turn-off bed\n\nM84 X Y E ;Disable all steppers but Z"
-        }
+        },
+        "speed_print": {  "default_value": 50 }
     }
 }
