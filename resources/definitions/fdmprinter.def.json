@@ -2986,6 +2986,49 @@
                     "maximum_value_warning": "150",
                     "settable_per_mesh": true
                 },
+                "wall_x_material_flow_layer_0":
+                {
+                    "label": "Initial Inner Wall Flow",
+                    "description": "Flow compensation on the outermost wall line of the first layer.",
+                    "unit": "%",
+                    "type": "float",
+                    "default_value": 100,
+                    "value": "material_flow_layer_0",
+                    "minimum_value": "0.0001",
+                    "minimum_value_warning": "50",
+                    "maximum_value_warning": "150",
+                    "limit_to_extruder": "wall_x_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "wall_0_material_flow_layer_0":
+                {
+                    "label": "Initial Outer Wall Flow",
+                    "description": "Flow compensation on the outermost wall line of the first layer.",
+                    "unit": "%",
+                    "type": "float",
+                    "default_value": 100,
+                    "value": "material_flow_layer_0",
+                    "minimum_value": "0.0001",
+                    "minimum_value_warning": "50",
+                    "maximum_value_warning": "150",
+                    "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "skin_material_flow_layer_0":
+                {
+                    "label": "Initial Bottom Flow",
+                    "description": "Flow compensation on bottom lines of the first layer",
+                    "unit": "%",
+                    "type": "float",
+                    "default_value": 100,
+                    "value": "material_flow_layer_0",
+                    "minimum_value": "0.0001",
+                    "minimum_value_warning": "50",
+                    "maximum_value_warning": "150",
+                    "enabled": "bottom_layers > 0",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true
+                },
                 "material_standby_temperature":
                 {
                     "label": "Standby Temperature",
