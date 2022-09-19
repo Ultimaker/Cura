@@ -99,7 +99,7 @@ class MachineManager(QObject):
 
         self._application.getPreferences().addPreference("cura/active_machine", "")
 
-        self._printer_output_devices = []  # type: List[PrinterOutputDevice]
+        self._printer_output_devices: List[PrinterOutputDevice] = []
         self._application.getOutputDeviceManager().outputDevicesChanged.connect(self._onOutputDevicesChanged)
         # There might already be some output devices by the time the signal is connected
         self._onOutputDevicesChanged()
@@ -112,7 +112,7 @@ class MachineManager(QObject):
 
         self._application.callLater(self.setInitialActiveMachine)
 
-        containers = CuraContainerRegistry.getInstance().findInstanceContainers(id = self.activeMaterialId)  # type: List[InstanceContainer]
+        containers: List[InstanceContainer] = CuraContainerRegistry.getInstance().findInstanceContainers(id = self.activeMaterialId)
         if containers:
             containers[0].nameChanged.connect(self._onMaterialNameChanged)
 

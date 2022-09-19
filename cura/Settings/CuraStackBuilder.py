@@ -1,5 +1,7 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
+import copy
 
 from typing import Optional, cast
 

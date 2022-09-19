@@ -79,7 +79,7 @@
             "value": "skin_material_flow"
         },
         "skin_monotonic" : {
-            "value": true
+            "value": "roofing_layer_count == 0"
         },
         "speed_equalize_flow_width_factor": {
             "value": "110.0"
@@ -112,10 +112,7 @@
             "value": "4 * layer_height if infill_sparse_density < 30 else 0"
         },
         "bridge_settings_enabled": {
-            "value": false
-        },
-        "bridge_wall_min_length": {
-            "value": 0
+            "value": true
         },
         "bridge_skin_support_threshold": {
             "value": 50
@@ -127,7 +124,7 @@
             "value": 0
         },
         "bridge_wall_speed": {
-            "value": "speed_wall"
+            "value": "bridge_skin_speed"
         },
         "bridge_wall_material_flow": {
             "value": "wall_material_flow"
@@ -237,10 +234,37 @@
             "value": "2 if support_interface_enable else 0"
         },
         "gradual_support_infill_step_height": {
-            "value": "4*layer_height"
+            "value": "4 * layer_height"
+        },
+        "raft_base_speed": {
+            "value": "raft_speed"
+        },
+        "raft_base_thickness": {
+            "value": "min(machine_nozzle_size * 0.75, 0.3)"
+        },
+        "raft_interface_fan_speed": {
+            "value": "(raft_base_fan_speed + raft_surface_fan_speed) / 2"
+        },
+        "raft_interface_line_width": {
+            "value": "(raft_base_line_width + raft_surface_line_width) / 2"
+        },
+        "raft_interface_speed": {
+            "value": "(raft_surface_speed + raft_base_speed) / 2"
+        },
+        "raft_interface_thickness": {
+            "value": "(raft_base_thickness + raft_surface_thickness) / 2"
+        },
+        "raft_speed": {
+            "value": 15
+        },
+        "raft_surface_fan_speed": {
+            "value": "cool_fan_speed"
+        },
+        "raft_surface_speed": {
+            "value": "speed_topbottom"
         },
         "support_interface_height": {
-            "value": "2*layer_height"
+            "value": "2 * layer_height"
         },
         "support_offset": {
             "value": "support_xy_distance if support_interface_enable else 0"
@@ -268,6 +292,15 @@
         },
         "support_z_distance": {
             "value": "0"
+        },
+        "support_conical_enabled": {
+            "value": true
+        },
+        "support_conical_min_width": {
+            "value": 10
+        },
+        "top_bottom_pattern": {
+            "value": "'zigzag'"
         }
     }
 }

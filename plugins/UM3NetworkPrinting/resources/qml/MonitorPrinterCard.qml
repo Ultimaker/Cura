@@ -175,7 +175,14 @@ Item
             {
                 id: printerConfiguration
                 anchors.verticalCenter: parent.verticalCenter
-                buildplate: printer ? catalog.i18nc("@label", "Glass") : null // 'Glass' as a default
+                buildplate: {
+                    switch (printer.buildplate) {
+                        case "glass":
+                            return catalog.i18nc("@label", "Glass");
+                        default:
+                            return null
+                    }
+                }
                 configurations:
                 {
                     var configs = []
