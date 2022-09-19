@@ -2988,7 +2988,7 @@
                 },
                 "wall_x_material_flow_layer_0":
                 {
-                    "label": "Initial Inner Wall Flow",
+                    "label": "Initial Layer Inner Wall Flow",
                     "description": "Flow compensation on the outermost wall line of the first layer.",
                     "unit": "%",
                     "type": "float",
@@ -3002,7 +3002,7 @@
                 },
                 "wall_0_material_flow_layer_0":
                 {
-                    "label": "Initial Outer Wall Flow",
+                    "label": "Initial Layer Outer Wall Flow",
                     "description": "Flow compensation on the outermost wall line of the first layer.",
                     "unit": "%",
                     "type": "float",
@@ -3016,7 +3016,7 @@
                 },
                 "skin_material_flow_layer_0":
                 {
-                    "label": "Initial Bottom Flow",
+                    "label": "Initial Layer Bottom Flow",
                     "description": "Flow compensation on bottom lines of the first layer",
                     "unit": "%",
                     "type": "float",
