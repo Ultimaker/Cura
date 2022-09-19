@@ -39,7 +39,6 @@
 			"machine_nozzle_cool_down_speed": { "default_value": 0.50 },
 			"machine_min_cool_heat_time_window": { "value": "15" },
 			"machine_gcode_flavor": { "default_value": "RepRap (RepRap)" },
-			"nozzle_disallowed_areas": { "default_value": [] },
 			"machine_nozzle_size": { "default_value": 0.6 },
 			"machine_use_extruder_offset_to_offset_coords": { "default_value": false },
 
@@ -99,7 +98,6 @@
             "travel_avoid_distance": { "value": "3 if extruders_enabled_count > 1 else machine_nozzle_tip_outer_diameter / 2 * 1.5" },
             "wall_thickness": { "value": "wall_line_width_0 + wall_line_width_x" },
 			
-			"acceleration_enabled": { "value": false },
             "acceleration_print": { "value": "machine_acceleration" },
             "acceleration_wall": { "value": "math.ceil(acceleration_print * 1250 / acceleration_print)" },
             "acceleration_wall_0": { "value": "math.ceil(acceleration_print * 1000 / acceleration_print)" },
