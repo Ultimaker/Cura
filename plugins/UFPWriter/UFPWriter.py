@@ -230,11 +230,11 @@ class UFPWriter(MeshWriter):
         # Add global user or quality changes
         global_flattened_changes = InstanceContainer.createMergedInstanceContainer(global_stack.userChanges, global_stack.qualityChanges)
         for setting in global_flattened_changes.getAllKeys():
-            settings["global"]["changes"][setting] = global_flattened_changes.getProperty(setting, "value")
+            settings["global"]["changes"][setting] = str(global_flattened_changes.getProperty(setting, "value"))
 
         # Get global all settings values without user or quality changes
         for setting in global_stack.getAllKeys():
-            settings["global"]["all_settings"][setting] = global_stack.getProperty(setting, "value")
+            settings["global"]["all_settings"][setting] = str(global_stack.getProperty(setting, "value"))
 
         for i, extruder in enumerate(global_stack.extruderList):
             # Add extruder fields to settings dictionary
@@ -246,10 +246,10 @@ class UFPWriter(MeshWriter):
             # Add extruder user or quality changes
             extruder_flattened_changes = InstanceContainer.createMergedInstanceContainer(extruder.userChanges, extruder.qualityChanges)
             for setting in extruder_flattened_changes.getAllKeys():
-                settings[f"extruder_{i}"]["changes"][setting] = extruder_flattened_changes.getProperty(setting, "value")
+                settings[f"extruder_{i}"]["changes"][setting] = str(extruder_flattened_changes.getProperty(setting, "value"))
 
             # Get extruder all settings values without user or quality changes
             for setting in extruder.getAllKeys():
-                settings[f"extruder_{i}"]["all_settings"][setting] = extruder.getProperty(setting, "value")
+                settings[f"extruder_{i}"]["all_settings"][setting] = str(extruder.getProperty(setting, "value"))
 
         return settings
