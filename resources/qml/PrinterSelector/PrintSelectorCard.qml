@@ -15,6 +15,7 @@ Rectangle
     property var extruders
     property var manager
 
+
     width: parent.width
     height: childrenRect.height + 2 * UM.Theme.getSize("default_margin").height
 
@@ -35,7 +36,7 @@ Rectangle
 
             Layout.preferredWidth: parent.width / 3
             Layout.fillWidth: true
-            Layout.alignment: Qt.AlignTop
+            Layout.alignment: extruders[0].materials.length > 1 ? Qt.AlignTop: Qt.AlignCenter
             Layout.fillHeight: false
 
             source: UM.Theme.getIcon("Printer")
@@ -50,7 +51,7 @@ Rectangle
             Layout.fillWidth: true
             Layout.preferredWidth: parent.width / 2
             Layout.alignment: Qt.AlignTop
-            spacing: UM.Theme.getSize("default_margin").width
+            spacing: UM.Theme.getSize("narrow_margin").width
 
             Repeater
             {
@@ -88,7 +89,6 @@ Rectangle
                         text: modelData.materials.length == 1 ? `${modelData.materials[0].brand} ${modelData.materials[0].name}` : ""
                         visible: modelData.materials.length == 1
                     }
-
                     ColumnLayout
                     {
                         id: multiMaterialText
@@ -98,7 +98,7 @@ Rectangle
                         visible: modelData.materials.length > 1
                         Repeater
                         {
-                            model: modelData.materials
+                            model: modelData.materials.length > 1 ? modelData.materials: null
                             UM.Label
                             {
                                 text: `${modelData.brand} ${modelData.name}`
@@ -113,9 +113,9 @@ Rectangle
         {
             id: printButton
 
-            implicitWidth: UM.Theme.getSize("medium_button").width
+            implicitWidth: UM.Theme.getSize("large_button").width
             implicitHeight: implicitWidth
-            Layout.alignment: Qt.AlignTop
+            Layout.alignment: extruders[0].materials.length > 1 ? Qt.AlignTop: Qt.AlignCenter
             padding: 0
 
             background: Rectangle
@@ -132,7 +132,7 @@ Rectangle
                     anchors.centerIn: parent
                     source: UM.Theme.getIcon("Printer")
                     color: UM.Theme.getColor("border_accent_1")
-                    width: UM.Theme.getSize("small_button_icon").width
+                    width: UM.Theme.getSize("medium_button_icon").width
                     height: width
                 }
             }

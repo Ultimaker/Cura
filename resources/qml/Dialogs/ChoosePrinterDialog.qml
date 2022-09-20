@@ -11,7 +11,7 @@ import Cura 1.0 as Cura
 UM.Dialog
 {
     property var manager
-
+    property var compatible_machine_model: Cura.CompatibleMachineModel {}
     id: base
 
     title: catalog.i18nc("@title:window", "Select Printer")
@@ -65,7 +65,11 @@ UM.Dialog
                     color: UM.Theme.getColor("text_link")
                     hoverColor: UM.Theme.getColor("text_scene_hover")
 
-                    onClicked: manager.refresh()
+                    onClicked:
+                    {
+                        manager.refresh()
+                        base.compatible_machine_model.forceUpdate()
+                    }
                 }
             }
 
@@ -73,7 +77,7 @@ UM.Dialog
             {
                 id: contents
 
-                model: Cura.CompatibleMachineModel {}
+                model: base.compatible_machine_model
 
                 delegate: Cura.PrintSelectorCard
                 {
