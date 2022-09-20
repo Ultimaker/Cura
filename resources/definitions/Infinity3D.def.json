@@ -12,8 +12,7 @@
         "has_materials": true,
         "has_machine_quality": true,
         "preferred_quality_type": "normal",
-        "preferred_material": "generic_pla",
-        "exclude_materials": [ ]
+        "preferred_material": "generic_pla"
     },
     "overrides": {
         "machine_name": {
