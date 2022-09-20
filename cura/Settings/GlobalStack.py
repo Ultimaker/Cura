@@ -90,7 +90,6 @@ class GlobalStack(CuraContainerStack):
     @pyqtProperty("QVariantList", notify=configuredConnectionTypesChanged)
     def configuredConnectionTypes(self) -> List[int]:
         """The configured connection types can be used to find out if the global
-
         stack is configured to be connected with a printer, without having to
         know all the details as to how this is exactly done (and without
         actually setting the stack to be active).
@@ -292,7 +291,6 @@ class GlobalStack(CuraContainerStack):
         for extruder_train in extruder_trains:
             extruder_position = extruder_train.getMetaDataEntry("position")
             extruder_check_position.add(extruder_position)
-
         for check_position in range(machine_extruder_count):
             if str(check_position) not in extruder_check_position:
                 return False
@@ -348,6 +346,12 @@ class GlobalStack(CuraContainerStack):
 
     nameChanged = pyqtSignal()
     name = pyqtProperty(str, fget=getName, fset=setName, notify=nameChanged)
+
+    def hasNetworkedConnection(self) -> bool:
+        has_connection = False
+        for connection_type in [ConnectionType.NetworkConnection.value, ConnectionType.CloudConnection.value]:
+            has_connection |= connection_type in self.configuredConnectionTypes
+        return has_connection
 
 ## private:
 global_stack_mime = MimeType(

@@ -1,7 +1,9 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Optional
+import copy
+
+from typing import Optional, cast
 
 from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from UM.Logger import Logger
@@ -275,41 +277,26 @@ class CuraStackBuilder:
         :return: The new Abstract Machine or None if an error occurred.
         """
         abstract_machine_id = f"{definition_id}_abstract_machine"
-
         from cura.CuraApplication import CuraApplication
         application = CuraApplication.getInstance()
         registry = application.getContainerRegistry()
-        container_tree = ContainerTree.getInstance()
 
-        if registry.findContainerStacks(is_abstract_machine = "True", id = abstract_machine_id):
-            # This abstract machine already exists
+        abstract_machines = registry.findContainerStacks(id = abstract_machine_id)
+        if abstract_machines:
+            return cast(GlobalStack, abstract_machines[0])
+        definitions = registry.findDefinitionContainers(id=definition_id)
+
+        name = ""
+
+        if definitions:
+            name = definitions[0].getName()
+        stack = cls.createMachine(abstract_machine_id, definition_id, show_warning_message=False)
+        if not stack:
             return None
 
-        match registry.findDefinitionContainers(type = "machine", id = definition_id):
-            case []:
-                # It should not be possible for the definition to be missing since an abstract machine will only
-                # be created as a result of a machine with definition_id being created.
-                Logger.error(f"Definition {definition_id} was not found!")
-                return None
-            case [machine_definition, *_definitions]:
-                machine_node = container_tree.machines[machine_definition.getId()]
-                name = machine_definition.getName()
+        stack.setName(name)
 
-                stack = GlobalStack(abstract_machine_id)
-                stack.setMetaDataEntry("is_abstract_machine", True)
-                stack.setMetaDataEntry("is_online", True)
-                stack.setDefinition(machine_definition)
-                cls.createUserContainer(
-                    name,
-                    machine_definition,
-                    stack,
-                    application.empty_variant_container,
-                    application.empty_material_container,
-                    machine_node.preferredGlobalQuality().container,
-                )
+        stack.setMetaDataEntry("is_abstract_machine", True)
+        stack.setMetaDataEntry("is_online", True)
 
-                stack.setName(name)
-
-                registry.addContainer(stack)
-
-                return stack
+        return stack

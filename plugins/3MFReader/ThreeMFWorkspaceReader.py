@@ -664,10 +664,22 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         cura_file_names = [name for name in archive.namelist() if name.startswith("Cura/")]
 
-        # Create a shadow copy of the preferences (we don't want all of the preferences, but we do want to re-use its
+        # Create a shadow copy of the preferences (We don't want all of the preferences, but we do want to re-use its
         # parsing code.
         temp_preferences = Preferences()
-        serialized = archive.open("Cura/preferences.cfg").read().decode("utf-8")
+        try:
+            serialized = archive.open("Cura/preferences.cfg").read().decode("utf-8")
+        except KeyError:
+            # If there is no preferences file, it's not a workspace, so notify user of failure.
+            Logger.log("w", "File %s is not a valid workspace.", file_name)
+            message = Message(i18n_catalog.i18nc("@info:error Don't translate the XML tags <filename> or <message>!",
+                                                 "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>.",
+                                                 file_name, str(e)),
+                              title=i18n_catalog.i18nc("@info:title", "Can't Open Project File"),
+                              message_type=Message.MessageType.ERROR)
+            message.show()
+            self.setWorkspaceName("")
+            return [], {}
         temp_preferences.deserialize(serialized)
 
         # Copy a number of settings from the temp preferences to the global
