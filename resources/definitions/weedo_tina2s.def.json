@@ -232,7 +232,7 @@
             "value": 25.0
         },
         "raft_base_thickness": {
-            "default_value": 0.35
+            "value": 0.35
         }
     }
 }
