@@ -1,5 +1,5 @@
 {
-    "version": 1,
+    "version": 2,
     "name": "Infinity3D",
     "inherits": "fdmprinter",
     "metadata": {
