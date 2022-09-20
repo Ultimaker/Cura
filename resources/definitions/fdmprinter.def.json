@@ -2989,7 +2989,7 @@
                 "wall_x_material_flow_layer_0":
                 {
                     "label": "Initial Layer Inner Wall Flow",
-                    "description": "Flow compensation on the outermost wall line of the first layer.",
+                    "description": "Flow compensation on wall lines for all wall lines except the outermost one, but only for the first layer",
                     "unit": "%",
                     "type": "float",
                     "default_value": 100,
