@@ -31,6 +31,10 @@ class CompatibleMachineModel(ListModel):
         machine_manager.globalContainerChanged.connect(self._update)
         machine_manager.outputDevicesChanged.connect(self._update)
 
+    @pyqtSlot()
+    def forceUpdate(self):
+        self._update()
+
     def _update(self) -> None:
         self.clear()
 

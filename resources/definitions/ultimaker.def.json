@@ -293,12 +293,6 @@
         "support_z_distance": {
             "value": "0"
         },
-        "support_conical_enabled": {
-            "value": true
-        },
-        "support_conical_min_width": {
-            "value": 10
-        },
         "top_bottom_pattern": {
             "value": "'zigzag'"
         }

@@ -37,50 +37,6 @@ Item
         }
     }
 
-    // Printer type selector.
-    Item
-    {
-        id: printerTypeSelectorRow
-        visible:
-        {
-            return Cura.MachineManager.printerOutputDevices.length >= 1 //If connected...
-                && Cura.MachineManager.printerOutputDevices[0].connectedPrintersTypeCount != null //...and we have configuration information...
-                && Cura.MachineManager.printerOutputDevices[0].connectedPrintersTypeCount.length > 1; //...and there is more than one type of printer in the configuration list.
-        }
-        height: visible ? childrenRect.height : 0
-
-        anchors
-        {
-            left: parent.left
-            right: parent.right
-            top: header.bottom
-            topMargin: visible ? UM.Theme.getSize("default_margin").height : 0
-        }
-
-        UM.Label
-        {
-            text: catalog.i18nc("@label", "Printer")
-            width: Math.round(parent.width * 0.3) - UM.Theme.getSize("default_margin").width
-            height: contentHeight
-            anchors.verticalCenter: printerTypeSelector.verticalCenter
-            anchors.left: parent.left
-        }
-
-        Button
-        {
-            id: printerTypeSelector
-            text: Cura.MachineManager.activeMachine !== null ? Cura.MachineManager.activeMachine.definition.name: ""
-
-            height: UM.Theme.getSize("print_setup_big_item").height
-            width: Math.round(parent.width * 0.7) + UM.Theme.getSize("default_margin").width
-            anchors.right: parent.right
-            onClicked: menu.open()
-            //style: UM.Theme.styles.print_setup_header_button
-
-            Cura.PrinterTypeMenu { id: menu}
-        }
-    }
-
     UM.TabRow
     {
         id: tabBar

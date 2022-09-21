@@ -165,7 +165,8 @@ jobs:
                                     actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{bump_up_patch}-alpha+{buildmetadata}{channel_metadata}"
                                 else:
                                     bump_up_minor = int(latest_branch_version.minor) + 1
-                                    actual_version = f"{latest_branch_version.major}.{bump_up_minor}.{latest_branch_version.patch}-alpha+{buildmetadata}{channel_metadata}"
+                                    reset_patch = 0
+                                    actual_version = f"{latest_branch_version.major}.{bump_up_minor}.{reset_patch}-alpha+{buildmetadata}{channel_metadata}"
                             else:
                                 actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-{latest_branch_version.prerelease.lower()}+{buildmetadata}{channel_metadata}"
                     else:
