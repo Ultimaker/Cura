@@ -5,7 +5,8 @@
     "metadata": {
         "author": "Luis Gabriel Gomez",
         "quality_definition": "creality_base",
-        "visible": true
+        "visible": true,
+        "has_variants": true
     },
     "overrides": {
         "machine_name": {
@@ -28,7 +29,6 @@
                 [32, 34]
             ]
         },
-        "has_variants": true,
         "preferred_variant_name": "0.4mm Nozzle",
         "gantry_height": {
             "value": 25
