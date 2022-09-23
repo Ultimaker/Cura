@@ -10,7 +10,6 @@ from PyQt6.QtGui import QDesktopServices
 from PyQt6.QtNetwork import QNetworkReply, QNetworkRequest  # Parse errors specific to print job uploading.
 
 from UM import i18nCatalog
-from UM.Backend.Backend import BackendState
 from UM.FileHandler.FileHandler import FileHandler
 from UM.Logger import Logger
 from UM.Scene.SceneNode import SceneNode
@@ -18,6 +17,8 @@ from UM.Version import Version
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState
 from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
+from cura.Scene.GCodeListDecorator import GCodeListDecorator
+from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
 
 from .CloudApiClient import CloudApiClient
 from ..ExportFileJob import ExportFileJob
@@ -110,6 +111,9 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         self._pre_upload_print_job = None  # type: Optional[CloudPrintJobResponse]
         self._uploaded_print_job = None  # type: Optional[CloudPrintJobResponse]
 
+        CuraApplication.getInstance().getBackend().backendDone.connect(self._resetPrintJob)
+        CuraApplication.getInstance().getController().getScene().sceneChanged.connect(self._onSceneChanged)
+
     def connect(self) -> None:
         """Connects this device."""
 
@@ -117,8 +121,6 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
             return
         Logger.log("i", "Attempting to connect to cluster %s", self.key)
         super().connect()
-
-        CuraApplication.getInstance().getBackend().backendStateChange.connect(self._onBackendStateChange)
         self._update()
 
     def disconnect(self) -> None:
@@ -128,11 +130,14 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
             return
         super().disconnect()
         Logger.log("i", "Disconnected from cluster %s", self.key)
-        CuraApplication.getInstance().getBackend().backendStateChange.disconnect(self._onBackendStateChange)
 
-    def _onBackendStateChange(self, _: BackendState) -> None:
-        """Resets the print job that was uploaded to force a new upload, runs whenever the user re-slices."""
+    def _onSceneChanged(self, node: SceneNode):
+        # This will reset the print job if a ufp file is loaded. This forces a new upload when printing via cloud from ufp.
+        if node.getDecorator(GCodeListDecorator) or node.getDecorator(SliceableObjectDecorator):
+            self._resetPrintJob()
 
+    def _resetPrintJob(self) -> None:
+        """Resets the print job that was uploaded to force a new upload, runs whenever slice finishes."""
         self._tool_path = None
         self._pre_upload_print_job = None
         self._uploaded_print_job = None
