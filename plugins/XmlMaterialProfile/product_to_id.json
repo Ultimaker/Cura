@@ -14,5 +14,7 @@
     "Ultimaker Original Dual Extrusion": "ultimaker_original_dual",
     "IMADE3D JellyBOX": "imade3d_jellybox",
     "DUAL600": "strateo3d",
-    "IDEX420": "strateo3d_IDEX420"
+    "IDEX420": "strateo3d_IDEX420",
+    "IDEX420 Duplicate": "strateo3d_IDEX420_duplicate",
+    "IDEX420 Mirror": "strateo3d_IDEX420_mirror"
 }

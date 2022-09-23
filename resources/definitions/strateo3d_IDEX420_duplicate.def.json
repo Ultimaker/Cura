@@ -2,33 +2,28 @@
     "version": 2,
     "name": "IDEX420 Duplicate",
     "inherits": "strateo3d_IDEX420",
-    "metadata":
-        {
-            "author": "eMotionTech",
-            "manufacturer": "eMotionTech",
-            "quality_definition": "strateo3d_IDEX420",
-            "visible": true,
-            "file_formats": "text/x-gcode",
-            "has_machine_quality": true,
-            "has_materials": true,
-            "has_variants": true,
-            "preferred_variant_name": "IDEX420 Duplicate Standard 0.4",
-            "preferred_material": "emotiontech_pla",
-            "preferred_quality_type": "b",
-            "variants_name": "Print Head",
-            "machine_extruder_trains": 
-                { 
-                    "0": "strateo3d_IDEX420_duplicate_left_right"
-                }
-        },
-        
-    "overrides": 
-        {
-            "machine_name": { "default_value": "IDEX420 Duplicate" },
-			"machine_start_gcode": { "default_value": "G90 ; switch to absolute coordinate mode\nT2 ; select the duplicate tool\nG1 F18000 Y-160 Z15 ; move fast to the coordinates\nG1 F18000 X0 Z0.3 ; move fast to the coordinates\nG92 E0 ; set the extruders to 0\nG1 F300 X60 E24 ; purge the hotends\nG1 F600 X40 ; swipe the nozzles\nG1 F600 Z3 ; perform Z hop" },
-			"machine_width": { "default_value": 209 },
-			"machine_depth": { "default_value": 320 },
-            "machine_height": { "default_value": 400 },
-			"machine_extruder_count": { "default_value": 1 }
+    "metadata": {
+        "author": "eMotionTech",
+        "manufacturer": "eMotionTech",
+        "quality_definition": "strateo3d_IDEX420",
+        "visible": true,
+        "file_formats": "text/x-gcode",
+        "has_machine_quality": true,
+        "has_materials": true,
+        "has_variants": true,
+        "preferred_variant_name": "IDEX420 Standard 0.4",
+        "variants_name": "Print Head",
+        "machine_extruder_trains": { 
+            "0": "strateo3d_IDEX420_duplicate_left_right"
         }
+    },
+        
+    "overrides": {
+        "machine_name": { "default_value": "IDEX420 Duplicate" },
+        "machine_start_gcode": { "default_value": "G90 ; switch to absolute coordinate mode\nT2 ; select the duplicate tool\nG1 F18000 Y-160 Z15 ; move fast to the coordinates\nG1 F18000 X0 Z0.3 ; move fast to the coordinates\nG92 E0 ; set the extruders to 0\nG1 F300 X60 E24 ; purge the hotends\nG1 F600 X40 ; swipe the nozzles\nG1 F600 Z3 ; perform Z hop" },
+        "machine_width": { "default_value": 209 },
+        "machine_depth": { "default_value": 320 },
+        "machine_height": { "default_value": 400 },
+        "machine_extruder_count": { "default_value": 1 }
+    }
 }

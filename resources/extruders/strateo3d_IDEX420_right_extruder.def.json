@@ -4,7 +4,8 @@
     "inherits": "fdmextruder",
     "metadata": {
         "machine": "strateo3d_IDEX420",
-        "position": "1"
+        "position": "1",
+        "quality_definition": "strateo3_IDEX420_right_extruder"
     },
 
     "overrides": {
