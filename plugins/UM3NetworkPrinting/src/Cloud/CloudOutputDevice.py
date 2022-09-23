@@ -411,3 +411,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
         root_url_prefix = "-staging" if self._account.is_staging else ""
         return f"https://digitalfactory{root_url_prefix}.ultimaker.com/app/jobs/{self.clusterData.cluster_id}"
+
+    def __del__(self):
+        CuraApplication.getInstance().getBackend().backendDone.disconnect(self._resetPrintJob)
+        CuraApplication.getInstance().getController().getScene().sceneChanged.disconnect(self._onSceneChanged)
