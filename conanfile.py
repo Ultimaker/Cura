@@ -35,6 +35,7 @@ class CuraConan(ConanFile):
         "devtools": [True, False],  # FIXME: Split this up in testing and (development / build (pyinstaller) / system installer) tools
         "cloud_api_version": "ANY",
         "display_name": "ANY",  # TODO: should this be an option??
+        "extra_build_version": "ANY",  #FIXME?: can't retrieve this from github workflow, so have an option to do it 'manually'
         "cura_debug_mode": [True, False],  # FIXME: Use profiles
         "internal": [True, False]
     }
@@ -44,6 +45,7 @@ class CuraConan(ConanFile):
         "devtools": False,
         "cloud_api_version": "1",
         "display_name": "Ultimaker Cura",
+        "extra_build_version": "",
         "cura_debug_mode": False,  # Not yet implemented
         "internal": False,
     }
@@ -150,9 +152,12 @@ class CuraConan(ConanFile):
             cura_version_py = Template(f.read())
 
         cura_version = self.conf_info.get("user.cura:version", default = self.version, check_type = str)
+        version = Version(cura_version)
+        if self.options.extra_build_version != "":
+            version.prerelease = self.options.extra_build_version
         if self.options.internal:
-            version = Version(cura_version)
-            cura_version = f"{version.major}.{version.minor}.{version.patch}-{version.prerelease.replace('+', '+internal_')}"
+            version.prerelease = version.prerelease.replace('+', '+internal_')
+        cura_version = f"{version.major}.{version.minor}.{version.patch}-{version.prerelease}"
 
         with open(Path(location, "CuraVersion.py"), "w") as f:
             f.write(cura_version_py.render(
