@@ -67,14 +67,14 @@ UM.ManagementPage
             {
                 width: Math.round(childrenRect.width + 2 * screenScaleFactor)
                 height: childrenRect.height
-                visible: machineActionRepeater.model[index].isVisible()
+                visible: machineActionRepeater.model[index].visible
                 Cura.SecondaryButton
                 {
                     text: machineActionRepeater.model[index].label
                     onClicked:
                     {
                         var currentItem = machineActionRepeater.model[index]
-                        if (currentItem.openAsDialog()) {
+                        if (currentItem.shouldOpenAsDialog) {
                             actionDialog.loader.manager = currentItem
                             actionDialog.loader.source = currentItem.qmlPath
                             actionDialog.title = currentItem.label
