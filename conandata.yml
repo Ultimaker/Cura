@@ -13,10 +13,10 @@
 "5.2.0-alpha":
     requirements:
         - "pyarcus/(latest)@ultimaker/testing"
-        - "curaengine/5.2@ultimaker/testing"
+        - "curaengine/(latest)@ultimaker/testing"
         - "pysavitar/(latest)@ultimaker/testing"
         - "pynest2d/(latest)@ultimaker/testing"
-        - "uranium/5.2@ultimaker/testing"
+        - "uranium/(latest)@ultimaker/testing"
         - "fdm_materials/(latest)@ultimaker/testing"
         - "cura_binary_data/(latest)@ultimaker/testing"
         - "cpython/3.10.4"
