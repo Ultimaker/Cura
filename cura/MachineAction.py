@@ -135,7 +135,6 @@ class MachineAction(QObject, PluginObject):
 
         :return: Defaults to true to be in line with the old behaviour.
         """
-
         return self._open_as_dialog
     
     @pyqtSlot()
@@ -153,4 +152,4 @@ class MachineAction(QObject, PluginObject):
         :return: Defaults to true to be in line with the old behaviour.
         """
 
-        self._visible  
+        return self._visible
