@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2022-06-21 12:50+0000\n"
+"POT-Creation-Date: 2022-09-27 14:50+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -15,212 +15,212 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: fdmextruder.def.json
+#: /fdmextruder.def.json
 msgctxt "machine_settings label"
 msgid "Machine"
 msgstr "Принтер"
 
-#: fdmextruder.def.json
+#: /fdmextruder.def.json
 msgctxt "machine_settings description"
 msgid "Machine specific settings"
 msgstr "Параметры, относящиеся к принтеру"
 
-#: fdmextruder.def.json
+#: /fdmextruder.def.json
 msgctxt "extruder_nr label"
 msgid "Extruder"
 msgstr "Экструдер"
 
-#: fdmextruder.def.json
+#: /fdmextruder.def.json
 msgctxt "extruder_nr description"
 msgid "The extruder train used for printing. This is used in multi-extrusion."
 msgstr "Экструдер, который используется для печати. Имеет значение при использовании нескольких экструдеров."
 
-#: fdmextruder.def.json
+#: /fdmextruder.def.json
 msgctxt "machine_nozzle_id label"
 msgid "Nozzle ID"
 msgstr "Идентификатор сопла"
 
-#: fdmextruder.def.json
+#: /fdmextruder.def.json
 msgctxt "machine_nozzle_id description"
 msgid "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\"."
 msgstr "Идентификатор сопла для экструдера, например \"AA 0.4\" и \"BB 0.8\"."
 
-#: fdmextruder.def.json
+#: /fdmextruder.def.json
 msgctxt "machine_nozzle_size label"
 msgid "Nozzle Diameter"
 msgstr "Диаметр сопла"
 
-#: fdmextruder.def.json
+#: /fdmextruder.def.json
 msgctxt "machine_nozzle_size description"
 msgid "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size."
 msgstr "Внутренний диаметр сопла. Измените этот параметр при использовании сопла нестандартного размера."
 
-#: fdmextruder.def.json
+#: /fdmextruder.def.json
 msgctxt "machine_nozzle_offset_x label"
 msgid "Nozzle X Offset"
 msgstr "X смещение сопла"
 
-#: fdmextruder.def.json
+#: /fdmextruder.def.json
 msgctxt "machine_nozzle_offset_x description"
 msgid "The x-coordinate of the offset of the nozzle."
 msgstr "Смещение сопла по оси X."
 
-#: fdmextruder.def.json
+#: /fdmextruder.def.json
 msgctxt "machine_nozzle_offset_y label"
 msgid "Nozzle Y Offset"
 msgstr "Y смещение сопла"
 
-#: fdmextruder.def.json
+#: /fdmextruder.def.json
 msgctxt "machine_nozzle_offset_y description"
 msgid "The y-coordinate of the offset of the nozzle."
 msgstr "Смещение сопла по оси Y."
 
-#: fdmextruder.def.json
+#: /fdmextruder.def.json
 msgctxt "machine_extruder_start_code label"
 msgid "Extruder Start G-Code"
 msgstr "Стартовый G-код экструдера"
 
-#: fdmextruder.def.json
+#: /fdmextruder.def.json
 msgctxt "machine_extruder_start_code description"
 msgid "Start g-code to execute when switching to this extruder."
 msgstr "Стартовый G-код, запускающийся при переключении на данный экструдер."
 
-#: fdmextruder.def.json
+#: /fdmextruder.def.json
 msgctxt "machine_extruder_start_pos_abs label"
 msgid "Extruder Start Position Absolute"
 msgstr "Абсолютная стартовая позиция экструдера"
 
-#: fdmextruder.def.json
+#: /fdmextruder.def.json
 msgctxt "machine_extruder_start_pos_abs description"
 msgid "Make the extruder starting position absolute rather than relative to the last-known location of the head."
 msgstr "Устанавливает абсолютную стартовую позицию экструдера, а не относительно последней известной позиции головы."
 
-#: fdmextruder.def.json
+#: /fdmextruder.def.json
 msgctxt "machine_extruder_start_pos_x label"
 msgid "Extruder Start Position X"
 msgstr "Стартовая X позиция экструдера"
 
-#: fdmextruder.def.json
+#: /fdmextruder.def.json
 msgctxt "machine_extruder_start_pos_x description"
 msgid "The x-coordinate of the starting position when turning the extruder on."
 msgstr "X координата стартовой позиции при включении экструдера."
 
-#: fdmextruder.def.json
+#: /fdmextruder.def.json
 msgctxt "machine_extruder_start_pos_y label"
 msgid "Extruder Start Position Y"
 msgstr "Стартовая Y позиция экструдера"
 
-#: fdmextruder.def.json
+#: /fdmextruder.def.json
 msgctxt "machine_extruder_start_pos_y description"
 msgid "The y-coordinate of the starting position when turning the extruder on."
 msgstr "Y координата стартовой позиции при включении экструдера."
 
-#: fdmextruder.def.json
+#: /fdmextruder.def.json
 msgctxt "machine_extruder_end_code label"
 msgid "Extruder End G-Code"
 msgstr "Завершающий G-код экструдера"
 
-#: fdmextruder.def.json
+#: /fdmextruder.def.json
 msgctxt "machine_extruder_end_code description"
 msgid "End g-code to execute when switching away from this extruder."
 msgstr "Завершающий G-код, запускающийся при переключении с данного экструдера."
 
-#: fdmextruder.def.json
+#: /fdmextruder.def.json
 msgctxt "machine_extruder_end_pos_abs label"
 msgid "Extruder End Position Absolute"
 msgstr "Абсолютная конечная позиция экструдера"
 
-#: fdmextruder.def.json
+#: /fdmextruder.def.json
 msgctxt "machine_extruder_end_pos_abs description"
 msgid "Make the extruder ending position absolute rather than relative to the last-known location of the head."
 msgstr "Устанавливает абсолютную конечную позицию экструдера, а не относительно последней известной позиции головы."
 
-#: fdmextruder.def.json
+#: /fdmextruder.def.json
 msgctxt "machine_extruder_end_pos_x label"
 msgid "Extruder End Position X"
 msgstr "Конечная X позиция экструдера"
 
-#: fdmextruder.def.json
+#: /fdmextruder.def.json
 msgctxt "machine_extruder_end_pos_x description"
 msgid "The x-coordinate of the ending position when turning the extruder off."
 msgstr "X координата конечной позиции при отключении экструдера."
 
-#: fdmextruder.def.json
+#: /fdmextruder.def.json
 msgctxt "machine_extruder_end_pos_y label"
 msgid "Extruder End Position Y"
 msgstr "Конечная Y позиция экструдера"
 
-#: fdmextruder.def.json
+#: /fdmextruder.def.json
 msgctxt "machine_extruder_end_pos_y description"
 msgid "The y-coordinate of the ending position when turning the extruder off."
 msgstr "Y координата конечной позиции при отключении экструдера."
 
-#: fdmextruder.def.json
+#: /fdmextruder.def.json
 msgctxt "extruder_prime_pos_z label"
 msgid "Extruder Prime Z Position"
 msgstr "Z координата начала печати"
 
-#: fdmextruder.def.json
+#: /fdmextruder.def.json
 msgctxt "extruder_prime_pos_z description"
 msgid "The Z coordinate of the position where the nozzle primes at the start of printing."
 msgstr "Позиция кончика сопла на оси Z при старте печати."
 
-#: fdmextruder.def.json
+#: /fdmextruder.def.json
 msgctxt "machine_extruder_cooling_fan_number label"
 msgid "Extruder Print Cooling Fan"
 msgstr "Охлаждающий вентилятор экструдера, используемый во время печати"
 
-#: fdmextruder.def.json
+#: /fdmextruder.def.json
 msgctxt "machine_extruder_cooling_fan_number description"
 msgid "The number of the print cooling fan associated with this extruder. Only change this from the default value of 0 when you have a different print cooling fan for each extruder."
 msgstr "Номер охлаждающего вентилятора, используемого при печати и ассоциированного с этим экструдером. Применяемое по умолчанию значение 0 следует менять только при наличии другого охлаждающего вентилятора, используемого при печати, для каждого экструдера."
 
-#: fdmextruder.def.json
+#: /fdmextruder.def.json
 msgctxt "platform_adhesion label"
 msgid "Build Plate Adhesion"
 msgstr "Прилипание к столу"
 
-#: fdmextruder.def.json
+#: /fdmextruder.def.json
 msgctxt "platform_adhesion description"
 msgid "Adhesion"
 msgstr "Прилипание"
 
-#: fdmextruder.def.json
+#: /fdmextruder.def.json
 msgctxt "extruder_prime_pos_x label"
 msgid "Extruder Prime X Position"
 msgstr "Начальная X позиция экструдера"
 
-#: fdmextruder.def.json
+#: /fdmextruder.def.json
 msgctxt "extruder_prime_pos_x description"
 msgid "The X coordinate of the position where the nozzle primes at the start of printing."
 msgstr "X координата позиции, в которой сопло начинает печать."
 
-#: fdmextruder.def.json
+#: /fdmextruder.def.json
 msgctxt "extruder_prime_pos_y label"
 msgid "Extruder Prime Y Position"
 msgstr "Начальная Y позиция экструдера"
 
-#: fdmextruder.def.json
+#: /fdmextruder.def.json
 msgctxt "extruder_prime_pos_y description"
 msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
 msgstr "Y координата позиции, в которой сопло начинает печать."
 
-#: fdmextruder.def.json
+#: /fdmextruder.def.json
 msgctxt "material label"
 msgid "Material"
 msgstr "Материал"
 
-#: fdmextruder.def.json
+#: /fdmextruder.def.json
 msgctxt "material description"
 msgid "Material"
 msgstr "Материал"
 
-#: fdmextruder.def.json
+#: /fdmextruder.def.json
 msgctxt "material_diameter label"
 msgid "Diameter"
 msgstr "Диаметр"
 
-#: fdmextruder.def.json
+#: /fdmextruder.def.json
 msgctxt "material_diameter description"
 msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
 msgstr "Укажите диаметр используемой нити."
