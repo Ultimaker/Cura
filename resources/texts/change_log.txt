@@ -1,3 +1,69 @@
+[5.2-BETA]
+
+* Abstract Cloud Printer Type
+For currently online cloud printers, they are collated by type, and you can slice on the ('abstract') printer-type, then choose the specific printer that matches the profiles afterwards.
+
+* Support For 'Student'-Type Accounts (In Digital Factory)
+Accounts can have a 'Student'/'Teacher' relationship, where permission is needed for printing, when a print is sent via cloud.
+
+* More Control Over Initial Layer Flow
+Three new settings: 'Initial Layer Outer Wall Flow', 'Initial Layer Inner Wall Flow', 'Initial Layer Bottom Flow', to better counteract the 'elephants foot' phenomenon.
+
+* Other new features and improvements:
+- Auto-remove holes from not completely solid models in vase-mode.
+- Add setting for 'tree support max diameter'.
+- Add option to drop-down models to the build-plate individually. contributed to @Piezoid
+- Added a preference to make the tray icon optional. contributed by @fieldOfView
+
+* Bug fixes:
+- Don't ignore bottom pattern when spiralizing.
+- Don't 'Union All' for 'Merged Meshes Overlap'.
+- Seam placement was not in the correct corner in some cases.
+- Cutting meshes with 'surface' set to 'both' cut through the mesh.
+- Brim lines where ordered the wrong way in some cases.
+- Random seam is now more random.
+- Correctly apply combing when spiralizing. contributed by @smartavionics
+- Don't spam the user with spurious 'Cura Notification's.
+- Don't spam the logs with duplicated deprecated warnings. contributed by @Patschke
+- Properly update the infill percentage in the top bar after an intent profile switch.
+- An uninstall could only be done by the original user that installed.
+- In certain rare situations, layers would be printed multiple times when monotonic fill was on.
+- Put tree support infill density at 0% by default.
+- Machine settings: Also save values when closing the window, not just when focus' changed.
+- Reduce clickable area of settings checkboxes, to prevent mis-clicks.
+- Fixed a crash when an unnamed tool would be accessed (possibly related to plugin use).
+- Fix an issue where a plugin would crash because of a missing dependency.
+- Code refactors contributed by @digitalfrost
+- Fix for to-mouse zoom on screens with scaling factor. contributed by @seaniepie
+- Models could not be multiplied in one-at-a-time mode.
+
+* Printer definitions, profiles and materials:
+- Added Creality Ender 3 S1 profile. contributed by @Sebazzz
+- Added Anycubic Kobra (Max). contributed by @ANYCUBIC-3D
+- Added HCTECH printers. contributed by @3d-hctech
+- Added da Vinci Pro EVO. contributed by @heed818
+- Fix FLSUN QQ-S platform orientation. contributed by @RVillani
+- Fix Kingroon printers from going outside the build-volume in the end-gcode. contributed by @odaki
+- Added Geetech Mizar_S. contributed by @Geeetech3D
+- Added Tank-M printer. contributed by KOONOVO3DPrinter
+- Update Renkforce RF100XL definition. contributed by @imakecodes
+- Added VzBot profiles. contributed by @ckvsoft
+- Added (additional) mingda printers. contributed by @jianshu-du
+- Added Naxe machines. contributed by @Naxecorp
+- Added T-Rex 2+, T-Rex 3. contributed by @jim-edwards
+- Update FLsun SR. @xPakrikx
+- Update Anycubic mega zero. contributed by @NOVAXIM
+- Added some Renkforce machines. contributed by @goofoo3d
+
+* Community translations (pending):
+- Updated the Brazilian Portuguese translation, contributed by Patola.
+- Updated the Czech translation, contributed by sustmi.
+
+* Known critical issues:
+- While some small fixes have been made already, the placement of the seam is still more scattered than before 5.0. (Will try to fix in stable.)
+- Support is sometimes missing in detailed parts, where previous releases supported them properly (still). (Will probably not be fixed in stable. This is currently slated for 5.3)
+- Multiple external monitors on Windows (especially if from the same brand) might be a problem under some circumstances. (Will probably not be fixed in stable.)
+
 [5.1.1]
 * New features:
 - Added support for the Ultimaker S3 and Ultimaker S5 updated mainbord
