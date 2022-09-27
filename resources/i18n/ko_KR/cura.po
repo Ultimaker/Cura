@@ -3960,67 +3960,67 @@ msgstr ""
 "Cura는 다음의 오픈 소스 프로젝트를 사용합니다:"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:136
-msgctxt "@label"
+msgctxt "@label Description for application component"
 msgid "Graphical user interface"
 msgstr "그래픽 사용자 인터페이스"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:137
-msgctxt "@label"
+msgctxt "@label Description for application component"
 msgid "Application framework"
 msgstr "애플리케이션 프레임 워크"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:138
-msgctxt "@label"
+msgctxt "@label Description for application component"
 msgid "G-code generator"
 msgstr "GCode 생성기"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:139
-msgctxt "@label"
+msgctxt "@label Description for application component"
 msgid "Interprocess communication library"
 msgstr "프로세스간 통신 라이브러리"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:140
-msgctxt "@label"
+msgctxt "@label Description for application component"
 msgid "Python bindings for libnest2d"
 msgstr "libnest2d용 Python 바인딩"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:141
-msgctxt "@label"
+msgctxt "@label Description for application component"
 msgid "Polygon packing library, developed by Prusa Research"
 msgstr "폴리곤 패킹 라이브러리, Prusa Research 개발"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:142
-msgctxt "@label"
+msgctxt "@label Description for application component"
 msgid "Support library for handling 3MF files"
 msgstr "3MF 파일 처리를 위한 라이브러리"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:143
-msgctxt "@label"
+msgctxt "@label Description for application component"
 msgid "Support library for file metadata and streaming"
 msgstr "파일 메타데이터 및 스트리밍을 위한 지원 라이브러리"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:146
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "Programming language"
 msgstr "프로그래밍 언어"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:147
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "GUI framework"
 msgstr "GUI 프레임 워크"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:148
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "GUI framework bindings"
 msgstr "GUI 프레임 워크 바인딩"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:149
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "C/C++ Binding library"
 msgstr "C/C ++ 바인딩 라이브러리"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:150
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "Data interchange format"
 msgstr "데이터 교환 형식"
 
@@ -4030,103 +4030,103 @@ msgid "Font"
 msgstr "폰트"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:154
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "Polygon clipping library"
 msgstr "다각형 클리핑 라이브러리"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:155
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "JSON parser"
 msgstr "JSON parser"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:156
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "Utility functions, including an image loader"
 msgstr "이미지 로더를 포함한 유틸리티 기능"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:157
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "Utility library, including Voronoi generation"
 msgstr "Voronoi 세대를 포함한 유틸리티 라이브러리"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:160
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:161
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "Root Certificates for validating SSL trustworthiness"
 msgstr "SSL 신뢰성 검증용 루트 인증서"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:162
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "Compatibility between Python 2 and 3"
 msgstr "Python 2 및 3 간의 호환성"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:163
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "Support library for system keyring access"
 msgstr "시스템 키링 액세스를 위한 서포트 라이브러리"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:164
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "Support library for faster math"
 msgstr "더 빠른 수학연산을 위한 라이브러리"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:165
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "Support library for handling STL files"
 msgstr "STL 파일 처리를 위한 라이브러리"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:166
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "Python bindings for Clipper"
 msgstr "Clipper용 Python 바인딩"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:167
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "Serial communication library"
 msgstr "직렬 통신 라이브러리"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:168
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "Support library for scientific computing"
 msgstr "과학 컴퓨팅을 위한 라이브러리"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:169
-msgctxt "@Label"
+msgctxt "@label Description for application dependency"
 msgid "Python Error tracking library"
 msgstr "Python 오류 추적 라이브러리"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:170
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "Support library for handling triangular meshes"
 msgstr "삼각형 메쉬 처리를 위한 지원 라이브러리"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:171
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "ZeroConf discovery library"
 msgstr "ZeroConf discovery 라이브러리"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:174
-msgctxt "@label"
+msgctxt "@label Description for development tool"
 msgid "Universal build system configuration"
 msgstr "범용 빌드 시스템 설정"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:175
-msgctxt "@label"
+msgctxt "@label Description for development tool"
 msgid "Dependency and package manager"
 msgstr "의존성 및 패키지 관리자"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:176
-msgctxt "@label"
+msgctxt "@label Description for development tool"
 msgid "Packaging Python-applications"
 msgstr "Python 애플리케이션 패키지 생성 중"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:177
-msgctxt "@label"
+msgctxt "@label Description for development tool"
 msgid "Linux cross-distribution application deployment"
 msgstr "Linux 교차 배포 응용 프로그램 배포"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:178
-msgctxt "@label"
+msgctxt "@label Description for development tool"
 msgid "Generating Windows installers"
 msgstr "Windows 설치 관리자 생성 중"
 

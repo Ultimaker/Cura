@@ -3986,67 +3986,67 @@ msgstr ""
 "Cura hrdě používá následující open source projekty:"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:136
-msgctxt "@label"
+msgctxt "@label Description for application component"
 msgid "Graphical user interface"
 msgstr "Grafické uživatelské prostředí"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:137
-msgctxt "@label"
+msgctxt "@label Description for application component"
 msgid "Application framework"
 msgstr "Aplikační framework"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:138
-msgctxt "@label"
+msgctxt "@label Description for application component"
 msgid "G-code generator"
 msgstr "Generátor G kódu"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:139
-msgctxt "@label"
+msgctxt "@label Description for application component"
 msgid "Interprocess communication library"
 msgstr "Meziprocesní komunikační knihovna"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:140
-msgctxt "@label"
+msgctxt "@label Description for application component"
 msgid "Python bindings for libnest2d"
 msgstr "Propojení libnest2d s jazykem Python"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:141
-msgctxt "@label"
+msgctxt "@label Description for application component"
 msgid "Polygon packing library, developed by Prusa Research"
 msgstr "Knihovna pro plošnou optimalizaci vyvinutá Prusa Research"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:142
-msgctxt "@label"
+msgctxt "@label Description for application component"
 msgid "Support library for handling 3MF files"
 msgstr "Podpůrná knihovna pro manipulaci s 3MF soubory"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:143
-msgctxt "@label"
+msgctxt "@label Description for application component"
 msgid "Support library for file metadata and streaming"
 msgstr "Podpůrná knihovna pro metadata souborů a streaming"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:146
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "Programming language"
 msgstr "Programovací jazyk"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:147
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "GUI framework"
 msgstr "GUI framework"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:148
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "GUI framework bindings"
 msgstr "Propojení GUI frameworku"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:149
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "C/C++ Binding library"
 msgstr "Binding knihovna C/C++"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:150
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "Data interchange format"
 msgstr "Formát výměny dat"
 
@@ -4056,103 +4056,103 @@ msgid "Font"
 msgstr "Font"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:154
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "Polygon clipping library"
 msgstr "Knihovna pro výstřižky z mnohoúhelníků"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:155
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "JSON parser"
 msgstr "JSON parser"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:156
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "Utility functions, including an image loader"
 msgstr "Pomocné funkce zahrnující načítání obrázků"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:157
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "Utility library, including Voronoi generation"
 msgstr "Pomocná knihovna zahrnující Voronoi generátor"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:160
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:161
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "Root Certificates for validating SSL trustworthiness"
 msgstr "Kořenové certifikáty pro ověření důvěryhodnosti SSL"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:162
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "Compatibility between Python 2 and 3"
 msgstr "Kompatibilita mezi Python 2 a 3"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:163
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "Support library for system keyring access"
 msgstr "Podpůrná knihovna pro přístup k systémové klíčence"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:164
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "Support library for faster math"
 msgstr "Podpůrný knihovna pro rychlejší matematické výpočty"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:165
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "Support library for handling STL files"
 msgstr "Podpůrná knihovna pro práci se soubory STL"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:166
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "Python bindings for Clipper"
 msgstr "Propojení Clipper s jazykem Python"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:167
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "Serial communication library"
 msgstr "Knihovna pro sériovou komunikaci"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:168
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "Support library for scientific computing"
 msgstr "Podpůrná knihovna pro vědecké výpočty"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:169
-msgctxt "@Label"
+msgctxt "@label Description for application dependency"
 msgid "Python Error tracking library"
 msgstr "Chyba v Python trackovací knihovně"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:170
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "Support library for handling triangular meshes"
 msgstr "Podpůrná knihovna pro manipulaci s trojúhelníkovými sítěmi"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:171
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "ZeroConf discovery library"
 msgstr "Knihovna ZeroConf discovery"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:174
-msgctxt "@label"
+msgctxt "@label Description for development tool"
 msgid "Universal build system configuration"
 msgstr "Univerzální konfigurace překladu programů"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:175
-msgctxt "@label"
+msgctxt "@label Description for development tool"
 msgid "Dependency and package manager"
 msgstr "Správce závislostí a balíčků"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:176
-msgctxt "@label"
+msgctxt "@label Description for development tool"
 msgid "Packaging Python-applications"
 msgstr "Vytváření balíčků Python aplikací"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:177
-msgctxt "@label"
+msgctxt "@label Description for development tool"
 msgid "Linux cross-distribution application deployment"
 msgstr "Linux cross-distribution application deployment"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:178
-msgctxt "@label"
+msgctxt "@label Description for development tool"
 msgid "Generating Windows installers"
 msgstr "Generování instalátorů pro Windows"
 

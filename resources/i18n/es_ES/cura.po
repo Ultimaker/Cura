@@ -3973,67 +3973,67 @@ msgstr ""
 "Cura se enorgullece de utilizar los siguientes proyectos de código abierto:"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:136
-msgctxt "@label"
+msgctxt "@label Description for application component"
 msgid "Graphical user interface"
 msgstr "Interfaz gráfica de usuario (GUI)"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:137
-msgctxt "@label"
+msgctxt "@label Description for application component"
 msgid "Application framework"
 msgstr "Entorno de la aplicación"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:138
-msgctxt "@label"
+msgctxt "@label Description for application component"
 msgid "G-code generator"
 msgstr "Generador de GCode"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:139
-msgctxt "@label"
+msgctxt "@label Description for application component"
 msgid "Interprocess communication library"
 msgstr "Biblioteca de comunicación entre procesos"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:140
-msgctxt "@label"
+msgctxt "@label Description for application component"
 msgid "Python bindings for libnest2d"
 msgstr "Enlaces de Python para libnest2d"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:141
-msgctxt "@label"
+msgctxt "@label Description for application component"
 msgid "Polygon packing library, developed by Prusa Research"
 msgstr "Biblioteca de empaquetado de polígonos, desarrollada por Prusa Research"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:142
-msgctxt "@label"
+msgctxt "@label Description for application component"
 msgid "Support library for handling 3MF files"
 msgstr "Biblioteca de compatibilidad para trabajar con archivos 3MF"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:143
-msgctxt "@label"
+msgctxt "@label Description for application component"
 msgid "Support library for file metadata and streaming"
 msgstr "Biblioteca de compatibilidad para metadatos y transmisión de archivos"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:146
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "Programming language"
 msgstr "Lenguaje de programación"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:147
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "GUI framework"
 msgstr "Entorno de la GUI"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:148
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "GUI framework bindings"
 msgstr "Enlaces del entorno de la GUI"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:149
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "C/C++ Binding library"
 msgstr "Biblioteca de enlaces C/C++"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:150
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "Data interchange format"
 msgstr "Formato de intercambio de datos"
 
@@ -4043,103 +4043,103 @@ msgid "Font"
 msgstr "Fuente"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:154
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "Polygon clipping library"
 msgstr "Biblioteca de recorte de polígonos"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:155
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "JSON parser"
 msgstr "Parser JSON"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:156
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "Utility functions, including an image loader"
 msgstr "Funciones de utilidades, incluido un cargador de imágenes"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:157
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "Utility library, including Voronoi generation"
 msgstr "Biblioteca de utilidades, incluida la generación de Voronoi"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:160
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:161
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "Root Certificates for validating SSL trustworthiness"
 msgstr "Certificados de raíz para validar la fiabilidad del SSL"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:162
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "Compatibility between Python 2 and 3"
 msgstr "Compatibilidad entre Python 2 y 3"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:163
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "Support library for system keyring access"
 msgstr "Biblioteca de soporte para el acceso al llavero del sistema"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:164
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "Support library for faster math"
 msgstr "Biblioteca de apoyo para cálculos más rápidos"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:165
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "Support library for handling STL files"
 msgstr "Biblioteca de apoyo para gestionar archivos STL"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:166
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "Python bindings for Clipper"
 msgstr "Enlaces de Python para Clipper"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:167
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "Serial communication library"
 msgstr "Biblioteca de comunicación en serie"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:168
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "Support library for scientific computing"
 msgstr "Biblioteca de apoyo para cálculos científicos"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:169
-msgctxt "@Label"
+msgctxt "@label Description for application dependency"
 msgid "Python Error tracking library"
 msgstr "Biblioteca de seguimiento de errores de Python"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:170
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "Support library for handling triangular meshes"
 msgstr "Biblioteca de compatibilidad para trabajar con mallas triangulares"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:171
-msgctxt "@label"
+msgctxt "@label Description for application dependency"
 msgid "ZeroConf discovery library"
 msgstr "Biblioteca de detección para Zeroconf"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:174
-msgctxt "@label"
+msgctxt "@label Description for development tool"
 msgid "Universal build system configuration"
 msgstr "Configuración del sistema de construcción universal"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:175
-msgctxt "@label"
+msgctxt "@label Description for development tool"
 msgid "Dependency and package manager"
 msgstr "Gestor de dependencias y paquetes"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:176
-msgctxt "@label"
+msgctxt "@label Description for development tool"
 msgid "Packaging Python-applications"
 msgstr "Empaquetado de aplicaciones Python"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:177
-msgctxt "@label"
+msgctxt "@label Description for development tool"
 msgid "Linux cross-distribution application deployment"
 msgstr "Implementación de la aplicación de distribución múltiple de Linux"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:178
-msgctxt "@label"
+msgctxt "@label Description for development tool"
 msgid "Generating Windows installers"
 msgstr "Generación de instaladores de Windows"
 
