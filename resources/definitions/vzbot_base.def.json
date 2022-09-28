@@ -76,7 +76,7 @@
         "infill_enable_travel_optimization":            { "default_value": true },
         "infill_sparse_density":                        { "value": 35 },
         "minimum_polygon_circumference":                { "default_value": 0.2 },
-        "xy_offset_layer_0":                            { "value": 0.3 },
+        "xy_offset_layer_0":                            { "value": -0.3 },
         "wall_overhang_angle":                          { "default_value": 75 },
         "wall_overhang_speed_factor":                   { "default_value": 50 },
         "infill_pattern":                               { "value": "'grid' if infill_sparse_density > 40 else 'cubic'" },
