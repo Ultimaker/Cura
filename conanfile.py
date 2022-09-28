@@ -157,7 +157,10 @@ class CuraConan(ConanFile):
             version.prerelease = self.options.extra_build_version
         if self.options.internal:
             version.prerelease = version.prerelease.replace('+', '+internal_')
-        cura_version = f"{version.major}.{version.minor}.{version.patch}-{version.prerelease}"
+        if version.prerelease and version.prerelease != "":
+            cura_version = f"{version.major}.{version.minor}.{version.patch}-{version.prerelease}"
+        else:
+            cura_version = f"{version.major}.{version.minor}.{version.patch}"
 
         with open(Path(location, "CuraVersion.py"), "w") as f:
             f.write(cura_version_py.render(
