@@ -1,10 +1,10 @@
 [5.2-BETA]
 
 * Abstract Cloud Printer Type
-For currently online cloud printers, they are collated by type, and you can slice on the ('abstract') printer-type, then choose the specific printer that matches the profiles afterwards.
+Online cloud printers are now grouped by type. You can slice with the ('abstract') printer type, and afterwards choose a specific printer to print with.
 
 * Support For 'Guest'-Type Accounts (In Digital Factory)
-Colleagues or students in a ‘Guest’ role can prepare print jobs in Ultimaker Cura and send them to the printers via Digital Factory. Print jobs prepared like this will not start immediately but wait for approval from a user with an 'Member' or 'Admin' role.
+Users with the ‘Guest’ role can prepare print jobs in Ultimaker Cura and send them to the printers via Digital Factory. These print jobs will not start until they are approved by a user with an 'Member' or 'Admin' role.
 
 * More Control Over Initial Layer Flow
 Three new settings: 'Initial Layer Outer Wall Flow', 'Initial Layer Inner Wall Flow', 'Initial Layer Bottom Flow', to better counteract the 'elephants foot' phenomenon.
