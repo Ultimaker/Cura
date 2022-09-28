@@ -1,7 +1,7 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import Qt, QTimer, pyqtProperty, pyqtSignal
+from PyQt6.QtCore import Qt, QTimer, pyqtProperty, pyqtSignal
 from typing import List, Optional
 
 from UM.Qt.ListModel import ListModel
@@ -15,14 +15,14 @@ from cura.UltimakerCloud.UltimakerCloudConstants import META_CAPABILITIES  # To 
 
 
 class GlobalStacksModel(ListModel):
-    NameRole = Qt.UserRole + 1
-    IdRole = Qt.UserRole + 2
-    HasRemoteConnectionRole = Qt.UserRole + 3
-    ConnectionTypeRole = Qt.UserRole + 4
-    MetaDataRole = Qt.UserRole + 5
-    DiscoverySourceRole = Qt.UserRole + 6  # For separating local and remote printers in the machine management page
-    RemovalWarningRole = Qt.UserRole + 7
-    IsOnlineRole = Qt.UserRole + 8
+    NameRole = Qt.ItemDataRole.UserRole + 1
+    IdRole = Qt.ItemDataRole.UserRole + 2
+    HasRemoteConnectionRole = Qt.ItemDataRole.UserRole + 3
+    ConnectionTypeRole = Qt.ItemDataRole.UserRole + 4
+    MetaDataRole = Qt.ItemDataRole.UserRole + 5
+    DiscoverySourceRole = Qt.ItemDataRole.UserRole + 6  # For separating local and remote printers in the machine management page
+    RemovalWarningRole = Qt.ItemDataRole.UserRole + 7
+    IsOnlineRole = Qt.ItemDataRole.UserRole + 8
 
     def __init__(self, parent = None) -> None:
         super().__init__(parent)
@@ -44,6 +44,7 @@ class GlobalStacksModel(ListModel):
         self._filter_connection_type = None  # type: Optional[ConnectionType]
         self._filter_online_only = False
         self._filter_capabilities: List[str] = []  # Required capabilities that all listed printers must have.
+        self._filter_abstract_machines: Optional[bool] = None
 
         # Listen to changes
         CuraContainerRegistry.getInstance().containerAdded.connect(self._onContainerChanged)
@@ -54,6 +55,7 @@ class GlobalStacksModel(ListModel):
     filterConnectionTypeChanged = pyqtSignal()
     filterCapabilitiesChanged = pyqtSignal()
     filterOnlineOnlyChanged = pyqtSignal()
+    filterAbstractMachinesChanged = pyqtSignal()
 
     def setFilterConnectionType(self, new_filter: Optional[ConnectionType]) -> None:
         if self._filter_connection_type != new_filter:
@@ -98,6 +100,22 @@ class GlobalStacksModel(ListModel):
         """
         return self._filter_capabilities
 
+    def setFilterAbstractMachines(self, new_filter: Optional[bool]) -> None:
+        if self._filter_abstract_machines != new_filter:
+            self._filter_abstract_machines = new_filter
+            self.filterAbstractMachinesChanged.emit()
+
+    @pyqtProperty(bool, fset = setFilterAbstractMachines, notify = filterAbstractMachinesChanged)
+    def filterAbstractMachines(self) -> Optional[bool]:
+        """
+        Weather we include abstract printers, non-abstract printers or both
+
+        if this is set to None both abstract and non-abstract printers will be included in the list
+                   set to True will only include abstract printers
+                   set to False will only inclde non-abstract printers
+        """
+        return self._filter_abstract_machines
+
     def _onContainerChanged(self, container) -> None:
         """Handler for container added/removed events from registry"""
 
@@ -130,12 +148,16 @@ class GlobalStacksModel(ListModel):
             if self._filter_online_only and not is_online:
                 continue
 
+            is_abstract_machine = parseBool(container_stack.getMetaDataEntry("is_abstract_machine", False))
+            if self._filter_abstract_machines is not None and self._filter_abstract_machines is not is_abstract_machine:
+                continue
+
             capabilities = set(container_stack.getMetaDataEntry(META_CAPABILITIES, "").split(","))
             if set(self._filter_capabilities) - capabilities:  # Not all required capabilities are met.
                 continue
 
             device_name = container_stack.getMetaDataEntry("group_name", container_stack.getName())
-            section_name = "Connected printers" if has_remote_connection else "Preset printers"
+            section_name = self._catalog.i18nc("@label", "Connected printers") if has_remote_connection else self._catalog.i18nc("@label", "Preset printers")
             section_name = self._catalog.i18nc("@info:title", section_name)
 
             default_removal_warning = self._catalog.i18nc(

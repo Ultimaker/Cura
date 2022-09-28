@@ -1,7 +1,7 @@
 // Copyright (c) 2020 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.10
+import QtQuick 2.15
 import QtQuick.Controls 2.3
 
 import UM 1.5 as UM
@@ -38,6 +38,7 @@ UM.TooltipArea
 
     property alias textField: textFieldWithUnit
     property alias valueText: textFieldWithUnit.text
+    property alias enabled: textFieldWithUnit.enabled
     property alias editingFinishedFunction: textFieldWithUnit.editingFinishedFunction
 
     property string tooltipText: propertyProvider.properties.description ? propertyProvider.properties.description : ""
@@ -61,15 +62,12 @@ UM.TooltipArea
         watchedProperties: [ "value", "description" ]
     }
 
-    Label
+    UM.Label
     {
         id: fieldLabel
         anchors.left: parent.left
         anchors.verticalCenter: textFieldWithUnit.verticalCenter
         visible: text != ""
-        font: UM.Theme.getFont("default")
-        color: UM.Theme.getColor("text")
-        renderType: Text.NativeRendering
     }
 
     TextField
@@ -90,11 +88,12 @@ UM.TooltipArea
         {
             anchors.fill: parent
 
+            borderColor: textFieldWithUnit.activeFocus ? UM.Theme.getColor("text_field_border_active") : "transparent"
             liningColor:
             {
                 if (!textFieldWithUnit.enabled)
                 {
-                    return UM.Theme.getColor("setting_control_disabled_border")
+                    return UM.Theme.getColor("setting_control_disabled_border");
                 }
                 switch (propertyProvider.properties.validationState)
                 {
@@ -107,11 +106,15 @@ UM.TooltipArea
                         return UM.Theme.getColor("setting_validation_warning")
                 }
                 // Validation is OK.
-                if (textFieldWithUnit.hovered || textFieldWithUnit.activeFocus)
+                if(textFieldWithUnit.activeFocus)
                 {
-                    return UM.Theme.getColor("border_main")
+                    return UM.Theme.getColor("text_field_border_active");
                 }
-                return UM.Theme.getColor("border_field_light")
+                if(textFieldWithUnit.hovered)
+                {
+                    return UM.Theme.getColor("text_field_border_hovered");
+                }
+                return UM.Theme.getColor("border_field_light");
             }
 
             color:
@@ -172,9 +175,9 @@ UM.TooltipArea
                 return "^%0\\d{0,%1}[.,]?\\d{0,%2}$".arg(minus).arg(digits).arg(numericTextFieldWithUnit.decimals)
             }
         }
-        validator: RegExpValidator
+        validator: RegularExpressionValidator
         {
-            regExp: new RegExp(textFieldWithUnit.validatorString)
+            regularExpression: new RegExp(textFieldWithUnit.validatorString)
         }
 
         //Enforce actual minimum and maximum values.

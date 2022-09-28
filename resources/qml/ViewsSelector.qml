@@ -69,17 +69,10 @@ Cura.ExpandablePopup
         }
     }
 
+    contentWidth: viewSelector.width - 2 * viewSelector.contentPadding
     contentItem: Column
     {
         id: viewSelectorPopup
-        width: viewSelector.width - 2 * viewSelector.contentPadding
-
-        // For some reason the height/width of the column gets set to 0 if this is not set...
-        Component.onCompleted:
-        {
-            height = implicitHeight
-            width = viewSelector.width - 2 * viewSelector.contentPadding
-        }
 
         Repeater
         {

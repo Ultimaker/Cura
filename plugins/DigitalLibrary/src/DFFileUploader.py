@@ -1,7 +1,7 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply
+from PyQt6.QtNetwork import QNetworkRequest, QNetworkReply
 from typing import Callable, Any, cast, Optional, Union
 
 from UM.Logger import Logger
@@ -39,8 +39,8 @@ class DFFileUploader:
         :param on_error: The method to be called when an error occurs.
         """
 
-        self._http = http  # type: HttpRequestManager
-        self._df_file = df_file  # type: Union[DFLibraryFileUploadResponse, DFPrintJobUploadResponse]
+        self._http: HttpRequestManager = http
+        self._df_file: Union[DFLibraryFileUploadResponse, DFPrintJobUploadResponse] = df_file
         self._file_name = ""
         if isinstance(self._df_file, DFLibraryFileUploadResponse):
             self._file_name = self._df_file.file_name
@@ -51,7 +51,7 @@ class DFFileUploader:
                 self._file_name = ""
         else:
             raise TypeError("Incorrect input type")
-        self._data = data  # type: bytes
+        self._data: bytes = data
 
         self._on_finished = on_finished
         self._on_success = on_success
@@ -120,9 +120,9 @@ class DFFileUploader:
         """
 
         Logger.log("i", "Finished callback %s %s",
-                   reply.attribute(QNetworkRequest.HttpStatusCodeAttribute), reply.url().toString())
+                   reply.attribute(QNetworkRequest.Attribute.HttpStatusCodeAttribute), reply.url().toString())
 
-        status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)  # type: Optional[int]
+        status_code = reply.attribute(QNetworkRequest.Attribute.HttpStatusCodeAttribute)  # type: Optional[int]
         if not status_code:
             Logger.log("e", "Reply contained no status code.")
             self._onUploadError(reply, None)

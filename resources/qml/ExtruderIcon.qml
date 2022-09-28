@@ -8,15 +8,15 @@ Item
 {
     id: extruderIconItem
 
-    implicitWidth: UM.Theme.getSize("extruder_icon").width
-    implicitHeight: UM.Theme.getSize("extruder_icon").height
-
     property bool checked: true
     property color materialColor
     property alias textColor: extruderNumberText.color
     property bool extruderEnabled: true
-    property alias iconSize: mainIcon.sourceSize
+    property var iconSize: UM.Theme.getSize("extruder_icon").width
     property string iconVariant: "medium"
+
+    implicitWidth: iconSize
+    implicitHeight: iconSize
 
     Item
     {
@@ -24,19 +24,21 @@ Item
         anchors.fill: parent
         layer.enabled: true // Prevent weird opacity effects.
 
-        UM.RecolorImage
+        UM.ColorImage
         {
             anchors.fill: parent
-            sourceSize: mainIcon.sourceSize
+            width: iconSize
+            height: iconSize
 
             source: UM.Theme.getIcon("ExtruderColor", iconVariant)
             color: materialColor
         }
-        UM.RecolorImage
+        UM.ColorImage
         {
             id: mainIcon
             anchors.fill: parent
-            sourceSize: UM.Theme.getSize("extruder_icon")
+            width: iconSize
+            height: iconSize
 
             source: UM.Theme.getIcon("Extruder", iconVariant)
             color: extruderNumberText.color

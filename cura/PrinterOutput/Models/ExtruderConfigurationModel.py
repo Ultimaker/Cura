@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import Optional
 
-from PyQt5.QtCore import pyqtProperty, QObject, pyqtSignal
+from PyQt6.QtCore import pyqtProperty, QObject, pyqtSignal
 
 from .MaterialOutputModel import MaterialOutputModel
 
@@ -13,9 +13,9 @@ class ExtruderConfigurationModel(QObject):
 
     def __init__(self, position: int = -1) -> None:
         super().__init__()
-        self._position = position  # type: int
-        self._material = None  # type: Optional[MaterialOutputModel]
-        self._hotend_id = None  # type: Optional[str]
+        self._position: int = position
+        self._material: Optional[MaterialOutputModel] = None
+        self._hotend_id: Optional[str] = None
 
     def setPosition(self, position: int) -> None:
         self._position = position

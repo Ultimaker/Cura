@@ -23,6 +23,7 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
 from UM.Job import Job
 from UM.Preferences import Preferences
+from cura.CuraPackageManager import CuraPackageManager
 
 from cura.Machines.ContainerTree import ContainerTree
 from cura.Settings.CuraStackBuilder import CuraStackBuilder
@@ -34,7 +35,7 @@ from cura.Settings.CuraContainerStack import _ContainerIndexes
 from cura.CuraApplication import CuraApplication
 from cura.Utils.Threading import call_on_qt_thread
 
-from PyQt5.QtCore import QCoreApplication
+from PyQt6.QtCore import QCoreApplication
 
 from .WorkspaceDialog import WorkspaceDialog
 
@@ -579,6 +580,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 is_printer_group = True
                 machine_name = group_name
 
+        # Getting missing required package ids
+        package_metadata = self._parse_packages_metadata(archive)
+        missing_package_metadata = self._filter_missing_package_metadata(package_metadata)
+
         # Show the dialog, informing the user what is about to happen.
         self._dialog.setMachineConflict(machine_conflict)
         self._dialog.setIsPrinterGroup(is_printer_group)
@@ -599,6 +604,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._dialog.setExtruders(extruders)
         self._dialog.setVariantType(variant_type_name)
         self._dialog.setHasObjectsOnPlate(Application.getInstance().platformActivity)
+        self._dialog.setMissingPackagesMetadata(missing_package_metadata)
         self._dialog.show()
 
         # Block until the dialog is closed.
@@ -658,10 +664,22 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         cura_file_names = [name for name in archive.namelist() if name.startswith("Cura/")]
 
-        # Create a shadow copy of the preferences (we don't want all of the preferences, but we do want to re-use its
+        # Create a shadow copy of the preferences (We don't want all of the preferences, but we do want to re-use its
         # parsing code.
         temp_preferences = Preferences()
-        serialized = archive.open("Cura/preferences.cfg").read().decode("utf-8")
+        try:
+            serialized = archive.open("Cura/preferences.cfg").read().decode("utf-8")
+        except KeyError:
+            # If there is no preferences file, it's not a workspace, so notify user of failure.
+            Logger.log("w", "File %s is not a valid workspace.", file_name)
+            message = Message(i18n_catalog.i18nc("@info:error Don't translate the XML tags <filename> or <message>!",
+                                                 "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>.",
+                                                 file_name, str(e)),
+                              title=i18n_catalog.i18nc("@info:title", "Can't Open Project File"),
+                              message_type=Message.MessageType.ERROR)
+            message.show()
+            self.setWorkspaceName("")
+            return [], {}
         temp_preferences.deserialize(serialized)
 
         # Copy a number of settings from the temp preferences to the global
@@ -1243,3 +1261,29 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         metadata = data.iterfind("./um:metadata/um:name/um:label", {"um": "http://www.ultimaker.com/material"})
         for entry in metadata:
             return entry.text
+
+    @staticmethod
+    def _parse_packages_metadata(archive: zipfile.ZipFile) -> List[Dict[str, str]]:
+        try:
+            package_metadata = json.loads(archive.open("Cura/packages.json").read().decode("utf-8"))
+            return package_metadata["packages"]
+        except KeyError:
+            Logger.warning("No package metadata was found in .3mf file.")
+        except Exception:
+            Logger.error("Failed to load packages metadata from .3mf file.")
+
+        return []
+
+
+    @staticmethod
+    def _filter_missing_package_metadata(package_metadata: List[Dict[str, str]]) -> List[Dict[str, str]]:
+        """Filters out installed packages from package_metadata"""
+        missing_packages = []
+        package_manager = cast(CuraPackageManager, CuraApplication.getInstance().getPackageManager())
+
+        for package in package_metadata:
+            package_id = package["id"]
+            if not package_manager.isPackageInstalled(package_id):
+                missing_packages.append(package)
+
+        return missing_packages

@@ -150,9 +150,6 @@
         "fill_outline_gaps": {
             "default_value": false
         },
-        "filter_out_tiny_gaps": {
-            "default_value": false
-        },
         "retraction_hop": {
             "default_value": 0.2
         },
@@ -244,12 +241,6 @@
         "skirt_brim_speed": {
             "value": "speed_layer_0"
         },
-        "speed_infill": {
-            "value": "speed_print"
-        },
-        "speed_wall": {
-            "value": "speed_print / 2"
-        },
         "speed_wall_0": {
             "value": "speed_wall"
         },
@@ -264,9 +255,6 @@
         },
         "speed_travel": {
             "value": "150.0 if speed_print < 60 else 250.0 if speed_print > 100 else speed_print * 2.5"
-        },
-        "speed_print_layer_0": {
-            "value": "speed_layer_0"
         },
         "speed_travel_layer_0": {
             "value": "100 if speed_layer_0 < 20 else 150 if speed_layer_0 > 30 else speed_layer_0 * 5"

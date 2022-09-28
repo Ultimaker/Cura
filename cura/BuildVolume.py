@@ -31,7 +31,7 @@ from cura.Settings.GlobalStack import GlobalStack
 from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Settings.ExtruderManager import ExtruderManager
 
-from PyQt5.QtCore import QTimer
+from PyQt6.QtCore import QTimer
 
 
 if TYPE_CHECKING:
@@ -565,8 +565,8 @@ class BuildVolume(SceneNode):
         self._updateScaleFactor()
 
         self._volume_aabb = AxisAlignedBox(
-            minimum = Vector(min_w, min_h - 1.0, min_d).scale(self._scale_vector),
-            maximum = Vector(max_w, max_h - self._raft_thickness - self._extra_z_clearance, max_d).scale(self._scale_vector)
+            minimum = Vector(min_w, min_h - 1.0, min_d),
+            maximum = Vector(max_w, max_h - self._raft_thickness - self._extra_z_clearance, max_d)
         )
 
         bed_adhesion_size = self.getEdgeDisallowedSize()
@@ -575,8 +575,8 @@ class BuildVolume(SceneNode):
         # This is probably wrong in all other cases. TODO!
         # The +1 and -1 is added as there is always a bit of extra room required to work properly.
         scale_to_max_bounds = AxisAlignedBox(
-            minimum = Vector(min_w + bed_adhesion_size + 1, min_h, min_d + self._disallowed_area_size - bed_adhesion_size + 1).scale(self._scale_vector),
-            maximum = Vector(max_w - bed_adhesion_size - 1, max_h - self._raft_thickness - self._extra_z_clearance, max_d - self._disallowed_area_size + bed_adhesion_size - 1).scale(self._scale_vector)
+            minimum = Vector(min_w + bed_adhesion_size + 1, min_h, min_d + self._disallowed_area_size - bed_adhesion_size + 1),
+            maximum = Vector(max_w - bed_adhesion_size - 1, max_h - self._raft_thickness - self._extra_z_clearance, max_d - self._disallowed_area_size + bed_adhesion_size - 1)
         )
 
         self._application.getController().getScene()._maximum_bounds = scale_to_max_bounds  # type: ignore
@@ -645,7 +645,7 @@ class BuildVolume(SceneNode):
             for extruder in extruders:
                 extruder.propertyChanged.connect(self._onSettingPropertyChanged)
 
-            self._width = self._global_container_stack.getProperty("machine_width", "value") * self._scale_vector.x
+            self._width = self._global_container_stack.getProperty("machine_width", "value")
             machine_height = self._global_container_stack.getProperty("machine_height", "value")
             if self._global_container_stack.getProperty("print_sequence", "value") == "one_at_a_time" and len(self._scene_objects) > 1:
                 self._height = min(self._global_container_stack.getProperty("gantry_height", "value") * self._scale_vector.z, machine_height)
@@ -656,7 +656,7 @@ class BuildVolume(SceneNode):
             else:
                 self._height = self._global_container_stack.getProperty("machine_height", "value")
                 self._build_volume_message.hide()
-            self._depth = self._global_container_stack.getProperty("machine_depth", "value") * self._scale_vector.y
+            self._depth = self._global_container_stack.getProperty("machine_depth", "value")
             self._shape = self._global_container_stack.getProperty("machine_shape", "value")
 
             self._updateDisallowedAreas()
@@ -752,8 +752,8 @@ class BuildVolume(SceneNode):
             return
         self._updateScaleFactor()
         self._height = self._global_container_stack.getProperty("machine_height", "value") * self._scale_vector.z
-        self._width = self._global_container_stack.getProperty("machine_width", "value") * self._scale_vector.x
-        self._depth = self._global_container_stack.getProperty("machine_depth", "value") * self._scale_vector.y
+        self._width = self._global_container_stack.getProperty("machine_width", "value")
+        self._depth = self._global_container_stack.getProperty("machine_depth", "value")
         self._shape = self._global_container_stack.getProperty("machine_shape", "value")
 
     def _updateDisallowedAreasAndRebuild(self):
@@ -769,14 +769,6 @@ class BuildVolume(SceneNode):
         self._updateRaftThickness()
         self._extra_z_clearance = self._calculateExtraZClearance(ExtruderManager.getInstance().getUsedExtruderStacks())
         self.rebuild()
-
-    def _scaleAreas(self, result_areas: List[Polygon]) -> None:
-        if self._global_container_stack is None:
-            return
-        for i, polygon in enumerate(result_areas):
-            result_areas[i] = polygon.scale(
-                100.0 / max(100.0, self._global_container_stack.getProperty("material_shrinkage_percentage_xy", "value"))
-            )
 
     def _updateDisallowedAreas(self) -> None:
         if not self._global_container_stack:
@@ -833,11 +825,9 @@ class BuildVolume(SceneNode):
 
         self._disallowed_areas = []
         for extruder_id in result_areas:
-            self._scaleAreas(result_areas[extruder_id])
             self._disallowed_areas.extend(result_areas[extruder_id])
         self._disallowed_areas_no_brim = []
         for extruder_id in result_areas_no_brim:
-            self._scaleAreas(result_areas_no_brim[extruder_id])
             self._disallowed_areas_no_brim.extend(result_areas_no_brim[extruder_id])
 
     def _computeDisallowedAreasPrinted(self, used_extruders):
@@ -992,6 +982,9 @@ class BuildVolume(SceneNode):
                     bottom_unreachable_border = max(bottom_unreachable_border, other_offset_y - offset_y)
             half_machine_width = self._global_container_stack.getProperty("machine_width", "value") / 2
             half_machine_depth = self._global_container_stack.getProperty("machine_depth", "value") / 2
+
+            # We need at a minimum a very small border around the edge so that models can't go off the build plate
+            border_size = max(border_size, 0.1)
 
             if self._shape != "elliptic":
                 if border_size - left_unreachable_border > 0:

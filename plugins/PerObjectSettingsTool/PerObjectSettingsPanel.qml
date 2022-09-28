@@ -79,7 +79,7 @@ Item
             {
                 id: normalButton
                 text: catalog.i18nc("@label", "Normal model")
-                toolItem: UM.RecolorImage
+                toolItem: UM.ColorImage
                 {
                     source: UM.Theme.getIcon("Infill0")
                     color: UM.Theme.getColor("icon")
@@ -94,7 +94,7 @@ Item
             {
                 id: supportMeshButton
                 text: catalog.i18nc("@label", "Print as support")
-                toolItem: UM.RecolorImage
+                toolItem: UM.ColorImage
                 {
                     source: UM.Theme.getIcon("MeshTypeSupport")
                     color: UM.Theme.getColor("icon")
@@ -109,7 +109,7 @@ Item
             {
                 id: overlapMeshButton
                 text: catalog.i18nc("@label", "Modify settings for overlaps")
-                toolItem: UM.RecolorImage
+                toolItem: UM.ColorImage
                 {
                     source: UM.Theme.getIcon("MeshTypeIntersect")
                     color: UM.Theme.getColor("icon")
@@ -124,7 +124,7 @@ Item
             {
                 id: antiOverhangMeshButton
                 text:  catalog.i18nc("@label", "Don't support overlaps")
-                toolItem: UM.RecolorImage
+                toolItem: UM.ColorImage
                 {
                     source: UM.Theme.getIcon("BlockSupportOverlaps")
                     color: UM.Theme.getColor("icon")
@@ -196,7 +196,7 @@ Item
                 height: parent.height
                 width: UM.Theme.getSize("setting").width + UM.Theme.getSize("default_margin").width
 
-                ScrollBar.vertical: UM.ScrollBar {}
+                ScrollBar.vertical: UM.ScrollBar { id: scrollBar }
                 clip: true
                 spacing: UM.Theme.getSize("default_lining").height
 
@@ -240,11 +240,11 @@ Item
 
                 delegate: Row
                 {
-                    spacing: - UM.Theme.getSize("default_margin").width
+                    spacing: UM.Theme.getSize("default_margin").width
                     Loader
                     {
                         id: settingLoader
-                        width: UM.Theme.getSize("setting").width
+                        width: UM.Theme.getSize("setting").width - removeButton.width - scrollBar.width
                         height: UM.Theme.getSize("section").height + UM.Theme.getSize("narrow_margin").height
                         enabled: provider.properties.enabled === "True"
                         property var definition: model
@@ -297,19 +297,19 @@ Item
 
                     Button
                     {
-                        width: Math.round(UM.Theme.getSize("setting").height / 2)
-                        height: UM.Theme.getSize("setting").height
+                        id: removeButton
+                        width: UM.Theme.getSize("setting").height
+                        height: UM.Theme.getSize("setting").height + UM.Theme.getSize("narrow_margin").height
 
                         onClicked: addedSettingsModel.setVisible(model.key, false)
 
                         background: Item
                         {
-                            UM.RecolorImage
+                            UM.ColorImage
                             {
                                 anchors.verticalCenter: parent.verticalCenter
                                 width: parent.width
                                 height: width
-                                sourceSize.height: width
                                 color: parent.hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button")
                                 source: UM.Theme.getIcon("Minus")
                             }

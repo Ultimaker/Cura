@@ -6,7 +6,7 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Window 2.2
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.6 as Cura
 
 Window
@@ -15,6 +15,10 @@ Window
     property variant catalog: UM.I18nCatalog { name: "cura" }
 
     signal searchStringChanged(string new_search)
+
+    property alias showOnboadBanner: onBoardBanner.visible
+    property alias showSearchHeader: searchHeader.visible
+    property alias pageContentsSource: content.source
 
     minimumWidth: UM.Theme.getSize("modal_window_minimum").width
     minimumHeight: UM.Theme.getSize("modal_window_minimum").height
@@ -67,7 +71,7 @@ Window
                 Layout.preferredWidth: parent.width
                 Layout.preferredHeight: childrenRect.height + UM.Theme.getSize("default_margin").height
 
-                Label
+                UM.Label
                 {
                     id: pageTitle
                     anchors
@@ -80,13 +84,13 @@ Window
                     }
 
                     font: UM.Theme.getFont("large")
-                    color: UM.Theme.getColor("text")
                     text: content.item ? content.item.pageTitle: catalog.i18nc("@title", "Loading...")
                 }
             }
 
             OnboardBanner
             {
+                id: onBoardBanner
                 visible: content.item && content.item.bannerVisible
                 text: content.item && content.item.bannerText
                 icon: content.item && content.item.bannerIcon
@@ -101,6 +105,7 @@ Window
             // Search & Top-Level Tabs
             Item
             {
+                id: searchHeader
                 implicitHeight: childrenRect.height
                 implicitWidth: parent.width - 2 * UM.Theme.getSize("default_margin").width
                 Layout.alignment: Qt.AlignHCenter
@@ -187,7 +192,7 @@ Window
             {
                 text: catalog.i18nc("@info", "Search in the browser")
                 iconSource: UM.Theme.getIcon("LinkExternal")
-                visible: pageSelectionTabBar.currentItem.hasSearch
+                visible: pageSelectionTabBar.currentItem.hasSearch && searchHeader.visible
                 isIconOnRightSide: true
                 height: fontMetrics.height
                 textFont: fontMetrics.font
@@ -251,7 +256,7 @@ Window
                 margins: UM.Theme.getSize("default_margin").width
             }
             spacing: UM.Theme.getSize("default_margin").width
-            UM.RecolorImage
+            UM.ColorImage
             {
                 id: bannerIcon
                 source: UM.Theme.getIcon("Plugin")

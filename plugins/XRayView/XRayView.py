@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os.path
-from PyQt5.QtGui import QOpenGLContext, QImage
+from PyQt6.QtGui import QOpenGLContext, QImage
 
 from UM.Application import Application
 from UM.Logger import Logger
