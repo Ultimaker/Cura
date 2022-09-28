@@ -61,8 +61,10 @@ Three new settings: 'Initial Layer Outer Wall Flow', 'Initial Layer Inner Wall F
 
 * Known critical issues:
 - While some small fixes have been made already, the placement of the seam is still more scattered than before 5.0. (Will try to fix in stable.)
-- Support is sometimes missing in detailed parts, where previous releases supported them properly (still). (Will probably not be fixed in stable. This is currently slated for 5.3)
-- Multiple external monitors on Windows (especially if from the same brand) might be a problem under some circumstances. (Will probably not be fixed in stable.)
+- <a href="https://support.ultimaker.com/hc/en-us/articles/6103470096028">Support is sometimes missing in detailed parts</a>, where previous releases supported them properly (still). (Will probably not be fixed in stable. This is currently slated for 5.3)
+- Multiple external monitors on Windows (especially if from the same brand) <a href="https://support.ultimaker.com/hc/en-us/articles/6103674944156">might be a problem under some circumstances</a>. (Will probably not be fixed in stable.)
+
+* Does Cura (not) work on your OS (version)? See <a href="https://support.ultimaker.com/hc/en-us/articles/360011889579">this article</a> for clarification.
 
 [5.1.1]
 * New features:
