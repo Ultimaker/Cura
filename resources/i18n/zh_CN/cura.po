@@ -57,7 +57,7 @@ msgstr "是否确实要删除 {0}？此操作无法撤消！"
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:338
 msgctxt "@label"
 msgid "Default"
-msgstr "Default"
+msgstr "默认"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:45 /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentSelectionModel.py:65 /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentTranslations.py:14
 msgctxt "@label"
@@ -72,7 +72,7 @@ msgstr "视觉配置文件用于打印视觉原型和模型，可实现出色的
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:49 /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentSelectionModel.py:70 /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentTranslations.py:18
 msgctxt "@label"
 msgid "Engineering"
-msgstr "Engineering"
+msgstr "工程"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:50 /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentSelectionModel.py:71 /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentTranslations.py:19
 msgctxt "@text"
@@ -158,12 +158,12 @@ msgstr "备份"
 #: /home/trin/Gedeeld/Projects/Cura/cura/Backups/Backup.py:134
 msgctxt "@info:backup_failed"
 msgid "Tried to restore a Cura backup without having proper data or meta data."
-msgstr "试图在没有适当数据或元数据的情况下恢复Cura备份。"
+msgstr "尝试在没有适当数据或元数据的情况下恢复Cura备份。"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Backups/Backup.py:145
 msgctxt "@info:backup_failed"
 msgid "Tried to restore a Cura backup that is higher than the current version."
-msgstr "尝试恢复的 Cura 备份版本高于当前版本。"
+msgstr "尝试从高于当前版本的 Cura 备份恢复。"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Backups/Backup.py:158
 msgctxt "@info:backup_failed"
@@ -233,7 +233,7 @@ msgid ""
 "        "
 msgstr ""
 "<p><b>Cura 发生了严重错误。请将这份错误报告发送给我们以便修复问题</p></b>\n"
-"            <p>请使用“发送报告”按钮将错误报告自动发布到我们的服务器</p>\n"
+"            <p>请使用“发送报告”按钮将错误报告自动发送到我们的服务器</p>\n"
 "        "
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/CrashHandler.py:198
@@ -606,7 +606,7 @@ msgstr "不支持"
 #: /home/trin/Gedeeld/Projects/Cura/cura/Settings/cura_empty_instance_containers.py:55
 msgctxt "@info:No intent profile selected"
 msgid "Default"
-msgstr "Default"
+msgstr "默认"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Settings/MachineManager.py:713 /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:219
 msgctxt "@label"
@@ -783,7 +783,7 @@ msgid ""
 msgstr ""
 "<p>由于模型的大小和材质的配置，一个或多个3D模型可能无法最优地打印:</p>\n"
 "<p>{model_names}</p>\n"
-"<p>找出如何确保最好的打印质量和可靠性.</p>\n"
+"<p>找到确保最好的打印质量与可靠性的方法.</p>\n"
 "<p><a href=\"https://ultimaker.com/3D-model-assistant\">查看打印质量指南</a></p>"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:545
@@ -873,7 +873,7 @@ msgstr "操作系统不允许向此位置或用此文件名保存项目文件。
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFWriter/ThreeMFWriter.py:238
 msgctxt "@error:zip"
 msgid "Error writing 3mf file."
-msgstr "写入 3mf 文件时出错。"
+msgstr "写入 3MF 文件时出错。"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFWriter/ThreeMFWriter.py:282
 #, python-brace-format
@@ -1043,7 +1043,7 @@ msgstr "您的 {machine_name} 可能有新功能或错误修复可用！如果�
 #, python-format
 msgctxt "@info:title The %s gets replaced with the printer name."
 msgid "New %s stable firmware available"
-msgstr "新 %s 稳定固件可用"
+msgstr "新 %s 稳定版固件可用"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerMessage.py:28
 msgctxt "@action:button"
@@ -1648,7 +1648,7 @@ msgstr "您正在尝试连接到 {0}，但它不是组中的主机。您可以�
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/NotClusterHostMessage.py:30
 msgctxt "@info:title"
 msgid "Not a group host"
-msgstr "非组中的主机"
+msgstr "非位于组中的主机"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/NotClusterHostMessage.py:36
 msgctxt "@action"
@@ -2290,7 +2290,7 @@ msgstr "置中"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:137
 msgctxt "@label"
 msgid "Heated bed"
-msgstr "加热床"
+msgstr "热床"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:149
 msgctxt "@label"
@@ -3143,7 +3143,7 @@ msgstr "请及时更新打印机固件以远程管理打印队列。"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:275
 msgctxt "@info"
 msgid "Webcam feeds for cloud printers cannot be viewed from Ultimaker Cura. Click \"Manage printer\" to visit Ultimaker Digital Factory and view this webcam."
-msgstr "无法从 Ultimaker Cura 中查看云打印机的网络摄像头馈送。请单击“管理打印机”以访问 Ultimaker Digital Factory 并查看此网络摄像头。"
+msgstr "无法从 Ultimaker Cura 中查看云打印机的网络摄像头的反馈数据。请单击“管理打印机”以访问 Ultimaker Digital Factory 并查看此网络摄像头。"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:335
 msgctxt "@label:status"
@@ -7850,7 +7850,7 @@ msgstr "透视视图"
 
 #~ msgctxt "@option:check"
 #~ msgid "Heated bed"
-#~ msgstr "加热床"
+#~ msgstr "热床"
 
 #~ msgctxt "@label"
 #~ msgid "Printhead Settings"
@@ -9991,7 +9991,7 @@ msgstr "透视视图"
 
 #~ msgctxt "@option:check"
 #~ msgid "Heated Bed"
-#~ msgstr "加热床"
+#~ msgstr "热床"
 
 #~ msgctxt "@label"
 #~ msgid "GCode Flavor"
