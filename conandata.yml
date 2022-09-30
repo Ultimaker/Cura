@@ -12,7 +12,7 @@
 # Subject to change in the future!
 "5.2.0-beta":
     requirements:
-        - "pyarcus/5.1.1-alpha+32@ultimaker/stable"
+        - "pyarcus/(latest)@_/_"
         - "curaengine/(latest)"
         - "pysavitar/(latest)@_/_"
         - "pynest2d/(latest)@_/_"
