@@ -172,6 +172,14 @@ jobs:
                     else:
                         # FIXME: for external PR's
                         actual_version = f"5.2.0-alpha+{buildmetadata}pr_{issue_number}"
+                        
+                    if is_tag:
+                        print("THE TAG IS: ", "${{ github.ref_name }}")
+                    if is_tag and "${{ github.ref_name }}" == "5.2.0-beta":
+                        actual_version = "5.2.0-beta"
+                        is_release_branch = True
+                        user = "_"
+                        channel = "_"
                     
                     # %% print to output
                     cmd_name = ["echo", f"::set-output name=name::{project_name}"]
