@@ -13,13 +13,13 @@
 
 "5.2.0":
     requirements:
-        - "pyarcus/(latest)@ultimaker/stable"
-        - "curaengine/(latest)@ultimaker/stable"
-        - "pysavitar/(latest)@ultimaker/stable"
-        - "pynest2d/(latest)@ultimaker/stable"
-        - "uranium/(latest)@ultimaker/stable"
-        - "fdm_materials/(latest)@ultimaker/stable"
-        - "cura_binary_data/(latest)@ultimaker/stable"
+        - "pyarcus/(latest)@_/_"
+        - "curaengine/(latest)@_/_"
+        - "pysavitar/(latest)@_/_"
+        - "pynest2d/(latest)@_/_"
+        - "uranium/(latest)@_/_"
+        - "fdm_materials/(latest)@_/_"
+        - "cura_binary_data/(latest)@_/_"
         - "cpython/3.10.4"
     internal_requirements:
         - "fdm_materials_private/(latest)@ultimaker/testing"
