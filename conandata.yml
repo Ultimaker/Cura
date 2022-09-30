@@ -11,7 +11,7 @@
 #
 # Subject to change in the future!
 
-"5.2.0-beta":
+"5.2.0":
     requirements:
         - "pyarcus/(latest)@ultimaker/stable"
         - "curaengine/(latest)@ultimaker/stable"
