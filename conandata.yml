@@ -14,7 +14,7 @@
 "5.2.0":
     requirements:
         - "pyarcus/5.1.1-alpha+32@ultimaker/stable"
-        - "curaengine/5.2"
+        - "curaengine/(latest)"
         - "pysavitar/(latest)@_/_"
         - "pynest2d/(latest)@_/_"
         - "uranium/(latest)@_/_"
