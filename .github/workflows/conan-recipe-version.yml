@@ -175,7 +175,7 @@ jobs:
                         
                     if is_tag:
                         print("THE TAG IS: ", ${{ github.ref_name }})
-                    if is_tag and ${{ github.ref_name }} == "5.2.0-beta:
+                    if is_tag and ${{ github.ref_name }} == "5.2.0-beta":
                         actual_version = "5.2.0-beta"
                         is_release_branch = True
                         user = "_"
