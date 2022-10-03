@@ -127,7 +127,7 @@ Component
                     id: sendToFactoryButton
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: catalog.i18nc("@button", "View printers in Digital Factory")
-                    onClicked: Qt.openUrlExternally("https://digitalfactory.ultimaker.com/app/print-jobs?utm_source=cura&utm_medium=software&utm_campaign=monitor-view-cloud-printer-type")
+                    onClicked: Qt.openUrlExternally("https://digitalfactory.ultimaker.com/app/welcome?utm_source=cura&utm_medium=software&utm_campaign=monitor-view-cloud-printer-type")
                 }
             }
         }
