@@ -152,6 +152,11 @@ class CuraConan(ConanFile):
         cura_version = self.conf_info.get("user.cura:version", default = self.version, check_type = str)
         if self.options.internal:
             version = Version(cura_version)
+            self.output.error("="*100)
+            self.output.error(f"version: {version}")
+            self.output.error(f"cura_version: {cura_version}")
+            self.output.error(f"version.prerelease: {version.prerelease}")
+            self.output.error("="*100)
             cura_version = f"{version.major}.{version.minor}.{version.patch}-{version.prerelease.replace('+', '+internal_')}"
 
         with open(Path(location, "CuraVersion.py"), "w") as f:
