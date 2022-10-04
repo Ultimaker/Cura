@@ -172,7 +172,7 @@ jobs:
                                     actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-{latest_branch_version.prerelease.lower()}+{buildmetadata}{channel_metadata}"
                         else:
                             # FIXME: for external PR's
-                            actual_version = f"5.2.0-alpha+{buildmetadata}pr_{issue_number}"
+                            actual_version = f"5.3.0-alpha+{buildmetadata}pr_{issue_number}"
                     
                     # %% print to output
                     cmd_name = ["echo", f"::set-output name=name::{project_name}"]
