@@ -92,6 +92,11 @@
                 src: "lib"
                 dst: "."
                 binary: "libspdlog"
+            fmt:
+                package: "fmt"
+                src: "lib"
+                dst: "."
+                binary: "libfmt"
         hiddenimports:
             - "pySavitar"
             - "pyArcus"
