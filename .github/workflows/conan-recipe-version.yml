@@ -140,33 +140,28 @@ jobs:
                                 if commit == latest_branch_tag.commit:
                                     break
                                 no_commits += 1
-                            
-                            if no_commits == 0:
-                                # This is a release on a branch
-                                actual_version = f"{latest_branch_version}"
+                            latest_branch_version_prerelease = latest_branch_version.prerelease
+                            if latest_branch_version.prerelease and not "." in latest_branch_version.prerelease:
+                                # The prerealese did not contain a version number, default it to 1
+                                latest_branch_version_prerelease = f"{latest_branch_version.prerelease}.1"
+                            if event_name == "pull_request":
+                                actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-{latest_branch_version_prerelease.lower()}+{buildmetadata}pr_{issue_number}_{no_commits}"
+                                channel_metadata = f"{channel}_{no_commits}"
                             else:
-                                latest_branch_version_prerelease = latest_branch_version.prerelease
-                                if latest_branch_version.prerelease and not "." in latest_branch_version.prerelease:
-                                    # The prerealese did not contain a version number, default it to 1
-                                    latest_branch_version_prerelease = f"{latest_branch_version.prerelease}.1"
-                                if event_name == "pull_request":
-                                    actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-{latest_branch_version_prerelease.lower()}+{buildmetadata}pr_{issue_number}_{no_commits}"
+                                if channel in ("stable", "_", ""):
+                                    channel_metadata = f"{no_commits}"
+                                else:
                                     channel_metadata = f"{channel}_{no_commits}"
+                            if latest_branch_version.prerelease == "" or "beta" in latest_branch_version.prerelease:
+                                if is_release_branch:
+                                    bump_up_patch = int(latest_branch_version.patch) + 1
+                                    actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{bump_up_patch}-alpha+{buildmetadata}{channel_metadata}"
                                 else:
-                                    if channel in ("stable", "_", ""):
-                                        channel_metadata = f"{no_commits}"
-                                    else:
-                                        channel_metadata = f"{channel}_{no_commits}"
-                                if latest_branch_version.prerelease == "" or "beta" in latest_branch_version.prerelease:
-                                    if is_release_branch:
-                                        bump_up_patch = int(latest_branch_version.patch) + 1
-                                        actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{bump_up_patch}-alpha+{buildmetadata}{channel_metadata}"
-                                    else:
-                                        bump_up_minor = int(latest_branch_version.minor) + 1
-                                        reset_patch = 0
-                                        actual_version = f"{latest_branch_version.major}.{bump_up_minor}.{reset_patch}-alpha+{buildmetadata}{channel_metadata}"
-                                else:
-                                    actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-{latest_branch_version.prerelease.lower()}+{buildmetadata}{channel_metadata}"
+                                    bump_up_minor = int(latest_branch_version.minor) + 1
+                                    reset_patch = 0
+                                    actual_version = f"{latest_branch_version.major}.{bump_up_minor}.{reset_patch}-alpha+{buildmetadata}{channel_metadata}"
+                            else:
+                                actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-{latest_branch_version.prerelease.lower()}+{buildmetadata}{channel_metadata}"
                         else:
                             # FIXME: for external PR's
                             actual_version = f"5.3.0-alpha+{buildmetadata}pr_{issue_number}"
