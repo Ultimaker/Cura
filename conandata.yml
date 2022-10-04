@@ -326,7 +326,6 @@
             Windows: "./icons/Cura.ico"
             Macos: "./icons/cura.icns"
             Linux: "./icons/cura-128.png"
-            
 "5.2.0":
     requirements:
         - "pyarcus/5.2.0"
@@ -432,7 +431,6 @@
             Windows: "./icons/Cura.ico"
             Macos: "./icons/cura.icns"
             Linux: "./icons/cura-128.png"
- 
 "5.2.0-alpha":
     requirements:
         - "pyarcus/5.2@ultimaker/testing"
