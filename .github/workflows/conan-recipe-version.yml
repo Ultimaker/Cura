@@ -142,11 +142,8 @@ jobs:
                                 no_commits += 1
                             
                             if no_commits == 0:
-                                # This is a release
-                                actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}"
-                                if channel == "stable":
-                                    user = "_"
-                                    channel = "_"
+                                # This is a release on a branch
+                                actual_version = f"{latest_branch_version}"
                             else:
                                 latest_branch_version_prerelease = latest_branch_version.prerelease
                                 if latest_branch_version.prerelease and not "." in latest_branch_version.prerelease:
