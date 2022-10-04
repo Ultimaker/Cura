@@ -50,7 +50,7 @@
         "adhesion_type":                                { "default_value": "skirt" },
         "retraction_amount":                            { "default_value": 0.65 },
         "skirt_brim_minimal_length":                    { "default_value": 550 },
-        "retraction_speed":                             { "default_value": 100, "maximum_value_warning": 150 },
+        "retraction_speed":                             { "default_value": 45, "maximum_value_warning": 150 },
         "retraction_retract_speed":                     { "maximum_value_warning": 150 },
         "retraction_prime_speed":                       { "value": "math.ceil(retraction_speed * 0.4)", "maximum_value_warning": 150 },
         "retraction_hop_enabled":                       { "default_value": true },
