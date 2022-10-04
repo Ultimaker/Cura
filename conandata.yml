@@ -87,6 +87,11 @@
                 src: "bin"
                 dst: "."
                 binary: "CuraEngine"
+            spdlog:
+                package: "spdlog"
+                src: "lib"
+                dst: "."
+                binary: "libspdlog"
         hiddenimports:
             - "pySavitar"
             - "pyArcus"

@@ -208,8 +208,10 @@ class CuraConan(ConanFile):
             else:
                 continue
             if not src_path.exists():
+                self.output.warning(f"Source path for binary {binary['binary']} does not exist")
                 continue
-            for bin in src_path.glob(binary["binary"] + ".*[exe|dll|so|dylib]"):
+
+            for bin in src_path.glob(binary["binary"] + "*[.exe|.dll|.so|.dylib|.so.]*"):
                 binaries.append((str(bin), binary["dst"]))
             for bin in src_path.glob(binary["binary"]):
                 binaries.append((str(bin), binary["dst"]))
