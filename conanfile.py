@@ -216,14 +216,17 @@ class CuraConan(ConanFile):
             for bin in src_path.glob(binary["binary"]):
                 binaries.append((str(bin), binary["dst"]))
 
-        for _, dependency in self.dependencies.items():
-            for bin_paths in dependency.cpp_info.bindirs:
-                binaries.extend([(f"{p}", ".") for p in Path(bin_paths).glob("**/*.dll")])
-                binaries.extend([(f"{p}", ".") for p in Path(bin_paths).glob("**/*.dylib")])
-                binaries.extend([(f"{p}", ".") for p in Path(bin_paths).glob("**/*.so")])
+        # Make sure all Conan dependencies which are shared are added to the binary list for pyinstaller
+        for _, dependency in self.dependencies.host.items():
+            if hasattr(dependency.options, "shared") and dependency.options.shared:
+                for bin_paths in dependency.cpp_info.bindirs:
+                    binaries.extend([(f"{p}", ".") for p in Path(bin_paths).glob("**/*")])
+                for lib_paths in dependency.cpp_info.libdirs:
+                    binaries.extend([(f"{p}", ".") for p in Path(lib_paths).glob("**/*")])
 
         # Copy dynamic libs from lib path
-        binaries.extend([(f"{p}", ".") for p in Path(self._base_dir.joinpath("lib")).glob("**/*.dylib")])
+        binaries.extend([(f"{p}", ".") for p in Path(self._base_dir.joinpath("lib")).glob("**/*.dylib*")])
+        binaries.extend([(f"{p}", ".") for p in Path(self._base_dir.joinpath("lib")).glob("**/*.so*")])
 
         # Collect all dll's from PyQt6 and place them in the root
         binaries.extend([(f"{p}", ".") for p in Path(self._site_packages, "PyQt6", "Qt6").glob("**/*.dll")])

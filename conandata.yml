@@ -220,7 +220,6 @@
             Windows: "./icons/Cura.ico"
             Macos: "./icons/cura.icns"
             Linux: "./icons/cura-128.png"
-
 "5.2.0-beta.1":
     requirements:
         - "pyarcus/5.2.0-beta.1"
@@ -298,16 +297,6 @@
                 src: "bin"
                 dst: "."
                 binary: "CuraEngine"
-            spdlog:
-                package: "spdlog"
-                src: "lib"
-                dst: "."
-                binary: "libspdlog"
-            fmt:
-                package: "fmt"
-                src: "lib"
-                dst: "."
-                binary: "libfmt"
         hiddenimports:
             - "pySavitar"
             - "pyArcus"
