@@ -1,0 +1,6 @@
+{
+  "api_url": "https://api.cloud.bcn3d.com/v2",
+  "client_id": "e032d294cef848058ecc8ff2f90bdc01",
+  "app_secret": "24c33b9c1af656a319bc1279dcbb046747629b0f0b1b7561e1eafc11fc0ff23f",
+  "scope": "all"
+}

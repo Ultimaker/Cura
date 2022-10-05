@@ -1,0 +1,7 @@
+{
+    "name": "BCN3D",
+    "author": "BCN3D",
+    "version": "1.0.0",
+    "description": "Enables functionality of linking BCN3D Stratos to a network connected printer through BCN3D Cloud.",
+    "api": "8.0.0"
+}
