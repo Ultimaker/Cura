@@ -7,7 +7,7 @@ from conan import ConanFile
 from conan.tools.files import copy, rmdir, save
 from conan.tools.env import VirtualRunEnv, Environment
 from conan.tools.scm import Version
-from conan.errors import ConanInvalidConfiguration
+from conan.errors import ConanInvalidConfiguration, ConanException
 
 required_conan_version = ">=1.50.0"
 
@@ -218,7 +218,11 @@ class CuraConan(ConanFile):
 
         # Make sure all Conan dependencies which are shared are added to the binary list for pyinstaller
         for _, dependency in self.dependencies.host.items():
-            if hasattr(dependency.options, "shared") and dependency.options.shared:
+            try:
+                is_shared = dependency.options.shared
+            except ConanException:
+                is_shared = False
+            if is_shared:
                 for bin_paths in dependency.cpp_info.bindirs:
                     binaries.extend([(f"{p}", ".") for p in Path(bin_paths).glob("**/*")])
                 for lib_paths in dependency.cpp_info.libdirs:
