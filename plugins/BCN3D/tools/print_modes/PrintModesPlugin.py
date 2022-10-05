@@ -23,7 +23,7 @@ class PrintModesPlugin(Tool):
         self._multi_extrusion = False
         self._single_model_selected = False
         self.visibility_handler = None
-        Logger.info(f"apoyo print modes")
+        Logger.info(f"PrintModesPlugin init")
         Selection.selectionChanged.connect(self.propertyChanged)
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerChanged)
         self._onGlobalContainerChanged()

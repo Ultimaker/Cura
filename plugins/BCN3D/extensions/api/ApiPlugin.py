@@ -7,14 +7,12 @@ from UM.Logger import Logger
 
 class ApiPlugin(Extension):
     def __init__(self) -> None:
-        Logger.info(f"API Extension init")
+        Logger.info(f"ApiPlugin Extension init")
 
         super().__init__()
         self._authentication_service = None
         self._printers_manager = PrintersManager.getInstance()
         
-        Logger.info(f"API Extension otra linea")
-
         #qmlRegisterSingletonType(AuthService, "Cura", 1, 1, self.getAuthenticationService, "AuthenticationService")
         qmlRegisterSingletonType(PrintersManager, "Cura", 1, 1, self.getPrintersManager, "PrintersManagerService")
 

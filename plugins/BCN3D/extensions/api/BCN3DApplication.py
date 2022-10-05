@@ -7,7 +7,7 @@ from cura import ApplicationMetadata
 
 class BCN3DApplication(CuraApplication):
     def __init__(self, *args, **kwargs) -> None:
-        Logger.info(f"apoyo sonia before!")
+        Logger.info(f"Init BCN3DApplication")
         #super().__init__(self, **kwargs) # esta linea provoca exit
         super().__init__(name = ApplicationMetadata.CuraAppName,
                         app_display_name = ApplicationMetadata.CuraAppDisplayName,
@@ -17,7 +17,6 @@ class BCN3DApplication(CuraApplication):
                         is_debug_mode = ApplicationMetadata.CuraDebugMode,
                         tray_icon_name = "cura-icon-32.png" if not ApplicationMetadata.IsAlternateVersion else "cura-icon-32_wip.png",
                         **kwargs)
-        Logger.info(f"apoyo sonia after 2")
 
         #self.default_theme = "stratos"
         
@@ -26,21 +25,19 @@ class BCN3DApplication(CuraApplication):
 
 
     def closeApplication(self) -> None:
-        Logger.log("i", "Sonia Close application")
-        Logger.info(f"apoyo sonia close")
+        Logger.log("i", " BCN3DApplication Close application")
         #self._global_container_stack.setProperty("print_mode", "value", "singleT0")
         #super().__init__()
 
 
     def setGlobalContainerStack(self, stack: Optional["GlobalStack"]) -> None:
-        print("***** setGlobalContainerStack SONIA antes *****")
+        print("***** BCN3DApplication  setGlobalContainerStack start *****")
         self.extractAndSavePrintMode(stack)
         super().setGlobalContainerStack(stack)
-        print("***** setGlobalContainerStack SONIA despues *****")
+        print("***** BCN3DApplication setGlobalContainerStack done *****")
     
     def groupSelected(self) -> None:
-        print("***** groupSelected SONIA antes *****")
-        print("***** groupSelected SONIA despues *****")
+        print("***** BCN3DApplication  groupSelected *****")
 
     #def discardOrKeepProfileChangesClosed(self, option: str) -> None:
     #    global_stack = self.getGlobalContainerStack()

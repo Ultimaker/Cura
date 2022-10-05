@@ -8,5 +8,5 @@ class OutputDeviceLoader(OutputDevicePlugin):
 
     def __init__(self):
         super().__init__()
-        Logger.info(f"apoyo device OutputDeviceLoader loader")
+        Logger.info(f"OutputDeviceLoader init")
         self.device_plugin = DevicePlugin.DevicePlugin()

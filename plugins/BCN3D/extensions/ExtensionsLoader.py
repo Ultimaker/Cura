@@ -9,6 +9,6 @@ class ExtensionsLoader(Extension):
 
     def __init__(self):
         super().__init__()
-        Logger.info(f"Init Extensions Loader:")
+        Logger.info(f" ExtensionsLoader Init")
         self.idex = IdexPlugin.IdexPlugin()
         self.api = ApiPlugin.ApiPlugin()

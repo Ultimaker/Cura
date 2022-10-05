@@ -13,7 +13,7 @@ i18n_catalog = i18nCatalog("BCN3DIdex")
 class IdexPlugin(Extension):
     def __init__(self) -> None:
         super().__init__()
-        Logger.info(f"IDEX Plugin init")
+        Logger.info(f"IdexPlugin init")
 
         self._curaActions = CuraActions.CuraActions()
         self._application = CuraApplication.getInstance()
@@ -40,7 +40,7 @@ class IdexPlugin(Extension):
     def _onPropertyChanged(self, key: str, property_name: str) -> None:
         Logger.info(f"IDEX _onPropertyChange: (any property has changed)")
         if key == "print_mode" and property_name == "value":
-            Logger.info(f"apoyo ext loader: print_mode property changed")
+            Logger.info(f"IdexPlugin: print_mode property changed")
             print_mode = self._global_container_stack.getProperty("print_mode", "value")
             left_extruder = self._global_container_stack.extruderList[0]
             right_extruder = self._global_container_stack.extruderList[1]

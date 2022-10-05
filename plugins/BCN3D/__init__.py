@@ -22,7 +22,7 @@ def getMetaData():
     }
    
 def register(app):
-    Logger.info(f"register plugin")
+    Logger.info(f"BCN3D plugin register")
     return {
             #extruder management, discovering printers, api
             "extension": ExtensionsLoader.ExtensionsLoader(),          
