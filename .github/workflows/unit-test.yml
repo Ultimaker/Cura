@@ -60,6 +60,9 @@ env:
     CONAN_LOGGING_LEVEL: info
     CONAN_NON_INTERACTIVE: 1
 
+permissions:
+  contents: read
+
 jobs:
     conan-recipe-version:
         uses: ultimaker/cura/.github/workflows/conan-recipe-version.yml@main
@@ -103,7 +106,18 @@ jobs:
 
             -   name: Install Linux system requirements
                 if: ${{ runner.os == 'Linux' }}
-                run: sudo apt install build-essential checkinstall libegl-dev zlib1g-dev libssl-dev ninja-build autoconf libx11-dev libx11-xcb-dev libfontenc-dev libice-dev libsm-dev libxau-dev libxaw7-dev libxcomposite-dev libxcursor-dev libxdamage-dev libxdmcp-dev libxext-dev libxfixes-dev libxi-dev libxinerama-dev libxkbfile-dev libxmu-dev libxmuu-dev libxpm-dev libxrandr-dev libxrender-dev libxres-dev libxss-dev libxt-dev libxtst-dev libxv-dev libxvmc-dev libxxf86vm-dev xtrans-dev libxcb-render0-dev libxcb-render-util0-dev libxcb-xkb-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev libxcb-randr0-dev libxcb-shape0-dev libxcb-sync-dev libxcb-xfixes0-dev libxcb-xinerama0-dev xkb-data libxcb-dri3-dev uuid-dev libxcb-util-dev libxkbcommon-x11-dev -y
+                run: |
+                    sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+                    sudo apt update
+                    sudo apt upgrade
+                    sudo apt install build-essential checkinstall libegl-dev zlib1g-dev libssl-dev ninja-build autoconf libx11-dev libx11-xcb-dev libfontenc-dev libice-dev libsm-dev libxau-dev libxaw7-dev libxcomposite-dev libxcursor-dev libxdamage-dev libxdmcp-dev libxext-dev libxfixes-dev libxi-dev libxinerama-dev libxkbfile-dev libxmu-dev libxmuu-dev libxpm-dev libxrandr-dev libxrender-dev libxres-dev libxss-dev libxt-dev libxtst-dev libxv-dev libxvmc-dev libxxf86vm-dev xtrans-dev libxcb-render0-dev libxcb-render-util0-dev libxcb-xkb-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev libxcb-randr0-dev libxcb-shape0-dev libxcb-sync-dev libxcb-xfixes0-dev libxcb-xinerama0-dev xkb-data libxcb-dri3-dev uuid-dev libxcb-util-dev libxkbcommon-x11-dev pkg-config -y
+
+            -   name: Install GCC-12 on ubuntu-22.04
+                if: ${{ startsWith(inputs.runs_on, 'ubuntu-22.04') }}
+                run: |
+                    sudo apt install g++-12 gcc-12 -y
+                    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 12
+                    sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 12
 
             -   name: Get Conan configuration
                 run: conan config install https://github.com/Ultimaker/conan-config.git
@@ -133,6 +147,11 @@ jobs:
                     path: "tests/**/*.xml"
 
     publish-test-results:
+        permissions:
+          contents: read # to fetch code (actions/checkout)
+          checks: write
+          pull-requests: write # to comment on pull request
+
         runs-on: ubuntu-20.04
         needs: [ testing ]
         if: success() || failure()

@@ -3,13 +3,13 @@ from pathlib import Path
 
 from jinja2 import Template
 
-from conans import tools
 from conan import ConanFile
-from conan.tools import files
+from conan.tools.files import copy, rmdir, save
 from conan.tools.env import VirtualRunEnv, Environment
+from conan.tools.scm import Version
 from conan.errors import ConanInvalidConfiguration
 
-required_conan_version = ">=1.48.0"
+required_conan_version = ">=1.50.0"
 
 
 class CuraConan(ConanFile):
@@ -26,7 +26,7 @@ class CuraConan(ConanFile):
 
     # FIXME: Remove specific branch once merged to main
     # Extending the conanfile with the UMBaseConanfile https://github.com/Ultimaker/conan-ultimaker-index/tree/CURA-9177_Fix_CI_CD/recipes/umbase
-    python_requires = "umbase/0.1.5@ultimaker/testing"
+    python_requires = "umbase/[>=0.1.7]@ultimaker/stable"
     python_requires_extend = "umbase.UMBaseConanfile"
 
     options = {
@@ -101,6 +101,10 @@ class CuraConan(ConanFile):
         return "https://digitalfactory-staging.ultimaker.com" if self._staging else "https://digitalfactory.ultimaker.com"
 
     @property
+    def _cura_latest_url(self):
+        return "https://software.ultimaker.com/latest.json"
+
+    @property
     def requirements_txts(self):
         if self.options.devtools:
             return ["requirements.txt", "requirements-ultimaker.txt", "requirements-dev.txt"]
@@ -131,7 +135,7 @@ class CuraConan(ConanFile):
     def _site_packages(self):
         if self.settings.os == "Windows":
             return self._base_dir.joinpath("Lib", "site-packages")
-        py_version = tools.Version(self.deps_cpp_info["cpython"].version)
+        py_version = Version(self.deps_cpp_info["cpython"].version)
         return self._base_dir.joinpath("lib", f"python{py_version.major}.{py_version.minor}", "site-packages")
 
     @property
@@ -145,10 +149,13 @@ class CuraConan(ConanFile):
         with open(Path(__file__).parent.joinpath("CuraVersion.py.jinja"), "r") as f:
             cura_version_py = Template(f.read())
 
-        cura_version = self.version
+        cura_version = self.conf_info.get("user.cura:version", default = self.version, check_type = str)
         if self.options.internal:
-            version = tools.Version(self.version)
-            cura_version = f"{version.major}.{version.minor}.{version.patch}-{version.prerelease.replace('+', '+internal_')}"
+            version = Version(cura_version)
+            if version.pre:
+                cura_version = f"{version.major}.{version.minor}.{version.patch}-{version.pre}+internal_{version.build}"
+            else:
+                cura_version = f"{version.major}.{version.minor}.{version.patch}+internal_{version.build}"
 
         with open(Path(location, "CuraVersion.py"), "w") as f:
             f.write(cura_version_py.render(
@@ -161,7 +168,8 @@ class CuraConan(ConanFile):
                 cura_cloud_api_version = self.options.cloud_api_version,
                 cura_cloud_account_api_root = self._cloud_account_api_root,
                 cura_marketplace_root = self._marketplace_root,
-                cura_digital_factory_url = self._digital_factory_url))
+                cura_digital_factory_url = self._digital_factory_url,
+                cura_latest_url = self._cura_latest_url))
 
     def _generate_pyinstaller_spec(self, location, entrypoint_location, icon_path, entitlements_file):
         pyinstaller_metadata = self._um_data()["pyinstaller"]
@@ -215,7 +223,8 @@ class CuraConan(ConanFile):
         with open(Path(__file__).parent.joinpath("Ultimaker-Cura.spec.jinja"), "r") as f:
             pyinstaller = Template(f.read())
 
-        cura_version = tools.Version(self.version) if self.version else tools.Version("0.0.0")
+        version = self.conf_info.get("user.cura:version", default = self.version, check_type = str)
+        cura_version = Version(version)
 
         with open(Path(location, "Ultimaker-Cura.spec"), "w") as f:
             f.write(pyinstaller.render(
@@ -234,9 +243,13 @@ class CuraConan(ConanFile):
                 strip = False,  # This should be possible on Linux and MacOS but, it can also cause issues on some distributions. Safest is to disable it for now
                 target_arch = "'x86_64'" if self.settings.os == "Macos" else "None",  # FIXME: Make this dependent on the settings.arch_target
                 macos = self.settings.os == "Macos",
-                version = f"'{self.version}'",
+                version = f"'{version}'",
                 short_version = f"'{cura_version.major}.{cura_version.minor}.{cura_version.patch}'",
             ))
+
+    def set_version(self):
+        if self.version is None:
+            self.version = self._umdefault_version()
 
     def configure(self):
         self.options["pyarcus"].shared = True
@@ -245,7 +258,8 @@ class CuraConan(ConanFile):
         self.options["cpython"].shared = True
 
     def validate(self):
-        if self.version and tools.Version(self.version) <= tools.Version("4"):
+        version = self.conf_info.get("user.cura:version", default = self.version, check_type = str)
+        if version and Version(version) <= Version("4"):
             raise ConanInvalidConfiguration("Only versions 5+ are support")
 
     def requirements(self):
@@ -288,7 +302,7 @@ class CuraConan(ConanFile):
         self.copy("CuraEngine.exe", root_package = "curaengine", src = "@bindirs", dst = "", keep_path = False)
         self.copy("CuraEngine", root_package = "curaengine", src = "@bindirs", dst = "", keep_path = False)
 
-        files.rmdir(self, "resources/materials")
+        rmdir(self, os.path.join(self.source_folder, "resources", "materials"))
         self.copy("*.fdm_material", root_package = "fdm_materials", src = "@resdirs", dst = "resources/materials", keep_path = False)
         self.copy("*.sig", root_package = "fdm_materials", src = "@resdirs", dst = "resources/materials", keep_path = False)
 
@@ -372,7 +386,8 @@ class CuraConan(ConanFile):
         self.copy("*.txt", src = self.cpp_info.resdirs[-1], dst = self._base_dir.joinpath("pip_requirements"))
 
         # Generate the GitHub Action version info Environment
-        cura_version = tools.Version(self.version)
+        version = self.conf_info.get("user.cura:version", default = self.version, check_type = str)
+        cura_version = Version(version)
         env_prefix = "Env:" if self.settings.os == "Windows" else ""
         activate_github_actions_version_env = Template(r"""echo "CURA_VERSION_MAJOR={{ cura_version_major }}" >> ${{ env_prefix }}GITHUB_ENV
 echo "CURA_VERSION_MINOR={{ cura_version_minor }}" >> ${{ env_prefix }}GITHUB_ENV
@@ -387,7 +402,7 @@ echo "CURA_VERSION_FULL={{ cura_version_full }}" >> ${{ env_prefix }}GITHUB_ENV
                     env_prefix = env_prefix)
 
         ext = ".sh" if self.settings.os != "Windows" else ".ps1"
-        files.save(self, self._script_dir.joinpath(f"activate_github_actions_version_env{ext}"), activate_github_actions_version_env)
+        save(self, self._script_dir.joinpath(f"activate_github_actions_version_env{ext}"), activate_github_actions_version_env)
 
         self._generate_cura_version(Path(self._site_packages, "cura"))
 

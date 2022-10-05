@@ -1,4 +1,5 @@
 name: Cura Installer
+run-name: Cura binaries ${{ inputs.cura_conan_version }} by @${{ github.actor }}
 
 on:
     workflow_dispatch:

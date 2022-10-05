@@ -115,6 +115,8 @@ from . import CuraActions
 from . import PlatformPhysics
 from . import PrintJobPreviewImageProvider
 from .AutoSave import AutoSave
+from .Machines.Models.CompatibleMachineModel import CompatibleMachineModel
+from .Machines.Models.MachineListModel import MachineListModel
 from .Machines.Models.ActiveIntentQualitiesModel import ActiveIntentQualitiesModel
 from .Machines.Models.IntentSelectionModel import IntentSelectionModel
 from .SingleInstance import SingleInstance
@@ -152,6 +154,7 @@ class CuraApplication(QtApplication):
         super().__init__(name = ApplicationMetadata.CuraAppName,
                          app_display_name = ApplicationMetadata.CuraAppDisplayName,
                          version = ApplicationMetadata.CuraVersion if not ApplicationMetadata.IsAlternateVersion else ApplicationMetadata.CuraBuildType,
+                         latest_url = ApplicationMetadata.CuraLatestURL,
                          api_version = ApplicationMetadata.CuraSDKVersion,
                          build_type = ApplicationMetadata.CuraBuildType,
                          is_debug_mode = ApplicationMetadata.CuraDebugMode,
@@ -1188,6 +1191,8 @@ class CuraApplication(QtApplication):
         qmlRegisterType(InstanceContainer, "Cura", 1, 0, "InstanceContainer")
         qmlRegisterType(ExtrudersModel, "Cura", 1, 0, "ExtrudersModel")
         qmlRegisterType(GlobalStacksModel, "Cura", 1, 0, "GlobalStacksModel")
+        qmlRegisterType(MachineListModel, "Cura", 1, 0, "MachineListModel")
+        qmlRegisterType(CompatibleMachineModel, "Cura", 1, 0, "CompatibleMachineModel")
 
         self.processEvents()
         qmlRegisterType(FavoriteMaterialsModel, "Cura", 1, 0, "FavoriteMaterialsModel")
@@ -1442,7 +1447,7 @@ class CuraApplication(QtApplication):
                 bounding_box = node.getBoundingBox()
                 if bounding_box is None or bounding_box.width < self._volume.getBoundingBox().width or bounding_box.depth < self._volume.getBoundingBox().depth:
                     # Arrange only the unlocked nodes and keep the locked ones in place
-                    if UM.Util.parseBool(node.getSetting(SceneNodeSettings.LockPosition)):
+                    if node.getSetting(SceneNodeSettings.LockPosition):
                         locked_nodes.append(node)
                     else:
                         nodes_to_arrange.append(node)

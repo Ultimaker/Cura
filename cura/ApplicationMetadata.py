@@ -9,11 +9,19 @@ DEFAULT_CURA_DISPLAY_NAME = "Ultimaker Cura"
 DEFAULT_CURA_VERSION = "dev"
 DEFAULT_CURA_BUILD_TYPE = ""
 DEFAULT_CURA_DEBUG_MODE = False
+DEFAULT_CURA_LATEST_URL = "https://software.ultimaker.com/latest.json"
 
 # Each release has a fixed SDK version coupled with it. It doesn't make sense to make it configurable because, for
 # example Cura 3.2 with SDK version 6.1 will not work. So the SDK version is hard-coded here and left out of the
 # CuraVersion.py.in template.
 CuraSDKVersion = "8.1.0"
+
+try:
+    from cura.CuraVersion import CuraLatestURL
+    if CuraLatestURL == "":
+        CuraLatestURL = DEFAULT_CURA_LATEST_URL
+except ImportError:
+    CuraLatestURL = DEFAULT_CURA_LATEST_URL
 
 try:
     from cura.CuraVersion import CuraAppName  # type: ignore
