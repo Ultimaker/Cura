@@ -24,7 +24,6 @@ Item
         id: items
         anchors.top: parent.top;
         anchors.left: parent.left;
-        color: "black";
 
 
         spacing: UM.Theme.getSize("default_margin").height
@@ -40,7 +39,7 @@ Item
                 text: catalog.i18nc("@label", "Dual")
                 toolItem: UM.ColorImage
                 {
-                    source: UM.Theme.getIcon("dualicon")
+                    source: Qt.resolvedUrl("./images/dualicon.svg")
                     color: UM.Theme.getColor("icon")
                 }
                 property bool needBorder: true
@@ -58,7 +57,7 @@ Item
                 text: catalog.i18nc("@label", "Single 1")
                 toolItem: UM.ColorImage
                 {
-                    source: UM.Theme.getIcon("single1")
+                    source: Qt.resolvedUrl("./images/single1.svg")
                     color: UM.Theme.getColor("icon")
                 }
                 property bool needBorder: true
@@ -77,7 +76,7 @@ Item
                 text: catalog.i18nc("@label", "Single 2")
                 toolItem: UM.ColorImage
                 {
-                    source: UM.Theme.getIcon("single2")
+                    source: Qt.resolvedUrl("./images/single2.svg")
                     color: UM.Theme.getColor("icon")
                 }                
                 property bool needBorder: true
@@ -95,7 +94,7 @@ Item
                 text: catalog.i18nc("@label", "Duplication")
                 toolItem: UM.ColorImage
                 {
-                    source: UM.Theme.getIcon("duplicationicon")
+                    source: Qt.resolvedUrl("./images/duplicationicon.svg")
                     color: UM.Theme.getColor("icon")
                 }
                 property bool needBorder: true
@@ -114,7 +113,7 @@ Item
                 text:  catalog.i18nc("@label", "Mirror")
                 toolItem: UM.ColorImage
                 {
-                    source: UM.Theme.getIcon("mirroricon")
+                    source: Qt.resolvedUrl("./images/mirroricon.svg")
                     color: UM.Theme.getColor("icon")
                 }
                 property bool needBorder: true
