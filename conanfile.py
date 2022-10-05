@@ -155,8 +155,9 @@ class CuraConan(ConanFile):
         # the global.conf, profile, package_info (of dependency) or via the cmd line `-c user.cura:version=VERSION`
         cura_version = Version(self.conf.get("user.cura:version", default = self.version, check_type = str))
         pre_tag = f"-{cura_version.pre}" if cura_version.pre else ""
-        build_tag = f"+internal_{cura_version.build}" if self.options.internal and cura_version.build else ""
-        cura_version = f"{cura_version.major}.{cura_version.minor}.{cura_version.patch}{pre_tag}{build_tag}"
+        build_tag = f"+{cura_version.build}" if cura_version.build else ""
+        internal_tag = f"+internal" if self.options.internal else ""
+        cura_version = f"{cura_version.major}.{cura_version.minor}.{cura_version.patch}{pre_tag}{build_tag}{internal_tag}"
 
         with open(Path(location, "CuraVersion.py"), "w") as f:
             f.write(cura_version_py.render(
