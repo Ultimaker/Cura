@@ -151,17 +151,12 @@ class CuraConan(ConanFile):
         with open(Path(__file__).parent.joinpath("CuraVersion.py.jinja"), "r") as f:
             cura_version_py = Template(f.read())
 
-        cura_version = self.conf_info.get("user.cura:version", default = self.version, check_type = str)
-        version = Version(cura_version)
-        prerelease = ""
-        if self.options.extra_build_version != "":
-            prerelease = self.options.extra_build_version
-        if self.options.internal:
-            prerelease = version.prerelease.replace('+', '+internal_')
-        if prerelease != "":
-            cura_version = f"{version.major}.{version.minor}.{version.patch}-{prerelease}"
-        else:
-            cura_version = f"{version.major}.{version.minor}.{version.patch}"
+        # If you want a specific Cura version to show up on the splash screen add the user configuration `user.cura:version=VERSION`
+        # the global.conf, profile, package_info (of dependency) or via the cmd line `-c user.cura:version=VERSION`
+        cura_version = Version(self.conf.get("user.cura:version", default = self.version, check_type = str))
+        pre_tag = f"-{cura_version.pre}" if cura_version.pre else ""
+        build_tag = f"+internal_{cura_version.build}" if self.options.internal and cura_version.build else ""
+        cura_version = f"{cura_version.major}.{cura_version.minor}.{cura_version.patch}{pre_tag}{build_tag}"
 
         with open(Path(location, "CuraVersion.py"), "w") as f:
             f.write(cura_version_py.render(
