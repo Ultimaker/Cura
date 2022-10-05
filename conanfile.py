@@ -218,15 +218,10 @@ class CuraConan(ConanFile):
 
         # Make sure all Conan dependencies which are shared are added to the binary list for pyinstaller
         for _, dependency in self.dependencies.host.items():
-            try:
-                is_shared = dependency.options.shared
-            except ConanException:
-                is_shared = False
-            if is_shared:
-                for bin_paths in dependency.cpp_info.bindirs:
-                    binaries.extend([(f"{p}", ".") for p in Path(bin_paths).glob("**/*")])
-                for lib_paths in dependency.cpp_info.libdirs:
-                    binaries.extend([(f"{p}", ".") for p in Path(lib_paths).glob("**/*")])
+            for bin_paths in dependency.cpp_info.bindirs:
+                binaries.extend([(f"{p}", ".") for p in Path(bin_paths).glob("**/*")])
+            for lib_paths in dependency.cpp_info.libdirs:
+                binaries.extend([(f"{p}", ".") for p in Path(lib_paths).glob("**/*")])
 
         # Copy dynamic libs from lib path
         binaries.extend([(f"{p}", ".") for p in Path(self._base_dir.joinpath("lib")).glob("**/*.dylib*")])
