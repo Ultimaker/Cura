@@ -59,6 +59,7 @@ Rectangle
 
                 Item
                 {
+                    Layout.preferredWidth: extruderInformation.width
                     height: childrenRect.height
 
                     Cura.ExtruderIcon
@@ -84,6 +85,7 @@ Rectangle
                     {
                         id: singleMaterialText
                         anchors.left: extruderCore.right
+                        anchors.right: parent.right
                         anchors.verticalCenter: extruderCore.verticalCenter
                         anchors.leftMargin: UM.Theme.getSize("default_margin").width
                         text: modelData.materials.length == 1 ? `${modelData.materials[0].brand} ${modelData.materials[0].name}` : ""
