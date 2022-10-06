@@ -1,0 +1,21 @@
+{
+    "version": 2,
+    "name": "Extruder 1",
+    "inherits": "elegoo_extruder_base",
+    "metadata": {
+        "machine": "elegoo_base",
+        "position": "0"
+    },
+
+    "overrides": {
+        "extruder_nr": {"default_value": 0,"maximum_value": "1"},
+        "material_diameter": { "default_value": 1.75 },
+        "machine_nozzle_size": { "default_value": 0.4 },
+        "machine_extruder_start_code": {
+            "value": "machine_extruder_start_code_1"
+            },
+        "machine_extruder_end_code": {
+            "value": "machine_extruder_end_code_1 if resolveOrValue('prime_tower_enable') else machine_extruder_end_code_2"
+            }
+    }
+}
