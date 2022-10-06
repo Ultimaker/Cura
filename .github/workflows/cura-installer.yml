@@ -29,7 +29,7 @@ on:
             installer:
                 description: 'Create the installer'
                 required: true
-                default: false
+                default: true
                 type: boolean
 
     # Run the nightly at 3:25 UTC on working days
