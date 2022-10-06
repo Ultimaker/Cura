@@ -1,0 +1,13 @@
+{
+    "version": 2,
+    "name": "Epsilon W27",
+    "inherits": "bcn3dw50",
+    "metadata": {
+        "weight": "2"
+    },
+    "overrides": {
+        "machine_name": { "default_value": "Epsilon W27" },
+        "machine_height": { "default_value":  220 },
+        "gantry_height": { "value": 12 }
+    }
+}

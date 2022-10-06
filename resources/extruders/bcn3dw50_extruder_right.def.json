@@ -1,0 +1,29 @@
+{
+    "id": "bcn3dw50_extruder_right",
+    "version": 2,
+    "name": "Extruder Right",
+    "inherits": "fdmextruder",
+    "metadata": {
+        "machine": "bcn3dw50",
+        "position": "1",
+        "quality_definition": "bcn3dw50_extruder_right"
+    },
+
+    "overrides": {
+        "extruder_nr": {
+            "default_value": 1,
+            "maximum_value": "1"
+        },
+        "machine_nozzle_offset_x": { "default_value": 0.0 },
+        "machine_nozzle_offset_y": { "default_value": 0.0 },
+        "machine_extruder_start_code": { "default_value": "G91\nG1 Z{retraction_hop_height_after_extruder_switch} F12000\nG90\nG92 E-{switch_extruder_retraction_amount}\nG1 E0 F300 ;Restore E position\nG1 E{purge_distance} F100 ;default purge\nG92 E0\nG1 E-{switch_extruder_retraction_amount} F500\nG4 P2000\nG92 E0" },
+        "machine_extruder_start_pos_abs": { "default_value": false },
+        "machine_extruder_start_pos_x": { "default_value": 0.0 },
+        "machine_extruder_start_pos_y": { "default_value": 0.0 },
+        "machine_extruder_end_code": { "default_value": "" },
+        "machine_extruder_end_pos_abs": { "default_value": false },
+        "machine_extruder_end_pos_x": { "default_value": 0.0 },
+        "machine_extruder_end_pos_y": { "default_value": 0.0 },
+        "extruder_prime_pos_x": { "value": "machine_width" }
+    }
+}

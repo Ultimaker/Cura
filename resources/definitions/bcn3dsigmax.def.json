@@ -1,0 +1,20 @@
+{
+    "version": 2,
+    "name": "Sigmax",
+    "inherits": "bcn3dsigma",
+    "metadata": {
+        "weight": "6",
+        "platform": "bcn3dsigmax_bed.stl",
+        "quality_definition": "bcn3dsigma"
+    },
+    "overrides": {
+        "machine_name": { "default_value": "Sigmax" },
+        "machine_prefix": { "default_value": "Sx" },
+        "machine_acceleration": { "default_value": 1750 },
+        "machine_max_jerk_xy": { "value": 12.5 },
+        "machine_width": { "default_value": 420 },
+        "machine_max_feedrate_e": { "default_value": 35 },
+        "avoid_grinding_filament": { "value": false },
+        "retraction_count_max": { "value": 100 }
+    }
+}

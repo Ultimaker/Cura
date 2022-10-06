@@ -1,0 +1,412 @@
+{
+  "name": "BCN3D Printer Base Description",
+  "version": 2,
+  "inherits": "fdmprinter",
+  "metadata": {
+    "visible": false,
+    "author": "BCN3D Technologies",
+    "manufacturer": "BCN3D Technologies",
+    "preferred_material": "generic_pla",
+    "preferred_variant_name": "0.4mm",
+    "preferred_quality_type": "normal",
+    "variants_name": "Hotend",
+    "has_machine_quality": true,
+    "has_materials": true,
+    "has_machine_materials": true,
+    "has_variant_materials": true,
+    "has_variants": true
+  },
+  "overrides": {
+    "meshfix_maximum_resolution": { "value": "(speed_wall_0 + speed_wall_x) / 60" },
+    "meshfix_maximum_deviation": { "value": "layer_height / 4" },
+    "retraction_hop_after_extruder_switch_height": {"value": 5}
+  },
+  "settings": {
+    "machine_settings": {
+      "children": {
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_extruder_count": { "default_value": 2 },
+        "machine_head_with_fans_polygon": { "default_value": [[-22, 60], [-22, -25], [27, 60], [27, -25]]}
+      }
+    },
+    "material": {
+      "children": {
+        "retraction_amount_multiplier": {
+          "label": "Retraction Distance Multiplier",
+          "description": "Multiplier for the length of material retracted during a retraction move. This setting compensates filament compressions in the bowden tube for different bowden types/lengths.",
+          "type": "float",
+          "default_value": 1,
+          "enabled": false,
+          "settable_per_mesh": false,
+          "settable_per_extruder": true,
+          "comments": "BCN3D setting"
+        },
+        "avoid_grinding_filament": {
+          "label": "Prevent Filament Grinding",
+          "description": "When retracting repeatedly, this option moves the hotend to the purge tray and primes the needed amount of filament to allow working on a new piece of it. Disabling this feature can flatten the filament and cause grinding issues.",
+          "type": "bool",
+          "default_value": false,
+          "enabled": false,
+          "settable_per_extruder": true,
+          "comments": "BCN3D setting"
+        },
+        "retraction_count_max_avoid_grinding_filament": {
+          "label": "Maximum Retraction Count",
+          "description": "Number of retractions occurring within the retraction distance. When the number of retractions is reached, active extruder will park, prime and come back.",
+          "type": "int",
+          "default_value": 1000,
+          "minimum_value": "0",
+          "maximum_value_warning": "500",
+          "enabled": "avoid_grinding_filament",
+          "value": "retraction_count_max",
+          "settable_per_extruder": true,
+          "comments": "BCN3D setting"
+        }
+      }
+    },
+    "speed": {
+      "children": {
+      }
+    },
+    "travel": {
+      "children": {
+        "retraction_hop_after_prime_tower": {
+          "label": "Z Hop After Prime Tower",
+          "description": "After priming in the tower, the build plate is lowered to create clearance between the nozzle and the print. This prevents the nozzle from leaving oozed material on the outside of a print.",
+          "type": "bool",
+          "default_value": true,
+          "value": "retraction_hop_enabled",
+          "enabled": "retraction_hop_enabled and machine_extruder_count > 1 and print_mode == 'dual' or print_mode == 'singleT0' or print_mode == 'singleT1' and prime_tower_enable",
+          "settable_per_mesh": false,
+          "settable_per_extruder": true,
+          "comments": "BCN3D Setting"
+        },
+        "hop_at_layer_change": {
+          "label": "Z Hop At Layer Change",
+          "description": "Perform a Z Hop when the nozzle is moving to the next layer.",
+          "type": "bool",
+          "default_value": false,
+          "value": "not magic_spiralize",
+          "settable_per_mesh": false,
+          "settable_per_extruder": true,
+          "comments": "BCN3D setting"
+        },
+        "retraction_hop_height_at_layer_change": {
+          "label": "Z Hop Height At Layer Change",
+          "description": "Distance to lift Z when the nozzle is moving to the next layer.",
+          "unit": "mm",
+          "type": "float",
+          "default_value": 2,
+          "minimum_value": "0",
+          "minimum_value_warning": "0",
+          "maximum_value_warning": "5",
+          "enabled": "hop_at_layer_change",
+          "settable_per_mesh": false,
+          "settable_per_extruder": true,
+          "comments": "BCN3D setting"
+        },
+        "retraction_hop_after_extruder_switch": {
+          "label": "Z Hop After Extruder Switch",
+          "description": "After the machine switched from one extruder to the other, the build plate is lowered to create clearance between the nozzle and the print. This prevents the nozzle from leaving oozed material on the outside of a print.",
+          "type": "bool",
+          "default_value": true,
+          "enabled": "retraction_hop_enabled and machine_extruder_count > 1 and print_mode == 'dual' or print_mode == 'singleT0' or print_mode == 'singleT1'",
+          "settable_per_mesh": false,
+          "settable_per_extruder": true
+        },
+        "retraction_hop_height_after_extruder_switch": {
+          "label": "Z Hop Height After Extruder Switch",
+          "description": "Distance to lift Z when changing toolheads.",
+          "unit": "mm",
+          "type": "float",
+          "default_value": 5,
+          "minimum_value": "0",
+          "minimum_value_warning": "0",
+          "maximum_value_warning": "10",
+          "enabled": "retraction_hop_after_extruder_switch",
+          "settable_per_extruder": false,
+          "comments": "BCN3D setting"
+        }
+      }
+    },
+    "cooling": {
+      "children": {
+        "clone_cool_fan": {
+          "label": "Clone Print Cooling",
+          "description": "Enables cooling fan for the idle extruder. This setting allows better temperature control for dual extruder prints.",
+          "type": "bool",
+          "default_value": false,
+          "enabled": false,
+          "settable_per_extruder": false,
+          "comments": "BCN3D setting"
+        },
+        "clone_cool_fan_gcode": {
+          "label": "Clone Print GCode",
+          "description": "GCode to enable cooling fan for the idle extruder.",
+          "type": "enum",
+          "options": {
+            "": "No",
+            "M108 P1      ;enable layer fan for the idle extruder": "Yes"
+          },
+          "default_value": "",
+          "value": "'M108 P1      ;enable layer fan for the idle extruder' if clone_cool_fan else ''",
+          "enabled": false,
+          "settable_per_extruder": false,
+          "comments": "BCN3D setting"
+        }
+      }
+    },
+    "platform_adhesion": {
+      "children": {
+        "start_purge_distance": {
+          "label": "Start Purge Distance",
+          "description": "Filament distance purged before extruder starts printing.",
+          "unit": "mm",
+          "type": "float",
+          "default_value": 10,
+          "minimum_value": "0",
+          "settable_per_extruder": true,
+          "comments": "BCN3D setting"
+        },
+        "start_purge_speed": {
+          "label": "Start Purge Speed",
+          "description": "The speed at which the filament is pushed by the extruder when purging in the purge tray.",
+          "unit": "mm/s",
+          "type": "float",
+          "default_value": 30,
+          "minimum_value": "0",
+          "maximum_value_warning": "45",
+          "settable_per_mesh": false,
+          "settable_per_extruder": true,
+          "comments": "BCN3D setting"
+        }
+      }
+    },
+    "dual": {
+      "children": {
+        "print_mode": {
+          "label": "Print Mode",
+          "description": "Choose the print mode",
+          "type": "enum",
+          "options": {
+            "dual": "Dual",
+            "singleT0": "Single 1",
+            "singleT1": "Single 2",
+            "duplication": "Duplication",
+            "mirror": "Mirror"
+          },
+          "default_value": "dual",
+          "enabled": true,
+          "settable_per_extruder": false,
+          "comments": "BCN3D setting"
+        },
+          "prime_tower_enable": {
+            "resolve":  "False if 'BVOH' in extruderValues('material_type') else any(extruderValues('prime_tower_enable'))"
+          },
+        "fix_tool_change_travel": {
+          "label": "Fix Tool Change Travel",
+          "description": "Allows the new tool to go straight to the position where it has to print, instead of going to the last position before tool change and then travel to the position where it has to print.",
+          "type": "bool",
+          "default_value": false,
+          "enabled": false,
+          "settable_per_mesh": false,
+          "settable_per_extruder": false,
+          "comments": "BCN3D setting"
+        },
+        "purge_in_bucket": {
+          "label": "Purge At Tool Change",
+          "description": "Add an extra prime amount in the bucket to compensate oozed material while the Extruder was idle. Disable Prime tower to save time and filament.",
+          "type": "bool",
+          "default_value": false,
+          "enabled": false,
+          "settable_per_extruder": true,
+          "comments": "BCN3D setting"
+        },
+        "purge_distance": {
+          "label": "Purge Distance",
+          "description": "Filament distance purged at extruder change.",
+          "unit": "mm",
+          "type": "float",
+          "default_value": 2.5,
+          "minimum_value": "0",
+          "maximum_value_warning": "50",
+          "enabled": "purge_in_bucket and not smart_purge and print_mode == 'dual' or print_mode == 'singleT0' or print_mode == 'singleT1'",
+          "settable_per_extruder": true,
+          "comments": "BCN3D setting"
+        },
+        "purge_in_bucket_enable_gcode": {
+          "label": "Purge At Tool Change Enable GCode",
+          "description": "GCode to enable Purge At Tool Change commands.",
+          "type": "enum",
+          "options": {
+            ";": "No",
+            "": "Yes"
+          },
+          "default_value": "",
+          "value": "'' if purge_in_bucket and not smart_purge else ';'",
+          "enabled": false,
+          "settable_per_extruder": true,
+          "comments": "BCN3D setting"
+        },
+        "smart_purge": {
+          "label": "Use Adaptive Purge Distance",
+          "description": "Make the purged distance variable according to idle time.",
+          "type": "bool",
+          "default_value": false,
+          "enabled": "purge_in_bucket and print_mode == 'dual' or print_mode == 'singleT0' or print_mode == 'singleT1'",
+          "settable_per_extruder": true,
+          "comments": "BCN3D setting",
+          "children": {
+            "smart_purge_minimum_purge_distance": {
+              "label": "Minimum Purge Distance",
+              "description": "Minimum distance to purge when changing toolheads.",
+              "unit": "mm",
+              "type": "float",
+              "default_value": 0,
+              "minimum_value": "0",
+              "maximum_value": "smart_purge_maximum_purge_distance",
+              "minimum_value_warning": "0",
+              "maximum_value_warning": "50",
+              "enabled": "smart_purge and purge_in_bucket and print_mode == 'dual' or print_mode == 'singleT0' or print_mode == 'singleT1'",
+              "settable_per_extruder": true,
+              "comments": "BCN3D setting"
+            },
+            "smart_purge_maximum_purge_distance": {
+              "label": "Maximum Purge Distance",
+              "description": "Maximum distance to purge when changing toolheads.",
+              "unit": "mm",
+              "type": "float",
+              "default_value": 0,
+              "minimum_value": "smart_purge_minimum_purge_distance",
+              "minimum_value_warning": "0",
+              "maximum_value_warning": "50",
+              "enabled": "smart_purge and purge_in_bucket and print_mode == 'dual' or print_mode == 'singleT0' or print_mode == 'singleT1'",
+              "settable_per_extruder": true,
+              "comments": "BCN3D setting"
+            },
+            "smart_purge_slope": {
+              "label": "Increase Distance by",
+              "description": "Distance to purge per minute idle. Purged distance will increase this amount each minute the toolhead remains idle. The real purged distance will never be shorter than the Minimum Purge Distance, or greater than the Maximum Purge Distance.",
+              "unit": "mm/min",
+              "type": "float",
+              "default_value": 0,
+              "minimum_value": "0",
+              "minimum_value_warning": "0",
+              "maximum_value_warning": "50",
+              "enabled": "smart_purge and purge_in_bucket and print_mode == 'dual' or print_mode == 'singleT0' or print_mode == 'singleT1'",
+              "settable_per_extruder": true,
+              "comments": "BCN3D setting"
+            },
+            "smart_purge_slope_gcode": {
+              "label": "Distance Gradient",
+              "description": "GCode to send proper value to the machine.",
+              "unit": "mm/s",
+              "type": "float",
+              "default_value": 0,
+              "value": "smart_purge_slope / float(60)",
+              "enabled": false,
+              "settable_per_extruder": true,
+              "comments": "BCN3D setting"
+            }
+          }
+        },
+        "smart_purge_enable_gcode": {
+          "label": "Smart Purge Enable GCode",
+          "description": "GCode to enable smart purge commands.",
+          "type": "enum",
+          "options": {
+            ";": "No",
+            "": "Yes"
+          },
+          "default_value": "",
+          "value": "'' if smart_purge and purge_in_bucket else ';'",
+          "enabled": false,
+          "settable_per_extruder": true,
+          "comments": "BCN3D setting"
+        },
+        "prime_tower_closest_to": {
+          "label": "Prime Tower Preferred Position",
+          "description": "Select the preferred area of the buildplate to automatically place the prime tower.",
+          "type": "enum",
+          "options": {
+            "top-left": "Top Left",
+            "top": "Top",
+            "top-right": "Top Right",
+            "right": "Right",
+            "bottom-right": "Bottom Right",
+            "bottom": "Bottom",
+            "bottom-left": "Bottom Left",
+            "left": "Left"
+          },
+          "default_value": "top-right",
+          "enabled": "resolveOrValue('prime_tower_enable')",
+          "settable_per_mesh": false,
+          "settable_per_extruder": false,
+          "comments": "BCN3D setting"
+        }
+      }
+    },
+    "blackmagic": {
+      "children": {
+        "material_type": {
+          "label": "Material type",
+          "description": "Material typ",
+          "type": "str",
+          "default_value": "",
+          "enabled": false,
+          "settable_per_extruder": true,
+          "comments": "BCN3D setting"
+        },
+        "used_material": {
+          "label": "Used materials",
+          "description": "Comment with the materials used.",
+          "type": "str",
+          "default_value": "",
+          "value": "'T' + str(extruderValue(extruder_nr, 'extruder_nr')) + ' ' + str(extruderValue(extruder_nr, 'material_type')) if adhesion_extruder_nr == extruder_nr or extruders_enabled_count == 2 else 'T' + str(extruderValue(extruder_nr, 'extruder_nr')) + ' ' + str(extruderValue(0, 'material_type')) if print_mode == \"mirror\" or print_mode == \"duplication\" else ''",
+          "enabled": false,
+          "settable_per_extruder": true,
+          "comments": "BCN3D setting"
+        },
+        "machine_nozzle_type": {
+          "label": "Nozzle type",
+          "description": "Nozzle type.",
+          "type": "str",
+          "default_value": "",
+          "enabled": false,
+          "settable_per_extruder": true,
+          "comments": "BCN3D setting"
+        },
+        "used_nozzle_size": {
+          "label": "Used nozzle size",
+          "description": "Comment with the nozzle size used.",
+          "type": "str",
+          "default_value": "",
+          "value": "'T' + str(extruderValue(extruder_nr, 'extruder_nr')) + ' ' + str(extruderValue(extruder_nr, 'machine_nozzle_size')) + str(extruderValue(extruder_nr, 'machine_nozzle_type')) if adhesion_extruder_nr == extruder_nr or extruders_enabled_count == 2 else 'T' + str(extruderValue(extruder_nr, 'extruder_nr')) + ' ' + str(extruderValue(0, 'machine_nozzle_size')) + str(extruderValue(0, 'machine_nozzle_type')) if print_mode == \"mirror\" or print_mode == \"duplication\" else ''",
+          "enabled": false,
+          "settable_per_extruder": true,
+          "comments": "BCN3D setting"
+        },
+        "print_mode_gcode": {
+          "label": "Print Mode GCode",
+          "description": "GCode to enable selected print mode.",
+          "type": "str",
+          "default_value": "",
+          "value": "'' if print_mode == 'dual' or print_mode == 'singleT0' or print_mode == 'singleT1' else 'M605 S6 \\t\\t;enable mirror mode' if print_mode == 'mirror' else 'M605 S5 \\t\\t;enable duplication mode'",
+          "enabled": false,
+          "settable_per_extruder": false,
+          "comments": "BCN3D setting"
+        },
+        "purge_in_bucket_before_start_gcode": {
+          "label": "Purge in bucket before start GCode",
+          "description": "GCode to purge in bucket each extruder.",
+          "type": "str",
+          "default_value": "",
+          "value": "'T' + str(extruderValue(extruder_nr, 'extruder_nr')) + '\\n' + 'G92 E0 \\t\\t;set zero the extruded length \\nG1 E' + str(extruderValue(extruder_nr, 'start_purge_distance')) + ' F' + str(extruderValue(extruder_nr, 'start_purge_speed')) + '\\nG92 E0 \\nG4 S2 \\t\\t;stabilize hotend \\nG1 E-0.5 F1000 \\nG92 E0' if adhesion_extruder_nr == extruder_nr or print_mode == \"mirror\" or print_mode == \"duplication\" else 'T' + str(extruderValue(extruder_nr, 'extruder_nr')) + '\\n' + 'G92 E0 \\t\\t;set zero the extruded length \\nG1 E' + str(extruderValue(extruder_nr, 'start_purge_distance')) + ' F' + str(extruderValue(extruder_nr, 'start_purge_speed')) + '\\nG92 E0 \\nG1 E-' + str(extruderValue(extruder_nr, 'switch_extruder_retraction_amount')) + ' F1000 \\nG92 E0' if adhesion_extruder_nr != extruder_nr and extruders_enabled_count == 2 else ''",
+          "enabled": false,
+          "settable_per_extruder": true,
+          "comments": "BCN3D setting"
+        }
+      }
+    }
+  }
+}
