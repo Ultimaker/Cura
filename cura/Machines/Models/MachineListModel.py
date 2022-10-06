@@ -86,6 +86,7 @@ class MachineListModel(ListModel):
         machines_manager = CuraApplication.getInstance().getMachineManager()
 
         other_machine_stacks = CuraContainerRegistry.getInstance().findContainerStacks(type="machine")
+        other_machine_stacks.sort(key = lambda machine: machine.getName().upper())
 
         abstract_machine_stacks = CuraContainerRegistry.getInstance().findContainerStacks(is_abstract_machine = "True")
         abstract_machine_stacks.sort(key = lambda machine: machine.getName(), reverse = True)

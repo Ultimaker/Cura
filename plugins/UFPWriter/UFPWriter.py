@@ -213,6 +213,7 @@ class UFPWriter(MeshWriter):
     def _getSliceMetadata(self) -> Dict[str, Dict[str, Dict[str, str]]]:
         """Get all changed settings and all settings. For each extruder and the global stack"""
         print_information = CuraApplication.getInstance().getPrintInformation()
+        machine_manager = CuraApplication.getInstance().getMachineManager()
         settings = {
             "material": {
                 "length": print_information.materialLengths,
@@ -222,7 +223,9 @@ class UFPWriter(MeshWriter):
             "global": {
                 "changes": {},
                 "all_settings": {},
-            }
+            },
+            "intent": machine_manager.activeIntentCategory,
+            "quality": machine_manager.activeQualityOrQualityChangesName,
         }
 
         global_stack = cast(GlobalStack, Application.getInstance().getGlobalContainerStack())

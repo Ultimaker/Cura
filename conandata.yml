@@ -220,7 +220,6 @@
             Windows: "./icons/Cura.ico"
             Macos: "./icons/cura.icns"
             Linux: "./icons/cura-128.png"
-
 "5.2.0-beta.1":
     requirements:
         - "pyarcus/5.2.0-beta.1"
