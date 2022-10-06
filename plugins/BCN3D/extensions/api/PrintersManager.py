@@ -19,7 +19,6 @@ class PrintersManager(QObject):
         self._data_api_service = DataService.getInstance()
         self._application = CuraApplication.getInstance()
         AuthService.getInstance().authStateChanged.connect(self._authStateChanged)
-        Logger.info(f"PrintersManager created")
 
 
 
@@ -82,15 +81,18 @@ class PrintersManager(QObject):
         # setPrintModeToLoad does not exists in CuraApplication, we need either to modifify it as a plugin to override functions and params, or save the parameter in our plugins"""
         #self._application.setPrintModeToLoad(print_mode)
         self._global_container_stack = self._application.getGlobalContainerStack()
-        left_extruder = self._global_container_stack.extruderList[0]
-        right_extruder = self._global_container_stack.extruderList[1]
+        #left_extruder = self._global_container_stack.extruderList[0]
+        #right_extruder = self._global_container_stack.extruderList[1]
         try:
-            left_extruder.enabledChanged.disconnect(self._onEnabledChangedLeft)
-            right_extruder.enabledChanged.disconnect(self._onEnabledChangedRight)
+            '''Exception on self._onEnabledChangedLeft/_onEnabledChangedRight Due it does not exits
+                in class, perhaps this should be in other class but why do we disable it?
+            '''
+            #left_extruder.enabledChanged.disconnect(self._onEnabledChangedLeft)
+            #right_extruder.enabledChanged.disconnect(self._onEnabledChangedRight)
             self._application.getMachineManager().setExtruderEnabled(0, False)
             self._application.getMachineManager().setExtruderEnabled(1, False)
-        except Exception:
-            # Just in case the connection didn't exists
+        except Exception as e:
+            Logger.error ("error setting extruders: ".format(e))
             pass
         if print_mode == "singleT0":
             self._global_container_stack.setProperty("print_mode", "value", "singleT0")
