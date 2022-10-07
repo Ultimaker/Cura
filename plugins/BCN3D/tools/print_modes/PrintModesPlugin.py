@@ -4,8 +4,10 @@ from UM.Scene.Selection import Selection
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Application import Application
 from UM.Logger import Logger
-
+from ...extensions.idex.IdexPlugin import IdexPlugin
 from cura.Settings.ExtruderManager import ExtruderManager
+from .PrintModesLitsener import  PrintModesLitsener
+from PyQt6.QtQml import qmlRegisterSingletonType
 
 from UM.i18n import i18nCatalog
 i18n_catalog = i18nCatalog("uranium")
@@ -24,16 +26,23 @@ class PrintModesPlugin(Tool):
         self._single_model_selected = False
         self.visibility_handler = None
         Logger.info(f"PrintModesPlugin init")
+        self._print_mode = PrintModesLitsener.getInstance()
         Selection.selectionChanged.connect(self.propertyChanged)
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerChanged)
         self._onGlobalContainerChanged()
         Selection.selectionChanged.connect(self._updateEnabled)
+        qmlRegisterSingletonType(PrintModesLitsener, "Cura", 1, 1, self.getModeManager, "PrintModeService")
+        Logger.info(f"PrintModesLitsener registered")
+
 
     def event(self, event):
         super().event(event)
         if event.type == Event.MousePressEvent and self._controller.getToolsEnabled():
             self.operationStopped.emit(self)
         return False
+
+    def getModeManager(self, *args):
+        return self._print_mode
 
     def _onGlobalContainerChanged(self):
         global_container_stack = Application.getInstance().getGlobalContainerStack()

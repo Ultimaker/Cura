@@ -14,7 +14,7 @@ class ApiPlugin(Extension):
         self._printers_manager = PrintersManager.getInstance()
         
         #qmlRegisterSingletonType(AuthService, "Cura", 1, 1, self.getAuthenticationService, "AuthenticationService")
-        qmlRegisterSingletonType(PrintersManager, "Cura", 1, 1, self.getPrintersManager, "PrintersManagerService")
+        #qmlRegisterSingletonType(PrintersManager, "Cura", 1, 1, self.getPrintersManager, "PrintersManagerService")
 
 
     def getAuthenticationService(self, *args):

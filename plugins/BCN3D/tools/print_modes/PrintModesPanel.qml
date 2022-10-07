@@ -44,9 +44,9 @@ Item
                 }
                 property bool needBorder: true
                 checkable: true
-                checked: Cura.PrintersManagerService.getPrintMode() == "dual"
+                checked: Cura.PrintModeService.getPrintMode() == "dual"
                 onClicked:{
-                 Cura.PrintersManagerService.setPrintMode("dual")
+                 Cura.PrintModeService.setPrintMode("dual")
                  CuraActions.setExtruderForSelection(extrudersModel.getItem(0).id)
                 }
                 z: 5
@@ -62,9 +62,9 @@ Item
                 }
                 property bool needBorder: true
                 checkable: true
-                checked: Cura.PrintersManagerService.getPrintMode() == "singleT0"
+                checked: Cura.PrintModeService.getPrintMode() == "singleT0"
                 onClicked: {
-                 Cura.PrintersManagerService.setPrintMode("singleT0");
+                 Cura.PrintModeService.setPrintMode("singleT0");
                  CuraActions.setExtruderForSelection(extrudersModel.getItem(0).id)
                     }
                 z: 4
@@ -81,9 +81,9 @@ Item
                 }                
                 property bool needBorder: true
                 checkable: true
-                checked: Cura.PrintersManagerService.getPrintMode() == "singleT1"
+                checked: Cura.PrintModeService.getPrintMode() == "singleT1"
                 onClicked:{
-                 Cura.PrintersManagerService.setPrintMode("singleT1")
+                 Cura.PrintModeService.setPrintMode("singleT1")
                  CuraActions.setExtruderForSelection(extrudersModel.getItem(1).id)
                 }
                 z: 3
@@ -99,9 +99,9 @@ Item
                 }
                 property bool needBorder: true
                 checkable: true
-                checked: Cura.PrintersManagerService.getPrintMode() == "duplication"
+                checked: Cura.PrintModeService.getPrintMode() == "duplication"
                 onClicked:{
-                 Cura.PrintersManagerService.setPrintMode("duplication")
+                 Cura.PrintModeService.setPrintMode("duplication")
                  CuraActions.setExtruderForSelection(extrudersModel.getItem(0).id)
 
                 }
@@ -118,9 +118,9 @@ Item
                 }
                 property bool needBorder: true
                 checkable: true
-                checked: Cura.PrintersManagerService.getPrintMode() == "mirror"
+                checked: Cura.PrintModeService.getPrintMode() == "mirror"
                 onClicked:{
-                 Cura.PrintersManagerService.setPrintMode("mirror")
+                 Cura.PrintModeService.setPrintMode("mirror")
                  CuraActions.setExtruderForSelection(extrudersModel.getItem(0).id)
 
                 }
