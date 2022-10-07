@@ -5,7 +5,8 @@
     "metadata": {
         "visible": false,
         "author": "Dagoma",
-        "manufacturer": "Dagoma"
+        "manufacturer": "Dagoma",
+        "first_start_actions": ["MachineSettingsAction"]
     },
     "overrides": {
         "machine_width": {
