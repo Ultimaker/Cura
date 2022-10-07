@@ -2,10 +2,11 @@ from typing import List, Optional, Any, Dict
 
 from UM.Extension import Extension
 from cura import CuraActions
-
+from cura import CuraApplication
 from cura.CuraApplication import CuraApplication
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
+from.PrintModeManager import PrintModeManager
 
 i18n_catalog = i18nCatalog("BCN3DIdex")
 
@@ -25,6 +26,9 @@ class IdexPlugin(Extension):
         self._expanded_categories = []  # type: List[str]  # temporary list used while creating nested settings
 
         self._onGlobalContainerStackChanged()
+
+        #application = CuraApplication.CuraApplication.getInstance()
+
 
     def _onGlobalContainerStackChanged(self):
         Logger.info(f"IDEX: _onGlobalContainerStackChanged")
@@ -68,10 +72,17 @@ class IdexPlugin(Extension):
                 self._application.getMachineManager().setExtruderEnabled(0, True)
                 self._application.getMachineManager().setExtruderEnabled(1, False)
 
+                ##try to do ghost models 
+                duplicated_nodes = PrintModeManager.getInstance().getDuplicatedNodes()
+                for node_dup in duplicated_nodes:
+                    node_dup._outside_buildarea = node_dup.node._outside_buildarea
+
+
             left_extruder.enabledChanged.connect(self._onEnabledChangedLeft)
             right_extruder.enabledChanged.connect(self._onEnabledChangedRight)
 
     def _onEnabledChangedLeft(self):
+        Logger.info(f"IdexPlugin _onEnabledChangedLeft")
         print_mode = self._global_container_stack.getProperty("print_mode", "value")
         if print_mode == "singleT0":
             left_extruder = self._global_container_stack.extruderList[0]
@@ -90,6 +101,7 @@ class IdexPlugin(Extension):
                 self._application.getMachineManager().setExtruderEnabled(0, True)
 
     def _onEnabledChangedRight(self):
+        Logger.info(f"IdexPlugin _onEnabledChangedRight")
         print_mode = self._global_container_stack.getProperty("print_mode", "value")
 
         if print_mode == "singleT0":

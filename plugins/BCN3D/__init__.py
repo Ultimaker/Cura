@@ -9,6 +9,7 @@ i18n_catalog = i18nCatalog("uranium")
 
 """ INFO: We can't load multiple metaData for the same plugin type (Ex: multiple tool)"""
 def getMetaData():
+    Logger.info(f"BCN3D plugin get metadata")
     return {
         "tool": [
             {

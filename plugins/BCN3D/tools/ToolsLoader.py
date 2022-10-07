@@ -8,5 +8,4 @@ class ToolsLoader(Tool):
 
     def __init__(self):
         super().__init__()
-        Logger.info(f"init tools loader")
         self.print_modes = PrintModesPlugin.PrintModesPlugin()
