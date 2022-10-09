@@ -12,6 +12,7 @@ from PyQt6.QtCore import QBuffer
 
 from UM.Application import Application
 from UM.Logger import Logger
+from UM.Settings.SettingFunction import SettingFunction
 from UM.Mesh.MeshWriter import MeshWriter  # The writer we need to implement.
 from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
 from UM.PluginRegistry import PluginRegistry  # To get the g-code writer.
@@ -233,11 +234,17 @@ class UFPWriter(MeshWriter):
         # Add global user or quality changes
         global_flattened_changes = InstanceContainer.createMergedInstanceContainer(global_stack.userChanges, global_stack.qualityChanges)
         for setting in global_flattened_changes.getAllKeys():
-            settings["global"]["changes"][setting] = str(global_flattened_changes.getProperty(setting, "value"))
+            value = global_flattened_changes.getProperty(setting, "value")
+            if isinstance(value, SettingFunction):
+                value = value(global_flattened_changes)
+            settings["global"]["changes"][setting] = value
 
         # Get global all settings values without user or quality changes
         for setting in global_stack.getAllKeys():
-            settings["global"]["all_settings"][setting] = str(global_stack.getProperty(setting, "value"))
+            value = global_stack.getProperty(setting, "value")
+            if isinstance(value, SettingFunction):
+                value = value(global_stack)
+            settings["global"]["all_settings"][setting] = value
 
         for i, extruder in enumerate(global_stack.extruderList):
             # Add extruder fields to settings dictionary
@@ -249,10 +256,16 @@ class UFPWriter(MeshWriter):
             # Add extruder user or quality changes
             extruder_flattened_changes = InstanceContainer.createMergedInstanceContainer(extruder.userChanges, extruder.qualityChanges)
             for setting in extruder_flattened_changes.getAllKeys():
-                settings[f"extruder_{i}"]["changes"][setting] = str(extruder_flattened_changes.getProperty(setting, "value"))
+                value = extruder_flattened_changes.getProperty(setting, "value")
+                if isinstance(value, SettingFunction):
+                    value = value(extruder_flattened_changes)
+                settings[f"extruder_{i}"]["changes"][setting] = value
 
             # Get extruder all settings values without user or quality changes
             for setting in extruder.getAllKeys():
-                settings[f"extruder_{i}"]["all_settings"][setting] = str(extruder.getProperty(setting, "value"))
+                value = extruder.getProperty(setting, "value")
+                if isinstance(value, SettingFunction):
+                    value = value(extruder)
+                settings[f"extruder_{i}"]["all_settings"][setting] = value
 
         return settings
