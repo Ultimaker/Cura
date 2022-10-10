@@ -292,9 +292,6 @@
         },
         "support_z_distance": {
             "value": "0"
-        },
-        "top_bottom_pattern": {
-            "value": "'zigzag'"
         }
     }
 }

@@ -169,6 +169,14 @@ jobs:
                             # FIXME: for external PR's
                             actual_version = f"5.3.0-alpha+{buildmetadata}pr_{issue_number}"
                     
+                    if is_tag:
+                        print("THE TAG IS: ", ${{ github.ref_name }})
+                    if is_tag and ${{ github.ref_name }} == "5.2.0-beta:
+                        actual_version = "5.2.0-beta"
+                        is_release_branch = True
+                        user = "_"
+                        channel = "_"
+
                     # %% print to output
                     cmd_name = ["echo", f"::set-output name=name::{project_name}"]
                     subprocess.call(cmd_name)
@@ -190,7 +198,7 @@ jobs:
                     print(f"version = {actual_version}")
                     print(f"user = {user}")
                     print(f"channel = {channel}")
-                    print(f"recipe_id_full = {project_name}/{actual_version}@{user}/{channel}")
+                    print(f"= {project_name}/{actual_version}@{user}/{channel}")
                     print(f"recipe_id_latest = {project_name}/latest@{user}/{channel}")
                     print(f"semver_full = {actual_version}")
                     print(f"is_release_branch = {str(is_release_branch).lower()}")
