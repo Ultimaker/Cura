@@ -64,6 +64,12 @@
         },
         "top_bottom_thickness": {
             "default_value": 1
+        },
+        "infill_before_walls": {
+            "value": "False"
+        },
+        "inset_direction": {
+            "value": "'inside_out'"
         }
     }
 }

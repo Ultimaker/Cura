@@ -33,6 +33,8 @@
         "material_final_print_temperature": { "maximum_value": "430" },
         "material_break_preparation_temperature": { "maximum_value": "430" },
         "material_break_temperature": { "maximum_value": "430" },
-        "material_standby_temperature": { "maximum_value": "430" }
+        "material_standby_temperature": { "maximum_value": "430" },
+        "infill_before_walls": { "value": "False" },
+        "inset_direction": { "value": "'inside_out'" }
     }
 }
