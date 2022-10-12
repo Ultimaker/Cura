@@ -32,7 +32,7 @@ Item
             {
                 profileName: model.name
                 icon: model.icon
-
+                tooltipText: (model.description != undefined) ? model.description : ""
 
                 selected: Cura.MachineManager.activeIntentCategory == model.intent_category
 

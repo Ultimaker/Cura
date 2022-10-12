@@ -19,6 +19,7 @@ Rectangle
     property bool selected: false
     property string profileName: ""
     property string icon: ""
+    property alias tooltipText: tooltip.text
 
     signal clicked()
 
@@ -28,6 +29,13 @@ Rectangle
         anchors.fill: parent
         hoverEnabled: true
         onClicked: base.clicked()
+    }
+
+    UM.ToolTip
+    {
+        id: tooltip
+        visible: mouseArea.containsMouse
+        targetPoint: Qt.point(base.x + (base.width / 2), base.y + (base.height / 2))
     }
 
     Item
