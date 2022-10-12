@@ -36,6 +36,7 @@ Rectangle
         id: tooltip
         visible: mouseArea.containsMouse
         targetPoint: Qt.point(base.x + (base.width / 2), base.y + (base.height / 2))
+        width: UM.Theme.getSize("tooltip").width
     }
 
     Item
