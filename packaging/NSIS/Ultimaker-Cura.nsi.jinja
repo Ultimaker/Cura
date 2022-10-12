@@ -163,7 +163,7 @@ Delete "$INSTDIR\uninstall.exe"
 Delete "$INSTDIR\${APP_NAME} website.url"
 !endif
 
-RmDir "$INSTDIR"
+RmDir /r /REBOOTOK "$INSTDIR"
 
 !ifdef REG_START_MENU
 !insertmacro MUI_STARTMENU_GETFOLDER "Application" $SM_Folder
