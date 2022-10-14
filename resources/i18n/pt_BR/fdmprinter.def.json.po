@@ -6055,7 +6055,7 @@ msgstr "Queda de IA"
 #: /fdmprinter.def.json
 msgctxt "wireframe_fall_down description"
 msgid "Distance with which the material falls down after an upward extrusion. This distance is compensated for. Only applies to Wire Printing."
-msgstr "Distância na qual o material desaba após uma extrusão ascendente. Esta distância é compensada. Somente se aplica à Impressão em Arame."
+msgstr "Distância na qual o material desaba após uma extrusão ascendente. Esta distância é compensada. Somente se aplica à Impressão em Arame."
 
 #: /fdmprinter.def.json
 msgctxt "wireframe_drag_along label"
