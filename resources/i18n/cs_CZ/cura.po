@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-27 14:50+0200\n"
-"PO-Revision-Date: 2022-07-07 19:34+0200\n"
+"PO-Revision-Date: 2022-10-10 18:52+0200\n"
 "Last-Translator: Miroslav Šustek <sustmidown@centrum.cz>\n"
 "Language-Team: DenyCZ <www.github.com/DenyCZ>\n"
 "Language: cs_CZ\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
-"X-Generator: Poedit 3.1\n"
+"X-Generator: Poedit 3.1.1\n"
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/UI/PrintInformation.py:87
 msgctxt "@tooltip"
@@ -967,17 +967,17 @@ msgstr "Zjistit více"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/PrintJobAwaitingApprovalMessage.py:18
 msgctxt "@info:status"
 msgid "You will receive a confirmation via email when the print job is approved"
-msgstr ""
+msgstr "Až bude tisková úloha schválena, obdržíte potvrzovací e-mail"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/PrintJobAwaitingApprovalMessage.py:19
 msgctxt "@info:title"
 msgid "The print job was successfully submitted"
-msgstr ""
+msgstr "Tisková úloha byla úspěšně odeslána"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/PrintJobAwaitingApprovalMessage.py:22
 msgctxt "@action"
 msgid "Manage print jobs"
-msgstr ""
+msgstr "Spravovat tiskové úlohy"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/PrintJobUploadProgressMessage.py:15
 msgctxt "@info:status"
@@ -1295,7 +1295,7 @@ msgstr "Balíček ve formátu Ultimaker"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/DigitalLibrary/src/DigitalFactoryProjectResponse.py:19
 msgctxt "@text Placeholder for the username if it has been deleted"
 msgid "deleted user"
-msgstr ""
+msgstr "smazaný uživatel"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/GCodeProfileReader/__init__.py:14
 #: /Users/c.lamboo/ultimaker/Cura/plugins/GCodeReader/__init__.py:14
@@ -2416,12 +2416,12 @@ msgstr "První dostupný"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorStage.qml:117
 msgctxt "@info"
 msgid "Monitor your printers from everywhere using Ultimaker Digital Factory"
-msgstr ""
+msgstr "Sledujte své tiskárny odkudkoliv pomocí Ultimaker Digital Factory"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorStage.qml:129
 msgctxt "@button"
 msgid "View printers in Digital Factory"
-msgstr ""
+msgstr "Zobrazit tiskárny v Digital Factory"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:44
 msgctxt "@title:window"
@@ -3237,7 +3237,7 @@ msgstr "Nahrání projektu vymaže všechny modely na podložce."
 #: /Users/c.lamboo/ultimaker/Cura/plugins/3MFReader/WorkspaceDialog.qml:490
 msgctxt "@label"
 msgid "The material used in this project is currently not installed in Cura.<br/>Install the material profile and reopen the project."
-msgstr ""
+msgstr "Materiál použitý v tomto projektu není aktuálně nainstalován v Cuře.<br/>Nainstalujte materiálový profil a znovu otevřete projekt."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/3MFReader/WorkspaceDialog.qml:515
 msgctxt "@action:button"
@@ -4029,12 +4029,12 @@ msgstr "Slicovat automaticky"
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:340
 msgctxt "@info:tooltip"
 msgid "Show an icon and notifications in the system notification area."
-msgstr ""
+msgstr "Zobrazovat ikonu a oznámení v oznamovací oblasti systému."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:348
 msgctxt "@option:check"
 msgid "Add icon to system tray *"
-msgstr ""
+msgstr "Přidat ikonu do systémové lišty *"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:357
 msgctxt "@label"
@@ -5324,17 +5324,17 @@ msgstr "Spravovat nastavení viditelnosti ..."
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Dialogs/ChoosePrinterDialog.qml:17
 msgctxt "@title:window"
 msgid "Select Printer"
-msgstr ""
+msgstr "Vyberte tiskárnu"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Dialogs/ChoosePrinterDialog.qml:54
 msgctxt "@title:label"
 msgid "Compatible Printers"
-msgstr ""
+msgstr "Kompatibilní tiskárny"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Dialogs/ChoosePrinterDialog.qml:94
 msgctxt "@description"
 msgid "No compatible printers, that are currently online, where found."
-msgstr ""
+msgstr "Nebyly nalezeny žádné online kompatibilní tiskárny."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:16
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Cura.qml:635
@@ -5605,7 +5605,7 @@ msgstr "Podpůrná knihovna pro vědecké výpočty"
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Dialogs/AboutDialog.qml:171
 msgctxt "@Label Description for application dependency"
 msgid "Python Error tracking library"
-msgstr ""
+msgstr "Knihovna pro sledování Python chyb"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Dialogs/AboutDialog.qml:172
 msgctxt "@label Description for application dependency"
@@ -5731,12 +5731,12 @@ msgstr "Vytvořte struktury pro podporu částí modelu, které mají přesahy. 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrintSetupSelector/Recommended/ProfileWarningReset.qml:54
 msgctxt "@info, %1 is the name of the custom profile"
 msgid "<b>%1</b> custom profile is active and you overwrote some settings."
-msgstr ""
+msgstr "Je aktivní vlastní profil <b>%1</b> a některá nastavení jste přepsali."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrintSetupSelector/Recommended/ProfileWarningReset.qml:68
 msgctxt "@info, %1 is the name of the custom profile"
 msgid "<b>%1</b> custom profile is overriding some settings."
-msgstr ""
+msgstr "Vlastní profil <b>%1</b> přepisuje některá nastavení."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrintSetupSelector/Recommended/ProfileWarningReset.qml:79
 msgctxt "@info"
@@ -6092,17 +6092,17 @@ msgstr "Spravovat tiskárny"
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrinterSelector/MachineListButton.qml:34
 msgctxt "@label"
 msgid "Hide all connected printers"
-msgstr ""
+msgstr "Skrýt všechny připojené tiskárny"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrinterSelector/MachineListButton.qml:47
 msgctxt "@label"
 msgid "Show all connected printers"
-msgstr ""
+msgstr "Zobrazit všechny připojené tiskárny"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrinterSelector/MachineSelectorList.qml:24
 msgctxt "@label"
 msgid "Other printers"
-msgstr ""
+msgstr "Ostatní tiskárny"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ActionPanel/SliceProcessWidget.qml:54
 msgctxt "@label:PrintjobStatus"
