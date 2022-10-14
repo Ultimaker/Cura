@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 5.1\n"
+"Project-Id-Version: Cura 5.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-27 14:50+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
@@ -145,7 +145,9 @@ msgstr "O Ficheiro Já Existe"
 #: /Users/c.lamboo/ultimaker/Cura/cura/Settings/CuraContainerRegistry.py:141
 #, python-brace-format
 msgctxt "@label Don't translate the XML tag <filename>!"
-msgid "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?"
+msgid ""
+"The file <filename>{0}</filename> already exists. Are you sure you want to "
+"overwrite it?"
 msgstr "O ficheiro <filename>{0}</filename> já existe. Tem a certeza de que deseja substituí-lo?"
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/Settings/ContainerManager.py:459
@@ -172,7 +174,8 @@ msgstr "Nozzle"
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/Settings/MachineManager.py:889
 msgctxt "@info:message Followed by a list of settings."
-msgid "Settings have been changed to match the current availability of extruders:"
+msgid ""
+"Settings have been changed to match the current availability of extruders:"
 msgstr "As definições foram alteradas de forma a corresponder aos extrusores disponíveis de momento:"
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/Settings/MachineManager.py:890
@@ -188,7 +191,8 @@ msgstr "Extrusor(es) desativado(s)"
 #: /Users/c.lamboo/ultimaker/Cura/cura/Settings/CuraContainerRegistry.py:153
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
-msgid "Failed to export profile to <filename>{0}</filename>: <message>{1}</message>"
+msgid ""
+"Failed to export profile to <filename>{0}</filename>: <message>{1}</message>"
 msgstr "Falha ao exportar perfil para <filename>{0}</filename>: <message>{1}</message>"
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/Settings/CuraContainerRegistry.py:156
@@ -203,7 +207,9 @@ msgstr "Erro"
 #: /Users/c.lamboo/ultimaker/Cura/cura/Settings/CuraContainerRegistry.py:163
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
-msgid "Failed to export profile to <filename>{0}</filename>: Writer plugin reported failure."
+msgid ""
+"Failed to export profile to <filename>{0}</filename>: Writer plugin reported "
+"failure."
 msgstr "Falha ao exportar perfil para <filename>{0}</filename>: O plug-in de gravação comunicou uma falha."
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/Settings/CuraContainerRegistry.py:171
@@ -226,7 +232,8 @@ msgstr "Falha ao importar perfil de <filename>{0}</filename>: {1}"
 #: /Users/c.lamboo/ultimaker/Cura/cura/Settings/CuraContainerRegistry.py:209
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
-msgid "Can't import profile from <filename>{0}</filename> before a printer is added."
+msgid ""
+"Can't import profile from <filename>{0}</filename> before a printer is added."
 msgstr "Não é possível importar o perfil de <filename>{0}</filename> antes de ser adicionada uma impressora."
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/Settings/CuraContainerRegistry.py:224
@@ -245,7 +252,9 @@ msgstr "Falha ao importar perfil de <filename>{0}</filename>:"
 #: /Users/c.lamboo/ultimaker/Cura/cura/Settings/CuraContainerRegistry.py:262
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
-msgid "This profile <filename>{0}</filename> contains incorrect data, could not import it."
+msgid ""
+"This profile <filename>{0}</filename> contains incorrect data, could not "
+"import it."
 msgstr "O perfil <filename>{0}</filename> contém dados incorretos, não foi possível importá-lo."
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/Settings/CuraContainerRegistry.py:355
@@ -295,14 +304,20 @@ msgstr "Não é possível adicionar o perfil."
 #: /Users/c.lamboo/ultimaker/Cura/cura/Settings/CuraContainerRegistry.py:483
 #, python-brace-format
 msgctxt "@info:status"
-msgid "Quality type '{0}' is not compatible with the current active machine definition '{1}'."
+msgid ""
+"Quality type '{0}' is not compatible with the current active machine "
+"definition '{1}'."
 msgstr "O tipo de qualidade '{0}' não é compatível com a definição de máquina atualmente ativa '{1}'."
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/Settings/CuraContainerRegistry.py:488
 #, python-brace-format
 msgctxt "@info:status"
-msgid "Warning: The profile is not visible because its quality type '{0}' is not available for the current configuration. Switch to a material/nozzle combination that can use this quality type."
-msgstr "Aviso: o perfil não é visível porque o respetivo tipo de qualidade '{0}' não está disponível para a configuração atual. Mude para uma combinação de material/bocal que possa utilizar este tipo de qualidade."
+msgid ""
+"Warning: The profile is not visible because its quality type '{0}' is not "
+"available for the current configuration. Switch to a material/nozzle "
+"combination that can use this quality type."
+msgstr "Aviso: o perfil não é visível porque o respetivo tipo de qualidade '{0}' não está disponível para a configuração atual. Mude para uma combinação de material/bocal"
+" que possa utilizar este tipo de qualidade."
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/MultiplyObjectsJob.py:30
 msgctxt "@info:status"
@@ -367,7 +382,9 @@ msgstr "A inicializar o motor..."
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/CuraApplication.py:1289
 #, python-format
-msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm."
+msgctxt ""
+"@info 'width', 'depth' and 'height' are variable names that must NOT be "
+"translated; just translate the format of ##x##x## mm."
 msgid "%(width).1f x %(depth).1f x %(height).1f mm"
 msgstr "%(width).1f x %(depth).1f x %(height).1f mm"
 
@@ -417,7 +434,9 @@ msgstr "Ocorreu algo inesperado ao tentar iniciar sessão, tente novamente."
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/OAuth2/AuthorizationService.py:216
 msgctxt "@info"
-msgid "Unable to start a new sign in process. Check if another sign in attempt is still active."
+msgid ""
+"Unable to start a new sign in process. Check if another sign in attempt is "
+"still active."
 msgstr "Não é possível iniciar um novo processo de início de sessão. Verifique se ainda está ativa outra tentativa de início de sessão."
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/OAuth2/AuthorizationService.py:277
@@ -469,8 +488,11 @@ msgstr "Acabamento"
 #: /Users/c.lamboo/ultimaker/Cura/cura/Machines/Models/IntentCategoryModel.py:46
 #: /Users/c.lamboo/ultimaker/Cura/cura/Machines/Models/IntentSelectionModel.py:66
 msgctxt "@text"
-msgid "The visual profile is designed to print visual prototypes and models with the intent of high visual and surface quality."
-msgstr "O perfil de acabamento foi criado para imprimir modelos e protótipos finais com o objetivo de se obter uma elevada qualidade de acabamento da superfície em termos visuais."
+msgid ""
+"The visual profile is designed to print visual prototypes and models with "
+"the intent of high visual and surface quality."
+msgstr "O perfil de acabamento foi criado para imprimir modelos e protótipos finais com o objetivo de se obter uma elevada qualidade de acabamento da superfície"
+" em termos visuais."
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/Machines/Models/IntentTranslations.py:18
 #: /Users/c.lamboo/ultimaker/Cura/cura/Machines/Models/IntentCategoryModel.py:49
@@ -483,8 +505,11 @@ msgstr "Engineering"
 #: /Users/c.lamboo/ultimaker/Cura/cura/Machines/Models/IntentCategoryModel.py:50
 #: /Users/c.lamboo/ultimaker/Cura/cura/Machines/Models/IntentSelectionModel.py:71
 msgctxt "@text"
-msgid "The engineering profile is designed to print functional prototypes and end-use parts with the intent of better accuracy and for closer tolerances."
-msgstr "O perfil de engenharia foi criado para imprimir protótipos funcionais e peças finais com o objetivo de se obter uma maior precisão dimensional assim como tolerâncias menores."
+msgid ""
+"The engineering profile is designed to print functional prototypes and end-"
+"use parts with the intent of better accuracy and for closer tolerances."
+msgstr "O perfil de engenharia foi criado para imprimir protótipos funcionais e peças finais com o objetivo de se obter uma maior precisão dimensional assim como"
+" tolerâncias menores."
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/Machines/Models/IntentTranslations.py:22
 #: /Users/c.lamboo/ultimaker/Cura/cura/Machines/Models/IntentCategoryModel.py:53
@@ -497,8 +522,11 @@ msgstr "Rascunho"
 #: /Users/c.lamboo/ultimaker/Cura/cura/Machines/Models/IntentCategoryModel.py:54
 #: /Users/c.lamboo/ultimaker/Cura/cura/Machines/Models/IntentSelectionModel.py:76
 msgctxt "@text"
-msgid "The draft profile is designed to print initial prototypes and concept validation with the intent of significant print time reduction."
-msgstr "O perfil de rascunho foi concebido para imprimir protótipos de teste e de validação de conceitos com o objetivo de se obter uma redução significativa do tempo de impressão."
+msgid ""
+"The draft profile is designed to print initial prototypes and concept "
+"validation with the intent of significant print time reduction."
+msgstr "O perfil de rascunho foi concebido para imprimir protótipos de teste e de validação de conceitos com o objetivo de se obter uma redução significativa do"
+" tempo de impressão."
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/Machines/Models/QualitySettingsModel.py:182
 msgctxt "@info:status"
@@ -528,7 +556,8 @@ msgstr "Desconhecido"
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/Machines/Models/DiscoveredPrintersModel.py:113
 msgctxt "@label"
-msgid "The printer(s) below cannot be connected because they are part of a group"
+msgid ""
+"The printer(s) below cannot be connected because they are part of a group"
 msgstr "Não é possível ligar a(s) impressora(s) abaixo porque faz(em) parte de um grupo"
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/Machines/Models/DiscoveredPrintersModel.py:115
@@ -571,7 +600,9 @@ msgstr "Falha no início de sessão"
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/UltimakerCloud/CloudMaterialSync.py:66
 msgctxt "@action:button"
-msgid "Please sync the material profiles with your printers before starting to print."
+msgid ""
+"Please sync the material profiles with your printers before starting to "
+"print."
 msgstr "Sincronize os perfis de material com as suas impressoras antes de começar a imprimir."
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/UltimakerCloud/CloudMaterialSync.py:67
@@ -631,7 +662,9 @@ msgstr "A resposta da Digital Factory tem informações importantes em falta."
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/PrinterOutput/UploadMaterialsJob.py:218
 msgctxt "@text:error"
-msgid "Failed to connect to Digital Factory to sync materials with some of the printers."
+msgid ""
+"Failed to connect to Digital Factory to sync materials with some of the "
+"printers."
 msgstr "Não foi possível estabelecer a ligação com a Digital Factory para poder sincronizar os materiais com algumas das impressoras."
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/PrinterOutput/UploadMaterialsJob.py:232
@@ -641,8 +674,11 @@ msgstr "Não foi possível estabelecer a ligação com a Digital Factory."
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/BuildVolume.py:100
 msgctxt "@info:status"
-msgid "The build volume height has been reduced due to the value of the \"Print Sequence\" setting to prevent the gantry from colliding with printed models."
-msgstr "A altura do volume de construção foi reduzida devido ao valor da definição \"Sequência de impressão\" para impedir que o pórtico colida com os modelos impressos."
+msgid ""
+"The build volume height has been reduced due to the value of the \"Print "
+"Sequence\" setting to prevent the gantry from colliding with printed models."
+msgstr "A altura do volume de construção foi reduzida devido ao valor da definição \"Sequência de impressão\" para impedir que o pórtico colida com os modelos"
+" impressos."
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/BuildVolume.py:103
 msgctxt "@info:title"
@@ -685,17 +721,20 @@ msgstr "Não é possível iniciar o Cura"
 #: /Users/c.lamboo/ultimaker/Cura/cura/CrashHandler.py:113
 msgctxt "@label crash message"
 msgid ""
-"<p><b>Oops, Ultimaker Cura has encountered something that doesn't seem right.</p></b>\n"
-"                    <p>We encountered an unrecoverable error during start up. It was possibly caused by some incorrect configuration files. We suggest to backup and reset your configuration.</p>\n"
-"                    <p>Backups can be found in the configuration folder.</p>\n"
-"                    <p>Please send us this Crash Report to fix the problem.</p>\n"
+"<p><b>Oops, Ultimaker Cura has encountered something that doesn't seem right."
+"</p></b>\n"
+"                    <p>We encountered an unrecoverable error during start "
+"up. It was possibly caused by some incorrect configuration files. We suggest "
+"to backup and reset your configuration.</p>\n"
+"                    <p>Backups can be found in the configuration folder.</"
+"p>\n"
+"                    <p>Please send us this Crash Report to fix the problem.</"
+"p>\n"
 "                "
-msgstr ""
-"<p><b>Ups, o Ultimaker Cura encontrou um possível problema.</p></b>\n"
-"                    <p>Foi encontrado um erro irrecuperável durante o arranque da aplicação. Este pode ter sido causado por alguns ficheiros de configuração incorrectos. Sugerimos que faça um backup e reponha a sua configuração.</p>\n"
-"                    <p>Os backups estão localizados na pasta de configuração.</p>\n"
-"                    <p>Por favor envie-nos este Relatório de Falhas para podermos resolver o problema.</p>\n"
-"                "
+msgstr "<p><b>Ups, o Ultimaker Cura encontrou um possível problema.</p></b>\n                    <p>Foi encontrado um erro irrecuperável durante o arranque da"
+" aplicação. Este pode ter sido causado por alguns ficheiros de configuração incorrectos. Sugerimos que faça um backup e reponha a sua configuração.</p>\n"
+"                    <p>Os backups estão localizados na pasta de configuração.</p>\n                    <p>Por favor envie-nos este Relatório de Falhas"
+" para podermos resolver o problema.</p>\n                "
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/CrashHandler.py:122
 msgctxt "@action:button"
@@ -725,13 +764,13 @@ msgstr "Relatório de Falhas"
 #: /Users/c.lamboo/ultimaker/Cura/cura/CrashHandler.py:190
 msgctxt "@label crash message"
 msgid ""
-"<p><b>A fatal error has occurred in Cura. Please send us this Crash Report to fix the problem</p></b>\n"
-"            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n"
+"<p><b>A fatal error has occurred in Cura. Please send us this Crash Report "
+"to fix the problem</p></b>\n"
+"            <p>Please use the \"Send report\" button to post a bug report "
+"automatically to our servers</p>\n"
 "        "
-msgstr ""
-"<p><b>Ocorreu um erro fatal no Cura. Por favor envie-nos este Relatório de Falhas para podermos resolver o problema</p></b>\n"
-"            <p>Por favor utilize o botão &quot;Enviar relatório&quot; para publicar um relatório de erros automaticamente nos nossos servidores</p>\n"
-"        "
+msgstr "<p><b>Ocorreu um erro fatal no Cura. Por favor envie-nos este Relatório de Falhas para podermos resolver o problema</p></b>\n            <p>Por favor utilize"
+" o botão &quot;Enviar relatório&quot; para publicar um relatório de erros automaticamente nos nossos servidores</p>\n        "
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/CrashHandler.py:198
 msgctxt "@title:groupbox"
@@ -939,10 +978,10 @@ msgstr "Erro de impressão"
 msgctxt "@info:status"
 msgid ""
 "Your printer <b>{printer_name}</b> could be connected via cloud.\n"
-" Manage your print queue and monitor your prints from anywhere connecting your printer to Digital Factory"
-msgstr ""
-"A sua impressora <b>{printer_name}</b> pode ser ligada através da cloud.\n"
-" Faça a gestão da sua fila de impressão e monitorize as suas impressões a partir de qualquer local ao ligar a sua impressora ao Digital Factory"
+" Manage your print queue and monitor your prints from anywhere connecting "
+"your printer to Digital Factory"
+msgstr "A sua impressora <b>{printer_name}</b> pode ser ligada através da cloud.\n Faça a gestão da sua fila de impressão e monitorize as suas impressões a partir"
+" de qualquer local ao ligar a sua impressora ao Digital Factory"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudFlowMessage.py:26
 msgctxt "@info:title"
@@ -962,18 +1001,19 @@ msgstr "Saber mais"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/PrintJobAwaitingApprovalMessage.py:18
 msgctxt "@info:status"
-msgid "You will receive a confirmation via email when the print job is approved"
-msgstr ""
+msgid ""
+"You will receive a confirmation via email when the print job is approved"
+msgstr "You will receive a confirmation via email when the print job is approved"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/PrintJobAwaitingApprovalMessage.py:19
 msgctxt "@info:title"
 msgid "The print job was successfully submitted"
-msgstr ""
+msgstr "The print job was successfully submitted"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/PrintJobAwaitingApprovalMessage.py:22
 msgctxt "@action"
 msgid "Manage print jobs"
-msgstr ""
+msgstr "Manage print jobs"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/PrintJobUploadProgressMessage.py:15
 msgctxt "@info:status"
@@ -988,7 +1028,9 @@ msgstr "Carregar um trabalho de impressão na impressora."
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/MaterialSyncMessage.py:24
 #, python-brace-format
 msgctxt "@info:status"
-msgid "Cura has detected material profiles that were not yet installed on the host printer of group {0}."
+msgid ""
+"Cura has detected material profiles that were not yet installed on the host "
+"printer of group {0}."
 msgstr "O Cura detetou perfis de material que ainda não estavam instalados na impressora que aloja o grupo {0}."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/MaterialSyncMessage.py:26
@@ -999,7 +1041,9 @@ msgstr "Enviar materiais para a impressora"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/NotClusterHostMessage.py:27
 #, python-brace-format
 msgctxt "@info:status"
-msgid "You are attempting to connect to {0} but it is not the host of a group. You can visit the web page to configure it as a group host."
+msgid ""
+"You are attempting to connect to {0} but it is not the host of a group. You "
+"can visit the web page to configure it as a group host."
 msgstr "Está a tentar ligar a {0}, mas esta não é Host de um grupo. Pode visitar a página Web para a configurar como Host do grupo."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/NotClusterHostMessage.py:30
@@ -1050,7 +1094,9 @@ msgstr "Remover impressoras"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:18
 msgctxt "@info:status"
-msgid "You are attempting to connect to a printer that is not running Ultimaker Connect. Please update the printer to the latest firmware."
+msgid ""
+"You are attempting to connect to a printer that is not running Ultimaker "
+"Connect. Please update the printer to the latest firmware."
 msgstr "Está a tentar ligar a uma impressora que não tem o Ultimaker Connect. Atualize a impressora para o firmware mais recente."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:21
@@ -1143,22 +1189,21 @@ msgstr "Remover impressoras?"
 #, python-brace-format
 msgctxt "@label"
 msgid ""
-"You are about to remove {0} printer from Cura. This action cannot be undone.\n"
+"You are about to remove {0} printer from Cura. This action cannot be "
+"undone.\n"
 "Are you sure you want to continue?"
 msgid_plural ""
-"You are about to remove {0} printers from Cura. This action cannot be undone.\n"
+"You are about to remove {0} printers from Cura. This action cannot be "
+"undone.\n"
 "Are you sure you want to continue?"
-msgstr[0] ""
-"Está prestes a remover {0} impressora do Cura. Esta ação não pode ser anulada.\n"
-"Tem a certeza de que pretende continuar?"
-msgstr[1] ""
-"Está prestes a remover {0} impressoras do Cura. Esta ação não pode ser anulada.\n"
-"Tem a certeza de que pretende continuar?"
+msgstr[0] "Está prestes a remover {0} impressora do Cura. Esta ação não pode ser anulada.\nTem a certeza de que pretende continuar?"
+msgstr[1] "Está prestes a remover {0} impressoras do Cura. Esta ação não pode ser anulada.\nTem a certeza de que pretende continuar?"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:484
 msgctxt "@label"
 msgid ""
-"You are about to remove all printers from Cura. This action cannot be undone.\n"
+"You are about to remove all printers from Cura. This action cannot be "
+"undone.\n"
 "Are you sure you want to continue?"
 msgstr "Está prestes a remover todas as impressoras do Cura. Esta ação não pode ser anulada.Tem a certeza de que pretende continuar?"
 
@@ -1211,7 +1256,9 @@ msgstr "Não tem permissão para escrever o espaço de trabalho aqui."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/3MFWriter/ThreeMFWorkspaceWriter.py:101
 msgctxt "@error:zip"
-msgid "The operating system does not allow saving a project file to this location or with this file name."
+msgid ""
+"The operating system does not allow saving a project file to this location "
+"or with this file name."
 msgstr "O sistema operativo não permite guardar um ficheiro de projeto nesta localização ou com este nome de ficheiro."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/CuraDrive/src/DriveApiService.py:86
@@ -1284,7 +1331,7 @@ msgstr "Arquivo Ultimaker Format"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/DigitalLibrary/src/DigitalFactoryProjectResponse.py:19
 msgctxt "@text Placeholder for the username if it has been deleted"
 msgid "deleted user"
-msgstr ""
+msgstr "deleted user"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/GCodeProfileReader/__init__.py:14
 #: /Users/c.lamboo/ultimaker/Cura/plugins/GCodeReader/__init__.py:14
@@ -1306,8 +1353,11 @@ msgstr "Detalhes do G-code"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/GCodeReader/FlavorParser.py:504
 msgctxt "@info:generic"
-msgid "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."
-msgstr "Certifique-se de que este g-code é apropriado para a sua impressora e respetiva configuração, antes de enviar o ficheiro para a impressora. A representação do g-code poderá não ser exata."
+msgid ""
+"Make sure the g-code is suitable for your printer and printer configuration "
+"before sending the file to it. The g-code representation may not be accurate."
+msgstr "Certifique-se de que este g-code é apropriado para a sua impressora e respetiva configuração, antes de enviar o ficheiro para a impressora. A representação"
+" do g-code poderá não ser exata."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/GCodeReader/__init__.py:18
 msgctxt "@item:inlistbox"
@@ -1546,7 +1596,9 @@ msgstr "Monitorizar"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:162
 msgctxt "@message"
-msgid "Slicing failed with an unexpected error. Please consider reporting a bug on our issue tracker."
+msgid ""
+"Slicing failed with an unexpected error. Please consider reporting a bug on "
+"our issue tracker."
 msgstr "O seccionamento falhou com um erro inesperado. Por favor reportar um erro no nosso registo de problemas."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:163
@@ -1566,7 +1618,9 @@ msgstr "Reportar um erro no registo de problemas do Ultimaker Cura."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:401
 msgctxt "@info:status"
-msgid "Unable to slice with the current material as it is incompatible with the selected machine or configuration."
+msgid ""
+"Unable to slice with the current material as it is incompatible with the "
+"selected machine or configuration."
 msgstr "Não é possível seccionar com o material atual, uma vez que é incompatível com a impressora ou configuração selecionada."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:402
@@ -1582,24 +1636,31 @@ msgstr "Não é possível Seccionar"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:434
 #, python-brace-format
 msgctxt "@info:status"
-msgid "Unable to slice with the current settings. The following settings have errors: {0}"
+msgid ""
+"Unable to slice with the current settings. The following settings have "
+"errors: {0}"
 msgstr "Não é possível seccionar com as definições atuais. As seguintes definições apresentam erros: {0}"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:461
 #, python-brace-format
 msgctxt "@info:status"
-msgid "Unable to slice due to some per-model settings. The following settings have errors on one or more models: {error_labels}"
+msgid ""
+"Unable to slice due to some per-model settings. The following settings have "
+"errors on one or more models: {error_labels}"
 msgstr "Não é possível seccionar devido a algumas definições por modelo. As seguintes definições apresentam erros num ou mais modelos: {error_labels}"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:473
 msgctxt "@info:status"
-msgid "Unable to slice because the prime tower or prime position(s) are invalid."
+msgid ""
+"Unable to slice because the prime tower or prime position(s) are invalid."
 msgstr "Não é possível seccionar porque a torre de preparação ou a(s) posição(ões) de preparação é(são) inválidas."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:485
 #, python-format
 msgctxt "@info:status"
-msgid "Unable to slice because there are objects associated with disabled Extruder %s."
+msgid ""
+"Unable to slice because there are objects associated with disabled Extruder "
+"%s."
 msgstr "Não é possível seccionar porque existem objetos associados ao extrusor %s desativado."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:495
@@ -1609,11 +1670,8 @@ msgid ""
 "- Fit within the build volume\n"
 "- Are assigned to an enabled extruder\n"
 "- Are not all set as modifier meshes"
-msgstr ""
-"Reveja as definições e verifique se os seus modelos:\n"
-"- Cabem dentro do volume de construção\n"
-"- Estão atribuídos a uma extrusora ativada\n"
-"- Não estão todos definidos como objetos modificadores"
+msgstr "Reveja as definições e verifique se os seus modelos:\n- Cabem dentro do volume de construção\n- Estão atribuídos a uma extrusora ativada\n- Não estão todos"
+" definidos como objetos modificadores"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:52
 #: /Users/c.lamboo/ultimaker/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:260
@@ -1644,8 +1702,12 @@ msgstr "Personalizado"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/3MFReader/WorkspaceDialog.py:390
 msgctxt "@info:status"
-msgid "The material used in this project relies on some material definitions not available in Cura, this might produce undesirable print results. We highly recommend installing the full material package from the Marketplace."
-msgstr "O material utilizado neste projeto baseia-se em algumas definições de material não disponíveis no Cura, o que pode produzir resultados de impressão indesejáveis. Recomendamos vivamente a instalação do pacote completo do material a partir do Marketplace."
+msgid ""
+"The material used in this project relies on some material definitions not "
+"available in Cura, this might produce undesirable print results. We highly "
+"recommend installing the full material package from the Marketplace."
+msgstr "O material utilizado neste projeto baseia-se em algumas definições de material não disponíveis no Cura, o que pode produzir resultados de impressão indesejáveis."
+" Recomendamos vivamente a instalação do pacote completo do material a partir do Marketplace."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/3MFReader/WorkspaceDialog.py:392
 msgctxt "@info:title"
@@ -1660,8 +1722,12 @@ msgstr "Instalar materiais"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:545
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
-msgid "Project file <filename>{0}</filename> contains an unknown machine type <message>{1}</message>. Cannot import the machine. Models will be imported instead."
-msgstr "O ficheiro de projeto <filename>{0}</filename> contém um tipo de máquina desconhecido <message>{1}</message>. Não é possível importar a máquina. Em vez disso, serão importados os modelos."
+msgid ""
+"Project file <filename>{0}</filename> contains an unknown machine type "
+"<message>{1}</message>. Cannot import the machine. Models will be imported "
+"instead."
+msgstr "O ficheiro de projeto <filename>{0}</filename> contém um tipo de máquina desconhecido <message>{1}</message>. Não é possível importar a máquina. Em vez"
+" disso, serão importados os modelos."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:548
 msgctxt "@info:title"
@@ -1671,7 +1737,9 @@ msgstr "Abrir ficheiro de projeto"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:650
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
-msgid "Project file <filename>{0}</filename> is suddenly inaccessible: <message>{1}</message>."
+msgid ""
+"Project file <filename>{0}</filename> is suddenly inaccessible: <message>{1}"
+"</message>."
 msgstr "O projeto de ficheiro <filename>{0}</filename> ficou subitamente inacessível: <message>{1}</message>."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:651
@@ -1685,13 +1753,16 @@ msgstr "Não é possível abrir o ficheiro de projeto"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:676
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
-msgid "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>."
+msgid ""
+"Project file <filename>{0}</filename> is corrupt: <message>{1}</message>."
 msgstr "O ficheiro de projeto <filename>{0}</filename> está corrompido: <message>{1}</message>."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:723
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
-msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of Ultimaker Cura."
+msgid ""
+"Project file <filename>{0}</filename> is made using profiles that are "
+"unknown to this version of Ultimaker Cura."
 msgstr "O ficheiro de projeto <filename>{0}</filename> foi criado utilizando perfis que são desconhecidos para esta versão do Ultimaker Cura."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/PerObjectSettingsTool/__init__.py:14
@@ -1713,15 +1784,16 @@ msgstr "Assistente de Modelos 3D"
 #, python-brace-format
 msgctxt "@info:status"
 msgid ""
-"<p>One or more 3D models may not print optimally due to the model size and material configuration:</p>\n"
+"<p>One or more 3D models may not print optimally due to the model size and "
+"material configuration:</p>\n"
 "<p>{model_names}</p>\n"
-"<p>Find out how to ensure the best possible print quality and reliability.</p>\n"
-"<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
-msgstr ""
-"<p>Um, ou mais, dos modelos 3D podem ter menos qualidade de impressão devido à dimensão do modelo 3D e definição de material:</p>\n"
-"<p>{model_names}</p>\n"
-"<p>Descubra como assegurar a melhor qualidade e fiabilidade possível da impressão.</p>\n"
-"<p><a href=\"https://ultimaker.com/3D-model-assistant\">Ver o guia de qualidade da impressão</a></p>"
+"<p>Find out how to ensure the best possible print quality and reliability.</"
+"p>\n"
+"<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality "
+"guide</a></p>"
+msgstr "<p>Um, ou mais, dos modelos 3D podem ter menos qualidade de impressão devido à dimensão do modelo 3D e definição de material:</p>\n<p>{model_names}</p>\n<p>Descubra"
+" como assegurar a melhor qualidade e fiabilidade possível da impressão.</p>\n<p><a href=\"https://ultimaker.com/3D-model-assistant\">Ver o guia de qualidade"
+" da impressão</a></p>"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:42
 msgctxt "@item:inmenu"
@@ -1745,12 +1817,15 @@ msgstr "Ligado via USB"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:110
 msgctxt "@label"
-msgid "A USB print is in progress, closing Cura will stop this print. Are you sure?"
+msgid ""
+"A USB print is in progress, closing Cura will stop this print. Are you sure?"
 msgstr "Existe uma impressão por USB em curso; fechar o Cura irá interromper esta impressão. Tem a certeza?"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:135
 msgctxt "@message"
-msgid "A print is still in progress. Cura cannot start another print via USB until the previous print has completed."
+msgid ""
+"A print is still in progress. Cura cannot start another print via USB until "
+"the previous print has completed."
 msgstr "Existe uma impressão em curso. O Cura não consegue iniciar outra impressão via USB até a impressão anterior ser concluída."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:136
@@ -1827,7 +1902,9 @@ msgstr "Ficheiro AMF"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/SolidView/SolidView.py:71
 msgctxt "@info:status"
-msgid "The highlighted areas indicate either missing or extraneous surfaces. Fix your model and open it again into Cura."
+msgid ""
+"The highlighted areas indicate either missing or extraneous surfaces. Fix "
+"your model and open it again into Cura."
 msgstr "As áreas destacadas indicam superfícies em falta ou separadas. Corrija o modelo e volte a abri-lo no Cura."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/SolidView/SolidView.py:73
@@ -1842,9 +1919,15 @@ msgstr "Vista Sólidos"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerMessage.py:17
 #, python-brace-format
-msgctxt "@info Don't translate {machine_name}, since it gets replaced by a printer name!"
-msgid "New features or bug-fixes may be available for your {machine_name}! If you haven't done so already, it is recommended to update the firmware on your printer to version {latest_version}."
-msgstr "Poderão estar disponíveis novas funcionalidades ou correções de erros para a sua {machine_name}! Se ainda não tiver a versão mais recente, recomendamos que atualize o firmware da sua impressora para a versão {latest_version}."
+msgctxt ""
+"@info Don't translate {machine_name}, since it gets replaced by a printer "
+"name!"
+msgid ""
+"New features or bug-fixes may be available for your {machine_name}! If you "
+"haven't done so already, it is recommended to update the firmware on your "
+"printer to version {latest_version}."
+msgstr "Poderão estar disponíveis novas funcionalidades ou correções de erros para a sua {machine_name}! Se ainda não tiver a versão mais recente, recomendamos"
+" que atualize o firmware da sua impressora para a versão {latest_version}."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerMessage.py:22
 #, python-format
@@ -2090,8 +2173,13 @@ msgstr "Mais claro é mais alto"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/ImageReader/ConfigUI.qml:195
 msgctxt "@info:tooltip"
-msgid "For lithophanes dark pixels should correspond to thicker locations in order to block more light coming through. For height maps lighter pixels signify higher terrain, so lighter pixels should correspond to thicker locations in the generated 3D model."
-msgstr "Para litofanias, os pixels escuros devem corresponder a localizações mais espessas para bloquear mais a passagem da luz. Para mapas de altura, os pixels mais claros significam um terreno mais alto, por isso, os pixels mais claros devem corresponder a localizações mais espessas no modelo 3D gerado."
+msgid ""
+"For lithophanes dark pixels should correspond to thicker locations in order "
+"to block more light coming through. For height maps lighter pixels signify "
+"higher terrain, so lighter pixels should correspond to thicker locations in "
+"the generated 3D model."
+msgstr "Para litofanias, os pixels escuros devem corresponder a localizações mais espessas para bloquear mais a passagem da luz. Para mapas de altura, os pixels"
+" mais claros significam um terreno mais alto, por isso, os pixels mais claros devem corresponder a localizações mais espessas no modelo 3D gerado."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/ImageReader/ConfigUI.qml:205
 msgctxt "@action:label"
@@ -2110,8 +2198,11 @@ msgstr "Translucidez"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/ImageReader/ConfigUI.qml:232
 msgctxt "@info:tooltip"
-msgid "For lithophanes a simple logarithmic model for translucency is available. For height maps the pixel values correspond to heights linearly."
-msgstr "Está disponível um modelo logarítmico simples para definir a translucidez das litofanias. Para mapas de altura, os valores dos pixels correspondem de forma linear à elevação."
+msgid ""
+"For lithophanes a simple logarithmic model for translucency is available. "
+"For height maps the pixel values correspond to heights linearly."
+msgstr "Está disponível um modelo logarítmico simples para definir a translucidez das litofanias. Para mapas de altura, os valores dos pixels correspondem de forma"
+" linear à elevação."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/ImageReader/ConfigUI.qml:242
 msgctxt "@action:label"
@@ -2120,8 +2211,12 @@ msgstr "(%) transmitância de 1 mm"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/ImageReader/ConfigUI.qml:263
 msgctxt "@info:tooltip"
-msgid "The percentage of light penetrating a print with a thickness of 1 millimeter. Lowering this value increases the contrast in dark regions and decreases the contrast in light regions of the image."
-msgstr "A percentagem de luz que penetra numa impressão com uma espessura de 1 milímetro. Diminuir este valor aumenta o contraste em regiões escuras e diminui o contraste em regiões claras da imagem."
+msgid ""
+"The percentage of light penetrating a print with a thickness of 1 "
+"millimeter. Lowering this value increases the contrast in dark regions and "
+"decreases the contrast in light regions of the image."
+msgstr "A percentagem de luz que penetra numa impressão com uma espessura de 1 milímetro. Diminuir este valor aumenta o contraste em regiões escuras e diminui"
+" o contraste em regiões claras da imagem."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/ImageReader/ConfigUI.qml:274
 msgctxt "@action:label"
@@ -2275,13 +2370,16 @@ msgstr "Ignorar"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:83
 msgctxt "@label"
 msgid "The assigned printer, %1, requires the following configuration change:"
-msgid_plural "The assigned printer, %1, requires the following configuration changes:"
+msgid_plural ""
+"The assigned printer, %1, requires the following configuration changes:"
 msgstr[0] "A impressora atribuída %1 requer a seguinte alteração na configuração:"
 msgstr[1] "A impressora atribuída %1 requer as seguintes alterações na configuração:"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:87
 msgctxt "@label"
-msgid "The printer %1 is assigned, but the job contains an unknown material configuration."
+msgid ""
+"The printer %1 is assigned, but the job contains an unknown material "
+"configuration."
 msgstr "A impressora %1 está atribuída, mas o trabalho tem uma configuração de material desconhecida."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:97
@@ -2306,7 +2404,9 @@ msgstr "Alterar base de construção para %1 (isto não pode ser substituído)."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:113
 msgctxt "@label"
-msgid "Override will use the specified settings with the existing printer configuration. This may result in a failed print."
+msgid ""
+"Override will use the specified settings with the existing printer "
+"configuration. This may result in a failed print."
 msgstr "Ignorar utilizará as definições especificadas com a configuração da impressora existente. Tal pode resultar numa falha de impressão."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:151
@@ -2335,8 +2435,11 @@ msgstr "Atualize o firmware da impressora para gerir a fila remotamente."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:287
 msgctxt "@info"
-msgid "Webcam feeds for cloud printers cannot be viewed from Ultimaker Cura. Click \"Manage printer\" to visit Ultimaker Digital Factory and view this webcam."
-msgstr "Não é possível visualizar os feeds das câmaras das impressoras na cloud a partir do Ultimaker Cura. Clique em \"Gerir impressora\" para visitar o Ultimaker Digital Factory e ver esta câmara."
+msgid ""
+"Webcam feeds for cloud printers cannot be viewed from Ultimaker Cura. Click "
+"\"Manage printer\" to visit Ultimaker Digital Factory and view this webcam."
+msgstr "Não é possível visualizar os feeds das câmaras das impressoras na cloud a partir do Ultimaker Cura. Clique em \"Gerir impressora\" para visitar o Ultimaker"
+" Digital Factory e ver esta câmara."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:347
 msgctxt "@label:status"
@@ -2403,12 +2506,12 @@ msgstr "Primeira disponível"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorStage.qml:117
 msgctxt "@info"
 msgid "Monitor your printers from everywhere using Ultimaker Digital Factory"
-msgstr ""
+msgstr "Monitor your printers from everywhere using Ultimaker Digital Factory"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorStage.qml:129
 msgctxt "@button"
 msgid "View printers in Digital Factory"
-msgstr ""
+msgstr "View printers in Digital Factory"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:44
 msgctxt "@title:window"
@@ -2417,8 +2520,15 @@ msgstr "Ligar a uma Impressora em Rede"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:51
 msgctxt "@label"
-msgid "To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer."
-msgstr "Para imprimir diretamente para a sua impressora através da rede, certifique-se de que a impressora está ligada à rede através de um cabo de rede ou através de ligação à rede Wi-Fi. Se não ligar o Cura por rede à impressora, poderá ainda assim utilizar uma unidade USB para transferir ficheiros g-code para a impressora."
+msgid ""
+"To print directly to your printer over the network, please make sure your "
+"printer is connected to the network using a network cable or by connecting "
+"your printer to your WIFI network. If you don't connect Cura with your "
+"printer, you can still use a USB drive to transfer g-code files to your "
+"printer."
+msgstr "Para imprimir diretamente para a sua impressora através da rede, certifique-se de que a impressora está ligada à rede através de um cabo de rede ou através"
+" de ligação à rede Wi-Fi. Se não ligar o Cura por rede à impressora, poderá ainda assim utilizar uma unidade USB para transferir ficheiros g-code para"
+" a impressora."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:51
 msgctxt "@label"
@@ -2445,7 +2555,9 @@ msgstr "Atualizar"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:161
 msgctxt "@label"
-msgid "If your printer is not listed, read the <a href='%1'>network printing troubleshooting guide</a>"
+msgid ""
+"If your printer is not listed, read the <a href='%1'>network printing "
+"troubleshooting guide</a>"
 msgstr "Se a sua impressora não estiver na lista, por favor, consulte o <a href='%1'>guia de resolução de problemas de impressão em rede</a>"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:186
@@ -2663,7 +2775,9 @@ msgstr "Restaurar cópia de segurança"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/CuraDrive/src/qml/components/BackupListItem.qml:103
 msgctxt "@dialog:info"
-msgid "You will need to restart Cura before your backup is restored. Do you want to close Cura now?"
+msgid ""
+"You will need to restart Cura before your backup is restored. Do you want to "
+"close Cura now?"
 msgstr "É necessário reiniciar o Cura para restaurar a sua cópia de segurança. Pretende fechar o Cura agora?"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/CuraDrive/src/qml/pages/BackupsPage.qml:28
@@ -2673,12 +2787,16 @@ msgstr "As minhas cópias de segurança"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/CuraDrive/src/qml/pages/BackupsPage.qml:36
 msgctxt "@empty_state"
-msgid "You don't have any backups currently. Use the 'Backup Now' button to create one."
+msgid ""
+"You don't have any backups currently. Use the 'Backup Now' button to create "
+"one."
 msgstr "Atualmente não existem quaisquer cópias de segurança. Utilize o botão \"Efetuar cópia de segurança agora\" para criar uma."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/CuraDrive/src/qml/pages/BackupsPage.qml:55
 msgctxt "@backup_limit_info"
-msgid "During the preview phase, you'll be limited to 5 visible backups. Remove a backup to see older ones."
+msgid ""
+"During the preview phase, you'll be limited to 5 visible backups. Remove a "
+"backup to see older ones."
 msgstr "Durante a fase de pré-visualização, terá um limite de 5 cópias de segurança visíveis. Remova uma cópia de segurança para ver as antigas."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/CuraDrive/src/qml/pages/WelcomePage.qml:34
@@ -2701,7 +2819,9 @@ msgstr "Mais informações sobre a recolha anónima de dados"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:73
 msgctxt "@text:window"
-msgid "Ultimaker Cura collects anonymous data in order to improve the print quality and user experience. Below is an example of all the data that is shared:"
+msgid ""
+"Ultimaker Cura collects anonymous data in order to improve the print quality "
+"and user experience. Below is an example of all the data that is shared:"
 msgstr "O Ultimaker Cura recolhe dados anónimos para melhorar a qualidade da impressão e a experiência do utilizador. Segue-se um exemplo de todos os dados partilhados:"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:107
@@ -2741,13 +2861,21 @@ msgstr "Nivelamento da Base de Construção"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UltimakerMachineActions/BedLevelMachineAction.qml:42
 msgctxt "@label"
-msgid "To make sure your prints will come out great, you can now adjust your buildplate. When you click 'Move to Next Position' the nozzle will move to the different positions that can be adjusted."
-msgstr "Para assegurar uma boa qualidade das suas impressões, pode agora ajustar a base de construção. Quando clica em \"Avançar para a posição seguinte\", o nozzle irá deslocar-se para as diferentes posições que podem ser ajustadas."
+msgid ""
+"To make sure your prints will come out great, you can now adjust your "
+"buildplate. When you click 'Move to Next Position' the nozzle will move to "
+"the different positions that can be adjusted."
+msgstr "Para assegurar uma boa qualidade das suas impressões, pode agora ajustar a base de construção. Quando clica em \"Avançar para a posição seguinte\", o nozzle"
+" irá deslocar-se para as diferentes posições que podem ser ajustadas."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UltimakerMachineActions/BedLevelMachineAction.qml:52
 msgctxt "@label"
-msgid "For every position; insert a piece of paper under the nozzle and adjust the print build plate height. The print build plate height is right when the paper is slightly gripped by the tip of the nozzle."
-msgstr "Para cada posição, introduza um pedaço de papel debaixo do nozzle e ajuste a altura da base de construção. A altura da base de construção está correta quando o papel fica ligeiramente preso pelo nozzle."
+msgid ""
+"For every position; insert a piece of paper under the nozzle and adjust the "
+"print build plate height. The print build plate height is right when the "
+"paper is slightly gripped by the tip of the nozzle."
+msgstr "Para cada posição, introduza um pedaço de papel debaixo do nozzle e ajuste a altura da base de construção. A altura da base de construção está correta"
+" quando o papel fica ligeiramente preso pelo nozzle."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UltimakerMachineActions/BedLevelMachineAction.qml:67
 msgctxt "@action:button"
@@ -2822,7 +2950,9 @@ msgstr "Instale plug-ins"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/Plugins.qml:12
 msgctxt "@text"
-msgid "Streamline your workflow and customize your Ultimaker Cura experience with plugins contributed by our amazing community of users."
+msgid ""
+"Streamline your workflow and customize your Ultimaker Cura experience with "
+"plugins contributed by our amazing community of users."
 msgstr "Simplifique o seu fluxo de trabalho e personalize a sua utilização do Ultimaker Cura com plug-ins criados pela nossa incrível comunidade de utilizadores."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/CompatibilityDialog.qml:15
@@ -2850,7 +2980,9 @@ msgstr "Os seguintes pacotes vão ser instalados:"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/CompatibilityDialog.qml:94
 msgctxt "@label"
-msgid "The following packages can not be installed because of an incompatible Cura version:"
+msgid ""
+"The following packages can not be installed because of an incompatible Cura "
+"version:"
 msgstr "Os seguintes pacotes não podem ser instalados devido a uma versão incompatível do Cura:"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/MultipleLicenseDialog.qml:35
@@ -2881,7 +3013,9 @@ msgstr "Instalar materiais"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/Materials.qml:12
 msgctxt "@text"
-msgid "Select and install material profiles optimised for your Ultimaker 3D printers."
+msgid ""
+"Select and install material profiles optimised for your Ultimaker 3D "
+"printers."
 msgstr "Selecione e instale perfis de materiais otimizados para as impressoras 3D Ultimaker."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/ManagePackagesButton.qml:32
@@ -3023,8 +3157,11 @@ msgstr "Gerir os pacotes"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/ManagedPackages.qml:15
 msgctxt "@text"
-msgid "Manage your Ultimaker Cura plugins and material profiles here. Make sure to keep your plugins up to date and backup your setup regularly."
-msgstr "Faça aqui a gestão dos plug-ins e perfis de materiais do Ultimaker Cura. Certifique-se de que mantém os plug-ins atualizados e que efetua regularmente uma cópia de segurança da sua configuração."
+msgid ""
+"Manage your Ultimaker Cura plugins and material profiles here. Make sure to "
+"keep your plugins up to date and backup your setup regularly."
+msgstr "Faça aqui a gestão dos plug-ins e perfis de materiais do Ultimaker Cura. Certifique-se de que mantém os plug-ins atualizados e que efetua regularmente"
+" uma cópia de segurança da sua configuração."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/InstallMissingPackagesDialog.qml:15
 msgctxt "@title"
@@ -3068,11 +3205,8 @@ msgid ""
 "- Check if the printer is turned on.\n"
 "- Check if the printer is connected to the network.\n"
 "- Check if you are signed in to discover cloud-connected printers."
-msgstr ""
-"Certifique-se de que é possível estabelecer ligação com a impressora:\n"
-"- Verifique se a impressora está ligada.\n"
-"- Verifique se a impressora está ligada à rede.\n"
-"- Verifique se tem sessão iniciada para encontrar impressoras ligadas através da cloud."
+msgstr "Certifique-se de que é possível estabelecer ligação com a impressora:\n- Verifique se a impressora está ligada.\n- Verifique se a impressora está ligada"
+" à rede.\n- Verifique se tem sessão iniciada para encontrar impressoras ligadas através da cloud."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/MonitorStage/MonitorMain.qml:113
 msgctxt "@info"
@@ -3221,8 +3355,10 @@ msgstr "Abrir um projeto irá apagar todos os modelos na base de construção."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/3MFReader/WorkspaceDialog.qml:490
 msgctxt "@label"
-msgid "The material used in this project is currently not installed in Cura.<br/>Install the material profile and reopen the project."
-msgstr ""
+msgid ""
+"The material used in this project is currently not installed in Cura.<br/"
+">Install the material profile and reopen the project."
+msgstr "The material used in this project is currently not installed in Cura.<br/>Install the material profile and reopen the project."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/3MFReader/WorkspaceDialog.qml:515
 msgctxt "@action:button"
@@ -3302,12 +3438,18 @@ msgstr "Atualizar firmware"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:37
 msgctxt "@label"
-msgid "Firmware is the piece of software running directly on your 3D printer. This firmware controls the step motors, regulates the temperature and ultimately makes your printer work."
-msgstr "O firmware é o software que é executado diretamente na sua impressora 3D. Este firmware controla os motores de passo, regula a temperatura e basicamente assegura o funcionamento da sua impressora."
+msgid ""
+"Firmware is the piece of software running directly on your 3D printer. This "
+"firmware controls the step motors, regulates the temperature and ultimately "
+"makes your printer work."
+msgstr "O firmware é o software que é executado diretamente na sua impressora 3D. Este firmware controla os motores de passo, regula a temperatura e basicamente"
+" assegura o funcionamento da sua impressora."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:43
 msgctxt "@label"
-msgid "The firmware shipping with new printers works, but new versions tend to have more features and improvements."
+msgid ""
+"The firmware shipping with new printers works, but new versions tend to have "
+"more features and improvements."
 msgstr "O firmware que é expedido com as novas impressoras funciona corretamente, mas as novas versões costumam ter mais funcionalidades e melhorias."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:55
@@ -3322,12 +3464,15 @@ msgstr "Carregar firmware personalizado"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:79
 msgctxt "@label"
-msgid "Firmware can not be updated because there is no connection with the printer."
+msgid ""
+"Firmware can not be updated because there is no connection with the printer."
 msgstr "O firmware não pode ser atualizado por não existir ligação com a impressora."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:86
 msgctxt "@label"
-msgid "Firmware can not be updated because the connection with the printer does not support upgrading firmware."
+msgid ""
+"Firmware can not be updated because the connection with the printer does not "
+"support upgrading firmware."
 msgstr "O firmware não pode ser atualizado porque a ligação com a impressora não suporta a atualização de firmware."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:93
@@ -3474,7 +3619,9 @@ msgstr "Pesquisar"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Settings/SettingItem.qml:84
 msgctxt "@label"
-msgid "This setting is not used because all the settings that it influences are overridden."
+msgid ""
+"This setting is not used because all the settings that it influences are "
+"overridden."
 msgstr "Esta definição não é utilizada porque todas as definições influenciadas foram substituídas."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Settings/SettingItem.qml:89
@@ -3489,7 +3636,9 @@ msgstr "Modificado Por"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Settings/SettingItem.qml:190
 msgctxt "@label"
-msgid "This setting is always shared between all extruders. Changing it here will change the value for all extruders."
+msgid ""
+"This setting is always shared between all extruders. Changing it here will "
+"change the value for all extruders."
 msgstr "Esta definição é sempre partilhada entre todos os extrusores. Ao alterá-la aqui, o valor será alterado em todos os extrusores."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Settings/SettingItem.qml:194
@@ -3503,21 +3652,16 @@ msgid ""
 "This setting has a value that is different from the profile.\n"
 "\n"
 "Click to restore the value of the profile."
-msgstr ""
-"Esta definição tem um valor que é diferente do perfil.\n"
-"\n"
-"Clique para restaurar o valor do perfil."
+msgstr "Esta definição tem um valor que é diferente do perfil.\n\nClique para restaurar o valor do perfil."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Settings/SettingItem.qml:334
 msgctxt "@label"
 msgid ""
-"This setting is normally calculated, but it currently has an absolute value set.\n"
+"This setting is normally calculated, but it currently has an absolute value "
+"set.\n"
 "\n"
 "Click to restore the calculated value."
-msgstr ""
-"Normalmente, o valor desta definição é calculado, mas atualmente tem definido um valor diferente.\n"
-"\n"
-"Clique para restaurar o valor calculado."
+msgstr "Normalmente, o valor desta definição é calculado, mas atualmente tem definido um valor diferente.\n\nClique para restaurar o valor calculado."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Settings/SettingView.qml:48
 msgctxt "@label:textbox"
@@ -3558,13 +3702,11 @@ msgstr "Configurar visibilidade das definições..."
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Settings/SettingCategory.qml:115
 msgctxt "@label"
 msgid ""
-"Some hidden settings use values different from their normal calculated value.\n"
+"Some hidden settings use values different from their normal calculated "
+"value.\n"
 "\n"
 "Click to make these settings visible."
-msgstr ""
-"Algumas das definições invisíveis têm valores diferentes dos valores normais calculados automaticamente.\n"
-"\n"
-"Clique para tornar estas definições visíveis."
+msgstr "Algumas das definições invisíveis têm valores diferentes dos valores normais calculados automaticamente.\n\nClique para tornar estas definições visíveis."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/MainWindow/MainWindowHeader.qml:135
 msgctxt "@action:button"
@@ -3584,7 +3726,9 @@ msgstr "Novo projeto"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/MainWindow/ApplicationMenu.qml:88
 msgctxt "@info:question"
-msgid "Are you sure you want to start a new project? This will clear the build plate and any unsaved settings."
+msgid ""
+"Are you sure you want to start a new project? This will clear the build "
+"plate and any unsaved settings."
 msgstr "Tem a certeza de que deseja iniciar um novo projeto? Isto irá apagar tudo na base de construção assim como quaisquer definições que não tenham sido guardadas."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/SettingVisibilityPage.qml:13
@@ -3615,7 +3759,9 @@ msgstr "Sincronizar materiais com impressoras"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:55
 msgctxt "@text"
-msgid "Following a few simple steps, you will be able to synchronize all your material profiles with your printers."
+msgid ""
+"Following a few simple steps, you will be able to synchronize all your "
+"material profiles with your printers."
 msgstr "Com alguns passos simples poderá sincronizar todos os seus perfis de materiais com as suas impressoras."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:77
@@ -3635,7 +3781,9 @@ msgstr "Iniciar sessão"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:150
 msgctxt "@text"
-msgid "To automatically sync the material profiles with all your printers connected to Digital Factory you need to be signed in in Cura."
+msgid ""
+"To automatically sync the material profiles with all your printers connected "
+"to Digital Factory you need to be signed in in Cura."
 msgstr "Para sincronizar automaticamente os perfis de materiais com todas as impressoras ligadas à Digital Factory, tem de ter uma sessão iniciada no Cura."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:174
@@ -3673,7 +3821,8 @@ msgstr "Faltam impressoras?"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:424
 msgctxt "@text"
-msgid "Make sure all your printers are turned ON and connected to Digital Factory."
+msgid ""
+"Make sure all your printers are turned ON and connected to Digital Factory."
 msgstr "Certifique-se de que todas as impressoras estão ON e ligadas com a Digital Factory."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:433
@@ -3710,8 +3859,12 @@ msgstr "Não foi encontrada nenhuma impressora"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:574
 msgctxt "@text"
-msgid "It seems like you don't have any compatible printers connected to Digital Factory. Make sure your printer is connected and it's running the latest firmware."
-msgstr "Parece que não tem nenhuma impressora compatível ligada com a Digital Factory. Certifique-se de que a impressora está ligada e que tem o firmware mais recente instalado."
+msgid ""
+"It seems like you don't have any compatible printers connected to Digital "
+"Factory. Make sure your printer is connected and it's running the latest "
+"firmware."
+msgstr "Parece que não tem nenhuma impressora compatível ligada com a Digital Factory. Certifique-se de que a impressora está ligada e que tem o firmware mais"
+" recente instalado."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:585
 msgctxt "@button"
@@ -3729,8 +3882,10 @@ msgid "Sync material profiles via USB"
 msgstr "Sincronizar perfis de materiais via USB"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:648
-msgctxt "@text In the UI this is followed by a list of steps the user needs to take."
-msgid "Follow the following steps to load the new material profiles to your printer."
+msgctxt ""
+"@text In the UI this is followed by a list of steps the user needs to take."
+msgid ""
+"Follow the following steps to load the new material profiles to your printer."
 msgstr "Siga os seguintes passos para instalar os novos perfis de materiais na sua impressora."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:679
@@ -3745,7 +3900,9 @@ msgstr "Guarde o ficheiro .umm numa unidade USB."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:681
 msgctxt "@text"
-msgid "Insert the USB stick into your printer and launch the procedure to load new material profiles."
+msgid ""
+"Insert the USB stick into your printer and launch the procedure to load new "
+"material profiles."
 msgstr "Insira a unidade USB na impressora e inicie o procedimento para carregar novos perfis de materiais."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:689
@@ -3776,7 +3933,9 @@ msgstr "Confirmar Alteração de Diâmetro"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:122
 msgctxt "@label (%1 is a number)"
-msgid "The new filament diameter is set to %1 mm, which is not compatible with the current extruder. Do you wish to continue?"
+msgid ""
+"The new filament diameter is set to %1 mm, which is not compatible with the "
+"current extruder. Do you wish to continue?"
 msgstr "O novo diâmetro do filamento está definido como %1 mm, o que não é compatível com o extrusor actual. Pretende prosseguir?"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:152
@@ -3943,7 +4102,8 @@ msgstr "Material <filename>%1</filename> importado com êxito"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:245
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
-msgid "Could not import material <filename>%1</filename>: <message>%2</message>"
+msgid ""
+"Could not import material <filename>%1</filename>: <message>%2</message>"
 msgstr "Não foi possível importar o material <filename>%1</filename>: <message>%2</message>"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:256
@@ -3954,7 +4114,8 @@ msgstr "Exportar Material"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:272
 msgctxt "@info:status Don't translate the XML tags <filename> and <message>!"
-msgid "Failed to export material to <filename>%1</filename>: <message>%2</message>"
+msgid ""
+"Failed to export material to <filename>%1</filename>: <message>%2</message>"
 msgstr "Falha ao exportar material para <filename>%1</filename>: <message>%2</message>"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:275
@@ -3964,13 +4125,18 @@ msgstr "Material exportado com êxito para <filename>%1</filename>"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/SettingVisibilityItem.qml:56
 msgctxt "@item:tooltip"
-msgid "This setting has been hidden by the active machine and will not be visible."
+msgid ""
+"This setting has been hidden by the active machine and will not be visible."
 msgstr "Esta definição não é válida para a máquina ativa, e não será visível."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/SettingVisibilityItem.qml:73
 msgctxt "@item:tooltip %1 is list of setting names"
-msgid "This setting has been hidden by the value of %1. Change the value of that setting to make this setting visible."
-msgid_plural "This setting has been hidden by the values of %1. Change the values of those settings to make this setting visible."
+msgid ""
+"This setting has been hidden by the value of %1. Change the value of that "
+"setting to make this setting visible."
+msgid_plural ""
+"This setting has been hidden by the values of %1. Change the values of those "
+"settings to make this setting visible."
 msgstr[0] "Esta definição não é visível devido ao valor da definição: %1. Altere o valor dessa definição, para que esta definição fique visível."
 msgstr[1] "Esta definição não é visível devido aos valores das seguintes definições: %1. Altere os valores dessas definições, para que esta definição fique visível."
 
@@ -3996,7 +4162,8 @@ msgid "Currency:"
 msgstr "Moeda:"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:277
-msgctxt "@label: Please keep the asterix, it's to indicate that a restart is needed."
+msgctxt ""
+"@label: Please keep the asterix, it's to indicate that a restart is needed."
 msgid "Theme*:"
 msgstr "Tema*:"
 
@@ -4013,16 +4180,17 @@ msgstr "Seccionar automaticamente"
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:340
 msgctxt "@info:tooltip"
 msgid "Show an icon and notifications in the system notification area."
-msgstr ""
+msgstr "Show an icon and notifications in the system notification area."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:348
 msgctxt "@option:check"
 msgid "Add icon to system tray *"
-msgstr ""
+msgstr "Add icon to system tray *"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:357
 msgctxt "@label"
-msgid "*You will need to restart the application for these changes to have effect."
+msgid ""
+"*You will need to restart the application for these changes to have effect."
 msgstr "*Terá de reiniciar a aplicação para ativar estas alterações."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:373
@@ -4032,7 +4200,9 @@ msgstr "Comportamento da janela"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:381
 msgctxt "@info:tooltip"
-msgid "Highlight unsupported areas of the model in red. Without support these areas will not print properly."
+msgid ""
+"Highlight unsupported areas of the model in red. Without support these areas "
+"will not print properly."
 msgstr "Realçar, a vermelho, as áreas do modelo sem apoio. Sem suporte, estas áreas podem não ser impressas correctamente."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:390
@@ -4042,8 +4212,11 @@ msgstr "Mostrar Saliências (Overhangs)"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:400
 msgctxt "@info:tooltip"
-msgid "Highlight missing or extraneous surfaces of the model using warning signs. The toolpaths will often be missing parts of the intended geometry."
-msgstr "Destaque as superfícies extra ou em falta do modelo utilizando sinais de aviso. As trajetórias de ferramentas irão falhar muitas vezes partes da geometria pretendida."
+msgid ""
+"Highlight missing or extraneous surfaces of the model using warning signs. "
+"The toolpaths will often be missing parts of the intended geometry."
+msgstr "Destaque as superfícies extra ou em falta do modelo utilizando sinais de aviso. As trajetórias de ferramentas irão falhar muitas vezes partes da geometria"
+" pretendida."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:409
 msgctxt "@option:check"
@@ -4052,7 +4225,9 @@ msgstr "Apresentar erros de modelo"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:417
 msgctxt "@info:tooltip"
-msgid "Moves the camera so the model is in the center of the view when a model is selected"
+msgid ""
+"Moves the camera so the model is in the center of the view when a model is "
+"selected"
 msgstr "Move a câmara de forma que o modelo fique no centro da visualização quando é selecionado um modelo"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:422
@@ -4077,7 +4252,8 @@ msgstr "O zoom deve deslocar-se na direção do rato?"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:453
 msgctxt "@info:tooltip"
-msgid "Zooming towards the mouse is not supported in the orthographic perspective."
+msgid ""
+"Zooming towards the mouse is not supported in the orthographic perspective."
 msgstr "Fazer zoom em direção ao rato não é suportado na perspetiva ortográfica."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:458
@@ -4087,7 +4263,8 @@ msgstr "Fazer Zoom na direção do rato"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:484
 msgctxt "@info:tooltip"
-msgid "Should models on the platform be moved so that they no longer intersect?"
+msgid ""
+"Should models on the platform be moved so that they no longer intersect?"
 msgstr "Os modelos, na plataforma, devem ser movidos para que não se intersectem?"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:489
@@ -4160,7 +4337,9 @@ msgstr "Abrir e guardar ficheiros"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:624
 msgctxt "@info:tooltip"
-msgid "Should opening files from the desktop or external applications open in the same instance of Cura?"
+msgid ""
+"Should opening files from the desktop or external applications open in the "
+"same instance of Cura?"
 msgstr "Pretende que os ficheiros abertos a partir do ambiente de trabalho ou de aplicações externas sejam executados na mesma instância do Cura?"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:629
@@ -4170,7 +4349,9 @@ msgstr "Utilizar uma única instância do Cura"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:640
 msgctxt "@info:tooltip"
-msgid "Should the build plate be cleared before loading a new model in the single instance of Cura?"
+msgid ""
+"Should the build plate be cleared before loading a new model in the single "
+"instance of Cura?"
 msgstr "Limpar a base de construção antes de carregar um novo modelo na instância única do Cura?"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:646
@@ -4190,7 +4371,9 @@ msgstr "Redimensionar modelos demasiado grandes"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:671
 msgctxt "@info:tooltip"
-msgid "An model may appear extremely small if its unit is for example in meters rather than millimeters. Should these models be scaled up?"
+msgid ""
+"An model may appear extremely small if its unit is for example in meters "
+"rather than millimeters. Should these models be scaled up?"
 msgstr "Um modelo pode parecer extremamente pequeno se, por exemplo, este tiver sido criado em metros e não em milímetros. Estes modelos devem ser redimensionados?"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:676
@@ -4210,7 +4393,9 @@ msgstr "Selecionar os modelos depois de abertos"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:701
 msgctxt "@info:tooltip"
-msgid "Should a prefix based on the printer name be added to the print job name automatically?"
+msgid ""
+"Should a prefix based on the printer name be added to the print job name "
+"automatically?"
 msgstr "Deve um prefixo com base no nome da impressora ser adicionado ao nome do trabalho de impressão automaticamente?"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:706
@@ -4255,8 +4440,12 @@ msgstr "Importar sempre modelos"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:792
 msgctxt "@info:tooltip"
-msgid "When you have made changes to a profile and switched to a different one, a dialog will be shown asking whether you want to keep your modifications or not, or you can choose a default behaviour and never show that dialog again."
-msgstr "Quando tiver realizado alterações a um perfil e mudado para outro, será apresentada uma caixa de diálogo a perguntar se pretende manter as alterações. Caso contrário, pode escolher um comportamento predefinido, sendo que a caixa de diálogo nunca mais é apresentada."
+msgid ""
+"When you have made changes to a profile and switched to a different one, a "
+"dialog will be shown asking whether you want to keep your modifications or "
+"not, or you can choose a default behaviour and never show that dialog again."
+msgstr "Quando tiver realizado alterações a um perfil e mudado para outro, será apresentada uma caixa de diálogo a perguntar se pretende manter as alterações."
+" Caso contrário, pode escolher um comportamento predefinido, sendo que a caixa de diálogo nunca mais é apresentada."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:801
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:36
@@ -4266,7 +4455,9 @@ msgstr "Perfis"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:806
 msgctxt "@window:text"
-msgid "Default behavior for changed setting values when switching to a different profile: "
+msgid ""
+"Default behavior for changed setting values when switching to a different "
+"profile: "
 msgstr "Comportamento predefinido para valores de definição alterados ao mudar para um perfil diferente: "
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:820
@@ -4292,8 +4483,12 @@ msgstr "Privacidade"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:862
 msgctxt "@info:tooltip"
-msgid "Should anonymous data about your print be sent to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored."
-msgstr "Podem alguns dados anónimos sobre a impressão ser enviados para a Ultimaker? Não são enviadas, nem armazenadas, quaisquer informações pessoais, incluindo modelos, endereços IP ou outro tipo de identificação pessoal."
+msgid ""
+"Should anonymous data about your print be sent to Ultimaker? Note, no "
+"models, IP addresses or other personally identifiable information is sent or "
+"stored."
+msgstr "Podem alguns dados anónimos sobre a impressão ser enviados para a Ultimaker? Não são enviadas, nem armazenadas, quaisquer informações pessoais, incluindo"
+" modelos, endereços IP ou outro tipo de identificação pessoal."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:867
 msgctxt "@option:check"
@@ -4337,7 +4532,9 @@ msgstr "Versões estáveis e beta"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:957
 msgctxt "@info:tooltip"
-msgid "Should an automatic check for new plugins be done every time Cura is started? It is highly recommended that you do not disable this!"
+msgid ""
+"Should an automatic check for new plugins be done every time Cura is "
+"started? It is highly recommended that you do not disable this!"
 msgstr "Fazer uma verificação automática de novos plug-ins sempre que o Cura for iniciado? Recomenda-se vivamente que não desative esta opção!"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:962
@@ -4411,7 +4608,9 @@ msgstr "Descartar alterações atuais"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/ProfilesPage.qml:158
 msgctxt "@action:label"
-msgid "This profile uses the defaults specified by the printer, so it has no settings/overrides in the list below."
+msgid ""
+"This profile uses the defaults specified by the printer, so it has no "
+"settings/overrides in the list below."
 msgstr "Este perfil utiliza as predefinições especificadas pela impressora, pelo que não tem quaisquer definições/substituições na lista seguinte."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/ProfilesPage.qml:165
@@ -4641,7 +4840,9 @@ msgstr "Ajude-nos a melhorar o Ultimaker Cura"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:56
 msgctxt "@text"
-msgid "Ultimaker Cura collects anonymous data to improve print quality and user experience, including:"
+msgid ""
+"Ultimaker Cura collects anonymous data to improve print quality and user "
+"experience, including:"
 msgstr "O Ultimaker Cura recolhe dados anónimos para melhorar a qualidade da impressão e a experiência do utilizador, incluindo:"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:68
@@ -4666,7 +4867,8 @@ msgstr "Definições de impressão"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:99
 msgctxt "@text"
-msgid "Data collected by Ultimaker Cura will not contain any personal information."
+msgid ""
+"Data collected by Ultimaker Cura will not contain any personal information."
 msgstr "Os dados recolhidos pelo Ultimaker Cura não conterão quaisquer informações pessoais."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:100
@@ -4747,7 +4949,9 @@ msgstr "A impressora neste endereço ainda não respondeu."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:231
 msgctxt "@label"
-msgid "This printer cannot be added because it's an unknown printer or it's not the host of a group."
+msgid ""
+"This printer cannot be added because it's an unknown printer or it's not the "
+"host of a group."
 msgstr "Não foi possível adicionar esta impressora porque é uma impressora desconhecida ou não aloja um grupo."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:312
@@ -4762,7 +4966,9 @@ msgstr "Bem-vindo ao Ultimaker Cura"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/WelcomeContent.qml:67
 msgctxt "@text"
-msgid "Please follow these steps to set up Ultimaker Cura. This will only take a few moments."
+msgid ""
+"Please follow these steps to set up Ultimaker Cura. This will only take a "
+"few moments."
 msgstr "Siga estes passos para configurar o Ultimaker Cura. Este processo irá demorar apenas alguns momentos."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/WelcomeContent.qml:82
@@ -4856,7 +5062,9 @@ msgid "Manage Materials..."
 msgstr "Gerir Materiais..."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Actions.qml:216
-msgctxt "@action:inmenu Marketplace is a brand name of Ultimaker's, so don't translate."
+msgctxt ""
+"@action:inmenu Marketplace is a brand name of Ultimaker's, so don't "
+"translate."
 msgid "Add more materials from Marketplace"
 msgstr "Adicionar mais materiais disponíveis no Marketplace"
 
@@ -5189,12 +5397,15 @@ msgstr "A carregar as configurações disponíveis da impressora..."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationListView.qml:53
 msgctxt "@label"
-msgid "The configurations are not available because the printer is disconnected."
+msgid ""
+"The configurations are not available because the printer is disconnected."
 msgstr "As configurações não estão disponíveis porque a impressora está desligada."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationItem.qml:137
 msgctxt "@label"
-msgid "This configuration is not available because %1 is not recognized. Please visit %2 to download the correct material profile."
+msgid ""
+"This configuration is not available because %1 is not recognized. Please "
+"visit %2 to download the correct material profile."
 msgstr "Esta configuração não está disponível porque não foi possível reconhecer %1. Visite %2 para transferir o perfil de material correto."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationItem.qml:138
@@ -5204,7 +5415,8 @@ msgstr "Mercado"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationMenu.qml:106
 msgctxt "@tooltip"
-msgid "The configuration of this extruder is not allowed, and prohibits slicing."
+msgid ""
+"The configuration of this extruder is not allowed, and prohibits slicing."
 msgstr "A configuração deste extrusor não é permitida o que impede o seccionamento."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationMenu.qml:110
@@ -5304,17 +5516,17 @@ msgstr "Gerir Visibilidade das Definições..."
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Dialogs/ChoosePrinterDialog.qml:17
 msgctxt "@title:window"
 msgid "Select Printer"
-msgstr ""
+msgstr "Select Printer"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Dialogs/ChoosePrinterDialog.qml:54
 msgctxt "@title:label"
 msgid "Compatible Printers"
-msgstr ""
+msgstr "Impressoras compatíveis"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Dialogs/ChoosePrinterDialog.qml:94
 msgctxt "@description"
 msgid "No compatible printers, that are currently online, where found."
-msgstr ""
+msgstr "No compatible printers, that are currently online, where found."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:16
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Cura.qml:635
@@ -5324,8 +5536,12 @@ msgstr "Abrir ficheiro(s)"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:47
 msgctxt "@text:window"
-msgid "We have found one or more project file(s) within the files you have selected. You can open only one project file at a time. We suggest to only import models from those files. Would you like to proceed?"
-msgstr "Encontrámos um ou mais projetos do Cura nos ficheiros selecionados. Só é possível abrir um Projeto do Cura, de cada vez. Sugerimos importar apenas os modelos 3D desses Projetos do Cura. Deseja continuar?"
+msgid ""
+"We have found one or more project file(s) within the files you have "
+"selected. You can open only one project file at a time. We suggest to only "
+"import models from those files. Would you like to proceed?"
+msgstr "Encontrámos um ou mais projetos do Cura nos ficheiros selecionados. Só é possível abrir um Projeto do Cura, de cada vez. Sugerimos importar apenas os modelos"
+" 3D desses Projetos do Cura. Deseja continuar?"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:64
 msgctxt "@action:button"
@@ -5339,7 +5555,9 @@ msgstr "Abrir ficheiro de projeto"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Dialogs/AskOpenAsProjectOrModelsDialog.qml:84
 msgctxt "@text:window"
-msgid "This is a Cura project file. Would you like to open it as a project or import the models from it?"
+msgid ""
+"This is a Cura project file. Would you like to open it as a project or "
+"import the models from it?"
 msgstr "Este ficheiro é um Projeto do Cura. Pretende abrir como Projeto ou só importar os modelos 3D incluídos no Projeto?"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Dialogs/AskOpenAsProjectOrModelsDialog.qml:91
@@ -5364,11 +5582,12 @@ msgstr "Descartar ou Manter as alterações"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:59
 msgctxt "@text:window, %1 is a profile name"
-msgid "You have customized some profile settings. Would you like to Keep these changed settings after switching profiles? Alternatively, you can discard the changes to load the defaults from '%1'."
-msgstr ""
-"Alterou algumas definições do perfil.\n"
-"Pretende manter estas alterações depois de trocar de perfis?\n"
-"Como alternativa, pode descartar as alterações para carregar as predefinições a partir de '%1'."
+msgid ""
+"You have customized some profile settings. Would you like to Keep these "
+"changed settings after switching profiles? Alternatively, you can discard "
+"the changes to load the defaults from '%1'."
+msgstr "Alterou algumas definições do perfil.\nPretende manter estas alterações depois de trocar de perfis?\nComo alternativa, pode descartar as alterações para"
+" carregar as predefinições a partir de '%1'."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:85
 msgctxt "@title:column"
@@ -5450,9 +5669,7 @@ msgctxt "@info:credit"
 msgid ""
 "Cura is developed by Ultimaker B.V. in cooperation with the community.\n"
 "Cura proudly uses the following open source projects:"
-msgstr ""
-"O Cura foi desenvolvido pela Ultimaker B.V. em colaboração com a comunidade.\n"
-"O Cura tem o prazer de utilizar os seguintes projetos open source:"
+msgstr "O Cura foi desenvolvido pela Ultimaker B.V. em colaboração com a comunidade.\nO Cura tem o prazer de utilizar os seguintes projetos open source:"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Dialogs/AboutDialog.qml:138
 msgctxt "@label Description for application component"
@@ -5588,7 +5805,7 @@ msgstr "Biblioteca de apoio para computação científica"
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Dialogs/AboutDialog.qml:171
 msgctxt "@Label Description for application dependency"
 msgid "Python Error tracking library"
-msgstr ""
+msgstr "Biblioteca de registo de Erros Python"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Dialogs/AboutDialog.qml:172
 msgctxt "@label Description for application dependency"
@@ -5708,18 +5925,20 @@ msgstr "Suportes"
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:44
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:78
 msgctxt "@label"
-msgid "Generate structures to support parts of the model which have overhangs. Without these structures, such parts would collapse during printing."
+msgid ""
+"Generate structures to support parts of the model which have overhangs. "
+"Without these structures, such parts would collapse during printing."
 msgstr "Criar estruturas para suportar partes do modelo, suspensas ou com saliências. Sem estas estruturas, essas partes do modelo podem desmoronar durante a impressão."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrintSetupSelector/Recommended/ProfileWarningReset.qml:54
 msgctxt "@info, %1 is the name of the custom profile"
 msgid "<b>%1</b> custom profile is active and you overwrote some settings."
-msgstr ""
+msgstr "<b>%1</b> custom profile is active and you overwrote some settings."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrintSetupSelector/Recommended/ProfileWarningReset.qml:68
 msgctxt "@info, %1 is the name of the custom profile"
 msgid "<b>%1</b> custom profile is overriding some settings."
-msgstr ""
+msgstr "<b>%1</b> custom profile is overriding some settings."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrintSetupSelector/Recommended/ProfileWarningReset.qml:79
 msgctxt "@info"
@@ -5729,7 +5948,8 @@ msgstr "Algumas definições foram alteradas."
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedInfillDensitySelector.qml:78
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedInfillDensitySelector.qml:254
 msgctxt "@label"
-msgid "Gradual infill will gradually increase the amount of infill towards the top."
+msgid ""
+"Gradual infill will gradually increase the amount of infill towards the top."
 msgstr "O enchimento gradual irá aumentar progressivamente a densidade do enchimento em direção ao topo."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedInfillDensitySelector.qml:216
@@ -5744,7 +5964,9 @@ msgstr "Configuração não suportada"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrintSetupSelector/Recommended/UnsupportedProfileIndication.qml:39
 msgctxt "@message:text %1 is the name the printer uses for 'nozzle'."
-msgid "No profiles are available for the selected material/%1 configuration. Please change your configuration."
+msgid ""
+"No profiles are available for the selected material/%1 configuration. Please "
+"change your configuration."
 msgstr "Não há perfis disponíveis para a configuração do material/%1 selecionado. Altere sua configuração."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrintSetupSelector/Recommended/UnsupportedProfileIndication.qml:47
@@ -5759,8 +5981,11 @@ msgstr "Aderência à Base de Construção"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedAdhesionSelector.qml:76
 msgctxt "@label"
-msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards."
-msgstr "Permite a impressão de uma aba ou raft. Isto irá adicionar, respetivamente, uma área plana em torno ou sob a base do seu objeto, que são fáceis de retirar posteriormente."
+msgid ""
+"Enable printing a brim or raft. This will add a flat area around or under "
+"your object which is easy to cut off afterwards."
+msgstr "Permite a impressão de uma aba ou raft. Isto irá adicionar, respetivamente, uma área plana em torno ou sob a base do seu objeto, que são fáceis de retirar"
+" posteriormente."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedResolutionSelector.qml:27
 msgctxt "@label"
@@ -5805,13 +6030,11 @@ msgstr "Perfil"
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrintSetupSelector/Custom/CustomPrintSetup.qml:145
 msgctxt "@tooltip"
 msgid ""
-"Some setting/override values are different from the values stored in the profile.\n"
+"Some setting/override values are different from the values stored in the "
+"profile.\n"
 "\n"
 "Click to open the profile manager."
-msgstr ""
-"Alguns valores de definição/substituição são diferentes dos valores armazenados no perfil.\n"
-"\n"
-"Clique para abrir o gestor de perfis."
+msgstr "Alguns valores de definição/substituição são diferentes dos valores armazenados no perfil.\n\nClique para abrir o gestor de perfis."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrintSetupSelector/Custom/QualitiesWithIntentMenu.qml:158
 msgctxt "@label:header"
@@ -5830,8 +6053,11 @@ msgstr "Base de construção"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrinterOutput/HeatedBedBox.qml:55
 msgctxt "@tooltip"
-msgid "The target temperature of the heated bed. The bed will heat up or cool down towards this temperature. If this is 0, the bed heating is turned off."
-msgstr "A temperatura desejada da base aquecida. A base irá aquecer ou arrefecer até esta temperatura. Se esta opção for definida como 0, o aquecimento da base será desligado."
+msgid ""
+"The target temperature of the heated bed. The bed will heat up or cool down "
+"towards this temperature. If this is 0, the bed heating is turned off."
+msgstr "A temperatura desejada da base aquecida. A base irá aquecer ou arrefecer até esta temperatura. Se esta opção for definida como 0, o aquecimento da base"
+" será desligado."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrinterOutput/HeatedBedBox.qml:88
 msgctxt "@tooltip"
@@ -5857,8 +6083,12 @@ msgstr "Preaquecer"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrinterOutput/HeatedBedBox.qml:286
 msgctxt "@tooltip of pre-heat"
-msgid "Heat the bed in advance before printing. You can continue adjusting your print while it is heating, and you won't have to wait for the bed to heat up when you're ready to print."
-msgstr "Aqueçer a base com antecedência antes de imprimir. Pode continuar a ajustar as definições de impressão durante o aquecimento e não precisará de esperar que a base aqueça quando começar a impressão."
+msgid ""
+"Heat the bed in advance before printing. You can continue adjusting your "
+"print while it is heating, and you won't have to wait for the bed to heat up "
+"when you're ready to print."
+msgstr "Aqueçer a base com antecedência antes de imprimir. Pode continuar a ajustar as definições de impressão durante o aquecimento e não precisará de esperar"
+" que a base aqueça quando começar a impressão."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:40
 msgctxt "@label"
@@ -5867,8 +6097,11 @@ msgstr "Extrusor"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:70
 msgctxt "@tooltip"
-msgid "The target temperature of the hotend. The hotend will heat up or cool down towards this temperature. If this is 0, the hotend heating is turned off."
-msgstr "A temperatura-alvo do extrusor. O extrusor irá aquecer ou arrefecer até esta temperatura. Se esta opção for definida como 0, o aquecimento do extrusor será desligado."
+msgid ""
+"The target temperature of the hotend. The hotend will heat up or cool down "
+"towards this temperature. If this is 0, the hotend heating is turned off."
+msgstr "A temperatura-alvo do extrusor. O extrusor irá aquecer ou arrefecer até esta temperatura. Se esta opção for definida como 0, o aquecimento do extrusor"
+" será desligado."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:105
 msgctxt "@tooltip"
@@ -5882,8 +6115,12 @@ msgstr "A temperatura-alvo de preaquecimento do extrusor."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:297
 msgctxt "@tooltip of pre-heat"
-msgid "Heat the hotend in advance before printing. You can continue adjusting your print while it is heating, and you won't have to wait for the hotend to heat up when you're ready to print."
-msgstr "Aquecer o extrusor com antecedência antes de imprimir. Pode continuar a ajustar as definições de impressão durante o aquecimento e não precisará de esperar que o extrusor aqueça quando começar a impressão."
+msgid ""
+"Heat the hotend in advance before printing. You can continue adjusting your "
+"print while it is heating, and you won't have to wait for the hotend to heat "
+"up when you're ready to print."
+msgstr "Aquecer o extrusor com antecedência antes de imprimir. Pode continuar a ajustar as definições de impressão durante o aquecimento e não precisará de esperar"
+" que o extrusor aqueça quando começar a impressão."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:335
 msgctxt "@tooltip"
@@ -5932,7 +6169,9 @@ msgstr "Enviar G-code"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrinterOutput/ManualPrinterControl.qml:319
 msgctxt "@tooltip of G-code command input"
-msgid "Send a custom G-code command to the connected printer. Press 'enter' to send the command."
+msgid ""
+"Send a custom G-code command to the connected printer. Press 'enter' to send "
+"the command."
 msgstr "Enviar um comando G-code personalizado para a impressora ligada. Prima \"Enter\" para enviar o comando."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Cura.qml:250
@@ -5968,8 +6207,12 @@ msgstr "Abrir ficheiro(s)"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Cura.qml:749
 msgctxt "@text:window"
-msgid "We have found one or more G-Code files within the files you have selected. You can only open one G-Code file at a time. If you want to open a G-Code file, please just select only one."
-msgstr "Encontrámos um ou mais ficheiros G-code nos ficheiros selecionados. Só é possível abrir um ficheiro G-code de cada vez. Se pretender abrir um ficheiro G-code, selecione apenas um."
+msgid ""
+"We have found one or more G-Code files within the files you have selected. "
+"You can only open one G-Code file at a time. If you want to open a G-Code "
+"file, please just select only one."
+msgstr "Encontrámos um ou mais ficheiros G-code nos ficheiros selecionados. Só é possível abrir um ficheiro G-code de cada vez. Se pretender abrir um ficheiro"
+" G-code, selecione apenas um."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Cura.qml:829
 msgctxt "@title:window"
@@ -5987,10 +6230,8 @@ msgid ""
 "- Add material profiles and plug-ins from the Marketplace\n"
 "- Back-up and sync your material profiles and plug-ins\n"
 "- Share ideas and get help from 48,000+ users in the Ultimaker community"
-msgstr ""
-"- Adicione definições de materiais e plug-ins do Marketplace\n"
-"- Efetue uma cópia de segurança e sincronize as definições de materiais e plug-ins\n"
-"- Partilhe ideias e obtenha ajuda dos mais de 48.000 utilizadores da Comunidade Ultimaker"
+msgstr "- Adicione definições de materiais e plug-ins do Marketplace\n- Efetue uma cópia de segurança e sincronize as definições de materiais e plug-ins\n- Partilhe"
+" ideias e obtenha ajuda dos mais de 48.000 utilizadores da Comunidade Ultimaker"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Account/GeneralOperations.qml:58
 msgctxt "@button"
@@ -6044,22 +6285,30 @@ msgstr "Verificar atualizações de conta"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrinterSelector/MachineSelector.qml:47
 msgctxt "@status"
-msgid "The cloud printer is offline. Please check if the printer is turned on and connected to the internet."
+msgid ""
+"The cloud printer is offline. Please check if the printer is turned on and "
+"connected to the internet."
 msgstr "A impressora de cloud está offline. Verifique se a impressora está ligada e conectada à Internet."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrinterSelector/MachineSelector.qml:51
 msgctxt "@status"
-msgid "This printer is not linked to your account. Please visit the Ultimaker Digital Factory to establish a connection."
+msgid ""
+"This printer is not linked to your account. Please visit the Ultimaker "
+"Digital Factory to establish a connection."
 msgstr "Esta impressora não está associada à sua conta. Visite a Ultimaker Digital Factory para estabelecer uma ligação."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrinterSelector/MachineSelector.qml:56
 msgctxt "@status"
-msgid "The cloud connection is currently unavailable. Please sign in to connect to the cloud printer."
+msgid ""
+"The cloud connection is currently unavailable. Please sign in to connect to "
+"the cloud printer."
 msgstr "A conectividade de cloud está atualmente indisponível. Inicie sessão para estabelecer ligação com a impressora de cloud."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrinterSelector/MachineSelector.qml:60
 msgctxt "@status"
-msgid "The cloud connection is currently unavailable. Please check your internet connection."
+msgid ""
+"The cloud connection is currently unavailable. Please check your internet "
+"connection."
 msgstr "A conectividade de cloud está atualmente indisponível. Verifique a sua ligação à Internet."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrinterSelector/MachineSelector.qml:237
@@ -6075,17 +6324,17 @@ msgstr "Gerir impressoras"
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrinterSelector/MachineListButton.qml:34
 msgctxt "@label"
 msgid "Hide all connected printers"
-msgstr ""
+msgstr "Hide all connected printers"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrinterSelector/MachineListButton.qml:47
 msgctxt "@label"
 msgid "Show all connected printers"
-msgstr ""
+msgstr "Show all connected printers"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrinterSelector/MachineSelectorList.qml:24
 msgctxt "@label"
 msgid "Other printers"
-msgstr ""
+msgstr "Other printers"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ActionPanel/SliceProcessWidget.qml:54
 msgctxt "@label:PrintjobStatus"
@@ -6164,7 +6413,9 @@ msgstr "Nenhum item para selecionar"
 
 #: /MachineSettingsAction/plugin.json
 msgctxt "description"
-msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc.)."
+msgid ""
+"Provides a way to change machine settings (such as build volume, nozzle "
+"size, etc.)."
 msgstr "Proporciona uma forma de alterar as definições da máquina (tal como o volume de construção, o tamanho do nozzle, etc.)."
 
 #: /MachineSettingsAction/plugin.json
@@ -6274,7 +6525,9 @@ msgstr "Gravador de UFP"
 
 #: /DigitalLibrary/plugin.json
 msgctxt "description"
-msgid "Connects to the Digital Library, allowing Cura to open files from and save files to the Digital Library."
+msgid ""
+"Connects to the Digital Library, allowing Cura to open files from and save "
+"files to the Digital Library."
 msgstr "Liga à Biblioteca Digital, permitindo ao Cura abrir ficheiros da Biblioteca Digital e guardar ficheiros na mesma."
 
 #: /DigitalLibrary/plugin.json
@@ -6314,7 +6567,9 @@ msgstr "Leitor de Trimesh"
 
 #: /UltimakerMachineActions/plugin.json
 msgctxt "description"
-msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
+msgid ""
+"Provides machine actions for Ultimaker machines (such as bed leveling "
+"wizard, selecting upgrades, etc.)."
 msgstr "Disponibiliza funções especificas para as máquinas Ultimaker (tais como, o assistente de nivelamento da base, seleção de atualizações, etc.)."
 
 #: /UltimakerMachineActions/plugin.json
@@ -6334,7 +6589,9 @@ msgstr "Leitor de G-code comprimido"
 
 #: /Marketplace/plugin.json
 msgctxt "description"
-msgid "Manages extensions to the application and allows browsing extensions from the Ultimaker website."
+msgid ""
+"Manages extensions to the application and allows browsing extensions from "
+"the Ultimaker website."
 msgstr "Faz a gestão de extensões da aplicação e permite a navegação das extensões a partir do website da Ultimaker."
 
 #: /Marketplace/plugin.json
@@ -6644,7 +6901,9 @@ msgstr "Gravador de perfis Cura"
 
 #: /ModelChecker/plugin.json
 msgctxt "description"
-msgid "Checks models and print configuration for possible printing issues and give suggestions."
+msgid ""
+"Checks models and print configuration for possible printing issues and give "
+"suggestions."
 msgstr "Verifica potenciais problemas de impressão nos modelos e definições de impressão, e oferece sugestões."
 
 #: /ModelChecker/plugin.json
@@ -6654,7 +6913,8 @@ msgstr "Verificador de Modelos"
 
 #: /USBPrinting/plugin.json
 msgctxt "description"
-msgid "Accepts G-Code and sends them to a printer. Plugin can also update firmware."
+msgid ""
+"Accepts G-Code and sends them to a printer. Plugin can also update firmware."
 msgstr "Aceita G-Codes e envia-os para uma impressora. O plug-in também pode atualizar firmware."
 
 #: /USBPrinting/plugin.json
@@ -6774,7 +7034,8 @@ msgstr "Sentry Logger"
 
 #: /SupportEraser/plugin.json
 msgctxt "description"
-msgid "Creates an eraser mesh to block the printing of support in certain places"
+msgid ""
+"Creates an eraser mesh to block the printing of support in certain places"
 msgstr "Cria um objecto usado para eliminar a impressão de suportes em certas zonas"
 
 #: /SupportEraser/plugin.json
@@ -6791,2494 +7052,3 @@ msgstr "Fornece uma fase de preparação no Cura."
 msgctxt "name"
 msgid "Prepare Stage"
 msgstr "Fase de preparação"
-
-#, python-brace-format
-#~ msgctxt "@error:material"
-#~ msgid "It was not possible to store material package information in project file: {material}. This project may not open correctly on other systems."
-#~ msgstr "Não foi possível guardar a informação do pacote do material no ficheiro do projecto: {material}. Este projeto poderá não abrir corretamente em outros sistemas."
-
-#~ msgctxt "@info:title"
-#~ msgid "Failed to save material package information"
-#~ msgstr "Não foi possível guardar a informação do pacote do material"
-
-#~ msgctxt "@label Description for application dependency"
-#~ msgid "Python Error tracking library"
-#~ msgstr "Biblioteca de controlo de erros de Python"
-
-#~ msgctxt "@label"
-#~ msgid "Printer"
-#~ msgstr "Impressora"
-
-#~ msgctxt "@info"
-#~ msgid "custom profile is active and you overwrote some settings."
-#~ msgstr "o perfil personalizado está ativo e substituiu algumas definições."
-
-#~ msgctxt "@info"
-#~ msgid "custom profile is overriding some settings."
-#~ msgstr "o perfil personalizado está a substituir algumas definições."
-
-#~ msgctxt "@label"
-#~ msgid "Not yet initialized<br/>"
-#~ msgstr "Ainda não inicializado<br/>"
-
-#~ msgctxt "@label"
-#~ msgid "By"
-#~ msgstr "Por"
-
-#~ msgctxt "@Label"
-#~ msgid "Static type checker for Python"
-#~ msgstr "Verificador de tipo estático para Python"
-
-#~ msgctxt "@Label"
-#~ msgid "Root Certificates for validating SSL trustworthiness"
-#~ msgstr "Certificados de raiz para validar a credibilidade SSL"
-
-#~ msgctxt "@label"
-#~ msgid "Python extensions for Microsoft Windows"
-#~ msgstr "Extensões Python para Microsoft Windows"
-
-#~ msgctxt "@label"
-#~ msgid "SVG icons"
-#~ msgstr "Ícones SVG"
-
-#~ msgctxt "@label %1 is filled in with the type of a profile. %2 is filled with a list of numbers (eg '1' or '1, 2')"
-#~ msgid "There is no %1 profile for the configuration in extruder %2. The default intent will be used instead"
-#~ msgid_plural "There is no %1 profile for the configurations in extruders %2. The default intent will be used instead"
-#~ msgstr[0] "Não existe um perfil %1 para a configuração do extrusor %2. O objetivo predefinido será usado como alternativa"
-#~ msgstr[1] "Não existe um perfil %1 para as configurações dos extrusores %2. O objetivo predefinido será usado como alternativa"
-
-#~ msgctxt "@tooltip"
-#~ msgid "You have modified some profile settings. If you want to change these go to custom mode."
-#~ msgstr "Algumas definições do perfil foram modificadas. Se pretender alterá-las, aceda ao modo Personalizado."
-
-#~ msgctxt "@action:button"
-#~ msgid "Sync materials with printers"
-#~ msgstr "Sincronizar materiais"
-
-#~ msgctxt "@title:window"
-#~ msgid "Convert Image..."
-#~ msgstr "Converter imagem..."
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "The width in millimeters on the build plate."
-#~ msgstr "A largura em milímetros na base de construção."
-
-#~ msgctxt "@title"
-#~ msgid "Marketplace"
-#~ msgstr "Mercado"
-
-#~ msgctxt "@info"
-#~ msgid "You will need to restart Cura before changes in packages have effect."
-#~ msgstr "É necessário reiniciar o Cura para que as alterações dos pacotes sejam aplicadas."
-
-#~ msgctxt "@action:button"
-#~ msgid "Install"
-#~ msgstr "Instalar"
-
-#~ msgctxt "@action:button"
-#~ msgid "Installed"
-#~ msgstr "Instalado"
-
-#~ msgctxt "@label"
-#~ msgid "Premium"
-#~ msgstr "Premium"
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "Go to Web Marketplace"
-#~ msgstr "Ir para Mercado na Web"
-
-#~ msgctxt "@label"
-#~ msgid "Search materials"
-#~ msgstr "Procurar materiais"
-
-#~ msgctxt "@label"
-#~ msgid "Compatibility"
-#~ msgstr "Compatibilidade"
-
-#~ msgctxt "@label:table_header"
-#~ msgid "Machine"
-#~ msgstr "Máquina"
-
-#~ msgctxt "@label:table_header"
-#~ msgid "Build Plate"
-#~ msgstr "Base de construção"
-
-#~ msgctxt "@label:table_header"
-#~ msgid "Support"
-#~ msgstr "Suportes"
-
-#~ msgctxt "@label:table_header"
-#~ msgid "Quality"
-#~ msgstr "Qualidade"
-
-#~ msgctxt "@action:label"
-#~ msgid "Technical Data Sheet"
-#~ msgstr "Ficha técnica"
-
-#~ msgctxt "@action:label"
-#~ msgid "Safety Data Sheet"
-#~ msgstr "Ficha de segurança"
-
-#~ msgctxt "@action:label"
-#~ msgid "Printing Guidelines"
-#~ msgstr "Instruções de impressão"
-
-#~ msgctxt "@action:label"
-#~ msgid "Website"
-#~ msgstr "Site"
-
-#~ msgctxt "@label:The string between <a href=> and </a> is the highlighted link"
-#~ msgid "<a href='%1'>Log in</a> is required to install or update"
-#~ msgstr "É necessário <a href='%1'>Log in</a> para instalar ou atualizar"
-
-#~ msgctxt "@label:The string between <a href=> and </a> is the highlighted link"
-#~ msgid "<a href='%1'>Buy material spools</a>"
-#~ msgstr "<a href='%1'>Comprar bobinas de material</a>"
-
-#~ msgctxt "@action:button"
-#~ msgid "Update"
-#~ msgstr "Atualizar"
-
-#~ msgctxt "@action:button"
-#~ msgid "Updating"
-#~ msgstr "A Actualizar"
-
-#~ msgctxt "@action:button"
-#~ msgid "Updated"
-#~ msgstr "Atualizado"
-
-#~ msgctxt "@action:button"
-#~ msgid "Back"
-#~ msgstr "Anterior"
-
-#~ msgctxt "@title:tab"
-#~ msgid "Plugins"
-#~ msgstr "Plug-ins"
-
-#~ msgctxt "@title:tab"
-#~ msgid "Installed"
-#~ msgstr "Instalado"
-
-#~ msgctxt "@label"
-#~ msgid "Will install upon restarting"
-#~ msgstr "Será instalado após reiniciar"
-
-#~ msgctxt "@label:The string between <a href=> and </a> is the highlighted link"
-#~ msgid "<a href='%1'>Log in</a> is required to update"
-#~ msgstr "É necessário <a href='%1'>Log in</a> para atualizar"
-
-#~ msgctxt "@action:button"
-#~ msgid "Downgrade"
-#~ msgstr "Repor Versão Anterior"
-
-#~ msgctxt "@action:button"
-#~ msgid "Uninstall"
-#~ msgstr "Desinstalar"
-
-#~ msgctxt "@label"
-#~ msgid "Community Contributions"
-#~ msgstr "Contribuições comunitárias"
-
-#~ msgctxt "@label"
-#~ msgid "Community Plugins"
-#~ msgstr "Plug-ins comunitários"
-
-#~ msgctxt "@label"
-#~ msgid "Generic Materials"
-#~ msgstr "Materiais genéricos"
-
-#~ msgctxt "@info"
-#~ msgid "Fetching packages..."
-#~ msgstr "A obter pacotes..."
-
-#~ msgctxt "@label"
-#~ msgid "Website"
-#~ msgstr "Site"
-
-#~ msgctxt "@label"
-#~ msgid "Email"
-#~ msgstr "E-mail"
-
-#~ msgctxt "@description"
-#~ msgid "Please sign in to get verified plugins and materials for Ultimaker Cura Enterprise"
-#~ msgstr "Inicie sessão para obter plug-ins e materiais verificados para o Ultimaker Cura Enterprise"
-
-#~ msgctxt "@label"
-#~ msgid "Version"
-#~ msgstr "Versão"
-
-#~ msgctxt "@label"
-#~ msgid "Last updated"
-#~ msgstr "Actualizado em"
-
-#~ msgctxt "@label"
-#~ msgid "Downloads"
-#~ msgstr "Transferências"
-
-#~ msgctxt "@title:tab"
-#~ msgid "Installed plugins"
-#~ msgstr "Plug-ins instalados"
-
-#~ msgctxt "@info"
-#~ msgid "No plugin has been installed."
-#~ msgstr "Não foi instalado qualquer plug-in."
-
-#~ msgctxt "@title:tab"
-#~ msgid "Installed materials"
-#~ msgstr "Materiais instalados"
-
-#~ msgctxt "@info"
-#~ msgid "No material has been installed."
-#~ msgstr "Não foi instalado qualquer material."
-
-#~ msgctxt "@title:tab"
-#~ msgid "Bundled plugins"
-#~ msgstr "Plug-ins em pacote"
-
-#~ msgctxt "@title:tab"
-#~ msgid "Bundled materials"
-#~ msgstr "Materiais em pacote"
-
-#~ msgctxt "@info"
-#~ msgid "Could not connect to the Cura Package database. Please check your connection."
-#~ msgstr "Não foi possível aceder á base de dados de Pacotes do Cura. Por favor verifique a sua ligação."
-
-#~ msgctxt "@title:window"
-#~ msgid "Confirm uninstall"
-#~ msgstr "Confirmar desinstalação"
-
-#~ msgctxt "@text:window"
-#~ msgid "You are uninstalling materials and/or profiles that are still in use. Confirming will reset the following materials/profiles to their defaults."
-#~ msgstr "Está a desinstalar materiais e/ou perfis que ainda estão a ser utilizados. Mediante confirmação, as predefinições dos seguintes materiais/perfis serão repostas."
-
-#~ msgctxt "@text:window"
-#~ msgid "Materials"
-#~ msgstr "Materiais"
-
-#~ msgctxt "@text:window"
-#~ msgid "Profiles"
-#~ msgstr "Perfis"
-
-#~ msgctxt "@action:button"
-#~ msgid "Confirm"
-#~ msgstr "Confirmar"
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "Some things could be problematic in this print. Click to see tips for adjustment."
-#~ msgstr "Alguns factores podem vir a ser problemáticos nesta impressão. Clique para ver algumas sugestões para melhorar a qualidade da impressão."
-
-#~ msgctxt "@label"
-#~ msgid "Support library for handling planar objects"
-#~ msgstr "Biblioteca de apoio para processamento de objetos planos"
-
-#~ msgctxt "@text:window, %1 is a profile name"
-#~ msgid ""
-#~ "You have customized some profile settings.\n"
-#~ "Would you like to Keep these changed settings after switching profiles?\n"
-#~ "Alternatively, you can discard the changes to load the defaults from '%1'."
-#~ msgstr ""
-#~ "Personalizou algumas definições de perfil.\n"
-#~ "Pretende manter estas definições alteradas depois de trocar de perfis?\n"
-#~ "Como alternativa, pode descartar as alterações para carregar as predefinições a partir de '%1'."
-
-#~ msgctxt "@action:inmenu menubar:view"
-#~ msgid "&Build plate"
-#~ msgstr "&Base de construção"
-
-#~ msgctxt "@label"
-#~ msgid "Create"
-#~ msgstr "Criar"
-
-#~ msgctxt "@label"
-#~ msgid "Duplicate"
-#~ msgstr "Duplicar"
-
-#~ msgctxt "@label %1 is printer name"
-#~ msgid "Printer: %1"
-#~ msgstr "Impressora: %1"
-
-#~ msgctxt "@action:button"
-#~ msgid "Update profile with current settings/overrides"
-#~ msgstr "Atualizar perfil com as definições/substituições atuais"
-
-#~ msgctxt "@label"
-#~ msgid "Theme:"
-#~ msgstr "Tema:"
-
-#~ msgctxt "@label"
-#~ msgid "You will need to restart the application for these changes to have effect."
-#~ msgstr "É necessário reiniciar a aplicação para que estas alterações sejam aplicadas."
-
-#~ msgctxt "@action:button"
-#~ msgid "More information"
-#~ msgstr "Mais informações"
-
-#~ msgctxt "@action:button"
-#~ msgid "Create"
-#~ msgstr "Criar"
-
-#~ msgctxt "@action:button Sending materials to printers"
-#~ msgid "Sync with Printers"
-#~ msgstr "Sincronizar com Impressoras"
-
-#~ msgctxt "@action:label"
-#~ msgid "Printer"
-#~ msgstr "Impressora"
-
-#~ msgctxt "@title:column"
-#~ msgid "Unit"
-#~ msgstr "Unidade"
-
-#~ msgctxt "@action:inmenu"
-#~ msgid "Show Online Troubleshooting Guide"
-#~ msgstr "Mostrar Guia de resolução de problemas online"
-
-#~ msgctxt "@action:inmenu"
-#~ msgid "Add more materials from Marketplace"
-#~ msgstr "Use o Mercado para adicionar outros materiais"
-
-#~ msgctxt "@action:inmenu menubar:edit"
-#~ msgid "Arrange All Models To All Build Plates"
-#~ msgstr "Dispor todos os modelos em todas as bases de construção"
-
-#~ msgctxt "@action:menu"
-#~ msgid "&Marketplace"
-#~ msgstr "&Mercado"
-
-#~ msgctxt "description"
-#~ msgid "Find, manage and install new Cura packages."
-#~ msgstr "Encontre, organize e instale novos pacotes para o Cura."
-
-#~ msgctxt "name"
-#~ msgid "Toolbox"
-#~ msgstr "Toolbox"
-
-#~ msgctxt "description"
-#~ msgid "Provides the Simulation view."
-#~ msgstr "Permite a visualização por camadas."
-
-#~ msgctxt "@info:status"
-#~ msgid "Send and monitor print jobs from anywhere using your Ultimaker account."
-#~ msgstr "Envie e monitorize trabalhos de impressão a partir de qualquer lugar através da sua conta Ultimaker."
-
-#~ msgctxt "@info:status Ultimaker Cloud should not be translated."
-#~ msgid "Connect to Ultimaker Digital Factory"
-#~ msgstr "Ligar à Ultimaker Digital Factory"
-
-#~ msgctxt "@info"
-#~ msgid "Webcam feeds for cloud printers cannot be viewed from Ultimaker Cura."
-#~ msgstr "Não é possível visualizar os feeds das câmaras das impressoras na cloud a partir do Ultimaker Cura."
-
-#~ msgctxt "@info Don't translate {machine_name}, since it gets replaced by a printer name!"
-#~ msgid "New features or bug-fixes may be available for your {machine_name}! If not already at the latest version, it is recommended to update the firmware on your printer to version {latest_version}."
-#~ msgstr "Poderão estar disponíveis novas funcionalidades ou correções de erros para {machine_name}! Se ainda não tiver a versão mais recente, recomendamos que atualize o firmware da sua impressora para a versão {latest_version}."
-
-#~ msgctxt "@info:title The %s gets replaced with the printer name."
-#~ msgid "New %s firmware available"
-#~ msgstr "Novo firmware para %s está disponível"
-
-#~ msgctxt "@info:status"
-#~ msgid "Global stack is missing."
-#~ msgstr "A pilha global está em falta."
-
-#~ msgctxt "@info:status"
-#~ msgid "Your model is not manifold. The highlighted areas indicate either missing or extraneous surfaces."
-#~ msgstr "O seu modelo não é uma variedade. As áreas destacadas indicam superfícies extra ou em falta."
-
-#~ msgctxt "@info:title"
-#~ msgid "Model errors"
-#~ msgstr "Erros de modelo"
-
-#~ msgctxt "@label:listbox"
-#~ msgid "Layer thickness"
-#~ msgstr "Espessura da Camada"
-
-#~ msgctxt "@label"
-#~ msgid "Your key to connected 3D printing"
-#~ msgstr "A chave para a impressão 3D em rede"
-
-#~ msgctxt "@text"
-#~ msgid ""
-#~ "- Customize your experience with more print profiles and plugins\n"
-#~ "- Stay flexible by syncing your setup and loading it anywhere\n"
-#~ "- Increase efficiency with a remote workflow on Ultimaker printers"
-#~ msgstr ""
-#~ "- Personalize a sua experiência com mais perfis e plug-ins de impressão\n"
-#~ "- Mantenha a sua flexibilidade. Sincronize a sua configuração e carregue-a em qualquer local\n"
-#~ "- Aumente a eficiência com um fluxo de trabalho remoto nas impressoras Ultimaker"
-
-#~ msgctxt "@button"
-#~ msgid "Create account"
-#~ msgstr "Criar conta"
-
-#~ msgctxt "@action:inmenu menubar:edit"
-#~ msgid "Delete Selected Model"
-#~ msgid_plural "Delete Selected Models"
-#~ msgstr[0] "Apagar Modelo Selecionado"
-#~ msgstr[1] "Apagar Modelos Selecionados"
-
-#~ msgctxt "@action:inmenu menubar:edit"
-#~ msgid "Center Selected Model"
-#~ msgid_plural "Center Selected Models"
-#~ msgstr[0] "Centrar modelo selecionado"
-#~ msgstr[1] "Centrar modelos selecionados"
-
-#~ msgctxt "@action:inmenu menubar:edit"
-#~ msgid "Multiply Selected Model"
-#~ msgid_plural "Multiply Selected Models"
-#~ msgstr[0] "Multiplicar modelo selecionado"
-#~ msgstr[1] "Multiplicar modelos selecionados"
-
-#~ msgctxt "@button"
-#~ msgid "Finish"
-#~ msgstr "Concluir"
-
-#~ msgctxt "@label"
-#~ msgid "Ultimaker Account"
-#~ msgstr "Conta Ultimaker"
-
-#~ msgctxt "@text"
-#~ msgid "Your key to connected 3D printing"
-#~ msgstr "A chave para a impressão 3D em rede"
-
-#~ msgctxt "@text"
-#~ msgid "- Customize your experience with more print profiles and plugins"
-#~ msgstr "Personalize a sua experiência com mais perfis e plug-ins de impressão"
-
-#~ msgctxt "@text"
-#~ msgid "- Stay flexible by syncing your setup and loading it anywhere"
-#~ msgstr "Mantenha a sua flexibilidade. Sincronize a sua configuração e carregue-a em qualquer local"
-
-#~ msgctxt "@text"
-#~ msgid "- Increase efficiency with a remote workflow on Ultimaker printers"
-#~ msgstr "Aumente a eficiência com um fluxo de trabalho remoto nas impressoras Ultimaker"
-
-#~ msgctxt "@text"
-#~ msgid ""
-#~ "Please follow these steps to set up\n"
-#~ "Ultimaker Cura. This will only take a few moments."
-#~ msgstr ""
-#~ "Siga estes passos para configurar o\n"
-#~ "Ultimaker Cura. Este processo deverá demorar apenas alguns momentos."
-
-#~ msgctxt "@label"
-#~ msgid "What's new in Ultimaker Cura"
-#~ msgstr "Novidades no Ultimaker Cura"
-
-#~ msgctxt "@label ({} is object name)"
-#~ msgid "Are you sure you wish to remove {}? This cannot be undone!"
-#~ msgstr "Tem a certeza de que pretende remover {}? Esta ação não pode ser anulada!"
-
-#~ msgctxt "@info:status"
-#~ msgid "The selected model was too small to load."
-#~ msgstr "O modelo selecionado era demasiado pequeno para carregar."
-
-#~ msgctxt "@info:status"
-#~ msgid "Successfully imported profile {0}"
-#~ msgstr "Perfil {0} importado com êxito"
-
-#~ msgctxt "@info:status"
-#~ msgid "Could not find a quality type {0} for the current configuration."
-#~ msgstr "Não foi possível encontrar um tipo de qualidade {0} para a configuração atual."
-
-#~ msgctxt "info:status"
-#~ msgid "Adding printer {} ({}) from your account"
-#~ msgstr "A adicionar impressora {} ({}) a partir da sua conta"
-
-#~ msgctxt "info:hidden list items"
-#~ msgid "<li>... and {} others</li>"
-#~ msgstr "<li>... e {} outras</li>"
-
-#~ msgctxt "info:status"
-#~ msgid "Printers added from Digital Factory:<ul>{}</ul>"
-#~ msgstr "Impressoras adicionadas a partir da Digital Factory:<ul>{}</ul>"
-
-#~ msgctxt "info:status"
-#~ msgid "<ul>{}</ul>To establish a connection, please visit the <a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>."
-#~ msgstr "<ul>{}</ul>Para estabelecer uma ligação, visite a <a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>."
-
-#~ msgctxt "@label ({} is printer name)"
-#~ msgid "{} will be removed until the next account sync. <br> To remove {} permanently, visit <a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>. <br><br>Are you sure you want to remove {} temporarily?"
-#~ msgstr "{} será removida até à próxima sincronização de conta. <br> Para remover {} permanentemente, visite <a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>. <br><br>Tem a certeza de que pretende remover {} temporariamente?"
-
-#~ msgctxt "@label"
-#~ msgid ""
-#~ "You are about to remove {} printer(s) from Cura. This action cannot be undone. \n"
-#~ "Are you sure you want to continue?"
-#~ msgstr ""
-#~ "Está prestes a remover {} impressora(s) do Cura. Esta ação não pode ser anulada. \n"
-#~ "Tem a certeza de que pretende continuar?"
-
-#~ msgctxt "@label"
-#~ msgid ""
-#~ "You are about to remove all printers from Cura. This action cannot be undone. \n"
-#~ "Are you sure you want to continue?"
-#~ msgstr ""
-#~ "Está prestes a remover todas as impressoras do Cura. Esta ação não pode ser anulada. \n"
-#~ "Tem a certeza de que pretende continuar?"
-
-#~ msgctxt "@action:ComboBox option"
-#~ msgid "Update"
-#~ msgstr "Atualizar"
-
-#~ msgctxt "@action:ComboBox option"
-#~ msgid "Create new"
-#~ msgstr "Criar nova"
-
-#~ msgctxt "@label"
-#~ msgid "Shared Heater"
-#~ msgstr "Aquecedor partilhado"
-
-#~ msgctxt "@info"
-#~ msgid "The webcam is not available because you are monitoring a cloud printer."
-#~ msgstr "Esta webcam não está disponível pois está a monitorizar uma impressora na cloud."
-
-#~ msgctxt "@button"
-#~ msgid "Ultimaker Digital Factory"
-#~ msgstr "Ultimaker Digital Factory"
-
-#~ msgctxt "@text:window, %1 is a profile name"
-#~ msgid ""
-#~ "You have customized some profile settings.\n"
-#~ "Would you like to Keep these changed settings after switching profiles?\n"
-#~ "Alternatively, you can Discard the changes to load the defaults from '%1'."
-#~ msgstr ""
-#~ "Personalizou algumas definições de perfil.\n"
-#~ "Pretende manter estas definições alteradas depois de trocar de perfis?\n"
-#~ "Como alternativa, pode descartar as alterações para carregar as predefinições a partir de '%1'."
-
-#~ msgctxt "@label"
-#~ msgid "Overrides %1 setting."
-#~ msgid_plural "Overrides %1 settings."
-#~ msgstr[0] "Substitui %1 definição."
-#~ msgstr[1] "Substitui %1 definições."
-
-#~ msgctxt "@text"
-#~ msgid "Please give your printer a name"
-#~ msgstr "Atribua um nome à sua impressora"
-
-#~ msgctxt "@info Don't translate {machine_name}, since it gets replaced by a printer name!"
-#~ msgid "New features are available for your {machine_name}! It is recommended to update the firmware on your printer."
-#~ msgstr "Estão disponíveis novas funcionalidades para a impressora {machine_name}! É recomendado atualizar o firmware da impressora."
-
-#~ msgctxt "@action:button"
-#~ msgid "Print via Cloud"
-#~ msgstr "Imprimir através da cloud"
-
-#~ msgctxt "@properties:tooltip"
-#~ msgid "Print via Cloud"
-#~ msgstr "Imprimir através da cloud"
-
-#~ msgctxt "@info:status"
-#~ msgid "Connected via Cloud"
-#~ msgstr "Ligada através da cloud"
-
-#~ msgctxt "@info:status Ultimaker Cloud should not be translated."
-#~ msgid "Connect to Ultimaker Cloud"
-#~ msgstr "Ligar à cloud da Ultimaker"
-
-#~ msgctxt "@label"
-#~ msgid "You need to login first before you can rate"
-#~ msgstr "É necessário iniciar sessão antes de atribuir a classificação"
-
-#~ msgctxt "@label"
-#~ msgid "You need to install the package before you can rate"
-#~ msgstr "É necessário instalar o pacote antes de atribuir a classificação"
-
-#~ msgctxt "@label"
-#~ msgid "ratings"
-#~ msgstr "classificações"
-
-#~ msgctxt "@label"
-#~ msgid "Featured"
-#~ msgstr "Em Destaque"
-
-#~ msgctxt "@label"
-#~ msgid "Your rating"
-#~ msgstr "A sua classificação"
-
-#~ msgctxt "@label"
-#~ msgid "Author"
-#~ msgstr "Autor"
-
-#~ msgctxt "@description"
-#~ msgid "Get plugins and materials verified by Ultimaker"
-#~ msgstr "Obter plug-ins e materiais verificados pela Ultimaker"
-
-#~ msgctxt "@label The argument is a username."
-#~ msgid "Hi %1"
-#~ msgstr "Olá, %1"
-
-#~ msgctxt "@button"
-#~ msgid "Ultimaker account"
-#~ msgstr "Conta Ultimaker"
-
-#~ msgctxt "@button"
-#~ msgid "Sign out"
-#~ msgstr "Terminar sessão"
-
-#~ msgctxt "@label"
-#~ msgid "Support library for analysis of complex networks"
-#~ msgstr "Biblioteca de apoio para análise de redes complexas"
-
-#~ msgctxt "@Label"
-#~ msgid "Python HTTP library"
-#~ msgstr "Biblioteca de HTTP Python"
-
-#~ msgctxt "@text:window"
-#~ msgid ""
-#~ "You have customized some profile settings.\n"
-#~ "Would you like to keep or discard those settings?"
-#~ msgstr ""
-#~ "Alterou algumas das definições do perfil.\n"
-#~ "Gostaria de manter ou descartar essas alterações?"
-
-#~ msgctxt "@title:column"
-#~ msgid "Default"
-#~ msgstr "Predefinição"
-
-#~ msgctxt "@title:column"
-#~ msgid "Customized"
-#~ msgstr "Personalizado"
-
-#~ msgctxt "@action:button"
-#~ msgid "Discard"
-#~ msgstr "Descartar"
-
-#~ msgctxt "@action:button"
-#~ msgid "Keep"
-#~ msgstr "Manter"
-
-#~ msgctxt "@action:button"
-#~ msgid "Create New Profile"
-#~ msgstr "Criar novo perfil"
-
-#~ msgctxt "@title:menu menubar:file"
-#~ msgid "&Save..."
-#~ msgstr "&Guardar..."
-
-#~ msgctxt "@text"
-#~ msgid "Place enter your printer's IP address."
-#~ msgstr "Introduza o endereço IP da sua impressora."
-
-#~ msgctxt "@button"
-#~ msgid "Create an account"
-#~ msgstr "Criar uma conta"
-
-#~ msgctxt "@info:generic"
-#~ msgid ""
-#~ "\n"
-#~ "Do you want to sync material and software packages with your account?"
-#~ msgstr ""
-#~ "\n"
-#~ "Pretende sincronizar o material e os pacotes de software com a sua conta?"
-
-#~ msgctxt "@info:generic"
-#~ msgid ""
-#~ "\n"
-#~ "Syncing..."
-#~ msgstr ""
-#~ "\n"
-#~ "A sincronizar..."
-
-#~ msgctxt "@info:status"
-#~ msgid "Nothing to slice because none of the models fit the build volume or are assigned to a disabled extruder. Please scale or rotate models to fit, or enable an extruder."
-#~ msgstr "Sem conteúdo para seccionar porque nenhum dos modelos está dentro do volume de construção ou porque os mesmos estão atribuídos a um extrusor desativado. Dimensione ou rode os modelos para os adaptar ou ative o extrusor."
-
-#~ msgctxt "@info:backup_status"
-#~ msgid "There was an error listing your backups."
-#~ msgstr "Ocorreu um erro ao listar as suas cópias de segurança."
-
-#~ msgctxt "@title:groupbox"
-#~ msgid "User description (Note: Developers may not speak your language, please use English if possible)"
-#~ msgstr "Descrição do utilizador (Nota: os programadores podem não falar a sua língua, pelo que, se possível, deve utilizar o inglês)"
-
-#~ msgctxt "@title:window"
-#~ msgid "Closing Cura"
-#~ msgstr "Fechar Cura"
-
-#~ msgctxt "@label"
-#~ msgid "Are you sure you want to exit Cura?"
-#~ msgstr "Tem a certeza de que deseja sair do Cura?"
-
-#~ msgctxt "@label"
-#~ msgid "Language:"
-#~ msgstr "Idioma:"
-
-#~ msgctxt "@label"
-#~ msgid "Ultimaker Cloud"
-#~ msgstr "Ultimaker Cloud"
-
-#~ msgctxt "@text"
-#~ msgid "The next generation 3D printing workflow"
-#~ msgstr "O fluxo de trabalho de impressão 3D da próxima geração"
-
-#~ msgctxt "@text"
-#~ msgid "- Send print jobs to Ultimaker printers outside your local network"
-#~ msgstr "- Envie trabalhos de impressão para impressoras Ultimaker fora da sua rede local"
-
-#~ msgctxt "@text"
-#~ msgid "- Store your Ultimaker Cura settings in the cloud for use anywhere"
-#~ msgstr "- Guarde as definições do seu Ultimaker Cura na cloud para utilizar em qualquer lugar"
-
-#~ msgctxt "@text"
-#~ msgid "- Get exclusive access to print profiles from leading brands"
-#~ msgstr "- Obtenha acesso exclusivo a perfis de impressão de marcas de referência"
-
-# rever!
-# contexto?!
-# resolvido?
-# por-extrusor
-#~ msgctxt "@label"
-#~ msgid "The value is resolved from per-extruder values "
-#~ msgstr "O valor é calculado com base nos valores por-extrusor "
-
-#~ msgctxt "@label"
-#~ msgid "The next generation 3D printing workflow"
-#~ msgstr "O fluxo de trabalho de impressão 3D da próxima geração"
-
-#~ msgctxt "@text"
-#~ msgid ""
-#~ "- Send print jobs to Ultimaker printers outside your local network\n"
-#~ "- Store your Ultimaker Cura settings in the cloud for use anywhere\n"
-#~ "- Get exclusive access to print profiles from leading brands"
-#~ msgstr ""
-#~ "- Envie trabalhos de impressão para impressoras Ultimaker fora da sua rede local\n"
-#~ "- Guarde as definições do seu Ultimaker Cura na cloud para utilizar em qualquer lugar\n"
-#~ "- Obtenha acesso exclusivo a perfis de impressão de marcas de referência"
-
-#~ msgctxt "@title:window"
-#~ msgid "About "
-#~ msgstr "Acerca de "
-
-#~ msgctxt "@info:button"
-#~ msgid "Quit Cura"
-#~ msgstr "Sair do Cura"
-
-#~ msgctxt "@action:checkbox"
-#~ msgid "Infill only"
-#~ msgstr "Apenas enchimento"
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "Change active post-processing scripts"
-#~ msgstr "Alterar scripts de pós-processamento ativos"
-
-#~ msgctxt "@label:listbox"
-#~ msgid "Feedrate"
-#~ msgstr "Velocidade de Alimentação"
-
-#~ msgctxt "name"
-#~ msgid "Machine Settings action"
-#~ msgstr "Função Definições da Máquina"
-
-#~ msgctxt "@info:title"
-#~ msgid "New cloud printers found"
-#~ msgstr "Encontradas novas impressoras na cloud"
-
-#~ msgctxt "@info:message"
-#~ msgid "New printers have been found connected to your account, you can find them in your list of discovered printers."
-#~ msgstr "Foram encontradas novas impressoras associadas à sua conta. Pode encontrá-las na sua lista de impressoras detetadas."
-
-#~ msgctxt "@info:status"
-#~ msgid "Cura does not accurately display layers when Wire Printing is enabled"
-#~ msgstr "Quando a opção \"Wire Printing\" está ativa, o Cura não permite visualizar as camadas de uma forma precisa"
-
-#~ msgctxt "@label"
-#~ msgid "Pre-sliced file {0}"
-#~ msgstr "Ficheiro pré-seccionado {0}"
-
-#~ msgctxt "@label"
-#~ msgid ""
-#~ "This plugin contains a license.\n"
-#~ "You need to accept this license to install this plugin.\n"
-#~ "Do you agree with the terms below?"
-#~ msgstr ""
-#~ "Este plug-in contém uma licença.\n"
-#~ "É necessário aceitar esta licença para instalar o plug-in.\n"
-#~ "Concorda com os termos abaixo?"
-
-#~ msgctxt "@action:button"
-#~ msgid "Accept"
-#~ msgstr "Aceitar"
-
-#~ msgctxt "@action:button"
-#~ msgid "Decline"
-#~ msgstr "Rejeitar"
-
-#~ msgctxt "@action:inmenu"
-#~ msgid "Show All Settings"
-#~ msgstr "Mostrar Todas as Definições"
-
-#~ msgctxt "@title:window"
-#~ msgid "Ultimaker Cura"
-#~ msgstr "Ultimaker Cura"
-
-#~ msgctxt "@title:window"
-#~ msgid "About Cura"
-#~ msgstr "Sobre o Cura"
-
-# rever!
-# flatten -ver contexto!
-# nivelar?
-#~ msgctxt "@item:inmenu"
-#~ msgid "Flatten active settings"
-#~ msgstr "Nivelar Definições Ativas"
-
-#~ msgctxt "@info:status"
-#~ msgid "Profile has been flattened & activated."
-#~ msgstr "O perfil foi nivelado & ativado."
-
-#~ msgctxt "X3g Writer Plugin Description"
-#~ msgid "Writes X3g to files"
-#~ msgstr "Grava X3g num ficheiro"
-
-#~ msgctxt "X3g Writer File Description"
-#~ msgid "X3g File"
-#~ msgstr "Ficheiro X3g"
-
-#~ msgctxt "X3G Writer File Description"
-#~ msgid "X3G File"
-#~ msgstr "Ficheiro X3G"
-
-#~ msgctxt "@item:inmenu"
-#~ msgid "Profile Assistant"
-#~ msgstr "Assistente de perfis"
-
-#~ msgctxt "@item:inlistbox"
-#~ msgid "Profile Assistant"
-#~ msgstr "Assistente de perfis"
-
-#~ msgctxt "@action:button"
-#~ msgid "Retry"
-#~ msgstr "Tentar de Novo"
-
-#~ msgctxt "@label:table_header"
-#~ msgid "Print Core"
-#~ msgstr "Print Core"
-
-#~ msgctxt "@label"
-#~ msgid "Don't support overlap with other models"
-#~ msgstr "Retirar suportes na intercepção com outros modelos"
-
-#~ msgctxt "@label"
-#~ msgid "Modify settings for overlap with other models"
-#~ msgstr "Alterar as definições dos objetos que intercepta"
-
-#~ msgctxt "@label"
-#~ msgid "Modify settings for infill of other models"
-#~ msgstr "Modificar definições do enchimento de outros modelos"
-
-#~ msgctxt "@action:ComboBox option"
-#~ msgid "Update existing"
-#~ msgstr "Atualizar existente"
-
-#~ msgctxt "@label"
-#~ msgid "Not supported"
-#~ msgstr "Não suportado"
-
-#~ msgctxt "@action:button"
-#~ msgid "Previous"
-#~ msgstr "Anterior"
-
-#~ msgctxt "@label"
-#~ msgid "Tip"
-#~ msgstr "Sugestão"
-
-#~ msgctxt "@label"
-#~ msgid "Print experiment"
-#~ msgstr "Experimento de impressão"
-
-#~ msgctxt "@label"
-#~ msgid "Checklist"
-#~ msgstr "Lista de verificação"
-
-#~ msgctxt "@label"
-#~ msgid "Please select any upgrades made to this Ultimaker 2."
-#~ msgstr "Selecione quaisquer atualizações realizadas a esta Ultimaker 2."
-
-#~ msgctxt "@label"
-#~ msgid "Olsson Block"
-#~ msgstr "Olsson Block"
-
-#~ msgctxt "@window:text"
-#~ msgid "Camera rendering: "
-#~ msgstr "Composição de câmara: "
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "Use multi build plate functionality"
-#~ msgstr "Usar a funcionalidade de múltiplas bases de construção"
-
-#~ msgctxt "@option:check"
-#~ msgid "Use multi build plate functionality (restart required)"
-#~ msgstr "Usar a funcionalidade de múltiplas bases de construção (é necessário reiniciar)"
-
-#~ msgctxt "@label"
-#~ msgid "Default profiles"
-#~ msgstr "Perfis predefinidos"
-
-#~ msgctxt "@label:textbox"
-#~ msgid "search settings"
-#~ msgstr "procurar definições"
-
-#~ msgctxt "@label"
-#~ msgid "Layer Height"
-#~ msgstr "Espessura das Camadas"
-
-#~ msgctxt "@tooltip"
-#~ msgid "This quality profile is not available for your current material and nozzle configuration. Please change these to enable this quality profile."
-#~ msgstr "Este perfil de qualidade não se encontra disponível para a sua configuração atual de material e de nozzle. Altere-a para ativar este perfil de qualidade."
-
-#~ msgctxt "@tooltip"
-#~ msgid "A custom profile is currently active. To enable the quality slider, choose a default quality profile in Custom tab"
-#~ msgstr "De momento está ativo um perfil personalizado. Para poder ativar o controlo de qualidade, por favor selecione um dos perfis de qualidade predefinidos no modo Personalizado"
-
-#~ msgctxt "@title:menu"
-#~ msgid "&Build plate"
-#~ msgstr "&Base de construção"
-
-#~ msgctxt "@title:settings"
-#~ msgid "&Profile"
-#~ msgstr "&Perfil"
-
-#~ msgctxt "@action:label"
-#~ msgid "Build plate"
-#~ msgstr "Base de construção"
-
-#~ msgctxt "description"
-#~ msgid "Dump the contents of all settings to a HTML file."
-#~ msgstr "Descarregar o conteúdo de todas as definições para um ficheiro HTML."
-
-#~ msgctxt "name"
-#~ msgid "God Mode"
-#~ msgstr "Modo God"
-
-#~ msgctxt "description"
-#~ msgid "Create a flattened quality changes profile."
-#~ msgstr "Cria um perfil de alterações de qualidade aplanado."
-
-#~ msgctxt "name"
-#~ msgid "Profile Flattener"
-#~ msgstr "Aplanador de perfis"
-
-#~ msgctxt "description"
-#~ msgid "Allows material manufacturers to create new material and quality profiles using a drop-in UI."
-#~ msgstr "Permite aos fabricantes de materiais criar novos materiais e perfis de qualidade utilizando uma IU de fácil acesso."
-
-#~ msgctxt "name"
-#~ msgid "Print Profile Assistant"
-#~ msgstr "Assistente de perfis de impressão"
-
-#~ msgctxt "@info:status"
-#~ msgid "Connected over the network."
-#~ msgstr "Ligado através da rede."
-
-#~ msgctxt "@info:status"
-#~ msgid "Connected over the network. Please approve the access request on the printer."
-#~ msgstr "Ligado através da rede. Por favor aprove o pedido de acesso, na impressora."
-
-#~ msgctxt "@info:status"
-#~ msgid "Connected over the network. No access to control the printer."
-#~ msgstr "Ligado através da rede. Sem autorização para controlar a impressora."
-
-#~ msgctxt "@info:status"
-#~ msgid "Access to the printer requested. Please approve the request on the printer"
-#~ msgstr "Acesso à impressora solicitado. Por favor aprove o pedido de acesso, na impressora"
-
-#~ msgctxt "@info:title"
-#~ msgid "Authentication status"
-#~ msgstr "Estado da autenticação"
-
-#~ msgctxt "@info:title"
-#~ msgid "Authentication Status"
-#~ msgstr "Estado da autenticação"
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "Re-send the access request"
-#~ msgstr "Reenviar a solicitação de acesso"
-
-# rever!
-# aceite?
-#~ msgctxt "@info:status"
-#~ msgid "Access to the printer accepted"
-#~ msgstr "Acesso à impressora confirmado"
-
-#~ msgctxt "@info:status"
-#~ msgid "No access to print with this printer. Unable to send print job."
-#~ msgstr "Sem autorização para imprimir com esta impressora. Não foi possível enviar o trabalho de impressão."
-
-#~ msgctxt "@action:button"
-#~ msgid "Request Access"
-#~ msgstr "Solicitar Acesso"
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "Send access request to the printer"
-#~ msgstr "Enviar pedido de acesso para a impressora"
-
-#~ msgctxt "@label"
-#~ msgid "Unable to start a new print job."
-#~ msgstr "Não é possível iniciar um novo trabalho de impressão."
-
-#~ msgctxt "@label"
-#~ msgid "There is an issue with the configuration of your Ultimaker, which makes it impossible to start the print. Please resolve this issues before continuing."
-#~ msgstr "Existe um problema com a configuração da sua Ultimaker, o qual impede o inicio da impressão. Por favor resolva este problema antes de continuar."
-
-# rever!
-# ver contexto! pode querer dizer
-# Configuração incompatível
-#~ msgctxt "@window:title"
-#~ msgid "Mismatched configuration"
-#~ msgstr "Divergência de Configuração"
-
-#~ msgctxt "@label"
-#~ msgid "Are you sure you wish to print with the selected configuration?"
-#~ msgstr "Tem a certeza de que deseja imprimir com a configuração selecionada?"
-
-#~ msgctxt "@label"
-#~ msgid "There is a mismatch between the configuration or calibration of the printer and Cura. For the best result, always slice for the PrintCores and materials that are inserted in your printer."
-#~ msgstr "Existe uma divergência entre a configuração ou calibração da impressora e o Cura. Para se obter os melhores resultados, o seccionamento (no Cura) deve ser sempre feito para os núcleos de impressão e para os materiais que estão introduzidos na impressora."
-
-#~ msgctxt "@info:status"
-#~ msgid "Sending new jobs (temporarily) blocked, still sending the previous print job."
-#~ msgstr "O envio de novos trabalhos está (temporariamente) bloqueado; o trabalho de impressão anterior ainda está a ser enviado."
-
-#~ msgctxt "@info:status"
-#~ msgid "Sending data to printer"
-#~ msgstr "A enviar dados para a impressora"
-
-#~ msgctxt "@info:title"
-#~ msgid "Sending Data"
-#~ msgstr "A Enviar Dados"
-
-#~ msgctxt "@info:status"
-#~ msgid "No Printcore loaded in slot {slot_number}"
-#~ msgstr "Nenhum PrintCore instalado na ranhura {slot_number}"
-
-#~ msgctxt "@info:status"
-#~ msgid "No material loaded in slot {slot_number}"
-#~ msgstr "Nenhum material carregado na ranhura {slot_number}"
-
-#~ msgctxt "@label"
-#~ msgid "Different PrintCore (Cura: {cura_printcore_name}, Printer: {remote_printcore_name}) selected for extruder {extruder_id}"
-#~ msgstr "PrintCore diferente (Cura: {cura_printcore_name}, Impressora: {remote_printcore_name}) selecionado para o extrusor {extruder_id}"
-
-#~ msgctxt "@label"
-#~ msgid "Different material (Cura: {0}, Printer: {1}) selected for extruder {2}"
-#~ msgstr "Material diferente (Cura: {0}, Impressora: {1}) selecionado para o extrusor {2}"
-
-#~ msgctxt "@window:title"
-#~ msgid "Sync with your printer"
-#~ msgstr "Sincronizar com a impressora"
-
-#~ msgctxt "@label"
-#~ msgid "Would you like to use your current printer configuration in Cura?"
-#~ msgstr "Deseja utilizar a configuração atual da impressora no Cura?"
-
-#~ msgctxt "@label"
-#~ msgid "The PrintCores and/or materials on your printer differ from those within your current project. For the best result, always slice for the PrintCores and materials that are inserted in your printer."
-#~ msgstr "Os núcleos de impressão e/ou materiais na sua impressora são diferentes dos definidos no seu projeto atual. Para se obter os melhores resultados, o seccionamento (no Cura) deve ser sempre feito para os núcleos de impressão e para os materiais que estão introduzidos na impressora."
-
-# rever!
-# contexto
-#~ msgctxt "@action:button"
-#~ msgid "View in Monitor"
-#~ msgstr "Ver no Monitor"
-
-#~ msgctxt "@info:status"
-#~ msgid "Printer '{printer_name}' has finished printing '{job_name}'."
-#~ msgstr "A impressora {printer_name} terminou a impressão de \"{job_name}\"."
-
-#~ msgctxt "@info:status"
-#~ msgid "The print job '{job_name}' was finished."
-#~ msgstr "O trabalho de impressão '{job_name}' terminou."
-
-# rever!
-# Concluída?
-#~ msgctxt "@info:status"
-#~ msgid "Print finished"
-#~ msgstr "Impressão terminada"
-
-#~ msgctxt "@label:material"
-#~ msgid "Empty"
-#~ msgstr "Vazio"
-
-#~ msgctxt "@label:material"
-#~ msgid "Unknown"
-#~ msgstr "Desconhecido"
-
-#~ msgctxt "@info:title"
-#~ msgid "Cloud error"
-#~ msgstr "Erro da cloud"
-
-#~ msgctxt "@info:status"
-#~ msgid "Could not export print job."
-#~ msgstr "Não foi possível exportar o trabalho de impressão."
-
-#~ msgctxt "@info:description"
-#~ msgid "There was an error connecting to the cloud."
-#~ msgstr "Ocorreu um erro na ligação à cloud."
-
-#~ msgctxt "@info:status"
-#~ msgid "Uploading via Ultimaker Cloud"
-#~ msgstr "A carregar através da cloud do Ultimaker"
-
-#~ msgctxt "@info:status Ultimaker Cloud is a brand name and shouldn't be translated."
-#~ msgid "Connect to Ultimaker Cloud"
-#~ msgstr "Ligar à cloud do Ultimaker"
-
-#~ msgctxt "@action"
-#~ msgid "Don't ask me again for this printer."
-#~ msgstr "Não perguntar novamente sobre esta impressora."
-
-#~ msgctxt "@info:status"
-#~ msgid "You can now send and monitor print jobs from anywhere using your Ultimaker account."
-#~ msgstr "Agora pode enviar e monitorizar trabalhos de impressão a partir de qualquer lugar através da sua conta Ultimaker."
-
-#~ msgctxt "@info:status"
-#~ msgid "Connected!"
-#~ msgstr "Ligada!"
-
-#~ msgctxt "@action"
-#~ msgid "Review your connection"
-#~ msgstr "Reveja a sua ligação"
-
-#~ msgctxt "@info:status Don't translate the XML tags <filename>!"
-#~ msgid "The machine defined in profile <filename>{0}</filename> ({1}) doesn't match with your current machine ({2}), could not import it."
-#~ msgstr "A máquina definida no perfil <filename>{0}</filename> ({1}) não corresponde à sua máquina atual ({2}), não foi possível importá-la."
-
-#~ msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
-#~ msgid "Failed to import profile from <filename>{0}</filename>:"
-#~ msgstr "Falha ao importar perfil de <filename>{0}</filename>:"
-
-#~ msgctxt "@window:title"
-#~ msgid "Existing Connection"
-#~ msgstr "Ligação Existente"
-
-#~ msgctxt "@message:text"
-#~ msgid "This printer/group is already added to Cura. Please select another printer/group."
-#~ msgstr "Esta impressora/grupo já foi adicionada ao Cura. Por favor selecione outra impressora/grupo."
-
-#~ msgctxt "@label"
-#~ msgid "Enter the IP address or hostname of your printer on the network."
-#~ msgstr "Introduza o endereço IP ou o nome de anfitrião da sua impressora na rede."
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "Connect to a printer"
-#~ msgstr "Ligar a uma impressora"
-
-#~ msgctxt "@title"
-#~ msgid "Cura Settings Guide"
-#~ msgstr "Guia de definições do Cura"
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "Zooming towards the mouse is not supported in the orthogonal perspective."
-#~ msgstr "Fazer zoom em direção ao rato não é suportado na perspetiva ortogonal."
-
-#~ msgid "Orthogonal"
-#~ msgstr "Ortogonal"
-
-#~ msgctxt "description"
-#~ msgid "Manages network connections to Ultimaker 3 printers."
-#~ msgstr "Gere as ligações de rede com as impressoras Ultimaker 3."
-
-#~ msgctxt "name"
-#~ msgid "UM3 Network Connection"
-#~ msgstr "Ligação de rede UM3"
-
-#~ msgctxt "description"
-#~ msgid "Provides extra information and explanations about settings in Cura, with images and animations."
-#~ msgstr "Fornece informações e explicações adicionais sobre as definições do Cura, com imagens e animações."
-
-#~ msgctxt "name"
-#~ msgid "Settings Guide"
-#~ msgstr "Guia de definições"
-
-#~ msgctxt "@item:inmenu"
-#~ msgid "Cura Settings Guide"
-#~ msgstr "Guia de definições do Cura"
-
-#~ msgctxt "@info:generic"
-#~ msgid "Settings have been changed to match the current availability of extruders: [%s]"
-#~ msgstr "As definições foram alteradas de forma a corresponder aos extrusores disponíveis de momento: [%s]"
-
-#~ msgctxt "@title:groupbox"
-#~ msgid "User description"
-#~ msgstr "Descrição do utilizador"
-
-#~ msgctxt "@info"
-#~ msgid "These options are not available because you are monitoring a cloud printer."
-#~ msgstr "Estas opções não estão disponíveis pois está a monitorizar uma impressora na cloud."
-
-#~ msgctxt "@label link to connect manager"
-#~ msgid "Go to Cura Connect"
-#~ msgstr "Ir para o Cura Connect"
-
-#~ msgctxt "@info"
-#~ msgid "All jobs are printed."
-#~ msgstr "Todos os trabalhos foram impressos."
-
-#~ msgctxt "@label link to connect manager"
-#~ msgid "View print history"
-#~ msgstr "Ver histórico de impressão"
-
-#~ msgctxt "@label"
-#~ msgid ""
-#~ "To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer.\n"
-#~ "\n"
-#~ "Select your printer from the list below:"
-#~ msgstr ""
-#~ "Para imprimir diretamente para a sua impressora através da rede, certifique-se de que a sua impressora está ligada à rede por meio de um cabo de rede ou através de ligação à rede Wi-Fi. Se não ligar o Cura por rede à impressora, poderá ainda assim utilizar uma unidade USB para transferir ficheiros g-code para a impressora.\n"
-#~ "\n"
-#~ "Selecione a sua impressora na lista em baixo:"
-
-#~ msgctxt "@info"
-#~ msgid ""
-#~ "Please make sure your printer has a connection:\n"
-#~ "- Check if the printer is turned on.\n"
-#~ "- Check if the printer is connected to the network."
-#~ msgstr ""
-#~ "Certifique-se de que é possível estabelecer ligação com a impressora:\n"
-#~ "- Verifique se a impressora está ligada.\n"
-#~ "- Verifique se a impressora está ligada à rede."
-
-#~ msgctxt "@option:check"
-#~ msgid "See only current build plate"
-#~ msgstr "Ver só a base de construção ativa"
-
-#~ msgctxt "@action:button"
-#~ msgid "Arrange to all build plates"
-#~ msgstr "Dispor em todas as bases"
-
-#~ msgctxt "@action:button"
-#~ msgid "Arrange current build plate"
-#~ msgstr "Dispor só na base ativa"
-
-#~ msgctxt "description"
-#~ msgid "Allows saving the resulting slice as an X3G file, to support printers that read this format (Malyan, Makerbot and other Sailfish-based printers)."
-#~ msgstr "Permite guardar o resultado do seccionamento como um ficheiro X3G, para poder ser usado com impressoras 3D que usam este formato (Kalyan, Makerbot e outras impressoras baseadas no Sailfish)."
-
-#~ msgctxt "name"
-#~ msgid "X3GWriter"
-#~ msgstr "X3GWriter"
-
-#~ msgctxt "description"
-#~ msgid "Reads SVG files as toolpaths, for debugging printer movements."
-#~ msgstr "Lê ficheiros SVG como caminhos de ferramenta para efeitos de depuração dos movimentos da impressora."
-
-#~ msgctxt "name"
-#~ msgid "SVG Toolpath Reader"
-#~ msgstr "Leitor de caminhos de ferramenta SVG"
-
-#~ msgctxt "@item:inmenu"
-#~ msgid "Changelog"
-#~ msgstr "Lista das Alterações"
-
-#~ msgctxt "@item:inmenu"
-#~ msgid "Show Changelog"
-#~ msgstr "Mostrar Lista das Alterações de cada Versão"
-
-#~ msgctxt "@info:status"
-#~ msgid "Sending data to remote cluster"
-#~ msgstr "A enviar dados para o cluster remoto"
-
-#~ msgctxt "@info:status"
-#~ msgid "Connect to Ultimaker Cloud"
-#~ msgstr "Ligar à Ultimaker Cloud"
-
-#~ msgctxt "@info"
-#~ msgid "Cura collects anonymized usage statistics."
-#~ msgstr "O Cura recolhe, de forma anónima, estatísticas sobre as opções usadas."
-
-#~ msgctxt "@info:title"
-#~ msgid "Collecting Data"
-#~ msgstr "A Recolher Dados"
-
-#~ msgctxt "@action:button"
-#~ msgid "More info"
-#~ msgstr "Mais informação"
-
-#~ msgctxt "@action:tooltip"
-#~ msgid "See more information on what data Cura sends."
-#~ msgstr "Saiba mais sobre que informação o Cura envia."
-
-#~ msgctxt "@action:button"
-#~ msgid "Allow"
-#~ msgstr "Permitir"
-
-#~ msgctxt "@action:tooltip"
-#~ msgid "Allow Cura to send anonymized usage statistics to help prioritize future improvements to Cura. Some of your preferences and settings are sent, the Cura version and a hash of the models you're slicing."
-#~ msgstr "Permitir que o Cura envie de forma anónima, estatísticas sobre as opções usadas, para nos ajudar a estabelecer as prioridades para os futuros desenvolvimentos do Cura. São enviadas apenas algumas das preferências e definições usadas, a versão do Cura e um valor \"hash\" dos modelos que está a seccionar."
-
-#~ msgctxt "@item:inmenu"
-#~ msgid "Evaluation"
-#~ msgstr "Avaliação"
-
-#~ msgctxt "@info:title"
-#~ msgid "Network enabled printers"
-#~ msgstr "Impressoras em rede"
-
-#~ msgctxt "@info:title"
-#~ msgid "Local printers"
-#~ msgstr "Impressoras locais"
-
-#~ msgctxt "@info:backup_failed"
-#~ msgid "Tried to restore a Cura backup that does not match your current version."
-#~ msgstr "Tentou restaurar um Cura backup que não corresponde á sua versão actual."
-
-#~ msgctxt "@title"
-#~ msgid "Machine Settings"
-#~ msgstr "Definições da máquina"
-
-#~ msgctxt "@label"
-#~ msgid "Printer Settings"
-#~ msgstr "Definições da Impressora"
-
-#~ msgctxt "@option:check"
-#~ msgid "Origin at center"
-#~ msgstr "Origem no centro"
-
-#~ msgctxt "@option:check"
-#~ msgid "Heated bed"
-#~ msgstr "Base aquecida"
-
-#~ msgctxt "@label"
-#~ msgid "Printhead Settings"
-#~ msgstr "Definições Cabeça de Impressão"
-
-#~ msgctxt "@tooltip"
-#~ msgid "Distance from the left of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\"."
-#~ msgstr "Distância desde a parte esquerda da cabeça de impressão até ao centro do nozzle. Utilizado para impedir colisões entre as impressões anteriores e a cabeça de impressão ao imprimir \"Individualmente\"."
-
-#~ msgctxt "@tooltip"
-#~ msgid "Distance from the front of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\"."
-#~ msgstr "Distância desde a parte frontal da cabeça de impressão até ao centro do nozzle. Utilizado para impedir colisões entre as impressões anteriores e a cabeça de impressão ao imprimir \"Individualmente\"."
-
-#~ msgctxt "@tooltip"
-#~ msgid "Distance from the right of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\"."
-#~ msgstr "Distância desde a parte direita da cabeça de impressão até ao centro do nozzle. Utilizado para impedir colisões entre as impressões anteriores e a cabeça de impressão ao imprimir \"Individualmente\"."
-
-#~ msgctxt "@tooltip"
-#~ msgid "Distance from the rear of the printhead to the center of the nozzle. Used to prevent colissions between previous prints and the printhead when printing \"One at a Time\"."
-#~ msgstr "Distância desde a parte posterior da cabeça de impressão até ao centro do nozzle. Utilizado para impedir colisões entre as impressões anteriores e a cabeça de impressão ao imprimir \"Individualmente\"."
-
-#~ msgctxt "@label"
-#~ msgid "Gantry height"
-#~ msgstr "Altura do pórtico"
-
-#~ msgctxt "@tooltip"
-#~ msgid "The height difference between the tip of the nozzle and the gantry system (X and Y axes). Used to prevent collisions between previous prints and the gantry when printing \"One at a Time\"."
-#~ msgstr "A diferença de altura entre a ponta do nozzle e o sistema de pórtico (eixos X e Y). Utilizado para impedir colisões entre as impressões anteriores e o pórtico ao imprimir \"Individualmente\"."
-
-#~ msgctxt "@label"
-#~ msgid "Start G-code"
-#~ msgstr "G-code Inicial"
-
-#~ msgctxt "@tooltip"
-#~ msgid "G-code commands to be executed at the very start."
-#~ msgstr "Comandos G-code a serem executados no início."
-
-#~ msgctxt "@label"
-#~ msgid "End G-code"
-#~ msgstr "G-code Final"
-
-#~ msgctxt "@tooltip"
-#~ msgid "G-code commands to be executed at the very end."
-#~ msgstr "Comandos G-code a serem executados no final."
-
-#~ msgctxt "@label"
-#~ msgid "Nozzle Settings"
-#~ msgstr "Definições do Nozzle"
-
-#~ msgctxt "@tooltip"
-#~ msgid "The nominal diameter of filament supported by the printer. The exact diameter will be overridden by the material and/or the profile."
-#~ msgstr "O diâmetro nominal do filamento suportado pela impressora. O diâmetro exato será substituído pelo material e/ou perfil."
-
-#~ msgctxt "@label"
-#~ msgid "Extruder Start G-code"
-#~ msgstr "G-code Inicial do Extrusor"
-
-#~ msgctxt "@label"
-#~ msgid "Extruder End G-code"
-#~ msgstr "G-code Final do Extrusor"
-
-#~ msgctxt "@label"
-#~ msgid "Changelog"
-#~ msgstr "Lista das Alterações"
-
-#~ msgctxt "@title:window"
-#~ msgid "User Agreement"
-#~ msgstr "Contrato de Utilizador"
-
-#~ msgctxt "@alabel"
-#~ msgid "Enter the IP address or hostname of your printer on the network."
-#~ msgstr "Introduza o endereço IP ou o hostname da sua impressora na rede."
-
-#~ msgctxt "@info"
-#~ msgid "Please select a network connected printer to monitor."
-#~ msgstr "Selecione uma impressora ligada à rede para monitorizar."
-
-#~ msgctxt "@info"
-#~ msgid "Please connect your Ultimaker printer to your local network."
-#~ msgstr "Ligue a sua impressora Ultimaker à sua rede local."
-
-#~ msgctxt "@text:window"
-#~ msgid "Cura sends anonymous data to Ultimaker in order to improve the print quality and user experience. Below is an example of all the data that is sent."
-#~ msgstr "O Cura envia informação anónima para a Ultimaker, para nos ajudar a aperfeiçoar a qualidade da impressão e a melhorar a experiência do utilizador. De seguida pode ver um exemplo com toda a informação enviada."
-
-#~ msgctxt "@text:window"
-#~ msgid "I don't want to send this data"
-#~ msgstr "Não pretendo enviar estes dados"
-
-#~ msgctxt "@text:window"
-#~ msgid "Allow sending this data to Ultimaker and help us improve Cura"
-#~ msgstr "Permita o envio destes dados ao Ultimaker e ajude-nos a melhorar o Cura"
-
-#~ msgctxt "@label"
-#~ msgid "No print selected"
-#~ msgstr "Nenhuma impressão selecionada"
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "By default, white pixels represent high points on the mesh and black pixels represent low points on the mesh. Change this option to reverse the behavior such that black pixels represent high points on the mesh and white pixels represent low points on the mesh."
-#~ msgstr "Por predefinição, os pixels brancos representam os pontos altos do objecto e os pixels pretos representam os pontos baixos do objecto. Altere esta opção para inverter o comportamento de forma que os pixels pretos representem os pontos altos do objecto e os pixels brancos representem os pontos baixos do objecto."
-
-#~ msgctxt "@title"
-#~ msgid "Select Printer Upgrades"
-#~ msgstr "Selecionar Atualizações da Impressora"
-
-# rever!
-# mid air? no ar? no meio do ar?
-# sagging? deformar?
-# Isto irá construir estruturas de suporte debaixo do modelo para impedir a deformação de partes suspensas do modelo ou que a impressão seja feita no ar.
-# a utilizar? usado?
-#~ msgctxt "@label"
-#~ msgid "Select which extruder to use for support. This will build up supporting structures below the model to prevent the model from sagging or printing in mid air."
-#~ msgstr "Selecionar qual o extrusor usado para imprimir os suportes. Isto irá construir estruturas de suporte por debaixo do modelo para impedir que as partes suspensas do modelo se deformem ou que sejam impressas no ar."
-
-#~ msgctxt "@tooltip"
-#~ msgid "This quality profile is not available for your current material and nozzle configuration. Please change these to enable this quality profile"
-#~ msgstr "Este perfil de qualidade não se encontra disponível para a sua configuração atual de material e de bocal. Altere-a para ativar este perfil de qualidade"
-
-#~ msgctxt "@label shown when we load a Gcode file"
-#~ msgid "Print setup disabled. G code file can not be modified."
-#~ msgstr "Configuração de impressão desativada. O ficheiro G-code não pode ser modificado."
-
-#~ msgctxt "@label"
-#~ msgid "See the material compatibility chart"
-#~ msgstr "Ver o gráfico de compatibilidade de materiais"
-
-#~ msgctxt "@label"
-#~ msgid "View types"
-#~ msgstr "Ver tipos"
-
-#~ msgctxt "@label"
-#~ msgid "Hi "
-#~ msgstr "Olá "
-
-#~ msgctxt "@text"
-#~ msgid ""
-#~ "- Send print jobs to Ultimaker printers outside your local network\n"
-#~ "- Store your Ultimaker Cura settings in the cloud for use anywhere\n"
-#~ "- Get exclusive access to material profiles from leading brands"
-#~ msgstr ""
-#~ "- Envie trabalhos de impressão para impressoras Ultimaker fora da sua rede local\n"
-#~ "- Guarde as definições do seu Ultimaker Cura na cloud para utilizar em qualquer lugar\n"
-#~ "- Obtenha acesso exclusivo a perfis de materiais de marcas de referência"
-
-#~ msgctxt "@label:PrintjobStatus"
-#~ msgid "Unable to Slice"
-#~ msgstr "Não é possível Seccionar"
-
-#~ msgctxt "@label"
-#~ msgid "Time specification"
-#~ msgstr "Especificação de tempo"
-
-#~ msgctxt "@label"
-#~ msgid "Material specification"
-#~ msgstr "Especificação do material"
-
-#~ msgctxt "@title:tab"
-#~ msgid "Add a printer to Cura"
-#~ msgstr "Adicionar uma impressora ao Cura"
-
-#~ msgctxt "@title:tab"
-#~ msgid ""
-#~ "Select the printer you want to use from the list below.\n"
-#~ "\n"
-#~ "If your printer is not in the list, use the \"Custom FFF Printer\" from the \"Custom\" category and adjust the settings to match your printer in the next dialog."
-#~ msgstr ""
-#~ "Selecione a impressora que deseja utilizar da lista abaixo.\n"
-#~ "\n"
-#~ "Se a sua impressora não constar da lista, utilize a opção \"Impressora FFF personalizada\" da categoria \"Personalizado\" e ajuste as definições para corresponder à sua impressora na próxima caixa de diálogo."
-
-#~ msgctxt "@label"
-#~ msgid "Printer Name"
-#~ msgstr "Nome da impressora"
-
-#~ msgctxt "@action:button"
-#~ msgid "Add Printer"
-#~ msgstr "Adicionar Impressora"
-
-#~ msgid "Modify G-Code"
-#~ msgstr "Modificar G-code"
-
-# rever!
-# models fit the
-# dentro do?
-# contido pelo
-# se adapta?
-# cabem no...?
-#~ msgctxt "@info:status"
-#~ msgid "Nothing to slice because none of the models fit the build volume. Please scale or rotate models to fit."
-#~ msgstr "Sem conteúdo para seccionar porque nenhum dos modelos está dentro do volume de construção. Por favor redimensione, mova ou rode os modelos para os adaptar ao volume de construção."
-
-#~ msgctxt "@info:status"
-#~ msgid "The selected material is incompatible with the selected machine or configuration."
-#~ msgstr "O material selecionado é incompatível com a máquina ou a configuração selecionada."
-
-#~ msgctxt "@info:title"
-#~ msgid "Incompatible Material"
-#~ msgstr "Material incompatível"
-
-#~ msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
-#~ msgid "Failed to import profile from <filename>{0}</filename>: <message>{1}</message>"
-#~ msgstr "Falha ao importar perfil de <filename>{0}</filename>: <message>{1}</message>"
-
-#~ msgctxt "@title"
-#~ msgid "Toolbox"
-#~ msgstr "Toolbox"
-
-#~ msgctxt "@label"
-#~ msgid "Not available"
-#~ msgstr "Não disponível"
-
-#~ msgctxt "@label"
-#~ msgid "Unreachable"
-#~ msgstr "Inacessível"
-
-#~ msgctxt "@label"
-#~ msgid "Available"
-#~ msgstr "Disponível"
-
-#~ msgctxt "@label:status"
-#~ msgid "Preparing"
-#~ msgstr "A preparar"
-
-#~ msgctxt "@label:status"
-#~ msgid "Pausing"
-#~ msgstr "A colocar em pausa"
-
-#~ msgctxt "@label:status"
-#~ msgid "Resuming"
-#~ msgstr "A Recomeçar"
-
-#~ msgctxt "@label"
-#~ msgid "Waiting for: Unavailable printer"
-#~ msgstr "A aguardar: Impressora indisponível"
-
-#~ msgctxt "@label"
-#~ msgid "Waiting for: First available"
-#~ msgstr "A aguardar: Primeira disponível"
-
-#~ msgctxt "@label"
-#~ msgid "Waiting for: "
-#~ msgstr "A aguardar: "
-
-#~ msgctxt "@label"
-#~ msgid "Configuration change"
-#~ msgstr "Configuração alterada"
-
-#~ msgctxt "@label"
-#~ msgid "The assigned printer, %1, requires the following configuration change(s):"
-#~ msgstr "A impressora atribuída %1 requer as seguintes alterações de configuração:"
-
-#~ msgctxt "@label"
-#~ msgid "Override"
-#~ msgstr "Ignorar"
-
-#~ msgctxt "@label"
-#~ msgid "Starting a print job with an incompatible configuration could damage your 3D printer. Are you sure you want to override the configuration and print %1?"
-#~ msgstr "Iniciar um trabalho de impressão com uma configuração incompatível pode danificar a impressora 3D. Tem a certeza de que pretende ignorar a configuração e imprimir %1?"
-
-#~ msgctxt "@window:title"
-#~ msgid "Override configuration configuration and start print"
-#~ msgstr "Ignorar configuração e iniciar impressão"
-
-#~ msgctxt "@label link to connect manager"
-#~ msgid "Manage queue"
-#~ msgstr "Gerir fila"
-
-#~ msgctxt "@label"
-#~ msgid "Printing"
-#~ msgstr "A Imprimir"
-
-#~ msgctxt "@label link to connect manager"
-#~ msgid "Manage printers"
-#~ msgstr "Gerir impressoras"
-
-#~ msgctxt "@action:button"
-#~ msgid "Activate Configuration"
-#~ msgstr "Ativar Configuração"
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "Load the configuration of the printer into Cura"
-#~ msgstr "Importar a configuração da impressora para o Cura"
-
-# rever!
-# Mostrar...?
-# Ver...?
-#~ msgctxt "@label"
-#~ msgid "Show Travels"
-#~ msgstr "Deslocações"
-
-#~ msgctxt "@label"
-#~ msgid "Show Helpers"
-#~ msgstr "Auxiliares"
-
-#~ msgctxt "@label"
-#~ msgid "Show Shell"
-#~ msgstr "Invólucro"
-
-#~ msgctxt "@label"
-#~ msgid "Show Infill"
-#~ msgstr "Enchimento"
-
-#~ msgctxt "@text:window"
-#~ msgid "I don't want to send these data"
-#~ msgstr "Eu não quero enviar estes dados"
-
-#~ msgctxt "@text:window"
-#~ msgid "Allow sending these data to Ultimaker and help us improve Cura"
-#~ msgstr "Permitir enviar estes dados para a Ultimaker para melhorar o Cura"
-
-#~ msgctxt "@label"
-#~ msgid "Printer type:"
-#~ msgstr "Tipo de impressora:"
-
-#~ msgctxt "@label"
-#~ msgid "Connection:"
-#~ msgstr "Ligação:"
-
-#~ msgctxt "@label"
-#~ msgid "State:"
-#~ msgstr "Estado:"
-
-#~ msgctxt "@label:MonitorStatus"
-#~ msgid "Waiting for a printjob"
-#~ msgstr "A aguardar por um trabalho de impressão"
-
-#~ msgctxt "@label:MonitorStatus"
-#~ msgid "Waiting for someone to clear the build plate"
-#~ msgstr "A aguardar que alguém limpe a base de construção"
-
-#~ msgctxt "@label:MonitorStatus"
-#~ msgid "Aborting print..."
-#~ msgstr "A cancelar impressão..."
-
-#~ msgctxt "@label"
-#~ msgid "Protected profiles"
-#~ msgstr "Perfis protegidos"
-
-#~ msgctxt "@label"
-#~ msgid "Printer Name:"
-#~ msgstr "Nome da Impressora:"
-
-#~ msgctxt "@label"
-#~ msgid "Profile:"
-#~ msgstr "Perfil:"
-
-#~ msgctxt "@label:textbox"
-#~ msgid "Search..."
-#~ msgstr "Procurar..."
-
-#~ msgctxt "@action:inmenu"
-#~ msgid "Collapse All"
-#~ msgstr "Esconder Tudo"
-
-#~ msgctxt "@action:inmenu"
-#~ msgid "Expand All"
-#~ msgstr "Mostrar Tudo"
-
-#~ msgctxt "@label:header configurations"
-#~ msgid "Available configurations"
-#~ msgstr "Configurações disponíveis"
-
-#~ msgctxt "@label:extruder label"
-#~ msgid "Extruder"
-#~ msgstr "Extrusor"
-
-#~ msgctxt "@label:extruder label"
-#~ msgid "Yes"
-#~ msgstr "Sim"
-
-#~ msgctxt "@label:extruder label"
-#~ msgid "No"
-#~ msgstr "Não"
-
-# rever!
-# Configuração da Impressão?
-#~ msgctxt "@label:listbox"
-#~ msgid "Print Setup"
-#~ msgstr "Configurar a Impressão"
-
-#~ msgctxt "@label:listbox"
-#~ msgid ""
-#~ "Print Setup disabled\n"
-#~ "G-code files cannot be modified"
-#~ msgstr ""
-#~ "Configuração da Impressão desativada\n"
-#~ "Os ficheiros G-code não podem ser modificados"
-
-#~ msgctxt "@label Hours and minutes"
-#~ msgid "00h 00min"
-#~ msgstr "00h00min"
-
-#~ msgctxt "@tooltip"
-#~ msgid "Time specification"
-#~ msgstr "Especificação de tempo"
-
-#~ msgctxt "@label"
-#~ msgid "Cost specification"
-#~ msgstr "Especificação de custos"
-
-#~ msgctxt "@label"
-#~ msgid "Total:"
-#~ msgstr "Total:"
-
-#~ msgctxt "@tooltip"
-#~ msgid "<b>Recommended Print Setup</b><br/><br/>Print with the recommended settings for the selected printer, material and quality."
-#~ msgstr "<b>Configuração de Impressão Recomendada</b><br/><br/>Imprimir com as definições recomendadas para a Impressora, Material e Qualidade selecionadas."
-
-#~ msgctxt "@tooltip"
-#~ msgid "<b>Custom Print Setup</b><br/><br/>Print with finegrained control over every last bit of the slicing process."
-#~ msgstr "<b>Configuração de Impressão Personalizada</b><br/><br/>Imprimir com um controlo detalhado de todas as definições específicas de cada uma das etapas do processo de seccionamento."
-
-#~ msgctxt "@action:inmenu menubar:help"
-#~ msgid "Show Engine &Log..."
-#~ msgstr "Mostrar &registo de motor..."
-
-#~ msgctxt "@action:menu"
-#~ msgid "Browse packages..."
-#~ msgstr "Procurar pacotes..."
-
-#~ msgctxt "@action:inmenu menubar:view"
-#~ msgid "Expand/Collapse Sidebar"
-#~ msgstr "Mostrar/Esconder Barra Lateral"
-
-#~ msgctxt "@label:PrintjobStatus"
-#~ msgid "Please load a 3D model"
-#~ msgstr "Por favor abra um Modelo 3D ou Projeto"
-
-# rever!
-# Pronto para?
-# Preparado para?
-#~ msgctxt "@label:PrintjobStatus"
-#~ msgid "Ready to slice"
-#~ msgstr "Disponível para seccionar"
-
-# rever!
-# Pronto para?
-# Preparado para?
-# Disponível para?
-#~ msgctxt "@label:PrintjobStatus %1 is target operation"
-#~ msgid "Ready to %1"
-#~ msgstr "Pronto para %1"
-
-#~ msgctxt "@label:PrintjobStatus"
-#~ msgid "Slicing unavailable"
-#~ msgstr "Seccionamento indisponível"
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "Slice current printjob"
-#~ msgstr "Seccionar o trabalho de impressão atual"
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "Cancel slicing process"
-#~ msgstr "Cancelar o processo de seccionamento"
-
-#~ msgctxt "@label:Printjob"
-#~ msgid "Prepare"
-#~ msgstr "Preparar"
-
-#~ msgctxt "@label:Printjob"
-#~ msgid "Cancel"
-#~ msgstr "Cancelar"
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "Select the active output device"
-#~ msgstr "Selecione o dispositivo de saída"
-
-#~ msgctxt "@title:menu"
-#~ msgid "&View"
-#~ msgstr "&Visualizar"
-
-#~ msgctxt "@title:menu"
-#~ msgid "&Settings"
-#~ msgstr "&Definições"
-
-#~ msgctxt "@title:menu menubar:toplevel"
-#~ msgid "&Toolbox"
-#~ msgstr "&Toolbox"
-
-#~ msgctxt "@action:button"
-#~ msgid "Open File"
-#~ msgstr "Abrir ficheiro"
-
-#~ msgctxt "@tooltip"
-#~ msgid "This quality profile is not available for you current material and nozzle configuration. Please change these to enable this quality profile"
-#~ msgstr "Este perfil de qualidade não está disponível para a sua atual configuração de nozzle e material. Por favor altere-a para poder ativar este perfil de qualidade"
-
-#~ msgctxt "@label"
-#~ msgid "Print Speed"
-#~ msgstr "Velocidade Impressão"
-
-#~ msgctxt "@label"
-#~ msgid "Slower"
-#~ msgstr "Mais Lenta"
-
-#~ msgctxt "@label"
-#~ msgid "Faster"
-#~ msgstr "Mais Rápida"
-
-#~ msgctxt "@label"
-#~ msgid "Enable gradual"
-#~ msgstr "Enchimento Gradual"
-
-#~ msgctxt "@label"
-#~ msgid "Generate Support"
-#~ msgstr "Criar Suportes"
-
-#~ msgctxt "@label"
-#~ msgid "Build Plate Adhesion"
-#~ msgstr "Aderência à Base"
-
-#~ msgctxt "@label"
-#~ msgid "Need help improving your prints?<br>Read the <a href='%1'>Ultimaker Troubleshooting Guides</a>"
-#~ msgstr "Precisa de ajuda para melhorar as suas impressões?<br>Por favor leia os <a href='%1'>Guias Ultimaker de Resolução de Problemas</a>"
-
-# rever!
-# contexto?!
-# Relatório?
-# Registo de motor?
-# use english string?
-#~ msgctxt "@title:window"
-#~ msgid "Engine Log"
-#~ msgstr "Engine Log"
-
-#~ msgctxt "@label"
-#~ msgid "Printer type"
-#~ msgstr "Tipo de impressora"
-
-#~ msgctxt "@label"
-#~ msgid "Use glue with this material combination"
-#~ msgstr "Utilizar cola com esta combinação de materiais"
-
-#~ msgctxt "@label"
-#~ msgid "Check compatibility"
-#~ msgstr "Compatibilidade entre Materiais"
-
-#~ msgctxt "@tooltip"
-#~ msgid "Click to check the material compatibility on Ultimaker.com."
-#~ msgstr "Clique para verificar a compatibilidade entre os materiais em Ultimaker.com."
-
-#~ msgctxt "description"
-#~ msgid "Shows changes since latest checked version."
-#~ msgstr "Mostra as novas alterações efetuadas desde a última versão."
-
-#~ msgctxt "name"
-#~ msgid "Changelog"
-#~ msgstr "Lista das Alterações"
-
-# rever!
-# contexto!
-# flattend - aplanado? nivelado? limpo? basico?
-#~ msgctxt "description"
-#~ msgid "Create a flattend quality changes profile."
-#~ msgstr "Criar um perfil de qualidade aplanado."
-
-#~ msgctxt "name"
-#~ msgid "Profile flatener"
-#~ msgstr "Aplanador de perfis"
-
-#~ msgctxt "description"
-#~ msgid "Ask the user once if he/she agrees with our license."
-#~ msgstr "Perguntar, uma vez, ao utilizador, se concorda com a nossa licença."
-
-# rever!
-# check the legal term in pt
-# licença?
-# acordo?
-# use the same term for label and description
-#~ msgctxt "name"
-#~ msgid "UserAgreement"
-#~ msgstr "Contrato de Utilizador"
-
-#~ msgctxt "@warning:status"
-#~ msgid "Please generate G-code before saving."
-#~ msgstr "Crie um G-code antes de guardar."
-
-#~ msgctxt "@action"
-#~ msgid "Upgrade Firmware"
-#~ msgstr "Atualizar firmware"
-
-#~ msgctxt "@label unknown material"
-#~ msgid "Unknown"
-#~ msgstr "Desconhecido"
-
-#~ msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
-#~ msgid "No custom profile to import in file <filename>{0}</filename>"
-#~ msgstr "O ficheiro <filename>{0}</filename> não contém qualquer perfil personalizado para importar"
-
-#~ msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
-#~ msgid "This profile <filename>{0}</filename> contains incorrect data, could not import it."
-#~ msgstr "O perfil <filename>{0}</filename> contém dados incorretos, não foi possível importá-lo."
-
-#~ msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
-#~ msgid "The machine defined in profile <filename>{0}</filename> ({1}) doesn't match with your current machine ({2}), could not import it."
-#~ msgstr "A máquina definida no perfil <filename>{0}</filename> ({1}) não corresponde à sua máquina atual ({2}), e não foi possível importá-la."
-
-#~ msgctxt "@title:window"
-#~ msgid "Confirm uninstall "
-#~ msgstr "Confirmar desinstalação "
-
-#~ msgctxt "@label Print estimates: m for meters, g for grams, %4 is currency and %3 is print cost"
-#~ msgid "%1m / ~ %2g / ~ %4 %3"
-#~ msgstr "%1 m / ~ %2 g / ~ %4 %3"
-
-#~ msgctxt "@label Print estimates: m for meters, g for grams"
-#~ msgid "%1m / ~ %2g"
-#~ msgstr "%1 m / ~ %2 g"
-
-#~ msgctxt "@title"
-#~ msgid "Upgrade Firmware"
-#~ msgstr "Atualizar Firmware"
-
-#~ msgctxt "@action:button"
-#~ msgid "Print with Doodle3D WiFi-Box"
-#~ msgstr "Imprimir com a Doodle3D WiFi-Box"
-
-#~ msgctxt "@properties:tooltip"
-#~ msgid "Print with Doodle3D WiFi-Box"
-#~ msgstr "Imprimir com a Doodle3D WiFi-Box"
-
-#~ msgctxt "@info:status"
-#~ msgid "Connecting to Doodle3D Connect"
-#~ msgstr "A ligar ao Doodle3D Connect"
-
-#~ msgctxt "@info:status"
-#~ msgid "Sending data to Doodle3D Connect"
-#~ msgstr "A enviar dados para o Doodle3D Connect"
-
-#~ msgctxt "@info:status"
-#~ msgid "Unable to send data to Doodle3D Connect. Is another job still active?"
-#~ msgstr "Não é possível enviar dados para o Doodle3D Connect. Será que há outro trabalho ainda ativo?"
-
-#~ msgctxt "@info:status"
-#~ msgid "Storing data on Doodle3D Connect"
-#~ msgstr "A guardar dados no Doodle3D Connect"
-
-#~ msgctxt "@info:status"
-#~ msgid "File sent to Doodle3D Connect"
-#~ msgstr "Ficheiro enviado para o Doodle3D Connect"
-
-#~ msgctxt "@action:button"
-#~ msgid "Open Connect..."
-#~ msgstr "Abrir Connect..."
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "Open the Doodle3D Connect web interface"
-#~ msgstr "Abrir a interface web do Doodle3D Connect"
-
-#~ msgctxt "@item:inlistbox"
-#~ msgid "Blender file"
-#~ msgstr "Ficheiro Blender"
-
-#~ msgctxt "@info:status"
-#~ msgid ""
-#~ "Could not export using \"{}\" quality!\n"
-#~ "Felt back to \"{}\"."
-#~ msgstr ""
-#~ "Não foi possível exportar utilizando a qualidade \"{}\"!\n"
-#~ "Foi revertido para \"{}\"."
-
-#~ msgctxt "@label"
-#~ msgid "Contact"
-#~ msgstr "Contacto"
-
-#~ msgctxt "@label"
-#~ msgid "This printer is not set up to host a group of Ultimaker 3 printers."
-#~ msgstr "Esta impressora não está configurada para ser Host de um grupo de impressoras Ultimaker 3."
-
-#~ msgctxt "@label"
-#~ msgid "This printer is the host for a group of %1 Ultimaker 3 printers."
-#~ msgstr "Esta impressora é o Host de um grupo de %1 impressoras Ultimaker 3."
-
-#~ msgctxt "@label: arg 1 is group name"
-#~ msgid "%1 is not set up to host a group of connected Ultimaker 3 printers"
-#~ msgstr "%1 não está configurada para ser Host de um grupo de impressoras Ultimaker 3 ligadas em rede"
-
-#~ msgctxt "@label link to connect manager"
-#~ msgid "Add/Remove printers"
-#~ msgstr "Adicionar / Remover Impressoras"
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "Opens the print jobs page with your default web browser."
-#~ msgstr "Abre a página com a lista dos trabalhos de impressão, no seu browser predefinido."
-
-#~ msgctxt "@action:button"
-#~ msgid "View print jobs"
-#~ msgstr "Ver Trabalhos em Impressão"
-
-#~ msgctxt "@label:status"
-#~ msgid "Preparing to print"
-#~ msgstr "A preparar para imprimir"
-
-#~ msgctxt "@label:status"
-#~ msgid "Available"
-#~ msgstr "Disponível"
-
-#~ msgctxt "@label:status"
-#~ msgid "Lost connection with the printer"
-#~ msgstr "Perdeu-se a ligação com a impressora"
-
-#~ msgctxt "@label:status"
-#~ msgid "Unknown"
-#~ msgstr "Desconhecida"
-
-#~ msgctxt "@label:status"
-#~ msgid "Disabled"
-#~ msgstr "Desativada"
-
-#~ msgctxt "@label:status"
-#~ msgid "Reserved"
-#~ msgstr "Reservada"
-
-#~ msgctxt "@label"
-#~ msgid "Preparing to print"
-#~ msgstr "A preparar para imprimir"
-
-#~ msgctxt "@label:status"
-#~ msgid "Print aborted"
-#~ msgstr "Impressão cancelada"
-
-#~ msgctxt "@label"
-#~ msgid "Not accepting print jobs"
-#~ msgstr "Não são aceites trabalhos de impressão"
-
-#~ msgctxt "@label"
-#~ msgid "Finishes at: "
-#~ msgstr "Termina às: "
-
-#~ msgctxt "@label"
-#~ msgid "Clear build plate"
-#~ msgstr "Limpar base de construção"
-
-#~ msgctxt "@label"
-#~ msgid "Waiting for configuration change"
-#~ msgstr "A aguardar pela alteração de configuração"
-
-#~ msgctxt "@title"
-#~ msgid "Print jobs"
-#~ msgstr "Trabalhos em Impressão"
-
-#~ msgctxt "@label:title"
-#~ msgid "Printers"
-#~ msgstr "Impressoras"
-
-#~ msgctxt "@action:button"
-#~ msgid "View printers"
-#~ msgstr "Ver Impressoras"
-
-#~ msgctxt "@label:"
-#~ msgid "Pause"
-#~ msgstr "Colocar em pausa"
-
-#~ msgctxt "@label:"
-#~ msgid "Resume"
-#~ msgstr "Retomar"
-
-#~ msgctxt "@label:"
-#~ msgid "Abort Print"
-#~ msgstr "Cancelar impressão"
-
-#~ msgctxt "@option:openProject"
-#~ msgid "Always ask"
-#~ msgstr "Perguntar sempre"
-
-#~ msgctxt "@label"
-#~ msgid "Override Profile"
-#~ msgstr "Substituir perfil"
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "Should newly loaded models be arranged on the build plate? Used in conjunction with multi build plate (EXPERIMENTAL)"
-#~ msgstr "Devem os novos modelos abertos ser dispostos na base de construção? Utilizado em conjunto com múltiplas bases de construção (EXPERIMENTAL)"
-
-#~ msgctxt "@option:check"
-#~ msgid "Do not arrange objects on load"
-#~ msgstr "Não dispor os objectos ao abrir"
-
-#~ msgctxt "@action:inmenu menubar:file"
-#~ msgid "&Save Selection to File"
-#~ msgstr "&Guardar seleção para ficheiro"
-
-#~ msgctxt "@title:menu menubar:file"
-#~ msgid "Save &As..."
-#~ msgstr "Guardar &como..."
-
-#~ msgctxt "@title:menu menubar:file"
-#~ msgid "Save &Project..."
-#~ msgstr "Guardar &Projeto..."
-
-#~ msgctxt "@label"
-#~ msgid "Use adhesion sheet or glue with this material combination"
-#~ msgstr "Use folhas de adesão ou cola, com estes materiais"
-
-#~ msgctxt "description"
-#~ msgid "Accepts G-Code and sends them over WiFi to a Doodle3D WiFi-Box."
-#~ msgstr "Recebe ficheiros G-code e envia-os por Wi-Fi para uma Doodle3D Wi-Fi Box."
-
-#~ msgctxt "name"
-#~ msgid "Doodle3D WiFi-Box"
-#~ msgstr "Doodle3D Wi-Fi Box"
-
-#~ msgctxt "description"
-#~ msgid "Provides an edit window for direct script editing."
-#~ msgstr "Fornece uma janela de edição para a edição direta de scripts."
-
-#~ msgctxt "name"
-#~ msgid "Live scripting tool"
-#~ msgstr "Ferramenta de scripting em direto"
-
-#~ msgctxt "description"
-#~ msgid "Helps to open Blender files directly in Cura."
-#~ msgstr "Ajuda a abrir ficheiros do Blender diretamente no Cura."
-
-#~ msgctxt "name"
-#~ msgid "Blender Integration (experimental)"
-#~ msgstr "Integração com o Blender (experimental)"
-
-# rever!
-#~ msgctxt "@info:title"
-#~ msgid "Model Checker Warning"
-#~ msgstr "Advertência do Verificador de Modelos"
-
-#~ msgctxt "@info:status"
-#~ msgid ""
-#~ "Some models may not be printed optimally due to object size and chosen material for models: {model_names}.\n"
-#~ "Tips that may be useful to improve the print quality:\n"
-#~ "1) Use rounded corners.\n"
-#~ "2) Turn the fan off (only if there are no tiny details on the model).\n"
-#~ "3) Use a different material."
-#~ msgstr ""
-#~ "Alguns modelos poderão não ser impressos com a melhor qualidade devido ás dimensões do objecto e aos materiais escolhidos para os modelos: {model_names}.\n"
-#~ "Sugestões que poderão ser úteis para melhorar a qualidade da impressão dos modelos:\n"
-#~ "1) Utilize cantos arredondados.\n"
-#~ "2) Desligue os ventiladores (apenas nos casos em que o modelo não têm pequenos detalhes ou pormenores).\n"
-#~ "3) Usar um material diferente."
-
-#~ msgctxt "@info:status"
-#~ msgid "SolidWorks reported errors while opening your file. We recommend to solve these issues inside SolidWorks itself."
-#~ msgstr "O SolidWorks comunicou erros ao abrir o ficheiro. Recomendamos a resolução destes problemas no próprio SolidWorks."
-
-#~ msgctxt "@info:status"
-#~ msgid ""
-#~ "Found no models inside your drawing. Could you please check its content again and make sure one part or assembly is inside?\n"
-#~ "\n"
-#~ "Thanks!"
-#~ msgstr ""
-#~ "Não foram encontrados quaisquer modelos no seu desenho. Por favor verifique novamente o conteúdo do desenho e confirme que este inclui uma peça ou uma \"assembly\"?\n"
-#~ "\n"
-#~ "Obrigado!"
-
-#~ msgctxt "@info:status"
-#~ msgid ""
-#~ "Found more than one part or assembly inside your drawing. We currently only support drawings with exactly one part or assembly inside.\n"
-#~ "\n"
-#~ "Sorry!"
-#~ msgstr ""
-#~ "Foram encontradas mais do que uma peça ou uma \"assembly\" no seu desenho. De momento só são suportados ficheiros com uma só peça ou só uma \"assembly\".\n"
-#~ "\n"
-#~ "As nossa desculpas!"
-
-# rever!
-# versão PT do solidworks?
-#~ msgctxt "@item:inlistbox"
-#~ msgid "SolidWorks part file"
-#~ msgstr "Ficheiro peça SolidWorks"
-
-# rever!
-# versão PT do solidworks?
-#~ msgctxt "@item:inlistbox"
-#~ msgid "SolidWorks assembly file"
-#~ msgstr "Ficheiro \"assembly\" SolidWorks"
-
-#~ msgctxt "@item:inlistbox"
-#~ msgid "SolidWorks drawing file"
-#~ msgstr "Ficheiro de desenho SolidWorks"
-
-#~ msgctxt "@info:status"
-#~ msgid ""
-#~ "Dear customer,\n"
-#~ "We could not find a valid installation of SolidWorks on your system. That means that either SolidWorks is not installed or you don't own an valid license. Please make sure that running SolidWorks itself works without issues and/or contact your ICT.\n"
-#~ "\n"
-#~ "With kind regards\n"
-#~ " - Thomas Karl Pietrowski"
-#~ msgstr ""
-#~ "Caro Cliente,\n"
-#~ "Não foi possível encontrar uma instalação válida do SolidWorks no seu sistema. O que significa que o SolidWorks não está instalado ou não dispõe de uma licença válida. Por favor verifique se o próprio SolidWorks funciona sem qualquer problema e/ou contacte o seu ICT.\n"
-#~ "\n"
-#~ "Atenciosamente\n"
-#~ " – Thomas Karl Pietrowski"
-
-#~ msgctxt "@info:status"
-#~ msgid ""
-#~ "Dear customer,\n"
-#~ "You are currently running this plugin on an operating system other than Windows. This plugin will only work on Windows with SolidWorks installed, including an valid license. Please install this plugin on a Windows machine with SolidWorks installed.\n"
-#~ "\n"
-#~ "With kind regards\n"
-#~ " - Thomas Karl Pietrowski"
-#~ msgstr ""
-#~ "Caro cliente,\n"
-#~ "Está atualmente a executar este plug-in num sistema operativo que não o Windows. Este plug-in apenas funciona no Windows com o SolidWorks instalado e com uma licença válida. Instale este plug-in num computador com o Windows e com o SolidWorks instalado.\n"
-#~ "\n"
-#~ "Atenciosamente\n"
-#~ " – Thomas Karl Pietrowski"
-
-#~ msgid "Configure"
-#~ msgstr "Configurar"
-
-#~ msgid "Installation guide for SolidWorks macro"
-#~ msgstr "Guia de instalação do macro SolidWorks"
-
-#~ msgctxt "@action:button"
-#~ msgid "Disable"
-#~ msgstr "Desativar"
-
-#~ msgctxt "@action:tooltip"
-#~ msgid "Don't allow Cura to send anonymized usage statistics. You can enable it again in the preferences."
-#~ msgstr "Não permitir que o Cura envie de forma anónima, estatísticas sobre as opções usadas. Pode voltar a ser ativado novamente nas preferências do Cura."
-
-#~ msgid "Install"
-#~ msgstr "Instalar"
-
-#~ msgid "Failed to copy Siemens NX plugins files. Please check your UGII_USER_DIR. It is not set to a directory."
-#~ msgstr "Falha ao copiar os ficheiros do plug-in Siemens NX. Verifique o seu UGII_USER_DIR. Não está atribuído a um diretório."
-
-#~ msgid "Successfully installed Siemens NX Cura plugin."
-#~ msgstr "Plug-in Siemens NX Cura instalado com sucesso."
-
-#~ msgid "Failed to copy Siemens NX plugins files. Please check your UGII_USER_DIR."
-#~ msgstr "Falha ao copiar os ficheiros do plug-in Siemens NX. Verifique o seu UGII_USER_DIR."
-
-#~ msgid "Failed to install Siemens NX plugin. Could not set environment variable UGII_USER_DIR for Siemens NX."
-#~ msgstr "Falha ao instalar o plug-in Siemens NX. Não foi possível definir a variável do ambiente UGII_USER_DIR para o Siemens NX."
-
-#~ msgctxt "@info:status"
-#~ msgid "Failed to get plugin ID from <filename>{0}</filename>"
-#~ msgstr "Não foi possível obter o ID do plug-in <filename>{0}</filename>"
-
-#~ msgctxt "@info:tile"
-#~ msgid "Warning"
-#~ msgstr "Atenção"
-
-#~ msgctxt "@window:title"
-#~ msgid "Plugin browser"
-#~ msgstr "Browser de plug-ins"
-
-#~ msgctxt "@label"
-#~ msgid "Ultimaker 3"
-#~ msgstr "Ultimaker 3"
-
-#~ msgctxt "@label"
-#~ msgid "Ultimaker 3 Extended"
-#~ msgstr "Ultimaker 3 Extended"
-
-#~ msgctxt "@title:window"
-#~ msgid "SolidWorks: Export wizard"
-#~ msgstr "SolidWorks: Assistente de Exportação"
-
-#~ msgctxt "@action:label"
-#~ msgid "Quality:"
-#~ msgstr "Qualidade:"
-
-#~ msgctxt "@option:curaSolidworksStlQuality"
-#~ msgid "Fine (3D-printing)"
-#~ msgstr "Alta Resolução (impressão 3D)"
-
-#~ msgctxt "@option:curaSolidworksStlQuality"
-#~ msgid "Coarse (3D-printing)"
-#~ msgstr "Baixa Resolução (impressão 3D)"
-
-#~ msgctxt "@option:curaSolidworksStlQuality"
-#~ msgid "Fine (SolidWorks)"
-#~ msgstr "Alta Resolução (SolidWorks)"
-
-#~ msgctxt "@option:curaSolidworksStlQuality"
-#~ msgid "Coarse (SolidWorks)"
-#~ msgstr "Baixa Resolução (SolidWorks)"
-
-#~ msgctxt "@text:window"
-#~ msgid "Show this dialog again"
-#~ msgstr "Mostrar esta caixa de diálogo novamente"
-
-#~ msgctxt "@action:button"
-#~ msgid "Continue"
-#~ msgstr "Continuar"
-
-#~ msgctxt "@action:button"
-#~ msgid "Abort"
-#~ msgstr "Cancelar"
-
-#~ msgctxt "@title:window"
-#~ msgid "How to install Cura SolidWorks macro"
-#~ msgstr "Como instalar a macro Cura SolidWorks"
-
-#~ msgctxt "@description:label"
-#~ msgid "Steps:"
-#~ msgstr "Passos:"
-
-#~ msgctxt "@action:button"
-#~ msgid ""
-#~ "Open the directory\n"
-#~ "with macro and icon"
-#~ msgstr ""
-#~ "Abrir o diretório\n"
-#~ "com macro e ícone"
-
-#~ msgctxt "@description:label"
-#~ msgid "Instructions:"
-#~ msgstr "Instruções:"
-
-#~ msgctxt "@action:playpause"
-#~ msgid "Play"
-#~ msgstr "Reproduzir"
-
-#~ msgctxt "@action:playpause"
-#~ msgid "Pause"
-#~ msgstr "Colocar em pausa"
-
-#~ msgctxt "@action:button"
-#~ msgid "Previous Step"
-#~ msgstr "Passo Anterior"
-
-#~ msgctxt "@action:button"
-#~ msgid "Done"
-#~ msgstr "Concluído"
-
-#~ msgctxt "@action:button"
-#~ msgid "Next Step"
-#~ msgstr "Passo Seguinte"
-
-#~ msgctxt "@title:window"
-#~ msgid "SolidWorks plugin: Configuration"
-#~ msgstr "Plug-in SolidWorks: Configuração"
-
-#~ msgctxt "@title:tab"
-#~ msgid "Conversion settings"
-#~ msgstr "Definições de conversão"
-
-#~ msgctxt "@label"
-#~ msgid "First choice:"
-#~ msgstr "Primeira escolha:"
-
-#~ msgctxt "@text:menu"
-#~ msgid "Latest installed version (Recommended)"
-#~ msgstr "Última versão instalada (Recomendada)"
-
-#~ msgctxt "@text:menu"
-#~ msgid "Default version"
-#~ msgstr "Versão predefinida"
-
-#~ msgctxt "@label"
-#~ msgid "Show wizard before opening SolidWorks files"
-#~ msgstr "Mostrar o assistente antes de abrir ficheiros SolidWorks"
-
-#~ msgctxt "@label"
-#~ msgid "Automatically rotate opened file into normed orientation"
-#~ msgstr "Rodar automaticamente o ficheiro aberto para uma orientação normalizada"
-
-#~ msgctxt "@title:tab"
-#~ msgid "Installation(s)"
-#~ msgstr "Instalação(ões)"
-
-#~ msgctxt "@label"
-#~ msgid "COM service found"
-#~ msgstr "Serviço COM encontrado"
-
-#~ msgctxt "@label"
-#~ msgid "Executable found"
-#~ msgstr "Executável encontrado"
-
-#~ msgctxt "@label"
-#~ msgid "COM starting"
-#~ msgstr "A iniciar COM"
-
-#~ msgctxt "@label"
-#~ msgid "Revision number"
-#~ msgstr "Número da revisão"
-
-#~ msgctxt "@label"
-#~ msgid "Functions available"
-#~ msgstr "Funções disponíveis"
-
-#~ msgctxt "@label (%1 is object name)"
-#~ msgid "The new material diameter is set to %1 mm, which is not compatible to the current machine. Do you wish to continue?"
-#~ msgstr "O novo diâmetro do material está definido como %1 mm, o que não é compatível com a máquina atual. Pretende prosseguir?"
-
-#~ msgctxt "@action:menu"
-#~ msgid "Browse plugins..."
-#~ msgstr "Procurar plug-ins..."
-
-#~ msgctxt "@title:menu menubar:toplevel"
-#~ msgid "P&lugins"
-#~ msgstr "P&lug-ins"
-
-#~ msgctxt "@window:title"
-#~ msgid "Install Plugin"
-#~ msgstr "Instalar plug-in"
-
-#~ msgctxt "description"
-#~ msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc)"
-#~ msgstr "Proporciona uma forma de alterar as definições da máquina (tal como o volume de construção, o tamanho do nozzle, etc)"
-
-#~ msgctxt "description"
-#~ msgid "Manages network connections to Ultimaker 3 printers"
-#~ msgstr "Gere as ligações de rede com as impressoras Ultimaker 3"
-
-#~ msgctxt "description"
-#~ msgid "Gives you the possibility to open certain files using SolidWorks itself. Conversion is done by this plugin and additional optimizations."
-#~ msgstr "Oferece a possibilidade de abrir determinados ficheiros utilizando o SolidWorks. A conversão é efetuada através deste plug-in e de otimizações adicionais."
-
-#~ msgctxt "name"
-#~ msgid "SolidWorks Integration"
-#~ msgstr "SolidWorks Integration"
-
-#~ msgctxt "description"
-#~ msgid "Automatically saves Preferences, Machines and Profiles after changes."
-#~ msgstr "Guarda Automaticamente as Preferências, Máquinas e Perfis após fazer alterações."
-
-#~ msgctxt "name"
-#~ msgid "Auto Save"
-#~ msgstr "Guardar Automaticamente"
-
-#~ msgctxt "description"
-#~ msgid "Helps you to install an 'export to Cura' button in Siemens NX."
-#~ msgstr "Ajuda a instalar um botão \"Exportar para o Cura\" no Siemens NX."
-
-#~ msgctxt "name"
-#~ msgid "Siemens NX Integration"
-#~ msgstr "Siemens NX Integration"
-
-#~ msgctxt "description"
-#~ msgid "Find, manage and install new plugins."
-#~ msgstr "Procura, gere e instala novos plug-ins."
-
-#~ msgctxt "name"
-#~ msgid "Plugin Browser"
-#~ msgstr "Browser de plug-ins"
-
-#~ msgctxt "description"
-#~ msgid "Ask the user once if he/she agrees with our license"
-#~ msgstr "Perguntar, uma vez, ao utilizador, se concorda com a licença"
-
-#~ msgctxt "description"
-#~ msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc)"
-#~ msgstr "Disponibiliza funções especificas para as máquinas Ultimaker (tais como, o assistente de nivelamento da base, seleção de atualizações, etc.)"
