@@ -27,9 +27,7 @@
     "machine_height": { "default_value": 250 },
     "machine_depth": { "default_value": 210 },
 
-    "retraction_retract_speed": { "value": 50, "maximum_value_warning": 130 },
-    "retraction_prime_speed": { "value": 20, "maximum_value_warning": 130 },
-    "speed_print": { "value": 50 },
+    "retraction_retract_speed": { "value": 50 },
 
     "machine_start_gcode": {
       "default_value": "G21\nG90 ;absolute positioning\nM82 ;set extruder to absolute mode\nM107 ;start with the fan off\nG28 X0 Y0  ;move X/Y to min endstops\nG28 Z0 ;move Z to min endstops\nG29\nM117 ; Purge extruder\nG92 E0 ; Reset Extruder\nG1 Z2.0 F3000 ; Move Z Axis up little to prevent scratching of Heat Bed\nG1 X0.1 Y20 Z0.3 F5000.0 ; Move to start position\nG1 X0.1 Y200.0 Z0.3 F1500.0 E15 ; Draw the first line\nG1 X0.4 Y200.0 Z0.3 F5000.0 ; Move to side a little\nG1 X0.4 Y20 Z0.3 F1500.0 E30 ; Draw the second line\nG92 E0 ; Reset Extruder\nG1 Z1.0 F3000\nG1 X0.1 Y15 F3000.0\nG1 Z0.1 F3000.0\nG1 Z2.0 F3000 ; Move Z Axis up little to prevent scratching of Heat Bed\nM117 Printing...\n"

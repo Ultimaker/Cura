@@ -4,7 +4,7 @@
   "inherits": "fdmprinter",
   "metadata": {
     "visible": false,
-    "author": "Blocks Dev Team - J. Grilo",
+    "author": "Blocks Dev Team",
     "manufacturer": "Blocks",
     "file_formats": "text/x-gcode",
     "first_start_actions": ["MachineSettingsAction"],
@@ -43,24 +43,13 @@
     "acceleration_print": { "value": 500 },
     "acceleration_travel": { "value": 500 },
     "acceleration_travel_layer_0": { "value": "acceleration_travel" },
-    "acceleration_roofing": {
-      "enabled": "acceleration_enabled and roofing_layer_count > 0 and top_layers > 0"
-    },
 
     "jerk_print": { "value": 8 },
     "jerk_travel": { "value": "jerk_print" },
     "jerk_travel_layer_0": { "value": "jerk_travel" },
 
-    "acceleration_enabled": { "value": false },
-    "jerk_enabled": { "value": false },
-
-    "speed_print": { "value": 50.0 },
-    "speed_infill": { "value": "speed_print" },
+    "speed_print": { "value": 60.0 },
     "speed_wall": { "value": "speed_print / 2" },
-    "speed_wall_0": { "value": "speed_wall" },
-    "speed_wall_x": { "value": "speed_wall" },
-    "speed_topbottom": { "value": "speed_print / 2" },
-    "speed_roofing": { "value": "speed_topbottom" },
     "speed_travel": {
       "value": "150.0 if speed_print < 60 else 250.0 if speed_print > 100 else speed_print * 2.5"
     },
@@ -76,9 +65,6 @@
 
     "skirt_brim_speed": { "value": "speed_layer_0" },
 
-    "line_width": { "value": "machine_nozzle_size" },
-    "wall_line_width": { "value": "machine_nozzle_size" },
-
     "optimize_wall_printing_order": { "value": "True" },
 
     "material_initial_print_temperature": {
@@ -87,7 +73,6 @@
     "material_final_print_temperature": {
       "value": "material_print_temperature"
     },
-    "material_flow": { "value": 100 },
     "travel_compensate_overlapping_walls_0_enabled": { "value": "False" },
 
     "z_seam_type": { "value": "'back'" },
@@ -109,15 +94,14 @@
 
     "retraction_speed": {
       "deafult_value": 40,
-      "maximum_value_warning": "machine_max_feedrate_e if retraction_enable else float('inf')",
       "maximum_value": 200
     },
     "retraction_retract_speed": {
-      "maximum_value_warning": "machine_max_feedrate_e if retraction_enable else float('inf')",
+      "maximum_value_warning": 130,
       "maximum_value": 200
     },
     "retraction_prime_speed": {
-      "maximum_value_warning": "machine_max_feedrate_e if retraction_enable else float('inf')",
+      "deafult_value": 20,
       "maximum_value": 200
     },
 
@@ -138,7 +122,6 @@
     "travel_avoid_supports": { "value": true },
     "travel_retract_before_outer_wall": { "value": true },
 
-    "retraction_enable": { "value": true },
     "retraction_count_max": { "value": 100 },
     "retraction_min_travel": { "value": 1.5 },
 
