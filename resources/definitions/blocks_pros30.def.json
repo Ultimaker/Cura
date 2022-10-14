@@ -11,8 +11,6 @@
 
     "machine_extruder_trains": {
       "0": "blocks_pros30_extruder_0"
-
-      
     }
   },
   "overrides": {
