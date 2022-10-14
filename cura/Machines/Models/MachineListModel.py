@@ -89,7 +89,7 @@ class MachineListModel(ListModel):
         other_machine_stacks.sort(key = lambda machine: machine.getName().upper())
 
         abstract_machine_stacks = CuraContainerRegistry.getInstance().findContainerStacks(is_abstract_machine = "True")
-        abstract_machine_stacks.sort(key = lambda machine: machine.getName().upper())
+        abstract_machine_stacks.sort(key = lambda machine: machine.getName().upper(), reverse = True)
         for abstract_machine in abstract_machine_stacks:
             definition_id = abstract_machine.definition.getId()
             online_machine_stacks = machines_manager.getMachinesWithDefinition(definition_id, online_only = True)
