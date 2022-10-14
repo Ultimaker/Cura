@@ -60,6 +60,9 @@ env:
     CONAN_LOGGING_LEVEL: info
     CONAN_NON_INTERACTIVE: 1
 
+permissions:
+  contents: read
+
 jobs:
     conan-recipe-version:
         uses: ultimaker/cura/.github/workflows/conan-recipe-version.yml@main
@@ -144,6 +147,11 @@ jobs:
                     path: "tests/**/*.xml"
 
     publish-test-results:
+        permissions:
+          contents: read # to fetch code (actions/checkout)
+          checks: write
+          pull-requests: write # to comment on pull request
+
         runs-on: ubuntu-20.04
         needs: [ testing ]
         if: success() || failure()

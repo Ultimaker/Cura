@@ -904,6 +904,7 @@ class MachineManager(QObject):
 
         if self._global_container_stack is None \
                 or self._global_container_stack.getProperty(setting_key, "value") == new_value \
+                or self._global_container_stack.definitionChanges.getProperty("extruders_enabled_count", "value") is None \
                 or self._global_container_stack.definitionChanges.getProperty("extruders_enabled_count", "value") < 2:
             return
 
