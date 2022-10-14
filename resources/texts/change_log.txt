@@ -14,6 +14,7 @@ Three new settings: 'Initial Layer Outer Wall Flow', 'Initial Layer Inner Wall F
 - Add setting for 'tree support max diameter'
 - Add option to drop-down models to the build-plate individually, contributed to Piezoid
 - Added a preference to make the tray icon optional, contributed by fieldOfView
+- (Community Developer Update: Proper workflow for 'installing from source' on Windows! <a href="https://github.com/Ultimaker/Cura/wiki/Running-Cura-from-Source">See our wiki.</a>)
 
 * Bug fixes:
 - Fixed a crash to do with the serialization of functions, contributed by Piezoid
@@ -63,7 +64,7 @@ Three new settings: 'Initial Layer Outer Wall Flow', 'Initial Layer Inner Wall F
 - Update Anycubic mega zero, contributed by NOVAXIM
 - Added some Renkforce machines, contributed by goofoo3d
 
-* Community translations (pending):
+* Community translations:
 - Updated the Brazilian Portuguese translation, contributed by Patola
 - Updated the Czech translation, contributed by sustmi
 
