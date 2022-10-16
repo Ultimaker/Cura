@@ -1,4 +1,4 @@
-[5.2-BETA]
+[5.2]
 
 * Abstract Cloud Printer Type
 Online cloud printers are now grouped by type. You can slice with the ('abstract') printer type, and afterwards choose a specific printer to print with.
@@ -14,8 +14,18 @@ Three new settings: 'Initial Layer Outer Wall Flow', 'Initial Layer Inner Wall F
 - Add setting for 'tree support max diameter'
 - Add option to drop-down models to the build-plate individually, contributed to Piezoid
 - Added a preference to make the tray icon optional, contributed by fieldOfView
+- (Community Developer Update: Proper workflow for 'installing from source' on Windows! <a href="https://github.com/Ultimaker/Cura/wiki/Running-Cura-from-Source">See our wiki.</a>)
 
 * Bug fixes:
+- Fixed a crash to do with the serialization of functions, contributed by Piezoid
+- Fixed a crash that could occur when a user has non-latin characters in their Windows username
+- Another 'Tree Support Starts in Air' fix
+- Restore tooltips (if available) for Intents in Recommended print settings
+- Fix startup on 'Zorin OS' (a Linux flavor), contributed by Tim453
+- On Windows, (admin) users should be able to uninstall via 'Programs and Features' again
+- Correct version number in Windows uninstaller
+- Uninstalling didn't remove all files in Windows
+- (Windows) An uninstall could only be done by the original user that installed
 - Don't ignore bottom pattern when spiralizing
 - Don't 'Union All' for 'Merged Meshes Overlap'
 - Seam placement was not in the correct corner in some cases
@@ -26,7 +36,6 @@ Three new settings: 'Initial Layer Outer Wall Flow', 'Initial Layer Inner Wall F
 - Don't spam the user with spurious 'Cura Notification's (Windows only)
 - Don't spam the logs with duplicated deprecated warnings, contributed by Patschke
 - Properly update the infill percentage in the top bar after an intent profile switch
-- An uninstall could only be done by the original user that installed
 - In certain rare situations, layers would be printed multiple times when monotonic fill was on
 - Put tree support infill density at 0% by default
 - Machine settings: Also save values when closing the window, not just when focus' changed
@@ -55,7 +64,7 @@ Three new settings: 'Initial Layer Outer Wall Flow', 'Initial Layer Inner Wall F
 - Update Anycubic mega zero, contributed by NOVAXIM
 - Added some Renkforce machines, contributed by goofoo3d
 
-* Community translations (pending):
+* Community translations:
 - Updated the Brazilian Portuguese translation, contributed by Patola
 - Updated the Czech translation, contributed by sustmi
 
