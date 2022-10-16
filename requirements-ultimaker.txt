@@ -1,1 +1,1 @@
-git+https://github.com/ultimaker/libcharon@master#egg=charon
+git+https://github.com/ultimaker/libcharon@master/s-line#egg=charon
