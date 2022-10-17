@@ -1,5 +1,5 @@
 name: Cura Installer
-run-name: Cura binaries ${{ inputs.cura_conan_version }} by @${{ github.actor }}
+run-name: ${{ inputs.cura_conan_version }} by @${{ github.actor }}
 
 on:
     workflow_dispatch:
@@ -53,6 +53,9 @@ env:
     MACOS_CERT_USER: ${{ secrets.MACOS_CERT_USER }}
     GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
     MACOS_CERT_PASSPHRASE: ${{ secrets.MACOS_CERT_PASSPHRASE }}
+    CURA_CONAN_VERSION: ${{ inputs.cura_conan_version }}
+    ENTERPRISE: ${{ inputs.enterprise }}
+    STAGING: ${{ inputs.staging }}
 
 jobs:
     cura-installer-create:
@@ -157,8 +160,13 @@ jobs:
                 if: ${{ inputs.conan_config_branch == '' }}
                 run: conan config install https://github.com/Ultimaker/conan-config.git
 
-            -   name: Create the Packages
-                run: conan install ${{ inputs.cura_conan_version }} ${{ inputs.conan_args }} --build=missing --update -if cura_inst -g VirtualPythonEnv -o cura:enterprise=${{ inputs.enterprise }} -o cura:staging=${{ inputs.staging }} --json "cura_inst/conan_install_info.json"
+            -   name: Create the Packages (Bash)
+                if: ${{ runner.os != 'Windows' }}
+                run: conan install $CURA_CONAN_VERSION ${{ inputs.conan_args }} --build=missing --update -if cura_inst -g VirtualPythonEnv -o cura:enterprise=$ENTERPRISE -o cura:staging=$STAGING --json "cura_inst/conan_install_info.json"
+
+            -   name: Create the Packages (Powershell)
+                if: ${{ runner.os == 'Windows' }}
+                run: conan install $Env:CURA_CONAN_VERSION ${{ inputs.conan_args }} --build=missing --update -if cura_inst -g VirtualPythonEnv -o cura:enterprise=$Env:ENTERPRISE -o cura:staging=$Env:STAGING --json "cura_inst/conan_install_info.json"
 
             -   name: Set Environment variables for Cura (bash)
                 if: ${{ runner.os != 'Windows' }}

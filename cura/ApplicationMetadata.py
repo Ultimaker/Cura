@@ -14,7 +14,7 @@ DEFAULT_CURA_LATEST_URL = "https://software.ultimaker.com/latest.json"
 # Each release has a fixed SDK version coupled with it. It doesn't make sense to make it configurable because, for
 # example Cura 3.2 with SDK version 6.1 will not work. So the SDK version is hard-coded here and left out of the
 # CuraVersion.py.in template.
-CuraSDKVersion = "8.1.0"
+CuraSDKVersion = "8.2.0"
 
 try:
     from cura.CuraVersion import CuraLatestURL

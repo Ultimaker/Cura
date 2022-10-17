@@ -12,9 +12,9 @@
 !define INSTALLER_NAME "{{ destination }}"
 !define MAIN_APP_EXE "{{ main_app }}"
 !define INSTALL_TYPE "SetShellVarContext all"
-!define REG_ROOT "HKCR"
-!define REG_APP_PATH "Software\Microsoft\Windows\CurrentVersion\App Paths\${APP_NAME}"
-!define UNINSTALL_PATH "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_NAME}"
+!define REG_ROOT "HKLM"
+!define REG_APP_PATH "Software\Microsoft\Windows\CurrentVersion\App Paths\${APP_NAME}-${VERSION}"
+!define UNINSTALL_PATH "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_NAME}-${VERSION}"
 
 !define REG_START_MENU "Start Menu Folder"
 
@@ -163,7 +163,7 @@ Delete "$INSTDIR\uninstall.exe"
 Delete "$INSTDIR\${APP_NAME} website.url"
 !endif
 
-RmDir "$INSTDIR"
+RmDir /r /REBOOTOK "$INSTDIR"
 
 !ifdef REG_START_MENU
 !insertmacro MUI_STARTMENU_GETFOLDER "Application" $SM_Folder
