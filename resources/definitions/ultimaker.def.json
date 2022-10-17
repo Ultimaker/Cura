@@ -14,8 +14,8 @@
         "bottom_layers": { "value": "math.ceil(round(bottom_thickness / resolveOrValue('layer_height'), 4))" },
         "bridge_enable_more_layers": { "value": false },
         "bridge_fan_speed": { "value": "cool_fan_speed_max" },
-        "bridge_fan_speed_2": { "value": "cool_fan_speed" },
-        "bridge_fan_speed_3": { "value": "cool_fan_speed" },
+        "bridge_fan_speed_2": { "value": "cool_fan_speed_min" },
+        "bridge_fan_speed_3": { "value": "cool_fan_speed_min" },
         "bridge_settings_enabled": { "value": true },
         "bridge_skin_density": { "value": "80" },
         "bridge_skin_density_2": { "value": 100 },
@@ -78,7 +78,7 @@
         "raft_interface_speed": { "value": "(raft_surface_speed + raft_base_speed) / 2" },
         "raft_interface_thickness": { "value": "(raft_base_thickness + raft_surface_thickness) / 2" },
         "raft_speed": { "value": 15 },
-        "raft_surface_fan_speed": { "value": "cool_fan_speed" },
+        "raft_surface_fan_speed": { "value": "cool_fan_speed_min" },
         "raft_surface_speed": { "value": "speed_topbottom" },
         "relative_extrusion":
         {
@@ -113,7 +113,6 @@
         "support_xy_distance": { "value": "1" },
         "support_xy_distance_overhang": { "value": "0.2" },
         "support_z_distance": { "value": "0" },
-        "top_bottom_pattern": { "value": "'zigzag'" },
         "top_layers": { "value": "math.ceil(round(top_thickness / resolveOrValue('layer_height'), 4))" },
         "wall_0_material_flow_layer_0": { "value": "1.10 * material_flow_layer_0" },
         "wall_thickness": { "value": "wall_line_width_0 + wall_line_width_x" },
