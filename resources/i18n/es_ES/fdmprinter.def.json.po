@@ -1,10 +1,7 @@
-# Cura
-# Copyright (C) 2022 Ultimaker B.V.
-# This file is distributed under the same license as the Cura package.
-#
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 5.2\n"
+"Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
 "POT-Creation-Date: 2022-09-27 14:50+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
@@ -1210,9 +1207,9 @@ msgid ""
 "propagate to the outside. However printing them later allows them to stack "
 "better when overhangs are printed. When there is an uneven amount of total "
 "innner walls, the 'center last line' is always printed last."
-msgstr "Determines the order in which walls are printed. Printing outer walls earlier helps with dimensional accuracy, as faults from inner walls cannot propagate"
-" to the outside. However printing them later allows them to stack better when overhangs are printed. When there is an uneven amount of total innner walls,"
-" the 'center last line' is always printed last."
+msgstr "Determina el orden de impresión de las paredes. La preimpresión de las paredes exteriores mejora la precisión dimensional ya que las fallas de las paredes"
+" internas no pueden propagarse hacia el exterior. Sin embargo, si imprime más tarde, podrá apilarlos mejor cuando se impriman los voladizos. Cuando hay"
+" una cantidad desigual de paredes interiores totales, la \"última línea central\" siempre se imprime al final."
 
 #: /fdmprinter.def.json
 msgctxt "inset_direction option inside_out"
@@ -1289,9 +1286,10 @@ msgid ""
 "A higher Minimum Odd Wall Line Width leads to a higher maximum even wall "
 "line width. The maximum odd wall line width is calculated as 2 * Minimum "
 "Even Wall Line Width."
-msgstr "The minimum line width for middle line gap filler polyline walls. This setting determines at which model thickness we switch from printing two wall lines,"
-" to printing two outer walls and a single central wall in the middle. A higher Minimum Odd Wall Line Width leads to a higher maximum even wall line width."
-" The maximum odd wall line width is calculated as 2 * Minimum Even Wall Line Width."
+msgstr "El ancho de línea mínimo para paredes de polilínea de relleno de hueco de línea intermedia. Este parámetro determina a partir de qué grosor de modelo pasamos"
+" de imprimir dos líneas de paredes a imprimir dos paredes exteriores y una sola pared central en el medio. Un ancho mínimo más alto de la línea perimetral"
+" impar conduce a un ancho máximo más alto de la línea perimetral par. El ancho máximo de línea perimetral impar se calcula como 2 * ancho mínimo de línea"
+" perimetral par."
 
 #: /fdmprinter.def.json
 msgctxt "fill_outline_gaps label"
@@ -3124,34 +3122,34 @@ msgstr "Compensación de flujo de la primera capa: la cantidad de material extru
 #: /fdmprinter.def.json
 msgctxt "wall_x_material_flow_layer_0 label"
 msgid "Initial Layer Inner Wall Flow"
-msgstr "Initial Layer Inner Wall Flow"
+msgstr "Flujo de pared interior de la capa inicial"
 
 #: /fdmprinter.def.json
 msgctxt "wall_x_material_flow_layer_0 description"
 msgid ""
 "Flow compensation on wall lines for all wall lines except the outermost one, "
 "but only for the first layer"
-msgstr "Flow compensation on wall lines for all wall lines except the outermost one, but only for the first layer"
+msgstr "Compensación de flujo en líneas de pared para todas las líneas excepto la más externa, pero solo para la primera capa"
 
 #: /fdmprinter.def.json
 msgctxt "wall_0_material_flow_layer_0 label"
 msgid "Initial Layer Outer Wall Flow"
-msgstr "Initial Layer Outer Wall Flow"
+msgstr "Flujo de pared exterior de la capa inicial"
 
 #: /fdmprinter.def.json
 msgctxt "wall_0_material_flow_layer_0 description"
 msgid "Flow compensation on the outermost wall line of the first layer."
-msgstr "Flow compensation on the outermost wall line of the first layer."
+msgstr "Compensación de flujo en la línea de pared más externa de la primera capa."
 
 #: /fdmprinter.def.json
 msgctxt "skin_material_flow_layer_0 label"
 msgid "Initial Layer Bottom Flow"
-msgstr "Initial Layer Bottom Flow"
+msgstr "Flujo inferior de la capa inicial"
 
 #: /fdmprinter.def.json
 msgctxt "skin_material_flow_layer_0 description"
 msgid "Flow compensation on bottom lines of the first layer"
-msgstr "Flow compensation on bottom lines of the first layer"
+msgstr "Compensación de flujo en las líneas inferiores de la primera capa"
 
 #: /fdmprinter.def.json
 msgctxt "material_standby_temperature label"
@@ -3458,14 +3456,15 @@ msgstr "Permite ajustar la aceleración del cabezal de impresión. Aumentar las 
 #: /fdmprinter.def.json
 msgctxt "acceleration_travel_enabled label"
 msgid "Enable Travel Acceleration"
-msgstr "Enable Travel Acceleration"
+msgstr "Habilitar la aceleración de desplazamiento"
 
 #: /fdmprinter.def.json
 msgctxt "acceleration_travel_enabled description"
 msgid ""
 "Use a separate acceleration rate for travel moves. If disabled, travel moves "
 "will use the acceleration value of the printed line at their destination."
-msgstr "Use a separate acceleration rate for travel moves. If disabled, travel moves will use the acceleration value of the printed line at their destination."
+msgstr "Utilice una tasa de aceleración independiente para los movimientos de desplazamiento. Si está deshabilitada, los movimientos de desplazamiento utilizarán"
+" el valor de aceleración de la línea impresa en su destino."
 
 #: /fdmprinter.def.json
 msgctxt "acceleration_print label"
@@ -3675,14 +3674,15 @@ msgstr "Permite ajustar el impulso del cabezal de impresión cuando la velocidad
 #: /fdmprinter.def.json
 msgctxt "jerk_travel_enabled label"
 msgid "Enable Travel Jerk"
-msgstr "Enable Travel Jerk"
+msgstr "Habilitar el impulso de desplazamiento"
 
 #: /fdmprinter.def.json
 msgctxt "jerk_travel_enabled description"
 msgid ""
 "Use a separate jerk rate for travel moves. If disabled, travel moves will "
 "use the jerk value of the printed line at their destination."
-msgstr "Use a separate jerk rate for travel moves. If disabled, travel moves will use the jerk value of the printed line at their destination."
+msgstr "Utilice una tasa de impulso independiente para los movimientos de desplazamiento. Si está deshabilitada, los movimientos de desplazamiento utilizarán el"
+" valor de impulso de la línea impresa en su destino."
 
 #: /fdmprinter.def.json
 msgctxt "jerk_print label"
@@ -4545,14 +4545,15 @@ msgstr "El diámetro de las ramas más finas del soporte en árbol. Cuanto más 
 #: /fdmprinter.def.json
 msgctxt "support_tree_max_diameter label"
 msgid "Tree Support Trunk Diameter"
-msgstr "Tree Support Trunk Diameter"
+msgstr "Diámetro del tronco de soporte en árbol"
 
 #: /fdmprinter.def.json
 msgctxt "support_tree_max_diameter description"
 msgid ""
 "The diameter of the widest branches of tree support. A thicker trunk is more "
 "sturdy; a thinner trunk takes up less space on the build plate."
-msgstr "The diameter of the widest branches of tree support. A thicker trunk is more sturdy; a thinner trunk takes up less space on the build plate."
+msgstr "El diámetro de las ramas más anchas del soporte en árbol. Un tronco más grueso es más resistente; un tronco más delgado ocupa menos espacio en la placa"
+" de impresión."
 
 #: /fdmprinter.def.json
 msgctxt "support_tree_branch_diameter_angle label"

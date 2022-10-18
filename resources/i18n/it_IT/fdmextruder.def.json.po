@@ -1,10 +1,7 @@
-# Cura
-# Copyright (C) 2022 Ultimaker B.V.
-# This file is distributed under the same license as the Cura package.
-#
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 5.2\n"
+"Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
 "POT-Creation-Date: 2022-09-27 14:50+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
@@ -17,165 +14,165 @@ msgstr ""
 #: /fdmextruder.def.json
 msgctxt "machine_settings label"
 msgid "Machine"
-msgstr "Macchina"
+msgstr "Machine"
 
 #: /fdmextruder.def.json
 msgctxt "machine_settings description"
 msgid "Machine specific settings"
-msgstr "Impostazioni macchina specifiche"
+msgstr "Paramètres spécifiques de la machine"
 
 #: /fdmextruder.def.json
 msgctxt "extruder_nr label"
 msgid "Extruder"
-msgstr "Estrusore"
+msgstr "Extrudeuse"
 
 #: /fdmextruder.def.json
 msgctxt "extruder_nr description"
 msgid "The extruder train used for printing. This is used in multi-extrusion."
-msgstr "Treno estrusore utilizzato per la stampa. Utilizzato nell’estrusione multipla."
+msgstr "Le train d'extrudeuse utilisé pour l'impression. Cela est utilisé en multi-extrusion."
 
 #: /fdmextruder.def.json
 msgctxt "machine_nozzle_id label"
 msgid "Nozzle ID"
-msgstr "ID ugello"
+msgstr "ID buse"
 
 #: /fdmextruder.def.json
 msgctxt "machine_nozzle_id description"
 msgid "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\"."
-msgstr "ID ugello per un treno estrusore, come \"AA 0.4\" e \"BB 0.8\"."
+msgstr "ID buse pour un train d'extrudeuse, comme « AA 0.4 » et « BB 0.8 »."
 
 #: /fdmextruder.def.json
 msgctxt "machine_nozzle_size label"
 msgid "Nozzle Diameter"
-msgstr "Diametro ugello"
+msgstr "Diamètre de la buse"
 
 #: /fdmextruder.def.json
 msgctxt "machine_nozzle_size description"
 msgid ""
 "The inner diameter of the nozzle. Change this setting when using a non-"
 "standard nozzle size."
-msgstr "Il diametro interno dell’ugello. Modificare questa impostazione quando si utilizza una dimensione ugello non standard."
+msgstr "Le diamètre intérieur de la buse. Modifiez ce paramètre si vous utilisez une taille de buse non standard."
 
 #: /fdmextruder.def.json
 msgctxt "machine_nozzle_offset_x label"
 msgid "Nozzle X Offset"
-msgstr "Offset X ugello"
+msgstr "Buse Décalage X"
 
 #: /fdmextruder.def.json
 msgctxt "machine_nozzle_offset_x description"
 msgid "The x-coordinate of the offset of the nozzle."
-msgstr "La coordinata y dell’offset dell’ugello."
+msgstr "Les coordonnées X du décalage de la buse."
 
 #: /fdmextruder.def.json
 msgctxt "machine_nozzle_offset_y label"
 msgid "Nozzle Y Offset"
-msgstr "Offset Y ugello"
+msgstr "Buse Décalage Y"
 
 #: /fdmextruder.def.json
 msgctxt "machine_nozzle_offset_y description"
 msgid "The y-coordinate of the offset of the nozzle."
-msgstr "La coordinata y dell’offset dell’ugello."
+msgstr "Les coordonnées Y du décalage de la buse."
 
 #: /fdmextruder.def.json
 msgctxt "machine_extruder_start_code label"
 msgid "Extruder Start G-Code"
-msgstr "Codice G avvio estrusore"
+msgstr "Extrudeuse G-Code de démarrage"
 
 #: /fdmextruder.def.json
 msgctxt "machine_extruder_start_code description"
 msgid "Start g-code to execute when switching to this extruder."
-msgstr "Inizio codice G da eseguire quando si passa a questo estrusore."
+msgstr "Démarrer le G-Code à exécuter lors du passage à cette extrudeuse."
 
 #: /fdmextruder.def.json
 msgctxt "machine_extruder_start_pos_abs label"
 msgid "Extruder Start Position Absolute"
-msgstr "Assoluto posizione avvio estrusore"
+msgstr "Extrudeuse Position de départ absolue"
 
 #: /fdmextruder.def.json
 msgctxt "machine_extruder_start_pos_abs description"
 msgid ""
 "Make the extruder starting position absolute rather than relative to the "
 "last-known location of the head."
-msgstr "Rende la posizione di partenza estrusore assoluta anziché relativa rispetto all’ultima posizione nota della testina."
+msgstr "Rendre la position de départ de l'extrudeuse absolue plutôt que relative à la dernière position connue de la tête."
 
 #: /fdmextruder.def.json
 msgctxt "machine_extruder_start_pos_x label"
 msgid "Extruder Start Position X"
-msgstr "X posizione avvio estrusore"
+msgstr "Extrudeuse Position de départ X"
 
 #: /fdmextruder.def.json
 msgctxt "machine_extruder_start_pos_x description"
 msgid "The x-coordinate of the starting position when turning the extruder on."
-msgstr "La coordinata x della posizione di partenza all’accensione dell’estrusore."
+msgstr "Les coordonnées X de la position de départ lors de la mise en marche de l'extrudeuse."
 
 #: /fdmextruder.def.json
 msgctxt "machine_extruder_start_pos_y label"
 msgid "Extruder Start Position Y"
-msgstr "Y posizione avvio estrusore"
+msgstr "Extrudeuse Position de départ Y"
 
 #: /fdmextruder.def.json
 msgctxt "machine_extruder_start_pos_y description"
 msgid "The y-coordinate of the starting position when turning the extruder on."
-msgstr "La coordinata y della posizione di partenza all’accensione dell’estrusore."
+msgstr "Les coordonnées Y de la position de départ lors de la mise en marche de l'extrudeuse."
 
 #: /fdmextruder.def.json
 msgctxt "machine_extruder_end_code label"
 msgid "Extruder End G-Code"
-msgstr "Codice G fine estrusore"
+msgstr "Extrudeuse G-Code de fin"
 
 #: /fdmextruder.def.json
 msgctxt "machine_extruder_end_code description"
 msgid "End g-code to execute when switching away from this extruder."
-msgstr "Fine codice G da eseguire quando si passa a questo estrusore."
+msgstr "Fin du G-Code à exécuter lors de l'abandon de l'extrudeuse."
 
 #: /fdmextruder.def.json
 msgctxt "machine_extruder_end_pos_abs label"
 msgid "Extruder End Position Absolute"
-msgstr "Assoluto posizione fine estrusore"
+msgstr "Extrudeuse Position de fin absolue"
 
 #: /fdmextruder.def.json
 msgctxt "machine_extruder_end_pos_abs description"
 msgid ""
 "Make the extruder ending position absolute rather than relative to the last-"
 "known location of the head."
-msgstr "Rende la posizione di fine estrusore assoluta anziché relativa rispetto all’ultima posizione nota della testina."
+msgstr "Rendre la position de fin de l'extrudeuse absolue plutôt que relative à la dernière position connue de la tête."
 
 #: /fdmextruder.def.json
 msgctxt "machine_extruder_end_pos_x label"
 msgid "Extruder End Position X"
-msgstr "Posizione X fine estrusore"
+msgstr "Extrudeuse Position de fin X"
 
 #: /fdmextruder.def.json
 msgctxt "machine_extruder_end_pos_x description"
 msgid "The x-coordinate of the ending position when turning the extruder off."
-msgstr "La coordinata x della posizione di fine allo spegnimento dell’estrusore."
+msgstr "Les coordonnées X de la position de fin lors de l'arrêt de l'extrudeuse."
 
 #: /fdmextruder.def.json
 msgctxt "machine_extruder_end_pos_y label"
 msgid "Extruder End Position Y"
-msgstr "Posizione Y fine estrusore"
+msgstr "Extrudeuse Position de fin Y"
 
 #: /fdmextruder.def.json
 msgctxt "machine_extruder_end_pos_y description"
 msgid "The y-coordinate of the ending position when turning the extruder off."
-msgstr "La coordinata y della posizione di fine allo spegnimento dell’estrusore."
+msgstr "Les coordonnées Y de la position de fin lors de l'arrêt de l'extrudeuse."
 
 #: /fdmextruder.def.json
 msgctxt "extruder_prime_pos_z label"
 msgid "Extruder Prime Z Position"
-msgstr "Posizione Z innesco estrusore"
+msgstr "Extrudeuse Position d'amorçage Z"
 
 #: /fdmextruder.def.json
 msgctxt "extruder_prime_pos_z description"
 msgid ""
 "The Z coordinate of the position where the nozzle primes at the start of "
 "printing."
-msgstr "Indica la coordinata Z della posizione in cui l’ugello si innesca all’avvio della stampa."
+msgstr "Les coordonnées Z de la position à laquelle la buse s'amorce au début de l'impression."
 
 #: /fdmextruder.def.json
 msgctxt "machine_extruder_cooling_fan_number label"
 msgid "Extruder Print Cooling Fan"
-msgstr "Ventola di raffreddamento stampa estrusore"
+msgstr "Ventilateur de refroidissement d'impression de l'extrudeuse"
 
 #: /fdmextruder.def.json
 msgctxt "machine_extruder_cooling_fan_number description"
@@ -183,61 +180,61 @@ msgid ""
 "The number of the print cooling fan associated with this extruder. Only "
 "change this from the default value of 0 when you have a different print "
 "cooling fan for each extruder."
-msgstr "Il numero di ventole di raffreddamento stampa abbinate a questo estrusore. Modificarlo dal valore predefinito 0 solo quando si ha una ventola di raffreddamento"
-" diversa per ciascun estrusore."
+msgstr "Numéro du ventilateur de refroidissement d'impression associé à cette extrudeuse. Ne modifiez cette valeur par rapport à la valeur par défaut 0 que si"
+" vous utilisez un ventilateur de refroidissement d'impression différent pour chaque extrudeuse."
 
 #: /fdmextruder.def.json
 msgctxt "platform_adhesion label"
 msgid "Build Plate Adhesion"
-msgstr "Adesione piano di stampa"
+msgstr "Adhérence du plateau"
 
 #: /fdmextruder.def.json
 msgctxt "platform_adhesion description"
 msgid "Adhesion"
-msgstr "Adesione"
+msgstr "Adhérence"
 
 #: /fdmextruder.def.json
 msgctxt "extruder_prime_pos_x label"
 msgid "Extruder Prime X Position"
-msgstr "Posizione X innesco estrusore"
+msgstr "Extrudeuse Position d'amorçage X"
 
 #: /fdmextruder.def.json
 msgctxt "extruder_prime_pos_x description"
 msgid ""
 "The X coordinate of the position where the nozzle primes at the start of "
 "printing."
-msgstr "La coordinata X della posizione in cui l’ugello si innesca all’avvio della stampa."
+msgstr "Les coordonnées X de la position à laquelle la buse s'amorce au début de l'impression."
 
 #: /fdmextruder.def.json
 msgctxt "extruder_prime_pos_y label"
 msgid "Extruder Prime Y Position"
-msgstr "Posizione Y innesco estrusore"
+msgstr "Extrudeuse Position d'amorçage Y"
 
 #: /fdmextruder.def.json
 msgctxt "extruder_prime_pos_y description"
 msgid ""
 "The Y coordinate of the position where the nozzle primes at the start of "
 "printing."
-msgstr "La coordinata Y della posizione in cui l’ugello si innesca all’avvio della stampa."
+msgstr "Les coordonnées Y de la position à laquelle la buse s'amorce au début de l'impression."
 
 #: /fdmextruder.def.json
 msgctxt "material label"
 msgid "Material"
-msgstr "Materiale"
+msgstr "Matériau"
 
 #: /fdmextruder.def.json
 msgctxt "material description"
 msgid "Material"
-msgstr "Materiale"
+msgstr "Matériau"
 
 #: /fdmextruder.def.json
 msgctxt "material_diameter label"
 msgid "Diameter"
-msgstr "Diametro"
+msgstr "Diamètre"
 
 #: /fdmextruder.def.json
 msgctxt "material_diameter description"
 msgid ""
 "Adjusts the diameter of the filament used. Match this value with the "
 "diameter of the used filament."
-msgstr "Regolare il diametro del filamento utilizzato. Abbinare questo valore al diametro del filamento utilizzato."
+msgstr "Ajuste le diamètre du filament utilisé. Faites correspondre cette valeur au diamètre du filament utilisé."
