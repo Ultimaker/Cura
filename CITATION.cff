@@ -18,8 +18,8 @@ url: 'https://ultimaker.com/software/ultimaker-cura'
 repository-code: 'https://github.com/Ultimaker/Cura'
 license: LGPL-3.0
 license-url: "https://github.com/Ultimaker/Cura/blob/main/LICENSE"
-version: 5.0.0
-date-released: '2022-05-17'
+version: 5.2.1
+date-released: '2022-10-19'
 keywords:
   - Ultimaker
   - Cura
