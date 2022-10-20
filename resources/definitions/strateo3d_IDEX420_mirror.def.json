@@ -20,7 +20,7 @@
         
     "overrides": {
         "machine_name": { "default_value": "IDEX420 Mirror" },
-        "machine_width": { "default_value": 175 },
+        "machine_width": { "default_value": 170 },
         "machine_depth": { "default_value": 320 },
         "machine_height": { "default_value": 400 },
         "machine_extruder_count": { "default_value": 1 },
