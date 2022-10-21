@@ -1,10 +1,12 @@
-# Cura
-# Copyright (C) 2022 Ultimaker B.V.
-# This file is distributed under the same license as the Cura package.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 5.2\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-27 14:50+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
@@ -1003,17 +1005,17 @@ msgstr "Saber mais"
 msgctxt "@info:status"
 msgid ""
 "You will receive a confirmation via email when the print job is approved"
-msgstr "You will receive a confirmation via email when the print job is approved"
+msgstr "Receberá uma confirmação por e-mail quando o trabalho de impressão for aprovado"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/PrintJobAwaitingApprovalMessage.py:19
 msgctxt "@info:title"
 msgid "The print job was successfully submitted"
-msgstr "The print job was successfully submitted"
+msgstr "O trabalho de impressão foi enviado com sucesso"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/PrintJobAwaitingApprovalMessage.py:22
 msgctxt "@action"
 msgid "Manage print jobs"
-msgstr "Manage print jobs"
+msgstr "Gerir trabalhos de impressão"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/PrintJobUploadProgressMessage.py:15
 msgctxt "@info:status"
@@ -1331,7 +1333,7 @@ msgstr "Arquivo Ultimaker Format"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/DigitalLibrary/src/DigitalFactoryProjectResponse.py:19
 msgctxt "@text Placeholder for the username if it has been deleted"
 msgid "deleted user"
-msgstr "deleted user"
+msgstr "utilizador excluído"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/GCodeProfileReader/__init__.py:14
 #: /Users/c.lamboo/ultimaker/Cura/plugins/GCodeReader/__init__.py:14
@@ -2506,12 +2508,12 @@ msgstr "Primeira disponível"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorStage.qml:117
 msgctxt "@info"
 msgid "Monitor your printers from everywhere using Ultimaker Digital Factory"
-msgstr "Monitor your printers from everywhere using Ultimaker Digital Factory"
+msgstr "Monitorize as suas impressoras de qualquer lugar usando a Ultimaker Digital Factory"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorStage.qml:129
 msgctxt "@button"
 msgid "View printers in Digital Factory"
-msgstr "View printers in Digital Factory"
+msgstr "Visualize as impressoras na fábrica digital"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:44
 msgctxt "@title:window"
@@ -3358,7 +3360,7 @@ msgctxt "@label"
 msgid ""
 "The material used in this project is currently not installed in Cura.<br/"
 ">Install the material profile and reopen the project."
-msgstr "The material used in this project is currently not installed in Cura.<br/>Install the material profile and reopen the project."
+msgstr "O material usado neste projeto não está atualmente instalado no Cura.<br/>Instale o perfil de material e reabra o projeto."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/3MFReader/WorkspaceDialog.qml:515
 msgctxt "@action:button"
@@ -4180,12 +4182,12 @@ msgstr "Seccionar automaticamente"
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:340
 msgctxt "@info:tooltip"
 msgid "Show an icon and notifications in the system notification area."
-msgstr "Show an icon and notifications in the system notification area."
+msgstr "Mostre um ícone e notificações na área de notificação do sistema."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:348
 msgctxt "@option:check"
 msgid "Add icon to system tray *"
-msgstr "Add icon to system tray *"
+msgstr "Adicione o ícone à bandeja do sistema *"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:357
 msgctxt "@label"
@@ -5516,7 +5518,7 @@ msgstr "Gerir Visibilidade das Definições..."
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Dialogs/ChoosePrinterDialog.qml:17
 msgctxt "@title:window"
 msgid "Select Printer"
-msgstr "Select Printer"
+msgstr "Selecionar impressora"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Dialogs/ChoosePrinterDialog.qml:54
 msgctxt "@title:label"
@@ -5526,7 +5528,7 @@ msgstr "Impressoras compatíveis"
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Dialogs/ChoosePrinterDialog.qml:94
 msgctxt "@description"
 msgid "No compatible printers, that are currently online, where found."
-msgstr "No compatible printers, that are currently online, where found."
+msgstr "Nenhuma impressora compatível, que esteja online no momento, foi encontrada."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:16
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Cura.qml:635
@@ -5933,12 +5935,12 @@ msgstr "Criar estruturas para suportar partes do modelo, suspensas ou com saliê
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrintSetupSelector/Recommended/ProfileWarningReset.qml:54
 msgctxt "@info, %1 is the name of the custom profile"
 msgid "<b>%1</b> custom profile is active and you overwrote some settings."
-msgstr "<b>%1</b> custom profile is active and you overwrote some settings."
+msgstr "<b>%1</b> perfil personalizado está ativo e sobrescreveu algumas configurações."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrintSetupSelector/Recommended/ProfileWarningReset.qml:68
 msgctxt "@info, %1 is the name of the custom profile"
 msgid "<b>%1</b> custom profile is overriding some settings."
-msgstr "<b>%1</b> custom profile is overriding some settings."
+msgstr "<b>%1</b> perfil personalizado está a sobrepor-se a algumas configurações."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrintSetupSelector/Recommended/ProfileWarningReset.qml:79
 msgctxt "@info"
@@ -6324,17 +6326,17 @@ msgstr "Gerir impressoras"
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrinterSelector/MachineListButton.qml:34
 msgctxt "@label"
 msgid "Hide all connected printers"
-msgstr "Hide all connected printers"
+msgstr "Ocultar todas as impressoras conectadas"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrinterSelector/MachineListButton.qml:47
 msgctxt "@label"
 msgid "Show all connected printers"
-msgstr "Show all connected printers"
+msgstr "Mostrar todas as impressoras conectadas"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrinterSelector/MachineSelectorList.qml:24
 msgctxt "@label"
 msgid "Other printers"
-msgstr "Other printers"
+msgstr "Outras impressoras"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ActionPanel/SliceProcessWidget.qml:54
 msgctxt "@label:PrintjobStatus"

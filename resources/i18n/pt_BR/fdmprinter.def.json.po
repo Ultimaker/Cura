@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Cura 5.0\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
 "POT-Creation-Date: 2022-09-27 14:50+0000\n"
-"PO-Revision-Date: 2022-07-04 03:38+0200\n"
+"PO-Revision-Date: 2022-10-10 07:50+0200\n"
 "Last-Translator: Cláudio Sampaio <patola@gmail.com>\n"
 "Language-Team: Cláudio Sampaio <patola@gmail.com>\n"
 "Language: pt_BR\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Poedit 3.1.1\n"
 
 #: /fdmprinter.def.json
 msgctxt "machine_settings label"
@@ -1058,7 +1058,7 @@ msgstr "Ordem de Parede"
 #: /fdmprinter.def.json
 msgctxt "inset_direction description"
 msgid "Determines the order in which walls are printed. Printing outer walls earlier helps with dimensional accuracy, as faults from inner walls cannot propagate to the outside. However printing them later allows them to stack better when overhangs are printed. When there is an uneven amount of total innner walls, the 'center last line' is always printed last."
-msgstr ""
+msgstr "Determina a ordem na qual paredes são impressas. Imprimir as paredes externas primeiro ajuda na acuracidade dimensional, visto que falhas das paredes internas não poderão propagar externamente. No entanto, imprimi-las no final ajuda a haver melhor empilhamento quando seções pendentes são impressas. Quando há uma quantidade ímpar de paredes internas totais, a 'última linha central' é sempre impressa por último."
 
 #: /fdmprinter.def.json
 msgctxt "inset_direction option inside_out"
@@ -1108,7 +1108,7 @@ msgstr "Largura Mínima de Filete de Parede Ímpar"
 #: /fdmprinter.def.json
 msgctxt "min_odd_wall_line_width description"
 msgid "The minimum line width for middle line gap filler polyline walls. This setting determines at which model thickness we switch from printing two wall lines, to printing two outer walls and a single central wall in the middle. A higher Minimum Odd Wall Line Width leads to a higher maximum even wall line width. The maximum odd wall line width is calculated as 2 * Minimum Even Wall Line Width."
-msgstr ""
+msgstr "A mínima largura de extrusão para paredes multifiletes de preenchimento de vão de filete central. Este ajuste determina em que espessura de modelo nós alternamos de imprimir dois filetes de parede para imprimir duas paredes externas e uma parede central no meio. Uma Largura de Extrusão de Parede Ímpar Mínima mais alta leva a uma largura máxima de extrusão de parede par mais alta. A largura máxima de extrusão de parede ímpar é calculada como 2 * Largura Mínima de Extrusão de Parede Par."
 
 #: /fdmprinter.def.json
 msgctxt "fill_outline_gaps label"
@@ -2607,32 +2607,32 @@ msgstr "Compensação de fluxo para a primeira camada; a quantidade de material 
 #: /fdmprinter.def.json
 msgctxt "wall_x_material_flow_layer_0 label"
 msgid "Initial Layer Inner Wall Flow"
-msgstr ""
+msgstr "Fluxo de Parede Interna da Camada Inicial"
 
 #: /fdmprinter.def.json
 msgctxt "wall_x_material_flow_layer_0 description"
 msgid "Flow compensation on wall lines for all wall lines except the outermost one, but only for the first layer"
-msgstr ""
+msgstr "Compensação de fluxo nos filetes de parede para todos os filetes exceto o mais externo, mas só para a primeira camada"
 
 #: /fdmprinter.def.json
 msgctxt "wall_0_material_flow_layer_0 label"
 msgid "Initial Layer Outer Wall Flow"
-msgstr ""
+msgstr "Fluxo de Parede Externa da Camada Inicial"
 
 #: /fdmprinter.def.json
 msgctxt "wall_0_material_flow_layer_0 description"
 msgid "Flow compensation on the outermost wall line of the first layer."
-msgstr ""
+msgstr "Compensação de fluxo no filete de parede mais externo da primeira camada."
 
 #: /fdmprinter.def.json
 msgctxt "skin_material_flow_layer_0 label"
 msgid "Initial Layer Bottom Flow"
-msgstr ""
+msgstr "Fluxo da Base da Camada Inicial"
 
 #: /fdmprinter.def.json
 msgctxt "skin_material_flow_layer_0 description"
 msgid "Flow compensation on bottom lines of the first layer"
-msgstr ""
+msgstr "Compensação de fluxo nos filetes da base da primeira camada"
 
 #: /fdmprinter.def.json
 msgctxt "material_standby_temperature label"
@@ -3792,12 +3792,12 @@ msgstr "O diâmetro dos galhos mais finos do suporte em árvore. Galhos mais gro
 #: /fdmprinter.def.json
 msgctxt "support_tree_max_diameter label"
 msgid "Tree Support Trunk Diameter"
-msgstr ""
+msgstr "Diâmetro de Tronco do Suporte em Árvore"
 
 #: /fdmprinter.def.json
 msgctxt "support_tree_max_diameter description"
 msgid "The diameter of the widest branches of tree support. A thicker trunk is more sturdy; a thinner trunk takes up less space on the build plate."
-msgstr ""
+msgstr "O diâmetro dos galhos mais espessos do suporte em árvore. Um tronco mais espesso é mais robusto; um tronco mais fino ocupa menos espaço na plataforma de impressão."
 
 #: /fdmprinter.def.json
 msgctxt "support_tree_branch_diameter_angle label"
@@ -6055,7 +6055,7 @@ msgstr "Queda de IA"
 #: /fdmprinter.def.json
 msgctxt "wireframe_fall_down description"
 msgid "Distance with which the material falls down after an upward extrusion. This distance is compensated for. Only applies to Wire Printing."
-msgstr "Distância na qual o material desaba após uma extrusão ascendente. Esta distância é compensada. Somente se aplica à Impressão em Arame."
+msgstr "Distância na qual o material desaba após uma extrusão ascendente. Esta distância é compensada. Somente se aplica à Impressão em Arame."
 
 #: /fdmprinter.def.json
 msgctxt "wireframe_drag_along label"
