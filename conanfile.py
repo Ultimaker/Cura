@@ -291,14 +291,15 @@ class CuraConan(ConanFile):
 
     def build(self):
         if self.settings.os == "Windows":
-            self.win_bash = True  # We need gettext, which requires the bash environment
+            return
+            # FIXME: once m4, autoconf, automake are Conan V2 ready self.win_bash = True  # We need gettext, which requires the bash environment
 
         for po_file in self.source_path.joinpath("resources", "i18n").glob("**/*.po"):
             mo_file = self.build_path.joinpath(po_file.with_suffix('.mo').relative_to(self.source_path))
             mkdir(self, str(unix_path(self, mo_file.parent)))
             self.run(f"msgfmt {po_file} -o {mo_file} -f", env="conanbuild")
 
-        self.win_bash = None
+        # FIXME: once m4, autoconf, automake are Conan V2 ready self.win_bash = None
 
     def generate(self):
         cura_run_envvars = self._cura_run_env.vars(self, scope = "run")
