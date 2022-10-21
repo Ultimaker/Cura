@@ -24,6 +24,6 @@
         "machine_depth": { "default_value": 320 },
         "machine_height": { "default_value": 400 },
         "machine_extruder_count": { "default_value": 1 },
-        "machine_start_gcode": { "default_value": "G90 ; switch to absolute coordinate mode\nT2 ; select the duplicate tool\nM140 S{material_bed_temperature_layer_0} ;Start heating bed\nM104 S{material_print_temperature_layer_0} ;Start heating extruder\nM190 S{material_bed_temperature_layer_0} ;Wait for bed to reach temp before proceeding\nM109 S{material_print_temperature_layer_0} ;Wait for extruder to reach temp before proceeding\nG1 F18000 Y-160 Z15 ; move fast to the coordinates\nG1 F18000 X0 Z0.3 ; move fast to the coordinates\nG92 E0 ; set the extruders to 0\nG1 F300 X60 E24 ; purge the hotends\nG1 F600 X40 ; swipe the nozzles\nG1 F600 Z3 ; perform Z hop" }
+        "machine_start_gcode": { "default_value": "G90 ; switch to absolute coordinate mode\nT3 ; select the duplicate tool\nM140 S{material_bed_temperature_layer_0} ;Start heating bed\nM104 S{material_print_temperature_layer_0} ;Start heating extruder\nM190 S{material_bed_temperature_layer_0} ;Wait for bed to reach temp before proceeding\nM109 S{material_print_temperature_layer_0} ;Wait for extruder to reach temp before proceeding\nG1 F18000 Y-160 Z15 ; move fast to the coordinates\nG1 F18000 X0 Z0.3 ; move fast to the coordinates\nG92 E0 ; set the extruders to 0\nG1 F300 X60 E24 ; purge the hotends\nG1 F600 X40 ; swipe the nozzles\nG1 F600 Z3 ; perform Z hop" }
     }
 }
