@@ -317,6 +317,13 @@ class CuraConan(ConanFile):
                                             icon_path = "'{}'".format(Path(self.source_folder, "packaging", self._um_data()["pyinstaller"]["icon"][str(self.settings.os)])).replace("\\", "\\\\"),
                                             entitlements_file = entitlements_file if self.settings.os == "Macos" else "None")
 
+        # Update the po files
+        if self.settings_build.os != "Windows" or self.conf.get("tools.microsoft.bash:path", default = False, check_type = bool):
+            for po_file in self.source_path.joinpath("resources", "i18n").glob("**/*.po"):
+                pot_file = self.source_path.joinpath("resources", "i18n", po_file.with_suffix('.pot').name)
+                mkdir(self, str(unix_path(self, pot_file.parent)))
+                self.run(f"msgmerge --no-wrap --no-fuzzy-matching -width=140 -o {po_file} {po_file} {pot_file}", env = "conanbuild")
+
 
     def imports(self):
         self.copy("CuraEngine.exe", root_package = "curaengine", src = "@bindirs", dst = "", keep_path = False)
