@@ -276,9 +276,8 @@ class CuraConan(ConanFile):
                 self.requires(req)
 
     def build_requirements(self):
-        if self.settings_build.os == "Windows" and not self.conf.get("tools.microsoft.bash:path", default=False, check_type=bool):
-            self.tool_requires("msys2/cci.latest")
-        self.tool_requires("gettext/0.21")
+        if self.settings_build.os != "Windows" or self.conf.get("tools.microsoft.bash:path", default=False, check_type=bool):
+            self.tool_requires("gettext/0.21")
 
     def layout(self):
         self.folders.source = "."
@@ -290,7 +289,7 @@ class CuraConan(ConanFile):
         self.cpp.package.resdirs = ["resources", "plugins", "packaging", "pip_requirements"]  # pip_requirements should be the last item in the list
 
     def build(self):
-        if self.settings.os == "Windows":
+        if self.settings_build.os == "Windows" and not self.conf.get("tools.microsoft.bash:path", default=False, check_type=bool):
             return
             # FIXME: once m4, autoconf, automake are Conan V2 ready self.win_bash = True  # We need gettext, which requires the bash environment
 
@@ -317,6 +316,7 @@ class CuraConan(ConanFile):
                                             entrypoint_location = "'{}'".format(Path(self.source_folder, self._um_data()["runinfo"]["entrypoint"])).replace("\\", "\\\\"),
                                             icon_path = "'{}'".format(Path(self.source_folder, "packaging", self._um_data()["pyinstaller"]["icon"][str(self.settings.os)])).replace("\\", "\\\\"),
                                             entitlements_file = entitlements_file if self.settings.os == "Macos" else "None")
+
 
     def imports(self):
         self.copy("CuraEngine.exe", root_package = "curaengine", src = "@bindirs", dst = "", keep_path = False)
