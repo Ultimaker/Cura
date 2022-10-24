@@ -16,7 +16,7 @@
     "overrides": {
         "coasting_enable": { "value": false },
         "retraction_amount": { "value": 2.7 },
-        "retraction_speed": { "value": 25 },
+        "retraction_speed": { "value": 45 },
         "retraction_extrusion_window": { "value": 2.7 },
         "retract_at_layer_change": { "value": true },
         "support_enable": { "value": false },
@@ -31,6 +31,9 @@
         "xy_offset_layer_0": { "value": -0.1 },
         "speed_print": { "value": 120 },
         "speed_travel": { "value": 200 },
+        "speed_layer_0": { "value": 40 },
+        "speed_wall_0": { "value": 60 },
+        "speed_wall_x": { "value": 75 },
         "machine_name": { "default_value": "Biqu Hurakan" },
         "machine_width": { "value": 235 },
         "machine_depth": { "value": 235 },
@@ -52,7 +55,7 @@
         "jerk_print": { "value": 12 },
         "skin_overlap": { "value": 20.0 },
         "machine_start_gcode": {
-            "default_value": ";BIQU Hurakan start code. Much complex. Very wow. Klipper FTW.\r\n\r\nSTART_PRINT BED_TEMP={material_bed_temperature_layer_0} EXTRUDER_TEMP={material_print_temperature_layer_0}\r\n\r\n; Note: This start\/end code is designed to work with the stock cfg files provided \r\n; with the BIQU Hurakan. If you alter the macros in the cfg files then you\r\n; may also need to alter this code.\r\n\r\n; Another note: This profile will get you part of the way to good prints.\r\n; You still need to tweak settings for each different filament that you\r\n; use. Settings such as retraction distance\/speed, flow,\r\n; bed\/nozzle temperatures and others may need to be adjusted.\r\n; Use https:\/\/teachingtechyt.github.io\/calibration.html to calibrate."
+            "default_value": ";BIQU Hurakan start code. Much complex. Very wow. Klipper FTW.\r\n\r\nSTART_PRINT BED_TEMP={material_bed_temperature_layer_0} EXTRUDER_TEMP={material_print_temperature_layer_0}\r\n\r\n; Note: This start\/end code is designed to work\r\n; with the stock cfg files provided  with the \r\n; BIQU Hurakan. If you alter the macros in the \r\n; cfg files then you may also need to alter this code.\r\n\r\n; Another note: This profile will get you \r\n; part of the way to good prints.\r\n; You still need to tweak settings for each \r\n; different filament that you use.\r\n; Settings such as retraction distance\/speed, \r\n; flow, pressure advance, bed\/nozzle temperatures\r\n; and others may need to be adjusted.\r\n; Use https:\/\/teachingtechyt.github.io\/calibration.html to calibrate.\r\n; Also see https:\/\/www.youtube.com\/watch?v=Ae2G7hl_pZc\r\n; for some good tips."
         },
         "machine_end_gcode": {
             "default_value": ";BIQU Hurakan end code. More complex. Such wow. Klipper4Life.\r\n\r\nEND_PRINT"
