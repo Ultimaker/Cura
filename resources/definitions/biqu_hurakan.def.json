@@ -31,7 +31,7 @@
         "xy_offset_layer_0": { "value": -0.1 },
         "speed_print": { "value": 120 },
         "speed_travel": { "value": 200 },
-        "speed_layer_0": { "value": 40 },
+        "speed_layer_0": { "value": 25 },
         "speed_wall_0": { "value": 60 },
         "speed_wall_x": { "value": 75 },
         "machine_name": { "default_value": "Biqu Hurakan" },
