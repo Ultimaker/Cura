@@ -16,7 +16,7 @@
     "overrides": {
         "coasting_enable": { "value": false },
         "retraction_amount": { "value": 2.7 },
-        "retraction_speed": { "value": 45 },
+        "retraction_speed": { "value": 25 },
         "retraction_extrusion_window": { "value": 2.7 },
         "retract_at_layer_change": { "value": true },
         "support_enable": { "value": false },
@@ -29,7 +29,8 @@
         "fill_outline_gaps": { "value": true },
         "roofing_layer_count": { "value": 2 },
         "xy_offset_layer_0": { "value": -0.1 },
-        "speed_print": { "value": 60 },
+        "speed_print": { "value": 120 },
+        "speed_travel": { "value": 200 },
         "machine_name": { "default_value": "Biqu Hurakan" },
         "machine_width": { "value": 235 },
         "machine_depth": { "value": 235 },
