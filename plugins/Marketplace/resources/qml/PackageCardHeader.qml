@@ -19,6 +19,8 @@ Item
     property bool showInstallButton: false
     property bool showUpdateButton: false
 
+    property string missingPackageReadMoreUrl: "https://support.ultimaker.com/hc/en-us/articles/360011968360-Using-the-Ultimaker-Marketplace?utm_source=cura&utm_medium=software&utm_campaign=load-file-material-missing"
+
 
     width: parent.width
     height: UM.Theme.getSize("card").height
@@ -47,23 +49,21 @@ Item
             sourceSize.width: width
         }
 
-        UM.RecolorImage
+        UM.ColorImage
         {
             visible: !parent.packageHasIcon
             anchors.fill: parent
-            sourceSize.height: height
-            sourceSize.width: width
             color: UM.Theme.getColor("text")
             source:
             {
                 switch (packageData.packageType)
                 {
                     case "plugin":
-                        return "../images/Plugin.svg";
+                        return Qt.resolvedUrl("../images/Plugin.svg");
                     case "material":
-                        return "../images/Spool.svg";
+                        return Qt.resolvedUrl("../images/Spool.svg");
                     default:
-                        return "../images/placeholder.svg";
+                        return Qt.resolvedUrl("../images/placeholder.svg");
                 }
             }
         }
@@ -89,11 +89,18 @@ Item
             Layout.preferredWidth: parent.width
             Layout.preferredHeight: childrenRect.height
 
-            Label
+            UM.StatusIcon
+            {
+                width: UM.Theme.getSize("section_icon").width + UM.Theme.getSize("narrow_margin").width
+                height: UM.Theme.getSize("section_icon").height
+                status: UM.StatusIcon.Status.WARNING
+                visible: packageData.isMissingPackageInformation
+            }
+
+            UM.Label
             {
                 text: packageData.displayName
                 font: UM.Theme.getFont("medium_bold")
-                color: UM.Theme.getColor("text")
                 verticalAlignment: Text.AlignTop
             }
             VerifiedIcon
@@ -102,18 +109,17 @@ Item
                 visible: packageData.isCheckedByUltimaker
             }
 
-            Label
+            UM.Label
             {
                 id: packageVersionLabel
                 text: packageData.packageVersion
-                font: UM.Theme.getFont("default")
-                color: UM.Theme.getColor("text")
                 Layout.fillWidth: true
             }
 
             Button
             {
                 id: externalLinkButton
+                visible: !packageData.isMissingPackageInformation
 
                 // For some reason if i set padding, they don't match up. If i set all of them explicitly, it does work?
                 leftPadding: UM.Theme.getSize("narrow_margin").width
@@ -121,9 +127,9 @@ Item
                 topPadding: UM.Theme.getSize("narrow_margin").width
                 bottomPadding: UM.Theme.getSize("narrow_margin").width
 
-                Layout.preferredWidth: UM.Theme.getSize("card_tiny_icon").width + 2 * padding
-                Layout.preferredHeight: UM.Theme.getSize("card_tiny_icon").width + 2 * padding
-                contentItem: UM.RecolorImage
+                width: UM.Theme.getSize("card_tiny_icon").width + 2 * padding
+                height: UM.Theme.getSize("card_tiny_icon").width + 2 * padding
+                contentItem: UM.ColorImage
                 {
                     source: UM.Theme.getIcon("LinkExternal")
                     color: UM.Theme.getColor("icon")
@@ -157,12 +163,13 @@ Item
             spacing: UM.Theme.getSize("narrow_margin").width
 
             // label "By"
-            Label
+            UM.Label
             {
                 id: authorBy
+                visible: !packageData.isMissingPackageInformation
                 Layout.alignment: Qt.AlignCenter
 
-                text: catalog.i18nc("@label", "By")
+                text: catalog.i18nc("@label Is followed by the name of an author", "By")
                 font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text")
             }
@@ -170,6 +177,7 @@ Item
             // clickable author name
             Item
             {
+                visible: !packageData.isMissingPackageInformation
                 Layout.fillWidth: true
                 implicitHeight: authorBy.height
                 Layout.alignment: Qt.AlignTop
@@ -187,10 +195,29 @@ Item
                 }
             }
 
+            Item
+            {
+                visible: packageData.isMissingPackageInformation
+                Layout.fillWidth: true
+                implicitHeight: readMoreButton.height
+                Layout.alignment: Qt.AlignTop
+                Cura.TertiaryButton
+                {
+                    id: readMoreButton
+                    text: catalog.i18nc("@button:label", "Learn More")
+                    leftPadding: 0
+                    rightPadding: 0
+                    iconSource: UM.Theme.getIcon("LinkExternal")
+                    isIconOnRightSide: true
+
+                    onClicked: Qt.openUrlExternally(missingPackageReadMoreUrl)
+                }
+            }
+
             ManageButton
             {
                 id: enableManageButton
-                visible: showDisableButton && packageData.isInstalled && !packageData.isToBeInstalled && packageData.packageType != "material"
+                visible: showDisableButton && packageData.isInstalled && !packageData.isToBeInstalled && packageData.packageType != "material" && !packageData.isMissingPackageInformation
                 enabled: !packageData.busy
 
                 button_style: !packageData.isActive
@@ -204,7 +231,7 @@ Item
             ManageButton
             {
                 id: installManageButton
-                visible: showInstallButton && (packageData.canDowngrade || !packageData.isBundled)
+                visible: showInstallButton && (packageData.canDowngrade || !packageData.isBundled) && !packageData.isMissingPackageInformation
                 enabled: !packageData.busy
                 busy: packageData.busy
                 button_style: !(packageData.isInstalled || packageData.isToBeInstalled)
@@ -234,7 +261,7 @@ Item
             ManageButton
             {
                 id: updateManageButton
-                visible: showUpdateButton && packageData.canUpdate
+                visible: showUpdateButton && packageData.canUpdate && !packageData.isMissingPackageInformation
                 enabled: !packageData.busy
                 busy: packageData.busy
                 Layout.alignment: Qt.AlignTop

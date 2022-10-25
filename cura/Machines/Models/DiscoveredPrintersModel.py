@@ -3,7 +3,7 @@
 
 from typing import Callable, Dict, List, Optional, TYPE_CHECKING
 
-from PyQt5.QtCore import pyqtSlot, pyqtProperty, pyqtSignal, QObject, QTimer
+from PyQt6.QtCore import pyqtSlot, pyqtProperty, pyqtSignal, QObject, QTimer
 
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger

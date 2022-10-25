@@ -63,13 +63,10 @@ Item
                     isTopElement: toolsModel.getItem(0).id == model.id
                     isBottomElement: toolsModel.getItem(toolsModel.count - 1).id == model.id
 
-                    toolItem: UM.RecolorImage
+                    toolItem: UM.ColorImage
                     {
                         source: UM.Theme.getIcon(model.icon) != "" ? UM.Theme.getIcon(model.icon) : "file:///" + model.location + "/" + model.icon
                         color: UM.Theme.getColor("icon")
-
-                        sourceSize.height: Math.round(UM.Theme.getSize("button").height / 2)
-                        sourceSize.width: Math.round(UM.Theme.getSize("button").width / 2)
                     }
 
                     onCheckedChanged:
@@ -160,7 +157,7 @@ Item
         anchors.topMargin: base.activeY
         z: buttons.z - 1
 
-        target: Qt.point(parent.right, base.activeY +  Math.round(UM.Theme.getSize("button").height/2))
+        target: Qt.point(-1, base.activeY +  Math.round(UM.Theme.getSize("button").height / 2))
         arrowSize: UM.Theme.getSize("default_arrow").width
 
         width:
@@ -213,12 +210,11 @@ Item
         width: toolHint.width + UM.Theme.getSize("default_margin").width
         height: toolHint.height;
         color: UM.Theme.getColor("tooltip")
-        Label
+        UM.Label
         {
             id: toolHint
             text: UM.ActiveTool.properties.getValue("ToolHint") != undefined ? UM.ActiveTool.properties.getValue("ToolHint") : ""
             color: UM.Theme.getColor("tooltip_text")
-            font: UM.Theme.getFont("default")
             anchors.horizontalCenter: parent.horizontalCenter
         }
 

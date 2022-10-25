@@ -32,7 +32,7 @@ Control
         anchors.fill: parent
         color: UM.Theme.getColor("action_button_hovered")
         radius: width
-        UM.RecolorImage
+        UM.ColorImage
         {
             anchors.fill: parent
             color: UM.Theme.getColor("primary")

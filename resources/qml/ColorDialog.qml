@@ -1,4 +1,7 @@
-import QtQuick 2.10
+// Copyright (c) 2022 Ultimaker B.V.
+// Cura is released under the terms of the LGPLv3 or higher.
+
+import QtQuick 2.15
 import QtQuick.Controls 2.2
 import QtQuick.Window 2.1
 import QtQuick.Layouts 1.1
@@ -24,13 +27,9 @@ UM.Dialog
     // In this case we would like to let the content of the dialog determine the size of the dialog
     // however with the current implementation of the dialog this is not possible, so instead we calculate
     // the size of the dialog ourselves.
-    minimumWidth: content.width + 4 * margin
-    minimumHeight:
-        content.height                                 // content height
-      + buttonRow.height                               // button row height
-      + 5 * margin                                     // top and bottom margin and margin between buttons and content
-    width: minimumWidth
-    height: minimumHeight
+    // Ugly workaround for windows having overlapping elements due to incorrect dialog width
+    minimumWidth: content.width + (Qt.platform.os == "windows" ? 4 * margin : 2 * margin)
+    minimumHeight: content.height + footer.height + (Qt.platform.os == "windows" ? 5 * margin : 3 * margin)
 
     property alias color: colorInput.text
     property var swatchColors: [
@@ -81,7 +80,7 @@ UM.Dialog
                     implicitHeight: UM.Theme.getSize("medium_button_icon").height
                     radius: width / 2
 
-                    UM.RecolorImage
+                    UM.ColorImage
                     {
                         anchors.fill: parent
                         visible: swatchColor == base.color
@@ -108,7 +107,7 @@ UM.Dialog
                 text: catalog.i18nc("@label", "Hex")
             }
 
-            TextField
+            Cura.TextField
             {
                 id: colorInput
                 Layout.fillWidth: true
@@ -120,7 +119,7 @@ UM.Dialog
                         text = `#${text}`;
                     }
                 }
-                validator: RegExpValidator { regExp: /^#([a-fA-F0-9]{0,6})$/ }
+                validator: RegularExpressionValidator { regularExpression: /^#([a-fA-F0-9]{0,6})$/ }
             }
 
             Rectangle

@@ -23,13 +23,10 @@ ScrollView
         enabled: !base.readOnly
         selectByMouse: true
 
-        background: Rectangle
-        {
-            radius: UM.Theme.getSize("setting_control_radius").width
-            color: textArea.enabled ? UM.Theme.getColor("setting_control") : UM.Theme.getColor("setting_control_disabled")
-        }
+        background: UM.UnderlineBackground { id: backgroundRectangle }
 
         color: UM.Theme.getColor("text")
+        selectionColor: UM.Theme.getColor("text_selection")
         font: UM.Theme.getFont("default")
 
         Keys.onReturnPressed:  base.editingFinished()

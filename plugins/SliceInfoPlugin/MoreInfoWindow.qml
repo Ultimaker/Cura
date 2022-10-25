@@ -5,9 +5,8 @@ import QtQuick 2.10
 import QtQuick.Controls 2.3
 import QtQuick.Window 2.2
 
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.1 as Cura
-
 
 Window
 {
@@ -62,7 +61,7 @@ Window
                 right: parent.right
             }
 
-            Label
+            UM.Label
             {
                 id: headerText
                 anchors
@@ -72,9 +71,7 @@ Window
                     right: parent.right
                 }
                 text: catalog.i18nc("@text:window", "Ultimaker Cura collects anonymous data in order to improve the print quality and user experience. Below is an example of all the data that is shared:")
-                color: UM.Theme.getColor("text")
                 wrapMode: Text.WordWrap
-                renderType: Text.NativeRendering
             }
 
             Cura.ScrollableTextArea

@@ -17,7 +17,7 @@ RowLayout
     property alias label: detailName.text
     property alias value: detailValue.text
 
-    UM.RecolorImage
+    UM.ColorImage
     {
         id: icon
         width: 18 * screenScaleFactor

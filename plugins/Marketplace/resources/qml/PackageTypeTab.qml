@@ -3,7 +3,7 @@
 
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-import UM 1.0 as UM
+import UM 1.5 as UM
 
 TabButton
 {
@@ -22,11 +22,10 @@ TabButton
         border.width: UM.Theme.getSize("thick_lining").width
     }
 
-    contentItem: Label
+    contentItem: UM.Label
     {
         text: parent.text
         font: UM.Theme.getFont("medium_bold")
-        color: UM.Theme.getColor("text")
         width: contentWidth
         anchors.centerIn: parent
     }

@@ -70,9 +70,6 @@
         "machine_heated_bed": {
             "default_value": true
         },
-        "speed_infill": {
-            "value": "speed_print"
-        },
         "speed_wall_x": {
             "value": "speed_wall"
         },

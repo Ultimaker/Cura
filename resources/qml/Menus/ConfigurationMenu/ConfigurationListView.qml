@@ -39,7 +39,7 @@ Item
             anchors.verticalCenter: parent.verticalCenter
             status: UM.StatusIcon.Status.WARNING
         }
-        Label
+        UM.Label
         {
             id: label
             anchors.left: icon.right
@@ -51,9 +51,6 @@ Item
             text: Cura.MachineManager.printerConnected ?
                     catalog.i18nc("@label", "Loading available configurations from the printer...") :
                     catalog.i18nc("@label", "The configurations are not available because the printer is disconnected.")
-            color: UM.Theme.getColor("text")
-            font: UM.Theme.getFont("default")
-            renderType: Text.NativeRendering
             wrapMode: Text.WordWrap
         }
     }
@@ -68,7 +65,7 @@ Item
         clip: true
 
         ScrollBar.vertical: UM.ScrollBar {
-            parent: container
+            parent: container.parent
             anchors
             {
                 top: parent.top

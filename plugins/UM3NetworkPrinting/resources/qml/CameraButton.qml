@@ -21,7 +21,7 @@ Button
         color: parent.enabled ? (parent.hovered ? UM.Theme.getColor("monitor_card_hover") : "transparent") : UM.Theme.getColor("monitor_icon_disabled")
     }
 
-    UM.RecolorImage
+    UM.ColorImage
     {
         id: icon
         anchors

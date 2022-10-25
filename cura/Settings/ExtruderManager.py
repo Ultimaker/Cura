@@ -1,7 +1,7 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, QVariant  # For communicating data and events to Qt.
+from PyQt6.QtCore import pyqtSignal, pyqtProperty, QObject, QVariant  # For communicating data and events to Qt.
 from UM.FlameProfiler import pyqtSlot
 
 import cura.CuraApplication # To get the global container stack to find the current machine.
@@ -31,9 +31,9 @@ class ExtruderManager(QObject):
 
         if ExtruderManager.__instance is not None:
             raise RuntimeError("Try to create singleton '%s' more than once" % self.__class__.__name__)
-        ExtruderManager.__instance = self
 
         super().__init__(parent)
+        ExtruderManager.__instance = self
 
         self._application = cura.CuraApplication.CuraApplication.getInstance()
 
@@ -382,7 +382,10 @@ class ExtruderManager(QObject):
     # "fdmextruder". We need to check a machine here so its extruder definition is correct according to this.
     def fixSingleExtrusionMachineExtruderDefinition(self, global_stack: "GlobalStack") -> None:
         container_registry = ContainerRegistry.getInstance()
-        expected_extruder_definition_0_id = global_stack.getMetaDataEntry("machine_extruder_trains")["0"]
+        expected_extruder_stack = global_stack.getMetaDataEntry("machine_extruder_trains")
+        if expected_extruder_stack is None:
+            return
+        expected_extruder_definition_0_id = expected_extruder_stack["0"]
         try:
             extruder_stack_0 = global_stack.extruderList[0]
         except IndexError:
