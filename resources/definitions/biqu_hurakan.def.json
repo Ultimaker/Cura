@@ -14,10 +14,11 @@
         ]
     },
     "overrides": {
+        "top_thickness": { "value": 1.0 },
         "coasting_enable": { "value": false },
-        "retraction_amount": { "value": 2.7 },
+        "retraction_amount": { "value": 2.8 },
         "retraction_speed": { "value": 45 },
-        "retraction_extrusion_window": { "value": 2.7 },
+        "retraction_extrusion_window": { "value": 2.8 },
         "retract_at_layer_change": { "value": true },
         "support_enable": { "value": false },
         "support_structure": { "value": "'normal'" },
@@ -25,7 +26,7 @@
         "support_angle": { "value": 45 },
         "support_infill_rate": { "value": 20 },
         "infill_overlap": { "value": 15.0 },
-        "skin_overlap": { "value": 20.0 },
+        "skin_overlap": { "value": 15.0 },
         "fill_outline_gaps": { "value": true },
         "roofing_layer_count": { "value": 2 },
         "xy_offset_layer_0": { "value": -0.1 },
@@ -53,7 +54,6 @@
         "acceleration_print": { "value": 3000 },
         "acceleration_travel": { "value": 3000 },
         "jerk_print": { "value": 12 },
-        "skin_overlap": { "value": 20.0 },
         "machine_start_gcode": {
             "default_value": ";BIQU Hurakan start code. Much complex. Very wow. Klipper FTW.\r\n\r\nSTART_PRINT BED_TEMP={material_bed_temperature_layer_0} EXTRUDER_TEMP={material_print_temperature_layer_0}\r\n\r\n; Note: This start\/end code is designed to work\r\n; with the stock cfg files provided  with the \r\n; BIQU Hurakan. If you alter the macros in the \r\n; cfg files then you may also need to alter this code.\r\n\r\n; Another note: This profile will get you \r\n; part of the way to good prints.\r\n; You still need to tweak settings for each \r\n; different filament that you use.\r\n; Settings such as retraction distance\/speed, \r\n; flow, pressure advance, bed\/nozzle temperatures\r\n; and others may need to be adjusted.\r\n; Use https:\/\/teachingtechyt.github.io\/calibration.html to calibrate.\r\n; Also see https:\/\/www.youtube.com\/watch?v=Ae2G7hl_pZc\r\n; for some good tips."
         },
