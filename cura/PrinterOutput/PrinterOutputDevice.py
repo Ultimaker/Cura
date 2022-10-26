@@ -252,7 +252,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
             # List could end up empty!
             Logger.log("e", "Found a broken configuration in the synced list!")
             all_configurations.remove(None)
-        new_configurations = sorted(all_configurations, key = lambda config: config.printerType or "")
+        new_configurations = sorted(all_configurations, key = lambda config: config.printerType or "", reverse = True)
         if new_configurations != self._unique_configurations:
             self._unique_configurations = new_configurations
             self.uniqueConfigurationsChanged.emit()

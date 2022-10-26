@@ -8073,7 +8073,7 @@
                     "label": "Remove Raft Inside Corners",
                     "description": "Remove inside corners from the raft, causing the raft to become convex.",
                     "type": "bool",
-                    "default_value": true,
+                    "default_value": false,
                     "resolve": "any(extruderValues('raft_remove_inside_corners'))",
                     "enabled": "resolveOrValue('adhesion_type') == 'raft'",
                     "settable_per_mesh": false,
