@@ -1,10 +1,11 @@
 {
-    "name": "Creality Ender-3 S1",
+    "name": "Creality Ender-3 S1 / S1 Pro",
     "version": 2,
     "inherits": "creality_base",
     "metadata": {
         "quality_definition": "creality_base",
-        "visible": true
+        "visible": true,
+        "author": "Victor (Yu Chieh) Lin"
     },
     "overrides": {
         "machine_name": { "default_value": "Creality Ender-3 S1" },
@@ -32,7 +33,7 @@
         "retraction_extrusion_window": {"value": 1.5},
         
         "machine_start_gcode": {
-            "default_value": "; Ender 3 S1 Start G-code\nG92 E0 ; Reset Extruder\nG28 ; Home all axes\nG1 Z10.0 F3000 ; Move Z Axis up little to prevent scratching of Heat Bed\nG1 X0 Y0\n\nM104 S{material_print_temperature_layer_0}\nM190 S{material_bed_temperature_layer_0}\nM109 S{material_print_temperature_layer_0}\n\nG1 X0.1 Y20 Z0.3 F5000.0 ; Move to start position\nG1 X0.1 Y200.0 Z0.3 F1500.0 E15 ; Draw the first line\nG1 X0.4 Y200.0 Z0.3 F5000.0 ; Move to side a little\nG1 X0.4 Y20 Z0.3 F1500.0 E30 ; Draw the second line\nG92 E0 ; Reset Extruder\nG1 Z2.0 F3000 ; Move Z Axis up little to prevent scratching of Heat Bed\nG1 X5 Y20 Z0.3 F5000.0 ; Move over to prevent blob squish\n"
+            "default_value": "; Ender 3 S1 Start G-code\nG92 E0 ; Reset Extruder\nG28 ; Home all axes\nG29 A ; Activate the UBL System\nG29 L0 ; Load UBL\nG29 J2 ; 4-point level\nG1 Z2.0 F3000 ; Move Z Axis up little to prevent scratching of Heat Bed\nG1 X0.1 Y20 Z0.3 F5000.0 ; Move to start position\nG1 X0.1 Y200.0 Z0.3 F1500.0 E15 ; Draw the first line\nG1 X0.4 Y200.0 Z0.3 F5000.0 ; Move to side a little\nG1 X0.4 Y20 Z0.3 F1500.0 E30 ; Draw the second line\nG92 E0 ; Reset Extruder\nG1 Z2.0 F3000 ; Move Z Axis up little to prevent scratching of Heat Bed\nG1 X5 Y20 Z0.3 F5000.0 ; Move over to prevent blob squish\n"
         }
     }
 }
