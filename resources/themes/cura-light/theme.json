@@ -133,6 +133,11 @@
             "weight": 400,
             "family": "Noto Sans"
         },
+        "small_bold": {
+            "size": 0.9,
+            "weight": 700,
+            "family": "Noto Sans"
+        },
         "small_ja_JP": {
             "size": 0.9,
             "weight": 400,
@@ -213,7 +218,7 @@
         "lining": [192, 193, 194, 255],
         "viewport_overlay": [246, 246, 246, 255],
 
-        "primary": [25, 110, 240, 255],
+        "primary": "accent_1",
         "primary_hover": [48, 182, 231, 255],
         "primary_text": [255, 255, 255, 255],
         "text_selection": [156, 195, 255, 127],
@@ -264,7 +269,7 @@
         "text": [25, 25, 25, 255],
         "text_disabled": [180, 180, 180, 255],
         "text_detail": [174, 174, 174, 128],
-        "text_link": [25, 110, 240, 255],
+        "text_link": "accent_1",
         "text_inactive": [174, 174, 174, 255],
         "text_medium": [128, 128, 128, 255],
         "text_scene": [102, 102, 102, 255],
@@ -559,6 +564,9 @@
         "medium_button": [2.5, 2.5],
         "medium_button_icon": [2, 2],
 
+        "large_button": [3.0, 3.0],
+        "large_button_icon": [2.8, 2.8],
+
         "context_menu": [20, 2],
 
         "icon_indicator": [1, 1],
@@ -637,6 +645,10 @@
 
         "marketplace_large_icon": [4.0, 4.0],
 
-        "preferences_page_list_item": [8.0, 2.0]
+        "preferences_page_list_item": [8.0, 2.0],
+
+        "recommended_button_icon": [1.7, 1.7],
+
+        "reset_profile_icon": [1, 1]
     }
 }

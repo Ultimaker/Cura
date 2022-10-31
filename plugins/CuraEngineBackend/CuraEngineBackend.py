@@ -60,7 +60,7 @@ class CuraEngineBackend(QObject, Backend):
         executable_name = "CuraEngine"
         if Platform.isWindows():
             executable_name += ".exe"
-        default_engine_location = executable_name
+        self._default_engine_location = executable_name
 
         search_path = [
             os.path.abspath(os.path.dirname(sys.executable)),
@@ -74,29 +74,29 @@ class CuraEngineBackend(QObject, Backend):
         for path in search_path:
             engine_path = os.path.join(path, executable_name)
             if os.path.isfile(engine_path):
-                default_engine_location = engine_path
+                self._default_engine_location = engine_path
                 break
 
-        if Platform.isLinux() and not default_engine_location:
+        if Platform.isLinux() and not self._default_engine_location:
             if not os.getenv("PATH"):
                 raise OSError("There is something wrong with your Linux installation.")
             for pathdir in cast(str, os.getenv("PATH")).split(os.pathsep):
                 execpath = os.path.join(pathdir, executable_name)
                 if os.path.exists(execpath):
-                    default_engine_location = execpath
+                    self._default_engine_location = execpath
                     break
 
         application = CuraApplication.getInstance() #type: CuraApplication
         self._multi_build_plate_model = None #type: Optional[MultiBuildPlateModel]
         self._machine_error_checker = None #type: Optional[MachineErrorChecker]
 
-        if not default_engine_location:
+        if not self._default_engine_location:
             raise EnvironmentError("Could not find CuraEngine")
 
-        Logger.log("i", "Found CuraEngine at: %s", default_engine_location)
+        Logger.log("i", "Found CuraEngine at: %s", self._default_engine_location)
 
-        default_engine_location = os.path.abspath(default_engine_location)
-        application.getPreferences().addPreference("backend/location", default_engine_location)
+        self._default_engine_location = os.path.abspath(self._default_engine_location)
+        application.getPreferences().addPreference("backend/location", self._default_engine_location)
 
         # Workaround to disable layer view processing if layer view is not active.
         self._layer_view_active = False #type: bool
@@ -124,6 +124,7 @@ class CuraEngineBackend(QObject, Backend):
         self._message_handlers["cura.proto.Progress"] = self._onProgressMessage
         self._message_handlers["cura.proto.GCodeLayer"] = self._onGCodeLayerMessage
         self._message_handlers["cura.proto.GCodePrefix"] = self._onGCodePrefixMessage
+        self._message_handlers["cura.proto.SliceUUID"] = self._onSliceUUIDMessage
         self._message_handlers["cura.proto.PrintTimeMaterialEstimates"] = self._onPrintTimeMaterialEstimates
         self._message_handlers["cura.proto.SlicingFinished"] = self._onSlicingFinishedMessage
 
@@ -215,7 +216,12 @@ class CuraEngineBackend(QObject, Backend):
         This is useful for debugging and used to actually start the engine.
         :return: list of commands and args / parameters.
         """
-        command = [CuraApplication.getInstance().getPreferences().getValue("backend/location"), "connect", "127.0.0.1:{0}".format(self._port), ""]
+        from cura import ApplicationMetadata
+        if ApplicationMetadata.IsEnterpriseVersion:
+            command = [self._default_engine_location]
+        else:
+            command = [CuraApplication.getInstance().getPreferences().getValue("backend/location")]
+        command += ["connect", "127.0.0.1:{0}".format(self._port), ""]
 
         parser = argparse.ArgumentParser(prog = "cura", add_help = False)
         parser.add_argument("--debug", action = "store_true", default = False, help = "Turn on the debug mode by setting this option.")
@@ -806,6 +812,10 @@ class CuraEngineBackend(QObject, Backend):
             self._scene.gcode_dict[self._start_slice_job_build_plate].insert(0, message.data.decode("utf-8", "replace")) #type: ignore #Because we generate this attribute dynamically.
         except KeyError:  # Can occur if the g-code has been cleared while a slice message is still arriving from the other end.
             pass  # Throw the message away.
+
+    def _onSliceUUIDMessage(self, message: Arcus.PythonMessage) -> None:
+        application = CuraApplication.getInstance()
+        application.getPrintInformation().slice_uuid = message.slice_uuid
 
     def _createSocket(self, protocol_file: str = None) -> None:
         """Creates a new socket connection."""

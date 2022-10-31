@@ -33,8 +33,11 @@ class MachineAction(QObject, PluginObject):
         self._qml_url = ""
         self._view = None
         self._finished = False
+        self._open_as_dialog = True
+        self._visible = True
 
     labelChanged = pyqtSignal()
+    visibilityChanged = pyqtSignal()
     onFinished = pyqtSignal()
 
     def getKey(self) -> str:
@@ -80,6 +83,15 @@ class MachineAction(QObject, PluginObject):
         pass
 
     @pyqtSlot()
+    def execute(self) -> None:
+        self._execute()
+    
+    def _execute(self) -> None:
+        """Protected implementation of execute."""
+        
+        pass
+
+    @pyqtSlot()
     def setFinished(self) -> None:
         self._finished = True
         self._reset()
@@ -94,7 +106,7 @@ class MachineAction(QObject, PluginObject):
 
         plugin_path = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
         if plugin_path is None:
-            Logger.log("e", "Cannot create QML view: cannot find plugin path for plugin [%s]", self.getPluginId())
+            Logger.error(f"Cannot create QML view: cannot find plugin path for plugin {self.getPluginId()}")
             return None
         path = os.path.join(plugin_path, self._qml_url)
 
@@ -106,7 +118,7 @@ class MachineAction(QObject, PluginObject):
     def qmlPath(self) -> "QUrl":
         plugin_path = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
         if plugin_path is None:
-            Logger.log("e", "Cannot create QML view: cannot find plugin path for plugin [%s]", self.getPluginId())
+            Logger.error(f"Cannot create QML view: cannot find plugin path for plugin {self.getPluginId()}")
             return QUrl("")
         path = os.path.join(plugin_path, self._qml_url)
         return QUrl.fromLocalFile(path)
@@ -114,3 +126,30 @@ class MachineAction(QObject, PluginObject):
     @pyqtSlot(result = QObject)
     def getDisplayItem(self) -> Optional["QObject"]:
         return self._createViewFromQML()
+
+    @pyqtProperty(bool, constant=True)
+    def shouldOpenAsDialog(self) -> bool:
+        """Whether this action will show a dialog.
+
+         If not, the action will directly run the function inside execute().
+
+        :return: Defaults to true to be in line with the old behaviour.
+        """
+        return self._open_as_dialog
+    
+    @pyqtSlot()
+    def setVisible(self, visible: bool) -> None:
+        if self._visible != visible:
+            self._visible = visible
+            self.visibilityChanged.emit()
+    
+    @pyqtProperty(bool, notify = visibilityChanged)
+    def visible(self) -> bool:
+        """Whether this action button will be visible.
+
+         Example: Show only when isLoggedIn
+
+        :return: Defaults to true to be in line with the old behaviour.
+        """
+
+        return self._visible

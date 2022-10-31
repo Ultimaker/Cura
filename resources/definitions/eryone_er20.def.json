@@ -53,7 +53,7 @@
         "machine_end_gcode": {
             "default_value": "G91 ;Relative positioning\nG1 Z5 F720 ;Raise Z\nG1 E-5 F300 ;Retract a bit to protect nozzle\nM104 S0 ;Turn off extruder\nM140 S0 ;Turn off bed\nM107 ;Turn off all fans\nG90 ;Absolute positioning\nG1 X230 Y200 F4800 ;Parking the hotend\nM84 X Y E ;All steppers off but left Z\n"
         },
-        "material_print_temperature": {
+        "default_material_print_temperature": {
             "value": 205
         },
         "material_print_temperature_layer_0": {
@@ -103,7 +103,7 @@
         "infill_before_walls": {
             "value": false
         },
-        "material_bed_temperature": {
+        "default_material_bed_temperature": {
             "value": 60
         },
         "material_bed_temperature_layer_0": {
@@ -155,9 +155,6 @@
         },
         "skirt_line_count": {
             "value": 3
-        },
-        "speed_infill": {
-            "value": "speed_print"
         },
         "speed_topbottom": {
             "value": "math.ceil(speed_print * 20 / 50)"

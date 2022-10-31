@@ -34,7 +34,7 @@
 
         "switch_extruder_retraction_speeds": {"default_value": 15 },
         "switch_extruder_retraction_amount": {"value": 1 },
-
+        "acceleration_enabled": { "value": true },
         "speed_travel": { "value": "100" },
         "speed_layer_0": { "value": "20" },
         "speed_prime_tower": { "value": "speed_topbottom" },
@@ -53,7 +53,6 @@
 
         "prime_blob_enable": { "enabled": true },
 
-        "acceleration_enabled": { "value": "True" },
         "acceleration_layer_0": { "value": "acceleration_topbottom" },
         "acceleration_prime_tower": { "value": "math.ceil(acceleration_print * 2000 / 4000)" },
         "acceleration_print": { "value": "3000" },

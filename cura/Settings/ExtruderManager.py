@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt6.QtCore import pyqtSignal, pyqtProperty, QObject, QVariant  # For communicating data and events to Qt.
@@ -275,7 +275,7 @@ class ExtruderManager(QObject):
         for extruder_setting in used_adhesion_extruders:
             extruder_str_nr = str(global_stack.getProperty(extruder_setting, "value"))
             if extruder_str_nr == "-1":
-                extruder_str_nr = self._application.getMachineManager().defaultExtruderPosition
+                continue  # An optional extruder doesn't force any extruder to be used if it isn't used already
             if extruder_str_nr in self.extruderIds:
                 used_extruder_stack_ids.add(self.extruderIds[extruder_str_nr])
 
@@ -298,7 +298,7 @@ class ExtruderManager(QObject):
         # Starts with the adhesion extruder.
         adhesion_type = global_stack.getProperty("adhesion_type", "value")
         if adhesion_type in {"skirt", "brim"}:
-            return global_stack.getProperty("skirt_brim_extruder_nr", "value")
+            return max(0, int(global_stack.getProperty("skirt_brim_extruder_nr", "value")))  # optional skirt/brim extruder defaults to zero
         if adhesion_type == "raft":
             return global_stack.getProperty("raft_base_extruder_nr", "value")
 
@@ -382,7 +382,10 @@ class ExtruderManager(QObject):
     # "fdmextruder". We need to check a machine here so its extruder definition is correct according to this.
     def fixSingleExtrusionMachineExtruderDefinition(self, global_stack: "GlobalStack") -> None:
         container_registry = ContainerRegistry.getInstance()
-        expected_extruder_definition_0_id = global_stack.getMetaDataEntry("machine_extruder_trains")["0"]
+        expected_extruder_stack = global_stack.getMetaDataEntry("machine_extruder_trains")
+        if expected_extruder_stack is None:
+            return
+        expected_extruder_definition_0_id = expected_extruder_stack["0"]
         try:
             extruder_stack_0 = global_stack.extruderList[0]
         except IndexError:

@@ -73,6 +73,9 @@ UM.PreferencesPage
         var defaultTheme = UM.Preferences.getValue("general/theme")
         setDefaultTheme(defaultTheme)
 
+        UM.Preferences.resetPreference("general/use_tray_icon")
+        trayIconCheckbox.checked = boolCheck(UM.Preferences.getValue("cura/use_tray_icon"))
+
         UM.Preferences.resetPreference("cura/single_instance")
         singleInstanceCheckbox.checked = boolCheck(UM.Preferences.getValue("cura/single_instance"))
         UM.Preferences.resetPreference("cura/single_instance_clear_before_load")
@@ -329,6 +332,23 @@ UM.PreferencesPage
                 }
             }
 
+            UM.TooltipArea
+            {
+                width: childrenRect.width;
+                height: childrenRect.height;
+
+                text: catalog.i18nc("@info:tooltip", "Show an icon and notifications in the system notification area.")
+
+                UM.CheckBox
+                {
+                    id: trayIconCheckbox
+                    checked: boolCheck(UM.Preferences.getValue("general/use_tray_icon"))
+                    onClicked: UM.Preferences.setValue("general/use_tray_icon", checked)
+
+                    text: catalog.i18nc("@option:check", "Add icon to system tray *");
+                }
+            }
+
             UM.Label
             {
                 id: languageCaption
@@ -337,6 +357,7 @@ UM.PreferencesPage
                 text: catalog.i18nc("@label", "*You will need to restart the application for these changes to have effect.")
                 wrapMode: Text.WordWrap
                 font.italic: true
+
             }
 
             Item

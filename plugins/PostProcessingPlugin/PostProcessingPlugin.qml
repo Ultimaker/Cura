@@ -19,7 +19,7 @@ UM.Dialog
     height: 500 * screenScaleFactor
     minimumWidth: 400 * screenScaleFactor
     minimumHeight: 250 * screenScaleFactor
-
+    backgroundColor: UM.Theme.getColor("main_background")
     onVisibleChanged:
     {
         // Whenever the window is closed (either via the "Close" button or the X on the window frame), we want to update it in the stack.
@@ -245,7 +245,7 @@ UM.Dialog
             height: parent.height
             id: settingsPanel
 
-            Label
+            UM.Label
             {
                 id: scriptSpecsHeader
                 text: manager.selectedScriptIndex == -1 ? catalog.i18nc("@label", "Settings") : base.activeScriptName
@@ -262,7 +262,6 @@ UM.Dialog
                 elide: Text.ElideRight
                 height: 20 * screenScaleFactor
                 font: UM.Theme.getFont("large_bold")
-                color: UM.Theme.getColor("text")
             }
 
             ListView
@@ -287,6 +286,7 @@ UM.Dialog
                 {
                     id: definitionsModel
                     containerId: manager.selectedScriptDefinitionId
+                    onContainerIdChanged: definitionsModel.setAllVisible(true)
                     showAll: true
                 }
 

@@ -1,0 +1,114 @@
+---
+name: conan-package
+
+# Exports the recipe, sources and binaries for Mac, Windows and Linux and upload these to the server such that these can
+# be used downstream.
+#
+# It should run on pushes against main or CURA-* branches, but it will only create the binaries for main and release branches
+
+on:
+    workflow_dispatch:
+        inputs:
+            create_binaries_windows:
+                required: true
+                default: false
+                description: 'create binaries Windows'
+            create_binaries_linux:
+                required: true
+                default: false
+                description: 'create binaries Linux'
+            create_binaries_macos:
+                required: true
+                default: false
+                description: 'create binaries Macos'
+
+    push:
+        paths:
+            - 'plugins/**'
+            - 'resources/**'
+            - 'cura/**'
+            - 'icons/**'
+            - 'tests/**'
+            - 'packaging/**'
+            - '.github/workflows/conan-*.yml'
+            - '.github/workflows/notify.yml'
+            - '.github/workflows/requirements-conan-package.txt'
+            - 'requirements*.txt'
+            - 'conanfile.py'
+            - 'conandata.yml'
+            - 'GitVersion.yml'
+            - '*.jinja'
+        branches:
+            - main
+            - 'CURA-*'
+            - '[1-9].[0-9]'
+            - '[1-9].[0-9][0-9]'
+        tags:
+            - '[1-9].[0-9].[0-9]*'
+            - '[1-9].[0-9].[0-9]'
+            - '[1-9].[0-9][0-9].[0-9]*'
+
+permissions: {}
+jobs:
+    conan-recipe-version:
+        permissions:
+          contents: read
+
+        uses: ultimaker/cura/.github/workflows/conan-recipe-version.yml@main
+        with:
+            project_name: cura
+
+    conan-package-export:
+        permissions:
+          contents: read
+
+        needs: [ conan-recipe-version ]
+        uses: ultimaker/cura/.github/workflows/conan-recipe-export.yml@main
+        with:
+            recipe_id_full: ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
+            recipe_id_latest: ${{ needs.conan-recipe-version.outputs.recipe_id_latest }}
+            runs_on: 'ubuntu-20.04'
+            python_version: '3.10.x'
+            conan_logging_level: 'info'
+        secrets: inherit
+
+    conan-package-create-linux:
+        permissions:
+          contents: read
+
+        if: ${{ (github.event_name == 'push' && (github.ref_name == 'main' || github.ref_name == 'master' || needs.conan-recipe-version.outputs.is_release_branch == 'true')) || (github.event_name == 'workflow_dispatch' && inputs.create_binaries_linux) }}
+        needs: [ conan-recipe-version, conan-package-export ]
+
+        uses: ultimaker/cura/.github/workflows/conan-package-create.yml@main
+        with:
+            recipe_id_full: ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
+            runs_on: 'ubuntu-20.04'
+            python_version: '3.10.x'
+            conan_logging_level: 'info'
+        secrets: inherit
+
+    notify-export:
+        if: ${{ always() }}
+        needs: [ conan-recipe-version, conan-package-export ]
+
+        uses: ultimaker/cura/.github/workflows/notify.yml@main
+        with:
+            success: ${{ contains(join(needs.*.result, ','), 'success') }}
+            success_title: "New Conan recipe exported in ${{ github.repository }}"
+            success_body: "Exported ${{ needs.conan-recipe-version.outputs.recipe_id_full }}"
+            failure_title: "Failed to export Conan Export in ${{ github.repository }}"
+            failure_body: "Failed to exported ${{ needs.conan-recipe-version.outputs.recipe_id_full }}"
+        secrets: inherit
+
+    notify-create:
+        if: ${{ always() && ((github.event_name == 'push' && (github.ref_name == 'main' || github.ref_name == 'master' || needs.conan-recipe-version.outputs.is_release_branch == 'true')) || (github.event_name == 'workflow_dispatch' && inputs.create_binaries_linux)) }}
+        needs: [ conan-recipe-version, conan-package-create-linux ]
+
+        uses: ultimaker/cura/.github/workflows/notify.yml@main
+        with:
+            success: ${{ contains(join(needs.*.result, ','), 'success') }}
+            success_title: "New binaries created in ${{ github.repository }}"
+            success_body: "Created binaries for ${{ needs.conan-recipe-version.outputs.recipe_id_full }}"
+            failure_title: "Failed to create binaries in ${{ github.repository }}"
+            failure_body: "Failed to created binaries for ${{ needs.conan-recipe-version.outputs.recipe_id_full }}"
+        secrets: inherit
