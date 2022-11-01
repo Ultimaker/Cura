@@ -502,7 +502,7 @@ UM.Dialog
         }
     }
 
-    buttonSpacing: UM.Theme.getSize("default_margin").width
+    buttonSpacing: UM.Theme.getSize("wide_margin").width
 
     rightButtons: [
         Cura.TertiaryButton
