@@ -55,9 +55,13 @@ def test_noCategory(file_path):
     :param file_path: The path of the machine definition to test.
     """
     with open(file_path, encoding = "utf-8") as f:
-        json = f.read()
-        metadata = DefinitionContainer.deserializeMetadata(json, "test_container_id")
-        assert "category" not in metadata[0], "Definition located at [%s] referenced a category, which is no longer allowed" % file_path
+        doc = json.load(f)
+
+    if "metadata" not in doc:
+        return
+
+    metadata = doc["metadata"]
+    assert "category" not in metadata, "Definition located at [%s] referenced a category, which is no longer allowed" % file_path
 
 
 @pytest.mark.parametrize("file_path", machine_filepaths)
