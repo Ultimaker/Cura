@@ -82,16 +82,9 @@ UM.Dialog
                     UM.Label
                     {
                         id: titleLabel
+                        anchors.margins: UM.Theme.getSize("default_margin").height
                         text: catalog.i18nc("@action:title", "Summary - Cura Project")
                         font: UM.Theme.getFont("large")
-                    }
-
-                    Rectangle
-                    {
-                        id: separator
-                        color: UM.Theme.getColor("text")
-                        width: parent.width
-                        height: UM.Theme.getSize("default_lining").height
                     }
                 }
 
@@ -160,6 +153,7 @@ UM.Dialog
                     {
                         width: parent.width
                         height: childrenRect.height
+                        spacing: UM.Theme.getSize("default_margin").height
 
                         UM.Label
                         {
@@ -236,6 +230,7 @@ UM.Dialog
                     {
                         width: parent.width
                         height: childrenRect.height
+                        spacing: UM.Theme.getSize("default_margin").height
 
                         UM.Label
                         {
@@ -352,6 +347,7 @@ UM.Dialog
                     {
                         width: parent.width
                         height: childrenRect.height
+                        spacing: UM.Theme.getSize("default_margin").height
                         Row
                         {
                             height: childrenRect.height
@@ -393,6 +389,7 @@ UM.Dialog
                 {
                     width: parent.width
                     height: childrenRect.height
+                    spacing: UM.Theme.getSize("default_margin").height
 
                     UM.Label
                     {
