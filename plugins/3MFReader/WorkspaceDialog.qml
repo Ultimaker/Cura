@@ -14,9 +14,11 @@ UM.Dialog
     id: base
     title: catalog.i18nc("@title:window", "Open Project")
 
-    minimumWidth: UM.Theme.getSize("popup_dialog").width
-    minimumHeight: UM.Theme.getSize("popup_dialog").height
+    minimumWidth: UM.Theme.getSize("modal_window_minimum").width
+    minimumHeight: UM.Theme.getSize("modal_window_minimum").height
     width: minimumWidth
+    height: minimumHeight
+
     backgroundColor: UM.Theme.getColor("main_background")
     margin: UM.Theme.getSize("default_margin").width
     property int comboboxHeight: UM.Theme.getSize("default_margin").height
