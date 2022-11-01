@@ -11,7 +11,7 @@ import Cura 1.1 as Cura
 
 UM.Dialog
 {
-    id: base
+    id: workspaceDialog
     title: catalog.i18nc("@title:window", "Open Project")
 
     minimumWidth: UM.Theme.getSize("modal_window_minimum").width
@@ -107,7 +107,7 @@ UM.Dialog
                         anchors.right: parent.right
                         width: (parent.width / 3) | 0
                         height: visible ? comboboxHeight : 0
-                        visible: base.visible && machineResolveComboBox.model.count > 1
+                        visible: workspaceDialog.visible && machineResolveComboBox.model.count > 1
                         text: catalog.i18nc("@info:tooltip", "How should the conflict in the machine be resolved?")
                         Cura.ComboBox
                         {
@@ -461,14 +461,14 @@ UM.Dialog
         color: warning ? UM.Theme.getColor("warning") : "transparent"
         anchors.bottom: parent.bottom
         width: parent.width
-        height: childrenRect.height + 2 * base.margin
+        height: childrenRect.height + 2 * workspaceDialog.margin
 
         Column
         {
             height: childrenRect.height
-            spacing: base.margin
+            spacing: workspaceDialog.margin
 
-            anchors.margins: base.margin
+            anchors.margins: workspaceDialog.margin
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.top: parent.top
@@ -478,7 +478,7 @@ UM.Dialog
                 id: warningRow
                 height: childrenRect.height
                 visible: warning
-                spacing: base.margin
+                spacing: workspaceDialog.margin
                 UM.ColorImage
                 {
                     width: UM.Theme.getSize("extruder_icon").width
