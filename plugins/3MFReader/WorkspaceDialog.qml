@@ -93,6 +93,7 @@ UM.Dialog
                 {
                     width: parent.width
                     height: childrenRect.height
+                    anchors.leftMargin: UM.Theme.getSize("default_margin")
 
                     UM.TooltipArea
                     {
@@ -109,6 +110,7 @@ UM.Dialog
                             id: open_with_label
                             anchors.top: parent.top
                             anchors.left: parent.left
+                            anchors.bottomMargin: UM.Theme.getSize("default_margin").height
                             text: catalog.i18nc("@action:label", "Open With")
                             font: UM.Theme.getFont("default_bold")
                         }
@@ -162,18 +164,36 @@ UM.Dialog
                         }
                     }
 
+                    Row
+                    {
+                        id: printerSettingsTitleRow
+                        anchors.top: parent.top
+                        anchors.bottomMargin: UM.Theme.getSize("default_margin").height
+                        spacing: UM.Theme.getSize("default_margin").width
+
+                        UM.ColorImage
+                        {
+                            anchors.verticalCenter: parent.verticalCenter
+                            source: UM.Theme.getIcon("Printer")
+                            height: UM.Theme.getSize("medium_button_icon").height
+                            width: height
+                        }
+                        UM.Label
+                        {
+                            text: catalog.i18nc("@action:label", "Printer settings")
+                            anchors.verticalCenter: parent.verticalCenter
+                            font: UM.Theme.getFont("default_bold")
+                        }
+                    }
+
                     Column
                     {
+                        id: printerSettingsValuesTable
                         width: parent.width
                         height: childrenRect.height
                         spacing: UM.Theme.getSize("default_margin").height
-
-                        UM.Label
-                        {
-                            id: printer_settings_label
-                            text: catalog.i18nc("@action:label", "Printer settings")
-                            font: UM.Theme.getFont("default_bold")
-                        }
+                        leftPadding: UM.Theme.getSize("medium_button_icon").width + UM.Theme.getSize("default_margin").width
+                        anchors.top: printerSettingsTitleRow.bottom
 
                         Row
                         {
@@ -239,17 +259,36 @@ UM.Dialog
                         }
                     }
 
-                    Column
+                    Row
                     {
-                        width: parent.width
-                        height: childrenRect.height
-                        spacing: UM.Theme.getSize("default_margin").height
+                        id: profileSettingsTitleRow
+                        anchors.top: parent.top
+                        anchors.bottomMargin: UM.Theme.getSize("default_margin").height
+                        spacing: UM.Theme.getSize("default_margin").width
 
+                        UM.ColorImage
+                        {
+                            anchors.verticalCenter: parent.verticalCenter
+                            source: UM.Theme.getIcon("Printer")
+                            height: UM.Theme.getSize("medium_button_icon").height
+                            width: height
+                        }
                         UM.Label
                         {
                             text: catalog.i18nc("@action:label", "Profile settings")
+                            anchors.verticalCenter: parent.verticalCenter
                             font: UM.Theme.getFont("default_bold")
                         }
+                    }
+
+                    Column
+                    {
+                        id: profileSettingsValuesTable
+                        width: parent.width
+                        height: childrenRect.height
+                        spacing: UM.Theme.getSize("default_margin").height
+                        leftPadding: UM.Theme.getSize("medium_button_icon").width + UM.Theme.getSize("default_margin").width
+                        anchors.top: profileSettingsTitleRow.bottom
 
                         Row
                         {
@@ -356,24 +395,35 @@ UM.Dialog
                         }
                     }
 
+                    Row
+                    {
+                        id: materialSettingsTitleRow
+                        anchors.top: parent.top
+                        anchors.bottomMargin: UM.Theme.getSize("default_margin").height
+                        spacing: UM.Theme.getSize("default_margin").width
+
+                        UM.ColorImage
+                        {
+                            anchors.verticalCenter: parent.verticalCenter
+                            source: UM.Theme.getIcon("Printer")
+                            height: UM.Theme.getSize("medium_button_icon").height
+                            width: height
+                        }
+                        UM.Label
+                        {
+                            text: catalog.i18nc("@action:label", "Material settings")
+                            anchors.verticalCenter: parent.verticalCenter
+                            font: UM.Theme.getFont("default_bold")
+                        }
+                    }
+
                     Column
                     {
                         width: parent.width
                         height: childrenRect.height
                         spacing: UM.Theme.getSize("default_margin").height
-                        Row
-                        {
-                            height: childrenRect.height
-                            width: parent.width
-                            spacing: UM.Theme.getSize("narrow_margin").width
-
-                            UM.Label
-                            {
-                                text: catalog.i18nc("@action:label", "Material settings")
-                                font: UM.Theme.getFont("default_bold")
-                                width: (parent.width / 3) | 0
-                            }
-                        }
+                        leftPadding: UM.Theme.getSize("medium_button_icon").width + UM.Theme.getSize("default_margin").width
+                        anchors.top: materialSettingsTitleRow.bottom
 
                         Repeater
                         {
@@ -398,66 +448,91 @@ UM.Dialog
                     }
                 }
 
-                Column
+                Item
                 {
                     width: parent.width
                     height: childrenRect.height
-                    spacing: UM.Theme.getSize("default_margin").height
 
-                    UM.Label
+                    Row
                     {
-                        text: catalog.i18nc("@action:label", "Setting visibility")
-                        font: UM.Theme.getFont("default_bold")
+                        id: visibilitySettingsTitleRow
+                        anchors.top: parent.top
+                        anchors.bottomMargin: UM.Theme.getSize("default_margin").height
+                        spacing: UM.Theme.getSize("default_margin").width
+
+                        UM.ColorImage
+                        {
+                            anchors.verticalCenter: parent.verticalCenter
+                            source: UM.Theme.getIcon("Printer")
+                            height: UM.Theme.getSize("medium_button_icon").height
+                            width: height
+                        }
+                        UM.Label
+                        {
+                            text: catalog.i18nc("@action:label", "Setting visibility")
+                            anchors.verticalCenter: parent.verticalCenter
+                            font: UM.Theme.getFont("default_bold")
+                        }
                     }
+
+                    Column
+                    {
+                        width: parent.width
+                        height: childrenRect.height
+                        spacing: UM.Theme.getSize("default_margin").height
+                        leftPadding: UM.Theme.getSize("medium_button_icon").width + UM.Theme.getSize("default_margin").width
+                        anchors.top: visibilitySettingsTitleRow.bottom
+
+                        Row
+                        {
+                            width: parent.width
+                            height: childrenRect.height
+                            UM.Label
+                            {
+                                text: catalog.i18nc("@action:label", "Mode")
+                                width: (parent.width / 3) | 0
+                            }
+                            UM.Label
+                            {
+                                text: manager.activeMode
+                                width: (parent.width / 3) | 0
+                            }
+                        }
+                        Row
+                        {
+                            width: parent.width
+                            height: childrenRect.height
+                            visible: manager.hasVisibleSettingsField
+                            UM.Label
+                            {
+                                text: catalog.i18nc("@action:label", "Visible settings:")
+                                width: (parent.width / 3) | 0
+                            }
+                            UM.Label
+                            {
+                                text: catalog.i18nc("@action:label", "%1 out of %2" ).arg(manager.numVisibleSettings).arg(manager.totalNumberOfSettings)
+                                width: (parent.width / 3) | 0
+                            }
+                        }
+                    }
+
                     Row
                     {
                         width: parent.width
                         height: childrenRect.height
-                        UM.Label
+                        visible: manager.hasObjectsOnPlate
+                        UM.ColorImage
                         {
-                            text: catalog.i18nc("@action:label", "Mode")
-                            width: (parent.width / 3) | 0
+                            width: warningLabel.height
+                            height: width
+                            source: UM.Theme.getIcon("Information")
+                            color: UM.Theme.getColor("text")
                         }
                         UM.Label
                         {
-                            text: manager.activeMode
-                            width: (parent.width / 3) | 0
+                            id: warningLabel
+                            text: catalog.i18nc("@action:warning", "Loading a project will clear all models on the build plate.")
                         }
-                    }
-                    Row
-                    {
-                        width: parent.width
-                        height: childrenRect.height
-                        visible: manager.hasVisibleSettingsField
-                        UM.Label
-                        {
-                            text: catalog.i18nc("@action:label", "Visible settings:")
-                            width: (parent.width / 3) | 0
-                        }
-                        UM.Label
-                        {
-                            text: catalog.i18nc("@action:label", "%1 out of %2" ).arg(manager.numVisibleSettings).arg(manager.totalNumberOfSettings)
-                            width: (parent.width / 3) | 0
-                        }
-                    }
-                }
-
-                Row
-                {
-                    width: parent.width
-                    height: childrenRect.height
-                    visible: manager.hasObjectsOnPlate
-                    UM.ColorImage
-                    {
-                        width: warningLabel.height
-                        height: width
-                        source: UM.Theme.getIcon("Information")
-                        color: UM.Theme.getColor("text")
-                    }
-                    UM.Label
-                    {
-                        id: warningLabel
-                        text: catalog.i18nc("@action:warning", "Loading a project will clear all models on the build plate.")
                     }
                 }
             }
