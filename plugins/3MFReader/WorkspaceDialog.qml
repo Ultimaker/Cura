@@ -78,6 +78,7 @@ UM.Dialog
                 {
                     width: parent.width
                     height: childrenRect.height
+                    spacing: UM.Theme.getSize("default_margin").height
 
                     UM.Label
                     {
@@ -102,9 +103,21 @@ UM.Dialog
                         height: visible ? comboboxHeight : 0
                         visible: workspaceDialog.visible && machineResolveComboBox.model.count > 1
                         text: catalog.i18nc("@info:tooltip", "How should the conflict in the machine be resolved?")
+
+                        UM.Label
+                        {
+                            id: open_with_label
+                            anchors.top: parent.top
+                            anchors.left: parent.left
+                            text: catalog.i18nc("@action:label", "Open With")
+                            font: UM.Theme.getFont("default_bold")
+                        }
+
                         Cura.ComboBox
                         {
                             id: machineResolveComboBox
+                            anchors.top: open_with_label.bottom
+                            anchors.left: parent.left
                             model: manager.updatableMachinesModel
                             visible: machineResolveStrategyTooltip.visible
                             textRole: "displayName"
