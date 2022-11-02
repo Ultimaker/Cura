@@ -38,8 +38,7 @@ Item
             id: comboboxLabel
             anchors.top: parent.top
             anchors.left: parent.left
-            anchors.bottomMargin: UM.Theme.getSize("default_margin").height
-            visible: comboboxVisible
+            visible: comboboxVisible && text != ""
             text: ""
             font: UM.Theme.getFont("default_bold")
         }
@@ -50,6 +49,7 @@ Item
             width: parent.width
             height: UM.Theme.getSize("button").height
             anchors.top: comboboxLabel.bottom
+            anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.left: parent.left
             sourceComponent: combobox
         }
