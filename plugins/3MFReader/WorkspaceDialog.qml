@@ -1,4 +1,4 @@
-// Copyright (c) 2020 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -28,9 +28,12 @@ UM.Dialog
     {
         if (visible)
         {
-            machineResolveComboBox.currentIndex = 0
-            qualityChangesResolveComboBox.currentIndex = 0
-            materialResolveComboBox.currentIndex = 0
+            // Force relead the comboboxes
+            // Since this dialog is only created once the first time you open it, these comboxes need to be reloaded
+            // each time it is shown after the first time so that the indexes will update correctly.
+            materialSection.reloadValues()
+            profileSection.reloadValues()
+            printerSection.reloadValues()
         }
     }
 
@@ -89,111 +92,15 @@ UM.Dialog
                     }
                 }
 
-                Item
+                WorkspaceSection
                 {
-                    width: parent.width
-                    height: childrenRect.height
-                    anchors.leftMargin: UM.Theme.getSize("default_margin")
-
-                    UM.TooltipArea
+                    id: printerSection
+                    title: catalog.i18nc("@action:label", "Printer settings")
+                    iconSource: UM.Theme.getIcon("Printer")
+                    content: Column
                     {
-                        id: machineResolveStrategyTooltip
-                        anchors.top: parent.top
-                        anchors.right: parent.right
-                        width: (parent.width / 3) | 0
-                        height: visible ? comboboxHeight : 0
-                        visible: workspaceDialog.visible && machineResolveComboBox.model.count > 1
-                        text: catalog.i18nc("@info:tooltip", "How should the conflict in the machine be resolved?")
-
-                        UM.Label
-                        {
-                            id: open_with_label
-                            anchors.top: parent.top
-                            anchors.left: parent.left
-                            anchors.bottomMargin: UM.Theme.getSize("default_margin").height
-                            text: catalog.i18nc("@action:label", "Open With")
-                            font: UM.Theme.getFont("default_bold")
-                        }
-
-                        Cura.ComboBox
-                        {
-                            id: machineResolveComboBox
-                            anchors.top: open_with_label.bottom
-                            anchors.left: parent.left
-                            model: manager.updatableMachinesModel
-                            visible: machineResolveStrategyTooltip.visible
-                            textRole: "displayName"
-                            width: parent.width
-                            height: UM.Theme.getSize("button").height
-                            onCurrentIndexChanged:
-                            {
-                                if (model.getItem(currentIndex).id == "new"
-                                    && model.getItem(currentIndex).type == "default_option")
-                                {
-                                    manager.setResolveStrategy("machine", "new")
-                                }
-                                else
-                                {
-                                    manager.setResolveStrategy("machine", "override")
-                                    manager.setMachineToOverride(model.getItem(currentIndex).id)
-                                }
-                            }
-
-                            onVisibleChanged:
-                            {
-                                if (!visible) {return}
-
-                                currentIndex = 0
-                                // If the project printer exists in Cura, set it as the default dropdown menu option.
-                                // No need to check object 0, which is the "Create new" option
-                                for (var i = 1; i < model.count; i++)
-                                {
-                                    if (model.getItem(i).name == manager.machineName)
-                                    {
-                                        currentIndex = i
-                                        break
-                                    }
-                                }
-                                // The project printer does not exist in Cura. If there is at least one printer of the same
-                                // type, select the first one, else set the index to "Create new"
-                                if (currentIndex == 0 && model.count > 1)
-                                {
-                                    currentIndex = 1
-                                }
-                            }
-                        }
-                    }
-
-                    Row
-                    {
-                        id: printerSettingsTitleRow
-                        anchors.top: parent.top
-                        anchors.bottomMargin: UM.Theme.getSize("default_margin").height
-                        spacing: UM.Theme.getSize("default_margin").width
-
-                        UM.ColorImage
-                        {
-                            anchors.verticalCenter: parent.verticalCenter
-                            source: UM.Theme.getIcon("Printer")
-                            height: UM.Theme.getSize("medium_button_icon").height
-                            width: height
-                        }
-                        UM.Label
-                        {
-                            text: catalog.i18nc("@action:label", "Printer settings")
-                            anchors.verticalCenter: parent.verticalCenter
-                            font: UM.Theme.getFont("default_bold")
-                        }
-                    }
-
-                    Column
-                    {
-                        id: printerSettingsValuesTable
-                        width: parent.width
-                        height: childrenRect.height
                         spacing: UM.Theme.getSize("default_margin").height
                         leftPadding: UM.Theme.getSize("medium_button_icon").width + UM.Theme.getSize("default_margin").width
-                        anchors.top: printerSettingsTitleRow.bottom
 
                         Row
                         {
@@ -230,65 +137,66 @@ UM.Dialog
                             }
                         }
                     }
-                }
 
-                Item
-                {
-                    width: parent.width
-                    height: childrenRect.height
-
-                    UM.TooltipArea
+                    comboboxTitle: catalog.i18nc("@action:label", "Open With")
+                    comboboxTooltipText: catalog.i18nc("@info:tooltip", "How should the conflict in the machine be resolved?")
+                    combobox: Cura.ComboBox
                     {
-                        anchors.right: parent.right
-                        anchors.top: parent.top
-                        width: (parent.width / 3) | 0
-                        height: visible ? comboboxHeight : 0
-                        visible: manager.qualityChangesConflict
-                        text: catalog.i18nc("@info:tooltip", "How should the conflict in the profile be resolved?")
-                        Cura.ComboBox
+                        id: machineResolveComboBox
+                        model: manager.updatableMachinesModel
+                        textRole: "displayName"
+                        visible: workspaceDialog.visible && model.count > 1
+                        currentIndex: machineVisibleChanged()
+
+                        onCurrentIndexChanged:
                         {
-                            model: resolveStrategiesModel
-                            textRole: "label"
-                            id: qualityChangesResolveComboBox
-                            width: parent.width
-                            height: UM.Theme.getSize("button").height
-                            onActivated:
+                            if (model.getItem(currentIndex).id == "new"
+                                && model.getItem(currentIndex).type == "default_option")
                             {
-                                manager.setResolveStrategy("quality_changes", resolveStrategiesModel.get(index).key)
+                                manager.setResolveStrategy("machine", "new")
+                            }
+                            else
+                            {
+                                manager.setResolveStrategy("machine", "override")
+                                manager.setMachineToOverride(model.getItem(currentIndex).id)
+                            }
+                        }
+
+                        function machineVisibleChanged()
+                        {
+                            if (!visible) {return}
+
+                            currentIndex = 0
+                            // If the project printer exists in Cura, set it as the default dropdown menu option.
+                            // No need to check object 0, which is the "Create new" option
+                            for (var i = 1; i < model.count; i++)
+                            {
+                                if (model.getItem(i).name == manager.machineName)
+                                {
+                                    currentIndex = i
+                                    break
+                                }
+                            }
+                            // The project printer does not exist in Cura. If there is at least one printer of the same
+                            // type, select the first one, else set the index to "Create new"
+                            if (currentIndex == 0 && model.count > 1)
+                            {
+                                currentIndex = 1
                             }
                         }
                     }
+                }
 
-                    Row
-                    {
-                        id: profileSettingsTitleRow
-                        anchors.top: parent.top
-                        anchors.bottomMargin: UM.Theme.getSize("default_margin").height
-                        spacing: UM.Theme.getSize("default_margin").width
-
-                        UM.ColorImage
-                        {
-                            anchors.verticalCenter: parent.verticalCenter
-                            source: UM.Theme.getIcon("Printer")
-                            height: UM.Theme.getSize("medium_button_icon").height
-                            width: height
-                        }
-                        UM.Label
-                        {
-                            text: catalog.i18nc("@action:label", "Profile settings")
-                            anchors.verticalCenter: parent.verticalCenter
-                            font: UM.Theme.getFont("default_bold")
-                        }
-                    }
-
-                    Column
+                WorkspaceSection
+                {
+                    id: profileSection
+                    title: catalog.i18nc("@action:label", "Profile settings")
+                    iconSource: UM.Theme.getIcon("Printer")
+                    content: Column
                     {
                         id: profileSettingsValuesTable
-                        width: parent.width
-                        height: childrenRect.height
                         spacing: UM.Theme.getSize("default_margin").height
                         leftPadding: UM.Theme.getSize("medium_button_icon").width + UM.Theme.getSize("default_margin").width
-                        anchors.top: profileSettingsTitleRow.bottom
 
                         Row
                         {
@@ -365,65 +273,38 @@ UM.Dialog
                             }
                         }
                     }
+
+                    comboboxTitle: catalog.i18nc("@action:label", "Open With")
+                    comboboxTooltipText: catalog.i18nc("@info:tooltip", "How should the conflict in the profile be resolved?")
+                    combobox: Cura.ComboBox
+                    {
+                        id: qualityChangesResolveComboBox
+                        model: resolveStrategiesModel
+                        textRole: "label"
+                        visible: manager.qualityChangesConflict
+
+                        // This is a hack. This will trigger onCurrentIndexChanged and set the index when this component in loaded
+                        currentIndex:
+                        {
+                            currentIndex = 0
+                        }
+
+                        onCurrentIndexChanged:
+                        {
+                            manager.setResolveStrategy("quality_changes", resolveStrategiesModel.get(currentIndex).key)
+                        }
+                    }
                 }
 
-                Item
+                WorkspaceSection
                 {
-                    width: parent.width
-                    height: childrenRect.height
-
-                    UM.TooltipArea
+                    id: materialSection
+                    title: catalog.i18nc("@action:label", "Material settings")
+                    iconSource: UM.Theme.getIcon("Printer")
+                    content: Column
                     {
-                        id: materialResolveTooltip
-                        anchors.right: parent.right
-                        anchors.top: parent.top
-                        width: (parent.width / 3) | 0
-                        height: visible ? comboboxHeight : 0
-                        visible: manager.materialConflict
-                        text: catalog.i18nc("@info:tooltip", "How should the conflict in the material be resolved?")
-                        Cura.ComboBox
-                        {
-                            model: resolveStrategiesModel
-                            textRole: "label"
-                            id: materialResolveComboBox
-                            width: parent.width
-                            height: UM.Theme.getSize("button").height
-                            onActivated:
-                            {
-                                manager.setResolveStrategy("material", resolveStrategiesModel.get(index).key)
-                            }
-                        }
-                    }
-
-                    Row
-                    {
-                        id: materialSettingsTitleRow
-                        anchors.top: parent.top
-                        anchors.bottomMargin: UM.Theme.getSize("default_margin").height
-                        spacing: UM.Theme.getSize("default_margin").width
-
-                        UM.ColorImage
-                        {
-                            anchors.verticalCenter: parent.verticalCenter
-                            source: UM.Theme.getIcon("Printer")
-                            height: UM.Theme.getSize("medium_button_icon").height
-                            width: height
-                        }
-                        UM.Label
-                        {
-                            text: catalog.i18nc("@action:label", "Material settings")
-                            anchors.verticalCenter: parent.verticalCenter
-                            font: UM.Theme.getFont("default_bold")
-                        }
-                    }
-
-                    Column
-                    {
-                        width: parent.width
-                        height: childrenRect.height
                         spacing: UM.Theme.getSize("default_margin").height
                         leftPadding: UM.Theme.getSize("medium_button_icon").width + UM.Theme.getSize("default_margin").width
-                        anchors.top: materialSettingsTitleRow.bottom
 
                         Repeater
                         {
@@ -446,42 +327,39 @@ UM.Dialog
                             }
                         }
                     }
-                }
 
-                Item
-                {
-                    width: parent.width
-                    height: childrenRect.height
+                    comboboxTitle: catalog.i18nc("@action:label", "Open With")
+                    comboboxTooltipText: catalog.i18nc("@info:tooltip", "How should the conflict in the material be resolved?")
 
-                    Row
+                    combobox: Cura.ComboBox
                     {
-                        id: visibilitySettingsTitleRow
-                        anchors.top: parent.top
-                        anchors.bottomMargin: UM.Theme.getSize("default_margin").height
-                        spacing: UM.Theme.getSize("default_margin").width
+                        id: materialResolveComboBox
+                        model: resolveStrategiesModel
+                        textRole: "label"
+                        visible: manager.materialConflict
 
-                        UM.ColorImage
+                        // This is a hack. This will trigger onCurrentIndexChanged and set the index when this component in loaded
+                        currentIndex:
                         {
-                            anchors.verticalCenter: parent.verticalCenter
-                            source: UM.Theme.getIcon("Printer")
-                            height: UM.Theme.getSize("medium_button_icon").height
-                            width: height
+                            currentIndex = 0
                         }
-                        UM.Label
+
+                        onCurrentIndexChanged:
                         {
-                            text: catalog.i18nc("@action:label", "Setting visibility")
-                            anchors.verticalCenter: parent.verticalCenter
-                            font: UM.Theme.getFont("default_bold")
+                            manager.setResolveStrategy("material", resolveStrategiesModel.get(currentIndex).key)
                         }
                     }
+                }
 
-                    Column
+                WorkspaceSection
+                {
+                    id: visibilitySection
+                    title: catalog.i18nc("@action:label", "Setting visibility")
+                    iconSource: UM.Theme.getIcon("Printer")
+                    content: Column
                     {
-                        width: parent.width
-                        height: childrenRect.height
                         spacing: UM.Theme.getSize("default_margin").height
                         leftPadding: UM.Theme.getSize("medium_button_icon").width + UM.Theme.getSize("default_margin").width
-                        anchors.top: visibilitySettingsTitleRow.bottom
 
                         Row
                         {
@@ -515,24 +393,25 @@ UM.Dialog
                             }
                         }
                     }
+                }
 
-                    Row
+                Row
+                {
+                    id: clearBuildPlateWarning
+                    width: parent.width
+                    height: childrenRect.height
+                    visible: manager.hasObjectsOnPlate
+                    UM.ColorImage
                     {
-                        width: parent.width
-                        height: childrenRect.height
-                        visible: manager.hasObjectsOnPlate
-                        UM.ColorImage
-                        {
-                            width: warningLabel.height
-                            height: width
-                            source: UM.Theme.getIcon("Information")
-                            color: UM.Theme.getColor("text")
-                        }
-                        UM.Label
-                        {
-                            id: warningLabel
-                            text: catalog.i18nc("@action:warning", "Loading a project will clear all models on the build plate.")
-                        }
+                        width: warningLabel.height
+                        height: width
+                        source: UM.Theme.getIcon("Information")
+                        color: UM.Theme.getColor("text")
+                    }
+                    UM.Label
+                    {
+                        id: warningLabel
+                        text: catalog.i18nc("@action:warning", "Loading a project will clear all models on the build plate.")
                     }
                 }
             }
