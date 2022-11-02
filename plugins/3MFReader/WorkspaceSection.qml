@@ -31,7 +31,7 @@ Item
     {
         id: comboboxTooltip
         width: (parent.width / 3) | 0
-        height: visible ? UM.Theme.getSize("default_margin").heightcomboboxHeight : 0
+        height: visible ? UM.Theme.getSize("default_margin").height : 0
         anchors.top: parent.top
         anchors.right: parent.right
         visible: combobox.visible

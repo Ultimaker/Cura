@@ -21,7 +21,6 @@ UM.Dialog
 
     backgroundColor: UM.Theme.getColor("main_background")
     margin: UM.Theme.getSize("default_margin").width
-    property int comboboxHeight: UM.Theme.getSize("default_margin").height
 
     Flickable
     {
