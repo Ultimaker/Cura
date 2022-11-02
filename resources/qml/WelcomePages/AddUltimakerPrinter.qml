@@ -84,6 +84,7 @@ Control
                     iconSource: UM.Theme.getIcon("LinkExternal")
                     isIconOnRightSide: true
                     textFont: UM.Theme.getFont("small")
+                    fixedWidthMode: true
                     onClicked: Qt.openUrlExternally("https://support.ultimaker.com/hc/en-us/articles/360012019239?utm_source=cura&utm_medium=software&utm_campaign=onboarding-add-printer")
                 }
             }
