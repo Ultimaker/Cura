@@ -30,7 +30,7 @@ Item
         height: visible ? UM.Theme.getSize("default_margin").height : 0
         anchors.top: parent.top
         anchors.right: parent.right
-        visible: combobox.visible
+        visible: comboboxVisible
         text: comboboxTooltipText
 
         UM.Label
@@ -39,7 +39,7 @@ Item
             anchors.top: parent.top
             anchors.left: parent.left
             anchors.bottomMargin: UM.Theme.getSize("default_margin").height
-            visible: combobox.visible
+            visible: comboboxVisible
             text: ""
             font: UM.Theme.getFont("default_bold")
         }

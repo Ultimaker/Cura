@@ -125,6 +125,7 @@ UM.Dialog
 
                     comboboxTitle: catalog.i18nc("@action:label", "Open With")
                     comboboxTooltipText: catalog.i18nc("@info:tooltip", "How should the conflict in the machine be resolved?")
+                    comboboxVisible: workspaceDialog.visible && manager.updatableMachinesModel.count > 1
                     combobox: Cura.ComboBox
                     {
                         id: machineResolveComboBox
@@ -261,6 +262,7 @@ UM.Dialog
 
                     comboboxTitle: catalog.i18nc("@action:label", "Open With")
                     comboboxTooltipText: catalog.i18nc("@info:tooltip", "How should the conflict in the profile be resolved?")
+                    comboboxVisible: manager.qualityChangesConflict
                     combobox: Cura.ComboBox
                     {
                         id: qualityChangesResolveComboBox
@@ -315,6 +317,7 @@ UM.Dialog
 
                     comboboxTitle: catalog.i18nc("@action:label", "Open With")
                     comboboxTooltipText: catalog.i18nc("@info:tooltip", "How should the conflict in the material be resolved?")
+                    comboboxVisible: manager.materialConflict
 
                     combobox: Cura.ComboBox
                     {
