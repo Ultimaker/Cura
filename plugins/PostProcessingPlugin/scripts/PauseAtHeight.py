@@ -26,7 +26,7 @@ class PauseAtHeight(Script):
                     "description": "Whether to pause at a certain height or at a certain layer.",
                     "type": "enum",
                     "options": {"height": "Height", "layer_no": "Layer Number"},
-                    "default_value": "height"
+                    "default_value": "layer_no"
                 },
                 "pause_height":
                 {
@@ -447,7 +447,7 @@ class PauseAtHeight(Script):
                 # Wait till the user continues printing
                 prepend_gcode += pause_command + " ; Do the actual pause\n"
 
-                # Set a custom GCODE section before pause
+                # Set a custom GCODE section after pause
                 if gcode_after:
                     prepend_gcode += gcode_after + "\n"
 
