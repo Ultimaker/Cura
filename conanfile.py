@@ -276,7 +276,7 @@ class CuraConan(ConanFile):
                 self.requires(req)
 
     def build_requirements(self):
-        if self.settings_build.os != "Windows" or self.conf.get("tools.microsoft.bash:path", default=False, check_type=bool):
+        if self.settings_build.os != "Windows" or self.conf.get("tools.microsoft.bash:path", check_type = str):
             self.tool_requires("gettext/0.21")
 
     def layout(self):
@@ -289,16 +289,13 @@ class CuraConan(ConanFile):
         self.cpp.package.resdirs = ["resources", "plugins", "packaging", "pip_requirements"]  # pip_requirements should be the last item in the list
 
     def build(self):
-        if self.settings_build.os == "Windows" and not self.conf.get("tools.microsoft.bash:path", default=False, check_type=bool):
-            return
-            # FIXME: once m4, autoconf, automake are Conan V2 ready self.win_bash = True  # We need gettext, which requires the bash environment
+        if self.settings_build.os != "Windows" or self.conf.get("tools.microsoft.bash:path", check_type = str):
+            for po_file in self.source_path.joinpath("resources", "i18n").glob("**/*.po"):
+                mo_file = self.build_path.joinpath(po_file.with_suffix('.mo').relative_to(self.source_path))
+                mkdir(self, str(unix_path(self, mo_file.parent)))
+                self.run(f"msgfmt {po_file} -o {mo_file} -f", env="conanbuild", run_environment=True)
 
-        for po_file in self.source_path.joinpath("resources", "i18n").glob("**/*.po"):
-            mo_file = self.build_path.joinpath(po_file.with_suffix('.mo').relative_to(self.source_path))
-            mkdir(self, str(unix_path(self, mo_file.parent)))
-            self.run(f"msgfmt {po_file} -o {mo_file} -f", env="conanbuild", run_environment=True)
-
-        # FIXME: once m4, autoconf, automake are Conan V2 ready self.win_bash = None
+            # FIXME: once m4, autoconf, automake are Conan V2 ready self.win_bash = None
 
     def generate(self):
         cura_run_envvars = self._cura_run_env.vars(self, scope = "run")
@@ -318,7 +315,7 @@ class CuraConan(ConanFile):
                                             entitlements_file = entitlements_file if self.settings.os == "Macos" else "None")
 
         # Update the po files
-        if self.settings_build.os != "Windows" or self.conf.get("tools.microsoft.bash:path", default = False, check_type = bool):
+        if self.settings_build.os != "Windows" or self.conf.get("tools.microsoft.bash:path", check_type = str):
             for po_file in self.source_path.joinpath("resources", "i18n").glob("**/*.po"):
                 pot_file = self.source_path.joinpath("resources", "i18n", po_file.with_suffix('.pot').name)
                 mkdir(self, str(unix_path(self, pot_file.parent)))
