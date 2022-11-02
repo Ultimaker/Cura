@@ -1,7 +1,7 @@
 {
     "name": "Creality CR-10 Smart",
     "version": 2,
-    "inherits": "creality_cr10",
+    "inherits": "creality_base",
     "metadata": {
       "quality_definition": "creality_base",
       "author": "ed3d.net",
