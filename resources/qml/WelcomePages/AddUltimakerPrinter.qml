@@ -42,8 +42,8 @@ Control
             Image
             {
                 source: UM.Theme.getImage("add_printer")
-                Layout.preferredWidth: 200
-                Layout.preferredHeight: 200
+                Layout.preferredWidth: 200 * screenScaleFactor
+                Layout.preferredHeight: 200 * screenScaleFactor
             }
 
             ColumnLayout
