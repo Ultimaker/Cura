@@ -3,11 +3,9 @@
 
 import QtQuick 2.10
 import QtQuick.Controls 2.3
-import QtQuick.Layouts 1.3
-import QtQuick.Window 2.2
+
 
 import UM 1.5 as UM
-import Cura 1.1 as Cura
 
 
 Item
@@ -18,10 +16,8 @@ Item
 
     property alias comboboxTitle: comboboxLabel.text
     property Component combobox: Item { visible: false }
-    property var comboboxTooltipText: ""
-    property var comboboxVisible: false
-
-
+    property string comboboxTooltipText: ""
+    property bool comboboxVisible: false
 
     width: parent.width
     height: childrenRect.height
