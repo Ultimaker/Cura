@@ -59,7 +59,7 @@ Item
     {
         id: sectionTitleRow
         anchors.top: parent.top
-        anchors.bottomMargin: UM.Theme.getSize("default_margin").height
+        bottomPadding: UM.Theme.getSize("default_margin").height
         spacing: UM.Theme.getSize("default_margin").width
 
         UM.ColorImage
