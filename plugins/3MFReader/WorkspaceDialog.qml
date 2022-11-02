@@ -262,6 +262,7 @@ UM.Dialog
                         {
                             spacing: UM.Theme.getSize("default_margin").height
                             leftPadding: UM.Theme.getSize("medium_button_icon").width + UM.Theme.getSize("default_margin").width
+                            bottomPadding: UM.Theme.getSize("narrow_margin").height
 
                             WorkspaceRow
                             {
@@ -283,7 +284,9 @@ UM.Dialog
                         id: clearBuildPlateWarning
                         width: parent.width
                         height: childrenRect.height
+                        spacing: UM.Theme.getSize("default_margin").width
                         visible: manager.hasObjectsOnPlate
+
                         UM.ColorImage
                         {
                             width: warningLabel.height
