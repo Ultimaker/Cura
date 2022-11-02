@@ -86,39 +86,16 @@ UM.Dialog
                             spacing: UM.Theme.getSize("default_margin").height
                             leftPadding: UM.Theme.getSize("medium_button_icon").width + UM.Theme.getSize("default_margin").width
 
-                            Row
+                            WorkspaceRow
                             {
-                                width: parent.width
-                                height: childrenRect.height
-
-                                UM.Label
-                                {
-                                    text: catalog.i18nc("@action:label", "Type")
-                                    width: (parent.width / 3) | 0
-                                }
-                                UM.Label
-                                {
-                                    text: manager.machineType
-                                    width: (parent.width / 3) | 0
-                                }
+                                leftLabelText: catalog.i18nc("@action:label", "Type")
+                                rightLabelText: manager.machineType
                             }
 
-                            Row
+                            WorkspaceRow
                             {
-                                width: parent.width
-                                height: childrenRect.height
-
-                                UM.Label
-                                {
-                                    text: catalog.i18nc("@action:label", manager.isPrinterGroup ? "Printer Group" : "Printer Name")
-                                    width: (parent.width / 3) | 0
-                                }
-                                UM.Label
-                                {
-                                    text: manager.machineName
-                                    width: (parent.width / 3) | 0
-                                    wrapMode: Text.WordWrap
-                                }
+                                leftLabelText: catalog.i18nc("@action:label", manager.isPrinterGroup ? "Printer Group" : "Printer Name")
+                                rightLabelText: manager.machineName
                             }
                         }
 
@@ -183,79 +160,30 @@ UM.Dialog
                             spacing: UM.Theme.getSize("default_margin").height
                             leftPadding: UM.Theme.getSize("medium_button_icon").width + UM.Theme.getSize("default_margin").width
 
-                            Row
+                            WorkspaceRow
                             {
-                                width: parent.width
-                                height: childrenRect.height
-
-                                UM.Label
-                                {
-                                    text: catalog.i18nc("@action:label", "Name")
-                                    width: (parent.width / 3) | 0
-                                }
-                                UM.Label
-                                {
-                                    text: manager.qualityName
-                                    width: (parent.width / 3) | 0
-                                    wrapMode: Text.WordWrap
-                                }
+                                leftLabelText: catalog.i18nc("@action:label", "Name")
+                                rightLabelText: manager.qualityName
                             }
 
-                            Row
+                            WorkspaceRow
                             {
-                                width: parent.width
-                                height: childrenRect.height
-
-                                UM.Label
-                                {
-                                    text: catalog.i18nc("@action:label", "Intent")
-                                    width: (parent.width / 3) | 0
-                                }
-                                UM.Label
-                                {
-                                    text: manager.intentName
-                                    width: (parent.width / 3) | 0
-                                    wrapMode: Text.WordWrap
-                                }
+                                leftLabelText: catalog.i18nc("@action:label", "Intent")
+                                rightLabelText: manager.intentName
                             }
 
-                            Row
+                            WorkspaceRow
                             {
-                                width: parent.width
-                                height: childrenRect.height
-
-                                UM.Label
-                                {
-                                    text: catalog.i18nc("@action:label", "Not in profile")
-                                    visible: manager.numUserSettings != 0
-                                    width: (parent.width / 3) | 0
-                                }
-                                UM.Label
-                                {
-                                    text: catalog.i18ncp("@action:label", "%1 override", "%1 overrides", manager.numUserSettings).arg(manager.numUserSettings)
-                                    visible: manager.numUserSettings != 0
-                                    width: (parent.width / 3) | 0
-                                }
+                                leftLabelText: catalog.i18nc("@action:label", "Not in profile")
+                                rightLabelText: catalog.i18ncp("@action:label", "%1 override", "%1 overrides", manager.numUserSettings).arg(manager.numUserSettings)
+                                visible: manager.numUserSettings != 0
                             }
 
-                            Row
+                            WorkspaceRow
                             {
-                                width: parent.width
-                                height: childrenRect.height
-
-                                UM.Label
-                                {
-                                    text: catalog.i18nc("@action:label", "Derivative from")
-                                    visible: manager.numSettingsOverridenByQualityChanges != 0
-                                    width: (parent.width / 3) | 0
-                                }
-                                UM.Label
-                                {
-                                    text: catalog.i18ncp("@action:label", "%1, %2 override", "%1, %2 overrides", manager.numSettingsOverridenByQualityChanges).arg(manager.qualityType).arg(manager.numSettingsOverridenByQualityChanges)
-                                    width: (parent.width / 3) | 0
-                                    visible: manager.numSettingsOverridenByQualityChanges != 0
-                                    wrapMode: Text.WordWrap
-                                }
+                                leftLabelText: catalog.i18nc("@action:label", "Derivative from")
+                                rightLabelText: catalog.i18ncp("@action:label", "%1, %2 override", "%1, %2 overrides", manager.numSettingsOverridenByQualityChanges).arg(manager.qualityType).arg(manager.numSettingsOverridenByQualityChanges)
+                                visible: manager.numSettingsOverridenByQualityChanges != 0
                             }
                         }
 
@@ -294,21 +222,10 @@ UM.Dialog
                             Repeater
                             {
                                 model: manager.materialLabels
-                                delegate: Row
+                                delegate: WorkspaceRow
                                 {
-                                    width: parent.width
-                                    height: childrenRect.height
-                                    UM.Label
-                                    {
-                                        text: catalog.i18nc("@action:label", "Name")
-                                        width: (parent.width / 3) | 0
-                                    }
-                                    UM.Label
-                                    {
-                                        text: modelData
-                                        width: (parent.width / 3) | 0
-                                        wrapMode: Text.WordWrap
-                                    }
+                                    leftLabelText: catalog.i18nc("@action:label", "Name")
+                                    rightLabelText: modelData
                                 }
                             }
                         }
@@ -346,36 +263,17 @@ UM.Dialog
                             spacing: UM.Theme.getSize("default_margin").height
                             leftPadding: UM.Theme.getSize("medium_button_icon").width + UM.Theme.getSize("default_margin").width
 
-                            Row
+                            WorkspaceRow
                             {
-                                width: parent.width
-                                height: childrenRect.height
-                                UM.Label
-                                {
-                                    text: catalog.i18nc("@action:label", "Mode")
-                                    width: (parent.width / 3) | 0
-                                }
-                                UM.Label
-                                {
-                                    text: manager.activeMode
-                                    width: (parent.width / 3) | 0
-                                }
+                                leftLabelText: catalog.i18nc("@action:label", "Mode")
+                                rightLabelText: manager.activeMode
                             }
-                            Row
+
+                            WorkspaceRow
                             {
-                                width: parent.width
-                                height: childrenRect.height
+                                leftLabelText: catalog.i18nc("@action:label", "%1 out of %2" ).arg(manager.numVisibleSettings).arg(manager.totalNumberOfSettings)
+                                rightLabelText: manager.activeMode
                                 visible: manager.hasVisibleSettingsField
-                                UM.Label
-                                {
-                                    text: catalog.i18nc("@action:label", "Visible settings:")
-                                    width: (parent.width / 3) | 0
-                                }
-                                UM.Label
-                                {
-                                    text: catalog.i18nc("@action:label", "%1 out of %2" ).arg(manager.numVisibleSettings).arg(manager.totalNumberOfSettings)
-                                    width: (parent.width / 3) | 0
-                                }
                             }
                         }
                     }
