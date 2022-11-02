@@ -19,7 +19,7 @@
         "machine_name": { "default_value": "SV01" },
         "machine_extruder_count": { "default_value": 1 },
         "machine_width": { "default_value": 280 },
-        "machine_depth": { "default_value": 260 },
+        "machine_depth": { "default_value": 240 },
         "machine_height": { "default_value": 300 },	
         "machine_max_feedrate_x": { "value": 500 },
         "machine_max_feedrate_y": { "value": 500 },
