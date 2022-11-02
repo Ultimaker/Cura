@@ -23,20 +23,6 @@ UM.Dialog
     margin: UM.Theme.getSize("default_margin").width
     property int comboboxHeight: UM.Theme.getSize("default_margin").height
 
-    onClosing: manager.notifyClosed()
-    onVisibleChanged:
-    {
-        if (visible)
-        {
-            // Force relead the comboboxes
-            // Since this dialog is only created once the first time you open it, these comboxes need to be reloaded
-            // each time it is shown after the first time so that the indexes will update correctly.
-            materialSection.reloadValues()
-            profileSection.reloadValues()
-            printerSection.reloadValues()
-        }
-    }
-
     Flickable
     {
         clip: true
@@ -498,6 +484,19 @@ UM.Dialog
         }
     ]
 
+    onClosing: manager.notifyClosed()
     onRejected: manager.onCancelButtonClicked()
     onAccepted: manager.onOkButtonClicked()
+    onVisibleChanged:
+    {
+        if (visible)
+        {
+            // Force relead the comboboxes
+            // Since this dialog is only created once the first time you open it, these comboxes need to be reloaded
+            // each time it is shown after the first time so that the indexes will update correctly.
+            materialSection.reloadValues()
+            profileSection.reloadValues()
+            printerSection.reloadValues()
+        }
+    }
 }
