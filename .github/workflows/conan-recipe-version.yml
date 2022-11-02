@@ -93,12 +93,13 @@ jobs:
                     issue_number = "${{ github.ref }}".split('/')[2]
                     is_tag = "${{ github.ref_type }}" == "tag"
                     is_release_branch = False
+                    ref_name = "${{ github.base_ref }}" if event_name == "pull_request" else "${{ github.ref_name }}"
                     buildmetadata = "" if "${{ inputs.additional_buildmetadata }}" == "" else "${{ inputs.additional_buildmetadata }}_"
                     
                     # FIXME: for when we push a tag (such as an release)
                     channel = "testing"
                     if is_tag:
-                        branch_version = tools.Version("${{ github.ref_name }}")
+                        branch_version = tools.Version(ref_name)
                         is_release_branch = True
                         channel = "_"
                         user = "_"
@@ -108,10 +109,10 @@ jobs:
                             branch_version = tools.Version(repo.active_branch.name)
                         except ConanException:
                             branch_version = tools.Version('0.0.0')
-                        if "${{ github.ref_name }}" == f"{branch_version.major}.{branch_version.minor}":
+                        if ref_name == f"{branch_version.major}.{branch_version.minor}":
                             channel = 'stable'
                             is_release_branch = True
-                        elif "${{ github.ref_name }}" in ("main", "master"):
+                        elif ref_name in ("main", "master"):
                             channel = 'testing'
                         else:
                             channel = repo.active_branch.name.split("_")[0].replace("-", "_").lower()
@@ -165,15 +166,6 @@ jobs:
                                 bump_up_minor = int(latest_branch_version.minor) + 1
                                 reset_patch = 0
                                 actual_version = f"{latest_branch_version.major}.{bump_up_minor}.{reset_patch}-alpha+{buildmetadata}{channel_metadata}"
-                        else:
-                            # FIXME: for external PR's
-                            actual_version = f"5.3.0-alpha+{buildmetadata}pr_{issue_number}"
-                    
-                    if is_tag and "${{ github.ref_name }}" == "5.2.0-beta":
-                        actual_version = "5.2.0-beta"
-                        is_release_branch = True
-                        user = "_"
-                        channel = "_"
 
                     # %% print to output
                     cmd_name = ["echo", f"::set-output name=name::{project_name}"]
