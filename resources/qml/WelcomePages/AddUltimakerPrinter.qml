@@ -74,7 +74,7 @@ Control
                             catalog.i18nc("@info", "Follow the procedure to add a new printer"),
                             catalog.i18nc("@info", "Your new printer will automatically appear in Cura"),
                         ];
-                        return `<ol>${steps.map(step => `<li>${step}</il>`).join('')}</ol>`;
+                        return steps.join("<br />");
                     }
                 }
 
