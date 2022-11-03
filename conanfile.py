@@ -10,7 +10,7 @@ from conan.tools.env import VirtualRunEnv, Environment
 from conan.tools.scm import Version
 from conan.errors import ConanInvalidConfiguration, ConanException
 
-required_conan_version = ">=1.50.0"
+required_conan_version = ">=1.52.0"
 
 
 class CuraConan(ConanFile):
@@ -276,8 +276,10 @@ class CuraConan(ConanFile):
                 self.requires(req)
 
     def build_requirements(self):
-        if self.settings_build.os != "Windows" or self.conf.get("tools.microsoft.bash:path", check_type = str):
-            self.tool_requires("gettext/0.21")
+        if self.options.devtools:
+            if self.settings.os != "Windows" or self.conf.get("tools.microsoft.bash:path", check_type = str):
+                # FIXME: once m4, autoconf, automake are Conan V2 ready use self.win_bash and add gettext as base tool_requirement
+                self.tool_requires("gettext/0.21", force_host_context=True)
 
     def layout(self):
         self.folders.source = "."
@@ -289,13 +291,14 @@ class CuraConan(ConanFile):
         self.cpp.package.resdirs = ["resources", "plugins", "packaging", "pip_requirements"]  # pip_requirements should be the last item in the list
 
     def build(self):
-        if self.settings_build.os != "Windows" or self.conf.get("tools.microsoft.bash:path", check_type = str):
-            for po_file in self.source_path.joinpath("resources", "i18n").glob("**/*.po"):
-                mo_file = self.build_path.joinpath(po_file.with_suffix('.mo').relative_to(self.source_path))
-                mkdir(self, str(unix_path(self, mo_file.parent)))
-                self.run(f"msgfmt {po_file} -o {mo_file} -f", env="conanbuild", run_environment=True)
-
-            # FIXME: once m4, autoconf, automake are Conan V2 ready self.win_bash = None
+        if self.options.devtools:
+            if self.settings.os != "Windows" or self.conf.get("tools.microsoft.bash:path", check_type = str):
+                # FIXME: once m4, autoconf, automake are Conan V2 ready use self.win_bash and add gettext as base tool_requirement
+                cpp_info = self.dependencies["gettext"].cpp_info
+                for po_file in self.source_path.joinpath("resources", "i18n").glob("**/*.po"):
+                    mo_file = self.build_path.joinpath(po_file.with_suffix('.mo').relative_to(self.source_path))
+                    mkdir(self, str(unix_path(self, mo_file.parent)))
+                    self.run(f"{cpp_info.bindirs[0]}/msgfmt {po_file} -o {mo_file} -f", env="conanbuild", ignore_errors=True)
 
     def generate(self):
         cura_run_envvars = self._cura_run_env.vars(self, scope = "run")
@@ -314,13 +317,15 @@ class CuraConan(ConanFile):
                                             icon_path = "'{}'".format(Path(self.source_folder, "packaging", self._um_data()["pyinstaller"]["icon"][str(self.settings.os)])).replace("\\", "\\\\"),
                                             entitlements_file = entitlements_file if self.settings.os == "Macos" else "None")
 
-        # Update the po files
-        if self.settings_build.os != "Windows" or self.conf.get("tools.microsoft.bash:path", check_type = str):
-            for po_file in self.source_path.joinpath("resources", "i18n").glob("**/*.po"):
-                pot_file = self.source_path.joinpath("resources", "i18n", po_file.with_suffix('.pot').name)
-                mkdir(self, str(unix_path(self, pot_file.parent)))
-                self.run(f"msgmerge --no-wrap --no-fuzzy-matching -width=140 -o {po_file} {po_file} {pot_file}", env = "conanbuild", run_environment=True)
-
+            # Update the po files
+            if self.settings.os != "Windows" or self.conf.get("tools.microsoft.bash:path", check_type = str):
+                # FIXME: once m4, autoconf, automake are Conan V2 ready use self.win_bash and add gettext as base tool_requirement
+                cpp_info = self.dependencies["gettext"].cpp_info
+                for po_file in self.source_path.joinpath("resources", "i18n").glob("**/*.po"):
+                    pot_file = self.source_path.joinpath("resources", "i18n", po_file.with_suffix('.pot').name)
+                    mkdir(self, str(unix_path(self, pot_file.parent)))
+                    self.run(f"{cpp_info.bindirs[0]}/msgmerge --no-wrap --no-fuzzy-matching -width=140 -o {po_file} {po_file} {pot_file}",
+                             env = "conanbuild", ignore_errors = True)
 
     def imports(self):
         self.copy("CuraEngine.exe", root_package = "curaengine", src = "@bindirs", dst = "", keep_path = False)
