@@ -60,7 +60,7 @@ Control
                     Layout.alignment: Qt.AlignTop
                     wrapMode: Text.WordWrap
                     font: UM.Theme.getFont("default_bold")
-                    text: catalog.i18nc("@label", "New Ultimaker printers can be connected to Digital Factory and monitored remotely.")
+                    text: catalog.i18nc("@label", "If you are trying to add a new Ultimaker printer to Cura")
                 }
 
                 UM.Label
@@ -82,7 +82,7 @@ Control
                 {
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignTop
-                    text: catalog.i18nc("@button", "Learn more about adding printers to Digital Factory")
+                    text: catalog.i18nc("@button", "Learn more")
                     iconSource: UM.Theme.getIcon("LinkExternal")
                     isIconOnRightSide: true
                     textFont: UM.Theme.getFont("small")
