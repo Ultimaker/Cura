@@ -158,7 +158,7 @@ UM.Dialog
                     {
                         id: profileSection
                         title: catalog.i18nc("@action:label", "Profile settings")
-                        iconSource: UM.Theme.getIcon("Printer")
+                        iconSource: UM.Theme.getIcon("Sliders")
                         content: Column
                         {
                             id: profileSettingsValuesTable
@@ -218,7 +218,7 @@ UM.Dialog
                     {
                         id: materialSection
                         title: catalog.i18nc("@action:label", "Material settings")
-                        iconSource: UM.Theme.getIcon("Printer")
+                        iconSource: UM.Theme.getIcon("Spool")
                         content: Column
                         {
                             spacing: UM.Theme.getSize("default_margin").height
@@ -262,7 +262,7 @@ UM.Dialog
                     {
                         id: visibilitySection
                         title: catalog.i18nc("@action:label", "Setting visibility")
-                        iconSource: UM.Theme.getIcon("Printer")
+                        iconSource: UM.Theme.getIcon("Eye")
                         content: Column
                         {
                             spacing: UM.Theme.getSize("default_margin").height
