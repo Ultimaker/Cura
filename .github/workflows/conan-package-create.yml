@@ -7,6 +7,10 @@ on:
                 required: true
                 type: string
 
+            build_id:
+                required: true
+                type: number
+
             recipe_id_full:
                 required: true
                 type: string
@@ -131,11 +135,13 @@ jobs:
                 run: conan config install https://github.com/Ultimaker/conan-config.git
 
             -  name: Associate build information with the Conan package
-               run: conan_build_info --v2 start ${{ inputs.project_name }} ${{ github.run_number }}
+               run: conan_build_info --v2 start ${{ inputs.project_name }} ${{ github.run_number }}000${{ inputs.build_id }}
 
             -   name: Create the Packages
                 if: ${{ !inputs.create_from_source }}
-                run: conan install ${{ inputs.recipe_id_full }} --build=missing --update
+                run: |
+                    conan lock create --reference ${{ inputs.recipe_id_full }} --build=missing --update
+                    conan install ${{ inputs.recipe_id_full }} --build=missing --update --lockfile=conan.lock
 
             -   name: Create the Packages (from source)
                 if: ${{ inputs.create_from_source }}
@@ -163,3 +169,4 @@ jobs:
                run: |
                    conan_build_info --v2 create buildinfo.json --lockfile conan.lock --user ${{ secrets.CONAN_USER }} --password ${{ secrets.CONAN_PASS }}
                    conan_build_info --v2 publish buildinfo.json --url https://ultimaker.jfrog.io/artifactory --user ${{ secrets.CONAN_USER }} --password ${{ secrets.CONAN_PASS }}
+                   conan_build_info --v2 stop
