@@ -14,33 +14,45 @@ UM.Dialog
     id: workspaceDialog
     title: catalog.i18nc("@title:window", "Open Project")
 
+    margin: UM.Theme.getSize("default_margin").width
     minimumWidth: UM.Theme.getSize("modal_window_minimum").width
     minimumHeight: UM.Theme.getSize("modal_window_minimum").height
-    width: minimumWidth
-    height: minimumHeight
 
-    backgroundColor: UM.Theme.getColor("main_background")
+    backgroundColor: UM.Theme.getColor("detail_background")
 
-    Flickable
+    headerComponent: Rectangle
     {
-        clip: true
-        width: parent.width
-        height: parent.height
-        contentHeight: dialogSummaryItem.height
-        ScrollBar.vertical: UM.ScrollBar { id: verticalScrollBar }
+        height: childrenRect.height + 2 * UM.Theme.getSize("default_margin").height
+        color: UM.Theme.getColor("main_background")
 
-        Item
+        UM.Label
+        {
+            id: titleLabel
+            text: catalog.i18nc("@action:title", "Summary - Cura Project")
+            font: UM.Theme.getFont("large")
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.topMargin: UM.Theme.getSize("default_margin").height
+            anchors.leftMargin: UM.Theme.getSize("default_margin").height
+        }
+    }
+
+    Rectangle
+    {
+        anchors.fill: parent
+        UM.I18nCatalog { id: catalog; name: "cura" }
+        color: UM.Theme.getColor("main_background")
+
+        Flickable
         {
             id: dialogSummaryItem
-            width: verticalScrollBar.visible ? parent.width - verticalScrollBar.width - UM.Theme.getSize("default_margin").width : parent.width
-            height: childrenRect.height
-            anchors.margins: 10 * screenScaleFactor
+            width: parent.width
+            height: parent.height
 
-            UM.I18nCatalog
-            {
-                id: catalog
-                name: "cura"
-            }
+            clip: true
+
+            contentHeight: contentColumn.height
+            ScrollBar.vertical: UM.ScrollBar { id: scrollbar }
 
             ListModel
             {
@@ -57,20 +69,13 @@ UM.Dialog
 
             Column
             {
-                width: parent.width
+                id: contentColumn
+                width: parent.width - scrollbar.width
                 height: childrenRect.height
-                spacing: UM.Theme.getSize("wide_margin").height
-
-                UM.Label
-                {
-                    id: titleLabel
-                    text: catalog.i18nc("@action:title", "Summary - Cura Project")
-                    font: UM.Theme.getFont("large")
-                }
 
                 Column
                 {
-                    width: parent.width
+                    width: parent.width - UM.Theme.getSize("default_margin").width
                     height: childrenRect.height
                     spacing: UM.Theme.getSize("default_margin").height
                     leftPadding: UM.Theme.getSize("default_margin").width
@@ -312,7 +317,7 @@ UM.Dialog
         color: warning ? UM.Theme.getColor("warning") : "transparent"
         anchors.bottom: parent.bottom
         width: parent.width
-        height: childrenRect.height + 2 * workspaceDialog.margin
+        height: childrenRect.height + (warning ? 2 * workspaceDialog.margin : workspaceDialog.margin)
 
         Column
         {

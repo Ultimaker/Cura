@@ -26,18 +26,21 @@ Item
     UM.TooltipArea
     {
         id: comboboxTooltip
-        width: (parent.width / 3) | 0
+        width: (parent.width / 2.5) | 0
         height: visible ? UM.Theme.getSize("default_margin").height : 0
         anchors.top: parent.top
         anchors.right: parent.right
-        visible: comboboxVisible
+        anchors.rightMargin: UM.Theme.getSize("default_margin").width
+
         text: comboboxTooltipText
+        visible: comboboxVisible
 
         UM.Label
         {
             id: comboboxLabel
             anchors.top: parent.top
             anchors.left: parent.left
+            anchors.topMargin: UM.Theme.getSize("default_margin").height
             visible: comboboxVisible && text != ""
             text: ""
             font: UM.Theme.getFont("default_bold")
