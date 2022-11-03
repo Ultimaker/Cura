@@ -324,7 +324,11 @@ UM.Dialog
             height: childrenRect.height
             spacing: workspaceDialog.margin
 
-            anchors.margins: workspaceDialog.margin
+            anchors.leftMargin: workspaceDialog.margin
+            anchors.rightMargin: workspaceDialog.margin
+            anchors.bottomMargin: workspaceDialog.margin
+            anchors.topMargin: warning ? workspaceDialog.margin : 0
+
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.top: parent.top
