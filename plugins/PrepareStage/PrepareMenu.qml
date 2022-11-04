@@ -57,6 +57,41 @@ Item
                 Layout.fillHeight: true
 
                 machineListModel: Cura.MachineListModel {}
+
+                buttons: [
+                    Cura.SecondaryButton
+                    {
+                        id: addPrinterButton
+                        leftPadding: UM.Theme.getSize("default_margin").width
+                        rightPadding: UM.Theme.getSize("default_margin").width
+                        text: catalog.i18nc("@button", "Add printer")
+                        // The maximum width of the button is half of the total space, minus the padding of the parent, the left
+                        // padding of the component and half the spacing because of the space between buttons.
+                        fixedWidthMode: true
+                        width: parent.width / 2 - leftPadding * 1.5
+                        onClicked:
+                        {
+                            toggleContent()
+                            Cura.Actions.addMachine.trigger()
+                        }
+                    },
+                    Cura.SecondaryButton
+                    {
+                        id: managePrinterButton
+                        leftPadding: UM.Theme.getSize("default_margin").width
+                        rightPadding: UM.Theme.getSize("default_margin").width
+                        text: catalog.i18nc("@button", "Manage printers")
+                        fixedWidthMode: true
+                        // The maximum width of the button is half of the total space, minus the padding of the parent, the right
+                        // padding of the component and half the spacing because of the space between buttons.
+                        width: parent.width / 2 - rightPadding * 1.5
+                        onClicked:
+                        {
+                            toggleContent()
+                            Cura.Actions.configureMachines.trigger()
+                        }
+                    }
+                ]
             }
 
             Cura.ConfigurationMenu
