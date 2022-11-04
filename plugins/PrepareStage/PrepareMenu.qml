@@ -55,6 +55,8 @@ Item
                 Layout.preferredWidth: parent.machineSelectorWidth
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+
+                machineListModel: Cura.MachineListModel {}
             }
 
             Cura.ConfigurationMenu

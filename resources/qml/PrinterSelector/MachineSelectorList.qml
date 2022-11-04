@@ -10,7 +10,6 @@ import Cura 1.0 as Cura
 ListView
 {
     id: listView
-    model: Cura.MachineListModel {}
     section.property: "isOnline"
     property real contentHeight: childrenRect.height
 

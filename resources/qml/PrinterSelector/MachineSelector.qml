@@ -16,6 +16,8 @@ Cura.ExpandablePopup
     property bool isCloudRegistered: Cura.MachineManager.activeMachineHasCloudRegistration
     property bool isGroup: Cura.MachineManager.activeMachineIsGroup
 
+    property alias machineListModel: machineSelectorList.model
+
     readonly property string connectionStatus: {
         if (isNetworkPrinter)
         {
@@ -156,7 +158,8 @@ Cura.ExpandablePopup
 
         }
 
-        MouseArea // Connection status tooltip hover area
+        // Connection status tooltip hover area
+        MouseArea
         {
             id: connectionStatusTooltipHoverArea
             anchors.fill: parent
