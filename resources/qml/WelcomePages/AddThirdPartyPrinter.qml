@@ -99,7 +99,7 @@ Item
         id: backButton
         anchors.left: parent.left
         anchors.bottom: parent.bottom
-        text: catalog.i18nc("@label", "Add Ultimaker printer via Digital Factory")
+        text: catalog.i18nc("@button", "Add Ultimaker printer via Digital Factory")
         onClicked: goToUltimakerPrinter()
     }
 
