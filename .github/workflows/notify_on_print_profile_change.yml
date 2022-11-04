@@ -19,13 +19,9 @@ on:
         - 'resources/intent/ultimaker**'
         - 'resources/quality/ultimaker**'
         - 'resources/variants/ultimaker**'
-
 permissions: {}
 jobs:
     slackNotification:
-      permissions:
-        contents: read
-
         name: Slack Notification
         runs-on: ubuntu-latest
         steps:
