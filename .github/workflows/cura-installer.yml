@@ -127,7 +127,7 @@ jobs:
                     echo "APPIMAGETOOL_LOCATION=$GITHUB_WORKSPACE/appimagetool" >> $GITHUB_ENV
 
             -   name: Install GCC-12 on ubuntu-22.04
-                if: ${{ matrix.os == 'ubuntu-22.04' }}
+                if: ${{ runner.os == 'Linux' }}
                 run: |
                     sudo apt install g++-12 gcc-12 -y
                     sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 12
