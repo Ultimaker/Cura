@@ -37,54 +37,10 @@ Item
         }
     }
 
-    // Printer type selector.
-    Item
-    {
-        id: printerTypeSelectorRow
-        visible:
-        {
-            return Cura.MachineManager.printerOutputDevices.length >= 1 //If connected...
-                && Cura.MachineManager.printerOutputDevices[0].connectedPrintersTypeCount != null //...and we have configuration information...
-                && Cura.MachineManager.printerOutputDevices[0].connectedPrintersTypeCount.length > 1; //...and there is more than one type of printer in the configuration list.
-        }
-        height: visible ? childrenRect.height : 0
-
-        anchors
-        {
-            left: parent.left
-            right: parent.right
-            top: header.bottom
-            topMargin: visible ? UM.Theme.getSize("default_margin").height : 0
-        }
-
-        UM.Label
-        {
-            text: catalog.i18nc("@label", "Printer")
-            width: Math.round(parent.width * 0.3) - UM.Theme.getSize("default_margin").width
-            height: contentHeight
-            anchors.verticalCenter: printerTypeSelector.verticalCenter
-            anchors.left: parent.left
-        }
-
-        Button
-        {
-            id: printerTypeSelector
-            text: Cura.MachineManager.activeMachine !== null ? Cura.MachineManager.activeMachine.definition.name: ""
-
-            height: UM.Theme.getSize("print_setup_big_item").height
-            width: Math.round(parent.width * 0.7) + UM.Theme.getSize("default_margin").width
-            anchors.right: parent.right
-            onClicked: menu.open()
-            //style: UM.Theme.styles.print_setup_header_button
-
-            Cura.PrinterTypeMenu { id: menu}
-        }
-    }
-
     UM.TabRow
     {
         id: tabBar
-        anchors.top: printerTypeSelectorRow.bottom
+        anchors.top: header.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         visible: extrudersModel.count > 1
 
@@ -97,13 +53,16 @@ Item
                 checked: model.index == 0
                 contentItem: Item
                 {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.verticalCenter: parent.verticalCenter
+                    width: Math.floor(tabBar.height / extrudersModel.count)
+                    height: tabBar.height
                     Cura.ExtruderIcon
                     {
                         anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.verticalCenter: parent.verticalCenter
                         materialColor: model.color
                         extruderEnabled: model.enabled
-                        width: parent.height
-                        height: parent.height
                     }
                 }
                 onClicked:
@@ -202,7 +161,7 @@ Item
                     return paddedWidth - textWidth - UM.Theme.getSize("print_setup_big_item").height * 0.5 - UM.Theme.getSize("default_margin").width
                 }
             }
-            property string instructionLink: Cura.MachineManager.activeStack != null ? Cura.ContainerManager.getContainerMetaDataEntry(Cura.MachineManager.activeStack.material.id, "instruction_link", ""): ""
+            property string instructionLink: Cura.MachineManager.activeStack != null ? Cura.ContainerManager.getContainerMetaDataEntry(Cura.MachineManager.activeStack.material.id, "instruction_link"): ""
 
             Row
             {
@@ -269,7 +228,7 @@ Item
                 {
                     id: materialSelection
 
-                    property bool valueError: Cura.MachineManager.activeStack !== null ? Cura.ContainerManager.getContainerMetaDataEntry(Cura.MachineManager.activeStack.material.id, "compatible", "") !== "True" : true
+                    property bool valueError: Cura.MachineManager.activeStack !== null ? Cura.ContainerManager.getContainerMetaDataEntry(Cura.MachineManager.activeStack.material.id, "compatible") !== "True" : true
                     property bool valueWarning: !Cura.MachineManager.isActiveQualitySupported
 
                     text: Cura.MachineManager.activeStack !== null ? Cura.MachineManager.activeStack.material.name : ""
@@ -304,7 +263,7 @@ Item
                         height: UM.Theme.getSize("small_button").height
                         width: UM.Theme.getSize("small_button").width
                         anchors.centerIn: parent
-                        background: UM.RecolorImage
+                        background: UM.ColorImage
                         {
                             source: UM.Theme.getIcon("Guide")
                             color: instructionButton.hovered ? UM.Theme.getColor("primary") : UM.Theme.getColor("icon")
@@ -369,15 +328,13 @@ Item
                     width: selectors.controlWidth
                     height: childrenRect.height
 
-                    UM.RecolorImage
+                    UM.ColorImage
                     {
                         id: warningImage
                         anchors.left: parent.left
                         source: UM.Theme.getIcon("Warning")
                         width: UM.Theme.getSize("section_icon").width
                         height: UM.Theme.getSize("section_icon").height
-                        sourceSize.width: width
-                        sourceSize.height: height
                         color: UM.Theme.getColor("material_compatibility_warning")
                         visible: !Cura.MachineManager.isCurrentSetupSupported || warnings.buildplateCompatibilityError || warnings.buildplateCompatibilityWarning
                     }

@@ -63,9 +63,6 @@
         "machine_heated_bed": {
             "default_value": true
         },
-        "speed_infill": {
-            "value": "speed_print"
-        },
         "speed_wall_x": {
             "value": "speed_wall"
         },
@@ -161,10 +158,6 @@
         "jerk_enabled":
         {
             "default_value": true
-        },
-        "jerk_print":
-        {
-            "default_value": 12
         },
         "jerk_travel":
         {

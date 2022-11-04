@@ -89,7 +89,7 @@ ToolButton
     {
         id: background
 
-        UM.RecolorImage
+        UM.ColorImage
         {
             id: downArrow
             anchors.verticalCenter: parent.verticalCenter
@@ -97,7 +97,6 @@ ToolButton
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
             width: UM.Theme.getSize("standard_arrow").width
             height: UM.Theme.getSize("standard_arrow").height
-            sourceSize.height: width
             color: base.enabled ? UM.Theme.getColor("setting_control_button") : UM.Theme.getColor("setting_category_disabled_text")
             source: UM.Theme.getIcon("ChevronSingleDown")
         }

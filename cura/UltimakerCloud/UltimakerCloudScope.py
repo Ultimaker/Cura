@@ -1,7 +1,7 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtNetwork import QNetworkRequest
+from PyQt6.QtNetwork import QNetworkRequest
 
 from UM.Logger import Logger
 from UM.TaskManagement.HttpRequestScope import DefaultUserAgentScope

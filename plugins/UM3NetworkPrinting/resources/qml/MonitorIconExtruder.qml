@@ -22,12 +22,12 @@ Item
     property int size: 32 * screenScaleFactor // TODO: Theme!
 
     // THe extruder icon source; NOTE: This shouldn't need to be changed
-    property string iconSource: "../svg/icons/Extruder.svg"
+    property string iconSource: Qt.resolvedUrl("../svg/icons/Extruder.svg")
 
     height: size
     width: size
 
-    UM.RecolorImage
+    UM.ColorImage
     {
         id: icon
         anchors.fill: parent

@@ -7,8 +7,8 @@ import platform
 import time
 from typing import cast, Optional, Set, TYPE_CHECKING
 
-from PyQt5.QtCore import pyqtSlot, QObject
-from PyQt5.QtNetwork import QNetworkRequest
+from PyQt6.QtCore import pyqtSlot, QObject
+from PyQt6.QtNetwork import QNetworkRequest
 
 from UM.Extension import Extension
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
@@ -20,7 +20,7 @@ from UM.Qt.Duration import DurationFormat
 from cura import ApplicationMetadata
 
 if TYPE_CHECKING:
-    from PyQt5.QtNetwork import QNetworkReply
+    from PyQt6.QtNetwork import QNetworkReply
 
 
 catalog = i18nCatalog("cura")
@@ -133,6 +133,7 @@ class SliceInfo(QObject, Extension):
             data["is_logged_in"] = self._application.getCuraAPI().account.isLoggedIn
             data["organization_id"] = org_id if org_id else None
             data["subscriptions"] = user_profile.get("subscriptions", []) if user_profile else []
+            data["slice_uuid"] = print_information.slice_uuid
 
             active_mode = self._application.getPreferences().getValue("cura/active_mode")
             if active_mode == 0:
@@ -289,7 +290,7 @@ class SliceInfo(QObject, Extension):
             Logger.logException("e", "Exception raised while sending slice info.") # But we should be notified about these problems of course.
 
     def _onRequestFinished(self, reply: "QNetworkReply") -> None:
-        status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
+        status_code = reply.attribute(QNetworkRequest.Attribute.HttpStatusCodeAttribute)
         if status_code == 200:
             Logger.log("i", "SliceInfo sent successfully")
             return

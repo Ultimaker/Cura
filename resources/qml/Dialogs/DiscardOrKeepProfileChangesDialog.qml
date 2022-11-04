@@ -1,11 +1,10 @@
 //Copyright (c) 2022 Ultimaker B.V.
 //Cura is released under the terms of the LGPLv3 or higher.
 
-import Qt.labs.qmlmodels 1.0
 import QtQuick 2.1
 import QtQuick.Controls 2.15
 
-import UM 1.5 as UM
+import UM 1.6 as UM
 import Cura 1.6 as Cura
 
 UM.Dialog
@@ -24,6 +23,16 @@ UM.Dialog
     margin: UM.Theme.getSize("thick_margin").width
 
     property var changesModel: Cura.UserChangesModel { id: userChangesModel }
+
+    // Hack to make sure that when the data of our model changes the tablemodel is also updated
+    // If we directly set the rows (So without the clear being called) it doesn't seem to
+    // get updated correctly.
+    property var modelRows: userChangesModel.items
+    onModelRowsChanged:
+    {
+        tableModel.clear()
+        tableModel.rows = modelRows
+    }
 
     onVisibilityChanged:
     {
@@ -77,12 +86,11 @@ UM.Dialog
                 Cura.MachineManager.activeQualityDisplayNameMap["main"],
                 catalog.i18nc("@title:column", "Current changes")
             ]
-            model: TableModel
+            model: UM.TableModel
             {
-                TableModelColumn { display: "label" }
-                TableModelColumn { display: "original_value" }
-                TableModelColumn { display: "user_value" }
-                rows: userChangesModel.items
+                id: tableModel
+                headers: ["label", "original_value", "user_value"]
+                rows: modelRows
             }
             sectionRole: "category"
         }

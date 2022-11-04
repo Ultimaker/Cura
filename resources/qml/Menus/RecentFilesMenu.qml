@@ -29,7 +29,7 @@ Cura.Menu
             }
             onTriggered: CuraApplication.readLocalFile(modelData)
         }
-        onObjectAdded: menu.insertItem(index, object)
-        onObjectRemoved: menu.removeItem(object)
+        onObjectAdded: (index, object) => menu.insertItem(index, object)
+        onObjectRemoved: (object) => menu.removeItem(object)
     }
 }

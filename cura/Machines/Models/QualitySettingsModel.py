@@ -1,7 +1,7 @@
 # Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import pyqtProperty, pyqtSignal, Qt
+from PyQt6.QtCore import pyqtProperty, pyqtSignal, Qt
 from typing import Set
 
 import cura.CuraApplication
@@ -17,13 +17,13 @@ import os
 class QualitySettingsModel(ListModel):
     """This model is used to show details settings of the selected quality in the quality management page."""
 
-    KeyRole = Qt.UserRole + 1
-    LabelRole = Qt.UserRole + 2
-    UnitRole = Qt.UserRole + 3
-    ProfileValueRole = Qt.UserRole + 4
-    ProfileValueSourceRole = Qt.UserRole + 5
-    UserValueRole = Qt.UserRole + 6
-    CategoryRole = Qt.UserRole + 7
+    KeyRole = Qt.ItemDataRole.UserRole + 1
+    LabelRole = Qt.ItemDataRole.UserRole + 2
+    UnitRole = Qt.ItemDataRole.UserRole + 3
+    ProfileValueRole = Qt.ItemDataRole.UserRole + 4
+    ProfileValueSourceRole = Qt.ItemDataRole.UserRole + 5
+    UserValueRole = Qt.ItemDataRole.UserRole + 6
+    CategoryRole = Qt.ItemDataRole.UserRole + 7
 
     GLOBAL_STACK_POSITION = -1
 

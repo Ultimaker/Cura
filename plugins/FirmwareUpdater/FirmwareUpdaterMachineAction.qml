@@ -5,7 +5,7 @@ import QtQuick 2.2
 import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.1
-import QtQuick.Dialogs 1.2 // For filedialog
+import QtQuick.Dialogs // For filedialog
 
 import UM 1.5 as UM
 import Cura 1.0 as Cura
@@ -92,11 +92,10 @@ Cura.MachineAction
         id: customFirmwareDialog
         title: catalog.i18nc("@title:window", "Select custom firmware")
         nameFilters:  "Firmware image files (*.hex)"
-        selectExisting: true
         onAccepted:
         {
             updateProgressDialog.visible = true;
-            activeOutputDevice.updateFirmware(fileUrl);
+            activeOutputDevice.updateFirmware(selectedFile);
         }
     }
 
@@ -148,8 +147,6 @@ Cura.MachineAction
                             return catalog.i18nc("@label","Firmware update failed due to missing firmware.");
                     }
                 }
-
-                wrapMode: Text.Wrap
             }
 
             UM.ProgressBar

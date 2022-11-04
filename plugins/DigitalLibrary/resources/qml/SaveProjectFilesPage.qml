@@ -1,12 +1,11 @@
 //Copyright (C) 2022 Ultimaker B.V.
 //Cura is released under the terms of the LGPLv3 or higher.
 
-import Qt.labs.qmlmodels 1.0
-import QtQuick 2.10
+import QtQuick 2.15
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.3
 
-import UM 1.5 as UM
+import UM 1.6 as UM
 import Cura 1.6 as Cura
 
 import DigitalFactory 1.0 as DF
@@ -15,9 +14,14 @@ import DigitalFactory 1.0 as DF
 Item
 {
     id: base
+
+    property variant catalog: UM.I18nCatalog { name: "cura" }
+
     width: parent.width
     height: parent.height
+
     property var fileModel: manager.digitalFactoryFileModel
+    property var modelRows: manager.digitalFactoryFileModel.items
 
     signal savePressed()
     signal selectDifferentProjectPressed()
@@ -43,14 +47,13 @@ Item
         cardMouseAreaEnabled: false
     }
 
-    Label
+    UM.Label
     {
         id: fileNameLabel
         anchors.top: projectSummaryCard.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         text: "Cura project name"
         font: UM.Theme.getFont("medium")
-        color: UM.Theme.getColor("text")
     }
 
 
@@ -61,9 +64,9 @@ Item
         anchors.left: parent.left
         anchors.top: fileNameLabel.bottom
         anchors.topMargin: UM.Theme.getSize("thin_margin").height
-        validator: RegExpValidator
+        validator: RegularExpressionValidator
         {
-            regExp: /^[\w\-\. ()]{0,255}$/
+            regularExpression: /^[\w\-\. ()]{0,255}$/
         }
 
         text: PrintInformation.jobName
@@ -92,9 +95,8 @@ Item
         border.width: UM.Theme.getSize("default_lining").width
         border.color: UM.Theme.getColor("lining")
 
-        //We can't use Cura's TableView here, since in Cura >= 5.0 this uses QtQuick.TableView, while in Cura < 5.0 this uses QtControls1.TableView.
-        //So we have to define our own. Once support for 4.13 and earlier is dropped, we can switch to Cura.TableView.
-        Table
+        // This is not backwards compatible with Cura < 5.0 due to QT.labs being removed in PyQt6
+        Cura.TableView
         {
             id: filesTableView
             anchors.fill: parent
@@ -102,22 +104,20 @@ Item
 
             allowSelection: false
             columnHeaders: ["Name", "Uploaded by", "Uploaded at"]
-            model: TableModel
+            model: UM.TableModel
             {
-                TableModelColumn { display: "fileName" }
-                TableModelColumn { display: "username" }
-                TableModelColumn { display: "uploadedAt" }
+                id: tableModel
+                headers: ["fileName", "username", "uploadedAt"]
                 rows: manager.digitalFactoryFileModel.items
             }
         }
 
-        Label
+        UM.Label
         {
             id: emptyProjectLabel
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
             text: "Select a project to view its files."
-            font: UM.Theme.getFont("default")
             color: UM.Theme.getColor("setting_category_text")
 
             Connections
@@ -130,14 +130,13 @@ Item
             }
         }
 
-        Label
+        UM.Label
         {
             id: noFilesInProjectLabel
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
             visible: (manager.digitalFactoryFileModel.count == 0 && !emptyProjectLabel.visible && !retrievingFilesBusyIndicator.visible)
             text: "No supported files in this project."
-            font: UM.Theme.getFont("default")
             color: UM.Theme.getColor("setting_category_text")
         }
 
@@ -194,58 +193,40 @@ Item
         text: "Save"
         enabled: (asProjectCheckbox.checked || asSlicedCheckbox.checked) && dfFilenameTextfield.text.length >= 1 && dfFilenameTextfield.state !== 'invalid'
 
-        onClicked:
-        {
-            let saveAsFormats = [];
-            if (asProjectCheckbox.checked)
-            {
-                saveAsFormats.push("3mf");
-            }
-            if (asSlicedCheckbox.checked)
-            {
-                saveAsFormats.push("ufp");
-            }
-            manager.saveFileToSelectedProject(dfFilenameTextfield.text, saveAsFormats);
-        }
+        onClicked: manager.saveFileToSelectedProject(dfFilenameTextfield.text, asProjectComboBox.currentValue)
         busy: false
     }
 
-    Row
+    Cura.ComboBox
     {
+        id: asProjectComboBox
 
-        id: saveAsFormatRow
+        width: UM.Theme.getSize("combobox_wide").width
+        height: saveButton.height
         anchors.verticalCenter: saveButton.verticalCenter
         anchors.right: saveButton.left
         anchors.rightMargin: UM.Theme.getSize("thin_margin").height
-        width: childrenRect.width
-        spacing: UM.Theme.getSize("default_margin").width
 
-        UM.CheckBox
-        {
-            id: asProjectCheckbox
-            height: UM.Theme.getSize("checkbox").height
-            anchors.verticalCenter: parent.verticalCenter
-            checked: true
-            text: "Save Cura project"
-            font: UM.Theme.getFont("medium")
-        }
+        enabled: UM.Backend.state == UM.Backend.Done
+        currentIndex: UM.Backend.state == UM.Backend.Done ? 0 : 1
+        textRole: "text"
+        valueRole: "value"
 
-        UM.CheckBox
-        {
-            id: asSlicedCheckbox
-            height: UM.Theme.getSize("checkbox").height
-            anchors.verticalCenter: parent.verticalCenter
-
-            enabled: UM.Backend.state == UM.Backend.Done
-            checked: UM.Backend.state == UM.Backend.Done
-            text: "Save print file"
-            font: UM.Theme.getFont("medium")
-        }
+        model: [
+            { text: catalog.i18nc("@option", "Save Cura project and print file"), key: "3mf_ufp", value: ["3mf", "ufp"] },
+            { text: catalog.i18nc("@option", "Save Cura project"), key: "3mf", value: ["3mf"] },
+        ]
     }
 
     Component.onCompleted:
     {
         saveButton.clicked.connect(base.savePressed)
         selectDifferentProjectButton.clicked.connect(base.selectDifferentProjectPressed)
+    }
+
+    onModelRowsChanged:
+    {
+        tableModel.clear()
+        tableModel.rows = modelRows
     }
 }

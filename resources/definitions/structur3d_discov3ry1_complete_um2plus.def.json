@@ -28,9 +28,6 @@
 
     "overrides": {
         "machine_name": { "default_value": "Discov3ry Complete (Ultimaker 2+)" },
-        "speed_infill": {
-            "value": "speed_print"
-        },
         "infill_sparse_density": {
             "value": 100
         },

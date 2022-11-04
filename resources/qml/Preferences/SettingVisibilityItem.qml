@@ -74,7 +74,7 @@ Item
             }
         }
 
-        UM.RecolorImage
+        UM.ColorImage
         {
             anchors.centerIn: parent
             width: Math.round(check.height * 0.75) | 0

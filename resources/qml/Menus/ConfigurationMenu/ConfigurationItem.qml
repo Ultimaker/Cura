@@ -88,7 +88,7 @@ Button
 
                 visible: !configurationItem.isValidMaterial
 
-                UM.RecolorImage
+                UM.ColorImage
                 {
                     id: icon
                     anchors.verticalCenter: unknownMaterialMessage.verticalCenter
@@ -221,10 +221,7 @@ Button
         }
     }
 
-    Component.onCompleted:
-    {
-        configurationItem.checked = Cura.MachineManager.matchesConfiguration(configuration)
-    }
+    Component.onCompleted: configurationItem.checked = Cura.MachineManager.matchesConfiguration(configuration)
 
     onClicked:
     {

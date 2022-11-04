@@ -15,7 +15,13 @@ SettingItem
     contents: MouseArea
     {
         id: control
-        anchors.fill: parent
+        anchors
+        {
+            top: parent.top
+            bottom: parent.bottom
+            left: parent.left
+        }
+        width: UM.Theme.getSize("checkbox").width
         hoverEnabled: true
 
         property bool checked:
@@ -143,13 +149,12 @@ SettingItem
                 return UM.Theme.getColor("checkbox")
             }
 
-            UM.RecolorImage
+            UM.ColorImage
             {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenter: parent.horizontalCenter
                 height: UM.Theme.getSize("checkbox_mark").height
                 width: UM.Theme.getSize("checkbox_mark").width
-                sourceSize.height: width
                 color: !enabled ? UM.Theme.getColor("checkbox_mark_disabled") : UM.Theme.getColor("checkbox_mark");
                 source: UM.Theme.getIcon("Check", "low")
                 opacity: control.checked ? 1 : 0
