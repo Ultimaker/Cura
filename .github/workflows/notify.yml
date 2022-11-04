@@ -23,9 +23,12 @@ on:
                 required: true
                 type: string
 
-
+permissions: {}
 jobs:
     slackNotification:
+        permissions:
+            contents: read
+
         name: Slack Notification
 
         runs-on: ubuntu-latest
