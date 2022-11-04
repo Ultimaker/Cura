@@ -5,7 +5,7 @@
 # online cloud connected printers are represented within this ListModel. Additional information such as the number of
 # connected printers for each printer type is gathered.
 
-from typing import Optional
+from typing import Optional, List
 
 from PyQt6.QtCore import Qt, QTimer, QObject, pyqtSlot, pyqtProperty, pyqtSignal
 
@@ -14,7 +14,6 @@ from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.Interfaces import ContainerInterface
 from UM.i18n import i18nCatalog
 from UM.Util import parseBool
-from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 from cura.Settings.GlobalStack import GlobalStack
@@ -30,10 +29,11 @@ class MachineListModel(ListModel):
     IsAbstractMachineRole = Qt.ItemDataRole.UserRole + 7
     ComponentTypeRole = Qt.ItemDataRole.UserRole + 8
 
-    def __init__(self, parent: Optional[QObject] = None) -> None:
+    def __init__(self, parent: Optional[QObject] = None, machines: List[GlobalStack] = None, listenToChanges: bool = True) -> None:
         super().__init__(parent)
 
         self._show_cloud_printers = False
+        self._machines = machines
 
         self._catalog = i18nCatalog("cura")
 
@@ -51,11 +51,11 @@ class MachineListModel(ListModel):
         self._change_timer.setSingleShot(True)
         self._change_timer.timeout.connect(self._update)
 
-        # Listen to changes
-        CuraContainerRegistry.getInstance().containerAdded.connect(self._onContainerChanged)
-        CuraContainerRegistry.getInstance().containerMetaDataChanged.connect(self._onContainerChanged)
-        CuraContainerRegistry.getInstance().containerRemoved.connect(self._onContainerChanged)
-        self._updateDelayed()
+        if listenToChanges:
+            CuraContainerRegistry.getInstance().containerAdded.connect(self._onContainerChanged)
+            CuraContainerRegistry.getInstance().containerMetaDataChanged.connect(self._onContainerChanged)
+            CuraContainerRegistry.getInstance().containerRemoved.connect(self._onContainerChanged)
+            self._updateDelayed()
 
     showCloudPrintersChanged = pyqtSignal(bool)
 
@@ -79,16 +79,32 @@ class MachineListModel(ListModel):
     def _updateDelayed(self) -> None:
         self._change_timer.start()
 
+    def _getMachineStacks(self) -> List[ContainerStack]:
+        if self._machines is not None:
+            return self._machines
+        return CuraContainerRegistry.getInstance().findContainerStacks(type="machine")
+
+    def _getAbstractMachineStacks(self) -> List[ContainerStack]:
+        if self._machines is not None:
+            return list(filter(lambda machine: parseBool(machine.getMetaDataEntry("is_abstract_machine", False)), self._machines))
+        return CuraContainerRegistry.getInstance().findContainerStacks(is_abstract_machine = "True")
+
+    def update(self, machines: List[ContainerStack] = None) -> None:
+        if machines is not None:
+            self._machines = machines
+
+        self._update()
+
     def _update(self) -> None:
         self.clear()
 
         from cura.CuraApplication import CuraApplication
         machines_manager = CuraApplication.getInstance().getMachineManager()
 
-        other_machine_stacks = CuraContainerRegistry.getInstance().findContainerStacks(type="machine")
+        other_machine_stacks = self._getMachineStacks()
         other_machine_stacks.sort(key = lambda machine: machine.getName().upper())
 
-        abstract_machine_stacks = CuraContainerRegistry.getInstance().findContainerStacks(is_abstract_machine = "True")
+        abstract_machine_stacks = self._getAbstractMachineStacks()
         abstract_machine_stacks.sort(key = lambda machine: machine.getName().upper(), reverse = True)
         for abstract_machine in abstract_machine_stacks:
             definition_id = abstract_machine.definition.getId()
