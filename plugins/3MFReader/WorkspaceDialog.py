@@ -5,6 +5,7 @@ from PyQt6.QtCore import pyqtSignal, QObject, pyqtProperty, QCoreApplication, QU
 from PyQt6.QtGui import QDesktopServices
 from typing import List, Optional, Dict, cast
 
+from cura.Machines.Models.MachineListModel import MachineListModel
 from cura.Settings.GlobalStack import GlobalStack
 from UM.Application import Application
 from UM.FlameProfiler import pyqtSlot
@@ -13,8 +14,6 @@ from UM.Logger import Logger
 from UM.Message import Message
 from UM.PluginRegistry import PluginRegistry
 from UM.Settings.ContainerRegistry import ContainerRegistry
-
-from .UpdatableMachinesModel import UpdatableMachinesModel
 
 import os
 import threading
@@ -63,7 +62,7 @@ class WorkspaceDialog(QObject):
         self._extruders = []
         self._objects_on_plate = False
         self._is_printer_group = False
-        self._updatable_machines_model = UpdatableMachinesModel(self)
+        self._updatable_machines_model = MachineListModel(self, listenToChanges=False)
         self._missing_package_metadata: List[Dict[str, str]] = []
         self._plugin_registry: PluginRegistry = CuraApplication.getInstance().getPluginRegistry()
         self._install_missing_package_dialog: Optional[QObject] = None
@@ -161,8 +160,8 @@ class WorkspaceDialog(QObject):
             self.machineNameChanged.emit()
 
     @pyqtProperty(QObject, notify = updatableMachinesChanged)
-    def updatableMachinesModel(self) -> UpdatableMachinesModel:
-        return cast(UpdatableMachinesModel, self._updatable_machines_model)
+    def updatableMachinesModel(self) -> MachineListModel:
+        return cast(MachineListModel, self._updatable_machines_model)
 
     def setUpdatableMachines(self, updatable_machines: List[GlobalStack]) -> None:
         self._updatable_machines_model.update(updatable_machines)

@@ -107,50 +107,50 @@ UM.Dialog
                         comboboxTitle: catalog.i18nc("@action:label", "Open With")
                         comboboxTooltipText: catalog.i18nc("@info:tooltip", "How should the conflict in the machine be resolved?")
                         comboboxVisible: workspaceDialog.visible && manager.updatableMachinesModel.count > 1
-                        combobox: Cura.ComboBox
+                        combobox: Cura.MachineSelector
                         {
-                            id: machineResolveComboBox
-                            model: manager.updatableMachinesModel
-                            textRole: "displayName"
-                            visible: workspaceDialog.visible && model.count > 1
-                            currentIndex: machineVisibleChanged()
-
-                            onCurrentIndexChanged:
-                            {
-                                if (model.getItem(currentIndex).id == "new"
-                                    && model.getItem(currentIndex).type == "default_option")
-                                {
-                                    manager.setResolveStrategy("machine", "new")
-                                }
-                                else
-                                {
-                                    manager.setResolveStrategy("machine", "override")
-                                    manager.setMachineToOverride(model.getItem(currentIndex).id)
-                                }
-                            }
-
-                            function machineVisibleChanged()
-                            {
-                                if (!visible) {return}
-
-                                currentIndex = 0
-                                // If the project printer exists in Cura, set it as the default dropdown menu option.
-                                // No need to check object 0, which is the "Create new" option
-                                for (var i = 1; i < model.count; i++)
-                                {
-                                    if (model.getItem(i).name == manager.machineName)
-                                    {
-                                        currentIndex = i
-                                        break
-                                    }
-                                }
-                                // The project printer does not exist in Cura. If there is at least one printer of the same
-                                // type, select the first one, else set the index to "Create new"
-                                if (currentIndex == 0 && model.count > 1)
-                                {
-                                    currentIndex = 1
-                                }
-                            }
+                            id: machineSelector
+                            headerCornerSide: Cura.RoundedRectangle.Direction.All
+                            width: UM.Theme.getSize("machine_selector_widget").width
+                            height: parent.height
+                            anchors.centerIn: parent
+                            machineListModel: manager.updatableMachinesModel
+//                            onCurrentIndexChanged:
+//                            {
+//                                if (model.getItem(currentIndex).id == "new"
+//                                    && model.getItem(currentIndex).type == "default_option")
+//                                {
+//                                    manager.setResolveStrategy("machine", "new")
+//                                }
+//                                else
+//                                {
+//                                    manager.setResolveStrategy("machine", "override")
+//                                    manager.setMachineToOverride(model.getItem(currentIndex).id)
+//                                }
+//                            }
+//
+//                            function machineVisibleChanged()
+//                            {
+//                                if (!visible) {return}
+//
+//                                currentIndex = 0
+//                                // If the project printer exists in Cura, set it as the default dropdown menu option.
+//                                // No need to check object 0, which is the "Create new" option
+//                                for (var i = 1; i < model.count; i++)
+//                                {
+//                                    if (model.getItem(i).name == manager.machineName)
+//                                    {
+//                                        currentIndex = i
+//                                        break
+//                                    }
+//                                }
+//                                // The project printer does not exist in Cura. If there is at least one printer of the same
+//                                // type, select the first one, else set the index to "Create new"
+//                                if (currentIndex == 0 && model.count > 1)
+//                                {
+//                                    currentIndex = 1
+//                                }
+//                            }
                         }
                     }
 
