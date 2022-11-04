@@ -49,6 +49,7 @@ Control
 
             PrinterCard
             {
+                id: ultimakerPrinterCard
                 onClicked: goToUltimakerPrinter
                 text: catalog.i18nc("@button", "Ultimaker printer")
                 imageSource: UM.Theme.getImage("ultimaker_printer")
@@ -56,6 +57,7 @@ Control
 
             PrinterCard
             {
+                id: thrirdPartyPrinterCard
                 onClicked: goToThirdPartyPrinter
                 text: catalog.i18nc("@button", "Non Ultimaker printer")
                 imageSource: UM.Theme.getImage("third_party_printer")
@@ -64,6 +66,7 @@ Control
 
         Cura.TertiaryButton
         {
+            id: learnMoreButton
             Layout.alignment: Qt.AlignBottom
             text: catalog.i18nc("@button", "Learn more about adding printers to Cura")
             iconSource: UM.Theme.getIcon("LinkExternal")

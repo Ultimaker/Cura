@@ -80,6 +80,7 @@ Control
 
                 Cura.TertiaryButton
                 {
+                    id: learnMoreButton
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignTop
                     text: catalog.i18nc("@button", "Learn more")
@@ -101,6 +102,7 @@ Control
 
                 Cura.SecondaryButton
                 {
+                    id: addLocalPrinterButton
                     Layout.alignment: Qt.AlignLeft
                     text: catalog.i18nc("@button", "Add local printer")
                     onClicked: goToThirdPartyPrinter()
@@ -108,6 +110,7 @@ Control
 
                 Cura.PrimaryButton
                 {
+                    id: signInButton
                     Layout.alignment: Qt.AlignRight
                     text: catalog.i18nc("@button", "Sign in to Digital Factory")
                     onClicked: function()
