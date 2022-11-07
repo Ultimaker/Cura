@@ -4,7 +4,7 @@
     "inherits": "creality_base",
     "metadata": {
         "quality_definition": "creality_base",
-        "visible": true
+        "visible": true,
         "author": "Victor (Yu Chieh) Lin"
     },
     "overrides": {
