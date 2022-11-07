@@ -116,7 +116,7 @@ jobs:
                 run: brew install autoconf automake ninja create-dmg
 
             -   name: Install Linux system requirements
-                if: ${{ runner.os == 'Linux' }}
+                if: ${{ startsWith(inputs.runs_on, 'ubuntu-22.04') }}
                 run: |
                     sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
                     sudo apt update
@@ -127,11 +127,17 @@ jobs:
                     echo "APPIMAGETOOL_LOCATION=$GITHUB_WORKSPACE/appimagetool" >> $GITHUB_ENV
 
             -   name: Install GCC-12 on ubuntu-22.04
-                if: ${{ matrix.os == 'ubuntu-22.04' }}
+                if: ${{ startsWith(inputs.runs_on, 'ubuntu-22.04') }}
                 run: |
                     sudo apt install g++-12 gcc-12 -y
                     sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 12
                     sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 12
+
+            -   name: Use GCC-10 on ubuntu-20.04
+                if: ${{ startsWith(inputs.runs_on, 'ubuntu-20.04') }}
+                run: |
+                    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 10
+                    sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 10
 
             -   name: Create the default Conan profile
                 run:  conan profile new default --detect
