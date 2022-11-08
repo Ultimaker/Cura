@@ -1,3 +1,9 @@
+[5.2.1]
+
+* Bug fixes:
+- Restored Italian translations (was French)
+- Restored simplified Chinese translations (was Czech)
+
 [5.2]
 
 * Abstract Cloud Printer Type
