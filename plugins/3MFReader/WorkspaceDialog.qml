@@ -70,240 +70,235 @@ UM.Dialog
             Column
             {
                 id: contentColumn
-                width: parent.width - scrollbar.width
+                width: parent.width - scrollbar.width - UM.Theme.getSize("default_margin").width
                 height: childrenRect.height
 
-                Column
+                spacing: UM.Theme.getSize("default_margin").height
+                leftPadding: UM.Theme.getSize("default_margin").width
+                rightPadding: UM.Theme.getSize("default_margin").width
+
+                WorkspaceSection
                 {
-                    width: parent.width - UM.Theme.getSize("default_margin").width
-                    height: childrenRect.height
-                    spacing: UM.Theme.getSize("default_margin").height
-                    leftPadding: UM.Theme.getSize("default_margin").width
-                    rightPadding: UM.Theme.getSize("default_margin").width
-
-                    WorkspaceSection
+                    id: printerSection
+                    title: catalog.i18nc("@action:label", "Printer settings")
+                    iconSource: UM.Theme.getIcon("Printer")
+                    content: Column
                     {
-                        id: printerSection
-                        title: catalog.i18nc("@action:label", "Printer settings")
-                        iconSource: UM.Theme.getIcon("Printer")
-                        content: Column
+                        spacing: UM.Theme.getSize("default_margin").height
+                        leftPadding: UM.Theme.getSize("medium_button_icon").width + UM.Theme.getSize("default_margin").width
+
+                        WorkspaceRow
                         {
-                            spacing: UM.Theme.getSize("default_margin").height
-                            leftPadding: UM.Theme.getSize("medium_button_icon").width + UM.Theme.getSize("default_margin").width
-
-                            WorkspaceRow
-                            {
-                                leftLabelText: catalog.i18nc("@action:label", "Type")
-                                rightLabelText: manager.machineType
-                            }
-
-                            WorkspaceRow
-                            {
-                                leftLabelText: catalog.i18nc("@action:label", manager.isPrinterGroup ? "Printer Group" : "Printer Name")
-                                rightLabelText: manager.machineName
-                            }
+                            leftLabelText: catalog.i18nc("@action:label", "Type")
+                            rightLabelText: manager.machineType
                         }
 
-                        comboboxTitle: catalog.i18nc("@action:label", "Open With")
-                        comboboxTooltipText: catalog.i18nc("@info:tooltip", "How should the conflict in the machine be resolved?")
-                        comboboxVisible: workspaceDialog.visible && manager.updatableMachinesModel.count > 1
-                        combobox: Cura.MachineSelector
+                        WorkspaceRow
                         {
-                            id: machineSelector
-                            headerCornerSide: Cura.RoundedRectangle.Direction.All
-                            width: parent.width
-                            height: parent.height
-                            machineListModel: manager.updatableMachinesModel
-                            machineName: manager.machineName
-
-                            isNetworkPrinter: false
-                            isConnectedCloudPrinter: false
-                            isCloudRegistered: false
-                            isGroup: false
-
-                            minDropDownWidth: machineSelector.width
-
-                            buttons: [
-                                Cura.SecondaryButton
-                                {
-                                    id: createNewPrinter
-                                    text: catalog.i18nc("@button", "Create new")
-                                    fixedWidthMode: true
-                                    width: parent.width - leftPadding * 1.5
-                                    onClicked:
-                                    {
-                                        machineSelector.machineName = catalog.i18nc("@button", "Create new")
-                                        machineSelector.isNetworkPrinter = false
-                                        machineSelector.isConnectedCloudPrinter = false
-                                        machineSelector.isCloudRegistered = false
-                                        machineSelector.isGroup = false
-
-                                        toggleContent()
-                                        manager.setResolveStrategy("machine", "new")
-                                    }
-                                }
-                            ]
-
-                            onSelectPrinter: function(machine)
-                            {
-                                toggleContent();
-                                manager.setResolveStrategy("machine", "override")
-                                manager.setMachineToOverride(machine.id)
-                                machineSelector.machineName = machine.name
-                            }
+                            leftLabelText: catalog.i18nc("@action:label", manager.isPrinterGroup ? "Printer Group" : "Printer Name")
+                            rightLabelText: manager.machineName
                         }
                     }
 
-                    WorkspaceSection
+                    comboboxTitle: catalog.i18nc("@action:label", "Open With")
+                    comboboxTooltipText: catalog.i18nc("@info:tooltip", "How should the conflict in the machine be resolved?")
+                    comboboxVisible: workspaceDialog.visible && manager.updatableMachinesModel.count > 1
+                    combobox: Cura.MachineSelector
                     {
-                        id: profileSection
-                        title: catalog.i18nc("@action:label", "Profile settings")
-                        iconSource: UM.Theme.getIcon("Sliders")
-                        content: Column
-                        {
-                            id: profileSettingsValuesTable
-                            spacing: UM.Theme.getSize("default_margin").height
-                            leftPadding: UM.Theme.getSize("medium_button_icon").width + UM.Theme.getSize("default_margin").width
+                        id: machineSelector
+                        headerCornerSide: Cura.RoundedRectangle.Direction.All
+                        width: parent.width
+                        height: parent.height
+                        machineListModel: manager.updatableMachinesModel
+                        machineName: manager.machineName
 
-                            WorkspaceRow
+                        isNetworkPrinter: false
+                        isConnectedCloudPrinter: false
+                        isCloudRegistered: false
+                        isGroup: false
+
+                        minDropDownWidth: machineSelector.width
+
+                        buttons: [
+                            Cura.SecondaryButton
+                            {
+                                id: createNewPrinter
+                                text: catalog.i18nc("@button", "Create new")
+                                fixedWidthMode: true
+                                width: parent.width - leftPadding * 1.5
+                                onClicked:
+                                {
+                                    machineSelector.machineName = catalog.i18nc("@button", "Create new")
+                                    machineSelector.isNetworkPrinter = false
+                                    machineSelector.isConnectedCloudPrinter = false
+                                    machineSelector.isCloudRegistered = false
+                                    machineSelector.isGroup = false
+
+                                    toggleContent()
+                                    manager.setResolveStrategy("machine", "new")
+                                }
+                            }
+                        ]
+
+                        onSelectPrinter: function(machine)
+                        {
+                            toggleContent();
+                            manager.setResolveStrategy("machine", "override")
+                            manager.setMachineToOverride(machine.id)
+                            machineSelector.machineName = machine.name
+                        }
+                    }
+                }
+
+                WorkspaceSection
+                {
+                    id: profileSection
+                    title: catalog.i18nc("@action:label", "Profile settings")
+                    iconSource: UM.Theme.getIcon("Sliders")
+                    content: Column
+                    {
+                        id: profileSettingsValuesTable
+                        spacing: UM.Theme.getSize("default_margin").height
+                        leftPadding: UM.Theme.getSize("medium_button_icon").width + UM.Theme.getSize("default_margin").width
+
+                        WorkspaceRow
+                        {
+                            leftLabelText: catalog.i18nc("@action:label", "Name")
+                            rightLabelText: manager.qualityName
+                        }
+
+                        WorkspaceRow
+                        {
+                            leftLabelText: catalog.i18nc("@action:label", "Intent")
+                            rightLabelText: manager.intentName
+                        }
+
+                        WorkspaceRow
+                        {
+                            leftLabelText: catalog.i18nc("@action:label", "Not in profile")
+                            rightLabelText: catalog.i18ncp("@action:label", "%1 override", "%1 overrides", manager.numUserSettings).arg(manager.numUserSettings)
+                            visible: manager.numUserSettings != 0
+                        }
+
+                        WorkspaceRow
+                        {
+                            leftLabelText: catalog.i18nc("@action:label", "Derivative from")
+                            rightLabelText: catalog.i18ncp("@action:label", "%1, %2 override", "%1, %2 overrides", manager.numSettingsOverridenByQualityChanges).arg(manager.qualityType).arg(manager.numSettingsOverridenByQualityChanges)
+                            visible: manager.numSettingsOverridenByQualityChanges != 0
+                        }
+                    }
+
+                    comboboxTooltipText: catalog.i18nc("@info:tooltip", "How should the conflict in the profile be resolved?")
+                    comboboxVisible: manager.qualityChangesConflict
+                    combobox: Cura.ComboBox
+                    {
+                        id: qualityChangesResolveComboBox
+                        model: resolveStrategiesModel
+                        textRole: "label"
+                        visible: manager.qualityChangesConflict
+
+                        // This is a hack. This will trigger onCurrentIndexChanged and set the index when this component in loaded
+                        currentIndex:
+                        {
+                            currentIndex = 0
+                        }
+
+                        onCurrentIndexChanged:
+                        {
+                            manager.setResolveStrategy("quality_changes", resolveStrategiesModel.get(currentIndex).key)
+                        }
+                    }
+                }
+
+                WorkspaceSection
+                {
+                    id: materialSection
+                    title: catalog.i18nc("@action:label", "Material settings")
+                    iconSource: UM.Theme.getIcon("Spool")
+                    content: Column
+                    {
+                        spacing: UM.Theme.getSize("default_margin").height
+                        leftPadding: UM.Theme.getSize("medium_button_icon").width + UM.Theme.getSize("default_margin").width
+
+                        Repeater
+                        {
+                            model: manager.materialLabels
+                            delegate: WorkspaceRow
                             {
                                 leftLabelText: catalog.i18nc("@action:label", "Name")
-                                rightLabelText: manager.qualityName
-                            }
-
-                            WorkspaceRow
-                            {
-                                leftLabelText: catalog.i18nc("@action:label", "Intent")
-                                rightLabelText: manager.intentName
-                            }
-
-                            WorkspaceRow
-                            {
-                                leftLabelText: catalog.i18nc("@action:label", "Not in profile")
-                                rightLabelText: catalog.i18ncp("@action:label", "%1 override", "%1 overrides", manager.numUserSettings).arg(manager.numUserSettings)
-                                visible: manager.numUserSettings != 0
-                            }
-
-                            WorkspaceRow
-                            {
-                                leftLabelText: catalog.i18nc("@action:label", "Derivative from")
-                                rightLabelText: catalog.i18ncp("@action:label", "%1, %2 override", "%1, %2 overrides", manager.numSettingsOverridenByQualityChanges).arg(manager.qualityType).arg(manager.numSettingsOverridenByQualityChanges)
-                                visible: manager.numSettingsOverridenByQualityChanges != 0
-                            }
-                        }
-
-                        comboboxTooltipText: catalog.i18nc("@info:tooltip", "How should the conflict in the profile be resolved?")
-                        comboboxVisible: manager.qualityChangesConflict
-                        combobox: Cura.ComboBox
-                        {
-                            id: qualityChangesResolveComboBox
-                            model: resolveStrategiesModel
-                            textRole: "label"
-                            visible: manager.qualityChangesConflict
-
-                            // This is a hack. This will trigger onCurrentIndexChanged and set the index when this component in loaded
-                            currentIndex:
-                            {
-                                currentIndex = 0
-                            }
-
-                            onCurrentIndexChanged:
-                            {
-                                manager.setResolveStrategy("quality_changes", resolveStrategiesModel.get(currentIndex).key)
+                                rightLabelText: modelData
                             }
                         }
                     }
 
-                    WorkspaceSection
-                    {
-                        id: materialSection
-                        title: catalog.i18nc("@action:label", "Material settings")
-                        iconSource: UM.Theme.getIcon("Spool")
-                        content: Column
-                        {
-                            spacing: UM.Theme.getSize("default_margin").height
-                            leftPadding: UM.Theme.getSize("medium_button_icon").width + UM.Theme.getSize("default_margin").width
+                    comboboxTooltipText: catalog.i18nc("@info:tooltip", "How should the conflict in the material be resolved?")
+                    comboboxVisible: manager.materialConflict
 
-                            Repeater
-                            {
-                                model: manager.materialLabels
-                                delegate: WorkspaceRow
-                                {
-                                    leftLabelText: catalog.i18nc("@action:label", "Name")
-                                    rightLabelText: modelData
-                                }
-                            }
+                    combobox: Cura.ComboBox
+                    {
+                        id: materialResolveComboBox
+                        model: resolveStrategiesModel
+                        textRole: "label"
+                        visible: manager.materialConflict
+
+                        // This is a hack. This will trigger onCurrentIndexChanged and set the index when this component in loaded
+                        currentIndex:
+                        {
+                            currentIndex = 0
                         }
 
-                        comboboxTooltipText: catalog.i18nc("@info:tooltip", "How should the conflict in the material be resolved?")
-                        comboboxVisible: manager.materialConflict
-
-                        combobox: Cura.ComboBox
+                        onCurrentIndexChanged:
                         {
-                            id: materialResolveComboBox
-                            model: resolveStrategiesModel
-                            textRole: "label"
-                            visible: manager.materialConflict
-
-                            // This is a hack. This will trigger onCurrentIndexChanged and set the index when this component in loaded
-                            currentIndex:
-                            {
-                                currentIndex = 0
-                            }
-
-                            onCurrentIndexChanged:
-                            {
-                                manager.setResolveStrategy("material", resolveStrategiesModel.get(currentIndex).key)
-                            }
+                            manager.setResolveStrategy("material", resolveStrategiesModel.get(currentIndex).key)
                         }
                     }
+                }
 
-                    WorkspaceSection
+                WorkspaceSection
+                {
+                    id: visibilitySection
+                    title: catalog.i18nc("@action:label", "Setting visibility")
+                    iconSource: UM.Theme.getIcon("Eye")
+                    content: Column
                     {
-                        id: visibilitySection
-                        title: catalog.i18nc("@action:label", "Setting visibility")
-                        iconSource: UM.Theme.getIcon("Eye")
-                        content: Column
+                        spacing: UM.Theme.getSize("default_margin").height
+                        leftPadding: UM.Theme.getSize("medium_button_icon").width + UM.Theme.getSize("default_margin").width
+                        bottomPadding: UM.Theme.getSize("narrow_margin").height
+
+                        WorkspaceRow
                         {
-                            spacing: UM.Theme.getSize("default_margin").height
-                            leftPadding: UM.Theme.getSize("medium_button_icon").width + UM.Theme.getSize("default_margin").width
-                            bottomPadding: UM.Theme.getSize("narrow_margin").height
+                            leftLabelText: catalog.i18nc("@action:label", "Mode")
+                            rightLabelText: manager.activeMode
+                        }
 
-                            WorkspaceRow
-                            {
-                                leftLabelText: catalog.i18nc("@action:label", "Mode")
-                                rightLabelText: manager.activeMode
-                            }
-
-                            WorkspaceRow
-                            {
-                                leftLabelText: catalog.i18nc("@action:label", "%1 out of %2" ).arg(manager.numVisibleSettings).arg(manager.totalNumberOfSettings)
-                                rightLabelText: manager.activeMode
-                                visible: manager.hasVisibleSettingsField
-                            }
+                        WorkspaceRow
+                        {
+                            leftLabelText: catalog.i18nc("@action:label", "%1 out of %2" ).arg(manager.numVisibleSettings).arg(manager.totalNumberOfSettings)
+                            rightLabelText: manager.activeMode
+                            visible: manager.hasVisibleSettingsField
                         }
                     }
+                }
 
-                    Row
+                Row
+                {
+                    id: clearBuildPlateWarning
+                    width: parent.width
+                    height: childrenRect.height
+                    spacing: UM.Theme.getSize("default_margin").width
+                    visible: manager.hasObjectsOnPlate
+
+                    UM.ColorImage
                     {
-                        id: clearBuildPlateWarning
-                        width: parent.width
-                        height: childrenRect.height
-                        spacing: UM.Theme.getSize("default_margin").width
-                        visible: manager.hasObjectsOnPlate
-
-                        UM.ColorImage
-                        {
-                            width: warningLabel.height
-                            height: width
-                            source: UM.Theme.getIcon("Information")
-                            color: UM.Theme.getColor("text")
-                        }
-                        UM.Label
-                        {
-                            id: warningLabel
-                            text: catalog.i18nc("@action:warning", "Loading a project will clear all models on the build plate.")
-                        }
+                        width: warningLabel.height
+                        height: width
+                        source: UM.Theme.getIcon("Information")
+                        color: UM.Theme.getColor("text")
+                    }
+                    UM.Label
+                    {
+                        id: warningLabel
+                        text: catalog.i18nc("@action:warning", "Loading a project will clear all models on the build plate.")
                     }
                 }
             }
