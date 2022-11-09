@@ -29,11 +29,11 @@ class MachineListModel(ListModel):
     IsAbstractMachineRole = Qt.ItemDataRole.UserRole + 7
     ComponentTypeRole = Qt.ItemDataRole.UserRole + 8
 
-    def __init__(self, parent: Optional[QObject] = None, machines: List[GlobalStack] = None, listenToChanges: bool = True) -> None:
+    def __init__(self, parent: Optional[QObject] = None, machines_filter: Optional[List[GlobalStack]] = None) -> None:
         super().__init__(parent)
 
         self._show_cloud_printers = False
-        self._machines = machines
+        self._machines_filter = machines_filter
 
         self._catalog = i18nCatalog("cura")
 
@@ -51,11 +51,10 @@ class MachineListModel(ListModel):
         self._change_timer.setSingleShot(True)
         self._change_timer.timeout.connect(self._update)
 
-        if listenToChanges:
-            CuraContainerRegistry.getInstance().containerAdded.connect(self._onContainerChanged)
-            CuraContainerRegistry.getInstance().containerMetaDataChanged.connect(self._onContainerChanged)
-            CuraContainerRegistry.getInstance().containerRemoved.connect(self._onContainerChanged)
-            self._updateDelayed()
+        CuraContainerRegistry.getInstance().containerAdded.connect(self._onContainerChanged)
+        CuraContainerRegistry.getInstance().containerMetaDataChanged.connect(self._onContainerChanged)
+        CuraContainerRegistry.getInstance().containerRemoved.connect(self._onContainerChanged)
+        self._updateDelayed()
 
     showCloudPrintersChanged = pyqtSignal(bool)
 
@@ -80,19 +79,13 @@ class MachineListModel(ListModel):
         self._change_timer.start()
 
     def _getMachineStacks(self) -> List[ContainerStack]:
-        if self._machines is not None:
-            return self._machines
         return CuraContainerRegistry.getInstance().findContainerStacks(type="machine")
 
     def _getAbstractMachineStacks(self) -> List[ContainerStack]:
-        if self._machines is not None:
-            return list(filter(lambda machine: parseBool(machine.getMetaDataEntry("is_abstract_machine", False)), self._machines))
         return CuraContainerRegistry.getInstance().findContainerStacks(is_abstract_machine = "True")
 
-    def update(self, machines: List[ContainerStack] = None) -> None:
-        if machines is not None:
-            self._machines = machines
-
+    def set_machines_filter(self, machines_filter: Optional[List[GlobalStack]]) -> None:
+        self._machines_filter = machines_filter
         self._update()
 
     def _update(self) -> None:
@@ -106,6 +99,12 @@ class MachineListModel(ListModel):
 
         abstract_machine_stacks = self._getAbstractMachineStacks()
         abstract_machine_stacks.sort(key = lambda machine: machine.getName().upper(), reverse = True)
+
+        if self._machines_filter is not None:
+            filter_ids = [machine_filter.id for machine_filter in self._machines_filter]
+            other_machine_stacks = [machine for machine in other_machine_stacks if machine.id in filter_ids]
+            abstract_machine_stacks = [machine for machine in abstract_machine_stacks if machine.id in filter_ids]
+
         for abstract_machine in abstract_machine_stacks:
             definition_id = abstract_machine.definition.getId()
             online_machine_stacks = machines_manager.getMachinesWithDefinition(definition_id, online_only = True)

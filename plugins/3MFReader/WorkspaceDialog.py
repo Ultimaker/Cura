@@ -62,7 +62,7 @@ class WorkspaceDialog(QObject):
         self._extruders = []
         self._objects_on_plate = False
         self._is_printer_group = False
-        self._updatable_machines_model = MachineListModel(self, listenToChanges=False)
+        self._updatable_machines_model = MachineListModel(self)
         self._missing_package_metadata: List[Dict[str, str]] = []
         self._plugin_registry: PluginRegistry = CuraApplication.getInstance().getPluginRegistry()
         self._install_missing_package_dialog: Optional[QObject] = None
@@ -164,7 +164,7 @@ class WorkspaceDialog(QObject):
         return cast(MachineListModel, self._updatable_machines_model)
 
     def setUpdatableMachines(self, updatable_machines: List[GlobalStack]) -> None:
-        self._updatable_machines_model.update(updatable_machines)
+        self._updatable_machines_model.set_machines_filter(updatable_machines)
         self.updatableMachinesChanged.emit()
 
     @pyqtProperty(str, notify=qualityTypeChanged)
