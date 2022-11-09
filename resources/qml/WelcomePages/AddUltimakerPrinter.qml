@@ -66,9 +66,9 @@ Control
                     wrapMode: Text.WordWrap
                     text: {
                         const steps = [
-                            catalog.i18nc("@info", "Sign in into Ultimaker Digilal Factory"),
-                            catalog.i18nc("@info", "Follow the procedure to add a new printer"),
-                            catalog.i18nc("@info", "Your new printer will automatically appear in Cura"),
+                            catalog.i18nc("@info", "1. Sign in into Ultimaker Digilal Factory"),
+                            catalog.i18nc("@info", "2. Follow the procedure to add a new printer"),
+                            catalog.i18nc("@info", "3. Your new printer will automatically appear in Cura"),
                         ];
                         return steps.join("<br />");
                     }
