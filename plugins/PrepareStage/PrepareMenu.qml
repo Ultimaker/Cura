@@ -56,6 +56,13 @@ Item
                 Layout.fillWidth: true
                 Layout.fillHeight: true
 
+                machineManager: Cura.MachineManager
+                onSelectPrinter: function(machine)
+                {
+                    toggleContent();
+                    Cura.MachineManager.setActiveMachine(machine.id);
+                }
+
                 machineListModel: Cura.MachineListModel {}
 
                 buttons: [

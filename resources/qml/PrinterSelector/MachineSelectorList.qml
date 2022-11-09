@@ -12,6 +12,7 @@ ListView
     id: listView
     section.property: "isOnline"
     property real contentHeight: childrenRect.height
+    property var onSelectPrinter
 
     ScrollBar.vertical: UM.ScrollBar
     {
@@ -42,8 +43,7 @@ ListView
                     listView.model.setShowCloudPrinters(true);
                     break;
                 case "MACHINE":
-                    toggleContent()
-                    Cura.MachineManager.setActiveMachine(model.id)
+                    if (typeof onSelectPrinter === "function") onSelectPrinter(model);
                     break;
                 default:
             }

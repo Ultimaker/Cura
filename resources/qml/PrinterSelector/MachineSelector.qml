@@ -11,12 +11,25 @@ Cura.ExpandablePopup
 {
     id: machineSelector
 
-    property bool isNetworkPrinter: Cura.MachineManager.activeMachineHasNetworkConnection
-    property bool isConnectedCloudPrinter: Cura.MachineManager.activeMachineHasCloudConnection
-    property bool isCloudRegistered: Cura.MachineManager.activeMachineHasCloudRegistration
-    property bool isGroup: Cura.MachineManager.activeMachineIsGroup
+    property Cura.MachineManager machineManager
+    property bool isNetworkPrinter: machineManager.activeMachineHasNetworkConnection
+    property bool isConnectedCloudPrinter: machineManager.activeMachineHasCloudConnection
+    property bool isCloudRegistered: machineManager.activeMachineHasCloudRegistration
+    property bool isGroup: machineManager.activeMachineIsGroup
+    property string machineName: {
+        if (isNetworkPrinter && machineManager.activeMachineNetworkGroupName != "")
+        {
+            return machineManager.activeMachineNetworkGroupName
+        }
+        if (machineManager.activeMachine != null)
+        {
+            return machineManager.activeMachine.name
+        }
+        return ""
+    }
 
     property alias machineListModel: machineSelectorList.model
+    property alias onSelectPrinter: machineSelectorList.onSelectPrinter
 
     property list<Item> buttons
 
@@ -46,7 +59,7 @@ Cura.ExpandablePopup
             {
                 if (Cura.API.account.isLoggedIn)
                 {
-                    if (Cura.MachineManager.activeMachineIsLinkedToCurrentAccount)
+                    if (machineManager.activeMachineIsLinkedToCurrentAccount)
                     {
                         return catalog.i18nc("@status", "The cloud printer is offline. Please check if the printer is turned on and connected to the internet.")
                     }
@@ -59,7 +72,8 @@ Cura.ExpandablePopup
                 {
                     return catalog.i18nc("@status", "The cloud connection is currently unavailable. Please sign in to connect to the cloud printer.")
                 }
-            } else
+            }
+            else
             {
                 return catalog.i18nc("@status", "The cloud connection is currently unavailable. Please check your internet connection.")
             }
@@ -81,18 +95,8 @@ Cura.ExpandablePopup
 
     headerItem: Cura.IconWithText
     {
-        text:
-        {
-            if (isNetworkPrinter && Cura.MachineManager.activeMachineNetworkGroupName != "")
-            {
-                return Cura.MachineManager.activeMachineNetworkGroupName
-            }
-            if(Cura.MachineManager.activeMachine != null)
-            {
-                return Cura.MachineManager.activeMachine.name
-            }
-            return ""
-        }
+        text: machineName
+
         source:
         {
             if (isGroup)
