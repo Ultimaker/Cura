@@ -83,6 +83,7 @@ Control
                     id: learnMoreButton
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignTop
+                    leftPadding: 0
                     text: catalog.i18nc("@button", "Learn more")
                     iconSource: UM.Theme.getIcon("LinkExternal")
                     isIconOnRightSide: true
