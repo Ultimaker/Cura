@@ -78,7 +78,7 @@ Item
                         width: Math.round(parent.width / 2 - leftPadding * 1.5)
                         onClicked:
                         {
-                            toggleContent()
+                            machineSelection.toggleContent()
                             Cura.Actions.addMachine.trigger()
                         }
                     },
@@ -94,7 +94,7 @@ Item
                         width: parent.width / 2 - rightPadding * 1.5
                         onClicked:
                         {
-                            toggleContent()
+                            machineSelection.toggleContent()
                             Cura.Actions.configureMachines.trigger()
                         }
                     }
