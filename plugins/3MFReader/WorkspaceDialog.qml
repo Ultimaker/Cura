@@ -111,9 +111,8 @@ UM.Dialog
                         {
                             id: machineSelector
                             headerCornerSide: Cura.RoundedRectangle.Direction.All
-                            width: UM.Theme.getSize("machine_selector_widget").width
+                            width: parent.width
                             height: parent.height
-                            anchors.centerIn: parent
                             machineListModel: manager.updatableMachinesModel
                             machineName: manager.machineName
 
@@ -121,6 +120,8 @@ UM.Dialog
                             isConnectedCloudPrinter: false
                             isCloudRegistered: false
                             isGroup: false
+
+                            minDropDownWidth: machineSelector.width
 
                             buttons: [
                                 Cura.SecondaryButton

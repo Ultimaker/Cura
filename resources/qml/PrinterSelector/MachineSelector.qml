@@ -198,11 +198,14 @@ Cura.ExpandablePopup
         }
     }
 
+    property int minDropDownWidth: UM.Theme.getSize("machine_selector_widget_content").width
+    property int maxDropDownHeight: UM.Theme.getSize("machine_selector_widget_content").height
+
     contentItem: Item
     {
         id: popup
-        implicitWidth: Math.max(machineSelector.width, UM.Theme.getSize("machine_selector_widget_content").width)
-        implicitHeight: Math.min(machineSelectorList.contentHeight + separator.height + buttonRow.height, UM.Theme.getSize("machine_selector_widget_content").height) //Maximum height is the theme entry.
+        implicitWidth: Math.max(machineSelector.width, minDropDownWidth)
+        implicitHeight: Math.min(machineSelectorList.contentHeight + separator.height + buttonRow.height, maxDropDownHeight) //Maximum height is the theme entry.
         MachineSelectorList
         {
             id: machineSelectorList
