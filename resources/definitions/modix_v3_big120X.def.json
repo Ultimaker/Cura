@@ -1,0 +1,15 @@
+{
+    "name": "Modix V3 BIG-120X",
+    "version": 2,
+    "inherits": "modix_v3_base",
+    "overrides": {
+        "machine_name": { "default_value": "Modix V3 BIG-120X" },
+        "machine_width": { "default_value": 1200 },
+        "machine_depth": { "default_value": 600 },
+        "machine_height": { "default_value": 640 }
+
+    },
+    "metadata": {
+        "visible": true
+    }
+}
