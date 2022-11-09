@@ -13,7 +13,6 @@ Control
     id: root
     property alias text: link_text.text
     property alias imageSource: image.source
-    property alias borderHeight: background.height
     property var onClicked
 
     states:
@@ -50,7 +49,6 @@ Control
     background: Rectangle
     {
         id: background
-        anchors.bottom: column.bottom
         height: parent.height
         border.color: UM.Theme.getColor("primary_button")
         color: "transparent"

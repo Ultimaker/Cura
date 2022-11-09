@@ -51,7 +51,6 @@ Control
             {
                 id: ultimakerPrinterCard
                 Layout.alignment: Qt.AlignBottom
-                borderHeight: thrirdPartyPrinterCard.height
                 onClicked: goToUltimakerPrinter
                 text: catalog.i18nc("@button", "Ultimaker printer")
                 imageSource: UM.Theme.getImage("ultimaker_printer")
