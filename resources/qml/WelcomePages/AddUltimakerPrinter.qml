@@ -35,7 +35,7 @@ Control
 
         RowLayout
         {
-            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignHCenter
 
             Image
             {
@@ -47,6 +47,7 @@ Control
             ColumnLayout
             {
                 Layout.fillHeight: true
+                Layout.fillWidth: false
                 Layout.alignment: Qt.AlignVCenter
                 spacing: UM.Theme.getSize("default_margin").height
 
