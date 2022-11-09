@@ -75,7 +75,7 @@ Item
                         // The maximum width of the button is half of the total space, minus the padding of the parent, the left
                         // padding of the component and half the spacing because of the space between buttons.
                         fixedWidthMode: true
-                        width: parent.width / 2 - leftPadding * 1.5
+                        width: Math.round(parent.width / 2 - leftPadding * 1.5)
                         onClicked:
                         {
                             toggleContent()
