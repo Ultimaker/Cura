@@ -50,6 +50,7 @@ Control
             PrinterCard
             {
                 id: ultimakerPrinterCard
+                Layout.alignment: Qt.AlignBottom
                 onClicked: goToUltimakerPrinter
                 text: catalog.i18nc("@button", "Ultimaker printer")
                 imageSource: UM.Theme.getImage("ultimaker_printer")
@@ -58,6 +59,7 @@ Control
             PrinterCard
             {
                 id: thrirdPartyPrinterCard
+                Layout.alignment: Qt.AlignBottom
                 onClicked: goToThirdPartyPrinter
                 text: catalog.i18nc("@button", "Non Ultimaker printer")
                 imageSource: UM.Theme.getImage("third_party_printer")

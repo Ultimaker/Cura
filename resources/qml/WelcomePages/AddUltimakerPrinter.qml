@@ -22,10 +22,6 @@ Control
         {
             base.goToPage("add_cloud_printers")
         }
-        else
-        {
-            goToThirdPartyPrinter()
-        }
     }
 
     contentItem: ColumnLayout
@@ -39,7 +35,7 @@ Control
 
         RowLayout
         {
-            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignHCenter
 
             Image
             {
@@ -51,30 +47,42 @@ Control
             ColumnLayout
             {
                 Layout.fillHeight: true
+                Layout.fillWidth: false
                 Layout.alignment: Qt.AlignVCenter
                 spacing: UM.Theme.getSize("default_margin").height
 
                 UM.Label
                 {
-                    Layout.fillWidth: true
+                    Layout.fillWidth: false
                     Layout.alignment: Qt.AlignTop
                     wrapMode: Text.WordWrap
                     font: UM.Theme.getFont("default_bold")
                     text: catalog.i18nc("@label", "If you are trying to add a new Ultimaker printer to Cura")
                 }
 
-                UM.Label
+                ColumnLayout
                 {
-                    Layout.fillWidth: true
-                    Layout.alignment: Qt.AlignTop
-                    wrapMode: Text.WordWrap
-                    text: {
-                        const steps = [
+                    spacing: 0
+
+                    FontMetrics
+                    {
+                        id: fontMetrics
+                        font: UM.Theme.getFont("default")
+                    }
+
+                    Repeater {
+                        model: [
                             catalog.i18nc("@info", "Sign in into Ultimaker Digilal Factory"),
                             catalog.i18nc("@info", "Follow the procedure to add a new printer"),
                             catalog.i18nc("@info", "Your new printer will automatically appear in Cura"),
-                        ];
-                        return steps.join("<br />");
+                        ]
+                        UM.Label
+                        {
+                            Layout.alignment: Qt.AlignTop
+                            font: fontMetrics.font
+                            Layout.preferredHeight: fontMetrics.height
+                            text: `${index + 1}. ${modelData}`
+                        }
                     }
                 }
 
@@ -83,6 +91,7 @@ Control
                     id: learnMoreButton
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignTop
+                    leftPadding: 0
                     text: catalog.i18nc("@button", "Learn more")
                     iconSource: UM.Theme.getIcon("LinkExternal")
                     isIconOnRightSide: true
@@ -115,6 +124,7 @@ Control
                     text: catalog.i18nc("@button", "Sign in to Digital Factory")
                     onClicked: function()
                     {
+                        Qt.openUrlExternally("https://digitalfactory.ultimaker.com/app/printers?add_printer=true&utm_source=cura&utm_medium=software&utm_campaign=onboarding-add-printer")
                         text = catalog.i18nc("@button", "Waiting for new printers")
                         busy = true;
                         enabled = false;

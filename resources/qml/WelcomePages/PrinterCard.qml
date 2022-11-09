@@ -42,7 +42,6 @@ Control
         onClicked: root.onClicked && root.onClicked()
     }
 
-    topPadding: UM.Theme.getSize("wide_margin").height
     rightPadding: UM.Theme.getSize("wide_margin").width
     bottomPadding: UM.Theme.getSize("wide_margin").height
     leftPadding: UM.Theme.getSize("wide_margin").width
@@ -50,7 +49,7 @@ Control
     background: Rectangle
     {
         id: background
-        anchors.fill: parent
+        height: parent.height
         border.color: UM.Theme.getColor("primary_button")
         color: "transparent"
         border.width: 1
@@ -59,6 +58,7 @@ Control
 
     contentItem: ColumnLayout
     {
+        id: column
         spacing: UM.Theme.getSize("wide_margin").height
         height: childrenRect.height
         width: childrenRect.width
@@ -68,7 +68,6 @@ Control
             id: image
             source: imageSource
             width: 180 * screenScaleFactor
-            height: 180 * screenScaleFactor
             sourceSize.width: width
             sourceSize.height: height
         }
