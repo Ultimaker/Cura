@@ -16,9 +16,9 @@
     "overrides": {
         "top_thickness": { "value": 1.0 },
         "coasting_enable": { "value": false },
-        "retraction_amount": { "value": 2.8 },
+        "retraction_amount": { "value": 3.0 },
         "retraction_speed": { "value": 45 },
-        "retraction_extrusion_window": { "value": 2.8 },
+        "retraction_extrusion_window": { "value": 3.0 },
         "retract_at_layer_change": { "value": true },
         "support_enable": { "value": false },
         "support_structure": { "value": "'normal'" },
