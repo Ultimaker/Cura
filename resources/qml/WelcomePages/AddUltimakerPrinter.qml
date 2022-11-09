@@ -110,7 +110,7 @@ Control
                     id: signInButton
                     Layout.alignment: Qt.AlignRight
                     text: catalog.i18nc("@button", "Sign in to Digital Factory")
-                    onClicked: Qt.openUrlExternally("https://digitalfactory.ultimaker.com/app/printers?add-printer?utm_source=cura&utm_medium=software&utm_campaign=onboarding-add-printer")
+                    onClicked: Qt.openUrlExternally("https://digitalfactory.ultimaker.com/app/printers?add_printer=true&utm_source=cura&utm_medium=software&utm_campaign=onboarding-add-printer")
                 }
             }
         }
