@@ -130,17 +130,21 @@ class MachineListModel(ListModel):
 
         if len(abstract_machine_stacks) > 0:
             if self._show_cloud_printers:
-                self.appendItem({"componentType": "HIDE_BUTTON",
-                                 "isOnline": True,
-                                 "isAbstractMachine": False,
-                                 "machineCount": 0
-                                 })
+                self.appendItem({
+                    "componentType": "HIDE_BUTTON",
+                    "isOnline": True,
+                    "isAbstractMachine": False,
+                    "machineCount": 0,
+                    "catergory": "connected",
+                })
             else:
-                self.appendItem({"componentType": "SHOW_BUTTON",
-                                 "isOnline": True,
-                                 "isAbstractMachine": False,
-                                 "machineCount": 0
-                                 })
+                self.appendItem({
+                    "componentType": "SHOW_BUTTON",
+                    "isOnline": True,
+                    "isAbstractMachine": False,
+                    "machineCount": 0,
+                    "catergory": "connected",
+                })
 
         for stack in other_machine_stacks:
             self.addItem(stack, False)
@@ -150,11 +154,12 @@ class MachineListModel(ListModel):
             return
 
         self.appendItem({
-                         "componentType": "MACHINE",
-                         "name": container_stack.getName(),
-                         "id": container_stack.getId(),
-                         "metadata": container_stack.getMetaData().copy(),
-                         "isOnline": is_online,
-                         "isAbstractMachine": parseBool(container_stack.getMetaDataEntry("is_abstract_machine", False)),
-                         "machineCount": machine_count,
-                        })
+            "componentType": "MACHINE",
+            "name": container_stack.getName(),
+            "id": container_stack.getId(),
+            "metadata": container_stack.getMetaData().copy(),
+            "isOnline": is_online,
+            "isAbstractMachine": parseBool(container_stack.getMetaDataEntry("is_abstract_machine", False)),
+            "machineCount": machine_count,
+            "catergory": "connected" if is_online else "other",
+        })
