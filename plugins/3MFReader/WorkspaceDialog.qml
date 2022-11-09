@@ -122,6 +122,27 @@ UM.Dialog
                             isCloudRegistered: false
                             isGroup: false
 
+                            buttons: [
+                                Cura.SecondaryButton
+                                {
+                                    id: createNewPrinter
+                                    text: catalog.i18nc("@button", "Create new")
+                                    fixedWidthMode: true
+                                    width: parent.width - leftPadding * 1.5
+                                    onClicked:
+                                    {
+                                        machineSelector.machineName = catalog.i18nc("@button", "Create new")
+                                        machineSelector.isNetworkPrinter = false
+                                        machineSelector.isConnectedCloudPrinter = false
+                                        machineSelector.isCloudRegistered = false
+                                        machineSelector.isGroup = false
+
+                                        toggleContent()
+                                        manager.setResolveStrategy("machine", "new")
+                                    }
+                                }
+                            ]
+
                             onSelectPrinter: function(machine)
                             {
                                 toggleContent();
