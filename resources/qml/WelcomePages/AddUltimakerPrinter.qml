@@ -53,25 +53,36 @@ Control
 
                 UM.Label
                 {
-                    Layout.fillWidth: true
+                    Layout.fillWidth: false
                     Layout.alignment: Qt.AlignTop
                     wrapMode: Text.WordWrap
                     font: UM.Theme.getFont("default_bold")
                     text: catalog.i18nc("@label", "If you are trying to add a new Ultimaker printer to Cura")
                 }
 
-                UM.Label
+                ColumnLayout
                 {
-                    Layout.fillWidth: true
-                    Layout.alignment: Qt.AlignTop
-                    wrapMode: Text.WordWrap
-                    text: {
-                        const steps = [
-                            catalog.i18nc("@info", "1. Sign in into Ultimaker Digilal Factory"),
-                            catalog.i18nc("@info", "2. Follow the procedure to add a new printer"),
-                            catalog.i18nc("@info", "3. Your new printer will automatically appear in Cura"),
-                        ];
-                        return steps.join("<br />");
+                    spacing: 0
+
+                    FontMetrics
+                    {
+                        id: fontMetrics
+                        font: UM.Theme.getFont("default")
+                    }
+
+                    Repeater {
+                        model: [
+                            catalog.i18nc("@info", "Sign in into Ultimaker Digilal Factory"),
+                            catalog.i18nc("@info", "Follow the procedure to add a new printer"),
+                            catalog.i18nc("@info", "Your new printer will automatically appear in Cura"),
+                        ]
+                        UM.Label
+                        {
+                            Layout.alignment: Qt.AlignTop
+                            font: fontMetrics.font
+                            Layout.preferredHeight: fontMetrics.height
+                            text: `${index + 1}. ${modelData}`
+                        }
                     }
                 }
 
