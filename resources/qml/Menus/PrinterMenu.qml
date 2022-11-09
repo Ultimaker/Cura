@@ -39,7 +39,7 @@ Cura.Menu
             onTriggered: Cura.MachineManager.setActiveMachine(model.id)
         }
         onObjectAdded: function(index, object) { menu.insertItem(2, object)}
-        onObjectRemoved: function(object) {  menu.removeItem(object)}
+        onObjectRemoved: function(index, object) {  menu.removeItem(object)}
     }
 
     Cura.MenuSeparator { visible: networKPrinterInstantiator.count > 0 }
@@ -67,7 +67,7 @@ Cura.Menu
         }
         // A bit hackish, but we have 2 items at the end, put them before that
         onObjectAdded: function(index, object) { menu.insertItem(menu.count - 2, object) }
-        onObjectRemoved: function(object) {  menu.removeItem(object) }
+        onObjectRemoved: function(index, object) {  menu.removeItem(object) }
     }
 
     Cura.MenuSeparator { visible: localPrinterInstantiator.count > 0 }

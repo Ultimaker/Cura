@@ -136,7 +136,7 @@ class Backup:
             return False
 
         current_version = Version(self._application.getVersion())
-        version_to_restore = Version(self.meta_data.get("cura_release", "master"))
+        version_to_restore = Version(self.meta_data.get("cura_release", "dev"))
 
         if current_version < version_to_restore:
             # Cannot restore version newer than current because settings might have changed.

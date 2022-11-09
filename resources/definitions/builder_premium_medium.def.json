@@ -28,7 +28,7 @@
 
         "infill_pattern": {"value": "'triangles'" },
         "infill_before_walls": {"value": false },
-
+        "acceleration_enabled": { "value": true },
         "default_material_print_temperature": { "value": "215" },
         "material_print_temperature_layer_0": { "value": "material_print_temperature + 5" },
         "material_standby_temperature": { "value": "material_print_temperature" },
@@ -54,7 +54,6 @@
 
         "prime_blob_enable": { "enabled": true },
 
-        "acceleration_enabled": { "value": "True" },
         "acceleration_layer_0": { "value": "acceleration_topbottom" },
         "acceleration_prime_tower": { "value": "math.ceil(acceleration_print * 2000 / 4000)" },
         "acceleration_print": { "value": "3000" },

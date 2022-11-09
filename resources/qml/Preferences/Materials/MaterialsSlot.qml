@@ -47,7 +47,7 @@ Rectangle
         radius: width / 2
         anchors.verticalCenter: materialSlot.verticalCenter
         anchors.left: materialSlot.left
-        anchors.leftMargin: 2 * UM.Theme.getSize("default_margin").width
+        anchors.leftMargin: UM.Theme.getSize("default_margin").width
     }
     UM.Label
     {
@@ -58,7 +58,7 @@ Rectangle
         wrapMode: Text.NoWrap
         verticalAlignment: Text.AlignVCenter
         anchors.left: swatch.right
-        anchors.right: favoriteButton.left
+        anchors.right: favoriteButton.visible ? favoriteButton.left : parent.right
         anchors.leftMargin: UM.Theme.getSize("default_margin").width
         anchors.rightMargin: UM.Theme.getSize("narrow_margin").width
         anchors.verticalCenter: materialSlot.verticalCenter
@@ -102,7 +102,7 @@ Rectangle
         ]
 
         implicitHeight: parent.height
-        implicitWidth: height
+        implicitWidth: favoriteIndicator.width
         anchors.right: materialSlot.right
         visible: false
 

@@ -51,7 +51,17 @@ Item
     {
         target: infillSlider
         property: "value"
-        value: parseInt(infillDensity.properties.value)
+        value: {
+            // The infill slider has a max value of 100. When it is given a value > 100 onValueChanged updates the setting to be 100.
+            // When changing to an intent with infillDensity > 100, it would always be clamped to 100.
+            // This will force the slider to ignore the first onValueChanged for values > 100 so higher values can be set.
+            var density = parseInt(infillDensity.properties.value)
+            if (density > 100) {
+                infillSlider.ignoreValueChange = true
+            }
+
+            return density
+        }
     }
 
     // Here are the elements that are shown in the left column
@@ -65,6 +75,7 @@ Item
         font: UM.Theme.getFont("medium")
         width: labelColumnWidth
         iconSize: UM.Theme.getSize("medium_button_icon").width
+        tooltipText: catalog.i18nc("@label", "Gradual infill will gradually increase the amount of infill towards the top.")
     }
 
     Item
@@ -82,6 +93,8 @@ Item
         Slider
         {
             id: infillSlider
+
+            property var ignoreValueChange: false
 
             width: parent.width
             height: UM.Theme.getSize("print_setup_slider_handle").height // The handle is the widest element of the slider
@@ -102,7 +115,6 @@ Item
                 id: backgroundLine
                 height: UM.Theme.getSize("print_setup_slider_groove").height
                 width: parent.width - UM.Theme.getSize("print_setup_slider_handle").width
-                implicitWidth: width
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter: parent.verticalCenter
                 color: infillSlider.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
@@ -133,7 +145,6 @@ Item
                             visible: (index % 20) == 0 // Only show steps of 20%
                             anchors.horizontalCenter: parent.horizontalCenter
                             y: UM.Theme.getSize("thin_margin").height
-                            renderType: Text.NativeRendering
                             color: UM.Theme.getColor("quality_slider_available")
                         }
                     }
@@ -158,7 +169,13 @@ Item
                 target: infillSlider
                 function onValueChanged()
                 {
-                    // Don't round the value if it's already the same
+                    if (infillSlider.ignoreValueChange)
+                    {
+                        infillSlider.ignoreValueChange = false
+                        return
+                    }
+
+                    // Don't update if the setting value, if the slider has the same value
                     if (parseInt(infillDensity.properties.value) == infillSlider.value)
                     {
                         return

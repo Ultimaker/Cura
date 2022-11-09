@@ -350,5 +350,6 @@ class PrinterOutputModel(QObject):
             self.availableConfigurationsChanged.emit()
 
     def setAvailableConfigurations(self, new_configurations: List[PrinterConfigurationModel]) -> None:
-        self._available_printer_configurations = new_configurations
-        self.availableConfigurationsChanged.emit()
+        if self._available_printer_configurations != new_configurations:
+            self._available_printer_configurations = new_configurations
+            self.availableConfigurationsChanged.emit()

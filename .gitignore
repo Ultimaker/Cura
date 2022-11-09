@@ -38,6 +38,7 @@ cura.desktop
 .settings
 
 #Externally located plug-ins commonly installed by our devs.
+plugins/BarbarianPlugin
 plugins/cura-big-flame-graph
 plugins/cura-camera-position
 plugins/cura-god-mode-plugin
@@ -64,6 +65,7 @@ plugins/CuraRemoteSupport
 plugins/ModelCutter
 plugins/PrintProfileCreator
 plugins/MultiPrintPlugin
+plugins/CuraOrientationPlugin
 
 #Build stuff
 CMakeCache.txt
@@ -87,4 +89,13 @@ CuraEngine
 #Prevents import failures when plugin running tests
 plugins/__init__.py
 
-/venv
+venv/
+build/
+dist/
+conaninfo.txt
+conan.lock
+conan_imports_manifest.txt
+conanbuildinfo.txt
+graph_info.json
+Ultimaker-Cura.spec
+.run/

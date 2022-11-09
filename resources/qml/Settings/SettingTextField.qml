@@ -32,11 +32,12 @@ SettingItem
 
         anchors.fill: parent
 
+        borderColor: input.activeFocus ? UM.Theme.getColor("text_field_border_active") : "transparent"
         liningColor:
         {
             if(!enabled)
             {
-                return UM.Theme.getColor("text_field_border_disabled")
+                return UM.Theme.getColor("text_field_border_disabled");
             }
             switch(propertyProvider.properties.validationState)
             {
@@ -50,17 +51,21 @@ SettingItem
                     return UM.Theme.getColor("setting_validation_warning");
             }
             //Validation is OK.
-            if(hovered || input.activeFocus)
+            if(input.activeFocus)
             {
-                return UM.Theme.getColor("text_field_border_hovered")
+                return UM.Theme.getColor("text_field_border_active");
             }
-            return UM.Theme.getColor("text_field_border")
+            if(hovered)
+            {
+                return UM.Theme.getColor("text_field_border_hovered");
+            }
+            return UM.Theme.getColor("text_field_border");
         }
 
         color: {
             if(!enabled)
             {
-                return UM.Theme.getColor("text_field")
+                return UM.Theme.getColor("setting_control_disabled")
             }
             switch(propertyProvider.properties.validationState)
             {
@@ -148,13 +153,13 @@ SettingItem
             selectionColor: UM.Theme.getColor("text_selection")
             selectByMouse: true
 
-            maximumLength: (definition.type == "str" || definition.type == "[int]") ? -1 : 10
+            maximumLength: (definition.type == "str" || definition.type == "[int]") ? -1 : 12
 
             // Since [int] & str don't have a max length, they need to be clipped (since clipping is expensive, this
             // should be done as little as possible)
             clip: definition.type == "str" || definition.type == "[int]"
 
-            validator: RegularExpressionValidator { regularExpression: (definition.type == "[int]") ? /^\[?(\s*-?[0-9]{0,9}\s*,)*(\s*-?[0-9]{0,9})\s*\]?$/ : (definition.type == "int") ? /^-?[0-9]{0,10}$/ : (definition.type == "float") ? /^-?[0-9]{0,9}[.,]?[0-9]{0,3}$/ : /^.*$/ } // definition.type property from parent loader used to disallow fractional number entry
+            validator: RegularExpressionValidator { regularExpression: (definition.type == "[int]") ? /^\[?(\s*-?[0-9]{0,11}\s*,)*(\s*-?[0-9]{0,11})\s*\]?$/ : (definition.type == "int") ? /^-?[0-9]{0,12}$/ : (definition.type == "float") ? /^-?[0-9]{0,11}[.,]?[0-9]{0,3}$/ : /^.*$/ } // definition.type property from parent loader used to disallow fractional number entry
 
             Binding
             {

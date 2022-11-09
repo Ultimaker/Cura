@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -114,6 +114,7 @@ Rectangle
             font: UM.Theme.getFont("medium")
             width: contentWidth
         }
+
         Item
         {
             anchors
@@ -122,6 +123,7 @@ Rectangle
             }
             visible: !isNetworkConfigured && isNetworkConfigurable
             width: childrenRect.width
+            height: childrenRect.height
 
             UM.ColorImage
             {
@@ -132,7 +134,7 @@ Rectangle
                 width: UM.Theme.getSize("icon_indicator").width
                 height: UM.Theme.getSize("icon_indicator").height
             }
-            Label
+            UM.Label
             {
                 id: manageQueueText
                 anchors
@@ -144,7 +146,6 @@ Rectangle
                 color: UM.Theme.getColor("text_link")
                 font: UM.Theme.getFont("medium")
                 text: catalog.i18nc("@label link to technical assistance", "View user manuals online")
-                renderType: Text.NativeRendering
             }
             MouseArea
             {
@@ -155,14 +156,13 @@ Rectangle
                 onExited: manageQueueText.font.underline = false
             }
         }
-        Label
+        UM.Label
         {
             id: noConnectionLabel
             anchors.horizontalCenter: parent.horizontalCenter
             visible: !isNetworkConfigurable
             text: catalog.i18nc("@info", "In order to monitor your print from Cura, please connect the printer.")
             font: UM.Theme.getFont("medium")
-            color: UM.Theme.getColor("text")
             wrapMode: Text.WordWrap
             width: contentWidth
         }
