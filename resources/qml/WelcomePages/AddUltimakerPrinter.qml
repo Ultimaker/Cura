@@ -22,10 +22,6 @@ Control
         {
             base.goToPage("add_cloud_printers")
         }
-        else
-        {
-            goToThirdPartyPrinter()
-        }
     }
 
     contentItem: ColumnLayout
