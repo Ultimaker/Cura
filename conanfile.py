@@ -357,6 +357,8 @@ class CuraConan(ConanFile):
                            dst = self._share_dir.joinpath("cura", "resources", "materials"), keep_path = False)
             self.copy_deps("*", root_package = "cura_private_data", src = self.deps_cpp_info["cura_private_data"].resdirs[0],
                            dst = self._share_dir.joinpath("cura", "resources"), keep_path = True)
+            self.copy_deps("*", root_package = "cura_private_data", src = self.deps_cpp_info["cura_private_data"].resdirs[1],
+                           dst = self._share_dir.joinpath("cura", "plugins"), keep_path = True)
 
         # Copy resources of Uranium (keep folder structure)
         self.copy_deps("*", root_package = "uranium", src = self.deps_cpp_info["uranium"].resdirs[0],
