@@ -23,41 +23,6 @@ Item
     height: childrenRect.height
     anchors.leftMargin: UM.Theme.getSize("default_margin").width
 
-    UM.TooltipArea
-    {
-        id: comboboxTooltip
-        width: (parent.width / 2.5) | 0
-        height: visible ? UM.Theme.getSize("default_margin").height : 0
-        anchors.top: parent.top
-        anchors.right: parent.right
-        anchors.rightMargin: UM.Theme.getSize("default_margin").width
-
-        text: comboboxTooltipText
-        visible: comboboxVisible
-
-        UM.Label
-        {
-            id: comboboxLabel
-            anchors.top: parent.top
-            anchors.left: parent.left
-            anchors.topMargin: UM.Theme.getSize("default_margin").height
-            visible: comboboxVisible && text != ""
-            text: ""
-            font: UM.Theme.getFont("default_bold")
-        }
-
-        Loader
-        {
-            id: comboboxLoader
-            width: parent.width
-            height: UM.Theme.getSize("button").height
-            anchors.top: comboboxLabel.bottom
-            anchors.topMargin: UM.Theme.getSize("default_margin").height
-            anchors.left: parent.left
-            sourceComponent: combobox
-        }
-    }
-
     Row
     {
         id: sectionTitleRow
@@ -81,6 +46,69 @@ Item
             font: UM.Theme.getFont("default_bold")
         }
     }
+
+    Item
+    {
+        id: comboboxTooltip
+        width: (parent.width / 2.5) | 0
+        height: visible ? UM.Theme.getSize("default_margin").height : 0
+        anchors.top: parent.top
+        anchors.right: parent.right
+        anchors.rightMargin: UM.Theme.getSize("default_margin").width
+        visible: comboboxVisible
+
+        UM.Label
+        {
+            id: comboboxLabel
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.topMargin: UM.Theme.getSize("default_margin").height
+            visible: comboboxVisible && text != ""
+            text: ""
+            font: UM.Theme.getFont("default_bold")
+        }
+
+        Loader
+        {
+            id: comboboxLoader
+            width: parent.width
+            height: UM.Theme.getSize("button").height
+            anchors.top: comboboxLabel.bottom
+            anchors.topMargin: UM.Theme.getSize("default_margin").height
+            anchors.left: parent.left
+            sourceComponent: combobox
+        }
+
+        MouseArea
+        {
+            id: helpIconMouseArea
+            anchors.right: parent.right
+            anchors.verticalCenter: comboboxLabel.verticalCenter
+            width: childrenRect.width
+            height: childrenRect.height
+            hoverEnabled: true
+
+            UM.ColorImage
+            {
+                width: UM.Theme.getSize("section_icon").width
+                height: width
+
+                visible: comboboxTooltipText != ""
+                source: UM.Theme.getIcon("Help")
+
+                UM.ToolTip
+                {
+                    text: comboboxTooltipText
+                    visible: helpIconMouseArea.containsMouse
+                    targetPoint: Qt.point(parent.x + Math.round(parent.width / 2), parent.y)
+                    x: 0
+                    y: parent.y + parent.height + UM.Theme.getSize("default_margin").height
+                    width: UM.Theme.getSize("tooltip").width
+                }
+            }
+        }
+    }
+
 
     Loader
     {
