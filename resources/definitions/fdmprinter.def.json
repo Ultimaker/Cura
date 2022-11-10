@@ -2193,31 +2193,43 @@
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
-                "gradual_infill_steps":
+                "gradual_infill":
                 {
-                    "label": "Gradual Infill Steps",
-                    "description": "Number of times to reduce the infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Infill Density.",
-                    "default_value": 0,
-                    "type": "int",
-                    "minimum_value": "0",
-                    "maximum_value_warning": "1 if (infill_pattern == 'cross' or infill_pattern == 'cross_3d' or infill_pattern == 'concentric') else 5",
-                    "maximum_value": "999999 if infill_line_distance == 0 else (20 - math.log(infill_line_distance) / math.log(2))",
+                    "label": "Increase top infill",
+                    "description": "The infill density below the top surface is gradually increased to better support the top layers.",
+                    "type": "bool",
+                    "default_value": false,
                     "enabled": "infill_sparse_density > 0 and infill_pattern not in ['cubicsubdiv', 'cross', 'cross_3d', 'lightning']",
                     "limit_to_extruder": "infill_extruder_nr",
-                    "settable_per_mesh": true
-                },
-                "gradual_infill_step_height":
-                {
-                    "label": "Gradual Infill Step Height",
-                    "description": "The height of infill of a given density before switching to half the density.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default_value": 1.5,
-                    "minimum_value": "0.0001",
-                    "minimum_value_warning": "3 * resolveOrValue('layer_height')",
-                    "enabled": "infill_sparse_density > 0 and gradual_infill_steps > 0 and infill_pattern not in ['cubicsubdiv', 'cross', 'cross_3d', 'lightning']",
-                    "limit_to_extruder": "infill_extruder_nr",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": true,
+                    "children":
+                    {
+                        "gradual_infill_steps":
+                        {
+                            "label": "Top infill steps",
+                            "description": "Number of times to double the infill density when getting towards the top surfaces.",
+                            "default_value": 2,
+                            "type": "int",
+                            "minimum_value": "1",
+                            "maximum_value": "math.log(100/infill_sparse_density)/math.log(2)",
+                            "enabled": "gradual_infill",
+                            "limit_to_extruder": "infill_extruder_nr",
+                            "settable_per_mesh": true
+                        },
+                        "gradual_infill_step_height":
+                        {
+                            "label": "Top infill step height",
+                            "description": "The height of infill of a given density before switching to double the density.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default_value": 1.5,
+                            "minimum_value": "0.0001",
+                            "minimum_value_warning": "resolveOrValue('layer_height')",
+                            "enabled": "gradual_infill",
+                            "limit_to_extruder": "infill_extruder_nr",
+                            "settable_per_mesh": true
+                        }
+                    }
                 },
                 "infill_before_walls":
                 {
