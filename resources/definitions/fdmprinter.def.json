@@ -1993,6 +1993,7 @@
                             "description": "Distance between the printed infill lines. This setting is calculated by the infill density and the infill line width.",
                             "unit": "mm",
                             "type": "float",
+                            "enabled": false,
                             "default_value": 2,
                             "minimum_value": "0",
                             "minimum_value_warning": "infill_line_width",
