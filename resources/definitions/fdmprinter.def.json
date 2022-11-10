@@ -1300,7 +1300,22 @@
                     "maximum_value_warning": "1",
                     "default_value": 0,
                     "limit_to_extruder": "wall_0_extruder_nr",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": true,
+                    "children":
+                    {
+                        "hole_xy_offset_max_diameter":
+                        {
+                            "label": "Hole Horizontal Expansion Max Diameter",
+                            "description": "When greater then zero, the Hole Horizontal Expansion is gradually reduced to zero. Holes larger then the Hole Horizontal Expansion Max Diameter are not expanded. If set to zero the Hole Horizontal Expansion will be applied to all holes.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default_value": 0,
+                            "minimum_value": "0",
+                            "enabled": "hole_xy_offset > 0",
+                            "limit_to_extruder": "wall_0_extruder_nr",
+                            "settable_per_mesh": true
+                        }
+                    }
                 },
                "z_seam_type":
                 {
