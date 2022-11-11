@@ -66,6 +66,8 @@ class WorkspaceDialog(QObject):
         self._missing_package_metadata: List[Dict[str, str]] = []
         self._plugin_registry: PluginRegistry = CuraApplication.getInstance().getPluginRegistry()
         self._install_missing_package_dialog: Optional[QObject] = None
+        self._is_abstract_machine = False
+        self._is_online_machine = False
 
     machineConflictChanged = pyqtSignal()
     qualityChangesConflictChanged = pyqtSignal()
@@ -79,6 +81,8 @@ class WorkspaceDialog(QObject):
     intentNameChanged = pyqtSignal()
     machineNameChanged = pyqtSignal()
     updatableMachinesChanged = pyqtSignal()
+    isAbstractMachineChanged = pyqtSignal()
+    isOnlineChanged = pyqtSignal()
     materialLabelsChanged = pyqtSignal()
     objectsOnPlateChanged = pyqtSignal()
     numUserSettingsChanged = pyqtSignal()
@@ -166,6 +170,24 @@ class WorkspaceDialog(QObject):
     def setUpdatableMachines(self, updatable_machines: List[GlobalStack]) -> None:
         self._updatable_machines_model.set_machines_filter(updatable_machines)
         self.updatableMachinesChanged.emit()
+
+    @pyqtProperty(bool, notify = isAbstractMachineChanged)
+    def isAbstractMachine(self) -> bool:
+        return self._is_abstract_machine
+
+    @pyqtSlot(bool)
+    def setIsAbstractMachine(self, is_abstract_machine: bool) -> None:
+        self._is_abstract_machine = is_abstract_machine
+        self.isAbstractMachineChanged.emit()
+
+    @pyqtProperty(bool, notify = isOnlineChanged)
+    def isOnline(self) -> bool:
+        return self._is_online_machine
+
+    @pyqtSlot(bool)
+    def setIsNetworkedMachine(self, is_online_machine: bool) -> None:
+        self._is_online_machine = is_online_machine
+        self.isOnlineChanged.emit()
 
     @pyqtProperty(str, notify=qualityTypeChanged)
     def qualityType(self) -> str:

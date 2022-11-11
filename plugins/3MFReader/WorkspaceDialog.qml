@@ -112,10 +112,10 @@ UM.Dialog
                         machineListModel: manager.updatableMachinesModel
                         machineName: manager.machineName
 
-                        isNetworkPrinter: false
                         isConnectedCloudPrinter: false
                         isCloudRegistered: false
-                        isGroup: false
+                        isNetworkPrinter: manager.isOnline
+                        isGroup: manager.isAbstractMachine
 
                         minDropDownWidth: machineSelector.width
 
@@ -129,10 +129,10 @@ UM.Dialog
                                 onClicked:
                                 {
                                     machineSelector.machineName = catalog.i18nc("@button", "Create new")
-                                    machineSelector.isNetworkPrinter = false
+                                    manager.setIsAbstractMachine(false)
+                                    manager.setIsNetworkedMachine(false)
                                     machineSelector.isConnectedCloudPrinter = false
                                     machineSelector.isCloudRegistered = false
-                                    machineSelector.isGroup = false
 
                                     toggleContent()
                                     manager.setResolveStrategy("machine", "new")
@@ -145,6 +145,8 @@ UM.Dialog
                             toggleContent();
                             manager.setResolveStrategy("machine", "override")
                             manager.setMachineToOverride(machine.id)
+                            manager.setIsAbstractMachine(machine.isAbstractMachine)
+                            manager.setIsNetworkedMachine(machine.isOnline)
                             machineSelector.machineName = machine.name
                         }
                     }
