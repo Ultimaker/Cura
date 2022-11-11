@@ -29,7 +29,7 @@ class MachineListModel(ListModel):
     IsAbstractMachineRole = Qt.ItemDataRole.UserRole + 7
     ComponentTypeRole = Qt.ItemDataRole.UserRole + 8
 
-    def __init__(self, parent: Optional[QObject] = None, machines_filter: Optional[List[GlobalStack]] = None) -> None:
+    def __init__(self, parent: Optional[QObject] = None, machines_filter: List[GlobalStack] = None, listenToChanges: bool = True) -> None:
         super().__init__(parent)
 
         self._show_cloud_printers = False
@@ -51,10 +51,11 @@ class MachineListModel(ListModel):
         self._change_timer.setSingleShot(True)
         self._change_timer.timeout.connect(self._update)
 
-        CuraContainerRegistry.getInstance().containerAdded.connect(self._onContainerChanged)
-        CuraContainerRegistry.getInstance().containerMetaDataChanged.connect(self._onContainerChanged)
-        CuraContainerRegistry.getInstance().containerRemoved.connect(self._onContainerChanged)
-        self._updateDelayed()
+        if listenToChanges:
+            CuraContainerRegistry.getInstance().containerAdded.connect(self._onContainerChanged)
+            CuraContainerRegistry.getInstance().containerMetaDataChanged.connect(self._onContainerChanged)
+            CuraContainerRegistry.getInstance().containerRemoved.connect(self._onContainerChanged)
+            self._updateDelayed()
 
     showCloudPrintersChanged = pyqtSignal(bool)
 
