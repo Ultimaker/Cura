@@ -4015,7 +4015,7 @@
                     "maximum_value": "machine_max_feedrate_e if retraction_enable else float('inf')",
                     "maximum_value_warning": "70",
                     "enabled": "retraction_enable and machine_gcode_flavor != \"UltiGCode\"",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true,
                     "children":
                     {
@@ -4032,7 +4032,7 @@
                             "maximum_value_warning": "70",
                             "enabled": "retraction_enable and machine_gcode_flavor != \"UltiGCode\"",
                             "value": "retraction_speed",
-                            "settable_per_mesh": false,
+                            "settable_per_mesh": true,
                             "settable_per_extruder": true
                         },
                         "retraction_prime_speed":
@@ -4048,7 +4048,7 @@
                             "maximum_value_warning": "70",
                             "enabled": "retraction_enable and machine_gcode_flavor != \"UltiGCode\"",
                             "value": "retraction_speed",
-                            "settable_per_mesh": false,
+                            "settable_per_mesh": true,
                             "settable_per_extruder": true
                         }
                     }
@@ -4063,7 +4063,7 @@
                     "minimum_value_warning": "-0.0001",
                     "maximum_value_warning": "5.0",
                     "enabled": "retraction_enable",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true
                 },
                 "retraction_min_travel":
@@ -4077,7 +4077,7 @@
                     "minimum_value": "0",
                     "minimum_value_warning": "line_width * 1.5",
                     "maximum_value_warning": "10",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true
                 },
                 "retraction_count_max":
@@ -4232,7 +4232,7 @@
                     "type": "bool",
                     "default_value": false,
                     "enabled": "retraction_enable and retraction_hop_enabled and travel_avoid_other_parts",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true
                 },
                 "retraction_hop": {
@@ -4244,7 +4244,7 @@
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "10",
                     "enabled": "retraction_enable and retraction_hop_enabled",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true
                 },
                 "retraction_hop_after_extruder_switch": {
@@ -7861,7 +7861,7 @@
                     "minimum_value_warning": "-0.0001",
                     "maximum_value_warning": "10.0",
                     "enabled": "wipe_retraction_enable and clean_between_layers",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": false
                 },
@@ -7876,7 +7876,7 @@
                     "minimum_value_warning": "-0.0001",
                     "maximum_value_warning": "10.0",
                     "enabled": "wipe_retraction_enable and clean_between_layers",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true
                 },
                 "wipe_retraction_speed":
@@ -7909,7 +7909,7 @@
                             "maximum_value_warning": "70",
                             "enabled": "wipe_retraction_enable and clean_between_layers",
                             "value": "wipe_retraction_speed",
-                            "settable_per_mesh": false,
+                            "settable_per_mesh": true,
                             "settable_per_extruder": true
                         },
                         "wipe_retraction_prime_speed":
@@ -7925,7 +7925,7 @@
                             "maximum_value_warning": "70",
                             "enabled": "wipe_retraction_enable and clean_between_layers",
                             "value": "wipe_retraction_speed",
-                            "settable_per_mesh": false,
+                            "settable_per_mesh": true,
                             "settable_per_extruder": true
                         }
                     }
@@ -7939,7 +7939,7 @@
                     "default_value": 0,
                     "minimum_value": "0",
                     "enabled": "clean_between_layers",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": false
                 },
@@ -7964,7 +7964,7 @@
                     "default_value": 1,
                     "value": "retraction_hop",
                     "enabled": "wipe_hop_enable and clean_between_layers",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": false
                 },
@@ -7979,7 +7979,7 @@
                     "minimum_value": "0",
                     "minimum_value_warning": "1",
                     "enabled": "wipe_hop_enable and clean_between_layers",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": false
                 },
@@ -8004,7 +8004,7 @@
                     "minimum_value": "0",
                     "default_value": 5,
                     "enabled": "clean_between_layers",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": false
                 },
@@ -8016,7 +8016,7 @@
                     "type": "float",
                     "default_value": 20,
                     "enabled": "clean_between_layers",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": false
                 },
