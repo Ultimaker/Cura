@@ -129,22 +129,13 @@ class MachineListModel(ListModel):
                     other_machine_stacks.remove(stack)
 
         if len(abstract_machine_stacks) > 0:
-            if self._show_cloud_printers:
-                self.appendItem({
-                    "componentType": "HIDE_BUTTON",
-                    "isOnline": True,
-                    "isAbstractMachine": False,
-                    "machineCount": 0,
-                    "catergory": "connected",
-                })
-            else:
-                self.appendItem({
-                    "componentType": "SHOW_BUTTON",
-                    "isOnline": True,
-                    "isAbstractMachine": False,
-                    "machineCount": 0,
-                    "catergory": "connected",
-                })
+            self.appendItem({
+                "componentType": "HIDE_BUTTON" if self._show_cloud_printers else "SHOW_BUTTON",
+                "isOnline": True,
+                "isAbstractMachine": False,
+                "machineCount": 0,
+                "catergory": "connected",
+            })
 
         for stack in other_machine_stacks:
             self.addItem(stack, False)
