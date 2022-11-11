@@ -79,7 +79,7 @@ class MachineListModel(ListModel):
         self._change_timer.start()
 
     def _getMachineStacks(self) -> List[ContainerStack]:
-        return CuraContainerRegistry.getInstance().findContainerStacks(type="machine")
+        return CuraContainerRegistry.getInstance().findContainerStacks(type = "machine")
 
     def _getAbstractMachineStacks(self) -> List[ContainerStack]:
         return CuraContainerRegistry.getInstance().findContainerStacks(is_abstract_machine = "True")
