@@ -4015,7 +4015,7 @@
                     "maximum_value": "machine_max_feedrate_e if retraction_enable else float('inf')",
                     "maximum_value_warning": "70",
                     "enabled": "retraction_enable and machine_gcode_flavor != \"UltiGCode\"",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true,
                     "children":
                     {
@@ -4032,7 +4032,7 @@
                             "maximum_value_warning": "70",
                             "enabled": "retraction_enable and machine_gcode_flavor != \"UltiGCode\"",
                             "value": "retraction_speed",
-                            "settable_per_mesh": false,
+                            "settable_per_mesh": true,
                             "settable_per_extruder": true
                         },
                         "retraction_prime_speed":
@@ -4048,7 +4048,7 @@
                             "maximum_value_warning": "70",
                             "enabled": "retraction_enable and machine_gcode_flavor != \"UltiGCode\"",
                             "value": "retraction_speed",
-                            "settable_per_mesh": false,
+                            "settable_per_mesh": true,
                             "settable_per_extruder": true
                         }
                     }
@@ -4063,7 +4063,7 @@
                     "minimum_value_warning": "-0.0001",
                     "maximum_value_warning": "5.0",
                     "enabled": "retraction_enable",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true
                 },
                 "retraction_min_travel":
@@ -4077,7 +4077,7 @@
                     "minimum_value": "0",
                     "minimum_value_warning": "line_width * 1.5",
                     "maximum_value_warning": "10",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true
                 },
                 "retraction_count_max":
@@ -4232,7 +4232,7 @@
                     "type": "bool",
                     "default_value": false,
                     "enabled": "retraction_enable and retraction_hop_enabled and travel_avoid_other_parts",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true
                 },
                 "retraction_hop": {
@@ -4244,7 +4244,7 @@
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "10",
                     "enabled": "retraction_enable and retraction_hop_enabled",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true
                 },
                 "retraction_hop_after_extruder_switch": {
@@ -4435,6 +4435,7 @@
                     "description": "Generate structures to support parts of the model which have overhangs. Without these structures, such parts would collapse during printing.",
                     "type": "bool",
                     "default_value": false,
+                    "resolve": "any(extruderValues('support_enable'))",
                     "settable_per_mesh": true,
                     "settable_per_extruder": false
                 },
@@ -4784,7 +4785,6 @@
                     "default_value": 8.0,
                     "minimum_value": "0.0",
                     "maximum_value_warning": "50.0",
-                    "maximum_value": "0.5 * min(machine_width, machine_depth)",
                     "enabled": "(support_enable or support_meshes_present) and support_brim_enable",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
@@ -4799,7 +4799,6 @@
                             "default_value": 20,
                             "minimum_value": "0",
                             "maximum_value_warning": "50 / skirt_brim_line_width",
-                            "maximum_value": "0.5 * min(machine_width, machine_depth) / skirt_brim_line_width",
                             "value": "math.ceil(support_brim_width / (skirt_brim_line_width * initial_layer_line_width_factor / 100.0))",
                             "enabled": "(support_enable or support_meshes_present) and support_brim_enable",
                             "settable_per_mesh": false,
@@ -5558,10 +5557,11 @@
                         {
                             "label": "Skirt/Brim Extruder",
                             "description": "The extruder train to use for printing the skirt or brim. This is used in multi-extrusion.",
-                            "type": "extruder",
+                            "type": "optional_extruder",
                             "default_value": "0",
                             "value": "adhesion_extruder_nr",
                             "enabled": "extruders_enabled_count > 1 and (resolveOrValue('adhesion_type') == 'skirt' or resolveOrValue('adhesion_type') == 'brim' or resolveOrValue('prime_tower_brim_enable'))",
+                            "resolve": "'-1' if '-1' in extruderValues('skirt_brim_extruder_nr') else adhesion_extruder_nr",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false
                         },
@@ -5613,9 +5613,9 @@
                     "maximum_value_warning": "10",
                     "maximum_value": "0.5 * min(machine_width, machine_depth) / skirt_brim_line_width",
                     "enabled": "resolveOrValue('adhesion_type') == 'skirt'",
+                    "limit_to_extruder": "skirt_brim_extruder_nr",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "limit_to_extruder": "skirt_brim_extruder_nr"
+                    "settable_per_extruder": true
                 },
                 "skirt_gap":
                 {
@@ -5627,9 +5627,9 @@
                     "minimum_value_warning": "max(extruderValues('machine_nozzle_size'))",
                     "maximum_value_warning": "10",
                     "enabled": "resolveOrValue('adhesion_type') == 'skirt'",
+                    "limit_to_extruder": "skirt_brim_extruder_nr",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "limit_to_extruder": "skirt_brim_extruder_nr"
+                    "settable_per_extruder": true
                 },
                 "skirt_brim_minimal_length":
                 {
@@ -5642,6 +5642,7 @@
                     "minimum_value_warning": "25",
                     "maximum_value_warning": "2500",
                     "enabled": "resolveOrValue('adhesion_type') == 'skirt' or resolveOrValue('adhesion_type') == 'brim' or resolveOrValue('prime_tower_brim_enable')",
+                    "limit_to_extruder": "skirt_brim_extruder_nr",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -5654,11 +5655,10 @@
                     "default_value": 8.0,
                     "minimum_value": "0.0",
                     "maximum_value_warning": "50.0",
-                    "maximum_value": "0.5 * min(machine_width, machine_depth)",
                     "enabled": "resolveOrValue('adhesion_type') == 'brim' or resolveOrValue('prime_tower_brim_enable')",
+                    "limit_to_extruder": "skirt_brim_extruder_nr",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
-                    "limit_to_extruder": "skirt_brim_extruder_nr",
                     "children":
                     {
                         "brim_line_count":
@@ -5669,12 +5669,11 @@
                             "default_value": 20,
                             "minimum_value": "0",
                             "maximum_value_warning": "50 / skirt_brim_line_width",
-                            "maximum_value": "0.5 * min(machine_width, machine_depth) / skirt_brim_line_width",
                             "value": "math.ceil(brim_width / (skirt_brim_line_width * initial_layer_line_width_factor / 100.0))",
                             "enabled": "resolveOrValue('adhesion_type') == 'brim' or resolveOrValue('prime_tower_brim_enable')",
+                            "limit_to_extruder": "skirt_brim_extruder_nr",
                             "settable_per_mesh": false,
-                            "settable_per_extruder": true,
-                            "limit_to_extruder": "skirt_brim_extruder_nr"
+                            "settable_per_extruder": true
                         }
                     }
                 },
@@ -5688,9 +5687,9 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "skirt_brim_line_width",
                     "enabled": "resolveOrValue('adhesion_type') == 'brim'",
+                    "limit_to_extruder": "skirt_brim_extruder_nr",
                     "settable_per_mesh": true,
-                    "settable_per_extruder": true,
-                    "limit_to_extruder": "skirt_brim_extruder_nr"
+                    "settable_per_extruder": true
                 },
                 "brim_replaces_support":
                 {
@@ -5699,9 +5698,9 @@
                     "type": "bool",
                     "default_value": true,
                     "enabled": "resolveOrValue('adhesion_type') == 'brim' and (support_enable or support_meshes_present)",
+                    "limit_to_extruder": "skirt_brim_extruder_nr",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "limit_to_extruder": "support_infill_extruder_nr"
+                    "settable_per_extruder": true
                 },
                 "brim_outside_only":
                 {
@@ -5710,9 +5709,22 @@
                     "type": "bool",
                     "default_value": true,
                     "enabled": "resolveOrValue('adhesion_type') == 'brim'",
+                    "limit_to_extruder": "skirt_brim_extruder_nr",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "limit_to_extruder": "skirt_brim_extruder_nr"
+                    "settable_per_extruder": true
+                },
+                "brim_inside_margin":
+                {
+                    "label": "Brim Inside Avoid Margin",
+                    "description": "If brim is only on outside then parts fully enclosed inside another part will get a brim which might overlap with the internal holes of the outer part. This setting controls how far to stay away from those internal holes. Set to a high value to prevent any brim from being generated for parts enclosed within the holes of other parts.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 5,
+                    "minimum_value": "0",
+                    "enabled": "resolveOrValue('adhesion_type') == 'brim' and any(extruderValues('brim_outside_only'))",
+                    "limit_to_extruder": "skirt_brim_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 },
                 "raft_margin":
                 {
@@ -7849,7 +7861,7 @@
                     "minimum_value_warning": "-0.0001",
                     "maximum_value_warning": "10.0",
                     "enabled": "wipe_retraction_enable and clean_between_layers",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": false
                 },
@@ -7864,7 +7876,7 @@
                     "minimum_value_warning": "-0.0001",
                     "maximum_value_warning": "10.0",
                     "enabled": "wipe_retraction_enable and clean_between_layers",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true
                 },
                 "wipe_retraction_speed":
@@ -7897,7 +7909,7 @@
                             "maximum_value_warning": "70",
                             "enabled": "wipe_retraction_enable and clean_between_layers",
                             "value": "wipe_retraction_speed",
-                            "settable_per_mesh": false,
+                            "settable_per_mesh": true,
                             "settable_per_extruder": true
                         },
                         "wipe_retraction_prime_speed":
@@ -7913,7 +7925,7 @@
                             "maximum_value_warning": "70",
                             "enabled": "wipe_retraction_enable and clean_between_layers",
                             "value": "wipe_retraction_speed",
-                            "settable_per_mesh": false,
+                            "settable_per_mesh": true,
                             "settable_per_extruder": true
                         }
                     }
@@ -7927,7 +7939,7 @@
                     "default_value": 0,
                     "minimum_value": "0",
                     "enabled": "clean_between_layers",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": false
                 },
@@ -7952,7 +7964,7 @@
                     "default_value": 1,
                     "value": "retraction_hop",
                     "enabled": "wipe_hop_enable and clean_between_layers",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": false
                 },
@@ -7967,7 +7979,7 @@
                     "minimum_value": "0",
                     "minimum_value_warning": "1",
                     "enabled": "wipe_hop_enable and clean_between_layers",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": false
                 },
@@ -7992,7 +8004,7 @@
                     "minimum_value": "0",
                     "default_value": 5,
                     "enabled": "clean_between_layers",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": false
                 },
@@ -8004,7 +8016,7 @@
                     "type": "float",
                     "default_value": 20,
                     "enabled": "clean_between_layers",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": false
                 },

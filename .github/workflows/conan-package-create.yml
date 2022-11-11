@@ -3,6 +3,14 @@ name: Create and Upload Conan package
 on:
     workflow_call:
         inputs:
+            project_name:
+                required: true
+                type: string
+
+            build_id:
+                required: true
+                type: number
+
             recipe_id_full:
                 required: true
                 type: string
@@ -115,6 +123,12 @@ jobs:
                     sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 12
                     sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 12
 
+            -   name: Use GCC-10 on ubuntu-20.04
+                if: ${{ startsWith(inputs.runs_on, 'ubuntu-20.04') }}
+                run: |
+                    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 10
+                    sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 10
+
             -   name: Create the default Conan profile
                 run:  conan profile new default --detect
 
@@ -128,7 +142,13 @@ jobs:
 
             -   name: Create the Packages
                 if: ${{ !inputs.create_from_source }}
-                run: conan install ${{ inputs.recipe_id_full }} --build=missing --update
+                run: |
+                    conan_build_info --v2 start ${{ inputs.project_name }} ${{ github.run_number }}000${{ inputs.build_id }}
+                    conan lock create --reference ${{ inputs.recipe_id_full }} --build=missing --update
+                    conan install ${{ inputs.recipe_id_full }} --build=missing --update --lockfile=conan.lock
+                    conan_build_info --v2 create buildinfo.json --lockfile conan.lock --user ${{ secrets.CONAN_USER }} --password ${{ secrets.CONAN_PASS }}
+                    conan_build_info --v2 publish buildinfo.json --url https://ultimaker.jfrog.io/artifactory --user ${{ secrets.CONAN_USER }} --password ${{ secrets.CONAN_PASS }}
+                    conan_build_info --v2 stop
 
             -   name: Create the Packages (from source)
                 if: ${{ inputs.create_from_source }}
