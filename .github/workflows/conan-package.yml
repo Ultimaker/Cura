@@ -81,7 +81,7 @@ jobs:
 
         uses: ultimaker/cura/.github/workflows/conan-package-create.yml@main
         with:
-            project_name: ${{ needs.conan-recipe-version.outputs.recipe_projectname }}
+            project_name: ${{ needs.conan-recipe-version.outputs.project_name }}
             recipe_id_full: ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
             build_id: 1
             runs_on: 'ubuntu-20.04'
