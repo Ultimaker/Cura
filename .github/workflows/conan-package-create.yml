@@ -7,21 +7,13 @@ on:
                 required: true
                 type: string
 
-            build_id:
-                required: true
-                type: number
-
-            recipe_user:
-                required: true
-                type: string
-
-            recipe_channel:
-                required: true
-                type: string
-
             recipe_id_full:
                 required: true
                 type: string
+
+            build_id:
+                required: true
+                type: number
 
             recipe_id_latest:
                 required: false
@@ -51,11 +43,6 @@ on:
             conan_upload_community:
                 required: false
                 default: true
-                type: boolean
-
-            create_from_source:
-                required: false
-                default: false
                 type: boolean
 
 env:
@@ -148,33 +135,23 @@ jobs:
                 if: ${{ inputs.conan_config_branch == '' }}
                 run: conan config install https://github.com/Ultimaker/conan-config.git
 
-            -   name: Create the Packages and the buildinfo.json
-                if: ${{ !inputs.create_from_source }}
+            -   name: Create the lock file
                 run: |
                     conan_build_info --v2 start ${{ inputs.project_name }} ${{ github.run_number }}000${{ inputs.build_id }}
-                    conan lock create --reference ${{ inputs.recipe_id_full }} --user=${{ inputs.recipe_user }} --channel=${{ inputs.recipe_channel }} --lockfile-out=conan.lock
-                    conan install ${{ inputs.recipe_id_full }} --build=missing --update --lockfile=conan.lock --lockfile-out=conan.lock
-                    conan_build_info --v2 create buildinfo.json --lockfile conan.lock --user ${{ secrets.CONAN_USER }} --password ${{ secrets.CONAN_PASS }}
-                    conan_build_info --v2 publish buildinfo.json --url https://ultimaker.jfrog.io/artifactory --user ${{ secrets.CONAN_USER }} --password ${{ secrets.CONAN_PASS }}
-                    conan_build_info --v2 stop
+                    conan lock create --reference ${{ inputs.recipe_id_full }} --lockfile-out=conan.lock                    
 
-            -   name: Create the Packages (from source)
-                if: ${{ inputs.create_from_source }}
-                run: conan create . ${{ inputs.recipe_id_full }} --build=missing --update
+            -   name: Create the Packages and the build info
+                run: conan install ${{ inputs.recipe_id_full }} --build=missing --update --lockfile=conan.lock --lockfile-out=conan.lock
 
-            -   name: Remove the latest alias
-                if: ${{ inputs.create_from_source && inputs.recipe_id_latest != '' && runner.os == 'Linux' }}
-                run: |
-                    conan remove ${{ inputs.recipe_id_latest }} -r cura -f || true
-                    conan remove ${{ inputs.recipe_id_latest }} -r cura-ce -f || true
+            -   name: Create the build info
+                run: conan_build_info --v2 create buildinfo.json --lockfile conan.lock --user ${{ secrets.CONAN_USER }} --password ${{ secrets.CONAN_PASS }}
 
-            -   name: Create the latest alias
-                if: ${{ inputs.create_from_source && inputs.recipe_id_latest != '' && always() }}
-                run: conan alias ${{ inputs.recipe_id_latest }} ${{ inputs.recipe_id_full }}
-
-            -   name: Upload the Package(s)
+            -   name: Upload the Package(s) and build info
                 if: always()
-                run: conan upload "*" -r cura --all -c
+                run: |
+                    conan upload "*" -r cura --all -c
+                    conan_build_info --v2 publish buildinfo.json --url https://ultimaker.jfrog.io/artifactory --user ${{ secrets.CONAN_USER }} --password ${{ secrets.CONAN_PASS }}conan_build_info --v2 publish buildinfo.json --url https://ultimaker.jfrog.io/artifactory --user ${{ secrets.CONAN_USER }} --password ${{ secrets.CONAN_PASS }}
+                    conan_build_info --v2 stop
 
             -   name: Upload the Package(s) community
                 if: ${{ always() && inputs.conan_upload_community == true }}
