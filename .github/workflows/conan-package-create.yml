@@ -158,3 +158,17 @@ jobs:
             -   name: Upload the Package(s) community
                 if: ${{ always() && inputs.conan_upload_community == true }}
                 run: conan upload "*" -r cura-ce -c
+
+            -   name: Upload the log and build artifacts
+                if: always()
+                uses: actions/upload-artifact@v3
+                with:
+                    name: log-${{ inputs.runs_on }}-${{ runner.arch }}
+                    path: |
+                        buildinfo.json
+                        conan.lock
+                        conanbuildinfo.txt
+                        conaninfo.txt
+                        graph_info.json
+                        build/**
+                    retention-days: 1
