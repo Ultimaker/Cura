@@ -37,6 +37,10 @@ on:
                 description: "The conan channel"
                 value: ${{ jobs.get-semver.outputs.channel }}
 
+            recipe_projectname:
+                description: "The conan projectname"
+                value: ${{ inputs.project_name }}
+
 jobs:
     get-semver:
 

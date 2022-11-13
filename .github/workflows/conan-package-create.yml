@@ -11,6 +11,14 @@ on:
                 required: true
                 type: number
 
+            recipe_user:
+                required: true
+                type: string
+
+            recipe_channel:
+                required: true
+                type: string
+
             recipe_id_full:
                 required: true
                 type: string
@@ -140,12 +148,12 @@ jobs:
                 if: ${{ inputs.conan_config_branch == '' }}
                 run: conan config install https://github.com/Ultimaker/conan-config.git
 
-            -   name: Create the Packages
+            -   name: Create the Packages and the buildinfo.json
                 if: ${{ !inputs.create_from_source }}
                 run: |
                     conan_build_info --v2 start ${{ inputs.project_name }} ${{ github.run_number }}000${{ inputs.build_id }}
-                    conan lock create --reference ${{ inputs.recipe_id_full }} --build=missing --update
-                    conan install ${{ inputs.recipe_id_full }} --build=missing --update --lockfile=conan.lock
+                    conan lock create --reference ${{ inputs.recipe_id_full }} --user=${{ inputs.recipe_user }} --channel=${{ inputs.recipe_channel }} --lockfile-out=conan.lock
+                    conan install ${{ inputs.recipe_id_full }} --build=missing --update --lockfile=conan.lock --lockfile-out=conan.lock
                     conan_build_info --v2 create buildinfo.json --lockfile conan.lock --user ${{ secrets.CONAN_USER }} --password ${{ secrets.CONAN_PASS }}
                     conan_build_info --v2 publish buildinfo.json --url https://ultimaker.jfrog.io/artifactory --user ${{ secrets.CONAN_USER }} --password ${{ secrets.CONAN_PASS }}
                     conan_build_info --v2 stop
