@@ -146,11 +146,13 @@ jobs:
             -   name: Create the build info
                 run: conan_build_info --v2 create buildinfo.json --lockfile conan.lock --user ${{ secrets.CONAN_USER }} --password ${{ secrets.CONAN_PASS }}
 
-            -   name: Upload the Package(s) and build info
+            -   name: Upload the Package(s)
                 if: always()
+                run: conan upload "*" -r cura --all -c
+
+            -   name: Upload the build info
                 run: |
-                    conan upload "*" -r cura --all -c
-                    conan_build_info --v2 publish buildinfo.json --url https://ultimaker.jfrog.io/artifactory --user ${{ secrets.CONAN_USER }} --password ${{ secrets.CONAN_PASS }}conan_build_info --v2 publish buildinfo.json --url https://ultimaker.jfrog.io/artifactory --user ${{ secrets.CONAN_USER }} --password ${{ secrets.CONAN_PASS }}
+                    conan_build_info --v2 publish buildinfo.json --url https://ultimaker.jfrog.io/artifactory --user ${{ secrets.CONAN_USER }} --password ${{ secrets.CONAN_PASS }}
                     conan_build_info --v2 stop
 
             -   name: Upload the Package(s) community
