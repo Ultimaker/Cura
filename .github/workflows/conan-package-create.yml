@@ -15,6 +15,11 @@ on:
                 required: true
                 type: number
 
+            build_info:
+                required: false
+                default: true
+                type: boolean
+
             recipe_id_latest:
                 required: false
                 type: string
@@ -136,14 +141,21 @@ jobs:
                 run: conan config install https://github.com/Ultimaker/conan-config.git
 
             -   name: Create the lock file
+                if: ${{ inputs.build_info }}
                 run: |
                     conan_build_info --v2 start ${{ inputs.project_name }} ${{ github.run_number }}000${{ inputs.build_id }}
                     conan lock create --reference ${{ inputs.recipe_id_full }} --lockfile-out=conan.lock                    
 
-            -   name: Create the Packages and the build info
+            -   name: Create the Packages using lockfile
+                if: ${{ inputs.build_info }}
                 run: conan install ${{ inputs.recipe_id_full }} --build=missing --update --lockfile=conan.lock --lockfile-out=conan.lock
 
+            -   name: Create the Packages
+                if: ${{ ! inputs.build_info }}
+                run: conan install ${{ inputs.recipe_id_full }} --build=missing --update
+
             -   name: Create the build info
+                if: ${{ inputs.build_info }}
                 run: conan_build_info --v2 create buildinfo.json --lockfile conan.lock --user ${{ secrets.CONAN_USER }} --password ${{ secrets.CONAN_PASS }}
 
             -   name: Upload the Package(s)
@@ -151,6 +163,7 @@ jobs:
                 run: conan upload "*" -r cura --all -c
 
             -   name: Upload the build info
+                if: ${{ inputs.build_info }}
                 run: |
                     conan_build_info --v2 publish buildinfo.json --url https://ultimaker.jfrog.io/artifactory --user ${{ secrets.CONAN_USER }} --password ${{ secrets.CONAN_PASS }}
                     conan_build_info --v2 stop
