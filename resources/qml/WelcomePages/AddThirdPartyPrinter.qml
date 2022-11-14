@@ -15,22 +15,13 @@ Item
 {
     UM.I18nCatalog { id: catalog; name: "cura" }
 
-    UM.Label
-    {
-        id: titleLabel
-        anchors.top: parent.top
-        anchors.horizontalCenter: parent.horizontalCenter
-        horizontalAlignment: Text.AlignHCenter
-        text: catalog.i18nc("@label", "Add a printer")
-        color: UM.Theme.getColor("primary_button")
-        font: UM.Theme.getFont("huge")
-    }
+    property var goToUltimakerPrinter
 
     DropDownWidget
     {
         id: addNetworkPrinterDropDown
 
-        anchors.top: titleLabel.bottom
+        anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.topMargin: UM.Theme.getSize("wide_margin").height
@@ -103,18 +94,13 @@ Item
         }
     }
 
-    // This "Back" button only shows in the "Add Machine" dialog, which has "previous_page_button_text" set to "Cancel"
     Cura.SecondaryButton
     {
         id: backButton
         anchors.left: parent.left
         anchors.bottom: parent.bottom
-        visible: base.currentItem.previous_page_button_text ? true : false
-        text: base.currentItem.previous_page_button_text ? base.currentItem.previous_page_button_text : ""
-        onClicked:
-        {
-            base.endWizard()
-        }
+        text: catalog.i18nc("@button", "Add Ultimaker printer via Digital Factory")
+        onClicked: goToUltimakerPrinter()
     }
 
     Cura.PrimaryButton
