@@ -168,7 +168,7 @@ class WorkspaceDialog(QObject):
         return cast(MachineListModel, self._updatable_machines_model)
 
     def setUpdatableMachines(self, updatable_machines: List[GlobalStack]) -> None:
-        self._updatable_machines_model.update(updatable_machines)
+        self._updatable_machines_model.set_machines_filter(updatable_machines)
         self.updatableMachinesChanged.emit()
 
     @pyqtProperty(bool, notify = isAbstractMachineChanged)
