@@ -131,8 +131,6 @@ UM.Dialog
                                     machineSelector.machineName = catalog.i18nc("@button", "Create new")
                                     manager.setIsAbstractMachine(false)
                                     manager.setIsNetworkedMachine(false)
-                                    machineSelector.isConnectedCloudPrinter = false
-                                    machineSelector.isCloudRegistered = false
 
                                     toggleContent()
                                     manager.setResolveStrategy("machine", "new")
