@@ -29,13 +29,17 @@ on:
                 description: "is current branch a release branch?"
                 value: ${{ jobs.get-semver.outputs.release_branch }}
 
-            recipe_user:
+            user:
                 description: "The conan user"
                 value: ${{ jobs.get-semver.outputs.user }}
 
-            recipe_channel:
+            channel:
                 description: "The conan channel"
                 value: ${{ jobs.get-semver.outputs.channel }}
+
+            project_name:
+                description: "The conan projectname"
+                value: ${{ inputs.project_name }}
 
 jobs:
     get-semver:
