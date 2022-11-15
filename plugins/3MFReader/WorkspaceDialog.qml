@@ -1,4 +1,4 @@
-// Copyright (c) 2020 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -11,47 +11,48 @@ import Cura 1.1 as Cura
 
 UM.Dialog
 {
-    id: base
+    id: workspaceDialog
     title: catalog.i18nc("@title:window", "Open Project")
 
-    minimumWidth: UM.Theme.getSize("popup_dialog").width
-    minimumHeight: UM.Theme.getSize("popup_dialog").height
-    width: minimumWidth
-    backgroundColor: UM.Theme.getColor("main_background")
     margin: UM.Theme.getSize("default_margin").width
-    property int comboboxHeight: UM.Theme.getSize("default_margin").height
+    minimumWidth: UM.Theme.getSize("modal_window_minimum").width
+    minimumHeight: UM.Theme.getSize("modal_window_minimum").height
 
-    onClosing: manager.notifyClosed()
-    onVisibleChanged:
+    backgroundColor: UM.Theme.getColor("detail_background")
+
+    headerComponent: Rectangle
     {
-        if (visible)
+        height: childrenRect.height + 2 * UM.Theme.getSize("default_margin").height
+        color: UM.Theme.getColor("main_background")
+
+        UM.Label
         {
-            machineResolveComboBox.currentIndex = 0
-            qualityChangesResolveComboBox.currentIndex = 0
-            materialResolveComboBox.currentIndex = 0
+            id: titleLabel
+            text: catalog.i18nc("@action:title", "Summary - Cura Project")
+            font: UM.Theme.getFont("large")
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.topMargin: UM.Theme.getSize("default_margin").height
+            anchors.leftMargin: UM.Theme.getSize("default_margin").height
         }
     }
 
-    Flickable
+    Rectangle
     {
-        clip: true
-        width: parent.width
-        height: parent.height
-        contentHeight: dialogSummaryItem.height
-        ScrollBar.vertical: UM.ScrollBar { id: verticalScrollBar }
+        anchors.fill: parent
+        UM.I18nCatalog { id: catalog; name: "cura" }
+        color: UM.Theme.getColor("main_background")
 
-        Item
+        Flickable
         {
             id: dialogSummaryItem
-            width: verticalScrollBar.visible ? parent.width - verticalScrollBar.width - UM.Theme.getSize("default_margin").width : parent.width
-            height: childrenRect.height
-            anchors.margins: 10 * screenScaleFactor
+            width: parent.width
+            height: parent.height
 
-            UM.I18nCatalog
-            {
-                id: catalog
-                name: "cura"
-            }
+            clip: true
+
+            contentHeight: contentColumn.height
+            ScrollBar.vertical: UM.ScrollBar { id: scrollbar }
 
             ListModel
             {
@@ -68,373 +69,224 @@ UM.Dialog
 
             Column
             {
-                width: parent.width
+                id: contentColumn
+                width: parent.width - scrollbar.width - UM.Theme.getSize("default_margin").width
                 height: childrenRect.height
+
                 spacing: UM.Theme.getSize("default_margin").height
+                leftPadding: UM.Theme.getSize("default_margin").width
+                rightPadding: UM.Theme.getSize("default_margin").width
 
-                Column
+                WorkspaceSection
                 {
-                    width: parent.width
-                    height: childrenRect.height
-
-                    UM.Label
+                    id: printerSection
+                    title: catalog.i18nc("@action:label", "Printer settings")
+                    iconSource: UM.Theme.getIcon("Printer")
+                    content: Column
                     {
-                        id: titleLabel
-                        text: catalog.i18nc("@action:title", "Summary - Cura Project")
-                        font: UM.Theme.getFont("large")
-                    }
+                        spacing: UM.Theme.getSize("default_margin").height
+                        leftPadding: UM.Theme.getSize("medium_button_icon").width + UM.Theme.getSize("default_margin").width
 
-                    Rectangle
-                    {
-                        id: separator
-                        color: UM.Theme.getColor("text")
-                        width: parent.width
-                        height: UM.Theme.getSize("default_lining").height
-                    }
-                }
-
-                Item
-                {
-                    width: parent.width
-                    height: childrenRect.height
-
-                    UM.TooltipArea
-                    {
-                        id: machineResolveStrategyTooltip
-                        anchors.top: parent.top
-                        anchors.right: parent.right
-                        width: (parent.width / 3) | 0
-                        height: visible ? comboboxHeight : 0
-                        visible: base.visible && machineResolveComboBox.model.count > 1
-                        text: catalog.i18nc("@info:tooltip", "How should the conflict in the machine be resolved?")
-                        Cura.ComboBox
+                        WorkspaceRow
                         {
-                            id: machineResolveComboBox
-                            model: manager.updatableMachinesModel
-                            visible: machineResolveStrategyTooltip.visible
-                            textRole: "displayName"
-                            width: parent.width
-                            height: UM.Theme.getSize("button").height
-                            onCurrentIndexChanged:
+                            leftLabelText: catalog.i18nc("@action:label", "Type")
+                            rightLabelText: manager.machineType
+                        }
+
+                        WorkspaceRow
+                        {
+                            leftLabelText: catalog.i18nc("@action:label", manager.isPrinterGroup ? "Printer Group" : "Printer Name")
+                            rightLabelText: manager.machineName
+                        }
+                    }
+
+                    comboboxTitle: catalog.i18nc("@action:label", "Open With")
+                    comboboxTooltipText: catalog.i18nc("@info:tooltip", "Printer settings will be updated to match the settings saved with the project.")
+                    comboboxVisible: workspaceDialog.visible && manager.updatableMachinesModel.count > 1
+                    combobox: Cura.MachineSelector
+                    {
+                        id: machineSelector
+                        headerCornerSide: Cura.RoundedRectangle.Direction.All
+                        width: parent.width
+                        height: parent.height
+                        machineListModel: manager.updatableMachinesModel
+                        machineName: manager.machineName
+
+                        isConnectedCloudPrinter: false
+                        isCloudRegistered: false
+                        isNetworkPrinter: manager.isNetworked
+                        isGroup: manager.isAbstractMachine
+                        connectionStatus: ""
+
+                        minDropDownWidth: machineSelector.width
+
+                        buttons: [
+                            Cura.SecondaryButton
                             {
-                                if (model.getItem(currentIndex).id == "new"
-                                    && model.getItem(currentIndex).type == "default_option")
+                                id: createNewPrinter
+                                text: catalog.i18nc("@button", "Create new")
+                                fixedWidthMode: true
+                                width: parent.width - leftPadding * 1.5
+                                onClicked:
                                 {
+                                    machineSelector.machineName = catalog.i18nc("@button", "Create new")
+                                    manager.setIsAbstractMachine(false)
+                                    manager.setIsNetworkedMachine(false)
+
+                                    toggleContent()
                                     manager.setResolveStrategy("machine", "new")
                                 }
-                                else
-                                {
-                                    manager.setResolveStrategy("machine", "override")
-                                    manager.setMachineToOverride(model.getItem(currentIndex).id)
-                                }
                             }
+                        ]
 
-                            onVisibleChanged:
-                            {
-                                if (!visible) {return}
-
-                                currentIndex = 0
-                                // If the project printer exists in Cura, set it as the default dropdown menu option.
-                                // No need to check object 0, which is the "Create new" option
-                                for (var i = 1; i < model.count; i++)
-                                {
-                                    if (model.getItem(i).name == manager.machineName)
-                                    {
-                                        currentIndex = i
-                                        break
-                                    }
-                                }
-                                // The project printer does not exist in Cura. If there is at least one printer of the same
-                                // type, select the first one, else set the index to "Create new"
-                                if (currentIndex == 0 && model.count > 1)
-                                {
-                                    currentIndex = 1
-                                }
-                            }
-                        }
-                    }
-
-                    Column
-                    {
-                        width: parent.width
-                        height: childrenRect.height
-
-                        UM.Label
+                        onSelectPrinter: function(machine)
                         {
-                            id: printer_settings_label
-                            text: catalog.i18nc("@action:label", "Printer settings")
-                            font: UM.Theme.getFont("default_bold")
-                        }
-
-                        Row
-                        {
-                            width: parent.width
-                            height: childrenRect.height
-
-                            UM.Label
-                            {
-                                text: catalog.i18nc("@action:label", "Type")
-                                width: (parent.width / 3) | 0
-                            }
-                            UM.Label
-                            {
-                                text: manager.machineType
-                                width: (parent.width / 3) | 0
-                            }
-                        }
-
-                        Row
-                        {
-                            width: parent.width
-                            height: childrenRect.height
-
-                            UM.Label
-                            {
-                                text: catalog.i18nc("@action:label", manager.isPrinterGroup ? "Printer Group" : "Printer Name")
-                                width: (parent.width / 3) | 0
-                            }
-                            UM.Label
-                            {
-                                text: manager.machineName
-                                width: (parent.width / 3) | 0
-                                wrapMode: Text.WordWrap
-                            }
+                            toggleContent();
+                            manager.setResolveStrategy("machine", "override")
+                            manager.setMachineToOverride(machine.id)
+                            manager.setIsAbstractMachine(machine.isAbstractMachine)
+                            manager.setIsNetworkedMachine(machine.isNetworked)
+                            machineSelector.machineName = machine.name
                         }
                     }
                 }
 
-                Item
+                WorkspaceSection
                 {
-                    width: parent.width
-                    height: childrenRect.height
-
-                    UM.TooltipArea
+                    id: profileSection
+                    title: catalog.i18nc("@action:label", "Profile settings")
+                    iconSource: UM.Theme.getIcon("Sliders")
+                    content: Column
                     {
-                        anchors.right: parent.right
-                        anchors.top: parent.top
-                        width: (parent.width / 3) | 0
-                        height: visible ? comboboxHeight : 0
+                        id: profileSettingsValuesTable
+                        spacing: UM.Theme.getSize("default_margin").height
+                        leftPadding: UM.Theme.getSize("medium_button_icon").width + UM.Theme.getSize("default_margin").width
+
+                        WorkspaceRow
+                        {
+                            leftLabelText: catalog.i18nc("@action:label", "Name")
+                            rightLabelText: manager.qualityName
+                        }
+
+                        WorkspaceRow
+                        {
+                            leftLabelText: catalog.i18nc("@action:label", "Intent")
+                            rightLabelText: manager.intentName
+                        }
+
+                        WorkspaceRow
+                        {
+                            leftLabelText: catalog.i18nc("@action:label", "Not in profile")
+                            rightLabelText: catalog.i18ncp("@action:label", "%1 override", "%1 overrides", manager.numUserSettings).arg(manager.numUserSettings)
+                            visible: manager.numUserSettings != 0
+                        }
+
+                        WorkspaceRow
+                        {
+                            leftLabelText: catalog.i18nc("@action:label", "Derivative from")
+                            rightLabelText: catalog.i18ncp("@action:label", "%1, %2 override", "%1, %2 overrides", manager.numSettingsOverridenByQualityChanges).arg(manager.qualityType).arg(manager.numSettingsOverridenByQualityChanges)
+                            visible: manager.numSettingsOverridenByQualityChanges != 0
+                        }
+                    }
+
+                    comboboxVisible: manager.qualityChangesConflict
+                    combobox: Cura.ComboBox
+                    {
+                        id: qualityChangesResolveComboBox
+                        model: resolveStrategiesModel
+                        textRole: "label"
                         visible: manager.qualityChangesConflict
-                        text: catalog.i18nc("@info:tooltip", "How should the conflict in the profile be resolved?")
-                        Cura.ComboBox
-                        {
-                            model: resolveStrategiesModel
-                            textRole: "label"
-                            id: qualityChangesResolveComboBox
-                            width: parent.width
-                            height: UM.Theme.getSize("button").height
-                            onActivated:
-                            {
-                                manager.setResolveStrategy("quality_changes", resolveStrategiesModel.get(index).key)
-                            }
-                        }
-                    }
 
-                    Column
-                    {
-                        width: parent.width
-                        height: childrenRect.height
-
-                        UM.Label
+                        // This is a hack. This will trigger onCurrentIndexChanged and set the index when this component in loaded
+                        currentIndex:
                         {
-                            text: catalog.i18nc("@action:label", "Profile settings")
-                            font: UM.Theme.getFont("default_bold")
+                            currentIndex = 0
                         }
 
-                        Row
+                        onCurrentIndexChanged:
                         {
-                            width: parent.width
-                            height: childrenRect.height
-
-                            UM.Label
-                            {
-                                text: catalog.i18nc("@action:label", "Name")
-                                width: (parent.width / 3) | 0
-                            }
-                            UM.Label
-                            {
-                                text: manager.qualityName
-                                width: (parent.width / 3) | 0
-                                wrapMode: Text.WordWrap
-                            }
-                        }
-
-                        Row
-                        {
-                            width: parent.width
-                            height: childrenRect.height
-
-                            UM.Label
-                            {
-                                text: catalog.i18nc("@action:label", "Intent")
-                                width: (parent.width / 3) | 0
-                            }
-                            UM.Label
-                            {
-                                text: manager.intentName
-                                width: (parent.width / 3) | 0
-                                wrapMode: Text.WordWrap
-                            }
-                        }
-
-                        Row
-                        {
-                            width: parent.width
-                            height: childrenRect.height
-
-                            UM.Label
-                            {
-                                text: catalog.i18nc("@action:label", "Not in profile")
-                                visible: manager.numUserSettings != 0
-                                width: (parent.width / 3) | 0
-                            }
-                            UM.Label
-                            {
-                                text: catalog.i18ncp("@action:label", "%1 override", "%1 overrides", manager.numUserSettings).arg(manager.numUserSettings)
-                                visible: manager.numUserSettings != 0
-                                width: (parent.width / 3) | 0
-                            }
-                        }
-
-                        Row
-                        {
-                            width: parent.width
-                            height: childrenRect.height
-
-                            UM.Label
-                            {
-                                text: catalog.i18nc("@action:label", "Derivative from")
-                                visible: manager.numSettingsOverridenByQualityChanges != 0
-                                width: (parent.width / 3) | 0
-                            }
-                            UM.Label
-                            {
-                                text: catalog.i18ncp("@action:label", "%1, %2 override", "%1, %2 overrides", manager.numSettingsOverridenByQualityChanges).arg(manager.qualityType).arg(manager.numSettingsOverridenByQualityChanges)
-                                width: (parent.width / 3) | 0
-                                visible: manager.numSettingsOverridenByQualityChanges != 0
-                                wrapMode: Text.WordWrap
-                            }
+                            manager.setResolveStrategy("quality_changes", resolveStrategiesModel.get(currentIndex).key)
                         }
                     }
                 }
 
-                Item
+                WorkspaceSection
                 {
-                    width: parent.width
-                    height: childrenRect.height
-
-                    UM.TooltipArea
+                    id: materialSection
+                    title: catalog.i18nc("@action:label", "Material settings")
+                    iconSource: UM.Theme.getIcon("Spool")
+                    content: Column
                     {
-                        id: materialResolveTooltip
-                        anchors.right: parent.right
-                        anchors.top: parent.top
-                        width: (parent.width / 3) | 0
-                        height: visible ? comboboxHeight : 0
-                        visible: manager.materialConflict
-                        text: catalog.i18nc("@info:tooltip", "How should the conflict in the material be resolved?")
-                        Cura.ComboBox
-                        {
-                            model: resolveStrategiesModel
-                            textRole: "label"
-                            id: materialResolveComboBox
-                            width: parent.width
-                            height: UM.Theme.getSize("button").height
-                            onActivated:
-                            {
-                                manager.setResolveStrategy("material", resolveStrategiesModel.get(index).key)
-                            }
-                        }
-                    }
-
-                    Column
-                    {
-                        width: parent.width
-                        height: childrenRect.height
-                        Row
-                        {
-                            height: childrenRect.height
-                            width: parent.width
-                            spacing: UM.Theme.getSize("narrow_margin").width
-
-                            UM.Label
-                            {
-                                text: catalog.i18nc("@action:label", "Material settings")
-                                font: UM.Theme.getFont("default_bold")
-                                width: (parent.width / 3) | 0
-                            }
-                        }
+                        spacing: UM.Theme.getSize("default_margin").height
+                        leftPadding: UM.Theme.getSize("medium_button_icon").width + UM.Theme.getSize("default_margin").width
 
                         Repeater
                         {
                             model: manager.materialLabels
-                            delegate: Row
+                            delegate: WorkspaceRow
                             {
-                                width: parent.width
-                                height: childrenRect.height
-                                UM.Label
-                                {
-                                    text: catalog.i18nc("@action:label", "Name")
-                                    width: (parent.width / 3) | 0
-                                }
-                                UM.Label
-                                {
-                                    text: modelData
-                                    width: (parent.width / 3) | 0
-                                    wrapMode: Text.WordWrap
-                                }
+                                leftLabelText: catalog.i18nc("@action:label", "Name")
+                                rightLabelText: modelData
                             }
+                        }
+                    }
+
+                    comboboxVisible: manager.materialConflict
+
+                    combobox: Cura.ComboBox
+                    {
+                        id: materialResolveComboBox
+                        model: resolveStrategiesModel
+                        textRole: "label"
+                        visible: manager.materialConflict
+
+                        // This is a hack. This will trigger onCurrentIndexChanged and set the index when this component in loaded
+                        currentIndex:
+                        {
+                            currentIndex = 0
+                        }
+
+                        onCurrentIndexChanged:
+                        {
+                            manager.setResolveStrategy("material", resolveStrategiesModel.get(currentIndex).key)
                         }
                     }
                 }
 
-                Column
+                WorkspaceSection
                 {
-                    width: parent.width
-                    height: childrenRect.height
+                    id: visibilitySection
+                    title: catalog.i18nc("@action:label", "Setting visibility")
+                    iconSource: UM.Theme.getIcon("Eye")
+                    content: Column
+                    {
+                        spacing: UM.Theme.getSize("default_margin").height
+                        leftPadding: UM.Theme.getSize("medium_button_icon").width + UM.Theme.getSize("default_margin").width
+                        bottomPadding: UM.Theme.getSize("narrow_margin").height
 
-                    UM.Label
-                    {
-                        text: catalog.i18nc("@action:label", "Setting visibility")
-                        font: UM.Theme.getFont("default_bold")
-                    }
-                    Row
-                    {
-                        width: parent.width
-                        height: childrenRect.height
-                        UM.Label
+                        WorkspaceRow
                         {
-                            text: catalog.i18nc("@action:label", "Mode")
-                            width: (parent.width / 3) | 0
+                            leftLabelText: catalog.i18nc("@action:label", "Mode")
+                            rightLabelText: manager.activeMode
                         }
-                        UM.Label
+
+                        WorkspaceRow
                         {
-                            text: manager.activeMode
-                            width: (parent.width / 3) | 0
-                        }
-                    }
-                    Row
-                    {
-                        width: parent.width
-                        height: childrenRect.height
-                        visible: manager.hasVisibleSettingsField
-                        UM.Label
-                        {
-                            text: catalog.i18nc("@action:label", "Visible settings:")
-                            width: (parent.width / 3) | 0
-                        }
-                        UM.Label
-                        {
-                            text: catalog.i18nc("@action:label", "%1 out of %2" ).arg(manager.numVisibleSettings).arg(manager.totalNumberOfSettings)
-                            width: (parent.width / 3) | 0
+                            leftLabelText: catalog.i18nc("@action:label", "%1 out of %2" ).arg(manager.numVisibleSettings).arg(manager.totalNumberOfSettings)
+                            rightLabelText: manager.activeMode
+                            visible: manager.hasVisibleSettingsField
                         }
                     }
                 }
 
                 Row
                 {
+                    id: clearBuildPlateWarning
                     width: parent.width
                     height: childrenRect.height
+                    spacing: UM.Theme.getSize("default_margin").width
                     visible: manager.hasObjectsOnPlate
+
                     UM.ColorImage
                     {
                         width: warningLabel.height
@@ -459,14 +311,18 @@ UM.Dialog
         color: warning ? UM.Theme.getColor("warning") : "transparent"
         anchors.bottom: parent.bottom
         width: parent.width
-        height: childrenRect.height + 2 * base.margin
+        height: childrenRect.height + (warning ? 2 * workspaceDialog.margin : workspaceDialog.margin)
 
         Column
         {
             height: childrenRect.height
-            spacing: base.margin
+            spacing: workspaceDialog.margin
 
-            anchors.margins: base.margin
+            anchors.leftMargin: workspaceDialog.margin
+            anchors.rightMargin: workspaceDialog.margin
+            anchors.bottomMargin: workspaceDialog.margin
+            anchors.topMargin: warning ? workspaceDialog.margin : 0
+
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.top: parent.top
@@ -476,7 +332,7 @@ UM.Dialog
                 id: warningRow
                 height: childrenRect.height
                 visible: warning
-                spacing: base.margin
+                spacing: workspaceDialog.margin
                 UM.ColorImage
                 {
                     width: UM.Theme.getSize("extruder_icon").width
@@ -500,7 +356,7 @@ UM.Dialog
         }
     }
 
-    buttonSpacing: UM.Theme.getSize("default_margin").width
+    buttonSpacing: UM.Theme.getSize("wide_margin").width
 
     rightButtons: [
         Cura.TertiaryButton
@@ -532,6 +388,19 @@ UM.Dialog
         }
     ]
 
+    onClosing: manager.notifyClosed()
     onRejected: manager.onCancelButtonClicked()
     onAccepted: manager.onOkButtonClicked()
+    onVisibleChanged:
+    {
+        if (visible)
+        {
+            // Force relead the comboboxes
+            // Since this dialog is only created once the first time you open it, these comboxes need to be reloaded
+            // each time it is shown after the first time so that the indexes will update correctly.
+            materialSection.reloadValues()
+            profileSection.reloadValues()
+            printerSection.reloadValues()
+        }
+    }
 }

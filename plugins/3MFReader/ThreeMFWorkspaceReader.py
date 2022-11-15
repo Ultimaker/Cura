@@ -9,6 +9,7 @@ from typing import cast, Dict, List, Optional, Tuple, Any, Set
 
 import xml.etree.ElementTree as ET
 
+from UM.Util import parseBool
 from UM.Workspace.WorkspaceReader import WorkspaceReader
 from UM.Application import Application
 
@@ -600,6 +601,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._dialog.setActiveMode(active_mode)
         self._dialog.setUpdatableMachines(updatable_machines)
         self._dialog.setMachineName(machine_name)
+        self._dialog.setIsNetworkedMachine(existing_global_stack.hasNetworkedConnection())
+        self._dialog.setIsAbstractMachine(parseBool(existing_global_stack.getMetaDataEntry("is_abstract_machine", False)))
+        self._dialog.setMachineToOverride(global_stack_id)
         self._dialog.setMaterialLabels(material_labels)
         self._dialog.setMachineType(machine_type)
         self._dialog.setExtruders(extruders)

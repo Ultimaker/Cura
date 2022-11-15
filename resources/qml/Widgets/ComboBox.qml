@@ -18,6 +18,8 @@ ComboBox
     property var defaultTextOnEmptyModel: catalog.i18nc("@label", "No items to select from")  // Text displayed in the combobox when the model is empty
     property var defaultTextOnEmptyIndex: ""  // Text displayed in the combobox when the model has items but no item is selected
     property alias textFormat: contentLabel.textFormat
+    property alias backgroundColor: background.color
+    property bool forceHighlight: false
 
     enabled: delegateModel.count > 0
 
@@ -45,7 +47,7 @@ ComboBox
         State
         {
             name: "highlighted"
-            when: (base.hovered || control.hovered) && !control.activeFocus
+            when: (control.hovered && !control.activeFocus) || forceHighlight
             PropertyChanges
             {
                 target: background
@@ -56,6 +58,7 @@ ComboBox
 
     background: UM.UnderlineBackground
     {
+        id: background
         // Rectangle for highlighting when this combobox needs to pulse.
         Rectangle
         {
