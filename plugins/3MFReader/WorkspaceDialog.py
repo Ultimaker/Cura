@@ -67,7 +67,7 @@ class WorkspaceDialog(QObject):
         self._plugin_registry: PluginRegistry = CuraApplication.getInstance().getPluginRegistry()
         self._install_missing_package_dialog: Optional[QObject] = None
         self._is_abstract_machine = False
-        self._is_online_machine = False
+        self._is_networked_machine = False
 
     machineConflictChanged = pyqtSignal()
     qualityChangesConflictChanged = pyqtSignal()
@@ -182,11 +182,11 @@ class WorkspaceDialog(QObject):
 
     @pyqtProperty(bool, notify = isNetworkedChanged)
     def isNetworked(self) -> bool:
-        return self._is_online_machine
+        return self._is_networked_machine
 
     @pyqtSlot(bool)
-    def setIsNetworkedMachine(self, is_online_machine: bool) -> None:
-        self._is_online_machine = is_online_machine
+    def setIsNetworkedMachine(self, is_networked_machine: bool) -> None:
+        self._is_networked_machine = is_networked_machine
         self.isNetworkedChanged.emit()
 
     @pyqtProperty(str, notify=qualityTypeChanged)
