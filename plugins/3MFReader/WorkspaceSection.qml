@@ -50,7 +50,7 @@ Item
     Item
     {
         id: comboboxTooltip
-        width: (parent.width / 2.5) | 0
+        width: Math.round(parent.width / 2.5)
         height: visible ? UM.Theme.getSize("default_margin").height : 0
         anchors.top: parent.top
         anchors.right: parent.right
