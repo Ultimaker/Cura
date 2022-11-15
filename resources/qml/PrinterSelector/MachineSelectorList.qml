@@ -28,6 +28,8 @@ ListView
                     return catalog.i18nc("@label", "Connected printers");
                 case "other":
                     return catalog.i18nc("@label", "Other printers");
+                default:
+                    return catalog.i18nc("@label", "Other printers");
             }
         }
         height: UM.Theme.getSize("action_button").height
