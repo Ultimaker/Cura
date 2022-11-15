@@ -82,7 +82,7 @@ class WorkspaceDialog(QObject):
     machineNameChanged = pyqtSignal()
     updatableMachinesChanged = pyqtSignal()
     isAbstractMachineChanged = pyqtSignal()
-    isOnlineChanged = pyqtSignal()
+    isNetworkedChanged = pyqtSignal()
     materialLabelsChanged = pyqtSignal()
     objectsOnPlateChanged = pyqtSignal()
     numUserSettingsChanged = pyqtSignal()
@@ -180,14 +180,14 @@ class WorkspaceDialog(QObject):
         self._is_abstract_machine = is_abstract_machine
         self.isAbstractMachineChanged.emit()
 
-    @pyqtProperty(bool, notify = isOnlineChanged)
-    def isOnline(self) -> bool:
+    @pyqtProperty(bool, notify = isNetworkedChanged)
+    def isNetworked(self) -> bool:
         return self._is_online_machine
 
     @pyqtSlot(bool)
     def setIsNetworkedMachine(self, is_online_machine: bool) -> None:
         self._is_online_machine = is_online_machine
-        self.isOnlineChanged.emit()
+        self.isNetworkedChanged.emit()
 
     @pyqtProperty(str, notify=qualityTypeChanged)
     def qualityType(self) -> str:

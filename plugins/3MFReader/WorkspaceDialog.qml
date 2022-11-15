@@ -114,7 +114,7 @@ UM.Dialog
 
                         isConnectedCloudPrinter: false
                         isCloudRegistered: false
-                        isNetworkPrinter: manager.isOnline
+                        isNetworkPrinter: manager.isNetworked
                         isGroup: manager.isAbstractMachine
 
                         minDropDownWidth: machineSelector.width
@@ -144,7 +144,7 @@ UM.Dialog
                             manager.setResolveStrategy("machine", "override")
                             manager.setMachineToOverride(machine.id)
                             manager.setIsAbstractMachine(machine.isAbstractMachine)
-                            manager.setIsNetworkedMachine(machine.isOnline)
+                            manager.setIsNetworkedMachine(machine.isNetworked)
                             machineSelector.machineName = machine.name
                         }
                     }

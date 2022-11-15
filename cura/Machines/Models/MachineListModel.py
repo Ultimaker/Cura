@@ -5,7 +5,7 @@
 # online cloud connected printers are represented within this ListModel. Additional information such as the number of
 # connected printers for each printer type is gathered.
 
-from typing import Optional, List
+from typing import Optional, List, cast
 
 from PyQt6.QtCore import Qt, QTimer, QObject, pyqtSlot, pyqtProperty, pyqtSignal
 
@@ -28,6 +28,7 @@ class MachineListModel(ListModel):
     MachineCountRole = Qt.ItemDataRole.UserRole + 6
     IsAbstractMachineRole = Qt.ItemDataRole.UserRole + 7
     ComponentTypeRole = Qt.ItemDataRole.UserRole + 8
+    IsNetworkedMachineRole = Qt.ItemDataRole.UserRole + 9
 
     def __init__(self, parent: Optional[QObject] = None, machines_filter: List[GlobalStack] = None, listenToChanges: bool = True) -> None:
         super().__init__(parent)
@@ -45,6 +46,7 @@ class MachineListModel(ListModel):
         self.addRoleName(self.MachineCountRole, "machineCount")
         self.addRoleName(self.IsAbstractMachineRole, "isAbstractMachine")
         self.addRoleName(self.ComponentTypeRole, "componentType")
+        self.addRoleName(self.IsNetworkedMachineRole, "isNetworked")
 
         self._change_timer = QTimer()
         self._change_timer.setInterval(200)
@@ -151,6 +153,7 @@ class MachineListModel(ListModel):
             "metadata": container_stack.getMetaData().copy(),
             "isOnline": is_online,
             "isAbstractMachine": parseBool(container_stack.getMetaDataEntry("is_abstract_machine", False)),
+            "isNetworked": cast(GlobalStack, container_stack).hasNetworkedConnection() if isinstance(container_stack, GlobalStack) else False,
             "machineCount": machine_count,
             "catergory": "connected" if is_online else "other",
         })
