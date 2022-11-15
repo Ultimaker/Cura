@@ -116,6 +116,7 @@ UM.Dialog
                         isCloudRegistered: false
                         isNetworkPrinter: manager.isNetworked
                         isGroup: manager.isAbstractMachine
+                        connectionStatus: ""
 
                         minDropDownWidth: machineSelector.width
 

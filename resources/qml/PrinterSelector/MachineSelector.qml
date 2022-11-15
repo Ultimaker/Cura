@@ -33,7 +33,7 @@ Cura.ExpandablePopup
 
     property list<Item> buttons
 
-    readonly property string connectionStatus: {
+    property string connectionStatus: {
         if (isNetworkPrinter)
         {
             return "printer_connected"
@@ -148,7 +148,7 @@ Cura.ExpandablePopup
 
             color: connectionStatus == "printer_cloud_not_available" ? UM.Theme.getColor("cloud_unavailable") : UM.Theme.getColor("primary")
 
-            visible: isNetworkPrinter || isCloudRegistered
+            visible: (isNetworkPrinter || isCloudRegistered) && source != ""
 
             // Make a themable circle in the background so we can change it in other themes
             Rectangle
