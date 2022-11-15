@@ -2196,8 +2196,8 @@
                 },
                 "gradual_infill":
                 {
-                    "label": "Increase top infill",
-                    "description": "The infill density below the top surface is gradually increased to better support the top layers.",
+                    "label": "Increase Top Infill",
+                    "description": "The infill density below the top surface is gradually increased to better support the top layers. (Previously known as Gradual Infill.)",
                     "type": "bool",
                     "default_value": false,
                     "enabled": "infill_sparse_density > 0 and infill_pattern not in ['cubicsubdiv', 'cross', 'cross_3d', 'lightning']",
@@ -2207,8 +2207,8 @@
                     {
                         "gradual_infill_steps":
                         {
-                            "label": "Top infill steps",
-                            "description": "Number of times to double the infill density when getting towards the top surfaces.",
+                            "label": "Top Infill Steps",
+                            "description": "Number of times to double the infill density when getting towards the top surfaces. (Previously known as Gradual Infill Steps.)",
                             "default_value": 2,
                             "type": "int",
                             "minimum_value": "1",
@@ -2219,8 +2219,8 @@
                         },
                         "gradual_infill_step_height":
                         {
-                            "label": "Top infill step height",
-                            "description": "The height of infill of a given density before switching to double the density.",
+                            "label": "Top Infill Step Height",
+                            "description": "The height of infill of a given density before switching to double the density. (Previously known as Gradual Infill Step Height.)",
                             "unit": "mm",
                             "type": "float",
                             "default_value": 1.5,
@@ -4990,33 +4990,46 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "gradual_support_infill_steps":
+                "gradual_support_infill":
                 {
-                    "label": "Gradual Support Infill Steps",
-                    "description": "Number of times to reduce the support infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Support Infill Density.",
-                    "default_value": 0,
-                    "type": "int",
-                    "minimum_value": "0",
-                    "maximum_value_warning": "1 if (support_pattern == 'cross' or support_pattern == 'lines' or support_pattern == 'concentric') else 5",
-                    "maximum_value": "999999 if support_line_distance == 0 else (20 - math.log(support_line_distance) / math.log(2))",
-                    "enabled": "(support_enable or support_meshes_present) and support_infill_rate > 0",
-                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "label": "Increase Support Top Infill",
+                    "description": "The infill density at the top of the support is gradually increased to better support the support interface layers or the model. (Previously known as Gradual Support Infill.)",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "(support_enable or support_meshes_present) and support_infill_rate > 0 and support_pattern not in ['cubicsubdiv', 'cross', 'cross_3d', 'lightning']",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
-                "gradual_support_infill_step_height":
-                {
-                    "label": "Gradual Support Infill Step Height",
-                    "description": "The height of support infill of a given density before switching to half the density.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default_value": 1,
-                    "minimum_value": "0.0001",
-                    "minimum_value_warning": "3 * resolveOrValue('layer_height')",
-                    "enabled": "(support_enable or support_meshes_present) and support_infill_rate > 0 and gradual_support_infill_steps > 0",
-                    "limit_to_extruder": "support_infill_extruder_nr",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
+                    "settable_per_extruder": true,
+                    "children":
+                    {
+                        "gradual_support_infill_steps":
+                        {
+                            "label": "Top Support Infill Steps",
+                            "description": "Number of times to double the infill density when getting towards the top surfaces. (Previously known as Gradual Support Infill Steps.)",
+                            "default_value": 2,
+                            "type": "int",
+                            "minimum_value": "0",
+                            "maximum_value_warning": "5",
+                            "maximum_value": "math.log(100/support_infill_rate)/math.log(2)",
+                            "enabled": "gradual_support_infill",
+                            "limit_to_extruder": "support_infill_extruder_nr",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        },
+                        "gradual_support_infill_step_height":
+                        {
+                            "label": "Top Support Infill Step Height",
+                            "description": "The height of infill of a given density before switching to double the density. (Previously known as Gradual Support Infill Step Height.)",
+                            "unit": "mm",
+                            "type": "float",
+                            "default_value": 1,
+                            "minimum_value": "0.0001",
+                            "minimum_value_warning": "3 * resolveOrValue('layer_height')",
+                            "enabled": "gradual_support_infill",
+                            "limit_to_extruder": "support_infill_extruder_nr",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        }
+                    }
                 },
                 "minimum_support_area": 
                 {
