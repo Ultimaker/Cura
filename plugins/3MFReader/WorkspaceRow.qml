@@ -21,14 +21,14 @@ Row
     {
         id: leftLabel
         text: catalog.i18nc("@action:label", "Type")
-        width: (parent.width / 4) | 0
+        width: Math.round(parent.width / 4)
         wrapMode: Text.WordWrap
     }
     UM.Label
     {
         id: rightLabel
         text: manager.machineType
-        width: (parent.width / 3) | 0
+        width: Math.round(parent.width / 3)
         wrapMode: Text.WordWrap
     }
 }

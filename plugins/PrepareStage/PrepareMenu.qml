@@ -91,7 +91,7 @@ Item
                         fixedWidthMode: true
                         // The maximum width of the button is half of the total space, minus the padding of the parent, the right
                         // padding of the component and half the spacing because of the space between buttons.
-                        width: parent.width / 2 - rightPadding * 1.5
+                        width: Math.round(parent.width / 2 - rightPadding * 1.5)
                         onClicked:
                         {
                             machineSelection.toggleContent()
