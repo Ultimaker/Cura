@@ -4682,6 +4682,54 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "support_interface_wall_count":
+                {
+                    "label": "Support Interface Wall Line Count",
+                    "description": "The number of walls with which to surround support interface. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used.",
+                    "default_value": 0,
+                    "minimum_value": "0",
+                    "minimum_value_warning": "0",
+                    "maximum_value_warning": "0 if (support_skip_some_zags and support_interface_pattern == 'zigzag') else 3",
+                    "maximum_value": "999999",
+                    "type": "int",
+                    "value": "1 if (support_interface_pattern == 'zigzag') else 0",
+                    "enabled": "support_interface_enable or support_meshes_present",
+                    "limit_to_extruder": "support_interface_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "children": {
+                        "support_roof_wall_count": {
+                            "label": "Support Roof Wall Line Count",
+                            "description": "The number of walls with which to surround support interface roof. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used.",
+                            "default_value": 0,
+                            "minimum_value": "0",
+                            "minimum_value_warning": "0",
+                            "maximum_value_warning": "0 if (support_skip_some_zags and support_interface_pattern == 'zigzag') else 3",
+                            "maximum_value": "999999",
+                            "type": "int",
+                            "value": "support_interface_wall_count",
+                            "enabled": "support_interface_enable or support_meshes_present",
+                            "limit_to_extruder": "support_interface_extruder_nr",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        },
+                        "support_bottom_wall_count": {
+                            "label": "Support Bottom Wall Line Count",
+                            "description": "The number of walls with which to surround support interface floor. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used.",
+                            "default_value": 0,
+                            "minimum_value": "0",
+                            "minimum_value_warning": "0",
+                            "maximum_value_warning": "0 if (support_skip_some_zags and support_interface_pattern == 'zigzag') else 3",
+                            "maximum_value": "999999",
+                            "type": "int",
+                            "value": "support_interface_wall_count",
+                            "enabled": "support_interface_enable or support_meshes_present",
+                            "limit_to_extruder": "support_interface_extruder_nr",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        }
+                    }
+                },
                 "zig_zaggify_support":
                 {
                     "label": "Connect Support Lines",
