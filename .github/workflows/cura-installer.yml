@@ -31,21 +31,6 @@ on:
                 required: true
                 default: true
                 type: boolean
-            create_binaries_windows:
-                description: 'Installer for Windows'
-                required: true
-                default: true
-                type: boolean
-            create_binaries_linux:
-                description: 'Installer for Linux'
-                required: true
-                default: true
-                type: boolean
-            create_binaries_macos:
-                description: 'Installer for MacOs'
-                required: true
-                default: true
-                type: boolean
 
     # Run the nightly at 3:25 UTC on working days
     #FIXME: Provide the same default values as the workflow dispatch
@@ -71,7 +56,6 @@ env:
     CURA_CONAN_VERSION: ${{ inputs.cura_conan_version }}
     ENTERPRISE: ${{ inputs.enterprise }}
     STAGING: ${{ inputs.staging }}
-    OS_NAME: 'unknown-os'
 
 jobs:
     cura-installer-create:
@@ -80,20 +64,15 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                os: [macos-11, windows-2022, ubuntu-20.04, ubuntu-22.04]
-                exclude:
-                    - os: ${{ inputs.create_binaries_macos && '' || 'macos-11' }}
-                    - os: ${{ inputs.create_binaries_windows && '' || 'windows-2022' }}
-                    - os: ${{ inputs.create_binaries_linux && '' || 'ubuntu-20.04' }}
-                    - os: ${{ inputs.create_binaries_linux && '' || 'ubuntu-22.04' }}
+                include:
+                    - { os: macos-11, os_id: 'mac' }
+                    - { os: windows-2022, os_id: 'win64' }
+                    - { os: ubuntu-20.04, os_id: 'linux' }
+                    - { os: ubuntu-22.04, os_id: 'linux-modern' }
 
         steps:
             -   name: Checkout
                 uses: actions/checkout@v3
-
-            -   name: Get OS-id String
-                run: |
-                    echo "OS_NAME=${{ (matrix.os == 'macos-11' && 'mac') || (matrix.os == 'windows-2022' && 'win64') || (matrix.os == 'ubuntu-20.04' && 'linux')  || (matrix.os == 'ubuntu-22.04' && 'linux-modern') || matrix.os }}" >> $GITHUB_ENV
 
             -   name: Setup Python and pip
                 uses: actions/setup-python@v4
@@ -238,34 +217,34 @@ jobs:
 
             -   name: Archive the artifacts (bash)
                 if: ${{ github.event.inputs.installer == 'false' && runner.os != 'Windows' }}
-                run: tar -zcf "./Ultimaker-Cura-$CURA_VERSION_FULL-${{ env.OS_NAME }}.tar.gz" "./Ultimaker-Cura/"
+                run: tar -zcf "./Ultimaker-Cura-$CURA_VERSION_FULL-${{ matrix.os_id }}.tar.gz" "./Ultimaker-Cura/"
                 working-directory: dist
 
             -   name: Archive the artifacts (Powershell)
                 if: ${{ github.event.inputs.installer == 'false' && runner.os == 'Windows' }}
-                run: Compress-Archive -Path ".\Ultimaker-Cura" -DestinationPath ".\Ultimaker-Cura-$Env:CURA_VERSION_FULL-${{ env.OS_NAME }}.zip"
+                run: Compress-Archive -Path ".\Ultimaker-Cura" -DestinationPath ".\Ultimaker-Cura-$Env:CURA_VERSION_FULL-${{ matrix.os_id }}.zip"
                 working-directory: dist
 
             -   name: Create the Windows exe installer (Powershell)
                 if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Windows' }}
                 run: |
-                    python ..\cura_inst\packaging\NSIS\create_windows_installer.py ../cura_inst . "Ultimaker-Cura-$Env:CURA_VERSION_FULL-${{ env.OS_NAME }}.exe"
+                    python ..\cura_inst\packaging\NSIS\create_windows_installer.py ../cura_inst . "Ultimaker-Cura-$Env:CURA_VERSION_FULL-${{ matrix.os_id }}.exe"
                 working-directory: dist
 
             -   name: Create the Linux AppImage (Bash)
                 if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Linux' }}
-                run: python ../cura_inst/packaging/AppImage/create_appimage.py ./Ultimaker-Cura $CURA_VERSION_FULL "Ultimaker-Cura-$CURA_VERSION_FULL-${{ env.OS_NAME }}.AppImage"
+                run: python ../cura_inst/packaging/AppImage/create_appimage.py ./Ultimaker-Cura $CURA_VERSION_FULL "Ultimaker-Cura-$CURA_VERSION_FULL-${{ matrix.os_id }}.AppImage"
                 working-directory: dist
 
             -   name: Create the MacOS dmg (Bash)
                 if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Macos' }}
-                run: python ../cura_inst/packaging/dmg/dmg_sign_noterize.py ../cura_inst . "Ultimaker-Cura-$CURA_VERSION_FULL-${{ env.OS_NAME }}.dmg"
+                run: python ../cura_inst/packaging/dmg/dmg_sign_noterize.py ../cura_inst . "Ultimaker-Cura-$CURA_VERSION_FULL-${{ matrix.os_id }}.dmg"
                 working-directory: dist
 
             -   name: Upload the artifacts
                 uses: actions/upload-artifact@v3
                 with:
-                    name: Ultimaker-Cura-${{ env.CURA_VERSION_FULL }}-${{ env.OS_NAME }}
+                    name: Ultimaker-Cura-${{ env.CURA_VERSION_FULL }}-${{ matrix.os_id }}
                     path: |
                         dist/*.tar.gz
                         dist/*.zip

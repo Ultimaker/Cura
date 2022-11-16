@@ -12,17 +12,14 @@ on:
             create_binaries_windows:
                 required: true
                 default: false
-                type: boolean
                 description: 'create binaries Windows'
             create_binaries_linux:
                 required: true
                 default: false
-                type: boolean
                 description: 'create binaries Linux'
             create_binaries_macos:
                 required: true
                 default: false
-                type: boolean
                 description: 'create binaries Macos'
 
     push:
