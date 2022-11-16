@@ -129,12 +129,11 @@ UM.Dialog
                                 width: parent.width - leftPadding * 1.5
                                 onClicked:
                                 {
+                                    toggleContent()
+                                    manager.setResolveStrategy("machine", "new")
                                     machineSelector.machineName = catalog.i18nc("@button", "Create new")
                                     manager.setIsAbstractMachine(false)
                                     manager.setIsNetworkedMachine(false)
-
-                                    toggleContent()
-                                    manager.setResolveStrategy("machine", "new")
                                 }
                             }
                         ]
@@ -142,11 +141,11 @@ UM.Dialog
                         onSelectPrinter: function(machine)
                         {
                             toggleContent();
+                            machineSelector.machineName = machine.name
                             manager.setResolveStrategy("machine", "override")
                             manager.setMachineToOverride(machine.id)
                             manager.setIsAbstractMachine(machine.isAbstractMachine)
                             manager.setIsNetworkedMachine(machine.isNetworked)
-                            machineSelector.machineName = machine.name
                         }
                     }
                 }

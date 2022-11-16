@@ -600,9 +600,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._dialog.setNumUserSettings(num_user_settings)
         self._dialog.setActiveMode(active_mode)
         self._dialog.setUpdatableMachines(updatable_machines)
-        self._dialog.setMachineName(machine_name)
-        self._dialog.setIsNetworkedMachine(existing_global_stack.hasNetworkedConnection())
-        self._dialog.setIsAbstractMachine(parseBool(existing_global_stack.getMetaDataEntry("is_abstract_machine", False)))
         self._dialog.setMachineToOverride(global_stack_id)
         self._dialog.setMaterialLabels(material_labels)
         self._dialog.setMachineType(machine_type)
@@ -611,6 +608,33 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._dialog.setHasObjectsOnPlate(Application.getInstance().platformActivity)
         self._dialog.setMissingPackagesMetadata(missing_package_metadata)
         self._dialog.show()
+
+        # Choosing the initially selected printer in MachineSelector
+        is_networked_machine = False
+        is_abstract_machine = False
+        if global_stack and isinstance(global_stack, GlobalStack):
+            # The machine included in the project file exists locally already, no need to change selected printers.
+            is_networked_machine = global_stack.hasNetworkedConnection()
+            is_abstract_machine = parseBool(existing_global_stack.getMetaDataEntry("is_abstract_machine", False))
+        elif self._dialog.updatableMachinesModel.count > 0:
+            # The machine included in the project file does not exist. There is another machine of the same type.
+            # This will always default to an abstract machine first.
+            machine = self._dialog.updatableMachinesModel.getItem(0)
+            machine_name = machine["name"]
+            is_networked_machine = machine["isNetworked"]
+            is_abstract_machine = machine["isAbstractMachine"]
+            self._dialog.setResolveStrategy("machine", "override")
+            self._dialog.setMachineToOverride(machine["id"])
+        else:
+            # The machine included in the project file does not exist. There are no other printers of the same type. Default to "Create New".
+            machine_name = i18n_catalog.i18nc("@button", "Create new")
+            self._dialog.setIsAbstractMachine(False)
+            self._dialog.setIsNetworkedMachine(False)
+            self._dialog.setResolveStrategy("machine", "new")
+
+        self._dialog.setIsNetworkedMachine(is_networked_machine)
+        self._dialog.setIsAbstractMachine(is_abstract_machine)
+        self._dialog.setMachineName(machine_name)
 
         # Block until the dialog is closed.
         self._dialog.waitForClose()
@@ -674,7 +698,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         temp_preferences = Preferences()
         try:
             serialized = archive.open("Cura/preferences.cfg").read().decode("utf-8")
-        except KeyError:
+        except KeyError as e:
             # If there is no preferences file, it's not a workspace, so notify user of failure.
             Logger.log("w", "File %s is not a valid workspace.", file_name)
             message = Message(i18n_catalog.i18nc("@info:error Don't translate the XML tags <filename> or <message>!",
