@@ -128,14 +128,14 @@
     "jerk_infill": { "value": 30 },
     "jerk_print": { "value": 15 },
     "jerk_travel": { "value": 15 },
-    "speed_print": { "value": 250.0, "maximum_value_warning": 250 },
+    "speed_print": { "value": 250.0, "maximum_value_warning": 300 },
     "speed_infill": { "maximum_value_warning": 300 },
     "speed_topbottom": { "value": 150.0 },
     "speed_travel_layer_0": { "value": 250.0 },
     "speed_travel": { "value": "speed_travel_layer_0" },
-    "speed_wall": { "value": 150.0, "maximum_value_warning": 250 },
-    "speed_wall_0": { "value": 150.0, "maximum_value_warning": 250 },
-    "speed_wall_x": { "value": 250.0, "maximum_value_warning": 250 },
+    "speed_wall": { "value": 150.0, "maximum_value_warning": 300 },
+    "speed_wall_0": { "value": 150.0, "maximum_value_warning": 300 },
+    "speed_wall_x": { "value": 250.0, "maximum_value_warning": 300 },
     "material_flow_layer_0": { "value": 120 },
     "skin_monotonic": { "value": true },
     "cool_min_layer_time": { "value": 6 },
@@ -150,6 +150,14 @@
     "raft_airgap": { "default_value": 0.25 },
     "brim_width": { "default_value": 5 },
     "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+    "machine_head_with_fans_polygon": {
+      "default_value": [
+        [-50, 25],
+        [-50, -60],
+        [50, 25],
+        [50, -60]
+      ]
+    },
     "machine_start_gcode": {
       "default_value": "G28 ;Home\nG1 Z15.0 F6000 ;Move the platform down 15mm\n;Prime the extruder\nG92 E0\nG1 F200 E3\nG92 E0"
     },
