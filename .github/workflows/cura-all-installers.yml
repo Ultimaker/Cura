@@ -8,43 +8,46 @@ on:
                 description: 'Cura Conan Version'
                 default: 'cura/latest@ultimaker/testing'
                 required: true
+                type: string
             conan_args:
                 description: 'Conan args: eq.: --require-override'
                 default: ''
                 required: false
+                type: string
             conan_config:
                 description: 'Conan config branch to use'
                 default: ''
                 required: false
+                type: string
             enterprise:
                 description: 'Build Cura as an Enterprise edition'
-                required: true
                 default: false
+                required: true
                 type: boolean
             staging:
                 description: 'Use staging API'
-                required: true
                 default: false
+                required: true
                 type: boolean
             installer:
                 description: 'Create the installer'
-                required: true
                 default: true
+                required: true
                 type: boolean
             build_windows:
                 description: 'Build for Windows'
-                required: true
                 default: true
+                required: true
                 type: boolean
             build_linux:
                 description: 'Build for Linux'
-                required: true
                 default: true
+                required: true
                 type: boolean
             build_macos:
                 description: 'Build for MacOs'
-                required: true
                 default: true
+                required: true
                 type: boolean
 
     # Run the nightly at 3:25 UTC on working days

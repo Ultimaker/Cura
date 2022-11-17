@@ -8,36 +8,41 @@ on:
                 description: 'Selected Installer OS'
                 default: 'ubuntu-20.04'
                 required: true
+                type: string
             os_name:
                 description: 'OS Friendly Name'
                 default: 'linux'
                 required: true
+                type: string
             cura_conan_version:
                 description: 'Cura Conan Version'
                 default: 'cura/latest@ultimaker/testing'
                 required: true
+                type: string
             conan_args:
                 description: 'Conan args: eq.: --require-override'
                 default: ''
                 required: false
+                type: string
             conan_config:
                 description: 'Conan config branch to use'
                 default: ''
                 required: false
+                type: string
             enterprise:
                 description: 'Build Cura as an Enterprise edition'
-                required: true
                 default: false
+                required: true
                 type: boolean
             staging:
                 description: 'Use staging API'
-                required: true
                 default: false
+                required: true
                 type: boolean
             installer:
                 description: 'Create the installer'
-                required: true
                 default: true
+                required: true
                 type: boolean
 
 env:
