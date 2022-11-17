@@ -1,12 +1,10 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Cura
+# Copyright (C) 2022 Ultimaker B.V.
+# This file is distributed under the same license as the Cura package.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: Cura 5.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-27 14:50+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
@@ -150,13 +148,13 @@ msgctxt "@label Don't translate the XML tag <filename>!"
 msgid ""
 "The file <filename>{0}</filename> already exists. Are you sure you want to "
 "overwrite it?"
-msgstr "Le fichier <filename>{0}</filename> existe déjà. Êtes-vous sûr de vouloir le remplacer ?"
+msgstr "Le fichier <filename>{0}</filename> existe déjà. Êtes-vous sûr de vouloir le remplacer?"
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/Settings/ContainerManager.py:459
 #: /Users/c.lamboo/ultimaker/Cura/cura/Settings/ContainerManager.py:462
 msgctxt "@info:status"
 msgid "Invalid file URL:"
-msgstr "URL de fichier invalide :"
+msgstr "URL de fichier invalide:"
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/Settings/cura_empty_instance_containers.py:36
 msgctxt "@info:not supported profile"
@@ -166,7 +164,7 @@ msgstr "Non pris en charge"
 #: /Users/c.lamboo/ultimaker/Cura/cura/Settings/cura_empty_instance_containers.py:55
 msgctxt "@info:No intent profile selected"
 msgid "Default"
-msgstr "Default"
+msgstr "Défaut"
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/Settings/MachineManager.py:745
 #: /Users/c.lamboo/ultimaker/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:219
@@ -178,7 +176,7 @@ msgstr "Buse"
 msgctxt "@info:message Followed by a list of settings."
 msgid ""
 "Settings have been changed to match the current availability of extruders:"
-msgstr "Les paramètres ont été modifiés pour correspondre aux extrudeuses actuellement disponibles :"
+msgstr "Les paramètres ont été modifiés pour correspondre aux extrudeuses actuellement disponibles:"
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/Settings/MachineManager.py:890
 msgctxt "@info:title"
@@ -212,7 +210,7 @@ msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid ""
 "Failed to export profile to <filename>{0}</filename>: Writer plugin reported "
 "failure."
-msgstr "Échec de l'exportation du profil vers <filename>{0}</filename> : le plug-in du générateur a rapporté une erreur."
+msgstr "Échec de l'exportation du profil vers <filename>{0}</filename>: le plugin du générateur a rapporté une erreur."
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/Settings/CuraContainerRegistry.py:171
 #, python-brace-format
@@ -229,7 +227,7 @@ msgstr "L'exportation a réussi"
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>: {1}"
-msgstr "Impossible d'importer le profil depuis <filename>{0}</filename> : {1}"
+msgstr "Impossible d'importer le profil depuis <filename>{0}</filename>: {1}"
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/Settings/CuraContainerRegistry.py:209
 #, python-brace-format
@@ -248,7 +246,7 @@ msgstr "Aucun profil personnalisé à importer dans le fichier <filename>{0}</fi
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
-msgstr "Échec de l'importation du profil depuis le fichier <filename>{0}</filename> :"
+msgstr "Échec de l'importation du profil depuis le fichier <filename>{0}</filename>:"
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/Settings/CuraContainerRegistry.py:252
 #: /Users/c.lamboo/ultimaker/Cura/cura/Settings/CuraContainerRegistry.py:262
@@ -309,7 +307,7 @@ msgctxt "@info:status"
 msgid ""
 "Quality type '{0}' is not compatible with the current active machine "
 "definition '{1}'."
-msgstr "Le type de qualité « {0} » n'est pas compatible avec la définition actuelle de la machine active « {1} »."
+msgstr "Le type de qualité '{0}' n'est pas compatible avec la définition actuelle de la machine active '{1}'."
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/Settings/CuraContainerRegistry.py:488
 #, python-brace-format
@@ -318,8 +316,9 @@ msgid ""
 "Warning: The profile is not visible because its quality type '{0}' is not "
 "available for the current configuration. Switch to a material/nozzle "
 "combination that can use this quality type."
-msgstr "Avertissement : le profil n'est pas visible car son type de qualité « {0} » n'est pas disponible pour la configuration actuelle. Passez à une combinaison"
-" matériau/buse qui peut utiliser ce type de qualité."
+msgstr ""
+"Avertissement: le profil n'est pas visible car son type de qualité '{0}' n'est pas disponible pour la configuration actuelle. Passez à une combinaison "
+"matériau/buse qui peut utiliser ce type de qualité."
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/MultiplyObjectsJob.py:30
 msgctxt "@info:status"
@@ -477,7 +476,7 @@ msgstr "Pas écrasé"
 #: /Users/c.lamboo/ultimaker/Cura/cura/Machines/Models/IntentSelectionModel.py:61
 msgctxt "@label"
 msgid "Default"
-msgstr "Default"
+msgstr "Défaut"
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/Machines/Models/IntentTranslations.py:14
 #: /Users/c.lamboo/ultimaker/Cura/cura/Machines/Models/IntentCategoryModel.py:45
@@ -580,7 +579,7 @@ msgstr "Imprimantes préréglées"
 #, python-brace-format
 msgctxt "@label {0} is the name of a printer that's about to be deleted."
 msgid "Are you sure you wish to remove {0}? This cannot be undone!"
-msgstr "Voulez-vous vraiment supprimer l'objet {0} ? Cette action est irréversible !"
+msgstr "Voulez-vous vraiment supprimer l'objet {0}? Cette action est irréversible!"
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/Machines/Models/MaterialManagementModel.py:232
 msgctxt "@label"
@@ -688,7 +687,7 @@ msgstr "Volume d'impression"
 #: /Users/c.lamboo/ultimaker/Cura/cura/Backups/Backup.py:115
 msgctxt "@info:backup_failed"
 msgid "Could not create archive from user data directory: {}"
-msgstr "Impossible de créer une archive à partir du répertoire de données de l'utilisateur : {}"
+msgstr "Impossible de créer une archive à partir du répertoire de données de l'utilisateur: {}"
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/Backups/Backup.py:122
 #: /Users/c.lamboo/ultimaker/Cura/cura/Backups/Backup.py:159
@@ -711,7 +710,7 @@ msgstr "A essayé de restaurer une sauvegarde Cura supérieure à la version act
 #: /Users/c.lamboo/ultimaker/Cura/cura/Backups/Backup.py:158
 msgctxt "@info:backup_failed"
 msgid "The following error occurred while trying to restore a Cura backup:"
-msgstr "L'erreur suivante s'est produite lors de la restauration d'une sauvegarde Cura :"
+msgstr "L'erreur suivante s'est produite lors de la restauration d'une sauvegarde Cura:"
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/CrashHandler.py:107
 msgctxt "@title:window"
@@ -820,25 +819,25 @@ msgstr "OpenGL"
 #: /Users/c.lamboo/ultimaker/Cura/cura/CrashHandler.py:264
 msgctxt "@label"
 msgid "Not yet initialized"
-msgstr "Non ancora inizializzato"
+msgstr "Pas encore initialisé"
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/CrashHandler.py:267
 #, python-brace-format
 msgctxt "@label OpenGL version"
 msgid "<li>OpenGL Version: {version}</li>"
-msgstr "<li>Version OpenGL : {version}</li>"
+msgstr "<li>Version OpenGL: {version}</li>"
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/CrashHandler.py:268
 #, python-brace-format
 msgctxt "@label OpenGL vendor"
 msgid "<li>OpenGL Vendor: {vendor}</li>"
-msgstr "<li>Revendeur OpenGL : {vendor}</li>"
+msgstr "<li>Revendeur OpenGL: {vendor}</li>"
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/CrashHandler.py:269
 #, python-brace-format
 msgctxt "@label OpenGL renderer"
 msgid "<li>OpenGL Renderer: {renderer}</li>"
-msgstr "<li>Moteur de rendu OpenGL : {renderer}</li>"
+msgstr "<li>Moteur de rendu OpenGL: {renderer}</li>"
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/CrashHandler.py:304
 msgctxt "@title:groupbox"
@@ -915,7 +914,7 @@ msgstr "Modifier le G-Code"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:66
 msgctxt "@info:status"
 msgid "There are no file formats available to write with!"
-msgstr "Aucun format de fichier n'est disponible pour écriture !"
+msgstr "Aucun format de fichier n'est disponible pour écriture!"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/PrintJobUploadQueueFullMessage.py:16
 msgctxt "@info:status"
@@ -961,7 +960,7 @@ msgstr[1] "... et {0} autres"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/NewPrinterDetectedMessage.py:57
 msgctxt "info:status"
 msgid "Printers added from Digital Factory:"
-msgstr "Imprimantes ajoutées à partir de Digital Factory :"
+msgstr "Imprimantes ajoutées à partir de Digital Factory:"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/PrintJobUploadBlockedMessage.py:15
 msgctxt "@info:status"
@@ -986,7 +985,7 @@ msgstr "Votre imprimante <b>{printer_name} </b> pourrait être connectée via le
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudFlowMessage.py:26
 msgctxt "@info:title"
 msgid "Are you ready for cloud printing?"
-msgstr "Êtes-vous prêt pour l'impression dans le cloud ?"
+msgstr "Êtes-vous prêt pour l'impression dans le cloud?"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudFlowMessage.py:30
 msgctxt "@action"
@@ -1060,8 +1059,8 @@ msgstr "Configurer le groupe"
 msgctxt "info:status"
 msgid "This printer is not linked to the Digital Factory:"
 msgid_plural "These printers are not linked to the Digital Factory:"
-msgstr[0] "Cette imprimante n'est pas associée à Digital Factory :"
-msgstr[1] "Ces imprimantes ne sont pas associées à Digital Factory :"
+msgstr[0] "Cette imprimante n'est pas associée à Digital Factory:"
+msgstr[1] "Ces imprimantes ne sont pas associées à Digital Factory:"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/RemovedPrintersMessage.py:22
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:422
@@ -1178,12 +1177,12 @@ msgstr "Pour supprimer {printer_name} définitivement, visitez le site {digital_
 #, python-brace-format
 msgctxt "@message {printer_name} is replaced with the name of the printer"
 msgid "Are you sure you want to remove {printer_name} temporarily?"
-msgstr "Voulez-vous vraiment supprimer {printer_name} temporairement ?"
+msgstr "Voulez-vous vraiment supprimer {printer_name} temporairement?"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:474
 msgctxt "@title:window"
 msgid "Remove printers?"
-msgstr "Supprimer des imprimantes ?"
+msgstr "Supprimer des imprimantes?"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:477
 #, python-brace-format
@@ -1196,8 +1195,8 @@ msgid_plural ""
 "You are about to remove {0} printers from Cura. This action cannot be "
 "undone.\n"
 "Are you sure you want to continue?"
-msgstr[0] "Vous êtes sur le point de supprimer {0} imprimante de Cura. Cette action est irréversible.\nVoulez-vous vraiment continuer ?"
-msgstr[1] "Vous êtes sur le point de supprimer {0} imprimantes de Cura. Cette action est irréversible.\nVoulez-vous vraiment continuer ?"
+msgstr[0] "Vous êtes sur le point de supprimer {0} imprimante de Cura. Cette action est irréversible.\nVoulez-vous vraiment continuer?"
+msgstr[1] "Vous êtes sur le point de supprimer {0} imprimantes de Cura. Cette action est irréversible.\nVoulez-vous vraiment continuer?"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:484
 msgctxt "@label"
@@ -1205,7 +1204,7 @@ msgid ""
 "You are about to remove all printers from Cura. This action cannot be "
 "undone.\n"
 "Are you sure you want to continue?"
-msgstr "Vous êtes sur le point de supprimer toutes les imprimantes de Cura. Cette action est irréversible.\nVoulez-vous vraiment continuer ?"
+msgstr "Vous êtes sur le point de supprimer toutes les imprimantes de Cura. Cette action est irréversible.\nVoulez-vous vraiment continuer?"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:276
 msgctxt "@action:button"
@@ -1221,7 +1220,7 @@ msgstr "Suivre l'impression dans Ultimaker Digital Factory"
 #, python-brace-format
 msgctxt "@error:send"
 msgid "Unknown error code when uploading print job: {0}"
-msgstr "Code d'erreur inconnu lors du téléchargement d'une tâche d'impression : {0}"
+msgstr "Code d'erreur inconnu lors du téléchargement d'une tâche d'impression: {0}"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/3MFWriter/__init__.py:28
 msgctxt "@item:inlistbox"
@@ -1241,7 +1240,7 @@ msgstr "Erreur d'écriture du fichier 3MF."
 #: /Users/c.lamboo/ultimaker/Cura/plugins/3MFWriter/ThreeMFWorkspaceWriter.py:31
 msgctxt "@error:zip"
 msgid "3MF Writer plug-in is corrupt."
-msgstr "Le plug-in 3MF Writer est corrompu."
+msgstr "Le plugin 3MF Writer est corrompu."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/3MFWriter/ThreeMFWorkspaceWriter.py:37
 msgctxt "@error"
@@ -1320,7 +1319,7 @@ msgstr "Impossible de lire le fichier de données d'exemple."
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UFPWriter/UFPWriter.py:178
 msgctxt "@info:error"
 msgid "Can't write to UFP file:"
-msgstr "Impossible d'écrire dans le fichier UFP :"
+msgstr "Impossible d'écrire dans le fichier UFP:"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UFPWriter/__init__.py:28
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UFPReader/__init__.py:22
@@ -1440,12 +1439,12 @@ msgstr "Accepter"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/CloudSync/LicenseModel.py:77
 msgctxt "@title:window"
 msgid "Plugin License Agreement"
-msgstr "Plug-in d'accord de licence"
+msgstr "Plugin d'accord de licence"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/CloudSync/CloudPackageChecker.py:144
 msgctxt "@info:generic"
 msgid "Do you want to sync material and software packages with your account?"
-msgstr "Vous souhaitez synchroniser du matériel et des logiciels avec votre compte ?"
+msgstr "Vous souhaitez synchroniser du matériel et des logiciels avec votre compte?"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/CloudSync/CloudPackageChecker.py:145
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/CloudSync/DownloadPresenter.py:95
@@ -1476,7 +1475,7 @@ msgstr "Échec de téléchargement des plugins {}"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/LocalPackageList.py:28
 msgctxt "@label"
 msgid "Installed Plugins"
-msgstr "Plug-ins installés"
+msgstr "Plugins installés"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/LocalPackageList.py:29
 msgctxt "@label"
@@ -1486,7 +1485,7 @@ msgstr "Matériaux installés"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/LocalPackageList.py:33
 msgctxt "@label"
 msgid "Bundled Plugins"
-msgstr "Plug-ins groupés"
+msgstr "Plugins groupés"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/LocalPackageList.py:34
 msgctxt "@label"
@@ -1639,7 +1638,7 @@ msgctxt "@info:status"
 msgid ""
 "Unable to slice with the current settings. The following settings have "
 "errors: {0}"
-msgstr "Impossible de couper avec les paramètres actuels. Les paramètres suivants contiennent des erreurs : {0}"
+msgstr "Impossible de couper avec les paramètres actuels. Les paramètres suivants contiennent des erreurs: {0}"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:461
 #, python-brace-format
@@ -1647,7 +1646,7 @@ msgctxt "@info:status"
 msgid ""
 "Unable to slice due to some per-model settings. The following settings have "
 "errors on one or more models: {error_labels}"
-msgstr "Impossible de couper en raison de certains paramètres par modèle. Les paramètres suivants contiennent des erreurs sur un ou plusieurs modèles : {error_labels}"
+msgstr "Impossible de couper en raison de certains paramètres par modèle. Les paramètres suivants contiennent des erreurs sur un ou plusieurs modèles: {error_labels}"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:473
 msgctxt "@info:status"
@@ -1670,8 +1669,11 @@ msgid ""
 "- Fit within the build volume\n"
 "- Are assigned to an enabled extruder\n"
 "- Are not all set as modifier meshes"
-msgstr "Veuillez vérifier les paramètres et si vos modèles :\n- S'intègrent dans le volume de fabrication\n- Sont affectés à un extrudeur activé\n- N sont pas"
-" tous définis comme des mailles de modificateur"
+msgstr ""
+"Veuillez vérifier les paramètres et si vos modèles:\n"
+"- S'intègrent dans le volume de fabrication\n"
+"- Sont affectés à un extrudeur activé\n"
+"- N sont pas tous définis comme des mailles de modificateur"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:52
 #: /Users/c.lamboo/ultimaker/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:260
@@ -1706,18 +1708,19 @@ msgid ""
 "The material used in this project relies on some material definitions not "
 "available in Cura, this might produce undesirable print results. We highly "
 "recommend installing the full material package from the Marketplace."
-msgstr "Il materiale utilizzato in questo progetto si basa su alcune definizioni di materiale non disponibili in Cura; ciò potrebbe produrre risultati di stampa"
-" indesiderati. Si consiglia vivamente di installare il pacchetto completo di materiali dal Marketplace."
+msgstr ""
+"Le matériau utilisé dans ce projet repose sur certaines définitions de matériaux non disponibles dans Cura, ce qui peut produire des résultats d’impression indésirables. Nous vous "
+"recommandons vivement d’installer l’ensemble complet des matériaux depuis le Marketplace."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/3MFReader/WorkspaceDialog.py:392
 msgctxt "@info:title"
 msgid "Material profiles not installed"
-msgstr "Profili del materiale non installati"
+msgstr "Profils des matériaux non installés"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/3MFReader/WorkspaceDialog.py:405
 msgctxt "@action:button"
 msgid "Install Materials"
-msgstr "Installa materiali"
+msgstr "Installer les matériaux"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:545
 #, python-brace-format
@@ -1740,7 +1743,7 @@ msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid ""
 "Project file <filename>{0}</filename> is suddenly inaccessible: <message>{1}"
 "</message>."
-msgstr "Le fichier de projet <filename>{0}</filename> est soudainement inaccessible : <message>{1}</message>."
+msgstr "Le fichier de projet <filename>{0}</filename> est soudainement inaccessible: <message>{1}</message>."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:651
 #: /Users/c.lamboo/ultimaker/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:659
@@ -1755,7 +1758,7 @@ msgstr "Impossible d'ouvrir le fichier de projet"
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid ""
 "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>."
-msgstr "Le fichier de projet <filename>{0}</filename> est corrompu : <message>{1}</message>."
+msgstr "Le fichier de projet <filename>{0}</filename> est corrompu: <message>{1}</message>."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:723
 #, python-brace-format
@@ -1791,9 +1794,11 @@ msgid ""
 "p>\n"
 "<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality "
 "guide</a></p>"
-msgstr "<p>Un ou plusieurs modèles 3D peuvent ne pas s'imprimer de manière optimale en raison de la taille du modèle et de la configuration matérielle :</p>\n<p>{model_names}</p>\n<p>Découvrez"
-" comment optimiser la qualité et la fiabilité de l'impression.</p>\n<p><a href=\"https://ultimaker.com/3D-model-assistant\">Consultez le guide de qualité"
-" d'impression</a></p>"
+msgstr ""
+"<p>Un ou plusieurs modèles 3D peuvent ne pas s'imprimer de manière optimale en raison de la taille du modèle et de la configuration matérielle:</p>\n"
+"<p>{model_names}</p>\n"
+"<p>Découvrez comment optimiser la qualité et la fiabilité de l'impression.</p>\n"
+"<p><a href=\"https://ultimaker.com/3D-model-assistant\">Consultez le guide de qualité d'impression</a></p>"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:42
 msgctxt "@item:inmenu"
@@ -1819,7 +1824,7 @@ msgstr "Connecté via USB"
 msgctxt "@label"
 msgid ""
 "A USB print is in progress, closing Cura will stop this print. Are you sure?"
-msgstr "Une impression USB est en cours, la fermeture de Cura arrêtera cette impression. Êtes-vous sûr ?"
+msgstr "Une impression USB est en cours, la fermeture de Cura arrêtera cette impression. Êtes-vous sûr?"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:135
 msgctxt "@message"
@@ -1926,8 +1931,9 @@ msgid ""
 "New features or bug-fixes may be available for your {machine_name}! If you "
 "haven't done so already, it is recommended to update the firmware on your "
 "printer to version {latest_version}."
-msgstr "De nouvelles fonctionnalités ou des correctifs de bugs sont disponibles pour votre {machine_name} ! Si vous ne l'avez pas encore fait, il est recommandé"
-" de mettre à jour le micrologiciel de votre imprimante avec la version {latest_version}."
+msgstr ""
+"De nouvelles fonctionnalités ou des correctifs de bugs sont disponibles pour votre {machine_name} ! Si vous ne l'avez pas encore fait, il est recommandé de mettre à jour le micrologiciel de "
+"votre imprimante avec la version {latest_version}."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerMessage.py:22
 #, python-format
@@ -2178,9 +2184,9 @@ msgid ""
 "to block more light coming through. For height maps lighter pixels signify "
 "higher terrain, so lighter pixels should correspond to thicker locations in "
 "the generated 3D model."
-msgstr "Pour les lithophanies, les pixels foncés doivent correspondre à des emplacements plus épais afin d'empêcher la lumière de passer. Pour des cartes de hauteur,"
-" les pixels clairs signifient un terrain plus élevé, de sorte que les pixels clairs doivent correspondre à des emplacements plus épais dans le modèle 3D"
-" généré."
+msgstr ""
+"Pour les lithophanies, les pixels foncés doivent correspondre à des emplacements plus épais afin d'empêcher la lumière de passer. Pour des cartes de hauteur, les pixels clairs signifient un "
+"terrain plus élevé, de sorte que les pixels clairs doivent correspondre à des emplacements plus épais dans le modèle 3D généré."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/ImageReader/ConfigUI.qml:205
 msgctxt "@action:label"
@@ -2202,8 +2208,8 @@ msgctxt "@info:tooltip"
 msgid ""
 "For lithophanes a simple logarithmic model for translucency is available. "
 "For height maps the pixel values correspond to heights linearly."
-msgstr "Pour les lithophanes, un modèle logarithmique simple de la translucidité est disponible. Pour les cartes de hauteur, les valeurs des pixels correspondent"
-" aux hauteurs de façon linéaire."
+msgstr ""
+"Pour les lithophanes, un modèle logarithmique simple de la translucidité est disponible. Pour les cartes de hauteur, les valeurs des pixels correspondent aux hauteurs de façon linéaire."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/ImageReader/ConfigUI.qml:242
 msgctxt "@action:label"
@@ -2216,8 +2222,9 @@ msgid ""
 "The percentage of light penetrating a print with a thickness of 1 "
 "millimeter. Lowering this value increases the contrast in dark regions and "
 "decreases the contrast in light regions of the image."
-msgstr "Le pourcentage de lumière pénétrant une impression avec une épaisseur de 1 millimètre. La diminution de cette valeur augmente le contraste dans les régions"
-" sombres et diminue le contraste dans les régions claires de l'image."
+msgstr ""
+"Le pourcentage de lumière pénétrant une impression avec une épaisseur de 1 millimètre. La diminution de cette valeur augmente le contraste dans les régions sombres et diminue le contraste "
+"dans les régions claires de l'image."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/ImageReader/ConfigUI.qml:274
 msgctxt "@action:label"
@@ -2240,7 +2247,7 @@ msgstr "OK"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:17
 msgctxt "@title:window"
 msgid "Post Processing Plugin"
-msgstr "Plug-in de post-traitement"
+msgstr "Plugin de post-traitement"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:57
 msgctxt "@label"
@@ -2439,8 +2446,8 @@ msgctxt "@info"
 msgid ""
 "Webcam feeds for cloud printers cannot be viewed from Ultimaker Cura. Click "
 "\"Manage printer\" to visit Ultimaker Digital Factory and view this webcam."
-msgstr "Les flux de webcam des imprimantes cloud ne peuvent pas être visualisés depuis Ultimaker Cura. Cliquez sur « Gérer l'imprimante » pour visiter Ultimaker"
-" Digital Factory et voir cette webcam."
+msgstr ""
+"Les flux de webcam des imprimantes cloud ne peuvent pas être visualisés depuis Ultimaker Cura. Cliquez sur « Gérer l'imprimante » pour visiter Ultimaker Digital Factory et voir cette webcam."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:347
 msgctxt "@label:status"
@@ -2507,7 +2514,7 @@ msgstr "Premier disponible"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorStage.qml:117
 msgctxt "@info"
 msgid "Monitor your printers from everywhere using Ultimaker Digital Factory"
-msgstr "Surveillez vos imprimantes à distance grâce à Ultimaker Digital Factory"
+msgstr "Surveillez vos imprimantes à distance avec Ultimaker Digital Factory"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorStage.qml:129
 msgctxt "@button"
@@ -2527,9 +2534,9 @@ msgid ""
 "your printer to your WIFI network. If you don't connect Cura with your "
 "printer, you can still use a USB drive to transfer g-code files to your "
 "printer."
-msgstr "Pour imprimer directement sur votre imprimante via le réseau, assurez-vous que votre imprimante est connectée au réseau via un câble Ethernet ou en connectant"
-" votre imprimante à votre réseau Wi-Fi. Si vous ne connectez pas Cura avec votre imprimante, vous pouvez utiliser une clé USB pour transférer les fichiers"
-" g-code sur votre imprimante."
+msgstr ""
+"Pour imprimer directement sur votre imprimante via le réseau, assurez-vous que votre imprimante est connectée au réseau via un câble Ethernet ou en connectant votre imprimante à votre réseau "
+"Wi-Fi. Si vous ne connectez pas Cura avec votre imprimante, vous pouvez utiliser une clé USB pour transférer les fichiers g-code sur votre imprimante."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:51
 msgctxt "@label"
@@ -2732,7 +2739,7 @@ msgstr "Profils"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/CuraDrive/src/qml/components/BackupListItemDetails.qml:53
 msgctxt "@backuplist:label"
 msgid "Plugins"
-msgstr "Plug-ins"
+msgstr "Plugins"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/CuraDrive/src/qml/components/BackupListFooter.qml:22
 msgctxt "@button"
@@ -2823,8 +2830,8 @@ msgctxt "@text:window"
 msgid ""
 "Ultimaker Cura collects anonymous data in order to improve the print quality "
 "and user experience. Below is an example of all the data that is shared:"
-msgstr "Ultimaker Cura recueille des données anonymes afin d'améliorer la qualité d'impression et l'expérience utilisateur. Voici un exemple de toutes les données"
-" partagées :"
+msgstr ""
+"Ultimaker Cura recueille des données anonymes afin d'améliorer la qualité d'impression et l'expérience utilisateur. Voici un exemple de toutes les données partagées :"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:107
 msgctxt "@text:window"
@@ -2839,12 +2846,12 @@ msgstr "Autoriser l'envoi de données anonymes"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/DigitalLibrary/resources/qml/SaveProjectFilesPage.qml:216
 msgctxt "@option"
 msgid "Save Cura project and print file"
-msgstr "Salva progetto Cura e stampa file"
+msgstr "Sauvegarder le projet Cura et imprimer le fichier"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/DigitalLibrary/resources/qml/SaveProjectFilesPage.qml:217
 msgctxt "@option"
 msgid "Save Cura project"
-msgstr "Salva progetto Cura"
+msgstr "Sauvegarder le projet Cura"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UltimakerMachineActions/UMOUpgradeSelectionMachineAction.qml:30
 msgctxt "@label"
@@ -2867,8 +2874,9 @@ msgid ""
 "To make sure your prints will come out great, you can now adjust your "
 "buildplate. When you click 'Move to Next Position' the nozzle will move to "
 "the different positions that can be adjusted."
-msgstr "Pour obtenir des résultats d'impression optimaux, vous pouvez maintenant régler votre plateau. Quand vous cliquez sur 'Aller à la position suivante', la"
-" buse se déplacera vers les différentes positions pouvant être réglées."
+msgstr ""
+"Pour obtenir des résultats d'impression optimaux, vous pouvez maintenant régler votre plateau. Quand vous cliquez sur 'Aller à la position suivante', la buse se déplacera vers les "
+"différentes positions pouvant être réglées."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UltimakerMachineActions/BedLevelMachineAction.qml:52
 msgctxt "@label"
@@ -2876,8 +2884,8 @@ msgid ""
 "For every position; insert a piece of paper under the nozzle and adjust the "
 "print build plate height. The print build plate height is right when the "
 "paper is slightly gripped by the tip of the nozzle."
-msgstr "Pour chacune des positions ; glissez un bout de papier sous la buse et ajustez la hauteur du plateau. La hauteur du plateau est juste lorsque la pointe"
-" de la buse gratte légèrement le papier."
+msgstr ""
+"Pour chacune des positions ; glissez un bout de papier sous la buse et ajustez la hauteur du plateau. La hauteur du plateau est juste lorsque la pointe de la buse gratte légèrement le papier."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UltimakerMachineActions/BedLevelMachineAction.qml:67
 msgctxt "@action:button"
@@ -2892,7 +2900,7 @@ msgstr "Aller à la position suivante"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/PackageCardHeader.qml:172
 msgctxt "@label Is followed by the name of an author"
 msgid "By"
-msgstr "Per mezzo di"
+msgstr "Par"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/PackageCardHeader.qml:207
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/OnboardBanner.qml:101
@@ -2948,14 +2956,14 @@ msgstr "Mise à jour"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/Plugins.qml:8
 msgctxt "@header"
 msgid "Install Plugins"
-msgstr "Installer les plug-ins"
+msgstr "Installer les plugins"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/Plugins.qml:12
 msgctxt "@text"
 msgid ""
 "Streamline your workflow and customize your Ultimaker Cura experience with "
 "plugins contributed by our amazing community of users."
-msgstr "Simplifiez votre flux de travail et personnalisez votre expérience Ultimaker Cura avec des plug-ins fournis par notre incroyable communauté d'utilisateurs."
+msgstr "Simplifiez votre flux de travail et personnalisez votre expérience Ultimaker Cura avec des plugins fournis par notre incroyable communauté d'utilisateurs."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/CompatibilityDialog.qml:15
 msgctxt "@title"
@@ -3000,7 +3008,7 @@ msgstr "Contrat de licence du plugin"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/LicenseDialog.qml:47
 msgctxt "@text"
 msgid "Please read and agree with the plugin licence."
-msgstr "Veuillez lire et accepter la licence du plug-in."
+msgstr "Veuillez lire et accepter la licence du plugin."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/LicenseDialog.qml:70
 msgctxt "@button"
@@ -3075,7 +3083,7 @@ msgstr "Optimisé pour Air Manager"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:243
 msgctxt "@button"
 msgid "Visit plug-in website"
-msgstr "Visitez le site Web du plug-in"
+msgstr "Visitez le site Web du plugin"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:243
 msgctxt "@button"
@@ -3140,7 +3148,7 @@ msgstr "Charger plus"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/VerifiedIcon.qml:21
 msgctxt "@info"
 msgid "Ultimaker Verified Plug-in"
-msgstr "Plug-in Ultimaker vérifié"
+msgstr "Plugin Ultimaker vérifié"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/VerifiedIcon.qml:22
 msgctxt "@info"
@@ -3162,12 +3170,12 @@ msgctxt "@text"
 msgid ""
 "Manage your Ultimaker Cura plugins and material profiles here. Make sure to "
 "keep your plugins up to date and backup your setup regularly."
-msgstr "Gérez vos plug-ins Ultimaker Cura et vos profils matériaux ici. Assurez-vous de maintenir vos plug-ins à jour et de sauvegarder régulièrement votre configuration."
+msgstr "Gérez vos plugins Ultimaker Cura et vos profils matériaux ici. Assurez-vous de maintenir vos plugins à jour et de sauvegarder régulièrement votre configuration."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/InstallMissingPackagesDialog.qml:15
 msgctxt "@title"
 msgid "Install missing Materials"
-msgstr "Installa materiali mancanti"
+msgstr "Installer les matériaux manquants"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/Marketplace.qml:87
 msgctxt "@title"
@@ -3177,7 +3185,7 @@ msgstr "Chargement..."
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/Marketplace.qml:148
 msgctxt "@button"
 msgid "Plugins"
-msgstr "Plug-ins"
+msgstr "Plugins"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/Marketplace.qml:156
 msgctxt "@button"
@@ -3206,8 +3214,11 @@ msgid ""
 "- Check if the printer is turned on.\n"
 "- Check if the printer is connected to the network.\n"
 "- Check if you are signed in to discover cloud-connected printers."
-msgstr "Assurez-vous que votre imprimante est connectée :\n- Vérifiez si l'imprimante est sous tension.\n- Vérifiez si l'imprimante est connectée au réseau.- Vérifiez"
-" si vous êtes connecté pour découvrir les imprimantes connectées au cloud."
+msgstr ""
+"Assurez-vous que votre imprimante est connectée:\n"
+"- Vérifiez si l'imprimante est sous tension.\n"
+"- Vérifiez si l'imprimante est connectée au réseau.\n"
+"- Vérifiez si vous êtes connecté pour découvrir les imprimantes connectées au cloud."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/MonitorStage/MonitorMain.qml:113
 msgctxt "@info"
@@ -3359,7 +3370,8 @@ msgctxt "@label"
 msgid ""
 "The material used in this project is currently not installed in Cura.<br/"
 ">Install the material profile and reopen the project."
-msgstr "Le matériau utilisé dans ce projet n'est actuellement pas installé dans Cura.<br/>Installez le profil du matériau et rouvrez le projet."
+msgstr ""
+"Le matériau utilisé dans ce projet n'est actuellement pas installé dans Cura.<br/>Installer le profil de matériau et rouvrir le projet."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/3MFReader/WorkspaceDialog.qml:515
 msgctxt "@action:button"
@@ -3369,12 +3381,12 @@ msgstr "Ouvrir"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/3MFReader/WorkspaceDialog.qml:521
 msgctxt "@action:button"
 msgid "Open project anyway"
-msgstr "Apri il progetto comunque"
+msgstr "Ouvrir tout de même le projet"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/3MFReader/WorkspaceDialog.qml:530
 msgctxt "@action:button"
 msgid "Install missing material"
-msgstr "Installa materiale mancante"
+msgstr "Installer le matériel manquant"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:41
 msgctxt "@label"
@@ -3443,16 +3455,16 @@ msgid ""
 "Firmware is the piece of software running directly on your 3D printer. This "
 "firmware controls the step motors, regulates the temperature and ultimately "
 "makes your printer work."
-msgstr "Le firmware est le logiciel fonctionnant directement dans votre imprimante 3D. Ce firmware contrôle les moteurs pas à pas, régule la température et surtout,"
-" fait que votre machine fonctionne."
+msgstr ""
+"Le firmware est le logiciel fonctionnant directement dans votre imprimante 3D. Ce firmware contrôle les moteurs pas à pas, régule la température et surtout, fait que votre machine fonctionne."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:43
 msgctxt "@label"
 msgid ""
 "The firmware shipping with new printers works, but new versions tend to have "
 "more features and improvements."
-msgstr "Le firmware fourni avec les nouvelles imprimantes fonctionne, mais les nouvelles versions ont tendance à fournir davantage de fonctionnalités ainsi que"
-" des améliorations."
+msgstr ""
+"Le firmware fourni avec les nouvelles imprimantes fonctionne, mais les nouvelles versions ont tendance à fournir davantage de fonctionnalités ainsi que des améliorations."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:55
 msgctxt "@action:button"
@@ -3654,7 +3666,10 @@ msgid ""
 "This setting has a value that is different from the profile.\n"
 "\n"
 "Click to restore the value of the profile."
-msgstr "Ce paramètre possède une valeur qui est différente du profil.\n\nCliquez pour restaurer la valeur du profil."
+msgstr ""
+"Ce paramètre possède une valeur qui est différente du profil.\n"
+"\n"
+"Cliquez pour restaurer la valeur du profil."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Settings/SettingItem.qml:334
 msgctxt "@label"
@@ -3663,7 +3678,10 @@ msgid ""
 "set.\n"
 "\n"
 "Click to restore the calculated value."
-msgstr "Ce paramètre est normalement calculé mais il possède actuellement une valeur absolue définie.\n\nCliquez pour restaurer la valeur calculée."
+msgstr ""
+"Ce paramètre est normalement calculé mais il possède actuellement une valeur absolue définie.\n"
+"\n"
+"Cliquez pour restaurer la valeur calculée."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Settings/SettingView.qml:48
 msgctxt "@label:textbox"
@@ -3708,12 +3726,15 @@ msgid ""
 "value.\n"
 "\n"
 "Click to make these settings visible."
-msgstr "Certains paramètres masqués utilisent des valeurs différentes de leur valeur normalement calculée.\n\nCliquez pour rendre ces paramètres visibles."
+msgstr ""
+"Certains paramètres masqués utilisent des valeurs différentes de leur valeur normalement calculée.\n"
+"\n"
+"Cliquez pour rendre ces paramètres visibles."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/MainWindow/MainWindowHeader.qml:135
 msgctxt "@action:button"
 msgid "Marketplace"
-msgstr "Marché en ligne"
+msgstr "Marketplace"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/MainWindow/ApplicationMenu.qml:63
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Menus/SettingsMenu.qml:13
@@ -3865,8 +3886,8 @@ msgid ""
 "It seems like you don't have any compatible printers connected to Digital "
 "Factory. Make sure your printer is connected and it's running the latest "
 "firmware."
-msgstr "Il semble que vous n'ayez aucune imprimante compatible connectée à Digital Factory. Assurez-vous que votre imprimante est connectée et qu'elle utilise"
-" le dernier micrologiciel."
+msgstr ""
+"Il semble que vous n'ayez aucune imprimante compatible connectée à Digital Factory. Assurez-vous que votre imprimante est connectée et qu'elle utilise le dernier micrologiciel."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:585
 msgctxt "@button"
@@ -4156,12 +4177,12 @@ msgstr "Interface"
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:215
 msgctxt "@heading"
 msgid "-- incomplete --"
-msgstr "--complet --"
+msgstr "-- incomplet —-"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:261
 msgctxt "@label"
 msgid "Currency:"
-msgstr "Devise :"
+msgstr "Devise:"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:277
 msgctxt ""
@@ -4217,8 +4238,8 @@ msgctxt "@info:tooltip"
 msgid ""
 "Highlight missing or extraneous surfaces of the model using warning signs. "
 "The toolpaths will often be missing parts of the intended geometry."
-msgstr "Surlignez les surfaces du modèle manquantes ou étrangères en utilisant les signes d'avertissement. Les Toolpaths seront souvent les parties manquantes"
-" de la géométrie prévue."
+msgstr ""
+"Surlignez les surfaces du modèle manquantes ou étrangères en utilisant les signes d'avertissement. Les Toolpaths seront souvent les parties manquantes de la géométrie prévue."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:409
 msgctxt "@option:check"
@@ -4322,7 +4343,7 @@ msgstr "Quel type de rendu de la caméra doit-il être utilisé?"
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:569
 msgctxt "@window:text"
 msgid "Camera rendering:"
-msgstr "Rendu caméra :"
+msgstr "Rendu caméra:"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:576
 msgid "Perspective"
@@ -4359,7 +4380,7 @@ msgstr "Les objets doivent-ils être supprimés du plateau de fabrication avant 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:646
 msgctxt "@option:check"
 msgid "Clear buildplate before loading model into the single instance"
-msgstr "Supprimez les objets du plateau de fabrication avant de charger un modèle dans l'instance unique"
+msgstr "Supprimer les objets du plateau avant de charger un modèle dans l'instance unique"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:656
 msgctxt "@info:tooltip"
@@ -4446,8 +4467,9 @@ msgid ""
 "When you have made changes to a profile and switched to a different one, a "
 "dialog will be shown asking whether you want to keep your modifications or "
 "not, or you can choose a default behaviour and never show that dialog again."
-msgstr "Lorsque vous apportez des modifications à un profil puis passez à un autre profil, une boîte de dialogue apparaît, vous demandant si vous souhaitez conserver"
-" les modifications. Vous pouvez aussi choisir une option par défaut, et le dialogue ne s'affichera plus."
+msgstr ""
+"Lorsque vous apportez des modifications à un profil puis passez à un autre profil, une boîte de dialogue apparaît, vous demandant si vous souhaitez conserver les modifications. Vous pouvez "
+"aussi choisir une option par défaut, et le dialogue ne s'affichera plus."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:801
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:36
@@ -4489,8 +4511,9 @@ msgid ""
 "Should anonymous data about your print be sent to Ultimaker? Note, no "
 "models, IP addresses or other personally identifiable information is sent or "
 "stored."
-msgstr "Les données anonymes de votre impression doivent-elles être envoyées à Ultimaker ? Notez qu'aucun modèle, aucune adresse IP ni aucune autre information"
-" permettant de vous identifier personnellement ne seront envoyés ou stockés."
+msgstr ""
+"Les données anonymes de votre impression doivent-elles être envoyées à Ultimaker ? Notez qu'aucun modèle, aucune adresse IP ni aucune autre information permettant de vous identifier "
+"personnellement ne seront envoyés ou stockés."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:867
 msgctxt "@option:check"
@@ -4537,8 +4560,8 @@ msgctxt "@info:tooltip"
 msgid ""
 "Should an automatic check for new plugins be done every time Cura is "
 "started? It is highly recommended that you do not disable this!"
-msgstr "Une vérification automatique des nouveaux plugins doit-elle être effectuée à chaque fois que Cura est lancé ? Il est fortement recommandé de ne pas désactiver"
-" cette fonction !"
+msgstr ""
+"Une vérification automatique des nouveaux plugins doit-elle être effectuée à chaque fois que Cura est lancé ? Il est fortement recommandé de ne pas désactiver cette fonction !"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:962
 msgctxt "@option:check"
@@ -4814,17 +4837,17 @@ msgstr "Connectez-vous à la plateforme Ultimaker"
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/CloudContent.qml:123
 msgctxt "@text"
 msgid "Add material settings and plugins from the Marketplace"
-msgstr "Ajoutez des paramètres de matériaux et des plug-ins depuis la Marketplace"
+msgstr "Ajoutez des paramètres de matériaux et des plugins depuis la Marketplace"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/CloudContent.qml:149
 msgctxt "@text"
 msgid "Backup and sync your material settings and plugins"
-msgstr "Sauvegardez et synchronisez vos paramètres de matériaux et vos plug-ins"
+msgstr "Sauvegardez et synchronisez vos paramètres de matériaux et vos plugins"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/CloudContent.qml:175
 msgctxt "@text"
 msgid "Share ideas and get help from 48,000+ users in the Ultimaker Community"
-msgstr "Partagez vos idées et obtenez l'aide de plus de 48 000 utilisateurs de la communauté Ultimaker"
+msgstr "Partagez vos idées et obtenez l'aide de plus de 48,000 utilisateurs de la communauté Ultimaker"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/CloudContent.qml:189
 msgctxt "@button"
@@ -4972,7 +4995,9 @@ msgctxt "@text"
 msgid ""
 "Please follow these steps to set up Ultimaker Cura. This will only take a "
 "few moments."
-msgstr "Veuillez suivre ces étapes pour configurer\nUltimaker Cura. Cela ne prendra que quelques instants."
+msgstr ""
+"Veuillez suivre ces étapes pour configurer\n"
+"Ultimaker Cura. Cela ne prendra que quelques instants."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/WelcomeContent.qml:82
 msgctxt "@button"
@@ -5164,7 +5189,7 @@ msgstr "Sélectionner tous les modèles"
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Actions.qml:393
 msgctxt "@action:inmenu menubar:edit"
 msgid "Clear Build Plate"
-msgstr "Supprimer les objets du plateau"
+msgstr "Supprimer les modèles du plateau"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Actions.qml:403
 msgctxt "@action:inmenu menubar:file"
@@ -5414,7 +5439,7 @@ msgstr "Cette configuration n'est pas disponible car %1 n'est pas reconnu. Veuil
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationItem.qml:138
 msgctxt "@label"
 msgid "Marketplace"
-msgstr "Marché en ligne"
+msgstr "Marketplace"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationMenu.qml:106
 msgctxt "@tooltip"
@@ -5519,7 +5544,7 @@ msgstr "Gérer la visibilité des paramètres..."
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Dialogs/ChoosePrinterDialog.qml:17
 msgctxt "@title:window"
 msgid "Select Printer"
-msgstr "Sélectionner une imprimante"
+msgstr "Sélectionner l’imprimante"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Dialogs/ChoosePrinterDialog.qml:54
 msgctxt "@title:label"
@@ -5543,8 +5568,9 @@ msgid ""
 "We have found one or more project file(s) within the files you have "
 "selected. You can open only one project file at a time. We suggest to only "
 "import models from those files. Would you like to proceed?"
-msgstr "Nous avons trouvé au moins un fichier de projet parmi les fichiers que vous avez sélectionnés. Vous ne pouvez ouvrir qu'un seul fichier de projet à la"
-" fois. Nous vous conseillons de n'importer que les modèles de ces fichiers. Souhaitez-vous continuer ?"
+msgstr ""
+"Nous avons trouvé au moins un fichier de projet parmi les fichiers que vous avez sélectionnés. Vous ne pouvez ouvrir qu'un seul fichier de projet à la fois. Nous vous conseillons de "
+"n'importer que les modèles de ces fichiers. Souhaitez-vous continuer?"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:64
 msgctxt "@action:button"
@@ -5589,8 +5615,10 @@ msgid ""
 "You have customized some profile settings. Would you like to Keep these "
 "changed settings after switching profiles? Alternatively, you can discard "
 "the changes to load the defaults from '%1'."
-msgstr "Vous avez personnalisé certains paramètres de profil.\nSouhaitez-vous conserver ces paramètres modifiés après avoir changé de profil ?\nVous pouvez également"
-" annuler les modifications pour charger les valeurs par défaut de '%1'."
+msgstr ""
+"Vous avez personnalisé certains paramètres de profil.\n"
+"Souhaitez-vous conserver ces paramètres modifiés après avoir changé de profil ?\n"
+"Vous pouvez également annuler les modifications pour charger les valeurs par défaut de '%1'."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:85
 msgctxt "@title:column"
@@ -5672,7 +5700,9 @@ msgctxt "@info:credit"
 msgid ""
 "Cura is developed by Ultimaker B.V. in cooperation with the community.\n"
 "Cura proudly uses the following open source projects:"
-msgstr "Cura a été développé par Ultimaker B.V. en coopération avec la communauté Ultimaker.\nCura est fier d'utiliser les projets open source suivants :"
+msgstr ""
+"Cura a été développé par Ultimaker B.V. en coopération avec la communauté Ultimaker.\n"
+"Cura est fier d'utiliser les projets open source suivants :"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Dialogs/AboutDialog.qml:138
 msgctxt "@label Description for application component"
@@ -5806,6 +5836,7 @@ msgid "Support library for scientific computing"
 msgstr "Prise en charge de la bibliothèque pour le calcul scientifique"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Dialogs/AboutDialog.qml:171
+#, fuzzy
 msgctxt "@Label Description for application dependency"
 msgid "Python Error tracking library"
 msgstr "Bibliothèque de suivi des erreurs Python"
@@ -5878,7 +5909,7 @@ msgstr "Surveillez les tâches d'impression et réimprimez à partir de votre hi
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:55
 msgctxt "@tooltip:button"
 msgid "Extend Ultimaker Cura with plugins and material profiles."
-msgstr "Étendez Ultimaker Cura avec des plug-ins et des profils de matériaux."
+msgstr "Étendez Ultimaker Cura avec des plugins et des profils de matériaux."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:62
 msgctxt "@tooltip:button"
@@ -5946,7 +5977,7 @@ msgstr "Le profil personnalisé <b>%1</b> remplace certains paramètres."
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrintSetupSelector/Recommended/ProfileWarningReset.qml:79
 msgctxt "@info"
 msgid "Some settings were changed."
-msgstr "Alcune impostazioni sono state modificate."
+msgstr "Certains paramètres ont été modifiés."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedInfillDensitySelector.qml:78
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedInfillDensitySelector.qml:254
@@ -5963,7 +5994,7 @@ msgstr "Remplissage graduel"
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrintSetupSelector/Recommended/UnsupportedProfileIndication.qml:31
 msgctxt "@error"
 msgid "Configuration not supported"
-msgstr "Configurazione non supportata"
+msgstr "Configuration non supportée"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrintSetupSelector/Recommended/UnsupportedProfileIndication.qml:39
 msgctxt "@message:text %1 is the name the printer uses for 'nozzle'."
@@ -5975,7 +6006,7 @@ msgstr "Nessun profilo disponibile per la configurazione del materiale /%1 selez
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrintSetupSelector/Recommended/UnsupportedProfileIndication.qml:47
 msgctxt "@button:label"
 msgid "Learn more"
-msgstr "Ulteriori informazioni"
+msgstr "En savoir plus"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedAdhesionSelector.qml:27
 msgctxt "@label"
@@ -5987,13 +6018,13 @@ msgctxt "@label"
 msgid ""
 "Enable printing a brim or raft. This will add a flat area around or under "
 "your object which is easy to cut off afterwards."
-msgstr "Activez l'impression d'une bordure ou plaquette (Brim/Raft). Cela ajoutera une zone plate autour de ou sous votre objet qui est facile à découper par la"
-" suite."
+msgstr ""
+"Activez l'impression d'une bordure ou plaquette (Brim/Raft). Cela ajoutera une zone plate autour de ou sous votre objet qui est facile à découper par la suite."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedResolutionSelector.qml:27
 msgctxt "@label"
 msgid "Resolution"
-msgstr "Risoluzione"
+msgstr "Résolution"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrintSetupSelector/PrintSetupSelector.qml:20
 msgctxt "@label shown when we load a Gcode file"
@@ -6037,7 +6068,10 @@ msgid ""
 "profile.\n"
 "\n"
 "Click to open the profile manager."
-msgstr "Certaines valeurs de paramètre / forçage sont différentes des valeurs enregistrées dans le profil. \n\nCliquez pour ouvrir le gestionnaire de profils."
+msgstr ""
+"Certaines valeurs de paramètre / forçage sont différentes des valeurs enregistrées dans le profil. \n"
+"\n"
+"Cliquez pour ouvrir le gestionnaire de profils."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrintSetupSelector/Custom/QualitiesWithIntentMenu.qml:158
 msgctxt "@label:header"
@@ -6059,8 +6093,8 @@ msgctxt "@tooltip"
 msgid ""
 "The target temperature of the heated bed. The bed will heat up or cool down "
 "towards this temperature. If this is 0, the bed heating is turned off."
-msgstr "Température cible du plateau chauffant. Le plateau sera chauffé ou refroidi pour tendre vers cette température. Si la valeur est 0, le chauffage du plateau"
-" sera éteint."
+msgstr ""
+"Température cible du plateau chauffant. Le plateau sera chauffé ou refroidi pour tendre vers cette température. Si la valeur est 0, le chauffage du plateau sera éteint."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrinterOutput/HeatedBedBox.qml:88
 msgctxt "@tooltip"
@@ -6090,8 +6124,9 @@ msgid ""
 "Heat the bed in advance before printing. You can continue adjusting your "
 "print while it is heating, and you won't have to wait for the bed to heat up "
 "when you're ready to print."
-msgstr "Préchauffez le plateau avant l'impression. Vous pouvez continuer à ajuster votre impression pendant qu'il chauffe, et vous n'aurez pas à attendre que le"
-" plateau chauffe lorsque vous serez prêt à lancer l'impression."
+msgstr ""
+"Préchauffez le plateau avant l'impression. Vous pouvez continuer à ajuster votre impression pendant qu'il chauffe, et vous n'aurez pas à attendre que le plateau chauffe lorsque vous serez "
+"prêt à lancer l'impression."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:40
 msgctxt "@label"
@@ -6103,8 +6138,9 @@ msgctxt "@tooltip"
 msgid ""
 "The target temperature of the hotend. The hotend will heat up or cool down "
 "towards this temperature. If this is 0, the hotend heating is turned off."
-msgstr "Température cible de l'extrémité chauffante. L'extrémité chauffante sera chauffée ou refroidie pour tendre vers cette température. Si la valeur est 0,"
-" le chauffage de l'extrémité chauffante sera coupé."
+msgstr ""
+"Température cible de l'extrémité chauffante. L'extrémité chauffante sera chauffée ou refroidie pour tendre vers cette température. Si la valeur est 0, le chauffage de l'extrémité chauffante "
+"sera coupé."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:105
 msgctxt "@tooltip"
@@ -6122,8 +6158,9 @@ msgid ""
 "Heat the hotend in advance before printing. You can continue adjusting your "
 "print while it is heating, and you won't have to wait for the hotend to heat "
 "up when you're ready to print."
-msgstr "Préchauffez l'extrémité chauffante avant l'impression. Vous pouvez continuer l'ajustement de votre impression pendant qu'elle chauffe, ce qui vous évitera"
-" un temps d'attente lorsque vous serez prêt à lancer l'impression."
+msgstr ""
+"Préchauffez l'extrémité chauffante avant l'impression. Vous pouvez continuer l'ajustement de votre impression pendant qu'elle chauffe, ce qui vous évitera un temps d'attente lorsque vous "
+"serez prêt à lancer l'impression."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:335
 msgctxt "@tooltip"
@@ -6175,7 +6212,7 @@ msgctxt "@tooltip of G-code command input"
 msgid ""
 "Send a custom G-code command to the connected printer. Press 'enter' to send "
 "the command."
-msgstr "Envoyer une commande G-Code personnalisée à l'imprimante connectée. Appuyez sur « Entrée » pour envoyer la commande."
+msgstr "Envoyer une commande G-Code personnalisée à l'imprimante connectée. Appuyez sur « Entrée » pour envoyer la commande."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Cura.qml:250
 msgctxt "@label"
@@ -6196,7 +6233,7 @@ msgstr "Fermeture de %1"
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Cura.qml:597
 msgctxt "@label %1 is the application name"
 msgid "Are you sure you want to exit %1?"
-msgstr "Voulez-vous vraiment quitter %1 ?"
+msgstr "Voulez-vous vraiment quitter %1?"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Cura.qml:740
 msgctxt "@window:title"
@@ -6214,8 +6251,9 @@ msgid ""
 "We have found one or more G-Code files within the files you have selected. "
 "You can only open one G-Code file at a time. If you want to open a G-Code "
 "file, please just select only one."
-msgstr "Nous avons trouvé au moins un fichier G-Code parmi les fichiers que vous avez sélectionné. Vous ne pouvez ouvrir qu'un seul fichier G-Code à la fois. Si"
-" vous souhaitez ouvrir un fichier G-Code, veuillez ne sélectionner qu'un seul fichier de ce type."
+msgstr ""
+"Nous avons trouvé au moins un fichier G-Code parmi les fichiers que vous avez sélectionné. Vous ne pouvez ouvrir qu'un seul fichier G-Code à la fois. Si vous souhaitez ouvrir un fichier G-"
+"Code, veuillez ne sélectionner qu'un seul fichier de ce type."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Cura.qml:829
 msgctxt "@title:window"
@@ -6233,8 +6271,10 @@ msgid ""
 "- Add material profiles and plug-ins from the Marketplace\n"
 "- Back-up and sync your material profiles and plug-ins\n"
 "- Share ideas and get help from 48,000+ users in the Ultimaker community"
-msgstr "- Ajoutez des profils de matériaux et des plug-ins à partir de la Marketplace\n- Sauvegardez et synchronisez vos profils de matériaux et vos plug-ins\n-"
-" Partagez vos idées et obtenez l'aide de plus de 48 000 utilisateurs de la communauté Ultimaker"
+msgstr ""
+"- Ajoutez des profils de matériaux et des plugins à partir de la Marketplace\n"
+"- Sauvegardez et synchronisez vos profils de matériaux et vos plugins\n"
+"- Partagez vos idées et obtenez l'aide de plus de 48,000 utilisateurs de la communauté Ultimaker"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Account/GeneralOperations.qml:58
 msgctxt "@button"
