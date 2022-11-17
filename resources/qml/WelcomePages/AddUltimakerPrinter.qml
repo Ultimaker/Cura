@@ -26,6 +26,7 @@ Control
 
     contentItem: ColumnLayout
     {
+        Layout.fillWidth: true
         UM.Label
         {
             Layout.fillWidth: true
@@ -36,24 +37,33 @@ Control
         RowLayout
         {
             Layout.alignment: Qt.AlignHCenter
+            Layout.fillWidth: true
 
-            Image
+            Item
             {
-                source: UM.Theme.getImage("add_printer")
-                Layout.preferredWidth: 200 * screenScaleFactor
-                Layout.preferredHeight: 200 * screenScaleFactor
+                Layout.fillWidth: true
+                Layout.minimumWidth: childrenRect.width
+                Layout.preferredHeight: childrenRect.height
+
+                Image
+                {
+                    anchors.right: parent.right
+                    source: UM.Theme.getImage("add_printer")
+                    Layout.preferredWidth: 200 * screenScaleFactor
+                    Layout.preferredHeight: 200 * screenScaleFactor
+                }
             }
 
             ColumnLayout
             {
                 Layout.fillHeight: true
-                Layout.fillWidth: false
+                Layout.fillWidth: true
                 Layout.alignment: Qt.AlignVCenter
                 spacing: UM.Theme.getSize("default_margin").height
 
                 UM.Label
                 {
-                    Layout.fillWidth: false
+                    Layout.fillWidth: true
                     Layout.alignment: Qt.AlignTop
                     wrapMode: Text.WordWrap
                     font: UM.Theme.getFont("default_bold")
@@ -63,12 +73,7 @@ Control
                 ColumnLayout
                 {
                     spacing: 0
-
-                    FontMetrics
-                    {
-                        id: fontMetrics
-                        font: UM.Theme.getFont("default")
-                    }
+                    Layout.fillWidth: true
 
                     Repeater {
                         model: [
@@ -79,8 +84,8 @@ Control
                         UM.Label
                         {
                             Layout.alignment: Qt.AlignTop
-                            font: fontMetrics.font
-                            Layout.preferredHeight: fontMetrics.height
+                            Layout.fillWidth: true
+                            wrapMode: Text.WordWrap
                             text: `${index + 1}. ${modelData}`
                         }
                     }
