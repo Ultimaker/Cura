@@ -1,4 +1,3 @@
-
 import QtQuick 2.7
 
 import UM 1.2 as UM
