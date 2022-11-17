@@ -1,0 +1,105 @@
+name: Cura All Installers
+run-name: ${{ inputs.cura_conan_version }} by @${{ github.actor }}
+
+on:
+    workflow_dispatch:
+        inputs:
+            cura_conan_version:
+                description: 'Cura Conan Version'
+                default: 'cura/latest@ultimaker/testing'
+                required: true
+            conan_args:
+                description: 'Conan args: eq.: --require-override'
+                default: ''
+                required: false
+            conan_config:
+                description: 'Conan config branch to use'
+                default: ''
+                required: false
+            enterprise:
+                description: 'Build Cura as an Enterprise edition'
+                required: true
+                default: false
+                type: boolean
+            staging:
+                description: 'Use staging API'
+                required: true
+                default: false
+                type: boolean
+            installer:
+                description: 'Create the installer'
+                required: true
+                default: true
+                type: boolean
+            build_windows:
+                description: 'Build for Windows'
+                required: true
+                default: true
+                type: boolean
+            build_linux:
+                description: 'Build for Linux'
+                required: true
+                default: true
+                type: boolean
+            build_macos:
+                description: 'Build for MacOs'
+                required: true
+                default: true
+                type: boolean
+
+    # Run the nightly at 3:25 UTC on working days
+    schedule:
+    - cron: '25 3 * * 1-5'
+
+jobs:
+    windows-installer-create:
+        if: ${{ inputs.build_windows }}
+        uses: ./.github/workflows/cura-installer.yml
+        with:
+            platform: 'windows-2022'
+            os_name: 'win64'
+            cura_conan_version: ${{ inputs.cura_conan_version }}
+            conan_args: ${{ inputs.conan_args }}
+            conan_config: ${{ inputs.conan_config }}
+            enterprise: ${{ inputs.enterprise }}
+            staging: ${{ inputs.staging }}
+            installer: ${{ inputs.installer }}
+
+    linux-installer-create:
+        if: ${{ inputs.build_linux }}
+        uses: ./.github/workflows/cura-installer.yml
+        with:
+            platform: 'ubuntu-20.04'
+            os_name: 'linux'
+            cura_conan_version: ${{ inputs.cura_conan_version }}
+            conan_args: ${{ inputs.conan_args }}
+            conan_config: ${{ inputs.conan_config }}
+            enterprise: ${{ inputs.enterprise }}
+            staging: ${{ inputs.staging }}
+            installer: ${{ inputs.installer }}
+
+    linux-modern-installer-create:
+        if: ${{ inputs.build_linux }}
+        uses: ./.github/workflows/cura-installer.yml
+        with:
+            platform: 'ubuntu-22.04'
+            os_name: 'linux-modern'
+            cura_conan_version: ${{ inputs.cura_conan_version }}
+            conan_args: ${{ inputs.conan_args }}
+            conan_config: ${{ inputs.conan_config }}
+            enterprise: ${{ inputs.enterprise }}
+            staging: ${{ inputs.staging }}
+            installer: ${{ inputs.installer }}
+
+    macos-installer-create:
+        if: ${{ inputs.build_macos }}
+        uses: ./.github/workflows/cura-installer.yml
+        with:
+            platform: 'macos-11'
+            os_name: 'mac'
+            cura_conan_version: ${{ inputs.cura_conan_version }}
+            conan_args: ${{ inputs.conan_args }}
+            conan_config: ${{ inputs.conan_config }}
+            enterprise: ${{ inputs.enterprise }}
+            staging: ${{ inputs.staging }}
+            installer: ${{ inputs.installer }}
