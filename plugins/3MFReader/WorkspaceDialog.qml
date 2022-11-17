@@ -195,6 +195,17 @@ UM.Dialog
                         model: resolveStrategiesModel
                         textRole: "label"
                         visible: manager.qualityChangesConflict
+                        contentLeftPadding: UM.Theme.getSize("default_margin").width
+                        textFont: UM.Theme.getFont("medium")
+
+                        background: Cura.RoundedRectangle
+                        {
+                            border.width: UM.Theme.getSize("default_lining").width
+                            border.color: UM.Theme.getColor("lining")
+                            color: qualityChangesResolveComboBox.hovered ? UM.Theme.getColor("expandable_hover") : UM.Theme.getColor("action_button")
+                            cornerSide: Cura.RoundedRectangle.Direction.All
+                            radius: UM.Theme.getSize("default_radius").width
+                        }
 
                         // This is a hack. This will trigger onCurrentIndexChanged and set the index when this component in loaded
                         currentIndex:
@@ -238,6 +249,17 @@ UM.Dialog
                         model: resolveStrategiesModel
                         textRole: "label"
                         visible: manager.materialConflict
+                        contentLeftPadding: UM.Theme.getSize("default_margin").width
+                        textFont: UM.Theme.getFont("medium")
+
+                        background: Cura.RoundedRectangle
+                        {
+                            border.width: UM.Theme.getSize("default_lining").width
+                            border.color: UM.Theme.getColor("lining")
+                            color: materialResolveComboBox.hovered ? UM.Theme.getColor("expandable_hover") : UM.Theme.getColor("action_button")
+                            cornerSide: Cura.RoundedRectangle.Direction.All
+                            radius: UM.Theme.getSize("default_radius").width
+                        }
 
                         // This is a hack. This will trigger onCurrentIndexChanged and set the index when this component in loaded
                         currentIndex:

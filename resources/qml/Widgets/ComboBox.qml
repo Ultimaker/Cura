@@ -20,6 +20,8 @@ ComboBox
     property alias textFormat: contentLabel.textFormat
     property alias backgroundColor: background.color
     property bool forceHighlight: false
+    property int contentLeftPadding: UM.Theme.getSize("setting_unit_margin").width
+    property var textFont: UM.Theme.getFont("default")
 
     enabled: delegateModel.count > 0
 
@@ -104,9 +106,10 @@ ComboBox
     contentItem: UM.Label
     {
         id: contentLabel
-        leftPadding: UM.Theme.getSize("setting_unit_margin").width + UM.Theme.getSize("default_margin").width
+        leftPadding: contentLeftPadding + UM.Theme.getSize("default_margin").width
         anchors.right: downArrow.left
         wrapMode: Text.NoWrap
+        font: textFont
         text:
         {
             if (control.delegateModel.count == 0)
@@ -176,11 +179,12 @@ ComboBox
             id: delegateLabel
             // FIXME: Somehow the top/bottom anchoring is not correct on Linux and it results in invisible texts.
             anchors.fill: parent
-            anchors.leftMargin: UM.Theme.getSize("setting_unit_margin").width
+            anchors.leftMargin: contentLeftPadding
             anchors.rightMargin: UM.Theme.getSize("setting_unit_margin").width
 
             text: delegateItem.text
             textFormat: control.textFormat
+            font: textFont
             color: UM.Theme.getColor("setting_control_text")
             elide: Text.ElideRight
             wrapMode: Text.NoWrap
