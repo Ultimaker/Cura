@@ -732,7 +732,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         application.expandedCategoriesChanged.emit()  # Notify the GUI of the change
 
         # If there are no machines of the same type, create a new machine.
-        print(self._resolve_strategies)
         if self._resolve_strategies["machine"] != "override" or self._dialog.updatableMachinesModel.count == 0:
             # We need to create a new machine
             machine_name = self._container_registry.uniqueName(self._machine_info.name)
@@ -743,7 +742,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             # the other extruders.
             machine_extruder_count = self._getMachineExtruderCount()  # type: Optional[int]
             global_stack = CuraStackBuilder.createMachine(machine_name, self._machine_info.definition_id, machine_extruder_count)
-            print(f"Created Global Stack: {global_stack}")
             if global_stack:  # Only switch if creating the machine was successful.
                 extruder_stack_dict = {str(position): extruder for position, extruder in enumerate(global_stack.extruderList)}
 
