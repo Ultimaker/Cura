@@ -96,7 +96,7 @@ UM.Dialog
                         WorkspaceRow
                         {
                             leftLabelText: catalog.i18nc("@action:label", manager.isPrinterGroup ? "Printer Group" : "Printer Name")
-                            rightLabelText: manager.machineName == "Create new" ? "" : manager.machineName
+                            rightLabelText: manager.machineName == catalog.i18nc("@button", "Create new") ? "" : manager.machineName
                         }
                     }
 
