@@ -600,7 +600,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._dialog.setNumUserSettings(num_user_settings)
         self._dialog.setActiveMode(active_mode)
         self._dialog.setUpdatableMachines(updatable_machines)
-        self._dialog.setMachineToOverride(global_stack_id)
         self._dialog.setMaterialLabels(material_labels)
         self._dialog.setMachineType(machine_type)
         self._dialog.setExtruders(extruders)
@@ -616,6 +615,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             # The machine included in the project file exists locally already, no need to change selected printers.
             is_networked_machine = global_stack.hasNetworkedConnection()
             is_abstract_machine = parseBool(existing_global_stack.getMetaDataEntry("is_abstract_machine", False))
+            self._dialog.setMachineToOverride(global_stack.getId())
+            self._dialog.setResolveStrategy("machine", "override")
         elif self._dialog.updatableMachinesModel.count > 0:
             # The machine included in the project file does not exist. There is another machine of the same type.
             # This will always default to an abstract machine first.
@@ -623,13 +624,14 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             machine_name = machine["name"]
             is_networked_machine = machine["isNetworked"]
             is_abstract_machine = machine["isAbstractMachine"]
-            self._dialog.setResolveStrategy("machine", "override")
             self._dialog.setMachineToOverride(machine["id"])
+            self._dialog.setResolveStrategy("machine", "override")
         else:
             # The machine included in the project file does not exist. There are no other printers of the same type. Default to "Create New".
             machine_name = i18n_catalog.i18nc("@button", "Create new")
-            self._dialog.setIsAbstractMachine(False)
-            self._dialog.setIsNetworkedMachine(False)
+            is_networked_machine = False
+            is_abstract_machine = False
+            self._dialog.setMachineToOverride(None)
             self._dialog.setResolveStrategy("machine", "new")
 
         self._dialog.setIsNetworkedMachine(is_networked_machine)
@@ -730,7 +732,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         application.expandedCategoriesChanged.emit()  # Notify the GUI of the change
 
         # If there are no machines of the same type, create a new machine.
-        if self._resolve_strategies["machine"] != "override" or self._dialog.updatableMachinesModel.count <= 1:
+        if self._resolve_strategies["machine"] != "override" or self._dialog.updatableMachinesModel.count == 0:
             # We need to create a new machine
             machine_name = self._container_registry.uniqueName(self._machine_info.name)
 

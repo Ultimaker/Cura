@@ -36,6 +36,7 @@ Item
             anchors.verticalCenter: parent.verticalCenter
             source: ""
             height: UM.Theme.getSize("medium_button_icon").height
+            color: UM.Theme.getColor("text")
             width: height
         }
         UM.Label
@@ -95,6 +96,7 @@ Item
 
                 visible: comboboxTooltipText != ""
                 source: UM.Theme.getIcon("Help")
+                color: UM.Theme.getColor("text")
 
                 UM.ToolTip
                 {
