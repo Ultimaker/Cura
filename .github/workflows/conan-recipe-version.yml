@@ -171,19 +171,19 @@ jobs:
                                 actual_version = f"{latest_branch_version.major}.{bump_up_minor}.{reset_patch}-alpha+{buildmetadata}{channel_metadata}"
 
                     # %% print to output
-                    cmd_name = ["echo", f"name={project_name} >> $GITHUB_OUTPUT"]
+                    cmd_name = ["echo", f"\"name={project_name}\" >> $GITHUB_OUTPUT"]
                     subprocess.call(cmd_name)
-                    cmd_version = ["echo", f"version={actual_version} >> $GITHUB_OUTPUT"]
+                    cmd_version = ["echo", f"\"version={actual_version}\" >> $GITHUB_OUTPUT"]
                     subprocess.call(cmd_version)
-                    cmd_channel = ["echo", f"channel={channel} >> $GITHUB_OUTPUT"]
+                    cmd_channel = ["echo", f"\"channel={channel}\" >> $GITHUB_OUTPUT"]
                     subprocess.call(cmd_channel)
-                    cmd_id_full= ["echo", f"recipe_id_full={project_name}/{actual_version}@{user}/{channel}  >> $GITHUB_OUTPUT"]
+                    cmd_id_full= ["echo", f"\"recipe_id_full={project_name}/{actual_version}@{user}/{channel}\"  >> $GITHUB_OUTPUT"]
                     subprocess.call(cmd_id_full)
-                    cmd_id_latest = ["echo", f"recipe_id_latest={project_name}/latest@{user}/{channel} >> $GITHUB_OUTPUT"]
+                    cmd_id_latest = ["echo", f"\"recipe_id_latest={project_name}/latest@{user}/{channel}\" >> $GITHUB_OUTPUT"]
                     subprocess.call(cmd_id_latest)
-                    cmd_semver_full = ["echo", f"semver_full={actual_version} >> $GITHUB_OUTPUT"]
+                    cmd_semver_full = ["echo", f"\"semver_full={actual_version}\" >> $GITHUB_OUTPUT"]
                     subprocess.call(cmd_semver_full)
-                    cmd_is_release_branch = ["echo", f"is_release_branch={str(is_release_branch).lower()} >> $GITHUB_OUTPUT"]
+                    cmd_is_release_branch = ["echo", f"\"is_release_branch={str(is_release_branch).lower()}\" >> $GITHUB_OUTPUT"]
                     subprocess.call(cmd_is_release_branch)
                     
                     print("::group::Conan Recipe Information")
