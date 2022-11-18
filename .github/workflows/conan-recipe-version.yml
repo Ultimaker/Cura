@@ -85,6 +85,7 @@ jobs:
                 name: Get Conan broadcast data
                 run: |
                     import subprocess
+                    import os
                     from conans import tools
                     from conans.errors import ConanException
                     from git import Repo
@@ -170,21 +171,22 @@ jobs:
                                 reset_patch = 0
                                 actual_version = f"{latest_branch_version.major}.{bump_up_minor}.{reset_patch}-alpha+{buildmetadata}{channel_metadata}"
 
-                    # %% print to output
-                    cmd_name = ["echo", f"\"name={project_name}\" >> $GITHUB_OUTPUT"]
-                    subprocess.call(cmd_name)
-                    cmd_version = ["echo", f"\"version={actual_version}\" >> $GITHUB_OUTPUT"]
-                    subprocess.call(cmd_version)
-                    cmd_channel = ["echo", f"\"channel={channel}\" >> $GITHUB_OUTPUT"]
-                    subprocess.call(cmd_channel)
-                    cmd_id_full= ["echo", f"\"recipe_id_full={project_name}/{actual_version}@{user}/{channel}\"  >> $GITHUB_OUTPUT"]
-                    subprocess.call(cmd_id_full)
-                    cmd_id_latest = ["echo", f"\"recipe_id_latest={project_name}/latest@{user}/{channel}\" >> $GITHUB_OUTPUT"]
-                    subprocess.call(cmd_id_latest)
-                    cmd_semver_full = ["echo", f"\"semver_full={actual_version}\" >> $GITHUB_OUTPUT"]
-                    subprocess.call(cmd_semver_full)
-                    cmd_is_release_branch = ["echo", f"\"is_release_branch={str(is_release_branch).lower()}\" >> $GITHUB_OUTPUT"]
-                    subprocess.call(cmd_is_release_branch)
+                    # %% Set the environment output
+                    output_env = os.environ["GITHUB_OUTPUT"]
+                    content = ""
+                    if os.path.exist(output_env):
+                        with open(output_env, "r") as f:
+                            content = f.read()
+                    
+                    with open(output_env, "w") as f:
+                        f.write(content)
+                        f.writelines(f"name={project_name}\n")
+                        f.writelines(f"version={actual_version}\n")
+                        f.writelines(f"channel={channel}\n")
+                        f.writelines(f"recipe_id_full={project_name}/{actual_version}@{user}/{channel}\n")
+                        f.writelines(f"recipe_id_latest={project_name}/latest@{user}/{channel}\n")
+                        f.writelines(f"semver_full={actual_version}\n")
+                        f.writelines(f"is_release_branch={str(is_release_branch).lower()}\n")
                     
                     print("::group::Conan Recipe Information")
                     print(f"name = {project_name}")
