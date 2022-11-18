@@ -49,6 +49,11 @@ on:
                 default: true
                 required: true
                 type: boolean
+            run_manually:
+                description: '+Do Not Touch+'
+                default: true
+                required: true
+                type: boolean
 
     # Run the nightly at 3:25 UTC on working days
     schedule:
@@ -56,57 +61,57 @@ on:
 
 jobs:
     windows-installer-create:
-        if: ${{ inputs.build_windows }}
+        if: ${{ inputs.build_windows || ! inputs.run_manually }}
         uses: ./.github/workflows/cura-installer.yml
         with:
             platform: 'windows-2022'
             os_name: 'win64'
-            cura_conan_version: ${{ inputs.cura_conan_version }}
-            conan_args: ${{ inputs.conan_args }}
-            conan_config: ${{ inputs.conan_config }}
+            cura_conan_version: ${{ inputs.cura_conan_version || 'cura/latest@ultimaker/testing' }}
+            conan_args: ${{ inputs.conan_args || '' }}
+            conan_config: ${{ inputs.conan_config || '' }}
             enterprise: ${{ inputs.enterprise }}
             staging: ${{ inputs.staging }}
-            installer: ${{ inputs.installer }}
+            installer: ${{ inputs.installer || ! inputs.run_manually }}
         secrets: inherit
 
     linux-installer-create:
-        if: ${{ inputs.build_linux }}
+        if: ${{ inputs.build_linux || ! inputs.run_manually  }}
         uses: ./.github/workflows/cura-installer.yml
         with:
             platform: 'ubuntu-20.04'
             os_name: 'linux'
-            cura_conan_version: ${{ inputs.cura_conan_version }}
-            conan_args: ${{ inputs.conan_args }}
-            conan_config: ${{ inputs.conan_config }}
+            cura_conan_version: ${{ inputs.cura_conan_version || 'cura/latest@ultimaker/testing' }}
+            conan_args: ${{ inputs.conan_args || '' }}
+            conan_config: ${{ inputs.conan_config || '' }}
             enterprise: ${{ inputs.enterprise }}
             staging: ${{ inputs.staging }}
-            installer: ${{ inputs.installer }}
+            installer: ${{ inputs.installer || ! inputs.run_manually }}
         secrets: inherit
 
     linux-modern-installer-create:
-        if: ${{ inputs.build_linux }}
+        if: ${{ inputs.build_linux || ! inputs.run_manually }}
         uses: ./.github/workflows/cura-installer.yml
         with:
             platform: 'ubuntu-22.04'
             os_name: 'linux-modern'
-            cura_conan_version: ${{ inputs.cura_conan_version }}
-            conan_args: ${{ inputs.conan_args }}
-            conan_config: ${{ inputs.conan_config }}
+            cura_conan_version: ${{ inputs.cura_conan_version || 'cura/latest@ultimaker/testing' }}
+            conan_args: ${{ inputs.conan_args || '' }}
+            conan_config: ${{ inputs.conan_config || '' }}
             enterprise: ${{ inputs.enterprise }}
             staging: ${{ inputs.staging }}
-            installer: ${{ inputs.installer }}
+            installer: ${{ inputs.installer || ! inputs.run_manually }}
         secrets: inherit
 
     macos-installer-create:
-        if: ${{ inputs.build_macos }}
+        if: ${{ inputs.build_macos || ! inputs.run_manually }}
         uses: ./.github/workflows/cura-installer.yml
         with:
             platform: 'macos-11'
             os_name: 'mac'
-            cura_conan_version: ${{ inputs.cura_conan_version }}
-            conan_args: ${{ inputs.conan_args }}
-            conan_config: ${{ inputs.conan_config }}
+            cura_conan_version: ${{ inputs.cura_conan_version || 'cura/latest@ultimaker/testing' }}
+            conan_args: ${{ inputs.conan_args || '' }}
+            conan_config: ${{ inputs.conan_config || '' }}
             enterprise: ${{ inputs.enterprise }}
             staging: ${{ inputs.staging }}
-            installer: ${{ inputs.installer }}
+            installer: ${{ inputs.installer || ! inputs.run_manually }}
         secrets: inherit
