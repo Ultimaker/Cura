@@ -195,7 +195,7 @@ UM.Dialog
                         model: resolveStrategiesModel
                         textRole: "label"
                         visible: manager.qualityChangesConflict
-                        contentLeftPadding: UM.Theme.getSize("default_margin").width
+                        contentLeftPadding: UM.Theme.getSize("default_margin").width + UM.Theme.getSize("narrow_margin").width
                         textFont: UM.Theme.getFont("medium")
 
                         background: Cura.RoundedRectangle
@@ -249,7 +249,7 @@ UM.Dialog
                         model: resolveStrategiesModel
                         textRole: "label"
                         visible: manager.materialConflict
-                        contentLeftPadding: UM.Theme.getSize("default_margin").width
+                        contentLeftPadding: UM.Theme.getSize("default_margin").width + UM.Theme.getSize("narrow_margin").width
                         textFont: UM.Theme.getFont("medium")
 
                         background: Cura.RoundedRectangle
