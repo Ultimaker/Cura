@@ -174,7 +174,7 @@ jobs:
                     # %% Set the environment output
                     output_env = os.environ["GITHUB_OUTPUT"]
                     content = ""
-                    if os.path.exist(output_env):
+                    if os.path.exists(output_env):
                         with open(output_env, "r") as f:
                             content = f.read()
                     
