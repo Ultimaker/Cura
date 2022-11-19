@@ -113,6 +113,38 @@ class FilamentChange(Script):
                     },
                     "default_value": "RepRap (Marlin/Sprinter)",
                     "enabled": "false"
+                },
+                "enable_before_macro":
+                {
+                    "label": "Enable macro Before filament change",
+                    "description": "Use this to insert a custom G-code macro before the filament change happens",
+                    "type": "bool",
+                    "default_value": false
+                },
+                "before_macro":
+                {
+                    "label": "G-code Before",
+                    "description": "Any custom G-code to run before the filament change happens, for example, M300 S1000 P10000 for a long beep.",
+                    "unit": "",
+                    "type": "str",
+                    "default_value": "M300 S1000 P10000",
+                    "enabled": "enable_before_macro"
+                },
+                "enable_after_macro":
+                {
+                    "label": "Enable macro After filament change",
+                    "description": "Use this to insert a custom G-code macro after the filament change",
+                    "type": "bool",
+                    "default_value": false
+                },
+                "after_macro":
+                {
+                    "label": "G-code After",
+                    "description": "Any custom G-code to run after the filament has been changed right before continuing the print, for example, you can add a sequence to purge filament and wipe the nozzle.",
+                    "unit": "",
+                    "type": "str",
+                    "default_value": "M300 S440 P500",
+                    "enabled": "enable_after_macro"
                 }
             }
         }"""
