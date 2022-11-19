@@ -126,7 +126,7 @@ class FilamentChange(Script):
                 },
                 "enable_before_macro":
                 {
-                    "label": "Enable macro Before filament change",
+                    "label": "Enable G-code Before",
                     "description": "Use this to insert a custom G-code macro before the filament change happens",
                     "type": "bool",
                     "default_value": false,
@@ -143,7 +143,7 @@ class FilamentChange(Script):
                 },
                 "enable_after_macro":
                 {
-                    "label": "Enable macro After filament change",
+                    "label": "Enable G-code After",
                     "description": "Use this to insert a custom G-code macro after the filament change",
                     "type": "bool",
                     "default_value": false,
