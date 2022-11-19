@@ -5,10 +5,10 @@ checks:
 fixes:
     diagnostic-definition-redundant-override: true
 format:
-    format-definition-bracket-newline: false
+    format-definition-bracket-newline: true
     format-definition-paired-coordinate-array: true
     format-definition-sort-keys: true
     format-definition-indent: 4
     format-profile-space-around-delimiters: true
     format-profile-sort-keys: true
-diagnostic-mesh-file-size: 800000
+diagnostic-mesh-file-size: 1200000
