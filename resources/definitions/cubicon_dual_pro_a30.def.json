@@ -1,24 +1,32 @@
 {
-    "version": 2,
-    "name": "Cubicon Dual Pro-A30",
     "inherits": "cubicon_common",
     "metadata": {
         "author": "Cubicon R&D Center",
-        "manufacturer": "Cubicon",
-        "visible": true,
         "file_formats": "text/x-gcode",
-        "supports_usb_connection": false,
         "machine_extruder_trains": {
             "0": "cubicon_dual_pro_a30_extruder_0",
             "1": "cubicon_dual_pro_a30_extruder_1"
         },
+        "manufacturer": "Cubicon",
         "platform_offset": [
             0,
             0,
             0
-        ]
+        ],
+        "supports_usb_connection": false,
+        "visible": true
     },
+    "name": "Cubicon Dual Pro-A30",
     "overrides": {
+        "machine_depth": {
+            "default_value": 300
+        },
+        "machine_extruder_count": {
+            "default_value": 2
+        },
+        "machine_height": {
+            "default_value": 300
+        },
         "machine_name": {
             "default_value": "Cubicon Dual Pro-A30"
         },
@@ -28,17 +36,9 @@
         "machine_width": {
             "default_value": 300
         },
-        "machine_depth": {
-            "default_value": 300
-        },
-        "machine_height": {
-            "default_value": 300
-        },
-        "material_bed_temp_wait":{
+        "material_bed_temp_wait": {
             "default_value": false
-        },
-        "machine_extruder_count": {
-            "default_value": 2
         }
-    }
+    },
+    "version": 2
 }

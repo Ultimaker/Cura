@@ -1,10 +1,6 @@
 {
-    "name": "Goofoo Open",
-    "version": 2,
     "inherits": "goofoo_base",
     "metadata": {
-        "quality_definition": "goofoo_open",
-        "visible": false,
         "exclude_materials": [
             "goofoo_bronze_pla",
             "goofoo_peek",
@@ -16,6 +12,10 @@
             "goofoo_pa",
             "goofoo_asa",
             "goofoo_abs"
-        ]
-    }
+        ],
+        "quality_definition": "goofoo_open",
+        "visible": false
+    },
+    "name": "Goofoo Open",
+    "version": 2
 }

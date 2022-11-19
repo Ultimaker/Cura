@@ -1,18 +1,24 @@
 {
-    "name": "VzBot 330",
-    "version": 2,
     "inherits": "vzbot_base",
-    "metadata":
-    {
-        "visible": true,
+    "metadata": {
         "platform": "vzbot_330_bed.stl",
-        "quality_definition": "vzbot_base"
+        "quality_definition": "vzbot_base",
+        "visible": true
     },
-    "overrides":
-    {
-        "machine_name":     { "default_value": "VzBot 330" },
-        "machine_width":    { "default_value": 330 },
-        "machine_depth":    { "default_value": 330 },
-        "machine_height":   { "default_value": 400 }
-    }
+    "name": "VzBot 330",
+    "overrides": {
+        "machine_depth": {
+            "default_value": 330
+        },
+        "machine_height": {
+            "default_value": 400
+        },
+        "machine_name": {
+            "default_value": "VzBot 330"
+        },
+        "machine_width": {
+            "default_value": 330
+        }
+    },
+    "version": 2
 }

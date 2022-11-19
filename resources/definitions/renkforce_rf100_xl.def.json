@@ -1,18 +1,15 @@
 {
-    "version": 2,
-    "name": "Renkforce RF100 XL",
     "inherits": "fdmprinter",
     "metadata": {
         "author": "Simon Peter (based on RF100.ini by Conrad Electronic SE)",
         "file_formats": "text/x-gcode",
-        "manufacturer": "Renkforce",
-        "visible": true,
-        "machine_extruder_trains":
-        {
+        "machine_extruder_trains": {
             "0": "renkforce_rf100_xl_extruder_0"
-        }
+        },
+        "manufacturer": "Renkforce",
+        "visible": true
     },
-
+    "name": "Renkforce RF100 XL",
     "overrides": {
         "adhesion_type": {
             "default_value": "skirt"
@@ -209,5 +206,6 @@
         "wall_thickness": {
             "value": 0.8
         }
-    }
+    },
+    "version": 2
 }

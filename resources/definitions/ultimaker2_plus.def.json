@@ -1,59 +1,140 @@
 {
-    "version": 2,
-    "name": "Ultimaker 2+",
     "inherits": "ultimaker2",
     "metadata": {
         "author": "Ultimaker",
-        "manufacturer": "Ultimaker B.V.",
-        "weight": 1,
+        "exclude_materials": [
+            "generic_hips",
+            "generic_petg",
+            "generic_bam",
+            "ultimaker_bam",
+            "generic_pva",
+            "ultimaker_pva",
+            "generic_tough_pla",
+            "ultimaker_tough_pla_black",
+            "ultimaker_tough_pla_green",
+            "ultimaker_tough_pla_red",
+            "ultimaker_tough_pla_white",
+            "generic_cffcpe",
+            "generic_cffpa",
+            "generic_gffcpe",
+            "generic_gffpa",
+            "structur3d_dap100silicone",
+            "ultimaker_petg_red",
+            "ultimaker_petg_blue",
+            "ultimaker_petg_grey",
+            "ultimaker_petg_black",
+            "ultimaker_petg_green",
+            "ultimaker_petg_white",
+            "ultimaker_petg_orange",
+            "ultimaker_petg_silver",
+            "ultimaker_petg_yellow",
+            "ultimaker_petg_transparent",
+            "ultimaker_petg_red_translucent",
+            "ultimaker_petg_blue_translucent",
+            "ultimaker_petg_green_translucent",
+            "ultimaker_petg_yellow_fluorescent"
+        ],
         "file_formats": "text/x-gcode",
+        "firmware_file": "MarlinUltimaker2plus.hex",
+        "first_start_actions": [],
+        "has_machine_quality": true,
+        "has_materials": true,
+        "has_variants": true,
+        "machine_extruder_trains": {
+            "0": "ultimaker2_plus_extruder_0"
+        },
+        "manufacturer": "Ultimaker B.V.",
         "platform": "ultimaker2_platform.obj",
         "platform_texture": "Ultimaker2Plusbackplate.png",
         "preferred_variant_name": "0.4 mm",
-        "has_variants": true,
-        "has_materials": true,
-        "has_machine_quality": true,
-        "exclude_materials": ["generic_hips", "generic_petg", "generic_bam", "ultimaker_bam", "generic_pva", "ultimaker_pva", "generic_tough_pla", "ultimaker_tough_pla_black", "ultimaker_tough_pla_green", "ultimaker_tough_pla_red", "ultimaker_tough_pla_white", "generic_cffcpe", "generic_cffpa", "generic_gffcpe", "generic_gffpa", "structur3d_dap100silicone", "ultimaker_petg_red", "ultimaker_petg_blue", "ultimaker_petg_grey", "ultimaker_petg_black", "ultimaker_petg_green", "ultimaker_petg_white", "ultimaker_petg_orange", "ultimaker_petg_silver", "ultimaker_petg_yellow", "ultimaker_petg_transparent", "ultimaker_petg_red_translucent", "ultimaker_petg_blue_translucent", "ultimaker_petg_green_translucent", "ultimaker_petg_yellow_fluorescent"],
-        "first_start_actions": [],
         "supported_actions": [],
-        "machine_extruder_trains":
-        {
-            "0": "ultimaker2_plus_extruder_0"
-        },
-        "firmware_file": "MarlinUltimaker2plus.hex"
+        "weight": 1
     },
-
+    "name": "Ultimaker 2+",
     "overrides": {
-        "machine_name": { "default_value": "Ultimaker 2+" },
-        "speed_infill": {
-            "value": "speed_print"
-        },
-        "speed_wall_x": {
-            "value": "speed_wall"
+        "gantry_height": {
+            "value": "52"
         },
         "layer_height_0": {
             "value": "round(machine_nozzle_size / 1.5, 2)"
         },
-        "speed_support": {
-            "value": "speed_wall_0"
+        "machine_disallowed_areas": {
+            "default_value": [
+                [
+                    [
+                        -115,
+                        112.5
+                    ],
+                    [
+                        -78,
+                        112.5
+                    ],
+                    [
+                        -80,
+                        102.5
+                    ],
+                    [
+                        -115,
+                        102.5
+                    ]
+                ],
+                [
+                    [
+                        115,
+                        112.5
+                    ],
+                    [
+                        115,
+                        102.5
+                    ],
+                    [
+                        105,
+                        102.5
+                    ],
+                    [
+                        103,
+                        112.5
+                    ]
+                ],
+                [
+                    [
+                        -115,
+                        -112.5
+                    ],
+                    [
+                        -115,
+                        -104.5
+                    ],
+                    [
+                        -84,
+                        -104.5
+                    ],
+                    [
+                        -82,
+                        -112.5
+                    ]
+                ],
+                [
+                    [
+                        115,
+                        -112.5
+                    ],
+                    [
+                        108,
+                        -112.5
+                    ],
+                    [
+                        110,
+                        -104.5
+                    ],
+                    [
+                        115,
+                        -104.5
+                    ]
+                ]
+            ]
         },
-        "machine_height": {
-            "default_value": 205
-        },
-        "machine_show_variants": {
-            "default_value": true
-        },
-        "gantry_height": {
-            "value": "52"
-        },
-        "machine_nozzle_head_distance": {
-            "default_value": 5
-        },
-        "machine_heat_zone_length": {
-            "default_value": 20
-        },
-        "machine_head_with_fans_polygon":
-        {
+        "machine_head_with_fans_polygon": {
             "default_value": [
                 [ -44, 14 ],
                 [ -44, -34 ],
@@ -61,13 +142,30 @@
                 [ 64, -34 ]
             ]
         },
-        "machine_disallowed_areas": {
-            "default_value": [
-                [[-115,  112.5], [ -78,  112.5], [ -80,  102.5], [-115,  102.5]],
-                [[ 115,  112.5], [ 115,  102.5], [ 105,  102.5], [ 103,  112.5]],
-                [[-115, -112.5], [-115, -104.5], [ -84, -104.5], [ -82, -112.5]],
-                [[ 115, -112.5], [ 108, -112.5], [ 110, -104.5], [ 115, -104.5]]
-            ]
+        "machine_heat_zone_length": {
+            "default_value": 20
+        },
+        "machine_height": {
+            "default_value": 205
+        },
+        "machine_name": {
+            "default_value": "Ultimaker 2+"
+        },
+        "machine_nozzle_head_distance": {
+            "default_value": 5
+        },
+        "machine_show_variants": {
+            "default_value": true
+        },
+        "speed_infill": {
+            "value": "speed_print"
+        },
+        "speed_support": {
+            "value": "speed_wall_0"
+        },
+        "speed_wall_x": {
+            "value": "speed_wall"
         }
-    }
+    },
+    "version": 2
 }

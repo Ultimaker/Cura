@@ -1,23 +1,28 @@
 {
-    "version": 2,
-    "name": "Cubicon Style Neo-A22",
     "inherits": "cubicon_common",
     "metadata": {
         "author": "Cubicon R&D Center",
-        "manufacturer": "Cubicon",
-        "visible": true,
         "file_formats": "text/x-gcode",
-        "supports_usb_connection": false,
         "machine_extruder_trains": {
             "0": "cubicon_style_neo_a22_extruder_0"
         },
+        "manufacturer": "Cubicon",
         "platform_offset": [
             0,
             0,
             0
-        ]
+        ],
+        "supports_usb_connection": false,
+        "visible": true
     },
+    "name": "Cubicon Style Neo-A22",
     "overrides": {
+        "machine_depth": {
+            "default_value": 220
+        },
+        "machine_height": {
+            "default_value": 220
+        },
         "machine_name": {
             "default_value": "Cubicon Style Neo-A22"
         },
@@ -27,14 +32,9 @@
         "machine_width": {
             "default_value": 220
         },
-        "machine_depth": {
-            "default_value": 220
-        },
-        "machine_height": {
-            "default_value": 220
-        },
-        "material_bed_temp_wait":{
+        "material_bed_temp_wait": {
             "default_value": false
         }
-    }
+    },
+    "version": 2
 }

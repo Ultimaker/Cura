@@ -1,69 +1,108 @@
 {
-    "version": 2,
-    "name": "Peopoly Moai",
     "inherits": "fdmprinter",
     "metadata": {
-        "visible": true,
         "author": "Peopoly",
-        "manufacturer": "Peopoly",
         "file_formats": "text/x-gcode",
         "has_machine_quality": true,
         "has_materials": false,
-        "platform": "moai.obj",
-        "platform_texture": "moai.jpg",
         "machine_extruder_trains": {
             "0": "peopoly_moai_extruder_0"
-        }
+        },
+        "manufacturer": "Peopoly",
+        "platform": "moai.obj",
+        "platform_texture": "moai.jpg",
+        "visible": true
     },
-
+    "name": "Peopoly Moai",
     "overrides": {
-        "machine_name": {
-            "default_value": "Moai"
+        "acceleration_enabled": {
+            "enabled": false,
+            "value": "False"
         },
-        "machine_width": {
-            "default_value": 130
+        "adaptive_layer_height_enabled": {
+            "enabled": false,
+            "value": "False"
         },
-        "machine_height": {
-            "default_value": 180
+        "adhesion_type": {
+            "value": "'none'"
         },
-        "machine_depth": {
-            "default_value": 130
+        "bottom_thickness": {
+            "minimum_value_warning": "resolveOrValue('layer_height')"
         },
-        "machine_head_with_fans_polygon":
-        {
-            "default_value": [
-                [ -20, 10 ],
-                [ -20, -10 ],
-                [ 10, 10 ],
-                [ 10, -10 ]
-            ]
+        "bridge_settings_enabled": {
+            "enabled": false,
+            "value": "False"
         },
-        "machine_gcode_flavor": {
-            "default_value": "RepRap (Marlin/Sprinter)"
+        "coasting_enable": {
+            "enabled": false,
+            "value": "False"
         },
-        "machine_start_gcode": {
-            "default_value": "G28 ;Home"
+        "cool_fan_enabled": {
+            "enabled": false,
+            "value": "False"
         },
-        "machine_end_gcode": {
-            "default_value": "M104 S0\nM140 S0\nG28 X0 Y0\nM84"
+        "cool_fan_full_at_height": {
+            "enabled": false
         },
-        "line_width": {
-            "minimum_value_warning": "machine_nozzle_size"
+        "cool_fan_full_layer": {
+            "enabled": false
         },
-        "wall_line_width": {
-            "minimum_value_warning": "machine_nozzle_size"
+        "cool_fan_speed_min": {
+            "enabled": false,
+            "value": 0
         },
-        "wall_line_width_x": {
-            "minimum_value_warning": "machine_nozzle_size"
+        "cool_lift_head": {
+            "enabled": false,
+            "value": "False"
         },
-        "skin_line_width": {
-            "minimum_value_warning": "machine_nozzle_size"
+        "cool_min_layer_time": {
+            "enabled": false,
+            "value": 0
+        },
+        "cool_min_layer_time_fan_speed_max": {
+            "enabled": false
+        },
+        "cool_min_speed": {
+            "enabled": false,
+            "value": 0
+        },
+        "draft_shield_enabled": {
+            "enabled": false,
+            "value": "False"
+        },
+        "expand_skins_expand_distance": {
+            "value": "( wall_line_width_0 + (wall_line_count - 1) * wall_line_width_x ) / 2"
+        },
+        "flow_rate_extrusion_offset_factor": {
+            "enabled": false
+        },
+        "flow_rate_max_extrusion_offset": {
+            "enabled": false
+        },
+        "infill_angles": {
+            "value": "[0,90]"
         },
         "infill_line_width": {
             "minimum_value_warning": "machine_nozzle_size"
         },
-        "skirt_brim_line_width": {
-            "minimum_value_warning": "machine_nozzle_size"
+        "infill_overlap": {
+            "value": 15
+        },
+        "infill_pattern": {
+            "value": "'lines'"
+        },
+        "infill_sparse_density": {
+            "value": 70
+        },
+        "infill_sparse_thickness": {
+            "maximum_value_warning": "0.5"
+        },
+        "infill_wipe_dist": {
+            "value": 0
+        },
+        "ironing_enabled": {
+            "enabled": false,
+            "value": "False"
         },
         "layer_height": {
             "maximum_value_warning": "0.5",
@@ -74,24 +113,111 @@
             "minimum_value_warning": "0.02",
             "value": "0.1"
         },
-        "top_bottom_thickness": {
-            "minimum_value_warning": "0.1",
+        "line_width": {
+            "minimum_value_warning": "machine_nozzle_size"
+        },
+        "machine_depth": {
+            "default_value": 130
+        },
+        "machine_end_gcode": {
+            "default_value": "M104 S0\nM140 S0\nG28 X0 Y0\nM84"
+        },
+        "machine_gcode_flavor": {
+            "default_value": "RepRap (Marlin/Sprinter)"
+        },
+        "machine_head_with_fans_polygon": {
+            "default_value": [
+                [ -20, 10 ],
+                [ -20, -10 ],
+                [ 10, 10 ],
+                [ 10, -10 ]
+            ]
+        },
+        "machine_height": {
+            "default_value": 180
+        },
+        "machine_name": {
+            "default_value": "Moai"
+        },
+        "machine_nozzle_temp_enabled": {
+            "value": "False"
+        },
+        "machine_start_gcode": {
+            "default_value": "G28 ;Home"
+        },
+        "machine_width": {
+            "default_value": 130
+        },
+        "material_bed_temperature": {
+            "enabled": false
+        },
+        "material_flow": {
+            "enabled": false
+        },
+        "material_flow_layer_0": {
+            "enabled": false
+        },
+        "meshfix_maximum_deviation": {
+            "value": "0.002"
+        },
+        "minimum_polygon_circumference": {
             "value": "0.1"
         },
-        "top_thickness": {
-            "minimum_value_warning": "resolveOrValue('layer_height')"
+        "print_sequence": {
+            "enabled": false
         },
-        "bottom_thickness": {
-            "minimum_value_warning": "resolveOrValue('layer_height')"
+        "relative_extrusion": {
+            "enabled": false,
+            "value": "False"
         },
-        "infill_sparse_thickness": {
-            "maximum_value_warning": "0.5"
+        "retract_at_layer_change": {
+            "enabled": false,
+            "value": false
+        },
+        "retraction_combing": {
+            "enabled": false,
+            "value": "'off'"
+        },
+        "retraction_enable": {
+            "enabled": false,
+            "value": "False"
+        },
+        "skin_line_width": {
+            "minimum_value_warning": "machine_nozzle_size"
+        },
+        "skin_no_small_gaps_heuristic": {
+            "value": "False"
+        },
+        "skin_outline_count": {
+            "value": 0
+        },
+        "skin_overlap": {
+            "value": 5
+        },
+        "skirt_brim_line_width": {
+            "minimum_value_warning": "machine_nozzle_size"
+        },
+        "speed_infill": {
+            "maximum_value_warning": "300"
+        },
+        "speed_layer_0": {
+            "value": 5
         },
         "speed_print": {
             "maximum_value_warning": "300"
         },
-        "speed_infill": {
-            "maximum_value_warning": "300"
+        "speed_slowdown_layers": {
+            "value": 3
+        },
+        "speed_topbottom": {
+            "maximum_value_warning": "300",
+            "value": "speed_print"
+        },
+        "speed_travel": {
+            "value": 150
+        },
+        "speed_travel_layer_0": {
+            "value": 150
         },
         "speed_wall": {
             "maximum_value_warning": "300",
@@ -104,162 +230,34 @@
             "maximum_value_warning": "300",
             "value": "speed_print"
         },
-        "speed_topbottom": {
-            "maximum_value_warning": "300",
-            "value": "speed_print"
-        },
-        "speed_travel": {
-            "value": 150
-        },
-        "speed_travel_layer_0": {
-            "value": 150
-        },
-        "speed_layer_0": {
-            "value": 5
-        },
-        "speed_slowdown_layers": {
-            "value": 3
-        },
-        "infill_overlap": {
-            "value": 15
-        },
-        "adhesion_type": {
-            "value": "'none'"
-        },
-        "print_sequence": {
-            "enabled": false
-        },
         "support_enable": {
             "enabled": false
         },
-        "machine_nozzle_temp_enabled": {
-            "value": "False"
-        },
-        "material_bed_temperature": {
-            "enabled": false
-        },
-        "cool_fan_enabled": {
-            "enabled": false,
-            "value": "False"
-        },
-        "cool_fan_speed_min": {
-            "enabled": false,
-            "value": 0
-        },
-        "retraction_enable": {
-            "enabled": false,
-            "value": "False"
-        },
-        "retraction_combing": {
-            "enabled": false,
-            "value": "'off'"
-        },
-        "retract_at_layer_change": {
-            "enabled": false,
-            "value": false
-        },
-        "cool_min_layer_time_fan_speed_max": {
-            "enabled": false
-        },
-        "cool_fan_full_at_height": {
-            "enabled": false
-        },
-        "cool_fan_full_layer": {
-            "enabled": false
-        },
-        "minimum_polygon_circumference": {
+        "top_bottom_thickness": {
+            "minimum_value_warning": "0.1",
             "value": "0.1"
         },
-        "meshfix_maximum_deviation": {
-            "value": "0.002"
-        },
-        "skin_outline_count": {
-            "value": 0
+        "top_thickness": {
+            "minimum_value_warning": "resolveOrValue('layer_height')"
         },
         "wall_0_wipe_dist": {
             "value": "machine_nozzle_size / 3"
         },
+        "wall_line_width": {
+            "minimum_value_warning": "machine_nozzle_size"
+        },
+        "wall_line_width_x": {
+            "minimum_value_warning": "machine_nozzle_size"
+        },
         "wall_thickness": {
             "value": "0.5"
-        },
-        "infill_sparse_density": {
-            "value": 70
-        },
-        "infill_pattern": {
-            "value": "'lines'"
-        },
-        "infill_angles": {
-            "value": "[0,90]"
-        },
-        "cool_min_layer_time": {
-            "enabled": false,
-            "value": 0
-        },
-        "cool_min_speed": {
-            "enabled": false,
-            "value": 0
-        },
-        "cool_lift_head": {
-            "enabled": false,
-            "value": "False"
-        },
-        "material_flow": {
-            "enabled": false
-        },
-        "material_flow_layer_0": {
-            "enabled": false
-        },
-        "draft_shield_enabled": {
-            "enabled": false,
-            "value": "False"
         },
         "z_seam_corner": {
             "value": "'z_seam_corner_none'"
         },
         "z_seam_type": {
             "value": "'shortest'"
-        },
-        "skin_no_small_gaps_heuristic": {
-            "value": "False"
-        },
-        "ironing_enabled": {
-            "enabled": false,
-            "value": "False"
-        },
-        "skin_overlap": {
-            "value": 5
-        },
-        "infill_wipe_dist": {
-            "value": 0
-        },
-        "expand_skins_expand_distance": {
-            "value": "( wall_line_width_0 + (wall_line_count - 1) * wall_line_width_x ) / 2"
-        },
-        "flow_rate_max_extrusion_offset": {
-            "enabled": false
-        },
-        "flow_rate_extrusion_offset_factor": {
-            "enabled": false
-        },
-        "adaptive_layer_height_enabled": {
-            "value": "False",
-            "enabled": false
-        },
-        "bridge_settings_enabled": {
-            "value": "False",
-            "enabled": false            
-        },
-        "acceleration_enabled": {
-            "value": "False",
-            "enabled": false
-        },
-        "relative_extrusion": {
-            "value": "False",
-            "enabled": false
-        },
-        "coasting_enable": {
-            "value": "False",
-            "enabled": false
         }
-    }
+    },
+    "version": 2
 }

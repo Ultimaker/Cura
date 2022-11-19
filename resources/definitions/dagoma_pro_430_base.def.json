@@ -1,25 +1,9 @@
 {
-    "version": 2,
-    "name": "Dagoma PRO 430 BASE",
     "inherits": "fdmprinter",
-    "metadata":
-    {
-        "visible": false,
+    "metadata": {
         "author": "Dagoma",
-        "manufacturer": "Dagoma",
-        "file_formats": "text/x-gcode",
-        "platform": "dagoma_pro_430_base.3mf",
-        "platform_offset": [-125, -118, -280],
-        "has_machine_quality": true,
-        "has_materials": true,
-        "has_variants": true,
-        "variants_name": "Steel Nozzle Size",
-        "preferred_material": "dagoma_generic_pla",
-        "preferred_quality_type": "high",
-        "preferred_variant_name": "0.4",
-        "exclude_materials": 
-        [
-            "3D-Fuel_PLA_PRO_Black", 
+        "exclude_materials": [
+            "3D-Fuel_PLA_PRO_Black",
             "3D-Fuel_PLA_SnapSupport",
             "bestfilament_abs_skyblue",
             "bestfilament_petg_orange",
@@ -162,34 +146,109 @@
             "zyyx_pro_flex",
             "zyyx_pro_pla",
             "xyzprinting_tpu"
-        ]
+        ],
+        "file_formats": "text/x-gcode",
+        "has_machine_quality": true,
+        "has_materials": true,
+        "has_variants": true,
+        "manufacturer": "Dagoma",
+        "platform": "dagoma_pro_430_base.3mf",
+        "platform_offset": [
+            -125,
+            -118,
+            -280
+        ],
+        "preferred_material": "dagoma_generic_pla",
+        "preferred_quality_type": "high",
+        "preferred_variant_name": "0.4",
+        "variants_name": "Steel Nozzle Size",
+        "visible": false
     },
-
-    "overrides":
-    {
-        "machine_gcode_flavor": { "default_value": "Marlin" },
-        "machine_width": { "default_value": 430 },
-        "machine_depth": { "default_value": 320 },
-        "machine_heated_bed": { "default_value": true },
-        "machine_center_is_zero": { "default_value": false },
-        "machine_steps_per_mm_x": { "default_value": 80 },
-        "machine_steps_per_mm_y": { "default_value": 80 },
-        "machine_steps_per_mm_z": { "default_value": 800 },
-        "machine_max_feedrate_x": { "default_value": 500 },
-        "machine_max_feedrate_y": { "default_value": 500 },
-        "machine_max_feedrate_z": { "default_value": 16 },
-        "machine_max_acceleration_x": { "value": 1500 },
-        "machine_max_acceleration_y": { "value": 1500 },
-        "machine_max_acceleration_z": { "value": 70 },
-        "machine_max_acceleration_e": { "value": 10000 },
-        "machine_nozzle_cool_down_speed": { "default_value": 1.5 },
-        "machine_nozzle_heat_up_speed": { "default_value": 7 },
-        "machine_nozzle_expansion_angle": { "default_value": 60 },
-        "default_material_print_temperature": { "default_value": 205 },
-        "default_material_bed_temperature": { "default_value": 50 },
-        "adhesion_type": { "default_value": "skirt" },
-        "skirt_line_count": { "default_value": 3 },
-        "nozzle_disallowed_areas": { "default_value": [ [[-215, 160], [-166, 160], [-215, 111]], [[215, 160], [166, 160], [215, 111]] ] },
-        "machine_use_extruder_offset_to_offset_coords": {"default_value": false }
-    }
+    "name": "Dagoma PRO 430 BASE",
+    "overrides": {
+        "adhesion_type": {
+            "default_value": "skirt"
+        },
+        "default_material_bed_temperature": {
+            "default_value": 50
+        },
+        "default_material_print_temperature": {
+            "default_value": 205
+        },
+        "machine_center_is_zero": {
+            "default_value": false
+        },
+        "machine_depth": {
+            "default_value": 320
+        },
+        "machine_gcode_flavor": {
+            "default_value": "Marlin"
+        },
+        "machine_heated_bed": {
+            "default_value": true
+        },
+        "machine_max_acceleration_e": {
+            "value": 10000
+        },
+        "machine_max_acceleration_x": {
+            "value": 1500
+        },
+        "machine_max_acceleration_y": {
+            "value": 1500
+        },
+        "machine_max_acceleration_z": {
+            "value": 70
+        },
+        "machine_max_feedrate_x": {
+            "default_value": 500
+        },
+        "machine_max_feedrate_y": {
+            "default_value": 500
+        },
+        "machine_max_feedrate_z": {
+            "default_value": 16
+        },
+        "machine_nozzle_cool_down_speed": {
+            "default_value": 1.5
+        },
+        "machine_nozzle_expansion_angle": {
+            "default_value": 60
+        },
+        "machine_nozzle_heat_up_speed": {
+            "default_value": 7
+        },
+        "machine_steps_per_mm_x": {
+            "default_value": 80
+        },
+        "machine_steps_per_mm_y": {
+            "default_value": 80
+        },
+        "machine_steps_per_mm_z": {
+            "default_value": 800
+        },
+        "machine_use_extruder_offset_to_offset_coords": {
+            "default_value": false
+        },
+        "machine_width": {
+            "default_value": 430
+        },
+        "nozzle_disallowed_areas": {
+            "default_value": [
+                [
+                    [ -215, 160 ],
+                    [ -166, 160 ],
+                    [ -215, 111 ]
+                ],
+                [
+                    [ 215, 160 ],
+                    [ 166, 160 ],
+                    [ 215, 111 ]
+                ]
+            ]
+        },
+        "skirt_line_count": {
+            "default_value": 3
+        }
+    },
+    "version": 2
 }

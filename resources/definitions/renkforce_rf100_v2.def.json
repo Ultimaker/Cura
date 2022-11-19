@@ -1,18 +1,15 @@
 {
-    "version": 2,
-    "name": "Renkforce RF100 V2",
     "inherits": "fdmprinter",
     "metadata": {
         "author": "Simon Peter (based on RF100.ini by Conrad Electronic SE)",
         "file_formats": "text/x-gcode",
-        "manufacturer": "Renkforce",
-        "visible": true,
-        "machine_extruder_trains":
-        {
+        "machine_extruder_trains": {
             "0": "renkforce_rf100_extruder_0"
-        }
+        },
+        "manufacturer": "Renkforce",
+        "visible": true
     },
-
+    "name": "Renkforce RF100 V2",
     "overrides": {
         "adhesion_type": {
             "default_value": "skirt"
@@ -44,6 +41,9 @@
         "cool_min_speed": {
             "value": "5.0"
         },
+        "gantry_height": {
+            "value": "8"
+        },
         "infill_before_walls": {
             "value": "True"
         },
@@ -74,17 +74,13 @@
         "machine_gcode_flavor": {
             "default_value": "RepRap (Marlin/Sprinter)"
         },
-        "machine_head_with_fans_polygon":
-        {
+        "machine_head_with_fans_polygon": {
             "default_value": [
-                [-26, -27],
-                [38, -27],
-                [38, 55],
-                [-26, 55]
+                [ -26, -27 ],
+                [ 38, -27 ],
+                [ 38, 55 ],
+                [ -26, 55 ]
             ]
-        },
-        "gantry_height": {
-            "value": "8"
         },
         "machine_height": {
             "value": "120"
@@ -221,5 +217,6 @@
         "wall_thickness": {
             "value": "0.8"
         }
-    }
+    },
+    "version": 2
 }

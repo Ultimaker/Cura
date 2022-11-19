@@ -1,23 +1,28 @@
 {
-    "version": 2,
-    "name": "Cubicon Single",
     "inherits": "cubicon_common",
     "metadata": {
         "author": "Cubicon R&D Center",
-        "manufacturer": "Cubicon",
-        "visible": true,
         "file_formats": "text/x-gcode",
-        "supports_usb_connection": false,
         "machine_extruder_trains": {
             "0": "cubicon_3dp_110f_extruder_0"
         },
+        "manufacturer": "Cubicon",
         "platform_offset": [
             0,
             -32.05,
             -20
-        ]
+        ],
+        "supports_usb_connection": false,
+        "visible": true
     },
+    "name": "Cubicon Single",
     "overrides": {
+        "machine_depth": {
+            "default_value": 190
+        },
+        "machine_height": {
+            "default_value": 200
+        },
         "machine_name": {
             "default_value": "Cubicon Single"
         },
@@ -27,14 +32,9 @@
         "machine_width": {
             "default_value": 240
         },
-        "machine_depth": {
-            "default_value": 190
-        },
-        "machine_height": {
-            "default_value": 200
-        },
         "material_bed_temp_wait": {
             "default_value": true
         }
-    }
+    },
+    "version": 2
 }

@@ -1,17 +1,23 @@
 {
-    "name": "VzBot Custom",
-    "version": 2,
     "inherits": "vzbot_base",
-    "metadata":
-    {
-        "visible": true,
-        "quality_definition": "vzbot_base"
+    "metadata": {
+        "quality_definition": "vzbot_base",
+        "visible": true
     },
-    "overrides":
-    {
-        "machine_name":     { "default_value": "VzBot Custom" },
-        "machine_width":    { "default_value": 400 },
-        "machine_depth":    { "default_value": 400 },
-        "machine_height":   { "default_value": 400 }
-    }
+    "name": "VzBot Custom",
+    "overrides": {
+        "machine_depth": {
+            "default_value": 400
+        },
+        "machine_height": {
+            "default_value": 400
+        },
+        "machine_name": {
+            "default_value": "VzBot Custom"
+        },
+        "machine_width": {
+            "default_value": 400
+        }
+    },
+    "version": 2
 }

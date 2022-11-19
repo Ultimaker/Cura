@@ -1,18 +1,24 @@
 {
-    "name": "VzBot 235",
-    "version": 2,
     "inherits": "vzbot_base",
-    "metadata":
-    {
-        "visible": true,
+    "metadata": {
         "platform": "vzbot_235_bed.stl",
-        "quality_definition": "vzbot_base"
+        "quality_definition": "vzbot_base",
+        "visible": true
     },
-    "overrides":
-    {
-        "machine_name":     { "default_value": "VzBot 235" },
-        "machine_width":    { "default_value": 235 },
-        "machine_depth":    { "default_value": 235 },
-        "machine_height":   { "default_value": 240 }
-    }
+    "name": "VzBot 235",
+    "overrides": {
+        "machine_depth": {
+            "default_value": 235
+        },
+        "machine_height": {
+            "default_value": 240
+        },
+        "machine_name": {
+            "default_value": "VzBot 235"
+        },
+        "machine_width": {
+            "default_value": 235
+        }
+    },
+    "version": 2
 }
