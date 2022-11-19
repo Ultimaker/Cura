@@ -54,11 +54,9 @@ class Diagnostic:
             with open(self.file, "r") as f:
                 self._lines = f.readlines()
 
-        start_line = self.location["start"]["line"]
-        start_col = self.location["start"]["col"]
-        end_line = self.location["end"]["line"]
-        end_col = len(self._lines[start_line:end_line - 1]) + self.location["start"]["col"]
-        self._content_block = "".join(self._lines[start_line:end_line])
+        start_line = self.location["start"]["line"] - 1
+        end_line = self.location["end"]["line"] - 1
+        self._content_block = "\n".join(self._lines[start_line:end_line])
         return self._content_block
 
     @property
@@ -73,10 +71,10 @@ class Diagnostic:
             with open(self.file, "r") as f:
                 self._lines = f.readlines()
 
-        start_line = self.location["start"]["line"]
-        start_col = self.location["start"]["col"]
-        end_line = self.location["end"]["line"]
-        end_col = len(self._lines[start_line:end_line - 1]) + self.location["start"]["col"]
+        start_line = self.location["start"]["line"] - 2
+        start_col = 0
+        end_line = self.location["end"]["line"] - 1
+        end_col = len(self._lines[start_line:end_line - 1]) + self.location["start"]["col"] - 4  # TODO: double check if 4 holds in all instances
         self._fix = self.content_block[start_col:end_col]
         return self._fix
 
