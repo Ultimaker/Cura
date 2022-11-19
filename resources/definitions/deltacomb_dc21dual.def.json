@@ -1,7 +1,9 @@
 {
     "inherits": "deltacomb_base",
-    "metadata": {
-        "machine_extruder_trains": {
+    "metadata":
+    {
+        "machine_extruder_trains":
+        {
             "0": "deltacomb_dc20dual_extruder_0",
             "1": "deltacomb_dc20dual_extruder_1"
         },
@@ -11,21 +13,27 @@
         "visible": true
     },
     "name": "Deltacomb DC-21 Dual",
-    "overrides": {
-        "machine_depth": {
+    "overrides":
+    {
+        "machine_depth":
+        {
             "default_value": 190
         },
-        "machine_extruder_count": {
+        "machine_extruder_count":
+        {
             "default_value": 2,
             "maximum_value": "2"
         },
-        "machine_height": {
+        "machine_height":
+        {
             "default_value": 400
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "Deltacomb DC-20 DUAL"
         },
-        "machine_width": {
+        "machine_width":
+        {
             "default_value": 190
         }
     },

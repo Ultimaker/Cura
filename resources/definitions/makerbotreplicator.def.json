@@ -1,8 +1,10 @@
 {
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "file_formats": "application/x3g",
-        "machine_extruder_trains": {
+        "machine_extruder_trains":
+        {
             "0": "makerbotreplicator_extruder_0"
         },
         "machine_x3g_variant": "r1",
@@ -15,38 +17,50 @@
         "visible": true
     },
     "name": "MakerBotReplicator",
-    "overrides": {
-        "infill_sparse_density": {
+    "overrides":
+    {
+        "infill_sparse_density":
+        {
             "default_value": 10
         },
-        "layer_height": {
+        "layer_height":
+        {
             "default_value": 0.15
         },
-        "machine_center_is_zero": {
+        "machine_center_is_zero":
+        {
             "default_value": false
         },
-        "machine_depth": {
+        "machine_depth":
+        {
             "default_value": 145
         },
-        "machine_extruder_count": {
+        "machine_extruder_count":
+        {
             "default_value": 1
         },
-        "machine_gcode_flavor": {
+        "machine_gcode_flavor":
+        {
             "default_value": "MakerBot"
         },
-        "machine_heated_bed": {
+        "machine_heated_bed":
+        {
             "default_value": true
         },
-        "machine_height": {
+        "machine_height":
+        {
             "default_value": 150
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "MakerBot Replicator"
         },
-        "machine_width": {
+        "machine_width":
+        {
             "default_value": 225
         },
-        "prime_tower_size": {
+        "prime_tower_size":
+        {
             "default_value": 10.0
         }
     },

@@ -1,8 +1,10 @@
 {
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "file_formats": "text/x-gcode",
-        "machine_extruder_trains": {
+        "machine_extruder_trains":
+        {
             "0": "bfb_extruder_0"
         },
         "manufacturer": "BFB",
@@ -14,47 +16,62 @@
         "visible": true
     },
     "name": "BFB",
-    "overrides": {
-        "infill_sparse_density": {
+    "overrides":
+    {
+        "infill_sparse_density":
+        {
             "default_value": 10
         },
-        "layer_height": {
+        "layer_height":
+        {
             "default_value": 0.25
         },
-        "layer_height_0": {
+        "layer_height_0":
+        {
             "default_value": 0.5
         },
-        "machine_center_is_zero": {
+        "machine_center_is_zero":
+        {
             "default_value": true
         },
-        "machine_depth": {
+        "machine_depth":
+        {
             "default_value": 265
         },
-        "machine_extruder_count": {
+        "machine_extruder_count":
+        {
             "default_value": 1
         },
-        "machine_gcode_flavor": {
+        "machine_gcode_flavor":
+        {
             "default_value": "BFB"
         },
-        "machine_heated_bed": {
+        "machine_heated_bed":
+        {
             "default_value": false
         },
-        "machine_height": {
+        "machine_height":
+        {
             "default_value": 240
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "BFB_Test"
         },
-        "machine_width": {
+        "machine_width":
+        {
             "default_value": 275
         },
-        "prime_tower_size": {
+        "prime_tower_size":
+        {
             "default_value": 7.745966692414834
         },
-        "retraction_amount": {
+        "retraction_amount":
+        {
             "default_value": 0.05
         },
-        "speed_print": {
+        "speed_print":
+        {
             "default_value": 40
         }
     },

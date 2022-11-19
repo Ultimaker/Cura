@@ -1,11 +1,13 @@
 {
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "author": "Peopoly",
         "file_formats": "text/x-gcode",
         "has_machine_quality": true,
         "has_materials": false,
-        "machine_extruder_trains": {
+        "machine_extruder_trains":
+        {
             "0": "peopoly_moai_extruder_0"
         },
         "manufacturer": "Peopoly",
@@ -14,118 +16,152 @@
         "visible": true
     },
     "name": "Peopoly Moai",
-    "overrides": {
-        "acceleration_enabled": {
+    "overrides":
+    {
+        "acceleration_enabled":
+        {
             "enabled": false,
             "value": "False"
         },
-        "adaptive_layer_height_enabled": {
+        "adaptive_layer_height_enabled":
+        {
             "enabled": false,
             "value": "False"
         },
-        "adhesion_type": {
+        "adhesion_type":
+        {
             "value": "'none'"
         },
-        "bottom_thickness": {
+        "bottom_thickness":
+        {
             "minimum_value_warning": "resolveOrValue('layer_height')"
         },
-        "bridge_settings_enabled": {
+        "bridge_settings_enabled":
+        {
             "enabled": false,
             "value": "False"
         },
-        "coasting_enable": {
+        "coasting_enable":
+        {
             "enabled": false,
             "value": "False"
         },
-        "cool_fan_enabled": {
+        "cool_fan_enabled":
+        {
             "enabled": false,
             "value": "False"
         },
-        "cool_fan_full_at_height": {
+        "cool_fan_full_at_height":
+        {
             "enabled": false
         },
-        "cool_fan_full_layer": {
+        "cool_fan_full_layer":
+        {
             "enabled": false
         },
-        "cool_fan_speed_min": {
+        "cool_fan_speed_min":
+        {
             "enabled": false,
             "value": 0
         },
-        "cool_lift_head": {
+        "cool_lift_head":
+        {
             "enabled": false,
             "value": "False"
         },
-        "cool_min_layer_time": {
+        "cool_min_layer_time":
+        {
             "enabled": false,
             "value": 0
         },
-        "cool_min_layer_time_fan_speed_max": {
+        "cool_min_layer_time_fan_speed_max":
+        {
             "enabled": false
         },
-        "cool_min_speed": {
+        "cool_min_speed":
+        {
             "enabled": false,
             "value": 0
         },
-        "draft_shield_enabled": {
+        "draft_shield_enabled":
+        {
             "enabled": false,
             "value": "False"
         },
-        "expand_skins_expand_distance": {
+        "expand_skins_expand_distance":
+        {
             "value": "( wall_line_width_0 + (wall_line_count - 1) * wall_line_width_x ) / 2"
         },
-        "flow_rate_extrusion_offset_factor": {
+        "flow_rate_extrusion_offset_factor":
+        {
             "enabled": false
         },
-        "flow_rate_max_extrusion_offset": {
+        "flow_rate_max_extrusion_offset":
+        {
             "enabled": false
         },
-        "infill_angles": {
+        "infill_angles":
+        {
             "value": "[0,90]"
         },
-        "infill_line_width": {
+        "infill_line_width":
+        {
             "minimum_value_warning": "machine_nozzle_size"
         },
-        "infill_overlap": {
+        "infill_overlap":
+        {
             "value": 15
         },
-        "infill_pattern": {
+        "infill_pattern":
+        {
             "value": "'lines'"
         },
-        "infill_sparse_density": {
+        "infill_sparse_density":
+        {
             "value": 70
         },
-        "infill_sparse_thickness": {
+        "infill_sparse_thickness":
+        {
             "maximum_value_warning": "0.5"
         },
-        "infill_wipe_dist": {
+        "infill_wipe_dist":
+        {
             "value": 0
         },
-        "ironing_enabled": {
+        "ironing_enabled":
+        {
             "enabled": false,
             "value": "False"
         },
-        "layer_height": {
+        "layer_height":
+        {
             "maximum_value_warning": "0.5",
             "minimum_value_warning": "0.02"
         },
-        "layer_height_0": {
+        "layer_height_0":
+        {
             "maximum_value_warning": "0.5",
             "minimum_value_warning": "0.02",
             "value": "0.1"
         },
-        "line_width": {
+        "line_width":
+        {
             "minimum_value_warning": "machine_nozzle_size"
         },
-        "machine_depth": {
+        "machine_depth":
+        {
             "default_value": 130
         },
-        "machine_end_gcode": {
+        "machine_end_gcode":
+        {
             "default_value": "M104 S0\nM140 S0\nG28 X0 Y0\nM84"
         },
-        "machine_gcode_flavor": {
+        "machine_gcode_flavor":
+        {
             "default_value": "RepRap (Marlin/Sprinter)"
         },
-        "machine_head_with_fans_polygon": {
+        "machine_head_with_fans_polygon":
+        {
             "default_value": [
                 [ -20, 10 ],
                 [ -20, -10 ],
@@ -133,129 +169,168 @@
                 [ 10, -10 ]
             ]
         },
-        "machine_height": {
+        "machine_height":
+        {
             "default_value": 180
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "Moai"
         },
-        "machine_nozzle_temp_enabled": {
+        "machine_nozzle_temp_enabled":
+        {
             "value": "False"
         },
-        "machine_start_gcode": {
+        "machine_start_gcode":
+        {
             "default_value": "G28 ;Home"
         },
-        "machine_width": {
+        "machine_width":
+        {
             "default_value": 130
         },
-        "material_bed_temperature": {
+        "material_bed_temperature":
+        {
             "enabled": false
         },
-        "material_flow": {
+        "material_flow":
+        {
             "enabled": false
         },
-        "material_flow_layer_0": {
+        "material_flow_layer_0":
+        {
             "enabled": false
         },
-        "meshfix_maximum_deviation": {
+        "meshfix_maximum_deviation":
+        {
             "value": "0.002"
         },
-        "minimum_polygon_circumference": {
+        "minimum_polygon_circumference":
+        {
             "value": "0.1"
         },
-        "print_sequence": {
+        "print_sequence":
+        {
             "enabled": false
         },
-        "relative_extrusion": {
+        "relative_extrusion":
+        {
             "enabled": false,
             "value": "False"
         },
-        "retract_at_layer_change": {
+        "retract_at_layer_change":
+        {
             "enabled": false,
             "value": false
         },
-        "retraction_combing": {
+        "retraction_combing":
+        {
             "enabled": false,
             "value": "'off'"
         },
-        "retraction_enable": {
+        "retraction_enable":
+        {
             "enabled": false,
             "value": "False"
         },
-        "skin_line_width": {
+        "skin_line_width":
+        {
             "minimum_value_warning": "machine_nozzle_size"
         },
-        "skin_no_small_gaps_heuristic": {
+        "skin_no_small_gaps_heuristic":
+        {
             "value": "False"
         },
-        "skin_outline_count": {
+        "skin_outline_count":
+        {
             "value": 0
         },
-        "skin_overlap": {
+        "skin_overlap":
+        {
             "value": 5
         },
-        "skirt_brim_line_width": {
+        "skirt_brim_line_width":
+        {
             "minimum_value_warning": "machine_nozzle_size"
         },
-        "speed_infill": {
+        "speed_infill":
+        {
             "maximum_value_warning": "300"
         },
-        "speed_layer_0": {
+        "speed_layer_0":
+        {
             "value": 5
         },
-        "speed_print": {
+        "speed_print":
+        {
             "maximum_value_warning": "300"
         },
-        "speed_slowdown_layers": {
+        "speed_slowdown_layers":
+        {
             "value": 3
         },
-        "speed_topbottom": {
+        "speed_topbottom":
+        {
             "maximum_value_warning": "300",
             "value": "speed_print"
         },
-        "speed_travel": {
+        "speed_travel":
+        {
             "value": 150
         },
-        "speed_travel_layer_0": {
+        "speed_travel_layer_0":
+        {
             "value": 150
         },
-        "speed_wall": {
+        "speed_wall":
+        {
             "maximum_value_warning": "300",
             "value": "speed_print"
         },
-        "speed_wall_0": {
+        "speed_wall_0":
+        {
             "maximum_value_warning": "300"
         },
-        "speed_wall_x": {
+        "speed_wall_x":
+        {
             "maximum_value_warning": "300",
             "value": "speed_print"
         },
-        "support_enable": {
+        "support_enable":
+        {
             "enabled": false
         },
-        "top_bottom_thickness": {
+        "top_bottom_thickness":
+        {
             "minimum_value_warning": "0.1",
             "value": "0.1"
         },
-        "top_thickness": {
+        "top_thickness":
+        {
             "minimum_value_warning": "resolveOrValue('layer_height')"
         },
-        "wall_0_wipe_dist": {
+        "wall_0_wipe_dist":
+        {
             "value": "machine_nozzle_size / 3"
         },
-        "wall_line_width": {
+        "wall_line_width":
+        {
             "minimum_value_warning": "machine_nozzle_size"
         },
-        "wall_line_width_x": {
+        "wall_line_width_x":
+        {
             "minimum_value_warning": "machine_nozzle_size"
         },
-        "wall_thickness": {
+        "wall_thickness":
+        {
             "value": "0.5"
         },
-        "z_seam_corner": {
+        "z_seam_corner":
+        {
             "value": "'z_seam_corner_none'"
         },
-        "z_seam_type": {
+        "z_seam_type":
+        {
             "value": "'shortest'"
         }
     },

@@ -1,6 +1,7 @@
 {
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "author": "Inat s.r.o.",
         "file_formats": "text/x-gcode",
         "first_start_actions": [
@@ -9,7 +10,8 @@
         "has_machine_quality": true,
         "has_materials": true,
         "has_variants": false,
-        "machine_extruder_trains": {
+        "machine_extruder_trains":
+        {
             "0": "inat_extruder_0"
         },
         "manufacturer": "Inat s.r.o.",
@@ -20,210 +22,266 @@
         "visible": false
     },
     "name": "Inat Base description",
-    "overrides": {
-        "acceleration_infill": {
+    "overrides":
+    {
+        "acceleration_infill":
+        {
             "maximum_value_warning": "1500",
             "minimum_value_warning": "100"
         },
-        "acceleration_layer_0": {
+        "acceleration_layer_0":
+        {
             "maximum_value_warning": "1500",
             "minimum_value_warning": "100"
         },
-        "acceleration_prime_tower": {
+        "acceleration_prime_tower":
+        {
             "maximum_value_warning": "1500",
             "minimum_value_warning": "100"
         },
-        "acceleration_print": {
+        "acceleration_print":
+        {
             "maximum_value_warning": "1500",
             "minimum_value_warning": "100",
             "value": 500
         },
-        "acceleration_print_layer_0": {
+        "acceleration_print_layer_0":
+        {
             "maximum_value_warning": "1500",
             "minimum_value_warning": "100"
         },
-        "acceleration_roofing": {
+        "acceleration_roofing":
+        {
             "maximum_value_warning": "1500",
             "minimum_value_warning": "100"
         },
-        "acceleration_skirt_brim": {
+        "acceleration_skirt_brim":
+        {
             "maximum_value_warning": "1500",
             "minimum_value_warning": "100"
         },
-        "acceleration_support": {
+        "acceleration_support":
+        {
             "maximum_value_warning": "1500",
             "minimum_value_warning": "100"
         },
-        "acceleration_support_bottom": {
+        "acceleration_support_bottom":
+        {
             "maximum_value_warning": "1500",
             "minimum_value_warning": "100"
         },
-        "acceleration_support_infill": {
+        "acceleration_support_infill":
+        {
             "maximum_value_warning": "1500",
             "minimum_value_warning": "100"
         },
-        "acceleration_support_interface": {
+        "acceleration_support_interface":
+        {
             "maximum_value_warning": "1500",
             "minimum_value_warning": "100"
         },
-        "acceleration_support_roof": {
+        "acceleration_support_roof":
+        {
             "maximum_value_warning": "1500",
             "minimum_value_warning": "100"
         },
-        "acceleration_topbottom": {
+        "acceleration_topbottom":
+        {
             "maximum_value_warning": "1500",
             "minimum_value_warning": "100"
         },
-        "acceleration_travel": {
+        "acceleration_travel":
+        {
             "maximum_value_warning": "1500",
             "minimum_value_warning": "100",
             "value": "acceleration_print"
         },
-        "acceleration_travel_layer_0": {
+        "acceleration_travel_layer_0":
+        {
             "maximum_value_warning": "1500",
             "minimum_value_warning": "100"
         },
-        "acceleration_wall": {
+        "acceleration_wall":
+        {
             "maximum_value_warning": "1500",
             "minimum_value_warning": "100"
         },
-        "acceleration_wall_0": {
+        "acceleration_wall_0":
+        {
             "maximum_value_warning": "1500",
             "minimum_value_warning": "100"
         },
-        "acceleration_wall_x": {
+        "acceleration_wall_x":
+        {
             "maximum_value_warning": "1500",
             "minimum_value_warning": "100"
         },
-        "adhesion_type": {
+        "adhesion_type":
+        {
             "value": "'skirt'"
         },
-        "brim_outside_only": {
+        "brim_outside_only":
+        {
             "value": false
         },
-        "cool_fan_speed_min": {
+        "cool_fan_speed_min":
+        {
             "value": "0.5*cool_fan_speed"
         },
-        "cool_min_layer_time_fan_speed_max": {
+        "cool_min_layer_time_fan_speed_max":
+        {
             "value": 10
         },
-        "default_material_bed_temperature": {
+        "default_material_bed_temperature":
+        {
             "maximum_value": "150"
         },
-        "default_material_print_temperature": {
+        "default_material_print_temperature":
+        {
             "maximum_value": "470"
         },
-        "expand_skins_expand_distance": {
+        "expand_skins_expand_distance":
+        {
             "value": "4"
         },
-        "gantry_height": {
+        "gantry_height":
+        {
             "value": 34
         },
-        "infill_before_walls": {
+        "infill_before_walls":
+        {
             "value": false
         },
-        "infill_pattern": {
+        "infill_pattern":
+        {
             "value": "'zigzag' if infill_sparse_density > 50 else 'cubic'"
         },
-        "infill_sparse_density": {
+        "infill_sparse_density":
+        {
             "value": 30
         },
-        "infill_sparse_thickness": {
+        "infill_sparse_thickness":
+        {
             "value": "layer_height if (2*layer_height > 0.8*machine_nozzle_size) else 2*layer_height"
         },
-        "jerk_infill": {
+        "jerk_infill":
+        {
             "maximum_value_warning": "20",
             "value": "jerk_print"
         },
-        "jerk_layer_0": {
+        "jerk_layer_0":
+        {
             "maximum_value_warning": "20",
             "value": "jerk_print"
         },
-        "jerk_prime_tower": {
+        "jerk_prime_tower":
+        {
             "maximum_value_warning": "20",
             "value": "jerk_print"
         },
-        "jerk_print": {
+        "jerk_print":
+        {
             "maximum_value_warning": "20",
             "value": 8
         },
-        "jerk_print_layer_0": {
+        "jerk_print_layer_0":
+        {
             "maximum_value_warning": "20",
             "value": "jerk_print"
         },
-        "jerk_roofing": {
+        "jerk_roofing":
+        {
             "maximum_value_warning": "20",
             "value": "jerk_print"
         },
-        "jerk_skirt_brim": {
+        "jerk_skirt_brim":
+        {
             "maximum_value_warning": "20",
             "value": "jerk_print"
         },
-        "jerk_support": {
+        "jerk_support":
+        {
             "maximum_value_warning": "20",
             "value": "jerk_print"
         },
-        "jerk_support_bottom": {
+        "jerk_support_bottom":
+        {
             "maximum_value_warning": "20",
             "value": "jerk_print"
         },
-        "jerk_support_infill": {
+        "jerk_support_infill":
+        {
             "maximum_value_warning": "20",
             "value": "jerk_print"
         },
-        "jerk_support_interface": {
+        "jerk_support_interface":
+        {
             "maximum_value_warning": "20",
             "value": "jerk_print"
         },
-        "jerk_support_roof": {
+        "jerk_support_roof":
+        {
             "maximum_value_warning": "20",
             "value": "jerk_print"
         },
-        "jerk_topbottom": {
+        "jerk_topbottom":
+        {
             "maximum_value_warning": "20",
             "value": "jerk_print"
         },
-        "jerk_travel": {
+        "jerk_travel":
+        {
             "maximum_value_warning": "20",
             "value": "jerk_print"
         },
-        "jerk_travel_layer_0": {
+        "jerk_travel_layer_0":
+        {
             "maximum_value_warning": "20",
             "value": "jerk_print"
         },
-        "jerk_wall": {
+        "jerk_wall":
+        {
             "maximum_value_warning": "20",
             "value": "jerk_print"
         },
-        "jerk_wall_0": {
+        "jerk_wall_0":
+        {
             "maximum_value_warning": "20",
             "value": "jerk_print"
         },
-        "jerk_wall_x": {
+        "jerk_wall_x":
+        {
             "maximum_value_warning": "20",
             "value": "jerk_print"
         },
-        "layer_height": {
+        "layer_height":
+        {
             "value": 0.2
         },
-        "layer_height_0": {
+        "layer_height_0":
+        {
             "value": "machine_nozzle_size / 2.0"
         },
-        "line_width": {
+        "line_width":
+        {
             "maximum_value_warning": "1.6 * machine_nozzle_size",
             "minimum_value_warning": "0.8 * machine_nozzle_size",
             "value": "1.05 * machine_nozzle_size"
         },
-        "machine_acceleration": {
+        "machine_acceleration":
+        {
             "value": 500
         },
-        "machine_end_gcode": {
+        "machine_end_gcode":
+        {
             "default_value": "M400\nM104 S0\nM140 S0\nM107\n;Retract the filament\nG92 E1\nG1 E-1 F300\nG28 R5 X\nG0 Y300 F3000\nM84\n"
         },
-        "machine_gcode_flavor": {
+        "machine_gcode_flavor":
+        {
             "default_value": "RepRap (Marlin/Sprinter)"
         },
-        "machine_head_with_fans_polygon": {
+        "machine_head_with_fans_polygon":
+        {
             "default_value": [
                 [ -86, 66 ],
                 [ 44, 66 ],
@@ -231,216 +289,285 @@
                 [ -86, -96 ]
             ]
         },
-        "machine_heated_bed": {
+        "machine_heated_bed":
+        {
             "default_value": true
         },
-        "machine_heated_build_volume": {
+        "machine_heated_build_volume":
+        {
             "default_value": false
         },
-        "machine_max_acceleration_e": {
+        "machine_max_acceleration_e":
+        {
             "value": 2000
         },
-        "machine_max_acceleration_x": {
+        "machine_max_acceleration_x":
+        {
             "value": 500
         },
-        "machine_max_acceleration_y": {
+        "machine_max_acceleration_y":
+        {
             "value": 500
         },
-        "machine_max_acceleration_z": {
+        "machine_max_acceleration_z":
+        {
             "value": 200
         },
-        "machine_max_feedrate_e": {
+        "machine_max_feedrate_e":
+        {
             "value": 100
         },
-        "machine_max_feedrate_x": {
+        "machine_max_feedrate_x":
+        {
             "value": 200
         },
-        "machine_max_feedrate_y": {
+        "machine_max_feedrate_y":
+        {
             "value": 200
         },
-        "machine_max_feedrate_z": {
+        "machine_max_feedrate_z":
+        {
             "value": 10
         },
-        "machine_max_jerk_e": {
+        "machine_max_jerk_e":
+        {
             "value": 5.0
         },
-        "machine_max_jerk_xy": {
+        "machine_max_jerk_xy":
+        {
             "value": 8
         },
-        "machine_max_jerk_z": {
+        "machine_max_jerk_z":
+        {
             "value": 2.0
         },
-        "machine_nozzle_size": {
+        "machine_nozzle_size":
+        {
             "default_value": 0.4
         },
-        "machine_shape": {
+        "machine_shape":
+        {
             "default_value": "rectangular"
         },
-        "machine_start_gcode": {
+        "machine_start_gcode":
+        {
             "default_value": "G28 ;Home\nG0 X-2 Y150 F6000 ;Move to the side\nG0 Z0.3 F200 ;Move nozzle down\nM192 ; Wait for probe temperature to settle\nG28 Z\nG29\nG0 X0 Y0 Z30 F6000\nM84 E\nM0\nG1 Z15.0 F6000 ;Move the platform down 15mm\n"
         },
-        "material_bed_temperature": {
+        "material_bed_temperature":
+        {
             "maximum_value": "150"
         },
-        "material_bed_temperature_layer_0": {
+        "material_bed_temperature_layer_0":
+        {
             "maximum_value": "150"
         },
-        "material_diameter": {
+        "material_diameter":
+        {
             "default_value": 1.75
         },
-        "material_final_print_temperature": {
+        "material_final_print_temperature":
+        {
             "maximum_value": "470",
             "value": "material_print_temperature"
         },
-        "material_initial_print_temperature": {
+        "material_initial_print_temperature":
+        {
             "maximum_value": "470",
             "value": "material_print_temperature"
         },
-        "material_print_temperature": {
+        "material_print_temperature":
+        {
             "maximum_value": "470"
         },
-        "material_print_temperature_layer_0": {
+        "material_print_temperature_layer_0":
+        {
             "maximum_value": "470",
             "value": "material_print_temperature"
         },
-        "optimize_wall_printing_order": {
+        "optimize_wall_printing_order":
+        {
             "value": true
         },
-        "raft_airgap": {
+        "raft_airgap":
+        {
             "value": "0.5 * layer_height"
         },
-        "raft_base_line_width": {
+        "raft_base_line_width":
+        {
             "value": "raft_interface_line_width"
         },
-        "raft_base_speed": {
+        "raft_base_speed":
+        {
             "value": "speed_layer_0"
         },
-        "raft_interface_line_width": {
+        "raft_interface_line_width":
+        {
             "value": "line_width"
         },
-        "raft_interface_thickness": {
+        "raft_interface_thickness":
+        {
             "maximum_value_warning": "0.8 * machine_nozzle_size",
             "value": "0.8*machine_nozzle_size"
         },
-        "raft_margin": {
+        "raft_margin":
+        {
             "value": 10
         },
-        "retraction_amount": {
+        "retraction_amount":
+        {
             "maximum_value_warning": "2.0",
             "value": 1.8
         },
-        "retraction_combing": {
+        "retraction_combing":
+        {
             "value": "'infill'"
         },
-        "retraction_hop": {
+        "retraction_hop":
+        {
             "value": "3*layer_height"
         },
-        "retraction_hop_enabled": {
+        "retraction_hop_enabled":
+        {
             "value": true
         },
-        "retraction_speed": {
+        "retraction_speed":
+        {
             "value": 45
         },
-        "roofing_layer_count": {
+        "roofing_layer_count":
+        {
             "value": 2
         },
-        "skin_outline_count": {
+        "skin_outline_count":
+        {
             "value": 2
         },
-        "skirt_brim_minimal_length": {
+        "skirt_brim_minimal_length":
+        {
             "value": 500
         },
-        "skirt_gap": {
+        "skirt_gap":
+        {
             "value": 10
         },
-        "skirt_line_count": {
+        "skirt_line_count":
+        {
             "value": 5
         },
-        "speed_layer_0": {
+        "speed_layer_0":
+        {
             "value": "30"
         },
-        "speed_roofing": {
+        "speed_roofing":
+        {
             "value": "speed_wall_0"
         },
-        "speed_topbottom": {
+        "speed_topbottom":
+        {
             "value": "speed_print"
         },
-        "speed_travel": {
+        "speed_travel":
+        {
             "value": "150"
         },
-        "speed_travel_layer_0": {
+        "speed_travel_layer_0":
+        {
             "value": "0.5 * speed_travel"
         },
-        "speed_wall": {
+        "speed_wall":
+        {
             "value": "speed_print"
         },
-        "speed_wall_0": {
+        "speed_wall_0":
+        {
             "value": "0.5 * speed_wall"
         },
-        "speed_wall_x": {
+        "speed_wall_x":
+        {
             "value": "speed_wall"
         },
-        "speed_z_hop": {
+        "speed_z_hop":
+        {
             "value": 10
         },
-        "support_angle": {
+        "support_angle":
+        {
             "value": 60
         },
-        "support_fan_enable": {
+        "support_fan_enable":
+        {
             "value": true
         },
-        "support_infill_angles": {
+        "support_infill_angles":
+        {
             "value": "[45]"
         },
-        "support_infill_rate": {
+        "support_infill_rate":
+        {
             "value": 10
         },
-        "support_infill_sparse_thickness": {
+        "support_infill_sparse_thickness":
+        {
             "value": "infill_sparse_thickness"
         },
-        "support_interface_density": {
+        "support_interface_density":
+        {
             "value": 80
         },
-        "support_interface_enable": {
+        "support_interface_enable":
+        {
             "value": true
         },
-        "support_interface_height": {
+        "support_interface_height":
+        {
             "value": 1.0
         },
-        "support_interface_offset": {
+        "support_interface_offset":
+        {
             "value": "support_offset"
         },
-        "support_interface_pattern": {
+        "support_interface_pattern":
+        {
             "value": "'grid'"
         },
-        "support_join_distance": {
+        "support_join_distance":
+        {
             "value": 5.0
         },
-        "support_offset": {
+        "support_offset":
+        {
             "value": 3.0
         },
-        "support_tree_angle": {
+        "support_tree_angle":
+        {
             "value": 60
         },
-        "support_use_towers": {
+        "support_use_towers":
+        {
             "value": false
         },
-        "support_wall_count": {
+        "support_wall_count":
+        {
             "value": "1 if (support_structure == 'tree') else 0"
         },
-        "support_z_distance": {
+        "support_z_distance":
+        {
             "value": "layer_height if (2*layer_height > 0.8*machine_nozzle_size) else (2*layer_height)"
         },
-        "top_bottom_pattern": {
+        "top_bottom_pattern":
+        {
             "value": "'zigzag'"
         },
-        "top_bottom_thickness": {
+        "top_bottom_thickness":
+        {
             "value": 1.0
         },
-        "wall_thickness": {
+        "wall_thickness":
+        {
             "value": "max(3*wall_line_width, 1)"
         },
-        "xy_offset_layer_0": {
+        "xy_offset_layer_0":
+        {
             "value": "-0.5*line_width"
         }
     },

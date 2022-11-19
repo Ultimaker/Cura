@@ -1,22 +1,28 @@
 {
     "inherits": "voron2_base",
-    "metadata": {
+    "metadata":
+    {
         "platform": "voron2_350_bed.3mf",
         "quality_definition": "voron2_base",
         "visible": true
     },
     "name": "Voron2 350",
-    "overrides": {
-        "machine_depth": {
+    "overrides":
+    {
+        "machine_depth":
+        {
             "default_value": 350
         },
-        "machine_height": {
+        "machine_height":
+        {
             "default_value": 350
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "VORON2 350"
         },
-        "machine_width": {
+        "machine_width":
+        {
             "default_value": 350
         }
     },

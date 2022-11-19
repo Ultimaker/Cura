@@ -1,6 +1,7 @@
 {
     "inherits": "artillery_base",
-    "metadata": {
+    "metadata":
+    {
         "platform": "artillery_genius.stl",
         "platform_offset": [
             0,
@@ -11,20 +12,26 @@
         "visible": true
     },
     "name": "Artillery Genius",
-    "overrides": {
-        "gantry_height": {
+    "overrides":
+    {
+        "gantry_height":
+        {
             "value": 25
         },
-        "machine_depth": {
+        "machine_depth":
+        {
             "default_value": 220
         },
-        "machine_height": {
+        "machine_height":
+        {
             "default_value": 250
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "Artillery Genius"
         },
-        "machine_width": {
+        "machine_width":
+        {
             "default_value": 220
         }
     },

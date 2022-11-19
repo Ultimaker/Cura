@@ -1,10 +1,12 @@
 {
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "author": "Hellbot Development Team",
         "file_formats": "text/x-gcode",
         "has_materials": true,
-        "machine_extruder_trains": {
+        "machine_extruder_trains":
+        {
             "0": "hellbot_magna_dual_extruder_1",
             "1": "hellbot_magna_dual_extruder_2"
         },
@@ -19,23 +21,30 @@
         "visible": true
     },
     "name": "Hellbot Magna Dual",
-    "overrides": {
-        "machine_depth": {
+    "overrides":
+    {
+        "machine_depth":
+        {
             "default_value": 220
         },
-        "machine_extruder_count": {
+        "machine_extruder_count":
+        {
             "default_value": 2
         },
-        "machine_heated_bed": {
+        "machine_heated_bed":
+        {
             "default_value": true
         },
-        "machine_height": {
+        "machine_height":
+        {
             "default_value": 260
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "Hellbot Magna DUAL"
         },
-        "machine_width": {
+        "machine_width":
+        {
             "default_value": 220
         }
     },

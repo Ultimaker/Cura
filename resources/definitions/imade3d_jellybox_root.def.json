@@ -1,6 +1,7 @@
 {
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "author": "Imade3D",
         "exclude_materials": [
             "chromatik_pla",
@@ -61,29 +62,38 @@
         "visible": false
     },
     "name": "imade3d_jellybox_root",
-    "overrides": {
-        "machine_center_is_zero": {
+    "overrides":
+    {
+        "machine_center_is_zero":
+        {
             "default_value": false
         },
-        "machine_gcode_flavor": {
+        "machine_gcode_flavor":
+        {
             "default_value": "RepRap (Marlin/Sprinter)"
         },
-        "machine_heated_bed": {
+        "machine_heated_bed":
+        {
             "default_value": true
         },
-        "material_bed_temperature": {
+        "material_bed_temperature":
+        {
             "minimum_value": "0"
         },
-        "material_diameter": {
+        "material_diameter":
+        {
             "default_value": 1.75
         },
-        "material_print_temperature": {
+        "material_print_temperature":
+        {
             "minimum_value": "0"
         },
-        "material_standby_temperature": {
+        "material_standby_temperature":
+        {
             "minimum_value": "0"
         },
-        "relative_extrusion": {
+        "relative_extrusion":
+        {
             "enabled": true,
             "value": true
         }

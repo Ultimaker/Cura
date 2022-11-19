@@ -1,20 +1,25 @@
 {
     "inherits": "zav_base",
-    "metadata": {
+    "metadata":
+    {
         "author": "Kirill Nikolaev, Kim Evgeniy (C)",
         "platform": "zav_l.stl",
         "quality_definition": "zav_base",
         "visible": true
     },
     "name": "Zav L Family Printer",
-    "overrides": {
-        "machine_height": {
+    "overrides":
+    {
+        "machine_height":
+        {
             "default_value": 200
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "zav_l"
         },
-        "machine_width": {
+        "machine_width":
+        {
             "default_value": 200
         }
     },

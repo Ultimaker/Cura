@@ -1,6 +1,7 @@
 {
     "inherits": "3di_base",
-    "metadata": {
+    "metadata":
+    {
         "platform": "3di_d300_platform.STL",
         "platform_offset": [
             -200,
@@ -10,17 +11,22 @@
         "visible": true
     },
     "name": "3DI D300",
-    "overrides": {
-        "machine_depth": {
+    "overrides":
+    {
+        "machine_depth":
+        {
             "default_value": 300
         },
-        "machine_height": {
+        "machine_height":
+        {
             "default_value": 300
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "3DI D300"
         },
-        "machine_width": {
+        "machine_width":
+        {
             "default_value": 300
         }
     },

@@ -1,12 +1,14 @@
 {
     "inherits": "xyzprinting_base",
-    "metadata": {
+    "metadata":
+    {
         "author": "XYZprinting Software",
         "file_formats": "text/x-gcode",
         "has_machine_quality": true,
         "has_materials": true,
         "has_variants": true,
-        "machine_extruder_trains": {
+        "machine_extruder_trains":
+        {
             "0": "xyzprinting_da_vinci_pro_evo_extruder_0"
         },
         "manufacturer": "XYZprinting",
@@ -18,86 +20,114 @@
         "visible": true
     },
     "name": "XYZprinting da Vinci Pro EVO",
-    "overrides": {
-        "acceleration_enabled": {
+    "overrides":
+    {
+        "acceleration_enabled":
+        {
             "value": true
         },
-        "acceleration_layer_0": {
+        "acceleration_layer_0":
+        {
             "value": "acceleration_topbottom"
         },
-        "acceleration_prime_tower": {
+        "acceleration_prime_tower":
+        {
             "value": "math.ceil(acceleration_print * 2000 / 3000)"
         },
-        "acceleration_print": {
+        "acceleration_print":
+        {
             "value": "3000"
         },
-        "acceleration_support": {
+        "acceleration_support":
+        {
             "value": "math.ceil(acceleration_print * 2000 / 3000)"
         },
-        "acceleration_support_interface": {
+        "acceleration_support_interface":
+        {
             "value": "acceleration_topbottom"
         },
-        "acceleration_topbottom": {
+        "acceleration_topbottom":
+        {
             "value": "math.ceil(acceleration_print * 500 / 3000)"
         },
-        "acceleration_travel": {
+        "acceleration_travel":
+        {
             "value": "3000"
         },
-        "acceleration_wall": {
+        "acceleration_wall":
+        {
             "value": "math.ceil(acceleration_print * 1000 / 3000)"
         },
-        "acceleration_wall_0": {
+        "acceleration_wall_0":
+        {
             "value": "math.ceil(acceleration_wall * 500 / 1000)"
         },
-        "brim_line_count": {
+        "brim_line_count":
+        {
             "value": 5
         },
-        "brim_width": {
+        "brim_width":
+        {
             "value": "10"
         },
-        "cool_fan_enabled": {
+        "cool_fan_enabled":
+        {
             "default_value": true
         },
-        "cool_fan_speed_0": {
+        "cool_fan_speed_0":
+        {
             "value": 100
         },
-        "cool_min_speed": {
+        "cool_min_speed":
+        {
             "value": 5
         },
-        "infill_before_walls": {
+        "infill_before_walls":
+        {
             "value": false
         },
-        "infill_line_width": {
+        "infill_line_width":
+        {
             "value": "0.4"
         },
-        "infill_overlap": {
+        "infill_overlap":
+        {
             "value": "0"
         },
-        "infill_pattern": {
+        "infill_pattern":
+        {
             "value": "'zigzag' if infill_sparse_density > 80 else 'triangles'"
         },
-        "infill_wipe_dist": {
+        "infill_wipe_dist":
+        {
             "value": "0"
         },
-        "jerk_enabled": {
+        "jerk_enabled":
+        {
             "value": true
         },
-        "line_width": {
+        "line_width":
+        {
             "value": "0.35"
         },
-        "machine_center_is_zero": {
+        "machine_center_is_zero":
+        {
             "default_value": false
         },
-        "machine_depth": {
+        "machine_depth":
+        {
             "default_value": 200.0
         },
-        "machine_end_gcode": {
+        "machine_end_gcode":
+        {
             "default_value": "M106 P1 S255 ; turn on fan\nG92 E0\nG28; home X,Y,Z axis\nM84     ; disable motors\n"
         },
-        "machine_gcode_flavor": {
+        "machine_gcode_flavor":
+        {
             "default_value": "RepRap (Marlin/Sprinter)"
         },
-        "machine_head_with_fans_polygon": {
+        "machine_head_with_fans_polygon":
+        {
             "default_value": [
                 [ -20, -10 ],
                 [ -20, 10 ],
@@ -105,67 +135,88 @@
                 [ 10, -10 ]
             ]
         },
-        "machine_heated_bed": {
+        "machine_heated_bed":
+        {
             "default_value": true
         },
-        "machine_height": {
+        "machine_height":
+        {
             "default_value": 200.0
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "XYZprinting da Vinci Pro EVO"
         },
-        "machine_shape": {
+        "machine_shape":
+        {
             "default_value": "rectangular"
         },
-        "machine_start_gcode": {
+        "machine_start_gcode":
+        {
             "default_value": "M191\nG28 ; home all axes\nG1 Z15 F5000 ; lift nozzle\nG92 E0\nG1 F200 E3\n"
         },
-        "machine_width": {
+        "machine_width":
+        {
             "default_value": 220.0
         },
-        "material_flow_layer_0": {
+        "material_flow_layer_0":
+        {
             "value": 120
         },
-        "multiple_mesh_overlap": {
+        "multiple_mesh_overlap":
+        {
             "value": "0"
         },
-        "optimize_wall_printing_order": {
+        "optimize_wall_printing_order":
+        {
             "value": "True"
         },
-        "retraction_count_max": {
+        "retraction_count_max":
+        {
             "value": "25"
         },
-        "retraction_extrusion_window": {
+        "retraction_extrusion_window":
+        {
             "value": "1"
         },
-        "skin_material_flow": {
+        "skin_material_flow":
+        {
             "value": "97"
         },
-        "skin_monotonic": {
+        "skin_monotonic":
+        {
             "value": true
         },
-        "skin_overlap": {
+        "skin_overlap":
+        {
             "value": "15"
         },
-        "skirt_line_count": {
+        "skirt_line_count":
+        {
             "default_value": 5
         },
-        "speed_layer_0": {
+        "speed_layer_0":
+        {
             "value": 10
         },
-        "speed_wall_0": {
+        "speed_wall_0":
+        {
             "value": "math.ceil(speed_wall * 20 / 30)"
         },
-        "speed_wall_x": {
+        "speed_wall_x":
+        {
             "value": "speed_print"
         },
-        "wall_0_inset": {
+        "wall_0_inset":
+        {
             "value": "0"
         },
-        "wall_line_width_x": {
+        "wall_line_width_x":
+        {
             "value": "0.35"
         },
-        "wall_thickness": {
+        "wall_thickness":
+        {
             "value": "1"
         }
     },

@@ -1,17 +1,22 @@
 {
     "inherits": "goofoo_near",
-    "metadata": {
+    "metadata":
+    {
         "visible": true
     },
     "name": "Goofoo Max",
-    "overrides": {
-        "gantry_height": {
+    "overrides":
+    {
+        "gantry_height":
+        {
             "value": 0
         },
-        "machine_depth": {
+        "machine_depth":
+        {
             "default_value": 580
         },
-        "machine_head_with_fans_polygon": {
+        "machine_head_with_fans_polygon":
+        {
             "default_value": [
                 [ 0, 0 ],
                 [ 0, 0 ],
@@ -19,13 +24,16 @@
                 [ 0, 0 ]
             ]
         },
-        "machine_height": {
+        "machine_height":
+        {
             "default_value": 700
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "Goofoo Max"
         },
-        "machine_width": {
+        "machine_width":
+        {
             "default_value": 600
         }
     },

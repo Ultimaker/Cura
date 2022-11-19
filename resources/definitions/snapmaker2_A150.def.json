@@ -1,8 +1,10 @@
 {
     "inherits": "snapmaker2",
-    "metadata": {
+    "metadata":
+    {
         "file_formats": "text/x-gcode",
-        "machine_extruder_trains": {
+        "machine_extruder_trains":
+        {
             "0": "snapmaker_extruder_0"
         },
         "manufacturer": "Snapmaker",
@@ -10,14 +12,18 @@
         "visible": true
     },
     "name": "Snapmaker 2 A150",
-    "overrides": {
-        "gantry_height": {
+    "overrides":
+    {
+        "gantry_height":
+        {
             "value": 27
         },
-        "machine_depth": {
+        "machine_depth":
+        {
             "default_value": 160
         },
-        "machine_head_with_fans_polygon": {
+        "machine_head_with_fans_polygon":
+        {
             "default_value": [
                 [ -67, 22 ],
                 [ -67, -25 ],
@@ -31,13 +37,16 @@
                 ]
             ]
         },
-        "machine_height": {
+        "machine_height":
+        {
             "default_value": 145
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "Snapmaker A150"
         },
-        "machine_width": {
+        "machine_width":
+        {
             "default_value": 160
         }
     },

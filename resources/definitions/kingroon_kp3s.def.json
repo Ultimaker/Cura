@@ -1,70 +1,92 @@
 {
     "inherits": "kingroon_base",
-    "metadata": {
+    "metadata":
+    {
         "platform": "kingroon_kp3s.stl",
         "quality_definition": "kingroon_base",
         "visible": true
     },
     "name": "Kingroon KP3S",
-    "overrides": {
-        "machine_acceleration": {
+    "overrides":
+    {
+        "machine_acceleration":
+        {
             "value": 1000
         },
-        "machine_max_acceleration_e": {
+        "machine_max_acceleration_e":
+        {
             "value": 1000
         },
-        "machine_max_acceleration_x": {
+        "machine_max_acceleration_x":
+        {
             "value": 1000
         },
-        "machine_max_acceleration_y": {
+        "machine_max_acceleration_y":
+        {
             "value": 1000
         },
-        "machine_max_acceleration_z": {
+        "machine_max_acceleration_z":
+        {
             "value": 100
         },
-        "machine_max_feedrate_e": {
+        "machine_max_feedrate_e":
+        {
             "value": 100
         },
-        "machine_max_feedrate_x": {
+        "machine_max_feedrate_x":
+        {
             "value": 200
         },
-        "machine_max_feedrate_y": {
+        "machine_max_feedrate_y":
+        {
             "value": 200
         },
-        "machine_max_feedrate_z": {
+        "machine_max_feedrate_z":
+        {
             "value": 4
         },
-        "machine_max_jerk_xy": {
+        "machine_max_jerk_xy":
+        {
             "value": 15
         },
-        "machine_max_jerk_z": {
+        "machine_max_jerk_z":
+        {
             "value": 0.4
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "Kingroon KP3S"
         },
-        "machine_steps_per_mm_e": {
+        "machine_steps_per_mm_e":
+        {
             "value": 764
         },
-        "machine_steps_per_mm_x": {
+        "machine_steps_per_mm_x":
+        {
             "value": 160
         },
-        "machine_steps_per_mm_y": {
+        "machine_steps_per_mm_y":
+        {
             "value": 160
         },
-        "machine_steps_per_mm_z": {
+        "machine_steps_per_mm_z":
+        {
             "value": 800
         },
-        "retraction_amount": {
+        "retraction_amount":
+        {
             "value": 1
         },
-        "retraction_extrusion_window": {
+        "retraction_extrusion_window":
+        {
             "value": 1
         },
-        "retraction_speed": {
+        "retraction_speed":
+        {
             "value": 40
         },
-        "speed_z_hop": {
+        "speed_z_hop":
+        {
             "value": 4
         }
     },

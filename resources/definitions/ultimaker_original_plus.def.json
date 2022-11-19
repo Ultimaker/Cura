@@ -1,6 +1,7 @@
 {
     "inherits": "ultimaker_original",
-    "metadata": {
+    "metadata":
+    {
         "author": "Ultimaker",
         "file_formats": "text/x-gcode",
         "firmware_file": "MarlinUltimaker-UMOP-{baudrate}.hex",
@@ -8,7 +9,8 @@
         "first_start_actions": [
             "BedLevel"
         ],
-        "machine_extruder_trains": {
+        "machine_extruder_trains":
+        {
             "0": "ultimaker_original_plus_extruder_0"
         },
         "manufacturer": "Ultimaker B.V.",
@@ -21,14 +23,18 @@
         "weight": 4
     },
     "name": "Ultimaker Original+",
-    "overrides": {
-        "machine_heated_bed": {
+    "overrides":
+    {
+        "machine_heated_bed":
+        {
             "default_value": true
         },
-        "machine_max_feedrate_z": {
+        "machine_max_feedrate_z":
+        {
             "default_value": 30
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "Ultimaker Original+"
         }
     },

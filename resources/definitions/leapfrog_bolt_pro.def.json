@@ -1,6 +1,7 @@
 {
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "author": "Karan and Vincent 20191104",
         "exclude_materials": [
             "generic_pla_175",
@@ -60,7 +61,8 @@
         "has_machine_quality": true,
         "has_materials": true,
         "has_variants": true,
-        "machine_extruder_trains": {
+        "machine_extruder_trains":
+        {
             "0": "leapfrog_bolt_pro_extruder_right",
             "1": "leapfrog_bolt_pro_extruder_left"
         },
@@ -79,35 +81,46 @@
         "visible": true
     },
     "name": "Leapfrog Bolt Pro",
-    "overrides": {
-        "adhesion_type": {
+    "overrides":
+    {
+        "adhesion_type":
+        {
             "default_value": "skirt"
         },
-        "build_volume_temperature": {
+        "build_volume_temperature":
+        {
             "enabled": false
         },
-        "gantry_height": {
+        "gantry_height":
+        {
             "value": "20"
         },
-        "machine_acceleration": {
+        "machine_acceleration":
+        {
             "default_value": 400
         },
-        "machine_center_is_zero": {
+        "machine_center_is_zero":
+        {
             "default_value": false
         },
-        "machine_depth": {
+        "machine_depth":
+        {
             "default_value": 322
         },
-        "machine_end_gcode": {
+        "machine_end_gcode":
+        {
             "default_value": "G92 E0\nG1 E-3 F300\nM104 S0 T0\nM104 S0 T1\nM140 S0\nG28 X0 Y0\nM84"
         },
-        "machine_extruder_count": {
+        "machine_extruder_count":
+        {
             "default_value": 2
         },
-        "machine_gcode_flavor": {
+        "machine_gcode_flavor":
+        {
             "default_value": "RepRap (Marlin/Sprinter)"
         },
-        "machine_head_with_fans_polygon": {
+        "machine_head_with_fans_polygon":
+        {
             "default_value": [
                 [ -60, 110 ],
                 [ -60, -45 ],
@@ -115,70 +128,92 @@
                 [ 60, 110 ]
             ]
         },
-        "machine_heated_bed": {
+        "machine_heated_bed":
+        {
             "default_value": true
         },
-        "machine_height": {
+        "machine_height":
+        {
             "default_value": 205
         },
-        "machine_max_acceleration_z": {
+        "machine_max_acceleration_z":
+        {
             "default_value": 100
         },
-        "machine_max_feedrate_e": {
+        "machine_max_feedrate_e":
+        {
             "default_value": 50
         },
-        "machine_max_feedrate_z": {
+        "machine_max_feedrate_z":
+        {
             "default_value": 16.7
         },
-        "machine_max_jerk_e": {
+        "machine_max_jerk_e":
+        {
             "default_value": 5
         },
-        "machine_max_jerk_xy": {
+        "machine_max_jerk_xy":
+        {
             "default_value": 20
         },
-        "machine_max_jerk_z": {
+        "machine_max_jerk_z":
+        {
             "default_value": 0.4
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "Leapfrog Bolt Pro"
         },
-        "machine_start_gcode": {
+        "machine_start_gcode":
+        {
             "default_value": "G90\nG28 X0 Y0 Z0\nG1 Z5 F1000\nG92 E0\nG1 Y-32 F12000\nG1 E15 F1000\nG1 E45 F150\nG4 S5"
         },
-        "machine_use_extruder_offset_to_offset_coords": {
+        "machine_use_extruder_offset_to_offset_coords":
+        {
             "default_value": true
         },
-        "machine_width": {
+        "machine_width":
+        {
             "default_value": 302
         },
-        "material_final_print_temperature": {
+        "material_final_print_temperature":
+        {
             "value": "default_material_print_temperature"
         },
-        "material_initial_print_temperature": {
+        "material_initial_print_temperature":
+        {
             "value": "default_material_print_temperature"
         },
-        "material_standby_temperature": {
+        "material_standby_temperature":
+        {
             "enabled": false
         },
-        "prime_tower_enable": {
+        "prime_tower_enable":
+        {
             "resolve": "extruders_enabled_count > 1"
         },
-        "prime_tower_position_x": {
+        "prime_tower_position_x":
+        {
             "value": "169"
         },
-        "prime_tower_position_y": {
+        "prime_tower_position_y":
+        {
             "value": "25"
         },
-        "retraction_amount": {
+        "retraction_amount":
+        {
             "default_value": 2
         },
-        "retraction_combing": {
+        "retraction_combing":
+        {
             "value": "'all'"
         },
-        "skirt_line_count": {
+        "skirt_line_count":
+        {
             "default_value": 3
         },
-        "speed_travel": {
+        "speed_travel":
+        {
             "value": "200"
         }
     },

@@ -1,24 +1,31 @@
 {
     "inherits": "mingda_base",
-    "metadata": {
+    "metadata":
+    {
         "quality_definition": "mingda_base",
         "visible": true
     },
     "name": "Mingda 4H",
-    "overrides": {
-        "gantry_height": {
+    "overrides":
+    {
+        "gantry_height":
+        {
             "value": 25
         },
-        "machine_depth": {
+        "machine_depth":
+        {
             "default_value": 200
         },
-        "machine_height": {
+        "machine_height":
+        {
             "default_value": 200
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "Mingda 4H"
         },
-        "machine_width": {
+        "machine_width":
+        {
             "default_value": 300
         }
     },

@@ -1,6 +1,7 @@
 {
     "inherits": "xyzprinting_base",
-    "metadata": {
+    "metadata":
+    {
         "author": "XYZprinting Software",
         "exclude_materials": [
             "generic_hips",
@@ -38,7 +39,8 @@
         "has_machine_quality": true,
         "has_materials": true,
         "has_variants": true,
-        "machine_extruder_trains": {
+        "machine_extruder_trains":
+        {
             "0": "xyzprinting_da_vinci_jr_1p0a_pro_extruder_0"
         },
         "manufacturer": "XYZprinting",
@@ -50,29 +52,38 @@
         "visible": true
     },
     "name": "XYZprinting da Vinci Jr. 1.0A Pro",
-    "overrides": {
-        "brim_line_count": {
+    "overrides":
+    {
+        "brim_line_count":
+        {
             "value": 5
         },
-        "cool_fan_enabled": {
+        "cool_fan_enabled":
+        {
             "default_value": true
         },
-        "cool_fan_speed_0": {
+        "cool_fan_speed_0":
+        {
             "value": 100
         },
-        "machine_center_is_zero": {
+        "machine_center_is_zero":
+        {
             "default_value": false
         },
-        "machine_depth": {
+        "machine_depth":
+        {
             "default_value": 175.0
         },
-        "machine_end_gcode": {
+        "machine_end_gcode":
+        {
             "default_value": "M104 S0 ; turn off temperature\nM105 S0;  \nG28 X0  ; home X axis\nM84     ; disable motors\n"
         },
-        "machine_gcode_flavor": {
+        "machine_gcode_flavor":
+        {
             "default_value": "RepRap (Marlin/Sprinter)"
         },
-        "machine_head_with_fans_polygon": {
+        "machine_head_with_fans_polygon":
+        {
             "default_value": [
                 [ -20, -10 ],
                 [ -20, 10 ],
@@ -80,28 +91,36 @@
                 [ 10, -10 ]
             ]
         },
-        "machine_heated_bed": {
+        "machine_heated_bed":
+        {
             "default_value": false
         },
-        "machine_height": {
+        "machine_height":
+        {
             "default_value": 175.0
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "XYZprinting da Vinci Jr. 1.0A Pro"
         },
-        "machine_shape": {
+        "machine_shape":
+        {
             "default_value": "rectangular"
         },
-        "machine_start_gcode": {
+        "machine_start_gcode":
+        {
             "default_value": "G28 ; home all axes\nG1 Z15 F5000 ; lift nozzle\nG92 E0\nG1 F200 E3\n"
         },
-        "machine_width": {
+        "machine_width":
+        {
             "default_value": 175.0
         },
-        "material_flow_layer_0": {
+        "material_flow_layer_0":
+        {
             "value": 120
         },
-        "skirt_line_count": {
+        "skirt_line_count":
+        {
             "default_value": 5
         }
     },

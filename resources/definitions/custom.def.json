@@ -1,13 +1,15 @@
 {
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "author": "Ultimaker",
         "file_formats": "text/x-gcode",
         "first_start_actions": [
             "MachineSettingsAction"
         ],
         "has_materials": true,
-        "machine_extruder_trains": {
+        "machine_extruder_trains":
+        {
             "0": "custom_extruder_1",
             "1": "custom_extruder_2",
             "2": "custom_extruder_3",

@@ -1,7 +1,9 @@
 {
     "inherits": "anycubic_kossel",
-    "metadata": {
-        "machine_extruder_trains": {
+    "metadata":
+    {
+        "machine_extruder_trains":
+        {
             "0": "anycubic_kossel_extruder_0"
         },
         "platform": "kossel_pro_build_platform.3mf",
@@ -13,11 +15,14 @@
         "visible": true
     },
     "name": "Anycubic Kossel Linear Plus",
-    "overrides": {
-        "machine_depth": {
+    "overrides":
+    {
+        "machine_depth":
+        {
             "default_value": 240
         },
-        "machine_disallowed_areas": {
+        "machine_disallowed_areas":
+        {
             "default_value": [
                 [
                     [ -50, -115 ],
@@ -61,10 +66,12 @@
                 ]
             ]
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "Anycubic Kossel Linear Plus"
         },
-        "machine_width": {
+        "machine_width":
+        {
             "default_value": 240
         }
     },

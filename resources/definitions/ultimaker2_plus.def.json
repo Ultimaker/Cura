@@ -1,6 +1,7 @@
 {
     "inherits": "ultimaker2",
-    "metadata": {
+    "metadata":
+    {
         "author": "Ultimaker",
         "exclude_materials": [
             "generic_hips",
@@ -40,7 +41,8 @@
         "has_machine_quality": true,
         "has_materials": true,
         "has_variants": true,
-        "machine_extruder_trains": {
+        "machine_extruder_trains":
+        {
             "0": "ultimaker2_plus_extruder_0"
         },
         "manufacturer": "Ultimaker B.V.",
@@ -51,14 +53,18 @@
         "weight": 1
     },
     "name": "Ultimaker 2+",
-    "overrides": {
-        "gantry_height": {
+    "overrides":
+    {
+        "gantry_height":
+        {
             "value": "52"
         },
-        "layer_height_0": {
+        "layer_height_0":
+        {
             "value": "round(machine_nozzle_size / 1.5, 2)"
         },
-        "machine_disallowed_areas": {
+        "machine_disallowed_areas":
+        {
             "default_value": [
                 [
                     [
@@ -134,7 +140,8 @@
                 ]
             ]
         },
-        "machine_head_with_fans_polygon": {
+        "machine_head_with_fans_polygon":
+        {
             "default_value": [
                 [ -44, 14 ],
                 [ -44, -34 ],
@@ -142,28 +149,36 @@
                 [ 64, -34 ]
             ]
         },
-        "machine_heat_zone_length": {
+        "machine_heat_zone_length":
+        {
             "default_value": 20
         },
-        "machine_height": {
+        "machine_height":
+        {
             "default_value": 205
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "Ultimaker 2+"
         },
-        "machine_nozzle_head_distance": {
+        "machine_nozzle_head_distance":
+        {
             "default_value": 5
         },
-        "machine_show_variants": {
+        "machine_show_variants":
+        {
             "default_value": true
         },
-        "speed_infill": {
+        "speed_infill":
+        {
             "value": "speed_print"
         },
-        "speed_support": {
+        "speed_support":
+        {
             "value": "speed_wall_0"
         },
-        "speed_wall_x": {
+        "speed_wall_x":
+        {
             "value": "speed_wall"
         }
     },

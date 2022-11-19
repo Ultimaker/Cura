@@ -1,6 +1,7 @@
 {
     "inherits": "goofoo_base",
-    "metadata": {
+    "metadata":
+    {
         "quality_definition": "goofoo_near",
         "visible": false
     },

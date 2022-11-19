@@ -1,6 +1,7 @@
 {
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "author": "Tizyx",
         "exclude_materials": [
             "chromatik_pla",
@@ -54,7 +55,8 @@
         "has_machine_quality": true,
         "has_materials": true,
         "has_variants": true,
-        "machine_extruder_trains": {
+        "machine_extruder_trains":
+        {
             "0": "tizyx_evy_extruder_0"
         },
         "manufacturer": "Tizyx",
@@ -73,47 +75,62 @@
         "visible": true
     },
     "name": "Tizyx Evy",
-    "overrides": {
-        "acceleration_enabled": {
+    "overrides":
+    {
+        "acceleration_enabled":
+        {
             "value": "False"
         },
-        "acceleration_print": {
+        "acceleration_print":
+        {
             "value": "1500"
         },
-        "adhesion_type": {
+        "adhesion_type":
+        {
             "default_value": "skirt"
         },
-        "cool_min_layer_time": {
+        "cool_min_layer_time":
+        {
             "default_value": 11
         },
-        "fill_outline_gaps": {
+        "fill_outline_gaps":
+        {
             "default_value": true
         },
-        "gantry_height": {
+        "gantry_height":
+        {
             "value": "500"
         },
-        "infill_sparse_density": {
+        "infill_sparse_density":
+        {
             "default_value": 15
         },
-        "layer_height": {
+        "layer_height":
+        {
             "maximum_value": "(0.8 * min(extruderValues('machine_nozzle_size')))"
         },
-        "layer_height_0": {
+        "layer_height_0":
+        {
             "maximum_value": "(0.8 * min(extruderValues('machine_nozzle_size')))"
         },
-        "machine_center_is_zero": {
+        "machine_center_is_zero":
+        {
             "default_value": false
         },
-        "machine_depth": {
+        "machine_depth":
+        {
             "default_value": 255
         },
-        "machine_end_gcode": {
+        "machine_end_gcode":
+        {
             "default_value": "M104 S0\nM140 S0\nG91\nG1 E-5 F300\nG1 Z+3 F3000\nG1 Y245 F3000\nM84"
         },
-        "machine_extruder_count": {
+        "machine_extruder_count":
+        {
             "default_value": 1
         },
-        "machine_head_with_fans_polygon": {
+        "machine_head_with_fans_polygon":
+        {
             "default_value": [
                 [ 25, 49 ],
                 [ 25, -49 ],
@@ -121,43 +138,56 @@
                 [ 25, 49 ]
             ]
         },
-        "machine_heated_bed": {
+        "machine_heated_bed":
+        {
             "default_value": true
         },
-        "machine_height": {
+        "machine_height":
+        {
             "default_value": 255
         },
-        "machine_start_gcode": {
+        "machine_start_gcode":
+        {
             "default_value": "M82\nG90\nG28 X\nG28 Y\nG28 Z\nG29\nG91\nG1 Z0\nG90\nM82\nG92 E0\nG1 X125 Y245 F3000\nG1 Z0"
         },
-        "machine_width": {
+        "machine_width":
+        {
             "default_value": 255
         },
-        "retraction_amount": {
+        "retraction_amount":
+        {
             "default_value": 2.5
         },
-        "retraction_combing": {
+        "retraction_combing":
+        {
             "value": "'off'"
         },
-        "retraction_speed": {
+        "retraction_speed":
+        {
             "default_value": 30
         },
-        "skirt_gap": {
+        "skirt_gap":
+        {
             "default_value": 2
         },
-        "skirt_line_count": {
+        "skirt_line_count":
+        {
             "default_value": 2
         },
-        "speed_print": {
+        "speed_print":
+        {
             "default_value": 60
         },
-        "z_seam_type": {
+        "z_seam_type":
+        {
             "default_value": "back"
         },
-        "z_seam_x": {
+        "z_seam_x":
+        {
             "value": "127.5"
         },
-        "z_seam_y": {
+        "z_seam_y":
+        {
             "value": "250"
         }
     },

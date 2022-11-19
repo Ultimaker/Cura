@@ -1,6 +1,7 @@
 {
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "author": "X40-Community.org",
         "exclude_materials": [
             "3D-Fuel_PLA_PRO_Black",
@@ -137,7 +138,8 @@
         "has_machine_quality": true,
         "has_materials": true,
         "has_variants": true,
-        "machine_extruder_trains": {
+        "machine_extruder_trains":
+        {
             "0": "weedo_x40_extruder_left_0",
             "1": "weedo_x40_extruder_right_0"
         },
@@ -155,113 +157,150 @@
         "visible": true
     },
     "name": "Weedo X40",
-    "overrides": {
-        "acceleration_enabled": {
+    "overrides":
+    {
+        "acceleration_enabled":
+        {
             "value": false
         },
-        "acceleration_print": {
+        "acceleration_print":
+        {
             "value": 1000
         },
-        "acceleration_roofing": {
+        "acceleration_roofing":
+        {
             "enabled": "acceleration_enabled and roofing_layer_count > 0 and top_layers > 0"
         },
-        "acceleration_support": {
+        "acceleration_support":
+        {
             "value": "math.ceil(acceleration_print * 2000 / 4000)"
         },
-        "acceleration_support_interface": {
+        "acceleration_support_interface":
+        {
             "value": "acceleration_topbottom"
         },
-        "acceleration_topbottom": {
+        "acceleration_topbottom":
+        {
             "value": "math.ceil(acceleration_print * 500 / 4000)"
         },
-        "acceleration_travel": {
+        "acceleration_travel":
+        {
             "value": 2000
         },
-        "acceleration_travel_layer_0": {
+        "acceleration_travel_layer_0":
+        {
             "value": "acceleration_travel / 2"
         },
-        "acceleration_wall": {
+        "acceleration_wall":
+        {
             "value": "math.ceil(acceleration_print * 1000 / 4000)"
         },
-        "acceleration_wall_0": {
+        "acceleration_wall_0":
+        {
             "value": "math.ceil(acceleration_wall * 500 / 1000)"
         },
-        "adhesion_type": {
+        "adhesion_type":
+        {
             "value": "'brim'"
         },
-        "bridge_settings_enabled": {
+        "bridge_settings_enabled":
+        {
             "default_value": true
         },
-        "brim_width": {
+        "brim_width":
+        {
             "value": "8"
         },
-        "cool_fan_full_at_height": {
+        "cool_fan_full_at_height":
+        {
             "value": "layer_height_0 + 2 * layer_height"
         },
-        "cool_fan_speed": {
+        "cool_fan_speed":
+        {
             "value": "50"
         },
-        "cool_fan_speed_max": {
+        "cool_fan_speed_max":
+        {
             "value": "100"
         },
-        "cool_min_speed": {
+        "cool_min_speed":
+        {
             "value": "7"
         },
-        "fill_outline_gaps": {
+        "fill_outline_gaps":
+        {
             "value": false
         },
-        "gantry_height": {
+        "gantry_height":
+        {
             "value": "12"
         },
-        "infill_before_walls": {
+        "infill_before_walls":
+        {
             "value": false
         },
-        "infill_line_width": {
+        "infill_line_width":
+        {
             "value": "round(line_width * 0.42 / 0.35, 2)"
         },
-        "infill_overlap": {
+        "infill_overlap":
+        {
             "value": 30.0
         },
-        "infill_pattern": {
+        "infill_pattern":
+        {
             "value": "'lines' if infill_sparse_density > 50 else 'cubic'"
         },
-        "infill_wipe_dist": {
+        "infill_wipe_dist":
+        {
             "value": 0.0
         },
-        "jerk_enabled": {
+        "jerk_enabled":
+        {
             "value": false
         },
-        "jerk_print": {
+        "jerk_print":
+        {
             "value": 11
         },
-        "jerk_travel": {
+        "jerk_travel":
+        {
             "value": 18
         },
-        "jerk_travel_layer_0": {
+        "jerk_travel_layer_0":
+        {
             "value": "jerk_travel"
         },
-        "jerk_wall": {
+        "jerk_wall":
+        {
             "value": "jerk_print - 2"
         },
-        "layer_height_0": {
+        "layer_height_0":
+        {
             "value": "round(layer_height * 1.5, 2)"
         },
-        "machine_acceleration": {
+        "machine_acceleration":
+        {
             "value": 500
         },
-        "machine_center_is_zero": {
+        "machine_center_is_zero":
+        {
             "default_value": false
         },
-        "machine_depth": {
+        "machine_depth":
+        {
             "default_value": 300
         },
-        "machine_end_gcode": {
+        "machine_end_gcode":
+        {
             "default_value": "(*********end X40 End.gcode*******)\nG28 X Y F3000\nG91 ; Relative positioning\nG1 E-6 ; Reduce filament pressure\nG90 ; Absolute positioning\nG0 Y300 F3000 ; Move headbed\nM104 S0 T0 ; Cool down left extruder\nM104 S0 T1 ; Cool down right extruder\nM140 S0 ; Cool down heatbed\nM107 P0 ; Turn off left fan\nM107 P1 ; Turn off right fan\nM82; Extruder in absolute mode\nM73 P100 ; Set print progress to 100%"
         },
-        "machine_extruder_count": {
+        "machine_extruder_count":
+        {
             "default_value": 2
         },
-        "machine_head_with_fans_polygon": {
+        "machine_head_with_fans_polygon":
+        {
             "default_value": [
                 [
                     -42.5,
@@ -281,206 +320,273 @@
                 ]
             ]
         },
-        "machine_heated_bed": {
+        "machine_heated_bed":
+        {
             "default_value": true
         },
-        "machine_height": {
+        "machine_height":
+        {
             "default_value": 400
         },
-        "machine_max_acceleration_e": {
+        "machine_max_acceleration_e":
+        {
             "value": 5000
         },
-        "machine_max_acceleration_x": {
+        "machine_max_acceleration_x":
+        {
             "value": 500
         },
-        "machine_max_acceleration_y": {
+        "machine_max_acceleration_y":
+        {
             "value": 500
         },
-        "machine_max_acceleration_z": {
+        "machine_max_acceleration_z":
+        {
             "value": 100
         },
-        "machine_max_feedrate_e": {
+        "machine_max_feedrate_e":
+        {
             "value": 50
         },
-        "machine_max_feedrate_x": {
+        "machine_max_feedrate_x":
+        {
             "value": 500
         },
-        "machine_max_feedrate_y": {
+        "machine_max_feedrate_y":
+        {
             "value": 500
         },
-        "machine_max_feedrate_z": {
+        "machine_max_feedrate_z":
+        {
             "value": 10
         },
-        "machine_max_jerk_e": {
+        "machine_max_jerk_e":
+        {
             "value": 5
         },
-        "machine_max_jerk_xy": {
+        "machine_max_jerk_xy":
+        {
             "value": 10
         },
-        "machine_max_jerk_z": {
+        "machine_max_jerk_z":
+        {
             "value": 0.4
         },
-        "machine_min_cool_heat_time_window": {
+        "machine_min_cool_heat_time_window":
+        {
             "default_value": 360
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "Weedo X40"
         },
-        "machine_nozzle_cool_down_speed": {
+        "machine_nozzle_cool_down_speed":
+        {
             "default_value": 0.75
         },
-        "machine_nozzle_heat_up_speed": {
+        "machine_nozzle_heat_up_speed":
+        {
             "default_value": 1.6
         },
-        "machine_start_gcode": {
+        "machine_start_gcode":
+        {
             "default_value": "; x40-community.org configuration Rev. 08\n;(**** start.gcode for WEEDO X40 DUAL****)\nT{initial_extruder_nr} S ; Selected start extruder\nM140 S{material_bed_temperature_layer_0} ; Preheat bed\nM109 S{material_print_temperature_layer_0}; Preheat nozzle\nM73 P0 ; Set current print progress percentage\nG21 ; Millimeter Units\nG90 ; Absolute positioning\nM82 ; Extruder in absolute mode\nT0 S ; Select left extruder\nM301 H1 P15.53 I1.32 D45.75 ; PID left extruder with Weedo X40 coolingsystem\n;M301 H1 P13.32 I0.98 D45.13 ; PID left extruder with X40 Community coolingsystem\nM92 E94.90 ; Calibrate left extruder\nT1 S ; Select right extruder\nM301 H1 P15.44 I1.29 D46.11 ; PID right extruder with Weedo X40 coolingsystem\n;M301 H1 P13.32 I0.98 D45.13 ; PID right extruder with X40 Community coolingsystem\nM92 E94.90 ; Calibrate right extruder\nT0 S ; Select left extruder\nG28 ; Auto home\nG29 ; Bed Leveling\nG1 X-47 F3000 ; Move left nozzle to parking position\nT1 S ; select right extruder\nG1 X351 F3000 ; Move right nozzle to parking position\nM107 P0 ; Turn off left fan\nM107 P1 ; Turn off right fan\nT{initial_extruder_nr} S ; Set start extruder\nM190 S{material_bed_temperature_layer_0} ; Waiting for bed temperature\nG1 E50 F100 ; Extrude in parking position\nM77 ; Stop heat up timer\nM75 ; Start print timer\n"
         },
-        "machine_width": {
+        "machine_width":
+        {
             "default_value": 300
         },
-        "material_diameter": {
+        "material_diameter":
+        {
             "default_value": 1.75
         },
-        "material_print_temp_prepend": {
+        "material_print_temp_prepend":
+        {
             "default_value": false
         },
-        "material_standby_temperature": {
+        "material_standby_temperature":
+        {
             "value": "100"
         },
-        "meshfix_maximum_resolution": {
+        "meshfix_maximum_resolution":
+        {
             "value": "0.25"
         },
-        "ooze_shield_dist": {
+        "ooze_shield_dist":
+        {
             "default_value": 3.0
         },
-        "ooze_shield_enabled": {
+        "ooze_shield_enabled":
+        {
             "default_value": false
         },
-        "optimize_wall_printing_order": {
+        "optimize_wall_printing_order":
+        {
             "value": "True"
         },
-        "raft_airgap": {
+        "raft_airgap":
+        {
             "default_value": 0.22
         },
-        "raft_base_speed": {
+        "raft_base_speed":
+        {
             "value": 20
         },
-        "raft_interface_speed": {
+        "raft_interface_speed":
+        {
             "value": 33
         },
-        "raft_margin": {
+        "raft_margin":
+        {
             "default_value": 8
         },
-        "retraction_amount": {
+        "retraction_amount":
+        {
             "default_value": 4.5
         },
-        "retraction_combing": {
+        "retraction_combing":
+        {
             "value": "'off' if retraction_hop_enabled else 'noskin'"
         },
-        "retraction_combing_max_distance": {
+        "retraction_combing_max_distance":
+        {
             "value": 30
         },
-        "retraction_count_max": {
+        "retraction_count_max":
+        {
             "value": 100
         },
-        "retraction_extrusion_window": {
+        "retraction_extrusion_window":
+        {
             "value": 8
         },
-        "retraction_hop": {
+        "retraction_hop":
+        {
             "value": 0.5
         },
-        "retraction_min_travel": {
+        "retraction_min_travel":
+        {
             "value": 1.5
         },
-        "retraction_speed": {
+        "retraction_speed":
+        {
             "default_value": 28
         },
-        "skin_overlap": {
+        "skin_overlap":
+        {
             "value": 10.0
         },
-        "speed_layer_0": {
+        "speed_layer_0":
+        {
             "value": "round(speed_print / 2.5, 2)"
         },
-        "speed_print": {
+        "speed_print":
+        {
             "value": 50.0
         },
-        "speed_roofing": {
+        "speed_roofing":
+        {
             "value": 30.0
         },
-        "speed_support": {
+        "speed_support":
+        {
             "value": "speed_wall_0"
         },
-        "speed_support_bottom": {
+        "speed_support_bottom":
+        {
             "value": 39.0
         },
-        "speed_support_infill": {
+        "speed_support_infill":
+        {
             "value": 58.0
         },
-        "speed_support_interface": {
+        "speed_support_interface":
+        {
             "value": "speed_print"
         },
-        "speed_support_roof": {
+        "speed_support_roof":
+        {
             "value": 39.0
         },
-        "speed_travel": {
+        "speed_travel":
+        {
             "maximum_value": "150",
             "value": "150"
         },
-        "speed_travel_layer_0": {
+        "speed_travel_layer_0":
+        {
             "value": 60
         },
-        "speed_wall_x": {
+        "speed_wall_x":
+        {
             "value": "speed_wall"
         },
-        "support_angle": {
+        "support_angle":
+        {
             "default_value": 45
         },
-        "support_fan_enable": {
+        "support_fan_enable":
+        {
             "value": true
         },
-        "support_pattern": {
+        "support_pattern":
+        {
             "value": "'zigzag'"
         },
-        "support_supported_skin_fan_speed": {
+        "support_supported_skin_fan_speed":
+        {
             "value": 100
         },
-        "support_use_towers": {
+        "support_use_towers":
+        {
             "value": true
         },
-        "support_xy_distance": {
+        "support_xy_distance":
+        {
             "value": "wall_line_width_0 * 2"
         },
-        "support_xy_distance_overhang": {
+        "support_xy_distance_overhang":
+        {
             "value": "wall_line_width_0"
         },
-        "support_z_distance": {
+        "support_z_distance":
+        {
             "value": "layer_height if layer_height >= 0.16 else layer_height*2"
         },
-        "switch_extruder_retraction_amount": {
+        "switch_extruder_retraction_amount":
+        {
             "value": 0
         },
-        "top_bottom_thickness": {
+        "top_bottom_thickness":
+        {
             "value": "line_width * 2"
         },
-        "travel_avoid_other_parts": {
+        "travel_avoid_other_parts":
+        {
             "value": true
         },
-        "travel_avoid_supports": {
+        "travel_avoid_supports":
+        {
             "value": true
         },
-        "travel_retract_before_outer_wall": {
+        "travel_retract_before_outer_wall":
+        {
             "value": true
         },
-        "wall_0_wipe_dist": {
+        "wall_0_wipe_dist":
+        {
             "value": 0.0
         },
-        "wall_thickness": {
+        "wall_thickness":
+        {
             "value": "line_width * 2"
         },
-        "z_seam_corner": {
+        "z_seam_corner":
+        {
             "value": "'z_seam_corner_weighted'"
         },
-        "z_seam_type": {
+        "z_seam_type":
+        {
             "value": "'back'"
         }
     },

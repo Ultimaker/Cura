@@ -1,6 +1,7 @@
 {
     "inherits": "flyingbear_base",
-    "metadata": {
+    "metadata":
+    {
         "author": "oducceu",
         "platform": "flyingbear_platform.obj",
         "platform_texture": "flyingbear_platform.png",
@@ -8,92 +9,122 @@
         "visible": true
     },
     "name": "Flying Bear Ghost 5",
-    "overrides": {
-        "acceleration_enabled": {
+    "overrides":
+    {
+        "acceleration_enabled":
+        {
             "value": false
         },
-        "acceleration_print": {
+        "acceleration_print":
+        {
             "value": 1000
         },
-        "acceleration_roofing": {
+        "acceleration_roofing":
+        {
             "enabled": "acceleration_enabled and roofing_layer_count > 0 and top_layers > 0"
         },
-        "acceleration_travel": {
+        "acceleration_travel":
+        {
             "value": 3000
         },
-        "acceleration_travel_layer_0": {
+        "acceleration_travel_layer_0":
+        {
             "value": "acceleration_travel"
         },
-        "jerk_enabled": {
+        "jerk_enabled":
+        {
             "value": false
         },
-        "jerk_print": {
+        "jerk_print":
+        {
             "value": 20
         },
-        "jerk_travel": {
+        "jerk_travel":
+        {
             "value": "jerk_print"
         },
-        "jerk_travel_layer_0": {
+        "jerk_travel_layer_0":
+        {
             "value": "jerk_travel"
         },
-        "machine_acceleration": {
+        "machine_acceleration":
+        {
             "value": 1000
         },
-        "machine_depth": {
+        "machine_depth":
+        {
             "default_value": 210
         },
-        "machine_height": {
+        "machine_height":
+        {
             "default_value": 200
         },
-        "machine_max_acceleration_e": {
+        "machine_max_acceleration_e":
+        {
             "value": 80000
         },
-        "machine_max_acceleration_x": {
+        "machine_max_acceleration_x":
+        {
             "value": 1000
         },
-        "machine_max_acceleration_y": {
+        "machine_max_acceleration_y":
+        {
             "value": 1000
         },
-        "machine_max_acceleration_z": {
+        "machine_max_acceleration_z":
+        {
             "value": 200
         },
-        "machine_max_feedrate_e": {
+        "machine_max_feedrate_e":
+        {
             "value": 70
         },
-        "machine_max_feedrate_x": {
+        "machine_max_feedrate_x":
+        {
             "value": 300
         },
-        "machine_max_feedrate_y": {
+        "machine_max_feedrate_y":
+        {
             "value": 300
         },
-        "machine_max_feedrate_z": {
+        "machine_max_feedrate_z":
+        {
             "value": 20
         },
-        "machine_max_jerk_e": {
+        "machine_max_jerk_e":
+        {
             "value": 5.0
         },
-        "machine_max_jerk_xy": {
+        "machine_max_jerk_xy":
+        {
             "value": 20
         },
-        "machine_max_jerk_z": {
+        "machine_max_jerk_z":
+        {
             "value": 0.4
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "Flying Bear Ghost 5"
         },
-        "machine_steps_per_mm_e": {
+        "machine_steps_per_mm_e":
+        {
             "default_value": 410
         },
-        "machine_steps_per_mm_x": {
+        "machine_steps_per_mm_x":
+        {
             "default_value": 80
         },
-        "machine_steps_per_mm_y": {
+        "machine_steps_per_mm_y":
+        {
             "default_value": 80
         },
-        "machine_steps_per_mm_z": {
+        "machine_steps_per_mm_z":
+        {
             "default_value": 400
         },
-        "machine_width": {
+        "machine_width":
+        {
             "default_value": 255
         }
     },

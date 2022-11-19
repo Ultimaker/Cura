@@ -1,6 +1,7 @@
 {
     "inherits": "longer_base",
-    "metadata": {
+    "metadata":
+    {
         "platform": "longer_235mm_platform.stl",
         "platform_offset": [
             -117.5,
@@ -11,14 +12,18 @@
         "visible": true
     },
     "name": "Longer LK4",
-    "overrides": {
-        "gantry_height": {
+    "overrides":
+    {
+        "gantry_height":
+        {
             "value": 33
         },
-        "machine_depth": {
+        "machine_depth":
+        {
             "default_value": 220
         },
-        "machine_head_with_fans_polygon": {
+        "machine_head_with_fans_polygon":
+        {
             "default_value": [
                 [ -22, 39 ],
                 [ -22, -34 ],
@@ -26,16 +31,20 @@
                 [ 58, 39 ]
             ]
         },
-        "machine_height": {
+        "machine_height":
+        {
             "default_value": 250
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "LONGER LK4"
         },
-        "machine_width": {
+        "machine_width":
+        {
             "default_value": 220
         },
-        "speed_travel": {
+        "speed_travel":
+        {
             "value": 65
         }
     },

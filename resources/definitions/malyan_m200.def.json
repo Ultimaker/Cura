@@ -1,6 +1,7 @@
 {
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "author": "Brian Corbino, Tyler Gibson",
         "file_formats": "text/x-gcode",
         "first_start_actions": [
@@ -8,7 +9,8 @@
         ],
         "has_machine_quality": true,
         "has_materials": true,
-        "machine_extruder_trains": {
+        "machine_extruder_trains":
+        {
             "0": "malyan_m200_extruder_0"
         },
         "manufacturer": "Malyan",
@@ -26,148 +28,196 @@
         "visible": true
     },
     "name": "Malyan M200",
-    "overrides": {
-        "adhesion_type": {
+    "overrides":
+    {
+        "adhesion_type":
+        {
             "default_value": "raft"
         },
-        "brim_width": {
+        "brim_width":
+        {
             "default_value": 5
         },
-        "coasting_enable": {
+        "coasting_enable":
+        {
             "default_value": true
         },
-        "layer_height": {
+        "layer_height":
+        {
             "default_value": 0.13125,
             "maximum_value_warning": "machine_nozzle_size * 0.48125 + 0.0875",
             "minimum_value_warning": "0.04375"
         },
-        "line_width": {
+        "line_width":
+        {
             "value": "round(machine_nozzle_size * 0.875, 2)"
         },
-        "machine_center_is_zero": {
+        "machine_center_is_zero":
+        {
             "default_value": false
         },
-        "machine_depth": {
+        "machine_depth":
+        {
             "default_value": 120
         },
-        "machine_end_gcode": {
+        "machine_end_gcode":
+        {
             "default_value": "G0 X0 Y120;(Stick out the part)\nM190 S0;(Turn off heat bed, don't wait.)\nG92 E10;(Set extruder to 10)\nG1 E7 F200;(retract 3mm)\nM104 S0;(Turn off nozzle, don't wait)\nG4 S300;(Delay 5 minutes)\nM107;(Turn off part fan)\nM84;(Turn off stepper motors.)"
         },
-        "machine_gcode_flavor": {
+        "machine_gcode_flavor":
+        {
             "default_value": "RepRap (Marlin/Sprinter)"
         },
-        "machine_heated_bed": {
+        "machine_heated_bed":
+        {
             "default_value": true
         },
-        "machine_height": {
+        "machine_height":
+        {
             "default_value": 120
         },
-        "machine_max_acceleration_e": {
+        "machine_max_acceleration_e":
+        {
             "default_value": 10000
         },
-        "machine_max_acceleration_x": {
+        "machine_max_acceleration_x":
+        {
             "default_value": 800
         },
-        "machine_max_acceleration_y": {
+        "machine_max_acceleration_y":
+        {
             "default_value": 800
         },
-        "machine_max_acceleration_z": {
+        "machine_max_acceleration_z":
+        {
             "default_value": 20
         },
-        "machine_max_feedrate_e": {
+        "machine_max_feedrate_e":
+        {
             "default_value": 100
         },
-        "machine_max_feedrate_x": {
+        "machine_max_feedrate_x":
+        {
             "default_value": 150
         },
-        "machine_max_feedrate_y": {
+        "machine_max_feedrate_y":
+        {
             "default_value": 150
         },
-        "machine_max_feedrate_z": {
+        "machine_max_feedrate_z":
+        {
             "default_value": 1.5
         },
-        "machine_max_jerk_e": {
+        "machine_max_jerk_e":
+        {
             "default_value": 5
         },
-        "machine_max_jerk_xy": {
+        "machine_max_jerk_xy":
+        {
             "default_value": 20
         },
-        "machine_max_jerk_z": {
+        "machine_max_jerk_z":
+        {
             "default_value": 0.4
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "Malyan M200"
         },
-        "machine_show_variants": {
+        "machine_show_variants":
+        {
             "default_value": true
         },
-        "machine_start_gcode": {
+        "machine_start_gcode":
+        {
             "default_value": "G21;(metric values)\nG90;(absolute positioning)\nM82;(set extruder to absolute mode)\nM107;(start with the fan off)\nG28;(Home the printer)\nG92 E0;(Reset the extruder to 0)\nG0 Z5 E5 F500;(Move up and prime the nozzle)\nG0 X-1 Z0;(Move outside the printable area)\nG1 Y60 E8 F500;(Draw a priming/wiping line to the rear)\nG1 X-1;(Move a little closer to the print area)\nG1 Y10 E16 F500;(draw more priming/wiping)\nG1 E15 F250;(Small retract)\nG92 E0;(Zero the extruder)"
         },
-        "machine_width": {
+        "machine_width":
+        {
             "default_value": 120
         },
-        "material_bed_temperature": {
+        "material_bed_temperature":
+        {
             "minimum_value": "0"
         },
-        "material_bed_temperature_layer_0": {
+        "material_bed_temperature_layer_0":
+        {
             "value": "min(material_bed_temperature + 5, 70)"
         },
-        "material_print_temperature": {
+        "material_print_temperature":
+        {
             "minimum_value": "0"
         },
-        "material_print_temperature_layer_0": {
+        "material_print_temperature_layer_0":
+        {
             "value": "min(material_print_temperature + 5, 245)"
         },
-        "material_standby_temperature": {
+        "material_standby_temperature":
+        {
             "minimum_value": "0"
         },
-        "raft_airgap": {
+        "raft_airgap":
+        {
             "default_value": 0.2625
         },
-        "raft_base_thickness": {
+        "raft_base_thickness":
+        {
             "value": "0.30625"
         },
-        "raft_interface_thickness": {
+        "raft_interface_thickness":
+        {
             "value": "0.21875"
         },
-        "raft_margin": {
+        "raft_margin":
+        {
             "default_value": 5
         },
-        "raft_surface_layers": {
+        "raft_surface_layers":
+        {
             "default_value": 1
         },
-        "retraction_amount": {
+        "retraction_amount":
+        {
             "default_value": 4.5
         },
-        "retraction_combing": {
+        "retraction_combing":
+        {
             "value": "'noskin'"
         },
-        "retraction_speed": {
+        "retraction_speed":
+        {
             "default_value": 40
         },
-        "skirt_line_count": {
+        "skirt_line_count":
+        {
             "default_value": 2
         },
-        "speed_layer_0": {
+        "speed_layer_0":
+        {
             "value": "round(speed_print / 2.0, 2)"
         },
-        "speed_print": {
+        "speed_print":
+        {
             "default_value": 50
         },
-        "speed_support": {
+        "speed_support":
+        {
             "value": "speed_wall_0"
         },
-        "speed_topbottom": {
+        "speed_topbottom":
+        {
             "value": "speed_print / 2"
         },
-        "speed_wall_0": {
+        "speed_wall_0":
+        {
             "value": "round(speed_print * 0.75, 2)"
         },
-        "speed_wall_x": {
+        "speed_wall_x":
+        {
             "value": "speed_print"
         },
-        "speed_z_hop": {
+        "speed_z_hop":
+        {
             "default_value": 1.5
         }
     },

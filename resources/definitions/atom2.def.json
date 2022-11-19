@@ -1,9 +1,11 @@
 {
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "author": "Victor (Yu Chieh) Lin",
         "file_formats": "text/x-gcode",
-        "machine_extruder_trains": {
+        "machine_extruder_trains":
+        {
             "0": "atom2_extruder_0"
         },
         "manufacturer": "Layer One",
@@ -15,53 +17,70 @@
         "visible": true
     },
     "name": "Atom 2",
-    "overrides": {
-        "brim_width": {
+    "overrides":
+    {
+        "brim_width":
+        {
             "default_value": 4
         },
-        "default_material_print_temperature": {
+        "default_material_print_temperature":
+        {
             "default_value": 210
         },
-        "infill_sparse_density": {
+        "infill_sparse_density":
+        {
             "default_value": 10
         },
-        "layer_height": {
+        "layer_height":
+        {
             "default_value": 0.2
         },
-        "machine_center_is_zero": {
+        "machine_center_is_zero":
+        {
             "default_value": true
         },
-        "machine_depth": {
+        "machine_depth":
+        {
             "default_value": 210
         },
-        "machine_end_gcode": {
+        "machine_end_gcode":
+        {
             "default_value": "G28\nG91\nG1 E-6 F300\nM104 S0\nG1 E-1000 F5000\nM84\nG90"
         },
-        "machine_extruder_count": {
+        "machine_extruder_count":
+        {
             "default_value": 1
         },
-        "machine_heated_bed": {
+        "machine_heated_bed":
+        {
             "default_value": false
         },
-        "machine_height": {
+        "machine_height":
+        {
             "default_value": 320
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "Atom 2"
         },
-        "machine_shape": {
+        "machine_shape":
+        {
             "default_value": "elliptic"
         },
-        "machine_start_gcode": {
+        "machine_start_gcode":
+        {
             "default_value": "G21\nG90 \nM107\nG28\nG1 Y-110 Z15\nG0 Z{layer_height_0}\nG92 E0\nG1 F200 Y-100 E6\nG92 E0"
         },
-        "machine_width": {
+        "machine_width":
+        {
             "default_value": 210
         },
-        "optimize_wall_printing_order": {
+        "optimize_wall_printing_order":
+        {
             "value": "True"
         },
-        "speed_print": {
+        "speed_print":
+        {
             "default_value": 32
         }
     },

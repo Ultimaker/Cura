@@ -1,11 +1,13 @@
 {
     "inherits": "malyan_m200",
-    "metadata": {
+    "metadata":
+    {
         "author": "Tyler Gibson",
         "file_formats": "text/x-gcode",
         "has_machine_quality": true,
         "has_materials": true,
-        "machine_extruder_trains": {
+        "machine_extruder_trains":
+        {
             "0": "monoprice_select_mini_v2_extruder_0"
         },
         "manufacturer": "Monoprice",
@@ -13,26 +15,34 @@
         "visible": true
     },
     "name": "Monoprice Select Mini V2 (E3D)",
-    "overrides": {
-        "adhesion_type": {
+    "overrides":
+    {
+        "adhesion_type":
+        {
             "default_value": "brim"
         },
-        "machine_end_gcode": {
+        "machine_end_gcode":
+        {
             "default_value": "G0 X0 Y120;(Stick out the part)\nM190 S0;(Turn off heat bed, don't wait.)\nG92 E10;(Set extruder to 10)\nG1 E7 F200;(retract 3mm)\nM104 S0;(Turn off nozzle, don't wait)\nG4 S300;(Delay 5 minutes)\nM107;(Turn off part fan)\nM84;(Turn off stepper motors.)"
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "Monoprice Select Mini V2"
         },
-        "material_print_temperature_layer_0": {
+        "material_print_temperature_layer_0":
+        {
             "value": "material_print_temperature + 5"
         },
-        "retraction_amount": {
+        "retraction_amount":
+        {
             "default_value": 2.5
         },
-        "retraction_combing": {
+        "retraction_combing":
+        {
             "value": "'noskin'"
         },
-        "retraction_speed": {
+        "retraction_speed":
+        {
             "default_value": 40
         }
     },

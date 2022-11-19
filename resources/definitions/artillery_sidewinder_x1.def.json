@@ -1,6 +1,7 @@
 {
     "inherits": "artillery_base",
-    "metadata": {
+    "metadata":
+    {
         "platform": "artillery_swx1.stl",
         "platform_offset": [
             -200,
@@ -11,20 +12,26 @@
         "visible": true
     },
     "name": "Artillery Sidewinder X1",
-    "overrides": {
-        "gantry_height": {
+    "overrides":
+    {
+        "gantry_height":
+        {
             "value": 25
         },
-        "machine_depth": {
+        "machine_depth":
+        {
             "default_value": 300
         },
-        "machine_height": {
+        "machine_height":
+        {
             "default_value": 400
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "Artillery Sidewinder X1"
         },
-        "machine_width": {
+        "machine_width":
+        {
             "default_value": 300
         }
     },

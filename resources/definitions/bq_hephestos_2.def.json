@@ -1,9 +1,11 @@
 {
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "author": "BQ",
         "file_formats": "text/x-gcode",
-        "machine_extruder_trains": {
+        "machine_extruder_trains":
+        {
             "0": "bq_hephestos_2_extruder_0"
         },
         "manufacturer": "BQ",
@@ -16,56 +18,74 @@
         "visible": true
     },
     "name": "BQ Hephestos 2",
-    "overrides": {
-        "infill_sparse_density": {
+    "overrides":
+    {
+        "infill_sparse_density":
+        {
             "default_value": 20
         },
-        "layer_height": {
+        "layer_height":
+        {
             "default_value": 0.2
         },
-        "layer_height_0": {
+        "layer_height_0":
+        {
             "default_value": 0.2
         },
-        "machine_center_is_zero": {
+        "machine_center_is_zero":
+        {
             "default_value": false
         },
-        "machine_depth": {
+        "machine_depth":
+        {
             "default_value": 297
         },
-        "machine_end_gcode": {
+        "machine_end_gcode":
+        {
             "default_value": "; -- END GCODE --\nM801        ; Marlin G-CODE to fire end print procedure\n; -- end of END GCODE --"
         },
-        "machine_heated_bed": {
+        "machine_heated_bed":
+        {
             "default_value": false
         },
-        "machine_height": {
+        "machine_height":
+        {
             "default_value": 220
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "BQ Hephestos 2"
         },
-        "machine_start_gcode": {
+        "machine_start_gcode":
+        {
             "default_value": "; -- START GCODE --\nM104 S{material_print_temperature}\nG28 ; Zero-ing position\nG29 ; Auto bed-leveling\nG0 X4 Y297 Z15 F4000 ; Fast move to BQ's start position\nG90 ; Set to Absolute Positioning\nG92 E0 ; Reset extruder 0\nG1 F1800 ; Set default feedrate\nM109 S{material_print_temperature} ; Makes sure the temperature is correct before printing\n; -- end of START GCODE --"
         },
-        "machine_width": {
+        "machine_width":
+        {
             "default_value": 210
         },
-        "skirt_brim_minimal_length": {
+        "skirt_brim_minimal_length":
+        {
             "default_value": 30
         },
-        "skirt_gap": {
+        "skirt_gap":
+        {
             "default_value": 6
         },
-        "skirt_line_count": {
+        "skirt_line_count":
+        {
             "default_value": 4
         },
-        "speed_print": {
+        "speed_print":
+        {
             "default_value": 60
         },
-        "top_bottom_thickness": {
+        "top_bottom_thickness":
+        {
             "default_value": 1.2
         },
-        "wall_thickness": {
+        "wall_thickness":
+        {
             "value": "1.2"
         }
     },

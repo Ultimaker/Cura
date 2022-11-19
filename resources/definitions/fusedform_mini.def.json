@@ -1,60 +1,79 @@
 {
     "inherits": "fusedform_base",
-    "metadata": {
+    "metadata":
+    {
         "quality_definition": "fusedform_base",
         "visible": true
     },
     "name": "FFmini",
-    "overrides": {
-        "acceleration_travel": {
+    "overrides":
+    {
+        "acceleration_travel":
+        {
             "value": 1000
         },
-        "machine_acceleration": {
+        "machine_acceleration":
+        {
             "default_value": 1000
         },
-        "machine_depth": {
+        "machine_depth":
+        {
             "default_value": 200
         },
-        "machine_extruder_count": {
+        "machine_extruder_count":
+        {
             "value": 1
         },
-        "machine_height": {
+        "machine_height":
+        {
             "default_value": 240
         },
-        "machine_max_acceleration_x": {
+        "machine_max_acceleration_x":
+        {
             "value": 1200
         },
-        "machine_max_acceleration_y": {
+        "machine_max_acceleration_y":
+        {
             "value": 1200
         },
-        "machine_max_acceleration_z": {
+        "machine_max_acceleration_z":
+        {
             "default_value": 100
         },
-        "machine_max_feedrate_e": {
+        "machine_max_feedrate_e":
+        {
             "default_value": 100
         },
-        "machine_max_feedrate_x": {
+        "machine_max_feedrate_x":
+        {
             "default_value": 100
         },
-        "machine_max_feedrate_y": {
+        "machine_max_feedrate_y":
+        {
             "default_value": 100
         },
-        "machine_max_feedrate_z": {
+        "machine_max_feedrate_z":
+        {
             "default_value": 3
         },
-        "machine_max_jerk_e": {
+        "machine_max_jerk_e":
+        {
             "default_value": 5
         },
-        "machine_max_jerk_xy": {
+        "machine_max_jerk_xy":
+        {
             "default_value": 14
         },
-        "machine_max_jerk_z": {
+        "machine_max_jerk_z":
+        {
             "default_value": 0.3
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "FFmini"
         },
-        "machine_width": {
+        "machine_width":
+        {
             "default_value": 200
         }
     },

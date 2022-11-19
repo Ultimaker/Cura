@@ -1,6 +1,7 @@
 {
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "author": "Koonovo",
         "file_formats": "text/x-gcode",
         "first_start_actions": [
@@ -8,7 +9,8 @@
         ],
         "has_machine_quality": true,
         "has_materials": true,
-        "machine_extruder_trains": {
+        "machine_extruder_trains":
+        {
             "0": "koonovo_kn3_extruder_0",
             "1": "koonovo_kn3_extruder_1"
         },
@@ -20,56 +22,74 @@
         "visible": true
     },
     "name": "Koonovo KN3 Idex",
-    "overrides": {
-        "acceleration_print": {
+    "overrides":
+    {
+        "acceleration_print":
+        {
             "value": 500
         },
-        "acceleration_travel": {
+        "acceleration_travel":
+        {
             "value": 500
         },
-        "adhesion_type": {
+        "adhesion_type":
+        {
             "value": "'skirt'"
         },
-        "brim_replaces_support": {
+        "brim_replaces_support":
+        {
             "value": false
         },
-        "cool_fan_full_at_height": {
+        "cool_fan_full_at_height":
+        {
             "value": "layer_height_0 + 2 * layer_height"
         },
-        "cool_min_layer_time": {
+        "cool_min_layer_time":
+        {
             "value": 10
         },
-        "default_material_bed_temperature": {
+        "default_material_bed_temperature":
+        {
             "value": "55"
         },
-        "default_material_print_temperature": {
+        "default_material_print_temperature":
+        {
             "value": "195"
         },
-        "fill_outline_gaps": {
+        "fill_outline_gaps":
+        {
             "value": false
         },
-        "gantry_height": {
+        "gantry_height":
+        {
             "value": 0
         },
-        "infill_pattern": {
+        "infill_pattern":
+        {
             "value": "'lines' if infill_sparse_density > 50 else 'cubic'"
         },
-        "infill_sparse_density": {
+        "infill_sparse_density":
+        {
             "value": "15"
         },
-        "machine_acceleration": {
+        "machine_acceleration":
+        {
             "value": 500
         },
-        "machine_depth": {
+        "machine_depth":
+        {
             "default_value": 310
         },
-        "machine_end_gcode": {
+        "machine_end_gcode":
+        {
             "default_value": "M104 T0 S0 ;1st extruder heater off\nM104 T1 S0 ;2nd extruder heater off\nM140 S0 ;heated bed heater off (if you have it)\nG91 ;relative positioning\nG1 E-1 F300  ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+0.5 E-5 X-20 Y-20 F9000 ;move Z up a bit and retract filament even more\nG28 X0 Y0 ;move X/Y to min endstops, so the head is out of the way\nM84 ;steppers off\nG90 ;absolute positioning"
         },
-        "machine_extruder_count": {
+        "machine_extruder_count":
+        {
             "default_value": 2
         },
-        "machine_head_with_fans_polygon": {
+        "machine_head_with_fans_polygon":
+        {
             "default_value": [
                 [ -26, 34 ],
                 [ -26, -32 ],
@@ -77,154 +97,204 @@
                 [ 32, 34 ]
             ]
         },
-        "machine_heated_bed": {
+        "machine_heated_bed":
+        {
             "default_value": true
         },
-        "machine_height": {
+        "machine_height":
+        {
             "default_value": 400
         },
-        "machine_max_acceleration_e": {
+        "machine_max_acceleration_e":
+        {
             "value": 2000
         },
-        "machine_max_acceleration_x": {
+        "machine_max_acceleration_x":
+        {
             "value": 500
         },
-        "machine_max_acceleration_y": {
+        "machine_max_acceleration_y":
+        {
             "value": 500
         },
-        "machine_max_acceleration_z": {
+        "machine_max_acceleration_z":
+        {
             "value": 50
         },
-        "machine_max_feedrate_e": {
+        "machine_max_feedrate_e":
+        {
             "value": 100
         },
-        "machine_max_feedrate_x": {
+        "machine_max_feedrate_x":
+        {
             "value": 200
         },
-        "machine_max_feedrate_y": {
+        "machine_max_feedrate_y":
+        {
             "value": 200
         },
-        "machine_max_feedrate_z": {
+        "machine_max_feedrate_z":
+        {
             "value": 50
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "Koonovo KN3"
         },
-        "machine_start_gcode": {
+        "machine_start_gcode":
+        {
             "default_value": "G21 ;metric values\nG90 ;absolute positioning\nM82 ;set extruder to absolute mode\nM107 ;start with the fan off\nG28 ;Move to min endstops\nG1 Z15.0 F9000 ;move the platform down 15mm\nM117 Printing..."
         },
-        "machine_width": {
+        "machine_width":
+        {
             "default_value": 310
         },
-        "material_diameter": {
+        "material_diameter":
+        {
             "default_value": 1.75
         },
-        "material_final_print_temperature": {
+        "material_final_print_temperature":
+        {
             "value": "material_print_temperature"
         },
-        "material_initial_print_temperature": {
+        "material_initial_print_temperature":
+        {
             "value": "material_print_temperature"
         },
-        "material_standby_temperature": {
+        "material_standby_temperature":
+        {
             "value": "material_print_temperature"
         },
-        "minimum_interface_area": {
+        "minimum_interface_area":
+        {
             "value": 10
         },
-        "minimum_support_area": {
+        "minimum_support_area":
+        {
             "value": 2
         },
-        "retraction_amount": {
+        "retraction_amount":
+        {
             "value": 2.5
         },
-        "retraction_speed": {
+        "retraction_speed":
+        {
             "value": 40
         },
-        "skirt_gap": {
+        "skirt_gap":
+        {
             "value": 6.0
         },
-        "skirt_line_count": {
+        "skirt_line_count":
+        {
             "value": 3
         },
-        "speed_layer_0": {
+        "speed_layer_0":
+        {
             "value": 25.0
         },
-        "speed_prime_tower": {
+        "speed_prime_tower":
+        {
             "value": "speed_topbottom"
         },
-        "speed_print": {
+        "speed_print":
+        {
             "value": 50.0
         },
-        "speed_support": {
+        "speed_support":
+        {
             "value": "speed_wall_0"
         },
-        "speed_travel": {
+        "speed_travel":
+        {
             "value": "120.0 if speed_print < 60 else 180.0 if speed_print > 100 else speed_print * 2.2"
         },
-        "speed_travel_layer_0": {
+        "speed_travel_layer_0":
+        {
             "value": "100 if speed_layer_0 < 25 else 150 if speed_layer_0 > 30 else speed_layer_0 * 5"
         },
-        "speed_wall_x": {
+        "speed_wall_x":
+        {
             "value": "speed_wall"
         },
-        "speed_z_hop": {
+        "speed_z_hop":
+        {
             "value": 5
         },
-        "support_angle": {
+        "support_angle":
+        {
             "value": "math.floor(math.degrees(math.atan(line_width/2.0/layer_height)))"
         },
-        "support_brim_enable": {
+        "support_brim_enable":
+        {
             "value": true
         },
-        "support_brim_width": {
+        "support_brim_width":
+        {
             "value": 4
         },
-        "support_enable": {
+        "support_enable":
+        {
             "value": true
         },
-        "support_infill_rate": {
+        "support_infill_rate":
+        {
             "value": "0 if support_enable and support_structure == 'tree' else 20"
         },
-        "support_interface_density": {
+        "support_interface_density":
+        {
             "value": 33.333
         },
-        "support_interface_enable": {
+        "support_interface_enable":
+        {
             "value": true
         },
-        "support_interface_height": {
+        "support_interface_height":
+        {
             "value": "layer_height * 4"
         },
-        "support_interface_pattern": {
+        "support_interface_pattern":
+        {
             "value": "'grid'"
         },
-        "support_interface_skip_height": {
+        "support_interface_skip_height":
+        {
             "value": 0.2
         },
-        "support_pattern": {
+        "support_pattern":
+        {
             "value": "'zigzag'"
         },
-        "support_use_towers": {
+        "support_use_towers":
+        {
             "value": false
         },
-        "support_wall_count": {
+        "support_wall_count":
+        {
             "value": 1
         },
-        "support_xy_distance": {
+        "support_xy_distance":
+        {
             "value": "wall_line_width_0 * 2"
         },
-        "support_xy_distance_overhang": {
+        "support_xy_distance_overhang":
+        {
             "value": "wall_line_width_0"
         },
-        "support_xy_overrides_z": {
+        "support_xy_overrides_z":
+        {
             "value": "'xy_overrides_z'"
         },
-        "support_z_distance": {
+        "support_z_distance":
+        {
             "value": "layer_height if layer_height >= 0.16 else layer_height*2"
         },
-        "top_bottom_thickness": {
+        "top_bottom_thickness":
+        {
             "value": "layer_height_0 + layer_height * 3"
         },
-        "wall_thickness": {
+        "wall_thickness":
+        {
             "value": "line_width * 2"
         }
     },

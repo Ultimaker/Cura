@@ -1,22 +1,28 @@
 {
     "inherits": "atmat_signal_pro_base",
-    "metadata": {
+    "metadata":
+    {
         "platform": "atmat_signal_pro_platform.stl",
         "quality_definition": "atmat_signal_pro_base",
         "visible": true
     },
     "name": "Signal Pro 400 v2",
-    "overrides": {
-        "machine_depth": {
+    "overrides":
+    {
+        "machine_depth":
+        {
             "default_value": 300
         },
-        "machine_height": {
+        "machine_height":
+        {
             "default_value": 400
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "Signal Pro 400 v2"
         },
-        "machine_width": {
+        "machine_width":
+        {
             "default_value": 300
         }
     },

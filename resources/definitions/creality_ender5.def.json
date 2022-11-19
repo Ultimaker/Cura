@@ -1,21 +1,27 @@
 {
     "inherits": "creality_base",
-    "metadata": {
+    "metadata":
+    {
         "quality_definition": "creality_base",
         "visible": true
     },
     "name": "Creality Ender-5",
-    "overrides": {
-        "gantry_height": {
+    "overrides":
+    {
+        "gantry_height":
+        {
             "value": 25
         },
-        "machine_depth": {
+        "machine_depth":
+        {
             "default_value": 220
         },
-        "machine_end_gcode": {
+        "machine_end_gcode":
+        {
             "default_value": "G91 ;Relative positioning\nG1 E-2 F2700 ;Retract a bit\nG1 E-2 Z0.2 F2400 ;Retract and raise Z\nG1 X5 Y5 F3000 ;Wipe out\nG1 Z10 ;Raise Z more\nG90 ;Absolute positioning\n\nG28 X0 Y0 ;Present print\nM106 S0 ;Turn-off fan\nM104 S0 ;Turn-off hotend\nM140 S0 ;Turn-off bed\n\nM84 X Y E ;Disable all steppers but Z\n"
         },
-        "machine_head_with_fans_polygon": {
+        "machine_head_with_fans_polygon":
+        {
             "default_value": [
                 [ -26, 34 ],
                 [ -26, -32 ],
@@ -23,16 +29,20 @@
                 [ 32, 34 ]
             ]
         },
-        "machine_height": {
+        "machine_height":
+        {
             "default_value": 300
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "Creality Ender-5"
         },
-        "machine_width": {
+        "machine_width":
+        {
             "default_value": 220
         },
-        "speed_print": {
+        "speed_print":
+        {
             "value": 80.0
         }
     },

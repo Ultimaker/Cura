@@ -1,11 +1,13 @@
 {
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "author": "Venkatkamesh",
         "file_formats": "text/x-gcode",
         "has_materials": true,
         "has_variants": true,
-        "machine_extruder_trains": {
+        "machine_extruder_trains":
+        {
             "0": "diy220_extruder_0"
         },
         "manufacturer": "Sri Vignan Technologies",
@@ -21,56 +23,74 @@
         "weight": 3
     },
     "name": "Diytech 220",
-    "overrides": {
-        "gantry_height": {
+    "overrides":
+    {
+        "gantry_height":
+        {
             "value": "48"
         },
-        "machine_acceleration": {
+        "machine_acceleration":
+        {
             "default_value": 3000
         },
-        "machine_center_is_zero": {
+        "machine_center_is_zero":
+        {
             "default_value": false
         },
-        "machine_depth": {
+        "machine_depth":
+        {
             "default_value": 220
         },
-        "machine_end_gcode": {
+        "machine_end_gcode":
+        {
             "default_value": "G91\nG1 Z+0.5 E-16 Y+10 F9000\nG90\nM107\nM104 S0 T0\nM140 S0\nM117\nG28 X0 Y0\nM84"
         },
-        "machine_gcode_flavor": {
+        "machine_gcode_flavor":
+        {
             "default_value": "Marlin"
         },
-        "machine_heated_bed": {
+        "machine_heated_bed":
+        {
             "default_value": true
         },
-        "machine_height": {
+        "machine_height":
+        {
             "default_value": 305
         },
-        "machine_max_feedrate_x": {
+        "machine_max_feedrate_x":
+        {
             "default_value": 300
         },
-        "machine_max_feedrate_y": {
+        "machine_max_feedrate_y":
+        {
             "default_value": 300
         },
-        "machine_max_feedrate_z": {
+        "machine_max_feedrate_z":
+        {
             "default_value": 40
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "Diytech 220"
         },
-        "machine_nozzle_head_distance": {
+        "machine_nozzle_head_distance":
+        {
             "default_value": 3
         },
-        "machine_nozzle_tip_outer_diameter": {
+        "machine_nozzle_tip_outer_diameter":
+        {
             "default_value": 1
         },
-        "machine_start_gcode": {
+        "machine_start_gcode":
+        {
             "default_value": "G21\nG90\nM82\nM107\nG28\nG1 Z15 F200\nT0\nG92 E0\nG1 E16 F250\nG92 E0\n"
         },
-        "machine_use_extruder_offset_to_offset_coords": {
+        "machine_use_extruder_offset_to_offset_coords":
+        {
             "default_value": true
         },
-        "machine_width": {
+        "machine_width":
+        {
             "default_value": 220
         }
     },

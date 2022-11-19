@@ -1,11 +1,13 @@
 {
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "author": "Sovol",
         "file_formats": "text/x-gcode",
         "has_machine_quality": false,
         "has_variants": false,
-        "machine_extruder_trains": {
+        "machine_extruder_trains":
+        {
             "0": "SV02_extruder_0",
             "1": "SV02_extruder_1"
         },
@@ -14,182 +16,242 @@
         "visible": true
     },
     "name": "Sovol-SV02",
-    "overrides": {
-        "acceleration_enabled": {
+    "overrides":
+    {
+        "acceleration_enabled":
+        {
             "value": false
         },
-        "acceleration_print": {
+        "acceleration_print":
+        {
             "value": 500
         },
-        "acceleration_travel": {
+        "acceleration_travel":
+        {
             "value": 500
         },
-        "acceleration_travel_layer_0": {
+        "acceleration_travel_layer_0":
+        {
             "value": "acceleration_travel"
         },
-        "adhesion_extruder_nr": {
+        "adhesion_extruder_nr":
+        {
             "value": 1
         },
-        "adhesion_type": {
+        "adhesion_type":
+        {
             "value": "'skirt'"
         },
-        "brim_replaces_support": {
+        "brim_replaces_support":
+        {
             "value": false
         },
-        "brim_width": {
+        "brim_width":
+        {
             "value": 4
         },
-        "coasting_enable": {
+        "coasting_enable":
+        {
             "default_value": true
         },
-        "default_material_print_temperature": {
+        "default_material_print_temperature":
+        {
             "value": 195
         },
-        "gantry_height": {
+        "gantry_height":
+        {
             "value": "30"
         },
-        "infill_before_walls": {
+        "infill_before_walls":
+        {
             "value": false
         },
-        "infill_overlap": {
+        "infill_overlap":
+        {
             "value": 30.0
         },
-        "infill_pattern": {
+        "infill_pattern":
+        {
             "value": "'lines'"
         },
-        "infill_sparse_density": {
+        "infill_sparse_density":
+        {
             "value": "15"
         },
-        "infill_wipe_dist": {
+        "infill_wipe_dist":
+        {
             "value": 0.0
         },
-        "jerk_enabled": {
+        "jerk_enabled":
+        {
             "value": false
         },
-        "jerk_print": {
+        "jerk_print":
+        {
             "value": 8
         },
-        "jerk_travel": {
+        "jerk_travel":
+        {
             "value": "jerk_print"
         },
-        "jerk_travel_layer_0": {
+        "jerk_travel_layer_0":
+        {
             "value": "jerk_travel"
         },
-        "machine_acceleration": {
+        "machine_acceleration":
+        {
             "value": 500
         },
-        "machine_center_is_zero": {
+        "machine_center_is_zero":
+        {
             "default_value": false
         },
-        "machine_depth": {
+        "machine_depth":
+        {
             "default_value": 250
         },
-        "machine_end_gcode": {
+        "machine_end_gcode":
+        {
             "default_value": "M104 S0  ;hotend off\nM140 S0  ;bed off\nG92 E0\nG1 F2000 E-100  ;retract filament 100mm\nG92 E0\nG1 F3000 X0 Y240  ;move bed for easy part removal\nM84  ;disable steppers"
         },
-        "machine_extruder_count": {
+        "machine_extruder_count":
+        {
             "default_value": 2
         },
-        "machine_gcode_flavor": {
+        "machine_gcode_flavor":
+        {
             "default_value": "RepRap (Marlin/Sprinter)"
         },
-        "machine_heated_bed": {
+        "machine_heated_bed":
+        {
             "default_value": true
         },
-        "machine_height": {
+        "machine_height":
+        {
             "default_value": 300
         },
-        "machine_max_acceleration_e": {
+        "machine_max_acceleration_e":
+        {
             "value": 500
         },
-        "machine_max_acceleration_x": {
+        "machine_max_acceleration_x":
+        {
             "value": 500
         },
-        "machine_max_acceleration_y": {
+        "machine_max_acceleration_y":
+        {
             "value": 500
         },
-        "machine_max_acceleration_z": {
+        "machine_max_acceleration_z":
+        {
             "value": 100
         },
-        "machine_max_feedrate_e": {
+        "machine_max_feedrate_e":
+        {
             "value": 50
         },
-        "machine_max_feedrate_x": {
+        "machine_max_feedrate_x":
+        {
             "value": 500
         },
-        "machine_max_feedrate_y": {
+        "machine_max_feedrate_y":
+        {
             "value": 500
         },
-        "machine_max_feedrate_z": {
+        "machine_max_feedrate_z":
+        {
             "value": 10
         },
-        "machine_max_jerk_e": {
+        "machine_max_jerk_e":
+        {
             "default_value": 5.0
         },
-        "machine_max_jerk_xy": {
+        "machine_max_jerk_xy":
+        {
             "default_value": 5.0
         },
-        "machine_max_jerk_z": {
+        "machine_max_jerk_z":
+        {
             "default_value": 0.4
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "SV02"
         },
-        "machine_start_gcode": {
+        "machine_start_gcode":
+        {
             "default_value": "G21 ;metric values\nG28 ;home all\nG90 ;absolute positioning\nM107 ;start with the fan off\nG1 F2400 Z15.0 ;raise the nozzle 15mm\nM109 S{material_print_temperature} ;Set Extruder Temperature and Wait\nM190 S{material_bed_temperature}; Wait for bed temperature to reach target temp\nT0 ;Switch to Extruder 1\nG1 F3000 X5 Y10 Z0.2 ;move to prime start position\nG92 E0 ;reset extrusion distance\nG1 F600 X160 E5 ;prime nozzle in a line\nG1 F5000 X180 ;quick wipe\nG92 E0 ;reset extrusion distance"
         },
-        "machine_width": {
+        "machine_width":
+        {
             "default_value": 300
         },
-        "material_diameter": {
+        "material_diameter":
+        {
             "default_value": 1.75
         },
-        "material_final_print_temperature": {
+        "material_final_print_temperature":
+        {
             "value": 195
         },
-        "material_initial_print_temperature": {
+        "material_initial_print_temperature":
+        {
             "value": "material_print_temperature"
         },
-        "prime_tower_min_volume": {
+        "prime_tower_min_volume":
+        {
             "value": "((resolveOrValue('prime_tower_size') * 0.5) ** 2 * 3.14159 * resolveOrValue('layer_height'))/2"
         },
-        "prime_tower_position_x": {
+        "prime_tower_position_x":
+        {
             "value": "240"
         },
-        "prime_tower_position_y": {
+        "prime_tower_position_y":
+        {
             "value": "190"
         },
-        "prime_tower_size": {
+        "prime_tower_size":
+        {
             "value": "30"
         },
-        "prime_tower_wipe_enabled": {
+        "prime_tower_wipe_enabled":
+        {
             "default_value": true
         },
-        "retraction_amount": {
+        "retraction_amount":
+        {
             "default_value": 5
         },
-        "retraction_speed": {
+        "retraction_speed":
+        {
             "default_value": 50
         },
-        "skin_overlap": {
+        "skin_overlap":
+        {
             "value": 10.0
         },
-        "skirt_gap": {
+        "skirt_gap":
+        {
             "value": 2
         },
-        "skirt_line_count": {
+        "skirt_line_count":
+        {
             "value": 3
         },
-        "speed_print": {
+        "speed_print":
+        {
             "default_value": 50
         },
-        "top_bottom_thickness": {
+        "top_bottom_thickness":
+        {
             "default_value": 1
         },
-        "travel_retract_before_outer_wall": {
+        "travel_retract_before_outer_wall":
+        {
             "default_value": true
         },
-        "wall_0_wipe_dist": {
+        "wall_0_wipe_dist":
+        {
             "value": 0.0
         }
     },

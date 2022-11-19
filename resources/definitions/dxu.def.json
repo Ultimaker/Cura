@@ -1,6 +1,7 @@
 {
     "inherits": "ultimaker2_plus",
-    "metadata": {
+    "metadata":
+    {
         "author": "TheUltimakerCommunity",
         "file_formats": "text/x-gcode",
         "has_machine_materials": false,
@@ -8,7 +9,8 @@
         "has_materials": true,
         "has_variant_materials": false,
         "has_variants": true,
-        "machine_extruder_trains": {
+        "machine_extruder_trains":
+        {
             "0": "dxu_extruder1",
             "1": "dxu_extruder2"
         },
@@ -28,46 +30,59 @@
         "weight": 0
     },
     "name": "DXU",
-    "overrides": {
-        "extruder_prime_pos_abs": {
+    "overrides":
+    {
+        "extruder_prime_pos_abs":
+        {
             "default_value": false
         },
-        "extruder_prime_pos_x": {
+        "extruder_prime_pos_x":
+        {
             "default_value": 0.0,
             "enabled": false
         },
-        "extruder_prime_pos_y": {
+        "extruder_prime_pos_y":
+        {
             "default_value": 0.0,
             "enabled": false
         },
-        "extruder_prime_pos_z": {
+        "extruder_prime_pos_z":
+        {
             "default_value": 0.0,
             "enabled": false
         },
-        "layer_height_0": {
+        "layer_height_0":
+        {
             "value": "round(machine_nozzle_size / 1.5, 2)"
         },
-        "layer_start_x": {
+        "layer_start_x":
+        {
             "default_value": 180.0,
             "enabled": false
         },
-        "layer_start_y": {
+        "layer_start_y":
+        {
             "default_value": 160.0,
             "enabled": false
         },
-        "line_width": {
+        "line_width":
+        {
             "value": "round(machine_nozzle_size * 0.875, 2)"
         },
-        "machine_acceleration": {
+        "machine_acceleration":
+        {
             "default_value": 3000
         },
-        "machine_center_is_zero": {
+        "machine_center_is_zero":
+        {
             "default_value": false
         },
-        "machine_depth": {
+        "machine_depth":
+        {
             "default_value": 223
         },
-        "machine_disallowed_areas": {
+        "machine_disallowed_areas":
+        {
             "default_value": [
                 [
                     [
@@ -161,16 +176,20 @@
                 ]
             ]
         },
-        "machine_end_gcode": {
+        "machine_end_gcode":
+        {
             "value": "\"\"  if machine_gcode_flavor == \"UltiGCode\" else \"G90 ;absolute positioning\\nM104 S0 T0 ;extruder heater off\\nM104 S0 T1\\nM140 S0 ;turn off bed\\nT0 ; move to the first head\\nM107 ;fan off\""
         },
-        "machine_extruder_count": {
+        "machine_extruder_count":
+        {
             "default_value": 2
         },
-        "machine_gcode_flavor": {
+        "machine_gcode_flavor":
+        {
             "default_value": "RepRap (Marlin/Sprinter)"
         },
-        "machine_head_with_fans_polygon": {
+        "machine_head_with_fans_polygon":
+        {
             "default_value": [
                 [ -44, 14 ],
                 [ -44, -34 ],
@@ -178,97 +197,127 @@
                 [ 64, -34 ]
             ]
         },
-        "machine_heat_zone_length": {
+        "machine_heat_zone_length":
+        {
             "default_value": 20
         },
-        "machine_heated_bed": {
+        "machine_heated_bed":
+        {
             "default_value": true
         },
-        "machine_height": {
+        "machine_height":
+        {
             "default_value": 203
         },
-        "machine_max_feedrate_e": {
+        "machine_max_feedrate_e":
+        {
             "default_value": 45
         },
-        "machine_max_feedrate_x": {
+        "machine_max_feedrate_x":
+        {
             "default_value": 300
         },
-        "machine_max_feedrate_y": {
+        "machine_max_feedrate_y":
+        {
             "default_value": 300
         },
-        "machine_max_feedrate_z": {
+        "machine_max_feedrate_z":
+        {
             "default_value": 40
         },
-        "machine_min_cool_heat_time_window": {
+        "machine_min_cool_heat_time_window":
+        {
             "default_value": 15.0
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "dxu"
         },
-        "machine_nozzle_cool_down_speed": {
+        "machine_nozzle_cool_down_speed":
+        {
             "default_value": 1.5
         },
-        "machine_nozzle_expansion_angle": {
+        "machine_nozzle_expansion_angle":
+        {
             "default_value": 45
         },
-        "machine_nozzle_head_distance": {
+        "machine_nozzle_head_distance":
+        {
             "default_value": 5
         },
-        "machine_nozzle_heat_up_speed": {
+        "machine_nozzle_heat_up_speed":
+        {
             "default_value": 3.5
         },
-        "machine_nozzle_size": {
+        "machine_nozzle_size":
+        {
             "default_value": 0.4
         },
-        "machine_show_variants": {
+        "machine_show_variants":
+        {
             "default_value": true
         },
-        "machine_start_gcode": {
+        "machine_start_gcode":
+        {
             "value": "\"\"  if machine_gcode_flavor == \"UltiGCode\" else \";material_bed_temperature={material_bed_temperature} material_print_temperature={material_print_temperature} material_print_temperature_layer_0={material_print_temperature_layer_0}\\nM190 S{material_bed_temperature_layer_0}\\nG21 ;metric values\\nG90 ;absolute positioning\\nM82 ;set extruder to absolute mode\\nM107 ;start with the fan off\\nM200 D0 T{initial_extruder_nr} ;reset filament diameter\\nG28 ;home all\\nT{initial_extruder_nr} ;switch to the first nozzle used for print\\nM104 T{initial_extruder_nr} S{material_standby_temperature, initial_extruder_nr}\\nG0 X25 Y20 F7200\\nG0 Z20 F2400\\nM109 T{initial_extruder_nr} S{material_print_temperature_layer_0, initial_extruder_nr}\\nG0 X210 Y20 F7200\\nG92 E-7.0\\nG1 E0 F45 ;purge nozzle\\nG1 E-6.5 F1500\\nG1 E0 F1500\\nM400 ;finish all moves\\nT{initial_extruder_nr}\\n;end of startup sequence\\n\""
         },
-        "machine_use_extruder_offset_to_offset_coords": {
+        "machine_use_extruder_offset_to_offset_coords":
+        {
             "default_value": false
         },
-        "machine_width": {
+        "machine_width":
+        {
             "default_value": 238
         },
-        "material_adhesion_tendency": {
+        "material_adhesion_tendency":
+        {
             "enabled": true
         },
-        "material_diameter": {
+        "material_diameter":
+        {
             "default_value": 1.75
         },
-        "prime_tower_position_x": {
+        "prime_tower_position_x":
+        {
             "value": "180"
         },
-        "prime_tower_position_y": {
+        "prime_tower_position_y":
+        {
             "value": "160"
         },
-        "retraction_amount": {
+        "retraction_amount":
+        {
             "default_value": 6.5
         },
-        "retraction_speed": {
+        "retraction_speed":
+        {
             "default_value": 25
         },
-        "speed_support": {
+        "speed_support":
+        {
             "value": "speed_wall_0"
         },
-        "speed_wall_x": {
+        "speed_wall_x":
+        {
             "value": "speed_wall"
         },
-        "switch_extruder_prime_speed": {
+        "switch_extruder_prime_speed":
+        {
             "enabled": false,
             "value": "retraction_prime_speed"
         },
-        "switch_extruder_retraction_amount": {
+        "switch_extruder_retraction_amount":
+        {
             "enabled": false,
             "value": "retraction_amount"
         },
-        "switch_extruder_retraction_speed": {
+        "switch_extruder_retraction_speed":
+        {
             "enabled": false,
             "value": "retraction_retract_speed"
         },
-        "switch_extruder_retraction_speeds": {
+        "switch_extruder_retraction_speeds":
+        {
             "enabled": false,
             "value": "retraction_speed"
         }

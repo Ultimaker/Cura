@@ -1,164 +1,217 @@
 {
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "author": "Alexander Kirsanov",
         "file_formats": "text/x-gcode",
-        "machine_extruder_trains": {
+        "machine_extruder_trains":
+        {
             "0": "erzay3d_extruder_0"
         },
         "manufacturer": "Robokinetika",
         "visible": true
     },
     "name": "Erzay3D",
-    "overrides": {
-        "acceleration_print": {
+    "overrides":
+    {
+        "acceleration_print":
+        {
             "default_value": 1000
         },
-        "adhesion_type": {
+        "adhesion_type":
+        {
             "default_value": "skirt"
         },
-        "brim_outside_only": {
+        "brim_outside_only":
+        {
             "default_value": false
         },
-        "default_material_print_temperature": {
+        "default_material_print_temperature":
+        {
             "default_value": 220
         },
-        "infill_sparse_density": {
+        "infill_sparse_density":
+        {
             "default_value": 20
         },
-        "ironing_flow": {
+        "ironing_flow":
+        {
             "default_value": 7.0
         },
-        "ironing_pattern": {
+        "ironing_pattern":
+        {
             "default_value": "concentric"
         },
-        "jerk_print": {
+        "jerk_print":
+        {
             "default_value": 10
         },
-        "layer_height": {
+        "layer_height":
+        {
             "default_value": 0.2
         },
-        "layer_height_0": {
+        "layer_height_0":
+        {
             "default_value": 0.2
         },
-        "machine_acceleration": {
+        "machine_acceleration":
+        {
             "default_value": 1000
         },
-        "machine_buildplate_type": {
+        "machine_buildplate_type":
+        {
             "default_value": "glass"
         },
-        "machine_center_is_zero": {
+        "machine_center_is_zero":
+        {
             "default_value": true
         },
-        "machine_depth": {
+        "machine_depth":
+        {
             "default_value": 210
         },
-        "machine_extruder_count": {
+        "machine_extruder_count":
+        {
             "default_value": 1
         },
-        "machine_feeder_wheel_diameter": {
+        "machine_feeder_wheel_diameter":
+        {
             "default_value": 12
         },
-        "machine_gcode_flavor": {
+        "machine_gcode_flavor":
+        {
             "default_value": "RepRap (Marlin/Sprinter)"
         },
-        "machine_heat_zone_length": {
+        "machine_heat_zone_length":
+        {
             "default_value": 12.5
         },
-        "machine_heated_bed": {
+        "machine_heated_bed":
+        {
             "default_value": true
         },
-        "machine_height": {
+        "machine_height":
+        {
             "default_value": 230
         },
-        "machine_max_acceleration_e": {
+        "machine_max_acceleration_e":
+        {
             "default_value": 3000
         },
-        "machine_max_acceleration_x": {
+        "machine_max_acceleration_x":
+        {
             "default_value": 3000
         },
-        "machine_max_acceleration_y": {
+        "machine_max_acceleration_y":
+        {
             "default_value": 3000
         },
-        "machine_max_acceleration_z": {
+        "machine_max_acceleration_z":
+        {
             "default_value": 3000
         },
-        "machine_max_feedrate_e": {
+        "machine_max_feedrate_e":
+        {
             "default_value": 50
         },
-        "machine_max_feedrate_x": {
+        "machine_max_feedrate_x":
+        {
             "default_value": 200
         },
-        "machine_max_feedrate_y": {
+        "machine_max_feedrate_y":
+        {
             "default_value": 200
         },
-        "machine_max_feedrate_z": {
+        "machine_max_feedrate_z":
+        {
             "default_value": 200
         },
-        "machine_max_jerk_e": {
+        "machine_max_jerk_e":
+        {
             "default_value": 10
         },
-        "machine_max_jerk_xy": {
+        "machine_max_jerk_xy":
+        {
             "default_value": 10
         },
-        "machine_max_jerk_z": {
+        "machine_max_jerk_z":
+        {
             "default_value": 10
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "Erzay3D"
         },
-        "machine_nozzle_head_distance": {
+        "machine_nozzle_head_distance":
+        {
             "default_value": 2.5
         },
-        "machine_nozzle_size": {
+        "machine_nozzle_size":
+        {
             "default_value": 0.4
         },
-        "machine_shape": {
+        "machine_shape":
+        {
             "default_value": "elliptic"
         },
-        "machine_start_gcode": {
+        "machine_start_gcode":
+        {
             "default_value": "G28\nG1 Z15.0 F6000\nG92 E0"
         },
-        "machine_steps_per_mm_e": {
+        "machine_steps_per_mm_e":
+        {
             "default_value": 174
         },
-        "machine_steps_per_mm_x": {
+        "machine_steps_per_mm_x":
+        {
             "default_value": 1600
         },
-        "machine_steps_per_mm_y": {
+        "machine_steps_per_mm_y":
+        {
             "default_value": 1600
         },
-        "machine_steps_per_mm_z": {
+        "machine_steps_per_mm_z":
+        {
             "default_value": 1600
         },
-        "machine_width": {
+        "machine_width":
+        {
             "default_value": 210
         },
-        "material_bed_temp_wait": {
+        "material_bed_temp_wait":
+        {
             "default_value": true
         },
-        "material_diameter": {
+        "material_diameter":
+        {
             "default_value": 1.75
         },
-        "material_print_temp_prepend": {
+        "material_print_temp_prepend":
+        {
             "default_value": true
         },
-        "material_print_temp_wait": {
+        "material_print_temp_wait":
+        {
             "default_value": true
         },
-        "meshfix_maximum_resolution": {
+        "meshfix_maximum_resolution":
+        {
             "default_value": 0.25
         },
-        "retraction_amount": {
+        "retraction_amount":
+        {
             "default_value": 6.5
         },
-        "speed_print": {
+        "speed_print":
+        {
             "default_value": 40
         },
-        "support_angle": {
+        "support_angle":
+        {
             "default_value": 65
         },
-        "support_brim_enable": {
+        "support_brim_enable":
+        {
             "value": true
         }
     },

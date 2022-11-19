@@ -1,25 +1,32 @@
 {
     "inherits": "two_trees_base",
-    "metadata": {
+    "metadata":
+    {
         "platform": "twotrees300x300_generic.stl",
         "quality_definition": "two_trees_base",
         "visible": true
     },
     "name": "Two Trees Bluer Plus",
-    "overrides": {
-        "gantry_height": {
+    "overrides":
+    {
+        "gantry_height":
+        {
             "value": 28
         },
-        "infill_material_flow": {
+        "infill_material_flow":
+        {
             "value": 100
         },
-        "infill_overlap": {
+        "infill_overlap":
+        {
             "value": 30
         },
-        "machine_depth": {
+        "machine_depth":
+        {
             "default_value": 300
         },
-        "machine_head_with_fans_polygon": {
+        "machine_head_with_fans_polygon":
+        {
             "default_value": [
                 [ -47, 37 ],
                 [ -47, -23 ],
@@ -27,34 +34,44 @@
                 [ 47, 37 ]
             ]
         },
-        "machine_height": {
+        "machine_height":
+        {
             "default_value": 400
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "Two Trees Bluer Plus"
         },
-        "machine_width": {
+        "machine_width":
+        {
             "default_value": 300
         },
-        "material_flow": {
+        "material_flow":
+        {
             "value": 90
         },
-        "retraction_amount": {
+        "retraction_amount":
+        {
             "default_value": 8
         },
-        "retraction_speed": {
+        "retraction_speed":
+        {
             "default_value": 50
         },
-        "skin_overlap": {
+        "skin_overlap":
+        {
             "value": 20
         },
-        "speed_print": {
+        "speed_print":
+        {
             "value": 50.0
         },
-        "speed_travel": {
+        "speed_travel":
+        {
             "value": 180
         },
-        "speed_travel_layer_0": {
+        "speed_travel_layer_0":
+        {
             "value": 100
         }
     },

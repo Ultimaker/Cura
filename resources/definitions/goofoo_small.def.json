@@ -1,6 +1,7 @@
 {
     "inherits": "goofoo_base",
-    "metadata": {
+    "metadata":
+    {
         "exclude_materials": [
             "goofoo_bronze_pla",
             "goofoo_peek",

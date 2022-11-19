@@ -1,6 +1,7 @@
 {
     "inherits": "uni_base",
-    "metadata": {
+    "metadata":
+    {
         "author": "Nail` Gimadeev (C)",
         "platform": "uni_mini_platform.stl",
         "platform_texture": "uni.png",
@@ -8,17 +9,22 @@
         "visible": true
     },
     "name": "Uni Mini",
-    "overrides": {
-        "machine_depth": {
+    "overrides":
+    {
+        "machine_depth":
+        {
             "default_value": 160
         },
-        "machine_height": {
+        "machine_height":
+        {
             "default_value": 175
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "uni_mini"
         },
-        "machine_width": {
+        "machine_width":
+        {
             "default_value": 160
         }
     },

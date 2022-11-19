@@ -1,8 +1,10 @@
 {
     "inherits": "goofoo_far",
-    "metadata": {
+    "metadata":
+    {
         "author": "Woosh (based on RF100.ini by Conrad Electronic SE)",
-        "machine_extruder_trains": {
+        "machine_extruder_trains":
+        {
             "0": "renkforce_pro7dual_1st",
             "1": "renkforce_pro7dual_2nd"
         },
@@ -10,14 +12,18 @@
         "visible": true
     },
     "name": "Renkforce Pro7 Dual",
-    "overrides": {
-        "machine_depth": {
+    "overrides":
+    {
+        "machine_depth":
+        {
             "default_value": 250
         },
-        "machine_extruder_count": {
+        "machine_extruder_count":
+        {
             "default_value": 2
         },
-        "machine_head_with_fans_polygon": {
+        "machine_head_with_fans_polygon":
+        {
             "default_value": [
                 [ 0, 0 ],
                 [ 0, 0 ],
@@ -25,13 +31,16 @@
                 [ 0, 0 ]
             ]
         },
-        "machine_height": {
+        "machine_height":
+        {
             "default_value": 200
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "Renkforce Pro7 Dual"
         },
-        "machine_width": {
+        "machine_width":
+        {
             "default_value": 360
         }
     },

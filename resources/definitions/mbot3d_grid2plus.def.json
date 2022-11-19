@@ -1,9 +1,11 @@
 {
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "author": "Magicfirm",
         "file_formats": "application/x3g",
-        "machine_extruder_trains": {
+        "machine_extruder_trains":
+        {
             "0": "mbot3d_grid2_extruder_0"
         },
         "machine_x3g_variant": "r1",
@@ -11,26 +13,34 @@
         "visible": true
     },
     "name": "MBot3D Grid 2+",
-    "overrides": {
-        "gantry_height": {
+    "overrides":
+    {
+        "gantry_height":
+        {
             "value": 10
         },
-        "infill_overlap": {
+        "infill_overlap":
+        {
             "value": "12 if infill_sparse_density < 95 and infill_pattern != 'concentric' else 0"
         },
-        "machine_center_is_zero": {
+        "machine_center_is_zero":
+        {
             "default_value": true
         },
-        "machine_depth": {
+        "machine_depth":
+        {
             "default_value": 210
         },
-        "machine_end_gcode": {
+        "machine_end_gcode":
+        {
             "default_value": "M18 A B(Turn off A and B steppers)\nG1 Z190 F900\nG162 X Y F2000\nM18 X Y Z(Turn off steppers after a build)\nM104 S0 T0\nM72 P1  ( Play Ta-Da song )\nM73 P100 (end  build progress )\nM137 (build end)\n"
         },
-        "machine_gcode_flavor": {
+        "machine_gcode_flavor":
+        {
             "default_value": "Makerbot"
         },
-        "machine_head_with_fans_polygon": {
+        "machine_head_with_fans_polygon":
+        {
             "default_value": [
                 [ -37, 50 ],
                 [ 25, 50 ],
@@ -38,85 +48,112 @@
                 [ -37, -40 ]
             ]
         },
-        "machine_heated_bed": {
+        "machine_heated_bed":
+        {
             "default_value": true
         },
-        "machine_height": {
+        "machine_height":
+        {
             "default_value": 190
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "MBot3D Grid 2+"
         },
-        "machine_start_gcode": {
+        "machine_start_gcode":
+        {
             "default_value": "M136\nG162 X Y F2000\nG161 Z F900\nG92 X0 Y0 Z-5 A0 B0\nG1 Z0.0 F900\nG161 Z F100\nM132 X Y Z A B\nG1 X125 Y115 Z10 F450\nG1 X0 Y115 Z10 F2000.0\nM133 T0\nG1 X20 Y115 Z0.5 F800\nG1 X0 Y115 Z0.5 F600 A12\nG92 A0\n"
         },
-        "machine_steps_per_mm_e": {
+        "machine_steps_per_mm_e":
+        {
             "default_value": 96.27520187033366
         },
-        "machine_steps_per_mm_x": {
+        "machine_steps_per_mm_x":
+        {
             "default_value": 88.888889
         },
-        "machine_steps_per_mm_y": {
+        "machine_steps_per_mm_y":
+        {
             "default_value": 88.888889
         },
-        "machine_steps_per_mm_z": {
+        "machine_steps_per_mm_z":
+        {
             "default_value": 400
         },
-        "machine_width": {
+        "machine_width":
+        {
             "default_value": 235
         },
-        "material_final_print_temperature": {
+        "material_final_print_temperature":
+        {
             "value": "material_print_temperature"
         },
-        "material_initial_print_temperature": {
+        "material_initial_print_temperature":
+        {
             "value": "material_print_temperature"
         },
-        "raft_airgap": {
+        "raft_airgap":
+        {
             "default_value": 0.15
         },
-        "raft_margin": {
+        "raft_margin":
+        {
             "default_value": 6
         },
-        "retract_at_layer_change": {
+        "retract_at_layer_change":
+        {
             "default_value": true
         },
-        "retraction_amount": {
+        "retraction_amount":
+        {
             "default_value": 0.7
         },
-        "retraction_speed": {
+        "retraction_speed":
+        {
             "default_value": 15
         },
-        "speed_layer_0": {
+        "speed_layer_0":
+        {
             "value": 15
         },
-        "speed_print": {
+        "speed_print":
+        {
             "default_value": 50
         },
-        "speed_travel": {
+        "speed_travel":
+        {
             "value": 80
         },
-        "speed_wall": {
+        "speed_wall":
+        {
             "value": 25
         },
-        "speed_wall_x": {
+        "speed_wall_x":
+        {
             "value": 35
         },
-        "support_interface_density": {
+        "support_interface_density":
+        {
             "default_value": 80
         },
-        "support_interface_enable": {
+        "support_interface_enable":
+        {
             "default_value": true
         },
-        "support_interface_height": {
+        "support_interface_height":
+        {
             "default_value": 0.8
         },
-        "support_interface_pattern": {
+        "support_interface_pattern":
+        {
             "default_value": "grid"
         },
-        "travel_avoid_other_parts": {
+        "travel_avoid_other_parts":
+        {
             "default_value": false
         },
-        "travel_retract_before_outer_wall": {
+        "travel_retract_before_outer_wall":
+        {
             "default_value": true
         }
     },

@@ -1,11 +1,13 @@
 {
     "inherits": "wanhao_d6",
-    "metadata": {
+    "metadata":
+    {
         "author": "Danny Tuppeny",
         "file_formats": "text/x-gcode",
         "has_materials": true,
         "icon": "wanhao-icon.png",
-        "machine_extruder_trains": {
+        "machine_extruder_trains":
+        {
             "0": "wanhao_d6_extruder_0"
         },
         "manufacturer": "Monoprice",
@@ -19,32 +21,42 @@
         "visible": true
     },
     "name": "Monoprice Ultimate",
-    "overrides": {
-        "machine_acceleration": {
+    "overrides":
+    {
+        "machine_acceleration":
+        {
             "default_value": 800
         },
-        "machine_max_acceleration_e": {
+        "machine_max_acceleration_e":
+        {
             "default_value": 500
         },
-        "machine_max_acceleration_x": {
+        "machine_max_acceleration_x":
+        {
             "default_value": 3000
         },
-        "machine_max_acceleration_y": {
+        "machine_max_acceleration_y":
+        {
             "default_value": 3000
         },
-        "machine_max_acceleration_z": {
+        "machine_max_acceleration_z":
+        {
             "default_value": 100
         },
-        "machine_max_jerk_e": {
+        "machine_max_jerk_e":
+        {
             "default_value": 1.0
         },
-        "machine_max_jerk_xy": {
+        "machine_max_jerk_xy":
+        {
             "default_value": 10.0
         },
-        "machine_max_jerk_z": {
+        "machine_max_jerk_z":
+        {
             "default_value": 0.4
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "Monoprice Ultimate"
         }
     },

@@ -1,20 +1,26 @@
 {
     "inherits": "goofoo_near",
-    "metadata": {
+    "metadata":
+    {
         "visible": true
     },
     "name": "Goofoo Plus",
-    "overrides": {
-        "machine_depth": {
+    "overrides":
+    {
+        "machine_depth":
+        {
             "default_value": 360
         },
-        "machine_height": {
+        "machine_height":
+        {
             "default_value": 400
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "Goofoo Plus"
         },
-        "machine_width": {
+        "machine_width":
+        {
             "default_value": 360
         }
     },

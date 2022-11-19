@@ -1,11 +1,13 @@
 {
     "inherits": "dagoma_delta",
-    "metadata": {
+    "metadata":
+    {
         "author": "Dagoma",
         "file_formats": "text/x-gcode",
         "has_machine_quality": true,
         "has_materials": true,
-        "machine_extruder_trains": {
+        "machine_extruder_trains":
+        {
             "0": "dagoma_neva_extruder"
         },
         "manufacturer": "Dagoma",
@@ -19,8 +21,10 @@
         "visible": true
     },
     "name": "Dagoma Neva",
-    "overrides": {
-        "machine_name": {
+    "overrides":
+    {
+        "machine_name":
+        {
             "default_value": "Dagoma Neva"
         }
     },

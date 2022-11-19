@@ -1,11 +1,13 @@
 {
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "author": "SRC",
         "file_formats": "text/x-gcode",
         "has_machine_quality": false,
         "has_variants": false,
-        "machine_extruder_trains": {
+        "machine_extruder_trains":
+        {
             "0": "cr-x_extruder_0",
             "1": "cr-x_extruder_1"
         },
@@ -15,77 +17,102 @@
         "visible": true
     },
     "name": "Creality CR-X",
-    "overrides": {
-        "adhesion_type": {
+    "overrides":
+    {
+        "adhesion_type":
+        {
             "default_value": "skirt"
         },
-        "gantry_height": {
+        "gantry_height":
+        {
             "value": "30"
         },
-        "machine_center_is_zero": {
+        "machine_center_is_zero":
+        {
             "default_value": false
         },
-        "machine_depth": {
+        "machine_depth":
+        {
             "default_value": 300
         },
-        "machine_end_gcode": {
+        "machine_end_gcode":
+        {
             "default_value": "M104 S0  ;hotend off\nM140 S0  ;bed off\nG92 E0\nG1 F2000 E-100  ;retract filament 100mm\nG92 E0\nG1 F3000 X0 Y270  ;move bed for easy part removal\nM84  ;disable steppers"
         },
-        "machine_extruder_count": {
+        "machine_extruder_count":
+        {
             "default_value": 2
         },
-        "machine_gcode_flavor": {
+        "machine_gcode_flavor":
+        {
             "default_value": "RepRap (Marlin/Sprinter)"
         },
-        "machine_heated_bed": {
+        "machine_heated_bed":
+        {
             "default_value": true
         },
-        "machine_height": {
+        "machine_height":
+        {
             "default_value": 400
         },
-        "machine_max_acceleration_e": {
+        "machine_max_acceleration_e":
+        {
             "default_value": 5000
         },
-        "machine_max_acceleration_x": {
+        "machine_max_acceleration_x":
+        {
             "default_value": 500
         },
-        "machine_max_acceleration_y": {
+        "machine_max_acceleration_y":
+        {
             "default_value": 500
         },
-        "machine_max_acceleration_z": {
+        "machine_max_acceleration_z":
+        {
             "default_value": 100
         },
-        "machine_max_jerk_e": {
+        "machine_max_jerk_e":
+        {
             "default_value": 5.0
         },
-        "machine_max_jerk_xy": {
+        "machine_max_jerk_xy":
+        {
             "default_value": 5.0
         },
-        "machine_max_jerk_z": {
+        "machine_max_jerk_z":
+        {
             "default_value": 0.4
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "Creality CR-X"
         },
-        "machine_start_gcode": {
+        "machine_start_gcode":
+        {
             "default_value": "G21 ;metric values\nG28 ;home all\nG90 ;absolute positioning\nM107 ;start with the fan off\nG1 F2400 Z15.0 ;raise the nozzle 15mm\nM109 S{material_print_temperature} ;Set Extruder Temperature and Wait\nM190 S{material_bed_temperature}; Wait for bed temperature to reach target temp\nT0 ;Switch to Extruder 1\nG1 F3000 X5 Y10 Z0.2 ;move to prime start position\nG92 E0 ;reset extrusion distance\nG1 F600 X160 E15 ;prime nozzle in a line\nG1 F5000 X180 ;quick wipe\nG92 E0 ;reset extrusion distance"
         },
-        "machine_width": {
+        "machine_width":
+        {
             "default_value": 300
         },
-        "retraction_amount": {
+        "retraction_amount":
+        {
             "default_value": 3
         },
-        "retraction_speed": {
+        "retraction_speed":
+        {
             "default_value": 70
         },
-        "speed_print": {
+        "speed_print":
+        {
             "default_value": 60
         },
-        "top_bottom_thickness": {
+        "top_bottom_thickness":
+        {
             "default_value": 1
         },
-        "wall_thickness": {
+        "wall_thickness":
+        {
             "value": "1"
         }
     },

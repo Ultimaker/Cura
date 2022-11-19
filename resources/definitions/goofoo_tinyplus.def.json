@@ -1,26 +1,34 @@
 {
     "inherits": "goofoo_small",
-    "metadata": {
+    "metadata":
+    {
         "visible": true
     },
     "name": "Goofoo Tiny+",
-    "overrides": {
-        "machine_depth": {
+    "overrides":
+    {
+        "machine_depth":
+        {
             "default_value": 120
         },
-        "machine_heated_bed": {
+        "machine_heated_bed":
+        {
             "default_value": false
         },
-        "machine_height": {
+        "machine_height":
+        {
             "default_value": 180
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "Goofoo Tiny+"
         },
-        "machine_width": {
+        "machine_width":
+        {
             "default_value": 120
         },
-        "raft_margin": {
+        "raft_margin":
+        {
             "default_value": 5
         }
     },

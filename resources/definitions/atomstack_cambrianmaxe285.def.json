@@ -1,27 +1,34 @@
 {
     "inherits": "atomstack_cambrian_base",
-    "metadata": {
+    "metadata":
+    {
         "author": "AtomStack",
         "file_formats": "text/x-gcode",
         "has_materials": true,
-        "machine_extruder_trains": {
+        "machine_extruder_trains":
+        {
             "0": "atomstack_cambrianmaxe285_extruder_0"
         },
         "manufacturer": "AtomStack",
         "visible": true
     },
     "name": "Cambrian Max E285",
-    "overrides": {
-        "machine_depth": {
+    "overrides":
+    {
+        "machine_depth":
+        {
             "default_value": 330
         },
-        "machine_height": {
+        "machine_height":
+        {
             "default_value": 380
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "Cambrian MAX E285"
         },
-        "machine_width": {
+        "machine_width":
+        {
             "default_value": 320
         }
     },

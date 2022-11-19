@@ -1,6 +1,7 @@
 {
     "inherits": "longer_base",
-    "metadata": {
+    "metadata":
+    {
         "platform": "longer_310mm_platform.stl",
         "platform_offset": [
             -155,
@@ -11,14 +12,18 @@
         "visible": true
     },
     "name": "Longer LK5 Pro",
-    "overrides": {
-        "gantry_height": {
+    "overrides":
+    {
+        "gantry_height":
+        {
             "value": 33
         },
-        "machine_depth": {
+        "machine_depth":
+        {
             "default_value": 300
         },
-        "machine_head_with_fans_polygon": {
+        "machine_head_with_fans_polygon":
+        {
             "default_value": [
                 [ -22, 39 ],
                 [ -22, -34 ],
@@ -26,13 +31,16 @@
                 [ 58, 39 ]
             ]
         },
-        "machine_height": {
+        "machine_height":
+        {
             "default_value": 400
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "LONGER LK5 Pro"
         },
-        "machine_width": {
+        "machine_width":
+        {
             "default_value": 300
         }
     },

@@ -1,9 +1,11 @@
 {
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "author": "Deltaprintr",
         "file_formats": "text/x-gcode",
-        "machine_extruder_trains": {
+        "machine_extruder_trains":
+        {
             "0": "delta_go_extruder_0"
         },
         "manufacturer": "Deltaprintr",
@@ -15,65 +17,86 @@
         "visible": true
     },
     "name": "Delta Go",
-    "overrides": {
-        "brim_width": {
+    "overrides":
+    {
+        "brim_width":
+        {
             "value": "5"
         },
-        "default_material_print_temperature": {
+        "default_material_print_temperature":
+        {
             "default_value": 210
         },
-        "infill_sparse_density": {
+        "infill_sparse_density":
+        {
             "default_value": 10
         },
-        "layer_height": {
+        "layer_height":
+        {
             "default_value": 0.15
         },
-        "machine_center_is_zero": {
+        "machine_center_is_zero":
+        {
             "default_value": true
         },
-        "machine_depth": {
+        "machine_depth":
+        {
             "default_value": 115
         },
-        "machine_gcode_flavor": {
+        "machine_gcode_flavor":
+        {
             "default_value": "RepRap (Marlin/Sprinter)"
         },
-        "machine_heated_bed": {
+        "machine_heated_bed":
+        {
             "default_value": false
         },
-        "machine_height": {
+        "machine_height":
+        {
             "default_value": 154
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "Delta Go"
         },
-        "machine_shape": {
+        "machine_shape":
+        {
             "default_value": "elliptic"
         },
-        "machine_width": {
+        "machine_width":
+        {
             "default_value": 115
         },
-        "prime_tower_size": {
+        "prime_tower_size":
+        {
             "default_value": 8.66
         },
-        "raft_airgap": {
+        "raft_airgap":
+        {
             "default_value": 0.15
         },
-        "retraction_amount": {
+        "retraction_amount":
+        {
             "default_value": 4.1
         },
-        "retraction_hop": {
+        "retraction_hop":
+        {
             "value": "0.2"
         },
-        "retraction_hop_enabled": {
+        "retraction_hop_enabled":
+        {
             "value": "True"
         },
-        "retraction_hop_only_when_collides": {
+        "retraction_hop_only_when_collides":
+        {
             "value": "True"
         },
-        "retraction_speed": {
+        "retraction_speed":
+        {
             "default_value": 500
         },
-        "speed_print": {
+        "speed_print":
+        {
             "default_value": 30
         }
     },

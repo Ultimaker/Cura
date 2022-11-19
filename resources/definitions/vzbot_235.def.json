@@ -1,22 +1,28 @@
 {
     "inherits": "vzbot_base",
-    "metadata": {
+    "metadata":
+    {
         "platform": "vzbot_235_bed.stl",
         "quality_definition": "vzbot_base",
         "visible": true
     },
     "name": "VzBot 235",
-    "overrides": {
-        "machine_depth": {
+    "overrides":
+    {
+        "machine_depth":
+        {
             "default_value": 235
         },
-        "machine_height": {
+        "machine_height":
+        {
             "default_value": 240
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "VzBot 235"
         },
-        "machine_width": {
+        "machine_width":
+        {
             "default_value": 235
         }
     },

@@ -1,18 +1,23 @@
 {
     "inherits": "eryone_thinker",
-    "metadata": {
+    "metadata":
+    {
         "quality_definition": "eryone_thinker",
-        "retraction_speed": {
+        "retraction_speed":
+        {
             "default_value": 35,
             "maximum_value_warning": 40
         },
-        "speed_print": {
+        "speed_print":
+        {
             "maximum_value_warning": 130
         }
     },
     "name": "Eryone Thinker DirectDrive",
-    "overrides": {
-        "machine_name": {
+    "overrides":
+    {
+        "machine_name":
+        {
             "default_value": "Eryone Thinker DirectDrive"
         }
     },

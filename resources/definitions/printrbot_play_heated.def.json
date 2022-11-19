@@ -1,23 +1,29 @@
 {
     "inherits": "printrbot_play",
-    "metadata": {
+    "metadata":
+    {
         "author": "Chris Pearson",
         "file_formats": "text/x-gcode",
-        "machine_extruder_trains": {
+        "machine_extruder_trains":
+        {
             "0": "printrbot_play_heated_extruder_0"
         },
         "manufacturer": "Printrbot",
         "visible": true
     },
     "name": "Printrbot Play (Heated Bed)",
-    "overrides": {
-        "machine_depth": {
+    "overrides":
+    {
+        "machine_depth":
+        {
             "default_value": 203
         },
-        "machine_heated_bed": {
+        "machine_heated_bed":
+        {
             "default_value": true
         },
-        "machine_name": {
+        "machine_name":
+        {
             "default_value": "Printrbot Play (Heated Bed)"
         }
     },
