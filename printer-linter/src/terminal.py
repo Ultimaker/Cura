@@ -8,22 +8,20 @@ from pathlib import Path
 
 import yaml
 
-from . import create
+from printerlinter import factory
 
 
 def examineFile(file, settings):
-    patient = create(file, settings)
+    patient = factory.create(file, settings)
     if patient is None:
         return {}
 
-    full_body_check = {f"{file.as_posix()}": []}
+    body_check = []
     for diagnostic in patient.check():
         if diagnostic:
-            full_body_check[f"{file.as_posix()}"].append(diagnostic.toDict())
+            body_check.append(diagnostic.toDict())
 
-    if len(full_body_check[f"{file.as_posix()}"]) == 0:
-        del full_body_check[f"{file.as_posix()}"]
-    return full_body_check
+    return body_check
 
 
 def fixFile(file, settings, full_body_check):
@@ -101,13 +99,13 @@ def main():
         settings = yaml.load(f, yaml.FullLoader)
 
     if to_fix or to_diagnose:
-        full_body_check = {}
+        full_body_check = {"Diagnostics": []}
         for file in files:
             if file.is_dir():
                 for fp in file.rglob("**/*"):
-                    full_body_check |= examineFile(fp, settings)
+                    full_body_check["Diagnostics"].append(examineFile(fp, settings))
             else:
-                full_body_check |= examineFile(file, settings)
+                full_body_check["Diagnostics"].append(examineFile(file, settings))
 
             results = yaml.dump(full_body_check, default_flow_style=False, indent=4, width=240)
             if report:

@@ -10,7 +10,7 @@ dependencies = [
 ]
 
 [project.scripts]
-printer-linter = "printerlinter.terminal:main"
+printer-linter = "terminal:main"
 
 [build-system]
 requires = ["setuptools"]
