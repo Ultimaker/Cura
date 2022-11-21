@@ -8,22 +8,17 @@ from pathlib import Path
 
 import yaml
 
-from tidy import create
+from printerlinter import factory
 
 
-def examineFile(file, settings):
-    patient = create(file, settings)
+def examineFile(file, settings, full_body_check):
+    patient = factory.create(file, settings)
     if patient is None:
-        return {}
+        return
 
-    full_body_check = {f"{file.as_posix()}": []}
     for diagnostic in patient.check():
         if diagnostic:
-            full_body_check[f"{file.as_posix()}"].append(diagnostic.toDict())
-
-    if len(full_body_check[f"{file.as_posix()}"]) == 0:
-        del full_body_check[f"{file.as_posix()}"]
-    return full_body_check
+            full_body_check["Diagnostics"].append(diagnostic.toDict())
 
 
 def fixFile(file, settings, full_body_check):
@@ -72,7 +67,24 @@ def formatFile(file: Path, settings):
             config.write(f, space_around_delimiters=settings["format"].get("format-profile-space-around-delimiters", True))
 
 
-def main(files, setting_path, to_format, to_fix, to_diagnose, report):
+def main():
+    parser = ArgumentParser(
+        description="UltiMaker Cura printer linting, static analysis and formatting of Cura printer definitions and other resources")
+    parser.add_argument("--setting", required=False, type=Path, help="Path to the `.printer-linter` setting file")
+    parser.add_argument("--report", required=False, type=Path, help="Path where the diagnostic report should be stored")
+    parser.add_argument("--format", action="store_true", help="Format the files")
+    parser.add_argument("--diagnose", action="store_true", help="Diagnose the files")
+    parser.add_argument("--fix", action="store_true", help="Attempt to apply the suggested fixes on the files")
+    parser.add_argument("Files", metavar="F", type=Path, nargs="+", help="Files or directories to format")
+
+    args = parser.parse_args()
+    files = args.Files
+    setting_path = args.setting
+    to_format = args.format
+    to_fix = args.fix
+    to_diagnose = args.diagnose
+    report = args.report
+
     if not setting_path:
         setting_path = Path(getcwd(), ".printer-linter")
 
@@ -84,13 +96,13 @@ def main(files, setting_path, to_format, to_fix, to_diagnose, report):
         settings = yaml.load(f, yaml.FullLoader)
 
     if to_fix or to_diagnose:
-        full_body_check = {}
+        full_body_check = {"Diagnostics": []}
         for file in files:
             if file.is_dir():
                 for fp in file.rglob("**/*"):
-                    full_body_check |= examineFile(fp, settings)
+                    examineFile(fp, settings, full_body_check)
             else:
-                full_body_check |= examineFile(file, settings)
+                examineFile(file, settings, full_body_check)
 
             results = yaml.dump(full_body_check, default_flow_style=False, indent=4, width=240)
             if report:
@@ -118,14 +130,4 @@ def main(files, setting_path, to_format, to_fix, to_diagnose, report):
 
 
 if __name__ == "__main__":
-    parser = ArgumentParser(
-        description="UltiMaker Cura printer linting, static analysis and formatting of Cura printer definitions and other resources")
-    parser.add_argument("--setting", required=False, type=Path, help="Path to the `.printer-linter` setting file")
-    parser.add_argument("--report", required=False, type=Path, help="Path where the diagnostic report should be stored")
-    parser.add_argument("--format", action="store_true", help="Format the files")
-    parser.add_argument("--diagnose", action="store_true", help="Diagnose the files")
-    parser.add_argument("--fix", action="store_true", help="Attempt to apply the suggested fixes on the files")
-    parser.add_argument("Files", metavar="F", type=Path, nargs="+", help="Files or directories to format")
-
-    args = parser.parse_args()
-    main(args.Files, args.setting, args.format, args.fix, args.diagnose, args.report)
+    main()

@@ -1,7 +1,9 @@
 import json
+import re
 from pathlib import Path
 
 from .diagnostic import Diagnostic
+from .replacement import Replacement
 
 
 class Definition:
@@ -10,6 +12,8 @@ class Definition:
         self._file = file
         self._defs = {}
         self._getDefs(file)
+
+        self._content = self._file.read_text()
 
         settings = {}
         for k, v in self._defs["fdmprinter"]["settings"].items():
@@ -32,24 +36,25 @@ class Definition:
         definition_name = list(self._defs.keys())[0]
         definition = self._defs[definition_name]
         if "overrides" in definition and definition_name != "fdmprinter":
-            keys = list(definition["overrides"].keys())
             for key, value_dict in definition["overrides"].items():
                 is_redefined, value, parent = self._isDefinedInParent(key, value_dict, definition['inherits'])
                 if is_redefined:
-                    termination_key = keys.index(key) + 1
-                    if termination_key >= len(keys):
-                        # FIXME: find the correct end sequence for now assume it is on the same line
-                        termination_seq = None
-                    else:
-                        termination_seq = keys[termination_key]
-                    yield Diagnostic("diagnostic-definition-redundant-override",
-                                     f"Overriding **{key}** with the same value (**{value}**) as defined in parent definition: **{definition['inherits']}**",
-                                     self._file,
-                                     key,
-                                     termination_seq)
+                    redefined = re.compile(r'.*(\"' + key + r'\"[\s\S]*?\{)[\s\S]*?(\}[,\"]?)')
+                    found = redefined.search(self._content)
+                    yield Diagnostic(
+                        file = self._file,
+                        diagnostic_name = "diagnostic-definition-redundant-override",
+                        message = f"Overriding {key} with the same value ({value}) as defined in parent definition: {definition['inherits']}",
+                        level = "Warning",
+                        offset = found.span(0)[0],
+                        replacements = [Replacement(
+                            file = self._file,
+                            offset = found.span(1)[0],
+                            length = found.span(2)[1] - found.span(1)[0],
+                            replacement_text = "")]
+                    )
 
     def checkValueOutOfBounds(self):
-
         pass
 
     def _getSetting(self, name, setting, settings):

@@ -20,15 +20,22 @@ class Meshes:
 
     def checkFileFormat(self):
         if self._file.suffix.lower() not in (".3mf", ".obj", ".stl"):
-            yield Diagnostic("diagnostic-mesh-file-extension",
-                             f"Extension **{self._file.suffix}** not supported, use **3mf**, **obj** or **stl**",
-                             self._file)
+            yield Diagnostic(
+                file = self._file,
+                diagnostic_name = "diagnostic-mesh-file-extension",
+                message = f"Extension {self._file.suffix} not supported, use 3mf, obj or stl",
+                level = "Error",
+                offset = 1
+            )
         yield
 
     def checkFileSize(self):
-
         if self._file.stat().st_size > self._max_file_size:
-            yield Diagnostic("diagnostic-mesh-file-size",
-                             f"Mesh file with a size **{self._file.stat().st_size}** is bigger then allowed maximum of **{self._max_file_size}**",
-                             self._file)
+            yield Diagnostic(
+                file = self._file,
+                diagnostic_name = "diagnostic-mesh-file-size",
+                message = f"Mesh file with a size {self._file.stat().st_size} is bigger then allowed maximum of {self._max_file_size}",
+                level = "Error",
+                offset = 1
+            )
         yield
