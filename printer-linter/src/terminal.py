@@ -11,17 +11,14 @@ import yaml
 from printerlinter import factory
 
 
-def examineFile(file, settings):
+def examineFile(file, settings, full_body_check):
     patient = factory.create(file, settings)
     if patient is None:
-        return {}
+        return
 
-    body_check = []
     for diagnostic in patient.check():
         if diagnostic:
-            body_check.append(diagnostic.toDict())
-
-    return body_check
+            full_body_check["Diagnostics"].append(diagnostic.toDict())
 
 
 def fixFile(file, settings, full_body_check):
@@ -103,9 +100,9 @@ def main():
         for file in files:
             if file.is_dir():
                 for fp in file.rglob("**/*"):
-                    full_body_check["Diagnostics"].append(examineFile(fp, settings))
+                    examineFile(fp, settings, full_body_check)
             else:
-                full_body_check["Diagnostics"].append(examineFile(file, settings))
+                examineFile(file, settings, full_body_check)
 
             results = yaml.dump(full_body_check, default_flow_style=False, indent=4, width=240)
             if report:
