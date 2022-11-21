@@ -44,7 +44,7 @@ class Definition:
                     yield Diagnostic(
                         file = self._file,
                         diagnostic_name = "diagnostic-definition-redundant-override",
-                        message = f"Overriding **{key}** with the same value (**{value}**) as defined in parent definition: **{definition['inherits']}**",
+                        message = f"Overriding {key} with the same value ({value}) as defined in parent definition: {definition['inherits']}",
                         level = "Warning",
                         offset = found.span(0)[0],
                         replacements = [Replacement(
