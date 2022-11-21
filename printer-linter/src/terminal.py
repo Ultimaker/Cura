@@ -48,6 +48,9 @@ def formatFile(file: Path, settings):
             newline = re.compile(r"(\B\s+)(\"[\w\"]+)(\:\s\{)")
             content = newline.sub(r"\1\2:\1{", content)
 
+        if settings["format"].get("format-definition-single-value-single-line", True):
+            pass  # TODO: format entries in the override section which only define a single value to be on one line
+
         if settings["format"].get("format-definition-paired-coordinate-array", True):
             paired_coordinates = re.compile(r"(\[)\s+(-?\d*),\s*(-?\d*)\s*(\])")
             content = paired_coordinates.sub(r"\1 \2, \3 \4", content)
