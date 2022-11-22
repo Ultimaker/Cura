@@ -1,15 +1,16 @@
 import json
 import re
 from pathlib import Path
+from typing import Iterator
 
-from .diagnostic import Diagnostic
-from .replacement import Replacement
+from ..diagnostic import Diagnostic
+from .diagnostic_generator import DiagnosticGenerator
+from ..replacement import Replacement
 
 
-class Definition:
+class Definition(DiagnosticGenerator):
     def __init__(self, file, settings) -> None:
-        self._settings = settings
-        self._file = file
+        super().__init__(file, settings)
         self._defs = {}
         self._getDefs(file)
 
@@ -20,7 +21,7 @@ class Definition:
             self._getSetting(k, v, settings)
         self._defs["fdmprinter"] = {"overrides": settings}
 
-    def check(self) -> None:
+    def check(self) -> Iterator[Diagnostic]:
         if self._settings["checks"].get("diagnostic-definition-redundant-override", False):
             for check in self.checkRedefineOverride():
                 yield check
