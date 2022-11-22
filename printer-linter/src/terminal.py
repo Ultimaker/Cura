@@ -49,7 +49,11 @@ def formatFile(file: Path, settings) -> None:
             content = newline.sub(r"\1\2:\1{", content)
 
         if settings["format"].get("format-definition-single-value-single-line", True):
-            pass  # TODO: format entries in the override section which only define a single value to be on one line
+            single_value_dict = re.compile(r"(:)(\s*\n?.*\{\s+)(\".*)(\d*\s*\})(\s*)(,?)")
+            content = single_value_dict.sub(r"\1 { \3 }\6", content)
+
+            single_value_list = re.compile(r"(:)(\s*\n?.*\[\s+)(\".*)(\d*\s*\])(\s*)(,?)")
+            content = single_value_list.sub(r"\1 [ \3 ]\6", content)
 
         if settings["format"].get("format-definition-paired-coordinate-array", True):
             paired_coordinates = re.compile(r"(\[)\s+(-?\d*),\s*(-?\d*)\s*(\])")
