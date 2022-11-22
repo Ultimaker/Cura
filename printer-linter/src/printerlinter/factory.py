@@ -1,9 +1,12 @@
-from .profile import Profile
-from .defintion import Definition
-from .meshes import Meshes
+from typing import Optional
+
+from .linters.profile import Profile
+from .linters.defintion import Definition
+from .linters.diagnostic_generator import DiagnosticGenerator
+from .linters.meshes import Meshes
 
 
-def create(file, settings):
+def create(file, settings) -> Optional[DiagnosticGenerator]:
     if not file.exists():
         return None
     if ".inst" in file.suffixes and ".cfg" in file.suffixes:

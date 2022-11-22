@@ -1,13 +1,14 @@
-from .diagnostic import Diagnostic
+from typing import Iterator
+
+from ..diagnostic import Diagnostic
 
 
 class Meshes:
     def __init__(self, file, settings) -> None:
-        self._settings = settings
-        self._file = file
+        super().__init__(file, settings)
         self._max_file_size = self._settings.get("diagnostic-mesh-file-size", 1e6)
 
-    def check(self) -> None:
+    def check(self) -> Iterator[Diagnostic]:
         if self._settings["checks"].get("diagnostic-mesh-file-extension", False):
             for check in self.checkFileFormat():
                 yield check
