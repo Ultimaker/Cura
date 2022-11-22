@@ -1,5 +1,5 @@
 class Diagnostic:
-    def __init__(self, file, diagnostic_name, message, level, offset, replacements=None):
+    def __init__(self, file, diagnostic_name, message, level, offset, replacements=None) -> None:
         self.file = file
         self.diagnostic_name = diagnostic_name
         self.message = message
@@ -7,7 +7,7 @@ class Diagnostic:
         self.level = level
         self.replacements = replacements
 
-    def toDict(self):
+    def toDict(self) -> dict:
         diagnostic_dict = {"DiagnosticName": self.diagnostic_name,
                            "DiagnosticMessage": {
                                "Message": self.message,

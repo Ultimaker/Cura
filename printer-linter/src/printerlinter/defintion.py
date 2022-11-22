@@ -7,7 +7,7 @@ from .replacement import Replacement
 
 
 class Definition:
-    def __init__(self, file, settings):
+    def __init__(self, file, settings) -> None:
         self._settings = settings
         self._file = file
         self._defs = {}
@@ -20,7 +20,7 @@ class Definition:
             self._getSetting(k, v, settings)
         self._defs["fdmprinter"] = {"overrides": settings}
 
-    def check(self):
+    def check(self) -> None:
         if self._settings["checks"].get("diagnostic-definition-redundant-override", False):
             for check in self.checkRedefineOverride():
                 yield check
@@ -32,7 +32,7 @@ class Definition:
 
         yield
 
-    def checkRedefineOverride(self):
+    def checkRedefineOverride(self) -> None:
         definition_name = list(self._defs.keys())[0]
         definition = self._defs[definition_name]
         if "overrides" in definition and definition_name != "fdmprinter":
@@ -54,17 +54,18 @@ class Definition:
                             replacement_text = "")]
                     )
 
-    def checkValueOutOfBounds(self):
+    def checkValueOutOfBounds(self) -> None:
         pass
 
-    def _getSetting(self, name, setting, settings):
+    def _getSetting(self, name, setting, settings) -> None:
         if "children" in setting:
             for childname, child in setting["children"].items():
                 self._getSetting(childname, child, settings)
         settings |= {name: setting}
 
-    def _getDefs(self, file):
-        if not file.exists():
+    def _getDefs(self, file) -> None:
+        """ Loads up file, and it's parent definitions into self._defs """
+        if not file.exists() or Path(file.stem).stem in self._defs:
             return
         self._defs[Path(file.stem).stem] = json.loads(file.read_text())
         if "inherits" in self._defs[Path(file.stem).stem]:

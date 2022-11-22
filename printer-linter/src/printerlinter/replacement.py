@@ -5,7 +5,7 @@ class Replacement:
         self.length = length
         self.replacement_text = replacement_text
 
-    def toDict(self):
+    def toDict(self) -> dict:
         return {"FilePath": self.file.as_posix(),
                 "Offset": self.offset,
                 "Length": self.length,

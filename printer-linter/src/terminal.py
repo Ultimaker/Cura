@@ -11,7 +11,7 @@ import yaml
 from printerlinter import factory
 
 
-def examineFile(file, settings, full_body_check):
+def examineFile(file, settings, full_body_check) -> None:
     patient = factory.create(file, settings)
     if patient is None:
         return
@@ -21,7 +21,7 @@ def examineFile(file, settings, full_body_check):
             full_body_check["Diagnostics"].append(diagnostic.toDict())
 
 
-def fixFile(file, settings, full_body_check):
+def fixFile(file, settings, full_body_check) -> None:
     if not file.exists():
         return
     ext = ".".join(file.name.split(".")[-2:])
@@ -34,7 +34,7 @@ def fixFile(file, settings, full_body_check):
                 pass
 
 
-def formatFile(file: Path, settings):
+def formatFile(file: Path, settings) -> None:
     if not file.exists():
         return
     ext = ".".join(file.name.split(".")[-2:])
@@ -70,7 +70,7 @@ def formatFile(file: Path, settings):
             config.write(f, space_around_delimiters=settings["format"].get("format-profile-space-around-delimiters", True))
 
 
-def main():
+def main() -> None:
     parser = ArgumentParser(
         description="UltiMaker Cura printer linting, static analysis and formatting of Cura printer definitions and other resources")
     parser.add_argument("--setting", required=False, type=Path, help="Path to the `.printer-linter` setting file")
