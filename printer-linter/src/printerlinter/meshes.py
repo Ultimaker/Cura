@@ -2,12 +2,12 @@ from .diagnostic import Diagnostic
 
 
 class Meshes:
-    def __init__(self, file, settings):
+    def __init__(self, file, settings) -> None:
         self._settings = settings
         self._file = file
         self._max_file_size = self._settings.get("diagnostic-mesh-file-size", 1e6)
 
-    def check(self):
+    def check(self) -> None:
         if self._settings["checks"].get("diagnostic-mesh-file-extension", False):
             for check in self.checkFileFormat():
                 yield check
@@ -18,7 +18,7 @@ class Meshes:
 
         yield
 
-    def checkFileFormat(self):
+    def checkFileFormat(self) -> None:
         if self._file.suffix.lower() not in (".3mf", ".obj", ".stl"):
             yield Diagnostic(
                 file = self._file,
