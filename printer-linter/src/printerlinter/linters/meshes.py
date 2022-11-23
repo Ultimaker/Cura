@@ -7,6 +7,7 @@ from .diagnostic_generator import DiagnosticGenerator
 
 class Meshes(DiagnosticGenerator):
     def __init__(self, file: Path, settings: dict) -> None:
+        """ Finds issues in model files, such as incorrect file format or too large size """
         super().__init__(file, settings)
         self._max_file_size = self._settings.get("diagnostic-mesh-file-size", 1e6)
 
@@ -21,7 +22,8 @@ class Meshes(DiagnosticGenerator):
 
         yield
 
-    def checkFileFormat(self) -> None:
+    def checkFileFormat(self) -> Iterator[Diagnostic]:
+        """ Check if mesh is in supported format """
         if self._file.suffix.lower() not in (".3mf", ".obj", ".stl"):
             yield Diagnostic(
                 file = self._file,
@@ -32,7 +34,8 @@ class Meshes(DiagnosticGenerator):
             )
         yield
 
-    def checkFileSize(self):
+    def checkFileSize(self) -> Iterator[Diagnostic]:
+        """ Check if file is within size limits for Cura """
         if self._file.stat().st_size > self._max_file_size:
             yield Diagnostic(
                 file = self._file,
