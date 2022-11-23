@@ -3,12 +3,12 @@ from typing import Optional
 
 from .linters.profile import Profile
 from .linters.defintion import Definition
-from .linters.diagnostic_generator import DiagnosticGenerator
+from .linters.linter import Linter
 from .linters.meshes import Meshes
 
 
-def create(file: Path, settings: dict) -> Optional[DiagnosticGenerator]:
-    """ Returns a DiagnosticGenerator depending on the file format """
+def getLinter(file: Path, settings: dict) -> Optional[Linter]:
+    """ Returns a Linter depending on the file format """
     if not file.exists():
         return None
     elif ".inst" in file.suffixes and ".cfg" in file.suffixes:

@@ -1,9 +1,9 @@
 from typing import Iterator
 
 from ..diagnostic import Diagnostic
-from .diagnostic_generator import DiagnosticGenerator
+from .linter import Linter
 
 
-class Profile(DiagnosticGenerator):
+class Profile(Linter):
     def check(self) -> Iterator[Diagnostic]:
         yield
