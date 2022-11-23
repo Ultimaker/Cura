@@ -487,6 +487,10 @@ class StartSliceJob(Job):
         settings["machine_start_gcode"] = self._expandGcodeTokens(settings["machine_start_gcode"], initial_extruder_nr)
         settings["machine_end_gcode"] = self._expandGcodeTokens(settings["machine_end_gcode"], initial_extruder_nr)
 
+        # Manually add 'nozzle offsetting', since that is a metadata-entry instead for some reason.
+        # NOTE: This probably needs to be an actual setting at some point.
+        settings["nozzle_offsetting_for_disallowed_areas"] = CuraApplication.getInstance().getGlobalContainerStack().getMetaDataEntry("nozzle_offsetting_for_disallowed_areas", True)
+
         # Add all sub-messages for each individual setting.
         for key, value in settings.items():
             setting_message = self._slice_message.getMessage("global_settings").addRepeatedMessage("settings")
