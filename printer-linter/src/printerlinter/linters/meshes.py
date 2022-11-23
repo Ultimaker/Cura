@@ -1,9 +1,10 @@
 from typing import Iterator
 
 from ..diagnostic import Diagnostic
+from .diagnostic_generator import DiagnosticGenerator
 
 
-class Meshes:
+class Meshes(DiagnosticGenerator):
     def __init__(self, file, settings) -> None:
         super().__init__(file, settings)
         self._max_file_size = self._settings.get("diagnostic-mesh-file-size", 1e6)
