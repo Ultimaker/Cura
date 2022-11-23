@@ -93,24 +93,26 @@ jobs:
                     issue_number = "${{ github.ref }}".split('/')[2]
                     is_tag = "${{ github.ref_type }}" == "tag"
                     is_release_branch = False
+                    ref_name = "${{ github.base_ref }}" if event_name == "pull_request" else "${{ github.ref_name }}"
                     buildmetadata = "" if "${{ inputs.additional_buildmetadata }}" == "" else "${{ inputs.additional_buildmetadata }}_"
                     
                     # FIXME: for when we push a tag (such as an release)
                     channel = "testing"
                     if is_tag:
-                        branch_version = tools.Version("${{ github.ref_name }}")
+                        branch_version = tools.Version(ref_name)
                         is_release_branch = True
                         channel = "_"
                         user = "_"
+                        actual_version = f"{branch_version}"
                     else:
                         try:
                             branch_version = tools.Version(repo.active_branch.name)
                         except ConanException:
                             branch_version = tools.Version('0.0.0')
-                        if "${{ github.ref_name }}" == f"{branch_version.major}.{branch_version.minor}":
+                        if ref_name == f"{branch_version.major}.{branch_version.minor}":
                             channel = 'stable'
                             is_release_branch = True
-                        elif "${{ github.ref_name }}" in ("main", "master"):
+                        elif ref_name in ("main", "master"):
                             channel = 'testing'
                         else:
                             channel = repo.active_branch.name.split("_")[0].replace("-", "_").lower()
@@ -118,35 +120,27 @@ jobs:
                         if "pull_request" in event_name:
                             channel = f"pr_{issue_number}"
                     
-                    # %% Get the actual version
-                    latest_branch_version = tools.Version("0.0.0")
-                    latest_branch_tag = None
-                    for tag in repo.git.tag(merged = True).splitlines():
-                        if str(tag).startswith("firmware") or str(tag).startswith("master"):
-                            continue  # Quick-fix for the versioning scheme name of the embedded team in fdm_materials(_private) repo
-                        try:
-                            version = tools.Version(tag)
-                        except ConanException:
-                            continue
-                        if version > latest_branch_version:
-                            latest_branch_version = version
-                            latest_branch_tag = repo.tag(tag)
-                    
-                    if latest_branch_tag:
                         # %% Get the actual version
-                        no_commits = 0
-                        for commit in repo.iter_commits("HEAD"):
-                            if commit == latest_branch_tag.commit:
-                                break
-                            no_commits += 1
+                        latest_branch_version = tools.Version("0.0.0")
+                        latest_branch_tag = None
+                        for tag in repo.git.tag(merged = True).splitlines():
+                            if str(tag).startswith("firmware") or str(tag).startswith("master"):
+                                continue  # Quick-fix for the versioning scheme name of the embedded team in fdm_materials(_private) repo
+                            try:
+                                version = tools.Version(tag)
+                            except ConanException:
+                                continue
+                            if version > latest_branch_version:
+                                latest_branch_version = version
+                                latest_branch_tag = repo.tag(tag)
                         
-                        if no_commits == 0:
-                            # This is a release
-                            actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}"
-                            if channel == "stable":
-                                user = "_"
-                                channel = "_"
-                        else:
+                        if latest_branch_tag:
+                            # %% Get the actual version
+                            no_commits = 0
+                            for commit in repo.iter_commits("HEAD"):
+                                if commit == latest_branch_tag.commit:
+                                    break
+                                no_commits += 1
                             latest_branch_version_prerelease = latest_branch_version.prerelease
                             if latest_branch_version.prerelease and not "." in latest_branch_version.prerelease:
                                 # The prerealese did not contain a version number, default it to 1
@@ -159,28 +153,20 @@ jobs:
                                     channel_metadata = f"{no_commits}"
                                 else:
                                     channel_metadata = f"{channel}_{no_commits}"
-                            if latest_branch_version.prerelease == "":
-                                if is_release_branch:
+                            if is_release_branch:
+                                if latest_branch_version.prerelease == "":
+                                    # An actual full release has been created, we are working on patch
                                     bump_up_patch = int(latest_branch_version.patch) + 1
-                                    actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{bump_up_patch}-alpha+{buildmetadata}{channel_metadata}"
+                                    actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{bump_up_patch}-beta.1+{buildmetadata}{channel_metadata}"
                                 else:
-                                    bump_up_minor = int(latest_branch_version.minor) + 1
-                                    reset_patch = 0
-                                    actual_version = f"{latest_branch_version.major}.{bump_up_minor}.{reset_patch}-alpha+{buildmetadata}{channel_metadata}"
+                                    # An beta release has been created we are working toward a next beta or full release
+                                    bump_up_release_tag = int(latest_branch_version.prerelease.split('.')[1]) + 1
+                                    actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-{latest_branch_version.prerelease.split('.')[0]}.{bump_up_release_tag}+{buildmetadata}{channel_metadata}"
                             else:
-                                actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-{latest_branch_version.prerelease.lower()}+{buildmetadata}{channel_metadata}"
-                    else:
-                        # FIXME: for external PR's
-                        actual_version = f"5.2.0-alpha+{buildmetadata}pr_{issue_number}"
-                        
-                    if is_tag:
-                        print("THE TAG IS: ", "${{ github.ref_name }}")
-                    if is_tag and "${{ github.ref_name }}" == "5.2.0-beta":
-                        actual_version = "5.2.0-beta"
-                        is_release_branch = True
-                        user = "_"
-                        channel = "_"
-                    
+                                bump_up_minor = int(latest_branch_version.minor) + 1
+                                reset_patch = 0
+                                actual_version = f"{latest_branch_version.major}.{bump_up_minor}.{reset_patch}-alpha+{buildmetadata}{channel_metadata}"
+
                     # %% print to output
                     cmd_name = ["echo", f"::set-output name=name::{project_name}"]
                     subprocess.call(cmd_name)
@@ -202,7 +188,7 @@ jobs:
                     print(f"version = {actual_version}")
                     print(f"user = {user}")
                     print(f"channel = {channel}")
-                    print(f"recipe_id_full = {project_name}/{actual_version}@{user}/{channel}")
+                    print(f"= {project_name}/{actual_version}@{user}/{channel}")
                     print(f"recipe_id_latest = {project_name}/latest@{user}/{channel}")
                     print(f"semver_full = {actual_version}")
                     print(f"is_release_branch = {str(is_release_branch).lower()}")

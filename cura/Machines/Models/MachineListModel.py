@@ -86,14 +86,16 @@ class MachineListModel(ListModel):
         machines_manager = CuraApplication.getInstance().getMachineManager()
 
         other_machine_stacks = CuraContainerRegistry.getInstance().findContainerStacks(type="machine")
+        other_machine_stacks.sort(key = lambda machine: machine.getName().upper())
 
         abstract_machine_stacks = CuraContainerRegistry.getInstance().findContainerStacks(is_abstract_machine = "True")
-        abstract_machine_stacks.sort(key = lambda machine: machine.getName(), reverse = True)
+        abstract_machine_stacks.sort(key = lambda machine: machine.getName().upper(), reverse = True)
         for abstract_machine in abstract_machine_stacks:
             definition_id = abstract_machine.definition.getId()
             online_machine_stacks = machines_manager.getMachinesWithDefinition(definition_id, online_only = True)
 
             online_machine_stacks = list(filter(lambda machine: machine.hasNetworkedConnection(), online_machine_stacks))
+            online_machine_stacks.sort(key=lambda machine: machine.getName().upper())
 
             other_machine_stacks.remove(abstract_machine)
             if abstract_machine in online_machine_stacks:

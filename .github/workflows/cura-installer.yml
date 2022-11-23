@@ -1,4 +1,5 @@
 name: Cura Installer
+run-name: ${{ inputs.cura_conan_version }} by @${{ github.actor }}
 
 on:
     workflow_dispatch:
@@ -28,7 +29,7 @@ on:
             installer:
                 description: 'Create the installer'
                 required: true
-                default: false
+                default: true
                 type: boolean
 
     # Run the nightly at 3:25 UTC on working days
@@ -52,6 +53,9 @@ env:
     MACOS_CERT_USER: ${{ secrets.MACOS_CERT_USER }}
     GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
     MACOS_CERT_PASSPHRASE: ${{ secrets.MACOS_CERT_PASSPHRASE }}
+    CURA_CONAN_VERSION: ${{ inputs.cura_conan_version }}
+    ENTERPRISE: ${{ inputs.enterprise }}
+    STAGING: ${{ inputs.staging }}
 
 jobs:
     cura-installer-create:
@@ -123,11 +127,17 @@ jobs:
                     echo "APPIMAGETOOL_LOCATION=$GITHUB_WORKSPACE/appimagetool" >> $GITHUB_ENV
 
             -   name: Install GCC-12 on ubuntu-22.04
-                if: ${{ matrix.os == 'ubuntu-22.04' }}
+                if: ${{ startsWith(inputs.runs_on, 'ubuntu-22.04') }}
                 run: |
                     sudo apt install g++-12 gcc-12 -y
                     sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 12
                     sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 12
+
+            -   name: Use GCC-10 on ubuntu-20.04
+                if: ${{ startsWith(inputs.runs_on, 'ubuntu-20.04') }}
+                run: |
+                    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 10
+                    sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 10
 
             -   name: Create the default Conan profile
                 run:  conan profile new default --detect
@@ -156,8 +166,13 @@ jobs:
                 if: ${{ inputs.conan_config_branch == '' }}
                 run: conan config install https://github.com/Ultimaker/conan-config.git
 
-            -   name: Create the Packages
-                run: conan install ${{ inputs.cura_conan_version }} ${{ inputs.conan_args }} --build=missing --update -if cura_inst -g VirtualPythonEnv -o cura:enterprise=${{ inputs.enterprise }} -o cura:staging=${{ inputs.staging }} --json "cura_inst/conan_install_info.json"
+            -   name: Create the Packages (Bash)
+                if: ${{ runner.os != 'Windows' }}
+                run: conan install $CURA_CONAN_VERSION ${{ inputs.conan_args }} --build=missing --update -if cura_inst -g VirtualPythonEnv -o cura:enterprise=$ENTERPRISE -o cura:staging=$STAGING --json "cura_inst/conan_install_info.json"
+
+            -   name: Create the Packages (Powershell)
+                if: ${{ runner.os == 'Windows' }}
+                run: conan install $Env:CURA_CONAN_VERSION ${{ inputs.conan_args }} --build=missing --update -if cura_inst -g VirtualPythonEnv -o cura:enterprise=$Env:ENTERPRISE -o cura:staging=$Env:STAGING --json "cura_inst/conan_install_info.json"
 
             -   name: Set Environment variables for Cura (bash)
                 if: ${{ runner.os != 'Windows' }}
