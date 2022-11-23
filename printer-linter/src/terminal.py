@@ -5,6 +5,7 @@ from argparse import ArgumentParser
 from collections import OrderedDict
 from os import getcwd
 from pathlib import Path
+from typing import List
 
 import yaml
 
@@ -74,6 +75,18 @@ def formatFile(file: Path, settings) -> None:
             config.write(f, space_around_delimiters=settings["format"].get("format-profile-space-around-delimiters", True))
 
 
+def extract_file_paths(paths: List[Path]) -> List[Path]:
+    """ Takes list of files and directories, returns the files as well as all files within directories as a List """
+    file_paths = []
+    for path in paths:
+        if path.is_dir():
+            file_paths.extend(path.rglob("**/*"))
+        else:
+            file_paths.append(path)
+
+    return file_paths
+
+
 def main() -> None:
     parser = ArgumentParser(
         description="UltiMaker Cura printer linting, static analysis and formatting of Cura printer definitions and other resources")
@@ -85,7 +98,7 @@ def main() -> None:
     parser.add_argument("Files", metavar="F", type=Path, nargs="+", help="Files or directories to format")
 
     args = parser.parse_args()
-    files = args.Files
+    files = extract_file_paths(args.Files)
     setting_path = args.setting
     to_format = args.format
     to_fix = args.fix
@@ -102,14 +115,11 @@ def main() -> None:
     with open(setting_path, "r") as f:
         settings = yaml.load(f, yaml.FullLoader)
 
+    full_body_check = {"Diagnostics": []}
+
     if to_fix or to_diagnose:
-        full_body_check = {"Diagnostics": []}
         for file in files:
-            if file.is_dir():
-                for fp in file.rglob("**/*"):
-                    examineFile(fp, settings, full_body_check)
-            else:
-                examineFile(file, settings, full_body_check)
+            examineFile(file, settings, full_body_check)
 
             results = yaml.dump(full_body_check, default_flow_style=False, indent=4, width=240)
             if report:
@@ -117,23 +127,14 @@ def main() -> None:
             else:
                 print(results)
 
-        if to_fix:
-            for file in files:
-                if file.is_dir():
-                    for fp in file.rglob("**/*"):
-                        if f"{file.as_posix()}" in full_body_check:
-                            fixFile(fp, settings, full_body_check)
-                else:
-                    if f"{file.as_posix()}" in full_body_check:
-                        fixFile(file, settings, full_body_check)
+    if to_fix:
+        for file in files:
+            if f"{file.as_posix()}" in full_body_check:
+                fixFile(file, settings, full_body_check)
 
     if to_format:
         for file in files:
-            if file.is_dir():
-                for fp in file.rglob("**/*"):
-                    formatFile(fp, settings)
-            else:
-                formatFile(file, settings)
+            formatFile(file, settings)
 
 
 if __name__ == "__main__":
