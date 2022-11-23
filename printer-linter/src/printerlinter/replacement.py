@@ -1,5 +1,15 @@
+from pathlib import Path
+
+
 class Replacement:
-    def __init__(self, file, offset, length, replacement_text):
+    def __init__(self, file: Path, offset: int, length: int, replacement_text: str):
+        """ Replacement text for file between offset and offset+length.
+
+        @param file: File to replace text in
+        @param offset: Offset in file to start text replace
+        @param length: Length of text that will be replaced. offset -> offset+length is the section of text to replace.
+        @param replacement_text: Text to insert of offset in file.
+        """
         self.file = file
         self.offset = offset
         self.length = length
