@@ -5,7 +5,7 @@ from typing import Iterator
 from ..diagnostic import Diagnostic
 
 
-class DiagnosticGenerator(ABC):
+class Linter(ABC):
     def __init__(self, file: Path, settings: dict) -> None:
         """ Yields Diagnostics for file, these are issues with the file such as bad text format or too large file size.
 

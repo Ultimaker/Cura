@@ -4,11 +4,11 @@ from pathlib import Path
 from typing import Iterator
 
 from ..diagnostic import Diagnostic
-from .diagnostic_generator import DiagnosticGenerator
+from .linter import Linter
 from ..replacement import Replacement
 
 
-class Definition(DiagnosticGenerator):
+class Definition(Linter):
     """ Finds issues in definition files, such as overriding default parameters """
     def __init__(self, file: Path, settings: dict) -> None:
         super().__init__(file, settings)

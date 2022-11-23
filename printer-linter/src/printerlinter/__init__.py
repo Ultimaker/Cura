@@ -1,4 +1,4 @@
 from .diagnostic import Diagnostic
-from .factory import create
+from .factory import getLinter
 
-__all__ = ["Diagnostic", "create"]
+__all__ = ["Diagnostic", "getLinter"]

@@ -1,6 +1,5 @@
 from pathlib import Path
 
-
 class Replacement:
     def __init__(self, file: Path, offset: int, length: int, replacement_text: str):
         """ Replacement text for file between offset and offset+length.

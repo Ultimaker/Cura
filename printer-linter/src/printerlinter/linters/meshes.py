@@ -2,10 +2,10 @@ from pathlib import Path
 from typing import Iterator
 
 from ..diagnostic import Diagnostic
-from .diagnostic_generator import DiagnosticGenerator
+from .linter import Linter
 
 
-class Meshes(DiagnosticGenerator):
+class Meshes(Linter):
     def __init__(self, file: Path, settings: dict) -> None:
         """ Finds issues in model files, such as incorrect file format or too large size """
         super().__init__(file, settings)
