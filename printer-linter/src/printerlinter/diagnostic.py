@@ -10,7 +10,7 @@ class Diagnostic:
 
         @param file: The path to the file this diagnostic is for.
         @param diagnostic_name: The name of the diagnostic rule that spawned this result. A list can be found in .printer-linter.
-        @param message: A message explaining the issue with this piece of text.
+        @param message: A message explaining the issue with this file.
         @param level: How important this diagnostic is, ranges from Warning -> Error.
         @param offset: The offset in file where the issue is.
         @param replacements: A list of Replacement that contain replacement text.
