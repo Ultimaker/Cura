@@ -32,6 +32,8 @@ class PrintModesPlugin(Tool):
         self._onGlobalContainerChanged()
         Selection.selectionChanged.connect(self._updateEnabled)
         qmlRegisterSingletonType(PrintModesLitsener, "Cura", 1, 1, self.getModeManager, "PrintModeService")
+        #qmlRegisterSingletonType(PrintModesLitsener, "Cura", 1, 1, self.getModeManager, "CuraActions")
+
         Logger.info(f"PrintModesLitsener registered")
 
 

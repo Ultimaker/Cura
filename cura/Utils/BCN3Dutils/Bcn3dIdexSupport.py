@@ -3,6 +3,7 @@ import math
 from UM.Application import Application
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.TranslateOperation import TranslateOperation
+from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Controller import Controller
 from UM.Scene.Selection import Selection
 from UM.Scene.Scene import Scene
@@ -55,7 +56,7 @@ def updateNodeBoundaryCheckForDuplicated(global_container_stack) -> None:
 
 # Deleted duplitaed nodes when group selected for being deleted (@pyqtSlot() def groupSelected(self) )
 # cura/CuraApplication.py:1652
-def duplicatedGroupSelected(globalContainerStack, controller : Controller, group_node : CuraSceneNode, selection : Selection, setParentOperation : SetParentOperation, print_mode_manager: PrintModeManager) -> None:
+def duplicatedGroupSelected(globalContainerStack, controller : Controller, group_node : CuraSceneNode, selection : Selection, setParentOperation : SetParentOperation) -> None:
     print_mode_enabled = globalContainerStack.getProperty("print_mode", "enabled")
     if print_mode_enabled:
         print_mode = globalContainerStack.getProperty("print_mode", "value")
@@ -67,7 +68,7 @@ def duplicatedGroupSelected(globalContainerStack, controller : Controller, group
     op = GroupedOperation()
     for node in selection.getAllSelectedObjects():
         if print_mode_enabled:
-            node_dup = print_mode_manager.getDuplicatedNode(node)
+            node_dup = PrintModeManager.getInstance().getDuplicatedNode(node)
             op.addOperation(setParentOperation(node_dup, duplicated_group_node))
 
         op.addOperation(setParentOperation(node, group_node))
@@ -77,13 +78,13 @@ def duplicatedGroupSelected(globalContainerStack, controller : Controller, group
 # On group with duplicated nodes selected (@pyqtSlot() def ungroupSelected(self))
 # cura/CuraApplication.py:1680
 def onDuplicatedgroupSelected(op : GroupedOperation, globalContainerStack, node : SceneNode):
-        print_mode = self.getGlobalContainerStack().getProperty("print_mode", "value")
-        if print_mode not in ["singleT0", "singleT1", "dual"]:
-            duplicated_group_node = self._print_mode_manager.getDuplicatedNode(node)
-            duplicated_group_parent = duplicated_group_node.getParent()
-            duplicated_children = duplicated_group_node.getChildren().copy()
-            for child in duplicated_children:
-                op.addOperation(SetParentOperation(child, duplicated_group_parent))
+    print_mode = Application.getInstance().getGlobalContainerStack().getProperty("print_mode", "value")
+    if print_mode not in ["singleT0", "singleT1", "dual"]:
+        duplicated_group_node = PrintModeManager.getInstance().getDuplicatedNode(node)
+        duplicated_group_parent = duplicated_group_node.getParent()
+        duplicated_children = duplicated_group_node.getChildren().copy()
+        for child in duplicated_children:
+            op.addOperation(SetParentOperation(child, duplicated_group_parent))
 
 # On group with duplicated nodes selected (def _readMeshFinished(self, job))
 # cura/CuraApplication.py:1958
@@ -100,3 +101,13 @@ def onReadMeshFinished(nodes_to_arrange, globalContainerStack, node : SceneNode,
     op.push()
     node.callDecoration("setActiveExtruder", default_extruder_id)
     scene.sceneChanged.emit(node)
+
+def runMultiplyObjectsJob(new_node : SceneNode):
+    print_mode_enabled = Application.getInstance().getGlobalContainerStack().getProperty("print_mode", "enabled")
+    if print_mode_enabled:
+        node_dup = DuplicatedNode(new_node)
+        op.addOperation(AddNodesOperation(node_dup, current_node.getParent()))
+    else:
+        op.addOperation(AddSceneNodeOperation(new_node, current_node.getParent()))
+    op.push()
+            

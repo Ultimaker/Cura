@@ -20,6 +20,9 @@ from cura.MultiplyObjectsJob import MultiplyObjectsJob
 from cura.Settings.SetObjectExtruderOperation import SetObjectExtruderOperation
 from cura.Settings.ExtruderManager import ExtruderManager
 
+#BCN3D IDEX (print_mode) INCLUSION
+from cura.Utils.BCN3Dutils.Bcn3dIdexSupport import removeDuplitedNode, recaltulateDuplicatedNodeCenterMoveOperation
+
 from cura.Operations.SetBuildPlateNumberOperation import SetBuildPlateNumberOperation
 
 from UM.Logger import Logger
@@ -76,6 +79,10 @@ class CuraActions(QObject):
 
             # Move the object so that it's bottom is on to of the buildplate
             center_operation = TranslateOperation(current_node, Vector(0, center_y, 0), set_position = True)
+            
+            #BCN3D IDEX inclusion
+            center_operation = recaltulateDuplicatedNodeCenterMoveOperation(center_operation, current_node)
+
             operation.addOperation(center_operation)
         operation.push()
 
@@ -101,6 +108,10 @@ class CuraActions(QObject):
         op = GroupedOperation()
         nodes = Selection.getAllSelectedObjects()
         for node in nodes:
+
+            #BCN3D IDEX inclusion
+            op = removeDuplitedNode(op, node)
+
             op.addOperation(RemoveSceneNodeOperation(node))
             group_node = node.getParent()
             if group_node and group_node.callDecoration("isGroup") and group_node not in removed_group_nodes:

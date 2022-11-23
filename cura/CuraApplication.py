@@ -121,6 +121,9 @@ from .Machines.Models.ActiveIntentQualitiesModel import ActiveIntentQualitiesMod
 from .Machines.Models.IntentSelectionModel import IntentSelectionModel
 from .SingleInstance import SingleInstance
 
+#BCN3D IDEX (print_mode) INCLUSION
+from cura.Utils.BCN3Dutils.Bcn3dIdexSupport import duplicatedGroupSelected, onDuplicatedgroupSelected, onReadMeshFinished
+
 if TYPE_CHECKING:
     from UM.Settings.EmptyInstanceContainer import EmptyInstanceContainer
 
@@ -1645,6 +1648,9 @@ class CuraApplication(QtApplication):
         # Move selected nodes into the group-node
         Selection.applyOperation(SetParentOperation, group_node)
 
+        #BCN3D IDEX INCLUSION
+        duplicatedGroupSelected(self.getGlobalContainerStack(), self._controller, group_node, Selection, SetParentOperation)
+
         # Deselect individual nodes and select the group-node instead
         for node in group_node.getChildren():
             Selection.remove(node)
@@ -1669,6 +1675,9 @@ class CuraApplication(QtApplication):
 
                     # Add all individual nodes to the selection
                     Selection.add(child)
+
+                #BCN3D IDEX INCLUSION
+                op = onDuplicatedgroupSelected(op, self.getGlobalContainerStack(), node)
 
                 op.push()
                 # Note: The group removes itself from the scene once all its children have left it,
@@ -1944,6 +1953,9 @@ class CuraApplication(QtApplication):
 
             node.callDecoration("setActiveExtruder", default_extruder_id)
             scene.sceneChanged.emit(node)
+
+            #BCN3D IDEX INCLUSION
+            nodes_to_arrange = onReadMeshFinished(nodes_to_arrange, self.getGlobalContainerStack(), node, scene)
 
             if select_models_on_load:
                 Selection.add(node)

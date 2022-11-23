@@ -26,6 +26,7 @@ class IdexPlugin(Extension):
         self._expanded_categories = []  # type: List[str]  # temporary list used while creating nested settings
 
         self._onGlobalContainerStackChanged()
+        self.cura_actions =  CuraApplication.getInstance()._cura_actions
 
         #application = CuraApplication.CuraApplication.getInstance()
 
@@ -48,6 +49,10 @@ class IdexPlugin(Extension):
             print_mode = self._global_container_stack.getProperty("print_mode", "value")
             left_extruder = self._global_container_stack.extruderList[0]
             right_extruder = self._global_container_stack.extruderList[1]
+
+            if not self.cura_actions:
+                self.cura_actions =  CuraApplication.getInstance()._cura_actions
+            self.cura_actions.deleteSelection = self.deleteSelection
 
             try:
                 left_extruder.enabledChanged.disconnect(self._onEnabledChangedLeft)
