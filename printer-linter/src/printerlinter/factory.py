@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import Optional
 
 from .linters.profile import Profile
@@ -6,15 +7,17 @@ from .linters.diagnostic_generator import DiagnosticGenerator
 from .linters.meshes import Meshes
 
 
-def create(file, settings) -> Optional[DiagnosticGenerator]:
+def create(file: Path, settings) -> Optional[DiagnosticGenerator]:
+    """ Returns a DiagnosticGenerator depending on the file format """
     if not file.exists():
         return None
-    if ".inst" in file.suffixes and ".cfg" in file.suffixes:
+    elif ".inst" in file.suffixes and ".cfg" in file.suffixes:
         return Profile(file, settings)
-    if ".def" in file.suffixes and ".json" in file.suffixes:
+    elif ".def" in file.suffixes and ".json" in file.suffixes:
         if file.stem in ("fdmprinter.def", "fdmextruder.def"):
             return None
         return Definition(file, settings)
-    if file.parent.stem == "meshes":
+    elif file.parent.stem == "meshes":
         return Meshes(file, settings)
+
     return None
