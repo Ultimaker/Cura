@@ -44,7 +44,7 @@ class LocalPackageList(PackageList):
 
     def _sortSectionsOnUpdate(self) -> None:
         section_order = dict(zip([i for k, v in self.PACKAGE_CATEGORIES.items() for i in self.PACKAGE_CATEGORIES[k].values()], ["a", "b", "c", "d"]))
-        self.sort(lambda model: (section_order[model.sectionTitle], model.canUpdate, model.displayName.lower()), key = "package")
+        self.sort(lambda model: (section_order[model.sectionTitle], not model.canUpdate, model.displayName.lower()), key = "package")
 
     def _removePackageModel(self, package_id: str) -> None:
         """

@@ -19,6 +19,7 @@ on:
         - 'resources/intent/ultimaker**'
         - 'resources/quality/ultimaker**'
         - 'resources/variants/ultimaker**'
+permissions: {}
 jobs:
     slackNotification:
         name: Slack Notification
