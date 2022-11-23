@@ -9,7 +9,7 @@ from ..replacement import Replacement
 
 
 class Definition(DiagnosticGenerator):
-    def __init__(self, file, settings) -> None:
+    def __init__(self, file: Path, settings: dict) -> None:
         super().__init__(file, settings)
         self._defs = {}
         self._getDefs(file)

@@ -7,7 +7,7 @@ from .linters.diagnostic_generator import DiagnosticGenerator
 from .linters.meshes import Meshes
 
 
-def create(file: Path, settings) -> Optional[DiagnosticGenerator]:
+def create(file: Path, settings: dict) -> Optional[DiagnosticGenerator]:
     """ Returns a DiagnosticGenerator depending on the file format """
     if not file.exists():
         return None
