@@ -71,7 +71,7 @@ def diagnoseIssuesWithFile(file: Path, settings: dict) -> List[Diagnostic]:
     if not diagnostic_generator:
         return []
 
-    return list(filter(lambda d: d, diagnostic_generator.check()))
+    return list(filter(lambda d: d is not None, diagnostic_generator.check()))
 
 
 def applyFixesToFile(file, settings, full_body_check) -> None:
