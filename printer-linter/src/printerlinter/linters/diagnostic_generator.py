@@ -7,7 +7,7 @@ from ..diagnostic import Diagnostic
 
 class DiagnosticGenerator(ABC):
     def __init__(self, file: Path, settings: dict) -> None:
-        """ Yields Diagnostics for file, these are suggested text replacements based on formatting rules in settings.
+        """ Yields Diagnostics for file, these are issues with the file such as bad text format or too large file size.
 
         @param file: A file to generate diagnostics for
         @param settings: A list of settings containing rules for creating diagnostics
