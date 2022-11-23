@@ -9,17 +9,13 @@ from ..replacement import Replacement
 
 
 class Definition(DiagnosticGenerator):
+    """ Finds issues in definition files, such as overriding default parameters """
     def __init__(self, file: Path, settings: dict) -> None:
         super().__init__(file, settings)
-        self._defs = {}
-        self._getDefs(file)
-
+        self._definitions = {}
+        self._loadDefinitionFiles(file)
         self._content = self._file.read_text()
-
-        settings = {}
-        for k, v in self._defs["fdmprinter"]["settings"].items():
-            self._getSetting(k, v, settings)
-        self._defs["fdmprinter"] = {"overrides": settings}
+        self._loadBasePrinterSettings()
 
     def check(self) -> Iterator[Diagnostic]:
         if self._settings["checks"].get("diagnostic-definition-redundant-override", False):
@@ -33,9 +29,10 @@ class Definition(DiagnosticGenerator):
 
         yield
 
-    def checkRedefineOverride(self) -> None:
-        definition_name = list(self._defs.keys())[0]
-        definition = self._defs[definition_name]
+    def checkRedefineOverride(self) -> Iterator[Diagnostic]:
+        """ Checks if definition file overrides its parents settings with the same value. """
+        definition_name = list(self._definitions.keys())[0]
+        definition = self._definitions[definition_name]
         if "overrides" in definition and definition_name != "fdmprinter":
             for key, value_dict in definition["overrides"].items():
                 is_redefined, value, parent = self._isDefinedInParent(key, value_dict, definition['inherits'])
@@ -55,30 +52,27 @@ class Definition(DiagnosticGenerator):
                             replacement_text = "")]
                     )
 
-    def checkValueOutOfBounds(self) -> None:
-        pass
+    def _loadDefinitionFiles(self, definition_file) -> None:
+        """ Loads definition file contents into self._definitions. Also load parent definition if it exists. """
+        definition_name = Path(definition_file.stem).stem
 
-    def _getSetting(self, name, setting, settings) -> None:
-        if "children" in setting:
-            for childname, child in setting["children"].items():
-                self._getSetting(childname, child, settings)
-        settings |= {name: setting}
-
-    def _getDefs(self, file) -> None:
-        """ Loads up file, and it's parent definitions into self._defs """
-        if not file.exists() or Path(file.stem).stem in self._defs:
+        if not definition_file.exists() or definition_name in self._definitions:
             return
-        self._defs[Path(file.stem).stem] = json.loads(file.read_text())
-        if "inherits" in self._defs[Path(file.stem).stem]:
-            parent_file = file.parent.joinpath(f"{self._defs[Path(file.stem).stem]['inherits']}.def.json")
-            self._getDefs(parent_file)
+
+        # Load definition file into dictionary
+        self._definitions[definition_name] = json.loads(definition_file.read_text())
+
+        # Load parent definition if it exists
+        if "inherits" in self._definitions[definition_name]:
+            parent_file = definition_file.parent.joinpath(f"{self._definitions[definition_name]['inherits']}.def.json")
+            self._loadDefinitionFiles(parent_file)
 
     def _isDefinedInParent(self, key, value_dict, inherits_from):
-        if "overrides" not in self._defs[inherits_from]:
-            return self._isDefinedInParent(key, value_dict, self._defs[inherits_from]["inherits"])
+        if "overrides" not in self._definitions[inherits_from]:
+            return self._isDefinedInParent(key, value_dict, self._definitions[inherits_from]["inherits"])
 
-        parent = self._defs[inherits_from]["overrides"]
-        is_number = self._defs["fdmprinter"]["overrides"][key] in ("float", "int")
+        parent = self._definitions[inherits_from]["overrides"]
+        is_number = self._definitions["fdmprinter"]["overrides"][key] in ("float", "int")
         for value in value_dict.values():
             if key in parent:
                 check_values = [cv for cv in [parent[key].get("default_value", None), parent[key].get("value", None)] if cv is not None]
@@ -101,3 +95,16 @@ class Definition(DiagnosticGenerator):
                 if "inherits" in parent:
                     return self._isDefinedInParent(key, value_dict, parent["inherits"])
         return False, None, None
+
+    def _loadBasePrinterSettings(self):
+        """ TODO @Jelle please explain why this """
+        settings = {}
+        for k, v in self._definitions["fdmprinter"]["settings"].items():
+            self._getSetting(k, v, settings)
+        self._definitions["fdmprinter"] = {"overrides": settings}
+
+    def _getSetting(self, name, setting, settings) -> None:
+        if "children" in setting:
+            for childname, child in setting["children"].items():
+                self._getSetting(childname, child, settings)
+        settings |= {name: setting}
