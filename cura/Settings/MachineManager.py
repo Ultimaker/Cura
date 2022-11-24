@@ -1764,21 +1764,14 @@ class MachineManager(QObject):
         global_stack = self._application.getGlobalContainerStack()
         return global_stack is None or global_stack.qualityChanges != empty_quality_changes_container
 
-    def activeQualityOrQualityChanges(self) -> GlobalStack:
-        global_container_stack = self._application.getGlobalContainerStack()
-        if not global_container_stack:
-            return empty_quality_container
-        if global_container_stack.qualityChanges != empty_quality_changes_container:
-            return global_container_stack.qualityChanges
-        return global_container_stack.quality
-
     @pyqtProperty(str, notify = activeQualityGroupChanged)
     def activeQualityOrQualityChangesName(self) -> str:
-        return self.activeQualityOrQualityChanges().getName()
-
-    @pyqtProperty(str, notify = activeQualityGroupChanged)
-    def activeQualityOrQualityChangesId(self) -> str:
-        return self.activeQualityOrQualityChanges().getId()
+        global_container_stack = self._application.getGlobalContainerStack()
+        if not global_container_stack:
+            return empty_quality_container.getName()
+        if global_container_stack.qualityChanges != empty_quality_changes_container:
+            return global_container_stack.qualityChanges.getName()
+        return global_container_stack.quality.getName()
 
     @pyqtProperty(bool, notify = activeQualityGroupChanged)
     def hasNotSupportedQuality(self) -> bool:
