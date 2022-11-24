@@ -98,12 +98,7 @@ Item
             Layout.fillWidth: true
         }
 
-        RecommendedAdhesionSelector
-        {
-            width: parent.width
-            labelColumnWidth: parent.firstColumnWidth
-            Layout.fillWidth: true
-        }
+        RecommendedAdhesionSelector {}
     }
 
     UM.SettingPropertyProvider
