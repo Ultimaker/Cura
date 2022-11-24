@@ -83,7 +83,7 @@ Item
             font: UM.Theme.getFont("medium")
         }
 
-        RecommendedInfillDensitySelector
+        RecommendedStrengthSelector
         {
             width: parent.width
             labelColumnWidth: parent.firstColumnWidth
