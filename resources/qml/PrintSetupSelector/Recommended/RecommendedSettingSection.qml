@@ -20,15 +20,19 @@ Item
     property var enableSectionClicked: { return }
     property int leftColumnWidth: width / 2
 
+    property alias contents: settingColumn.children
+
     function onEnableSectionChanged(state) {}
 
     height: childrenRect.height
-    width: parent.width
-
 
     Item
     {
         id: sectionHeader
+        anchors.top: parent.top
+        anchors.right: parent.right
+        anchors.left: parent.left
+        height: UM.Theme.getSize("section_header").height
 
         Cura.IconWithText
         {
@@ -71,8 +75,8 @@ Item
     {
         id: contentLoader
         width: parent.width
-        height: content.height
-        anchors.left: settingLabel.right
+        height: childrenRect.height
+        anchors.left: parent.left
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
         sourceComponent: content

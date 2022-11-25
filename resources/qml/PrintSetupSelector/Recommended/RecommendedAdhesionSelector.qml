@@ -10,7 +10,6 @@ import Cura 1.0 as Cura
 RecommendedSettingSection
 {
     id: enableAdhesionRow
-    height: enableAdhesionContainer.height
 
     title: catalog.i18nc("@label", "Adhesion")
     icon: UM.Theme.getIcon("Adhesion")
@@ -20,17 +19,29 @@ RecommendedSettingSection
 
     property var curaRecommendedMode: Cura.RecommendedMode {}
 
-    function onEnableSectionChanged(state) {
-        curaRecommendedMode.setAdhesion(state)
-    }
-
-    UM.SettingPropertyProvider
+    property UM.SettingPropertyProvider platformAdhesionType: UM.SettingPropertyProvider
     {
-        id: platformAdhesionType
         containerStack: Cura.MachineManager.activeMachine
         removeUnusedValue: false //Doesn't work with settings that are resolved.
         key: "adhesion_type"
         watchedProperties: [ "value", "resolve", "enabled" ]
         storeIndex: 0
     }
+
+    function onEnableSectionChanged(state) {
+        curaRecommendedMode.setAdhesion(state)
+    }
+
+    contents: RecommendedSettingItem
+    {
+        settingName: catalog.i18nc("@action:label", "Print with")
+
+        settingControl: Rectangle
+        {
+            width: 20
+            height: 20
+            color: Qt.rgba(1, 0, 0, .5)
+        }
+    }
+
 }

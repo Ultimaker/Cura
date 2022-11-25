@@ -11,26 +11,30 @@ import Cura 1.7 as Cura
 
 Item
 {
-    property Component content: Item { visible: false  }
+    width: parent.width
+    height: UM.Theme.getSize("section_header").height
+
+    property alias settingControl: settingContainer.children
     property alias settingName: settingLabel.text
+    property int leftColumnWidth: width / 2
 
     UM.Label
     {
         id: settingLabel
+        width: leftColumnWidth
         anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter
-        text: "TEST"
+        // These numbers come from the IconWithText in RecommendedSettingSection
+        anchors.leftMargin: UM.Theme.getSize("medium_button_icon").width + UM.Theme.getSize("thick_margin").width - UM.Theme.getSize("thick_lining").width
     }
 
 
     Loader
     {
-        id: settingLoader
-        width: parent.width
-        height: content.height
+        id: settingContainer
+        height: childrenRect.height
         anchors.left: settingLabel.right
         anchors.right: parent.right
-        anchers.verticalCenter: parent.verticalCenter
-        sourceComponent: content
+        anchors.verticalCenter: parent.verticalCenter
     }
 }
