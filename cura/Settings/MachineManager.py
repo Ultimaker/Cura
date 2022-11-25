@@ -1631,33 +1631,49 @@ class MachineManager(QObject):
     #        Examples:
     #          - "my_profile - Fine" (only based on a default quality, no intent involved)
     #          - "my_profile - Engineering - Fine" (based on an intent)
+    @pyqtProperty("QList<QString>", notify = activeQualityDisplayNameChanged)
+    def activeQualityDisplayNameStringParts(self) -> [str]:
+        result_map = self.activeQualityDisplayNameMap
+        string_parts = list()
+
+        if result_map["custom_profile"] is not None:
+            string_parts.append(result_map["custom_profile"])
+
+        string_parts.append(result_map["profile"])
+
+        if result_map["intent_category"] is not "default":
+            string_parts.append(result_map["intent_name"])
+
+        if result_map["layer_height"]:
+            string_parts.append(f"""{result_map["layer_height"]}mm""")
+
+        if result_map["is_experimental"]:
+            string_parts.append(catalog.i18nc("@label", "Experimental"))
+
+        return string_parts
+
     @pyqtProperty("QVariantMap", notify = activeQualityDisplayNameChanged)
-    def activeQualityDisplayNameMap(self) -> Dict[str, str]:
+    def activeQualityDisplayNameMap(self) -> Dict[str, Any]:
         global_stack = self._application.getGlobalContainerStack()
         if global_stack is None:
-            return {"main": "",
-                    "suffix": ""}
+            return {
+                "profile": "",
+                "intent_category": "",
+                "intent": "",
+                "custom_profile": None,
+                "is_experimental": False
+            }
 
-        display_name = global_stack.quality.getName()
-
-        intent_category = self.activeIntentCategory
-        if intent_category != "default":
-            intent_display_name = IntentCategoryModel.translation(intent_category,
-                                                                  "name",
-                                                                  intent_category.title())
-            display_name = "{intent_name} - {the_rest}".format(intent_name = intent_display_name,
-                                                               the_rest = display_name)
-
-        main_part = display_name
-        suffix_part = ""
-
-        # Not a custom quality
-        if global_stack.qualityChanges != empty_quality_changes_container:
-            main_part = self.activeQualityOrQualityChangesName
-            suffix_part = display_name
-
-        return {"main": main_part,
-                "suffix": suffix_part}
+        return {
+            "profile": global_stack.quality.getName(),
+            "intent_category": self.activeIntentCategory,
+            "intent_name": IntentCategoryModel.translation(self.activeIntentCategory, "name", self.activeIntentCategory.title()),
+            "custom_profile": self.activeQualityOrQualityChangesName \
+                                    if global_stack.qualityChanges is not empty_quality_changes_container \
+                                    else None,
+            "layer_height": self.activeQualityLayerHeight if self.isActiveQualitySupported else None,
+            "is_experimental": self.isActiveQualityExperimental and self.isActiveQualitySupported,
+        }
 
     @pyqtSlot(str)
     def setIntentByCategory(self, intent_category: str) -> None:
@@ -1776,7 +1792,9 @@ class MachineManager(QObject):
     @pyqtProperty(bool, notify = activeQualityGroupChanged)
     def hasNotSupportedQuality(self) -> bool:
         global_container_stack = self._application.getGlobalContainerStack()
-        return (not global_container_stack is None) and global_container_stack.quality == empty_quality_container and global_container_stack.qualityChanges == empty_quality_changes_container
+        return global_container_stack is not None\
+               and global_container_stack.quality == empty_quality_container \
+               and global_container_stack.qualityChanges == empty_quality_changes_container
 
     @pyqtProperty(bool, notify = activeQualityGroupChanged)
     def isActiveQualityCustom(self) -> bool:
