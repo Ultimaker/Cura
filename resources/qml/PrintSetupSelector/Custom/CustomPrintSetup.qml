@@ -77,7 +77,7 @@ Item
 
                 UM.Label
                 {
-                    text: Cura.MachineManager.activeQualityDisplayNameStringParts.slice(1).join(" - ")
+                    text: ` - ${Cura.MachineManager.activeQualityDisplayNameStringParts.slice(1).join(" - ")}`
 
                     color: UM.Theme.getColor("text_detail")
                     Layout.margins: 0
