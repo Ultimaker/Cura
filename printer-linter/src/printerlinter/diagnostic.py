@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Optional, List
+from typing import Optional, List, Dict, Any
 
 from .replacement import Replacement
 
@@ -22,7 +22,7 @@ class Diagnostic:
         self.level = level
         self.replacements = replacements
 
-    def toDict(self) -> Dict[str, Any[str, int, List[Replacements]]]:
+    def toDict(self) -> Dict[str, Any]:
         return {"DiagnosticName": self.diagnostic_name,
                 "DiagnosticMessage": {
                     "Message": self.message,
