@@ -55,14 +55,6 @@
     "small_hole_max_size": { "value": 10 },
     "wall_overhang_angle": { "value": 55 },
     "wall_overhang_speed_factor": { "value": 50 },
-    "machine_head_with_fans_polygon": {
-      "default_value": [
-        [-50, 25],
-        [-50, -60],
-        [50, 25],
-        [50, -60]
-      ]
-    },
     "gantry_height": { "value": 25 }
   }
 }
