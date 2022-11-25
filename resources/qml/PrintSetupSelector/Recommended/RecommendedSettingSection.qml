@@ -12,7 +12,6 @@ Item
 {
     property alias title: sectionTitle.text
     property alias icon: sectionTitle.source
-    property Component content: Item { visible: false  }
 
     property alias enableSectionVisible: enableSectionSwitch.visible
     property alias enableSectionChecked: enableSectionSwitch.checked
@@ -71,14 +70,13 @@ Item
 
     }
 
-    Loader
+    Column
     {
-        id: contentLoader
+        id: settingColumn
         width: parent.width
         height: childrenRect.height
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.verticalCenter: parent.verticalCenter
-        sourceComponent: content
+        anchors.top: sectionHeader.bottom
     }
 }
