@@ -1639,10 +1639,10 @@ class MachineManager(QObject):
         if result_map["custom_profile"] is not None:
             string_parts.append(result_map["custom_profile"])
 
-        string_parts.append(result_map["profile"])
-
         if result_map["intent_category"] is not "default":
-            string_parts.append(result_map["intent_name"])
+            string_parts.append(f"""{result_map["intent_name"]} - {result_map["profile"]}""")
+        else:
+            string_parts.append(result_map["profile"])
 
         if result_map["layer_height"]:
             string_parts.append(f"""{result_map["layer_height"]}mm""")
