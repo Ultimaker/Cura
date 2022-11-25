@@ -22,7 +22,7 @@ class Diagnostic:
         self.level = level
         self.replacements = replacements
 
-    def toDict(self) -> dict:
+    def toDict(self) -> Dict[str, Any[str, int, List[Replacements]]]:
         return {"DiagnosticName": self.diagnostic_name,
                 "DiagnosticMessage": {
                     "Message": self.message,
