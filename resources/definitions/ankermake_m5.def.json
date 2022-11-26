@@ -24,18 +24,31 @@
     "machine_depth": { "default_value": 235 },
     "machine_heated_bed": { "default_value": true },
     "material_diameter": { "default_value": 1.75 },
-    "speed_print": { "value": 250.0, "maximum_value_warning": 300 },
-    "speed_infill": { "maximum_value_warning": 300 },
+    "speed_print": { "value": 250.0, "maximum_value_warning": 255 },
+    "speed_infill": { "maximum_value_warning": 255 },
     "speed_topbottom": { "value": 150.0 },
     "speed_travel": { "value": 250.0 },
-    "speed_wall": { "value": 150.0, "maximum_value_warning": 300 },
-    "speed_wall_x": { "value": 250.0, "maximum_value_warning": 300 },
+    "speed_wall": { "value": 150.0, "maximum_value_warning": 255 },
+    "speed_wall_x": { "value": 250.0, "maximum_value_warning": 255 },
+    "skin_monotonic": { "default_value": true },
+    "material_print_temperature": {
+      "maximum_value_warning": "260"
+    },
+    "material_print_temperature_layer_0": {
+      "value": "material_print_temperature + 5",
+      "maximum_value_warning": "260"
+    },
+    "material_bed_temperature": { "maximum_value_warning": "110" },
+    "material_bed_temperature_layer_0": {
+      "value": "material_bed_temperature + 5",
+      "maximum_value_warning": "110"
+    },
     "material_flow_layer_0": { "value": 120 },
     "cool_min_layer_time": { "value": 6 },
     "cool_min_speed": { "value": 30 },
     "retraction_amount": { "default_value": 1.5 },
     "retraction_speed": { "default_value": 70 },
-    "acceleration_enabled": { "value": "False" },
+    "acceleration_enabled": { "value": false },
     "acceleration_print": { "value": "2500" },
     "adhesion_type": { "default_value": "skirt" },
     "retraction_combing": { "value": "infill" },
