@@ -10,17 +10,17 @@ from .formatter import FileFormatter
 # Dictionary items with matching keys will be sorted as if they were the value
 # Example: "version" will be sorted as if it was "0"
 TOP_LEVEL_SORT_PRIORITY = {
-    "version":  "0",
-    "name":     "1",
-    "inherits": "3"
+    "version":      "0",
+    "name":         "1",
+    "inherits":     "3",
 }
 
 METADATA_SORT_PRIORITY = {
-    "visible": "0",
-    "author": "1",
+    "visible":      "0",
+    "author":       "1",
     "manufacturer": "2",
     "file_formats": "3",
-    "platform" : "4"
+    "platform":     "4",
 }
 
 
