@@ -1636,18 +1636,28 @@ class MachineManager(QObject):
     def activeQualityDisplayNameStringParts(self) -> List[str]:
         return self.activeQualityDisplayNameMap.getStringParts()
 
+    @pyqtProperty("QList<QString>", notify = activeQualityDisplayNameChanged)
+    def activeQualityDisplayNameMainStringParts(self) -> List[str]:
+        return self.activeQualityDisplayNameMap.getMainStringParts()
+
+    @pyqtProperty("QList<QString>", notify = activeQualityDisplayNameChanged)
+    def activeQualityDisplayNameTailStringParts(self) -> List[str]:
+        return self.activeQualityDisplayNameMap.getTailStringParts()
+
     @pyqtProperty("QVariantMap", notify = activeQualityDisplayNameChanged)
     def activeQualityDisplayNameMap(self) -> ActiveQuality:
         global_stack = self._application.getGlobalContainerStack()
         if global_stack is None:
             return ActiveQuality()
 
-        return ActiveQuality(profile = global_stack.quality.getName(),
+        return ActiveQuality(
+            profile = global_stack.quality.getName(),
             intent_category = self.activeIntentCategory,
             intent_name = IntentCategoryModel.translation(self.activeIntentCategory, "name", self.activeIntentCategory.title()),
             custom_profile = self.activeQualityOrQualityChangesName if global_stack.qualityChanges is not empty_quality_changes_container else None,
             layer_height = self.activeQualityLayerHeight if self.isActiveQualitySupported else None,
-            is_experimental = self.isActiveQualityExperimental and self.isActiveQualitySupported)
+            is_experimental = self.isActiveQualityExperimental and self.isActiveQualitySupported
+        )
 
     @pyqtSlot(str)
     def setIntentByCategory(self, intent_category: str) -> None:

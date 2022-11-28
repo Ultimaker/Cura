@@ -16,16 +16,25 @@ class ActiveQuality:
     layer_height: float = None      # Layer height of quality in mm. For example 0.4
     is_experimental: bool = False   # If the quality experimental.
 
-    def getStringParts(self) -> List[str]:
+    def getMainStringParts(self) -> List[str]:
         string_parts = []
 
         if self.custom_profile is not None:
             string_parts.append(self.custom_profile)
-
-        if self.intent_category is not "default":
-            string_parts.append(f"{self.intent_name} - {self.profile}")
         else:
             string_parts.append(self.profile)
+            if self.intent_category is not "default":
+                string_parts.append(self.intent_name)
+
+        return string_parts
+
+    def getTailStringParts(self) -> List[str]:
+        string_parts = []
+
+        if self.custom_profile is not None:
+            string_parts.append(self.profile)
+            if self.intent_category is not "default":
+                string_parts.append(self.intent_name)
 
         if self.layer_height:
             string_parts.append(f"{self.layer_height}mm")
@@ -35,3 +44,5 @@ class ActiveQuality:
 
         return string_parts
 
+    def getStringParts(self) -> List[str]:
+        return self.getMainStringParts() + self.getTailStringParts()

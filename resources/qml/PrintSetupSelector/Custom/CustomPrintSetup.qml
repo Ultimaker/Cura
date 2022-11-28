@@ -67,7 +67,7 @@ Item
                 UM.Label
                 {
                     id: textLabel
-                    text: Cura.MachineManager.activeQualityDisplayNameStringParts[0]
+                    text: Cura.MachineManager.activeQualityDisplayNameMainStringParts.join(" - ")
                     Layout.margins: 0
                     Layout.maximumWidth: Math.floor(parent.width * 0.7)  // Always leave >= 30% for the rest of the row.
                     height: contentHeight
@@ -77,7 +77,18 @@ Item
 
                 UM.Label
                 {
-                    text: ` - ${Cura.MachineManager.activeQualityDisplayNameStringParts.slice(1).join(" - ")}`
+                    text:
+                    {
+                        const string_parts = Cura.MachineManager.activeQualityDisplayNameTailStringParts;
+                        if (string_parts.length === 0)
+                        {
+                            return "";
+                        }
+                        else
+                        {
+                            ` - ${string_parts.join(" - ")}`
+                        }
+                    }
 
                     color: UM.Theme.getColor("text_detail")
                     Layout.margins: 0
