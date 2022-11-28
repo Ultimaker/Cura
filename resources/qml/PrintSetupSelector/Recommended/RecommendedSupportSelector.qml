@@ -6,7 +6,7 @@ import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
 
 import UM 1.5 as UM
-import Cura 1.0 as Cura
+import Cura 1.6 as Cura
 
 
 RecommendedSettingSection
@@ -57,7 +57,9 @@ RecommendedSettingSection
         RecommendedSettingItem
         {
             settingName: catalog.i18nc("@action:label", "Print with")
-            settingControl: Rectangle { color: "red"; width: 10; height:10 }
+            settingControl: Cura.ExtruderSelectorBar { model: extruderModel }
+
+            Layout.preferredHeight: childrenRect.height
 //            ComboBox
 //        {
 //            id: supportExtruderCombobox
@@ -242,7 +244,7 @@ RecommendedSettingSection
         RecommendedSettingItem
         {
             settingName: catalog.i18nc("@action:label", "Placement")
-            settingControl: Rectangle { color: "red"; width: 10; height:10 }
+            settingControl: Rectangle { color: "green"; width: 50; height:50 }
         }
     ]
 

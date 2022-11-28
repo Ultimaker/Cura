@@ -17,7 +17,7 @@ Item
     property alias enableSectionChecked: enableSectionSwitch.checked
     property alias enableSectionEnabled: enableSectionSwitch.enabled
     property var enableSectionClicked: { return }
-    property int leftColumnWidth: width / 2
+    property int leftColumnWidth: Math.floor(width * 0.35)
     property var toolTipText: ""
 
     property alias contents: settingColumn.children

@@ -12,12 +12,12 @@ import Cura 1.7 as Cura
 Item
 {
     width: parent.width
-    height: UM.Theme.getSize("section_header").height
+    Layout.preferredHeight: childrenRect.height
+    Layout.minimumHeight: UM.Theme.getSize("section_header").height
     Layout.fillWidth: true
 
     property alias settingControl: settingContainer.children
     property alias settingName: settingLabel.text
-    property int leftColumnWidth: Math.floor(width * 0.35)
 
     UM.Label
     {
