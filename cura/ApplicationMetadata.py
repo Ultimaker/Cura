@@ -5,7 +5,7 @@
 # General constants used in Cura
 # ---------
 DEFAULT_CURA_APP_NAME = "cura"
-DEFAULT_CURA_DISPLAY_NAME = "Ultimaker Cura"
+DEFAULT_CURA_DISPLAY_NAME = "UltiMaker Cura"
 DEFAULT_CURA_VERSION = "dev"
 DEFAULT_CURA_BUILD_TYPE = ""
 DEFAULT_CURA_DEBUG_MODE = False
