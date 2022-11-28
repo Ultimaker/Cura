@@ -13,6 +13,7 @@ Item
 {
     width: parent.width
     height: UM.Theme.getSize("section_header").height
+    Layout.fillWidth: true
 
     property alias settingControl: settingContainer.children
     property alias settingName: settingLabel.text

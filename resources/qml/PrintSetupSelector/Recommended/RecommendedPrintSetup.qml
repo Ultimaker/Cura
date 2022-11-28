@@ -94,7 +94,6 @@ Item
         RecommendedSupportSelector
         {
             width: parent.width
-            labelColumnWidth: parent.firstColumnWidth
             Layout.fillWidth: true
         }
 

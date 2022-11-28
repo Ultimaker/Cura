@@ -18,6 +18,7 @@ Item
     property alias enableSectionEnabled: enableSectionSwitch.enabled
     property var enableSectionClicked: { return }
     property int leftColumnWidth: width / 2
+    property var toolTipText: ""
 
     property alias contents: settingColumn.children
 
@@ -60,7 +61,7 @@ Item
         MouseArea
         {
             id: tooltipMouseArea
-            anchors.fill: parent
+            anchors.fill: sectionTitle
             propagateComposedEvents: true
             hoverEnabled: true
 
@@ -70,7 +71,7 @@ Item
 
     }
 
-    Column
+    ColumnLayout
     {
         id: settingColumn
         width: parent.width
