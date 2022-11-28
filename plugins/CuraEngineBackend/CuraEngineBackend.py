@@ -1,4 +1,4 @@
-#  Copyright (c) 2022 UltiMaker B.V.
+#  Copyright (c) 2022 UltiMaker
 #  Cura is released under the terms of the LGPLv3 or higher.
 
 import argparse #To run the engine in debug mode if the front-end is in debug mode.

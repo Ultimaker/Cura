@@ -1,5 +1,5 @@
-# Copyright (c) 2022 UltiMaker B.V.
-# Cura is released under the terms of the LGPLv3 or higher.
+#  Copyright (c) 2022 UltiMaker
+#  Cura is released under the terms of the LGPLv3 or higher.
 
 from UM import i18nCatalog
 from UM.Message import Message
