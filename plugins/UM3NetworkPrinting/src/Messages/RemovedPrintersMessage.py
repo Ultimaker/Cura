@@ -1,5 +1,6 @@
-# Copyright (c) 2022 Ultimaker B.V.
+# Copyright (c) 2022 UltiMaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from UM import i18nCatalog
 from UM.Message import Message
 from cura.CuraApplication import CuraApplication
@@ -19,7 +20,7 @@ class RemovedPrintersMessage(Message):
         )
         message_text += "<br/><ul>{}</ul><br/>".format(device_names)
 
-        digital_factory_string = self.i18n_catalog.i18nc("info:name", "Ultimaker Digital Factory")
+        digital_factory_string = self.i18n_catalog.i18nc("info:name", "UltiMaker Digital Factory")
         website_link = f"<a href='https://digitalfactory.ultimaker.com?utm_source=cura&" \
                        f"utm_medium=software&utm_campaign=change-account-connect-printer'>{digital_factory_string}</a>."
 

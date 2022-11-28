@@ -1,4 +1,4 @@
-// Copyright (c) 2020 Ultimaker B.V.
+// Copyright (c) 2022 UltiMaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -104,7 +104,7 @@ Column
         width: parent.width
         height: UM.Theme.getSize("account_button").height
 
-        text: catalog.i18nc("@button", "Ultimaker Account")
+        text: catalog.i18nc("@button", "UltiMaker Account")
         onClicked: Qt.openUrlExternally(CuraApplication.ultimakerCloudAccountRootUrl + "?utm_source=cura&utm_medium=software&utm_campaign=menu-visit-account")
         fixedWidthMode: false
     }

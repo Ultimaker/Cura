@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Ultimaker B.V.
+// Copyright (c) 2022 UltiMaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.15
@@ -114,7 +114,7 @@ Component
                 UM.Label
                 {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    text: catalog.i18nc("@info", "Monitor your printers from everywhere using Ultimaker Digital Factory")
+                    text: catalog.i18nc("@info", "Monitor your printers from everywhere using UltiMaker Digital Factory")
                     font: UM.Theme.getFont("medium")
                     width: sendToFactoryImage.width
                     wrapMode: Text.WordWrap

@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2022 UltiMaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.3
@@ -284,7 +284,7 @@ Item
         MonitorInfoBlurb
         {
             id: cameraDisabledInfo
-            text: catalog.i18nc("@info", "Webcam feeds for cloud printers cannot be viewed from Ultimaker Cura." +
+            text: catalog.i18nc("@info", "Webcam feeds for cloud printers cannot be viewed from UltiMaker Cura." +
                 " Click \"Manage printer\" to visit Ultimaker Digital Factory and view this webcam.")
             target: cameraButton
         }

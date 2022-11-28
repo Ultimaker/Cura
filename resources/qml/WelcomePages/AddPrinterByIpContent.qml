@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2022 UltiMaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.15
@@ -193,12 +193,12 @@ Item
                         if (addPrinterByIpScreen.hasRequestFinished)
                         {
                             return catalog.i18nc("@label", "Could not connect to device.") + "<br /><br /><a href=\"https://ultimaker.com/in/cura/troubleshooting/network?utm_source=cura&utm_medium=software&utm_campaign=add-network-printer-error\">"
-                                + catalog.i18nc("@label", "Can't connect to your Ultimaker printer?") + "</a>";
+                                + catalog.i18nc("@label", "Can't connect to your UltiMaker printer?") + "</a>";
                         }
                         else
                         {
                             return catalog.i18nc("@label", "The printer at this address has not responded yet.") + "<br /><br /><a href=\"https://ultimaker.com/in/cura/troubleshooting/network?utm_source=cura&utm_medium=software&utm_campaign=add-network-printer-error\">"
-                                + catalog.i18nc("@label", "Can't connect to your Ultimaker printer?") + "</a>";
+                                + catalog.i18nc("@label", "Can't connect to your UltiMaker printer?") + "</a>";
                         }
                     }
                     onLinkActivated: Qt.openUrlExternally(link)

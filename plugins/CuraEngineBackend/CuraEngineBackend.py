@@ -1,4 +1,4 @@
-#  Copyright (c) 2021-2022 Ultimaker B.V.
+#  Copyright (c) 2022 UltiMaker B.V.
 #  Cura is released under the terms of the LGPLv3 or higher.
 
 import argparse #To run the engine in debug mode if the front-end is in debug mode.
@@ -166,7 +166,7 @@ class CuraEngineBackend(QObject, Backend):
         self._slicing_error_message.addAction(
             action_id = "report_bug",
             name = catalog.i18nc("@message:button", "Report a bug"),
-            description = catalog.i18nc("@message:description", "Report a bug on Ultimaker Cura's issue tracker."),
+            description = catalog.i18nc("@message:description", "Report a bug on UltiMaker Cura's issue tracker."),
             icon = "[no_icon]"
         )
         self._slicing_error_message.actionTriggered.connect(self._reportBackendError)

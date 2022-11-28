@@ -1,4 +1,4 @@
-# Copyright (c) 2022 Ultimaker B.V.
+# Copyright (c) 2022 UltiMaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from time import time
@@ -275,7 +275,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
             message.addAction("monitor print",
                               name=I18N_CATALOG.i18nc("@action:button", "Monitor print"),
                               icon="",
-                              description=I18N_CATALOG.i18nc("@action:tooltip", "Track the print in Ultimaker Digital Factory"),
+                              description=I18N_CATALOG.i18nc("@action:tooltip", "Track the print in UltiMaker Digital Factory"),
                               button_align=message.ActionButtonAlignment.ALIGN_RIGHT)
             df_url = f"https://digitalfactory.ultimaker.com/app/jobs/{self._cluster.cluster_id}?utm_source=cura&utm_medium=software&utm_campaign=message-printjob-sent"
             message.pyQtActionTriggered.connect(lambda message, action: (QDesktopServices.openUrl(QUrl(df_url)), message.hide()))

@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2022 UltiMaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -61,7 +61,7 @@ Item
                 id: titleLabel
                 anchors.horizontalCenter: parent.horizontalCenter
                 horizontalAlignment: Text.AlignHCenter
-                text: catalog.i18nc("@label", "Sign in to the Ultimaker platform")
+                text: catalog.i18nc("@label", "Sign in to the UltiMaker platform")
                 color: UM.Theme.getColor("primary_button")
                 font: UM.Theme.getFont("huge")
             }
@@ -172,7 +172,7 @@ Item
                         id: communityTextLabel
                         anchors.horizontalCenter: communityColumn.horizontalCenter
                         width: parent.width
-                        text: catalog.i18nc("@text", "Share ideas and get help from 48,000+ users in the Ultimaker Community")
+                        text: catalog.i18nc("@text", "Share ideas and get help from 48,000+ users in the UltiMaker Community")
                         horizontalAlignment: Text.AlignHCenter
                     }
                 }
