@@ -61,7 +61,7 @@ Control
                 id: thrirdPartyPrinterCard
                 Layout.alignment: Qt.AlignBottom
                 onClicked: goToThirdPartyPrinter
-                text: catalog.i18nc("@button", "Non Ultimaker printer")
+                text: catalog.i18nc("@button", "UltiMaker")
                 imageSource: UM.Theme.getImage("third_party_printer")
             }
         }

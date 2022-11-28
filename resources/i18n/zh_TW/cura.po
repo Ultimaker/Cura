@@ -2331,8 +2331,8 @@ msgstr "請更新你印表機的韌體以便遠端管理工作隊列。"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:287
 msgctxt "@info"
-msgid "Webcam feeds for cloud printers cannot be viewed from Ultimaker Cura. Click \"Manage printer\" to visit UltiMaker Digital Factory and view this webcam."
-msgstr "網路攝影機無法從UltiMaker Cura中瀏覽，請點擊\"管理列印機\"並從Ultimaker Digital Factory中瀏覽網路攝影機."
+msgid "Webcam feeds for cloud printers cannot be viewed from UltiMaker Cura. Click \"Manage printer\" to visit UltiMaker Digital Factory and view this webcam."
+msgstr "網路攝影機無法從UltiMaker Cura中瀏覽，請點擊\"管理列印機\"並從UltiMaker Digital Factory中瀏覽網路攝影機."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:347
 msgctxt "@label:status"

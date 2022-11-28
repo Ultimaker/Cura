@@ -2438,9 +2438,9 @@ msgstr "Atualize o firmware da impressora para gerir a fila remotamente."
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:287
 msgctxt "@info"
 msgid ""
-"Webcam feeds for cloud printers cannot be viewed from Ultimaker Cura. Click "
-"\"Manage printer\" to visit Ultimaker Digital Factory and view this webcam."
-msgstr "Não é possível visualizar os feeds das câmaras das impressoras na cloud a partir do UltiMaker Cura. Clique em \"Gerir impressora\" para visitar o Ultimaker"
+"Webcam feeds for cloud printers cannot be viewed from UltiMaker Cura. Click "
+"\"Manage printer\" to visit UltiMaker Digital Factory and view this webcam."
+msgstr "Não é possível visualizar os feeds das câmaras das impressoras na cloud a partir do UltiMaker Cura. Clique em \"Gerir impressora\" para visitar o UltiMaker"
 " Digital Factory e ver esta câmara."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:347

@@ -2438,10 +2438,10 @@ msgstr "Для удаленного управления очередью нео
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:287
 msgctxt "@info"
 msgid ""
-"Webcam feeds for cloud printers cannot be viewed from Ultimaker Cura. Click "
-"\"Manage printer\" to visit Ultimaker Digital Factory and view this webcam."
+"Webcam feeds for cloud printers cannot be viewed from UltiMaker Cura. Click "
+"\"Manage printer\" to visit UltiMaker Digital Factory and view this webcam."
 msgstr "Каналы веб-камеры для облачных принтеров невозможно просмотреть из UltiMaker Cura. Щелкните «Управление принтером», чтобы просмотреть эту веб-камеру на"
-" сайте Ultimaker Digital Factory."
+" сайте UltiMaker Digital Factory."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:347
 msgctxt "@label:status"

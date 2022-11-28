@@ -718,7 +718,7 @@ msgstr "Curaを開始できません"
 #: /Users/c.lamboo/ultimaker/Cura/cura/CrashHandler.py:113
 msgctxt "@label crash message"
 msgid ""
-"<p><b>Oops, Ultimaker Cura has encountered something that doesn't seem right."
+"<p><b>Oops, UltiMaker Cura has encountered something that doesn't seem right."
 "</p></b>\n"
 "                    <p>We encountered an unrecoverable error during start "
 "up. It was possibly caused by some incorrect configuration files. We suggest "
@@ -934,8 +934,8 @@ msgstr "ネットワークエラー"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/NewPrinterDetectedMessage.py:13
 msgctxt "info:status"
 msgid "New printer detected from your UltiMaker account"
-msgid_plural "New printers detected from your Ultimaker account"
-msgstr[0] "Ultimakerアカウントから新しいプリンターが検出されました"
+msgid_plural "New printers detected from your UltiMaker account"
+msgstr[0] "UltiMakerアカウントから新しいプリンターが検出されました"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/NewPrinterDetectedMessage.py:29
 #, python-brace-format
@@ -1085,7 +1085,7 @@ msgstr "プリンターを取り除く"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:18
 msgctxt "@info:status"
 msgid ""
-"You are attempting to connect to a printer that is not running Ultimaker "
+"You are attempting to connect to a printer that is not running UltiMaker "
 "Connect. Please update the printer to the latest firmware."
 msgstr "UltiMaker Connectを実行していないプリンターに接続しようとしています。プリンターを最新のファームウェアに更新してください。"
 
@@ -1747,7 +1747,7 @@ msgstr "プロジェクトファイル<filename>{0}</filename>は破損してい
 msgctxt "@info:error Don't translate the XML tag <filename>!"
 msgid ""
 "Project file <filename>{0}</filename> is made using profiles that are "
-"unknown to this version of Ultimaker Cura."
+"unknown to this version of UltiMaker Cura."
 msgstr "プロジェクトファイル<filename>{0}</filename>はこのバージョンのUltiMaker Curaでは認識できないプロファイルを使用して作成されています。"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/PerObjectSettingsTool/__init__.py:14
@@ -2413,9 +2413,9 @@ msgstr "キューをリモートで管理するには、プリンターのファ
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:287
 msgctxt "@info"
 msgid ""
-"Webcam feeds for cloud printers cannot be viewed from Ultimaker Cura. Click "
-"\"Manage printer\" to visit Ultimaker Digital Factory and view this webcam."
-msgstr "クラウドプリンターのウェブカムフィードをUltiMaker Curaから見ることができません。「プリンター管理」をクリックして、Ultimaker Digital Factoryにアクセスし、このウェブカムを見ます。"
+"Webcam feeds for cloud printers cannot be viewed from UltiMaker Cura. Click "
+"\"Manage printer\" to visit UltiMaker Digital Factory and view this webcam."
+msgstr "クラウドプリンターのウェブカムフィードをUltiMaker Curaから見ることができません。「プリンター管理」をクリックして、UltiMaker Digital Factoryにアクセスし、このウェブカムを見ます。"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:347
 msgctxt "@label:status"
@@ -2794,7 +2794,7 @@ msgstr "匿名データの収集に関する詳細"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:73
 msgctxt "@text:window"
 msgid ""
-"Ultimaker Cura collects anonymous data in order to improve the print quality "
+"UltiMaker Cura collects anonymous data in order to improve the print quality "
 "and user experience. Below is an example of all the data that is shared:"
 msgstr "UltiMaker Cura は、印刷品質とユーザーエクスペリエンスを向上させるために匿名データを収集します。以下は、共有されるすべてのデータの例です："
 
@@ -2923,7 +2923,7 @@ msgstr "プラグインのインストール"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/Plugins.qml:12
 msgctxt "@text"
 msgid ""
-"Streamline your workflow and customize your Ultimaker Cura experience with "
+"Streamline your workflow and customize your UltiMaker Cura experience with "
 "plugins contributed by our amazing community of users."
 msgstr "素晴らしいユーザーコミュニティから提供されるプラグインを活用して、ワークフローを合理化し、UltiMaker Cura体験をカスタマイズすることができます。"
 
@@ -2986,7 +2986,7 @@ msgstr "材料のインストール"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/Materials.qml:12
 msgctxt "@text"
 msgid ""
-"Select and install material profiles optimised for your Ultimaker 3D "
+"Select and install material profiles optimised for your UltiMaker 3D "
 "printers."
 msgstr "UltiMaker 3Dプリンターに最適な材料プロファイルを選択してインストールします。"
 
@@ -3130,7 +3130,7 @@ msgstr "パッケージの管理"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/ManagedPackages.qml:15
 msgctxt "@text"
 msgid ""
-"Manage your Ultimaker Cura plugins and material profiles here. Make sure to "
+"Manage your UltiMaker Cura plugins and material profiles here. Make sure to "
 "keep your plugins up to date and backup your setup regularly."
 msgstr "UltiMaker Curaのプラグインと材料プロファイルはここで管理します。プラグインを常に最新の状態に保ち、セットアップのバックアップを定期的に取るようにしてください。"
 
@@ -4447,7 +4447,7 @@ msgstr "プライバシー"
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:862
 msgctxt "@info:tooltip"
 msgid ""
-"Should anonymous data about your print be sent to Ultimaker? Note, no "
+"Should anonymous data about your print be sent to UltiMaker? Note, no "
 "models, IP addresses or other personally identifiable information is sent or "
 "stored."
 msgstr "プリンターの不明なデータをUltiMakerにおくりますか？メモ、モデル、IPアドレス、個人的な情報は送信されたり保存されたりはしません。"
@@ -4802,7 +4802,7 @@ msgstr "UltiMaker Cura の改善にご協力ください"
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:56
 msgctxt "@text"
 msgid ""
-"Ultimaker Cura collects anonymous data to improve print quality and user "
+"UltiMaker Cura collects anonymous data to improve print quality and user "
 "experience, including:"
 msgstr "UltiMaker Cura は、印刷品質とユーザーエクスペリエンスを向上させるために以下の匿名データを収集します:"
 
@@ -4829,7 +4829,7 @@ msgstr "プリント設定"
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:99
 msgctxt "@text"
 msgid ""
-"Data collected by Ultimaker Cura will not contain any personal information."
+"Data collected by UltiMaker Cura will not contain any personal information."
 msgstr "UltiMaker Cura が収集したデータには個人データは含まれません。"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:100
@@ -4928,7 +4928,7 @@ msgstr "UltiMaker Cura にようこそ"
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/WelcomeContent.qml:67
 msgctxt "@text"
 msgid ""
-"Please follow these steps to set up Ultimaker Cura. This will only take a "
+"Please follow these steps to set up UltiMaker Cura. This will only take a "
 "few moments."
 msgstr "以下の手順で\nUltiMaker Cura を設定してください。数秒で完了します。"
 
@@ -5024,7 +5024,7 @@ msgstr "フィラメントを管理する..."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Actions.qml:216
 msgctxt ""
-"@action:inmenu Marketplace is a brand name of Ultimaker's, so don't "
+"@action:inmenu Marketplace is a brand name of UltiMaker's, so don't "
 "translate."
 msgid "Add more materials from Marketplace"
 msgstr "マーケットプレイスから材料を追加"

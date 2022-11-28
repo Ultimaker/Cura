@@ -2348,8 +2348,8 @@ msgstr "Aktualizujte firmware tiskárny a spravujte frontu vzdáleně."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:287
 msgctxt "@info"
-msgid "Webcam feeds for cloud printers cannot be viewed from Ultimaker Cura. Click \"Manage printer\" to visit UltiMaker Digital Factory and view this webcam."
-msgstr "Vstup z webové kamery nemůže být pro cloudové tiskárny zobrazen v UltiMaker Cura. Klikněte na \"Spravovat tiskárnu\", abyste navštívili Ultimaker Digital Factory a zobrazili tuto webkameru."
+msgid "Webcam feeds for cloud printers cannot be viewed from UltiMaker Cura. Click \"Manage printer\" to visit UltiMaker Digital Factory and view this webcam."
+msgstr "Vstup z webové kamery nemůže být pro cloudové tiskárny zobrazen v UltiMaker Cura. Klikněte na \"Spravovat tiskárnu\", abyste navštívili UltiMaker Digital Factory a zobrazili tuto webkameru."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:347
 msgctxt "@label:status"

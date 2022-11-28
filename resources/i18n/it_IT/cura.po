@@ -722,7 +722,7 @@ msgstr "Impossibile avviare Cura"
 #: /Users/c.lamboo/ultimaker/Cura/cura/CrashHandler.py:113
 msgctxt "@label crash message"
 msgid ""
-"<p><b>Oops, Ultimaker Cura has encountered something that doesn't seem right."
+"<p><b>Oops, UltiMaker Cura has encountered something that doesn't seem right."
 "</p></b>\n"
 "                    <p>We encountered an unrecoverable error during start "
 "up. It was possibly caused by some incorrect configuration files. We suggest "
@@ -941,9 +941,9 @@ msgstr "Errore di rete"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/NewPrinterDetectedMessage.py:13
 msgctxt "info:status"
 msgid "New printer detected from your UltiMaker account"
-msgid_plural "New printers detected from your Ultimaker account"
-msgstr[0] "Nuova stampante rilevata dall'account Ultimaker"
-msgstr[1] "Nuove stampanti rilevate dall'account Ultimaker"
+msgid_plural "New printers detected from your UltiMaker account"
+msgstr[0] "Nuova stampante rilevata dall'account UltiMaker"
+msgstr[1] "Nuove stampanti rilevate dall'account UltiMaker"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/NewPrinterDetectedMessage.py:29
 #, python-brace-format
@@ -1096,7 +1096,7 @@ msgstr "Rimuovere le stampanti"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:18
 msgctxt "@info:status"
 msgid ""
-"You are attempting to connect to a printer that is not running Ultimaker "
+"You are attempting to connect to a printer that is not running UltiMaker "
 "Connect. Please update the printer to the latest firmware."
 msgstr "Si sta tentando di connettersi a una stampante che non esegue UltiMaker Connect. Aggiornare la stampante con il firmware più recente."
 
@@ -1763,7 +1763,7 @@ msgstr "Il file di progetto <filename>{0}</filename> è danneggiato: <message>{1
 msgctxt "@info:error Don't translate the XML tag <filename>!"
 msgid ""
 "Project file <filename>{0}</filename> is made using profiles that are "
-"unknown to this version of Ultimaker Cura."
+"unknown to this version of UltiMaker Cura."
 msgstr "Il file di progetto <filename>{0}</filename> è realizzato con profili sconosciuti a questa versione di UltiMaker Cura."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/PerObjectSettingsTool/__init__.py:14
@@ -2438,9 +2438,9 @@ msgstr "Aggiornare il firmware della stampante per gestire la coda da remoto."
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:287
 msgctxt "@info"
 msgid ""
-"Webcam feeds for cloud printers cannot be viewed from Ultimaker Cura. Click "
-"\"Manage printer\" to visit Ultimaker Digital Factory and view this webcam."
-msgstr "Impossibile visualizzare feed della Webcam per stampanti cloud da UltiMaker Cura. Fare clic su \"Gestione stampanti\" per visitare Ultimaker Digital Factory"
+"Webcam feeds for cloud printers cannot be viewed from UltiMaker Cura. Click "
+"\"Manage printer\" to visit UltiMaker Digital Factory and view this webcam."
+msgstr "Impossibile visualizzare feed della Webcam per stampanti cloud da UltiMaker Cura. Fare clic su \"Gestione stampanti\" per visitare UltiMaker Digital Factory"
 " e visualizzare questa Webcam."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:347
@@ -2822,7 +2822,7 @@ msgstr "Maggiori informazioni sulla raccolta di dati anonimi"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:73
 msgctxt "@text:window"
 msgid ""
-"Ultimaker Cura collects anonymous data in order to improve the print quality "
+"UltiMaker Cura collects anonymous data in order to improve the print quality "
 "and user experience. Below is an example of all the data that is shared:"
 msgstr "UltiMaker Cura acquisisce dati anonimi per migliorare la qualità di stampa e l'esperienza dell'utente. Di seguito è riportato un esempio dei dati condivisi:"
 
@@ -2953,7 +2953,7 @@ msgstr "Installa plugin"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/Plugins.qml:12
 msgctxt "@text"
 msgid ""
-"Streamline your workflow and customize your Ultimaker Cura experience with "
+"Streamline your workflow and customize your UltiMaker Cura experience with "
 "plugins contributed by our amazing community of users."
 msgstr "Semplifica il flusso di lavoro e personalizza l'esperienza UltiMaker Cura experience con plugin forniti dalla nostra eccezionale comunità di utenti."
 
@@ -3016,7 +3016,7 @@ msgstr "Installa materiali"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/Materials.qml:12
 msgctxt "@text"
 msgid ""
-"Select and install material profiles optimised for your Ultimaker 3D "
+"Select and install material profiles optimised for your UltiMaker 3D "
 "printers."
 msgstr "Selezionare e installare i profili dei materiali ottimizzati per le stampanti 3D UltiMaker."
 
@@ -3160,7 +3160,7 @@ msgstr "Gestisci pacchetti"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/ManagedPackages.qml:15
 msgctxt "@text"
 msgid ""
-"Manage your Ultimaker Cura plugins and material profiles here. Make sure to "
+"Manage your UltiMaker Cura plugins and material profiles here. Make sure to "
 "keep your plugins up to date and backup your setup regularly."
 msgstr "Gestisci i plugin UltiMaker Cura e i profili del materiale qui. Accertarsi di mantenere i plugin aggiornati e di eseguire regolarmente il backup dell'impostazione."
 
@@ -4484,7 +4484,7 @@ msgstr "Privacy"
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:862
 msgctxt "@info:tooltip"
 msgid ""
-"Should anonymous data about your print be sent to Ultimaker? Note, no "
+"Should anonymous data about your print be sent to UltiMaker? Note, no "
 "models, IP addresses or other personally identifiable information is sent or "
 "stored."
 msgstr "I dati anonimi sulla stampa devono essere inviati a UltiMaker? Nota, non sono trasmessi o memorizzati modelli, indirizzi IP o altre informazioni personali."
@@ -4840,7 +4840,7 @@ msgstr "Aiutaci a migliorare UltiMaker Cura"
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:56
 msgctxt "@text"
 msgid ""
-"Ultimaker Cura collects anonymous data to improve print quality and user "
+"UltiMaker Cura collects anonymous data to improve print quality and user "
 "experience, including:"
 msgstr "UltiMaker Cura acquisisce dati anonimi per migliorare la qualità di stampa e l'esperienza dell'utente, tra cui:"
 
@@ -4867,7 +4867,7 @@ msgstr "Impostazioni di stampa"
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:99
 msgctxt "@text"
 msgid ""
-"Data collected by Ultimaker Cura will not contain any personal information."
+"Data collected by UltiMaker Cura will not contain any personal information."
 msgstr "I dati acquisiti da UltiMaker Cura non conterranno alcuna informazione personale."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:100
@@ -4966,7 +4966,7 @@ msgstr "Benvenuto in UltiMaker Cura"
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/WelcomeContent.qml:67
 msgctxt "@text"
 msgid ""
-"Please follow these steps to set up Ultimaker Cura. This will only take a "
+"Please follow these steps to set up UltiMaker Cura. This will only take a "
 "few moments."
 msgstr "Segui questa procedura per configurare\nUltiMaker Cura. Questa operazione richiederà solo pochi istanti."
 
