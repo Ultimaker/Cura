@@ -7636,6 +7636,7 @@
                     "enabled": "adaptive_layer_height_enabled",
                     "unit": "mm",
                     "default_value": 0.1,
+					"minimum_value": "0.0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
@@ -7647,9 +7648,9 @@
                     "type": "float",
                     "enabled": "adaptive_layer_height_enabled",
                     "default_value": 0.01,
+					"minimum_value": "0.001",
                     "unit": "mm",
                     "settable_per_mesh": false,
-                    "minimum_value": "0.001",
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
