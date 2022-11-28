@@ -21,7 +21,7 @@ class CuraConan(ConanFile):
     description = "3D printer / slicing GUI built on top of the Uranium framework"
     topics = ("conan", "python", "pyqt5", "qt", "qml", "3d-printing", "slicer")
     build_policy = "missing"
-    exports = "LICENSE*", "Ultimaker-Cura.spec.jinja", "CuraVersion.py.jinja"
+    exports = "LICENSE*", "UltiMaker-Cura.spec.jinja", "CuraVersion.py.jinja"
     settings = "os", "compiler", "build_type", "arch"
     no_copy_source = True  # We won't build so no need to copy sources to the build folder
 
@@ -226,13 +226,13 @@ class CuraConan(ConanFile):
         # Collect all dll's from PyQt6 and place them in the root
         binaries.extend([(f"{p}", ".") for p in Path(self._site_packages, "PyQt6", "Qt6").glob("**/*.dll")])
 
-        with open(Path(__file__).parent.joinpath("Ultimaker-Cura.spec.jinja"), "r") as f:
+        with open(Path(__file__).parent.joinpath("UltiMaker-Cura.spec.jinja"), "r") as f:
             pyinstaller = Template(f.read())
 
         version = self.conf_info.get("user.cura:version", default = self.version, check_type = str)
         cura_version = Version(version)
 
-        with open(Path(location, "Ultimaker-Cura.spec"), "w") as f:
+        with open(Path(location, "UltiMaker-Cura.spec"), "w") as f:
             f.write(pyinstaller.render(
                 name = str(self.options.display_name).replace(" ", "-"),
                 display_name = self.options.display_name,
