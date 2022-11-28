@@ -16,7 +16,7 @@ required_conan_version = ">=1.52.0"
 class CuraConan(ConanFile):
     name = "cura"
     license = "LGPL-3.0"
-    author = "Ultimaker B.V."
+    author = "UltiMaker"
     url = "https://github.com/Ultimaker/cura"
     description = "3D printer / slicing GUI built on top of the Uranium framework"
     topics = ("conan", "python", "pyqt5", "qt", "qml", "3d-printing", "slicer")
