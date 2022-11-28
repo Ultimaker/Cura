@@ -6,6 +6,7 @@ import QtQuick.Controls 2.15
 
 import UM 1.5 as UM
 import Cura 1.0 as Cura
+import QtQuick.Layouts 1.3
 
 
 //
@@ -25,24 +26,29 @@ Item
         property: "source"
         value:
         {
-            var density = parseInt(infillDensity.properties.value)
-            if (parseInt(infillSteps.properties.value) != 0)
+            const infill_steps = parseInt(infillSteps.properties.value);
+            if (infill_steps != 0)
             {
                 return UM.Theme.getIcon("InfillGradual")
             }
-            if (density <= 0)
+
+            const density = parseInt(infillDensity.properties.value)
+            if (density == 0)
             {
-                return UM.Theme.getIcon("Infill0")
+                return UM.Theme.getIcon("Infill0");
             }
-            if (density < 40)
+            else if (density < 40)
             {
-                return UM.Theme.getIcon("Infill3")
+                return UM.Theme.getIcon("Infill3");
             }
-            if (density < 90)
+            else if (density < 90)
             {
-                return UM.Theme.getIcon("Infill2")
+                return UM.Theme.getIcon("Infill2");
             }
-            return UM.Theme.getIcon("Infill100")
+            else
+            {
+                return UM.Theme.getIcon("Infill100");
+            }
         }
     }
 
@@ -55,7 +61,7 @@ Item
             // The infill slider has a max value of 100. When it is given a value > 100 onValueChanged updates the setting to be 100.
             // When changing to an intent with infillDensity > 100, it would always be clamped to 100.
             // This will force the slider to ignore the first onValueChanged for values > 100 so higher values can be set.
-            var density = parseInt(infillDensity.properties.value)
+            const density = parseInt(infillDensity.properties.value)
             if (density > 100) {
                 infillSlider.ignoreValueChange = true
             }
@@ -71,17 +77,19 @@ Item
         anchors.top: parent.top
         anchors.left: parent.left
         source: UM.Theme.getIcon("Infill1")
-        text: catalog.i18nc("@label", "Infill") + " (%)"
+        text: `${catalog.i18nc("@label", "Infill")} (%)`
         font: UM.Theme.getFont("medium")
         width: labelColumnWidth
         iconSize: UM.Theme.getSize("medium_button_icon").width
         tooltipText: catalog.i18nc("@label", "Gradual infill will gradually increase the amount of infill towards the top.")
     }
 
-    Item
+    RowLayout
     {
         id: infillSliderContainer
         height: childrenRect.height
+
+        spacing: UM.Theme.getSize("default_margin").width
 
         anchors
         {
@@ -90,18 +98,19 @@ Item
             verticalCenter: infillRowTitle.verticalCenter
         }
 
+        UM.Label { Layout.fillWidth: false; text: "0" }
+
         Slider
         {
             id: infillSlider
+            Layout.fillWidth: true
 
             property var ignoreValueChange: false
 
             width: parent.width
-            height: UM.Theme.getSize("print_setup_slider_handle").height // The handle is the widest element of the slider
+            height: childrenRect.height
 
-            from: 0
-            to: 100
-            stepSize: 1
+            from: 0; to: 100; stepSize: 1
 
             // disable slider when gradual support is enabled
             enabled: parseInt(infillSteps.properties.value) == 0
@@ -117,36 +126,24 @@ Item
                 width: parent.width - UM.Theme.getSize("print_setup_slider_handle").width
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter: parent.verticalCenter
-                color: infillSlider.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
+                color: UM.Theme.getColor("lining")
 
                 Repeater
                 {
                     id: repeater
                     anchors.fill: parent
-                    model: infillSlider.to / infillSlider.stepSize + 1
+                    model: 11
 
                     Rectangle
                     {
-                        color: infillSlider.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
+                        color: UM.Theme.getColor("lining")
                         implicitWidth: UM.Theme.getSize("print_setup_slider_tickmarks").width
                         implicitHeight: UM.Theme.getSize("print_setup_slider_tickmarks").height
                         anchors.verticalCenter: parent.verticalCenter
 
-                        // Do not use Math.round otherwise the tickmarks won't be aligned
-                        // (space between steps) * index of step
-                        x: (backgroundLine.width / (repeater.count - 1)) * index
+                        x: Math.round(backgroundLine.width / (repeater.count - 1) * index - width / 2)
 
-                        radius: Math.round(implicitWidth / 2)
-                        visible: (index % 10) == 0 // Only show steps of 10%
-
-                        UM.Label
-                        {
-                            text: index
-                            visible: (index % 20) == 0 // Only show steps of 20%
-                            anchors.horizontalCenter: parent.horizontalCenter
-                            y: UM.Theme.getSize("thin_margin").height
-                            color: UM.Theme.getColor("quality_slider_available")
-                        }
+                        radius: Math.round(width / 2)
                     }
                 }
             }
@@ -155,13 +152,13 @@ Item
             {
                 id: handleButton
                 x: infillSlider.leftPadding + infillSlider.visualPosition * (infillSlider.availableWidth - width)
-                y: infillSlider.topPadding + infillSlider.availableHeight / 2 - height / 2
-                color: infillSlider.enabled ? UM.Theme.getColor("primary") : UM.Theme.getColor("quality_slider_unavailable")
+                anchors.verticalCenter: parent.verticalCenter
                 implicitWidth: UM.Theme.getSize("print_setup_slider_handle").width
-                implicitHeight: implicitWidth
-                radius: Math.round(implicitWidth / 2)
-                border.color: UM.Theme.getColor("slider_groove_fill")
-                border.width: UM.Theme.getSize("default_lining").height
+                implicitHeight: UM.Theme.getSize("print_setup_slider_handle").height
+                radius: Math.round(width / 2)
+                color: UM.Theme.getColor("main_background")
+                border.color: UM.Theme.getColor("primary")
+                border.width: UM.Theme.getSize("wide_lining").height
             }
 
             Connections
@@ -201,6 +198,8 @@ Item
                 }
             }
         }
+
+        UM.Label { Layout.fillWidth: false; text: "100" }
     }
 
     //  Gradual Support Infill Checkbox
@@ -210,7 +209,7 @@ Item
         property alias _hovered: enableGradualInfillMouseArea.containsMouse
 
         anchors.top: infillSliderContainer.bottom
-        anchors.topMargin: UM.Theme.getSize("wide_margin").height
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
         anchors.left: infillSliderContainer.left
 
         text: catalog.i18nc("@label", "Gradual infill")
