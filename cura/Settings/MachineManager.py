@@ -40,6 +40,7 @@ from cura.Settings.cura_empty_instance_containers import (empty_definition_chang
                                                           empty_material_container, empty_quality_container,
                                                           empty_quality_changes_container, empty_intent_container)
 from cura.UltimakerCloud.UltimakerCloudConstants import META_UM_LINKED_TO_ACCOUNT
+from .ActiveQuality import ActiveQuality
 
 from .CuraStackBuilder import CuraStackBuilder
 
@@ -1633,47 +1634,20 @@ class MachineManager(QObject):
     #          - "my_profile - Engineering - Fine" (based on an intent)
     @pyqtProperty("QList<QString>", notify = activeQualityDisplayNameChanged)
     def activeQualityDisplayNameStringParts(self) -> List[str]:
-        result_map = self.activeQualityDisplayNameMap
-        string_parts = []
-
-        if result_map["custom_profile"] is not None:
-            string_parts.append(result_map["custom_profile"])
-
-        if result_map["intent_category"] is not "default":
-            string_parts.append(f"""{result_map["intent_name"]} - {result_map["profile"]}""")
-        else:
-            string_parts.append(result_map["profile"])
-
-        if result_map["layer_height"]:
-            string_parts.append(f"""{result_map["layer_height"]}mm""")
-
-        if result_map["is_experimental"]:
-            string_parts.append(catalog.i18nc("@label", "Experimental"))
-
-        return string_parts
+        return self.activeQualityDisplayNameMap.getStringParts()
 
     @pyqtProperty("QVariantMap", notify = activeQualityDisplayNameChanged)
-    def activeQualityDisplayNameMap(self) -> Dict[str, Any]:
+    def activeQualityDisplayNameMap(self) -> ActiveQuality:
         global_stack = self._application.getGlobalContainerStack()
         if global_stack is None:
-            return {
-                "profile": "",
-                "intent_category": "",
-                "intent": "",
-                "custom_profile": None,
-                "is_experimental": False
-            }
+            return ActiveQuality()
 
-        return {
-            "profile": global_stack.quality.getName(),
-            "intent_category": self.activeIntentCategory,
-            "intent_name": IntentCategoryModel.translation(self.activeIntentCategory, "name", self.activeIntentCategory.title()),
-            "custom_profile": self.activeQualityOrQualityChangesName \
-                                    if global_stack.qualityChanges is not empty_quality_changes_container \
-                                    else None,
-            "layer_height": self.activeQualityLayerHeight if self.isActiveQualitySupported else None,
-            "is_experimental": self.isActiveQualityExperimental and self.isActiveQualitySupported,
-        }
+        return ActiveQuality(profile = global_stack.quality.getName(),
+            intent_category = self.activeIntentCategory,
+            intent_name = IntentCategoryModel.translation(self.activeIntentCategory, "name", self.activeIntentCategory.title()),
+            custom_profile = self.activeQualityOrQualityChangesName if global_stack.qualityChanges is not empty_quality_changes_container else None,
+            layer_height = self.activeQualityLayerHeight if self.isActiveQualitySupported else None,
+            is_experimental = self.isActiveQualityExperimental and self.isActiveQualitySupported)
 
     @pyqtSlot(str)
     def setIntentByCategory(self, intent_category: str) -> None:
