@@ -12,5 +12,5 @@ class FileFormatter(ABC):
         self._settings = settings
 
     @abstractmethod
-    def format(self, file: Path) -> None:
+    def formatFile(self, file: Path) -> None:
         pass

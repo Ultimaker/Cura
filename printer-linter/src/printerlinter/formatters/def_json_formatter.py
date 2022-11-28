@@ -25,7 +25,7 @@ METADATA_SORT_PRIORITY = {
 
 
 class DefJsonFormatter(FileFormatter):
-    def format(self, file: Path):
+    def formatFile(self, file: Path):
         """ Format .def.json files according to the rules in settings.
 
         You can assume that you will be running regex on standard formatted json files, because we load the json first and then

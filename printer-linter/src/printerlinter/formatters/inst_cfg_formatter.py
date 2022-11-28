@@ -7,7 +7,7 @@ from pathlib import Path
 from .formatter import FileFormatter
 
 class InstCfgFormatter(FileFormatter):
-    def format(self, file: Path):
+    def formatFile(self, file: Path):
         """ Format .inst.cfg files according to the rules in settings """
         config = configparser.ConfigParser()
         config.read(file)

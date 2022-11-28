@@ -94,11 +94,11 @@ def applyFormattingToFile(file: Path, settings) -> None:
 
     if ext == "def.json":
         formatter = DefJsonFormatter(settings)
-        formatter.format(file)
+        formatter.formatFile(file)
 
     if ext == "inst.cfg":
         formatter = InstCfgFormatter(settings)
-        formatter.format(file)
+        formatter.formatFile(file)
 
 
 def extractFilePaths(paths: List[Path]) -> List[Path]:
