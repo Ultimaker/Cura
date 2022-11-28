@@ -1,3 +1,7 @@
+# Copyright (c) 2022 UltiMaker
+# Cura is released under the terms of the LGPLv3 or higher.
+
+
 import os
 import argparse  # Command line arguments parsing and help.
 import subprocess
@@ -14,11 +18,11 @@ def build_dmg(source_path: str, dist_path: str, filename: str) -> None:
                  "--app-drop-link", "520", "272",
                  "--volicon", f"{source_path}/packaging/icons/VolumeIcons_Cura.icns",
                  "--icon-size", "90",
-                 "--icon", "Ultimaker-Cura.app", "169", "272",
+                 "--icon", "UltiMaker-Cura.app", "169", "272",
                  "--eula", f"{source_path}/packaging/cura_license.txt",
                  "--background", f"{source_path}/packaging/dmg/cura_background_dmg.png",
                  f"{dist_path}/{filename}",
-                 f"{dist_path}/Ultimaker-Cura.app"]
+                 f"{dist_path}/UltiMaker-Cura.app"]
 
     subprocess.run(arguments)
 
@@ -57,7 +61,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = "Create dmg of Cura.")
     parser.add_argument("source_path", type=str, help="Path to Conan install Cura folder.")
     parser.add_argument("dist_path", type=str, help="Path to Pyinstaller dist folder")
-    parser.add_argument("filename", type = str, help = "Filename of the dmg (e.g. 'Ultimaker-Cura-5.1.0-beta-Linux-X64.dmg')")
+    parser.add_argument("filename", type = str, help = "Filename of the dmg (e.g. 'UltiMaker-Cura-5.1.0-beta-Linux-X64.dmg')")
     args = parser.parse_args()
     build_dmg(args.source_path, args.dist_path, args.filename)
     sign(args.dist_path, args.filename)
