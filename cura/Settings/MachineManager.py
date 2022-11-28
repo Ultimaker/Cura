@@ -1632,7 +1632,7 @@ class MachineManager(QObject):
     #          - "my_profile - Fine" (only based on a default quality, no intent involved)
     #          - "my_profile - Engineering - Fine" (based on an intent)
     @pyqtProperty("QList<QString>", notify = activeQualityDisplayNameChanged)
-    def activeQualityDisplayNameStringParts(self) -> [str]:
+    def activeQualityDisplayNameStringParts(self) -> List[str]:
         result_map = self.activeQualityDisplayNameMap
         string_parts = []
 
