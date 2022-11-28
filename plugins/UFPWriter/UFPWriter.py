@@ -226,9 +226,7 @@ class UFPWriter(MeshWriter):
                 "changes": {},
                 "all_settings": {},
             },
-            "intent": machine_manager.activeIntentCategory,
-            "quality": machine_manager.activeQualityOrQualityChangesName,
-            "quality_display_name": asdict(machine_manager.activeQualityDisplayNameMap),
+            "quality": asdict(machine_manager.activeQualityDisplayNameMap),
         }
 
         global_stack = cast(GlobalStack, Application.getInstance().getGlobalContainerStack())
