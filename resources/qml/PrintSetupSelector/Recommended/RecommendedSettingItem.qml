@@ -17,7 +17,7 @@ Item
 
     property alias settingControl: settingContainer.children
     property alias settingName: settingLabel.text
-    property int leftColumnWidth: width / 2
+    property int leftColumnWidth: Math.floor(width * 0.35)
 
     UM.Label
     {
