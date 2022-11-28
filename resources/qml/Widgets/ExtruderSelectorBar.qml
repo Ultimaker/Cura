@@ -8,11 +8,15 @@ import Cura 1.5 as Cura
 Row
 {
     id: extruderSelectionBar
-    property alias model: extruderButtonRepeater.model
 
-    spacing: 0
     width: parent.width
     height: childrenRect.height
+    spacing: 0
+
+    property alias model: extruderButtonRepeater.model
+    property int selectedIndex: 0
+    function onClickExtruder(index) {}
+
 
     Repeater
     {
@@ -24,16 +28,15 @@ Row
                 const maximum_width = Math.floor(extruderSelectionBar.width / extruderButtonRepeater.count);
                 return Math.min(UM.Theme.getSize("large_button").width, maximum_width);
             }
-
             height: childrenRect.height
 
             Cura.ExtruderButton
             {
                 extruder: model
-                isTopElement: extrudersModel.getItem(0).id == model.id
-                isBottomElement: extrudersModel.getItem(extrudersModel.rowCount() - 1).id == model.id
+                checked: extruder.index == selectedIndex
                 iconScale: 0.6
                 buttonSize: UM.Theme.getSize("large_button").width
+                onClicked: extruder.enabled && onClickExtruder(extruder.index)
             }
         }
     }
