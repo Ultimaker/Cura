@@ -1634,17 +1634,16 @@ class MachineManager(QObject):
     #          - "my_profile - Engineering - Fine" (based on an intent)
     @pyqtProperty("QList<QString>", notify = activeQualityDisplayNameChanged)
     def activeQualityDisplayNameStringParts(self) -> List[str]:
-        return self.activeQualityDisplayNameMap.getStringParts()
+        return self.activeQualityDisplayNameMap().getStringParts()
 
     @pyqtProperty("QList<QString>", notify = activeQualityDisplayNameChanged)
     def activeQualityDisplayNameMainStringParts(self) -> List[str]:
-        return self.activeQualityDisplayNameMap.getMainStringParts()
+        return self.activeQualityDisplayNameMap().getMainStringParts()
 
     @pyqtProperty("QList<QString>", notify = activeQualityDisplayNameChanged)
     def activeQualityDisplayNameTailStringParts(self) -> List[str]:
-        return self.activeQualityDisplayNameMap.getTailStringParts()
+        return self.activeQualityDisplayNameMap().getTailStringParts()
 
-    @pyqtProperty("QVariantMap", notify = activeQualityDisplayNameChanged)
     def activeQualityDisplayNameMap(self) -> ActiveQuality:
         global_stack = self._application.getGlobalContainerStack()
         if global_stack is None:
