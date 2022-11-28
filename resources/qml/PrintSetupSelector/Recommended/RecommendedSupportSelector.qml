@@ -52,10 +52,10 @@ RecommendedSettingSection
         storeIndex: 0
     }
 
-    //Replace this with the Extruder selector
     contents: [
         RecommendedSettingItem
         {
+            Layout.preferredHeight: childrenRect.height
             settingName: catalog.i18nc("@action:label", "Print with")
             settingControl: Cura.ExtruderSelectorBar
             {
@@ -68,7 +68,6 @@ RecommendedSettingSection
                 }
             }
 
-            Layout.preferredHeight: childrenRect.height
         },
 
         RecommendedSettingItem
