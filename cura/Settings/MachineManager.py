@@ -1634,7 +1634,7 @@ class MachineManager(QObject):
     @pyqtProperty("QList<QString>", notify = activeQualityDisplayNameChanged)
     def activeQualityDisplayNameStringParts(self) -> [str]:
         result_map = self.activeQualityDisplayNameMap
-        string_parts = list()
+        string_parts = []
 
         if result_map["custom_profile"] is not None:
             string_parts.append(result_map["custom_profile"])
