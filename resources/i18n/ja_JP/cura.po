@@ -1057,8 +1057,8 @@ msgstr[0] "これらのプリンターはDigital Factoryとリンクされてい
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/RemovedPrintersMessage.py:22
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:422
 msgctxt "info:name"
-msgid "UltiMaker Digital Factory"
-msgstr "UltiMaker Digital Factory"
+msgid "Ultimaker Digital Factory"
+msgstr "Ultimaker Digital Factory"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/RemovedPrintersMessage.py:28
 #, python-brace-format
@@ -1203,8 +1203,8 @@ msgstr "プリントをモニタリング"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:278
 msgctxt "@action:tooltip"
-msgid "Track the print in UltiMaker Digital Factory"
-msgstr "UltiMaker Digital Factoryでプリントを追跡"
+msgid "Track the print in Ultimaker Digital Factory"
+msgstr "Ultimaker Digital Factoryでプリントを追跡"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:298
 #, python-brace-format
@@ -2414,8 +2414,8 @@ msgstr "キューをリモートで管理するには、プリンターのファ
 msgctxt "@info"
 msgid ""
 "Webcam feeds for cloud printers cannot be viewed from UltiMaker Cura. Click "
-"\"Manage printer\" to visit UltiMaker Digital Factory and view this webcam."
-msgstr "クラウドプリンターのウェブカムフィードをUltiMaker Curaから見ることができません。「プリンター管理」をクリックして、UltiMaker Digital Factoryにアクセスし、このウェブカムを見ます。"
+"\"Manage printer\" to visit Ultimaker Digital Factory and view this webcam."
+msgstr "クラウドプリンターのウェブカムフィードをUltiMaker Curaから見ることができません。「プリンター管理」をクリックして、Ultimaker Digital Factoryにアクセスし、このウェブカムを見ます。"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:347
 msgctxt "@label:status"
@@ -2481,8 +2481,8 @@ msgstr "次の空き"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorStage.qml:117
 msgctxt "@info"
-msgid "Monitor your printers from everywhere using UltiMaker Digital Factory"
-msgstr "UltiMaker Digital Factoryを使用して、あらゆる場所から自分のプリンターをモニタリング"
+msgid "Monitor your printers from everywhere using Ultimaker Digital Factory"
+msgstr "Ultimaker Digital Factoryを使用して、あらゆる場所から自分のプリンターをモニタリング"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorStage.qml:129
 msgctxt "@button"
@@ -5810,8 +5810,8 @@ msgstr "マイプリンター"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:34
 msgctxt "@tooltip:button"
-msgid "Monitor printers in UltiMaker Digital Factory."
-msgstr "UltiMaker Digital Factoryでプリンターをモニタリングします。"
+msgid "Monitor printers in Ultimaker Digital Factory."
+msgstr "Ultimaker Digital Factoryでプリンターをモニタリングします。"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:41
 msgctxt "@tooltip:button"
@@ -6244,7 +6244,7 @@ msgctxt "@status"
 msgid ""
 "This printer is not linked to your account. Please visit the Ultimaker "
 "Digital Factory to establish a connection."
-msgstr "このプリンターはお使いのアカウントにリンクされていません。UltiMaker Digital Factoryにアクセスして接続を確立してください。"
+msgstr "このプリンターはお使いのアカウントにリンクされていません。Ultimaker Digital Factoryにアクセスして接続を確立してください。"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrinterSelector/MachineSelector.qml:56
 msgctxt "@status"
@@ -6481,8 +6481,8 @@ msgstr "Digital Libraryに接続し、CuraでDigital Libraryからファイル�
 
 #: /DigitalLibrary/plugin.json
 msgctxt "name"
-msgid "UltiMaker Digital Library"
-msgstr "UltiMaker Digital Library"
+msgid "Ultimaker Digital Library"
+msgstr "Ultimaker Digital Library"
 
 #: /GCodeProfileReader/plugin.json
 msgctxt "description"

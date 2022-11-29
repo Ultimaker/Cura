@@ -20,7 +20,7 @@ class RemovedPrintersMessage(Message):
         )
         message_text += "<br/><ul>{}</ul><br/>".format(device_names)
 
-        digital_factory_string = self.i18n_catalog.i18nc("info:name", "UltiMaker Digital Factory")
+        digital_factory_string = self.i18n_catalog.i18nc("info:name", "Ultimaker Digital Factory")
         website_link = f"<a href='https://digitalfactory.ultimaker.com?utm_source=cura&" \
                        f"utm_medium=software&utm_campaign=change-account-connect-printer'>{digital_factory_string}</a>."
 

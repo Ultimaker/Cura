@@ -1064,8 +1064,8 @@ msgstr[1] "Bu yazıcılar Digital Factory ile bağlantılandırılmamış:"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/RemovedPrintersMessage.py:22
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:422
 msgctxt "info:name"
-msgid "UltiMaker Digital Factory"
-msgstr "UltiMaker Digital Factory"
+msgid "Ultimaker Digital Factory"
+msgstr "Ultimaker Digital Factory"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/RemovedPrintersMessage.py:28
 #, python-brace-format
@@ -1212,8 +1212,8 @@ msgstr "Baskı izleme"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:278
 msgctxt "@action:tooltip"
-msgid "Track the print in UltiMaker Digital Factory"
-msgstr "UltiMaker Digital Factory'de baskıyı izleyin"
+msgid "Track the print in Ultimaker Digital Factory"
+msgstr "Ultimaker Digital Factory'de baskıyı izleyin"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:298
 #, python-brace-format
@@ -2433,8 +2433,8 @@ msgstr "Kuyruğu uzaktan yönetmek için lütfen yazıcının donanım yazılım
 msgctxt "@info"
 msgid ""
 "Webcam feeds for cloud printers cannot be viewed from UltiMaker Cura. Click "
-"\"Manage printer\" to visit UltiMaker Digital Factory and view this webcam."
-msgstr "Bulut yazıcıları için web kamerası akışları UltiMaker Cura'dan görüntülenemez. UltiMaker Digital Factory'i ziyaret etmek ve bu web kamerasını görüntülemek"
+"\"Manage printer\" to visit Ultimaker Digital Factory and view this webcam."
+msgstr "Bulut yazıcıları için web kamerası akışları UltiMaker Cura'dan görüntülenemez. Ultimaker Digital Factory'i ziyaret etmek ve bu web kamerasını görüntülemek"
 " için \"Yazıcıyı Yönet\"i tıklayın."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:347
@@ -2501,8 +2501,8 @@ msgstr "İlk kullanılabilen"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorStage.qml:117
 msgctxt "@info"
-msgid "Monitor your printers from everywhere using UltiMaker Digital Factory"
-msgstr "UltiMaker Digital Factory'yi kullanarak yazıcılarınızı her yerden izleyin"
+msgid "Monitor your printers from everywhere using Ultimaker Digital Factory"
+msgstr "Ultimaker Digital Factory'yi kullanarak yazıcılarınızı her yerden izleyin"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorStage.qml:129
 msgctxt "@button"
@@ -5846,8 +5846,8 @@ msgstr "Yazıcılarım"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:34
 msgctxt "@tooltip:button"
-msgid "Monitor printers in UltiMaker Digital Factory."
-msgstr "UltiMaker Digital Factory'de yazıcıları izleyin."
+msgid "Monitor printers in Ultimaker Digital Factory."
+msgstr "Ultimaker Digital Factory'de yazıcıları izleyin."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:41
 msgctxt "@tooltip:button"
@@ -6284,7 +6284,7 @@ msgctxt "@status"
 msgid ""
 "This printer is not linked to your account. Please visit the Ultimaker "
 "Digital Factory to establish a connection."
-msgstr "Yazıcı hesabınızla bağlanmamış. Bağlantı kurmak için lütfen UltiMaker Digital Factory bölümünü ziyaret edin."
+msgstr "Yazıcı hesabınızla bağlanmamış. Bağlantı kurmak için lütfen Ultimaker Digital Factory bölümünü ziyaret edin."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrinterSelector/MachineSelector.qml:56
 msgctxt "@status"
@@ -6521,8 +6521,8 @@ msgstr "Digital Library'ye bağlanarak Cura'nın Digital Library'deki dosyaları
 
 #: /DigitalLibrary/plugin.json
 msgctxt "name"
-msgid "UltiMaker Digital Library"
-msgstr "UltiMaker Digital Library"
+msgid "Ultimaker Digital Library"
+msgstr "Ultimaker Digital Library"
 
 #: /GCodeProfileReader/plugin.json
 msgctxt "description"

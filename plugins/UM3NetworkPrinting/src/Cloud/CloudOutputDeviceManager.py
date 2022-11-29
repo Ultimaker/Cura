@@ -419,7 +419,7 @@ class CloudOutputDeviceManager:
         machine.setMetaDataEntry(self.META_HOST_GUID, device.clusterData.host_guid)
         machine.setMetaDataEntry("group_name", device.name)
         machine.setMetaDataEntry("group_size", device.clusterSize)
-        digital_factory_string = self.i18n_catalog.i18nc("info:name", "UltiMaker Digital Factory")
+        digital_factory_string = self.i18n_catalog.i18nc("info:name", "Ultimaker Digital Factory")
         digital_factory_link = f"<a href='https://digitalfactory.ultimaker.com?utm_source=cura&utm_medium=software&" \
                                f"utm_campaign=change-account-remove-printer'>{digital_factory_string}</a>"
         removal_warning_string = self.i18n_catalog.i18nc("@message {printer_name} is replaced with the name of the printer", "{printer_name} will be removed until the next account sync.").format(printer_name = device.name) \

@@ -114,7 +114,7 @@ Component
                 UM.Label
                 {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    text: catalog.i18nc("@info", "Monitor your printers from everywhere using UltiMaker Digital Factory")
+                    text: catalog.i18nc("@info", "Monitor your printers from everywhere using Ultimaker Digital Factory")
                     font: UM.Theme.getFont("medium")
                     width: sendToFactoryImage.width
                     wrapMode: Text.WordWrap

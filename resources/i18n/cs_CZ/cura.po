@@ -1027,8 +1027,8 @@ msgstr[2] "Tyto tiskárny nejsou napojeny na Digital Factory:"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/RemovedPrintersMessage.py:22
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:422
 msgctxt "info:name"
-msgid "UltiMaker Digital Factory"
-msgstr "UltiMaker Digital Factory"
+msgid "Ultimaker Digital Factory"
+msgstr "Ultimaker Digital Factory"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/RemovedPrintersMessage.py:28
 #, python-brace-format
@@ -1180,8 +1180,8 @@ msgstr "Sledovat tisk"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:278
 msgctxt "@action:tooltip"
-msgid "Track the print in UltiMaker Digital Factory"
-msgstr "Sledujte tisk v UltiMaker Digital Factory"
+msgid "Track the print in Ultimaker Digital Factory"
+msgstr "Sledujte tisk v Ultimaker Digital Factory"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:298
 #, python-brace-format
@@ -2348,8 +2348,8 @@ msgstr "Aktualizujte firmware tiskárny a spravujte frontu vzdáleně."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:287
 msgctxt "@info"
-msgid "Webcam feeds for cloud printers cannot be viewed from UltiMaker Cura. Click \"Manage printer\" to visit UltiMaker Digital Factory and view this webcam."
-msgstr "Vstup z webové kamery nemůže být pro cloudové tiskárny zobrazen v UltiMaker Cura. Klikněte na \"Spravovat tiskárnu\", abyste navštívili UltiMaker Digital Factory a zobrazili tuto webkameru."
+msgid "Webcam feeds for cloud printers cannot be viewed from UltiMaker Cura. Click \"Manage printer\" to visit Ultimaker Digital Factory and view this webcam."
+msgstr "Vstup z webové kamery nemůže být pro cloudové tiskárny zobrazen v UltiMaker Cura. Klikněte na \"Spravovat tiskárnu\", abyste navštívili Ultimaker Digital Factory a zobrazili tuto webkameru."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:347
 msgctxt "@label:status"
@@ -2415,8 +2415,8 @@ msgstr "První dostupný"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorStage.qml:117
 msgctxt "@info"
-msgid "Monitor your printers from everywhere using UltiMaker Digital Factory"
-msgstr "Sledujte své tiskárny odkudkoliv pomocí UltiMaker Digital Factory"
+msgid "Monitor your printers from everywhere using Ultimaker Digital Factory"
+msgstr "Sledujte své tiskárny odkudkoliv pomocí Ultimaker Digital Factory"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorStage.qml:129
 msgctxt "@button"
@@ -5654,8 +5654,8 @@ msgstr "Moje tiskárny"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:34
 msgctxt "@tooltip:button"
-msgid "Monitor printers in UltiMaker Digital Factory."
-msgstr "Sledujte tiskárny v UltiMaker Digital Factory."
+msgid "Monitor printers in Ultimaker Digital Factory."
+msgstr "Sledujte tiskárny v Ultimaker Digital Factory."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:41
 msgctxt "@tooltip:button"
@@ -6066,8 +6066,8 @@ msgstr "Cloudová tiskárna je offline. Prosím zkontrolujte, zda je tiskárna z
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrinterSelector/MachineSelector.qml:51
 msgctxt "@status"
-msgid "This printer is not linked to your account. Please visit the UltiMaker Digital Factory to establish a connection."
-msgstr "Tiskárna není připojena k vašemu účtu. Prosím navštivte UltiMaker Digital Factory pro navázání spojení."
+msgid "This printer is not linked to your account. Please visit the Ultimaker Digital Factory to establish a connection."
+msgstr "Tiskárna není připojena k vašemu účtu. Prosím navštivte Ultimaker Digital Factory pro navázání spojení."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrinterSelector/MachineSelector.qml:56
 msgctxt "@status"
@@ -6296,7 +6296,7 @@ msgstr "Připojuje k Digitální knihovně. Umožňuje Cuře otevírat a ukláda
 
 #: /DigitalLibrary/plugin.json
 msgctxt "name"
-msgid "UltiMaker Digital Library"
+msgid "Ultimaker Digital Library"
 msgstr "Digitální knihovna UltiMaker"
 
 #: /GCodeProfileReader/plugin.json
@@ -7180,8 +7180,8 @@ msgstr "Fáze přípravy"
 #~ msgstr "Odesílejte a sledujte tiskové úlohy odkudkoli pomocí účtu UltiMaker."
 
 #~ msgctxt "@info:status Ultimaker Cloud should not be translated."
-#~ msgid "Connect to UltiMaker Digital Factory"
-#~ msgstr "Připojit se k UltiMaker Digital Factory"
+#~ msgid "Connect to Ultimaker Digital Factory"
+#~ msgstr "Připojit se k Ultimaker Digital Factory"
 
 #~ msgctxt "@info"
 #~ msgid "Webcam feeds for cloud printers cannot be viewed from UltiMaker Cura."
@@ -7315,11 +7315,11 @@ msgstr "Fáze přípravy"
 #~ msgstr "Tiskárny přidané z Digital Factory:<ul>{}</ul>"
 
 #~ msgctxt "info:status"
-#~ msgid "<ul>{}</ul>To establish a connection, please visit the <a href='https://mycloud.ultimaker.com/'>UltiMaker Digital Factory</a>."
+#~ msgid "<ul>{}</ul>To establish a connection, please visit the <a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>."
 #~ msgstr "<ul>{}</ul> Chcete-li navázat spojení, navštivte <a href='https://mycloud.UltiMaker.com/'>Ultimaker Digital Factory</a>."
 
 #~ msgctxt "@label ({} is printer name)"
-#~ msgid "{} will be removed until the next account sync. <br> To remove {} permanently, visit <a href='https://mycloud.ultimaker.com/'>UltiMaker Digital Factory</a>. <br><br>Are you sure you want to remove {} temporarily?"
+#~ msgid "{} will be removed until the next account sync. <br> To remove {} permanently, visit <a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>. <br><br>Are you sure you want to remove {} temporarily?"
 #~ msgstr "{} bude odebrána až do další synchronizace účtu. <br> Chcete-li {} trvale odebrat, navštivte <a href='https://mycloud.UltiMaker.com/'>Ultimaker Digital Factory</a>. <br><br>Opravdu chcete dočasně odebrat {}?"
 
 #~ msgctxt "@label"
@@ -7355,8 +7355,8 @@ msgstr "Fáze přípravy"
 #~ msgstr "Webová kamera není k dispozici, protože monitorujete cloudovou tiskárnu."
 
 #~ msgctxt "@button"
-#~ msgid "UltiMaker Digital Factory"
-#~ msgstr "UltiMaker Digital Factory"
+#~ msgid "Ultimaker Digital Factory"
+#~ msgstr "Ultimaker Digital Factory"
 
 #~ msgctxt "@text:window, %1 is a profile name"
 #~ msgid ""

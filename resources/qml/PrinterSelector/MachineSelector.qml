@@ -65,7 +65,7 @@ Cura.ExpandablePopup
                     }
                     else
                     {
-                        return catalog.i18nc("@status", "This printer is not linked to your account. Please visit the UltiMaker Digital Factory to establish a connection.")
+                        return catalog.i18nc("@status", "This printer is not linked to your account. Please visit the Ultimaker Digital Factory to establish a connection.")
                     }
                 }
                 else

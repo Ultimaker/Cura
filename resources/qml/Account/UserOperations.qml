@@ -93,7 +93,7 @@ Column
         width: parent.width
         height: UM.Theme.getSize("account_button").height
 
-        text: "UltiMaker Digital Factory"
+        text: "Ultimaker Digital Factory"
         onClicked: Qt.openUrlExternally(CuraApplication.ultimakerDigitalFactoryUrl + "?utm_source=cura&utm_medium=software&utm_campaign=menu-visit-DF")
         fixedWidthMode: false
     }

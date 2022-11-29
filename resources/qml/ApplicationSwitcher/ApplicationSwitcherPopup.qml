@@ -31,7 +31,7 @@ Popup
                 {
                     displayName: catalog.i18nc("@label:button", "My printers"),
                     thumbnail: UM.Theme.getIcon("PrinterTriple", "high"),
-                    description: catalog.i18nc("@tooltip:button", "Monitor printers in UltiMaker Digital Factory."),
+                    description: catalog.i18nc("@tooltip:button", "Monitor printers in Ultimaker Digital Factory."),
                     link: "https://digitalfactory.ultimaker.com/app/printers?utm_source=cura&utm_medium=software&utm_campaign=switcher-digital-factory-printers",
                     permissionsRequired: ["digital-factory.printer.read"]
                 },

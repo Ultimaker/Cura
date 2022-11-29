@@ -1021,8 +1021,8 @@ msgstr[0] "这些打印机未链接到 Digital Factory："
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/RemovedPrintersMessage.py:22
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:422
 msgctxt "info:name"
-msgid "UltiMaker Digital Factory"
-msgstr "UltiMaker Digital Factory"
+msgid "Ultimaker Digital Factory"
+msgstr "Ultimaker Digital Factory"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/RemovedPrintersMessage.py:28
 #, python-brace-format
@@ -1166,8 +1166,8 @@ msgstr "监控打印"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:278
 msgctxt "@action:tooltip"
-msgid "Track the print in UltiMaker Digital Factory"
-msgstr "在 UltiMaker Digital Factory 中跟踪打印"
+msgid "Track the print in Ultimaker Digital Factory"
+msgstr "在 Ultimaker Digital Factory 中跟踪打印"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:298
 #, python-brace-format
@@ -2330,8 +2330,8 @@ msgstr "请及时更新打印机固件以远程管理打印队列。"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:287
 msgctxt "@info"
-msgid "Webcam feeds for cloud printers cannot be viewed from UltiMaker Cura. Click \"Manage printer\" to visit UltiMaker Digital Factory and view this webcam."
-msgstr "无法从 UltiMaker Cura 中查看云打印机的网络摄像头馈送。请单击“管理打印机”以访问 UltiMaker Digital Factory 并查看此网络摄像头。"
+msgid "Webcam feeds for cloud printers cannot be viewed from UltiMaker Cura. Click \"Manage printer\" to visit Ultimaker Digital Factory and view this webcam."
+msgstr "无法从 UltiMaker Cura 中查看云打印机的网络摄像头馈送。请单击“管理打印机”以访问 Ultimaker Digital Factory 并查看此网络摄像头。"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:347
 msgctxt "@label:status"
@@ -2397,8 +2397,8 @@ msgstr "第一个可用"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorStage.qml:117
 msgctxt "@info"
-msgid "Monitor your printers from everywhere using UltiMaker Digital Factory"
-msgstr "使用 UltiMaker Digital Factory 从任意位置监控打印机"
+msgid "Monitor your printers from everywhere using Ultimaker Digital Factory"
+msgstr "使用 Ultimaker Digital Factory 从任意位置监控打印机"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorStage.qml:129
 msgctxt "@button"
@@ -5627,8 +5627,8 @@ msgstr "我的打印机"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:34
 msgctxt "@tooltip:button"
-msgid "Monitor printers in UltiMaker Digital Factory."
-msgstr "在 UltiMaker Digital Factory 中监控打印机。"
+msgid "Monitor printers in Ultimaker Digital Factory."
+msgstr "在 Ultimaker Digital Factory 中监控打印机。"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:41
 msgctxt "@tooltip:button"
@@ -6039,8 +6039,8 @@ msgstr "云打印机离线。请检查打印机是否已开启并连接到 Inter
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrinterSelector/MachineSelector.qml:51
 msgctxt "@status"
-msgid "This printer is not linked to your account. Please visit the UltiMaker Digital Factory to establish a connection."
-msgstr "此打印机未链接到您的帐户。请访问 UltiMaker Digital Factory 以建立连接。"
+msgid "This printer is not linked to your account. Please visit the Ultimaker Digital Factory to establish a connection."
+msgstr "此打印机未链接到您的帐户。请访问 Ultimaker Digital Factory 以建立连接。"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrinterSelector/MachineSelector.qml:56
 msgctxt "@status"
@@ -6269,8 +6269,8 @@ msgstr "连接到 Digital Library，以允许 Cura 从 Digital Library 打开文
 
 #: /DigitalLibrary/plugin.json
 msgctxt "name"
-msgid "UltiMaker Digital Library"
-msgstr "UltiMaker Digital Library"
+msgid "Ultimaker Digital Library"
+msgstr "Ultimaker Digital Library"
 
 #: /GCodeProfileReader/plugin.json
 msgctxt "description"
@@ -7151,8 +7151,8 @@ msgstr "准备阶段"
 #~ msgstr "使用您的 UltiMaker account 帐户从任何地方发送和监控打印作业。"
 
 #~ msgctxt "@info:status Ultimaker Cloud should not be translated."
-#~ msgid "Connect to UltiMaker Digital Factory"
-#~ msgstr "连接到 UltiMaker Digital Factory"
+#~ msgid "Connect to Ultimaker Digital Factory"
+#~ msgstr "连接到 Ultimaker Digital Factory"
 
 #~ msgctxt "@info"
 #~ msgid "Webcam feeds for cloud printers cannot be viewed from UltiMaker Cura."
@@ -7280,11 +7280,11 @@ msgstr "准备阶段"
 #~ msgstr "从 Digital Factory 添加的打印机：<ul>{}</ul>"
 
 #~ msgctxt "info:status"
-#~ msgid "<ul>{}</ul>To establish a connection, please visit the <a href='https://mycloud.ultimaker.com/'>UltiMaker Digital Factory</a>."
+#~ msgid "<ul>{}</ul>To establish a connection, please visit the <a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>."
 #~ msgstr "<ul>{}</ul>要建立连接，请访问 <a href='https://mycloud.UltiMaker.com/'>Ultimaker Digital Factory</a>。"
 
 #~ msgctxt "@label ({} is printer name)"
-#~ msgid "{} will be removed until the next account sync. <br> To remove {} permanently, visit <a href='https://mycloud.ultimaker.com/'>UltiMaker Digital Factory</a>. <br><br>Are you sure you want to remove {} temporarily?"
+#~ msgid "{} will be removed until the next account sync. <br> To remove {} permanently, visit <a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>. <br><br>Are you sure you want to remove {} temporarily?"
 #~ msgstr "{} 将被删除，直至下次帐户同步为止。<br>要永久删除 {}，请访问 <a href='https://mycloud.UltiMaker.com/'>Ultimaker Digital Factory</a>。<br><br>是否确实要暂时删除 {}？"
 
 #~ msgctxt "@label"
@@ -7320,8 +7320,8 @@ msgstr "准备阶段"
 #~ msgstr "网络摄像头不可用，因为您正在监控云打印机。"
 
 #~ msgctxt "@button"
-#~ msgid "UltiMaker Digital Factory"
-#~ msgstr "UltiMaker Digital Factory"
+#~ msgid "Ultimaker Digital Factory"
+#~ msgstr "Ultimaker Digital Factory"
 
 #~ msgctxt "@text:window, %1 is a profile name"
 #~ msgid ""

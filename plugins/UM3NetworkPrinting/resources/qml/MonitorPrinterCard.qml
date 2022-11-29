@@ -285,7 +285,7 @@ Item
         {
             id: cameraDisabledInfo
             text: catalog.i18nc("@info", "Webcam feeds for cloud printers cannot be viewed from UltiMaker Cura." +
-                " Click \"Manage printer\" to visit UltiMaker Digital Factory and view this webcam.")
+                " Click \"Manage printer\" to visit Ultimaker Digital Factory and view this webcam.")
             target: cameraButton
         }
     }
