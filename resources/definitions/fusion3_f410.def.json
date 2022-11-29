@@ -32,61 +32,47 @@
         "machine_max_acceleration_x": { "value": 5000 },
         "machine_max_acceleration_y": { "value": 5000 },
         "machine_max_acceleration_z": { "value": 500 },
-        "machine_max_acceleration_e": { "value": 10000 },
         "machine_acceleration": { "value": 2000 },
         "acceleration_print": { "value": "machine_acceleration" },
         "acceleration_travel": { "value": "machine_acceleration" },
         "acceleration_travel_layer_0": { "value": "acceleration_travel" },
         "acceleration_roofing": { "enabled": "acceleration_enabled and roofing_layer_count > 0 and top_layers > 0" },
-        "acceleration_enabled": { "value": false },
 
-        "machine_max_jerk_xy": { "value": 20 },
         "machine_max_jerk_z": { "value": 1 },
         "machine_max_jerk_e": { "value": 30 },
         "jerk_print": { "value": 10 },
         "jerk_travel": { "value": "jerk_print" },
         "jerk_travel_layer_0": { "value": "jerk_travel" },
-        "jerk_enabled": { "value": false },
 
         "speed_print": { "value": 100 } ,
         "speed_infill": { "value": "speed_print *0.7" },
         "speed_wall": { "value": "speed_print *0.6" },
-        "speed_wall_0": { "value": "speed_wall" },
         "speed_wall_x": { "value": "speed_print *0.85" },
 
-        "speed_roofing": { "value": "speed_topbottom" },
         "speed_travel": { "value": "speed_print * 1.5" },
         "speed_layer_0": { "value": "speed_print *0.4" },
-        "speed_print_layer_0": { "value": "speed_layer_0" },
         "speed_travel_layer_0": { "value": "speed_travel *0.5" },
         "speed_prime_tower": { "value": "speed_topbottom" },
         "speed_support": { "value": "speed_wall_0" },
         "speed_support_interface": { "value": "speed_topbottom" },
         "speed_z_hop": { "value": 5 },
 
-        "skirt_brim_speed": { "value": "speed_layer_0" },
 
-        "line_width": { "value": "machine_nozzle_size" },
 
         "optimize_wall_printing_order": { "value": "True" },
 
         "material_initial_print_temperature": { "value": "material_print_temperature" },
         "material_final_print_temperature": { "value": "material_print_temperature" },
-        "material_flow": { "value": 100 },
-        "material_flow_layer_0": { "value": 100 },
 
         "z_seam_type": { "value": "'sharpest_corner'" },
         "z_seam_corner": { "value": "'z_seam_corner_inner'" },
-        
-        "infill_sparse_density": { "value": "20" },
+
         "infill_pattern": { "value": "'zigzag' if infill_sparse_density > 89 else 'lines' if infill_sparse_density > 31 else 'cubic'" },
         "infill_before_walls": { "value": false },
         "infill_overlap": { "value": 20.0 },
         "skin_overlap": { "value": 10.0 },
         "infill_wipe_dist": { "value": 0.0 },
         "wall_0_wipe_dist": { "value": 0.0 },
-
-        "fill_outline_gaps": { "value": true },
 
         "retraction_speed": {
             "maximum_value_warning": "machine_max_feedrate_e *0.75",
@@ -101,7 +87,7 @@
             "maximum_value_warning": "machine_max_feedrate_e *0.75",
             "maximum_value": "machine_max_feedrate_e"
         },
-        
+
         "retraction_hop_enabled": { "value": "True" },
         "retraction_hop": { "value": 0.2 },
         "retraction_combing": { "value": "'off' if retraction_hop_enabled else 'noskin'" },
@@ -109,17 +95,13 @@
         "travel_avoid_other_parts": { "value": false },
         "travel_avoid_supports": { "value": true },
         "travel_retract_before_outer_wall": { "value": true },
-        
-        "retraction_enable": { "value": true },
+
         "retract_at_layer_change": { "value": true },
         "retraction_count_max": { "value": 100 },
         "retraction_extrusion_window": { "value": 5 },
         "retraction_hop_enabled": { "value": true },
-        "retraction_min_travel": { "value": 1.5 },
 
         "cool_fan_full_at_height": { "value": "layer_height_0 * 4" },
-        "cool_fan_enabled": { "value": true },
-        "cool_min_layer_time": { "value": 5 },
         "cool_min_speed": { "value": "speed_print * 0.3" },
 
         "adhesion_type": { "value": "'skirt'" },
@@ -146,7 +128,6 @@
         "support_brim_enable": { "value": true },
         "support_brim_width": { "value": 4 },
 
-        "support_interface_enable": { "value": false },
         "support_interface_height": { "value": "layer_height * 4" },
         "support_interface_density": { "value": 33.333 },
         "support_interface_pattern": { "value": "'grid'" },
