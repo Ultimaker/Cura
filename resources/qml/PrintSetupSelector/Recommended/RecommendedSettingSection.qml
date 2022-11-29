@@ -48,16 +48,6 @@ Item
             font: UM.Theme.getFont("medium_bold")
         }
 
-        UM.Switch
-        {
-            id: enableSectionSwitch
-            anchors.left: sectionTitle.right
-            anchors.verticalCenter: parent.verticalCenter
-            visible: false
-
-            onClicked: onEnableSectionChanged(enableSectionSwitch.checked)
-        }
-
         MouseArea
         {
             id: tooltipMouseArea
@@ -69,6 +59,18 @@ Item
             onExited: { print("hideTooltip" ) }
         }
 
+    }
+
+    UM.Switch
+    {
+        id: enableSectionSwitch
+        anchors.left: parent.left
+        // These numbers come from the IconWithText in RecommendedSettingSection.
+        anchors.leftMargin: leftColumnWidth + UM.Theme.getSize("medium_button_icon").width + UM.Theme.getSize("thick_margin").width - (2 * UM.Theme.getSize("thick_lining").width)
+        anchors.verticalCenter: sectionHeader.verticalCenter
+        visible: false
+
+        onClicked: onEnableSectionChanged(enableSectionSwitch.checked)
     }
 
     ColumnLayout
