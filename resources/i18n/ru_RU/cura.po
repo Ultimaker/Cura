@@ -5675,7 +5675,7 @@ msgstr "Полное решение для 3D печати методом нап
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Dialogs/AboutDialog.qml:87
 msgctxt "@info:credit"
 msgid ""
-"Cura is developed by Ultimaker B.V. in cooperation with the community.\n"
+"Cura is developed by UltiMaker in cooperation with the community.\n"
 "Cura proudly uses the following open source projects:"
 msgstr "Cura разработана компанией UltiMaker B.V. совместно с сообществом.\nCura использует следующие проекты с открытым исходным кодом:"
 

@@ -5434,7 +5434,7 @@ msgstr "熔絲 3D 列印技術的的端對端解決方案。"
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Dialogs/AboutDialog.qml:87
 msgctxt "@info:credit"
 msgid ""
-"Cura is developed by Ultimaker B.V. in cooperation with the community.\n"
+"Cura is developed by UltiMaker in cooperation with the community.\n"
 "Cura proudly uses the following open source projects:"
 msgstr ""
 "Cura 由 Ultimaker B.V. 與社群合作開發。\n"

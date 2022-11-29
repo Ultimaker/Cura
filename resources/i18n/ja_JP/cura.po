@@ -5623,7 +5623,7 @@ msgstr "熱溶解積層型3Dプリンティングのエンドtoエンドソリ�
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Dialogs/AboutDialog.qml:87
 msgctxt "@info:credit"
 msgid ""
-"Cura is developed by Ultimaker B.V. in cooperation with the community.\n"
+"Cura is developed by UltiMaker in cooperation with the community.\n"
 "Cura proudly uses the following open source projects:"
 msgstr "CuraはUltiMakerB.Vのコミュニティの協力によって開発され、Curaはオープンソースで使えることを誇りに思います:"
 

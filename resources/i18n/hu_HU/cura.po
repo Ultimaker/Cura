@@ -5437,7 +5437,7 @@ msgstr "Teljes körű megoldás az olvadószálas 3D-s nyomtatáshoz."
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Dialogs/AboutDialog.qml:87
 msgctxt "@info:credit"
 msgid ""
-"Cura is developed by Ultimaker B.V. in cooperation with the community.\n"
+"Cura is developed by UltiMaker in cooperation with the community.\n"
 "Cura proudly uses the following open source projects:"
 msgstr "A Cura-t az UltiMaker B.V fejlesztette ki a közösséggel együttműködésben. A Cura büszkén használja a következő nyílt forráskódú projekteket:"
 
