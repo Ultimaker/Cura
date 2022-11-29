@@ -38,6 +38,12 @@ class CompatibleMachineModel(ListModel):
     def _update(self) -> None:
         self.clear()
 
+        def _makeMaterial(brand, name, color):
+            if name.lower() in ["", "empty"]:
+                return {"brand": "", "name": "(empty)", "hexcolor": "#ffffff"}
+            else:
+                return {"brand": brand, "name": name, "hexcolor": color}
+
         from cura.CuraApplication import CuraApplication
         machine_manager = CuraApplication.getInstance().getMachineManager()
 
@@ -48,11 +54,8 @@ class CompatibleMachineModel(ListModel):
 
                 # initialize & add current active material:
                 for extruder in printer.extruders:
-                    materials = [{
-                        "brand": extruder.activeMaterial.brand,
-                        "name": extruder.activeMaterial.name,
-                        "hexcolor": extruder.activeMaterial.color,
-                    }]
+                    materials = [_makeMaterial(
+                        extruder.activeMaterial.brand, extruder.activeMaterial.name, extruder.activeMaterial.color)]
                     extruder_configs[extruder.getPosition()] = {
                         "position": extruder.getPosition(),
                         "core": extruder.hotendID,
@@ -66,11 +69,9 @@ class CompatibleMachineModel(ListModel):
                             Logger.log("w", f"No active extruder for position {extruder.position}.")
                             continue
 
-                        extruder_configs[extruder.position]["materials"].append({
-                            "brand": extruder.material.brand,
-                            "name": extruder.material.name,
-                            "hexcolor": extruder.material.color
-                        })
+                        entry = _makeMaterial(extruder.material.brand, extruder.material.name, extruder.material.color)
+                        if entry not in extruder_configs[extruder.position]["materials"]:
+                            extruder_configs[extruder.position]["materials"].append(entry)
 
                 if any([len(extruder["materials"]) > 0 for extruder in extruder_configs.values()]):
                     self.appendItem({
