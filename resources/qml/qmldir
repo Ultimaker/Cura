@@ -40,6 +40,7 @@ MenuItem            1.0 MenuItem.qml
 MenuSeparator       1.0 MenuSeparator.qml
 ExtruderSelectorBar 1.6 ExtruderSelectorBar.qml
 ExtruderButton      1.6 ExtruderButton.qml
+SingleSettingComboBox       1.7 SingleSettingComboBox.qml
 
 
 # Cura/MachineSettings

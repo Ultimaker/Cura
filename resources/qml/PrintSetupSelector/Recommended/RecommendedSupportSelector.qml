@@ -6,7 +6,7 @@ import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
 
 import UM 1.5 as UM
-import Cura 1.6 as Cura
+import Cura 1.7 as Cura
 
 
 RecommendedSettingSection
@@ -60,7 +60,7 @@ RecommendedSettingSection
             settingControl: Cura.ExtruderSelectorBar
             {
                 model: extruderModel
-                selectedIndex: (supportExtruderNr.properties.value !== undefined) ? supportExtruderNr.properties.value : 0
+                selectedIndex: supportExtruderNr.properties.value !== undefined ? supportExtruderNr.properties.value : 0
                 function onClickExtruder(index)
                 {
                     forceActiveFocus();
@@ -73,9 +73,13 @@ RecommendedSettingSection
         RecommendedSettingItem
         {
             settingName: catalog.i18nc("@action:label", "Placement")
-            settingControl: Rectangle { color: "green"; width: 50; height:50 }
+
+            settingControl: Cura.SingleSettingComboBox
+            {
+                width: parent.width
+                height: UM.Theme.getSize("combobox").height
+                settingName: "support_type"
+            }
         }
     ]
-
-
 }
