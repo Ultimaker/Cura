@@ -6,6 +6,7 @@ import QtQuick.Layouts 1.1
 
 import UM 1.6 as UM
 import Cura 1.6 as Cura
+import ".."
 
 Item
 {
