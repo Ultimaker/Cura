@@ -91,10 +91,10 @@ Item
 
     UM.SimpleButton
     {
-        id: compareAndSaveButton
+        id: resetToDefaultQualityButton
         height: UM.Theme.getSize("action_button_icon").height
         width: height
-        iconSource: UM.Theme.getIcon("Save")
+        iconSource: UM.Theme.getIcon("ArrowReset")
         anchors
         {
             right: buttonsSpacer.left
@@ -104,8 +104,15 @@ Item
         color: enabled ? UM.Theme.getColor("accent_1") : UM.Theme.getColor("disabled")
         hoverColor: UM.Theme.getColor("primary_hover")
 
-        enabled: Cura.SimpleModeSettingsManager.isProfileCustomized
-        onClicked: Cura.MachineManager.hasCustomQuality ? CuraApplication.discardOrKeepProfileChanges() : Cura.Actions.addProfile.trigger()
+        enabled: Cura.MachineManager.hasCustomQuality || Cura.SimpleModeSettingsManager.isProfileCustomized
+        onClicked: Cura.MachineManager.resetToUseDefaultQuality()
+
+        UM.ToolTip
+        {
+            visible: parent.hovered
+            targetPoint: Qt.point(parent.x - width, Math.round(parent.y + parent.height / 2))
+            tooltipText: catalog.i18nc("@info", "Reset to defaults.")
+        }
     }
 
     // Spacer
@@ -113,15 +120,15 @@ Item
     {
         id: buttonsSpacer
         width:  UM.Theme.getSize("action_button_icon").height
-        anchors.right: resetToDefaultQualityButton.left
+        anchors.right: compareAndSaveButton.left
     }
 
     UM.SimpleButton
     {
-        id: resetToDefaultQualityButton
+        id: compareAndSaveButton
         height: UM.Theme.getSize("action_button_icon").height
         width: height
-        iconSource: UM.Theme.getIcon("ArrowReset")
+        iconSource: UM.Theme.getIcon("Save")
         anchors
         {
             right: parent.right
@@ -131,7 +138,14 @@ Item
         color: enabled ? UM.Theme.getColor("accent_1") : UM.Theme.getColor("disabled")
         hoverColor: UM.Theme.getColor("primary_hover")
 
-        enabled: Cura.MachineManager.hasCustomQuality || Cura.SimpleModeSettingsManager.isProfileCustomized
-        onClicked: Cura.MachineManager.resetToUseDefaultQuality()
+        enabled: Cura.SimpleModeSettingsManager.isProfileCustomized
+        onClicked: Cura.MachineManager.hasCustomQuality ? CuraApplication.discardOrKeepProfileChanges() : Cura.Actions.addProfile.trigger()
+
+        UM.ToolTip
+        {
+            visible: parent.hovered
+            targetPoint: Qt.point(parent.x - width, Math.round(parent.y + parent.height / 2))
+            tooltipText: catalog.i18nc("@info", "Compare and safe.")
+        }
     }
 }
