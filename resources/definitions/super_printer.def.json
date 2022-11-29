@@ -93,6 +93,8 @@
         "acceleration_topbottom": { "value": "math.ceil(acceleration_print * 1000 / 3500)" },
         "acceleration_wall": { "value": "math.ceil(acceleration_print * 1500 / 3500)" },
         "acceleration_wall_0": { "value": "math.ceil(acceleration_wall * 1000 / 3500)" },
+        "support_use_towers": {
+            "value": false },
         "brim_width": { "value": "3" },
         "cool_fan_speed": { "value": "50" },
         "cool_fan_speed_max": { "value": "100" },
