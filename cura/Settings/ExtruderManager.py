@@ -275,7 +275,7 @@ class ExtruderManager(QObject):
         for extruder_setting in used_adhesion_extruders:
             extruder_str_nr = str(global_stack.getProperty(extruder_setting, "value"))
             if extruder_str_nr == "-1":
-                extruder_str_nr = self._application.getMachineManager().defaultExtruderPosition
+                continue  # An optional extruder doesn't force any extruder to be used if it isn't used already
             if extruder_str_nr in self.extruderIds:
                 used_extruder_stack_ids.add(self.extruderIds[extruder_str_nr])
 
@@ -298,7 +298,7 @@ class ExtruderManager(QObject):
         # Starts with the adhesion extruder.
         adhesion_type = global_stack.getProperty("adhesion_type", "value")
         if adhesion_type in {"skirt", "brim"}:
-            return global_stack.getProperty("skirt_brim_extruder_nr", "value")
+            return max(0, int(global_stack.getProperty("skirt_brim_extruder_nr", "value")))  # optional skirt/brim extruder defaults to zero
         if adhesion_type == "raft":
             return global_stack.getProperty("raft_base_extruder_nr", "value")
 

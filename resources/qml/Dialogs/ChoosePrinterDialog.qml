@@ -53,22 +53,38 @@ UM.Dialog
                     anchors.left: parent.left
                     text: catalog.i18nc("@title:label", "Compatible Printers")
                     font: UM.Theme.getFont("large")
+                    anchors.horizontalCenter: parent.horizontalCenter
                 }
-
-                UM.SimpleButton
+                TabButton
                 {
+                    id: refreshButton
                     anchors.right: parent.right
-
-                    width: UM.Theme.getSize("small_button").width
-                    height: UM.Theme.getSize("small_button").height
-                    iconSource: UM.Theme.getIcon("ArrowDoubleCircleRight")
-                    color: UM.Theme.getColor("text_link")
-                    hoverColor: UM.Theme.getColor("text_scene_hover")
+                    width: UM.Theme.getSize("button_icon").width
+                    height: UM.Theme.getSize("button_icon").height
+                    hoverEnabled: true
 
                     onClicked:
                     {
                         manager.refresh()
                         base.compatible_machine_model.forceUpdate()
+                    }
+
+                    background: Rectangle
+                    {
+                        width: UM.Theme.getSize("button_icon").width
+                        height: UM.Theme.getSize("button_icon").height
+                        color: refreshButton.hovered ? UM.Theme.getColor("toolbar_button_hover") : UM.Theme.getColor("toolbar_background")
+                        radius: Math.round(refreshButton.width * 0.5)
+                    }
+
+                    UM.ColorImage
+                    {
+                        width: UM.Theme.getSize("section_icon").width
+                        height: UM.Theme.getSize("section_icon").height
+                        color: UM.Theme.getColor("text_link")
+                        source: UM.Theme.getIcon("ArrowDoubleCircleRight")
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.verticalCenter: parent.verticalCenter
                     }
                 }
             }
