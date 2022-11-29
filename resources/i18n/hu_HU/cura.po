@@ -1,6 +1,7 @@
 # Cura
-# Copyright (C) 2022 Ultimaker B.V.
+# Copyright (C) 2022 UltiMaker.
 # This file is distributed under the same license as the Cura package.
+# Ultimaker <plugins@ultimaker.com>, 2022.
 #
 msgid ""
 msgstr ""
@@ -423,8 +424,8 @@ msgstr ""
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/OAuth2/AuthorizationService.py:277
 msgctxt "@info"
-msgid "Unable to reach the Ultimaker account server."
-msgstr "Az Ultimaker fiókkiszolgáló elérhetetlen."
+msgid "Unable to reach the UltiMaker account server."
+msgstr "Az UltiMaker fiókkiszolgáló elérhetetlen."
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/OAuth2/AuthorizationService.py:278
 msgctxt "@info:title"
@@ -700,8 +701,8 @@ msgstr ""
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/CrashHandler.py:122
 msgctxt "@action:button"
-msgid "Send crash report to Ultimaker"
-msgstr "Hibajelentés küldése az Ultimaker -nek"
+msgid "Send crash report to UltiMaker"
+msgstr "Hibajelentés küldése az UltiMaker -nek"
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/CrashHandler.py:125
 msgctxt "@action:button"
@@ -901,7 +902,7 @@ msgstr "Hálózati hiba"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/NewPrinterDetectedMessage.py:13
 msgctxt "info:status"
-msgid "New printer detected from your Ultimaker account"
+msgid "New printer detected from your UltiMaker account"
 msgid_plural "New printers detected from your Ultimaker account"
 msgstr[0] ""
 msgstr[1] ""
@@ -1049,8 +1050,8 @@ msgstr ""
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:18
 msgctxt "@info:status"
-msgid "You are attempting to connect to a printer that is not running Ultimaker Connect. Please update the printer to the latest firmware."
-msgstr "Olyan nyomtatóval próbál csatlakozni, amelyen nem fut az Ultimaker Connect. Kérjük, frissítse a nyomtatón a firmware-t."
+msgid "You are attempting to connect to a printer that is not running UltiMaker Connect. Please update the printer to the latest firmware."
+msgstr "Olyan nyomtatóval próbál csatlakozni, amelyen nem fut az UltiMaker Connect. Kérjük, frissítse a nyomtatón a firmware-t."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:21
 msgctxt "@info:title"
@@ -1273,8 +1274,8 @@ msgstr ""
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UFPWriter/__init__.py:28
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UFPReader/__init__.py:22
 msgctxt "@item:inlistbox"
-msgid "Ultimaker Format Package"
-msgstr "Ultimaker formátumcsomag"
+msgid "UltiMaker Format Package"
+msgstr "UltiMaker formátumcsomag"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/DigitalLibrary/src/DigitalFactoryProjectResponse.py:19
 msgctxt "@text Placeholder for the username if it has been deleted"
@@ -1395,7 +1396,7 @@ msgstr ""
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/CloudSync/CloudPackageChecker.py:145
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/CloudSync/DownloadPresenter.py:95
 msgctxt "@info:title"
-msgid "Changes detected from your Ultimaker account"
+msgid "Changes detected from your UltiMaker account"
 msgstr ""
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/CloudSync/CloudPackageChecker.py:147
@@ -1556,7 +1557,7 @@ msgstr ""
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:169
 msgctxt "@message:description"
-msgid "Report a bug on Ultimaker Cura's issue tracker."
+msgid "Report a bug on UltiMaker Cura's issue tracker."
 msgstr ""
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:401
@@ -1682,7 +1683,7 @@ msgstr ""
 #: /Users/c.lamboo/ultimaker/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:723
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
-msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of Ultimaker Cura."
+msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura."
 msgstr ""
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/PerObjectSettingsTool/__init__.py:14
@@ -2326,7 +2327,7 @@ msgstr "A távoli nyomtatásisor kezeléshez kérjük frissítse a firmware-t."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:287
 msgctxt "@info"
-msgid "Webcam feeds for cloud printers cannot be viewed from Ultimaker Cura. Click \"Manage printer\" to visit Ultimaker Digital Factory and view this webcam."
+msgid "Webcam feeds for cloud printers cannot be viewed from UltiMaker Cura. Click \"Manage printer\" to visit Ultimaker Digital Factory and view this webcam."
 msgstr ""
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:347
@@ -2692,8 +2693,8 @@ msgstr "További információ a névtelen adatgyűjtésről"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:73
 msgctxt "@text:window"
-msgid "Ultimaker Cura collects anonymous data in order to improve the print quality and user experience. Below is an example of all the data that is shared:"
-msgstr "Az Ultimaker Cura névtelen adatokat gyűjt a nyomtatási minőség és a felhasználói élmény javítása érdekében. Az alábbiakban található egy példa az összes megosztott adatra:"
+msgid "UltiMaker Cura collects anonymous data in order to improve the print quality and user experience. Below is an example of all the data that is shared:"
+msgstr "Az UltiMaker Cura névtelen adatokat gyűjt a nyomtatási minőség és a felhasználói élmény javítása érdekében. Az alábbiakban található egy példa az összes megosztott adatra:"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:107
 msgctxt "@text:window"
@@ -2717,8 +2718,8 @@ msgstr ""
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UltimakerMachineActions/UMOUpgradeSelectionMachineAction.qml:30
 msgctxt "@label"
-msgid "Please select any upgrades made to this Ultimaker Original"
-msgstr "Kérjük, válassza ki az Ultimaker Original eredeti frissítéseit"
+msgid "Please select any upgrades made to this UltiMaker Original"
+msgstr "Kérjük, válassza ki az UltiMaker Original eredeti frissítéseit"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UltimakerMachineActions/UMOUpgradeSelectionMachineAction.qml:39
 msgctxt "@label"
@@ -2813,7 +2814,7 @@ msgstr ""
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/Plugins.qml:12
 msgctxt "@text"
-msgid "Streamline your workflow and customize your Ultimaker Cura experience with plugins contributed by our amazing community of users."
+msgid "Streamline your workflow and customize your UltiMaker Cura experience with plugins contributed by our amazing community of users."
 msgstr ""
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/CompatibilityDialog.qml:15
@@ -2872,7 +2873,7 @@ msgstr ""
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/Materials.qml:12
 msgctxt "@text"
-msgid "Select and install material profiles optimised for your Ultimaker 3D printers."
+msgid "Select and install material profiles optimised for your UltiMaker 3D printers."
 msgstr ""
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/ManagePackagesButton.qml:32
@@ -2994,17 +2995,17 @@ msgstr ""
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/VerifiedIcon.qml:21
 msgctxt "@info"
-msgid "Ultimaker Verified Plug-in"
+msgid "UltiMaker Verified Plug-in"
 msgstr ""
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/VerifiedIcon.qml:22
 msgctxt "@info"
-msgid "Ultimaker Certified Material"
+msgid "UltiMaker Certified Material"
 msgstr ""
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/VerifiedIcon.qml:23
 msgctxt "@info"
-msgid "Ultimaker Verified Package"
+msgid "UltiMaker Verified Package"
 msgstr ""
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/ManagedPackages.qml:11
@@ -3014,7 +3015,7 @@ msgstr ""
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/ManagedPackages.qml:15
 msgctxt "@text"
-msgid "Manage your Ultimaker Cura plugins and material profiles here. Make sure to keep your plugins up to date and backup your setup regularly."
+msgid "Manage your UltiMaker Cura plugins and material profiles here. Make sure to keep your plugins up to date and backup your setup regularly."
 msgstr ""
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/InstallMissingPackagesDialog.qml:15
@@ -4283,8 +4284,8 @@ msgstr "Magán"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:862
 msgctxt "@info:tooltip"
-msgid "Should anonymous data about your print be sent to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored."
-msgstr "Elküldjük a nyomtatott adatokat név nélkül az Ultimaker-nek?Semmilyen személyes infromáció, IP cím vagy azonosító nem kerül elküldésre."
+msgid "Should anonymous data about your print be sent to UltiMaker? Note, no models, IP addresses or other personally identifiable information is sent or stored."
+msgstr "Elküldjük a nyomtatott adatokat név nélkül az UltiMaker-nek?Semmilyen személyes infromáció, IP cím vagy azonosító nem kerül elküldésre."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:867
 msgctxt "@option:check"
@@ -4597,7 +4598,7 @@ msgstr "Hibaelhárítás"
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/CloudContent.qml:64
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Account/GeneralOperations.qml:19
 msgctxt "@label"
-msgid "Sign in to the Ultimaker platform"
+msgid "Sign in to the UltiMaker platform"
 msgstr ""
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/CloudContent.qml:123
@@ -4612,7 +4613,7 @@ msgstr ""
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/CloudContent.qml:175
 msgctxt "@text"
-msgid "Share ideas and get help from 48,000+ users in the Ultimaker Community"
+msgid "Share ideas and get help from 48,000+ users in the UltiMaker Community"
 msgstr ""
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/CloudContent.qml:189
@@ -4622,18 +4623,18 @@ msgstr ""
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/CloudContent.qml:201
 msgctxt "@text"
-msgid "Create a free Ultimaker Account"
+msgid "Create a free UltiMaker Account"
 msgstr ""
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:24
 msgctxt "@label"
-msgid "Help us to improve Ultimaker Cura"
-msgstr "Segítsen nekünk az Ultimaker Cura fejlesztésében"
+msgid "Help us to improve UltiMaker Cura"
+msgstr "Segítsen nekünk az UltiMaker Cura fejlesztésében"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:56
 msgctxt "@text"
-msgid "Ultimaker Cura collects anonymous data to improve print quality and user experience, including:"
-msgstr "Az Ultimaker Cura névtelen adatokat gyűjt a nyomtatási minőség és a felhasználói élmény javításának érdekében, ideértve:"
+msgid "UltiMaker Cura collects anonymous data to improve print quality and user experience, including:"
+msgstr "Az UltiMaker Cura névtelen adatokat gyűjt a nyomtatási minőség és a felhasználói élmény javításának érdekében, ideértve:"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:68
 msgctxt "@text"
@@ -4657,8 +4658,8 @@ msgstr "Nyomtatási beállítások"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:99
 msgctxt "@text"
-msgid "Data collected by Ultimaker Cura will not contain any personal information."
-msgstr "Az Ultimaker Cura által gyűjtött adatok nem tartalmaznak személyes információt."
+msgid "Data collected by UltiMaker Cura will not contain any personal information."
+msgstr "Az UltiMaker Cura által gyűjtött adatok nem tartalmaznak személyes információt."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:100
 msgctxt "@text"
@@ -4728,7 +4729,7 @@ msgstr "Nem sikerült csatlakozni az eszközhöz."
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:196
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:201
 msgctxt "@label"
-msgid "Can't connect to your Ultimaker printer?"
+msgid "Can't connect to your UltiMaker printer?"
 msgstr ""
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:200
@@ -4748,12 +4749,12 @@ msgstr "Csatlakozás"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/WelcomeContent.qml:56
 msgctxt "@label"
-msgid "Welcome to Ultimaker Cura"
-msgstr "Üdvözöljük az Ultimaker Cura-ban"
+msgid "Welcome to UltiMaker Cura"
+msgstr "Üdvözöljük az UltiMaker Cura-ban"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/WelcomeContent.qml:67
 msgctxt "@text"
-msgid "Please follow these steps to set up Ultimaker Cura. This will only take a few moments."
+msgid "Please follow these steps to set up UltiMaker Cura. This will only take a few moments."
 msgstr ""
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/WelcomeContent.qml:82
@@ -5436,9 +5437,9 @@ msgstr "Teljes körű megoldás az olvadószálas 3D-s nyomtatáshoz."
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Dialogs/AboutDialog.qml:87
 msgctxt "@info:credit"
 msgid ""
-"Cura is developed by Ultimaker B.V. in cooperation with the community.\n"
+"Cura is developed by UltiMaker in cooperation with the community.\n"
 "Cura proudly uses the following open source projects:"
-msgstr "A Cura-t az Ultimaker B.V fejlesztette ki a közösséggel együttműködésben. A Cura büszkén használja a következő nyílt forráskódú projekteket:"
+msgstr "A Cura-t az UltiMaker B.V fejlesztette ki a közösséggel együttműködésben. A Cura büszkén használja a következő nyílt forráskódú projekteket:"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Dialogs/AboutDialog.qml:138
 msgctxt "@label Description for application component"
@@ -5643,22 +5644,22 @@ msgstr ""
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:55
 msgctxt "@tooltip:button"
-msgid "Extend Ultimaker Cura with plugins and material profiles."
+msgid "Extend UltiMaker Cura with plugins and material profiles."
 msgstr ""
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:62
 msgctxt "@tooltip:button"
-msgid "Become a 3D printing expert with Ultimaker e-learning."
+msgid "Become a 3D printing expert with UltiMaker e-learning."
 msgstr ""
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:67
 msgctxt "@label:button"
-msgid "Ultimaker support"
+msgid "UltiMaker support"
 msgstr ""
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:69
 msgctxt "@tooltip:button"
-msgid "Learn how to get started with Ultimaker Cura."
+msgid "Learn how to get started with UltiMaker Cura."
 msgstr ""
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:74
@@ -5668,7 +5669,7 @@ msgstr ""
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:76
 msgctxt "@tooltip:button"
-msgid "Consult the Ultimaker Community."
+msgid "Consult the UltiMaker Community."
 msgstr ""
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:81
@@ -5683,7 +5684,7 @@ msgstr ""
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:90
 msgctxt "@tooltip:button"
-msgid "Visit the Ultimaker website."
+msgid "Visit the UltiMaker website."
 msgstr ""
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:40
@@ -5977,7 +5978,7 @@ msgstr ""
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Account/GeneralOperations.qml:58
 msgctxt "@button"
-msgid "Create a free Ultimaker account"
+msgid "Create a free UltiMaker account"
 msgstr ""
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Account/AccountWidget.qml:24
@@ -5992,7 +5993,7 @@ msgstr ""
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Account/UserOperations.qml:107
 msgctxt "@button"
-msgid "Ultimaker Account"
+msgid "UltiMaker Account"
 msgstr ""
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Account/UserOperations.qml:126
@@ -6207,13 +6208,13 @@ msgstr "Utólagos feldolgozás"
 
 #: /UM3NetworkPrinting/plugin.json
 msgctxt "description"
-msgid "Manages network connections to Ultimaker networked printers."
-msgstr "Kezeli a hálózati csatlakozásokat az Ultimaker hálózati nyomtatókhoz."
+msgid "Manages network connections to UltiMaker networked printers."
+msgstr "Kezeli a hálózati csatlakozásokat az UltiMaker hálózati nyomtatókhoz."
 
 #: /UM3NetworkPrinting/plugin.json
 msgctxt "name"
-msgid "Ultimaker Network Connection"
-msgstr "Ultimaker hálózati kapcsolat"
+msgid "UltiMaker Network Connection"
+msgstr "UltiMaker hálózati kapcsolat"
 
 #: /3MFWriter/plugin.json
 msgctxt "description"
@@ -6247,8 +6248,8 @@ msgstr "Szeletelési infó"
 
 #: /UFPWriter/plugin.json
 msgctxt "description"
-msgid "Provides support for writing Ultimaker Format Packages."
-msgstr "Támogatást nyújt az Ultimaker formátumú csomagok írásához."
+msgid "Provides support for writing UltiMaker Format Packages."
+msgstr "Támogatást nyújt az UltiMaker formátumú csomagok írásához."
 
 #: /UFPWriter/plugin.json
 msgctxt "name"
@@ -6297,13 +6298,13 @@ msgstr "Trimesh olvasó"
 
 #: /UltimakerMachineActions/plugin.json
 msgctxt "description"
-msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
-msgstr "Gépi funkciók biztosítása az Ultimaker nyomtatók számára.(pl.: ágyszintezés varázsló, frissítések kiválasztása.)"
+msgid "Provides machine actions for UltiMaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
+msgstr "Gépi funkciók biztosítása az UltiMaker nyomtatók számára.(pl.: ágyszintezés varázsló, frissítések kiválasztása.)"
 
 #: /UltimakerMachineActions/plugin.json
 msgctxt "name"
-msgid "Ultimaker machine actions"
-msgstr "Ultimaker gépi funkciók"
+msgid "UltiMaker machine actions"
+msgstr "UltiMaker gépi funkciók"
 
 #: /GCodeGzReader/plugin.json
 msgctxt "description"
@@ -6317,7 +6318,7 @@ msgstr "Tömörített G-kód olvasó"
 
 #: /Marketplace/plugin.json
 msgctxt "description"
-msgid "Manages extensions to the application and allows browsing extensions from the Ultimaker website."
+msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
 msgstr ""
 
 #: /Marketplace/plugin.json
@@ -6667,8 +6668,8 @@ msgstr "G-kódot író"
 
 #: /UFPReader/plugin.json
 msgctxt "description"
-msgid "Provides support for reading Ultimaker Format Packages."
-msgstr "Támogatást nyújt az Ultimaker formátumú csomagok olvasásához."
+msgid "Provides support for reading UltiMaker Format Packages."
+msgstr "Támogatást nyújt az UltiMaker formátumú csomagok olvasásához."
 
 #: /UFPReader/plugin.json
 msgctxt "name"
@@ -7036,8 +7037,8 @@ msgstr "Előkészítés nézet"
 #~ msgstr "Szimulációs nézetet biztosít."
 
 #~ msgctxt "@info:status"
-#~ msgid "Send and monitor print jobs from anywhere using your Ultimaker account."
-#~ msgstr "Küldjön és felügyeljen nyomtatási feladatokat bárhonnan az Ultimaker fiókjával."
+#~ msgid "Send and monitor print jobs from anywhere using your UltiMaker account."
+#~ msgstr "Küldjön és felügyeljen nyomtatási feladatokat bárhonnan az UltiMaker fiókjával."
 
 #~ msgctxt "@info:title The %s gets replaced with the printer name."
 #~ msgid "New %s firmware available"
@@ -7082,8 +7083,8 @@ msgstr "Előkészítés nézet"
 #~ "az Ultimaker Cura beállításához. Pár pillanat az egész."
 
 #~ msgctxt "@label"
-#~ msgid "What's new in Ultimaker Cura"
-#~ msgstr "Újdonságok az Ultimaker Cura-ban"
+#~ msgid "What's new in UltiMaker Cura"
+#~ msgstr "Újdonságok az UltiMaker Cura-ban"
 
 #~ msgctxt "@info:status"
 #~ msgid "The selected model was too small to load."
@@ -7130,8 +7131,8 @@ msgstr "Előkészítés nézet"
 #~ msgstr "Csatlakozás felhőn keresztül"
 
 #~ msgctxt "@info:status Ultimaker Cloud should not be translated."
-#~ msgid "Connect to Ultimaker Cloud"
-#~ msgstr "Csatlakozás az Ultimaker felhőhöz"
+#~ msgid "Connect to UltiMaker Cloud"
+#~ msgstr "Csatlakozás az UltiMaker felhőhöz"
 
 #~ msgctxt "@label"
 #~ msgid "You need to install the package before you can rate"
@@ -7158,8 +7159,8 @@ msgstr "Előkészítés nézet"
 #~ msgstr "Szia %1"
 
 #~ msgctxt "@button"
-#~ msgid "Ultimaker account"
-#~ msgstr "Ultimaker fiók"
+#~ msgid "UltiMaker account"
+#~ msgstr "UltiMaker fiók"
 
 #~ msgctxt "@button"
 #~ msgid "Sign out"
@@ -7343,8 +7344,8 @@ msgstr "Előkészítés nézet"
 #~ msgstr "Ellenőrző lista"
 
 #~ msgctxt "@label"
-#~ msgid "Please select any upgrades made to this Ultimaker 2."
-#~ msgstr "Kérjük, válassza ki az Ultimaker 2 frissítéseit."
+#~ msgid "Please select any upgrades made to this UltiMaker 2."
+#~ msgstr "Kérjük, válassza ki az UltiMaker 2 frissítéseit."
 
 #~ msgctxt "@label"
 #~ msgid "Olsson Block"
@@ -7421,8 +7422,8 @@ msgstr "Előkészítés nézet"
 #~ "- Exklúzív hozzáférés a vezető nyomtató márkák nyomtatási profiljaikhoz"
 
 #~ msgctxt "@title:window"
-#~ msgid "Ultimaker Cura"
-#~ msgstr "Ultimaker Cura"
+#~ msgid "UltiMaker Cura"
+#~ msgstr "UltiMaker Cura"
 
 #~ msgctxt "@title:window"
 #~ msgid "Closing Cura"
@@ -7441,20 +7442,20 @@ msgstr "Előkészítés nézet"
 #~ msgstr "Tárgyasztal"
 
 #~ msgctxt "@label"
-#~ msgid "Ultimaker Cloud"
-#~ msgstr "Ultimaker felhő"
+#~ msgid "UltiMaker Cloud"
+#~ msgstr "UltiMaker felhő"
 
 #~ msgctxt "@text"
 #~ msgid "The next generation 3D printing workflow"
 #~ msgstr "Következő generációs 3D nyomtatási munkafolyamat"
 
 #~ msgctxt "@text"
-#~ msgid "- Send print jobs to Ultimaker printers outside your local network"
-#~ msgstr "- Küldjön nyomtatási feladatokat az Ultimaker nyomtatóknak a helyi hálózaton kívülről"
+#~ msgid "- Send print jobs to UltiMaker printers outside your local network"
+#~ msgstr "- Küldjön nyomtatási feladatokat az UltiMaker nyomtatóknak a helyi hálózaton kívülről"
 
 #~ msgctxt "@text"
-#~ msgid "- Store your Ultimaker Cura settings in the cloud for use anywhere"
-#~ msgstr "- Tárolja az Ultimaker Cura beállításait a felhőben így azok bárhol használhatóak"
+#~ msgid "- Store your UltiMaker Cura settings in the cloud for use anywhere"
+#~ msgstr "- Tárolja az UltiMaker Cura beállításait a felhőben így azok bárhol használhatóak"
 
 #~ msgctxt "@text"
 #~ msgid "- Get exclusive access to print profiles from leading brands"

@@ -50,30 +50,30 @@ Popup
                     permissionsRequired: ["digital-factory.print-job.read"]
                 },
                 {
-                    displayName: "Ultimaker Marketplace", //Not translated, since it's a brand name.
+                    displayName: "UltiMaker Marketplace", //Not translated, since it's a brand name.
                     thumbnail: UM.Theme.getIcon("Shop", "high"),
-                    description: catalog.i18nc("@tooltip:button", "Extend Ultimaker Cura with plugins and material profiles."),
+                    description: catalog.i18nc("@tooltip:button", "Extend UltiMaker Cura with plugins and material profiles."),
                     link: "https://marketplace.ultimaker.com/?utm_source=cura&utm_medium=software&utm_campaign=switcher-marketplace-materials",
                     permissionsRequired: []
                 },
                 {
-                    displayName: "Ultimaker Academy", //Not translated, since it's a brand name.
+                    displayName: "UltiMaker Academy", //Not translated, since it's a brand name.
                     thumbnail: UM.Theme.getIcon("Knowledge"),
-                    description: catalog.i18nc("@tooltip:button", "Become a 3D printing expert with Ultimaker e-learning."),
+                    description: catalog.i18nc("@tooltip:button", "Become a 3D printing expert with UltiMaker e-learning."),
                     link: "https://academy.ultimaker.com/?utm_source=cura&utm_medium=software&utm_campaign=switcher-academy",
                     permissionsRequired: []
                 },
                 {
-                    displayName: catalog.i18nc("@label:button", "Ultimaker support"),
+                    displayName: catalog.i18nc("@label:button", "UltiMaker support"),
                     thumbnail: UM.Theme.getIcon("Help", "high"),
-                    description: catalog.i18nc("@tooltip:button", "Learn how to get started with Ultimaker Cura."),
+                    description: catalog.i18nc("@tooltip:button", "Learn how to get started with UltiMaker Cura."),
                     link: "https://support.ultimaker.com/?utm_source=cura&utm_medium=software&utm_campaign=switcher-support",
                     permissionsRequired: []
                 },
                 {
                     displayName: catalog.i18nc("@label:button", "Ask a question"),
                     thumbnail: UM.Theme.getIcon("Speak", "high"),
-                    description: catalog.i18nc("@tooltip:button", "Consult the Ultimaker Community."),
+                    description: catalog.i18nc("@tooltip:button", "Consult the UltiMaker Community."),
                     link: "https://community.ultimaker.com/?utm_source=cura&utm_medium=software&utm_campaign=switcher-community",
                     permissionsRequired: []
                 },
@@ -87,7 +87,7 @@ Popup
                 {
                     displayName: "Ultimaker.com", //Not translated, since it's a URL.
                     thumbnail: UM.Theme.getIcon("Browser"),
-                    description: catalog.i18nc("@tooltip:button", "Visit the Ultimaker website."),
+                    description: catalog.i18nc("@tooltip:button", "Visit the UltiMaker website."),
                     link: "https://ultimaker.com/?utm_source=cura&utm_medium=software&utm_campaign=switcher-umwebsite",
                     permissionsRequired: []
                 }

@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Ultimaker B.V.
+// Copyright (c) 2022 UltiMaker
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -99,7 +99,7 @@ Item
         id: backButton
         anchors.left: parent.left
         anchors.bottom: parent.bottom
-        text: catalog.i18nc("@button", "Add Ultimaker printer via Digital Factory")
+        text: catalog.i18nc("@button", "Add UltiMaker printer via Digital Factory")
         onClicked: goToUltimakerPrinter()
     }
 
