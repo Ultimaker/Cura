@@ -354,6 +354,10 @@
         "checkbox_text": "text_default",
         "checkbox_text_disabled": "text_disabled",
 
+        "switch": "background_1",
+        "switch_state_checked": "accent_1",
+        "switch_state_unchecked": "text_disabled",
+
         "radio": "background_1",
         "radio_disabled": "background_2",
         "radio_selected": "accent_1",
