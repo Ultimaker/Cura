@@ -68,20 +68,37 @@ UM.TooltipArea
         function updateModel()
         {
             clear()
-            // Options come in as a string-representation of an OrderedDict
-            if(propertyProvider.properties.options)
+
+            if(!propertyProvider.properties.options)
             {
-                var options = propertyProvider.properties.options.match(/^OrderedDict\(\[\((.*)\)\]\)$/);
-                if(options)
+                return
+            }
+
+            for (var i = 0; i < propertyProvider.properties["options"].keys().length; i++)
+            {
+                var key = propertyProvider.properties["options"].keys()[i]
+                var value = propertyProvider.properties["options"][key]
+                append({ text: value, code: key})
+
+                if (propertyProvider.properties.value == key)
                 {
-                    options = options[1].split("), (");
-                    for(var i = 0; i < options.length; i++)
-                    {
-                        var option = options[i].substring(1, options[i].length - 1).split("', '");
-                        append({ text: option[1], value: option[0] });
-                    }
+                    currentIndex = i
                 }
             }
+//            // Options come in as a string-representation of an OrderedDict
+//            if(propertyProvider.properties.options)
+//            {
+//                var options = propertyProvider.properties.options.match(/^OrderedDict\(\[\((.*)\)\]\)$/);
+//                if(options)
+//                {
+//                    options = options[1].split("), (");
+//                    for(var i = 0; i < options.length; i++)
+//                    {
+//                        var option = options[i].substring(1, options[i].length - 1).split("', '");
+//                        append({ text: option[1], value: option[0] });
+//                    }
+//                }
+//            }
         }
 
         Component.onCompleted: updateModel()
