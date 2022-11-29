@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Ultimaker B.V.
+// Copyright (c) 2022 UltiMaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -23,9 +23,6 @@ RecommendedSettingSection
     function onEnableSectionChanged(state) {
         supportEnabled.setPropertyValue("value", state)
     }
-
-    property var extruderModel: CuraApplication.getExtrudersModel()
-
 
     property UM.SettingPropertyProvider supportEnabled: UM.SettingPropertyProvider
     {
@@ -68,19 +65,8 @@ RecommendedSettingSection
         {
             Layout.preferredHeight: childrenRect.height
             settingName: catalog.i18nc("@action:label", "Print with")
-            settingControl: Cura.ExtruderSelectorBar
-            {
-                model: extruderModel
-                selectedIndex: supportExtruderNr.properties.value !== undefined ? supportExtruderNr.properties.value : 0
-                function onClickExtruder(index)
-                {
-                    forceActiveFocus();
-                    supportExtruderNr.setPropertyValue("value", index);
-                }
-            }
-
+            settingControl: Cura.SingleSettingExtruderSelectorBar { extruderSettingName: "support_extruder_nr" }
         },
-
         RecommendedSettingItem
         {
             settingName: catalog.i18nc("@action:label", "Placement")

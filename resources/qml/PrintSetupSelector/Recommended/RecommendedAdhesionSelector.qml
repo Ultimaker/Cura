@@ -1,10 +1,11 @@
-// Copyright (c) 2022 Ultimaker B.V.
+// Copyright (c) 2022 UltiMaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
+import QtQuick.Layouts 1.3
 
 import UM 1.5 as UM
-import Cura 1.0 as Cura
+import Cura 1.7 as Cura
 
 
 RecommendedSettingSection
@@ -32,16 +33,12 @@ RecommendedSettingSection
         curaRecommendedMode.setAdhesion(state)
     }
 
-    contents: RecommendedSettingItem
-    {
-        settingName: catalog.i18nc("@action:label", "Print with")
-
-        settingControl: Rectangle
+    contents: [
+        RecommendedSettingItem
         {
-            width: 20
-            height: 20
-            color: Qt.rgba(1, 0, 0, .5)
+            Layout.preferredHeight: childrenRect.height
+            settingName: catalog.i18nc("@action:label", "Print with")
+            settingControl: Cura.SingleSettingExtruderSelectorBar { extruderSettingName: "adhesion_extruder_nr" }
         }
-    }
-
+    ]
 }

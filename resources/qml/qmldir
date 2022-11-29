@@ -38,9 +38,9 @@ ScrollView          1.0 ScrollView.qml
 Menu                1.0 Menu.qml
 MenuItem            1.0 MenuItem.qml
 MenuSeparator       1.0 MenuSeparator.qml
-ExtruderSelectorBar 1.6 ExtruderSelectorBar.qml
-ExtruderButton      1.6 ExtruderButton.qml
-SingleSettingComboBox       1.7 SingleSettingComboBox.qml
+SingleSettingExtruderSelectorBar        1.7 SingleSettingExtruderSelectorBar.qml
+ExtruderButton                          1.7 ExtruderButton.qml
+SingleSettingComboBox                   1.7 SingleSettingComboBox.qml
 
 
 # Cura/MachineSettings

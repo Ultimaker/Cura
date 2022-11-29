@@ -19,7 +19,7 @@ Cura.ComboBox {
         id: comboboxModel
 
         // The propertyProvider has not loaded the setting when this components onComplete triggers. Populating the model
-        // is defered until propertyProvider signals "onIsValueUsedChanged".
+        // is defered until propertyProvider signals "onIsValueUsedChanged". The defered upate is triggered with this function.
         function updateModel()
         {
             clear()
