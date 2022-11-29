@@ -34,7 +34,6 @@
         "machine_extruder_count": { "value": 2 }, 
         
 		"machine_heated_bed": { "default_value": true },
-        
 		
         	
         "machine_start_gcode": 
