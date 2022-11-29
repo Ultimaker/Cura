@@ -32,7 +32,7 @@
         "machine_height": { "default_value": 350 },
         "gantry_height": { "default_value": 0 },
          
-        "machine_buildplate_type": { "value": "glass" },
+        
 		"machine_heated_bed": { "default_value": true },
         "machine_center_is_zero": { "default_value": false },
 		"machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
