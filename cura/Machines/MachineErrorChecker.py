@@ -43,7 +43,7 @@ class MachineErrorChecker(QObject):
         self._application = cura.CuraApplication.CuraApplication.getInstance()
         self._machine_manager = self._application.getMachineManager()
 
-        self._start_time = 0.  # measure checking time
+        self._check_start_time = time.time()
 
         self._setCheckTimer()
 
@@ -160,7 +160,7 @@ class MachineErrorChecker(QObject):
                 self._stacks_and_keys_to_check.append((stack, key))
 
         self._application.callLater(self._checkStack)
-        self._start_time = time.time()
+        self._check_start_time = time.time()
         Logger.log("d", "New error check scheduled.")
 
     def _checkStack(self) -> None:
@@ -212,12 +212,10 @@ class MachineErrorChecker(QObject):
             self._has_errors = result
             self.hasErrorUpdated.emit()
             self._machine_manager.stacksValidationChanged.emit()
-        if keys_to_recheck is None:
-            self._keys_to_check = set()
-        else:
-            self._keys_to_check = keys_to_recheck
+        self._keys_to_check = keys_to_recheck if keys_to_recheck else set()
         self._need_to_check = False
         self._check_in_progress = False
         self.needToWaitForResultChanged.emit()
         self.errorCheckFinished.emit()
-        Logger.log("i", "Error check finished, result = %s, time = %0.1fs", result, time.time() - self._start_time)
+        execution_time = time.time() - self._check_start_time
+        Logger.info(f"Error check finished, result = {result}, time = {execution_time:.2f}s")

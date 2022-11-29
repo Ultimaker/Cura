@@ -165,9 +165,6 @@
     "skin_overlap": {
       "value": 10.0
     },
-    "speed_infill": {
-      "value": "speed_print"
-    },
     "speed_travel_layer_0": {
       "value": "math.ceil(speed_travel * 0.4)"
     },

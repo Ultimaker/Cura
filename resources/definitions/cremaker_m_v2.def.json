@@ -30,9 +30,6 @@
     },
     
     "cool_fan_speed": { "value": 50 },
-    "coasting_enable": { "value": true },
-    "coasting_volume": { "value": 0.05 },
-    "coasting_min_volume": { "value": 1.0 },
     "jerk_enabled": { "value": false }
   }
 }

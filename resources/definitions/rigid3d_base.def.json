@@ -112,8 +112,8 @@
         "retraction_combing": { "value": "'noskin'" },
         "travel_avoid_other_parts": { "value": "False" },
         
-        "support_z_distance": { "value": "layer_height if layer_height >= 0.16 else layer_height*2" },
-        "support_interface_enable": { "value": "True" },
+        "support_z_distance": { "value": "layer_height if layer_height >= 0.16 else layer_height * 2" },
+        "support_interface_enable": { "value": true },
         "support_interface_density": { "value": 70 },
         "minimum_interface_area": { "value": 5.0 },
         "minimum_support_area": { "value": 5 },

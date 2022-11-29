@@ -1,3 +1,93 @@
+[5.2.1]
+
+* Bug fixes:
+- Restored Italian translations (was French)
+- Restored simplified Chinese translations (was Czech)
+
+[5.2]
+
+* Abstract Cloud Printer Type
+Online cloud printers are now grouped by type. You can slice with the ('abstract') printer type, and afterwards choose a specific printer to print with.
+
+* Support For 'Guest'-Type Accounts (In Digital Factory)
+Users with the ‘Guest’ role can prepare print jobs in Ultimaker Cura and send them to the printers via Digital Factory. These print jobs will not start until they are approved by a user with an 'Member' or 'Admin' role.
+
+* More Control Over Initial Layer Flow
+Three new settings: 'Initial Layer Outer Wall Flow', 'Initial Layer Inner Wall Flow', 'Initial Layer Bottom Flow', to better counteract the 'elephants foot' phenomenon.
+
+* Other new features and improvements:
+- Auto-remove holes from not completely solid models in vase-mode
+- Add setting for 'tree support max diameter'
+- Add option to drop-down models to the build-plate individually, contributed to Piezoid
+- Added a preference to make the tray icon optional, contributed by fieldOfView
+- (Community Developer Update: Proper workflow for 'installing from source' on Windows! <a href="https://github.com/Ultimaker/Cura/wiki/Running-Cura-from-Source">See our wiki.</a>)
+
+* Bug fixes:
+- Fixed a crash to do with the serialization of functions, contributed by Piezoid
+- Fixed a crash that could occur when a user has non-latin characters in their Windows username
+- Another 'Tree Support Starts in Air' fix
+- Restore tooltips (if available) for Intents in Recommended print settings
+- Fix startup on 'Zorin OS' (a Linux flavor), contributed by Tim453
+- On Windows, (admin) users should be able to uninstall via 'Programs and Features' again
+- Correct version number in Windows uninstaller
+- Uninstalling didn't remove all files in Windows
+- (Windows) An uninstall could only be done by the original user that installed
+- Don't ignore bottom pattern when spiralizing
+- Don't 'Union All' for 'Merged Meshes Overlap'
+- Seam placement was not in the correct corner in some cases
+- Cutting meshes with 'surface' set to 'both' cut through the mesh
+- Brim lines where ordered the wrong way in some cases
+- Random seam is now more random
+- Correctly apply combing when spiralizing, contributed by smartavionics
+- Don't spam the user with spurious 'Cura Notification's (Windows only)
+- Don't spam the logs with duplicated deprecated warnings, contributed by Patschke
+- Properly update the infill percentage in the top bar after an intent profile switch
+- In certain rare situations, layers would be printed multiple times when monotonic fill was on
+- Put tree support infill density at 0% by default
+- Machine settings: Also save values when closing the window, not just when focus' changed
+- Reduce clickable area of settings checkboxes, to prevent mis-clicks
+- Fixed a crash when an unnamed tool would be accessed (possibly related to plugin use)
+- Fix an issue where a plugin would crash because of a missing dependency
+- Many helpful code refactors, contributed by digitalfrost
+- Fix for to-mouse zoom on screens with scaling factor, contributed by seaniepie
+- Models could not be multiplied in one-at-a-time mode
+
+* Printer definitions, profiles and materials:
+- Added Creality Ender 3 S1 profile, contributed by Sebazzz
+- Added Anycubic Kobra (Max), contributed by ANYCUBIC-3D
+- Added HCTECH printers, contributed by 3d-hctech
+- Added da Vinci Pro EVO, contributed by heed818
+- Fix FLSUN QQ-S platform orientation, contributed by RVillani
+- Fix Kingroon printers from going outside the build-volume in the end-gcode, contributed by odaki
+- Added Geetech Mizar_S, contributed by Geeetech3D
+- Added Tank-M printer, contributed by KOONOVO3DPrinter
+- Update Renkforce RF100XL definition, contributed by imakecodes
+- Added VzBot profiles, contributed by ckvsoft
+- Added (additional) mingda printers, contributed by jianshu-du
+- Added Naxe machines, contributed by Naxecorp
+- Added T-Rex 2+, T-Rex 3, contributed by jim-edwards
+- Update FLsun SR, contributed xPakrikx
+- Update Anycubic mega zero, contributed by NOVAXIM
+- Added some Renkforce machines, contributed by goofoo3d
+
+* Community translations:
+- Updated the Brazilian Portuguese translation, contributed by Patola
+- Updated the Czech translation, contributed by sustmi
+
+* Known critical issues:
+- While some small fixes have been made already, the placement of the seam is still more scattered than before 5.0. (Will try to fix in stable.)
+- <a href="https://support.ultimaker.com/hc/en-us/articles/6103470096028">Support is sometimes missing in detailed parts</a>, where previous releases supported them properly (still). (Will probably not be fixed in stable. This is currently slated for 5.3)
+- Multiple external monitors on Windows (especially if from the same brand) <a href="https://support.ultimaker.com/hc/en-us/articles/6103674944156">might be a problem under some circumstances</a>. (Will probably not be fixed in stable.)
+
+* Does Cura (not) work on your OS (version)? See <a href="https://support.ultimaker.com/hc/en-us/articles/360011889579">this article</a> for clarification.
+
+[5.1.1]
+* New features:
+- Added support for the Ultimaker S3 and Ultimaker S5 updated mainbord
+
+
+<i>MacOS 10.15 is no longer supported. Technically this means Ultimaker will stop testing and developing for such operating systems. However, even though it is no longer supported, there is still a high likelihood the application keeps functioning.</i>
+
 [5.1]
 <i>For an overview of the new features in Cura 5.1, please watch <a href="https://youtu.be/7jetjsHLIvk">our video</a>.</i>
 

@@ -57,8 +57,6 @@
         "infill_wipe_dist": { "value": "0" },
         "infill_overlap": { "value": "0" },
         "infill_pattern": { "value": "'zigzag' if infill_sparse_density > 80 else 'grid'" },
-        "speed_infill": { "value": "speed_print" },
-        "speed_wall_x": { "value": "speed_wall" },
         "layer_height_0": { "value": "round(machine_nozzle_size / 1.5, 2)" },
         "optimize_wall_printing_order": { "value": "True" },
         "zig_zaggify_infill": { "value": "gradual_infill_steps == 0" },
@@ -72,7 +70,6 @@
             "maximum_value": 260
         },
         "material_print_temperature_layer_0": {
-            "value": "material_print_temperature",
             "maximum_value": 260
         },
         "machine_start_gcode": { "value": "''" },
@@ -85,6 +82,7 @@
         "meshfix_maximum_travel_resolution": { "value": 0.5 },
         "prime_blob_enable": { "enabled": true, "default_value": true, "value": "resolveOrValue('print_sequence') != 'one_at_a_time'" },
         "retraction_prime_speed": { "value": "15" },
-        "retraction_speed": {"value": "45" }
+        "retraction_speed": {"value": "45" },
+        "speed_wall_x": { "value": "speed_wall" }
     }
 }
