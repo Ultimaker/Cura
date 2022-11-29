@@ -17,6 +17,12 @@ class Definition(Linter):
         self._content = self._file.read_text()
         self._loadBasePrinterSettings()
 
+    @property
+    def base_def(self):
+        if "fdmextruder" in self._definitions:
+            return "fdmextruder"
+        return "fdmprinter"
+
     def check(self) -> Iterator[Diagnostic]:
         if self._settings["checks"].get("diagnostic-definition-redundant-override", False):
             for check in self.checkRedefineOverride():
@@ -33,7 +39,7 @@ class Definition(Linter):
         """ Checks if definition file overrides its parents settings with the same value. """
         definition_name = list(self._definitions.keys())[0]
         definition = self._definitions[definition_name]
-        if "overrides" in definition and definition_name != "fdmprinter":
+        if "overrides" in definition and definition_name not in ("fdmprinter", "fdmextruder"):
             for key, value_dict in definition["overrides"].items():
                 is_redefined, value, parent = self._isDefinedInParent(key, value_dict, definition['inherits'])
                 if is_redefined:
@@ -64,7 +70,10 @@ class Definition(Linter):
 
         # Load parent definition if it exists
         if "inherits" in self._definitions[definition_name]:
-            parent_file = definition_file.parent.joinpath(f"{self._definitions[definition_name]['inherits']}.def.json")
+            if self._definitions[definition_name]['inherits'] in ("fdmextruder", "fdmprinter"):
+                parent_file = definition_file.parent.parent.joinpath("definitions", f"{self._definitions[definition_name]['inherits']}.def.json")
+            else:
+                parent_file = definition_file.parent.joinpath(f"{self._definitions[definition_name]['inherits']}.def.json")
             self._loadDefinitionFiles(parent_file)
 
     def _isDefinedInParent(self, key, value_dict, inherits_from):
@@ -72,7 +81,10 @@ class Definition(Linter):
             return self._isDefinedInParent(key, value_dict, self._definitions[inherits_from]["inherits"])
 
         parent = self._definitions[inherits_from]["overrides"]
-        is_number = self._definitions["fdmprinter"]["overrides"][key] in ("float", "int")
+        if key not in self._definitions[self.base_def]["overrides"]:
+            is_number = False
+        else:
+            is_number = self._definitions[self.base_def]["overrides"][key]["type"] in ("float", "int")
         for value in value_dict.values():
             if key in parent:
                 check_values = [cv for cv in [parent[key].get("default_value", None), parent[key].get("value", None)] if cv is not None]
@@ -99,9 +111,9 @@ class Definition(Linter):
     def _loadBasePrinterSettings(self):
         """ TODO @Jelle please explain why this """
         settings = {}
-        for k, v in self._definitions["fdmprinter"]["settings"].items():
+        for k, v in self._definitions[self.base_def]["settings"].items():
             self._getSetting(k, v, settings)
-        self._definitions["fdmprinter"] = {"overrides": settings}
+        self._definitions[self.base_def] = {"overrides": settings}
 
     def _getSetting(self, name, setting, settings) -> None:
         if "children" in setting:
