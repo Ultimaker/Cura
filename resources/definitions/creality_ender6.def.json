@@ -9,17 +9,6 @@
         "machine_width": { "default_value": 260 },
         "machine_depth": { "default_value": 260 },
         "machine_height": { "default_value": 400 },
-        "z_seam_type": { "value": "'sharpest_corner'"},
-        "z_seam_corner": { "value": "'z_seam_corner_inner'"},
-        "infill_sparse_density": { "value": "10"},
-        "infill_pattern": { "value": "'lines' if infill_sparse_density > 50 else 'grid'"},
-        "infill_overlap":{"value": 10},    
-        "material_print_temperature":{"value": 220},
-        "material_bed_temperature":{"value": 50},
-        "retraction_amount":{"value": 10},  
-        "speed_travel": { "value": 80.0 },
-        "coasting_enable": { "value": true},
-        "coasting_min_volume": { "value": 0.5},
         "machine_head_with_fans_polygon": { "default_value": [
                 [-26, 34],
                 [-26, -32],
@@ -30,9 +19,8 @@
 
         "gantry_height": { "value": 25 },
 
-        "speed_print": { "value": 50.0 },
-        "speed_wall": { "value": 30.0 }
-
+        "speed_print": { "value": 80.0 }
+        
     },
     "metadata": {
         "quality_definition": "creality_base",

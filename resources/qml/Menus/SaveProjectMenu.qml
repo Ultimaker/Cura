@@ -44,7 +44,7 @@ Cura.Menu
             enabled: saveProjectMenu.shouldBeVisible
         }
         onObjectAdded: function(index, object) {  saveProjectMenu.insertItem(index, object)}
-        onObjectRemoved: function(object) {  saveProjectMenu.removeItem(object)}
+        onObjectRemoved: function(index, object) {  saveProjectMenu.removeItem(object)}
     }
 
     WorkspaceSummaryDialog

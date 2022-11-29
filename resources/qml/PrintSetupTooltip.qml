@@ -17,6 +17,8 @@ UM.PointingRectangle
     arrowSize: UM.Theme.getSize("default_arrow").width
 
     opacity: 0
+    // This should be disabled when invisible, otherwise it will catch mouse events.
+    enabled: opacity > 0
 
     Behavior on opacity
     {
@@ -88,7 +90,6 @@ UM.PointingRectangle
             y: UM.Theme.getSize("tooltip_margins").height
             width: textScroll.width - 2 * UM.Theme.getSize("tooltip_margins").width
 
-            wrapMode: Text.Wrap
             textFormat: Text.RichText
             color: UM.Theme.getColor("tooltip_text")
         }

@@ -17,26 +17,8 @@ RowLayout
     {
         source: UM.Theme.getIcon("Sliders", "medium")
         iconSize: UM.Theme.getSize("button_icon").width
-        text:
-        {
-            if (Cura.MachineManager.activeStack)
-            {
-                var resultMap = Cura.MachineManager.activeQualityDisplayNameMap
-                var text = resultMap["main"]
-                if (resultMap["suffix"])
-                {
-                    text += " - " + resultMap["suffix"]
-                }
 
-                if (!Cura.MachineManager.hasNotSupportedQuality)
-                {
-                    text += " - " + layerHeight.properties.value + "mm"
-                    text += Cura.MachineManager.isActiveQualityExperimental ? " - " + catalog.i18nc("@label", "Experimental") : ""
-                }
-                return text
-            }
-            return ""
-        }
+        text: Cura.MachineManager.activeQualityDisplayNameStringParts.join(" - ")
         font: UM.Theme.getFont("medium")
         elide: Text.ElideMiddle
         wrapMode: Text.NoWrap

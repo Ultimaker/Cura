@@ -1,5 +1,5 @@
-# Copyright (c) 2022 Ultimaker B.V.
-# Cura is released under the terms of the LGPLv3 or higher.
+#  Copyright (c) 2022 UltiMaker
+#  Cura is released under the terms of the LGPLv3 or higher.
 
 import tempfile
 from typing import Dict, List, Any
@@ -92,7 +92,7 @@ class DownloadPresenter:
             lifetime = 0,
             use_inactivity_timer = False,
             progress = 0.0,
-            title = i18n_catalog.i18nc("@info:title", "Changes detected from your Ultimaker account"))
+            title = i18n_catalog.i18nc("@info:title", "Changes detected from your UltiMaker account"))
 
     def _onFinished(self, package_id: str, reply: QNetworkReply) -> None:
         self._progress[package_id]["received"] = self._progress[package_id]["total"]

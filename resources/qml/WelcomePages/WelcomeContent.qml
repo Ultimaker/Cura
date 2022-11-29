@@ -1,10 +1,10 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2022 UltiMaker
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.1 as Cura
 
 //
@@ -48,28 +48,24 @@ Item
             width: parent.width
         }
 
-        Label
+        UM.Label
         {
             id: titleLabel
             anchors.horizontalCenter: parent.horizontalCenter
             horizontalAlignment: Text.AlignHCenter
-            text: catalog.i18nc("@label", "Welcome to Ultimaker Cura")
+            text: catalog.i18nc("@label", "Welcome to UltiMaker Cura")
             color: UM.Theme.getColor("primary_button")
             font: UM.Theme.getFont("huge_bold")
-            renderType: Text.NativeRendering
         }
 
-        Label
+        UM.Label
         {
             id: textLabel
             anchors.horizontalCenter: parent.horizontalCenter
             horizontalAlignment: Text.AlignHCenter
             width: titleLabel.width + 2 * UM.Theme.getSize("thick_margin").width
-            text: catalog.i18nc("@text", "Please follow these steps to set up Ultimaker Cura. This will only take a few moments.")
-            wrapMode: Text.Wrap
+            text: catalog.i18nc("@text", "Please follow these steps to set up UltiMaker Cura. This will only take a few moments.")
             font: UM.Theme.getFont("medium")
-            color: UM.Theme.getColor("text")
-            renderType: Text.NativeRendering
         }
 
         // Filler item

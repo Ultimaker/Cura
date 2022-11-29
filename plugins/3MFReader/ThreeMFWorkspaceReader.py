@@ -9,6 +9,7 @@ from typing import cast, Dict, List, Optional, Tuple, Any, Set
 
 import xml.etree.ElementTree as ET
 
+from UM.Util import parseBool
 from UM.Workspace.WorkspaceReader import WorkspaceReader
 from UM.Application import Application
 
@@ -23,6 +24,7 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
 from UM.Job import Job
 from UM.Preferences import Preferences
+from cura.CuraPackageManager import CuraPackageManager
 
 from cura.Machines.ContainerTree import ContainerTree
 from cura.Settings.CuraStackBuilder import CuraStackBuilder
@@ -52,6 +54,7 @@ _ignored_machine_network_metadata = {
     "connection_type",
     "capabilities",
     "octoprint_api_key",
+    "is_abstract_machine"
 }  # type: Set[str]
 
 
@@ -579,6 +582,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 is_printer_group = True
                 machine_name = group_name
 
+        # Getting missing required package ids
+        package_metadata = self._parse_packages_metadata(archive)
+        missing_package_metadata = self._filter_missing_package_metadata(package_metadata)
+
         # Show the dialog, informing the user what is about to happen.
         self._dialog.setMachineConflict(machine_conflict)
         self._dialog.setIsPrinterGroup(is_printer_group)
@@ -593,13 +600,43 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._dialog.setNumUserSettings(num_user_settings)
         self._dialog.setActiveMode(active_mode)
         self._dialog.setUpdatableMachines(updatable_machines)
-        self._dialog.setMachineName(machine_name)
         self._dialog.setMaterialLabels(material_labels)
         self._dialog.setMachineType(machine_type)
         self._dialog.setExtruders(extruders)
         self._dialog.setVariantType(variant_type_name)
         self._dialog.setHasObjectsOnPlate(Application.getInstance().platformActivity)
+        self._dialog.setMissingPackagesMetadata(missing_package_metadata)
         self._dialog.show()
+
+        # Choosing the initially selected printer in MachineSelector
+        is_networked_machine = False
+        is_abstract_machine = False
+        if global_stack and isinstance(global_stack, GlobalStack):
+            # The machine included in the project file exists locally already, no need to change selected printers.
+            is_networked_machine = global_stack.hasNetworkedConnection()
+            is_abstract_machine = parseBool(existing_global_stack.getMetaDataEntry("is_abstract_machine", False))
+            self._dialog.setMachineToOverride(global_stack.getId())
+            self._dialog.setResolveStrategy("machine", "override")
+        elif self._dialog.updatableMachinesModel.count > 0:
+            # The machine included in the project file does not exist. There is another machine of the same type.
+            # This will always default to an abstract machine first.
+            machine = self._dialog.updatableMachinesModel.getItem(0)
+            machine_name = machine["name"]
+            is_networked_machine = machine["isNetworked"]
+            is_abstract_machine = machine["isAbstractMachine"]
+            self._dialog.setMachineToOverride(machine["id"])
+            self._dialog.setResolveStrategy("machine", "override")
+        else:
+            # The machine included in the project file does not exist. There are no other printers of the same type. Default to "Create New".
+            machine_name = i18n_catalog.i18nc("@button", "Create new")
+            is_networked_machine = False
+            is_abstract_machine = False
+            self._dialog.setMachineToOverride(None)
+            self._dialog.setResolveStrategy("machine", "new")
+
+        self._dialog.setIsNetworkedMachine(is_networked_machine)
+        self._dialog.setIsAbstractMachine(is_abstract_machine)
+        self._dialog.setMachineName(machine_name)
 
         # Block until the dialog is closed.
         self._dialog.waitForClose()
@@ -658,10 +695,22 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         cura_file_names = [name for name in archive.namelist() if name.startswith("Cura/")]
 
-        # Create a shadow copy of the preferences (we don't want all of the preferences, but we do want to re-use its
+        # Create a shadow copy of the preferences (We don't want all of the preferences, but we do want to re-use its
         # parsing code.
         temp_preferences = Preferences()
-        serialized = archive.open("Cura/preferences.cfg").read().decode("utf-8")
+        try:
+            serialized = archive.open("Cura/preferences.cfg").read().decode("utf-8")
+        except KeyError as e:
+            # If there is no preferences file, it's not a workspace, so notify user of failure.
+            Logger.log("w", "File %s is not a valid workspace.", file_name)
+            message = Message(i18n_catalog.i18nc("@info:error Don't translate the XML tags <filename> or <message>!",
+                                                 "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>.",
+                                                 file_name, str(e)),
+                              title=i18n_catalog.i18nc("@info:title", "Can't Open Project File"),
+                              message_type=Message.MessageType.ERROR)
+            message.show()
+            self.setWorkspaceName("")
+            return [], {}
         temp_preferences.deserialize(serialized)
 
         # Copy a number of settings from the temp preferences to the global
@@ -683,7 +732,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         application.expandedCategoriesChanged.emit()  # Notify the GUI of the change
 
         # If there are no machines of the same type, create a new machine.
-        if self._resolve_strategies["machine"] != "override" or self._dialog.updatableMachinesModel.count <= 1:
+        if self._resolve_strategies["machine"] != "override" or self._dialog.updatableMachinesModel.count == 0:
             # We need to create a new machine
             machine_name = self._container_registry.uniqueName(self._machine_info.name)
 
@@ -1243,3 +1292,29 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         metadata = data.iterfind("./um:metadata/um:name/um:label", {"um": "http://www.ultimaker.com/material"})
         for entry in metadata:
             return entry.text
+
+    @staticmethod
+    def _parse_packages_metadata(archive: zipfile.ZipFile) -> List[Dict[str, str]]:
+        try:
+            package_metadata = json.loads(archive.open("Cura/packages.json").read().decode("utf-8"))
+            return package_metadata["packages"]
+        except KeyError:
+            Logger.warning("No package metadata was found in .3mf file.")
+        except Exception:
+            Logger.error("Failed to load packages metadata from .3mf file.")
+
+        return []
+
+
+    @staticmethod
+    def _filter_missing_package_metadata(package_metadata: List[Dict[str, str]]) -> List[Dict[str, str]]:
+        """Filters out installed packages from package_metadata"""
+        missing_packages = []
+        package_manager = cast(CuraPackageManager, CuraApplication.getInstance().getPackageManager())
+
+        for package in package_metadata:
+            package_id = package["id"]
+            if not package_manager.isPackageInstalled(package_id):
+                missing_packages.append(package)
+
+        return missing_packages

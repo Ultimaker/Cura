@@ -3,7 +3,7 @@
 
 import QtQuick 2.2
 import QtQuick.Controls 2.0
-import UM 1.3 as UM
+import UM 1.5 as UM
 
 import Cura 1.6 as Cura
 
@@ -57,32 +57,25 @@ Item
         width: Math.max(materialLabel.contentWidth, 60 * screenScaleFactor) // TODO: Theme!
         radius: 2 * screenScaleFactor // TODO: Theme!
 
-        Label
+        UM.Label
         {
             id: materialLabel
             anchors.top: parent.top
 
-            color: UM.Theme.getColor("text")
             elide: Text.ElideRight
-            font: UM.Theme.getFont("default") // 12pt, regular
             text: ""
             visible: text !== ""
-
-            renderType: Text.NativeRendering
         }
 
-        Label
+        UM.Label
         {
             id: printCoreLabel
             anchors.top: materialLabel.bottom
 
-            color: UM.Theme.getColor("text")
             elide: Text.ElideRight
             font: UM.Theme.getFont("default_bold") // 12pt, bold
             text: ""
             visible: text !== ""
-
-            renderType: Text.NativeRendering
         }
     }
 }

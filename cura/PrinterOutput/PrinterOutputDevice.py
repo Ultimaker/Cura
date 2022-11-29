@@ -50,12 +50,11 @@ class PrinterOutputDevice(QObject, OutputDevice):
     The assumption is made the printer is a FDM printer.
 
     Note that a number of settings are marked as "final". This is because decorators
-    are not inherited by children. To fix this we use the private counter part of those
+    are not inherited by children. To fix this we use the private counterpart of those
     functions to actually have the implementation.
 
     For all other uses it should be used in the same way as a "regular" OutputDevice.
     """
-
 
     printersChanged = pyqtSignal()
     connectionStateChanged = pyqtSignal(str)
@@ -183,8 +182,8 @@ class PrinterOutputDevice(QObject, OutputDevice):
     @pyqtProperty(QObject, constant = True)
     def monitorItem(self) -> QObject:
         # Note that we specifically only check if the monitor component is created.
-        # It could be that it failed to actually create the qml item! If we check if the item was created, it will try to
-        # create the item (and fail) every time.
+        # It could be that it failed to actually create the qml item! If we check if the item was created, it will try
+        # to create the item (and fail) every time.
         if not self._monitor_component:
             self._createMonitorViewFromQML()
         return self._monitor_item
@@ -237,9 +236,9 @@ class PrinterOutputDevice(QObject, OutputDevice):
 
             self.acceptsCommandsChanged.emit()
 
-    # Returns the unique configurations of the printers within this output device
     @pyqtProperty("QVariantList", notify = uniqueConfigurationsChanged)
     def uniqueConfigurations(self) -> List["PrinterConfigurationModel"]:
+        """ Returns the unique configurations of the printers within this output device """
         return self._unique_configurations
 
     def _updateUniqueConfigurations(self) -> None:
@@ -248,17 +247,19 @@ class PrinterOutputDevice(QObject, OutputDevice):
             if printer.printerConfiguration is not None and printer.printerConfiguration.hasAnyMaterialLoaded():
                 all_configurations.add(printer.printerConfiguration)
             all_configurations.update(printer.availableConfigurations)
-        if None in all_configurations:  # Shouldn't happen, but it does. I don't see how it could ever happen. Skip adding that configuration. List could end up empty!
+        if None in all_configurations:
+            # Shouldn't happen, but it does. I don't see how it could ever happen. Skip adding that configuration.
+            # List could end up empty!
             Logger.log("e", "Found a broken configuration in the synced list!")
             all_configurations.remove(None)
-        new_configurations = sorted(all_configurations, key = lambda config: config.printerType or "")
+        new_configurations = sorted(all_configurations, key = lambda config: config.printerType or "", reverse = True)
         if new_configurations != self._unique_configurations:
             self._unique_configurations = new_configurations
             self.uniqueConfigurationsChanged.emit()
 
-    # Returns the unique configurations of the printers within this output device
     @pyqtProperty("QStringList", notify = uniqueConfigurationsChanged)
     def uniquePrinterTypes(self) -> List[str]:
+        """ Returns the unique configurations of the printers within this output device """
         return list(sorted(set([configuration.printerType or "" for configuration in self._unique_configurations])))
 
     def _onPrintersChanged(self) -> None:

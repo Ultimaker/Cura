@@ -244,7 +244,10 @@ class PackageList(ListModel):
 
     def _downloadError(self, package_id: str, update: bool = False, reply: Optional["QNetworkReply"] = None, error: Optional["QNetworkReply.NetworkError"] = None) -> None:
         if reply:
-            reply_string = bytes(reply.readAll()).decode()
+            try:
+                reply_string = bytes(reply.readAll()).decode()
+            except UnicodeDecodeError:
+                reply_string = "<error message is corrupt too>"
             Logger.error(f"Failed to download package: {package_id} due to {reply_string}")
         self._package_manager.packageInstallingFailed.emit(package_id)
 
