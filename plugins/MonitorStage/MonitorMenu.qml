@@ -19,5 +19,7 @@ Item
         width: UM.Theme.getSize("machine_selector_widget").width
         height: parent.height
         anchors.centerIn: parent
+
+        machineListModel: Cura.MachineListModel {}
     }
 }
