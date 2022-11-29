@@ -85,7 +85,6 @@
 
         "retraction_hop_enabled": { "value": "True" },
         "retraction_hop": { "value": 0.2 },
-        "retraction_combing": { "default_value": "noskin" },
         "retraction_combing_max_distance": { "value": 30 },
 
         "travel_avoid_supports": { "value": true },
