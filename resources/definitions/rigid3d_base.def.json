@@ -55,7 +55,7 @@
         "material_final_print_temperature": { "value": "material_print_temperature" },
         "material_bed_temperature_layer_0": { "value": "material_bed_temperature" },
 
-        "speed_print": { "value": 60.0 } ,
+       } ,
         "speed_topbottom": { "value": "speed_print" },
         "speed_support_interface": { "value": "speed_support" },
         "speed_travel": { "value": 80.0 },
