@@ -18,6 +18,7 @@ Item
 
     property alias settingControl: settingContainer.children
     property alias settingName: settingLabel.text
+    property string tooltipText: ""
 
     UM.Label
     {

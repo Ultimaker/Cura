@@ -86,9 +86,7 @@ Item
         RecommendedStrengthSelector
         {
             width: parent.width
-            labelColumnWidth: parent.firstColumnWidth
             Layout.fillWidth: true
-            Layout.rightMargin: UM.Theme.getSize("default_margin").width
         }
 
         RecommendedSupportSelector

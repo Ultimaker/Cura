@@ -15,9 +15,18 @@ RowLayout
 
     anchors
     {
-        left: infillRowTitle.right
+        left: strengthSection.right
         right: parent.right
-        verticalCenter: infillRowTitle.verticalCenter
+        verticalCenter: strengthSection.verticalCenter
+    }
+
+    UM.SettingPropertyProvider
+    {
+        id: infillDensity
+        containerStackId: Cura.MachineManager.activeStackId
+        key: "infill_sparse_density"
+        watchedProperties: [ "value" ]
+        storeIndex: 0
     }
 
     UM.Label { Layout.fillWidth: false; text: "0" }
