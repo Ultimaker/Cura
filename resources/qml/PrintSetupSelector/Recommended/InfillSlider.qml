@@ -86,7 +86,7 @@ RowLayout
             width: childrenRect.width
             height: childrenRect.height
             target: Qt.point(handleButton.x + handleButton.width / 2, handleButton.y + handleButton.height / 2)
-            x: handleButton.x - width / 2 + handleButton.width / 2
+            x: handleButton.x + Math.round((handleButton.width - width) / 2)
             y: handleButton.y - height - UM.Theme.getSize("button_tooltip_arrow").height - UM.Theme.getSize("narrow_margin").height
             color: UM.Theme.getColor("tooltip");
 
