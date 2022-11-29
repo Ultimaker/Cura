@@ -1,8 +1,14 @@
 {
+    "version": 2,
+    "name": "Tizyx Evy Dual",
     "inherits": "fdmprinter",
     "metadata":
     {
+        "visible": true,
         "author": "Tizyx",
+        "manufacturer": "Tizyx",
+        "file_formats": "text/x-gcode",
+        "platform": "tizyx_k25_platform.3mf",
         "exclude_materials": [
             "chromatik_pla",
             "dsm_arnitel2045_175",
@@ -39,10 +45,7 @@
             "zyyx_pro_flex",
             "zyyx_pro_pla"
         ],
-        "file_formats": "text/x-gcode",
-        "first_start_actions": [
-            "MachineSettingsAction"
-        ],
+        "first_start_actions": [ "MachineSettingsAction" ],
         "has_machine_quality": true,
         "has_materials": true,
         "has_variants": true,
@@ -51,8 +54,6 @@
             "0": "tizyx_evy_dual_extruder_0",
             "1": "tizyx_evy_dual_extruder_1"
         },
-        "manufacturer": "Tizyx",
-        "platform": "tizyx_k25_platform.3mf",
         "platform_offset": [
             0,
             -4,
@@ -61,42 +62,17 @@
         "preferred_material": "tizyx_pla",
         "preferred_quality_type": "normal",
         "preferred_variant_name": "Classic Extruder",
-        "supported_actions": [
-            "MachineSettingsAction"
-        ],
-        "visible": true
+        "supported_actions": [ "MachineSettingsAction" ]
     },
-    "name": "Tizyx Evy Dual",
     "overrides":
     {
-        "acceleration_enabled":
-        {
-            "value": "False"
-        },
-        "acceleration_print":
-        {
-            "value": "1500"
-        },
-        "gantry_height":
-        {
-            "value": "500"
-        },
-        "machine_center_is_zero":
-        {
-            "default_value": false
-        },
-        "machine_depth":
-        {
-            "default_value": 255
-        },
-        "machine_end_gcode":
-        {
-            "default_value": "M104 S0\nM140 S0\nG91\nG1 E-5 F300\nG1 Z+3 F3000\nG1 Y245 F3000\nM84"
-        },
-        "machine_extruder_count":
-        {
-            "default_value": 2
-        },
+        "acceleration_enabled": { "value": "False" },
+        "acceleration_print": { "value": "1500" },
+        "gantry_height": { "value": "500" },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_depth": { "default_value": 255 },
+        "machine_end_gcode": { "default_value": "M104 S0\nM140 S0\nG91\nG1 E-5 F300\nG1 Z+3 F3000\nG1 Y245 F3000\nM84" },
+        "machine_extruder_count": { "default_value": 2 },
         "machine_head_with_fans_polygon":
         {
             "default_value": [
@@ -106,38 +82,13 @@
                 [ 25, 49 ]
             ]
         },
-        "machine_heated_bed":
-        {
-            "default_value": true
-        },
-        "machine_height":
-        {
-            "default_value": 255
-        },
-        "machine_start_gcode":
-        {
-            "default_value": "M82\nG90\nG28 X\nG28 Y\nG28 Z\nG29\nG91\nG1 Z0\nG90\nM82\nG92 E0\nG1 X125 Y245 F3000\nG1 Z0"
-        },
-        "machine_width":
-        {
-            "default_value": 255
-        },
-        "retraction_combing":
-        {
-            "value": "'off'"
-        },
-        "z_seam_type":
-        {
-            "default_value": "back"
-        },
-        "z_seam_x":
-        {
-            "value": "127.5"
-        },
-        "z_seam_y":
-        {
-            "value": "250"
-        }
-    },
-    "version": 2
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 255 },
+        "machine_start_gcode": { "default_value": "M82\nG90\nG28 X\nG28 Y\nG28 Z\nG29\nG91\nG1 Z0\nG90\nM82\nG92 E0\nG1 X125 Y245 F3000\nG1 Z0" },
+        "machine_width": { "default_value": 255 },
+        "retraction_combing": { "value": "'off'" },
+        "z_seam_type": { "default_value": "back" },
+        "z_seam_x": { "value": "127.5" },
+        "z_seam_y": { "value": "250" }
+    }
 }

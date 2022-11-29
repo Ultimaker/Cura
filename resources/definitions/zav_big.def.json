@@ -1,7 +1,10 @@
 {
+    "version": 2,
+    "name": "Zav Big",
     "inherits": "zav_base",
     "metadata":
     {
+        "visible": true,
         "author": "Kirill Nikolaev, Kim Evgeniy (C)",
         "platform": "zav_big.stl",
         "platform_offset": [
@@ -9,24 +12,12 @@
             0,
             0
         ],
-        "quality_definition": "zav_base",
-        "visible": true
+        "quality_definition": "zav_base"
     },
-    "name": "Zav Big",
     "overrides":
     {
-        "machine_depth":
-        {
-            "default_value": 300
-        },
-        "machine_height":
-        {
-            "default_value": 340
-        },
-        "machine_name":
-        {
-            "default_value": "zav_big"
-        }
-    },
-    "version": 2
+        "machine_depth": { "default_value": 300 },
+        "machine_height": { "default_value": 340 },
+        "machine_name": { "default_value": "zav_big" }
+    }
 }

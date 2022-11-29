@@ -1,27 +1,22 @@
 {
+    "version": 2,
+    "name": "Longer LK1 Pro",
     "inherits": "longer_base",
     "metadata":
     {
+        "visible": true,
         "platform": "longer_310mm_platform.stl",
         "platform_offset": [
             -155,
             -3,
             155
         ],
-        "quality_definition": "longer_base",
-        "visible": true
+        "quality_definition": "longer_base"
     },
-    "name": "Longer LK1 Pro",
     "overrides":
     {
-        "gantry_height":
-        {
-            "value": 33
-        },
-        "machine_depth":
-        {
-            "default_value": 300
-        },
+        "gantry_height": { "value": 33 },
+        "machine_depth": { "default_value": 300 },
         "machine_head_with_fans_polygon":
         {
             "default_value": [
@@ -31,18 +26,8 @@
                 [ 58, 39 ]
             ]
         },
-        "machine_height":
-        {
-            "default_value": 400
-        },
-        "machine_name":
-        {
-            "default_value": "LONGER LK1 Pro"
-        },
-        "machine_width":
-        {
-            "default_value": 300
-        }
-    },
-    "version": 2
+        "machine_height": { "default_value": 400 },
+        "machine_name": { "default_value": "LONGER LK1 Pro" },
+        "machine_width": { "default_value": 300 }
+    }
 }

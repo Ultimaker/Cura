@@ -1,44 +1,30 @@
 {
+    "version": 2,
+    "name": "Punchtec Connect XL",
     "inherits": "fdmprinter",
     "metadata":
     {
+        "visible": true,
+        "manufacturer": "Punchtec",
         "file_formats": "text/x-gcode",
         "machine_extruder_trains":
         {
             "0": "punchtec_connect_xl_extruder_0",
             "1": "punchtec_connect_xl_extruder_1"
         },
-        "manufacturer": "Punchtec",
         "platform_offset": [
             0,
             0,
             0
-        ],
-        "visible": true
+        ]
     },
-    "name": "Punchtec Connect XL",
     "overrides":
     {
-        "layer_height":
-        {
-            "default_value": 0.2
-        },
-        "machine_center_is_zero":
-        {
-            "default_value": false
-        },
-        "machine_depth":
-        {
-            "default_value": 304
-        },
-        "machine_extruder_count":
-        {
-            "default_value": 2
-        },
-        "machine_gcode_flavor":
-        {
-            "default_value": "RepRap (Marlin/Sprinter)"
-        },
+        "layer_height": { "default_value": 0.2 },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_depth": { "default_value": 304 },
+        "machine_extruder_count": { "default_value": 2 },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
         "machine_head_with_fans_polygon":
         {
             "default_value": [
@@ -48,30 +34,11 @@
                 [ 0, 0 ]
             ]
         },
-        "machine_heated_bed":
-        {
-            "default_value": true
-        },
-        "machine_height":
-        {
-            "default_value": 200
-        },
-        "machine_name":
-        {
-            "default_value": "Punchtec Connect XL"
-        },
-        "machine_width":
-        {
-            "default_value": 304
-        },
-        "prime_tower_size":
-        {
-            "default_value": 8.660254037844387
-        },
-        "speed_print":
-        {
-            "default_value": 40
-        }
-    },
-    "version": 2
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 200 },
+        "machine_name": { "default_value": "Punchtec Connect XL" },
+        "machine_width": { "default_value": 304 },
+        "prime_tower_size": { "default_value": 8.660254037844387 },
+        "speed_print": { "default_value": 40 }
+    }
 }

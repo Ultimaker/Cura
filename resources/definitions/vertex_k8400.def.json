@@ -1,40 +1,27 @@
 {
+    "version": 2,
+    "name": "Vertex K8400",
     "inherits": "fdmprinter",
     "metadata":
     {
-        "file_formats": "text/x-gcode",
-        "machine_extruder_trains":
-        {
-            "0": "vertex_k8400_extruder_0"
-        },
+        "visible": true,
         "manufacturer": "Velleman N.V.",
+        "file_formats": "text/x-gcode",
         "platform": "Vertex_build_panel.3mf",
+        "machine_extruder_trains": { "0": "vertex_k8400_extruder_0" },
         "platform_offset": [
             0,
             -3,
             0
         ],
-        "supported_actions": [
-            "MachineSettingsAction"
-        ],
-        "supports_usb_connection": true,
-        "visible": true
+        "supported_actions": [ "MachineSettingsAction" ],
+        "supports_usb_connection": true
     },
-    "name": "Vertex K8400",
     "overrides":
     {
-        "gantry_height":
-        {
-            "value": "18"
-        },
-        "machine_center_is_zero":
-        {
-            "default_value": false
-        },
-        "machine_depth":
-        {
-            "default_value": 200
-        },
+        "gantry_height": { "value": "18" },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_depth": { "default_value": 200 },
         "machine_disallowed_areas":
         {
             "default_value": [
@@ -46,14 +33,8 @@
                 ]
             ]
         },
-        "machine_end_gcode":
-        {
-            "default_value": "G1 X0 Y0 Z130 ;Get extruder out of way\nM107 ;Turn off fan\n;Disable all extruders\nG91 ;Relative positioning\nT0\nG1 E-1 ;Reduce filament pressure\nM104 T0 S0\nG90 ;Absolute positioning\nG92 E0 ;Reset extruder position\nM140 S0 ;Disable heated bed\nM84 ;Turn steppers off"
-        },
-        "machine_gcode_flavor":
-        {
-            "default_value": "RepRap (Marlin/Sprinter)"
-        },
+        "machine_end_gcode": { "default_value": "G1 X0 Y0 Z130 ;Get extruder out of way\nM107 ;Turn off fan\n;Disable all extruders\nG91 ;Relative positioning\nT0\nG1 E-1 ;Reduce filament pressure\nM104 T0 S0\nG90 ;Absolute positioning\nG92 E0 ;Reset extruder position\nM140 S0 ;Disable heated bed\nM84 ;Turn steppers off" },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
         "machine_head_with_fans_polygon":
         {
             "default_value": [
@@ -63,26 +44,10 @@
                 [ 18, -40 ]
             ]
         },
-        "machine_heated_bed":
-        {
-            "default_value": true
-        },
-        "machine_height":
-        {
-            "default_value": 190
-        },
-        "machine_name":
-        {
-            "default_value": "Vertex K8400"
-        },
-        "machine_start_gcode":
-        {
-            "default_value": "M104 T0 S{material_print_temperature_layer_0}\nG28 ;Home extruder\nG90 ;Absolute positioning\nM82 ;Extruder in absolute mode\nG1 Z1 F100\nG92 E0 ;Reset extruder position\nM109 T0 S{material_print_temperature_layer_0}\nG1 E20 F100\nG92 E0 ;Reset extruder position"
-        },
-        "machine_width":
-        {
-            "default_value": 200
-        }
-    },
-    "version": 2
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 190 },
+        "machine_name": { "default_value": "Vertex K8400" },
+        "machine_start_gcode": { "default_value": "M104 T0 S{material_print_temperature_layer_0}\nG28 ;Home extruder\nG90 ;Absolute positioning\nM82 ;Extruder in absolute mode\nG1 Z1 F100\nG92 E0 ;Reset extruder position\nM109 T0 S{material_print_temperature_layer_0}\nG1 E20 F100\nG92 E0 ;Reset extruder position" },
+        "machine_width": { "default_value": 200 }
+    }
 }

@@ -1,21 +1,16 @@
 {
+    "version": 2,
+    "name": "Creality CR-10S4",
     "inherits": "creality_base",
     "metadata":
     {
-        "quality_definition": "creality_base",
-        "visible": true
+        "visible": true,
+        "quality_definition": "creality_base"
     },
-    "name": "Creality CR-10S4",
     "overrides":
     {
-        "gantry_height":
-        {
-            "value": 25
-        },
-        "machine_depth":
-        {
-            "default_value": 400
-        },
+        "gantry_height": { "value": 25 },
+        "machine_depth": { "default_value": 400 },
         "machine_head_with_fans_polygon":
         {
             "default_value": [
@@ -25,18 +20,8 @@
                 [ 32, 34 ]
             ]
         },
-        "machine_height":
-        {
-            "default_value": 400
-        },
-        "machine_name":
-        {
-            "default_value": "Creality CR-10S4"
-        },
-        "machine_width":
-        {
-            "default_value": 400
-        }
-    },
-    "version": 2
+        "machine_height": { "default_value": 400 },
+        "machine_name": { "default_value": "Creality CR-10S4" },
+        "machine_width": { "default_value": 400 }
+    }
 }

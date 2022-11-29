@@ -1,43 +1,28 @@
 {
+    "version": 2,
+    "name": "Hellbot Adonis",
     "inherits": "fdmprinter",
     "metadata":
     {
+        "visible": true,
         "author": "MUX team",
-        "file_formats": "text/x-gcode",
-        "has_materials": true,
-        "machine_extruder_trains":
-        {
-            "0": "hellbot_adonis_extruder"
-        },
         "manufacturer": "Hellbot",
+        "file_formats": "text/x-gcode",
         "platform": "hellbot_adonis.obj",
+        "has_materials": true,
+        "machine_extruder_trains": { "0": "hellbot_adonis_extruder" },
         "platform_offset": [
             0,
             -1,
             0
         ],
-        "platform_texture": "hellbot.png",
-        "visible": true
+        "platform_texture": "hellbot.png"
     },
-    "name": "Hellbot Adonis",
     "overrides":
     {
-        "machine_depth":
-        {
-            "default_value": 160
-        },
-        "machine_height":
-        {
-            "default_value": 160
-        },
-        "machine_name":
-        {
-            "default_value": "Hellbot Adonis"
-        },
-        "machine_width":
-        {
-            "default_value": 160
-        }
-    },
-    "version": 2
+        "machine_depth": { "default_value": 160 },
+        "machine_height": { "default_value": 160 },
+        "machine_name": { "default_value": "Hellbot Adonis" },
+        "machine_width": { "default_value": 160 }
+    }
 }

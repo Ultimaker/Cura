@@ -1,27 +1,18 @@
 {
+    "version": 2,
+    "name": "Zav Max",
     "inherits": "zav_base",
     "metadata":
     {
+        "visible": true,
         "author": "Kirill Nikolaev, Kim Evgeniy (C)",
         "platform": "zav_max.stl",
-        "quality_definition": "zav_base",
-        "visible": true
+        "quality_definition": "zav_base"
     },
-    "name": "Zav Max",
     "overrides":
     {
-        "machine_height":
-        {
-            "default_value": 240
-        },
-        "machine_name":
-        {
-            "default_value": "zav_max"
-        },
-        "machine_width":
-        {
-            "default_value": 200
-        }
-    },
-    "version": 2
+        "machine_height": { "default_value": 240 },
+        "machine_name": { "default_value": "zav_max" },
+        "machine_width": { "default_value": 200 }
+    }
 }

@@ -1,25 +1,23 @@
 {
+    "version": 2,
+    "name": "FDM Printer Base Description",
     "metadata":
     {
+        "visible": false,
         "author": "Unknown",
+        "manufacturer": "Unknown",
         "file_formats": "text/x-gcode;model/stl;application/x-wavefront-obj;application/x3g",
         "has_machine_quality": false,
         "has_materials": true,
         "has_variants": false,
-        "machine_extruder_trains":
-        {
-            "0": "fdmextruder"
-        },
-        "manufacturer": "Unknown",
+        "machine_extruder_trains": { "0": "fdmextruder" },
         "preferred_material": "generic_pla",
         "preferred_quality_type": "normal",
         "setting_version": 20,
         "supports_network_connection": false,
         "supports_usb_connection": true,
-        "type": "machine",
-        "visible": false
+        "type": "machine"
     },
-    "name": "FDM Printer Base Description",
     "settings":
     {
         "blackmagic":
@@ -8282,6 +8280,5 @@
             "label": "Travel",
             "type": "category"
         }
-    },
-    "version": 2
+    }
 }

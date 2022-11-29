@@ -1,56 +1,32 @@
 {
+    "version": 2,
+    "name": "TinyBoy RA20",
     "inherits": "fdmprinter",
     "metadata":
     {
+        "visible": true,
         "author": "Fred Chan",
+        "manufacturer": "TinyBoy",
         "file_formats": "text/x-gcode",
+        "platform": "tinyboy_ra20.obj",
         "has_machine_quality": true,
         "has_materials": false,
-        "machine_extruder_trains":
-        {
-            "0": "tinyboy_extruder_0"
-        },
-        "manufacturer": "TinyBoy",
-        "platform": "tinyboy_ra20.obj",
+        "machine_extruder_trains": { "0": "tinyboy_extruder_0" },
         "platform_offset": [
             8,
             -73.3,
             -8
         ],
-        "preferred_quality_type": "normal",
-        "visible": true
+        "preferred_quality_type": "normal"
     },
-    "name": "TinyBoy RA20",
     "overrides":
     {
-        "machine_depth":
-        {
-            "default_value": 120
-        },
-        "machine_end_gcode":
-        {
-            "default_value": "M104 S0\nM140 S0\nG92 E80\nG1 E-80 F2000\nG28 X0 Y0\nM84"
-        },
-        "machine_heated_bed":
-        {
-            "default_value": true
-        },
-        "machine_height":
-        {
-            "default_value": 205
-        },
-        "machine_name":
-        {
-            "default_value": "TinyBoy RA20"
-        },
-        "machine_start_gcode":
-        {
-            "default_value": "G28 ;Home\nG1 Z15.0 F2000 ;Move the platform"
-        },
-        "machine_width":
-        {
-            "default_value": 120
-        }
-    },
-    "version": 2
+        "machine_depth": { "default_value": 120 },
+        "machine_end_gcode": { "default_value": "M104 S0\nM140 S0\nG92 E80\nG1 E-80 F2000\nG28 X0 Y0\nM84" },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 205 },
+        "machine_name": { "default_value": "TinyBoy RA20" },
+        "machine_start_gcode": { "default_value": "G28 ;Home\nG1 Z15.0 F2000 ;Move the platform" },
+        "machine_width": { "default_value": 120 }
+    }
 }

@@ -1,12 +1,14 @@
 {
+    "version": 2,
+    "name": "Custom FFF printer",
     "inherits": "fdmprinter",
     "metadata":
     {
+        "visible": true,
         "author": "Ultimaker",
+        "manufacturer": "Custom",
         "file_formats": "text/x-gcode",
-        "first_start_actions": [
-            "MachineSettingsAction"
-        ],
+        "first_start_actions": [ "MachineSettingsAction" ],
         "has_materials": true,
         "machine_extruder_trains":
         {
@@ -18,10 +20,6 @@
             "5": "custom_extruder_6",
             "6": "custom_extruder_7",
             "7": "custom_extruder_8"
-        },
-        "manufacturer": "Custom",
-        "visible": true
-    },
-    "name": "Custom FFF printer",
-    "version": 2
+        }
+    }
 }

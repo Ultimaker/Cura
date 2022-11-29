@@ -1,39 +1,24 @@
 {
+    "version": 2,
+    "name": "Mingda D2",
     "inherits": "mingda_base",
     "metadata":
     {
+        "visible": true,
         "platform": "mingda_d2_base.stl",
         "platform_offset": [
             -205,
             -77,
             65
         ],
-        "quality_definition": "mingda_base",
-        "visible": true
+        "quality_definition": "mingda_base"
     },
-    "name": "Mingda D2",
     "overrides":
     {
-        "gantry_height":
-        {
-            "value": 25
-        },
-        "machine_depth":
-        {
-            "default_value": 230
-        },
-        "machine_height":
-        {
-            "default_value": 260
-        },
-        "machine_name":
-        {
-            "default_value": "MINGDA D2"
-        },
-        "machine_width":
-        {
-            "default_value": 230
-        }
-    },
-    "version": 2
+        "gantry_height": { "value": 25 },
+        "machine_depth": { "default_value": 230 },
+        "machine_height": { "default_value": 260 },
+        "machine_name": { "default_value": "MINGDA D2" },
+        "machine_width": { "default_value": 230 }
+    }
 }

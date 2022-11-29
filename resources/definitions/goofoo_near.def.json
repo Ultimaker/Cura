@@ -1,10 +1,10 @@
 {
+    "version": 2,
+    "name": "Goofoo Near",
     "inherits": "goofoo_base",
     "metadata":
     {
-        "quality_definition": "goofoo_near",
-        "visible": false
-    },
-    "name": "Goofoo Near",
-    "version": 2
+        "visible": false,
+        "quality_definition": "goofoo_near"
+    }
 }

@@ -1,27 +1,19 @@
 {
+    "version": 2,
+    "name": "Snapmaker 2 A350",
     "inherits": "snapmaker2",
     "metadata":
     {
-        "file_formats": "text/x-gcode",
-        "machine_extruder_trains":
-        {
-            "0": "snapmaker_extruder_0"
-        },
+        "visible": true,
         "manufacturer": "Snapmaker",
-        "quality_definition": "snapmaker2",
-        "visible": true
+        "file_formats": "text/x-gcode",
+        "machine_extruder_trains": { "0": "snapmaker_extruder_0" },
+        "quality_definition": "snapmaker2"
     },
-    "name": "Snapmaker 2 A350",
     "overrides":
     {
-        "gantry_height":
-        {
-            "value": 27
-        },
-        "machine_depth":
-        {
-            "default_value": 350
-        },
+        "gantry_height": { "value": 27 },
+        "machine_depth": { "default_value": 350 },
         "machine_head_with_fans_polygon":
         {
             "default_value": [
@@ -37,18 +29,8 @@
                 ]
             ]
         },
-        "machine_height":
-        {
-            "default_value": 330
-        },
-        "machine_name":
-        {
-            "default_value": "Snapmaker A350"
-        },
-        "machine_width":
-        {
-            "default_value": 320
-        }
-    },
-    "version": 2
+        "machine_height": { "default_value": 330 },
+        "machine_name": { "default_value": "Snapmaker A350" },
+        "machine_width": { "default_value": 320 }
+    }
 }

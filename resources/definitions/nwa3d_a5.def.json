@@ -1,45 +1,31 @@
 {
+    "version": 2,
+    "name": "Nwa3D A5",
     "inherits": "fdmprinter",
     "metadata":
     {
+        "visible": true,
         "author": "DragonJe",
+        "manufacturer": "Nwa 3D LLC",
         "file_formats": "text/x-gcode",
         "has_machine_quality": true,
         "has_materials": true,
         "has_variants": false,
-        "machine_extruder_trains":
-        {
-            "0": "nwa3d_a5_extruder_0"
-        },
-        "manufacturer": "Nwa 3D LLC",
+        "machine_extruder_trains": { "0": "nwa3d_a5_extruder_0" },
         "platform_offset": [
             0,
             0,
             0
         ],
         "preferred_material": "generic_pla",
-        "preferred_quality_type": "normal",
-        "visible": true
+        "preferred_quality_type": "normal"
     },
-    "name": "Nwa3D A5",
     "overrides":
     {
-        "gantry_height":
-        {
-            "value": "30"
-        },
-        "machine_depth":
-        {
-            "default_value": 150
-        },
-        "machine_end_gcode":
-        {
-            "default_value": "M104 S0\nM140 S0\n ; Retract the filament\nG92 E1\nG1 E-1 F300\nG28 X0 Y0\nM84"
-        },
-        "machine_gcode_flavor":
-        {
-            "default_value": "RepRap (RepRap)"
-        },
+        "gantry_height": { "value": "30" },
+        "machine_depth": { "default_value": 150 },
+        "machine_end_gcode": { "default_value": "M104 S0\nM140 S0\n ; Retract the filament\nG92 E1\nG1 E-1 F300\nG28 X0 Y0\nM84" },
+        "machine_gcode_flavor": { "default_value": "RepRap (RepRap)" },
         "machine_head_with_fans_polygon":
         {
             "default_value": [
@@ -49,30 +35,11 @@
                 [ 30, 34 ]
             ]
         },
-        "machine_heated_bed":
-        {
-            "default_value": false
-        },
-        "machine_height":
-        {
-            "default_value": 100
-        },
-        "machine_name":
-        {
-            "default_value": "NWA3D A5"
-        },
-        "machine_start_gcode":
-        {
-            "default_value": "G28 ; Home\nG1 Z15.0 F6000 ; Move Z axis up 15mm\n ; Prime the extruder\nG92 E0\nG1 F200 E3\nG92 E0"
-        },
-        "machine_width":
-        {
-            "default_value": 125
-        },
-        "material_diameter":
-        {
-            "default_value": 1.75
-        }
-    },
-    "version": 2
+        "machine_heated_bed": { "default_value": false },
+        "machine_height": { "default_value": 100 },
+        "machine_name": { "default_value": "NWA3D A5" },
+        "machine_start_gcode": { "default_value": "G28 ; Home\nG1 Z15.0 F6000 ; Move Z axis up 15mm\n ; Prime the extruder\nG92 E0\nG1 F200 E3\nG92 E0" },
+        "machine_width": { "default_value": 125 },
+        "material_diameter": { "default_value": 1.75 }
+    }
 }

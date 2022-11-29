@@ -1,28 +1,13 @@
 {
-    "inherits": "goofoo_near",
-    "metadata":
-    {
-        "visible": true
-    },
+    "version": 2,
     "name": "Goofoo Giant",
+    "inherits": "goofoo_near",
+    "metadata": { "visible": true },
     "overrides":
     {
-        "machine_depth":
-        {
-            "default_value": 600
-        },
-        "machine_height":
-        {
-            "default_value": 1000
-        },
-        "machine_name":
-        {
-            "default_value": "Goofoo Giant"
-        },
-        "machine_width":
-        {
-            "default_value": 600
-        }
-    },
-    "version": 2
+        "machine_depth": { "default_value": 600 },
+        "machine_height": { "default_value": 1000 },
+        "machine_name": { "default_value": "Goofoo Giant" },
+        "machine_width": { "default_value": 600 }
+    }
 }

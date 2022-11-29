@@ -1,8 +1,13 @@
 {
+    "version": 2,
+    "name": "imade3d_jellybox_root",
     "inherits": "fdmprinter",
     "metadata":
     {
+        "visible": false,
         "author": "Imade3D",
+        "manufacturer": "Imade3D",
+        "file_formats": "text/x-gcode",
         "exclude_materials": [
             "chromatik_pla",
             "dsm_arnitel2045_175",
@@ -56,47 +61,21 @@
             "Vertex_Delta_TPU",
             "zyyx_pro_flex",
             "zyyx_pro_pla"
-        ],
-        "file_formats": "text/x-gcode",
-        "manufacturer": "Imade3D",
-        "visible": false
+        ]
     },
-    "name": "imade3d_jellybox_root",
     "overrides":
     {
-        "machine_center_is_zero":
-        {
-            "default_value": false
-        },
-        "machine_gcode_flavor":
-        {
-            "default_value": "RepRap (Marlin/Sprinter)"
-        },
-        "machine_heated_bed":
-        {
-            "default_value": true
-        },
-        "material_bed_temperature":
-        {
-            "minimum_value": "0"
-        },
-        "material_diameter":
-        {
-            "default_value": 1.75
-        },
-        "material_print_temperature":
-        {
-            "minimum_value": "0"
-        },
-        "material_standby_temperature":
-        {
-            "minimum_value": "0"
-        },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_heated_bed": { "default_value": true },
+        "material_bed_temperature": { "minimum_value": "0" },
+        "material_diameter": { "default_value": 1.75 },
+        "material_print_temperature": { "minimum_value": "0" },
+        "material_standby_temperature": { "minimum_value": "0" },
         "relative_extrusion":
         {
             "enabled": true,
             "value": true
         }
-    },
-    "version": 2
+    }
 }

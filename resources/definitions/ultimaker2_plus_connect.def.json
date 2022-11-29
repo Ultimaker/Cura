@@ -1,8 +1,13 @@
 {
+    "version": 2,
+    "name": "Ultimaker 2+ Connect",
     "inherits": "ultimaker2",
     "metadata":
     {
         "author": "Ultimaker",
+        "manufacturer": "Ultimaker B.V.",
+        "file_formats": "application/x-ufp;text/x-gcode",
+        "platform": "ultimaker2_plus_connect_platform.obj",
         "exclude_materials": [
             "generic_hips",
             "generic_petg",
@@ -21,18 +26,12 @@
             "generic_gffpa",
             "structur3d_dap100silicone"
         ],
-        "file_formats": "application/x-ufp;text/x-gcode",
         "first_start_actions": [],
         "has_machine_materials": true,
         "has_machine_quality": true,
         "has_materials": true,
         "has_variants": true,
-        "machine_extruder_trains":
-        {
-            "0": "ultimaker2_plus_connect_extruder_0"
-        },
-        "manufacturer": "Ultimaker B.V.",
-        "platform": "ultimaker2_plus_connect_platform.obj",
+        "machine_extruder_trains": { "0": "ultimaker2_plus_connect_extruder_0" },
         "platform_offset": [
             -1,
             -6,
@@ -45,33 +44,14 @@
         "supports_usb_connection": false,
         "weight": 1
     },
-    "name": "Ultimaker 2+ Connect",
     "overrides":
     {
-        "gantry_height":
-        {
-            "value": "52"
-        },
-        "infill_overlap":
-        {
-            "value": "0"
-        },
-        "infill_pattern":
-        {
-            "value": "'zigzag' if infill_sparse_density > 80 else 'grid'"
-        },
-        "infill_wipe_dist":
-        {
-            "value": "0"
-        },
-        "layer_height_0":
-        {
-            "value": "round(machine_nozzle_size / 1.5, 2)"
-        },
-        "machine_depth":
-        {
-            "default_value": 220
-        },
+        "gantry_height": { "value": "52" },
+        "infill_overlap": { "value": "0" },
+        "infill_pattern": { "value": "'zigzag' if infill_sparse_density > 80 else 'grid'" },
+        "infill_wipe_dist": { "value": "0" },
+        "layer_height_0": { "value": "round(machine_nozzle_size / 1.5, 2)" },
+        "machine_depth": { "default_value": 220 },
         "machine_disallowed_areas":
         {
             "default_value": [
@@ -149,14 +129,8 @@
                 ]
             ]
         },
-        "machine_end_gcode":
-        {
-            "value": "''"
-        },
-        "machine_gcode_flavor":
-        {
-            "default_value": "Griffin"
-        },
+        "machine_end_gcode": { "value": "''" },
+        "machine_gcode_flavor": { "default_value": "Griffin" },
         "machine_head_with_fans_polygon":
         {
             "default_value": [
@@ -166,42 +140,15 @@
                 [ 64, -34 ]
             ]
         },
-        "machine_heat_zone_length":
-        {
-            "default_value": 20
-        },
-        "machine_height":
-        {
-            "default_value": 205
-        },
-        "machine_name":
-        {
-            "default_value": "Ultimaker 2+ Connect"
-        },
-        "machine_nozzle_head_distance":
-        {
-            "default_value": 5
-        },
-        "machine_show_variants":
-        {
-            "default_value": true
-        },
-        "machine_start_gcode":
-        {
-            "value": "''"
-        },
-        "machine_width":
-        {
-            "default_value": 223
-        },
-        "material_bed_temperature":
-        {
-            "maximum_value": 110
-        },
-        "material_bed_temperature_layer_0":
-        {
-            "maximum_value": 110
-        },
+        "machine_heat_zone_length": { "default_value": 20 },
+        "machine_height": { "default_value": 205 },
+        "machine_name": { "default_value": "Ultimaker 2+ Connect" },
+        "machine_nozzle_head_distance": { "default_value": 5 },
+        "machine_show_variants": { "default_value": true },
+        "machine_start_gcode": { "value": "''" },
+        "machine_width": { "default_value": 223 },
+        "material_bed_temperature": { "maximum_value": 110 },
+        "material_bed_temperature_layer_0": { "maximum_value": 110 },
         "material_final_print_temperature":
         {
             "maximum_value": 260,
@@ -212,56 +159,22 @@
             "maximum_value": 260,
             "value": "material_print_temperature"
         },
-        "material_print_temperature":
-        {
-            "maximum_value": 260
-        },
-        "material_print_temperature_layer_0":
-        {
-            "maximum_value": 260
-        },
-        "meshfix_maximum_deviation":
-        {
-            "value": "(layer_height / 3) if magic_spiralize else (layer_height / 4)"
-        },
-        "meshfix_maximum_resolution":
-        {
-            "value": "(speed_wall_0 + speed_wall_x) / 60"
-        },
-        "meshfix_maximum_travel_resolution":
-        {
-            "value": 0.5
-        },
-        "optimize_wall_printing_order":
-        {
-            "value": "True"
-        },
+        "material_print_temperature": { "maximum_value": 260 },
+        "material_print_temperature_layer_0": { "maximum_value": 260 },
+        "meshfix_maximum_deviation": { "value": "(layer_height / 3) if magic_spiralize else (layer_height / 4)" },
+        "meshfix_maximum_resolution": { "value": "(speed_wall_0 + speed_wall_x) / 60" },
+        "meshfix_maximum_travel_resolution": { "value": 0.5 },
+        "optimize_wall_printing_order": { "value": "True" },
         "prime_blob_enable":
         {
             "default_value": true,
             "enabled": true,
             "value": "resolveOrValue('print_sequence') != 'one_at_a_time'"
         },
-        "retraction_prime_speed":
-        {
-            "value": "15"
-        },
-        "retraction_speed":
-        {
-            "value": "45"
-        },
-        "speed_support":
-        {
-            "value": "speed_wall_0"
-        },
-        "speed_wall_x":
-        {
-            "value": "speed_wall"
-        },
-        "zig_zaggify_infill":
-        {
-            "value": "gradual_infill_steps == 0"
-        }
-    },
-    "version": 2
+        "retraction_prime_speed": { "value": "15" },
+        "retraction_speed": { "value": "45" },
+        "speed_support": { "value": "speed_wall_0" },
+        "speed_wall_x": { "value": "speed_wall" },
+        "zig_zaggify_infill": { "value": "gradual_infill_steps == 0" }
+    }
 }

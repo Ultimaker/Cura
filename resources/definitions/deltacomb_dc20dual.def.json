@@ -1,24 +1,22 @@
 {
+    "version": 2,
+    "name": "Deltacomb DC-20 Dual",
     "inherits": "deltacomb_base",
     "metadata":
     {
+        "visible": true,
+        "platform": "deltacomb_dc20.stl",
         "machine_extruder_trains":
         {
             "0": "deltacomb_dc20dual_extruder_0",
             "1": "deltacomb_dc20dual_extruder_1"
         },
-        "platform": "deltacomb_dc20.stl",
         "preferred_variant_name": "DBE 0.40mm",
-        "quality_definition": "deltacomb_base",
-        "visible": true
+        "quality_definition": "deltacomb_base"
     },
-    "name": "Deltacomb DC-20 Dual",
     "overrides":
     {
-        "machine_depth":
-        {
-            "default_value": 190
-        },
+        "machine_depth": { "default_value": 190 },
         "machine_disallowed_areas":
         {
             "default_value": [
@@ -101,18 +99,8 @@
             "default_value": 2,
             "maximum_value": "2"
         },
-        "machine_height":
-        {
-            "default_value": 250
-        },
-        "machine_name":
-        {
-            "default_value": "Deltacomb DC-20 DUAL"
-        },
-        "machine_width":
-        {
-            "default_value": 190
-        }
-    },
-    "version": 2
+        "machine_height": { "default_value": 250 },
+        "machine_name": { "default_value": "Deltacomb DC-20 DUAL" },
+        "machine_width": { "default_value": 190 }
+    }
 }

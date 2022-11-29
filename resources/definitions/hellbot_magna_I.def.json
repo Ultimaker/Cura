@@ -1,47 +1,29 @@
 {
+    "version": 2,
+    "name": "Hellbot Magna 1",
     "inherits": "fdmprinter",
     "metadata":
     {
+        "visible": true,
         "author": "Hellbot Development Team",
-        "file_formats": "text/x-gcode",
-        "has_materials": true,
-        "machine_extruder_trains":
-        {
-            "0": "hellbot_magna_i_extruder"
-        },
         "manufacturer": "Hellbot",
+        "file_formats": "text/x-gcode",
         "platform": "hellbot_magna.obj",
+        "has_materials": true,
+        "machine_extruder_trains": { "0": "hellbot_magna_i_extruder" },
         "platform_offset": [
             0,
             -1,
             0
         ],
-        "platform_texture": "hellbot.png",
-        "visible": true
+        "platform_texture": "hellbot.png"
     },
-    "name": "Hellbot Magna 1",
     "overrides":
     {
-        "machine_depth":
-        {
-            "default_value": 220
-        },
-        "machine_heated_bed":
-        {
-            "default_value": true
-        },
-        "machine_height":
-        {
-            "default_value": 260
-        },
-        "machine_name":
-        {
-            "default_value": "Hellbot Magna 1"
-        },
-        "machine_width":
-        {
-            "default_value": 220
-        }
-    },
-    "version": 2
+        "machine_depth": { "default_value": 220 },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 260 },
+        "machine_name": { "default_value": "Hellbot Magna 1" },
+        "machine_width": { "default_value": 220 }
+    }
 }

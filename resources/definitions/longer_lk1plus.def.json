@@ -1,27 +1,22 @@
 {
+    "version": 2,
+    "name": "Longer LK1 Plus",
     "inherits": "longer_base",
     "metadata":
     {
+        "visible": true,
         "platform": "longer_415mm_platform.stl",
         "platform_offset": [
             -207.5,
             -3,
             207.5
         ],
-        "quality_definition": "longer_base",
-        "visible": true
+        "quality_definition": "longer_base"
     },
-    "name": "Longer LK1 Plus",
     "overrides":
     {
-        "gantry_height":
-        {
-            "value": 33
-        },
-        "machine_depth":
-        {
-            "default_value": 400
-        },
+        "gantry_height": { "value": 33 },
+        "machine_depth": { "default_value": 400 },
         "machine_head_with_fans_polygon":
         {
             "default_value": [
@@ -31,22 +26,9 @@
                 [ 58, 39 ]
             ]
         },
-        "machine_height":
-        {
-            "default_value": 500
-        },
-        "machine_name":
-        {
-            "default_value": "LONGER LK1 Plus"
-        },
-        "machine_width":
-        {
-            "default_value": 400
-        },
-        "speed_travel":
-        {
-            "value": 65
-        }
-    },
-    "version": 2
+        "machine_height": { "default_value": 500 },
+        "machine_name": { "default_value": "LONGER LK1 Plus" },
+        "machine_width": { "default_value": 400 },
+        "speed_travel": { "value": 65 }
+    }
 }

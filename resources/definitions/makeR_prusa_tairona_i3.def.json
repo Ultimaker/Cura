@@ -1,45 +1,28 @@
 {
+    "version": 2,
+    "name": "Maker Prusa Tairona i3",
     "inherits": "fdmprinter",
     "metadata":
     {
+        "visible": true,
         "author": "Maker",
-        "file_formats": "text/x-gcode",
-        "machine_extruder_trains":
-        {
-            "0": "makeR_prusa_tairona_i3_extruder_0"
-        },
         "manufacturer": "Maker",
+        "file_formats": "text/x-gcode",
         "platform": "makeR_prusa_tairona_i3_platform.3mf",
+        "machine_extruder_trains": { "0": "makeR_prusa_tairona_i3_extruder_0" },
         "platform_offset": [
             -2,
             0,
             0
-        ],
-        "visible": true
+        ]
     },
-    "name": "Maker Prusa Tairona i3",
     "overrides":
     {
-        "gantry_height":
-        {
-            "value": "55"
-        },
-        "machine_center_is_zero":
-        {
-            "default_value": false
-        },
-        "machine_depth":
-        {
-            "default_value": 200
-        },
-        "machine_end_gcode":
-        {
-            "default_value": "M104 S0;Turn off temperature\nG28 X0; Home X\nM84; Disable Motors"
-        },
-        "machine_gcode_flavor":
-        {
-            "default_value": "RepRap (Marlin/Sprinter)"
-        },
+        "gantry_height": { "value": "55" },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_depth": { "default_value": 200 },
+        "machine_end_gcode": { "default_value": "M104 S0;Turn off temperature\nG28 X0; Home X\nM84; Disable Motors" },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
         "machine_head_with_fans_polygon":
         {
             "default_value": [
@@ -49,26 +32,10 @@
                 [ 18, -18 ]
             ]
         },
-        "machine_heated_bed":
-        {
-            "default_value": true
-        },
-        "machine_height":
-        {
-            "default_value": 200
-        },
-        "machine_name":
-        {
-            "default_value": "makeR Prusa Tairona I3"
-        },
-        "machine_start_gcode":
-        {
-            "default_value": "G1 Z15;\nG28;Home\nG29;Auto Level\nG1 Z5 F5000;Move the platform down 15mm"
-        },
-        "machine_width":
-        {
-            "default_value": 200
-        }
-    },
-    "version": 2
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 200 },
+        "machine_name": { "default_value": "makeR Prusa Tairona I3" },
+        "machine_start_gcode": { "default_value": "G1 Z15;\nG28;Home\nG29;Auto Level\nG1 Z5 F5000;Move the platform down 15mm" },
+        "machine_width": { "default_value": 200 }
+    }
 }

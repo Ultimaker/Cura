@@ -1,7 +1,10 @@
 {
+    "version": 2,
+    "name": "Rigid3D Hobby",
     "inherits": "rigid3d_base",
     "metadata":
     {
+        "visible": true,
         "exclude_materials": [
             "chromatik_pla",
             "dsm_arnitel2045_175",
@@ -80,28 +83,14 @@
         ],
         "preferred_material": "generic_pla_175",
         "preferred_quality_type": "standard",
-        "quality_definition": "rigid3d_base",
-        "visible": true
+        "quality_definition": "rigid3d_base"
     },
-    "name": "Rigid3D Hobby",
     "overrides":
     {
-        "gantry_height":
-        {
-            "value": 20
-        },
-        "machine_center_is_zero":
-        {
-            "default_value": false
-        },
-        "machine_depth":
-        {
-            "default_value": 150
-        },
-        "machine_end_gcode":
-        {
-            "default_value": "G1 X0 Y145 ; Get extruder out of way.\nM107 ; Turn off fan\nG91 ; Relative positioning\nG0 Z20 ; Lift extruder up\nT0\nG1 E-1 ; Reduce filament pressure\nM104 T0 S0 ; Turn extruder heater off\nG90 ; Absolute positioning\nG92 E0 ; Reset extruder position\nM84 ; Turn steppers off\n"
-        },
+        "gantry_height": { "value": 20 },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_depth": { "default_value": 150 },
+        "machine_end_gcode": { "default_value": "G1 X0 Y145 ; Get extruder out of way.\nM107 ; Turn off fan\nG91 ; Relative positioning\nG0 Z20 ; Lift extruder up\nT0\nG1 E-1 ; Reduce filament pressure\nM104 T0 S0 ; Turn extruder heater off\nG90 ; Absolute positioning\nG92 E0 ; Reset extruder position\nM84 ; Turn steppers off\n" },
         "machine_head_with_fans_polygon":
         {
             "default_value": [
@@ -111,26 +100,10 @@
                 [ 16, 45 ]
             ]
         },
-        "machine_heated_bed":
-        {
-            "default_value": false
-        },
-        "machine_height":
-        {
-            "default_value": 150
-        },
-        "machine_name":
-        {
-            "default_value": "Rigid3D Hobby"
-        },
-        "machine_start_gcode":
-        {
-            "default_value": "G21\nG28 ; Home extruder\nM420 S1 ; Enable MBL\nM107 ; Turn off fan\nG91 ; Relative positioning\nG1 Z5 F180;\nG1 X30 Y30 F3000;\nG90 ; Absolute positioning\nM82 ; Extruder in absolute mode\nG92 E0 ; Reset extruder position\n"
-        },
-        "machine_width":
-        {
-            "default_value": 150
-        }
-    },
-    "version": 2
+        "machine_heated_bed": { "default_value": false },
+        "machine_height": { "default_value": 150 },
+        "machine_name": { "default_value": "Rigid3D Hobby" },
+        "machine_start_gcode": { "default_value": "G21\nG28 ; Home extruder\nM420 S1 ; Enable MBL\nM107 ; Turn off fan\nG91 ; Relative positioning\nG1 Z5 F180;\nG1 X30 Y30 F3000;\nG90 ; Absolute positioning\nM82 ; Extruder in absolute mode\nG92 E0 ; Reset extruder position\n" },
+        "machine_width": { "default_value": 150 }
+    }
 }

@@ -1,16 +1,10 @@
 {
-    "inherits": "creality_cr10",
-    "metadata":
-    {
-        "quality_definition": "creality_base"
-    },
+    "version": 2,
     "name": "Creality CR-10S",
+    "inherits": "creality_cr10",
+    "metadata": { "quality_definition": "creality_base" },
     "overrides":
     {
-        "machine_name":
-        {
-            "default_value": "Creality CR-10S"
-        }
-    },
-    "version": 2
+        "machine_name": { "default_value": "Creality CR-10S" }
+    }
 }

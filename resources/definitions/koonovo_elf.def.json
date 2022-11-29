@@ -1,21 +1,16 @@
 {
+    "version": 2,
+    "name": "Koonovo Elf",
     "inherits": "koonovo_base",
     "metadata":
     {
-        "quality_definition": "koonovo_base",
-        "visible": true
+        "visible": true,
+        "quality_definition": "koonovo_base"
     },
-    "name": "Koonovo Elf",
     "overrides":
     {
-        "gantry_height":
-        {
-            "value": 0
-        },
-        "machine_depth":
-        {
-            "default_value": 310
-        },
+        "gantry_height": { "value": 0 },
+        "machine_depth": { "default_value": 310 },
         "machine_head_with_fans_polygon":
         {
             "default_value": [
@@ -25,18 +20,8 @@
                 [ 32, 34 ]
             ]
         },
-        "machine_height":
-        {
-            "default_value": 345
-        },
-        "machine_name":
-        {
-            "default_value": "Koonovo Elf"
-        },
-        "machine_width":
-        {
-            "default_value": 310
-        }
-    },
-    "version": 2
+        "machine_height": { "default_value": 345 },
+        "machine_name": { "default_value": "Koonovo Elf" },
+        "machine_width": { "default_value": 310 }
+    }
 }

@@ -1,8 +1,13 @@
 {
+    "version": 2,
+    "name": "Ultimaker 2+",
     "inherits": "ultimaker2",
     "metadata":
     {
         "author": "Ultimaker",
+        "manufacturer": "Ultimaker B.V.",
+        "file_formats": "text/x-gcode",
+        "platform": "ultimaker2_platform.obj",
         "exclude_materials": [
             "generic_hips",
             "generic_petg",
@@ -35,34 +40,21 @@
             "ultimaker_petg_green_translucent",
             "ultimaker_petg_yellow_fluorescent"
         ],
-        "file_formats": "text/x-gcode",
         "firmware_file": "MarlinUltimaker2plus.hex",
         "first_start_actions": [],
         "has_machine_quality": true,
         "has_materials": true,
         "has_variants": true,
-        "machine_extruder_trains":
-        {
-            "0": "ultimaker2_plus_extruder_0"
-        },
-        "manufacturer": "Ultimaker B.V.",
-        "platform": "ultimaker2_platform.obj",
+        "machine_extruder_trains": { "0": "ultimaker2_plus_extruder_0" },
         "platform_texture": "Ultimaker2Plusbackplate.png",
         "preferred_variant_name": "0.4 mm",
         "supported_actions": [],
         "weight": 1
     },
-    "name": "Ultimaker 2+",
     "overrides":
     {
-        "gantry_height":
-        {
-            "value": "52"
-        },
-        "layer_height_0":
-        {
-            "value": "round(machine_nozzle_size / 1.5, 2)"
-        },
+        "gantry_height": { "value": "52" },
+        "layer_height_0": { "value": "round(machine_nozzle_size / 1.5, 2)" },
         "machine_disallowed_areas":
         {
             "default_value": [
@@ -149,38 +141,13 @@
                 [ 64, -34 ]
             ]
         },
-        "machine_heat_zone_length":
-        {
-            "default_value": 20
-        },
-        "machine_height":
-        {
-            "default_value": 205
-        },
-        "machine_name":
-        {
-            "default_value": "Ultimaker 2+"
-        },
-        "machine_nozzle_head_distance":
-        {
-            "default_value": 5
-        },
-        "machine_show_variants":
-        {
-            "default_value": true
-        },
-        "speed_infill":
-        {
-            "value": "speed_print"
-        },
-        "speed_support":
-        {
-            "value": "speed_wall_0"
-        },
-        "speed_wall_x":
-        {
-            "value": "speed_wall"
-        }
-    },
-    "version": 2
+        "machine_heat_zone_length": { "default_value": 20 },
+        "machine_height": { "default_value": 205 },
+        "machine_name": { "default_value": "Ultimaker 2+" },
+        "machine_nozzle_head_distance": { "default_value": 5 },
+        "machine_show_variants": { "default_value": true },
+        "speed_infill": { "value": "speed_print" },
+        "speed_support": { "value": "speed_wall_0" },
+        "speed_wall_x": { "value": "speed_wall" }
+    }
 }

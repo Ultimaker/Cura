@@ -1,14 +1,15 @@
 {
+    "version": 2,
+    "name": "Extruder",
     "metadata":
     {
+        "visible": false,
         "author": "Ultimaker",
         "manufacturer": "Unknown",
         "position": "0",
         "setting_version": 20,
-        "type": "extruder",
-        "visible": false
+        "type": "extruder"
     },
-    "name": "Extruder",
     "settings":
     {
         "machine_settings":
@@ -252,6 +253,5 @@
             "label": "Build Plate Adhesion",
             "type": "category"
         }
-    },
-    "version": 2
+    }
 }

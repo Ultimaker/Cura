@@ -1,7 +1,10 @@
 {
+    "version": 2,
+    "name": "Goofoo Small",
     "inherits": "goofoo_base",
     "metadata":
     {
+        "visible": false,
         "exclude_materials": [
             "goofoo_bronze_pla",
             "goofoo_peek",
@@ -16,9 +19,6 @@
             "goofoo_pva",
             "goofoo_hips"
         ],
-        "quality_definition": "goofoo_small",
-        "visible": false
-    },
-    "name": "Goofoo Small",
-    "version": 2
+        "quality_definition": "goofoo_small"
+    }
 }

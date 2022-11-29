@@ -1,32 +1,26 @@
 {
+    "version": 2,
+    "name": "Dagoma Neva",
     "inherits": "dagoma_delta",
     "metadata":
     {
+        "visible": true,
         "author": "Dagoma",
+        "manufacturer": "Dagoma",
         "file_formats": "text/x-gcode",
+        "platform": "dagoma_neva.3mf",
         "has_machine_quality": true,
         "has_materials": true,
-        "machine_extruder_trains":
-        {
-            "0": "dagoma_neva_extruder"
-        },
-        "manufacturer": "Dagoma",
-        "platform": "dagoma_neva.3mf",
+        "machine_extruder_trains": { "0": "dagoma_neva_extruder" },
         "platform_offset": [
             0,
             -28,
             -35
         ],
-        "preferred_material": "chromatik_pla",
-        "visible": true
+        "preferred_material": "chromatik_pla"
     },
-    "name": "Dagoma Neva",
     "overrides":
     {
-        "machine_name":
-        {
-            "default_value": "Dagoma Neva"
-        }
-    },
-    "version": 2
+        "machine_name": { "default_value": "Dagoma Neva" }
+    }
 }

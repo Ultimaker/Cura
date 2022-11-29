@@ -1,16 +1,15 @@
 {
+    "version": 2,
+    "name": "Ultimaker 2 Go",
     "inherits": "ultimaker2",
     "metadata":
     {
         "author": "Ultimaker",
-        "file_formats": "text/x-gcode",
-        "firmware_file": "MarlinUltimaker2go.hex",
-        "machine_extruder_trains":
-        {
-            "0": "ultimaker2_go_extruder_0"
-        },
         "manufacturer": "Ultimaker B.V.",
+        "file_formats": "text/x-gcode",
         "platform": "ultimaker2go_platform.obj",
+        "firmware_file": "MarlinUltimaker2go.hex",
+        "machine_extruder_trains": { "0": "ultimaker2_go_extruder_0" },
         "platform_offset": [
             0,
             0,
@@ -20,13 +19,9 @@
         "quality_definition": "ultimaker2",
         "weight": 3
     },
-    "name": "Ultimaker 2 Go",
     "overrides":
     {
-        "machine_depth":
-        {
-            "default_value": 120
-        },
+        "machine_depth": { "default_value": 120 },
         "machine_disallowed_areas":
         {
             "default_value": [
@@ -56,22 +51,9 @@
                 ]
             ]
         },
-        "machine_heated_bed":
-        {
-            "default_value": false
-        },
-        "machine_height":
-        {
-            "default_value": 115
-        },
-        "machine_name":
-        {
-            "default_value": "Ultimaker 2 Go"
-        },
-        "machine_width":
-        {
-            "default_value": 120
-        }
-    },
-    "version": 2
+        "machine_heated_bed": { "default_value": false },
+        "machine_height": { "default_value": 115 },
+        "machine_name": { "default_value": "Ultimaker 2 Go" },
+        "machine_width": { "default_value": 120 }
+    }
 }

@@ -1,23 +1,24 @@
 {
+    "version": 2,
+    "name": "Ultimaker 3 Extended",
     "inherits": "ultimaker3",
     "metadata":
     {
+        "visible": true,
         "author": "Ultimaker",
+        "manufacturer": "Ultimaker B.V.",
+        "file_formats": "application/gzip;text/x-gcode",
+        "platform": "ultimaker3_platform.obj",
         "bom_numbers": [
             9511
         ],
-        "file_formats": "application/gzip;text/x-gcode",
         "firmware_update_info":
         {
-            "check_urls": [
-                "https://software.ultimaker.com/releases/firmware/9066/stable/um-update.swu.version"
-            ],
+            "check_urls": [ "https://software.ultimaker.com/releases/firmware/9066/stable/um-update.swu.version" ],
             "id": 9511,
             "update_url": "https://ultimaker.com/firmware?utm_source=cura&utm_medium=software&utm_campaign=fw-update"
         },
-        "first_start_actions": [
-            "DiscoverUM3Action"
-        ],
+        "first_start_actions": [ "DiscoverUM3Action" ],
         "has_machine_quality": true,
         "has_materials": true,
         "has_variants": true,
@@ -26,8 +27,6 @@
             "0": "ultimaker3_extended_extruder_left",
             "1": "ultimaker3_extended_extruder_right"
         },
-        "manufacturer": "Ultimaker B.V.",
-        "platform": "ultimaker3_platform.obj",
         "platform_offset": [
             0,
             0,
@@ -36,23 +35,12 @@
         "platform_texture": "Ultimaker3Extendedbackplate.png",
         "preferred_variant_name": "AA 0.4",
         "quality_definition": "ultimaker3",
-        "supported_actions": [
-            "DiscoverUM3Action"
-        ],
-        "variants_name": "Print core",
-        "visible": true
+        "supported_actions": [ "DiscoverUM3Action" ],
+        "variants_name": "Print core"
     },
-    "name": "Ultimaker 3 Extended",
     "overrides":
     {
-        "machine_height":
-        {
-            "default_value": 300
-        },
-        "machine_name":
-        {
-            "default_value": "Ultimaker 3 Extended"
-        }
-    },
-    "version": 2
+        "machine_height": { "default_value": 300 },
+        "machine_name": { "default_value": "Ultimaker 3 Extended" }
+    }
 }
