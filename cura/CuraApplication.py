@@ -710,6 +710,7 @@ class CuraApplication(QtApplication):
 
     showDiscardOrKeepProfileChanges = pyqtSignal()
 
+    @pyqtSlot()
     def discardOrKeepProfileChanges(self) -> bool:
         has_user_interaction = False
         choice = self.getPreferences().getValue("cura/choice_on_profile_override")
