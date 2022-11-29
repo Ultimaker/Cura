@@ -6,7 +6,6 @@ import QtQuick.Controls 2.15
 
 import UM 1.5 as UM
 import Cura 1.0 as Cura
-import QtQuick.Layouts 1.3
 
 
 //
@@ -52,24 +51,6 @@ Item
         }
     }
 
-    // We use a binding to make sure that after manually setting infillSlider.value it is still bound to the property provider
-    Binding
-    {
-        target: infillSlider
-        property: "value"
-        value: {
-            // The infill slider has a max value of 100. When it is given a value > 100 onValueChanged updates the setting to be 100.
-            // When changing to an intent with infillDensity > 100, it would always be clamped to 100.
-            // This will force the slider to ignore the first onValueChanged for values > 100 so higher values can be set.
-            const density = parseInt(infillDensity.properties.value)
-            if (density > 100) {
-                infillSlider.ignoreValueChange = true
-            }
-
-            return density
-        }
-    }
-
     // Here are the elements that are shown in the left column
     Cura.IconWithText
     {
@@ -84,122 +65,10 @@ Item
         tooltipText: catalog.i18nc("@label", "Gradual infill will gradually increase the amount of infill towards the top.")
     }
 
-    RowLayout
+    InfillSlider
     {
         id: infillSliderContainer
         height: childrenRect.height
-
-        spacing: UM.Theme.getSize("default_margin").width
-
-        anchors
-        {
-            left: infillRowTitle.right
-            right: parent.right
-            verticalCenter: infillRowTitle.verticalCenter
-        }
-
-        UM.Label { Layout.fillWidth: false; text: "0" }
-
-        Slider
-        {
-            id: infillSlider
-            Layout.fillWidth: true
-
-            property var ignoreValueChange: false
-
-            width: parent.width
-            height: childrenRect.height
-
-            from: 0; to: 100; stepSize: 1
-
-            // disable slider when gradual support is enabled
-            enabled: parseInt(infillSteps.properties.value) == 0
-
-            // set initial value from stack
-            value: parseInt(infillDensity.properties.value)
-
-            //Draw line
-            background: Rectangle
-            {
-                id: backgroundLine
-                height: UM.Theme.getSize("print_setup_slider_groove").height
-                width: parent.width - UM.Theme.getSize("print_setup_slider_handle").width
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.verticalCenter: parent.verticalCenter
-                color: UM.Theme.getColor("lining")
-
-                Repeater
-                {
-                    id: repeater
-                    anchors.fill: parent
-                    model: 11
-
-                    Rectangle
-                    {
-                        color: UM.Theme.getColor("lining")
-                        implicitWidth: UM.Theme.getSize("print_setup_slider_tickmarks").width
-                        implicitHeight: UM.Theme.getSize("print_setup_slider_tickmarks").height
-                        anchors.verticalCenter: parent.verticalCenter
-
-                        x: Math.round(backgroundLine.width / (repeater.count - 1) * index - width / 2)
-
-                        radius: Math.round(width / 2)
-                    }
-                }
-            }
-
-            handle: Rectangle
-            {
-                id: handleButton
-                x: infillSlider.leftPadding + infillSlider.visualPosition * (infillSlider.availableWidth - width)
-                anchors.verticalCenter: parent.verticalCenter
-                implicitWidth: UM.Theme.getSize("print_setup_slider_handle").width
-                implicitHeight: UM.Theme.getSize("print_setup_slider_handle").height
-                radius: Math.round(width / 2)
-                color: UM.Theme.getColor("main_background")
-                border.color: UM.Theme.getColor("primary")
-                border.width: UM.Theme.getSize("wide_lining").height
-            }
-
-            Connections
-            {
-                target: infillSlider
-                function onValueChanged()
-                {
-                    if (infillSlider.ignoreValueChange)
-                    {
-                        infillSlider.ignoreValueChange = false
-                        return
-                    }
-
-                    // Don't update if the setting value, if the slider has the same value
-                    if (parseInt(infillDensity.properties.value) == infillSlider.value)
-                    {
-                        return
-                    }
-
-                    // Round the slider value to the nearest multiple of 10 (simulate step size of 10)
-                    var roundedSliderValue = Math.round(infillSlider.value / 10) * 10
-
-                    // Update the slider value to represent the rounded value
-                    infillSlider.value = roundedSliderValue
-
-                    // Update value only if the Recommended mode is Active,
-                    // Otherwise if I change the value in the Custom mode the Recommended view will try to repeat
-                    // same operation
-                    const active_mode = UM.Preferences.getValue("cura/active_mode")
-
-                    if (visible  // Workaround: 'visible' is checked because on startup in Windows it spuriously gets an 'onValueChanged' with value '0' if this isn't checked.
-                        && (active_mode == 0 || active_mode == "simple"))
-                    {
-                        Cura.MachineManager.setSettingForAllExtruders("infill_sparse_density", "value", roundedSliderValue)
-                        Cura.MachineManager.resetSettingForAllExtruders("infill_line_distance")
-                    }
-                }
-            }
-        }
-
-        UM.Label { Layout.fillWidth: false; text: "100" }
     }
 
     //  Gradual Support Infill Checkbox
