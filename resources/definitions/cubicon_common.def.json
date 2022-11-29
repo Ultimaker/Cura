@@ -26,7 +26,7 @@
         "material_flow_layer_0": { "default_value": 100 },
         "max_skin_angle_for_expansion": { "default_value": 90 },
         "retraction_amount": { "default_value": 1.5 },
-        "skin_angles": { "default_value": "[135,45]" },
+        "skin_angles": { "default_value": "[135, 45]" },
         "support_interface_pattern": { "default_value": "zigzag" },
         "support_pattern": { "default_value": "zigzag" },
         "top_bottom_pattern": { "default_value": "lines" },

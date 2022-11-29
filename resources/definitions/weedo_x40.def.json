@@ -198,22 +198,10 @@
         "machine_head_with_fans_polygon":
         {
             "default_value": [
-                [
-                    -42.5,
-                    18
-                ],
-                [
-                    -42.5,
-                    -50
-                ],
-                [
-                    24.5,
-                    18
-                ],
-                [
-                    24.5,
-                    -50.0
-                ]
+                [-42.5, 18],
+                [-42.5, -50],
+                [24.5, 18],
+                [24.5, -50.0]
             ]
         },
         "machine_heated_bed": { "default_value": true },

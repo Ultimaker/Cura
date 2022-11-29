@@ -27,10 +27,10 @@
         "machine_head_with_fans_polygon":
         {
             "default_value": [
-                [ -12, 9 ],
-                [ -12, -9 ],
-                [ 14, 9 ],
-                [ 14, -9 ]
+                [-12, 9],
+                [-12, -9],
+                [14, 9],
+                [14, -9]
             ]
         },
         "machine_heat_zone_length": { "default_value": 16 },

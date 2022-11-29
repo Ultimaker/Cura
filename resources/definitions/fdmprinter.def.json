@@ -1282,7 +1282,7 @@
                 },
                 "material_flow_temp_graph":
                 {
-                    "default_value": "[[3.5,200],[7.0,240]]",
+                    "default_value": "[[3.5, 200],[7.0, 240]]",
                     "description": "Data linking material flow (in mm3 per second) to temperature (degrees Celsius).",
                     "enabled": "False and machine_nozzle_temp_enabled and material_flow_dependent_temperature",
                     "label": "Flow Temperature Graph",
@@ -2702,10 +2702,10 @@
                 "machine_head_with_fans_polygon":
                 {
                     "default_value": [
-                        [ -20, 10 ],
-                        [ 10, 10 ],
-                        [ 10, -10 ],
-                        [ -20, -10 ]
+                        [-20, 10],
+                        [10, 10],
+                        [10, -10],
+                        [-20, -10]
                     ],
                     "description": "The shape of the print head. These are coordinates relative to the position of the print head, which is usually the position of its first extruder. The dimensions left and in front of the print head must be negative coordinates.",
                     "label": "Machine Head & Fan Polygon",

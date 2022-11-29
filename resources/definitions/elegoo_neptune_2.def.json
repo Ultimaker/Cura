@@ -29,10 +29,10 @@
         "machine_head_with_fans_polygon":
         {
             "value": [
-                [ -30, 35 ],
-                [ -30, -10 ],
-                [ 25, 35 ],
-                [ 25, -10 ]
+                [-30, 35],
+                [-30, -10],
+                [25, 35],
+                [25, -10]
             ]
         },
         "machine_heated_bed": { "default_value": true },
@@ -53,7 +53,7 @@
         "retraction_speed": { "default_value": 70 },
         "skin_angles":
         {
-            "default_value": [ 45, 135 ]
+            "default_value": [45, 135]
         },
         "speed_print": { "value": 60.0 },
         "z_seam_corner": { "default_value": "z_seam_corner_weighted" },

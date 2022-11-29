@@ -29,10 +29,10 @@
         "machine_head_with_fans_polygon":
         {
             "default_value": [
-                [ -10, 35 ],
-                [ -10, -18 ],
-                [ 28, -18 ],
-                [ 28, 35 ]
+                [-10, 35],
+                [-10, -18],
+                [28, -18],
+                [28, 35]
             ]
         },
         "machine_height": { "default_value": 80 },

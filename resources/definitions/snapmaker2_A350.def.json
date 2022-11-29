@@ -17,16 +17,10 @@
         "machine_head_with_fans_polygon":
         {
             "default_value": [
-                [ -67, 22 ],
-                [ -67, -25 ],
-                [
-                    25.5,
-                    22
-                ],
-                [
-                    25.5,
-                    -25
-                ]
+                [-67, 22],
+                [-67, -25],
+                [25.5, 22],
+                [25.5, -25]
             ]
         },
         "machine_height": { "default_value": 330 },

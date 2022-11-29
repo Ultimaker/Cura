@@ -74,7 +74,7 @@
         "expand_skins_expand_distance": { "value": "( wall_line_width_0 + (wall_line_count - 1) * wall_line_width_x ) / 2" },
         "flow_rate_extrusion_offset_factor": { "enabled": false },
         "flow_rate_max_extrusion_offset": { "enabled": false },
-        "infill_angles": { "value": "[0,90]" },
+        "infill_angles": { "value": "[0, 90]" },
         "infill_line_width": { "minimum_value_warning": "machine_nozzle_size" },
         "infill_overlap": { "value": 15 },
         "infill_pattern": { "value": "'lines'" },
@@ -104,10 +104,10 @@
         "machine_head_with_fans_polygon":
         {
             "default_value": [
-                [ -20, 10 ],
-                [ -20, -10 ],
-                [ 10, 10 ],
-                [ 10, -10 ]
+                [-20, 10],
+                [-20, -10],
+                [10, 10],
+                [10, -10]
             ]
         },
         "machine_height": { "default_value": 180 },

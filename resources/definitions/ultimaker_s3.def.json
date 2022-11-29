@@ -9,7 +9,7 @@
         "manufacturer": "Ultimaker B.V.",
         "file_formats": "application/x-ufp;text/x-gcode",
         "platform": "ultimaker_s3_platform.obj",
-        "bom_numbers": [ 213482, 213483 ],
+        "bom_numbers": [213482, 213483],
         "exclude_materials": [
             "generic_hips",
             "generic_petg",
@@ -77,22 +77,10 @@
         "machine_head_with_fans_polygon":
         {
             "default_value": [
-                [
-                    -41.4,
-                    -45.8
-                ],
-                [
-                    -41.4,
-                    36.0
-                ],
-                [
-                    63.3,
-                    36.0
-                ],
-                [
-                    63.3,
-                    -45.8
-                ]
+                [-41.4, -45.8],
+                [-41.4, 36.0],
+                [63.3, 36.0],
+                [63.3, -45.8]
             ]
         },
         "machine_heated_bed": { "default_value": true },

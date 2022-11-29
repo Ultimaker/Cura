@@ -174,22 +174,10 @@
         "machine_head_with_fans_polygon":
         {
             "default_value": [
-                [
-                    -76,
-                    -51.8
-                ],
-                [
-                    25,
-                    -51.8
-                ],
-                [
-                    25,
-                    38.2
-                ],
-                [
-                    -76,
-                    38.2
-                ]
+                [-76, -51.8],
+                [25, -51.8],
+                [25, 38.2],
+                [-76, 38.2]
             ]
         },
         "machine_heat_zone_length": { "default_value": 7 },

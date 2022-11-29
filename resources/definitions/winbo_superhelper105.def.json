@@ -54,10 +54,10 @@
         "machine_head_with_fans_polygon":
         {
             "default_value": [
-                [ -110, 50 ],
-                [ -110, -30 ],
-                [ 110, -30 ],
-                [ 110, 50 ]
+                [-110, 50],
+                [-110, -30],
+                [110, -30],
+                [110, 50]
             ]
         },
         "machine_heated_bed": { "default_value": false },

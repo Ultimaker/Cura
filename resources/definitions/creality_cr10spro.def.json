@@ -18,10 +18,10 @@
         "machine_head_with_fans_polygon":
         {
             "default_value": [
-                [ -44, 34 ],
-                [ -44, -34 ],
-                [ 38, -34 ],
-                [ 38, 34 ]
+                [-44, 34],
+                [-44, -34],
+                [38, -34],
+                [38, 34]
             ]
         },
         "machine_name": { "default_value": "Creality CR-10S Pro" },

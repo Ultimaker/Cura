@@ -33,10 +33,10 @@
         "machine_head_with_fans_polygon":
         {
             "default_value": [
-                [ -30, 34 ],
-                [ -30, -32 ],
-                [ 30, -32 ],
-                [ 30, 34 ]
+                [-30, 34],
+                [-30, -32],
+                [30, -32],
+                [30, 34]
             ]
         },
         "machine_heated_bed": { "default_value": true },
