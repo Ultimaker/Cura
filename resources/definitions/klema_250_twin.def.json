@@ -26,7 +26,7 @@
     "overrides": 
     {
         "machine_name":	{ "default_value": "KLEMA 250 Twin" },
-		"machine_shape": { "default_value": "rectangular" },
+		
         "machine_width": { "default_value": 250 },
         "machine_depth": { "default_value": 250 },
         "machine_height": { "default_value": 350 },
