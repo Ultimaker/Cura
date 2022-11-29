@@ -702,7 +702,7 @@ msgstr ""
 #: /Users/c.lamboo/ultimaker/Cura/cura/CrashHandler.py:122
 msgctxt "@action:button"
 msgid "Send crash report to UltiMaker"
-msgstr "Poslat záznam o pádu do UltiMakeru"
+msgstr "Poslat záznam o pádu do UltiMaker"
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/CrashHandler.py:125
 msgctxt "@action:button"
