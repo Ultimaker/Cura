@@ -18,39 +18,6 @@ Item
 
     property real labelColumnWidth: Math.round(width / 3)
 
-    // Create a binding to update the icon when the infill density changes
-    Binding
-    {
-        target: infillRowTitle
-        property: "source"
-        value:
-        {
-            const infill_steps = parseInt(infillSteps.properties.value);
-            if (infill_steps != 0)
-            {
-                return UM.Theme.getIcon("InfillGradual")
-            }
-
-            const density = parseInt(infillDensity.properties.value)
-            if (density == 0)
-            {
-                return UM.Theme.getIcon("Infill0");
-            }
-            else if (density < 40)
-            {
-                return UM.Theme.getIcon("Infill3");
-            }
-            else if (density < 90)
-            {
-                return UM.Theme.getIcon("Infill2");
-            }
-            else
-            {
-                return UM.Theme.getIcon("Infill100");
-            }
-        }
-    }
-
     // Here are the elements that are shown in the left column
     Cura.IconWithText
     {
