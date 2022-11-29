@@ -86,6 +86,7 @@
             "enabled": false
         },
         "retraction_combing": { "value": "'no_outer_surfaces'" },
+        "retraction_combing_max_distance": { "value": 15 },
         "retraction_count_max": { "value": 25 },
         "retraction_extrusion_window": { "value": 1 },
         "roofing_layer_count": { "value": "1" },
