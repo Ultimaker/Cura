@@ -1,7 +1,4 @@
-from .defintion import Definition
 from .diagnostic import Diagnostic
-from .factory import create
-from .meshes import Meshes
-from .profile import Profile
+from .factory import getLinter
 
-__all__ = ["Profile", "Definition", "Meshes", "Diagnostic", "create"]
+__all__ = ["Diagnostic", "getLinter"]
