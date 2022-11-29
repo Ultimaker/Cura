@@ -80,6 +80,26 @@ RowLayout
             border.width: UM.Theme.getSize("wide_lining").height
         }
 
+        UM.PointingRectangle
+        {
+            arrowSize: UM.Theme.getSize("button_tooltip_arrow").width
+            width: childrenRect.width
+            height: childrenRect.height
+            target: Qt.point(handleButton.x + handleButton.width / 2, handleButton.y + handleButton.height / 2)
+            x: handleButton.x - width / 2 + handleButton.width / 2
+            y: handleButton.y - height - UM.Theme.getSize("button_tooltip_arrow").height - UM.Theme.getSize("narrow_margin").height
+            color: UM.Theme.getColor("tooltip");
+
+            UM.Label
+            {
+                text: `${infillSlider.value}%`
+                horizontalAlignment: TextInput.AlignHCenter
+                leftPadding: UM.Theme.getSize("narrow_margin").width
+                rightPadding: UM.Theme.getSize("narrow_margin").width
+                color: UM.Theme.getColor("tooltip_text");
+            }
+        }
+
         Connections
         {
             target: infillSlider
