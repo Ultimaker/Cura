@@ -55,6 +55,17 @@ RecommendedSettingSection
     contents: [
         RecommendedSettingItem
         {
+            settingName: catalog.i18nc("@action:label", "Support Type")
+
+            settingControl: Cura.SingleSettingComboBox
+            {
+                width: parent.width
+                height: UM.Theme.getSize("combobox").height
+                settingName: "support_structure"
+            }
+        },
+        RecommendedSettingItem
+        {
             Layout.preferredHeight: childrenRect.height
             settingName: catalog.i18nc("@action:label", "Print with")
             settingControl: Cura.ExtruderSelectorBar
