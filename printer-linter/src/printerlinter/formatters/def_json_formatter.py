@@ -51,8 +51,8 @@ class DefJsonFormatter(FileFormatter):
             content = single_value_list.sub(r"\1 [ \3 ]\5", content)
 
         if self._settings["format"].get("format-definition-paired-coordinate-array", True):
-            paired_coordinates = re.compile(r"(\[)\s+(-?\d*),\s*(-?\d*)\s*(\])")
-            content = paired_coordinates.sub(r"\1 \2, \3 \4", content)
+            paired_coordinates = re.compile(r"(\s*\[)\s*([-\d\.]+),\s*([-\d\.]+)[\s]*(\])")
+            content = paired_coordinates.sub(r"\1\2, \3\4", content)
 
         file.write_text(content)
 
