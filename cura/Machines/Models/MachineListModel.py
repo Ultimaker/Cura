@@ -5,7 +5,7 @@
 # online cloud connected printers are represented within this ListModel. Additional information such as the number of
 # connected printers for each printer type is gathered.
 
-from typing import Optional
+from typing import Optional, List, cast
 
 from PyQt6.QtCore import Qt, QTimer, QObject, pyqtSlot, pyqtProperty, pyqtSignal
 
@@ -14,7 +14,6 @@ from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.Interfaces import ContainerInterface
 from UM.i18n import i18nCatalog
 from UM.Util import parseBool
-from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 from cura.Settings.GlobalStack import GlobalStack
@@ -29,11 +28,13 @@ class MachineListModel(ListModel):
     MachineCountRole = Qt.ItemDataRole.UserRole + 6
     IsAbstractMachineRole = Qt.ItemDataRole.UserRole + 7
     ComponentTypeRole = Qt.ItemDataRole.UserRole + 8
+    IsNetworkedMachineRole = Qt.ItemDataRole.UserRole + 9
 
-    def __init__(self, parent: Optional[QObject] = None) -> None:
+    def __init__(self, parent: Optional[QObject] = None, machines_filter: List[GlobalStack] = None, listenToChanges: bool = True) -> None:
         super().__init__(parent)
 
         self._show_cloud_printers = False
+        self._machines_filter = machines_filter
 
         self._catalog = i18nCatalog("cura")
 
@@ -45,17 +46,18 @@ class MachineListModel(ListModel):
         self.addRoleName(self.MachineCountRole, "machineCount")
         self.addRoleName(self.IsAbstractMachineRole, "isAbstractMachine")
         self.addRoleName(self.ComponentTypeRole, "componentType")
+        self.addRoleName(self.IsNetworkedMachineRole, "isNetworked")
 
         self._change_timer = QTimer()
         self._change_timer.setInterval(200)
         self._change_timer.setSingleShot(True)
         self._change_timer.timeout.connect(self._update)
 
-        # Listen to changes
-        CuraContainerRegistry.getInstance().containerAdded.connect(self._onContainerChanged)
-        CuraContainerRegistry.getInstance().containerMetaDataChanged.connect(self._onContainerChanged)
-        CuraContainerRegistry.getInstance().containerRemoved.connect(self._onContainerChanged)
-        self._updateDelayed()
+        if listenToChanges:
+            CuraContainerRegistry.getInstance().containerAdded.connect(self._onContainerChanged)
+            CuraContainerRegistry.getInstance().containerMetaDataChanged.connect(self._onContainerChanged)
+            CuraContainerRegistry.getInstance().containerRemoved.connect(self._onContainerChanged)
+            self._updateDelayed()
 
     showCloudPrintersChanged = pyqtSignal(bool)
 
@@ -79,17 +81,33 @@ class MachineListModel(ListModel):
     def _updateDelayed(self) -> None:
         self._change_timer.start()
 
+    def _getMachineStacks(self) -> List[ContainerStack]:
+        return CuraContainerRegistry.getInstance().findContainerStacks(type = "machine")
+
+    def _getAbstractMachineStacks(self) -> List[ContainerStack]:
+        return CuraContainerRegistry.getInstance().findContainerStacks(is_abstract_machine = "True")
+
+    def set_machines_filter(self, machines_filter: Optional[List[GlobalStack]]) -> None:
+        self._machines_filter = machines_filter
+        self._update()
+
     def _update(self) -> None:
         self.clear()
 
         from cura.CuraApplication import CuraApplication
         machines_manager = CuraApplication.getInstance().getMachineManager()
 
-        other_machine_stacks = CuraContainerRegistry.getInstance().findContainerStacks(type="machine")
+        other_machine_stacks = self._getMachineStacks()
         other_machine_stacks.sort(key = lambda machine: machine.getName().upper())
 
-        abstract_machine_stacks = CuraContainerRegistry.getInstance().findContainerStacks(is_abstract_machine = "True")
-        abstract_machine_stacks.sort(key = lambda machine: machine.getName().upper())
+        abstract_machine_stacks = self._getAbstractMachineStacks()
+        abstract_machine_stacks.sort(key = lambda machine: machine.getName().upper(), reverse = True)
+
+        if self._machines_filter is not None:
+            filter_ids = [machine_filter.id for machine_filter in self._machines_filter]
+            other_machine_stacks = [machine for machine in other_machine_stacks if machine.id in filter_ids]
+            abstract_machine_stacks = [machine for machine in abstract_machine_stacks if machine.id in filter_ids]
+
         for abstract_machine in abstract_machine_stacks:
             definition_id = abstract_machine.definition.getId()
             online_machine_stacks = machines_manager.getMachinesWithDefinition(definition_id, online_only = True)
@@ -113,18 +131,13 @@ class MachineListModel(ListModel):
                     other_machine_stacks.remove(stack)
 
         if len(abstract_machine_stacks) > 0:
-            if self._show_cloud_printers:
-                self.appendItem({"componentType": "HIDE_BUTTON",
-                                 "isOnline": True,
-                                 "isAbstractMachine": False,
-                                 "machineCount": 0
-                                 })
-            else:
-                self.appendItem({"componentType": "SHOW_BUTTON",
-                                 "isOnline": True,
-                                 "isAbstractMachine": False,
-                                 "machineCount": 0
-                                 })
+            self.appendItem({
+                "componentType": "HIDE_BUTTON" if self._show_cloud_printers else "SHOW_BUTTON",
+                "isOnline": True,
+                "isAbstractMachine": False,
+                "machineCount": 0,
+                "catergory": "connected",
+            })
 
         for stack in other_machine_stacks:
             self.addItem(stack, False)
@@ -134,11 +147,13 @@ class MachineListModel(ListModel):
             return
 
         self.appendItem({
-                         "componentType": "MACHINE",
-                         "name": container_stack.getName(),
-                         "id": container_stack.getId(),
-                         "metadata": container_stack.getMetaData().copy(),
-                         "isOnline": is_online,
-                         "isAbstractMachine": parseBool(container_stack.getMetaDataEntry("is_abstract_machine", False)),
-                         "machineCount": machine_count,
-                        })
+            "componentType": "MACHINE",
+            "name": container_stack.getName(),
+            "id": container_stack.getId(),
+            "metadata": container_stack.getMetaData().copy(),
+            "isOnline": is_online,
+            "isAbstractMachine": parseBool(container_stack.getMetaDataEntry("is_abstract_machine", False)),
+            "isNetworked": cast(GlobalStack, container_stack).hasNetworkedConnection() if isinstance(container_stack, GlobalStack) else False,
+            "machineCount": machine_count,
+            "catergory": "connected" if is_online else "other",
+        })

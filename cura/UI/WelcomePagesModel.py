@@ -265,7 +265,7 @@ class WelcomePagesModel(ListModel):
                            "should_show_function": self.shouldShowCloudPage,
                            },
                           {"id": "add_network_or_local_printer",
-                           "page_url": self._getBuiltinWelcomePagePath("AddNetworkOrLocalPrinterContent.qml"),
+                           "page_url": self._getBuiltinWelcomePagePath("AddUltimakerOrThirdPartyPrinterStack.qml"),
                            "next_page_id": "machine_actions",
                            },
                           {"id": "add_printer_by_ip",
