@@ -78,3 +78,4 @@ jobs:
                     github_token: ${{ secrets.GITHUB_TOKEN }}
                     clang_tidy_fixes: printer-linter-result/fixes.yml
                     pull_request_id: ${{ env.pr_id }}
+                    request_changes: true
