@@ -81,7 +81,7 @@ Item
             spacing: UM.Theme.getSize("thin_margin").height
             UM.Label
             {
-                text: catalog.i18nc("@label", "Reccomended print settings")
+                text: catalog.i18nc("@label", "Recommended print settings")
                 font: UM.Theme.getFont("medium")
             }
 
