@@ -7,7 +7,7 @@ on:
 
 jobs:
     publish-test-results:
-        if: ${{ github.event.workflow_run.conclusion == 'success' }}
+        if: ${{ github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.conclusion == 'success' }}
         runs-on: ubuntu-latest
 
         steps:
@@ -34,11 +34,43 @@ jobs:
 
             -   name: Set environment variables
                 run: |
-                    mkdir tests
+                    mkdir pr_env
+                    unzip test-result.zip -d pr_env
+                    echo "pr_id=$(cat pr_env/pr-id.txt)" >> $GITHUB_ENV
+                    echo "pr_head_repo=$(cat pr_env/pr-head-repo.txt)" >> $GITHUB_ENV
+                    echo "pr_head_ref=$(cat pr_env/pr-head-ref.txt)" >> $GITHUB_ENV
+
+            -   uses: actions/checkout@v3
+                with:
+                    repository: ${{ env.pr_head_repo }}
+                    ref: ${{ env.pr_head_ref }}
+                    persist-credentials: false
+
+            -   name: Redownload analysis results
+                uses: actions/github-script@v3.1.0
+                with:
+                    script: |
+                        let artifacts = await github.actions.listWorkflowRunArtifacts({
+                            owner: context.repo.owner,
+                            repo: context.repo.repo,
+                            run_id: ${{github.event.workflow_run.id }},
+                        });
+                        let matchArtifact = artifacts.data.artifacts.filter((artifact) => {
+                            return artifact.name == "test-result"
+                        })[0];
+                        let download = await github.actions.downloadArtifact({
+                            owner: context.repo.owner,
+                            repo: context.repo.repo,
+                            artifact_id: matchArtifact.id,
+                            archive_format: "zip",
+                        });
+                        let fs = require("fs");
+                        fs.writeFileSync("${{github.workspace}}/test-result.zip", Buffer.from(download.data));
+
+            -   name: Extract analysis results
+                run: |
+                    mkdir -p tests
                     unzip test-result.zip -d tests
-                    echo "pr_id=$(cat tests/pr-id.txt)" >> $GITHUB_ENV
-                    echo "pr_head_repo=$(cat tests/pr-head-repo.txt)" >> $GITHUB_ENV
-                    echo "pr_head_ref=$(cat tests/pr-head-ref.txt)" >> $GITHUB_ENV
 
             -   name: Publish Unit Test Results
                 id: test-results
