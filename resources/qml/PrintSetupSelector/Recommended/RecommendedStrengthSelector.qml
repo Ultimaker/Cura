@@ -16,6 +16,7 @@ RecommendedSettingSection
     icon: UM.Theme.getIcon("Hammer")
     enableSectionSwitchVisible: false
     enableSectionSwitchEnabled: false
+    tooltipText: ""
 
     UM.SettingPropertyProvider
     {
@@ -29,8 +30,8 @@ RecommendedSettingSection
     contents: [
         RecommendedSettingItem
         {
-            settingName: catalog.i18nc("@action:label", "Infill Density")
-            tooltipText: catalog.i18nc("@label", "Gradual infill will gradually increase the amount of infill towards the top.")
+            settingName: catalog.i18nc("infill_sparse_density description", "Infill Density")
+            tooltipText: catalog.i18nc("@label", "Adjusts the density of infill of the print.")
             settingControl: Cura.SingleSettingSlider
             {
                 height: UM.Theme.getSize("combobox").height
@@ -50,6 +51,7 @@ RecommendedSettingSection
         RecommendedSettingItem
         {
             settingName: catalog.i18nc("@action:label", "Infill Pattern")
+            tooltipText: catalog.i18nc("infill_pattern description", "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the ceiling of the object.")
 
             settingControl: Cura.SingleSettingComboBox
             {

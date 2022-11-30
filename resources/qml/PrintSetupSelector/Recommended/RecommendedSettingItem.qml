@@ -30,6 +30,16 @@ Item
         anchors.leftMargin: UM.Theme.getSize("medium_button_icon").width + UM.Theme.getSize("default_margin").width
     }
 
+    MouseArea
+    {
+        id: tooltipArea
+        anchors.fill: settingLabel
+        propagateComposedEvents: true
+        hoverEnabled: true
+        onEntered: base.showTooltip(parent, Qt.point(-UM.Theme.getSize("thick_margin").width, 0), tooltipText)
+        onExited: base.hideTooltip()
+    }
+
 
     Loader
     {

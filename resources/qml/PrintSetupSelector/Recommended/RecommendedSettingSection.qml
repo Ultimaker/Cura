@@ -16,9 +16,9 @@ Item
     property alias enableSectionSwitchVisible: enableSectionSwitch.visible
     property alias enableSectionSwitchChecked: enableSectionSwitch.checked
     property alias enableSectionSwitchEnabled: enableSectionSwitch.enabled
+    property string tooltipText: "test"
     property var enableSectionClicked: { return }
     property int leftColumnWidth: Math.floor(width * 0.35)
-    property var toolTipText: ""
 
     property alias contents: settingColumn.children
 
@@ -49,13 +49,12 @@ Item
 
         MouseArea
         {
-            id: tooltipMouseArea
+            id: tooltipArea
             anchors.fill: sectionTitle
             propagateComposedEvents: true
             hoverEnabled: true
-
-            onEntered: { print("showTooltip") }
-            onExited: { print("hideTooltip" ) }
+            onEntered: base.showTooltip(parent, Qt.point(-UM.Theme.getSize("thick_margin").width, 0), tooltipText)
+            onExited: base.hideTooltip()
         }
 
     }

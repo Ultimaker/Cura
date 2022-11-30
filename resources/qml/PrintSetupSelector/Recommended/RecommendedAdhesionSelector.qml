@@ -17,6 +17,7 @@ RecommendedSettingSection
     enableSectionSwitchVisible: platformAdhesionType.properties.enabled == "True"
     enableSectionSwitchChecked: platformAdhesionType.properties.value != "skirt" && platformAdhesionType.properties.value != "none"
     enableSectionSwitchEnabled: recommendedPrintSetup.settingsEnabled
+    tooltipText: catalog.i18nc("@label", "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards.")
 
     property var curaRecommendedMode: Cura.RecommendedMode {}
 
@@ -38,6 +39,7 @@ RecommendedSettingSection
         {
             Layout.preferredHeight: childrenRect.height
             settingName: catalog.i18nc("@action:label", "Print with")
+            tooltipText: catalog.i18nc("adhesion_extruder_nr description", "The extruder train to use for printing the skirt/brim/raft. This is used in multi-extrusion.")
             settingControl: Cura.SingleSettingExtruderSelectorBar { extruderSettingName: "adhesion_extruder_nr" }
         }
     ]
