@@ -139,7 +139,7 @@ Item
         hoverColor: UM.Theme.getColor("primary_hover")
 
         enabled: Cura.SimpleModeSettingsManager.isProfileCustomized
-        onClicked: Cura.MachineManager.hasCustomQuality ? CuraApplication.discardOrKeepProfileChanges() : Cura.Actions.addProfile.trigger()
+        onClicked: CuraApplication.showCompareAndSaveProfileChanges(Cura.MachineManager.hasCustomQuality ? "saveFromCustom" : "saveFromBuiltIn")
 
         UM.ToolTip
         {

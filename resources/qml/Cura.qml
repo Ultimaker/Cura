@@ -816,11 +816,13 @@ UM.MainWindow
     Connections
     {
         target: CuraApplication
-        function onShowDiscardOrKeepProfileChanges()
+        function onShowCompareAndSaveProfileChanges(profileState)
         {
             discardOrKeepProfileChangesDialogLoader.sourceComponent = discardOrKeepProfileChangesDialogComponent
+            discardOrKeepProfileChangesDialogLoader.item.state = profileState
             discardOrKeepProfileChangesDialogLoader.item.show()
         }
+        function onShowDiscardOrKeepProfileChanges() { onShowCompareAndSaveProfileChanges("") }
     }
 
     Cura.WizardDialog

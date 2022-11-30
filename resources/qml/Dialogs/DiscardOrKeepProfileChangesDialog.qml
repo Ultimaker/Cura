@@ -12,8 +12,10 @@ UM.Dialog
     id: base
     title: catalog.i18nc("@title:window", "Discard or Keep changes")
 
-    onAccepted: CuraApplication.discardOrKeepProfileChangesClosed("discard")
-    onRejected: CuraApplication.discardOrKeepProfileChangesClosed("keep")
+    property alias state: alternateStates.state
+
+    onAccepted: alternateStates.state == "" ? CuraApplication.discardOrKeepProfileChangesClosed("discard") : Cura.Actions.addProfile.trigger()
+    onRejected: alternateStates.state == "" ? CuraApplication.discardOrKeepProfileChangesClosed("keep") : Cura.Actions.addProfile.trigger()
 
     minimumWidth: UM.Theme.getSize("popup_dialog").width
     minimumHeight: UM.Theme.getSize("popup_dialog").height
@@ -98,9 +100,26 @@ UM.Dialog
 
     buttonSpacing: UM.Theme.getSize("thin_margin").width
 
-    leftButtons: [
+    Rectangle
+    {
+        // Use a rectangle to get access to states. For some reason top-levels like Dialog/Window ect. don't have them.
+        // NOTE: The default state is 'switch profiles', alternate states are used for 'save from [built-in|custom]'.
+        id: alternateStates
+        width: 0
+        height: 0
+        states:
+        [
+            State { name: "saveFromBuiltIn" },
+            State { name: "saveFromCustom" }
+        ]
+    }
+
+    leftButtons:
+    [
         Cura.ComboBox
         {
+            visible: alternateStates.state == ""
+
             implicitHeight: UM.Theme.getSize("combobox").height
             implicitWidth: UM.Theme.getSize("combobox").width
 
@@ -136,6 +155,13 @@ UM.Dialog
                     discardButton.enabled = true;
                 }
             }
+        },
+        Rectangle
+        {
+            // Workaround: If this placeholder isn't in here, then on repeated state-changes of the window, the rightButtons will be in the center (despite initially showing up right).
+            visible: alternateStates.state != ""
+            implicitHeight: UM.Theme.getSize("combobox").height
+            implicitWidth: UM.Theme.getSize("combobox").width
         }
     ]
 
@@ -146,12 +172,28 @@ UM.Dialog
             id: discardButton
             text: catalog.i18nc("@action:button", "Discard changes")
             onClicked: base.accept()
+            visible: alternateStates.state == ""
         },
         Cura.SecondaryButton
         {
             id: keepButton
             text: catalog.i18nc("@action:button", "Keep changes")
             onClicked: base.reject()
+            visible: alternateStates.state == ""
+        },
+        Cura.SecondaryButton
+        {
+            id: overwriteButton
+            text: catalog.i18nc("@action:button", "Save as new custom profile")
+            onClicked: base.accept()
+            visible: alternateStates.state != ""
+        },
+        Cura.PrimaryButton
+        {
+            id: saveButton
+            text: catalog.i18nc("@action:button", "Save changes")
+            onClicked: base.reject()
+            visible: alternateStates.state == "saveFromCustom"
         }
     ]
 }
