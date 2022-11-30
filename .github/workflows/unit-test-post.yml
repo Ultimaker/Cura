@@ -1,4 +1,4 @@
-name: printer-linter-pr-post
+name: unit-test-post
 
 on:
     workflow_run:
