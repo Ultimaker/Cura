@@ -33,7 +33,7 @@ class ActiveQuality:
 
         if self.custom_profile is not None:
             string_parts.append(self.profile)
-            if self.intent_category is not "default":
+            if self.intent_category != "default":
                 string_parts.append(self.intent_name)
 
         if self.layer_height:
