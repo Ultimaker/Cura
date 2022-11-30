@@ -40,7 +40,7 @@ jobs:
                     echo "pr_head_repo=$(cat printer-linter-result/pr-head-repo.txt)" >> $GITHUB_ENV
                     echo "pr_head_ref=$(cat printer-linter-result/pr-head-ref.txt)" >> $GITHUB_ENV
 
-            -   uses: actions/checkout@v2
+            -   uses: actions/checkout@v3
                 with:
                     repository: ${{ env.pr_head_repo }}
                     ref: ${{ env.pr_head_ref }}
