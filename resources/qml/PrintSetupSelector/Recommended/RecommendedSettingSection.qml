@@ -77,7 +77,7 @@ Item
     {
         id: settingColumn
         width: parent.width
-        height: childrenRect.height
+        spacing: 0
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: sectionHeader.bottom
