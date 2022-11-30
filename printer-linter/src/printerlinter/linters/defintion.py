@@ -43,7 +43,7 @@ class Definition(Linter):
             for key, value_dict in definition["overrides"].items():
                 is_redefined, value, parent = self._isDefinedInParent(key, value_dict, definition['inherits'])
                 if is_redefined:
-                    redefined = re.compile(r'.*(\"' + key + r'\"[\s\S]*?\{)[\s\S]*?(\}[,\"]?)')
+                    redefined = re.compile(r'.*(\"' + key + r'\"[\s\:\S]*?)\{[\s\S]*?\},?')
                     found = redefined.search(self._content)
                     yield Diagnostic(
                         file = self._file,
@@ -54,7 +54,7 @@ class Definition(Linter):
                         replacements = [Replacement(
                             file = self._file,
                             offset = found.span(1)[0],
-                            length = found.span(2)[1] - found.span(1)[0],
+                            length = len(found.group()),
                             replacement_text = "")]
                     )
 
