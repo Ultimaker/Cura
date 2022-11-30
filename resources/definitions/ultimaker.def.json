@@ -105,7 +105,7 @@
         "support_interface_height": { "value": "2 * layer_height" },
         "support_interface_material_flow": { "value": "skin_material_flow" },
         "support_interface_offset": { "value": "support_offset" },
-        "support_interface_pattern": { "value": "'concentric'" },
+        "support_interface_pattern": { "value": "'zigzag'" },
         "support_interface_skip_height": { "value": "layer_height" },
         "support_line_distance": { "minimum_value_warning": "0 if support_structure == 'tree' else support_line_width" },
         "support_offset": { "value": "support_xy_distance if support_interface_enable else 0" },
