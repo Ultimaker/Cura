@@ -53,10 +53,12 @@ Row
 
             Cura.ExtruderButton
             {
+                anchors.margins : 0
+                padding: 0
                 extruder: model
                 checked: extruder.index == selectedIndex
-                iconScale: 0.6
-                buttonSize: UM.Theme.getSize("large_button").width
+                iconScale: 0.8
+                buttonSize: UM.Theme.getSize("small_button").width
                 onClicked: extruder.enabled && onClickExtruder(extruder.index)
             }
         }
