@@ -1,5 +1,5 @@
-#Copyright (c) 2019 Ultimaker B.V.
-#Cura is released under the terms of the LGPLv3 or higher.
+#  Copyright (c) 2022 UltiMaker
+#  Cura is released under the terms of the LGPLv3 or higher.
 
 import sys
 
@@ -19,7 +19,7 @@ def getMetaData():
             {
                 "mime_type": "application/x-ufp",
                 "extension": "ufp",
-                "description": i18n_catalog.i18nc("@item:inlistbox", "Ultimaker Format Package")
+                "description": i18n_catalog.i18nc("@item:inlistbox", "UltiMaker Format Package")
             }
         ]
     }

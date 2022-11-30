@@ -36,6 +36,6 @@ Cura.Menu
         }
         onObjectAdded: function(index, object) { openFilesMenu.insertItem(index, object)}
 
-        onObjectRemoved: function(object) { openFilesMenu.removeItem(object) }
+        onObjectRemoved: function(index, object) { openFilesMenu.removeItem(object) }
     }
 }

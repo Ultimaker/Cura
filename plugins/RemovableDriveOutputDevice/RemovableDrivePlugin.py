@@ -21,7 +21,7 @@ class RemovableDrivePlugin(OutputDevicePlugin):
         super().__init__()
 
         self._update_thread = threading.Thread(target = self._updateThread)
-        self._update_thread.deamon = True
+        self._update_thread.daemon = True
 
         self._check_updates = True
 

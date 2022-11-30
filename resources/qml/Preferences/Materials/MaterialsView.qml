@@ -574,11 +574,11 @@ Item
                     elide: Text.ElideRight
                     verticalAlignment: Qt.AlignVCenter
                 }
-                Cura.SpinBox
+                Cura.NumericTextFieldWithUnit
                 {
                     id: spinBox
                     anchors.left: label.right
-                    value:
+                    valueText:
                     {
                         // In case the setting is not in the material...
                         if (!isNaN(parseFloat(materialPropertyProvider.properties.value)))
@@ -598,11 +598,15 @@ Item
                         return 0;
                     }
                     width: settingsPage.columnWidth
-                    suffix: " " + model.unit
-                    to: 99999
+                    maximum: 99999
+                    unitText: model.unit
                     decimals: model.unit == "mm" ? 2 : 0
+                    enabled: base.editingEnabled
 
-                    onEditingFinished: materialPropertyProvider.setPropertyValue("value", value)
+                    editingFinishedFunction: function()
+                    {
+                        materialPropertyProvider.setPropertyValue("value", parseFloat(valueText.replace(",", ".")))
+                    }
                 }
 
                 UM.ContainerPropertyProvider

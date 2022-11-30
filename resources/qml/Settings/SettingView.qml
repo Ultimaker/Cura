@@ -46,7 +46,7 @@ Item
             topPadding: height / 4
             leftPadding: searchIcon.width + UM.Theme.getSize("default_margin").width * 2
             placeholderText: catalog.i18nc("@label:textbox", "Search settings")
-            font.italic: true
+            font: UM.Theme.getFont("default_italic")
 
             property var expandedCategories
             property bool lastFindingSettings: false
@@ -61,7 +61,7 @@ Item
                     left: parent.left
                     leftMargin: UM.Theme.getSize("default_margin").width
                 }
-                source: UM.Theme.getIcon("search")
+                source: UM.Theme.getIcon("Magnifier")
                 height: UM.Theme.getSize("small_button_icon").height
                 width: height
                 color: UM.Theme.getColor("text")
@@ -178,7 +178,7 @@ Item
     ListView
     {
         id: contents
-        maximumFlickVelocity: 1000
+        maximumFlickVelocity: 1000 * screenScaleFactor
         anchors
         {
             top: filterContainer.bottom

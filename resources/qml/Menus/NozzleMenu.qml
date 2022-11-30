@@ -50,7 +50,7 @@ Cura.Menu
         }
 
         onObjectAdded: function(index, object) { nozzleMenu.insertItem(index, object) }
-        onObjectRemoved: function(object) {nozzleMenu.removeItem(object)}
+        onObjectRemoved: function(index, object) {nozzleMenu.removeItem(object)}
     }
 
 }

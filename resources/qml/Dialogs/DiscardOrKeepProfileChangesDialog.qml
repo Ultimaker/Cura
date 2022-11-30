@@ -24,6 +24,16 @@ UM.Dialog
 
     property var changesModel: Cura.UserChangesModel { id: userChangesModel }
 
+    // Hack to make sure that when the data of our model changes the tablemodel is also updated
+    // If we directly set the rows (So without the clear being called) it doesn't seem to
+    // get updated correctly.
+    property var modelRows: userChangesModel.items
+    onModelRowsChanged:
+    {
+        tableModel.clear()
+        tableModel.rows = modelRows
+    }
+
     onVisibilityChanged:
     {
         if(visible)
@@ -46,7 +56,7 @@ UM.Dialog
     UM.Label
     {
         id: infoText
-        text: catalog.i18nc("@text:window, %1 is a profile name", "You have customized some profile settings. Would you like to Keep these changed settings after switching profiles? Alternatively, you can discard the changes to load the defaults from '%1'.").arg(Cura.MachineManager.activeQualityDisplayNameMap["main"])
+        text: catalog.i18nc("@text:window, %1 is a profile name", "You have customized some profile settings. Would you like to Keep these changed settings after switching profiles? Alternatively, you can discard the changes to load the defaults from '%1'.").arg(Cura.MachineManager.activeQualityDisplayNameMainStringParts.join(" - "))
         anchors.left: parent.left
         anchors.right: parent.right
         wrapMode: Text.WordWrap
@@ -73,13 +83,14 @@ UM.Dialog
 
             columnHeaders: [
                 catalog.i18nc("@title:column", "Profile settings"),
-                Cura.MachineManager.activeQualityDisplayNameMap["main"],
+                Cura.MachineManager.activeQualityDisplayNameMainStringParts.join(" - "),
                 catalog.i18nc("@title:column", "Current changes")
             ]
             model: UM.TableModel
             {
+                id: tableModel
                 headers: ["label", "original_value", "user_value"]
-                rows: userChangesModel.items
+                rows: modelRows
             }
             sectionRole: "category"
         }

@@ -47,18 +47,6 @@ Item
             font: UM.Theme.getFont("medium")
         }
 
-        NoIntentIcon
-        {
-            affected_extruders: Cura.MachineManager.extruderPositionsWithNonActiveIntent
-            intent_type: Cura.MachineManager.activeIntentCategory
-            anchors.right: intentSelection.left
-            anchors.rightMargin: UM.Theme.getSize("narrow_margin").width
-            width: Math.round(profileLabel.height * 0.5)
-            anchors.verticalCenter: parent.verticalCenter
-            height: width
-            visible: affected_extruders.length
-        }
-
         Button
         {
             id: intentSelection
@@ -79,7 +67,7 @@ Item
                 UM.Label
                 {
                     id: textLabel
-                    text: Cura.MachineManager.activeQualityDisplayNameMap["main"]
+                    text: Cura.MachineManager.activeQualityDisplayNameMainStringParts.join(" - ")
                     Layout.margins: 0
                     Layout.maximumWidth: Math.floor(parent.width * 0.7)  // Always leave >= 30% for the rest of the row.
                     height: contentHeight
@@ -89,7 +77,19 @@ Item
 
                 UM.Label
                 {
-                    text: activeQualityDetailText()
+                    text:
+                    {
+                        const string_parts = Cura.MachineManager.activeQualityDisplayNameTailStringParts;
+                        if (string_parts.length === 0)
+                        {
+                            return "";
+                        }
+                        else
+                        {
+                            ` - ${string_parts.join(" - ")}`
+                        }
+                    }
+
                     color: UM.Theme.getColor("text_detail")
                     Layout.margins: 0
                     Layout.fillWidth: true
@@ -97,39 +97,13 @@ Item
                     height: contentHeight
                     elide: Text.ElideRight
                     wrapMode: Text.NoWrap
-                    function activeQualityDetailText()
-                    {
-                        var resultMap = Cura.MachineManager.activeQualityDisplayNameMap
-                        var resultSuffix = resultMap["suffix"]
-                        var result = ""
-
-                        if (Cura.MachineManager.isActiveQualityExperimental)
-                        {
-                            resultSuffix += " (Experimental)"
-                        }
-
-                        if (Cura.MachineManager.isActiveQualitySupported)
-                        {
-                            if (Cura.MachineManager.activeQualityLayerHeight > 0)
-                            {
-                                if (resultSuffix)
-                                {
-                                    result += " - " + resultSuffix
-                                }
-                                result += " - "
-                                result += Cura.MachineManager.activeQualityLayerHeight + "mm"
-                            }
-                        }
-
-                        return result
-                    }
                 }
             }
 
             background: UM.UnderlineBackground
             {
                 id: backgroundItem
-                liningColor: intentSelection.hovered ? UM.Theme.getColor("border_main") : UM.Theme.getColor("border_field_light")
+                liningColor: intentSelection.hovered ? UM.Theme.getColor("text_field_border_hovered") : UM.Theme.getColor("border_field_light")
             }
 
             UM.SimpleButton
@@ -218,8 +192,6 @@ Item
                         materialColor: model.color
                         extruderEnabled: model.enabled
                         iconVariant: "default"
-                        height: parent.height
-                        width: height
                     }
                 }
                 onClicked:

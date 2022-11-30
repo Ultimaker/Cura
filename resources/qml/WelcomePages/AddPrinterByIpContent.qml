@@ -1,11 +1,11 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2022 UltiMaker
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.15
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
 
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.5 as Cura
 
 
@@ -61,7 +61,7 @@ Item
         }
     }
 
-    Label
+    UM.Label
     {
         id: titleLabel
         anchors.top: parent.top
@@ -70,7 +70,6 @@ Item
         text: catalog.i18nc("@label", "Add printer by IP address")
         color: UM.Theme.getColor("primary_button")
         font: UM.Theme.getFont("huge")
-        renderType: Text.NativeRendering
     }
 
     Item
@@ -88,17 +87,13 @@ Item
             anchors.right: parent.right
             anchors.margins: UM.Theme.getSize("default_margin").width
 
-            Label
+            UM.Label
             {
                 id: explainLabel
                 height: contentHeight
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.top: parent.top
-
-                font: UM.Theme.getFont("default")
-                color: UM.Theme.getColor("text")
-                renderType: Text.NativeRendering
                 text: catalog.i18nc("@label", "Enter the IP address of your printer on the network.")
             }
 
@@ -136,7 +131,7 @@ Item
                     onAccepted: addPrinterButton.clicked()
                 }
 
-                Label
+                UM.Label
                 {
                     id: invalidInputLabel
                     anchors.top: hostnameField.bottom
@@ -144,9 +139,6 @@ Item
                     anchors.left: parent.left
                     visible: false
                     text: catalog.i18nc("@text", "Please enter a valid IP address.")
-                    font: UM.Theme.getFont("default")
-                    color: UM.Theme.getColor("text")
-                    renderType: Text.NativeRendering
                 }
 
                 Cura.SecondaryButton
@@ -188,14 +180,11 @@ Item
                 anchors.top: userInputFields.bottom
                 anchors.margins: UM.Theme.getSize("default_margin").width
 
-                Label
+                UM.Label
                 {
                     id: waitResponseLabel
                     anchors.top: parent.top
                     anchors.margins: UM.Theme.getSize("default_margin").width
-                    font: UM.Theme.getFont("default")
-                    color: UM.Theme.getColor("text")
-                    renderType: Text.NativeRendering
 
                     visible: addPrinterByIpScreen.hasRequestInProgress || (addPrinterByIpScreen.hasRequestFinished && !addPrinterByIpScreen.isPrinterDiscovered)
                     textFormat: Text.RichText
@@ -204,12 +193,12 @@ Item
                         if (addPrinterByIpScreen.hasRequestFinished)
                         {
                             return catalog.i18nc("@label", "Could not connect to device.") + "<br /><br /><a href=\"https://ultimaker.com/in/cura/troubleshooting/network?utm_source=cura&utm_medium=software&utm_campaign=add-network-printer-error\">"
-                                + catalog.i18nc("@label", "Can't connect to your Ultimaker printer?") + "</a>";
+                                + catalog.i18nc("@label", "Can't connect to your UltiMaker printer?") + "</a>";
                         }
                         else
                         {
                             return catalog.i18nc("@label", "The printer at this address has not responded yet.") + "<br /><br /><a href=\"https://ultimaker.com/in/cura/troubleshooting/network?utm_source=cura&utm_medium=software&utm_campaign=add-network-printer-error\">"
-                                + catalog.i18nc("@label", "Can't connect to your Ultimaker printer?") + "</a>";
+                                + catalog.i18nc("@label", "Can't connect to your UltiMaker printer?") + "</a>";
                         }
                     }
                     onLinkActivated: Qt.openUrlExternally(link)
@@ -225,18 +214,15 @@ Item
 
                     visible: addPrinterByIpScreen.isPrinterDiscovered
 
-                    Label
+                    UM.Label
                     {
                         id: printerNameLabel
                         anchors.top: parent.top
                         font: UM.Theme.getFont("large")
-                        color: UM.Theme.getColor("text")
-                        renderType: Text.NativeRendering
-
                         text: !addPrinterByIpScreen.isPrinterDiscovered ? "???" : addPrinterByIpScreen.discoveredPrinter.name
                     }
 
-                    Label
+                    UM.Label
                     {
                         id: printerCannotBeAddedLabel
                         width: parent.width
@@ -245,8 +231,6 @@ Item
                         text: catalog.i18nc("@label", "This printer cannot be added because it's an unknown printer or it's not the host of a group.")
                         visible: addPrinterByIpScreen.hasRequestFinished && !addPrinterByIpScreen.canAddPrinter
                         font: UM.Theme.getFont("default_bold")
-                        color: UM.Theme.getColor("text")
-                        renderType: Text.NativeRendering
                         wrapMode: Text.WordWrap
                     }
 
@@ -258,52 +242,33 @@ Item
                         columns: 2
                         columnSpacing: UM.Theme.getSize("default_margin").width
 
-                        Label
+                        UM.Label
                         {
                             text: catalog.i18nc("@label", "Type")
-                            font: UM.Theme.getFont("default")
-                            color: UM.Theme.getColor("text")
-                            renderType: Text.NativeRendering
                         }
-                        Label
+                        UM.Label
                         {
                             id: typeText
                             text: !addPrinterByIpScreen.isPrinterDiscovered ? "?" : addPrinterByIpScreen.discoveredPrinter.readableMachineType
-                            font: UM.Theme.getFont("default")
-                            color: UM.Theme.getColor("text")
-                            renderType: Text.NativeRendering
                         }
-
-                        Label
+                        UM.Label
                         {
                             text: catalog.i18nc("@label", "Firmware version")
-                            font: UM.Theme.getFont("default")
-                            color: UM.Theme.getColor("text")
-                            renderType: Text.NativeRendering
                         }
-                        Label
+                        UM.Label
                         {
                             id: firmwareText
                             text: !addPrinterByIpScreen.isPrinterDiscovered ? "0.0.0.0" : addPrinterByIpScreen.discoveredPrinter.device.getProperty("firmware_version")
-                            font: UM.Theme.getFont("default")
-                            color: UM.Theme.getColor("text")
-                            renderType: Text.NativeRendering
                         }
 
-                        Label
+                        UM.Label
                         {
                             text: catalog.i18nc("@label", "Address")
-                            font: UM.Theme.getFont("default")
-                            color: UM.Theme.getColor("text")
-                            renderType: Text.NativeRendering
                         }
-                        Label
+                        UM.Label
                         {
                             id: addressText
                             text: !addPrinterByIpScreen.isPrinterDiscovered ? "0.0.0.0" : addPrinterByIpScreen.discoveredPrinter.address
-                            font: UM.Theme.getFont("default")
-                            color: UM.Theme.getColor("text")
-                            renderType: Text.NativeRendering
                         }
                     }
 

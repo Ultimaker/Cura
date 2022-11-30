@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import os
 from time import time
@@ -183,6 +183,42 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
     @pyqtSlot(str, name="forceSendJob")
     def forceSendJob(self, print_job_uuid: str) -> None:
         raise NotImplementedError("forceSendJob must be implemented")
+
+    @pyqtProperty(bool, constant = True)
+    def supportsPrintJobQueue(self) -> bool:
+        """
+        Whether this printer knows about queueing print jobs.
+        """
+        return True  # This API always supports print job queueing.
+
+    @pyqtProperty(bool, constant = True)
+    def canReadPrintJobs(self) -> bool:
+        """
+        Whether this user can read the list of print jobs and their properties.
+        """
+        return True
+
+    @pyqtProperty(bool, constant = True)
+    def canWriteOthersPrintJobs(self) -> bool:
+        """
+        Whether this user can change things about print jobs made by other
+        people.
+        """
+        return True
+
+    @pyqtProperty(bool, constant = True)
+    def canWriteOwnPrintJobs(self) -> bool:
+        """
+        Whether this user can change things about print jobs made by themself.
+        """
+        return True
+
+    @pyqtProperty(bool, constant = True)
+    def canReadPrinterDetails(self) -> bool:
+        """
+        Whether this user can read the status of the printer.
+        """
+        return True
 
     @pyqtSlot(name="openPrintJobControlPanel")
     def openPrintJobControlPanel(self) -> None:
