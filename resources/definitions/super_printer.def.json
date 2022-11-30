@@ -93,14 +93,16 @@
         "acceleration_topbottom": { "value": "math.ceil(acceleration_print * 1000 / 3500)" },
         "acceleration_wall": { "value": "math.ceil(acceleration_print * 1500 / 3500)" },
         "acceleration_wall_0": { "value": "math.ceil(acceleration_wall * 1000 / 3500)" },
-        "support_use_towers": {
-            "value": false },
+        
         "brim_width": { "value": "3" },
         "cool_fan_speed": { "value": "50" },
         "cool_fan_speed_max": { "value": "100" },
         "cool_min_speed": { "value": "5" },
         "infill_overlap": { "value": "0" },
         "infill_pattern": { "value": "'zigzag' if infill_sparse_density > 80 else 'triangles'" },
+                "support_use_towers": {
+            "value": false },
+        
         "infill_wipe_dist": { "value": "0" },
         "jerk_enabled": { "value": "True" },
         "layer_start_x": { "value": "sum(extruderValues('machine_extruder_start_pos_x')) / len(extruderValues('machine_extruder_start_pos_x'))" },
