@@ -119,7 +119,7 @@ UM.Dialog
                         text = `#${text}`;
                     }
                 }
-                validator: RegularExpressionValidator { regularExpression: /^#([a-fA-F0-9]{0,6})$/ }
+                validator: Cura.HexColorValidator {}
             }
 
             Rectangle
