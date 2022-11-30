@@ -19,7 +19,9 @@
         "machine_name": { "default_value": "3Dator" },
         "prime_tower_size": { "default_value": 8.660254037844387 },
         "infill_sparse_density": { "default_value": 20 },
-        "layer_height": { "default_value": 0.2 },
+        "layer_height": { 
+            "default_value": 0.2
+        },
         "speed_print": { "default_value": 50 },
         "machine_heated_bed": { "default_value": true },
         "machine_center_is_zero": { "default_value": false },
