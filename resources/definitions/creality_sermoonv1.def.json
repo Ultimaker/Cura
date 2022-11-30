@@ -1,5 +1,5 @@
 {
-    "name": "Creality Sermoon V1/V1 Pro",
+    "name": "Creality Sermoon V1 & V1 Pro",
     "version": 2,
     "inherits": "creality_base",
     "metadata": {
