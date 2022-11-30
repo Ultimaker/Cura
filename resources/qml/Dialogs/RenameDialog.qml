@@ -28,7 +28,7 @@ UM.Dialog
     title: dialogTitle
     backgroundColor: UM.Theme.getColor("main_background")
     minimumWidth: UM.Theme.getSize("small_popup_dialog").width
-    minimumHeight: UM.Theme.getSize("small_popup_dialog").height
+    minimumHeight: UM.Theme.getSize("small_popup_dialog").height + extraInfoHolder.height
     width: minimumWidth
     height: minimumHeight
 
@@ -63,8 +63,24 @@ UM.Dialog
             onTextChanged: base.textChanged(text)
         }
 
+        // spacer
+        Rectangle
+        {
+            color: base.backgroundColor
+            height: UM.Theme.getSize("wide_margin").height
+            width: height
+        }
+
         Row
         {
+            id: extraInfoHolder
+            anchors
+            {
+                left: parent.left
+                right: parent.right
+                margins: UM.Theme.getSize("default_margin").height
+            }
+            spacing: UM.Theme.getSize("default_margin").height
             children: extraInfo
         }
 

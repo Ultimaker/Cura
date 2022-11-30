@@ -878,6 +878,29 @@ UM.MainWindow
         title: catalog.i18nc("@title:window", "Save Custom Profile")
         object: catalog.i18nc("@textfield:placeholder", "<New Custom Profile>")
         explanation: catalog.i18nc("@info", "Custom profile name:")
+        extraInfo:
+        [
+            UM.ColorImage
+            {
+                width: UM.Theme.getSize("message_type_icon").width
+                height: UM.Theme.getSize("message_type_icon").height
+                source: UM.Theme.getIcon("Information")
+                color: UM.Theme.getColor("text")
+            },
+            UM.Label
+            {
+                text: catalog.i18nc
+                (
+                    "@label %i will be replaced with a profile name",
+                    "<b>Only user changed settings will be saved in the custom profile.</b><br/>" +
+                    "The new custom profile will inherit properties from <b>%1</b>,<br/>" +
+                    "for materials that support it.<br/>" +
+                    "<a href=\"%2\">Learn more about Cura print profiles</a>"
+                ).arg(Cura.MachineManager.activeQualityOrQualityChangesName).arg("https://support.ultimaker.com/s/article/1667337576882")
+                wrapMode: Text.WordWrap
+            }
+        ]
+        okButtonText: catalog.i18nc("@button", "Save new profile")
         onAccepted: CuraApplication.getQualityManagementModel().createQualityChanges(newName, true);
     }
 

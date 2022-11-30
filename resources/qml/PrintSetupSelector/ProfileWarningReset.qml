@@ -83,7 +83,11 @@ Item
                 PropertyChanges
                 {
                     target: warning
-                    text: catalog.i18nc("@info", "Some settings were changed.")
+                    text:
+                    {
+                        var profile_name = Cura.MachineManager.activeQualityOrQualityChangesName;
+                        return catalog.i18nc("@info %1 is the name of a profile", "Some setting-values defined in <b>%1</b> were overridden.").arg(profile_name);
+                    }
                 }
             }
         ]
