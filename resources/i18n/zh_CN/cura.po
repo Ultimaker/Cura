@@ -1,6 +1,7 @@
 # Cura
-# Copyright (C) 2022 Ultimaker B.V.
+# Copyright (C) 2022 UltiMaker.
 # This file is distributed under the same license as the Cura package.
+# Ultimaker <plugins@ultimaker.com>, 2022.
 #
 msgid ""
 msgstr ""
@@ -423,8 +424,8 @@ msgstr "无法开始新的登录过程。请检查是否仍在尝试进行另一
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/OAuth2/AuthorizationService.py:277
 msgctxt "@info"
-msgid "Unable to reach the Ultimaker account server."
-msgstr "无法连接 Ultimaker 帐户服务器。"
+msgid "Unable to reach the UltiMaker account server."
+msgstr "无法连接 UltiMaker 帐户服务器。"
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/OAuth2/AuthorizationService.py:278
 msgctxt "@info:title"
@@ -700,8 +701,8 @@ msgstr ""
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/CrashHandler.py:122
 msgctxt "@action:button"
-msgid "Send crash report to Ultimaker"
-msgstr "向 Ultimaker 发送错误报告"
+msgid "Send crash report to UltiMaker"
+msgstr "向 UltiMaker 发送错误报告"
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/CrashHandler.py:125
 msgctxt "@action:button"
@@ -901,7 +902,7 @@ msgstr "网络错误"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/NewPrinterDetectedMessage.py:13
 msgctxt "info:status"
-msgid "New printer detected from your Ultimaker account"
+msgid "New printer detected from your UltiMaker account"
 msgid_plural "New printers detected from your Ultimaker account"
 msgstr[0] "从您的 Ultimaker 帐户中检测到新的打印机"
 
@@ -1047,8 +1048,8 @@ msgstr "删除打印机"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:18
 msgctxt "@info:status"
-msgid "You are attempting to connect to a printer that is not running Ultimaker Connect. Please update the printer to the latest firmware."
-msgstr "您正在尝试连接未运行 Ultimaker Connect 的打印机。请将打印机更新至最新固件。"
+msgid "You are attempting to connect to a printer that is not running UltiMaker Connect. Please update the printer to the latest firmware."
+msgstr "您正在尝试连接未运行 UltiMaker Connect 的打印机。请将打印机更新至最新固件。"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:21
 msgctxt "@info:title"
@@ -1274,8 +1275,8 @@ msgstr "无法写入到 UFP 文件："
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UFPWriter/__init__.py:28
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UFPReader/__init__.py:22
 msgctxt "@item:inlistbox"
-msgid "Ultimaker Format Package"
-msgstr "Ultimaker 格式包"
+msgid "UltiMaker Format Package"
+msgstr "UltiMaker 格式包"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/DigitalLibrary/src/DigitalFactoryProjectResponse.py:19
 msgctxt "@text Placeholder for the username if it has been deleted"
@@ -1396,8 +1397,8 @@ msgstr "是否要与您的帐户同步材料和软件包?"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/CloudSync/CloudPackageChecker.py:145
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/CloudSync/DownloadPresenter.py:95
 msgctxt "@info:title"
-msgid "Changes detected from your Ultimaker account"
-msgstr "检测到您的 Ultimaker 帐户有更改"
+msgid "Changes detected from your UltiMaker account"
+msgstr "检测到您的 UltiMaker 帐户有更改"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/CloudSync/CloudPackageChecker.py:147
 msgctxt "@action:button"
@@ -1557,8 +1558,8 @@ msgstr "报告错误"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:169
 msgctxt "@message:description"
-msgid "Report a bug on Ultimaker Cura's issue tracker."
-msgstr "在 Ultimaker Cura 问题跟踪器上报告错误。"
+msgid "Report a bug on UltiMaker Cura's issue tracker."
+msgstr "在 UltiMaker Cura 问题跟踪器上报告错误。"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:401
 msgctxt "@info:status"
@@ -1687,8 +1688,8 @@ msgstr "项目文件 <filename>{0}</filename> 损坏: <message>{1}</message>。"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:723
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
-msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of Ultimaker Cura."
-msgstr "项目文件 <filename>{0}</filename> 是用此 Ultimaker Cura 版本未识别的配置文件制作的。"
+msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura."
+msgstr "项目文件 <filename>{0}</filename> 是用此 UltiMaker Cura 版本未识别的配置文件制作的。"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/PerObjectSettingsTool/__init__.py:14
 msgctxt "@label"
@@ -2329,8 +2330,8 @@ msgstr "请及时更新打印机固件以远程管理打印队列。"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:287
 msgctxt "@info"
-msgid "Webcam feeds for cloud printers cannot be viewed from Ultimaker Cura. Click \"Manage printer\" to visit Ultimaker Digital Factory and view this webcam."
-msgstr "无法从 Ultimaker Cura 中查看云打印机的网络摄像头馈送。请单击“管理打印机”以访问 Ultimaker Digital Factory 并查看此网络摄像头。"
+msgid "Webcam feeds for cloud printers cannot be viewed from UltiMaker Cura. Click \"Manage printer\" to visit Ultimaker Digital Factory and view this webcam."
+msgstr "无法从 UltiMaker Cura 中查看云打印机的网络摄像头馈送。请单击“管理打印机”以访问 Ultimaker Digital Factory 并查看此网络摄像头。"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:347
 msgctxt "@label:status"
@@ -2695,8 +2696,8 @@ msgstr "更多关于匿名数据收集的信息"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:73
 msgctxt "@text:window"
-msgid "Ultimaker Cura collects anonymous data in order to improve the print quality and user experience. Below is an example of all the data that is shared:"
-msgstr "为了改善打印质量和用户体验，Ultimaker Cura 会收集匿名数据。以下是所有数据分享的示例："
+msgid "UltiMaker Cura collects anonymous data in order to improve the print quality and user experience. Below is an example of all the data that is shared:"
+msgstr "为了改善打印质量和用户体验，UltiMaker Cura 会收集匿名数据。以下是所有数据分享的示例："
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:107
 msgctxt "@text:window"
@@ -2720,8 +2721,8 @@ msgstr "保存 Cura 项目"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UltimakerMachineActions/UMOUpgradeSelectionMachineAction.qml:30
 msgctxt "@label"
-msgid "Please select any upgrades made to this Ultimaker Original"
-msgstr "请选择适用于 Ultimaker Original 的升级文件"
+msgid "Please select any upgrades made to this UltiMaker Original"
+msgstr "请选择适用于 UltiMaker Original 的升级文件"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UltimakerMachineActions/UMOUpgradeSelectionMachineAction.qml:39
 msgctxt "@label"
@@ -2816,8 +2817,8 @@ msgstr "安装插件"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/Plugins.qml:12
 msgctxt "@text"
-msgid "Streamline your workflow and customize your Ultimaker Cura experience with plugins contributed by our amazing community of users."
-msgstr "使用由我们卓越的用户社区提供的插件，简化您的工作流程并自定义 Ultimaker Cura 体验。"
+msgid "Streamline your workflow and customize your UltiMaker Cura experience with plugins contributed by our amazing community of users."
+msgstr "使用由我们卓越的用户社区提供的插件，简化您的工作流程并自定义 UltiMaker Cura 体验。"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/CompatibilityDialog.qml:15
 msgctxt "@title"
@@ -2875,8 +2876,8 @@ msgstr "安装材料"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/Materials.qml:12
 msgctxt "@text"
-msgid "Select and install material profiles optimised for your Ultimaker 3D printers."
-msgstr "选择并安装针对您的 Ultimaker 3D 打印机经过优化的材料配置文件。"
+msgid "Select and install material profiles optimised for your UltiMaker 3D printers."
+msgstr "选择并安装针对您的 UltiMaker 3D 打印机经过优化的材料配置文件。"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/ManagePackagesButton.qml:32
 msgctxt "@info:tooltip"
@@ -2997,18 +2998,18 @@ msgstr "加载更多"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/VerifiedIcon.qml:21
 msgctxt "@info"
-msgid "Ultimaker Verified Plug-in"
-msgstr "Ultimaker 验证插件"
+msgid "UltiMaker Verified Plug-in"
+msgstr "UltiMaker 验证插件"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/VerifiedIcon.qml:22
 msgctxt "@info"
-msgid "Ultimaker Certified Material"
-msgstr "Ultimaker 认证材料"
+msgid "UltiMaker Certified Material"
+msgstr "UltiMaker 认证材料"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/VerifiedIcon.qml:23
 msgctxt "@info"
-msgid "Ultimaker Verified Package"
-msgstr "Ultimaker 验证包"
+msgid "UltiMaker Verified Package"
+msgstr "UltiMaker 验证包"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/ManagedPackages.qml:11
 msgctxt "@header"
@@ -3017,8 +3018,8 @@ msgstr "管理包"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/ManagedPackages.qml:15
 msgctxt "@text"
-msgid "Manage your Ultimaker Cura plugins and material profiles here. Make sure to keep your plugins up to date and backup your setup regularly."
-msgstr "在此处管理您的 Ultimaker Cura 插件和材料配置文件。请确保将插件保持为最新，并定期备份设置。"
+msgid "Manage your UltiMaker Cura plugins and material profiles here. Make sure to keep your plugins up to date and backup your setup regularly."
+msgstr "在此处管理您的 UltiMaker Cura 插件和材料配置文件。请确保将插件保持为最新，并定期备份设置。"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/InstallMissingPackagesDialog.qml:15
 msgctxt "@title"
@@ -4283,8 +4284,8 @@ msgstr "隐私"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:862
 msgctxt "@info:tooltip"
-msgid "Should anonymous data about your print be sent to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored."
-msgstr "您愿意将关于您的打印数据以匿名形式发送到 Ultimaker 吗？注意：我们不会记录/发送任何模型、IP 地址或其他私人数据。"
+msgid "Should anonymous data about your print be sent to UltiMaker? Note, no models, IP addresses or other personally identifiable information is sent or stored."
+msgstr "您愿意将关于您的打印数据以匿名形式发送到 UltiMaker 吗？注意：我们不会记录/发送任何模型、IP 地址或其他私人数据。"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:867
 msgctxt "@option:check"
@@ -4596,8 +4597,8 @@ msgstr "故障排除"
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/CloudContent.qml:64
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Account/GeneralOperations.qml:19
 msgctxt "@label"
-msgid "Sign in to the Ultimaker platform"
-msgstr "登录 Ultimaker 平台"
+msgid "Sign in to the UltiMaker platform"
+msgstr "登录 UltiMaker 平台"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/CloudContent.qml:123
 msgctxt "@text"
@@ -4611,8 +4612,8 @@ msgstr "备份和同步材料设置和插件"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/CloudContent.qml:175
 msgctxt "@text"
-msgid "Share ideas and get help from 48,000+ users in the Ultimaker Community"
-msgstr "在 Ultimaker 社区分享观点并获取 48,000 多名用户的帮助"
+msgid "Share ideas and get help from 48,000+ users in the UltiMaker Community"
+msgstr "在 UltiMaker 社区分享观点并获取 48,000 多名用户的帮助"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/CloudContent.qml:189
 msgctxt "@button"
@@ -4621,18 +4622,18 @@ msgstr "跳过"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/CloudContent.qml:201
 msgctxt "@text"
-msgid "Create a free Ultimaker Account"
-msgstr "创建免费的 Ultimaker 帐户"
+msgid "Create a free UltiMaker Account"
+msgstr "创建免费的 UltiMaker 帐户"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:24
 msgctxt "@label"
-msgid "Help us to improve Ultimaker Cura"
-msgstr "帮助我们改进 Ultimaker Cura"
+msgid "Help us to improve UltiMaker Cura"
+msgstr "帮助我们改进 UltiMaker Cura"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:56
 msgctxt "@text"
-msgid "Ultimaker Cura collects anonymous data to improve print quality and user experience, including:"
-msgstr "为了改善打印质量和用户体验，Ultimaker Cura 会收集匿名数据，这些数据包括："
+msgid "UltiMaker Cura collects anonymous data to improve print quality and user experience, including:"
+msgstr "为了改善打印质量和用户体验，UltiMaker Cura 会收集匿名数据，这些数据包括："
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:68
 msgctxt "@text"
@@ -4656,8 +4657,8 @@ msgstr "打印设置"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:99
 msgctxt "@text"
-msgid "Data collected by Ultimaker Cura will not contain any personal information."
-msgstr "Ultimaker Cura 收集的数据不会包含任何个人信息。"
+msgid "Data collected by UltiMaker Cura will not contain any personal information."
+msgstr "UltiMaker Cura 收集的数据不会包含任何个人信息。"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:100
 msgctxt "@text"
@@ -4727,8 +4728,8 @@ msgstr "无法连接到设备。"
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:196
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:201
 msgctxt "@label"
-msgid "Can't connect to your Ultimaker printer?"
-msgstr "无法连接到 Ultimaker 打印机？"
+msgid "Can't connect to your UltiMaker printer?"
+msgstr "无法连接到 UltiMaker 打印机？"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:200
 msgctxt "@label"
@@ -4747,12 +4748,12 @@ msgstr "连接"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/WelcomeContent.qml:56
 msgctxt "@label"
-msgid "Welcome to Ultimaker Cura"
-msgstr "欢迎使用 Ultimaker Cura"
+msgid "Welcome to UltiMaker Cura"
+msgstr "欢迎使用 UltiMaker Cura"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/WelcomeContent.qml:67
 msgctxt "@text"
-msgid "Please follow these steps to set up Ultimaker Cura. This will only take a few moments."
+msgid "Please follow these steps to set up UltiMaker Cura. This will only take a few moments."
 msgstr ""
 "请按照以下步骤设置\n"
 "Ultimaker Cura。此操作只需要几分钟时间。"
@@ -5437,7 +5438,7 @@ msgstr "熔丝 3D 打印技术的的端对端解决方案。"
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Dialogs/AboutDialog.qml:87
 msgctxt "@info:credit"
 msgid ""
-"Cura is developed by Ultimaker B.V. in cooperation with the community.\n"
+"Cura is developed by UltiMaker in cooperation with the community.\n"
 "Cura proudly uses the following open source projects:"
 msgstr ""
 "Cura 由 Ultimaker B.V. 与社区合作开发。\n"
@@ -5646,23 +5647,23 @@ msgstr "监控打印作业并从打印历史记录重新打印。"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:55
 msgctxt "@tooltip:button"
-msgid "Extend Ultimaker Cura with plugins and material profiles."
-msgstr "用插件和材料配置文件扩展 Ultimaker Cura。"
+msgid "Extend UltiMaker Cura with plugins and material profiles."
+msgstr "用插件和材料配置文件扩展 UltiMaker Cura。"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:62
 msgctxt "@tooltip:button"
-msgid "Become a 3D printing expert with Ultimaker e-learning."
-msgstr "通过 Ultimaker 线上课程教学，成为 3D 打印专家。"
+msgid "Become a 3D printing expert with UltiMaker e-learning."
+msgstr "通过 UltiMaker 线上课程教学，成为 3D 打印专家。"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:67
 msgctxt "@label:button"
-msgid "Ultimaker support"
-msgstr "Ultimaker 支持"
+msgid "UltiMaker support"
+msgstr "UltiMaker 支持"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:69
 msgctxt "@tooltip:button"
-msgid "Learn how to get started with Ultimaker Cura."
-msgstr "了解如何开始使用 Ultimaker Cura。"
+msgid "Learn how to get started with UltiMaker Cura."
+msgstr "了解如何开始使用 UltiMaker Cura。"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:74
 msgctxt "@label:button"
@@ -5671,8 +5672,8 @@ msgstr "提问"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:76
 msgctxt "@tooltip:button"
-msgid "Consult the Ultimaker Community."
-msgstr "咨询 Ultimaker 社区。"
+msgid "Consult the UltiMaker Community."
+msgstr "咨询 UltiMaker 社区。"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:81
 msgctxt "@label:button"
@@ -5686,8 +5687,8 @@ msgstr "向开发人员报错。"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:90
 msgctxt "@tooltip:button"
-msgid "Visit the Ultimaker website."
-msgstr "访问 Ultimaker 网站。"
+msgid "Visit the UltiMaker website."
+msgstr "访问 UltiMaker 网站。"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:40
 msgctxt "@label"
@@ -5983,8 +5984,8 @@ msgstr ""
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Account/GeneralOperations.qml:58
 msgctxt "@button"
-msgid "Create a free Ultimaker account"
-msgstr "创建免费的 Ultimaker 帐户"
+msgid "Create a free UltiMaker account"
+msgstr "创建免费的 UltiMaker 帐户"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Account/AccountWidget.qml:24
 msgctxt "@action:button"
@@ -5998,8 +5999,8 @@ msgstr "上次更新时间：%1"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Account/UserOperations.qml:107
 msgctxt "@button"
-msgid "Ultimaker Account"
-msgstr "Ultimaker 帐户"
+msgid "UltiMaker Account"
+msgstr "UltiMaker 帐户"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Account/UserOperations.qml:126
 msgctxt "@button"
@@ -6213,13 +6214,13 @@ msgstr "后期处理"
 
 #: /UM3NetworkPrinting/plugin.json
 msgctxt "description"
-msgid "Manages network connections to Ultimaker networked printers."
-msgstr "管理与 Ultimaker 网络打印机的网络连接。"
+msgid "Manages network connections to UltiMaker networked printers."
+msgstr "管理与 UltiMaker 网络打印机的网络连接。"
 
 #: /UM3NetworkPrinting/plugin.json
 msgctxt "name"
-msgid "Ultimaker Network Connection"
-msgstr "Ultimaker 网络连接"
+msgid "UltiMaker Network Connection"
+msgstr "UltiMaker 网络连接"
 
 #: /3MFWriter/plugin.json
 msgctxt "description"
@@ -6253,8 +6254,8 @@ msgstr "切片信息"
 
 #: /UFPWriter/plugin.json
 msgctxt "description"
-msgid "Provides support for writing Ultimaker Format Packages."
-msgstr "支持写入 Ultimaker 格式包。"
+msgid "Provides support for writing UltiMaker Format Packages."
+msgstr "支持写入 UltiMaker 格式包。"
 
 #: /UFPWriter/plugin.json
 msgctxt "name"
@@ -6303,13 +6304,13 @@ msgstr "Trimesh 阅读器"
 
 #: /UltimakerMachineActions/plugin.json
 msgctxt "description"
-msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
+msgid "Provides machine actions for UltiMaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
 msgstr "为最后的机器提供机器操作（例如，热床调平向导，选择升级等）。"
 
 #: /UltimakerMachineActions/plugin.json
 msgctxt "name"
-msgid "Ultimaker machine actions"
-msgstr "Ultimaker 打印机操作"
+msgid "UltiMaker machine actions"
+msgstr "UltiMaker 打印机操作"
 
 #: /GCodeGzReader/plugin.json
 msgctxt "description"
@@ -6323,8 +6324,8 @@ msgstr "压缩 G-code 读取器"
 
 #: /Marketplace/plugin.json
 msgctxt "description"
-msgid "Manages extensions to the application and allows browsing extensions from the Ultimaker website."
-msgstr "管理对应用程序的扩展并允许从 Ultimaker 网站浏览扩展。"
+msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
+msgstr "管理对应用程序的扩展并允许从 UltiMaker 网站浏览扩展。"
 
 #: /Marketplace/plugin.json
 msgctxt "name"
@@ -6673,8 +6674,8 @@ msgstr "G-code 写入器"
 
 #: /UFPReader/plugin.json
 msgctxt "description"
-msgid "Provides support for reading Ultimaker Format Packages."
-msgstr "支持读取 Ultimaker 格式包。"
+msgid "Provides support for reading UltiMaker Format Packages."
+msgstr "支持读取 UltiMaker 格式包。"
 
 #: /UFPReader/plugin.json
 msgctxt "name"
@@ -6988,8 +6989,8 @@ msgstr "准备阶段"
 #~ msgstr "电子邮件"
 
 #~ msgctxt "@description"
-#~ msgid "Please sign in to get verified plugins and materials for Ultimaker Cura Enterprise"
-#~ msgstr "请登录以获取经验证适用于 Ultimaker Cura Enterprise 的插件和材料"
+#~ msgid "Please sign in to get verified plugins and materials for UltiMaker Cura Enterprise"
+#~ msgstr "请登录以获取经验证适用于 UltiMaker Cura Enterprise 的插件和材料"
 
 #~ msgctxt "@label"
 #~ msgid "Version"
@@ -7146,16 +7147,16 @@ msgstr "准备阶段"
 #~ msgstr "提供仿真视图。"
 
 #~ msgctxt "@info:status"
-#~ msgid "Send and monitor print jobs from anywhere using your Ultimaker account."
-#~ msgstr "使用您的 Ultimaker account 帐户从任何地方发送和监控打印作业。"
+#~ msgid "Send and monitor print jobs from anywhere using your UltiMaker account."
+#~ msgstr "使用您的 UltiMaker account 帐户从任何地方发送和监控打印作业。"
 
 #~ msgctxt "@info:status Ultimaker Cloud should not be translated."
 #~ msgid "Connect to Ultimaker Digital Factory"
 #~ msgstr "连接到 Ultimaker Digital Factory"
 
 #~ msgctxt "@info"
-#~ msgid "Webcam feeds for cloud printers cannot be viewed from Ultimaker Cura."
-#~ msgstr "无法从 Ultimaker Cura 中查看云打印机的网络摄像头馈送。"
+#~ msgid "Webcam feeds for cloud printers cannot be viewed from UltiMaker Cura."
+#~ msgstr "无法从 UltiMaker Cura 中查看云打印机的网络摄像头馈送。"
 
 #~ msgctxt "@info Don't translate {machine_name}, since it gets replaced by a printer name!"
 #~ msgid "New features or bug-fixes may be available for your {machine_name}! If not already at the latest version, it is recommended to update the firmware on your printer to version {latest_version}."
@@ -7219,8 +7220,8 @@ msgstr "准备阶段"
 #~ msgstr "完成"
 
 #~ msgctxt "@label"
-#~ msgid "Ultimaker Account"
-#~ msgstr "Ultimaker 帐户"
+#~ msgid "UltiMaker Account"
+#~ msgstr "UltiMaker 帐户"
 
 #~ msgctxt "@text"
 #~ msgid "Your key to connected 3D printing"
@@ -7235,8 +7236,8 @@ msgstr "准备阶段"
 #~ msgstr "- 通过同步设置并将其加载到任何位置保持灵活性"
 
 #~ msgctxt "@text"
-#~ msgid "- Increase efficiency with a remote workflow on Ultimaker printers"
-#~ msgstr "- 使用 Ultimaker 打印机上的远程工作流提高效率"
+#~ msgid "- Increase efficiency with a remote workflow on UltiMaker printers"
+#~ msgstr "- 使用 UltiMaker 打印机上的远程工作流提高效率"
 
 #~ msgctxt "@text"
 #~ msgid ""
@@ -7247,8 +7248,8 @@ msgstr "准备阶段"
 #~ "Ultimaker Cura。此操作只需要几分钟时间。"
 
 #~ msgctxt "@label"
-#~ msgid "What's new in Ultimaker Cura"
-#~ msgstr "Ultimaker Cura 新增功能"
+#~ msgid "What's new in UltiMaker Cura"
+#~ msgstr "UltiMaker Cura 新增功能"
 
 #~ msgctxt "@label ({} is object name)"
 #~ msgid "Are you sure you wish to remove {}? This cannot be undone!"
@@ -7280,11 +7281,11 @@ msgstr "准备阶段"
 
 #~ msgctxt "info:status"
 #~ msgid "<ul>{}</ul>To establish a connection, please visit the <a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>."
-#~ msgstr "<ul>{}</ul>要建立连接，请访问 <a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>。"
+#~ msgstr "<ul>{}</ul>要建立连接，请访问 <a href='https://mycloud.UltiMaker.com/'>Ultimaker Digital Factory</a>。"
 
 #~ msgctxt "@label ({} is printer name)"
 #~ msgid "{} will be removed until the next account sync. <br> To remove {} permanently, visit <a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>. <br><br>Are you sure you want to remove {} temporarily?"
-#~ msgstr "{} 将被删除，直至下次帐户同步为止。<br>要永久删除 {}，请访问 <a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>。<br><br>是否确实要暂时删除 {}？"
+#~ msgstr "{} 将被删除，直至下次帐户同步为止。<br>要永久删除 {}，请访问 <a href='https://mycloud.UltiMaker.com/'>Ultimaker Digital Factory</a>。<br><br>是否确实要暂时删除 {}？"
 
 #~ msgctxt "@label"
 #~ msgid ""
@@ -7358,8 +7359,8 @@ msgstr "准备阶段"
 #~ msgstr "通过云连接"
 
 #~ msgctxt "@info:status Ultimaker Cloud should not be translated."
-#~ msgid "Connect to Ultimaker Cloud"
-#~ msgstr "连接到 Ultimaker Cloud"
+#~ msgid "Connect to UltiMaker Cloud"
+#~ msgstr "连接到 UltiMaker Cloud"
 
 #~ msgctxt "@label"
 #~ msgid "You need to login first before you can rate"
@@ -7386,16 +7387,16 @@ msgstr "准备阶段"
 #~ msgstr "作者"
 
 #~ msgctxt "@description"
-#~ msgid "Get plugins and materials verified by Ultimaker"
-#~ msgstr "获取经过 Ultimaker 验证的插件和材料"
+#~ msgid "Get plugins and materials verified by UltiMaker"
+#~ msgstr "获取经过 UltiMaker 验证的插件和材料"
 
 #~ msgctxt "@label The argument is a username."
 #~ msgid "Hi %1"
 #~ msgstr "%1，您好"
 
 #~ msgctxt "@button"
-#~ msgid "Ultimaker account"
-#~ msgstr "Ultimaker 帐户"
+#~ msgid "UltiMaker account"
+#~ msgstr "UltiMaker 帐户"
 
 #~ msgctxt "@button"
 #~ msgid "Sign out"
@@ -7490,20 +7491,20 @@ msgstr "准备阶段"
 #~ msgstr "语言："
 
 #~ msgctxt "@label"
-#~ msgid "Ultimaker Cloud"
-#~ msgstr "Ultimaker Cloud"
+#~ msgid "UltiMaker Cloud"
+#~ msgstr "UltiMaker Cloud"
 
 #~ msgctxt "@text"
 #~ msgid "The next generation 3D printing workflow"
 #~ msgstr "下一代 3D 打印工作流程"
 
 #~ msgctxt "@text"
-#~ msgid "- Send print jobs to Ultimaker printers outside your local network"
-#~ msgstr "- 将打印作业发送到局域网外的 Ultimaker 打印机"
+#~ msgid "- Send print jobs to UltiMaker printers outside your local network"
+#~ msgstr "- 将打印作业发送到局域网外的 UltiMaker 打印机"
 
 #~ msgctxt "@text"
-#~ msgid "- Store your Ultimaker Cura settings in the cloud for use anywhere"
-#~ msgstr "- 将 Ultimaker Cura 设置存储到云以便在任何地方使用"
+#~ msgid "- Store your UltiMaker Cura settings in the cloud for use anywhere"
+#~ msgstr "- 将 UltiMaker Cura 设置存储到云以便在任何地方使用"
 
 #~ msgctxt "@text"
 #~ msgid "- Get exclusive access to print profiles from leading brands"
@@ -7590,8 +7591,8 @@ msgstr "准备阶段"
 #~ msgstr "显示所有设置"
 
 #~ msgctxt "@title:window"
-#~ msgid "Ultimaker Cura"
-#~ msgstr "Ultimaker Cura"
+#~ msgid "UltiMaker Cura"
+#~ msgstr "UltiMaker Cura"
 
 #~ msgctxt "@title:window"
 #~ msgid "About Cura"
@@ -7674,8 +7675,8 @@ msgstr "准备阶段"
 #~ msgstr "检查表"
 
 #~ msgctxt "@label"
-#~ msgid "Please select any upgrades made to this Ultimaker 2."
-#~ msgstr "请选择适用于 Ultimaker 2 的升级文件。"
+#~ msgid "Please select any upgrades made to this UltiMaker 2."
+#~ msgstr "请选择适用于 UltiMaker 2 的升级文件。"
 
 #~ msgctxt "@label"
 #~ msgid "Olsson Block"
@@ -7798,8 +7799,8 @@ msgstr "准备阶段"
 #~ msgstr "无法启动新的打印作业。"
 
 #~ msgctxt "@label"
-#~ msgid "There is an issue with the configuration of your Ultimaker, which makes it impossible to start the print. Please resolve this issues before continuing."
-#~ msgstr "Ultimaker 配置存在问题，导致无法开始打印。请解决此问题，然后再继续。"
+#~ msgid "There is an issue with the configuration of your UltiMaker, which makes it impossible to start the print. Please resolve this issues before continuing."
+#~ msgstr "UltiMaker 配置存在问题，导致无法开始打印。请解决此问题，然后再继续。"
 
 #~ msgctxt "@window:title"
 #~ msgid "Mismatched configuration"
@@ -7890,20 +7891,20 @@ msgstr "准备阶段"
 #~ msgstr "连接到云时出错。"
 
 #~ msgctxt "@info:status"
-#~ msgid "Uploading via Ultimaker Cloud"
-#~ msgstr "通过 Ultimaker Cloud 上传"
+#~ msgid "Uploading via UltiMaker Cloud"
+#~ msgstr "通过 UltiMaker Cloud 上传"
 
 #~ msgctxt "@info:status Ultimaker Cloud is a brand name and shouldn't be translated."
-#~ msgid "Connect to Ultimaker Cloud"
-#~ msgstr "连接到 Ultimaker Cloud"
+#~ msgid "Connect to UltiMaker Cloud"
+#~ msgstr "连接到 UltiMaker Cloud"
 
 #~ msgctxt "@action"
 #~ msgid "Don't ask me again for this printer."
 #~ msgstr "对此打印机不再询问。"
 
 #~ msgctxt "@info:status"
-#~ msgid "You can now send and monitor print jobs from anywhere using your Ultimaker account."
-#~ msgstr "您现在可以使用您的 Ultimaker account 帐户从任何地方发送和监控打印作业。"
+#~ msgid "You can now send and monitor print jobs from anywhere using your UltiMaker account."
+#~ msgstr "您现在可以使用您的 UltiMaker account 帐户从任何地方发送和监控打印作业。"
 
 #~ msgctxt "@info:status"
 #~ msgid "Connected!"
@@ -7949,7 +7950,7 @@ msgstr "准备阶段"
 #~ msgstr "正交"
 
 #~ msgctxt "description"
-#~ msgid "Manages network connections to Ultimaker 3 printers."
+#~ msgid "Manages network connections to UltiMaker 3 printers."
 #~ msgstr "管理与最后的3个打印机的网络连接。"
 
 #~ msgctxt "name"
@@ -8053,8 +8054,8 @@ msgstr "准备阶段"
 #~ msgstr "发送数据至远程群集"
 
 #~ msgctxt "@info:status"
-#~ msgid "Connect to Ultimaker Cloud"
-#~ msgstr "连接到 Ultimaker Cloud"
+#~ msgid "Connect to UltiMaker Cloud"
+#~ msgstr "连接到 UltiMaker Cloud"
 
 #~ msgctxt "@info"
 #~ msgid "Cura collects anonymized usage statistics."
@@ -8189,11 +8190,11 @@ msgstr "准备阶段"
 #~ msgstr "请选择已连接网络的打印机进行监控。"
 
 #~ msgctxt "@info"
-#~ msgid "Please connect your Ultimaker printer to your local network."
-#~ msgstr "请将 Ultimaker 打印机连接到您的局域网。"
+#~ msgid "Please connect your UltiMaker printer to your local network."
+#~ msgstr "请将 UltiMaker 打印机连接到您的局域网。"
 
 #~ msgctxt "@text:window"
-#~ msgid "Cura sends anonymous data to Ultimaker in order to improve the print quality and user experience. Below is an example of all the data that is sent."
+#~ msgid "Cura sends anonymous data to UltiMaker in order to improve the print quality and user experience. Below is an example of all the data that is sent."
 #~ msgstr "Cura向最终用户发送匿名数据，以提高打印质量和用户体验。下面是发送的所有数据的一个示例。"
 
 #~ msgctxt "@text:window"
@@ -8201,8 +8202,8 @@ msgstr "准备阶段"
 #~ msgstr "我不想发送此数据"
 
 #~ msgctxt "@text:window"
-#~ msgid "Allow sending this data to Ultimaker and help us improve Cura"
-#~ msgstr "允许向 Ultimaker 发送此数据并帮助我们改善 Cura"
+#~ msgid "Allow sending this data to UltiMaker and help us improve Cura"
+#~ msgstr "允许向 UltiMaker 发送此数据并帮助我们改善 Cura"
 
 #~ msgctxt "@label"
 #~ msgid "No print selected"
@@ -8404,7 +8405,7 @@ msgstr "准备阶段"
 #~ msgstr "我不想发送这些数据"
 
 #~ msgctxt "@text:window"
-#~ msgid "Allow sending these data to Ultimaker and help us improve Cura"
+#~ msgid "Allow sending these data to UltiMaker and help us improve Cura"
 #~ msgstr "允许将这些数据发送到最后一个，帮助我们改进Cura"
 
 #~ msgctxt "@label"
@@ -8600,8 +8601,8 @@ msgstr "准备阶段"
 #~ msgstr "打印平台附着"
 
 #~ msgctxt "@label"
-#~ msgid "Need help improving your prints?<br>Read the <a href='%1'>Ultimaker Troubleshooting Guides</a>"
-#~ msgstr "需要帮助改善您的打印？<br>阅读 <a href=‘%1’>Ultimaker 故障排除指南</a>"
+#~ msgid "Need help improving your prints?<br>Read the <a href='%1'>UltiMaker Troubleshooting Guides</a>"
+#~ msgstr "需要帮助改善您的打印？<br>阅读 <a href=‘%1’>UltiMaker 故障排除指南</a>"
 
 #~ msgctxt "@title:window"
 #~ msgid "Engine Log"
@@ -8620,8 +8621,8 @@ msgstr "准备阶段"
 #~ msgstr "检查兼容性"
 
 #~ msgctxt "@tooltip"
-#~ msgid "Click to check the material compatibility on Ultimaker.com."
-#~ msgstr "点击查看 Ultimaker.com 上的材料兼容情况。"
+#~ msgid "Click to check the material compatibility on UltiMaker.com."
+#~ msgstr "点击查看 UltiMaker.com 上的材料兼容情况。"
 
 #~ msgctxt "description"
 #~ msgid "Shows changes since latest checked version."
@@ -8740,16 +8741,16 @@ msgstr "准备阶段"
 #~ msgstr "联系方式"
 
 #~ msgctxt "@label"
-#~ msgid "This printer is not set up to host a group of Ultimaker 3 printers."
-#~ msgstr "这台打印机未设置为运行一组连接的 Ultimaker 3 打印机。"
+#~ msgid "This printer is not set up to host a group of UltiMaker 3 printers."
+#~ msgstr "这台打印机未设置为运行一组连接的 UltiMaker 3 打印机。"
 
 #~ msgctxt "@label"
-#~ msgid "This printer is the host for a group of %1 Ultimaker 3 printers."
-#~ msgstr "这台打印机是一组共 %1 台已连接 Ultimaker 3 打印机的主机。"
+#~ msgid "This printer is the host for a group of %1 UltiMaker 3 printers."
+#~ msgstr "这台打印机是一组共 %1 台已连接 UltiMaker 3 打印机的主机。"
 
 #~ msgctxt "@label: arg 1 is group name"
-#~ msgid "%1 is not set up to host a group of connected Ultimaker 3 printers"
-#~ msgstr "%1 未设置为运行一组连接的 Ultimaker 3 打印机"
+#~ msgid "%1 is not set up to host a group of connected UltiMaker 3 printers"
+#~ msgstr "%1 未设置为运行一组连接的 UltiMaker 3 打印机"
 
 #~ msgctxt "@label link to connect manager"
 #~ msgid "Add/Remove printers"
@@ -9015,12 +9016,12 @@ msgstr "准备阶段"
 #~ msgstr "插件浏览器"
 
 #~ msgctxt "@label"
-#~ msgid "Ultimaker 3"
-#~ msgstr "Ultimaker 3"
+#~ msgid "UltiMaker 3"
+#~ msgstr "UltiMaker 3"
 
 #~ msgctxt "@label"
-#~ msgid "Ultimaker 3 Extended"
-#~ msgstr "Ultimaker 3 Extended"
+#~ msgid "UltiMaker 3 Extended"
+#~ msgstr "UltiMaker 3 Extended"
 
 #~ msgctxt "@title:window"
 #~ msgid "SolidWorks: Export wizard"
@@ -9171,8 +9172,8 @@ msgstr "准备阶段"
 #~ msgstr "提供更改打印机设置（如成形空间体积、喷嘴口径等）的方法"
 
 #~ msgctxt "description"
-#~ msgid "Manages network connections to Ultimaker 3 printers"
-#~ msgstr "管理与 Ultimaker 3 打印机的网络连接"
+#~ msgid "Manages network connections to UltiMaker 3 printers"
+#~ msgstr "管理与 UltiMaker 3 打印机的网络连接"
 
 #~ msgctxt "description"
 #~ msgid "Gives you the possibility to open certain files using SolidWorks itself. Conversion is done by this plugin and additional optimizations."
@@ -9211,8 +9212,8 @@ msgstr "准备阶段"
 #~ msgstr "询问用户一次是否同意我们的许可"
 
 #~ msgctxt "description"
-#~ msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc)"
-#~ msgstr "为 Ultimaker 打印机提供操作选项(如平台调平向导、选择升级等)"
+#~ msgid "Provides machine actions for UltiMaker machines (such as bed leveling wizard, selecting upgrades, etc)"
+#~ msgstr "为 UltiMaker 打印机提供操作选项(如平台调平向导、选择升级等)"
 
 #~ msgctxt "@item:inlistbox"
 #~ msgid "GCode File"
@@ -9318,12 +9319,12 @@ msgstr "准备阶段"
 #~ msgid "Resuming print..."
 #~ msgstr "恢复打印..."
 
-#~ msgid "This printer is not set up to host a group of connected Ultimaker 3 printers."
-#~ msgstr "这台打印机未设置为运行一组连接的 Ultimaker 3 打印机。"
+#~ msgid "This printer is not set up to host a group of connected UltiMaker 3 printers."
+#~ msgstr "这台打印机未设置为运行一组连接的 UltiMaker 3 打印机。"
 
 #~ msgctxt "Count is number of printers."
-#~ msgid "This printer is the host for a group of {count} connected Ultimaker 3 printers."
-#~ msgstr "这台打印机是一组共 {count} 台已连接 Ultimaker 3 打印机的主机。"
+#~ msgid "This printer is the host for a group of {count} connected UltiMaker 3 printers."
+#~ msgstr "这台打印机是一组共 {count} 台已连接 UltiMaker 3 打印机的主机。"
 
 #~ msgid "{printer_name} has finished printing '{job_name}'. Please collect the print and confirm clearing the build plate."
 #~ msgstr "{printer_name} 已完成打印 '{job_name}'。 请收起打印品并确认清空打印平台。"
@@ -9332,8 +9333,8 @@ msgstr "准备阶段"
 #~ msgstr "{printer_name} 已保留用于打印 '{job_name}'。 请更改打印机配置以匹配此项作业，以便开始打印。"
 
 #~ msgctxt "@info:status"
-#~ msgid "Unable to send new print job: this 3D printer is not (yet) set up to host a group of connected Ultimaker 3 printers."
-#~ msgstr "无法发送新打印作业：此 3D 打印机（尚）未设置为运行一组连接的 Ultimaker 3 打印机。"
+#~ msgid "Unable to send new print job: this 3D printer is not (yet) set up to host a group of connected UltiMaker 3 printers."
+#~ msgstr "无法发送新打印作业：此 3D 打印机（尚）未设置为运行一组连接的 UltiMaker 3 打印机。"
 
 #~ msgctxt "@info:status"
 #~ msgid "Unable to send print job to group {cluster_name}."
@@ -9458,12 +9459,12 @@ msgstr "准备阶段"
 #~ msgstr "未知错误代码: %1"
 
 #~ msgctxt "@label Printer name"
-#~ msgid "Ultimaker 3"
-#~ msgstr "Ultimaker 3"
+#~ msgid "UltiMaker 3"
+#~ msgstr "UltiMaker 3"
 
 #~ msgctxt "@label Printer name"
-#~ msgid "Ultimaker 3 Extended"
-#~ msgstr "Ultimaker 3 Extended"
+#~ msgid "UltiMaker 3 Extended"
+#~ msgstr "UltiMaker 3 Extended"
 
 #~ msgctxt "@label Printer status"
 #~ msgid "Unknown"
@@ -9737,12 +9738,12 @@ msgstr "准备阶段"
 #~ msgstr "确定"
 
 #~ msgctxt "@label"
-#~ msgid "This printer is not set up to host a group of connected Ultimaker 3 printers"
-#~ msgstr "这台打印机未设置为运行一组连接的 Ultimaker 3 打印机"
+#~ msgid "This printer is not set up to host a group of connected UltiMaker 3 printers"
+#~ msgstr "这台打印机未设置为运行一组连接的 UltiMaker 3 打印机"
 
 #~ msgctxt "@label"
-#~ msgid "This printer is the host for a group of %1 connected Ultimaker 3 printers"
-#~ msgstr "这台打印机是一组 %1 台已连接 Ultimaker 3 打印机的主机"
+#~ msgid "This printer is the host for a group of %1 connected UltiMaker 3 printers"
+#~ msgstr "这台打印机是一组 %1 台已连接 UltiMaker 3 打印机的主机"
 
 #~ msgctxt "@label"
 #~ msgid "Completed on: "
@@ -10058,8 +10059,8 @@ msgstr "准备阶段"
 #~ msgstr "提供可移动磁盘热插拔和写入文件的支持。"
 
 #~ msgctxt "@info:whatsthis"
-#~ msgid "Manages network connections to Ultimaker 3 printers"
-#~ msgstr "管理与 Ultimaker 3 打印机的网络连接"
+#~ msgid "Manages network connections to UltiMaker 3 printers"
+#~ msgstr "管理与 UltiMaker 3 打印机的网络连接"
 
 #~ msgctxt "@label"
 #~ msgid "Different print core (Cura: {0}, Printer: {1}) selected for extruder {2}"
@@ -10222,12 +10223,12 @@ msgstr "准备阶段"
 #~ msgstr "提供对写入 3MF 文件的支持。"
 
 #~ msgctxt "@label"
-#~ msgid "Ultimaker machine actions"
-#~ msgstr "Ultimaker 打印机操作"
+#~ msgid "UltiMaker machine actions"
+#~ msgstr "UltiMaker 打印机操作"
 
 #~ msgctxt "@info:whatsthis"
-#~ msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc)"
-#~ msgstr "为 Ultimaker 打印机提供操作选项 (如平台调平向导、选择升级等)"
+#~ msgid "Provides machine actions for UltiMaker machines (such as bed leveling wizard, selecting upgrades, etc)"
+#~ msgstr "为 UltiMaker 打印机提供操作选项 (如平台调平向导、选择升级等)"
 
 #~ msgctxt "@label"
 #~ msgid "Cura Profile Reader"
@@ -10266,8 +10267,8 @@ msgstr "准备阶段"
 #~ msgstr "如果您的打印机未列出，请阅读<a href='%1'>网络打印故障排除指南</a>"
 
 #~ msgctxt "@item:inlistbox"
-#~ msgid "Ultimaker"
-#~ msgstr "Ultimaker"
+#~ msgid "UltiMaker"
+#~ msgstr "UltiMaker"
 
 #~ msgctxt "@label"
 #~ msgid "Support library for scientific computing "

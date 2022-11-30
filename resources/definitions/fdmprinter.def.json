@@ -4015,7 +4015,7 @@
                     "maximum_value": "machine_max_feedrate_e if retraction_enable else float('inf')",
                     "maximum_value_warning": "70",
                     "enabled": "retraction_enable and machine_gcode_flavor != \"UltiGCode\"",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true,
                     "children":
                     {
@@ -4032,7 +4032,7 @@
                             "maximum_value_warning": "70",
                             "enabled": "retraction_enable and machine_gcode_flavor != \"UltiGCode\"",
                             "value": "retraction_speed",
-                            "settable_per_mesh": false,
+                            "settable_per_mesh": true,
                             "settable_per_extruder": true
                         },
                         "retraction_prime_speed":
@@ -4048,7 +4048,7 @@
                             "maximum_value_warning": "70",
                             "enabled": "retraction_enable and machine_gcode_flavor != \"UltiGCode\"",
                             "value": "retraction_speed",
-                            "settable_per_mesh": false,
+                            "settable_per_mesh": true,
                             "settable_per_extruder": true
                         }
                     }
@@ -4063,7 +4063,7 @@
                     "minimum_value_warning": "-0.0001",
                     "maximum_value_warning": "5.0",
                     "enabled": "retraction_enable",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true
                 },
                 "retraction_min_travel":
@@ -4077,7 +4077,7 @@
                     "minimum_value": "0",
                     "minimum_value_warning": "line_width * 1.5",
                     "maximum_value_warning": "10",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true
                 },
                 "retraction_count_max":
@@ -4232,7 +4232,7 @@
                     "type": "bool",
                     "default_value": false,
                     "enabled": "retraction_enable and retraction_hop_enabled and travel_avoid_other_parts",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true
                 },
                 "retraction_hop": {
@@ -4244,7 +4244,7 @@
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "10",
                     "enabled": "retraction_enable and retraction_hop_enabled",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true
                 },
                 "retraction_hop_after_extruder_switch": {
@@ -4681,6 +4681,54 @@
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
+                },
+                "support_interface_wall_count":
+                {
+                    "label": "Support Interface Wall Line Count",
+                    "description": "The number of walls with which to surround support interface. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used.",
+                    "default_value": 0,
+                    "minimum_value": "0",
+                    "minimum_value_warning": "0",
+                    "maximum_value_warning": "0 if (support_skip_some_zags and support_interface_pattern == 'zigzag') else 3",
+                    "maximum_value": "999999",
+                    "type": "int",
+                    "value": "1 if (support_interface_pattern == 'zigzag') else 0",
+                    "enabled": "support_interface_enable or support_meshes_present",
+                    "limit_to_extruder": "support_interface_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "children": {
+                        "support_roof_wall_count": {
+                            "label": "Support Roof Wall Line Count",
+                            "description": "The number of walls with which to surround support interface roof. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used.",
+                            "default_value": 0,
+                            "minimum_value": "0",
+                            "minimum_value_warning": "0",
+                            "maximum_value_warning": "0 if (support_skip_some_zags and support_interface_pattern == 'zigzag') else 3",
+                            "maximum_value": "999999",
+                            "type": "int",
+                            "value": "support_interface_wall_count",
+                            "enabled": "support_interface_enable or support_meshes_present",
+                            "limit_to_extruder": "support_interface_extruder_nr",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        },
+                        "support_bottom_wall_count": {
+                            "label": "Support Bottom Wall Line Count",
+                            "description": "The number of walls with which to surround support interface floor. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used.",
+                            "default_value": 0,
+                            "minimum_value": "0",
+                            "minimum_value_warning": "0",
+                            "maximum_value_warning": "0 if (support_skip_some_zags and support_interface_pattern == 'zigzag') else 3",
+                            "maximum_value": "999999",
+                            "type": "int",
+                            "value": "support_interface_wall_count",
+                            "enabled": "support_interface_enable or support_meshes_present",
+                            "limit_to_extruder": "support_interface_extruder_nr",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        }
+                    }
                 },
                 "zig_zaggify_support":
                 {
@@ -6346,6 +6394,81 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
+                "interlocking_enable":
+                {
+                    "label": "Generate Interlocking Structure",
+                    "description": "Whether to generate a structure at the interface between two models of a different material in order to improve the adhesion. The structure consists of cells of horizontal beams with alternating direction which connect to each other over the Z direction in order to interlock with the beams of the other material.",
+                    "type": "bool",
+                    "enabled": "extruders_enabled_count > 1",
+                    "default_value": false,
+                    "resolve": "(extruders_enabled_count > 1) and any(extruderValues('interlocking_enable'))",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "interlocking_beam_width":
+                {
+                    "label": "Interlocking Beam Width",
+                    "description": "The width of the beams of this material in the interlocking structure.",
+                    "type": "float",
+                    "unit": "mm",
+                    "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
+                    "default_value": 0.8,
+                    "value": "2 * wall_line_width_0",
+                    "minimum_value": "0.001",
+                    "maximum_value": "min(0.5 * machine_width, 0.5 * machine_depth)",
+                    "maximum_value_warning": "max(extruderValues('wall_line_width_0')) * 6",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true
+                },
+                "interlocking_orientation":
+                {
+                    "label": "Interlocking Structure Orientation",
+                    "description": "The direction of the beams of the interlocking structure in the XY plane as a rotation about the Z axis.",
+                    "unit": "°",
+                    "type": "float",
+                    "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
+                    "default_value": 22.5,
+                    "resolve": "min(extruderValues('interlocking_orientation'))",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "interlocking_beam_layer_count":
+                {
+                    "label": "Interlocking Beam Layer Count",
+                    "description": "The height of the beams of the interlocking structure as measured in number of layers. Less layers is stronger, but more prone to manufacturing defects.",
+                    "type": "int",
+                    "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
+                    "default_value": 2,
+                    "minimum_value": "1",
+                    "resolve": "max(extruderValues('interlocking_beam_layer_count'))",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "interlocking_depth":
+                {
+                    "label": "Interlocking Depth",
+                    "description": "The number of cells along the depth of the interface between two models where an interlocking structure is to be generated. Less cells is better, but too little cells can cause the not to be connected properly, which reduces the adhesion performance of the interlocking structure.",
+                    "type": "int",
+                    "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
+                    "default_value": 2,
+                    "minimum_value": "1",
+                    "resolve": "max(extruderValues('interlocking_depth'))",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "interlocking_boundary_avoidance":
+                {
+                    "label": "Interlocking Boundary Avoidance",
+                    "description": "The distance close to the boundary of the print where not to generate an interlocking structure as measued in number of cells times 2. If set to a value lower than the Inerlocking Depth then the interlocking structure can become visible on the outside of the print near the interfaces where two models meet.",
+                    "type": "int",
+                    "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
+                    "default_value": 3,
+                    "minimum_value": "0",
+                    "resolve": "max(extruderValues('interlocking_boundary_avoidance'))",
+                    "minimum_value_warning": "resolveOrValue('interlocking_depth')",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
                 "switch_extruder_retraction_amount":
                 {
                     "label": "Nozzle Switch Retraction Distance",
@@ -7861,7 +7984,7 @@
                     "minimum_value_warning": "-0.0001",
                     "maximum_value_warning": "10.0",
                     "enabled": "wipe_retraction_enable and clean_between_layers",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": false
                 },
@@ -7876,7 +7999,7 @@
                     "minimum_value_warning": "-0.0001",
                     "maximum_value_warning": "10.0",
                     "enabled": "wipe_retraction_enable and clean_between_layers",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true
                 },
                 "wipe_retraction_speed":
@@ -7909,7 +8032,7 @@
                             "maximum_value_warning": "70",
                             "enabled": "wipe_retraction_enable and clean_between_layers",
                             "value": "wipe_retraction_speed",
-                            "settable_per_mesh": false,
+                            "settable_per_mesh": true,
                             "settable_per_extruder": true
                         },
                         "wipe_retraction_prime_speed":
@@ -7925,7 +8048,7 @@
                             "maximum_value_warning": "70",
                             "enabled": "wipe_retraction_enable and clean_between_layers",
                             "value": "wipe_retraction_speed",
-                            "settable_per_mesh": false,
+                            "settable_per_mesh": true,
                             "settable_per_extruder": true
                         }
                     }
@@ -7939,7 +8062,7 @@
                     "default_value": 0,
                     "minimum_value": "0",
                     "enabled": "clean_between_layers",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": false
                 },
@@ -7964,7 +8087,7 @@
                     "default_value": 1,
                     "value": "retraction_hop",
                     "enabled": "wipe_hop_enable and clean_between_layers",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": false
                 },
@@ -7979,7 +8102,7 @@
                     "minimum_value": "0",
                     "minimum_value_warning": "1",
                     "enabled": "wipe_hop_enable and clean_between_layers",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": false
                 },
@@ -8004,7 +8127,7 @@
                     "minimum_value": "0",
                     "default_value": 5,
                     "enabled": "clean_between_layers",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": false
                 },
@@ -8016,7 +8139,7 @@
                     "type": "float",
                     "default_value": 20,
                     "enabled": "clean_between_layers",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": false
                 },

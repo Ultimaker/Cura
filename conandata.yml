@@ -40,6 +40,11 @@
                 src: "resources"
                 dst: "share/cura/resources"
                 internal: true
+            cura_private_data_plugins:
+                package: "cura_private_data"
+                src: "plugins"
+                dst: "share/cura/plugins"
+                internal: true
             uranium_plugins:
                 package: "uranium"
                 src: "plugins"

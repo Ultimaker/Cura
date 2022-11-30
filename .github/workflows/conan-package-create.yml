@@ -7,13 +7,18 @@ on:
                 required: true
                 type: string
 
+            recipe_id_full:
+                required: true
+                type: string
+
             build_id:
                 required: true
                 type: number
 
-            recipe_id_full:
-                required: true
-                type: string
+            build_info:
+                required: false
+                default: true
+                type: boolean
 
             recipe_id_latest:
                 required: false
@@ -43,11 +48,6 @@ on:
             conan_upload_community:
                 required: false
                 default: true
-                type: boolean
-
-            create_from_source:
-                required: false
-                default: false
                 type: boolean
 
 env:
@@ -92,7 +92,7 @@ jobs:
                     path: |
                         $HOME/.conan/data
                         $HOME/.conan/conan_download_cache
-                    key: conan-${{ runner.os }}-${{ runner.arch }}-create-cache
+                    key: conan-${{ inputs.runs_on }}-${{ runner.arch }}-create-cache
 
             -   name: Cache Conan local repository packages (Powershell)
                 uses: actions/cache@v3
@@ -102,7 +102,7 @@ jobs:
                         C:\Users\runneradmin\.conan\data
                         C:\.conan
                         C:\Users\runneradmin\.conan\conan_download_cache
-                    key: conan-${{ runner.os }}-${{ runner.arch }}-create-cache
+                    key: conan-${{ inputs.runs_on }}-${{ runner.arch }}-create-cache
 
             -   name: Install MacOS system requirements
                 if:  ${{ runner.os == 'Macos' }}
@@ -114,7 +114,7 @@ jobs:
                     sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
                     sudo apt update
                     sudo apt upgrade
-                    sudo apt install build-essential checkinstall libegl-dev zlib1g-dev libssl-dev ninja-build autoconf libx11-dev libx11-xcb-dev libfontenc-dev libice-dev libsm-dev libxau-dev libxaw7-dev libxcomposite-dev libxcursor-dev libxdamage-dev libxdmcp-dev libxext-dev libxfixes-dev libxi-dev libxinerama-dev libxkbfile-dev libxmu-dev libxmuu-dev libxpm-dev libxrandr-dev libxrender-dev libxres-dev libxss-dev libxt-dev libxtst-dev libxv-dev libxvmc-dev libxxf86vm-dev xtrans-dev libxcb-render0-dev libxcb-render-util0-dev libxcb-xkb-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev libxcb-randr0-dev libxcb-shape0-dev libxcb-sync-dev libxcb-xfixes0-dev libxcb-xinerama0-dev xkb-data libxcb-dri3-dev uuid-dev libxcb-util-dev libxkbcommon-x11-dev pkg-config -y
+                    sudo apt install build-essential checkinstall libegl-dev zlib1g-dev libssl-dev ninja-build autoconf libx11-dev libx11-xcb-dev libfontenc-dev libice-dev libsm-dev libxau-dev libxaw7-dev libxcomposite-dev libxcursor-dev libxdamage-dev libxdmcp-dev libxext-dev libxfixes-dev libxi-dev libxinerama-dev libxkbfile-dev libxmu-dev libxmuu-dev libxpm-dev libxrandr-dev libxrender-dev libxres-dev libxss-dev libxt-dev libxtst-dev libxv-dev libxvmc-dev libxxf86vm-dev xtrans-dev libxcb-render0-dev libxcb-render-util0-dev libxcb-xkb-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev libxcb-randr0-dev libxcb-shape0-dev libxcb-sync-dev libxcb-xfixes0-dev libxcb-xinerama0-dev xkb-data libxcb-dri3-dev uuid-dev libxcb-util-dev libxkbcommon-x11-dev pkg-config flex bison -y
 
             -   name: Install GCC-12 on ubuntu-22.04
                 if: ${{ startsWith(inputs.runs_on, 'ubuntu-22.04') }}
@@ -122,6 +122,12 @@ jobs:
                     sudo apt install g++-12 gcc-12 -y
                     sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 12
                     sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 12
+
+            -   name: Use GCC-10 on ubuntu-20.04
+                if: ${{ startsWith(inputs.runs_on, 'ubuntu-20.04') }}
+                run: |
+                    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 10
+                    sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 10
 
             -   name: Create the default Conan profile
                 run:  conan profile new default --detect
@@ -134,34 +140,48 @@ jobs:
                 if: ${{ inputs.conan_config_branch == '' }}
                 run: conan config install https://github.com/Ultimaker/conan-config.git
 
-            -   name: Create the Packages
-                if: ${{ !inputs.create_from_source }}
+            -   name: Create the lock file
+                if: ${{ inputs.build_info }}
                 run: |
                     conan_build_info --v2 start ${{ inputs.project_name }} ${{ github.run_number }}000${{ inputs.build_id }}
-                    conan lock create --reference ${{ inputs.recipe_id_full }} --build=missing --update
-                    conan install ${{ inputs.recipe_id_full }} --build=missing --update --lockfile=conan.lock
-                    conan_build_info --v2 create buildinfo.json --lockfile conan.lock --user ${{ secrets.CONAN_USER }} --password ${{ secrets.CONAN_PASS }}
-                    conan_build_info --v2 publish buildinfo.json --url https://ultimaker.jfrog.io/artifactory --user ${{ secrets.CONAN_USER }} --password ${{ secrets.CONAN_PASS }}
-                    conan_build_info --v2 stop
+                    conan lock create --reference ${{ inputs.recipe_id_full }} --lockfile-out=conan.lock                    
 
-            -   name: Create the Packages (from source)
-                if: ${{ inputs.create_from_source }}
-                run: conan create . ${{ inputs.recipe_id_full }} --build=missing --update
+            -   name: Create the Packages using lockfile
+                if: ${{ inputs.build_info }}
+                run: conan install ${{ inputs.recipe_id_full }} --build=missing --update --lockfile=conan.lock --lockfile-out=conan.lock
 
-            -   name: Remove the latest alias
-                if: ${{ inputs.create_from_source && inputs.recipe_id_latest != '' && runner.os == 'Linux' }}
-                run: |
-                    conan remove ${{ inputs.recipe_id_latest }} -r cura -f || true
-                    conan remove ${{ inputs.recipe_id_latest }} -r cura-ce -f || true
+            -   name: Create the Packages
+                if: ${{ ! inputs.build_info }}
+                run: conan install ${{ inputs.recipe_id_full }} --build=missing --update
 
-            -   name: Create the latest alias
-                if: ${{ inputs.create_from_source && inputs.recipe_id_latest != '' && always() }}
-                run: conan alias ${{ inputs.recipe_id_latest }} ${{ inputs.recipe_id_full }}
+            -   name: Create the build info
+                if: ${{ inputs.build_info }}
+                run: conan_build_info --v2 create buildinfo.json --lockfile conan.lock --user ${{ secrets.CONAN_USER }} --password ${{ secrets.CONAN_PASS }}
 
             -   name: Upload the Package(s)
                 if: always()
                 run: conan upload "*" -r cura --all -c
 
+            -   name: Upload the build info
+                if: ${{ inputs.build_info }}
+                run: |
+                    conan_build_info --v2 publish buildinfo.json --url https://ultimaker.jfrog.io/artifactory --user ${{ secrets.CONAN_USER }} --password ${{ secrets.CONAN_PASS }}
+                    conan_build_info --v2 stop
+
             -   name: Upload the Package(s) community
                 if: ${{ always() && inputs.conan_upload_community == true }}
                 run: conan upload "*" -r cura-ce -c
+
+            -   name: Upload the log and build artifacts
+                if: always()
+                uses: actions/upload-artifact@v3
+                with:
+                    name: log-${{ inputs.runs_on }}-${{ runner.arch }}
+                    path: |
+                        buildinfo.json
+                        conan.lock
+                        conanbuildinfo.txt
+                        conaninfo.txt
+                        graph_info.json
+                        build/**
+                    retention-days: 1

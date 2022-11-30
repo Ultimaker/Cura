@@ -1,5 +1,6 @@
 pytest
 pyinstaller
 pyinstaller-hooks-contrib
+pyyaml
 sip==6.5.1
 jinja2
