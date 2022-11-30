@@ -20,13 +20,6 @@ RowLayout
     property int maxValue: 100
     property int minValue: 0
 
-    anchors
-    {
-        left: strengthSection.right
-        right: parent.right
-        verticalCenter: strengthSection.verticalCenter
-    }
-
     UM.SettingPropertyProvider
     {
         id: settingPropertyProvider
