@@ -1,5 +1,5 @@
 # Cura
-# Copyright (C) 2022 Ultimaker B.V.
+# Copyright (C) 2022 UltiMaker.
 # This file is distributed under the same license as the Cura package.
 # Ultimaker <plugins@ultimaker.com>, 2022.
 #
@@ -424,8 +424,8 @@ msgstr "Nepodařilo se mi spustit nový proces přihlášení. Zkontrolujte, zda
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/OAuth2/AuthorizationService.py:277
 msgctxt "@info"
-msgid "Unable to reach the Ultimaker account server."
-msgstr "Nelze se dostat na server účtu Ultimaker."
+msgid "Unable to reach the UltiMaker account server."
+msgstr "Nelze se dostat na server účtu UltiMaker."
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/OAuth2/AuthorizationService.py:278
 msgctxt "@info:title"
@@ -701,8 +701,8 @@ msgstr ""
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/CrashHandler.py:122
 msgctxt "@action:button"
-msgid "Send crash report to Ultimaker"
-msgstr "Poslat záznam o pádu do Ultimakeru"
+msgid "Send crash report to UltiMaker"
+msgstr "Poslat záznam o pádu do UltiMaker"
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/CrashHandler.py:125
 msgctxt "@action:button"
@@ -902,7 +902,7 @@ msgstr "Chyba sítě"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/NewPrinterDetectedMessage.py:13
 msgctxt "info:status"
-msgid "New printer detected from your Ultimaker account"
+msgid "New printer detected from your UltiMaker account"
 msgid_plural "New printers detected from your Ultimaker account"
 msgstr[0] "Z vašeho Ultimaker účtu byla detekována nová tiskárna"
 msgstr[1] "Z vašeho Ultimaker účtu byly detekovány nové tiskárny"
@@ -1056,8 +1056,8 @@ msgstr "Odstranit tiskárnu"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:18
 msgctxt "@info:status"
-msgid "You are attempting to connect to a printer that is not running Ultimaker Connect. Please update the printer to the latest firmware."
-msgstr "Pokoušíte se připojit k tiskárně, na které není spuštěna aplikace Ultimaker Connect. Aktualizujte tiskárnu na nejnovější firmware."
+msgid "You are attempting to connect to a printer that is not running UltiMaker Connect. Please update the printer to the latest firmware."
+msgstr "Pokoušíte se připojit k tiskárně, na které není spuštěna aplikace UltiMaker Connect. Aktualizujte tiskárnu na nejnovější firmware."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:21
 msgctxt "@info:title"
@@ -1289,8 +1289,8 @@ msgstr "Nemohu zapsat do UFP souboru:"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UFPWriter/__init__.py:28
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UFPReader/__init__.py:22
 msgctxt "@item:inlistbox"
-msgid "Ultimaker Format Package"
-msgstr "Balíček ve formátu Ultimaker"
+msgid "UltiMaker Format Package"
+msgstr "Balíček ve formátu UltiMaker"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/DigitalLibrary/src/DigitalFactoryProjectResponse.py:19
 msgctxt "@text Placeholder for the username if it has been deleted"
@@ -1411,8 +1411,8 @@ msgstr "Chcete synchronizovat materiálové a softwarové balíčky s vaším ú
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/CloudSync/CloudPackageChecker.py:145
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/CloudSync/DownloadPresenter.py:95
 msgctxt "@info:title"
-msgid "Changes detected from your Ultimaker account"
-msgstr "Zjištěny změny z vašeho účtu Ultimaker"
+msgid "Changes detected from your UltiMaker account"
+msgstr "Zjištěny změny z vašeho účtu UltiMaker"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/CloudSync/CloudPackageChecker.py:147
 msgctxt "@action:button"
@@ -1572,8 +1572,8 @@ msgstr "Nahlásit chybu"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:169
 msgctxt "@message:description"
-msgid "Report a bug on Ultimaker Cura's issue tracker."
-msgstr "Nahlásit chybu v Ultimaker Cura issue trackeru."
+msgid "Report a bug on UltiMaker Cura's issue tracker."
+msgstr "Nahlásit chybu v UltiMaker Cura issue trackeru."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:401
 msgctxt "@info:status"
@@ -1702,8 +1702,8 @@ msgstr "Soubor projektu <filename>{0}</filename> je poškozený: <message>{1}</m
 #: /Users/c.lamboo/ultimaker/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:723
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
-msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of Ultimaker Cura."
-msgstr "Soubor projektu <filename>{0}</filename> je vytvořený profily, které jsou této verzi Ultimaker Cura neznámé."
+msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura."
+msgstr "Soubor projektu <filename>{0}</filename> je vytvořený profily, které jsou této verzi UltiMaker Cura neznámé."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/PerObjectSettingsTool/__init__.py:14
 msgctxt "@label"
@@ -2348,8 +2348,8 @@ msgstr "Aktualizujte firmware tiskárny a spravujte frontu vzdáleně."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:287
 msgctxt "@info"
-msgid "Webcam feeds for cloud printers cannot be viewed from Ultimaker Cura. Click \"Manage printer\" to visit Ultimaker Digital Factory and view this webcam."
-msgstr "Vstup z webové kamery nemůže být pro cloudové tiskárny zobrazen v Ultimaker Cura. Klikněte na \"Spravovat tiskárnu\", abyste navštívili Ultimaker Digital Factory a zobrazili tuto webkameru."
+msgid "Webcam feeds for cloud printers cannot be viewed from UltiMaker Cura. Click \"Manage printer\" to visit Ultimaker Digital Factory and view this webcam."
+msgstr "Vstup z webové kamery nemůže být pro cloudové tiskárny zobrazen v UltiMaker Cura. Klikněte na \"Spravovat tiskárnu\", abyste navštívili Ultimaker Digital Factory a zobrazili tuto webkameru."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:347
 msgctxt "@label:status"
@@ -2714,8 +2714,8 @@ msgstr "Další informace o anonymním shromažďování údajů"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:73
 msgctxt "@text:window"
-msgid "Ultimaker Cura collects anonymous data in order to improve the print quality and user experience. Below is an example of all the data that is shared:"
-msgstr "Ultimaker Cura shromažďuje anonymní data za účelem zlepšení kvality tisku a uživatelského komfortu. Níže uvádíme příklad všech sdílených dat:"
+msgid "UltiMaker Cura collects anonymous data in order to improve the print quality and user experience. Below is an example of all the data that is shared:"
+msgstr "UltiMaker Cura shromažďuje anonymní data za účelem zlepšení kvality tisku a uživatelského komfortu. Níže uvádíme příklad všech sdílených dat:"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:107
 msgctxt "@text:window"
@@ -2739,8 +2739,8 @@ msgstr "Uložit projekt Cura"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UltimakerMachineActions/UMOUpgradeSelectionMachineAction.qml:30
 msgctxt "@label"
-msgid "Please select any upgrades made to this Ultimaker Original"
-msgstr "Vyberte prosím všechny upgrady provedené v tomto originálu Ultimaker"
+msgid "Please select any upgrades made to this UltiMaker Original"
+msgstr "Vyberte prosím všechny upgrady provedené v tomto originálu UltiMaker"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UltimakerMachineActions/UMOUpgradeSelectionMachineAction.qml:39
 msgctxt "@label"
@@ -2835,8 +2835,8 @@ msgstr "Nainstalovat moduly"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/Plugins.qml:12
 msgctxt "@text"
-msgid "Streamline your workflow and customize your Ultimaker Cura experience with plugins contributed by our amazing community of users."
-msgstr "Urychlete váš postup práce a přizpůsobte si zážitek s Ultimaker Cura pomocí modulů, kterými přispěla naše úžasná komunita uživatelů."
+msgid "Streamline your workflow and customize your UltiMaker Cura experience with plugins contributed by our amazing community of users."
+msgstr "Urychlete váš postup práce a přizpůsobte si zážitek s UltiMaker Cura pomocí modulů, kterými přispěla naše úžasná komunita uživatelů."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/CompatibilityDialog.qml:15
 msgctxt "@title"
@@ -2894,8 +2894,8 @@ msgstr "Instalovat materiály"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/Materials.qml:12
 msgctxt "@text"
-msgid "Select and install material profiles optimised for your Ultimaker 3D printers."
-msgstr "Vyberte a nainstalujte materiálové profily optimalizované pro vaše 3D tiskárny Ultimaker."
+msgid "Select and install material profiles optimised for your UltiMaker 3D printers."
+msgstr "Vyberte a nainstalujte materiálové profily optimalizované pro vaše 3D tiskárny UltiMaker."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/ManagePackagesButton.qml:32
 msgctxt "@info:tooltip"
@@ -3016,18 +3016,18 @@ msgstr "Načíst více"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/VerifiedIcon.qml:21
 msgctxt "@info"
-msgid "Ultimaker Verified Plug-in"
-msgstr "Modul ověřený společností Ultimaker"
+msgid "UltiMaker Verified Plug-in"
+msgstr "Modul ověřený společností UltiMaker"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/VerifiedIcon.qml:22
 msgctxt "@info"
-msgid "Ultimaker Certified Material"
-msgstr "Materiál certifikovaný společností Ultimaker"
+msgid "UltiMaker Certified Material"
+msgstr "Materiál certifikovaný společností UltiMaker"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/VerifiedIcon.qml:23
 msgctxt "@info"
-msgid "Ultimaker Verified Package"
-msgstr "Balíček ověřený společností Ultimaker"
+msgid "UltiMaker Verified Package"
+msgstr "Balíček ověřený společností UltiMaker"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/ManagedPackages.qml:11
 msgctxt "@header"
@@ -3036,8 +3036,8 @@ msgstr "Spravovat balíčky"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/ManagedPackages.qml:15
 msgctxt "@text"
-msgid "Manage your Ultimaker Cura plugins and material profiles here. Make sure to keep your plugins up to date and backup your setup regularly."
-msgstr "Zde můžete spravovat své Ultimaker Cura moduly a materiály. Udržujte své moduly aktuální a pravidelně zálohujte své nastavení."
+msgid "Manage your UltiMaker Cura plugins and material profiles here. Make sure to keep your plugins up to date and backup your setup regularly."
+msgstr "Zde můžete spravovat své UltiMaker Cura moduly a materiály. Udržujte své moduly aktuální a pravidelně zálohujte své nastavení."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/InstallMissingPackagesDialog.qml:15
 msgctxt "@title"
@@ -4308,8 +4308,8 @@ msgstr "Soukromí"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:862
 msgctxt "@info:tooltip"
-msgid "Should anonymous data about your print be sent to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored."
-msgstr "Měla by být anonymní data o vašem tisku zaslána společnosti Ultimaker? Upozorňujeme, že nejsou odesílány ani ukládány žádné modely, adresy IP ani jiné osobní údaje."
+msgid "Should anonymous data about your print be sent to UltiMaker? Note, no models, IP addresses or other personally identifiable information is sent or stored."
+msgstr "Měla by být anonymní data o vašem tisku zaslána společnosti UltiMaker? Upozorňujeme, že nejsou odesílány ani ukládány žádné modely, adresy IP ani jiné osobní údaje."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:867
 msgctxt "@option:check"
@@ -4623,8 +4623,8 @@ msgstr "Podpora při problémech"
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/CloudContent.qml:64
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Account/GeneralOperations.qml:19
 msgctxt "@label"
-msgid "Sign in to the Ultimaker platform"
-msgstr "Přihlásit se do platformy Ultimaker"
+msgid "Sign in to the UltiMaker platform"
+msgstr "Přihlásit se do platformy UltiMaker"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/CloudContent.qml:123
 msgctxt "@text"
@@ -4638,8 +4638,8 @@ msgstr "Zálohovat a synchronizovat nastavení materiálů a moduly"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/CloudContent.qml:175
 msgctxt "@text"
-msgid "Share ideas and get help from 48,000+ users in the Ultimaker Community"
-msgstr "Sdílejte nápady a získejte pomoc od více než 48 0000 uživatelů v Ultimaker komunitě"
+msgid "Share ideas and get help from 48,000+ users in the UltiMaker Community"
+msgstr "Sdílejte nápady a získejte pomoc od více než 48 0000 uživatelů v UltiMaker komunitě"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/CloudContent.qml:189
 msgctxt "@button"
@@ -4648,18 +4648,18 @@ msgstr "Přeskočit"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/CloudContent.qml:201
 msgctxt "@text"
-msgid "Create a free Ultimaker Account"
-msgstr "Vytvořit účet Ultimaker zdarma"
+msgid "Create a free UltiMaker Account"
+msgstr "Vytvořit účet UltiMaker zdarma"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:24
 msgctxt "@label"
-msgid "Help us to improve Ultimaker Cura"
-msgstr "Pomožte nám zlepšovat Ultimaker Cura"
+msgid "Help us to improve UltiMaker Cura"
+msgstr "Pomožte nám zlepšovat UltiMaker Cura"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:56
 msgctxt "@text"
-msgid "Ultimaker Cura collects anonymous data to improve print quality and user experience, including:"
-msgstr "Ultimaker Cura shromažďuje anonymní data za účelem zlepšení kvality tisku a uživatelského komfortu, včetně:"
+msgid "UltiMaker Cura collects anonymous data to improve print quality and user experience, including:"
+msgstr "UltiMaker Cura shromažďuje anonymní data za účelem zlepšení kvality tisku a uživatelského komfortu, včetně:"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:68
 msgctxt "@text"
@@ -4683,8 +4683,8 @@ msgstr "Nastavení tisku"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:99
 msgctxt "@text"
-msgid "Data collected by Ultimaker Cura will not contain any personal information."
-msgstr "Data shromážděná společností Ultimaker Cura nebudou obsahovat žádné osobní údaje."
+msgid "Data collected by UltiMaker Cura will not contain any personal information."
+msgstr "Data shromážděná společností UltiMaker Cura nebudou obsahovat žádné osobní údaje."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:100
 msgctxt "@text"
@@ -4754,8 +4754,8 @@ msgstr "Nelze se připojit k zařízení."
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:196
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:201
 msgctxt "@label"
-msgid "Can't connect to your Ultimaker printer?"
-msgstr "Nemůžete se připojit k Vaší tiskárně Ultimaker?"
+msgid "Can't connect to your UltiMaker printer?"
+msgstr "Nemůžete se připojit k Vaší tiskárně UltiMaker?"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:200
 msgctxt "@label"
@@ -4774,13 +4774,13 @@ msgstr "Připojit"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/WelcomeContent.qml:56
 msgctxt "@label"
-msgid "Welcome to Ultimaker Cura"
-msgstr "Vítejte v Ultimaker Cura"
+msgid "Welcome to UltiMaker Cura"
+msgstr "Vítejte v UltiMaker Cura"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/WelcomeContent.qml:67
 msgctxt "@text"
-msgid "Please follow these steps to set up Ultimaker Cura. This will only take a few moments."
-msgstr "Při nastavování postupujte podle těchto pokynů Ultimaker Cura. Bude to trvat jen několik okamžiků."
+msgid "Please follow these steps to set up UltiMaker Cura. This will only take a few moments."
+msgstr "Při nastavování postupujte podle těchto pokynů UltiMaker Cura. Bude to trvat jen několik okamžiků."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/WelcomeContent.qml:82
 msgctxt "@button"
@@ -5465,7 +5465,7 @@ msgstr "Komplexní řešení pro 3D tisk z taveného filamentu."
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Dialogs/AboutDialog.qml:87
 msgctxt "@info:credit"
 msgid ""
-"Cura is developed by Ultimaker B.V. in cooperation with the community.\n"
+"Cura is developed by UltiMaker in cooperation with the community.\n"
 "Cura proudly uses the following open source projects:"
 msgstr ""
 "Cura vyvíjí Ultimaker B.V. ve spolupráci s komunitou.\n"
@@ -5674,23 +5674,23 @@ msgstr "Sledujte tiskové úlohy a znovu tiskněte z historie."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:55
 msgctxt "@tooltip:button"
-msgid "Extend Ultimaker Cura with plugins and material profiles."
-msgstr "Rozšiřte Ultimaker Cura pomocí modulů a materiálových profilů."
+msgid "Extend UltiMaker Cura with plugins and material profiles."
+msgstr "Rozšiřte UltiMaker Cura pomocí modulů a materiálových profilů."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:62
 msgctxt "@tooltip:button"
-msgid "Become a 3D printing expert with Ultimaker e-learning."
-msgstr "Staňte se expertem na 3D tisk díky Ultimaker e-learningu."
+msgid "Become a 3D printing expert with UltiMaker e-learning."
+msgstr "Staňte se expertem na 3D tisk díky UltiMaker e-learningu."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:67
 msgctxt "@label:button"
-msgid "Ultimaker support"
-msgstr "Ultimaker podpora"
+msgid "UltiMaker support"
+msgstr "UltiMaker podpora"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:69
 msgctxt "@tooltip:button"
-msgid "Learn how to get started with Ultimaker Cura."
-msgstr "Zjistěte, jak začít s Ultimaker Cura."
+msgid "Learn how to get started with UltiMaker Cura."
+msgstr "Zjistěte, jak začít s UltiMaker Cura."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:74
 msgctxt "@label:button"
@@ -5699,8 +5699,8 @@ msgstr "Položit otázku"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:76
 msgctxt "@tooltip:button"
-msgid "Consult the Ultimaker Community."
-msgstr "Poraďte se s Ultimaker komunitou."
+msgid "Consult the UltiMaker Community."
+msgstr "Poraďte se s UltiMaker komunitou."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:81
 msgctxt "@label:button"
@@ -5714,8 +5714,8 @@ msgstr "Dejte vývojářům vědět, že je něco špatně."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:90
 msgctxt "@tooltip:button"
-msgid "Visit the Ultimaker website."
-msgstr "Navštivte web Ultimaker."
+msgid "Visit the UltiMaker website."
+msgstr "Navštivte web UltiMaker."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:40
 msgctxt "@label"
@@ -6011,8 +6011,8 @@ msgstr ""
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Account/GeneralOperations.qml:58
 msgctxt "@button"
-msgid "Create a free Ultimaker account"
-msgstr "Vytvořit účet Ultimaker zdarma"
+msgid "Create a free UltiMaker account"
+msgstr "Vytvořit účet UltiMaker zdarma"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Account/AccountWidget.qml:24
 msgctxt "@action:button"
@@ -6026,8 +6026,8 @@ msgstr "Poslední aktualizace: %1"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Account/UserOperations.qml:107
 msgctxt "@button"
-msgid "Ultimaker Account"
-msgstr "Ultimaker Account"
+msgid "UltiMaker Account"
+msgstr "UltiMaker Account"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Account/UserOperations.qml:126
 msgctxt "@button"
@@ -6241,13 +6241,13 @@ msgstr "Post Processing"
 
 #: /UM3NetworkPrinting/plugin.json
 msgctxt "description"
-msgid "Manages network connections to Ultimaker networked printers."
-msgstr "Spravuje síťová připojení k síťovým tiskárnám Ultimaker."
+msgid "Manages network connections to UltiMaker networked printers."
+msgstr "Spravuje síťová připojení k síťovým tiskárnám UltiMaker."
 
 #: /UM3NetworkPrinting/plugin.json
 msgctxt "name"
-msgid "Ultimaker Network Connection"
-msgstr "Síťové připojení Ultimaker"
+msgid "UltiMaker Network Connection"
+msgstr "Síťové připojení UltiMaker"
 
 #: /3MFWriter/plugin.json
 msgctxt "description"
@@ -6281,8 +6281,8 @@ msgstr "Informace o slicování"
 
 #: /UFPWriter/plugin.json
 msgctxt "description"
-msgid "Provides support for writing Ultimaker Format Packages."
-msgstr "Poskytuje podporu pro psaní balíčků formátu Ultimaker."
+msgid "Provides support for writing UltiMaker Format Packages."
+msgstr "Poskytuje podporu pro psaní balíčků formátu UltiMaker."
 
 #: /UFPWriter/plugin.json
 msgctxt "name"
@@ -6297,7 +6297,7 @@ msgstr "Připojuje k Digitální knihovně. Umožňuje Cuře otevírat a ukláda
 #: /DigitalLibrary/plugin.json
 msgctxt "name"
 msgid "Ultimaker Digital Library"
-msgstr "Digitální knihovna Ultimaker"
+msgstr "Digitální knihovna UltiMaker"
 
 #: /GCodeProfileReader/plugin.json
 msgctxt "description"
@@ -6331,13 +6331,13 @@ msgstr "Čtečka trimesh"
 
 #: /UltimakerMachineActions/plugin.json
 msgctxt "description"
-msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
-msgstr "Poskytuje akce strojů pro stroje Ultimaker (jako je průvodce vyrovnáváním postele, výběr upgradů atd.)."
+msgid "Provides machine actions for UltiMaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
+msgstr "Poskytuje akce strojů pro stroje UltiMaker (jako je průvodce vyrovnáváním postele, výběr upgradů atd.)."
 
 #: /UltimakerMachineActions/plugin.json
 msgctxt "name"
-msgid "Ultimaker machine actions"
-msgstr "Akce zařízení Ultimaker"
+msgid "UltiMaker machine actions"
+msgstr "Akce zařízení UltiMaker"
 
 #: /GCodeGzReader/plugin.json
 msgctxt "description"
@@ -6351,8 +6351,8 @@ msgstr "Čtečka kompresovaného G kódu"
 
 #: /Marketplace/plugin.json
 msgctxt "description"
-msgid "Manages extensions to the application and allows browsing extensions from the Ultimaker website."
-msgstr "Spravuje rozšíření aplikace a umožňuje prohlížení rozšíření z webu Ultimaker."
+msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
+msgstr "Spravuje rozšíření aplikace a umožňuje prohlížení rozšíření z webu UltiMaker."
 
 #: /Marketplace/plugin.json
 msgctxt "name"
@@ -6701,8 +6701,8 @@ msgstr "Zapisovač G kódu"
 
 #: /UFPReader/plugin.json
 msgctxt "description"
-msgid "Provides support for reading Ultimaker Format Packages."
-msgstr "Poskytuje podporu pro čtení balíčků formátu Ultimaker."
+msgid "Provides support for reading UltiMaker Format Packages."
+msgstr "Poskytuje podporu pro čtení balíčků formátu UltiMaker."
 
 #: /UFPReader/plugin.json
 msgctxt "name"
@@ -7018,8 +7018,8 @@ msgstr "Fáze přípravy"
 #~ msgstr "Email"
 
 #~ msgctxt "@description"
-#~ msgid "Please sign in to get verified plugins and materials for Ultimaker Cura Enterprise"
-#~ msgstr "Přihlaste se, abyste získali ověřené pluginy a materiály pro Ultimaker Cura Enterprise"
+#~ msgid "Please sign in to get verified plugins and materials for UltiMaker Cura Enterprise"
+#~ msgstr "Přihlaste se, abyste získali ověřené pluginy a materiály pro UltiMaker Cura Enterprise"
 
 #~ msgctxt "@label"
 #~ msgid "Version"
@@ -7176,16 +7176,16 @@ msgstr "Fáze přípravy"
 #~ msgstr "Poskytuje zobrazení simulace."
 
 #~ msgctxt "@info:status"
-#~ msgid "Send and monitor print jobs from anywhere using your Ultimaker account."
-#~ msgstr "Odesílejte a sledujte tiskové úlohy odkudkoli pomocí účtu Ultimaker."
+#~ msgid "Send and monitor print jobs from anywhere using your UltiMaker account."
+#~ msgstr "Odesílejte a sledujte tiskové úlohy odkudkoli pomocí účtu UltiMaker."
 
 #~ msgctxt "@info:status Ultimaker Cloud should not be translated."
 #~ msgid "Connect to Ultimaker Digital Factory"
 #~ msgstr "Připojit se k Ultimaker Digital Factory"
 
 #~ msgctxt "@info"
-#~ msgid "Webcam feeds for cloud printers cannot be viewed from Ultimaker Cura."
-#~ msgstr "Vstup z webových kamer pro cloudové tiskárny nemůže být v Ultimaker Cura zobrazen."
+#~ msgid "Webcam feeds for cloud printers cannot be viewed from UltiMaker Cura."
+#~ msgstr "Vstup z webových kamer pro cloudové tiskárny nemůže být v UltiMaker Cura zobrazen."
 
 #~ msgctxt "@info Don't translate {machine_name}, since it gets replaced by a printer name!"
 #~ msgid "New features or bug-fixes may be available for your {machine_name}! If not already at the latest version, it is recommended to update the firmware on your printer to version {latest_version}."
@@ -7255,8 +7255,8 @@ msgstr "Fáze přípravy"
 #~ msgstr "Dokončit"
 
 #~ msgctxt "@label"
-#~ msgid "Ultimaker Account"
-#~ msgstr "Účet Ultimaker"
+#~ msgid "UltiMaker Account"
+#~ msgstr "Účet UltiMaker"
 
 #~ msgctxt "@text"
 #~ msgid "Your key to connected 3D printing"
@@ -7271,8 +7271,8 @@ msgstr "Fáze přípravy"
 #~ msgstr "- Zůstaňte flexibilní díky synchronizaci nastavení a přístupu k ní kdekoli"
 
 #~ msgctxt "@text"
-#~ msgid "- Increase efficiency with a remote workflow on Ultimaker printers"
-#~ msgstr "- Zvyšte efektivitu pomocí vzdáleného pracovního postupu na tiskárnách Ultimaker"
+#~ msgid "- Increase efficiency with a remote workflow on UltiMaker printers"
+#~ msgstr "- Zvyšte efektivitu pomocí vzdáleného pracovního postupu na tiskárnách UltiMaker"
 
 #~ msgctxt "@text"
 #~ msgid ""
@@ -7283,8 +7283,8 @@ msgstr "Fáze přípravy"
 #~ "Ultimaker Cura. Bude to trvat jen několik okamžiků."
 
 #~ msgctxt "@label"
-#~ msgid "What's new in Ultimaker Cura"
-#~ msgstr "Co je nového v Ultimaker Cura"
+#~ msgid "What's new in UltiMaker Cura"
+#~ msgstr "Co je nového v UltiMaker Cura"
 
 #~ msgctxt "@label ({} is object name)"
 #~ msgid "Are you sure you wish to remove {}? This cannot be undone!"
@@ -7316,11 +7316,11 @@ msgstr "Fáze přípravy"
 
 #~ msgctxt "info:status"
 #~ msgid "<ul>{}</ul>To establish a connection, please visit the <a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>."
-#~ msgstr "<ul>{}</ul> Chcete-li navázat spojení, navštivte <a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>."
+#~ msgstr "<ul>{}</ul> Chcete-li navázat spojení, navštivte <a href='https://mycloud.UltiMaker.com/'>Ultimaker Digital Factory</a>."
 
 #~ msgctxt "@label ({} is printer name)"
 #~ msgid "{} will be removed until the next account sync. <br> To remove {} permanently, visit <a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>. <br><br>Are you sure you want to remove {} temporarily?"
-#~ msgstr "{} bude odebrána až do další synchronizace účtu. <br> Chcete-li {} trvale odebrat, navštivte <a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>. <br><br>Opravdu chcete dočasně odebrat {}?"
+#~ msgstr "{} bude odebrána až do další synchronizace účtu. <br> Chcete-li {} trvale odebrat, navštivte <a href='https://mycloud.UltiMaker.com/'>Ultimaker Digital Factory</a>. <br><br>Opravdu chcete dočasně odebrat {}?"
 
 #~ msgctxt "@label"
 #~ msgid ""
@@ -7396,8 +7396,8 @@ msgstr "Fáze přípravy"
 #~ msgstr "Připojeno přes Cloud"
 
 #~ msgctxt "@info:status Ultimaker Cloud should not be translated."
-#~ msgid "Connect to Ultimaker Cloud"
-#~ msgstr "Připojit k Ultimaker Cloudu"
+#~ msgid "Connect to UltiMaker Cloud"
+#~ msgstr "Připojit k UltiMaker Cloudu"
 
 #~ msgctxt "@label"
 #~ msgid "You need to login first before you can rate"
@@ -7424,16 +7424,16 @@ msgstr "Fáze přípravy"
 #~ msgstr "Autor"
 
 #~ msgctxt "@description"
-#~ msgid "Get plugins and materials verified by Ultimaker"
-#~ msgstr "Získejte pluginy a materiály ověřené společností Ultimaker"
+#~ msgid "Get plugins and materials verified by UltiMaker"
+#~ msgstr "Získejte pluginy a materiály ověřené společností UltiMaker"
 
 #~ msgctxt "@label The argument is a username."
 #~ msgid "Hi %1"
 #~ msgstr "Zdravím, %1"
 
 #~ msgctxt "@button"
-#~ msgid "Ultimaker account"
-#~ msgstr "Ultimaker účet"
+#~ msgid "UltiMaker account"
+#~ msgstr "UltiMaker účet"
 
 #~ msgctxt "@button"
 #~ msgid "Sign out"
@@ -7512,20 +7512,20 @@ msgstr "Fáze přípravy"
 #~ msgstr "Jazyk:"
 
 #~ msgctxt "@label"
-#~ msgid "Ultimaker Cloud"
-#~ msgstr "Ultimaker Cloud"
+#~ msgid "UltiMaker Cloud"
+#~ msgstr "UltiMaker Cloud"
 
 #~ msgctxt "@text"
 #~ msgid "The next generation 3D printing workflow"
 #~ msgstr "Pracovní postup 3D tisku nové generace"
 
 #~ msgctxt "@text"
-#~ msgid "- Send print jobs to Ultimaker printers outside your local network"
-#~ msgstr "- Odeslat tiskové úlohy do tiskáren Ultimaker mimo vaši místní síť"
+#~ msgid "- Send print jobs to UltiMaker printers outside your local network"
+#~ msgstr "- Odeslat tiskové úlohy do tiskáren UltiMaker mimo vaši místní síť"
 
 #~ msgctxt "@text"
-#~ msgid "- Store your Ultimaker Cura settings in the cloud for use anywhere"
-#~ msgstr "- Uložte svá nastavení Ultimaker Cura do cloudu pro použití kdekoli"
+#~ msgid "- Store your UltiMaker Cura settings in the cloud for use anywhere"
+#~ msgstr "- Uložte svá nastavení UltiMaker Cura do cloudu pro použití kdekoli"
 
 #~ msgctxt "@text"
 #~ msgid "- Get exclusive access to print profiles from leading brands"
