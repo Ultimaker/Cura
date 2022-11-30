@@ -57,7 +57,6 @@ RecommendedSettingSection
             settingControl: Cura.SingleSettingComboBox
             {
                 width: parent.width
-                height: UM.Theme.getSize("combobox").height
                 settingName: "support_structure"
             }
         },
@@ -74,7 +73,6 @@ RecommendedSettingSection
             settingControl: Cura.SingleSettingComboBox
             {
                 width: parent.width
-                height: UM.Theme.getSize("combobox").height
                 settingName: "support_type"
             }
         }

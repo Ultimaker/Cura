@@ -77,9 +77,13 @@ Item
     {
         id: settingColumn
         width: parent.width
-        spacing: 0
+        spacing: UM.Theme.getSize("thin_margin").height
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: sectionHeader.bottom
+        anchors.topMargin: UM.Theme.getSize("narrow_margin").height
+
+        Layout.preferredHeight: UM.Theme.getSize("recommended_section_setting_item").height
+
     }
 }

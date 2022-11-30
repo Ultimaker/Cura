@@ -76,28 +76,31 @@ Item
             Layout.fillWidth: true
             color: UM.Theme.getColor("lining")
         }
-
-        UM.Label
+        ColumnLayout
         {
-            text: catalog.i18nc("@label", "Print settings")
-            font: UM.Theme.getFont("medium")
-        }
+            spacing: UM.Theme.getSize("thin_margin").height
+            UM.Label
+            {
+                text: catalog.i18nc("@label", "Reccomended print settings")
+                font: UM.Theme.getFont("medium")
+            }
 
-        RecommendedStrengthSelector
-        {
-            width: parent.width
-            Layout.fillWidth: true
-        }
+            RecommendedStrengthSelector
+            {
+                width: parent.width
+                Layout.fillWidth: true
+            }
 
-        RecommendedSupportSelector
-        {
-            width: parent.width
-            Layout.fillWidth: true
-        }
+            RecommendedSupportSelector
+            {
+                width: parent.width
+                Layout.fillWidth: true
+            }
 
-        RecommendedAdhesionSelector {
-            width: parent.width
-            Layout.fillWidth: true
+            RecommendedAdhesionSelector {
+                width: parent.width
+                Layout.fillWidth: true
+            }
         }
     }
 

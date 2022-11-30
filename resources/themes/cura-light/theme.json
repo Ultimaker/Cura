@@ -653,6 +653,8 @@
 
         "recommended_button_icon": [1.7, 1.7],
 
+        "recommended_section_setting_item": [14.0, 2.0],
+
         "reset_profile_icon": [1, 1]
     }
 }
