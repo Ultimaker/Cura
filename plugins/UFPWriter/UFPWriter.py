@@ -1,6 +1,7 @@
 # Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import json
+from dataclasses import asdict
 from typing import cast, List, Dict
 
 from Charon.VirtualFile import VirtualFile  # To open UFP files.
@@ -40,7 +41,7 @@ class UFPWriter(MeshWriter):
         MimeTypeDatabase.addMimeType(
             MimeType(
                 name = "application/x-ufp",
-                comment = "Ultimaker Format Package",
+                comment = "UltiMaker Format Package",
                 suffixes = ["ufp"]
             )
         )
@@ -225,8 +226,7 @@ class UFPWriter(MeshWriter):
                 "changes": {},
                 "all_settings": {},
             },
-            "intent": machine_manager.activeIntentCategory,
-            "quality": machine_manager.activeQualityOrQualityChangesName,
+            "quality": asdict(machine_manager.activeQualityDisplayNameMap()),
         }
 
         global_stack = cast(GlobalStack, Application.getInstance().getGlobalContainerStack())
