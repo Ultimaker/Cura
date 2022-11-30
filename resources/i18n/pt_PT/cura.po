@@ -1,10 +1,12 @@
 # Cura
-# Copyright (C) 2022 Ultimaker B.V.
+# Copyright (C) 2022 UltiMaker.
 # This file is distributed under the same license as the Cura package.
+# Ultimaker <plugins@ultimaker.com>, 2022.
 #
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 5.2\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-27 14:50+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
@@ -441,8 +443,8 @@ msgstr "Não é possível iniciar um novo processo de início de sessão. Verifi
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/OAuth2/AuthorizationService.py:277
 msgctxt "@info"
-msgid "Unable to reach the Ultimaker account server."
-msgstr "Não é possível aceder ao servidor da conta Ultimaker."
+msgid "Unable to reach the UltiMaker account server."
+msgstr "Não é possível aceder ao servidor da conta UltiMaker."
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/OAuth2/AuthorizationService.py:278
 msgctxt "@info:title"
@@ -731,15 +733,15 @@ msgid ""
 "                    <p>Please send us this Crash Report to fix the problem.</"
 "p>\n"
 "                "
-msgstr "<p><b>Ups, o Ultimaker Cura encontrou um possível problema.</p></b>\n                    <p>Foi encontrado um erro irrecuperável durante o arranque da"
+msgstr "<p><b>Ups, o UltiMaker Cura encontrou um possível problema.</p></b>\n                    <p>Foi encontrado um erro irrecuperável durante o arranque da"
 " aplicação. Este pode ter sido causado por alguns ficheiros de configuração incorrectos. Sugerimos que faça um backup e reponha a sua configuração.</p>\n"
 "                    <p>Os backups estão localizados na pasta de configuração.</p>\n                    <p>Por favor envie-nos este Relatório de Falhas"
 " para podermos resolver o problema.</p>\n                "
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/CrashHandler.py:122
 msgctxt "@action:button"
-msgid "Send crash report to Ultimaker"
-msgstr "Enviar relatório de falhas para a Ultimaker"
+msgid "Send crash report to UltiMaker"
+msgstr "Enviar relatório de falhas para a UltiMaker"
 
 #: /Users/c.lamboo/ultimaker/Cura/cura/CrashHandler.py:125
 msgctxt "@action:button"
@@ -939,7 +941,7 @@ msgstr "Erro de rede"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/NewPrinterDetectedMessage.py:13
 msgctxt "info:status"
-msgid "New printer detected from your Ultimaker account"
+msgid "New printer detected from your UltiMaker account"
 msgid_plural "New printers detected from your Ultimaker account"
 msgstr[0] "Nova impressora detetada a partir da sua conta Ultimaker"
 msgstr[1] "Novas impressoras detetadas a partir da sua conta Ultimaker"
@@ -1003,17 +1005,17 @@ msgstr "Saber mais"
 msgctxt "@info:status"
 msgid ""
 "You will receive a confirmation via email when the print job is approved"
-msgstr "You will receive a confirmation via email when the print job is approved"
+msgstr "Receberá uma confirmação por e-mail quando o trabalho de impressão for aprovado"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/PrintJobAwaitingApprovalMessage.py:19
 msgctxt "@info:title"
 msgid "The print job was successfully submitted"
-msgstr "The print job was successfully submitted"
+msgstr "O trabalho de impressão foi enviado com sucesso"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/PrintJobAwaitingApprovalMessage.py:22
 msgctxt "@action"
 msgid "Manage print jobs"
-msgstr "Manage print jobs"
+msgstr "Gerir trabalhos de impressão"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/PrintJobUploadProgressMessage.py:15
 msgctxt "@info:status"
@@ -1097,7 +1099,7 @@ msgctxt "@info:status"
 msgid ""
 "You are attempting to connect to a printer that is not running Ultimaker "
 "Connect. Please update the printer to the latest firmware."
-msgstr "Está a tentar ligar a uma impressora que não tem o Ultimaker Connect. Atualize a impressora para o firmware mais recente."
+msgstr "Está a tentar ligar a uma impressora que não tem o UltiMaker Connect. Atualize a impressora para o firmware mais recente."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:21
 msgctxt "@info:title"
@@ -1325,13 +1327,13 @@ msgstr "Não é possível escrever no ficheiro UFP:"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UFPWriter/__init__.py:28
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UFPReader/__init__.py:22
 msgctxt "@item:inlistbox"
-msgid "Ultimaker Format Package"
-msgstr "Arquivo Ultimaker Format"
+msgid "UltiMaker Format Package"
+msgstr "Arquivo UltiMaker Format"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/DigitalLibrary/src/DigitalFactoryProjectResponse.py:19
 msgctxt "@text Placeholder for the username if it has been deleted"
 msgid "deleted user"
-msgstr "deleted user"
+msgstr "utilizador excluído"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/GCodeProfileReader/__init__.py:14
 #: /Users/c.lamboo/ultimaker/Cura/plugins/GCodeReader/__init__.py:14
@@ -1450,8 +1452,8 @@ msgstr "Pretende sincronizar o material e os pacotes de software com a sua conta
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/CloudSync/CloudPackageChecker.py:145
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/CloudSync/DownloadPresenter.py:95
 msgctxt "@info:title"
-msgid "Changes detected from your Ultimaker account"
-msgstr "Foram detetadas alterações da sua conta Ultimaker"
+msgid "Changes detected from your UltiMaker account"
+msgstr "Foram detetadas alterações da sua conta UltiMaker"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/CloudSync/CloudPackageChecker.py:147
 msgctxt "@action:button"
@@ -1613,8 +1615,8 @@ msgstr "Reportar um erro"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:169
 msgctxt "@message:description"
-msgid "Report a bug on Ultimaker Cura's issue tracker."
-msgstr "Reportar um erro no registo de problemas do Ultimaker Cura."
+msgid "Report a bug on UltiMaker Cura's issue tracker."
+msgstr "Reportar um erro no registo de problemas do UltiMaker Cura."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:401
 msgctxt "@info:status"
@@ -1763,7 +1765,7 @@ msgctxt "@info:error Don't translate the XML tag <filename>!"
 msgid ""
 "Project file <filename>{0}</filename> is made using profiles that are "
 "unknown to this version of Ultimaker Cura."
-msgstr "O ficheiro de projeto <filename>{0}</filename> foi criado utilizando perfis que são desconhecidos para esta versão do Ultimaker Cura."
+msgstr "O ficheiro de projeto <filename>{0}</filename> foi criado utilizando perfis que são desconhecidos para esta versão do UltiMaker Cura."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/PerObjectSettingsTool/__init__.py:14
 msgctxt "@label"
@@ -2436,9 +2438,9 @@ msgstr "Atualize o firmware da impressora para gerir a fila remotamente."
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:287
 msgctxt "@info"
 msgid ""
-"Webcam feeds for cloud printers cannot be viewed from Ultimaker Cura. Click "
+"Webcam feeds for cloud printers cannot be viewed from UltiMaker Cura. Click "
 "\"Manage printer\" to visit Ultimaker Digital Factory and view this webcam."
-msgstr "Não é possível visualizar os feeds das câmaras das impressoras na cloud a partir do Ultimaker Cura. Clique em \"Gerir impressora\" para visitar o Ultimaker"
+msgstr "Não é possível visualizar os feeds das câmaras das impressoras na cloud a partir do UltiMaker Cura. Clique em \"Gerir impressora\" para visitar o UltiMaker"
 " Digital Factory e ver esta câmara."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:347
@@ -2506,12 +2508,12 @@ msgstr "Primeira disponível"
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorStage.qml:117
 msgctxt "@info"
 msgid "Monitor your printers from everywhere using Ultimaker Digital Factory"
-msgstr "Monitor your printers from everywhere using Ultimaker Digital Factory"
+msgstr "Monitorize as suas impressoras de qualquer lugar usando a Ultimaker Digital Factory"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorStage.qml:129
 msgctxt "@button"
 msgid "View printers in Digital Factory"
-msgstr "View printers in Digital Factory"
+msgstr "Visualize as impressoras na fábrica digital"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:44
 msgctxt "@title:window"
@@ -2822,7 +2824,7 @@ msgctxt "@text:window"
 msgid ""
 "Ultimaker Cura collects anonymous data in order to improve the print quality "
 "and user experience. Below is an example of all the data that is shared:"
-msgstr "O Ultimaker Cura recolhe dados anónimos para melhorar a qualidade da impressão e a experiência do utilizador. Segue-se um exemplo de todos os dados partilhados:"
+msgstr "O UltiMaker Cura recolhe dados anónimos para melhorar a qualidade da impressão e a experiência do utilizador. Segue-se um exemplo de todos os dados partilhados:"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:107
 msgctxt "@text:window"
@@ -2846,8 +2848,8 @@ msgstr "Guardar projeto Cura"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UltimakerMachineActions/UMOUpgradeSelectionMachineAction.qml:30
 msgctxt "@label"
-msgid "Please select any upgrades made to this Ultimaker Original"
-msgstr "Selecione quaisquer atualizações realizadas a esta Ultimaker Original"
+msgid "Please select any upgrades made to this UltiMaker Original"
+msgstr "Selecione quaisquer atualizações realizadas a esta UltiMaker Original"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/UltimakerMachineActions/UMOUpgradeSelectionMachineAction.qml:39
 msgctxt "@label"
@@ -2953,7 +2955,7 @@ msgctxt "@text"
 msgid ""
 "Streamline your workflow and customize your Ultimaker Cura experience with "
 "plugins contributed by our amazing community of users."
-msgstr "Simplifique o seu fluxo de trabalho e personalize a sua utilização do Ultimaker Cura com plug-ins criados pela nossa incrível comunidade de utilizadores."
+msgstr "Simplifique o seu fluxo de trabalho e personalize a sua utilização do UltiMaker Cura com plug-ins criados pela nossa incrível comunidade de utilizadores."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/CompatibilityDialog.qml:15
 msgctxt "@title"
@@ -3016,7 +3018,7 @@ msgctxt "@text"
 msgid ""
 "Select and install material profiles optimised for your Ultimaker 3D "
 "printers."
-msgstr "Selecione e instale perfis de materiais otimizados para as impressoras 3D Ultimaker."
+msgstr "Selecione e instale perfis de materiais otimizados para as impressoras 3D UltiMaker."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/ManagePackagesButton.qml:32
 msgctxt "@info:tooltip"
@@ -3137,18 +3139,18 @@ msgstr "Carregar mais"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/VerifiedIcon.qml:21
 msgctxt "@info"
-msgid "Ultimaker Verified Plug-in"
-msgstr "Plug-in Aprovado pela Ultimaker"
+msgid "UltiMaker Verified Plug-in"
+msgstr "Plug-in Aprovado pela UltiMaker"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/VerifiedIcon.qml:22
 msgctxt "@info"
-msgid "Ultimaker Certified Material"
-msgstr "Material Certificado pela Ultimaker"
+msgid "UltiMaker Certified Material"
+msgstr "Material Certificado pela UltiMaker"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/VerifiedIcon.qml:23
 msgctxt "@info"
-msgid "Ultimaker Verified Package"
-msgstr "Pacote Aprovado pela Ultimaker"
+msgid "UltiMaker Verified Package"
+msgstr "Pacote Aprovado pela UltiMaker"
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/ManagedPackages.qml:11
 msgctxt "@header"
@@ -3160,7 +3162,7 @@ msgctxt "@text"
 msgid ""
 "Manage your Ultimaker Cura plugins and material profiles here. Make sure to "
 "keep your plugins up to date and backup your setup regularly."
-msgstr "Faça aqui a gestão dos plug-ins e perfis de materiais do Ultimaker Cura. Certifique-se de que mantém os plug-ins atualizados e que efetua regularmente"
+msgstr "Faça aqui a gestão dos plug-ins e perfis de materiais do UltiMaker Cura. Certifique-se de que mantém os plug-ins atualizados e que efetua regularmente"
 " uma cópia de segurança da sua configuração."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/Marketplace/resources/qml/InstallMissingPackagesDialog.qml:15
@@ -3358,7 +3360,7 @@ msgctxt "@label"
 msgid ""
 "The material used in this project is currently not installed in Cura.<br/"
 ">Install the material profile and reopen the project."
-msgstr "The material used in this project is currently not installed in Cura.<br/>Install the material profile and reopen the project."
+msgstr "O material usado neste projeto não está atualmente instalado no Cura.<br/>Instale o perfil de material e reabra o projeto."
 
 #: /Users/c.lamboo/ultimaker/Cura/plugins/3MFReader/WorkspaceDialog.qml:515
 msgctxt "@action:button"
@@ -4180,12 +4182,12 @@ msgstr "Seccionar automaticamente"
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:340
 msgctxt "@info:tooltip"
 msgid "Show an icon and notifications in the system notification area."
-msgstr "Show an icon and notifications in the system notification area."
+msgstr "Mostre um ícone e notificações na área de notificação do sistema."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:348
 msgctxt "@option:check"
 msgid "Add icon to system tray *"
-msgstr "Add icon to system tray *"
+msgstr "Adicione o ícone à bandeja do sistema *"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:357
 msgctxt "@label"
@@ -4487,7 +4489,7 @@ msgid ""
 "Should anonymous data about your print be sent to Ultimaker? Note, no "
 "models, IP addresses or other personally identifiable information is sent or "
 "stored."
-msgstr "Podem alguns dados anónimos sobre a impressão ser enviados para a Ultimaker? Não são enviadas, nem armazenadas, quaisquer informações pessoais, incluindo"
+msgstr "Podem alguns dados anónimos sobre a impressão ser enviados para a UltiMaker? Não são enviadas, nem armazenadas, quaisquer informações pessoais, incluindo"
 " modelos, endereços IP ou outro tipo de identificação pessoal."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Preferences/GeneralPage.qml:867
@@ -4805,8 +4807,8 @@ msgstr "Resolução de problemas"
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/CloudContent.qml:64
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Account/GeneralOperations.qml:19
 msgctxt "@label"
-msgid "Sign in to the Ultimaker platform"
-msgstr "Inicie a sessão na plataforma Ultimaker"
+msgid "Sign in to the UltiMaker platform"
+msgstr "Inicie a sessão na plataforma UltiMaker"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/CloudContent.qml:123
 msgctxt "@text"
@@ -4820,8 +4822,8 @@ msgstr "Efetue uma cópia de segurança e sincronize as definições de materiai
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/CloudContent.qml:175
 msgctxt "@text"
-msgid "Share ideas and get help from 48,000+ users in the Ultimaker Community"
-msgstr "Partilhe ideias e obtenha ajuda dos mais de 48.000 utilizadores da Comunidade Ultimaker"
+msgid "Share ideas and get help from 48,000+ users in the UltiMaker Community"
+msgstr "Partilhe ideias e obtenha ajuda dos mais de 48.000 utilizadores da Comunidade UltiMaker"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/CloudContent.qml:189
 msgctxt "@button"
@@ -4830,20 +4832,20 @@ msgstr "Ignorar"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/CloudContent.qml:201
 msgctxt "@text"
-msgid "Create a free Ultimaker Account"
-msgstr "Crie uma Conta Ultimaker gratuita"
+msgid "Create a free UltiMaker Account"
+msgstr "Crie uma Conta UltiMaker gratuita"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:24
 msgctxt "@label"
-msgid "Help us to improve Ultimaker Cura"
-msgstr "Ajude-nos a melhorar o Ultimaker Cura"
+msgid "Help us to improve UltiMaker Cura"
+msgstr "Ajude-nos a melhorar o UltiMaker Cura"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:56
 msgctxt "@text"
 msgid ""
 "Ultimaker Cura collects anonymous data to improve print quality and user "
 "experience, including:"
-msgstr "O Ultimaker Cura recolhe dados anónimos para melhorar a qualidade da impressão e a experiência do utilizador, incluindo:"
+msgstr "O UltiMaker Cura recolhe dados anónimos para melhorar a qualidade da impressão e a experiência do utilizador, incluindo:"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:68
 msgctxt "@text"
@@ -4869,7 +4871,7 @@ msgstr "Definições de impressão"
 msgctxt "@text"
 msgid ""
 "Data collected by Ultimaker Cura will not contain any personal information."
-msgstr "Os dados recolhidos pelo Ultimaker Cura não conterão quaisquer informações pessoais."
+msgstr "Os dados recolhidos pelo UltiMaker Cura não conterão quaisquer informações pessoais."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:100
 msgctxt "@text"
@@ -4939,8 +4941,8 @@ msgstr "Não foi possível ligar ao dispositivo."
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:196
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:201
 msgctxt "@label"
-msgid "Can't connect to your Ultimaker printer?"
-msgstr "Não se consegue ligar a uma impressora Ultimaker?"
+msgid "Can't connect to your UltiMaker printer?"
+msgstr "Não se consegue ligar a uma impressora UltiMaker?"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:200
 msgctxt "@label"
@@ -4961,15 +4963,15 @@ msgstr "Ligar"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/WelcomeContent.qml:56
 msgctxt "@label"
-msgid "Welcome to Ultimaker Cura"
-msgstr "Bem-vindo ao Ultimaker Cura"
+msgid "Welcome to UltiMaker Cura"
+msgstr "Bem-vindo ao UltiMaker Cura"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/WelcomeContent.qml:67
 msgctxt "@text"
 msgid ""
 "Please follow these steps to set up Ultimaker Cura. This will only take a "
 "few moments."
-msgstr "Siga estes passos para configurar o Ultimaker Cura. Este processo irá demorar apenas alguns momentos."
+msgstr "Siga estes passos para configurar o UltiMaker Cura. Este processo irá demorar apenas alguns momentos."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/WelcomePages/WelcomeContent.qml:82
 msgctxt "@button"
@@ -5516,7 +5518,7 @@ msgstr "Gerir Visibilidade das Definições..."
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Dialogs/ChoosePrinterDialog.qml:17
 msgctxt "@title:window"
 msgid "Select Printer"
-msgstr "Select Printer"
+msgstr "Selecionar impressora"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Dialogs/ChoosePrinterDialog.qml:54
 msgctxt "@title:label"
@@ -5526,7 +5528,7 @@ msgstr "Impressoras compatíveis"
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Dialogs/ChoosePrinterDialog.qml:94
 msgctxt "@description"
 msgid "No compatible printers, that are currently online, where found."
-msgstr "No compatible printers, that are currently online, where found."
+msgstr "Nenhuma impressora compatível, que esteja online no momento, foi encontrada."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:16
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Cura.qml:635
@@ -5667,9 +5669,9 @@ msgstr "A Solução completa para a impressão 3D por filamento fundido."
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Dialogs/AboutDialog.qml:87
 msgctxt "@info:credit"
 msgid ""
-"Cura is developed by Ultimaker B.V. in cooperation with the community.\n"
+"Cura is developed by UltiMaker in cooperation with the community.\n"
 "Cura proudly uses the following open source projects:"
-msgstr "O Cura foi desenvolvido pela Ultimaker B.V. em colaboração com a comunidade.\nO Cura tem o prazer de utilizar os seguintes projetos open source:"
+msgstr "O Cura foi desenvolvido pela UltiMaker B.V. em colaboração com a comunidade.\nO Cura tem o prazer de utilizar os seguintes projetos open source:"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Dialogs/AboutDialog.qml:138
 msgctxt "@label Description for application component"
@@ -5874,23 +5876,23 @@ msgstr "Monitorize os trabalhos de impressão e volte a imprimir a partir do his
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:55
 msgctxt "@tooltip:button"
-msgid "Extend Ultimaker Cura with plugins and material profiles."
-msgstr "Tire mais partido do Ultimaker Cura com plug-ins e perfis de materiais."
+msgid "Extend UltiMaker Cura with plugins and material profiles."
+msgstr "Tire mais partido do UltiMaker Cura com plug-ins e perfis de materiais."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:62
 msgctxt "@tooltip:button"
-msgid "Become a 3D printing expert with Ultimaker e-learning."
-msgstr "Torne-se um perito em impressão 3D com os cursos de e-learning da Ultimaker."
+msgid "Become a 3D printing expert with UltiMaker e-learning."
+msgstr "Torne-se um perito em impressão 3D com os cursos de e-learning da UltiMaker."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:67
 msgctxt "@label:button"
-msgid "Ultimaker support"
-msgstr "Suporte da Ultimaker"
+msgid "UltiMaker support"
+msgstr "Suporte da UltiMaker"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:69
 msgctxt "@tooltip:button"
-msgid "Learn how to get started with Ultimaker Cura."
-msgstr "Saiba como começar a utilizar o Ultimaker Cura."
+msgid "Learn how to get started with UltiMaker Cura."
+msgstr "Saiba como começar a utilizar o UltiMaker Cura."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:74
 msgctxt "@label:button"
@@ -5899,8 +5901,8 @@ msgstr "Faça uma pergunta"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:76
 msgctxt "@tooltip:button"
-msgid "Consult the Ultimaker Community."
-msgstr "Consulte a Comunidade Ultimaker."
+msgid "Consult the UltiMaker Community."
+msgstr "Consulte a Comunidade UltiMaker."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:81
 msgctxt "@label:button"
@@ -5914,8 +5916,8 @@ msgstr "Informe os programadores quando houver algum problema."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:90
 msgctxt "@tooltip:button"
-msgid "Visit the Ultimaker website."
-msgstr "Visite o site da Ultimaker."
+msgid "Visit the UltiMaker website."
+msgstr "Visite o site da UltiMaker."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:40
 msgctxt "@label"
@@ -5933,12 +5935,12 @@ msgstr "Criar estruturas para suportar partes do modelo, suspensas ou com saliê
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrintSetupSelector/Recommended/ProfileWarningReset.qml:54
 msgctxt "@info, %1 is the name of the custom profile"
 msgid "<b>%1</b> custom profile is active and you overwrote some settings."
-msgstr "<b>%1</b> custom profile is active and you overwrote some settings."
+msgstr "<b>%1</b> perfil personalizado está ativo e sobrescreveu algumas configurações."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrintSetupSelector/Recommended/ProfileWarningReset.qml:68
 msgctxt "@info, %1 is the name of the custom profile"
 msgid "<b>%1</b> custom profile is overriding some settings."
-msgstr "<b>%1</b> custom profile is overriding some settings."
+msgstr "<b>%1</b> perfil personalizado está a sobrepor-se a algumas configurações."
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrintSetupSelector/Recommended/ProfileWarningReset.qml:79
 msgctxt "@info"
@@ -6235,8 +6237,8 @@ msgstr "- Adicione definições de materiais e plug-ins do Marketplace\n- Efetue
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Account/GeneralOperations.qml:58
 msgctxt "@button"
-msgid "Create a free Ultimaker account"
-msgstr "Crie uma conta Ultimaker gratuita"
+msgid "Create a free UltiMaker account"
+msgstr "Crie uma conta UltiMaker gratuita"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Account/AccountWidget.qml:24
 msgctxt "@action:button"
@@ -6250,8 +6252,8 @@ msgstr "Atualização mais recente: %1"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Account/UserOperations.qml:107
 msgctxt "@button"
-msgid "Ultimaker Account"
-msgstr "Conta Ultimaker"
+msgid "UltiMaker Account"
+msgstr "Conta UltiMaker"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Account/UserOperations.qml:126
 msgctxt "@button"
@@ -6324,17 +6326,17 @@ msgstr "Gerir impressoras"
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrinterSelector/MachineListButton.qml:34
 msgctxt "@label"
 msgid "Hide all connected printers"
-msgstr "Hide all connected printers"
+msgstr "Ocultar todas as impressoras conectadas"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrinterSelector/MachineListButton.qml:47
 msgctxt "@label"
 msgid "Show all connected printers"
-msgstr "Show all connected printers"
+msgstr "Mostrar todas as impressoras conectadas"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/PrinterSelector/MachineSelectorList.qml:24
 msgctxt "@label"
 msgid "Other printers"
-msgstr "Other printers"
+msgstr "Outras impressoras"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/ActionPanel/SliceProcessWidget.qml:54
 msgctxt "@label:PrintjobStatus"
@@ -6475,13 +6477,13 @@ msgstr "Pós-Processamento"
 
 #: /UM3NetworkPrinting/plugin.json
 msgctxt "description"
-msgid "Manages network connections to Ultimaker networked printers."
-msgstr "Gere as ligações de rede com as impressoras em rede Ultimaker."
+msgid "Manages network connections to UltiMaker networked printers."
+msgstr "Gere as ligações de rede com as impressoras em rede UltiMaker."
 
 #: /UM3NetworkPrinting/plugin.json
 msgctxt "name"
-msgid "Ultimaker Network Connection"
-msgstr "Ligação de rede Ultimaker"
+msgid "UltiMaker Network Connection"
+msgstr "Ligação de rede UltiMaker"
 
 #: /3MFWriter/plugin.json
 msgctxt "description"
@@ -6515,8 +6517,8 @@ msgstr "Informações do seccionamento"
 
 #: /UFPWriter/plugin.json
 msgctxt "description"
-msgid "Provides support for writing Ultimaker Format Packages."
-msgstr "Permite a gravação de arquivos Ultimaker Format."
+msgid "Provides support for writing UltiMaker Format Packages."
+msgstr "Permite a gravação de arquivos UltiMaker Format."
 
 #: /UFPWriter/plugin.json
 msgctxt "name"
@@ -6533,7 +6535,7 @@ msgstr "Liga à Biblioteca Digital, permitindo ao Cura abrir ficheiros da Biblio
 #: /DigitalLibrary/plugin.json
 msgctxt "name"
 msgid "Ultimaker Digital Library"
-msgstr "Biblioteca Digital Ultimaker"
+msgstr "Biblioteca Digital UltiMaker"
 
 #: /GCodeProfileReader/plugin.json
 msgctxt "description"
@@ -6570,12 +6572,12 @@ msgctxt "description"
 msgid ""
 "Provides machine actions for Ultimaker machines (such as bed leveling "
 "wizard, selecting upgrades, etc.)."
-msgstr "Disponibiliza funções especificas para as máquinas Ultimaker (tais como, o assistente de nivelamento da base, seleção de atualizações, etc.)."
+msgstr "Disponibiliza funções especificas para as máquinas UltiMaker (tais como, o assistente de nivelamento da base, seleção de atualizações, etc.)."
 
 #: /UltimakerMachineActions/plugin.json
 msgctxt "name"
-msgid "Ultimaker machine actions"
-msgstr "Funções para impressoras Ultimaker"
+msgid "UltiMaker machine actions"
+msgstr "Funções para impressoras UltiMaker"
 
 #: /GCodeGzReader/plugin.json
 msgctxt "description"
@@ -6592,7 +6594,7 @@ msgctxt "description"
 msgid ""
 "Manages extensions to the application and allows browsing extensions from "
 "the Ultimaker website."
-msgstr "Faz a gestão de extensões da aplicação e permite a navegação das extensões a partir do website da Ultimaker."
+msgstr "Faz a gestão de extensões da aplicação e permite a navegação das extensões a partir do website da UltiMaker."
 
 #: /Marketplace/plugin.json
 msgctxt "name"
@@ -6944,8 +6946,8 @@ msgstr "Gravador de G-code"
 
 #: /UFPReader/plugin.json
 msgctxt "description"
-msgid "Provides support for reading Ultimaker Format Packages."
-msgstr "Fornece suporte para ler pacotes de formato Ultimaker."
+msgid "Provides support for reading UltiMaker Format Packages."
+msgstr "Fornece suporte para ler pacotes de formato UltiMaker."
 
 #: /UFPReader/plugin.json
 msgctxt "name"
