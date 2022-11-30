@@ -5766,7 +5766,7 @@
                     "description": "If brim is only on outside then parts fully enclosed inside another part will get a brim which might overlap with the internal holes of the outer part. This setting controls how far to stay away from those internal holes. Set to a high value to prevent any brim from being generated for parts enclosed within the holes of other parts.",
                     "unit": "mm",
                     "type": "float",
-                    "value": "2.5",
+                    "default_value": "2.5",
                     "minimum_value": "0",
                     "enabled": "resolveOrValue('adhesion_type') == 'brim' and any(extruderValues('brim_outside_only'))",
                     "limit_to_extruder": "skirt_brim_extruder_nr",
