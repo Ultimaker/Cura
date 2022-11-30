@@ -691,7 +691,7 @@
                     "default_value": false,
                     "description": "Adaptive layers computes the layer heights depending on the shape of the model.",
                     "label": "Use Adaptive Layers",
-		    "minimum_value": "0.0",
+                    "minimum_value": "0.0",
                     "settable_per_extruder": false,
                     "settable_per_mesh": false,
                     "settable_per_meshgroup": false,
