@@ -16,6 +16,8 @@ Item
     property bool settingsEnabled: Cura.ExtruderManager.activeExtruderStackId || extrudersEnabledCount.properties.value == 1
     property real padding: UM.Theme.getSize("default_margin").width
 
+    function onModeChanged() {}
+
     ColumnLayout
     {
         spacing: UM.Theme.getSize("default_margin").height
@@ -79,10 +81,27 @@ Item
         ColumnLayout
         {
             spacing: UM.Theme.getSize("thin_margin").height
-            UM.Label
+
+            RowLayout
             {
-                text: catalog.i18nc("@label", "Recommended print settings")
-                font: UM.Theme.getFont("medium")
+                UM.Label
+                {
+                    text: catalog.i18nc("@label", "Recommended print settings")
+                    font: UM.Theme.getFont("medium")
+                }
+
+                Item { Layout.fillWidth: true } // Spacer
+
+                Cura.SecondaryButton
+                {
+                    id: customSettingsButton
+                    anchors.top: parent.top
+                    anchors.right: parent.right
+                    text: catalog.i18nc("@button", "Show Custom")
+                    textFont: UM.Theme.getFont("medium_bold")
+                    outlineColor: "transparent"
+                    onClicked: onModeChanged()
+                }
             }
 
             RecommendedStrengthSelector
