@@ -21,6 +21,9 @@ UM.Dialog
     property string validationError
     property string dialogTitle: catalog.i18nc("@title:window", "Rename")
     property string explanation: catalog.i18nc("@info", "Please provide a new name.")
+    property string okButtonText: catalog.i18nc("@action:button", "OK")
+
+    property list<Item> extraInfo
 
     title: dialogTitle
     backgroundColor: UM.Theme.getColor("main_background")
@@ -60,6 +63,11 @@ UM.Dialog
             onTextChanged: base.textChanged(text)
         }
 
+        Row
+        {
+            children: extraInfo
+        }
+
         UM.Label
         {
             visible: !base.validName
@@ -67,20 +75,23 @@ UM.Dialog
         }
     }
 
-    rightButtons: [
-        Cura.SecondaryButton
+    leftButtons:
+    [
+        Cura.TertiaryButton
         {
             id: cancelButton
             text: catalog.i18nc("@action:button","Cancel")
             onClicked: base.reject()
-        },
+        }
+    ]
+    rightButtons:
+    [
         Cura.PrimaryButton
         {
             id: okButton
-            text: catalog.i18nc("@action:button", "OK")
+            text: base.okButtonText
             onClicked: base.accept()
             enabled: base.validName
         }
     ]
 }
-

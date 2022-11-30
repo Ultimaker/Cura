@@ -494,13 +494,7 @@ UM.MainWindow
     Connections
     {
         target: Cura.Actions.addProfile
-        function onTriggered()
-        {
-            preferences.show();
-            preferences.setPage(4);
-            // Create a new profile after a very short delay so the preference page has time to initiate
-            createProfileTimer.start();
-        }
+        function onTriggered() { createNewQualityDialog.visible = true; }
     }
 
     Connections
@@ -545,15 +539,6 @@ UM.MainWindow
                 preferences.getCurrentItem().scrollToSection(source.key);
             }
         }
-    }
-
-    Timer
-    {
-        id: createProfileTimer
-        repeat: false
-        interval: 1
-
-        onTriggered: preferences.getCurrentItem().createProfile()
     }
 
     // BlurSettings is a way to force the focus away from any of the setting items.
@@ -885,6 +870,15 @@ UM.MainWindow
                 base.visible = true
             }
         }
+    }
+
+    Cura.RenameDialog
+    {
+        id: createNewQualityDialog
+        title: catalog.i18nc("@title:window", "Save Custom Profile")
+        object: catalog.i18nc("@textfield:placeholder", "<New Custom Profile>")
+        explanation: catalog.i18nc("@info", "Custom profile name:")
+        onAccepted: CuraApplication.getQualityManagementModel().createQualityChanges(newName, true);
     }
 
     /**

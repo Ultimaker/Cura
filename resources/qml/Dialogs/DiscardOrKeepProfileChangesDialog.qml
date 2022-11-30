@@ -15,7 +15,7 @@ UM.Dialog
     property alias state: alternateStates.state
 
     onAccepted: alternateStates.state == "" ? CuraApplication.discardOrKeepProfileChangesClosed("discard") : Cura.Actions.addProfile.trigger()
-    onRejected: alternateStates.state == "" ? CuraApplication.discardOrKeepProfileChangesClosed("keep") : Cura.Actions.addProfile.trigger()
+    onRejected: alternateStates.state == "" ? CuraApplication.discardOrKeepProfileChangesClosed("keep") : Cura.Actions.updateProfile.trigger()
 
     minimumWidth: UM.Theme.getSize("popup_dialog").width
     minimumHeight: UM.Theme.getSize("popup_dialog").height
@@ -160,6 +160,7 @@ UM.Dialog
         {
             // Workaround: If this placeholder isn't in here, then on repeated state-changes of the window, the rightButtons will be in the center (despite initially showing up right).
             visible: alternateStates.state != ""
+            color: base.backgroundColor
             implicitHeight: UM.Theme.getSize("combobox").height
             implicitWidth: UM.Theme.getSize("combobox").width
         }
