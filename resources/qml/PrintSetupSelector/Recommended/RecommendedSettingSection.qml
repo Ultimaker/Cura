@@ -13,9 +13,9 @@ Item
     property alias title: sectionTitle.text
     property alias icon: sectionTitle.source
 
-    property alias enableSectionVisible: enableSectionSwitch.visible
-    property alias enableSectionChecked: enableSectionSwitch.checked
-    property alias enableSectionEnabled: enableSectionSwitch.enabled
+    property alias enableSectionSwitchVisible: enableSectionSwitch.visible
+    property alias enableSectionSwitchChecked: enableSectionSwitch.checked
+    property alias enableSectionSwitchEnabled: enableSectionSwitch.enabled
     property var enableSectionClicked: { return }
     property int leftColumnWidth: Math.floor(width * 0.35)
     property var toolTipText: ""

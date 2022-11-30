@@ -14,8 +14,8 @@ RecommendedSettingSection
 
     title: catalog.i18nc("@label", "Strength")
     icon: UM.Theme.getIcon("Hammer")
-    enableSectionVisible: false
-    enableSectionEnabled: false
+    enableSectionSwitchVisible: false
+    enableSectionSwitchEnabled: false
 
     UM.SettingPropertyProvider
     {

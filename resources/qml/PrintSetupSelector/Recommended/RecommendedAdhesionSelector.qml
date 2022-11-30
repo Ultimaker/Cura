@@ -14,9 +14,9 @@ RecommendedSettingSection
 
     title: catalog.i18nc("@label", "Adhesion")
     icon: UM.Theme.getIcon("Adhesion")
-    enableSectionVisible: platformAdhesionType.properties.enabled == "True"
-    enableSectionChecked: platformAdhesionType.properties.value != "skirt" && platformAdhesionType.properties.value != "none"
-    enableSectionEnabled: recommendedPrintSetup.settingsEnabled
+    enableSectionSwitchVisible: platformAdhesionType.properties.enabled == "True"
+    enableSectionSwitchChecked: platformAdhesionType.properties.value != "skirt" && platformAdhesionType.properties.value != "none"
+    enableSectionSwitchEnabled: recommendedPrintSetup.settingsEnabled
 
     property var curaRecommendedMode: Cura.RecommendedMode {}
 

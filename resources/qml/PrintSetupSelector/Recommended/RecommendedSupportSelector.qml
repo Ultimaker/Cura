@@ -15,9 +15,9 @@ RecommendedSettingSection
 
     title: catalog.i18nc("@label", "Support")
     icon: UM.Theme.getIcon("Support")
-    enableSectionVisible: supportEnabled.properties.enabled == "True"
-    enableSectionChecked: supportEnabled.properties.value == "True"
-    enableSectionEnabled: recommendedPrintSetup.settingsEnabled
+    enableSectionSwitchVisible: supportEnabled.properties.enabled == "True"
+    enableSectionSwitchChecked: supportEnabled.properties.value == "True"
+    enableSectionSwitchEnabled: recommendedPrintSetup.settingsEnabled
     toolTipText: catalog.i18nc("@label", "Generate structures to support parts of the model which have overhangs. Without these structures, such parts would collapse during printing.")
 
     function onEnableSectionChanged(state) {
