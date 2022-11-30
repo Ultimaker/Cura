@@ -5,7 +5,7 @@ import QtQuick 2.10
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 2.10
 
-import UM 1.6 as UM
+import UM 1.7 as UM
 import Cura 1.7 as Cura
 
 Item

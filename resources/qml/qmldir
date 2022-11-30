@@ -41,6 +41,7 @@ MenuSeparator       1.0 MenuSeparator.qml
 SingleSettingExtruderSelectorBar        1.7 SingleSettingExtruderSelectorBar.qml
 ExtruderButton                          1.7 ExtruderButton.qml
 SingleSettingComboBox                   1.7 SingleSettingComboBox.qml
+SingleSettingSlider                     1.7 SingleSettingSlider.qml
 
 
 # Cura/MachineSettings

@@ -17,15 +17,34 @@ RecommendedSettingSection
     enableSectionVisible: false
     enableSectionEnabled: false
 
+    UM.SettingPropertyProvider
+    {
+        id: infillSteps
+        containerStackId: Cura.MachineManager.activeStackId
+        key: "gradual_infill_steps"
+        watchedProperties: ["value", "enabled"]
+        storeIndex: 0
+    }
+
     contents: [
         RecommendedSettingItem
         {
             settingName: catalog.i18nc("@action:label", "Infill Density")
             tooltipText: catalog.i18nc("@label", "Gradual infill will gradually increase the amount of infill towards the top.")
-            settingControl: InfillSlider
+            settingControl: Cura.SingleSettingSlider
             {
                 height: UM.Theme.getSize("combobox").height
                 width: parent.width
+                settingName: "infill_sparse_density"
+                roundToNearestTen: true
+                // disable slider when gradual support is enabled
+                enabled: parseInt(infillSteps.properties.value) == 0
+
+                function updateSetting(value)
+                {
+                    Cura.MachineManager.setSettingForAllExtruders("infill_sparse_density", "value", value)
+                    Cura.MachineManager.resetSettingForAllExtruders("infill_line_distance")
+                }
             }
         },
         RecommendedSettingItem
