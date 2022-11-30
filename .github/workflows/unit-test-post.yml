@@ -1,0 +1,50 @@
+name: printer-linter-pr-post
+
+on:
+    workflow_run:
+        workflows: [ "unit-test" ]
+        types: [ completed ]
+
+jobs:
+    publish-test-results:
+        if: ${{ github.event.workflow_run.conclusion == 'success' }}
+        runs-on: ubuntu-latest
+
+        steps:
+            -   name: Download analysis results
+                uses: actions/github-script@v3.1.0
+                with:
+                    script: |
+                        let artifacts = await github.actions.listWorkflowRunArtifacts({
+                            owner: context.repo.owner,
+                            repo: context.repo.repo,
+                            run_id: ${{github.event.workflow_run.id }},
+                        });
+                        let matchArtifact = artifacts.data.artifacts.filter((artifact) => {
+                            return artifact.name == "test-result"
+                        })[0];
+                        let download = await github.actions.downloadArtifact({
+                            owner: context.repo.owner,
+                            repo: context.repo.repo,
+                            artifact_id: matchArtifact.id,
+                            archive_format: "zip",
+                        });
+                        let fs = require("fs");
+                        fs.writeFileSync("${{github.workspace}}/test-result.zip", Buffer.from(download.data));
+
+            -   name: Set environment variables
+                run: |
+                    mkdir tests
+                    unzip test-result.zip -d tests
+                    echo "pr_id=$(cat tests/pr-id.txt)" >> $GITHUB_ENV
+                    echo "pr_head_repo=$(cat tests/pr-head-repo.txt)" >> $GITHUB_ENV
+                    echo "pr_head_ref=$(cat tests/pr-head-ref.txt)" >> $GITHUB_ENV
+
+            -   name: Publish Unit Test Results
+                id: test-results
+                uses: EnricoMi/publish-unit-test-result-action@v1
+                with:
+                    files: "tests/**/*.xml"
+
+            -   name: Conclusion
+                run: echo "Conclusion is ${{ fromJSON( steps.test-results.outputs.json ).conclusion }}"
