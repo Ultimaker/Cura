@@ -23,7 +23,7 @@ class ActiveQuality:
             string_parts.append(self.custom_profile)
         else:
             string_parts.append(self.profile)
-            if self.intent_category is not "default":
+            if self.intent_category != "default":
                 string_parts.append(self.intent_name)
 
         return string_parts
