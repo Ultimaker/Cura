@@ -27,7 +27,7 @@ Item
         anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter
         // These numbers come from the IconWithText in RecommendedSettingSection
-        anchors.leftMargin: UM.Theme.getSize("medium_button_icon").width + UM.Theme.getSize("thick_margin").width - UM.Theme.getSize("thick_lining").width
+        anchors.leftMargin: UM.Theme.getSize("medium_button_icon").width + UM.Theme.getSize("default_margin").width
     }
 
 

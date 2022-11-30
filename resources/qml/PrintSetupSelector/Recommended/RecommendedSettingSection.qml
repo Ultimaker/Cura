@@ -40,9 +40,8 @@ Item
             width: leftColumnWidth
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
-            anchors.leftMargin: - UM.Theme.getSize("thick_lining").width
             source: UM.Theme.getIcon("PrintQuality")
-            spacing: UM.Theme.getSize("thick_margin").width
+            spacing: UM.Theme.getSize("default_margin").width
             iconSize: UM.Theme.getSize("medium_button_icon").width
             iconColor: UM.Theme.getColor("text")
             font: UM.Theme.getFont("medium_bold")
@@ -66,7 +65,7 @@ Item
         id: enableSectionSwitch
         anchors.left: parent.left
         // These numbers come from the IconWithText in RecommendedSettingSection.
-        anchors.leftMargin: leftColumnWidth + UM.Theme.getSize("medium_button_icon").width + UM.Theme.getSize("thick_margin").width - (2 * UM.Theme.getSize("thick_lining").width)
+        anchors.leftMargin: leftColumnWidth + UM.Theme.getSize("medium_button_icon").width + UM.Theme.getSize("default_margin").width
         anchors.verticalCenter: sectionHeader.verticalCenter
         visible: false
 
