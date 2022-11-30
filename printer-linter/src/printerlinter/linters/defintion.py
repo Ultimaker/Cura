@@ -46,6 +46,7 @@ class Definition(Linter):
                     redefined = re.compile(r'.*(\"' + key + r'\"[\s\:\S]*?)\{[\s\S]*?\},?')
                     found = redefined.search(self._content)
                     # TODO: Figure out a way to support multiline fixes in the PR review GH Action, for now suggest no fix to ensure no ill-formed json are created
+                    #  see: https://github.com/platisd/clang-tidy-pr-comments/issues/37
                     if len(found.group().splitlines()) > 1:
                         replacements = []
                     else:
