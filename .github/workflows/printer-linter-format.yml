@@ -11,6 +11,7 @@ on:
 
 jobs:
     printer-linter-format:
+        if: ${{ github.repository_owner == 'Ultimaker' }}
         name: Printer linter auto format
 
         runs-on: ubuntu-latest
@@ -35,9 +36,9 @@ jobs:
                 if: env.GIT_DIFF && !env.MATCHED_FILES
                 run: pip install -r .github/workflows/requirements-printer-linter.txt
 
-#             -   name: Format file
-#                 if: env.GIT_DIFF && !env.MATCHED_FILES
-#                 run: python printer-linter/src/terminal.py --format ${{ env.GIT_DIFF_FILTERED }}
+            -   name: Format file
+                if: env.GIT_DIFF && !env.MATCHED_FILES
+                run: python printer-linter/src/terminal.py --format ${{ env.GIT_DIFF_FILTERED }}
 
             -   uses: stefanzweifel/git-auto-commit-action@v4
                 if: env.GIT_DIFF && !env.MATCHED_FILES
