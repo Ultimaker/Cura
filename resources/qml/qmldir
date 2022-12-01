@@ -20,7 +20,9 @@ ProfileMenu 1.0 ProfileMenu.qml
 PrintSelectorCard 1.0 PrintSelectorCard.qml
 
 # Cura/Validators
-DoubleValidator             1.7 DoubleValidator.qml
+FloatValidator              1.7 FloatValidator.qml
+IntValidator                1.7 IntValidator
+IntListValidator            1.7 IntListValidator
 HexColorValidator           1.7 HexColorValidator.qml
 
 # Cura/WelcomePages
@@ -45,7 +47,7 @@ SingleSettingExtruderSelectorBar        1.7 SingleSettingExtruderSelectorBar.qml
 ExtruderButton                          1.7 ExtruderButton.qml
 SingleSettingComboBox                   1.7 SingleSettingComboBox.qml
 SingleSettingSlider                     1.7 SingleSettingSlider.qml
-SingleSettingTextFieldWithUnit          1.7 SingleSettingTextFieldWithUnit.qml
+SingleSettingTextField                  1.7 SingleSettingTextField.qml
 
 
 # Cura/MachineSettings
