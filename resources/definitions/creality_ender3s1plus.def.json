@@ -24,7 +24,7 @@
 
         "gantry_height": { "value": 25 },
         
-        "speed_print": { "value": 50 },
+        
         "speed_layer_0": { "value": 25 },
         "speed_travel": { "value": "120.0 if speed_print < 60 else 250.0 if speed_print > 100 else speed_print * 2.5" },
         
