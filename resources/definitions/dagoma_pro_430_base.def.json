@@ -21,10 +21,8 @@
     {
         "machine_gcode_flavor": { "default_value": "Marlin" },
         "machine_heated_bed": { "default_value": true },
-        "machine_center_is_zero": { "default_value": false },
         "machine_width": { "default_value": 430 },
         "machine_depth": { "default_value": 320 },
-        "nozzle_disallowed_areas": { "default_value": [ [[-215, 160], [-166, 160], [-215, 111]], [[215, 160], [166, 160], [215, 111]] ] },
         "default_material_bed_temperature": { "default_value": 50 },
         "default_material_print_temperature": { "default_value": 205, "maximum_value": "430" },
         "material_print_temperature": { "maximum_value": "430" },
