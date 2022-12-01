@@ -114,7 +114,8 @@ Item
         UM.ToolTip
         {
             visible: parent.hovered
-            targetPoint: Qt.point(parent.x - width, Math.round(parent.y + parent.height / 2))
+            y: parent.y + parent.height + UM.Theme.getSize("default_margin").height
+            targetPoint: Qt.point(parent.x, Math.round(parent.y + parent.height / 2))
             tooltipText: catalog.i18nc("@info", "Reset to defaults.")
         }
     }
@@ -148,8 +149,9 @@ Item
         UM.ToolTip
         {
             visible: parent.hovered
-            targetPoint: Qt.point(parent.x - width, Math.round(parent.y + parent.height / 2))
-            tooltipText: catalog.i18nc("@info", "Compare and safe.")
+            y: parent.y + parent.height + UM.Theme.getSize("default_margin").height
+            targetPoint: Qt.point(parent.x, Math.round(parent.y + parent.height / 2))
+            tooltipText: catalog.i18nc("@info", "Compare and save.")
         }
     }
 }

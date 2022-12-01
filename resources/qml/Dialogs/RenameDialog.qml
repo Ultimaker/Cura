@@ -15,6 +15,7 @@ UM.Dialog
     buttonSpacing: UM.Theme.getSize("default_margin").width
 
     property string object: ""
+    property string objectPlaceholder: ""
 
     property alias newName: nameField.text
     property bool validName: true
@@ -58,6 +59,8 @@ UM.Dialog
             id: nameField
             width: parent.width
             text: base.object
+            placeholderText: base.objectPlaceholder
+            placeholderTextColor: UM.Theme.getColor("text_field_text_disabled")
             maximumLength: 40
             selectByMouse: true
             onTextChanged: base.textChanged(text)

@@ -155,14 +155,6 @@ UM.Dialog
                     discardButton.enabled = true;
                 }
             }
-        },
-        Rectangle
-        {
-            // Workaround: If this placeholder isn't in here, then on repeated state-changes of the window, the rightButtons will be in the center (despite initially showing up right).
-            visible: alternateStates.state != ""
-            color: base.backgroundColor
-            implicitHeight: UM.Theme.getSize("combobox").height
-            implicitWidth: UM.Theme.getSize("combobox").width
         }
     ]
 

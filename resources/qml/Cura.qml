@@ -876,7 +876,7 @@ UM.MainWindow
     {
         id: createNewQualityDialog
         title: catalog.i18nc("@title:window", "Save Custom Profile")
-        object: catalog.i18nc("@textfield:placeholder", "<New Custom Profile>")
+        objectPlaceholder: catalog.i18nc("@textfield:placeholder", "New Custom Profile")
         explanation: catalog.i18nc("@info", "Custom profile name:")
         extraInfo:
         [
@@ -887,17 +887,28 @@ UM.MainWindow
                 source: UM.Theme.getIcon("Information")
                 color: UM.Theme.getColor("text")
             },
-            UM.Label
+            Column
             {
-                text: catalog.i18nc
-                (
-                    "@label %i will be replaced with a profile name",
-                    "<b>Only user changed settings will be saved in the custom profile.</b><br/>" +
-                    "The new custom profile will inherit properties from <b>%1</b>,<br/>" +
-                    "for materials that support it.<br/>" +
-                    "<a href=\"%2\">Learn more about Cura print profiles</a>"
-                ).arg(Cura.MachineManager.activeQualityOrQualityChangesName).arg("https://support.ultimaker.com/s/article/1667337576882")
-                wrapMode: Text.WordWrap
+                UM.Label
+                {
+                    text: catalog.i18nc
+                    (
+                        "@label %i will be replaced with a profile name",
+                        "<b>Only user changed settings will be saved in the custom profile.</b><br/>" +
+                        "For materials that support it, the new custom profile will inherit properties from <b>%1</b>."
+                    ).arg(Cura.MachineManager.activeQualityOrQualityChangesName)
+                    wrapMode: Text.WordWrap
+                    width: parent.parent.width - 2 * UM.Theme.getSize("message_type_icon").width
+                }
+                Cura.TertiaryButton
+                {
+                    text: "Learn more about Cura print profiles"
+                    iconSource: UM.Theme.getIcon("LinkExternal")
+                    isIconOnRightSide: true
+                    leftPadding: 0
+                    rightPadding: 0
+                    onClicked: Qt.openUrlExternally("https://support.ultimaker.com/s/article/1667337576882")
+                }
             }
         ]
         okButtonText: catalog.i18nc("@button", "Save new profile")
