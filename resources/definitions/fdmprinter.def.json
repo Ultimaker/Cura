@@ -711,10 +711,10 @@
                 "adaptive_layer_height_variation":
                 {
                     "default_value": 0.1,
-                    "minimum_value": "0.0",
                     "description": "The maximum allowed height different from the base layer height.",
                     "enabled": "adaptive_layer_height_enabled",
                     "label": "Adaptive Layers Maximum Variation",
+                    "minimum_value": "0.0",
                     "settable_per_extruder": false,
                     "settable_per_mesh": false,
                     "settable_per_meshgroup": false,
