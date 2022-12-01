@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Ultimaker B.V.
+// Copyright (c) 2022 UltiMaker
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -52,7 +52,7 @@ Control
                 id: ultimakerPrinterCard
                 Layout.alignment: Qt.AlignBottom
                 onClicked: goToUltimakerPrinter
-                text: catalog.i18nc("@button", "Ultimaker printer")
+                text: catalog.i18nc("@button", "UltiMaker printer")
                 imageSource: UM.Theme.getImage("ultimaker_printer")
             }
 
@@ -61,7 +61,7 @@ Control
                 id: thrirdPartyPrinterCard
                 Layout.alignment: Qt.AlignBottom
                 onClicked: goToThirdPartyPrinter
-                text: catalog.i18nc("@button", "Non Ultimaker printer")
+                text: catalog.i18nc("@button", "Non UltiMaker printer")
                 imageSource: UM.Theme.getImage("third_party_printer")
             }
         }
