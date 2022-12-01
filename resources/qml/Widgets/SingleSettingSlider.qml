@@ -63,10 +63,7 @@ RowLayout
         id: updateTimer
         interval: 100
         repeat: false
-        onTriggered:
-        {
-            parseValueUpdateSetting()
-        }
+        onTriggered: parseValueUpdateSetting()
     }
 
     function parseValueUpdateSetting()

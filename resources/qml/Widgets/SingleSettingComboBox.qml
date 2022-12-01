@@ -58,7 +58,9 @@ Cura.ComboBox {
         function onIsValueUsedChanged() { comboboxModel.updateModel() }
     }
 
-    onCurrentIndexChanged:
+    onCurrentIndexChanged: updateSetting()
+
+    function updateSetting(value)
     {
         if (comboboxModel.get(currentIndex) && comboboxModel.get(currentIndex).code)
         {
