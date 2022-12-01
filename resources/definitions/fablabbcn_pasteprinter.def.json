@@ -15,9 +15,6 @@
         "first_start_actions": ["MachineSettingsAction"]
     },
     "overrides": {
-        "machine_gcode_flavor": {
-            "default_value": "RepRap (Marlin/Sprinter)"
-        },
         "machine_always_write_active_tool": {
             "default_value": true
         },
@@ -41,17 +38,12 @@
         "material_print_temp_wait":{"default_value": false},
         "material_print_temp_prepend":{"default_value": false},
         "material_bed_temp_prepend":{"default_value": false},
-        "machine_heated_bed": {"default_value": false},
-
-        "machine_nozzle_temp_enabled":{"default_value": true},
 
         "machine_max_jerk_xy":{"default_value": 50.0},
         "machine_max_jerk_z":{"default_value": 50.0},
         "machine_max_jerk_e":{"default_value": 50.0},
         "layer_height":{"default_value": 1.5},
         "layer_height_0":{"default_value": 1.5},
-
-        "line_width":{"default_value":"machine_nozzle_size"},
 
 
         "wall_thickness":{"default_value": "machine_nozzle_size"},
