@@ -43,19 +43,26 @@ class Definition(Linter):
             for key, value_dict in definition["overrides"].items():
                 is_redefined, value, parent = self._isDefinedInParent(key, value_dict, definition['inherits'])
                 if is_redefined:
-                    redefined = re.compile(r'.*(\"' + key + r'\"[\s\S]*?\{)[\s\S]*?(\}[,\"]?)')
+                    redefined = re.compile(r'.*(\"' + key + r'\"[\s\:\S]*?)\{[\s\S]*?\},?')
                     found = redefined.search(self._content)
+                    # TODO: Figure out a way to support multiline fixes in the PR review GH Action, for now suggest no fix to ensure no ill-formed json are created
+                    #  see: https://github.com/platisd/clang-tidy-pr-comments/issues/37
+                    if len(found.group().splitlines()) > 1:
+                        replacements = []
+                    else:
+                        replacements = [Replacement(
+                            file = self._file,
+                            offset = found.span(1)[0],
+                            length = len(found.group()),
+                            replacement_text = "")]
+
                     yield Diagnostic(
                         file = self._file,
                         diagnostic_name = "diagnostic-definition-redundant-override",
                         message = f"Overriding {key} with the same value ({value}) as defined in parent definition: {definition['inherits']}",
                         level = "Warning",
                         offset = found.span(0)[0],
-                        replacements = [Replacement(
-                            file = self._file,
-                            offset = found.span(1)[0],
-                            length = found.span(2)[1] - found.span(1)[0],
-                            replacement_text = "")]
+                        replacements = replacements
                     )
 
     def _loadDefinitionFiles(self, definition_file) -> None:

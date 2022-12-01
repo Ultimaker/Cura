@@ -1,0 +1,28 @@
+{
+    "version": 2,
+    "name": "Creality CR-10 Smart",
+    "inherits": "creality_base",
+    "metadata":
+    {
+        "visible": true,
+        "author": "ed3d.net",
+        "quality_definition": "creality_base"
+    },
+    "overrides":
+    {
+        "gantry_height": { "value": 35 },
+        "machine_depth": { "default_value": 300 },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [-26, 34],
+                [-26, -32],
+                [32, -32],
+                [32, 34]
+            ]
+        },
+        "machine_height": { "default_value": 400 },
+        "machine_name": { "default_value": "Creality CR-10 Smart" },
+        "machine_width": { "default_value": 300 }
+    }
+}

@@ -1,0 +1,65 @@
+{
+    "version": 2,
+    "name": "Biqu Hurakan",
+    "inherits": "biqu_base",
+    "metadata":
+    {
+        "visible": true,
+        "platform": "BIQU_Hurakan_bed.stl",
+        "has_machine_materials": true,
+        "platform_offset": [
+            0,
+            0,
+            0.01
+        ],
+        "quality_definition": "biqu_base"
+    },
+    "overrides":
+    {
+        "acceleration_print": { "value": 3000 },
+        "acceleration_travel": { "value": 3000 },
+        "coasting_enable": { "value": false },
+        "fill_outline_gaps": { "value": true },
+        "gantry_height": { "value": 35 },
+        "infill_overlap": { "value": 15.0 },
+        "jerk_print": { "value": 12 },
+        "machine_acceleration": { "value": 3000 },
+        "machine_depth": { "value": 235 },
+        "machine_end_gcode": { "default_value": ";BIQU Hurakan end code. More complex. Such wow. Klipper4Life.\r\n\r\nEND_PRINT" },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [-31, -35.3],
+                [-31, 25.5],
+                [31, 25.5],
+                [31, -35.5]
+            ]
+        },
+        "machine_height": { "value": 270 },
+        "machine_max_acceleration_e": { "value": 10000 },
+        "machine_max_acceleration_x": { "value": 3000 },
+        "machine_max_acceleration_y": { "value": 3000 },
+        "machine_max_acceleration_z": { "value": 100 },
+        "machine_name": { "default_value": "Biqu Hurakan" },
+        "machine_start_gcode": { "default_value": ";BIQU Hurakan start code. Much complex. Very wow. Klipper FTW.\r\n\r\nSTART_PRINT BED_TEMP={material_bed_temperature_layer_0} EXTRUDER_TEMP={material_print_temperature_layer_0}\r\n\r\n; Note: This start/end code is designed to work\r\n; with the stock cfg files provided  with the \r\n; BIQU Hurakan. If you alter the macros in the \r\n; cfg files then you may also need to alter this code.\r\n\r\n; Another note: This profile will get you \r\n; part of the way to good prints.\r\n; You still need to tweak settings for each \r\n; different filament that you use.\r\n; Settings such as retraction distance/speed, \r\n; flow, pressure advance, bed/nozzle temperatures\r\n; and others may need to be adjusted.\r\n; Use https://teachingtechyt.github.io/calibration.html to calibrate.\r\n; Also see https://www.youtube.com/watch?v=Ae2G7hl_pZc\r\n; for some good tips." },
+        "machine_width": { "value": 235 },
+        "retract_at_layer_change": { "value": true },
+        "retraction_amount": { "value": 3.0 },
+        "retraction_extrusion_window": { "value": 3.0 },
+        "retraction_speed": { "value": 45 },
+        "roofing_layer_count": { "value": 2 },
+        "skin_overlap": { "value": 15.0 },
+        "speed_layer_0": { "value": 25 },
+        "speed_print": { "value": 120 },
+        "speed_travel": { "value": 200 },
+        "speed_wall_0": { "value": 60 },
+        "speed_wall_x": { "value": 75 },
+        "support_angle": { "value": 45 },
+        "support_enable": { "value": false },
+        "support_infill_rate": { "value": 20 },
+        "support_structure": { "value": "'normal'" },
+        "support_type": { "value": "'buildplate'" },
+        "top_thickness": { "value": 1.0 },
+        "xy_offset_layer_0": { "value": -0.1 }
+    }
+}
