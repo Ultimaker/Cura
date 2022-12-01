@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Ultimaker B.V.
+// Copyright (c) 2022 UltiMaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -11,14 +11,15 @@ import Cura 1.7 as Cura
 
 Item
 {
+    id: settingItem
     width: parent.width
-    Layout.preferredHeight: childrenRect.height
     Layout.minimumHeight: UM.Theme.getSize("section_header").height
     Layout.fillWidth: true
 
     property alias settingControl: settingContainer.children
     property alias settingName: settingLabel.text
     property string tooltipText: ""
+    property bool isCompressed: false
 
     UM.Label
     {
@@ -48,5 +49,43 @@ Item
         anchors.left: settingLabel.right
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
+    }
+
+    states:
+    [
+        State
+        {
+            name: "sectionClosed" // Section is hidden when the switch in parent is off
+            when: isCompressed
+            PropertyChanges
+            {
+                target: settingItem;
+                opacity: 0
+                height: 0
+                implicitHeight: 0
+                Layout.preferredHeight: 0
+                Layout.minimumHeight: 0
+            }
+        },
+        State
+        {
+            // All values are default. This state is only here for the animation.
+            name: "sectionOpened"
+            when: !isCompressed
+        }
+    ]
+
+    transitions: Transition
+    {
+        from: "sectionOpened"; to: "sectionClosed"
+        reversible: true
+        ParallelAnimation
+        {
+            // Animate section compressing as it closes
+            NumberAnimation { property: "Layout.minimumHeight"; duration: 100; }
+            // Animate section dissapearring as it closes
+            NumberAnimation { property: "opacity"; duration: 100; }
+
+        }
     }
 }

@@ -37,10 +37,14 @@ RecommendedSettingSection
     contents: [
         RecommendedSettingItem
         {
-            Layout.preferredHeight: childrenRect.height
+            isCompressed: enableAdhesionRow.isCompressed
             settingName: catalog.i18nc("@action:label", "Print with")
             tooltipText: catalog.i18nc("adhesion_extruder_nr description", "The extruder train to use for printing the skirt/brim/raft. This is used in multi-extrusion.")
-            settingControl: Cura.SingleSettingExtruderSelectorBar { extruderSettingName: "adhesion_extruder_nr" }
+
+            settingControl: Cura.SingleSettingExtruderSelectorBar
+            {
+                extruderSettingName: "adhesion_extruder_nr"
+            }
         }
     ]
 }

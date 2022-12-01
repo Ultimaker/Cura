@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Ultimaker B.V.
+// Copyright (c) 2022 UltiMaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -10,6 +10,7 @@ import Cura 1.7 as Cura
 
 Item
 {
+    id: settingSection
     property alias title: sectionTitle.text
     property alias icon: sectionTitle.source
 
@@ -19,6 +20,7 @@ Item
     property string tooltipText: "test"
     property var enableSectionClicked: { return }
     property int leftColumnWidth: Math.floor(width * 0.35)
+    property bool isCompressed: false
 
     property alias contents: settingColumn.children
 
@@ -68,7 +70,15 @@ Item
         anchors.verticalCenter: sectionHeader.verticalCenter
         visible: false
 
-        onClicked: onEnableSectionChanged(enableSectionSwitch.checked)
+        // This delay forces the setting change to happen after the setting section open/close animation. This is so the animation is smooth.
+        Timer
+        {
+            id: updateTimer
+            interval: 500 // This interval is set long enough so you can spam click the button on/off without lag.
+            repeat: false
+            onTriggered: onEnableSectionChanged(enableSectionSwitch.checked)
+        }
+        onClicked: updateTimer.restart()
     }
 
     ColumnLayout
@@ -80,8 +90,40 @@ Item
         anchors.right: parent.right
         anchors.top: sectionHeader.bottom
         anchors.topMargin: UM.Theme.getSize("narrow_margin").height
+    }
 
-        Layout.preferredHeight: UM.Theme.getSize("recommended_section_setting_item").height
+    states:
+    [
+        State
+        {
+            name: "settingListClosed"
+            when: !enableSectionSwitchChecked && enableSectionSwitchEnabled
+            PropertyChanges
+            {
+                target: settingSection
+                isCompressed: true
+                implicitHeight: 0
+            }
+            PropertyChanges
+            {
+                target: settingColumn
+                spacing: 0
+            }
+        },
+        State
+        {
+            // Use default properties. This is only here for the animation. 
+            name: "settingListOpened"
+            when: enableSectionSwitchChecked && enableSectionSwitchEnabled
+        }
+    ]
 
+    // Animate section closing
+    transitions: Transition
+    {
+        from: "settingListOpened"; to: "settingListClosed"
+        reversible: true
+        // Animate section compressing as it closes
+        NumberAnimation { property: "implicitHeight"; duration: 100; }
     }
 }

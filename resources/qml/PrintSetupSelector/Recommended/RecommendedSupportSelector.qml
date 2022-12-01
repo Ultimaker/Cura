@@ -54,6 +54,7 @@ RecommendedSettingSection
         {
             settingName: catalog.i18nc("@action:label", "Support Type")
             tooltipText: catalog.i18nc("support_structure description", "Chooses between the techniques available to generate support. \"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. \"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible.")
+            isCompressed: enableSupportRow.isCompressed
 
             settingControl: Cura.SingleSettingComboBox
             {
@@ -66,12 +67,18 @@ RecommendedSettingSection
             Layout.preferredHeight: childrenRect.height
             settingName: catalog.i18nc("@action:label", "Print with")
             tooltipText: catalog.i18nc("support_extruder_nr description", "The extruder train to use for printing the support. This is used in multi-extrusion.")
-            settingControl: Cura.SingleSettingExtruderSelectorBar { extruderSettingName: "support_extruder_nr" }
+            isCompressed: enableSupportRow.isCompressed
+
+            settingControl: Cura.SingleSettingExtruderSelectorBar
+            {
+                extruderSettingName: "support_extruder_nr"
+            }
         },
         RecommendedSettingItem
         {
             settingName: catalog.i18nc("@action:label", "Placement")
             tooltipText: catalog.i18nc("support_type description", "Adjusts the placement of the support structures. The placement can be set to touching build plate or everywhere. When set to everywhere the support structures will also be printed on the model.")
+            isCompressed: enableSupportRow.isCompressed
 
             settingControl: Cura.SingleSettingComboBox
             {
