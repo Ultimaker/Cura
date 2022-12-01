@@ -1,15 +1,15 @@
-name: printer-linter-pr-post
+name: unit-test-post
 
 on:
     workflow_run:
-        workflows: [ "printer-linter-pr-diagnose" ]
+        workflows: [ "unit-test" ]
         types: [ completed ]
 
 jobs:
-    clang-tidy-results:
-        # Trigger the job only if the previous (insecure) workflow completed successfully
+    publish-test-results:
         if: ${{ github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.conclusion == 'success' }}
         runs-on: ubuntu-latest
+
         steps:
             -   name: Download analysis results
                 uses: actions/github-script@v3.1.0
@@ -21,7 +21,7 @@ jobs:
                             run_id: ${{github.event.workflow_run.id }},
                         });
                         let matchArtifact = artifacts.data.artifacts.filter((artifact) => {
-                            return artifact.name == "printer-linter-result"
+                            return artifact.name == "test-result"
                         })[0];
                         let download = await github.actions.downloadArtifact({
                             owner: context.repo.owner,
@@ -30,15 +30,15 @@ jobs:
                             archive_format: "zip",
                         });
                         let fs = require("fs");
-                        fs.writeFileSync("${{github.workspace}}/printer-linter-result.zip", Buffer.from(download.data));
+                        fs.writeFileSync("${{github.workspace}}/test-result.zip", Buffer.from(download.data));
 
             -   name: Set environment variables
                 run: |
-                    mkdir printer-linter-result
-                    unzip printer-linter-result.zip -d printer-linter-result
-                    echo "pr_id=$(cat printer-linter-result/pr-id.txt)" >> $GITHUB_ENV
-                    echo "pr_head_repo=$(cat printer-linter-result/pr-head-repo.txt)" >> $GITHUB_ENV
-                    echo "pr_head_ref=$(cat printer-linter-result/pr-head-ref.txt)" >> $GITHUB_ENV
+                    mkdir pr_env
+                    unzip test-result.zip -d pr_env
+                    echo "pr_id=$(cat pr_env/pr-id.txt)" >> $GITHUB_ENV
+                    echo "pr_head_repo=$(cat pr_env/pr-head-repo.txt)" >> $GITHUB_ENV
+                    echo "pr_head_ref=$(cat pr_env/pr-head-ref.txt)" >> $GITHUB_ENV
 
             -   uses: actions/checkout@v3
                 with:
@@ -56,7 +56,7 @@ jobs:
                             run_id: ${{github.event.workflow_run.id }},
                         });
                         let matchArtifact = artifacts.data.artifacts.filter((artifact) => {
-                            return artifact.name == "printer-linter-result"
+                            return artifact.name == "test-result"
                         })[0];
                         let download = await github.actions.downloadArtifact({
                             owner: context.repo.owner,
@@ -65,17 +65,18 @@ jobs:
                             archive_format: "zip",
                         });
                         let fs = require("fs");
-                        fs.writeFileSync("${{github.workspace}}/printer-linter-result.zip", Buffer.from(download.data));
+                        fs.writeFileSync("${{github.workspace}}/test-result.zip", Buffer.from(download.data));
 
             -   name: Extract analysis results
                 run: |
-                    mkdir printer-linter-result
-                    unzip printer-linter-result.zip -d printer-linter-result
+                    mkdir -p tests
+                    unzip test-result.zip -d tests
 
-            -   name: Run clang-tidy-pr-comments action
-                uses: platisd/clang-tidy-pr-comments@master
+            -   name: Publish Unit Test Results
+                id: test-results
+                uses: EnricoMi/publish-unit-test-result-action@v1
                 with:
-                    github_token: ${{ secrets.GITHUB_TOKEN }}
-                    clang_tidy_fixes: printer-linter-result/fixes.yml
-                    pull_request_id: ${{ env.pr_id }}
-                    request_changes: true
+                    files: "tests/**/*.xml"
+
+            -   name: Conclusion
+                run: echo "Conclusion is ${{ fromJSON( steps.test-results.outputs.json ).conclusion }}"
