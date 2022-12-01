@@ -6,9 +6,7 @@
     "machine": "ankermake_m5",
     "position": "0"
   },
-
   "overrides": {
-    
     "material_diameter": { "default_value": 1.75 }
   }
 }
