@@ -5,7 +5,8 @@
     "metadata": {
         "visible": false,
         "author": "Dagoma",
-        "manufacturer": "Dagoma"
+        "manufacturer": "Dagoma",
+        "first_start_actions": ["MachineSettingsAction"]
     },
     "overrides": {
         "machine_width": {
@@ -63,6 +64,12 @@
         },
         "top_bottom_thickness": {
             "default_value": 1
+        },
+        "infill_before_walls": {
+            "value": "False"
+        },
+        "inset_direction": {
+            "value": "'inside_out'"
         }
     }
 }
