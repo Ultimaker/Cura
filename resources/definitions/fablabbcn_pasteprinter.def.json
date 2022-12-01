@@ -10,7 +10,6 @@
         "machine_extruder_trains":
         {
             "0": "fablabbcn_0"
-
         },
         "first_start_actions": ["MachineSettingsAction"]
     },
@@ -45,16 +44,8 @@
         "layer_height":{"default_value": 1.5},
         "layer_height_0":{"default_value": 1.5},
 
-
-        "wall_thickness":{"default_value": "machine_nozzle_size"},
         "wall_line_count":{"default_value": 1},
-        "wall_line_width":{"default_value":"machine_nozzle_size"},
-        "wall_line_width_0":{"default_value":"machine_nozzle_size"},
-        "wall_line_width_x":{"default_value": "machine_nozzle_size"},
 
-        "skin_line_width":{"default_value":"machine_nozzle_size"},
-        "infill_line_width":{"default_value": "machine_nozzle_size"},
-        "roofing_line_width":{"default_value": "machine_nozzle_size"},
         "roofing_pattern":{"default_value": "concentric"},
 
         "material_diameter": {"default_value": 1.75 },
@@ -63,8 +54,6 @@
 
         "adhesion_type":{"default_value": "skirt" },
         "infill_pattern":{"default_value": "zigzag" },
-        "top_layers":{"default_value": 2 },
-        "bottom_layers":{"default_value": 2 },
         "top_bottom_pattern":{"default_value": "concentric" }
 
     }
