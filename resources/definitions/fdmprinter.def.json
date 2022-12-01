@@ -7635,6 +7635,7 @@
                     "enabled": "adaptive_layer_height_enabled",
                     "unit": "mm",
                     "default_value": 0.1,
+                    "minimum_value": "0.0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
