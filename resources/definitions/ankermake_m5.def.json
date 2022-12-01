@@ -48,7 +48,7 @@
     "cool_min_speed": { "value": 30 },
     "retraction_amount": { "default_value": 1.5 },
     "retraction_speed": { "default_value": 70 },
-    "acceleration_enabled": { "value": false },
+    
     "acceleration_print": { "value": "2500" },
     "adhesion_type": { "default_value": "skirt" },
     "retraction_combing": { "value": "infill" },
