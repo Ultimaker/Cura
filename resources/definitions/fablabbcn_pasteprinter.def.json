@@ -44,16 +44,11 @@
         "layer_height":{"default_value": 1.5},
         "layer_height_0":{"default_value": 1.5},
 
-        "wall_line_count":{"default_value": 1},
-
-        "roofing_pattern":{"default_value": "concentric"},
-
         "material_diameter": {"default_value": 1.75 },
         "speed_print":{"default_value": 15 },
         "retraction_enable":{"default_value": false },
 
         "adhesion_type":{"default_value": "skirt" },
-        "infill_pattern":{"default_value": "zigzag" },
         "top_bottom_pattern":{"default_value": "concentric" }
 
     }
