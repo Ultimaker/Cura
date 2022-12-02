@@ -1,5 +1,5 @@
 {
-    "id": "klema_250_twin_m1_extruder_1",
+    "id": "klema_250_twin_m1_t1_extruder_1",
     "version": 2,
     "name": "Extruder 1",
     "inherits": "fdmextruder",
