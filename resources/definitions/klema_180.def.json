@@ -29,7 +29,7 @@
         "machine_width": { "default_value": 180 },
         "machine_depth": { "default_value": 180 },
         "machine_height": { "default_value": 220 },
-        "gantry_height": { "default_value": 0 },
+        "gantry_height": { "default_value": 35 },
          
         
 		"machine_heated_bed": { "default_value": true },
