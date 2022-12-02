@@ -4,7 +4,7 @@
     "name": "Extruder 2",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "KLEMA 250 Twin",
+        "machine": "klema_250_twin",
         "position": "0"
     },
 
