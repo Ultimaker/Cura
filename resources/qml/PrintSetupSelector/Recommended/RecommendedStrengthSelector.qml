@@ -3,8 +3,9 @@
 
 import QtQuick 2.7
 import QtQuick.Controls 2.15
+import QtQuick.Layouts 2.10
 
-import UM 1.5 as UM
+import UM 1.7 as UM
 import Cura 1.7 as Cura
 
 
@@ -63,12 +64,34 @@ RecommendedSettingSection
         {
             settingName: catalog.i18nc("@action:label", "Shell Thickness")
 
-            settingControl: Cura.SingleSettingTextField
+            settingControl: RowLayout
             {
-                width: parent.width
-                settingName: "wall_thickness"
-                validator: Cura.FloatValidator {}
-                unitText: catalog.i18nc("@label", "mm")
+                anchors.fill: parent
+                spacing: UM.Theme.getSize("default_margin").width
+                UM.ComponentWithIcon
+                {
+                    Layout.fillWidth: true
+                    source: UM.Theme.getIcon("PrintWalls")
+                    displayComponent: Cura.SingleSettingTextField
+                    {
+                        width: parent.width
+                        settingName: "wall_thickness"
+                        validator: Cura.FloatValidator {}
+                        unitText: catalog.i18nc("@label", "mm")
+                    }
+                }
+                UM.ComponentWithIcon
+                {
+                    Layout.fillWidth: true
+                    source: UM.Theme.getIcon("PrintTopBottom")
+                    displayComponent: Cura.SingleSettingTextField
+                    {
+                        width: parent.width
+                        settingName: "top_bottom_thickness"
+                        validator: Cura.FloatValidator {}
+                        unitText: catalog.i18nc("@label", "mm")
+                    }
+                }
             }
         }
     ]
