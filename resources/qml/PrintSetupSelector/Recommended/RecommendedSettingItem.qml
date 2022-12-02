@@ -65,6 +65,7 @@ Item
                 implicitHeight: 0
                 Layout.preferredHeight: 0
                 Layout.minimumHeight: 0
+                enabled: false // Components can still be clickable with height 0 so they need to be disabled as well.
             }
         },
         State
