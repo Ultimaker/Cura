@@ -58,6 +58,18 @@ RecommendedSettingSection
                 width: parent.width
                 settingName: "infill_pattern"
             }
+        },
+        RecommendedSettingItem
+        {
+            settingName: catalog.i18nc("@action:label", "Shell Thickness")
+
+            settingControl: Cura.SingleSettingTextField
+            {
+                width: parent.width
+                settingName: "wall_thickness"
+                validator: Cura.FloatValidator {}
+                unitText: catalog.i18nc("@label", "mm")
+            }
         }
     ]
 }
