@@ -23,7 +23,6 @@ METADATA_SORT_PRIORITY = {
     "platform":     "4",
 }
 
-
 class DefJsonFormatter(FileFormatter):
     def formatFile(self, file: Path):
         """ Format .def.json files according to the rules in settings.
@@ -34,7 +33,7 @@ class DefJsonFormatter(FileFormatter):
 
         definition = json.loads(file.read_text(), object_pairs_hook=OrderedDict)
 
-        if self._settings["format"].get("format-definition-sort-keys", True):
+        if self._settings["format"].get("format-definition-sort-keys", True) and file.stem.split(".")[0] != "fdmprinter":
             definition = self.order_keys(definition)
 
         content = json.dumps(definition, indent=self._settings["format"].get("format-definition-indent", 4))
