@@ -1,60 +1,32 @@
 {
     "version": 2,
     "name": "Geeetech A10T",
-    "inherits": "fdmprinter",
+    "inherits": "Geeetech_base",
     "metadata": {
+		"quality_definition": "Geeetech_base",
         "visible": true,
-        "author": "Amit L",
-        "manufacturer": "Geeetech",
-        "file_formats": "text/x-gcode",
         "has_materials": true,
-        "machine_extruder_trains":
-        {
-            "0": "geeetech_A10T_1",
-            "1": "geeetech_A10T_2",
-            "2": "geeetech_A10T_3"
-        }
-
-    },
+        "has_variants": false,
+        "has_machine_quality": true,
+		"preferred_material": "Geeetech_PLA_Magenta",
+		"machine_extruder_trains": { 
+		"0": "Geeetech_Multi_Extruder_0",  "1": "Geeetech_Multi_Extruder_1", "2": "Geeetech_Multi_Extruder_2"
+		}		
+       },
 
     "overrides": {
         "machine_name": { "default_value": "Geeetech A10T" },
-        "machine_width": {
-            "default_value": 220
-        },
-        "machine_height": {
-            "default_value": 220
-        },
-        "machine_depth": {
-            "default_value": 260
-        },
-        "machine_center_is_zero": {
-            "default_value": false
-        },
-        "layer_height": { "default_value": 0.1 },
-        "layer_height_0": { "default_value": 0.15 },
-        "retraction_amount": { "default_value": 0.8 },
-        "retraction_speed": { "default_value": 35 },
-        "adhesion_type": { "default_value": "skirt" },
-        "machine_head_with_fans_polygon": { "default_value": [[-31,31],[34,31],[34,-40],[-31,-40]] },
-        "gantry_height": { "value": "28" },
-        "machine_max_feedrate_z": { "default_value": 12 },
-        "machine_max_feedrate_e": { "default_value": 120 },
-        "machine_max_acceleration_z": { "default_value": 500 },
-        "machine_acceleration": { "default_value": 1000 },
-        "machine_max_jerk_xy": { "default_value": 10 },
-        "machine_max_jerk_z": { "default_value": 0.2 },
-        "machine_max_jerk_e": { "default_value": 2.5 },
-        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
-        "machine_start_gcode": {
-            "default_value": "G28 \nG1 Z15 F300\nM107\nG90\nM82\nM104 S215\nM140 S55\nG92 E0\nM109 S215\nM107\nM163 S0 P0.33\nM163 S1 P0.33\nM163 S2 P0.33\nM164 S4\nG0 X10 Y20 F6000\nG1 Z0.8\nG1 F300 X180 E40\nG1 F1200 Z2\nG92 E0\nG28"
-        },
-        "machine_end_gcode": {
-            "default_value": "G91\nG1 E-1\nG0 X0 Y200\nM104 S0\nG90\nG92 E0\nM140 S0\nM84\nM104 S0\nM140 S0\nM84"
-        },
-        "machine_extruder_count": {
-            "default_value": 3
-        }
-
-    }
+        "machine_width": { "default_value": 220 },  
+        "machine_depth": { "default_value": 220 },
+        "machine_height": {"default_value": 260 },
+		"machine_head_with_fans_polygon": { "default_value": [[-31, 31], [34, 31], [34, -40], [-31, -40]] },
+		"gantry_height": { "value": 28 },
+		"prime_tower_position_x":{ "value": 190 },
+		"prime_tower_position_y":{ "value": 160 },
+		
+        "machine_start_gcode": { "default_value": ";Geeetech A10T Custom Start G-code\nM104 S{material_print_temperature_layer_0} ; Set Hotend Temperature\nM190 S{material_bed_temperature_layer_0} ; Wait for Bed Temperature\nM109 S{material_print_temperature_layer_0} ; Wait for Hotend Temperature\nG92 E0 ; Reset Extruder\nG28 ; Home all axes\nM107 P0 ;Off Main Fan\nM107 P1 ;Off Aux Fan\nM2012 P8 S1 F100 ; ON Light\n;M106 P0 S383 ; ON MainFan 150% if need\n;M106 P1 S255 ; ON Aux Fan 100% if need\nG1 Z5.0 F3000 ;Move Z Axis up little to prevent scratching of Heat Bed\nG1 X0.1 Y20 Z0.8 F5000 ; Move to start position\nG1 X0.1 Y200.0 Z1.2 F1500 E30 ; Draw the first line\nG92 E0 ; Reset Extruder\nG1 X0.4 Y200.0 Z1.2 F3000 ; Move to side a little\nG1 X0.4 Y20 Z1.2 F1500 E25 ; Draw the second line\nG92 E0 ; Reset Extruder\nG1 Z2.0 F3000 ; Move Z Axis up little to prevent scratching of Heat Bed\nG1 X5 Y20 Z0.4 F3000.0 ; Scrape off nozzle residue" },
+        "machine_end_gcode":   { "default_value": "G91 ;Switch to relative positioning\nG1 E-2.5 F2700 ;Retract filament\nG1 E-1.5 Z0.2 F2400 ;Retract and raise Z\nG1 X5 Y5 F3000 ;Move away\nG1 Z10 ;lift print head\nG90 ;Switch to absolute positioning\nG28 X Y ;homing XY\nM106 S0 ;off Fan\nM104 S0 ;Cooldown hotend\nM140 S0 ;Cooldown bed\nM84 X Y E ;Disable steppers" },
+        "machine_extruder_count": { "default_value": 3 },	
+		"machine_heated_bed": { "default_value": true }
+	}
 }
