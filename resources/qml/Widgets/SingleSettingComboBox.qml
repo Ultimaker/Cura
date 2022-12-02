@@ -58,13 +58,19 @@ Cura.ComboBox {
         function onIsValueUsedChanged() { comboboxModel.updateModel() }
     }
 
-    onCurrentIndexChanged: updateSetting()
+    onCurrentIndexChanged: parseValueAndUpdateSetting()
+
+    function parseValueAndUpdateSetting()
+    {
+        if (comboboxModel.get(currentIndex) && comboboxModel.get(currentIndex).code != propertyProvider.properties.value)
+        {
+            updateSetting(comboboxModel.get(currentIndex).code)
+        }
+
+    }
 
     function updateSetting(value)
     {
-        if (comboboxModel.get(currentIndex) && comboboxModel.get(currentIndex).code)
-        {
-            propertyProvider.setPropertyValue("value", comboboxModel.get(currentIndex).code)
-        }
+        propertyProvider.setPropertyValue("value", value)
     }
 }
