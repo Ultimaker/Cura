@@ -155,9 +155,9 @@ Item
         ProfileWarningReset
         {
             id: profileWarningReset
-            fullWarning: false
-            anchors.right: parent.right
             width: childrenRect.width
+            anchors.right: parent.right
+            fullWarning: false
         }
 
         QualitiesWithIntentMenu

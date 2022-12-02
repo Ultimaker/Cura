@@ -178,15 +178,15 @@ UM.Dialog
         {
             id: overwriteButton
             text: catalog.i18nc("@action:button", "Save as new custom profile")
-            onClicked: base.accept()
             visible: alternateStates.state != ""
+            onClicked: base.accept()
         },
         Cura.PrimaryButton
         {
             id: saveButton
             text: catalog.i18nc("@action:button", "Save changes")
-            onClicked: base.reject()
             visible: alternateStates.state == "saveFromCustom"
+            onClicked: base.reject()
         }
     ]
 }

@@ -67,9 +67,8 @@ UM.Dialog
         }
 
         // spacer
-        Rectangle
+        Item
         {
-            color: base.backgroundColor
             height: UM.Theme.getSize("wide_margin").height
             width: height
         }
