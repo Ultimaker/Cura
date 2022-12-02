@@ -6,6 +6,8 @@ import QtQuick 2.10
 import UM 1.6 as UM
 import Cura 1.6 as Cura
 
+import "../Dialogs"
+
 Item
 {
     property bool fullWarning: true  // <- Can you see the warning icon and the text, or is it just the buttons?
@@ -144,7 +146,12 @@ Item
         hoverColor: UM.Theme.getColor("primary_hover")
 
         enabled: Cura.SimpleModeSettingsManager.isProfileCustomized
-        onClicked: CuraApplication.showCompareAndSaveProfileChanges(Cura.MachineManager.hasCustomQuality ? "saveFromCustom" : "saveFromBuiltIn")
+        onClicked: CuraApplication.showCompareAndSaveProfileChanges
+            (
+                Cura.MachineManager.hasCustomQuality ?
+                DiscardOrKeepProfileChangesDialog.ButtonsType.SaveFromCustom :
+                DiscardOrKeepProfileChangesDialog.ButtonsType.SaveFromBuiltIn
+            )
 
         UM.ToolTip
         {

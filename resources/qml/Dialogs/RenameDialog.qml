@@ -24,6 +24,8 @@ UM.Dialog
     property string explanation: catalog.i18nc("@info", "Please provide a new name.")
     property string okButtonText: catalog.i18nc("@action:button", "OK")
 
+    // Extra Information for the user about the current rename can go here, can be left alone if not needed.
+    // For example; An icon and a text-field and a tertiary button providing a link.
     property list<Item> extraInfo
 
     title: dialogTitle

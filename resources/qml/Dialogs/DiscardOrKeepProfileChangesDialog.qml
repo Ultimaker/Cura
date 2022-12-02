@@ -12,10 +12,13 @@ UM.Dialog
     id: base
     title: catalog.i18nc("@title:window", "Discard or Keep changes")
 
-    property alias state: alternateStates.state
+    enum ButtonsType { DiscardOrKeep, SaveFromBuiltIn, SaveFromCustom}
+    property int buttonState: DiscardOrKeepProfileChangesDialog.ButtonsType.DiscardOrKeep
 
-    onAccepted: alternateStates.state == "" ? CuraApplication.discardOrKeepProfileChangesClosed("discard") : Cura.Actions.addProfile.trigger()
-    onRejected: alternateStates.state == "" ? CuraApplication.discardOrKeepProfileChangesClosed("keep") : Cura.Actions.updateProfile.trigger()
+    onAccepted: buttonState == DiscardOrKeepProfileChangesDialog.ButtonsType.DiscardOrKeep ?
+        CuraApplication.discardOrKeepProfileChangesClosed("discard") : Cura.Actions.addProfile.trigger()
+    onRejected: buttonState == DiscardOrKeepProfileChangesDialog.ButtonsType.DiscardOrKeep ?
+        CuraApplication.discardOrKeepProfileChangesClosed("keep") : Cura.Actions.updateProfile.trigger()
 
     minimumWidth: UM.Theme.getSize("popup_dialog").width
     minimumHeight: UM.Theme.getSize("popup_dialog").height
@@ -100,25 +103,11 @@ UM.Dialog
 
     buttonSpacing: UM.Theme.getSize("thin_margin").width
 
-    Rectangle
-    {
-        // Use a rectangle to get access to states. For some reason top-levels like Dialog/Window ect. don't have them.
-        // NOTE: The default state is 'switch profiles', alternate states are used for 'save from [built-in|custom]'.
-        id: alternateStates
-        width: 0
-        height: 0
-        states:
-        [
-            State { name: "saveFromBuiltIn" },
-            State { name: "saveFromCustom" }
-        ]
-    }
-
     leftButtons:
     [
         Cura.ComboBox
         {
-            visible: alternateStates.state == ""
+            visible: buttonState == DiscardOrKeepProfileChangesDialog.ButtonsType.DiscardOrKeep
 
             implicitHeight: UM.Theme.getSize("combobox").height
             implicitWidth: UM.Theme.getSize("combobox").width
@@ -165,27 +154,27 @@ UM.Dialog
             id: discardButton
             text: catalog.i18nc("@action:button", "Discard changes")
             onClicked: base.accept()
-            visible: alternateStates.state == ""
+            visible: buttonState == DiscardOrKeepProfileChangesDialog.ButtonsType.DiscardOrKeep
         },
         Cura.SecondaryButton
         {
             id: keepButton
             text: catalog.i18nc("@action:button", "Keep changes")
             onClicked: base.reject()
-            visible: alternateStates.state == ""
+            visible: buttonState == DiscardOrKeepProfileChangesDialog.ButtonsType.DiscardOrKeep
         },
         Cura.SecondaryButton
         {
             id: overwriteButton
             text: catalog.i18nc("@action:button", "Save as new custom profile")
-            visible: alternateStates.state != ""
+            visible: buttonState != DiscardOrKeepProfileChangesDialog.ButtonsType.DiscardOrKeep
             onClicked: base.accept()
         },
         Cura.PrimaryButton
         {
             id: saveButton
             text: catalog.i18nc("@action:button", "Save changes")
-            visible: alternateStates.state == "saveFromCustom"
+            visible: buttonState == DiscardOrKeepProfileChangesDialog.ButtonsType.SaveFromCustom
             onClicked: base.reject()
         }
     ]

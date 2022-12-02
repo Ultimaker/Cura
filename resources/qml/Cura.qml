@@ -804,10 +804,13 @@ UM.MainWindow
         function onShowCompareAndSaveProfileChanges(profileState)
         {
             discardOrKeepProfileChangesDialogLoader.sourceComponent = discardOrKeepProfileChangesDialogComponent
-            discardOrKeepProfileChangesDialogLoader.item.state = profileState
+            discardOrKeepProfileChangesDialogLoader.item.buttonState = profileState
             discardOrKeepProfileChangesDialogLoader.item.show()
         }
-        function onShowDiscardOrKeepProfileChanges() { onShowCompareAndSaveProfileChanges("") }
+        function onShowDiscardOrKeepProfileChanges()
+        {
+            onShowCompareAndSaveProfileChanges(DiscardOrKeepProfileChangesDialog.ButtonsType.DiscardOrKeep)
+        }
     }
 
     Cura.WizardDialog
