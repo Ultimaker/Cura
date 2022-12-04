@@ -1,27 +1,19 @@
 {
-    "name": "Creality Sermoon V1/V1 Pro",
     "version": 2,
+    "name": "Creality Sermoon V1 & V1 Pro",
     "inherits": "creality_base",
-    "metadata": {
-        "author": "Luis Gabriel Gomez",
-        "quality_definition": "creality_base",
+    "metadata":
+    {
         "visible": true,
-        "has_variants": true
+        "author": "Luis Gabriel Gomez",
+        "has_variants": true,
+        "quality_definition": "creality_base"
     },
-    "overrides": {
-        "machine_name": {
-            "default_value": "Creality Sermoon V1"
-        },
-        "machine_width": {
-            "default_value": 175
-        },
-        "machine_depth": {
-            "default_value": 175
-        },
-        "machine_height": {
-            "default_value": 165
-        },
-        "machine_head_with_fans_polygon": {
+    "overrides":
+    {
+        "machine_depth": { "default_value": 175 },
+        "machine_head_with_fans_polygon":
+        {
             "default_value": [
                 [-26, 34],
                 [-26, -32],
@@ -41,9 +33,6 @@
         },
         "machine_heated_bed": {
             "default_value": true
-        },
-        "machine_center_is_zero": {
-            "default_value": false
         },
         "machine_center_is_zero": {
             "default_value": false
