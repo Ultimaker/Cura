@@ -33,6 +33,18 @@
         "gantry_height": {
             "value": 25
         },
+        "retraction_speed": { 
+            "default_value": 40 
+        },
+        "retraction_amount": { 
+            "value": 0.8
+        },
+        "machine_heated_bed": {
+            "default_value": true
+        },
+        "machine_center_is_zero": {
+            "default_value": false
+        },
         "machine_center_is_zero": {
             "default_value": false
         },
