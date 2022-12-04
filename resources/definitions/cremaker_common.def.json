@@ -24,6 +24,7 @@
     "xy_offset": { "value": 0.1 },
     "xy_offset_layer_0": { "value": -0.1 },
     "hole_xy_offset": { "value": 0.15 },
+    "material_print_temperature_layer_0": { "value": "default_material_bed_temperature + 15" },
     "speed_travel": { "value": 100 },
     "speed_layer_0": { "value": 25 },
     "acceleration_enabled": { "value": true },
