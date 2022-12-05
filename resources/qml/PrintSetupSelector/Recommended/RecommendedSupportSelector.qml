@@ -68,10 +68,14 @@ RecommendedSettingSection
             Layout.preferredHeight: childrenRect.height
             settingName: catalog.i18nc("@action:label", "Print with")
             tooltipText: catalog.i18nc("support_extruder_nr description", "The extruder train to use for printing the support. This is used in multi-extrusion.")
-            isCompressed: enableSupportRow.isCompressed
+            // Hide this component when there is only one extruder
+            enabled: machineExtruderCount.properties.value > 1
+            visible: machineExtruderCount.properties.value > 1
+            isCompressed: enableSupportRow.isCompressed || machineExtruderCount.properties.value <= 1
 
             settingControl: Cura.SingleSettingExtruderSelectorBar
             {
+
                 extruderSettingName: "support_extruder_nr"
             }
         },
