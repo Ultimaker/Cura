@@ -15,6 +15,10 @@ UM.TextField
     id: control
     property alias settingName: propertyProvider.key
 
+    // If true, all extruders will have "settingName" property updated.
+    // The displayed value will be read from the first extruder instead of the machine.
+    property bool updateAllExtruders: false
+
     // Resolving the value in the textField.
     Binding
     {
@@ -28,6 +32,15 @@ UM.TextField
                 // This stops the text being reformatted as you edit. For example "10.1" -Edit-> "10." -Auto Format-> "10.0".
                 return control.text
             }
+
+            if (( propertyProvider.properties.resolve != "None" &&  propertyProvider.properties.resolve) && ( propertyProvider.properties.stackLevels[0] != 0) && ( propertyProvider.properties.stackLevels[0] != 1))
+            {
+                // We have a resolve function. Indicates that the setting is not settable per extruder and that
+                // we have to choose between the resolved value (default) and the global value
+                // (if user has explicitly set this).
+                return base.resolve
+            }
+
             return propertyProvider.properties.value
         }
 
@@ -36,8 +49,8 @@ UM.TextField
     property UM.SettingPropertyProvider propertyProvider: UM.SettingPropertyProvider
     {
         id: propertyProvider
-        containerStack: Cura.MachineManager.activeMachine
-        watchedProperties: [ "value", "validationState" ]
+        watchedProperties: [ "value", "validationState",  "resolve" ]
+        containerStackId: updateAllExtruders ? Cura.ExtruderManager.extruderIds[0] : Cura.MachineManager.activeMachine
     }
 
     Connections
@@ -51,7 +64,7 @@ UM.TextField
     // textfield styling while typing.
     Keys.onReleased: updateTimer.restart()
     // Forces formatting when you finish editing "10.1" -Edit-> "10." -Focus Change-> "10"
-    onActiveFocusChanged: updateTime.restart()
+    onActiveFocusChanged: updateTimer.restart()
 
     // Updates to the setting are delayed by interval. This stops lag caused by calling the
     // parseValueUpdateSetting() function being called repeatedly while changing the text value.
@@ -65,13 +78,19 @@ UM.TextField
 
     function parseValueUpdateSetting()
     {
-        // Do some parsing of text here
-        updateSetting(text);
+        if (propertyProvider && text != propertyProvider.properties.value)
+        {
+            updateSetting(text);
+        }
     }
 
     function updateSetting(value)
     {
-        if (propertyProvider && text != propertyProvider.properties.value)
+        if (updateAllExtruders)
+        {
+            Cura.MachineManager.setSettingForAllExtruders(propertyProvider.key, "value", value)
+        }
+        else
         {
             propertyProvider.setPropertyValue("value", text)
         }

@@ -58,6 +58,11 @@ RecommendedSettingSection
             {
                 width: parent.width
                 settingName: "infill_pattern"
+
+                function updateSetting(value)
+                {
+                    Cura.MachineManager.setSettingForAllExtruders("infill_pattern", "value", value)
+                }
             }
         },
         RecommendedSettingItem
@@ -76,6 +81,7 @@ RecommendedSettingSection
                     {
                         width: parent.width
                         settingName: "wall_thickness"
+                        updateAllExtruders: true
                         validator: Cura.FloatValidator {}
                         unitText: catalog.i18nc("@label", "mm")
                     }
@@ -88,6 +94,7 @@ RecommendedSettingSection
                     {
                         width: parent.width
                         settingName: "top_bottom_thickness"
+                        updateAllExtruders: true
                         validator: Cura.FloatValidator {}
                         unitText: catalog.i18nc("@label", "mm")
                     }
