@@ -96,13 +96,6 @@ Cura.MenuItem
         y: {
             var popupHeight = materialTypesModel.material_types.count * UM.Theme.getSize("menu").height
             var spaceToBottom = materialBrandMenu.parent.height - parent.y // Space from hovered item to bottom of list
-//
-//            print(materialTypesModel)
-//            print(materialTypesModel.material_types)
-//            print(materialTypesModel.material_types.count)
-//            print("popupHeight: " + popupHeight)
-//            print("parentHeight: " + parentHeight)
-//            print("parent.y: " + parent.y)
 
             if (popupHeight < spaceToBottom)
             {
