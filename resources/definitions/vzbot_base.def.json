@@ -53,7 +53,6 @@
         "retraction_speed":                             { "default_value": 45, "maximum_value_warning": 150 },
         "retraction_retract_speed":                     { "maximum_value_warning": 150 },
         "retraction_prime_speed":                       { "value": "math.ceil(retraction_speed * 0.4)", "maximum_value_warning": 150 },
-        "retraction_hop_enabled":                       { "default_value": false },
         "retraction_hop":                               { "default_value": 0.2 },
         "retraction_combing":                           { "value": "'noskin'" },
         "z_seam_type":                                  { "value": "'back'" },
