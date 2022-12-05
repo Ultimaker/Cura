@@ -6,7 +6,7 @@
         "author": "Ultimaker",
         "manufacturer": "Ultimaker B.V.",
         "visible": false,
-        "exclude_materials": [ "generic_hips", "structur3d_dap100silicone" ],
+        "exclude_materials": [ "generic_hips", "structur3d_dap100silicone" ]
     },
     "overrides": {
         "acceleration_layer_0": { "value": "acceleration_topbottom" },
