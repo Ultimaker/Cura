@@ -274,7 +274,7 @@ class AuthorizationService:
                             self._unable_to_get_data_message.show()
                         else:
                             self._unable_to_get_data_message = Message(i18n_catalog.i18nc("@info",
-                                                                                          "Unable to reach the Ultimaker account server."),
+                                                                                          "Unable to reach the UltiMaker account server."),
                                                                        title = i18n_catalog.i18nc("@info:title", "Log-in failed"),
                                                                        message_type = Message.MessageType.ERROR)
                             Logger.warning("Unable to get user profile using auth data from preferences.")
