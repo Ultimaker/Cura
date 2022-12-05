@@ -494,7 +494,10 @@ UM.MainWindow
     Connections
     {
         target: Cura.Actions.addProfile
-        function onTriggered() { createNewQualityDialog.visible = true; }
+        function onTriggered()
+        {
+            createNewQualityDialog.visible = true;
+        }
     }
 
     Connections
@@ -905,7 +908,7 @@ UM.MainWindow
                 }
                 Cura.TertiaryButton
                 {
-                    text: "Learn more about Cura print profiles"
+                    text: catalog.i18nc("@action:button", "Learn more about Cura print profiles")
                     iconSource: UM.Theme.getIcon("LinkExternal")
                     isIconOnRightSide: true
                     leftPadding: 0

@@ -1,5 +1,5 @@
-//Copyright (C) 2022 UltiMaker B.V.
-//Cura is released under the terms of the LGPLv3 or higher.
+// Copyright (C) 2022 UltiMaker
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
 
