@@ -225,58 +225,6 @@ Popup
 
         MenuButton
         {
-            labelText: Cura.Actions.addProfile.text
-
-            anchors.left: parent.left
-            anchors.right: parent.right
-
-            enabled: Cura.Actions.addProfile.enabled
-            onClicked:
-            {
-                Cura.Actions.addProfile.trigger()
-                popup.visible = false
-            }
-        }
-        MenuButton
-        {
-            labelText: Cura.Actions.updateProfile.text
-            anchors.left: parent.left
-            anchors.right: parent.right
-
-            enabled: Cura.Actions.updateProfile.enabled
-
-            onClicked:
-            {
-                popup.visible = false
-                Cura.Actions.updateProfile.trigger()
-            }
-        }
-        MenuButton
-        {
-            text: catalog.i18nc("@action:button", "Discard current changes")
-
-            anchors.left: parent.left
-            anchors.right: parent.right
-
-            enabled: Cura.MachineManager.hasUserSettings
-
-            onClicked:
-            {
-                popup.visible = false
-                Cura.ContainerManager.clearUserContainers()
-            }
-        }
-
-        Rectangle
-        {
-            height: UM.Theme.getSize("default_lining").width
-            anchors.left: parent.left
-            anchors.right: parent.right
-            color: borderColor
-        }
-
-        MenuButton
-        {
             id: manageProfilesButton
             text: Cura.Actions.manageProfiles.text
             anchors
