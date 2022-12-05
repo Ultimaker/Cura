@@ -29,22 +29,13 @@
 		
 		"layer_height_0": {"value": "round(machine_nozzle_size / 2, 1)" },
 
-        "speed_infill": { "value": "speed_print" },
-        "speed_wall": { "value": "speed_print / 2" },
-        "speed_wall_0": { "value": "speed_wall" },
         "speed_wall_x": { "value": "speed_wall" },
-        "speed_topbottom": { "value": "speed_print / 2" },
-        "speed_roofing": { "value": "speed_topbottom" },
-        "speed_travel": { "value": 350.0 },
+        "speed_travel": { "value": 250.0 },
         "speed_layer_0": { "value": 20.0 },
-        "speed_print_layer_0": { "value": "speed_layer_0" },
-        "speed_travel_layer_0": { "value": "speed_layer_0 * speed_travel / speed_print" },
         "speed_prime_tower": { "value": "speed_topbottom" },
         "speed_support": { "value": "speed_wall_0" },
         "speed_support_interface": { "value": "speed_topbottom" },
         "speed_z_hop": { "value": 5 },
-
-        "skirt_brim_speed": { "value": "speed_layer_0" },
 
         "line_width": { "value": "machine_nozzle_size * 1.05" },
 
@@ -52,7 +43,6 @@
 
         "material_initial_print_temperature": { "value": "material_print_temperature" },
         "material_final_print_temperature": { "value": "material_print_temperature" },
-        "material_flow": { "value": 100 },
 
         "z_seam_corner": { "value": "z_seam_corner_weighted" },
         
@@ -78,7 +68,6 @@
 		"retraction_amount": 				{ "value": 1 },
         "retraction_count_max": 			{ "value": 50 },
         "retraction_extrusion_window": 		{ "value": 1 },
-        "retraction_min_travel": 			{ "value": 1.5 },
 
         "cool_fan_full_at_height": 			{ "value": "layer_height_0 + 2 * layer_height" },
 
