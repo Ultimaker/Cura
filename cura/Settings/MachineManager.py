@@ -1319,7 +1319,7 @@ class MachineManager(QObject):
         else:
             position_list = [str(position) for position, _ in enumerate(self._global_container_stack.extruderList)]
 
-        for position_ in position_list:
+        for position_item in position_list:
             try:
                 extruder = self._global_container_stack.extruderList[int(position_)]
             except IndexError:
