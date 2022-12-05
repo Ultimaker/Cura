@@ -94,16 +94,27 @@ Cura.MenuItem
 
         x: parent.width - UM.Theme.getSize("default_lining").width
         y: {
-            // Checks if popup is more than halfway down the screen AND further than 400 down (this avoids popup going off the top of screen)
-            // If it is then the popup will push up instead of down
-            // This fixes the popups appearing bellow the bottom of the screen.
+            var popupHeight = materialTypesModel.material_types.count * UM.Theme.getSize("menu").height
+            var spaceToBottom = materialBrandMenu.parent.height - parent.y // Space from hovered item to bottom of list
+//
+//            print(materialTypesModel)
+//            print(materialTypesModel.material_types)
+//            print(materialTypesModel.material_types.count)
+//            print("popupHeight: " + popupHeight)
+//            print("parentHeight: " + parentHeight)
+//            print("parent.y: " + parent.y)
 
-            if (materialBrandMenu.parent.height / 2 < parent.y && parent.y > 400) {
-                flipped = true
-                return -UM.Theme.getSize("default_lining").width - height + UM.Theme.getSize("menu").height
+            if (popupHeight < spaceToBottom)
+            {
+                return -UM.Theme.getSize("default_lining").width
             }
-            flipped = false
-            return -UM.Theme.getSize("default_lining").width
+            else
+            {
+                // The popup is longer than the distance between the hovered item and the bottom of the item list.
+                // This pushes the popup upwards until the bottom lines up with the parent bottom.
+                // Only when popup is longer than the parent, the popup will flow out below the parent.
+                return -Math.max(parent.y - (materialBrandMenu.parent.height - popupHeight), 0) + (3 * UM.Theme.getSize("default_lining").height)
+            }
         }
 
         padding: background.border.width
@@ -243,11 +254,20 @@ Cura.MenuItem
                         height: materialColorsList.height + padding * 2
                         x: parent.width
                         y: {
-                            // If flipped the popup should push up rather than down from the parent
-                            if (brandMaterialBase.isFlipped) {
-                                return -height + UM.Theme.getSize("menu").height + UM.Theme.getSize("default_lining").width
+                            var popupHeight = model.colors.count * UM.Theme.getSize("menu").height
+                            var spaceToBottom = materialTypesList.height - parent.y // Space from hovered item to bottom of list
+
+                            if (popupHeight < spaceToBottom)
+                            {
+                                return -UM.Theme.getSize("default_lining").width
                             }
-                            return -UM.Theme.getSize("default_lining").width
+                            else
+                            {
+                                // The popup is longer than the distance between the hovered item and the bottom of the item list.
+                                // This pushes the popup upwards until the bottom lines up with the parent bottom.
+                                // Only when popup is longer than the parent, the popup will flow out below the parent.
+                                return -Math.max(parent.y - (materialTypesList.height - popupHeight), 0)
+                            }
                         }
 
                         property int itemHovered: 0
