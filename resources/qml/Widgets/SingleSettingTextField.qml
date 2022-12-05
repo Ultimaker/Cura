@@ -10,14 +10,17 @@ import Cura 1.7 as Cura
 
 // This text field allows you to edit a single setting. The setting can be passed by "settingName".
 // You must specify a validator with Validator. We store our default setting validators in qml/Validators
+// If the setting is limited to a single extruder or is settable with different values per extruder use "updateAllExtruders: true"
 UM.TextField
 {
     id: control
     property alias settingName: propertyProvider.key
 
     // If true, all extruders will have "settingName" property updated.
-    // The displayed value will be read from the first extruder instead of the machine.
+    // The displayed value will be read from the extruder with index "defaultExtruderIndex" instead of the machine.
     property bool updateAllExtruders: false
+    // This is only used if updateAllExtruders == true
+    property int defaultExtruderIndex: 0
 
     // Resolving the value in the textField.
     Binding
@@ -49,8 +52,8 @@ UM.TextField
     property UM.SettingPropertyProvider propertyProvider: UM.SettingPropertyProvider
     {
         id: propertyProvider
-        watchedProperties: [ "value", "validationState",  "resolve" ]
-        containerStackId: updateAllExtruders ? Cura.ExtruderManager.extruderIds[0] : Cura.MachineManager.activeMachine
+        watchedProperties: ["value", "validationState",  "resolve"]
+        containerStackId: updateAllExtruders ? Cura.ExtruderManager.extruderIds[defaultExtruderIndex] : Cura.MachineManager.activeMachine.id
     }
 
     Connections

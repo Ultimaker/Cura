@@ -11,9 +11,16 @@ import Cura 1.7 as Cura
 // This ComboBox allows changing of a single setting. Only the setting name has to be passed in to "settingName".
 // All of the setting updating logic is handled by this component.
 // This uses the "options" value of a setting to populate the drop down. This will only work for settings with "options"
+// If the setting is limited to a single extruder or is settable with different values per extruder use "updateAllExtruders: true"
 Cura.ComboBox {
     textRole: "text"
     property alias settingName: propertyProvider.key
+
+    // If true, all extruders will have "settingName" property updated.
+    // The displayed value will be read from the extruder with index "defaultExtruderIndex" instead of the machine.
+    property bool updateAllExtruders: false
+    // This is only used if updateAllExtruders == true
+    property int defaultExtruderIndex: 0
 
     model:  ListModel {
         id: comboboxModel
@@ -47,8 +54,8 @@ Cura.ComboBox {
     property UM.SettingPropertyProvider propertyProvider: UM.SettingPropertyProvider
     {
         id: propertyProvider
-        containerStack: Cura.MachineManager.activeMachine
-        watchedProperties: [ "value" , "options"]
+        containerStackId: updateAllExtruders ? Cura.ExtruderManager.extruderIds[defaultExtruderIndex] : Cura.MachineManager.activeMachine.id
+        watchedProperties: ["value" , "options"]
     }
 
     Connections
@@ -71,6 +78,13 @@ Cura.ComboBox {
 
     function updateSetting(value)
     {
-        propertyProvider.setPropertyValue("value", value)
+        if (updateAllExtruders)
+        {
+            Cura.MachineManager.setSettingForAllExtruders(propertyProvider.key, "value", value)
+        }
+        else
+        {
+            propertyProvider.setPropertyValue("value", value)
+        }
     }
 }

@@ -39,6 +39,7 @@ RecommendedSettingSection
                 width: parent.width
                 settingName: "infill_sparse_density"
                 roundToNearestTen: true
+                updateAllExtruders: true
                 // disable slider when gradual support is enabled
                 enabled: parseInt(infillSteps.properties.value) == 0
 
@@ -58,11 +59,6 @@ RecommendedSettingSection
             {
                 width: parent.width
                 settingName: "infill_pattern"
-
-                function updateSetting(value)
-                {
-                    Cura.MachineManager.setSettingForAllExtruders("infill_pattern", "value", value)
-                }
             }
         },
         RecommendedSettingItem
