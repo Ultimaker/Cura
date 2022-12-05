@@ -1,0 +1,69 @@
+{
+    "version": 2,
+    "name": "AnkerMake M5",
+    "inherits": "fdmprinter",
+    "metadata":
+    {
+        "visible": true,
+        "author": "just-trey",
+        "manufacturer": "AnkerMake",
+        "file_formats": "text/x-gcode",
+        "platform": "ankermake_m5_platform.obj",
+        "has_machine_quality": true,
+        "machine_extruder_trains": { "0": "ankermake_m5_extruder_0" },
+        "platform_texture": "ankermake_m5.png",
+        "preferred_material": "generic_pla",
+        "preferred_quality_type": "normal"
+    },
+    "overrides":
+    {
+        "acceleration_print": { "value": "2500" },
+        "adhesion_type": { "default_value": "skirt" },
+        "cool_min_layer_time": { "value": 6 },
+        "cool_min_speed": { "value": 30 },
+        "gantry_height": { "value": 25 },
+        "machine_depth": { "default_value": 235 },
+        "machine_end_gcode": { "default_value": "M104 S0\nM140 S0\n;Retract the filament\nG92 E1\nG1 E-1 F300\nG28 X0 Y0\nM84" },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 250 },
+        "machine_name": { "default_value": "AnkerMake M5" },
+        "machine_start_gcode": { "default_value": "M104 S{material_print_temperature_layer_0} ; set final nozzle temp\nM190 S{material_bed_temperature_layer_0} ; set and wait for nozzle temp to stabilize\nM109 S{material_print_temperature_layer_0} ; wait for nozzle temp to stabilize\nG28 ;Home\nG1 E10 F3600; push out retracted filament(fix for over retraction after prime)" },
+        "machine_width": { "default_value": 235 },
+        "material_bed_temperature": { "maximum_value_warning": "110" },
+        "material_bed_temperature_layer_0":
+        {
+            "maximum_value_warning": "110",
+            "value": "material_bed_temperature + 5"
+        },
+        "material_diameter": { "default_value": 1.75 },
+        "material_flow_layer_0": { "value": 120 },
+        "material_print_temperature": { "maximum_value_warning": "260" },
+        "material_print_temperature_layer_0":
+        {
+            "maximum_value_warning": "260",
+            "value": "material_print_temperature + 5"
+        },
+        "retraction_amount": { "default_value": 1.5 },
+        "retraction_combing": { "value": "infill" },
+        "retraction_speed": { "default_value": 70 },
+        "skin_monotonic": { "default_value": true },
+        "speed_infill": { "maximum_value_warning": 255 },
+        "speed_print":
+        {
+            "maximum_value_warning": 255,
+            "value": 250.0
+        },
+        "speed_topbottom": { "value": 150.0 },
+        "speed_travel": { "value": 250.0 },
+        "speed_wall":
+        {
+            "maximum_value_warning": 255,
+            "value": 150.0
+        },
+        "speed_wall_x":
+        {
+            "maximum_value_warning": 255,
+            "value": 250.0
+        }
+    }
+}

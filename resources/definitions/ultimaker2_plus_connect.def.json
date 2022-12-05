@@ -70,7 +70,6 @@
             "maximum_value": 260
         },
         "material_print_temperature_layer_0": {
-            "value": "material_print_temperature",
             "maximum_value": 260
         },
         "machine_start_gcode": { "value": "''" },
