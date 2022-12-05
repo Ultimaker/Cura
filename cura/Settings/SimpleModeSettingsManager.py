@@ -57,6 +57,12 @@ class SimpleModeSettingsManager(QObject):
     # changed, we consider it as a user customized profile in the Simple ("Recommended") Mode.
     __ignored_custom_setting_keys = ["support_enable",
                                      "infill_sparse_density",
+                                     "infill_pattern",
                                      "gradual_infill_steps",
+                                     "wall_thickness",
+                                     "top_bottom_thickness",
+                                     "support_structure",
+                                     "support_extruder_nr",
+                                     "support_type",
                                      "adhesion_type",
-                                     "support_extruder_nr"]
+                                     "adhesion_extruder_nr"]
