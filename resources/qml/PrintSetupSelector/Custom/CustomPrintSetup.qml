@@ -52,8 +52,8 @@ Item
             id: intentSelection
             onClicked: menu.opened ? menu.close() : menu.open()
 
-            anchors.right: parent.right
-            width: UM.Theme.getSize("print_setup_big_item").width
+            anchors.right: profileWarningReset.left
+            width: UM.Theme.getSize("print_setup_big_item").width - profileWarningReset.width
             height: textLabel.contentHeight + 2 * UM.Theme.getSize("narrow_margin").height
             hoverEnabled: true
 
@@ -150,6 +150,14 @@ Item
 
                 color: UM.Theme.getColor("setting_control_button")
             }
+        }
+
+        ProfileWarningReset
+        {
+            id: profileWarningReset
+            width: childrenRect.width
+            anchors.right: parent.right
+            fullWarning: false
         }
 
         QualitiesWithIntentMenu
