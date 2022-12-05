@@ -104,7 +104,8 @@ RowLayout
     }
 
     // Override this function to update a setting differently
-    function updateSetting(value) {
+    function updateSetting(value)
+    {
         if (updateAllExtruders)
         {
             Cura.MachineManager.setSettingForAllExtruders(propertyProvider.key, "value", value)

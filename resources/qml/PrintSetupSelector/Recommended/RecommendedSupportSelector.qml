@@ -20,7 +20,8 @@ RecommendedSettingSection
     enableSectionSwitchEnabled: recommendedPrintSetup.settingsEnabled
     tooltipText: catalog.i18nc("@label", "Generate structures to support parts of the model which have overhangs. Without these structures, such parts would collapse during printing.")
 
-    function onEnableSectionChanged(state) {
+    function onEnableSectionChanged(state)
+    {
         supportEnabled.setPropertyValue("value", state)
     }
 

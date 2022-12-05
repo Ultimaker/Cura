@@ -68,7 +68,10 @@ Item
             }
             visible: currentModeIndex == PrintSetupSelectorContents.Mode.Recommended
 
-            function onModeChanged() { currentModeIndex = PrintSetupSelectorContents.Mode.Custom }
+            function onModeChanged()
+            {
+                currentModeIndex = PrintSetupSelectorContents.Mode.Custom;
+            }
         }
 
         CustomPrintSetup
@@ -125,7 +128,8 @@ Item
     {
         id: buttonRow
         property real padding: UM.Theme.getSize("default_margin").width
-        height: {
+        height:
+        {
             if (currentModeIndex == PrintSetupSelectorContents.Mode.Custom)
             {
                 return recommendedButton.height + 2 * padding + (draggableArea.visible ? draggableArea.height : 0)

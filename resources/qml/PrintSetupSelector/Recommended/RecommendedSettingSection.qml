@@ -1,4 +1,4 @@
-// Copyright (c) 2022 UltiMaker B.V.
+// Copyright (c) 2022 UltiMaker
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -17,7 +17,7 @@ Item
     property alias enableSectionSwitchVisible: enableSectionSwitch.visible
     property alias enableSectionSwitchChecked: enableSectionSwitch.checked
     property alias enableSectionSwitchEnabled: enableSectionSwitch.enabled
-    property string tooltipText: "test"
+    property string tooltipText: ""
     property var enableSectionClicked: { return }
     property int leftColumnWidth: Math.floor(width * 0.35)
     property bool isCompressed: false
