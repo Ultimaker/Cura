@@ -14,6 +14,7 @@
         "has_materials": false,
         "has_machine_quality": true,
         "preferred_variant_name": "0.4 mm",
+        "preferred_quality_type": "fast",
         "machine_extruder_trains":
         {
             "0": "ultimaker2_extruder_0"
