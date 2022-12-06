@@ -106,7 +106,7 @@ Cura.MenuItem
                 // The popup is longer than the distance between the hovered item and the bottom of the item list.
                 // This pushes the popup upwards until the bottom lines up with the parent bottom.
                 // Only when popup is longer than the parent, the popup will flow out below the parent.
-                var topOfParent = parent.y + (3 * UM.Theme.getSize("default_lining").height)
+                var topOfParent = parent.y + UM.Theme.getSize("narrow_margin").height
                 return -Math.min(parent.y - (materialBrandMenu.parent.height - popupHeight ), topOfParent)
             }
         }
@@ -260,8 +260,8 @@ Cura.MenuItem
                                 // The popup is longer than the distance between the hovered item and the bottom of the item list.
                                 // This pushes the popup upwards until the bottom lines up with the parent bottom.
                                 // Only when popup is longer than the parent, the popup will flow out below the parent.
-                                var topOfParent = parent.y + (3 * UM.Theme.getSize("default_lining").height)
-                                return -Math.min(parent.y - (materialTypesList.height - popupHeight), parent.y)
+                                var topOfParent = parent.y + UM.Theme.getSize("default_lining").height
+                                return -Math.min(parent.y - (materialTypesList.height - popupHeight - UM.Theme.getSize("default_lining").height), topOfParent)
                             }
                         }
 
