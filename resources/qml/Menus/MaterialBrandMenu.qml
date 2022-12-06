@@ -99,7 +99,7 @@ Cura.MenuItem
 
             if (popupHeight < spaceToBottom)
             {
-                return -UM.Theme.getSize("default_lining").width
+                return -UM.Theme.getSize("default_lining").height
             }
             else
             {
