@@ -142,6 +142,7 @@ Item
                     text: catalog.i18ncp("@label %1 is filled in with the name of an extruder", "Print Selected Model with %1", "Print Selected Models with %1", UM.Selection.selectionCount).arg(extruder.name)
                     checked: Cura.ExtruderManager.selectedObjectExtruders.indexOf(extruder.id) != -1
                     enabled: UM.Selection.hasSelection && extruder.stack.isEnabled
+                    font: UM.Theme.getFont("small_emphasis")
 
                     onClicked:
                     {

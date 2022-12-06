@@ -61,6 +61,7 @@ Row
                 extruder: model
                 checked: extruder.index == selectedIndex
                 iconScale: 0.8
+                font: UM.Theme.getFont("tiny_emphasis")
                 buttonSize: UM.Theme.getSize("small_button").width
                 onClicked: extruder.enabled && onClickExtruder(extruder.index)
             }

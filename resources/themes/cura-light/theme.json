@@ -172,6 +172,26 @@
             "size": 0.9,
             "weight": 700,
             "family": "Noto Sans"
+        },
+        "tiny_emphasis": {
+            "size": 0.7,
+            "weight": 700,
+            "family": "Noto Sans"
+        },
+        "tiny_emphasis_ja_JP": {
+            "size": 0.7,
+            "weight": 700,
+            "family": "Noto Sans"
+        },
+        "tiny_emphasis_zh_CN": {
+            "size": 0.7,
+            "weight": 700,
+            "family": "Noto Sans"
+        },
+        "tiny_emphasis_zh_TW": {
+            "size": 0.7,
+            "weight": 700,
+            "family": "Noto Sans"
         }
     },
 
