@@ -53,6 +53,7 @@ Item
             onClicked: menu.opened ? menu.close() : menu.open()
 
             anchors.right: profileWarningReset.left
+            anchors.rightMargin: UM.Theme.getSize("narrow_margin").width
             width: UM.Theme.getSize("print_setup_big_item").width - profileWarningReset.width
             height: textLabel.contentHeight + 2 * UM.Theme.getSize("narrow_margin").height
             hoverEnabled: true
@@ -157,6 +158,7 @@ Item
             id: profileWarningReset
             width: childrenRect.width
             anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
             fullWarning: false
         }
 
