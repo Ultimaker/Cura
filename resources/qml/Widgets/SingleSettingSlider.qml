@@ -83,9 +83,7 @@ RowLayout
     function roundSliderValueUpdateSetting()
     {
         // If the user interacts with the slider we round the value and update the setting.
-        print("roundSliderValueUpdateSetting()")
         const roundedSliderValue = roundToNearestTen ? Math.round(settingSlider.value / 10) * 10 : Math.round(settingSlider.value)
-        settingSlider.value = roundedSliderValue
         updateSetting(roundedSliderValue)
     }
 

@@ -59,6 +59,7 @@ RecommendedSettingSection
             {
                 width: parent.width
                 settingName: "infill_pattern"
+                updateAllExtruders: true
             }
         },
         RecommendedSettingItem
