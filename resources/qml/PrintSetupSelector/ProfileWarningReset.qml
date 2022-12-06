@@ -125,7 +125,7 @@ Item
         color: enabled ? UM.Theme.getColor("accent_1") : UM.Theme.getColor("disabled")
         hoverColor: UM.Theme.getColor("primary_hover")
 
-        enabled: Cura.MachineManager.hasCustomQuality || Cura.MachineManager.hasUserSettings
+        enabled: (fullWarning && Cura.MachineManager.hasCustomQuality) || Cura.MachineManager.hasUserSettings
         onClicked: Cura.MachineManager.resetToUseDefaultQuality()
 
         UM.ToolTip
