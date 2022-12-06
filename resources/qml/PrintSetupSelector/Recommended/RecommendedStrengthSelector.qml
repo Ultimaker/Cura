@@ -17,7 +17,7 @@ RecommendedSettingSection
     icon: UM.Theme.getIcon("Hammer")
     enableSectionSwitchVisible: false
     enableSectionSwitchEnabled: false
-    tooltipText: ""
+    tooltipText: catalog.i18nc("@label", "The following settings define the strength of your part.")
 
     UM.SettingPropertyProvider
     {
@@ -53,7 +53,8 @@ RecommendedSettingSection
         RecommendedSettingItem
         {
             settingName: catalog.i18nc("@action:label", "Infill Pattern")
-            tooltipText: catalog.i18nc("infill_pattern description", "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the ceiling of the object.")
+            tooltipText: catalog.i18nc("@label",
+            "The pattern of the infill material of the print:\n\nFor quick prints of non functional model choose line, zig zag or lighting infill.\n\nFor functional part not subjected to a lot of stress we reccomend grid or triangle or tri hexagon.\n\nFor functional 3D prints which require high strenght in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid.")
 
             settingControl: Cura.SingleSettingComboBox
             {
@@ -65,6 +66,7 @@ RecommendedSettingSection
         RecommendedSettingItem
         {
             settingName: catalog.i18nc("@action:label", "Shell Thickness")
+            tooltipText: catalog.i18nc("@label", "Defines the tickness of your part side walls, roof and floor.")
 
             settingControl: RowLayout
             {
