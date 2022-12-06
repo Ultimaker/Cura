@@ -42,27 +42,8 @@ class SimpleModeSettingsManager(QObject):
             for extruder_stack in global_stack.extruderList:
                 user_setting_keys.update(extruder_stack.userChanges.getAllKeys())
 
-        # remove settings that are visible in recommended (we don't show the reset button for those)
-        for skip_key in self.__ignored_custom_setting_keys:
-            if skip_key in user_setting_keys:
-                user_setting_keys.remove(skip_key)
-
         has_customized_user_settings = len(user_setting_keys) > 0
 
         if has_customized_user_settings != self._is_profile_customized:
             self._is_profile_customized = has_customized_user_settings
             self.isProfileCustomizedChanged.emit()
-
-    # These are the settings included in the Simple ("Recommended") Mode, so only when the other settings have been
-    # changed, we consider it as a user customized profile in the Simple ("Recommended") Mode.
-    __ignored_custom_setting_keys = ["support_enable",
-                                     "infill_sparse_density",
-                                     "infill_pattern",
-                                     "gradual_infill_steps",
-                                     "wall_thickness",
-                                     "top_bottom_thickness",
-                                     "support_structure",
-                                     "support_extruder_nr",
-                                     "support_type",
-                                     "adhesion_type",
-                                     "adhesion_extruder_nr"]
