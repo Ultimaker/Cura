@@ -91,11 +91,6 @@ Item
                         return catalog.i18nc("@info %1 is the name of a profile", "Recommended settings (for <b>%1</b>) were altered.").arg(profile_name);
                     }
                 }
-                PropertyChanges
-                {
-                    target: warningIcon
-                    color: UM.Theme.getColor("success")
-                }
             },
             State
             {
@@ -145,7 +140,7 @@ Item
     Item
     {
         id: buttonsSpacer
-        width: UM.Theme.getSize("narrow_margin").width
+        width: UM.Theme.getSize("default_margin").width
         anchors.right: compareAndSaveButton.left
     }
 
