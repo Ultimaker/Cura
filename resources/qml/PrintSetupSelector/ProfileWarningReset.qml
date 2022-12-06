@@ -13,13 +13,13 @@ Item
     property bool fullWarning: true  // <- Can you see the warning icon and the text, or is it just the buttons?
 
     height: visible ? UM.Theme.getSize("action_button_icon").height : 0
-    visible: Cura.SimpleModeSettingsManager.isProfileCustomized || Cura.MachineManager.hasCustomQuality
+    visible: Cura.MachineManager.hasUserSettings || Cura.MachineManager.hasCustomQuality
 
     Rectangle
     {
         id: warningIcon
         visible: fullWarning
-        color: UM.Theme.getColor("um_yellow_5")
+        color: UM.Theme.getColor("warning")
         height: UM.Theme.getSize("action_button_icon").height
         width: visible ? height : 0
         radius: width
@@ -30,6 +30,7 @@ Item
         }
         UM.ColorImage
         {
+            id: warningIconImage
             height: UM.Theme.getSize("action_button_icon").height
             width: height
             source: UM.Theme.getIcon("Warning", "low")
@@ -54,7 +55,7 @@ Item
             State
             {
                 name: "settings changed and custom quality"
-                when: Cura.SimpleModeSettingsManager.isProfileCustomized && Cura.MachineManager.hasCustomQuality
+                when: Cura.MachineManager.hasUserSettings && Cura.MachineManager.hasCustomQuality
                 PropertyChanges
                 {
                     target: warning
@@ -63,7 +64,6 @@ Item
                         return catalog.i18nc("@info, %1 is the name of the custom profile", "<b>%1</b> custom profile is active and you overwrote some settings.").arg(profile_name)
                     }
                 }
-
             },
             State
             {
@@ -80,7 +80,26 @@ Item
             },
             State
             {
-                name: "settings changed"
+                name: "recommended settings changed"
+                when: Cura.MachineManager.hasUserSettings
+                PropertyChanges
+                {
+                    target: warning
+                    text:
+                    {
+                        var profile_name = Cura.MachineManager.activeQualityOrQualityChangesName;
+                        return catalog.i18nc("@info %1 is the name of a profile", "Recommended settings (for <b>%1</b>) were altered.").arg(profile_name);
+                    }
+                }
+                PropertyChanges
+                {
+                    target: warningIcon
+                    color: UM.Theme.getColor("success")
+                }
+            },
+            State
+            {
+                name: "custom settings changed"
                 when: Cura.SimpleModeSettingsManager.isProfileCustomized
                 PropertyChanges
                 {
@@ -110,7 +129,7 @@ Item
         color: enabled ? UM.Theme.getColor("accent_1") : UM.Theme.getColor("disabled")
         hoverColor: UM.Theme.getColor("primary_hover")
 
-        enabled: Cura.MachineManager.hasCustomQuality || Cura.SimpleModeSettingsManager.isProfileCustomized
+        enabled: Cura.MachineManager.hasCustomQuality || Cura.MachineManager.hasUserSettings
         onClicked: Cura.MachineManager.resetToUseDefaultQuality()
 
         UM.ToolTip
@@ -145,7 +164,7 @@ Item
         color: enabled ? UM.Theme.getColor("accent_1") : UM.Theme.getColor("disabled")
         hoverColor: UM.Theme.getColor("primary_hover")
 
-        enabled: Cura.SimpleModeSettingsManager.isProfileCustomized
+        enabled: Cura.MachineManager.hasUserSettings
         onClicked: CuraApplication.showCompareAndSaveProfileChanges
             (
                 Cura.MachineManager.hasCustomQuality ?
