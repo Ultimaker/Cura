@@ -121,6 +121,7 @@ Item
             verticalCenter: parent.verticalCenter
         }
 
+        visible: enabled
         color: enabled ? UM.Theme.getColor("accent_1") : UM.Theme.getColor("disabled")
         hoverColor: UM.Theme.getColor("primary_hover")
 
@@ -156,6 +157,7 @@ Item
             verticalCenter: parent.verticalCenter
         }
 
+        visible: enabled
         color: enabled ? UM.Theme.getColor("accent_1") : UM.Theme.getColor("disabled")
         hoverColor: UM.Theme.getColor("primary_hover")
 
