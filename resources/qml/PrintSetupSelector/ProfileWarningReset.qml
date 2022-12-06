@@ -145,7 +145,7 @@ Item
     Item
     {
         id: buttonsSpacer
-        width:  UM.Theme.getSize("action_button_icon").height
+        width: UM.Theme.getSize("narrow_margin").width
         anchors.right: compareAndSaveButton.left
     }
 
