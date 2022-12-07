@@ -46,17 +46,22 @@ class ExtruderManager(QObject):
         self._selected_object_extruders = []  # type: List[Union[str, "ExtruderStack"]]
 
         Selection.selectionChanged.connect(self.resetSelectedObjectExtruders)
-        Application.getInstance().globalContainerStackChanged.connect(self.emitExtrudersChanged)  # When the machine is swapped we must update the active machine extruders
+        Application.getInstance().globalContainerStackChanged.connect(self.emitGlobalStackExtrudersChanged)  # When the machine is swapped we must update the active machine extruders
 
-    extrudersChanged = pyqtSignal()
+    # Don't use this unless you are reading from ExtruderManager.extruderIds when receiving the signal
+    globalStackExtrudersChanged = pyqtSignal()
+
+    # This signal actually emits before the global stacks extruders are updated, changing this behaviour breaks too many things
+    # Use globalStackExtrudersChanged = pyqtSignal() if you want a trigger when the extrduerIds property changes.
+    extrudersChanged = pyqtSignal(QVariant)
     """Signal to notify other components when the list of extruders for a machine definition changes."""
 
     activeExtruderChanged = pyqtSignal()
     """Notify when the user switches the currently active extruder."""
 
-    def emitExtrudersChanged(self):
+    def emitGlobalStackExtrudersChanged(self):
         # The emit function can't be directly connected to another signal. This wrapper function is required.
-        self.extrudersChanged.emit()
+        self.globalStackExtrudersChanged.emit()
 
     @pyqtProperty(str, notify = activeExtruderChanged)
     def activeExtruderStackId(self) -> Optional[str]:
@@ -381,6 +386,8 @@ class ExtruderManager(QObject):
             extruders_changed = True
 
         self.fixSingleExtrusionMachineExtruderDefinition(global_stack)
+        if extruders_changed:
+            self.extrudersChanged.emit(global_stack_id)
 
     # After 3.4, all single-extrusion machines have their own extruder definition files instead of reusing
     # "fdmextruder". We need to check a machine here so its extruder definition is correct according to this.
