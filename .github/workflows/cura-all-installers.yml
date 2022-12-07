@@ -1,5 +1,5 @@
 name: Cura All Installers
-run-name: ${{ inputs.cura_conan_version }} for ${{ if inputs.build_windows then Windows }} ${{ if inputs.build_macos then Mac }} ${{ if inputs.build_linux then Linux }}
+run-name: ${{ inputs.cura_conan_version }} for Windows ${{ inputs.build_windows }}, MacOS ${{ inputs.build_macos }}, Linux ${{ inputs.build_linux }}
 
 on:
     workflow_dispatch:
