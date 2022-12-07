@@ -34,22 +34,6 @@ RecommendedSettingSection
         storeIndex: 0
     }
 
-    property UM.SettingPropertyProvider supportExtruderNr: UM.SettingPropertyProvider
-    {
-        containerStack: Cura.MachineManager.activeMachine
-        key: "support_extruder_nr"
-        watchedProperties: [ "value" ]
-        storeIndex: 0
-    }
-
-    property UM.SettingPropertyProvider machineExtruderCount: UM.SettingPropertyProvider
-    {
-        containerStack: Cura.MachineManager.activeMachine
-        key: "machine_extruder_count"
-        watchedProperties: ["value"]
-        storeIndex: 0
-    }
-
     contents: [
         RecommendedSettingItem
         {
@@ -69,9 +53,9 @@ RecommendedSettingSection
             settingName: catalog.i18nc("@action:label", "Print with")
             tooltipText: catalog.i18nc("@label", "The extruder train to use for printing the support. This is used in multi-extrusion.")
             // Hide this component when there is only one extruder
-            enabled: machineExtruderCount.properties.value > 1
-            visible: machineExtruderCount.properties.value > 1
-            isCompressed: enableSupportRow.isCompressed || machineExtruderCount.properties.value <= 1
+            enabled: Cura.ExtruderManager.enabledExtruderCount > 1
+            visible: Cura.ExtruderManager.enabledExtruderCount > 1
+            isCompressed: enableSupportRow.isCompressed || Cura.ExtruderManager.enabledExtruderCount <= 1
 
             settingControl: Cura.SingleSettingExtruderSelectorBar
             {

@@ -7,6 +7,7 @@ from UM.Application import Application
 from UM.FlameProfiler import pyqtSlot
 
 import cura.CuraApplication # To get the global container stack to find the current machine.
+from UM.Util import parseBool
 from cura.Settings.GlobalStack import GlobalStack
 from UM.Logger import Logger
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
@@ -69,6 +70,13 @@ class ExtruderManager(QObject):
         # trying to fix this broke to many things. This is a workaround. Don't use this unless you need to read
         # extruderIds directly after a machine update.
         return self.extruderIds
+
+    @pyqtProperty(int, notify = extrudersChanged)
+    def enabledExtruderCount(self) -> int:
+        global_container_stack = self._application.getGlobalContainerStack()
+        if global_container_stack:
+            return len([extruder for extruder in global_container_stack.extruderList if parseBool(extruder.getMetaDataEntry("enabled", "True"))])
+        return 0
 
     @pyqtProperty(str, notify = activeExtruderChanged)
     def activeExtruderStackId(self) -> Optional[str]:
