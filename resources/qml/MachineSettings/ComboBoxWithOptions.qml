@@ -74,6 +74,12 @@ UM.TooltipArea
                 return
             }
 
+            if (typeof propertyProvider.properties["options"] == "string")
+            {
+                return
+            }
+
+
             for (var i = 0; i < propertyProvider.properties["options"].keys().length; i++)
             {
                 var key = propertyProvider.properties["options"].keys()[i]
@@ -82,7 +88,7 @@ UM.TooltipArea
 
                 if (propertyProvider.properties.value == key)
                 {
-                    currentIndex = i
+                    comboBox.currentIndex = i
                 }
             }
         }
@@ -126,7 +132,7 @@ UM.TooltipArea
         onActivated:
         {
             var newValue = model.get(index).value
-            if (propertyProvider.properties.value != newValue)
+            if (propertyProvider.properties.value != newValue && newValue != undefined)
             {
                 if (setValueFunction !== null)
                 {
@@ -134,6 +140,7 @@ UM.TooltipArea
                 }
                 else
                 {
+                    print("SETTING PROPERTY VALUE: " + newValue)
                     propertyProvider.setPropertyValue("value", newValue)
                 }
                 forceUpdateOnChangeFunction()
