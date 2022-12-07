@@ -44,11 +44,26 @@ Cura.ComboBox {
 
                 if (propertyProvider.properties.value == key)
                 {
+                    print("propertyProvider.properties.value: " + propertyProvider.properties.value)
+                    print("key: " + key)
+                    print("currentIndex: " + currentIndex)
+                    print("i: " + i)
                     // The combobox is cleared after each value change so the currentIndex must be set each time.
                     currentIndex = i
                 }
             }
         }
+    }
+
+    // Updates to the setting are delayed by interval. The signal onIsValueUsedChanged() is emitted early for some reason.
+    // This causes the selected value in the combobox to be updated to the previous value. (This issue is present with infill_pattern setting)
+    // This is a hack. If you see this in the future, try removing it and see if the combobox still works.
+    Timer
+    {
+        id: updateTimer
+        interval: 100
+        repeat: false
+        onTriggered: comboboxModel.updateModel(false)
     }
 
     property UM.SettingPropertyProvider propertyProvider: UM.SettingPropertyProvider
@@ -61,8 +76,8 @@ Cura.ComboBox {
     Connections
     {
         target: propertyProvider
-        function onContainerStackChanged() { comboboxModel.updateModel() }
-        function onIsValueUsedChanged() { comboboxModel.updateModel() }
+        function onContainerStackChanged() { updateTimer.restart() }
+        function onIsValueUsedChanged() { updateTimer.restart() }
     }
 
     onCurrentIndexChanged: parseValueAndUpdateSetting()
@@ -80,6 +95,7 @@ Cura.ComboBox {
     {
         if (updateAllExtruders)
         {
+            print("UPDATING ALL WITH VALUE: " + value)
             Cura.MachineManager.setSettingForAllExtruders(propertyProvider.key, "value", value)
         }
         else
