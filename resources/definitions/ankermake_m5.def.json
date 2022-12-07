@@ -19,44 +19,99 @@
 
   "overrides": {
     "machine_name": { "default_value": "AnkerMake M5" },
-    "machine_width": { "default_value": 235 },
-    "machine_height": { "default_value": 250 },
-    "machine_depth": { "default_value": 235 },
-    "machine_heated_bed": { "default_value": true },
+    "machine_start_gcode": {
+      "default_value": "M104 S{material_print_temperature_layer_0} ; set final nozzle temp\nM190 S{material_bed_temperature_layer_0} ; set and wait for nozzle temp to stabilize\nM109 S{material_print_temperature_layer_0} ; wait for nozzle temp to stabilize\nG28 ;Home\nG1 E10 F3600; push out retracted filament(fix for over retraction after prime)"
+    },
     "material_diameter": { "default_value": 1.75 },
-    "speed_print": { "value": 250.0, "maximum_value_warning": 255 },
-    "speed_infill": { "maximum_value_warning": 255 },
-    "speed_topbottom": { "value": 150.0 },
-    "speed_travel": { "value": 250.0 },
-    "speed_wall": { "value": 150.0, "maximum_value_warning": 255 },
-    "speed_wall_x": { "value": 250.0, "maximum_value_warning": 255 },
+    "machine_width": { "default_value": 235 },
+    "machine_depth": { "default_value": 235 },
+    "machine_height": { "default_value": 250 },
+    "machine_heated_bed": { "default_value": true },
+    "gantry_height": { "value": 25 },
+
+    "xy_offset_layer_0": { "value": -0.2 },
+    "hole_xy_offset": { "value": 0.2 },
+
+    "top_bottom_thickness": { "value": "layer_height * 4" },
     "skin_monotonic": { "default_value": true },
+
+    "infill_sparse_density": { "value": 25 },
+    "infill_pattern": {
+      "value": "'lines' if infill_sparse_density >= 25 else 'grid'"
+    },
+    "zig_zaggify_infill": {
+      "value": "infill_pattern == 'cross' or infill_pattern == 'cross_3d' or infill_pattern == 'lines'"
+    },
+
     "material_print_temperature": {
       "maximum_value_warning": "260"
     },
     "material_print_temperature_layer_0": {
       "value": "material_print_temperature + 5",
-      "maximum_value_warning": "260"
+      "maximum_value_warning": "270"
+    },
+    "material_initial_print_temperature": {
+      "value": "material_print_temperature"
+    },
+    "material_final_print_temperature": {
+      "value": "material_print_temperature"
     },
     "material_bed_temperature": { "maximum_value_warning": "110" },
-    "material_bed_temperature_layer_0": {
-      "value": "material_bed_temperature + 5",
-      "maximum_value_warning": "110"
+    "material_bed_temperature_layer_0": { "maximum_value_warning": "110" },
+    "skin_material_flow": { "value": 97 },
+    "material_flow_layer_0": { "value": 115 },
+
+    "speed_print": { "value": 250.0, "maximum_value_warning": 255 },
+    "speed_infill": { "maximum_value_warning": 255 },
+    "speed_wall": { "value": 150.0, "maximum_value_warning": 255 },
+    "speed_wall_x": { "value": 250.0, "maximum_value_warning": 255 },
+    "speed_support": { "maximum_value_warning": 255 },
+    "speed_support_infill": { "maximum_value_warning": 255 },
+    "speed_support_interface": { "maximum_value_warning": 255 },
+    "speed_support_roof": { "maximum_value_warning": 255 },
+    "speed_support_bottom": { "maximum_value_warning": 255 },
+    "speed_topbottom": { "value": 150.0 },
+    "acceleration_print": { "value": "2500" },
+    "speed_travel": { "value": 250.0 },
+
+    "retraction_amount": { "default_value": 1.5 },
+    "retraction_speed": { "default_value": 60 },
+    "retraction_combing": {
+      "value": "'off' if retraction_hop_enabled else 'infill'"
     },
-    "material_flow_layer_0": { "value": 120 },
+    "retraction_hop": { "value": 0.2 },
+
     "cool_min_layer_time": { "value": 6 },
     "cool_min_speed": { "value": 30 },
-    "retraction_amount": { "default_value": 1.5 },
-    "retraction_speed": { "default_value": 70 },
-    "acceleration_print": { "value": "2500" },
+
+    "support_angle": {
+      "value": "math.floor(math.degrees(math.atan(line_width / 2.0 /layer_height)))"
+    },
+    "support_infill_rate": {
+      "value": "0 if support_enable and support_structure == 'tree' else 20"
+    },
+    "support_z_distance": { "value": "layer_height * 2" },
+    "support_xy_distance": { "value": "wall_line_width_0 * 2" },
+    "support_top_distance": {
+      "value": "extruderValue(support_roof_extruder_nr if support_roof_enable else support_infill_extruder_nr, 'support_z_distance') + (layer_height if support_structure == 'tree' else 0)"
+    },
+    "support_xy_overrides_z": { "value": "'xy_overrides_z'" },
+    "support_xy_distance_overhang": { "value": "wall_line_width_0" },
+    "support_brim_width": { "value": 4.0 },
+    "minimum_support_area": { "value": 2 },
+    "support_interface_enable": { "value": true },
+    "support_roof_enable": { "value": true },
+    "support_interface_skip_height": { "value": 0.2 },
+    "support_interface_density": { "value": 33.333 },
+    "support_interface_pattern": { "value": "'grid'" },
+    "minimum_interface_area": { "value": 10 },
+
     "adhesion_type": { "default_value": "skirt" },
-    "retraction_combing": { "value": "infill" },
-    "machine_start_gcode": {
-      "default_value": "M104 S{material_print_temperature_layer_0} ; set final nozzle temp\nM190 S{material_bed_temperature_layer_0} ; set and wait for nozzle temp to stabilize\nM109 S{material_print_temperature_layer_0} ; wait for nozzle temp to stabilize\nG28 ;Home\nG1 E10 F3600; push out retracted filament(fix for over retraction after prime)"
-    },
-    "machine_end_gcode": {
-      "default_value": "M104 S0\nM140 S0\n;Retract the filament\nG92 E1\nG1 E-1 F300\nG28 X0 Y0\nM84"
-    },
-    "gantry_height": { "value": 25 }
+    "skirt_line_count": { "value": 3 },
+
+    "wall_overhang_angle": { "value": 55 },
+    "wall_overhang_speed_factor": { "value": 55 },
+    "small_hole_max_size": { "value": 10 },
+    "small_feature_speed_factor_0": { "value": 50 }
   }
 }
