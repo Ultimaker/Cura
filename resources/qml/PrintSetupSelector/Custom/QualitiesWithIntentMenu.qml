@@ -233,18 +233,19 @@ Popup
                 right: parent.right
             }
 
-            height: textLabel.contentHeight + 2 * UM.Theme.getSize("narrow_margin").height
+            height: textLabel.contentHeight + UM.Theme.getSize("default_margin").height
 
             contentItem: Item
             {
                 width: parent.width
-                height: childrenRect.height
+                height: parent.height
 
                 UM.Label
                 {
                     id: textLabel
                     text: manageProfilesButton.text
                     height: contentHeight
+                    anchors.verticalCenter: parent.verticalCenter
                 }
                 UM.Label
                 {
@@ -252,6 +253,7 @@ Popup
                     text: Cura.Actions.manageProfiles.shortcut
                     color: UM.Theme.getColor("text_lighter")
                     height: contentHeight
+                    anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right
                     anchors.rightMargin: UM.Theme.getSize("default_margin").width
                 }
@@ -266,7 +268,7 @@ Popup
         Item
         {
             width: 2
-            height: UM.Theme.getSize("default_radius").width 
+            height: UM.Theme.getSize("default_radius").width
         }
     }
 }
