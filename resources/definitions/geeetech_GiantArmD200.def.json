@@ -11,8 +11,7 @@
        },
 
     "overrides": {
-        "machine_name": { "default_value": "Geeetech GiantArmD200" },
-        "machine_width": { "default_value": 300 },   
+        "machine_name": { "default_value": "Geeetech GiantArmD200" },  
         "machine_depth": { "default_value": 180 },
         "machine_height": {"default_value": 180 },
 		"machine_head_with_fans_polygon": { "default_value": [[-75, 35], [18, 35], [18, -18], [-75, -18]] },
