@@ -34,7 +34,7 @@ RowLayout
     UM.SettingPropertyProvider
     {
         id: propertyProvider
-        containerStackId: updateAllExtruders ? Cura.ExtruderManager.extruderIds[defaultExtruderIndex] : Cura.MachineManager.activeMachine.id
+        containerStackId: updateAllExtruders ? Cura.ExtruderManager.globalStackExtruderIds[defaultExtruderIndex] : Cura.MachineManager.activeMachine.id
         watchedProperties: ["value"]
         storeIndex: 0
     }

@@ -63,6 +63,13 @@ class ExtruderManager(QObject):
         # The emit function can't be directly connected to another signal. This wrapper function is required.
         self.globalStackExtrudersChanged.emit()
 
+    @pyqtProperty("QVariantMap", notify = globalStackExtrudersChanged)
+    def globalStackExtruderIds(self) -> Dict[str, str]:
+        # The extruderIds property notifys changed before the extruders are changed on switching machines
+        # trying to fix this broke to many things. This is a workaround. Don't use this unless you need to read
+        # extruderIds directly after a machine update.
+        return self.extruderIds
+
     @pyqtProperty(str, notify = activeExtruderChanged)
     def activeExtruderStackId(self) -> Optional[str]:
         """Gets the unique identifier of the currently active extruder stack.
