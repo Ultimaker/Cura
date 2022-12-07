@@ -52,8 +52,13 @@ Item
             id: intentSelection
             onClicked: menu.opened ? menu.close() : menu.open()
 
-            anchors.right: profileWarningReset.left
-            width: UM.Theme.getSize("print_setup_big_item").width - profileWarningReset.width
+            // Anchoring to the right makes much more sense here, but for some reason this component compresses from the right
+            // and then expands from the left afterwards. This pushes it left by profileWarningReset.width
+            // The solution is to anchor from the other direction so this does not happen.
+            anchors.left: parent.left
+            // This leftMargin gives us the same spacing as anchoring to the right on profileWarningReset
+            anchors.leftMargin: parent.width - UM.Theme.getSize("print_setup_big_item").width
+            width: profileWarningReset.visible ? UM.Theme.getSize("print_setup_big_item").width - profileWarningReset.width  - UM.Theme.getSize("default_margin").width : UM.Theme.getSize("print_setup_big_item").width
             height: textLabel.contentHeight + 2 * UM.Theme.getSize("narrow_margin").height
             hoverEnabled: true
 
@@ -157,6 +162,7 @@ Item
             id: profileWarningReset
             width: childrenRect.width
             anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
             fullWarning: false
         }
 
