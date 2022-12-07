@@ -392,12 +392,6 @@
         "raft_interface_thickness": {
             "value": 0.27
         },
-        "raft_interface_line_width": {
-            "value": 0.7
-        },
-        "raft_base_thickness": {
-            "value": 0.3
-        },
         "raft_surface_speed": {
             "value": 40.0
         },
@@ -409,12 +403,6 @@
         },
         "raft_surface_fan_speed": {
             "value": "100.0 if cool_fan_enabled else 0.0"
-        },
-        "raft_interface_fan_speed": {
-            "value": 0.0
-        },
-        "raft_base_fan_speed": {
-            "value": 0.0
         },
         "prime_tower_size": {
             "default_value": 15.0

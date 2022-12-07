@@ -39,9 +39,6 @@
         "machine_height": {
             "default_value": 400
         },
-        "machine_heated_bed": {
-            "default_value": true
-        },
         "machine_always_write_active_tool": {
             "default_value": true
         },
