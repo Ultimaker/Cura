@@ -12,7 +12,7 @@ UM.ToolbarButton
     id: base
 
     property var extruder
-    property var extrdurerNumberFont: UM.Theme.getFont("small_emphasis")
+    property var extruderNumberFont: UM.Theme.getFont("small_emphasis")
 
     toolItem: ExtruderIcon
     {
