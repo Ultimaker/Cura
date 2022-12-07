@@ -11,7 +11,7 @@ import Cura 1.0 as Cura
 UM.Dialog
 {
     property var manager
-
+    property var compatible_machine_model: Cura.CompatibleMachineModel {}
     id: base
 
     title: catalog.i18nc("@title:window", "Select Printer")
@@ -53,19 +53,39 @@ UM.Dialog
                     anchors.left: parent.left
                     text: catalog.i18nc("@title:label", "Compatible Printers")
                     font: UM.Theme.getFont("large")
+                    anchors.horizontalCenter: parent.horizontalCenter
                 }
-
-                UM.SimpleButton
+                TabButton
                 {
+                    id: refreshButton
                     anchors.right: parent.right
+                    width: UM.Theme.getSize("button_icon").width
+                    height: UM.Theme.getSize("button_icon").height
+                    hoverEnabled: true
 
-                    width: UM.Theme.getSize("small_button").width
-                    height: UM.Theme.getSize("small_button").height
-                    iconSource: UM.Theme.getIcon("ArrowDoubleCircleRight")
-                    color: UM.Theme.getColor("text_link")
-                    hoverColor: UM.Theme.getColor("text_scene_hover")
+                    onClicked:
+                    {
+                        manager.refresh()
+                        base.compatible_machine_model.forceUpdate()
+                    }
 
-                    onClicked: manager.refresh()
+                    background: Rectangle
+                    {
+                        width: UM.Theme.getSize("button_icon").width
+                        height: UM.Theme.getSize("button_icon").height
+                        color: refreshButton.hovered ? UM.Theme.getColor("toolbar_button_hover") : UM.Theme.getColor("toolbar_background")
+                        radius: Math.round(refreshButton.width * 0.5)
+                    }
+
+                    UM.ColorImage
+                    {
+                        width: UM.Theme.getSize("section_icon").width
+                        height: UM.Theme.getSize("section_icon").height
+                        color: UM.Theme.getColor("text_link")
+                        source: UM.Theme.getIcon("ArrowDoubleCircleRight")
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
                 }
             }
 
@@ -73,7 +93,7 @@ UM.Dialog
             {
                 id: contents
 
-                model: Cura.CompatibleMachineModel {}
+                model: base.compatible_machine_model
 
                 delegate: Cura.PrintSelectorCard
                 {

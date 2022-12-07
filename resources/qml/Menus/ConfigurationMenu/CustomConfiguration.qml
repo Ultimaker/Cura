@@ -40,7 +40,7 @@ Item
     UM.TabRow
     {
         id: tabBar
-        anchors.top: printerTypeSelectorRow.bottom
+        anchors.top: header.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         visible: extrudersModel.count > 1
 

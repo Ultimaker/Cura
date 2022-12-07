@@ -52,8 +52,9 @@ Item
             id: intentSelection
             onClicked: menu.opened ? menu.close() : menu.open()
 
-            anchors.right: parent.right
-            width: UM.Theme.getSize("print_setup_big_item").width
+            anchors.right: profileWarningReset.left
+            anchors.rightMargin: UM.Theme.getSize("narrow_margin").width
+            width: UM.Theme.getSize("print_setup_big_item").width - profileWarningReset.width
             height: textLabel.contentHeight + 2 * UM.Theme.getSize("narrow_margin").height
             hoverEnabled: true
 
@@ -67,7 +68,7 @@ Item
                 UM.Label
                 {
                     id: textLabel
-                    text: Cura.MachineManager.activeQualityDisplayNameMap["main"]
+                    text: Cura.MachineManager.activeQualityDisplayNameMainStringParts.join(" - ")
                     Layout.margins: 0
                     Layout.maximumWidth: Math.floor(parent.width * 0.7)  // Always leave >= 30% for the rest of the row.
                     height: contentHeight
@@ -77,7 +78,19 @@ Item
 
                 UM.Label
                 {
-                    text: activeQualityDetailText()
+                    text:
+                    {
+                        const string_parts = Cura.MachineManager.activeQualityDisplayNameTailStringParts;
+                        if (string_parts.length === 0)
+                        {
+                            return "";
+                        }
+                        else
+                        {
+                            ` - ${string_parts.join(" - ")}`
+                        }
+                    }
+
                     color: UM.Theme.getColor("text_detail")
                     Layout.margins: 0
                     Layout.fillWidth: true
@@ -85,32 +98,6 @@ Item
                     height: contentHeight
                     elide: Text.ElideRight
                     wrapMode: Text.NoWrap
-                    function activeQualityDetailText()
-                    {
-                        var resultMap = Cura.MachineManager.activeQualityDisplayNameMap
-                        var resultSuffix = resultMap["suffix"]
-                        var result = ""
-
-                        if (Cura.MachineManager.isActiveQualityExperimental)
-                        {
-                            resultSuffix += " (Experimental)"
-                        }
-
-                        if (Cura.MachineManager.isActiveQualitySupported)
-                        {
-                            if (Cura.MachineManager.activeQualityLayerHeight > 0)
-                            {
-                                if (resultSuffix)
-                                {
-                                    result += " - " + resultSuffix
-                                }
-                                result += " - "
-                                result += Cura.MachineManager.activeQualityLayerHeight + "mm"
-                            }
-                        }
-
-                        return result
-                    }
                 }
             }
 
@@ -164,6 +151,15 @@ Item
 
                 color: UM.Theme.getColor("setting_control_button")
             }
+        }
+
+        ProfileWarningReset
+        {
+            id: profileWarningReset
+            width: childrenRect.width
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+            fullWarning: false
         }
 
         QualitiesWithIntentMenu
