@@ -140,7 +140,6 @@ UM.TooltipArea
                 }
                 else
                 {
-                    print("SETTING PROPERTY VALUE: " + newValue)
                     propertyProvider.setPropertyValue("value", newValue)
                 }
                 forceUpdateOnChangeFunction()

@@ -44,10 +44,6 @@ Cura.ComboBox {
 
                 if (propertyProvider.properties.value == key)
                 {
-                    print("propertyProvider.properties.value: " + propertyProvider.properties.value)
-                    print("key: " + key)
-                    print("currentIndex: " + currentIndex)
-                    print("i: " + i)
                     // The combobox is cleared after each value change so the currentIndex must be set each time.
                     currentIndex = i
                 }
@@ -95,7 +91,6 @@ Cura.ComboBox {
     {
         if (updateAllExtruders)
         {
-            print("UPDATING ALL WITH VALUE: " + value)
             Cura.MachineManager.setSettingForAllExtruders(propertyProvider.key, "value", value)
         }
         else
