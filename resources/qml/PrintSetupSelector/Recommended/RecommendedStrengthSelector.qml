@@ -81,7 +81,7 @@ RecommendedSettingSection
                         width: parent.width
                         settingName: "wall_thickness"
                         updateAllExtruders: true
-                        validator: Cura.FloatValidator {}
+                        validator: UM.FloatValidator {}
                         unitText: catalog.i18nc("@label", "mm")
                     }
                 }
@@ -94,7 +94,7 @@ RecommendedSettingSection
                         width: parent.width
                         settingName: "top_bottom_thickness"
                         updateAllExtruders: true
-                        validator: Cura.FloatValidator {}
+                        validator: UM.FloatValidator {}
                         unitText: catalog.i18nc("@label", "mm")
                     }
                 }

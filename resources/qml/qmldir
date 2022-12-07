@@ -19,12 +19,6 @@ SettingView 1.0 SettingView.qml
 ProfileMenu 1.0 ProfileMenu.qml
 PrintSelectorCard 1.0 PrintSelectorCard.qml
 
-# Cura/Validators
-FloatValidator              1.7 FloatValidator.qml
-IntValidator                1.7 IntValidator
-IntListValidator            1.7 IntListValidator
-HexColorValidator           1.7 HexColorValidator.qml
-
 # Cura/WelcomePages
 
 WizardPanel         1.0 WizardPanel.qml
