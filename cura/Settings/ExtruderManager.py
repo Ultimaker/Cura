@@ -49,11 +49,6 @@ class ExtruderManager(QObject):
         Selection.selectionChanged.connect(self.resetSelectedObjectExtruders)
         Application.getInstance().globalContainerStackChanged.connect(self.emitGlobalStackExtrudersChanged)  # When the machine is swapped we must update the active machine extruders
 
-    # Don't use this unless you are reading from ExtruderManager.extruderIds when receiving the signal
-    globalStackExtrudersChanged = pyqtSignal()
-
-    # This signal actually emits before the global stacks extruders are updated, changing this behaviour breaks too many things
-    # Use globalStackExtrudersChanged = pyqtSignal() if you want a trigger when the extrduerIds property changes.
     extrudersChanged = pyqtSignal(QVariant)
     """Signal to notify other components when the list of extruders for a machine definition changes."""
 
@@ -62,14 +57,10 @@ class ExtruderManager(QObject):
 
     def emitGlobalStackExtrudersChanged(self):
         # The emit function can't be directly connected to another signal. This wrapper function is required.
-        self.globalStackExtrudersChanged.emit()
-
-    @pyqtProperty("QVariantMap", notify = globalStackExtrudersChanged)
-    def globalStackExtruderIds(self) -> Dict[str, str]:
-        # The extruderIds property notifys changed before the extruders are changed on switching machines
-        # trying to fix this broke to many things. This is a workaround. Don't use this unless you need to read
-        # extruderIds directly after a machine update.
-        return self.extruderIds
+        # The extrudersChanged signal is emitted early when changing machines. This triggers it a second time
+        # after the extruder have changed properly. This is important for any QML using ExtruderManager.extruderIds
+        # This is a hack, but other behaviour relys on the updating in this order.
+        self.extrudersChanged.emit(self._application.getGlobalContainerStack().getId())
 
     @pyqtProperty(int, notify = extrudersChanged)
     def enabledExtruderCount(self) -> int:
