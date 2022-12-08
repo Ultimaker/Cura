@@ -64,11 +64,11 @@ RowLayout
         target: propertyProvider
         function onContainerStackChanged()
         {
-            comboboxModel.updateModel()
+            updateTimer.restart()
         }
         function onIsValueUsedChanged()
         {
-            comboboxModel.updateModel()
+            updateTimer.restart()
         }
     }
 
