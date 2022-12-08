@@ -1,19 +1,18 @@
 {
-    "version": 2,
-    "name": "AnkerMake M5",
-    "inherits": "fdmprinter",
-    "metadata":
-    {
-        "visible": true,
-        "author": "just-trey",
-        "manufacturer": "AnkerMake",
-        "file_formats": "text/x-gcode",
-        "platform": "ankermake_m5_platform.obj",
-        "has_machine_quality": true,
-        "machine_extruder_trains": { "0": "ankermake_m5_extruder_0" },
-        "platform_texture": "ankermake_m5.png",
-        "preferred_material": "generic_pla",
-        "preferred_quality_type": "normal"
+  "version": 2,
+  "name": "AnkerMake M5",
+  "inherits": "fdmprinter",
+  "metadata": {
+    "visible": true,
+    "author": "just-trey",
+    "manufacturer": "AnkerMake",
+    "file_formats": "text/x-gcode",
+    "platform": "ankermake_m5_platform.obj",
+    "has_machine_quality": true,
+    "machine_extruder_trains": { "0": "ankermake_m5_extruder_0" },
+    "platform_texture": "ankermake_m5.png",
+    "preferred_material": "generic_pla",
+    "preferred_quality_type": "normal"
   },
 
   "overrides": {
@@ -91,9 +90,6 @@
     },
     "support_z_distance": { "value": "layer_height * 2" },
     "support_xy_distance": { "value": "wall_line_width_0 * 2" },
-    "support_top_distance": {
-      "value": "extruderValue(support_roof_extruder_nr if support_roof_enable else support_infill_extruder_nr, 'support_z_distance') + (layer_height if support_structure == 'tree' else 0)"
-    },
     "support_xy_overrides_z": { "value": "'xy_overrides_z'" },
     "support_xy_distance_overhang": { "value": "wall_line_width_0" },
     "support_brim_width": { "value": 4.0 },
@@ -110,7 +106,6 @@
 
     "wall_overhang_angle": { "value": 55 },
     "wall_overhang_speed_factor": { "value": 55 },
-    "small_hole_max_size": { "value": 10 },
-    "small_feature_speed_factor_0": { "value": 50 }
+    "small_hole_max_size": { "value": 10 }
   }
 }
