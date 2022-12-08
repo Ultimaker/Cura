@@ -87,6 +87,12 @@ UM.TextField
 
     function parseValueUpdateSetting()
     {
+        if (propertyProvider.properties.value == text || parseInt(propertyProvide.properties.value) == parseInt(text))
+        {
+            // Don't set the property value from the control. It already has the same value
+            return
+        }
+
         if (propertyProvider && text != propertyProvider.properties.value)
         {
             updateSetting(text);
