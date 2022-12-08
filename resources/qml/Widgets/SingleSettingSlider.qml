@@ -6,16 +6,14 @@ import QtQuick.Controls 2.15
 
 import UM 1.7 as UM
 import Cura 1.7 as Cura
-import QtQuick.Layouts 1.3
 
 // This silder allows changing of a single setting. Only the setting name has to be passed in to "settingName".
 // All of the setting updating logic is handled by this component.
 // This component allows you to choose values between minValue -> maxValue and rounds them to the nearest 10.
 // If the setting is limited to a single extruder or is settable with different values per extruder use "updateAllExtruders: true"
-RowLayout
+Item
 {
     height: childrenRect.height
-    spacing: UM.Theme.getSize("default_margin").width
 
     property alias settingName: propertyProvider.key
     property alias enabled: settingSlider.enabled
@@ -39,12 +37,9 @@ RowLayout
         storeIndex: 0
     }
 
-    UM.Label { Layout.fillWidth: false; text: minValue }
-
     UM.Slider
     {
         id: settingSlider
-        Layout.fillWidth: true
 
         width: parent.width
 
@@ -54,10 +49,14 @@ RowLayout
         value: parseInt(propertyProvider.properties.value)
 
         // When the slider is released trigger an update immediately. This forces the slider to snap to the rounded value.
-        onPressedChanged: if(!pressed) { roundSliderValueUpdateSetting() }
+        onPressedChanged: function(pressed)
+        {
+            if(!pressed)
+            {
+                roundSliderValueUpdateSetting();
+            }
+        }
     }
-
-    UM.Label { Layout.fillWidth: false; text: maxValue }
 
     Connections
     {
