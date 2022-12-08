@@ -59,8 +59,14 @@ UM.TextField
     Connections
     {
         target: propertyProvider
-        function onContainerStackChanged() { updateTimer.restart() }
-        function onIsValueUsedChanged() { updateTimer.restart() }
+        function onContainerStackChanged()
+        {
+            updateTimer.restart()
+        }
+        function onIsValueUsedChanged()
+        {
+            updateTimer.restart()
+        }
     }
 
     // Restart update timer right after releasing a key. This stops lag while typing, but you still get warning and error

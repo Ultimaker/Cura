@@ -22,7 +22,8 @@ Cura.ComboBox {
     // This is only used if updateAllExtruders == true
     property int defaultExtruderIndex: 0
 
-    model:  ListModel {
+    model:  ListModel
+    {
         id: comboboxModel
 
         // The propertyProvider has not loaded the setting when this components onComplete triggers. Populating the model

@@ -62,8 +62,14 @@ RowLayout
     Connections
     {
         target: propertyProvider
-        function onContainerStackChanged() { updateTimer.restart() }
-        function onIsValueUsedChanged() { updateTimer.restart() }
+        function onContainerStackChanged()
+        {
+            comboboxModel.updateModel()
+        }
+        function onIsValueUsedChanged()
+        {
+            comboboxModel.updateModel()
+        }
     }
 
     // Updates to the setting are delayed by interval. This reduces lag by waiting a bit after a setting change to update the slider contents.
