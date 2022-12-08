@@ -11,23 +11,24 @@ import Cura 1.7 as Cura
 // All of the setting updating logic is handled by this component.
 // This component allows you to choose values between minValue -> maxValue and rounds them to the nearest 10.
 // If the setting is limited to a single extruder or is settable with different values per extruder use "updateAllExtruders: true"
-Item
+UM.Slider
 {
-    height: childrenRect.height
+    id: settingSlider
 
     property alias settingName: propertyProvider.key
-    property alias enabled: settingSlider.enabled
 
     // If true, all extruders will have "settingName" property updated.
     // The displayed value will be read from the extruder with index "defaultExtruderIndex" instead of the machine.
     property bool updateAllExtruders: false
     // This is only used if updateAllExtruders == true
     property int defaultExtruderIndex: 0
-
-    property bool roundToNearestTen: false
-    property int maxValue: 100
-    property int minValue: 0
     property int previousValue: -1
+
+    // set range from 0 to 100
+    from: 0; to: 100
+    // set stepSize to 10 and set snapMode to snap on release snapMode is needed
+    // otherwise the used percentage and slider handle show different values
+    stepSize: 10; snapMode: Slider.SnapOnRelease
 
     UM.SettingPropertyProvider
     {
@@ -37,24 +38,15 @@ Item
         storeIndex: 0
     }
 
-    UM.Slider
+    // set initial value from stack
+    value: parseInt(propertyProvider.properties.value)
+
+    // When the slider is released trigger an update immediately. This forces the slider to snap to the rounded value.
+    onPressedChanged: function(pressed)
     {
-        id: settingSlider
-
-        width: parent.width
-
-        from: minValue; to: maxValue; stepSize: 1
-
-        // set initial value from stack
-        value: parseInt(propertyProvider.properties.value)
-
-        // When the slider is released trigger an update immediately. This forces the slider to snap to the rounded value.
-        onPressedChanged: function(pressed)
+        if(!pressed)
         {
-            if(!pressed)
-            {
-                roundSliderValueUpdateSetting();
-            }
+            updateSetting(settingSlider.value);
         }
     }
 
@@ -84,14 +76,6 @@ Item
     {
         settingSlider.value = value
     }
-
-    function roundSliderValueUpdateSetting()
-    {
-        // If the user interacts with the slider we round the value and update the setting.
-        const roundedSliderValue = roundToNearestTen ? Math.round(settingSlider.value / 10) * 10 : Math.round(settingSlider.value)
-        updateSetting(roundedSliderValue)
-    }
-
 
     function parseValueUpdateSetting(triggerUpdate)
     {

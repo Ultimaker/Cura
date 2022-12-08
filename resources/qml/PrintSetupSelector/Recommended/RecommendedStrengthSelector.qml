@@ -38,7 +38,6 @@ RecommendedSettingSection
                 height: UM.Theme.getSize("combobox").height
                 width: parent.width
                 settingName: "infill_sparse_density"
-                roundToNearestTen: true
                 updateAllExtruders: true
                 // disable slider when gradual support is enabled
                 enabled: parseInt(infillSteps.properties.value) == 0
