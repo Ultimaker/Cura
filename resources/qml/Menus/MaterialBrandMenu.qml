@@ -16,6 +16,7 @@ Cura.MenuItem
     id: materialBrandMenu
     overrideShowArrow: true
 
+    property var rootHeight
     property var materialTypesModel
     text: materialTypesModel.name
 
@@ -36,6 +37,7 @@ Cura.MenuItem
 
             UM.Label
             {
+                id: brandLableText
                 text: replaceText(materialBrandMenu.text)
                 Layout.fillWidth: true
                 Layout.fillHeight:true
@@ -248,6 +250,8 @@ Cura.MenuItem
                         height: materialColorsList.height + padding * 2
                         x: parent.width
                         y: {
+                            // This popup will always try to stay within the vertical space of the parent of MaterialBrandMenu
+                            // If it is larger than the parent, it will expand downwards.
                             var popupHeight = model.colors.count * UM.Theme.getSize("menu").height
                             var spaceToBottom = materialTypesList.height - parent.y // Space from hovered item to bottom of list
 
@@ -257,11 +261,25 @@ Cura.MenuItem
                             }
                             else
                             {
-                                // The popup is longer than the distance between the hovered item and the bottom of the item list.
-                                // This pushes the popup upwards until the bottom lines up with the parent bottom.
-                                // Only when popup is longer than the parent, the popup will flow out below the parent.
-                                var topOfParent = parent.y + UM.Theme.getSize("default_lining").height
-                                return -Math.min(parent.y - (materialTypesList.height - popupHeight - UM.Theme.getSize("default_lining").height), topOfParent)
+                                var yAlignedWithTopOfRootPopup = - materialBrandMenu.y - UM.Theme.getSize("default_lining").height
+
+                                if (popupHeight > rootHeight && popupHeight > menuPopup.height)
+                                {
+                                   // The popup is taller than the root material popup and the popup is taller than it's parent popup
+                                   // This means it should align with the top of the root popup
+                                    if (menuPopup.height < rootHeight)
+                                    {
+                                        //The root is larger than than the parent popup. Align with root top
+                                        return -materialBrandMenu.y - UM.Theme.getSize("default_lining").height
+                                    }
+                                    else
+                                    {
+                                        // The parent popup is larger than the root we only have to align to the top of the parent
+                                        return -brandMaterialBase.y - UM.Theme.getSize("default_lining").height
+                                    }
+                                }
+                                // The bottom of the popup is aligned with the bottom of the parent popup
+                                return  materialTypesList.height - parent.y - popupHeight - UM.Theme.getSize("default_lining").height
                             }
                         }
 
