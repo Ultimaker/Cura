@@ -52,7 +52,7 @@ jobs:
                     path: printer-linter-result/
 
             -   name: Run clang-tidy-pr-comments action
-                uses: platisd/clang-tidy-pr-comments@master
+                uses: platisd/clang-tidy-pr-comments@fix_suggestions_for_multiline_comments
                 with:
                     github_token: ${{ secrets.GITHUB_TOKEN }}
                     clang_tidy_fixes: result.yml

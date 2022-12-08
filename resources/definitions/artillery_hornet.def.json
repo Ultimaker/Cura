@@ -1,0 +1,25 @@
+{
+    "version": 2,
+    "name": "Artillery Hornet",
+    "inherits": "artillery_base",
+    "metadata":
+    {
+        "visible": true,
+        "author": "Wilds",
+        "platform": "artillery_hornet.stl",
+        "platform_offset": [
+            0,
+            -105.5,
+            0
+        ],
+        "quality_definition": "artillery_base"
+    },
+    "overrides":
+    {
+        "gantry_height": { "value": 25 },
+        "machine_depth": { "default_value": 220 },
+        "machine_height": { "default_value": 250 },
+        "machine_name": { "default_value": "Artillery Hornet" },
+        "machine_width": { "default_value": 220 }
+    }
+}

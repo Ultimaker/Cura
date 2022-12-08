@@ -1,20 +1,19 @@
 {
-  "name": "AnkerMake M5",
-  "version": 2,
-  "inherits": "fdmprinter",
-  "metadata": {
-    "visible": true,
-    "author": "just-trey",
-    "manufacturer": "AnkerMake",
-    "platform_texture": "ankermake_m5.png",
-    "platform": "ankermake_m5_platform.obj",
-    "has_machine_quality": true,
-    "preferred_quality_type": "normal",
-    "file_formats": "text/x-gcode",
-    "machine_extruder_trains": {
-      "0": "ankermake_m5_extruder_0"
-    },
-    "preferred_material": "generic_pla"
+    "version": 2,
+    "name": "AnkerMake M5",
+    "inherits": "fdmprinter",
+    "metadata":
+    {
+        "visible": true,
+        "author": "just-trey",
+        "manufacturer": "AnkerMake",
+        "file_formats": "text/x-gcode",
+        "platform": "ankermake_m5_platform.obj",
+        "has_machine_quality": true,
+        "machine_extruder_trains": { "0": "ankermake_m5_extruder_0" },
+        "platform_texture": "ankermake_m5.png",
+        "preferred_material": "generic_pla",
+        "preferred_quality_type": "normal"
   },
 
   "overrides": {
