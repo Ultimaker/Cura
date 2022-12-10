@@ -1,5 +1,5 @@
 name: Cura All Installers
-run-name: ${{ inputs.cura_conan_version }} by @${{ github.actor }}
+run-name: ${{ inputs.cura_conan_version }} for Windows ${{ inputs.build_windows }}, MacOS ${{ inputs.build_macos }}, Linux ${{ inputs.build_linux }}
 
 on:
     workflow_dispatch:
