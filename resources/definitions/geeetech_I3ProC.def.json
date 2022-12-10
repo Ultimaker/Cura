@@ -21,7 +21,7 @@
         "machine_height": {"default_value": 180 },
 		"machine_head_with_fans_polygon": { "default_value": [[-75, 35], [18, 35], [18, -18], [-75, -18]] },
 		"gantry_height": { "value": 45 },
-		"retraction_amount": { "default_value": 2 },
+		"retraction_amount": { "value": 2 },
 		"brim_width":{ "value": 10 },
 		"prime_tower_position_x":{ "value": 170 },
 		"prime_tower_position_y":{ "value": 140 },

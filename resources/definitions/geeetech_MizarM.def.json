@@ -20,7 +20,7 @@
         "machine_depth": { "default_value": 255 },
         "machine_height": {"default_value": 260 },
 		"machine_head_with_fans_polygon": { "default_value": [[-31, 31], [34, 31], [34, -40], [-31, -40]] },
-        "gantry_height": { "value": 35 },		
+        "gantry_height": { "value": 35 },
 		"brim_width":{ "value": 10 },
 		"prime_tower_position_x":{ "value": 225 },
 		"prime_tower_position_y":{ "value": 195 },
