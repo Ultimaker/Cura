@@ -56,6 +56,7 @@ class ExtruderManager(QObject):
     """Notify when the user switches the currently active extruder."""
 
     def emitGlobalStackExtrudersChanged(self):
+        # HACK
         # The emit function can't be directly connected to another signal. This wrapper function is required.
         # The extrudersChanged signal is emitted early when changing machines. This triggers it a second time
         # after the extruder have changed properly. This is important for any QML using ExtruderManager.extruderIds

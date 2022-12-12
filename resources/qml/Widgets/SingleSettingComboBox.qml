@@ -43,7 +43,7 @@ Cura.ComboBox {
                 var value = propertyProvider.properties["options"][key]
                 comboboxModel.append({ text: value, code: key})
 
-                if (propertyProvider.properties.value == key)
+                if (propertyProvider.properties.value === key)
                 {
                     // The combobox is cleared after each value change so the currentIndex must be set each time.
                     currentIndex = i
@@ -81,7 +81,7 @@ Cura.ComboBox {
 
     function parseValueAndUpdateSetting()
     {
-        if (comboboxModel.get(currentIndex) && comboboxModel.get(currentIndex).code != propertyProvider.properties.value)
+        if (comboboxModel.get(currentIndex) && comboboxModel.get(currentIndex).code !== propertyProvider.properties.value)
         {
             updateSetting(comboboxModel.get(currentIndex).code)
         }

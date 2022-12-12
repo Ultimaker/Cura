@@ -74,7 +74,7 @@ UM.TooltipArea
                 return
             }
 
-            if (typeof propertyProvider.properties["options"] == "string")
+            if (typeof propertyProvider.properties["options"] === "string")
             {
                 return
             }
@@ -84,9 +84,9 @@ UM.TooltipArea
             {
                 var key = propertyProvider.properties["options"].keys()[i]
                 var value = propertyProvider.properties["options"][key]
-                append({ text: value, code: key})
+                append({ text: value, code: key })
 
-                if (propertyProvider.properties.value == key)
+                if (propertyProvider.properties.value === key)
                 {
                     comboBox.currentIndex = i
                 }
@@ -132,7 +132,7 @@ UM.TooltipArea
         onActivated:
         {
             var newValue = model.get(index).value
-            if (propertyProvider.properties.value != newValue && newValue != undefined)
+            if (propertyProvider.properties.value !== newValue && newValue !== undefined)
             {
                 if (setValueFunction !== null)
                 {

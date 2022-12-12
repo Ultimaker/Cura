@@ -14,8 +14,8 @@ RecommendedSettingSection
 
     title: catalog.i18nc("@label", "Adhesion")
     icon: UM.Theme.getIcon("Adhesion")
-    enableSectionSwitchVisible: platformAdhesionType.properties.enabled == "True"
-    enableSectionSwitchChecked: platformAdhesionType.properties.value != "skirt" && platformAdhesionType.properties.value != "none"
+    enableSectionSwitchVisible: platformAdhesionType.properties.enabled === "True"
+    enableSectionSwitchChecked: platformAdhesionType.properties.value !== "skirt" && platformAdhesionType.properties.value !== "none"
     enableSectionSwitchEnabled: recommendedPrintSetup.settingsEnabled
     tooltipText: catalog.i18nc("@label", "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards.")
 
@@ -30,7 +30,8 @@ RecommendedSettingSection
         storeIndex: 0
     }
 
-    function onEnableSectionChanged(state) {
+    function onEnableSectionChanged(state)
+    {
         curaRecommendedMode.setAdhesion(state)
     }
 }

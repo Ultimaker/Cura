@@ -77,7 +77,8 @@ Item
 
         Item { height: UM.Theme.getSize("narrow_margin").height } //Spacer
 
-        Column {
+        Column
+        {
             id: settingColumn
             width: parent.width
             spacing: UM.Theme.getSize("thin_margin").height
@@ -117,7 +118,8 @@ Item
                 width: parent.width
             }
 
-            RecommendedAdhesionSelector {
+            RecommendedAdhesionSelector
+            {
                 width: parent.width
             }
         }

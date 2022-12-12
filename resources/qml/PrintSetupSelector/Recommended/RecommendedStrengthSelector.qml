@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Ultimaker
+// Copyright (c) 2022 UltiMaker
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -40,7 +40,7 @@ RecommendedSettingSection
                 settingName: "infill_sparse_density"
                 updateAllExtruders: true
                 // disable slider when gradual support is enabled
-                enabled: parseInt(infillSteps.properties.value) == 0
+                enabled: parseInt(infillSteps.properties.value) === 0
 
                 function updateSetting(value)
                 {

@@ -87,13 +87,13 @@ UM.TextField
 
     function parseValueUpdateSetting()
     {
-        if (propertyProvider.properties.value == text || (parseFloat(propertyProvider.properties.value) == parseFloat(text) && !isNan(parseFloat(text))))
+        if (propertyProvider.properties.value === text || (parseFloat(propertyProvider.properties.value) === parseFloat(text)))
         {
             // Don't set the property value from the control. It already has the same value
             return
         }
 
-        if (propertyProvider && text != propertyProvider.properties.value)
+        if (propertyProvider && text !== propertyProvider.properties.value)
         {
             updateSetting(text);
         }
@@ -119,7 +119,7 @@ UM.TextField
         State
         {
             name: "validationError"
-            when: propertyProvider.properties.validationState == "ValidatorState.Exception" || propertyProvider.properties.validationState == "ValidatorState.MinimumError" || propertyProvider.properties.validationState == "ValidatorState.MaximumError"
+            when: propertyProvider.properties.validationState === "ValidatorState.Exception" || propertyProvider.properties.validationState === "ValidatorState.MinimumError" || propertyProvider.properties.validationState === "ValidatorState.MaximumError"
              PropertyChanges
              {
                 target: background
@@ -130,7 +130,7 @@ UM.TextField
         State
         {
             name: "validationWarning"
-            when: propertyProvider.properties.validationState == "ValidatorState.MinimumWarning" || propertyProvider.properties.validationState == "ValidatorState.MaximumWarning"
+            when: propertyProvider.properties.validationState === "ValidatorState.MinimumWarning" || propertyProvider.properties.validationState === "ValidatorState.MaximumWarning"
             PropertyChanges
             {
                 target: background

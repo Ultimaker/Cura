@@ -41,7 +41,6 @@ Item
         onExited: base.hideTooltip()
     }
 
-
     Loader
     {
         id: settingContainer
@@ -86,7 +85,6 @@ Item
             NumberAnimation { property: "Layout.minimumHeight"; duration: 100; }
             // Animate section dissapearring as it closes
             NumberAnimation { property: "opacity"; duration: 100; }
-
         }
     }
 }

@@ -59,7 +59,6 @@ RecommendedSettingSection
 
             settingControl: Cura.SingleSettingExtruderSelectorBar
             {
-
                 extruderSettingName: "support_extruder_nr"
             }
         },
