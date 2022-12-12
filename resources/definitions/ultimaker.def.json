@@ -56,7 +56,7 @@
         "jerk_topbottom": { "minimum_value_warning": 20 },
         "jerk_travel": { "value": "jerk_print" },
         "jerk_travel_enabled": { "value": false },
-        "layer_height": {"value": 0.15 },
+        "layer_height": { "value": 0.15 },
         "layer_height_0": { "value": "max(0.2, layer_height)" },
         "line_width": { "value": "machine_nozzle_size" },
         "machine_max_feedrate_e": { "default_value": 45 },
