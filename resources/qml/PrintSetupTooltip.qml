@@ -11,7 +11,7 @@ UM.PointingRectangle
     id: base
     property real sourceWidth: 0
     width: UM.Theme.getSize("tooltip").width
-    height: textScroll.height + UM.Theme.getSize("tooltip_margins").height * 2
+    height: textScroll.height + UM.Theme.getSize("tooltip_margins").height
     color: UM.Theme.getColor("tooltip")
 
     arrowSize: UM.Theme.getSize("default_arrow").width
