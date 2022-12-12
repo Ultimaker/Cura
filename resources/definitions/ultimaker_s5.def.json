@@ -16,7 +16,7 @@
         "has_variants": true,
         "preferred_variant_name": "AA 0.4",
         "preferred_variant_buildplate_name": "Glass",
-        "preferred_quality_type": "normal",
+        "preferred_quality_type": "fast",
         "variants_name": "Print core",
         "nozzle_offsetting_for_disallowed_areas": false,
         "machine_extruder_trains":

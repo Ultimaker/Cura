@@ -16,7 +16,7 @@
         "has_variants": true,
         "exclude_materials": [ "generic_hips", "generic_petg", "structur3d_dap100silicone" ],
         "preferred_variant_name": "AA 0.4",
-        "preferred_quality_type": "normal",
+        "preferred_quality_type": "fast",
         "variants_name": "Print core",
         "nozzle_offsetting_for_disallowed_areas": false,
         "machine_extruder_trains":

@@ -15,7 +15,7 @@
         "has_variants": true,
         "exclude_materials": [ "generic_hips", "generic_cffcpe", "generic_cffpa", "generic_gffcpe", "generic_gffpa", "structur3d_dap100silicone" ],
         "preferred_variant_name": "AA 0.4",
-        "preferred_quality_type": "normal",
+        "preferred_quality_type": "fast",
         "variants_name": "Print core",
         "machine_extruder_trains":
         {
