@@ -14,6 +14,7 @@ Item
     property bool extruderEnabled: true
     property var iconSize: UM.Theme.getSize("extruder_icon").width
     property string iconVariant: "medium"
+    property alias font: extruderNumberText.font
 
     implicitWidth: iconSize
     implicitHeight: iconSize

@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Ultimaker B.V.
+// Copyright (c) 2022 UltiMaker
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.15
@@ -6,8 +6,8 @@ import QtQuick.Controls 2.2
 import QtQuick.Window 2.1
 import QtQuick.Layouts 1.1
 
-import UM 1.5 as UM
-import Cura 1.1 as Cura
+import UM 1.7 as UM
+import Cura 1.7 as Cura
 
 
 /*
@@ -122,7 +122,7 @@ UM.Dialog
                         text = `#${text}`;
                     }
                 }
-                validator: RegularExpressionValidator { regularExpression: /^#([a-fA-F0-9]{0,6})$/ }
+                validator: UM.HexColorValidator {}
             }
 
             Rectangle

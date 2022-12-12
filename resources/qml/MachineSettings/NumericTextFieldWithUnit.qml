@@ -59,7 +59,7 @@ UM.TooltipArea
     UM.SettingPropertyProvider
     {
         id: propertyProvider
-        watchedProperties: [ "value", "description" ]
+        watchedProperties: [ "value", "description", "validationState" ]
     }
 
     UM.Label
