@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Ultimaker B.V.
+// Copyright (c) 2022 UltiMaker
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -30,7 +30,7 @@ Control
         UM.Label
         {
             Layout.fillWidth: true
-            text: catalog.i18nc("@label", "New Ultimaker printers can be connected to Digital Factory and monitored remotely.")
+            text: catalog.i18nc("@label", "New UltiMaker printers can be connected to Digital Factory and monitored remotely.")
             wrapMode: Text.WordWrap
         }
 
@@ -67,7 +67,7 @@ Control
                     Layout.alignment: Qt.AlignTop
                     wrapMode: Text.WordWrap
                     font: UM.Theme.getFont("default_bold")
-                    text: catalog.i18nc("@label", "If you are trying to add a new Ultimaker printer to Cura")
+                    text: catalog.i18nc("@label", "If you are trying to add a new UltiMaker printer to Cura")
                 }
 
                 ColumnLayout
@@ -77,7 +77,7 @@ Control
 
                     Repeater {
                         model: [
-                            catalog.i18nc("@info", "Sign in into Ultimaker Digilal Factory"),
+                            catalog.i18nc("@info", "Sign in into UltiMaker Digilal Factory"),
                             catalog.i18nc("@info", "Follow the procedure to add a new printer"),
                             catalog.i18nc("@info", "Your new printer will automatically appear in Cura"),
                         ]
