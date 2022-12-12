@@ -75,7 +75,8 @@ RecommendedSettingSection
                 {
                     Layout.fillWidth: true
                     source: UM.Theme.getIcon("PrintWalls")
-                    displayComponent: Cura.SingleSettingTextField
+
+                    Cura.SingleSettingTextField
                     {
                         width: parent.width
                         settingName: "wall_thickness"
@@ -88,7 +89,8 @@ RecommendedSettingSection
                 {
                     Layout.fillWidth: true
                     source: UM.Theme.getIcon("PrintTopBottom")
-                    displayComponent: Cura.SingleSettingTextField
+
+                    Cura.SingleSettingTextField
                     {
                         width: parent.width
                         settingName: "top_bottom_thickness"

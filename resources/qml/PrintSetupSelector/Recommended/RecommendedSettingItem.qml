@@ -41,7 +41,7 @@ Item
         onExited: base.hideTooltip()
     }
 
-    Loader
+    Item
     {
         id: settingContainer
         height: childrenRect.height
