@@ -28,8 +28,11 @@ UM.Dialog
     // however with the current implementation of the dialog this is not possible, so instead we calculate
     // the size of the dialog ourselves.
     // Ugly workaround for windows having overlapping elements due to incorrect dialog width
-    minimumWidth: content.width + (Qt.platform.os == "windows" ? 4 * margin : 2 * margin)
-    minimumHeight: content.height + footer.height + (Qt.platform.os == "windows" ? 5 * margin : 3 * margin)
+    minimumWidth: content.width + (Qt.platform.os === "windows" ? 4 * margin : 2 * margin)
+    minimumHeight: {
+        const footerHeight = Math.max(okButton.height, cancelButton.height);
+        return content.height + footerHeight + (Qt.platform.os === "windows" ? 5 * margin : 3 * margin);
+    }
 
     property alias color: colorInput.text
     property var swatchColors: [
@@ -136,10 +139,12 @@ UM.Dialog
     rightButtons:
     [
         Cura.TertiaryButton {
+            id: cancelButton
             text: catalog.i18nc("@action:button", "Cancel")
             onClicked: base.close()
         },
         Cura.PrimaryButton {
+            id: okButton
             text: catalog.i18nc("@action:button", "OK")
             onClicked: base.accept()
         }
