@@ -14,6 +14,11 @@ SettingItem
     property string textBeforeEdit
     property bool textHasChanged
     property bool focusGainedByClick: false
+
+    readonly property UM.IntValidator intValidator: UM.IntValidator {}
+    readonly property UM.FloatValidator floatValidator: UM.FloatValidator {}
+    readonly property UM.IntListValidator intListValidator: UM.IntListValidator {}
+
     onFocusReceived:
     {
         textHasChanged = false;
@@ -159,9 +164,6 @@ SettingItem
             // should be done as little as possible)
             clip: definition.type == "str" || definition.type == "[int]"
 
-            readonly property UM.IntValidator intValidator: UM.IntValidator {}
-            readonly property UM.FloatValidator floatValidator: UM.FloatValidator {}
-            readonly property UM.IntListValidator intListValidator: UM.IntListValidator {}
             validator: RegularExpressionValidator
             {
                 regularExpression:
