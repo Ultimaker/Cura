@@ -323,7 +323,7 @@
             "default_value": 4 
         },
         "minimum_support_area": { 
-            "default_value": 2 
+            "value": "2.0 if support_structure != 'tree' else 0.0"
         },
         "minimum_interface_area": { 
             "default_value": 10 

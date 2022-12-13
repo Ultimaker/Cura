@@ -174,7 +174,7 @@
         "support_xy_distance": { "value": "wall_line_width_0 * 2" },
         "support_xy_overrides_z": { "value": "'xy_overrides_z'" },
         "support_xy_distance_overhang": { "value": "wall_line_width_0" },
-        "minimum_support_area": { "value": 5 },
+        "minimum_support_area": { "value": "5.0 if support_structure != 'tree' else 0.0" },
         "minimum_interface_area": { "value": 10 },
         "support_interface_enable": { "value": true },
         "support_interface_height": { "value": "layer_height * 4" },

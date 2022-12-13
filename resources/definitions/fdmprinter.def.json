@@ -5158,7 +5158,7 @@
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "minimum_value_warning": "-1 * machine_nozzle_size",
                     "maximum_value_warning": "10 * machine_nozzle_size",
-                    "enabled": "(support_enable and support_structure == 'normal') or support_meshes_present",
+                    "enabled": "support_enable or support_meshes_present",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -5215,7 +5215,7 @@
                     "default_value": 0.0,
                     "minimum_value": "0",
                     "maximum_value_warning": "10",
-                    "enabled": "(support_enable or support_meshes_present) and support_structure == 'normal'",
+                    "enabled": "support_enable or support_meshes_present",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": true
                 },
