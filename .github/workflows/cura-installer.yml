@@ -235,9 +235,9 @@ jobs:
                 run: python ../cura_inst/packaging/AppImage/create_appimage.py ./UltiMaker-Cura $CURA_VERSION_FULL "UltiMaker-Cura-$CURA_VERSION_FULL-${{ inputs.os_name }}.AppImage"
                 working-directory: dist
 
-            -   name: Create the MacOS dmg (Bash)
+            -   name: Create the MacOS dmg and/or pkg (Bash)
                 if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Macos' }}
-                run: python ../cura_inst/packaging/dmg/dmg_sign_noterize.py ../cura_inst . "UltiMaker-Cura-$CURA_VERSION_FULL-${{ inputs.os_name }}.dmg"
+                run: python ../cura_inst/packaging/MacOs/build_macos.py ../cura_inst . "UltiMaker-Cura-$CURA_VERSION_FULL-${{ inputs.os_name }}"
                 working-directory: dist
 
             -   name: Upload the artifacts
@@ -250,6 +250,7 @@ jobs:
                         dist/*.exe
                         dist/*.msi
                         dist/*.dmg
+                        dist/*.pkg
                         dist/*.AppImage
                         dist/*.asc
                     retention-days: 5
