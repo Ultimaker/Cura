@@ -26,26 +26,66 @@ def build_dmg(source_path: str, dist_path: str, filename: str) -> None:
 
     subprocess.run(arguments)
 
+def build_pkg(source_path: str, dist_path: str, app_filename: str, component_filename: str, installer_filename: str) -> None:
+    pkg_build_executable = os.environ.get("PKG_BUILD_EXECUTABLE", "pkgbuild")
+    product_build_executable = os.environ.get("PRODUCT_BUILD_EXECUTABLE", "productbuild")
 
-def sign(dist_path: str, filename: str) -> None:
+    # This builds the component package that contains Ultimaker-Cura.app. This component package will be bundled in a distribution package.
+    # TODO: sign the packgae with installer certificate
+    pkg_build_arguments = [
+        pkg_build_executable,
+        "--component",
+        f"{dist_path}/{app_filename}",
+        f"{dist_path}/{component_filename}",
+        "--install-location", "/Applications",
+    ]
+    print(f"pkg_build_arguments: {pkg_build_arguments}")
+    subprocess.run(pkg_build_arguments)
+
+    # This automatically generates a distribution.xml file that is used to build the installer.
+    # If you want to make any changes to how the installer functions, this file should be changed to do that.
+    # TODO: Use --product {property_list_file} to pull keys out of file for distribution.xml. This can be used to set min requirements
+    # TODO: sign the packgae with installer certificate
+    distribution_creation_arguments = [
+        product_build_executable,
+        "--synthesize",
+        "--package", f"{dist_path}/{component_filename}",  # Package that will be inside installer
+        f"{dist_path}/distribution.xml",  # Output location for sythesized distributions file
+    ]
+    print(f"distribution_creation_arguments: {distribution_creation_arguments}")
+    subprocess.run(distribution_creation_arguments)
+
+    # This creates the distributable package (Installer)
+    installer_creation_arguments = [
+        product_build_executable,
+        "--distribution", f"{dist_path}/distribution.xml",
+        "--package-path", dist_path,  # Where to find the component packages mentioned in distribution.xml (Ultimaker-Cura.pkg)
+        f"{dist_path}/{installer_filename}",
+    ]
+    print(f"installer_creation_arguments: {installer_creation_arguments}")
+    subprocess.run(installer_creation_arguments)
+
+def code_sign(dist_path: str, filename: str) -> None:
+    """ Sign a file using apple codesign. This uses a different certificate to package signing."""
     codesign_executable = os.environ.get("CODESIGN", "codesign")
     codesign_identity = os.environ.get("CODESIGN_IDENTITY")
 
-    arguments = [codesign_executable,
+    sign_arguments = [codesign_executable,
                  "-s", codesign_identity,
                  "--timestamp",
-                 "-i", f"{ULTIMAKER_CURA_DOMAIN}.dmg",  # TODO: check if this really should have the extra dmg. We seem to be doing this also in the old Rundeck scripts
+                 "-i", filename,  # This is by default derived from Info.plist or the filename. The documentation does not specify which, so it is explicit here. **This must be unique in the package**
                  f"{dist_path}/{filename}"]
 
-    subprocess.run(arguments)
+    subprocess.run(sign_arguments)
 
 
-def notarize(dist_path: str, filename: str) -> None:
+def notarize_file(dist_path: str, filename: str) -> None:
+    """ Notarize a file. This takes 5+ minutes, there is indication that this step is successful."""
     notarize_user = os.environ.get("MAC_NOTARIZE_USER")
     notarize_password = os.environ.get("MAC_NOTARIZE_PASS")
     altool_executable = os.environ.get("ALTOOL_EXECUTABLE", "altool")
 
-    arguments = [
+    notarize_arguments = [
         "xcrun", altool_executable,
         "--notarize-app",
         "--primary-bundle-id", ULTIMAKER_CURA_DOMAIN,
@@ -54,18 +94,60 @@ def notarize(dist_path: str, filename: str) -> None:
         "--file", f"{dist_path}/{filename}"
     ]
 
-    subprocess.run(arguments)
+    subprocess.run(notarize_arguments)
+
+
+def create_pkg_installer(filename: str, dist_path: str, source_path: str) -> None:
+    """ Creates a pkg installer from {filename}.app called {filename}-Installer.pkg
+
+    The final package structure is Ultimaker-Cura-XXX-Installer.pkg[Ultimaker-Cura.pkg[Ultimaker-Cura.app]]
+
+    @param filename: The name of the app file and the app component package file without the extension
+    @param dist_path: The location to read the app from and save the pkg to
+    @param source_path: The location of the project source files
+    """
+    installer_package_name = f"{filename}-Installer.pkg"
+    cura_component_package_name = f"{filename}.pkg"  # This is a component package that is nested inside the installer, it contains the Ultimaker-Cura.app file
+    app_name = f"{filename}.app"  # This is the app file that will end up in your applications folder
+
+    code_sign(dist_path, app_name)  # The app is signed using a different certificate than the package files
+    build_pkg(source_path, dist_path, app_name, cura_component_package_name, installer_package_name)
+
+    notarize = bool(os.environ.get("NOTARIZE_PKG", "TRUE"))
+    if notarize:
+        notarize_file(dist_path, installer_package_name)
+
+
+def create_dmg(filename: str, dist_path: str, source_path: str) -> None:
+    """ Creates a dmg executable from {filename}.app named {filename}.dmg
+
+    @param filename: The name of the app file and the output dmg file without the extension
+    @param dist_path: The location to read the app from and save the dmg to
+    @param source_path: The location of the project source files
+    """
+
+    dmg_filename = f"{filename}.dmg"
+
+    build_dmg(source_path, dist_path, dmg_filename)
+
+    code_sign(dist_path, dmg_filename)
+
+    notarize_dmg = bool(os.environ.get("NOTARIZE_DMG", "TRUE"))
+    if notarize_dmg:
+        notarize_file(dist_path, dmg_filename)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = "Create dmg of Cura.")
     parser.add_argument("source_path", type=str, help="Path to Conan install Cura folder.")
     parser.add_argument("dist_path", type=str, help="Path to Pyinstaller dist folder")
-    parser.add_argument("filename", type = str, help = "Filename of the dmg (e.g. 'UltiMaker-Cura-5.1.0-beta-Linux-X64.dmg')")
+    parser.add_argument("filename", type = str, help = "Filename of the dmg/pkg without the file extension (e.g. 'UltiMaker-Cura-5.1.0-beta-Linux-X64')")
     args = parser.parse_args()
-    build_dmg(args.source_path, args.dist_path, args.filename)
-    sign(args.dist_path, args.filename)
 
-    notarize_dmg = bool(os.environ.get("NOTARIZE_DMG", "TRUE"))
-    if notarize_dmg:
-        notarize(args.dist_path, args.filename)
+    build_installer = bool(os.environ.get("BUILD_INSTALLER", "TRUE"))
+    if build_installer:
+        create_pkg_installer(args.filename, args.dist_path, args.source_path)
+
+    build_dmg_executable = bool(os.environ.get("BUILD_DMG", "False"))
+    if build_dmg_executable:
+        create_dmg(args.filename, args.dist_path, args.source_path)
