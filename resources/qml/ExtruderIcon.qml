@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Ultimaker B.V.
+// Copyright (c) 2022 UltiMaker
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.11
@@ -12,7 +12,7 @@ Item
     property color materialColor
     property alias textColor: extruderNumberText.color
     property bool extruderEnabled: true
-    property var iconSize: UM.Theme.getSize("extruder_icon").width
+    property int iconSize: UM.Theme.getSize("extruder_icon").width
     property string iconVariant: "medium"
     property alias font: extruderNumberText.font
 
@@ -36,7 +36,6 @@ Item
         }
         UM.ColorImage
         {
-            id: mainIcon
             anchors.fill: parent
             width: iconSize
             height: iconSize
@@ -48,12 +47,14 @@ Item
         UM.Label
         {
             id: extruderNumberText
-            anchors.centerIn: parent
-            text: index + 1
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.left: parent.left
+            anchors.right: parent.right
+            horizontalAlignment: Text.AlignHCenter
+            text: (index + 1).toString()
             font: UM.Theme.getFont("small_emphasis")
             width: contentWidth
             height: contentHeight
-            horizontalAlignment: Text.AlignHCenter
         }
     }
 }
