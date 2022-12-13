@@ -41,7 +41,7 @@
             0
         ],
         "platform_texture": "Ultimaker3backplate.png",
-        "preferred_quality_type": "normal",
+        "preferred_quality_type": "fast",
         "preferred_variant_name": "AA 0.4",
         "supported_actions": [ "DiscoverUM3Action" ],
         "supports_network_connection": true,

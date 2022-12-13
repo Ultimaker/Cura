@@ -37,7 +37,7 @@
             -10
         ],
         "platform_texture": "UltimakerS5backplate.png",
-        "preferred_quality_type": "normal",
+        "preferred_quality_type": "fast",
         "preferred_variant_buildplate_name": "Glass",
         "preferred_variant_name": "AA 0.4",
         "supported_actions": [ "DiscoverUM3Action" ],
