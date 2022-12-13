@@ -3,6 +3,8 @@
 import os
 from typing import Optional, Dict, List, Callable, Any
 
+from time import time
+
 from PyQt6.QtGui import QDesktopServices
 from PyQt6.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty, QObject
 from PyQt6.QtNetwork import QNetworkReply
@@ -31,6 +33,8 @@ I18N_CATALOG = i18nCatalog("cura")
 class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
     activeCameraUrlChanged = pyqtSignal()
+
+    CHECK_CLUSTER_INTERVAL = 10.0  # seconds
 
     def __init__(self, device_id: str, address: str, properties: Dict[bytes, bytes], parent=None) -> None:
 
@@ -107,6 +111,8 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
     def _update(self) -> None:
         super()._update()
+        if time() - self._time_of_last_request < self.CHECK_CLUSTER_INTERVAL:
+            return  # avoid calling the cluster too often
         self._getApiClient().getPrinters(self._updatePrinters)
         self._getApiClient().getPrintJobs(self._updatePrintJobs)
         self._updatePrintJobPreviewImages()
