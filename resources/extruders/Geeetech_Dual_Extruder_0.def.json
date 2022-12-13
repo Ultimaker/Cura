@@ -3,7 +3,7 @@
     "name": "E0",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "Geeetech_base",
+        "machine": "Geeetech_Base_Dual_Extruder",
         "position": "0"
     },
 

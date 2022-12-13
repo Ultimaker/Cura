@@ -1,14 +1,13 @@
 {
     "version": 2,
     "name": "Geeetech MizarMax",
-    "inherits": "Geeetech_base",
+    "inherits": "Geeetech_Base_Single_Extruder",
     "metadata": {
-		"quality_definition": "Geeetech_base",
-        "visible": true,
-        "has_materials": true,
-        "has_variants": true,
-        "has_machine_quality": true
-       },
+		"visible": true,
+        "machine_extruder_trains": {
+		  "0": "Geeetech_Single_Extruder" 
+		}
+     },
 
     "overrides": {
         "machine_name": { "default_value": "Geeetech MizarMax" },

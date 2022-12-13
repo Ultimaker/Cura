@@ -1,17 +1,13 @@
 {
     "version": 2,
     "name": "Geeetech Thunder",
-    "inherits": "Geeetech_base",
+    "inherits": "Geeetech_Base_Single_Extruder",
     "metadata": {
-		"quality_definition": "Geeetech_base",
-        "visible": true,
-        "has_materials": true,
-        "has_variants": true,
-        "has_machine_quality": true,
-		"machine_extruder_trains": { 
-		  "0": "Geeetech_base_extruder_0" 
-		}        
-       },
+		"visible": true,
+        "machine_extruder_trains": {
+		  "0": "Geeetech_Single_Extruder" 
+		}
+     },
 
     "overrides": {
         "machine_name": { "default_value": "Geeetech Thunder" },
@@ -47,8 +43,7 @@
 		"cool_fan_speed_max":{ "maximum_value": "151","value": "cool_fan_speed" },  		
 
         "material_print_temperature": { "value":  "200 if speed_infill <=150 else 205 if speed_infill <= 200 else 215 if speed_infill <= 260 else 220","maximum_value": "250" },
-        "material_print_temperature_layer_0": { "value": "material_print_temperature" },
-		"material_initial_print_temperature": { "value": "material_print_temperature - 5" },
+        "material_print_temperature_layer_0": { "value": "material_print_temperature","maximum_value_warning": 300 },
 		"material_flow_layer_0": { "value": 95 },
         
         "speed_print": { "value":250, "maximum_value_warning": "300" },		

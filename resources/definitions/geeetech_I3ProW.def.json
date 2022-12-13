@@ -1,17 +1,13 @@
 {
     "version": 2,
     "name": "Geeetech I3ProW",
-    "inherits": "Geeetech_base",
+    "inherits": "Geeetech_Base_Single_Extruder",
     "metadata": {
-		"quality_definition": "Geeetech_base",
-        "visible": true,
-        "has_materials": true,
-        "has_variants": true,
-        "has_machine_quality": true,
-		"machine_extruder_trains": { 
-		  "0": "Geeetech_base_extruder_0" 
+		"visible": true,
+        "machine_extruder_trains": {
+		  "0": "Geeetech_Single_Extruder" 
 		}
-       },
+     },
 
     "overrides": {
         "machine_name": { "default_value": "Geeetech I3ProW" },
