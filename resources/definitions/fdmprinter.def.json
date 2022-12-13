@@ -4630,6 +4630,206 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
+                "support_tree_angle":
+                {
+                    "label": "Tree Support Maximum Branch Angle",
+                    "description": "The maximum angle of the branches, when the branches have to avoid the model. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach.",
+                    "unit": "°",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "minimum_value_warning": "20",
+                    "maximum_value": "89",
+                    "maximum_value_warning": "85",
+                    "default_value": 60,
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "enabled": "support_enable and support_structure=='tree'",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true
+                },
+                "support_tree_angle_slow":
+                {
+                    "label": "Tree Support Preferred Branch Angle",
+                    "description": "The preferred angle of the branches, when they do not have to avoid the model. Use a lower angle to make them more vertical and more stable. Use a higher angle for branches to merge faster.",
+                    "unit": "°",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "minimum_value_warning": "10",
+                    "maximum_value": "support_tree_angle",
+                    "maximum_value_warning": "support_tree_angle-1",
+                    "default_value": 50,
+                    "value":"support_tree_angle*0.7",
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "enabled": "support_enable and support_structure=='tree'",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true
+                },
+                "support_tree_max_diameter_increase_by_merges_when_support_to_model":
+                {
+                    "label": "Tree Support Diameter Increase To Model",
+                    "description": "The most the diameter of a branch that has to connect to the model may increase by merging with branches that could reach the buildplate. Increasing this reduces print time, but increases the area of support that rests on model",
+                    "unit": "mm",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "default_value": 1,
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "enabled": "support_enable and support_structure=='tree' and resolveOrValue('support_type') == 'everywhere' ",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true
+                },
+                "support_tree_min_height_to_model":
+                {
+                    "label": "Tree Support Minimum Height To Model",
+                    "description": "How tall a branch has to be if it is placed on the model. Prevents small blobs of support. This setting is ignored when a branch is supporting a support roof.",
+                    "unit": "mm",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "maximum_value_warning": "5",
+                    "default_value": 1,
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "enabled": "support_enable and support_structure=='tree' and resolveOrValue('support_type') == 'everywhere' ",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true
+                },
+                "support_tree_bp_diameter":
+                {
+                    "label": "Tree Support Inital Layer Diameter",
+                    "description": "Diameter every branch tries to achieve when reaching the buildplate. Improves bed adhesion.",
+                    "unit": "mm",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "maximum_value_warning": "20",
+                    "default_value": 7.5,
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "enabled": "support_enable and support_structure=='tree'",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true
+                },
+                "support_tree_top_rate":
+                {
+                    "label": "Tree Support Branch Density",
+                    "description": "Adjusts the density of the support structure used to generate the tips of the branches. A higher value results in better overhangs, but the supports are harder to remove. Use Support Roof for very high values or ensure support density is similarly high at the top.",
+                    "unit": "%",
+                    "type": "float",
+                    "minimum_value": "0.1",
+                    "minimum_value_warning": "5",
+                    "maximum_value_warning": "35",
+                    "default_value": 15,
+                    "enabled": "support_enable and support_structure=='tree'",
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true
+                },
+                "support_tree_branch_diameter":
+                {
+                    "label": "Tree Support Branch Diameter",
+                    "description": "The diameter of the thinnest branches of tree support. Thicker branches are more sturdy. Branches towards the base will be thicker than this.",
+                    "unit": "mm",
+                    "type": "float",
+                    "minimum_value": "0.001",
+                    "minimum_value_warning": "support_line_width * 2",
+                    "default_value": 2,
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "enabled": "support_enable and support_structure=='tree'",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true
+                },
+                "support_tree_tip_diameter":
+                {
+                    "label": "Tree Support Tip Diameter",
+                    "description": "The diameter of the top of the tip of the branches of tree support.",
+                    "unit": "mm",
+                    "type": "float",
+                    "minimum_value": "min_wall_line_width",
+                    "minimum_value_warning": "min_wall_line_width+0.05",
+                    "maximum_value": "support_tree_branch_diameter",
+                    "default_value": 0.4,
+                    "value": "support_line_width",
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "enabled": "support_enable and support_structure=='tree'",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true
+                },
+                "support_tree_max_diameter":
+                {
+                    "label": "Tree Support Trunk Diameter",
+                    "description": "The diameter of the widest branches of tree support. A thicker trunk is more sturdy; a thinner trunk takes up less space on the build plate.",
+                    "unit": "mm",
+                    "type": "float",
+                    "minimum_value": "support_tree_branch_diameter",
+                    "minimum_value_warning": "support_line_width * 5",
+                    "default_value": 15,
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "enabled": "support_enable and support_structure=='tree'",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "support_tree_branch_diameter_angle":
+                {
+                    "label": "Tree Support Branch Diameter Angle",
+                    "description": "The angle of the branches' diameter as they gradually become thicker towards the bottom. An angle of 0 will cause the branches to have uniform thickness over their length. A bit of an angle can increase stability of the tree support.",
+                    "unit": "°",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "maximum_value": "89.9999",
+                    "maximum_value_warning": "15",
+                    "default_value": 5,
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "enabled": "support_enable and support_structure=='tree'",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true
+                },
+                "support_tree_limit_branch_reach":
+                {
+                    "label": "Tree Support Limit Branch Reach",
+                    "description": "Limit how far each branch should travel from the point it supports. This can make the support more sturdy, but will increase the amount of branches (and because of that material usage/print time)",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "support_enable and support_structure=='tree'",
+                    "settable_per_mesh": true
+                },
+                "support_tree_branch_reach_limit":
+                {
+                    "label": "Tree Support Optimal Branch Range",
+                    "description": "A recomendation to how far branches can move from the points they support. Branches can violate this value to reach their destination (buildplate or a flat part of the model). Lowering this value will make the support more sturdy, but increase the amount of branches (and because of that material usage/print time) ",
+                    "unit": "mm",
+                    "type": "float",
+                    "minimum_value": "1",
+                    "minimum_value_warning": "10",
+                    "default_value": 50,
+                    "enabled": "support_enable and support_tree_limit_branch_reach and support_structure=='tree'",
+                    "settable_per_mesh": true
+                },
+                "support_type":
+                {
+                    "label": "Support Placement",
+                    "description": "Adjusts the placement of the support structures. The placement can be set to touching build plate or everywhere. When set to everywhere the support structures will also be printed on the model.",
+                    "type": "enum",
+                    "options":
+                    {
+                        "buildplate": "Touching Buildplate",
+                        "everywhere": "Everywhere"
+                    },
+                    "default_value": "everywhere",
+                    "resolve": "'everywhere' if 'everywhere' in extruderValues('support_type') else 'buildplate'",
+                    "enabled": "support_enable",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "support_tree_rest_preference":
+                {
+                    "label": "Tree Support Rest Preference",
+                    "description": "The preferred placement of the support structures. If structures cant be placed at the prefered location, they will be place elsewhere",
+                    "type": "enum",
+                    "options":
+                    {
+                        "buildplate": "Buildplate",
+                        "graceful": "On any flat surface"
+                    },
+                    "default_value": "buildplate",
+                    "resolve": "'buildplate' if 'buildplate' in extruderValues('support_tree_rest_preference') else 'graceful'",
+                    "enabled": "support_enable and support_structure=='tree' and support_type == 'everywhere'",
+                    "settable_per_mesh": true
+                },
                 "support_angle":
                 {
                     "label": "Support Overhang Angle",
@@ -5342,6 +5542,24 @@
                             "settable_per_extruder": true
                         }
                     }
+                },
+                "support_interface_priority":
+                {
+                    "label": "Support Interface Priority",
+                    "description": "How support interface and support will interact when they overlap. Currently only implemented for support roof.",
+                    "type": "enum",
+                    "options":
+                    {
+                        "support_area_overwrite_interface_area": "Support preferred",
+                        "interface_area_overwrite_support_area": "Interface preferred",
+                        "support_lines_overwrite_interface_area": "Support lines preferred",
+                        "interface_lines_overwrite_support_area": "Interface lines preferred",
+                        "nothing": "Both overlap"
+                    },
+                    "default_value": "support_lines_overwrite_interface_area",
+                    "settable_per_extruder": false,
+                    "enabled": "support_enable and support_structure=='tree' and support_roof_enable",
+                    "settable_per_mesh": false
                 },
                 "support_interface_angles":
                 {
