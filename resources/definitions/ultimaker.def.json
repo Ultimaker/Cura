@@ -58,6 +58,7 @@
         "jerk_travel_enabled": { "value": false },
         "jerk_wall": { "minimum_value_warning": 20 },
         "jerk_wall_0": { "minimum_value_warning": 20 },
+        "layer_height": { "value": 0.15 },
         "layer_height_0": { "value": "max(0.2, layer_height)" },
         "line_width": { "value": "machine_nozzle_size" },
         "machine_max_feedrate_e": { "default_value": 45 },
