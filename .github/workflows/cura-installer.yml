@@ -224,10 +224,10 @@ jobs:
                 run: Compress-Archive -Path ".\UltiMaker-Cura" -DestinationPath ".\UltiMaker-Cura-$Env:CURA_VERSION_FULL-${{ inputs.os_name }}.zip"
                 working-directory: dist
 
-            -   name: Create the Windows exe installer (Powershell)
+            -   name: Create the Windows msi installer (Powershell)
                 if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Windows' }}
                 run: |
-                    python ..\cura_inst\packaging\NSIS\create_windows_installer.py ../cura_inst . "UltiMaker-Cura-$Env:CURA_VERSION_FULL-${{ inputs.os_name }}.exe"
+                    python ..\cura_inst\packaging\msi\create_windows_msi.py ../cura_inst ./UltiMaker-Cura "UltiMaker-Cura-$Env:CURA_VERSION_FULL-${{ inputs.os_name }}.msi"
                 working-directory: dist
 
             -   name: Create the Linux AppImage (Bash)
