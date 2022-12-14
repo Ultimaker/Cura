@@ -20,11 +20,12 @@ def build_dmg(source_path: str, dist_path: str, filename: str) -> None:
                  "--icon-size", "90",
                  "--icon", "UltiMaker-Cura.app", "169", "272",
                  "--eula", f"{source_path}/packaging/cura_license.txt",
-                 "--background", f"{source_path}/packaging/dmg/cura_background_dmg.png",
+                 "--background", f"{source_path}/packaging/MacOs/cura_background_dmg.png",
                  f"{dist_path}/{filename}",
                  f"{dist_path}/UltiMaker-Cura.app"]
 
     subprocess.run(arguments)
+
 
 def build_pkg(source_path: str, dist_path: str, app_filename: str, component_filename: str, installer_filename: str) -> None:
     pkg_build_executable = os.environ.get("PKG_BUILD_EXECUTABLE", "pkgbuild")
@@ -64,6 +65,7 @@ def build_pkg(source_path: str, dist_path: str, app_filename: str, component_fil
     ]
     print(f"installer_creation_arguments: {installer_creation_arguments}")
     subprocess.run(installer_creation_arguments)
+
 
 def code_sign(dist_path: str, filename: str) -> None:
     """ Sign a file using apple codesign. This uses a different certificate to package signing."""

@@ -311,7 +311,7 @@ class CuraConan(ConanFile):
         self._generate_cura_version(Path(self.source_folder, "cura"))
 
         if self.options.devtools:
-            entitlements_file = "'{}'".format(Path(self.source_folder, "packaging", "dmg", "cura.entitlements"))
+            entitlements_file = "'{}'".format(Path(self.source_folder, "packaging", "MacOs", "cura.entitlements"))
             self._generate_pyinstaller_spec(location = self.generators_folder,
                                             entrypoint_location = "'{}'".format(Path(self.source_folder, self._um_data()["runinfo"]["entrypoint"])).replace("\\", "\\\\"),
                                             icon_path = "'{}'".format(Path(self.source_folder, "packaging", self._um_data()["pyinstaller"]["icon"][str(self.settings.os)])).replace("\\", "\\\\"),
@@ -437,7 +437,7 @@ echo "CURA_VERSION_FULL={{ cura_version_full }}" >> ${{ env_prefix }}GITHUB_ENV
 
         self._generate_cura_version(Path(self._site_packages, "cura"))
 
-        entitlements_file = "'{}'".format(Path(self.cpp_info.res_paths[2], "dmg", "cura.entitlements"))
+        entitlements_file = "'{}'".format(Path(self.cpp_info.res_paths[2], "MacOs", "cura.entitlements"))
         self._generate_pyinstaller_spec(location = self._base_dir,
                                         entrypoint_location = "'{}'".format(Path(self.cpp_info.bin_paths[0], self._um_data()["runinfo"]["entrypoint"])).replace("\\", "\\\\"),
                                         icon_path = "'{}'".format(Path(self.cpp_info.res_paths[2], self._um_data()["pyinstaller"]["icon"][str(self.settings.os)])).replace("\\", "\\\\"),
