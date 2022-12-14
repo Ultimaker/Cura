@@ -110,7 +110,7 @@ def create_pkg_installer(filename: str, dist_path: str, source_path: str) -> Non
     """
     installer_package_name = f"{filename}-Installer.pkg"
     cura_component_package_name = f"{filename}.pkg"  # This is a component package that is nested inside the installer, it contains the Ultimaker-Cura.app file
-    app_name = f"{filename}.app"  # This is the app file that will end up in your applications folder
+    app_name = "UltiMaker-Cura.app"  # This is the app file that will end up in your applications folder
 
     code_sign(dist_path, app_name)  # The app is signed using a different certificate than the package files
     build_pkg(source_path, dist_path, app_name, cura_component_package_name, installer_package_name)
@@ -121,7 +121,7 @@ def create_pkg_installer(filename: str, dist_path: str, source_path: str) -> Non
 
 
 def create_dmg(filename: str, dist_path: str, source_path: str) -> None:
-    """ Creates a dmg executable from {filename}.app named {filename}.dmg
+    """ Creates a dmg executable from UltiMaker-Cura.app named {filename}.dmg
 
     @param filename: The name of the app file and the output dmg file without the extension
     @param dist_path: The location to read the app from and save the dmg to
