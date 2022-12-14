@@ -227,7 +227,7 @@ jobs:
             -   name: Create the Windows msi installer (Powershell)
                 if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Windows' }}
                 run: |
-                    python ..\cura_inst\packaging\msi\create_windows_msi.py ../cura_inst ./UltiMaker-Cura "UltiMaker-Cura-$Env:CURA_VERSION_FULL-${{ inputs.os_name }}.msi"
+                    python ..\cura_inst\packaging\msi\create_windows_msi.py ../cura_inst ./UltiMaker-Cura "UltiMaker-Cura-$Env:CURA_VERSION_FULL-${{ inputs.os_name }}.msi" $Env:CURA_APP_NAME
                 working-directory: dist
 
             -   name: Create the Linux AppImage (Bash)
