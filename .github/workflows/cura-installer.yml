@@ -182,6 +182,7 @@ jobs:
             -   name: Set Environment variables for Cura (Powershell)
                 if: ${{ runner.os == 'Windows' }}
                 run: |
+                    $env:Path += ";C:\Program Files (x86)\WiX Toolset v3.11\bin"
                     .\cura_inst\Scripts\activate_github_actions_env.ps1
                     .\cura_inst\Scripts\activate_github_actions_version_env.ps1
 
