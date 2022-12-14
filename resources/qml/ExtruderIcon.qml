@@ -47,14 +47,14 @@ Item
         UM.Label
         {
             id: extruderNumberText
+            width: contentWidth
+            height: contentHeight
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
             anchors.right: parent.right
             horizontalAlignment: Text.AlignHCenter
             text: (index + 1).toString()
             font: UM.Theme.getFont("small_emphasis")
-            width: contentWidth
-            height: contentHeight
         }
     }
 }
