@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Product Id="*"  Name="{{ app_name }}" Language="1033" Version="{{ version_major }}.{{ version_minor }}.{{ version_patch }}" Manufacturer="{{ company }}" UpgradeCode="{{ upgrade_code }}" >
+        <Package InstallerVersion="500"
+            Compressed="yes"
+            InstallScope="perMachine"
+            Manufacturer="{{ company }}"
+            Description="UltiMaker Cura the most popular 3D printing slicer"
+            Keywords="UltiMaker,Cura,3D,printing,slicer"
+            Comments="Copyright (c) {{ year }} UltiMaker" />
+
+        <Condition Message= "OS must be Windows 8.1 64bit or higher.">
+            <![CDATA[Installed OR VersionNT64 >= 600]]>
+        </Condition>
+
+        <MediaTemplate EmbedCab="yes" CompressionLevel="high" />
+
+        <UI Id="MyWixUI_Mondo">
+            <UIRef Id="WixUI_Mondo" />
+
+            <DialogRef Id="ManageOldCuraDlg" />
+
+            <Publish Dialog="CustomizeDlg" Control="Next" Event="NewDialog" Value="ManageOldCuraDlg">1</Publish>
+            <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="ManageOldCuraDlg" Order="1">WixUI_InstallMode = "InstallCustom"</Publish>
+
+        </UI>
+        <UIRef Id="WixUI_ErrorProgressText" />
+
+        <WixVariable Id="WixUILicenseRtf" Value="{{ cura_license_file }}" />
+        <WixVariable Id="WixUIDialogBmp" Value="{{ cura_banner_side }}" />
+        <WixVariable Id="WixUIBannerBmp" Value="{{ cura_banner_top }}" />
+        <Icon Id="ICO_Cura" SourceFile="{{ cura_icon }}" />
+
+        <Property Id="ApplicationFolderName" Value="{{ app_name }} {{ version }}" />
+        <Property Id="ARPPRODUCTICON" Value="ICO_Cura" />
+        <Property Id="WixAppFolder" Value="WixPerMachineFolder" />
+
+        <!--Directory structure-->
+        <Directory Id="TARGETDIR" Name="SourceDir">
+           <Directory Id="ProgramFiles64Folder">
+               <Directory Id="APPLICATIONFOLDER" Name="{{ app_name }} {{ version }}" />
+           </Directory>
+            <Directory Id="ProgramMenuFolder">
+                <Directory Id="ShortCutDir" Name="{{ app_name }}" />
+            </Directory>
+        </Directory>
+
+        <!--Shortcuts-->
+        <DirectoryRef Id="ShortCutDir">
+            <Component Id="CMP_Shortcuts" Guid="33741C82-30BF-41AF-8246-4422DCF22953">
+                <Shortcut Id="SHRT_Cura"
+                          Name="{{ app_name }} {{ version }}"
+                          Description="{{ app_name }} {{ version }}"
+                          Target="[MyProgramDir]{{ main_app }}"
+                          Icon="ICO_Cura"  />
+                <Shortcut Id="SHRT_UninstallShortcut"
+                          Name="Uninstall {{ app_name }} {{ version }}"
+                          Description= "Uninstalls {{ app_name }} {{ version }}"
+                          Target="[System64Folder]msiexec.exe"
+                          Arguments="/x [ProductCode]" />
+                <RemoveFolder Id="RemoveMyShortcutsDir"
+                              On="uninstall" />
+                <RegistryValue Root="HKCU"
+                               Key="Software\{{ company }}\{{ app_name }}"
+                               Name="installed"
+                               Type="integer"
+                               Value="1"
+                               KeyPath="yes" />
+            </Component>
+        </DirectoryRef>
+
+        <Feature Id="ProductFeature" Title="{{ app_name }}" Level="1">
+            <ComponentGroupRef Id="NewFilesGroup" />
+            <ComponentRef Id="CMP_Shortcuts" />
+        </Feature>
+    </Product>
+</Wix>
