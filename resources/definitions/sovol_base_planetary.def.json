@@ -1,0 +1,14 @@
+{
+    "version": 2,
+    "name": "Sovol Base Planetary Printer",
+    "inherits": "sovol_base",
+    "metadata": {
+        "quality_definition": "sovol_base_planetary",
+        "machine_extruder_trains": {
+            "0": "sovol_planetary_extruder_0"
+        }
+    },
+
+    "overrides": {
+    }
+}
