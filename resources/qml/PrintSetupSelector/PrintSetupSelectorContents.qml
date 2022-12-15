@@ -67,6 +67,10 @@ Item
                 top: parent.top
             }
             visible: currentModeIndex == PrintSetupSelectorContents.Mode.Recommended
+            height: {
+                const height = base.height - (customPrintSetup.mapToItem(null, 0, 0).y + buttonRow.height + UM.Theme.getSize("default_margin").height);
+                return Math.min(implicitHeight, height);
+            }
 
             function onModeChanged()
             {
