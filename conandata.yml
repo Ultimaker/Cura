@@ -14,10 +14,10 @@
 # TODO: Remove this once we merge to main
 "5.3.0-alpha":
     requirements:
-        - "pyarcus/5.2.0"
+        - "pyarcus/(latest)@ultimaker/testing"
         - "curaengine/latest@ultimaker/cura_9879"
-        - "pysavitar/5.2.0"
-        - "pynest2d/5.2.0"
+        - "pysavitar/(latest)@ultimaker/testing"
+        - "pynest2d/(latest)@ultimaker/testing"
         - "uranium/5.2.0"
         - "fdm_materials/5.2.0"
         - "cura_binary_data/5.2.1"
