@@ -18,7 +18,7 @@
         - "curaengine/latest@ultimaker/cura_9879"
         - "pysavitar/(latest)@ultimaker/testing"
         - "pynest2d/(latest)@ultimaker/testing"
-        - "uranium/5.2.0"
+        - "uranium/(latest)@ultimaker/cura_9879"
         - "fdm_materials/5.2.0"
         - "cura_binary_data/5.2.1"
         - "cpython/3.10.4"
