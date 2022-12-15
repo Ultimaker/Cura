@@ -39,7 +39,7 @@
         "machine_head_with_fans_polygon":               { "default_value": [ [-35, 65], [-35, -50], [35, -50], [35, 65] ] },
         "machine_max_feedrate_z":                       { "default_value": 40 },
         "machine_max_feedrate_e":                       { "default_value": 120 },
-        "machine_start_gcode":                          { "default_value": "# Simple\nSTART_PRINT EXTRUDER_TEMP={material_print_temperature_layer_0} BED_TEMP={material_bed_temperature_layer_0}\n# Or with custom bed mesh area\n# START_PRINT EXTRUDER_TEMP={material_print_temperature_layer_0} BED_TEMP={material_bed_temperature_layer_0} AREA_START=%MINX%,%MINY% AREA_END=%MAXX%,%MAXY% FILAMENT_TYPE={material_type}" },
+        "machine_start_gcode":                          { "default_value": ";Simple\nSTART_PRINT EXTRUDER_TEMP={material_print_temperature_layer_0} BED_TEMP={material_bed_temperature_layer_0}\n;Or with custom bed mesh area\n;START_PRINT EXTRUDER_TEMP={material_print_temperature_layer_0} BED_TEMP={material_bed_temperature_layer_0} AREA_START=%MINX%,%MINY% AREA_END=%MAXX%,%MAXY% FILAMENT_TYPE={material_type}" },
         "machine_end_gcode":                            { "default_value": "END_PRINT" },
         "adhesion_type":                                { "default_value": "skirt" },
         "retraction_amount":                            { "default_value": 0.80 },
