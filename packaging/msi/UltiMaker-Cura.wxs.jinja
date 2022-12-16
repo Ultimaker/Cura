@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-    <Product Id="*"  Name="{{ app_name }}" Language="1033" Version="{{ version_major }}.{{ version_minor }}.{{ version_patch }}" Manufacturer="{{ company }}" UpgradeCode="{{ upgrade_code }}" >
+    <Product
+        Id="*"
+        Name="{{ app_name }}"
+        Language="1033"
+        Version="{{ version_major }}.{{ version_minor }}.{{ version_patch }}"
+        Manufacturer="{{ company }}"
+        UpgradeCode="{{ upgrade_code }}"
+    >
         <Package InstallerVersion="500"
             Compressed="yes"
             InstallScope="perMachine"
@@ -8,6 +15,30 @@
             Description="UltiMaker Cura the most popular 3D printing slicer"
             Keywords="UltiMaker,Cura,3D,printing,slicer"
             Comments="Copyright (c) {{ year }} UltiMaker" />
+
+        <InstallExecuteSequence>
+            <RemoveExistingProducts Before="InstallInitialize" />
+        </InstallExecuteSequence>
+
+        <Property Id="PREVIOUS_VERSIONS_INSTALLED" Secure="yes" />
+        <Upgrade Id="{{ upgrade_code }}">
+            <UpgradeVersion
+                Minimum="4.13.2" Maximum="{{ version_major }}.{{ version_minor }}.{{ version_patch }}"
+                Property="PREVIOUS_VERSIONS_INSTALLED"
+                IncludeMinimum="no" IncludeMaximum="no"
+            />
+        </Upgrade>
+
+        {% if "Enterpise" in app_name %}
+        <Property Id="PREVIOUS_413_INSTALLED" Secure="yes" />
+        <Upgrade Id="53C603BB-2B17-4206-A609-29C2E0D0B0AE">
+            <UpgradeVersion
+                Minimum="1.0.0" Maximum="4.13.2"
+                Property="PREVIOUS_413_INSTALLED"
+                IncludeMinimum="yes" IncludeMaximum="yes"
+            />
+        </Upgrade>
+        {% endif %}
 
         <Condition Message= "OS must be Windows 8.1 64bit or higher.">
             <![CDATA[Installed OR VersionNT64 >= 600]]>

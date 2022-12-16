@@ -15,6 +15,7 @@
                     <Text>{\WixUI_Font_Title}Manage installed versions</Text>
                 </Control>
                 <Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
+                <Control Id="DesktopShortcutCheckBox" Type="CheckBox" X="20" Y="160" Width="290" Height="17" Property="PREVIOUS_VERSIONS_INSTALLED" CheckBoxValue="0" Text="Uninstall previous Cura versions." />
             </Dialog>
         </UI>
     </Fragment>
