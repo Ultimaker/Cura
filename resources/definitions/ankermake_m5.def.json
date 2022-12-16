@@ -27,7 +27,6 @@
     "machine_heated_bed": { "default_value": true },
     "gantry_height": { "value": 25 },
 
-    "xy_offset_layer_0": { "value": -0.2 },
     "hole_xy_offset": { "value": 0.2 },
 
     "top_bottom_thickness": { "value": "layer_height * 4" },
