@@ -19,7 +19,7 @@
     "preferred_material": "generic_pla"
   },
   "overrides": {
-    "machine_center_is_zero": { "default_value": false },
+    
 
     "machine_max_feedrate_x": { "value": 500 },
     "machine_max_feedrate_y": { "value": 500 },
