@@ -33,7 +33,7 @@
     "machine_acceleration": { "value": 500 },
 
     "machine_max_jerk_xy": { "value": 10 },
-    "machine_max_jerk_z": { "value": 0.4 },
+    
     "machine_max_jerk_e": { "value": 5 },
 
     "machine_heated_bed": { "default_value": true },
