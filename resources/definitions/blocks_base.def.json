@@ -28,7 +28,7 @@
 
     "machine_max_acceleration_x": { "value": 500 },
     "machine_max_acceleration_y": { "value": 500 },
-    "machine_max_acceleration_z": { "value": 100 },
+    
     "machine_max_acceleration_e": { "value": 5000 },
     "machine_acceleration": { "value": 500 },
 
