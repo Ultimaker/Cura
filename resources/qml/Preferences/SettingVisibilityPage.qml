@@ -12,6 +12,8 @@ UM.PreferencesPage
 {
     title: catalog.i18nc("@title:tab", "Setting Visibility")
 
+    Item { enabled: false; UM.I18nCatalog { id: catalog; name: "cura"} }
+
     property QtObject settingVisibilityPresetsModel: CuraApplication.getSettingVisibilityPresetsModel()
 
     property int scrollToIndex: 0
@@ -150,7 +152,7 @@ UM.PreferencesPage
             }
 
             clip: true
-            ScrollBar.vertical: UM.ScrollBar {}
+            ScrollBar.vertical: UM.ScrollBar { id: scrollBar }
 
             model: UM.SettingDefinitionsModel
             {
@@ -163,11 +165,14 @@ UM.PreferencesPage
                 visibilityHandler: UM.SettingPreferenceVisibilityHandler {}
             }
 
+            property Component settingVisibilityCategory: Cura.SettingVisibilityCategory {}
+            property Component settingVisibilityItem: Cura.SettingVisibilityItem {}
+
             delegate: Loader
             {
                 id: loader
 
-                width: settingsListView.width
+                width: settingsListView.width - scrollBar.width
                 height: model.type != undefined ? UM.Theme.getSize("section").height : 0
 
                 property var definition: model
@@ -177,31 +182,15 @@ UM.PreferencesPage
                 active: model.type != undefined
                 sourceComponent:
                 {
-                    switch(model.type)
+                    switch (model.type)
                     {
                         case "category":
-                            return settingVisibilityCategory
+                            return settingsListView.settingVisibilityCategory
                         default:
-                            return settingVisibilityItem
+                            return settingsListView.settingVisibilityItem
                     }
                 }
             }
-        }
-
-        UM.I18nCatalog { name: "cura" }
-
-        Component
-        {
-            id: settingVisibilityCategory;
-
-            UM.SettingVisibilityCategory { }
-        }
-
-        Component
-        {
-            id: settingVisibilityItem;
-
-            UM.SettingVisibilityItem { }
         }
     }
 }

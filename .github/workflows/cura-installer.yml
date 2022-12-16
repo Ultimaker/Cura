@@ -1,0 +1,268 @@
+name: Cura Installer
+run-name: ${{ inputs.cura_conan_version }} for ${{ inputs.platform }} by @${{ github.actor }}
+
+on:
+    workflow_call:
+        inputs:
+            platform:
+                description: 'Selected Installer OS'
+                default: 'ubuntu-20.04'
+                required: true
+                type: string
+            os_name:
+                description: 'OS Friendly Name'
+                default: 'linux'
+                required: true
+                type: string
+            cura_conan_version:
+                description: 'Cura Conan Version'
+                default: 'cura/latest@ultimaker/testing'
+                required: true
+                type: string
+            conan_args:
+                description: 'Conan args: eq.: --require-override'
+                default: ''
+                required: false
+                type: string
+            conan_config:
+                description: 'Conan config branch to use'
+                default: ''
+                required: false
+                type: string
+            enterprise:
+                description: 'Build Cura as an Enterprise edition'
+                default: false
+                required: true
+                type: boolean
+            staging:
+                description: 'Use staging API'
+                default: false
+                required: true
+                type: boolean
+            installer:
+                description: 'Create the installer'
+                default: true
+                required: true
+                type: boolean
+
+env:
+    CONAN_LOGIN_USERNAME_CURA: ${{ secrets.CONAN_USER }}
+    CONAN_PASSWORD_CURA: ${{ secrets.CONAN_PASS }}
+    CONAN_LOGIN_USERNAME_CURA_CE: ${{ secrets.CONAN_USER }}
+    CONAN_PASSWORD_CURA_CE: ${{ secrets.CONAN_PASS }}
+    CONAN_LOG_RUN_TO_OUTPUT: 1
+    CONAN_LOGGING_LEVEL: ${{ inputs.conan_logging_level }}
+    CONAN_NON_INTERACTIVE: 1
+    CODESIGN_IDENTITY: ${{ secrets.CODESIGN_IDENTITY }}
+    MAC_NOTARIZE_USER: ${{ secrets.MAC_NOTARIZE_USER }}
+    MAC_NOTARIZE_PASS: ${{ secrets.MAC_NOTARIZE_PASS }}
+    MACOS_CERT_P12: ${{ secrets.MACOS_CERT_P12 }}
+    MACOS_CERT_PASS: ${{ secrets.MACOS_CERT_PASS }}
+    MACOS_CERT_USER: ${{ secrets.MACOS_CERT_USER }}
+    GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+    MACOS_CERT_PASSPHRASE: ${{ secrets.MACOS_CERT_PASSPHRASE }}
+    CURA_CONAN_VERSION: ${{ inputs.cura_conan_version }}
+    ENTERPRISE: ${{ inputs.enterprise }}
+    STAGING: ${{ inputs.staging }}
+
+jobs:
+    cura-installer-create:
+        runs-on: ${{ inputs.platform }}
+
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v3
+
+            -   name: Setup Python and pip
+                uses: actions/setup-python@v4
+                with:
+                    python-version: '3.10.x'
+                    cache: 'pip'
+                    cache-dependency-path: .github/workflows/requirements-conan-package.txt
+
+            -   name: Install Python requirements for runner
+                run: pip install -r .github/workflows/requirements-conan-package.txt
+
+            -   name: Use Conan download cache (Bash)
+                if: ${{ runner.os != 'Windows' }}
+                run: conan config set storage.download_cache="$HOME/.conan/conan_download_cache"
+
+            -   name: Use Conan download cache (Powershell)
+                if: ${{ runner.os == 'Windows' }}
+                run: conan config set storage.download_cache="C:\Users\runneradmin\.conan\conan_download_cache"
+
+            -   name: Cache Conan local repository packages (Bash)
+                uses: actions/cache@v3
+                if: ${{ runner.os != 'Windows' }}
+                with:
+                    path: |
+                        $HOME/.conan/data
+                        $HOME/.conan/conan_download_cache
+                    key: conan-${{ runner.os }}-${{ runner.arch }}-installer-cache
+
+            -   name: Cache Conan local repository packages (Powershell)
+                uses: actions/cache@v3
+                if: ${{ runner.os == 'Windows' }}
+                with:
+                    path: |
+                        C:\Users\runneradmin\.conan\data
+                        C:\.conan
+                        C:\Users\runneradmin\.conan\conan_download_cache
+                    key: conan-${{ runner.os }}-${{ runner.arch }}-installer-cache
+
+            -   name: Install MacOS system requirements
+                if:  ${{ runner.os == 'Macos' }}
+                run: brew install autoconf automake ninja create-dmg
+
+            -   name: Install Linux system requirements
+                if: ${{ runner.os == 'Linux' }}
+                run: |
+                    sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+                    sudo apt update
+                    sudo apt upgrade
+                    sudo apt install build-essential checkinstall libegl-dev zlib1g-dev libssl-dev ninja-build autoconf libx11-dev libx11-xcb-dev libfontenc-dev libice-dev libsm-dev libxau-dev libxaw7-dev libxcomposite-dev libxcursor-dev libxdamage-dev libxdmcp-dev libxext-dev libxfixes-dev libxi-dev libxinerama-dev libxkbfile-dev libxmu-dev libxmuu-dev libxpm-dev libxrandr-dev libxrender-dev libxres-dev libxss-dev libxt-dev libxtst-dev libxv-dev libxvmc-dev libxxf86vm-dev xtrans-dev libxcb-render0-dev libxcb-render-util0-dev libxcb-xkb-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev libxcb-randr0-dev libxcb-shape0-dev libxcb-sync-dev libxcb-xfixes0-dev libxcb-xinerama0-dev xkb-data libxcb-dri3-dev uuid-dev libxcb-util-dev libxkbcommon-x11-dev pkg-config -y
+                    wget --no-check-certificate --quiet https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage -O $GITHUB_WORKSPACE/appimagetool
+                    chmod +x $GITHUB_WORKSPACE/appimagetool
+                    echo "APPIMAGETOOL_LOCATION=$GITHUB_WORKSPACE/appimagetool" >> $GITHUB_ENV
+
+            -   name: Install GCC-12 on ubuntu-22.04
+                if: ${{ startsWith(inputs.runs_on, 'ubuntu-22.04') }}
+                run: |
+                    sudo apt install g++-12 gcc-12 -y
+                    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 12
+                    sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 12
+
+            -   name: Use GCC-10 on ubuntu-20.04
+                if: ${{ startsWith(inputs.runs_on, 'ubuntu-20.04') }}
+                run: |
+                    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 10
+                    sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 10
+
+            -   name: Create the default Conan profile
+                run:  conan profile new default --detect
+
+            -   name: Configure GPG Key Linux (Bash)
+                if: ${{ runner.os == 'Linux' }}
+                run: echo -n "$GPG_PRIVATE_KEY" | base64 --decode | gpg --import
+
+            -   name: Configure Macos keychain (Bash)
+                id: macos-keychain
+                if: ${{ runner.os == 'Macos' }}
+                uses: apple-actions/import-codesign-certs@v1
+                with:
+                    p12-file-base64: ${{ secrets.MACOS_CERT_P12 }}
+                    p12-password: ${{ secrets.MACOS_CERT_PASSPHRASE }}
+
+            -   name: Clean Conan local cache
+                if: ${{ inputs.conan_clean_local_cache }}
+                run: conan remove "*" -f
+
+            -   name: Get Conan configuration from branch
+                if: ${{ inputs.conan_config_branch != '' }}
+                run: conan config install https://github.com/Ultimaker/conan-config.git -a "-b ${{ inputs.conan_config_branch }}"
+
+            -   name: Get Conan configuration
+                if: ${{ inputs.conan_config_branch == '' }}
+                run: conan config install https://github.com/Ultimaker/conan-config.git
+
+            -   name: Create the Packages (Bash)
+                if: ${{ runner.os != 'Windows' }}
+                run: conan install $CURA_CONAN_VERSION ${{ inputs.conan_args }} --build=missing --update -if cura_inst -g VirtualPythonEnv -o cura:enterprise=$ENTERPRISE -o cura:staging=$STAGING --json "cura_inst/conan_install_info.json"
+
+            -   name: Create the Packages (Powershell)
+                if: ${{ runner.os == 'Windows' }}
+                run: conan install $Env:CURA_CONAN_VERSION ${{ inputs.conan_args }} --build=missing --update -if cura_inst -g VirtualPythonEnv -o cura:enterprise=$Env:ENTERPRISE -o cura:staging=$Env:STAGING --json "cura_inst/conan_install_info.json"
+
+            -   name: Set Environment variables for Cura (bash)
+                if: ${{ runner.os != 'Windows' }}
+                run: |
+                    . ./cura_inst/bin/activate_github_actions_env.sh
+                    . ./cura_inst/bin/activate_github_actions_version_env.sh
+
+            -   name: Set Environment variables for Cura (Powershell)
+                if: ${{ runner.os == 'Windows' }}
+                run: |
+                    .\cura_inst\Scripts\activate_github_actions_env.ps1
+                    .\cura_inst\Scripts\activate_github_actions_version_env.ps1
+
+            -   name: Unlock Macos keychain (Bash)
+                if: ${{ runner.os == 'Macos' }}
+                run: security unlock -p $TEMP_KEYCHAIN_PASSWORD signing_temp.keychain
+                env:
+                    TEMP_KEYCHAIN_PASSWORD: ${{  steps.macos-keychain.outputs.keychain-password }}
+
+                # FIXME: This is a workaround to ensure that we use and pack a shared library for OpenSSL 1.1.1l. We currently compile
+                #  OpenSSL statically for CPython, but our Python Dependenies (such as PyQt6) require a shared library.
+                #  Because Conan won't allow for building the same library with two different options (easily) we need to install it explicitly
+                #  and do a manual copy to the VirtualEnv, such that Pyinstaller can find it.
+
+            -   name: Install OpenSSL shared
+                run: conan install openssl/1.1.1l@_/_ --build=missing --update -o openssl:shared=True -g deploy
+
+            -   name: Copy OpenSSL shared (Bash)
+                if: ${{ runner.os != 'Windows' }}
+                run: |
+                    cp ./openssl/lib/*.so* ./cura_inst/bin/ || true
+                    cp ./openssl/lib/*.dylib* ./cura_inst/bin/ || true                    
+
+            -   name: Copy OpenSSL shared (Powershell)
+                if: ${{ runner.os == 'Windows' }}
+                run: |
+                    cp openssl/bin/*.dll ./cura_inst/Scripts/
+                    cp openssl/lib/*.lib ./cura_inst/Lib/
+
+            -   name: Create the Cura dist
+                run: pyinstaller ./cura_inst/UltiMaker-Cura.spec
+
+            -   name: Archive the artifacts (bash)
+                if: ${{ github.event.inputs.installer == 'false' && runner.os != 'Windows' }}
+                run: tar -zcf "./UltiMaker-Cura-$CURA_VERSION_FULL-${{ inputs.os_name }}.tar.gz" "./UltiMaker-Cura/"
+                working-directory: dist
+
+            -   name: Archive the artifacts (Powershell)
+                if: ${{ github.event.inputs.installer == 'false' && runner.os == 'Windows' }}
+                run: Compress-Archive -Path ".\UltiMaker-Cura" -DestinationPath ".\UltiMaker-Cura-$Env:CURA_VERSION_FULL-${{ inputs.os_name }}.zip"
+                working-directory: dist
+
+            -   name: Create the Windows exe installer (Powershell)
+                if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Windows' }}
+                run: |
+                    python ..\cura_inst\packaging\NSIS\create_windows_installer.py ../cura_inst . "UltiMaker-Cura-$Env:CURA_VERSION_FULL-${{ inputs.os_name }}.exe"
+                working-directory: dist
+
+            -   name: Create the Linux AppImage (Bash)
+                if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Linux' }}
+                run: python ../cura_inst/packaging/AppImage/create_appimage.py ./UltiMaker-Cura $CURA_VERSION_FULL "UltiMaker-Cura-$CURA_VERSION_FULL-${{ inputs.os_name }}.AppImage"
+                working-directory: dist
+
+            -   name: Create the MacOS dmg (Bash)
+                if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Macos' }}
+                run: python ../cura_inst/packaging/dmg/dmg_sign_noterize.py ../cura_inst . "UltiMaker-Cura-$CURA_VERSION_FULL-${{ inputs.os_name }}.dmg"
+                working-directory: dist
+
+            -   name: Upload the artifacts
+                uses: actions/upload-artifact@v3
+                with:
+                    name: UltiMaker-Cura-${{ env.CURA_VERSION_FULL }}-${{ inputs.os_name }}
+                    path: |
+                        dist/*.tar.gz
+                        dist/*.zip
+                        dist/*.exe
+                        dist/*.msi
+                        dist/*.dmg
+                        dist/*.AppImage
+                        dist/*.asc
+                    retention-days: 5
+
+    notify-export:
+        if: ${{ always() }}
+        needs: [ cura-installer-create ]
+
+        uses: ultimaker/cura/.github/workflows/notify.yml@main
+        with:
+            success: ${{ contains(join(needs.*.result, ','), 'success') }}
+            success_title: "Create the Cura distributions"
+            success_body: "Installers for ${{ inputs.cura_conan_version }}"
+            failure_title: "Failed to create the Cura distributions"
+            failure_body: "Failed to create at least 1 installer for ${{ inputs.cura_conan_version }}"
+        secrets: inherit

@@ -25,7 +25,6 @@ Item
             top: parent.top
             left: parent.left
             right: settingVisibilityMenu.left
-            rightMargin: UM.Theme.getSize("default_margin").width
         }
         height: UM.Theme.getSize("print_setup_big_item").height
 
@@ -44,14 +43,15 @@ Item
             height: parent.height
             anchors.left: parent.left
             anchors.right: parent.right
+            topPadding: height / 4
             leftPadding: searchIcon.width + UM.Theme.getSize("default_margin").width * 2
             placeholderText: catalog.i18nc("@label:textbox", "Search settings")
-            font.italic: true
+            font: UM.Theme.getFont("default_italic")
 
             property var expandedCategories
             property bool lastFindingSettings: false
 
-            UM.RecolorImage
+            UM.ColorImage
             {
                 id: searchIcon
 
@@ -61,7 +61,7 @@ Item
                     left: parent.left
                     leftMargin: UM.Theme.getSize("default_margin").width
                 }
-                source: UM.Theme.getIcon("search")
+                source: UM.Theme.getIcon("Magnifier")
                 height: UM.Theme.getSize("small_button_icon").height
                 width: height
                 color: UM.Theme.getColor("text")
@@ -131,8 +131,6 @@ Item
     SettingVisibilityPresetsMenu
     {
         id: settingVisibilityPresetsMenu
-        x: settingVisibilityMenu.x
-        y: settingVisibilityMenu.y
         onCollapseAllCategories:
         {
             settingsSearchTimer.stop()
@@ -142,31 +140,31 @@ Item
         }
     }
 
-    UM.SimpleButton
+    UM.BurgerButton
     {
         id: settingVisibilityMenu
 
         anchors
         {
-            top: filterContainer.top
-            bottom: filterContainer.bottom
+            verticalCenter: filterContainer.verticalCenter
             right: parent.right
-            rightMargin: UM.Theme.getSize("wide_margin").width
         }
-        width: UM.Theme.getSize("medium_button_icon").width
-        height: UM.Theme.getSize("medium_button_icon").height
-        iconSource: UM.Theme.getIcon("Hamburger")
-        hoverColor: UM.Theme.getColor("small_button_text_hover")
-        color: UM.Theme.getColor("small_button_text")
 
         onClicked:
         {
             settingVisibilityPresetsMenu.popup(
-                settingVisibilityMenu,
+                popupContainer,
                 -settingVisibilityPresetsMenu.width + UM.Theme.getSize("default_margin").width,
                 settingVisibilityMenu.height
             )
         }
+    }
+    Item
+    {
+        // Work around to prevent the buttom from being rescaled if a popup is attached
+        id: popupContainer
+        anchors.bottom: settingVisibilityMenu.bottom
+        anchors.right: settingVisibilityMenu.right
     }
 
     // Mouse area that gathers the scroll events to not propagate it to the main view.
@@ -174,13 +172,13 @@ Item
     {
         anchors.fill: contents
         acceptedButtons: Qt.AllButtons
-        onWheel: wheel.accepted = true
+        onWheel: (wheel) => { wheel.accepted = true }
     }
 
     ListView
     {
         id: contents
-
+        maximumFlickVelocity: 1000 * screenScaleFactor
         anchors
         {
             top: filterContainer.bottom
@@ -191,7 +189,17 @@ Item
         }
         clip: true
         cacheBuffer: 1000000   // Set a large cache to effectively just cache every list item.
-        ScrollBar.vertical: UM.ScrollBar {}
+        ScrollBar.vertical: UM.ScrollBar
+        {
+            id: scrollBar
+            onPositionChanged: {
+                // This removes focus from items when scrolling.
+                // This fixes comboboxes staying open and scrolling container
+                if (!activeFocus && !filter.activeFocus) {
+                    forceActiveFocus();
+                }
+            }
+        }
 
         model: UM.SettingDefinitionsModel
         {
@@ -213,17 +221,13 @@ Item
         }
 
         property int indexWithFocus: -1
-        property double delegateHeight: UM.Theme.getSize("section").height + 2 * UM.Theme.getSize("default_lining").height
         property string activeMachineId: Cura.MachineManager.activeMachine !== null ? Cura.MachineManager.activeMachine.id : ""
         delegate: Loader
         {
             id: delegate
 
-            width: contents.width
-            height: enabled ? contents.delegateHeight: 0
-            Behavior on height { NumberAnimation { duration: 100 } }
+            width: contents.width - (scrollBar.width + UM.Theme.getSize("narrow_margin").width)
             opacity: enabled ? 1 : 0
-            Behavior on opacity { NumberAnimation { duration: 100 } }
             enabled: provider.properties.enabled === "True"
 
             property var definition: model
@@ -345,10 +349,7 @@ Item
                 function onFocusReceived()
                 {
                     contents.indexWithFocus = index
-                    animateContentY.from = contents.contentY
                     contents.positionViewAtIndex(index, ListView.Contain)
-                    animateContentY.to = contents.contentY
-                    animateContentY.running = true
                 }
                 function onSetActiveFocusToNextSetting(forward)
                 {
@@ -377,35 +378,6 @@ Item
                         }
                     }
                 }
-            }
-        }
-
-        NumberAnimation {
-            id: animateContentY
-            target: contents
-            property: "contentY"
-            duration: 50
-        }
-
-        add: Transition {
-            SequentialAnimation {
-                NumberAnimation { properties: "height"; from: 0; duration: 100 }
-                NumberAnimation { properties: "opacity"; from: 0; duration: 100 }
-            }
-        }
-        remove: Transition {
-            SequentialAnimation {
-                NumberAnimation { properties: "opacity"; to: 0; duration: 100 }
-                NumberAnimation { properties: "height"; to: 0; duration: 100 }
-            }
-        }
-        addDisplaced: Transition {
-            NumberAnimation { properties: "x,y"; duration: 100 }
-        }
-        removeDisplaced: Transition {
-            SequentialAnimation {
-                PauseAnimation { duration: 100; }
-                NumberAnimation { properties: "x,y"; duration: 100 }
             }
         }
 

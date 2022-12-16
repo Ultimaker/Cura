@@ -41,7 +41,6 @@
         "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
         "material_print_temp_wait": { "default_value": false },
         "material_bed_temp_wait": { "default_value": false },
-        "prime_tower_enable": { "default_value": false },
         "prime_tower_min_volume": { "value": "0.7" },
         "prime_tower_size": { "value": 24.0 },
         "prime_tower_position_x": { "value": "125" },

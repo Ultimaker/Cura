@@ -19,7 +19,7 @@ UM.Dialog
     height: 500 * screenScaleFactor
     minimumWidth: 400 * screenScaleFactor
     minimumHeight: 250 * screenScaleFactor
-
+    backgroundColor: UM.Theme.getColor("main_background")
     onVisibleChanged:
     {
         // Whenever the window is closed (either via the "Close" button or the X on the window frame), we want to update it in the stack.
@@ -143,14 +143,12 @@ UM.Dialog
                                 }
                             }
 
-                            UM.RecolorImage
+                            UM.ColorImage
                             {
                                 anchors.verticalCenter: parent.verticalCenter
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 width: UM.Theme.getSize("standard_arrow").width
                                 height: UM.Theme.getSize("standard_arrow").height
-                                sourceSize.width: width
-                                sourceSize.height: height
                                 color: parent.enabled ? UM.Theme.getColor("text") : UM.Theme.getColor("text_disabled")
                                 source: UM.Theme.getIcon("ChevronSingleDown")
                             }
@@ -175,14 +173,12 @@ UM.Dialog
                                 }
                             }
 
-                            UM.RecolorImage
+                            UM.ColorImage
                             {
                                 anchors.verticalCenter: parent.verticalCenter
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 width: UM.Theme.getSize("standard_arrow").width
                                 height: UM.Theme.getSize("standard_arrow").height
-                                sourceSize.width: width
-                                sourceSize.height: height
                                 color: upButton.enabled ? UM.Theme.getColor("text") : UM.Theme.getColor("text_disabled")
                                 source: UM.Theme.getIcon("ChevronSingleUp")
                             }
@@ -200,14 +196,12 @@ UM.Dialog
                                 onClicked: manager.removeScriptByIndex(index)
                             }
 
-                            UM.RecolorImage
+                            UM.ColorImage
                             {
                                 anchors.verticalCenter: parent.verticalCenter
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 width: UM.Theme.getSize("standard_arrow").width
                                 height: UM.Theme.getSize("standard_arrow").height
-                                sourceSize.width: width
-                                sourceSize.height: height
                                 color: UM.Theme.getColor("text")
                                 source: UM.Theme.getIcon("Cancel")
                             }
@@ -237,8 +231,8 @@ UM.Dialog
                     onTriggered: manager.addScriptToList(modelData.toString())
                 }
 
-                onObjectAdded: scriptsMenu.insertItem(index, object)
-                onObjectRemoved: scriptsMenu.removeItem(object)
+                onObjectAdded: function(index, object) { scriptsMenu.insertItem(index, object)}
+                onObjectRemoved: function(index, object) {  scriptsMenu.removeItem(object) }
             }
         }
 
@@ -251,7 +245,7 @@ UM.Dialog
             height: parent.height
             id: settingsPanel
 
-            Label
+            UM.Label
             {
                 id: scriptSpecsHeader
                 text: manager.selectedScriptIndex == -1 ? catalog.i18nc("@label", "Settings") : base.activeScriptName
@@ -268,7 +262,6 @@ UM.Dialog
                 elide: Text.ElideRight
                 height: 20 * screenScaleFactor
                 font: UM.Theme.getFont("large_bold")
-                color: UM.Theme.getColor("text")
             }
 
             ListView
@@ -293,6 +286,7 @@ UM.Dialog
                 {
                     id: definitionsModel
                     containerId: manager.selectedScriptDefinitionId
+                    onContainerIdChanged: definitionsModel.setAllVisible(true)
                     showAll: true
                 }
 
@@ -479,9 +473,9 @@ UM.Dialog
                 }
                 return tipText
             }
-            toolTipContentAlignment: Cura.ToolTip.ContentAlignment.AlignLeft
+            toolTipContentAlignment: UM.Enums.ContentAlignment.AlignLeft
             onClicked: dialog.show()
-            iconSource: "Script.svg"
+            iconSource: Qt.resolvedUrl("Script.svg")
             fixedWidthMode: false
         }
 

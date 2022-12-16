@@ -1,7 +1,7 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import Qt
+from PyQt6.QtCore import Qt
 
 from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
@@ -10,9 +10,9 @@ from cura.Machines.ContainerTree import ContainerTree
 
 
 class NozzleModel(ListModel):
-    IdRole = Qt.UserRole + 1
-    HotendNameRole = Qt.UserRole + 2
-    ContainerNodeRole = Qt.UserRole + 3
+    IdRole = Qt.ItemDataRole.UserRole + 1
+    HotendNameRole = Qt.ItemDataRole.UserRole + 2
+    ContainerNodeRole = Qt.ItemDataRole.UserRole + 3
 
     def __init__(self, parent = None):
         super().__init__(parent)

@@ -1,4 +1,4 @@
-// Copyright (c) 2020 Ultimaker B.V.
+// Copyright (c) 2022 UltiMaker
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -30,6 +30,7 @@ Column
             height: UM.Theme.getSize("main_window_header").height
 
             source: profile["profile_image_url"] ? profile["profile_image_url"] : ""
+            maskColor: UM.Theme.getColor("main_background")
             outlineColor: UM.Theme.getColor("main_background")
         }
         Rectangle
@@ -45,7 +46,7 @@ Column
             {
                 id: initialLabel
                 anchors.centerIn: parent
-                text: profile["username"].charAt(0).toUpperCase()
+                text: profile.username.charAt(0).toUpperCase()
                 font: UM.Theme.getFont("large_bold")
                 horizontalAlignment: Text.AlignHCenter
             }
@@ -89,8 +90,9 @@ Column
     Cura.TertiaryButton
     {
         id: cloudButton
-        width: UM.Theme.getSize("account_button").width
+        width: parent.width
         height: UM.Theme.getSize("account_button").height
+
         text: "Ultimaker Digital Factory"
         onClicked: Qt.openUrlExternally(CuraApplication.ultimakerDigitalFactoryUrl + "?utm_source=cura&utm_medium=software&utm_campaign=menu-visit-DF")
         fixedWidthMode: false
@@ -99,9 +101,10 @@ Column
     Cura.TertiaryButton
     {
         id: accountButton
-        width: UM.Theme.getSize("account_button").width
+        width: parent.width
         height: UM.Theme.getSize("account_button").height
-        text: catalog.i18nc("@button", "Ultimaker Account")
+
+        text: catalog.i18nc("@button", "UltiMaker Account")
         onClicked: Qt.openUrlExternally(CuraApplication.ultimakerCloudAccountRootUrl + "?utm_source=cura&utm_medium=software&utm_campaign=menu-visit-account")
         fixedWidthMode: false
     }
@@ -116,7 +119,11 @@ Column
     Cura.TertiaryButton
     {
         id: signOutButton
+        width: parent.width
+        height: UM.Theme.getSize("account_button").height
+
         onClicked: Cura.API.account.logout()
         text: catalog.i18nc("@button", "Sign Out")
+        fixedWidthMode: false
     }
 }

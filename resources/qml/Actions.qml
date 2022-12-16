@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Ultimaker B.V.
+// Copyright (c) 2022 UltiMaker
 // Cura is released under the terms of the LGPLv3 or higher.
 
 pragma Singleton
@@ -40,7 +40,6 @@ Item
     property alias selectAll: selectAllAction
     property alias deleteAll: deleteAllAction
     property alias reloadAll: reloadAllAction
-    property alias arrangeAllBuildPlates: arrangeAllBuildPlatesAction
     property alias arrangeAll: arrangeAllAction
     property alias arrangeSelection: arrangeSelectionAction
     property alias resetAllTranslation: resetAllTranslationAction
@@ -79,7 +78,7 @@ Item
     {
         id: showTroubleShootingAction
         onTriggered: Qt.openUrlExternally("https://ultimaker.com/en/troubleshooting?utm_source=cura&utm_medium=software&utm_campaign=dropdown-troubleshooting")
-        text: catalog.i18nc("@action:inmenu", "Show Online Troubleshooting Guide")
+        text: catalog.i18nc("@action:inmenu", "Show Online Troubleshooting")
     }
 
     Action
@@ -188,6 +187,8 @@ Item
         //- https://doc.qt.io/qt-5/qmenubar.html#qmenubar-as-a-global-menu-bar
         text: (Qt.platform.os == "osx") ? "Configure Cura..." : catalog.i18nc("@action:inmenu", "Configure Cura...")
         icon.name: "configure"
+        // on MacOS it us customary to assign the ctrl+, hotkey to open a general settings menu
+        shortcut: (Qt.platform.os == "osx") ? "Ctrl+," : ""
     }
 
     Action
@@ -214,7 +215,7 @@ Item
     Action
     {
         id: marketplaceMaterialsAction
-        text: catalog.i18nc("@action:inmenu Marketplace is a brand name of Ultimaker's, so don't translate.", "Add more materials from Marketplace")
+        text: catalog.i18nc("@action:inmenu Marketplace is a brand name of UltiMaker's, so don't translate.", "Add more materials from Marketplace")
     }
 
     Action
@@ -405,13 +406,6 @@ Item
         icon.name: "document-revert"
         shortcut: "F5"
         onTriggered: CuraApplication.reloadAll()
-    }
-
-    Action
-    {
-        id: arrangeAllBuildPlatesAction
-        text: catalog.i18nc("@action:inmenu menubar:edit","Arrange All Models To All Build Plates")
-        onTriggered: Printer.arrangeObjectsToAllBuildPlates()
     }
 
     Action

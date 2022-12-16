@@ -27,7 +27,7 @@ Item
     Row
     {
         height: parent.height
-        spacing: UM.Theme.getSize("print_setup_slider_handle").width // TODO: Theme! (Should be same as extruder spacing)
+        spacing: UM.Theme.getSize("slider_handle").width // TODO: Theme! (Should be same as extruder spacing)
 
         // This wrapper ensures that the buildplate icon is located centered
         // below an extruder icon.
@@ -45,7 +45,7 @@ Item
                 radius: Math.floor(height / 2)
             }
 
-            UM.RecolorImage
+            UM.ColorImage
             {
                 id: buildplateIcon
                 anchors.centerIn: parent

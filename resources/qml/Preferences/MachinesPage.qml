@@ -12,15 +12,25 @@ import Cura 1.0 as Cura
 UM.ManagementPage
 {
     id: base
+    Item { enabled: false; UM.I18nCatalog { id: catalog; name: "cura"} }
 
     title: catalog.i18nc("@title:tab", "Printers")
-    model: Cura.GlobalStacksModel { }
+    detailsPlaneCaption: base.currentItem && base.currentItem.name ? base.currentItem.name : ""
+
+    model: Cura.GlobalStacksModel { filterAbstractMachines: false }
 
     sectionRole: "discoverySource"
 
     activeId: Cura.MachineManager.activeMachine !== null ? Cura.MachineManager.activeMachine.id: ""
     activeIndex: activeMachineIndex()
-    onHamburgeButtonClicked: menu.popup(content_item, content_item.width - menu.width, hamburger_button.height)
+    onHamburgeButtonClicked: {
+        const hamburerButtonHeight = hamburger_button.height;
+        menu.popup(hamburger_button, -menu.width + hamburger_button.width / 2, hamburger_button.height);
+        // for some reason the height of the hamburger changes when opening the popup
+        // reset height to initial heigt
+        hamburger_button.height = hamburerButtonHeight;
+    }
+    hamburgerButtonVisible: Cura.MachineManager.activeMachine !== null
 
     function activeMachineIndex()
     {
@@ -42,60 +52,44 @@ UM.ManagementPage
         }
     ]
 
-    Item
+    Flow
     {
-        id: content_item
-        visible: base.currentItem != null
+        visible: base.currentItem != null && currentItem && currentItem.id == Cura.MachineManager.activeMachine.id
         anchors.fill: parent
+        spacing: UM.Theme.getSize("default_margin").height
 
-
-        UM.Label
+        Repeater
         {
-            id: machineName
-            text: base.currentItem && base.currentItem.name ? base.currentItem.name : ""
-            font: UM.Theme.getFont("large_bold")
-            width: parent.width
-            elide: Text.ElideRight
-        }
+            id: machineActionRepeater
+            model: base.currentItem ? Cura.MachineActionManager.getSupportedActions(Cura.MachineManager.getDefinitionByMachineId(base.currentItem.id)) : null
 
-        Flow
-        {
-            id: machineActions
-            visible: currentItem && currentItem.id == Cura.MachineManager.activeMachine.id
-            anchors
+            Item
             {
-                left: parent.left
-                right: parent.right
-                top: machineName.bottom
-                topMargin: UM.Theme.getSize("default_margin").height
-            }
-            spacing: UM.Theme.getSize("default_margin").height
-
-            Repeater
-            {
-                id: machineActionRepeater
-                model: base.currentItem ? Cura.MachineActionManager.getSupportedActions(Cura.MachineManager.getDefinitionByMachineId(base.currentItem.id)) : null
-
-                Item
+                width: Math.round(childrenRect.width + 2 * screenScaleFactor)
+                height: childrenRect.height
+                visible: machineActionRepeater.model[index].visible
+                Cura.SecondaryButton
                 {
-                    width: Math.round(childrenRect.width + 2 * screenScaleFactor)
-                    height: childrenRect.height
-                    Cura.SecondaryButton
+                    text: machineActionRepeater.model[index].label
+                    onClicked:
                     {
-                        text: machineActionRepeater.model[index].label
-                        onClicked:
-                        {
-                            var currentItem = machineActionRepeater.model[index]
+                        var currentItem = machineActionRepeater.model[index]
+                        if (currentItem.shouldOpenAsDialog) {
                             actionDialog.loader.manager = currentItem
                             actionDialog.loader.source = currentItem.qmlPath
                             actionDialog.title = currentItem.label
                             actionDialog.show()
+                        } else {
+                            currentItem.execute()
                         }
                     }
                 }
             }
         }
+    }
 
+    Item
+    {
         UM.Dialog
         {
             id: actionDialog
@@ -103,9 +97,15 @@ UM.ManagementPage
             minimumHeight: UM.Theme.getSize("modal_window_minimum").height
             maximumWidth: minimumWidth * 3
             maximumHeight: minimumHeight * 3
+            backgroundColor: UM.Theme.getColor("main_background")
+            onVisibleChanged:
+            {
+                if(!visible)
+                {
+                    actionDialog.loader.item.focus = true
+                }
+            }
         }
-
-        UM.I18nCatalog { id: catalog; name: "cura"; }
 
         UM.ConfirmRemoveDialog
         {
@@ -138,6 +138,7 @@ UM.ManagementPage
                 objectList.onCurrentIndexChanged()
             }
         }
+
         Cura.Menu
         {
             id: menu

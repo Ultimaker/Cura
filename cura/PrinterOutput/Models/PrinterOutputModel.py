@@ -1,7 +1,7 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, QVariant, pyqtSlot, QUrl
+from PyQt6.QtCore import pyqtSignal, pyqtProperty, QObject, QVariant, pyqtSlot, QUrl
 from typing import List, Dict, Optional, TYPE_CHECKING
 from UM.Math.Vector import Vector
 from cura.PrinterOutput.Peripheral import Peripheral
@@ -350,5 +350,6 @@ class PrinterOutputModel(QObject):
             self.availableConfigurationsChanged.emit()
 
     def setAvailableConfigurations(self, new_configurations: List[PrinterConfigurationModel]) -> None:
-        self._available_printer_configurations = new_configurations
-        self.availableConfigurationsChanged.emit()
+        if self._available_printer_configurations != new_configurations:
+            self._available_printer_configurations = new_configurations
+            self.availableConfigurationsChanged.emit()

@@ -17,7 +17,15 @@ ComboBox
 
     property var defaultTextOnEmptyModel: catalog.i18nc("@label", "No items to select from")  // Text displayed in the combobox when the model is empty
     property var defaultTextOnEmptyIndex: ""  // Text displayed in the combobox when the model has items but no item is selected
+    property alias textFormat: contentLabel.textFormat
+    property alias backgroundColor: background.color
+    property bool forceHighlight: false
+    property int contentLeftPadding: UM.Theme.getSize("setting_unit_margin").width
+    property var textFont: UM.Theme.getFont("default")
+
     enabled: delegateModel.count > 0
+
+    height: UM.Theme.getSize("combobox").height
 
     onVisibleChanged: { popup.close() }
 
@@ -31,15 +39,60 @@ ComboBox
         },
         State
         {
+            name: "active"
+            when: control.activeFocus
+            PropertyChanges
+            {
+                target: background
+                borderColor: UM.Theme.getColor("text_field_border_active")
+                liningColor: UM.Theme.getColor("text_field_border_active")
+            }
+        },
+        State
+        {
             name: "highlighted"
-            when: control.hovered || control.activeFocus
-            PropertyChanges { target: background; liningColor: UM.Theme.getColor("border_main")}
+            when: (control.hovered && !control.activeFocus) || forceHighlight
+            PropertyChanges
+            {
+                target: background
+                liningColor: UM.Theme.getColor("text_field_border_hovered")
+            }
         }
     ]
 
-    background: UM.UnderlineBackground{}
+    background: UM.UnderlineBackground
+    {
+        id: background
+        // Rectangle for highlighting when this combobox needs to pulse.
+        Rectangle
+        {
+            anchors.fill: parent
+            opacity: 0
+            color: "transparent"
 
-    indicator: UM.RecolorImage
+            border.color: UM.Theme.getColor("text_field_border_active")
+            border.width: UM.Theme.getSize("default_lining").width
+
+            SequentialAnimation on opacity
+            {
+                id: pulseAnimation
+                running: false
+                loops: 2
+                PropertyAnimation
+                {
+                    to: 1
+                    duration: 150
+                }
+                PropertyAnimation
+                {
+                    to: 0
+                    duration : 150
+                }
+            }
+        }
+    }
+
+    indicator: UM.ColorImage
     {
         id: downArrow
         x: control.width - width - control.rightPadding
@@ -48,8 +101,6 @@ ComboBox
         source: UM.Theme.getIcon("ChevronSingleDown")
         width: UM.Theme.getSize("standard_arrow").width
         height: UM.Theme.getSize("standard_arrow").height
-        sourceSize.width: width + 5 * screenScaleFactor
-        sourceSize.height: width + 5 * screenScaleFactor
 
         color: UM.Theme.getColor("setting_control_button")
     }
@@ -57,11 +108,10 @@ ComboBox
     contentItem: UM.Label
     {
         id: contentLabel
-        anchors.left: parent.left
-        anchors.leftMargin: UM.Theme.getSize("setting_unit_margin").width
-        anchors.verticalCenter: parent.verticalCenter
+        leftPadding: contentLeftPadding + UM.Theme.getSize("default_margin").width
         anchors.right: downArrow.left
         wrapMode: Text.NoWrap
+        font: textFont
         text:
         {
             if (control.delegateModel.count == 0)
@@ -131,11 +181,12 @@ ComboBox
             id: delegateLabel
             // FIXME: Somehow the top/bottom anchoring is not correct on Linux and it results in invisible texts.
             anchors.fill: parent
-            anchors.leftMargin: UM.Theme.getSize("setting_unit_margin").width
+            anchors.leftMargin: contentLeftPadding
             anchors.rightMargin: UM.Theme.getSize("setting_unit_margin").width
 
             text: delegateItem.text
-            textFormat: Text.PlainText
+            textFormat: control.textFormat
+            font: textFont
             color: UM.Theme.getColor("setting_control_text")
             elide: Text.ElideRight
             wrapMode: Text.NoWrap
@@ -150,5 +201,10 @@ ComboBox
             }
             text: delegateLabel.truncated ? delegateItem.text : ""
         }
+    }
+
+    function pulse()
+    {
+        pulseAnimation.restart();
     }
 }

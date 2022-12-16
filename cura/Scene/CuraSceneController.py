@@ -1,7 +1,7 @@
 from UM.Logger import Logger
 
-from PyQt5.QtCore import Qt, pyqtSlot, QObject, QTimer
-from PyQt5.QtWidgets import QApplication
+from PyQt6.QtCore import Qt, pyqtSlot, QObject, QTimer
+from PyQt6.QtWidgets import QApplication
 
 from UM.Scene.Camera import Camera
 from cura.UI.ObjectsModel import ObjectsModel
@@ -107,8 +107,8 @@ class CuraSceneController(QObject):
         """Either select or deselect an item"""
 
         modifiers = QApplication.keyboardModifiers()
-        ctrl_is_active = modifiers & Qt.ControlModifier
-        shift_is_active = modifiers & Qt.ShiftModifier
+        ctrl_is_active = modifiers & Qt.KeyboardModifier.ControlModifier
+        shift_is_active = modifiers & Qt.KeyboardModifier.ShiftModifier
 
         if ctrl_is_active:
             item = self._objects_model.getItem(index)
@@ -139,7 +139,7 @@ class CuraSceneController(QObject):
     def setActiveBuildPlate(self, nr):
         if nr == self._active_build_plate:
             return
-        Logger.log("d", "Select build plate: %s" % nr)
+        Logger.debug(f"Selected build plate: {nr}")
         self._active_build_plate = nr
         Selection.clear()
 

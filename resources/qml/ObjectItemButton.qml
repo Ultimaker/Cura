@@ -146,7 +146,7 @@ Button
                     labelText: perObjectSettingsCount.toString()
                 }
 
-                UM.RecolorImage
+                UM.ColorImage
                 {
                     id: meshTypeIcon
                     anchors
@@ -188,7 +188,7 @@ Button
         elideWidth: buttonText.width
     }
 
-    Cura.ToolTip
+    UM.ToolTip
     {
         id: tooltip
         tooltipText: objectItemButton.text + perObjectSettingsInfo.tooltipText

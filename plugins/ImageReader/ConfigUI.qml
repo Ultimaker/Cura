@@ -1,7 +1,7 @@
 // Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.1
+import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.3
 import QtQuick.Window 2.1
@@ -47,11 +47,11 @@ UM.Dialog
             Layout.minimumWidth: UM.Theme.getSize("setting_control").width
             selectByMouse: true
             objectName: "Peak_Height"
-            validator: RegExpValidator { regExp: /^\d{0,3}([\,|\.]\d*)?$/ }
+            validator: RegularExpressionValidator { regularExpression: /^\d{0,3}([\,|\.]\d*)?$/ }
             onTextChanged: manager.onPeakHeightChanged(text)
         }
 
-        Cura.ToolTip
+        UM.ToolTip
         {
             text: catalog.i18nc("@info:tooltip", "The maximum distance of each pixel from \"Base.\"")
             visible: peak_height.hovered || peak_height_label.containsMouse
@@ -81,11 +81,11 @@ UM.Dialog
             Layout.fillWidth: true
             Layout.minimumWidth: UM.Theme.getSize("setting_control").width
             objectName: "Base_Height"
-            validator: RegExpValidator { regExp: /^\d{0,3}([\,|\.]\d*)?$/ }
+            validator: RegularExpressionValidator { regularExpression: /^\d{0,3}([\,|\.]\d*)?$/ }
             onTextChanged: manager.onBaseHeightChanged(text)
         }
 
-        Cura.ToolTip
+        UM.ToolTip
         {
             text: catalog.i18nc("@info:tooltip", "The base height from the build plate in millimeters.")
             visible: base_height.hovered || base_height_label.containsMouse
@@ -115,11 +115,11 @@ UM.Dialog
             Layout.fillWidth: true
             Layout.minimumWidth: UM.Theme.getSize("setting_control").width
             focus: true
-            validator: RegExpValidator { regExp: /^[1-9]\d{0,2}([\,|\.]\d*)?$/ }
+            validator: RegularExpressionValidator { regularExpression: /^[1-9]\d{0,2}([\,|\.]\d*)?$/ }
             onTextChanged: manager.onWidthChanged(text)
         }
 
-        Cura.ToolTip
+        UM.ToolTip
         {
             text: catalog.i18nc("@info:tooltip", "The width in millimeters on the build plate")
             visible: width.hovered || width_label.containsMouse
@@ -149,11 +149,11 @@ UM.Dialog
             selectByMouse: true
             objectName: "Depth"
             focus: true
-            validator: RegExpValidator { regExp: /^[1-9]\d{0,2}([\,|\.]\d*)?$/ }
+            validator: RegularExpressionValidator { regularExpression: /^[1-9]\d{0,2}([\,|\.]\d*)?$/ }
             onTextChanged: manager.onDepthChanged(text)
         }
 
-        Cura.ToolTip
+        UM.ToolTip
         {
             text: catalog.i18nc("@info:tooltip", "The depth in millimeters on the build plate")
             visible: depth.hovered || depth_label.containsMouse
@@ -190,7 +190,7 @@ UM.Dialog
             onCurrentIndexChanged: { manager.onImageColorInvertChanged(currentIndex) }
         }
 
-        Cura.ToolTip
+        UM.ToolTip
         {
             text: catalog.i18nc("@info:tooltip", "For lithophanes dark pixels should correspond to thicker locations in order to block more light coming through. For height maps lighter pixels signify higher terrain, so lighter pixels should correspond to thicker locations in the generated 3D model.")
             visible: lighter_is_higher.hovered || lighter_is_higher_label.containsMouse
@@ -227,7 +227,7 @@ UM.Dialog
             onCurrentIndexChanged: { manager.onColorModelChanged(currentIndex) }
         }
 
-        Cura.ToolTip
+        UM.ToolTip
         {
             text: catalog.i18nc("@info:tooltip", "For lithophanes a simple logarithmic model for translucency is available. For height maps the pixel values correspond to heights linearly.")
             visible: color_model.hovered || color_model_label.containsMouse
@@ -255,10 +255,10 @@ UM.Dialog
             Layout.minimumWidth: UM.Theme.getSize("setting_control").width
             selectByMouse: true
             objectName: "Transmittance"
-            validator: RegExpValidator { regExp: /^[1-9]\d{0,2}([\,|\.]\d*)?$/ }
+            validator: RegularExpressionValidator { regularExpression: /^[1-9]\d{0,2}([\,|\.]\d*)?$/ }
             onTextChanged: manager.onTransmittanceChanged(text)
 
-            Cura.ToolTip
+            UM.ToolTip
             {
                 text: catalog.i18nc("@info:tooltip", "The percentage of light penetrating a print with a thickness of 1 millimeter. Lowering this value increases the contrast in dark regions and decreases the contrast in light regions of the image.")
                 visible: parent.hovered || transmittance_label.containsMouse
@@ -293,7 +293,7 @@ UM.Dialog
             onValueChanged: manager.onSmoothingChanged(value)
         }
 
-        Cura.ToolTip
+        UM.ToolTip
         {
             text: catalog.i18nc("@info:tooltip", "The amount of smoothing to apply to the image.")
             visible: smoothing.hovered || smoothing_label.containsMouse
