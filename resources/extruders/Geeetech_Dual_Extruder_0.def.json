@@ -1,0 +1,19 @@
+{
+    "version": 2,
+    "name": "E0",
+    "inherits": "fdmextruder",
+    "metadata":
+    {
+        "machine": "Geeetech_Base_Dual_Extruder",
+        "position": "0"
+    },
+    "overrides":
+    {
+        "extruder_nr":
+        {
+            "default_value": 0,
+            "maximum_value": "1"
+        },
+        "material_diameter": { "default_value": 1.75 }
+    }
+}
