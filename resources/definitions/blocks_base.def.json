@@ -49,7 +49,7 @@
     "jerk_travel_layer_0": { "value": "jerk_travel" },
 
     
-    "speed_wall": { "value": "speed_print / 2" },
+    
     "speed_travel": {
       "value": "150.0 if speed_print < 60 else 250.0 if speed_print > 100 else speed_print * 2.5"
     },
