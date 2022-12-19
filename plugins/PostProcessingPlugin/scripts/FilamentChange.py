@@ -194,12 +194,12 @@ class FilamentChange(Script):
         if not enabled:
             return data
 
-        color_change = ";BEGIN FilamentChange plugin"
+        color_change = ";BEGIN FilamentChange plugin\n"
 
         if enable_before_macro:
-            color_change = color_change + "\n" + before_macro
+            color_change = color_change + before_macro + "\n"
 
-        color_change = color_change + "\n" + "M600"
+        color_change = color_change + "M600\n"
 
         if not firmware_config:
             if initial_retract is not None and initial_retract > 0.:
@@ -221,9 +221,9 @@ class FilamentChange(Script):
                 color_change = color_change + (" Z%.2f" % z_pos)
 
         if enable_after_macro:
-            color_change = color_change + "\n" + after_macro
+            color_change = color_change + after_macro + "\n"
 
-        color_change = color_change + "\n;END FilamentChange plugin\n"
+        color_change = color_change + ";END FilamentChange plugin\n"
 
         layer_targets = layer_nums.split(",")
         if len(layer_targets) > 0:
