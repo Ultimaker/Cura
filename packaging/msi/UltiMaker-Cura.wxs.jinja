@@ -20,7 +20,7 @@
             <RemoveExistingProducts Before="InstallInitialize" />
         </InstallExecuteSequence>
 
-        <Property Id="PREVIOUS_VERSIONS_INSTALLED" Secure="yes" />
+        <Property Id="PREVIOUS_VERSIONS_INSTALLED" Secure="yes" Value="{{ 1 if "Enterpise" in app_name else 0 }}" />
         <Upgrade Id="{{ upgrade_code }}">
             <UpgradeVersion
                 Minimum="4.13.2" Maximum="{{ version_major }}.{{ version_minor }}.{{ version_patch }}"
