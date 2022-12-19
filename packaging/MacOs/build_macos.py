@@ -28,32 +28,38 @@ def build_dmg(source_path: str, dist_path: str, filename: str) -> None:
 
 
 def build_pkg(source_path: str, dist_path: str, app_filename: str, component_filename: str, installer_filename: str) -> None:
+    """ Builds and signs the pkg installer.
+
+    @param source_path: Path to folder containing source files
+    @param dist_path: Path to put output pkg in
+    @param app_filename: name of the .app file to bundle inside the pkg
+    @param component_filename: Name of the pkg component package to bundle the app in
+    @param installer_filename: Name of the installer that contains the component package
+    """
     pkg_build_executable = os.environ.get("PKG_BUILD_EXECUTABLE", "pkgbuild")
     product_build_executable = os.environ.get("PRODUCT_BUILD_EXECUTABLE", "productbuild")
+    codesign_identity = os.environ.get("CODESIGN_IDENTITY")
 
     # This builds the component package that contains Ultimaker-Cura.app. This component package will be bundled in a distribution package.
-    # TODO: sign the packgae with installer certificate
     pkg_build_arguments = [
         pkg_build_executable,
         "--component",
         f"{dist_path}/{app_filename}",
         f"{dist_path}/{component_filename}",
+        "--sign", codesign_identity,
         "--install-location", "/Applications",
     ]
-    print(f"pkg_build_arguments: {pkg_build_arguments}")
     subprocess.run(pkg_build_arguments)
 
     # This automatically generates a distribution.xml file that is used to build the installer.
     # If you want to make any changes to how the installer functions, this file should be changed to do that.
     # TODO: Use --product {property_list_file} to pull keys out of file for distribution.xml. This can be used to set min requirements
-    # TODO: sign the packgae with installer certificate
     distribution_creation_arguments = [
         product_build_executable,
         "--synthesize",
         "--package", f"{dist_path}/{component_filename}",  # Package that will be inside installer
         f"{dist_path}/distribution.xml",  # Output location for sythesized distributions file
     ]
-    print(f"distribution_creation_arguments: {distribution_creation_arguments}")
     subprocess.run(distribution_creation_arguments)
 
     # This creates the distributable package (Installer)
@@ -61,10 +67,13 @@ def build_pkg(source_path: str, dist_path: str, app_filename: str, component_fil
         product_build_executable,
         "--distribution", f"{dist_path}/distribution.xml",
         "--package-path", dist_path,  # Where to find the component packages mentioned in distribution.xml (Ultimaker-Cura.pkg)
+        "--sign", codesign_identity,
         f"{dist_path}/{installer_filename}",
     ]
-    print(f"installer_creation_arguments: {installer_creation_arguments}")
     subprocess.run(installer_creation_arguments)
+
+    # Remove component package so that it is not added to the output zip file
+    os.remove(f"{dist_path}/{component_filename}")
 
 
 def code_sign(dist_path: str, filename: str) -> None:
@@ -102,7 +111,9 @@ def notarize_file(dist_path: str, filename: str) -> None:
 def create_pkg_installer(filename: str, dist_path: str, source_path: str) -> None:
     """ Creates a pkg installer from {filename}.app called {filename}-Installer.pkg
 
-    The final package structure is Ultimaker-Cura-XXX-Installer.pkg[Ultimaker-Cura.pkg[Ultimaker-Cura.app]]
+    The final package structure is Ultimaker-Cura-XXX-Installer.pkg[Ultimaker-Cura.pkg[Ultimaker-Cura.app]]. The outer
+    pkg file is a distributable pkg (Installer). Inside the distributable pkg there is a component pkg. The component
+    pkg contains the .app file that will be installed in the users Applications folder.
 
     @param filename: The name of the app file and the app component package file without the extension
     @param dist_path: The location to read the app from and save the pkg to
@@ -143,7 +154,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = "Create dmg of Cura.")
     parser.add_argument("source_path", type=str, help="Path to Conan install Cura folder.")
     parser.add_argument("dist_path", type=str, help="Path to Pyinstaller dist folder")
-    parser.add_argument("filename", type = str, help = "Filename of the dmg/pkg without the file extension (e.g. 'UltiMaker-Cura-5.1.0-beta-Linux-X64')")
+    parser.add_argument("filename", type = str, help = "Filename of the dmg/pkg without the file extension (e.g. 'UltiMaker-Cura-5.1.0-beta-Macos-X64')")
     args = parser.parse_args()
 
     build_installer = bool(os.environ.get("BUILD_INSTALLER", "TRUE"))
