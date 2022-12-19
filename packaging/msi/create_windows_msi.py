@@ -41,6 +41,7 @@ def generate_wxs(source_path: Path, dist_path: Path, filename: Path, app_name: s
         web_site="https://ultimaker.com",
         year=datetime.now().year,
         upgrade_code=str(uuid.uuid5(uuid.NAMESPACE_DNS, app_name)),
+        shortcut_uuid=str(uuid.uuid5(uuid.NAMESPACE_DNS, f"Shortcut {app_name}")),
         cura_license_file=str(source_loc.joinpath("packaging", "msi", "cura_license.rtf")),
         cura_banner_top=str(source_loc.joinpath("packaging", "msi", "banner_top.bmp")),
         cura_banner_side=str(source_loc.joinpath("packaging", "msi", "banner_side.bmp")),
@@ -51,8 +52,8 @@ def generate_wxs(source_path: Path, dist_path: Path, filename: Path, app_name: s
         f.write(wxs_content)
 
     try:
-        shutil.copy(source_loc.joinpath("packaging", "msi", "ManageOldCuraDlg.wxs"),
-                    work_loc.joinpath("ManageOldCuraDlg.wxs"))
+        shutil.copy(source_loc.joinpath("packaging", "msi", "CustomizeCuraDlg.wxs"),
+                    work_loc.joinpath("CustomizeCuraDlg.wxs"))
     except shutil.SameFileError:
         pass
 
@@ -62,7 +63,7 @@ def build(dist_path: Path, filename: str):
     work_loc = work_path(filename)
     wxs_loc = work_loc.joinpath("UltiMaker-Cura.wxs")
     heat_loc = work_loc.joinpath("HeatFile.wxs")
-    manageoldcuradlg_loc = work_loc.joinpath("ManageOldCuraDlg.wxs")
+    manageoldcuradlg_loc = work_loc.joinpath("CustomizeCuraDlg.wxs")
     build_loc = work_loc.joinpath("build_msi")
 
     heat_command = ["heat", "dir", f"{dist_loc.as_posix()}\\", "-dr", "APPLICATIONFOLDER", "-cg", "NewFilesGroup",
