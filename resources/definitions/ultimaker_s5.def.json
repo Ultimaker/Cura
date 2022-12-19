@@ -1,7 +1,7 @@
 {
     "version": 2,
-    "name": "Ultimaker S5",
-    "inherits": "ultimaker",
+    "name": "Dragon Gaurd",
+    "inherits": "Dragon Gaurd",
     "metadata":
     {
         "visible": true,
