@@ -57,6 +57,7 @@ env:
     MAC_NOTARIZE_USER: ${{ secrets.MAC_NOTARIZE_USER }}
     MAC_NOTARIZE_PASS: ${{ secrets.MAC_NOTARIZE_PASS }}
     MACOS_CERT_P12: ${{ secrets.MACOS_CERT_P12 }}
+    MACOS_CERT_INSTALLER_P12: ${{ secrets.MACOS_CERT_INSTALLER_P12 }}
     MACOS_CERT_PASS: ${{ secrets.MACOS_CERT_PASS }}
     MACOS_CERT_USER: ${{ secrets.MACOS_CERT_USER }}
     GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
@@ -145,12 +146,20 @@ jobs:
                 if: ${{ runner.os == 'Linux' }}
                 run: echo -n "$GPG_PRIVATE_KEY" | base64 --decode | gpg --import
 
-            -   name: Configure Macos keychain (Bash)
+            -   name: Configure Macos keychain Developer Cert(Bash)
                 id: macos-keychain
                 if: ${{ runner.os == 'Macos' }}
                 uses: apple-actions/import-codesign-certs@v1
                 with:
                     p12-file-base64: ${{ secrets.MACOS_CERT_P12 }}
+                    p12-password: ${{ secrets.MACOS_CERT_PASSPHRASE }}
+
+            -   name: Configure Macos keychain Installer Cert (Bash)
+                id: macos-keychain
+                if: ${{ runner.os == 'Macos' }}
+                uses: apple-actions/import-codesign-certs@v1
+                with:
+                    p12-file-base64: ${{ secrets.MACOS_CERT_INSTALLER_P12 }}
                     p12-password: ${{ secrets.MACOS_CERT_PASSPHRASE }}
 
             -   name: Clean Conan local cache
