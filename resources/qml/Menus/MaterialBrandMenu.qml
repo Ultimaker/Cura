@@ -244,6 +244,8 @@ Cura.MenuItem
                         height: materialColorsList.height + padding * 2
                         onOpened:
                         {
+                            // This will be resolved before opening the popup if directly assigned to the properties
+                            // This forces these values to update whenever a popup is opened
                             var popupHeight = model.colors.count * UM.Theme.getSize("menu").height
                             var parentGlobalY = parent.mapToItem(null, 0, 0).y
                             var overflowY = (parentGlobalY + popupHeight) - mainWindow.height
@@ -252,6 +254,10 @@ Cura.MenuItem
                             var parentGlobalX = materialTypesList.mapToItem(null, 0, 0).x
                             var overflowX = (parentGlobalX + parent.width + colorPopup.width) - mainWindow.width
                             x = overflowX > 0 ? parent.width - overflowX : parent.width
+
+                            var popupHeight = model.colors.count * UM.Theme.getSize("menu").height
+                            scrollView.height =  popupHeight > mainWindow.height ? mainWindow.height: popupHeight
+                            colorPopup.height = popupHeight > mainWindow.height ? mainWindow.height: popupHeight
                         }
 
                         property int itemHovered: 0
@@ -263,79 +269,98 @@ Cura.MenuItem
                             border.color: UM.Theme.getColor("lining")
                             border.width: UM.Theme.getSize("default_lining").width
                         }
-
-                        Column
+                        ScrollView
                         {
-                            id: materialColorsList
-                            property var brandColors: model.colors
-                            spacing: 0
+                            id: scrollView
+                            width: UM.Theme.getSize("menu").width + scrollbar.width
+                            height: parent.height
+                            clip: true
 
-                            Repeater
+                            ScrollBar.vertical: UM.ScrollBar
                             {
-                                model: parent.brandColors
+                                id: scrollbar
+                                anchors.right: parent.right
+                                anchors.top: parent.top
+                                anchors.bottom: parent.bottom
+                            }
 
-                                delegate: Rectangle
+                            Column
+                            {
+                                id: materialColorsList
+                                property var brandColors: model.colors
+                                width: UM.Theme.getSize("menu").width
+                                height: parent.height
+                                spacing: 0
+
+                                Repeater
                                 {
-                                    height: UM.Theme.getSize("menu").height
-                                    width: UM.Theme.getSize("menu").width
+                                    model: parent.brandColors
 
-                                    color: materialColorButton.containsMouse ? UM.Theme.getColor("background_2") : UM.Theme.getColor("background_1")
-
-                                    Item
+                                    delegate: Rectangle
                                     {
-                                        opacity: materialBrandMenu.enabled ? 1 : 0.5
-                                        anchors.fill: parent
+                                        height: UM.Theme.getSize("menu").height
+                                        width: parent.width
 
-                                        //Checkmark, if the material is selected.
-                                        UM.ColorImage
+//                                        color: materialColorButton.containsMouse ? UM.Theme.getColor("background_2") : UM.Theme.getColor("background_1")
+
+                                        Rectangle
                                         {
-                                            id: checkmark
-                                            visible: model.id === materialMenu.activeMaterialId
-                                            height: UM.Theme.getSize("default_arrow").height
-                                            width: height
-                                            anchors.left: parent.left
-                                            anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                                            anchors.verticalCenter: parent.verticalCenter
-                                            source: UM.Theme.getIcon("Check", "low")
-                                            color: UM.Theme.getColor("setting_control_text")
+                                            height: parent.height
+                                            width: parent.width
+                                            opacity: materialBrandMenu.enabled ? 1 : 0.5
+                                            anchors.fill: parent
+
+                                            //Checkmark, if the material is selected.
+                                            UM.ColorImage
+                                            {
+                                                id: checkmark
+                                                visible: model.id === materialMenu.activeMaterialId
+                                                height: UM.Theme.getSize("default_arrow").height
+                                                width: height
+                                                anchors.left: parent.left
+                                                anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                                                anchors.verticalCenter: parent.verticalCenter
+                                                source: UM.Theme.getIcon("Check", "low")
+                                                color: UM.Theme.getColor("setting_control_text")
+                                            }
+
+                                            UM.Label
+                                            {
+                                                text: model.name
+                                                anchors.left: parent.left
+                                                anchors.leftMargin: UM.Theme.getSize("default_margin").width + UM.Theme.getSize("default_arrow").height
+                                                anchors.verticalCenter: parent.verticalCenter
+                                                anchors.right: parent.right
+                                                anchors.rightMargin: UM.Theme.getSize("default_margin").width
+
+                                                elide: Label.ElideRight
+                                                wrapMode: Text.NoWrap
+                                            }
                                         }
 
-                                        UM.Label
+                                        MouseArea
                                         {
-                                            text: model.name
-                                            anchors.left: parent.left
-                                            anchors.leftMargin: UM.Theme.getSize("default_margin").width + UM.Theme.getSize("default_arrow").height
-                                            anchors.verticalCenter: parent.verticalCenter
-                                            anchors.right: parent.right
-                                            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                                            id: materialColorButton
+                                            anchors.fill: parent
 
-                                            elide: Label.ElideRight
-                                            wrapMode: Text.NoWrap
-                                        }
-                                    }
-
-                                    MouseArea
-                                    {
-                                        id: materialColorButton
-                                        anchors.fill: parent
-
-                                        hoverEnabled: true
-                                        onClicked:
-                                        {
-                                            Cura.MachineManager.setMaterial(extruderIndex, model.container_node);
-                                            menuPopup.close();
-                                            colorPopup.close();
-                                            materialMenu.close();
-                                        }
-                                        onEntered:
-                                        {
-                                            menuPopup.itemHovered += 1;
-                                            colorPopup.itemHovered += 1;
-                                        }
-                                        onExited:
-                                        {
-                                            menuPopup.itemHovered -= 1;
-                                            colorPopup.itemHovered -= 1;
+                                            hoverEnabled: true
+                                            onClicked:
+                                            {
+                                                Cura.MachineManager.setMaterial(extruderIndex, model.container_node);
+                                                menuPopup.close();
+                                                colorPopup.close();
+                                                materialMenu.close();
+                                            }
+                                            onEntered:
+                                            {
+                                                menuPopup.itemHovered += 1;
+                                                colorPopup.itemHovered += 1;
+                                            }
+                                            onExited:
+                                            {
+                                                menuPopup.itemHovered -= 1;
+                                                colorPopup.itemHovered -= 1;
+                                            }
                                         }
                                     }
                                 }
