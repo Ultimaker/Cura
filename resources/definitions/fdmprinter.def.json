@@ -1302,7 +1302,7 @@
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
-               "z_seam_type":
+                "z_seam_type":
                 {
                     "label": "Z Seam Alignment",
                     "description": "Starting point of each path in a layer. When paths in consecutive layers start at the same point a vertical seam may show on the print. When aligning these near a user specified location, the seam is easiest to remove. When placed randomly the inaccuracies at the paths' start will be less noticeable. When taking the shortest path the print will be quicker.",
@@ -2279,20 +2279,20 @@
                     "settable_per_mesh": true,
                     "children":
                     {
-                         "skin_edge_support_layers":
-                         {
-                              "label": "Skin Edge Support Layers",
-                              "description": "The number of infill layers that supports skin edges.",
-                              "default_value": 4,
-                              "minimum_value": "0",
-                              "maximum_value_warning": "10",
-                              "type": "int",
-                              "maximum_value": "999999",
-                              "value": "math.ceil(round(skin_edge_support_thickness / resolveOrValue('infill_sparse_thickness'), 4))",
-                              "limit_to_extruder": "infill_extruder_nr",
-                              "enabled": "infill_sparse_density > 0",
-                              "settable_per_mesh": true
-                         }
+                        "skin_edge_support_layers":
+                        {
+                            "label": "Skin Edge Support Layers",
+                            "description": "The number of infill layers that supports skin edges.",
+                            "default_value": 4,
+                            "minimum_value": "0",
+                            "maximum_value_warning": "10",
+                            "type": "int",
+                            "maximum_value": "999999",
+                            "value": "math.ceil(round(skin_edge_support_thickness / resolveOrValue('infill_sparse_thickness'), 4))",
+                            "limit_to_extruder": "infill_extruder_nr",
+                            "enabled": "infill_sparse_density > 0",
+                            "settable_per_mesh": true
+                        }
                     }
                 },
                 "lightning_infill_support_angle":
@@ -4256,7 +4256,7 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "retraction_hop_after_extruder_switch_height": 
+                "retraction_hop_after_extruder_switch_height":
                 {
                     "label": "Z Hop After Extruder Switch Height",
                     "description": "The height difference when performing a Z Hop after extruder switch.",
@@ -4524,23 +4524,25 @@
                         "tree": "Tree"
                     },
                     "enabled": "support_enable",
-                    "default_value": "normal",
+                    "default_value": "tree",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
                 "support_tree_angle":
                 {
-                    "label": "Tree Support Branch Angle",
-                    "description": "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach.",
+                    "label": "Tree Support Maximum Branch Angle",
+                    "description": "The maximum angle of the branches, when the branches have to avoid the model. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach.",
                     "unit": "°",
                     "type": "float",
                     "minimum_value": "0",
-                    "maximum_value": "90",
-                    "maximum_value_warning": "60",
-                    "default_value": 40,
+                    "minimum_value_warning": "20",
+                    "maximum_value": "89",
+                    "maximum_value_warning": "85",
+                    "default_value": 60,
+                    "value": "support_angle",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "enabled": "support_enable and support_structure=='tree'",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true
                 },
                 "support_tree_branch_distance":
@@ -4552,7 +4554,7 @@
                     "minimum_value": "0.001",
                     "default_value": 1,
                     "limit_to_extruder": "support_infill_extruder_nr",
-                    "enabled": "support_enable and support_structure=='tree'",
+                    "enabled": false,
                     "settable_per_mesh": true
                 },
                 "support_tree_branch_diameter":
@@ -4563,10 +4565,10 @@
                     "type": "float",
                     "minimum_value": "0.001",
                     "minimum_value_warning": "support_line_width * 2",
-                    "default_value": 2,
+                    "default_value": 5,
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "enabled": "support_enable and support_structure=='tree'",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true
                 },
                 "support_tree_max_diameter":
@@ -4577,7 +4579,7 @@
                     "type": "float",
                     "minimum_value": "support_tree_branch_diameter",
                     "minimum_value_warning": "support_line_width * 5",
-                    "default_value": 15,
+                    "default_value": 25,
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "enabled": "support_enable and support_structure=='tree'",
                     "settable_per_mesh": false,
@@ -4592,10 +4594,10 @@
                     "minimum_value": "0",
                     "maximum_value": "89.9999",
                     "maximum_value_warning": "15",
-                    "default_value": 5,
+                    "default_value": 7,
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "enabled": "support_enable and support_structure=='tree'",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true
                 },
                 "support_tree_collision_resolution":
@@ -4610,7 +4612,7 @@
                     "default_value": 0.4,
                     "value": "support_line_width / 2",
                     "limit_to_extruder": "support_infill_extruder_nr",
-                    "enabled": "support_enable and support_structure=='tree' and support_tree_branch_diameter_angle > 0",
+                    "enabled": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -4630,22 +4632,6 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
-                "support_tree_angle":
-                {
-                    "label": "Tree Support Maximum Branch Angle",
-                    "description": "The maximum angle of the branches, when the branches have to avoid the model. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach.",
-                    "unit": "°",
-                    "type": "float",
-                    "minimum_value": "0",
-                    "minimum_value_warning": "20",
-                    "maximum_value": "89",
-                    "maximum_value_warning": "85",
-                    "default_value": 60,
-                    "limit_to_extruder": "support_infill_extruder_nr",
-                    "enabled": "support_enable and support_structure=='tree'",
-                    "settable_per_mesh": true,
-                    "settable_per_extruder": true
-                },
                 "support_tree_angle_slow":
                 {
                     "label": "Tree Support Preferred Branch Angle",
@@ -4657,7 +4643,7 @@
                     "maximum_value": "support_tree_angle",
                     "maximum_value_warning": "support_tree_angle-1",
                     "default_value": 50,
-                    "value":"support_tree_angle*0.7",
+                    "value":"support_tree_angle * 2 / 3",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "enabled": "support_enable and support_structure=='tree'",
                     "settable_per_mesh": true,
@@ -4684,7 +4670,7 @@
                     "type": "float",
                     "minimum_value": "0",
                     "maximum_value_warning": "5",
-                    "default_value": 1,
+                    "default_value": 3,
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "enabled": "support_enable and support_structure=='tree' and resolveOrValue('support_type') == 'everywhere' ",
                     "settable_per_mesh": true,
@@ -4700,7 +4686,7 @@
                     "maximum_value_warning": "20",
                     "default_value": 7.5,
                     "limit_to_extruder": "support_infill_extruder_nr",
-                    "enabled": "support_enable and support_structure=='tree'",
+                    "enabled": false,
                     "settable_per_mesh": true,
                     "settable_per_extruder": true
                 },
@@ -4714,22 +4700,9 @@
                     "minimum_value_warning": "5",
                     "maximum_value_warning": "35",
                     "default_value": 15,
+                    "value": "30 if support_roof_enable else 10",
                     "enabled": "support_enable and support_structure=='tree'",
                     "limit_to_extruder": "support_infill_extruder_nr",
-                    "settable_per_mesh": true,
-                    "settable_per_extruder": true
-                },
-                "support_tree_branch_diameter":
-                {
-                    "label": "Tree Support Branch Diameter",
-                    "description": "The diameter of the thinnest branches of tree support. Thicker branches are more sturdy. Branches towards the base will be thicker than this.",
-                    "unit": "mm",
-                    "type": "float",
-                    "minimum_value": "0.001",
-                    "minimum_value_warning": "support_line_width * 2",
-                    "default_value": 2,
-                    "limit_to_extruder": "support_infill_extruder_nr",
-                    "enabled": "support_enable and support_structure=='tree'",
                     "settable_per_mesh": true,
                     "settable_per_extruder": true
                 },
@@ -4740,39 +4713,9 @@
                     "unit": "mm",
                     "type": "float",
                     "minimum_value": "min_wall_line_width",
-                    "minimum_value_warning": "min_wall_line_width+0.05",
                     "maximum_value": "support_tree_branch_diameter",
                     "default_value": 0.4,
-                    "value": "support_line_width",
-                    "limit_to_extruder": "support_infill_extruder_nr",
-                    "enabled": "support_enable and support_structure=='tree'",
-                    "settable_per_mesh": true,
-                    "settable_per_extruder": true
-                },
-                "support_tree_max_diameter":
-                {
-                    "label": "Tree Support Trunk Diameter",
-                    "description": "The diameter of the widest branches of tree support. A thicker trunk is more sturdy; a thinner trunk takes up less space on the build plate.",
-                    "unit": "mm",
-                    "type": "float",
-                    "minimum_value": "support_tree_branch_diameter",
-                    "minimum_value_warning": "support_line_width * 5",
-                    "default_value": 15,
-                    "limit_to_extruder": "support_infill_extruder_nr",
-                    "enabled": "support_enable and support_structure=='tree'",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
-                "support_tree_branch_diameter_angle":
-                {
-                    "label": "Tree Support Branch Diameter Angle",
-                    "description": "The angle of the branches' diameter as they gradually become thicker towards the bottom. An angle of 0 will cause the branches to have uniform thickness over their length. A bit of an angle can increase stability of the tree support.",
-                    "unit": "°",
-                    "type": "float",
-                    "minimum_value": "0",
-                    "maximum_value": "89.9999",
-                    "maximum_value_warning": "15",
-                    "default_value": 5,
+                    "value": "support_line_width * 2",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "enabled": "support_enable and support_structure=='tree'",
                     "settable_per_mesh": true,
@@ -4783,7 +4726,7 @@
                     "label": "Tree Support Limit Branch Reach",
                     "description": "Limit how far each branch should travel from the point it supports. This can make the support more sturdy, but will increase the amount of branches (and because of that material usage/print time)",
                     "type": "bool",
-                    "default_value": false,
+                    "default_value": true,
                     "enabled": "support_enable and support_structure=='tree'",
                     "settable_per_mesh": true
                 },
@@ -4795,25 +4738,9 @@
                     "type": "float",
                     "minimum_value": "1",
                     "minimum_value_warning": "10",
-                    "default_value": 50,
+                    "default_value": 30,
                     "enabled": "support_enable and support_tree_limit_branch_reach and support_structure=='tree'",
                     "settable_per_mesh": true
-                },
-                "support_type":
-                {
-                    "label": "Support Placement",
-                    "description": "Adjusts the placement of the support structures. The placement can be set to touching build plate or everywhere. When set to everywhere the support structures will also be printed on the model.",
-                    "type": "enum",
-                    "options":
-                    {
-                        "buildplate": "Touching Buildplate",
-                        "everywhere": "Everywhere"
-                    },
-                    "default_value": "everywhere",
-                    "resolve": "'everywhere' if 'everywhere' in extruderValues('support_type') else 'buildplate'",
-                    "enabled": "support_enable",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false
                 },
                 "support_tree_rest_preference":
                 {
@@ -4826,6 +4753,7 @@
                         "graceful": "On any flat surface"
                     },
                     "default_value": "buildplate",
+                    "value": "'buildplate' if support_type == 'buildplate' else 'graceful'",
                     "resolve": "'buildplate' if 'buildplate' in extruderValues('support_tree_rest_preference') else 'graceful'",
                     "enabled": "support_enable and support_structure=='tree' and support_type == 'everywhere'",
                     "settable_per_mesh": true
@@ -5206,7 +5134,7 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "minimum_support_area": 
+                "minimum_support_area":
                 {
                     "label": "Minimum Support Area",
                     "description": "Minimum area size for support polygons. Polygons which have an area smaller than this value will not be generated.",
@@ -5458,7 +5386,7 @@
                         }
                     }
                 },
-                "minimum_interface_area": 
+                "minimum_interface_area":
                 {
                     "label": "Minimum Support Interface Area",
                     "description": "Minimum area size for support interface polygons. Polygons which have an area smaller than this value will be printed as normal support.",
@@ -5471,7 +5399,7 @@
                     "settable_per_mesh": true,
                     "children":
                     {
-                        "minimum_roof_area": 
+                        "minimum_roof_area":
                         {
                             "label": "Minimum Support Roof Area",
                             "description": "Minimum area size for the roofs of the support. Polygons which have an area smaller than this value will be printed as normal support.",
@@ -5484,7 +5412,7 @@
                             "enabled": "support_roof_enable and (support_enable or support_meshes_present)",
                             "settable_per_mesh": true
                         },
-                        "minimum_bottom_area": 
+                        "minimum_bottom_area":
                         {
                             "label": "Minimum Support Floor Area",
                             "description": "Minimum area size for the floors of the support. Polygons which have an area smaller than this value will be printed as normal support.",
@@ -5513,7 +5441,7 @@
                     "settable_per_extruder": true,
                     "children":
                     {
-                        "support_roof_offset": 
+                        "support_roof_offset":
                         {
                             "label": "Support Roof Horizontal Expansion",
                             "description": "Amount of offset applied to the roofs of the support.",
@@ -5527,7 +5455,7 @@
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
                         },
-                        "support_bottom_offset": 
+                        "support_bottom_offset":
                         {
                             "label": "Support Floor Horizontal Expansion",
                             "description": "Amount of offset applied to the floors of the support.",
@@ -5556,7 +5484,7 @@
                         "interface_lines_overwrite_support_area": "Interface lines preferred",
                         "nothing": "Both overlap"
                     },
-                    "default_value": "support_lines_overwrite_interface_area",
+                    "default_value": "interface_area_overwrite_support_area",
                     "settable_per_extruder": false,
                     "enabled": "support_enable and support_structure=='tree' and support_roof_enable",
                     "settable_per_mesh": false
@@ -5896,7 +5824,7 @@
                         }
                     }
                 },
-               "brim_gap":
+                "brim_gap":
                 {
                     "label": "Brim Distance",
                     "description": "The horizontal distance between the first brim line and the outline of the first layer of the print. A small gap can make the brim easier to remove while still providing the thermal benefits.",
@@ -7122,16 +7050,16 @@
                     "default_value": 50,
                     "enabled": "conical_overhang_enabled"
                 },
-                "conical_overhang_hole_size": 
+                "conical_overhang_hole_size":
                 {
-                   "label": "Maximum Overhang Hole Area",
-                   "description": "The maximum area of a hole in the base of the model before it's removed by Make Overhang Printable.  Holes smaller than this will be retained.  A value of 0 mm² will fill all holes in the models base.",
-                   "unit": "mm²",
-                   "type": "float",
-                   "minimum_value": "0",
-                   "minimum_value_warning": "0",
-                   "default_value": 0,
-                   "enabled": "conical_overhang_enabled"
+                    "label": "Maximum Overhang Hole Area",
+                    "description": "The maximum area of a hole in the base of the model before it's removed by Make Overhang Printable.  Holes smaller than this will be retained.  A value of 0 mm² will fill all holes in the models base.",
+                    "unit": "mm²",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "minimum_value_warning": "0",
+                    "default_value": 0,
+                    "enabled": "conical_overhang_enabled"
                 },
                 "coasting_enable":
                 {
@@ -7274,7 +7202,7 @@
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
-               "magic_fuzzy_skin_thickness":
+                "magic_fuzzy_skin_thickness":
                 {
                     "label": "Fuzzy Skin Thickness",
                     "description": "The width within which to jitter. It's advised to keep this below the outer wall width, since the inner walls are unaltered.",
