@@ -4686,7 +4686,7 @@
                     "maximum_value_warning": "20",
                     "default_value": 7.5,
                     "limit_to_extruder": "support_infill_extruder_nr",
-                    "enabled": false,
+                    "enabled": "support_enable and support_structure=='tree'",
                     "settable_per_mesh": true,
                     "settable_per_extruder": true
                 },
