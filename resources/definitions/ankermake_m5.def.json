@@ -14,7 +14,6 @@
     "preferred_material": "generic_pla",
     "preferred_quality_type": "normal"
   },
-
   "overrides": {
     "machine_name": { "default_value": "AnkerMake M5" },
     "machine_start_gcode": {
