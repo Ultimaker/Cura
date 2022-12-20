@@ -146,20 +146,19 @@ jobs:
                 if: ${{ runner.os == 'Linux' }}
                 run: echo -n "$GPG_PRIVATE_KEY" | base64 --decode | gpg --import
 
-            -   name: Configure Macos keychain Developer Cert(Bash)
-                id: macos-keychain-developer-cert
-                if: ${{ runner.os == 'Macos' }}
-                uses: apple-actions/import-codesign-certs@v1
-                with:
-                    p12-file-base64: ${{ secrets.MACOS_CERT_P12 }}
-                    p12-password: ${{ secrets.MACOS_CERT_PASSPHRASE }}
+#             -   name: Configure Macos keychain Developer Cert(Bash)
+#                 id: macos-keychain-developer-cert
+#                 if: ${{ runner.os == 'Macos' }}
+#                 uses: apple-actions/import-codesign-certs@v1
+#                 with:
+#                     p12-file-base64: ${{ secrets.MACOS_CERT_P12 }}
+#                     p12-password: ${{ secrets.MACOS_CERT_PASSPHRASE }}
 
             -   name: Configure Macos keychain Installer Cert (Bash)
                 id: macos-keychain-installer-cert
                 if: ${{ runner.os == 'Macos' }}
                 uses: apple-actions/import-codesign-certs@v1
                 with:
-                    create-keychain: false # keychain is created in previous use of action.
                     p12-file-base64: ${{ secrets.MACOS_CERT_INSTALLER_P12 }}
                     p12-password: ${{ secrets.MACOS_CERT_PASSPHRASE }}
 
