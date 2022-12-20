@@ -40,7 +40,7 @@ def build_pkg(source_path: str, dist_path: str, app_filename: str, component_fil
     product_build_executable = os.environ.get("PRODUCT_BUILD_EXECUTABLE", "productbuild")
     codesign_identity = os.environ.get("CODESIGN_IDENTITY")
 
-    # This builds the component package that contains Ultimaker-Cura.app. This component package will be bundled in a distribution package.
+    # This builds the component package that contains UltiMaker-Cura.app. This component package will be bundled in a distribution package.
     pkg_build_arguments = [
         pkg_build_executable,
         "--component",
@@ -66,7 +66,7 @@ def build_pkg(source_path: str, dist_path: str, app_filename: str, component_fil
     installer_creation_arguments = [
         product_build_executable,
         "--distribution", f"{dist_path}/distribution.xml",
-        "--package-path", dist_path,  # Where to find the component packages mentioned in distribution.xml (Ultimaker-Cura.pkg)
+        "--package-path", dist_path,  # Where to find the component packages mentioned in distribution.xml (UltiMaker-Cura.pkg)
         "--sign", codesign_identity,
         f"{dist_path}/{installer_filename}",
     ]
@@ -111,7 +111,7 @@ def notarize_file(dist_path: str, filename: str) -> None:
 def create_pkg_installer(filename: str, dist_path: str, source_path: str) -> None:
     """ Creates a pkg installer from {filename}.app called {filename}-Installer.pkg
 
-    The final package structure is Ultimaker-Cura-XXX-Installer.pkg[Ultimaker-Cura.pkg[Ultimaker-Cura.app]]. The outer
+    The final package structure is UltiMaker-Cura-XXX-Installer.pkg[UltiMaker-Cura.pkg[UltiMaker-Cura.app]]. The outer
     pkg file is a distributable pkg (Installer). Inside the distributable pkg there is a component pkg. The component
     pkg contains the .app file that will be installed in the users Applications folder.
 
@@ -120,7 +120,7 @@ def create_pkg_installer(filename: str, dist_path: str, source_path: str) -> Non
     @param source_path: The location of the project source files
     """
     installer_package_name = f"{filename}-Installer.pkg"
-    cura_component_package_name = f"{filename}.pkg"  # This is a component package that is nested inside the installer, it contains the Ultimaker-Cura.app file
+    cura_component_package_name = f"{filename}.pkg"  # This is a component package that is nested inside the installer, it contains the UltiMaker-Cura.app file
     app_name = "UltiMaker-Cura.app"  # This is the app file that will end up in your applications folder
 
     code_sign(dist_path, app_name)  # The app is signed using a different certificate than the package files
