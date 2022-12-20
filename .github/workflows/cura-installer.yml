@@ -147,7 +147,7 @@ jobs:
                 run: echo -n "$GPG_PRIVATE_KEY" | base64 --decode | gpg --import
 
             -   name: Configure Macos keychain Developer Cert(Bash)
-                id: macos-keychain
+                id: macos-keychain-developer-cert
                 if: ${{ runner.os == 'Macos' }}
                 uses: apple-actions/import-codesign-certs@v1
                 with:
@@ -155,7 +155,7 @@ jobs:
                     p12-password: ${{ secrets.MACOS_CERT_PASSPHRASE }}
 
             -   name: Configure Macos keychain Installer Cert (Bash)
-                id: macos-keychain
+                id: macos-keychain-installer-cert
                 if: ${{ runner.os == 'Macos' }}
                 uses: apple-actions/import-codesign-certs@v1
                 with:
@@ -198,7 +198,7 @@ jobs:
                 if: ${{ runner.os == 'Macos' }}
                 run: security unlock -p $TEMP_KEYCHAIN_PASSWORD signing_temp.keychain
                 env:
-                    TEMP_KEYCHAIN_PASSWORD: ${{  steps.macos-keychain.outputs.keychain-password }}
+                    TEMP_KEYCHAIN_PASSWORD: ${{  steps.macos-keychain-developer-cert.outputs.keychain-password }}
 
                 # FIXME: This is a workaround to ensure that we use and pack a shared library for OpenSSL 1.1.1l. We currently compile
                 #  OpenSSL statically for CPython, but our Python Dependenies (such as PyQt6) require a shared library.
