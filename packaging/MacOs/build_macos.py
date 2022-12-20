@@ -72,9 +72,6 @@ def build_pkg(source_path: str, dist_path: str, app_filename: str, component_fil
     ]
     subprocess.run(installer_creation_arguments)
 
-    # Remove component package so that it is not added to the output zip file
-    os.remove(f"{dist_path}/{component_filename}")
-
 
 def code_sign(dist_path: str, filename: str) -> None:
     """ Sign a file using apple codesign. This uses a different certificate to package signing."""
