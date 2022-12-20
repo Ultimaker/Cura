@@ -1,5 +1,6 @@
 from argparse import ArgumentParser
 from os import getcwd
+from os import path
 from pathlib import Path
 from typing import List
 
@@ -40,6 +41,11 @@ def main() -> None:
         settings = yaml.load(f, yaml.FullLoader)
 
     full_body_check = {"Diagnostics": []}
+
+    for file in files:
+        if not path.exists(file):
+            print(f"Can't find the file: {file}")
+            return
 
     if to_fix or to_diagnose:
         for file in files:
