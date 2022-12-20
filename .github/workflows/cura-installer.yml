@@ -151,6 +151,7 @@ jobs:
                 if: ${{ runner.os == 'Macos' }}
                 uses: apple-actions/import-codesign-certs@v1
                 with:
+                    keychain-password: ${{ secrets.MACOS_KEYCHAIN_PASSWORD }}
                     p12-file-base64: ${{ secrets.MACOS_CERT_P12 }}
                     p12-password: ${{ secrets.MACOS_CERT_PASSPHRASE }}
 
@@ -159,6 +160,7 @@ jobs:
                 if: ${{ runner.os == 'Macos' }}
                 uses: apple-actions/import-codesign-certs@v1
                 with:
+                    keychain-password: ${{ secrets.MACOS_KEYCHAIN_PASSWORD }}
                     create-keychain: false # keychain is created in previous use of action.	
                     p12-file-base64: ${{ secrets.MACOS_CERT_INSTALLER_P12 }}
                     p12-password: ${{ secrets.MACOS_CERT_PASSPHRASE }}
