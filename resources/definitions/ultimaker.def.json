@@ -6,7 +6,10 @@
         "author": "Ultimaker",
         "manufacturer": "Ultimaker B.V.",
         "visible": false,
-        "exclude_materials": [ "generic_hips", "structur3d_dap100silicone" ]
+        "exclude_materials": [
+            "generic_hips",
+            "structur3d_dap100silicone"
+        ]
     },
     "overrides": {
         "machine_max_feedrate_e": {
@@ -19,26 +22,22 @@
             "minimum_value": "0",
             "maximum_value_warning": "125"
         },
-        "material_bed_temperature_layer_0":
-        {
+        "material_bed_temperature_layer_0": {
             "maximum_value_warning": "125"
         },
         "material_standby_temperature": {
             "value": "material_print_temperature - 100",
             "minimum_value": "0"
         },
-        "extruder_prime_pos_y":
-        {
+        "extruder_prime_pos_y": {
             "minimum_value": "0",
             "maximum_value": "machine_depth"
         },
-        "extruder_prime_pos_x":
-        {
+        "extruder_prime_pos_x": {
             "minimum_value": "0",
             "maximum_value": "machine_width"
         },
-        "relative_extrusion":
-        {
+        "relative_extrusion": {
             "value": false,
             "enabled": false
         },
@@ -78,7 +77,7 @@
         "support_interface_material_flow": {
             "value": "skin_material_flow"
         },
-        "skin_monotonic" : {
+        "skin_monotonic": {
             "value": "roofing_layer_count == 0"
         },
         "speed_equalize_flow_width_factor": {
@@ -139,7 +138,7 @@
             "value": "80"
         },
         "bridge_fan_speed": {
-             "value": "cool_fan_speed_max"
+            "value": "cool_fan_speed_max"
         },
         "bridge_enable_more_layers": {
             "value": false
@@ -157,16 +156,16 @@
             "value": "cool_fan_speed_min"
         },
         "bridge_skin_speed_3": {
-             "value": "speed_topbottom"
+            "value": "speed_topbottom"
         },
         "bridge_skin_material_flow_3": {
             "value": "skin_material_flow"
         },
         "bridge_skin_density_3": {
-             "value": 100
+            "value": 100
         },
         "bridge_fan_speed_3": {
-             "value": "cool_fan_speed_min"
+            "value": "cool_fan_speed_min"
         },
         "jerk_print": {
             "value": "20",
@@ -267,7 +266,7 @@
             "value": "2 * layer_height"
         },
         "support_offset": {
-            "value": "support_xy_distance if support_interface_enable else 0"
+            "value": "support_xy_distance if (support_interface_enable and support_structure != 'tree') else 0"
         },
         "support_xy_distance": {
             "value": "1"
