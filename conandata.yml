@@ -20,7 +20,7 @@
         - "pynest2d/(latest)@ultimaker/testing"
         - "uranium/(latest)@ultimaker/cura_9879"
         - "fdm_materials/5.2.0"
-        - "cura_binary_data/5.2.1"
+        - "cura_binary_data/(latest)@ultimaker/cura_9879"
         - "cpython/3.10.4"
     internal_requirements:
         - "fdm_materials_private/(latest)@ultimaker/testing"
