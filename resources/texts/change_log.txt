@@ -1,3 +1,22 @@
+[Tree Support Xmas release]
+
+<h1>5.3.0-Alpha-Xmas</h1>
+* New tree support implementation by Thomas Rahm
+This tree support uses significantly less filament, reduces printing time, and is easier to remove than our current tree supports. A number of new settings can now be applied to your tree supports, including: support blocker, per model settings, and support horizontal expansion. 
+
+The newly introduced settings are:
+- Tree Support Preferred Branch Angle
+- Tree Support Maximum Branch Angle
+- Tree Support Diameter Increase to Model
+- Tree Support Minimum Height To Model
+- Tree Support Initial Layer Diameter
+- Support Interface Priority
+- Tree Support Limit Branch Reach
+- Tree Support Optimal Branch Range
+- Tree Support Rest Preference
+
+Join <a href="https://github.com/Ultimaker/Cura/discussions">our discussion</a> on GitHub to provide us with all your feedback.
+
 [5.2.1]
 
 * Bug fixes:
