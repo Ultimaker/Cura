@@ -25,6 +25,8 @@ ComboBox
 
     enabled: delegateModel.count > 0
 
+    height: UM.Theme.getSize("combobox").height
+
     onVisibleChanged: { popup.close() }
 
     states: [
