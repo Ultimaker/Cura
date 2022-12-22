@@ -1,0 +1,15 @@
+{
+    "name": "Modix V4 BIG-Meter",
+    "version": 2,
+    "inherits": "modix_v4_base",
+    "overrides": {
+        "machine_name": { "default_value": "Modix BIG-METER V4" },
+        "machine_width": { "default_value": 1000 },
+        "machine_depth": { "default_value": 1000 },
+        "machine_height": { "default_value": 1000 }
+
+    },
+    "metadata": {
+        "visible": true
+    }
+}
