@@ -229,22 +229,24 @@ class UFPWriter(MeshWriter):
             "quality": asdict(machine_manager.activeQualityDisplayNameMap()),
         }
 
+        def _retrieveValue(container: InstanceContainer, setting_: str):
+            value_ = container.getProperty(setting_, "value")
+            for _ in range(0, 1024):  # Prevent possibly endless loop by not using a limit.
+                if not isinstance(value_, SettingFunction):
+                    return value_  # Success!
+                value_ = value_(container)
+            return 0  # Fallback value after breaking possibly endless loop.
+
         global_stack = cast(GlobalStack, Application.getInstance().getGlobalContainerStack())
 
         # Add global user or quality changes
         global_flattened_changes = InstanceContainer.createMergedInstanceContainer(global_stack.userChanges, global_stack.qualityChanges)
         for setting in global_flattened_changes.getAllKeys():
-            value = global_flattened_changes.getProperty(setting, "value")
-            if isinstance(value, SettingFunction):
-                value = value(global_flattened_changes)
-            settings["global"]["changes"][setting] = value
+            settings["global"]["changes"][setting] = _retrieveValue(global_flattened_changes, setting)
 
         # Get global all settings values without user or quality changes
         for setting in global_stack.getAllKeys():
-            value = global_stack.getProperty(setting, "value")
-            if isinstance(value, SettingFunction):
-                value = value(global_stack)
-            settings["global"]["all_settings"][setting] = value
+            settings["global"]["all_settings"][setting] = _retrieveValue(global_stack, setting)
 
         for i, extruder in enumerate(global_stack.extruderList):
             # Add extruder fields to settings dictionary
@@ -256,16 +258,10 @@ class UFPWriter(MeshWriter):
             # Add extruder user or quality changes
             extruder_flattened_changes = InstanceContainer.createMergedInstanceContainer(extruder.userChanges, extruder.qualityChanges)
             for setting in extruder_flattened_changes.getAllKeys():
-                value = extruder_flattened_changes.getProperty(setting, "value")
-                if isinstance(value, SettingFunction):
-                    value = value(extruder_flattened_changes)
-                settings[f"extruder_{i}"]["changes"][setting] = value
+                settings[f"extruder_{i}"]["changes"][setting] = _retrieveValue(extruder_flattened_changes, setting)
 
             # Get extruder all settings values without user or quality changes
             for setting in extruder.getAllKeys():
-                value = extruder.getProperty(setting, "value")
-                if isinstance(value, SettingFunction):
-                    value = value(extruder)
-                settings[f"extruder_{i}"]["all_settings"][setting] = value
+                settings[f"extruder_{i}"]["all_settings"][setting] = _retrieveValue(extruder, setting)
 
         return settings
