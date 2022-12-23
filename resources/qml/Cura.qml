@@ -17,7 +17,11 @@ UM.MainWindow
 {
     id: base
 
-    readonly property var mainWindow: base
+    Item
+    {
+        id: mainWindow
+        anchors.fill: parent
+    }
 
     // Cura application window title
     title:
