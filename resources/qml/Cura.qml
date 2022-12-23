@@ -17,7 +17,6 @@ UM.MainWindow
 {
     id: base
 
-    property var main_window_height: base.height
     readonly property var mainWindow: base
 
     // Cura application window title
