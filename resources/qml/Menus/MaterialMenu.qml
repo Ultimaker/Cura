@@ -101,7 +101,6 @@ Cura.Menu
         delegate: Cura.MaterialBrandMenu
         {
             materialTypesModel: model
-            rootHeight: materialMenu.height
         }
         onObjectAdded: function(index, object) { materialMenu.insertItem(index + 4, object)}
         onObjectRemoved: function(index, object) { materialMenu.removeItem(index) }

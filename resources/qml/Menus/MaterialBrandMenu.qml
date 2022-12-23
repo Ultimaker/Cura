@@ -16,7 +16,6 @@ Cura.MenuItem
     id: materialBrandMenu
     overrideShowArrow: true
 
-    property int rootHeight
     property var materialTypesModel
     text: materialTypesModel.name
 
