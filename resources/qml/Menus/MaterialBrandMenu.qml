@@ -166,7 +166,7 @@ Cura.MenuItem
                         height: UM.Theme.getSize("menu").height
                         width: UM.Theme.getSize("menu").width
 
-                        color: materialTypeButton.containsMouse ? "transparent" : UM.Theme.getColor("background_1")
+                        color: materialTypeButton.containsMouse ? UM.Theme.getColor("background_2") : "transparent"
 
                         property bool isFlipped:  menuPopup.flipped
 
@@ -319,7 +319,7 @@ Cura.MenuItem
                                             height: UM.Theme.getSize("menu").height
                                             width: parent.width
 
-                                            color: materialColorButton.containsMouse ? "transparent" : UM.Theme.getColor("background_1")
+                                            color: materialColorButton.containsMouse ? UM.Theme.getColor("background_2") : "transparent"
 
                                             Rectangle
                                             {
