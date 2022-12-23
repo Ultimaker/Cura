@@ -16,7 +16,7 @@ Cura.MenuItem
     id: materialBrandMenu
     overrideShowArrow: true
 
-    property var rootHeight
+    property int rootHeight
     property var materialTypesModel
     text: materialTypesModel.name
 
@@ -99,15 +99,15 @@ Cura.MenuItem
             var popupHeight = materialTypesModel.material_types.count * UM.Theme.getSize("menu").height
             var parentGlobalY = parent.mapToItem(null, 0, 0).y
             var overflowY = (parentGlobalY + popupHeight) - mainWindow.height
-            y = overflowY > 0 ? -overflowY : 0
+            menuPopup.y = overflowY > 0 ? -overflowY : 0
 
             var defaultX = parent.width - UM.Theme.getSize("default_lining").width
             var parentGlobalX = parent.mapToItem(null, 0, 0).x
             var overflowX = (parentGlobalX + defaultX + menuPopup.width) - mainWindow.width
-            x = overflowX > 0 ? overflowX : defaultX
+            menuPopup.x = overflowX > 0 ? overflowX : defaultX
 
-            scrollViewMaterialType.height =  popupHeight > mainWindow.height ? mainWindow.height: popupHeight
-            menuPopup.height = popupHeight > mainWindow.height ? mainWindow.height: popupHeight
+            scrollViewMaterialType.height = popupHeight > mainWindow.height ? mainWindow.height : popupHeight
+            menuPopup.height = popupHeight > mainWindow.height ? mainWindow.heigh : popupHeight 
         }
 
         padding: background.border.width
@@ -169,7 +169,7 @@ Cura.MenuItem
 
                         color: materialTypeButton.containsMouse ? UM.Theme.getColor("background_2") : UM.Theme.getColor("background_1")
 
-                        property var isFlipped:  menuPopup.flipped
+                        property bool isFlipped:  menuPopup.flipped
 
                         RowLayout
                         {
@@ -206,7 +206,7 @@ Cura.MenuItem
                                 source: UM.Theme.getIcon("ChevronSingleRight")
                             }
 
-                                                    Item
+                            Item
                             {
                                 // Right side margin
                                 width: UM.Theme.getSize("default_margin").width
@@ -269,14 +269,14 @@ Cura.MenuItem
                                 var popupHeight = model.colors.count * UM.Theme.getSize("menu").height
                                 var parentGlobalY = parent.mapToItem(null, 0, 0).y
                                 var overflowY = (parentGlobalY + popupHeight) - mainWindow.height
-                                y = overflowY > 0 ? - overflowY - UM.Theme.getSize("default_lining").height: - UM.Theme.getSize("default_lining").height
+                                colorPopup.y = overflowY > 0 ? - overflowY - UM.Theme.getSize("default_lining").height : -UM.Theme.getSize("default_lining").height
 
                                 var parentGlobalX = materialTypesList.mapToItem(null, 0, 0).x
                                 var overflowX = (parentGlobalX + parent.width + colorPopup.width) - mainWindow.width
-                                x = overflowX > 0 ? parent.width - overflowX : parent.width
+                                colorPopup.x = overflowX > 0 ? parent.width - overflowX : parent.width
 
-                                scrollView.height =  popupHeight > mainWindow.height ? mainWindow.height: popupHeight
-                                colorPopup.height = popupHeight > mainWindow.height ? mainWindow.height: popupHeight
+                                scrollView.height =  popupHeight > mainWindow.height ? mainWindow.height : popupHeight
+                                colorPopup.height = popupHeight > mainWindow.height ? mainWindow.height : popupHeight
                             }
 
                             property int itemHovered: 0
@@ -306,7 +306,7 @@ Cura.MenuItem
                                 Column
                                 {
                                     id: materialColorsList
-                                    property var brandColors: model.colors
+                                    property color brandColors: model.colors
                                     width: UM.Theme.getSize("menu").width
                                     height: parent.height
                                     spacing: 0
