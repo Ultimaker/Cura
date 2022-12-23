@@ -17,4 +17,4 @@ export OPENSSL_CONF="$scriptdir/openssl.cnf"
 # unset `QT_STYLE_OVERRIDE` as a precaution
 unset QT_STYLE_OVERRIDE
 
-$scriptdir/Ultimaker-Cura "$@"
+$scriptdir/UltiMaker-Cura "$@"
