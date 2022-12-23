@@ -305,7 +305,7 @@ Cura.MenuItem
                                 Column
                                 {
                                     id: materialColorsList
-                                    property color brandColors: model.colors
+                                    property var brandColors: model.colors
                                     width: UM.Theme.getSize("menu").width
                                     height: parent.height
                                     spacing: 0
