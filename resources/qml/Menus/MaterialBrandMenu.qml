@@ -321,7 +321,7 @@ Cura.MenuItem
 
                                             color: materialColorButton.containsMouse ? UM.Theme.getColor("background_2") : "transparent"
 
-                                            Rectangle
+                                            Item
                                             {
                                                 height: parent.height
                                                 width: parent.width
