@@ -63,6 +63,16 @@ def generate_wxs(source_path: Path, dist_path: Path, filename: Path, app_name: s
     except shutil.SameFileError:
         pass
 
+
+def cleanup_artifacts(dist_path: Path):
+    dist_loc = Path(os.getcwd(), dist_path)
+    dirt = [d for d in dist_loc.rglob("__pycache__") if d.is_dir()]
+    dirt += [d for d in dist_loc.rglob("*.dist-info") if d.is_dir()]
+    for d in dirt:
+        if d.exists():
+            shutil.rmtree(d, ignore_errors=True)
+
+
 def build(dist_path: Path, filename: str):
     dist_loc = Path(os.getcwd(), dist_path)
     work_loc = work_path(filename)
@@ -97,4 +107,5 @@ if __name__ == "__main__":
     parser.add_argument("name", type=str, help="App name (e.g. 'UltiMaker Cura')")
     args = parser.parse_args()
     generate_wxs(args.source_path, args.dist_path, args.filename, args.name)
+    cleanup_artifacts(args.dist_path)
     build(args.dist_path, args.filename)
