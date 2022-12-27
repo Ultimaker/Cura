@@ -57,17 +57,24 @@ def generate_wxs(source_path: Path, dist_path: Path, filename: Path, app_name: s
     except shutil.SameFileError:
         pass
 
+    try:
+        shutil.copy(source_loc.joinpath("packaging", "msi", "ExcludeComponents.xslt"),
+                    work_loc.joinpath("ExcludeComponents.xslt"))
+    except shutil.SameFileError:
+        pass
 
 def build(dist_path: Path, filename: str):
     dist_loc = Path(os.getcwd(), dist_path)
     work_loc = work_path(filename)
     wxs_loc = work_loc.joinpath("UltiMaker-Cura.wxs")
     heat_loc = work_loc.joinpath("HeatFile.wxs")
+    exclude_components_loc = work_loc.joinpath("ExcludeComponents.xslt")
     manageoldcuradlg_loc = work_loc.joinpath("CustomizeCuraDlg.wxs")
     build_loc = work_loc.joinpath("build_msi")
 
     heat_command = ["heat", "dir", f"{dist_loc.as_posix()}\\", "-dr", "APPLICATIONFOLDER", "-cg", "NewFilesGroup",
-                    "-gg", "-g1", "-sf", "-srd", "-var", "var.CuraDir", "-out", f"{heat_loc.as_posix()}"]
+                    "-gg", "-g1", "-sf", "-srd", "-var", "var.CuraDir", "-t", f"{exclude_components_loc.as_posix()}",
+                    "-out", f"{heat_loc.as_posix()}"]
     subprocess.call(heat_command)
 
     build_command = ["candle", "-arch", "x64", f"-dCuraDir={dist_loc}\\", "-out", f"{build_loc.as_posix()}\\",
