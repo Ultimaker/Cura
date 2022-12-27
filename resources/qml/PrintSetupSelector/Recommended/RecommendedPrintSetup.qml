@@ -2,34 +2,41 @@
 //Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
+import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.1
 
 import UM 1.6 as UM
 import Cura 1.6 as Cura
 import ".."
 
-Item
+ScrollView
 {
     id: recommendedPrintSetup
 
-    height: childrenRect.height + 2 * padding
+    implicitHeight: settingsColumn.height + 2 * padding
 
     property bool settingsEnabled: Cura.ExtruderManager.activeExtruderStackId || extrudersEnabledCount.properties.value == 1
-    property real padding: UM.Theme.getSize("default_margin").width
+
+    padding: UM.Theme.getSize("default_margin").width
 
     function onModeChanged() {}
 
-    Column
-    {
-        spacing: UM.Theme.getSize("default_margin").height
-
+    ScrollBar.vertical: UM.ScrollBar {
+        id: scroll
         anchors
         {
-            left: parent.left
-            right: parent.right
             top: parent.top
-            margins: parent.padding
+            right: parent.right
+            bottom: parent.bottom
         }
+    }
+
+    Column
+    {
+        id: settingsColumn
+        spacing: UM.Theme.getSize("default_margin").height
+
+        width: recommendedPrintSetup.width - 2 * recommendedPrintSetup.padding - (scroll.visible ? scroll.width : 0)
 
         // TODO
         property real firstColumnWidth: Math.round(width / 3)
