@@ -30,7 +30,7 @@ Popup
     // needed for the `mapToItem` function to work; apparently a Popup is not an Item
     Item
     {
-        id: materialBrandSubMenu
+        id: materialBrandSubMenuItem
         anchors.fill: parent
     }
 
@@ -47,7 +47,7 @@ Popup
         materialBrandSubMenu.width = implicitWidth;
         materialBrandSubMenu.height = implicitHeight;
 
-        const globalPosition = materialBrandSubMenu.mapToItem(null, 0, 0);
+        const globalPosition = materialBrandSubMenuItem.mapToItem(null, 0, 0);
 
         if (globalPosition.y > mainWindow.height - materialBrandSubMenu.height)
         {
