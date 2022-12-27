@@ -112,6 +112,7 @@ Popup
             id: scrollViewContent
             width: childrenRect.width
             height: childrenRect.height
+            color: UM.Theme.getColor("main_background")
         }
     }
 }
