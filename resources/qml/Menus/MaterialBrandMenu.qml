@@ -36,7 +36,7 @@ Cura.MenuItem
 
             UM.Label
             {
-                id: brandLableText
+                id: brandLabelText
                 text: replaceText(materialBrandMenu.text)
                 Layout.fillWidth: true
                 Layout.fillHeight:true

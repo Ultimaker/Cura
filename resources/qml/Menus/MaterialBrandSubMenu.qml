@@ -71,8 +71,8 @@ Popup
         {
             if (mainWindow.width > materialBrandSubMenu.width)
             {
-                const targetY = mainWindow.width - materialBrandSubMenu.width;
-                const deltaX = globalPosition.x - targetY;
+                const targetX = mainWindow.width - materialBrandSubMenu.width;
+                const deltaX = globalPosition.x - targetX;
                 materialBrandSubMenu.x = implicitX - deltaX;
             }
             else
