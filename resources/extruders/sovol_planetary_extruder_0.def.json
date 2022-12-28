@@ -4,7 +4,7 @@
     "inherits": "fdmextruder",
     "metadata":
     {
-        "machine": "sovol_base",
+        "machine": "sovol_base_planetary",
         "position": "0"
     },
     "overrides":
