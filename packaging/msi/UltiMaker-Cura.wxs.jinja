@@ -28,6 +28,8 @@
                 IncludeMinimum="no" IncludeMaximum="no"
             />
         </Upgrade>
+        <!--TODO: handle copy of configuration of previous version-->
+        <!--TODO: handle removal of old configuration once previous version is uninstalled-->
 
         {% if "Enterpise" in app_name %}
         <Property Id="PREVIOUS_413_INSTALLED" Secure="yes" />
@@ -83,6 +85,27 @@
 
         <Property Id="ApplicationFolderName" Value="{{ app_name }} {{ version }}" />
         <Property Id="WixAppFolder" Value="WixPerMachineFolder" />
+
+       <Component Id="CMP_UltiMaker_Cura_exe" Directory="APPLICATIONFOLDER" Guid="*">
+           <File Id="FILE_UltiMaker_Cura_exe" KeyPath="yes" Source="$(var.CuraDir)\{{ main_app }}" />
+
+           <!--Computer\HKEY_LOCAL_MACHINE\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.fileTypeAssociation\.3mf-->
+
+           <ProgId Id="PRG_UltiMaker_Cura" Description="{{ app_name }}" Icon="ICO_Cura" Advertise="yes">
+               <Extension Id="stl">
+                   <Verb Id='open' Command="[APPLICATIONFOLDER]{{ main_app }}" Argument='"%1"' />
+                   <MIME Advertise="yes" ContentType="application/stl" Default="yes" />
+               </Extension>
+               <Extension Id="3mf">
+                   <Verb Id='open' Command="[APPLICATIONFOLDER]{{ main_app }}" Argument='"%1"' />
+                   <MIME Advertise="yes" ContentType="application/3mf" Default="yes" />
+               </Extension>
+           </ProgId>
+       </Component>
+       <Component Id="CMP_CuraEngine_exe" Directory="APPLICATIONFOLDER" Guid="*">
+           <File Id="FILE_CuraEngine_exe" KeyPath="yes" Source="$(var.CuraDir)\CuraEngine.exe" />
+           <!--TODO: add firewall exception, see: https://wixtoolset.org/docs/v3/xsd/firewall/firewallexception/-->
+       </Component>
 
         <!--Shortcuts-->
         <DirectoryRef Id="ShortCutDir">
