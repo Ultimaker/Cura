@@ -1,0 +1,19 @@
+{
+    "version": 2,
+    "name": "Left Extruder",
+    "inherits": "fdmextruder",
+    "metadata":
+    {
+        "machine": "modix_v3_base",
+        "position": "0"
+    },
+    "overrides":
+    {
+        "extruder_nr":
+        {
+            "default_value": 0,
+            "maximum_value": "1"
+        },
+        "material_diameter": { "default_value": 1.75 }
+    }
+}
