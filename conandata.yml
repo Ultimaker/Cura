@@ -21,8 +21,7 @@
         - "cura_binary_data/5.2.1"
         - "cpython/3.10.4"
     internal_requirements:
-        - "fdm_materials_private/(latest)@ultimaker/testing"
-        - "cura_private_data/(latest)@ultimaker/testing"
+        - "cura_private_data/5.2.2"
     runinfo:
         entrypoint: "cura_app.py"
     pyinstaller:
