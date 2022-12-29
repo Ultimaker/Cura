@@ -67,11 +67,6 @@
                 package: "fdm_materials"
                 src: "materials"
                 dst: "share/cura/resources/materials"
-            fdm_materials_private:
-                package: "fdm_materials_private"
-                src: "resources/materials"
-                dst: "share/cura/resources/materials"
-                internal: true
             tcl:
                 package: "tcl"
                 src: "lib/tcl8.6"

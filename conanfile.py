@@ -336,8 +336,6 @@ class CuraConan(ConanFile):
         self.copy("*.sig", root_package = "fdm_materials", src = "@resdirs", dst = "resources/materials", keep_path = False)
 
         if self.options.internal:
-            self.copy("*.fdm_material", root_package = "fdm_materials_private", src = "@resdirs", dst = "resources/materials", keep_path = False)
-            self.copy("*.sig", root_package = "fdm_materials_private", src = "@resdirs", dst = "resources/materials", keep_path = False)
             self.copy("*", root_package = "cura_private_data", src = self.deps_cpp_info["cura_private_data"].resdirs[0],
                            dst = self._share_dir.joinpath("cura", "resources"), keep_path = True)
 
@@ -375,10 +373,6 @@ class CuraConan(ConanFile):
 
         # Copy internal resources
         if self.options.internal:
-            self.copy_deps("*.fdm_material", root_package = "fdm_materials_private", src = self.deps_cpp_info["fdm_materials_private"].resdirs[0],
-                           dst = self._share_dir.joinpath("cura", "resources", "materials"), keep_path = False)
-            self.copy_deps("*.sig", root_package = "fdm_materials_private", src = self.deps_cpp_info["fdm_materials_private"].resdirs[0],
-                           dst = self._share_dir.joinpath("cura", "resources", "materials"), keep_path = False)
             self.copy_deps("*", root_package = "cura_private_data", src = self.deps_cpp_info["cura_private_data"].resdirs[0],
                            dst = self._share_dir.joinpath("cura", "resources"), keep_path = True)
             self.copy_deps("*", root_package = "cura_private_data", src = self.deps_cpp_info["cura_private_data"].resdirs[1],
