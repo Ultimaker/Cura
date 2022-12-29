@@ -17,7 +17,7 @@
         - "pysavitar/(latest)@ultimaker/testing"
         - "pynest2d/(latest)@ultimaker/testing"
         - "uranium/5.2.0"
-        - "fdm_materials/5.2.0"
+        - "fdm_materials/5.2.2"
         - "cura_binary_data/5.2.1"
         - "cpython/3.10.4"
     internal_requirements:
