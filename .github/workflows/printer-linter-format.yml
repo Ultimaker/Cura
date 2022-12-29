@@ -3,11 +3,7 @@ name: printer-linter-format
 on:
     push:
         paths:
-            - 'resources/definitions/**'
-            - 'resources/extruders/**'
-            - 'resources/intent/**'
-            - 'resources/quality/**'
-            - 'resources/variants/**'
+            - 'resources/**'
 
 jobs:
     printer-linter-format:
