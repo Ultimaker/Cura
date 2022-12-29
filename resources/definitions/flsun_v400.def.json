@@ -16,12 +16,6 @@
         }
     },
     "overrides": {
-        "machine_extruder_count": {
-            "default_value": 1
-        },
-        "retraction_enable": {
-            "default_value": true
-        },
         "machine_heated_bed": {
             "default_value": true
         },
