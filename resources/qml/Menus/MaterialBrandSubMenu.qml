@@ -67,6 +67,10 @@ Popup
             }
         }
 
+        // Changing the height causes implicitWidth to change because of the scrollbar appearing/disappearing
+        // Reassign it here to update the value
+        materialBrandSubMenu.width = implicitWidth;
+
         if (globalPosition.x > mainWindow.width - materialBrandSubMenu.width)
         {
             if (mainWindow.width > materialBrandSubMenu.width)
@@ -81,10 +85,6 @@ Popup
                 materialBrandSubMenu.width = mainWindow.width;
             }
         }
-
-
-        // This function can cause the scrollbar.width to update but this won't update the width (bug?) so it is done explicitly here.
-        width = scrollViewContent.width + scrollbar.width + leftPadding + rightPadding
     }
 
     padding: background.border.width
