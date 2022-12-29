@@ -81,6 +81,10 @@ Popup
                 materialBrandSubMenu.width = mainWindow.width;
             }
         }
+
+
+        // This function can cause the scrollbar.width to update but this won't update the width (bug?) so it is done explicitly here.
+        width = scrollViewContent.width + scrollbar.width + leftPadding + rightPadding
     }
 
     padding: background.border.width
