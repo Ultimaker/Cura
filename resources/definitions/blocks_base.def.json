@@ -28,17 +28,17 @@
         "alternate_extra_perimeter": { "default_value": true },
         "bottom_layers": { "value": "math.ceil(round(bottom_thickness / resolveOrValue('layer_height'), 4))" },
         "brim_replaces_support": { "value": false },
-        "cool_fan_enabled": { "value": true },
+        
         "cool_fan_full_at_height": { "value": "layer_height_0 + 2 * layer_height" },
         "cool_min_layer_time": { "value": 10 },
-        "fill_outline_gaps": { "value": true },
+        
         "fill_perimeter_gaps": { "value": "'nowhere'" },
         "filter_out_tiny_gaps": { "value": false },
         "infill_before_walls": { "value": false },
         "infill_enable_travel_optimization": { "default_value": true },
         "infill_overlap": { "value": 30.0 },
         "infill_pattern": { "value": "'lines' if infill_sparse_density > 50 else 'cubic'" },
-        "infill_sparse_density": { "value": "20" },
+        
         "infill_wipe_dist": { "value": 0.0 },
         "jerk_print": { "value": 8 },
         "jerk_travel": { "value": "jerk_print" },
@@ -67,7 +67,7 @@
         "retraction_count_max": { "value": 100 },
         "retraction_hop": { "value": 0.2 },
         "retraction_hop_enabled": { "value": "False" },
-        "retraction_min_travel": { "value": 1.5 },
+        
         "retraction_prime_speed":
         {
             "deafult_value": 20,
@@ -105,15 +105,15 @@
         "support_interface_pattern": { "value": "'grid'" },
         "support_interface_skip_height": { "value": 0.2 },
         "support_pattern": { "value": "'zigzag'" },
-        "support_top_distance": { "value": "extruderValue(support_roof_extruder_nr if support_roof_enable else support_infill_extruder_nr, 'support_z_distance') + (layer_height if support_structure == 'tree' else 0)" },
+        
         "support_use_towers": { "value": false },
-        "support_wall_count": { "value": 1 },
+        
         "support_xy_distance": { "value": "wall_line_width_0 * 2" },
         "support_xy_distance_overhang": { "value": "wall_line_width_0" },
         "support_xy_overrides_z": { "value": "'xy_overrides_z'" },
         "support_z_distance": { "value": "layer_height if layer_height >= 0.16 else layer_height * 2" },
         "top_layers": { "value": "math.ceil(round(top_thickness / resolveOrValue('layer_height'), 4))" },
-        "travel_avoid_other_parts": { "value": true },
+        
         "travel_avoid_supports": { "value": true },
         "travel_compensate_overlapping_walls_0_enabled": { "value": "False" },
         "travel_retract_before_outer_wall": { "value": true },
