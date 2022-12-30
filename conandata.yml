@@ -12,13 +12,13 @@
 # Subject to change in the future!
 "5.2.2":
     requirements:
-        - "pyarcus/(latest)@ultimaker/testing"
+        - "pyarcus/5.2.2"
         - "curaengine/5.2.2"
-        - "pysavitar/(latest)@ultimaker/testing"
-        - "pynest2d/(latest)@ultimaker/testing"
-        - "uranium/5.2.0"
+        - "pysavitar/5.2.2"
+        - "pynest2d/5.2.2"
+        - "uranium/5.2.2"
         - "fdm_materials/5.2.2"
-        - "cura_binary_data/5.2.1"
+        - "cura_binary_data/5.2.2"
         - "cpython/3.10.4"
     internal_requirements:
         - "cura_private_data/5.2.2"
@@ -111,11 +111,11 @@
             Linux: "./icons/cura-128.png"
 "5.2.2-beta.1":
     requirements:
-        - "pyarcus/(latest)@ultimaker/testing"
+        - "pyarcus/5.2.2"
         - "curaengine/5.2.2"
-        - "pysavitar/(latest)@ultimaker/testing"
-        - "pynest2d/(latest)@ultimaker/testing"
-        - "uranium/5.2.0"
+        - "pysavitar/5.2.2"
+        - "pynest2d/5.2.2"
+        - "uranium/5.2.2"
         - "fdm_materials/5.2.2"
         - "cura_binary_data/5.2.1"
         - "cpython/3.10.4"
