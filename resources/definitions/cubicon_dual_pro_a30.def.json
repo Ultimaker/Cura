@@ -35,7 +35,7 @@
             "default_value": 300
         },
         "material_bed_temp_wait":{
-            "default_value": false
+            "default_value": true
         },
         "machine_extruder_count": {
             "default_value": 2

@@ -32,9 +32,6 @@
         },
         "machine_height": {
             "default_value": 200
-        },
-        "material_bed_temp_wait": {
-            "default_value": true
         }
     }
 }
