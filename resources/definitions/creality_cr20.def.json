@@ -1,25 +1,27 @@
 {
-    "name": "Creality CR-20",
     "version": 2,
+    "name": "Creality CR-20",
     "inherits": "creality_base",
-    "overrides": {
-        "machine_name": { "default_value": "Creality CR-20" },
-        "machine_width": { "default_value": 220 },
+    "metadata":
+    {
+        "visible": true,
+        "quality_definition": "creality_base"
+    },
+    "overrides":
+    {
+        "gantry_height": { "value": 25 },
         "machine_depth": { "default_value": 220 },
-        "machine_height": { "default_value": 250 },
-        "machine_head_with_fans_polygon": { "default_value": [
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
                 [-26, 34],
                 [-26, -32],
                 [32, -32],
                 [32, 34]
             ]
         },
-
-        "gantry_height": { "value": 25 }
-
-    },
-    "metadata": {
-        "quality_definition": "creality_base",
-        "visible": true
+        "machine_height": { "default_value": 250 },
+        "machine_name": { "default_value": "Creality CR-20" },
+        "machine_width": { "default_value": 220 }
     }
 }

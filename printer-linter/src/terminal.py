@@ -113,8 +113,11 @@ def extractFilePaths(paths: List[Path]) -> List[Path]:
     for path in paths:
         if path.is_dir():
             file_paths.extend(path.rglob("**/*"))
-        else:
+        if not path.match("*"):
             file_paths.append(path)
+        else:
+            file_paths.extend(Path(*path.parts[:-1]).glob(path.parts[-1]))
+            continue
 
     return file_paths
 
