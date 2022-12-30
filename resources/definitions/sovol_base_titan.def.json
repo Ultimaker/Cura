@@ -1,0 +1,12 @@
+{
+    "version": 2,
+    "name": "Sovol Base Titan Printer",
+    "inherits": "sovol_base",
+    "metadata":
+    {
+        "machine_extruder_trains": { "0": "sovol_titan_extruder_0" },
+        "quality_definition": "sovol_base_titan"
+    },
+    "overrides":
+    {}
+}
