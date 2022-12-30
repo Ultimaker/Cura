@@ -1,0 +1,19 @@
+{
+    "name": "Z-Bolt Limited Plus",
+    "version": 2,
+    "inherits": "z-bolt_base",
+    "metadata":
+    {
+        "visible": true,
+        "quality_definition": "z-bolt_base"
+    },
+
+    "overrides":
+    {
+        "machine_name":                                 { "default_value": "Z-Bolt Limited Plus" },
+        "machine_width":                                { "default_value": 300 },
+        "machine_depth":                                { "default_value": 200 },
+        "machine_height":                               { "default_value": 335 },
+        "retraction_amount":                            { "value": 6 }
+    }
+}

@@ -1,0 +1,16 @@
+{
+    "version": 2,
+    "name": "Toolhead 2",
+    "inherits": "fdmextruder",
+    "metadata":
+    {
+        "machine": "z-bolt_base",
+        "position": "1"
+    },
+
+    "overrides":
+    {
+        "extruder_nr":              { "default_value": 1 },
+        "material_diameter":        { "default_value": 1.75 }
+    }
+}

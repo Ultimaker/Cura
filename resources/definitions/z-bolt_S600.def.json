@@ -1,0 +1,28 @@
+{
+    "name": "Z-Bolt S600",
+    "version": 2,
+    "inherits": "z-bolt_base",
+    "metadata":
+    {
+        "visible": true,
+        "machine_extruder_trains": { "0": "z-bolt_extruder_1", "1": "z-bolt_extruder_2" },
+        "quality_definition": "z-bolt_base"
+    },
+
+    "overrides":
+    {
+        "machine_name":                                 { "default_value": "Z-Bolt S600" },
+        "machine_width":                                { "default_value": 600 },
+        "machine_depth":                                { "default_value": 600 },
+        "machine_height":                               { "default_value": 900 },
+        "retraction_amount":                            { "value": 4 },
+        "speed_travel":                                 { "value": 150, "maximum_value": 300 },
+        "prime_tower_enable":                           { "default_value": true },
+        "prime_tower_position_x":                       { "default_value": 50 },
+        "prime_tower_position_y":                       { "default_value": 30 },
+        "prime_tower_size":                             { "default_value": 24 },
+        "prime_tower_min_volume":                       { "default_value": 24 },
+        "prime_tower_wipe_enabled":                     { "default_value": true },
+        "prime_tower_brim_enable":                      { "default_value": true }
+     }
+}
