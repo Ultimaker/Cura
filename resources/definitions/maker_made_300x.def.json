@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "Maker Made 300x",    
+    "name": "Maker Made 300x",
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
@@ -11,7 +11,7 @@
         "has_materials": true,
         "has_variants": false,
         "preferred_quality_type": "normal",
-        "has_machine_quality": false,
+        "has_machine_quality": true,
         "preferred_material": "generic_pla",
         "machine_extruder_trains":
         {
@@ -29,7 +29,7 @@
         "machine_heated_bed": {"default_value": true},
         "material_diameter": {"default_value": 1.75},
         "machine_gcode_flavor": {"default_value": " RepRap (Marlin/Sprinter)"},
-        "machine_start_gcode": {"default_value": "G28 ;Home\n G29 ;Auto Level\n G92 E0 ;Reset Extruder\n G1 Z5.0 F3000 ;Move Z Axis up\n G1 X25 Y295.0 Z0.28 F3000.0 ;Move to extrude\n G1 X250 Y295.0 Z0.28 F1500.0 E15 ;Draw the first line\n G1 X25 Y290.0 Z0.28 F3000.0 ;Move to side a little\n G1 X250 Y290.0 Z0.28 F1500.0 E30 ;Draw the second line\n G92 E0 ;Reset Extruder\n G1 Z5.0 F3000 ;Move Z Axis up" },
+        "machine_start_gcode": {"default_value": "G28 ;Home\n G29 ;Auto Level\n G90\n G92 E0 ;Reset Extruder\n G1 Z5.0 F3000 ;Move Z Axis up\n G1 X25 Y295.0 Z0.28 F3000.0 ;Move to extrude\n G1 X250 Y295.0 Z0.28 F1500.0 E15 ;Draw the first line\n G1 X25 Y290.0 Z0.28 F3000.0 ;Move to side a little\n G1 X250 Y290.0 Z0.28 F1500.0 E30 ;Draw the second line\n G92 E0 ;Reset Extruder\n G1 Z5.0 F3000 ;Move Z Axis up" },
         "machine_end_gcode": {"default_value": "M104 S0\n M140 S0\n ;Retract the filament\n G92 E1\n G1 E-1 F300\n G28 X0 Y0\n G1 Y300 F3000 ;Move bed forward\n M84" },
 
         "layer_height": {"value": 0.16},
@@ -136,6 +136,6 @@
         "meshfix_extensive_stitching":  {"value": false },
         "meshfix_keep_open_polygons":  {"value": false },
         "multiple_mesh_overlap": {"value": "0.16"},
-        "carve_multiple_volumes": {"value": false }       
+        "carve_multiple_volumes": {"value": false }
     }
 }
