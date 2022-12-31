@@ -1,0 +1,19 @@
+{
+    "name": "Voron Trident 250",
+    "version": 2,
+    "inherits": "voron2_base",
+    "metadata":
+    {
+        "visible": true,
+        "platform": "voron_trident_250mm_bed_model.stl",
+        "quality_definition": "voron2_base",
+        "author": "RagingRoosevelt, hartk"
+    },
+    "overrides":
+    {
+        "machine_name":         { "default_value": "VORON Trident 250" },
+        "machine_width":        { "default_value": 250 },
+        "machine_depth":        { "default_value": 250 },
+        "machine_height":       { "default_value": 250 }
+    }
+}

@@ -1,0 +1,19 @@
+{
+    "name": "Voron Trident 350",
+    "version": 2,
+    "inherits": "voron2_base",
+    "metadata":
+    {
+        "visible": true,
+        "platform": "voron_trident_350mm_bed_model.stl",
+        "quality_definition": "voron2_base",
+        "author": "RagingRoosevelt, hartk"
+    },
+    "overrides":
+    {
+        "machine_name":         { "default_value": "VORON Trident 350" },
+        "machine_width":        { "default_value": 350 },
+        "machine_depth":        { "default_value": 350 },
+        "machine_height":       { "default_value": 250 }
+    }
+}
