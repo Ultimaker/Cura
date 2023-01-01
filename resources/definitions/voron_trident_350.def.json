@@ -1,7 +1,7 @@
 {
     "name": "Voron Trident 350",
     "version": 2,
-    "inherits": "voron_trident_250",
+    "inherits": "voron_trident_base",
     "metadata":
     {
         "visible": true,

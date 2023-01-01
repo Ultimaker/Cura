@@ -1,7 +1,7 @@
 {
     "name": "Voron Trident 250",
     "version": 2,
-    "inherits": "voron2_base",
+    "inherits": "voron_trident_base",
     "metadata":
     {
         "visible": true,
@@ -11,9 +11,6 @@
     },
     "overrides":
     {
-        "machine_name":         { "default_value": "VORON Trident 250" },
-        "machine_width":        { "default_value": 250 },
-        "machine_depth":        { "default_value": 250 },
-        "machine_height":       { "default_value": 250 }
+        "machine_name":         { "default_value": "VORON Trident 250" }
     }
 }
