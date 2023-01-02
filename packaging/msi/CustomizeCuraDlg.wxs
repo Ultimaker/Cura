@@ -27,7 +27,6 @@
                 <Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="!(loc.WixUICancel)">
                     <Publish Event="SpawnDialog" Value="CancelDlg">1</Publish>
                 </Control>
-                <Control Id="DesktopShortcutCheckBox" Type="CheckBox" X="20" Y="160" Width="290" Height="17" Property="PREVIOUS_VERSIONS_INSTALLED" CheckBoxValue="0" Text="Uninstall previous Cura versions." />
                 <Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="no" Text="!(loc.CustomizeDlgBannerBitmap)" />
                 <Control Id="Text" Type="Text" X="25" Y="55" Width="320" Height="20" Text="!(loc.CustomizeDlgText)" />
                 <Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
@@ -41,6 +40,7 @@
                 <Control Id="ItemSize" Type="Text" X="215" Y="140" Width="131" Height="50" Text="!(loc.CustomizeDlgItemSize)">
                     <Subscribe Event="SelectionSize" Attribute="Text" />
                 </Control>
+                <Control Id="UninstallPreviousCheckBox" Type="CheckBox" X="10" Y="210" Width="290" Height="17" Property="PREVIOUS_VERSIONS_INSTALLED" CheckBoxValue="0" Text="Uninstall previous Cura versions." />
                 <Control Id="Location" Type="Text" X="90" Y="210" Width="200" Height="20" Text="!(loc.CustomizeDlgLocation)">
                     <Subscribe Event="SelectionPath" Attribute="Text" />
                     <Subscribe Event="SelectionPathOn" Attribute="Visible" />

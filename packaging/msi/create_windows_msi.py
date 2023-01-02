@@ -57,26 +57,47 @@ def generate_wxs(source_path: Path, dist_path: Path, filename: Path, app_name: s
     except shutil.SameFileError:
         pass
 
+    try:
+        shutil.copy(source_loc.joinpath("packaging", "msi", "ExcludeComponents.xslt"),
+                    work_loc.joinpath("ExcludeComponents.xslt"))
+    except shutil.SameFileError:
+        pass
+
+
+def cleanup_artifacts(dist_path: Path):
+    dist_loc = Path(os.getcwd(), dist_path)
+    dirt = [d for d in dist_loc.rglob("__pycache__") if d.is_dir()]
+    dirt += [d for d in dist_loc.rglob("*.dist-info") if d.is_dir()]
+    for d in dirt:
+        if d.exists():
+            shutil.rmtree(d, ignore_errors=True)
+
 
 def build(dist_path: Path, filename: str):
     dist_loc = Path(os.getcwd(), dist_path)
     work_loc = work_path(filename)
     wxs_loc = work_loc.joinpath("UltiMaker-Cura.wxs")
     heat_loc = work_loc.joinpath("HeatFile.wxs")
+    exclude_components_loc = work_loc.joinpath("ExcludeComponents.xslt")
     manageoldcuradlg_loc = work_loc.joinpath("CustomizeCuraDlg.wxs")
     build_loc = work_loc.joinpath("build_msi")
 
     heat_command = ["heat", "dir", f"{dist_loc.as_posix()}\\", "-dr", "APPLICATIONFOLDER", "-cg", "NewFilesGroup",
-                    "-gg", "-g1", "-sf", "-srd", "-var", "var.CuraDir", "-out", f"{heat_loc.as_posix()}"]
+                    "-gg", "-g1", "-sf", "-srd", "-var", "var.CuraDir", "-t", f"{exclude_components_loc.as_posix()}",
+                    "-out", f"{heat_loc.as_posix()}"]
     subprocess.call(heat_command)
 
-    build_command = ["candle", "-arch", "x64", f"-dCuraDir={dist_loc}\\", "-out", f"{build_loc.as_posix()}\\",
+    build_command = ["candle", "-arch", "x64", f"-dCuraDir={dist_loc}\\",
+                     "-ext", "WixFirewallExtension",
+                     "-out", f"{build_loc.as_posix()}\\",
                      f"{wxs_loc.as_posix()}", f"{heat_loc.as_posix()}", f"{manageoldcuradlg_loc.as_posix()}"]
     subprocess.call(build_command)
 
     link_command = ["light", f"{build_loc.joinpath(wxs_loc.name).with_suffix('.wixobj')}",
                     f"{build_loc.joinpath(heat_loc.name).with_suffix('.wixobj')}",
-                    f"{build_loc.joinpath(manageoldcuradlg_loc.name).with_suffix('.wixobj')}", "-ext", "WixUIExtension",
+                    f"{build_loc.joinpath(manageoldcuradlg_loc.name).with_suffix('.wixobj')}",
+                    "-ext", "WixUIExtension",
+                    "-ext", "WixFirewallExtension",
                     "-out", f"{work_loc.joinpath(filename.name)}"]
     subprocess.call(link_command)
 
@@ -89,5 +110,6 @@ if __name__ == "__main__":
                         help="Filename of the exe (e.g. 'UltiMaker-Cura-5.1.0-beta-Windows-X64.msi')")
     parser.add_argument("name", type=str, help="App name (e.g. 'UltiMaker Cura')")
     args = parser.parse_args()
-    generate_wxs(args.source_path, args.dist_path, args.filename, args.name)
-    build(args.dist_path, args.filename)
+    generate_wxs(args.source_path.resolve(), args.dist_path.resolve(), args.filename.resolve(), args.name)
+    cleanup_artifacts(args.dist_path.resolve())
+    build(args.dist_path.resolve(), args.filename)

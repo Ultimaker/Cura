@@ -87,15 +87,17 @@ UM.TextField
 
     function parseValueUpdateSetting()
     {
-        if (propertyProvider.properties.value === text || (parseFloat(propertyProvider.properties.value) === parseFloat(text)))
+        // User convenience. We use dots for decimal values
+        const modified_text = text.replace(",", ".");
+        if (propertyProvider.properties.value === modified_text || (parseFloat(propertyProvider.properties.value) === parseFloat(modified_text)))
         {
             // Don't set the property value from the control. It already has the same value
             return
         }
 
-        if (propertyProvider && text !== propertyProvider.properties.value)
+        if (propertyProvider && modified_text !== propertyProvider.properties.value)
         {
-            updateSetting(text);
+            updateSetting(modified_text);
         }
     }
 
@@ -138,7 +140,7 @@ UM.TextField
                 color: UM.Theme.getColor("setting_validation_warning_background")
             }
         },
-         State
+        State
         {
             name: "disabled"
             when: !control.enabled
