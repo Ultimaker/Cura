@@ -94,8 +94,6 @@ Cura.MenuItem
         // We have to keep a count of itemHovered (instead of just a bool)
         property int itemHovered: 0
 
-        implicitX: parent.width - UM.Theme.getSize("default_lining").width
-
         MouseArea
         {
             id: submenuArea
@@ -217,6 +215,8 @@ Cura.MenuItem
                     MaterialBrandSubMenu
                     {
                         id: colorPopup
+                        implicitX: parent.width
+
                         property int itemHovered: 0
 
                         Column

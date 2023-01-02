@@ -19,7 +19,7 @@ Popup
     implicitHeight: scrollViewContent.height + bottomPadding + topPadding
 
     // offset position relative to the parent
-    property int implicitX: parent.width
+    property int implicitX: parent.width - UM.Theme.getSize("default_lining").width
     property int implicitY: -UM.Theme.getSize("thin_margin").height
 
     default property alias contents: scrollViewContent.children
