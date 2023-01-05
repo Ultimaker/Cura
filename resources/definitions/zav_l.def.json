@@ -1,16 +1,18 @@
 {
-    "name":      "Zav L Family Printer",
-    "version":   2,
-    "inherits":  "zav_base",
-    "metadata":  {
-                  "author": "Kirill Nikolaev, Kim Evgeniy (C)",
-                  "visible": true,
-                  "quality_definition": "zav_base",
-                  "platform": "zav_l.stl"
-                  },
-    "overrides": {
-                  "machine_name":   {"default_value": "zav_l"},
-                  "machine_width":  {"default_value": 200},
-                  "machine_height": {"default_value": 200}
-                 }
+    "version": 2,
+    "name": "Zav L Family Printer",
+    "inherits": "zav_base",
+    "metadata":
+    {
+        "visible": true,
+        "author": "Kirill Nikolaev, Kim Evgeniy (C)",
+        "platform": "zav_l.stl",
+        "quality_definition": "zav_base"
+    },
+    "overrides":
+    {
+        "machine_height": { "default_value": 200 },
+        "machine_name": { "default_value": "zav_l" },
+        "machine_width": { "default_value": 200 }
+    }
 }

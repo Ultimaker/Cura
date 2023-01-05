@@ -1,33 +1,32 @@
 {
-    "name": "Rigid3D 3. Nesil",
     "version": 2,
+    "name": "Rigid3D 3. Nesil",
     "inherits": "rigid3d_base",
-    "metadata": {
-		"visible": true,
-		"quality_definition": "rigid3d_base",
-
-		"preferred_quality_type": "standard"		
+    "metadata":
+    {
+        "visible": true,
+        "preferred_quality_type": "standard",
+        "quality_definition": "rigid3d_base"
     },
-    "overrides": {
-        "machine_name": { "default_value": "Rigid3D 3. Nesil" },
-
-		"machine_heated_bed": { "default_value": true },
-		
-		"machine_width": { "default_value": 270 },
+    "overrides":
+    {
+        "gantry_height": { "value": 20 },
+        "machine_center_is_zero": { "default_value": false },
         "machine_depth": { "default_value": 290 },
-        "machine_height": { "default_value": 240 },
-		
-		"machine_center_is_zero": { "default_value": false },
-		
-		"machine_start_gcode": {"default_value": "  ; -- START GCODE --\n  G21\n  G28 ; Home extruder\n  G29 ; Autolevel bed\n  M107 ; Turn off fan\n  G90 ; Absolute positioning\n  M82 ; Extruder in absolute mode\n  G92 E0 ; Reset extruder position\n  ; -- end of START GCODE --\n\n"},
-        "machine_end_gcode": {"default_value": "  ; -- END GCODE --\n  G1 X0 Y230 ; Get extruder out of way.\n  M107 ; Turn off fan\n  G91 ; Relative positioning\n  G0 Z20 ; Lift extruder up\n  T0\n  G1 E-1 ; Reduce filament pressure\n  M104 T0 S0 ; Turn extruder heater off\n  G90 ; Absolute positioning\n  G92 E0 ; Reset extruder position\n  M140 S0 ; Disable heated bed\n  M84 ; Turn steppers off\n  ; -- end of END GCODE --\n"},
-		
-		"machine_head_with_fans_polygon": { 
+        "machine_end_gcode": { "default_value": "  ; -- END GCODE --\n  G1 X0 Y230 ; Get extruder out of way.\n  M107 ; Turn off fan\n  G91 ; Relative positioning\n  G0 Z20 ; Lift extruder up\n  T0\n  G1 E-1 ; Reduce filament pressure\n  M104 T0 S0 ; Turn extruder heater off\n  G90 ; Absolute positioning\n  G92 E0 ; Reset extruder position\n  M140 S0 ; Disable heated bed\n  M84 ; Turn steppers off\n  ; -- end of END GCODE --\n" },
+        "machine_head_with_fans_polygon":
+        {
             "default_value": [
-                 [ -18, -20], [ -18, 45], [ 32, -20], [ 32, 45]
-				 ] 
+                [-18, -20],
+                [-18, 45],
+                [32, -20],
+                [32, 45]
+            ]
         },
-
-        "gantry_height": { "value": 20 }
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 240 },
+        "machine_name": { "default_value": "Rigid3D 3. Nesil" },
+        "machine_start_gcode": { "default_value": "  ; -- START GCODE --\n  G21\n  G28 ; Home extruder\n  G29 ; Autolevel bed\n  M107 ; Turn off fan\n  G90 ; Absolute positioning\n  M82 ; Extruder in absolute mode\n  G92 E0 ; Reset extruder position\n  ; -- end of START GCODE --\n\n" },
+        "machine_width": { "default_value": 270 }
     }
 }

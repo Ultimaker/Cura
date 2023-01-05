@@ -2,15 +2,20 @@
     "version": 2,
     "name": "Left Extruder 2",
     "inherits": "fdmextruder",
-    "metadata": {
+    "metadata":
+    {
         "machine": "strateo3d",
         "position": "1"
     },
-
-    "overrides": {
-        "extruder_nr": { "default_value": 1, "maximum_value": "1" },
-        "material_diameter": { "default_value": 1.75 },
+    "overrides":
+    {
+        "extruder_nr":
+        {
+            "default_value": 1,
+            "maximum_value": "1"
+        },
         "machine_nozzle_offset_x": { "default_value": 0 },
-        "machine_nozzle_offset_y": { "default_value": 0 }
+        "machine_nozzle_offset_y": { "default_value": 0 },
+        "material_diameter": { "default_value": 1.75 }
     }
 }

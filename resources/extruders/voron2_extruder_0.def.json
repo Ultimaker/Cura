@@ -7,10 +7,13 @@
         "machine": "voron2_base",
         "position": "0"
     },
-
     "overrides":
     {
-        "extruder_nr":              { "default_value": 0, "maximum_value": 1 },
-        "material_diameter":        { "default_value": 1.75 }
+        "extruder_nr":
+        {
+            "default_value": 0,
+            "maximum_value": 1
+        },
+        "material_diameter": { "default_value": 1.75 }
     }
 }

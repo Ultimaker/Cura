@@ -2,32 +2,26 @@
     "version": 2,
     "name": "I3 Metal Motion",
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "visible": true,
         "author": "Peter Felecan",
         "manufacturer": "eMotionTech",
         "file_formats": "text/x-gcode",
         "has_materials": true,
-        "preferred_material": "emotiontech_pla",
-        "machine_extruder_trains":
-        {
-            "0": "I3MetalMotion_extruder_0"
-        }
+        "machine_extruder_trains": { "0": "I3MetalMotion_extruder_0" },
+        "preferred_material": "emotiontech_pla"
     },
-
-    "overrides": {
-        "machine_name": { "default_value": "I3MetalMotion" },
-        "machine_heated_bed": { "default_value": true },
-        "machine_width": { "default_value": 200 },
-        "machine_height": { "default_value": 200 },
-        "machine_depth": { "default_value": 200 },
+    "overrides":
+    {
         "machine_center_is_zero": { "default_value": false },
+        "machine_depth": { "default_value": 200 },
+        "machine_end_gcode": { "default_value": "G28 Z\nG28 X\nG28 Y\nM107 ; Turn off the fan\nG91; Relative positioning\nG1 E-1 ; reduce filament pressure\nM104 T0 S0\nG90 ; Absolute positioning\nG92 E0 ; Reset extruder position\nM140 S0 ; Disable heated bed\nM84 ; Turn the steppers off" },
         "machine_gcode_flavor": { "default_value": "RepRap (RepRap)" },
-        "machine_start_gcode": {
-            "default_value": "G21 ; set units to millimeters\nG90 ; use absolute positioning\nM82 ; absolute extrusion mode\nM104 S{material_print_temperature_layer_0} ; set extruder temp\nM140 S{material_bed_temperature_layer_0} ; set bed temp\nM190 S{material_bed_temperature_layer_0} ; wait for bed temp\nM109 S{material_print_temperature_layer_0} ; wait for extruder temp\nG28 W ; home all\nG92 E0.0 ; reset extruder distance position\nG1 Y-3.0 F1000.0 ; go outside print area\nG1 X60.0 E9.0 F1000.0 ; intro line\nG1 X100.0 E21.5 F1000.0 ; intro line\nG92 E0.0 ; reset extruder distance position"
-        },
-        "machine_end_gcode": {
-            "default_value": "G28 Z\nG28 X\nG28 Y\nM107 ; Turn off the fan\nG91; Relative positioning\nG1 E-1 ; reduce filament pressure\nM104 T0 S0\nG90 ; Absolute positioning\nG92 E0 ; Reset extruder position\nM140 S0 ; Disable heated bed\nM84 ; Turn the steppers off"
-        }
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 200 },
+        "machine_name": { "default_value": "I3MetalMotion" },
+        "machine_start_gcode": { "default_value": "G21 ; set units to millimeters\nG90 ; use absolute positioning\nM82 ; absolute extrusion mode\nM104 S{material_print_temperature_layer_0} ; set extruder temp\nM140 S{material_bed_temperature_layer_0} ; set bed temp\nM190 S{material_bed_temperature_layer_0} ; wait for bed temp\nM109 S{material_print_temperature_layer_0} ; wait for extruder temp\nG28 W ; home all\nG92 E0.0 ; reset extruder distance position\nG1 Y-3.0 F1000.0 ; go outside print area\nG1 X60.0 E9.0 F1000.0 ; intro line\nG1 X100.0 E21.5 F1000.0 ; intro line\nG92 E0.0 ; reset extruder distance position" },
+        "machine_width": { "default_value": 200 }
     }
 }

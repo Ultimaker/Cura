@@ -1,6 +1,6 @@
 {
-    "name": "Asterion HT",
     "version": 2,
+    "name": "Asterion HT",
     "inherits": "atmat_signal_pro_base",
     "metadata":
     {
@@ -10,11 +10,10 @@
     },
     "overrides":
     {
-        "machine_name":                 { "default_value": "Asterion HT" },
-        "machine_width":                { "default_value": 500 },
-        "machine_depth":                { "default_value": 500 },
-        "machine_height":               { "default_value": 600 },
-        "material_print_temperature":   { "maximum_value_warning": 500 }
-		
+        "machine_depth": { "default_value": 500 },
+        "machine_height": { "default_value": 600 },
+        "machine_name": { "default_value": "Asterion HT" },
+        "machine_width": { "default_value": 500 },
+        "material_print_temperature": { "maximum_value_warning": 500 }
     }
 }

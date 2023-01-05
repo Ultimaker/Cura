@@ -118,12 +118,14 @@ class UserChangesModel(ListModel):
                     if original_value is not None:
                         break
 
-                item_to_add = {"key": setting_key,
-                               "label": label,
-                               "user_value": str(user_changes.getProperty(setting_key, "value")),
-                               "original_value": str(original_value),
-                               "extruder": "",
-                               "category": category_label}
+                item_to_add = {
+                    "key": setting_key,
+                    "label": label,
+                    "user_value": str(user_changes.getProperty(setting_key, "value", default_value_resolve_context)),
+                    "original_value": str(original_value),
+                    "extruder": "",
+                    "category": category_label,
+                }
 
                 if stack != global_stack:
                     item_to_add["extruder"] = stack.getName()

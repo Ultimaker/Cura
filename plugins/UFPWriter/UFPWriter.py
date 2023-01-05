@@ -1,6 +1,7 @@
 # Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import json
+from dataclasses import asdict
 from typing import cast, List, Dict
 
 from Charon.VirtualFile import VirtualFile  # To open UFP files.
@@ -12,6 +13,7 @@ from PyQt6.QtCore import QBuffer
 
 from UM.Application import Application
 from UM.Logger import Logger
+from UM.Settings.SettingFunction import SettingFunction
 from UM.Mesh.MeshWriter import MeshWriter  # The writer we need to implement.
 from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
 from UM.PluginRegistry import PluginRegistry  # To get the g-code writer.
@@ -39,7 +41,7 @@ class UFPWriter(MeshWriter):
         MimeTypeDatabase.addMimeType(
             MimeType(
                 name = "application/x-ufp",
-                comment = "Ultimaker Format Package",
+                comment = "UltiMaker Format Package",
                 suffixes = ["ufp"]
             )
         )
@@ -213,6 +215,7 @@ class UFPWriter(MeshWriter):
     def _getSliceMetadata(self) -> Dict[str, Dict[str, Dict[str, str]]]:
         """Get all changed settings and all settings. For each extruder and the global stack"""
         print_information = CuraApplication.getInstance().getPrintInformation()
+        machine_manager = CuraApplication.getInstance().getMachineManager()
         settings = {
             "material": {
                 "length": print_information.materialLengths,
@@ -222,19 +225,28 @@ class UFPWriter(MeshWriter):
             "global": {
                 "changes": {},
                 "all_settings": {},
-            }
+            },
+            "quality": asdict(machine_manager.activeQualityDisplayNameMap()),
         }
+
+        def _retrieveValue(container: InstanceContainer, setting_: str):
+            value_ = container.getProperty(setting_, "value")
+            for _ in range(0, 1024):  # Prevent possibly endless loop by not using a limit.
+                if not isinstance(value_, SettingFunction):
+                    return value_  # Success!
+                value_ = value_(container)
+            return 0  # Fallback value after breaking possibly endless loop.
 
         global_stack = cast(GlobalStack, Application.getInstance().getGlobalContainerStack())
 
         # Add global user or quality changes
         global_flattened_changes = InstanceContainer.createMergedInstanceContainer(global_stack.userChanges, global_stack.qualityChanges)
         for setting in global_flattened_changes.getAllKeys():
-            settings["global"]["changes"][setting] = global_flattened_changes.getProperty(setting, "value")
+            settings["global"]["changes"][setting] = _retrieveValue(global_flattened_changes, setting)
 
         # Get global all settings values without user or quality changes
         for setting in global_stack.getAllKeys():
-            settings["global"]["all_settings"][setting] = global_stack.getProperty(setting, "value")
+            settings["global"]["all_settings"][setting] = _retrieveValue(global_stack, setting)
 
         for i, extruder in enumerate(global_stack.extruderList):
             # Add extruder fields to settings dictionary
@@ -246,10 +258,10 @@ class UFPWriter(MeshWriter):
             # Add extruder user or quality changes
             extruder_flattened_changes = InstanceContainer.createMergedInstanceContainer(extruder.userChanges, extruder.qualityChanges)
             for setting in extruder_flattened_changes.getAllKeys():
-                settings[f"extruder_{i}"]["changes"][setting] = extruder_flattened_changes.getProperty(setting, "value")
+                settings[f"extruder_{i}"]["changes"][setting] = _retrieveValue(extruder_flattened_changes, setting)
 
             # Get extruder all settings values without user or quality changes
             for setting in extruder.getAllKeys():
-                settings[f"extruder_{i}"]["all_settings"][setting] = extruder.getProperty(setting, "value")
+                settings[f"extruder_{i}"]["all_settings"][setting] = _retrieveValue(extruder, setting)
 
         return settings
