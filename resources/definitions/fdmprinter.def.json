@@ -4405,7 +4405,7 @@
                     "unit": "mm/s",
                     "type": "float",
                     "default_value": 10,
-                    "minimum_value": "0",
+                    "minimum_value": "1",
                     "maximum_value_warning": "100",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
