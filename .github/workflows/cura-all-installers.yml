@@ -72,7 +72,6 @@ jobs:
             enterprise: ${{ inputs.enterprise }}
             staging: ${{ inputs.staging }}
             installer: ${{ inputs.installer }}
-            msi: false
         secrets: inherit
 
     windows-installer-create-msi:
@@ -102,7 +101,6 @@ jobs:
             enterprise: ${{ inputs.enterprise }}
             staging: ${{ inputs.staging }}
             installer: ${{ inputs.installer }}
-            msi: false
         secrets: inherit
 
     linux-modern-installer-create:
@@ -117,7 +115,6 @@ jobs:
             enterprise: ${{ inputs.enterprise }}
             staging: ${{ inputs.staging }}
             installer: ${{ inputs.installer }}
-            msi: false
         secrets: inherit
 
     macos-installer-create:
@@ -132,5 +129,4 @@ jobs:
             enterprise: ${{ inputs.enterprise }}
             staging: ${{ inputs.staging }}
             installer: ${{ inputs.installer }}
-            msi: false
         secrets: inherit
