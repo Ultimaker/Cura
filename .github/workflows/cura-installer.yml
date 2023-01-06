@@ -61,6 +61,8 @@ env:
     MACOS_CERT_USER: ${{ secrets.MACOS_CERT_USER }}
     GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
     MACOS_CERT_PASSPHRASE: ${{ secrets.MACOS_CERT_PASSPHRASE }}
+    WIN_CERT_INSTALLER_CER: ${{ secrets.WIN_CERT_INSTALLER_CER }}
+    WIN_CERT_INSTALLER_CER_PASS: ${{ secrets.WIN_CERT_INSTALLER_CER_PASS }}
     CURA_CONAN_VERSION: ${{ inputs.cura_conan_version }}
     ENTERPRISE: ${{ inputs.enterprise }}
     STAGING: ${{ inputs.staging }}
@@ -153,6 +155,17 @@ jobs:
                     p12-file-base64: ${{ secrets.MACOS_CERT_P12 }}
                     p12-password: ${{ secrets.MACOS_CERT_PASSPHRASE }}
 
+            -   name: Create PFX certificate from BASE64_PFX_CONTENT secret
+                if: ${{ runner.os == 'Windows' }}
+                id: create-pfx
+                env:
+                    PFX_CONTENT: ${{ secrets.WIN_CERT_INSTALLER_CER }}
+                run: |
+                    $pfxPath = Join-Path -Path $env:RUNNER_TEMP -ChildPath "cert.pfx"; 
+                    $encodedBytes = [System.Convert]::FromBase64String($env:PFX_CONTENT); 
+                    Set-Content $pfxPath -Value $encodedBytes -AsByteStream;
+                    echo "PFX_PATH=$pfxPath" >> $env:GITHUB_OUTPUT;
+
             -   name: Clean Conan local cache
                 if: ${{ inputs.conan_clean_local_cache }}
                 run: conan remove "*" -f
@@ -229,6 +242,14 @@ jobs:
                 run: |
                     python ..\cura_inst\packaging\NSIS\create_windows_installer.py ../cura_inst . "UltiMaker-Cura-$Env:CURA_VERSION_FULL-${{ inputs.os_name }}.exe"
                 working-directory: dist
+
+            - name: Sign the Windows exe installer (Powershell)
+              if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Windows' }}
+              env:
+                  PFX_PATH: ${{ steps.create-pfx.outputs.PFX_PATH }}
+              run: |
+                  & "C:/Program Files (x86)/Windows Kits/10/bin/10.0.17763.0/x86/signtool.exe" sign /f $Env:PFX_PATH /p "$Env:WIN_CERT_INSTALLER_CER_PASS" /fd SHA256 /t http://timestamp.digicert.com "UltiMaker-Cura-$Env:CURA_VERSION_FULL-${{ inputs.os_name }}.exe"
+              working-directory: dist
 
             -   name: Create the Linux AppImage (Bash)
                 if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Linux' }}
