@@ -14,6 +14,7 @@ Instead we'll use a pop-up which doesn't seem to have that problem. */
 Cura.MenuItem
 {
     id: materialBrandMenu
+    height: UM.Theme.getSize("menu").height + UM.Theme.getSize("narrow_margin").height
     overrideShowArrow: true
 
     property var materialTypesModel
@@ -215,6 +216,8 @@ Cura.MenuItem
                     MaterialBrandSubMenu
                     {
                         id: colorPopup
+                        implicitX: parent.width
+
                         property int itemHovered: 0
 
                         Column
