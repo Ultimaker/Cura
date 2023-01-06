@@ -82,7 +82,7 @@ def build(dist_path: Path, filename: Path):
     manageoldcuradlg_loc = work_loc.joinpath("CustomizeCuraDlg.wxs")
     build_loc = work_loc.joinpath("build_msi")
 
-    heat_command = ["heat", "dir", f"{dist_loc.as_posix()}\\", "-dr", "APPLICATIONFOLDER", "-cg", "NewFilesGroup",
+    heat_command = ["heat", "dir", f"{dist_loc.as_posix()}\\", "-dr", "APPLICATIONFOLDER", "-cg", "NewFilesGroup", "-sw5150",
                     "-gg", "-g1", "-sf", "-srd", "-var", "var.CuraDir", "-t", f"{exclude_components_loc.as_posix()}",
                     "-out", f"{heat_loc.as_posix()}"]
     subprocess.call(heat_command)
