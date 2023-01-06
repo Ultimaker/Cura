@@ -73,7 +73,7 @@ def cleanup_artifacts(dist_path: Path):
             shutil.rmtree(d, ignore_errors=True)
 
 
-def build(dist_path: Path, filename: str):
+def build(dist_path: Path, filename: Path):
     dist_loc = Path(os.getcwd(), dist_path)
     work_loc = work_path(filename)
     wxs_loc = work_loc.joinpath("UltiMaker-Cura.wxs")
