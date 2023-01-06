@@ -9,7 +9,7 @@
     },
     "overrides":
     {
-        "extruder_nr": { "default_value": 0 },
+        "extruder_nr": { "default_value": 1 },
         "material_diameter": { "default_value": 1.75 }
     }
 }

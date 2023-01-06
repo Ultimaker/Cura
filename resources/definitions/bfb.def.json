@@ -1,32 +1,34 @@
 {
-    "name": "BFB",
     "version": 2,
+    "name": "BFB",
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "visible": true,
         "manufacturer": "BFB",
         "file_formats": "text/x-gcode",
-        "platform_offset": [ 0, 0, 0],
-        "machine_extruder_trains":
-        {
-            "0": "bfb_extruder_0"
-        }
+        "machine_extruder_trains": { "0": "bfb_extruder_0" },
+        "platform_offset": [
+            0,
+            0,
+            0
+        ]
     },
-
-    "overrides": {
-        "speed_print": { "default_value": 40 },
-        "machine_extruder_count": { "default_value": 1 },
-        "prime_tower_size": { "default_value": 7.745966692414834 },
-        "machine_name": { "default_value": "BFB_Test" },
-        "machine_heated_bed": { "default_value": false },
-        "machine_width": { "default_value": 275 },
-        "machine_gcode_flavor": { "default_value": "BFB" },
-        "machine_depth": { "default_value": 265 },
-        "machine_center_is_zero": { "default_value": true },
-        "machine_height": { "default_value": 240 },
-        "layer_height": { "default_value": 0.25 },
-        "retraction_amount": { "default_value": 0.05 },
+    "overrides":
+    {
         "infill_sparse_density": { "default_value": 10 },
-        "layer_height_0": { "default_value": 0.5 }
+        "layer_height": { "default_value": 0.25 },
+        "layer_height_0": { "default_value": 0.5 },
+        "machine_center_is_zero": { "default_value": true },
+        "machine_depth": { "default_value": 265 },
+        "machine_extruder_count": { "default_value": 1 },
+        "machine_gcode_flavor": { "default_value": "BFB" },
+        "machine_heated_bed": { "default_value": false },
+        "machine_height": { "default_value": 240 },
+        "machine_name": { "default_value": "BFB_Test" },
+        "machine_width": { "default_value": 275 },
+        "prime_tower_size": { "default_value": 7.745966692414834 },
+        "retraction_amount": { "default_value": 0.05 },
+        "speed_print": { "default_value": 40 }
     }
 }

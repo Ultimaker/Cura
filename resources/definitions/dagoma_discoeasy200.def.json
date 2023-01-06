@@ -1,34 +1,29 @@
 {
-    "name": "Dagoma DiscoEasy200",
     "version": 2,
+    "name": "Dagoma DiscoEasy200",
     "inherits": "dagoma_disco",
-    "metadata": {
+    "metadata":
+    {
         "visible": true,
         "author": "Dagoma",
         "manufacturer": "Dagoma",
         "file_formats": "text/x-gcode",
         "platform": "dagoma_discoeasy200.3mf",
-        "platform_offset": [0, -57, -39],
         "has_machine_quality": true,
         "has_materials": true,
-        "preferred_material": "chromatik_pla",
-        "machine_extruder_trains":
-        {
-            "0": "dagoma_discoeasy200_extruder"
-        }
+        "machine_extruder_trains": { "0": "dagoma_discoeasy200_extruder" },
+        "platform_offset": [
+            0,
+            -57,
+            -39
+        ],
+        "preferred_material": "chromatik_pla"
     },
-    "overrides": {
-        "machine_name": {
-            "default_value": "Dagoma DiscoEasy200"
-        },
-        "machine_extruder_count": {
-            "default_value": 1
-        },
-        "machine_start_gcode": {
-            "default_value": ";Begin Start Gcode for Dagoma DiscoEasy 200\n;Sliced: {date} {time}\n;Initial extruder: {initial_extruder_nr}\n\nG90 ;Absolute positioning\nM106 S255 ;Fan on full\nG28 X Y ;Home stop X Y\nG1 X100 ;Centre back during cooldown in case of oozing\nM109 R{material_standby_temperature} ;Cooldown in case too hot\nG28 ;Centre\nG29 ;Auto-level\nM104 S{material_print_temperature_layer_0} ;Pre-heat\nM107 ;Fan off\nG0 X100 Y5 Z0.5 ;Front centre for degunk\nM109 S{material_print_temperature_layer_0} ;Wait for initial temp\nM83 ;E Relative\nG1 E10 F200 ;Degunk\nG1 E-3 F5000 ;Retract\nG0 Z3 ;Withdraw\nM82 ;E absolute\nG92 E0 ;E reset\nG1 F6000 ;Set feedrate\n\n;Finish Start Gcode for Dagoma DiscoEasy 200\n"
-        },
-        "machine_end_gcode": {
-            "default_value": ";Begin End Gcode for Dagoma DiscoEasy 200\n\nM106 S255 ;Fan on full\nM104 S0 ;Cool hotend\nM140 S0 ;Cool heated bed\nG91 ;Relative positioning\nG1 E-3 F5000 ;Retract filament to stop oozing\nG0 Z+3 ;Withdraw\nG90 ;Absolute positioning\nG28 X Y ;Home\nM109 R{material_standby_temperature} ;Wait until head has cooled to standby temp\nM107 ;Fan off\nM18 ;Stepper motors off\n\n;Finish End Gcode for Dagoma DiscoEasy 200\n"
-        }
+    "overrides":
+    {
+        "machine_end_gcode": { "default_value": ";Begin End Gcode for Dagoma DiscoEasy 200\n\nM106 S255 ;Fan on full\nM104 S0 ;Cool hotend\nM140 S0 ;Cool heated bed\nG91 ;Relative positioning\nG1 E-3 F5000 ;Retract filament to stop oozing\nG0 Z+3 ;Withdraw\nG90 ;Absolute positioning\nG28 X Y ;Home\nM109 R{material_standby_temperature} ;Wait until head has cooled to standby temp\nM107 ;Fan off\nM18 ;Stepper motors off\n\n;Finish End Gcode for Dagoma DiscoEasy 200\n" },
+        "machine_extruder_count": { "default_value": 1 },
+        "machine_name": { "default_value": "Dagoma DiscoEasy200" },
+        "machine_start_gcode": { "default_value": ";Begin Start Gcode for Dagoma DiscoEasy 200\n;Sliced: {date} {time}\n;Initial extruder: {initial_extruder_nr}\n\nG90 ;Absolute positioning\nM106 S255 ;Fan on full\nG28 X Y ;Home stop X Y\nG1 X100 ;Centre back during cooldown in case of oozing\nM109 R{material_standby_temperature} ;Cooldown in case too hot\nG28 ;Centre\nG29 ;Auto-level\nM104 S{material_print_temperature_layer_0} ;Pre-heat\nM107 ;Fan off\nG0 X100 Y5 Z0.5 ;Front centre for degunk\nM109 S{material_print_temperature_layer_0} ;Wait for initial temp\nM83 ;E Relative\nG1 E10 F200 ;Degunk\nG1 E-3 F5000 ;Retract\nG0 Z3 ;Withdraw\nM82 ;E absolute\nG92 E0 ;E reset\nG1 F6000 ;Set feedrate\n\n;Finish Start Gcode for Dagoma DiscoEasy 200\n" }
     }
 }

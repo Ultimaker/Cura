@@ -2,55 +2,50 @@
     "version": 2,
     "name": "Felix Tec 4 Dual",
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "visible": true,
         "author": "kerog777@gmail.com",
         "manufacturer": "Felix",
+        "file_formats": "text/x-gcode",
         "platform": "FelixTec4_platform.3mf",
-        "platform_offset": [-128,0, 102],
+        "has_materials": true,
+        "has_variants": true,
         "machine_extruder_trains":
         {
             "0": "felixtec4_dual_extruder_0",
             "1": "felixtec4_dual_extruder_1"
         },
-        "file_formats": "text/x-gcode",
-        "has_variants": true,
-        "has_materials": true,
+        "platform_offset": [
+            -128,
+            0,
+            102
+        ],
         "preferred_variant_name": "0.35 mm",
         "variants_name": "Nozzle Diam"
     },
-    "overrides": {
-        "machine_name": { "default_value": "FelixTec4Dual" },
-
+    "overrides":
+    {
+        "adhesion_type": { "default_value": "skirt" },
+        "infill_pattern": { "value": "'tetrahedral'" },
+        "infill_sparse_density": { "default_value": 20 },
         "layer_height": { "default_value": 0.2 },
         "layer_height_0": { "default_value": 0.3 },
-        "infill_sparse_density": { "default_value": 20 },
-        "wall_thickness": { "value": "1" },
-        "top_bottom_thickness": { "default_value": 1 },
-
-        "infill_pattern": { "value": "'tetrahedral'" },
-
-        "machine_width": { "default_value": 255 },
-        "machine_depth": { "default_value": 205 },
-        "machine_height": { "default_value": 225 },
-
-        "machine_heated_bed": { "default_value": true },
-        "machine_gcode_flavor": { "default_value": "Repetier" },
         "machine_center_is_zero": { "default_value": false },
-
-        "speed_print": { "default_value": 60 },
-
-        "retraction_amount": { "default_value": 1 },
-        "retraction_speed": { "default_value": 50},
+        "machine_depth": { "default_value": 205 },
+        "machine_end_gcode": { "default_value": "; FELIXprinters End Code Tec Series v1.0\n; Modified by kerog777@gmail.com\n; ================================= \n; Move extruder to park position\nG91       ; Make coordinates relative\nG1 Z2 F1000       ; Move z 2mm up\nG90       ; Use absolute coordinates again\nG1 X0 Y0 F15240   ; Move bed and printhead to ergonomic position\n\n; ================================= ; Turn off heaters\nM140 S0    ; Turn off bed heater\nT0    ; Select left extruder\nM104 T0 S0    ; Turn off heater and continue\nG92 E0    ; Reset extruder position\nG1 E-6    ; Retract filament 8mm\nG92 E0    ; Reset extruder position\nT1    ; Select right extruder\nM104 T1 S0    ; Turn off heater and continue\nG92 E0    ; Reset extruder position\nG1 E-6    ; Retract filament 8mm\nG92 E0    ; Reset extruder position\nT0    ; Select left extruder\n\n; ================================= ; Turn the rest off\nM107        ; Turn off fan\nM84    ; Disable steppers\nM117 Finished Printing!" },
+        "machine_gcode_flavor": { "default_value": "Repetier" },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 225 },
+        "machine_name": { "default_value": "FelixTec4Dual" },
+        "machine_start_gcode": { "default_value": "; FELIXprinters | www.FELIXprinters.com | Zeemanlaan 15 3401 MV IJsselstein The Netherlands\n; FELIX Tec 4 | Start Code Dual Extruders v1.0\n; Modified by kerog777@gmail.com\n;================================ \n;Initializing\nM80   ; Turn on the power supply\nM107     ; Turn off fans\nM117 Heating up\nM190 S{material_bed_temperature}   ; Heatup Bed\nM104 T0 S120\nM104 T1 S120\nG28             ; Home all\nM109 T0 S{material_print_temperature_layer_0}   ; Heatup hot-end\nM117 Purging\nT0    ; Select extruder 1\nG92 E0    ; Reset extruder\nG1 X10.0 Y1.1 Z5.0 F15240   ; Move to start-line position\nG1 Z0.3 F15240    ; Move z up\nG1 X127.0 Y1.1 Z0.3 F1500.0 E15    ; Purge 1st line\nG92 E0    ; Reset extruder\n\n;================================ ; Initializing done\nM117 FELIXprinting" },
+        "machine_width": { "default_value": 255 },
         "material_flow": { "default_value": 95 },
-        "adhesion_type": { "default_value": "skirt" },
-        "skirt_brim_minimal_length": { "default_value": 130},
-
-        "machine_start_gcode": {
-            "default_value": "; FELIXprinters | www.FELIXprinters.com | Zeemanlaan 15 3401 MV IJsselstein The Netherlands\n; FELIX Tec 4 | Start Code Dual Extruders v1.0\n; Modified by kerog777@gmail.com\n;================================ \n;Initializing\nM80   ; Turn on the power supply\nM107     ; Turn off fans\nM117 Heating up\nM190 S{material_bed_temperature}   ; Heatup Bed\nM104 T0 S120\nM104 T1 S120\nG28             ; Home all\nM109 T0 S{material_print_temperature_layer_0}   ; Heatup hot-end\nM117 Purging\nT0    ; Select extruder 1\nG92 E0    ; Reset extruder\nG1 X10.0 Y1.1 Z5.0 F15240   ; Move to start-line position\nG1 Z0.3 F15240    ; Move z up\nG1 X127.0 Y1.1 Z0.3 F1500.0 E15    ; Purge 1st line\nG92 E0    ; Reset extruder\n\n;================================ ; Initializing done\nM117 FELIXprinting"
-        },
-        "machine_end_gcode": {
-            "default_value": "; FELIXprinters End Code Tec Series v1.0\n; Modified by kerog777@gmail.com\n; ================================= \n; Move extruder to park position\nG91       ; Make coordinates relative\nG1 Z2 F1000       ; Move z 2mm up\nG90       ; Use absolute coordinates again\nG1 X0 Y0 F15240   ; Move bed and printhead to ergonomic position\n\n; ================================= ; Turn off heaters\nM140 S0    ; Turn off bed heater\nT0    ; Select left extruder\nM104 T0 S0    ; Turn off heater and continue\nG92 E0    ; Reset extruder position\nG1 E-6    ; Retract filament 8mm\nG92 E0    ; Reset extruder position\nT1    ; Select right extruder\nM104 T1 S0    ; Turn off heater and continue\nG92 E0    ; Reset extruder position\nG1 E-6    ; Retract filament 8mm\nG92 E0    ; Reset extruder position\nT0    ; Select left extruder\n\n; ================================= ; Turn the rest off\nM107        ; Turn off fan\nM84    ; Disable steppers\nM117 Finished Printing!"
-        }
+        "retraction_amount": { "default_value": 1 },
+        "retraction_speed": { "default_value": 50 },
+        "skirt_brim_minimal_length": { "default_value": 130 },
+        "speed_print": { "default_value": 60 },
+        "top_bottom_thickness": { "default_value": 1 },
+        "wall_thickness": { "value": "1" }
     }
 }
