@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:fw="http://schemas.microsoft.com/wix/FirewallExtension">
+    <Product
+        Id="*"
+        Name="{{ app_name }}"
+        Language="1033"
+        Version="{{ version_major }}.{{ version_minor }}.{{ version_patch }}"
+        Manufacturer="{{ company }}"
+        UpgradeCode="{{ upgrade_code }}"
+    >
+        <Package InstallerVersion="500"
+            Compressed="yes"
+            InstallScope="perMachine"
+            Manufacturer="{{ company }}"
+            Description="UltiMaker Cura the most popular 3D printing slicer"
+            Keywords="UltiMaker,Cura,3D,printing,slicer"
+            Comments="Copyright (c) {{ year }} UltiMaker B.V." />
+
+        <InstallExecuteSequence>
+            <RemoveExistingProducts Before="InstallInitialize" />
+        </InstallExecuteSequence>
+
+        <Property Id="PREVIOUS_VERSIONS_INSTALLED" Secure="yes" Value="{{ 1 if "Enterpise" in app_name else 0 }}" />
+        <Upgrade Id="{{ upgrade_code }}">
+            <UpgradeVersion
+                Minimum="4.13.2" Maximum="{{ version_major }}.{{ version_minor }}.{{ version_patch }}"
+                Property="PREVIOUS_VERSIONS_INSTALLED"
+                IncludeMinimum="no" IncludeMaximum="no"
+            />
+        </Upgrade>
+        <!--TODO: handle copy of configuration of previous version-->
+        <!--TODO: handle removal of old configuration once previous version is uninstalled-->
+
+        {% if "Enterpise" in app_name %}
+        <Property Id="PREVIOUS_413_INSTALLED" Secure="yes" />
+        <Upgrade Id="53C603BB-2B17-4206-A609-29C2E0D0B0AE">
+            <UpgradeVersion
+                Minimum="1.0.0" Maximum="4.13.2"
+                Property="PREVIOUS_413_INSTALLED"
+                IncludeMinimum="yes" IncludeMaximum="yes"
+            />
+        </Upgrade>
+        {% endif %}
+
+        <Condition Message= "OS must be Windows 8.1 64bit or higher.">
+            <![CDATA[Installed OR VersionNT64 >= 600]]>
+        </Condition>
+
+        <MediaTemplate EmbedCab="yes" CompressionLevel="high" />
+
+        <UI Id="MyWixUI_Mondo">
+            <UIRef Id="WixUI_Mondo" />
+
+            <DialogRef Id="CustomizeCuraDlg" />
+
+            <Publish Dialog="SetupTypeDlg" Control="CustomButton" Event="NewDialog" Value="CustomizeCuraDlg">1</Publish>
+
+            <Publish Dialog="CustomizeCuraDlg" Control="Back" Event="NewDialog" Value="MaintenanceTypeDlg" Order="1">WixUI_InstallMode = "Change"</Publish>
+            <Publish Dialog="CustomizeCuraDlg" Control="Back" Event="NewDialog" Value="SetupTypeDlg" Order="2">WixUI_InstallMode = "InstallCustom"</Publish>
+            <Publish Dialog="CustomizeCuraDlg" Control="Next" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
+
+            <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="CustomizeCuraDlg" Order="1">WixUI_InstallMode = "InstallCustom"</Publish>
+            <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="CustomizeCuraDlg" Order="3">WixUI_InstallMode = "Change"</Publish>
+            <Publish Dialog="MaintenanceTypeDlg" Control="ChangeButton" Event="NewDialog" Value="CustomizeCuraDlg">1</Publish>
+
+        </UI>
+        <UIRef Id="WixUI_ErrorProgressText" />
+
+        <WixVariable Id="WixUILicenseRtf" Value="{{ cura_license_file }}" />
+        <WixVariable Id="WixUIDialogBmp" Value="{{ cura_banner_side }}" />
+        <WixVariable Id="WixUIBannerBmp" Value="{{ cura_banner_top }}" />
+
+        <Icon Id="ICO_Cura" SourceFile="{{ cura_icon }}" />
+        <Property Id="ARPPRODUCTICON" Value="ICO_Cura" />
+
+        <!--Directory structure-->
+        <Directory Id="TARGETDIR" Name="SourceDir">
+           <Directory Id="ProgramFiles64Folder">
+               <Directory Id="APPLICATIONFOLDER" Name="{{ app_name }} {{ version }}" />
+               <Directory Id="ProgramMenuFolder">
+                   <Directory Id="ShortCutDir" Name="{{ app_name }}" />
+               </Directory>
+           </Directory>
+        </Directory>
+
+        <Property Id="ApplicationFolderName" Value="{{ app_name }} {{ version }}" />
+        <Property Id="WixAppFolder" Value="WixPerMachineFolder" />
+
+		<Component Id="CMP_UltiMaker_Cura_exe" Directory="APPLICATIONFOLDER" Guid="*">
+			<File Id="FILE_UltiMaker_Cura_exe" KeyPath="yes" Source="$(var.CuraDir)\{{ main_app }}"/>
+			<!--Computer\HKEY_LOCAL_MACHINE\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.fileTypeAssociation\.3mf-->
+
+			<RegistryValue Root="HKLM" Key="SOFTWARE\{{ app_name }}\Capabilities\FileAssociations" Name=".3mf" Value="PRG_UltiMaker_Cura.3MF" Type="string" />
+			<RegistryValue Root="HKLM" Key="SOFTWARE\{{ app_name }}\Capabilities\FileAssociations" Name=".stl" Value="PRG_UltiMaker_Cura.STL" Type="string" />
+			<RegistryValue Root="HKLM" Key="SOFTWARE\{{ app_name }}\Capabilities\MIMEAssociations" Name="application/3mf" Value="PRG_UltiMaker_Cura.3MF" Type="string" />
+			<RegistryValue Root="HKLM" Key="SOFTWARE\{{ app_name }}\Capabilities\MIMEAssociations" Name="application/stl" Value="PRG_UltiMaker_Cura.STL" Type="string" />
+			<RegistryValue Root="HKLM" Key="SOFTWARE\{{ app_name }}\Capabilities\shell\Open\command" Value='"[APPLICATIONFOLDER]\{{ main_app }}" "%1"' Type="string" />
+			<RegistryValue Root="HKLM" Key="SOFTWARE\RegisteredApplications" Name="{{ app_name }}" Value="SOFTWARE\MyApp\Capabilities" Type="string" />
+
+			<RegistryValue Root="HKLM" Key="SOFTWARE\Classes\Applications\{{ main_app }}\SupportedTypes" Name=".3mf" Value="" Type="string" />
+			<RegistryValue Root="HKLM" Key="SOFTWARE\Classes\Applications\{{ main_app }}\SupportedTypes" Name=".stl" Value="" Type="string" />
+			<RegistryValue Root="HKLM" Key="SOFTWARE\Classes\Applications\{{ main_app }}\shell\open" Name="{{ app_name }}" Value="{{ main_app }}" Type="string" />
+
+			<ProgId Id="PRG_UltiMaker_Cura.STL" Description="{{ app_name }}" Icon="FILE_UltiMaker_Cura_exe">
+				<Extension Id="STL">
+					<Verb Id='edit' TargetFile="FILE_UltiMaker_Cura_exe" Argument='"%1"' />
+					<MIME ContentType="application/stl" Default="yes" />
+				</Extension>
+			</ProgId>
+			<ProgId Id="PRG_UltiMaker_Cura.3MF" Description="{{ app_name }}" Icon="FILE_UltiMaker_Cura_exe">
+				<Extension Id="3MF">
+					<Verb Id='edit' TargetFile="FILE_UltiMaker_Cura_exe" Argument='"%1"' />
+					<MIME ContentType="application/3mf" Default="yes" />
+				</Extension>
+			</ProgId>
+
+			<!-- Current Cura versions are not supported on XP or Server 2003. Even so, add 'ignorefailure=yes'. After all, worst that can happen is the user gets asked, like before. -->
+			<fw:FirewallException Id="FirewallExceptLocalFrontend" Name="Cura (Frontend) Connection (LocalHost)" File="FILE_CuraEngine_exe" Port="127.0.0.1" IgnoreFailure="yes" Scope="localSubnet" />
+		</Component>
+		<Component Id="CMP_CuraEngine_exe" Directory="APPLICATIONFOLDER" Guid="*">
+			<File Id="FILE_CuraEngine_exe" KeyPath="yes" Source="$(var.CuraDir)\CuraEngine.exe" />
+
+			<!-- Current Cura versions are not supported on XP or Server 2003. Even so, add 'ignorefailure=yes'. After all, worst that can happen is the user gets asked, like before. -->
+			<fw:FirewallException Id="FirewallExceptLocalEngine" Name="CuraEngine (Backend) Connection (LocalHost)" File="FILE_CuraEngine_exe" Port="127.0.0.1" IgnoreFailure="yes" Scope="localSubnet" />
+		</Component>
+
+        <!--Shortcuts-->
+        <DirectoryRef Id="ShortCutDir">
+            <Component Id="CMP_Shortcuts" Guid="{{ shortcut_uuid }}">
+                <Shortcut Id="SHRT_Cura"
+                          Name="{{ app_name }} {{ version }}"
+                          Description="{{ app_name }} {{ version }}"
+                          Target="[APPLICATIONFOLDER]\{{ main_app }}"
+                          Icon="ICO_Cura"  />
+                <Shortcut Id="SHRT_UninstallShortcut"
+                          Name="Uninstall {{ app_name }} {{ version }}"
+                          Description= "Uninstalls {{ app_name }} {{ version }}"
+                          Target="[System64Folder]msiexec.exe"
+                          Arguments="/x [ProductCode]" />
+                <RemoveFolder Id="RemoveMyShortcutsDir"
+                              On="uninstall" />
+                <RegistryValue Root="HKCU"
+                               Key="Software\{{ company }}\{{ app_name }}"
+                               Name="installed"
+                               Type="integer"
+                               Value="1"
+                               KeyPath="yes" />
+            </Component>
+        </DirectoryRef>
+
+        <Feature Id="ProductFeature" Title="{{ app_name }}" Level="1">
+            <ComponentRef Id="CMP_UltiMaker_Cura_exe" />
+            <ComponentRef Id="CMP_CuraEngine_exe" />
+            <ComponentGroupRef Id="NewFilesGroup" />
+            <ComponentRef Id="CMP_Shortcuts" />
+        </Feature>
+    </Product>
+</Wix>

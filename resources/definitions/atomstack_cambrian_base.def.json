@@ -2,28 +2,20 @@
     "version": 2,
     "name": "AtomStack Cambrian Base Printer",
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "visible": false,
         "author": "AtomStack",
         "manufacturer": "AtomStack",
         "file_formats": "text/x-gcode",
         "has_materials": true,
-        "machine_extruder_trains": {
-            "0": "atomstack_cambrianmaxe175_extruder_0"
-        }
+        "machine_extruder_trains": { "0": "atomstack_cambrianmaxe175_extruder_0" }
     },
-    "overrides": {
-        "machine_heated_bed": {
-            "default_value": true
-        },
-        "machine_extruder_count": {
-            "default_value": 1
-        },
-        "machine_start_gcode": {
-            "default_value": "; AtomStack Cambrian Start G-code\nG92 E0 ; Reset Extruder\nG28 ; Home all axes\nG1 Z2.0 F3000 ; Move Z Axis up little to prevent scratching of Heat Bed\nG1 X0.1 Y20 Z0.3 F5000.0 ; Move to start position\nG1 X0.1 Y200.0 Z0.3 F1500.0 E15 ; Draw the first line\nG1 X0.9 Y200.0 Z0.3 F5000.0 ; Move to side a little\nG1 X0.9 Y20 Z0.3 F1500.0 E30 ; Draw the second line\nG1 E29 ;Retract the filament\nG92 E0 ; Reset Extruder\nG1 Z2.0 F3000 ; Move Z Axis up little to prevent scratching of Heat Bed\nG1 X5 Y20 Z0.3 F5000.0 ; Move over to prevent blob squish"
-        },
-        "machine_end_gcode": {
-            "default_value": "; AtomStack Cambrian End G-code\nG91 ;Relative positioning\nG1 E-2 F2700 ;Retract a bit\nG1 E-8 Z0.2 F2400 ;Retract and raise Z\nG1 X5 Y5 F3000 ;Wipe out\nG1 Z10 ;Raise Z more\nG90 ;Absolute position\n\nG1 X0 Y210 ;Present print\nM106 S0 ;Turn-off fan\nM104 S0 ;Turn-off nozzle\nM140 S0 ;Turn-off bed\n\nM84 X Y E ;Disable all steppers but Z"
-        }
+    "overrides":
+    {
+        "machine_end_gcode": { "default_value": "; AtomStack Cambrian End G-code\nG91 ;Relative positioning\nG1 E-2 F2700 ;Retract a bit\nG1 E-8 Z0.2 F2400 ;Retract and raise Z\nG1 X5 Y5 F3000 ;Wipe out\nG1 Z10 ;Raise Z more\nG90 ;Absolute position\n\nG1 X0 Y210 ;Present print\nM106 S0 ;Turn-off fan\nM104 S0 ;Turn-off nozzle\nM140 S0 ;Turn-off bed\n\nM84 X Y E ;Disable all steppers but Z" },
+        "machine_extruder_count": { "default_value": 1 },
+        "machine_heated_bed": { "default_value": true },
+        "machine_start_gcode": { "default_value": "; AtomStack Cambrian Start G-code\nG92 E0 ; Reset Extruder\nG28 ; Home all axes\nG1 Z2.0 F3000 ; Move Z Axis up little to prevent scratching of Heat Bed\nG1 X0.1 Y20 Z0.3 F5000.0 ; Move to start position\nG1 X0.1 Y200.0 Z0.3 F1500.0 E15 ; Draw the first line\nG1 X0.9 Y200.0 Z0.3 F5000.0 ; Move to side a little\nG1 X0.9 Y20 Z0.3 F1500.0 E30 ; Draw the second line\nG1 E29 ;Retract the filament\nG92 E0 ; Reset Extruder\nG1 Z2.0 F3000 ; Move Z Axis up little to prevent scratching of Heat Bed\nG1 X5 Y20 Z0.3 F5000.0 ; Move over to prevent blob squish" }
     }
 }

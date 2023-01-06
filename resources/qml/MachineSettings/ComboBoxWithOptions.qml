@@ -68,18 +68,27 @@ UM.TooltipArea
         function updateModel()
         {
             clear()
-            // Options come in as a string-representation of an OrderedDict
-            if(propertyProvider.properties.options)
+
+            if(!propertyProvider.properties.options)
             {
-                var options = propertyProvider.properties.options.match(/^OrderedDict\(\[\((.*)\)\]\)$/);
-                if(options)
+                return
+            }
+
+            if (typeof propertyProvider.properties["options"] === "string")
+            {
+                return
+            }
+
+
+            for (var i = 0; i < propertyProvider.properties["options"].keys().length; i++)
+            {
+                var key = propertyProvider.properties["options"].keys()[i]
+                var value = propertyProvider.properties["options"][key]
+                append({ text: value, code: key })
+
+                if (propertyProvider.properties.value === key)
                 {
-                    options = options[1].split("), (");
-                    for(var i = 0; i < options.length; i++)
-                    {
-                        var option = options[i].substring(1, options[i].length - 1).split("', '");
-                        append({ text: option[1], value: option[0] });
-                    }
+                    comboBox.currentIndex = i
                 }
             }
         }
@@ -123,7 +132,7 @@ UM.TooltipArea
         onActivated:
         {
             var newValue = model.get(index).value
-            if (propertyProvider.properties.value != newValue)
+            if (propertyProvider.properties.value !== newValue && newValue !== undefined)
             {
                 if (setValueFunction !== null)
                 {

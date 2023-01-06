@@ -4418,6 +4418,18 @@
                     "default_value": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
+                },
+                "cool_min_temperature":
+                {
+                    "label": "Small Layer Printing Temperature",
+                    "description": "When reducing print speeds because of the minimum layer time, the printing temperature is gradually reduced to this temperature.",
+                    "unit": "\u00b0C",
+                    "type": "float",
+                    "value": "material_print_temperature",
+                    "minimum_value": "material_final_print_temperature",
+                    "maximum_value": "material_print_temperature",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 }
             }
         },
@@ -5675,6 +5687,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 3,
+                    "minimum_value": "0",
                     "minimum_value_warning": "max(extruderValues('machine_nozzle_size'))",
                     "maximum_value_warning": "10",
                     "enabled": "resolveOrValue('adhesion_type') == 'skirt'",
@@ -5735,7 +5748,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0,
-                    "minimum_value": "0",
+                    "minimum_value": "-skirt_brim_line_width / 2",
                     "maximum_value_warning": "skirt_brim_line_width",
                     "enabled": "resolveOrValue('adhesion_type') == 'brim'",
                     "limit_to_extruder": "skirt_brim_extruder_nr",
@@ -8161,6 +8174,7 @@
                         "small_feature_max_length":
                         {
                             "label": "Small Feature Max Length",
+                            "enabled": "small_hole_max_size > 0",
                             "description": "Feature outlines that are shorter than this length will be printed using Small Feature Speed.",
                             "unit": "mm",
                             "type": "float",
@@ -8174,6 +8188,7 @@
                 "small_feature_speed_factor":
                 {
                     "label": "Small Feature Speed",
+                    "enabled": "small_hole_max_size > 0",
                     "description": "Small features will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy.",
                     "unit": "%",
                     "type": "float",
@@ -8186,6 +8201,7 @@
                 "small_feature_speed_factor_0":
                 {
                     "label": "Small Feature Initial Layer Speed",
+                    "enabled": "small_hole_max_size > 0",
                     "description": "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy.",
                     "unit": "%",
                     "type": "float",

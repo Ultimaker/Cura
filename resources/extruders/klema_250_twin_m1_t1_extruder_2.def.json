@@ -1,0 +1,15 @@
+{
+    "version": 2,
+    "name": "Extruder 2",
+    "inherits": "fdmextruder",
+    "metadata":
+    {
+        "machine": "klema_250_twin",
+        "position": "1"
+    },
+    "overrides":
+    {
+        "extruder_nr": { "default_value": 1 },
+        "material_diameter": { "default_value": 1.75 }
+    }
+}

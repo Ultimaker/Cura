@@ -2,70 +2,34 @@
     "version": 2,
     "name": "RigidBot",
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "visible": true,
         "author": "RBC",
         "manufacturer": "RigidBot",
         "file_formats": "text/x-gcode",
         "platform": "rigidbot_platform.3mf",
-        "machine_extruder_trains":
-        {
-            "0": "rigidbot_extruder_0"
-        }
+        "machine_extruder_trains": { "0": "rigidbot_extruder_0" }
     },
-
-    "overrides": {
+    "overrides":
+    {
+        "cool_fan_enabled": { "default_value": false },
+        "gantry_height": { "value": "0" },
+        "layer_height": { "default_value": 0.2 },
+        "machine_depth": { "default_value": 254 },
+        "machine_end_gcode": { "default_value": ";End GCode\nM104 S0 ;extruder heater off\nM140 S0 ;heated bed heater off (if you have it)\nG91 ;relative positioning\nG1 E-1 F300 ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+10 E-1 X-20 Y-20 F{speed_travel} ;move Z up a bit and retract filament even more\nG28 X0 Y0 ;move X/Y to min endstops, so the head is out of the way\nG1 Y230 F3000 ;move Y so the head is out of the way and Plate is moved forward\nM84 ;steppers off\nG90 ;absolute positioning" },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 254 },
         "machine_name": { "default_value": "RigidBot" },
-        "machine_width": {
-            "default_value": 254
-        },
-        "machine_depth": {
-            "default_value": 254
-        },
-        "machine_height": {
-            "default_value": 254
-        },
-        "machine_heated_bed": {
-            "default_value": true
-        },
-        "gantry_height": {
-            "value": "0"
-        },
-        "machine_gcode_flavor": {
-            "default_value": "RepRap (Marlin/Sprinter)"
-        },
-        "machine_start_gcode": {
-            "default_value": ";Basic settings: Layer height: {layer_height} Walls: {wall_thickness} Fill: {infill_sparse_density}\nG21 ;metric values\nG90 ;absolute positioning\nM82 ;set extruder to absolute mode\nM107 ;start with the fan off\nG28 X0 Y0 ;move X/Y to min endstops\nG28 Z0 ;move Z to min endstops\nM205 X8 ;X/Y Jerk settings\nG1 Z15.0 F{speed_travel} ;move the platform down 15mm\nG92 E0 ;zero the extruded length\nG1 F200 E7 ;extrude 3mm of feed stock\nG92 E0 ;zero the extruded length again\nG1 F{speed_travel}\n;Put printing message on LCD screen\nM117 Rigibot Printing..."
-        },
-        "machine_end_gcode": {
-            "default_value": ";End GCode\nM104 S0 ;extruder heater off\nM140 S0 ;heated bed heater off (if you have it)\nG91 ;relative positioning\nG1 E-1 F300 ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+10 E-1 X-20 Y-20 F{speed_travel} ;move Z up a bit and retract filament even more\nG28 X0 Y0 ;move X/Y to min endstops, so the head is out of the way\nG1 Y230 F3000 ;move Y so the head is out of the way and Plate is moved forward\nM84 ;steppers off\nG90 ;absolute positioning"
-        },
-        "layer_height": {
-            "default_value": 0.2
-        },
-        "wall_thickness": {
-            "value": "0.8"
-        },
-        "top_bottom_thickness": {
-            "default_value": 0.3
-        },
-        "speed_print": {
-            "default_value": 60
-        },
-        "speed_layer_0": {
-            "minimum_value": "0.1"
-        },
-        "cool_fan_enabled": {
-            "default_value": false
-        },
-        "skirt_line_count": {
-            "default_value": 3
-        },
-        "skirt_gap": {
-            "default_value": 4
-        },
-        "skirt_brim_minimal_length": {
-            "default_value": 200
-        }
+        "machine_start_gcode": { "default_value": ";Basic settings: Layer height: {layer_height} Walls: {wall_thickness} Fill: {infill_sparse_density}\nG21 ;metric values\nG90 ;absolute positioning\nM82 ;set extruder to absolute mode\nM107 ;start with the fan off\nG28 X0 Y0 ;move X/Y to min endstops\nG28 Z0 ;move Z to min endstops\nM205 X8 ;X/Y Jerk settings\nG1 Z15.0 F{speed_travel} ;move the platform down 15mm\nG92 E0 ;zero the extruded length\nG1 F200 E7 ;extrude 3mm of feed stock\nG92 E0 ;zero the extruded length again\nG1 F{speed_travel}\n;Put printing message on LCD screen\nM117 Rigibot Printing..." },
+        "machine_width": { "default_value": 254 },
+        "skirt_brim_minimal_length": { "default_value": 200 },
+        "skirt_gap": { "default_value": 4 },
+        "skirt_line_count": { "default_value": 3 },
+        "speed_layer_0": { "minimum_value": "0.1" },
+        "speed_print": { "default_value": 60 },
+        "top_bottom_thickness": { "default_value": 0.3 },
+        "wall_thickness": { "value": "0.8" }
     }
 }

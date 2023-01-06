@@ -23,7 +23,7 @@ Item
     //So compute here the visibility of the menu items, so that we can use it for the visibility of the button.
     property bool sendToTopVisible:
     {
-        if (printJob && printJob.state in ("queued",  "error") && !isAssigned(printJob)) {
+        if (printJob && (printJob.state == "queued" || printJob.state == "error")) {
             if (OutputDevice && OutputDevice.queuedPrintJobs[0] && OutputDevice.canWriteOthersPrintJobs) {
                 return OutputDevice.queuedPrintJobs[0].key != printJob.key;
             }
@@ -245,11 +245,5 @@ Item
     }
     function close() {
         popUp.close()
-    }
-    function isAssigned(job) {
-        if (!job) {
-            return false;
-        }
-        return job.assignedPrinter ? true : false;
     }
 }

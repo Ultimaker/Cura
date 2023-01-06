@@ -1,24 +1,29 @@
 {
-    "version":                 2,
-    "name":                    "Deltacomb DC-30 Dual",
-    "inherits":                "deltacomb_base",
-
-    "metadata": {
-        "visible":                 true,
-        "platform":                "deltacomb_dc30.stl",
-        "quality_definition":      "deltacomb_base",
-        "preferred_variant_name":  "DBE 0.40mm",
-        "machine_extruder_trains": {
+    "version": 2,
+    "name": "Deltacomb DC-30 Dual",
+    "inherits": "deltacomb_base",
+    "metadata":
+    {
+        "visible": true,
+        "platform": "deltacomb_dc30.stl",
+        "machine_extruder_trains":
+        {
             "0": "deltacomb_dc30dual_extruder_0",
             "1": "deltacomb_dc30dual_extruder_1"
-        }
+        },
+        "preferred_variant_name": "DBE 0.40mm",
+        "quality_definition": "deltacomb_base"
     },
-
-    "overrides": {
-        "machine_name":            { "default_value": "Deltacomb DC-30 DUAL" },
-        "machine_width":           { "default_value": 290 },
-        "machine_depth":           { "default_value": 290 },
-        "machine_height":          { "default_value": 300 },
-        "machine_extruder_count":  { "default_value": 2, "maximum_value": "2" }
+    "overrides":
+    {
+        "machine_depth": { "default_value": 290 },
+        "machine_extruder_count":
+        {
+            "default_value": 2,
+            "maximum_value": "2"
+        },
+        "machine_height": { "default_value": 300 },
+        "machine_name": { "default_value": "Deltacomb DC-30 DUAL" },
+        "machine_width": { "default_value": 290 }
     }
 }
