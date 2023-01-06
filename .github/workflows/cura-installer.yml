@@ -164,7 +164,7 @@ jobs:
                     $pfxPath = Join-Path -Path $env:RUNNER_TEMP -ChildPath "cert.pfx"; 
                     $encodedBytes = [System.Convert]::FromBase64String($env:PFX_CONTENT); 
                     Set-Content $pfxPath -Value $encodedBytes -AsByteStream;
-                    Write-Output "::set-output name=PFX_PATH::$pfxPath";
+                    Add-Content [-Path] $Env:GITHUB_OUTPUT [-Value] "PFX_PATH=$pfxPath";
 
             -   name: Clean Conan local cache
                 if: ${{ inputs.conan_clean_local_cache }}
