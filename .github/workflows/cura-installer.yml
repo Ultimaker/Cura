@@ -47,8 +47,8 @@ on:
             msi:
                 description: 'Create the msi'
                 default: false
-                required: true
-                type: boolean
+                required: 'true'
+                type: string
 
 env:
     CONAN_LOGIN_USERNAME_CURA: ${{ secrets.CONAN_USER }}
