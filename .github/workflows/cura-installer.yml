@@ -47,7 +47,7 @@ on:
             msi:
                 description: 'Create the msi'
                 default: false
-                required: false
+                required: true
                 type: boolean
 
 env:
