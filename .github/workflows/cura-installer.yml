@@ -230,29 +230,29 @@ jobs:
                 run: pyinstaller ./cura_inst/UltiMaker-Cura.spec
 
             -   name: Archive the artifacts (bash)
-                if: ${{ inputs.installer == 'false' && runner.os != 'Windows' }}
+                if: ${{ inputs.installer && runner.os != 'Windows' }}
                 run: tar -zcf "./UltiMaker-Cura-$CURA_VERSION_FULL-${{ inputs.os_name }}.tar.gz" "./UltiMaker-Cura/"
                 working-directory: dist
 
             -   name: Archive the artifacts (Powershell)
-                if: ${{ inputs.installer == 'false' && runner.os == 'Windows' }}
+                if: ${{ inputs.installer && runner.os == 'Windows' }}
                 run: Compress-Archive -Path ".\UltiMaker-Cura" -DestinationPath ".\UltiMaker-Cura-$Env:CURA_VERSION_FULL-${{ inputs.os_name }}.zip"
                 working-directory: dist
 
             -   name: Create the Windows exe installer (Powershell)
-                if: ${{ inputs.installer == 'true' && runner.os == 'Windows' && inputs.msi_installer == 'false' }}
+                if: ${{ inputs.installer && runner.os == 'Windows' && inputs.msi_installer }}
                 run: |
                     python ..\cura_inst\packaging\NSIS\create_windows_installer.py ../cura_inst . "UltiMaker-Cura-$Env:CURA_VERSION_FULL-${{ inputs.os_name }}.exe"
                 working-directory: dist
 
             -   name: Create the Windows msi installer (Powershell)
-                if: ${{ inputs.installer == 'true' && runner.os == 'Windows' && inputs.msi_installer == 'true' }}
+                if: ${{ inputs.installer && runner.os == 'Windows' && inputs.msi_installer }}
                 run: |
                     python ..\cura_inst\packaging\msi\create_windows_msi.py ..\cura_inst .\UltiMaker-Cura "UltiMaker-Cura-$Env:CURA_VERSION_FULL-${{ inputs.os_name }}.msi" "$Env:CURA_APP_NAME"
                 working-directory: dist
 
             -   name: Sign the Windows exe installer (Powershell)
-                if: ${{ inputs.installer == 'true' && runner.os == 'Windows' && inputs.msi_installer == 'false'  }}
+                if: ${{ inputs.installer && runner.os == 'Windows' && inputs.msi_installer }}
                 env:
                     PFX_PATH: ${{ steps.create-pfx.outputs.PFX_PATH }}
                 run: |
@@ -260,7 +260,7 @@ jobs:
                 working-directory: dist
 
             -   name: Sign the Windows msi installer (Powershell)
-                if: ${{ inputs.installer == 'true' && runner.os == 'Windows' && inputs.msi_installer == 'true' }}
+                if: ${{ inputs.installer && runner.os == 'Windows' && inputs.msi_installer }}
                 env:
                     PFX_PATH: ${{ steps.create-pfx.outputs.PFX_PATH }}
                 run: |
@@ -268,12 +268,12 @@ jobs:
                 working-directory: dist
 
             -   name: Create the Linux AppImage (Bash)
-                if: ${{ inputs.installer == 'true' && runner.os == 'Linux' }}
+                if: ${{ inputs.installer && runner.os == 'Linux' }}
                 run: python ../cura_inst/packaging/AppImage/create_appimage.py ./UltiMaker-Cura $CURA_VERSION_FULL "UltiMaker-Cura-$CURA_VERSION_FULL-${{ inputs.os_name }}.AppImage"
                 working-directory: dist
 
             -   name: Create the MacOS dmg (Bash)
-                if: ${{ inputs.installer == 'true' && runner.os == 'Macos' }}
+                if: ${{ inputs.installer && runner.os == 'Macos' }}
                 run: python ../cura_inst/packaging/dmg/dmg_sign_noterize.py ../cura_inst . "UltiMaker-Cura-$CURA_VERSION_FULL-${{ inputs.os_name }}.dmg"
                 working-directory: dist
 
