@@ -215,6 +215,8 @@ Cura.MenuItem
                     MaterialBrandSubMenu
                     {
                         id: colorPopup
+                        implicitX: parent.width
+
                         property int itemHovered: 0
 
                         Column

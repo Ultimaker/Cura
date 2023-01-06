@@ -19,7 +19,7 @@ Popup
     implicitHeight: scrollViewContent.height + bottomPadding + topPadding
 
     // offset position relative to the parent
-    property int implicitX: parent.width
+    property int implicitX: parent.width - UM.Theme.getSize("default_lining").width
     property int implicitY: -UM.Theme.getSize("thin_margin").height
 
     default property alias contents: scrollViewContent.children
@@ -66,6 +66,10 @@ Popup
                 materialBrandSubMenu.height = mainWindow.height;
             }
         }
+
+        // Changing the height causes implicitWidth to change because of the scrollbar appearing/disappearing
+        // Reassign it here to update the value
+        materialBrandSubMenu.width = implicitWidth;
 
         if (globalPosition.x > mainWindow.width - materialBrandSubMenu.width)
         {
