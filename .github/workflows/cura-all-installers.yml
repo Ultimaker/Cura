@@ -1,5 +1,5 @@
 name: Cura All Installers
-run-name: ${{ inputs.cura_conan_version }} for Windows exe ${{ inputs.build_windows_exe }}, for Windows msi ${{ inputs.build_windows_msi }}, MacOS ${{ inputs.build_macos }}, Linux ${{ inputs.build_linux }}
+run-name: ${{ inputs.cura_conan_version }} for exe ${{ inputs.build_windows_exe }}, msi ${{ inputs.build_windows_msi }}, dmg ${{ inputs.build_macos }}, appimage ${{ inputs.build_linux }}
 
 on:
     workflow_dispatch:
