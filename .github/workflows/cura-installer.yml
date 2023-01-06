@@ -82,7 +82,9 @@ jobs:
 
             -   name: blerk
                 if: ${{ runner.os == 'Windows' }}
-                run: echo "${{  github.event.inputs.msi_installer }}"
+                run: |
+                    echo "${{ inputs.msi_installer }}"
+                    echo "${{ inputs.installer }}"
 
             -   name: Setup Python and pip
                 uses: actions/setup-python@v4
