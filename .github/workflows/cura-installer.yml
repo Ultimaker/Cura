@@ -44,10 +44,10 @@ on:
                 default: true
                 required: true
                 type: boolean
-            msi:
+            msi_installer:
                 description: 'Create the msi'
                 default: false
-                required: false
+                required: true
                 type: boolean
 
 env:
@@ -79,6 +79,10 @@ jobs:
         steps:
             -   name: Checkout
                 uses: actions/checkout@v3
+
+            -   name: blerk
+                if: ${{ runner.os == 'Windows' }}
+                run: echo ${{  github.event.inputs.msi_installer }}
 
             -   name: Setup Python and pip
                 uses: actions/setup-python@v4
@@ -240,19 +244,19 @@ jobs:
                 working-directory: dist
 
             -   name: Create the Windows exe installer (Powershell)
-                if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Windows' && github.event.inputs.msi == 'false' }}
+                if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Windows' && github.event.inputs.msi_installer == 'false' }}
                 run: |
                     python ..\cura_inst\packaging\NSIS\create_windows_installer.py ../cura_inst . "UltiMaker-Cura-$Env:CURA_VERSION_FULL-${{ inputs.os_name }}.exe"
                 working-directory: dist
 
             -   name: Create the Windows msi installer (Powershell)
-                if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Windows' && github.event.inputs.msi == 'true' }}
+                if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Windows' && github.event.inputs.msi_installer == 'true' }}
                 run: |
                     python ..\cura_inst\packaging\msi\create_windows_msi.py ..\cura_inst .\UltiMaker-Cura "UltiMaker-Cura-$Env:CURA_VERSION_FULL-${{ inputs.os_name }}.msi" "$Env:CURA_APP_NAME"
                 working-directory: dist
 
             -   name: Sign the Windows exe installer (Powershell)
-                if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Windows' &&github.event.inputs.msi == 'false'  }}
+                if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Windows' && github.event.inputs.msi_installer == 'false'  }}
                 env:
                     PFX_PATH: ${{ steps.create-pfx.outputs.PFX_PATH }}
                 run: |
@@ -260,7 +264,7 @@ jobs:
                 working-directory: dist
 
             -   name: Sign the Windows msi installer (Powershell)
-                if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Windows' && github.event.inputs.msi == 'true' }}
+                if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Windows' && github.event.inputs.msi_installer == 'true' }}
                 env:
                     PFX_PATH: ${{ steps.create-pfx.outputs.PFX_PATH }}
                 run: |
