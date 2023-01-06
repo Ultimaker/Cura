@@ -1,5 +1,5 @@
 name: Cura All Installers
-run-name: ${{ inputs.cura_conan_version }} for Windows ${{ inputs.build_windows }}, MacOS ${{ inputs.build_macos }}, Linux ${{ inputs.build_linux }}
+run-name: ${{ inputs.cura_conan_version }} for Windows exe ${{ inputs.build_windows_exe }}, for Windows msi ${{ inputs.build_windows_msi }}, MacOS ${{ inputs.build_macos }}, Linux ${{ inputs.build_linux }}
 
 on:
     workflow_dispatch:
@@ -34,8 +34,13 @@ on:
                 default: true
                 required: true
                 type: boolean
-            build_windows:
-                description: 'Build for Windows'
+            build_windows_exe:
+                description: 'Build for Windows exe'
+                default: false
+                required: true
+                type: boolean
+            build_windows_msi:
+                description: 'Build for Windows msi'
                 default: true
                 required: true
                 type: boolean
@@ -55,8 +60,8 @@ on:
     - cron: '25 3 * * 1-5'
 
 jobs:
-    windows-installer-create:
-        if: ${{ inputs.build_windows }}
+    windows-installer-create-exe:
+        if: ${{ inputs.build_windows_exe }}
         uses: ./.github/workflows/cura-installer.yml
         with:
             platform: 'windows-2022'
@@ -67,6 +72,22 @@ jobs:
             enterprise: ${{ inputs.enterprise }}
             staging: ${{ inputs.staging }}
             installer: ${{ inputs.installer }}
+            msi: false
+        secrets: inherit
+
+    windows-installer-create-msi:
+        if: ${{ inputs.build_windows_msi }}
+        uses: ./.github/workflows/cura-installer.yml
+        with:
+            platform: 'windows-2022'
+            os_name: 'win64'
+            cura_conan_version: ${{ inputs.cura_conan_version }}
+            conan_args: ${{ inputs.conan_args }}
+            conan_config: ${{ inputs.conan_config }}
+            enterprise: ${{ inputs.enterprise }}
+            staging: ${{ inputs.staging }}
+            installer: ${{ inputs.installer }}
+            msi: true
         secrets: inherit
 
     linux-installer-create:
