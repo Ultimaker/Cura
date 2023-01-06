@@ -240,19 +240,19 @@ jobs:
                 working-directory: dist
 
             -   name: Create the Windows exe installer (Powershell)
-                if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Windows' && github.event.inputs.msi == 'false' }}
+                if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Windows' && github.event.inputs.msi }}
                 run: |
                     python ..\cura_inst\packaging\NSIS\create_windows_installer.py ../cura_inst . "UltiMaker-Cura-$Env:CURA_VERSION_FULL-${{ inputs.os_name }}.exe"
                 working-directory: dist
 
             -   name: Create the Windows msi installer (Powershell)
-                if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Windows' && github.event.inputs.msi == 'true' }}
+                if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Windows' && github.event.inputs.msi }}
                 run: |
                     python ..\cura_inst\packaging\msi\create_windows_msi.py ..\cura_inst .\UltiMaker-Cura "UltiMaker-Cura-$Env:CURA_VERSION_FULL-${{ inputs.os_name }}.msi" "$Env:CURA_APP_NAME"
                 working-directory: dist
 
             -   name: Sign the Windows exe installer (Powershell)
-                if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Windows' && github.event.inputs.msi == 'false' }}
+                if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Windows' && github.event.inputs.msi  }}
                 env:
                     PFX_PATH: ${{ steps.create-pfx.outputs.PFX_PATH }}
                 run: |
@@ -260,7 +260,7 @@ jobs:
                 working-directory: dist
 
             -   name: Sign the Windows msi installer (Powershell)
-                if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Windows' && github.event.inputs.msi == 'true' }}
+                if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Windows' && github.event.inputs.msi }}
                 env:
                     PFX_PATH: ${{ steps.create-pfx.outputs.PFX_PATH }}
                 run: |
