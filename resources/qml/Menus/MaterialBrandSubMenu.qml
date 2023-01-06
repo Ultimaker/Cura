@@ -12,11 +12,13 @@ Popup
 {
     id: materialBrandSubMenu
 
-    bottomPadding: UM.Theme.getSize("thin_margin").height
+    // There is a bug where hovering the bottom half of the last element causes the popup to close.
+    // Undo this commit if you find a fix.
+    bottomPadding: -UM.Theme.getSize("thin_margin").height
     topPadding: UM.Theme.getSize("thin_margin").height
 
     implicitWidth: scrollViewContent.width + scrollbar.width + leftPadding + rightPadding
-    implicitHeight: scrollViewContent.height + bottomPadding + topPadding
+    implicitHeight: scrollViewContent.height + bottomPadding + topPadding + (2 * UM.Theme.getSize("thin_margin").height)
 
     // offset position relative to the parent
     property int implicitX: parent.width - UM.Theme.getSize("default_lining").width
