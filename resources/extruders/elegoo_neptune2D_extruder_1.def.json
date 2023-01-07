@@ -2,19 +2,16 @@
     "version": 2,
     "name": "Extruder 2",
     "inherits": "fdmextruder",
-    "metadata": {
+    "metadata":
+    {
         "machine": "elegoo_neptune_2D",
         "position": "1"
     },
-
-    "overrides": {
-        "extruder_nr": {"default_value": 1},
-        "material_diameter": { "default_value": 1.75 },
-        "machine_extruder_start_code": {
-            "default_value": "G1 E100 F1200\nG92 E0"
-            },
-        "machine_extruder_end_code": {
-            "default_value": "G1 E-100 F3000\nG92 E0"
-            }
+    "overrides":
+    {
+        "extruder_nr": { "default_value": 1 },
+        "machine_extruder_end_code": { "default_value": "G1 E-100 F3000\nG92 E0" },
+        "machine_extruder_start_code": { "default_value": "G1 E100 F1200\nG92 E0" },
+        "material_diameter": { "default_value": 1.75 }
     }
 }
