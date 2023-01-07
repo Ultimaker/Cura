@@ -1,46 +1,39 @@
 {
-    "version": 2,
-    "name": "ELEGOO NEPTUNE 2D",
-    "inherits": "elegoo_base",
-    "metadata":
-    {
-        "visible": true,
-        "author": "Toylerrr & NARUTO",
-        "machine_extruder_trains":
-        {
-            "0": "elegoo_neptune2D_extruder_0",
-            "1": "elegoo_neptune2D_extruder_1"
-        },
-        "quality_definition": "elegoo_base"
-    },
-    "overrides":
-    {
-        "initial_layer_line_width_factor": { "settable_per_extruder": false },
-        "layer_start_x": { "value": "machine_width" },
-        "layer_start_y": { "value": "machine_depth" },
-        "machine_depth": { "default_value": 235 },
-        "machine_end_gcode": { "default_value": "G91\nG1 E-100 X5 Y5 Z3 F2400\nG90\nG1 X0 Y{machine_depth} ;\nM106 S0 ;Turn-off fan\nM104 S0 ;Turn-off hotend\nM140 S0 ;Turn-off bed\nM84 X Y E ;Disable all steppers but Z" },
-        "machine_extruder_count": { "default_value": 2 },
-        "machine_head_with_fans_polygon":
-        {
-            "value": [
-                [-55, 20],
-                [55, 20],
-                [55, -25],
-                [-55, -25]
-            ]
-        },
-        "machine_height": { "default_value": 260 },
-        "machine_min_cool_heat_time_window": { "value": 0.0 },
-        "machine_name": { "default_value": "ELEGOO NEPTUNE 2D" },
-        "machine_start_gcode": { "default_value": ";ELEGOO NEPTUNE 2D\n;Fool-proof Gcode\nG90\nG28\nG90\nT1\nG92 E0\nG1 X1.5 Y20 Z1.0 E-10 F6000\nT0\nG92 E0\nG1 E-100 F1600\nT1\nG92 E0\nG1 Y200 E130 F250\nG91\nG1 E-{retraction_amount} F1600\nG1 E-101 F1600\nG90\nT0\nG92 E0\nG1 X0.5 E100 F3000\nG1 Y20 E230 F250\nG91\nG1 E-{retraction_amount} F1600\nG1 E-101 F1600\nG4 P5000\nG90\nT{extruder_nr}\nG92 E0\nG1 E{retraction_amount} F1600\nG92 E0" },
-        "machine_use_extruder_offset_to_offset_coords": { "default_value": false },
-        "machine_width": { "default_value": 235 },
-        "material_bed_temperature": { "value": "default_material_bed_temperature + 5" },
-        "material_print_temperature":
-        {
-            "resolve": "max(extruderValues('default_material_print_temperature'))",
-            "settable_per_extruder": false
-        }
-    }
+    "name":      "ELEGOO NEPTUNE 2D",
+    "version":   2,
+    "inherits":  "elegoo_base",
+    "metadata":  {
+                  "author": "Toylerrr & NARUTO",
+                  "visible": true,
+                  "quality_definition": "elegoo_base",
+                  "machine_extruder_trains":
+                   {
+                    "0": "elegoo_neptune2D_extruder_0",
+                    "1": "elegoo_neptune2D_extruder_1"
+                   }
+                 },
+    "overrides": {
+                  "machine_name":   {"default_value": "ELEGOO NEPTUNE 2D"},
+                  "machine_width":  {"default_value": 235},
+                  "machine_depth":  {"default_value": 235},
+                  "machine_height": {"default_value": 260},
+                  "machine_head_with_fans_polygon": { "value":  [ [-55, 20], [55, 20], [55, -25], [-55, -25] ] },
+                   "machine_extruder_count": { "default_value": 2 },
+                   "layer_start_x":{"value": "machine_width"},
+                   "layer_start_y":{"value": "machine_depth"},
+                   
+                  "machine_use_extruder_offset_to_offset_coords":{"default_value": false},
+                  "machine_min_cool_heat_time_window":{"value": 0.0},
+
+                  "machine_start_gcode" : 
+                  {"default_value": ";ELEGOO NEPTUNE 2D\n;Fool-proof Gcode\nG90\nG28\nG90\nT1\nG92 E0\nG1 X1.5 Y20 Z1.0 E-10 F6000\nT0\nG92 E0\nG1 E-100 F1600\nT1\nG92 E0\nG1 Y200 E130 F250\nG91\nG1 E-{retraction_amount} F1600\nG1 E-101 F1600\nG90\nT0\nG92 E0\nG1 X0.5 E100 F3000\nG1 Y20 E230 F250\nG91\nG1 E-{retraction_amount} F1600\nG1 E-101 F1600\nG4 P5000\nG90\nT{extruder_nr}\nG92 E0\nG1 E{retraction_amount} F1600\nG92 E0"   
+                    },
+                  "machine_end_gcode" : 
+                  {"default_value": "G91\nG1 E-100 X5 Y5 Z3 F2400\nG90\nG1 X0 Y{machine_depth} ;\nM106 S0 ;Turn-off fan\nM104 S0 ;Turn-off hotend\nM140 S0 ;Turn-off bed\nM84 X Y E ;Disable all steppers but Z" 
+                  },
+
+                  "material_bed_temperature":{"value": "default_material_bed_temperature + 5"},
+                  "initial_layer_line_width_factor":{"settable_per_extruder": false },
+                  "material_print_temperature":{"resolve": "max(extruderValues('default_material_print_temperature'))","settable_per_extruder": false}
+                 }
 }
