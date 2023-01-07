@@ -21,7 +21,8 @@
                    "machine_extruder_count": { "default_value": 2 },
                    "layer_start_x":{"value": "machine_width"},
                    "layer_start_y":{"value": "machine_depth"},
-                   
+
+                   "prime_tower_enable":{"default_value": true },
                   "machine_use_extruder_offset_to_offset_coords":{"default_value": false},
                   "machine_min_cool_heat_time_window":{"value": 0.0},
 

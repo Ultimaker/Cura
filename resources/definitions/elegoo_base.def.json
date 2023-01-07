@@ -78,7 +78,6 @@
          "optimize_wall_printing_order":{"default_value": true },
          "z_seam_type":{"default_value": "back"},
           "z_seam_corner":{"default_value": "z_seam_corner_weighted"},
-          "prime_tower_enable":{"enabled": "extruders_enabled_count > 1","default_value": true},
 
           "support_angle":{"value": "45 if speed_print > 99.9 else 50"},
           "gradual_support_infill_step_height":{"value": "5"},
