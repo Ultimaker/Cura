@@ -238,7 +238,7 @@ jobs:
                     installer_filename = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-${{ inputs.os_name }}"
                     if "${{ runner.os }}" == "Windows":
                         installer_ext = "msi" if "${{ inputs.msi_installer }}" == "true" else "exe"
-                    elif "${{ runner.os }}" == "Macos":
+                    elif "${{ runner.os }}" == "macOS":
                         installer_ext = "dmg"
                     else:
                         installer_ext = "AppImage"
