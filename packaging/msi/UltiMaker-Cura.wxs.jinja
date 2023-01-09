@@ -115,7 +115,7 @@
 			</ProgId>
 
 			<!-- Current Cura versions are not supported on XP or Server 2003. Even so, add 'ignorefailure=yes'. After all, worst that can happen is the user gets asked, like before. -->
-			<fw:FirewallException Id="FirewallExceptLocalFrontend" Name="Cura (Frontend) Connection (LocalHost)" File="FILE_CuraEngine_exe" Port="127.0.0.1" IgnoreFailure="yes" Scope="localSubnet" />
+			<fw:FirewallException Id="FirewallExceptLocalFrontend" Name="Cura (Frontend) Connection (LocalHost)" File="FILE_UltiMaker_Cura_exe" Port="127.0.0.1" IgnoreFailure="yes" Scope="localSubnet" />
 		</Component>
 		<Component Id="CMP_CuraEngine_exe" Directory="APPLICATIONFOLDER" Guid="*">
 			<File Id="FILE_CuraEngine_exe" KeyPath="yes" Source="$(var.CuraDir)\CuraEngine.exe" />
