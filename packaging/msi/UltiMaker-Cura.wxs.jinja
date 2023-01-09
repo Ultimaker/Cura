@@ -20,7 +20,7 @@
             <RemoveExistingProducts Before="InstallInitialize" />
         </InstallExecuteSequence>
 
-        <Property Id="PREVIOUS_VERSIONS_INSTALLED" Secure="yes" Value="{{ 1 if "Enterpise" in app_name else 0 }}" />
+        <Property Id="PREVIOUS_VERSIONS_INSTALLED" Secure="yes" Value="{{ 1 if "Enterprise" in app_name else 0 }}" />
         <Upgrade Id="{{ upgrade_code }}">
             <UpgradeVersion
                 Minimum="4.13.2" Maximum="{{ version_major }}.{{ version_minor }}.{{ version_patch }}"
@@ -31,7 +31,7 @@
         <!--TODO: handle copy of configuration of previous version-->
         <!--TODO: handle removal of old configuration once previous version is uninstalled-->
 
-        {% if "Enterpise" in app_name %}
+        {% if "Enterprise" in app_name %}
         <Property Id="PREVIOUS_413_INSTALLED" Secure="yes" />
         <Upgrade Id="53C603BB-2B17-4206-A609-29C2E0D0B0AE">
             <UpgradeVersion
