@@ -304,15 +304,11 @@ jobs:
             -   name: Upload the artifacts
                 uses: actions/upload-artifact@v3
                 with:
-                    name: ${{ steps.filename.outputs.INSTALLER_FILENAME }}-${{ steps.filename.outputs.INSTALLER_EXT }}"
+                    name: ${{ steps.filename.outputs.INSTALLER_FILENAME }}-${{ steps.filename.outputs.INSTALLER_EXT }}
                     path: |
                         dist/*.tar.gz
                         dist/*.zip
-                        dist/*.exe
-                        dist/*.msi
-                        dist/*.dmg
-                        dist/*.pkg
-                        dist/*.AppImage
+                        dist/${{ steps.filename.outputs.FULL_INSTALLER_FILENAME }}
                         dist/*.asc
                     retention-days: 5
 
