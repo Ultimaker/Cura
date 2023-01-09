@@ -230,6 +230,7 @@ jobs:
                 run: pyinstaller ./cura_inst/UltiMaker-Cura.spec
 
             -   name: Output the name file name and extension
+                id: filename
                 shell: python
                 run: |
                     import os
@@ -241,7 +242,7 @@ jobs:
                         installer_ext = "dmg"
                     else:
                         installer_ext = "AppImage"
-                    output_env = os.environ["GITHUB_ENV"]
+                    output_env = os.environ["GITHUB_OUTPUT"]
                     content = ""
                     if os.path.exists(output_env):
                         with open(output_env, "r") as f:
@@ -250,27 +251,28 @@ jobs:
                         f.write(content)
                         f.writelines(f"INSTALLER_FILENAME={installer_filename}\n")
                         f.writelines(f"INSTALLER_EXT={installer_ext}\n")
+                        f.writelines(f"FULL_INSTALLER_FILENAME={installer_filename}.{installer_ext}\n")
 
             -   name: Archive the artifacts (bash)
                 if: ${{ !inputs.installer && runner.os != 'Windows' }}
-                run: tar -zcf "./$INSTALLER_FILENAME.tar.gz" "./UltiMaker-Cura/"
+                run: tar -zcf "./${{ steps.filename.outputs.INSTALLER_FILENAME }}.tar.gz" "./UltiMaker-Cura/"
                 working-directory: dist
 
             -   name: Archive the artifacts (Powershell)
                 if: ${{ !inputs.installer && runner.os == 'Windows' }}
-                run: Compress-Archive -Path ".\UltiMaker-Cura" -DestinationPath ".\$Env:INSTALLER_FILENAME.zip"
+                run: Compress-Archive -Path ".\UltiMaker-Cura" -DestinationPath ".\${{ steps.filename.outputs.INSTALLER_FILENAME }}.zip"
                 working-directory: dist
 
             -   name: Create the Windows exe installer (Powershell)
                 if: ${{ inputs.installer && runner.os == 'Windows' && !inputs.msi_installer }}
                 run: |
-                    python ..\cura_inst\packaging\NSIS\create_windows_installer.py ../cura_inst . "$Env:INSTALLER_FILENAME.$Env:INSTALLER_EXT"
+                    python ..\cura_inst\packaging\NSIS\create_windows_installer.py ../cura_inst . "${{ steps.filename.outputs.FULL_INSTALLER_FILENAME }}"
                 working-directory: dist
 
             -   name: Create the Windows msi installer (Powershell)
                 if: ${{ inputs.installer && runner.os == 'Windows' && inputs.msi_installer }}
                 run: |
-                    python ..\cura_inst\packaging\msi\create_windows_msi.py ..\cura_inst .\UltiMaker-Cura "$Env:INSTALLER_FILENAME.$Env:INSTALLER_EXT" "$Env:CURA_APP_NAME"
+                    python ..\cura_inst\packaging\msi\create_windows_msi.py ..\cura_inst .\UltiMaker-Cura "${{ steps.filename.outputs.FULL_INSTALLER_FILENAME }}" "$Env:CURA_APP_NAME"
                 working-directory: dist
 
             -   name: Sign the Windows exe installer (Powershell)
@@ -278,7 +280,7 @@ jobs:
                 env:
                     PFX_PATH: ${{ steps.create-pfx.outputs.PFX_PATH }}
                 run: |
-                    & "C:/Program Files (x86)/Windows Kits/10/bin/10.0.17763.0/x86/signtool.exe" sign /f $Env:PFX_PATH /p "$Env:WIN_CERT_INSTALLER_CER_PASS" /fd SHA256 /t http://timestamp.digicert.com "$Env:INSTALLER_FILENAME.$Env:INSTALLER_EXT"
+                    & "C:/Program Files (x86)/Windows Kits/10/bin/10.0.17763.0/x86/signtool.exe" sign /f $Env:PFX_PATH /p "$Env:WIN_CERT_INSTALLER_CER_PASS" /fd SHA256 /t http://timestamp.digicert.com "${{ steps.filename.outputs.FULL_INSTALLER_FILENAME }}"
                 working-directory: dist
 
             -   name: Sign the Windows msi installer (Powershell)
@@ -286,29 +288,30 @@ jobs:
                 env:
                     PFX_PATH: ${{ steps.create-pfx.outputs.PFX_PATH }}
                 run: |
-                    & "C:/Program Files (x86)/Windows Kits/10/bin/10.0.17763.0/x86/signtool.exe" sign /f $Env:PFX_PATH /p "$Env:WIN_CERT_INSTALLER_CER_PASS" /fd SHA256 /t http://timestamp.digicert.com "$Env:INSTALLER_FILENAME.$Env:INSTALLER_EXT"
+                    & "C:/Program Files (x86)/Windows Kits/10/bin/10.0.17763.0/x86/signtool.exe" sign /f $Env:PFX_PATH /p "$Env:WIN_CERT_INSTALLER_CER_PASS" /fd SHA256 /t http://timestamp.digicert.com "${{ steps.filename.outputs.FULL_INSTALLER_FILENAME }}"
                 working-directory: dist
 
             -   name: Create the Linux AppImage (Bash)
                 if: ${{ inputs.installer && runner.os == 'Linux' }}
-                run: python ../cura_inst/packaging/AppImage/create_appimage.py ./UltiMaker-Cura $CURA_VERSION_FULL "$Env:INSTALLER_FILENAME.$Env:INSTALLER_EXT"
+                run: python ../cura_inst/packaging/AppImage/create_appimage.py ./UltiMaker-Cura $CURA_VERSION_FULL "${{ steps.filename.outputs.FULL_INSTALLER_FILENAME }}"
                 working-directory: dist
 
             -   name: Create the MacOS dmg (Bash)
                 if: ${{ inputs.installer && runner.os == 'Macos' }}
-                run: python ../cura_inst/packaging/dmg/dmg_sign_noterize.py ../cura_inst . "$Env:INSTALLER_FILENAME.$Env:INSTALLER_EXT"
+                run: python ../cura_inst/packaging/dmg/dmg_sign_noterize.py ../cura_inst . "${{ steps.filename.outputs.FULL_INSTALLER_FILENAME }}"
                 working-directory: dist
 
             -   name: Upload the artifacts
                 uses: actions/upload-artifact@v3
                 with:
-                    name: "$Env:INSTALLER_FILENAME-$Env:INSTALLER_EXT"
+                    name: ${{ steps.filename.outputs.INSTALLER_FILENAME }}-${{ steps.filename.outputs.INSTALLER_EXT }}"
                     path: |
                         dist/*.tar.gz
                         dist/*.zip
                         dist/*.exe
                         dist/*.msi
                         dist/*.dmg
+                        dist/*.pkg
                         dist/*.AppImage
                         dist/*.asc
                     retention-days: 5
