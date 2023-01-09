@@ -1,0 +1,13 @@
+{
+    "version": 2,
+    "name": "Modix V3 BIG-60",
+    "inherits": "modix_v3_base",
+    "metadata": { "visible": true },
+    "overrides":
+    {
+        "machine_depth": { "default_value": 600 },
+        "machine_height": { "default_value": 660 },
+        "machine_name": { "default_value": "Modix BIG-60 V3" },
+        "machine_width": { "default_value": 600 }
+    }
+}

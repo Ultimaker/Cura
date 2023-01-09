@@ -1,41 +1,39 @@
 {
-    "name": "Julia",
     "version": 2,
+    "name": "Julia",
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "visible": true,
         "manufacturer": "Fracktal",
         "file_formats": "text/x-gcode",
-        "platform_offset": [ 0, 0, 0],
-        "machine_extruder_trains":
-        {
-            "0": "julia_extruder_0"
-        }
+        "machine_extruder_trains": { "0": "julia_extruder_0" },
+        "platform_offset": [
+            0,
+            0,
+            0
+        ]
     },
-
-    "overrides": {
-        "machine_start_gcode": {
-            "default_value": " ;Basic settings: Layer height: {layer_height} Walls: {wall_thickness} Fill: {infill_sparse_density}\n ;metric values\n M107\n G28\n G29\n G90        ;absolute positioning\n G92 E0; reset extruder distance\n G1 Z5 F300 ;move nozzle up 5mm for safe homing\n G1 X0 Y0 Z0 F5000; move nozzle to home\n M300 S600P200\n M300 S800 P200\n M190 S{material_bed_temperature} ;Uncomment to add your own bed temperature line\n M109 S{material_print_temperature} ;Uncomment to add your own temperature line\n M82        ;set extruder to absolute mode\n M107       ;start with the fan off\n G1 Z15.0 F{speed_travel} ;move the platform down 15mm\n G92 E0                  ;zero the extruded length\n G1 F200 E3              ;extrude 3mm of feed stock\n G92 E0                  ;zero the extruded length again\n G1 F{speed_travel}\n ;Put printing message on LCD screen\n M117 Printing...\n"
-        },
-        "machine_end_gcode": {
-            "default_value": " M104 S0                     ;extruder heater off\n M140 S0                     ;heated bed heater off (if you have it)\n G91                                    ;relative positioning\n G1 E-1 F300                            ;retract the filament a bit before lifting the nozzle, to release some of the pressure\n G1 Z+0.5 E-5 X-20 Y-20 F{speed_travel} ;move Z up a bit and retract filament even more\n G28 X0 Y0                              ;move X/Y to min endstops, so the head is out of the way\n M84                         ;steppers off\n G90                         ;absolute positioning\n"
-        },
+    "overrides":
+    {
+        "infill_sparse_density": { "default_value": 10 },
         "layer_height": { "default_value": 0.2 },
-        "support_angle": { "default_value": 30 },
         "layer_height_0": { "default_value": 0.2 },
-        "speed_print": { "default_value": 80 },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_depth": { "default_value": 250 },
+        "machine_end_gcode": { "default_value": " M104 S0                     ;extruder heater off\n M140 S0                     ;heated bed heater off (if you have it)\n G91                                    ;relative positioning\n G1 E-1 F300                            ;retract the filament a bit before lifting the nozzle, to release some of the pressure\n G1 Z+0.5 E-5 X-20 Y-20 F{speed_travel} ;move Z up a bit and retract filament even more\n G28 X0 Y0                              ;move X/Y to min endstops, so the head is out of the way\n M84                         ;steppers off\n G90                         ;absolute positioning\n" },
+        "machine_extruder_count": { "default_value": 1 },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 260 },
+        "machine_name": { "default_value": "Julia V2" },
+        "machine_start_gcode": { "default_value": " ;Basic settings: Layer height: {layer_height} Walls: {wall_thickness} Fill: {infill_sparse_density}\n ;metric values\n M107\n G28\n G29\n G90        ;absolute positioning\n G92 E0; reset extruder distance\n G1 Z5 F300 ;move nozzle up 5mm for safe homing\n G1 X0 Y0 Z0 F5000; move nozzle to home\n M300 S600P200\n M300 S800 P200\n M190 S{material_bed_temperature} ;Uncomment to add your own bed temperature line\n M109 S{material_print_temperature} ;Uncomment to add your own temperature line\n M82        ;set extruder to absolute mode\n M107       ;start with the fan off\n G1 Z15.0 F{speed_travel} ;move the platform down 15mm\n G92 E0                  ;zero the extruded length\n G1 F200 E3              ;extrude 3mm of feed stock\n G92 E0                  ;zero the extruded length again\n G1 F{speed_travel}\n ;Put printing message on LCD screen\n M117 Printing...\n" },
+        "machine_width": { "default_value": 210 },
         "prime_tower_size": { "default_value": 8.660254037844387 },
         "retraction_amount": { "default_value": 3 },
-        "support_pattern": { "default_value": "grid" },
-        "infill_sparse_density": { "default_value": 10 },
-        "machine_extruder_count": { "default_value": 1 },
         "retraction_combing": { "value": "'off'" },
-        "machine_heated_bed": { "default_value": true },
-        "machine_center_is_zero": { "default_value": false },
-        "machine_height": { "default_value": 260 },
-        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
-        "machine_depth": { "default_value": 250 },
-        "machine_width": { "default_value": 210 },
-        "machine_name": { "default_value": "Julia V2" }
+        "speed_print": { "default_value": 80 },
+        "support_angle": { "default_value": 30 },
+        "support_pattern": { "default_value": "grid" }
     }
 }

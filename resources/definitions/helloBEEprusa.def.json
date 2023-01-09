@@ -2,40 +2,45 @@
     "version": 2,
     "name": "Hello Bee Prusa",
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "visible": true,
         "author": "Beeverycreative",
         "manufacturer": "Beeverycreative",
-        "platform": "BEEVERYCREATIVE-helloBEEprusa.3mf",
-        "platform_offset": [-226, -75, -196],
         "file_formats": "text/x-gcode",
+        "platform": "BEEVERYCREATIVE-helloBEEprusa.3mf",
         "machine_extruder_trains":
         {
             "0": "hBp_extruder_left",
             "1": "hBp_extruder_right"
-        }
+        },
+        "platform_offset": [
+            -226,
+            -75,
+            -196
+        ]
     },
-
-    "overrides": {
-        "machine_extruder_count": { "default_value": 2 },
-        "machine_name": { "default_value": "hello BEE prusa" },
-        "machine_start_gcode": { "default_value": "; -- START GCODE --\nG21                     ;set units to millimetres\nG90                     ;set to absolute positioning\nM107                    ;set fan speed to zero (turned off)\nG28 X0 Y0               ;move to the X/Y origin (Home)\nG28 Z0                  ;move to the Z origin (Home)\nG92 E0                  ;zero the extruded length\nG1 F3600                ;set feedrate to 60 mm/sec\nM420 S1 \n; -- end of START GCODE --" },
-        "machine_end_gcode": { "default_value": "; -- END GCODE --\nM104 S0                 ;set extruder temperature to zero (turned off)\nM140 S0                 ;set bed temperature to zero (turned off)\nG28 X0 Y0               ;move to the X/Y origin (Home)\nM84                     ;turn off steppers\n; -- end of END GCODE --" },
-        "machine_width": { "default_value": 185 },
-        "machine_depth": { "default_value": 200 },
-        "machine_height": { "default_value": 190 },
-        "machine_heated_bed": { "default_value": true },
-        "machine_center_is_zero": { "default_value": false },
+    "overrides":
+    {
+        "infill_sparse_density": { "default_value": 20 },
         "layer_height": { "default_value": 0.2 },
         "layer_height_0": { "default_value": 0.2 },
-        "wall_thickness": { "value": "1.2" },
-        "top_bottom_thickness": { "default_value": 1.2 },
-        "infill_sparse_density": { "default_value": 20 },
-        "speed_print": { "default_value": 60 },
-        "skirt_line_count": { "default_value": 4 },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_depth": { "default_value": 200 },
+        "machine_end_gcode": { "default_value": "; -- END GCODE --\nM104 S0                 ;set extruder temperature to zero (turned off)\nM140 S0                 ;set bed temperature to zero (turned off)\nG28 X0 Y0               ;move to the X/Y origin (Home)\nM84                     ;turn off steppers\n; -- end of END GCODE --" },
+        "machine_extruder_count": { "default_value": 2 },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 190 },
+        "machine_name": { "default_value": "hello BEE prusa" },
+        "machine_start_gcode": { "default_value": "; -- START GCODE --\nG21                     ;set units to millimetres\nG90                     ;set to absolute positioning\nM107                    ;set fan speed to zero (turned off)\nG28 X0 Y0               ;move to the X/Y origin (Home)\nG28 Z0                  ;move to the Z origin (Home)\nG92 E0                  ;zero the extruded length\nG1 F3600                ;set feedrate to 60 mm/sec\nM420 S1 \n; -- end of START GCODE --" },
+        "machine_width": { "default_value": 185 },
+        "retraction_amount": { "default_value": 1.5 },
+        "retraction_speed": { "default_value": 15.0 },
         "skirt_brim_minimal_length": { "default_value": 30 },
         "skirt_gap": { "default_value": 6 },
-        "retraction_speed": { "default_value": 15.0},
-        "retraction_amount": { "default_value": 1.5}
+        "skirt_line_count": { "default_value": 4 },
+        "speed_print": { "default_value": 60 },
+        "top_bottom_thickness": { "default_value": 1.2 },
+        "wall_thickness": { "value": "1.2" }
     }
 }

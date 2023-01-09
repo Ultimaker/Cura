@@ -44,6 +44,11 @@ on:
                 default: true
                 required: true
                 type: boolean
+            msi_installer:
+                description: 'Create the msi'
+                default: false
+                required: true
+                type: boolean
 
 env:
     CONAN_LOGIN_USERNAME_CURA: ${{ secrets.CONAN_USER }}
@@ -61,6 +66,8 @@ env:
     MACOS_CERT_USER: ${{ secrets.MACOS_CERT_USER }}
     GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
     MACOS_CERT_PASSPHRASE: ${{ secrets.MACOS_CERT_PASSPHRASE }}
+    WIN_CERT_INSTALLER_CER: ${{ secrets.WIN_CERT_INSTALLER_CER }}
+    WIN_CERT_INSTALLER_CER_PASS: ${{ secrets.WIN_CERT_INSTALLER_CER_PASS }}
     CURA_CONAN_VERSION: ${{ inputs.cura_conan_version }}
     ENTERPRISE: ${{ inputs.enterprise }}
     STAGING: ${{ inputs.staging }}
@@ -126,14 +133,14 @@ jobs:
                     echo "APPIMAGETOOL_LOCATION=$GITHUB_WORKSPACE/appimagetool" >> $GITHUB_ENV
 
             -   name: Install GCC-12 on ubuntu-22.04
-                if: ${{ startsWith(inputs.runs_on, 'ubuntu-22.04') }}
+                if: ${{ startsWith(inputs.platform, 'ubuntu-22.04') }}
                 run: |
                     sudo apt install g++-12 gcc-12 -y
                     sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 12
                     sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 12
 
             -   name: Use GCC-10 on ubuntu-20.04
-                if: ${{ startsWith(inputs.runs_on, 'ubuntu-20.04') }}
+                if: ${{ startsWith(inputs.platform, 'ubuntu-20.04') }}
                 run: |
                     sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 10
                     sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 10
@@ -153,16 +160,23 @@ jobs:
                     p12-file-base64: ${{ secrets.MACOS_CERT_P12 }}
                     p12-password: ${{ secrets.MACOS_CERT_PASSPHRASE }}
 
-            -   name: Clean Conan local cache
-                if: ${{ inputs.conan_clean_local_cache }}
-                run: conan remove "*" -f
+            -   name: Create PFX certificate from BASE64_PFX_CONTENT secret
+                if: ${{ runner.os == 'Windows' }}
+                id: create-pfx
+                env:
+                    PFX_CONTENT: ${{ secrets.WIN_CERT_INSTALLER_CER }}
+                run: |
+                    $pfxPath = Join-Path -Path $env:RUNNER_TEMP -ChildPath "cert.pfx"; 
+                    $encodedBytes = [System.Convert]::FromBase64String($env:PFX_CONTENT); 
+                    Set-Content $pfxPath -Value $encodedBytes -AsByteStream;
+                    echo "PFX_PATH=$pfxPath" >> $env:GITHUB_OUTPUT;
 
             -   name: Get Conan configuration from branch
-                if: ${{ inputs.conan_config_branch != '' }}
-                run: conan config install https://github.com/Ultimaker/conan-config.git -a "-b ${{ inputs.conan_config_branch }}"
+                if: ${{ inputs.conan_config != '' }}
+                run: conan config install https://github.com/Ultimaker/conan-config.git -a "-b ${{ inputs.conan_config }}"
 
             -   name: Get Conan configuration
-                if: ${{ inputs.conan_config_branch == '' }}
+                if: ${{ inputs.conan_config == '' }}
                 run: conan config install https://github.com/Ultimaker/conan-config.git
 
             -   name: Create the Packages (Bash)
@@ -182,6 +196,7 @@ jobs:
             -   name: Set Environment variables for Cura (Powershell)
                 if: ${{ runner.os == 'Windows' }}
                 run: |
+                    echo "${Env:WIX}\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
                     .\cura_inst\Scripts\activate_github_actions_env.ps1
                     .\cura_inst\Scripts\activate_github_actions_version_env.ps1
 
@@ -214,43 +229,86 @@ jobs:
             -   name: Create the Cura dist
                 run: pyinstaller ./cura_inst/UltiMaker-Cura.spec
 
+            -   name: Output the name file name and extension
+                id: filename
+                shell: python
+                run: |
+                    import os
+                    enterprise = "-Enterprise" if "${{ inputs.enterprise }}" == "true" else ""
+                    installer_filename = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-${{ inputs.os_name }}"
+                    if "${{ runner.os }}" == "Windows":
+                        installer_ext = "msi" if "${{ inputs.msi_installer }}" == "true" else "exe"
+                    elif "${{ runner.os }}" == "macOS":
+                        installer_ext = "dmg"
+                    else:
+                        installer_ext = "AppImage"
+                    output_env = os.environ["GITHUB_OUTPUT"]
+                    content = ""
+                    if os.path.exists(output_env):
+                        with open(output_env, "r") as f:
+                            content = f.read()
+                    with open(output_env, "w") as f:
+                        f.write(content)
+                        f.writelines(f"INSTALLER_FILENAME={installer_filename}\n")
+                        f.writelines(f"INSTALLER_EXT={installer_ext}\n")
+                        f.writelines(f"FULL_INSTALLER_FILENAME={installer_filename}.{installer_ext}\n")
+
             -   name: Archive the artifacts (bash)
-                if: ${{ github.event.inputs.installer == 'false' && runner.os != 'Windows' }}
-                run: tar -zcf "./UltiMaker-Cura-$CURA_VERSION_FULL-${{ inputs.os_name }}.tar.gz" "./UltiMaker-Cura/"
+                if: ${{ !inputs.installer && runner.os != 'Windows' }}
+                run: tar -zcf "./${{ steps.filename.outputs.INSTALLER_FILENAME }}.tar.gz" "./UltiMaker-Cura/"
                 working-directory: dist
 
             -   name: Archive the artifacts (Powershell)
-                if: ${{ github.event.inputs.installer == 'false' && runner.os == 'Windows' }}
-                run: Compress-Archive -Path ".\UltiMaker-Cura" -DestinationPath ".\UltiMaker-Cura-$Env:CURA_VERSION_FULL-${{ inputs.os_name }}.zip"
+                if: ${{ !inputs.installer && runner.os == 'Windows' }}
+                run: Compress-Archive -Path ".\UltiMaker-Cura" -DestinationPath ".\${{ steps.filename.outputs.INSTALLER_FILENAME }}.zip"
                 working-directory: dist
 
             -   name: Create the Windows exe installer (Powershell)
-                if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Windows' }}
+                if: ${{ inputs.installer && runner.os == 'Windows' && !inputs.msi_installer }}
                 run: |
-                    python ..\cura_inst\packaging\NSIS\create_windows_installer.py ../cura_inst . "UltiMaker-Cura-$Env:CURA_VERSION_FULL-${{ inputs.os_name }}.exe"
+                    python ..\cura_inst\packaging\NSIS\create_windows_installer.py ../cura_inst . "${{ steps.filename.outputs.FULL_INSTALLER_FILENAME }}"
+                working-directory: dist
+
+            -   name: Create the Windows msi installer (Powershell)
+                if: ${{ inputs.installer && runner.os == 'Windows' && inputs.msi_installer }}
+                run: |
+                    python ..\cura_inst\packaging\msi\create_windows_msi.py ..\cura_inst .\UltiMaker-Cura "${{ steps.filename.outputs.FULL_INSTALLER_FILENAME }}" "$Env:CURA_APP_NAME"
+                working-directory: dist
+
+            -   name: Sign the Windows exe installer (Powershell)
+                if: ${{ inputs.installer && runner.os == 'Windows' && !inputs.msi_installer }}
+                env:
+                    PFX_PATH: ${{ steps.create-pfx.outputs.PFX_PATH }}
+                run: |
+                    & "C:/Program Files (x86)/Windows Kits/10/bin/10.0.17763.0/x86/signtool.exe" sign /f $Env:PFX_PATH /p "$Env:WIN_CERT_INSTALLER_CER_PASS" /fd SHA256 /t http://timestamp.digicert.com "${{ steps.filename.outputs.FULL_INSTALLER_FILENAME }}"
+                working-directory: dist
+
+            -   name: Sign the Windows msi installer (Powershell)
+                if: ${{ inputs.installer && runner.os == 'Windows' && inputs.msi_installer }}
+                env:
+                    PFX_PATH: ${{ steps.create-pfx.outputs.PFX_PATH }}
+                run: |
+                    & "C:/Program Files (x86)/Windows Kits/10/bin/10.0.17763.0/x86/signtool.exe" sign /f $Env:PFX_PATH /p "$Env:WIN_CERT_INSTALLER_CER_PASS" /fd SHA256 /t http://timestamp.digicert.com "${{ steps.filename.outputs.FULL_INSTALLER_FILENAME }}"
                 working-directory: dist
 
             -   name: Create the Linux AppImage (Bash)
-                if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Linux' }}
-                run: python ../cura_inst/packaging/AppImage/create_appimage.py ./UltiMaker-Cura $CURA_VERSION_FULL "UltiMaker-Cura-$CURA_VERSION_FULL-${{ inputs.os_name }}.AppImage"
+                if: ${{ inputs.installer && runner.os == 'Linux' }}
+                run: python ../cura_inst/packaging/AppImage/create_appimage.py ./UltiMaker-Cura $CURA_VERSION_FULL "${{ steps.filename.outputs.FULL_INSTALLER_FILENAME }}"
                 working-directory: dist
 
             -   name: Create the MacOS dmg (Bash)
-                if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Macos' }}
-                run: python ../cura_inst/packaging/dmg/dmg_sign_noterize.py ../cura_inst . "UltiMaker-Cura-$CURA_VERSION_FULL-${{ inputs.os_name }}.dmg"
+                if: ${{ inputs.installer && runner.os == 'Macos' }}
+                run: python ../cura_inst/packaging/dmg/dmg_sign_noterize.py ../cura_inst . "${{ steps.filename.outputs.FULL_INSTALLER_FILENAME }}"
                 working-directory: dist
 
             -   name: Upload the artifacts
                 uses: actions/upload-artifact@v3
                 with:
-                    name: UltiMaker-Cura-${{ env.CURA_VERSION_FULL }}-${{ inputs.os_name }}
+                    name: ${{ steps.filename.outputs.INSTALLER_FILENAME }}-${{ steps.filename.outputs.INSTALLER_EXT }}
                     path: |
                         dist/*.tar.gz
                         dist/*.zip
-                        dist/*.exe
-                        dist/*.msi
-                        dist/*.dmg
-                        dist/*.AppImage
+                        dist/${{ steps.filename.outputs.FULL_INSTALLER_FILENAME }}
                         dist/*.asc
                     retention-days: 5
 

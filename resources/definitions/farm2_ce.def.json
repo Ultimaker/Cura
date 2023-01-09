@@ -2,56 +2,38 @@
     "version": 2,
     "name": "Farm 2CE",
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "visible": true,
         "author": "Farm3D",
         "manufacturer": "Farm3D LLC",
         "file_formats": "text/x-gcode",
         "platform": "farm2_platform.obj",
-        "platform_texture": "farm2ceplate.png",
-        "platform_offset": [-7, 0, -4],
-		"has_variants": true,
-		"preferred_variant_name": "PrintHead 0.4 mm",
-		"variants_name": "PrintHead type",
-        "has_materials": true,
-	"preferred_material": "generic_pla",
         "has_machine_quality": false,
-                "machine_extruder_trains":
-        {
-            "0": "farm2_ce_extruder_1"
-			
-        }
-        
+        "has_materials": true,
+        "has_variants": true,
+        "machine_extruder_trains": { "0": "farm2_ce_extruder_1" },
+        "platform_offset": [
+            -7,
+            0,
+            -4
+        ],
+        "platform_texture": "farm2ceplate.png",
+        "preferred_material": "generic_pla",
+        "preferred_variant_name": "PrintHead 0.4 mm",
+        "variants_name": "PrintHead type"
     },
-    "overrides": {
+    "overrides":
+    {
+        "machine_center_is_zero": { "default_value": false },
+        "machine_depth": { "default_value": 199 },
+        "machine_end_gcode": { "default_value": "M104 S0\nM140 S0\nG92 E1\nG1 E-1 F300\nG28\nM84" },
+        "machine_gcode_flavor": { "default_value": "RepRap (RepRap)" },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 213 },
         "machine_name": { "default_value": "Farm 2CE" },
-        "machine_start_gcode" : {
-            "default_value": "G28\nG29 S0\nG92 E0\nG1 X0 Y0 F4000 Z0.1\nG1 Y0 X190 F1000 E50 Z0.3\nG1 Z0"
-        },
-        "machine_end_gcode" : {
-            "default_value": "M104 S0\nM140 S0\nG92 E1\nG1 E-1 F300\nG28\nM84"
-        },
-        "machine_width": {
-            "default_value": 209
-        },
-        "machine_depth": {
-            "default_value": 199
-        },
-        "machine_height": {
-            "default_value": 213
-        },
-        "machine_heated_bed": {
-            "default_value": true
-        },
-		"material_diameter": {
-  		    "default_value": 1.75 
-		},
-        "machine_center_is_zero": {
-            "default_value": false
-        },
-        "machine_gcode_flavor": {
-            "default_value": "RepRap (RepRap)"
-        }
-            
+        "machine_start_gcode": { "default_value": "G28\nG29 S0\nG92 E0\nG1 X0 Y0 F4000 Z0.1\nG1 Y0 X190 F1000 E50 Z0.3\nG1 Z0" },
+        "machine_width": { "default_value": 209 },
+        "material_diameter": { "default_value": 1.75 }
     }
 }
