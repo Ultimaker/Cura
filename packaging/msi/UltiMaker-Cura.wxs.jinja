@@ -88,30 +88,60 @@
 
         <Component Id="CMP_UltiMaker_Cura_exe" Directory="APPLICATIONFOLDER" Guid="*">
             <File Id="FILE_UltiMaker_Cura_exe" KeyPath="yes" Source="$(var.CuraDir)\{{ main_app }}"/>
-            <!--Computer\HKEY_LOCAL_MACHINE\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.fileTypeAssociation\.3mf-->
 
-            <RegistryValue Root="HKLM" Key="SOFTWARE\{{ app_name }}\Capabilities\FileAssociations" Name=".3mf" Value="PRG_UltiMaker_Cura.3MF" Type="string" />
-            <RegistryValue Root="HKLM" Key="SOFTWARE\{{ app_name }}\Capabilities\FileAssociations" Name=".stl" Value="PRG_UltiMaker_Cura.STL" Type="string" />
-            <RegistryValue Root="HKLM" Key="SOFTWARE\{{ app_name }}\Capabilities\MIMEAssociations" Name="application/3mf" Value="PRG_UltiMaker_Cura.3MF" Type="string" />
-            <RegistryValue Root="HKLM" Key="SOFTWARE\{{ app_name }}\Capabilities\MIMEAssociations" Name="application/stl" Value="PRG_UltiMaker_Cura.STL" Type="string" />
-            <RegistryValue Root="HKLM" Key="SOFTWARE\{{ app_name }}\Capabilities\shell\Open\command" Value='"[APPLICATIONFOLDER]\{{ main_app }}" "%1"' Type="string" />
-            <RegistryValue Root="HKLM" Key="SOFTWARE\RegisteredApplications" Name="{{ app_name }}" Value="SOFTWARE\MyApp\Capabilities" Type="string" />
-
+            <RegistryValue Root="HKLM" Key="SOFTWARE\{{ app_name }}\Capabilities\FileAssociations" Name=".3mf" Value="3D Manufacturing Format Document" Type="string" />
+            <RegistryValue Root="HKLM" Key="SOFTWARE\{{ app_name }}\Capabilities\MIMEAssociations" Name="application/3mf" Value="3D Manufacturing Format Document" Type="string" />
             <RegistryValue Root="HKLM" Key="SOFTWARE\Classes\Applications\{{ main_app }}\SupportedTypes" Name=".3mf" Value="" Type="string" />
+
+            <RegistryValue Root="HKLM" Key="SOFTWARE\{{ app_name }}\Capabilities\FileAssociations" Name=".stl" Value="3D Object" Type="string" />
+            <RegistryValue Root="HKLM" Key="SOFTWARE\{{ app_name }}\Capabilities\MIMEAssociations" Name="application/stl" Value="3D Object" Type="string" />
             <RegistryValue Root="HKLM" Key="SOFTWARE\Classes\Applications\{{ main_app }}\SupportedTypes" Name=".stl" Value="" Type="string" />
+
+            <RegistryValue Root="HKLM" Key="SOFTWARE\{{ app_name }}\Capabilities\FileAssociations" Name=".gcode" Value="GCode machine instructions" Type="string" />
+            <RegistryValue Root="HKLM" Key="SOFTWARE\{{ app_name }}\Capabilities\MIMEAssociations" Name="text/x-gcode" Value="GCode machine instructions" Type="string" />
+            <RegistryValue Root="HKLM" Key="SOFTWARE\Classes\Applications\{{ main_app }}\SupportedTypes" Name=".gcode" Value="" Type="string" />
+
+            <RegistryValue Root="HKLM" Key="SOFTWARE\{{ app_name }}\Capabilities\FileAssociations" Name=".ufp" Value="UltiMaker Format Package" Type="string" />
+            <RegistryValue Root="HKLM" Key="SOFTWARE\{{ app_name }}\Capabilities\MIMEAssociations" Name="application/x-ufp" Value="UltiMaker Format Package" Type="string" />
+            <RegistryValue Root="HKLM" Key="SOFTWARE\Classes\Applications\{{ main_app }}\SupportedTypes" Name=".ufp" Value="" Type="string" />
+
+            <RegistryValue Root="HKLM" Key="SOFTWARE\{{ app_name }}\Capabilities\FileAssociations" Name=".curapackage" Value="UltiMaker Cura package" Type="string" />
+            <RegistryValue Root="HKLM" Key="SOFTWARE\{{ app_name }}\Capabilities\MIMEAssociations" Name="application/curapackage" Value="UltiMaker Cura package" Type="string" />
+            <RegistryValue Root="HKLM" Key="SOFTWARE\Classes\Applications\{{ main_app }}\SupportedTypes" Name=".curapackage" Value="" Type="string" />
+
+            <RegistryValue Root="HKLM" Key="SOFTWARE\{{ app_name }}\Capabilities\shell\Open\command" Value='"[APPLICATIONFOLDER]\{{ main_app }}" "%1"' Type="string" />
+            <RegistryValue Root="HKLM" Key="SOFTWARE\RegisteredApplications" Name="{{ app_name }}" Value="SOFTWARE\{{ app_name }}\Capabilities" Type="string" />
             <RegistryValue Root="HKLM" Key="SOFTWARE\Classes\Applications\{{ main_app }}\shell\open" Name="{{ app_name }}" Value="{{ main_app }}" Type="string" />
 
-            <ProgId Id="PRG_UltiMaker_Cura.STL" Description="{{ app_name }}" Icon="FILE_UltiMaker_Cura_exe">
-                <Extension Id="STL">
-                    <Verb Id='edit' TargetFile="FILE_UltiMaker_Cura_exe" Argument='"%1"' />
-                    <MIME ContentType="application/stl" Default="yes" />
-                </Extension>
+            <ProgId Id="PRG_UltiMaker_Cura_3mf" Description="{{ app_name }}" Icon="FILE_UltiMaker_Cura_exe">
+            <Extension Id='3mf' ContentType='application/3mf'>
+                <Verb Id='open' Command='Open' TargetFile='FILE_UltiMaker_Cura_exe' Argument='"%1"' />
+                <MIME ContentType="application/3mf" Default="yes" />
+            </Extension>
             </ProgId>
-            <ProgId Id="PRG_UltiMaker_Cura.3MF" Description="{{ app_name }}" Icon="FILE_UltiMaker_Cura_exe">
-                <Extension Id="3MF">
-                    <Verb Id='edit' TargetFile="FILE_UltiMaker_Cura_exe" Argument='"%1"' />
-                    <MIME ContentType="application/3mf" Default="yes" />
-                </Extension>
+            <ProgId Id="PRG_UltiMaker_Cura_stl" Description="{{ app_name }}" Icon="FILE_UltiMaker_Cura_exe">
+            <Extension Id='stl' ContentType='application/stl'>
+                <Verb Id='open_stl' Command='Open' TargetFile='FILE_UltiMaker_Cura_exe' Argument='"%1"' />
+                <MIME ContentType="application/stl" Default="yes" />
+            </Extension>
+            </ProgId>
+            <ProgId Id="PRG_UltiMaker_Cura_gcode" Description="{{ app_name }}" Icon="FILE_UltiMaker_Cura_exe">
+            <Extension Id='gcode' ContentType='text/x-gcode'>
+                <Verb Id='open_gcode' Command='Open' TargetFile='FILE_UltiMaker_Cura_exe' Argument='"%1"' />
+                <MIME ContentType="text/x-gcode" Default="yes" />
+            </Extension>
+            </ProgId>
+            <ProgId Id="PRG_UltiMaker_Cura_ufp" Description="{{ app_name }}" Icon="FILE_UltiMaker_Cura_exe">
+            <Extension Id='ufp' ContentType='application/x-ufp'>
+                <Verb Id='open_ufp' Command='Open' TargetFile='FILE_UltiMaker_Cura_exe' Argument='"%1"' />
+                <MIME ContentType="application/x-ufp" Default="yes" />
+            </Extension>
+            </ProgId>
+            <ProgId Id="PRG_UltiMaker_Cura_curapackage" Description="{{ app_name }}" Icon="FILE_UltiMaker_Cura_exe">
+            <Extension Id='curapackage' ContentType='application/curapackage'>
+                <Verb Id='open_curapackage' Command='Open' TargetFile='FILE_UltiMaker_Cura_exe' Argument='"%1"' />
+                <MIME ContentType="application/curapackage" Default="yes" />
+            </Extension>
             </ProgId>
 
             <fw:FirewallException Id="FirewallExceptLocalFrontend" Name="Cura (Frontend) Connection (LocalHost)" File="FILE_UltiMaker_Cura_exe" IgnoreFailure="yes">

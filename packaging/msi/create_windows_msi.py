@@ -96,6 +96,8 @@ def build(dist_path: Path, filename: Path):
     link_command = ["light", f"{build_loc.joinpath(wxs_loc.name).with_suffix('.wixobj')}",
                     f"{build_loc.joinpath(heat_loc.name).with_suffix('.wixobj')}",
                     f"{build_loc.joinpath(manageoldcuradlg_loc.name).with_suffix('.wixobj')}",
+                    "-sw1076",
+                    "-dcl:high",
                     "-ext", "WixUIExtension",
                     "-ext", "WixFirewallExtension",
                     "-out", f"{work_loc.joinpath(filename.name)}"]
