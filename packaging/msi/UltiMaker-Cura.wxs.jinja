@@ -113,35 +113,32 @@
             <RegistryValue Root="HKLM" Key="SOFTWARE\RegisteredApplications" Name="{{ app_name }}" Value="SOFTWARE\{{ app_name }}\Capabilities" Type="string" />
             <RegistryValue Root="HKLM" Key="SOFTWARE\Classes\Applications\{{ main_app }}\shell\open" Name="{{ app_name }}" Value="{{ main_app }}" Type="string" />
 
-            <ProgId Id="PRG_UltiMaker_Cura_3mf" Description="{{ app_name }}" Icon="FILE_UltiMaker_Cura_exe">
-            <Extension Id='3mf' ContentType='application/3mf'>
-                <Verb Id='open' Command='Open' TargetFile='FILE_UltiMaker_Cura_exe' Argument='"%1"' />
-                <MIME ContentType="application/3mf" Default="yes" />
-            </Extension>
-            </ProgId>
-            <ProgId Id="PRG_UltiMaker_Cura_stl" Description="{{ app_name }}" Icon="FILE_UltiMaker_Cura_exe">
-            <Extension Id='stl' ContentType='application/stl'>
-                <Verb Id='open_stl' Command='Open' TargetFile='FILE_UltiMaker_Cura_exe' Argument='"%1"' />
-                <MIME ContentType="application/stl" Default="yes" />
-            </Extension>
-            </ProgId>
-            <ProgId Id="PRG_UltiMaker_Cura_gcode" Description="{{ app_name }}" Icon="FILE_UltiMaker_Cura_exe">
-            <Extension Id='gcode' ContentType='text/x-gcode'>
-                <Verb Id='open_gcode' Command='Open' TargetFile='FILE_UltiMaker_Cura_exe' Argument='"%1"' />
-                <MIME ContentType="text/x-gcode" Default="yes" />
-            </Extension>
-            </ProgId>
-            <ProgId Id="PRG_UltiMaker_Cura_ufp" Description="{{ app_name }}" Icon="FILE_UltiMaker_Cura_exe">
-            <Extension Id='ufp' ContentType='application/x-ufp'>
-                <Verb Id='open_ufp' Command='Open' TargetFile='FILE_UltiMaker_Cura_exe' Argument='"%1"' />
-                <MIME ContentType="application/x-ufp" Default="yes" />
-            </Extension>
-            </ProgId>
-            <ProgId Id="PRG_UltiMaker_Cura_curapackage" Description="{{ app_name }}" Icon="FILE_UltiMaker_Cura_exe">
-            <Extension Id='curapackage' ContentType='application/curapackage'>
-                <Verb Id='open_curapackage' Command='Open' TargetFile='FILE_UltiMaker_Cura_exe' Argument='"%1"' />
-                <MIME ContentType="application/curapackage" Default="yes" />
-            </Extension>
+            <ProgId Id="Cura" Description="{{ app_name }}" Icon="ICO_Cura" Advertise="yes">
+                <ProgId Id="3mf">
+                    <Extension Id='3mf' ContentType="application/3mf">
+                        <MIME ContentType="application/3mf" Default="yes" />
+                    </Extension>
+                </ProgId>
+                <ProgId Id="stl">
+                    <Extension Id='stl' ContentType='application/stl'>
+                        <MIME ContentType="application/stl" Default="yes" />
+                    </Extension>
+                </ProgId>
+                <ProgId Id="gcode">
+                    <Extension Id='gcode' ContentType='text/x-gcode'>
+                        <MIME ContentType="text/x-gcode" Default="yes" />
+                    </Extension>
+                </ProgId>
+                <ProgId Id="ufp">
+                    <Extension Id='ufp' ContentType='application/x-ufp'>
+                        <MIME ContentType="application/x-ufp" Default="yes" />
+                    </Extension>
+                </ProgId>
+                <ProgId Id="curapackage">
+                    <Extension Id='curapackage' ContentType='application/curapackage'>
+                        <MIME ContentType="application/curapackage" Default="yes" />
+                    </Extension>
+                </ProgId>
             </ProgId>
 
             <fw:FirewallException Id="FirewallExceptLocalFrontend" Name="Cura (Frontend) Connection (LocalHost)" File="FILE_UltiMaker_Cura_exe" IgnoreFailure="yes">
