@@ -1,0 +1,31 @@
+{
+    "name": "Lotmaxx Shark V3",
+    "version": 2,
+    "inherits": "lotmaxx_sc60_v2",
+    "overrides": {
+        "machine_name": { "default_value": "Lotmaxx Shark V3" },
+        "machine_width": { "default_value": 235 },
+        "machine_depth": { "default_value": 235 },
+        "machine_height": { "default_value": 260 },
+        "machine_head_with_fans_polygon": { "default_value": [
+                [-45,22.5],
+                [-45,-34.5],
+                [64,-34.5],
+                [64,22.5]
+            ]
+        },
+        "gantry_height": { "value": 29 }
+    },
+    "metadata": {
+        "visible": true,
+        "author": "lotmaxx.com",
+        "manufacturer": "Lotmaxx",
+        "platform": "lotmaxx_sc_10_20_platform.3mf",
+        "machine_extruder_trains": {
+            "0": "lotmaxx_sc60_extruder_left",
+            "1": "lotmaxx_sc60_extruder_right"
+        },
+        "has_materials": true,
+        "preferred_quality_type": "normal"
+    }
+}
