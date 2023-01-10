@@ -64,18 +64,18 @@
         "retraction_hop_enabled": { "value": "False" },
         "retraction_prime_speed":
         {
-            "value": 20,
-            "maximum_value": 200
+            "maximum_value": 200,
+            "value": 20
         },
         "retraction_retract_speed":
         {
-            "value": 200,
-            "maximum_value_warning": 130
+            "maximum_value_warning": 130,
+            "value": 200
         },
         "retraction_speed":
         {
-            "value": 40,
-            "maximum_value": 200
+            "maximum_value": 200,
+            "value": 40
         },
         "roofing_layer_count": { "value": 1 },
         "skin_monotonic": { "value": true },
