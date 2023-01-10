@@ -84,6 +84,8 @@ class Definition(Linter):
             self._loadDefinitionFiles(parent_file)
 
     def _isDefinedInParent(self, key, value_dict, inherits_from):
+        if self._ignore(key, "diagnostic-definition-redundant-override"):
+            return False, None, None, None
         if "overrides" not in self._definitions[inherits_from]:
             return self._isDefinedInParent(key, value_dict, self._definitions[inherits_from]["inherits"])
 
@@ -119,7 +121,6 @@ class Definition(Linter):
         return False, None, None, None
 
     def _loadBasePrinterSettings(self):
-        """ TODO @Jelle please explain why this """
         settings = {}
         for k, v in self._definitions[self.base_def]["settings"].items():
             self._getSetting(k, v, settings)
@@ -130,3 +131,11 @@ class Definition(Linter):
             for childname, child in setting["children"].items():
                 self._getSetting(childname, child, settings)
         settings |= {name: setting}
+
+    def _ignore(self, key: dict, type_of_check: str) -> bool:
+        if f"{type_of_check}-ignore" in self._settings:
+            filters = [re.compile(f) for f in self._settings[f"{type_of_check}-ignore"]]
+            for f in filters:
+                if f.match(key):
+                    return True
+        return False
