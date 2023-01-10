@@ -15,39 +15,37 @@
             "1": "tevo_tarantula_extruder_1"
         }
     },
-
     "overrides":
     {
-        "machine_name": { "default_value": "Tevo Tarantula" },
-        "machine_heated_bed": { "default_value": true },
-        "machine_width": { "default_value": 200 },
-        "machine_height": { "default_value": 200 },
-        "machine_depth": { "default_value": 200 },
+        "acceleration_print": { "default_value": 2650 },
+        "gantry_height": { "value": "55" },
+        "machine_acceleration": { "default_value": 2650 },
         "machine_center_is_zero": { "default_value": false },
+        "machine_depth": { "default_value": 200 },
+        "machine_end_gcode": { "default_value": "M104 S0 ;extruder heater off\nM140 S0 ;heated bed heater off (if you have it)\nG91 ;relative positioning\nG1 E-1 F300  ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+0.5 E-5 X-20 Y-20 F9000 ;move Z up a bit and retract filament even more\nG90 ;absolute positioning\nG1 X0 Y200 F3600 ;move extruder out of the way by moving the baseplate to the front for easier access to printed object\nM84 ;steppers off" },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
         "machine_head_with_fans_polygon":
         {
-            "default_value":
-            [
+            "default_value": [
                 [-75, -18],
                 [-75, 35],
                 [18, 35],
                 [18, -18]
             ]
         },
-        "gantry_height": { "value": "55" },
-        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
-        "machine_acceleration": { "default_value": 2650 },
-        "machine_max_jerk_xy": { "default_value": 15.0 },
-        "machine_max_jerk_z": { "default_value": 0.4 },
-        "machine_max_jerk_e": { "default_value": 5 },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 200 },
+        "machine_max_acceleration_x": { "default_value": 2650 },
+        "machine_max_acceleration_y": { "default_value": 2650 },
         "machine_max_feedrate_x": { "default_value": 255 },
         "machine_max_feedrate_y": { "default_value": 225 },
         "machine_max_feedrate_z": { "default_value": 3 },
-        "machine_max_acceleration_x": { "default_value": 2650 },
-        "machine_max_acceleration_y": { "default_value": 2650 },
-        "acceleration_print": { "default_value": 2650 },
+        "machine_max_jerk_e": { "default_value": 5 },
+        "machine_max_jerk_xy": { "default_value": 15.0 },
+        "machine_max_jerk_z": { "default_value": 0.4 },
+        "machine_name": { "default_value": "Tevo Tarantula" },
         "machine_start_gcode": { "default_value": "G21 ;metric values\nG90 ;absolute positioning\nM82 ;set extruder to absolute mode\nM107 ;start with the fan off\nG28 X0 Y0 ;move X/Y to min endstops\nG28 Z0 ;move Z to min endstops\nG1 Z15.0 F9000 ;move the platform down 15mm\nG92 E0 ;zero the extruded length\nG1 F200 E3 ;extrude 3mm of feed stock\nG92 E0 ;zero the extruded length again\nG1 F9000\n;Put printing message on LCD screen\nM117 Printing..." },
-        "machine_end_gcode": { "default_value": "M104 S0 ;extruder heater off\nM140 S0 ;heated bed heater off (if you have it)\nG91 ;relative positioning\nG1 E-1 F300  ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+0.5 E-5 X-20 Y-20 F9000 ;move Z up a bit and retract filament even more\nG90 ;absolute positioning\nG1 X0 Y200 F3600 ;move extruder out of the way by moving the baseplate to the front for easier access to printed object\nM84 ;steppers off" },
+        "machine_width": { "default_value": 200 },
         "speed_z_hop": { "default_value": 3 }
     }
 }

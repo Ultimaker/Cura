@@ -86,6 +86,12 @@ class CuraConan(ConanFile):
         return self.options.enterprise in ["True", 'true']
 
     @property
+    def _app_name(self):
+        if self._enterprise:
+            return str(self.options.display_name) + " Enterprise"
+        return str(self.options.display_name)
+
+    @property
     def _cloud_api_root(self):
         return "https://api-staging.ultimaker.com" if self._staging else "https://api.ultimaker.com"
 
@@ -161,7 +167,7 @@ class CuraConan(ConanFile):
         with open(Path(location, "CuraVersion.py"), "w") as f:
             f.write(cura_version_py.render(
                 cura_app_name = self.name,
-                cura_app_display_name = self.options.display_name,
+                cura_app_display_name = self._app_name,
                 cura_version = cura_version,
                 cura_build_type = "Enterprise" if self._enterprise else "",
                 cura_debug_mode = self.options.cura_debug_mode,
@@ -425,11 +431,13 @@ echo "CURA_VERSION_MINOR={{ cura_version_minor }}" >> ${{ env_prefix }}GITHUB_EN
 echo "CURA_VERSION_PATCH={{ cura_version_patch }}" >> ${{ env_prefix }}GITHUB_ENV
 echo "CURA_VERSION_BUILD={{ cura_version_build }}" >> ${{ env_prefix }}GITHUB_ENV
 echo "CURA_VERSION_FULL={{ cura_version_full }}" >> ${{ env_prefix }}GITHUB_ENV
+echo "CURA_APP_NAME={{ cura_app_name }}" >> ${{ env_prefix }}GITHUB_ENV
         """).render(cura_version_major = cura_version.major,
                     cura_version_minor = cura_version.minor,
                     cura_version_patch = cura_version.patch,
                     cura_version_build = cura_version.build if cura_version.build != "" else "0",
                     cura_version_full = self.version,
+                    cura_app_name = self._app_name,
                     env_prefix = env_prefix)
 
         ext = ".sh" if self.settings.os != "Windows" else ".ps1"

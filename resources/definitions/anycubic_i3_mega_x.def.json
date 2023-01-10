@@ -4,33 +4,36 @@
     "inherits": "anycubic_i3_mega_s",
     "metadata":
     {
-        "quality_definition": "anycubic_i3_mega_s",
-        "platform": "anycubic_i3_mega_x_platform.stl"
+        "platform": "anycubic_i3_mega_x_platform.stl",
+        "quality_definition": "anycubic_i3_mega_s"
     },
     "overrides":
     {
-        "machine_name": { "default_value": "Anycubic i3 Mega X" },
-        "machine_width": { "default_value": 300 },
-        "machine_height": { "default_value": 305 },
+        "acceleration_print": { "value": 400 },
+        "acceleration_travel": { "value": 400 },
+        "machine_acceleration": { "value": 3000 },
         "machine_depth": { "default_value": 300 },
-
+        "machine_height": { "default_value": 305 },
+        "machine_max_acceleration_e": { "value": 10000 },
         "machine_max_acceleration_x": { "value": 400 },
         "machine_max_acceleration_y": { "value": 400 },
         "machine_max_acceleration_z": { "value": 60 },
-        "machine_max_acceleration_e": { "value": 10000 },
-        "machine_acceleration": { "value": 3000 },
-
         "machine_max_feedrate_x": { "default_value": 120 },
         "machine_max_feedrate_y": { "default_value": 120 },
         "machine_max_feedrate_z": { "default_value": 20 },
-
-        "speed_travel": { "value": 100.0,  "maximum_value": 120.0 },
-
-        "acceleration_print": { "value": 400 },
-        "acceleration_travel": { "value": 400 },
-        
-        "retraction_speed": { "value": 30, "maximum_value_warning": 60 },
+        "machine_name": { "default_value": "Anycubic i3 Mega X" },
+        "machine_width": { "default_value": 300 },
+        "retraction_prime_speed": { "maximum_value_warning": 60 },
         "retraction_retract_speed": { "maximum_value_warning": 60 },
-        "retraction_prime_speed": { "maximum_value_warning": 60 }
+        "retraction_speed":
+        {
+            "maximum_value_warning": 60,
+            "value": 30
+        },
+        "speed_travel":
+        {
+            "maximum_value": 120.0,
+            "value": 100.0
+        }
     }
 }
