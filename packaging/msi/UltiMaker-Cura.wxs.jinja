@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:fw="http://schemas.microsoft.com/wix/FirewallExtension">
     <Product
-        Id="*"
+        Id="{{ product_code }}"
         Name="{{ app_name }}"
         Language="1033"
         Version="{{ version_major }}.{{ version_minor }}.{{ version_patch }}"
         Manufacturer="{{ company }}"
         UpgradeCode="{{ upgrade_code }}"
     >
-        <Package InstallerVersion="500"
+        <Package
+            Id="*"
+            InstallerVersion="500"
             Compressed="yes"
             InstallScope="perMachine"
             Manufacturer="{{ company }}"
