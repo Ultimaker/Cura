@@ -5,13 +5,13 @@
 import os
 import argparse  # Command line arguments parsing and help.
 import subprocess
+from pathlib import Path
 
 ULTIMAKER_CURA_DOMAIN = os.environ.get("ULTIMAKER_CURA_DOMAIN", "nl.ultimaker.cura")
 
-def build_pkg(source_path: str, dist_path: str, app_filename: str, component_filename: str, installer_filename: str) -> None:
+def build_pkg(dist_path: str, app_filename: str, component_filename: str, installer_filename: str) -> None:
     """ Builds and signs the pkg installer.
 
-    @param source_path: Path to folder containing source files
     @param dist_path: Path to put output pkg in
     @param app_filename: name of the .app file to bundle inside the pkg
     @param component_filename: Name of the pkg component package to bundle the app in
@@ -86,7 +86,7 @@ def notarize_file(dist_path: str, filename: str) -> None:
     subprocess.run(notarize_arguments)
 
 
-def create_pkg_installer(filename: str, dist_path: str, source_path: str) -> None:
+def create_pkg_installer(filename: str, dist_path: str) -> None:
     """ Creates a pkg installer from {filename}.app called {filename}-Installer.pkg
 
     The final package structure is UltiMaker-Cura-XXX-Installer.pkg[UltiMaker-Cura.pkg[UltiMaker-Cura.app]]. The outer
@@ -95,26 +95,25 @@ def create_pkg_installer(filename: str, dist_path: str, source_path: str) -> Non
 
     @param filename: The name of the app file and the app component package file without the extension
     @param dist_path: The location to read the app from and save the pkg to
-    @param source_path: The location of the project source files
     """
-    installer_package_name = f"{filename}-Installer.pkg"
-    cura_component_package_name = f"{filename}.pkg"  # This is a component package that is nested inside the installer, it contains the UltiMaker-Cura.app file
+
+    filename_stem = Path(filename).stem
+    cura_component_package_name = f"{filename_stem}-Component.pkg"  # This is a component package that is nested inside the installer, it contains the UltiMaker-Cura.app file
     app_name = "UltiMaker-Cura.app"  # This is the app file that will end up in your applications folder
 
     code_sign(dist_path, app_name)  # The app is signed using a different certificate than the package files
-    build_pkg(source_path, dist_path, app_name, cura_component_package_name, installer_package_name)
+    build_pkg(dist_path, app_name, cura_component_package_name, filename)
 
     notarize = bool(os.environ.get("NOTARIZE_INSTALLER", "TRUE"))
     if notarize:
-        notarize_file(dist_path, installer_package_name)
+        notarize_file(dist_path, filename)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = "Create installer for Cura.")
-    parser.add_argument("source_path", type=str, help="Path to Conan install Cura folder.")
     parser.add_argument("dist_path", type=str, help="Path to Pyinstaller dist folder")
-    parser.add_argument("filename", type = str, help = "Filename of the pkg without the file extension (e.g. 'UltiMaker-Cura-5.1.0-beta-Macos-X64')")
+    parser.add_argument("filename", type = str, help = "Filename of the pkg (e.g. 'UltiMaker-Cura-5.1.0-beta-Macos-X64.pkg')")
     args = parser.parse_args()
 
     build_installer = bool(os.environ.get("BUILD_INSTALLER", "TRUE"))
     if build_installer:
-        create_pkg_installer(args.filename, args.dist_path, args.source_path)
+        create_pkg_installer(args.filename, args.dist_path)
