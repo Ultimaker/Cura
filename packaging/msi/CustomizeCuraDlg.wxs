@@ -6,7 +6,7 @@
     <Fragment>
         <UI>
             <Dialog Id="CustomizeCuraDlg" Width="370" Height="270" Title="!(loc.CustomizeDlg_Title)" TrackDiskSpace="yes">
-                <Control Id="Tree" Type="SelectionTree" X="25" Y="85" Width="175" Height="115" Property="_BrowseProperty" Sunken="yes" TabSkip="no" Text="!(loc.CustomizeDlgTree)" />
+                <Control Id="Tree" Type="SelectionTree" X="25" Y="85" Width="175" Height="95" Property="_BrowseProperty" Sunken="yes" TabSkip="no" Text="!(loc.CustomizeDlgTree)" />
                 <Control Id="Browse" Type="PushButton" X="294" Y="210" Width="66" Height="17" Text="!(loc.CustomizeDlgBrowse)">
                     <Publish Event="SelectionBrowse" Value="BrowseDlg">1</Publish>
                     <Condition Action="hide">Installed</Condition>
@@ -16,7 +16,7 @@
                     <Publish Event="Reset" Value="0">1</Publish>
                     <Subscribe Event="SelectionNoItems" Attribute="Enabled" />
                 </Control>
-                <Control Id="DiskCost" Type="PushButton" X="91" Y="243" Width="100" Height="17" Text="!(loc.CustomizeDlgDiskCost)">
+                <Control Id="DiskCost" Type="PushButton" X="91" Y="243" Width="80" Height="17" Text="!(loc.CustomizeDlgDiskCost)">
                     <Publish Event="SpawnDialog" Value="DiskCostDlg">1</Publish>
                     <Subscribe Event="SelectionNoItems" Attribute="Enabled" />
                 </Control>
@@ -33,14 +33,14 @@
                 <Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
                 <Control Id="Description" Type="Text" X="25" Y="23" Width="280" Height="15" Transparent="yes" NoPrefix="yes" Text="!(loc.CustomizeDlgDescription)" />
                 <Control Id="Title" Type="Text" X="15" Y="6" Width="210" Height="15" Transparent="yes" NoPrefix="yes" Text="!(loc.CustomizeDlgTitle)" />
-                <Control Id="Box" Type="GroupBox" X="210" Y="81" Width="150" Height="118" />
-                <Control Id="ItemDescription" Type="Text" X="215" Y="90" Width="131" Height="50" Text="!(loc.CustomizeDlgItemDescription)">
+                <Control Id="Box" Type="GroupBox" X="210" Y="81" Width="150" Height="88" />
+                <Control Id="ItemDescription" Type="Text" X="215" Y="90" Width="131" Height="30" Text="!(loc.CustomizeDlgItemDescription)">
                     <Subscribe Event="SelectionDescription" Attribute="Text" />
                 </Control>
                 <Control Id="ItemSize" Type="Text" X="215" Y="140" Width="131" Height="50" Text="!(loc.CustomizeDlgItemSize)">
                     <Subscribe Event="SelectionSize" Attribute="Text" />
                 </Control>
-                <Control Id="UninstallPreviousCheckBox" Type="CheckBox" X="10" Y="210" Width="290" Height="17" Property="PREVIOUS_VERSIONS_INSTALLED" CheckBoxValue="0" Text="Uninstall previous Cura versions." />
+                <Control Id="UninstallPreviousCheckBox" Type="CheckBox" X="25" Y="190" Width="290" Height="17" Property="PREVIOUS_VERSIONS_INSTALLED" CheckBoxValue="0" Text="Uninstall previous Cura versions." />
                 <Control Id="Location" Type="Text" X="90" Y="210" Width="200" Height="20" Text="!(loc.CustomizeDlgLocation)">
                     <Subscribe Event="SelectionPath" Attribute="Text" />
                     <Subscribe Event="SelectionPathOn" Attribute="Visible" />

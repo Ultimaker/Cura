@@ -28,8 +28,6 @@
                 IncludeMinimum="no" IncludeMaximum="no"
             />
         </Upgrade>
-        <!--TODO: handle copy of configuration of previous version-->
-        <!--TODO: handle removal of old configuration once previous version is uninstalled-->
 
         {% if "Enterprise" in app_name %}
         <Property Id="PREVIOUS_413_INSTALLED" Secure="yes" />
@@ -169,7 +167,7 @@
                 <RemoveFolder Id="RemoveMyShortcutsDir"
                               On="uninstall" />
                 <RegistryValue Root="HKCU"
-                               Key="Software\{{ company }}\{{ app_name }}"
+                               Key="Software\{{ company }}\{{ app_name }}\{{ version }}"
                                Name="installed"
                                Type="integer"
                                Value="1"
@@ -177,7 +175,7 @@
             </Component>
         </DirectoryRef>
 
-        <Feature Id="ProductFeature" Title="{{ app_name }}" Level="1">
+        <Feature Id="ProductFeature" Title="{{ app_name }}" Level="1" ConfigurableDirectory="APPLICATIONFOLDER">
             <ComponentRef Id="CMP_UltiMaker_Cura_exe" />
             <ComponentRef Id="CMP_CuraEngine_exe" />
             <ComponentGroupRef Id="NewFilesGroup" />
