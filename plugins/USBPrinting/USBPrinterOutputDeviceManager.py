@@ -7,7 +7,7 @@ import serial.tools.list_ports
 from os import environ
 from re import search
 
-from PyQt5.QtCore import QObject, pyqtSignal
+from PyQt6.QtCore import QObject, pyqtSignal
 
 from UM.Signal import Signal, signalemitter
 from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
@@ -30,16 +30,17 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin):
     def __init__(self, application, parent = None):
         if USBPrinterOutputDeviceManager.__instance is not None:
             raise RuntimeError("Try to create singleton '%s' more than once" % self.__class__.__name__)
-        USBPrinterOutputDeviceManager.__instance = self
 
         super().__init__(parent = parent)
+        USBPrinterOutputDeviceManager.__instance = self
+
         self._application = application
 
         self._serial_port_list = []
         self._usb_output_devices = {}
         self._usb_output_devices_model = None
         self._update_thread = threading.Thread(target = self._updateThread)
-        self._update_thread.setDaemon(True)
+        self._update_thread.daemon = True
 
         self._check_updates = True
 

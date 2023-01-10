@@ -4,9 +4,8 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
-import QtGraphicalEffects 1.12 // For the DropShadow
 
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.1 as Cura
 
 
@@ -20,7 +19,7 @@ Item
 
     UM.I18nCatalog { id: catalog; name: "cura" }
 
-    Label
+    UM.Label
     {
         id: titleLabel
         anchors.top: parent.top
@@ -29,7 +28,6 @@ Item
         text: catalog.i18nc("@label", "What's New")
         color: UM.Theme.getColor("primary_button")
         font: UM.Theme.getFont("huge")
-        renderType: Text.NativeRendering
     }
 
     Rectangle
@@ -92,13 +90,6 @@ Item
                         source: manager.getSubpageImageSource(index)
                     }
 
-                    DropShadow {
-                        anchors.fill: subpageImage
-                        radius: UM.Theme.getSize("monitor_shadow_radius").width
-                        color: UM.Theme.getColor("first_run_shadow")
-                        source: subpageImage
-                    }
-
                     Cura.ScrollableTextArea
                     {
                         id: subpageText
@@ -112,8 +103,6 @@ Item
                             left: subpageImage.left
                             right: subpageImage.right
                         }
-
-                        ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
 
                         back_color: UM.Theme.getColor("viewport_overlay")
                         do_borders: false

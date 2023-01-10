@@ -8,7 +8,6 @@ from ..BaseModel import BaseModel
 class CloudClusterResponse(BaseModel):
     """Class representing a cloud connected cluster."""
 
-
     def __init__(self, cluster_id: str, host_guid: str, host_name: str, is_online: bool, status: str,
                  host_internal_ip: Optional[str] = None, host_version: Optional[str] = None,
                  friendly_name: Optional[str] = None, printer_type: str = "ultimaker3", printer_count: int = 1,

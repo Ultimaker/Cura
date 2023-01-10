@@ -2,66 +2,39 @@
     "version": 2,
     "name": "Malyan M180",
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "visible": true,
         "author": "Ghostkeeper",
         "manufacturer": "Malyan",
-        "machine_x3g_variant": "r1d",
         "file_formats": "application/x3g",
-        "machine_extruder_trains":
-        {
-            "0": "malyan_m180_extruder_0"
-        }
+        "machine_extruder_trains": { "0": "malyan_m180_extruder_0" },
+        "machine_x3g_variant": "r1d"
     },
-
-    "overrides": {
-        "machine_name": { "default_value": "Malyan M180" },
-        "machine_width": {
-            "default_value": 230
-        },
-        "machine_height": {
-            "default_value": 165
-        },
-        "machine_depth": {
-            "default_value": 145
-        },
-        "machine_center_is_zero": {
-            "default_value": true
-        },
-        "machine_head_with_fans_polygon": {
+    "overrides":
+    {
+        "gantry_height": { "value": "55" },
+        "machine_center_is_zero": { "default_value": true },
+        "machine_depth": { "default_value": 145 },
+        "machine_end_gcode": { "default_value": "G92 Z0\nG1 Z10 F400\nM18\nM109 S0 T0\nM104 S0 T0\nM73 P100 (end  build progress)\nG162 X Y F3000\nM18" },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_head_with_fans_polygon":
+        {
             "default_value": [
-                [ -75, 35 ],
-                [ -75, -18 ],
-                [ 18, -18 ],
-                [ 18, 35 ]
+                [-75, 35],
+                [-75, -18],
+                [18, -18],
+                [18, 35]
             ]
         },
-        "machine_max_feedrate_z": {
-            "default_value": 400
-        },
-        "machine_steps_per_mm_x": {
-            "default_value": 93
-        },
-        "machine_steps_per_mm_y": {
-            "default_value": 93
-        },
-        "machine_steps_per_mm_z": {
-            "default_value": 1600
-        },
-        "machine_steps_per_mm_e": {
-            "default_value": 92
-        },
-        "gantry_height": {
-            "value": "55"
-        },
-        "machine_gcode_flavor": {
-            "default_value": "RepRap (Marlin/Sprinter)"
-        },
-        "machine_start_gcode": {
-            "default_value": "M136\nM73 P0\nM103\nG21\nG90\nM320\n;(**** begin homing ****)\nG162 X Y F4000\nG161 Z F3500\nG92 Z-5\nG1 Z0.0\nG161 Z F100\nM132 X Y Z A B\n;(**** end homing ****)\nG92 X147 Y66 Z5\nG1 X105 Y-60 Z10 F4000.0\nG130 X127 Y127 A127 B127\nG0 X105 Y-60\nG1 Z0.3 F300\nG92 E0\nG1 X100 E10 F300\nG92 E0\nG1 Z0.0 F300\nM320"
-        },
-        "machine_end_gcode": {
-            "default_value": "G92 Z0\nG1 Z10 F400\nM18\nM109 S0 T0\nM104 S0 T0\nM73 P100 (end  build progress)\nG162 X Y F3000\nM18"
-        }
+        "machine_height": { "default_value": 165 },
+        "machine_max_feedrate_z": { "default_value": 400 },
+        "machine_name": { "default_value": "Malyan M180" },
+        "machine_start_gcode": { "default_value": "M136\nM73 P0\nM103\nG21\nG90\nM320\n;(**** begin homing ****)\nG162 X Y F4000\nG161 Z F3500\nG92 Z-5\nG1 Z0.0\nG161 Z F100\nM132 X Y Z A B\n;(**** end homing ****)\nG92 X147 Y66 Z5\nG1 X105 Y-60 Z10 F4000.0\nG130 X127 Y127 A127 B127\nG0 X105 Y-60\nG1 Z0.3 F300\nG92 E0\nG1 X100 E10 F300\nG92 E0\nG1 Z0.0 F300\nM320" },
+        "machine_steps_per_mm_e": { "default_value": 92 },
+        "machine_steps_per_mm_x": { "default_value": 93 },
+        "machine_steps_per_mm_y": { "default_value": 93 },
+        "machine_steps_per_mm_z": { "default_value": 1600 },
+        "machine_width": { "default_value": 230 }
     }
 }

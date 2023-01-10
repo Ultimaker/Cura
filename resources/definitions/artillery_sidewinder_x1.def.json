@@ -1,19 +1,24 @@
 {
-    "name": "Artillery Sidewinder X1",
     "version": 2,
+    "name": "Artillery Sidewinder X1",
     "inherits": "artillery_base",
-    "overrides": {
-        "machine_name": { "default_value": "Artillery Sidewinder X1" },
-        "machine_width": { "default_value": 300 },
+    "metadata":
+    {
+        "visible": true,
+        "platform": "artillery_swx1.stl",
+        "platform_offset": [
+            -200,
+            -100,
+            250
+        ],
+        "quality_definition": "artillery_base"
+    },
+    "overrides":
+    {
+        "gantry_height": { "value": 25 },
         "machine_depth": { "default_value": 300 },
         "machine_height": { "default_value": 400 },
-		"gantry_height": { "value": 25 }
-
-    },
-    "metadata": {
-        "quality_definition": "artillery_base",
-        "visible": true,
-		"platform": "artillery_swx1.stl",
-        "platform_offset": [ -200, -100, 250]
+        "machine_name": { "default_value": "Artillery Sidewinder X1" },
+        "machine_width": { "default_value": 300 }
     }
 }

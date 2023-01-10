@@ -71,7 +71,7 @@ def test_uniqueConfigurations(printer_output_device):
     loaded_right_extruder = ExtruderConfigurationModel(1)
     loaded_right_extruder.setMaterial(loaded_material)
     printer.printerConfiguration.setExtruderConfigurations([loaded_left_extruder, loaded_right_extruder])
-    assert printer_output_device.uniqueConfigurations == [configuration, printer.printerConfiguration]
+    assert set(printer_output_device.uniqueConfigurations) == set([configuration, printer.printerConfiguration])
 
 
 def test_uniqueConfigurations_empty_is_filtered_out(printer_output_device):

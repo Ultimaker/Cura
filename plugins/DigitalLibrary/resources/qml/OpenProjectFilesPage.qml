@@ -1,12 +1,11 @@
-// Copyright (C) 2021 Ultimaker B.V.
+//Copyright (C) 2022 Ultimaker B.V.
+//Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.10
+import QtQuick 2.15
 import QtQuick.Window 2.2
-import QtQuick.Controls 1.4 as OldControls // TableView doesn't exist in the QtQuick Controls 2.x in 5.10, so use the old one
 import QtQuick.Controls 2.3
-import QtQuick.Controls.Styles 1.4
 
-import UM 1.2 as UM
+import UM 1.6 as UM
 import Cura 1.6 as Cura
 
 import DigitalFactory 1.0 as DF
@@ -19,6 +18,7 @@ Item
     height: parent.height
 
     property var fileModel: manager.digitalFactoryFileModel
+    property var modelRows: manager.digitalFactoryFileModel.items
 
     signal openFilePressed()
     signal selectDifferentProjectPressed()
@@ -57,61 +57,38 @@ Item
         border.width: UM.Theme.getSize("default_lining").width
         border.color: UM.Theme.getColor("lining")
 
-
+        // This is not backwards compatible with Cura < 5.0 due to QT.labs being removed in PyQt6
         Cura.TableView
         {
             id: filesTableView
             anchors.fill: parent
-            model: manager.digitalFactoryFileModel
-            visible: model.count != 0 && manager.retrievingFileStatus != DF.RetrievalStatus.InProgress
-            selectionMode: OldControls.SelectionMode.SingleSelection
-            onDoubleClicked:
+            anchors.margins: parent.border.width
+
+            columnHeaders: ["Name", "Uploaded by", "Uploaded at"]
+            model: UM.TableModel
+            {
+                id: tableModel
+                headers: ["fileName", "username", "uploadedAt"]
+                rows: modelRows
+            }
+
+            onCurrentRowChanged:
+            {
+                manager.setSelectedFileIndices([currentRow]);
+            }
+            onDoubleClicked: function(row)
             {
                 manager.setSelectedFileIndices([row]);
                 openFilesButton.clicked();
             }
-
-            OldControls.TableViewColumn
-            {
-                id: fileNameColumn
-                role: "fileName"
-                title: "Name"
-                width: Math.round(filesTableView.width / 3)
-            }
-
-            OldControls.TableViewColumn
-            {
-                id: usernameColumn
-                role: "username"
-                title: "Uploaded by"
-                width: Math.round(filesTableView.width / 3)
-            }
-
-            OldControls.TableViewColumn
-            {
-                role: "uploadedAt"
-                title: "Uploaded at"
-            }
-
-            Connections
-            {
-                target: filesTableView.selection
-                function onSelectionChanged()
-                {
-                    let newSelection = [];
-                    filesTableView.selection.forEach(function(rowIndex) { newSelection.push(rowIndex); });
-                    manager.setSelectedFileIndices(newSelection);
-                }
-            }
         }
 
-        Label
+        UM.Label
         {
             id: emptyProjectLabel
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
             text: "Select a project to view its files."
-            font: UM.Theme.getFont("default")
             color: UM.Theme.getColor("setting_category_text")
 
             Connections
@@ -124,14 +101,13 @@ Item
             }
         }
 
-        Label
+        UM.Label
         {
             id: noFilesInProjectLabel
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
             visible: (manager.digitalFactoryFileModel.count == 0 && !emptyProjectLabel.visible && !retrievingFilesBusyIndicator.visible)
             text: "No supported files in this project."
-            font: UM.Theme.getFont("default")
             color: UM.Theme.getColor("setting_category_text")
         }
 
@@ -161,7 +137,6 @@ Item
             {
                 // Make sure no files are selected when the file model changes
                 filesTableView.currentRow = -1
-                filesTableView.selection.clear()
             }
         }
     }
@@ -187,7 +162,7 @@ Item
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         text: "Open"
-        enabled: filesTableView.selection.count > 0
+        enabled: filesTableView.currentRow >= 0
         onClicked:
         {
             manager.openSelectedFiles()
@@ -199,5 +174,11 @@ Item
     {
         openFilesButton.clicked.connect(base.openFilePressed)
         selectDifferentProjectButton.clicked.connect(base.selectDifferentProjectPressed)
+    }
+
+    onModelRowsChanged:
+    {
+        tableModel.clear()
+        tableModel.rows = modelRows
     }
 }

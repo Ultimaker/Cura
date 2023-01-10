@@ -1,0 +1,29 @@
+{
+    "version": 2,
+    "name": "Anycubic Kobra",
+    "inherits": "fdmprinter",
+    "metadata":
+    {
+        "visible": true,
+        "author": "Jason Chen",
+        "manufacturer": "Anycubic",
+        "file_formats": "text/x-gcode",
+        "firmware_file": "MarlinChiron.hex",
+        "has_machine_quality": true,
+        "has_materials": true,
+        "machine_extruder_trains": { "0": "anycubic_kobra_extruder_0" },
+        "preferred_material": "generic_pla",
+        "preferred_quality_type": "pla",
+        "quality_definition": "anycubic_kobra"
+    },
+    "overrides":
+    {
+        "machine_depth": { "default_value": 222 },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 252 },
+        "machine_name": { "default_value": "Anycubic Kobra" },
+        "machine_start_gcode": { "default_value": "G28 ;Home\nG1 Z15.0 F1200 ;Move the platform down 15mm\n;Prime the extruder\nG92 E0\nG1 F200 E3\nG92 E0" },
+        "machine_width": { "default_value": 222 }
+    }
+}

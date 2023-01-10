@@ -1,10 +1,10 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.3
-import QtQuick.Controls 2.0
-import QtQuick.Dialogs 1.1
-import UM 1.3 as UM
+import QtQuick.Controls 2.15
+import UM 1.5 as UM
+import Cura 1.6 as Cura
 
 /**
  * A MonitorInfoBlurb is an extension of the GenericPopUp used to show static information (vs. interactive context
@@ -13,9 +13,97 @@ import UM 1.3 as UM
  */
 Item
 {
+    id: monitorContextMenu
     property alias target: popUp.target
 
     property var printJob: null
+
+    //Everything in the pop-up only gets evaluated when showing the pop-up.
+    //However we want to show the button for showing the pop-up only if there is anything visible inside it.
+    //So compute here the visibility of the menu items, so that we can use it for the visibility of the button.
+    property bool sendToTopVisible:
+    {
+        if (printJob && (printJob.state == "queued" || printJob.state == "error")) {
+            if (OutputDevice && OutputDevice.queuedPrintJobs[0] && OutputDevice.canWriteOthersPrintJobs) {
+                return OutputDevice.queuedPrintJobs[0].key != printJob.key;
+            }
+        }
+        return false;
+    }
+    
+    property bool deleteVisible:
+    {
+        if(!printJob)
+        {
+            return false;
+        }
+        if(printJob.isMine)
+        {
+            if(!OutputDevice.canWriteOwnPrintJobs)
+            {
+                return false;
+            }
+        }
+        else
+        {
+            if(!OutputDevice.canWriteOthersPrintJobs)
+            {
+                return false;
+            }
+        }
+        var states = ["queued", "error", "sent_to_printer"];
+        return states.indexOf(printJob.state) !== -1;
+    }
+    
+    property bool pauseVisible:
+    {
+        if(!printJob)
+        {
+            return false;
+        }
+        if(printJob.isMine)
+        {
+            if(!OutputDevice.canWriteOwnPrintJobs)
+            {
+                return false;
+            }
+        }
+        else
+        {
+            if(!OutputDevice.canWriteOthersPrintJobs)
+            {
+                return false;
+            }
+        }
+        var states = ["printing", "pausing", "paused", "resuming"];
+        return states.indexOf(printJob.state) !== -1;
+    }
+
+    property bool abortVisible:
+    {
+        if(!printJob)
+        {
+            return false;
+        }
+        if(printJob.isMine)
+        {
+            if(!OutputDevice.canWriteOwnPrintJobs)
+            {
+                return false;
+            }
+        }
+        else
+        {
+            if(!OutputDevice.canWriteOthersPrintJobs)
+            {
+                return false;
+            }
+        }
+        var states = ["pre_print", "printing", "pausing", "paused", "resuming"];
+        return states.indexOf(printJob.state) !== -1;
+    }
+
+    property bool hasItems: sendToTopVisible || deleteVisible || pauseVisible || abortVisible
 
     GenericPopUp
     {
@@ -46,56 +134,54 @@ Item
 
                 spacing: Math.floor(UM.Theme.getSize("default_margin").height / 2)
 
-                PrintJobContextMenuItem {
-                    onClicked: {
+                PrintJobContextMenuItem
+                {
+                    onClicked:
+                    {
                         sendToTopConfirmationDialog.visible = true;
                         popUp.close();
                     }
                     text: catalog.i18nc("@label", "Move to top");
-                    visible: {
-                        if (printJob && (printJob.state == "queued" || printJob.state == "error") && !isAssigned(printJob)) {
-                            if (OutputDevice && OutputDevice.queuedPrintJobs[0]) {
-                                return OutputDevice.queuedPrintJobs[0].key != printJob.key;
-                            }
-                        }
-                        return false;
-                    }
+                    visible: monitorContextMenu.sendToTopVisible
                 }
 
-                PrintJobContextMenuItem {
-                    onClicked: {
+                PrintJobContextMenuItem
+                {
+                    onClicked:
+                    {
                         deleteConfirmationDialog.visible = true;
                         popUp.close();
                     }
                     text: catalog.i18nc("@label", "Delete");
-                    visible: {
-                        if (!printJob) {
-                            return false;
-                        }
-                        var states = ["queued", "error", "sent_to_printer"];
-                        return states.indexOf(printJob.state) !== -1;
-                    }
+                    visible: monitorContextMenu.deleteVisible
                 }
 
-                PrintJobContextMenuItem {
+                PrintJobContextMenuItem
+                {
                     enabled: visible && !(printJob.state == "pausing" || printJob.state == "resuming");
-                    onClicked: {
-                        if (printJob.state == "paused") {
+                    onClicked:
+                    {
+                        if (printJob.state == "paused")
+                        {
                             printJob.setState("resume");
                             popUp.close();
                             return;
                         }
-                        if (printJob.state == "printing") {
+                        if (printJob.state == "printing")
+                        {
                             printJob.setState("pause");
                             popUp.close();
                             return;
                         }
                     }
-                    text: {
-                        if (!printJob) {
+                    text:
+                    {
+                        if(!printJob)
+                        {
                             return "";
                         }
-                        switch(printJob.state) {
+                        switch(printJob.state)
+                        {
                             case "paused":
                                 return catalog.i18nc("@label", "Resume");
                             case "pausing":
@@ -106,60 +192,47 @@ Item
                                 catalog.i18nc("@label", "Pause");
                         }
                     }
-                    visible: {
-                        if (!printJob) {
-                            return false;
-                        }
-                        var states = ["printing", "pausing", "paused", "resuming"];
-                        return states.indexOf(printJob.state) !== -1;
-                    }
+                    visible: monitorContextMenu.pauseVisible
                 }
 
-                PrintJobContextMenuItem {
+                PrintJobContextMenuItem
+                {
                     enabled: visible && printJob.state !== "aborting";
-                    onClicked: {
+                    onClicked:
+                    {
                         abortConfirmationDialog.visible = true;
                         popUp.close();
                     }
                     text: printJob && printJob.state == "aborting" ? catalog.i18nc("@label", "Aborting...") : catalog.i18nc("@label", "Abort");
-                    visible: {
-                        if (!printJob) {
-                            return false;
-                        }
-                        var states = ["pre_print", "printing", "pausing", "paused", "resuming"];
-                        return states.indexOf(printJob.state) !== -1;
-                    }
+                    visible: monitorContextMenu.abortVisible
                 }
             }
         }
     }
 
-    MessageDialog {
+    Cura.MessageDialog
+    {
         id: sendToTopConfirmationDialog
-        Component.onCompleted: visible = false
-        icon: StandardIcon.Warning
-        onYes: OutputDevice.sendJobToTop(printJob.key)
-        standardButtons: StandardButton.Yes | StandardButton.No
+        onAccepted: OutputDevice.sendJobToTop(printJob.key)
+        standardButtons: Dialog.Yes | Dialog.No
         text: printJob && printJob.name ? catalog.i18nc("@label %1 is the name of a print job.", "Are you sure you want to move %1 to the top of the queue?").arg(printJob.name) : ""
         title: catalog.i18nc("@window:title", "Move print job to top")
     }
 
-    MessageDialog {
+    Cura.MessageDialog
+    {
         id: deleteConfirmationDialog
-        Component.onCompleted: visible = false
-        icon: StandardIcon.Warning
-        onYes: OutputDevice.deleteJobFromQueue(printJob.key)
-        standardButtons: StandardButton.Yes | StandardButton.No
+        onAccepted: OutputDevice.deleteJobFromQueue(printJob.key)
+        standardButtons: Dialog.Yes | Dialog.No
         text: printJob && printJob.name ? catalog.i18nc("@label %1 is the name of a print job.", "Are you sure you want to delete %1?").arg(printJob.name) : ""
         title: catalog.i18nc("@window:title", "Delete print job")
     }
 
-    MessageDialog {
+    Cura.MessageDialog
+    {
         id: abortConfirmationDialog
-        Component.onCompleted: visible = false
-        icon: StandardIcon.Warning
-        onYes: printJob.setState("abort")
-        standardButtons: StandardButton.Yes | StandardButton.No
+        onAccepted: printJob.setState("abort")
+        standardButtons: Dialog.Yes | Dialog.No
         text: printJob && printJob.name ? catalog.i18nc("@label %1 is the name of a print job.", "Are you sure you want to abort %1?").arg(printJob.name) : ""
         title: catalog.i18nc("@window:title", "Abort print")
     }
@@ -172,11 +245,5 @@ Item
     }
     function close() {
         popUp.close()
-    }
-    function isAssigned(job) {
-        if (!job) {
-            return false;
-        }
-        return job.assignedPrinter ? true : false;
     }
 }

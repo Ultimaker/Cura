@@ -2,78 +2,37 @@
     "version": 2,
     "name": "Renkforce RF100 V2",
     "inherits": "fdmprinter",
-    "metadata": {
-        "author": "Simon Peter (based on RF100.ini by Conrad Electronic SE)",
-        "file_formats": "text/x-gcode",
-        "manufacturer": "Renkforce",
+    "metadata":
+    {
         "visible": true,
-        "machine_extruder_trains":
-        {
-            "0": "renkforce_rf100_extruder_0"
-        }
+        "author": "Simon Peter (based on RF100.ini by Conrad Electronic SE)",
+        "manufacturer": "Renkforce",
+        "file_formats": "text/x-gcode",
+        "machine_extruder_trains": { "0": "renkforce_rf100_extruder_0" }
     },
-
-    "overrides": {
-        "adhesion_type": {
-            "default_value": "skirt"
-        },
-        "bottom_thickness": {
-            "value": "0.6"
-        },
-        "brim_width": {
-            "value": "3.0"
-        },
-        "cool_fan_enabled": {
-            "value": "True"
-        },
-        "cool_fan_full_at_height": {
-            "value": "0.5"
-        },
-        "cool_fan_speed_max": {
-            "value": "100.0"
-        },
-        "cool_fan_speed_min": {
-            "value": "100.0"
-        },
-        "cool_lift_head": {
-            "value": "True"
-        },
-        "cool_min_layer_time": {
-            "value": "1.0"
-        },
-        "cool_min_speed": {
-            "value": "5.0"
-        },
-        "infill_before_walls": {
-            "value": "True"
-        },
-        "infill_line_width": {
-            "value": "0.6"
-        },
-        "infill_overlap": {
-            "value": "15.0"
-        },
-        "infill_sparse_density": {
-            "value": "26.0"
-        },
-        "ironing_enabled": {
-            "value": "True"
-        },
-        "layer_0_z_overlap": {
-            "value": "0.11"
-        },
-        "layer_height_0": {
-            "value": "0.3"
-        },
-        "machine_depth": {
-            "value": "120"
-        },
-        "machine_end_gcode": {
-            "default_value": ";End GCode\nG91 ;relative positioning\nG1 E-1 F300 ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+0.5 E-4 F300 ;move Z up a bit and retract filament even more\nM104 S0 ;extruder heater off\nM140 S0 ;heated bed heater off (if you have it)\nG0 Z{machine_height} F1800 ;move the platform all the way down\nG28 X0 Y0 F1800 ;move X/Y to min endstops, so the head is out of the way\nM84 ;steppers off\nG90 ;absolute positioning\nM117 Done"
-        },
-        "machine_gcode_flavor": {
-            "default_value": "RepRap (Marlin/Sprinter)"
-        },
+    "overrides":
+    {
+        "adhesion_type": { "default_value": "skirt" },
+        "bottom_thickness": { "value": "0.6" },
+        "brim_width": { "value": "3.0" },
+        "cool_fan_enabled": { "value": "True" },
+        "cool_fan_full_at_height": { "value": "0.5" },
+        "cool_fan_speed_max": { "value": "100.0" },
+        "cool_fan_speed_min": { "value": "100.0" },
+        "cool_lift_head": { "value": "True" },
+        "cool_min_layer_time": { "value": "1.0" },
+        "cool_min_speed": { "value": "5.0" },
+        "gantry_height": { "value": "8" },
+        "infill_before_walls": { "value": "True" },
+        "infill_line_width": { "value": "0.6" },
+        "infill_overlap": { "value": "15.0" },
+        "infill_sparse_density": { "value": "26.0" },
+        "ironing_enabled": { "value": "True" },
+        "layer_0_z_overlap": { "value": "0.11" },
+        "layer_height_0": { "value": "0.3" },
+        "machine_depth": { "value": "120" },
+        "machine_end_gcode": { "default_value": ";End GCode\nG91 ;relative positioning\nG1 E-1 F300 ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+0.5 E-4 F300 ;move Z up a bit and retract filament even more\nM104 S0 ;extruder heater off\nM140 S0 ;heated bed heater off (if you have it)\nG0 Z{machine_height} F1800 ;move the platform all the way down\nG28 X0 Y0 F1800 ;move X/Y to min endstops, so the head is out of the way\nM84 ;steppers off\nG90 ;absolute positioning\nM117 Done" },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
         "machine_head_with_fans_polygon":
         {
             "default_value": [
@@ -83,146 +42,50 @@
                 [-26, 55]
             ]
         },
-        "gantry_height": {
-            "value": "8"
-        },
-        "machine_height": {
-            "value": "120"
-        },
-        "machine_name": {
-            "default_value": "Renkforce RF100 V2"
-        },
-        "machine_start_gcode": {
-            "default_value": ";Sliced at: {day} {date} {time}\nG21 ;metric values\nG90 ;absolute positioning\nM82 ;set extruder to absolute mode\nM107 ;start with the fan off\nG1 Z5.0 F1800 ;move Z to 5mm\nG28 X0 Y0 F1800 ;move X/Y to min endstops\nG28 Z0 ;move Z to min endstop\nG92 E0 ;zero the extruded length\nG1 F200 E6.0 ;extrude 6.0mm of feed stock to build pressure\nG1 Z5.0 F300 ;move the platform down 5mm\nG92 E0 ;zero the extruded length again\nG1 F1800\n;Put printing message on LCD screen\nM117 Printing..."
-        },
-        "machine_width": {
-            "value": "120"
-        },
-        "material_bed_temperature": {
-            "enabled": false
-        },
-        "material_flow": {
-            "value": "110"
-        },
-        "material_print_temperature": {
-            "value": "210.0"
-        },
-        "ooze_shield_enabled": {
-            "value": "True"
-        },
-        "raft_airgap": {
-            "value": "0.33"
-        },
-        "raft_base_line_spacing": {
-            "value": "3.0"
-        },
-        "raft_base_line_width": {
-            "value": "1.0"
-        },
-        "raft_base_thickness": {
-            "value": "0.3"
-        },
-        "raft_interface_line_spacing": {
-            "value": "3.0"
-        },
-        "raft_interface_line_width": {
-            "value": "0.4"
-        },
-        "raft_interface_thickness": {
-            "value": "0.27"
-        },
-        "raft_margin": {
-            "value": "6.0"
-        },
-        "raft_speed": {
-            "value": "20.0"
-        },
-        "raft_surface_layers": {
-            "value": "2"
-        },
-        "raft_surface_line_spacing": {
-            "value": "0.4"
-        },
-        "raft_surface_line_width": {
-            "value": "0.4"
-        },
-        "raft_surface_thickness": {
-            "value": "0.1"
-        },
-        "retraction_amount": {
-            "value": "5.0"
-        },
-        "retraction_combing": {
-            "value": "'all'"
-        },
-        "retraction_enable": {
-            "value": "True"
-        },
-        "retraction_min_travel": {
-            "value": "1.5"
-        },
-        "skin_overlap": {
-            "value": "15.0"
-        },
-        "skirt_brim_minimal_length": {
-            "value": "150.0"
-        },
-        "skirt_gap": {
-            "value": "3.0"
-        },
-        "skirt_line_count": {
-            "value": "3"
-        },
-        "speed_infill": {
-            "value": "50.0"
-        },
-        "speed_layer_0": {
-            "value": "15.0"
-        },
-        "speed_print": {
-            "value": "50.0"
-        },
-        "speed_topbottom": {
-            "value": "30.0"
-        },
-        "speed_travel": {
-            "value": "50.0"
-        },
-        "speed_wall_0": {
-            "value": "25.0"
-        },
-        "speed_wall_x": {
-            "value": "35.0"
-        },
-        "support_angle": {
-            "value": "60.0"
-        },
-        "support_enable": {
-            "value": "False"
-        },
-        "support_infill_rate": {
-            "value": "15 if support_enable and support_structure == 'normal' else 0 if support_enable and support_structure == 'tree' else 15"
-        },
-        "support_line_width": {
-            "value": "0.6"
-        },
-        "support_pattern": {
-            "default_value": "lines"
-        },
-        "support_type": {
-            "default_value": "everywhere"
-        },
-        "support_xy_distance": {
-            "value": "0.7"
-        },
-        "support_z_distance": {
-            "value": "0.35"
-        },
-        "top_bottom_thickness": {
-            "value": "0.8"
-        },
-        "wall_thickness": {
-            "value": "0.8"
-        }
+        "machine_height": { "value": "120" },
+        "machine_name": { "default_value": "Renkforce RF100 V2" },
+        "machine_start_gcode": { "default_value": ";Sliced at: {day} {date} {time}\nG21 ;metric values\nG90 ;absolute positioning\nM82 ;set extruder to absolute mode\nM107 ;start with the fan off\nG1 Z5.0 F1800 ;move Z to 5mm\nG28 X0 Y0 F1800 ;move X/Y to min endstops\nG28 Z0 ;move Z to min endstop\nG92 E0 ;zero the extruded length\nG1 F200 E6.0 ;extrude 6.0mm of feed stock to build pressure\nG1 Z5.0 F300 ;move the platform down 5mm\nG92 E0 ;zero the extruded length again\nG1 F1800\n;Put printing message on LCD screen\nM117 Printing..." },
+        "machine_width": { "value": "120" },
+        "material_bed_temperature": { "enabled": false },
+        "material_flow": { "value": "110" },
+        "ooze_shield_enabled": { "value": "True" },
+        "raft_airgap": { "value": "0.33" },
+        "raft_base_line_spacing": { "value": "3.0" },
+        "raft_base_line_width": { "value": "1.0" },
+        "raft_base_thickness": { "value": "0.3" },
+        "raft_interface_line_spacing": { "value": "3.0" },
+        "raft_interface_line_width": { "value": "0.4" },
+        "raft_interface_thickness": { "value": "0.27" },
+        "raft_margin": { "value": "6.0" },
+        "raft_speed": { "value": "20.0" },
+        "raft_surface_layers": { "value": "2" },
+        "raft_surface_line_spacing": { "value": "0.4" },
+        "raft_surface_line_width": { "value": "0.4" },
+        "raft_surface_thickness": { "value": "0.1" },
+        "retraction_amount": { "value": "5.0" },
+        "retraction_combing": { "value": "'all'" },
+        "retraction_enable": { "value": "True" },
+        "retraction_min_travel": { "value": "1.5" },
+        "skin_overlap": { "value": "15.0" },
+        "skirt_brim_minimal_length": { "value": "150.0" },
+        "skirt_gap": { "value": "3.0" },
+        "skirt_line_count": { "value": "3" },
+        "speed_infill": { "value": "50.0" },
+        "speed_layer_0": { "value": "15.0" },
+        "speed_print": { "value": "50.0" },
+        "speed_topbottom": { "value": "30.0" },
+        "speed_travel": { "value": "50.0" },
+        "speed_wall_0": { "value": "25.0" },
+        "speed_wall_x": { "value": "35.0" },
+        "support_angle": { "value": "60.0" },
+        "support_enable": { "value": "False" },
+        "support_infill_rate": { "value": "15 if support_enable and support_structure == 'normal' else 0 if support_enable and support_structure == 'tree' else 15" },
+        "support_line_width": { "value": "0.6" },
+        "support_pattern": { "default_value": "lines" },
+        "support_type": { "default_value": "everywhere" },
+        "support_xy_distance": { "value": "0.7" },
+        "support_z_distance": { "value": "0.35" },
+        "top_bottom_thickness": { "value": "0.8" },
+        "wall_thickness": { "value": "0.8" }
     }
 }

@@ -1,0 +1,23 @@
+{
+    "version": 2,
+    "name": "Left Extruder",
+    "inherits": "fdmextruder",
+    "metadata":
+    {
+        "machine": "vivedino_trex2plus",
+        "position": "0"
+    },
+    "overrides":
+    {
+        "extruder_nr":
+        {
+            "default_value": 0,
+            "maximum_value": "3"
+        },
+        "machine_extruder_end_code": { "default_value": "" },
+        "machine_extruder_start_code": { "default_value": "G0 X-40" },
+        "machine_nozzle_offset_x": { "default_value": 0.0 },
+        "machine_nozzle_offset_y": { "default_value": 0.0 },
+        "material_diameter": { "default_value": 1.75 }
+    }
+}

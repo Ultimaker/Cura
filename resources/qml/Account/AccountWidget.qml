@@ -4,13 +4,13 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 
-import UM 1.4 as UM
+import UM 1.5 as UM
 import Cura 1.1 as Cura
 
 Item
 {
     property var profile: Cura.API.account.userProfile
-    property var loggedIn: Cura.API.account.isLoggedIn
+    property bool loggedIn: Cura.API.account.isLoggedIn
 
     height: signInButton.visible ? signInButton.height : accountWidget.height
     width: signInButton.visible ? signInButton.width : accountWidget.width
@@ -46,15 +46,12 @@ Item
             }
         }
 
-        contentItem: Label
+        contentItem: UM.Label
         {
             id: label
             text: signInButton.text
-            font: UM.Theme.getFont("default")
             color: UM.Theme.getColor("primary_text")
             width: contentWidth
-            verticalAlignment: Text.AlignVCenter
-            renderType: Text.NativeRendering
         }
     }
 
@@ -84,6 +81,7 @@ Item
 
             source: (loggedIn && profile["profile_image_url"]) ? profile["profile_image_url"] : ""
             outlineColor: loggedIn ? UM.Theme.getColor("account_widget_outline_active") : UM.Theme.getColor("lining")
+            maskColor: UM.Theme.getColor("main_window_header_background")
         }
 
         contentItem: Item
@@ -113,7 +111,7 @@ Item
                 }
             }
 
-            Label
+            UM.Label
             {
                 id: initialLabel
                 anchors.verticalCenter: parent.verticalCenter
@@ -121,9 +119,7 @@ Item
                 text: accountWidget.text
                 font: UM.Theme.getFont("large_bold")
                 color: UM.Theme.getColor("primary_text")
-                verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                renderType: Text.NativeRendering
             }
         }
 
