@@ -1,4 +1,4 @@
-# Copyright (c) 2022 UltiMaker
+# Copyright (c) 2023 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 
 
@@ -7,25 +7,6 @@ import argparse  # Command line arguments parsing and help.
 import subprocess
 
 ULTIMAKER_CURA_DOMAIN = os.environ.get("ULTIMAKER_CURA_DOMAIN", "nl.ultimaker.cura")
-
-
-def build_dmg(source_path: str, dist_path: str, filename: str) -> None:
-    create_dmg_executable = os.environ.get("CREATE_DMG_EXECUTABLE", "create-dmg")
-
-    arguments = [create_dmg_executable,
-                 "--window-pos", "640", "360",
-                 "--window-size", "690", "503",
-                 "--app-drop-link", "520", "272",
-                 "--volicon", f"{source_path}/packaging/icons/VolumeIcons_Cura.icns",
-                 "--icon-size", "90",
-                 "--icon", "UltiMaker-Cura.app", "169", "272",
-                 "--eula", f"{source_path}/packaging/cura_license.txt",
-                 "--background", f"{source_path}/packaging/MacOs/cura_background_dmg.png",
-                 f"{dist_path}/{filename}",
-                 f"{dist_path}/UltiMaker-Cura.app"]
-
-    subprocess.run(arguments)
-
 
 def build_pkg(source_path: str, dist_path: str, app_filename: str, component_filename: str, installer_filename: str) -> None:
     """ Builds and signs the pkg installer.
@@ -123,41 +104,17 @@ def create_pkg_installer(filename: str, dist_path: str, source_path: str) -> Non
     code_sign(dist_path, app_name)  # The app is signed using a different certificate than the package files
     build_pkg(source_path, dist_path, app_name, cura_component_package_name, installer_package_name)
 
-    notarize = bool(os.environ.get("NOTARIZE_PKG", "TRUE"))
+    notarize = bool(os.environ.get("NOTARIZE_INSTALLER", "TRUE"))
     if notarize:
         notarize_file(dist_path, installer_package_name)
 
-
-def create_dmg(filename: str, dist_path: str, source_path: str) -> None:
-    """ Creates a dmg executable from UltiMaker-Cura.app named {filename}.dmg
-
-    @param filename: The name of the app file and the output dmg file without the extension
-    @param dist_path: The location to read the app from and save the dmg to
-    @param source_path: The location of the project source files
-    """
-
-    dmg_filename = f"{filename}.dmg"
-
-    build_dmg(source_path, dist_path, dmg_filename)
-
-    code_sign(dist_path, dmg_filename)
-
-    notarize_dmg = bool(os.environ.get("NOTARIZE_DMG", "TRUE"))
-    if notarize_dmg:
-        notarize_file(dist_path, dmg_filename)
-
-
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description = "Create dmg of Cura.")
+    parser = argparse.ArgumentParser(description = "Create installer for Cura.")
     parser.add_argument("source_path", type=str, help="Path to Conan install Cura folder.")
     parser.add_argument("dist_path", type=str, help="Path to Pyinstaller dist folder")
-    parser.add_argument("filename", type = str, help = "Filename of the dmg/pkg without the file extension (e.g. 'UltiMaker-Cura-5.1.0-beta-Macos-X64')")
+    parser.add_argument("filename", type = str, help = "Filename of the pkg without the file extension (e.g. 'UltiMaker-Cura-5.1.0-beta-Macos-X64')")
     args = parser.parse_args()
 
     build_installer = bool(os.environ.get("BUILD_INSTALLER", "TRUE"))
     if build_installer:
         create_pkg_installer(args.filename, args.dist_path, args.source_path)
-
-    build_dmg_executable = bool(os.environ.get("BUILD_DMG", "False"))
-    if build_dmg_executable:
-        create_dmg(args.filename, args.dist_path, args.source_path)

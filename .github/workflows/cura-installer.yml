@@ -120,7 +120,7 @@ jobs:
 
             -   name: Install MacOS system requirements
                 if:  ${{ runner.os == 'Macos' }}
-                run: brew install autoconf automake ninja create-dmg
+                run: brew install autoconf automake ninja
 
             -   name: Install Linux system requirements
                 if: ${{ runner.os == 'Linux' }}
@@ -251,7 +251,7 @@ jobs:
                     if "${{ runner.os }}" == "Windows":
                         installer_ext = "msi" if "${{ inputs.msi_installer }}" == "true" else "exe"
                     elif "${{ runner.os }}" == "macOS":
-                        installer_ext = "dmg"
+                        installer_ext = "pkg"
                     else:
                         installer_ext = "AppImage"
                     output_env = os.environ["GITHUB_OUTPUT"]
@@ -308,7 +308,7 @@ jobs:
                 run: python ../cura_inst/packaging/AppImage/create_appimage.py ./UltiMaker-Cura $CURA_VERSION_FULL "${{ steps.filename.outputs.FULL_INSTALLER_FILENAME }}"
                 working-directory: dist
 
-            -   name: Create the MacOS dmg and/or pkg (Bash)
+            -   name: Create the MacOS pkg (Bash)
                 if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Macos' }}
                 run: python ../cura_inst/packaging/MacOs/build_macos.py ../cura_inst . "${{ steps.filename.outputs.FULL_INSTALLER_FILENAME }}"
                 working-directory: dist
