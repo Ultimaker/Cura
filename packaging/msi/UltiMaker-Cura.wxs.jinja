@@ -87,56 +87,37 @@
         <Property Id="WixAppFolder" Value="WixPerMachineFolder" />
 
         <Component Id="CMP_UltiMaker_Cura_exe" Directory="APPLICATIONFOLDER" Guid="*">
-            <File Id="FILE_UltiMaker_Cura_exe" KeyPath="yes" Source="$(var.CuraDir)\{{ main_app }}"/>
-
-            <RegistryValue Root="HKLM" Key="SOFTWARE\{{ app_name }}\Capabilities\FileAssociations" Name=".3mf" Value="3D Manufacturing Format Document" Type="string" />
-            <RegistryValue Root="HKLM" Key="SOFTWARE\{{ app_name }}\Capabilities\MIMEAssociations" Name="application/3mf" Value="3D Manufacturing Format Document" Type="string" />
-            <RegistryValue Root="HKLM" Key="SOFTWARE\Classes\Applications\{{ main_app }}\SupportedTypes" Name=".3mf" Value="" Type="string" />
-
-            <RegistryValue Root="HKLM" Key="SOFTWARE\{{ app_name }}\Capabilities\FileAssociations" Name=".stl" Value="3D Object" Type="string" />
-            <RegistryValue Root="HKLM" Key="SOFTWARE\{{ app_name }}\Capabilities\MIMEAssociations" Name="application/stl" Value="3D Object" Type="string" />
-            <RegistryValue Root="HKLM" Key="SOFTWARE\Classes\Applications\{{ main_app }}\SupportedTypes" Name=".stl" Value="" Type="string" />
-
-            <RegistryValue Root="HKLM" Key="SOFTWARE\{{ app_name }}\Capabilities\FileAssociations" Name=".gcode" Value="GCode machine instructions" Type="string" />
-            <RegistryValue Root="HKLM" Key="SOFTWARE\{{ app_name }}\Capabilities\MIMEAssociations" Name="text/x-gcode" Value="GCode machine instructions" Type="string" />
-            <RegistryValue Root="HKLM" Key="SOFTWARE\Classes\Applications\{{ main_app }}\SupportedTypes" Name=".gcode" Value="" Type="string" />
-
-            <RegistryValue Root="HKLM" Key="SOFTWARE\{{ app_name }}\Capabilities\FileAssociations" Name=".ufp" Value="UltiMaker Format Package" Type="string" />
-            <RegistryValue Root="HKLM" Key="SOFTWARE\{{ app_name }}\Capabilities\MIMEAssociations" Name="application/x-ufp" Value="UltiMaker Format Package" Type="string" />
-            <RegistryValue Root="HKLM" Key="SOFTWARE\Classes\Applications\{{ main_app }}\SupportedTypes" Name=".ufp" Value="" Type="string" />
-
-            <RegistryValue Root="HKLM" Key="SOFTWARE\{{ app_name }}\Capabilities\FileAssociations" Name=".curapackage" Value="UltiMaker Cura package" Type="string" />
-            <RegistryValue Root="HKLM" Key="SOFTWARE\{{ app_name }}\Capabilities\MIMEAssociations" Name="application/curapackage" Value="UltiMaker Cura package" Type="string" />
-            <RegistryValue Root="HKLM" Key="SOFTWARE\Classes\Applications\{{ main_app }}\SupportedTypes" Name=".curapackage" Value="" Type="string" />
-
-            <RegistryValue Root="HKLM" Key="SOFTWARE\{{ app_name }}\Capabilities\shell\Open\command" Value='"[APPLICATIONFOLDER]\{{ main_app }}" "%1"' Type="string" />
-            <RegistryValue Root="HKLM" Key="SOFTWARE\RegisteredApplications" Name="{{ app_name }}" Value="SOFTWARE\{{ app_name }}\Capabilities" Type="string" />
-            <RegistryValue Root="HKLM" Key="SOFTWARE\Classes\Applications\{{ main_app }}\shell\open" Name="{{ app_name }}" Value="{{ main_app }}" Type="string" />
+            <File Id="FILE_UltiMaker_Cura_exe" KeyPath="yes" Source="$(var.CuraDir)\{{ main_app }}" />
 
             <ProgId Id="Cura" Description="{{ app_name }}" Icon="ICO_Cura" Advertise="yes">
-                <ProgId Id="3mf">
-                    <Extension Id='3mf' ContentType="application/3mf">
-                        <MIME ContentType="application/3mf" Default="yes" />
+                <ProgId Id="3mf" Advertise="yes">
+                    <Extension Id="3mf" ContentType="application/3mf">
+                        <Verb Id="open_3mf" Command="Open" Argument='"%1"' />
+                        <MIME Advertise="yes" ContentType="application/3mf" Default="yes" />
                     </Extension>
                 </ProgId>
-                <ProgId Id="stl">
-                    <Extension Id='stl' ContentType='application/stl'>
-                        <MIME ContentType="application/stl" Default="yes" />
+                <ProgId Id="stl" Advertise="yes">
+                    <Extension Id="stl" ContentType="application/stl">
+                        <Verb Id="open_stl" Command="Open" Argument='"%1"' />
+                        <MIME Advertise="yes" ContentType="application/stl" Default="yes" />
                     </Extension>
                 </ProgId>
-                <ProgId Id="gcode">
-                    <Extension Id='gcode' ContentType='text/x-gcode'>
-                        <MIME ContentType="text/x-gcode" Default="yes" />
+                <ProgId Id="gcode" Advertise="yes">
+                    <Extension Id="gcode" ContentType="text/x-gcode">
+                        <Verb Id="open_gcode" Command="Open" Argument='"%1"' />
+                        <MIME Advertise="yes" ContentType="text/x-gcode" Default="yes" />
                     </Extension>
                 </ProgId>
-                <ProgId Id="ufp">
-                    <Extension Id='ufp' ContentType='application/x-ufp'>
-                        <MIME ContentType="application/x-ufp" Default="yes" />
+                <ProgId Id="ufp" Advertise="yes">
+                    <Extension Id="ufp" ContentType="application/x-ufp">
+                        <Verb Id="open_ufp" Command="Open" Argument='"%1"' />
+                        <MIME Advertise="yes" ContentType="application/x-ufp" Default="yes" />
                     </Extension>
                 </ProgId>
-                <ProgId Id="curapackage">
+                <ProgId Id="curapackage" Advertise="yes">
                     <Extension Id='curapackage' ContentType='application/curapackage'>
-                        <MIME ContentType="application/curapackage" Default="yes" />
+                        <Verb Id='open_curapackage' Command="Open" Argument='"%1"' />
+                        <MIME Advertise="yes" ContentType="application/curapackage" Default="yes" />
                     </Extension>
                 </ProgId>
             </ProgId>
