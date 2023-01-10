@@ -64,7 +64,7 @@
         "retraction_hop_enabled": { "value": "False" },
         "retraction_prime_speed":
         {
-            "deafult_value": 20,
+            "default_value": 20,
             "maximum_value": 200
         },
         "retraction_retract_speed":
@@ -74,7 +74,7 @@
         },
         "retraction_speed":
         {
-            "deafult_value": 40,
+            "default_value": 40,
             "maximum_value": 200
         },
         "roofing_layer_count": { "value": 1 },
