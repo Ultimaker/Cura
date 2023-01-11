@@ -58,7 +58,7 @@ env:
     CONAN_LOG_RUN_TO_OUTPUT: 1
     CONAN_LOGGING_LEVEL: ${{ inputs.conan_logging_level }}
     CONAN_NON_INTERACTIVE: 1
-    CODESIGN_IDENTITY: ${{ secrets.CODESIGN_IDENTITY_2 }}
+    CODESIGN_IDENTITY: ${{ secrets.CODESIGN_IDENTITY }}
     MAC_NOTARIZE_USER: ${{ secrets.MAC_NOTARIZE_USER }}
     MAC_NOTARIZE_PASS: ${{ secrets.MAC_NOTARIZE_PASS }}
     MACOS_CERT_P12: ${{ secrets.MACOS_CERT_P12 }}

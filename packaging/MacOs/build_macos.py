@@ -25,8 +25,8 @@ def build_pkg(dist_path: str, app_filename: str, component_filename: str, instal
     pkg_build_arguments = [
         pkg_build_executable,
         "--component",
-        f"{dist_path}/{app_filename}",
-        f"{dist_path}/{component_filename}",
+        Path(dist_path, app_filename),
+        Path(dist_path, component_filename),
         "--sign", codesign_identity,
         "--install-location", "/Applications",
     ]
@@ -38,18 +38,18 @@ def build_pkg(dist_path: str, app_filename: str, component_filename: str, instal
     distribution_creation_arguments = [
         product_build_executable,
         "--synthesize",
-        "--package", f"{dist_path}/{component_filename}",  # Package that will be inside installer
-        f"{dist_path}/distribution.xml",  # Output location for sythesized distributions file
+        "--package", Path(dist_path, component_filename),  # Package that will be inside installer
+        Path(dist_path, "distribution.xml"),  # Output location for sythesized distributions file
     ]
     subprocess.run(distribution_creation_arguments)
 
     # This creates the distributable package (Installer)
     installer_creation_arguments = [
         product_build_executable,
-        "--distribution", f"{dist_path}/distribution.xml",
+        "--distribution", Path(dist_path, "distribution.xml"),
         "--package-path", dist_path,  # Where to find the component packages mentioned in distribution.xml (UltiMaker-Cura.pkg)
         "--sign", codesign_identity,
-        f"{dist_path}/{installer_filename}",
+        Path(dist_path, installer_filename),
     ]
     subprocess.run(installer_creation_arguments)
 
@@ -63,7 +63,8 @@ def code_sign(dist_path: str, filename: str) -> None:
                  "-s", codesign_identity,
                  "--timestamp",
                  "-i", filename,  # This is by default derived from Info.plist or the filename. The documentation does not specify which, so it is explicit here. **This must be unique in the package**
-                 f"{dist_path}/{filename}"]
+                 Path(dist_path, filename)
+    ]
 
     subprocess.run(sign_arguments)
 
@@ -80,7 +81,7 @@ def notarize_file(dist_path: str, filename: str) -> None:
         "--primary-bundle-id", ULTIMAKER_CURA_DOMAIN,
         "--username", notarize_user,
         "--password", notarize_password,
-        "--file", f"{dist_path}/{filename}"
+        "--file", Path(dist_path, filename)
     ]
 
     subprocess.run(notarize_arguments)
