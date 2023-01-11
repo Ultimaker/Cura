@@ -40,7 +40,6 @@ def generate_wxs(source_path: Path, dist_path: Path, filename: Path, app_name: s
         company="UltiMaker",
         web_site="https://ultimaker.com",
         year=datetime.now().year,
-        product_code=str(uuid.uuid5(uuid.NAMESPACE_DNS, app_name + os.environ.get("CURA_VERSION_MAJOR") + os.environ.get("CURA_VERSION_MINOR"))),
         upgrade_code=str(uuid.uuid5(uuid.NAMESPACE_DNS, app_name)),
         shortcut_uuid=str(uuid.uuid5(uuid.NAMESPACE_DNS, f"Shortcut {app_name}")),
         cura_license_file=str(source_loc.joinpath("packaging", "msi", "cura_license.rtf")),
@@ -83,22 +82,36 @@ def build(dist_path: Path, filename: Path):
     manageoldcuradlg_loc = work_loc.joinpath("CustomizeCuraDlg.wxs")
     build_loc = work_loc.joinpath("build_msi")
 
-    heat_command = ["heat", "dir", f"{dist_loc.as_posix()}\\", "-dr", "APPLICATIONFOLDER", "-cg", "NewFilesGroup", "-sw5150",
-                    "-gg", "-g1", "-sf", "-srd", "-var", "var.CuraDir", "-t", f"{exclude_components_loc.as_posix()}",
+    heat_command = ["heat",
+                    "dir", f"{dist_loc.as_posix()}\\",
+                    "-dr", "APPLICATIONFOLDER",
+                    "-cg", "NewFilesGroup",
+                    "-sw5150",  # Don't pollute logs with warnings from auto generated content
+                    "-gg",
+                    "-g1",
+                    "-sf",
+                    "-srd",
+                    "-var", "var.CuraDir",
+                    "-t", f"{exclude_components_loc.as_posix()}",
                     "-out", f"{heat_loc.as_posix()}"]
     subprocess.call(heat_command)
 
-    build_command = ["candle", "-arch", "x64", f"-dCuraDir={dist_loc}\\",
+    build_command = ["candle",
+                     "-arch", "x64",
+                     f"-dCuraDir={dist_loc}\\",
                      "-ext", "WixFirewallExtension",
                      "-out", f"{build_loc.as_posix()}\\",
-                     f"{wxs_loc.as_posix()}", f"{heat_loc.as_posix()}", f"{manageoldcuradlg_loc.as_posix()}"]
+                     f"{wxs_loc.as_posix()}",
+                     f"{heat_loc.as_posix()}",
+                     f"{manageoldcuradlg_loc.as_posix()}"]
     subprocess.call(build_command)
 
-    link_command = ["light", f"{build_loc.joinpath(wxs_loc.name).with_suffix('.wixobj')}",
+    link_command = ["light",
+                    f"{build_loc.joinpath(wxs_loc.name).with_suffix('.wixobj')}",
                     f"{build_loc.joinpath(heat_loc.name).with_suffix('.wixobj')}",
                     f"{build_loc.joinpath(manageoldcuradlg_loc.name).with_suffix('.wixobj')}",
-                    "-sw1076",
-                    "-dcl:high",
+                    "-sw1076",  # Don't pollute logs with warnings from auto generated content
+                    "-dcl:high",  # Use high compression ratio
                     "-ext", "WixUIExtension",
                     "-ext", "WixFirewallExtension",
                     "-out", f"{work_loc.joinpath(filename.name)}"]
