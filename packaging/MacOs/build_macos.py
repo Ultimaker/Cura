@@ -27,9 +27,14 @@ def build_pkg(dist_path: str, app_filename: str, component_filename: str, instal
         "--component",
         Path(dist_path, app_filename),
         Path(dist_path, component_filename),
-        "--sign", codesign_identity,
         "--install-location", "/Applications",
     ]
+
+    if codesign_identity:
+        pkg_build_arguments.extend(["--sign", codesign_identity])
+    else:
+        print("CODESIGN_IDENTITY missing. The installer is not being signed")
+
     subprocess.run(pkg_build_arguments)
 
     # This automatically generates a distribution.xml file that is used to build the installer.
@@ -48,25 +53,13 @@ def build_pkg(dist_path: str, app_filename: str, component_filename: str, instal
         product_build_executable,
         "--distribution", Path(dist_path, "distribution.xml"),
         "--package-path", dist_path,  # Where to find the component packages mentioned in distribution.xml (UltiMaker-Cura.pkg)
-        "--sign", codesign_identity,
         Path(dist_path, installer_filename),
     ]
+
+    if codesign_identity:
+        installer_creation_arguments.extend(["--sign", codesign_identity])
+
     subprocess.run(installer_creation_arguments)
-
-
-def code_sign(dist_path: str, filename: str) -> None:
-    """ Sign a file using apple codesign. This uses a different certificate to package signing."""
-    codesign_executable = os.environ.get("CODESIGN", "codesign")
-    codesign_identity = os.environ.get("CODESIGN_IDENTITY")
-
-    sign_arguments = [codesign_executable,
-                 "-s", codesign_identity,
-                 "--timestamp",
-                 "-i", filename,  # This is by default derived from Info.plist or the filename. The documentation does not specify which, so it is explicit here. **This must be unique in the package**
-                 Path(dist_path, filename)
-    ]
-
-    subprocess.run(sign_arguments)
 
 
 def notarize_file(dist_path: str, filename: str) -> None:
@@ -87,7 +80,7 @@ def notarize_file(dist_path: str, filename: str) -> None:
     subprocess.run(notarize_arguments)
 
 
-def create_pkg_installer(filename: str, dist_path: str) -> None:
+def create_pkg_installer(filename: str,  dist_path: str) -> None:
     """ Creates a pkg installer from {filename}.app called {filename}-Installer.pkg
 
     The final package structure is UltiMaker-Cura-XXX-Installer.pkg[UltiMaker-Cura.pkg[UltiMaker-Cura.app]]. The outer
@@ -102,10 +95,9 @@ def create_pkg_installer(filename: str, dist_path: str) -> None:
     cura_component_package_name = f"{filename_stem}-Component.pkg"  # This is a component package that is nested inside the installer, it contains the UltiMaker-Cura.app file
     app_name = "UltiMaker-Cura.app"  # This is the app file that will end up in your applications folder
 
-    code_sign(dist_path, app_name)  # The app is signed using a different certificate than the package files
     build_pkg(dist_path, app_name, cura_component_package_name, filename)
 
-    notarize = bool(os.environ.get("NOTARIZE_INSTALLER", "TRUE"))
+    notarize = bool(os.environ.get("NOTARIZE_INSTALLER", "FALSE"))
     if notarize:
         notarize_file(dist_path, filename)
 
