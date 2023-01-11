@@ -40,6 +40,7 @@ def generate_wxs(source_path: Path, dist_path: Path, filename: Path, app_name: s
         company="UltiMaker",
         web_site="https://ultimaker.com",
         year=datetime.now().year,
+        product_code=str(uuid.uuid5(uuid.NAMESPACE_DNS, app_name + os.environ.get("CURA_VERSION_MAJOR") + os.environ.get("CURA_VERSION_MINOR"))),
         upgrade_code=str(uuid.uuid5(uuid.NAMESPACE_DNS, app_name)),
         shortcut_uuid=str(uuid.uuid5(uuid.NAMESPACE_DNS, f"Shortcut {app_name}")),
         cura_license_file=str(source_loc.joinpath("packaging", "msi", "cura_license.rtf")),
@@ -96,6 +97,8 @@ def build(dist_path: Path, filename: Path):
     link_command = ["light", f"{build_loc.joinpath(wxs_loc.name).with_suffix('.wixobj')}",
                     f"{build_loc.joinpath(heat_loc.name).with_suffix('.wixobj')}",
                     f"{build_loc.joinpath(manageoldcuradlg_loc.name).with_suffix('.wixobj')}",
+                    "-sw1076",
+                    "-dcl:high",
                     "-ext", "WixUIExtension",
                     "-ext", "WixFirewallExtension",
                     "-out", f"{work_loc.joinpath(filename.name)}"]
