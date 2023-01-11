@@ -1,26 +1,28 @@
 {
-    "name": "Creality Ender-2",
     "version": 2,
+    "name": "Creality Ender-2",
     "inherits": "creality_base",
-    "overrides": {
-        "machine_name": { "default_value": "Creality Ender-2" },
-        "machine_start_gcode": { "default_value": "M201 X500.00 Y500.00 Z100.00 E5000.00 ;Setup machine max acceleration\nM203 X500.00 Y500.00 Z10.00 E50.00 ;Setup machine max feedrate\nM204 P500.00 R1000.00 T500.00 ;Setup Print/Retract/Travel acceleration\nM205 X8.00 Y8.00 Z0.40 E5.00 ;Setup Jerk\nM220 S100 ;Reset Feedrate\nM221 S100 ;Reset Flowrate\n\nG28 ;Home\n\nG92 E0 ;Reset Extruder\nG1 Z2.0 F3000 ;Move Z Axis up\nG1 X10.1 Y20 Z0.28 F5000.0 ;Move to start position\nG1 X10.1 Y100.0 Z0.28 F1500.0 E8 ;Draw the first line\nG1 X10.4 Y100.0 Z0.28 F5000.0 ;Move to side a little\nG1 X10.4 Y20 Z0.28 F1500.0 E15 ;Draw the second line\nG92 E0 ;Reset Extruder\nG1 Z2.0 F3000 ;Move Z Axis up\n"},
-        "machine_width": { "default_value": 150 },
+    "metadata":
+    {
+        "visible": true,
+        "quality_definition": "creality_base"
+    },
+    "overrides":
+    {
+        "gantry_height": { "value": 25 },
         "machine_depth": { "default_value": 150 },
-        "machine_height": { "default_value": 200 },
-        "machine_head_with_fans_polygon": { "default_value": [
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
                 [-26, 34],
                 [-26, -32],
                 [32, -32],
                 [32, 34]
             ]
         },
-
-        "gantry_height": { "value": 25 }
-
-    },
-    "metadata": {
-        "quality_definition": "creality_base",
-        "visible": true
+        "machine_height": { "default_value": 200 },
+        "machine_name": { "default_value": "Creality Ender-2" },
+        "machine_start_gcode": { "default_value": "M201 X500.00 Y500.00 Z100.00 E5000.00 ;Setup machine max acceleration\nM203 X500.00 Y500.00 Z10.00 E50.00 ;Setup machine max feedrate\nM204 P500.00 R1000.00 T500.00 ;Setup Print/Retract/Travel acceleration\nM205 X8.00 Y8.00 Z0.40 E5.00 ;Setup Jerk\nM220 S100 ;Reset Feedrate\nM221 S100 ;Reset Flowrate\n\nG28 ;Home\n\nG92 E0 ;Reset Extruder\nG1 Z2.0 F3000 ;Move Z Axis up\nG1 X10.1 Y20 Z0.28 F5000.0 ;Move to start position\nG1 X10.1 Y100.0 Z0.28 F1500.0 E8 ;Draw the first line\nG1 X10.4 Y100.0 Z0.28 F5000.0 ;Move to side a little\nG1 X10.4 Y20 Z0.28 F1500.0 E15 ;Draw the second line\nG92 E0 ;Reset Extruder\nG1 Z2.0 F3000 ;Move Z Axis up\n" },
+        "machine_width": { "default_value": 150 }
     }
 }

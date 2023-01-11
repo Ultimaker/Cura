@@ -1,12 +1,11 @@
-// Copyright (c) 2018 Ultimaker B.V.
-// Cura is released under the terms of the LGPLv3 or higher.
+//Copyright (c) 2022 Ultimaker B.V.
+//Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
 import QtQuick.Controls 2.3
-import QtQuick.Controls 1.4 as OldControls
 import QtQuick.Layouts 1.3
 
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.6 as Cura
 import ".."
 
@@ -34,7 +33,7 @@ Item
             rightMargin: parent.padding
         }
 
-        Label
+        UM.Label
         {
             id: profileLabel
             anchors
@@ -46,21 +45,6 @@ Item
             }
             text: catalog.i18nc("@label", "Profile")
             font: UM.Theme.getFont("medium")
-            renderType: Text.NativeRendering
-            color: UM.Theme.getColor("text")
-            verticalAlignment: Text.AlignVCenter
-        }
-
-        NoIntentIcon
-        {
-            affected_extruders: Cura.MachineManager.extruderPositionsWithNonActiveIntent
-            intent_type: Cura.MachineManager.activeIntentCategory
-            anchors.right: intentSelection.left
-            anchors.rightMargin: UM.Theme.getSize("narrow_margin").width
-            width: Math.round(profileLabel.height * 0.5)
-            anchors.verticalCenter: parent.verticalCenter
-            height: width
-            visible: affected_extruders.length
         }
 
         Button
@@ -68,8 +52,13 @@ Item
             id: intentSelection
             onClicked: menu.opened ? menu.close() : menu.open()
 
-            anchors.right: parent.right
-            width: UM.Theme.getSize("print_setup_big_item").width
+            // Anchoring to the right makes much more sense here, but for some reason this component compresses from the right
+            // and then expands from the left afterwards. This pushes it left by profileWarningReset.width
+            // The solution is to anchor from the other direction so this does not happen.
+            anchors.left: parent.left
+            // This leftMargin gives us the same spacing as anchoring to the right on profileWarningReset
+            anchors.leftMargin: parent.width - UM.Theme.getSize("print_setup_big_item").width
+            width: profileWarningReset.visible ? UM.Theme.getSize("print_setup_big_item").width - profileWarningReset.width  - UM.Theme.getSize("default_margin").width : UM.Theme.getSize("print_setup_big_item").width
             height: textLabel.contentHeight + 2 * UM.Theme.getSize("narrow_margin").height
             hoverEnabled: true
 
@@ -80,69 +69,46 @@ Item
                 anchors.right: customisedSettings.left
                 anchors.leftMargin: UM.Theme.getSize("default_margin").width
 
-                Label
+                UM.Label
                 {
                     id: textLabel
-                    text: Cura.MachineManager.activeQualityDisplayNameMap["main"]
-                    font: UM.Theme.getFont("default")
-                    color: UM.Theme.getColor("text")
+                    text: Cura.MachineManager.activeQualityDisplayNameMainStringParts.join(" - ")
                     Layout.margins: 0
                     Layout.maximumWidth: Math.floor(parent.width * 0.7)  // Always leave >= 30% for the rest of the row.
                     height: contentHeight
-                    verticalAlignment: Text.AlignVCenter
-                    renderType: Text.NativeRendering
                     elide: Text.ElideRight
+                    wrapMode: Text.NoWrap
                 }
 
-                Label
+                UM.Label
                 {
-                    text: activeQualityDetailText()
-                    font: UM.Theme.getFont("default")
+                    text:
+                    {
+                        const string_parts = Cura.MachineManager.activeQualityDisplayNameTailStringParts;
+                        if (string_parts.length === 0)
+                        {
+                            return "";
+                        }
+                        else
+                        {
+                            ` - ${string_parts.join(" - ")}`
+                        }
+                    }
+
                     color: UM.Theme.getColor("text_detail")
                     Layout.margins: 0
                     Layout.fillWidth: true
 
                     height: contentHeight
-                    verticalAlignment: Text.AlignVCenter
-                    renderType: Text.NativeRendering
                     elide: Text.ElideRight
-
-                    function activeQualityDetailText()
-                    {
-                        var resultMap = Cura.MachineManager.activeQualityDisplayNameMap
-                        var resultSuffix = resultMap["suffix"]
-                        var result = ""
-
-                        if (Cura.MachineManager.isActiveQualityExperimental)
-                        {
-                            resultSuffix += " (Experimental)"
-                        }
-
-                        if (Cura.MachineManager.isActiveQualitySupported)
-                        {
-                            if (Cura.MachineManager.activeQualityLayerHeight > 0)
-                            {
-                                if (resultSuffix)
-                                {
-                                    result += " - " + resultSuffix
-                                }
-                                result += " - "
-                                result += Cura.MachineManager.activeQualityLayerHeight + "mm"
-                            }
-                        }
-
-                        return result
-                    }
+                    wrapMode: Text.NoWrap
                 }
             }
 
-            background: Rectangle
+            background: UM.UnderlineBackground
             {
                 id: backgroundItem
-                border.color: intentSelection.hovered ? UM.Theme.getColor("setting_control_border_highlight") : UM.Theme.getColor("setting_control_border")
-                border.width: UM.Theme.getSize("default_lining").width
-                radius: UM.Theme.getSize("default_radius").width
-                color: UM.Theme.getColor("main_background")
+                liningColor: intentSelection.hovered ? UM.Theme.getColor("text_field_border_hovered") : UM.Theme.getColor("border_field_light")
             }
 
             UM.SimpleButton
@@ -172,7 +138,7 @@ Item
                 }
                 onExited: base.hideTooltip()
             }
-            UM.RecolorImage
+            UM.ColorImage
             {
                 id: downArrow
 
@@ -189,6 +155,15 @@ Item
 
                 color: UM.Theme.getColor("setting_control_button")
             }
+        }
+
+        ProfileWarningReset
+        {
+            id: profileWarningReset
+            width: childrenRect.width
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+            fullWarning: false
         }
 
         QualitiesWithIntentMenu
@@ -222,6 +197,7 @@ Item
             model: extrudersModel
             delegate: UM.TabRowButton
             {
+                checked: model.index == 0
                 contentItem: Item
                 {
                     Cura.ExtruderIcon
@@ -230,8 +206,6 @@ Item
                         materialColor: model.color
                         extruderEnabled: model.enabled
                         iconVariant: "default"
-                        height: parent.height
-                        width: height
                     }
                 }
                 onClicked:

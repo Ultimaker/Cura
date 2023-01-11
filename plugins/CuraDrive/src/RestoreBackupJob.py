@@ -7,7 +7,7 @@ import threading
 from tempfile import NamedTemporaryFile
 from typing import Optional, Any, Dict
 
-from PyQt5.QtNetwork import QNetworkReply, QNetworkRequest
+from PyQt6.QtNetwork import QNetworkReply, QNetworkRequest
 
 from UM.Job import Job
 from UM.Logger import Logger
@@ -53,7 +53,7 @@ class RestoreBackupJob(Job):
     def _onRestoreRequestCompleted(self, reply: QNetworkReply, error: Optional["QNetworkReply.NetworkError"] = None) -> None:
         if not HttpRequestManager.replyIndicatesSuccess(reply, error):
             Logger.warning("Requesting backup failed, response code %s while trying to connect to %s",
-                           reply.attribute(QNetworkRequest.HttpStatusCodeAttribute), reply.url())
+                           reply.attribute(QNetworkRequest.Attribute.HttpStatusCodeAttribute), reply.url())
             self.restore_backup_error_message = self.DEFAULT_ERROR_MESSAGE
             self._job_done.set()
             return

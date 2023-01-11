@@ -1,33 +1,38 @@
 {
-    "version":                 2,
-    "name":                    "Deltacomb DC-21 Flux",
-    "inherits":                "deltacomb_base",
-
-    "metadata": {
-        "visible":                 true,
-        "platform":                "deltacomb_dc20.stl",
-        "quality_definition":      "deltacomb_base",
-        "preferred_variant_name":  "FBE 0.40mm",
-        "machine_extruder_trains": {
+    "version": 2,
+    "name": "Deltacomb DC-21 Flux",
+    "inherits": "deltacomb_base",
+    "metadata":
+    {
+        "visible": true,
+        "platform": "deltacomb_dc20.stl",
+        "machine_extruder_trains":
+        {
             "0": "deltacomb_dc20flux_extruder_0",
             "1": "deltacomb_dc20flux_extruder_1",
             "2": "deltacomb_dc20flux_extruder_2",
             "3": "deltacomb_dc20flux_extruder_3"
-          }
+        },
+        "preferred_variant_name": "FBE 0.40mm",
+        "quality_definition": "deltacomb_base"
     },
-
-    "overrides": {
-        "machine_name":                       { "default_value": "Deltacomb DC-21 FLUX" },
-        "machine_width":                      { "default_value": 190 },
-        "machine_depth":                      { "default_value": 190 },
-        "machine_height":                     { "default_value": 400 },
-        "machine_extruder_count":             { "default_value": 2, "maximum_value": "4" },
-        "machine_end_gcode":                  { "default_value": ";---------------------------------------\n;Deltacomb end script\n;---------------------------------------\nG91 ;relative positioning\nG1 X8.0 E-10 F6000 ;wipe filament+material retraction\nG1 Z2 E9 ;Lift and start filament shaping\nG1 E-9\nG1 E8\nG1 E-8\nG1 E-10 F110\nG1 E-40 F5000 ; move to park position\nG28 ;home all axes (max endstops)\nM84 ;steppers off" },
-        "switch_extruder_retraction_amount":  { "value": "0" },
-        "prime_tower_min_volume":             { "value": "50" },
-        "prime_tower_enable":                 { "value": "1" },
+    "overrides":
+    {
+        "machine_depth": { "default_value": 190 },
+        "machine_end_gcode": { "default_value": ";---------------------------------------\n;Deltacomb end script\n;---------------------------------------\nG91 ;relative positioning\nG1 X8.0 E-10 F6000 ;wipe filament+material retraction\nG1 Z2 E9 ;Lift and start filament shaping\nG1 E-9\nG1 E8\nG1 E-8\nG1 E-10 F110\nG1 E-40 F5000 ; move to park position\nG28 ;home all axes (max endstops)\nM84 ;steppers off" },
+        "machine_extruder_count":
+        {
+            "default_value": 2,
+            "maximum_value": "4"
+        },
+        "machine_height": { "default_value": 400 },
+        "machine_name": { "default_value": "Deltacomb DC-21 FLUX" },
+        "machine_width": { "default_value": 190 },
+        "material_final_print_temperature": { "value": "material_print_temperature" },
         "material_initial_print_temperature": { "value": "material_print_temperature" },
-        "material_final_print_temperature":   { "value": "material_print_temperature" },
-        "material_standby_temperature":       { "value": "material_print_temperature" }
+        "material_standby_temperature": { "value": "material_print_temperature" },
+        "prime_tower_enable": { "value": true },
+        "prime_tower_min_volume": { "value": "50" },
+        "switch_extruder_retraction_amount": { "value": "0" }
     }
 }

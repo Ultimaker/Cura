@@ -1,8 +1,8 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import QObject, QUrl
-from PyQt5.QtGui import QDesktopServices
+from PyQt6.QtCore import QObject, QUrl
+from PyQt6.QtGui import QDesktopServices
 from typing import List, cast
 
 from UM.Event import CallFunctionEvent
@@ -35,7 +35,7 @@ class CuraActions(QObject):
         # Starting a web browser from a signal handler connected to a menu will crash on windows.
         # So instead, defer the call to the next run of the event loop, since that does work.
         # Note that weirdly enough, only signal handlers that open a web browser fail like that.
-        event = CallFunctionEvent(self._openUrl, [QUrl("https://ultimaker.com/en/resources/manuals/software")], {})
+        event = CallFunctionEvent(self._openUrl, [QUrl("https://ultimaker.com/en/resources/manuals/software?utm_source=cura&utm_medium=software&utm_campaign=dropdown-documentation")], {})
         cura.CuraApplication.CuraApplication.getInstance().functionEvent(event)
 
     @pyqtSlot()

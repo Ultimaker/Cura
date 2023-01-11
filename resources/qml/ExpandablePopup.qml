@@ -4,7 +4,7 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.3
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 // The expandable component has 2 major sub components:
@@ -27,11 +27,17 @@ Item
     // The contentItem holds the QML item that is shown when the "open" button is pressed
     property alias contentItem: content.contentItem
 
+    // If the contentItem is a Layout (eg Column) you must use these to set the popup size otherwise you end up with a
+    // binding loop between the popup and the contentItem
+    // ImplicitWidth/ImplicitHeight can be used instead in the contentItem if it is not a Layout.
+    property alias contentWidth: content.width
+    property alias contentHeight: content.height
+
     property color contentBackgroundColor: UM.Theme.getColor("action_button")
 
     property color headerBackgroundColor: UM.Theme.getColor("action_button")
-    property color headerActiveColor: UM.Theme.getColor("secondary")
-    property color headerHoverColor: UM.Theme.getColor("action_button_hovered")
+    property color headerActiveColor: UM.Theme.getColor("expandable_active")
+    property color headerHoverColor: UM.Theme.getColor("expandable_hover")
 
     property alias mouseArea: headerMouseArea
     property alias enabled: headerMouseArea.enabled
@@ -75,7 +81,8 @@ Item
     // Change the contentItem close behaviour
     property alias contentClosePolicy : content.closePolicy
 
-    property int popupOffset: 2
+    // Distance between the header and the content.
+    property int popupOffset: 2 * UM.Theme.getSize("default_lining").height
 
     onEnabledChanged:
     {
@@ -119,16 +126,12 @@ Item
         color: base.enabled ? headerBackgroundColor : UM.Theme.getColor("disabled")
         anchors.fill: parent
 
-        Label
+        UM.Label
         {
             id: disabledLabel
             visible: !base.enabled
             leftPadding: background.padding
             text: ""
-            font: UM.Theme.getFont("default")
-            renderType: Text.NativeRendering
-            verticalAlignment: Text.AlignVCenter
-            color: UM.Theme.getColor("text")
             height: parent.height
         }
 
@@ -171,7 +174,7 @@ Item
                 anchors.bottom: parent.bottom
             }
 
-            UM.RecolorImage
+            UM.ColorImage
             {
                 id: collapseButton
                 anchors
@@ -214,23 +217,5 @@ Item
         }
 
         contentItem: Item {}
-
-        onContentItemChanged:
-        {
-            // Since we want the size of the content to be set by the size of the content,
-            // we need to do it like this.
-            content.width = contentItem.width + 2 * content.padding
-            content.height = contentItem.height + 2 * content.padding
-        }
-    }
-
-    // DO NOT MOVE UP IN THE CODE: This connection has to be here, after the definition of the content item.
-    // Apparently the order in which these are handled matters and so the height is correctly updated if this is here.
-    Connections
-    {
-        // Since it could be that the content is dynamically populated, we should also take these changes into account.
-        target: content.contentItem
-        function onWidthChanged() { content.width = content.contentItem.width + 2 * content.padding }
-        function onHeightChanged() { content.height = content.contentItem.height + 2 * content.padding }
     }
 }

@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import io
@@ -111,15 +111,15 @@ class Backup:
             return archive
         except (IOError, OSError, BadZipfile) as error:
             Logger.log("e", "Could not create archive from user data directory: %s", error)
-            self._showMessage(
-                self.catalog.i18nc("@info:backup_failed",
-                                   "Could not create archive from user data directory: {}".format(error)))
+            self._showMessage(self.catalog.i18nc("@info:backup_failed",
+                                                 "Could not create archive from user data directory: {}".format(error)),
+                              message_type = Message.MessageType.ERROR)
             return None
 
-    def _showMessage(self, message: str) -> None:
+    def _showMessage(self, message: str, message_type: Message.MessageType = Message.MessageType.NEUTRAL) -> None:
         """Show a UI message."""
 
-        Message(message, title=self.catalog.i18nc("@info:title", "Backup"), lifetime=30).show()
+        Message(message, title=self.catalog.i18nc("@info:title", "Backup"), message_type = message_type).show()
 
     def restore(self) -> bool:
         """Restore this back-up.
@@ -130,20 +130,20 @@ class Backup:
         if not self.zip_file or not self.meta_data or not self.meta_data.get("cura_release", None):
             # We can restore without the minimum required information.
             Logger.log("w", "Tried to restore a Cura backup without having proper data or meta data.")
-            self._showMessage(
-                self.catalog.i18nc("@info:backup_failed",
-                                   "Tried to restore a Cura backup without having proper data or meta data."))
+            self._showMessage(self.catalog.i18nc("@info:backup_failed",
+                                                 "Tried to restore a Cura backup without having proper data or meta data."),
+                              message_type = Message.MessageType.ERROR)
             return False
 
         current_version = Version(self._application.getVersion())
-        version_to_restore = Version(self.meta_data.get("cura_release", "master"))
+        version_to_restore = Version(self.meta_data.get("cura_release", "dev"))
 
         if current_version < version_to_restore:
             # Cannot restore version newer than current because settings might have changed.
             Logger.log("d", "Tried to restore a Cura backup of version {version_to_restore} with cura version {current_version}".format(version_to_restore = version_to_restore, current_version = current_version))
-            self._showMessage(
-                self.catalog.i18nc("@info:backup_failed",
-                                   "Tried to restore a Cura backup that is higher than the current version."))
+            self._showMessage(self.catalog.i18nc("@info:backup_failed",
+                                                 "Tried to restore a Cura backup that is higher than the current version."),
+                              message_type = Message.MessageType.ERROR)
             return False
 
         # Get the current secrets and store since the back-up doesn't contain those
@@ -154,7 +154,11 @@ class Backup:
             archive = ZipFile(io.BytesIO(self.zip_file), "r")
         except LookupError as e:
             Logger.log("d", f"The following error occurred while trying to restore a Cura backup: {str(e)}")
-            self._showMessage(self.catalog.i18nc("@info:backup_failed", "The following error occurred while trying to restore a Cura backup:") + str(e))
+            Message(self.catalog.i18nc("@info:backup_failed",
+                                       "The following error occurred while trying to restore a Cura backup:") + str(e),
+                    title = self.catalog.i18nc("@info:title", "Backup"),
+                    message_type = Message.MessageType.ERROR).show()
+
             return False
         extracted = self._extractArchive(archive, version_data_dir)
 
@@ -164,7 +168,10 @@ class Backup:
             preferences_file = Resources.getPath(Resources.Preferences, "{}.cfg".format(preferences_file_name))
             backup_preferences_file = os.path.join(version_data_dir, "{}.cfg".format(preferences_file_name))
             Logger.log("d", "Moving preferences file from %s to %s", backup_preferences_file, preferences_file)
-            shutil.move(backup_preferences_file, preferences_file)
+            try:
+                shutil.move(backup_preferences_file, preferences_file)
+            except EnvironmentError as e:
+                Logger.error(f"Unable to back-up preferences file: {type(e)} - {str(e)}")
 
         # Read the preferences from the newly restored configuration (or else the cached Preferences will override the restored ones)
         self._application.readPreferencesFromConfiguration()
@@ -174,8 +181,7 @@ class Backup:
 
         return extracted
 
-    @staticmethod
-    def _extractArchive(archive: "ZipFile", target_path: str) -> bool:
+    def _extractArchive(self, archive: "ZipFile", target_path: str) -> bool:
         """Extract the whole archive to the given target path.
 
         :param archive: The archive as ZipFile.
@@ -194,11 +200,17 @@ class Backup:
         Resources.factoryReset()
         Logger.log("d", "Extracting backup to location: %s", target_path)
         name_list = archive.namelist()
+        ignore_string = re.compile("|".join(self.IGNORED_FILES + self.IGNORED_FOLDERS))
         for archive_filename in name_list:
+            if ignore_string.search(archive_filename):
+                Logger.warning(f"File ({archive_filename}) in archive that doesn't fit current backup policy; ignored.")
+                continue
             try:
                 archive.extract(archive_filename, target_path)
             except (PermissionError, EnvironmentError):
                 Logger.logException("e", f"Unable to extract the file {archive_filename} from the backup due to permission or file system errors.")
+            except UnicodeEncodeError:
+                Logger.error(f"Unable to extract the file {archive_filename} because of an encoding error.")
             CuraApplication.getInstance().processEvents()
         return True
 

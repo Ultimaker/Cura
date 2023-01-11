@@ -1,24 +1,31 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+import enum
 from datetime import datetime
-from typing import Optional, Dict, TYPE_CHECKING, Callable
+import json
+from PyQt6.QtCore import QObject, pyqtSignal, pyqtSlot, pyqtProperty, QTimer, pyqtEnum
+from PyQt6.QtNetwork import QNetworkRequest
+from typing import Any, Callable, Dict, List, Optional, TYPE_CHECKING
 
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, pyqtProperty, QTimer, Q_ENUMS
-
+from UM.Decorators import deprecated
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.i18n import i18nCatalog
+from UM.TaskManagement.HttpRequestManager import HttpRequestManager
+from UM.TaskManagement.HttpRequestScope import JsonDecoratorScope
 from cura.OAuth2.AuthorizationService import AuthorizationService
-from cura.OAuth2.Models import OAuth2Settings
+from cura.OAuth2.Models import OAuth2Settings, UserProfile
 from cura.UltimakerCloud import UltimakerCloudConstants
+from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope
 
 if TYPE_CHECKING:
     from cura.CuraApplication import CuraApplication
+    from PyQt6.QtNetwork import QNetworkReply
 
 i18n_catalog = i18nCatalog("cura")
 
 
-class SyncState:
+class SyncState(enum.IntEnum):
     """QML: Cura.AccountSyncState"""
     SYNCING = 0
     SUCCESS = 1
@@ -41,10 +48,16 @@ class Account(QObject):
 
     # The interval in which sync services are automatically triggered
     SYNC_INTERVAL = 60.0  # seconds
-    Q_ENUMS(SyncState)
+    pyqtEnum(SyncState)
 
     loginStateChanged = pyqtSignal(bool)
     """Signal emitted when user logged in or out"""
+
+    userProfileChanged = pyqtSignal()
+    """Signal emitted when new account information is available."""
+
+    additionalRightsChanged = pyqtSignal("QVariantMap")
+    """Signal emitted when a users additional rights change"""
 
     accessTokenChanged = pyqtSignal()
     syncRequested = pyqtSignal()
@@ -59,7 +72,7 @@ class Account(QObject):
     updatePackagesEnabledChanged = pyqtSignal(bool)
 
     CLIENT_SCOPES = "account.user.read drive.backup.read drive.backup.write packages.download " \
-                    "packages.rating.read packages.rating.write connect.cluster.read connect.cluster.write " \
+                    "packages.rating.read packages.rating.write connect.cluster.read connect.cluster.write connect.material.write " \
                     "library.project.read library.project.write cura.printjob.read cura.printjob.write " \
                     "cura.mesh.read cura.mesh.write"
 
@@ -68,12 +81,15 @@ class Account(QObject):
         self._application = application
         self._new_cloud_printers_detected = False
 
-        self._error_message = None  # type: Optional[Message]
+        self._error_message: Optional[Message] = None
         self._logged_in = False
+        self._user_profile: Optional[UserProfile] = None
+        self._additional_rights: Dict[str, Any] = {}
+        self._permissions: List[str] = []  # List of account permission keys, e.g. ["digital-factory.print-job.write"]
         self._sync_state = SyncState.IDLE
         self._manual_sync_enabled = False
         self._update_packages_enabled = False
-        self._update_packages_action = None  # type: Optional[Callable]
+        self._update_packages_action: Optional[Callable] = None
         self._last_sync_str = "-"
 
         self._callback_port = 32118
@@ -99,8 +115,9 @@ class Account(QObject):
         self._update_timer.setSingleShot(True)
         self._update_timer.timeout.connect(self.sync)
 
-        self._sync_services = {}  # type: Dict[str, int]
+        self._sync_services: Dict[str, int] = {}
         """contains entries "service_name" : SyncState"""
+        self.syncRequested.connect(self._updatePermissions)
 
     def initialize(self) -> None:
         self._authorization_service.initialize(self._application.getPreferences())
@@ -178,7 +195,9 @@ class Account(QObject):
             if self._error_message:
                 self._error_message.hide()
             Logger.log("w", "Failed to login: %s", error_message)
-            self._error_message = Message(error_message, title = i18n_catalog.i18nc("@info:title", "Login failed"))
+            self._error_message = Message(error_message,
+                                          title = i18n_catalog.i18nc("@info:title", "Login failed"),
+                                          message_type = Message.MessageType.ERROR)
             self._error_message.show()
             self._logged_in = False
             self.loginStateChanged.emit(False)
@@ -190,11 +209,16 @@ class Account(QObject):
             self._logged_in = logged_in
             self.loginStateChanged.emit(logged_in)
             if logged_in:
+                self._authorization_service.getUserProfile(self._onProfileChanged)
                 self._setManualSyncEnabled(False)
                 self._sync()
             else:
                 if self._update_timer.isActive():
                     self._update_timer.stop()
+
+    def _onProfileChanged(self, profile: Optional[UserProfile]) -> None:
+        self._user_profile = profile
+        self.userProfileChanged.emit()
 
     def _sync(self) -> None:
         """Signals all sync services to start syncing
@@ -209,7 +233,7 @@ class Account(QObject):
         if self._update_timer.isActive():
             self._update_timer.stop()
         elif self._sync_state == SyncState.SYNCING:
-            Logger.warning("Starting a new sync while previous sync was not completed\n{}", str(self._sync_services))
+            Logger.debug("Starting a new sync while previous sync was not completed")
 
         self.syncRequested.emit()
 
@@ -237,32 +261,28 @@ class Account(QObject):
                 return
         self._authorization_service.startAuthorizationFlow(force_logout_before_login)
 
-    @pyqtProperty(str, notify=loginStateChanged)
+    @pyqtProperty(str, notify = userProfileChanged)
     def userName(self):
-        user_profile = self._authorization_service.getUserProfile()
-        if not user_profile:
-            return None
-        return user_profile.username
+        if not self._user_profile:
+            return ""
+        return self._user_profile.username
 
-    @pyqtProperty(str, notify = loginStateChanged)
+    @pyqtProperty(str, notify = userProfileChanged)
     def profileImageUrl(self):
-        user_profile = self._authorization_service.getUserProfile()
-        if not user_profile:
-            return None
-        return user_profile.profile_image_url
+        if not self._user_profile:
+            return ""
+        return self._user_profile.profile_image_url
 
     @pyqtProperty(str, notify=accessTokenChanged)
     def accessToken(self) -> Optional[str]:
         return self._authorization_service.getAccessToken()
 
-    @pyqtProperty("QVariantMap", notify = loginStateChanged)
-    def userProfile(self) -> Optional[Dict[str, Optional[str]]]:
+    @pyqtProperty("QVariantMap", notify = userProfileChanged)
+    def userProfile(self) -> Dict[str, Optional[str]]:
         """None if no user is logged in otherwise the logged in  user as a dict containing containing user_id, username and profile_image_url """
-
-        user_profile = self._authorization_service.getUserProfile()
-        if not user_profile:
-            return None
-        return user_profile.__dict__
+        if not self._user_profile:
+            return {}
+        return self._user_profile.__dict__
 
     @pyqtProperty(str, notify=lastSyncDateTimeChanged)
     def lastSyncDateTime(self) -> str:
@@ -299,3 +319,64 @@ class Account(QObject):
             return  # Nothing to do, user isn't logged in.
 
         self._authorization_service.deleteAuthData()
+
+    @deprecated("Get permissions from the 'permissions' property", since = "5.2.0")
+    def updateAdditionalRight(self, **kwargs) -> None:
+        """Update the additional rights of the account.
+        The argument(s) are the rights that need to be set"""
+        self._additional_rights.update(kwargs)
+        self.additionalRightsChanged.emit(self._additional_rights)
+
+    @deprecated("Get permissions from the 'permissions' property", since = "5.2.0")
+    @pyqtProperty("QVariantMap", notify = additionalRightsChanged)
+    def additionalRights(self) -> Dict[str, Any]:
+        """A dictionary which can be queried for additional account rights."""
+        return self._additional_rights
+
+    permissionsChanged = pyqtSignal()
+    @pyqtProperty("QVariantList", notify = permissionsChanged)
+    def permissions(self) -> List[str]:
+        """
+        The permission keys that the user has in his account.
+        """
+        return self._permissions
+
+    def _updatePermissions(self) -> None:
+        """
+        Update the list of permissions that the user has.
+        """
+        def callback(reply: "QNetworkReply"):
+            status_code = reply.attribute(QNetworkRequest.Attribute.HttpStatusCodeAttribute)
+            if status_code is None:
+                Logger.error("Server did not respond to request to get list of permissions.")
+                return
+            if status_code >= 300:
+                Logger.error(f"Request to get list of permission resulted in HTTP error {status_code}")
+                return
+
+            try:
+                reply_data = json.loads(bytes(reply.readAll()).decode("UTF-8"))
+            except (UnicodeDecodeError, json.JSONDecodeError, ValueError) as e:
+                Logger.logException("e", f"Could not parse response to permission list request: {e}")
+                return
+            if "errors" in reply_data:
+                Logger.error(f"Request to get list of permission resulted in error response: {reply_data['errors']}")
+                return
+
+            if "data" in reply_data and "permissions" in reply_data["data"]:
+                permissions = sorted(reply_data["data"]["permissions"])
+                if permissions != self._permissions:
+                    self._permissions = permissions
+                    self.permissionsChanged.emit()
+
+        def error_callback(reply: "QNetworkReply", error: "QNetworkReply.NetworkError"):
+            Logger.error(f"Request for user permissions list failed. Network error: {error}")
+
+        HttpRequestManager.getInstance().get(
+            url = f"{self._oauth_root}/users/permissions",
+            scope = JsonDecoratorScope(UltimakerCloudScope(self._application)),
+            callback = callback,
+            error_callback = error_callback,
+            timeout = 10
+        )
+

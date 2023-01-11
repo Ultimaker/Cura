@@ -2,23 +2,27 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import copy  # To duplicate materials.
-from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject, QUrl
+from PyQt6.QtCore import pyqtSignal, pyqtSlot, QObject, QUrl
+from PyQt6.QtGui import QDesktopServices
 from typing import Any, Dict, Optional, TYPE_CHECKING
 import uuid  # To generate new GUIDs for new materials.
-import zipfile  # To export all materials in a .zip archive.
 
+from UM.Message import Message
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
+from UM.Resources import Resources  # To find QML files.
 from UM.Signal import postponeSignals, CompressTechnique
 
-import cura.CuraApplication  # Imported like this to prevent circular imports.
+import cura.CuraApplication  # Imported like this to prevent cirmanagecular imports.
 from cura.Machines.ContainerTree import ContainerTree
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry  # To find the sets of materials belonging to each other, and currently loaded extruder stacks.
+from cura.UltimakerCloud.CloudMaterialSync import CloudMaterialSync
 
 if TYPE_CHECKING:
     from cura.Machines.MaterialNode import MaterialNode
 
 catalog = i18nCatalog("cura")
+
 
 class MaterialManagementModel(QObject):
     favoritesChanged = pyqtSignal(str)
@@ -26,6 +30,10 @@ class MaterialManagementModel(QObject):
 
     :param The base file of the material is provided as parameter when this emits
     """
+
+    def __init__(self, parent: Optional[QObject] = None) -> None:
+        super().__init__(parent = parent)
+        self._material_sync = CloudMaterialSync(parent=self)
 
     @pyqtSlot("QVariant", result = bool)
     def canMaterialBeRemoved(self, material_node: "MaterialNode") -> bool:
@@ -261,39 +269,10 @@ class MaterialManagementModel(QObject):
         except ValueError:  # Material was not in the favorites list.
             Logger.log("w", "Material {material_base_file} was already not a favorite material.".format(material_base_file = material_base_file))
 
-    @pyqtSlot(result = QUrl)
-    def getPreferredExportAllPath(self) -> QUrl:
+    @pyqtSlot()
+    def openSyncAllWindow(self) -> None:
         """
-        Get the preferred path to export materials to.
+        Opens the window to sync all materials.
+        """
+        self._material_sync.openSyncAllWindow()
 
-        If there is a removable drive, that should be the preferred path. Otherwise it should be the most recent local
-        file path.
-        :return: The preferred path to export all materials to.
-        """
-        cura_application = cura.CuraApplication.CuraApplication.getInstance()
-        device_manager = cura_application.getOutputDeviceManager()
-        devices = device_manager.getOutputDevices()
-        for device in devices:
-            if device.__class__.__name__ == "RemovableDriveOutputDevice":
-                return QUrl.fromLocalFile(device.getId())
-        else:  # No removable drives? Use local path.
-            return cura_application.getDefaultPath("dialog_material_path")
-
-    @pyqtSlot(QUrl)
-    def exportAll(self, file_path: QUrl) -> None:
-        """
-        Export all materials to a certain file path.
-        :param file_path: The path to export the materials to.
-        """
-        registry = CuraContainerRegistry.getInstance()
-
-        archive = zipfile.ZipFile(file_path.toLocalFile(), "w", compression = zipfile.ZIP_DEFLATED)
-        for metadata in registry.findInstanceContainersMetadata(type = "material"):
-            if metadata["base_file"] != metadata["id"]:  # Only process base files.
-                continue
-            if metadata["id"] == "empty_material":  # Don't export the empty material.
-                continue
-            material = registry.findContainers(id = metadata["id"])[0]
-            suffix = registry.getMimeTypeForContainer(type(material)).preferredSuffix
-            filename = metadata["id"] + "." + suffix
-            archive.writestr(filename, material.serialize())

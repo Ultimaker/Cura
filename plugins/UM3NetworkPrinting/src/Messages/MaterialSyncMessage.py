@@ -25,8 +25,7 @@ class MaterialSyncMessage(Message):
                                                       "on the host printer of group {0}.", device.name),
             title = I18N_CATALOG.i18nc("@info:title", "Sending materials to printer"),
             lifetime = 10,
-            dismissable = True
-        )
+            dismissable = True)
 
     def show(self) -> None:
         if MaterialSyncMessage.__is_visible:

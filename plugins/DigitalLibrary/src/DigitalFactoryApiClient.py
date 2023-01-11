@@ -7,7 +7,7 @@ import re
 from time import time
 from typing import List, Any, Optional, Union, Type, Tuple, Dict, cast, TypeVar, Callable
 
-from PyQt5.QtNetwork import QNetworkReply, QNetworkRequest
+from PyQt6.QtNetwork import QNetworkReply, QNetworkRequest
 
 from UM.Logger import Logger
 from UM.TaskManagement.HttpRequestManager import HttpRequestManager
@@ -40,7 +40,7 @@ class DigitalFactoryApiClient:
     DEFAULT_REQUEST_TIMEOUT = 10  # seconds
 
     # In order to avoid garbage collection we keep the callbacks in this list.
-    _anti_gc_callbacks = []  # type: List[Callable[[Any], None]]
+    _anti_gc_callbacks: List[Callable[[Any], None]] = []
 
     def __init__(self, application: CuraApplication, on_error: Callable[[List[CloudError]], None], projects_limit_per_page: Optional[int] = None) -> None:
         """Initializes a new digital factory API client.
@@ -54,7 +54,7 @@ class DigitalFactoryApiClient:
         self._scope = JsonDecoratorScope(UltimakerCloudScope(application))
         self._http = HttpRequestManager.getInstance()
         self._on_error = on_error
-        self._file_uploader = None  # type: Optional[DFFileUploader]
+        self._file_uploader: Optional[DFFileUploader] = None
         self._library_max_private_projects: Optional[int] = None
 
         self._projects_pagination_mgr = PaginationManager(limit = projects_limit_per_page) if projects_limit_per_page else None  # type: Optional[PaginationManager]
@@ -67,9 +67,9 @@ class DigitalFactoryApiClient:
         def callbackWrap(response: Optional[Any] = None, *args, **kwargs) -> None:
             if (response is not None and isinstance(response, DigitalFactoryFeatureBudgetResponse) and
                     response.library_max_private_projects is not None):
-                callback(
-                    response.library_max_private_projects == -1 or  # Note: -1 is unlimited
-                    response.library_max_private_projects > 0)
+                # A user has DF access when library_max_private_projects is either -1 (unlimited) or bigger then 0
+                has_access = response.library_max_private_projects == -1 or response.library_max_private_projects > 0
+                callback(has_access)
                 self._library_max_private_projects = response.library_max_private_projects
             else:
                 Logger.warning(f"Digital Factory: Response is not a feature budget, likely an error: {str(response)}")
@@ -226,7 +226,7 @@ class DigitalFactoryApiClient:
             self._anti_gc_callbacks.remove(parse)
 
             # Don't try to parse the reply if we didn't get one
-            if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) is None:
+            if reply.attribute(QNetworkRequest.Attribute.HttpStatusCodeAttribute) is None:
                 if on_error is not None:
                     on_error()
                 return
@@ -248,7 +248,7 @@ class DigitalFactoryApiClient:
         :return: A tuple with a status code and a dictionary.
         """
 
-        status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
+        status_code = reply.attribute(QNetworkRequest.Attribute.HttpStatusCodeAttribute)
         try:
             response = bytes(reply.readAll()).decode()
             return status_code, json.loads(response)

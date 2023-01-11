@@ -2,8 +2,8 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import TYPE_CHECKING
 
-from PyQt5.QtCore import QUrl
-from PyQt5.QtGui import QDesktopServices
+from PyQt6.QtCore import QUrl
+from PyQt6.QtGui import QDesktopServices
 
 from UM import i18nCatalog
 from UM.Message import Message
@@ -29,7 +29,8 @@ class NotClusterHostMessage(Message):
                                                       "it as a group host.", device.name),
             title = I18N_CATALOG.i18nc("@info:title", "Not a group host"),
             lifetime = 0,
-            dismissable = True
+            dismissable = True,
+            message_type = Message.MessageType.ERROR
         )
         self._address = device.address
         self.addAction("", I18N_CATALOG.i18nc("@action", "Configure group"), "", "")

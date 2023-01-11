@@ -1,34 +1,37 @@
-# Copyright (c) 2020 Ultimaker B.V.
-# Cura is released under the terms of the LGPLv3 or higher.
+#  Copyright (c) 2022 UltiMaker
+#  Cura is released under the terms of the LGPLv3 or higher.
 
 import os
 from typing import Dict, List, Optional, Set
 
-from PyQt5.QtNetwork import QNetworkReply
-from PyQt5.QtWidgets import QMessageBox
+from PyQt6.QtNetwork import QNetworkReply
+from PyQt6.QtWidgets import QMessageBox
 
 from UM import i18nCatalog
 from UM.Logger import Logger  # To log errors talking to the API.
-from UM.Message import Message
 from UM.Settings.Interfaces import ContainerInterface
 from UM.Signal import Signal
 from UM.Util import parseBool
 from cura.API import Account
 from cura.API.Account import SyncState
 from cura.CuraApplication import CuraApplication
+from cura.Settings.CuraContainerRegistry import CuraContainerRegistry  # To update printer metadata with information received about cloud printers.
 from cura.Settings.CuraStackBuilder import CuraStackBuilder
 from cura.Settings.GlobalStack import GlobalStack
-from cura.UltimakerCloud.UltimakerCloudConstants import META_UM_LINKED_TO_ACCOUNT
+from cura.UltimakerCloud.UltimakerCloudConstants import META_CAPABILITIES, META_UM_LINKED_TO_ACCOUNT
+from .AbstractCloudOutputDevice import AbstractCloudOutputDevice
 from .CloudApiClient import CloudApiClient
 from .CloudOutputDevice import CloudOutputDevice
+from ..Messages.RemovedPrintersMessage import RemovedPrintersMessage
 from ..Models.Http.CloudClusterResponse import CloudClusterResponse
+from ..Messages.NewPrinterDetectedMessage import NewPrinterDetectedMessage
 
 
 class CloudOutputDeviceManager:
     """The cloud output device manager is responsible for using the Ultimaker Cloud APIs to manage remote clusters.
 
     Keeping all cloud related logic in this class instead of the UM3OutputDevicePlugin results in more readable code.
-    API spec is available on https://api.ultimaker.com/docs/connect/spec/.
+    API spec is available on https://docs.api.ultimaker.com/connect/index.html.
     """
 
     META_CLUSTER_ID = "um_cloud_cluster_id"
@@ -45,21 +48,22 @@ class CloudOutputDeviceManager:
 
     def __init__(self) -> None:
         # Persistent dict containing the remote clusters for the authenticated user.
-        self._remote_clusters = {}  # type: Dict[str, CloudOutputDevice]
+        self._remote_clusters: Dict[str, CloudOutputDevice] = {}
+
+        self._abstract_clusters: Dict[str, AbstractCloudOutputDevice] = {}
 
         # Dictionary containing all the cloud printers loaded in Cura
-        self._um_cloud_printers = {}  # type: Dict[str, GlobalStack]
+        self._um_cloud_printers: Dict[str, GlobalStack] = {}
 
-        self._account = CuraApplication.getInstance().getCuraAPI().account  # type: Account
+        self._account: Account = CuraApplication.getInstance().getCuraAPI().account
         self._api = CloudApiClient(CuraApplication.getInstance(), on_error = lambda error: Logger.log("e", str(error)))
         self._account.loginStateChanged.connect(self._onLoginStateChanged)
-        self._removed_printers_message = None  # type: Optional[Message]
+        self._removed_printers_message: Optional[RemovedPrintersMessage] = None
 
         # Ensure we don't start twice.
         self._running = False
 
         self._syncing = False
-
         CuraApplication.getInstance().getContainerRegistry().containerRemoved.connect(self._printerRemoved)
 
     def start(self):
@@ -112,8 +116,8 @@ class CloudOutputDeviceManager:
                                    CuraApplication.getInstance().getContainerRegistry().findContainerStacks(
                                        type = "machine") if m.getMetaDataEntry(self.META_CLUSTER_ID, None)}
         new_clusters = []
-        all_clusters = {c.cluster_id: c for c in clusters}  # type: Dict[str, CloudClusterResponse]
-        online_clusters = {c.cluster_id: c for c in clusters if c.is_online}  # type: Dict[str, CloudClusterResponse]
+        all_clusters: Dict[str, CloudClusterResponse] = {c.cluster_id: c for c in clusters}
+        online_clusters: Dict[str, CloudClusterResponse] = {c.cluster_id: c for c in clusters if c.is_online}
 
         # Add the new printers in Cura.
         for device_id, cluster_data in all_clusters.items():
@@ -127,7 +131,14 @@ class CloudOutputDeviceManager:
                 # to the current account
                 if not parseBool(self._um_cloud_printers[device_id].getMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, "true")):
                     self._um_cloud_printers[device_id].setMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, True)
-        self._onDevicesDiscovered(new_clusters)
+                if not self._um_cloud_printers[device_id].getMetaDataEntry(META_CAPABILITIES, None):
+                    self._um_cloud_printers[device_id].setMetaDataEntry(META_CAPABILITIES, ",".join(cluster_data.capabilities))
+
+        # We want a machine stack per remote printer that we discovered. Create them now!
+        self._createMachineStacksForDiscoveredClusters(new_clusters)
+
+        # Update the online vs offline status for all found devices
+        self._updateOnlinePrinters(all_clusters)
 
         # Hide the current removed_printers_message, if there is any
         if self._removed_printers_message:
@@ -147,6 +158,7 @@ class CloudOutputDeviceManager:
 
         if new_clusters or offline_device_keys or removed_device_keys:
             self.discoveredDevicesChanged.emit()
+
         if offline_device_keys:
             # If the removed device was active we should connect to the new active device
             self._connectToActiveMachine()
@@ -154,58 +166,78 @@ class CloudOutputDeviceManager:
         self._syncing = False
         self._account.setSyncState(self.SYNC_SERVICE_NAME, SyncState.SUCCESS)
 
+        Logger.debug("Synced cloud printers with account.")
+
     def _onGetRemoteClusterFailed(self, reply: QNetworkReply, error: QNetworkReply.NetworkError) -> None:
         self._syncing = False
         self._account.setSyncState(self.SYNC_SERVICE_NAME, SyncState.ERROR)
 
-    def _onDevicesDiscovered(self, clusters: List[CloudClusterResponse]) -> None:
+    def _requestWrite(self, unique_id: str, nodes: List["SceneNode"]):
+        for remote in self._remote_clusters.values():
+            if unique_id == remote.name:  # No other id-type would match. Assume cloud doesn't have duplicate names.
+                remote.requestWrite(nodes)
+                return
+        Logger.log("e", f"Failed writing to specific cloud printer: {unique_id} not in remote clusters.")
+
+    def _createMachineStacksForDiscoveredClusters(self, discovered_clusters: List[CloudClusterResponse]) -> None:
         """**Synchronously** create machines for discovered devices
 
         Any new machines are made available to the user.
-        May take a long time to complete. As this code needs access to the Application
-        and blocks the GIL, creating a Job for this would not make sense.
-        Shows a Message informing the user of progress.
+        May take a long time to complete. This currently forcefully calls the "processEvents", which isn't
+        the nicest solution out there. We might need to consider moving this into a job later!
         """
-        new_devices = []
+        new_output_devices: List[CloudOutputDevice] = []
         remote_clusters_added = False
-        host_guid_map = {machine.getMetaDataEntry(self.META_HOST_GUID): device_cluster_id
-                         for device_cluster_id, machine in self._um_cloud_printers.items()
-                         if machine.getMetaDataEntry(self.META_HOST_GUID)}
+
+        # Create a map that maps the HOST_GUID to the DEVICE_CLUSTER_ID
+        host_guid_map: Dict[str, str] = {machine.getMetaDataEntry(self.META_HOST_GUID): device_cluster_id
+                                         for device_cluster_id, machine in self._um_cloud_printers.items()
+                                         if machine.getMetaDataEntry(self.META_HOST_GUID)}
+
         machine_manager = CuraApplication.getInstance().getMachineManager()
 
-        for cluster_data in clusters:
-            device = CloudOutputDevice(self._api, cluster_data)
+        for cluster_data in discovered_clusters:
+            output_device = CloudOutputDevice(self._api, cluster_data)
+
+            if cluster_data.printer_type not in self._abstract_clusters:
+                self._abstract_clusters[cluster_data.printer_type] = AbstractCloudOutputDevice(self._api, cluster_data.printer_type, self._requestWrite, self.refreshConnections)
+                # Ensure that the abstract machine is added (either because it was never added, or it somehow got
+                # removed)
+                _abstract_machine = CuraStackBuilder.createAbstractMachine(cluster_data.printer_type)
+
             # If the machine already existed before, it will be present in the host_guid_map
             if cluster_data.host_guid in host_guid_map:
-                machine = machine_manager.getMachine(device.printerType, {self.META_HOST_GUID: cluster_data.host_guid})
-                if machine and machine.getMetaDataEntry(self.META_CLUSTER_ID) != device.key:
+                machine = machine_manager.getMachine(output_device.printerType, {self.META_HOST_GUID: cluster_data.host_guid})
+                if machine and machine.getMetaDataEntry(self.META_CLUSTER_ID) != output_device.key:
                     # If the retrieved device has a different cluster_id than the existing machine, bring the existing
                     # machine up-to-date.
-                    self._updateOutdatedMachine(outdated_machine = machine, new_cloud_output_device = device)
+                    self._updateOutdatedMachine(outdated_machine = machine, new_cloud_output_device = output_device)
 
             # Create a machine if we don't already have it. Do not make it the active machine.
             # We only need to add it if it wasn't already added by "local" network or by cloud.
-            if machine_manager.getMachine(device.printerType, {self.META_CLUSTER_ID: device.key}) is None \
-                    and machine_manager.getMachine(device.printerType, {self.META_NETWORK_KEY: cluster_data.host_name + "*"}) is None:  # The host name is part of the network key.
-                new_devices.append(device)
-            elif device.getId() not in self._remote_clusters:
-                self._remote_clusters[device.getId()] = device
+            if machine_manager.getMachine(output_device.printerType, {self.META_CLUSTER_ID: output_device.key}) is None \
+                    and machine_manager.getMachine(output_device.printerType, {self.META_NETWORK_KEY: cluster_data.host_name + "*"}) is None:  # The host name is part of the network key.
+                new_output_devices.append(output_device)
+            elif output_device.getId() not in self._remote_clusters:
+                self._remote_clusters[output_device.getId()] = output_device
                 remote_clusters_added = True
             # If a printer that was removed from the account is re-added, change its metadata to mark it not removed
             # from the account
-            elif not parseBool(self._um_cloud_printers[device.key].getMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, "true")):
-                self._um_cloud_printers[device.key].setMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, True)
+            elif not parseBool(self._um_cloud_printers[output_device.key].getMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, "true")):
+                self._um_cloud_printers[output_device.key].setMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, True)
+            # As adding a lot of machines might take some time, ensure that the GUI (and progress message) is updated
+            CuraApplication.getInstance().processEvents()
 
         # Inform the Cloud printers model about new devices.
         new_devices_list_of_dicts = [{
                 "key": d.getId(),
                 "name": d.name,
                 "machine_type": d.printerTypeName,
-                "firmware_version": d.firmwareVersion} for d in new_devices]
+                "firmware_version": d.firmwareVersion} for d in new_output_devices]
         discovered_cloud_printers_model = CuraApplication.getInstance().getDiscoveredCloudPrintersModel()
         discovered_cloud_printers_model.addDiscoveredCloudPrinters(new_devices_list_of_dicts)
 
-        if not new_devices:
+        if not new_output_devices:
             if remote_clusters_added:
                 self._connectToActiveMachine()
             return
@@ -213,52 +245,37 @@ class CloudOutputDeviceManager:
         # Sort new_devices on online status first, alphabetical second.
         # Since the first device might be activated in case there is no active printer yet,
         # it would be nice to prioritize online devices
-        online_cluster_names = {c.friendly_name.lower() for c in clusters if c.is_online and not c.friendly_name is None}
-        new_devices.sort(key = lambda x: ("a{}" if x.name.lower() in online_cluster_names else "b{}").format(x.name.lower()))
+        online_cluster_names = {c.friendly_name.lower() for c in discovered_clusters if c.is_online and not c.friendly_name is None}
+        new_output_devices.sort(key = lambda x: ("a{}" if x.name.lower() in online_cluster_names else "b{}").format(x.name.lower()))
 
-        image_path = os.path.join(
-            CuraApplication.getInstance().getPluginRegistry().getPluginPath("UM3NetworkPrinting") or "",
-            "resources", "svg", "cloud-flow-completed.svg"
-        )
-
-        message = Message(
-            title = self.i18n_catalog.i18ncp(
-                "info:status",
-                "New printer detected from your Ultimaker account",
-                "New printers detected from your Ultimaker account",
-                len(new_devices)
-            ),
-            progress = 0,
-            lifetime = 0,
-            image_source = image_path
-        )
+        message = NewPrinterDetectedMessage(num_printers_found = len(new_output_devices))
         message.show()
 
-        for idx, device in enumerate(new_devices):
-            message_text = self.i18n_catalog.i18nc("info:status Filled in with printer name and printer model.", "Adding printer {name} ({model}) from your account").format(name = device.name, model = device.printerTypeName)
-            message.setText(message_text)
-            if len(new_devices) > 1:
-                message.setProgress((idx / len(new_devices)) * 100)
-            CuraApplication.getInstance().processEvents()
-            self._remote_clusters[device.getId()] = device
+        new_devices_added = []
+
+        for idx, output_device in enumerate(new_output_devices):
+            message.updateProgressText(output_device)
+
+            self._remote_clusters[output_device.getId()] = output_device
 
             # If there is no active machine, activate the first available cloud printer
             activate = not CuraApplication.getInstance().getMachineManager().activeMachine
-            self._createMachineFromDiscoveredDevice(device.getId(), activate = activate)
 
-        message.setProgress(None)
+            if self._createMachineFromDiscoveredDevice(output_device.getId(), activate = activate):
+                new_devices_added.append(output_device)
 
-        max_disp_devices = 3
-        if len(new_devices) > max_disp_devices:
-            num_hidden = len(new_devices) - max_disp_devices
-            device_name_list = ["<li>{} ({})</li>".format(device.name, device.printerTypeName) for device in new_devices[0:max_disp_devices]]
-            device_name_list.append("<li>" + self.i18n_catalog.i18ncp("info:{0} gets replaced by a number of printers", "... and {0} other", "... and {0} others", num_hidden) + "</li>")
-            device_names = "".join(device_name_list)
-        else:
-            device_names = "".join(["<li>{} ({})</li>".format(device.name, device.printerTypeName) for device in new_devices])
+        message.finalize(new_devices_added, new_output_devices)
 
-        message_text = self.i18n_catalog.i18nc("info:status", "Printers added from Digital Factory:") + "<ul>" + device_names + "</ul>"
-        message.setText(message_text)
+    @staticmethod
+    def _updateOnlinePrinters(printer_responses: Dict[str, CloudClusterResponse]) -> None:
+        """
+        Update the metadata of the printers to store whether they are online or not.
+        :param printer_responses: The responses received from the API about the printer statuses.
+        """
+        for container_stack in CuraContainerRegistry.getInstance().findContainerStacks(type = "machine"):
+            cluster_id = container_stack.getMetaDataEntry("um_cloud_cluster_id", "")
+            if cluster_id in printer_responses:
+                container_stack.setMetaDataEntry("is_online", printer_responses[cluster_id].is_online)
 
     def _updateOutdatedMachine(self, outdated_machine: GlobalStack, new_cloud_output_device: CloudOutputDevice) -> None:
         """
@@ -273,7 +290,8 @@ class CloudOutputDeviceManager:
         old_cluster_id = outdated_machine.getMetaDataEntry(self.META_CLUSTER_ID)
         outdated_machine.setMetaDataEntry(self.META_CLUSTER_ID, new_cloud_output_device.key)
         outdated_machine.setMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, True)
-        # Cleanup the remainings of the old CloudOutputDevice(old_cluster_id)
+
+        # Cleanup the remains of the old CloudOutputDevice(old_cluster_id)
         self._um_cloud_printers[new_cloud_output_device.key] = self._um_cloud_printers.pop(old_cluster_id)
         output_device_manager = CuraApplication.getInstance().getOutputDeviceManager()
         if old_cluster_id in output_device_manager.getOutputDeviceIds():
@@ -303,55 +321,19 @@ class CloudOutputDeviceManager:
         for device_id in removed_device_ids:
             if not parseBool(self._um_cloud_printers[device_id].getMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, "true")):
                 ignored_device_ids.add(device_id)
+
         # Keep the reported_device_ids list in a class variable, so that the message button actions can access it and
         # take the necessary steps to fulfill their purpose.
         self.reported_device_ids = removed_device_ids - ignored_device_ids
         if not self.reported_device_ids:
             return
 
-        # Generate message
-        self._removed_printers_message = Message(
-                title = self.i18n_catalog.i18ncp(
-                        "info:status",
-                        "A cloud connection is not available for a printer",
-                        "A cloud connection is not available for some printers",
-                        len(self.reported_device_ids)
-                )
-        )
-        device_names = "".join(["<li>{} ({})</li>".format(self._um_cloud_printers[device].name, self._um_cloud_printers[device].definition.name) for device in self.reported_device_ids])
-        message_text = self.i18n_catalog.i18ncp(
-                "info:status",
-                "This printer is not linked to the Digital Factory:",
-                "These printers are not linked to the Digital Factory:",
-                len(self.reported_device_ids)
-        )
-        message_text += "<br/><ul>{}</ul><br/>".format(device_names)
-        digital_factory_string = self.i18n_catalog.i18nc("info:name", "Ultimaker Digital Factory")
-
-        message_text += self.i18n_catalog.i18nc(
-                "info:status",
-                "To establish a connection, please visit the {website_link}".format(website_link = "<a href='https://digitalfactory.ultimaker.com/'>{}</a>.".format(digital_factory_string))
-        )
-        self._removed_printers_message.setText(message_text)
-        self._removed_printers_message.addAction("keep_printer_configurations_action",
-                                                 name = self.i18n_catalog.i18nc("@action:button", "Keep printer configurations"),
-                                                 icon = "",
-                                                 description = "Keep cloud printers in Ultimaker Cura when not connected to your account.",
-                                                 button_align = Message.ActionButtonAlignment.ALIGN_RIGHT)
-        self._removed_printers_message.addAction("remove_printers_action",
-                                                 name = self.i18n_catalog.i18nc("@action:button", "Remove printers"),
-                                                 icon = "",
-                                                 description = "Remove cloud printer(s) which aren't linked to your account.",
-                                                 button_style = Message.ActionButtonStyle.SECONDARY,
-                                                 button_align = Message.ActionButtonAlignment.ALIGN_LEFT)
-        self._removed_printers_message.actionTriggered.connect(self._onRemovedPrintersMessageActionTriggered)
-
         output_device_manager = CuraApplication.getInstance().getOutputDeviceManager()
 
         # Remove the output device from the printers
         for device_id in removed_device_ids:
-            device = self._um_cloud_printers.get(device_id, None)  # type: Optional[GlobalStack]
-            if not device:
+            global_stack: Optional[GlobalStack] = self._um_cloud_printers.get(device_id, None)
+            if not global_stack:
                 continue
             if device_id in output_device_manager.getOutputDeviceIds():
                 output_device_manager.removeOutputDevice(device_id)
@@ -359,12 +341,19 @@ class CloudOutputDeviceManager:
                 del self._remote_clusters[device_id]
 
             # Update the printer's metadata to mark it as not linked to the account
-            device.setMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, False)
+            global_stack.setMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, False)
 
+        # Generate message to show
+        device_names = "".join(["<li>{} ({})</li>".format(self._um_cloud_printers[device].name,
+                                                          self._um_cloud_printers[device].definition.name) for device in
+                                self.reported_device_ids])
+        self._removed_printers_message = RemovedPrintersMessage(self.reported_device_ids, device_names)
+        self._removed_printers_message.actionTriggered.connect(self._onRemovedPrintersMessageActionTriggered)
         self._removed_printers_message.show()
 
     def _onDiscoveredDeviceRemoved(self, device_id: str) -> None:
-        device = self._remote_clusters.pop(device_id, None)  # type: Optional[CloudOutputDevice]
+        """ Remove the CloudOutputDevices for printers that are offline"""
+        device: Optional[CloudOutputDevice] = self._remote_clusters.pop(device_id, None)
         if not device:
             return
         device.close()
@@ -372,34 +361,40 @@ class CloudOutputDeviceManager:
         if device.key in output_device_manager.getOutputDeviceIds():
             output_device_manager.removeOutputDevice(device.key)
 
-    def _createMachineFromDiscoveredDevice(self, key: str, activate: bool = True) -> None:
-        device = self._remote_clusters[key]
+    def _createMachineFromDiscoveredDevice(self, key: str, activate: bool = True) -> bool:
+        device = self._remote_clusters.get(key)
         if not device:
-            return
+            return False
 
         # Create a new machine.
-        # We do not use use MachineManager.addMachine here because we need to set the cluster ID before activating it.
-        new_machine = CuraStackBuilder.createMachine(device.name, device.printerType)
+        # We do not use MachineManager.addMachine here because we need to set the cluster ID before activating it.
+        new_machine = CuraStackBuilder.createMachine(device.name, device.printerType, show_warning_message=False)
         if not new_machine:
-            Logger.log("e", "Failed creating a new machine")
-            return
+            Logger.error(f"Failed creating a new machine for {device.name}")
+            return False
 
         self._setOutputDeviceMetadata(device, new_machine)
 
         if activate:
             CuraApplication.getInstance().getMachineManager().setActiveMachine(new_machine.getId())
 
+        return True
+
     def _connectToActiveMachine(self) -> None:
         """Callback for when the active machine was changed by the user"""
-
         active_machine = CuraApplication.getInstance().getGlobalContainerStack()
         if not active_machine:
             return
 
+        # Check if we should directly connect with a "normal" CloudOutputDevice or that we should connect to an
+        # 'abstract' one
         output_device_manager = CuraApplication.getInstance().getOutputDeviceManager()
         stored_cluster_id = active_machine.getMetaDataEntry(self.META_CLUSTER_ID)
         local_network_key = active_machine.getMetaDataEntry(self.META_NETWORK_KEY)
-        for device in list(self._remote_clusters.values()):  # Make a copy of the remote devices list, to prevent modifying the list while iterating, if a device gets added asynchronously.
+
+        # Copy of the device list, to prevent modifying the list while iterating, if a device gets added asynchronously.
+        remote_cluster_copy: List[CloudOutputDevice] = list(self._remote_clusters.values())
+        for device in remote_cluster_copy:
             if device.key == stored_cluster_id:
                 # Connect to it if the stored ID matches.
                 self._connectToOutputDevice(device, active_machine)
@@ -410,6 +405,14 @@ class CloudOutputDeviceManager:
                 # Remove device if it is not meant for the active machine.
                 output_device_manager.removeOutputDevice(device.key)
 
+        # Update state of all abstract output devices
+        remote_abstract_cluster_copy: List[CloudOutputDevice] = list(self._abstract_clusters.values())
+        for device in remote_abstract_cluster_copy:
+            if device.printerType == active_machine.definition.getId() and parseBool(active_machine.getMetaDataEntry("is_abstract_machine", False)):
+                self._connectToAbstractOutputDevice(device, active_machine)
+            elif device.key in output_device_manager.getOutputDeviceIds():
+                output_device_manager.removeOutputDevice(device.key)
+
     def _setOutputDeviceMetadata(self, device: CloudOutputDevice, machine: GlobalStack):
         machine.setName(device.name)
         machine.setMetaDataEntry(self.META_CLUSTER_ID, device.key)
@@ -417,12 +420,23 @@ class CloudOutputDeviceManager:
         machine.setMetaDataEntry("group_name", device.name)
         machine.setMetaDataEntry("group_size", device.clusterSize)
         digital_factory_string = self.i18n_catalog.i18nc("info:name", "Ultimaker Digital Factory")
-        digital_factory_link = "<a href='https://digitalfactory.ultimaker.com/'>{digital_factory_string}</a>".format(digital_factory_string = digital_factory_string)
+        digital_factory_link = f"<a href='https://digitalfactory.ultimaker.com?utm_source=cura&utm_medium=software&" \
+                               f"utm_campaign=change-account-remove-printer'>{digital_factory_string}</a>"
         removal_warning_string = self.i18n_catalog.i18nc("@message {printer_name} is replaced with the name of the printer", "{printer_name} will be removed until the next account sync.").format(printer_name = device.name) \
             + "<br>" + self.i18n_catalog.i18nc("@message {printer_name} is replaced with the name of the printer", "To remove {printer_name} permanently, visit {digital_factory_link}").format(printer_name = device.name, digital_factory_link = digital_factory_link) \
             + "<br><br>" + self.i18n_catalog.i18nc("@message {printer_name} is replaced with the name of the printer", "Are you sure you want to remove {printer_name} temporarily?").format(printer_name = device.name)
         machine.setMetaDataEntry("removal_warning", removal_warning_string)
         machine.addConfiguredConnectionType(device.connectionType.value)
+
+    def _connectToAbstractOutputDevice(self, device: AbstractCloudOutputDevice, machine: GlobalStack) -> None:
+        Logger.debug(f"Attempting to connect to abstract machine {machine.id}")
+        if not device.isConnected():
+            device.connect()
+        machine.addConfiguredConnectionType(device.connectionType.value)
+
+        output_device_manager = CuraApplication.getInstance().getOutputDeviceManager()
+        if device.key not in output_device_manager.getOutputDeviceIds():
+            output_device_manager.addOutputDevice(device)
 
     def _connectToOutputDevice(self, device: CloudOutputDevice, machine: GlobalStack) -> None:
         """Connects to an output device and makes sure it is registered in the output device manager."""
@@ -449,7 +463,7 @@ class CloudOutputDeviceManager:
             if container_cluster_id in self._remote_clusters.keys():
                 del self._remote_clusters[container_cluster_id]
 
-    def _onRemovedPrintersMessageActionTriggered(self, removed_printers_message: Message, action: str) -> None:
+    def _onRemovedPrintersMessageActionTriggered(self, removed_printers_message: RemovedPrintersMessage, action: str) -> None:
         if action == "keep_printer_configurations_action":
             removed_printers_message.hide()
         elif action == "remove_printers_action":
@@ -460,14 +474,18 @@ class CloudOutputDeviceManager:
             question_title = self.i18n_catalog.i18nc("@title:window", "Remove printers?")
             question_content = self.i18n_catalog.i18ncp(
                 "@label",
-                "You are about to remove {0} printer from Cura. This action cannot be undone.\nAre you sure you want to continue?",
-                "You are about to remove {0} printers from Cura. This action cannot be undone.\nAre you sure you want to continue?",
+                "You are about to remove {0} printer from Cura. This action cannot be undone.\n"
+                "Are you sure you want to continue?",
+                "You are about to remove {0} printers from Cura. This action cannot be undone.\n"
+                "Are you sure you want to continue?",
                 len(remove_printers_ids)
             )
             if remove_printers_ids == all_ids:
-                question_content = self.i18n_catalog.i18nc("@label", "You are about to remove all printers from Cura. This action cannot be undone.\nAre you sure you want to continue?")
+                question_content = self.i18n_catalog.i18nc("@label", "You are about to remove all printers from Cura. "
+                                                                     "This action cannot be undone.\n"
+                                                                     "Are you sure you want to continue?")
             result = QMessageBox.question(None, question_title, question_content)
-            if result == QMessageBox.No:
+            if result == QMessageBox.StandardButton.No:
                 return
 
             for machine_cloud_id in self.reported_device_ids:

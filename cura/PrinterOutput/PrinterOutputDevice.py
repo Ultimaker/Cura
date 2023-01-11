@@ -1,11 +1,13 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from enum import IntEnum
 from typing import Callable, List, Optional, Union
 
-from PyQt5.QtCore import pyqtProperty, pyqtSignal, QObject, QTimer, QUrl
-from PyQt5.QtWidgets import QMessageBox
+from PyQt6.QtCore import pyqtProperty, pyqtSignal, QObject, QTimer, QUrl
+from PyQt6.QtWidgets import QMessageBox
 
+import cura.CuraApplication  # Imported like this to prevent circular imports.
 from UM.Logger import Logger
 from UM.Signal import signalemitter
 from UM.Qt.QtApplication import QtApplication
@@ -48,12 +50,11 @@ class PrinterOutputDevice(QObject, OutputDevice):
     The assumption is made the printer is a FDM printer.
 
     Note that a number of settings are marked as "final". This is because decorators
-    are not inherited by children. To fix this we use the private counter part of those
+    are not inherited by children. To fix this we use the private counterpart of those
     functions to actually have the implementation.
 
     For all other uses it should be used in the same way as a "regular" OutputDevice.
     """
-
 
     printersChanged = pyqtSignal()
     connectionStateChanged = pyqtSignal(str)
@@ -120,11 +121,26 @@ class PrinterOutputDevice(QObject, OutputDevice):
         callback(QMessageBox.Yes)
 
     def isConnected(self) -> bool:
-        return self._connection_state != ConnectionState.Closed and self._connection_state != ConnectionState.Error
+        """
+        Returns whether we could theoretically send commands to this printer.
+        :return: `True` if we are connected, or `False` if not.
+        """
+        return self.connectionState != ConnectionState.Closed and self.connectionState != ConnectionState.Error
 
     def setConnectionState(self, connection_state: "ConnectionState") -> None:
-        if self._connection_state != connection_state:
+        """
+        Store the connection state of the printer.
+
+        Causes everything that displays the connection state to update its QML models.
+        :param connection_state: The new connection state to store.
+        """
+        if self.connectionState != connection_state:
             self._connection_state = connection_state
+            application = cura.CuraApplication.CuraApplication.getInstance()
+            if application is not None:  # Might happen during the closing of Cura or in a test.
+                global_stack = application.getGlobalContainerStack()
+                if global_stack is not None:
+                    global_stack.setMetaDataEntry("is_online", self.isConnected())
             self.connectionStateChanged.emit(self._id)
 
     @pyqtProperty(int, constant = True)
@@ -133,6 +149,10 @@ class PrinterOutputDevice(QObject, OutputDevice):
 
     @pyqtProperty(int, notify = connectionStateChanged)
     def connectionState(self) -> "ConnectionState":
+        """
+        Get the connection state of the printer, e.g. whether it is connected, still connecting, error state, etc.
+        :return: The current connection state of this output device.
+        """
         return self._connection_state
 
     def _update(self) -> None:
@@ -162,8 +182,8 @@ class PrinterOutputDevice(QObject, OutputDevice):
     @pyqtProperty(QObject, constant = True)
     def monitorItem(self) -> QObject:
         # Note that we specifically only check if the monitor component is created.
-        # It could be that it failed to actually create the qml item! If we check if the item was created, it will try to
-        # create the item (and fail) every time.
+        # It could be that it failed to actually create the qml item! If we check if the item was created, it will try
+        # to create the item (and fail) every time.
         if not self._monitor_component:
             self._createMonitorViewFromQML()
         return self._monitor_item
@@ -216,9 +236,9 @@ class PrinterOutputDevice(QObject, OutputDevice):
 
             self.acceptsCommandsChanged.emit()
 
-    # Returns the unique configurations of the printers within this output device
     @pyqtProperty("QVariantList", notify = uniqueConfigurationsChanged)
     def uniqueConfigurations(self) -> List["PrinterConfigurationModel"]:
+        """ Returns the unique configurations of the printers within this output device """
         return self._unique_configurations
 
     def _updateUniqueConfigurations(self) -> None:
@@ -227,17 +247,19 @@ class PrinterOutputDevice(QObject, OutputDevice):
             if printer.printerConfiguration is not None and printer.printerConfiguration.hasAnyMaterialLoaded():
                 all_configurations.add(printer.printerConfiguration)
             all_configurations.update(printer.availableConfigurations)
-        if None in all_configurations:  # Shouldn't happen, but it does. I don't see how it could ever happen. Skip adding that configuration. List could end up empty!
+        if None in all_configurations:
+            # Shouldn't happen, but it does. I don't see how it could ever happen. Skip adding that configuration.
+            # List could end up empty!
             Logger.log("e", "Found a broken configuration in the synced list!")
             all_configurations.remove(None)
-        new_configurations = sorted(all_configurations, key = lambda config: config.printerType or "")
+        new_configurations = sorted(all_configurations, key = lambda config: config.printerType or "", reverse = True)
         if new_configurations != self._unique_configurations:
             self._unique_configurations = new_configurations
             self.uniqueConfigurationsChanged.emit()
 
-    # Returns the unique configurations of the printers within this output device
     @pyqtProperty("QStringList", notify = uniqueConfigurationsChanged)
     def uniquePrinterTypes(self) -> List[str]:
+        """ Returns the unique configurations of the printers within this output device """
         return list(sorted(set([configuration.printerType or "" for configuration in self._unique_configurations])))
 
     def _onPrintersChanged(self) -> None:

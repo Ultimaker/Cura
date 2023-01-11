@@ -2,21 +2,13 @@
     "version": 2,
     "name": "Leapfrog Bolt Pro",
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "visible": true,
         "author": "Karan and Vincent 20191104",
         "manufacturer": "Leapfrog B.V.",
-        "platform": "leapfrog_bolt_pro_platform.3mf",
-        "platform_offset": [0, 0, -14],
         "file_formats": "text/x-gcode",
-        "supports_usb_connection": false,
-        "supports_network_connection": false,
-        "has_materials": true,
-        "has_machine_quality": true,
-        "has_variants": true,
-        "preferred_variant_name": "Brass 0.4",
-        "preferred_material": "leapfrog_epla_natural",
-        "variants_name": "Hot end",
+        "platform": "leapfrog_bolt_pro_platform.3mf",
         "exclude_materials": [
             "generic_pla_175",
             "generic_abs_175",
@@ -71,44 +63,66 @@
             "zyyx_pro_flex",
             "zyyx_pro_pla"
         ],
+        "has_machine_quality": true,
+        "has_materials": true,
+        "has_variants": true,
         "machine_extruder_trains":
         {
             "0": "leapfrog_bolt_pro_extruder_right",
             "1": "leapfrog_bolt_pro_extruder_left"
-        }
+        },
+        "platform_offset": [
+            0,
+            0,
+            -14
+        ],
+        "preferred_material": "leapfrog_epla_natural",
+        "preferred_variant_name": "Brass 0.4",
+        "supports_network_connection": false,
+        "supports_usb_connection": false,
+        "variants_name": "Hot end"
     },
-    "overrides": {
-        "machine_name": {"default_value": "Leapfrog Bolt Pro" },
-        "machine_extruder_count": {"default_value": 2},
-		"machine_center_is_zero": {"default_value": false},
-        "machine_width": {"default_value": 302},
-        "machine_height": {"default_value": 205},
-        "machine_depth": {"default_value": 322},
-        "machine_heated_bed": {"default_value": true},
-        "machine_head_with_fans_polygon": {"default_value": [[-60, 110 ], [-60, -45], [60, -45 ], [60, 110]]},
-		"machine_max_feedrate_z": {"default_value": 16.7 },
-        "machine_max_feedrate_e": {"default_value": 50 },
-        "machine_max_acceleration_z": {"default_value": 100 },
-        "machine_acceleration": {"default_value": 400 },
-        "machine_max_jerk_xy": {"default_value": 20 },
-        "machine_max_jerk_z": {"default_value": 0.4 },
-        "machine_max_jerk_e": {"default_value": 5 },
-		"machine_gcode_flavor": {"default_value": "RepRap (Marlin/Sprinter)"},
-		"material_final_print_temperature": {"value": "default_material_print_temperature" },
-		"material_initial_print_temperature": {"value": "default_material_print_temperature" },
-        "gantry_height": {"value": "20"},
-        "retraction_combing": { "default_value": "all" },
-        "retraction_amount": {"default_value": 2},
-        "adhesion_type": {"default_value": "skirt"},
-        "skirt_line_count": {"default_value": 3},
-        "machine_use_extruder_offset_to_offset_coords": {"default_value": true},
-        "machine_start_gcode": {"default_value": "G90\nG28 X0 Y0 Z0\nG1 Z5 F1000\nG92 E0\nG1 Y-32 F12000\nG1 E15 F1000\nG1 E45 F150\nG4 S5"},
-        "machine_end_gcode": {"default_value": "G92 E0\nG1 E-3 F300\nM104 S0 T0\nM104 S0 T1\nM140 S0\nG28 X0 Y0\nM84"},
-        "prime_tower_enable": { "resolve": "extruders_enabled_count > 1"},
-        "prime_tower_position_x": {"value": "169" },
-        "prime_tower_position_y": {"value": "25" },
-        "speed_travel": { "value": "200" },
-        "build_volume_temperature": {"enabled": false},
-        "material_standby_temperature": {"enabled": false }
+    "overrides":
+    {
+        "adhesion_type": { "default_value": "skirt" },
+        "build_volume_temperature": { "enabled": false },
+        "gantry_height": { "value": "20" },
+        "machine_acceleration": { "default_value": 400 },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_depth": { "default_value": 322 },
+        "machine_end_gcode": { "default_value": "G92 E0\nG1 E-3 F300\nM104 S0 T0\nM104 S0 T1\nM140 S0\nG28 X0 Y0\nM84" },
+        "machine_extruder_count": { "default_value": 2 },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [-60, 110],
+                [-60, -45],
+                [60, -45],
+                [60, 110]
+            ]
+        },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 205 },
+        "machine_max_acceleration_z": { "default_value": 100 },
+        "machine_max_feedrate_e": { "default_value": 50 },
+        "machine_max_feedrate_z": { "default_value": 16.7 },
+        "machine_max_jerk_e": { "default_value": 5 },
+        "machine_max_jerk_xy": { "default_value": 20 },
+        "machine_max_jerk_z": { "default_value": 0.4 },
+        "machine_name": { "default_value": "Leapfrog Bolt Pro" },
+        "machine_start_gcode": { "default_value": "G90\nG28 X0 Y0 Z0\nG1 Z5 F1000\nG92 E0\nG1 Y-32 F12000\nG1 E15 F1000\nG1 E45 F150\nG4 S5" },
+        "machine_use_extruder_offset_to_offset_coords": { "default_value": true },
+        "machine_width": { "default_value": 302 },
+        "material_final_print_temperature": { "value": "default_material_print_temperature" },
+        "material_initial_print_temperature": { "value": "default_material_print_temperature" },
+        "material_standby_temperature": { "enabled": false },
+        "prime_tower_enable": { "resolve": "extruders_enabled_count > 1" },
+        "prime_tower_position_x": { "value": "169" },
+        "prime_tower_position_y": { "value": "25" },
+        "retraction_amount": { "default_value": 2 },
+        "retraction_combing": { "value": "'all'" },
+        "skirt_line_count": { "default_value": 3 },
+        "speed_travel": { "value": "200" }
     }
 }

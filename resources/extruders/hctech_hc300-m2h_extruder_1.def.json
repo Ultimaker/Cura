@@ -1,0 +1,25 @@
+{
+    "version": 2,
+    "name": "Right Extruder",
+    "inherits": "fdmextruder",
+    "metadata":
+    {
+        "machine": "hctech_hc300-m2h",
+        "position": "1"
+    },
+    "overrides":
+    {
+        "extruder_nr":
+        {
+            "default_value": 1,
+            "maximum_value": "1"
+        },
+        "machine_extruder_cooling_fan_number": { "default_value": 0 },
+        "machine_extruder_end_code": { "default_value": "G92 E0 ;reset extruder distance\nG1 F800 E-1 ;retract\nG92 E0 ;reset extruder distance\nG1 X0 Y300 F4800 ;move to start position\nG1 X5 Y319 ;move to wait posiotion" },
+        "machine_extruder_start_code": { "default_value": "G1 X5 Y319 ;move to wait posiotion\nT1 ;switch to extruder 2\nM109 S{material_print_temperature}\nG1 F5000\nG12 ;clean nozzle\nG1 X0 Y300 F4800 ;move to start point" },
+        "machine_nozzle_offset_x": { "default_value": 0.0 },
+        "machine_nozzle_offset_y": { "default_value": 0.0 },
+        "machine_nozzle_size": { "default_value": 0.4 },
+        "material_diameter": { "default_value": 1.75 }
+    }
+}

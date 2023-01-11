@@ -2,8 +2,9 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 import QtQuick 2.2
 import QtQuick.Window 2.2
-import QtQuick.Controls 1.2
-import UM 1.1 as UM
+import QtQuick.Controls 2.15
+
+import UM 1.5 as UM
 
 UM.Dialog {
 
@@ -69,7 +70,7 @@ UM.Dialog {
             name: "cura";
         }
 
-        Label {
+        UM.Label {
             id: manualPrinterSelectionLabel;
             anchors {
                 left: parent.left;
@@ -78,12 +79,11 @@ UM.Dialog {
             }
             height: 20 * screenScaleFactor;
             text: catalog.i18nc("@label", "Printer selection");
-            wrapMode: Text.Wrap;
-            renderType: Text.NativeRendering;
         }
 
         ComboBox {
             id: printerComboBox;
+            currentIndex: 0;
             Behavior on height { NumberAnimation { duration: 100 } }
             height: 40 * screenScaleFactor;
             model: ListModel {

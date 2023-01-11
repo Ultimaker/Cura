@@ -80,6 +80,18 @@ class RemovableDriveOutputDevice(OutputDevice):
         if extension:  # Not empty string.
             extension = "." + extension
         file_name = os.path.join(self.getId(), file_name + extension)
+        self._performWrite(file_name, preferred_format, writer, nodes)
+
+    def _performWrite(self, file_name, preferred_format, writer, nodes):
+        """Writes the specified nodes to the removable drive. This is split from
+        requestWrite to allow interception in other plugins. See Ultimaker/Cura#10917.
+
+        :param file_name: File path to write to.
+        :param preferred_format: Preferred file format to write to.
+        :param writer: Writer for writing to the file.
+        :param nodes: A collection of scene nodes that should be written to the
+        file.
+        """
 
         try:
             Logger.log("d", "Writing to %s", file_name)
@@ -93,7 +105,9 @@ class RemovableDriveOutputDevice(OutputDevice):
             job.progress.connect(self._onProgress)
             job.finished.connect(self._onFinished)
 
-            message = Message(catalog.i18nc("@info:progress Don't translate the XML tags <filename>!", "Saving to Removable Drive <filename>{0}</filename>").format(self.getName()), 0, False, -1, catalog.i18nc("@info:title", "Saving"))
+            message = Message(catalog.i18nc("@info:progress Don't translate the XML tags <filename>!",
+                                            "Saving to Removable Drive <filename>{0}</filename>").format(self.getName()),
+                              0, False, -1, catalog.i18nc("@info:title", "Saving"))
             message.show()
 
             self.writeStarted.emit(self)
@@ -134,9 +148,10 @@ class RemovableDriveOutputDevice(OutputDevice):
                 self._stream.close()
                 self._stream = None
             except:
-                Logger.logException("w", "An execption occured while trying to write to removable drive.")
+                Logger.logException("w", "An exception occurred while trying to write to removable drive.")
                 message = Message(catalog.i18nc("@info:status", "Could not save to removable drive {0}: {1}").format(self.getName(),str(job.getError())),
-                                  title = catalog.i18nc("@info:title", "Error"))
+                                  title = catalog.i18nc("@info:title", "Error"),
+                                  message_type = Message.MessageType.ERROR)
                 message.show()
                 self.writeError.emit(self)
                 return
@@ -144,13 +159,19 @@ class RemovableDriveOutputDevice(OutputDevice):
         self._writing = False
         self.writeFinished.emit(self)
         if job.getResult():
-            message = Message(catalog.i18nc("@info:status", "Saved to Removable Drive {0} as {1}").format(self.getName(), os.path.basename(job.getFileName())), title = catalog.i18nc("@info:title", "File Saved"))
+            message = Message(catalog.i18nc("@info:status", "Saved to Removable Drive {0} as {1}").format(self.getName(), os.path.basename(job.getFileName())),
+                              title = catalog.i18nc("@info:title", "File Saved"),
+                              message_type = Message.MessageType.POSITIVE)
             message.addAction("eject", catalog.i18nc("@action:button", "Eject"), "eject", catalog.i18nc("@action", "Eject removable device {0}").format(self.getName()))
             message.actionTriggered.connect(self._onActionTriggered)
             message.show()
             self.writeSuccess.emit(self)
         else:
-            message = Message(catalog.i18nc("@info:status", "Could not save to removable drive {0}: {1}").format(self.getName(), str(job.getError())), title = catalog.i18nc("@info:title", "Warning"))
+            message = Message(catalog.i18nc("@info:status",
+                                            "Could not save to removable drive {0}: {1}").format(self.getName(),
+                                                                                                 str(job.getError())),
+                              title = catalog.i18nc("@info:title", "Error"),
+                              message_type = Message.MessageType.ERROR)
             message.show()
             self.writeError.emit(self)
         job.getStream().close()
@@ -159,8 +180,12 @@ class RemovableDriveOutputDevice(OutputDevice):
         if action == "eject":
             if Application.getInstance().getOutputDeviceManager().getOutputDevicePlugin("RemovableDriveOutputDevice").ejectDevice(self):
                 message.hide()
-
-                eject_message = Message(catalog.i18nc("@info:status", "Ejected {0}. You can now safely remove the drive.").format(self.getName()), title = catalog.i18nc("@info:title", "Safely Remove Hardware"))
+                eject_message = Message(catalog.i18nc("@info:status",
+                                                      "Ejected {0}. You can now safely remove the drive.").format(self.getName()),
+                                        title = catalog.i18nc("@info:title", "Safely Remove Hardware"))
             else:
-                eject_message = Message(catalog.i18nc("@info:status", "Failed to eject {0}. Another program may be using the drive.").format(self.getName()), title = catalog.i18nc("@info:title", "Warning"))
+                eject_message = Message(catalog.i18nc("@info:status",
+                                                      "Failed to eject {0}. Another program may be using the drive.").format(self.getName()),
+                                        title = catalog.i18nc("@info:title", "Warning"),
+                                        message_type = Message.MessageType.ERROR)
             eject_message.show()

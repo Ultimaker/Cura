@@ -257,10 +257,10 @@ class ProcessSlicedLayersJob(Job):
         if self.isRunning():
             if Application.getInstance().getController().getActiveView().getPluginId() == "SimulationView":
                 if not self._progress_message:
-                    self._progress_message = Message(catalog.i18nc("@info:status", "Processing Layers"), 0, False, 0, catalog.i18nc("@info:title", "Information"))
+                    self._progress_message = Message(catalog.i18nc("@info:status", "Processing Layers"), 0, False, 0,
+                                                     catalog.i18nc("@info:title", "Information"))
                 if self._progress_message.getProgress() != 100:
                     self._progress_message.show()
             else:
                 if self._progress_message:
                     self._progress_message.hide()
-

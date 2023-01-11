@@ -1,15 +1,14 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2021 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
-import QtQuick.Controls 2.0 as Controls2
-import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.1
+import QtQuick.Controls 2.4
 
-import UM 1.4 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 import "../Account"
+import "../ApplicationSwitcher"
 
 Item
 {
@@ -31,6 +30,10 @@ Item
         fillMode: Image.PreserveAspectFit
         sourceSize.width: width
         sourceSize.height: height
+    }
+    ButtonGroup
+    {
+        buttons: stagesListContainer.children
     }
 
     Row
@@ -60,17 +63,62 @@ Item
                 checked: UM.Controller.activeStage !== null && model.id == UM.Controller.activeStage.stageId
 
                 anchors.verticalCenter: parent.verticalCenter
-                exclusiveGroup: mainWindowHeaderMenuGroup
-                style: UM.Theme.styles.main_window_header_tab
+                //style: UM.Theme.styles.main_window_header_tab
                 height: Math.round(0.5 * UM.Theme.getSize("main_window_header").height)
-                iconSource: model.stage.iconSource
-
-                property color overlayColor: "transparent"
-                property string overlayIconSource: ""
                 // This id is required to find the stage buttons through Squish
                 property string stageId: model.id
+                hoverEnabled: true
+                leftPadding: 2 * UM.Theme.getSize("default_margin").width
+                rightPadding: 2 * UM.Theme.getSize("default_margin").width
 
-                // This is a trick to assure the activeStage is correctly changed. It doesn't work propertly if done in the onClicked (see CURA-6028)
+                // Set top & bottom padding to whatever space is left from height and the size of the text.
+                bottomPadding: Math.round((height - buttonLabel.contentHeight) / 2)
+                topPadding: bottomPadding
+
+                background: Rectangle
+                {
+                    radius: UM.Theme.getSize("action_button_radius").width
+                    color:
+                    {
+                        if (stageSelectorButton.checked)
+                        {
+                            return UM.Theme.getColor("main_window_header_button_background_active")
+                        }
+                        else
+                        {
+                            if (stageSelectorButton.hovered)
+                            {
+                                return UM.Theme.getColor("main_window_header_button_background_hovered")
+                            }
+                            return UM.Theme.getColor("main_window_header_button_background_inactive")
+                        }
+                    }
+                }
+
+                contentItem: UM.Label
+                {
+                    id: buttonLabel
+                    text: stageSelectorButton.text
+                    anchors.centerIn: stageSelectorButton
+                    font: UM.Theme.getFont("medium")
+                    color:
+                    {
+                        if (stageSelectorButton.checked)
+                        {
+                            return UM.Theme.getColor("main_window_header_button_text_active")
+                        }
+                        else
+                        {
+                            if (stageSelectorButton.hovered)
+                            {
+                                return UM.Theme.getColor("main_window_header_button_text_hovered")
+                            }
+                            return UM.Theme.getColor("main_window_header_button_text_inactive")
+                        }
+                    }
+                }
+
+                // This is a trick to assure the activeStage is correctly changed. It doesn't work properly if done in the onClicked (see CURA-6028)
                 MouseArea
                 {
                     anchors.fill: parent
@@ -78,12 +126,10 @@ Item
                 }
             }
         }
-
-        ExclusiveGroup { id: mainWindowHeaderMenuGroup }
     }
 
     // Shortcut button to quick access the Toolbox
-    Controls2.Button
+    Button
     {
         id: marketplaceButton
         text: catalog.i18nc("@action:button", "Marketplace")
@@ -94,26 +140,34 @@ Item
 
         background: Rectangle
         {
+            id: marketplaceButtonBorder
             radius: UM.Theme.getSize("action_button_radius").width
-            color: marketplaceButton.hovered ? UM.Theme.getColor("primary_text") : UM.Theme.getColor("main_window_header_background")
+            color: UM.Theme.getColor("main_window_header_background")
             border.width: UM.Theme.getSize("default_lining").width
             border.color: UM.Theme.getColor("primary_text")
+
+            Rectangle
+            {
+                id: marketplaceButtonFill
+                anchors.fill: parent
+                radius: parent.radius
+                color: UM.Theme.getColor("primary_text")
+                opacity: marketplaceButton.hovered ? 0.2 : 0
+                Behavior on opacity { NumberAnimation { duration: 100 } }
+            }
         }
 
-        contentItem: Label
+        contentItem: UM.Label
         {
             id: label
             text: marketplaceButton.text
-            font: UM.Theme.getFont("default")
-            color: marketplaceButton.hovered ? UM.Theme.getColor("main_window_header_background") : UM.Theme.getColor("primary_text")
+            color: UM.Theme.getColor("primary_text")
             width: contentWidth
-            verticalAlignment: Text.AlignVCenter
-            renderType: Text.NativeRendering
         }
 
         anchors
         {
-            right: accountWidget.left
+            right: applicationSwitcher.left
             rightMargin: UM.Theme.getSize("default_margin").width
             verticalCenter: parent.verticalCenter
         }
@@ -135,6 +189,17 @@ Item
                 const itemCount = CuraApplication.getPackageManager().packagesWithUpdate.length
                 return itemCount > 9 ? "9+" : itemCount
             }
+        }
+    }
+
+    ApplicationSwitcher
+    {
+        id: applicationSwitcher
+        anchors
+        {
+            verticalCenter: parent.verticalCenter
+            right: accountWidget.left
+            rightMargin: UM.Theme.getSize("default_margin").width
         }
     }
 
