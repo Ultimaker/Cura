@@ -50,7 +50,7 @@ on:
                 required: true
                 type: boolean
             build_macos:
-                description: 'Build for MacOs'
+                description: 'Build for MacOS'
                 default: true
                 required: true
                 type: boolean
