@@ -12,6 +12,7 @@
         "has_variants": true,
         "supports_usb_connection": true,
         "preferred_quality_type": "normal",
+		"preferred_material": "xyzprinting_carbon_fiber",
 		"quality_definition": "xyzprinting_da_vinci_pro_evo",
 		"preferred_variant_name": "Hardened Steel 0.4mm Nozzle",
         "variants_name": "Nozzle Type",
@@ -81,6 +82,11 @@
             "default_value": "M106 P1 S255 ; turn on fan\nG92 E0\nG28; home X,Y,Z axis\nM84     ; disable motors\n"
         },
 		"multiple_mesh_overlap": { "value": "0" },
-		"wall_0_inset": { "value": "0" }
+		"wall_0_inset": { "value": "0" },
+		"minimum_support_area": { "value": "4" },
+        "support_use_towers": { "value": "False" },
+        "support_xy_distance": { "value": "1.2" },
+        "support_xy_distance_overhang": { "value": "0.6" },
+        "support_z_distance": { "value": "0.4" }
     }
 }

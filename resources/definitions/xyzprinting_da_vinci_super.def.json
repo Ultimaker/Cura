@@ -12,6 +12,7 @@
         "has_variants": true,
         "supports_usb_connection": true,
         "preferred_quality_type": "normal",
+		"preferred_material": "xyzprinting_pla",
 		"quality_definition": "xyzprinting_da_vinci_super",
 		"preferred_variant_name": "Copper 0.4mm Nozzle",
         "variants_name": "Nozzle Type",
@@ -47,6 +48,11 @@
          },
         "machine_end_gcode": {
             "default_value": "M104 S0 ; turn off temperature\nM105 S0;  \nG28 X0  ; home X axis\nM84     ; disable motors\n"
-        }
+        },
+		"minimum_support_area": { "value": "4" },
+        "support_use_towers": { "value": "False" },
+        "support_xy_distance": { "value": "1.2" },
+        "support_xy_distance_overhang": { "value": "0.6" },
+        "support_z_distance": { "value": "0.4" }
     }
 }

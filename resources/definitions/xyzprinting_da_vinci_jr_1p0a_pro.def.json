@@ -13,6 +13,7 @@
 		"exclude_materials": ["generic_hips", "generic_petg", "generic_bam", "ultimaker_bam", "generic_pva", "ultimaker_pva", "generic_tough_pla", "ultimaker_tough_pla_black", "ultimaker_tough_pla_green", "ultimaker_tough_pla_red", "ultimaker_tough_pla_white", "generic_cffcpe", "generic_cffpa", "generic_gffcpe", "generic_gffpa", "structur3d_dap100silicone", "ultimaker_petg_blue", "ultimaker_petg_grey", "ultimaker_petg_black", "ultimaker_petg_green", "ultimaker_petg_white", "ultimaker_petg_orange", "ultimaker_petg_silver", "ultimaker_petg_yellow", "ultimaker_petg_transparent", "ultimaker_petg_red_translucent", "ultimaker_petg_blue_translucent", "ultimaker_petg_green_translucent", "ultimaker_petg_yellow_fluorescent", "ultimaker_petg_red" ],
         "supports_usb_connection": true,
         "preferred_quality_type": "normal",
+		"preferred_material": "xyzprinting_pla",
 		"quality_definition": "xyzprinting_da_vinci_jr_1p0a_pro",
 		"preferred_variant_name": "Copper 0.4mm Nozzle",
         "variants_name": "Nozzle Type",
@@ -48,6 +49,11 @@
          },
         "machine_end_gcode": {
             "default_value": "M104 S0 ; turn off temperature\nM105 S0;  \nG28 X0  ; home X axis\nM84     ; disable motors\n"
-        }
+        },
+		"minimum_support_area": { "value": "4" },
+        "support_use_towers": { "value": "False" },
+        "support_xy_distance": { "value": "1.2" },
+        "support_xy_distance_overhang": { "value": "0.6" },
+        "support_z_distance": { "value": "0.4" }
     }
 }

@@ -1,5 +1,5 @@
 {
-    "version": 2, 
+    "version": 2,
     "name": "Crazy3DPrint CZ-300",
     "inherits": "crazy3dprint_base",
     "metadata": {
@@ -36,9 +36,8 @@
 		"min_infill_area": {  "default_value": 2.0 },
 		"retract_at_layer_change": { "default_value": true },
 		"default_material_print_temperature": {  "default_value": 210 },
-		"material_print_temperature": { "value": 210 },
 		"material_final_print_temperature": {  "value": 210 },
-		"material_bed_temperature": { "value": 70 },
+		"default_material_bed_temperature": { "value": 70 },
         "material_bed_temperature_layer_0": {  "value": 70 },
 		"material_flow_layer_0": {"value": 140},
 		"retraction_amount": {  "default_value": 10 },
@@ -52,14 +51,19 @@
 		"skirt_line_count": { "default_value" : 5 },
 		"initial_layer_line_width_factor": { "default_value" : 140 },
 		"top_bottom_pattern": { "default_value" : "concentric" },
-		"outer_inset_first": { "default_value": true },
 		"fill_outline_gaps": { "default_value": true },
         "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "inset_direction": {"value": "'outside_in'" },
         "machine_start_gcode": {
             "default_value": "G28 ; home all axes\nG1 Z15 F5000 ; lift nozzle\nG92 E0\nG1 F200 E3\n"
          },
         "machine_end_gcode": {
             "default_value": "M104 S0 ; turn off temperature\nM105 S0;  \nG28 X0  ; home X axis\nM84     ; disable motors\n"
-        }
+        },
+		"minimum_support_area": { "value": "4" },
+        "support_use_towers": { "value": "False" },
+        "support_xy_distance": { "value": "1.2" },
+        "support_xy_distance_overhang": { "value": "0.6" },
+        "support_z_distance": { "value": "0.4" }
     }
 }
