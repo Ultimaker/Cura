@@ -112,6 +112,7 @@ def build(dist_path: Path, filename: Path):
                     f"{build_loc.joinpath(manageoldcuradlg_loc.name).with_suffix('.wixobj')}",
                     "-sw1076",  # Don't pollute logs with warnings from auto generated content
                     "-dcl:high",  # Use high compression ratio
+                    "-sval",  # Disable ICE validation otherwise the CI complains
                     "-ext", "WixUIExtension",
                     "-ext", "WixFirewallExtension",
                     "-out", f"{work_loc.joinpath(filename.name)}"]
