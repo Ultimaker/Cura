@@ -253,7 +253,7 @@ class UMBUNDLE(BUNDLE):
 
 app = UMBUNDLE(
     coll,
-    name='{{ name }}.app',
+    name='{{ display_name }}.app'.replace(" ", "-"),
     icon={{ icon }},
     bundle_identifier={{ osx_bundle_identifier }},
     version={{ version }},
@@ -264,6 +264,7 @@ app = UMBUNDLE(
         'CFBundleExecutable': '{{ name }}',
         'CFBundleInfoDictionaryVersion': '6.0',
         'CFBundlePackageType': 'APPL',
+        'CFBundleVersionString': {{ version }},
         'CFBundleShortVersionString': {{ short_version }},
         'CFBundleDocumentTypes': [{
                 'CFBundleTypeRole': 'Viewer',
