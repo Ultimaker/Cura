@@ -107,6 +107,4 @@ if __name__ == "__main__":
     parser.add_argument("filename", type = str, help = "Filename of the pkg (e.g. 'UltiMaker-Cura-5.1.0-beta-Macos-X64.pkg')")
     args = parser.parse_args()
 
-    build_installer = bool(os.environ.get("BUILD_INSTALLER", "TRUE"))
-    if build_installer:
-        create_pkg_installer(args.filename, args.dist_path)
+    create_pkg_installer(args.filename, args.dist_path)
