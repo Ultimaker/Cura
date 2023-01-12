@@ -86,6 +86,12 @@ class CuraConan(ConanFile):
         return self.options.enterprise in ["True", 'true']
 
     @property
+    def _app_name(self):
+        if self._enterprise:
+            return str(self.options.display_name) + " Enterprise"
+        return str(self.options.display_name)
+
+    @property
     def _cloud_api_root(self):
         return "https://api-staging.ultimaker.com" if self._staging else "https://api.ultimaker.com"
 
@@ -161,7 +167,7 @@ class CuraConan(ConanFile):
         with open(Path(location, "CuraVersion.py"), "w") as f:
             f.write(cura_version_py.render(
                 cura_app_name = self.name,
-                cura_app_display_name = self.options.display_name,
+                cura_app_display_name = self._app_name,
                 cura_version = cura_version,
                 cura_build_type = "Enterprise" if self._enterprise else "",
                 cura_debug_mode = self.options.cura_debug_mode,
@@ -311,7 +317,7 @@ class CuraConan(ConanFile):
         self._generate_cura_version(Path(self.source_folder, "cura"))
 
         if self.options.devtools:
-            entitlements_file = "'{}'".format(Path(self.source_folder, "packaging", "dmg", "cura.entitlements"))
+            entitlements_file = "'{}'".format(Path(self.source_folder, "packaging", "MacOS", "cura.entitlements"))
             self._generate_pyinstaller_spec(location = self.generators_folder,
                                             entrypoint_location = "'{}'".format(Path(self.source_folder, self._um_data()["runinfo"]["entrypoint"])).replace("\\", "\\\\"),
                                             icon_path = "'{}'".format(Path(self.source_folder, "packaging", self._um_data()["pyinstaller"]["icon"][str(self.settings.os)])).replace("\\", "\\\\"),
@@ -336,6 +342,8 @@ class CuraConan(ConanFile):
         self.copy("*.sig", root_package = "fdm_materials", src = "@resdirs", dst = "resources/materials", keep_path = False)
 
         if self.options.internal:
+            self.copy("*.fdm_material", root_package = "fdm_materials_private", src = "@resdirs", dst = "resources/materials", keep_path = False)
+            self.copy("*.sig", root_package = "fdm_materials_private", src = "@resdirs", dst = "resources/materials", keep_path = False)
             self.copy("*", root_package = "cura_private_data", src = self.deps_cpp_info["cura_private_data"].resdirs[0],
                            dst = self._share_dir.joinpath("cura", "resources"), keep_path = True)
 
@@ -373,6 +381,10 @@ class CuraConan(ConanFile):
 
         # Copy internal resources
         if self.options.internal:
+            self.copy_deps("*.fdm_material", root_package = "fdm_materials_private", src = self.deps_cpp_info["fdm_materials_private"].resdirs[0],
+                           dst = self._share_dir.joinpath("cura", "resources", "materials"), keep_path = False)
+            self.copy_deps("*.sig", root_package = "fdm_materials_private", src = self.deps_cpp_info["fdm_materials_private"].resdirs[0],
+                           dst = self._share_dir.joinpath("cura", "resources", "materials"), keep_path = False)
             self.copy_deps("*", root_package = "cura_private_data", src = self.deps_cpp_info["cura_private_data"].resdirs[0],
                            dst = self._share_dir.joinpath("cura", "resources"), keep_path = True)
             self.copy_deps("*", root_package = "cura_private_data", src = self.deps_cpp_info["cura_private_data"].resdirs[1],
@@ -419,11 +431,13 @@ echo "CURA_VERSION_MINOR={{ cura_version_minor }}" >> ${{ env_prefix }}GITHUB_EN
 echo "CURA_VERSION_PATCH={{ cura_version_patch }}" >> ${{ env_prefix }}GITHUB_ENV
 echo "CURA_VERSION_BUILD={{ cura_version_build }}" >> ${{ env_prefix }}GITHUB_ENV
 echo "CURA_VERSION_FULL={{ cura_version_full }}" >> ${{ env_prefix }}GITHUB_ENV
+echo "CURA_APP_NAME={{ cura_app_name }}" >> ${{ env_prefix }}GITHUB_ENV
         """).render(cura_version_major = cura_version.major,
                     cura_version_minor = cura_version.minor,
                     cura_version_patch = cura_version.patch,
                     cura_version_build = cura_version.build if cura_version.build != "" else "0",
                     cura_version_full = self.version,
+                    cura_app_name = self._app_name,
                     env_prefix = env_prefix)
 
         ext = ".sh" if self.settings.os != "Windows" else ".ps1"
@@ -431,7 +445,7 @@ echo "CURA_VERSION_FULL={{ cura_version_full }}" >> ${{ env_prefix }}GITHUB_ENV
 
         self._generate_cura_version(Path(self._site_packages, "cura"))
 
-        entitlements_file = "'{}'".format(Path(self.cpp_info.res_paths[2], "dmg", "cura.entitlements"))
+        entitlements_file = "'{}'".format(Path(self.cpp_info.res_paths[2], "MacOS", "cura.entitlements"))
         self._generate_pyinstaller_spec(location = self._base_dir,
                                         entrypoint_location = "'{}'".format(Path(self.cpp_info.bin_paths[0], self._um_data()["runinfo"]["entrypoint"])).replace("\\", "\\\\"),
                                         icon_path = "'{}'".format(Path(self.cpp_info.res_paths[2], self._um_data()["pyinstaller"]["icon"][str(self.settings.os)])).replace("\\", "\\\\"),
