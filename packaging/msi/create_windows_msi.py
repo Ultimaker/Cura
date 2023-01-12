@@ -52,12 +52,6 @@ def generate_wxs(source_path: Path, dist_path: Path, filename: Path, app_name: s
         f.write(wxs_content)
 
     try:
-        shutil.copy(source_loc.joinpath("packaging", "msi", "CustomizeCuraDlg.wxs"),
-                    work_loc.joinpath("CustomizeCuraDlg.wxs"))
-    except shutil.SameFileError:
-        pass
-
-    try:
         shutil.copy(source_loc.joinpath("packaging", "msi", "ExcludeComponents.xslt"),
                     work_loc.joinpath("ExcludeComponents.xslt"))
     except shutil.SameFileError:
@@ -79,7 +73,6 @@ def build(dist_path: Path, filename: Path):
     wxs_loc = work_loc.joinpath("UltiMaker-Cura.wxs")
     heat_loc = work_loc.joinpath("HeatFile.wxs")
     exclude_components_loc = work_loc.joinpath("ExcludeComponents.xslt")
-    manageoldcuradlg_loc = work_loc.joinpath("CustomizeCuraDlg.wxs")
     build_loc = work_loc.joinpath("build_msi")
 
     heat_command = ["heat",
@@ -102,14 +95,12 @@ def build(dist_path: Path, filename: Path):
                      "-ext", "WixFirewallExtension",
                      "-out", f"{build_loc.as_posix()}\\",
                      f"{wxs_loc.as_posix()}",
-                     f"{heat_loc.as_posix()}",
-                     f"{manageoldcuradlg_loc.as_posix()}"]
+                     f"{heat_loc.as_posix()}"]
     subprocess.call(build_command)
 
     link_command = ["light",
                     f"{build_loc.joinpath(wxs_loc.name).with_suffix('.wixobj')}",
                     f"{build_loc.joinpath(heat_loc.name).with_suffix('.wixobj')}",
-                    f"{build_loc.joinpath(manageoldcuradlg_loc.name).with_suffix('.wixobj')}",
                     "-sw1076",  # Don't pollute logs with warnings from auto generated content
                     "-dcl:high",  # Use high compression ratio
                     "-sval",  # Disable ICE validation otherwise the CI complains
