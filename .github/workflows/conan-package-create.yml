@@ -72,10 +72,9 @@ jobs:
                 with:
                     python-version: ${{ inputs.python_version }}
                     cache: 'pip'
-                    cache-dependency-path: .github/workflows/requirements-conan-package.txt
 
             -   name: Install Python requirements for runner
-                run: pip install -r .github/workflows/requirements-conan-package.txt
+                run: pip install -r https://raw.githubusercontent.com/Ultimaker/Cura/main/.github/workflows/requirements-conan-package.txt
 
             -   name: Use Conan download cache (Bash)
                 if: ${{ runner.os != 'Windows' }}
