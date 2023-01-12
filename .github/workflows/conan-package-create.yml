@@ -74,7 +74,9 @@ jobs:
                     cache: 'pip'
 
             -   name: Install Python requirements for runner
-                run: pip install -r https://raw.githubusercontent.com/Ultimaker/Cura/main/.github/workflows/requirements-conan-package.txt
+                run: |
+                    pip install conan!=1.51.0,!=1.51.1,!=1.51.2,!=1.51.3,!=1.52.0,!=1.57.0
+                    pip install sip
 
             -   name: Use Conan download cache (Bash)
                 if: ${{ runner.os != 'Windows' }}
