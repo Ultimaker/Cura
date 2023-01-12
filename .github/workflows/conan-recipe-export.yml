@@ -58,11 +58,10 @@ jobs:
                 with:
                     python-version: ${{ inputs.python_version }}
                     cache: 'pip'
-                    cache-dependency-path: .github/workflows/requirements-conan-package.txt
 
             -   name: Install Python requirements and Create default Conan profile
                 run: |
-                    pip install -r .github/workflows/requirements-conan-package.txt
+                    pip install -r https://raw.githubusercontent.com/Ultimaker/Cura/main/.github/workflows/requirements-conan-package.txt
                     conan profile new default --detect
 
             -   name: Cache Conan local repository packages
