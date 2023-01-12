@@ -140,6 +140,7 @@ def create_dmg(filename: str, dist_path: str, source_path: str) -> None:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = "Create installer for Cura.")
+    parser.add_argument("source_path", type = str, help="Path to Pyinstaller source folder")
     parser.add_argument("dist_path", type = str, help="Path to Pyinstaller dist folder")
     parser.add_argument("filename", type = str, help = "Filename of the pkg (e.g. 'UltiMaker-Cura-5.1.0-beta-Macos-X64.pkg')")
     args = parser.parse_args()
