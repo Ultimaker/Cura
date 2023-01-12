@@ -40,7 +40,7 @@ on:
                 required: true
                 type: boolean
             build_windows_msi:
-                description: 'Build for Windows msi'
+                description: 'Build for msi+pkg'
                 default: true
                 required: true
                 type: boolean
@@ -51,11 +51,6 @@ on:
                 type: boolean
             build_macos:
                 description: 'Build dmg for MacOS'
-                default: true
-                required: true
-                type: boolean
-            build_macos_installer:
-                description: 'Build pkg for MacOS'
                 default: true
                 required: true
                 type: boolean
@@ -152,6 +147,5 @@ jobs:
             enterprise: ${{ inputs.enterprise }}
             staging: ${{ inputs.staging }}
             installer: ${{ inputs.installer }}
-            msi_installer: false
-            pkg_installer: true
+            msi_installer: true
         secrets: inherit
