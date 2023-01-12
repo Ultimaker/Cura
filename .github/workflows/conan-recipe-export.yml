@@ -64,6 +64,7 @@ jobs:
                 run: |
                     pip install -r https://raw.githubusercontent.com/Ultimaker/Cura/main/.github/workflows/requirements-conan-package.txt
                     conan profile new default --detect
+                #  Note the runner requirements are always installed from the main branch in the Ultimaker/Cura repo
 
             -   name: Cache Conan local repository packages
                 uses: actions/cache@v3
