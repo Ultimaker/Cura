@@ -42,7 +42,6 @@
 		"retraction_extrusion_window": { "value": "1.5" },
 		"skin_overlap": { "value": "10" },
 		"skin_monotonic" : { "value": true },
-		"brim_width": { "value": "10" },
 		"infill_before_walls": { "value": false },
 		"acceleration_enabled" : {"value" : true},
         "acceleration_print": { "value": "500" },

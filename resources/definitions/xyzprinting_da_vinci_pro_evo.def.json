@@ -45,7 +45,6 @@
 		"skin_overlap": { "value": "15" },
 		"skin_monotonic" : { "value": true },
 		"skin_material_flow": { "value": "97" },
-		"brim_width": { "value": "10" },
 		"line_width" : { "value": "0.35" },
 		"wall_line_width_x" : { "value": "0.35" },
 		"infill_before_walls": { "value": false },
