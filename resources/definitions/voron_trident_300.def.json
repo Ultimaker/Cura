@@ -1,0 +1,18 @@
+{
+    "version": 2,
+    "name": "Voron Trident 300",
+    "inherits": "voron_trident_base",
+    "metadata":
+    {
+        "visible": true,
+        "author": "RagingRoosevelt, hartk",
+        "platform": "voron_trident_300mm_bed_model.stl",
+        "quality_definition": "voron2_base"
+    },
+    "overrides":
+    {
+        "machine_depth": { "default_value": 300 },
+        "machine_name": { "default_value": "VORON Trident 300" },
+        "machine_width": { "default_value": 300 }
+    }
+}

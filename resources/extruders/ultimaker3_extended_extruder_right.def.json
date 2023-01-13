@@ -2,29 +2,30 @@
     "version": 2,
     "name": "Extruder 2",
     "inherits": "fdmextruder",
-    "metadata": {
+    "metadata":
+    {
         "machine": "ultimaker3_extended",
         "position": "1",
         "quality_definition": "ultimaker3_extruder_right"
     },
-
-    "overrides": {
-        "extruder_nr": {
+    "overrides":
+    {
+        "extruder_nr":
+        {
             "default_value": 1,
             "maximum_value": "1"
         },
-        "machine_nozzle_offset_x": { "default_value": 18 },
-        "machine_nozzle_offset_y": { "default_value": 0 },
-
-        "machine_extruder_start_pos_abs": { "default_value": true },
-        "machine_extruder_start_pos_x": { "default_value": 213 },
-        "machine_extruder_start_pos_y": { "default_value": 189 },
+        "extruder_prime_pos_x": { "default_value": 222 },
+        "extruder_prime_pos_y": { "default_value": 6 },
+        "extruder_prime_pos_z": { "default_value": 2 },
         "machine_extruder_end_pos_abs": { "default_value": true },
         "machine_extruder_end_pos_x": { "default_value": 213 },
         "machine_extruder_end_pos_y": { "default_value": 189 },
+        "machine_extruder_start_pos_abs": { "default_value": true },
+        "machine_extruder_start_pos_x": { "default_value": 213 },
+        "machine_extruder_start_pos_y": { "default_value": 189 },
         "machine_nozzle_head_distance": { "default_value": 4.2 },
-        "extruder_prime_pos_x": { "default_value": 222 },
-        "extruder_prime_pos_y": { "default_value": 6 },
-        "extruder_prime_pos_z": { "default_value": 2 }
+        "machine_nozzle_offset_x": { "default_value": 18 },
+        "machine_nozzle_offset_y": { "default_value": 0 }
     }
 }

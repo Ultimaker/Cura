@@ -17,6 +17,12 @@ UM.MainWindow
 {
     id: base
 
+    Item
+    {
+        id: mainWindow
+        anchors.fill: parent
+    }
+
     // Cura application window title
     title:
     {
@@ -496,10 +502,7 @@ UM.MainWindow
         target: Cura.Actions.addProfile
         function onTriggered()
         {
-            preferences.show();
-            preferences.setPage(4);
-            // Create a new profile after a very short delay so the preference page has time to initiate
-            createProfileTimer.start();
+            createNewQualityDialog.visible = true;
         }
     }
 
@@ -545,15 +548,6 @@ UM.MainWindow
                 preferences.getCurrentItem().scrollToSection(source.key);
             }
         }
-    }
-
-    Timer
-    {
-        id: createProfileTimer
-        repeat: false
-        interval: 1
-
-        onTriggered: preferences.getCurrentItem().createProfile()
     }
 
     // BlurSettings is a way to force the focus away from any of the setting items.
@@ -816,10 +810,15 @@ UM.MainWindow
     Connections
     {
         target: CuraApplication
-        function onShowDiscardOrKeepProfileChanges()
+        function onShowCompareAndSaveProfileChanges(profileState)
         {
             discardOrKeepProfileChangesDialogLoader.sourceComponent = discardOrKeepProfileChangesDialogComponent
+            discardOrKeepProfileChangesDialogLoader.item.buttonState = profileState
             discardOrKeepProfileChangesDialogLoader.item.show()
+        }
+        function onShowDiscardOrKeepProfileChanges()
+        {
+            onShowCompareAndSaveProfileChanges(DiscardOrKeepProfileChangesDialog.ButtonsType.DiscardOrKeep)
         }
     }
 
@@ -883,6 +882,49 @@ UM.MainWindow
                 base.visible = true
             }
         }
+    }
+
+    Cura.RenameDialog
+    {
+        id: createNewQualityDialog
+        title: catalog.i18nc("@title:window", "Save Custom Profile")
+        objectPlaceholder: catalog.i18nc("@textfield:placeholder", "New Custom Profile")
+        explanation: catalog.i18nc("@info", "Custom profile name:")
+        extraInfo:
+        [
+            UM.ColorImage
+            {
+                width: UM.Theme.getSize("message_type_icon").width
+                height: UM.Theme.getSize("message_type_icon").height
+                source: UM.Theme.getIcon("Information")
+                color: UM.Theme.getColor("text")
+            },
+            Column
+            {
+                UM.Label
+                {
+                    text: catalog.i18nc
+                    (
+                        "@label %i will be replaced with a profile name",
+                        "<b>Only user changed settings will be saved in the custom profile.</b><br/>" +
+                        "For materials that support it, the new custom profile will inherit properties from <b>%1</b>."
+                    ).arg(Cura.MachineManager.activeQualityOrQualityChangesName)
+                    wrapMode: Text.WordWrap
+                    width: parent.parent.width - 2 * UM.Theme.getSize("message_type_icon").width
+                }
+                Cura.TertiaryButton
+                {
+                    text: catalog.i18nc("@action:button", "Learn more about Cura print profiles")
+                    iconSource: UM.Theme.getIcon("LinkExternal")
+                    isIconOnRightSide: true
+                    leftPadding: 0
+                    rightPadding: 0
+                    onClicked: Qt.openUrlExternally("https://support.ultimaker.com/s/article/1667337576882")
+                }
+            }
+        ]
+        okButtonText: catalog.i18nc("@button", "Save new profile")
+        onAccepted: CuraApplication.getQualityManagementModel().createQualityChanges(newName, true);
     }
 
     /**

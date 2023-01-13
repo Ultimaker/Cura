@@ -2,13 +2,15 @@
     "version": 2,
     "name": "Extruder 5",
     "inherits": "fdmextruder",
-    "metadata": {
+    "metadata":
+    {
         "machine": "custom",
         "position": "4"
     },
-
-    "overrides": {
-        "extruder_nr": {
+    "overrides":
+    {
+        "extruder_nr":
+        {
             "default_value": 4,
             "maximum_value": "7"
         }

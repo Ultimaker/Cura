@@ -134,7 +134,8 @@ jobs:
                                 version = tools.Version(tag)
                             except ConanException:
                                 continue
-                            if version > latest_branch_version:
+                            if version > latest_branch_version and version < tools.Version("10.0.0"):
+                                # FIXME: stupid old Cura tags 13.04 etc. keep popping up
                                 latest_branch_version = version
                                 latest_branch_tag = repo.tag(tag)
                         
