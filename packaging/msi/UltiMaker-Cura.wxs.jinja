@@ -122,7 +122,7 @@
 
         <!--Shortcuts-->
         <DirectoryRef Id="ShortCutDir">
-            <Component Id="CMP_Shortcuts" Guid="{{ shortcut_uuid }}">
+            <Component Id="CMP_Shortcuts" Guid="*">
                 <Shortcut Id="SHRT_Cura"
                           Name="{{ app_name }} {{ version }}"
                           Description="{{ app_name }} {{ version }}"
@@ -150,6 +150,6 @@
             <ComponentGroupRef Id="NewFilesGroup" />
             <ComponentRef Id="CMP_Shortcuts" />
         </Feature>
-        <Feature Id="UninstallOlderVersionFeature" Title="Uninstall previous versions" Level="{{ 1 if "Enterprise" in app_name else 2 }}" Description="..."/>
+        <Feature Id="UninstallOlderVersionFeature" Title="Uninstall previous versions" Level="{{ 1 if "Enterprise" in app_name else 0 }}" Description="..."/>
     </Product>
 </Wix>
