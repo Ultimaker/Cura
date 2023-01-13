@@ -41,7 +41,6 @@ def generate_wxs(source_path: Path, dist_path: Path, filename: Path, app_name: s
         web_site="https://ultimaker.com",
         year=datetime.now().year,
         upgrade_code=str(uuid.uuid5(uuid.NAMESPACE_DNS, app_name)),
-        shortcut_uuid=str(uuid.uuid5(uuid.NAMESPACE_DNS, f"Shortcut {app_name}")),
         cura_license_file=str(source_loc.joinpath("packaging", "msi", "cura_license.rtf")),
         cura_banner_top=str(source_loc.joinpath("packaging", "msi", "banner_top.bmp")),
         cura_banner_side=str(source_loc.joinpath("packaging", "msi", "banner_side.bmp")),
