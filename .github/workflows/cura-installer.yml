@@ -251,7 +251,7 @@ jobs:
                     if "${{ runner.os }}" == "Windows":
                         installer_ext = "msi" if "${{ inputs.msi_installer }}" == "true" else "exe"
                     elif "${{ runner.os }}" == "macOS":
-                        installer_ext = "pkg" if "${{ inputs.mis_installer }}" == "true" else "dmg"
+                        installer_ext = "pkg" if "${{ inputs.msi_installer }}" == "true" else "dmg"
                     else:
                         installer_ext = "AppImage"
                     output_env = os.environ["GITHUB_OUTPUT"]

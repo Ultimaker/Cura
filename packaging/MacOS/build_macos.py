@@ -129,13 +129,11 @@ def create_dmg(filename: str, dist_path: str, source_path: str) -> None:
     @param source_path: The location of the project source files
     """
 
-    dmg_filename = f"{filename}.dmg"
-
-    build_dmg(source_path, dist_path, dmg_filename)
+    build_dmg(source_path, dist_path, filename)
 
     notarize_dmg = bool(os.environ.get("NOTARIZE_DMG", "TRUE"))
     if notarize_dmg:
-        notarize_file(dist_path, dmg_filename)
+        notarize_file(dist_path, filename)
 
 
 if __name__ == "__main__":
