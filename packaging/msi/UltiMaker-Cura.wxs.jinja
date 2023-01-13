@@ -150,6 +150,6 @@
             <ComponentGroupRef Id="NewFilesGroup" />
             <ComponentRef Id="CMP_Shortcuts" />
         </Feature>
-        <Feature Id="UninstallOlderVersionFeature" Title="Uninstall previous versions" Level="{{ 1 if "Enterprise" in app_name else 0 }}" Description="..."/>
+        <Feature Id="UninstallOlderVersionFeature" Title="Uninstall previous versions" Level="{{ 1 if "Enterprise" in app_name else 2 }}" Description="..."/>
     </Product>
 </Wix>
