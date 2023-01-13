@@ -255,7 +255,7 @@ app = UMBUNDLE(
     coll,
     name='{{ display_name }}.app'.replace(" ", "-"),
     icon={{ icon }},
-    bundle_identifier={{ osx_bundle_identifier }} + _ + {{ version }},
+    bundle_identifier={{ osx_bundle_identifier }} + "_" + {{ short_version }},
     version={{ version }},
     info_plist={
         'CFBundleDisplayName': '{{ display_name }}',
