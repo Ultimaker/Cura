@@ -141,12 +141,14 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = "Create installer for Cura.")
     parser.add_argument("source_path", type = str, help = "Path to Pyinstaller source folder")
     parser.add_argument("dist_path", type = str, help = "Path to Pyinstaller dist folder")
-    parser.add_argument("cura_version", type = str, help="The version of cura")
+    parser.add_argument("cura_conan_version", type = str, help="The version of cura")
     parser.add_argument("filename", type = str, help = "Filename of the pkg (e.g. 'UltiMaker-Cura-5.1.0-beta-Macos-X64.pkg')")
     args = parser.parse_args()
 
+    cura_version = args.cura_conan_version.split("/")[-1]
+
     if Path(args.filename).suffix == ".pkg":
-        create_pkg_installer(args.filename, args.dist_path, args.cura_version)
+        create_pkg_installer(args.filename, args.dist_path, cura_version)
     elif Path(args.filename).suffix == ".dmg":
         create_dmg(args.filename, args.dist_path, args.source_path)
     else:
