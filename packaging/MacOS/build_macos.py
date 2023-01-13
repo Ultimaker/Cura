@@ -43,8 +43,7 @@ def build_pkg(dist_path: str, app_filename: str, component_filename: str, cura_v
     # This builds the component package that contains UltiMaker-Cura.app. This component package will be bundled in a distribution package.
     pkg_build_arguments = [
         pkg_build_executable,
-        "--identifier", ULTIMAKER_CURA_DOMAIN,
-        "--version", cura_version,
+        "--identifier", f"{ULTIMAKER_CURA_DOMAIN}_{cura_version}", # If we want to replace previous version automatecially remove {cure_version}
         "--component",
         Path(dist_path, app_filename),
         Path(dist_path, component_filename),
