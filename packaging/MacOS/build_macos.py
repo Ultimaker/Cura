@@ -43,7 +43,7 @@ def build_pkg(dist_path: str, app_filename: str, component_filename: str, cura_v
     # This builds the component package that contains UltiMaker-Cura.app. This component package will be bundled in a distribution package.
     pkg_build_arguments = [
         pkg_build_executable,
-        "--identifier", f"{ULTIMAKER_CURA_DOMAIN}_{cura_version}", # If we want to replace previous version automatecially remove {cure_version}
+        "--identifier", f"{ULTIMAKER_CURA_DOMAIN}_{cura_version}", # If we want to replace previous version automatically remove {cure_version}
         "--component",
         Path(dist_path, app_filename),
         Path(dist_path, component_filename),
@@ -142,7 +142,7 @@ if __name__ == "__main__":
     parser.add_argument("source_path", type = str, help = "Path to Pyinstaller source folder")
     parser.add_argument("dist_path", type = str, help = "Path to Pyinstaller dist folder")
     parser.add_argument("cura_conan_version", type = str, help="The version of cura")
-    parser.add_argument("filename", type = str, help = "Filename of the pkg (e.g. 'UltiMaker-Cura-5.1.0-beta-Macos-X64.pkg')")
+    parser.add_argument("filename", type = str, help = "Filename of the pkg/dmg (e.g. 'UltiMaker-Cura-5.1.0-beta-Macos-X64.pkg' or 'UltiMaker-Cura-5.1.0-beta-Macos-X64.dmg')")
     args = parser.parse_args()
 
     cura_version = args.cura_conan_version.split("/")[-1]
