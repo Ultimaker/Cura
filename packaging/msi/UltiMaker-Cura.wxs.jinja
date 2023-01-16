@@ -19,15 +19,17 @@
             Comments="Copyright (c) {{ year }} {{ company }}" />
 
         <InstallExecuteSequence>
-            <RemoveExistingProducts Before="InstallInitialize" />
+            <RemoveExistingProducts After="InstallFinalize">
+            <![CDATA[&UninstallOlderVersionFeature=3]]>
+            </RemoveExistingProducts>
         </InstallExecuteSequence>
 
-        <Property Id="PREVIOUS_VERSIONS_INSTALLED" Secure="yes" Value="{{ 1 if "Enterprise" in app_name else 0 }}" />
+        <Property Id="PREVIOUS_VERSIONS_INSTALLED" Secure="yes" />
         <Upgrade Id="{{ upgrade_code }}">
             <UpgradeVersion
                 Minimum="4.13.2" Maximum="{{ version_major }}.{{ version_minor }}.{{ version_patch }}"
                 Property="PREVIOUS_VERSIONS_INSTALLED"
-                IncludeMinimum="no" IncludeMaximum="no"
+                IncludeMinimum="no" IncludeMaximum="yes"
             />
         </Upgrade>
 
@@ -36,7 +38,7 @@
         <Upgrade Id="53C603BB-2B17-4206-A609-29C2E0D0B0AE">
             <UpgradeVersion
                 Minimum="1.0.0" Maximum="4.13.2"
-                Property="PREVIOUS_413_INSTALLED"
+                Property="PREVIOUS_VERSIONS_INSTALLED"
                 IncludeMinimum="yes" IncludeMaximum="yes"
             />
         </Upgrade>
@@ -48,23 +50,7 @@
 
         <MediaTemplate EmbedCab="yes" CompressionLevel="high" />
 
-        <UI Id="MyWixUI_Mondo">
-            <UIRef Id="WixUI_Mondo" />
-
-            <DialogRef Id="CustomizeCuraDlg" />
-
-            <Publish Dialog="SetupTypeDlg" Control="CustomButton" Event="NewDialog" Value="CustomizeCuraDlg">1</Publish>
-
-            <Publish Dialog="CustomizeCuraDlg" Control="Back" Event="NewDialog" Value="MaintenanceTypeDlg" Order="1">WixUI_InstallMode = "Change"</Publish>
-            <Publish Dialog="CustomizeCuraDlg" Control="Back" Event="NewDialog" Value="SetupTypeDlg" Order="2">WixUI_InstallMode = "InstallCustom"</Publish>
-            <Publish Dialog="CustomizeCuraDlg" Control="Next" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
-
-            <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="CustomizeCuraDlg" Order="1">WixUI_InstallMode = "InstallCustom"</Publish>
-            <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="CustomizeCuraDlg" Order="3">WixUI_InstallMode = "Change"</Publish>
-            <Publish Dialog="MaintenanceTypeDlg" Control="ChangeButton" Event="NewDialog" Value="CustomizeCuraDlg">1</Publish>
-
-        </UI>
-        <UIRef Id="WixUI_ErrorProgressText" />
+        <UIRef Id="WixUI_Mondo" />
 
         <WixVariable Id="WixUILicenseRtf" Value="{{ cura_license_file }}" />
         <WixVariable Id="WixUIDialogBmp" Value="{{ cura_banner_side }}" />
@@ -136,7 +122,7 @@
 
         <!--Shortcuts-->
         <DirectoryRef Id="ShortCutDir">
-            <Component Id="CMP_Shortcuts" Guid="{{ shortcut_uuid }}">
+            <Component Id="CMP_Shortcuts" Guid="*">
                 <Shortcut Id="SHRT_Cura"
                           Name="{{ app_name }} {{ version }}"
                           Description="{{ app_name }} {{ version }}"
@@ -164,5 +150,6 @@
             <ComponentGroupRef Id="NewFilesGroup" />
             <ComponentRef Id="CMP_Shortcuts" />
         </Feature>
+        <Feature Id="UninstallOlderVersionFeature" Title="Uninstall previous versions" Level="{{ 1 if "Enterprise" in app_name else 0 }}" Description="..."/>
     </Product>
 </Wix>
