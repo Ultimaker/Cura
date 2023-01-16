@@ -9,7 +9,7 @@ from pathlib import Path
 
 ULTIMAKER_CURA_DOMAIN = os.environ.get("ULTIMAKER_CURA_DOMAIN", "nl.ultimaker.cura")
 
-def build_dmg(source_path: str, dist_path: str, filename: str) -> None:
+def build_dmg(source_path: str, dist_path: str, filename: str, app_name: str) -> None:
     create_dmg_executable = os.environ.get("CREATE_DMG_EXECUTABLE", "create-dmg")
 
     arguments = [create_dmg_executable,
@@ -18,11 +18,11 @@ def build_dmg(source_path: str, dist_path: str, filename: str) -> None:
                  "--app-drop-link", "520", "272",
                  "--volicon", f"{source_path}/packaging/icons/VolumeIcons_Cura.icns",
                  "--icon-size", "90",
-                 "--icon", "UltiMaker-Cura.app", "169", "272",
+                 "--icon", app_name, "169", "272",
                  "--eula", f"{source_path}/packaging/cura_license.txt",
                  "--background", f"{source_path}/packaging/MacOs/cura_background_dmg.png",
                  f"{dist_path}/{filename}",
-                 f"{dist_path}/UltiMaker-Cura.app"]
+                 f"{dist_path}/{app_name}"]
 
     subprocess.run(arguments)
 
@@ -100,7 +100,7 @@ def notarize_file(dist_path: str, filename: str) -> None:
     subprocess.run(notarize_arguments)
 
 
-def create_pkg_installer(filename: str,  dist_path: str, cura_version: str) -> None:
+def create_pkg_installer(filename: str,  dist_path: str, cura_version: str, app_name: str) -> None:
     """ Creates a pkg installer from {filename}.app called {filename}-Installer.pkg
 
     The final package structure is UltiMaker-Cura-XXX-Installer.pkg[UltiMaker-Cura.pkg[UltiMaker-Cura.app]]. The outer
@@ -112,8 +112,7 @@ def create_pkg_installer(filename: str,  dist_path: str, cura_version: str) -> N
     """
 
     filename_stem = Path(filename).stem
-    cura_component_package_name = f"{filename_stem}-Component.pkg"  # This is a component package that is nested inside the installer, it contains the UltiMaker-Cura.app file
-    app_name = "UltiMaker-Cura.app"  # This is the app file that will end up in your applications folder
+    cura_component_package_name = f"{filename_stem}-Component.pkg"  # This is a component package that is nested inside the installer, it contains the UltiMaker-Cura.app file This is the app file that will end up in your applications folder
 
     build_pkg(dist_path, app_name, cura_component_package_name, cura_version, filename)
 
@@ -122,7 +121,7 @@ def create_pkg_installer(filename: str,  dist_path: str, cura_version: str) -> N
         notarize_file(dist_path, filename)
 
 
-def create_dmg(filename: str, dist_path: str, source_path: str) -> None:
+def create_dmg(filename: str, dist_path: str, source_path: str, app_name: str) -> None:
     """ Creates a dmg executable from UltiMaker-Cura.app named {filename}.dmg
 
     @param filename: The name of the app file and the output dmg file without the extension
@@ -130,7 +129,7 @@ def create_dmg(filename: str, dist_path: str, source_path: str) -> None:
     @param source_path: The location of the project source files
     """
 
-    build_dmg(source_path, dist_path, filename)
+    build_dmg(source_path, dist_path, filename, app_name)
 
     notarize_dmg = bool(os.environ.get("NOTARIZE_DMG", "TRUE"))
     if notarize_dmg:
@@ -143,11 +142,14 @@ if __name__ == "__main__":
     parser.add_argument("dist_path", type = str, help = "Path to Pyinstaller dist folder")
     parser.add_argument("cura_conan_version", type = str, help="The version of cura")
     parser.add_argument("filename", type = str, help = "Filename of the pkg/dmg (e.g. 'UltiMaker-Cura-5.1.0-beta-Macos-X64.pkg' or 'UltiMaker-Cura-5.1.0-beta-Macos-X64.dmg')")
+    parser.add_argument("app_name", type = str, help = "Filename of the .app that will be contained within the dmg/pkg")
     args = parser.parse_args()
 
     cura_version = args.cura_conan_version.split("/")[-1]
 
+    app_name = f"{args.app_name}.app"
+
     if Path(args.filename).suffix == ".pkg":
-        create_pkg_installer(args.filename, args.dist_path, cura_version)
+        create_pkg_installer(args.filename, args.dist_path, cura_version, app_name)
     else:
-        create_dmg(args.filename, args.dist_path, args.source_path)
+        create_dmg(args.filename, args.dist_path, args.source_path, app_name)

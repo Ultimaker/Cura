@@ -253,7 +253,7 @@ class UMBUNDLE(BUNDLE):
 
 app = UMBUNDLE(
     coll,
-    name='{{ display_name }}.app'.replace(" ", "-"),
+    name='{{ display_name }}.app',
     icon={{ icon }},
     bundle_identifier={{ osx_bundle_identifier }} + "_" + '{{ display_name }}'.replace(" ", "_") + "_" {{ short_version }},
     version={{ version }},
