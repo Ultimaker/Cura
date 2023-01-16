@@ -149,7 +149,5 @@ if __name__ == "__main__":
 
     if Path(args.filename).suffix == ".pkg":
         create_pkg_installer(args.filename, args.dist_path, cura_version)
-    elif Path(args.filename).suffix == ".dmg":
-        create_dmg(args.filename, args.dist_path, args.source_path)
     else:
         create_dmg(args.filename, args.dist_path, args.source_path)
