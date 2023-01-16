@@ -1,6 +1,6 @@
 #! /bin/bash
 
-# Extract strings from a list of JSON files.
+# Extract strings from all JSON files in a directory into files with matching names ending with .pot.
 #
 # This script will extract strings from all JSON files in the directory
 # passed as first argument. The second argument is the destination
