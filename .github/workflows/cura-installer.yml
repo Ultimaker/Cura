@@ -310,7 +310,7 @@ jobs:
 
             -   name: Create the MacOS dmg and/or pkg (Bash)
                 if: ${{ github.event.inputs.installer == 'true' && runner.os == 'Macos' }}
-                run: python ../cura_inst/packaging/MacOS/build_macos.py ../cura_inst . $CURA_CONAN_VERSION "${{ steps.filename.outputs.FULL_INSTALLER_FILENAME }}" $CURA_APP_NAME
+                run: python ../cura_inst/packaging/MacOS/build_macos.py ../cura_inst . $CURA_CONAN_VERSION "${{ steps.filename.outputs.FULL_INSTALLER_FILENAME }}" "$CURA_APP_NAME"
                 working-directory: dist
 
             -   name: Upload the artifacts
