@@ -9,12 +9,31 @@ from pathlib import Path
 
 ULTIMAKER_CURA_DOMAIN = os.environ.get("ULTIMAKER_CURA_DOMAIN", "nl.ultimaker.cura")
 
-def build_pkg(dist_path: str, app_filename: str, component_filename: str, installer_filename: str) -> None:
+def build_dmg(source_path: str, dist_path: str, filename: str, app_name: str) -> None:
+    create_dmg_executable = os.environ.get("CREATE_DMG_EXECUTABLE", "create-dmg")
+
+    arguments = [create_dmg_executable,
+                 "--window-pos", "640", "360",
+                 "--window-size", "690", "503",
+                 "--app-drop-link", "520", "272",
+                 "--volicon", f"{source_path}/packaging/icons/VolumeIcons_Cura.icns",
+                 "--icon-size", "90",
+                 "--icon", app_name, "169", "272",
+                 "--eula", f"{source_path}/packaging/cura_license.txt",
+                 "--background", f"{source_path}/packaging/MacOs/cura_background_dmg.png",
+                 f"{dist_path}/{filename}",
+                 f"{dist_path}/{app_name}"]
+
+    subprocess.run(arguments)
+
+
+def build_pkg(dist_path: str, app_filename: str, component_filename: str, cura_version: str, installer_filename: str) -> None:
     """ Builds and signs the pkg installer.
 
     @param dist_path: Path to put output pkg in
     @param app_filename: name of the .app file to bundle inside the pkg
     @param component_filename: Name of the pkg component package to bundle the app in
+    @param cura_version: The version is used when automatically replacing existing versions with the installer.
     @param installer_filename: Name of the installer that contains the component package
     """
     pkg_build_executable = os.environ.get("PKG_BUILD_EXECUTABLE", "pkgbuild")
@@ -24,6 +43,7 @@ def build_pkg(dist_path: str, app_filename: str, component_filename: str, instal
     # This builds the component package that contains UltiMaker-Cura.app. This component package will be bundled in a distribution package.
     pkg_build_arguments = [
         pkg_build_executable,
+        "--identifier", f"{ULTIMAKER_CURA_DOMAIN}_{cura_version}", # If we want to replace previous version automatically remove {cure_version}
         "--component",
         Path(dist_path, app_filename),
         Path(dist_path, component_filename),
@@ -80,7 +100,7 @@ def notarize_file(dist_path: str, filename: str) -> None:
     subprocess.run(notarize_arguments)
 
 
-def create_pkg_installer(filename: str,  dist_path: str) -> None:
+def create_pkg_installer(filename: str,  dist_path: str, cura_version: str, app_name: str) -> None:
     """ Creates a pkg installer from {filename}.app called {filename}-Installer.pkg
 
     The final package structure is UltiMaker-Cura-XXX-Installer.pkg[UltiMaker-Cura.pkg[UltiMaker-Cura.app]]. The outer
@@ -92,19 +112,44 @@ def create_pkg_installer(filename: str,  dist_path: str) -> None:
     """
 
     filename_stem = Path(filename).stem
-    cura_component_package_name = f"{filename_stem}-Component.pkg"  # This is a component package that is nested inside the installer, it contains the UltiMaker-Cura.app file
-    app_name = "UltiMaker-Cura.app"  # This is the app file that will end up in your applications folder
+    cura_component_package_name = f"{filename_stem}-Component.pkg"  # This is a component package that is nested inside the installer, it contains the UltiMaker-Cura.app file This is the app file that will end up in your applications folder
 
-    build_pkg(dist_path, app_name, cura_component_package_name, filename)
+    build_pkg(dist_path, app_name, cura_component_package_name, cura_version, filename)
 
     notarize = bool(os.environ.get("NOTARIZE_INSTALLER", "FALSE"))
     if notarize:
         notarize_file(dist_path, filename)
 
+
+def create_dmg(filename: str, dist_path: str, source_path: str, app_name: str) -> None:
+    """ Creates a dmg executable from UltiMaker-Cura.app named {filename}.dmg
+
+    @param filename: The name of the app file and the output dmg file without the extension
+    @param dist_path: The location to read the app from and save the dmg to
+    @param source_path: The location of the project source files
+    """
+
+    build_dmg(source_path, dist_path, filename, app_name)
+
+    notarize_dmg = bool(os.environ.get("NOTARIZE_DMG", "TRUE"))
+    if notarize_dmg:
+        notarize_file(dist_path, filename)
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = "Create installer for Cura.")
-    parser.add_argument("dist_path", type = str, help="Path to Pyinstaller dist folder")
-    parser.add_argument("filename", type = str, help = "Filename of the pkg (e.g. 'UltiMaker-Cura-5.1.0-beta-Macos-X64.pkg')")
+    parser.add_argument("source_path", type = str, help = "Path to Pyinstaller source folder")
+    parser.add_argument("dist_path", type = str, help = "Path to Pyinstaller dist folder")
+    parser.add_argument("cura_conan_version", type = str, help="The version of cura")
+    parser.add_argument("filename", type = str, help = "Filename of the pkg/dmg (e.g. 'UltiMaker-Cura-5.1.0-beta-Macos-X64.pkg' or 'UltiMaker-Cura-5.1.0-beta-Macos-X64.dmg')")
+    parser.add_argument("app_name", type = str, help = "Filename of the .app that will be contained within the dmg/pkg")
     args = parser.parse_args()
 
-    create_pkg_installer(args.filename, args.dist_path)
+    cura_version = args.cura_conan_version.split("/")[-1]
+
+    app_name = f"{args.app_name}.app"
+
+    if Path(args.filename).suffix == ".pkg":
+        create_pkg_installer(args.filename, args.dist_path, cura_version, app_name)
+    else:
+        create_dmg(args.filename, args.dist_path, args.source_path, app_name)
