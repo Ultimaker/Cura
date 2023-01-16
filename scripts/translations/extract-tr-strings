@@ -1,0 +1,73 @@
+#!/bin/sh
+#
+# This script extracts strings from a set of files using Qt's translation system.
+# It then converts the extracted .ts file in a .po file that can be used with
+# tools that expect Gettext's po file format.
+#
+# This script was adapted from extract-tr-strings from KDE's translation scripts.
+# extract-tr-strings is Copyright 2014 Aurélien Gateau <agateau@kde.org>
+set -e
+
+OLD_PWD=$PWD
+cd $(dirname $0)
+SCRIPTS_DIR=$PWD
+cd $OLD_PWD
+
+LUPDATE=${LUPDATE:-lupdate}
+LCONVERT=${LCONVERT:-lconvert}
+
+die() {
+    echo "ERROR: $*" >&2
+    exit 1
+}
+
+usage() {
+    cat <<EOF
+Usage: $(basename $0) [src_files]... -o [pot_file]
+
+Creates a .pot file for code translated using Qt translation system.
+EOF
+    exit 1
+}
+
+src_files=""
+pot_file=""
+while [ $# -gt 0 ] ; do
+    case "$1" in
+    -h|--help)
+        usage
+        ;;
+    -o|--output)
+        pot_file="$2"
+        shift 2
+        ;;
+    -*)
+        die "Unknown option $1"
+        ;;
+    *)
+        src_files="$src_files $1"
+        shift
+        ;;
+    esac
+done
+
+if [ -z "$src_files" ] ; then
+    die "No source files provided"
+fi
+if [ -z "$pot_file" ] ; then
+    die "No pot file provided, please provide one with the -o option"
+fi
+
+# "Reserve" a name for a temporary .ts file where lupdate can store its output.
+# The .ts file is created in the directory where Messages.sh is to ensure
+# lupdate creates file paths relative to this directory.
+# lupdate fails if we pass it an existing but empty file, so we have to rm the
+# temporary file we just created. It is not completely safe, but since this
+# script is always running in a trusted environment we can assume it is OK.
+tmp_ts=$(mktemp $PWD/extract-tr-strings-XXXXXX.ts)
+trap "rm -rf $tmp_ts" 0
+trap "exit 2" 1 2 3 13 15
+rm $tmp_ts
+
+$LUPDATE -silent $src_files -ts $tmp_ts
+$LCONVERT $tmp_ts --sort-contexts --output-format pot -o $pot_file

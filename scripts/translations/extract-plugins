@@ -1,0 +1,14 @@
+#! /bin/bash
+
+# Extract strings from all plugins
+#
+
+scriptdir=$(dirname $0)
+dir=$1; shift
+dest=$1; shift
+
+for file in $(find -L "$dir" -name plugin.json | grep -v 'tests'); do
+    python3 $scriptdir/createplugincontext.py $file $dir $dest
+done
+
+

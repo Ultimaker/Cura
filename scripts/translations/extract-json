@@ -1,0 +1,42 @@
+#! /bin/bash
+
+# Extract strings from a list of JSON files.
+#
+# This script will extract strings from all JSON files in the directory
+# passed as first argument. The second argument is the destination
+# directory for the extracted message file.
+#
+# This script uses createjsoncontext to generate the actual message file
+# from the JSON file.
+#
+# This script is based on handle_json_files.sh from KDE's translation
+# scripts.
+# handle_json_files.sh is copyright 2014 Burkhard Lück <lueck@hube-lueck.de>
+scriptdir=$(dirname $0)
+
+extract() {
+    basedir=$1
+    dest=$2
+    file=$3
+
+    python3 $scriptdir/createjsoncontext.py $file $basedir json.$$.tmp
+    if test $? -eq 1; then
+        return
+    fi
+
+    echo "Extracted messages from $file"
+
+    msguniq --to-code=UTF-8 -o json.$$ json.$$.tmp
+    if test -f json.$$; then
+        destfile="$dest/$(basename $file).pot"
+        mv json.$$ $destfile
+    fi
+    rm -f json.$$ json.$$.tmp
+}
+
+dir=$1; shift
+dest=$1; shift
+
+for file in $(find -L "$dir" -name *.json | grep -v 'tests'); do
+    extract $dir $dest $file
+done

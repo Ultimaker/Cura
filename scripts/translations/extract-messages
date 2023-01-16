@@ -1,0 +1,42 @@
+#!/bin/bash
+
+scriptdir=$(dirname $0)
+basedir=$1
+catalogname=$2
+
+# This script processes the source files using several other scripts to extract strings.
+# The strings are extracted to $basedir/resources/i18n/ and then post processed. After that
+# It generates english translation files and testing files that are pre- and sufficed with
+# xx. These can be used by setting the LANGUAGE environment variable to x-test.
+#
+# This script uses extract-tr-strings to extract strings from QML files, extract-json to
+# extract strings from JSON files and extract-python to extract strings from Python files.
+#
+mkdir -p $basedir/resources/i18n
+$scriptdir/extract-json $basedir/resources/definitions/ $basedir/resources/i18n
+$scriptdir/extract-all $basedir $basedir/resources/i18n/$catalogname.pot
+$scriptdir/extract-plugins $basedir/plugins/ $basedir/resources/i18n/$catalogname.pot
+msgconv --to-code=UTF-8 $basedir/resources/i18n/$catalogname.pot -o $basedir/resources/i18n/$catalogname.pot
+
+for pot in $basedir/resources/i18n/*.pot; do
+    filename=$(basename $pot)
+
+    dir=$basedir/resources/i18n/en_US
+    mkdir -p $dir
+    po=$dir/${filename/.pot/.po}
+    msginit --no-translator -l en_US -i $pot -o $po
+
+    dir=$basedir/resources/i18n/x-test
+    mkdir -p $dir
+    po=$dir/${filename/.pot/.po}
+    msginit --no-translator -l en_US -i $pot -o $po
+    msgfilter --keep-header -i $po -o $po sed -e "s/.*/xx&xx/"
+    msgfilter -i $po -o $po sed -e "s/Language: en_US/Language: x-test/"
+
+    #Auto-translate the translation files to Pirate.
+    dir=$basedir/resources/i18n/en_7S
+    mkdir -p $dir
+    po=$dir/${filename/.pot/.po}
+    python3 $scriptdir/pirate.py $pot $po
+    echo Created $po.
+done

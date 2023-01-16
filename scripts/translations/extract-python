@@ -1,0 +1,12 @@
+#!/bin/bash
+#
+# Use xgettext to extract all strings from a set of python files.
+# Argument 1 is the directory to search for python files, argument 2
+# is the destination file.
+#
+# This script will extract strings marked using i18n or i18nc methods.
+# See UM/i18n.py for the relevant methods.
+#
+dir=$1
+dest=$2
+xgettext --from-code=UTF-8 --language=python -ki18n:1 -ki18nc:1c,2 -o $dest $(find -L "$dir" -name \*.py)
