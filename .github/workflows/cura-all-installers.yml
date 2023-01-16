@@ -1,5 +1,5 @@
 name: Cura All Installers
-run-name: ${{ inputs.cura_conan_version }} for exe ${{ inputs.build_windows_exe }}, msi ${{ inputs.build_windows_msi }}, dmg ${{ inputs.build_macos }}, appimage ${{ inputs.build_linux }} - enterprise ${{ inputs.enterprise }}
+run-name: ${{ inputs.cura_conan_version }} for exe ${{ inputs.build_windows_exe }}, msi ${{ inputs.build_windows_msi }}, dmg ${{ inputs.build_macos }}, pkg ${{ inputs.build_macos_installer }}, appimage ${{ inputs.build_linux }} - enterprise ${{ inputs.enterprise }}
 
 on:
     workflow_dispatch:
@@ -40,7 +40,7 @@ on:
                 required: true
                 type: boolean
             build_windows_msi:
-                description: 'Build for Windows msi'
+                description: 'Build for msi+pkg'
                 default: true
                 required: true
                 type: boolean
@@ -50,7 +50,7 @@ on:
                 required: true
                 type: boolean
             build_macos:
-                description: 'Build for MacOS'
+                description: 'Build dmg for MacOS'
                 default: true
                 required: true
                 type: boolean
@@ -120,7 +120,7 @@ jobs:
             msi_installer: false
         secrets: inherit
 
-    macos-installer-create:
+    macos-dmg-create:
         if: ${{ inputs.build_macos }}
         uses: ./.github/workflows/cura-installer.yml
         with:
@@ -133,4 +133,19 @@ jobs:
             staging: ${{ inputs.staging }}
             installer: ${{ inputs.installer }}
             msi_installer: false
+        secrets: inherit
+
+    macos-installer-create:
+        if: ${{ inputs.build_macos }}
+        uses: ./.github/workflows/cura-installer.yml
+        with:
+            platform: 'macos-11'
+            os_name: 'mac'
+            cura_conan_version: ${{ inputs.cura_conan_version }}
+            conan_args: ${{ inputs.conan_args }}
+            conan_config: ${{ inputs.conan_config }}
+            enterprise: ${{ inputs.enterprise }}
+            staging: ${{ inputs.staging }}
+            installer: ${{ inputs.installer }}
+            msi_installer: true
         secrets: inherit

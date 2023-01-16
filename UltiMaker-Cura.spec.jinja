@@ -253,9 +253,9 @@ class UMBUNDLE(BUNDLE):
 
 app = UMBUNDLE(
     coll,
-    name='{{ name }}.app',
+    name='{{ display_name }}.app',
     icon={{ icon }},
-    bundle_identifier={{ osx_bundle_identifier }},
+    bundle_identifier={{ osx_bundle_identifier }} + "_" + '{{ display_name }}'.replace(" ", "_") + "_" {{ short_version }},
     version={{ version }},
     info_plist={
         'CFBundleDisplayName': '{{ display_name }}',
@@ -264,6 +264,7 @@ app = UMBUNDLE(
         'CFBundleExecutable': '{{ name }}',
         'CFBundleInfoDictionaryVersion': '6.0',
         'CFBundlePackageType': 'APPL',
+        'CFBundleVersionString': {{ version }},
         'CFBundleShortVersionString': {{ short_version }},
         'CFBundleDocumentTypes': [{
                 'CFBundleTypeRole': 'Viewer',

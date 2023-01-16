@@ -241,7 +241,7 @@ class CuraConan(ConanFile):
         with open(Path(location, "UltiMaker-Cura.spec"), "w") as f:
             f.write(pyinstaller.render(
                 name = str(self.options.display_name).replace(" ", "-"),
-                display_name = self.options.display_name,
+                display_name = self._app_name,
                 entrypoint = entrypoint_location,
                 datas = datas,
                 binaries = binaries,
