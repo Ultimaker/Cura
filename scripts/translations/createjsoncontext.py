@@ -92,7 +92,7 @@ else:
 
         jsondatadict = json.load(data_file, object_pairs_hook=collections.OrderedDict)
         if "settings" not in jsondatadict:
-            print("No settings item found, nothing to translate")
+            print(f"Nothing to translate in file: {jsondatadict}")
             exit(1)
 
         processSettings(jsonfilename.replace(basedir, ""), jsondatadict["settings"])
