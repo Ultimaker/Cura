@@ -120,7 +120,7 @@ jobs:
 
             -   name: Install MacOS system requirements
                 if:  ${{ runner.os == 'Macos' }}
-                run: brew install autoconf automake ninja create-dmg
+                run: brew install autoconf automake ninja create-dmg # Delete create-dmg when deprecating dmg
 
             -   name: Install Linux system requirements
                 if: ${{ runner.os == 'Linux' }}
