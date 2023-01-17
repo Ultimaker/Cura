@@ -9,14 +9,15 @@
 #
 dir=$1
 dest=$2
+touch $dest
 for f in $(find -L "$dir" -name \*.py)
 do
   echo "Extracting strings from python file: $f"
-  xgettext --from-code=UTF-8 --language=python -ki18n:1 -ki18nc:1c,2 -ki18np:1,2 -ki18ncp:1c,2,3  -o $dest $f
+  xgettext --from-code=UTF-8 --join-existing --sort-by-file --language=python -ki18n:1 -ki18nc:1c,2 -ki18np:1,2 -ki18ncp:1c,2,3  -o $dest $f
 done
 
 for f in $(find -L "$dir" -name \*.qml)
 do
   echo "Extracting strings from qml file: $f"
-  xgettext --from-code=UTF-8 --join-existing --language=javascript -ki18n:1 -ki18nc:1c,2 -ki18np:1,2 -ki18ncp:1c,2,3  -o $dest $f
+  xgettext --from-code=UTF-8 --join-existing --sort-by-file --language=javascript -ki18n:1 -ki18nc:1c,2 -ki18np:1,2 -ki18ncp:1c,2,3  -o $dest $f
 done
