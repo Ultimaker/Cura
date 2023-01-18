@@ -13,7 +13,8 @@ Item
     property bool fullWarning: true  // <- Can you see the warning icon and the text, or is it just the buttons?
 
     height: visible ? UM.Theme.getSize("action_button_icon").height : 0
-    visible: Cura.MachineManager.hasUserSettings || Cura.MachineManager.hasCustomQuality
+    width: visible ? childrenRect.width: 0
+    visible: Cura.MachineManager.hasUserSettings || (fullWarning && Cura.MachineManager.hasCustomQuality)
 
     Rectangle
     {
@@ -46,7 +47,7 @@ Item
         {
             left: warningIcon.right
             verticalCenter: parent.verticalCenter
-            leftMargin: UM.Theme.getSize("thin_margin").width
+            leftMargin: visible ? UM.Theme.getSize("thin_margin").width : 0
         }
 
         wrapMode: Text.WordWrap
@@ -113,7 +114,7 @@ Item
     {
         id: resetToDefaultQualityButton
         height: UM.Theme.getSize("action_button_icon").height
-        width: height
+        width: visible ? height : 0
         iconSource: UM.Theme.getIcon("ArrowReset")
         anchors
         {
@@ -121,10 +122,11 @@ Item
             verticalCenter: parent.verticalCenter
         }
 
+        visible: enabled
         color: enabled ? UM.Theme.getColor("accent_1") : UM.Theme.getColor("disabled")
         hoverColor: UM.Theme.getColor("primary_hover")
 
-        enabled: Cura.MachineManager.hasCustomQuality || Cura.MachineManager.hasUserSettings
+        enabled: (fullWarning && Cura.MachineManager.hasCustomQuality) || Cura.MachineManager.hasUserSettings
         onClicked: Cura.MachineManager.resetToUseDefaultQuality()
 
         UM.ToolTip
@@ -140,7 +142,7 @@ Item
     Item
     {
         id: buttonsSpacer
-        width: UM.Theme.getSize("default_margin").width
+        width: compareAndSaveButton.visible ? UM.Theme.getSize("default_margin").width : 0
         anchors.right: compareAndSaveButton.left
     }
 
@@ -148,7 +150,7 @@ Item
     {
         id: compareAndSaveButton
         height: UM.Theme.getSize("action_button_icon").height
-        width: height
+        width: visible ? height : 0
         iconSource: UM.Theme.getIcon("Save")
         anchors
         {
@@ -156,6 +158,7 @@ Item
             verticalCenter: parent.verticalCenter
         }
 
+        visible: enabled
         color: enabled ? UM.Theme.getColor("accent_1") : UM.Theme.getColor("disabled")
         hoverColor: UM.Theme.getColor("primary_hover")
 

@@ -1,5 +1,6 @@
 from argparse import ArgumentParser
 from os import getcwd
+from os import path
 from pathlib import Path
 from typing import List
 
@@ -40,6 +41,11 @@ def main() -> None:
         settings = yaml.load(f, yaml.FullLoader)
 
     full_body_check = {"Diagnostics": []}
+
+    for file in files:
+        if not path.exists(file):
+            print(f"Can't find the file: {file}")
+            return
 
     if to_fix or to_diagnose:
         for file in files:
@@ -107,8 +113,11 @@ def extractFilePaths(paths: List[Path]) -> List[Path]:
     for path in paths:
         if path.is_dir():
             file_paths.extend(path.rglob("**/*"))
-        else:
+        if not path.match("*"):
             file_paths.append(path)
+        else:
+            file_paths.extend(Path(*path.parts[:-1]).glob(path.parts[-1]))
+            continue
 
     return file_paths
 

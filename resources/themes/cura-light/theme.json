@@ -172,6 +172,26 @@
             "size": 0.9,
             "weight": 700,
             "family": "Noto Sans"
+        },
+        "tiny_emphasis": {
+            "size": 0.7,
+            "weight": 700,
+            "family": "Noto Sans"
+        },
+        "tiny_emphasis_ja_JP": {
+            "size": 0.7,
+            "weight": 700,
+            "family": "Noto Sans"
+        },
+        "tiny_emphasis_zh_CN": {
+            "size": 0.7,
+            "weight": 700,
+            "family": "Noto Sans"
+        },
+        "tiny_emphasis_zh_TW": {
+            "size": 0.7,
+            "weight": 700,
+            "family": "Noto Sans"
         }
     },
 
@@ -354,6 +374,10 @@
         "checkbox_text": "text_default",
         "checkbox_text_disabled": "text_disabled",
 
+        "switch": "background_1",
+        "switch_state_checked": "accent_1",
+        "switch_state_unchecked": "text_disabled",
+
         "radio": "background_1",
         "radio_disabled": "background_2",
         "radio_selected": "accent_1",
@@ -486,9 +510,9 @@
 
         "print_setup_widget": [38.0, 30.0],
         "print_setup_extruder_box": [0.0, 6.0],
-        "print_setup_slider_groove": [0.16, 0.16],
-        "print_setup_slider_handle": [1.0, 1.0],
-        "print_setup_slider_tickmarks": [0.32, 0.32],
+        "slider_widget_groove": [0.16, 0.16],
+        "slider_widget_handle": [1.3, 1.3],
+        "slider_widget_tickmarks": [0.5, 0.5],
         "print_setup_big_item": [28, 2.5],
         "print_setup_icon": [1.2, 1.2],
         "drag_icon": [1.416, 0.25],
@@ -648,6 +672,8 @@
         "preferences_page_list_item": [8.0, 2.0],
 
         "recommended_button_icon": [1.7, 1.7],
+
+        "recommended_section_setting_item": [14.0, 2.0],
 
         "reset_profile_icon": [1, 1]
     }

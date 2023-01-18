@@ -64,7 +64,7 @@ try:
     if CuraAppDisplayName == "":
         CuraAppDisplayName = DEFAULT_CURA_DISPLAY_NAME
     if IsEnterpriseVersion:
-        CuraAppDisplayName = CuraAppDisplayName + " Enterprise"
+        CuraAppDisplayName = CuraAppDisplayName
 
 except ImportError:
     CuraAppDisplayName = DEFAULT_CURA_DISPLAY_NAME
