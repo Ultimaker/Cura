@@ -2528,6 +2528,18 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
+                "material_max_mm3_per_sec":
+                {
+                    "label": "Max Filament Flow Rate",
+                    "description": "When non-zero, sets the maximum allowed filament flow rate (in mm^3/S). The filament flow rate of each printed line is calculated as layer height * line width * print speed. The flow rate limit is enforced by reducing the print speed. Note that these speed reductions are not taken into account when calculating the print time.",
+                    "unit": "mm³/s",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value": "0",
+                    "enabled": true,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "material_adhesion_tendency":
                 {
                     "label": "Adhesion Tendency",
