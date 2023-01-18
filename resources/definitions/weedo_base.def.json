@@ -2,19 +2,12 @@
     "version": 2,
     "name": "WEEDO Base",
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
+        "visible": false,
         "author": "WEEDO",
         "manufacturer": "WEEDO",
-        "visible": false,
         "file_formats": "text/x-gcode",
-        "machine_extruder_trains": {
-            "0": "weedo_base_extruder_0"
-        },
-        "has_materials": true,
-        "has_variants": false,
-        "has_machine_quality": false,
-        "preferred_quality_type": "draft",
-        "preferred_material": "generic_pla_175",
         "exclude_materials": [
             "3D-Fuel_PLA_PRO_Black",
             "3D-Fuel_PLA_SnapSupport",
@@ -164,257 +157,98 @@
             "xyzprinting_tpu",
             "zyyx_pro_flex",
             "zyyx_pro_pla"
-        ]
+        ],
+        "has_machine_quality": false,
+        "has_materials": true,
+        "has_variants": false,
+        "machine_extruder_trains": { "0": "weedo_base_extruder_0" },
+        "preferred_material": "generic_pla_175",
+        "preferred_quality_type": "draft"
     },
-    "overrides": {
-        "machine_name": {
-            "default_value": "WEEDO Base"
-        },
-        "machine_start_gcode": {
-            "default_value": "G28 ;Home\nG92 E0\nG1 F200 E3\nG92 E0"
-        },
-        "machine_end_gcode": {
-            "default_value": "G92 E0\nG1 E-3 F1680 \nG28 Z F400; Get extruder out of way.\nM107 ; Turn off fan\n; Disable all extruder\nM104 T0 S0\nG90 ; Absolute positioning\nG92 E0 ; Reset extruder position\nM84 ; Turn steppers off\n"
-        },
-        "material_diameter": {
-            "default_value": 1.75
-        },
-        "material_bed_temp_wait": {
-            "default_value": false
-        },
-        "material_print_temp_wait": {
-            "default_value": false
-        },
-        "machine_heated_bed": {
-            "default_value": true
-        },
-        "machine_nozzle_tip_outer_diameter": {
-            "default_value": 0.8
-        },
-        "machine_nozzle_heat_up_speed": {
-            "default_value": 1.8
-        },
-        "machine_nozzle_cool_down_speed": {
-            "default_value": 0.67
-        },
-        "machine_min_cool_heat_time_window": {
-            "default_value": 1200.0
-        },
-        "machine_max_feedrate_x": {
-            "default_value": 200
-        },
-        "machine_max_feedrate_y": {
-            "default_value": 130
-        },
-        "machine_max_feedrate_z": {
-            "default_value": 10
-        },
-        "machine_max_feedrate_e": {
-            "default_value": 50
-        },
-        "machine_max_acceleration_x": {
-            "default_value": 3000
-        },
-        "machine_max_acceleration_y": {
-            "default_value": 3000
-        },
-        "machine_max_acceleration_z": {
-            "default_value": 120
-        },
-        "machine_max_acceleration_e": {
-            "default_value": 1600
-        },
-        "machine_acceleration": {
-            "default_value": 3000
-        },
-        "machine_max_jerk_xy": {
-            "default_value": 10.0
-        },
-        "machine_max_jerk_z": {
-            "default_value": 5
-        },
-        "machine_max_jerk_e": {
-            "default_value": 5.1
-        },
-        "infill_line_width": {
-            "value": "line_width * 1.25"
-        },
-        "initial_layer_line_width_factor": {
-            "default_value": 110.0
-        },
-        "wall_0_wipe_dist": {
-            "value": 0.0
-        },
-        "z_seam_corner": {
-            "default_value": "z_seam_corner_any"
-        },
-        "skin_outline_count": {
-            "value": "0"
-        },
-        "infill_sparse_density": {
-            "default_value": 10.0
-        },
-        "infill_pattern": {
-            "value": "'zigzag'"
-        },
-        "infill_before_walls": {
-            "default_value": false
-        },
-        "material_print_temperature": {
-            "maximum_value": "300"
-        },
-        "material_print_temperature_layer_0": {
-            "value": "min(material_print_temperature + 10, 300)"
-        },
-        "material_initial_print_temperature": {
-            "value": "material_print_temperature"
-        },
-        "material_final_print_temperature": {
-            "value": "material_print_temperature"
-        },
-        "material_bed_temperature": {
-            "maximum_value_warning": "96"
-        },
-        "material_flow": {
-            "default_value": 95.0
-        },
-        "material_flow_layer_0": {
-            "default_value": 95.0
-        },
-        "infill_material_flow": {
-            "value": "max(0, material_flow - 5)"
-        },
-        "support_material_flow": {
-            "value": "max(0, material_flow - 5)"
-        },
-        "speed_print": {
-            "default_value": 70.0
-        },
-        "speed_wall": {
-            "value": "max(5, round(speed_print / 2 - 5, 1))"
-        },
-        "speed_wall_0": {
-            "value": "max(5, speed_wall - 5)"
-        },
-        "speed_wall_x": {
-            "value": "speed_wall"
-        },
-        "speed_topbottom": {
-            "value": "round(speed_print * 0.65, 1)"
-        },
-        "speed_support": {
-            "value": "round(speed_print * 0.82, 1)"
-        },
-        "speed_support_interface": {
-            "value": "round(speed_support * 0.689, 1)"
-        },
-        "speed_prime_tower": {
-            "value": "speed_support"
-        },
-        "speed_travel": {
-            "value": 105.0
-        },
-        "speed_layer_0": {
-            "value": 26.0
-        },
-        "speed_travel_layer_0": {
-            "value": 80.0
-        },
-        "skirt_brim_speed": {
-            "value": 26.0
-        },
-        "retraction_amount": {
-            "default_value": 3
-        },
-        "retraction_speed": {
-            "default_value": 28.0
-        },
-        "retraction_min_travel": {
-            "value": 0.8
-        },
-        "retraction_extrusion_window": {
-            "value": 1.0
-        },
-        "material_standby_temperature": {
-            "default_value": 175.0
-        },
-        "switch_extruder_retraction_amount": {
-            "value": 16.5
-        },
-        "switch_extruder_retraction_speeds": {
-            "default_value": 28.0
-        },
-        "retraction_combing": {
-            "value": "off"
-        },
-        "retraction_hop_after_extruder_switch": {
-            "default_value": false
-        },
-        "support_angle": {
-            "default_value": 60.0
-        },
-        "support_connect_zigzags": {
-            "default_value": false
-        },
-        "support_z_distance": {
-            "default_value": 0.18
-        },
-        "support_interface_enable": {
-            "default_value": true
-        },
-        "support_interface_density": {
-            "default_value": 60.0
-        },
-        "support_interface_height": {
-            "default_value": 0.8
-        },
-        "support_interface_pattern": {
-            "default_value": "lines"
-        },
-        "adhesion_type": {
-            "default_value": "raft"
-        },
-        "skirt_line_count": {
-            "default_value": 2
-        },
-        "raft_margin": {
-            "default_value": 8.0
-        },
-        "raft_airgap": {
-            "default_value": 0.19
-        },
-        "layer_0_z_overlap": {
-            "value": 0.09
-        },
-        "raft_surface_thickness": {
-            "value": 0.25
-        },
-        "raft_interface_thickness": {
-            "value": 0.27
-        },
-        "raft_surface_speed": {
-            "value": 40.0
-        },
-        "raft_interface_speed": {
-            "value": 33.0
-        },
-        "raft_base_speed": {
-            "value": 20.0
-        },
-        "raft_surface_fan_speed": {
-            "value": "100.0 if cool_fan_enabled else 0.0"
-        },
-        "prime_tower_size": {
-            "default_value": 15.0
-        },
-        "prime_tower_min_volume": {
-            "default_value": 10.0
-        },
-        "draft_shield_dist": {
-            "default_value": 3
-        },
-        "top_skin_preshrink": {
-            "value": 0.0
-        }
+    "overrides":
+    {
+        "adhesion_type": { "default_value": "raft" },
+        "draft_shield_dist": { "default_value": 3 },
+        "infill_before_walls": { "default_value": false },
+        "infill_line_width": { "value": "line_width * 1.25" },
+        "infill_material_flow": { "value": "max(0, material_flow - 5)" },
+        "infill_pattern": { "value": "'zigzag'" },
+        "infill_sparse_density": { "default_value": 10.0 },
+        "initial_layer_line_width_factor": { "default_value": 110.0 },
+        "layer_0_z_overlap": { "value": 0.09 },
+        "machine_acceleration": { "default_value": 3000 },
+        "machine_end_gcode": { "default_value": "G92 E0\nG1 E-3 F1680 \nG28 Z F400; Get extruder out of way.\nM107 ; Turn off fan\n; Disable all extruder\nM104 T0 S0\nG90 ; Absolute positioning\nG92 E0 ; Reset extruder position\nM84 ; Turn steppers off\n" },
+        "machine_heated_bed": { "default_value": true },
+        "machine_max_acceleration_e": { "default_value": 1600 },
+        "machine_max_acceleration_x": { "default_value": 3000 },
+        "machine_max_acceleration_y": { "default_value": 3000 },
+        "machine_max_acceleration_z": { "default_value": 120 },
+        "machine_max_feedrate_e": { "default_value": 50 },
+        "machine_max_feedrate_x": { "default_value": 200 },
+        "machine_max_feedrate_y": { "default_value": 130 },
+        "machine_max_feedrate_z": { "default_value": 10 },
+        "machine_max_jerk_e": { "default_value": 5.1 },
+        "machine_max_jerk_xy": { "default_value": 10.0 },
+        "machine_max_jerk_z": { "default_value": 5 },
+        "machine_min_cool_heat_time_window": { "default_value": 1200.0 },
+        "machine_name": { "default_value": "WEEDO Base" },
+        "machine_nozzle_cool_down_speed": { "default_value": 0.67 },
+        "machine_nozzle_heat_up_speed": { "default_value": 1.8 },
+        "machine_nozzle_tip_outer_diameter": { "default_value": 0.8 },
+        "machine_start_gcode": { "default_value": "G28 ;Home\nG92 E0\nG1 F200 E3\nG92 E0" },
+        "material_bed_temp_wait": { "default_value": false },
+        "material_bed_temperature": { "maximum_value_warning": "96" },
+        "material_diameter": { "default_value": 1.75 },
+        "material_final_print_temperature": { "value": "material_print_temperature" },
+        "material_flow": { "default_value": 95.0 },
+        "material_flow_layer_0": { "default_value": 95.0 },
+        "material_initial_print_temperature": { "value": "material_print_temperature" },
+        "material_print_temp_wait": { "default_value": false },
+        "material_print_temperature": { "maximum_value": "300" },
+        "material_print_temperature_layer_0": { "value": "min(material_print_temperature + 10, 300)" },
+        "material_standby_temperature": { "default_value": 175.0 },
+        "prime_tower_min_volume": { "default_value": 10.0 },
+        "prime_tower_size": { "default_value": 15.0 },
+        "raft_airgap": { "default_value": 0.19 },
+        "raft_base_speed": { "value": 20.0 },
+        "raft_interface_speed": { "value": 33.0 },
+        "raft_interface_thickness": { "value": 0.27 },
+        "raft_margin": { "default_value": 8.0 },
+        "raft_surface_fan_speed": { "value": "100.0 if cool_fan_enabled else 0.0" },
+        "raft_surface_speed": { "value": 40.0 },
+        "raft_surface_thickness": { "value": 0.25 },
+        "retraction_amount": { "default_value": 3 },
+        "retraction_combing": { "value": "off" },
+        "retraction_extrusion_window": { "value": 1.0 },
+        "retraction_hop_after_extruder_switch": { "default_value": false },
+        "retraction_min_travel": { "value": 0.8 },
+        "retraction_speed": { "default_value": 28.0 },
+        "skin_outline_count": { "value": "0" },
+        "skirt_brim_speed": { "value": 26.0 },
+        "skirt_line_count": { "default_value": 2 },
+        "speed_layer_0": { "value": 26.0 },
+        "speed_prime_tower": { "value": "speed_support" },
+        "speed_print": { "default_value": 70.0 },
+        "speed_support": { "value": "round(speed_print * 0.82, 1)" },
+        "speed_support_interface": { "value": "round(speed_support * 0.689, 1)" },
+        "speed_topbottom": { "value": "round(speed_print * 0.65, 1)" },
+        "speed_travel": { "value": 105.0 },
+        "speed_travel_layer_0": { "value": 80.0 },
+        "speed_wall": { "value": "max(5, round(speed_print / 2 - 5, 1))" },
+        "speed_wall_0": { "value": "max(5, speed_wall - 5)" },
+        "speed_wall_x": { "value": "speed_wall" },
+        "support_angle": { "default_value": 60.0 },
+        "support_connect_zigzags": { "default_value": false },
+        "support_interface_density": { "default_value": 60.0 },
+        "support_interface_enable": { "default_value": true },
+        "support_interface_height": { "default_value": 0.8 },
+        "support_interface_pattern": { "default_value": "lines" },
+        "support_material_flow": { "value": "max(0, material_flow - 5)" },
+        "support_z_distance": { "default_value": 0.18 },
+        "switch_extruder_retraction_amount": { "value": 16.5 },
+        "switch_extruder_retraction_speeds": { "default_value": 28.0 },
+        "top_skin_preshrink": { "value": 0.0 },
+        "wall_0_wipe_dist": { "value": 0.0 },
+        "z_seam_corner": { "default_value": "z_seam_corner_any" }
     }
 }
