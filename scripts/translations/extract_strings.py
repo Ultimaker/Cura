@@ -8,6 +8,7 @@ from os.path import isfile
 
 from pathlib import Path
 
+
 def extract_all_strings(root_path: Path, script_path: Path, translations_root_path: Path, all_strings_pot_path: Path):
     """ Extracts all strings into a pot file with empty translations.
 
@@ -20,14 +21,14 @@ def extract_all_strings(root_path: Path, script_path: Path, translations_root_pa
     @param all_strings_pot_path: The path of the pot file where all strings will be outputted (resources/i8n/cura.pot).
     """
 
-    # # Extract the setting strings from any json file with settings at its root
-    # extract_json_arguments = [
-    #     script_path.joinpath("extract-json"),
-    #     root_path.joinpath("resources", "definitions"),
-    #     translations_root_path
-    # ]
-    # subprocess.run(extract_json_arguments)
-    #
+    # Extract the setting strings from any json file with settings at its root
+    extract_json_arguments = [
+        script_path.joinpath("extract-json"),
+        root_path.joinpath("resources", "definitions"),
+        translations_root_path
+    ]
+    subprocess.run(extract_json_arguments)
+
     # Extract all strings from qml and py files
     extract_qml_py_arguments = [
         script_path.joinpath("extract-all"),
@@ -84,18 +85,6 @@ def update_po_files_all_languages(translation_root_path: Path) -> None:
             pot_file = pot
             po_file = Path(directory, po_filename).absolute()
 
-            # # Initialize the new po file
-            # init_files_arguments = [
-            #     "msginit",
-            #     "--no-wrap",
-            #     "--no-translator",
-            #     "-l", language,
-            #     "-i", pot_file,
-            #     "-o", po_file
-            # ]
-            #
-            # subprocess.run(init_files_arguments)
-
             merge_files_arguments = [
                 "msgmerge",
                 "--no-wrap",
@@ -108,8 +97,6 @@ def update_po_files_all_languages(translation_root_path: Path) -> None:
 
             subprocess.run(merge_files_arguments)
 
-            return
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Extract strings from project into .po files")
@@ -121,15 +108,15 @@ if __name__ == "__main__":
     root_path = Path(args.root_path)  # root of the project
     script_path = Path(args.script_path)  # location of bash scripts
 
-    # Path where all translation file are
+    # All the translation files should be in this path. Each language in a folder corresponding with its lang code (resource/i18n/en_US/)
     translations_root_path = root_path.joinpath("resources", "i18n")
     translations_root_path.mkdir(parents=True, exist_ok=True)  # Make sure we have an output path
 
     all_strings_pot_path = translations_root_path.joinpath(args.translation_file_name)  # pot file containing all strings untranslated
-
-    #  Clear the output file, otherwise deleted strings will still be in the output.
     if os.path.exists(all_strings_pot_path):
-        os.remove(all_strings_pot_path)
+        os.remove(all_strings_pot_path)  # Clear the output file, otherwise deleted strings will still be in the output.
 
     extract_all_strings(root_path, script_path, translations_root_path, all_strings_pot_path)
+
+
     update_po_files_all_languages(translations_root_path)
