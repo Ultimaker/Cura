@@ -327,8 +327,8 @@ class CuraConan(ConanFile):
             if self.settings.os != "Windows" or self.conf.get("tools.microsoft.bash:path", check_type = str):
                 # FIXME: once m4, autoconf, automake are Conan V2 ready use self.win_bash and add gettext as base tool_requirement
                 # Extract all the new strings and update the existing po files
-                extractTool = self.python_requires["translationextractor"].module.ExtractTranslations(self)
-                extractTool.extract(self.source_path, self.source_path.joinpath("resources", "i18n"), "cura.pot")
+                extractTool = self.python_requires["translationextractor"].module.ExtractTranslations(self, self.source_path, self.source_path.joinpath("resources", "i18n"), "cura.pot")
+                extractTool.generate()
 
     def imports(self):
         self.copy("CuraEngine.exe", root_package = "curaengine", src = "@bindirs", dst = "", keep_path = False)
