@@ -35,14 +35,10 @@
             "maximum_value_warning": "295",
             "description": "The temperature used for printing. Set at 0 to pre-heat the printer manually.",
             "minimum_value": "0",
-            "enabled": true,
-            "unit": "\u00b0C"
+            "enabled": true
         },
         "machine_nozzle_size": {
             "default_value": 0.5
-        },
-        "material_diameter": {
-            "default_value": 2.85
         }
     },
     "settings": {
