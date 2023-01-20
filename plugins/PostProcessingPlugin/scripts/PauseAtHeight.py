@@ -26,7 +26,7 @@ class PauseAtHeight(Script):
                     "description": "Whether to pause at a certain height or at a certain layer.",
                     "type": "enum",
                     "options": {"height": "Height", "layer_no": "Layer Number"},
-                    "default_value": "height"
+                    "default_value": "layer_no"
                 },
                 "pause_height":
                 {
@@ -54,20 +54,37 @@ class PauseAtHeight(Script):
                     "label": "Method",
                     "description": "The method or gcode command to use for pausing.",
                     "type": "enum",
-                    "options": {"marlin": "Marlin (M0)", "griffin": "Griffin (M0, firmware retract)", "bq": "BQ (M25)", "reprap": "RepRap (M226)", "repetier": "Repetier (@pause)"},
+                    "options": {"marlin": "Marlin (M0)", "griffin": "Griffin (M0, firmware retract)", "bq": "BQ (M25)", "reprap": "RepRap (M226)", "repetier": "Repetier/OctoPrint (@pause)"},
                     "default_value": "marlin",
                     "value": "\\\"griffin\\\" if machine_gcode_flavor==\\\"Griffin\\\" else \\\"reprap\\\" if machine_gcode_flavor==\\\"RepRap (RepRap)\\\" else \\\"repetier\\\" if machine_gcode_flavor==\\\"Repetier\\\" else \\\"bq\\\" if \\\"BQ\\\" in machine_name or \\\"Flying Bear Ghost 4S\\\" in machine_name  else \\\"marlin\\\""
-                },                    
+                },
+                "hold_steppers_on":
+                {
+                    "label": "Keep motors engaged",
+                    "description": "Keep the steppers engaged to allow change of filament without moving the head. Applying too much force will move the head/bed anyway",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": "pause_method != \\\"griffin\\\""
+                },
                 "disarm_timeout":
                 {
                     "label": "Disarm timeout",
-                    "description": "After this time steppers are going to disarm (meaning that they can easily lose their positions). Set this to 0 if you don't want to set any duration.",
+                    "description": "After this time steppers are going to disarm (meaning that they can easily lose their positions). Set this to 0 if you don't want to set any duration and disarm immediately.",
                     "type": "int",
                     "value": "0",
                     "minimum_value": "0",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "1800",
-                    "unit": "s"
+                    "unit": "s",
+                    "enabled": "not hold_steppers_on"
+                },
+                "head_park_enabled":
+                {
+                    "label": "Park Print",
+                    "description": "Instruct the head to move to a safe location when pausing. Leave this unchecked if your printer handles parking for you.",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": "pause_method != \\\"griffin\\\""
                 },
                 "head_park_x":
                 {
@@ -76,7 +93,7 @@ class PauseAtHeight(Script):
                     "unit": "mm",
                     "type": "float",
                     "default_value": 190,
-                    "enabled": "pause_method != \\\"griffin\\\""
+                    "enabled": "head_park_enabled and pause_method != \\\"griffin\\\""
                 },
                 "head_park_y":
                 {
@@ -85,7 +102,7 @@ class PauseAtHeight(Script):
                     "unit": "mm",
                     "type": "float",
                     "default_value": 190,
-                    "enabled": "pause_method != \\\"griffin\\\""
+                    "enabled": "head_park_enabled and pause_method != \\\"griffin\\\""
                 },
                 "head_move_z":
                 {
@@ -94,7 +111,7 @@ class PauseAtHeight(Script):
                     "unit": "mm",
                     "type": "float",
                     "default_value": 15.0,
-                    "enabled": "pause_method == \\\"repetier\\\""
+                    "enabled": "head_park_enabled and pause_method == \\\"repetier\\\""
                 },
                 "retraction_amount":
                 {
@@ -184,6 +201,22 @@ class PauseAtHeight(Script):
                     "default_value": "RepRap (Marlin/Sprinter)",
                     "enabled": false
                 },
+                "beep_at_pause":
+                {
+                    "label": "Beep at pause",
+                    "description": "Make a beep when pausing",
+                    "type": "bool",
+                    "default_value": true
+                },                
+                "beep_length":
+                {
+                    "label": "Beep length",
+                    "description": "How much should the beep last",
+                    "type": "int",
+                    "default_value": "1000",
+                    "unit": "ms",
+                    "enabled": "beep_at_pause"
+                },
                 "custom_gcode_before_pause":
                 {
                     "label": "G-code Before Pause",
@@ -234,11 +267,13 @@ class PauseAtHeight(Script):
         pause_at = self.getSettingValueByKey("pause_at")
         pause_height = self.getSettingValueByKey("pause_height")
         pause_layer = self.getSettingValueByKey("pause_layer")
+        hold_steppers_on = self.getSettingValueByKey("hold_steppers_on")
         disarm_timeout = self.getSettingValueByKey("disarm_timeout")
         retraction_amount = self.getSettingValueByKey("retraction_amount")
         retraction_speed = self.getSettingValueByKey("retraction_speed")
         extrude_amount = self.getSettingValueByKey("extrude_amount")
         extrude_speed = self.getSettingValueByKey("extrude_speed")
+        park_enabled = self.getSettingValueByKey("head_park_enabled")
         park_x = self.getSettingValueByKey("head_park_x")
         park_y = self.getSettingValueByKey("head_park_y")
         move_z = self.getSettingValueByKey("head_move_z")
@@ -251,6 +286,8 @@ class PauseAtHeight(Script):
         display_text = self.getSettingValueByKey("display_text")
         gcode_before = self.getSettingValueByKey("custom_gcode_before_pause")
         gcode_after = self.getSettingValueByKey("custom_gcode_after_pause")
+        beep_at_pause = self.getSettingValueByKey("beep_at_pause")
+        beep_length = self.getSettingValueByKey("beep_length")
 
         pause_method = self.getSettingValueByKey("pause_method")
         pause_command = {
@@ -321,7 +358,7 @@ class PauseAtHeight(Script):
 
                     current_height = current_z - layer_0_z
                     if current_height < pause_height:
-                        continue  # Scan the enitre layer, z-changes are not always on the same/first line.
+                        continue  # Scan the entire layer, z-changes are not always on the same/first line.
 
                 # Pause at layer
                 else:
@@ -389,11 +426,12 @@ class PauseAtHeight(Script):
                     if retraction_amount != 0:
                         prepend_gcode += self.putValue(G = 1, E = -retraction_amount, F = 6000) + "\n"
 
-                    #Move the head away
-                    prepend_gcode += self.putValue(G = 1, Z = current_z + 1, F = 300) + " ; move up a millimeter to get out of the way\n"
-                    prepend_gcode += self.putValue(G = 1, X = park_x, Y = park_y, F = 9000) + "\n"
-                    if current_z < move_z:
-                        prepend_gcode += self.putValue(G = 1, Z = current_z + move_z, F = 300) + "\n"
+                    if park_enabled:
+                        #Move the head away
+                        prepend_gcode += self.putValue(G = 1, Z = current_z + 1, F = 300) + " ; move up a millimeter to get out of the way\n"
+                        prepend_gcode += self.putValue(G = 1, X = park_x, Y = park_y, F = 9000) + "\n"
+                        if current_z < move_z:
+                            prepend_gcode += self.putValue(G = 1, Z = current_z + move_z, F = 300) + "\n"
 
                     #Disable the E steppers
                     prepend_gcode += self.putValue(M = 84, E = 0) + "\n"
@@ -409,14 +447,15 @@ class PauseAtHeight(Script):
                         else:
                             prepend_gcode += self.putValue(G = 1, E = -retraction_amount, F = retraction_speed * 60) + "\n"
 
-                    # Move the head away
-                    prepend_gcode += self.putValue(G = 1, Z = current_z + 1, F = 300) + " ; move up a millimeter to get out of the way\n"
+                    if park_enabled:
+                        # Move the head away
+                        prepend_gcode += self.putValue(G = 1, Z = current_z + 1, F = 300) + " ; move up a millimeter to get out of the way\n"
 
-                    # This line should be ok
-                    prepend_gcode += self.putValue(G = 1, X = park_x, Y = park_y, F = 9000) + "\n"
+                        # This line should be ok
+                        prepend_gcode += self.putValue(G = 1, X = park_x, Y = park_y, F = 9000) + "\n"
 
-                    if current_z < 15:
-                        prepend_gcode += self.putValue(G = 1, Z = 15, F = 300) + " ; too close to bed--move to at least 15mm\n"
+                        if current_z < 15:
+                            prepend_gcode += self.putValue(G = 1, Z = 15, F = 300) + " ; too close to bed--move to at least 15mm\n"
 
                     if control_temperatures:
                         # Set extruder standby temperature
@@ -426,19 +465,26 @@ class PauseAtHeight(Script):
                     prepend_gcode += "M117 " + display_text + "\n"
 
                 # Set the disarm timeout
-                if disarm_timeout > 0:
-                    prepend_gcode += self.putValue(M = 18, S = disarm_timeout) + " ; Set the disarm timeout\n"
+                if hold_steppers_on:
+                    prepend_gcode += self.putValue(M = 84, S = 3600) + " ; Keep steppers engaged for 1h\n"
+                elif disarm_timeout > 0:
+                    prepend_gcode += self.putValue(M = 84, S = disarm_timeout) + " ; Set the disarm timeout\n"
+
+                # Beep at pause
+                if beep_at_pause:
+                    prepend_gcode += self.putValue(M = 300, S = 440, P = beep_length) + " ; Beep\n"
+
 
                 # Set a custom GCODE section before pause
                 if gcode_before:
-                    prepend_gcode += gcode_before + "\n"
+                    prepend_gcode += gcode_before.replace(";","\n") + "\n"
 
                 # Wait till the user continues printing
                 prepend_gcode += pause_command + " ; Do the actual pause\n"
 
-                # Set a custom GCODE section before pause
+                # Set a custom GCODE section after pause
                 if gcode_after:
-                    prepend_gcode += gcode_after + "\n"
+                    prepend_gcode += gcode_after.replace(";","\n") + "\n"
 
                 if pause_method == "repetier":
                     #Push the filament back,
@@ -447,7 +493,7 @@ class PauseAtHeight(Script):
 
                     # Optionally extrude material
                     if extrude_amount != 0:
-                        prepend_gcode += self.putValue(G = 1, E = extrude_amount, F = 200) + "\n"
+                        prepend_gcode += self.putValue(G = 1, E = extrude_amount, F = 200) + "; Extra extrude after the unpause\n"
                         prepend_gcode += self.putValue("@info wait for cleaning nozzle from previous filament") + "\n"
                         prepend_gcode += self.putValue("@pause remove the waste filament from parking area and press continue printing") + "\n"
 
@@ -456,8 +502,10 @@ class PauseAtHeight(Script):
                         prepend_gcode += self.putValue(G = 1, E = -retraction_amount, F = 6000) + "\n"
 
                     #Move the head back
-                    prepend_gcode += self.putValue(G = 1, Z = current_z, F = 300) + "\n"
-                    prepend_gcode += self.putValue(G = 1, X = x, Y = y, F = 9000) + "\n"
+                    if park_enabled:
+                        prepend_gcode += self.putValue(G = 1, X = x, Y = y, F = 9000) + "\n"
+                        prepend_gcode += self.putValue(G = 1, Z = current_z, F = 300) + "\n"
+
                     if retraction_amount != 0:
                         prepend_gcode += self.putValue(G = 1, E = retraction_amount, F = 6000) + "\n"
 
@@ -466,7 +514,15 @@ class PauseAtHeight(Script):
                     else:
                         Logger.log("w", "No previous feedrate found in gcode, feedrate for next layer(s) might be incorrect")
 
-                    prepend_gcode += self.putValue(M = 82) + "\n"
+                    extrusion_mode_string = "absolute"
+                    extrusion_mode_numeric = 82
+
+                    relative_extrusion = Application.getInstance().getGlobalContainerStack().getProperty("relative_extrusion", "value")
+                    if relative_extrusion:
+                        extrusion_mode_string = "relative"
+                        extrusion_mode_numeric = 83
+
+                    prepend_gcode += self.putValue(M = extrusion_mode_numeric) + " ; switch back to " + extrusion_mode_string + " E values\n"
 
                     # reset extrude value to pre pause value
                     prepend_gcode += self.putValue(G = 92, E = current_e) + "\n"
@@ -476,24 +532,25 @@ class PauseAtHeight(Script):
                         # Set extruder resume temperature
                         prepend_gcode += self.putValue(M = 109, S = int(target_temperature.get(current_t, 0))) + " ; resume temperature\n"
 
-                    # Push the filament back,
-                    if retraction_amount != 0:
-                        prepend_gcode += self.putValue(G = 1, E = retraction_amount, F = retraction_speed * 60) + "\n"
+                    if extrude_amount != 0:  # Need to prime after the pause.
+                        # Push the filament back.
+                        if retraction_amount != 0:
+                            prepend_gcode += self.putValue(G = 1, E = retraction_amount, F = retraction_speed * 60) + "\n"
 
-                    # Optionally extrude material
-                    if extrude_amount != 0:
-                        prepend_gcode += self.putValue(G = 1, E = extrude_amount, F = extrude_speed * 60) + "\n"
+                        # Prime the material.
+                        prepend_gcode += self.putValue(G = 1, E = extrude_amount, F = extrude_speed * 60) + "; Extra extrude after the unpause\n"
 
-                    # and retract again, the properly primes the nozzle
-                    # when changing filament.
-                    if retraction_amount != 0:
-                        prepend_gcode += self.putValue(G = 1, E = -retraction_amount, F = retraction_speed * 60) + "\n"
+                        # And retract again to make the movements back to the starting position.
+                        if retraction_amount != 0:
+                            prepend_gcode += self.putValue(G = 1, E = -retraction_amount, F = retraction_speed * 60) + "\n"
 
                     # Move the head back
-                    if current_z < 15:
-                        prepend_gcode += self.putValue(G = 1, Z = current_z + 1, F = 300) + "\n"
-                    prepend_gcode += self.putValue(G = 1, X = x, Y = y, F = 9000) + "\n"
-                    prepend_gcode += self.putValue(G = 1, Z = current_z, F = 300) + " ; move back down to resume height\n"
+                    if park_enabled:
+                        if current_z < 15:
+                            prepend_gcode += self.putValue(G = 1, Z = current_z, F = 300) + "\n"
+                        prepend_gcode += self.putValue(G = 1, X = x, Y = y, F = 9000) + "\n"
+                        prepend_gcode += self.putValue(G = 1, Z = current_z, F = 300) + " ; move back down to resume height\n"
+
                     if retraction_amount != 0:
                         if firmware_retract: #Can't set the distance directly to what the user wants. We have to choose ourselves.
                             retraction_count = 1 if control_temperatures else 3 #Retract more if we don't control the temperature.

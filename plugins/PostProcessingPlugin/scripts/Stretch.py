@@ -195,7 +195,7 @@ class Stretcher:
         i.e. it is a travel move
         """
         if i_pos == 0:
-            return True # Begining a layer always breaks filament (for simplicity)
+            return True # Beginning a layer always breaks filament (for simplicity)
         step = layer_steps[i_pos]
         prev_step = layer_steps[i_pos - 1]
         if step.step_e != prev_step.step_e:
@@ -432,7 +432,7 @@ class Stretcher:
         """
         dist_palp = self.line_width # Palpation distance to seek for a wall
         mrot = np.array([[0, -1], [1, 0]]) # Rotation matrix for a quarter turn
-        for i in range(len(orig_seq)):
+        for i, _ in enumerate(orig_seq):
             ibeg = i # Index of the first point of the segment
             iend = i + 1 # Index of the last point of the segment
             if iend == len(orig_seq):

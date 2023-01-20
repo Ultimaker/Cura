@@ -2,9 +2,10 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import Type, TYPE_CHECKING, Optional, List
 
+from io import BlockingIOError
 import keyring
 from keyring.backend import KeyringBackend
-from keyring.errors import NoKeyringError, PasswordSetError, KeyringLocked
+from keyring.errors import NoKeyringError, PasswordSetError, KeyringLocked, KeyringError
 
 from UM.Logger import Logger
 
@@ -14,13 +15,18 @@ if TYPE_CHECKING:
 # Need to do some extra workarounds on windows:
 import sys
 from UM.Platform import Platform
-if Platform.isWindows() and hasattr(sys, "frozen"):
-    import win32timezone
+if Platform.isWindows():
+    if hasattr(sys, "frozen"):
+        import win32timezone
     from keyring.backends.Windows import WinVaultKeyring
     keyring.set_keyring(WinVaultKeyring())
-if Platform.isOSX() and hasattr(sys, "frozen"):
+if Platform.isOSX():
     from keyring.backends.macOS import Keyring
     keyring.set_keyring(Keyring())
+if Platform.isLinux():
+    # We do not support the keyring on Linux, so make sure no Keyring backend is loaded, even if there is a system one.
+    from keyring.backends.fail import Keyring as NoKeyringBackend
+    keyring.set_keyring(NoKeyringBackend())
 
 # Even if errors happen, we don't want this stored locally:
 DONT_EVER_STORE_LOCALLY: List[str] = ["refresh_token"]
@@ -39,9 +45,17 @@ class KeyringAttribute:
                 self._store_secure = False
                 Logger.logException("w", "No keyring backend present")
                 return getattr(instance, self._name)
-            except KeyringLocked:
+            except (KeyringLocked, BlockingIOError):
                 self._store_secure = False
                 Logger.log("i", "Access to the keyring was denied.")
+                return getattr(instance, self._name)
+            except UnicodeDecodeError:
+                self._store_secure = False
+                Logger.log("w", "The password retrieved from the keyring cannot be used because it contains characters that cannot be decoded.")
+                return getattr(instance, self._name)
+            except KeyringError:
+                self._store_secure = False
+                Logger.logException("w", "Unknown keyring error.")
                 return getattr(instance, self._name)
         else:
             return getattr(instance, self._name)

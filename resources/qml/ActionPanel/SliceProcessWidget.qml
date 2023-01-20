@@ -1,12 +1,11 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
-import QtQuick.Controls 2.1
+import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.3
-import QtQuick.Controls 1.4 as Controls1
 
-import UM 1.4 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 
@@ -46,16 +45,13 @@ Column
         }
     }
 
-    Label
+    UM.Label
     {
         id: autoSlicingLabel
         width: parent.width
         visible: progressBar.visible
 
         text: catalog.i18nc("@label:PrintjobStatus", "Slicing...")
-        color: UM.Theme.getColor("text")
-        font: UM.Theme.getFont("default")
-        renderType: Text.NativeRendering
     }
     Item
     {
@@ -72,7 +68,7 @@ Column
             height: width
             status: UM.StatusIcon.Status.WARNING
         }
-        Label
+        UM.Label
         {
             id: label
             anchors.left: warningIcon.right
@@ -80,9 +76,6 @@ Column
             anchors.verticalCenter: parent.verticalCenter
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             text: catalog.i18nc("@label:PrintjobStatus", "Unable to slice")
-            color: UM.Theme.getColor("text")
-            font: UM.Theme.getFont("default")
-            renderType: Text.NativeRendering
             wrapMode: Text.WordWrap
         }
     }
@@ -120,9 +113,12 @@ Column
 
             text: widget.waitingForSliceToStart ? catalog.i18nc("@button", "Processing"): catalog.i18nc("@button", "Slice")
             tooltip: catalog.i18nc("@label", "Start the slicing process")
+            hoverEnabled: !widget.waitingForSliceToStart
             enabled: widget.backendState != UM.Backend.Error && !widget.waitingForSliceToStart
             visible: widget.backendState == UM.Backend.NotStarted || widget.backendState == UM.Backend.Error
-            onClicked: sliceOrStopSlicing()
+            onClicked: {
+                sliceOrStopSlicing()
+            }
         }
 
         Cura.SecondaryButton
@@ -136,7 +132,9 @@ Column
             text: catalog.i18nc("@button", "Cancel")
             enabled: sliceButton.enabled
             visible: !sliceButton.visible
-            onClicked: sliceOrStopSlicing()
+            onClicked: {
+                sliceOrStopSlicing()
+            }
         }
     }
 
@@ -165,7 +163,7 @@ Column
     }
 
     // Shortcut for "slice/stop"
-    Controls1.Action
+    Action
     {
         shortcut: "Ctrl+P"
         onTriggered:

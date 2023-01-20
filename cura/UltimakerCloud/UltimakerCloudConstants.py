@@ -13,6 +13,9 @@ DEFAULT_DIGITAL_FACTORY_URL = "https://digitalfactory.ultimaker.com"  # type: st
 META_UM_LINKED_TO_ACCOUNT = "um_linked_to_account"
 """(bool) Whether a cloud printer is linked to an Ultimaker account"""
 
+META_CAPABILITIES = "capabilities"
+"""(list[str]) a list of capabilities this printer supports"""
+
 try:
     from cura.CuraVersion import CuraCloudAPIRoot  # type: ignore
     if CuraCloudAPIRoot == "":

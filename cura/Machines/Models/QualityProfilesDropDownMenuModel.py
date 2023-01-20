@@ -1,7 +1,7 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import Qt, QTimer
+from PyQt6.QtCore import Qt, QTimer
 
 import cura.CuraApplication  # Imported this way to prevent circular dependencies.
 from UM.Logger import Logger
@@ -13,14 +13,14 @@ from cura.Machines.Models.MachineModelUtils import fetchLayerHeight
 class QualityProfilesDropDownMenuModel(ListModel):
     """QML Model for all built-in quality profiles. This model is used for the drop-down quality menu."""
 
-    NameRole = Qt.UserRole + 1
-    QualityTypeRole = Qt.UserRole + 2
-    LayerHeightRole = Qt.UserRole + 3
-    LayerHeightUnitRole = Qt.UserRole + 4
-    AvailableRole = Qt.UserRole + 5
-    QualityGroupRole = Qt.UserRole + 6
-    QualityChangesGroupRole = Qt.UserRole + 7
-    IsExperimentalRole = Qt.UserRole + 8
+    NameRole = Qt.ItemDataRole.UserRole + 1
+    QualityTypeRole = Qt.ItemDataRole.UserRole + 2
+    LayerHeightRole = Qt.ItemDataRole.UserRole + 3
+    LayerHeightUnitRole = Qt.ItemDataRole.UserRole + 4
+    AvailableRole = Qt.ItemDataRole.UserRole + 5
+    QualityGroupRole = Qt.ItemDataRole.UserRole + 6
+    QualityChangesGroupRole = Qt.ItemDataRole.UserRole + 7
+    IsExperimentalRole = Qt.ItemDataRole.UserRole + 8
 
     def __init__(self, parent = None):
         super().__init__(parent)
@@ -41,10 +41,6 @@ class QualityProfilesDropDownMenuModel(ListModel):
         machine_manager.activeQualityGroupChanged.connect(self._onChange)
         machine_manager.activeMaterialChanged.connect(self._onChange)
         machine_manager.activeVariantChanged.connect(self._onChange)
-        machine_manager.extruderChanged.connect(self._onChange)
-
-        extruder_manager = application.getExtruderManager()
-        extruder_manager.extrudersChanged.connect(self._onChange)
 
         self._layer_height_unit = ""  # This is cached
 

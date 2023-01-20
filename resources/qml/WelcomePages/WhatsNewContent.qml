@@ -5,7 +5,7 @@ import QtQuick 2.10
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
 
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.1 as Cura
 
 
@@ -19,7 +19,7 @@ Item
 
     UM.I18nCatalog { id: catalog; name: "cura" }
 
-    Label
+    UM.Label
     {
         id: titleLabel
         anchors.top: parent.top
@@ -28,7 +28,6 @@ Item
         text: catalog.i18nc("@label", "What's New")
         color: UM.Theme.getColor("primary_button")
         font: UM.Theme.getFont("huge")
-        renderType: Text.NativeRendering
     }
 
     Rectangle
@@ -105,13 +104,11 @@ Item
                             right: subpageImage.right
                         }
 
-                        ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-
                         back_color: UM.Theme.getColor("viewport_overlay")
                         do_borders: false
 
                         textArea.wrapMode: TextEdit.Wrap
-                        textArea.text: manager.getSubpageText(index)
+                        textArea.text: "<style>a:link { color: " + UM.Theme.getColor("text_link") + "; text-decoration: underline; }</style>" + manager.getSubpageText(index)
                         textArea.textFormat: Text.RichText
                         textArea.readOnly: true
                         textArea.font: UM.Theme.getFont("default")

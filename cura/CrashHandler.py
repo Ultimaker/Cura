@@ -1,5 +1,5 @@
-# Copyright (c) 2019 Ultimaker B.V.
-# Cura is released under the terms of the LGPLv3 or higher.
+#  Copyright (c) 2022 UltiMaker
+#  Cura is released under the terms of the LGPLv3 or higher.
 
 import platform
 import traceback
@@ -15,14 +15,14 @@ from typing import cast, Any
 try:
     from sentry_sdk.hub import Hub
     from sentry_sdk.utils import event_from_exception
-    from sentry_sdk import configure_scope
+    from sentry_sdk import configure_scope, add_breadcrumb
     with_sentry_sdk = True
 except ImportError:
     with_sentry_sdk = False
 
-from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, QUrl
-from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QTextEdit, QGroupBox, QCheckBox, QPushButton
-from PyQt5.QtGui import QDesktopServices
+from PyQt6.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, QUrl
+from PyQt6.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QTextEdit, QGroupBox, QCheckBox, QPushButton
+from PyQt6.QtGui import QDesktopServices
 
 from UM.Application import Application
 from UM.Logger import Logger
@@ -110,7 +110,7 @@ class CrashHandler:
         layout = QVBoxLayout(dialog)
 
         label = QLabel()
-        label.setText(catalog.i18nc("@label crash message", """<p><b>Oops, Ultimaker Cura has encountered something that doesn't seem right.</p></b>
+        label.setText(catalog.i18nc("@label crash message", """<p><b>Oops, UltiMaker Cura has encountered something that doesn't seem right.</p></b>
                     <p>We encountered an unrecoverable error during start up. It was possibly caused by some incorrect configuration files. We suggest to backup and reset your configuration.</p>
                     <p>Backups can be found in the configuration folder.</p>
                     <p>Please send us this Crash Report to fix the problem.</p>
@@ -119,7 +119,7 @@ class CrashHandler:
         layout.addWidget(label)
 
         # "send report" check box and show details
-        self._send_report_checkbox = QCheckBox(catalog.i18nc("@action:button", "Send crash report to Ultimaker"), dialog)
+        self._send_report_checkbox = QCheckBox(catalog.i18nc("@action:button", "Send crash report to UltiMaker"), dialog)
         self._send_report_checkbox.setChecked(True)
 
         show_details_button = QPushButton(catalog.i18nc("@action:button", "Show detailed crash report"), dialog)
@@ -136,8 +136,8 @@ class CrashHandler:
 
         # "backup and start clean" and "close" buttons
         buttons = QDialogButtonBox()
-        buttons.addButton(QDialogButtonBox.Close)
-        buttons.addButton(catalog.i18nc("@action:button", "Backup and Reset Configuration"), QDialogButtonBox.AcceptRole)
+        buttons.addButton(QDialogButtonBox.StandardButton.Close)
+        buttons.addButton(catalog.i18nc("@action:button", "Backup and Reset Configuration"), QDialogButtonBox.ButtonRole.AcceptRole)
         buttons.rejected.connect(self._closeEarlyCrashDialog)
         buttons.accepted.connect(self._backupAndStartClean)
 
@@ -161,7 +161,7 @@ class CrashHandler:
         QDesktopServices.openUrl(QUrl.fromLocalFile( path ))
 
     def _showDetailedReport(self):
-        self.dialog.exec_()
+        self.dialog.exec()
 
     def _createDialog(self):
         """Creates a modal dialog."""
@@ -261,7 +261,7 @@ class CrashHandler:
         opengl_instance = OpenGL.getInstance()
         if not opengl_instance:
             self.data["opengl"] = {"version": "n/a", "vendor": "n/a", "type": "n/a"}
-            return catalog.i18nc("@label", "Not yet initialized<br/>")
+            return catalog.i18nc("@label", "Not yet initialized") + "<br />"
 
         info = "<ul>"
         info += catalog.i18nc("@label OpenGL version", "<li>OpenGL Version: {version}</li>").format(version = opengl_instance.getOpenGLVersion())
@@ -291,6 +291,7 @@ class CrashHandler:
         if with_sentry_sdk:
             with configure_scope() as scope:
                 scope.set_tag("opengl_version", opengl_instance.getOpenGLVersion())
+                scope.set_tag("opengl_version_short", opengl_instance.getOpenGLVersionShort())
                 scope.set_tag("gpu_vendor", opengl_instance.getGPUVendorName())
                 scope.set_tag("gpu_type", opengl_instance.getGPUType())
                 scope.set_tag("active_machine", active_machine_definition_id)
@@ -409,12 +410,12 @@ class CrashHandler:
 
     def _buttonsWidget(self):
         buttons = QDialogButtonBox()
-        buttons.addButton(QDialogButtonBox.Close)
+        buttons.addButton(QDialogButtonBox.StandardButton.Close)
         # Like above, this will be served as a separate detailed report dialog if the application has not yet been
         # fully loaded. In this case, "send report" will be a check box in the early crash dialog, so there is no
         # need for this extra button.
         if self.has_started:
-            buttons.addButton(catalog.i18nc("@action:button", "Send report"), QDialogButtonBox.AcceptRole)
+            buttons.addButton(catalog.i18nc("@action:button", "Send report"), QDialogButtonBox.ButtonRole.AcceptRole)
             buttons.accepted.connect(self._sendCrashReport)
         buttons.rejected.connect(self.dialog.close)
 
@@ -424,6 +425,13 @@ class CrashHandler:
         if with_sentry_sdk:
             try:
                 hub = Hub.current
+                if not Logger.getLoggers():
+                    # No loggers have been loaded yet, so we don't have any breadcrumbs :(
+                    # So add them manually so we at least have some info...
+                    add_breadcrumb(level = "info", message = "SentryLogging was not initialised yet")
+                    for log_type, line in Logger.getUnloggedLines():
+                        add_breadcrumb(message=line)
+
                 event, hint = event_from_exception((self.exception_type, self.value, self.traceback))
                 hub.capture_event(event, hint=hint)
                 hub.flush()
@@ -449,5 +457,5 @@ class CrashHandler:
     def _show(self):
         # When the exception is in the skip_exception_types list, the dialog is not created, so we don't need to show it
         if self.dialog:
-            self.dialog.exec_()
+            self.dialog.exec()
         os._exit(1)

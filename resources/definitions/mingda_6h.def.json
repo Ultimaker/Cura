@@ -1,0 +1,18 @@
+{
+    "version": 2,
+    "name": "Mingda 6H",
+    "inherits": "mingda_base",
+    "metadata":
+    {
+        "visible": true,
+        "quality_definition": "mingda_base"
+    },
+    "overrides":
+    {
+        "gantry_height": { "value": 25 },
+        "machine_depth": { "default_value": 300 },
+        "machine_height": { "default_value": 500 },
+        "machine_name": { "default_value": "Mingda 6H" },
+        "machine_width": { "default_value": 400 }
+    }
+}

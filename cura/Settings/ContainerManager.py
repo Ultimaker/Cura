@@ -6,8 +6,8 @@ import urllib.parse
 import uuid
 from typing import Any, cast, Dict, List, TYPE_CHECKING, Union
 
-from PyQt5.QtCore import QObject, QUrl
-from PyQt5.QtWidgets import QMessageBox
+from PyQt6.QtCore import QObject, QUrl
+from PyQt6.QtWidgets import QMessageBox
 
 from UM.i18n import i18nCatalog
 from UM.FlameProfiler import pyqtSlot
@@ -23,6 +23,8 @@ from UM.Settings.InstanceContainer import InstanceContainer
 
 import cura.CuraApplication
 from cura.Machines.ContainerTree import ContainerTree
+from cura.Settings.ExtruderStack import ExtruderStack
+from cura.Settings.GlobalStack import GlobalStack
 
 if TYPE_CHECKING:
     from cura.CuraApplication import CuraApplication
@@ -45,11 +47,11 @@ class ContainerManager(QObject):
     def __init__(self, application: "CuraApplication") -> None:
         if ContainerManager.__instance is not None:
             raise RuntimeError("Try to create singleton '%s' more than once" % self.__class__.__name__)
-        ContainerManager.__instance = self
         try:
             super().__init__(parent = application)
         except TypeError:
             super().__init__()
+        ContainerManager.__instance = self
 
         self._container_name_filters = {}  # type: Dict[str, Dict[str, Any]]
 
@@ -112,7 +114,7 @@ class ContainerManager(QObject):
             for _ in range(len(entries)):
                 item = item.get(entries.pop(0), {})
 
-            if item[entry_name] != entry_value:
+            if entry_name not in item or item[entry_name] != entry_value:
                 sub_item_changed = True
             item[entry_name] = entry_value
 
@@ -204,7 +206,7 @@ class ContainerManager(QObject):
             if os.path.exists(file_url):
                 result = QMessageBox.question(None, catalog.i18nc("@title:window", "File Already Exists"),
                                               catalog.i18nc("@label Don't translate the XML tag <filename>!", "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?").format(file_url))
-                if result == QMessageBox.No:
+                if result == QMessageBox.StandardButton.No:
                     return {"status": "cancelled", "message": "User cancelled"}
 
         try:
@@ -319,7 +321,7 @@ class ContainerManager(QObject):
                 stack.qualityChanges = quality_changes
 
             if not quality_changes or container_registry.isReadOnly(quality_changes.getId()):
-                Logger.log("e", "Could not update quality of a nonexistant or read only quality profile in stack %s", stack.getId())
+                Logger.log("e", "Could not update quality of a nonexistent or read only quality profile in stack %s", stack.getId())
                 continue
 
             self._performMerge(quality_changes, stack.getTop())
@@ -408,7 +410,7 @@ class ContainerManager(QObject):
         container_registry = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry()
         for plugin_id, container_type in container_registry.getContainerTypes():
             # Ignore default container types since those are not plugins
-            if container_type in (InstanceContainer, ContainerStack, DefinitionContainer):
+            if container_type in (InstanceContainer, ContainerStack, DefinitionContainer, GlobalStack, ExtruderStack):
                 continue
 
             serialize_type = ""

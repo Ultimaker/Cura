@@ -52,7 +52,6 @@ class LocalClusterOutputDeviceManager:
 
     def start(self) -> None:
         """Start the network discovery."""
-
         self._zero_conf_client.start()
         for address in self._getStoredManualAddresses():
             self.addManualDevice(address)
@@ -222,7 +221,7 @@ class LocalClusterOutputDeviceManager:
             return
 
         # Create a new machine and activate it.
-        # We do not use use MachineManager.addMachine here because we need to set the network key before activating it.
+        # We do not use MachineManager.addMachine here because we need to set the network key before activating it.
         # If we do not do this the auto-pairing with the cloud-equivalent device will not work.
         new_machine = CuraStackBuilder.createMachine(device.name, device.printerType)
         if not new_machine:
@@ -232,6 +231,8 @@ class LocalClusterOutputDeviceManager:
         CuraApplication.getInstance().getMachineManager().setActiveMachine(new_machine.getId())
         self._connectToOutputDevice(device, new_machine)
         self._showCloudFlowMessage(device)
+
+        _abstract_machine = CuraStackBuilder.createAbstractMachine(device.printerType)
 
     def _storeManualAddress(self, address: str) -> None:
         """Add an address to the stored preferences."""
@@ -292,4 +293,4 @@ class LocalClusterOutputDeviceManager:
         if not CuraApplication.getInstance().getCuraAPI().account.isLoggedIn:
             # Do not show the message if the user is not signed in.
             return
-        CloudFlowMessage(device.ipAddress).show()
+        CloudFlowMessage(device.name).show()

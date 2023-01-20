@@ -32,6 +32,12 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
             Logger.error("3MF Writer class is unavailable. Can't write workspace.")
             return False
 
+        global_stack = machine_manager.activeMachine
+        if global_stack is None:
+            self.setInformation(catalog.i18nc("@error", "There is no workspace yet to write. Please add a printer first."))
+            Logger.error("Tried to write a 3MF workspace before there was a global stack.")
+            return False
+
         # Indicate that the 3mf mesh writer should not close the archive just yet (we still need to add stuff to it).
         mesh_writer.setStoreArchive(True)
         mesh_writer.write(stream, nodes, mode)
@@ -40,7 +46,6 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
         if archive is None:  # This happens if there was no mesh data to write.
             archive = zipfile.ZipFile(stream, "w", compression = zipfile.ZIP_DEFLATED)
 
-        global_stack = machine_manager.activeMachine
 
         try:
             # Add global container stack data to the archive.
@@ -149,7 +154,9 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
                 "group_name",
                 "group_size",
                 "connection_type",
-                "octoprint_api_key"
+                "capabilities",
+                "octoprint_api_key",
+                "is_online",
             }
             serialized_data = container.serialize(ignored_metadata_keys = ignore_keys)
 

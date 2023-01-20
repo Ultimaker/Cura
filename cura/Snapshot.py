@@ -2,9 +2,11 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 import numpy
 
-from PyQt5 import QtCore
-from PyQt5.QtGui import QImage
+from PyQt6 import QtCore
+from PyQt6.QtCore import QCoreApplication
+from PyQt6.QtGui import QImage
 
+from UM.Logger import Logger
 from cura.PreviewPass import PreviewPass
 
 from UM.Application import Application
@@ -19,7 +21,7 @@ class Snapshot:
     def getImageBoundaries(image: QImage):
         # Look at the resulting image to get a good crop.
         # Get the pixels as byte array
-        pixel_array = image.bits().asarray(image.byteCount())
+        pixel_array = image.bits().asarray(image.sizeInBytes())
         width, height = image.width(), image.height()
         # Convert to numpy array, assume it's 32 bit (it should always be)
         pixels = numpy.frombuffer(pixel_array, dtype=numpy.uint8).reshape([height, width, 4])
@@ -46,6 +48,7 @@ class Snapshot:
         render_width, render_height = (width, height) if active_camera is None else active_camera.getWindowSize()
         render_width = int(render_width)
         render_height = int(render_height)
+        QCoreApplication.processEvents()  # This ensures that the opengl context is correctly available
         preview_pass = PreviewPass(render_width, render_height)
 
         root = scene.getRoot()
@@ -62,6 +65,7 @@ class Snapshot:
                         bbox = bbox + node.getBoundingBox()
         # If there is no bounding box, it means that there is no model in the buildplate
         if bbox is None:
+            Logger.log("w", "Unable to create snapshot as we seem to have an empty buildplate")
             return None
 
         look_at = bbox.center
@@ -94,6 +98,7 @@ class Snapshot:
             try:
                 min_x, max_x, min_y, max_y = Snapshot.getImageBoundaries(pixel_output)
             except (ValueError, AttributeError):
+                Logger.logException("w", "Failed to crop the snapshot!")
                 return None
 
             size = max((max_x - min_x) / render_width, (max_y - min_y) / render_height)
@@ -115,7 +120,7 @@ class Snapshot:
         # Scale it to the correct size
         scaled_image = cropped_image.scaled(
             width, height,
-            aspectRatioMode = QtCore.Qt.IgnoreAspectRatio,
-            transformMode = QtCore.Qt.SmoothTransformation)
+            aspectRatioMode = QtCore.Qt.AspectRatioMode.IgnoreAspectRatio,
+            transformMode = QtCore.Qt.TransformationMode.SmoothTransformation)
 
         return scaled_image

@@ -4,14 +4,14 @@
 from typing import Any
 
 from UM.Qt.ListModel import ListModel
-from PyQt5.QtCore import pyqtSlot, Qt
+from PyQt6.QtCore import pyqtSlot, Qt
 
 
 class SidebarCustomMenuItemsModel(ListModel):
-    name_role = Qt.UserRole + 1
-    actions_role = Qt.UserRole + 2
-    menu_item_role = Qt.UserRole + 3
-    menu_item_icon_name_role = Qt.UserRole + 5
+    name_role = Qt.ItemDataRole.UserRole + 1
+    actions_role = Qt.ItemDataRole.UserRole + 2
+    menu_item_role = Qt.ItemDataRole.UserRole + 3
+    menu_item_icon_name_role = Qt.ItemDataRole.UserRole + 5
 
     def __init__(self, parent=None):
         super().__init__(parent)

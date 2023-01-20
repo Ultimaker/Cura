@@ -15,7 +15,13 @@ SettingItem
     contents: MouseArea
     {
         id: control
-        anchors.fill: parent
+        anchors
+        {
+            top: parent.top
+            bottom: parent.bottom
+            left: parent.left
+        }
+        width: UM.Theme.getSize("checkbox").width
         hoverEnabled: true
 
         property bool checked:
@@ -85,20 +91,20 @@ SettingItem
         {
             anchors
             {
-                top: parent.top
-                bottom: parent.bottom
+                verticalCenter: parent.verticalCenter
                 left: parent.left
             }
-            width: height
+            width: UM.Theme.getSize("checkbox").width
+            height: width
 
-            radius: UM.Theme.getSize("setting_control_radius").width
+            radius: UM.Theme.getSize("checkbox_radius").width
             border.width: UM.Theme.getSize("default_lining").width
 
             border.color:
             {
                 if(!enabled)
                 {
-                    return UM.Theme.getColor("setting_control_disabled_border")
+                    return UM.Theme.getColor("checkbox_border_disabled")
                 }
                 switch (propertyProvider.properties.validationState)
                 {
@@ -114,15 +120,15 @@ SettingItem
                 // Validation is OK.
                 if (control.containsMouse || control.activeFocus || hovered)
                 {
-                    return UM.Theme.getColor("setting_control_border_highlight")
+                    return UM.Theme.getColor("checkbox_border_hover")
                 }
-                return UM.Theme.getColor("setting_control_border")
+                return UM.Theme.getColor("checkbox_border")
             }
 
             color: {
                 if (!enabled)
                 {
-                    return UM.Theme.getColor("setting_control_disabled")
+                    return UM.Theme.getColor("checkbox_disabled")
                 }
                 switch (propertyProvider.properties.validationState)
                 {
@@ -138,20 +144,19 @@ SettingItem
                 // Validation is OK.
                 if (control.containsMouse || control.activeFocus)
                 {
-                    return UM.Theme.getColor("setting_control_highlight")
+                    return UM.Theme.getColor("checkbox_hover")
                 }
-                return UM.Theme.getColor("setting_control")
+                return UM.Theme.getColor("checkbox")
             }
 
-            UM.RecolorImage
+            UM.ColorImage
             {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenter: parent.horizontalCenter
-                width: Math.round(parent.width / 2.5)
-                height: Math.round(parent.height / 2.5)
-                sourceSize.height: width
-                color: !enabled ? UM.Theme.getColor("setting_control_disabled_text") : UM.Theme.getColor("setting_control_text");
-                source: UM.Theme.getIcon("Check")
+                height: UM.Theme.getSize("checkbox_mark").height
+                width: UM.Theme.getSize("checkbox_mark").width
+                color: !enabled ? UM.Theme.getColor("checkbox_mark_disabled") : UM.Theme.getColor("checkbox_mark");
+                source: UM.Theme.getIcon("Check", "low")
                 opacity: control.checked ? 1 : 0
                 Behavior on opacity { NumberAnimation { duration: 100; } }
             }

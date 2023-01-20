@@ -1,11 +1,12 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import Qt, QTimer
-from PyQt5.QtWidgets import QApplication
+from PyQt6.QtCore import Qt, QTimer
+from PyQt6.QtWidgets import QApplication
 
 from UM.Application import Application
 from UM.Math.Vector import Vector
+from UM.Operations.TranslateOperation import TranslateOperation
 from UM.Tool import Tool
 from UM.Event import Event, MouseEvent
 from UM.Mesh.MeshBuilder import MeshBuilder
@@ -30,7 +31,7 @@ import numpy
 class SupportEraser(Tool):
     def __init__(self):
         super().__init__()
-        self._shortcut_key = Qt.Key_E
+        self._shortcut_key = Qt.Key.Key_E
         self._controller = self.getController()
 
         self._selection_pass = None
@@ -52,7 +53,7 @@ class SupportEraser(Tool):
     def event(self, event):
         super().event(event)
         modifiers = QApplication.keyboardModifiers()
-        ctrl_is_active = modifiers & Qt.ControlModifier
+        ctrl_is_active = modifiers & Qt.KeyboardModifier.ControlModifier
 
         if event.type == Event.MousePressEvent and MouseEvent.LeftButton in event.buttons and self._controller.getToolsEnabled():
             if ctrl_is_active:
@@ -120,8 +121,8 @@ class SupportEraser(Tool):
         # First add node to the scene at the correct position/scale, before parenting, so the eraser mesh does not get scaled with the parent
         op.addOperation(AddSceneNodeOperation(node, self._controller.getScene().getRoot()))
         op.addOperation(SetParentOperation(node, parent))
+        op.addOperation(TranslateOperation(node, position, set_position = True))
         op.push()
-        node.setPosition(position, CuraSceneNode.TransformSpace.World)
 
         CuraApplication.getInstance().getController().getScene().sceneChanged.emit(node)
 

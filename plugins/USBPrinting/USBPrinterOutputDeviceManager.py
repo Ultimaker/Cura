@@ -7,8 +7,9 @@ import serial.tools.list_ports
 from os import environ
 from re import search
 
-from PyQt5.QtCore import QObject, pyqtSignal
+from PyQt6.QtCore import QObject, pyqtSignal
 
+from UM.Platform import Platform
 from UM.Signal import Signal, signalemitter
 from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
 from UM.i18n import i18nCatalog
@@ -30,16 +31,17 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin):
     def __init__(self, application, parent = None):
         if USBPrinterOutputDeviceManager.__instance is not None:
             raise RuntimeError("Try to create singleton '%s' more than once" % self.__class__.__name__)
-        USBPrinterOutputDeviceManager.__instance = self
 
         super().__init__(parent = parent)
+        USBPrinterOutputDeviceManager.__instance = self
+
         self._application = application
 
         self._serial_port_list = []
         self._usb_output_devices = {}
         self._usb_output_devices_model = None
         self._update_thread = threading.Thread(target = self._updateThread)
-        self._update_thread.setDaemon(True)
+        self._update_thread.daemon = True
 
         self._check_updates = True
 
@@ -82,7 +84,8 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin):
             if container_stack.getMetaDataEntry("supports_usb_connection"):
                 machine_file_formats = [file_type.strip() for file_type in container_stack.getMetaDataEntry("file_formats").split(";")]
                 if "text/x-gcode" in machine_file_formats:
-                    port_list = self.getSerialPortList(only_list_usb=True)
+                    # We only limit listing usb on windows is a fix for connecting tty/cu printers on MacOS and Linux
+                    port_list = self.getSerialPortList(only_list_usb=Platform.isWindows())
             self._addRemovePorts(port_list)
             time.sleep(5)
 

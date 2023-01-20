@@ -5,7 +5,7 @@ import time
 
 from collections import deque
 
-from PyQt5.QtCore import QObject, QTimer, pyqtSignal, pyqtProperty
+from PyQt6.QtCore import QObject, QTimer, pyqtSignal, pyqtProperty
 from typing import Optional, Any, Set
 
 from UM.Logger import Logger
@@ -43,15 +43,13 @@ class MachineErrorChecker(QObject):
         self._application = cura.CuraApplication.CuraApplication.getInstance()
         self._machine_manager = self._application.getMachineManager()
 
-        self._start_time = 0.  # measure checking time
+        self._check_start_time = time.time()
 
-        # This timer delays the starting of error check so we can react less frequently if the user is frequently
-        # changing settings.
-        self._error_check_timer = QTimer(self)
-        self._error_check_timer.setInterval(100)
-        self._error_check_timer.setSingleShot(True)
+        self._setCheckTimer()
 
         self._keys_to_check = set()  # type: Set[str]
+
+        self._num_keys_to_check_per_update = 10
 
     def initialize(self) -> None:
         self._error_check_timer.timeout.connect(self._rescheduleCheck)
@@ -63,6 +61,18 @@ class MachineErrorChecker(QObject):
         self._machine_manager.globalContainerChanged.connect(self.startErrorCheck)
 
         self._onMachineChanged()
+
+    def _setCheckTimer(self) -> None:
+        """A QTimer to regulate error check frequency
+
+        This timer delays the starting of error check
+        so we can react less frequently if the user is frequently
+        changing settings.
+        """
+
+        self._error_check_timer = QTimer(self)
+        self._error_check_timer.setInterval(100)
+        self._error_check_timer.setSingleShot(True)
 
     def _onMachineChanged(self) -> None:
         if self._global_stack:
@@ -97,8 +107,7 @@ class MachineErrorChecker(QObject):
 
     def startErrorCheckPropertyChanged(self, key: str, property_name: str) -> None:
         """Start the error check for property changed
-
-        this is seperate from the startErrorCheck because it ignores a number property types
+        this is separate from the startErrorCheck because it ignores a number property types
 
         :param key:
         :param property_name:
@@ -151,7 +160,7 @@ class MachineErrorChecker(QObject):
                 self._stacks_and_keys_to_check.append((stack, key))
 
         self._application.callLater(self._checkStack)
-        self._start_time = time.time()
+        self._check_start_time = time.time()
         Logger.log("d", "New error check scheduled.")
 
     def _checkStack(self) -> None:
@@ -163,37 +172,37 @@ class MachineErrorChecker(QObject):
 
         self._check_in_progress = True
 
-        # If there is nothing to check any more, it means there is no error.
-        if not self._stacks_and_keys_to_check:
-            # Finish
-            self._setResult(False)
-            return
+        for i in range(self._num_keys_to_check_per_update):
+            # If there is nothing to check any more, it means there is no error.
+            if not self._stacks_and_keys_to_check:
+                # Finish
+                self._setResult(False)
+                return
 
-        # Get the next stack and key to check
-        stack, key = self._stacks_and_keys_to_check.popleft()
+            # Get the next stack and key to check
+            stack, key = self._stacks_and_keys_to_check.popleft()
 
-        enabled = stack.getProperty(key, "enabled")
-        if not enabled:
-            self._application.callLater(self._checkStack)
-            return
+            enabled = stack.getProperty(key, "enabled")
+            if not enabled:
+                continue
 
-        validation_state = stack.getProperty(key, "validationState")
-        if validation_state is None:
-            # Setting is not validated. This can happen if there is only a setting definition.
-            # We do need to validate it, because a setting definitions value can be set by a function, which could
-            # be an invalid setting.
-            definition = stack.getSettingDefinition(key)
-            validator_type = SettingDefinition.getValidatorForType(definition.type)
-            if validator_type:
-                validator = validator_type(key)
-                validation_state = validator(stack)
-        if validation_state in (ValidatorState.Exception, ValidatorState.MaximumError, ValidatorState.MinimumError, ValidatorState.Invalid):
-            # Since we don't know if any of the settings we didn't check is has an error value, store the list for the
-            # next check.
-            keys_to_recheck = {setting_key for stack, setting_key in self._stacks_and_keys_to_check}
-            keys_to_recheck.add(key)
-            self._setResult(True, keys_to_recheck = keys_to_recheck)
-            return
+            validation_state = stack.getProperty(key, "validationState")
+            if validation_state is None:
+                # Setting is not validated. This can happen if there is only a setting definition.
+                # We do need to validate it, because a setting definitions value can be set by a function, which could
+                # be an invalid setting.
+                definition = stack.getSettingDefinition(key)
+                validator_type = SettingDefinition.getValidatorForType(definition.type)
+                if validator_type:
+                    validator = validator_type(key)
+                    validation_state = validator(stack)
+            if validation_state in (ValidatorState.Exception, ValidatorState.MaximumError, ValidatorState.MinimumError, ValidatorState.Invalid):
+                # Since we don't know if any of the settings we didn't check is has an error value, store the list for the
+                # next check.
+                keys_to_recheck = {setting_key for stack, setting_key in self._stacks_and_keys_to_check}
+                keys_to_recheck.add(key)
+                self._setResult(True, keys_to_recheck = keys_to_recheck)
+                return
 
         # Schedule the check for the next key
         self._application.callLater(self._checkStack)
@@ -203,12 +212,10 @@ class MachineErrorChecker(QObject):
             self._has_errors = result
             self.hasErrorUpdated.emit()
             self._machine_manager.stacksValidationChanged.emit()
-        if keys_to_recheck is None:
-            self._keys_to_check = set()
-        else:
-            self._keys_to_check = keys_to_recheck
+        self._keys_to_check = keys_to_recheck if keys_to_recheck else set()
         self._need_to_check = False
         self._check_in_progress = False
         self.needToWaitForResultChanged.emit()
         self.errorCheckFinished.emit()
-        Logger.log("i", "Error check finished, result = %s, time = %0.1fs", result, time.time() - self._start_time)
+        execution_time = time.time() - self._check_start_time
+        Logger.info(f"Error check finished, result = {result}, time = {execution_time:.2f}s")

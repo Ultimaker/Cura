@@ -1,18 +1,14 @@
-//Copyright (c) 2018 Ultimaker B.V.
+//Copyright (c) 2022 Ultimaker B.V.
 //Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
-import QtQuick.Controls 1.1
-import QtQuick.Controls.Styles 1.1
-import QtQuick.Dialogs 1.1
-import QtQuick.Layouts 1.1
 
-import UM 1.1 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 Item
 {
-    id: base;
+    id: base
     UM.I18nCatalog { id: catalog; name: "cura"}
 
     height: childrenRect.height + UM.Theme.getSize("thick_margin").height
@@ -37,7 +33,7 @@ Item
         }
         if(activePrintJob.timeTotal == 0)
         {
-            return 0  // Prevent devision by 0
+            return 0  // Prevent division by 0
         }
         return activePrintJob.timeElapsed / activePrintJob.timeTotal * 100
     }
@@ -159,7 +155,7 @@ Item
         }
     }
 
-    Label
+    UM.Label
     {
         id: statusLabel
         width: parent.width - 2 * UM.Theme.getSize("thick_margin").width
@@ -172,7 +168,7 @@ Item
         text: statusText
     }
 
-    Label
+    UM.Label
     {
         id: percentageLabel
         anchors.top: parent.top
@@ -184,22 +180,22 @@ Item
         visible: showProgress
     }
 
-    ProgressBar
+    UM.ProgressBar
     {
-        id: progressBar;
-        minimumValue: 0;
-        maximumValue: 100;
-        value: 0;
+        id: progressBar
+        from: 0
+        to: 100
+        value: 0
 
         //Doing this in an explicit binding since the implicit binding breaks on occasion.
         Binding
         {
-            target: progressBar;
-            property: "value";
-            value: base.progress;
+            target: progressBar
+            property: "value"
+            value: base.progress
         }
 
-        visible: showProgress;
+        visible: showProgress
         indeterminate:
         {
             if(!printerConnected)
@@ -219,17 +215,15 @@ Item
                     return false;
             }
         }
-        style: UM.Theme.styles.progressbar;
+        property string backgroundColor: UM.Theme.getColor("progressbar_background")
+        property string controlColor: base.statusColor
 
-        property string backgroundColor: UM.Theme.getColor("progressbar_background");
-        property string controlColor: base.statusColor;
-
-        width: parent.width - 2 * UM.Theme.getSize("thick_margin").width;
-        height: UM.Theme.getSize("progressbar").height;
-        anchors.top: statusLabel.bottom;
-        anchors.topMargin: Math.round(UM.Theme.getSize("thick_margin").height / 4);
-        anchors.left: parent.left;
-        anchors.leftMargin: UM.Theme.getSize("thick_margin").width;
+        width: parent.width - 2 * UM.Theme.getSize("thick_margin").width
+        height: UM.Theme.getSize("progressbar").height
+        anchors.top: statusLabel.bottom
+        anchors.topMargin: Math.round(UM.Theme.getSize("thick_margin").height / 4)
+        anchors.left: parent.left
+        anchors.leftMargin: UM.Theme.getSize("thick_margin").width
     }
 
     Row
@@ -266,7 +260,7 @@ Item
             }
         }
 
-        Button
+        Cura.SecondaryButton
         {
             id: pauseResumeButton
 
@@ -309,11 +303,9 @@ Item
                     activePrintJob.setState("pause");
                 }
             }
-
-            style: UM.Theme.styles.print_setup_action_button
         }
 
-        Button
+        Cura.SecondaryButton
         {
             id: abortButton
 
@@ -324,21 +316,17 @@ Item
             height: UM.Theme.getSize("save_button_save_to_button").height
 
             text: catalog.i18nc("@label", "Abort Print")
-            onClicked: confirmationDialog.visible = true
-
-            style: UM.Theme.styles.print_setup_action_button
+            onClicked: confirmationDialog.open()
         }
 
-        MessageDialog
+        Cura.MessageDialog
         {
             id: confirmationDialog
 
             title: catalog.i18nc("@window:title", "Abort print")
-            icon: StandardIcon.Warning
             text: catalog.i18nc("@label", "Are you sure you want to abort the print?")
-            standardButtons: StandardButton.Yes | StandardButton.No
-            Component.onCompleted: visible = false
-            onYes: activePrintJob.setState("abort")
+            standardButtons: Cura.MessageDialog.Yes | Cura.MessageDialog.No
+            onAccepted: activePrintJob.setState("abort")
         }
     }
 }

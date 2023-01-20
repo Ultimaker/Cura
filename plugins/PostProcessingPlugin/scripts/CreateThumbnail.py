@@ -2,7 +2,7 @@ import base64
 
 from UM.Logger import Logger
 from cura.Snapshot import Snapshot
-from PyQt5.QtCore import QByteArray, QIODevice, QBuffer
+from PyQt6.QtCore import QByteArray, QIODevice, QBuffer
 
 from ..Script import Script
 
@@ -22,7 +22,7 @@ class CreateThumbnail(Script):
         Logger.log("d", "Encoding thumbnail image...")
         try:
             thumbnail_buffer = QBuffer()
-            thumbnail_buffer.open(QBuffer.ReadWrite)
+            thumbnail_buffer.open(QBuffer.OpenModeFlag.ReadWrite)
             thumbnail_image = snapshot
             thumbnail_image.save(thumbnail_buffer, "PNG")
             base64_bytes = base64.b64encode(thumbnail_buffer.data())
