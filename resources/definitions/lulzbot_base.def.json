@@ -1,121 +1,121 @@
 {
+    "version": 2,
     "name": "LulzBot",
     "inherits": "fdmprinter",
-    "version": 2,
-    "metadata": {
+    "metadata":
+    {
+        "visible": false,
         "author": "FAME3D Base",
+        "manufacturer": "LulzBot",
         "file_formats": "text/x-gcode",
         "firmware_last_version": "2.0.6.7",
-        "first_start_actions": [
-            "MachineSettingsAction"
-        ],
+        "first_start_actions": [ "MachineSettingsAction" ],
         "has_machine_quality": true,
         "has_materials": true,
         "has_variants": true,
-        "machine_extruder_trains": {
-            "0": "lulzbot_base_285_extruder"
-        },
-        "manufacturer": "LulzBot",
-        "preferred_variant_name": "LulzBot SE",
+        "machine_extruder_trains": { "0": "lulzbot_base_285_extruder" },
         "preferred_material": "generic_pla",
-        "supported_actions": [
-            "MachineSettingsAction"
-        ],
-        "variants_name": "Tool Head",
-        "visible": false
+        "preferred_variant_name": "LulzBot SE",
+        "supported_actions": [ "MachineSettingsAction" ],
+        "variants_name": "Tool Head"
     },
-    "overrides": {
-        "infill_before_walls": {
-            "default_value": "False"
-        },
-        "layer_height_0": {
-            "maximum_value_warning": "0.5"
-        },
-        "material_print_temperature": {
-            "maximum_value_warning": "295",
+    "overrides":
+    {
+        "infill_before_walls": { "default_value": "False" },
+        "layer_height_0": { "maximum_value_warning": "0.5" },
+        "machine_nozzle_size": { "default_value": 0.5 },
+        "material_print_temperature":
+        {
             "description": "The temperature used for printing. Set at 0 to pre-heat the printer manually.",
-            "minimum_value": "0",
-            "enabled": true
-        },
-        "machine_nozzle_size": {
-            "default_value": 0.5
+            "enabled": true,
+            "maximum_value_warning": "295",
+            "minimum_value": "0"
         }
     },
-    "settings": {
-        "material": {
-            "children": {
-                "material_part_removal_temperature": {
-                    "settable_per_extruder": false,
-                    "minimum_value": "0",
-                    "enabled": "machine_heated_bed",
-                    "description": "The ideal bed temperature to remove the model after printing.",
-                    "label": "Part Removal Temperature",
-                    "unit": "\u00b0C",
-                    "type": "float",
-                    "maximum_value": "110",
-                    "default_value": 50,
-                    "settable_per_mesh": false,
-                    "resolve": "sum(extruderValues('material_part_removal_temperature')) / len(extruderValues('material_part_removal_temperature'))"
-                },
-                "material_keep_part_removal_temperature": {
-                    "label": "Keep Heating",
-                    "description": "Keep temperature after print on removal value",
-                    "type": "bool",
+    "settings":
+    {
+        "material":
+        {
+            "children":
+            {
+                "material_keep_part_removal_temperature":
+                {
                     "default_value": true,
-                    "resolve": "any(extruderValues('material_keep_part_removal_temperature'))",
+                    "description": "Keep temperature after print on removal value",
                     "enabled": "True",
+                    "label": "Keep Heating",
+                    "resolve": "any(extruderValues('material_keep_part_removal_temperature'))",
+                    "settable_per_extruder": false,
                     "settable_per_mesh": false,
-                    "settable_per_extruder": false
+                    "type": "bool"
                 },
-                "material_keep_part_removal_temperature_t": {
-                    "label": "Temperature After Print",
-                    "description": "",
-                    "unit": "°C",
-                    "type": "float",
+                "material_keep_part_removal_temperature_t":
+                {
                     "default_value": "material_part_removal_temperature",
-                    "resolve": "material_part_removal_temperature if material_keep_part_removal_temperature else 0",
+                    "description": "",
                     "enabled": "False",
+                    "label": "Temperature After Print",
+                    "resolve": "material_part_removal_temperature if material_keep_part_removal_temperature else 0",
+                    "settable_per_extruder": false,
                     "settable_per_mesh": false,
-                    "settable_per_extruder": false
+                    "type": "float",
+                    "unit": "\u00b0C"
                 },
-                "material_probe_temperature": {
-                    "settable_per_extruder": true,
+                "material_part_removal_temperature":
+                {
+                    "default_value": 50,
+                    "description": "The ideal bed temperature to remove the model after printing.",
+                    "enabled": "machine_heated_bed",
+                    "label": "Part Removal Temperature",
+                    "maximum_value": "110",
                     "minimum_value": "0",
-                    "enabled": true,
+                    "resolve": "sum(extruderValues('material_part_removal_temperature')) / len(extruderValues('material_part_removal_temperature'))",
+                    "settable_per_extruder": false,
+                    "settable_per_mesh": false,
+                    "type": "float",
+                    "unit": "\u00b0C"
+                },
+                "material_probe_temperature":
+                {
+                    "default_value": 160,
                     "description": "The nozzle temperature used before probing.",
+                    "enabled": true,
                     "label": "Probe Temperature",
-                    "unit": "\u00b0C",
-                    "maximum_value_warning": "295",
-                    "type": "float",
                     "maximum_value": "300",
-                    "default_value": 160,
-                    "settable_per_mesh": false
-                },
-                "material_soften_temperature": {
-                    "settable_per_extruder": true,
+                    "maximum_value_warning": "295",
                     "minimum_value": "0",
-                    "enabled": true,
-                    "description": "The nozzle temperature used before z-axis homing.",
-                    "label": "Soften Temperature",
-                    "unit": "\u00b0C",
-                    "maximum_value_warning": "295",
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
                     "type": "float",
-                    "maximum_value": "300",
+                    "unit": "\u00b0C"
+                },
+                "material_soften_temperature":
+                {
                     "default_value": 170,
-                    "settable_per_mesh": false
-                },
-                "material_wipe_temperature": {
-                    "settable_per_extruder": true,
-                    "minimum_value": "0",
+                    "description": "The nozzle temperature used before z-axis homing.",
                     "enabled": true,
-                    "description": "The nozzle temperature used before nozzle wiping.",
-                    "label": "Wipe Temperature",
-                    "unit": "\u00b0C",
-                    "maximum_value_warning": "195",
+                    "label": "Soften Temperature",
+                    "maximum_value": "300",
+                    "maximum_value_warning": "295",
+                    "minimum_value": "0",
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
                     "type": "float",
-                    "maximum_value": "200",
+                    "unit": "\u00b0C"
+                },
+                "material_wipe_temperature":
+                {
                     "default_value": 160,
-                    "settable_per_mesh": false
+                    "description": "The nozzle temperature used before nozzle wiping.",
+                    "enabled": true,
+                    "label": "Wipe Temperature",
+                    "maximum_value": "200",
+                    "maximum_value_warning": "195",
+                    "minimum_value": "0",
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
+                    "type": "float",
+                    "unit": "\u00b0C"
                 }
             }
         }
