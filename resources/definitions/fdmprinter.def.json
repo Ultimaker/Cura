@@ -7195,6 +7195,7 @@
                     "description": "Randomly jitter while printing the outer wall, so that the surface has a rough and fuzzy look.",
                     "type": "bool",
                     "default_value": false,
+                    "enabled": "not interlocking_enable",
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
