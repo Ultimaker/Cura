@@ -6,11 +6,13 @@ from ..Script import Script
 from UM.Application import Application  # To get current absolute/relative setting.
 from UM.Math.Vector import Vector
 
+from typing import List, Tuple
+
 
 class RetractContinue(Script):
     """Continues retracting during all travel moves."""
 
-    def getSettingDataString(self):
+    def getSettingDataString(self) -> str:
         return """{
             "name": "Retract Continue",
             "key": "RetractContinue",
@@ -28,7 +30,7 @@ class RetractContinue(Script):
             }
         }"""
 
-    def _getTravelMove(self, travel_move, default_pos):
+    def _getTravelMove(self, travel_move: str, default_pos: Vector) -> Tuple[Vector, float]:
         travel = Vector(
             self.getValue(travel_move, "X", default_pos.x),
             self.getValue(travel_move, "Y", default_pos.y),
@@ -37,14 +39,14 @@ class RetractContinue(Script):
         f = self.getValue(travel_move, "F", -1.0)
         return travel, f
 
-    def _travelMoveString(self, travel, f, out_e):
+    def _travelMoveString(self, travel: Vector, f: float, out_e: float) -> str:
         # Note that only G1 moves are written, since extrusion is included.
         if f <= 0.0:
             return f"G1 X{travel.x:.5f} Y{travel.y:.5f} Z{travel.z:.5f} E{out_e:.5f}"
         else:
             return f"G1 F{f:.5f} X{travel.x:.5f} Y{travel.y:.5f} Z{travel.z:.5f} E{out_e:.5f}"
 
-    def execute(self, data):
+    def execute(self, data: List[str]) -> List[str]:
         current_e = 0.0
         to_compensate = 0  # Used when extrusion mode is relative.
         is_active = False  # Whether retract-continue is in effect.
