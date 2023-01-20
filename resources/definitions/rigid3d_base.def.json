@@ -53,7 +53,6 @@
         "retraction_amount": { "value": 1.5 },
         "retraction_combing": { "value": "'all'" },
         "retraction_combing_max_distance": { "value": 30 },
-
         "skin_monotonic": { "value": "True" },
         "skirt_gap": { "value": 5.0 },
         "skirt_line_count": { "value": 2 },
