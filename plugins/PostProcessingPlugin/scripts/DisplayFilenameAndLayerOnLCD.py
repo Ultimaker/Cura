@@ -62,7 +62,7 @@ class DisplayFilenameAndLayerOnLCD(Script):
                     "description": "This will add the prefix 'Printing'",
                     "type": "bool",
                     "default_value": true
-                },
+                }
             }
         }"""
 
