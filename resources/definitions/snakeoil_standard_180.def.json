@@ -1,0 +1,17 @@
+{
+    "version": 2,
+    "name": "SnakeOil Standard 180",
+    "inherits": "snakeoil_standard_base",
+    "metadata":
+    {
+        "visible": true,
+        "quality_definition": "snakeoil_standard_base"
+    },
+    "overrides":
+    {
+        "machine_depth": { "default_value": 180 },
+        "machine_height": { "default_value": 180 },
+        "machine_name": { "default_value": "SNAKEOIL STANDARD 180" },
+        "machine_width": { "default_value": 180 }
+    }
+}

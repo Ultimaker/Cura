@@ -2,15 +2,10 @@
     "version": 2,
     "name": "DXU Dual",
     "inherits": "dxu",
-    "overrides": {
-        "machine_start_gcode" : {
-            "value": "\"\"  if machine_gcode_flavor == \"UltiGCode\" else \";material_bed_temperature={material_bed_temperature} material_print_temperature={material_print_temperature} material_print_temperature_layer_0={material_print_temperature_layer_0}\\nM190 S{material_bed_temperature_layer_0}\\nM104 T0 S{material_standby_temperature, 0}\\nM104 T0 S{material_print_temperature_layer_0, 0}\\nG21 ;metric values\\nG90 ;absolute positioning\\nM82 ;set extruder to absolute mode\\nM107 ;start with the fan off\\nM200 D0 T0 ;reset filament diameter\\nM200 D0 T1\\nG28 ;home all\\nT1 ; move to the nozzle 2\\nG0 Z20 F2400 ;move the platform to 30mm\\nM109 T1 S{material_print_temperature_layer_0, 1}\\nG0 X210 Y20 F7200\\nG92 E0\\nG92 E-7.0 ;prime distance\\nG1 E0 F45 ;purge nozzle\\nG1 E-6.5 F1500 ; retract\\nT0 ; move to the nozzle 1\\nM104 T1 S{material_standby_temperature, 1}\\nG0 Z20 F2400\\nM109 T0 S{material_print_temperature_layer_0, 0}\\nG0 X210 Y20 F7200\\nG92 E0\\nG92 E-7.0\\nG1 E0 F45 ;purge nozzle\\nG1 E-6.5 F1500\\nM104 T0 S{material_standby_temperature, 0}\\nT{initial_extruder_nr} ;switch to the first nozzle used for print\\nM109 T{initial_extruder_nr} S{material_print_temperature_layer_0, initial_extruder_nr}\\nM400 ;finish all moves\\nG1 E0 F1500\\nG92 E0\\n;end of startup sequence\\n\""
-        },
-        "machine_end_gcode" : {
-            "value": "\"\"  if machine_gcode_flavor == \"UltiGCode\" else \"G90 ;absolute positioning\\nM104 S0 T0 ;extruder heater off\\nM104 S0 T1\\nM140 S0 ;turn off bed\\nT0 ; move to the first head\\nM107 ;fan off\""
-        },
-        "prime_tower_enable": {
-			"default_value": true
-		}
+    "overrides":
+    {
+        "machine_end_gcode": { "value": "\"\"  if machine_gcode_flavor == \"UltiGCode\" else \"G90 ;absolute positioning\\nM104 S0 T0 ;extruder heater off\\nM104 S0 T1\\nM140 S0 ;turn off bed\\nT0 ; move to the first head\\nM107 ;fan off\"" },
+        "machine_start_gcode": { "value": "\"\"  if machine_gcode_flavor == \"UltiGCode\" else \";material_bed_temperature={material_bed_temperature} material_print_temperature={material_print_temperature} material_print_temperature_layer_0={material_print_temperature_layer_0}\\nM190 S{material_bed_temperature_layer_0}\\nM104 T0 S{material_standby_temperature, 0}\\nM104 T0 S{material_print_temperature_layer_0, 0}\\nG21 ;metric values\\nG90 ;absolute positioning\\nM82 ;set extruder to absolute mode\\nM107 ;start with the fan off\\nM200 D0 T0 ;reset filament diameter\\nM200 D0 T1\\nG28 ;home all\\nT1 ; move to the nozzle 2\\nG0 Z20 F2400 ;move the platform to 30mm\\nM109 T1 S{material_print_temperature_layer_0, 1}\\nG0 X210 Y20 F7200\\nG92 E0\\nG92 E-7.0 ;prime distance\\nG1 E0 F45 ;purge nozzle\\nG1 E-6.5 F1500 ; retract\\nT0 ; move to the nozzle 1\\nM104 T1 S{material_standby_temperature, 1}\\nG0 Z20 F2400\\nM109 T0 S{material_print_temperature_layer_0, 0}\\nG0 X210 Y20 F7200\\nG92 E0\\nG92 E-7.0\\nG1 E0 F45 ;purge nozzle\\nG1 E-6.5 F1500\\nM104 T0 S{material_standby_temperature, 0}\\nT{initial_extruder_nr} ;switch to the first nozzle used for print\\nM109 T{initial_extruder_nr} S{material_print_temperature_layer_0, initial_extruder_nr}\\nM400 ;finish all moves\\nG1 E0 F1500\\nG92 E0\\n;end of startup sequence\\n\"" },
+        "prime_tower_enable": { "default_value": true }
     }
 }

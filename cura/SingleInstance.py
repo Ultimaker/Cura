@@ -5,7 +5,7 @@ import json
 import os
 from typing import List, Optional
 
-from PyQt5.QtNetwork import QLocalServer, QLocalSocket
+from PyQt6.QtNetwork import QLocalServer, QLocalSocket
 
 from UM.Qt.QtApplication import QtApplication #For typing.
 from UM.Logger import Logger
@@ -18,6 +18,8 @@ class SingleInstance:
 
         self._single_instance_server = None
 
+        self._application.getPreferences().addPreference("cura/single_instance_clear_before_load", True)
+
     # Starts a client that checks for a single instance server and sends the files that need to opened if the server
     # exists. Returns True if the single instance server is found, otherwise False.
     def startClient(self) -> bool:
@@ -27,7 +29,7 @@ class SingleInstance:
         single_instance_socket.connectToServer("ultimaker-cura")
         single_instance_socket.waitForConnected(msecs = 3000)  # wait for 3 seconds
 
-        if single_instance_socket.state() != QLocalSocket.ConnectedState:
+        if single_instance_socket.state() != QLocalSocket.LocalSocketState.ConnectedState:
             return False
 
         # We only send the files that need to be opened.
@@ -35,15 +37,16 @@ class SingleInstance:
             Logger.log("i", "No file need to be opened, do nothing.")
             return True
 
-        if single_instance_socket.state() == QLocalSocket.ConnectedState:
+        if single_instance_socket.state() == QLocalSocket.LocalSocketState.ConnectedState:
             Logger.log("i", "Connection has been made to the single-instance Cura socket.")
 
             # Protocol is one line of JSON terminated with a carriage return.
             # "command" field is required and holds the name of the command to execute.
             # Other fields depend on the command.
 
-            payload = {"command": "clear-all"}
-            single_instance_socket.write(bytes(json.dumps(payload) + "\n", encoding = "ascii"))
+            if self._application.getPreferences().getValue("cura/single_instance_clear_before_load"):
+                payload = {"command": "clear-all"}
+                single_instance_socket.write(bytes(json.dumps(payload) + "\n", encoding = "ascii"))
 
             payload = {"command": "focus"}
             single_instance_socket.write(bytes(json.dumps(payload) + "\n", encoding = "ascii"))
@@ -68,7 +71,7 @@ class SingleInstance:
             Logger.log("e", "Single instance server was not created.")
 
     def _onClientConnected(self) -> None:
-        Logger.log("i", "New connection recevied on our single-instance server")
+        Logger.log("i", "New connection received on our single-instance server")
         connection = None #type: Optional[QLocalSocket]
         if self._single_instance_server:
             connection = self._single_instance_server.nextPendingConnection()

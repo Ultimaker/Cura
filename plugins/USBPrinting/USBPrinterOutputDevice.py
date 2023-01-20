@@ -311,7 +311,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             if line == b"":
                 # An empty line means that the firmware is idle
                 # Multiple empty lines probably means that the firmware and Cura are waiting
-                # for eachother due to a missed "ok", so we keep track of empty lines
+                # for each other due to a missed "ok", so we keep track of empty lines
                 self._firmware_idle_count += 1
             else:
                 self._firmware_idle_count = 0
@@ -398,7 +398,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             line = line[:line.find(";")]
 
         line = line.strip()
-
+ 
         # Don't send empty lines. But we do have to send something, so send M105 instead.
         # Don't send the M0 or M1 to the machine, as M0 and M1 are handled as an LCD menu pause.
         if line == "" or line == "M0" or line == "M1":
@@ -429,7 +429,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         print_job.updateTimeElapsed(elapsed_time)
         estimated_time = self._print_estimated_time
         if progress > .1:
-            estimated_time = self._print_estimated_time * (1 - progress) + elapsed_time
+            estimated_time = int(self._print_estimated_time * (1 - progress) + elapsed_time)
         print_job.updateTimeTotal(estimated_time)
 
         self._gcode_position += 1

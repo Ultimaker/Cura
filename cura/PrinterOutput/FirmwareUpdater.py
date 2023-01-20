@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import QObject, QUrl, pyqtSignal, pyqtProperty
+from PyQt6.QtCore import QObject, QUrl, pyqtSignal, pyqtProperty
 
 from enum import IntEnum
 from threading import Thread
@@ -49,7 +49,7 @@ class FirmwareUpdater(QObject):
         raise NotImplementedError("_updateFirmware needs to be implemented")
 
     def _cleanupAfterUpdate(self) -> None:
-        """Cleanup after a succesful update"""
+        """Cleanup after a successful update"""
 
         # Clean up for next attempt.
         self._update_firmware_thread = Thread(target=self._updateFirmware, daemon=True, name = "FirmwareUpdateThread")

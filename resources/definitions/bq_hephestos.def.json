@@ -1,64 +1,38 @@
 {
-    "name": "BQ Prusa i3 Hephestos",
     "version": 2,
+    "name": "BQ Prusa i3 Hephestos",
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "visible": true,
         "author": "BQ",
         "manufacturer": "BQ",
         "file_formats": "text/x-gcode",
         "platform": "bq_hephestos_platform.3mf",
-        "platform_offset": [ 0, -82, 0],
-        "machine_extruder_trains":
-        {
-            "0": "bq_hephestos_extruder_0"
-        },
-        "firmware_file": "MarlinHephestos2.hex"
+        "firmware_file": "MarlinHephestos2.hex",
+        "machine_extruder_trains": { "0": "bq_hephestos_extruder_0" },
+        "platform_offset": [
+            0,
+            -82,
+            0
+        ]
     },
-
-    "overrides": {
+    "overrides":
+    {
+        "layer_height": { "default_value": 0.2 },
+        "layer_height_0": { "default_value": 0.2 },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_depth": { "default_value": 210 },
+        "machine_end_gcode": { "default_value": "; -- END GCODE --\nM104 S0                 ;set extruder temperature to zero (turned off)\nG91                     ;set to relative positioning\nG1 E-20 F300            ;retract the filament a bit to release some of the pressure\nG1 Z10                  ;move extruder up 10 mm\nG90                     ;set to absolute positioning\nG1 X0 Y180 F1200        ;expose the platform\nM84                     ;turn off steppers\n; -- end of END GCODE --" },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_heated_bed": { "default_value": false },
+        "machine_height": { "default_value": 180 },
         "machine_name": { "default_value": "BQ Prusa i3 Hephestos" },
-        "machine_start_gcode": {
-            "default_value": "; -- START GCODE --\nG21                     ;set units to millimetres\nG90                     ;set to absolute positioning\nM106 S0                 ;set fan speed to zero (turned off)\nG28 X0 Y0               ;move to the X/Y origin (Home)\nG28 Z0                  ;move to the Z origin (Home)\nG1 Z15.0 F1200          ;move Z to position 15.0 mm\nG92 E0                  ;zero the extruded length\nG1 E20 F200             ;extrude 20mm of feed stock\nG92 E0                  ;zero the extruded length again\nG1 F7200                ;set feedrate to 120 mm/s\n; -- end of START GCODE --"
-        },
-        "machine_end_gcode": {
-            "default_value": "; -- END GCODE --\nM104 S0                 ;set extruder temperature to zero (turned off)\nG91                     ;set to relative positioning\nG1 E-20 F300            ;retract the filament a bit to release some of the pressure\nG1 Z10                  ;move extruder up 10 mm\nG90                     ;set to absolute positioning\nG1 X0 Y180 F1200        ;expose the platform\nM84                     ;turn off steppers\n; -- end of END GCODE --"
-        },
-        "machine_width": {
-            "default_value": 215
-        },
-        "machine_depth": {
-            "default_value": 210
-        },
-        "machine_height": {
-            "default_value": 180
-        },
-        "machine_heated_bed": {
-            "default_value": false
-        },
-        "machine_center_is_zero": {
-            "default_value": false
-        },
-        "machine_gcode_flavor": {
-            "default_value": "RepRap (Marlin/Sprinter)"
-        },
-        "layer_height": {
-            "default_value": 0.2
-        },
-        "layer_height_0": {
-            "default_value": 0.2
-        },
-        "wall_thickness": {
-            "value": "1"
-        },
-        "top_bottom_thickness": {
-            "default_value": 1
-        },
-        "speed_print": {
-            "default_value": 40
-        },
-        "support_enable": {
-            "default_value": true
-        }
+        "machine_start_gcode": { "default_value": "; -- START GCODE --\nG21                     ;set units to millimetres\nG90                     ;set to absolute positioning\nM106 S0                 ;set fan speed to zero (turned off)\nG28 X0 Y0               ;move to the X/Y origin (Home)\nG28 Z0                  ;move to the Z origin (Home)\nG1 Z15.0 F1200          ;move Z to position 15.0 mm\nG92 E0                  ;zero the extruded length\nG1 E20 F200             ;extrude 20mm of feed stock\nG92 E0                  ;zero the extruded length again\nG1 F7200                ;set feedrate to 120 mm/s\n; -- end of START GCODE --" },
+        "machine_width": { "default_value": 215 },
+        "speed_print": { "default_value": 40 },
+        "support_enable": { "default_value": true },
+        "top_bottom_thickness": { "default_value": 1 },
+        "wall_thickness": { "value": "1" }
     }
 }

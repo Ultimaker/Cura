@@ -1,14 +1,16 @@
 {
     "version": 2,
-    "name": "Extrusor E1",
+    "name": "Extruder E1",
     "inherits": "fdmextruder",
-    "metadata": {
+    "metadata":
+    {
         "machine": "hellbot_hidra_plus",
         "position": "0"
     },
-
-    "overrides": {
-        "extruder_nr": {
+    "overrides":
+    {
+        "extruder_nr":
+        {
             "default_value": 0,
             "maximum_value": "1"
         },

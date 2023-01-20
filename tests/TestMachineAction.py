@@ -38,7 +38,7 @@ def test_addDefaultMachineActions(machine_action_manager, global_stack):
         machine_action_manager.addMachineAction(action)
 
     # Only the actions in the definition that were registered first will be added to the machine.
-    # For the sake of this test, all the actions were previouly added.
+    # For the sake of this test, all the actions were previously added.
     machine_action_manager.addDefaultMachineActions(global_stack)
     definition_id = global_stack.getDefinition().getId()
 

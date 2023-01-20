@@ -1,0 +1,15 @@
+{
+    "version": 2,
+    "name": "Goofoo Tiny",
+    "inherits": "goofoo_small",
+    "metadata": { "visible": true },
+    "overrides":
+    {
+        "machine_depth": { "default_value": 100 },
+        "machine_heated_bed": { "default_value": false },
+        "machine_height": { "default_value": 100 },
+        "machine_name": { "default_value": "Goofoo Tiny" },
+        "machine_width": { "default_value": 100 },
+        "raft_margin": { "default_value": 5 }
+    }
+}

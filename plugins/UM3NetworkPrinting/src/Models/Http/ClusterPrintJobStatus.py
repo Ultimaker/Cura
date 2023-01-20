@@ -40,7 +40,7 @@ class ClusterPrintJobStatus(BaseModel):
                  configuration_changes_required: List[
                      Union[Dict[str, Any], ClusterPrintJobConfigurationChange]] = None,
                  build_plate: Union[Dict[str, Any], ClusterBuildPlate] = None,
-                 compatible_machine_families: List[str] = None,
+                 compatible_machine_families: Optional[List[str]] = None,
                  impediments_to_printing: List[Union[Dict[str, Any], ClusterPrintJobImpediment]] = None,
                  preview_url: Optional[str] = None,
                  **kwargs) -> None:
@@ -97,7 +97,7 @@ class ClusterPrintJobStatus(BaseModel):
                                                                configuration_changes_required) \
             if configuration_changes_required else []
         self.build_plate = self.parseModel(ClusterBuildPlate, build_plate) if build_plate else None
-        self.compatible_machine_families = compatible_machine_families if compatible_machine_families else []
+        self.compatible_machine_families = compatible_machine_families if compatible_machine_families is not None else []
         self.impediments_to_printing = self.parseModels(ClusterPrintJobImpediment, impediments_to_printing) \
             if impediments_to_printing else []
 
@@ -130,8 +130,10 @@ class ClusterPrintJobStatus(BaseModel):
 
         model.updateConfiguration(self._createConfigurationModel())
         model.updateTimeTotal(self.time_total)
-        model.updateTimeElapsed(self.time_elapsed)
-        model.updateOwner(self.owner)
+        if self.time_elapsed is not None:
+            model.updateTimeElapsed(self.time_elapsed)
+        if self.owner is not None:
+            model.updateOwner(self.owner)
         model.updateState(self.status)
         model.setCompatibleMachineFamilies(self.compatible_machine_families)
 

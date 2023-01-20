@@ -5,7 +5,7 @@ import QtQuick 2.7
 import QtQuick.Layouts 1.2
 import QtQuick.Controls 2.0
 
-import UM 1.1 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 import "."
@@ -13,12 +13,9 @@ import "."
 Item
 {
     id: base
-
-    height: UM.Theme.getSize("section").height
+    height: enabled ? UM.Theme.getSize("section").height + UM.Theme.getSize("narrow_margin").height : 0
     anchors.left: parent.left
     anchors.right: parent.right
-    // To avoid overlaping with the scrollBars
-    anchors.rightMargin: 2 * UM.Theme.getSize("thin_margin").width
 
     property alias contents: controlContainer.children
     property alias hovered: mouse.containsMouse
@@ -65,13 +62,19 @@ Item
         var affected_by_list = ""
         for (var i in affected_by)
         {
-            affected_by_list += "<li>%1</li>\n".arg(affected_by[i].label)
+            if(affected_by[i].label != "")
+            {
+                affected_by_list += "<li>%1</li>\n".arg(affected_by[i].label)
+            }
         }
 
         var affects_list = ""
         for (var i in affects)
         {
-            affects_list += "<li>%1</li>\n".arg(affects[i].label)
+            if(affects[i].label != "")
+            {
+                affects_list += "<li>%1</li>\n".arg(affects[i].label)
+            }
         }
 
         var tooltip = "<b>%1</b>\n<p>%2</p>".arg(definition.label).arg(definition.description)
@@ -132,18 +135,17 @@ Item
             }
         }
 
-        Label
+        UM.Label
         {
             id: label
 
             anchors.left: parent.left
-            anchors.leftMargin: doDepthIndentation ? Math.round(UM.Theme.getSize("thin_margin").width + ((definition.depth - 1) * UM.Theme.getSize("setting_control_depth_margin").width)) : 0
+            anchors.leftMargin: doDepthIndentation ? Math.round(UM.Theme.getSize("thin_margin").width + ((definition.depth - 1) * UM.Theme.getSize("default_margin").width)) : 0
             anchors.right: settingControls.left
             anchors.verticalCenter: parent.verticalCenter
 
             text: definition.label
             elide: Text.ElideMiddle
-            renderType: Text.NativeRendering
             textFormat: Text.PlainText
 
             color: UM.Theme.getColor("setting_control_text")
@@ -207,7 +209,7 @@ Item
                 height: UM.Theme.getSize("small_button_icon").height
                 width: height
 
-                color: UM.Theme.getColor("setting_control_button")
+                color: UM.Theme.getColor("accent_1")
                 hoverColor: UM.Theme.getColor("setting_control_button_hover")
 
                 iconSource: UM.Theme.getIcon("ArrowReset")
@@ -269,7 +271,7 @@ Item
                     }
 
                     // If the setting does not have a limit_to_extruder property (or is -1), use the active stack.
-                    if (globalPropertyProvider.properties.limit_to_extruder === null || String(globalPropertyProvider.properties.limit_to_extruder) === "-1")
+                    if (globalPropertyProvider.properties.limit_to_extruder === null || globalPropertyProvider.properties.limit_to_extruder === "-1")
                     {
                         return Cura.SettingInheritanceManager.settingsWithInheritanceWarning.indexOf(definition.key) >= 0
                     }
@@ -283,7 +285,7 @@ Item
                     {
                         return false
                     }
-                    return Cura.SettingInheritanceManager.getOverridesForExtruder(definition.key, String(globalPropertyProvider.properties.limit_to_extruder)).indexOf(definition.key) >= 0
+                    return Cura.SettingInheritanceManager.hasOverrides(definition.key, globalPropertyProvider.properties.limit_to_extruder)
                 }
 
                 anchors.top: parent.top

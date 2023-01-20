@@ -1,0 +1,30 @@
+{
+    "version": 2,
+    "name": "ELEGOO NEPTUNE 3",
+    "inherits": "elegoo_base",
+    "metadata":
+    {
+        "visible": true,
+        "author": "NARUTO",
+        "quality_definition": "elegoo_base"
+    },
+    "overrides":
+    {
+        "machine_depth": { "default_value": 235 },
+        "machine_end_gcode": { "default_value": "G91 ;Relative positionning\nG1 E-2 F2700 ;Retract a bit\nG1 E-10 X5 Y5 Z3 F3000 ;Retract\nG90 ;Absolute positionning\nG1 X0 Y{machine_depth} ;Present print\nM106 S0 ;Turn-off fan\nM104 S0 ;Turn-off hotend\nM140 S0 ;Turn-off bed\nM84 X Y E ;Disable all steppers but Z" },
+        "machine_head_with_fans_polygon":
+        {
+            "value": [
+                [-55, 20],
+                [55, 20],
+                [55, -25],
+                [-55, -25]
+            ]
+        },
+        "machine_height": { "default_value": 280 },
+        "machine_name": { "default_value": "ELEGOO NEPTUNE 3" },
+        "machine_start_gcode": { "default_value": ";ELEGOO NEPTUNE 3\n;M413 S0;S0=Disable power-loss recovery:S1=Enable power-loss recovery\nM220 S100 ;Set the feed speed to 100%\nG90\nG28 ;home\n;M420 S1 Z10;Uncomment to enable progressive compensation height of 10mm\nG92 E0 ;Reset Extruder\nG1 Z0.6 F100\nG1 X1.5 Y20 F5000.0 ;Move to start position\nG1 Y120.0 F600.0 E20 ;Draw the first line\nG1 X0.5 F1000.0 ;Move to side a little\nG1 Y20 F600 E40 ;Draw the second line\nG92 E0 ;Reset Extruder" },
+        "machine_width": { "default_value": 235 },
+        "material_bed_temperature": { "value": "default_material_bed_temperature + 10" }
+    }
+}

@@ -1,10 +1,10 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
 import QtQuick.Controls 2.3
 
-import UM 1.4 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 Item
@@ -39,21 +39,18 @@ Item
             anchors.verticalCenter: parent.verticalCenter
             status: UM.StatusIcon.Status.WARNING
         }
-        Label
+        UM.Label
         {
             id: label
             anchors.left: icon.right
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
-            // There are two cases that we want to differenciate, one is when Cura is loading the configurations and the
+            // There are two cases that we want to differentiate, one is when Cura is loading the configurations and the
             // other when the connection was lost
             text: Cura.MachineManager.printerConnected ?
                     catalog.i18nc("@label", "Loading available configurations from the printer...") :
                     catalog.i18nc("@label", "The configurations are not available because the printer is disconnected.")
-            color: UM.Theme.getColor("text")
-            font: UM.Theme.getFont("default")
-            renderType: Text.NativeRendering
             wrapMode: Text.WordWrap
         }
     }
@@ -67,18 +64,14 @@ Item
         contentHeight: configurationList.height
         clip: true
 
-        ScrollBar.vertical.policy: (configurationList.height > maximumHeight) ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff //The AsNeeded policy also hides it when the cursor is away, and we don't want that.
-        ScrollBar.vertical.background: Rectangle
-        {
-            implicitWidth: UM.Theme.getSize("scrollbar").width
-            radius: width / 2
-            color: UM.Theme.getColor("scrollbar_background")
-        }
-        ScrollBar.vertical.contentItem: Rectangle
-        {
-            implicitWidth: UM.Theme.getSize("scrollbar").width
-            radius: width / 2
-            color: UM.Theme.getColor(parent.pressed ? "scrollbar_handle_down" : parent.hovered ? "scrollbar_handle_hover" : "scrollbar_handle")
+        ScrollBar.vertical: UM.ScrollBar {
+            parent: container.parent
+            anchors
+            {
+                top: parent.top
+                right: parent.right
+                bottom: parent.bottom
+            }
         }
 
         ButtonGroup

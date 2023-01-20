@@ -1,6 +1,6 @@
 name: Bug Report
 description: Create a report to help us fix issues.
-labels: "Type: Bug"
+labels: ["Type: Bug", "Status: Triage"]
 body:
 - type: markdown
   attributes:
@@ -14,7 +14,7 @@ body:
   attributes:
     label: Application Version
     description: The version of Cura this issue occurs with.
-    placeholder: 4.9.0
+    placeholder: 5.0.0
   validations:
     required: true
 - type: input
@@ -64,7 +64,7 @@ body:
           You can find your log file here:
           Windows: `%APPDATA%\cura\<Cura version>\cura.log` or usually `C:\Users\\<your username>\AppData\Roaming\cura\<Cura version>\cura.log`
           MacOS: `$USER/Library/Application Support/cura/<Cura version>/cura.log`
-          Ubuntu/Linus: `$USER/.local/share/cura/<Cura version>/cura.log` 
+          Ubuntu/Linux: `$USER/.local/share/cura/<Cura version>/cura.log` 
           
           If the Cura user interface still starts, you can also reach this directory from the application menu in Help -> Show settings folder 
 - type: checkboxes

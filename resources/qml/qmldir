@@ -2,8 +2,10 @@ module Cura
 
 MachineSelector 1.0 MachineSelector.qml
 MachineSelectorButton 1.0 MachineSelectorButton.qml
+MachineListButton 1.0 MachineListButton.qml
 CustomConfigurationSelector 1.0 CustomConfigurationSelector.qml
 PrintSetupSelector 1.0 PrintSetupSelector.qml
+ProfileOverview 1.6 ProfileOverview.qml
 ActionButton 1.0 ActionButton.qml
 MaterialMenu 1.0 MaterialMenu.qml
 NozzleMenu 1.0 NozzleMenu.qml
@@ -13,12 +15,9 @@ OutputDevicesActionButton 1.0 OutputDevicesActionButton.qml
 ExpandableComponent 1.0 ExpandableComponent.qml
 PrinterTypeLabel 1.0 PrinterTypeLabel.qml
 ViewsSelector 1.0 ViewsSelector.qml
-ToolbarButton 1.0 ToolbarButton.qml
 SettingView 1.0 SettingView.qml
 ProfileMenu 1.0 ProfileMenu.qml
-CheckBoxWithTooltip 1.0 CheckBoxWithTooltip.qml
-ToolTip 1.0 ToolTip.qml
-
+PrintSelectorCard 1.0 PrintSelectorCard.qml
 
 # Cura/WelcomePages
 
@@ -28,7 +27,6 @@ WizardDialog        1.0 WizardDialog.qml
 
 # Cura/Widgets
 
-CheckBox            1.0 CheckBox.qml
 ComboBox            1.0 ComboBox.qml
 NotificationIcon    1.0 NotificationIcon.qml
 RadioButton         1.0 RadioButton.qml
@@ -39,6 +37,11 @@ ScrollView          1.0 ScrollView.qml
 Menu                1.0 Menu.qml
 MenuItem            1.0 MenuItem.qml
 MenuSeparator       1.0 MenuSeparator.qml
+SingleSettingExtruderSelectorBar        1.7 SingleSettingExtruderSelectorBar.qml
+ExtruderButton                          1.7 ExtruderButton.qml
+SingleSettingComboBox                   1.7 SingleSettingComboBox.qml
+SingleSettingSlider                     1.7 SingleSettingSlider.qml
+SingleSettingTextField                  1.7 SingleSettingTextField.qml
 
 
 # Cura/MachineSettings
@@ -48,3 +51,4 @@ GcodeTextArea               1.0 GcodeTextArea.qml
 NumericTextFieldWithUnit    1.0 NumericTextFieldWithUnit.qml
 PrintHeadMinMaxTextField    1.0 PrintHeadMinMaxTextField.qml
 SimpleCheckBox              1.0 SimpleCheckBox.qml
+RenameDialog                1.0 RenameDialog.qml

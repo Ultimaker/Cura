@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Ruben Dulek
+# Copyright (c) 2017 Ghostkeeper
 # The PostProcessingPlugin is released under the terms of the AGPLv3 or higher.
 
 import re #To perform the search and replace.
