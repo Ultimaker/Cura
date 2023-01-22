@@ -92,7 +92,6 @@ Item
     Action
     {
         id: exitFullScreenAction
-        shortcut: StandardKey.Cancel
         text: catalog.i18nc("@action:inmenu", "Exit Full Screen")
         icon.name: "view-fullscreen"
     }
