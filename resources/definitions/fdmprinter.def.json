@@ -4405,6 +4405,7 @@
                     "unit": "mm/s",
                     "type": "float",
                     "default_value": 10,
+                    "enable": "cool_min_layer_time > 0",
                     "minimum_value": "0",
                     "maximum_value_warning": "100",
                     "settable_per_mesh": false,
@@ -4416,6 +4417,7 @@
                     "description": "When the minimum speed is hit because of minimum layer time, lift the head away from the print and wait the extra time until the minimum layer time is reached.",
                     "type": "bool",
                     "default_value": false,
+                    "enable": "cool_min_layer_time > 0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -4426,6 +4428,7 @@
                     "unit": "\u00b0C",
                     "type": "float",
                     "value": "material_print_temperature",
+                    "enable": "cool_min_layer_time > 0",
                     "minimum_value": "material_final_print_temperature",
                     "maximum_value": "material_print_temperature",
                     "settable_per_mesh": false,
