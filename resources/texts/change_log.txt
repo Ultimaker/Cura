@@ -1,3 +1,18 @@
+[5.2.2]
+
+* Introducing the UltiMaker S7
+- Included support for the new UltiMaker S7
+
+* Bug fixes:
+- Allow UltiMaker S7 printers to receive Material Profiles
+
+* Printer definitions, profiles and materials:
+- Improved Initial Layer settings for UltiMaker S7, S5, and S3 printers
+- Disabled Support Towers for UltiMaker S7, S5, and S3 printers
+- Cleaned up material profiles, by removing duplicate setting segments, and unused elements 
+- Updated preferred quality type for all UltiMaker 3D printers
+
+
 [5.2.1]
 
 * Bug fixes:
