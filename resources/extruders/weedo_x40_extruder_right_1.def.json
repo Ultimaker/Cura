@@ -6,7 +6,7 @@
     {
         "machine": "weedo_x40",
         "position": "1",
-        "quality_definition": "weedo_x40_extruder_right_0"
+        "quality_definition": "weedo_x40_extruder_right_1"
     },
     "overrides":
     {
