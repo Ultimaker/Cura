@@ -477,14 +477,14 @@ class PauseAtHeight(Script):
 
                 # Set a custom GCODE section before pause
                 if gcode_before:
-                    prepend_gcode += gcode_before.replace(";","\n") + "\n"
+                    prepend_gcode += gcode_before + "\n"
 
                 # Wait till the user continues printing
                 prepend_gcode += pause_command + " ; Do the actual pause\n"
 
                 # Set a custom GCODE section after pause
                 if gcode_after:
-                    prepend_gcode += gcode_after.replace(";","\n") + "\n"
+                    prepend_gcode += gcode_after + "\n"
 
                 if pause_method == "repetier":
                     #Push the filament back,
