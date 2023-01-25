@@ -39,12 +39,12 @@ class RetractContinue(Script):
         f = self.getValue(travel_move, "F", -1.0)
         return travel, f
 
-    def _travelMoveString(self, travel: Vector, f: float, out_e: float) -> str:
+    def _travelMoveString(self, travel: Vector, f: float, e: float) -> str:
         # Note that only G1 moves are written, since extrusion is included.
         if f <= 0.0:
-            return f"G1 X{travel.x:.5f} Y{travel.y:.5f} Z{travel.z:.5f} E{out_e:.5f}"
+            return f"G1 X{travel.x:.5f} Y{travel.y:.5f} Z{travel.z:.5f} E{e:.5f}"
         else:
-            return f"G1 F{f:.5f} X{travel.x:.5f} Y{travel.y:.5f} Z{travel.z:.5f} E{out_e:.5f}"
+            return f"G1 F{f:.5f} X{travel.x:.5f} Y{travel.y:.5f} Z{travel.z:.5f} E{e:.5f}"
 
     def execute(self, data: List[str]) -> List[str]:
         current_e = 0.0
