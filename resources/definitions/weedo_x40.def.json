@@ -60,6 +60,7 @@
             "eryone_pla_matte",
             "eryone_pla_wood",
             "eryone_pla",
+            "eryone_tpu",  
             "eSUN_PETG_Black",
             "eSUN_PETG_Grey",
             "eSUN_PETG_Purple",
@@ -106,7 +107,7 @@
             "redd_nylon",
             "redd_petg",
             "redd_pla",
-            "redd_tpe",
+            "redd_tpe",            
             "tizyx_abs",
             "tizyx_flex",
             "tizyx_petg",
@@ -137,6 +138,21 @@
             "volumic_pp_ultra",
             "volumic_strong_ultra",
             "volumic_support_ultra",
+            "xyzprinting_abs",
+            "xyzprinting_antibact_pla",
+            "xyzprinting_carbon_fiber",
+            "xyzprinting_colorinkjet_pla",
+            "xyzprinting_flexible",
+            "xyzprinting_metallic_pla",
+            "xyzprinting_nylon",
+            "xyzprinting_pahtcf15",
+            "xyzprinting_pc",
+            "xyzprinting_petcf15",
+            "xyzprinting_petg",
+            "xyzprinting_pla",
+            "xyzprinting_ppgf30",
+            "xyzprinting_tough_pla",
+            "xyzprinting_tpu",
             "zyyx_pro_flex",
             "zyyx_pro_pla"
         ],
@@ -146,7 +162,7 @@
         "machine_extruder_trains":
         {
             "0": "weedo_x40_extruder_left_0",
-            "1": "weedo_x40_extruder_right_0"
+            "1": "weedo_x40_extruder_right_1"
         },
         "platform_offset": [
             0,
@@ -193,15 +209,15 @@
         "machine_acceleration": { "value": 500 },
         "machine_center_is_zero": { "default_value": false },
         "machine_depth": { "default_value": 300 },
-        "machine_end_gcode": { "default_value": "(*********end X40 End.gcode*******)\nG28 X Y F3000\nG91 ; Relative positioning\nG1 E-6 ; Reduce filament pressure\nG90 ; Absolute positioning\nG0 Y300 F3000 ; Move headbed\nM104 S0 T0 ; Cool down left extruder\nM104 S0 T1 ; Cool down right extruder\nM140 S0 ; Cool down heatbed\nM107 P0 ; Turn off left fan\nM107 P1 ; Turn off right fan\nM82; Extruder in absolute mode\nM73 P100 ; Set print progress to 100%" },
+        "machine_end_gcode": { "default_value": "(*********end WEEDO X40 End.gcode*******)\nG28 X Y F3000\nG91 ; Relative positioning\nG1 E-6 ; Reduce filament pressure\nG90 ; Absolute positioning\nG0 Y300 F3000 ; Move headbed\nM104 S0 T0 ; Cool down left extruder\nM104 S0 T1 ; Cool down right extruder\nM140 S0 ; Cool down heatbed\nM107 P0 ; Turn off left fan\nM107 P1 ; Turn off right fan\nM82; Extruder in absolute mode\nM73 P100 ; Set print progress to 100%" },
         "machine_extruder_count": { "default_value": 2 },
         "machine_head_with_fans_polygon":
         {
             "default_value": [
-                [-42.5, 18],
-                [-42.5, -50],
-                [24.5, 18],
-                [24.5, -50.0]
+                [-25,  55],
+                [-25, -25],
+                [ 25,  55],
+                [ 25, -25]
             ]
         },
         "machine_heated_bed": { "default_value": true },
@@ -221,7 +237,7 @@
         "machine_name": { "default_value": "Weedo X40" },
         "machine_nozzle_cool_down_speed": { "default_value": 0.75 },
         "machine_nozzle_heat_up_speed": { "default_value": 1.6 },
-        "machine_start_gcode": { "default_value": "; x40-community.org configuration Rev. 08\n;(**** start.gcode for WEEDO X40 DUAL****)\nT{initial_extruder_nr} S ; Selected start extruder\nM140 S{material_bed_temperature_layer_0} ; Preheat bed\nM109 S{material_print_temperature_layer_0}; Preheat nozzle\nM73 P0 ; Set current print progress percentage\nG21 ; Millimeter Units\nG90 ; Absolute positioning\nM82 ; Extruder in absolute mode\nT0 S ; Select left extruder\nM301 H1 P15.53 I1.32 D45.75 ; PID left extruder with Weedo X40 coolingsystem\n;M301 H1 P13.32 I0.98 D45.13 ; PID left extruder with X40 Community coolingsystem\nM92 E94.90 ; Calibrate left extruder\nT1 S ; Select right extruder\nM301 H1 P15.44 I1.29 D46.11 ; PID right extruder with Weedo X40 coolingsystem\n;M301 H1 P13.32 I0.98 D45.13 ; PID right extruder with X40 Community coolingsystem\nM92 E94.90 ; Calibrate right extruder\nT0 S ; Select left extruder\nG28 ; Auto home\nG29 ; Bed Leveling\nG1 X-47 F3000 ; Move left nozzle to parking position\nT1 S ; select right extruder\nG1 X351 F3000 ; Move right nozzle to parking position\nM107 P0 ; Turn off left fan\nM107 P1 ; Turn off right fan\nT{initial_extruder_nr} S ; Set start extruder\nM190 S{material_bed_temperature_layer_0} ; Waiting for bed temperature\nG1 E50 F100 ; Extrude in parking position\nM77 ; Stop heat up timer\nM75 ; Start print timer\n" },
+        "machine_start_gcode": { "default_value": ";x40-community.org configuration Rev. 12\n;MachineType:{machine_name}\n;FilamentType:{material_type}\n;InfillDensity:{infill_sparse_density}\n;Weight:{filament_weight}\n;Data for OctoPrint Plugin Slicer Estimator\n;Slicer info:machine_name;{machine_name}\n;Slicer info:material_brand;{material_brand}\n;Slicer info:material_name;{material_name}\n;(**** start.gcode for WEEDO X40 ****)\nT0 S ; Selected left extruder\nG28 ; Auto home\nG90 ; Absolute Positioning\nG29 ; Bed Leveling\nG1 X-47 F3000 ; Move left nozzle to parking position\nT{initial_extruder_nr} S ; Set start extruder\nM140 S{material_bed_temperature_layer_0} ; Preheat bed\nM109 S{material_print_temperature_layer_0}; Preheat nozzle\nM73 P0 ; Set current print progress percentage\nM107 P0 ; Turn off left fan\nM107 P1 ; Turn off right fan\nM190 S{material_bed_temperature_layer_0} ; Waiting for bed temperature\nG1 E50 F100 ; Extrude in parking position\n"},
         "machine_width": { "default_value": 300 },
         "material_diameter": { "default_value": 1.75 },
         "material_print_temp_prepend": { "default_value": false },
