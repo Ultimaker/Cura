@@ -101,11 +101,6 @@
         "machine_width": { "default_value": 223 },
         "material_bed_temperature": { "maximum_value": 110 },
         "material_bed_temperature_layer_0": { "maximum_value": 110 },
-        "material_final_print_temperature":
-        {
-            "maximum_value": 260,
-            "value": "material_print_temperature"
-        },
         "material_initial_print_temperature":
         {
             "maximum_value": 260,
