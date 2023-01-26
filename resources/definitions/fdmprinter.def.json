@@ -1649,6 +1649,19 @@
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "small_skin_width":
+                {
+                    "label": "Small Top/Bottom width",
+                    "description": "Small Top/Bottom regions are filled with walls instead of the normal Top/Bottom pattern. This helps to avoids jerky motions.",
+                    "value": "skin_line_width * 2",
+                    "default_value": 1,
+                    "minimum_value": "0",
+                    "maximum_value_warning": "skin_line_width * 10",
+                    "type": "float",
+                    "enabled": "(top_layers > 0 or bottom_layers > 0) and top_bottom_pattern != 'concentric'",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true
+                },
                 "skin_no_small_gaps_heuristic":
                 {
                     "label": "No Skin in Z Gaps",
