@@ -2409,7 +2409,7 @@
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "285",
                     "maximum_value": "365",
-                    "enabled": "machine_nozzle_temp_enabled and not (material_flow_dependent_temperature)",
+                    "enabled": "machine_nozzle_temp_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -2471,7 +2471,7 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "10.0",
                     "maximum_value": "machine_nozzle_heat_up_speed",
-                    "enabled": "material_flow_dependent_temperature or (extruders_enabled_count > 1 and material_final_print_temperature != material_print_temperature)",
+                    "enabled": "extruders_enabled_count > 1 and material_final_print_temperature != material_print_temperature",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -4100,16 +4100,6 @@
                     "maximum_value_warning": "retraction_amount * 2",
                     "value": "retraction_amount",
                     "enabled": "retraction_enable",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
-                "limit_support_retractions":
-                {
-                    "label": "Limit Support Retractions",
-                    "description": "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excessive stringing within the support structure.",
-                    "type": "bool",
-                    "default_value": true,
-                    "enabled": "retraction_enable and (support_enable or support_meshes_present)",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -6836,16 +6826,6 @@
                     "default_value": false,
                     "settable_per_mesh": true
                 },
-                "material_flow_dependent_temperature":
-                {
-                    "label": "Auto Temperature",
-                    "description": "Change the temperature for each layer automatically with the average flow speed of that layer.",
-                    "type": "bool",
-                    "default_value": false,
-                    "enabled": "machine_nozzle_temp_enabled and False",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
                 "material_flow_temp_graph":
                 {
                     "label": "Flow Temperature Graph",
@@ -6853,7 +6833,7 @@
                     "unit": "[[mm\u00b3,\u00b0C]]",
                     "type": "str",
                     "default_value": "[[3.5, 200],[7.0, 240]]",
-                    "enabled": "False and machine_nozzle_temp_enabled and material_flow_dependent_temperature",
+                    "enabled": "False and machine_nozzle_temp_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
