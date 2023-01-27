@@ -1020,6 +1020,23 @@
             }
         }
     },
+    "VersionUpgrade52to53": {
+        "package_info": {
+            "package_id": "VersionUpgrade52to53",
+            "package_type": "plugin",
+            "display_name": "Version Upgrade 5.2 to 5.3",
+            "description": "Upgrades configurations from Cura 5.2 to Cura 5.3",
+            "package_version": "1.0.0",
+            "sdk_version": "8.2.0",
+            "website": "https://ultimaker.com",
+            "author": {
+                "author_id": "UltimakerPackages",
+                "display_name": "UltiMaker",
+                "email": "plugins@ultimaker.com",
+                "website": "https://ultimaker.com"
+            }
+        }
+    },
     "X3DReader": {
         "package_info": {
             "package_id": "X3DReader",
