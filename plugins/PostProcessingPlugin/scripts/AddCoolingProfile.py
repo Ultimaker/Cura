@@ -251,30 +251,12 @@ class AddCoolingProfile(Script):
         }"""
 #Initialize variables
     def execute(self, data):
-        fan_first_l = "0"
-        fan_first_p = "0"
-        fan_second_l = "0"
-        fan_second_p = "0"
-        fan_third_l = "0"
-        fan_third_p = "0"
-        fan_fourth_l = "0"
-        fan_fourth_p = "0"
-        fan_fifth_l = "0"
-        fan_fifth_p = "0"
-        fan_sixth_l = "0"
-        fan_sixth_p = "0"
-        fan_seventh_l = "0"
-        fan_seventh_p = "0"
-        fan_eighth_l = "0"
-        fan_eighth_p = "0"
-        fan_ninth_l = "0"
-        fan_ninth_p = "0"
-        fan_tenth_l = "0"
-        fan_fan_tenth_p = "0"
-        fan_eleventh_l = "0"
-        fan_eleventh_p = "0"
-        fan_twelfth_l = "0"
-        fan_twelfth_p = "0"
+        fan_first_l = "0"; fan_first_p = "0"; fan_second_l = "0"; fan_second_p = "0"
+        fan_third_l = "0"; fan_third_p = "0"; fan_fourth_l = "0"; fan_fourth_p = "0"
+        fan_fifth_l = "0"; fan_fifth_p = "0"; fan_sixth_l = "0"; fan_sixth_p = "0"
+        fan_seventh_l = "0"; fan_seventh_p = "0"; fan_eighth_l = "0"; fan_eighth_p = "0"
+        fan_ninth_l = "0"; fan_ninth_p = "0"; fan_tenth_l = "0"; fan_fan_tenth_p = "0"
+        fan_eleventh_l = "0"; fan_eleventh_p = "0"; fan_twelfth_l = "0"; fan_twelfth_p = "0"
 #Get the {machine_scale_fan_speed_zero_to_one} setting from Cura.
         fan_mode = True
         extrud = Application.getInstance().getGlobalContainerStack().extruderList 
@@ -558,6 +540,7 @@ class AddCoolingProfile(Script):
                         modified_data += line + "\n"
                 else:
                     modified_data += line + "\n"
+            if modified_data.endswith("\n"): modified_data = modified_data[:-1]
             data[index] = modified_data
 
 #The "By Layer" section
@@ -607,7 +590,7 @@ class AddCoolingProfile(Script):
                             modified_data += fan_sp_bridge + "\n"
                     if line == ";LAYER:" + str(int(the_end_layer) + 1)  and the_end_is_enabled == True:
                         modified_data += fan_sp_feature_final + "\n"
-                if modified_data.endswith("\n"): modified_data = modified_data[0:len(modified_data) - 2]
+                if modified_data.endswith("\n"): modified_data = modified_data[0:len(modified_data) - 1]
                 data[layer_index] = modified_data
                 layer_index +=1
         return data
