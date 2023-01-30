@@ -639,6 +639,9 @@ class VersionUpgrade52to53(VersionUpgrade):
 
         parser["metadata"]["setting_version"] = "21"
 
+        for container in parser['containers']:
+            parser['containers'][container] = _RENAMED_PROFILES.get(parser['containers'][container], parser['containers'][container])
+
         result = io.StringIO()
         parser.write(result)
         return [filename], [result.getvalue()]
