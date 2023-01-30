@@ -5313,7 +5313,7 @@ msgstr "ローカルプリンター"
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Menus/ExtensionMenu.qml:13
 msgctxt "@title:menu menubar:toplevel"
 msgid "E&xtensions"
-msgstr "拡張子"
+msgstr "拡張"
 
 #: /Users/c.lamboo/ultimaker/Cura/resources/qml/Menus/OpenFilesMenu.qml:15
 msgctxt "@title:menu menubar:file"
@@ -6415,7 +6415,7 @@ msgstr "Curaプロファイルリーダー"
 #: /PostProcessingPlugin/plugin.json
 msgctxt "description"
 msgid "Extension that allows for user created scripts for post processing"
-msgstr "後処理のためにユーザーが作成したスクリプト用拡張子"
+msgstr "後処理のためにユーザーが作成したスクリプト用拡張"
 
 #: /PostProcessingPlugin/plugin.json
 msgctxt "name"
