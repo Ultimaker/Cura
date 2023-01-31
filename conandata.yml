@@ -10,15 +10,15 @@
 # requirements (use the <dep_name>/(latest)@ultimaker/testing)
 #
 # Subject to change in the future!
-"5.3.0":
+"5.3.0-beta":
     requirements:
         - "pyarcus/5.2.2"
-        - "curaengine/5.3.0"
+        - "curaengine/(latest)@ultimaker/stable"
         - "pysavitar/5.2.2"
         - "pynest2d/5.2.2"
-        - "uranium/5.3.0"
-        - "fdm_materials/5.3.0"
-        - "cura_binary_data/5.3.0"
+        - "uranium/(latest)@ultimaker/stable"
+        - "fdm_materials/(latest)@ultimaker/stable"
+        - "cura_binary_data/(latest)@ultimaker/stable"
         - "cpython/3.10.4"
     internal_requirements:
         - "fdm_materials_private/(latest)@ultimaker/testing"
@@ -120,15 +120,15 @@
             Windows: "./icons/Cura.ico"
             Macos: "./icons/cura.icns"
             Linux: "./icons/cura-128.png"
-"5.3.0-beta":
+"5.3.0":
     requirements:
         - "pyarcus/5.2.2"
-        - "curaengine/(latest)@ultimaker/stable"
+        - "curaengine/5.3.0"
         - "pysavitar/5.2.2"
         - "pynest2d/5.2.2"
-        - "uranium/(latest)@ultimaker/stable"
-        - "fdm_materials/(latest)@ultimaker/stable"
-        - "cura_binary_data/(latest)@ultimaker/stable"
+        - "uranium/5.3.0"
+        - "fdm_materials/5.3.0"
+        - "cura_binary_data/5.3.0"
         - "cpython/3.10.4"
     internal_requirements:
         - "fdm_materials_private/(latest)@ultimaker/testing"
