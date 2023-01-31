@@ -159,7 +159,9 @@ jobs:
                                 else:
                                     channel_metadata = f"{channel}_{no_commits}"
                             if is_release_branch:
-                                if latest_branch_version.prerelease == "":
+                                if latest_branch_version.prerelease == "" and branch_version > latest_branch_version:
+                                    actual_version = f"{branch_version.major}.{branch_version.minor}.0-beta.1+{buildmetadata}{channel_metadata}"
+                                elif latest_branch_version.prerelease == "":
                                     # An actual full release has been created, we are working on patch
                                     bump_up_patch = int(latest_branch_version.patch) + 1
                                     actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{bump_up_patch}-beta.1+{buildmetadata}{channel_metadata}"
