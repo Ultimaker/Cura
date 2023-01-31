@@ -228,6 +228,21 @@ class ChangeAtZ(Script):
                     "maximum_value_warning": "120",
                     "enabled": "h1_Change_bedTemp"
                 },
+                "h1_Change_Extruder": {
+                    "label": "Change Extruder",
+                    "description": "Select if Extruder has to be changed",
+                    "type": "bool",
+                    "default_value": false
+                },
+                "h2_changeextruder": {
+                    "label": "Extruder",
+                    "description": "Extruder to use. Enter only number",
+                    "type": "int",
+                    "default_value": 0,
+                    "minimum_value": "0",
+                    "maximum_value_warning": "2",
+                    "enabled": "h1_Change_Extruder"
+                },
                 "h1_Change_buildVolumeTemperature": {
                     "label": "Change Build Volume Temperature",
                     "description": "Select if Build Volume Temperature has to be changed",
@@ -362,6 +377,7 @@ class ChangeAtZ(Script):
         caz_instance.targetValues = {}
 
         # copy over our settings to our change z class
+        self.setIntSettingIfEnabled(caz_instance, "h1_Change_Extruder", "changeextruder", "h2_changeextruder")
         self.setIntSettingIfEnabled(caz_instance, "e1_Change_speed", "speed", "e2_speed")
         self.setIntSettingIfEnabled(caz_instance, "f1_Change_printspeed", "printspeed", "f2_printspeed")
         self.setIntSettingIfEnabled(caz_instance, "g1_Change_flowrate", "flowrate", "g2_flowrate")
@@ -800,6 +816,10 @@ class ChangeAtZProcessor:
         if "bedTemp" in values:
             codes.append("BedTemp: " + str(round(values["bedTemp"])))
 
+        # looking for new extruder
+        if "changeextruder" in values:
+            codes.append("Change Extruder to: " + str(values["changeextruder"]) + "")
+
         # looking for wait for Build Volume Temperature
         if "buildVolumeTemperature" in values:
             codes.append("buildVolumeTemperature: " + str(round(values["buildVolumeTemperature"])))
@@ -885,6 +905,10 @@ class ChangeAtZProcessor:
         # looking for wait for bed temp
         if "bedTemp" in values:
             codes.append("M140 S" + str(values["bedTemp"]))
+
+        # looking for new extruder
+        if "changeextruder" in values:
+            codes.append("T" + str(values["changeextruder"]) + "")
 
         # looking for wait for Build Volume Temperature
         if "buildVolumeTemperature" in values:
@@ -1392,6 +1416,16 @@ class ChangeAtZProcessor:
             # get our bed temp if provided
             if "S" in command.arguments:
                 self.lastValues["bedTemp"] = command.getArgumentAsFloat("S")
+
+            # move to the next command
+            return
+
+        # handle extruder change
+        if command.command == "T":
+
+            # get our extruder if provided
+            if "T" in command.arguments:
+                self.lastValues["changeextruder"] = command.getArgumentAsInt("T")
 
             # move to the next command
             return
