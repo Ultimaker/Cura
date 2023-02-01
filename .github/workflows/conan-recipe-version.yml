@@ -175,14 +175,14 @@ jobs:
                                 for branch in repo.references:
                                     try:
                                         if "remotes/origin" in branch.abspath:
-                                            b_version = tools.Version(branch.name)
+                                            b_version = tools.Version(branch.name.split("/")[-1])
                                             if b_version < tools.Version("10.0.0") and b_version > max_branches_version:
                                                 max_branches_version = b_version
                                                 branches_no_commits = repo.commit().count() - branch.commit.count()
                                     except:
                                         pass
                                 if max_branches_version > latest_branch_version:
-                                    actual_version = f"{latest_branches_version.major}.{int(latest_branches_version.minor) + 1}.0-alpha+{buildmetadata}{channel_metadata}"
+                                    actual_version = f"{max_branches_version.major}.{int(max_branches_version.minor) + 1}.0-alpha+{buildmetadata}{channel_metadata}"
                                 else:
                                     actual_version = f"{latest_branch_version.major}.{int(latest_branch_version.minor) + 1}.0-alpha+{buildmetadata}{channel_metadata}"
 
