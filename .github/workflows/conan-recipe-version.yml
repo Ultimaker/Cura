@@ -178,7 +178,7 @@ jobs:
                                             b_version = tools.Version(branch.name)
                                             if b_version < tools.Version("10.0.0") and b_version > max_branches_version:
                                                 max_branches_version = b_version
-                                                branches_no_commits = repo.commit().count() - branch..commit.count()
+                                                branches_no_commits = repo.commit().count() - branch.commit.count()
                                     except:
                                         pass
                                 if max_branches_version > latest_branch_version:
