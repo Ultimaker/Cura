@@ -173,7 +173,9 @@ jobs:
                                 branches_version = []
                                 for branch in repo.branches:
                                     try:
-                                        branches_version.append(tools.Version(branch.name))
+                                        b_version = tools.Version(branch.name)
+                                        if b_version < tools.Version("10.0.0"):
+                                            branches_version.append(b_version)
                                     except:
                                         pass
                                 latest_branches_version = max(sorted(branches_version))
