@@ -173,17 +173,13 @@ jobs:
                                 branches_version = []
                                 for branch in repo.references:
                                     try:
-                                        print(branch.abspath)
-                                        if "heads" in branch.abspath:
+                                        if "remotes/origin" in branch.abspath:
                                             b_version = tools.Version(branch.name)
                                             if b_version < tools.Version("10.0.0"):
                                                 branches_version.append(b_version)
                                     except:
                                         pass
-                                if len(branches_version) > 0:
-                                    latest_branches_version = max(sorted(branches_version))
-                                else:
-                                    latest_branches_version = tools.Version("5.3")  # FIXME: Do not hardcode
+                                latest_branches_version = max(sorted(branches_version))
                                 if latest_branches_version > latest_branch_version:
                                     actual_version = f"{latest_branches_version.major}.{int(latest_branches_version.minor) + 1}.0-alpha+{buildmetadata}{channel_metadata}"
                                 else:
