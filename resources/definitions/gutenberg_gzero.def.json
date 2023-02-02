@@ -1,0 +1,17 @@
+{
+    "name": "G-ZERO",
+    "version": 2,
+    "inherits": "gutenberg_base",
+    "metadata":
+    {
+        "visible": true,
+        "quality_definition": "gutenberg_base"
+    },
+    "overrides":
+    {
+        "machine_name":     { "default_value": "G-ZERO" },
+        "machine_width":    { "default_value": 250 },
+        "machine_depth":    { "default_value": 200 },
+        "machine_height":   { "default_value": 201 }
+    }
+}
