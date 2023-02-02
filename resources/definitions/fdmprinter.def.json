@@ -6870,7 +6870,7 @@
                     "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
                     "default_value": 0.8,
                     "value": "2 * wall_line_width_0",
-                    "minimum_value": "0.001",
+                    "minimum_value": "min_odd_wall_line_width",
                     "maximum_value": "min(0.5 * machine_width, 0.5 * machine_depth)",
                     "maximum_value_warning": "max(extruderValues('wall_line_width_0')) * 6",
                     "settable_per_mesh": true,
@@ -6884,6 +6884,8 @@
                     "type": "float",
                     "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
                     "default_value": 22.5,
+                    "minimum_value": "0",
+                    "maximum_value": "360",
                     "resolve": "min(extruderValues('interlocking_orientation'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
@@ -6896,6 +6898,7 @@
                     "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
                     "default_value": 2,
                     "minimum_value": "1",
+                    "maximum_value_warning": "50",
                     "resolve": "max(extruderValues('interlocking_beam_layer_count'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
@@ -6908,6 +6911,8 @@
                     "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
                     "default_value": 2,
                     "minimum_value": "1",
+                    "maximum_value": "10",
+                    "maximum_value_warning": "5",
                     "resolve": "max(extruderValues('interlocking_depth'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
@@ -6920,8 +6925,10 @@
                     "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
                     "default_value": 3,
                     "minimum_value": "0",
-                    "resolve": "max(extruderValues('interlocking_boundary_avoidance'))",
                     "minimum_value_warning": "resolveOrValue('interlocking_depth')",
+                    "maximum_value": "10",
+                    "maximum_value_warning": "5",
+                    "resolve": "max(extruderValues('interlocking_boundary_avoidance'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
