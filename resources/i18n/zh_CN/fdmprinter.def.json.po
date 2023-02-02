@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-01-31 16:46+0000\n"
+"POT-Creation-Date: 2023-02-02 16:06+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -66,6 +66,11 @@ msgstr "包含不允许喷嘴进入区域的多边形列表。"
 msgctxt "machine_disallowed_areas description"
 msgid "A list of polygons with areas the print head is not allowed to enter."
 msgstr "包含不允许打印头进入区域的多边形列表。"
+
+#: fdmprinter.def.json
+msgctxt "brim_inside_margin description"
+msgid "A part fully enclosed inside another part can generate an outer brim that touches the inside of the other part. This removes all brim within this distance from internal holes."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_abs label"
@@ -270,6 +275,11 @@ msgstr "防渗出回抽速度"
 msgctxt "machine_use_extruder_offset_to_offset_coords description"
 msgid "Apply the extruder offset to the coordinate system. Affects all extruders."
 msgstr "将挤出器偏移量应用到坐标轴系统。影响所有挤出器。"
+
+#: fdmprinter.def.json
+msgctxt "interlocking_enable description"
+msgid "At the locations where models touch, generate an interlocking beam structure. This improves the adhesion between models, especially models printed in different materials."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "travel_avoid_other_parts label"
@@ -1544,6 +1554,11 @@ msgid "Gradual Support Infill Steps"
 msgstr "渐进支撑填充步阶"
 
 #: fdmprinter.def.json
+msgctxt "cool_min_temperature description"
+msgid "Gradually reduce to this temperature when printing at reduced speeds because of minimum layer time."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
 msgid "Grid"
 msgstr "网格"
@@ -1727,11 +1742,6 @@ msgstr "假定在打印机启动 gcode 脚本完成后，每个挤出器的细�
 msgctxt "bridge_skin_support_threshold description"
 msgid "If a skin region is supported for less than this percentage of its area, print it using the bridge settings. Otherwise it is printed using the normal skin settings."
 msgstr "如果受支撑的表面区域小于整个区域的这一百分比，则使用连桥设置打印。否则，使用正常表面设置打印。"
-
-#: fdmprinter.def.json
-msgctxt "brim_inside_margin description"
-msgid "If brim is only on outside then parts fully enclosed inside another part will get a brim which might overlap with the internal holes of the outer part. This setting controls how far to stay away from those internal holes. Set to a high value to prevent any brim from being generated for parts enclosed within the holes of other parts."
-msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "bridge_enable_more_layers description"
@@ -4558,11 +4568,6 @@ msgid "The difference in height of the next layer height compared to the previou
 msgstr "下一层与前一层的高度差。"
 
 #: fdmprinter.def.json
-msgctxt "interlocking_orientation description"
-msgid "The direction of the beams of the interlocking structure in the XY plane as a rotation about the Z axis."
-msgstr ""
-
-#: fdmprinter.def.json
 msgctxt "ironing_line_spacing description"
 msgid "The distance between the lines of ironing."
 msgstr "熨平走线之间的距离。"
@@ -4588,19 +4593,24 @@ msgid "The distance between the raft lines for the top raft layers. The spacing 
 msgstr "顶部 Raft 层的 Raft 走线之间的距离。 间距应等于走线宽度，以便打造坚固表面。"
 
 #: fdmprinter.def.json
-msgctxt "interlocking_boundary_avoidance description"
-msgid "The distance close to the boundary of the print where not to generate an interlocking structure as measued in number of cells times 2. If set to a value lower than the Inerlocking Depth then the interlocking structure can become visible on the outside of the print near the interfaces where two models meet."
-msgstr ""
-
-#: fdmprinter.def.json
 msgctxt "wireframe_roof_inset description"
 msgid "The distance covered when making a connection from a roof outline inward. Only applies to Wire Printing."
 msgstr "在从顶板轮廓向内进行连接时所覆盖的距离。 仅应用于单线打印。"
 
 #: fdmprinter.def.json
+msgctxt "interlocking_depth description"
+msgid "The distance from the boundary between models to generate interlocking structure measured in cells. Too few cells will result in poor adhesion."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "brim_width description"
 msgid "The distance from the model to the outermost brim line. A larger brim enhances adhesion to the build plate, but also reduces the effective print area."
 msgstr "模型到最外侧 brim 线的距离。 较大的 brim 可增强与打印平台的附着，但也会减少有效打印区域。"
+
+#: fdmprinter.def.json
+msgctxt "interlocking_boundary_avoidance description"
+msgid "The distance from the outside of a model where interlocking structures will not be generated, measured in cells."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_heat_zone_length description"
@@ -4829,7 +4839,12 @@ msgstr "在切换至密度的一半前指定密度的支撑填充高度。"
 
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_layer_count description"
-msgid "The height of the beams of the interlocking structure as measured in number of layers. Less layers is stronger, but more prone to manufacturing defects."
+msgid "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "interlocking_orientation description"
+msgid "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -5190,11 +5205,6 @@ msgstr "在空走时，喷嘴避免了已打印的支撑。只有在启用了梳
 msgctxt "bottom_layers description"
 msgid "The number of bottom layers. When calculated by the bottom thickness, this value is rounded to a whole number."
 msgstr "底层的数量。 在按底层厚度计算时，该值舍入为整数。"
-
-#: fdmprinter.def.json
-msgctxt "interlocking_depth description"
-msgid "The number of cells along the depth of the interface between two models where an interlocking structure is to be generated. Less cells is better, but too little cells can cause the not to be connected properly, which reduces the adhesion performance of the interlocking structure."
-msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "raft_base_wall_count description"
@@ -5680,14 +5690,15 @@ msgid "The width (X-direction) of the printable area."
 msgstr "机器可打印区域宽度（X 坐标）"
 
 #: fdmprinter.def.json
-msgctxt "interlocking_beam_width description"
-msgid "The width of the beams of this material in the interlocking structure."
-msgstr ""
-
-#: fdmprinter.def.json
 msgctxt "support_brim_width description"
 msgid "The width of the brim to print underneath the support. A larger brim enhances adhesion to the build plate, at the cost of some extra material."
 msgstr "在支撑下方要打印的 Brim 的宽度。较大的 Brim 可增强与打印平台的附着，但也会增加一些额外材料成本。"
+
+#: fdmprinter.def.json
+#, fuzzy
+msgctxt "interlocking_beam_width description"
+msgid "The width of the interlocking structure beams."
+msgstr "装填塔的宽度。"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_size description"
@@ -6325,11 +6336,6 @@ msgid "When printing the third bridge skin layer, the amount of material extrude
 msgstr "打印连桥第三层表面时，将挤出的材料量乘以此值。"
 
 #: fdmprinter.def.json
-msgctxt "cool_min_temperature description"
-msgid "When reducing print speeds because of the minimum layer time, the printing temperature is gradually reduced to this temperature."
-msgstr ""
-
-#: fdmprinter.def.json
 msgctxt "cool_lift_head description"
 msgid "When the minimum speed is hit because of minimum layer time, lift the head away from the print and wait the extra time until the minimum layer time is reached."
 msgstr "当因最低层时间达到最低速度时，将打印头从打印品上提升，并等候达到最低层时间。"
@@ -6413,11 +6419,6 @@ msgstr "是否将模型放置在打印平台中心 (0,0)，而不是使用模型
 msgctxt "machine_nozzle_temp_enabled description"
 msgid "Whether to control temperature from Cura. Turn this off to control nozzle temperature from outside of Cura."
 msgstr "是否从 Cura 控制温度。 关闭此选项，从 Cura 外部控制喷嘴温度。"
-
-#: fdmprinter.def.json
-msgctxt "interlocking_enable description"
-msgid "Whether to generate a structure at the interface between two models of a different material in order to improve the adhesion. The structure consists of cells of horizontal beams with alternating direction which connect to each other over the Z direction in order to interlock with the beams of the other material."
-msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temp_prepend description"

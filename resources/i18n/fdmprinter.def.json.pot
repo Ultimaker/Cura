@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-01-31 16:46+0000\n"
+"POT-Creation-Date: 2023-02-02 16:06+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -3638,7 +3638,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "cool_min_temperature description"
-msgid "When reducing print speeds because of the minimum layer time, the printing temperature is gradually reduced to this temperature."
+msgid "Gradually reduce to this temperature when printing at reduced speeds because of minimum layer time."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -4768,7 +4768,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "brim_inside_margin description"
-msgid "If brim is only on outside then parts fully enclosed inside another part will get a brim which might overlap with the internal holes of the outer part. This setting controls how far to stay away from those internal holes. Set to a high value to prevent any brim from being generated for parts enclosed within the holes of other parts."
+msgid "A part fully enclosed inside another part can generate an outer brim that touches the inside of the other part. This removes all brim within this distance from internal holes."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -5618,7 +5618,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "interlocking_enable description"
-msgid "Whether to generate a structure at the interface between two models of a different material in order to improve the adhesion. The structure consists of cells of horizontal beams with alternating direction which connect to each other over the Z direction in order to interlock with the beams of the other material."
+msgid "At the locations where models touch, generate an interlocking beam structure. This improves the adhesion between models, especially models printed in different materials."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -5628,7 +5628,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_width description"
-msgid "The width of the beams of this material in the interlocking structure."
+msgid "The width of the interlocking structure beams."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -5638,7 +5638,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "interlocking_orientation description"
-msgid "The direction of the beams of the interlocking structure in the XY plane as a rotation about the Z axis."
+msgid "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -5648,7 +5648,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_layer_count description"
-msgid "The height of the beams of the interlocking structure as measured in number of layers. Less layers is stronger, but more prone to manufacturing defects."
+msgid "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -5658,7 +5658,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "interlocking_depth description"
-msgid "The number of cells along the depth of the interface between two models where an interlocking structure is to be generated. Less cells is better, but too little cells can cause the not to be connected properly, which reduces the adhesion performance of the interlocking structure."
+msgid "The distance from the boundary between models to generate interlocking structure measured in cells. Too few cells will result in poor adhesion."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -5668,7 +5668,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "interlocking_boundary_avoidance description"
-msgid "The distance close to the boundary of the print where not to generate an interlocking structure as measued in number of cells times 2. If set to a value lower than the Inerlocking Depth then the interlocking structure can become visible on the outside of the print near the interfaces where two models meet."
+msgid "The distance from the outside of a model where interlocking structures will not be generated, measured in cells."
 msgstr ""
 
 #: fdmprinter.def.json

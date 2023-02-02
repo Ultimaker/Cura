@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-01-31 16:46+0000\n"
+"POT-Creation-Date: 2023-02-02 16:06+0000\n"
 "PO-Revision-Date: 2020-03-24 09:43+0100\n"
 "Last-Translator: Nagy Attila <vokroot@gmail.com>\n"
 "Language-Team: AT-VLOG\n"
@@ -71,6 +71,11 @@ msgstr "A sokszögek listája azon területekkel, ahová a fúvóka nem léphet 
 msgctxt "machine_disallowed_areas description"
 msgid "A list of polygons with areas the print head is not allowed to enter."
 msgstr "A sokszögek listája azon területekkel, ahová a nyomtatófej nem léphet be."
+
+#: fdmprinter.def.json
+msgctxt "brim_inside_margin description"
+msgid "A part fully enclosed inside another part can generate an outer brim that touches the inside of the other part. This removes all brim within this distance from internal holes."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_abs label"
@@ -274,6 +279,11 @@ msgstr "Szivárgásgátló visszahúzás sebesség"
 #: fdmprinter.def.json
 msgctxt "machine_use_extruder_offset_to_offset_coords description"
 msgid "Apply the extruder offset to the coordinate system. Affects all extruders."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "interlocking_enable description"
+msgid "At the locations where models touch, generate an interlocking beam structure. This improves the adhesion between models, especially models printed in different materials."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -1547,6 +1557,11 @@ msgid "Gradual Support Infill Steps"
 msgstr "Fokozatos támasz kitöltési lépések"
 
 #: fdmprinter.def.json
+msgctxt "cool_min_temperature description"
+msgid "Gradually reduce to this temperature when printing at reduced speeds because of minimum layer time."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
 msgid "Grid"
 msgstr "Rács"
@@ -1730,11 +1745,6 @@ msgstr ""
 msgctxt "bridge_skin_support_threshold description"
 msgid "If a skin region is supported for less than this percentage of its area, print it using the bridge settings. Otherwise it is printed using the normal skin settings."
 msgstr "Ha a felületi régió területe kevesebb, mint ez a megadott százalékos érték, nyomtassa a híd beállításokkal, egyébként normál felületi beállításokkal nyomtasson."
-
-#: fdmprinter.def.json
-msgctxt "brim_inside_margin description"
-msgid "If brim is only on outside then parts fully enclosed inside another part will get a brim which might overlap with the internal holes of the outer part. This setting controls how far to stay away from those internal holes. Set to a high value to prevent any brim from being generated for parts enclosed within the holes of other parts."
-msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "bridge_enable_more_layers description"
@@ -4561,11 +4571,6 @@ msgid "The difference in height of the next layer height compared to the previou
 msgstr "A következő réteg magasságának különbsége az előzőhöz képest."
 
 #: fdmprinter.def.json
-msgctxt "interlocking_orientation description"
-msgid "The direction of the beams of the interlocking structure in the XY plane as a rotation about the Z axis."
-msgstr ""
-
-#: fdmprinter.def.json
 msgctxt "ironing_line_spacing description"
 msgid "The distance between the lines of ironing."
 msgstr "A vasalási vonalak közötti távolság."
@@ -4591,19 +4596,25 @@ msgid "The distance between the raft lines for the top raft layers. The spacing 
 msgstr "A tutajvonalak közötti távolság a felső tutajrétegeknél. A távolságnak meg kell egyeznie a vonalszélességgel, hogy a felület tömör legyen."
 
 #: fdmprinter.def.json
-msgctxt "interlocking_boundary_avoidance description"
-msgid "The distance close to the boundary of the print where not to generate an interlocking structure as measued in number of cells times 2. If set to a value lower than the Inerlocking Depth then the interlocking structure can become visible on the outside of the print near the interfaces where two models meet."
-msgstr ""
-
-#: fdmprinter.def.json
 msgctxt "wireframe_roof_inset description"
 msgid "The distance covered when making a connection from a roof outline inward. Only applies to Wire Printing."
 msgstr "A beépített távolság, amikor a tetőtől körvonalakat bekapcsolnak. Csak a huzalnyomásra vonatkozik."
 
 #: fdmprinter.def.json
+msgctxt "interlocking_depth description"
+msgid "The distance from the boundary between models to generate interlocking structure measured in cells. Too few cells will result in poor adhesion."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "brim_width description"
 msgid "The distance from the model to the outermost brim line. A larger brim enhances adhesion to the build plate, but also reduces the effective print area."
 msgstr "Az a szélesség, amilyen széles lesz a Perem, a nyomtatott tárgy szélétől számítva. A nagyobb perem nagyobb tapadást fog eredményeznim viszont csökkenti az effektív használható nyomtatási területet."
+
+#: fdmprinter.def.json
+#, fuzzy
+msgctxt "interlocking_boundary_avoidance description"
+msgid "The distance from the outside of a model where interlocking structures will not be generated, measured in cells."
+msgstr "Ez a távolság a fúvóka végétől mért távolság, ameddig a nyomtatószálat vissza szükséges húzni, ha nem használjuk az adott extrudert."
 
 #: fdmprinter.def.json
 msgctxt "machine_heat_zone_length description"
@@ -4832,7 +4843,12 @@ msgstr "A támaszkitöltés azon magassága, ahol a sűrűség feleződni fog."
 
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_layer_count description"
-msgid "The height of the beams of the interlocking structure as measured in number of layers. Less layers is stronger, but more prone to manufacturing defects."
+msgid "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "interlocking_orientation description"
+msgid "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -5193,11 +5209,6 @@ msgstr "A fej mozgatásakor a kinyomtatott támaszokat elkerülő útvonalon fog
 msgctxt "bottom_layers description"
 msgid "The number of bottom layers. When calculated by the bottom thickness, this value is rounded to a whole number."
 msgstr "Az alsó rétegek száma. Az alsó vastagság alapján számítva ezt az értéket egész számra kerekíti."
-
-#: fdmprinter.def.json
-msgctxt "interlocking_depth description"
-msgid "The number of cells along the depth of the interface between two models where an interlocking structure is to be generated. Less cells is better, but too little cells can cause the not to be connected properly, which reduces the adhesion performance of the interlocking structure."
-msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "raft_base_wall_count description"
@@ -5683,14 +5694,15 @@ msgid "The width (X-direction) of the printable area."
 msgstr "A nyomtatási terület szélessége (X-irány)."
 
 #: fdmprinter.def.json
-msgctxt "interlocking_beam_width description"
-msgid "The width of the beams of this material in the interlocking structure."
-msgstr ""
-
-#: fdmprinter.def.json
 msgctxt "support_brim_width description"
 msgid "The width of the brim to print underneath the support. A larger brim enhances adhesion to the build plate, at the cost of some extra material."
 msgstr "A támasz alá nyomtatandó perem szélessége. A nagyobb peremek javítják a tálcához való tapadást, viszon extra anyagfelhasználást is jelent."
+
+#: fdmprinter.def.json
+#, fuzzy
+msgctxt "interlocking_beam_width description"
+msgid "The width of the interlocking structure beams."
+msgstr "Az előtorony szélessége."
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_size description"
@@ -6328,11 +6340,6 @@ msgid "When printing the third bridge skin layer, the amount of material extrude
 msgstr "A harmadik hídréteg nyomtatásakor az extrudált anyag mennyiségét megszorozzuk ezzel az értékkel."
 
 #: fdmprinter.def.json
-msgctxt "cool_min_temperature description"
-msgid "When reducing print speeds because of the minimum layer time, the printing temperature is gradually reduced to this temperature."
-msgstr ""
-
-#: fdmprinter.def.json
 msgctxt "cool_lift_head description"
 msgid "When the minimum speed is hit because of minimum layer time, lift the head away from the print and wait the extra time until the minimum layer time is reached."
 msgstr "Ha a nyomtató elérte a megadott minimális rétegidővel a minimális sebességet, és nem tud tovább lassulni, akkor a nyomtató emelje fel a fejet addig, amig amíg el nem éri a minimális rétegidőt."
@@ -6416,11 +6423,6 @@ msgstr "A tárgyat a tárgyasztal közepére kell központosítani (0,0), annak 
 msgctxt "machine_nozzle_temp_enabled description"
 msgid "Whether to control temperature from Cura. Turn this off to control nozzle temperature from outside of Cura."
 msgstr "A hőmérsékletet a Cura-ból lehet szabályozni.Kapcsolja ki ezt, ha a fúvóka hőmérsékletének szabályozását kívülről szeretné végezni."
-
-#: fdmprinter.def.json
-msgctxt "interlocking_enable description"
-msgid "Whether to generate a structure at the interface between two models of a different material in order to improve the adhesion. The structure consists of cells of horizontal beams with alternating direction which connect to each other over the Z direction in order to interlock with the beams of the other material."
-msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temp_prepend description"
@@ -7040,10 +7042,6 @@ msgstr "fej átpozícionálás"
 #~ msgctxt "spaghetti_max_infill_angle label"
 #~ msgid "Spaghetti Maximum Infill Angle"
 #~ msgstr "Maximális kitöltési szög"
-
-#~ msgctxt "machine_filament_park_distance description"
-#~ msgid "The distance from the tip of the nozzle where to park the filament when an extruder is no longer used."
-#~ msgstr "Ez a távolság a fúvóka végétől mért távolság, ameddig a nyomtatószálat vissza szükséges húzni, ha nem használjuk az adott extrudert."
 
 #~ msgctxt "spaghetti_max_infill_angle description"
 #~ msgid "The maximum angle w.r.t. the Z axis of the inside of the print for areas which are to be filled with spaghetti infill afterwards. Lowering this value causes more angled parts in your model to be filled on each layer."

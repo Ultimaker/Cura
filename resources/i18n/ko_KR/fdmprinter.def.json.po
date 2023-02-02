@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-01-31 16:46+0000\n"
+"POT-Creation-Date: 2023-02-02 16:06+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -66,6 +66,11 @@ msgstr "노즐이 위치할 수 없는 구역의 목록입니다."
 msgctxt "machine_disallowed_areas description"
 msgid "A list of polygons with areas the print head is not allowed to enter."
 msgstr "프린팅 헤드가 위치할 수 없는 구역의 목록입니다."
+
+#: fdmprinter.def.json
+msgctxt "brim_inside_margin description"
+msgid "A part fully enclosed inside another part can generate an outer brim that touches the inside of the other part. This removes all brim within this distance from internal holes."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_abs label"
@@ -270,6 +275,11 @@ msgstr "흐름 방지 리트랙션 속도"
 msgctxt "machine_use_extruder_offset_to_offset_coords description"
 msgid "Apply the extruder offset to the coordinate system. Affects all extruders."
 msgstr "익스트루더 오프셋을 좌표계에 적용하십시오. 모든 익스트루더에 적용됩니다."
+
+#: fdmprinter.def.json
+msgctxt "interlocking_enable description"
+msgid "At the locations where models touch, generate an interlocking beam structure. This improves the adhesion between models, especially models printed in different materials."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "travel_avoid_other_parts label"
@@ -1542,6 +1552,11 @@ msgid "Gradual Support Infill Steps"
 msgstr "점진적 서포트 내부채움 단계"
 
 #: fdmprinter.def.json
+msgctxt "cool_min_temperature description"
+msgid "Gradually reduce to this temperature when printing at reduced speeds because of minimum layer time."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
 msgid "Grid"
 msgstr "그리드"
@@ -1725,11 +1740,6 @@ msgstr "프린터 시작 gcode 스크립트가 완료될 때 공유된 노즐 �
 msgctxt "bridge_skin_support_threshold description"
 msgid "If a skin region is supported for less than this percentage of its area, print it using the bridge settings. Otherwise it is printed using the normal skin settings."
 msgstr "스킨 영역이 해당 영역의 비율 미만으로 생성되면 브릿지 설정을 사용하여 인쇄하십시오. 그렇지 않으면 일반 스킨 설정을 사용하여 인쇄됩니다."
-
-#: fdmprinter.def.json
-msgctxt "brim_inside_margin description"
-msgid "If brim is only on outside then parts fully enclosed inside another part will get a brim which might overlap with the internal holes of the outer part. This setting controls how far to stay away from those internal holes. Set to a high value to prevent any brim from being generated for parts enclosed within the holes of other parts."
-msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "bridge_enable_more_layers description"
@@ -4556,11 +4566,6 @@ msgid "The difference in height of the next layer height compared to the previou
 msgstr "이전 높이와 비교되는 다음 레이어 높이의 차이."
 
 #: fdmprinter.def.json
-msgctxt "interlocking_orientation description"
-msgid "The direction of the beams of the interlocking structure in the XY plane as a rotation about the Z axis."
-msgstr ""
-
-#: fdmprinter.def.json
 msgctxt "ironing_line_spacing description"
 msgid "The distance between the lines of ironing."
 msgstr "다림질 라인 사이의 거리."
@@ -4586,19 +4591,24 @@ msgid "The distance between the raft lines for the top raft layers. The spacing 
 msgstr "상단 래프트 레이어에 대한 래프트 사이의 거리. 간격은 선 너비와 동일해야 표면이 단색입니다."
 
 #: fdmprinter.def.json
-msgctxt "interlocking_boundary_avoidance description"
-msgid "The distance close to the boundary of the print where not to generate an interlocking structure as measued in number of cells times 2. If set to a value lower than the Inerlocking Depth then the interlocking structure can become visible on the outside of the print near the interfaces where two models meet."
-msgstr ""
-
-#: fdmprinter.def.json
 msgctxt "wireframe_roof_inset description"
 msgid "The distance covered when making a connection from a roof outline inward. Only applies to Wire Printing."
 msgstr "지붕에서 연결을 할 때 안쪽까지 윤곽선을 그립니다. 와이어 프린팅에만 적용됩니다."
 
 #: fdmprinter.def.json
+msgctxt "interlocking_depth description"
+msgid "The distance from the boundary between models to generate interlocking structure measured in cells. Too few cells will result in poor adhesion."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "brim_width description"
 msgid "The distance from the model to the outermost brim line. A larger brim enhances adhesion to the build plate, but also reduces the effective print area."
 msgstr "모델에서 가장 바깥 쪽 브림까지의 거리. 큰 테두리는 빌드 플레이트에 대한 접착력을 향상 시키지만 효과적인 프린팅 영역도 감소시킵니다."
+
+#: fdmprinter.def.json
+msgctxt "interlocking_boundary_avoidance description"
+msgid "The distance from the outside of a model where interlocking structures will not be generated, measured in cells."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_heat_zone_length description"
@@ -4827,7 +4837,12 @@ msgstr "밀도의 절반으로 전환하기 전에 주어진 밀도의 서포트
 
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_layer_count description"
-msgid "The height of the beams of the interlocking structure as measured in number of layers. Less layers is stronger, but more prone to manufacturing defects."
+msgid "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "interlocking_orientation description"
+msgid "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -5188,11 +5203,6 @@ msgstr "노즐은 이동하는 경우 이미 인쇄된 지지대를 피합니다
 msgctxt "bottom_layers description"
 msgid "The number of bottom layers. When calculated by the bottom thickness, this value is rounded to a whole number."
 msgstr "아래층의 수. 바닥 두께로 계산을 할때 이 값은 벽 두께로 계산할 때 이 값은 반올림됩니다."
-
-#: fdmprinter.def.json
-msgctxt "interlocking_depth description"
-msgid "The number of cells along the depth of the interface between two models where an interlocking structure is to be generated. Less cells is better, but too little cells can cause the not to be connected properly, which reduces the adhesion performance of the interlocking structure."
-msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "raft_base_wall_count description"
@@ -5678,14 +5688,15 @@ msgid "The width (X-direction) of the printable area."
 msgstr "프린팅 가능 영역의 폭 (X 방향)."
 
 #: fdmprinter.def.json
-msgctxt "interlocking_beam_width description"
-msgid "The width of the beams of this material in the interlocking structure."
-msgstr ""
-
-#: fdmprinter.def.json
 msgctxt "support_brim_width description"
 msgid "The width of the brim to print underneath the support. A larger brim enhances adhesion to the build plate, at the cost of some extra material."
 msgstr "서포트 아래를 인쇄하기 위한 브림 폭. 브림이 커질수록 추가 재료가 소요되지만 빌드 플레이트에 대한 접착력이 향상됩니다."
+
+#: fdmprinter.def.json
+#, fuzzy
+msgctxt "interlocking_beam_width description"
+msgid "The width of the interlocking structure beams."
+msgstr "프라임 타워의 너비."
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_size description"
@@ -6323,11 +6334,6 @@ msgid "When printing the third bridge skin layer, the amount of material extrude
 msgstr "세번째 브릿지 스킨 영역을 프린팅할 때 압출 된 재료의 양에 이 값을 곱합니다."
 
 #: fdmprinter.def.json
-msgctxt "cool_min_temperature description"
-msgid "When reducing print speeds because of the minimum layer time, the printing temperature is gradually reduced to this temperature."
-msgstr ""
-
-#: fdmprinter.def.json
 msgctxt "cool_lift_head description"
 msgid "When the minimum speed is hit because of minimum layer time, lift the head away from the print and wait the extra time until the minimum layer time is reached."
 msgstr "최소 레이어 시간으로 인해 최소 속도에 도달하면 헤드를 출력물에서 들어 올려 최소 레이어 시간에 도달 할 때까지 시간을 기다립니다."
@@ -6411,11 +6417,6 @@ msgstr "객체가 저장된 좌표계를 사용하는 대신 빌드 플랫폼 �
 msgctxt "machine_nozzle_temp_enabled description"
 msgid "Whether to control temperature from Cura. Turn this off to control nozzle temperature from outside of Cura."
 msgstr "Cura에서 온도를 제어할지 여부. Cura 외부에서 노즐 온도를 제어하려면 이 기능을 끄십시오."
-
-#: fdmprinter.def.json
-msgctxt "interlocking_enable description"
-msgid "Whether to generate a structure at the interface between two models of a different material in order to improve the adhesion. The structure consists of cells of horizontal beams with alternating direction which connect to each other over the Z direction in order to interlock with the beams of the other material."
-msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temp_prepend description"

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-01-31 16:46+0000\n"
+"POT-Creation-Date: 2023-02-02 16:06+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -66,6 +66,11 @@ msgstr "Lista de polígonos con áreas en las que la tobera no tiene permitido e
 msgctxt "machine_disallowed_areas description"
 msgid "A list of polygons with areas the print head is not allowed to enter."
 msgstr "Lista de polígonos con áreas que el cabezal de impresión no tiene permitido introducir."
+
+#: fdmprinter.def.json
+msgctxt "brim_inside_margin description"
+msgid "A part fully enclosed inside another part can generate an outer brim that touches the inside of the other part. This removes all brim within this distance from internal holes."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_abs label"
@@ -270,6 +275,11 @@ msgstr "Velocidad de retracción antirrezumado"
 msgctxt "machine_use_extruder_offset_to_offset_coords description"
 msgid "Apply the extruder offset to the coordinate system. Affects all extruders."
 msgstr "Aplicar el desplazamiento del extrusor al sistema de coordenadas. Influye en todos los extrusores."
+
+#: fdmprinter.def.json
+msgctxt "interlocking_enable description"
+msgid "At the locations where models touch, generate an interlocking beam structure. This improves the adhesion between models, especially models printed in different materials."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "travel_avoid_other_parts label"
@@ -1544,6 +1554,11 @@ msgid "Gradual Support Infill Steps"
 msgstr "Escalones de relleno de soporte"
 
 #: fdmprinter.def.json
+msgctxt "cool_min_temperature description"
+msgid "Gradually reduce to this temperature when printing at reduced speeds because of minimum layer time."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
 msgid "Grid"
 msgstr "Rejilla"
@@ -1727,11 +1742,6 @@ msgstr "La cantidad de filamento de cada extrusor que se supone que se ha retira
 msgctxt "bridge_skin_support_threshold description"
 msgid "If a skin region is supported for less than this percentage of its area, print it using the bridge settings. Otherwise it is printed using the normal skin settings."
 msgstr "Si un área de forro es compatible con un porcentaje inferior de su área, se imprime utilizando los ajustes de puente. De lo contrario, se imprimirá utilizando los ajustes de forro habituales."
-
-#: fdmprinter.def.json
-msgctxt "brim_inside_margin description"
-msgid "If brim is only on outside then parts fully enclosed inside another part will get a brim which might overlap with the internal holes of the outer part. This setting controls how far to stay away from those internal holes. Set to a high value to prevent any brim from being generated for parts enclosed within the holes of other parts."
-msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "bridge_enable_more_layers description"
@@ -4558,11 +4568,6 @@ msgid "The difference in height of the next layer height compared to the previou
 msgstr "La diferencia de altura de la siguiente altura de capa en comparación con la anterior."
 
 #: fdmprinter.def.json
-msgctxt "interlocking_orientation description"
-msgid "The direction of the beams of the interlocking structure in the XY plane as a rotation about the Z axis."
-msgstr ""
-
-#: fdmprinter.def.json
 msgctxt "ironing_line_spacing description"
 msgid "The distance between the lines of ironing."
 msgstr "Distancia entre las líneas del alisado."
@@ -4588,19 +4593,24 @@ msgid "The distance between the raft lines for the top raft layers. The spacing 
 msgstr "Distancia entre las líneas de la balsa para las capas superiores de la balsa. La separación debe ser igual a la ancho de línea para producir una superficie sólida."
 
 #: fdmprinter.def.json
-msgctxt "interlocking_boundary_avoidance description"
-msgid "The distance close to the boundary of the print where not to generate an interlocking structure as measued in number of cells times 2. If set to a value lower than the Inerlocking Depth then the interlocking structure can become visible on the outside of the print near the interfaces where two models meet."
-msgstr ""
-
-#: fdmprinter.def.json
 msgctxt "wireframe_roof_inset description"
 msgid "The distance covered when making a connection from a roof outline inward. Only applies to Wire Printing."
 msgstr "Distancia cubierta al hacer una conexión desde un contorno del techo hacia el interior. Solo se aplica a la impresión de alambre."
 
 #: fdmprinter.def.json
+msgctxt "interlocking_depth description"
+msgid "The distance from the boundary between models to generate interlocking structure measured in cells. Too few cells will result in poor adhesion."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "brim_width description"
 msgid "The distance from the model to the outermost brim line. A larger brim enhances adhesion to the build plate, but also reduces the effective print area."
 msgstr "Distancia desde el modelo hasta la línea del borde exterior. Un borde mayor mejora la adhesión a la plataforma de impresión, pero también reduce el área de impresión efectiva."
+
+#: fdmprinter.def.json
+msgctxt "interlocking_boundary_avoidance description"
+msgid "The distance from the outside of a model where interlocking structures will not be generated, measured in cells."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_heat_zone_length description"
@@ -4829,7 +4839,12 @@ msgstr "Altura del relleno de soporte de una determinada densidad antes de cambi
 
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_layer_count description"
-msgid "The height of the beams of the interlocking structure as measured in number of layers. Less layers is stronger, but more prone to manufacturing defects."
+msgid "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "interlocking_orientation description"
+msgid "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -5190,11 +5205,6 @@ msgstr "La tobera evita los soportes ya impresos al desplazarse. Esta opción so
 msgctxt "bottom_layers description"
 msgid "The number of bottom layers. When calculated by the bottom thickness, this value is rounded to a whole number."
 msgstr "Número de capas inferiores. Al calcularlo por el grosor inferior, este valor se redondea a un número entero."
-
-#: fdmprinter.def.json
-msgctxt "interlocking_depth description"
-msgid "The number of cells along the depth of the interface between two models where an interlocking structure is to be generated. Less cells is better, but too little cells can cause the not to be connected properly, which reduces the adhesion performance of the interlocking structure."
-msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "raft_base_wall_count description"
@@ -5680,14 +5690,15 @@ msgid "The width (X-direction) of the printable area."
 msgstr "Ancho (dimensión sobre el eje X) del área de impresión."
 
 #: fdmprinter.def.json
-msgctxt "interlocking_beam_width description"
-msgid "The width of the beams of this material in the interlocking structure."
-msgstr ""
-
-#: fdmprinter.def.json
 msgctxt "support_brim_width description"
 msgid "The width of the brim to print underneath the support. A larger brim enhances adhesion to the build plate, at the cost of some extra material."
 msgstr "Anchura del borde de impresión que se imprime por debajo del soporte. Una anchura de soporte amplia mejora la adhesión a la placa de impresión, pero requieren material adicional."
+
+#: fdmprinter.def.json
+#, fuzzy
+msgctxt "interlocking_beam_width description"
+msgid "The width of the interlocking structure beams."
+msgstr "Anchura de la torre auxiliar."
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_size description"
@@ -6325,11 +6336,6 @@ msgid "When printing the third bridge skin layer, the amount of material extrude
 msgstr "Cuando se imprime la tercera capa del forro del puente; la cantidad de material extruido se multiplica por este valor."
 
 #: fdmprinter.def.json
-msgctxt "cool_min_temperature description"
-msgid "When reducing print speeds because of the minimum layer time, the printing temperature is gradually reduced to this temperature."
-msgstr ""
-
-#: fdmprinter.def.json
 msgctxt "cool_lift_head description"
 msgid "When the minimum speed is hit because of minimum layer time, lift the head away from the print and wait the extra time until the minimum layer time is reached."
 msgstr "Cuando se alcanza la velocidad mínima debido al tiempo mínimo de capa, levante el cabezal de la impresión y espere el tiempo adicional hasta que se alcance el tiempo mínimo de capa."
@@ -6413,11 +6419,6 @@ msgstr "Centrar o no el objeto en el centro de la plataforma de impresión (0, 0
 msgctxt "machine_nozzle_temp_enabled description"
 msgid "Whether to control temperature from Cura. Turn this off to control nozzle temperature from outside of Cura."
 msgstr "Para controlar la temperatura desde Cura. Si va a controlar la temperatura de la tobera desde fuera de Cura, desactive esta opción."
-
-#: fdmprinter.def.json
-msgctxt "interlocking_enable description"
-msgid "Whether to generate a structure at the interface between two models of a different material in order to improve the adhesion. The structure consists of cells of horizontal beams with alternating direction which connect to each other over the Z direction in order to interlock with the beams of the other material."
-msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temp_prepend description"
