@@ -6923,7 +6923,7 @@
                     "description": "The distance close to the boundary of the print where not to generate an interlocking structure as measued in number of cells times 2. If set to a value lower than the Inerlocking Depth then the interlocking structure can become visible on the outside of the print near the interfaces where two models meet.",
                     "type": "int",
                     "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
-                    "default_value": 3,
+                    "default_value": 2,
                     "minimum_value": "0",
                     "minimum_value_warning": "resolveOrValue('interlocking_depth')",
                     "maximum_value": "10",
