@@ -1,0 +1,115 @@
+{
+    "version": 2,
+    "name": "Gutenberg Base",
+    "inherits": "fdmprinter",
+    "metadata":
+    {
+        "visible": false,
+        "author": "Gutenberg Dev",
+        "manufacturer": "Gutenberg",
+        "file_formats": "text/x-gcode",
+        "first_start_actions": [ "MachineSettingsAction" ],
+        "has_machine_quality": true,
+        "machine_extruder_trains": { "0": "gutenberg_extruder_0" },
+        "preferred_material": "generic_abs",
+        "preferred_quality_type": "normal"
+    },
+    "overrides":
+    {
+        "acceleration_enabled": { "default_value": true },
+        "acceleration_layer_0": { "value": 10000 },
+        "acceleration_print": { "default_value": 15000 },
+        "acceleration_roofing": { "value": 10000 },
+        "acceleration_travel_layer_0": { "value": 10000 },
+        "acceleration_wall_0": { "value": 7500 },
+        "adhesion_type": { "default_value": "skirt" },
+        "alternate_extra_perimeter": { "default_value": true },
+        "bridge_fan_speed_2": { "resolve": "max(cool_fan_speed, 50)" },
+        "bridge_fan_speed_3": { "resolve": "max(cool_fan_speed, 20)" },
+        "bridge_settings_enabled": { "default_value": true },
+        "bridge_wall_coast": { "default_value": 10 },
+        "cool_fan_full_at_height": { "value": "resolveOrValue('layer_height_0') + resolveOrValue('layer_height') * max(1, cool_fan_full_layer - 1)" },
+        "cool_fan_full_layer": { "value": 4 },
+        "cool_min_layer_time": { "default_value": 15 },
+        "cool_min_layer_time_fan_speed_max": { "default_value": 20 },
+        "gantry_height": { "value": 30 },
+        "infill_before_walls": { "default_value": false },
+        "infill_enable_travel_optimization": { "default_value": true },
+        "jerk_roofing": { "value": 10 },
+        "jerk_wall_0": { "value": 10 },
+        "layer_height_0": { "resolve": "max(0.2, min(extruderValues('layer_height')))" },
+        "line_width": { "value": "machine_nozzle_size * 1.125" },
+        "machine_acceleration": { "default_value": 1500 },
+        "machine_depth": { "default_value": 165 },
+        "machine_end_gcode": { "default_value": "END_PRINT" },
+        "machine_endstop_positive_direction_x": { "default_value": true },
+        "machine_endstop_positive_direction_y": { "default_value": true },
+        "machine_endstop_positive_direction_z": { "default_value": false },
+        "machine_feeder_wheel_diameter": { "default_value": 7.5 },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [-35, 65],
+                [-35, -50],
+                [35, -50],
+                [35, 65]
+            ]
+        },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 165 },
+        "machine_max_acceleration_x": { "default_value": 15000 },
+        "machine_max_acceleration_y": { "default_value": 15000 },
+        "machine_max_acceleration_z": { "default_value": 250 },
+        "machine_max_feedrate_e": { "default_value": 120 },
+        "machine_max_feedrate_z": { "default_value": 40 },
+        "machine_max_jerk_e": { "default_value": 60 },
+        "machine_name": { "default_value": "GUTENBERG 3DP" },
+        "machine_start_gcode": { "default_value": ";Simple\nSTART_PRINT EXTRUDER_TEMP={material_print_temperature_layer_0} BED_TEMP={material_bed_temperature_layer_0}\n;Or with custom bed mesh area\n;START_PRINT EXTRUDER_TEMP={material_print_temperature_layer_0} BED_TEMP={material_bed_temperature_layer_0} AREA_START=%MINX%,%MINY% AREA_END=%MAXX%,%MAXY% FILAMENT_TYPE={material_type}" },
+        "machine_steps_per_mm_x": { "default_value": 160 },
+        "machine_steps_per_mm_y": { "default_value": 160 },
+        "machine_steps_per_mm_z": { "default_value": 800 },
+        "machine_use_extruder_offset_to_offset_coords": { "value": false },
+        "machine_width": { "default_value": 165 },
+        "material_diameter": { "default_value": 1.75 },
+        "meshfix_maximum_resolution": { "default_value": 0.01 },
+        "min_infill_area": { "default_value": 5.0 },
+        "minimum_polygon_circumference": { "default_value": 0.2 },
+        "optimize_wall_printing_order": { "default_value": true },
+        "retraction_amount": { "default_value": 0.8 },
+        "retraction_combing": { "value": "'noskin'" },
+        "retraction_combing_max_distance": { "default_value": 10 },
+        "retraction_hop": { "default_value": 0.2 },
+        "retraction_hop_enabled": { "default_value": true },
+        "retraction_prime_speed":
+        {
+            "maximum_value_warning": 130,
+            "value": "math.ceil(retraction_speed * 0.4)"
+        },
+        "retraction_retract_speed": { "maximum_value_warning": 130 },
+        "retraction_speed":
+        {
+            "default_value": 35,
+            "maximum_value_warning": 130
+        },
+        "roofing_layer_count": { "value": 1 },
+        "skirt_brim_minimal_length": { "default_value": 550 },
+        "speed_layer_0": { "value": "math.ceil(speed_print * 0.25)" },
+        "speed_roofing": { "value": "math.ceil(speed_print * 0.33)" },
+        "speed_slowdown_layers": { "default_value": 4 },
+        "speed_topbottom": { "value": "math.ceil(speed_print * 0.33)" },
+        "speed_travel":
+        {
+            "maximum_value_warning": 501,
+            "value": 300
+        },
+        "speed_travel_layer_0": { "value": "math.ceil(speed_travel * 0.4)" },
+        "speed_wall": { "value": "math.ceil(speed_print * 0.33)" },
+        "speed_wall_0": { "value": "math.ceil(speed_print * 0.33)" },
+        "speed_wall_x": { "value": "math.ceil(speed_print * 0.66)" },
+        "travel_avoid_other_parts": { "default_value": false },
+        "wall_line_width": { "value": "machine_nozzle_size" },
+        "wall_overhang_angle": { "default_value": 75 },
+        "wall_overhang_speed_factor": { "default_value": 50 },
+        "zig_zaggify_infill": { "value": true }
+    }
+}
