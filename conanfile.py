@@ -27,7 +27,7 @@ class CuraConan(ConanFile):
 
     # FIXME: Remove specific branch once merged to main
     # Extending the conanfile with the UMBaseConanfile https://github.com/Ultimaker/conan-ultimaker-index/tree/CURA-9177_Fix_CI_CD/recipes/umbase
-    python_requires = "umbase/[>=0.1.7]@ultimaker/stable"
+    python_requires = "umbase/[>=0.1.7]@ultimaker/stable", "translationextractor/[>=1.0.0]@ultimaker/stable"
     python_requires_extend = "umbase.UMBaseConanfile"
 
     options = {
@@ -179,7 +179,7 @@ class CuraConan(ConanFile):
                 cura_latest_url = self._cura_latest_url))
 
     def _generate_pyinstaller_spec(self, location, entrypoint_location, icon_path, entitlements_file):
-        pyinstaller_metadata = self.conan_data[self.version]["pyinstaller"]
+        pyinstaller_metadata = self._um_data()["pyinstaller"]
         datas = [(str(self._base_dir.joinpath("conan_install_info.json")), ".")]
         for data in pyinstaller_metadata["datas"].values():
             if not self.options.internal and data.get("internal", False):
@@ -275,10 +275,10 @@ class CuraConan(ConanFile):
             raise ConanInvalidConfiguration("Only versions 5+ are support")
 
     def requirements(self):
-        for req in self.conan_data[self.version]["requirements"]:
+        for req in self._um_data()["requirements"]:
             self.requires(req)
         if self.options.internal:
-            for req in self.conan_data[self.version]["internal_requirements"]:
+            for req in self._um_data()["internal_requirements"]:
                 self.requires(req)
 
     def build_requirements(self):
@@ -319,19 +319,16 @@ class CuraConan(ConanFile):
         if self.options.devtools:
             entitlements_file = "'{}'".format(Path(self.source_folder, "packaging", "MacOS", "cura.entitlements"))
             self._generate_pyinstaller_spec(location = self.generators_folder,
-                                            entrypoint_location = "'{}'".format(Path(self.source_folder, self.conan_data[self.version]["runinfo"]["entrypoint"])).replace("\\", "\\\\"),
-                                            icon_path = "'{}'".format(Path(self.source_folder, "packaging", self.conan_data[self.version]["pyinstaller"]["icon"][str(self.settings.os)])).replace("\\", "\\\\"),
+                                            entrypoint_location = "'{}'".format(Path(self.source_folder, self._um_data()["runinfo"]["entrypoint"])).replace("\\", "\\\\"),
+                                            icon_path = "'{}'".format(Path(self.source_folder, "packaging", self._um_data()["pyinstaller"]["icon"][str(self.settings.os)])).replace("\\", "\\\\"),
                                             entitlements_file = entitlements_file if self.settings.os == "Macos" else "None")
 
             # Update the po files
             if self.settings.os != "Windows" or self.conf.get("tools.microsoft.bash:path", check_type = str):
                 # FIXME: once m4, autoconf, automake are Conan V2 ready use self.win_bash and add gettext as base tool_requirement
-                cpp_info = self.dependencies["gettext"].cpp_info
-                for po_file in self.source_path.joinpath("resources", "i18n").glob("**/*.po"):
-                    pot_file = self.source_path.joinpath("resources", "i18n", po_file.with_suffix('.pot').name)
-                    mkdir(self, str(unix_path(self, pot_file.parent)))
-                    self.run(f"{cpp_info.bindirs[0]}/msgmerge --no-wrap --no-fuzzy-matching -width=140 -o {po_file} {po_file} {pot_file}",
-                             env = "conanbuild", ignore_errors = True)
+                # Extract all the new strings and update the existing po files
+                extractTool = self.python_requires["translationextractor"].module.ExtractTranslations(self, self.source_path.joinpath("resources", "i18n"), "cura.pot")
+                extractTool.generate()
 
     def imports(self):
         self.copy("CuraEngine.exe", root_package = "curaengine", src = "@bindirs", dst = "", keep_path = False)
@@ -447,8 +444,8 @@ echo "CURA_APP_NAME={{ cura_app_name }}" >> ${{ env_prefix }}GITHUB_ENV
 
         entitlements_file = "'{}'".format(Path(self.cpp_info.res_paths[2], "MacOS", "cura.entitlements"))
         self._generate_pyinstaller_spec(location = self._base_dir,
-                                        entrypoint_location = "'{}'".format(Path(self.cpp_info.bin_paths[0], self.conan_data[self.version]["runinfo"]["entrypoint"])).replace("\\", "\\\\"),
-                                        icon_path = "'{}'".format(Path(self.cpp_info.res_paths[2], self.conan_data[self.version]["pyinstaller"]["icon"][str(self.settings.os)])).replace("\\", "\\\\"),
+                                        entrypoint_location = "'{}'".format(Path(self.cpp_info.bin_paths[0], self._um_data()["runinfo"]["entrypoint"])).replace("\\", "\\\\"),
+                                        icon_path = "'{}'".format(Path(self.cpp_info.res_paths[2], self._um_data()["pyinstaller"]["icon"][str(self.settings.os)])).replace("\\", "\\\\"),
                                         entitlements_file = entitlements_file if self.settings.os == "Macos" else "None")
 
     def package(self):

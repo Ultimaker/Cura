@@ -170,9 +170,21 @@ jobs:
                                     bump_up_release_tag = int(latest_branch_version.prerelease.split('.')[1]) + 1
                                     actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-{latest_branch_version.prerelease.split('.')[0]}.{bump_up_release_tag}+{buildmetadata}{channel_metadata}"
                             else:
-                                bump_up_minor = int(latest_branch_version.minor) + 1
-                                reset_patch = 0
-                                actual_version = f"{latest_branch_version.major}.{bump_up_minor}.{reset_patch}-alpha+{buildmetadata}{channel_metadata}"
+                                max_branches_version = tools.Version("0.0.0")
+                                branches_no_commits = no_commits
+                                for branch in repo.references:
+                                    try:
+                                        if "remotes/origin" in branch.abspath:
+                                            b_version = tools.Version(branch.name.split("/")[-1])
+                                            if b_version < tools.Version("10.0.0") and b_version > max_branches_version:
+                                                max_branches_version = b_version
+                                                branches_no_commits = repo.commit().count() - branch.commit.count()
+                                    except:
+                                        pass
+                                if max_branches_version > latest_branch_version:
+                                    actual_version = f"{max_branches_version.major}.{int(max_branches_version.minor) + 1}.0-alpha+{buildmetadata}{channel}_{branches_no_commits}"
+                                else:
+                                    actual_version = f"{latest_branch_version.major}.{int(latest_branch_version.minor) + 1}.0-alpha+{buildmetadata}{channel_metadata}"
 
                     # %% Set the environment output
                     output_env = os.environ["GITHUB_OUTPUT"]
