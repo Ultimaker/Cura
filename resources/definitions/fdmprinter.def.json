@@ -6,7 +6,7 @@
         "type": "machine",
         "author": "Unknown",
         "manufacturer": "Unknown",
-        "setting_version": 20,
+        "setting_version": 21,
         "file_formats": "text/x-gcode;model/stl;application/x-wavefront-obj;application/x3g",
         "visible": false,
         "has_materials": true,
@@ -2409,7 +2409,7 @@
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "285",
                     "maximum_value": "365",
-                    "enabled": "machine_nozzle_temp_enabled and not (material_flow_dependent_temperature)",
+                    "enabled": "machine_nozzle_temp_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -2471,7 +2471,7 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "10.0",
                     "maximum_value": "machine_nozzle_heat_up_speed",
-                    "enabled": "material_flow_dependent_temperature or (extruders_enabled_count > 1 and material_final_print_temperature != material_print_temperature)",
+                    "enabled": "extruders_enabled_count > 1 and material_final_print_temperature != material_print_temperature",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -4103,16 +4103,6 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "limit_support_retractions":
-                {
-                    "label": "Limit Support Retractions",
-                    "description": "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excessive stringing within the support structure.",
-                    "type": "bool",
-                    "default_value": true,
-                    "enabled": "retraction_enable and (support_enable or support_meshes_present)",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
                 "retraction_combing":
                 {
                     "label": "Combing Mode",
@@ -4405,6 +4395,7 @@
                     "unit": "mm/s",
                     "type": "float",
                     "default_value": 10,
+                    "enabled": "cool_min_layer_time > 0",
                     "minimum_value": "0",
                     "maximum_value_warning": "100",
                     "settable_per_mesh": false,
@@ -4416,6 +4407,7 @@
                     "description": "When the minimum speed is hit because of minimum layer time, lift the head away from the print and wait the extra time until the minimum layer time is reached.",
                     "type": "bool",
                     "default_value": false,
+                    "enabled": "cool_min_layer_time > 0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -4426,6 +4418,7 @@
                     "unit": "\u00b0C",
                     "type": "float",
                     "value": "material_print_temperature",
+                    "enabled": "cool_min_layer_time > 0",
                     "minimum_value": "material_final_print_temperature",
                     "maximum_value": "material_print_temperature",
                     "settable_per_mesh": false,
@@ -6833,16 +6826,6 @@
                     "default_value": false,
                     "settable_per_mesh": true
                 },
-                "material_flow_dependent_temperature":
-                {
-                    "label": "Auto Temperature",
-                    "description": "Change the temperature for each layer automatically with the average flow speed of that layer.",
-                    "type": "bool",
-                    "default_value": false,
-                    "enabled": "machine_nozzle_temp_enabled and False",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
                 "material_flow_temp_graph":
                 {
                     "label": "Flow Temperature Graph",
@@ -6850,7 +6833,7 @@
                     "unit": "[[mm\u00b3,\u00b0C]]",
                     "type": "str",
                     "default_value": "[[3.5, 200],[7.0, 240]]",
-                    "enabled": "False and machine_nozzle_temp_enabled and material_flow_dependent_temperature",
+                    "enabled": "False and machine_nozzle_temp_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -6887,7 +6870,7 @@
                     "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
                     "default_value": 0.8,
                     "value": "2 * wall_line_width_0",
-                    "minimum_value": "0.001",
+                    "minimum_value": "min_odd_wall_line_width",
                     "maximum_value": "min(0.5 * machine_width, 0.5 * machine_depth)",
                     "maximum_value_warning": "max(extruderValues('wall_line_width_0')) * 6",
                     "settable_per_mesh": true,
@@ -6901,6 +6884,8 @@
                     "type": "float",
                     "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
                     "default_value": 22.5,
+                    "minimum_value": "0",
+                    "maximum_value": "360",
                     "resolve": "min(extruderValues('interlocking_orientation'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
@@ -6913,6 +6898,7 @@
                     "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
                     "default_value": 2,
                     "minimum_value": "1",
+                    "maximum_value_warning": "50",
                     "resolve": "max(extruderValues('interlocking_beam_layer_count'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
@@ -6925,6 +6911,8 @@
                     "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
                     "default_value": 2,
                     "minimum_value": "1",
+                    "maximum_value": "10",
+                    "maximum_value_warning": "5",
                     "resolve": "max(extruderValues('interlocking_depth'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
@@ -6935,10 +6923,12 @@
                     "description": "The distance close to the boundary of the print where not to generate an interlocking structure as measued in number of cells times 2. If set to a value lower than the Inerlocking Depth then the interlocking structure can become visible on the outside of the print near the interfaces where two models meet.",
                     "type": "int",
                     "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
-                    "default_value": 3,
+                    "default_value": 2,
                     "minimum_value": "0",
-                    "resolve": "max(extruderValues('interlocking_boundary_avoidance'))",
                     "minimum_value_warning": "resolveOrValue('interlocking_depth')",
+                    "maximum_value": "10",
+                    "maximum_value_warning": "5",
+                    "resolve": "max(extruderValues('interlocking_boundary_avoidance'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
@@ -7772,7 +7762,7 @@
                     "description": "The speed at which the bridge walls are printed.",
                     "unit": "mm/s",
                     "type": "float",
-                    "minimum_value": "cool_min_speed",
+                    "minimum_value": "0",
                     "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
                     "maximum_value_warning": "300",
                     "default_value": 15,
@@ -7799,7 +7789,7 @@
                     "description": "The speed at which bridge skin regions are printed.",
                     "unit": "mm/s",
                     "type": "float",
-                    "minimum_value": "cool_min_speed",
+                    "minimum_value": "0",
                     "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
                     "maximum_value_warning": "300",
                     "default_value": 15,
@@ -7860,7 +7850,7 @@
                     "description": "Print speed to use when printing the second bridge skin layer.",
                     "unit": "mm/s",
                     "type": "float",
-                    "minimum_value": "cool_min_speed",
+                    "minimum_value": "0",
                     "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
                     "maximum_value_warning": "300",
                     "default_value": 25,
@@ -7912,7 +7902,7 @@
                     "description": "Print speed to use when printing the third bridge skin layer.",
                     "unit": "mm/s",
                     "type": "float",
-                    "minimum_value": "cool_min_speed",
+                    "minimum_value": "0",
                     "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
                     "maximum_value_warning": "300",
                     "default_value": 15,
