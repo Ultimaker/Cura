@@ -32,7 +32,7 @@
         "adhesion_type": { "value": "'skirt'" },
         "coasting_enable": { "value": true },
         "coasting_min_volume": { "value": "coasting_volume" },
-        "infill_before_walls": { "value": true },
+        
         "infill_overlap": { "value": 15 },
         "infill_pattern": { "value": "'grid'" },
         "infill_sparse_density": { "value": "20" },
