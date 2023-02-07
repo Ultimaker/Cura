@@ -94,7 +94,7 @@
         "speed_print": { "value": 60.0 },
         "speed_print_layer_0": { "value": "speed_wall_0" },
         "speed_topbottom": { "value": "speed_wall_x" },
-        "speed_wall": { "value": "speed_print / 2" },
+        
         "speed_wall_0": { "value": "speed_wall / 2" },
         "speed_wall_x": { "value": "speed_wall" },
         "switch_extruder_extra_prime_amount": { "value": 14 },
