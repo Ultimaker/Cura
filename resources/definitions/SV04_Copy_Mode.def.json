@@ -109,7 +109,7 @@
         
         
         "wall_line_width_x": { "value": "line_width - 0.05" },
-        "wall_thickness": { "value": 1.6 },
+        "wall_th
         "z_seam
         "z_seam_c },
         "z_seam_type": { "value": "'back'" },
