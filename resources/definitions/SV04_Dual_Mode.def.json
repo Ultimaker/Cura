@@ -116,7 +116,7 @@
         },
         "top_bottom_pattern": { "value": "'zigzag'" },
         "top_bottom_thickness": { "value": 1 },
-        "wall_0_inset": { "value": 0 },
+        
         "wall_0_wipe_dist": { "value": 0.2 },
         "wall_line_width": { "value": "line_width" },
         "wall_line_width_x": { "value": "line_width - 0.05" },
