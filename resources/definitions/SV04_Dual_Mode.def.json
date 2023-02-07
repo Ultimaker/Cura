@@ -90,7 +90,7 @@
         "skin_overlap": { "value": 25 },
         "skin_preshrink": { "value": "expand_skins_expand_distance" },
         "skirt_brim_speed": { "value": "speed_wall_0" },
-        "speed_infill": { "value": "speed_print" },
+        
         "speed_print": { "value": 60.0 },
         "speed_print_layer_0": { "value": "speed_wall_0" },
         "speed_topbottom": { "value": "speed_wall_x" },
