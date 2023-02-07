@@ -32,10 +32,8 @@
         "adhesion_type": { "value": "'skirt'" },
         "coasting_enable": { "value": true },
         "coasting_min_volume": { "value": "coasting_volume" },
-        
         "infill_overlap": { "value": 15 },
         "infill_pattern": { "value": "'grid'" },
-        
         "infill_sparse_thickness": { "value": 0.2 },
         "infill_wipe_dist": { "value": 0.0 },
         "initial_layer_line_width_factor": { "default_value": 150.0 },
@@ -45,7 +43,6 @@
         "jerk_travel_layer_0": { "value": "jerk_travel" },
         "jerk_wall_0": { "value": "jerk_print * 0.5" },
         "layer_height_0": { "value": 0.2 },
-        
         "machine_acceleration": { "value": 2000 },
         "machine_depth": { "default_value": 302 },
         "machine_end_gcode": { "default_value": ";Dual end\nG91 ;Relative positioning\nG1 E-2 F2700 ;Retract a bit\nG1 E-2 Z0.2 F2400 ;Retract and raise Z\nG1 X0 Y240 F3000 ;Wipe out\nG1 Z10 ;Raise Z more\nG90 ;Absolute positionning\nT0 \nG1 X-62 \nT1 \nG1 X362 \nG1 Y{machine_depth} ;Present print\nM106 S0 ;Turn-off fan\nM104 S0 ;Turn-off hotend\nM140 S0 ;Turn-off bed\nM84 X Y E ;Disable all steppers but Z" },
@@ -68,10 +65,8 @@
         "machine_width": { "default_value": 302 },
         "material_diameter": { "default_value": 1.75 },
         "material_final_print_temperature": { "value": 190 },
-        
         "material_initial_print_temperature": { "value": "material_print_temperature" },
         "material_print_temperature": { "value": 190 },
-        
         "material_standby_temperature": { "default_value": 190 },
         "meshfix_maximum_resolution": { "value": 0.0125 },
         "optimize_wall_printing_order": { "value": true },
@@ -80,7 +75,6 @@
         "retraction_count_max": { "value": "10 * retraction_extrusion_window" },
         "retraction_extrusion_window": { "value": 1 },
         "retraction_hop": { "value": "2 * layer_height" },
-        
         "retraction_hop_after_extruder_switch_height": { "value": 0.5 },
         "retraction_hop_enabled": { "value": true },
         "retraction_min_travel": { "value": "3.75 * machine_nozzle_size" },
@@ -90,11 +84,9 @@
         "skin_overlap": { "value": 25 },
         "skin_preshrink": { "value": "expand_skins_expand_distance" },
         "skirt_brim_speed": { "value": "speed_wall_0" },
-        
         "speed_print": { "value": 60.0 },
         "speed_print_layer_0": { "value": "speed_wall_0" },
         "speed_topbottom": { "value": "speed_wall_x" },
-        
         "speed_wall_0": { "value": "speed_wall / 2" },
         "speed_wall_x": { "value": "speed_wall" },
         "switch_extruder_extra_prime_amount": { "value": 14 },
@@ -116,7 +108,6 @@
         },
         "top_bottom_pattern": { "value": "'zigzag'" },
         "top_bottom_thickness": { "value": 1 },
-        
         "wall_0_wipe_dist": { "value": 0.2 },
         "wall_line_width": { "value": "line_width" },
         "wall_line_width_x": { "value": "line_width - 0.05" },
