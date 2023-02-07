@@ -39,7 +39,7 @@
         "speed_wall_0":{"value":45},
         "speed_wall_x":{"value":45},
         "support_angle":{"value":60},
-        "support_infill_rate":{"value":15},
+        
         "support_z_distance":{"value":0.15},
         "material_bed_temperature":{"value":60},
         "support_enable":{"value":true},
