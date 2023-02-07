@@ -53,7 +53,7 @@
         "retraction_hop": { "value": 0.12 },
         "retraction_hop_enabled": { "value": true },
         "retraction_speed": { "value": 70 },
-        "skirt_gap": { "value": 3.0 },
+        
         "skirt_line_count": { "value": 2 },
         "speed_infill": { "value": 50 },
         "speed_print": { "value": 45 },
