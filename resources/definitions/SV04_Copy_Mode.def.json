@@ -40,7 +40,7 @@
         "jerk_travel_layer_0": { "value": "jerk_travel" },
         "jerk_wall_0": { "value": "jerk_print * 0.5" },
         "layer_height_0": { "value": 0.2 },
-        "line_width": { "value": "machine_nozzle_size" },
+        
         "machine_acceleration": { "value": 2000 },
         "machine_depth": { "default_value": 302 },
         "machine_end_gcode": { "default_value": ";Copy end\nG91 ;Relative positioning\nG1 E-2 F2700 ;Retract a bit\nG1 E-2 Z0.2 F2400 ;Retract and raise Z\nG1 X0 Y240 F3000 ;Wipe out\nG1 Z10 ;Raise Z more\nG90 ;Absolute positionning\nG1 X0 Y{machine_depth} ;Present print\nM106 S0 ;Turn-off fan\nM104 S0 ;Turn-off hotend\nM140 S0 ;Turn-off bed\nM84 X Y E ;Disable all steppers but Z" },
