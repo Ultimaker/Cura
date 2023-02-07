@@ -87,7 +87,7 @@
         "speed_topbottom":
         "speed_wall_0": { "value": "speed_wall / 2" },
         "speed_wall_x": { "value": "speed_wall" },
-        "switch_extruder_extra_prime_amount": { "value": 14 },
+        "switch_extrud
   
         {
             "maximum_value_warning": "machine_max_feedrate_e",
