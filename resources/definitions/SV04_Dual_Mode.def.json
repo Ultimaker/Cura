@@ -68,7 +68,7 @@
         "machine_width": { "default_value": 302 },
         "material_diameter": { "default_value": 1.75 },
         "material_final_print_temperature": { "value": 190 },
-        "material_flow": { "value": 100 },
+        
         "material_initial_print_temperature": { "value": "material_print_temperature" },
         "material_print_temperature": { "value": 190 },
         "material_print_temperature_layer_0": { "value": "material_print_temperature" },
