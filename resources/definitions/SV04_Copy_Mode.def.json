@@ -73,7 +73,7 @@
         "retraction_hop": { "value": "2 * layer_height" },
         "retraction_hop_after_extruder_switch": { "value": true },
         "retraction_hop_after_extruder_switch_height": { "value": 0.5 },
-        "retraction_hop_enabled": { "value": true },
+        "retraction_hop_enabled": { "val
         "retraction_min_travel": { "value": "3.75 * machine_nozzle_size" },
         "retraction_prime_speed": { "maximum_value_warning": "machine_max_feedrate_e" },
         "retraction_speed": { "default_value": 35 },
