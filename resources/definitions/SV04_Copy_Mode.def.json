@@ -83,7 +83,7 @@
         "skirt_brim_speed": { "value": "speed_wall_0" },
         
         "speed_print": { "value": 60.0 },
-        "speed_print_layer_0": { "value": "speed_wall_0" },
+        "speed_print_layer_0": { "value": "
         "speed_topbottom":
         "speed_wall_0": { "value": "speed_wall / 2" },
         "speed_wall_x": { "value": "speed_wall" },
