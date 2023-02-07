@@ -35,7 +35,7 @@
         
         "infill_overlap": { "value": 15 },
         "infill_pattern": { "value": "'grid'" },
-        "infill_sparse_density": { "value": "20" },
+        
         "infill_sparse_thickness": { "value": 0.2 },
         "infill_wipe_dist": { "value": 0.0 },
         "initial_layer_line_width_factor": { "default_value": 150.0 },
