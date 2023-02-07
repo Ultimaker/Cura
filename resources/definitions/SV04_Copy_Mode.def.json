@@ -63,7 +63,7 @@
         "material_flow": { "value": 100 },
         "mater "material_print_temperature" },
         "material_print_temperature": { "value": 190 },
-        "material_standby_temperature": { "default_value": 190 },
+        "material_standby_temperature": { "defau
         "meshfix_maximum_resolution": { "value": 0.0125 },
         "optimize_wall_printing_order": { "value": true },
         "retraction_amount": { "default_value": 3 },
