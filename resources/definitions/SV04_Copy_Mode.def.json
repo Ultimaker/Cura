@@ -110,7 +110,7 @@
         
         "wall_line_width_x": { "value": "line_width - 0.05" },
         "wall_thickness": { "value": 1.6 },
-        "z_seam_X": { "value": 604 },
+        "z_seam
         "z_seam_corner": { "value": "'z_seam_corner_weighted'" },
         "z_seam_type": { "value": "'back'" },
         "z_seam_y": { "value": 151 },
