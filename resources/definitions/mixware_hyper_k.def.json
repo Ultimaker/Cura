@@ -61,7 +61,7 @@
         "machine_width": { "default_value": 225 },
         "material_diameter": { "default_value": 1.75 },
         "material_final_print_temperature": { "value": "material_print_temperature" },
-        "material_flow": { "value": 100 },
+        
         "material_initial_print_temperature": { "value": "material_print_temperature" },
         "meshfix_maximum_resolution": { "value": "0.25" },
         "meshfix_maximum_travel_resolution": { "value": "meshfix_maximum_resolution" },
