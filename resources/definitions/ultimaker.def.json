@@ -120,7 +120,7 @@
         "support_interface_skip_height": { "value": "layer_height" },
         "support_line_distance": { "minimum_value_warning": "0 if support_structure == 'tree' else support_line_width" },
         "support_offset": { "value": "0.9 if support_interface_enable else 0" },
-        "support_tower_roof_angle": { "value": "0" },
+        "support_tower_roof_angle": { "value": "65 if support_interface_enable else 0" },
         "support_use_towers": { "value": true },
         "support_wall_count": { "value": "1 if support_structure == 'tree' else 0" },
         "support_xy_distance": { "value": "1" },
