@@ -7,7 +7,6 @@
         "machine": "mixware_vulcan",
         "position": "0"
     },
-
     "overrides":
     {
         "extruder_nr": { "default_value": 0 },
