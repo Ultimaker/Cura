@@ -33,7 +33,6 @@
         "infill_before_walls": { "value": false },
         "infill_overlap": { "value": 30.0 },
         "infill_pattern": { "value": "'lines' if infill_sparse_density > 50 else 'cubic'" },
-        
         "infill_wipe_dist": { "value": 0.0 },
         "ironing_line_spacing": { "default_value": 0.4 },
         "ironing_pattern": { "default_value": "concentric" },
@@ -61,7 +60,6 @@
         "machine_width": { "default_value": 225 },
         "material_diameter": { "default_value": 1.75 },
         "material_final_print_temperature": { "value": "material_print_temperature" },
-        
         "material_initial_print_temperature": { "value": "material_print_temperature" },
         "meshfix_maximum_resolution": { "value": "0.25" },
         "meshfix_maximum_travel_resolution": { "value": "meshfix_maximum_resolution" },
@@ -79,11 +77,9 @@
         "retraction_count_max": { "value": 100 },
         "retraction_extrusion_window": { "value": 10 },
         "retraction_hop": { "value": 0.2 },
-        
         "retraction_prime_speed": { "maximum_value": 200 },
         "retraction_retract_speed": { "maximum_value": 200 },
         "retraction_speed": { "maximum_value": 200 },
-        
         "skin_overlap": { "value": 10.0 },
         "skirt_brim_speed": { "value": "speed_layer_0" },
         "skirt_gap": { "value": 10.0 },
