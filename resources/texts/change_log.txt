@@ -1,12 +1,14 @@
 [5.3] 
+<i>This release does not yet contain the new tree support implementation by ThomasRahm.<a href="https://github.com/Ultimaker/Cura/releases/tag/5.3.0-alpha%2Bxmas"> You can download a special Cura version for that here</a>.</i> 
+
 * Interlocking Structure Generation
-- This new setting enables you to interlock multiple materials together, even if those materials are not compatible, contributed by BagelOrb
+- This new setting enables you to interlock multiple materials together, even if those materials are not compatible, contributed by BagelOrb. Try it for yourself <a href="https://www.thingiverse.com/thing:5842529?utm_source=changelog&utm_medium=cura&utm_campaign=53_beta">with this test model</a>.
 
 * Brim per Material 
 - A brim can now be printed with multiple materials in the same model, contributed by BagelOrb
 
 * Updated Recommended Print Settings Menu
-- The number of settings available in the recommended have expanded. The redesign will make is easier to use intent profiles or save new custom profiles. 
+- The number of settings available in the recommended have expanded. The redesign will make it easier to use intent profiles or save custom profiles. 
 
 * Other new features and improvements:
 - Improved the Zseam behavior so Hide Seam is generated less randomly.
@@ -24,7 +26,7 @@
 - Added settings for Support Interface Wall Line Count, Support Roof Line Count, and Support Floor Line Count.
 - Reduced stringing for Lift Head setting by removing the move in XY.
 - Added prefix 'Printing' to post processing plugin script "DisplayFilenameAndLayerOnLCD" contributed by brunohenriquy
-- Added Enable, G-code Before and G-code After To Filament Change, contributed by victornpb
+- Added Enable, G-code Before, and G-code After To Filament Change, contributed by victornpb
 - Added support for per-object retraction settings, contributed by jeremysalwen
 - Updated PauseAtHeight so M18 becomes M84 when disarming, contributed by Cycov
 - Added an option to keep stepper motors engaged to Pause At Height, contributed by Cycov
@@ -42,7 +44,7 @@
 - Fixed a bug where hole expansion would affect interlocking holes.
 - Fixed a bug where fuzzy skin would also apply to interlocking structures. 
 - Fixed a bug where Relative Extrusion was not calculated correctly when using Retract Continue.
-- Fixed a bug that would prevent  advanced users from slicing a batch with multiple STLs in a script.
+- Fixed a bug that would prevent advanced users from slicing a batch with multiple STLs in a script.
 - Fixed a bug where skirt lines would not follow the convex contours of models.
 - Fixed a bug where Exclusing Slicing Tolerance was not applied correctly to bottom-layer(s).
 - Fixed a bug where small travels were not retracted correctly. 
@@ -50,9 +52,9 @@
 - Fixed a bug with Skin Overlap where the skin would overlap with the roofing.
 - Fixed a bug where Support Interface would be generated on top of support.
 - Fixed a bug where the Floor Support Interface would not be generated in certain models.
-- Fixed a bug where a long material list would disappear out of the screen.
+- Fixed a bug where a long material list would disappear from the screen.
 - Fixed a bug where support is not generated correctly if Support Pattern is Concentric.
-- Fixed a bug where an increased Skin Removal Width would cut of part of the skin area.
+- Fixed a bug where an increased Skin Removal Width would cut off part of the skin area.
 - Fixed a bug where Support Towers would be generated but would support nothing.
 - Fixed a bug where Small Feature Size would also be applied to inner-wall loops.
 - Fixed a bug where adhesion would be printed outside of the buildplate, contributed by BagelOrb
@@ -63,7 +65,7 @@
 - Fixed a bug where the travel move at the end of a layer unretracts, contributed by richfelker
 - Fixed a bug where WallToolPaths are not simplified, contributed by Piezoid
 - Fixed a bug where iterators were moving out of range, contributed by Piezoid and plaintoothpaste
-- Fixed a bug where the Maximum Area Deviation value would too small, contributed by Piezoid
+- Fixed a bug where the Maximum Area Deviation value was too small, contributed by Piezoid
 - Fixed a bug where an airgap was present in Spiralized Outer Contour, contributed by richfelker
 - Fixed a bug where speeds defined for slower layers would impact speeds accelerations and jerks for the whole print, contributed by richfelker
 - Fixed a bug where materials with longer names in Materials Preferences were harder to read, contributed by Ghostkeeper 
@@ -107,9 +109,10 @@
 - Updated French translations, contributed by xommit
 
 * Known critical issues:
-- Under certain angles the Interlocking Structures are not effective, yet.
-- The Gcode Reader Plug-in is broken since Cura 5.2 and will not load gcodes correctly. 
-- Some models have been slicing slower since Cura 5.1.
+- Under certain angles, the Interlocking Structures are not effective, yet.
+- The Gcode Reader Plug-in is broken since Cura 5.2, and will not load gcodes correctly yet. 
+- Some models have been slicing slower since Cura 5.1. <a href="https://github.com/Ultimaker/Cura/issues/14108"> We are collecting cases here</a>. 
+- Reports have been coming in that Cura is running slow on Windows 11 <a href="https://github.com/Ultimaker/Cura/issues/13820"> We are collecting cases here</a>. 
 - Multiple external monitors on Windows (especially if from the same brand) <a href="https://support.ultimaker.com/hc/en-us/articles/6103674944156">might be a problem under some circumstances</a>. 
 - Does Cura (not) work on your OS (version)? See <a href="https://support.ultimaker.com/hc/en-us/articles/360011889579">this article</a> for clarification.
 
