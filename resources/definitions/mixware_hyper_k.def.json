@@ -33,7 +33,7 @@
         "infill_before_walls": { "value": false },
         "infill_overlap": { "value": 30.0 },
         "infill_pattern": { "value": "'lines' if infill_sparse_density > 50 else 'cubic'" },
-        "infill_sparse_density": { "value": "20" },
+        
         "infill_wipe_dist": { "value": 0.0 },
         "ironing_line_spacing": { "default_value": 0.4 },
         "ironing_pattern": { "default_value": "concentric" },
