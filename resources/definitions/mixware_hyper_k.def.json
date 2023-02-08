@@ -79,7 +79,7 @@
         "retraction_count_max": { "value": 100 },
         "retraction_extrusion_window": { "value": 10 },
         "retraction_hop": { "value": 0.2 },
-        "retraction_min_travel": { "value": 1.5 },
+        
         "retraction_prime_speed": { "maximum_value": 200 },
         "retraction_retract_speed": { "maximum_value": 200 },
         "retraction_speed": { "maximum_value": 200 },
