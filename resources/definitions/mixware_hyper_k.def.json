@@ -81,7 +81,7 @@
         "retraction_retract_speed": { "maximum_value": 200 },
         "retraction_speed": { "maximum_value": 200 },
         "skin_overlap": { "value": 10.0 },
-        "skirt_brim_speed": { "value": "speed_layer_0" },
+        
         "skirt_gap": { "value": 10.0 },
         "skirt_line_count": { "value": 3 },
         "speed_layer_0": { "value": 20.0 },
