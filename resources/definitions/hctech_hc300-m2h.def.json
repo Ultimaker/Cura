@@ -51,6 +51,6 @@
        
         "line_width": { "value": 0.38 },
         "travel_avoid_distance": { "value": 1 },
-		"infill_before_walls": { "value": true }
+		
     }
 }
