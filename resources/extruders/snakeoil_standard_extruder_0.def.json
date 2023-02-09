@@ -1,0 +1,19 @@
+{
+    "version": 2,
+    "name": "Toolhead",
+    "inherits": "fdmextruder",
+    "metadata":
+    {
+        "machine": "snakeoil_standard_base",
+        "position": "0"
+    },
+    "overrides":
+    {
+        "extruder_nr":
+        {
+            "default_value": 0,
+            "maximum_value": 1
+        },
+        "material_diameter": { "default_value": 1.75 }
+    }
+}

@@ -52,8 +52,13 @@ Item
             id: intentSelection
             onClicked: menu.opened ? menu.close() : menu.open()
 
-            anchors.right: parent.right
-            width: UM.Theme.getSize("print_setup_big_item").width
+            // Anchoring to the right makes much more sense here, but for some reason this component compresses from the right
+            // and then expands from the left afterwards. This pushes it left by profileWarningReset.width
+            // The solution is to anchor from the other direction so this does not happen.
+            anchors.left: parent.left
+            // This leftMargin gives us the same spacing as anchoring to the right on profileWarningReset
+            anchors.leftMargin: parent.width - UM.Theme.getSize("print_setup_big_item").width
+            width: profileWarningReset.visible ? UM.Theme.getSize("print_setup_big_item").width - profileWarningReset.width  - UM.Theme.getSize("default_margin").width : UM.Theme.getSize("print_setup_big_item").width
             height: textLabel.contentHeight + 2 * UM.Theme.getSize("narrow_margin").height
             hoverEnabled: true
 
@@ -67,7 +72,7 @@ Item
                 UM.Label
                 {
                     id: textLabel
-                    text: Cura.MachineManager.activeQualityDisplayNameMap["main"]
+                    text: Cura.MachineManager.activeQualityDisplayNameMainStringParts.join(" - ")
                     Layout.margins: 0
                     Layout.maximumWidth: Math.floor(parent.width * 0.7)  // Always leave >= 30% for the rest of the row.
                     height: contentHeight
@@ -77,7 +82,19 @@ Item
 
                 UM.Label
                 {
-                    text: activeQualityDetailText()
+                    text:
+                    {
+                        const string_parts = Cura.MachineManager.activeQualityDisplayNameTailStringParts;
+                        if (string_parts.length === 0)
+                        {
+                            return "";
+                        }
+                        else
+                        {
+                            ` - ${string_parts.join(" - ")}`
+                        }
+                    }
+
                     color: UM.Theme.getColor("text_detail")
                     Layout.margins: 0
                     Layout.fillWidth: true
@@ -85,32 +102,6 @@ Item
                     height: contentHeight
                     elide: Text.ElideRight
                     wrapMode: Text.NoWrap
-                    function activeQualityDetailText()
-                    {
-                        var resultMap = Cura.MachineManager.activeQualityDisplayNameMap
-                        var resultSuffix = resultMap["suffix"]
-                        var result = ""
-
-                        if (Cura.MachineManager.isActiveQualityExperimental)
-                        {
-                            resultSuffix += " (Experimental)"
-                        }
-
-                        if (Cura.MachineManager.isActiveQualitySupported)
-                        {
-                            if (Cura.MachineManager.activeQualityLayerHeight > 0)
-                            {
-                                if (resultSuffix)
-                                {
-                                    result += " - " + resultSuffix
-                                }
-                                result += " - "
-                                result += Cura.MachineManager.activeQualityLayerHeight + "mm"
-                            }
-                        }
-
-                        return result
-                    }
                 }
             }
 
@@ -164,6 +155,15 @@ Item
 
                 color: UM.Theme.getColor("setting_control_button")
             }
+        }
+
+        ProfileWarningReset
+        {
+            id: profileWarningReset
+            width: childrenRect.width
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+            fullWarning: false
         }
 
         QualitiesWithIntentMenu

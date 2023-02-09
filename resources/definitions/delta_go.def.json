@@ -1,38 +1,41 @@
 {
-    "name": "Delta Go",
     "version": 2,
+    "name": "Delta Go",
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "visible": true,
         "author": "Deltaprintr",
         "manufacturer": "Deltaprintr",
         "file_formats": "text/x-gcode",
-        "platform_offset": [0, 0, 0],
-        "machine_extruder_trains":
-        {
-            "0": "delta_go_extruder_0"
-        }
+        "machine_extruder_trains": { "0": "delta_go_extruder_0" },
+        "platform_offset": [
+            0,
+            0,
+            0
+        ]
     },
-    "overrides": {
-        "machine_name":                       { "default_value": "Delta Go" },
+    "overrides":
+    {
+        "brim_width": { "value": "5" },
         "default_material_print_temperature": { "default_value": 210 },
-        "prime_tower_size":                   { "default_value": 8.66 },
-        "infill_sparse_density":              { "default_value": 10 },
-        "layer_height":                       { "default_value": 0.15 },
-        "speed_print":                        { "default_value": 30 },
-        "machine_heated_bed":                 { "default_value": false },
-        "machine_center_is_zero":             { "default_value": true },
-        "machine_height":                     { "default_value": 154 },
-        "machine_gcode_flavor":               { "default_value": "RepRap (Marlin/Sprinter)" },
-        "machine_depth":                      { "default_value": 115 },
-        "machine_width":                      { "default_value": 115 },
-        "raft_airgap":                        { "default_value": 0.15 },
-        "retraction_hop_enabled":             { "value": "True" },
-        "retraction_amount":                  { "default_value": 4.1 },
-        "retraction_speed":                   { "default_value": 500 },
-        "retraction_hop":                     { "value": "0.2" },
-        "retraction_hop_only_when_collides":  { "value": "True" },
-        "brim_width":                         { "value": "5" },
-        "machine_shape":                      { "default_value": "elliptic"}
+        "infill_sparse_density": { "default_value": 10 },
+        "layer_height": { "default_value": 0.15 },
+        "machine_center_is_zero": { "default_value": true },
+        "machine_depth": { "default_value": 115 },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_heated_bed": { "default_value": false },
+        "machine_height": { "default_value": 154 },
+        "machine_name": { "default_value": "Delta Go" },
+        "machine_shape": { "default_value": "elliptic" },
+        "machine_width": { "default_value": 115 },
+        "prime_tower_size": { "default_value": 8.66 },
+        "raft_airgap": { "default_value": 0.15 },
+        "retraction_amount": { "default_value": 4.1 },
+        "retraction_hop": { "value": "0.2" },
+        "retraction_hop_enabled": { "value": "True" },
+        "retraction_hop_only_when_collides": { "value": "True" },
+        "retraction_speed": { "default_value": 500 },
+        "speed_print": { "default_value": 30 }
     }
 }

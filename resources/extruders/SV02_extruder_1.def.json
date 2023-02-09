@@ -2,25 +2,23 @@
     "version": 2,
     "name": "Right Extruder",
     "inherits": "fdmextruder",
-    "metadata": {
+    "metadata":
+    {
         "machine": "SV02",
         "position": "1"
     },
-
-    "overrides": {
-        "extruder_nr": {
+    "overrides":
+    {
+        "extruder_nr":
+        {
             "default_value": 1,
             "maximum_value": "1"
         },
+        "machine_extruder_end_code": { "default_value": "\nG92 E0 ;reset extruder distance\nG1 F800 E-5 ;short retract\nG1 F2400 X250 Y220\nG1 F2000 E-93 ;long retract for filament removal\nG92 E0 ;reset extruder distance\nG90" },
+        "machine_extruder_start_code": { "default_value": "\nT1 ;switch to extruder 2\nG92 E0 ;reset extruder distance\nG1 F2000 E93 ;load filament\nG92 E0 ;reset extruder distance\nM104 S{material_print_temperature}" },
         "machine_nozzle_offset_x": { "default_value": 0.0 },
         "machine_nozzle_offset_y": { "default_value": 0.0 },
-        "material_diameter": { "default_value": 1.75 },
         "machine_nozzle_size": { "default_value": 0.4 },
-        "machine_extruder_start_code": {
-            "default_value": "\nT1 ;switch to extruder 2\nG92 E0 ;reset extruder distance\nG1 F2000 E93 ;load filament\nG92 E0 ;reset extruder distance\nM104 S{material_print_temperature}"
-        },
-        "machine_extruder_end_code": {
-            "default_value": "\nG92 E0 ;reset extruder distance\nG1 F800 E-5 ;short retract\nG1 F2400 X250 Y220\nG1 F2000 E-93 ;long retract for filament removal\nG92 E0 ;reset extruder distance\nG90"
-        }
+        "material_diameter": { "default_value": 1.75 }
     }
 }

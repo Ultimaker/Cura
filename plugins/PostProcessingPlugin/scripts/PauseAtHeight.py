@@ -1,8 +1,12 @@
-# Copyright (c) 2021 Ultimaker B.V.
+# Copyright (c) 2023 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from ..Script import Script
+#  Revised by GregValiant 10-17-2022
+#  Changed "extrude" line to before the nozzle moves back to the print (if not Repetier or Griffin).
+#  Add M104 option for Resume temperature
 
+from ..Script import Script
+import re
 from UM.Application import Application #To get the current printer's settings.
 from UM.Logger import Logger
 
@@ -42,7 +46,7 @@ class PauseAtHeight(Script):
                 "pause_layer":
                 {
                     "label": "Pause Layer",
-                    "description": "At what layer should the pause occur?",
+                    "description": "Enter the Number of the LAST layer you want to finish prior to the pause (from the Cura preview).",
                     "type": "int",
                     "value": "math.floor((pause_height - 0.27) / 0.1) + 1",
                     "minimum_value": "0",
@@ -156,6 +160,14 @@ class PauseAtHeight(Script):
                     "type": "bool",
                     "default_value": false
                 },
+                "standby_wait_for_temperature_enabled":
+                {
+                    "label": "Use M109 for standby temperature? (M104 when false)",
+                    "description": "Wait for hot end after Resume? (If your standby temperature is lower than the Printing temperature CHECK and use M109",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": "pause_method not in [\\\"griffin\\\", \\\"repetier\\\"]"                                              
+                },
                 "standby_temperature":
                 {
                     "label": "Standby Temperature",
@@ -220,14 +232,14 @@ class PauseAtHeight(Script):
                 "custom_gcode_before_pause":
                 {
                     "label": "G-code Before Pause",
-                    "description": "Any custom g-code to run before the pause, for example, M300 S440 P200 to beep.",
+                    "description": "Custom g-code to run before the pause. EX: M300 to beep. Use a comma to separate multiple commands. EX: M400,M300,M117 Pause",
                     "type": "str",
                     "default_value": ""
                 },
                 "custom_gcode_after_pause":
                 {
                     "label": "G-code After Pause",
-                    "description": "Any custom g-code to run after the pause, for example, M300 S440 P200 to beep.",
+                    "description": "Custom g-code to run after the pause. Use a comma to separate multiple commands. EX: M204 X8 Y8,M106 S0,M117 Resume",
                     "type": "str",
                     "default_value": ""
                 }
@@ -279,13 +291,14 @@ class PauseAtHeight(Script):
         move_z = self.getSettingValueByKey("head_move_z")
         layers_started = False
         redo_layer = self.getSettingValueByKey("redo_layer")
+        standby_wait_for_temperature_enabled = self.getSettingValueByKey("standby_wait_for_temperature_enabled")
         standby_temperature = self.getSettingValueByKey("standby_temperature")
         firmware_retract = Application.getInstance().getGlobalContainerStack().getProperty("machine_firmware_retract", "value")
         control_temperatures = Application.getInstance().getGlobalContainerStack().getProperty("machine_nozzle_temp_enabled", "value")
         initial_layer_height = Application.getInstance().getGlobalContainerStack().getProperty("layer_height_0", "value")
         display_text = self.getSettingValueByKey("display_text")
-        gcode_before = self.getSettingValueByKey("custom_gcode_before_pause")
-        gcode_after = self.getSettingValueByKey("custom_gcode_after_pause")
+        gcode_before = re.sub("\\s*,\\s*", "\n", self.getSettingValueByKey("custom_gcode_before_pause"))
+        gcode_after = re.sub("\\s*,\\s*", "\n", self.getSettingValueByKey("custom_gcode_after_pause"))
         beep_at_pause = self.getSettingValueByKey("beep_at_pause")
         beep_length = self.getSettingValueByKey("beep_length")
 
@@ -477,14 +490,14 @@ class PauseAtHeight(Script):
 
                 # Set a custom GCODE section before pause
                 if gcode_before:
-                    prepend_gcode += gcode_before.replace(";","\n") + "\n"
+                    prepend_gcode += gcode_before + "\n"
 
                 # Wait till the user continues printing
                 prepend_gcode += pause_command + " ; Do the actual pause\n"
 
                 # Set a custom GCODE section after pause
                 if gcode_after:
-                    prepend_gcode += gcode_after.replace(";","\n") + "\n"
+                    prepend_gcode += gcode_after + "\n"
 
                 if pause_method == "repetier":
                     #Push the filament back,
@@ -530,19 +543,23 @@ class PauseAtHeight(Script):
                 elif pause_method != "griffin":
                     if control_temperatures:
                         # Set extruder resume temperature
-                        prepend_gcode += self.putValue(M = 109, S = int(target_temperature.get(current_t, 0))) + " ; resume temperature\n"
+                        if standby_wait_for_temperature_enabled:
+                            WFT_numeric = 109
+                            Temp_resume_Text = " ; WAIT for resume temperature\n"
+                        else:
+                            WFT_numeric = 104
+                            Temp_resume_Text = " ; resume temperature\n"
+
+                        prepend_gcode += self.putValue(M=WFT_numeric,
+                                                       S=int(target_temperature.get(current_t, 0))) + Temp_resume_Text
 
                     if extrude_amount != 0:  # Need to prime after the pause.
                         # Push the filament back.
-                        if retraction_amount != 0:
-                            prepend_gcode += self.putValue(G = 1, E = retraction_amount, F = retraction_speed * 60) + "\n"
+                        if extrude_speed == 0:
+                            extrude_speed = 25
 
-                        # Prime the material.
-                        prepend_gcode += self.putValue(G = 1, E = extrude_amount, F = extrude_speed * 60) + "; Extra extrude after the unpause\n"
-
-                        # And retract again to make the movements back to the starting position.
-                        if retraction_amount != 0:
-                            prepend_gcode += self.putValue(G = 1, E = -retraction_amount, F = retraction_speed * 60) + "\n"
+                        if extrude_amount != 0:
+                            prepend_gcode += self.putValue(G=1, E=extrude_amount, F=extrude_speed * 60) + "\n"
 
                     # Move the head back
                     if park_enabled:
@@ -556,8 +573,6 @@ class PauseAtHeight(Script):
                             retraction_count = 1 if control_temperatures else 3 #Retract more if we don't control the temperature.
                             for i in range(retraction_count):
                                 prepend_gcode += self.putValue(G = 11) + "\n"
-                        else:
-                            prepend_gcode += self.putValue(G = 1, E = retraction_amount, F = retraction_speed * 60) + "\n"
 
                     if current_extrusion_f != 0:
                         prepend_gcode += self.putValue(G = 1, F = current_extrusion_f) + " ; restore extrusion feedrate\n"

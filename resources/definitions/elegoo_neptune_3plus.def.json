@@ -1,0 +1,26 @@
+{
+    "version": 2,
+    "name": "ELEGOO NEPTUNE 3 Plus",
+    "inherits": "elegoo_neptune_3pro",
+    "metadata":
+    {
+        "platform": "elegoo_platform_max.3mf",
+        "platform_offset": [
+            -2.1,
+            -0.2,
+            0
+        ]
+    },
+    "overrides":
+    {
+        "acceleration_wall": { "value": 700 },
+        "machine_acceleration": { "value": 700 },
+        "machine_depth": { "default_value": 330 },
+        "machine_height": { "default_value": 410 },
+        "machine_max_acceleration_x": { "value": 700 },
+        "machine_max_acceleration_y": { "value": 700 },
+        "machine_name": { "default_value": "ELEGOO NEPTUNE 3 Plus" },
+        "machine_start_gcode": { "default_value": ";ELEGOO NEPTUNE 3 Plus\nM220 S100 ;Set the feed speed to 100%\nM221 S100 ;Set the flow rate to 100%\nG90\nG28 ;home\n;M420 S1 Z10;Uncomment to enable progressive compensation height of 10mm\nG92 E0 ;Reset Extruder\nG1 Z0.45 F300\nG1 X1.5 Y20 F5000.0 ;Move to start position\nG1 Y120.0 F600.0 E15 ;Draw the first line\nG1 X0.5 F1000.0 ;Move to side a little\nG1 Y20 F600 E30 ;Draw the second line\nG92 E0 ;Reset Extruder" },
+        "machine_width": { "default_value": 330 }
+    }
+}

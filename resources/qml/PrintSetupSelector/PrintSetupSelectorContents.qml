@@ -67,6 +67,16 @@ Item
                 top: parent.top
             }
             visible: currentModeIndex == PrintSetupSelectorContents.Mode.Recommended
+            height: {
+                const height = base.height - (customPrintSetup.mapToItem(null, 0, 0).y + buttonRow.height + UM.Theme.getSize("default_margin").height);
+                const maxHeight = UM.Preferences.getValue("view/settings_list_height");
+                return Math.min(implicitHeight, height, maxHeight);
+            }
+
+            function onModeChanged()
+            {
+                currentModeIndex = PrintSetupSelectorContents.Mode.Custom;
+            }
         }
 
         CustomPrintSetup
@@ -116,13 +126,21 @@ Item
         width: parent.width
         height: UM.Theme.getSize("default_lining").height
         color: UM.Theme.getColor("lining")
+        visible: currentModeIndex == PrintSetupSelectorContents.Mode.Custom
     }
 
     Item
     {
         id: buttonRow
         property real padding: UM.Theme.getSize("default_margin").width
-        height: recommendedButton.height + 2 * padding + (draggableArea.visible ? draggableArea.height : 0)
+        height:
+        {
+            if (currentModeIndex == PrintSetupSelectorContents.Mode.Custom)
+            {
+                return recommendedButton.height + 2 * padding + (draggableArea.visible ? draggableArea.height : 0)
+            }
+            return 0
+        }
 
         anchors
         {
@@ -143,25 +161,6 @@ Item
             iconSource: UM.Theme.getIcon("ChevronSingleLeft")
             visible: currentModeIndex == PrintSetupSelectorContents.Mode.Custom
             onClicked: currentModeIndex = PrintSetupSelectorContents.Mode.Recommended
-        }
-
-        Cura.SecondaryButton
-        {
-            id: customSettingsButton
-            anchors.top: parent.top
-            anchors.right: parent.right
-            anchors.margins: UM.Theme.getSize("default_margin").width
-            leftPadding: UM.Theme.getSize("default_margin").width
-            rightPadding: UM.Theme.getSize("default_margin").width
-            text: catalog.i18nc("@button", "Custom")
-            iconSource: UM.Theme.getIcon("ChevronSingleRight")
-            isIconOnRightSide: true
-            visible: currentModeIndex == PrintSetupSelectorContents.Mode.Recommended
-            onClicked:
-            {
-                currentModeIndex = PrintSetupSelectorContents.Mode.Custom
-                updateDragPosition();
-            }
         }
 
         //Invisible area at the bottom with which you can resize the panel.
