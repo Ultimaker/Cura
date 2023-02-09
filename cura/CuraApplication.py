@@ -2076,3 +2076,7 @@ class CuraApplication(QtApplication):
     @classmethod
     def getInstance(cls, *args, **kwargs) -> "CuraApplication":
         return cast(CuraApplication, super().getInstance(**kwargs))
+
+    @pyqtProperty(bool, constant=True)
+    def isEnterprise(self) -> bool:
+        return ApplicationMetadata.IsEnterpriseVersion
