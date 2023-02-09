@@ -9,7 +9,7 @@
 
     "overrides": {
         "extruder_nr": { "default_value": 0 },
-        "material_diameter": { "default_value": 2.85 },
+        
         "machine_nozzle_size": { "default_value": 2.0 }
     }
 }
