@@ -109,7 +109,7 @@
         
         "skin_overlap": { "value": 10.0 },
         
-        "skirt_gap": { "default_value": 3.0 },
+        
         "skirt_line_count": { "default_value": 3 },
         "speed_layer_0": { "value": "speed_print / 2" },
         "speed_prime_tower": { "value": "speed_topbottom" },
