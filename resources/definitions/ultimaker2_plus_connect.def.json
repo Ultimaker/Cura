@@ -101,11 +101,6 @@
         "machine_width": { "default_value": 223 },
         "material_bed_temperature": { "maximum_value": 110 },
         "material_bed_temperature_layer_0": { "maximum_value": 110 },
-        "material_initial_print_temperature":
-        {
-            "maximum_value": 260,
-            "value": "material_print_temperature"
-        },
         "material_print_temperature": { "maximum_value": 260 },
         "material_print_temperature_layer_0": { "maximum_value": 260 },
         "meshfix_maximum_deviation": { "value": "(layer_height / 3) if magic_spiralize else (layer_height / 4)" },
