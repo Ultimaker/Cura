@@ -81,13 +81,11 @@
         "retraction_retract_speed": { "maximum_value": 200 },
         "retraction_speed": { "maximum_value": 200 },
         "skin_overlap": { "value": 10.0 },
-        
         "skirt_gap": { "value": 10.0 },
         "skirt_line_count": { "value": 3 },
         "speed_layer_0": { "value": 20.0 },
         "speed_prime_tower": { "value": "speed_topbottom" },
         "speed_print": { "value": 50.0 },
-        
         "speed_support": { "value": "speed_wall_0" },
         "speed_support_interface": { "value": "speed_topbottom" },
         "speed_travel": { "value": "120.0 if speed_print < 60 else 240.0 if speed_print > 100 else speed_print * 2.5" },
@@ -105,7 +103,6 @@
         "support_interface_skip_height": { "value": 0.2 },
         "support_type": { "default_value": "buildplate" },
         "support_use_towers": { "value": false },
-        
         "support_xy_distance": { "value": "wall_line_width_0 * 2" },
         "support_xy_distance_overhang": { "value": "wall_line_width_0" },
         "support_xy_overrides_z": { "value": "'xy_overrides_z'" },

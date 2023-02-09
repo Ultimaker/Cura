@@ -138,7 +138,6 @@
         "travel_retract_before_outer_wall": { "value": true },
         "wall_thickness":
         {
-            "default_value": 0.8,
             "maximum_warning_value": "1.6",
             "minimum_warning_value": "0.4"
         },
