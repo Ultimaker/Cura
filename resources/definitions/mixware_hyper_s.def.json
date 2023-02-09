@@ -109,7 +109,6 @@
         "skirt_line_count": { "default_value": 3 },
         "speed_prime_tower": { "value": "speed_topbottom" },
         "speed_print": { "default_value": 40.0 },
-        
         "speed_support": { "value": "speed_wall_0" },
         "speed_support_interface": { "value": "speed_topbottom" },
         "speed_topbottom": { "value": "speed_print / 2" },
