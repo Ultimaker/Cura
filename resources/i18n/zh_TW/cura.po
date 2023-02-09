@@ -8512,9 +8512,9 @@ msgstr "提供讀寫 XML 格式線材參數的功能。"
 #~ msgid "Please select any upgrades made to this UltiMaker 2."
 #~ msgstr "請選擇適用於 UltiMaker 2 的更新檔案。"
 
-#~ msgctxt "@description"
-#~ msgid "Please sign in to get verified plugins and materials for UltiMaker Cura Enterprise"
-#~ msgstr "請登入以取得 UltiMaker Cura Enterprise 驗証的外掛及線材"
+msgctxt "@description"
+msgid "Please sign in to get verified plugins and materials for UltiMaker Cura Enterprise"
+msgstr "請登入以取得 UltiMaker Cura Enterprise 驗証的外掛及線材"
 
 #~ msgctxt "name"
 #~ msgid "Plugin Browser"

@@ -6782,6 +6782,10 @@ msgctxt "description"
 msgid "Provides capabilities to read and write XML-based material profiles."
 msgstr "提供读取和写入基于 XML 的材料配置文件的功能。"
 
+msgctxt "@description"
+msgid "Please sign in to get verified plugins and materials for Ultimaker Cura Enterprise"
+msgstr "请登录以获取经验证适用于 Ultimaker Cura Enterprise 的插件和材料"
+
 #~ msgctxt "@info:generic"
 #~ msgid ""
 #~ "\n"

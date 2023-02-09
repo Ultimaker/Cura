@@ -6774,3 +6774,7 @@ msgstr "フィラメントプロファイル"
 msgctxt "description"
 msgid "Provides capabilities to read and write XML-based material profiles."
 msgstr "XMLベースフィラメントのプロファイルを読み書きするための機能を供給する。"
+
+msgctxt "@description"
+msgid "Please sign in to get verified plugins and materials for Ultimaker Cura Enterprise"
+msgstr "検証済みのUltimaker Cura Enterprise用プラグインおよび材料を入手するにはサインインしてください。"

@@ -8965,9 +8965,9 @@ msgstr "Provê capacidade de ler e escrever perfis de material baseado em XML."
 #~ msgid "Please select any upgrades made to this UltiMaker 2."
 #~ msgstr "Por favor selecione quaisquer atualizações feitas nesta UltiMaker 2."
 
-#~ msgctxt "@description"
-#~ msgid "Please sign in to get verified plugins and materials for UltiMaker Cura Enterprise"
-#~ msgstr "Por favor se logue para adquirir complementos e materiais verificados para o UltiMaker Cura Enterprise"
+msgctxt "@description"
+msgid "Please sign in to get verified plugins and materials for UltiMaker Cura Enterprise"
+msgstr "Por favor se logue para adquirir complementos e materiais verificados para o UltiMaker Cura Enterprise"
 
 #~ msgctxt "name"
 #~ msgid "Plugin Browser"

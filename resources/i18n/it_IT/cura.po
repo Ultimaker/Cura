@@ -6797,3 +6797,7 @@ msgstr "Profili del materiale"
 msgctxt "description"
 msgid "Provides capabilities to read and write XML-based material profiles."
 msgstr "Offre la possibilità di leggere e scrivere profili di materiali basati su XML."
+
+msgctxt "@description"
+msgid "Please sign in to get verified plugins and materials for Ultimaker Cura Enterprise"
+msgstr "Accedere per ottenere i plugin e i materiali verificati per Ultimaker Cura Enterprise"
