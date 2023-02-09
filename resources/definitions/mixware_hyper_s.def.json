@@ -81,7 +81,7 @@
         "retraction_combing": { "value": "off" },
         "retraction_combing_max_distance": { "default_value": 0.5 },
         "retraction_count_max": { "default_value": 100 },
-        "retraction_enable": { "default_value": true },
+        
         "retraction_extrusion_window":
         {
             "maximum_value_warning": "20",
