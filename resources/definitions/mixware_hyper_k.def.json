@@ -87,7 +87,7 @@
         "speed_layer_0": { "value": 20.0 },
         "speed_prime_tower": { "value": "speed_topbottom" },
         "speed_print": { "value": 50.0 },
-        "speed_print_layer_0": { "value": "speed_layer_0" },
+        
         "speed_support": { "value": "speed_wall_0" },
         "speed_support_interface": { "value": "speed_topbottom" },
         "speed_travel": { "value": "120.0 if speed_print < 60 else 240.0 if speed_print > 100 else speed_print * 2.5" },
