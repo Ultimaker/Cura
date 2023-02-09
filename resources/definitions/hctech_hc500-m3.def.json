@@ -40,7 +40,7 @@
         "travel_retract_before_outer_wall": { "value": true },
 
         "gantry_height": { "value": "55" },
-        "speed_print": { "default_value": 60.0 } ,
+        
 
         "material_diameter": { "default_value": 2.85 },
         "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
