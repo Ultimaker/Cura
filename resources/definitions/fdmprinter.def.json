@@ -4485,7 +4485,7 @@
                             "type": "extruder",
                             "default_value": "0",
                             "value": "support_extruder_nr",
-                            "enabled": "(support_enable or support_meshes_present) and extruders_enabled_count > 1",
+                            "enabled": "(support_enable or support_meshes_present) and extruders_enabled_count > 1 and support_interface_enable",
                             "resolve": "max(extruderValues('support_interface_extruder_nr'))",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false,
@@ -4498,7 +4498,7 @@
                                     "type": "extruder",
                                     "default_value": "0",
                                     "value": "support_interface_extruder_nr",
-                                    "enabled": "(support_enable or support_meshes_present) and extruders_enabled_count > 1",
+                                    "enabled": "(support_enable or support_meshes_present) and extruders_enabled_count > 1 and support_roof_enable",
                                     "resolve": "max(extruderValues('support_roof_extruder_nr'))",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": false
@@ -4510,7 +4510,7 @@
                                     "type": "extruder",
                                     "default_value": "0",
                                     "value": "support_interface_extruder_nr",
-                                    "enabled": "(support_enable or support_meshes_present) and extruders_enabled_count > 1",
+                                    "enabled": "(support_enable or support_meshes_present) and extruders_enabled_count > 1 and support_bottom_enable",
                                     "resolve": "max(extruderValues('support_bottom_extruder_nr'))",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": false
@@ -5093,7 +5093,7 @@
                             "default_value": false,
                             "value": "extruderValue(support_roof_extruder_nr, 'support_interface_enable')",
                             "limit_to_extruder": "support_roof_extruder_nr",
-                            "enabled": "support_enable or support_meshes_present",
+                            "enabled": "support_enable or support_meshes_present and support_interface_enable",
                             "settable_per_mesh": true
                         },
                         "support_bottom_enable":
@@ -5104,7 +5104,7 @@
                             "default_value": false,
                             "value": "extruderValue(support_bottom_extruder_nr, 'support_interface_enable')",
                             "limit_to_extruder": "support_bottom_extruder_nr",
-                            "enabled": "support_enable or support_meshes_present",
+                            "enabled": "support_enable or support_meshes_present and support_interface_enable",
                             "settable_per_mesh": true
                         }
                     }
