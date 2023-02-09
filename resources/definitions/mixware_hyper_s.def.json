@@ -81,7 +81,6 @@
         "retraction_combing": { "value": "off" },
         "retraction_combing_max_distance": { "default_value": 0.5 },
         "retraction_count_max": { "default_value": 100 },
-        
         "retraction_extrusion_window":
         {
             "maximum_value_warning": "20",
@@ -106,10 +105,7 @@
             "maximum_value": "200",
             "maximum_value_warning": "machine_max_feedrate_e if retraction_enable else float('inf')"
         },
-        
         "skin_overlap": { "value": 10.0 },
-        
-        
         "skirt_line_count": { "default_value": 3 },
         "speed_layer_0": { "value": "speed_print / 2" },
         "speed_prime_tower": { "value": "speed_topbottom" },
