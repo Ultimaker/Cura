@@ -1,5 +1,5 @@
 {
-    "version": 2,
+    "version": 3,
     "name": "Left Extruder",
     "inherits": "fdmextruder",
     "metadata": {
@@ -17,10 +17,10 @@
         "material_diameter": { "default_value": 1.75 },
         "machine_nozzle_size": { "default_value": 0.4 },
         "machine_extruder_start_code": {
-            "default_value": "G1 X5 Y319 ;move to wait posiotion\nT0 ;switch to extruder 1\nM109 S{material_print_temperature}\nG1 F5000\nG12 ;clean nozzle\nG1 X0 Y300 F4800 ;move to start point"
+            "default_value": "G91 ; Relative positioning\nG1 Z1\nG90 ; Absolute positioning\nG1 X0 Y319 F4000 ; Move to corner\nG92 E0 ; Reset Extruder\nG1 E-2 F2700 ; Retract\nG92 E0 ; Reset Extruder\nT0 ;switch to extruder 1\nM109 S{material_print_temperature}\nG12 ; clean nozzle"
         },
         "machine_extruder_end_code": {
-            "default_value": "G92 E0 ;reset extruder distance\nG1 F800 E-1 ;retract\nG92 E0 ;reset extruder distance\nG1 X0 Y300 F4800 ;move to start position\nG1 X5 Y319 ;move to wait posiotion"
+            "default_value": "G91 ; Relative positioning\nG1 Z-1\nG90 ; Absolute positioning"
         },
         "machine_extruder_cooling_fan_number": { "default_value": 0 }
     }
