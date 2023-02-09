@@ -106,7 +106,7 @@
             "maximum_value": "200",
             "maximum_value_warning": "machine_max_feedrate_e if retraction_enable else float('inf')"
         },
-        "skin_no_small_gaps_heuristic": { "default_value": false },
+        
         "skin_overlap": { "value": 10.0 },
         "skirt_brim_speed": { "value": "speed_layer_0" },
         "skirt_gap": { "default_value": 3.0 },
