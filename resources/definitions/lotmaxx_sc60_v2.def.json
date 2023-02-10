@@ -42,7 +42,7 @@
         
         "support_z_distance":{"value":0.15},
         
-        "support_enable":{"value":true},
+        "support_enable":{"value":
 		"adhesion_type":{"default_value":"skirt"},
 		
 		"skirt_line_count": {"value":2},
