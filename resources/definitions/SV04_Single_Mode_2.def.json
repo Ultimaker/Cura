@@ -1,0 +1,24 @@
+{
+    "version": 2,
+    "name": "Sovol-SV04 Single Mode 02",
+    "inherits": "Sovol3D_SV04_base",
+    "metadata": {
+        "visible": true,
+        "author": "Sovol",
+        "manufacturer": "Sovol 3D",
+        "file_formats": "text/x-gcode",
+        "has_variants": false,
+        "has_machine_quality": false,
+        "preferred_quality_type": "draft",
+        "machine_extruder_trains": {
+            "1": "SV04_extruder_right"
+        }
+    },
+	
+    "overrides": {
+        "machine_name": { "default_value": "SV04 Single Mode 02" },
+        "machine_width": { "default_value": 302 },
+        "machine_depth": { "default_value": 302 },
+        "machine_height": { "default_value": 402 }
+    }
+}

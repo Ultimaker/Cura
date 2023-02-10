@@ -1,0 +1,24 @@
+{
+    "version": 2,
+    "name": "Sovol-SV04 Mirror Mode",
+    "inherits": "Sovol3D_SV04_base",
+    "metadata": {
+        "visible": true,
+        "author": "Sovol",
+        "manufacturer": "Sovol 3D",
+        "file_formats": "text/x-gcode",
+        "has_variants": false,
+        "has_machine_quality": false,
+        "preferred_quality_type": "draft",
+        "machine_extruder_trains": {
+            "0": "SV04_extruder_0"
+        }
+    },
+	
+    "overrides": {
+        "machine_name": { "default_value": "SV04 Mirror Mode" },
+        "machine_width": { "default_value": 115 },
+        "machine_depth": { "default_value": 302 },
+        "machine_height": { "default_value": 402 }
+    }
+}
