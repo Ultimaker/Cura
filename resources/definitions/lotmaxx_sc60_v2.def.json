@@ -24,7 +24,7 @@
         },
         "infill_overlap":{"value":15},
         "infill_sparse_density":{"value":10},
-		"material_print_temperature":{"value":210},
+		
 		"material_print_temperature_layer_0": { "value": "material_print_temperature + 5" },
         "material_final_print_temperature":{"value":"material_print_temperature"},
         "material_initial_print_temperature":{"value":"material_print_temperature"},
