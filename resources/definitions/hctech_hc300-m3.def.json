@@ -44,7 +44,6 @@
             "maximum_value_warning": 3
         },
         "retraction_speed": { "default_value": 35 },
-
         "travel_avoid_distance": { "value": 1 },
         "travel_avoid_supports": { "value": true },
         "travel_retract_before_outer_wall": { "value": true }
