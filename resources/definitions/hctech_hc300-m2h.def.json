@@ -21,7 +21,6 @@
         "adhesion_type": { "default_value": "skirt" },
         "cool_fan_speed": { "value": 75 },
         "gantry_height": { "value": "55" },
-        
         "line_width": { "value": 0.38 },
         "machine_center_is_zero": { "default_value": false },
         "machine_depth": { "default_value": 300 },
