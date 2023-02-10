@@ -41,7 +41,7 @@
         "support_angle":{"value":60},
         
         "support_z_distance":{"value":0.15},
-        "material_bed_temperature":{"value":60},
+        
         "support_enable":{"value":true},
 		"adhesion_type":{"default_value":"skirt"},
 		"skirt_gap":{"value": 3.0},
