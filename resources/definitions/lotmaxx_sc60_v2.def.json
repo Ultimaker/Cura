@@ -46,7 +46,7 @@
 		"adhesion_type":{"default_value":"skirt"},
 		
 		"skirt_line_count": {"value":2},
-        "prime_tower_size":{"value":30},
+        "prime_tower_size":{"value":30}
         "prime_tower_enable":{"value":true},
         "prime_tower_position_x":{"value": 65},
         "prime_tower_position_y":{"value": 35},
