@@ -22,6 +22,7 @@ PyQt6-NetworkAuth==6.2.0 \
 PyQt6-NetworkAuth-Qt6==6.2.4 \
     --hash=sha256:c7996a9d8c4ce024529ec37981fbfd525ab1a2d497af1281f81f2b6054452d2e \
     --hash=sha256:1ae9e08e03bd9d5ebdb42dfaccf484a9cc62eeea7504621fe42c005ff1745e66 \
+    --hash=sha256:1363ea81e5c6ac10bfd643e41ba0d215c0d031a57ff1e5972cc4c2a918efe712 \
     --hash=sha256:8ed4e5e0eaaa42a6f91aba6745eea23fb3ffcbddc6b162016936530ed28dd0ad
 PyQt6-sip==13.2.1 \
     --hash=sha256:b7bce59900b2e0a04f70246de2ccf79ee7933036b6b9183cf039b62eeae2b858 \
