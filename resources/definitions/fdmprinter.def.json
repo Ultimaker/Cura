@@ -4996,7 +4996,7 @@
                     "description": "The maximum distance between support structures in the X/Y directions. When separate structures are closer together than this value, the structures merge into one.",
                     "unit": "mm",
                     "type": "float",
-                    "default_value": 10.0,
+                    "default_value": 5.0,
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "50",
