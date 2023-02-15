@@ -122,6 +122,10 @@ jobs:
                 if:  ${{ runner.os == 'Macos' }}
                 run: brew install autoconf automake ninja create-dmg # Delete create-dmg when deprecating dmg
 
+            -   name: Hack needed specifically for ubuntu-22.04 from mid-Feb 2023 onwards
+                if: ${{ runner.os == 'Linux' && startsWith(inputs.platform, 'ubuntu-22.04') }}
+                run: sudo apt remove libodbc2 libodbcinst2 unixodbc-common -y
+
             -   name: Install Linux system requirements
                 if: ${{ runner.os == 'Linux' }}
                 run: |
