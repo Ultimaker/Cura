@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-01-31 16:46+0100\n"
-"PO-Revision-Date: 2022-10-10 18:52+0200\n"
+"PO-Revision-Date: 2023-02-16 20:28+0100\n"
 "Last-Translator: Miroslav Šustek <sustmidown@centrum.cz>\n"
 "Language-Team: DenyCZ <www.github.com/DenyCZ>\n"
 "Language: cs_CZ\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.2.2\n"
 
 #: cura/API/Account.py:199
 msgctxt "@info:title"
@@ -86,7 +86,6 @@ msgid "Cura can't start"
 msgstr "Cura nelze spustit"
 
 #: cura/CrashHandler.py:113
-#, fuzzy
 msgctxt "@label crash message"
 msgid ""
 "<p><b>Oops, UltiMaker Cura has encountered something that doesn't seem right.</p></b>\n"
@@ -95,7 +94,7 @@ msgid ""
 "                    <p>Please send us this Crash Report to fix the problem.</p>\n"
 "                "
 msgstr ""
-"<p> <b> Jejda, Ultimaker Cura narazil na něco, co se nezdá být v pořádku. </p> </b>\n"
+"<p> <b> Jejda, UltiMaker Cura narazil na něco, co se nezdá být v pořádku. </p> </b>\n"
 "                     <p> Během spouštění jsme zaznamenali neodstranitelnou chybu. Bylo to pravděpodobně způsobeno některými nesprávnými konfiguračními soubory. Doporučujeme zálohovat a resetovat vaši konfiguraci. </p>\n"
 "                     <p> Zálohy najdete v konfigurační složce. </p>\n"
 "                     <p> Za účelem vyřešení problému nám prosím pošlete tento záznam pádu. </p>\n"
@@ -949,13 +948,11 @@ msgid "Machine Settings Action"
 msgstr "Akce nastavení zařízení"
 
 #: plugin.json
-#, fuzzy
 msgctxt "description"
 msgid "Manages extensions to the application and allows browsing extensions from the Ultimaker website."
 msgstr "Spravuje rozšíření aplikace a umožňuje prohlížení rozšíření z webu UltiMaker."
 
 #: plugin.json
-#, fuzzy
 msgctxt "description"
 msgid "Manages network connections to Ultimaker networked printers."
 msgstr "Spravuje síťová připojení k síťovým tiskárnám UltiMaker."
@@ -1036,10 +1033,9 @@ msgid "Provides capabilities to read and write XML-based material profiles."
 msgstr "Poskytuje funkce pro čtení a zápis materiálových profilů založených na XML."
 
 #: plugin.json
-#, fuzzy
 msgctxt "description"
 msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
-msgstr "Poskytuje akce strojů pro stroje UltiMaker (jako je průvodce vyrovnáváním postele, výběr upgradů atd.)."
+msgstr "Poskytuje akce strojů pro stroje UltiMaker (jako je průvodce vyrovnáváním tiskové podložky, výběr upgradů atd.)."
 
 #: plugin.json
 msgctxt "description"
@@ -1077,7 +1073,6 @@ msgid "Provides support for reading AMF files."
 msgstr "Poskytuje podporu pro čtení souborů AMF."
 
 #: plugin.json
-#, fuzzy
 msgctxt "description"
 msgid "Provides support for reading Ultimaker Format Packages."
 msgstr "Poskytuje podporu pro čtení balíčků formátu UltiMaker."
@@ -1098,7 +1093,6 @@ msgid "Provides support for writing 3MF files."
 msgstr "Poskytuje podporu pro psaní souborů 3MF."
 
 #: plugin.json
-#, fuzzy
 msgctxt "description"
 msgid "Provides support for writing Ultimaker Format Packages."
 msgstr "Poskytuje podporu pro psaní balíčků formátu UltiMaker."
@@ -1189,13 +1183,11 @@ msgid "Ultimaker Digital Library"
 msgstr "Digitální knihovna UltiMaker"
 
 #: plugin.json
-#, fuzzy
 msgctxt "name"
 msgid "Ultimaker Network Connection"
 msgstr "Síťové připojení UltiMaker"
 
 #: plugin.json
-#, fuzzy
 msgctxt "name"
 msgid "Ultimaker machine actions"
 msgstr "Akce zařízení UltiMaker"
@@ -1316,10 +1308,9 @@ msgid "Upgrades configurations from Cura 4.9 to Cura 4.10."
 msgstr "Aktualizuje konfigurace z Cura 4.9 na Cura 4.10."
 
 #: plugin.json
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.2 to Cura 5.3."
-msgstr "Aktualizuje konfigurace z Cura 3.2 na Cura 3.3."
+msgstr "Aktualizuje konfigurace z Cura 5.2 na Cura 5.3."
 
 #: plugin.json
 msgctxt "name"
@@ -1437,10 +1428,9 @@ msgid "Version Upgrade 4.9 to 4.10"
 msgstr "Aktualizace verze 4.9 na 4.10"
 
 #: plugin.json
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 5.2 to 5.3"
-msgstr "Aktualizace verze 3.2 na 3.3"
+msgstr "Aktualizace verze 5.2 na 5.3"
 
 #: plugin.json
 msgctxt "description"
@@ -1477,7 +1467,6 @@ msgstr "Otevřít soubor s projektem"
 #: plugins/3MFReader/WorkspaceDialog.qml:99
 #: plugins/3MFReader/WorkspaceDialog.qml:127
 #: plugins/3MFReader/WorkspaceDialog.qml:134
-#, fuzzy
 msgctxt "@button"
 msgid "Create new"
 msgstr "Vytvořit nový"
@@ -1503,10 +1492,10 @@ msgid "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>.
 msgstr "Soubor projektu <filename>{0}</filename> je poškozený: <message>{1}</message>."
 
 #: plugins/3MFReader/ThreeMFWorkspaceReader.py:754
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
 msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of Ultimaker Cura."
-msgstr "Soubor projektu <filename>{0}</filename> je vytvořený profily, které jsou této verzi UltiMaker Cura neznámé."
+msgstr "Soubor projektu <filename>{0}</filename> je vytvořený s profily, které nejsou této verzi UltiMaker Cura známé."
 
 #: plugins/3MFReader/WorkspaceDialog.py:233
 msgctxt "@title:tab"
@@ -1574,15 +1563,14 @@ msgid "Printer Group"
 msgstr "Skupina tiskárny"
 
 #: plugins/3MFReader/WorkspaceDialog.qml:103
-#, fuzzy
 msgctxt "@action:label"
 msgid "Open With"
-msgstr "Otevřít"
+msgstr "Otevřít s"
 
 #: plugins/3MFReader/WorkspaceDialog.qml:104
 msgctxt "@info:tooltip"
 msgid "Printer settings will be updated to match the settings saved with the project."
-msgstr ""
+msgstr "Nastavení tiskárny bude aktualizováno, aby odpovídalo nastavení uloženému v projektu."
 
 #: plugins/3MFReader/WorkspaceDialog.qml:156
 #: resources/qml/Dialogs/WorkspaceSummaryDialog.qml:222
@@ -2510,7 +2498,7 @@ msgstr "Neznámý autor"
 #: plugins/Marketplace/PackageModel.py:95
 msgctxt "@label:label Ultimaker Marketplace is a brand name, don't translate"
 msgid "The material package associated with the Cura project could not be found on the Ultimaker Marketplace. Use the partial material profile definition stored in the Cura project file at your own risk."
-msgstr ""
+msgstr "Balíček materiálů spojený s tímto Cura projektem nebyl nalezen v Ultimaker Marketplace. Částečnou definici materiálového profilu uloženou v Cura projektu používejte na vlastní nebezpečí."
 
 #: plugins/Marketplace/RemotePackageList.py:117
 msgctxt "@info:error"
@@ -3177,7 +3165,7 @@ msgstr "Pomocníci"
 #: plugins/SimulationView/SimulationViewMenuComponent.qml:243
 msgctxt "@label"
 msgid "Shell"
-msgstr "Shell"
+msgstr "Plášť"
 
 #: plugins/SimulationView/SimulationViewMenuComponent.qml:249
 msgctxt "@label"
@@ -3835,7 +3823,6 @@ msgid "Learn more"
 msgstr "Zjistit více"
 
 #: plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:18
-#, fuzzy
 msgctxt "@info:status"
 msgid "You are attempting to connect to a printer that is not running Ultimaker Connect. Please update the printer to the latest firmware."
 msgstr "Pokoušíte se připojit k tiskárně, na které není spuštěna aplikace UltiMaker Connect. Aktualizujte tiskárnu na nejnovější firmware."
@@ -3857,13 +3844,12 @@ msgid "Sending materials to printer"
 msgstr "Odesílání materiálů do tiskárny"
 
 #: plugins/UM3NetworkPrinting/src/Messages/NewPrinterDetectedMessage.py:13
-#, fuzzy
 msgctxt "info:status"
 msgid "New printer detected from your Ultimaker account"
 msgid_plural "New printers detected from your Ultimaker account"
-msgstr[0] "Z vašeho Ultimaker účtu byla detekována nová tiskárna"
-msgstr[1] "Z vašeho Ultimaker účtu byly detekovány nové tiskárny"
-msgstr[2] "Z vašeho Ultimaker účtu byly detekovány nové tiskárny"
+msgstr[0] "Ve vašem Ultimaker účtu byla detekována nová tiskárna"
+msgstr[1] "Ve vašem Ultimaker účtu byly detekovány nové tiskárny"
+msgstr[2] "Ve vašem Ultimaker účtu byly detekovány nové tiskárny"
 
 #: plugins/UM3NetworkPrinting/src/Messages/NewPrinterDetectedMessage.py:29
 #, python-brace-format
@@ -4130,16 +4116,15 @@ msgid "Sign in to the UltiMaker platform"
 msgstr "Přihlásit se do platformy UltiMaker"
 
 #: resources/qml/Account/GeneralOperations.qml:39
-#, fuzzy
 msgctxt "@text"
 msgid ""
 "- Add material profiles and plug-ins from the Marketplace\n"
 "- Back-up and sync your material profiles and plug-ins\n"
 "- Share ideas and get help from 48,000+ users in the UltiMaker community"
 msgstr ""
-"- Přidejte materiálnové profily and moduly z Obchodu\n"
+"- Přidejte materiálnové profily and moduly z Marketplace\n"
 "- Zálohujte a synchronizujte vaše materiálové profily and moduly\n"
-"- Sdílejte nápady a získejte pomoc od více než 48 000 uživatelů v Ultimaker komunitě"
+"- Sdílejte nápady a získejte pomoc od více než 48 000 uživatelů v UltiMaker komunitě"
 
 #: resources/qml/Account/GeneralOperations.qml:58
 msgctxt "@button"
@@ -4332,10 +4317,9 @@ msgid "Manage Materials..."
 msgstr "Spravovat materiály..."
 
 #: resources/qml/Actions.qml:218
-#, fuzzy
 msgctxt "@action:inmenu Marketplace is a brand name of UltiMaker's, so don't translate."
 msgid "Add more materials from Marketplace"
-msgstr "Přidat více materiálů z Obchodu"
+msgstr "Přidat více materiálů z Marketplace"
 
 #: resources/qml/Actions.qml:225
 msgctxt "@action:inmenu menubar:profile"
@@ -4625,38 +4609,34 @@ msgid "What's New"
 msgstr "Co je nového"
 
 #: resources/qml/Cura.qml:890
-#, fuzzy
 msgctxt "@title:window"
 msgid "Save Custom Profile"
-msgstr "Vlastní profil"
+msgstr "Uložit vlastní profil"
 
 #: resources/qml/Cura.qml:891
-#, fuzzy
 msgctxt "@textfield:placeholder"
 msgid "New Custom Profile"
-msgstr "Vlastní profil"
+msgstr "Nový vlastní profil"
 
 #: resources/qml/Cura.qml:892
-#, fuzzy
 msgctxt "@info"
 msgid "Custom profile name:"
-msgstr "Vlastní profil"
+msgstr "Název vlastního profilu:"
 
 #: resources/qml/Cura.qml:909
 msgctxt "@label %i will be replaced with a profile name"
 msgid "<b>Only user changed settings will be saved in the custom profile.</b><br/>For materials that support it, the new custom profile will inherit properties from <b>%1</b>."
-msgstr ""
+msgstr "<b>Ve vlastním profilu budou uložena pouze nastavení změněná uživatelem.</b><br/>Pro materiály, které to podporují, bude nový vlastní profil dědit vlastnosti z <b>%1</b>."
 
 #: resources/qml/Cura.qml:917
 msgctxt "@action:button"
 msgid "Learn more about Cura print profiles"
-msgstr ""
+msgstr "Zjistit více o profilech tisku Cura"
 
 #: resources/qml/Cura.qml:926
-#, fuzzy
 msgctxt "@button"
 msgid "Save new profile"
-msgstr "Vytvořit nový profil"
+msgstr "Uložit nový profil"
 
 #: resources/qml/Dialogs/AboutDialog.qml:15
 msgctxt "@title:window The argument is the application name."
@@ -4940,16 +4920,14 @@ msgid "Keep changes"
 msgstr "Zanechat změny"
 
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:171
-#, fuzzy
 msgctxt "@action:button"
 msgid "Save as new custom profile"
-msgstr "Vlastní profil"
+msgstr "Uložit jako nový vlastní profil"
 
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:178
-#, fuzzy
 msgctxt "@action:button"
 msgid "Save changes"
-msgstr "Zanechat změny"
+msgstr "Uložit změny"
 
 #: resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:47
 msgctxt "@text:window"
@@ -6243,23 +6221,22 @@ msgstr "Vlastní profil <b>%1</b> přepisuje některá nastavení."
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:92
 msgctxt "@info %1 is the name of a profile"
 msgid "Recommended settings (for <b>%1</b>) were altered."
-msgstr ""
+msgstr "Doporučená nastavení (pro <b>%1</b>) byla změněna."
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:106
-#, fuzzy
 msgctxt "@info %1 is the name of a profile"
 msgid "Some setting-values defined in <b>%1</b> were overridden."
-msgstr "Některá nastavení z aktuálního profilu byla přepsána."
+msgstr "Některé hodnoty nastavení definované v <b>%1</b> byly přepsány."
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:137
 msgctxt "@info"
 msgid "Reset to defaults."
-msgstr ""
+msgstr "Resetovat na výchozí."
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:178
 msgctxt "@info"
 msgid "Compare and save."
-msgstr ""
+msgstr "Porovnat a uložit."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedAdhesionSelector.qml:15
 msgctxt "@label"
@@ -6272,16 +6249,14 @@ msgid "Enable printing a brim or raft. This will add a flat area around or under
 msgstr "Umožňuje tisk okraje nebo voru. Tímto způsobem se kolem nebo pod objekt přidá plochá oblast, kterou lze snadno odříznout."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:102
-#, fuzzy
 msgctxt "@label"
 msgid "Recommended print settings"
-msgstr "Nastavení tisku"
+msgstr "Doporučená nastavení tisku"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:111
-#, fuzzy
 msgctxt "@button"
 msgid "Show Custom"
-msgstr "Vlastní"
+msgstr "Zobrazit vlastní"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedResolutionSelector.qml:27
 msgctxt "@label"
@@ -6291,29 +6266,27 @@ msgstr "Rozlišení"
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:16
 msgctxt "@label"
 msgid "Strength"
-msgstr ""
+msgstr "Pevnost"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:20
 msgctxt "@label"
 msgid "The following settings define the strength of your part."
-msgstr ""
+msgstr "Následující nastavení definuje pevnost součásti."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:34
-#, fuzzy
 msgctxt "infill_sparse_density description"
 msgid "Infill Density"
-msgstr "Pouze výplň"
+msgstr "Hustota výplně"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:35
 msgctxt "@label"
 msgid "Adjusts the density of infill of the print."
-msgstr ""
+msgstr "Upravuje hustotu výplně tisku."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:54
-#, fuzzy
 msgctxt "@action:label"
 msgid "Infill Pattern"
-msgstr "Pouze výplň"
+msgstr "Výplňový vzor"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:56
 msgctxt "@label"
@@ -6326,17 +6299,23 @@ msgid ""
 "\n"
 "For functional 3D prints which require high strenght in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
 msgstr ""
+"Vzor výplně při tisku modelu:\n"
+"\n"
+"Pro rychlý tisk jiných než funkčních částí vyberte čáry, cik-cak nebo bleskovou výplň.\n"
+"\n"
+"Pro funkční části, které nebudou příliš namáhány, doporučujeme mřížku, trojúhelníky nebo tri-hexagony.\n"
+"\n"
+"Pro funkční 3D výtisky, které vyžadují velkou pevnost ve více směrech, použijte výplně: krychle, kubické členění, čtvrtinově krychlová, oktet nebo gyroid."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:67
-#, fuzzy
 msgctxt "@action:label"
 msgid "Shell Thickness"
-msgstr "Tloušťka vrstvy"
+msgstr "Tloušťka pláště"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:68
 msgctxt "@label"
 msgid "Defines the tickness of your part side walls, roof and floor."
-msgstr ""
+msgstr "Definuje tloušťku stěn, střechy a podlahy vašeho modelu."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:16
 msgctxt "@label"
@@ -6344,16 +6323,14 @@ msgid "Support"
 msgstr "Podpora"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:21
-#, fuzzy
 msgctxt "@label"
 msgid "Generate structures to support parts of the model which have overhangs. Without these structures, these parts would collapse during printing."
-msgstr "Vytvořte struktury pro podporu částí modelu, které mají přesahy. Bez těchto struktur by se takové části během tisku zhroutily."
+msgstr "Vytvořit struktury pro podporu částí modelu, které mají přesahy. Bez těchto struktur by se takové části během tisku zhroutily."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:40
-#, fuzzy
 msgctxt "@action:label"
 msgid "Support Type"
-msgstr "Podpora"
+msgstr "Typ podpory"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:41
 msgctxt "@label"
@@ -6364,27 +6341,31 @@ msgid ""
 "\n"
 "\"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
 msgstr ""
+"Volí mezi dostupnými technikami pro generování podpory. \n"
+"\n"
+"„Normální“ podpora vytváří podpůrnou strukturu přímo pod převislými částmi a spouští tyto podpory přímo dolů. \n"
+"\n"
+"„Stromová“ podpora vytváří větve směrem k převislým oblastem, které podporují model na koncích těchto větví, a umožňuje větvím procházet kolem modelu a podporovat je co nejvíce z konstrukční desky."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:53
-#, fuzzy
 msgctxt "@action:label"
 msgid "Print with"
-msgstr "Tisknu"
+msgstr "Tisknout pomocí"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:54
 msgctxt "@label"
 msgid "The extruder train to use for printing the support. This is used in multi-extrusion."
-msgstr ""
+msgstr "Vytlačovací souprava použitá pro tisk podpory. Používá se při vícenásobném vytlačování."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:67
 msgctxt "@action:label"
 msgid "Placement"
-msgstr ""
+msgstr "Umístění"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:68
 msgctxt "support_type description"
 msgid "Adjusts the placement of the support structures. The placement can be set to touching build plate or everywhere. When set to everywhere the support structures will also be printed on the model."
-msgstr ""
+msgstr "Upravuje umístění podpůrných struktur. Umístění lze nastavit tak, aby se dotýkalo pouze podložky nebo všude. Pokud je nastaveno všude, podpůrné struktury budou vytištěny také na modelu."
 
 #: resources/qml/PrintSetupSelector/Recommended/UnsupportedProfileIndication.qml:31
 msgctxt "@error"
@@ -6822,95 +6803,84 @@ msgid "Add a non-networked printer"
 msgstr "Přidat ne-síťovou tiskárnu"
 
 #: resources/qml/WelcomePages/AddThirdPartyPrinter.qml:102
-#, fuzzy
 msgctxt "@button"
 msgid "Add UltiMaker printer via Digital Factory"
-msgstr "Zobrazit tiskárny v Digital Factory"
+msgstr "Přidat UltiMaker tiskárnu přes Digital Factory"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:29
-#, fuzzy
 msgctxt "@label"
 msgid "In order to start using Cura you will need to configure a printer."
-msgstr "Abyste mohli balíček použít, musíte restartovat Curu"
+msgstr "Abyste mohli začít používat Curu, musíte nakonfigurovat tiskárnu."
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:36
 msgctxt "@label"
 msgid "What printer would you like to setup?"
-msgstr ""
+msgstr "Jakou tiskárnu si přejete nakonfigurovat?"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:55
-#, fuzzy
 msgctxt "@button"
 msgid "UltiMaker printer"
-msgstr "UltiMaker podpora"
+msgstr "UltiMaker tiskárna"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:64
-#, fuzzy
 msgctxt "@button"
 msgid "Non UltiMaker printer"
-msgstr "UltiMaker podpora"
+msgstr "Jiná než UltiMaker tiskárna"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:73
 msgctxt "@button"
 msgid "Learn more about adding printers to Cura"
-msgstr ""
+msgstr "Zjistit více o přidávání tiskáren do Cury"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinterStack.qml:29
-#, fuzzy
 msgctxt "@label"
 msgid "Add printer"
 msgstr "Přidat tiskárnu"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:33
-#, fuzzy
 msgctxt "@label"
 msgid "New UltiMaker printers can be connected to Digital Factory and monitored remotely."
-msgstr "Ujistěte se, že jsou všechny vaše tiskárny zapnuté a připojené k Digital Factory."
+msgstr "Nové tiskárny UltiMaker mohou být připojeny k Digital Factory a vzdáleně monitorovány."
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:70
 msgctxt "@label"
 msgid "If you are trying to add a new UltiMaker printer to Cura"
-msgstr ""
+msgstr "Pokud se pokoušíte přidat novou tiskárnu UltiMaker do Cury"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:80
-#, fuzzy
 msgctxt "@info"
 msgid "Sign in into UltiMaker Digilal Factory"
-msgstr "Připojit se k Ultimaker Digital Factory"
+msgstr "Přihlaste se do UltiMaker Digital Factory"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:81
 msgctxt "@info"
 msgid "Follow the procedure to add a new printer"
-msgstr ""
+msgstr "Řiďte se postupem pro přidání nové tiskárny"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:82
 msgctxt "@info"
 msgid "Your new printer will automatically appear in Cura"
-msgstr ""
+msgstr "Vaše nová tiskárna se automaticky objeví v Cuře"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:100
-#, fuzzy
 msgctxt "@button"
 msgid "Learn more"
 msgstr "Zjistit více"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:121
-#, fuzzy
 msgctxt "@button"
 msgid "Add local printer"
-msgstr "Přidat tiskárnu"
+msgstr "Přidat lokální tiskárnu"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:129
-#, fuzzy
 msgctxt "@button"
 msgid "Sign in to Digital Factory"
-msgstr "Zobrazit tiskárny v Digital Factory"
+msgstr "Přihlásit do Digital Factory"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:133
-#, fuzzy
 msgctxt "@button"
 msgid "Waiting for new printers"
-msgstr "Spravovat tiskárny"
+msgstr "Čekám na nové tiskárny"
 
 #: resources/qml/WelcomePages/ChangelogContent.qml:24
 msgctxt "@label"
