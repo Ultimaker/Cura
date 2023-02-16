@@ -17,6 +17,7 @@ jobs:
           fetch-depth: 2
 
       - name: Setup Python and pip
+        if: env.GIT_DIFF && !env.MATCHED_FILES  # If nothing happens with python and/or pip after, the clean-up crashes.
         uses: actions/setup-python@v4
         with:
           python-version: 3.11.x
