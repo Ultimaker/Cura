@@ -109,6 +109,10 @@ jobs:
                 if:  ${{ runner.os == 'Macos' }}
                 run: brew install autoconf automake ninja
 
+            -   name: Hack needed specifically for ubuntu-22.04 from mid-Feb 2023 onwards
+                if: ${{ runner.os == 'Linux' && startsWith(inputs.runs_on, 'ubuntu-22.04') }}
+                run: sudo apt remove libodbc2 libodbcinst2 unixodbc-common -y
+
             -   name: Install Linux system requirements
                 if: ${{ runner.os == 'Linux' }}
                 run: |
