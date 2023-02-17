@@ -144,7 +144,7 @@
 		"jerk_wall_0": { "value": "jerk_print * 0.5" },
         "jerk_travel": { "value": "jerk_print" },
         "jerk_travel_layer_0": { "value": "jerk_travel" },
-        "line_width": { "value": "machine_nozzle_size" },
+        
 		"retraction_min_travel": { "value": "3.75 * machine_nozzle_size" },
         "retraction_count_max": { "value": "10 * retraction_extrusion_window" },
         "retraction_extrusion_window": { "value": 1 },
