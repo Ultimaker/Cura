@@ -144,7 +144,6 @@
 		"jerk_wall_0": { "value": "jerk_print * 0.5" },
         "jerk_travel": { "value": "jerk_print" },
         "jerk_travel_layer_0": { "value": "jerk_travel" },
-        
 		"retraction_min_travel": { "value": "3.75 * machine_nozzle_size" },
         "retraction_count_max": { "value": "10 * retraction_extrusion_window" },
         "retraction_extrusion_window": { "value": 1 },
@@ -156,8 +155,8 @@
         "skirt_brim_speed": { "value": "speed_wall_0" },
         "z_seam_type": { "value": "'back'" },
         "z_seam_corner": { "value": "'z_seam_corner_weighted'" }, 
-		"z_seam_X": { "value": 604 },
-		"z_seam_y": { "value": 151 },
+		"z_seam_X": { "default_value": 604 },
+		"z_seam_y": { "default_value": 151 },
 		"infill_sparse_thickness": { "value": 0.2 },
 		"skin_preshrink": { "value": "expand_skins_expand_distance" },
 		"zig_zaggify_infill": { "value": true },
