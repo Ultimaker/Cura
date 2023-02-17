@@ -3,7 +3,7 @@
     "name": "Left Extruder",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "SV04",
+        "machine": ["SV04 Copy Mode", "SV04 Dual Mode", "SV04 Mirror Mode"],
         "position": "0"
     },
 
