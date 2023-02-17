@@ -3,7 +3,7 @@
     "name": "Right Extruder",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "SV04",
+        "machine": "SV04 Dual Mode",
         "position": "1"
     },
 
