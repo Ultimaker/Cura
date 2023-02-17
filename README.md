@@ -57,10 +57,10 @@
 [Contributors]: https://github.com/Ultimaker/Cura/graphs/contributors
 [PullRequests]: https://github.com/Ultimaker/Cura/pulls
 [Machines]: https://github.com/Ultimaker/Cura/wiki/Adding-new-machine-profiles-to-Cura
-[Building]: https://github.com/Ultimaker/Cura/wiki/Running-Cura-from-Source
+[Building]: https://github.com/Ultimaker/Cura/wiki/Getting-Started
 [Localize]: https://github.com/Ultimaker/Cura/wiki/Translating-Cura
-[Settings]: https://github.com/Ultimaker/Cura/wiki/Cura-Settings
-[Plugins]: https://github.com/Ultimaker/Cura/wiki/Plugin-Directory
+[Settings]: https://github.com/Ultimaker/Cura/wiki/Profiles-&-Settings
+[Plugins]: https://github.com/Ultimaker/Cura/wiki/Plugins-And-Packages
 [Closed]: https://github.com/Ultimaker/Cura/issues?q=is%3Aissue+is%3Aclosed
 [Issues]: https://github.com/Ultimaker/Cura/issues
 [Conan]: https://github.com/Ultimaker/Cura/actions/workflows/conan-package.yml
@@ -87,7 +87,7 @@
 <!---------------------------------[ Buttons ]--------------------------------->
 
 [Button Localize]: https://img.shields.io/badge/Help_Localize-e2467d?style=for-the-badge&logoColor=white&logo=GoogleTranslate
-[Button Machines]: https://img.shields.io/badge/Adding_Machines-yellow?style=for-the-badge&logoColor=white&logo=CloudFoundry
+[Button Machines]: https://img.shields.io/badge/Adding_Printers-yellow?style=for-the-badge&logoColor=white&logo=CloudFoundry
 [Button Settings]: https://img.shields.io/badge/Configuration-00979D?style=for-the-badge&logoColor=white&logo=CodeReview
 [Button Building]: https://img.shields.io/badge/Building_Cura-blue?style=for-the-badge&logoColor=white&logo=GitBook
 [Button Plugins]: https://img.shields.io/badge/Plugin_Usage-569A31?style=for-the-badge&logoColor=white&logo=ROS
