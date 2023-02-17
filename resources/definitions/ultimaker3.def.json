@@ -140,7 +140,8 @@
             "maximum_value": "115",
             "maximum_value_warning": "115"
         },
-        "material_bed_temperature_layer_0": {
+        "material_bed_temperature_layer_0":
+        {
             "maximum_value": "115",
             "maximum_value_warning": "115"
         },
