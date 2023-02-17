@@ -90,6 +90,15 @@
             ]
         },
         "machine_heated_bed": { "default_value": true },
+        "material_bed_temperature":
+        {
+            "maximum_value": "110",
+            "maximum_value_warning": "110"
+        },
+        "material_bed_temperature_layer_0": {
+            "maximum_value": "110",
+            "maximum_value_warning": "110"
+        },
         "machine_height": { "default_value": 205 },
         "machine_max_feedrate_x": { "default_value": 300 },
         "machine_max_feedrate_y": { "default_value": 300 },

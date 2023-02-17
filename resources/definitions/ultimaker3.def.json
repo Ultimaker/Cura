@@ -135,8 +135,15 @@
         "machine_nozzle_heat_up_speed": { "default_value": 1.4 },
         "machine_start_gcode": { "default_value": "" },
         "machine_width": { "default_value": 233 },
-        "material_bed_temperature": { "maximum_value": "115" },
-        "material_bed_temperature_layer_0": { "maximum_value": "115" },
+        "material_bed_temperature":
+        {
+            "maximum_value": "115",
+            "maximum_value_warning": "115"
+        },
+        "material_bed_temperature_layer_0": {
+            "maximum_value": "115",
+            "maximum_value_warning": "115"
+        },
         "multiple_mesh_overlap": { "value": "0" },
         "optimize_wall_printing_order": { "value": "True" },
         "prime_blob_enable":

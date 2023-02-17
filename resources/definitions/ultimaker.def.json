@@ -69,10 +69,15 @@
         "machine_max_feedrate_e": { "default_value": 45 },
         "material_bed_temperature":
         {
-            "maximum_value_warning": "125",
+            "maximum_value": "140",
+            "maximum_value_warning": "120",
             "minimum_value": "0"
         },
-        "material_bed_temperature_layer_0": { "maximum_value_warning": "125" },
+        "material_bed_temperature_layer_0": {
+            "maximum_value": "140",
+            "maximum_value_warning": "120",
+            "minimum_value": "0"
+        },
         "material_print_temperature": { "minimum_value": "0" },
         "material_standby_temperature":
         {
