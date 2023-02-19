@@ -53,7 +53,6 @@
         "jerk_enabled": { "value": false },
         "layer_height": { "value": 0.16 },
         "layer_height_0": { "value": 0.32 },
-        "limit_support_retractions": { "value": true },
         "line_width": { "value": 0.4 },
         "machine_depth": { "default_value": 300 },
         "machine_end_gcode": { "default_value": "M104 S0\n M140 S0\n ;Retract the filament\n G92 E1\n G1 E-1 F300\n G28 X0 Y0\n G1 Y300 F3000 ;Move bed forward\n M84" },

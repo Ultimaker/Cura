@@ -27,7 +27,7 @@ class CuraConan(ConanFile):
 
     # FIXME: Remove specific branch once merged to main
     # Extending the conanfile with the UMBaseConanfile https://github.com/Ultimaker/conan-ultimaker-index/tree/CURA-9177_Fix_CI_CD/recipes/umbase
-    python_requires = "umbase/[>=0.1.7]@ultimaker/stable"
+    python_requires = "umbase/[>=0.1.7]@ultimaker/stable", "translationextractor/[>=1.0.0]@ultimaker/stable"
     python_requires_extend = "umbase.UMBaseConanfile"
 
     options = {
@@ -326,12 +326,9 @@ class CuraConan(ConanFile):
             # Update the po files
             if self.settings.os != "Windows" or self.conf.get("tools.microsoft.bash:path", check_type = str):
                 # FIXME: once m4, autoconf, automake are Conan V2 ready use self.win_bash and add gettext as base tool_requirement
-                cpp_info = self.dependencies["gettext"].cpp_info
-                for po_file in self.source_path.joinpath("resources", "i18n").glob("**/*.po"):
-                    pot_file = self.source_path.joinpath("resources", "i18n", po_file.with_suffix('.pot').name)
-                    mkdir(self, str(unix_path(self, pot_file.parent)))
-                    self.run(f"{cpp_info.bindirs[0]}/msgmerge --no-wrap --no-fuzzy-matching -width=140 -o {po_file} {po_file} {pot_file}",
-                             env = "conanbuild", ignore_errors = True)
+                # Extract all the new strings and update the existing po files
+                extractTool = self.python_requires["translationextractor"].module.ExtractTranslations(self, self.source_path.joinpath("resources", "i18n"), "cura.pot")
+                extractTool.generate()
 
     def imports(self):
         self.copy("CuraEngine.exe", root_package = "curaengine", src = "@bindirs", dst = "", keep_path = False)
