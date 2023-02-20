@@ -714,7 +714,7 @@ UM.Window
                         {
                             if(!materialsSyncDialog.hasExportedUsb)
                             {
-                                exportUsbDialog.currentFolder = syncModel.getPreferredExportAllPath();
+                                exportUsbDialog.currentFolder = `${syncModel.getPreferredExportAllPath()}/materials.umm`;
                                 exportUsbDialog.open();
                             }
                             else
