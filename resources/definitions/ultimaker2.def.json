@@ -100,16 +100,8 @@
         "machine_start_gcode": { "value": "\"G0 F3000 Y50 ;avoid prime blob\"  if machine_gcode_flavor == \"UltiGCode\" else \"G21 ;metric values\\nG90 ;absolute positioning\\nM82 ;set extruder to absolute mode\\nM107 ;start with the fan off\\nG28 Z0 ;move Z to bottom endstops\\nG28 X0 Y0 ;move X/Y to endstops\\nG1 X15 Y0 F4000 ;move X/Y to front of printer\\nG1 Z15.0 F9000 ;move the platform to 15mm\\nG92 E0 ;zero the extruded length\\nG1 F200 E10 ;extrude 10 mm of feed stock\\nG92 E0 ;zero the extruded length again\\nG1 Y50 F9000\\n;Put printing message on LCD screen\\nM117 Printing...\"" },
         "machine_use_extruder_offset_to_offset_coords": { "default_value": true },
         "machine_width": { "default_value": 223 },
-        "material_bed_temperature":
-        {
-            "maximum_value": "110",
-            "maximum_value_warning": "110"
-        },
-        "material_bed_temperature_layer_0":
-        {
-            "maximum_value": "110",
-            "maximum_value_warning": "110"
-        },
+        "material_bed_temperature": { "maximum_value": "110" },
+        "material_bed_temperature_layer_0": { "maximum_value": "110" },
         "speed_slowdown_layers": { "value": 2 },
         "support_z_distance": { "value": "0.1" }
     }
