@@ -36,9 +36,7 @@
         "material_bed_temp_prepend": { "default_value": false },
         "material_diameter": { "default_value": 1.75 },
         "material_print_temp_prepend": { "default_value": false },
-        
         "retraction_amount": { "default_value": 5 },
-        
         "retraction_speed": { "default_value": 60 }
     }
 }
