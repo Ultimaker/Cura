@@ -123,7 +123,6 @@
         "support_interface_density": { "default_value": 33.333 },
         "support_interface_pattern": { "default_value": "lines" },
         "support_material_flow": { "value": "material_flow * 0.95" },
-        "support_offset": { "default_value": 0.3 },
         "support_roof_pattern": { "value": "'grid'" },
         "support_top_distance": { "value": "extruderValue(support_roof_extruder_nr if support_roof_enable else support_infill_extruder_nr, 'layer_height') + (0 if support_structure == 'tree' else 0)" },
         "support_tower_maximum_supported_diameter": { "value": "1" },
