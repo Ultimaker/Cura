@@ -38,7 +38,7 @@
         "material_print_temp_prepend": { "default_value": false },
         
         "retraction_amount": { "default_value": 5 },
-        "retraction_enable": { "default_value": true },
+        
         "retraction_speed": { "default_value": 60 }
     }
 }
