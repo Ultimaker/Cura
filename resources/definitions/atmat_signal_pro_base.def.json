@@ -221,7 +221,6 @@
         "support_offset": { "value": "1.5" },
         "support_pattern": { "default_value": "zigzag" },
         "support_top_distance": { "value": "support_z_distance" },
-        "support_use_towers": { "value": "True" },
         "support_xy_distance": { "value": "wall_line_width_0 * 2.5" },
         "support_xy_distance_overhang": { "value": "wall_line_width_0" },
         "support_z_distance": { "value": "layer_height" },

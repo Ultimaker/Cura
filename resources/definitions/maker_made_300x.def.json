@@ -124,7 +124,6 @@
         "support_tower_diameter": { "value": 3 },
         "support_tower_roof_angle": { "value": "65" },
         "support_type": { "value": "'everywhere'" },
-        "support_use_towers": { "value": true },
         "support_wall_count": { "value": "1 if (support_structure == 'tree') else 0" },
         "support_xy_distance": { "value": 0.7 },
         "support_xy_distance_overhang": { "value": 0.2 },

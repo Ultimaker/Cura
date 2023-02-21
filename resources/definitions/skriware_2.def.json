@@ -238,7 +238,6 @@
         "support_skip_zag_per_mm": { "default_value": 10 },
         "support_top_distance": { "value": "0.2" },
         "support_tree_collision_resolution": { "value": "0.2" },
-        "support_use_towers": { "default_value": false },
         "support_xy_distance": { "default_value": 0.6 },
         "support_xy_distance_overhang": { "value": "0.5" },
         "support_z_distance": { "default_value": 0.2 },
