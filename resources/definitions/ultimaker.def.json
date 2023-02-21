@@ -81,7 +81,6 @@
         },
         "meshfix_maximum_deviation": { "value": "machine_nozzle_size / 10" },
         "meshfix_maximum_resolution": { "value": "max(speed_wall_0 / 75, 0.5)" },
-        "minimum_support_area": { "value": "2 if support_interface_enable else 0" },
         "raft_base_speed": { "value": "raft_speed" },
         "raft_base_thickness": { "value": "min(machine_nozzle_size * 0.75, 0.3)" },
         "raft_interface_fan_speed": { "value": "(raft_base_fan_speed + raft_surface_fan_speed) / 2" },
