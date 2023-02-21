@@ -135,6 +135,21 @@ jobs:
             msi_installer: false
         secrets: inherit
 
+    macos-dmg-m1-create:
+        if: ${{ inputs.build_macos }}
+        uses: ./.github/workflows/cura-installer.yml
+        with:
+            platform: 'macos-11'
+            os_name: 'mac'
+            cura_conan_version: ${{ inputs.cura_conan_version }}
+            conan_args: ${{ inputs.conan_args }}, -s target_arch=armv8
+            conan_config: ${{ inputs.conan_config }}
+            enterprise: ${{ inputs.enterprise }}
+            staging: ${{ inputs.staging }}
+            installer: ${{ inputs.installer }}
+            msi_installer: false
+        secrets: inherit
+
     macos-installer-create:
         if: ${{ inputs.build_macos }}
         uses: ./.github/workflows/cura-installer.yml

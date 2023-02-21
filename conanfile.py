@@ -22,7 +22,7 @@ class CuraConan(ConanFile):
     topics = ("conan", "python", "pyqt5", "qt", "qml", "3d-printing", "slicer")
     build_policy = "missing"
     exports = "LICENSE*", "UltiMaker-Cura.spec.jinja", "CuraVersion.py.jinja"
-    settings = "os", "compiler", "build_type", "arch"
+    settings = "os", "compiler", "build_type", "arch", "target_arch"
     no_copy_source = True  # We won't build so no need to copy sources to the build folder
 
     # FIXME: Remove specific branch once merged to main
@@ -87,9 +87,16 @@ class CuraConan(ConanFile):
 
     @property
     def _app_name(self):
+        app_name = str(self.options.display_name)
         if self._enterprise:
-            return str(self.options.display_name) + " Enterprise"
-        return str(self.options.display_name)
+            app_name += " Enterprise"
+
+        if self.settings.target_arch:
+            app_name += f"_{self.settings.target_arch}"
+        else:
+            app_name += f"_{self.settings.arch}"
+
+        return app_name
 
     @property
     def _cloud_api_root(self):
@@ -155,7 +162,7 @@ class CuraConan(ConanFile):
     @property
     def _pyinstaller_spec_arch(self):
         if self.settings.os == "Macos":
-            if self.settings.arch == "armv8":
+            if self.settings.target_arch == "armv8":
                 return "'arm64'"
             return "'x86_64'"
         return "None"
