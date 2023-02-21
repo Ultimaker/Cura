@@ -152,6 +152,14 @@ class CuraConan(ConanFile):
             py_interp = Path(*[f'"{p}"' if " " in p else p for p in py_interp.parts])
         return py_interp
 
+    @property
+    def _pyinstaller_spec_arch(self):
+        if self.settings.os == "Macos":
+            if self.settings.arch == "armv8":
+                return "'arm64'"
+            return "'x86_64'"
+        return "None"
+
     def _generate_cura_version(self, location):
         with open(Path(__file__).parent.joinpath("CuraVersion.py.jinja"), "r") as f:
             cura_version_py = Template(f.read())
@@ -253,7 +261,7 @@ class CuraConan(ConanFile):
                 osx_bundle_identifier = "'nl.ultimaker.cura'" if self.settings.os == "Macos" else "None",
                 upx = str(self.settings.os == "Windows"),
                 strip = False,  # This should be possible on Linux and MacOS but, it can also cause issues on some distributions. Safest is to disable it for now
-                target_arch = "'x86_64'" if self.settings.os == "Macos" else "None",  # FIXME: Make this dependent on the settings.arch_target
+                target_arch = self._pyinstaller_spec_arch,
                 macos = self.settings.os == "Macos",
                 version = f"'{version}'",
                 short_version = f"'{cura_version.major}.{cura_version.minor}.{cura_version.patch}'",
