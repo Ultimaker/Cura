@@ -1,6 +1,6 @@
-runinfo:
-    entrypoint: "cura_app.py"
 pyinstaller:
+    runinfo:
+        entrypoint: "cura_app.py"
     datas:
         cura_plugins:
             package: "cura"

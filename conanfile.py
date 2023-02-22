@@ -191,7 +191,7 @@ class CuraConan(ConanFile):
                 src_path = os.path.join(self.source_folder, data["root"], data["src"])
             else:
                 continue
-            if src_path.exists():
+            if Path(src_path).exists():
                 datas.append((str(src_path), data["dst"]))
 
         binaries = []
@@ -202,13 +202,13 @@ class CuraConan(ConanFile):
                 src_path = os.path.join(self.source_folder, binary["root"], binary["src"])
             else:
                 continue
-            if not src_path.exists():
+            if not Path(src_path).exists():
                 self.output.warning(f"Source path for binary {binary['binary']} does not exist")
                 continue
 
-            for bin in src_path.glob(binary["binary"] + "*[.exe|.dll|.so|.dylib|.so.]*"):
+            for bin in Path(src_path).glob(binary["binary"] + "*[.exe|.dll|.so|.dylib|.so.]*"):
                 binaries.append((str(bin), binary["dst"]))
-            for bin in src_path.glob(binary["binary"]):
+            for bin in Path(src_path).glob(binary["binary"]):
                 binaries.append((str(bin), binary["dst"]))
 
         # Make sure all Conan dependencies which are shared are added to the binary list for pyinstaller
@@ -332,7 +332,7 @@ class CuraConan(ConanFile):
         if self.options.devtools:
             entitlements_file = "'{}'".format(os.path.join(self.source_folder, "packaging", "MacOS", "cura.entitlements"))
             self._generate_pyinstaller_spec(location = self.generators_folder,
-                                            entrypoint_location = "'{}'".format(os.path.join(self.source_folder, self.conan_data["runinfo"]["entrypoint"])).replace("\\", "\\\\"),
+                                            entrypoint_location = "'{}'".format(os.path.join(self.source_folder, self.conan_data["pyinstaller"]["runinfo"]["entrypoint"])).replace("\\", "\\\\"),
                                             icon_path = "'{}'".format(os.path.join(self.source_folder, "packaging", self.conan_data["pyinstaller"]["icon"][str(self.settings.os)])).replace("\\", "\\\\"),
                                             entitlements_file = entitlements_file if self.settings.os == "Macos" else "None")
 
@@ -457,7 +457,7 @@ echo "CURA_APP_NAME={{ cura_app_name }}" >> ${{ env_prefix }}GITHUB_ENV
 
         entitlements_file = "'{}'".format(Path(self.cpp_info.res_paths[2], "MacOS", "cura.entitlements"))
         self._generate_pyinstaller_spec(location = self._base_dir,
-                                        entrypoint_location = "'{}'".format(os.path.join(self.build_folder, self.cpp_info.bindirs[0], self.conan_data["runinfo"]["entrypoint"])).replace("\\", "\\\\"),
+                                        entrypoint_location = "'{}'".format(os.path.join(self.build_folder, self.cpp_info.bindirs[0], self.conan_data["pyinstaller"]["runinfo"]["entrypoint"])).replace("\\", "\\\\"),
                                         icon_path = "'{}'".format(os.path.join(self.build_folder, self.cpp_info.resdirs[2], self.conan_data["pyinstaller"]["icon"][str(self.settings.os)])).replace("\\", "\\\\"),
                                         entitlements_file = entitlements_file if self.settings.os == "Macos" else "None")
 
