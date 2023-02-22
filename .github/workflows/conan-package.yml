@@ -137,20 +137,6 @@ conan-recipe-version:
           conan upload "*" -r cura --all -c
           conan upload "*" -r cura-ce -c
 
-      - name: Upload the log and build artifacts
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: log-ubuntu-${{ runner.arch }}
-          path: |
-            buildinfo.json
-            conan.lock
-            conanbuildinfo.txt
-            conaninfo.txt
-            graph_info.json
-            build/**
-          retention-days: 1
-
   notify-create:
     if: ${{ always() && (github.event_name == 'push' && (github.ref_name == 'main' || github.ref_name == 'master' || needs.conan-recipe-version.outputs.is_release_branch == 'true')) }}
     needs: [ conan-recipe-version, conan-package-create-linux ]
