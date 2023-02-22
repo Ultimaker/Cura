@@ -6,7 +6,7 @@ from jinja2 import Template
 from conan import ConanFile
 from conan.tools.files import copy, rmdir, save, mkdir
 from conan.tools.microsoft import unix_path
-from conan.tools.env import VirtualRunEnv, Environment
+from conan.tools.env import VirtualRunEnv, Environment, VirtualBuildEnv
 from conan.tools.scm import Version
 from conan.errors import ConanInvalidConfiguration, ConanException
 
@@ -313,6 +313,9 @@ class CuraConan(ConanFile):
 
         vr = VirtualRunEnv(self)
         vr.generate()
+
+        vb = VirtualBuildEnv(self)
+        vb.generate()
 
         self._generate_cura_version(Path(self.source_folder, "cura"))
 
