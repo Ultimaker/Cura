@@ -19,7 +19,7 @@ class CuraConan(ConanFile):
     author = "UltiMaker"
     url = "https://github.com/Ultimaker/cura"
     description = "3D printer / slicing GUI built on top of the Uranium framework"
-    topics = ("conan", "python", "pyqt5", "qt", "qml", "3d-printing", "slicer")
+    topics = ("conan", "python", "pyqt6", "qt", "qml", "3d-printing", "slicer")
     build_policy = "missing"
     exports = "LICENSE*", "UltiMaker-Cura.spec.jinja", "CuraVersion.py.jinja"
     settings = "os", "compiler", "build_type", "arch"
@@ -47,12 +47,6 @@ class CuraConan(ConanFile):
         "display_name": "UltiMaker Cura",
         "cura_debug_mode": False,  # Not yet implemented
         "internal": False,
-    }
-    scm = {
-        "type": "git",
-        "subfolder": ".",
-        "url": "auto",
-        "revision": "auto"
     }
 
     @property
@@ -153,7 +147,7 @@ class CuraConan(ConanFile):
         return py_interp
 
     def _generate_cura_version(self, location):
-        with open(Path(__file__).parent.joinpath("CuraVersion.py.jinja"), "r") as f:
+        with open(os.path.join(self.recipe_folder, "CuraVersion.py.jinja"), "r") as f:
             cura_version_py = Template(f.read())
 
         # If you want a specific Cura version to show up on the splash screen add the user configuration `user.cura:version=VERSION`
@@ -164,7 +158,7 @@ class CuraConan(ConanFile):
         internal_tag = f"+internal" if self.options.internal else ""
         cura_version = f"{cura_version.major}.{cura_version.minor}.{cura_version.patch}{pre_tag}{build_tag}{internal_tag}"
 
-        with open(Path(location, "CuraVersion.py"), "w") as f:
+        with open(os.path.join(location, "CuraVersion.py"), "w") as f:
             f.write(cura_version_py.render(
                 cura_app_name = self.name,
                 cura_app_display_name = self._app_name,
@@ -188,13 +182,13 @@ class CuraConan(ConanFile):
             if "package" in data:  # get the paths from conan package
                 if data["package"] == self.name:
                     if self.in_local_cache:
-                        src_path = Path(self.package_folder, data["src"])
+                        src_path = os.path.join(self.package_folder, data["src"])
                     else:
-                        src_path = Path(self.source_folder, data["src"])
+                        src_path = os.path.join(self.source_folder, data["src"])
                 else:
-                    src_path = Path(self.deps_cpp_info[data["package"]].rootpath, data["src"])
+                    src_path = os.path.join(self.deps_cpp_info[data["package"]].rootpath, data["src"])
             elif "root" in data:  # get the paths relative from the sourcefolder
-                src_path = Path(self.source_folder, data["root"], data["src"])
+                src_path = os.path.join(self.source_folder, data["root"], data["src"])
             else:
                 continue
             if src_path.exists():
@@ -203,9 +197,9 @@ class CuraConan(ConanFile):
         binaries = []
         for binary in pyinstaller_metadata["binaries"].values():
             if "package" in binary:  # get the paths from conan package
-                src_path = Path(self.deps_cpp_info[binary["package"]].rootpath, binary["src"])
+                src_path = os.path.join(self.deps_cpp_info[binary["package"]].rootpath, binary["src"])
             elif "root" in binary:  # get the paths relative from the sourcefolder
-                src_path = Path(self.source_folder, binary["root"], binary["src"])
+                src_path = os.path.join(self.source_folder, binary["root"], binary["src"])
             else:
                 continue
             if not src_path.exists():
@@ -232,13 +226,13 @@ class CuraConan(ConanFile):
         # Collect all dll's from PyQt6 and place them in the root
         binaries.extend([(f"{p}", ".") for p in Path(self._site_packages, "PyQt6", "Qt6").glob("**/*.dll")])
 
-        with open(Path(__file__).parent.joinpath("UltiMaker-Cura.spec.jinja"), "r") as f:
+        with open(os.path.join(self.recipe_folder, "UltiMaker-Cura.spec.jinja"), "r") as f:
             pyinstaller = Template(f.read())
 
         version = self.conf_info.get("user.cura:version", default = self.version, check_type = str)
         cura_version = Version(version)
 
-        with open(Path(location, "UltiMaker-Cura.spec"), "w") as f:
+        with open(os.path.join(location, "UltiMaker-Cura.spec"), "w") as f:
             f.write(pyinstaller.render(
                 name = str(self.options.display_name).replace(" ", "-"),
                 display_name = self._app_name,
@@ -259,6 +253,20 @@ class CuraConan(ConanFile):
                 short_version = f"'{cura_version.major}.{cura_version.minor}.{cura_version.patch}'",
             ))
 
+    def export_sources(self):
+        copy(self, "*", os.path.join(self.recipe_folder, "plugins"), os.path.join(self.export_sources_folder, "plugins"))
+        copy(self, "*", os.path.join(self.recipe_folder, "resources"), os.path.join(self.export_sources_folder, "resources"), excludes = "*.mo")
+        copy(self, "*", os.path.join(self.recipe_folder, "tests"), os.path.join(self.export_sources_folder, "tests"))
+        copy(self, "*", os.path.join(self.recipe_folder, "cura"), os.path.join(self.export_sources_folder, "cura"), excludes="CuraVersion.py")
+        copy(self, "*", os.path.join(self.recipe_folder, "packaging"), os.path.join(self.export_sources_folder, "packaging"))
+        copy(self, "*", os.path.join(self.recipe_folder, ".run_templates"), os.path.join(self.export_sources_folder, "run_templates"))
+        copy(self, "requirements.txt", self.recipe_folder, self.export_sources_folder)
+        copy(self, "requirements-dev.txt", self.recipe_folder, self.export_sources_folder)
+        copy(self, "requirements-ultimaker.txt", self.recipe_folder, self.export_sources_folder)
+        copy(self, "UltiMaker-Cura.spec.jinja", self.recipe_folder, self.export_sources_folder)
+        copy(self, "CuraVersion.py.jinja", self.recipe_folder, self.export_sources_folder)
+        copy(self, "cura_app.py", self.recipe_folder, self.export_sources_folder)
+
     def set_version(self):
         if self.version is None:
             self.version = self._umdefault_version()
@@ -276,12 +284,12 @@ class CuraConan(ConanFile):
 
     def requirements(self):
         self.requires("pyarcus/5.2.2")
-        self.requires("curaengine/5.3.0-beta@ultimaker/testing")
+        self.requires("curaengine/5.3.0-beta")
         self.requires("pysavitar/5.2.2")
         self.requires("pynest2d/5.2.2")
-        self.requires("uranium/5.3.0-beta.2@ultimaker/testing")
+        self.requires("uranium/5.3.0-beta.2")
         self.requires("fdm_materials/5.3.0-beta.1+29@ultimaker/stable")
-        self.requires("cura_binary_data/(latest)@ultimaker/testing")
+        self.requires("cura_binary_data/5.3.0-beta")
         self.requires("cpython/3.10.4")
         if self.options.internal:
             self.requires("cura_private_data/(latest)@ultimaker/testing")
@@ -295,7 +303,7 @@ class CuraConan(ConanFile):
     def layout(self):
         self.folders.source = "."
         self.folders.build = "venv"
-        self.folders.generators = Path(self.folders.build, "conan")
+        self.folders.generators = os.path.join(self.folders.build, "conan")
 
         self.cpp.package.libdirs = [os.path.join("site-packages", "cura")]
         self.cpp.package.bindirs = ["bin"]
@@ -314,25 +322,25 @@ class CuraConan(ConanFile):
     def generate(self):
         cura_run_envvars = self._cura_run_env.vars(self, scope = "run")
         ext = ".ps1" if self.settings.os == "Windows" else ".sh"
-        cura_run_envvars.save_script(self.folders.generators.joinpath(f"cura_run_environment{ext}"))
+        cura_run_envvars.save_script(os.path.join(self.folders.generators, f"cura_run_environment{ext}"))
 
         vr = VirtualRunEnv(self)
         vr.generate()
 
-        vb = VirtualBuildEnv(self)
-        vb.generate()
-
-        self._generate_cura_version(Path(self.source_folder, "cura"))
+        self._generate_cura_version(os.path.join(self.source_folder, "cura"))
 
         if self.options.devtools:
-            entitlements_file = "'{}'".format(Path(self.source_folder, "packaging", "MacOS", "cura.entitlements"))
+            entitlements_file = "'{}'".format(os.path.join(self.source_folder, "packaging", "MacOS", "cura.entitlements"))
             self._generate_pyinstaller_spec(location = self.generators_folder,
-                                            entrypoint_location = "'{}'".format(Path(self.source_folder, self.conan_data["runinfo"]["entrypoint"])).replace("\\", "\\\\"),
-                                            icon_path = "'{}'".format(Path(self.source_folder, "packaging", self.conan_data["pyinstaller"]["icon"][str(self.settings.os)])).replace("\\", "\\\\"),
+                                            entrypoint_location = "'{}'".format(os.path.join(self.source_folder, self.conan_data["runinfo"]["entrypoint"])).replace("\\", "\\\\"),
+                                            icon_path = "'{}'".format(os.path.join(self.source_folder, "packaging", self.conan_data["pyinstaller"]["icon"][str(self.settings.os)])).replace("\\", "\\\\"),
                                             entitlements_file = entitlements_file if self.settings.os == "Macos" else "None")
 
             # Update the po files
             if self.settings.os != "Windows" or self.conf.get("tools.microsoft.bash:path", check_type = str):
+                vb = VirtualBuildEnv(self)
+                vb.generate()
+
                 # FIXME: once m4, autoconf, automake are Conan V2 ready use self.win_bash and add gettext as base tool_requirement
                 cpp_info = self.dependencies["gettext"].cpp_info
                 for po_file in self.source_path.joinpath("resources", "i18n").glob("**/*.po"):
@@ -400,7 +408,7 @@ class CuraConan(ConanFile):
         self.copy_deps("*", root_package = "uranium", src = self.deps_cpp_info["uranium"].libdirs[0],
                        dst = self._site_packages.joinpath("UM"),
                        keep_path = True)
-        self.copy_deps("*", root_package = "uranium", src = str(Path(self.deps_cpp_info["uranium"].libdirs[0], "Qt", "qml", "UM")),
+        self.copy_deps("*", root_package = "uranium", src = str(os.path.join(self.deps_cpp_info["uranium"].libdirs[0], "Qt", "qml", "UM")),
                        dst = self._site_packages.joinpath("PyQt6", "Qt6", "qml", "UM"),
                        keep_path = True)
 
@@ -445,22 +453,22 @@ echo "CURA_APP_NAME={{ cura_app_name }}" >> ${{ env_prefix }}GITHUB_ENV
         ext = ".sh" if self.settings.os != "Windows" else ".ps1"
         save(self, self._script_dir.joinpath(f"activate_github_actions_version_env{ext}"), activate_github_actions_version_env)
 
-        self._generate_cura_version(Path(self._site_packages, "cura"))
+        self._generate_cura_version(os.path.join(self._site_packages, "cura"))
 
         entitlements_file = "'{}'".format(Path(self.cpp_info.res_paths[2], "MacOS", "cura.entitlements"))
         self._generate_pyinstaller_spec(location = self._base_dir,
-                                        entrypoint_location = "'{}'".format(Path(self.cpp_info.bin_paths[0], self.conan_data["runinfo"]["entrypoint"])).replace("\\", "\\\\"),
-                                        icon_path = "'{}'".format(Path(self.cpp_info.res_paths[2], self.conan_data["pyinstaller"]["icon"][str(self.settings.os)])).replace("\\", "\\\\"),
+                                        entrypoint_location = "'{}'".format(os.path.join(self.build_folder, self.cpp_info.bindirs[0], self.conan_data["runinfo"]["entrypoint"])).replace("\\", "\\\\"),
+                                        icon_path = "'{}'".format(os.path.join(self.build_folder, self.cpp_info.resdirs[2], self.conan_data["pyinstaller"]["icon"][str(self.settings.os)])).replace("\\", "\\\\"),
                                         entitlements_file = entitlements_file if self.settings.os == "Macos" else "None")
 
     def package(self):
-        copy(self, "cura_app.py", src = self.source_path, dst = self.package_path.joinpath(self.cpp.package.bindirs[0]))
-        copy(self, "*", src = self.source_path.joinpath("cura"), dst = self.package_path.joinpath(self.cpp.package.libdirs[0]))
-        copy(self, "*", src = self.source_path.joinpath("resources"), dst = self.package_path.joinpath(self.cpp.package.resdirs[0]), excludes="*.po")
-        copy(self, "*", src = self.build_path.joinpath("resources"), dst = self.package_path.joinpath(self.cpp.package.resdirs[0]))
-        copy(self, "*", src = self.source_path.joinpath("plugins"), dst = self.package_path.joinpath(self.cpp.package.resdirs[1]))
-        copy(self, "requirement*.txt", src = self.source_path, dst = self.package_path.joinpath(self.cpp.package.resdirs[-1]))
-        copy(self, "*", src = self.source_path.joinpath("packaging"), dst = self.package_path.joinpath(self.cpp.package.resdirs[2]))
+        copy(self, "cura_app.py", src = self.source_folder, dst = os.path.join(self.package_folder, self.cpp.package.bindirs[0]))
+        copy(self, "*", src = os.path.join(self.source_folder, "cura"), dst = os.path.join(self.package_folder, self.cpp.package.libdirs[0]))
+        copy(self, "*", src = os.path.join(self.source_folder, "resources"), dst = os.path.join(self.package_folder, self.cpp.package.resdirs[0]), excludes="*.po")
+        copy(self, "*", src = os.path.join(self.source_folder, "resources"), dst = os.path.join(self.package_folder, self.cpp.package.resdirs[0]))
+        copy(self, "*", src = os.path.join(self.source_folder, "plugins"), dst = os.path.join(self.package_folder, self.cpp.package.resdirs[1]))
+        copy(self, "requirement*.txt", src = self.source_folder, dst = os.path.join(self.package_folder, self.cpp.package.resdirs[-1]))
+        copy(self, "*", src = os.path.join(self.source_folder, "packaging"), dst = os.path.join(self.package_folder, self.cpp.package.resdirs[2]))
 
     def package_info(self):
         self.user_info.pip_requirements = "requirements.txt"
@@ -468,8 +476,8 @@ echo "CURA_APP_NAME={{ cura_app_name }}" >> ${{ env_prefix }}GITHUB_ENV
         self.user_info.pip_requirements_build = "requirements-dev.txt"
 
         if self.in_local_cache:
-            self.runenv_info.append_path("PYTHONPATH", str(Path(self.cpp_info.lib_paths[0]).parent))
-            self.runenv_info.append_path("PYTHONPATH", self.cpp_info.res_paths[1])  # Add plugins to PYTHONPATH
+            self.runenv_info.append_path("PYTHONPATH", os.path.join(self.package_folder, "site-packages"))
+            self.runenv_info.append_path("PYTHONPATH", os.path.join(self.package_folder, "plugins"))
         else:
             self.runenv_info.append_path("PYTHONPATH", self.source_folder)
             self.runenv_info.append_path("PYTHONPATH", os.path.join(self.source_folder, "plugins"))
