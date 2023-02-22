@@ -276,11 +276,11 @@ class CuraConan(ConanFile):
 
     def requirements(self):
         self.requires("pyarcus/5.2.2")
-        self.requires("curaengine/(latest)@ultimaker/testing")
+        self.requires("curaengine/5.3.0-beta@ultimaker/testing")
         self.requires("pysavitar/5.2.2")
         self.requires("pynest2d/5.2.2")
-        self.requires("uranium/(latest)@ultimaker/testing")
-        self.requires("fdm_materials/(latest)@{}/testing".format("internal" if self.options.internal else "ultimaker"))
+        self.requires("uranium/5.3.0-beta.2@ultimaker/testing")
+        self.requires("fdm_materials/5.3.0-beta.1+29@ultimaker/stable")
         self.requires("cura_binary_data/(latest)@ultimaker/testing")
         self.requires("cpython/3.10.4")
         if self.options.internal:
