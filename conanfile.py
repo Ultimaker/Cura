@@ -310,7 +310,7 @@ class CuraConan(ConanFile):
         self.cpp.package.resdirs = ["resources", "plugins", "packaging", "pip_requirements"]  # pip_requirements should be the last item in the list
 
     def generate(self):
-        copy(self, "cura_app.py", os.path.join(self.source_folder, "cura_app.py"), str(self._script_dir))
+        copy(self, "cura_app.py", self.source_folder, str(self._script_dir))
         cura_run_envvars = self._cura_run_env.vars(self, scope = "run")
         ext = ".ps1" if self.settings.os == "Windows" else ".sh"
         cura_run_envvars.save_script(os.path.join(self.folders.generators, f"cura_run_environment{ext}"))
@@ -374,6 +374,7 @@ class CuraConan(ConanFile):
         self.copy("*.dylib", src = "@libdirs", dst = self._script_dir)
 
     def deploy(self):
+        copy(self, "cura_app.py", self.source_folder, str(self._script_dir))
         # Copy CuraEngine.exe to bindirs of Virtual Python Environment
         # TODO: Fix source such that it will get the curaengine relative from the executable (Python bindir in this case)
         self.copy_deps("CuraEngine.exe", root_package = "curaengine", src = self.deps_cpp_info["curaengine"].bindirs[0],
