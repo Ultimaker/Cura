@@ -309,16 +309,6 @@ class CuraConan(ConanFile):
         self.cpp.package.bindirs = ["bin"]
         self.cpp.package.resdirs = ["resources", "plugins", "packaging", "pip_requirements"]  # pip_requirements should be the last item in the list
 
-    def build(self):
-        if self.options.devtools:
-            if self.settings.os != "Windows" or self.conf.get("tools.microsoft.bash:path", check_type = str):
-                # FIXME: once m4, autoconf, automake are Conan V2 ready use self.win_bash and add gettext as base tool_requirement
-                cpp_info = self.dependencies["gettext"].cpp_info
-                for po_file in self.source_path.joinpath("resources", "i18n").glob("**/*.po"):
-                    mo_file = self.build_path.joinpath(po_file.with_suffix('.mo').relative_to(self.source_path))
-                    mkdir(self, str(unix_path(self, mo_file.parent)))
-                    self.run(f"{cpp_info.bindirs[0]}/msgfmt {po_file} -o {mo_file} -f", env="conanbuild", ignore_errors=True)
-
     def generate(self):
         cura_run_envvars = self._cura_run_env.vars(self, scope = "run")
         ext = ".ps1" if self.settings.os == "Windows" else ".sh"
@@ -337,17 +327,27 @@ class CuraConan(ConanFile):
                                             entitlements_file = entitlements_file if self.settings.os == "Macos" else "None")
 
             # Update the po files
-            if self.settings.os != "Windows" or self.conf.get("tools.microsoft.bash:path", check_type = str):
-                vb = VirtualBuildEnv(self)
-                vb.generate()
+            vb = VirtualBuildEnv(self)
+            vb.generate()
 
+            # FIXME: once m4, autoconf, automake are Conan V2 ready use self.win_bash and add gettext as base tool_requirement
+            cpp_info = self.dependencies["gettext"].cpp_info
+            for po_file in self.source_path.joinpath("resources", "i18n").glob("**/*.po"):
+                pot_file = self.source_path.joinpath("resources", "i18n", po_file.with_suffix('.pot').name)
+                mkdir(self, str(unix_path(self, pot_file.parent)))
+                self.run(
+                    f"{cpp_info.bindirs[0]}/msgmerge --no-wrap --no-fuzzy-matching -width=140 -o {po_file} {po_file} {pot_file}",
+                    env="conanbuild", ignore_errors=True)
+
+    def build(self):
+        if self.options.devtools:
+            if self.settings.os != "Windows" or self.conf.get("tools.microsoft.bash:path", check_type = str):
                 # FIXME: once m4, autoconf, automake are Conan V2 ready use self.win_bash and add gettext as base tool_requirement
-                cpp_info = self.dependencies["gettext"].cpp_info
                 for po_file in self.source_path.joinpath("resources", "i18n").glob("**/*.po"):
-                    pot_file = self.source_path.joinpath("resources", "i18n", po_file.with_suffix('.pot').name)
-                    mkdir(self, str(unix_path(self, pot_file.parent)))
-                    self.run(f"{cpp_info.bindirs[0]}/msgmerge --no-wrap --no-fuzzy-matching -width=140 -o {po_file} {po_file} {pot_file}",
-                             env = "conanbuild", ignore_errors = True)
+                    mo_file = os.path.join(self.build_folder, po_file.with_suffix('.mo').relative_to(self.source_path))
+                    mkdir(self, str(unix_path(self, Path(mo_file).parent)))
+                    cpp_info = self.dependencies["gettext"].cpp_info
+                    self.run(f"{cpp_info.bindirs[0]}/msgfmt {po_file} -o {mo_file} -f", env="conanbuild", ignore_errors=True)
 
     def imports(self):
         self.copy("CuraEngine.exe", root_package = "curaengine", src = "@bindirs", dst = "", keep_path = False)
@@ -465,7 +465,7 @@ echo "CURA_APP_NAME={{ cura_app_name }}" >> ${{ env_prefix }}GITHUB_ENV
         copy(self, "cura_app.py", src = self.source_folder, dst = os.path.join(self.package_folder, self.cpp.package.bindirs[0]))
         copy(self, "*", src = os.path.join(self.source_folder, "cura"), dst = os.path.join(self.package_folder, self.cpp.package.libdirs[0]))
         copy(self, "*", src = os.path.join(self.source_folder, "resources"), dst = os.path.join(self.package_folder, self.cpp.package.resdirs[0]), excludes="*.po")
-        copy(self, "*", src = os.path.join(self.source_folder, "resources"), dst = os.path.join(self.package_folder, self.cpp.package.resdirs[0]))
+        copy(self, "*.mo", os.path.join(self.build_folder, "resources"), os.path.join(self.package_folder, "resources"))
         copy(self, "*", src = os.path.join(self.source_folder, "plugins"), dst = os.path.join(self.package_folder, self.cpp.package.resdirs[1]))
         copy(self, "requirement*.txt", src = self.source_folder, dst = os.path.join(self.package_folder, self.cpp.package.resdirs[-1]))
         copy(self, "*", src = os.path.join(self.source_folder, "packaging"), dst = os.path.join(self.package_folder, self.cpp.package.resdirs[2]))
