@@ -59,13 +59,13 @@ env:
 
 permissions: {}
 jobs:
-conan-recipe-version:
-  permissions:
-    contents: read
+  conan-recipe-version:
+    permissions:
+      contents: read
 
-  uses: ultimaker/cura/.github/workflows/conan-recipe-version.yml@main
-  with:
-    project_name: cura
+    uses: ultimaker/cura/.github/workflows/conan-recipe-version.yml@main
+    with:
+      project_name: cura
 
   conan-package-create-linux:
     needs: [ conan-recipe-version ]
