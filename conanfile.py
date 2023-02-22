@@ -187,7 +187,7 @@ class CuraConan(ConanFile):
                 cura_latest_url = self._cura_latest_url))
 
     def _generate_pyinstaller_spec(self, location, entrypoint_location, icon_path, entitlements_file):
-        pyinstaller_metadata = self._um_data()["pyinstaller"]
+        pyinstaller_metadata = self.conan_data["pyinstaller"]
         datas = [(str(self._base_dir.joinpath("conan_install_info.json")), ".")]
         for data in pyinstaller_metadata["datas"].values():
             if not self.options.internal and data.get("internal", False):
@@ -283,11 +283,16 @@ class CuraConan(ConanFile):
             raise ConanInvalidConfiguration("Only versions 5+ are support")
 
     def requirements(self):
-        for req in self._um_data()["requirements"]:
-            self.requires(req)
+        self.requires("pyarcus/5.2.2")
+        self.requires("curaengine/(latest)@ultimaker/testing")
+        self.requires("pysavitar/5.2.2")
+        self.requires("pynest2d/5.2.2")
+        self.requires("uranium/(latest)@ultimaker/testing")
+        self.requires("fdm_materials/(latest)@{}/testing".format("internal" if self.options.internal else "ultimaker"))
+        self.requires("cura_binary_data/(latest)@ultimaker/testing")
+        self.requires("cpython/3.10.4")
         if self.options.internal:
-            for req in self._um_data()["internal_requirements"]:
-                self.requires(req)
+            self.requires("cura_private_data/(latest)@ultimaker/testing")
 
     def build_requirements(self):
         if self.options.devtools:
@@ -327,8 +332,8 @@ class CuraConan(ConanFile):
         if self.options.devtools:
             entitlements_file = "'{}'".format(Path(self.source_folder, "packaging", "MacOS", "cura.entitlements"))
             self._generate_pyinstaller_spec(location = self.generators_folder,
-                                            entrypoint_location = "'{}'".format(Path(self.source_folder, self._um_data()["runinfo"]["entrypoint"])).replace("\\", "\\\\"),
-                                            icon_path = "'{}'".format(Path(self.source_folder, "packaging", self._um_data()["pyinstaller"]["icon"][str(self.settings.os)])).replace("\\", "\\\\"),
+                                            entrypoint_location = "'{}'".format(Path(self.source_folder, self.conan_data["runinfo"]["entrypoint"])).replace("\\", "\\\\"),
+                                            icon_path = "'{}'".format(Path(self.source_folder, "packaging", self.conan_data["pyinstaller"]["icon"][str(self.settings.os)])).replace("\\", "\\\\"),
                                             entitlements_file = entitlements_file if self.settings.os == "Macos" else "None")
 
             # Update the po files
@@ -347,8 +352,6 @@ class CuraConan(ConanFile):
         self.copy("*.sig", root_package = "fdm_materials", src = "@resdirs", dst = "resources/materials", keep_path = False)
 
         if self.options.internal:
-            self.copy("*.fdm_material", root_package = "fdm_materials_private", src = "@resdirs", dst = "resources/materials", keep_path = False)
-            self.copy("*.sig", root_package = "fdm_materials_private", src = "@resdirs", dst = "resources/materials", keep_path = False)
             self.copy("*", root_package = "cura_private_data", src = self.deps_cpp_info["cura_private_data"].resdirs[0],
                            dst = self._share_dir.joinpath("cura", "resources"), keep_path = True)
 
@@ -386,10 +389,6 @@ class CuraConan(ConanFile):
 
         # Copy internal resources
         if self.options.internal:
-            self.copy_deps("*.fdm_material", root_package = "fdm_materials_private", src = self.deps_cpp_info["fdm_materials_private"].resdirs[0],
-                           dst = self._share_dir.joinpath("cura", "resources", "materials"), keep_path = False)
-            self.copy_deps("*.sig", root_package = "fdm_materials_private", src = self.deps_cpp_info["fdm_materials_private"].resdirs[0],
-                           dst = self._share_dir.joinpath("cura", "resources", "materials"), keep_path = False)
             self.copy_deps("*", root_package = "cura_private_data", src = self.deps_cpp_info["cura_private_data"].resdirs[0],
                            dst = self._share_dir.joinpath("cura", "resources"), keep_path = True)
             self.copy_deps("*", root_package = "cura_private_data", src = self.deps_cpp_info["cura_private_data"].resdirs[1],
@@ -452,8 +451,8 @@ echo "CURA_APP_NAME={{ cura_app_name }}" >> ${{ env_prefix }}GITHUB_ENV
 
         entitlements_file = "'{}'".format(Path(self.cpp_info.res_paths[2], "MacOS", "cura.entitlements"))
         self._generate_pyinstaller_spec(location = self._base_dir,
-                                        entrypoint_location = "'{}'".format(Path(self.cpp_info.bin_paths[0], self._um_data()["runinfo"]["entrypoint"])).replace("\\", "\\\\"),
-                                        icon_path = "'{}'".format(Path(self.cpp_info.res_paths[2], self._um_data()["pyinstaller"]["icon"][str(self.settings.os)])).replace("\\", "\\\\"),
+                                        entrypoint_location = "'{}'".format(Path(self.cpp_info.bin_paths[0], self.conan_data["runinfo"]["entrypoint"])).replace("\\", "\\\\"),
+                                        icon_path = "'{}'".format(Path(self.cpp_info.res_paths[2], self.conan_data["pyinstaller"]["icon"][str(self.settings.os)])).replace("\\", "\\\\"),
                                         entitlements_file = entitlements_file if self.settings.os == "Macos" else "None")
 
     def package(self):
