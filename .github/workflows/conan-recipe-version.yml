@@ -203,14 +203,14 @@ jobs:
                         f.writelines(f"semver_full={actual_version}\n")
                         f.writelines(f"is_release_branch={str(is_release_branch).lower()}\n")
                     
-                    print("::group::Conan Recipe Information")
-                    print(f"name = {project_name}")
-                    print(f"version = {actual_version}")
-                    print(f"user = {user}")
-                    print(f"channel = {channel}")
-                    print(f"recipe_id_full = {project_name}/{actual_version}@{user}/{channel}")
-                    print(f"recipe_id_latest = {project_name}/latest@{user}/{channel}")
-                    print(f"semver_full = {actual_version}")
-                    print(f"is_release_branch = {str(is_release_branch).lower()}")
-                    print("::endgroup::")
+                    summary_env = os.environ["GITHUB_STEP_SUMMARY"]
+                    with open(summary_env, "w") as f:
+                        f.writelines(f"# {project_name} is at version {actual_version}")
+                        f.writelines(f"name={project_name}\n")
+                        f.writelines(f"version={actual_version}\n")
+                        f.writelines(f"channel={channel}\n")
+                        f.writelines(f"recipe_id_full={project_name}/{actual_version}@{user}/{channel}\n")
+                        f.writelines(f"recipe_id_latest={project_name}/latest@{user}/{channel}\n")
+                        f.writelines(f"semver_full={actual_version}\n")
+                        f.writelines(f"is_release_branch={str(is_release_branch).lower()}\n")
                 shell: python
