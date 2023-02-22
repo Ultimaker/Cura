@@ -7,6 +7,11 @@ on:
                 required: true
                 type: string
 
+            user:
+                required: false
+                default: ultimaker
+                type: string
+
             additional_buildmetadata:
                 required: false
                 default: ""
@@ -91,7 +96,7 @@ jobs:
                     from git import Repo
                     
                     repo = Repo('.')
-                    user = "${{ github.repository_owner }}".lower()
+                    user = "${{ inputs.user }}".lower()
                     project_name = "${{ inputs.project_name }}"
                     event_name = "${{ github.event_name }}"
                     issue_number = "${{ github.ref }}".split('/')[2]
