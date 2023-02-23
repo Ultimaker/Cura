@@ -18,6 +18,7 @@ SettingItem
 
         model: definition.options
         textRole: "value"
+        forceHighlight: base.hovered
 
         anchors.fill: parent
 

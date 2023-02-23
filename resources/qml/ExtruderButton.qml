@@ -12,23 +12,14 @@ UM.ToolbarButton
     id: base
 
     property var extruder
-
-    text: catalog.i18ncp("@label %1 is filled in with the name of an extruder", "Print Selected Model with %1", "Print Selected Models with %1", UM.Selection.selectionCount).arg(extruder.name)
-
-    checked: Cura.ExtruderManager.selectedObjectExtruders.indexOf(extruder.id) != -1
-    enabled: UM.Selection.hasSelection && extruder.stack.isEnabled
+    property var extruderNumberFont: UM.Theme.getFont("small_emphasis")
 
     toolItem: ExtruderIcon
     {
         materialColor: extruder.color
         extruderEnabled: extruder.stack.isEnabled
         iconVariant: "default"
+        font: extruderNumberFont
         property int index: extruder.index
-    }
-
-    onClicked:
-    {
-        forceActiveFocus() //First grab focus, so all the text fields are updated
-        CuraActions.setExtruderForSelection(extruder.id)
     }
 }

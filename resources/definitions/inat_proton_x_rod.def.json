@@ -1,18 +1,23 @@
 {
-
-    "name": "Proton X Rod",
     "version": 2,
+    "name": "Proton X Rod",
     "inherits": "inat_base",
-    "metadata": {
+    "metadata":
+    {
         "visible": true,
-        "quality_definition": "inat_base",
         "platform": "inat_proton_x_buildplate.stl",
-        "platform_offset": [ 0, -1.1, 0]
+        "platform_offset": [
+            0,
+            -1.1,
+            0
+        ],
+        "quality_definition": "inat_base"
     },
-    "overrides": {
-        "machine_name": { "default_value": "Proton X Rod" },
-        "machine_width": { "default_value": 304 },
+    "overrides":
+    {
         "machine_depth": { "default_value": 304 },
-        "machine_height": { "default_value": 300 }
+        "machine_height": { "default_value": 300 },
+        "machine_name": { "default_value": "Proton X Rod" },
+        "machine_width": { "default_value": 304 }
     }
 }

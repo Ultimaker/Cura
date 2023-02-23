@@ -1,30 +1,32 @@
 {
-    "name": "Tronxy XY-3/Pro",
     "version": 2,
+    "name": "Tronxy XY-3/Pro",
     "inherits": "tronxy_x",
-    "metadata": {
-        "quality_definition": "tronxy_x",
+    "metadata":
+    {
         "visible": true,
-        "platform": "tronxy.stl"
+        "platform": "tronxy.stl",
+        "quality_definition": "tronxy_x"
     },
-    "overrides": {
-        "machine_name": { "default_value": "Tronxy XY-3" },
-        "machine_width": { "default_value": 310 },
+    "overrides":
+    {
+        "gantry_height": { "value": 30 },
+        "machine_acceleration": { "value": 150 },
         "machine_depth": { "default_value": 310 },
-        "machine_height": { "default_value": 330 },
-        "machine_head_with_fans_polygon": { "default_value": [
+        "machine_end_gcode": { "default_value": "M83 ; Set extrder to Relative\nG1 E-5 F3000 ; Retract 5mm of filament at 50mm/s\nG90 ; Set all axis to Absolute \nG1 X0 Y{machine_depth} ; Park print head\nG1 Z10 ; Move up 10mm\nM106 S0 ; Set fan speed to 0\nM104 S0 ; Set bed temp to 0\nM140 S0 ; Set Nozzle temp to 0\nM84 ; Disable all stepper motors\n" },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
                 [-30, 45],
                 [-30, -30],
                 [27, -30],
                 [27, 45]
             ]
         },
-        "gantry_height": { "value": 30 },
-        "retraction_amount": { "value": 5 },
-
-        "machine_start_gcode": { "default_value": "; XY-3 Start Code\nG21 ; Set units to millimeters\nG90 ; Set all axis to Absolute\nM82 ; Set extrusion to Absolute\nM107 ; Disable all fans\nM190 S{material_bed_temperature_layer_0} ; Set bed temperature and wait\nG28 ; Home all axis\n; Uncomment the line below to enable ABL Mesh probing\n;G29 ; Probe bed mesh for ABL\n; For best results do not run nozzle heater while performing ABL\nG1 Z5.0 ; Raise nozzle to prevent scratching of heat bed\nG1 X0 Y0 ; Move nozzle to Home before heating\nM109 S{material_print_temperature_layer_0} T0 ; Set nozzle temp and wait\nG92 E0 ; Set Extruder position to zero\n; Uncomment the following lines to enable nozzle purge line along left edge of bed\n;G1 Z2.0 F3000 ; Raise Z axis\n;G1 X1.1 Y20 Z0.2 F3600.0 ; Move to purge line start position\n;G1 Y220 F1500.0 E10 ; Draw first purge line\n;G1 X1.4 F3600.0 ; Move to side\n;G1 Y20 F1500.0 E20 ; Draw second purge line\n;G92 E0 ; Reset Extruder\n;G1 Z2.0 F3000 ; Move Z Axis up little to prevent scratching of Heat Bed\n;G1 X5 Y20 Z0.2 F3600.0 ; Move over to finish nozzle wipe\n;G92 E0\n"},
-        "machine_end_gcode": { "default_value": "M83 ; Set extrder to Relative\nG1 E-5 F3000 ; Retract 5mm of filament at 50mm/s\nG90 ; Set all axis to Absolute \nG1 X0 Y{machine_depth} ; Park print head\nG1 Z10 ; Move up 10mm\nM106 S0 ; Set fan speed to 0\nM104 S0 ; Set bed temp to 0\nM140 S0 ; Set Nozzle temp to 0\nM84 ; Disable all stepper motors\n" },
-
-        "machine_acceleration": { "value": 150 }
+        "machine_height": { "default_value": 330 },
+        "machine_name": { "default_value": "Tronxy XY-3" },
+        "machine_start_gcode": { "default_value": "; XY-3 Start Code\nG21 ; Set units to millimeters\nG90 ; Set all axis to Absolute\nM82 ; Set extrusion to Absolute\nM107 ; Disable all fans\nM190 S{material_bed_temperature_layer_0} ; Set bed temperature and wait\nG28 ; Home all axis\n; Uncomment the line below to enable ABL Mesh probing\n;G29 ; Probe bed mesh for ABL\n; For best results do not run nozzle heater while performing ABL\nG1 Z5.0 ; Raise nozzle to prevent scratching of heat bed\nG1 X0 Y0 ; Move nozzle to Home before heating\nM109 S{material_print_temperature_layer_0} T0 ; Set nozzle temp and wait\nG92 E0 ; Set Extruder position to zero\n; Uncomment the following lines to enable nozzle purge line along left edge of bed\n;G1 Z2.0 F3000 ; Raise Z axis\n;G1 X1.1 Y20 Z0.2 F3600.0 ; Move to purge line start position\n;G1 Y220 F1500.0 E10 ; Draw first purge line\n;G1 X1.4 F3600.0 ; Move to side\n;G1 Y20 F1500.0 E20 ; Draw second purge line\n;G92 E0 ; Reset Extruder\n;G1 Z2.0 F3000 ; Move Z Axis up little to prevent scratching of Heat Bed\n;G1 X5 Y20 Z0.2 F3600.0 ; Move over to finish nozzle wipe\n;G92 E0\n" },
+        "machine_width": { "default_value": 310 },
+        "retraction_amount": { "value": 5 }
     }
 }

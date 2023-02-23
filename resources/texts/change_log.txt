@@ -1,3 +1,141 @@
+[5.3] 
+<i>This release does not yet contain the new tree support implementation by ThomasRahm.<a href="https://github.com/Ultimaker/Cura/releases/tag/5.3.0-alpha%2Bxmas"> You can download a special Cura version for that here</a>.</i> 
+
+* Interlocking Structure Generation
+- This new setting enables you to interlock multiple materials together, even if those materials are not compatible, contributed by BagelOrb. Try it for yourself <a href="https://www.thingiverse.com/thing:5842529?utm_source=changelog&utm_medium=cura&utm_campaign=53_beta">with this test model</a>.
+
+* Brim per Material 
+- A brim can now be printed with multiple materials in the same model, contributed by BagelOrb
+
+* Updated Recommended Print Settings Menu
+- The number of settings available in the recommended have expanded. The redesign will make it easier to use intent profiles or save custom profiles. 
+
+* Other new features and improvements:
+- Improved the Zseam behavior so Hide Seam is generated less randomly.
+- Fixed the order in which concentric top/bottom patterns are printed.
+- Replaced mentions of Ultimaker by UltiMaker to correctly reflect the merger.
+- Updated Load Project window with a new design.
+- Added tooling to automatically generate translation files to reduce the chance of human error. 
+- Added quality type to slice meta-data so it can be displayed in the Ultimaker Digital Factory.
+- Added a new way to update profiles by adding a Save/Compare Settings Button in custom window. 
+- Improved onboarding so it is easier to add your first cloud printer or a non-UltiMaker printer.
+- Included options to download .MSI and .PKG for easier software distribution. 
+- Smoothed some support generation, so support is generated less jittery.
+- Reduced unnecessary support generation for small overhang regions, like textures.
+- Improved support generation so the support doesn't fold around the model. 
+- Reduced stringing for Lift Head setting by removing the move in XY.
+- Added a Minimum Layer Time Temperature setting.
+- Added settings for Support Interface Wall Line Count, Support Roof Line Count, and Support Floor Line Count.
+- Added Brim Inside Avoid Margin setting, contributed by BagelOrb
+- Added prefix 'Printing' to post processing plugin script "DisplayFilenameAndLayerOnLCD" contributed by brunohenriquy
+- Added Enable, G-code Before, and G-code After To Filament Change, contributed by victornpb
+- Added support for per-object retraction settings, contributed by jeremysalwen
+- Updated PauseAtHeight so M18 becomes M84 when disarming, contributed by Cycov
+- Added an option to keep stepper motors engaged to Pause At Height, contributed by Cycov
+- Added an option to Beep at Pause to Pause At Height, contributed by Cycov
+- Added Additional Gcode Fields to Pause At Height, contributed by Cycov
+- Make Layer Number the default in Pause At Height, contributed by discip
+- Added more information when rotating a model using the arrows, contributed by Fabbro03
+- Added the "CTRL +" shortcut to open Preferences window, contributed by Ladnessness
+- Added the option to add Machine Action buttons in the Printer Preferences, contributed by julianCast
+
+* Bug fixes:
+- Fixed a slicing crash if they were placed in the center of the buildplate. 
+- Fixed a slicing crash that would happen if Adaptive Layers Maximum Variation had a negative value.
+- Fixed a bug where an "object of type SettingFunction is not JSON serializable" error would prevent users from using certain plug-ins. 
+- Fixed a bug where hole expansion would affect interlocking holes.
+- Fixed a bug where fuzzy skin would also apply to interlocking structures. 
+- Fixed a bug where Relative Extrusion was not calculated correctly when using Retract Continue.
+- Fixed a bug that would prevent advanced users from slicing a batch with multiple STLs in a script.
+- Fixed a bug where skirt lines would not follow the convex contours of models.
+- Fixed a bug where Exclusing Slicing Tolerance was not applied correctly to bottom-layer(s).
+- Fixed a bug where small travels were not retracted correctly. 
+- Fixed a bug where the printjob time showed 0 minutes if adaptive layer height was enabled.
+- Fixed a bug with Skin Overlap where the skin would overlap with the roofing.
+- Fixed a bug where Support Interface would be generated on top of support.
+- Fixed a bug where the Floor Support Interface would not be generated in certain models.
+- Fixed a bug where a long material list would disappear from the screen.
+- Fixed a bug where support is not generated correctly if Support Pattern is Concentric.
+- Fixed a bug where an increased Skin Removal Width would cut off part of the skin area.
+- Fixed a bug where Support Towers would be generated but would support nothing.
+- Fixed a bug where Small Feature Size would also be applied to inner-wall loops.
+- Fixed a bug where adhesion would be printed outside of the buildplate, contributed by BagelOrb
+- Fixed a bug where a primetower brim was printed when it shouldn't, contributed by BagelOrb
+- Fixed a bug where Ooze/Draft shields did not avoid prime tower, contributed by BagelOrb
+- Fixed a bug where not all Mac users could not use USB printing, contributed by Sovenger
+- Fixed input value for platform offset when adding a logo, contributed by drewdoggy
+- Fixed a bug where the travel move at the end of a layer unretracts, contributed by richfelker
+- Fixed a bug where WallToolPaths are not simplified, contributed by Piezoid
+- Fixed a bug where iterators were moving out of range, contributed by Piezoid and plaintoothpaste
+- Fixed a bug where the Maximum Area Deviation value was too small, contributed by Piezoid
+- Fixed a bug where an airgap was present in Spiralized Outer Contour, contributed by richfelker
+- Fixed a bug where speeds defined for slower layers would impact speeds accelerations and jerks for the whole print, contributed by richfelker
+- Fixed a bug where materials with longer names in Materials Preferences were harder to read, contributed by Ghostkeeper 
+
+* Printer definitions, profiles and materials:
+- Support Towers are working again and enabled by default for all printers.
+- Updated Support Horizontal Expansion, Support Join Distance, and Minimum Support Area Settings for UltiMaker printers to improve support reliability. 
+- Updated intent and quality files for UltiMaker printers to have more consistent file names. 
+- Updated default Support Interface Pattern to ZigZag for UltiMaker printers
+- Updated Maximum Combing Distance for UltiMaker printers
+- Updated UltiMaker ABS Silver Metallic to the correct UltiMaker ABS Silver
+- Updated AnkerMake M5 definitions, contributed by just-trey
+- Updated Anycubic i3 Mega S/Pro profile, contributed by NilsRo
+- Updated Creality Ender CR10 start GCode, contributed by InstantMuffin
+- Updated Creality Sermoon V1 profiles to include hotend specifics, contributed by Iggomez
+- Updated Geetech A10M, A10, A20, A20M, A20T, A30M, MizarS, contributed by whoseyoung
+- Updated PPGF30 temperature from 235 to 240, introduced by heed818
+- Updated Rigid3D machine definitions, contributed by mehmetsutas
+- Updated Sovol SV01, SV02, and SV03, contributed by eropple
+- Updated Sovol's SV01 and SV02 bed dimensions, contributed by eropple
+- Added AnkerMake M5, contributed by just-trey
+- Added Anycubic Kobra Go, contributed by Razzeee
+- Added Artillery Hornet, contributed by wilds
+- Added Biqu Hurakan, contributed by looxonline
+- Added Blocks ONE MKII, Blocks One, Blocks Pro S100, Blocks Pro S30, Blocks R21, Blocks RD50, and Blocks Zero, contributed by jgrilo-blocks
+- Added Creality CR-10 Smart, contributed by eropple
+- Added Creality Ender-3 S1 Plus, and Ender-3 S1 Pro, contributed by izilzty 
+- Added Creality Sermoon V1, and Sermoon V1 Pro, contributed by Iggomez
+- Added Dagoma Sigma, and updated Dagome Pro430, contributed by 0r31
+- Added Elegoo Neptune 1, Neptune 2s, Neptune 3, Neptune 3 Max, Neptune 3 Plus, Neptune 3 Pro, and Neptune X, contributed by NARUTOfzr
+- Added FablabBcn PastePrinter, contributed by EDUARDOCHAMORRO
+- Added Flsun V400, contributed by dengdaitianhei
+- Added Fusion3 F410, contributed by 64bittuning
+- Added Geetech A10Pro, A30Pro, A30T, E180, GiantArmD200, I3ProB, i3ProC, I3PrW, MeCreator, MeCreator2, MeDucer, Mizar, MizarM, MizarMax, MizarMax, MizarPro, and Thunder, contributed by whoseyoung
+- Added Klema 180, Klema 250, Klema 250 Pro, Klema 250 Twin, and Klema 500, contributed by polyntsev
+- Added Modix V3 BIG-120X, Modix V3 BIG-120Z, Modix V3 BIG-180X, Modix V3 BIG-40, Modix V3 BIG-60, and Modix V3 BIG-Meter, contributed by Modix3D
+- Added SnakeOil Standard 180, and SnakeOil Standard 250, contributed by ChipCE
+- Added Sovol SV01PRO, SV05, and SV06, contributed by eropple
+- Added UMO+ DXU, contributed by ansonl
+- Added Voron Trident 250, Trident 300, and Trident 350, contributed by RagingRoosevelt 
+
+* Community translations:
+- Updated French translations, contributed by xommit
+- Updated a typo in Japanese translations, contributed by tamorikawa
+
+* Known critical issues:
+- Under certain angles, the Interlocking Structures are not effective, yet.
+- The Gcode Reader Plug-in is broken since Cura 5.2, and will not load gcodes correctly yet. 
+- Some models have been slicing slower since Cura 5.1. <a href="https://github.com/Ultimaker/Cura/issues/14108"> We are collecting cases here</a>. 
+- Reports have been coming in that Cura is running slow on Windows 11 <a href="https://github.com/Ultimaker/Cura/issues/13820"> We are collecting cases here</a>. 
+- Multiple external monitors on Windows (especially if from the same brand) <a href="https://support.ultimaker.com/hc/en-us/articles/6103674944156">might be a problem under some circumstances</a>. 
+- Does Cura (not) work on your OS (version)? See <a href="https://support.ultimaker.com/hc/en-us/articles/360011889579">this article</a> for clarification.
+
+[5.2.2]
+
+* Introducing the UltiMaker S7
+- Included support for the new UltiMaker S7
+
+* Bug fixes:
+- Allow UltiMaker S7 printers to receive Material Profiles
+
+* Printer definitions, profiles and materials:
+- Improved Initial Layer settings for UltiMaker S7, S5, and S3 printers
+- Disabled Support Towers for UltiMaker S7, S5, and S3 printers
+- Cleaned up material profiles, by removing duplicate setting segments, and unused elements 
+- Updated preferred quality type for all UltiMaker 3D printers
+
+
 [5.2.1]
 
 * Bug fixes:

@@ -1,44 +1,45 @@
 {
-    "name": "Biqu B1",
     "version": 2,
+    "name": "Biqu B1",
     "inherits": "biqu_base",
-    "metadata": {
-        "quality_definition": "biqu_base",
+    "metadata":
+    {
         "visible": true,
-        "has_machine_materials": true,
         "platform": "BIQU_SSS.stl",
+        "has_machine_materials": true,
         "platform_offset": [
             0,
             -7.4,
             5
-        ]
+        ],
+        "quality_definition": "biqu_base"
     },
-    "overrides": {
+    "overrides":
+    {
         "coasting_enable": { "value": true },
-        "retraction_amount": { "value": 7 },
-        "retraction_speed": { "value": 70 },
-        "support_enable": { "value": true },
-        "support_structure": { "value": "'normal'" },
-        "support_type": { "value": "'buildplate'" },
-        "support_angle": { "value": 45 },
-        "support_infill_rate": { "value": 15 },
+        "gantry_height": { "value": 27.5 },
         "infill_overlap_mm": { "value": 0.06 },
-        "speed_print": { "value": 60 },
-        "machine_name": { "default_value": "BIQU B1" },
-        "machine_width": { "value": 235 },
         "machine_depth": { "value": 235 },
-        "machine_height": { "value": 270 },
-        "machine_head_with_fans_polygon": { "default_value": [
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
                 [-33, 35],
                 [-33, -23],
                 [33, -23],
                 [33, 35]
             ]
         },
-        "machine_start_gcode": {
-            "default_value": "                                 ; BIQU B1 Start G-code\nM117 Getting the bed up to temp!\nM140 S{material_bed_temperature_layer_0}      ; Set Heat Bed temperature\nM190 S{material_bed_temperature_layer_0}      ; Wait for Heat Bed temperature\nM117 Getting the extruder up to temp!\nM104 S{material_print_temperature_layer_0}    ; Set Extruder temperature\nG92 E0                           ; Reset Extruder\nM117 Homing axes\nG28                              ; Home all axes\nM109 S{material_print_temperature_layer_0}    ; Wait for Extruder temperature\nG1 Z2.0 F3000                    ; Move Z Axis up little to prevent scratching of Heat Bed\nG1 X4.1 Y20 Z0.3 F5000.0         ; Move to start position\nM117 Purging\nG1 X4.1 Y200.0 Z0.3 F1500.0 E15  ; Draw the first line\nG1 X4.4 Y200.0 Z0.3 F5000.0      ; Move to side a little\nG1 X4.4 Y20 Z0.3 F1500.0 E30     ; Draw the second line\nG92 E0                           ; Reset Extruder\nM117 Lets make\nG1 Z2.0 F3000                    ; Move Z Axis up little to prevent scratching of Heat Bed\nG1 X5 Y20 Z0.3 F5000.0           ; Move over to prevent blob squish"
-        },
-
-        "gantry_height": { "value": 27.5 }
+        "machine_height": { "value": 270 },
+        "machine_name": { "default_value": "BIQU B1" },
+        "machine_start_gcode": { "default_value": "                                 ; BIQU B1 Start G-code\nM117 Getting the bed up to temp!\nM140 S{material_bed_temperature_layer_0}      ; Set Heat Bed temperature\nM190 S{material_bed_temperature_layer_0}      ; Wait for Heat Bed temperature\nM117 Getting the extruder up to temp!\nM104 S{material_print_temperature_layer_0}    ; Set Extruder temperature\nG92 E0                           ; Reset Extruder\nM117 Homing axes\nG28                              ; Home all axes\nM109 S{material_print_temperature_layer_0}    ; Wait for Extruder temperature\nG1 Z2.0 F3000                    ; Move Z Axis up little to prevent scratching of Heat Bed\nG1 X4.1 Y20 Z0.3 F5000.0         ; Move to start position\nM117 Purging\nG1 X4.1 Y200.0 Z0.3 F1500.0 E15  ; Draw the first line\nG1 X4.4 Y200.0 Z0.3 F5000.0      ; Move to side a little\nG1 X4.4 Y20 Z0.3 F1500.0 E30     ; Draw the second line\nG92 E0                           ; Reset Extruder\nM117 Lets make\nG1 Z2.0 F3000                    ; Move Z Axis up little to prevent scratching of Heat Bed\nG1 X5 Y20 Z0.3 F5000.0           ; Move over to prevent blob squish" },
+        "machine_width": { "value": 235 },
+        "retraction_amount": { "value": 7 },
+        "retraction_speed": { "value": 70 },
+        "speed_print": { "value": 60 },
+        "support_angle": { "value": 45 },
+        "support_enable": { "value": true },
+        "support_infill_rate": { "value": 15 },
+        "support_structure": { "value": "'normal'" },
+        "support_type": { "value": "'buildplate'" }
     }
 }

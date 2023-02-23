@@ -2,15 +2,20 @@
     "version": 2,
     "name": "Right Extruder 1",
     "inherits": "fdmextruder",
-    "metadata": {
+    "metadata":
+    {
         "machine": "strateo3d",
         "position": "0"
     },
-
-    "overrides": {
-        "extruder_nr": { "default_value": 0, "maximum_value": "1" },
-        "material_diameter": { "default_value": 1.75 },
+    "overrides":
+    {
+        "extruder_nr":
+        {
+            "default_value": 0,
+            "maximum_value": "1"
+        },
         "machine_nozzle_offset_x": { "default_value": 0 },
-        "machine_nozzle_offset_y": { "default_value": 0 }
+        "machine_nozzle_offset_y": { "default_value": 0 },
+        "material_diameter": { "default_value": 1.75 }
     }
 }
