@@ -2205,10 +2205,11 @@
                         {
                             "label": "Top Infill Steps",
                             "description": "Number of times to double the infill density when getting towards the top surfaces. (Previously known as Gradual Infill Steps.)",
-                            "default_value": 2,
+                            "default_value": 0,
                             "type": "int",
-                            "minimum_value": "1",
-                            "maximum_value": "math.log(100/infill_sparse_density)/math.log(2)",
+                            "value": "math.floor(math.log(80/infill_sparse_density)/math.log(2))",
+                            "minimum_value": "0",
+                            "maximum_value": "math.floor(math.log(100/infill_sparse_density)/math.log(2))",
                             "enabled": "gradual_infill",
                             "limit_to_extruder": "infill_extruder_nr",
                             "settable_per_mesh": true
