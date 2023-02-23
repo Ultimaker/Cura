@@ -39,8 +39,6 @@ RecommendedSettingSection
                 width: parent.width
                 settingName: "infill_sparse_density"
                 updateAllExtruders: true
-                // disable slider when gradual support is enabled
-                enabled: parseInt(infillSteps.properties.value) === 0
 
                 function updateSetting(value)
                 {
