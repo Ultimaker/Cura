@@ -98,9 +98,13 @@ jobs:
             $HOME/.conan/conan_download_cache
           key: conan-ubuntu-${{ runner.arch }}-create-cache
 
+      # NOTE: Due to what are probably github issues, we have to remove the cache and reconfigure before the rest.
+      #       This is maybe because grub caches the disk it uses last time, which is recreated each time.
       - name: Install Linux system requirements
         if: ${{ runner.os == 'Linux' }}
         run: |
+          sudo rm /var/cache/debconf/config.dat
+          sudo dpkg --configure -a
           sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
           sudo apt update
           sudo apt upgrade
