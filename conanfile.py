@@ -345,7 +345,8 @@ class CuraConan(ConanFile):
             if self.settings.os != "Windows" or self.conf.get("tools.microsoft.bash:path", check_type = str):
                 # FIXME: once m4, autoconf, automake are Conan V2 ready use self.win_bash and add gettext as base tool_requirement
                 for po_file in self.source_path.joinpath("resources", "i18n").glob("**/*.po"):
-                    mo_file = os.path.join(self.build_folder, po_file.with_suffix('.mo').relative_to(self.source_path))
+                    mo_file = Path(self.build_folder, po_file.with_suffix('.mo').relative_to(self.source_path))
+                    mo_file = mo_file.parent.joinpath("LC_MESSAGES", mo_file.name)
                     mkdir(self, str(unix_path(self, Path(mo_file).parent)))
                     cpp_info = self.dependencies["gettext"].cpp_info
                     self.run(f"{cpp_info.bindirs[0]}/msgfmt {po_file} -o {mo_file} -f", env="conanbuild", ignore_errors=True)
