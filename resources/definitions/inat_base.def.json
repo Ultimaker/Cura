@@ -316,7 +316,6 @@
         "support_join_distance": { "value": 5.0 },
         "support_offset": { "value": 3.0 },
         "support_tree_angle": { "value": 60 },
-        "support_use_towers": { "value": false },
         "support_wall_count": { "value": "1 if (support_structure == 'tree') else 0" },
         "support_z_distance": { "value": "layer_height if (2*layer_height > 0.8*machine_nozzle_size) else (2*layer_height)" },
         "top_bottom_pattern": { "value": "'zigzag'" },

@@ -75,7 +75,6 @@
         "support_interface_density": { "value": 40 },
         "support_interface_enable": { "value": true },
         "support_interface_height": { "value": "layer_height * 3" },
-        "support_use_towers": { "value": false },
         "support_xy_distance": { "value": "wall_line_width_0 * 2" },
         "support_xy_distance_overhang": { "value": "wall_line_width_0" },
         "support_z_distance": { "value": "layer_height if layer_height >= 0.2 else layer_height * 2" },

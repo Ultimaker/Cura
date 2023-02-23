@@ -32,6 +32,7 @@ class FlavorParser:
     """This parser is intended to interpret the common firmware codes among all the different flavors"""
 
     MAX_EXTRUDER_COUNT = 16
+    DEFAULT_FILAMENT_DIAMETER = 2.85
 
     def __init__(self) -> None:
         CuraApplication.getInstance().hideMessageSignal.connect(self._onHideMessage)
@@ -48,7 +49,7 @@ class FlavorParser:
         self._is_layers_in_file = False  # Does the Gcode have the layers comment?
         self._extruder_offsets = {}  # type: Dict[int, List[float]] # Offsets for multi extruders. key is index, value is [x-offset, y-offset]
         self._current_layer_thickness = 0.2  # default
-        self._filament_diameter = 2.85       # default
+        self._current_filament_diameter = 2.85       # default
         self._previous_extrusion_value = 0.0  # keep track of the filament retractions
 
         CuraApplication.getInstance().getPreferences().addPreference("gcodereader/show_caution", True)
@@ -152,7 +153,7 @@ class FlavorParser:
 
     def _calculateLineWidth(self, current_point: Position, previous_point: Position, current_extrusion: float, previous_extrusion: float, layer_thickness: float) -> float:
         # Area of the filament
-        Af = (self._filament_diameter / 2) ** 2 * numpy.pi
+        Af = (self._current_filament_diameter / 2) ** 2 * numpy.pi
         # Length of the extruded filament
         de = current_extrusion - previous_extrusion
         # Volume of the extruded filament
@@ -287,7 +288,11 @@ class FlavorParser:
 
     def processTCode(self, global_stack, T: int, line: str, position: Position, path: List[List[Union[float, int]]]) -> Position:
         self._extruder_number = T
-        self._filament_diameter = global_stack.extruderList[self._extruder_number].getProperty("material_diameter", "value")
+        try:
+            self._current_filament_diameter = global_stack.extruderList[self._extruder_number].getProperty("material_diameter", "value")
+        except IndexError:
+            self._current_filament_diameter = self.DEFAULT_FILAMENT_DIAMETER
+
         if self._extruder_number + 1 > len(position.e):
             self._extrusion_length_offset.extend([0] * (self._extruder_number - len(position.e) + 1))
             position.e.extend([0] * (self._extruder_number - len(position.e) + 1))
@@ -323,7 +328,11 @@ class FlavorParser:
         if not global_stack:
             return None
 
-        self._filament_diameter = global_stack.extruderList[self._extruder_number].getProperty("material_diameter", "value")
+        try:
+            self._current_filament_diameter = global_stack.extruderList[self._extruder_number].getProperty("material_diameter", "value")
+        except IndexError:
+            # There can be a mismatch between the number of extruders in the G-Code file and the number of extruders in the current machine.
+            self._current_filament_diameter = self.DEFAULT_FILAMENT_DIAMETER
 
         scene_node = CuraSceneNode()
 

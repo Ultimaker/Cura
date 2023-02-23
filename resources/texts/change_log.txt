@@ -13,18 +13,20 @@
 * Other new features and improvements:
 - Improved the Zseam behavior so Hide Seam is generated less randomly.
 - Fixed the order in which concentric top/bottom patterns are printed.
-- Replaced mentions of Ultimaker by UltiMaker to correctly reflect the merger
+- Replaced mentions of Ultimaker by UltiMaker to correctly reflect the merger.
 - Updated Load Project window with a new design.
 - Added tooling to automatically generate translation files to reduce the chance of human error. 
 - Added quality type to slice meta-data so it can be displayed in the Ultimaker Digital Factory.
 - Added a new way to update profiles by adding a Save/Compare Settings Button in custom window. 
-- Improved onboarding so t easier to add your first cloud printer or a non-UltiMaker printer.
+- Improved onboarding so it is easier to add your first cloud printer or a non-UltiMaker printer.
+- Included options to download .MSI and .PKG for easier software distribution. 
+- Smoothed some support generation, so support is generated less jittery.
+- Reduced unnecessary support generation for small overhang regions, like textures.
 - Improved support generation so the support doesn't fold around the model. 
-- Adjusted Support Horizontal Expansion and Minimum Support Area Settings for UltiMaker printers to improve support reliability. 
-- Added a Minimum Layer Time Temperature setting.
-- Added Brim Inside Avoid Margin setting, contributed by BagelOrb
-- Added settings for Support Interface Wall Line Count, Support Roof Line Count, and Support Floor Line Count.
 - Reduced stringing for Lift Head setting by removing the move in XY.
+- Added a Minimum Layer Time Temperature setting.
+- Added settings for Support Interface Wall Line Count, Support Roof Line Count, and Support Floor Line Count.
+- Added Brim Inside Avoid Margin setting, contributed by BagelOrb
 - Added prefix 'Printing' to post processing plugin script "DisplayFilenameAndLayerOnLCD" contributed by brunohenriquy
 - Added Enable, G-code Before, and G-code After To Filament Change, contributed by victornpb
 - Added support for per-object retraction settings, contributed by jeremysalwen
@@ -71,6 +73,8 @@
 - Fixed a bug where materials with longer names in Materials Preferences were harder to read, contributed by Ghostkeeper 
 
 * Printer definitions, profiles and materials:
+- Support Towers are working again and enabled by default for all printers.
+- Updated Support Horizontal Expansion, Support Join Distance, and Minimum Support Area Settings for UltiMaker printers to improve support reliability. 
 - Updated intent and quality files for UltiMaker printers to have more consistent file names. 
 - Updated default Support Interface Pattern to ZigZag for UltiMaker printers
 - Updated Maximum Combing Distance for UltiMaker printers
@@ -107,6 +111,7 @@
 
 * Community translations:
 - Updated French translations, contributed by xommit
+- Updated a typo in Japanese translations, contributed by tamorikawa
 
 * Known critical issues:
 - Under certain angles, the Interlocking Structures are not effective, yet.

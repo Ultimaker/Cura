@@ -78,7 +78,6 @@
         "speed_z_hop": { "value": "speed_travel" },
         "support_bottom_distance": { "value": "layer_height" },
         "support_bottom_enable": { "value": false },
-        "support_use_towers": { "default_value": false },
         "support_wall_count": { "value": "1" },
         "support_z_distance": { "value": "layer_height" },
         "switch_extruder_retraction_amount": { "value": 10 },
