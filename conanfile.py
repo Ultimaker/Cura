@@ -328,17 +328,18 @@ class CuraConan(ConanFile):
                                             entitlements_file = entitlements_file if self.settings.os == "Macos" else "None")
 
             # Update the po files
-            vb = VirtualBuildEnv(self)
-            vb.generate()
+            if self.settings.os != "Windows" or self.conf.get("tools.microsoft.bash:path", check_type=str):
+                vb = VirtualBuildEnv(self)
+                vb.generate()
 
-            # FIXME: once m4, autoconf, automake are Conan V2 ready use self.win_bash and add gettext as base tool_requirement
-            cpp_info = self.dependencies["gettext"].cpp_info
-            for po_file in self.source_path.joinpath("resources", "i18n").glob("**/*.po"):
-                pot_file = self.source_path.joinpath("resources", "i18n", po_file.with_suffix('.pot').name)
-                mkdir(self, str(unix_path(self, pot_file.parent)))
-                self.run(
-                    f"{cpp_info.bindirs[0]}/msgmerge --no-wrap --no-fuzzy-matching -width=140 -o {po_file} {po_file} {pot_file}",
-                    env="conanbuild", ignore_errors=True)
+                # FIXME: once m4, autoconf, automake are Conan V2 ready use self.win_bash and add gettext as base tool_requirement
+                cpp_info = self.dependencies["gettext"].cpp_info
+                for po_file in self.source_path.joinpath("resources", "i18n").glob("**/*.po"):
+                    pot_file = self.source_path.joinpath("resources", "i18n", po_file.with_suffix('.pot').name)
+                    mkdir(self, str(unix_path(self, pot_file.parent)))
+                    self.run(
+                        f"{cpp_info.bindirs[0]}/msgmerge --no-wrap --no-fuzzy-matching -width=140 -o {po_file} {po_file} {pot_file}",
+                        env="conanbuild", ignore_errors=True)
 
     def build(self):
         if self.options.devtools:
