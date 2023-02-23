@@ -4414,7 +4414,7 @@
                 "cool_min_temperature":
                 {
                     "label": "Small Layer Printing Temperature",
-                    "description": "When reducing print speeds because of the minimum layer time, the printing temperature is gradually reduced to this temperature.",
+                    "description": "Gradually reduce to this temperature when printing at reduced speeds because of minimum layer time.",
                     "unit": "\u00b0C",
                     "type": "float",
                     "value": "material_print_temperature",
@@ -5777,7 +5777,7 @@
                 "brim_inside_margin":
                 {
                     "label": "Brim Inside Avoid Margin",
-                    "description": "If brim is only on outside then parts fully enclosed inside another part will get a brim which might overlap with the internal holes of the outer part. This setting controls how far to stay away from those internal holes. Set to a high value to prevent any brim from being generated for parts enclosed within the holes of other parts.",
+                    "description": "A part fully enclosed inside another part can generate an outer brim that touches the inside of the other part. This removes all brim within this distance from internal holes.",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 2.5,
@@ -6856,7 +6856,7 @@
                 "interlocking_enable":
                 {
                     "label": "Generate Interlocking Structure",
-                    "description": "Whether to generate a structure at the interface between two models of a different material in order to improve the adhesion. The structure consists of cells of horizontal beams with alternating direction which connect to each other over the Z direction in order to interlock with the beams of the other material.",
+                    "description": "At the locations where models touch, generate an interlocking beam structure. This improves the adhesion between models, especially models printed in different materials.",
                     "type": "bool",
                     "enabled": "extruders_enabled_count > 1",
                     "default_value": false,
@@ -6867,7 +6867,7 @@
                 "interlocking_beam_width":
                 {
                     "label": "Interlocking Beam Width",
-                    "description": "The width of the beams of this material in the interlocking structure.",
+                    "description": "The width of the interlocking structure beams.",
                     "type": "float",
                     "unit": "mm",
                     "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
@@ -6882,7 +6882,7 @@
                 "interlocking_orientation":
                 {
                     "label": "Interlocking Structure Orientation",
-                    "description": "The direction of the beams of the interlocking structure in the XY plane as a rotation about the Z axis.",
+                    "description": "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects.",
                     "unit": "\u00b0",
                     "type": "float",
                     "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
@@ -6896,7 +6896,7 @@
                 "interlocking_beam_layer_count":
                 {
                     "label": "Interlocking Beam Layer Count",
-                    "description": "The height of the beams of the interlocking structure as measured in number of layers. Less layers is stronger, but more prone to manufacturing defects.",
+                    "description": "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects.",
                     "type": "int",
                     "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
                     "default_value": 2,
@@ -6909,7 +6909,7 @@
                 "interlocking_depth":
                 {
                     "label": "Interlocking Depth",
-                    "description": "The number of cells along the depth of the interface between two models where an interlocking structure is to be generated. Less cells is better, but too little cells can cause the not to be connected properly, which reduces the adhesion performance of the interlocking structure.",
+                    "description": "The distance from the boundary between models to generate interlocking structure measured in cells. Too few cells will result in poor adhesion.",
                     "type": "int",
                     "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
                     "default_value": 2,
@@ -6923,7 +6923,7 @@
                 "interlocking_boundary_avoidance":
                 {
                     "label": "Interlocking Boundary Avoidance",
-                    "description": "The distance close to the boundary of the print where not to generate an interlocking structure as measued in number of cells times 2. If set to a value lower than the Inerlocking Depth then the interlocking structure can become visible on the outside of the print near the interfaces where two models meet.",
+                    "description": "The distance from the outside of a model where interlocking structures will not be generated, measured in cells.",
                     "type": "int",
                     "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
                     "default_value": 2,

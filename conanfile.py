@@ -267,7 +267,7 @@ class CuraConan(ConanFile):
         copy(self, "*", os.path.join(self.recipe_folder, "tests"), os.path.join(self.export_sources_folder, "tests"))
         copy(self, "*", os.path.join(self.recipe_folder, "cura"), os.path.join(self.export_sources_folder, "cura"), excludes="CuraVersion.py")
         copy(self, "*", os.path.join(self.recipe_folder, "packaging"), os.path.join(self.export_sources_folder, "packaging"))
-        copy(self, "*", os.path.join(self.recipe_folder, ".run_templates"), os.path.join(self.export_sources_folder, "run_templates"))
+        copy(self, "*", os.path.join(self.recipe_folder, ".run_templates"), os.path.join(self.export_sources_folder, ".run_templates"))
         copy(self, "requirements.txt", self.recipe_folder, self.export_sources_folder)
         copy(self, "requirements-dev.txt", self.recipe_folder, self.export_sources_folder)
         copy(self, "requirements-ultimaker.txt", self.recipe_folder, self.export_sources_folder)
