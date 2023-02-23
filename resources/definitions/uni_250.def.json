@@ -1,18 +1,20 @@
 {
-    "name":      "Uni 250",
-    "version":   2,
-    "inherits":  "uni_base",
-    "metadata":  {
-                  "author": "Nail` Gimadeev (C)",
-                  "visible": true,
-                  "quality_definition": "uni_base",
-                  "platform": "uni_250_platform.stl",
-                  "platform_texture": "uni.png"
-                 },
-    "overrides": {
-                  "machine_name":   {"default_value": "uni_250"},
-                  "machine_width":  {"default_value": 270},
-				  "machine_depth":  {"default_value": 220},
-                  "machine_height": {"default_value": 250}
-                 }
+    "version": 2,
+    "name": "Uni 250",
+    "inherits": "uni_base",
+    "metadata":
+    {
+        "visible": true,
+        "author": "Nail` Gimadeev (C)",
+        "platform": "uni_250_platform.stl",
+        "platform_texture": "uni.png",
+        "quality_definition": "uni_base"
+    },
+    "overrides":
+    {
+        "machine_depth": { "default_value": 220 },
+        "machine_height": { "default_value": 250 },
+        "machine_name": { "default_value": "uni_250" },
+        "machine_width": { "default_value": 270 }
+    }
 }

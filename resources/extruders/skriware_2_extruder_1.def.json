@@ -2,13 +2,15 @@
     "version": 2,
     "name": "Right Extruder",
     "inherits": "fdmextruder",
-    "metadata": {
+    "metadata":
+    {
         "machine": "skriware_2",
         "position": "1"
     },
-
-    "overrides": {
-        "extruder_nr": {
+    "overrides":
+    {
+        "extruder_nr":
+        {
             "default_value": 1,
             "maximum_value": "1"
         },

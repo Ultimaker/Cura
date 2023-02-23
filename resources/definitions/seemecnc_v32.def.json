@@ -2,42 +2,36 @@
     "version": 2,
     "name": "SeeMeCNC Rostock Max V3.2",
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "visible": true,
         "author": "PouncingIguana, JJ",
         "manufacturer": "SeeMeCNC",
         "file_formats": "text/x-gcode",
         "platform": "rostock_platform.3mf",
         "has_materials": true,
-        "machine_extruder_trains":
-        {
-            "0": "seemecnc_v32_extruder_0"
-        }
+        "machine_extruder_trains": { "0": "seemecnc_v32_extruder_0" }
     },
-
-    "overrides": {
+    "overrides":
+    {
         "layer_height": { "default_value": 0.1618 },
         "layer_height_0": { "default_value": 0.2 },
         "machine_center_is_zero": { "default_value": true },
         "machine_depth": { "default_value": 265 },
+        "machine_end_gcode": { "default_value": "M203 Z24000\nM104 S0\nM140 S0\nM107\nG28\nM84" },
         "machine_gcode_flavor": { "default_value": "RepRap (RepRap)" },
         "machine_heated_bed": { "default_value": true },
         "machine_height": { "default_value": 395 },
         "machine_max_feedrate_z": { "default_value": 300 },
         "machine_name": { "default_value": "Rostock Max V3.2" },
         "machine_shape": { "default_value": "elliptic" },
+        "machine_start_gcode": { "default_value": "G28\nG1 Z15.0 F10000\nG92 E0" },
         "machine_width": { "default_value": 265 },
         "relative_extrusion": { "value": "False" },
         "retraction_amount": { "default_value": 3.2 },
         "retraction_combing": { "value": "'off'" },
         "retraction_hop_enabled": { "default_value": true },
         "retraction_hop_only_when_collides": { "default_value": false },
-        "retraction_speed": { "default_value": 45 },
-        "machine_start_gcode": {
-            "default_value": "G28\nG1 Z15.0 F10000\nG92 E0"
-        },
-        "machine_end_gcode": {
-            "default_value": "M203 Z24000\nM104 S0\nM140 S0\nM107\nG28\nM84"
-        }
+        "retraction_speed": { "default_value": 45 }
     }
 }

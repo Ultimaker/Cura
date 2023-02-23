@@ -7,6 +7,11 @@ on:
                 required: true
                 type: string
 
+            user:
+                required: false
+                default: ultimaker
+                type: string
+
             additional_buildmetadata:
                 required: false
                 default: ""
@@ -67,8 +72,7 @@ jobs:
                 if: ${{ github.event.pull_request.head.repo.full_name != github.repository }}
                 with:
                     fetch-depth: 0
-                    ref: ${{ github.event.pull_request.head.ref }}
-                    repository: ${{ github.event.pull_request.head.repo.full_name }}
+                    ref: ${{ github.base_ref }}
 
             -   name: Setup Python and pip
                 uses: actions/setup-python@v4
@@ -86,12 +90,13 @@ jobs:
                 name: Get Conan broadcast data
                 run: |
                     import subprocess
+                    import os
                     from conans import tools
                     from conans.errors import ConanException
                     from git import Repo
                     
                     repo = Repo('.')
-                    user = "${{ github.repository_owner }}".lower()
+                    user = "${{ inputs.user }}".lower()
                     project_name = "${{ inputs.project_name }}"
                     event_name = "${{ github.event_name }}"
                     issue_number = "${{ github.ref }}".split('/')[2]
@@ -119,7 +124,7 @@ jobs:
                         elif ref_name in ("main", "master"):
                             channel = 'testing'
                         else:
-                            channel = repo.active_branch.name.split("_")[0].replace("-", "_").lower()
+                            channel = "_".join(repo.active_branch.name.replace("-", "_").split("_")[:2]).lower()
                     
                         if "pull_request" in event_name:
                             channel = f"pr_{issue_number}"
@@ -134,7 +139,8 @@ jobs:
                                 version = tools.Version(tag)
                             except ConanException:
                                 continue
-                            if version > latest_branch_version:
+                            if version > latest_branch_version and version < tools.Version("10.0.0"):
+                                # FIXME: stupid old Cura tags 13.04 etc. keep popping up
                                 latest_branch_version = version
                                 latest_branch_tag = repo.tag(tag)
                         
@@ -158,7 +164,9 @@ jobs:
                                 else:
                                     channel_metadata = f"{channel}_{no_commits}"
                             if is_release_branch:
-                                if latest_branch_version.prerelease == "":
+                                if latest_branch_version.prerelease == "" and branch_version > latest_branch_version:
+                                    actual_version = f"{branch_version.major}.{branch_version.minor}.0-beta.1+{buildmetadata}{channel_metadata}"
+                                elif latest_branch_version.prerelease == "":
                                     # An actual full release has been created, we are working on patch
                                     bump_up_patch = int(latest_branch_version.patch) + 1
                                     actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{bump_up_patch}-beta.1+{buildmetadata}{channel_metadata}"
@@ -167,34 +175,47 @@ jobs:
                                     bump_up_release_tag = int(latest_branch_version.prerelease.split('.')[1]) + 1
                                     actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-{latest_branch_version.prerelease.split('.')[0]}.{bump_up_release_tag}+{buildmetadata}{channel_metadata}"
                             else:
-                                bump_up_minor = int(latest_branch_version.minor) + 1
-                                reset_patch = 0
-                                actual_version = f"{latest_branch_version.major}.{bump_up_minor}.{reset_patch}-alpha+{buildmetadata}{channel_metadata}"
+                                max_branches_version = tools.Version("0.0.0")
+                                branches_no_commits = no_commits
+                                for branch in repo.references:
+                                    try:
+                                        if "remotes/origin" in branch.abspath:
+                                            b_version = tools.Version(branch.name.split("/")[-1])
+                                            if b_version < tools.Version("10.0.0") and b_version > max_branches_version:
+                                                max_branches_version = b_version
+                                                branches_no_commits = repo.commit().count() - branch.commit.count()
+                                    except:
+                                        pass
+                                if max_branches_version > latest_branch_version:
+                                    actual_version = f"{max_branches_version.major}.{int(max_branches_version.minor) + 1}.0-alpha+{buildmetadata}{channel}_{branches_no_commits}"
+                                else:
+                                    actual_version = f"{latest_branch_version.major}.{int(latest_branch_version.minor) + 1}.0-alpha+{buildmetadata}{channel_metadata}"
 
-                    # %% print to output
-                    cmd_name = ["echo", f"::set-output name=name::{project_name}"]
-                    subprocess.call(cmd_name)
-                    cmd_version = ["echo", f"::set-output name=version::{actual_version}"]
-                    subprocess.call(cmd_version)
-                    cmd_channel = ["echo", f"::set-output name=channel::{channel}"]
-                    subprocess.call(cmd_channel)
-                    cmd_id_full= ["echo", f"::set-output name=recipe_id_full::{project_name}/{actual_version}@{user}/{channel}"]
-                    subprocess.call(cmd_id_full)
-                    cmd_id_latest = ["echo", f"::set-output name=recipe_id_latest::{project_name}/latest@{user}/{channel}"]
-                    subprocess.call(cmd_id_latest)
-                    cmd_semver_full = ["echo", f"::set-output name=semver_full::{actual_version}"]
-                    subprocess.call(cmd_semver_full)
-                    cmd_is_release_branch = ["echo", f"::set-output name=is_release_branch::{str(is_release_branch).lower()}"]
-                    subprocess.call(cmd_is_release_branch)
+                    # %% Set the environment output
+                    output_env = os.environ["GITHUB_OUTPUT"]
+                    content = ""
+                    if os.path.exists(output_env):
+                        with open(output_env, "r") as f:
+                            content = f.read()
                     
-                    print("::group::Conan Recipe Information")
-                    print(f"name = {project_name}")
-                    print(f"version = {actual_version}")
-                    print(f"user = {user}")
-                    print(f"channel = {channel}")
-                    print(f"= {project_name}/{actual_version}@{user}/{channel}")
-                    print(f"recipe_id_latest = {project_name}/latest@{user}/{channel}")
-                    print(f"semver_full = {actual_version}")
-                    print(f"is_release_branch = {str(is_release_branch).lower()}")
-                    print("::endgroup::")
+                    with open(output_env, "w") as f:
+                        f.write(content)
+                        f.writelines(f"name={project_name}\n")
+                        f.writelines(f"version={actual_version}\n")
+                        f.writelines(f"channel={channel}\n")
+                        f.writelines(f"recipe_id_full={project_name}/{actual_version}@{user}/{channel}\n")
+                        f.writelines(f"recipe_id_latest={project_name}/latest@{user}/{channel}\n")
+                        f.writelines(f"semver_full={actual_version}\n")
+                        f.writelines(f"is_release_branch={str(is_release_branch).lower()}\n")
+                    
+                    summary_env = os.environ["GITHUB_STEP_SUMMARY"]
+                    with open(summary_env, "w") as f:
+                        f.writelines(f"# {project_name}\n")
+                        f.writelines(f"name={project_name}\n")
+                        f.writelines(f"version={actual_version}\n")
+                        f.writelines(f"channel={channel}\n")
+                        f.writelines(f"recipe_id_full={project_name}/{actual_version}@{user}/{channel}\n")
+                        f.writelines(f"recipe_id_latest={project_name}/latest@{user}/{channel}\n")
+                        f.writelines(f"semver_full={actual_version}\n")
+                        f.writelines(f"is_release_branch={str(is_release_branch).lower()}\n")
                 shell: python
