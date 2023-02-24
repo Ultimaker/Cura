@@ -7,7 +7,8 @@
         "visible": true,
         "manufacturer": "Snapmaker",
         "file_formats": "text/x-gcode",
-        "machine_extruder_trains": {
+        "machine_extruder_trains":
+        {
             "0": "snapmaker_dual_extruder_0",
             "1": "snapmaker_dual_extruder_1"
         },
