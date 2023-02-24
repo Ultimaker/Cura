@@ -367,31 +367,23 @@ class CuraConan(ConanFile):
 
     def deploy(self):
         # Copy CuraEngine.exe to bindirs of Virtual Python Environment
-        # TODO: Fix source such that it will get the curaengine relative from the executable (Python bindir in this case)
-        self.copy_deps("CuraEngine.exe", root_package = "curaengine", src = self.deps_cpp_info["curaengine"].bindirs[0],
-                       dst = self._base_dir,
-                       keep_path = False)
-        self.copy_deps("CuraEngine", root_package = "curaengine", src = self.deps_cpp_info["curaengine"].bindirs[0], dst = self._base_dir,
-                       keep_path = False)
+        curaengine_exe = Path(self.conf.get("user.curaengine:curaengine"))
+        copy(self, "*", str(curaengine_exe.parent), self._base_dir, keep_path=False)
 
         # Copy resources of Cura (keep folder structure)
-        self.copy("*", src = self.cpp_info.bindirs[0], dst = self._base_dir, keep_path = False)
-        self.copy("*", src = self.cpp_info.libdirs[0], dst = self._site_packages.joinpath("cura"), keep_path = True)
-        self.copy("*", src = self.cpp_info.resdirs[0], dst = self._share_dir.joinpath("cura", "resources"), keep_path = True)
-        self.copy("*", src = self.cpp_info.resdirs[1], dst = self._share_dir.joinpath("cura", "plugins"), keep_path = True)
+        copy(self, "*", self.cpp_info.bindirs[0], str(self._base_dir), keep_path = False)
+        copy(self, "*", self.cpp_info.libdirs[0], str(self._site_packages.joinpath("cura")), keep_path = True)
+        copy(self, "*", self.cpp_info.resdirs[0], str(self._share_dir.joinpath("cura", "resources")), keep_path = True)
+        copy(self, "*", self.cpp_info.resdirs[1], str(self._share_dir.joinpath("cura", "plugins")), keep_path = True)
 
         # Copy materials (flat)
-        self.copy_deps("*.fdm_material", root_package = "fdm_materials", src = self.deps_cpp_info["fdm_materials"].resdirs[0],
-                       dst = self._share_dir.joinpath("cura", "resources", "materials"), keep_path = False)
-        self.copy_deps("*.sig", root_package = "fdm_materials", src = self.deps_cpp_info["fdm_materials"].resdirs[0],
-                       dst = self._share_dir.joinpath("cura", "resources", "materials"), keep_path = False)
+        fdm_materials = self.dependencies["fdm_materials"].cpp_info
+        copy(self, "*", fdm_materials.resdirs[0], str(self._share_dir.joinpath("cura")))
 
         # Copy internal resources
         if self.options.internal:
-            self.copy_deps("*", root_package = "cura_private_data", src = self.deps_cpp_info["cura_private_data"].resdirs[0],
-                           dst = self._share_dir.joinpath("cura", "resources"), keep_path = True)
-            self.copy_deps("*", root_package = "cura_private_data", src = self.deps_cpp_info["cura_private_data"].resdirs[1],
-                           dst = self._share_dir.joinpath("cura", "plugins"), keep_path = True)
+            cura_private_data = self.dependencies["cura_private_data"].cpp_info
+            copy(self, "*", cura_private_data.resdirs[0], str(self._share_dir.joinpath("cura")))
 
         # Copy resources of Uranium (keep folder structure)
         self.copy_deps("*", root_package = "uranium", src = self.deps_cpp_info["uranium"].resdirs[0],
