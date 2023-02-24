@@ -72,10 +72,6 @@ class CuraConan(ConanFile):
         return self._cura_env
 
     @property
-    def _staging(self):
-        return self.options.staging in ["True", 'true']
-
-    @property
     def _enterprise(self):
         return self.options.enterprise in ["True", 'true']
 
@@ -86,24 +82,10 @@ class CuraConan(ConanFile):
         return str(self.options.display_name)
 
     @property
-    def _cloud_api_root(self):
-        return "https://api-staging.ultimaker.com" if self._staging else "https://api.ultimaker.com"
-
-    @property
-    def _cloud_account_api_root(self):
-        return "https://account-staging.ultimaker.com" if self._staging else "https://account.ultimaker.com"
-
-    @property
-    def _marketplace_root(self):
-        return "https://marketplace-staging.ultimaker.com" if self._staging else "https://marketplace.ultimaker.com"
-
-    @property
-    def _digital_factory_url(self):
-        return "https://digitalfactory-staging.ultimaker.com" if self._staging else "https://digitalfactory.ultimaker.com"
-
-    @property
-    def _cura_latest_url(self):
-        return "https://software.ultimaker.com/latest.json"
+    def _urls(self):
+        if self.options.staging in ["True", 'true']:
+            return "staging"
+        return "default"
 
     @property
     def requirements_txts(self):
@@ -173,12 +155,12 @@ class CuraConan(ConanFile):
                 cura_version = cura_version,
                 cura_build_type = "Enterprise" if self._enterprise else "",
                 cura_debug_mode = self.options.cura_debug_mode,
-                cura_cloud_api_root = self._cloud_api_root,
+                cura_cloud_api_root = self.conan_data["urls"][self._urls]["cloud_api_root"],
                 cura_cloud_api_version = self.options.cloud_api_version,
-                cura_cloud_account_api_root = self._cloud_account_api_root,
-                cura_marketplace_root = self._marketplace_root,
-                cura_digital_factory_url = self._digital_factory_url,
-                cura_latest_url = self._cura_latest_url))
+                cura_cloud_account_api_root = self.conan_data["urls"][self._urls]["cloud_account_api_root"],
+                cura_marketplace_root = self.conan_data["urls"][self._urls]["marketplace_root"],
+                cura_digital_factory_url = self.conan_data["urls"][self._urls]["digital_factory_url"],
+                cura_latest_url = self.conan_data["urls"][self._urls]["cura_latest_url"]))
 
     def _generate_pyinstaller_spec(self, location, entrypoint_location, icon_path, entitlements_file):
         pyinstaller_metadata = self.conan_data["pyinstaller"]

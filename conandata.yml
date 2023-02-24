@@ -1,3 +1,16 @@
+urls:
+    default:
+        cloud_api_root: "https://api.ultimaker.com"
+        cloud_account_api_root: "https://account.ultimaker.com"
+        marketplace_root: "https://marketplace.ultimaker.com"
+        digital_factory_url: "https://digitalfactory.ultimaker.com"
+        cura_latest_url: "https://software.ultimaker.com/latest.json"
+    staging:
+        cloud_api_root: "https://api-staging.ultimaker.com"
+        cloud_account_api_root: "https://account-staging.ultimaker.com"
+        marketplace_root: "https://marketplace-staging.ultimaker.com"
+        digital_factory_url: "https://digitalfactory-staging.ultimaker.com"
+        cura_latest_url: "https://software.ultimaker.com/latest.json"
 pyinstaller:
     runinfo:
         entrypoint: "cura_app.py"
