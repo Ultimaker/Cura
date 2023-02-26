@@ -4414,12 +4414,12 @@
                 "cool_min_temperature":
                 {
                     "label": "Small Layer Printing Temperature",
-                    "description": "When reducing print speeds because of the minimum layer time, the printing temperature is gradually reduced to this temperature.",
+                    "description": "Gradually reduce to this temperature when printing at reduced speeds because of minimum layer time.",
                     "unit": "\u00b0C",
                     "type": "float",
                     "value": "material_print_temperature",
                     "enabled": "cool_min_layer_time > 0",
-                    "minimum_value": "material_final_print_temperature",
+                    "minimum_value": "max(material_final_print_temperature, material_initial_print_temperature)",
                     "maximum_value": "material_print_temperature",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
@@ -4698,7 +4698,7 @@
                     "maximum_value": "999999",
                     "type": "int",
                     "value": "1 if (support_interface_pattern == 'zigzag') else 0",
-                    "enabled": "support_interface_enable or support_meshes_present",
+                    "enabled": "(support_enable and support_interface_enable) or support_meshes_present",
                     "limit_to_extruder": "support_interface_extruder_nr",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
@@ -4715,7 +4715,7 @@
                             "maximum_value": "999999",
                             "type": "int",
                             "value": "support_interface_wall_count",
-                            "enabled": "support_interface_enable or support_meshes_present",
+                            "enabled": "(support_enable and support_interface_enable) or support_meshes_present",
                             "limit_to_extruder": "support_interface_extruder_nr",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
@@ -4731,7 +4731,7 @@
                             "maximum_value": "999999",
                             "type": "int",
                             "value": "support_interface_wall_count",
-                            "enabled": "support_interface_enable or support_meshes_present",
+                            "enabled": "(support_enable and support_interface_enable) or support_meshes_present",
                             "limit_to_extruder": "support_interface_extruder_nr",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
@@ -4957,6 +4957,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.3,
+                    "value": "0 if support_bottom_enable else 0.3",
                     "limit_to_extruder": "support_bottom_extruder_nr if support_bottom_enable else support_infill_extruder_nr",
                     "minimum_value": "0",
                     "maximum_value_warning": "1.0",
@@ -4970,10 +4971,10 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 5.0,
-                    "limit_to_extruder": "support_interface_extruder_nr if support_interface_enable else support_infill_extruder_nr",
+                    "limit_to_extruder": "support_interface_extruder_nr if support_bottom_enable else support_infill_extruder_nr",
                     "minimum_value": "0",
                     "maximum_value_warning": "10.0",
-                    "enabled": "support_enable or support_meshes_present",
+                    "enabled": "(support_enable or support_meshes_present) and support_bottom_stair_step_height > 0",
                     "settable_per_mesh": true
                 },
                 "support_bottom_stair_step_min_slope":
@@ -4986,7 +4987,7 @@
                     "limit_to_extruder": "support_bottom_extruder_nr if support_bottom_enable else support_infill_extruder_nr",
                     "minimum_value": "0.01",
                     "maximum_value": "89.99",
-                    "enabled": "support_enable or support_meshes_present",
+                    "enabled": "(support_enable or support_meshes_present) and support_bottom_stair_step_height > 0",
                     "settable_per_mesh": true
                 },
                 "support_join_distance":
@@ -5009,7 +5010,8 @@
                     "description": "Amount of offset applied to all support polygons in each layer. Positive values can smooth out the support areas and result in more sturdy support.",
                     "unit": "mm",
                     "type": "float",
-                    "default_value": 0,
+                    "default_value": 0.8,
+                    "value": "support_line_width + 0.4",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "minimum_value_warning": "-1 * machine_nozzle_size",
                     "maximum_value_warning": "10 * machine_nozzle_size",
@@ -5093,7 +5095,7 @@
                             "default_value": false,
                             "value": "extruderValue(support_roof_extruder_nr, 'support_interface_enable')",
                             "limit_to_extruder": "support_roof_extruder_nr",
-                            "enabled": "support_enable or support_meshes_present",
+                            "enabled": "(support_enable or support_meshes_present) and support_interface_enable",
                             "settable_per_mesh": true
                         },
                         "support_bottom_enable":
@@ -5104,7 +5106,7 @@
                             "default_value": false,
                             "value": "extruderValue(support_bottom_extruder_nr, 'support_interface_enable')",
                             "limit_to_extruder": "support_bottom_extruder_nr",
-                            "enabled": "support_enable or support_meshes_present",
+                            "enabled": "(support_enable or support_meshes_present) and support_interface_enable",
                             "settable_per_mesh": true
                         }
                     }
@@ -5162,7 +5164,8 @@
                     "description": "When checking where there's model above and below the support, take steps of the given height. Lower values will slice slower, while higher values may cause normal support to be printed in some places where there should have been support interface.",
                     "unit": "mm",
                     "type": "float",
-                    "default_value": 0.3,
+                    "default_value": 0.2,
+                    "value": "layer_height",
                     "minimum_value": "0",
                     "maximum_value_warning": "support_interface_height",
                     "limit_to_extruder": "support_interface_extruder_nr",
@@ -5774,7 +5777,7 @@
                 "brim_inside_margin":
                 {
                     "label": "Brim Inside Avoid Margin",
-                    "description": "If brim is only on outside then parts fully enclosed inside another part will get a brim which might overlap with the internal holes of the outer part. This setting controls how far to stay away from those internal holes. Set to a high value to prevent any brim from being generated for parts enclosed within the holes of other parts.",
+                    "description": "A part fully enclosed inside another part can generate an outer brim that touches the inside of the other part. This removes all brim within this distance from internal holes.",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 2.5,
@@ -6853,7 +6856,7 @@
                 "interlocking_enable":
                 {
                     "label": "Generate Interlocking Structure",
-                    "description": "Whether to generate a structure at the interface between two models of a different material in order to improve the adhesion. The structure consists of cells of horizontal beams with alternating direction which connect to each other over the Z direction in order to interlock with the beams of the other material.",
+                    "description": "At the locations where models touch, generate an interlocking beam structure. This improves the adhesion between models, especially models printed in different materials.",
                     "type": "bool",
                     "enabled": "extruders_enabled_count > 1",
                     "default_value": false,
@@ -6864,7 +6867,7 @@
                 "interlocking_beam_width":
                 {
                     "label": "Interlocking Beam Width",
-                    "description": "The width of the beams of this material in the interlocking structure.",
+                    "description": "The width of the interlocking structure beams.",
                     "type": "float",
                     "unit": "mm",
                     "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
@@ -6879,7 +6882,7 @@
                 "interlocking_orientation":
                 {
                     "label": "Interlocking Structure Orientation",
-                    "description": "The direction of the beams of the interlocking structure in the XY plane as a rotation about the Z axis.",
+                    "description": "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects.",
                     "unit": "\u00b0",
                     "type": "float",
                     "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
@@ -6893,7 +6896,7 @@
                 "interlocking_beam_layer_count":
                 {
                     "label": "Interlocking Beam Layer Count",
-                    "description": "The height of the beams of the interlocking structure as measured in number of layers. Less layers is stronger, but more prone to manufacturing defects.",
+                    "description": "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects.",
                     "type": "int",
                     "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
                     "default_value": 2,
@@ -6906,7 +6909,7 @@
                 "interlocking_depth":
                 {
                     "label": "Interlocking Depth",
-                    "description": "The number of cells along the depth of the interface between two models where an interlocking structure is to be generated. Less cells is better, but too little cells can cause the not to be connected properly, which reduces the adhesion performance of the interlocking structure.",
+                    "description": "The distance from the boundary between models to generate interlocking structure measured in cells. Too few cells will result in poor adhesion.",
                     "type": "int",
                     "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
                     "default_value": 2,
@@ -6920,7 +6923,7 @@
                 "interlocking_boundary_avoidance":
                 {
                     "label": "Interlocking Boundary Avoidance",
-                    "description": "The distance close to the boundary of the print where not to generate an interlocking structure as measued in number of cells times 2. If set to a value lower than the Inerlocking Depth then the interlocking structure can become visible on the outside of the print near the interfaces where two models meet.",
+                    "description": "The distance from the outside of a model where interlocking structures will not be generated, measured in cells.",
                     "type": "int",
                     "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
                     "default_value": 2,

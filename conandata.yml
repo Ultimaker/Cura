@@ -1,107 +1,90 @@
----
-# Usage: defaults to the first entry in this conandata.yml file
-# If you're on a release branch create an entry for that **version**  e.q.: `5.1.0` update the requirements (use pinned versions, not latest)
-# also create a beta entry for that **version**  e.q.: `5.1.0-beta`, update the requirements (use the <dep_name>/(latest)@ultimaker/stable)
-#
-# If you're working on a feature/bugfix branch from a release branch, create an entry for that **channel**,  update the requirements (use
-# the <dep_name>/(latest)@ultimaker/stable)
-#
-# If you're working on a feature/bugfix branch from a main branch, it is optional to create an entry for that **channel**,  update the
-# requirements (use the <dep_name>/(latest)@ultimaker/testing)
-#
-# Subject to change in the future!
-runinfo:
-  entrypoint: "cura_app.py"
 pyinstaller:
-  datas:
-    cura_plugins:
-      package: "cura"
-      src: "plugins"
-      dst: "share/cura/plugins"
-    cura_resources:
-      package: "cura"
-      src: "resources"
-      dst: "share/cura/resources"
-    cura_private_data:
-      package: "cura_private_data"
-      src: "resources"
-      dst: "share/cura/resources"
-      internal: true
-    cura_private_data_plugins:
-      package: "cura_private_data"
-      src: "plugins"
-      dst: "share/cura/plugins"
-      internal: true
-    uranium_plugins:
-      package: "uranium"
-      src: "plugins"
-      dst: "share/uranium/plugins"
-    uranium_resources:
-      package: "uranium"
-      src: "resources"
-      dst: "share/uranium/resources"
-    uranium_um_qt_qml_um:
-      package: "uranium"
-      src: "site-packages/UM/Qt/qml/UM"
-      dst: "PyQt6/Qt6/qml/UM"
-    cura_binary_data:
-      package: "cura_binary_data"
-      src: "resources/cura/resources"
-      dst: "share/cura/resources"
-    uranium_binary_data:
-      package: "cura_binary_data"
-      src: "resources/uranium/resources"
-      dst: "share/uranium/resources"
-    windows_binary_data:
-      package: "cura_binary_data"
-      src: "windows"
-      dst: "share/windows"
-    fdm_materials:
-      package: "fdm_materials"
-      src: "materials"
-      dst: "share/cura/resources/materials"
-    tcl:
-      package: "tcl"
-      src: "lib/tcl8.6"
-      dst: "tcl"
-    tk:
-      package: "tk"
-      src: "lib/tk8.6"
-      dst: "tk"
-  binaries:
-    curaengine:
-      package: "curaengine"
-      src: "bin"
-      dst: "."
-      binary: "CuraEngine"
-  hiddenimports:
-    - "pySavitar"
-    - "pyArcus"
-    - "pynest2d"
-    - "PyQt6"
-    - "PyQt6.QtNetwork"
-    - "PyQt6.sip"
-    - "logging.handlers"
-    - "zeroconf"
-    - "fcntl"
-    - "stl"
-    - "serial"
-  collect_all:
-    - "cura"
-    - "UM"
-    - "serial"
-    - "Charon"
-    - "sqlite3"
-    - "trimesh"
-    - "win32ctypes"
-    - "PyQt6"
-    - "PyQt6.QtNetwork"
-    - "PyQt6.sip"
-    - "stl"
-  icon:
-    Windows: "./icons/Cura.ico"
-    Macos: "./icons/cura.icns"
-    Linux: "./icons/cura-128.png"
+    runinfo:
+        entrypoint: "cura_app.py"
+    datas:
+        cura_plugins:
+            package: "cura"
+            src: "plugins"
+            dst: "share/cura/plugins"
+        cura_resources:
+            package: "cura"
+            src: "resources"
+            dst: "share/cura/resources"
+        cura_private_data:
+            package: "cura_private_data"
+            src: "resources"
+            dst: "share/cura/resources"
+            internal: true
+        uranium_plugins:
+            package: "uranium"
+            src: "plugins"
+            dst: "share/uranium/plugins"
+        uranium_resources:
+            package: "uranium"
+            src: "resources"
+            dst: "share/uranium/resources"
+        uranium_um_qt_qml_um:
+            package: "uranium"
+            src: "site-packages/UM/Qt/qml/UM"
+            dst: "PyQt6/Qt6/qml/UM"
+        cura_binary_data:
+            package: "cura_binary_data"
+            src: "resources/cura/resources"
+            dst: "share/cura/resources"
+        uranium_binary_data:
+            package: "cura_binary_data"
+            src: "resources/uranium/resources"
+            dst: "share/uranium/resources"
+        windows_binary_data:
+            package: "cura_binary_data"
+            src: "windows"
+            dst: "share/windows"
+        fdm_materials:
+            package: "fdm_materials"
+            src: "materials"
+            dst: "share/cura/resources/materials"
+        tcl:
+            package: "tcl"
+            src: "lib/tcl8.6"
+            dst: "tcl"
+        tk:
+            package: "tk"
+            src: "lib/tk8.6"
+            dst: "tk"
+    binaries:
+        curaengine:
+            package: "curaengine"
+            src: "bin"
+            dst: "."
+            binary: "CuraEngine"
+    hiddenimports:
+        - "pySavitar"
+        - "pyArcus"
+        - "pynest2d"
+        - "PyQt6"
+        - "PyQt6.QtNetwork"
+        - "PyQt6.sip"
+        - "logging.handlers"
+        - "zeroconf"
+        - "fcntl"
+        - "stl"
+        - "serial"
+    collect_all:
+        - "cura"
+        - "UM"
+        - "serial"
+        - "Charon"
+        - "sqlite3"
+        - "trimesh"
+        - "win32ctypes"
+        - "PyQt6"
+        - "PyQt6.QtNetwork"
+        - "PyQt6.sip"
+        - "stl"
+    icon:
+        Windows: "./icons/Cura.ico"
+        Macos: "./icons/cura.icns"
+        Linux: "./icons/cura-128.png"
 pycharm_targets:
   - jinja_path: .run_templates/pycharm_cura_run.run.xml.jinja
     module_name: Cura
