@@ -103,7 +103,7 @@
 - Added Fusion3 F410, contributed by 64bittuning
 - Added Geetech A10Pro, A30Pro, A30T, E180, GiantArmD200, I3ProB, i3ProC, I3PrW, MeCreator, MeCreator2, MeDucer, Mizar, MizarM, MizarMax, MizarMax, MizarPro, and Thunder, contributed by whoseyoung
 - Added Klema 180, Klema 250, Klema 250 Pro, Klema 250 Twin, and Klema 500, contributed by polyntsev
-- Added Modix V3 BIG-120X, Modix V3 BIG-120Z, Modix V3 BIG-180X, Modix V3 BIG-40, Modix V3 BIG-60, and Modix V3 BIG-Meter, contributed by Modix3D
+- Added Modix V3 BIG-120X, V3 BIG-120Z, V3 BIG-180X, V3 BIG-40, V3 BIG-60, V3 BIG-Meter, V4 BIG 60, V4 120x, V4 120z, V4 180x, and V4 BIG-Meter contributed by Modix3D
 - Added SnakeOil Standard 180, and SnakeOil Standard 250, contributed by ChipCE
 - Added Sovol SV01PRO, SV05, and SV06, contributed by eropple
 - Added UMO+ DXU, contributed by ansonl
