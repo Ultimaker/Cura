@@ -1,0 +1,61 @@
+{
+    "version": 2,
+    "name": "nps",
+    "inherits": "fdmprinter",
+    "metadata":
+    {
+        "visible": true,
+        "author": "Naxe",
+        "manufacturer": "Naxe",
+        "file_formats": "text/x-gcode",
+        "platform": "npscura.stl",
+        "has_machine_quality": true,
+        "has_materials": true,
+        "machine_extruder_trains": { "0": "nps_extruder_0" },
+        "platform_offset": [
+            -212,
+            -83,
+            215
+        ]
+    },
+    "overrides":
+    {
+        "adhesion_type": { "default_value": "none" },
+        "fill_outline_gaps": { "default_value": true },
+        "infill_sparse_density": { "default_value": 25 },
+        "layer_height": { "default_value": 0.1 },
+        "layer_height_0": { "default_value": 0.2 },
+        "machine_acceleration": { "default_value": 1000 },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_depth": { "default_value": 300 },
+        "machine_end_gcode": { "default_value": "M104 S0\nM140 S0\nG92 E1\nG1 E-1 F300\nG28 X0 Y0\nM84\n" },
+        "machine_extruder_count": { "default_value": 1 },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [-38, 30],
+                [38, 30],
+                [38, -40],
+                [-38, -40]
+            ]
+        },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 300 },
+        "machine_max_acceleration_z": { "default_value": 500 },
+        "machine_max_feedrate_e": { "default_value": 60 },
+        "machine_max_feedrate_z": { "default_value": 20 },
+        "machine_max_jerk_e": { "default_value": 5 },
+        "machine_max_jerk_xy": { "default_value": 12 },
+        "machine_max_jerk_z": { "default_value": 0.5 },
+        "machine_name": { "default_value": "NAXE NP-S" },
+        "machine_nozzle_size": { "default_value": 0.4 },
+        "machine_start_gcode": { "default_value": "G28 X Y\nG1 Y10\nM104 S{print_temperature}\nM190 S{print_bed_temperature}\nG28\nG4 S5\nG34\nG29 E0\nG21\nG90\nM83\nG1 X6 Y20 F7200\nG1 Z0.2\nM109 S{print_temperature}\nG1 X10 Y20 Z0.2 F5000.0\nG1 X10 Y200.0 Z0.2 F900.0 E10\nG92 E0.0\nM82\nM117 Printing\n" },
+        "machine_width": { "default_value": 300 },
+        "material_diameter": { "default_value": 1.75 },
+        "retract_at_layer_change": { "default_value": true },
+        "retraction_amount": { "default_value": 0.2 },
+        "retraction_combing_max_distance": { "default_value": 200 },
+        "retraction_speed": { "default_value": 45 }
+    }
+}

@@ -67,16 +67,21 @@ UM.ManagementPage
             {
                 width: Math.round(childrenRect.width + 2 * screenScaleFactor)
                 height: childrenRect.height
+                visible: machineActionRepeater.model[index].visible
                 Cura.SecondaryButton
                 {
                     text: machineActionRepeater.model[index].label
                     onClicked:
                     {
                         var currentItem = machineActionRepeater.model[index]
-                        actionDialog.loader.manager = currentItem
-                        actionDialog.loader.source = currentItem.qmlPath
-                        actionDialog.title = currentItem.label
-                        actionDialog.show()
+                        if (currentItem.shouldOpenAsDialog) {
+                            actionDialog.loader.manager = currentItem
+                            actionDialog.loader.source = currentItem.qmlPath
+                            actionDialog.title = currentItem.label
+                            actionDialog.show()
+                        } else {
+                            currentItem.execute()
+                        }
                     }
                 }
             }
@@ -93,6 +98,13 @@ UM.ManagementPage
             maximumWidth: minimumWidth * 3
             maximumHeight: minimumHeight * 3
             backgroundColor: UM.Theme.getColor("main_background")
+            onVisibleChanged:
+            {
+                if(!visible)
+                {
+                    actionDialog.loader.item.focus = true
+                }
+            }
         }
 
         UM.ConfirmRemoveDialog

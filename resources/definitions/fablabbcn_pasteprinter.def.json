@@ -1,0 +1,38 @@
+{
+    "version": 2,
+    "name": "PastePrinter",
+    "inherits": "fdmprinter",
+    "metadata":
+    {
+        "visible": true,
+        "author": "eduardo_chamorro",
+        "manufacturer": "FablabBcn",
+        "file_formats": "text/x-gcode",
+        "first_start_actions": [ "MachineSettingsAction" ],
+        "machine_extruder_trains": { "0": "fablabbcn_0" }
+    },
+    "overrides":
+    {
+        "adhesion_type": { "default_value": "skirt" },
+        "layer_height": { "default_value": 1.5 },
+        "layer_height_0": { "default_value": 1.5 },
+        "machine_always_write_active_tool": { "default_value": true },
+        "machine_depth": { "default_value": 235 },
+        "machine_end_gcode": { "default_value": ";FOOTER\nG91; relative positioning\nM107; turn off layer fan\nG1 Z50 F1000\nM400;Wait finish move\nG90; absolute positioning\nG1 X235 Y235\n;ENDFOOTER" },
+        "machine_height": { "default_value": 235 },
+        "machine_max_jerk_e": { "default_value": 50.0 },
+        "machine_max_jerk_xy": { "default_value": 50.0 },
+        "machine_max_jerk_z": { "default_value": 50.0 },
+        "machine_nozzle_size": { "settable_per_extruder": false },
+        "machine_start_gcode": { "default_value": ";HEADER;\nG21; Set to metric [change to G20 if you want Imperial]\nG91;Force coordinates to be absolute relative to the origin \nG1 Z10 F1000;\nG90; Force coordinates to be absolute relative to the origin\nG28 X; Home X axis\nG28 Y; Home Y axis\nG28 Z; Home Z axis\nM302 P1; Disable Cold Extrusion Checking\nG92 E0; Reset extruder to [0] zero end of cleaning run\nG91; Force coordinates to be absolute relative to the origin\nG1 Z10 F1000;\nG90;\nT0;\nM117 Printing...;ENDHEADER" },
+        "machine_width": { "default_value": 235 },
+        "material_bed_temp_prepend": { "default_value": false },
+        "material_bed_temp_wait": { "default_value": false },
+        "material_diameter": { "default_value": 1.75 },
+        "material_print_temp_prepend": { "default_value": false },
+        "material_print_temp_wait": { "default_value": false },
+        "retraction_enable": { "default_value": false },
+        "speed_print": { "default_value": 15 },
+        "top_bottom_pattern": { "default_value": "concentric" }
+    }
+}

@@ -1,0 +1,46 @@
+name: printer-linter-format
+
+on:
+    push:
+        paths:
+            - 'resources/definitions/**'
+            - 'resources/extruders/**'
+            - 'resources/intent/**'
+            - 'resources/quality/**'
+            - 'resources/variants/**'
+
+jobs:
+    printer-linter-format:
+        name: Printer linter auto format
+
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v3
+
+            -   uses: technote-space/get-diff-action@v6
+                with:
+                    PATTERNS: |
+                        resources/+(definitions|extruders)/*.def.json
+                        resources/+(intent|quality|variants)/**/*.inst.cfg
+
+            -   name: Setup Python and pip
+                if: env.GIT_DIFF && !env.MATCHED_FILES  # If nothing happens with python and/or pip after, the clean-up crashes.
+                uses: actions/setup-python@v4
+                with:
+                    python-version: 3.11.x
+                    cache: 'pip'
+                    cache-dependency-path: .github/workflows/requirements-printer-linter.txt
+
+            -   name: Install Python requirements for runner
+                if: env.GIT_DIFF && !env.MATCHED_FILES
+                run: pip install -r .github/workflows/requirements-printer-linter.txt
+
+            -   name: Format file
+                if: env.GIT_DIFF && !env.MATCHED_FILES
+                run: python printer-linter/src/terminal.py --format ${{ env.GIT_DIFF_FILTERED }}
+
+            -   uses: stefanzweifel/git-auto-commit-action@v4
+                if: env.GIT_DIFF && !env.MATCHED_FILES
+                with:
+                    commit_message: "Applied printer-linter format"

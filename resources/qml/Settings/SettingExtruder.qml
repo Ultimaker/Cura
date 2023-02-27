@@ -17,6 +17,8 @@ SettingItem
         id: control
         anchors.fill: parent
 
+        forceHighlight: base.hovered
+
         property var extrudersModel: CuraApplication.getExtrudersModel()
 
         model: extrudersModel

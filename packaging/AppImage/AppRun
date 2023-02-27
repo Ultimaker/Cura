@@ -13,8 +13,13 @@ export QT_XKB_CONFIG_ROOT=/usr/share/X11/xkb
 # Use the openssl.cnf packaged in the AppImage
 export OPENSSL_CONF="$scriptdir/openssl.cnf"
 
-$scriptdir/Ultimaker-Cura "$@"
-
 # If this variable is set on Zorin OS 16 Cura would crash
 # unset `QT_STYLE_OVERRIDE` as a precaution
 unset QT_STYLE_OVERRIDE
+
+BIN=`basename "$ARGV0" .AppImage`
+if [ -f $scriptdir/$BIN ]; then
+    $scriptdir/$BIN "$@"
+else
+    $scriptdir/UltiMaker-Cura "$@"
+fi;
