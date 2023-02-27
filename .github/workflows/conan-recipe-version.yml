@@ -152,7 +152,7 @@ jobs:
                                     break
                                 no_commits += 1
                             latest_branch_version_prerelease = latest_branch_version.pre
-                            if latest_branch_version.pre and not "." in latest_branch_version.pre:
+                            if latest_branch_version.pre and not "." in str(latest_branch_version.pre):
                                 # The prerealese did not contain a version number, default it to 1
                                 latest_branch_version_prerelease = f"{latest_branch_version.pre}.1"
                             if event_name == "pull_request":
