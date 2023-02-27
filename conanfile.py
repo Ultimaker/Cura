@@ -154,6 +154,38 @@ class CuraConan(ConanFile):
             return "'x86_64'"
         return "None"
 
+    def _generate_about_dialog(self, location):
+
+        # TODO: @jellespijker also auto generate for Python requirements, but we might want to do that after a revision of the VirtualPythonEnv
+        # TODO: @jellespijker also add the entries for Windows/MacOS specific conan managed dependencies
+        with open(os.path.join(self.recipe_folder, "AboutDialog.qml.jinja"), "r") as f:
+            about_dialog_qml = Template(f.read())
+
+        dependencies = [{}]
+        for require, dep in self.dependencies.host.items():
+            name = str(dep.ref.name).replace('_', ' ')
+
+            # Currently not possible to get this information from the dependencies conanfiles themself, should be doable in the future with the 2.0 API
+            description = self.conan_data["about_dialog"].get(str(dep.ref.name), {"description": ""})["description"]
+            url = self.conan_data["about_dialog"].get(str(dep.ref.name), {"url": ""})["url"]
+            license = self.conan_data["about_dialog"].get(str(dep.ref.name), {"license": ""})["license"]
+            dependencies.append({"name": name,
+                                 "version": str(dep.ref.version),
+                                 "license": license,
+                                 })
+
+        for dep, values in self.conan_data["about_dialog_unmanaged"].items():
+            dependencies.append({"name": dep.replace("_", " "),
+                                 "version": "",
+                                 "license": values["license"],
+            })
+
+        with open(os.path.join(location, "AboutDialog.qml"), "w") as f:
+            f.write(about_dialog_qml.render(
+                dependencies = dependencies
+                # dependencies = sorted(dependencies, key=lambda dep: dep["name"])
+            ))
+
     def _generate_cura_version(self, location):
         with open(os.path.join(self.recipe_folder, "CuraVersion.py.jinja"), "r") as f:
             cura_version_py = Template(f.read())
@@ -327,6 +359,7 @@ class CuraConan(ConanFile):
         vr.generate()
 
         self._generate_cura_version(os.path.join(self.source_folder, "cura"))
+        self._generate_about_dialog(os.path.join(self.source_folder, "resources", "qml", "Dialogs"))
 
         if self.options.devtools:
             entitlements_file = "'{}'".format(os.path.join(self.source_folder, "packaging", "MacOS", "cura.entitlements"))

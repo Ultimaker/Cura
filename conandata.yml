@@ -85,6 +85,256 @@ pyinstaller:
         Windows: "./icons/Cura.ico"
         Macos: "./icons/cura.icns"
         Linux: "./icons/cura-128.png"
+about_dialog:
+    cura:
+        description: "Graphical user interface"
+        url: "https://github.com/Ultimaker/Cura"
+        license: "LGPLv3"
+    pyarcus:
+        description: "Python bindings for arcus"
+        url: "https://github.com/Ultimaker/pyArcus"
+        license: "LGPLv3"
+    protobuf:
+        description: "Data interchange format"
+        url: "https://developers.google.com/protocol-buffers"
+        license: "BSD"
+    arcus:
+        description: "Interprocess communication library"
+        url: "https://github.com/Ultimaker/libArcus"
+        license: "LGPLv3"
+    cpython:
+        description: "Programming language"
+        url: "http://python.org/"
+        license: "Python"
+    openssl:
+        description: "Toolkit for TLS and SSL protocols"
+        url: "https://github.com/openssl/openssl"
+        license: "OpenSSL"
+    expat:
+        description: "XML parser"
+        url: "https://github.com/libexpat/libexpat"
+        license: "MIT"
+    libffi:
+        description: "High level programming interface"
+        url: "https://sourceware.org/libffi/"
+        license: "MIT"
+    mpdecimal:
+        description: "Correctly-rounded arbitrary precision decimal floating point arithmetic"
+        url: "http://www.bytereef.org/mpdecimal"
+        license: "BSD-2-clause"
+    libuuid:
+        description: "Portable uuid C library"
+        url: "https://sourceforge.net/projects/libuuid/"
+        license: "BSD-3-clause"
+    libxcrypt:
+        description: "Extended crypt library"
+        url: "https://github.com/besser82/libxcrypt"
+        license: "LGPL-2.1"
+    gdbm:
+        description: "Library of database functions"
+        url: "https://www.gnu.org.ua/software/gdbm/gdbm.html"
+        license: "GPLv3"
+    sqlite3:
+        description: "SQL database engine"
+        url: "https://www.sqlite.org"
+        license: "Unlicense"
+    tk:
+        description: "GUI toolkit"
+        url: "https://tcl.tk"
+        license: "TCL"
+    tcl:
+        description: "Dynamic programming language"
+        url: "https://tcl.tk"
+        license: "TCL"
+    fontconfig:
+        description: "Configuring and customizing font access"
+        url: "https://gitlab.freedesktop.org/fontconfig/fontconfig"
+        license: "MIT"
+    freetype:
+        description: "Render fonts"
+        url: "https://www.freetype.org"
+        license: "FTL"
+    libpng:
+        description: "Official PNG file format reference library"
+        url: "http://www.libpng.org"
+        license: "libpng-2.0"
+    brotli:
+        description: "Brotli compression format"
+        url: "https://github.com/google/brotli"
+        license: "MIT"
+    xorg:
+        description: "X Window System"
+        url: "https://www.x.org/wiki/"
+        license: "MIT"
+    ncurses:
+        description: "Emulation of curses in System V"
+        url: "https://www.gnu.org/software/ncurses"
+        license: "X11"
+    curaengine:
+        description: "G-code generator"
+        url: "https://github.com/Ultimaker/CuraEngine"
+        license: "AGPLv3"
+    clipper:
+        description: "Polygon clipping library"
+        url: "http://www.angusj.com/delphi/clipper.php"
+        license: "Boost"
+    boost:
+        description: "Utility library, including Voronoi generation"
+        url: "https://www.boost.org/"
+        license: "Boost"
+    rapidjson:
+        description: "JSON parser"
+        url: "https://rapidjson.org/"
+        license: "MIT"
+    stb:
+        description: "Utility functions, including an image loader"
+        url: "https://github.com/nothings/stb"
+        license: "Public Domain"
+    spdlog:
+        description: "Fast C++ logging library"
+        url: "https://github.com/gabime/spdlog"
+        license: "MIT"
+    fmt:
+        description: "Alternative to printf and IOStreams for C++"
+        url: "https://github.com/fmtlib/fmt"
+        license: "MIT"
+    range-v3:
+        description: "Range library for C++"
+        url: "https://github.com/ericniebler/range-v3"
+        license: "BSL-1.0"
+    pysavitar:
+        description: "Python bindings for savitar"
+        url: "LGPLv3"
+        license: "https://github.com/ultimaker/pySavitar"
+    savitar:
+        description: "Support library for handling 3MF files"
+        url: "LGPLv3"
+        license: "https://github.com/ultimaker/libSavitar"
+    pugixml:
+        description: "XML parser"
+        url: "https://pugixml.org/"
+        license: "MIT"
+    pynest2d:
+        description: "Python bindings for nest2d"
+        url: "LGPL"
+        license: "https://github.com/Ultimaker/pynest2d"
+    nest2d:
+        description: "Polygon packing library, developed by Prusa Research"
+        url: "https://github.com/tamasmeszaros/libnest2d"
+        license: "LGPL"
+    nlopt:
+        description: "Library for nonlinear optimization"
+        url: "https://github.com/stevengj/nlopt"
+        license: "MIT"
+    uranium:
+        description: "Application framework"
+        url: "https://github.com/Ultimaker/Uranium"
+        license: "LGPLv3"
+    fdm_materials:
+        description: "FDM Material database"
+        url: "https://github.com/Ultimaker/fdm_materials"
+        license: "CC0-1.0 license"
+    cura_binary_data:
+        description: "Binary data for Cura releases"
+        url: "https://github.com/Ultimaker/cura-binary-data"
+        license: "AGPLv3"
+    cura_private_data:
+        description: "Private data for internal Cura builds"
+        url: ""
+        license: ""
+about_dialog_unmanaged:
+    qt6:
+        description: "GUI framework"
+        url: "https://www.qt.io/"
+        license: "LGPLv3"
+    charon:
+        description: "Support library for file metadata and streaming"
+        url: "https://github.com/ultimaker/libcharon"
+        license: "LGPLv3"
+    pyqt6:
+        description: "GUI framework bindings"
+        url: "https://riverbankcomputing.com/software/pyqt"
+        license: "GPL"
+    sip:
+        description: "C/C++ Binding library"
+        url: "https://riverbankcomputing.com/software/sip"
+        license: "GPL"
+    noto_sans:
+        description: "Font"
+        url: "https://www.google.com/get/noto/"
+        license: "Apache 2.0"
+    certifi:
+        description: "Root Certificates for validating SSL trustworthiness"
+        url: "https://github.com/certifi/python-certifi"
+        license: "MPL"
+    cryptography:
+        description: "Root Certificates for validating SSL trustworthiness"
+        url: "https://cryptography.io/"
+        license: "APACHE and BSD"
+    keyring:
+        description: "Support library for system keyring access"
+        url: "https://github.com/jaraco/keyring"
+        license: "MIT"
+    numpy:
+        description: "Support library for faster math"
+        url: "http://www.numpy.org/"
+        license: "BSD"
+    numpy_stl:
+        description: "Support library for handling STL files"
+        url: "https://github.com/WoLpH/numpy-stl"
+        license: "BSD"
+    pyclipper:
+        description: "Python bindings for Clipper"
+        url: "https://github.com/fonttools/pyclipper"
+        license: "MIT"
+    pyserial:
+        description: "Serial communication library"
+        url: "http://pyserial.sourceforge.net/"
+        license: "Python"
+    scipy:
+        description: "Support library for scientific computing"
+        url: "https://www.scipy.org/"
+        license: "BSD-new"
+    sentry:
+        description: "Python Error tracking library"
+        url: "https://sentry.io/for/python/"
+        license: "BSD 2-Clause 'Simplified'"
+    trimesh:
+        description: "Support library for handling triangular meshes"
+        url: "https://trimsh.org"
+        license: "MIT"
+    python_zeroconf:
+        description: "ZeroConf discovery library"
+        url: "https://github.com/jstasiak/python-zeroconf"
+        license: "LGPL"
+    cmake:
+        description: "Universal build system configuration"
+        url: "https://cmake.org/"
+        license: "MIT"
+    conan:
+        description: "Dependency and package manager"
+        url: "https://conan.io/"
+        license: "MIT"
+    ninja:
+        description: "Build system"
+        url: "https://ninja-build.org/"
+        license: ""
+    pyinstaller:
+        description: "Packaging Python-applications"
+        url: "https://pyinstaller.org/"
+        license: "GPLv2"
+    appimagekit:
+        description: "Linux cross-distribution application deployment"
+        url: "https://github.com/AppImage/AppImageKit"
+        license: "MIT"
+    nsis:
+        description: "Generating Windows installers"
+        url: "https://nsis.sourceforge.io/"
+        license: "Zlib"
+    wix_toolset:
+        description: "Generating Windows installers"
+        url: "https://wixtoolset.org/"
+        license: "MS-RL"
 pycharm_targets:
   - jinja_path: .run_templates/pycharm_cura_run.run.xml.jinja
     module_name: Cura
