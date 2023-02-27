@@ -70,7 +70,6 @@
             "maximum_value_warning": 130,
             "value": "math.ceil(retraction_speed * 0.4)"
         },
-        "retraction_retract_speed": { "maximum_value_warning": 130 },
         "retraction_speed":
         {
             "default_value": 25,
