@@ -54,7 +54,7 @@
         "machine_max_jerk_xy": { "default_value": 20 },
         "machine_max_jerk_z": { "default_value": 10 },
         "machine_name": { "default_value": "Annex" },
-        "machine_start_gcode": { "default_value": ";Filament Metadata\n;Filament name = {material_brand} {material_name}\n;Filament type = {material_type}\n;Filament weight = {filament_weight}\n;Nozzle diameter = {machine_nozzle_size}\nprint_start EXTRUDER={material_print_temperature_layer_0} BED={material_bed_temperature_layer_0} CHAMBER_TARGET={build_volume_temperature} ;requires Material Settings plugin for build volume temperature to work\nG21 ; set units to millimeters\nG90 ; use absolute coordinates\nM82 ; use absolute distances for extrusion\nG92 E0" },
+        "machine_start_gcode": { "default_value": ";Filament Metadata\n;Filament name = {material_brand} {material_name}\n;Filament type = {material_type}\n;Filament weight = {filament_weight}\n;Nozzle diameter = {machine_nozzle_size}\nprint_start EXTRUDER={material_print_temperature_layer_0} BED={material_bed_temperature_layer_0} CHAMBER_TARGET={build_volume_temperature} ;requires Material Settings plugin for build volume temperature to work\nG21 ; set units to millimeters\nG90 ; use absolute coordinates\nM82 ; use absolute distances for extrusion" },
         "machine_width": { "default_value": 180 },
         "meshfix_maximum_resolution": { "default_value": 0.01 },
         "min_infill_area": { "default_value": 5.0 },
