@@ -139,8 +139,8 @@ jobs:
                                 version = Version(tag)
                             except ConanException:
                                 continue
-                            if version > latest_branch_version and version < Version("10.0.0"):
-                                # FIXME: stupid old Cura tags 13.04 etc. keep popping up
+                            if version > latest_branch_version and version < Version("6.0.0"):
+                                # FIXME: stupid old Cura tags 13.04 etc. keep popping up, als  the fdm_material tag for firmware are messing with this
                                 latest_branch_version = version
                                 latest_branch_tag = repo.tag(tag)
                         
