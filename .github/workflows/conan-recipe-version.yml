@@ -151,10 +151,10 @@ jobs:
                                 if commit == latest_branch_tag.commit:
                                     break
                                 no_commits += 1
-                            latest_branch_version_prerelease = latest_branch_version.prerelease
-                            if latest_branch_version.prerelease and not "." in latest_branch_version.prerelease:
+                            latest_branch_version_prerelease = latest_branch_version.pre
+                            if latest_branch_version.pre and not "." in latest_branch_version.pre:
                                 # The prerealese did not contain a version number, default it to 1
-                                latest_branch_version_prerelease = f"{latest_branch_version.prerelease}.1"
+                                latest_branch_version_prerelease = f"{latest_branch_version.pre}.1"
                             if event_name == "pull_request":
                                 actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-{latest_branch_version_prerelease.lower()}+{buildmetadata}pr_{issue_number}_{no_commits}"
                                 channel_metadata = f"{channel}_{no_commits}"
@@ -164,16 +164,16 @@ jobs:
                                 else:
                                     channel_metadata = f"{channel}_{no_commits}"
                             if is_release_branch:
-                                if latest_branch_version.prerelease == "" and branch_version > latest_branch_version:
+                                if latest_branch_version.pre == "" and branch_version > latest_branch_version:
                                     actual_version = f"{branch_version.major}.{branch_version.minor}.0-beta.1+{buildmetadata}{channel_metadata}"
-                                elif latest_branch_version.prerelease == "":
+                                elif latest_branch_version.pre == "":
                                     # An actual full release has been created, we are working on patch
                                     bump_up_patch = int(latest_branch_version.patch) + 1
                                     actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{bump_up_patch}-beta.1+{buildmetadata}{channel_metadata}"
                                 else:
                                     # An beta release has been created we are working toward a next beta or full release
-                                    bump_up_release_tag = int(latest_branch_version.prerelease.split('.')[1]) + 1
-                                    actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-{latest_branch_version.prerelease.split('.')[0]}.{bump_up_release_tag}+{buildmetadata}{channel_metadata}"
+                                    bump_up_release_tag = int(latest_branch_version.pre.split('.')[1]) + 1
+                                    actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-{latest_branch_version.pre.split('.')[0]}.{bump_up_release_tag}+{buildmetadata}{channel_metadata}"
                             else:
                                 max_branches_version = Version("0.0.0")
                                 branches_no_commits = no_commits
