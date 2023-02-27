@@ -182,12 +182,13 @@ class CuraEngineBackend(QObject, Backend):
         self._time_end_slice = None
 
     def resetAndReturnLastSliceTimeStats(self) -> Dict[str, float]:
-        return {
+        last_slice_data = {
             "time_start_process": self._time_start_process,
             "time_send_message": self._time_send_message,
-            "time_end_slice": self._time_end_slice
+            "time_end_slice": self._time_end_slice,
         }
         self._resetLastSliceTimeStats()
+        return last_slice_data
 
     def initialize(self) -> None:
         application = CuraApplication.getInstance()
