@@ -70,11 +70,6 @@
             "maximum_value_warning": 130,
             "value": "math.ceil(retraction_speed * 0.4)"
         },
-        "retraction_speed":
-        {
-            "default_value": 25,
-            "maximum_value_warning": 130
-        },
         "roofing_layer_count": { "value": 1 },
         "skirt_brim_minimal_length": { "default_value": 550 },
         "speed_layer_0": { "value": "math.ceil(speed_print * 0.25)" },
