@@ -168,11 +168,11 @@ jobs:
                                     actual_version = f"{branch_version.major}.{branch_version.minor}.0-beta.1+{buildmetadata}{channel_metadata}"
                                 elif latest_branch_version.pre == "":
                                     # An actual full release has been created, we are working on patch
-                                    bump_up_patch = int(latest_branch_version.patch) + 1
+                                    bump_up_patch = int(str(latest_branch_version.patch)) + 1
                                     actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{bump_up_patch}-beta.1+{buildmetadata}{channel_metadata}"
                                 else:
                                     # An beta release has been created we are working toward a next beta or full release
-                                    bump_up_release_tag = int(latest_branch_version.pre.split('.')[1]) + 1
+                                    bump_up_release_tag = int(str(latest_branch_version.pre.split('.')[1])) + 1
                                     actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-{latest_branch_version.pre.split('.')[0]}.{bump_up_release_tag}+{buildmetadata}{channel_metadata}"
                             else:
                                 max_branches_version = Version("0.0.0")
@@ -187,9 +187,9 @@ jobs:
                                     except:
                                         pass
                                 if max_branches_version > latest_branch_version:
-                                    actual_version = f"{max_branches_version.major}.{int(max_branches_version.minor) + 1}.0-alpha+{buildmetadata}{channel}_{branches_no_commits}"
+                                    actual_version = f"{max_branches_version.major}.{int(str(max_branches_version.minor)) + 1}.0-alpha+{buildmetadata}{channel}_{branches_no_commits}"
                                 else:
-                                    actual_version = f"{latest_branch_version.major}.{int(latest_branch_version.minor) + 1}.0-alpha+{buildmetadata}{channel_metadata}"
+                                    actual_version = f"{latest_branch_version.major}.{int(str(latest_branch_version.minor)) + 1}.0-alpha+{buildmetadata}{channel_metadata}"
 
                     # %% Set the environment output
                     output_env = os.environ["GITHUB_OUTPUT"]
