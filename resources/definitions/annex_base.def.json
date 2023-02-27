@@ -5,7 +5,7 @@
     "metadata":
     {
         "visible": false,
-        "author": "Superbrain",
+        "author": "Superbrain8",
         "manufacturer": "Annex Engineering",
         "file_formats": "text/x-gcode",
         "exclude_materials": [],
@@ -15,7 +15,7 @@
         "has_variants": true,
         "machine_extruder_trains": { "0": "annex_extruder_0" },
         "preferred_material": "generic_abs",
-        "preferred_quality_type": "fast",
+        "preferred_quality_type": "normal",
         "preferred_variant_name": "0.50mm",
         "variants_name": "Toolhead"
     },
