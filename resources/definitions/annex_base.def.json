@@ -56,21 +56,6 @@
         "machine_name": { "default_value": "Annex" },
         "machine_start_gcode": { "default_value": ";Filament Metadata\n;Filament name = {material_brand} {material_name}\n;Filament type = {material_type}\n;Filament weight = {filament_weight}\n;Nozzle diameter = {machine_nozzle_size}\nprint_start EXTRUDER={material_print_temperature_layer_0} BED={material_bed_temperature_layer_0} CHAMBER_TARGET={build_volume_temperature} ;requires Material Settings plugin for build volume temperature to work\nG21 ; set units to millimeters\nG90 ; use absolute coordinates\nM82 ; use absolute distances for extrusion" },
         "machine_width": { "default_value": 180 },
-        "meshfix_maximum_resolution": { "default_value": 0.01 },
-        "min_infill_area": { "default_value": 5.0 },
-        "minimum_polygon_circumference": { "default_value": 0.2 },
-        "optimize_wall_printing_order": { "default_value": true },
-        "retraction_amount": { "default_value": 0.75 },
-        "retraction_combing": { "value": "'noskin'" },
-        "retraction_combing_max_distance": { "default_value": 10 },
-        "retraction_hop": { "default_value": 0.2 },
-        "retraction_hop_enabled": { "default_value": true },
-        "retraction_prime_speed":
-        {
-            "maximum_value_warning": 130,
-            "value": "math.ceil(retraction_speed * 0.4)"
-        },
-        "roofing_layer_count": { "value": 1 },
         "skirt_brim_minimal_length": { "default_value": 550 },
         "speed_layer_0": { "value": "math.ceil(speed_print * 0.25)" },
         "speed_roofing": { "value": "math.ceil(speed_print * 0.33)" },
