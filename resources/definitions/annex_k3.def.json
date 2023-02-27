@@ -1,6 +1,6 @@
 {
-    "version": 2,
     "name": "Annex K3",
+    "version": 2,
     "inherits": "annex_base",
     "metadata":
     {
@@ -10,35 +10,31 @@
     },
     "overrides":
     {
-        "layer_height": { "default_value": 0.2 },
-        "machine_acceleration": { "default_value": 30000 },
-        "machine_depth": { "default_value": 180 },
-        "machine_endstop_positive_direction_x": { "default_value": true },
-        "machine_endstop_positive_direction_y": { "default_value": false },
-        "machine_endstop_positive_direction_z": { "default_value": true },
-        "machine_height": { "default_value": 180 },
-        "machine_max_acceleration_x": { "default_value": 30000 },
-        "machine_max_acceleration_y": { "default_value": 30000 },
-        "machine_max_acceleration_z": { "default_value": 250 },
-        "machine_max_feedrate_x": { "value": 1000 },
-        "machine_max_feedrate_y": { "value": 1000 },
-        "machine_max_jerk_e": { "default_value": 60 },
-        "machine_max_jerk_xy": { "default_value": 20 },
-        "machine_max_jerk_z": { "default_value": 20 },
-        "machine_name": { "default_value": "Annex K3" },
-        "machine_width": { "default_value": 180 },
-        "speed_layer_0": { "value": "math.ceil(speed_print * 0.25)" },
-        "speed_roofing": { "value": "math.ceil(speed_print * 0.33)" },
-        "speed_slowdown_layers": { "default_value": 4 },
-        "speed_topbottom": { "value": "math.ceil(speed_print * 0.33)" },
-        "speed_travel":
-        {
-            "maximum_value_warning": 800,
-            "value": 300
-        },
-        "speed_travel_layer_0": { "value": "math.ceil(speed_travel * 0.4)" },
-        "speed_wall": { "value": "math.ceil(speed_print * 0.33)" },
-        "speed_wall_0": { "value": "math.ceil(speed_print * 0.33)" },
-        "speed_wall_x": { "value": "math.ceil(speed_print * 0.66)" }
+        "machine_name":                                 { "default_value": "Annex K3" },
+        "machine_width":                                { "default_value": 180 },
+        "machine_depth":                                { "default_value": 180 },
+        "machine_height":                               { "default_value": 180 },
+        "machine_max_acceleration_x":                   { "default_value": 30000 },
+        "machine_max_acceleration_y":                   { "default_value": 30000 },
+        "machine_max_acceleration_z":                   { "default_value": 250 },
+        "machine_max_feedrate_x":                       { "value": 1000 },
+        "machine_max_feedrate_y":                       { "value": 1000 },
+        "machine_acceleration":                         { "default_value": 30000 },
+        "machine_max_jerk_xy":                          { "default_value": 20 },
+        "machine_max_jerk_z":                           { "default_value": 20 },
+        "machine_max_jerk_e":                           { "default_value": 60 },
+        "machine_endstop_positive_direction_x":         { "default_value": true },
+        "machine_endstop_positive_direction_y":         { "default_value": false },
+        "machine_endstop_positive_direction_z":         { "default_value": true },
+        "speed_travel":                                 { "value": 500 },
+        "speed_travel_layer_0":                         { "value": "math.ceil(speed_travel * 0.75)" },
+        "speed_layer_0":                                { "value": "math.ceil(speed_print * 0.35)" },
+        "speed_wall":                                   { "value": "math.ceil(speed_print * 0.75)" },
+        "speed_wall_0":                                 { "value": "math.ceil(speed_print * 0.60)" },
+        "speed_wall_x":                                 { "value": "math.ceil(speed_print * 0.90)" },
+        "speed_topbottom":                              { "value": "math.ceil(speed_print * 0.55)" },
+        "speed_roofing":                                { "value": "math.ceil(speed_print * 0.55)" },
+        "speed_slowdown_layers":                        { "default_value": 2 },
+        "layer_height":                                 { "default_value": 0.2 }
     }
 }
