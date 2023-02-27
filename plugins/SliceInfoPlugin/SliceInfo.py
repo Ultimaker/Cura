@@ -1,4 +1,4 @@
-# Copyright (c) 2023 UltiMaker B.V.
+# Copyright (c) 2023 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import json
