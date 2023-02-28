@@ -173,4 +173,3 @@ jobs:
                 if: always()
                 run: |
                     conan upload ${{ inputs.recipe_id_full }} -r cura --all -c
-                    conan upload ${{ inputs.recipe_id_latest }} -r cura --all -c
