@@ -296,7 +296,7 @@ jobs:
                     
                     with open(output_env, "w") as f:
                         f.write(content)
-                        f.writelines(f"# {os.environ['FULL_INSTALLER_FILENAME']} uses:\n")
+                        f.writelines(f"# {{ steps.filename.outputs.FULL_INSTALLER_FILENAME }} uses:\n")
                         for dep in sorted_deps:
                             f.writelines(f"{dep}\n")
 
