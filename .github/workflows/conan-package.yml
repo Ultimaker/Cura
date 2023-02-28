@@ -128,8 +128,8 @@ jobs:
       - name: Remove the latest alias
         if: ${{ needs.conan-recipe-version.outputs.recipe_id_latest != '' }}
         run: |
-          conan remove ${{ needs.conan-recipe-version.outputs.recipe_id_latest }} -r cura -f || true
-          conan remove ${{ needs.conan-recipe-version.outputs.recipe_id_latest }} -r cura-ce -f || true
+          conan remove ${{ needs.conan-recipe-version.outputs.recipe_id_latest }} -r cura -f
+          conan remove ${{ needs.conan-recipe-version.outputs.recipe_id_latest }} -r cura-ce -f
 
       - name: Create the latest alias
         if: ${{ needs.conan-recipe-version.outputs.recipe_id_latest != '' && always() }}
