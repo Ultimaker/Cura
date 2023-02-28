@@ -174,9 +174,3 @@ jobs:
                 run: |
                     conan upload ${{ inputs.recipe_id_full }} -r cura --all -c
                     conan upload ${{ inputs.recipe_id_latest }} -r cura --all -c
-
-            -   name: Upload the Package(s) community
-                if: ${{ inputs.conan_upload_community && always() }}
-                run: |
-                    conan upload ${{ inputs.recipe_id_full }} -r cura-ce -c
-                    conan upload ${{ inputs.recipe_id_latest }} -r cura-ce -c
