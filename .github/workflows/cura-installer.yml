@@ -297,7 +297,7 @@ jobs:
                         f.write(content)
                         f.writelines("# ${{ steps.filename.outputs.FULL_INSTALLER_FILENAME }} uses:\n")
                         for dep in sorted_deps:
-                            f.writelines(f"{dep}\n")
+                            f.writelines(f"`{dep}`\n")
 
             -   name: Archive the artifacts (bash)
                 if: ${{ !inputs.installer && runner.os != 'Windows' }}
