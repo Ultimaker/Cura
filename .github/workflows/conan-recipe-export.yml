@@ -37,8 +37,10 @@ on:
                 type: boolean
 
 env:
-    CONAN_LOGIN_USERNAME: ${{ secrets.CONAN_USER }}
-    CONAN_PASSWORD: ${{ secrets.CONAN_PASS }}
+    CONAN_LOGIN_USERNAME_CURA: ${{ secrets.CONAN_USER }}
+    CONAN_PASSWORD_CURA: ${{ secrets.CONAN_PASS }}
+    CONAN_LOGIN_USERNAME_CURA_CE: ${{ secrets.CONAN_USER }}
+    CONAN_PASSWORD_CURA_CE: ${{ secrets.CONAN_PASS }}
     CONAN_LOG_RUN_TO_OUTPUT: 1
     CONAN_LOGGING_LEVEL: ${{ inputs.conan_logging_level }}
     CONAN_NON_INTERACTIVE: 1
@@ -64,8 +66,19 @@ jobs:
                     conan profile new default --detect
                 #  Note the runner requirements are always installed from the main branch in the Ultimaker/Cura repo
 
+            -   name: Cache Conan local repository packages
+                uses: actions/cache@v3
+                with:
+                    path: $HOME/.conan/data
+                    key: ${{ runner.os }}-conan-export-cache
+
+            -   name: Get Conan configuration from branch
+                if: ${{ inputs.conan_config_branch != '' }}
+                run: conan config install https://github.com/Ultimaker/conan-config.git -a "-b ${{ inputs.conan_config_branch }}"
+
             -   name: Get Conan configuration
-                run: conan config install https://github.com/Ultimaker/conan-config.git -a "-b cs_remote"
+                if: ${{ inputs.conan_config_branch == '' }}
+                run: conan config install https://github.com/Ultimaker/conan-config.git
 
             -   name: Export the Package (binaries)
                 if: ${{ inputs.conan_export_binaries }}
@@ -75,16 +88,26 @@ jobs:
                 if: ${{ !inputs.conan_export_binaries }}
                 run: conan export . ${{ inputs.recipe_id_full }}
 
-            -   name: Remove the latest alias from CS
+            -   name: Remove the latest alias
                 if: always()
-                run: conan remove ${{ inputs.recipe_id_latest }} -r cs-conan-public -f || true
+                run: conan remove ${{ inputs.recipe_id_latest }} -r cura -f || true
+
+            -   name: Remove the latest alias from cura-ce
+                if: always()
+                run: conan remove ${{ inputs.recipe_id_latest }} -r cura-ce -f || true
 
             -   name: Create the latest alias
                 if: always()
                 run: conan alias ${{ inputs.recipe_id_latest }} ${{ inputs.recipe_id_full }}
 
-            -   name: Upload the Package(s) to CS
+            -   name: Upload the Package(s)
                 if: always()
                 run: |
-                    conan upload ${{ inputs.recipe_id_full }} -r cs-conan-public --all -c
-                    conan upload ${{ inputs.recipe_id_latest }} -r cs-conan-public --all -c
+                    conan upload ${{ inputs.recipe_id_full }} -r cura --all -c
+                    conan upload ${{ inputs.recipe_id_latest }} -r cura --all -c
+
+            -   name: Upload the Package(s) community
+                if: ${{ inputs.conan_upload_community && always() }}
+                run: |
+                    conan upload ${{ inputs.recipe_id_full }} -r cura-ce -c
+                    conan upload ${{ inputs.recipe_id_latest }} -r cura-ce -c
