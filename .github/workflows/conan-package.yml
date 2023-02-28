@@ -125,10 +125,6 @@ jobs:
       - name: Create the Packages
         run: conan create . ${{ needs.conan-recipe-version.outputs.recipe_id_full }} --build=missing --update -o ${{ needs.conan-recipe-version.outputs.project_name }}:devtools=True
 
-      - name: Remove the latest alias
-        if: always()
-        run: conan remove ${{ needs.conan-recipe-version.outputs.recipe_id_latest }} -r cura -f  || true
-
       - name: Create the latest alias
         if: always()
         run: conan alias ${{ needs.conan-recipe-version.outputs.recipe_id_latest }} ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
@@ -137,7 +133,7 @@ jobs:
         if: always()
         run: |
           conan upload ${{ needs.conan-recipe-version.outputs.recipe_id_full }} -r cura --all -c
-          conan upload ${{ needs.conan-recipe-version.outputs.recipe_id_latest }} -r cura --all -c
+          conan upload ${{ needs.conan-recipe-version.outputs.recipe_id_latest }} -r cura -c
 
   notify-create:
     if: ${{ always() && (github.event_name == 'push' && (github.ref_name == 'main' || github.ref_name == 'master' || needs.conan-recipe-version.outputs.is_release_branch == 'true')) }}

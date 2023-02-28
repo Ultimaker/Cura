@@ -88,10 +88,6 @@ jobs:
                 if: ${{ !inputs.conan_export_binaries }}
                 run: conan export . ${{ inputs.recipe_id_full }}
 
-            -   name: Remove the latest alias
-                if: always()
-                run: conan remove ${{ inputs.recipe_id_latest }} -r cura -f || true
-
             -   name: Create the latest alias
                 if: always()
                 run: conan alias ${{ inputs.recipe_id_latest }} ${{ inputs.recipe_id_full }}
@@ -100,4 +96,4 @@ jobs:
                 if: always()
                 run: |
                     conan upload ${{ inputs.recipe_id_full }} -r cura --all -c
-                    conan upload ${{ inputs.recipe_id_latest }} -r cura --all -c
+                    conan upload ${{ inputs.recipe_id_latest }} -r cura -c
