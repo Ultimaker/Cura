@@ -126,13 +126,15 @@ jobs:
         run: conan create . ${{ needs.conan-recipe-version.outputs.recipe_id_full }} --build=missing --update -o ${{ needs.conan-recipe-version.outputs.project_name }}:devtools=True
 
       - name: Remove the latest alias
-        if: ${{ needs.conan-recipe-version.outputs.recipe_id_latest != '' }}
-        run: |
-          conan remove ${{ needs.conan-recipe-version.outputs.recipe_id_latest }} -r cura -f
-          conan remove ${{ needs.conan-recipe-version.outputs.recipe_id_latest }} -r cura-ce -f
+        if: always() && ${{ needs.conan-recipe-version.outputs.recipe_id_latest != '' }}
+        run: conan remove ${{ needs.conan-recipe-version.outputs.recipe_id_latest }} -r cura -f
+
+      - name: Remove the latest alias from cura-ce
+        if: always() && ${{ needs.conan-recipe-version.outputs.recipe_id_latest != '' }}
+        run: conan remove ${{ needs.conan-recipe-version.outputs.recipe_id_latest }} -r cura-ce -f
 
       - name: Create the latest alias
-        if: ${{ needs.conan-recipe-version.outputs.recipe_id_latest != '' && always() }}
+        if: always() && ${{ needs.conan-recipe-version.outputs.recipe_id_latest != '' }}
         run: conan alias ${{ needs.conan-recipe-version.outputs.recipe_id_latest }} ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
 
       - name: Upload the Package(s)

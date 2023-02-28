@@ -89,13 +89,19 @@ jobs:
                 run: conan export . ${{ inputs.recipe_id_full }}
 
             -   name: Remove the latest alias
-                if: ${{ inputs.recipe_id_latest != '' && runner.os == 'Linux' }}
-                run: |
-                    conan remove ${{ inputs.recipe_id_latest }} -r cura -f
-                    conan remove ${{ inputs.recipe_id_latest }} -r cura-ce -f
+                if: always() && ${{ inputs.recipe_id_latest != '' && runner.os == 'Linux' }}
+                run: conan remove ${{ inputs.recipe_id_latest }} -r cura -f
+
+            -   name: Remove the latest alias from cura-ce
+                if: always() && ${{ inputs.recipe_id_latest != '' && runner.os == 'Linux' }}
+                run: conan remove ${{ inputs.recipe_id_latest }} -r cura-ce -f
 
             -   name: Create the latest alias
-                if: ${{ inputs.recipe_id_latest != '' && always() }}
+                if: always() && ${{ inputs.recipe_id_latest != '' && runner.os == 'Linux' }}
+                run: conan alias ${{ inputs.recipe_id_latest }} ${{ inputs.recipe_id_full }}
+
+            -   name: Create the latest alias
+                if: always() && ${{ inputs.recipe_id_latest != '' }}
                 run: conan alias ${{ inputs.recipe_id_latest }} ${{ inputs.recipe_id_full }}
 
             -   name: Upload the Package(s)
@@ -103,5 +109,5 @@ jobs:
                 run: conan upload "*" -r cura --all -c
 
             -   name: Upload the Package(s) community
-                if: ${{ always() && inputs.conan_upload_community == true }}
+                if: always() && ${{ inputs.conan_upload_community == true }}
                 run: conan upload "*" -r cura-ce -c
