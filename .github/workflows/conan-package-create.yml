@@ -163,30 +163,20 @@ jobs:
                 if: ${{ inputs.build_info }}
                 run: conan_build_info --v2 create buildinfo.json --lockfile conan.lock --user ${{ secrets.CONAN_USER }} --password ${{ secrets.CONAN_PASS }}
 
-            -   name: Upload the Package(s)
-                if: always()
-                run: conan upload "*" -r cura --all -c
-
             -   name: Upload the build info
                 if: ${{ inputs.build_info }}
                 run: |
                     conan_build_info --v2 publish buildinfo.json --url https://ultimaker.jfrog.io/artifactory --user ${{ secrets.CONAN_USER }} --password ${{ secrets.CONAN_PASS }}
                     conan_build_info --v2 stop
 
-            -   name: Upload the Package(s) community
-                if: ${{ always() && inputs.conan_upload_community == true }}
-                run: conan upload "*" -r cura-ce -c
-
-            -   name: Upload the log and build artifacts
+            -   name: Upload the Package(s)
                 if: always()
-                uses: actions/upload-artifact@v3
-                with:
-                    name: log-${{ inputs.runs_on }}-${{ runner.arch }}
-                    path: |
-                        buildinfo.json
-                        conan.lock
-                        conanbuildinfo.txt
-                        conaninfo.txt
-                        graph_info.json
-                        build/**
-                    retention-days: 1
+                run: |
+                    conan upload ${{ inputs.recipe_id_full }} -r cura --all -c
+                    conan upload ${{ inputs.recipe_id_latest }} -r cura --all -c
+
+            -   name: Upload the Package(s) community
+                if: ${{ inputs.conan_upload_community && always() }}
+                run: |
+                    conan upload ${{ inputs.recipe_id_full }} -r cura-ce -c
+                    conan upload ${{ inputs.recipe_id_latest }} -r cura-ce -c

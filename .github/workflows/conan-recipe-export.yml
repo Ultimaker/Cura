@@ -90,11 +90,11 @@ jobs:
 
             -   name: Remove the latest alias
                 if: always()
-                run: conan remove ${{ inputs.recipe_id_latest }} -r cura -f
+                run: conan remove ${{ inputs.recipe_id_latest }} -r cura -f || true
 
             -   name: Remove the latest alias from cura-ce
                 if: always()
-                run: conan remove ${{ inputs.recipe_id_latest }} -r cura-ce -f
+                run: conan remove ${{ inputs.recipe_id_latest }} -r cura-ce -f || true
 
             -   name: Create the latest alias
                 if: always()
@@ -102,8 +102,12 @@ jobs:
 
             -   name: Upload the Package(s)
                 if: always()
-                run: conan upload "*" -r cura --all -c
+                run: |
+                    conan upload ${{ inputs.recipe_id_full }} -r cura --all -c
+                    conan upload ${{ inputs.recipe_id_latest }} -r cura --all -c
 
             -   name: Upload the Package(s) community
                 if: ${{ inputs.conan_upload_community && always() }}
-                run: conan upload "*" -r cura-ce -c
+                run: |
+                    conan upload ${{ inputs.recipe_id_full }} -r cura-ce -c
+                    conan upload ${{ inputs.recipe_id_latest }} -r cura-ce -c
