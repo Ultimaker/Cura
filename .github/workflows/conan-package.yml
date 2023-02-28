@@ -122,19 +122,19 @@ jobs:
       - name: Get Conan configuration
         run: conan config install https://github.com/Ultimaker/conan-config.git
 
-      - name: Create the Packages using lockfile
+      - name: Create the Packages
         run: conan create . ${{ needs.conan-recipe-version.outputs.recipe_id_full }} --build=missing --update -o ${{ needs.conan-recipe-version.outputs.project_name }}:devtools=True
 
       - name: Remove the latest alias
-        if: always() && ${{ needs.conan-recipe-version.outputs.recipe_id_latest != '' }}
+        if: always()
         run: conan remove ${{ needs.conan-recipe-version.outputs.recipe_id_latest }} -r cura -f
 
       - name: Remove the latest alias from cura-ce
-        if: always() && ${{ needs.conan-recipe-version.outputs.recipe_id_latest != '' }}
+        if: always()
         run: conan remove ${{ needs.conan-recipe-version.outputs.recipe_id_latest }} -r cura-ce -f
 
       - name: Create the latest alias
-        if: always() && ${{ needs.conan-recipe-version.outputs.recipe_id_latest != '' }}
+        if: always()
         run: conan alias ${{ needs.conan-recipe-version.outputs.recipe_id_latest }} ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
 
       - name: Upload the Package(s)
