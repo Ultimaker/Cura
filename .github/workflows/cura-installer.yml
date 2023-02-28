@@ -273,6 +273,33 @@ jobs:
                         f.writelines(f"INSTALLER_EXT={installer_ext}\n")
                         f.writelines(f"FULL_INSTALLER_FILENAME={installer_filename}.{installer_ext}\n")
 
+            -   name: Summarize the used Conan dependencies
+                shell: python
+                run: |
+                    import os
+                    import json
+                    from pathlib import Path
+                    
+                    
+                    conan_install_info_path = Path("cura_inst/conan_install_info.json")
+                    conan_info = {"installed": []}
+                    if os.path.exists(conan_install_info_path):
+                        with open(conan_install_info_path, "r") as f:
+                            conan_info = json.load(f)
+                    sorted_deps = sorted([dep["recipe"]["id"] for dep in conan_info["installed"]])
+                    
+                    output_env = os.environ["GITHUB_OUTPUT"]
+                    content = ""
+                    if os.path.exists(output_env):
+                        with open(output_env, "r") as f:
+                            content = f.read()
+                    
+                    with open(output_env, "w") as f:
+                        f.write(content)
+                        f.writelines(f"# {os.environ['FULL_INSTALLER_FILENAME']} uses:\n")
+                        for dep in sorted_deps:
+                            f.writelines(f"{dep}\n")
+
             -   name: Archive the artifacts (bash)
                 if: ${{ !inputs.installer && runner.os != 'Windows' }}
                 run: tar -zcf "./${{ steps.filename.outputs.INSTALLER_FILENAME }}.tar.gz" "./UltiMaker-Cura/"
