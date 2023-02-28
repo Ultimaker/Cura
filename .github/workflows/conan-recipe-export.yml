@@ -91,8 +91,8 @@ jobs:
             -   name: Remove the latest alias
                 if: ${{ inputs.recipe_id_latest != '' && runner.os == 'Linux' }}
                 run: |
-                    conan remove ${{ inputs.recipe_id_latest }} -r cura -f || true
-                    conan remove ${{ inputs.recipe_id_latest }} -r cura-ce -f || true
+                    conan remove ${{ inputs.recipe_id_latest }} -r cura -f
+                    conan remove ${{ inputs.recipe_id_latest }} -r cura-ce -f
 
             -   name: Create the latest alias
                 if: ${{ inputs.recipe_id_latest != '' && always() }}
