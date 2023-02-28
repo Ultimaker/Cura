@@ -51,10 +51,8 @@ on:
                 type: boolean
 
 env:
-    CONAN_LOGIN_USERNAME_CURA: ${{ secrets.CONAN_USER }}
-    CONAN_PASSWORD_CURA: ${{ secrets.CONAN_PASS }}
-    CONAN_LOGIN_USERNAME_CURA_CE: ${{ secrets.CONAN_USER }}
-    CONAN_PASSWORD_CURA_CE: ${{ secrets.CONAN_PASS }}
+    CONAN_LOGIN_USERNAME: ${{ secrets.CONAN_USER }}
+    CONAN_PASSWORD: ${{ secrets.CONAN_PASS }}
     CONAN_LOG_RUN_TO_OUTPUT: 1
     CONAN_LOGGING_LEVEL: ${{ inputs.conan_logging_level }}
     CONAN_NON_INTERACTIVE: 1
@@ -78,35 +76,8 @@ jobs:
                 run: pip install -r https://raw.githubusercontent.com/Ultimaker/Cura/main/.github/workflows/requirements-conan-package.txt
                 #  Note the runner requirements are always installed from the main branch in the Ultimaker/Cura repo
 
-            -   name: Use Conan download cache (Bash)
-                if: ${{ runner.os != 'Windows' }}
-                run: conan config set storage.download_cache="$HOME/.conan/conan_download_cache"
-
-            -   name: Use Conan download cache (Powershell)
-                if: ${{ runner.os == 'Windows' }}
-                run: conan config set storage.download_cache="C:\Users\runneradmin\.conan\conan_download_cache"
-
-            -   name: Cache Conan local repository packages (Bash)
-                uses: actions/cache@v3
-                if: ${{ runner.os != 'Windows' }}
-                with:
-                    path: |
-                        $HOME/.conan/data
-                        $HOME/.conan/conan_download_cache
-                    key: conan-${{ inputs.runs_on }}-${{ runner.arch }}-create-cache
-
-            -   name: Cache Conan local repository packages (Powershell)
-                uses: actions/cache@v3
-                if: ${{ runner.os == 'Windows' }}
-                with:
-                    path: |
-                        C:\Users\runneradmin\.conan\data
-                        C:\.conan
-                        C:\Users\runneradmin\.conan\conan_download_cache
-                    key: conan-${{ inputs.runs_on }}-${{ runner.arch }}-create-cache
-
             -   name: Install MacOS system requirements
-                if:  ${{ runner.os == 'Macos' }}
+                if: ${{ runner.os == 'Macos' }}
                 run: brew install autoconf automake ninja
 
             # NOTE: Due to what are probably github issues, we have to remove the cache and reconfigure before the rest.
@@ -135,21 +106,10 @@ jobs:
                     sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 10
 
             -   name: Create the default Conan profile
-                run:  conan profile new default --detect
-
-            -   name: Get Conan configuration from branch
-                if: ${{ inputs.conan_config_branch != '' }}
-                run: conan config install https://github.com/Ultimaker/conan-config.git -a "-b ${{ inputs.conan_config_branch }}"
+                run: conan profile new default --detect
 
             -   name: Get Conan configuration
-                if: ${{ inputs.conan_config_branch == '' }}
-                run: conan config install https://github.com/Ultimaker/conan-config.git
-
-            -   name: Create the lock file
-                if: ${{ inputs.build_info }}
-                run: |
-                    conan_build_info --v2 start ${{ inputs.project_name }} ${{ github.run_number }}000${{ inputs.build_id }}
-                    conan lock create --reference ${{ inputs.recipe_id_full }} --lockfile-out=conan.lock                    
+                run: conan config install https://github.com/Ultimaker/conan-config.git -a "-b cs_remote"
 
             -   name: Create the Packages using lockfile
                 if: ${{ inputs.build_info }}
@@ -169,14 +129,7 @@ jobs:
                     conan_build_info --v2 publish buildinfo.json --url https://ultimaker.jfrog.io/artifactory --user ${{ secrets.CONAN_USER }} --password ${{ secrets.CONAN_PASS }}
                     conan_build_info --v2 stop
 
-            -   name: Upload the Package(s)
+            -   name: Upload the Package(s) to CS
                 if: always()
                 run: |
-                    conan upload ${{ inputs.recipe_id_full }} -r cura --all -c
-                    conan upload ${{ inputs.recipe_id_latest }} -r cura --all -c
-
-            -   name: Upload the Package(s) community
-                if: ${{ inputs.conan_upload_community && always() }}
-                run: |
-                    conan upload ${{ inputs.recipe_id_full }} -r cura-ce -c
-                    conan upload ${{ inputs.recipe_id_latest }} -r cura-ce -c
+                    conan upload ${{ inputs.recipe_id_full }} -r cs-conan-public --all -c           

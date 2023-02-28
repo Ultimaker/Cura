@@ -192,12 +192,7 @@ jobs:
                     echo "PFX_PATH=$pfxPath" >> $env:GITHUB_OUTPUT;
 
             -   name: Get Conan configuration from branch
-                if: ${{ inputs.conan_config != '' }}
-                run: conan config install https://github.com/Ultimaker/conan-config.git -a "-b ${{ inputs.conan_config }}"
-
-            -   name: Get Conan configuration
-                if: ${{ inputs.conan_config == '' }}
-                run: conan config install https://github.com/Ultimaker/conan-config.git
+                run: conan config install https://github.com/Ultimaker/conan-config.git -a "-b cs_remote"
 
             -   name: Create the Packages (Bash)
                 if: ${{ runner.os != 'Windows' }}

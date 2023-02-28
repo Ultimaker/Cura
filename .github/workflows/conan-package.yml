@@ -7,46 +7,46 @@ name: conan-package
 # It should run on pushes against main or CURA-* branches, but it will only create the binaries for main and release branches
 
 on:
-  workflow_dispatch:
-    inputs:
-      create_binaries_windows:
-        required: true
-        default: false
-        description: 'create binaries Windows'
-      create_binaries_linux:
-        required: true
-        default: false
-        description: 'create binaries Linux'
-      create_binaries_macos:
-        required: true
-        default: false
-        description: 'create binaries Macos'
+    workflow_dispatch:
+        inputs:
+            create_binaries_windows:
+                required: true
+                default: false
+                description: 'create binaries Windows'
+            create_binaries_linux:
+                required: true
+                default: false
+                description: 'create binaries Linux'
+            create_binaries_macos:
+                required: true
+                default: false
+                description: 'create binaries Macos'
 
-  push:
-    paths:
-      - 'plugins/**'
-      - 'resources/**'
-      - 'cura/**'
-      - 'icons/**'
-      - 'tests/**'
-      - 'packaging/**'
-      - '.github/workflows/conan-*.yml'
-      - '.github/workflows/notify.yml'
-      - '.github/workflows/requirements-conan-package.txt'
-      - 'requirements*.txt'
-      - 'conanfile.py'
-      - 'conandata.yml'
-      - 'GitVersion.yml'
-      - '*.jinja'
-    branches:
-      - main
-      - 'CURA-*'
-      - '[1-9].[0-9]'
-      - '[1-9].[0-9][0-9]'
-    tags:
-      - '[1-9].[0-9].[0-9]*'
-      - '[1-9].[0-9].[0-9]'
-      - '[1-9].[0-9][0-9].[0-9]*'
+    push:
+        paths:
+            - 'plugins/**'
+            - 'resources/**'
+            - 'cura/**'
+            - 'icons/**'
+            - 'tests/**'
+            - 'packaging/**'
+            - '.github/workflows/conan-*.yml'
+            - '.github/workflows/notify.yml'
+            - '.github/workflows/requirements-conan-package.txt'
+            - 'requirements*.txt'
+            - 'conanfile.py'
+            - 'conandata.yml'
+            - 'GitVersion.yml'
+            - '*.jinja'
+        branches:
+            - main
+            - 'CURA-*'
+            - '[1-9].[0-9]'
+            - '[1-9].[0-9][0-9]'
+        tags:
+            - '[1-9].[0-9].[0-9]*'
+            - '[1-9].[0-9].[0-9]'
+            - '[1-9].[0-9][0-9].[0-9]*'
 
 env:
     CONAN_LOGIN_USERNAME_CURA: ${{ secrets.CONAN_USER }}
@@ -57,103 +57,85 @@ env:
     CONAN_LOGGING_LEVEL: ${{ inputs.conan_logging_level }}
     CONAN_NON_INTERACTIVE: 1
 
-permissions: {}
+permissions: { }
 jobs:
-  conan-recipe-version:
-    permissions:
-      contents: read
+    conan-recipe-version:
+        permissions:
+            contents: read
 
-    uses: ultimaker/cura/.github/workflows/conan-recipe-version.yml@main
-    with:
-      project_name: cura
-
-  conan-package-create-linux:
-    needs: [ conan-recipe-version ]
-    runs-on: 'ubuntu-latest'
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Setup Python and pip
-        uses: actions/setup-python@v4
+        uses: ultimaker/cura/.github/workflows/conan-recipe-version.yml@main
         with:
-          python-version: '3.10.x'
-          cache: 'pip'
-          cache-dependency-path: .github/workflows/requirements-conan-package.txt
+            project_name: cura
 
-      - name: Install Python requirements for runner
-        run: pip install -r https://raw.githubusercontent.com/Ultimaker/Cura/main/.github/workflows/requirements-conan-package.txt
-        #  Note the runner requirements are always installed from the main branch in the Ultimaker/Cura repo
+    conan-package-create-linux:
+        needs: [ conan-recipe-version ]
+        runs-on: 'ubuntu-latest'
 
-      - name: Use Conan download cache (Bash)
-        if: ${{ runner.os != 'Windows' }}
-        run: conan config set storage.download_cache="$HOME/.conan/conan_download_cache"
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v3
 
-      - name: Cache Conan local repository packages (Bash)
-        uses: actions/cache@v3
+            -   name: Setup Python and pip
+                uses: actions/setup-python@v4
+                with:
+                    python-version: '3.10.x'
+                    cache: 'pip'
+                    cache-dependency-path: .github/workflows/requirements-conan-package.txt
+
+            -   name: Install Python requirements for runner
+                run: pip install -r https://raw.githubusercontent.com/Ultimaker/Cura/main/.github/workflows/requirements-conan-package.txt
+                #  Note the runner requirements are always installed from the main branch in the Ultimaker/Cura repo
+
+            # NOTE: Due to what are probably github issues, we have to remove the cache and reconfigure before the rest.
+            #       This is maybe because grub caches the disk it uses last time, which is recreated each time.
+            -   name: Install Linux system requirements
+                if: ${{ runner.os == 'Linux' }}
+                run: |
+                    sudo rm /var/cache/debconf/config.dat
+                    sudo dpkg --configure -a
+                    sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+                    sudo apt update
+                    sudo apt upgrade
+                    sudo apt install efibootmgr build-essential checkinstall libegl-dev zlib1g-dev libssl-dev ninja-build autoconf libx11-dev libx11-xcb-dev libfontenc-dev libice-dev libsm-dev libxau-dev libxaw7-dev libxcomposite-dev libxcursor-dev libxdamage-dev libxdmcp-dev libxext-dev libxfixes-dev libxi-dev libxinerama-dev libxkbfile-dev libxmu-dev libxmuu-dev libxpm-dev libxrandr-dev libxrender-dev libxres-dev libxss-dev libxt-dev libxtst-dev libxv-dev libxvmc-dev libxxf86vm-dev xtrans-dev libxcb-render0-dev libxcb-render-util0-dev libxcb-xkb-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev libxcb-randr0-dev libxcb-shape0-dev libxcb-sync-dev libxcb-xfixes0-dev libxcb-xinerama0-dev xkb-data libxcb-dri3-dev uuid-dev libxcb-util-dev libxkbcommon-x11-dev pkg-config flex bison -y
+
+            -   name: Install GCC-12
+                run: |
+                    sudo apt install g++-12 gcc-12 -y
+                    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 12
+                    sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 12
+
+            -   name: Create the default Conan profile
+                run: conan profile new default --detect
+
+            -   name: Get Conan configuration
+                run: conan config install https://github.com/Ultimaker/conan-config.git -a "-b cs_remote"
+
+            -   name: Create the Packages
+                run: conan create . ${{ needs.conan-recipe-version.outputs.recipe_id_full }} --build=missing --update -o ${{ needs.conan-recipe-version.outputs.project_name }}:devtools=True
+
+            -   name: Remove the latest alias from CS
+                if: always()
+                run: conan remove ${{ inputs.recipe_id_latest }} -r cs-conan-public -f || true
+
+            -   name: Create the latest alias
+                if: always()
+                run: conan alias ${{ needs.conan-recipe-version.outputs.recipe_id_latest }} ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
+
+            -   name: Upload the Package(s) to CS
+                if: always()
+                run: |
+                    conan upload ${{ needs.conan-recipe-version.outputs.recipe_id_full }} -r cs-conan-public --all -c
+                    conan upload ${{ needs.conan-recipe-version.outputs.recipe_id_latest }} -r cs-conan-public --all -c
+
+    notify-create:
+        if: ${{ always() && (github.event_name == 'push' && (github.ref_name == 'main' || github.ref_name == 'master' || needs.conan-recipe-version.outputs.is_release_branch == 'true')) }}
+        needs: [ conan-recipe-version, conan-package-create-linux ]
+
+        uses: ultimaker/cura/.github/workflows/notify.yml@main
         with:
-          path: |
-            $HOME/.conan/data
-            $HOME/.conan/conan_download_cache
-          key: conan-ubuntu-${{ runner.arch }}-create-cache
-
-      # NOTE: Due to what are probably github issues, we have to remove the cache and reconfigure before the rest.
-      #       This is maybe because grub caches the disk it uses last time, which is recreated each time.
-      - name: Install Linux system requirements
-        if: ${{ runner.os == 'Linux' }}
-        run: |
-          sudo rm /var/cache/debconf/config.dat
-          sudo dpkg --configure -a
-          sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
-          sudo apt update
-          sudo apt upgrade
-          sudo apt install efibootmgr build-essential checkinstall libegl-dev zlib1g-dev libssl-dev ninja-build autoconf libx11-dev libx11-xcb-dev libfontenc-dev libice-dev libsm-dev libxau-dev libxaw7-dev libxcomposite-dev libxcursor-dev libxdamage-dev libxdmcp-dev libxext-dev libxfixes-dev libxi-dev libxinerama-dev libxkbfile-dev libxmu-dev libxmuu-dev libxpm-dev libxrandr-dev libxrender-dev libxres-dev libxss-dev libxt-dev libxtst-dev libxv-dev libxvmc-dev libxxf86vm-dev xtrans-dev libxcb-render0-dev libxcb-render-util0-dev libxcb-xkb-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev libxcb-randr0-dev libxcb-shape0-dev libxcb-sync-dev libxcb-xfixes0-dev libxcb-xinerama0-dev xkb-data libxcb-dri3-dev uuid-dev libxcb-util-dev libxkbcommon-x11-dev pkg-config flex bison -y
-
-      - name: Install GCC-12
-        run: |
-          sudo apt install g++-12 gcc-12 -y
-          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 12
-          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 12
-
-      - name: Create the default Conan profile
-        run: conan profile new default --detect
-
-      - name: Get Conan configuration
-        run: conan config install https://github.com/Ultimaker/conan-config.git
-
-      - name: Create the Packages
-        run: conan create . ${{ needs.conan-recipe-version.outputs.recipe_id_full }} --build=missing --update -o ${{ needs.conan-recipe-version.outputs.project_name }}:devtools=True
-
-      - name: Remove the latest alias
-        if: always()
-        run: conan remove ${{ needs.conan-recipe-version.outputs.recipe_id_latest }} -r cura -f  || true
-
-      - name: Remove the latest alias from cura-ce
-        if: always()
-        run: conan remove ${{ needs.conan-recipe-version.outputs.recipe_id_latest }} -r cura-ce -f  || true
-
-      - name: Create the latest alias
-        if: always()
-        run: conan alias ${{ needs.conan-recipe-version.outputs.recipe_id_latest }} ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
-
-      - name: Upload the Package(s)
-        if: always()
-        run: |
-          conan upload ${{ needs.conan-recipe-version.outputs.recipe_id_full }} -r cura --all -c
-          conan upload ${{ needs.conan-recipe-version.outputs.recipe_id_latest }} -r cura --all -c
-          conan upload ${{ needs.conan-recipe-version.outputs.recipe_id_full }} -r cura-ce -c
-          conan upload ${{ needs.conan-recipe-version.outputs.recipe_id_latest }} -r cura-ce -c
-
-  notify-create:
-    if: ${{ always() && (github.event_name == 'push' && (github.ref_name == 'main' || github.ref_name == 'master' || needs.conan-recipe-version.outputs.is_release_branch == 'true')) }}
-    needs: [ conan-recipe-version, conan-package-create-linux ]
-
-    uses: ultimaker/cura/.github/workflows/notify.yml@main
-    with:
-      success: ${{ contains(join(needs.*.result, ','), 'success') }}
-      success_title: "New binaries created in ${{ github.repository }}"
-      success_body: "Created binaries for ${{ needs.conan-recipe-version.outputs.recipe_id_full }}"
-      failure_title: "Failed to create binaries in ${{ github.repository }}"
-      failure_body: "Failed to created binaries for ${{ needs.conan-recipe-version.outputs.recipe_id_full }}"
-    secrets: inherit
+            success: ${{ contains(join(needs.*.result, ','), 'success') }}
+            success_title: "New binaries created in ${{ github.repository }}"
+            success_body: "Created binaries for ${{ needs.conan-recipe-version.outputs.recipe_id_full }}"
+            failure_title: "Failed to create binaries in ${{ github.repository }}"
+            failure_body: "Failed to created binaries for ${{ needs.conan-recipe-version.outputs.recipe_id_full }}"
+        secrets: inherit
