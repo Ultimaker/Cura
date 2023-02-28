@@ -285,7 +285,7 @@ jobs:
                     if os.path.exists(conan_install_info_path):
                         with open(conan_install_info_path, "r") as f:
                             conan_info = json.load(f)
-                    sorted_deps = sorted([dep["recipe"]["id"].replace('#', r'\\#') for dep in conan_info["installed"]])
+                    sorted_deps = sorted([dep["recipe"]["id"].replace('#', r' rev: ') for dep in conan_info["installed"]])
                     
                     summary_env = os.environ["GITHUB_STEP_SUMMARY"]
                     content = ""
