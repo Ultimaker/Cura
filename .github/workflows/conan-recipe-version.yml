@@ -7,6 +7,11 @@ on:
                 required: true
                 type: string
 
+            user:
+                required: false
+                default: ultimaker
+                type: string
+
             additional_buildmetadata:
                 required: false
                 default: ""
@@ -86,12 +91,12 @@ jobs:
                 run: |
                     import subprocess
                     import os
-                    from conans import tools
-                    from conans.errors import ConanException
+                    from conan.tools.scm import Version
+                    from conan.errors import ConanException
                     from git import Repo
                     
                     repo = Repo('.')
-                    user = "${{ github.repository_owner }}".lower()
+                    user = "${{ inputs.user }}".lower()
                     project_name = "${{ inputs.project_name }}"
                     event_name = "${{ github.event_name }}"
                     issue_number = "${{ github.ref }}".split('/')[2]
@@ -103,16 +108,16 @@ jobs:
                     # FIXME: for when we push a tag (such as an release)
                     channel = "testing"
                     if is_tag:
-                        branch_version = tools.Version(ref_name)
+                        branch_version = Version(ref_name)
                         is_release_branch = True
                         channel = "_"
                         user = "_"
                         actual_version = f"{branch_version}"
                     else:
                         try:
-                            branch_version = tools.Version(repo.active_branch.name)
+                            branch_version = Version(repo.active_branch.name)
                         except ConanException:
-                            branch_version = tools.Version('0.0.0')
+                            branch_version = Version('0.0.0')
                         if ref_name == f"{branch_version.major}.{branch_version.minor}":
                             channel = 'stable'
                             is_release_branch = True
@@ -125,17 +130,17 @@ jobs:
                             channel = f"pr_{issue_number}"
                     
                         # %% Get the actual version
-                        latest_branch_version = tools.Version("0.0.0")
+                        latest_branch_version = Version("0.0.0")
                         latest_branch_tag = None
                         for tag in repo.git.tag(merged = True).splitlines():
                             if str(tag).startswith("firmware") or str(tag).startswith("master"):
                                 continue  # Quick-fix for the versioning scheme name of the embedded team in fdm_materials(_private) repo
                             try:
-                                version = tools.Version(tag)
+                                version = Version(tag)
                             except ConanException:
                                 continue
-                            if version > latest_branch_version and version < tools.Version("10.0.0"):
-                                # FIXME: stupid old Cura tags 13.04 etc. keep popping up
+                            if version > latest_branch_version and version < Version("6.0.0"):
+                                # FIXME: stupid old Cura tags 13.04 etc. keep popping up, als  the fdm_material tag for firmware are messing with this
                                 latest_branch_version = version
                                 latest_branch_tag = repo.tag(tag)
                         
@@ -146,10 +151,10 @@ jobs:
                                 if commit == latest_branch_tag.commit:
                                     break
                                 no_commits += 1
-                            latest_branch_version_prerelease = latest_branch_version.prerelease
-                            if latest_branch_version.prerelease and not "." in latest_branch_version.prerelease:
+                            latest_branch_version_prerelease = latest_branch_version.pre
+                            if latest_branch_version.pre and not "." in str(latest_branch_version.pre):
                                 # The prerealese did not contain a version number, default it to 1
-                                latest_branch_version_prerelease = f"{latest_branch_version.prerelease}.1"
+                                latest_branch_version_prerelease = f"{latest_branch_version.pre}.1"
                             if event_name == "pull_request":
                                 actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-{latest_branch_version_prerelease.lower()}+{buildmetadata}pr_{issue_number}_{no_commits}"
                                 channel_metadata = f"{channel}_{no_commits}"
@@ -159,32 +164,32 @@ jobs:
                                 else:
                                     channel_metadata = f"{channel}_{no_commits}"
                             if is_release_branch:
-                                if latest_branch_version.prerelease == "" and branch_version > latest_branch_version:
+                                if latest_branch_version.pre == "" and branch_version > latest_branch_version:
                                     actual_version = f"{branch_version.major}.{branch_version.minor}.0-beta.1+{buildmetadata}{channel_metadata}"
-                                elif latest_branch_version.prerelease == "":
+                                elif latest_branch_version.pre == "":
                                     # An actual full release has been created, we are working on patch
-                                    bump_up_patch = int(latest_branch_version.patch) + 1
+                                    bump_up_patch = int(str(latest_branch_version.patch)) + 1
                                     actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{bump_up_patch}-beta.1+{buildmetadata}{channel_metadata}"
                                 else:
                                     # An beta release has been created we are working toward a next beta or full release
-                                    bump_up_release_tag = int(latest_branch_version.prerelease.split('.')[1]) + 1
-                                    actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-{latest_branch_version.prerelease.split('.')[0]}.{bump_up_release_tag}+{buildmetadata}{channel_metadata}"
+                                    bump_up_release_tag = int(str(latest_branch_version.pre.split('.')[1])) + 1
+                                    actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-{latest_branch_version.pre.split('.')[0]}.{bump_up_release_tag}+{buildmetadata}{channel_metadata}"
                             else:
-                                max_branches_version = tools.Version("0.0.0")
+                                max_branches_version = Version("0.0.0")
                                 branches_no_commits = no_commits
                                 for branch in repo.references:
                                     try:
                                         if "remotes/origin" in branch.abspath:
-                                            b_version = tools.Version(branch.name.split("/")[-1])
-                                            if b_version < tools.Version("10.0.0") and b_version > max_branches_version:
+                                            b_version = Version(branch.name.split("/")[-1])
+                                            if b_version < Version("10.0.0") and b_version > max_branches_version:
                                                 max_branches_version = b_version
                                                 branches_no_commits = repo.commit().count() - branch.commit.count()
                                     except:
                                         pass
                                 if max_branches_version > latest_branch_version:
-                                    actual_version = f"{max_branches_version.major}.{int(max_branches_version.minor) + 1}.0-alpha+{buildmetadata}{channel}_{branches_no_commits}"
+                                    actual_version = f"{max_branches_version.major}.{int(str(max_branches_version.minor)) + 1}.0-alpha+{buildmetadata}{channel}_{branches_no_commits}"
                                 else:
-                                    actual_version = f"{latest_branch_version.major}.{int(latest_branch_version.minor) + 1}.0-alpha+{buildmetadata}{channel_metadata}"
+                                    actual_version = f"{latest_branch_version.major}.{int(str(latest_branch_version.minor)) + 1}.0-alpha+{buildmetadata}{channel_metadata}"
 
                     # %% Set the environment output
                     output_env = os.environ["GITHUB_OUTPUT"]
@@ -203,14 +208,14 @@ jobs:
                         f.writelines(f"semver_full={actual_version}\n")
                         f.writelines(f"is_release_branch={str(is_release_branch).lower()}\n")
                     
-                    print("::group::Conan Recipe Information")
-                    print(f"name = {project_name}")
-                    print(f"version = {actual_version}")
-                    print(f"user = {user}")
-                    print(f"channel = {channel}")
-                    print(f"recipe_id_full = {project_name}/{actual_version}@{user}/{channel}")
-                    print(f"recipe_id_latest = {project_name}/latest@{user}/{channel}")
-                    print(f"semver_full = {actual_version}")
-                    print(f"is_release_branch = {str(is_release_branch).lower()}")
-                    print("::endgroup::")
+                    summary_env = os.environ["GITHUB_STEP_SUMMARY"]
+                    with open(summary_env, "w") as f:
+                        f.writelines(f"# {project_name}\n")
+                        f.writelines(f"name={project_name}\n")
+                        f.writelines(f"version={actual_version}\n")
+                        f.writelines(f"channel={channel}\n")
+                        f.writelines(f"recipe_id_full={project_name}/{actual_version}@{user}/{channel}\n")
+                        f.writelines(f"recipe_id_latest={project_name}/latest@{user}/{channel}\n")
+                        f.writelines(f"semver_full={actual_version}\n")
+                        f.writelines(f"is_release_branch={str(is_release_branch).lower()}\n")
                 shell: python
