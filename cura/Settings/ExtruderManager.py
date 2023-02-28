@@ -466,7 +466,6 @@ class ExtruderManager(QObject):
             return False
         return list(active_material_node_qualities.keys())[0] != "empty_quality"
 
-
     @pyqtSlot(str, result="QVariant")
     def getInstanceExtruderValues(self, key: str) -> List:
         """Get all extruder values for a certain setting.
