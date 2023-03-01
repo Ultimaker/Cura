@@ -68,9 +68,28 @@ Item
             }
             visible: currentModeIndex == PrintSetupSelectorContents.Mode.Recommended
             height: {
-                const height = base.height - (customPrintSetup.mapToItem(null, 0, 0).y + buttonRow.height + UM.Theme.getSize("default_margin").height);
+                const height = base.height - (recommendedPrintSetup.mapToItem(null, 0, 0).y + buttonRow.height + UM.Theme.getSize("default_margin").height);
                 const maxHeight = UM.Preferences.getValue("view/settings_list_height");
-                return Math.min(implicitHeight, height, maxHeight);
+                return Math.min(height, maxHeight);
+            }
+
+            Connections
+            {
+                target: UM.Preferences
+                function onPreferenceChanged(preference)
+                {
+                    if (preference !== "view/settings_list_height" && preference !== "general/window_height" && preference !== "general/window_state")
+                    {
+                        return;
+                    }
+
+                    const height = base.height - (recommendedPrintSetup.mapToItem(null, 0, 0).y + buttonRow.height + UM.Theme.getSize("default_margin").height);
+                    const maxHeight = UM.Preferences.getValue("view/settings_list_height");
+
+                    recommendedPrintSetup.height = Math.min(maxHeight, height);
+
+                    updateDragPosition();
+                }
             }
 
             function onModeChanged()
@@ -126,7 +145,6 @@ Item
         width: parent.width
         height: UM.Theme.getSize("default_lining").height
         color: UM.Theme.getColor("lining")
-        visible: currentModeIndex == PrintSetupSelectorContents.Mode.Custom
     }
 
     Item
@@ -135,11 +153,12 @@ Item
         property real padding: UM.Theme.getSize("default_margin").width
         height:
         {
+            const draggable_area_height = draggableArea.visible ? draggableArea.height : 0;
             if (currentModeIndex == PrintSetupSelectorContents.Mode.Custom)
             {
-                return recommendedButton.height + 2 * padding + (draggableArea.visible ? draggableArea.height : 0)
+                return recommendedButton.height + 2 * padding + draggable_area_height;
             }
-            return 0
+            return draggable_area_height;
         }
 
         anchors
@@ -175,7 +194,6 @@ Item
             }
             height: childrenRect.height
             cursorShape: Qt.SplitVCursor
-            visible: currentModeIndex == PrintSetupSelectorContents.Mode.Custom
             drag
             {
                 target: parent
