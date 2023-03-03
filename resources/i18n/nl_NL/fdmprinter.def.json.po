@@ -70,7 +70,7 @@ msgstr "Een lijst polygonen met gebieden waarin de printkop niet mag komen."
 #: fdmprinter.def.json
 msgctxt "brim_inside_margin description"
 msgid "A part fully enclosed inside another part can generate an outer brim that touches the inside of the other part. This removes all brim within this distance from internal holes."
-msgstr ""
+msgstr "Een deel dat volledig in een ander deel is ingesloten, kan een buitenste brim genereren die de binnenkant van het andere deel raakt. Dit verwijdert alle brim binnen deze afstand van interne gaten."
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_abs label"
@@ -279,7 +279,7 @@ msgstr "Pas de extruderoffset toe op het coördinatensysteem. Van toepassing op 
 #: fdmprinter.def.json
 msgctxt "interlocking_enable description"
 msgid "At the locations where models touch, generate an interlocking beam structure. This improves the adhesion between models, especially models printed in different materials."
-msgstr ""
+msgstr "Genereer op de plaatsen waar modellen elkaar raken een in elkaar grijpende balkstructuur. Dit verbetert de hechting tussen modellen, vooral modellen die in verschillende materialen zijn gedrukt."
 
 #: fdmprinter.def.json
 msgctxt "travel_avoid_other_parts label"
@@ -479,7 +479,7 @@ msgstr "Brimafstand"
 #: fdmprinter.def.json
 msgctxt "brim_inside_margin label"
 msgid "Brim Inside Avoid Margin"
-msgstr ""
+msgstr "Binnenste mijdmarge brim"
 
 #: fdmprinter.def.json
 msgctxt "brim_line_count label"
@@ -1491,7 +1491,7 @@ msgstr "Rijbrughoogte"
 #: fdmprinter.def.json
 msgctxt "interlocking_enable label"
 msgid "Generate Interlocking Structure"
-msgstr ""
+msgstr "Genereer een in elkaar grijpende structuur"
 
 #: fdmprinter.def.json
 msgctxt "support_enable label"
@@ -1556,7 +1556,7 @@ msgstr "Geleidelijke supportvulling traptreden"
 #: fdmprinter.def.json
 msgctxt "cool_min_temperature description"
 msgid "Gradually reduce to this temperature when printing at reduced speeds because of minimum layer time."
-msgstr ""
+msgstr "Verlaag vanwege de minimale laagtijd geleidelijk naar deze temperatuur bij het printen aan lagere snelheden."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -2046,27 +2046,27 @@ msgstr "Van binnen naar buiten"
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_layer_count label"
 msgid "Interlocking Beam Layer Count"
-msgstr ""
+msgstr "Aantal in elkaar grijpende balklagen"
 
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_width label"
 msgid "Interlocking Beam Width"
-msgstr ""
+msgstr "Breedte in elkaar grijpende balk"
 
 #: fdmprinter.def.json
 msgctxt "interlocking_boundary_avoidance label"
 msgid "Interlocking Boundary Avoidance"
-msgstr ""
+msgstr "In elkaar grijpende grensvermijding"
 
 #: fdmprinter.def.json
 msgctxt "interlocking_depth label"
 msgid "Interlocking Depth"
-msgstr ""
+msgstr "In elkaar grijpende diepte"
 
 #: fdmprinter.def.json
 msgctxt "interlocking_orientation label"
 msgid "Interlocking Structure Orientation"
-msgstr ""
+msgstr "Oriëntatie van de in elkaar grijpende structuur"
 
 #: fdmprinter.def.json
 msgctxt "ironing_only_highest_layer label"
@@ -3729,10 +3729,9 @@ msgid "Small Hole Max Size"
 msgstr "Maximale grootte kleine gaten"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "cool_min_temperature label"
 msgid "Small Layer Printing Temperature"
-msgstr "Eindtemperatuur voor printen"
+msgstr "De printtemperatuur van kleine lagens"
 
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 description"
@@ -3885,10 +3884,9 @@ msgid "Support Bottom Distance"
 msgstr "Afstand van Onderkant Supportstructuur"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "support_bottom_wall_count label"
 msgid "Support Bottom Wall Line Count"
-msgstr "Aantal wandlijnen supportstructuur"
+msgstr "Aantal wandlijnen van de ondersteuningsonderzijde"
 
 #: fdmprinter.def.json
 msgctxt "support_brim_line_count label"
@@ -4086,10 +4084,9 @@ msgid "Support Interface Thickness"
 msgstr "Dikte Verbindingsstructuur"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "support_interface_wall_count label"
 msgid "Support Interface Wall Line Count"
-msgstr "Aantal wandlijnen supportstructuur"
+msgstr "Aantal wandlijnen van de ondersteuningsinterface"
 
 #: fdmprinter.def.json
 msgctxt "jerk_support label"
@@ -4192,10 +4189,9 @@ msgid "Support Roof Thickness"
 msgstr "Dikte Supportdak"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "support_roof_wall_count label"
 msgid "Support Roof Wall Line Count"
-msgstr "Aantal wandlijnen supportstructuur"
+msgstr "Aantal wandlijnen van het ondersteuningsdak"
 
 #: fdmprinter.def.json
 msgctxt "speed_support label"
@@ -4600,7 +4596,7 @@ msgstr "De afstand die wordt overbrugt wanneer vanaf een dakcontour een verbindi
 #: fdmprinter.def.json
 msgctxt "interlocking_depth description"
 msgid "The distance from the boundary between models to generate interlocking structure measured in cells. Too few cells will result in poor adhesion."
-msgstr ""
+msgstr "De afstand vanaf de grens tussen modellen om een in elkaar grijpende structuur te genereren, gemeten in cellen. Te weinig cellen leiden tot slechte hechting."
 
 #: fdmprinter.def.json
 msgctxt "brim_width description"
@@ -4610,7 +4606,7 @@ msgstr "De afstand vanaf de rand van het model tot de buitenrand van de brim. Ee
 #: fdmprinter.def.json
 msgctxt "interlocking_boundary_avoidance description"
 msgid "The distance from the outside of a model where interlocking structures will not be generated, measured in cells."
-msgstr ""
+msgstr "De afstand van de buitenkant van een model waarbij in elkaar grijpende structuren niet worden gegenereerd, gemeten in cellen."
 
 #: fdmprinter.def.json
 msgctxt "machine_heat_zone_length description"
@@ -4840,12 +4836,12 @@ msgstr "De hoogte van de supportvulling van een bepaalde dichtheid voordat de di
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_layer_count description"
 msgid "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects."
-msgstr ""
+msgstr "De hoogte van de balken van de in elkaar grijpende structuur, gemeten in aantal lagen. Minder lagen is sterker, maar vatbaarder voor defecten."
 
 #: fdmprinter.def.json
 msgctxt "interlocking_orientation description"
 msgid "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects."
-msgstr ""
+msgstr "De hoogte van de balken van de in elkaar grijpende structuur, gemeten in aantal lagen. Minder lagen is sterker, maar vatbaarder voor defecten."
 
 #: fdmprinter.def.json
 msgctxt "layer_height_0 description"
@@ -5257,22 +5253,19 @@ msgid "The number of walls with which to surround support infill. Adding a wall 
 msgstr "Het aantal wanden rond de vulling van de supportstructuur. Met een extra wand wordt de supportstructuur betrouwbaarder en kan de overhang beter worden geprint, maar wordt de printtijd verlengd en wordt meer materiaal gebruikt."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "support_bottom_wall_count description"
 msgid "The number of walls with which to surround support interface floor. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "Het aantal wanden rond de vulling van de supportstructuur. Met een extra wand wordt de supportstructuur betrouwbaarder en kan de overhang beter worden geprint, maar wordt de printtijd verlengd en wordt meer materiaal gebruikt."
+msgstr "Het aantal muren waarmee de ondersteuningsinterfacevloer kan worden omgeven. Door een muur toe te voegen, kan de ondersteuningsprint betrouwbaarder worden gemaakt en kunnen overhangen beter worden ondersteund, maar neemt de printtijd en het gebruikte materiaal toe."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "support_roof_wall_count description"
 msgid "The number of walls with which to surround support interface roof. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "Het aantal wanden rond de vulling van de supportstructuur. Met een extra wand wordt de supportstructuur betrouwbaarder en kan de overhang beter worden geprint, maar wordt de printtijd verlengd en wordt meer materiaal gebruikt."
+msgstr "Het aantal muren waarmee het dak van de ondersteuningsinterface moet worden omgeven. Door een muur toe te voegen, kan de ondersteuningsprint betrouwbaarder worden gemaakt en kunnen overhangen beter worden ondersteund, maar neemt de printtijd en het gebruikte materiaal toe."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "support_interface_wall_count description"
 msgid "The number of walls with which to surround support interface. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "Het aantal wanden rond de vulling van de supportstructuur. Met een extra wand wordt de supportstructuur betrouwbaarder en kan de overhang beter worden geprint, maar wordt de printtijd verlengd en wordt meer materiaal gebruikt."
+msgstr "Het aantal muren waarmee de ondersteuningsinterface kan worden omgeven. Door een muur toe te voegen, kan de ondersteuningsprint betrouwbaarder worden gemaakt en kunnen overhangen beter worden ondersteund, maar neemt de printtijd en het gebruikte materiaal toe."
 
 #: fdmprinter.def.json
 msgctxt "wall_distribution_count description"
@@ -5695,10 +5688,9 @@ msgid "The width of the brim to print underneath the support. A larger brim enha
 msgstr "De breedte van de brim die onder de support wordt geprint. Een bredere brim kost meer materiaal, maar hecht beter aan het platform."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "interlocking_beam_width description"
 msgid "The width of the interlocking structure beams."
-msgstr "De breedte van de primepijler."
+msgstr "De breedte van de in elkaar grijpende structuurbalken."
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_size description"
