@@ -1,7 +1,7 @@
 # Cura
 # Copyright (C) 2022 UltiMaker.
 # This file is distributed under the same license as the Cura package.
-# Ultimaker <plugins@ultimaker.com>, 2022.
+# UltiMaker <plugins@ultimaker.com>, 2022.
 #
 #, fuzzy
 msgid ""
@@ -948,15 +948,13 @@ msgid "Machine Settings Action"
 msgstr "Beschreibung Geräteeinstellungen"
 
 #: plugin.json
-#, fuzzy
 msgctxt "description"
-msgid "Manages extensions to the application and allows browsing extensions from the Ultimaker website."
+msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
 msgstr "Verwaltet die Erweiterungen der Anwendung und ermöglicht das Durchsuchen von Erweiterungen auf der UltiMaker-Website."
 
 #: plugin.json
-#, fuzzy
 msgctxt "description"
-msgid "Manages network connections to Ultimaker networked printers."
+msgid "Manages network connections to UltiMaker networked printers."
 msgstr "Verwaltet Netzwerkverbindungen zu UltiMaker-Netzwerkdruckern."
 
 #: plugin.json
@@ -1035,9 +1033,8 @@ msgid "Provides capabilities to read and write XML-based material profiles."
 msgstr "Bietet Möglichkeiten, um XML-basierte Materialprofile zu lesen und zu schreiben."
 
 #: plugin.json
-#, fuzzy
 msgctxt "description"
-msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
+msgid "Provides machine actions for UltiMaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
 msgstr "Ermöglicht Maschinenabläufe für UltiMaker-Maschinen (z. B. Assistent für Bettnivellierung, Auswahl von Upgrades usw.)"
 
 #: plugin.json
@@ -1076,9 +1073,8 @@ msgid "Provides support for reading AMF files."
 msgstr "Ermöglicht das Lesen von AMF-Dateien."
 
 #: plugin.json
-#, fuzzy
 msgctxt "description"
-msgid "Provides support for reading Ultimaker Format Packages."
+msgid "Provides support for reading UltiMaker Format Packages."
 msgstr "Bietet Unterstützung für das Lesen von UltiMaker Format Packages."
 
 #: plugin.json
@@ -1097,9 +1093,8 @@ msgid "Provides support for writing 3MF files."
 msgstr "Bietet Unterstützung für das Schreiben von 3MF-Dateien."
 
 #: plugin.json
-#, fuzzy
 msgctxt "description"
-msgid "Provides support for writing Ultimaker Format Packages."
+msgid "Provides support for writing UltiMaker Format Packages."
 msgstr "Bietet Unterstützung für das Schreiben von UltiMaker Format Packages."
 
 #: plugin.json
@@ -1188,16 +1183,14 @@ msgid "Ultimaker Digital Library"
 msgstr "Digitale Bibliothek von UltiMaker"
 
 #: plugin.json
-#, fuzzy
 msgctxt "name"
 msgid "Ultimaker Network Connection"
-msgstr "UltiMaker-Netzwerkverbindung"
+msgstr "Ultimaker-Netzwerkverbindung"
 
 #: plugin.json
-#, fuzzy
 msgctxt "name"
 msgid "Ultimaker machine actions"
-msgstr "UltiMaker-Maschinenabläufe"
+msgstr "Ultimaker-Maschinenabläufe"
 
 #: plugin.json
 msgctxt "description"
@@ -1315,10 +1308,9 @@ msgid "Upgrades configurations from Cura 4.9 to Cura 4.10."
 msgstr "Upgrade der Konfigurationen von Cura 4.9 auf Cura 4.10."
 
 #: plugin.json
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.2 to Cura 5.3."
-msgstr "Aktualisiert Konfigurationen von Cura 3.2 auf Cura 3.3."
+msgstr "Upgrade der Konfigurationen von Cura 5.2 auf Cura 5.3."
 
 #: plugin.json
 msgctxt "name"
@@ -1436,10 +1428,9 @@ msgid "Version Upgrade 4.9 to 4.10"
 msgstr "Upgrade von Version 4.9 auf 4.10"
 
 #: plugin.json
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 5.2 to 5.3"
-msgstr "Upgrade von Version 3.2 auf 3.3"
+msgstr "Upgrade von Version 5.2 auf 5.3"
 
 #: plugin.json
 msgctxt "description"
@@ -1476,7 +1467,6 @@ msgstr "Projektdatei öffnen"
 #: plugins/3MFReader/WorkspaceDialog.qml:99
 #: plugins/3MFReader/WorkspaceDialog.qml:127
 #: plugins/3MFReader/WorkspaceDialog.qml:134
-#, fuzzy
 msgctxt "@button"
 msgid "Create new"
 msgstr "Neu erstellen"
@@ -1502,9 +1492,9 @@ msgid "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>.
 msgstr "Projektdatei <filename>{0}</filename> ist beschädigt: <message>{1}</message>."
 
 #: plugins/3MFReader/ThreeMFWorkspaceReader.py:754
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
-msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of Ultimaker Cura."
+msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura."
 msgstr "Projektdatei <filename>{0}</filename> verwendet Profile, die nicht mit dieser UltiMaker Cura-Version kompatibel sind."
 
 #: plugins/3MFReader/WorkspaceDialog.py:233
@@ -1573,7 +1563,6 @@ msgid "Printer Group"
 msgstr "Druckergruppe"
 
 #: plugins/3MFReader/WorkspaceDialog.qml:103
-#, fuzzy
 msgctxt "@action:label"
 msgid "Open With"
 msgstr "Öffnen"
@@ -1581,7 +1570,7 @@ msgstr "Öffnen"
 #: plugins/3MFReader/WorkspaceDialog.qml:104
 msgctxt "@info:tooltip"
 msgid "Printer settings will be updated to match the settings saved with the project."
-msgstr ""
+msgstr "Die Druckereinstellungen werden aktualisiert, sodass sie mit den im Projekt gespeicherten Einstellungen übereinstimmen."
 
 #: plugins/3MFReader/WorkspaceDialog.qml:156
 #: resources/qml/Dialogs/WorkspaceSummaryDialog.qml:222
@@ -2505,9 +2494,9 @@ msgid "Unknown Author"
 msgstr "Unbekannter Autor"
 
 #: plugins/Marketplace/PackageModel.py:95
-msgctxt "@label:label Ultimaker Marketplace is a brand name, don't translate"
-msgid "The material package associated with the Cura project could not be found on the Ultimaker Marketplace. Use the partial material profile definition stored in the Cura project file at your own risk."
-msgstr ""
+msgctxt "@label:label UltiMaker Marketplace is a brand name, don't translate"
+msgid "The material package associated with the Cura project could not be found on the UltiMaker Marketplace. Use the partial material profile definition stored in the Cura project file at your own risk."
+msgstr "Das mit dem Cura-Projekt verknüpfte Materialpaket konnte im UltiMaker Marketplace nicht gefunden werden. Verwenden Sie die in der Cura-Projektdatei gespeicherte unvollständige Definition des Materialprofils auf eigene Gefahr."
 
 #: plugins/Marketplace/RemotePackageList.py:117
 msgctxt "@info:error"
@@ -3608,8 +3597,8 @@ msgstr "Drucker verwalten"
 
 #: plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:280
 msgctxt "@info"
-msgid "Webcam feeds for cloud printers cannot be viewed from UltiMaker Cura. Click \"Manage printer\" to visit Ultimaker Digital Factory and view this webcam."
-msgstr "Webcam-Feeds für Cloud-Drucker können nicht in UltiMaker Cura angezeigt werden. Klicken Sie auf „Drucker verwalten“, um die Ultimaker Digital Factory zu besuchen und diese Webcam zu sehen."
+msgid "Webcam feeds for cloud printers cannot be viewed from UltiMaker Cura. Click \"Manage printer\" to visit UltiMaker Digital Factory and view this webcam."
+msgstr "Webcam-Feeds für Cloud-Drucker können nicht in UltiMaker Cura angezeigt werden. Klicken Sie auf „Drucker verwalten“, um die UltiMaker Digital Factory zu besuchen und diese Webcam zu sehen."
 
 #: plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:340
 msgctxt "@label:status"
@@ -3688,8 +3677,8 @@ msgstr "Warten auf"
 
 #: plugins/UM3NetworkPrinting/resources/qml/MonitorStage.qml:117
 msgctxt "@info"
-msgid "Monitor your printers from everywhere using Ultimaker Digital Factory"
-msgstr "Überwachen Sie Ihre Drucker standortunabhängig mit Ultimaker Digital Factory."
+msgid "Monitor your printers from everywhere using UltiMaker Digital Factory"
+msgstr "Überwachen Sie Ihre Drucker standortunabhängig mit UltiMaker Digital Factory."
 
 #: plugins/UM3NetworkPrinting/resources/qml/MonitorStage.qml:129
 msgctxt "@button"
@@ -3736,8 +3725,8 @@ msgstr "Druck überwachen"
 
 #: plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:278
 msgctxt "@action:tooltip"
-msgid "Track the print in Ultimaker Digital Factory"
-msgstr "Verfolgen Sie den Druck in der Ultimaker Digital Factory"
+msgid "Track the print in UltiMaker Digital Factory"
+msgstr "Verfolgen Sie den Druck in der UltiMaker Digital Factory"
 
 #: plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:298
 #, python-brace-format
@@ -3824,9 +3813,8 @@ msgid "Learn more"
 msgstr "Mehr erfahren"
 
 #: plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:18
-#, fuzzy
 msgctxt "@info:status"
-msgid "You are attempting to connect to a printer that is not running Ultimaker Connect. Please update the printer to the latest firmware."
+msgid "You are attempting to connect to a printer that is not running UltiMaker Connect. Please update the printer to the latest firmware."
 msgstr "Sie versuchen, sich mit einem Drucker zu verbinden, auf dem UltiMaker Connect nicht läuft. Bitte aktualisieren Sie die Firmware des Druckers."
 
 #: plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:21
@@ -3846,10 +3834,9 @@ msgid "Sending materials to printer"
 msgstr "Material an Drucker senden"
 
 #: plugins/UM3NetworkPrinting/src/Messages/NewPrinterDetectedMessage.py:13
-#, fuzzy
 msgctxt "info:status"
-msgid "New printer detected from your Ultimaker account"
-msgid_plural "New printers detected from your Ultimaker account"
+msgid "New printer detected from your UltiMaker account"
+msgid_plural "New printers detected from your UltiMaker account"
 msgstr[0] "Ihr UltiMaker-Konto hat einen neuen Drucker erkannt"
 msgstr[1] "Ihr UltiMaker-Konto hat neue Drucker erkannt"
 
@@ -4467,8 +4454,8 @@ msgstr "Meine Drucker"
 
 #: resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:34
 msgctxt "@tooltip:button"
-msgid "Monitor printers in Ultimaker Digital Factory."
-msgstr "Überwachen Sie Drucker in der Ultimaker Digital Factory."
+msgid "Monitor printers in UltiMaker Digital Factory."
+msgstr "Überwachen Sie Drucker in der UltiMaker Digital Factory."
 
 #: resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:41
 msgctxt "@tooltip:button"
@@ -4608,19 +4595,16 @@ msgid "What's New"
 msgstr "Neuheiten"
 
 #: resources/qml/Cura.qml:890
-#, fuzzy
 msgctxt "@title:window"
 msgid "Save Custom Profile"
 msgstr "Benutzerdefiniertes Profil"
 
 #: resources/qml/Cura.qml:891
-#, fuzzy
 msgctxt "@textfield:placeholder"
 msgid "New Custom Profile"
 msgstr "Benutzerdefiniertes Profil"
 
 #: resources/qml/Cura.qml:892
-#, fuzzy
 msgctxt "@info"
 msgid "Custom profile name:"
 msgstr "Benutzerdefiniertes Profil"
@@ -4628,18 +4612,17 @@ msgstr "Benutzerdefiniertes Profil"
 #: resources/qml/Cura.qml:909
 msgctxt "@label %i will be replaced with a profile name"
 msgid "<b>Only user changed settings will be saved in the custom profile.</b><br/>For materials that support it, the new custom profile will inherit properties from <b>%1</b>."
-msgstr ""
+msgstr "<b>Nur vom Benutzer geänderte Einstellungen werden im benutzerdefinierten Profil gespeichert. </b><br/>Für Materialien, bei denen dies unterstützt ist, übernimmt das neue benutzerdefinierte Profil Eigenschaften von <b>%1</b>."
 
 #: resources/qml/Cura.qml:917
 msgctxt "@action:button"
 msgid "Learn more about Cura print profiles"
-msgstr ""
+msgstr "Mehr über Druckprofile von Cura erfahren"
 
 #: resources/qml/Cura.qml:926
-#, fuzzy
 msgctxt "@button"
 msgid "Save new profile"
-msgstr "Nicht im Profil"
+msgstr ""
 
 #: resources/qml/Dialogs/AboutDialog.qml:15
 msgctxt "@title:window The argument is the application name."
@@ -4657,7 +4640,6 @@ msgid "End-to-end solution for fused filament 3D printing."
 msgstr "Komplettlösung für den 3D-Druck mit geschmolzenem Filament."
 
 #: resources/qml/Dialogs/AboutDialog.qml:87
-#, fuzzy
 msgctxt "@info:credit"
 msgid ""
 "Cura is developed by UltiMaker in cooperation with the community.\n"
@@ -4927,13 +4909,11 @@ msgid "Keep changes"
 msgstr "Änderungen speichern"
 
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:171
-#, fuzzy
 msgctxt "@action:button"
 msgid "Save as new custom profile"
 msgstr "Benutzerdefiniertes Profil"
 
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:178
-#, fuzzy
 msgctxt "@action:button"
 msgid "Save changes"
 msgstr "Änderungen speichern"
@@ -5648,7 +5628,7 @@ msgstr "(Anonyme) Druckinformationen senden"
 #: resources/qml/Preferences/GeneralPage.qml:897
 msgctxt "@label"
 msgid "Updates"
-msgstr "Updates"
+msgstr ""
 
 #: resources/qml/Preferences/GeneralPage.qml:904
 msgctxt "@info:tooltip"
@@ -5723,7 +5703,7 @@ msgstr "Neu erstellen"
 #: resources/qml/Preferences/ProfilesPage.qml:88
 msgctxt "@action:button"
 msgid "Import"
-msgstr "Import"
+msgstr ""
 
 #: resources/qml/Preferences/Materials/MaterialsPage.qml:101
 msgctxt "@action:button"
@@ -5740,7 +5720,7 @@ msgstr "Duplizieren"
 #: resources/qml/Preferences/ProfilesPage.qml:342
 msgctxt "@action:button"
 msgid "Export"
-msgstr "Export"
+msgstr ""
 
 #: resources/qml/Preferences/Materials/MaterialsPage.qml:212
 #: resources/qml/Preferences/ProfilesPage.qml:392
@@ -5809,7 +5789,7 @@ msgstr "Warum muss ich Materialprofile synchronisieren?"
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:86
 msgctxt "@button"
 msgid "Start"
-msgstr "Start"
+msgstr ""
 
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:144
 msgctxt "@title:header"
@@ -5924,7 +5904,7 @@ msgstr "Klicken Sie auf die Schaltfläche Materialarchiv exportieren."
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:680
 msgctxt "@text"
 msgid "Save the .umm file on a USB stick."
-msgstr "Save the .umm file on a USB stick."
+msgstr ""
 
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:681
 msgctxt "@text"
@@ -5934,7 +5914,7 @@ msgstr "Stecken Sie den USB-Stick in Ihren Drucker und starten Sie das Verfahren
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:689
 msgctxt "@button"
 msgid "How to load new material profiles to my printer"
-msgstr "How to load new material profiles to my printer"
+msgstr ""
 
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:703
 #: resources/qml/WelcomePages/AddPrinterByIpContent.qml:299
@@ -6226,10 +6206,9 @@ msgstr "<b>%1</b> benutzerdefiniertes Profil überschreibt einige Einstellungen.
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:92
 msgctxt "@info %1 is the name of a profile"
 msgid "Recommended settings (for <b>%1</b>) were altered."
-msgstr ""
+msgstr "Die empfohlenen Einstellungen (für <b>%1</b>) wurden geändert."
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:106
-#, fuzzy
 msgctxt "@info %1 is the name of a profile"
 msgid "Some setting-values defined in <b>%1</b> were overridden."
 msgstr "Einige Einstellungen des aktuellen Profils wurden überschrieben."
@@ -6237,12 +6216,12 @@ msgstr "Einige Einstellungen des aktuellen Profils wurden überschrieben."
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:137
 msgctxt "@info"
 msgid "Reset to defaults."
-msgstr ""
+msgstr "Auf die Standardeinstellungen zurücksetzen."
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:178
 msgctxt "@info"
 msgid "Compare and save."
-msgstr ""
+msgstr "Vergleichen und speichern."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedAdhesionSelector.qml:15
 msgctxt "@label"
@@ -6255,13 +6234,11 @@ msgid "Enable printing a brim or raft. This will add a flat area around or under
 msgstr "Drucken eines Brim- oder Raft-Elements aktivieren. Es wird ein flacher Bereich rund um oder unter Ihrem Objekt hinzugefügt, das im Anschluss leicht abgeschnitten werden kann."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:102
-#, fuzzy
 msgctxt "@label"
 msgid "Recommended print settings"
 msgstr "Druckeinstellungen"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:111
-#, fuzzy
 msgctxt "@button"
 msgid "Show Custom"
 msgstr "Benutzerdefiniert"
@@ -6274,15 +6251,14 @@ msgstr "Auflösung"
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:16
 msgctxt "@label"
 msgid "Strength"
-msgstr ""
+msgstr "Festigkeit"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:20
 msgctxt "@label"
 msgid "The following settings define the strength of your part."
-msgstr ""
+msgstr "Die folgenden Einstellungen definieren die Festigkeit Ihres Teils."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:34
-#, fuzzy
 msgctxt "infill_sparse_density description"
 msgid "Infill Density"
 msgstr "Nur Mesh-Füllung"
@@ -6290,12 +6266,12 @@ msgstr "Nur Mesh-Füllung"
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:35
 msgctxt "@label"
 msgid "Adjusts the density of infill of the print."
-msgstr ""
+msgstr "Passt die Fülldichte des Drucks an."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:54
 msgctxt "@action:label"
 msgid "Infill Pattern"
-msgstr ""
+msgstr "Füllmuster"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:56
 msgctxt "@label"
@@ -6308,9 +6284,15 @@ msgid ""
 "\n"
 "For functional 3D prints which require high strenght in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
 msgstr ""
+"Das Muster des Füllmaterials des Drucks:\n"
+"\n"
+"Für schnelle Drucke von nicht funktionalen Modellen wählen Sie die Linien-, Zickzack- oder Blitz-Füllung.\n"
+"\n"
+"Für funktionale Teile, die keiner großen Belastung ausgesetzt sind, empfehlen wir ein Raster-, Dreieck- oder Tri-Hexagon-Muster.\n"
+"\n"
+"Für funktionale 3D-Drucke, die eine hohe Festigkeit in mehreren Richtungen erfordern, verwenden Sie am besten die Würfel-, Würfel-Unterbereich-, Viertelwürfel-, Octahedral- und Gyroid-Füllungen."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:67
-#, fuzzy
 msgctxt "@action:label"
 msgid "Shell Thickness"
 msgstr "Schichtdicke"
@@ -6318,7 +6300,7 @@ msgstr "Schichtdicke"
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:68
 msgctxt "@label"
 msgid "Defines the tickness of your part side walls, roof and floor."
-msgstr ""
+msgstr "Definiert die Dicke der Seitenwände, des Dachs und des Bodens Ihres Teils."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:16
 msgctxt "@label"
@@ -6326,13 +6308,11 @@ msgid "Support"
 msgstr "Stützstruktur"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:21
-#, fuzzy
 msgctxt "@label"
 msgid "Generate structures to support parts of the model which have overhangs. Without these structures, these parts would collapse during printing."
 msgstr "Damit werden Strukturen zur Unterstützung von Modellteilen mit Überhängen generiert. Ohne diese Strukturen würden solche Teile während des Druckvorgangs zusammenfallen."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:40
-#, fuzzy
 msgctxt "@action:label"
 msgid "Support Type"
 msgstr "Stützstruktur"
@@ -6345,10 +6325,9 @@ msgid ""
 "\"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. \n"
 "\n"
 "\"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
-msgstr ""
+msgstr "Wählt zwischen den verfügbaren Techniken zur Erzeugung von Stützstrukturen. Mit „Normal“ wird eine Stützstruktur direkt unter den überhängenden Teilen erzeugt, die direkt darauf liegen. In der Einstellung „Tree“ wird eine Baumstützstruktur erzeugt, die zu den überhängenden Teilen reicht und diese stützt. Die Stützstruktur verästelt sich innerhalb des Modells und stützt es so gut wie möglich vom Druckbett aus."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:53
-#, fuzzy
 msgctxt "@action:label"
 msgid "Print with"
 msgstr "Drucken"
@@ -6356,17 +6335,17 @@ msgstr "Drucken"
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:54
 msgctxt "@label"
 msgid "The extruder train to use for printing the support. This is used in multi-extrusion."
-msgstr ""
+msgstr "Das für das Drucken der Stützstruktur verwendete Extruder-Element. Diese wird für die Mehrfach-Extrusion benutzt."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:67
 msgctxt "@action:label"
 msgid "Placement"
-msgstr ""
+msgstr "Platzierung"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:68
 msgctxt "support_type description"
 msgid "Adjusts the placement of the support structures. The placement can be set to touching build plate or everywhere. When set to everywhere the support structures will also be printed on the model."
-msgstr ""
+msgstr "Es werden Stützstrukturen platziert. Die Platzierung kann auf „Druckbett berühren“ oder „Überall“ eingestellt werden. Wenn „Überall“ eingestellt wird, werden die Stützstrukturen auch auf dem Modell gedruckt."
 
 #: resources/qml/PrintSetupSelector/Recommended/UnsupportedProfileIndication.qml:31
 msgctxt "@error"
@@ -6516,10 +6495,9 @@ msgid "The cloud printer is offline. Please check if the printer is turned on an
 msgstr "Der Cloud-Drucker ist offline. Bitte prüfen Sie, ob der Drucker eingeschaltet und mit dem Internet verbunden ist."
 
 #: resources/qml/PrinterSelector/MachineSelector.qml:68
-#, fuzzy
 msgctxt "@status"
-msgid "This printer is not linked to your account. Please visit the Ultimaker Digital Factory to establish a connection."
-msgstr "Der Drucker ist nicht mit Ihrem Konto verbunden. Bitte besuchen Sie die Ultimaker Digital Factory, um eine Verbindung herzustellen."
+msgid "This printer is not linked to your account. Please visit the UltiMaker Digital Factory to establish a connection."
+msgstr "Der Drucker ist nicht mit Ihrem Konto verbunden. Bitte besuchen Sie die UltiMaker Digital Factory, um eine Verbindung herzustellen."
 
 #: resources/qml/PrinterSelector/MachineSelector.qml:73
 msgctxt "@status"
@@ -6804,13 +6782,11 @@ msgid "Add a non-networked printer"
 msgstr "Einen unvernetzten Drucker hinzufügen"
 
 #: resources/qml/WelcomePages/AddThirdPartyPrinter.qml:102
-#, fuzzy
 msgctxt "@button"
 msgid "Add UltiMaker printer via Digital Factory"
 msgstr "Drucker in der Digital Factory anzeigen"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:29
-#, fuzzy
 msgctxt "@label"
 msgid "In order to start using Cura you will need to configure a printer."
 msgstr "Um das Paket nutzen zu können, müssen Sie Cura neu starten"
@@ -6818,33 +6794,29 @@ msgstr "Um das Paket nutzen zu können, müssen Sie Cura neu starten"
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:36
 msgctxt "@label"
 msgid "What printer would you like to setup?"
-msgstr ""
+msgstr "Welchen Drucker möchten Sie einrichten?"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:55
-#, fuzzy
 msgctxt "@button"
 msgid "UltiMaker printer"
-msgstr "UltiMaker Kundendienst"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:64
-#, fuzzy
 msgctxt "@button"
 msgid "Non UltiMaker printer"
-msgstr "UltiMaker Kundendienst"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:73
 msgctxt "@button"
 msgid "Learn more about adding printers to Cura"
-msgstr ""
+msgstr "Mehr über das Hinzufügen von Druckern zu Cura erfahren"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinterStack.qml:29
-#, fuzzy
 msgctxt "@label"
 msgid "Add printer"
 msgstr "Drucker hinzufügen"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:33
-#, fuzzy
 msgctxt "@label"
 msgid "New UltiMaker printers can be connected to Digital Factory and monitored remotely."
 msgstr "Vergewissern Sie sich, dass alle Ihre Drucker eingeschaltet und mit Digital Factory verbunden sind."
@@ -6852,44 +6824,39 @@ msgstr "Vergewissern Sie sich, dass alle Ihre Drucker eingeschaltet und mit Digi
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:70
 msgctxt "@label"
 msgid "If you are trying to add a new UltiMaker printer to Cura"
-msgstr ""
+msgstr "Wenn Sie versuchen, einen neuen UltiMaker-Drucker zu Cura hinzuzufügen"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:80
-#, fuzzy
 msgctxt "@info"
 msgid "Sign in into UltiMaker Digilal Factory"
-msgstr "Überwachen Sie Drucker in der Ultimaker Digital Factory."
+msgstr "Überwachen Sie Drucker in der UltiMaker Digital Factory."
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:81
 msgctxt "@info"
 msgid "Follow the procedure to add a new printer"
-msgstr ""
+msgstr "Befolgen Sie die Anweisungen zum Hinzufügen eines neuen Druckers"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:82
 msgctxt "@info"
 msgid "Your new printer will automatically appear in Cura"
-msgstr ""
+msgstr "Ihr neuer Drucker wird automatisch in Cura angezeigt"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:100
-#, fuzzy
 msgctxt "@button"
 msgid "Learn more"
 msgstr "Mehr erfahren"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:121
-#, fuzzy
 msgctxt "@button"
 msgid "Add local printer"
 msgstr "Einen Drucker hinzufügen"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:129
-#, fuzzy
 msgctxt "@button"
 msgid "Sign in to Digital Factory"
 msgstr "Drucker in der Digital Factory anzeigen"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:133
-#, fuzzy
 msgctxt "@button"
 msgid "Waiting for new printers"
 msgstr "Drucker verwalten"
@@ -7005,47 +6972,3 @@ msgstr "Neuheiten"
 msgctxt "@label"
 msgid "No items to select from"
 msgstr "Keine auswählbaren Einträge"
-
-#~ msgctxt "@label"
-#~ msgid "Add cloud printer"
-#~ msgstr "Ein Cloud-Drucker hinzufügen"
-
-#~ msgctxt "@label"
-#~ msgid "Aluminum"
-#~ msgstr "Aluminium"
-
-#~ msgctxt "@label"
-#~ msgid "Change build plate to %1 (This cannot be overridden)."
-#~ msgstr "Druckplatte auf %1 wechseln (Dies kann nicht übergangen werden)."
-
-#~ msgctxt "@label"
-#~ msgid "Glass"
-#~ msgstr "Glas"
-
-#~ msgctxt "@label"
-#~ msgid "Gradual infill"
-#~ msgstr "Stufenweise Füllung"
-
-#~ msgctxt "@label"
-#~ msgid "Gradual infill will gradually increase the amount of infill towards the top."
-#~ msgstr "Die graduelle Füllung steigert die Menge der Füllung nach oben hin schrittweise."
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "How should the conflict in the machine be resolved?"
-#~ msgstr "Wie soll der Konflikt im Gerät gelöst werden?"
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "How should the conflict in the material be resolved?"
-#~ msgstr "Wie soll der Konflikt im Material gelöst werden?"
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "How should the conflict in the profile be resolved?"
-#~ msgstr "Wie soll der Konflikt im Profil gelöst werden?"
-
-#~ msgctxt "@info"
-#~ msgid "Some settings were changed."
-#~ msgstr "Einige Einstellungen wurden geändert."
-
-#~ msgctxt "@action:label"
-#~ msgid "Visible settings:"
-#~ msgstr "Sichtbare Einstellungen:"
