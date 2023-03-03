@@ -6877,7 +6877,7 @@ msgstr ""
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:80
 #, fuzzy
 msgctxt "@info"
-msgid "Sign in into UltiMaker Digilal Factory"
+msgid "Sign in into UltiMaker Digital Factory"
 msgstr "Следите за своими принтерами в Ultimaker Digital Factory."
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:81

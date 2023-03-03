@@ -6842,7 +6842,7 @@ msgstr ""
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:80
 #, fuzzy
 msgctxt "@info"
-msgid "Sign in into UltiMaker Digilal Factory"
+msgid "Sign in into UltiMaker Digital Factory"
 msgstr "Ultimaker Digital Factory의 프린터를 모니터링하십시오."
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:81
