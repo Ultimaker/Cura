@@ -58,6 +58,7 @@
         "machine_width": { "default_value": 180 },
         "skirt_brim_minimal_length": { "default_value": 550 },
         "speed_layer_0": { "value": "math.ceil(speed_print * 0.25)" },
+        "speed_print": {"maximum_value_warning": "300"},
         "speed_roofing": { "value": "math.ceil(speed_print * 0.33)" },
         "speed_slowdown_layers": { "default_value": 4 },
         "speed_topbottom": { "value": "math.ceil(speed_print * 0.33)" },
