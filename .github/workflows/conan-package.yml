@@ -122,24 +122,18 @@ jobs:
       - name: Get Conan configuration
         run: conan config install https://github.com/Ultimaker/conan-config.git
 
-      - name: Create the Packages using lockfile
+      - name: Create the Packages
         run: conan create . ${{ needs.conan-recipe-version.outputs.recipe_id_full }} --build=missing --update -o ${{ needs.conan-recipe-version.outputs.project_name }}:devtools=True
 
-      - name: Remove the latest alias
-        if: ${{ needs.conan-recipe-version.outputs.recipe_id_latest != '' }}
-        run: |
-          conan remove ${{ needs.conan-recipe-version.outputs.recipe_id_latest }} -r cura -f || true
-          conan remove ${{ needs.conan-recipe-version.outputs.recipe_id_latest }} -r cura-ce -f || true
-
       - name: Create the latest alias
-        if: ${{ needs.conan-recipe-version.outputs.recipe_id_latest != '' && always() }}
+        if: always()
         run: conan alias ${{ needs.conan-recipe-version.outputs.recipe_id_latest }} ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
 
       - name: Upload the Package(s)
         if: always()
         run: |
-          conan upload "*" -r cura --all -c
-          conan upload "*" -r cura-ce -c
+          conan upload ${{ needs.conan-recipe-version.outputs.recipe_id_full }} -r cura --all -c
+          conan upload ${{ needs.conan-recipe-version.outputs.recipe_id_latest }} -r cura -c
 
   notify-create:
     if: ${{ always() && (github.event_name == 'push' && (github.ref_name == 'main' || github.ref_name == 'master' || needs.conan-recipe-version.outputs.is_release_branch == 'true')) }}

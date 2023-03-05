@@ -145,48 +145,10 @@ jobs:
                 if: ${{ inputs.conan_config_branch == '' }}
                 run: conan config install https://github.com/Ultimaker/conan-config.git
 
-            -   name: Create the lock file
-                if: ${{ inputs.build_info }}
-                run: |
-                    conan_build_info --v2 start ${{ inputs.project_name }} ${{ github.run_number }}000${{ inputs.build_id }}
-                    conan lock create --reference ${{ inputs.recipe_id_full }} --lockfile-out=conan.lock                    
-
-            -   name: Create the Packages using lockfile
-                if: ${{ inputs.build_info }}
-                run: conan install ${{ inputs.recipe_id_full }} --build=missing --update --lockfile=conan.lock --lockfile-out=conan.lock
-
             -   name: Create the Packages
-                if: ${{ ! inputs.build_info }}
                 run: conan install ${{ inputs.recipe_id_full }} --build=missing --update
-
-            -   name: Create the build info
-                if: ${{ inputs.build_info }}
-                run: conan_build_info --v2 create buildinfo.json --lockfile conan.lock --user ${{ secrets.CONAN_USER }} --password ${{ secrets.CONAN_PASS }}
 
             -   name: Upload the Package(s)
                 if: always()
-                run: conan upload "*" -r cura --all -c
-
-            -   name: Upload the build info
-                if: ${{ inputs.build_info }}
                 run: |
-                    conan_build_info --v2 publish buildinfo.json --url https://ultimaker.jfrog.io/artifactory --user ${{ secrets.CONAN_USER }} --password ${{ secrets.CONAN_PASS }}
-                    conan_build_info --v2 stop
-
-            -   name: Upload the Package(s) community
-                if: ${{ always() && inputs.conan_upload_community == true }}
-                run: conan upload "*" -r cura-ce -c
-
-            -   name: Upload the log and build artifacts
-                if: always()
-                uses: actions/upload-artifact@v3
-                with:
-                    name: log-${{ inputs.runs_on }}-${{ runner.arch }}
-                    path: |
-                        buildinfo.json
-                        conan.lock
-                        conanbuildinfo.txt
-                        conaninfo.txt
-                        graph_info.json
-                        build/**
-                    retention-days: 1
+                    conan upload ${{ inputs.recipe_id_full }} -r cura --all -c
