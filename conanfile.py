@@ -27,7 +27,7 @@ class CuraConan(ConanFile):
 
     # FIXME: Remove specific branch once merged to main
     # Extending the conanfile with the UMBaseConanfile https://github.com/Ultimaker/conan-ultimaker-index/tree/CURA-9177_Fix_CI_CD/recipes/umbase
-    python_requires = "umbase/[>=0.1.7]@ultimaker/stable"
+    python_requires = "umbase/[>=0.1.7]@ultimaker/stable", "translationextractor/[>=1.0.0]@ultimaker/stable"
     python_requires_extend = "umbase.UMBaseConanfile"
 
     options = {
@@ -146,6 +146,14 @@ class CuraConan(ConanFile):
             py_interp = Path(*[f'"{p}"' if " " in p else p for p in py_interp.parts])
         return py_interp
 
+    @property
+    def _pyinstaller_spec_arch(self):
+        if self.settings.os == "Macos":
+            if self.settings.arch == "armv8":
+                return "'arm64'"
+            return "'x86_64'"
+        return "None"
+
     def _generate_cura_version(self, location):
         with open(os.path.join(self.recipe_folder, "CuraVersion.py.jinja"), "r") as f:
             cura_version_py = Template(f.read())
@@ -247,7 +255,7 @@ class CuraConan(ConanFile):
                 osx_bundle_identifier = "'nl.ultimaker.cura'" if self.settings.os == "Macos" else "None",
                 upx = str(self.settings.os == "Windows"),
                 strip = False,  # This should be possible on Linux and MacOS but, it can also cause issues on some distributions. Safest is to disable it for now
-                target_arch = "'x86_64'" if self.settings.os == "Macos" else "None",  # FIXME: Make this dependent on the settings.arch_target
+                target_arch = self._pyinstaller_spec_arch,
                 macos = self.settings.os == "Macos",
                 version = f"'{version}'",
                 short_version = f"'{cura_version.major}.{cura_version.minor}.{cura_version.patch}'",
@@ -284,12 +292,12 @@ class CuraConan(ConanFile):
 
     def requirements(self):
         self.requires("pyarcus/5.2.2")
-        self.requires("curaengine/(latest)@ultimaker/stable")
+        self.requires("curaengine/(latest)@ultimaker/testing")
         self.requires("pysavitar/5.2.2")
         self.requires("pynest2d/5.2.2")
-        self.requires("uranium/(latest)@ultimaker/stable")
-        self.requires("fdm_materials/(latest)@ultimaker/stable")
-        self.requires("cura_binary_data/5.3.0-beta")
+        self.requires("uranium/(latest)@ultimaker/testing")
+        self.requires("fdm_materials/(latest)@{}/testing".format("internal" if self.options.internal else "ultimaker"))
+        self.requires("cura_binary_data/(latest)@ultimaker/testing")
         self.requires("cpython/3.10.4")
         if self.options.internal:
             self.requires("cura_private_data/(latest)@ultimaker/testing")
