@@ -86,112 +86,112 @@ pyinstaller:
         Macos: "./icons/cura.icns"
         Linux: "./icons/cura-128.png"
 pycharm_targets:
-    - jinja_path: .run_templates/pycharm_cura_run.run.xml.jinja
-      module_name: Cura
-      name: cura
-      script_name: cura_app.py
-    - jinja_path: .run_templates/pycharm_cura_run.run.xml.jinja
-      module_name: Cura
-      name: cura_external_engine
-      parameters: --external-backend
-      script_name: cura_app.py
-    - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
-      module_name: Cura
-      name: pytest in tests
-      script_name: tests/
-    - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
-      module_name: Cura
-      name: pytest in TestBuildVolume.py
-      script_name: tests/TestBuildVolume.py
-    - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
-      module_name: Cura
-      name: pytest in TestConvexHullDecorator.py
-      script_name: tests/TestConvexHullDecorator.py
-    - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
-      module_name: Cura
-      name: pytest in TestCuraSceneNode.py
-      script_name: tests/TestCuraSceneNode.py
-    - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
-      module_name: Cura
-      name: pytest in TestCuraSceneNode.py
-      script_name: tests/TestExtruderManager.py
-    - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
-      module_name: Cura
-      name: pytest in TestGCodeListDecorator.py
-      script_name: tests/TestGCodeListDecorator.py
-    - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
-      module_name: Cura
-      name: pytest in TestIntentManager.py
-      script_name: tests/TestIntentManager.py
-    - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
-      module_name: Cura
-      name: pytest in TestLayer.py
-      script_name: tests/TestLayer.py
-    - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
-      module_name: Cura
-      name: pytest in TestMachineAction.py
-      script_name: tests/TestMachineAction.py
-    - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
-      module_name: Cura
-      name: pytest in TestMachineManager.py
-      script_name: tests/TestMachineManager.py
-    - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
-      module_name: Cura
-      name: pytest in TestOAuth2.py
-      script_name: tests/TestOAuth2.py
-    - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
-      module_name: Cura
-      name: pytest in TestObjectsModel.py
-      script_name: tests/TestObjectsModel.py
-    - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
-      module_name: Cura
-      name: pytest in TestPrintInformation.py
-      script_name: tests/TestPrintInformation.py
-    - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
-      module_name: Cura
-      name: pytest in TestProfileRequirements.py
-      script_name: tests/TestProfileRequirements.py
-    - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
-      module_name: Cura
-      name: pytest in TestThemes.py
-      script_name: tests/TestThemes.py
-    - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
-      module_name: Cura
-      name: pytest in TestContainerManager.py
-      script_name: tests/Settings/TestContainerManager.py
-    - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
-      module_name: Cura
-      name: pytest in TestCuraContainerRegistry.py
-      script_name: tests/Settings/TestCuraContainerRegistry.py
-    - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
-      module_name: Cura
-      name: pytest in TestCuraStackBuilder.py
-      script_name: tests/Settings/TestCuraStackBuilder.py
-    - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
-      module_name: Cura
-      name: pytest in TestDefinitionContainer.py
-      script_name: tests/Settings/TestDefinitionContainer.py
-    - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
-      module_name: Cura
-      name: pytest in TestExtruderStack.py
-      script_name: tests/Settings/TestExtruderStack.py
-    - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
-      module_name: Cura
-      name: pytest in TestGlobalStack.py
-      script_name: tests/Settings/TestGlobalStack.py
-    - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
-      module_name: Cura
-      name: pytest in TestProfiles.py
-      script_name: tests/Settings/TestProfiles.py
-    - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
-      module_name: Cura
-      name: pytest in TestSettingInheritanceManager.py
-      script_name: tests/Settings/TestSettingInheritanceManager.py
-    - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
-      module_name: Cura
-      name: pytest in TestSettingOverrideDecorator.py
-      script_name: tests/Settings/TestSettingOverrideDecorator.py
-    - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
-      module_name: Cura
-      name: pytest in TestSettingVisibilityPresets.py
-      script_name: tests/Settings/TestSettingVisibilityPresets.py
+  - jinja_path: .run_templates/pycharm_cura_run.run.xml.jinja
+    module_name: Cura
+    name: cura
+    script_name: cura_app.py
+  - jinja_path: .run_templates/pycharm_cura_run.run.xml.jinja
+    module_name: Cura
+    name: cura_external_engine
+    parameters: --external-backend
+    script_name: cura_app.py
+  - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
+    module_name: Cura
+    name: pytest in tests
+    script_name: tests/
+  - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
+    module_name: Cura
+    name: pytest in TestBuildVolume.py
+    script_name: tests/TestBuildVolume.py
+  - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
+    module_name: Cura
+    name: pytest in TestConvexHullDecorator.py
+    script_name: tests/TestConvexHullDecorator.py
+  - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
+    module_name: Cura
+    name: pytest in TestCuraSceneNode.py
+    script_name: tests/TestCuraSceneNode.py
+  - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
+    module_name: Cura
+    name: pytest in TestCuraSceneNode.py
+    script_name: tests/TestExtruderManager.py
+  - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
+    module_name: Cura
+    name: pytest in TestGCodeListDecorator.py
+    script_name: tests/TestGCodeListDecorator.py
+  - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
+    module_name: Cura
+    name: pytest in TestIntentManager.py
+    script_name: tests/TestIntentManager.py
+  - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
+    module_name: Cura
+    name: pytest in TestLayer.py
+    script_name: tests/TestLayer.py
+  - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
+    module_name: Cura
+    name: pytest in TestMachineAction.py
+    script_name: tests/TestMachineAction.py
+  - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
+    module_name: Cura
+    name: pytest in TestMachineManager.py
+    script_name: tests/TestMachineManager.py
+  - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
+    module_name: Cura
+    name: pytest in TestOAuth2.py
+    script_name: tests/TestOAuth2.py
+  - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
+    module_name: Cura
+    name: pytest in TestObjectsModel.py
+    script_name: tests/TestObjectsModel.py
+  - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
+    module_name: Cura
+    name: pytest in TestPrintInformation.py
+    script_name: tests/TestPrintInformation.py
+  - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
+    module_name: Cura
+    name: pytest in TestProfileRequirements.py
+    script_name: tests/TestProfileRequirements.py
+  - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
+    module_name: Cura
+    name: pytest in TestThemes.py
+    script_name: tests/TestThemes.py
+  - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
+    module_name: Cura
+    name: pytest in TestContainerManager.py
+    script_name: tests/Settings/TestContainerManager.py
+  - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
+    module_name: Cura
+    name: pytest in TestCuraContainerRegistry.py
+    script_name: tests/Settings/TestCuraContainerRegistry.py
+  - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
+    module_name: Cura
+    name: pytest in TestCuraStackBuilder.py
+    script_name: tests/Settings/TestCuraStackBuilder.py
+  - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
+    module_name: Cura
+    name: pytest in TestDefinitionContainer.py
+    script_name: tests/Settings/TestDefinitionContainer.py
+  - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
+    module_name: Cura
+    name: pytest in TestExtruderStack.py
+    script_name: tests/Settings/TestExtruderStack.py
+  - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
+    module_name: Cura
+    name: pytest in TestGlobalStack.py
+    script_name: tests/Settings/TestGlobalStack.py
+  - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
+    module_name: Cura
+    name: pytest in TestProfiles.py
+    script_name: tests/Settings/TestProfiles.py
+  - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
+    module_name: Cura
+    name: pytest in TestSettingInheritanceManager.py
+    script_name: tests/Settings/TestSettingInheritanceManager.py
+  - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
+    module_name: Cura
+    name: pytest in TestSettingOverrideDecorator.py
+    script_name: tests/Settings/TestSettingOverrideDecorator.py
+  - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
+    module_name: Cura
+    name: pytest in TestSettingVisibilityPresets.py
+    script_name: tests/Settings/TestSettingVisibilityPresets.py
