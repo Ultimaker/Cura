@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-06 21:46+0100\n"
+"POT-Creation-Date: 2023-03-06 22:44+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4109,11 +4109,7 @@ msgid ""
 "- Add material profiles and plug-ins from the Marketplace\n"
 "- Back-up and sync your material profiles and plug-ins\n"
 "- Share ideas and get help from 48,000+ users in the UltiMaker community"
-msgstr ""
-"- Ajoutez des profils de matériaux et des plug-ins à partir de la Marketplace"
-"- Sauvegardez et synchronisez vos profils de matériaux et vos plug-ins"
-"- Partagez vos idées et obtenez l'aide de plus de 48 000 utilisateurs de la communauté Ultimaker"
-
+msgstr "- Ajoutez des profils de matériaux et des plug-ins à partir de la Marketplace- Sauvegardez et synchronisez vos profils de matériaux et vos plug-ins- Partagez vos idées et obtenez l'aide de plus de 48 000 utilisateurs de la communauté Ultimaker"
 
 #: resources/qml/Account/GeneralOperations.qml:58
 msgctxt "@button"
@@ -5621,8 +5617,7 @@ msgstr "Confidentialité"
 #: resources/qml/Preferences/GeneralPage.qml:862
 msgctxt "@info:tooltip"
 msgid "Should anonymous data about your print be sent to UltiMaker? Note, no models, IP addresses or other personally identifiable information is sent or stored."
-msgstr "Les données anonymes de votre impression doivent-elles être envoyées à Ultimaker ? Notez qu'aucun modèle, aucune adresse IP ni aucune autre information"
-" permettant de vous identifier personnellement ne seront envoyés ou stockés."
+msgstr "Les données anonymes de votre impression doivent-elles être envoyées à Ultimaker ? Notez qu'aucun modèle, aucune adresse IP ni aucune autre information permettant de vous identifier personnellement ne seront envoyés ou stockés."
 
 #: resources/qml/Preferences/GeneralPage.qml:867
 msgctxt "@option:check"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-06 17:40+0100\n"
+"POT-Creation-Date: 2023-03-06 22:44+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -93,9 +93,12 @@ msgid ""
 "                    <p>Backups can be found in the configuration folder.</p>\n"
 "                    <p>Please send us this Crash Report to fix the problem.</p>\n"
 "                "
-msgstr "<p><b>Ultimaker Cura doğru görünmeyen bir şeyle karşılaştı.</p></b>\n                    <p>Başlatma esnasında kurtarılamaz bir hata ile karşılaştık. Muhtemelen"
-" bazı hatalı yapılandırma dosyalarından kaynaklanıyordu. Yapılandırmanızı yedekleyip sıfırlamanızı öneriyoruz.</p>\n                    <p>Yedekler yapılandırma"
-" klasöründe bulunabilir.</p>\n                    <p>Sorunu düzeltmek için lütfen bu Çökme Raporunu bize gönderin.</p>\n                "
+msgstr ""
+"<p><b>Ultimaker Cura doğru görünmeyen bir şeyle karşılaştı.</p></b>\n"
+"                    <p>Başlatma esnasında kurtarılamaz bir hata ile karşılaştık. Muhtemelen bazı hatalı yapılandırma dosyalarından kaynaklanıyordu. Yapılandırmanızı yedekleyip sıfırlamanızı öneriyoruz.</p>\n"
+"                    <p>Yedekler yapılandırma klasöründe bulunabilir.</p>\n"
+"                    <p>Sorunu düzeltmek için lütfen bu Çökme Raporunu bize gönderin.</p>\n"
+"                "
 
 #: cura/CrashHandler.py:122
 msgctxt "@action:button"
@@ -809,646 +812,6 @@ msgctxt "@text"
 msgid "Unknown error."
 msgstr "Bilinmeyen hata."
 
-#: plugin.json
-msgctxt "name"
-msgid "3MF Reader"
-msgstr "3MF Okuyucu"
-
-#: plugin.json
-msgctxt "name"
-msgid "3MF Writer"
-msgstr "3MF Yazıcı"
-
-#: plugin.json
-msgctxt "name"
-msgid "AMF Reader"
-msgstr "AMF Okuyucu"
-
-#: plugin.json
-msgctxt "description"
-msgid "Accepts G-Code and sends them to a printer. Plugin can also update firmware."
-msgstr "G-Code’ları kabul eder ve bir yazıcıya gönderir. Eklenti aynı zamanda üretici sürümünü güncelleyebilir."
-
-#: plugin.json
-msgctxt "description"
-msgid "Allows loading and displaying G-code files."
-msgstr "G-code dosyalarının yüklenmesine ve görüntülenmesine olanak tanır."
-
-#: plugin.json
-msgctxt "description"
-msgid "Backup and restore your configuration."
-msgstr "Yapılandırmanızı yedekleyin ve geri yükleyin."
-
-#: plugin.json
-msgctxt "description"
-msgid "Checks for firmware updates."
-msgstr "Bellenim güncellemelerini denetler."
-
-#: plugin.json
-msgctxt "description"
-msgid "Checks models and print configuration for possible printing issues and give suggestions."
-msgstr "Olası yazdırma sorunlarına karşı modelleri ve yazdırma yapılandırmasını kontrol eder ve öneriler verir."
-
-#: plugin.json
-msgctxt "name"
-msgid "Compressed G-code Reader"
-msgstr "Sıkıştırılmış G-code Okuyucusu"
-
-#: plugin.json
-msgctxt "name"
-msgid "Compressed G-code Writer"
-msgstr "Sıkıştırılmış G-code Yazıcısı"
-
-#: plugin.json
-msgctxt "description"
-msgid "Connects to the Digital Library, allowing Cura to open files from and save files to the Digital Library."
-msgstr "Digital Library'ye bağlanarak Cura'nın Digital Library'deki dosyaları açmasına ve kaydetmesine olanak tanır."
-
-#: plugin.json
-msgctxt "description"
-msgid "Creates an eraser mesh to block the printing of support in certain places"
-msgstr "Belirli yerlerde desteğin yazdırılmasını engellemek için bir silici yüzey oluşturur"
-
-#: plugin.json
-msgctxt "name"
-msgid "Cura Backups"
-msgstr "Cura Yedeklemeleri"
-
-#: plugin.json
-msgctxt "name"
-msgid "Cura Profile Reader"
-msgstr "Cura Profil Okuyucu"
-
-#: plugin.json
-msgctxt "name"
-msgid "Cura Profile Writer"
-msgstr "Cura Profili Yazıcı"
-
-#: plugin.json
-msgctxt "name"
-msgid "CuraEngine Backend"
-msgstr "CuraEngine Arka Uç"
-
-#: plugin.json
-msgctxt "description"
-msgid "Enables ability to generate printable geometry from 2D image files."
-msgstr "2D resim dosyasından yazdırılabilir geometri oluşturulmasını sağlar."
-
-#: plugin.json
-msgctxt "description"
-msgid "Extension that allows for user created scripts for post processing"
-msgstr "Kullanıcının oluşturduğu komut dosyalarına son işleme için izin veren uzantı"
-
-#: plugin.json
-msgctxt "name"
-msgid "Firmware Update Checker"
-msgstr "Bellenim Güncelleme Denetleyicisi"
-
-#: plugin.json
-msgctxt "name"
-msgid "Firmware Updater"
-msgstr "Aygıt Yazılımı Güncelleyici"
-
-#: plugin.json
-msgctxt "name"
-msgid "G-code Profile Reader"
-msgstr "G-code Profil Okuyucu"
-
-#: plugin.json
-msgctxt "name"
-msgid "G-code Reader"
-msgstr "G-code Okuyucu"
-
-#: plugin.json
-msgctxt "name"
-msgid "G-code Writer"
-msgstr "G-code Yazıcı"
-
-#: plugin.json
-msgctxt "name"
-msgid "Image Reader"
-msgstr "Resim Okuyucu"
-
-#: plugin.json
-msgctxt "name"
-msgid "Legacy Cura Profile Reader"
-msgstr "Eski Cura Profil Okuyucu"
-
-#: plugin.json
-msgctxt "description"
-msgid "Logs certain events so that they can be used by the crash reporter"
-msgstr "Çökme raporlayıcının kullanabilmesi için belirli olayları günlüğe kaydeder"
-
-#: plugin.json
-msgctxt "name"
-msgid "Machine Settings Action"
-msgstr "Makine Ayarları eylemi"
-
-#: plugin.json
-msgctxt "description"
-msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
-msgstr ""
-
-#: plugin.json
-msgctxt "description"
-msgid "Manages network connections to UltiMaker networked printers."
-msgstr ""
-
-#: plugin.json
-msgctxt "name"
-msgid "Marketplace"
-msgstr "Mağaza"
-
-#: plugin.json
-msgctxt "name"
-msgid "Material Profiles"
-msgstr "Malzeme Profilleri"
-
-#: plugin.json
-msgctxt "name"
-msgid "Model Checker"
-msgstr "Model Kontrol Edici"
-
-#: plugin.json
-msgctxt "name"
-msgid "Monitor Stage"
-msgstr "Görüntüleme Aşaması"
-
-#: plugin.json
-msgctxt "name"
-msgid "Per Model Settings Tool"
-msgstr "Model Başına Ayarlar Aracı"
-
-#: plugin.json
-msgctxt "name"
-msgid "Post Processing"
-msgstr "Son İşleme"
-
-#: plugin.json
-msgctxt "name"
-msgid "Prepare Stage"
-msgstr "Hazırlık Aşaması"
-
-#: plugin.json
-msgctxt "name"
-msgid "Preview Stage"
-msgstr "Öz İzleme Aşaması"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides a machine actions for updating firmware."
-msgstr "Aygıt yazılımını güncellemeye yönelik makine eylemleri sağlar."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides a monitor stage in Cura."
-msgstr "Cura’da görüntüleme aşaması sunar."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides a normal solid mesh view."
-msgstr "Normal gerçek bir ağ görünümü sağlar."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides a prepare stage in Cura."
-msgstr "Cura’da hazırlık aşaması sunar."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides a preview stage in Cura."
-msgstr "Cura’da ön izleme aşaması sunar."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc.)."
-msgstr "Makine ayarlarının değiştirilmesini sağlar (yapı hacmi, nozül boyutu vb.)"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides capabilities to read and write XML-based material profiles."
-msgstr "XML tabanlı malzeme profillerini okuma ve yazma olanağı sağlar."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
-msgstr "Ultimaker makineleri için makine eylemleri sunar (yatak dengeleme sihirbazı, yükseltme seçme vb.)"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides removable drive hotplugging and writing support."
-msgstr "Çıkarılabilir sürücünün takılıp çıkarılmasını ve yazma desteği sağlar."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for exporting Cura profiles."
-msgstr "Cura profillerinin dışa aktarılması için destek sağlar."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for importing Cura profiles."
-msgstr "Cura profillerinin içe aktarılması için destek sağlar."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for importing profiles from g-code files."
-msgstr "G-code dosyalarından profilleri içe aktarmak için destek sağlar."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for importing profiles from legacy Cura versions."
-msgstr "Eski Cura sürümlerinden profilleri içe aktarmak için destek sağlar."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for reading 3MF files."
-msgstr "3MF dosyalarının okunması için destek sağlar."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for reading AMF files."
-msgstr "AMF dosyalarının okunması için destek sağlar."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for reading Ultimaker Format Packages."
-msgstr "Ultimaker Biçim Paketlerinin okunması için destek sağlar."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for reading X3D files."
-msgstr "X3D dosyalarının okunması için destek sağlar."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for reading model files."
-msgstr "Model dosyalarını okuma desteği sağlar."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for writing 3MF files."
-msgstr "3MF dosyalarının yazılması için destek sağlar."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for writing Ultimaker Format Packages."
-msgstr "Ultimaker Biçim Paketleri yazmak için destek sağlar."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides the Per Model Settings."
-msgstr "Model Başına Ayarları sağlar."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides the X-Ray view."
-msgstr "Röntgen Görüntüsü sağlar."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides the link to the CuraEngine slicing backend."
-msgstr "CuraEngine arka dilimleme ucuna bağlantı sağlar."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides the preview of sliced layerdata."
-msgstr "Dilimlenen katman verilerinin önizlemesini sağlar."
-
-#: plugin.json
-msgctxt "description"
-msgid "Reads g-code from a compressed archive."
-msgstr "Bir sıkıştırılmış arşivden g-code okur."
-
-#: plugin.json
-msgctxt "name"
-msgid "Removable Drive Output Device Plugin"
-msgstr "Çıkarılabilir Sürücü Çıkış Cihazı Eklentisi"
-
-#: plugin.json
-msgctxt "name"
-msgid "Sentry Logger"
-msgstr "Nöbetçi Günlükçü"
-
-#: plugin.json
-msgctxt "name"
-msgid "Simulation View"
-msgstr "Simülasyon Görünümü"
-
-#: plugin.json
-msgctxt "name"
-msgid "Slice info"
-msgstr "Dilim bilgisi"
-
-#: plugin.json
-msgctxt "name"
-msgid "Solid View"
-msgstr "Gerçek Görünüm"
-
-#: plugin.json
-msgctxt "description"
-msgid "Submits anonymous slice info. Can be disabled through preferences."
-msgstr "Anonim dilim bilgisi gönderir. Tercihlerden devre dışı bırakılabilir."
-
-#: plugin.json
-msgctxt "name"
-msgid "Support Eraser"
-msgstr "Destek Silici"
-
-#: plugin.json
-msgctxt "name"
-msgid "Trimesh Reader"
-msgstr "Trimesh Okuyucu"
-
-#: plugin.json
-msgctxt "name"
-msgid "UFP Reader"
-msgstr "UFP Okuyucu"
-
-#: plugin.json
-msgctxt "name"
-msgid "UFP Writer"
-msgstr "UPF Yazıcı"
-
-#: plugin.json
-msgctxt "name"
-msgid "USB printing"
-msgstr "USB yazdırma"
-
-#: plugin.json
-msgctxt "name"
-msgid "UltiMaker Network Connection"
-msgstr "Ultimaker Ağ Bağlantısı"
-
-#: plugin.json
-msgctxt "name"
-msgid "UltiMaker machine actions"
-msgstr "Ultimaker makine eylemleri"
-
-#: plugin.json
-msgctxt "name"
-msgid "Ultimaker Digital Library"
-msgstr "Ultimaker Digital Library"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.1 to Cura 2.2."
-msgstr "Yapılandırmaları Cura 2.1’den Cura 2.2’ye yükseltir."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.2 to Cura 2.4."
-msgstr "Yapılandırmaları Cura 2.2’den Cura 2.4’e yükseltir."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.5 to Cura 2.6."
-msgstr "Yapılandırmaları Cura 2.5’ten Cura 2.6’ya yükseltir."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.6 to Cura 2.7."
-msgstr "Yapılandırmaları Cura 2.6’dan Cura 2.7’ye yükseltir."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.7 to Cura 3.0."
-msgstr "Yapılandırmaları Cura 2.7’den Cura 3.0’a yükseltir."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.0 to Cura 3.1."
-msgstr "Yapılandırmaları Cura 3.0'dan Cura 3.1'e yükseltir."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.2 to Cura 3.3."
-msgstr "Yapılandırmaları Cura 3.2’ten Cura 3.3’ya yükseltir."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.3 to Cura 3.4."
-msgstr "Yapılandırmaları Cura 3.3’ten Cura 3.4’ya yükseltir."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.4 to Cura 3.5."
-msgstr "Yapılandırmaları Cura 3.4’ten Cura 3.5’e yükseltir."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.5 to Cura 4.0."
-msgstr "Yapılandırmaları Cura 3.5’ten Cura 4.0’a yükseltir."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.0 to Cura 4.1."
-msgstr "Yapılandırmaları Cura 4.0’dan Cura 4.1’e yükseltir."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.1 to Cura 4.2."
-msgstr "Yapılandırmaları Cura 4.1'den Cura 4.2'ye yükseltir."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.11 to Cura 4.12."
-msgstr "Yapılandırmaları Cura 4.11'den Cura 4.12'ye yükseltir."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.13 to Cura 5.0."
-msgstr "Yapılandırmaları Cura 4.13'ten Cura 5.0'a yükseltir."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.2 to Cura 4.3."
-msgstr "Yapılandırmaları Cura 4.2'den Cura 4.3'e yükseltir."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.3 to Cura 4.4."
-msgstr "Yapılandırmaları Cura 4.3'ten Cura 4.4'e yükseltir."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.4 to Cura 4.5."
-msgstr "Yapılandırmaları Cura 4.4'ten Cura 4.5'e yükseltir."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.5 to Cura 4.6."
-msgstr "Yapılandırmaları Cura 4.5'ten Cura 4.6'ya yükseltir."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.6.0 to Cura 4.6.2."
-msgstr "Yapılandırmaları Cura 4.6.0'dan Cura 4.6.2'ye yükseltir."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.6.2 to Cura 4.7."
-msgstr "Yapılandırmaları Cura 4.6.2'den Cura 4.7'ye yükseltir."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.7 to Cura 4.8."
-msgstr "Yapılandırmaları Cura 4.7'den Cura 4.8'e yükseltir."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.8 to Cura 4.9."
-msgstr "Yapılandırmaları Cura 4.8'den Cura 4.9'a yükseltir."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.9 to Cura 4.10."
-msgstr "Yapılandırmaları Cura 4.9'dan Cura 4.10'a yükseltir."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 5.2 to Cura 5.3."
-msgstr "Yapılandırmaları Cura 5.2'dan Cura 5.3'a yükseltir."
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 2.1 to 2.2"
-msgstr "2.1’den 2.2’ye Sürüm Yükseltme"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 2.2 to 2.4"
-msgstr "2.2’den 2.4’e Sürüm Yükseltme"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 2.5 to 2.6"
-msgstr "2.5’ten 2.6’ya Sürüm Yükseltme"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 2.6 to 2.7"
-msgstr "2.6’dan 2.7’ye Sürüm Yükseltme"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 2.7 to 3.0"
-msgstr "2.7’den 3.0’a Sürüm Yükseltme"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 3.0 to 3.1"
-msgstr "3.0'dan 3.1'e Sürüm Yükseltme"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 3.2 to 3.3"
-msgstr "3.2'dan 3.3'e Sürüm Yükseltme"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 3.3 to 3.4"
-msgstr "3.3'dan 3.4'e Sürüm Yükseltme"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 3.4 to 3.5"
-msgstr "3.4’ten 3.5’e Sürüm Yükseltme"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 3.5 to 4.0"
-msgstr "3.5’ten 4.0’a Sürüm Yükseltme"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.0 to 4.1"
-msgstr "4.0’dan 4.1’e Sürüm Yükseltme"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.1 to 4.2"
-msgstr "Sürüm 4.1'den 4.2'ye Yükseltme"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.11 to 4.12"
-msgstr "4.11'den 4.12'ye Sürüm Yükseltme"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.13 to 5.0"
-msgstr "4.13'ten 5.0'a Sürüm Yükseltme"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.2 to 4.3"
-msgstr "4.2'den 4.3'e Sürüm Yükseltme"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.3 to 4.4"
-msgstr "4.3'ten 4.4'e Sürüm Yükseltme"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.4 to 4.5"
-msgstr "4.4'ten 4.5'e Sürüm Yükseltme"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.5 to 4.6"
-msgstr "4.5'ten 4.6'ya Sürüm Yükseltme"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.6.0 to 4.6.2"
-msgstr "4.6.0'dan 4.6.2'ye Sürüm Yükseltme"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.6.2 to 4.7"
-msgstr "4.6.2'den 4.7'ye Sürüm Yükseltme"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.7 to 4.8"
-msgstr "4.7'den 4.8'e Sürüm Yükseltme"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.8 to 4.9"
-msgstr "4.8'den 4.9'a Sürüm Yükseltme"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.9 to 4.10"
-msgstr "4.9'dan 4.10'a Sürüm Yükseltme"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 5.2 to 5.3"
-msgstr "5.2'dan 5.3'a Sürüm Yükseltme"
-
-#: plugin.json
-msgctxt "description"
-msgid "Writes g-code to a compressed archive."
-msgstr "G-code’u bir sıkıştırılmış arşive yazar."
-
-#: plugin.json
-msgctxt "description"
-msgid "Writes g-code to a file."
-msgstr "G-code’u bir dosyaya yazar."
-
-#: plugin.json
-msgctxt "name"
-msgid "X-Ray View"
-msgstr "Röntgen Görüntüsü"
-
-#: plugin.json
-msgctxt "name"
-msgid "X3D Reader"
-msgstr "X3D Okuyucu"
-
 #: plugins/3MFReader/ThreeMFWorkspaceReader.py:547
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
@@ -1665,6 +1028,16 @@ msgctxt "@item:inlistbox"
 msgid "3MF File"
 msgstr "3MF Dosyası"
 
+#: plugins/3MFReader/plugin.json
+msgctxt "name"
+msgid "3MF Reader"
+msgstr "3MF Okuyucu"
+
+#: plugins/3MFReader/plugin.json
+msgctxt "description"
+msgid "Provides support for reading 3MF files."
+msgstr "3MF dosyalarının okunması için destek sağlar."
+
 #: plugins/3MFWriter/ThreeMFWorkspaceWriter.py:31
 msgctxt "@error:zip"
 msgid "3MF Writer plug-in is corrupt."
@@ -1701,10 +1074,40 @@ msgctxt "@item:inlistbox"
 msgid "Cura Project 3MF file"
 msgstr "Cura Projesi 3MF dosyası"
 
+#: plugins/3MFWriter/plugin.json
+msgctxt "name"
+msgid "3MF Writer"
+msgstr "3MF Yazıcı"
+
+#: plugins/3MFWriter/plugin.json
+msgctxt "description"
+msgid "Provides support for writing 3MF files."
+msgstr "3MF dosyalarının yazılması için destek sağlar."
+
 #: plugins/AMFReader/__init__.py:15
 msgctxt "@item:inlistbox"
 msgid "AMF File"
 msgstr "AMF Dosyası"
+
+#: plugins/AMFReader/plugin.json
+msgctxt "name"
+msgid "AMF Reader"
+msgstr "AMF Okuyucu"
+
+#: plugins/AMFReader/plugin.json
+msgctxt "description"
+msgid "Provides support for reading AMF files."
+msgstr "AMF dosyalarının okunması için destek sağlar."
+
+#: plugins/CuraDrive/plugin.json
+msgctxt "description"
+msgid "Backup and restore your configuration."
+msgstr "Yapılandırmanızı yedekleyin ve geri yükleyin."
+
+#: plugins/CuraDrive/plugin.json
+msgctxt "name"
+msgid "Cura Backups"
+msgstr "Cura Yedeklemeleri"
 
 #: plugins/CuraDrive/src/CreateBackupJob.py:25
 msgctxt "@info:title"
@@ -1937,11 +1340,51 @@ msgctxt "@info:title"
 msgid "Information"
 msgstr "Bilgi"
 
+#: plugins/CuraEngineBackend/plugin.json
+msgctxt "name"
+msgid "CuraEngine Backend"
+msgstr "CuraEngine Arka Uç"
+
+#: plugins/CuraEngineBackend/plugin.json
+msgctxt "description"
+msgid "Provides the link to the CuraEngine slicing backend."
+msgstr "CuraEngine arka dilimleme ucuna bağlantı sağlar."
+
 #: plugins/CuraProfileReader/__init__.py:14
 #: plugins/CuraProfileWriter/__init__.py:14
 msgctxt "@item:inlistbox"
 msgid "Cura Profile"
 msgstr "Cura Profili"
+
+#: plugins/CuraProfileReader/plugin.json
+msgctxt "name"
+msgid "Cura Profile Reader"
+msgstr "Cura Profil Okuyucu"
+
+#: plugins/CuraProfileReader/plugin.json
+msgctxt "description"
+msgid "Provides support for importing Cura profiles."
+msgstr "Cura profillerinin içe aktarılması için destek sağlar."
+
+#: plugins/CuraProfileWriter/plugin.json
+msgctxt "name"
+msgid "Cura Profile Writer"
+msgstr "Cura Profili Yazıcı"
+
+#: plugins/CuraProfileWriter/plugin.json
+msgctxt "description"
+msgid "Provides support for exporting Cura profiles."
+msgstr "Cura profillerinin dışa aktarılması için destek sağlar."
+
+#: plugins/DigitalLibrary/plugin.json
+msgctxt "description"
+msgid "Connects to the Digital Library, allowing Cura to open files from and save files to the Digital Library."
+msgstr "Digital Library'ye bağlanarak Cura'nın Digital Library'deki dosyaları açmasına ve kaydetmesine olanak tanır."
+
+#: plugins/DigitalLibrary/plugin.json
+msgctxt "name"
+msgid "Ultimaker Digital Library"
+msgstr "Ultimaker Digital Library"
 
 #: plugins/DigitalLibrary/resources/qml/SaveProjectFilesPage.qml:216
 msgctxt "@option"
@@ -1979,6 +1422,16 @@ msgstr "Yeni %s istikrarlı donanım yazılımı yayınlandı"
 msgctxt "@action:button"
 msgid "How to update"
 msgstr "Nasıl güncellenir"
+
+#: plugins/FirmwareUpdateChecker/plugin.json
+msgctxt "description"
+msgid "Checks for firmware updates."
+msgstr "Bellenim güncellemelerini denetler."
+
+#: plugins/FirmwareUpdateChecker/plugin.json
+msgctxt "name"
+msgid "Firmware Update Checker"
+msgstr "Bellenim Güncelleme Denetleyicisi"
 
 #: plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.py:27
 msgctxt "@action"
@@ -2060,21 +1513,61 @@ msgctxt "@label"
 msgid "Firmware update failed due to missing firmware."
 msgstr "Eksik aygıt yazılımı nedeniyle aygıt yazılımı güncellemesi başarısız oldu."
 
+#: plugins/FirmwareUpdater/plugin.json
+msgctxt "name"
+msgid "Firmware Updater"
+msgstr "Aygıt Yazılımı Güncelleyici"
+
+#: plugins/FirmwareUpdater/plugin.json
+msgctxt "description"
+msgid "Provides a machine actions for updating firmware."
+msgstr "Aygıt yazılımını güncellemeye yönelik makine eylemleri sağlar."
+
 #: plugins/GCodeGzReader/__init__.py:17 plugins/GCodeGzWriter/__init__.py:17
 msgctxt "@item:inlistbox"
 msgid "Compressed G-code File"
 msgstr "Sıkıştırılmış G-code Dosyası"
+
+#: plugins/GCodeGzReader/plugin.json
+msgctxt "name"
+msgid "Compressed G-code Reader"
+msgstr "Sıkıştırılmış G-code Okuyucusu"
+
+#: plugins/GCodeGzReader/plugin.json
+msgctxt "description"
+msgid "Reads g-code from a compressed archive."
+msgstr "Bir sıkıştırılmış arşivden g-code okur."
 
 #: plugins/GCodeGzWriter/GCodeGzWriter.py:43
 msgctxt "@error:not supported"
 msgid "GCodeGzWriter does not support text mode."
 msgstr "GCodeGzWriter yazı modunu desteklemez."
 
+#: plugins/GCodeGzWriter/plugin.json
+msgctxt "name"
+msgid "Compressed G-code Writer"
+msgstr "Sıkıştırılmış G-code Yazıcısı"
+
+#: plugins/GCodeGzWriter/plugin.json
+msgctxt "description"
+msgid "Writes g-code to a compressed archive."
+msgstr "G-code’u bir sıkıştırılmış arşive yazar."
+
 #: plugins/GCodeProfileReader/__init__.py:14 plugins/GCodeReader/__init__.py:14
 #: plugins/GCodeWriter/__init__.py:16
 msgctxt "@item:inlistbox"
 msgid "G-code File"
 msgstr "G-code dosyası"
+
+#: plugins/GCodeProfileReader/plugin.json
+msgctxt "name"
+msgid "G-code Profile Reader"
+msgstr "G-code Profil Okuyucu"
+
+#: plugins/GCodeProfileReader/plugin.json
+msgctxt "description"
+msgid "Provides support for importing profiles from g-code files."
+msgstr "G-code dosyalarından profilleri içe aktarmak için destek sağlar."
 
 #: plugins/GCodeReader/FlavorParser.py:359
 msgctxt "@info:status"
@@ -2097,6 +1590,16 @@ msgctxt "@item:inlistbox"
 msgid "G File"
 msgstr "G Dosyası"
 
+#: plugins/GCodeReader/plugin.json
+msgctxt "description"
+msgid "Allows loading and displaying G-code files."
+msgstr "G-code dosyalarının yüklenmesine ve görüntülenmesine olanak tanır."
+
+#: plugins/GCodeReader/plugin.json
+msgctxt "name"
+msgid "G-code Reader"
+msgstr "G-code Okuyucu"
+
 #: plugins/GCodeWriter/GCodeWriter.py:75
 msgctxt "@error:not supported"
 msgid "GCodeWriter does not support non-text mode."
@@ -2106,6 +1609,16 @@ msgstr "GCodeWriter metin dışı modu desteklemez."
 msgctxt "@warning:status"
 msgid "Please prepare G-code before exporting."
 msgstr "Lütfen dışa aktarmadan önce G-code'u hazırlayın."
+
+#: plugins/GCodeWriter/plugin.json
+msgctxt "name"
+msgid "G-code Writer"
+msgstr "G-code Yazıcı"
+
+#: plugins/GCodeWriter/plugin.json
+msgctxt "description"
+msgid "Writes g-code to a file."
+msgstr "G-code’u bir dosyaya yazar."
 
 #: plugins/ImageReader/ConfigUI.qml:14
 msgctxt "@title:window"
@@ -2239,10 +1752,30 @@ msgctxt "@item:inlistbox"
 msgid "GIF Image"
 msgstr "GIF Resmi"
 
+#: plugins/ImageReader/plugin.json
+msgctxt "description"
+msgid "Enables ability to generate printable geometry from 2D image files."
+msgstr "2D resim dosyasından yazdırılabilir geometri oluşturulmasını sağlar."
+
+#: plugins/ImageReader/plugin.json
+msgctxt "name"
+msgid "Image Reader"
+msgstr "Resim Okuyucu"
+
 #: plugins/LegacyProfileReader/__init__.py:14
 msgctxt "@item:inlistbox"
 msgid "Cura 15.04 profiles"
 msgstr "Cura 15.04 profilleri"
+
+#: plugins/LegacyProfileReader/plugin.json
+msgctxt "name"
+msgid "Legacy Cura Profile Reader"
+msgstr "Eski Cura Profil Okuyucu"
+
+#: plugins/LegacyProfileReader/plugin.json
+msgctxt "description"
+msgid "Provides support for importing profiles from legacy Cura versions."
+msgstr "Eski Cura sürümlerinden profilleri içe aktarmak için destek sağlar."
 
 #: plugins/MachineSettingsAction/MachineSettingsAction.py:32
 msgctxt "@action"
@@ -2407,6 +1940,16 @@ msgctxt "@title:label"
 msgid "End G-code"
 msgstr "G-code’u Sonlandır"
 
+#: plugins/MachineSettingsAction/plugin.json
+msgctxt "name"
+msgid "Machine Settings Action"
+msgstr "Makine Ayarları eylemi"
+
+#: plugins/MachineSettingsAction/plugin.json
+msgctxt "description"
+msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc.)."
+msgstr "Makine ayarlarının değiştirilmesini sağlar (yapı hacmi, nozül boyutu vb.)"
+
 #: plugins/Marketplace/CloudSync/CloudPackageChecker.py:144
 msgctxt "@info:generic"
 msgid "Do you want to sync material and software packages with your account?"
@@ -2504,6 +2047,16 @@ msgstr "Sunucunun yanıtı yorumlanamadı."
 msgctxt "@info:error"
 msgid "Could not reach Marketplace."
 msgstr "Pazar Yerine ulaşılamadı."
+
+#: plugins/Marketplace/plugin.json
+msgctxt "description"
+msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
+msgstr ""
+
+#: plugins/Marketplace/plugin.json
+msgctxt "name"
+msgid "Marketplace"
+msgstr "Mağaza"
 
 #: plugins/Marketplace/resources/qml/CompatibilityDialog.qml:15
 msgctxt "@title"
@@ -2825,6 +2378,16 @@ msgstr ""
 "<p>En iyi kalite ve güvenilirliği nasıl elde edeceğinizi öğrenin.</p>\n"
 "<p><a href=\"https://ultimaker.com/3D-model-assistant\">Yazdırma kalitesi kılavuzunu görüntüleyin</a></p>"
 
+#: plugins/ModelChecker/plugin.json
+msgctxt "description"
+msgid "Checks models and print configuration for possible printing issues and give suggestions."
+msgstr "Olası yazdırma sorunlarına karşı modelleri ve yazdırma yapılandırmasını kontrol eder ve öneriler verir."
+
+#: plugins/ModelChecker/plugin.json
+msgctxt "name"
+msgid "Model Checker"
+msgstr "Model Kontrol Edici"
+
 #: plugins/MonitorStage/MonitorMain.qml:100
 msgctxt "@info"
 msgid ""
@@ -2857,6 +2420,16 @@ msgstr "Baskınızı Cura üzerinden izlemek için lütfen yazıcıyı bağlayı
 msgctxt "@item:inmenu"
 msgid "Monitor"
 msgstr "Görüntüle"
+
+#: plugins/MonitorStage/plugin.json
+msgctxt "name"
+msgid "Monitor Stage"
+msgstr "Görüntüleme Aşaması"
+
+#: plugins/MonitorStage/plugin.json
+msgctxt "description"
+msgid "Provides a monitor stage in Cura."
+msgstr "Cura’da görüntüleme aşaması sunar."
 
 #: plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:41
 msgctxt "@label"
@@ -2924,6 +2497,16 @@ msgctxt "@info:tooltip"
 msgid "Configure Per Model Settings"
 msgstr "Model Başına Ayarları Yapılandır"
 
+#: plugins/PerObjectSettingsTool/plugin.json
+msgctxt "name"
+msgid "Per Model Settings Tool"
+msgstr "Model Başına Ayarlar Aracı"
+
+#: plugins/PerObjectSettingsTool/plugin.json
+msgctxt "description"
+msgid "Provides the Per Model Settings."
+msgstr "Model Başına Ayarları sağlar."
+
 #: plugins/PostProcessingPlugin/PostProcessingPlugin.py:35
 msgctxt "@item:inmenu"
 msgid "Post Processing"
@@ -2966,6 +2549,16 @@ msgid_plural "The following scripts are active:"
 msgstr[0] "Aşağıdaki komut dosyası etkin:"
 msgstr[1] "Aşağıdaki komut dosyaları etkin:"
 
+#: plugins/PostProcessingPlugin/plugin.json
+msgctxt "description"
+msgid "Extension that allows for user created scripts for post processing"
+msgstr "Kullanıcının oluşturduğu komut dosyalarına son işleme için izin veren uzantı"
+
+#: plugins/PostProcessingPlugin/plugin.json
+msgctxt "name"
+msgid "Post Processing"
+msgstr "Son İşleme"
+
 #: plugins/PrepareStage/PrepareMenu.qml:74
 msgctxt "@button"
 msgid "Add printer"
@@ -2981,10 +2574,30 @@ msgctxt "@item:inmenu"
 msgid "Prepare"
 msgstr "Hazırla"
 
+#: plugins/PrepareStage/plugin.json
+msgctxt "name"
+msgid "Prepare Stage"
+msgstr "Hazırlık Aşaması"
+
+#: plugins/PrepareStage/plugin.json
+msgctxt "description"
+msgid "Provides a prepare stage in Cura."
+msgstr "Cura’da hazırlık aşaması sunar."
+
 #: plugins/PreviewStage/__init__.py:13
 msgctxt "@item:inmenu"
 msgid "Preview"
 msgstr "Önizleme"
+
+#: plugins/PreviewStage/plugin.json
+msgctxt "name"
+msgid "Preview Stage"
+msgstr "Öz İzleme Aşaması"
+
+#: plugins/PreviewStage/plugin.json
+msgctxt "description"
+msgid "Provides a preview stage in Cura."
+msgstr "Cura’da ön izleme aşaması sunar."
 
 #: plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:23
 msgctxt "@action:button Preceded by 'Ready to'."
@@ -3077,6 +2690,26 @@ msgstr "Çıkarma işlemi başarısız oldu {0}. Başka bir program sürücüyü
 msgctxt "@item:intext"
 msgid "Removable Drive"
 msgstr "Çıkarılabilir Sürücü"
+
+#: plugins/RemovableDriveOutputDevice/plugin.json
+msgctxt "description"
+msgid "Provides removable drive hotplugging and writing support."
+msgstr "Çıkarılabilir sürücünün takılıp çıkarılmasını ve yazma desteği sağlar."
+
+#: plugins/RemovableDriveOutputDevice/plugin.json
+msgctxt "name"
+msgid "Removable Drive Output Device Plugin"
+msgstr "Çıkarılabilir Sürücü Çıkış Cihazı Eklentisi"
+
+#: plugins/SentryLogger/plugin.json
+msgctxt "description"
+msgid "Logs certain events so that they can be used by the crash reporter"
+msgstr "Çökme raporlayıcının kullanabilmesi için belirli olayları günlüğe kaydeder"
+
+#: plugins/SentryLogger/plugin.json
+msgctxt "name"
+msgid "Sentry Logger"
+msgstr "Nöbetçi Günlükçü"
 
 #: plugins/SimulationView/SimulationView.py:129
 msgctxt "@info:status"
@@ -3205,6 +2838,16 @@ msgctxt "@item:inlistbox"
 msgid "Layer view"
 msgstr "Katman görünümü"
 
+#: plugins/SimulationView/plugin.json
+msgctxt "description"
+msgid "Provides the preview of sliced layerdata."
+msgstr "Dilimlenen katman verilerinin önizlemesini sağlar."
+
+#: plugins/SimulationView/plugin.json
+msgctxt "name"
+msgid "Simulation View"
+msgstr "Simülasyon Görünümü"
+
 #: plugins/SliceInfoPlugin/MoreInfoWindow.qml:16
 msgctxt "@title:window"
 msgid "More information on anonymous data collection"
@@ -3230,6 +2873,16 @@ msgctxt "@text"
 msgid "Unable to read example data file."
 msgstr "Örnek veri dosyası okunamıyor."
 
+#: plugins/SliceInfoPlugin/plugin.json
+msgctxt "name"
+msgid "Slice info"
+msgstr "Dilim bilgisi"
+
+#: plugins/SliceInfoPlugin/plugin.json
+msgctxt "description"
+msgid "Submits anonymous slice info. Can be disabled through preferences."
+msgstr "Anonim dilim bilgisi gönderir. Tercihlerden devre dışı bırakılabilir."
+
 #: plugins/SolidView/SolidView.py:71
 msgctxt "@info:status"
 msgid "The highlighted areas indicate either missing or extraneous surfaces. Fix your model and open it again into Cura."
@@ -3245,6 +2898,16 @@ msgctxt "@item:inmenu"
 msgid "Solid view"
 msgstr "Gerçek görünüm"
 
+#: plugins/SolidView/plugin.json
+msgctxt "description"
+msgid "Provides a normal solid mesh view."
+msgstr "Normal gerçek bir ağ görünümü sağlar."
+
+#: plugins/SolidView/plugin.json
+msgctxt "name"
+msgid "Solid View"
+msgstr "Gerçek Görünüm"
+
 #: plugins/SupportEraser/__init__.py:12
 msgctxt "@label"
 msgid "Support Blocker"
@@ -3254,6 +2917,16 @@ msgstr "Destek Engelleyici"
 msgctxt "@info:tooltip"
 msgid "Create a volume in which supports are not printed."
 msgstr "Desteklerin yazdırılmadığı bir hacim oluşturun."
+
+#: plugins/SupportEraser/plugin.json
+msgctxt "description"
+msgid "Creates an eraser mesh to block the printing of support in certain places"
+msgstr "Belirli yerlerde desteğin yazdırılmasını engellemek için bir silici yüzey oluşturur"
+
+#: plugins/SupportEraser/plugin.json
+msgctxt "name"
+msgid "Support Eraser"
+msgstr "Destek Silici"
 
 #: plugins/TrimeshReader/__init__.py:15
 msgctxt "@item:inlistbox 'Open' is part of the name of this file format."
@@ -3285,10 +2958,30 @@ msgctxt "@item:inlistbox"
 msgid "Compressed COLLADA Digital Asset Exchange"
 msgstr "Compressed COLLADA Digital Asset Exchange"
 
+#: plugins/TrimeshReader/plugin.json
+msgctxt "description"
+msgid "Provides support for reading model files."
+msgstr "Model dosyalarını okuma desteği sağlar."
+
+#: plugins/TrimeshReader/plugin.json
+msgctxt "name"
+msgid "Trimesh Reader"
+msgstr "Trimesh Okuyucu"
+
 #: plugins/UFPReader/__init__.py:22 plugins/UFPWriter/__init__.py:28
 msgctxt "@item:inlistbox"
 msgid "UltiMaker Format Package"
 msgstr "Ultimaker Biçim Paketi"
+
+#: plugins/UFPReader/plugin.json
+msgctxt "description"
+msgid "Provides support for reading Ultimaker Format Packages."
+msgstr "Ultimaker Biçim Paketlerinin okunması için destek sağlar."
+
+#: plugins/UFPReader/plugin.json
+msgctxt "name"
+msgid "UFP Reader"
+msgstr "UFP Okuyucu"
 
 #: plugins/UFPWriter/UFPWriter.py:64 plugins/UFPWriter/UFPWriter.py:80
 #: plugins/UFPWriter/UFPWriter.py:93 plugins/UFPWriter/UFPWriter.py:115
@@ -3296,6 +2989,26 @@ msgstr "Ultimaker Biçim Paketi"
 msgctxt "@info:error"
 msgid "Can't write to UFP file:"
 msgstr "UFP dosyasına yazamıyor:"
+
+#: plugins/UFPWriter/plugin.json
+msgctxt "description"
+msgid "Provides support for writing Ultimaker Format Packages."
+msgstr "Ultimaker Biçim Paketleri yazmak için destek sağlar."
+
+#: plugins/UFPWriter/plugin.json
+msgctxt "name"
+msgid "UFP Writer"
+msgstr "UPF Yazıcı"
+
+#: plugins/UM3NetworkPrinting/plugin.json
+msgctxt "description"
+msgid "Manages network connections to UltiMaker networked printers."
+msgstr ""
+
+#: plugins/UM3NetworkPrinting/plugin.json
+msgctxt "name"
+msgid "UltiMaker Network Connection"
+msgstr "Ultimaker Ağ Bağlantısı"
 
 #: plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:44
 msgctxt "@title:window"
@@ -3595,8 +3308,7 @@ msgstr "Yazıcıyı yönet"
 #: plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:280
 msgctxt "@info"
 msgid "Webcam feeds for cloud printers cannot be viewed from UltiMaker Cura. Click \"Manage printer\" to visit Ultimaker Digital Factory and view this webcam."
-msgstr "Bulut yazıcıları için web kamerası akışları Ultimaker Cura'dan görüntülenemez. Ultimaker Digital Factory'i ziyaret etmek ve bu web kamerasını görüntülemek"
-" için \"Yazıcıyı Yönet\"i tıklayın."
+msgstr "Bulut yazıcıları için web kamerası akışları Ultimaker Cura'dan görüntülenemez. Ultimaker Digital Factory'i ziyaret etmek ve bu web kamerasını görüntülemek için \"Yazıcıyı Yönet\"i tıklayın."
 
 #: plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:340
 msgctxt "@label:status"
@@ -4035,6 +3747,16 @@ msgctxt "@message"
 msgid "Print in Progress"
 msgstr "Baskı Sürüyor"
 
+#: plugins/USBPrinting/plugin.json
+msgctxt "description"
+msgid "Accepts G-Code and sends them to a printer. Plugin can also update firmware."
+msgstr "G-Code’ları kabul eder ve bir yazıcıya gönderir. Eklenti aynı zamanda üretici sürümünü güncelleyebilir."
+
+#: plugins/USBPrinting/plugin.json
+msgctxt "name"
+msgid "USB printing"
+msgstr "USB yazdırma"
+
 #: plugins/UltimakerMachineActions/BedLevelMachineAction.py:24
 msgctxt "@action"
 msgid "Level build plate"
@@ -4080,15 +3802,295 @@ msgctxt "@label"
 msgid "Heated Build Plate (official kit or self-built)"
 msgstr "Isıtılmış Yapı Levhası (orijinal donanım veya şahsen yapılan)"
 
+#: plugins/UltimakerMachineActions/plugin.json
+msgctxt "description"
+msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
+msgstr "Ultimaker makineleri için makine eylemleri sunar (yatak dengeleme sihirbazı, yükseltme seçme vb.)"
+
+#: plugins/UltimakerMachineActions/plugin.json
+msgctxt "name"
+msgid "UltiMaker machine actions"
+msgstr "Ultimaker makine eylemleri"
+
+#: plugins/VersionUpgrade/VersionUpgrade21to22/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.1 to Cura 2.2."
+msgstr "Yapılandırmaları Cura 2.1’den Cura 2.2’ye yükseltir."
+
+#: plugins/VersionUpgrade/VersionUpgrade21to22/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 2.1 to 2.2"
+msgstr "2.1’den 2.2’ye Sürüm Yükseltme"
+
+#: plugins/VersionUpgrade/VersionUpgrade22to24/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.2 to Cura 2.4."
+msgstr "Yapılandırmaları Cura 2.2’den Cura 2.4’e yükseltir."
+
+#: plugins/VersionUpgrade/VersionUpgrade22to24/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 2.2 to 2.4"
+msgstr "2.2’den 2.4’e Sürüm Yükseltme"
+
+#: plugins/VersionUpgrade/VersionUpgrade25to26/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.5 to Cura 2.6."
+msgstr "Yapılandırmaları Cura 2.5’ten Cura 2.6’ya yükseltir."
+
+#: plugins/VersionUpgrade/VersionUpgrade25to26/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 2.5 to 2.6"
+msgstr "2.5’ten 2.6’ya Sürüm Yükseltme"
+
+#: plugins/VersionUpgrade/VersionUpgrade26to27/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.6 to Cura 2.7."
+msgstr "Yapılandırmaları Cura 2.6’dan Cura 2.7’ye yükseltir."
+
+#: plugins/VersionUpgrade/VersionUpgrade26to27/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 2.6 to 2.7"
+msgstr "2.6’dan 2.7’ye Sürüm Yükseltme"
+
+#: plugins/VersionUpgrade/VersionUpgrade27to30/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.7 to Cura 3.0."
+msgstr "Yapılandırmaları Cura 2.7’den Cura 3.0’a yükseltir."
+
+#: plugins/VersionUpgrade/VersionUpgrade27to30/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 2.7 to 3.0"
+msgstr "2.7’den 3.0’a Sürüm Yükseltme"
+
+#: plugins/VersionUpgrade/VersionUpgrade30to31/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.0 to Cura 3.1."
+msgstr "Yapılandırmaları Cura 3.0'dan Cura 3.1'e yükseltir."
+
+#: plugins/VersionUpgrade/VersionUpgrade30to31/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 3.0 to 3.1"
+msgstr "3.0'dan 3.1'e Sürüm Yükseltme"
+
+#: plugins/VersionUpgrade/VersionUpgrade32to33/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.2 to Cura 3.3."
+msgstr "Yapılandırmaları Cura 3.2’ten Cura 3.3’ya yükseltir."
+
+#: plugins/VersionUpgrade/VersionUpgrade32to33/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 3.2 to 3.3"
+msgstr "3.2'dan 3.3'e Sürüm Yükseltme"
+
+#: plugins/VersionUpgrade/VersionUpgrade33to34/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.3 to Cura 3.4."
+msgstr "Yapılandırmaları Cura 3.3’ten Cura 3.4’ya yükseltir."
+
+#: plugins/VersionUpgrade/VersionUpgrade33to34/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 3.3 to 3.4"
+msgstr "3.3'dan 3.4'e Sürüm Yükseltme"
+
+#: plugins/VersionUpgrade/VersionUpgrade34to35/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.4 to Cura 3.5."
+msgstr "Yapılandırmaları Cura 3.4’ten Cura 3.5’e yükseltir."
+
+#: plugins/VersionUpgrade/VersionUpgrade34to35/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 3.4 to 3.5"
+msgstr "3.4’ten 3.5’e Sürüm Yükseltme"
+
+#: plugins/VersionUpgrade/VersionUpgrade35to40/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.5 to Cura 4.0."
+msgstr "Yapılandırmaları Cura 3.5’ten Cura 4.0’a yükseltir."
+
+#: plugins/VersionUpgrade/VersionUpgrade35to40/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 3.5 to 4.0"
+msgstr "3.5’ten 4.0’a Sürüm Yükseltme"
+
+#: plugins/VersionUpgrade/VersionUpgrade40to41/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.0 to Cura 4.1."
+msgstr "Yapılandırmaları Cura 4.0’dan Cura 4.1’e yükseltir."
+
+#: plugins/VersionUpgrade/VersionUpgrade40to41/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.0 to 4.1"
+msgstr "4.0’dan 4.1’e Sürüm Yükseltme"
+
+#: plugins/VersionUpgrade/VersionUpgrade411to412/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.11 to Cura 4.12."
+msgstr "Yapılandırmaları Cura 4.11'den Cura 4.12'ye yükseltir."
+
+#: plugins/VersionUpgrade/VersionUpgrade411to412/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.11 to 4.12"
+msgstr "4.11'den 4.12'ye Sürüm Yükseltme"
+
+#: plugins/VersionUpgrade/VersionUpgrade413to50/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.13 to Cura 5.0."
+msgstr "Yapılandırmaları Cura 4.13'ten Cura 5.0'a yükseltir."
+
+#: plugins/VersionUpgrade/VersionUpgrade413to50/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.13 to 5.0"
+msgstr "4.13'ten 5.0'a Sürüm Yükseltme"
+
+#: plugins/VersionUpgrade/VersionUpgrade41to42/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.1 to Cura 4.2."
+msgstr "Yapılandırmaları Cura 4.1'den Cura 4.2'ye yükseltir."
+
+#: plugins/VersionUpgrade/VersionUpgrade41to42/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.1 to 4.2"
+msgstr "Sürüm 4.1'den 4.2'ye Yükseltme"
+
+#: plugins/VersionUpgrade/VersionUpgrade42to43/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.2 to Cura 4.3."
+msgstr "Yapılandırmaları Cura 4.2'den Cura 4.3'e yükseltir."
+
+#: plugins/VersionUpgrade/VersionUpgrade42to43/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.2 to 4.3"
+msgstr "4.2'den 4.3'e Sürüm Yükseltme"
+
+#: plugins/VersionUpgrade/VersionUpgrade43to44/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.3 to Cura 4.4."
+msgstr "Yapılandırmaları Cura 4.3'ten Cura 4.4'e yükseltir."
+
+#: plugins/VersionUpgrade/VersionUpgrade43to44/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.3 to 4.4"
+msgstr "4.3'ten 4.4'e Sürüm Yükseltme"
+
+#: plugins/VersionUpgrade/VersionUpgrade44to45/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.4 to Cura 4.5."
+msgstr "Yapılandırmaları Cura 4.4'ten Cura 4.5'e yükseltir."
+
+#: plugins/VersionUpgrade/VersionUpgrade44to45/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.4 to 4.5"
+msgstr "4.4'ten 4.5'e Sürüm Yükseltme"
+
+#: plugins/VersionUpgrade/VersionUpgrade45to46/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.5 to Cura 4.6."
+msgstr "Yapılandırmaları Cura 4.5'ten Cura 4.6'ya yükseltir."
+
+#: plugins/VersionUpgrade/VersionUpgrade45to46/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.5 to 4.6"
+msgstr "4.5'ten 4.6'ya Sürüm Yükseltme"
+
+#: plugins/VersionUpgrade/VersionUpgrade460to462/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.6.0 to Cura 4.6.2."
+msgstr "Yapılandırmaları Cura 4.6.0'dan Cura 4.6.2'ye yükseltir."
+
+#: plugins/VersionUpgrade/VersionUpgrade460to462/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.6.0 to 4.6.2"
+msgstr "4.6.0'dan 4.6.2'ye Sürüm Yükseltme"
+
+#: plugins/VersionUpgrade/VersionUpgrade462to47/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.6.2 to Cura 4.7."
+msgstr "Yapılandırmaları Cura 4.6.2'den Cura 4.7'ye yükseltir."
+
+#: plugins/VersionUpgrade/VersionUpgrade462to47/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.6.2 to 4.7"
+msgstr "4.6.2'den 4.7'ye Sürüm Yükseltme"
+
+#: plugins/VersionUpgrade/VersionUpgrade47to48/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.7 to Cura 4.8."
+msgstr "Yapılandırmaları Cura 4.7'den Cura 4.8'e yükseltir."
+
+#: plugins/VersionUpgrade/VersionUpgrade47to48/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.7 to 4.8"
+msgstr "4.7'den 4.8'e Sürüm Yükseltme"
+
+#: plugins/VersionUpgrade/VersionUpgrade48to49/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.8 to Cura 4.9."
+msgstr "Yapılandırmaları Cura 4.8'den Cura 4.9'a yükseltir."
+
+#: plugins/VersionUpgrade/VersionUpgrade48to49/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.8 to 4.9"
+msgstr "4.8'den 4.9'a Sürüm Yükseltme"
+
+#: plugins/VersionUpgrade/VersionUpgrade49to410/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.9 to Cura 4.10."
+msgstr "Yapılandırmaları Cura 4.9'dan Cura 4.10'a yükseltir."
+
+#: plugins/VersionUpgrade/VersionUpgrade49to410/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.9 to 4.10"
+msgstr "4.9'dan 4.10'a Sürüm Yükseltme"
+
+#: plugins/VersionUpgrade/VersionUpgrade52to53/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.2 to Cura 5.3."
+msgstr "Yapılandırmaları Cura 5.2'dan Cura 5.3'a yükseltir."
+
+#: plugins/VersionUpgrade/VersionUpgrade52to53/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 5.2 to 5.3"
+msgstr "5.2'dan 5.3'a Sürüm Yükseltme"
+
 #: plugins/X3DReader/__init__.py:13
 msgctxt "@item:inlistbox"
 msgid "X3D File"
 msgstr "X3D Dosyası"
 
+#: plugins/X3DReader/plugin.json
+msgctxt "description"
+msgid "Provides support for reading X3D files."
+msgstr "X3D dosyalarının okunması için destek sağlar."
+
+#: plugins/X3DReader/plugin.json
+msgctxt "name"
+msgid "X3D Reader"
+msgstr "X3D Okuyucu"
+
 #: plugins/XRayView/__init__.py:12
 msgctxt "@item:inlistbox"
 msgid "X-Ray view"
 msgstr "Röntgen Görüntüsü"
+
+#: plugins/XRayView/plugin.json
+msgctxt "description"
+msgid "Provides the X-Ray view."
+msgstr "Röntgen Görüntüsü sağlar."
+
+#: plugins/XRayView/plugin.json
+msgctxt "name"
+msgid "X-Ray View"
+msgstr "Röntgen Görüntüsü"
+
+#: plugins/XmlMaterialProfile/plugin.json
+msgctxt "name"
+msgid "Material Profiles"
+msgstr "Malzeme Profilleri"
+
+#: plugins/XmlMaterialProfile/plugin.json
+msgctxt "description"
+msgid "Provides capabilities to read and write XML-based material profiles."
+msgstr "XML tabanlı malzeme profillerini okuma ve yazma olanağı sağlar."
 
 #: resources/qml/Account/AccountWidget.qml:24
 msgctxt "@action:button"
@@ -4107,8 +4109,10 @@ msgid ""
 "- Add material profiles and plug-ins from the Marketplace\n"
 "- Back-up and sync your material profiles and plug-ins\n"
 "- Share ideas and get help from 48,000+ users in the UltiMaker community"
-msgstr "- Marketplace'den malzeme profilleri ve eklentiler ekleyin\n- Malzeme profillerinizi ve eklentilerinizi yedekleyin ve senkronize edin\n- Ultimaker topluluğunda"
-" fikirlerinizi paylaşın ve 48.000'den fazla kullanıcıdan yardım alın"
+msgstr ""
+"- Marketplace'den malzeme profilleri ve eklentiler ekleyin\n"
+"- Malzeme profillerinizi ve eklentilerinizi yedekleyin ve senkronize edin\n"
+"- Ultimaker topluluğunda fikirlerinizi paylaşın ve 48.000'den fazla kullanıcıdan yardım alın"
 
 #: resources/qml/Account/GeneralOperations.qml:58
 msgctxt "@button"
