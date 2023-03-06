@@ -338,7 +338,7 @@ class CuraConan(ConanFile):
                     pot_file = self.source_path.joinpath("resources", "i18n", po_file.with_suffix('.pot').name)
                     mkdir(self, str(unix_path(self, pot_file.parent)))
                     self.run(
-                        f"{cpp_info.bindirs[0]}/msgmerge --no-wrap --sort-by-file -o {po_file} {po_file} {pot_file}",
+                        f"{cpp_info.bindirs[0]}/msgmerge --no-wrap --no-fuzzy-matching --sort-by-file -o {po_file} {po_file} {pot_file}",
                         env="conanbuild", ignore_errors=True)
 
     def build(self):
