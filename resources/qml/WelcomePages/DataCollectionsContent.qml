@@ -10,18 +10,17 @@ import Cura 1.1 as Cura
 
 //
 // This component contains the content for the "Help us to improve Ultimaker Cura" page of the welcome on-boarding process.
+// This dialog is currently only shown during on-boarding and therefore only shown in English
 //
 Item
 {
-    UM.I18nCatalog { id: catalog; name: "cura" }
-
     UM.Label
     {
         id: titleLabel
         anchors.top: parent.top
         anchors.horizontalCenter: parent.horizontalCenter
         horizontalAlignment: Text.AlignHCenter
-        text: catalog.i18nc("@label", "Help us to improve UltiMaker Cura")
+        text: "Help us to improve UltiMaker Cura"
         color: UM.Theme.getColor("primary_button")
         font: UM.Theme.getFont("huge")
     }
@@ -53,7 +52,7 @@ Item
                 width: parent.width
                 anchors.horizontalCenter: parent.horizontalCenter
                 horizontalAlignment: Text.AlignHCenter
-                text: catalog.i18nc("@text", "UltiMaker Cura collects anonymous data to improve print quality and user experience, including:")
+                text: "UltiMaker Cura collects anonymous data to improve print quality and user experience, including:"
                 wrapMode: Text.WordWrap
                 font: UM.Theme.getFont("medium")
             }
@@ -65,25 +64,25 @@ Item
 
                 ImageTile
                 {
-                    text: catalog.i18nc("@text", "Machine types")
+                    text: "Machine types"
                     imageSource: UM.Theme.getImage("first_run_machine_types")
                 }
 
                 ImageTile
                 {
-                    text: catalog.i18nc("@text", "Material usage")
+                    text: "Material usage"
                     imageSource: UM.Theme.getImage("first_run_material_usage")
                 }
 
                 ImageTile
                 {
-                    text: catalog.i18nc("@text", "Number of slices")
+                    text: "Number of slices"
                     imageSource: UM.Theme.getImage("first_run_number_slices")
                 }
 
                 ImageTile
                 {
-                    text: catalog.i18nc("@text", "Print settings")
+                    text: "Print settings"
                     imageSource: UM.Theme.getImage("first_run_print_settings")
                 }
             }
@@ -96,8 +95,8 @@ Item
                 horizontalAlignment: Text.AlignHCenter
                 text:
                 {
-                    var t = catalog.i18nc("@text", "Data collected by UltiMaker Cura will not contain any personal information.")
-                    var t2 = catalog.i18nc("@text", "More information")
+                    var t = "Data collected by UltiMaker Cura will not contain any personal information."
+                    var t2 = "More information"
                     t += " <a href='https://notusedref'>" + t2 + "</a>"
                     return t
                 }
@@ -115,7 +114,7 @@ Item
         id: getStartedButton
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        text: catalog.i18nc("@button", "Next")
+        text: "Next"
         onClicked: base.showNextPage()
     }
 }
