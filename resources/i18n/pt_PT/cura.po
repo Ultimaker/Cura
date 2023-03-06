@@ -1184,7 +1184,7 @@ msgstr "Ligação de rede UltiMaker"
 
 #: plugin.json
 msgctxt "name"
-msgid "Ultimaker machine actions"
+msgid "UltiMaker machine actions"
 msgstr "Funções para impressoras Ultimaker"
 
 #: plugin.json

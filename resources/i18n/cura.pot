@@ -6648,7 +6648,7 @@ msgstr ""
 
 #: plugin.json
 msgctxt "name"
-msgid "Ultimaker machine actions"
+msgid "UltiMaker machine actions"
 msgstr ""
 
 #: plugin.json

@@ -1187,7 +1187,7 @@ msgstr "UltiMaker-verkkoyhteys"
 #: plugin.json
 #, fuzzy
 msgctxt "name"
-msgid "Ultimaker machine actions"
+msgid "UltiMaker machine actions"
 msgstr "UltiMaker-laitteen toiminnot"
 
 #: plugin.json

@@ -1189,8 +1189,8 @@ msgstr "UltiMaker-Netzwerkverbindung"
 
 #: plugin.json
 msgctxt "name"
-msgid "Ultimaker machine actions"
-msgstr "Ultimaker-Maschinenabläufe"
+msgid "UltiMaker machine actions"
+msgstr "UltiMaker-Maschinenabläufe"
 
 #: plugin.json
 msgctxt "description"

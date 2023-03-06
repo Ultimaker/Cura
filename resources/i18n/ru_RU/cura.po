@@ -1195,7 +1195,7 @@ msgstr "Соединение с сетью UltiMaker"
 #: plugin.json
 #, fuzzy
 msgctxt "name"
-msgid "Ultimaker machine actions"
+msgid "UltiMaker machine actions"
 msgstr "Действия с принтерами UltiMaker"
 
 #: plugin.json
