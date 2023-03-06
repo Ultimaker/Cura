@@ -948,16 +948,14 @@ msgid "Machine Settings Action"
 msgstr "컴퓨터 설정 작업"
 
 #: plugin.json
-#, fuzzy
 msgctxt "description"
 msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
-msgstr "응용 프로그램의 확장을 관리하고 UltiMaker 웹 사이트에서 확장을 검색할 수 있습니다."
+msgstr ""
 
 #: plugin.json
-#, fuzzy
 msgctxt "description"
 msgid "Manages network connections to UltiMaker networked printers."
-msgstr "UltiMaker 네트워크 연결 프린터에 대한 네트워크 연결을 관리합니다."
+msgstr ""
 
 #: plugin.json
 msgctxt "name"
@@ -1035,10 +1033,9 @@ msgid "Provides capabilities to read and write XML-based material profiles."
 msgstr "XML 기반 재료 프로파일을 읽고 쓸 수있는 기능을 제공합니다."
 
 #: plugin.json
-#, fuzzy
 msgctxt "description"
 msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
-msgstr "UltiMaker 기계에 대한 기계 작동 제공(예 : 침대 수평 조정 마법사, 업그레이드 선택 등)"
+msgstr ""
 
 #: plugin.json
 msgctxt "description"
@@ -1076,10 +1073,9 @@ msgid "Provides support for reading AMF files."
 msgstr "AMF 파일 읽기가 지원됩니다."
 
 #: plugin.json
-#, fuzzy
 msgctxt "description"
 msgid "Provides support for reading Ultimaker Format Packages."
-msgstr "UltiMaker 포맷 패키지 읽기를 지원합니다."
+msgstr ""
 
 #: plugin.json
 msgctxt "description"
@@ -1097,10 +1093,9 @@ msgid "Provides support for writing 3MF files."
 msgstr "3MF 파일 작성 지원을 제공합니다."
 
 #: plugin.json
-#, fuzzy
 msgctxt "description"
 msgid "Provides support for writing Ultimaker Format Packages."
-msgstr "UltiMaker 포맷 패키지 작성을 지원합니다."
+msgstr ""
 
 #: plugin.json
 msgctxt "description"
@@ -1188,16 +1183,14 @@ msgid "Ultimaker Digital Library"
 msgstr "UltiMaker 디지털 라이브러리"
 
 #: plugin.json
-#, fuzzy
 msgctxt "name"
 msgid "UltiMaker Network Connection"
-msgstr "UltiMaker 네트워크 연결"
+msgstr ""
 
 #: plugin.json
-#, fuzzy
 msgctxt "name"
 msgid "UltiMaker machine actions"
-msgstr "UltiMaker 기기 동작"
+msgstr ""
 
 #: plugin.json
 msgctxt "description"
@@ -1315,10 +1308,9 @@ msgid "Upgrades configurations from Cura 4.9 to Cura 4.10."
 msgstr "Cura 4.9에서 Cura 4.10으로 구성을 업그레이드합니다."
 
 #: plugin.json
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.2 to Cura 5.3."
-msgstr "Cura 3.2에서 Cura 3.3으로 구성을 업그레이드합니다."
+msgstr "Cura 5.2에서 Cura 5.3으로 구성을 업그레이드합니다."
 
 #: plugin.json
 msgctxt "name"
@@ -1436,10 +1428,9 @@ msgid "Version Upgrade 4.9 to 4.10"
 msgstr "4.9에서 4.10으로 버전 업그레이드"
 
 #: plugin.json
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 5.2 to 5.3"
-msgstr "3.2에서 3.3으로 버전 업그레이드"
+msgstr "5.2에서 5.3으로 버전 업그레이드"
 
 #: plugin.json
 msgctxt "description"
@@ -1476,10 +1467,9 @@ msgstr "프로젝트 파일 열기"
 #: plugins/3MFReader/WorkspaceDialog.qml:99
 #: plugins/3MFReader/WorkspaceDialog.qml:127
 #: plugins/3MFReader/WorkspaceDialog.qml:134
-#, fuzzy
 msgctxt "@button"
 msgid "Create new"
-msgstr "새로 만들기"
+msgstr ""
 
 #: plugins/3MFReader/ThreeMFWorkspaceReader.py:681
 #, python-brace-format
@@ -1502,7 +1492,7 @@ msgid "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>.
 msgstr "프로젝트 파일 <filename>{0}</filename>이 손상됨: <message>{1}</message>."
 
 #: plugins/3MFReader/ThreeMFWorkspaceReader.py:754
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
 msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of Ultimaker Cura."
 msgstr "프로젝트 파일 <filename>{0}</filename>이(가) 이 버전의 UltiMaker Cura에서 확인할 수 없는 프로파일을 사용하였습니다."
@@ -1573,15 +1563,14 @@ msgid "Printer Group"
 msgstr "프린터 그룹"
 
 #: plugins/3MFReader/WorkspaceDialog.qml:103
-#, fuzzy
 msgctxt "@action:label"
 msgid "Open With"
-msgstr "열기"
+msgstr ""
 
 #: plugins/3MFReader/WorkspaceDialog.qml:104
 msgctxt "@info:tooltip"
 msgid "Printer settings will be updated to match the settings saved with the project."
-msgstr ""
+msgstr "프린터 설정은 프로젝트에 저장된 설정과 일치하도록 업데이트됩니다."
 
 #: plugins/3MFReader/WorkspaceDialog.qml:156
 #: resources/qml/Dialogs/WorkspaceSummaryDialog.qml:222
@@ -2505,7 +2494,7 @@ msgstr "알 수 없는 원작자"
 #: plugins/Marketplace/PackageModel.py:95
 msgctxt "@label:label Ultimaker Marketplace is a brand name, don't translate"
 msgid "The material package associated with the Cura project could not be found on the Ultimaker Marketplace. Use the partial material profile definition stored in the Cura project file at your own risk."
-msgstr ""
+msgstr "Ultimaker Marketplace에서 Cura 프로젝트와 관련된 재료 패키지를 찾을 수 없습니다. Cura 프로젝트 파일에 저장된 부분적인 재료 프로필 정의를 사용할 시 이로 인한 문제는 사용자 책임입니다."
 
 #: plugins/Marketplace/RemotePackageList.py:117
 msgctxt "@info:error"
@@ -3817,10 +3806,9 @@ msgid "Learn more"
 msgstr "자세히 알아보기"
 
 #: plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:18
-#, fuzzy
 msgctxt "@info:status"
 msgid "You are attempting to connect to a printer that is not running UltiMaker Connect. Please update the printer to the latest firmware."
-msgstr "UltiMaker Connect를 실행하지 않는 프린터에 연결하려 합니다. 프린터를 최신 펌웨어로 업데이트해 주십시오."
+msgstr ""
 
 #: plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:21
 msgctxt "@info:title"
@@ -3839,7 +3827,6 @@ msgid "Sending materials to printer"
 msgstr "재료를 프린터로 전송 중"
 
 #: plugins/UM3NetworkPrinting/src/Messages/NewPrinterDetectedMessage.py:13
-#, fuzzy
 msgctxt "info:status"
 msgid "New printer detected from your Ultimaker account"
 msgid_plural "New printers detected from your Ultimaker account"
@@ -4597,38 +4584,34 @@ msgid "What's New"
 msgstr "새로운 기능"
 
 #: resources/qml/Cura.qml:890
-#, fuzzy
 msgctxt "@title:window"
 msgid "Save Custom Profile"
-msgstr "사용자 정의 프로파일"
+msgstr ""
 
 #: resources/qml/Cura.qml:891
-#, fuzzy
 msgctxt "@textfield:placeholder"
 msgid "New Custom Profile"
-msgstr "사용자 정의 프로파일"
+msgstr ""
 
 #: resources/qml/Cura.qml:892
-#, fuzzy
 msgctxt "@info"
 msgid "Custom profile name:"
-msgstr "사용자 정의 프로파일"
+msgstr ""
 
 #: resources/qml/Cura.qml:909
 msgctxt "@label %i will be replaced with a profile name"
 msgid "<b>Only user changed settings will be saved in the custom profile.</b><br/>For materials that support it, the new custom profile will inherit properties from <b>%1</b>."
-msgstr ""
+msgstr "<b>사용자 지정 프로필에는 사용자가 변경한 설정만 저장됩니다.</b><br/>이를 지원하는 재료의 경우 새 사용자 지정 프로필은 <b>%1</b>의 속성을 상속합니다."
 
 #: resources/qml/Cura.qml:917
 msgctxt "@action:button"
 msgid "Learn more about Cura print profiles"
-msgstr ""
+msgstr "Cura 프린트 프로필 자세히 알아보기"
 
 #: resources/qml/Cura.qml:926
-#, fuzzy
 msgctxt "@button"
 msgid "Save new profile"
-msgstr "프로파일에 없음"
+msgstr ""
 
 #: resources/qml/Dialogs/AboutDialog.qml:15
 msgctxt "@title:window The argument is the application name."
@@ -4646,13 +4629,12 @@ msgid "End-to-end solution for fused filament 3D printing."
 msgstr "3D 프린팅을 위한 엔드 투 엔트 솔루션."
 
 #: resources/qml/Dialogs/AboutDialog.qml:87
-#, fuzzy
 msgctxt "@info:credit"
 msgid ""
 "Cura is developed by UltiMaker in cooperation with the community.\n"
 "Cura proudly uses the following open source projects:"
 msgstr ""
-"Cura는 커뮤니티와 공동으로 UltiMaker B.V.에 의해 개발되었습니다.\n"
+"Cura는 커뮤니티와 공동으로 UltiMaker 에 의해 개발되었습니다.\n"
 "Cura는 다음의 오픈 소스 프로젝트를 사용합니다:"
 
 #: resources/qml/Dialogs/AboutDialog.qml:138
@@ -4916,16 +4898,14 @@ msgid "Keep changes"
 msgstr "변경 사항 유지"
 
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:171
-#, fuzzy
 msgctxt "@action:button"
 msgid "Save as new custom profile"
-msgstr "사용자 정의 프로파일"
+msgstr ""
 
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:178
-#, fuzzy
 msgctxt "@action:button"
 msgid "Save changes"
-msgstr "변경 사항 유지"
+msgstr ""
 
 #: resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:47
 msgctxt "@text:window"
@@ -6211,23 +6191,22 @@ msgstr "<b>%1</b>개의 사용자 정의 프로파일이 일부 설정을 무시
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:92
 msgctxt "@info %1 is the name of a profile"
 msgid "Recommended settings (for <b>%1</b>) were altered."
-msgstr ""
+msgstr "(<b>%1</b>) 권장 설정이 변경되었습니다."
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:106
-#, fuzzy
 msgctxt "@info %1 is the name of a profile"
 msgid "Some setting-values defined in <b>%1</b> were overridden."
-msgstr "현재 프로파일의 일부 설정을 덮어썼습니다."
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:137
 msgctxt "@info"
 msgid "Reset to defaults."
-msgstr ""
+msgstr "기본값으로 재설정합니다."
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:178
 msgctxt "@info"
 msgid "Compare and save."
-msgstr ""
+msgstr "비교하고 저장합니다."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedAdhesionSelector.qml:15
 msgctxt "@label"
@@ -6240,16 +6219,14 @@ msgid "Enable printing a brim or raft. This will add a flat area around or under
 msgstr "브림이나 라프트를 사용합니다. 이렇게하면 출력물 주변이나 아래에 평평한 영역이 추가되어 나중에 쉽게 자를 수 있습니다."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:102
-#, fuzzy
 msgctxt "@label"
 msgid "Recommended print settings"
-msgstr "프린팅 설정"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:111
-#, fuzzy
 msgctxt "@button"
 msgid "Show Custom"
-msgstr "사용자 정의"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedResolutionSelector.qml:27
 msgctxt "@label"
@@ -6259,28 +6236,27 @@ msgstr "해상도"
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:16
 msgctxt "@label"
 msgid "Strength"
-msgstr ""
+msgstr "강도"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:20
 msgctxt "@label"
 msgid "The following settings define the strength of your part."
-msgstr ""
+msgstr "다음 설정은 부품의 강도를 정의합니다."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:34
-#, fuzzy
 msgctxt "infill_sparse_density description"
 msgid "Infill Density"
-msgstr "매쉬 내부채움 전용"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:35
 msgctxt "@label"
 msgid "Adjusts the density of infill of the print."
-msgstr ""
+msgstr "출력물의 내부채움을 조절합니다."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:54
 msgctxt "@action:label"
 msgid "Infill Pattern"
-msgstr ""
+msgstr "내부채움 패턴"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:56
 msgctxt "@label"
@@ -6293,17 +6269,23 @@ msgid ""
 "\n"
 "For functional 3D prints which require high strenght in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
 msgstr ""
+"3D 객체의 인필 재료 패턴:\n"
+"\n"
+" 비기능성 모델을 빠르게 프린트하기 위해 선, 지그재그 또는 라이트닝 인필을 선택합니다.\n"
+"\n"
+"많은 응력을 받지 않는 기능성 부품에 대해서는 그리드 또는 삼각형 또는 세 개로 된 육각형을 권장합니다.\n"
+"\n"
+"여러 방향에서 높은 강도를 요구하는 기능성 3D 객체의 경우 입방체, 입방체 세분, 쿼터 큐빅, 옥텟 및 자이로이드를 사용합니다."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:67
-#, fuzzy
 msgctxt "@action:label"
 msgid "Shell Thickness"
-msgstr "레이어 두께"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:68
 msgctxt "@label"
 msgid "Defines the tickness of your part side walls, roof and floor."
-msgstr ""
+msgstr "부품 측벽, 지붕 및 바닥의 두께를 정의합니다."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:16
 msgctxt "@label"
@@ -6311,16 +6293,14 @@ msgid "Support"
 msgstr "서포트"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:21
-#, fuzzy
 msgctxt "@label"
 msgid "Generate structures to support parts of the model which have overhangs. Without these structures, these parts would collapse during printing."
 msgstr "오버행이 있는 모델 서포트를 생성합니다. 이러한 구조가 없으면 이러한 부분이 프린팅 중에 붕괴됩니다."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:40
-#, fuzzy
 msgctxt "@action:label"
 msgid "Support Type"
-msgstr "서포트"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:41
 msgctxt "@label"
@@ -6330,28 +6310,27 @@ msgid ""
 "\"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. \n"
 "\n"
 "\"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
-msgstr ""
+msgstr "서포트를 생성하는 데 사용할 수 있는 기술 중 하나를 선택합니다. '표준' 서포트는 오버행(경사면) 파트 바로 아래에 서포트 구조물을 생성하고 해당 영역을 바로 아래로 떨어뜨립니다. '트리' 서포트는 모델을 지지하는 브랜치 끝에서 오버행(경사면) 영역을 향해 브랜치를 만들고 빌드 플레이트에서 모델을 지지할 수 있도록 모델을 브랜치로 최대한 감쌉니다."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:53
-#, fuzzy
 msgctxt "@action:label"
 msgid "Print with"
-msgstr "프린팅"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:54
 msgctxt "@label"
 msgid "The extruder train to use for printing the support. This is used in multi-extrusion."
-msgstr ""
+msgstr "서포트 프린팅에 사용할 익스트루더. 이것은 다중 압출에 사용됩니다."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:67
 msgctxt "@action:label"
 msgid "Placement"
-msgstr ""
+msgstr "배치"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:68
 msgctxt "support_type description"
 msgid "Adjusts the placement of the support structures. The placement can be set to touching build plate or everywhere. When set to everywhere the support structures will also be printed on the model."
-msgstr ""
+msgstr "서포트 구조의 배치를 조정합니다. 배치는 빌드 플레이트 또는 모든 곳을 터치하도록 설정할 수 있습니다. 모든 곳에 설정하면 모델에 서포트 구조가 프린팅됩니다."
 
 #: resources/qml/PrintSetupSelector/Recommended/UnsupportedProfileIndication.qml:31
 msgctxt "@error"
@@ -6501,10 +6480,9 @@ msgid "The cloud printer is offline. Please check if the printer is turned on an
 msgstr "클라우드 프린터가 오프라인 상태입니다. 프린터가 켜져 있고 인터넷과 연결되어 있는지 확인하십시오."
 
 #: resources/qml/PrinterSelector/MachineSelector.qml:68
-#, fuzzy
 msgctxt "@status"
 msgid "This printer is not linked to your account. Please visit the Ultimaker Digital Factory to establish a connection."
-msgstr "해당 프린터가 사용자의 계정에 연결되어 있지 않습니다. Ultimaker Digital Factory에 방문하여 연결을 설정하십시오."
+msgstr ""
 
 #: resources/qml/PrinterSelector/MachineSelector.qml:73
 msgctxt "@status"
@@ -6788,16 +6766,14 @@ msgid "Add a non-networked printer"
 msgstr "비 네트워크 프린터 추가"
 
 #: resources/qml/WelcomePages/AddThirdPartyPrinter.qml:102
-#, fuzzy
 msgctxt "@button"
 msgid "Add UltiMaker printer via Digital Factory"
-msgstr "Digital Factory에서 프린터 보기"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:29
-#, fuzzy
 msgctxt "@label"
 msgid "In order to start using Cura you will need to configure a printer."
-msgstr "패키지를 사용하려면 Cura를 재시작해야 합니다."
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:36
 msgctxt "@label"
@@ -6805,78 +6781,69 @@ msgid "What printer would you like to setup?"
 msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:55
-#, fuzzy
 msgctxt "@button"
 msgid "UltiMaker printer"
-msgstr "UltiMaker support"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:64
-#, fuzzy
 msgctxt "@button"
 msgid "Non UltiMaker printer"
-msgstr "UltiMaker support"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:73
 msgctxt "@button"
 msgid "Learn more about adding printers to Cura"
-msgstr ""
+msgstr "Cura에 프린터를 추가하는 방법 자세히 알아보기"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinterStack.qml:29
-#, fuzzy
 msgctxt "@label"
 msgid "Add printer"
-msgstr "프린터 추가"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:33
-#, fuzzy
 msgctxt "@label"
 msgid "New UltiMaker printers can be connected to Digital Factory and monitored remotely."
-msgstr "모든 프린터가 켜져 있고 Digital Factory에 연결되어 있는지 확인하십시오."
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:70
 msgctxt "@label"
 msgid "If you are trying to add a new UltiMaker printer to Cura"
-msgstr ""
+msgstr "Cura에 새 UltiMaker 프린터를 추가하려는 경우"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:80
-#, fuzzy
 msgctxt "@info"
 msgid "Sign in into UltiMaker Digital Factory"
-msgstr "Ultimaker Digital Factory의 프린터를 모니터링하십시오."
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:81
 msgctxt "@info"
 msgid "Follow the procedure to add a new printer"
-msgstr ""
+msgstr "절차에 따라 새 프린터를 추가하세요."
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:82
 msgctxt "@info"
 msgid "Your new printer will automatically appear in Cura"
-msgstr ""
+msgstr "새 프린터가 Cura에 자동으로 나타납니다."
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:100
-#, fuzzy
 msgctxt "@button"
 msgid "Learn more"
 msgstr "자세히 알아보기"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:121
-#, fuzzy
 msgctxt "@button"
 msgid "Add local printer"
-msgstr "프린터 추가"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:129
-#, fuzzy
 msgctxt "@button"
 msgid "Sign in to Digital Factory"
-msgstr "Digital Factory에서 프린터 보기"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:133
-#, fuzzy
 msgctxt "@button"
 msgid "Waiting for new printers"
-msgstr "프린터 관리"
+msgstr ""
 
 #: resources/qml/WelcomePages/ChangelogContent.qml:24
 msgctxt "@label"
@@ -6932,91 +6899,3 @@ msgstr "새로운 기능"
 msgctxt "@label"
 msgid "No items to select from"
 msgstr "선택할 항목 없음"
-
-#~ msgctxt "@label"
-#~ msgid "Add cloud printer"
-#~ msgstr "클라우드 프린터 추가"
-
-#~ msgctxt "@label"
-#~ msgid "Aluminum"
-#~ msgstr "알루미늄"
-
-#~ msgctxt "@label"
-#~ msgid "Change build plate to %1 (This cannot be overridden)."
-#~ msgstr "빌드 플레이트를 %1(으)로 변경합니다(이 작업은 무효화할 수 없음)."
-
-#~ msgctxt "@text"
-#~ msgid "Data collected by UltiMaker Cura will not contain any personal information."
-#~ msgstr "UltiMaker Cura가 수집하는 데이터에는 개인 정보가 포함되어 있지 않습니다."
-
-#~ msgctxt "@button"
-#~ msgid "Get started"
-#~ msgstr "시작하기"
-
-#~ msgctxt "@label"
-#~ msgid "Glass"
-#~ msgstr "유리"
-
-#~ msgctxt "@label"
-#~ msgid "Gradual infill"
-#~ msgstr "점진적 내부채움"
-
-#~ msgctxt "@label"
-#~ msgid "Gradual infill will gradually increase the amount of infill towards the top."
-#~ msgstr "점차적인 내부채움은 점차적으로 빈 공간 채우기의 양을 증가시킵니다."
-
-#~ msgctxt "@label"
-#~ msgid "Help us to improve UltiMaker Cura"
-#~ msgstr "UltiMaker Cura를 개선하는 데 도움을 주십시오"
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "How should the conflict in the machine be resolved?"
-#~ msgstr "기기의 충돌을 어떻게 해결해야합니까?"
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "How should the conflict in the material be resolved?"
-#~ msgstr "재료의 충돌은 어떻게 해결되어야합니까?"
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "How should the conflict in the profile be resolved?"
-#~ msgstr "프로파일의 충돌을 어떻게 해결해야합니까?"
-
-#~ msgctxt "@text"
-#~ msgid "Machine types"
-#~ msgstr "기기 유형"
-
-#~ msgctxt "@text"
-#~ msgid "Material usage"
-#~ msgstr "재료 사용"
-
-#~ msgctxt "@text"
-#~ msgid "More information"
-#~ msgstr "추가 정보"
-
-#~ msgctxt "@text"
-#~ msgid "Number of slices"
-#~ msgstr "슬라이드 수"
-
-#~ msgctxt "@text"
-#~ msgid "Please follow these steps to set up UltiMaker Cura. This will only take a few moments."
-#~ msgstr "UltiMaker Cura를 설정하려면 다음 단계로 이동하세요. 오래 걸리지 않습니다."
-
-#~ msgctxt "@text"
-#~ msgid "Print settings"
-#~ msgstr "인쇄 설정"
-
-#~ msgctxt "@info"
-#~ msgid "Some settings were changed."
-#~ msgstr "일부 설정이 변경되었습니다."
-
-#~ msgctxt "@text"
-#~ msgid "UltiMaker Cura collects anonymous data to improve print quality and user experience, including:"
-#~ msgstr "UltiMaker Cura는 인쇄 품질과 사용자 경험을 개선하기 위해 다음과 같은 익명 데이터를 수집합니다:"
-
-#~ msgctxt "@action:label"
-#~ msgid "Visible settings:"
-#~ msgstr "표시 설정 :"
-
-#~ msgctxt "@label"
-#~ msgid "Welcome to UltiMaker Cura"
-#~ msgstr "UltiMaker Cura에 오신 것을 환영합니다"
