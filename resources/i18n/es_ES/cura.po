@@ -949,12 +949,12 @@ msgstr "Acción Ajustes de la máquina"
 #: plugin.json
 msgctxt "description"
 msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
-msgstr ""
+msgstr "Gestiona las extensiones de la aplicación y permite navegar por las extensiones desde el sitio web de UltiMaker."
 
 #: plugin.json
 msgctxt "description"
-msgid "Manages network connections to Ultimaker networked printers."
-msgstr ""
+msgid "Manages network connections to UltiMaker networked printers."
+msgstr "Gestiona las conexiones de red de las impresoras UltiMaker conectadas."
 
 #: plugin.json
 msgctxt "name"
@@ -1034,7 +1034,7 @@ msgstr "Permite leer y escribir perfiles de material basados en XML."
 #: plugin.json
 msgctxt "description"
 msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
-msgstr ""
+msgstr "Proporciona las acciones de la máquina de las máquinas Ultimaker (como un asistente para la nivelación de la plataforma, la selección de actualizaciones, etc.)."
 
 #: plugin.json
 msgctxt "description"
@@ -1074,7 +1074,7 @@ msgstr "Proporciona asistencia para leer archivos AMF."
 #: plugin.json
 msgctxt "description"
 msgid "Provides support for reading Ultimaker Format Packages."
-msgstr ""
+msgstr "Proporciona asistencia para leer archivos de paquetes de formato Ultimaker."
 
 #: plugin.json
 msgctxt "description"
@@ -1094,7 +1094,7 @@ msgstr "Proporciona asistencia para escribir archivos 3MF."
 #: plugin.json
 msgctxt "description"
 msgid "Provides support for writing Ultimaker Format Packages."
-msgstr ""
+msgstr "Proporciona asistencia para escribir archivos de paquetes de formato Ultimaker."
 
 #: plugin.json
 msgctxt "description"
@@ -1494,7 +1494,7 @@ msgstr "El archivo de proyecto <filename>{0}</filename> está dañado: <message>
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
 msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of Ultimaker Cura."
-msgstr ""
+msgstr "El archivo de proyecto <filename>{0}</filename> se ha creado con perfiles desconocidos para esta versión de Ultimaker Cura."
 
 #: plugins/3MFReader/WorkspaceDialog.py:233
 msgctxt "@title:tab"
@@ -3813,8 +3813,8 @@ msgstr "Más información"
 
 #: plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:18
 msgctxt "@info:status"
-msgid "You are attempting to connect to a printer that is not running Ultimaker Connect. Please update the printer to the latest firmware."
-msgstr ""
+msgid "You are attempting to connect to a printer that is not running UltiMaker Connect. Please update the printer to the latest firmware."
+msgstr "Está intentando conectarse a una impresora que no está ejecutando Ultimaker Connect. Actualice la impresora al firmware más reciente."
 
 #: plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:21
 msgctxt "@info:title"
@@ -6309,7 +6309,7 @@ msgstr "Soporte"
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:21
 msgctxt "@label"
 msgid "Generate structures to support parts of the model which have overhangs. Without these structures, these parts would collapse during printing."
-msgstr ""
+msgstr "Generar estructuras para soportar piezas del modelo que tengan voladizos. Sin estas estructuras, estas piezas se romperían durante la impresión."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:40
 msgctxt "@action:label"
@@ -6334,7 +6334,7 @@ msgstr ""
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:53
 msgctxt "@action:label"
 msgid "Print with"
-msgstr ""
+msgstr "Imprimir con"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:54
 msgctxt "@label"
@@ -6803,12 +6803,12 @@ msgstr "Qu impresora le gustara configurar?"
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:55
 msgctxt "@button"
 msgid "UltiMaker printer"
-msgstr ""
+msgstr "Impresoras UltiMaker"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:64
 msgctxt "@button"
 msgid "Non UltiMaker printer"
-msgstr ""
+msgstr "Impresoras no UltiMaker"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:73
 msgctxt "@button"

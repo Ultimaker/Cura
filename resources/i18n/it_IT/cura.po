@@ -955,7 +955,7 @@ msgstr "Gestisce le estensioni per l'applicazione e consente di ricercare le est
 #: plugin.json
 #, fuzzy
 msgctxt "description"
-msgid "Manages network connections to Ultimaker networked printers."
+msgid "Manages network connections to UltiMaker networked printers."
 msgstr "Gestisce le connessioni di rete alle stampanti UltiMaker in rete."
 
 #: plugin.json
@@ -3826,7 +3826,7 @@ msgstr "Ulteriori informazioni"
 #: plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:18
 #, fuzzy
 msgctxt "@info:status"
-msgid "You are attempting to connect to a printer that is not running Ultimaker Connect. Please update the printer to the latest firmware."
+msgid "You are attempting to connect to a printer that is not running UltiMaker Connect. Please update the printer to the latest firmware."
 msgstr "Si sta tentando di connettersi a una stampante che non esegue UltiMaker Connect. Aggiornare la stampante con il firmware più recente."
 
 #: plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:21
