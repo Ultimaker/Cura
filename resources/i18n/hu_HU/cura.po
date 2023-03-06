@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-31 16:46+0100\n"
+"POT-Creation-Date: 2023-03-06 21:46+0100\n"
 "PO-Revision-Date: 2020-03-24 09:36+0100\n"
 "Last-Translator: Nagy Attila <vokroot@gmail.com>\n"
 "Language-Team: ATI-SZOFT\n"
@@ -813,654 +813,6 @@ msgctxt "@text"
 msgid "Unknown error."
 msgstr ""
 
-#: plugin.json
-msgctxt "name"
-msgid "3MF Reader"
-msgstr "3MF olvasó"
-
-#: plugin.json
-msgctxt "name"
-msgid "3MF Writer"
-msgstr "3MF író"
-
-#: plugin.json
-msgctxt "name"
-msgid "AMF Reader"
-msgstr "AMF Olvasó"
-
-#: plugin.json
-msgctxt "description"
-msgid "Accepts G-Code and sends them to a printer. Plugin can also update firmware."
-msgstr "Elfogadja a G-kódot és elküldi őket egy nyomtatóra. A plugin a firmware-t is frissítheti."
-
-#: plugin.json
-msgctxt "description"
-msgid "Allows loading and displaying G-code files."
-msgstr "Lehetővé teszi a G-kód fájlok betöltését és megjelenítését."
-
-#: plugin.json
-msgctxt "description"
-msgid "Backup and restore your configuration."
-msgstr "Konfiguráció biztonsági másolat készítése és visszaállítása."
-
-#: plugin.json
-msgctxt "description"
-msgid "Checks for firmware updates."
-msgstr "Ellenőrzi a firmware frissítéseket."
-
-#: plugin.json
-msgctxt "description"
-msgid "Checks models and print configuration for possible printing issues and give suggestions."
-msgstr "Ellenőrzi a modelleket és a nyomtatási konfigurációt a lehetséges nyomtatási problémákra vonatkozóan, és javaslatokat ad."
-
-#: plugin.json
-msgctxt "name"
-msgid "Compressed G-code Reader"
-msgstr "Tömörített G-kód olvasó"
-
-#: plugin.json
-msgctxt "name"
-msgid "Compressed G-code Writer"
-msgstr "Tömörített G-kód író"
-
-#: plugin.json
-msgctxt "description"
-msgid "Connects to the Digital Library, allowing Cura to open files from and save files to the Digital Library."
-msgstr ""
-
-#: plugin.json
-msgctxt "description"
-msgid "Creates an eraser mesh to block the printing of support in certain places"
-msgstr "Törlő hálót hoz létre, hogy bizonyos helyeken blokkolja a támasz nyomtatását"
-
-#: plugin.json
-msgctxt "name"
-msgid "Cura Backups"
-msgstr "Cura biztonsági mentések"
-
-#: plugin.json
-msgctxt "name"
-msgid "Cura Profile Reader"
-msgstr "Cura profil olvasó"
-
-#: plugin.json
-msgctxt "name"
-msgid "Cura Profile Writer"
-msgstr "Cura profil író"
-
-#: plugin.json
-msgctxt "name"
-msgid "CuraEngine Backend"
-msgstr "CuraEngine motor"
-
-#: plugin.json
-msgctxt "description"
-msgid "Enables ability to generate printable geometry from 2D image files."
-msgstr "Lehetővé teszi a nyomtatható geometria létrehozását 2D-képfájlokból."
-
-#: plugin.json
-msgctxt "description"
-msgid "Extension that allows for user created scripts for post processing"
-msgstr "Bővítmény, amely lehetővé teszi a felhasználó által létrehozott szkriptek utófeldolgozást"
-
-#: plugin.json
-msgctxt "name"
-msgid "Firmware Update Checker"
-msgstr "Frimrware frissítés ellenőrző"
-
-#: plugin.json
-msgctxt "name"
-msgid "Firmware Updater"
-msgstr "Firmware frissítő"
-
-#: plugin.json
-msgctxt "name"
-msgid "G-code Profile Reader"
-msgstr "G-kód profil olvasó"
-
-#: plugin.json
-msgctxt "name"
-msgid "G-code Reader"
-msgstr "G-kód olvasó"
-
-#: plugin.json
-msgctxt "name"
-msgid "G-code Writer"
-msgstr "G-kódot író"
-
-#: plugin.json
-msgctxt "name"
-msgid "Image Reader"
-msgstr "Kép olvasó"
-
-#: plugin.json
-msgctxt "name"
-msgid "Legacy Cura Profile Reader"
-msgstr "Örökölt Cura profil olvasó"
-
-#: plugin.json
-msgctxt "description"
-msgid "Logs certain events so that they can be used by the crash reporter"
-msgstr ""
-
-#: plugin.json
-msgctxt "name"
-msgid "Machine Settings Action"
-msgstr ""
-
-#: plugin.json
-msgctxt "description"
-msgid "Manages extensions to the application and allows browsing extensions from the Ultimaker website."
-msgstr ""
-
-#: plugin.json
-#, fuzzy
-msgctxt "description"
-msgid "Manages network connections to Ultimaker networked printers."
-msgstr "Kezeli a hálózati csatlakozásokat az UltiMaker hálózati nyomtatókhoz."
-
-#: plugin.json
-msgctxt "name"
-msgid "Marketplace"
-msgstr ""
-
-#: plugin.json
-msgctxt "name"
-msgid "Material Profiles"
-msgstr "Alapanyag profilok"
-
-#: plugin.json
-msgctxt "name"
-msgid "Model Checker"
-msgstr "Modell-ellenőrző"
-
-#: plugin.json
-msgctxt "name"
-msgid "Monitor Stage"
-msgstr "Monitor nézet"
-
-#: plugin.json
-msgctxt "name"
-msgid "Per Model Settings Tool"
-msgstr "Modellenkénti beállítás-eszköz"
-
-#: plugin.json
-msgctxt "name"
-msgid "Post Processing"
-msgstr "Utólagos feldolgozás"
-
-#: plugin.json
-msgctxt "name"
-msgid "Prepare Stage"
-msgstr "Előkészítés nézet"
-
-#: plugin.json
-msgctxt "name"
-msgid "Preview Stage"
-msgstr "Előnézet"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides a machine actions for updating firmware."
-msgstr "Gépi funkciókat biztosít a firmware frissítéséhez."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides a monitor stage in Cura."
-msgstr "Monitor nézetet biztosít a Cura -ban."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides a normal solid mesh view."
-msgstr "Felületi háló nézetet biztosít."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides a prepare stage in Cura."
-msgstr "Biztosítja az előkészítés nézetet a Cura-ban."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides a preview stage in Cura."
-msgstr "Előnézet biztosítása a Cura -ban."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc.)."
-msgstr "A géoi beállítások megváltoztatásának lehetőségét biztosítja.(például a építési méret, fúvóka méret, stb.)"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides capabilities to read and write XML-based material profiles."
-msgstr "Lehetővé teszi az XML-alapú anyagprofilok olvasását és írását."
-
-#: plugin.json
-#, fuzzy
-msgctxt "description"
-msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
-msgstr "Gépi funkciók biztosítása az UltiMaker nyomtatók számára.(pl.: ágyszintezés varázsló, frissítések kiválasztása.)"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides removable drive hotplugging and writing support."
-msgstr "Támogatás a cserélhető meghajtók üzem közbeni cseréjét és írását."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for exporting Cura profiles."
-msgstr "Támogatást nyújt a Cura profilok exportálásához."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for importing Cura profiles."
-msgstr "Támogatást nyújt a Cura profilok importálásához."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for importing profiles from g-code files."
-msgstr "Támogatást nyújt a profilok g-kód fájlokból történő importálásához."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for importing profiles from legacy Cura versions."
-msgstr "Támogatást nyújt a profilok importálásához a régi Cura verziókból."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for reading 3MF files."
-msgstr "Támogatást nyújt a 3MF fájlok olvasásához."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for reading AMF files."
-msgstr "Támogatást nyújt az AMF fájlok olvasásához."
-
-#: plugin.json
-#, fuzzy
-msgctxt "description"
-msgid "Provides support for reading Ultimaker Format Packages."
-msgstr "Támogatást nyújt az UltiMaker formátumú csomagok olvasásához."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for reading X3D files."
-msgstr "Támogatást nyújt az X3D fájlok olvasásához."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for reading model files."
-msgstr "Támogatást nyújt a modellfájlok olvasásához."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for writing 3MF files."
-msgstr "Támogatást nyújt a 3MF fájlok írásához."
-
-#: plugin.json
-#, fuzzy
-msgctxt "description"
-msgid "Provides support for writing Ultimaker Format Packages."
-msgstr "Támogatást nyújt az UltiMaker formátumú csomagok írásához."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides the Per Model Settings."
-msgstr "Biztosítja a modellenkénti beállításokat."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides the X-Ray view."
-msgstr "Röntgen nézetet biztosít."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides the link to the CuraEngine slicing backend."
-msgstr "Biztosítja a kapcsolatot a CuraEngine szeletelő motorhoz."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides the preview of sliced layerdata."
-msgstr ""
-
-#: plugin.json
-msgctxt "description"
-msgid "Reads g-code from a compressed archive."
-msgstr "Olvassa be a g-kódot egy tömörített archívumból."
-
-#: plugin.json
-msgctxt "name"
-msgid "Removable Drive Output Device Plugin"
-msgstr "Cserélhető meghajtók kimeneti beépülője"
-
-#: plugin.json
-msgctxt "name"
-msgid "Sentry Logger"
-msgstr ""
-
-#: plugin.json
-msgctxt "name"
-msgid "Simulation View"
-msgstr "Szimulációs nézet"
-
-#: plugin.json
-msgctxt "name"
-msgid "Slice info"
-msgstr "Szeletelési infó"
-
-#: plugin.json
-msgctxt "name"
-msgid "Solid View"
-msgstr "Felület nézet"
-
-#: plugin.json
-msgctxt "description"
-msgid "Submits anonymous slice info. Can be disabled through preferences."
-msgstr "Névtelen szelet-információt nyújt be. A beállítások révén letiltható."
-
-#: plugin.json
-msgctxt "name"
-msgid "Support Eraser"
-msgstr "Támasz törlő"
-
-#: plugin.json
-msgctxt "name"
-msgid "Trimesh Reader"
-msgstr "Trimesh olvasó"
-
-#: plugin.json
-msgctxt "name"
-msgid "UFP Reader"
-msgstr "UFP Olvasó"
-
-#: plugin.json
-msgctxt "name"
-msgid "UFP Writer"
-msgstr "UFP Író"
-
-#: plugin.json
-msgctxt "name"
-msgid "USB printing"
-msgstr "USB nyomtatás"
-
-#: plugin.json
-msgctxt "name"
-msgid "Ultimaker Digital Library"
-msgstr ""
-
-#: plugin.json
-#, fuzzy
-msgctxt "name"
-msgid "Ultimaker Network Connection"
-msgstr "UltiMaker hálózati kapcsolat"
-
-#: plugin.json
-#, fuzzy
-msgctxt "name"
-msgid "Ultimaker machine actions"
-msgstr "UltiMaker gépi funkciók"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.1 to Cura 2.2."
-msgstr "A konfigurációk frissítése Cura 2.1-ről Cura 2.2-re."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.2 to Cura 2.4."
-msgstr "A konfigurációk frissítése Cura 2.2-ről Cura 2.4-re."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.5 to Cura 2.6."
-msgstr "Frissíti a konfigurációt Cura 2.5-ről Cura 2.6-ra."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.6 to Cura 2.7."
-msgstr "A konfigurációk frissítése Cura 2.6-ról Cura 2.7-re."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.7 to Cura 3.0."
-msgstr "A konfigurációk frissítése Cura 2.7-ről Cura 3.0-ra."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.0 to Cura 3.1."
-msgstr "A konfigurációk frissítése Cura 3.0-ról Cura 3.1-re."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.2 to Cura 3.3."
-msgstr "A konfigurációk frissítése Cura 3.2-ről Cura 3.3-ra."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.3 to Cura 3.4."
-msgstr "A konfigurációk frissítése Cura 3.3-ról Cura 3.4-re."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.4 to Cura 3.5."
-msgstr "A konfigurációt Cura 3.4-ről Cura 3.5-re frissíti."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.5 to Cura 4.0."
-msgstr "A konfigurációk frissítése Cura 3.5-ről Cura 4.0-ra."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.0 to Cura 4.1."
-msgstr "A konfigurációt Cura 4.0-ról Cura 4.1-re frissíti."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.1 to Cura 4.2."
-msgstr "A konfigurációk frissítése Cura 4.1-ről Cura 4.2-re."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.11 to Cura 4.12."
-msgstr ""
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.13 to Cura 5.0."
-msgstr ""
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.2 to Cura 4.3."
-msgstr "A konfigurációk frissítése Cura 4.2-ről Cura 4.3-ra."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.3 to Cura 4.4."
-msgstr ""
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.4 to Cura 4.5."
-msgstr ""
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.5 to Cura 4.6."
-msgstr ""
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.6.0 to Cura 4.6.2."
-msgstr ""
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.6.2 to Cura 4.7."
-msgstr ""
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.7 to Cura 4.8."
-msgstr ""
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.8 to Cura 4.9."
-msgstr ""
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.9 to Cura 4.10."
-msgstr ""
-
-#: plugin.json
-#, fuzzy
-msgctxt "description"
-msgid "Upgrades configurations from Cura 5.2 to Cura 5.3."
-msgstr "A konfigurációk frissítése Cura 3.2-ről Cura 3.3-ra."
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 2.1 to 2.2"
-msgstr "A 2.1-es verzió frissítése 2.2-re"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 2.2 to 2.4"
-msgstr "A 2.2-es verzió frissítése 2.4-ig"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 2.5 to 2.6"
-msgstr "A 2.5-es verzió frissítése 2.6-ra"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 2.6 to 2.7"
-msgstr "A 2.6-os verzió frissítése 2.7-re"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 2.7 to 3.0"
-msgstr "A 2.7-es verzió frissítése 3.0-ra"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 3.0 to 3.1"
-msgstr "A 3.0-s verzió frissítése 3.1-re"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 3.2 to 3.3"
-msgstr "A 3.2-es verzió frissítése 3.3-ra"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 3.3 to 3.4"
-msgstr "A 3.3-as verzió frissítése 3.4-re"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 3.4 to 3.5"
-msgstr "A 3.4-es verzió frissítése 3.5-re"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 3.5 to 4.0"
-msgstr "A 3.5-es verzió frissítése 4.0-ra"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.0 to 4.1"
-msgstr "A 4.0-s verzió frissítése 4.1-re"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.1 to 4.2"
-msgstr "A 4.1-es verzió frissítése 4.2-re"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.11 to 4.12"
-msgstr ""
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.13 to 5.0"
-msgstr ""
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.2 to 4.3"
-msgstr "A 4.2-es verzió frissítése 4.3-ra"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.3 to 4.4"
-msgstr ""
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.4 to 4.5"
-msgstr ""
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.5 to 4.6"
-msgstr ""
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.6.0 to 4.6.2"
-msgstr ""
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.6.2 to 4.7"
-msgstr ""
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.7 to 4.8"
-msgstr ""
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.8 to 4.9"
-msgstr ""
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.9 to 4.10"
-msgstr ""
-
-#: plugin.json
-#, fuzzy
-msgctxt "name"
-msgid "Version Upgrade 5.2 to 5.3"
-msgstr "A 3.2-es verzió frissítése 3.3-ra"
-
-#: plugin.json
-msgctxt "description"
-msgid "Writes g-code to a compressed archive."
-msgstr "G-kódot ír egy tömörített archívumba."
-
-#: plugin.json
-msgctxt "description"
-msgid "Writes g-code to a file."
-msgstr "G-kódot ír fájlba."
-
-#: plugin.json
-msgctxt "name"
-msgid "X-Ray View"
-msgstr "Röntgen nézet"
-
-#: plugin.json
-msgctxt "name"
-msgid "X3D Reader"
-msgstr "X3D Olvasó"
-
 #: plugins/3MFReader/ThreeMFWorkspaceReader.py:547
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
@@ -1679,6 +1031,16 @@ msgctxt "@item:inlistbox"
 msgid "3MF File"
 msgstr "3MF fájl"
 
+#: plugins/3MFReader/plugin.json
+msgctxt "name"
+msgid "3MF Reader"
+msgstr "3MF olvasó"
+
+#: plugins/3MFReader/plugin.json
+msgctxt "description"
+msgid "Provides support for reading 3MF files."
+msgstr "Támogatást nyújt a 3MF fájlok olvasásához."
+
 #: plugins/3MFWriter/ThreeMFWorkspaceWriter.py:31
 msgctxt "@error:zip"
 msgid "3MF Writer plug-in is corrupt."
@@ -1715,10 +1077,40 @@ msgctxt "@item:inlistbox"
 msgid "Cura Project 3MF file"
 msgstr "Cura projekt 3MF fájl"
 
+#: plugins/3MFWriter/plugin.json
+msgctxt "name"
+msgid "3MF Writer"
+msgstr "3MF író"
+
+#: plugins/3MFWriter/plugin.json
+msgctxt "description"
+msgid "Provides support for writing 3MF files."
+msgstr "Támogatást nyújt a 3MF fájlok írásához."
+
 #: plugins/AMFReader/__init__.py:15
 msgctxt "@item:inlistbox"
 msgid "AMF File"
 msgstr "AMF fájl"
+
+#: plugins/AMFReader/plugin.json
+msgctxt "name"
+msgid "AMF Reader"
+msgstr "AMF Olvasó"
+
+#: plugins/AMFReader/plugin.json
+msgctxt "description"
+msgid "Provides support for reading AMF files."
+msgstr "Támogatást nyújt az AMF fájlok olvasásához."
+
+#: plugins/CuraDrive/plugin.json
+msgctxt "description"
+msgid "Backup and restore your configuration."
+msgstr "Konfiguráció biztonsági másolat készítése és visszaállítása."
+
+#: plugins/CuraDrive/plugin.json
+msgctxt "name"
+msgid "Cura Backups"
+msgstr "Cura biztonsági mentések"
 
 #: plugins/CuraDrive/src/CreateBackupJob.py:25
 msgctxt "@info:title"
@@ -1947,11 +1339,51 @@ msgctxt "@info:title"
 msgid "Information"
 msgstr "Információ"
 
+#: plugins/CuraEngineBackend/plugin.json
+msgctxt "name"
+msgid "CuraEngine Backend"
+msgstr "CuraEngine motor"
+
+#: plugins/CuraEngineBackend/plugin.json
+msgctxt "description"
+msgid "Provides the link to the CuraEngine slicing backend."
+msgstr "Biztosítja a kapcsolatot a CuraEngine szeletelő motorhoz."
+
 #: plugins/CuraProfileReader/__init__.py:14
 #: plugins/CuraProfileWriter/__init__.py:14
 msgctxt "@item:inlistbox"
 msgid "Cura Profile"
 msgstr "Cura Profil"
+
+#: plugins/CuraProfileReader/plugin.json
+msgctxt "name"
+msgid "Cura Profile Reader"
+msgstr "Cura profil olvasó"
+
+#: plugins/CuraProfileReader/plugin.json
+msgctxt "description"
+msgid "Provides support for importing Cura profiles."
+msgstr "Támogatást nyújt a Cura profilok importálásához."
+
+#: plugins/CuraProfileWriter/plugin.json
+msgctxt "name"
+msgid "Cura Profile Writer"
+msgstr "Cura profil író"
+
+#: plugins/CuraProfileWriter/plugin.json
+msgctxt "description"
+msgid "Provides support for exporting Cura profiles."
+msgstr "Támogatást nyújt a Cura profilok exportálásához."
+
+#: plugins/DigitalLibrary/plugin.json
+msgctxt "description"
+msgid "Connects to the Digital Library, allowing Cura to open files from and save files to the Digital Library."
+msgstr ""
+
+#: plugins/DigitalLibrary/plugin.json
+msgctxt "name"
+msgid "Ultimaker Digital Library"
+msgstr ""
 
 #: plugins/DigitalLibrary/resources/qml/SaveProjectFilesPage.qml:216
 msgctxt "@option"
@@ -1989,6 +1421,16 @@ msgstr ""
 msgctxt "@action:button"
 msgid "How to update"
 msgstr "Hogyan frissíts"
+
+#: plugins/FirmwareUpdateChecker/plugin.json
+msgctxt "description"
+msgid "Checks for firmware updates."
+msgstr "Ellenőrzi a firmware frissítéseket."
+
+#: plugins/FirmwareUpdateChecker/plugin.json
+msgctxt "name"
+msgid "Firmware Update Checker"
+msgstr "Frimrware frissítés ellenőrző"
 
 #: plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.py:27
 msgctxt "@action"
@@ -2070,15 +1512,45 @@ msgctxt "@label"
 msgid "Firmware update failed due to missing firmware."
 msgstr "A firmware frissítés meghiúsult, mert nem található a firmware."
 
+#: plugins/FirmwareUpdater/plugin.json
+msgctxt "name"
+msgid "Firmware Updater"
+msgstr "Firmware frissítő"
+
+#: plugins/FirmwareUpdater/plugin.json
+msgctxt "description"
+msgid "Provides a machine actions for updating firmware."
+msgstr "Gépi funkciókat biztosít a firmware frissítéséhez."
+
 #: plugins/GCodeGzReader/__init__.py:17 plugins/GCodeGzWriter/__init__.py:17
 msgctxt "@item:inlistbox"
 msgid "Compressed G-code File"
 msgstr "Tömörített G-kód fájl"
 
+#: plugins/GCodeGzReader/plugin.json
+msgctxt "name"
+msgid "Compressed G-code Reader"
+msgstr "Tömörített G-kód olvasó"
+
+#: plugins/GCodeGzReader/plugin.json
+msgctxt "description"
+msgid "Reads g-code from a compressed archive."
+msgstr "Olvassa be a g-kódot egy tömörített archívumból."
+
 #: plugins/GCodeGzWriter/GCodeGzWriter.py:43
 msgctxt "@error:not supported"
 msgid "GCodeGzWriter does not support text mode."
 msgstr "A GCodeGzWriter nem támogatja a nem szöveges módot."
+
+#: plugins/GCodeGzWriter/plugin.json
+msgctxt "name"
+msgid "Compressed G-code Writer"
+msgstr "Tömörített G-kód író"
+
+#: plugins/GCodeGzWriter/plugin.json
+msgctxt "description"
+msgid "Writes g-code to a compressed archive."
+msgstr "G-kódot ír egy tömörített archívumba."
 
 #: plugins/GCodeProfileReader/__init__.py:14 plugins/GCodeReader/__init__.py:14
 #: plugins/GCodeWriter/__init__.py:16
@@ -2086,18 +1558,28 @@ msgctxt "@item:inlistbox"
 msgid "G-code File"
 msgstr "G-code Fájl"
 
-#: plugins/GCodeReader/FlavorParser.py:350
+#: plugins/GCodeProfileReader/plugin.json
+msgctxt "name"
+msgid "G-code Profile Reader"
+msgstr "G-kód profil olvasó"
+
+#: plugins/GCodeProfileReader/plugin.json
+msgctxt "description"
+msgid "Provides support for importing profiles from g-code files."
+msgstr "Támogatást nyújt a profilok g-kód fájlokból történő importálásához."
+
+#: plugins/GCodeReader/FlavorParser.py:359
 msgctxt "@info:status"
 msgid "Parsing G-code"
 msgstr "G-kód elemzés"
 
-#: plugins/GCodeReader/FlavorParser.py:352
-#: plugins/GCodeReader/FlavorParser.py:506
+#: plugins/GCodeReader/FlavorParser.py:361
+#: plugins/GCodeReader/FlavorParser.py:515
 msgctxt "@info:title"
 msgid "G-code Details"
 msgstr "G-kód részletek"
 
-#: plugins/GCodeReader/FlavorParser.py:504
+#: plugins/GCodeReader/FlavorParser.py:513
 msgctxt "@info:generic"
 msgid "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."
 msgstr "Győződj meg róla, hogy a G-kód igazodik a nyomtatódhoz és beállításaihoz, mielőtt elküldöd a fájlt. A G-kód ábrázolása nem biztos, hogy pontos."
@@ -2106,6 +1588,16 @@ msgstr "Győződj meg róla, hogy a G-kód igazodik a nyomtatódhoz és beállí
 msgctxt "@item:inlistbox"
 msgid "G File"
 msgstr "G fájl"
+
+#: plugins/GCodeReader/plugin.json
+msgctxt "description"
+msgid "Allows loading and displaying G-code files."
+msgstr "Lehetővé teszi a G-kód fájlok betöltését és megjelenítését."
+
+#: plugins/GCodeReader/plugin.json
+msgctxt "name"
+msgid "G-code Reader"
+msgstr "G-kód olvasó"
 
 #: plugins/GCodeWriter/GCodeWriter.py:75
 msgctxt "@error:not supported"
@@ -2116,6 +1608,16 @@ msgstr "A GCodeWriter nem támogatja a szöveges nélüli módot."
 msgctxt "@warning:status"
 msgid "Please prepare G-code before exporting."
 msgstr "Készítse elő a G-kódot az exportálás előtt."
+
+#: plugins/GCodeWriter/plugin.json
+msgctxt "name"
+msgid "G-code Writer"
+msgstr "G-kódot író"
+
+#: plugins/GCodeWriter/plugin.json
+msgctxt "description"
+msgid "Writes g-code to a file."
+msgstr "G-kódot ír fájlba."
 
 #: plugins/ImageReader/ConfigUI.qml:14
 msgctxt "@title:window"
@@ -2249,10 +1751,30 @@ msgctxt "@item:inlistbox"
 msgid "GIF Image"
 msgstr "GIF kép"
 
+#: plugins/ImageReader/plugin.json
+msgctxt "description"
+msgid "Enables ability to generate printable geometry from 2D image files."
+msgstr "Lehetővé teszi a nyomtatható geometria létrehozását 2D-képfájlokból."
+
+#: plugins/ImageReader/plugin.json
+msgctxt "name"
+msgid "Image Reader"
+msgstr "Kép olvasó"
+
 #: plugins/LegacyProfileReader/__init__.py:14
 msgctxt "@item:inlistbox"
 msgid "Cura 15.04 profiles"
 msgstr "Cura 15.04 profil"
+
+#: plugins/LegacyProfileReader/plugin.json
+msgctxt "name"
+msgid "Legacy Cura Profile Reader"
+msgstr "Örökölt Cura profil olvasó"
+
+#: plugins/LegacyProfileReader/plugin.json
+msgctxt "description"
+msgid "Provides support for importing profiles from legacy Cura versions."
+msgstr "Támogatást nyújt a profilok importálásához a régi Cura verziókból."
 
 #: plugins/MachineSettingsAction/MachineSettingsAction.py:32
 msgctxt "@action"
@@ -2417,6 +1939,16 @@ msgctxt "@title:label"
 msgid "End G-code"
 msgstr "G-kód zárás"
 
+#: plugins/MachineSettingsAction/plugin.json
+msgctxt "name"
+msgid "Machine Settings Action"
+msgstr ""
+
+#: plugins/MachineSettingsAction/plugin.json
+msgctxt "description"
+msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc.)."
+msgstr "A géoi beállítások megváltoztatásának lehetőségét biztosítja.(például a építési méret, fúvóka méret, stb.)"
+
 #: plugins/Marketplace/CloudSync/CloudPackageChecker.py:144
 msgctxt "@info:generic"
 msgid "Do you want to sync material and software packages with your account?"
@@ -2515,6 +2047,16 @@ msgctxt "@info:error"
 msgid "Could not reach Marketplace."
 msgstr ""
 
+#: plugins/Marketplace/plugin.json
+msgctxt "description"
+msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
+msgstr ""
+
+#: plugins/Marketplace/plugin.json
+msgctxt "name"
+msgid "Marketplace"
+msgstr ""
+
 #: plugins/Marketplace/resources/qml/CompatibilityDialog.qml:15
 msgctxt "@title"
 msgid "Changes from your account"
@@ -2526,7 +2068,6 @@ msgid "Dismiss"
 msgstr ""
 
 #: plugins/Marketplace/resources/qml/CompatibilityDialog.qml:24
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:118
 #: resources/qml/WelcomePages/FirstStartMachineActionsContent.qml:76
 #: resources/qml/WelcomePages/WhatsNewContent.qml:175
 msgctxt "@button"
@@ -2836,6 +2377,16 @@ msgstr ""
 "<p>Itt Megtudhatja, hogyan lehet a lehető legjobb nyomtatási minőséget és megbízhatóságot biztosítani.</p>\n"
 "<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
 
+#: plugins/ModelChecker/plugin.json
+msgctxt "description"
+msgid "Checks models and print configuration for possible printing issues and give suggestions."
+msgstr "Ellenőrzi a modelleket és a nyomtatási konfigurációt a lehetséges nyomtatási problémákra vonatkozóan, és javaslatokat ad."
+
+#: plugins/ModelChecker/plugin.json
+msgctxt "name"
+msgid "Model Checker"
+msgstr "Modell-ellenőrző"
+
 #: plugins/MonitorStage/MonitorMain.qml:100
 msgctxt "@info"
 msgid ""
@@ -2868,6 +2419,16 @@ msgstr ""
 msgctxt "@item:inmenu"
 msgid "Monitor"
 msgstr "Monitor"
+
+#: plugins/MonitorStage/plugin.json
+msgctxt "name"
+msgid "Monitor Stage"
+msgstr "Monitor nézet"
+
+#: plugins/MonitorStage/plugin.json
+msgctxt "description"
+msgid "Provides a monitor stage in Cura."
+msgstr "Monitor nézetet biztosít a Cura -ban."
 
 #: plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:41
 msgctxt "@label"
@@ -2935,6 +2496,16 @@ msgctxt "@info:tooltip"
 msgid "Configure Per Model Settings"
 msgstr "Modellenkénti beállítások konfigurálása"
 
+#: plugins/PerObjectSettingsTool/plugin.json
+msgctxt "name"
+msgid "Per Model Settings Tool"
+msgstr "Modellenkénti beállítás-eszköz"
+
+#: plugins/PerObjectSettingsTool/plugin.json
+msgctxt "description"
+msgid "Provides the Per Model Settings."
+msgstr "Biztosítja a modellenkénti beállításokat."
+
 #: plugins/PostProcessingPlugin/PostProcessingPlugin.py:35
 msgctxt "@item:inmenu"
 msgid "Post Processing"
@@ -2977,6 +2548,16 @@ msgid_plural "The following scripts are active:"
 msgstr[0] ""
 msgstr[1] ""
 
+#: plugins/PostProcessingPlugin/plugin.json
+msgctxt "description"
+msgid "Extension that allows for user created scripts for post processing"
+msgstr "Bővítmény, amely lehetővé teszi a felhasználó által létrehozott szkriptek utófeldolgozást"
+
+#: plugins/PostProcessingPlugin/plugin.json
+msgctxt "name"
+msgid "Post Processing"
+msgstr "Utólagos feldolgozás"
+
 #: plugins/PrepareStage/PrepareMenu.qml:74
 msgctxt "@button"
 msgid "Add printer"
@@ -2992,10 +2573,30 @@ msgctxt "@item:inmenu"
 msgid "Prepare"
 msgstr "Előkészítés"
 
+#: plugins/PrepareStage/plugin.json
+msgctxt "name"
+msgid "Prepare Stage"
+msgstr "Előkészítés nézet"
+
+#: plugins/PrepareStage/plugin.json
+msgctxt "description"
+msgid "Provides a prepare stage in Cura."
+msgstr "Biztosítja az előkészítés nézetet a Cura-ban."
+
 #: plugins/PreviewStage/__init__.py:13
 msgctxt "@item:inmenu"
 msgid "Preview"
 msgstr "Előnézet"
+
+#: plugins/PreviewStage/plugin.json
+msgctxt "name"
+msgid "Preview Stage"
+msgstr "Előnézet"
+
+#: plugins/PreviewStage/plugin.json
+msgctxt "description"
+msgid "Provides a preview stage in Cura."
+msgstr "Előnézet biztosítása a Cura -ban."
 
 #: plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:23
 msgctxt "@action:button Preceded by 'Ready to'."
@@ -3088,6 +2689,26 @@ msgstr "{0} leválasztása sikertelen. A meghajtó használatban van."
 msgctxt "@item:intext"
 msgid "Removable Drive"
 msgstr "Cserélhető meghajtó"
+
+#: plugins/RemovableDriveOutputDevice/plugin.json
+msgctxt "description"
+msgid "Provides removable drive hotplugging and writing support."
+msgstr "Támogatás a cserélhető meghajtók üzem közbeni cseréjét és írását."
+
+#: plugins/RemovableDriveOutputDevice/plugin.json
+msgctxt "name"
+msgid "Removable Drive Output Device Plugin"
+msgstr "Cserélhető meghajtók kimeneti beépülője"
+
+#: plugins/SentryLogger/plugin.json
+msgctxt "description"
+msgid "Logs certain events so that they can be used by the crash reporter"
+msgstr ""
+
+#: plugins/SentryLogger/plugin.json
+msgctxt "name"
+msgid "Sentry Logger"
+msgstr ""
 
 #: plugins/SimulationView/SimulationView.py:129
 msgctxt "@info:status"
@@ -3216,6 +2837,16 @@ msgctxt "@item:inlistbox"
 msgid "Layer view"
 msgstr "Réteg nézet"
 
+#: plugins/SimulationView/plugin.json
+msgctxt "description"
+msgid "Provides the preview of sliced layerdata."
+msgstr ""
+
+#: plugins/SimulationView/plugin.json
+msgctxt "name"
+msgid "Simulation View"
+msgstr "Szimulációs nézet"
+
 #: plugins/SliceInfoPlugin/MoreInfoWindow.qml:16
 msgctxt "@title:window"
 msgid "More information on anonymous data collection"
@@ -3241,6 +2872,16 @@ msgctxt "@text"
 msgid "Unable to read example data file."
 msgstr ""
 
+#: plugins/SliceInfoPlugin/plugin.json
+msgctxt "name"
+msgid "Slice info"
+msgstr "Szeletelési infó"
+
+#: plugins/SliceInfoPlugin/plugin.json
+msgctxt "description"
+msgid "Submits anonymous slice info. Can be disabled through preferences."
+msgstr "Névtelen szelet-információt nyújt be. A beállítások révén letiltható."
+
 #: plugins/SolidView/SolidView.py:71
 msgctxt "@info:status"
 msgid "The highlighted areas indicate either missing or extraneous surfaces. Fix your model and open it again into Cura."
@@ -3256,6 +2897,16 @@ msgctxt "@item:inmenu"
 msgid "Solid view"
 msgstr "Felület nézet"
 
+#: plugins/SolidView/plugin.json
+msgctxt "description"
+msgid "Provides a normal solid mesh view."
+msgstr "Felületi háló nézetet biztosít."
+
+#: plugins/SolidView/plugin.json
+msgctxt "name"
+msgid "Solid View"
+msgstr "Felület nézet"
+
 #: plugins/SupportEraser/__init__.py:12
 msgctxt "@label"
 msgid "Support Blocker"
@@ -3265,6 +2916,16 @@ msgstr "Támasz blokkoló"
 msgctxt "@info:tooltip"
 msgid "Create a volume in which supports are not printed."
 msgstr "Hozzon létre egy kötetet, amelyben a támaszok nem kerülnek nyomtatásra."
+
+#: plugins/SupportEraser/plugin.json
+msgctxt "description"
+msgid "Creates an eraser mesh to block the printing of support in certain places"
+msgstr "Törlő hálót hoz létre, hogy bizonyos helyeken blokkolja a támasz nyomtatását"
+
+#: plugins/SupportEraser/plugin.json
+msgctxt "name"
+msgid "Support Eraser"
+msgstr "Támasz törlő"
 
 #: plugins/TrimeshReader/__init__.py:15
 msgctxt "@item:inlistbox 'Open' is part of the name of this file format."
@@ -3296,10 +2957,31 @@ msgctxt "@item:inlistbox"
 msgid "Compressed COLLADA Digital Asset Exchange"
 msgstr "Tömörített COLLADA digitális eszközcsere"
 
+#: plugins/TrimeshReader/plugin.json
+msgctxt "description"
+msgid "Provides support for reading model files."
+msgstr "Támogatást nyújt a modellfájlok olvasásához."
+
+#: plugins/TrimeshReader/plugin.json
+msgctxt "name"
+msgid "Trimesh Reader"
+msgstr "Trimesh olvasó"
+
 #: plugins/UFPReader/__init__.py:22 plugins/UFPWriter/__init__.py:28
 msgctxt "@item:inlistbox"
 msgid "UltiMaker Format Package"
 msgstr "UltiMaker formátumcsomag"
+
+#: plugins/UFPReader/plugin.json
+#, fuzzy
+msgctxt "description"
+msgid "Provides support for reading Ultimaker Format Packages."
+msgstr "Támogatást nyújt az UltiMaker formátumú csomagok olvasásához."
+
+#: plugins/UFPReader/plugin.json
+msgctxt "name"
+msgid "UFP Reader"
+msgstr "UFP Olvasó"
 
 #: plugins/UFPWriter/UFPWriter.py:64 plugins/UFPWriter/UFPWriter.py:80
 #: plugins/UFPWriter/UFPWriter.py:93 plugins/UFPWriter/UFPWriter.py:115
@@ -3307,6 +2989,29 @@ msgstr "UltiMaker formátumcsomag"
 msgctxt "@info:error"
 msgid "Can't write to UFP file:"
 msgstr ""
+
+#: plugins/UFPWriter/plugin.json
+#, fuzzy
+msgctxt "description"
+msgid "Provides support for writing Ultimaker Format Packages."
+msgstr "Támogatást nyújt az UltiMaker formátumú csomagok írásához."
+
+#: plugins/UFPWriter/plugin.json
+msgctxt "name"
+msgid "UFP Writer"
+msgstr "UFP Író"
+
+#: plugins/UM3NetworkPrinting/plugin.json
+#, fuzzy
+msgctxt "description"
+msgid "Manages network connections to UltiMaker networked printers."
+msgstr "Kezeli a hálózati csatlakozásokat az UltiMaker hálózati nyomtatókhoz."
+
+#: plugins/UM3NetworkPrinting/plugin.json
+#, fuzzy
+msgctxt "name"
+msgid "UltiMaker Network Connection"
+msgstr "UltiMaker hálózati kapcsolat"
 
 #: plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:44
 msgctxt "@title:window"
@@ -3817,7 +3522,7 @@ msgstr ""
 #: plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:18
 #, fuzzy
 msgctxt "@info:status"
-msgid "You are attempting to connect to a printer that is not running Ultimaker Connect. Please update the printer to the latest firmware."
+msgid "You are attempting to connect to a printer that is not running UltiMaker Connect. Please update the printer to the latest firmware."
 msgstr "Olyan nyomtatóval próbál csatlakozni, amelyen nem fut az UltiMaker Connect. Kérjük, frissítse a nyomtatón a firmware-t."
 
 #: plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:21
@@ -4038,6 +3743,16 @@ msgctxt "@message"
 msgid "Print in Progress"
 msgstr "Nyomtatás folyamatban"
 
+#: plugins/USBPrinting/plugin.json
+msgctxt "description"
+msgid "Accepts G-Code and sends them to a printer. Plugin can also update firmware."
+msgstr "Elfogadja a G-kódot és elküldi őket egy nyomtatóra. A plugin a firmware-t is frissítheti."
+
+#: plugins/USBPrinting/plugin.json
+msgctxt "name"
+msgid "USB printing"
+msgstr "USB nyomtatás"
+
 #: plugins/UltimakerMachineActions/BedLevelMachineAction.py:24
 msgctxt "@action"
 msgid "Level build plate"
@@ -4083,15 +3798,299 @@ msgctxt "@label"
 msgid "Heated Build Plate (official kit or self-built)"
 msgstr "Fűthető tárgyasztal (eredeti vagy utólag épített)"
 
+#: plugins/UltimakerMachineActions/plugin.json
+#, fuzzy
+msgctxt "description"
+msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
+msgstr "Gépi funkciók biztosítása az UltiMaker nyomtatók számára.(pl.: ágyszintezés varázsló, frissítések kiválasztása.)"
+
+#: plugins/UltimakerMachineActions/plugin.json
+#, fuzzy
+msgctxt "name"
+msgid "UltiMaker machine actions"
+msgstr "UltiMaker gépi funkciók"
+
+#: plugins/VersionUpgrade/VersionUpgrade21to22/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.1 to Cura 2.2."
+msgstr "A konfigurációk frissítése Cura 2.1-ről Cura 2.2-re."
+
+#: plugins/VersionUpgrade/VersionUpgrade21to22/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 2.1 to 2.2"
+msgstr "A 2.1-es verzió frissítése 2.2-re"
+
+#: plugins/VersionUpgrade/VersionUpgrade22to24/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.2 to Cura 2.4."
+msgstr "A konfigurációk frissítése Cura 2.2-ről Cura 2.4-re."
+
+#: plugins/VersionUpgrade/VersionUpgrade22to24/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 2.2 to 2.4"
+msgstr "A 2.2-es verzió frissítése 2.4-ig"
+
+#: plugins/VersionUpgrade/VersionUpgrade25to26/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.5 to Cura 2.6."
+msgstr "Frissíti a konfigurációt Cura 2.5-ről Cura 2.6-ra."
+
+#: plugins/VersionUpgrade/VersionUpgrade25to26/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 2.5 to 2.6"
+msgstr "A 2.5-es verzió frissítése 2.6-ra"
+
+#: plugins/VersionUpgrade/VersionUpgrade26to27/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.6 to Cura 2.7."
+msgstr "A konfigurációk frissítése Cura 2.6-ról Cura 2.7-re."
+
+#: plugins/VersionUpgrade/VersionUpgrade26to27/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 2.6 to 2.7"
+msgstr "A 2.6-os verzió frissítése 2.7-re"
+
+#: plugins/VersionUpgrade/VersionUpgrade27to30/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.7 to Cura 3.0."
+msgstr "A konfigurációk frissítése Cura 2.7-ről Cura 3.0-ra."
+
+#: plugins/VersionUpgrade/VersionUpgrade27to30/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 2.7 to 3.0"
+msgstr "A 2.7-es verzió frissítése 3.0-ra"
+
+#: plugins/VersionUpgrade/VersionUpgrade30to31/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.0 to Cura 3.1."
+msgstr "A konfigurációk frissítése Cura 3.0-ról Cura 3.1-re."
+
+#: plugins/VersionUpgrade/VersionUpgrade30to31/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 3.0 to 3.1"
+msgstr "A 3.0-s verzió frissítése 3.1-re"
+
+#: plugins/VersionUpgrade/VersionUpgrade32to33/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.2 to Cura 3.3."
+msgstr "A konfigurációk frissítése Cura 3.2-ről Cura 3.3-ra."
+
+#: plugins/VersionUpgrade/VersionUpgrade32to33/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 3.2 to 3.3"
+msgstr "A 3.2-es verzió frissítése 3.3-ra"
+
+#: plugins/VersionUpgrade/VersionUpgrade33to34/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.3 to Cura 3.4."
+msgstr "A konfigurációk frissítése Cura 3.3-ról Cura 3.4-re."
+
+#: plugins/VersionUpgrade/VersionUpgrade33to34/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 3.3 to 3.4"
+msgstr "A 3.3-as verzió frissítése 3.4-re"
+
+#: plugins/VersionUpgrade/VersionUpgrade34to35/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.4 to Cura 3.5."
+msgstr "A konfigurációt Cura 3.4-ről Cura 3.5-re frissíti."
+
+#: plugins/VersionUpgrade/VersionUpgrade34to35/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 3.4 to 3.5"
+msgstr "A 3.4-es verzió frissítése 3.5-re"
+
+#: plugins/VersionUpgrade/VersionUpgrade35to40/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.5 to Cura 4.0."
+msgstr "A konfigurációk frissítése Cura 3.5-ről Cura 4.0-ra."
+
+#: plugins/VersionUpgrade/VersionUpgrade35to40/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 3.5 to 4.0"
+msgstr "A 3.5-es verzió frissítése 4.0-ra"
+
+#: plugins/VersionUpgrade/VersionUpgrade40to41/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.0 to Cura 4.1."
+msgstr "A konfigurációt Cura 4.0-ról Cura 4.1-re frissíti."
+
+#: plugins/VersionUpgrade/VersionUpgrade40to41/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.0 to 4.1"
+msgstr "A 4.0-s verzió frissítése 4.1-re"
+
+#: plugins/VersionUpgrade/VersionUpgrade411to412/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.11 to Cura 4.12."
+msgstr ""
+
+#: plugins/VersionUpgrade/VersionUpgrade411to412/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.11 to 4.12"
+msgstr ""
+
+#: plugins/VersionUpgrade/VersionUpgrade413to50/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.13 to Cura 5.0."
+msgstr ""
+
+#: plugins/VersionUpgrade/VersionUpgrade413to50/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.13 to 5.0"
+msgstr ""
+
+#: plugins/VersionUpgrade/VersionUpgrade41to42/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.1 to Cura 4.2."
+msgstr "A konfigurációk frissítése Cura 4.1-ről Cura 4.2-re."
+
+#: plugins/VersionUpgrade/VersionUpgrade41to42/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.1 to 4.2"
+msgstr "A 4.1-es verzió frissítése 4.2-re"
+
+#: plugins/VersionUpgrade/VersionUpgrade42to43/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.2 to Cura 4.3."
+msgstr "A konfigurációk frissítése Cura 4.2-ről Cura 4.3-ra."
+
+#: plugins/VersionUpgrade/VersionUpgrade42to43/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.2 to 4.3"
+msgstr "A 4.2-es verzió frissítése 4.3-ra"
+
+#: plugins/VersionUpgrade/VersionUpgrade43to44/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.3 to Cura 4.4."
+msgstr ""
+
+#: plugins/VersionUpgrade/VersionUpgrade43to44/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.3 to 4.4"
+msgstr ""
+
+#: plugins/VersionUpgrade/VersionUpgrade44to45/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.4 to Cura 4.5."
+msgstr ""
+
+#: plugins/VersionUpgrade/VersionUpgrade44to45/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.4 to 4.5"
+msgstr ""
+
+#: plugins/VersionUpgrade/VersionUpgrade45to46/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.5 to Cura 4.6."
+msgstr ""
+
+#: plugins/VersionUpgrade/VersionUpgrade45to46/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.5 to 4.6"
+msgstr ""
+
+#: plugins/VersionUpgrade/VersionUpgrade460to462/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.6.0 to Cura 4.6.2."
+msgstr ""
+
+#: plugins/VersionUpgrade/VersionUpgrade460to462/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.6.0 to 4.6.2"
+msgstr ""
+
+#: plugins/VersionUpgrade/VersionUpgrade462to47/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.6.2 to Cura 4.7."
+msgstr ""
+
+#: plugins/VersionUpgrade/VersionUpgrade462to47/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.6.2 to 4.7"
+msgstr ""
+
+#: plugins/VersionUpgrade/VersionUpgrade47to48/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.7 to Cura 4.8."
+msgstr ""
+
+#: plugins/VersionUpgrade/VersionUpgrade47to48/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.7 to 4.8"
+msgstr ""
+
+#: plugins/VersionUpgrade/VersionUpgrade48to49/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.8 to Cura 4.9."
+msgstr ""
+
+#: plugins/VersionUpgrade/VersionUpgrade48to49/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.8 to 4.9"
+msgstr ""
+
+#: plugins/VersionUpgrade/VersionUpgrade49to410/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.9 to Cura 4.10."
+msgstr ""
+
+#: plugins/VersionUpgrade/VersionUpgrade49to410/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.9 to 4.10"
+msgstr ""
+
+#: plugins/VersionUpgrade/VersionUpgrade52to53/plugin.json
+#, fuzzy
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.2 to Cura 5.3."
+msgstr "A konfigurációk frissítése Cura 3.2-ről Cura 3.3-ra."
+
+#: plugins/VersionUpgrade/VersionUpgrade52to53/plugin.json
+#, fuzzy
+msgctxt "name"
+msgid "Version Upgrade 5.2 to 5.3"
+msgstr "A 3.2-es verzió frissítése 3.3-ra"
+
 #: plugins/X3DReader/__init__.py:13
 msgctxt "@item:inlistbox"
 msgid "X3D File"
 msgstr "X3D Fájl"
 
+#: plugins/X3DReader/plugin.json
+msgctxt "description"
+msgid "Provides support for reading X3D files."
+msgstr "Támogatást nyújt az X3D fájlok olvasásához."
+
+#: plugins/X3DReader/plugin.json
+msgctxt "name"
+msgid "X3D Reader"
+msgstr "X3D Olvasó"
+
 #: plugins/XRayView/__init__.py:12
 msgctxt "@item:inlistbox"
 msgid "X-Ray view"
 msgstr "Röntgen nézet"
+
+#: plugins/XRayView/plugin.json
+msgctxt "description"
+msgid "Provides the X-Ray view."
+msgstr "Röntgen nézetet biztosít."
+
+#: plugins/XRayView/plugin.json
+msgctxt "name"
+msgid "X-Ray View"
+msgstr "Röntgen nézet"
+
+#: plugins/XmlMaterialProfile/plugin.json
+msgctxt "name"
+msgid "Material Profiles"
+msgstr "Alapanyag profilok"
+
+#: plugins/XmlMaterialProfile/plugin.json
+msgctxt "description"
+msgid "Provides capabilities to read and write XML-based material profiles."
+msgstr "Lehetővé teszi az XML-alapú anyagprofilok olvasását és írását."
 
 #: resources/qml/Account/AccountWidget.qml:24
 msgctxt "@action:button"
@@ -6178,7 +6177,7 @@ msgctxt "@label shown when we load a Gcode file"
 msgid "Print setup disabled. G-code file can not be modified."
 msgstr "A nyomtatás beállítása letiltva. A G-kód fájl nem módosítható."
 
-#: resources/qml/PrintSetupSelector/PrintSetupSelectorContents.qml:160
+#: resources/qml/PrintSetupSelector/PrintSetupSelectorContents.qml:179
 msgctxt "@button"
 msgid "Recommended"
 msgstr "Ajánlott"
@@ -6831,7 +6830,7 @@ msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:80
 msgctxt "@info"
-msgid "Sign in into UltiMaker Digilal Factory"
+msgid "Sign in into UltiMaker Digital Factory"
 msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:81
@@ -6897,46 +6896,6 @@ msgctxt "@text"
 msgid "Create a free UltiMaker Account"
 msgstr ""
 
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:24
-msgctxt "@label"
-msgid "Help us to improve UltiMaker Cura"
-msgstr "Segítsen nekünk az UltiMaker Cura fejlesztésében"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:56
-msgctxt "@text"
-msgid "UltiMaker Cura collects anonymous data to improve print quality and user experience, including:"
-msgstr "Az UltiMaker Cura névtelen adatokat gyűjt a nyomtatási minőség és a felhasználói élmény javításának érdekében, ideértve:"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:68
-msgctxt "@text"
-msgid "Machine types"
-msgstr "Géptípusok"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:74
-msgctxt "@text"
-msgid "Material usage"
-msgstr "Anyagfelhasználás"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:80
-msgctxt "@text"
-msgid "Number of slices"
-msgstr "Szeletek száma"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:86
-msgctxt "@text"
-msgid "Print settings"
-msgstr "Nyomtatási beállítások"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:99
-msgctxt "@text"
-msgid "Data collected by UltiMaker Cura will not contain any personal information."
-msgstr "Az UltiMaker Cura által gyűjtött adatok nem tartalmaznak személyes információt."
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:100
-msgctxt "@text"
-msgid "More information"
-msgstr "Több információ"
-
 #: resources/qml/WelcomePages/DropDownWidget.qml:93
 msgctxt "@label"
 msgid "Empty"
@@ -6951,21 +6910,6 @@ msgstr "Felhasználói Szerződés"
 msgctxt "@button"
 msgid "Decline and close"
 msgstr "Elutasítás és bezárás"
-
-#: resources/qml/WelcomePages/WelcomeContent.qml:56
-msgctxt "@label"
-msgid "Welcome to UltiMaker Cura"
-msgstr "Üdvözöljük az UltiMaker Cura-ban"
-
-#: resources/qml/WelcomePages/WelcomeContent.qml:67
-msgctxt "@text"
-msgid "Please follow these steps to set up UltiMaker Cura. This will only take a few moments."
-msgstr ""
-
-#: resources/qml/WelcomePages/WelcomeContent.qml:82
-msgctxt "@button"
-msgid "Get started"
-msgstr "Kezdj hozzá"
 
 #: resources/qml/WelcomePages/WhatsNewContent.qml:28
 msgctxt "@label"
@@ -7173,6 +7117,10 @@ msgstr ""
 #~ msgid "Customized"
 #~ msgstr "Testreszabott"
 
+#~ msgctxt "@text"
+#~ msgid "Data collected by UltiMaker Cura will not contain any personal information."
+#~ msgstr "Az UltiMaker Cura által gyűjtött adatok nem tartalmaznak személyes információt."
+
 #~ msgctxt "@action:button"
 #~ msgid "Decline"
 #~ msgstr "Elutasít"
@@ -7251,6 +7199,10 @@ msgstr ""
 #~ msgid "Generic Materials"
 #~ msgstr "Általános anyagok"
 
+#~ msgctxt "@button"
+#~ msgid "Get started"
+#~ msgstr "Kezdj hozzá"
+
 #~ msgctxt "@label"
 #~ msgid "Glass"
 #~ msgstr "Üveg"
@@ -7266,6 +7218,10 @@ msgstr ""
 #~ msgctxt "@label"
 #~ msgid "Gradual infill will gradually increase the amount of infill towards the top."
 #~ msgstr "A fokozatos kitöltés folyamatosan növeli a kitöltés mennyiségét, ahogy közeledik a tárgy teteje felé."
+
+#~ msgctxt "@label"
+#~ msgid "Help us to improve UltiMaker Cura"
+#~ msgstr "Segítsen nekünk az UltiMaker Cura fejlesztésében"
 
 #~ msgctxt "@label The argument is a username."
 #~ msgid "Hi %1"
@@ -7319,9 +7275,17 @@ msgstr ""
 #~ msgid "Machine Settings action"
 #~ msgstr "Gépbeállítások művelete"
 
+#~ msgctxt "@text"
+#~ msgid "Machine types"
+#~ msgstr "Géptípusok"
+
 #~ msgctxt "@title"
 #~ msgid "Marketplace"
 #~ msgstr "Áruház"
+
+#~ msgctxt "@text"
+#~ msgid "Material usage"
+#~ msgstr "Anyagfelhasználás"
 
 #~ msgctxt "@text:window"
 #~ msgid "Materials"
@@ -7336,6 +7300,10 @@ msgstr ""
 #~ msgstr "Módosítsa az egyéb modellekkel való átfedés beállítását"
 
 #~ msgctxt "@action:button"
+#~ msgid "More information"
+#~ msgstr "Több információ"
+
+#~ msgctxt "@text"
 #~ msgid "More information"
 #~ msgstr "Több információ"
 
@@ -7364,6 +7332,10 @@ msgstr ""
 #~ msgctxt "@info:status"
 #~ msgid "Nothing to slice because none of the models fit the build volume or are assigned to a disabled extruder. Please scale or rotate models to fit, or enable an extruder."
 #~ msgstr "Nem lehet szeletelni, mert egyik modell sem érintkezik az alapsíkkal, vagy a modell letiltott extruderhez van hozzárendelve. Kérjük, méretezze vagy forgassa el a modelleket, hogy illeszkedjenek az alapsíkra, vagy engedélyezz egy extrudert."
+
+#~ msgctxt "@text"
+#~ msgid "Number of slices"
+#~ msgstr "Szeletek száma"
 
 #~ msgctxt "@label"
 #~ msgid "Olsson Block"
@@ -7416,6 +7388,10 @@ msgstr ""
 #~ msgctxt "@label"
 #~ msgid "Print experiment"
 #~ msgstr "Nyomtatási kísérlet"
+
+#~ msgctxt "@text"
+#~ msgid "Print settings"
+#~ msgstr "Nyomtatási beállítások"
 
 #~ msgctxt "@action:button"
 #~ msgid "Print via Cloud"
@@ -7586,6 +7562,10 @@ msgstr ""
 #~ msgid "UltiMaker Cloud"
 #~ msgstr "UltiMaker felhő"
 
+#~ msgctxt "@text"
+#~ msgid "UltiMaker Cura collects anonymous data to improve print quality and user experience, including:"
+#~ msgstr "Az UltiMaker Cura névtelen adatokat gyűjt a nyomtatási minőség és a felhasználói élmény javításának érdekében, ideértve:"
+
 #~ msgctxt "@action:button"
 #~ msgid "Uninstall"
 #~ msgstr "Eltávolítás"
@@ -7645,6 +7625,10 @@ msgstr ""
 #~ msgctxt "@label"
 #~ msgid "Website"
 #~ msgstr "Weboldal"
+
+#~ msgctxt "@label"
+#~ msgid "Welcome to UltiMaker Cura"
+#~ msgstr "Üdvözöljük az UltiMaker Cura-ban"
 
 #~ msgctxt "@label"
 #~ msgid "What's new in UltiMaker Cura"

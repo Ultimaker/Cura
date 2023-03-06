@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-01-31 16:46+0100\n"
-"PO-Revision-Date: 2022-10-10 18:52+0200\n"
+"PO-Revision-Date: 2023-02-16 20:28+0100\n"
 "Last-Translator: Miroslav Šustek <sustmidown@centrum.cz>\n"
 "Language-Team: DenyCZ <www.github.com/DenyCZ>\n"
 "Language: cs_CZ\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.2.2\n"
 
 #: cura/API/Account.py:199
 msgctxt "@info:title"
@@ -86,7 +86,6 @@ msgid "Cura can't start"
 msgstr "Cura nelze spustit"
 
 #: cura/CrashHandler.py:113
-#, fuzzy
 msgctxt "@label crash message"
 msgid ""
 "<p><b>Oops, UltiMaker Cura has encountered something that doesn't seem right.</p></b>\n"
@@ -95,7 +94,7 @@ msgid ""
 "                    <p>Please send us this Crash Report to fix the problem.</p>\n"
 "                "
 msgstr ""
-"<p> <b> Jejda, Ultimaker Cura narazil na něco, co se nezdá být v pořádku. </p> </b>\n"
+"<p> <b> Jejda, UltiMaker Cura narazil na něco, co se nezdá být v pořádku. </p> </b>\n"
 "                     <p> Během spouštění jsme zaznamenali neodstranitelnou chybu. Bylo to pravděpodobně způsobeno některými nesprávnými konfiguračními soubory. Doporučujeme zálohovat a resetovat vaši konfiguraci. </p>\n"
 "                     <p> Zálohy najdete v konfigurační složce. </p>\n"
 "                     <p> Za účelem vyřešení problému nám prosím pošlete tento záznam pádu. </p>\n"
@@ -813,655 +812,6 @@ msgctxt "@text"
 msgid "Unknown error."
 msgstr "Neznámá chyba."
 
-#: plugin.json
-msgctxt "name"
-msgid "3MF Reader"
-msgstr "Čtečka 3MF"
-
-#: plugin.json
-msgctxt "name"
-msgid "3MF Writer"
-msgstr "Zapisovač 3MF"
-
-#: plugin.json
-msgctxt "name"
-msgid "AMF Reader"
-msgstr "Čtečka AMF"
-
-#: plugin.json
-msgctxt "description"
-msgid "Accepts G-Code and sends them to a printer. Plugin can also update firmware."
-msgstr "Přijme G-kód a odešle je do tiskárny. Plugin může také aktualizovat firmware."
-
-#: plugin.json
-msgctxt "description"
-msgid "Allows loading and displaying G-code files."
-msgstr "Povoluje načítání a zobrazení souborů G kódu."
-
-#: plugin.json
-msgctxt "description"
-msgid "Backup and restore your configuration."
-msgstr "Zálohujte a obnovte konfiguraci."
-
-#: plugin.json
-msgctxt "description"
-msgid "Checks for firmware updates."
-msgstr "Zkontroluje dostupné aktualizace firmwaru."
-
-#: plugin.json
-msgctxt "description"
-msgid "Checks models and print configuration for possible printing issues and give suggestions."
-msgstr "Zkontroluje možné tiskové modely a konfiguraci tisku a poskytne návrhy."
-
-#: plugin.json
-msgctxt "name"
-msgid "Compressed G-code Reader"
-msgstr "Čtečka kompresovaného G kódu"
-
-#: plugin.json
-msgctxt "name"
-msgid "Compressed G-code Writer"
-msgstr "Zapisova kompresovaného G kódu"
-
-#: plugin.json
-msgctxt "description"
-msgid "Connects to the Digital Library, allowing Cura to open files from and save files to the Digital Library."
-msgstr "Připojuje k Digitální knihovně. Umožňuje Cuře otevírat a ukládat soubory z a do Digitální knihovny."
-
-#: plugin.json
-msgctxt "description"
-msgid "Creates an eraser mesh to block the printing of support in certain places"
-msgstr "Vytvoří gumovou síť, která blokuje tisk podpory na určitých místech"
-
-#: plugin.json
-msgctxt "name"
-msgid "Cura Backups"
-msgstr "Cura zálohy"
-
-#: plugin.json
-msgctxt "name"
-msgid "Cura Profile Reader"
-msgstr "Čtečka Cura profilu"
-
-#: plugin.json
-msgctxt "name"
-msgid "Cura Profile Writer"
-msgstr "Zapisovač Cura profilu"
-
-#: plugin.json
-msgctxt "name"
-msgid "CuraEngine Backend"
-msgstr "CuraEngine Backend"
-
-#: plugin.json
-msgctxt "description"
-msgid "Enables ability to generate printable geometry from 2D image files."
-msgstr "Umožňuje generovat tiskovou geometrii ze 2D obrazových souborů."
-
-#: plugin.json
-msgctxt "description"
-msgid "Extension that allows for user created scripts for post processing"
-msgstr "Rozšíření, které umožňuje uživateli vytvořené skripty pro následné zpracování"
-
-#: plugin.json
-msgctxt "name"
-msgid "Firmware Update Checker"
-msgstr "Kontroler aktualizace firmwaru"
-
-#: plugin.json
-msgctxt "name"
-msgid "Firmware Updater"
-msgstr "Firmware Updater"
-
-#: plugin.json
-msgctxt "name"
-msgid "G-code Profile Reader"
-msgstr "Čtečka profilu G kódu"
-
-#: plugin.json
-msgctxt "name"
-msgid "G-code Reader"
-msgstr "Čtečka G kódu"
-
-#: plugin.json
-msgctxt "name"
-msgid "G-code Writer"
-msgstr "Zapisovač G kódu"
-
-#: plugin.json
-msgctxt "name"
-msgid "Image Reader"
-msgstr "Čtečka obrázků"
-
-#: plugin.json
-msgctxt "name"
-msgid "Legacy Cura Profile Reader"
-msgstr "Čtečka legacy Cura profilu"
-
-#: plugin.json
-msgctxt "description"
-msgid "Logs certain events so that they can be used by the crash reporter"
-msgstr "Protokolová určité události, aby je mohl použít reportér havárií"
-
-#: plugin.json
-msgctxt "name"
-msgid "Machine Settings Action"
-msgstr "Akce nastavení zařízení"
-
-#: plugin.json
-#, fuzzy
-msgctxt "description"
-msgid "Manages extensions to the application and allows browsing extensions from the Ultimaker website."
-msgstr "Spravuje rozšíření aplikace a umožňuje prohlížení rozšíření z webu UltiMaker."
-
-#: plugin.json
-#, fuzzy
-msgctxt "description"
-msgid "Manages network connections to Ultimaker networked printers."
-msgstr "Spravuje síťová připojení k síťovým tiskárnám UltiMaker."
-
-#: plugin.json
-msgctxt "name"
-msgid "Marketplace"
-msgstr "Obchod"
-
-#: plugin.json
-msgctxt "name"
-msgid "Material Profiles"
-msgstr "Materiálové profily"
-
-#: plugin.json
-msgctxt "name"
-msgid "Model Checker"
-msgstr "Kontroler modelu"
-
-#: plugin.json
-msgctxt "name"
-msgid "Monitor Stage"
-msgstr "Fáze monitoringu"
-
-#: plugin.json
-msgctxt "name"
-msgid "Per Model Settings Tool"
-msgstr "Nástroj pro nastavení pro každý model"
-
-#: plugin.json
-msgctxt "name"
-msgid "Post Processing"
-msgstr "Post Processing"
-
-#: plugin.json
-msgctxt "name"
-msgid "Prepare Stage"
-msgstr "Fáze přípravy"
-
-#: plugin.json
-msgctxt "name"
-msgid "Preview Stage"
-msgstr "Fáze náhledu"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides a machine actions for updating firmware."
-msgstr "Poskytuje akce počítače pro aktualizaci firmwaru."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides a monitor stage in Cura."
-msgstr "Poskytuje monitorovací scénu v Cuře."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides a normal solid mesh view."
-msgstr "Poskytuje normální zobrazení pevné sítě."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides a prepare stage in Cura."
-msgstr "Poskytuje přípravnou fázi v Cuře."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides a preview stage in Cura."
-msgstr "Poskytuje fázi náhledu v Cura."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc.)."
-msgstr "Poskytuje způsob, jak změnit nastavení zařízení (například objem sestavení, velikost trysek atd.)."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides capabilities to read and write XML-based material profiles."
-msgstr "Poskytuje funkce pro čtení a zápis materiálových profilů založených na XML."
-
-#: plugin.json
-#, fuzzy
-msgctxt "description"
-msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
-msgstr "Poskytuje akce strojů pro stroje UltiMaker (jako je průvodce vyrovnáváním postele, výběr upgradů atd.)."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides removable drive hotplugging and writing support."
-msgstr "Poskytuje vyměnitelnou jednotku za plného zapojení a podporu zápisu."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for exporting Cura profiles."
-msgstr "Poskytuje podporu pro export profilů Cura."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for importing Cura profiles."
-msgstr "Poskytuje podporu pro import profilů Cura."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for importing profiles from g-code files."
-msgstr "Poskytuje podporu pro import profilů ze souborů g-kódu."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for importing profiles from legacy Cura versions."
-msgstr "Poskytuje podporu pro import profilů ze starších verzí Cura."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for reading 3MF files."
-msgstr "Poskytuje podporu pro čtení souborů 3MF."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for reading AMF files."
-msgstr "Poskytuje podporu pro čtení souborů AMF."
-
-#: plugin.json
-#, fuzzy
-msgctxt "description"
-msgid "Provides support for reading Ultimaker Format Packages."
-msgstr "Poskytuje podporu pro čtení balíčků formátu UltiMaker."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for reading X3D files."
-msgstr "Poskytuje podporu pro čtení souborů X3D."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for reading model files."
-msgstr "Poskytuje podporu pro čtení souborů modelu."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for writing 3MF files."
-msgstr "Poskytuje podporu pro psaní souborů 3MF."
-
-#: plugin.json
-#, fuzzy
-msgctxt "description"
-msgid "Provides support for writing Ultimaker Format Packages."
-msgstr "Poskytuje podporu pro psaní balíčků formátu UltiMaker."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides the Per Model Settings."
-msgstr "Umožňuje nastavení pro každý model."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides the X-Ray view."
-msgstr "Poskytuje rentgenové zobrazení."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides the link to the CuraEngine slicing backend."
-msgstr "Poskytuje odkaz na backend krájení CuraEngine."
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides the preview of sliced layerdata."
-msgstr "Poskytuje náhled slicovaných dat vrstev."
-
-#: plugin.json
-msgctxt "description"
-msgid "Reads g-code from a compressed archive."
-msgstr "Čte g-kód z komprimovaného archivu."
-
-#: plugin.json
-msgctxt "name"
-msgid "Removable Drive Output Device Plugin"
-msgstr "Vyměnitelný zásuvný modul pro výstupní zařízení"
-
-#: plugin.json
-msgctxt "name"
-msgid "Sentry Logger"
-msgstr "Záznamník hlavy"
-
-#: plugin.json
-msgctxt "name"
-msgid "Simulation View"
-msgstr "Pohled simulace"
-
-#: plugin.json
-msgctxt "name"
-msgid "Slice info"
-msgstr "Informace o slicování"
-
-#: plugin.json
-msgctxt "name"
-msgid "Solid View"
-msgstr "Solid View"
-
-#: plugin.json
-msgctxt "description"
-msgid "Submits anonymous slice info. Can be disabled through preferences."
-msgstr "Odešle anonymní informace o slicování. Lze deaktivovat pomocí preferencí."
-
-#: plugin.json
-msgctxt "name"
-msgid "Support Eraser"
-msgstr "Mazač podpor"
-
-#: plugin.json
-msgctxt "name"
-msgid "Trimesh Reader"
-msgstr "Čtečka trimesh"
-
-#: plugin.json
-msgctxt "name"
-msgid "UFP Reader"
-msgstr "Čtečka UFP"
-
-#: plugin.json
-msgctxt "name"
-msgid "UFP Writer"
-msgstr "Zapisovač UFP"
-
-#: plugin.json
-msgctxt "name"
-msgid "USB printing"
-msgstr "USB tisk"
-
-#: plugin.json
-msgctxt "name"
-msgid "Ultimaker Digital Library"
-msgstr "Digitální knihovna UltiMaker"
-
-#: plugin.json
-#, fuzzy
-msgctxt "name"
-msgid "Ultimaker Network Connection"
-msgstr "Síťové připojení UltiMaker"
-
-#: plugin.json
-#, fuzzy
-msgctxt "name"
-msgid "Ultimaker machine actions"
-msgstr "Akce zařízení UltiMaker"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.1 to Cura 2.2."
-msgstr "Aktualizuje konfigurace z Cura 2.1 na Cura 2.2."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.2 to Cura 2.4."
-msgstr "Aktualizuje konfigurace z Cura 2.2 na Cura 2.4."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.5 to Cura 2.6."
-msgstr "Aktualizuje konfigurace z Cura 2.5 na Cura 2.6."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.6 to Cura 2.7."
-msgstr "Aktualizuje konfigurace z Cura 2.6 na Cura 2.7."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.7 to Cura 3.0."
-msgstr "Aktualizuje konfigurace z Cura 2.7 na Cura 3.0."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.0 to Cura 3.1."
-msgstr "Aktualizuje konfigurace z Cura 3.0 na Cura 3.1."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.2 to Cura 3.3."
-msgstr "Aktualizuje konfigurace z Cura 3.2 na Cura 3.3."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.3 to Cura 3.4."
-msgstr "Aktualizuje konfigurace z Cura 3.3 na Cura 3.4."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.4 to Cura 3.5."
-msgstr "Aktualizuje konfigurace z Cura 3.4 na Cura 3.5."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.5 to Cura 4.0."
-msgstr "Aktualizuje konfigurace z Cura 3.5 na Cura 4.0."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.0 to Cura 4.1."
-msgstr "Aktualizuje konfigurace z Cura 4.0 na Cura 4.1."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.1 to Cura 4.2."
-msgstr "Aktualizuje konfigurace z Cura 4.1 na Cura 4.2."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.11 to Cura 4.12."
-msgstr "Aktualizuje konfigurace z Cura 4.11 na Cura 4.12."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.13 to Cura 5.0."
-msgstr "Aktualizuje konfigurace z Cura 4.13 na Cura 5.0."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.2 to Cura 4.3."
-msgstr "Aktualizuje konfigurace z Cura 4.2 na Cura 4.3."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.3 to Cura 4.4."
-msgstr "Aktualizuje konfigurace z Cura 4.3 na Cura 4.4."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.4 to Cura 4.5."
-msgstr "Aktualizuje konfigurace z Cura 4.4 na Cura 4.5."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.5 to Cura 4.6."
-msgstr "Aktualizuje konfigurace z Cura 4.5 na Cura 4.6."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.6.0 to Cura 4.6.2."
-msgstr "Aktualizuje konfigurace z Cura 4.6.0 na Cura 4.6.2."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.6.2 to Cura 4.7."
-msgstr "Aktualizuje konfigurace z Cura 4.6.2 na Cura 4.7."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.7 to Cura 4.8."
-msgstr "Aktualizuje konfigurace z Cura 4.7 na Cura 4.8."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.8 to Cura 4.9."
-msgstr "Aktualizuje konfigurace z Cura 4.8 na Cura 4.9."
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.9 to Cura 4.10."
-msgstr "Aktualizuje konfigurace z Cura 4.9 na Cura 4.10."
-
-#: plugin.json
-#, fuzzy
-msgctxt "description"
-msgid "Upgrades configurations from Cura 5.2 to Cura 5.3."
-msgstr "Aktualizuje konfigurace z Cura 3.2 na Cura 3.3."
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 2.1 to 2.2"
-msgstr "Aktualizace verze 2.1 na 2.2"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 2.2 to 2.4"
-msgstr "Aktualizace verze 2.2 na 2.4"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 2.5 to 2.6"
-msgstr "Aktualizace verze 2.5 na 2.6"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 2.6 to 2.7"
-msgstr "Aktualizace verze 2.6 na 2.7"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 2.7 to 3.0"
-msgstr "Aktualizace verze 2.7 na 3.0"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 3.0 to 3.1"
-msgstr "Aktualizace verze 3.0 na 3.1"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 3.2 to 3.3"
-msgstr "Aktualizace verze 3.2 na 3.3"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 3.3 to 3.4"
-msgstr "Aktualizace verze 3.3 na 3.4"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 3.4 to 3.5"
-msgstr "Aktualizace verze 3.4 na 3.5"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 3.5 to 4.0"
-msgstr "Aktualizace verze 3.5 na 4.0"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.0 to 4.1"
-msgstr "Aktualizace verze 4.0 na 4.1"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.1 to 4.2"
-msgstr "Aktualizace verze 4.1 na 4.2"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.11 to 4.12"
-msgstr "Aktualizace verze 4.11 na 4.12"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.13 to 5.0"
-msgstr "Aktualizace verze 4.13 na 5.0"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.2 to 4.3"
-msgstr "Aktualizace verze 4.2 na 4.3"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.3 to 4.4"
-msgstr "Aktualizace verze 4.3 na 4.4"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.4 to 4.5"
-msgstr "Aktualizace verze 4.4 na 4.5"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.5 to 4.6"
-msgstr "Aktualizace verze 4.5 na 4.6"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.6.0 to 4.6.2"
-msgstr "Aktualizace verze 4.6.0 na 4.6.2"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.6.2 to 4.7"
-msgstr "Aktualizace verze 4.6.2 na 4.7"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.7 to 4.8"
-msgstr "Aktualizace verze 4.7 na 4.8"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.8 to 4.9"
-msgstr "Aktualizace verze 4.8 na 4.9"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.9 to 4.10"
-msgstr "Aktualizace verze 4.9 na 4.10"
-
-#: plugin.json
-#, fuzzy
-msgctxt "name"
-msgid "Version Upgrade 5.2 to 5.3"
-msgstr "Aktualizace verze 3.2 na 3.3"
-
-#: plugin.json
-msgctxt "description"
-msgid "Writes g-code to a compressed archive."
-msgstr "Zapíše g-kód do komprimovaného archivu."
-
-#: plugin.json
-msgctxt "description"
-msgid "Writes g-code to a file."
-msgstr "Zapisuje G kód o souboru."
-
-#: plugin.json
-msgctxt "name"
-msgid "X-Ray View"
-msgstr "Rentgenový pohled"
-
-#: plugin.json
-msgctxt "name"
-msgid "X3D Reader"
-msgstr "Čtečka X3D"
-
 #: plugins/3MFReader/ThreeMFWorkspaceReader.py:547
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
@@ -1477,7 +827,6 @@ msgstr "Otevřít soubor s projektem"
 #: plugins/3MFReader/WorkspaceDialog.qml:99
 #: plugins/3MFReader/WorkspaceDialog.qml:127
 #: plugins/3MFReader/WorkspaceDialog.qml:134
-#, fuzzy
 msgctxt "@button"
 msgid "Create new"
 msgstr "Vytvořit nový"
@@ -1503,10 +852,10 @@ msgid "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>.
 msgstr "Soubor projektu <filename>{0}</filename> je poškozený: <message>{1}</message>."
 
 #: plugins/3MFReader/ThreeMFWorkspaceReader.py:754
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
 msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of Ultimaker Cura."
-msgstr "Soubor projektu <filename>{0}</filename> je vytvořený profily, které jsou této verzi UltiMaker Cura neznámé."
+msgstr "Soubor projektu <filename>{0}</filename> je vytvořený s profily, které nejsou této verzi UltiMaker Cura známé."
 
 #: plugins/3MFReader/WorkspaceDialog.py:233
 msgctxt "@title:tab"
@@ -1574,15 +923,14 @@ msgid "Printer Group"
 msgstr "Skupina tiskárny"
 
 #: plugins/3MFReader/WorkspaceDialog.qml:103
-#, fuzzy
 msgctxt "@action:label"
 msgid "Open With"
-msgstr "Otevřít"
+msgstr "Otevřít s"
 
 #: plugins/3MFReader/WorkspaceDialog.qml:104
 msgctxt "@info:tooltip"
 msgid "Printer settings will be updated to match the settings saved with the project."
-msgstr ""
+msgstr "Nastavení tiskárny bude aktualizováno, aby odpovídalo nastavení uloženému v projektu."
 
 #: plugins/3MFReader/WorkspaceDialog.qml:156
 #: resources/qml/Dialogs/WorkspaceSummaryDialog.qml:222
@@ -1682,6 +1030,16 @@ msgctxt "@item:inlistbox"
 msgid "3MF File"
 msgstr "Soubor 3MF"
 
+#: plugins/3MFReader/plugin.json
+msgctxt "name"
+msgid "3MF Reader"
+msgstr "Čtečka 3MF"
+
+#: plugins/3MFReader/plugin.json
+msgctxt "description"
+msgid "Provides support for reading 3MF files."
+msgstr "Poskytuje podporu pro čtení souborů 3MF."
+
 #: plugins/3MFWriter/ThreeMFWorkspaceWriter.py:31
 msgctxt "@error:zip"
 msgid "3MF Writer plug-in is corrupt."
@@ -1718,10 +1076,40 @@ msgctxt "@item:inlistbox"
 msgid "Cura Project 3MF file"
 msgstr "Soubor Cura Project 3MF"
 
+#: plugins/3MFWriter/plugin.json
+msgctxt "name"
+msgid "3MF Writer"
+msgstr "Zapisovač 3MF"
+
+#: plugins/3MFWriter/plugin.json
+msgctxt "description"
+msgid "Provides support for writing 3MF files."
+msgstr "Poskytuje podporu pro psaní souborů 3MF."
+
 #: plugins/AMFReader/__init__.py:15
 msgctxt "@item:inlistbox"
 msgid "AMF File"
 msgstr "Soubor AMF"
+
+#: plugins/AMFReader/plugin.json
+msgctxt "name"
+msgid "AMF Reader"
+msgstr "Čtečka AMF"
+
+#: plugins/AMFReader/plugin.json
+msgctxt "description"
+msgid "Provides support for reading AMF files."
+msgstr "Poskytuje podporu pro čtení souborů AMF."
+
+#: plugins/CuraDrive/plugin.json
+msgctxt "description"
+msgid "Backup and restore your configuration."
+msgstr "Zálohujte a obnovte konfiguraci."
+
+#: plugins/CuraDrive/plugin.json
+msgctxt "name"
+msgid "Cura Backups"
+msgstr "Cura zálohy"
 
 #: plugins/CuraDrive/src/CreateBackupJob.py:25
 msgctxt "@info:title"
@@ -1954,11 +1342,51 @@ msgctxt "@info:title"
 msgid "Information"
 msgstr "Informace"
 
+#: plugins/CuraEngineBackend/plugin.json
+msgctxt "name"
+msgid "CuraEngine Backend"
+msgstr "CuraEngine Backend"
+
+#: plugins/CuraEngineBackend/plugin.json
+msgctxt "description"
+msgid "Provides the link to the CuraEngine slicing backend."
+msgstr "Poskytuje odkaz na backend krájení CuraEngine."
+
 #: plugins/CuraProfileReader/__init__.py:14
 #: plugins/CuraProfileWriter/__init__.py:14
 msgctxt "@item:inlistbox"
 msgid "Cura Profile"
 msgstr "Cura profil"
+
+#: plugins/CuraProfileReader/plugin.json
+msgctxt "name"
+msgid "Cura Profile Reader"
+msgstr "Čtečka Cura profilu"
+
+#: plugins/CuraProfileReader/plugin.json
+msgctxt "description"
+msgid "Provides support for importing Cura profiles."
+msgstr "Poskytuje podporu pro import profilů Cura."
+
+#: plugins/CuraProfileWriter/plugin.json
+msgctxt "name"
+msgid "Cura Profile Writer"
+msgstr "Zapisovač Cura profilu"
+
+#: plugins/CuraProfileWriter/plugin.json
+msgctxt "description"
+msgid "Provides support for exporting Cura profiles."
+msgstr "Poskytuje podporu pro export profilů Cura."
+
+#: plugins/DigitalLibrary/plugin.json
+msgctxt "description"
+msgid "Connects to the Digital Library, allowing Cura to open files from and save files to the Digital Library."
+msgstr "Připojuje k Digitální knihovně. Umožňuje Cuře otevírat a ukládat soubory z a do Digitální knihovny."
+
+#: plugins/DigitalLibrary/plugin.json
+msgctxt "name"
+msgid "Ultimaker Digital Library"
+msgstr "Digitální knihovna UltiMaker"
 
 #: plugins/DigitalLibrary/resources/qml/SaveProjectFilesPage.qml:216
 msgctxt "@option"
@@ -1996,6 +1424,16 @@ msgstr "Nový stabilní firmware je k dispozici pro %s"
 msgctxt "@action:button"
 msgid "How to update"
 msgstr "Jak aktualizovat"
+
+#: plugins/FirmwareUpdateChecker/plugin.json
+msgctxt "description"
+msgid "Checks for firmware updates."
+msgstr "Zkontroluje dostupné aktualizace firmwaru."
+
+#: plugins/FirmwareUpdateChecker/plugin.json
+msgctxt "name"
+msgid "Firmware Update Checker"
+msgstr "Kontroler aktualizace firmwaru"
 
 #: plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.py:27
 msgctxt "@action"
@@ -2077,15 +1515,45 @@ msgctxt "@label"
 msgid "Firmware update failed due to missing firmware."
 msgstr "Aktualizace firmwaru selhala kvůli chybějícímu firmwaru."
 
+#: plugins/FirmwareUpdater/plugin.json
+msgctxt "name"
+msgid "Firmware Updater"
+msgstr "Firmware Updater"
+
+#: plugins/FirmwareUpdater/plugin.json
+msgctxt "description"
+msgid "Provides a machine actions for updating firmware."
+msgstr "Poskytuje akce počítače pro aktualizaci firmwaru."
+
 #: plugins/GCodeGzReader/__init__.py:17 plugins/GCodeGzWriter/__init__.py:17
 msgctxt "@item:inlistbox"
 msgid "Compressed G-code File"
 msgstr "Kompresovaný soubor G kódu"
 
+#: plugins/GCodeGzReader/plugin.json
+msgctxt "name"
+msgid "Compressed G-code Reader"
+msgstr "Čtečka kompresovaného G kódu"
+
+#: plugins/GCodeGzReader/plugin.json
+msgctxt "description"
+msgid "Reads g-code from a compressed archive."
+msgstr "Čte g-kód z komprimovaného archivu."
+
 #: plugins/GCodeGzWriter/GCodeGzWriter.py:43
 msgctxt "@error:not supported"
 msgid "GCodeGzWriter does not support text mode."
 msgstr "GCodeGzWriter nepodporuje textový mód."
+
+#: plugins/GCodeGzWriter/plugin.json
+msgctxt "name"
+msgid "Compressed G-code Writer"
+msgstr "Zapisova kompresovaného G kódu"
+
+#: plugins/GCodeGzWriter/plugin.json
+msgctxt "description"
+msgid "Writes g-code to a compressed archive."
+msgstr "Zapíše g-kód do komprimovaného archivu."
 
 #: plugins/GCodeProfileReader/__init__.py:14 plugins/GCodeReader/__init__.py:14
 #: plugins/GCodeWriter/__init__.py:16
@@ -2093,18 +1561,28 @@ msgctxt "@item:inlistbox"
 msgid "G-code File"
 msgstr "Soubor G-kódu"
 
-#: plugins/GCodeReader/FlavorParser.py:350
+#: plugins/GCodeProfileReader/plugin.json
+msgctxt "name"
+msgid "G-code Profile Reader"
+msgstr "Čtečka profilu G kódu"
+
+#: plugins/GCodeProfileReader/plugin.json
+msgctxt "description"
+msgid "Provides support for importing profiles from g-code files."
+msgstr "Poskytuje podporu pro import profilů ze souborů g-kódu."
+
+#: plugins/GCodeReader/FlavorParser.py:359
 msgctxt "@info:status"
 msgid "Parsing G-code"
 msgstr "Zpracovávám G kód"
 
-#: plugins/GCodeReader/FlavorParser.py:352
-#: plugins/GCodeReader/FlavorParser.py:506
+#: plugins/GCodeReader/FlavorParser.py:361
+#: plugins/GCodeReader/FlavorParser.py:515
 msgctxt "@info:title"
 msgid "G-code Details"
 msgstr "Podrobnosti G kódu"
 
-#: plugins/GCodeReader/FlavorParser.py:504
+#: plugins/GCodeReader/FlavorParser.py:513
 msgctxt "@info:generic"
 msgid "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."
 msgstr "Před odesláním souboru se ujistěte, že je g-kód vhodný pro vaši tiskárnu a konfiguraci tiskárny. Reprezentace g-kódu nemusí být přesná."
@@ -2113,6 +1591,16 @@ msgstr "Před odesláním souboru se ujistěte, že je g-kód vhodný pro vaši 
 msgctxt "@item:inlistbox"
 msgid "G File"
 msgstr "G soubor"
+
+#: plugins/GCodeReader/plugin.json
+msgctxt "description"
+msgid "Allows loading and displaying G-code files."
+msgstr "Povoluje načítání a zobrazení souborů G kódu."
+
+#: plugins/GCodeReader/plugin.json
+msgctxt "name"
+msgid "G-code Reader"
+msgstr "Čtečka G kódu"
 
 #: plugins/GCodeWriter/GCodeWriter.py:75
 msgctxt "@error:not supported"
@@ -2123,6 +1611,16 @@ msgstr "GCodeWriter nepodporuje netextový mód."
 msgctxt "@warning:status"
 msgid "Please prepare G-code before exporting."
 msgstr "Před exportem prosím připravte G-kód."
+
+#: plugins/GCodeWriter/plugin.json
+msgctxt "name"
+msgid "G-code Writer"
+msgstr "Zapisovač G kódu"
+
+#: plugins/GCodeWriter/plugin.json
+msgctxt "description"
+msgid "Writes g-code to a file."
+msgstr "Zapisuje G kód o souboru."
 
 #: plugins/ImageReader/ConfigUI.qml:14
 msgctxt "@title:window"
@@ -2256,10 +1754,30 @@ msgctxt "@item:inlistbox"
 msgid "GIF Image"
 msgstr "Obrázek GIF"
 
+#: plugins/ImageReader/plugin.json
+msgctxt "description"
+msgid "Enables ability to generate printable geometry from 2D image files."
+msgstr "Umožňuje generovat tiskovou geometrii ze 2D obrazových souborů."
+
+#: plugins/ImageReader/plugin.json
+msgctxt "name"
+msgid "Image Reader"
+msgstr "Čtečka obrázků"
+
 #: plugins/LegacyProfileReader/__init__.py:14
 msgctxt "@item:inlistbox"
 msgid "Cura 15.04 profiles"
 msgstr "Profily Cura 15.04"
+
+#: plugins/LegacyProfileReader/plugin.json
+msgctxt "name"
+msgid "Legacy Cura Profile Reader"
+msgstr "Čtečka legacy Cura profilu"
+
+#: plugins/LegacyProfileReader/plugin.json
+msgctxt "description"
+msgid "Provides support for importing profiles from legacy Cura versions."
+msgstr "Poskytuje podporu pro import profilů ze starších verzí Cura."
 
 #: plugins/MachineSettingsAction/MachineSettingsAction.py:32
 msgctxt "@action"
@@ -2424,6 +1942,16 @@ msgctxt "@title:label"
 msgid "End G-code"
 msgstr "Ukončující G kód"
 
+#: plugins/MachineSettingsAction/plugin.json
+msgctxt "name"
+msgid "Machine Settings Action"
+msgstr "Akce nastavení zařízení"
+
+#: plugins/MachineSettingsAction/plugin.json
+msgctxt "description"
+msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc.)."
+msgstr "Poskytuje způsob, jak změnit nastavení zařízení (například objem sestavení, velikost trysek atd.)."
+
 #: plugins/Marketplace/CloudSync/CloudPackageChecker.py:144
 msgctxt "@info:generic"
 msgid "Do you want to sync material and software packages with your account?"
@@ -2510,7 +2038,7 @@ msgstr "Neznámý autor"
 #: plugins/Marketplace/PackageModel.py:95
 msgctxt "@label:label Ultimaker Marketplace is a brand name, don't translate"
 msgid "The material package associated with the Cura project could not be found on the Ultimaker Marketplace. Use the partial material profile definition stored in the Cura project file at your own risk."
-msgstr ""
+msgstr "Balíček materiálů spojený s tímto Cura projektem nebyl nalezen v Ultimaker Marketplace. Částečnou definici materiálového profilu uloženou v Cura projektu používejte na vlastní nebezpečí."
 
 #: plugins/Marketplace/RemotePackageList.py:117
 msgctxt "@info:error"
@@ -2521,6 +2049,16 @@ msgstr "Nelze přečíst odpověď serveru."
 msgctxt "@info:error"
 msgid "Could not reach Marketplace."
 msgstr "Nelze se připojit k Obchodu."
+
+#: plugins/Marketplace/plugin.json
+msgctxt "description"
+msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
+msgstr ""
+
+#: plugins/Marketplace/plugin.json
+msgctxt "name"
+msgid "Marketplace"
+msgstr "Obchod"
 
 #: plugins/Marketplace/resources/qml/CompatibilityDialog.qml:15
 msgctxt "@title"
@@ -2533,7 +2071,6 @@ msgid "Dismiss"
 msgstr "Schovat"
 
 #: plugins/Marketplace/resources/qml/CompatibilityDialog.qml:24
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:118
 #: resources/qml/WelcomePages/FirstStartMachineActionsContent.qml:76
 #: resources/qml/WelcomePages/WhatsNewContent.qml:175
 msgctxt "@button"
@@ -2843,6 +2380,16 @@ msgstr ""
 "<p> Zjistěte, jak zajistit nejlepší možnou kvalitu a spolehlivost tisku. </p>\n"
 "<p> <a href=\"https://ultimaker.com/3D-model-assistant\"> Zobrazit průvodce kvalitou tisku </a> </p>"
 
+#: plugins/ModelChecker/plugin.json
+msgctxt "description"
+msgid "Checks models and print configuration for possible printing issues and give suggestions."
+msgstr "Zkontroluje možné tiskové modely a konfiguraci tisku a poskytne návrhy."
+
+#: plugins/ModelChecker/plugin.json
+msgctxt "name"
+msgid "Model Checker"
+msgstr "Kontroler modelu"
+
 #: plugins/MonitorStage/MonitorMain.qml:100
 msgctxt "@info"
 msgid ""
@@ -2875,6 +2422,16 @@ msgstr "Abyste mohli monitorovat tisk z Cury, připojte prosím tiskárnu."
 msgctxt "@item:inmenu"
 msgid "Monitor"
 msgstr "Monitorování"
+
+#: plugins/MonitorStage/plugin.json
+msgctxt "name"
+msgid "Monitor Stage"
+msgstr "Fáze monitoringu"
+
+#: plugins/MonitorStage/plugin.json
+msgctxt "description"
+msgid "Provides a monitor stage in Cura."
+msgstr "Poskytuje monitorovací scénu v Cuře."
 
 #: plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:41
 msgctxt "@label"
@@ -2942,6 +2499,16 @@ msgctxt "@info:tooltip"
 msgid "Configure Per Model Settings"
 msgstr "Konfigurovat nastavení pro každý model"
 
+#: plugins/PerObjectSettingsTool/plugin.json
+msgctxt "name"
+msgid "Per Model Settings Tool"
+msgstr "Nástroj pro nastavení pro každý model"
+
+#: plugins/PerObjectSettingsTool/plugin.json
+msgctxt "description"
+msgid "Provides the Per Model Settings."
+msgstr "Umožňuje nastavení pro každý model."
+
 #: plugins/PostProcessingPlugin/PostProcessingPlugin.py:35
 msgctxt "@item:inmenu"
 msgid "Post Processing"
@@ -2985,6 +2552,16 @@ msgstr[0] "Následují skript je aktivní:"
 msgstr[1] "Následují skripty jsou aktivní:"
 msgstr[2] "Následují skripty jsou aktivní:"
 
+#: plugins/PostProcessingPlugin/plugin.json
+msgctxt "description"
+msgid "Extension that allows for user created scripts for post processing"
+msgstr "Rozšíření, které umožňuje uživateli vytvořené skripty pro následné zpracování"
+
+#: plugins/PostProcessingPlugin/plugin.json
+msgctxt "name"
+msgid "Post Processing"
+msgstr "Post Processing"
+
 #: plugins/PrepareStage/PrepareMenu.qml:74
 msgctxt "@button"
 msgid "Add printer"
@@ -3000,10 +2577,30 @@ msgctxt "@item:inmenu"
 msgid "Prepare"
 msgstr "Příprava"
 
+#: plugins/PrepareStage/plugin.json
+msgctxt "name"
+msgid "Prepare Stage"
+msgstr "Fáze přípravy"
+
+#: plugins/PrepareStage/plugin.json
+msgctxt "description"
+msgid "Provides a prepare stage in Cura."
+msgstr "Poskytuje přípravnou fázi v Cuře."
+
 #: plugins/PreviewStage/__init__.py:13
 msgctxt "@item:inmenu"
 msgid "Preview"
 msgstr "Náhled"
+
+#: plugins/PreviewStage/plugin.json
+msgctxt "name"
+msgid "Preview Stage"
+msgstr "Fáze náhledu"
+
+#: plugins/PreviewStage/plugin.json
+msgctxt "description"
+msgid "Provides a preview stage in Cura."
+msgstr "Poskytuje fázi náhledu v Cura."
 
 #: plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:23
 msgctxt "@action:button Preceded by 'Ready to'."
@@ -3097,6 +2694,26 @@ msgctxt "@item:intext"
 msgid "Removable Drive"
 msgstr "Vyměnitelná jednotka"
 
+#: plugins/RemovableDriveOutputDevice/plugin.json
+msgctxt "description"
+msgid "Provides removable drive hotplugging and writing support."
+msgstr "Poskytuje vyměnitelnou jednotku za plného zapojení a podporu zápisu."
+
+#: plugins/RemovableDriveOutputDevice/plugin.json
+msgctxt "name"
+msgid "Removable Drive Output Device Plugin"
+msgstr "Vyměnitelný zásuvný modul pro výstupní zařízení"
+
+#: plugins/SentryLogger/plugin.json
+msgctxt "description"
+msgid "Logs certain events so that they can be used by the crash reporter"
+msgstr "Protokolová určité události, aby je mohl použít reportér havárií"
+
+#: plugins/SentryLogger/plugin.json
+msgctxt "name"
+msgid "Sentry Logger"
+msgstr "Záznamník hlavy"
+
 #: plugins/SimulationView/SimulationView.py:129
 msgctxt "@info:status"
 msgid "Cura does not accurately display layers when Wire Printing is enabled."
@@ -3177,7 +2794,7 @@ msgstr "Pomocníci"
 #: plugins/SimulationView/SimulationViewMenuComponent.qml:243
 msgctxt "@label"
 msgid "Shell"
-msgstr "Shell"
+msgstr "Plášť"
 
 #: plugins/SimulationView/SimulationViewMenuComponent.qml:249
 msgctxt "@label"
@@ -3224,6 +2841,16 @@ msgctxt "@item:inlistbox"
 msgid "Layer view"
 msgstr "Pohled vrstev"
 
+#: plugins/SimulationView/plugin.json
+msgctxt "description"
+msgid "Provides the preview of sliced layerdata."
+msgstr "Poskytuje náhled slicovaných dat vrstev."
+
+#: plugins/SimulationView/plugin.json
+msgctxt "name"
+msgid "Simulation View"
+msgstr "Pohled simulace"
+
 #: plugins/SliceInfoPlugin/MoreInfoWindow.qml:16
 msgctxt "@title:window"
 msgid "More information on anonymous data collection"
@@ -3249,6 +2876,16 @@ msgctxt "@text"
 msgid "Unable to read example data file."
 msgstr "Nelze načíst ukázkový datový soubor."
 
+#: plugins/SliceInfoPlugin/plugin.json
+msgctxt "name"
+msgid "Slice info"
+msgstr "Informace o slicování"
+
+#: plugins/SliceInfoPlugin/plugin.json
+msgctxt "description"
+msgid "Submits anonymous slice info. Can be disabled through preferences."
+msgstr "Odešle anonymní informace o slicování. Lze deaktivovat pomocí preferencí."
+
 #: plugins/SolidView/SolidView.py:71
 msgctxt "@info:status"
 msgid "The highlighted areas indicate either missing or extraneous surfaces. Fix your model and open it again into Cura."
@@ -3264,6 +2901,16 @@ msgctxt "@item:inmenu"
 msgid "Solid view"
 msgstr "Pevný pohled"
 
+#: plugins/SolidView/plugin.json
+msgctxt "description"
+msgid "Provides a normal solid mesh view."
+msgstr "Poskytuje normální zobrazení pevné sítě."
+
+#: plugins/SolidView/plugin.json
+msgctxt "name"
+msgid "Solid View"
+msgstr "Pevný pohled"
+
 #: plugins/SupportEraser/__init__.py:12
 msgctxt "@label"
 msgid "Support Blocker"
@@ -3273,6 +2920,16 @@ msgstr "Blokovač podpor"
 msgctxt "@info:tooltip"
 msgid "Create a volume in which supports are not printed."
 msgstr "Vytvořit prostor ve kterém nejsou tištěny podpory."
+
+#: plugins/SupportEraser/plugin.json
+msgctxt "description"
+msgid "Creates an eraser mesh to block the printing of support in certain places"
+msgstr "Vytvoří gumovou síť, která blokuje tisk podpory na určitých místech"
+
+#: plugins/SupportEraser/plugin.json
+msgctxt "name"
+msgid "Support Eraser"
+msgstr "Mazač podpor"
 
 #: plugins/TrimeshReader/__init__.py:15
 msgctxt "@item:inlistbox 'Open' is part of the name of this file format."
@@ -3304,10 +2961,30 @@ msgctxt "@item:inlistbox"
 msgid "Compressed COLLADA Digital Asset Exchange"
 msgstr "Kompresovaný COLLADA Digital Asset Exchenge"
 
+#: plugins/TrimeshReader/plugin.json
+msgctxt "description"
+msgid "Provides support for reading model files."
+msgstr "Poskytuje podporu pro čtení souborů modelu."
+
+#: plugins/TrimeshReader/plugin.json
+msgctxt "name"
+msgid "Trimesh Reader"
+msgstr "Čtečka trimesh"
+
 #: plugins/UFPReader/__init__.py:22 plugins/UFPWriter/__init__.py:28
 msgctxt "@item:inlistbox"
 msgid "UltiMaker Format Package"
 msgstr "Balíček ve formátu UltiMaker"
+
+#: plugins/UFPReader/plugin.json
+msgctxt "description"
+msgid "Provides support for reading Ultimaker Format Packages."
+msgstr "Poskytuje podporu pro čtení balíčků formátu UltiMaker."
+
+#: plugins/UFPReader/plugin.json
+msgctxt "name"
+msgid "UFP Reader"
+msgstr "Čtečka UFP"
 
 #: plugins/UFPWriter/UFPWriter.py:64 plugins/UFPWriter/UFPWriter.py:80
 #: plugins/UFPWriter/UFPWriter.py:93 plugins/UFPWriter/UFPWriter.py:115
@@ -3315,6 +2992,26 @@ msgstr "Balíček ve formátu UltiMaker"
 msgctxt "@info:error"
 msgid "Can't write to UFP file:"
 msgstr "Nemohu zapsat do UFP souboru:"
+
+#: plugins/UFPWriter/plugin.json
+msgctxt "description"
+msgid "Provides support for writing Ultimaker Format Packages."
+msgstr "Poskytuje podporu pro psaní balíčků formátu UltiMaker."
+
+#: plugins/UFPWriter/plugin.json
+msgctxt "name"
+msgid "UFP Writer"
+msgstr "Zapisovač UFP"
+
+#: plugins/UM3NetworkPrinting/plugin.json
+msgctxt "description"
+msgid "Manages network connections to UltiMaker networked printers."
+msgstr ""
+
+#: plugins/UM3NetworkPrinting/plugin.json
+msgctxt "name"
+msgid "UltiMaker Network Connection"
+msgstr ""
 
 #: plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:44
 msgctxt "@title:window"
@@ -3835,9 +3532,8 @@ msgid "Learn more"
 msgstr "Zjistit více"
 
 #: plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:18
-#, fuzzy
 msgctxt "@info:status"
-msgid "You are attempting to connect to a printer that is not running Ultimaker Connect. Please update the printer to the latest firmware."
+msgid "You are attempting to connect to a printer that is not running UltiMaker Connect. Please update the printer to the latest firmware."
 msgstr "Pokoušíte se připojit k tiskárně, na které není spuštěna aplikace UltiMaker Connect. Aktualizujte tiskárnu na nejnovější firmware."
 
 #: plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:21
@@ -3857,13 +3553,12 @@ msgid "Sending materials to printer"
 msgstr "Odesílání materiálů do tiskárny"
 
 #: plugins/UM3NetworkPrinting/src/Messages/NewPrinterDetectedMessage.py:13
-#, fuzzy
 msgctxt "info:status"
 msgid "New printer detected from your Ultimaker account"
 msgid_plural "New printers detected from your Ultimaker account"
-msgstr[0] "Z vašeho Ultimaker účtu byla detekována nová tiskárna"
-msgstr[1] "Z vašeho Ultimaker účtu byly detekovány nové tiskárny"
-msgstr[2] "Z vašeho Ultimaker účtu byly detekovány nové tiskárny"
+msgstr[0] "Ve vašem Ultimaker účtu byla detekována nová tiskárna"
+msgstr[1] "Ve vašem Ultimaker účtu byly detekovány nové tiskárny"
+msgstr[2] "Ve vašem Ultimaker účtu byly detekovány nové tiskárny"
 
 #: plugins/UM3NetworkPrinting/src/Messages/NewPrinterDetectedMessage.py:29
 #, python-brace-format
@@ -4063,6 +3758,16 @@ msgctxt "@message"
 msgid "Print in Progress"
 msgstr "Probíhá tisk"
 
+#: plugins/USBPrinting/plugin.json
+msgctxt "description"
+msgid "Accepts G-Code and sends them to a printer. Plugin can also update firmware."
+msgstr "Přijme G-kód a odešle je do tiskárny. Plugin může také aktualizovat firmware."
+
+#: plugins/USBPrinting/plugin.json
+msgctxt "name"
+msgid "USB printing"
+msgstr "USB tisk"
+
 #: plugins/UltimakerMachineActions/BedLevelMachineAction.py:24
 msgctxt "@action"
 msgid "Level build plate"
@@ -4108,15 +3813,295 @@ msgctxt "@label"
 msgid "Heated Build Plate (official kit or self-built)"
 msgstr "Vyhřívaná podložka (Oficiální kit, nebo vytvořená)"
 
+#: plugins/UltimakerMachineActions/plugin.json
+msgctxt "description"
+msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
+msgstr "Poskytuje akce strojů pro stroje UltiMaker (jako je průvodce vyrovnáváním tiskové podložky, výběr upgradů atd.)."
+
+#: plugins/UltimakerMachineActions/plugin.json
+msgctxt "name"
+msgid "UltiMaker machine actions"
+msgstr ""
+
+#: plugins/VersionUpgrade/VersionUpgrade21to22/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.1 to Cura 2.2."
+msgstr "Aktualizuje konfigurace z Cura 2.1 na Cura 2.2."
+
+#: plugins/VersionUpgrade/VersionUpgrade21to22/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 2.1 to 2.2"
+msgstr "Aktualizace verze 2.1 na 2.2"
+
+#: plugins/VersionUpgrade/VersionUpgrade22to24/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.2 to Cura 2.4."
+msgstr "Aktualizuje konfigurace z Cura 2.2 na Cura 2.4."
+
+#: plugins/VersionUpgrade/VersionUpgrade22to24/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 2.2 to 2.4"
+msgstr "Aktualizace verze 2.2 na 2.4"
+
+#: plugins/VersionUpgrade/VersionUpgrade25to26/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.5 to Cura 2.6."
+msgstr "Aktualizuje konfigurace z Cura 2.5 na Cura 2.6."
+
+#: plugins/VersionUpgrade/VersionUpgrade25to26/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 2.5 to 2.6"
+msgstr "Aktualizace verze 2.5 na 2.6"
+
+#: plugins/VersionUpgrade/VersionUpgrade26to27/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.6 to Cura 2.7."
+msgstr "Aktualizuje konfigurace z Cura 2.6 na Cura 2.7."
+
+#: plugins/VersionUpgrade/VersionUpgrade26to27/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 2.6 to 2.7"
+msgstr "Aktualizace verze 2.6 na 2.7"
+
+#: plugins/VersionUpgrade/VersionUpgrade27to30/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.7 to Cura 3.0."
+msgstr "Aktualizuje konfigurace z Cura 2.7 na Cura 3.0."
+
+#: plugins/VersionUpgrade/VersionUpgrade27to30/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 2.7 to 3.0"
+msgstr "Aktualizace verze 2.7 na 3.0"
+
+#: plugins/VersionUpgrade/VersionUpgrade30to31/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.0 to Cura 3.1."
+msgstr "Aktualizuje konfigurace z Cura 3.0 na Cura 3.1."
+
+#: plugins/VersionUpgrade/VersionUpgrade30to31/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 3.0 to 3.1"
+msgstr "Aktualizace verze 3.0 na 3.1"
+
+#: plugins/VersionUpgrade/VersionUpgrade32to33/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.2 to Cura 3.3."
+msgstr "Aktualizuje konfigurace z Cura 3.2 na Cura 3.3."
+
+#: plugins/VersionUpgrade/VersionUpgrade32to33/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 3.2 to 3.3"
+msgstr "Aktualizace verze 3.2 na 3.3"
+
+#: plugins/VersionUpgrade/VersionUpgrade33to34/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.3 to Cura 3.4."
+msgstr "Aktualizuje konfigurace z Cura 3.3 na Cura 3.4."
+
+#: plugins/VersionUpgrade/VersionUpgrade33to34/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 3.3 to 3.4"
+msgstr "Aktualizace verze 3.3 na 3.4"
+
+#: plugins/VersionUpgrade/VersionUpgrade34to35/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.4 to Cura 3.5."
+msgstr "Aktualizuje konfigurace z Cura 3.4 na Cura 3.5."
+
+#: plugins/VersionUpgrade/VersionUpgrade34to35/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 3.4 to 3.5"
+msgstr "Aktualizace verze 3.4 na 3.5"
+
+#: plugins/VersionUpgrade/VersionUpgrade35to40/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.5 to Cura 4.0."
+msgstr "Aktualizuje konfigurace z Cura 3.5 na Cura 4.0."
+
+#: plugins/VersionUpgrade/VersionUpgrade35to40/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 3.5 to 4.0"
+msgstr "Aktualizace verze 3.5 na 4.0"
+
+#: plugins/VersionUpgrade/VersionUpgrade40to41/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.0 to Cura 4.1."
+msgstr "Aktualizuje konfigurace z Cura 4.0 na Cura 4.1."
+
+#: plugins/VersionUpgrade/VersionUpgrade40to41/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.0 to 4.1"
+msgstr "Aktualizace verze 4.0 na 4.1"
+
+#: plugins/VersionUpgrade/VersionUpgrade411to412/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.11 to Cura 4.12."
+msgstr "Aktualizuje konfigurace z Cura 4.11 na Cura 4.12."
+
+#: plugins/VersionUpgrade/VersionUpgrade411to412/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.11 to 4.12"
+msgstr "Aktualizace verze 4.11 na 4.12"
+
+#: plugins/VersionUpgrade/VersionUpgrade413to50/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.13 to Cura 5.0."
+msgstr "Aktualizuje konfigurace z Cura 4.13 na Cura 5.0."
+
+#: plugins/VersionUpgrade/VersionUpgrade413to50/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.13 to 5.0"
+msgstr "Aktualizace verze 4.13 na 5.0"
+
+#: plugins/VersionUpgrade/VersionUpgrade41to42/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.1 to Cura 4.2."
+msgstr "Aktualizuje konfigurace z Cura 4.1 na Cura 4.2."
+
+#: plugins/VersionUpgrade/VersionUpgrade41to42/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.1 to 4.2"
+msgstr "Aktualizace verze 4.1 na 4.2"
+
+#: plugins/VersionUpgrade/VersionUpgrade42to43/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.2 to Cura 4.3."
+msgstr "Aktualizuje konfigurace z Cura 4.2 na Cura 4.3."
+
+#: plugins/VersionUpgrade/VersionUpgrade42to43/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.2 to 4.3"
+msgstr "Aktualizace verze 4.2 na 4.3"
+
+#: plugins/VersionUpgrade/VersionUpgrade43to44/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.3 to Cura 4.4."
+msgstr "Aktualizuje konfigurace z Cura 4.3 na Cura 4.4."
+
+#: plugins/VersionUpgrade/VersionUpgrade43to44/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.3 to 4.4"
+msgstr "Aktualizace verze 4.3 na 4.4"
+
+#: plugins/VersionUpgrade/VersionUpgrade44to45/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.4 to Cura 4.5."
+msgstr "Aktualizuje konfigurace z Cura 4.4 na Cura 4.5."
+
+#: plugins/VersionUpgrade/VersionUpgrade44to45/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.4 to 4.5"
+msgstr "Aktualizace verze 4.4 na 4.5"
+
+#: plugins/VersionUpgrade/VersionUpgrade45to46/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.5 to Cura 4.6."
+msgstr "Aktualizuje konfigurace z Cura 4.5 na Cura 4.6."
+
+#: plugins/VersionUpgrade/VersionUpgrade45to46/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.5 to 4.6"
+msgstr "Aktualizace verze 4.5 na 4.6"
+
+#: plugins/VersionUpgrade/VersionUpgrade460to462/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.6.0 to Cura 4.6.2."
+msgstr "Aktualizuje konfigurace z Cura 4.6.0 na Cura 4.6.2."
+
+#: plugins/VersionUpgrade/VersionUpgrade460to462/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.6.0 to 4.6.2"
+msgstr "Aktualizace verze 4.6.0 na 4.6.2"
+
+#: plugins/VersionUpgrade/VersionUpgrade462to47/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.6.2 to Cura 4.7."
+msgstr "Aktualizuje konfigurace z Cura 4.6.2 na Cura 4.7."
+
+#: plugins/VersionUpgrade/VersionUpgrade462to47/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.6.2 to 4.7"
+msgstr "Aktualizace verze 4.6.2 na 4.7"
+
+#: plugins/VersionUpgrade/VersionUpgrade47to48/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.7 to Cura 4.8."
+msgstr "Aktualizuje konfigurace z Cura 4.7 na Cura 4.8."
+
+#: plugins/VersionUpgrade/VersionUpgrade47to48/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.7 to 4.8"
+msgstr "Aktualizace verze 4.7 na 4.8"
+
+#: plugins/VersionUpgrade/VersionUpgrade48to49/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.8 to Cura 4.9."
+msgstr "Aktualizuje konfigurace z Cura 4.8 na Cura 4.9."
+
+#: plugins/VersionUpgrade/VersionUpgrade48to49/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.8 to 4.9"
+msgstr "Aktualizace verze 4.8 na 4.9"
+
+#: plugins/VersionUpgrade/VersionUpgrade49to410/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.9 to Cura 4.10."
+msgstr "Aktualizuje konfigurace z Cura 4.9 na Cura 4.10."
+
+#: plugins/VersionUpgrade/VersionUpgrade49to410/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.9 to 4.10"
+msgstr "Aktualizace verze 4.9 na 4.10"
+
+#: plugins/VersionUpgrade/VersionUpgrade52to53/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.2 to Cura 5.3."
+msgstr "Aktualizuje konfigurace z Cura 5.2 na Cura 5.3."
+
+#: plugins/VersionUpgrade/VersionUpgrade52to53/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 5.2 to 5.3"
+msgstr "Aktualizace verze 5.2 na 5.3"
+
 #: plugins/X3DReader/__init__.py:13
 msgctxt "@item:inlistbox"
 msgid "X3D File"
 msgstr "Soubor X3D"
 
+#: plugins/X3DReader/plugin.json
+msgctxt "description"
+msgid "Provides support for reading X3D files."
+msgstr "Poskytuje podporu pro čtení souborů X3D."
+
+#: plugins/X3DReader/plugin.json
+msgctxt "name"
+msgid "X3D Reader"
+msgstr "Čtečka X3D"
+
 #: plugins/XRayView/__init__.py:12
 msgctxt "@item:inlistbox"
 msgid "X-Ray view"
 msgstr "Rentgenový pohled"
+
+#: plugins/XRayView/plugin.json
+msgctxt "description"
+msgid "Provides the X-Ray view."
+msgstr "Poskytuje rentgenové zobrazení."
+
+#: plugins/XRayView/plugin.json
+msgctxt "name"
+msgid "X-Ray View"
+msgstr "Rentgenový pohled"
+
+#: plugins/XmlMaterialProfile/plugin.json
+msgctxt "name"
+msgid "Material Profiles"
+msgstr "Materiálové profily"
+
+#: plugins/XmlMaterialProfile/plugin.json
+msgctxt "description"
+msgid "Provides capabilities to read and write XML-based material profiles."
+msgstr "Poskytuje funkce pro čtení a zápis materiálových profilů založených na XML."
 
 #: resources/qml/Account/AccountWidget.qml:24
 msgctxt "@action:button"
@@ -4130,16 +4115,15 @@ msgid "Sign in to the UltiMaker platform"
 msgstr "Přihlásit se do platformy UltiMaker"
 
 #: resources/qml/Account/GeneralOperations.qml:39
-#, fuzzy
 msgctxt "@text"
 msgid ""
 "- Add material profiles and plug-ins from the Marketplace\n"
 "- Back-up and sync your material profiles and plug-ins\n"
 "- Share ideas and get help from 48,000+ users in the UltiMaker community"
 msgstr ""
-"- Přidejte materiálnové profily and moduly z Obchodu\n"
+"- Přidejte materiálnové profily and moduly z Marketplace\n"
 "- Zálohujte a synchronizujte vaše materiálové profily and moduly\n"
-"- Sdílejte nápady a získejte pomoc od více než 48 000 uživatelů v Ultimaker komunitě"
+"- Sdílejte nápady a získejte pomoc od více než 48 000 uživatelů v UltiMaker komunitě"
 
 #: resources/qml/Account/GeneralOperations.qml:58
 msgctxt "@button"
@@ -4332,10 +4316,9 @@ msgid "Manage Materials..."
 msgstr "Spravovat materiály..."
 
 #: resources/qml/Actions.qml:218
-#, fuzzy
 msgctxt "@action:inmenu Marketplace is a brand name of UltiMaker's, so don't translate."
 msgid "Add more materials from Marketplace"
-msgstr "Přidat více materiálů z Obchodu"
+msgstr "Přidat více materiálů z Marketplace"
 
 #: resources/qml/Actions.qml:225
 msgctxt "@action:inmenu menubar:profile"
@@ -4625,38 +4608,34 @@ msgid "What's New"
 msgstr "Co je nového"
 
 #: resources/qml/Cura.qml:890
-#, fuzzy
 msgctxt "@title:window"
 msgid "Save Custom Profile"
-msgstr "Vlastní profil"
+msgstr "Uložit vlastní profil"
 
 #: resources/qml/Cura.qml:891
-#, fuzzy
 msgctxt "@textfield:placeholder"
 msgid "New Custom Profile"
-msgstr "Vlastní profil"
+msgstr "Nový vlastní profil"
 
 #: resources/qml/Cura.qml:892
-#, fuzzy
 msgctxt "@info"
 msgid "Custom profile name:"
-msgstr "Vlastní profil"
+msgstr "Název vlastního profilu:"
 
 #: resources/qml/Cura.qml:909
 msgctxt "@label %i will be replaced with a profile name"
 msgid "<b>Only user changed settings will be saved in the custom profile.</b><br/>For materials that support it, the new custom profile will inherit properties from <b>%1</b>."
-msgstr ""
+msgstr "<b>Ve vlastním profilu budou uložena pouze nastavení změněná uživatelem.</b><br/>Pro materiály, které to podporují, bude nový vlastní profil dědit vlastnosti z <b>%1</b>."
 
 #: resources/qml/Cura.qml:917
 msgctxt "@action:button"
 msgid "Learn more about Cura print profiles"
-msgstr ""
+msgstr "Zjistit více o profilech tisku Cura"
 
 #: resources/qml/Cura.qml:926
-#, fuzzy
 msgctxt "@button"
 msgid "Save new profile"
-msgstr "Vytvořit nový profil"
+msgstr "Uložit nový profil"
 
 #: resources/qml/Dialogs/AboutDialog.qml:15
 msgctxt "@title:window The argument is the application name."
@@ -4940,16 +4919,14 @@ msgid "Keep changes"
 msgstr "Zanechat změny"
 
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:171
-#, fuzzy
 msgctxt "@action:button"
 msgid "Save as new custom profile"
-msgstr "Vlastní profil"
+msgstr "Uložit jako nový vlastní profil"
 
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:178
-#, fuzzy
 msgctxt "@action:button"
 msgid "Save changes"
-msgstr "Zanechat změny"
+msgstr "Uložit změny"
 
 #: resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:47
 msgctxt "@text:window"
@@ -6215,7 +6192,7 @@ msgctxt "@label shown when we load a Gcode file"
 msgid "Print setup disabled. G-code file can not be modified."
 msgstr "Nastavení tisku zakázáno. Soubor G-kódu nelze změnit."
 
-#: resources/qml/PrintSetupSelector/PrintSetupSelectorContents.qml:160
+#: resources/qml/PrintSetupSelector/PrintSetupSelectorContents.qml:179
 msgctxt "@button"
 msgid "Recommended"
 msgstr "Doporučeno"
@@ -6243,23 +6220,22 @@ msgstr "Vlastní profil <b>%1</b> přepisuje některá nastavení."
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:92
 msgctxt "@info %1 is the name of a profile"
 msgid "Recommended settings (for <b>%1</b>) were altered."
-msgstr ""
+msgstr "Doporučená nastavení (pro <b>%1</b>) byla změněna."
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:106
-#, fuzzy
 msgctxt "@info %1 is the name of a profile"
 msgid "Some setting-values defined in <b>%1</b> were overridden."
-msgstr "Některá nastavení z aktuálního profilu byla přepsána."
+msgstr "Některé hodnoty nastavení definované v <b>%1</b> byly přepsány."
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:137
 msgctxt "@info"
 msgid "Reset to defaults."
-msgstr ""
+msgstr "Resetovat na výchozí."
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:178
 msgctxt "@info"
 msgid "Compare and save."
-msgstr ""
+msgstr "Porovnat a uložit."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedAdhesionSelector.qml:15
 msgctxt "@label"
@@ -6272,16 +6248,14 @@ msgid "Enable printing a brim or raft. This will add a flat area around or under
 msgstr "Umožňuje tisk okraje nebo voru. Tímto způsobem se kolem nebo pod objekt přidá plochá oblast, kterou lze snadno odříznout."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:102
-#, fuzzy
 msgctxt "@label"
 msgid "Recommended print settings"
-msgstr "Nastavení tisku"
+msgstr "Doporučená nastavení tisku"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:111
-#, fuzzy
 msgctxt "@button"
 msgid "Show Custom"
-msgstr "Vlastní"
+msgstr "Zobrazit vlastní"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedResolutionSelector.qml:27
 msgctxt "@label"
@@ -6291,29 +6265,27 @@ msgstr "Rozlišení"
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:16
 msgctxt "@label"
 msgid "Strength"
-msgstr ""
+msgstr "Pevnost"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:20
 msgctxt "@label"
 msgid "The following settings define the strength of your part."
-msgstr ""
+msgstr "Následující nastavení definuje pevnost součásti."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:34
-#, fuzzy
 msgctxt "infill_sparse_density description"
 msgid "Infill Density"
-msgstr "Pouze výplň"
+msgstr "Hustota výplně"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:35
 msgctxt "@label"
 msgid "Adjusts the density of infill of the print."
-msgstr ""
+msgstr "Upravuje hustotu výplně tisku."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:54
-#, fuzzy
 msgctxt "@action:label"
 msgid "Infill Pattern"
-msgstr "Pouze výplň"
+msgstr "Výplňový vzor"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:56
 msgctxt "@label"
@@ -6326,17 +6298,23 @@ msgid ""
 "\n"
 "For functional 3D prints which require high strenght in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
 msgstr ""
+"Vzor výplně při tisku modelu:\n"
+"\n"
+"Pro rychlý tisk jiných než funkčních částí vyberte čáry, cik-cak nebo bleskovou výplň.\n"
+"\n"
+"Pro funkční části, které nebudou příliš namáhány, doporučujeme mřížku, trojúhelníky nebo tri-hexagony.\n"
+"\n"
+"Pro funkční 3D výtisky, které vyžadují velkou pevnost ve více směrech, použijte výplně: krychle, kubické členění, čtvrtinově krychlová, oktet nebo gyroid."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:67
-#, fuzzy
 msgctxt "@action:label"
 msgid "Shell Thickness"
-msgstr "Tloušťka vrstvy"
+msgstr "Tloušťka pláště"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:68
 msgctxt "@label"
 msgid "Defines the tickness of your part side walls, roof and floor."
-msgstr ""
+msgstr "Definuje tloušťku stěn, střechy a podlahy vašeho modelu."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:16
 msgctxt "@label"
@@ -6344,16 +6322,14 @@ msgid "Support"
 msgstr "Podpora"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:21
-#, fuzzy
 msgctxt "@label"
 msgid "Generate structures to support parts of the model which have overhangs. Without these structures, these parts would collapse during printing."
-msgstr "Vytvořte struktury pro podporu částí modelu, které mají přesahy. Bez těchto struktur by se takové části během tisku zhroutily."
+msgstr "Vytvořit struktury pro podporu částí modelu, které mají přesahy. Bez těchto struktur by se takové části během tisku zhroutily."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:40
-#, fuzzy
 msgctxt "@action:label"
 msgid "Support Type"
-msgstr "Podpora"
+msgstr "Typ podpory"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:41
 msgctxt "@label"
@@ -6364,27 +6340,31 @@ msgid ""
 "\n"
 "\"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
 msgstr ""
+"Volí mezi dostupnými technikami pro generování podpory. \n"
+"\n"
+"„Normální“ podpora vytváří podpůrnou strukturu přímo pod převislými částmi a spouští tyto podpory přímo dolů. \n"
+"\n"
+"„Stromová“ podpora vytváří větve směrem k převislým oblastem, které podporují model na koncích těchto větví, a umožňuje větvím procházet kolem modelu a podporovat je co nejvíce z konstrukční desky."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:53
-#, fuzzy
 msgctxt "@action:label"
 msgid "Print with"
-msgstr "Tisknu"
+msgstr "Tisknout pomocí"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:54
 msgctxt "@label"
 msgid "The extruder train to use for printing the support. This is used in multi-extrusion."
-msgstr ""
+msgstr "Vytlačovací souprava použitá pro tisk podpory. Používá se při vícenásobném vytlačování."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:67
 msgctxt "@action:label"
 msgid "Placement"
-msgstr ""
+msgstr "Umístění"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:68
 msgctxt "support_type description"
 msgid "Adjusts the placement of the support structures. The placement can be set to touching build plate or everywhere. When set to everywhere the support structures will also be printed on the model."
-msgstr ""
+msgstr "Upravuje umístění podpůrných struktur. Umístění lze nastavit tak, aby se dotýkalo pouze podložky nebo všude. Pokud je nastaveno všude, podpůrné struktury budou vytištěny také na modelu."
 
 #: resources/qml/PrintSetupSelector/Recommended/UnsupportedProfileIndication.qml:31
 msgctxt "@error"
@@ -6822,95 +6802,84 @@ msgid "Add a non-networked printer"
 msgstr "Přidat ne-síťovou tiskárnu"
 
 #: resources/qml/WelcomePages/AddThirdPartyPrinter.qml:102
-#, fuzzy
 msgctxt "@button"
 msgid "Add UltiMaker printer via Digital Factory"
-msgstr "Zobrazit tiskárny v Digital Factory"
+msgstr "Přidat UltiMaker tiskárnu přes Digital Factory"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:29
-#, fuzzy
 msgctxt "@label"
 msgid "In order to start using Cura you will need to configure a printer."
-msgstr "Abyste mohli balíček použít, musíte restartovat Curu"
+msgstr "Abyste mohli začít používat Curu, musíte nakonfigurovat tiskárnu."
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:36
 msgctxt "@label"
 msgid "What printer would you like to setup?"
-msgstr ""
+msgstr "Jakou tiskárnu si přejete nakonfigurovat?"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:55
-#, fuzzy
 msgctxt "@button"
 msgid "UltiMaker printer"
-msgstr "UltiMaker podpora"
+msgstr "UltiMaker tiskárna"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:64
-#, fuzzy
 msgctxt "@button"
 msgid "Non UltiMaker printer"
-msgstr "UltiMaker podpora"
+msgstr "Jiná než UltiMaker tiskárna"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:73
 msgctxt "@button"
 msgid "Learn more about adding printers to Cura"
-msgstr ""
+msgstr "Zjistit více o přidávání tiskáren do Cury"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinterStack.qml:29
-#, fuzzy
 msgctxt "@label"
 msgid "Add printer"
 msgstr "Přidat tiskárnu"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:33
-#, fuzzy
 msgctxt "@label"
 msgid "New UltiMaker printers can be connected to Digital Factory and monitored remotely."
-msgstr "Ujistěte se, že jsou všechny vaše tiskárny zapnuté a připojené k Digital Factory."
+msgstr "Nové tiskárny UltiMaker mohou být připojeny k Digital Factory a vzdáleně monitorovány."
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:70
 msgctxt "@label"
 msgid "If you are trying to add a new UltiMaker printer to Cura"
-msgstr ""
+msgstr "Pokud se pokoušíte přidat novou tiskárnu UltiMaker do Cury"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:80
-#, fuzzy
 msgctxt "@info"
-msgid "Sign in into UltiMaker Digilal Factory"
-msgstr "Připojit se k Ultimaker Digital Factory"
+msgid "Sign in into UltiMaker Digital Factory"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:81
 msgctxt "@info"
 msgid "Follow the procedure to add a new printer"
-msgstr ""
+msgstr "Řiďte se postupem pro přidání nové tiskárny"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:82
 msgctxt "@info"
 msgid "Your new printer will automatically appear in Cura"
-msgstr ""
+msgstr "Vaše nová tiskárna se automaticky objeví v Cuře"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:100
-#, fuzzy
 msgctxt "@button"
 msgid "Learn more"
 msgstr "Zjistit více"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:121
-#, fuzzy
 msgctxt "@button"
 msgid "Add local printer"
-msgstr "Přidat tiskárnu"
+msgstr "Přidat lokální tiskárnu"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:129
-#, fuzzy
 msgctxt "@button"
 msgid "Sign in to Digital Factory"
-msgstr "Zobrazit tiskárny v Digital Factory"
+msgstr "Přihlásit do Digital Factory"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:133
-#, fuzzy
 msgctxt "@button"
 msgid "Waiting for new printers"
-msgstr "Spravovat tiskárny"
+msgstr "Čekám na nové tiskárny"
 
 #: resources/qml/WelcomePages/ChangelogContent.qml:24
 msgctxt "@label"
@@ -6942,46 +6911,6 @@ msgctxt "@text"
 msgid "Create a free UltiMaker Account"
 msgstr "Vytvořit účet UltiMaker zdarma"
 
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:24
-msgctxt "@label"
-msgid "Help us to improve UltiMaker Cura"
-msgstr "Pomožte nám zlepšovat UltiMaker Cura"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:56
-msgctxt "@text"
-msgid "UltiMaker Cura collects anonymous data to improve print quality and user experience, including:"
-msgstr "UltiMaker Cura shromažďuje anonymní data za účelem zlepšení kvality tisku a uživatelského komfortu, včetně:"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:68
-msgctxt "@text"
-msgid "Machine types"
-msgstr "Typy zařízení"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:74
-msgctxt "@text"
-msgid "Material usage"
-msgstr "Použití materiálu"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:80
-msgctxt "@text"
-msgid "Number of slices"
-msgstr "Počet sliců"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:86
-msgctxt "@text"
-msgid "Print settings"
-msgstr "Nastavení tisku"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:99
-msgctxt "@text"
-msgid "Data collected by UltiMaker Cura will not contain any personal information."
-msgstr "Data shromážděná společností UltiMaker Cura nebudou obsahovat žádné osobní údaje."
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:100
-msgctxt "@text"
-msgid "More information"
-msgstr "Více informací"
-
 #: resources/qml/WelcomePages/DropDownWidget.qml:93
 msgctxt "@label"
 msgid "Empty"
@@ -6996,21 +6925,6 @@ msgstr "Uživatelská dohoda"
 msgctxt "@button"
 msgid "Decline and close"
 msgstr "Odmítnout a zavřít"
-
-#: resources/qml/WelcomePages/WelcomeContent.qml:56
-msgctxt "@label"
-msgid "Welcome to UltiMaker Cura"
-msgstr "Vítejte v UltiMaker Cura"
-
-#: resources/qml/WelcomePages/WelcomeContent.qml:67
-msgctxt "@text"
-msgid "Please follow these steps to set up UltiMaker Cura. This will only take a few moments."
-msgstr "Při nastavování postupujte podle těchto pokynů UltiMaker Cura. Bude to trvat jen několik okamžiků."
-
-#: resources/qml/WelcomePages/WelcomeContent.qml:82
-msgctxt "@button"
-msgid "Get started"
-msgstr "Začínáme"
 
 #: resources/qml/WelcomePages/WhatsNewContent.qml:28
 msgctxt "@label"
@@ -7237,6 +7151,10 @@ msgstr "Není z čeho vybírat"
 #~ msgid "Customized"
 #~ msgstr "Upraveno"
 
+#~ msgctxt "@text"
+#~ msgid "Data collected by UltiMaker Cura will not contain any personal information."
+#~ msgstr "Data shromážděná společností UltiMaker Cura nebudou obsahovat žádné osobní údaje."
+
 #~ msgctxt "@title:column"
 #~ msgid "Default"
 #~ msgstr "Výchozí"
@@ -7300,6 +7218,10 @@ msgstr "Není z čeho vybírat"
 #~ msgid "Get plugins and materials verified by UltiMaker"
 #~ msgstr "Získejte pluginy a materiály ověřené společností UltiMaker"
 
+#~ msgctxt "@button"
+#~ msgid "Get started"
+#~ msgstr "Začínáme"
+
 #~ msgctxt "@label"
 #~ msgid "Glass"
 #~ msgstr "Sklo"
@@ -7319,6 +7241,10 @@ msgstr "Není z čeho vybírat"
 #~ msgctxt "@label"
 #~ msgid "Gradual infill will gradually increase the amount of infill towards the top."
 #~ msgstr "Postupná výplň postupně zvyšuje množství výplně směrem nahoru."
+
+#~ msgctxt "@label"
+#~ msgid "Help us to improve UltiMaker Cura"
+#~ msgstr "Pomožte nám zlepšovat UltiMaker Cura"
 
 #~ msgctxt "@label The argument is a username."
 #~ msgid "Hi %1"
@@ -7385,9 +7311,25 @@ msgstr "Není z čeho vybírat"
 #~ msgid "Machine Settings action"
 #~ msgstr "Akce nastavení zařízení"
 
+#~ msgctxt "@text"
+#~ msgid "Machine types"
+#~ msgstr "Typy zařízení"
+
+#~ msgctxt "description"
+#~ msgid "Manages extensions to the application and allows browsing extensions from the Ultimaker website."
+#~ msgstr "Spravuje rozšíření aplikace a umožňuje prohlížení rozšíření z webu UltiMaker."
+
+#~ msgctxt "description"
+#~ msgid "Manages network connections to Ultimaker networked printers."
+#~ msgstr "Spravuje síťová připojení k síťovým tiskárnám UltiMaker."
+
 #~ msgctxt "@title"
 #~ msgid "Marketplace"
 #~ msgstr "Obchod"
+
+#~ msgctxt "@text"
+#~ msgid "Material usage"
+#~ msgstr "Použití materiálu"
 
 #~ msgctxt "@text:window"
 #~ msgid "Materials"
@@ -7398,6 +7340,10 @@ msgstr "Není z čeho vybírat"
 #~ msgstr "Chyby modelu"
 
 #~ msgctxt "@action:button"
+#~ msgid "More information"
+#~ msgstr "Více informací"
+
+#~ msgctxt "@text"
 #~ msgid "More information"
 #~ msgstr "Více informací"
 
@@ -7436,6 +7382,10 @@ msgstr "Není z čeho vybírat"
 #~ msgid "Nothing to slice because none of the models fit the build volume or are assigned to a disabled extruder. Please scale or rotate models to fit, or enable an extruder."
 #~ msgstr "Nic ke slicování, protože žádný z modelů neodpovídá objemu sestavení nebo není přiřazen k vytlačovacímu stroji s deaktivací. Změňte měřítko nebo otočte modely, aby se vešly, nebo povolte extrudér."
 
+#~ msgctxt "@text"
+#~ msgid "Number of slices"
+#~ msgstr "Počet sliců"
+
 #~ msgctxt "@label"
 #~ msgid "Overrides %1 setting."
 #~ msgid_plural "Overrides %1 settings."
@@ -7456,6 +7406,10 @@ msgstr "Není z čeho vybírat"
 #~ "Ultimaker Cura. Bude to trvat jen několik okamžiků."
 
 #~ msgctxt "@text"
+#~ msgid "Please follow these steps to set up UltiMaker Cura. This will only take a few moments."
+#~ msgstr "Při nastavování postupujte podle těchto pokynů UltiMaker Cura. Bude to trvat jen několik okamžiků."
+
+#~ msgctxt "@text"
 #~ msgid "Please give your printer a name"
 #~ msgstr "Prosím dejte vaší tiskárně název"
 
@@ -7470,6 +7424,10 @@ msgstr "Není z čeho vybírat"
 #~ msgctxt "@label"
 #~ msgid "Premium"
 #~ msgstr "Premium"
+
+#~ msgctxt "@text"
+#~ msgid "Print settings"
+#~ msgstr "Nastavení tisku"
 
 #~ msgctxt "@action:button"
 #~ msgid "Print via Cloud"
@@ -7554,6 +7512,10 @@ msgstr "Není z čeho vybírat"
 #~ msgctxt "@action:inmenu"
 #~ msgid "Show Online Troubleshooting Guide"
 #~ msgstr "Zobrazit online průvodce řešením problémů"
+
+#~ msgctxt "@info"
+#~ msgid "Sign in into UltiMaker Digilal Factory"
+#~ msgstr "Přihlaste se do UltiMaker Digital Factory"
 
 #~ msgctxt "@button"
 #~ msgid "Sign out"
@@ -7650,6 +7612,10 @@ msgstr "Není z čeho vybírat"
 #~ msgid "UltiMaker Cloud"
 #~ msgstr "UltiMaker Cloud"
 
+#~ msgctxt "@text"
+#~ msgid "UltiMaker Cura collects anonymous data to improve print quality and user experience, including:"
+#~ msgstr "UltiMaker Cura shromažďuje anonymní data za účelem zlepšení kvality tisku a uživatelského komfortu, včetně:"
+
 #~ msgctxt "@button"
 #~ msgid "UltiMaker account"
 #~ msgstr "UltiMaker účet"
@@ -7657,6 +7623,14 @@ msgstr "Není z čeho vybírat"
 #~ msgctxt "@button"
 #~ msgid "Ultimaker Digital Factory"
 #~ msgstr "Ultimaker Digital Factory"
+
+#~ msgctxt "name"
+#~ msgid "Ultimaker Network Connection"
+#~ msgstr "Síťové připojení UltiMaker"
+
+#~ msgctxt "name"
+#~ msgid "Ultimaker machine actions"
+#~ msgstr "Akce zařízení UltiMaker"
 
 #~ msgctxt "@action:button"
 #~ msgid "Uninstall"
@@ -7711,6 +7685,10 @@ msgstr "Není z čeho vybírat"
 #~ msgstr "Webová stránka"
 
 #~ msgctxt "@label"
+#~ msgid "Welcome to UltiMaker Cura"
+#~ msgstr "Vítejte v UltiMaker Cura"
+
+#~ msgctxt "@label"
 #~ msgid "What's new in UltiMaker Cura"
 #~ msgstr "Co je nového v UltiMaker Cura"
 
@@ -7733,6 +7711,10 @@ msgstr "Není z čeho vybírat"
 #~ msgstr ""
 #~ "Chystáte se odebrat {} tiskárny z Cury. Tuto akci nelze vrátit zpět.\n"
 #~ "Jste si jistý, že chcete pokračovat?"
+
+#~ msgctxt "@info:status"
+#~ msgid "You are attempting to connect to a printer that is not running Ultimaker Connect. Please update the printer to the latest firmware."
+#~ msgstr "Pokoušíte se připojit k tiskárně, na které není spuštěna aplikace UltiMaker Connect. Aktualizujte tiskárnu na nejnovější firmware."
 
 #~ msgctxt "@text:window"
 #~ msgid "You are uninstalling materials and/or profiles that are still in use. Confirming will reset the following materials/profiles to their defaults."
