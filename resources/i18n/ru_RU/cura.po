@@ -6958,24 +6958,6 @@ msgctxt "@button"
 msgid "Decline and close"
 msgstr "Отклонить и закрыть"
 
-#: resources/qml/WelcomePages/WelcomeContent.qml:56
-msgctxt "@label"
-msgid "Welcome to UltiMaker Cura"
-msgstr "Приветствуем в UltiMaker Cura"
-
-#: resources/qml/WelcomePages/WelcomeContent.qml:67
-#, fuzzy
-msgctxt "@text"
-msgid "Please follow these steps to set up UltiMaker Cura. This will only take a few moments."
-msgstr ""
-"Выполните указанные ниже действия для настройки\n"
-"UltiMaker Cura. Это займет немного времени."
-
-#: resources/qml/WelcomePages/WelcomeContent.qml:82
-msgctxt "@button"
-msgid "Get started"
-msgstr "Приступить"
-
 #: resources/qml/WelcomePages/WhatsNewContent.qml:28
 msgctxt "@label"
 msgid "What's New"
@@ -7002,6 +6984,10 @@ msgstr "Нет элементов для выбора"
 #~ msgctxt "@text"
 #~ msgid "Data collected by UltiMaker Cura will not contain any personal information."
 #~ msgstr "Данные, собранные UltiMaker Cura, не содержат каких-либо персональных данных."
+
+#~ msgctxt "@button"
+#~ msgid "Get started"
+#~ msgstr "Приступить"
 
 #~ msgctxt "@label"
 #~ msgid "Glass"
@@ -7047,6 +7033,13 @@ msgstr "Нет элементов для выбора"
 #~ msgid "Number of slices"
 #~ msgstr "Количество слоев"
 
+#, fuzzy
+#~ msgctxt "@text"
+#~ msgid "Please follow these steps to set up UltiMaker Cura. This will only take a few moments."
+#~ msgstr ""
+#~ "Выполните указанные ниже действия для настройки\n"
+#~ "UltiMaker Cura. Это займет немного времени."
+
 #~ msgctxt "@text"
 #~ msgid "Print settings"
 #~ msgstr "Параметры печати"
@@ -7063,3 +7056,7 @@ msgstr "Нет элементов для выбора"
 #~ msgctxt "@action:label"
 #~ msgid "Visible settings:"
 #~ msgstr "Видимые параметры:"
+
+#~ msgctxt "@label"
+#~ msgid "Welcome to UltiMaker Cura"
+#~ msgstr "Приветствуем в UltiMaker Cura"

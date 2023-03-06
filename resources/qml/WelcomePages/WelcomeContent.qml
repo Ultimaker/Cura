@@ -9,11 +9,10 @@ import Cura 1.1 as Cura
 
 //
 // This component contains the content for the "Welcome" page of the welcome on-boarding process.
+// This dialog is currently only shown during on-boarding and therefore only shown in English
 //
 Item
 {
-    UM.I18nCatalog { id: catalog; name: "cura" }
-
     // Arrange the items vertically and put everything in the center
     Column
     {
@@ -53,7 +52,7 @@ Item
             id: titleLabel
             anchors.horizontalCenter: parent.horizontalCenter
             horizontalAlignment: Text.AlignHCenter
-            text: catalog.i18nc("@label", "Welcome to UltiMaker Cura")
+            text: "Welcome to UltiMaker Cura"
             color: UM.Theme.getColor("primary_button")
             font: UM.Theme.getFont("huge_bold")
         }
@@ -64,7 +63,7 @@ Item
             anchors.horizontalCenter: parent.horizontalCenter
             horizontalAlignment: Text.AlignHCenter
             width: titleLabel.width + 2 * UM.Theme.getSize("thick_margin").width
-            text: catalog.i18nc("@text", "Please follow these steps to set up UltiMaker Cura. This will only take a few moments.")
+            text: "Please follow these steps to set up UltiMaker Cura. This will only take a few moments."
             font: UM.Theme.getFont("medium")
         }
 
@@ -79,7 +78,7 @@ Item
         {
             id: getStartedButton
             anchors.horizontalCenter: parent.horizontalCenter
-            text: catalog.i18nc("@button", "Get started")
+            text: "Get started"
             onClicked: base.showNextPage()
         }
 

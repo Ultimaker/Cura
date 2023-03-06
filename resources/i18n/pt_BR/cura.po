@@ -6940,21 +6940,6 @@ msgctxt "@button"
 msgid "Decline and close"
 msgstr "Rejeitar e fechar"
 
-#: resources/qml/WelcomePages/WelcomeContent.qml:56
-msgctxt "@label"
-msgid "Welcome to UltiMaker Cura"
-msgstr "Bem-vindo ao UltiMaker Cura"
-
-#: resources/qml/WelcomePages/WelcomeContent.qml:67
-msgctxt "@text"
-msgid "Please follow these steps to set up UltiMaker Cura. This will only take a few moments."
-msgstr "Por favor siga estes passos para configurar o UltiMaker Cura. Isto tomará apenas alguns momentos."
-
-#: resources/qml/WelcomePages/WelcomeContent.qml:82
-msgctxt "@button"
-msgid "Get started"
-msgstr "Começar"
-
 #: resources/qml/WelcomePages/WhatsNewContent.qml:28
 msgctxt "@label"
 msgid "What's New"
@@ -8486,6 +8471,10 @@ msgstr "Sem itens para selecionar"
 #~ msgid "Get plugins and materials verified by UltiMaker"
 #~ msgstr "Obter complementos e materiais verificados pela UltiMaker"
 
+#~ msgctxt "@button"
+#~ msgid "Get started"
+#~ msgstr "Começar"
+
 #~ msgctxt "description"
 #~ msgid "Gives you the possibility to open certain files using SolidWorks itself. Conversion is done by this plugin and additional optimizations."
 #~ msgstr "Te dá a possibilidade de abrir certos arquivos usando o SolidWorks. A conversão é feita por este complemento junto a personalizações adicionais."
@@ -9138,6 +9127,10 @@ msgstr "Sem itens para selecionar"
 #~ msgstr ""
 #~ "Por favor siga estes passos para configurar\n"
 #~ "o Ultimaker Cura. Isto tomará apenas alguns momentos."
+
+#~ msgctxt "@text"
+#~ msgid "Please follow these steps to set up UltiMaker Cura. This will only take a few moments."
+#~ msgstr "Por favor siga estes passos para configurar o UltiMaker Cura. Isto tomará apenas alguns momentos."
 
 #~ msgctxt "@warning:status"
 #~ msgid "Please generate G-code before saving."
@@ -10618,6 +10611,10 @@ msgstr "Sem itens para selecionar"
 #~ msgctxt "@label"
 #~ msgid "Website"
 #~ msgstr "Sítio Web"
+
+#~ msgctxt "@label"
+#~ msgid "Welcome to UltiMaker Cura"
+#~ msgstr "Bem-vindo ao UltiMaker Cura"
 
 #~ msgctxt "@label"
 #~ msgid "What's new in UltiMaker Cura"

@@ -6915,23 +6915,6 @@ msgctxt "@button"
 msgid "Decline and close"
 msgstr "拒否して閉じる"
 
-#: resources/qml/WelcomePages/WelcomeContent.qml:56
-msgctxt "@label"
-msgid "Welcome to UltiMaker Cura"
-msgstr "UltiMaker Cura にようこそ"
-
-#: resources/qml/WelcomePages/WelcomeContent.qml:67
-msgctxt "@text"
-msgid "Please follow these steps to set up UltiMaker Cura. This will only take a few moments."
-msgstr ""
-"以下の手順で\n"
-"UltiMaker Cura を設定してください。数秒で完了します。"
-
-#: resources/qml/WelcomePages/WelcomeContent.qml:82
-msgctxt "@button"
-msgid "Get started"
-msgstr "はじめに"
-
 #: resources/qml/WelcomePages/WhatsNewContent.qml:28
 msgctxt "@label"
 msgid "What's New"
@@ -6957,6 +6940,10 @@ msgstr "選択するアイテムがありません"
 #~ msgctxt "@text"
 #~ msgid "Data collected by UltiMaker Cura will not contain any personal information."
 #~ msgstr "UltiMaker Cura が収集したデータには個人データは含まれません。"
+
+#~ msgctxt "@button"
+#~ msgid "Get started"
+#~ msgstr "はじめに"
 
 #~ msgctxt "@label"
 #~ msgid "Glass"
@@ -7003,6 +6990,12 @@ msgstr "選択するアイテムがありません"
 #~ msgstr "スライスの数"
 
 #~ msgctxt "@text"
+#~ msgid "Please follow these steps to set up UltiMaker Cura. This will only take a few moments."
+#~ msgstr ""
+#~ "以下の手順で\n"
+#~ "UltiMaker Cura を設定してください。数秒で完了します。"
+
+#~ msgctxt "@text"
 #~ msgid "Print settings"
 #~ msgstr "プリント設定"
 
@@ -7017,3 +7010,7 @@ msgstr "選択するアイテムがありません"
 #~ msgctxt "@action:label"
 #~ msgid "Visible settings:"
 #~ msgstr "ビジブル設定:"
+
+#~ msgctxt "@label"
+#~ msgid "Welcome to UltiMaker Cura"
+#~ msgstr "UltiMaker Cura にようこそ"

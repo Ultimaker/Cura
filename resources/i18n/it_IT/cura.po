@@ -6939,23 +6939,6 @@ msgctxt "@button"
 msgid "Decline and close"
 msgstr "Rifiuta e chiudi"
 
-#: resources/qml/WelcomePages/WelcomeContent.qml:56
-msgctxt "@label"
-msgid "Welcome to UltiMaker Cura"
-msgstr "Benvenuto in UltiMaker Cura"
-
-#: resources/qml/WelcomePages/WelcomeContent.qml:67
-msgctxt "@text"
-msgid "Please follow these steps to set up UltiMaker Cura. This will only take a few moments."
-msgstr ""
-"Segui questa procedura per configurare\n"
-"UltiMaker Cura. Questa operazione richiederà solo pochi istanti."
-
-#: resources/qml/WelcomePages/WelcomeContent.qml:82
-msgctxt "@button"
-msgid "Get started"
-msgstr "Per iniziare"
-
 #: resources/qml/WelcomePages/WhatsNewContent.qml:28
 msgctxt "@label"
 msgid "What's New"
@@ -6981,6 +6964,10 @@ msgstr "Nessun elemento da selezionare da"
 #~ msgctxt "@text"
 #~ msgid "Data collected by UltiMaker Cura will not contain any personal information."
 #~ msgstr "I dati acquisiti da UltiMaker Cura non conterranno alcuna informazione personale."
+
+#~ msgctxt "@button"
+#~ msgid "Get started"
+#~ msgstr "Per iniziare"
 
 #~ msgctxt "@label"
 #~ msgid "Glass"
@@ -7027,6 +7014,12 @@ msgstr "Nessun elemento da selezionare da"
 #~ msgstr "Numero di sezionamenti"
 
 #~ msgctxt "@text"
+#~ msgid "Please follow these steps to set up UltiMaker Cura. This will only take a few moments."
+#~ msgstr ""
+#~ "Segui questa procedura per configurare\n"
+#~ "UltiMaker Cura. Questa operazione richiederà solo pochi istanti."
+
+#~ msgctxt "@text"
 #~ msgid "Print settings"
 #~ msgstr "Impostazioni di stampa"
 
@@ -7041,3 +7034,7 @@ msgstr "Nessun elemento da selezionare da"
 #~ msgctxt "@action:label"
 #~ msgid "Visible settings:"
 #~ msgstr "Impostazioni visibili:"
+
+#~ msgctxt "@label"
+#~ msgid "Welcome to UltiMaker Cura"
+#~ msgstr "Benvenuto in UltiMaker Cura"

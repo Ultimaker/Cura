@@ -6923,21 +6923,6 @@ msgctxt "@button"
 msgid "Decline and close"
 msgstr "拒絕並關閉"
 
-#: resources/qml/WelcomePages/WelcomeContent.qml:56
-msgctxt "@label"
-msgid "Welcome to UltiMaker Cura"
-msgstr "歡迎來到 UltiMaker Cura"
-
-#: resources/qml/WelcomePages/WelcomeContent.qml:67
-msgctxt "@text"
-msgid "Please follow these steps to set up UltiMaker Cura. This will only take a few moments."
-msgstr "請依照步驟安裝UltiMaker Cura. 這會需要幾分鐘的時間."
-
-#: resources/qml/WelcomePages/WelcomeContent.qml:82
-msgctxt "@button"
-msgid "Get started"
-msgstr "開始"
-
 #: resources/qml/WelcomePages/WhatsNewContent.qml:28
 msgctxt "@label"
 msgid "What's New"
@@ -8158,6 +8143,10 @@ msgstr "沒有可選取的專案"
 #~ msgid "Get plugins and materials verified by UltiMaker"
 #~ msgstr "取得經 UltiMaker 驗証過的外掛和耗材"
 
+#~ msgctxt "@button"
+#~ msgid "Get started"
+#~ msgstr "開始"
+
 #~ msgctxt "description"
 #~ msgid "Gives you the possibility to open certain files using SolidWorks itself. Conversion is done by this plugin and additional optimizations."
 #~ msgstr "讓你可以使用 SolidWorks 開啟某些檔案。此外掛會完成轉換和最佳化的工作。"
@@ -8683,6 +8672,10 @@ msgstr "沒有可選取的專案"
 #~ msgstr ""
 #~ "請按照以下步驟進行設定\n"
 #~ "Ultimaker Cura。這只需要一點時間。"
+
+#~ msgctxt "@text"
+#~ msgid "Please follow these steps to set up UltiMaker Cura. This will only take a few moments."
+#~ msgstr "請依照步驟安裝UltiMaker Cura. 這會需要幾分鐘的時間."
 
 #~ msgctxt "@warning:status"
 #~ msgid "Please generate G-code before saving."
@@ -9901,6 +9894,10 @@ msgstr "沒有可選取的專案"
 #~ msgctxt "@label"
 #~ msgid "Website"
 #~ msgstr "網站"
+
+#~ msgctxt "@label"
+#~ msgid "Welcome to UltiMaker Cura"
+#~ msgstr "歡迎來到 UltiMaker Cura"
 
 #~ msgctxt "@label"
 #~ msgid "What's new in UltiMaker Cura"

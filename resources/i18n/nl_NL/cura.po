@@ -6909,23 +6909,6 @@ msgctxt "@button"
 msgid "Decline and close"
 msgstr "Afwijzen en sluiten"
 
-#: resources/qml/WelcomePages/WelcomeContent.qml:56
-msgctxt "@label"
-msgid "Welcome to UltiMaker Cura"
-msgstr "Welkom bij UltiMaker Cura"
-
-#: resources/qml/WelcomePages/WelcomeContent.qml:67
-msgctxt "@text"
-msgid "Please follow these steps to set up UltiMaker Cura. This will only take a few moments."
-msgstr ""
-"Volg deze stappen voor het instellen van\n"
-"UltiMaker Cura. Dit duurt slechts even."
-
-#: resources/qml/WelcomePages/WelcomeContent.qml:82
-msgctxt "@button"
-msgid "Get started"
-msgstr "Aan de slag"
-
 #: resources/qml/WelcomePages/WhatsNewContent.qml:28
 msgctxt "@label"
 msgid "What's New"
@@ -6951,6 +6934,10 @@ msgstr "Geen items om uit te kiezen"
 #~ msgctxt "@text"
 #~ msgid "Data collected by UltiMaker Cura will not contain any personal information."
 #~ msgstr "De gegevens die UltiMaker Cura verzamelt, bevatten geen persoonlijke informatie."
+
+#~ msgctxt "@button"
+#~ msgid "Get started"
+#~ msgstr "Aan de slag"
 
 #~ msgctxt "@label"
 #~ msgid "Glass"
@@ -6997,6 +6984,12 @@ msgstr "Geen items om uit te kiezen"
 #~ msgstr "Aantal slices"
 
 #~ msgctxt "@text"
+#~ msgid "Please follow these steps to set up UltiMaker Cura. This will only take a few moments."
+#~ msgstr ""
+#~ "Volg deze stappen voor het instellen van\n"
+#~ "UltiMaker Cura. Dit duurt slechts even."
+
+#~ msgctxt "@text"
 #~ msgid "Print settings"
 #~ msgstr "Instellingen voor printen"
 
@@ -7011,3 +7004,7 @@ msgstr "Geen items om uit te kiezen"
 #~ msgctxt "@action:label"
 #~ msgid "Visible settings:"
 #~ msgstr "Zichtbare instellingen:"
+
+#~ msgctxt "@label"
+#~ msgid "Welcome to UltiMaker Cura"
+#~ msgstr "Welkom bij UltiMaker Cura"

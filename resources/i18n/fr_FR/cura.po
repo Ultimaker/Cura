@@ -6942,24 +6942,6 @@ msgctxt "@button"
 msgid "Decline and close"
 msgstr "Décliner et fermer"
 
-#: resources/qml/WelcomePages/WelcomeContent.qml:56
-msgctxt "@label"
-msgid "Welcome to UltiMaker Cura"
-msgstr "Bienvenue dans UltiMaker Cura"
-
-#: resources/qml/WelcomePages/WelcomeContent.qml:67
-#, fuzzy
-msgctxt "@text"
-msgid "Please follow these steps to set up UltiMaker Cura. This will only take a few moments."
-msgstr ""
-"Veuillez suivre ces étapes pour configurer\n"
-"Ultimaker Cura. Cela ne prendra que quelques instants."
-
-#: resources/qml/WelcomePages/WelcomeContent.qml:82
-msgctxt "@button"
-msgid "Get started"
-msgstr "Prise en main"
-
 #: resources/qml/WelcomePages/WhatsNewContent.qml:28
 msgctxt "@label"
 msgid "What's New"
@@ -6986,6 +6968,10 @@ msgstr "Aucun élément à sélectionner"
 #~ msgctxt "@text"
 #~ msgid "Data collected by UltiMaker Cura will not contain any personal information."
 #~ msgstr "Les données recueillies par UltiMaker Cura ne contiendront aucun renseignement personnel."
+
+#~ msgctxt "@button"
+#~ msgid "Get started"
+#~ msgstr "Prise en main"
 
 #~ msgctxt "@label"
 #~ msgid "Glass"
@@ -7031,6 +7017,13 @@ msgstr "Aucun élément à sélectionner"
 #~ msgid "Number of slices"
 #~ msgstr "Nombre de découpes"
 
+#, fuzzy
+#~ msgctxt "@text"
+#~ msgid "Please follow these steps to set up UltiMaker Cura. This will only take a few moments."
+#~ msgstr ""
+#~ "Veuillez suivre ces étapes pour configurer\n"
+#~ "Ultimaker Cura. Cela ne prendra que quelques instants."
+
 #~ msgctxt "@text"
 #~ msgid "Print settings"
 #~ msgstr "Paramètres d'impression"
@@ -7047,3 +7040,7 @@ msgstr "Aucun élément à sélectionner"
 #~ msgctxt "@action:label"
 #~ msgid "Visible settings:"
 #~ msgstr "Paramètres visibles :"
+
+#~ msgctxt "@label"
+#~ msgid "Welcome to UltiMaker Cura"
+#~ msgstr "Bienvenue dans UltiMaker Cura"

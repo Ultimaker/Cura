@@ -6944,24 +6944,6 @@ msgctxt "@button"
 msgid "Decline and close"
 msgstr "Reddet ve kapat"
 
-#: resources/qml/WelcomePages/WelcomeContent.qml:56
-msgctxt "@label"
-msgid "Welcome to UltiMaker Cura"
-msgstr "UltiMaker Cura'ya hoş geldiniz"
-
-#: resources/qml/WelcomePages/WelcomeContent.qml:67
-#, fuzzy
-msgctxt "@text"
-msgid "Please follow these steps to set up UltiMaker Cura. This will only take a few moments."
-msgstr ""
-"UltiMaker Cura'yı kurmak\n"
-" için lütfen aşağıdaki adımları izleyin. Bu sadece birkaç saniye sürecektir."
-
-#: resources/qml/WelcomePages/WelcomeContent.qml:82
-msgctxt "@button"
-msgid "Get started"
-msgstr "Başlayın"
-
 #: resources/qml/WelcomePages/WhatsNewContent.qml:28
 msgctxt "@label"
 msgid "What's New"
@@ -6988,6 +6970,10 @@ msgstr "Seçilecek öğe yok"
 #~ msgctxt "@text"
 #~ msgid "Data collected by UltiMaker Cura will not contain any personal information."
 #~ msgstr "UltiMaker Cura tarafından toplanan veriler herhangi bir kişisel bilgi içermeyecektir."
+
+#~ msgctxt "@button"
+#~ msgid "Get started"
+#~ msgstr "Başlayın"
 
 #~ msgctxt "@label"
 #~ msgid "Glass"
@@ -7033,6 +7019,13 @@ msgstr "Seçilecek öğe yok"
 #~ msgid "Number of slices"
 #~ msgstr "Dilim sayısı"
 
+#, fuzzy
+#~ msgctxt "@text"
+#~ msgid "Please follow these steps to set up UltiMaker Cura. This will only take a few moments."
+#~ msgstr ""
+#~ "UltiMaker Cura'yı kurmak\n"
+#~ " için lütfen aşağıdaki adımları izleyin. Bu sadece birkaç saniye sürecektir."
+
 #~ msgctxt "@text"
 #~ msgid "Print settings"
 #~ msgstr "Yazdırma ayarları"
@@ -7049,3 +7042,7 @@ msgstr "Seçilecek öğe yok"
 #~ msgctxt "@action:label"
 #~ msgid "Visible settings:"
 #~ msgstr "Görünür ayarlar:"
+
+#~ msgctxt "@label"
+#~ msgid "Welcome to UltiMaker Cura"
+#~ msgstr "UltiMaker Cura'ya hoş geldiniz"

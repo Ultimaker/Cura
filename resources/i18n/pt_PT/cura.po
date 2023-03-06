@@ -6899,21 +6899,6 @@ msgctxt "@button"
 msgid "Decline and close"
 msgstr "Rejeitar e fechar"
 
-#: resources/qml/WelcomePages/WelcomeContent.qml:56
-msgctxt "@label"
-msgid "Welcome to UltiMaker Cura"
-msgstr "Bem-vindo ao UltiMaker Cura"
-
-#: resources/qml/WelcomePages/WelcomeContent.qml:67
-msgctxt "@text"
-msgid "Please follow these steps to set up UltiMaker Cura. This will only take a few moments."
-msgstr ""
-
-#: resources/qml/WelcomePages/WelcomeContent.qml:82
-msgctxt "@button"
-msgid "Get started"
-msgstr "Iniciar"
-
 #: resources/qml/WelcomePages/WhatsNewContent.qml:28
 msgctxt "@label"
 msgid "What's New"
@@ -7015,6 +7000,10 @@ msgstr "Nenhum item para selecionar"
 #~ msgctxt "@label"
 #~ msgid "Generate structures to support parts of the model which have overhangs. Without these structures, such parts would collapse during printing."
 #~ msgstr "Criar estruturas para suportar partes do modelo, suspensas ou com saliências. Sem estas estruturas, essas partes do modelo podem desmoronar durante a impressão."
+
+#~ msgctxt "@button"
+#~ msgid "Get started"
+#~ msgstr "Iniciar"
 
 #~ msgctxt "@label"
 #~ msgid "Glass"
@@ -7163,6 +7152,10 @@ msgstr "Nenhum item para selecionar"
 #~ msgctxt "@info"
 #~ msgid "Webcam feeds for cloud printers cannot be viewed from Ultimaker Cura. Click \"Manage printer\" to visit Ultimaker Digital Factory and view this webcam."
 #~ msgstr "Não é possível visualizar os feeds das câmaras das impressoras na cloud a partir do Ultimaker Cura. Clique em \"Gerir impressora\" para visitar o Ultimaker Digital Factory e ver esta câmara."
+
+#~ msgctxt "@label"
+#~ msgid "Welcome to UltiMaker Cura"
+#~ msgstr "Bem-vindo ao UltiMaker Cura"
 
 #~ msgctxt "@label"
 #~ msgid "Welcome to Ultimaker Cura"

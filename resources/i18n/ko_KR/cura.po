@@ -6923,21 +6923,6 @@ msgctxt "@button"
 msgid "Decline and close"
 msgstr "거절 및 닫기"
 
-#: resources/qml/WelcomePages/WelcomeContent.qml:56
-msgctxt "@label"
-msgid "Welcome to UltiMaker Cura"
-msgstr "UltiMaker Cura에 오신 것을 환영합니다"
-
-#: resources/qml/WelcomePages/WelcomeContent.qml:67
-msgctxt "@text"
-msgid "Please follow these steps to set up UltiMaker Cura. This will only take a few moments."
-msgstr "UltiMaker Cura를 설정하려면 다음 단계로 이동하세요. 오래 걸리지 않습니다."
-
-#: resources/qml/WelcomePages/WelcomeContent.qml:82
-msgctxt "@button"
-msgid "Get started"
-msgstr "시작하기"
-
 #: resources/qml/WelcomePages/WhatsNewContent.qml:28
 msgctxt "@label"
 msgid "What's New"
@@ -6963,6 +6948,10 @@ msgstr "선택할 항목 없음"
 #~ msgctxt "@text"
 #~ msgid "Data collected by UltiMaker Cura will not contain any personal information."
 #~ msgstr "UltiMaker Cura가 수집하는 데이터에는 개인 정보가 포함되어 있지 않습니다."
+
+#~ msgctxt "@button"
+#~ msgid "Get started"
+#~ msgstr "시작하기"
 
 #~ msgctxt "@label"
 #~ msgid "Glass"
@@ -7009,6 +6998,10 @@ msgstr "선택할 항목 없음"
 #~ msgstr "슬라이드 수"
 
 #~ msgctxt "@text"
+#~ msgid "Please follow these steps to set up UltiMaker Cura. This will only take a few moments."
+#~ msgstr "UltiMaker Cura를 설정하려면 다음 단계로 이동하세요. 오래 걸리지 않습니다."
+
+#~ msgctxt "@text"
 #~ msgid "Print settings"
 #~ msgstr "인쇄 설정"
 
@@ -7023,3 +7016,7 @@ msgstr "선택할 항목 없음"
 #~ msgctxt "@action:label"
 #~ msgid "Visible settings:"
 #~ msgstr "표시 설정 :"
+
+#~ msgctxt "@label"
+#~ msgid "Welcome to UltiMaker Cura"
+#~ msgstr "UltiMaker Cura에 오신 것을 환영합니다"

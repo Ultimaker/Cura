@@ -6956,21 +6956,6 @@ msgctxt "@button"
 msgid "Decline and close"
 msgstr "Odmítnout a zavřít"
 
-#: resources/qml/WelcomePages/WelcomeContent.qml:56
-msgctxt "@label"
-msgid "Welcome to UltiMaker Cura"
-msgstr "Vítejte v UltiMaker Cura"
-
-#: resources/qml/WelcomePages/WelcomeContent.qml:67
-msgctxt "@text"
-msgid "Please follow these steps to set up UltiMaker Cura. This will only take a few moments."
-msgstr "Při nastavování postupujte podle těchto pokynů UltiMaker Cura. Bude to trvat jen několik okamžiků."
-
-#: resources/qml/WelcomePages/WelcomeContent.qml:82
-msgctxt "@button"
-msgid "Get started"
-msgstr "Začínáme"
-
 #: resources/qml/WelcomePages/WhatsNewContent.qml:28
 msgctxt "@label"
 msgid "What's New"
@@ -7263,6 +7248,10 @@ msgstr "Není z čeho vybírat"
 #~ msgid "Get plugins and materials verified by UltiMaker"
 #~ msgstr "Získejte pluginy a materiály ověřené společností UltiMaker"
 
+#~ msgctxt "@button"
+#~ msgid "Get started"
+#~ msgstr "Začínáme"
+
 #~ msgctxt "@label"
 #~ msgid "Glass"
 #~ msgstr "Sklo"
@@ -7437,6 +7426,10 @@ msgstr "Není z čeho vybírat"
 #~ msgstr ""
 #~ "Při nastavování postupujte podle těchto pokynů\n"
 #~ "Ultimaker Cura. Bude to trvat jen několik okamžiků."
+
+#~ msgctxt "@text"
+#~ msgid "Please follow these steps to set up UltiMaker Cura. This will only take a few moments."
+#~ msgstr "Při nastavování postupujte podle těchto pokynů UltiMaker Cura. Bude to trvat jen několik okamžiků."
 
 #~ msgctxt "@text"
 #~ msgid "Please give your printer a name"
@@ -7700,6 +7693,10 @@ msgstr "Není z čeho vybírat"
 #~ msgctxt "@label"
 #~ msgid "Website"
 #~ msgstr "Webová stránka"
+
+#~ msgctxt "@label"
+#~ msgid "Welcome to UltiMaker Cura"
+#~ msgstr "Vítejte v UltiMaker Cura"
 
 #~ msgctxt "@label"
 #~ msgid "What's new in UltiMaker Cura"
