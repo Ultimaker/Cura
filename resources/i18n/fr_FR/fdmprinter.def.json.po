@@ -70,7 +70,7 @@ msgstr "Une liste de polygones comportant les zones dans lesquelles la tête d'i
 #: fdmprinter.def.json
 msgctxt "brim_inside_margin description"
 msgid "A part fully enclosed inside another part can generate an outer brim that touches the inside of the other part. This removes all brim within this distance from internal holes."
-msgstr ""
+msgstr "Une pièce entièrement contenue à l'intérieur d'une autre peut générer une bordure extérieure qui vient en contact avec l'intérieur de la pièce extérieure. Cette fonction supprime à cette distance toutes les bordures situées dans des vides intérieurs."
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_abs label"
@@ -279,7 +279,7 @@ msgstr "Appliquez le décalage de l'extrudeuse au système de coordonnées. Affe
 #: fdmprinter.def.json
 msgctxt "interlocking_enable description"
 msgid "At the locations where models touch, generate an interlocking beam structure. This improves the adhesion between models, especially models printed in different materials."
-msgstr ""
+msgstr "Aux endroits où les modèles 3D se touchent, générez une structure d'attaches de connexion. Cette fonctionnalité améliore l'adhérence entre les modèles 3D, en particulier ceux imprimés avec des matériaux différents."
 
 #: fdmprinter.def.json
 msgctxt "travel_avoid_other_parts label"
@@ -479,7 +479,7 @@ msgstr "Distance de la bordure"
 #: fdmprinter.def.json
 msgctxt "brim_inside_margin label"
 msgid "Brim Inside Avoid Margin"
-msgstr ""
+msgstr "Marge d'évitement de la bordure intérieure"
 
 #: fdmprinter.def.json
 msgctxt "brim_line_count label"
@@ -1491,7 +1491,7 @@ msgstr "Hauteur du portique"
 #: fdmprinter.def.json
 msgctxt "interlocking_enable label"
 msgid "Generate Interlocking Structure"
-msgstr ""
+msgstr "Générer une structure de connexion"
 
 #: fdmprinter.def.json
 msgctxt "support_enable label"
@@ -1556,7 +1556,7 @@ msgstr "Étapes de remplissage graduel du support"
 #: fdmprinter.def.json
 msgctxt "cool_min_temperature description"
 msgid "Gradually reduce to this temperature when printing at reduced speeds because of minimum layer time."
-msgstr ""
+msgstr "Abaissez progressivement la température jusqu'à ce niveau lors de l'impression à vitesse réduite, en raison du temps d'impression minimum de chaque couche."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -2046,27 +2046,27 @@ msgstr "De l'intérieur vers l'extérieur"
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_layer_count label"
 msgid "Interlocking Beam Layer Count"
-msgstr ""
+msgstr "Nombre de couches de l'attache de connexion"
 
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_width label"
 msgid "Interlocking Beam Width"
-msgstr ""
+msgstr "Largeur de l'attache de connexion"
 
 #: fdmprinter.def.json
 msgctxt "interlocking_boundary_avoidance label"
 msgid "Interlocking Boundary Avoidance"
-msgstr ""
+msgstr "Limite de la distance de connexion"
 
 #: fdmprinter.def.json
 msgctxt "interlocking_depth label"
 msgid "Interlocking Depth"
-msgstr ""
+msgstr "Profondeur de connexion"
 
 #: fdmprinter.def.json
 msgctxt "interlocking_orientation label"
 msgid "Interlocking Structure Orientation"
-msgstr ""
+msgstr "Orientation de la structure de connexion"
 
 #: fdmprinter.def.json
 msgctxt "ironing_only_highest_layer label"
@@ -3729,10 +3729,9 @@ msgid "Small Hole Max Size"
 msgstr "Taille maximale des petits trous"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "cool_min_temperature label"
 msgid "Small Layer Printing Temperature"
-msgstr "Température d’impression finale"
+msgstr "Température d'impression pour couches fines"
 
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 description"
@@ -3885,10 +3884,9 @@ msgid "Support Bottom Distance"
 msgstr "Distance inférieure des supports"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "support_bottom_wall_count label"
 msgid "Support Bottom Wall Line Count"
-msgstr "Nombre de lignes de la paroi du support"
+msgstr "Nombre de lignes de la paroi inférieure du support"
 
 #: fdmprinter.def.json
 msgctxt "support_brim_line_count label"
@@ -4086,10 +4084,9 @@ msgid "Support Interface Thickness"
 msgstr "Épaisseur de l'interface de support"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "support_interface_wall_count label"
 msgid "Support Interface Wall Line Count"
-msgstr "Nombre de lignes de la paroi du support"
+msgstr "Nombre de lignes de la paroi de la surface de support"
 
 #: fdmprinter.def.json
 msgctxt "jerk_support label"
@@ -4192,10 +4189,9 @@ msgid "Support Roof Thickness"
 msgstr "Épaisseur du plafond de support"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "support_roof_wall_count label"
 msgid "Support Roof Wall Line Count"
-msgstr "Nombre de lignes de la paroi du support"
+msgstr "Nombre de lignes de la paroi du plafond de support"
 
 #: fdmprinter.def.json
 msgctxt "speed_support label"
@@ -4600,7 +4596,7 @@ msgstr "La distance couverte lors de l'impression d'une connexion d'un contour d
 #: fdmprinter.def.json
 msgctxt "interlocking_depth description"
 msgid "The distance from the boundary between models to generate interlocking structure measured in cells. Too few cells will result in poor adhesion."
-msgstr ""
+msgstr "Limite de la distance entre modèles 3D lors de la génération d'une structure de connexion, mesurée en cellules. Un trop petit nombre de cellules entraînera une mauvaise adhérence."
 
 #: fdmprinter.def.json
 msgctxt "brim_width description"
@@ -4610,7 +4606,7 @@ msgstr "La distance entre le modèle et la ligne de bordure la plus à l'extéri
 #: fdmprinter.def.json
 msgctxt "interlocking_boundary_avoidance description"
 msgid "The distance from the outside of a model where interlocking structures will not be generated, measured in cells."
-msgstr ""
+msgstr "Distance à partir de l'extérieur d'un modèle 3D où les structures de connexion ne seront plus générées, mesurée en cellules."
 
 #: fdmprinter.def.json
 msgctxt "machine_heat_zone_length description"
@@ -4840,12 +4836,12 @@ msgstr "La hauteur de remplissage de support d'une densité donnée avant de pas
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_layer_count description"
 msgid "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects."
-msgstr ""
+msgstr "La hauteur des attaches de la structure de connexion, mesurée en nombre de couches. Des couches moins nombreuses seront plus solides, mais sujettes à des imperfections."
 
 #: fdmprinter.def.json
 msgctxt "interlocking_orientation description"
 msgid "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects."
-msgstr ""
+msgstr "La hauteur des attaches de la structure de connexion, mesurée en nombre de couches. Des couches moins nombreuses seront plus solides, mais sujettes à des imperfections."
 
 #: fdmprinter.def.json
 msgctxt "layer_height_0 description"
@@ -5257,22 +5253,19 @@ msgid "The number of walls with which to surround support infill. Adding a wall 
 msgstr "Nombre de parois qui entourent le remplissage de support. L'ajout d'une paroi peut rendre l'impression de support plus fiable et mieux supporter les porte-à-faux, mais augmente le temps d'impression et la quantité de matériau nécessaire."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "support_bottom_wall_count description"
 msgid "The number of walls with which to surround support interface floor. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "Nombre de parois qui entourent le remplissage de support. L'ajout d'une paroi peut rendre l'impression de support plus fiable et mieux supporter les porte-à-faux, mais augmente le temps d'impression et la quantité de matériau nécessaire."
+msgstr "Nombre de parois avec lesquelles entourer le plancher de la surface de support. L'ajout d'une paroi rend l'impression du support plus fiable et permet de mieux soutenir les saillies, mais augmente le temps d'impression et la quantité de matériau utilisé."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "support_roof_wall_count description"
 msgid "The number of walls with which to surround support interface roof. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "Nombre de parois qui entourent le remplissage de support. L'ajout d'une paroi peut rendre l'impression de support plus fiable et mieux supporter les porte-à-faux, mais augmente le temps d'impression et la quantité de matériau nécessaire."
+msgstr "Le nombre de parois avec lesquelles entourer le plafond de la surface de support. L'ajout d'une paroi rend l'impression du support plus fiable et permet de mieux soutenir les saillies, mais augmente le temps d'impression et la quantité de matériau utilisé."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "support_interface_wall_count description"
 msgid "The number of walls with which to surround support interface. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "Nombre de parois qui entourent le remplissage de support. L'ajout d'une paroi peut rendre l'impression de support plus fiable et mieux supporter les porte-à-faux, mais augmente le temps d'impression et la quantité de matériau nécessaire."
+msgstr "Nombre de parois avec lesquelles entourer la surface de support. L'ajout d'une paroi rend l'impression du support plus fiable et permet de mieux soutenir les saillies, mais augmente le temps d'impression et la quantité de matériau utilisé."
 
 #: fdmprinter.def.json
 msgctxt "wall_distribution_count description"
@@ -5695,10 +5688,9 @@ msgid "The width of the brim to print underneath the support. A larger brim enha
 msgstr "Largeur de la bordure à imprimer sous le support. Une plus grande bordure améliore l'adhérence au plateau, mais demande un peu de matériau supplémentaire."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "interlocking_beam_width description"
 msgid "The width of the interlocking structure beams."
-msgstr "La largeur de la tour d'amorçage."
+msgstr "La largeur des attaches de la structure de connexion."
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_size description"
