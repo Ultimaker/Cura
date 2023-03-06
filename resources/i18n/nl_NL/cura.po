@@ -7008,3 +7008,7 @@ msgstr "Geen items om uit te kiezen"
 #~ msgctxt "@label"
 #~ msgid "Welcome to UltiMaker Cura"
 #~ msgstr "Welkom bij UltiMaker Cura"
+
+msgctxt "@description"
+msgid "Please sign in to get verified plugins and materials for Ultimaker Cura Enterprise"
+msgstr "Meld u aan voor geverifieerde plug-ins en materialen voor Ultimaker Cura Enterprise"

@@ -7007,3 +7007,7 @@ msgstr "Aucun élément à sélectionner"
 #~ msgctxt "@label"
 #~ msgid "Welcome to UltiMaker Cura"
 #~ msgstr "Bienvenue dans UltiMaker Cura"
+
+msgctxt "@description"
+msgid "Please sign in to get verified plugins and materials for Ultimaker Cura Enterprise"
+msgstr "Veuillez vous connecter pour obtenir les plug-ins et matériaux vérifiés pour Ultimaker Cura Enterprise"

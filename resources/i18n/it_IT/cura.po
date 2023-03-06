@@ -6982,3 +6982,7 @@ msgstr "Nessun elemento da selezionare da"
 #~ msgctxt "@info:status"
 #~ msgid "You are attempting to connect to a printer that is not running Ultimaker Connect. Please update the printer to the latest firmware."
 #~ msgstr "Si sta tentando di connettersi a una stampante che non esegue Ultimaker Connect. Aggiornare la stampante con il firmware più recente."
+
+msgctxt "@description"
+msgid "Please sign in to get verified plugins and materials for Ultimaker Cura Enterprise"
+msgstr "Accedere per ottenere i plugin e i materiali verificati per Ultimaker Cura Enterprise"

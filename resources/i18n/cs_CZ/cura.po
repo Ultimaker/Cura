@@ -7413,9 +7413,9 @@ msgstr "Není z čeho vybírat"
 #~ msgid "Please give your printer a name"
 #~ msgstr "Prosím dejte vaší tiskárně název"
 
-#~ msgctxt "@description"
-#~ msgid "Please sign in to get verified plugins and materials for UltiMaker Cura Enterprise"
-#~ msgstr "Přihlaste se, abyste získali ověřené pluginy a materiály pro UltiMaker Cura Enterprise"
+msgctxt "@description"
+msgid "Please sign in to get verified plugins and materials for UltiMaker Cura Enterprise"
+msgstr "Přihlaste se, abyste získali ověřené pluginy a materiály pro UltiMaker Cura Enterprise"
 
 #~ msgctxt "@title:tab"
 #~ msgid "Plugins"

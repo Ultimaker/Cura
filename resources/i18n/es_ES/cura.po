@@ -6935,3 +6935,7 @@ msgstr "No hay elementos para seleccionar"
 #~ msgctxt "name"
 #~ msgid "Ultimaker machine actions"
 #~ msgstr "Acciones de la máquina Ultimaker"
+
+msgctxt "@description"
+msgid "Please sign in to get verified plugins and materials for Ultimaker Cura Enterprise"
+msgstr "Inicie sesión para obtener complementos y materiales verificados para Ultimaker Cura Enterprise"

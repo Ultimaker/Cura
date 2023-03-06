@@ -6896,3 +6896,267 @@ msgstr "新情報"
 msgctxt "@label"
 msgid "No items to select from"
 msgstr "選択するアイテムがありません"
+
+#: /VersionUpgrade/VersionUpgrade21to22/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.1 to Cura 2.2."
+msgstr "Cura 2.1 からCura 2.2のコンフィグレーションアップグレート。"
+
+#: /VersionUpgrade/VersionUpgrade21to22/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 2.1 to 2.2"
+msgstr "2.1 から2.2にバージョンアップグレート"
+
+#: /VersionUpgrade/VersionUpgrade22to24/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.2 to Cura 2.4."
+msgstr "Cura 2.2 からCura 2.4のコンフィグレーションアップグレート。"
+
+#: /VersionUpgrade/VersionUpgrade22to24/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 2.2 to 2.4"
+msgstr "2.2 から2.4にバージョンアップグレート"
+
+#: /VersionUpgrade/VersionUpgrade25to26/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.5 to Cura 2.6."
+msgstr "Cura 2.5 からCura 2.6のコンフィグレーションアップグレート。"
+
+#: /VersionUpgrade/VersionUpgrade25to26/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 2.5 to 2.6"
+msgstr "2.5から2.6にバージョンアップグレート"
+
+#: /VersionUpgrade/VersionUpgrade26to27/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.6 to Cura 2.7."
+msgstr "Cura 2.6 からCura 2.7のコンフィグレーションアップグレート。"
+
+#: /VersionUpgrade/VersionUpgrade26to27/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 2.6 to 2.7"
+msgstr "2.6から2.7にバージョンアップグレート"
+
+#: /VersionUpgrade/VersionUpgrade27to30/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.7 to Cura 3.0."
+msgstr "Cura 2.7からCura 3.0のコンフィグレーションアップグレート。"
+
+#: /VersionUpgrade/VersionUpgrade27to30/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 2.7 to 3.0"
+msgstr "2.7から3.0にバージョンアップグレート"
+
+#: /VersionUpgrade/VersionUpgrade30to31/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.0 to Cura 3.1."
+msgstr "Cura 3.0からCura 3.1のコンフィグレーションアップグレート。"
+
+#: /VersionUpgrade/VersionUpgrade30to31/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 3.0 to 3.1"
+msgstr "3.0から3.1にバージョンアップグレート"
+
+#: /VersionUpgrade/VersionUpgrade32to33/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.2 to Cura 3.3."
+msgstr "Cura 3.2からCura 3.3のコンフィグレーションアップグレート。"
+
+#: /VersionUpgrade/VersionUpgrade32to33/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 3.2 to 3.3"
+msgstr "3.2から3.3にバージョンアップグレート"
+
+#: /VersionUpgrade/VersionUpgrade33to34/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.3 to Cura 3.4."
+msgstr "Cura 3.3からCura 3.4のコンフィグレーションアップグレート。"
+
+#: /VersionUpgrade/VersionUpgrade33to34/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 3.3 to 3.4"
+msgstr "3.3から3.4にバージョンアップグレート"
+
+#: /VersionUpgrade/VersionUpgrade34to35/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.4 to Cura 3.5."
+msgstr "Cura 3.4 から Cura 3.5 のコンフィグレーションアップグレート。"
+
+#: /VersionUpgrade/VersionUpgrade34to35/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 3.4 to 3.5"
+msgstr "3.4 から 3.5 にバージョンアップグレート"
+
+#: /VersionUpgrade/VersionUpgrade35to40/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.5 to Cura 4.0."
+msgstr "Cura 3.5 から Cura 4.0 のコンフィグレーションアップグレート。"
+
+#: /VersionUpgrade/VersionUpgrade35to40/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 3.5 to 4.0"
+msgstr "3.5 から 4.0 にバージョンアップグレート"
+
+#: /VersionUpgrade/VersionUpgrade40to41/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.0 to Cura 4.1."
+msgstr "Cura 4.0 から Cura 4.1 のコンフィグレーションアップグレート。"
+
+#: /VersionUpgrade/VersionUpgrade40to41/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.0 to 4.1"
+msgstr "4.0 から 4.1 にバージョンアップグレート"
+
+#: /VersionUpgrade/VersionUpgrade411to412/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.11 to Cura 4.12."
+msgstr "Cura 4.11からCura 4.12に設定をアップグレードします。"
+
+#: /VersionUpgrade/VersionUpgrade411to412/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.11 to 4.12"
+msgstr "バージョン4.11から4.12へのアップグレード"
+
+#: /VersionUpgrade/VersionUpgrade413to50/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.13 to Cura 5.0."
+msgstr "Cura 4.13からCura 5.0に設定をアップグレードします。"
+
+#: /VersionUpgrade/VersionUpgrade413to50/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.13 to 5.0"
+msgstr "バージョン4.13から5.0へのアップグレード"
+
+#: /VersionUpgrade/VersionUpgrade41to42/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.1 to Cura 4.2."
+msgstr "コンフィギュレーションを Cura 4.1 から Cura 4.2 にアップグレートする。"
+
+#: /VersionUpgrade/VersionUpgrade41to42/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.1 to 4.2"
+msgstr "4.0 から 4.1 にバージョンアップグレート"
+
+#: /VersionUpgrade/VersionUpgrade42to43/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.2 to Cura 4.3."
+msgstr "Cura 4.2からCura 4.3の設定をアップグレードします。"
+
+#: /VersionUpgrade/VersionUpgrade42to43/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.2 to 4.3"
+msgstr "4.2から4.3にバージョンをアップグレート"
+
+#: /VersionUpgrade/VersionUpgrade43to44/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.3 to Cura 4.4."
+msgstr "Cura 4.3からCura 4.4へのコンフィグレーションアップグレート。"
+
+#: /VersionUpgrade/VersionUpgrade43to44/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.3 to 4.4"
+msgstr "4.3から4.4にバージョンアップグレート"
+
+#: /VersionUpgrade/VersionUpgrade44to45/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.4 to Cura 4.5."
+msgstr "Cura 4.4からCura 4.5に設定をアップグレードします。"
+
+#: /VersionUpgrade/VersionUpgrade44to45/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.4 to 4.5"
+msgstr "4.4から4.5にバージョンアップグレート"
+
+#: /VersionUpgrade/VersionUpgrade45to46/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.5 to Cura 4.6."
+msgstr "Cura 4.5からCura 4.6に設定をアップグレードします。"
+
+#: /VersionUpgrade/VersionUpgrade45to46/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.5 to 4.6"
+msgstr "バージョン4.5から4.6へのアップグレード"
+
+#: /VersionUpgrade/VersionUpgrade460to462/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.6.0 to Cura 4.6.2."
+msgstr "構成をCura 4.6.0からCura 4.6.2に更新します。"
+
+#: /VersionUpgrade/VersionUpgrade460to462/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.6.0 to 4.6.2"
+msgstr "4.6.0から4.6.2へのバージョン更新"
+
+#: /VersionUpgrade/VersionUpgrade462to47/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.6.2 to Cura 4.7."
+msgstr "構成をCura 4.6.2からCura 4.7に更新します。"
+
+#: /VersionUpgrade/VersionUpgrade462to47/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.6.2 to 4.7"
+msgstr "4.6.2から4.7へのバージョン更新"
+
+#: /VersionUpgrade/VersionUpgrade47to48/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.7 to Cura 4.8."
+msgstr "Cura 4.7からCura 4.8に設定をアップグレードします。"
+
+#: /VersionUpgrade/VersionUpgrade47to48/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.7 to 4.8"
+msgstr "バージョン4.7から4.8へのアップグレード"
+
+#: /VersionUpgrade/VersionUpgrade48to49/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.8 to Cura 4.9."
+msgstr "Cura 4.8からCura 4.9に設定をアップグレードします。"
+
+#: /VersionUpgrade/VersionUpgrade48to49/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.8 to 4.9"
+msgstr "バージョン4.8から4.9へのアップグレード"
+
+#: /VersionUpgrade/VersionUpgrade49to410/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.9 to Cura 4.10."
+msgstr "Cura 4.9からCura 4.10に設定をアップグレードします。"
+
+#: /VersionUpgrade/VersionUpgrade49to410/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.9 to 4.10"
+msgstr "バージョン4.9から4.10へのアップグレード"
+
+#: /X3DReader/plugin.json
+msgctxt "description"
+msgid "Provides support for reading X3D files."
+msgstr "X3Dファイルを読むこむためのサポートを供給する。"
+
+#: /X3DReader/plugin.json
+msgctxt "name"
+msgid "X3D Reader"
+msgstr "X3Dリーダー"
+
+#: /XRayView/plugin.json
+msgctxt "description"
+msgid "Provides the X-Ray view."
+msgstr "透視ビューイング。"
+
+#: /XRayView/plugin.json
+msgctxt "name"
+msgid "X-Ray View"
+msgstr "透視ビュー"
+
+#: /XmlMaterialProfile/plugin.json
+msgctxt "name"
+msgid "Material Profiles"
+msgstr "フィラメントプロファイル"
+
+#: /XmlMaterialProfile/plugin.json
+msgctxt "description"
+msgid "Provides capabilities to read and write XML-based material profiles."
+msgstr "XMLベースフィラメントのプロファイルを読み書きするための機能を供給する。"
+
+msgctxt "@description"
+msgid "Please sign in to get verified plugins and materials for Ultimaker Cura Enterprise"
+msgstr "検証済みのUltimaker Cura Enterprise用プラグインおよび材料を入手するにはサインインしてください。"

@@ -7183,3 +7183,7 @@ msgstr "Seçilecek öğe yok"
 #~ msgctxt "@info:status"
 #~ msgid "You are attempting to connect to a printer that is not running Ultimaker Connect. Please update the printer to the latest firmware."
 #~ msgstr "Ultimaker Connect çalıştırmayan bir yazıcıya bağlanmaya çalışıyorsunuz. Lütfen yazıcının donanım yazılımını son sürüme güncelleyin."
+
+msgctxt "@description"
+msgid "Please sign in to get verified plugins and materials for Ultimaker Cura Enterprise"
+msgstr "Ultimaker Cura Enterprise için onaylı eklenti ve malzemeleri almak için lütfen oturum açın"

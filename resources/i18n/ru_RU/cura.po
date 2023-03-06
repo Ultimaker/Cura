@@ -7019,3 +7019,7 @@ msgstr "Нет элементов для выбора"
 #~ msgctxt "@label"
 #~ msgid "Welcome to UltiMaker Cura"
 #~ msgstr "Приветствуем в UltiMaker Cura"
+
+msgctxt "@description"
+msgid "Please sign in to get verified plugins and materials for Ultimaker Cura Enterprise"
+msgstr "Войдите, чтобы получить проверенные встраиваемые модули и материалы для Ultimaker Cura Enterprise"

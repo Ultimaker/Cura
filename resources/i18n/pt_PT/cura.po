@@ -7163,3 +7163,7 @@ msgstr "Nenhum item para selecionar"
 #~ msgctxt "@label"
 #~ msgid "Welcome to Ultimaker Cura"
 #~ msgstr "Bem-vindo ao Ultimaker Cura"
+
+msgctxt "@description"
+msgid "Please sign in to get verified plugins and materials for Ultimaker Cura Enterprise"
+msgstr "Inicie sessão para obter plug-ins e materiais verificados para o Ultimaker Cura Enterprise"
