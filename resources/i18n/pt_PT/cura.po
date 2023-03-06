@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-06 21:46+0100\n"
+"POT-Creation-Date: 2023-03-06 17:11+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -807,6 +807,646 @@ msgctxt "@text"
 msgid "Unknown error."
 msgstr "Erro desconhecido."
 
+#: plugin.json
+msgctxt "name"
+msgid "3MF Reader"
+msgstr "Leitor de 3MF"
+
+#: plugin.json
+msgctxt "name"
+msgid "3MF Writer"
+msgstr "Gravador 3MF"
+
+#: plugin.json
+msgctxt "name"
+msgid "AMF Reader"
+msgstr "Leitor de AMF"
+
+#: plugin.json
+msgctxt "description"
+msgid "Accepts G-Code and sends them to a printer. Plugin can also update firmware."
+msgstr "Aceita G-Codes e envia-os para uma impressora. O plug-in também pode atualizar firmware."
+
+#: plugin.json
+msgctxt "description"
+msgid "Allows loading and displaying G-code files."
+msgstr "Permite abrir e visualizar ficheiros G-code."
+
+#: plugin.json
+msgctxt "description"
+msgid "Backup and restore your configuration."
+msgstr "Efetua uma cópia de segurança e repõe a sua configuração."
+
+#: plugin.json
+msgctxt "description"
+msgid "Checks for firmware updates."
+msgstr "Procura e verifica se existem atualizações de firmware."
+
+#: plugin.json
+msgctxt "description"
+msgid "Checks models and print configuration for possible printing issues and give suggestions."
+msgstr "Verifica potenciais problemas de impressão nos modelos e definições de impressão, e oferece sugestões."
+
+#: plugin.json
+msgctxt "name"
+msgid "Compressed G-code Reader"
+msgstr "Leitor de G-code comprimido"
+
+#: plugin.json
+msgctxt "name"
+msgid "Compressed G-code Writer"
+msgstr "Gravador de G-code comprimido"
+
+#: plugin.json
+msgctxt "description"
+msgid "Connects to the Digital Library, allowing Cura to open files from and save files to the Digital Library."
+msgstr "Liga à Biblioteca Digital, permitindo ao Cura abrir ficheiros da Biblioteca Digital e guardar ficheiros na mesma."
+
+#: plugin.json
+msgctxt "description"
+msgid "Creates an eraser mesh to block the printing of support in certain places"
+msgstr "Cria um objecto usado para eliminar a impressão de suportes em certas zonas"
+
+#: plugin.json
+msgctxt "name"
+msgid "Cura Backups"
+msgstr "Cópias de segurança do Cura"
+
+#: plugin.json
+msgctxt "name"
+msgid "Cura Profile Reader"
+msgstr "Leitor de Perfis Cura"
+
+#: plugin.json
+msgctxt "name"
+msgid "Cura Profile Writer"
+msgstr "Gravador de perfis Cura"
+
+#: plugin.json
+msgctxt "name"
+msgid "CuraEngine Backend"
+msgstr "Back-end do CuraEngine"
+
+#: plugin.json
+msgctxt "description"
+msgid "Enables ability to generate printable geometry from 2D image files."
+msgstr "Permite gerar geometria imprimível a partir de ficheiros de imagem 2D."
+
+#: plugin.json
+msgctxt "description"
+msgid "Extension that allows for user created scripts for post processing"
+msgstr "Extensão que permite a utilização de scripts criados pelo utilizador para efeitos de pós-processamento"
+
+#: plugin.json
+msgctxt "name"
+msgid "Firmware Update Checker"
+msgstr "Verificador Atualizações Firmware"
+
+#: plugin.json
+msgctxt "name"
+msgid "Firmware Updater"
+msgstr "Atualizador de firmware"
+
+#: plugin.json
+msgctxt "name"
+msgid "G-code Profile Reader"
+msgstr "Leitor de perfis G-code"
+
+#: plugin.json
+msgctxt "name"
+msgid "G-code Reader"
+msgstr "Leitor de G-code"
+
+#: plugin.json
+msgctxt "name"
+msgid "G-code Writer"
+msgstr "Gravador de G-code"
+
+#: plugin.json
+msgctxt "name"
+msgid "Image Reader"
+msgstr "Leitor de imagens"
+
+#: plugin.json
+msgctxt "name"
+msgid "Legacy Cura Profile Reader"
+msgstr "Leitor de perfis antigos do Cura"
+
+#: plugin.json
+msgctxt "description"
+msgid "Logs certain events so that they can be used by the crash reporter"
+msgstr "Regista determinados eventos para que possam ser utilizados pelo \"crash reporter\""
+
+#: plugin.json
+msgctxt "name"
+msgid "Machine Settings Action"
+msgstr "Função Definições da Máquina"
+
+#: plugin.json
+msgctxt "description"
+msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
+msgstr "Faz a gestão de extensões da aplicação e permite a navegação das extensões a partir do website da UltiMaker."
+
+#: plugin.json
+msgctxt "description"
+msgid "Manages network connections to UltiMaker networked printers."
+msgstr "Gere as ligações de rede com as impressoras em rede UltiMaker."
+
+#: plugin.json
+msgctxt "name"
+msgid "Marketplace"
+msgstr "Marketplace"
+
+#: plugin.json
+msgctxt "name"
+msgid "Material Profiles"
+msgstr "Perfis de Materiais"
+
+#: plugin.json
+msgctxt "name"
+msgid "Model Checker"
+msgstr "Verificador de Modelos"
+
+#: plugin.json
+msgctxt "name"
+msgid "Monitor Stage"
+msgstr "Fase de monitorização"
+
+#: plugin.json
+msgctxt "name"
+msgid "Per Model Settings Tool"
+msgstr "Ferramenta de definições Por-Modelo"
+
+#: plugin.json
+msgctxt "name"
+msgid "Post Processing"
+msgstr "Pós-Processamento"
+
+#: plugin.json
+msgctxt "name"
+msgid "Prepare Stage"
+msgstr "Fase de preparação"
+
+#: plugin.json
+msgctxt "name"
+msgid "Preview Stage"
+msgstr "Fase de pré-visualização"
+
+#: plugin.json
+msgctxt "description"
+msgid "Provides a machine actions for updating firmware."
+msgstr "Disponibiliza as ações da máquina para atualizar o firmware."
+
+#: plugin.json
+msgctxt "description"
+msgid "Provides a monitor stage in Cura."
+msgstr "Fornece uma fase de monitorização no Cura."
+
+#: plugin.json
+msgctxt "description"
+msgid "Provides a normal solid mesh view."
+msgstr "Permite a visualização (simples) dos objetos como sólidos."
+
+#: plugin.json
+msgctxt "description"
+msgid "Provides a prepare stage in Cura."
+msgstr "Fornece uma fase de preparação no Cura."
+
+#: plugin.json
+msgctxt "description"
+msgid "Provides a preview stage in Cura."
+msgstr "Fornece uma fase de pré-visualização no Cura."
+
+#: plugin.json
+msgctxt "description"
+msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc.)."
+msgstr "Proporciona uma forma de alterar as definições da máquina (tal como o volume de construção, o tamanho do nozzle, etc.)."
+
+#: plugin.json
+msgctxt "description"
+msgid "Provides capabilities to read and write XML-based material profiles."
+msgstr "Fornece capacidades para ler e gravar perfis de material com base em XML."
+
+#: plugin.json
+msgctxt "description"
+msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
+msgstr "Disponibiliza funções especificas para as máquinas UltiMaker (tais como, o assistente de nivelamento da base, seleção de atualizações, etc.)."
+
+#: plugin.json
+msgctxt "description"
+msgid "Provides removable drive hotplugging and writing support."
+msgstr "Fornece suporte de ligação da unidade amovível e suporte de gravação."
+
+#: plugin.json
+msgctxt "description"
+msgid "Provides support for exporting Cura profiles."
+msgstr "Possibilita a exportação de perfis do Cura."
+
+#: plugin.json
+msgctxt "description"
+msgid "Provides support for importing Cura profiles."
+msgstr "Fornece suporte para importar perfis Cura."
+
+#: plugin.json
+msgctxt "description"
+msgid "Provides support for importing profiles from g-code files."
+msgstr "Permite importar perfis a partir de ficheiros g-code."
+
+#: plugin.json
+msgctxt "description"
+msgid "Provides support for importing profiles from legacy Cura versions."
+msgstr "Permite importar perfis de versões antigas do Cura."
+
+#: plugin.json
+msgctxt "description"
+msgid "Provides support for reading 3MF files."
+msgstr "Fornece suporte para ler ficheiros 3MF."
+
+#: plugin.json
+msgctxt "description"
+msgid "Provides support for reading AMF files."
+msgstr "Fornece suporte para ler ficheiros AMF."
+
+#: plugin.json
+msgctxt "description"
+msgid "Provides support for reading Ultimaker Format Packages."
+msgstr "Fornece suporte para ler pacotes de formato Ultimaker."
+
+#: plugin.json
+msgctxt "description"
+msgid "Provides support for reading X3D files."
+msgstr "Fornece suporte para ler ficheiros X3D."
+
+#: plugin.json
+msgctxt "description"
+msgid "Provides support for reading model files."
+msgstr "Fornece suporte para a leitura de ficheiros modelo."
+
+#: plugin.json
+msgctxt "description"
+msgid "Provides support for writing 3MF files."
+msgstr "Possiblita a gravação de ficheiros 3MF."
+
+#: plugin.json
+msgctxt "description"
+msgid "Provides support for writing Ultimaker Format Packages."
+msgstr "Permite a gravação de arquivos Ultimaker Format."
+
+#: plugin.json
+msgctxt "description"
+msgid "Provides the Per Model Settings."
+msgstr "Fornece as definições por-modelo."
+
+#: plugin.json
+msgctxt "description"
+msgid "Provides the X-Ray view."
+msgstr "Permite a visualização em Raio-X."
+
+#: plugin.json
+msgctxt "description"
+msgid "Provides the link to the CuraEngine slicing backend."
+msgstr "Fornece a hiperligação para o back-end de seccionamento do CuraEngine."
+
+#: plugin.json
+msgctxt "description"
+msgid "Provides the preview of sliced layerdata."
+msgstr "Permite pré-visualizar os dados das camadas seccionadas."
+
+#: plugin.json
+msgctxt "description"
+msgid "Reads g-code from a compressed archive."
+msgstr "Lê o g-code a partir de um arquivo comprimido."
+
+#: plugin.json
+msgctxt "name"
+msgid "Removable Drive Output Device Plugin"
+msgstr "Plug-in de dispositivo de saída da unidade amovível"
+
+#: plugin.json
+msgctxt "name"
+msgid "Sentry Logger"
+msgstr "Sentry Logger"
+
+#: plugin.json
+msgctxt "name"
+msgid "Simulation View"
+msgstr "Visualização por camadas"
+
+#: plugin.json
+msgctxt "name"
+msgid "Slice info"
+msgstr "Informações do seccionamento"
+
+#: plugin.json
+msgctxt "name"
+msgid "Solid View"
+msgstr "Vista Sólidos"
+
+#: plugin.json
+msgctxt "description"
+msgid "Submits anonymous slice info. Can be disabled through preferences."
+msgstr "Envia informações anónimas sobre o seccionamento. Pode ser desativado nas preferências."
+
+#: plugin.json
+msgctxt "name"
+msgid "Support Eraser"
+msgstr "Eliminador de suportes"
+
+#: plugin.json
+msgctxt "name"
+msgid "Trimesh Reader"
+msgstr "Leitor de Trimesh"
+
+#: plugin.json
+msgctxt "name"
+msgid "UFP Reader"
+msgstr "Leitor de UFP"
+
+#: plugin.json
+msgctxt "name"
+msgid "UFP Writer"
+msgstr "Gravador de UFP"
+
+#: plugin.json
+msgctxt "name"
+msgid "USB printing"
+msgstr "Impressão USB"
+
+#: plugin.json
+msgctxt "name"
+msgid "UltiMaker Network Connection"
+msgstr "Ligação de rede UltiMaker"
+
+#: plugin.json
+msgctxt "name"
+msgid "UltiMaker machine actions"
+msgstr "Funções para impressoras Ultimaker"
+
+#: plugin.json
+msgctxt "name"
+msgid "Ultimaker Digital Library"
+msgstr "Biblioteca Digital UltiMaker"
+
+#: plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.1 to Cura 2.2."
+msgstr "Atualiza as configurações do Cura 2.1 para o Cura 2.2."
+
+#: plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.2 to Cura 2.4."
+msgstr "Atualiza as configurações do Cura 2.2 para o Cura 2.4."
+
+#: plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.5 to Cura 2.6."
+msgstr "Atualiza as configurações do Cura 2.5 para o Cura 2.6."
+
+#: plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.6 to Cura 2.7."
+msgstr "Atualiza as configurações do Cura 2.6 para o Cura 2.7."
+
+#: plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.7 to Cura 3.0."
+msgstr "Atualiza as configurações do Cura 2.7 para o Cura 3.0."
+
+#: plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.0 to Cura 3.1."
+msgstr "Atualiza as configurações do Cura 3.0 para o Cura 3.1."
+
+#: plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.2 to Cura 3.3."
+msgstr "Atualiza as configurações do Cura 3.2 para o Cura 3.3."
+
+#: plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.3 to Cura 3.4."
+msgstr "Atualiza as configurações do Cura 3.3 para o Cura 3.4."
+
+#: plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.4 to Cura 3.5."
+msgstr "Atualiza as configurações do Cura 3.4 para o Cura 3.5."
+
+#: plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.5 to Cura 4.0."
+msgstr "Atualiza as configurações do Cura 3.5 para o Cura 4.0."
+
+#: plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.0 to Cura 4.1."
+msgstr "Atualiza as configurações do Cura 4.0 para o Cura 4.1."
+
+#: plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.1 to Cura 4.2."
+msgstr "Atualiza as configurações do Cura 4.1 para o Cura 4.2."
+
+#: plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.11 to Cura 4.12."
+msgstr "Atualiza as configurações do Cura 4.11 para o Cura 4.12."
+
+#: plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.13 to Cura 5.0."
+msgstr "Atualiza as configurações do Cura 4.13 para o Cura 5.0."
+
+#: plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.2 to Cura 4.3."
+msgstr "Atualiza as configurações do Cura 4.2 para o Cura 4.3."
+
+#: plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.3 to Cura 4.4."
+msgstr "Configurações de atualizações do Cura 4.3 para o Cura 4.4."
+
+#: plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.4 to Cura 4.5."
+msgstr "Atualiza as configurações do Cura 4.4 para o Cura 4.5."
+
+#: plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.5 to Cura 4.6."
+msgstr "Atualiza as configurações do Cura 4.5 para o Cura 4.6."
+
+#: plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.6.0 to Cura 4.6.2."
+msgstr "Atualiza as configurações do Cura 4.6.0 para o Cura 4.6.2."
+
+#: plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.6.2 to Cura 4.7."
+msgstr "Atualiza as configurações do Cura 4.6.2 para o Cura 4.7."
+
+#: plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.7 to Cura 4.8."
+msgstr "Atualiza as configurações do Cura 4.7 para o Cura 4.8."
+
+#: plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.8 to Cura 4.9."
+msgstr "Atualiza as configurações do Cura 4.8 para o Cura 4.9."
+
+#: plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.9 to Cura 4.10."
+msgstr "Atualiza as configurações do Cura 4.9 para o Cura 4.10."
+
+#: plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.2 to Cura 5.3."
+msgstr "Upgrades configurations from Cura 5.2 to Cura 5.3."
+
+#: plugin.json
+msgctxt "name"
+msgid "Version Upgrade 2.1 to 2.2"
+msgstr "Atualização da versão 2.1 para 2.2"
+
+#: plugin.json
+msgctxt "name"
+msgid "Version Upgrade 2.2 to 2.4"
+msgstr "Atualização da versão 2.2 para 2.4"
+
+#: plugin.json
+msgctxt "name"
+msgid "Version Upgrade 2.5 to 2.6"
+msgstr "Atualização da versão 2.5 para 2.6"
+
+#: plugin.json
+msgctxt "name"
+msgid "Version Upgrade 2.6 to 2.7"
+msgstr "Atualização da versão 2.6 para 2.7"
+
+#: plugin.json
+msgctxt "name"
+msgid "Version Upgrade 2.7 to 3.0"
+msgstr "Atualização da versão 2.7 para 3.0"
+
+#: plugin.json
+msgctxt "name"
+msgid "Version Upgrade 3.0 to 3.1"
+msgstr "Atualização da versão 3.0 para 3.1"
+
+#: plugin.json
+msgctxt "name"
+msgid "Version Upgrade 3.2 to 3.3"
+msgstr "Atualização da versão 3.2 para 3.3"
+
+#: plugin.json
+msgctxt "name"
+msgid "Version Upgrade 3.3 to 3.4"
+msgstr "Atualização da versão 3.3 para 3.4"
+
+#: plugin.json
+msgctxt "name"
+msgid "Version Upgrade 3.4 to 3.5"
+msgstr "Atualização da versão 3.4 para 3.5"
+
+#: plugin.json
+msgctxt "name"
+msgid "Version Upgrade 3.5 to 4.0"
+msgstr "Atualização da versão 3.5 para 4.0"
+
+#: plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.0 to 4.1"
+msgstr "Atualização da versão 4.0 para 4.1"
+
+#: plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.1 to 4.2"
+msgstr "Atualização da versão 4.1 para 4.2"
+
+#: plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.11 to 4.12"
+msgstr "Atualização da versão 4.11 para a versão 4.12"
+
+#: plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.13 to 5.0"
+msgstr "Atualização do Cura versão 4.13 para 5.0"
+
+#: plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.2 to 4.3"
+msgstr "Atualização da versão 4.2 para 4.3"
+
+#: plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.3 to 4.4"
+msgstr "Atualização da versão 4.3 para 4.4"
+
+#: plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.4 to 4.5"
+msgstr "Atualização da versão 4.4 para a versão 4.5"
+
+#: plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.5 to 4.6"
+msgstr "Atualização da versão 4.5 para a versão 4.6"
+
+#: plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.6.0 to 4.6.2"
+msgstr "Atualização da versão 4.6.0 para a versão 4.6.2"
+
+#: plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.6.2 to 4.7"
+msgstr "Atualização da versão 4.6.2 para a versão 4.7"
+
+#: plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.7 to 4.8"
+msgstr "Atualização da versão 4.7 para 4.8"
+
+#: plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.8 to 4.9"
+msgstr "Atualização da versão 4.8 para 4.9"
+
+#: plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.9 to 4.10"
+msgstr "Atualização da versão 4.9 para 4.10"
+
+#: plugin.json
+msgctxt "name"
+msgid "Version Upgrade 5.2 to 5.3"
+msgstr "Atualização da versão 5.2 para 5.3"
+
+#: plugin.json
+msgctxt "description"
+msgid "Writes g-code to a compressed archive."
+msgstr "Grava o g-code num arquivo comprimido."
+
+#: plugin.json
+msgctxt "description"
+msgid "Writes g-code to a file."
+msgstr "Grava o g-code num ficheiro."
+
+#: plugin.json
+msgctxt "name"
+msgid "X-Ray View"
+msgstr "Vista Raio-X"
+
+#: plugin.json
+msgctxt "name"
+msgid "X3D Reader"
+msgstr "Leitor de X3D"
+
 #: plugins/3MFReader/ThreeMFWorkspaceReader.py:547
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
@@ -1023,16 +1663,6 @@ msgctxt "@item:inlistbox"
 msgid "3MF File"
 msgstr "Ficheiro 3MF"
 
-#: plugins/3MFReader/plugin.json
-msgctxt "name"
-msgid "3MF Reader"
-msgstr "Leitor de 3MF"
-
-#: plugins/3MFReader/plugin.json
-msgctxt "description"
-msgid "Provides support for reading 3MF files."
-msgstr "Fornece suporte para ler ficheiros 3MF."
-
 #: plugins/3MFWriter/ThreeMFWorkspaceWriter.py:31
 msgctxt "@error:zip"
 msgid "3MF Writer plug-in is corrupt."
@@ -1069,40 +1699,10 @@ msgctxt "@item:inlistbox"
 msgid "Cura Project 3MF file"
 msgstr "Ficheiro 3MF de Projeto Cura"
 
-#: plugins/3MFWriter/plugin.json
-msgctxt "name"
-msgid "3MF Writer"
-msgstr "Gravador 3MF"
-
-#: plugins/3MFWriter/plugin.json
-msgctxt "description"
-msgid "Provides support for writing 3MF files."
-msgstr "Possiblita a gravação de ficheiros 3MF."
-
 #: plugins/AMFReader/__init__.py:15
 msgctxt "@item:inlistbox"
 msgid "AMF File"
 msgstr "Ficheiro AMF"
-
-#: plugins/AMFReader/plugin.json
-msgctxt "name"
-msgid "AMF Reader"
-msgstr "Leitor de AMF"
-
-#: plugins/AMFReader/plugin.json
-msgctxt "description"
-msgid "Provides support for reading AMF files."
-msgstr "Fornece suporte para ler ficheiros AMF."
-
-#: plugins/CuraDrive/plugin.json
-msgctxt "description"
-msgid "Backup and restore your configuration."
-msgstr "Efetua uma cópia de segurança e repõe a sua configuração."
-
-#: plugins/CuraDrive/plugin.json
-msgctxt "name"
-msgid "Cura Backups"
-msgstr "Cópias de segurança do Cura"
 
 #: plugins/CuraDrive/src/CreateBackupJob.py:25
 msgctxt "@info:title"
@@ -1335,51 +1935,11 @@ msgctxt "@info:title"
 msgid "Information"
 msgstr "Informações"
 
-#: plugins/CuraEngineBackend/plugin.json
-msgctxt "name"
-msgid "CuraEngine Backend"
-msgstr "Back-end do CuraEngine"
-
-#: plugins/CuraEngineBackend/plugin.json
-msgctxt "description"
-msgid "Provides the link to the CuraEngine slicing backend."
-msgstr "Fornece a hiperligação para o back-end de seccionamento do CuraEngine."
-
 #: plugins/CuraProfileReader/__init__.py:14
 #: plugins/CuraProfileWriter/__init__.py:14
 msgctxt "@item:inlistbox"
 msgid "Cura Profile"
 msgstr "Perfil Cura"
-
-#: plugins/CuraProfileReader/plugin.json
-msgctxt "name"
-msgid "Cura Profile Reader"
-msgstr "Leitor de Perfis Cura"
-
-#: plugins/CuraProfileReader/plugin.json
-msgctxt "description"
-msgid "Provides support for importing Cura profiles."
-msgstr "Fornece suporte para importar perfis Cura."
-
-#: plugins/CuraProfileWriter/plugin.json
-msgctxt "name"
-msgid "Cura Profile Writer"
-msgstr "Gravador de perfis Cura"
-
-#: plugins/CuraProfileWriter/plugin.json
-msgctxt "description"
-msgid "Provides support for exporting Cura profiles."
-msgstr "Possibilita a exportação de perfis do Cura."
-
-#: plugins/DigitalLibrary/plugin.json
-msgctxt "description"
-msgid "Connects to the Digital Library, allowing Cura to open files from and save files to the Digital Library."
-msgstr "Liga à Biblioteca Digital, permitindo ao Cura abrir ficheiros da Biblioteca Digital e guardar ficheiros na mesma."
-
-#: plugins/DigitalLibrary/plugin.json
-msgctxt "name"
-msgid "Ultimaker Digital Library"
-msgstr "Biblioteca Digital UltiMaker"
 
 #: plugins/DigitalLibrary/resources/qml/SaveProjectFilesPage.qml:216
 msgctxt "@option"
@@ -1417,16 +1977,6 @@ msgstr "A nova versão de firmware %s estável está disponível"
 msgctxt "@action:button"
 msgid "How to update"
 msgstr "Como atualizar"
-
-#: plugins/FirmwareUpdateChecker/plugin.json
-msgctxt "description"
-msgid "Checks for firmware updates."
-msgstr "Procura e verifica se existem atualizações de firmware."
-
-#: plugins/FirmwareUpdateChecker/plugin.json
-msgctxt "name"
-msgid "Firmware Update Checker"
-msgstr "Verificador Atualizações Firmware"
 
 #: plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.py:27
 msgctxt "@action"
@@ -1508,61 +2058,21 @@ msgctxt "@label"
 msgid "Firmware update failed due to missing firmware."
 msgstr "A atualização de firmware falhou devido à ausência de firmware."
 
-#: plugins/FirmwareUpdater/plugin.json
-msgctxt "name"
-msgid "Firmware Updater"
-msgstr "Atualizador de firmware"
-
-#: plugins/FirmwareUpdater/plugin.json
-msgctxt "description"
-msgid "Provides a machine actions for updating firmware."
-msgstr "Disponibiliza as ações da máquina para atualizar o firmware."
-
 #: plugins/GCodeGzReader/__init__.py:17 plugins/GCodeGzWriter/__init__.py:17
 msgctxt "@item:inlistbox"
 msgid "Compressed G-code File"
 msgstr "Ficheiro G-code comprimido"
-
-#: plugins/GCodeGzReader/plugin.json
-msgctxt "name"
-msgid "Compressed G-code Reader"
-msgstr "Leitor de G-code comprimido"
-
-#: plugins/GCodeGzReader/plugin.json
-msgctxt "description"
-msgid "Reads g-code from a compressed archive."
-msgstr "Lê o g-code a partir de um arquivo comprimido."
 
 #: plugins/GCodeGzWriter/GCodeGzWriter.py:43
 msgctxt "@error:not supported"
 msgid "GCodeGzWriter does not support text mode."
 msgstr "O GCodeGzWriter não suporta modo de texto."
 
-#: plugins/GCodeGzWriter/plugin.json
-msgctxt "name"
-msgid "Compressed G-code Writer"
-msgstr "Gravador de G-code comprimido"
-
-#: plugins/GCodeGzWriter/plugin.json
-msgctxt "description"
-msgid "Writes g-code to a compressed archive."
-msgstr "Grava o g-code num arquivo comprimido."
-
 #: plugins/GCodeProfileReader/__init__.py:14 plugins/GCodeReader/__init__.py:14
 #: plugins/GCodeWriter/__init__.py:16
 msgctxt "@item:inlistbox"
 msgid "G-code File"
 msgstr "Ficheiro G-code"
-
-#: plugins/GCodeProfileReader/plugin.json
-msgctxt "name"
-msgid "G-code Profile Reader"
-msgstr "Leitor de perfis G-code"
-
-#: plugins/GCodeProfileReader/plugin.json
-msgctxt "description"
-msgid "Provides support for importing profiles from g-code files."
-msgstr "Permite importar perfis a partir de ficheiros g-code."
 
 #: plugins/GCodeReader/FlavorParser.py:359
 msgctxt "@info:status"
@@ -1585,16 +2095,6 @@ msgctxt "@item:inlistbox"
 msgid "G File"
 msgstr "Ficheiro G"
 
-#: plugins/GCodeReader/plugin.json
-msgctxt "description"
-msgid "Allows loading and displaying G-code files."
-msgstr "Permite abrir e visualizar ficheiros G-code."
-
-#: plugins/GCodeReader/plugin.json
-msgctxt "name"
-msgid "G-code Reader"
-msgstr "Leitor de G-code"
-
 #: plugins/GCodeWriter/GCodeWriter.py:75
 msgctxt "@error:not supported"
 msgid "GCodeWriter does not support non-text mode."
@@ -1604,16 +2104,6 @@ msgstr "O GCodeWriter não suporta modo sem texto."
 msgctxt "@warning:status"
 msgid "Please prepare G-code before exporting."
 msgstr "Prepare um G-code antes de exportar."
-
-#: plugins/GCodeWriter/plugin.json
-msgctxt "name"
-msgid "G-code Writer"
-msgstr "Gravador de G-code"
-
-#: plugins/GCodeWriter/plugin.json
-msgctxt "description"
-msgid "Writes g-code to a file."
-msgstr "Grava o g-code num ficheiro."
 
 #: plugins/ImageReader/ConfigUI.qml:14
 msgctxt "@title:window"
@@ -1747,30 +2237,10 @@ msgctxt "@item:inlistbox"
 msgid "GIF Image"
 msgstr "Imagem GIF"
 
-#: plugins/ImageReader/plugin.json
-msgctxt "description"
-msgid "Enables ability to generate printable geometry from 2D image files."
-msgstr "Permite gerar geometria imprimível a partir de ficheiros de imagem 2D."
-
-#: plugins/ImageReader/plugin.json
-msgctxt "name"
-msgid "Image Reader"
-msgstr "Leitor de imagens"
-
 #: plugins/LegacyProfileReader/__init__.py:14
 msgctxt "@item:inlistbox"
 msgid "Cura 15.04 profiles"
 msgstr "Perfis Cura 15.04"
-
-#: plugins/LegacyProfileReader/plugin.json
-msgctxt "name"
-msgid "Legacy Cura Profile Reader"
-msgstr "Leitor de perfis antigos do Cura"
-
-#: plugins/LegacyProfileReader/plugin.json
-msgctxt "description"
-msgid "Provides support for importing profiles from legacy Cura versions."
-msgstr "Permite importar perfis de versões antigas do Cura."
 
 #: plugins/MachineSettingsAction/MachineSettingsAction.py:32
 msgctxt "@action"
@@ -1935,16 +2405,6 @@ msgctxt "@title:label"
 msgid "End G-code"
 msgstr "G-code final"
 
-#: plugins/MachineSettingsAction/plugin.json
-msgctxt "name"
-msgid "Machine Settings Action"
-msgstr "Função Definições da Máquina"
-
-#: plugins/MachineSettingsAction/plugin.json
-msgctxt "description"
-msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc.)."
-msgstr "Proporciona uma forma de alterar as definições da máquina (tal como o volume de construção, o tamanho do nozzle, etc.)."
-
 #: plugins/Marketplace/CloudSync/CloudPackageChecker.py:144
 msgctxt "@info:generic"
 msgid "Do you want to sync material and software packages with your account?"
@@ -2043,16 +2503,6 @@ msgctxt "@info:error"
 msgid "Could not reach Marketplace."
 msgstr "Não foi possível ligar ao Marketplace."
 
-#: plugins/Marketplace/plugin.json
-msgctxt "description"
-msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
-msgstr "Faz a gestão de extensões da aplicação e permite a navegação das extensões a partir do website da UltiMaker."
-
-#: plugins/Marketplace/plugin.json
-msgctxt "name"
-msgid "Marketplace"
-msgstr "Marketplace"
-
 #: plugins/Marketplace/resources/qml/CompatibilityDialog.qml:15
 msgctxt "@title"
 msgid "Changes from your account"
@@ -2113,7 +2563,8 @@ msgstr "Gerir os pacotes"
 #: plugins/Marketplace/resources/qml/ManagedPackages.qml:16
 msgctxt "@text"
 msgid "Manage your UltiMaker Cura plugins and material profiles here. Make sure to keep your plugins up to date and backup your setup regularly."
-msgstr ""
+msgstr "Faça aqui a gestão dos plug-ins e perfis de materiais do Ultimaker Cura. Certifique-se de que mantém os plug-ins atualizados e que efetua regularmente"
+" uma cópia de segurança da sua configuração."
 
 #: plugins/Marketplace/resources/qml/Marketplace.qml:87
 msgctxt "@title"
@@ -2154,7 +2605,7 @@ msgstr "Instalar materiais"
 #: plugins/Marketplace/resources/qml/Materials.qml:12
 msgctxt "@text"
 msgid "Select and install material profiles optimised for your UltiMaker 3D printers."
-msgstr ""
+msgstr "Selecione e instale perfis de materiais otimizados para as impressoras 3D UltiMaker."
 
 #: plugins/Marketplace/resources/qml/MultipleLicenseDialog.qml:35
 msgctxt "@label"
@@ -2337,7 +2788,7 @@ msgstr "Instale plug-ins"
 #: plugins/Marketplace/resources/qml/Plugins.qml:12
 msgctxt "@text"
 msgid "Streamline your workflow and customize your UltiMaker Cura experience with plugins contributed by our amazing community of users."
-msgstr ""
+msgstr "Simplifique o seu fluxo de trabalho e personalize a sua utilização do Ultimaker Cura com plug-ins criados pela nossa incrível comunidade de utilizadores."
 
 #: plugins/Marketplace/resources/qml/VerifiedIcon.qml:21
 msgctxt "@info"
@@ -2373,16 +2824,6 @@ msgstr ""
 "<p>Descubra como assegurar a melhor qualidade e fiabilidade possível da impressão.</p>\n"
 "<p><a href=\"https://ultimaker.com/3D-model-assistant\">Ver o guia de qualidade da impressão</a></p>"
 
-#: plugins/ModelChecker/plugin.json
-msgctxt "description"
-msgid "Checks models and print configuration for possible printing issues and give suggestions."
-msgstr "Verifica potenciais problemas de impressão nos modelos e definições de impressão, e oferece sugestões."
-
-#: plugins/ModelChecker/plugin.json
-msgctxt "name"
-msgid "Model Checker"
-msgstr "Verificador de Modelos"
-
 #: plugins/MonitorStage/MonitorMain.qml:100
 msgctxt "@info"
 msgid ""
@@ -2415,16 +2856,6 @@ msgstr "Para monitorizar a sua impressão a partir do Cura, ligue a impressora."
 msgctxt "@item:inmenu"
 msgid "Monitor"
 msgstr "Monitorizar"
-
-#: plugins/MonitorStage/plugin.json
-msgctxt "name"
-msgid "Monitor Stage"
-msgstr "Fase de monitorização"
-
-#: plugins/MonitorStage/plugin.json
-msgctxt "description"
-msgid "Provides a monitor stage in Cura."
-msgstr "Fornece uma fase de monitorização no Cura."
 
 #: plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:41
 msgctxt "@label"
@@ -2492,16 +2923,6 @@ msgctxt "@info:tooltip"
 msgid "Configure Per Model Settings"
 msgstr "Configurar definições individuais Por-Modelo"
 
-#: plugins/PerObjectSettingsTool/plugin.json
-msgctxt "name"
-msgid "Per Model Settings Tool"
-msgstr "Ferramenta de definições Por-Modelo"
-
-#: plugins/PerObjectSettingsTool/plugin.json
-msgctxt "description"
-msgid "Provides the Per Model Settings."
-msgstr "Fornece as definições por-modelo."
-
 #: plugins/PostProcessingPlugin/PostProcessingPlugin.py:35
 msgctxt "@item:inmenu"
 msgid "Post Processing"
@@ -2544,16 +2965,6 @@ msgid_plural "The following scripts are active:"
 msgstr[0] "O script a seguir está ativo:"
 msgstr[1] "Os seguintes scripts estão ativos:"
 
-#: plugins/PostProcessingPlugin/plugin.json
-msgctxt "description"
-msgid "Extension that allows for user created scripts for post processing"
-msgstr "Extensão que permite a utilização de scripts criados pelo utilizador para efeitos de pós-processamento"
-
-#: plugins/PostProcessingPlugin/plugin.json
-msgctxt "name"
-msgid "Post Processing"
-msgstr "Pós-Processamento"
-
 #: plugins/PrepareStage/PrepareMenu.qml:74
 msgctxt "@button"
 msgid "Add printer"
@@ -2569,30 +2980,10 @@ msgctxt "@item:inmenu"
 msgid "Prepare"
 msgstr "Preparar"
 
-#: plugins/PrepareStage/plugin.json
-msgctxt "name"
-msgid "Prepare Stage"
-msgstr "Fase de preparação"
-
-#: plugins/PrepareStage/plugin.json
-msgctxt "description"
-msgid "Provides a prepare stage in Cura."
-msgstr "Fornece uma fase de preparação no Cura."
-
 #: plugins/PreviewStage/__init__.py:13
 msgctxt "@item:inmenu"
 msgid "Preview"
 msgstr "Pré-visualizar"
-
-#: plugins/PreviewStage/plugin.json
-msgctxt "name"
-msgid "Preview Stage"
-msgstr "Fase de pré-visualização"
-
-#: plugins/PreviewStage/plugin.json
-msgctxt "description"
-msgid "Provides a preview stage in Cura."
-msgstr "Fornece uma fase de pré-visualização no Cura."
 
 #: plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:23
 msgctxt "@action:button Preceded by 'Ready to'."
@@ -2685,26 +3076,6 @@ msgstr "Não foi possível ejectar {0}. Outro programa pode estar a usar o disco
 msgctxt "@item:intext"
 msgid "Removable Drive"
 msgstr "Disco Externo"
-
-#: plugins/RemovableDriveOutputDevice/plugin.json
-msgctxt "description"
-msgid "Provides removable drive hotplugging and writing support."
-msgstr "Fornece suporte de ligação da unidade amovível e suporte de gravação."
-
-#: plugins/RemovableDriveOutputDevice/plugin.json
-msgctxt "name"
-msgid "Removable Drive Output Device Plugin"
-msgstr "Plug-in de dispositivo de saída da unidade amovível"
-
-#: plugins/SentryLogger/plugin.json
-msgctxt "description"
-msgid "Logs certain events so that they can be used by the crash reporter"
-msgstr "Regista determinados eventos para que possam ser utilizados pelo \"crash reporter\""
-
-#: plugins/SentryLogger/plugin.json
-msgctxt "name"
-msgid "Sentry Logger"
-msgstr "Sentry Logger"
 
 #: plugins/SimulationView/SimulationView.py:129
 msgctxt "@info:status"
@@ -2833,16 +3204,6 @@ msgctxt "@item:inlistbox"
 msgid "Layer view"
 msgstr "Vista Camadas"
 
-#: plugins/SimulationView/plugin.json
-msgctxt "description"
-msgid "Provides the preview of sliced layerdata."
-msgstr "Permite pré-visualizar os dados das camadas seccionadas."
-
-#: plugins/SimulationView/plugin.json
-msgctxt "name"
-msgid "Simulation View"
-msgstr "Visualização por camadas"
-
 #: plugins/SliceInfoPlugin/MoreInfoWindow.qml:16
 msgctxt "@title:window"
 msgid "More information on anonymous data collection"
@@ -2851,7 +3212,7 @@ msgstr "Mais informações sobre a recolha anónima de dados"
 #: plugins/SliceInfoPlugin/MoreInfoWindow.qml:73
 msgctxt "@text:window"
 msgid "UltiMaker Cura collects anonymous data in order to improve the print quality and user experience. Below is an example of all the data that is shared:"
-msgstr ""
+msgstr "O Ultimaker Cura recolhe dados anónimos para melhorar a qualidade da impressão e a experiência do utilizador. Segue-se um exemplo de todos os dados partilhados:"
 
 #: plugins/SliceInfoPlugin/MoreInfoWindow.qml:107
 msgctxt "@text:window"
@@ -2868,16 +3229,6 @@ msgctxt "@text"
 msgid "Unable to read example data file."
 msgstr "Não foi possível ler o ficheiro de dados de exemplo."
 
-#: plugins/SliceInfoPlugin/plugin.json
-msgctxt "name"
-msgid "Slice info"
-msgstr "Informações do seccionamento"
-
-#: plugins/SliceInfoPlugin/plugin.json
-msgctxt "description"
-msgid "Submits anonymous slice info. Can be disabled through preferences."
-msgstr "Envia informações anónimas sobre o seccionamento. Pode ser desativado nas preferências."
-
 #: plugins/SolidView/SolidView.py:71
 msgctxt "@info:status"
 msgid "The highlighted areas indicate either missing or extraneous surfaces. Fix your model and open it again into Cura."
@@ -2893,16 +3244,6 @@ msgctxt "@item:inmenu"
 msgid "Solid view"
 msgstr "Vista Sólidos"
 
-#: plugins/SolidView/plugin.json
-msgctxt "description"
-msgid "Provides a normal solid mesh view."
-msgstr "Permite a visualização (simples) dos objetos como sólidos."
-
-#: plugins/SolidView/plugin.json
-msgctxt "name"
-msgid "Solid View"
-msgstr "Vista Sólidos"
-
 #: plugins/SupportEraser/__init__.py:12
 msgctxt "@label"
 msgid "Support Blocker"
@@ -2912,16 +3253,6 @@ msgstr "Remover Suportes"
 msgctxt "@info:tooltip"
 msgid "Create a volume in which supports are not printed."
 msgstr "Criar um volume dentro do qual não são impressos suportes."
-
-#: plugins/SupportEraser/plugin.json
-msgctxt "description"
-msgid "Creates an eraser mesh to block the printing of support in certain places"
-msgstr "Cria um objecto usado para eliminar a impressão de suportes em certas zonas"
-
-#: plugins/SupportEraser/plugin.json
-msgctxt "name"
-msgid "Support Eraser"
-msgstr "Eliminador de suportes"
 
 #: plugins/TrimeshReader/__init__.py:15
 msgctxt "@item:inlistbox 'Open' is part of the name of this file format."
@@ -2953,30 +3284,10 @@ msgctxt "@item:inlistbox"
 msgid "Compressed COLLADA Digital Asset Exchange"
 msgstr "Compressed COLLADA Digital Asset Exchange"
 
-#: plugins/TrimeshReader/plugin.json
-msgctxt "description"
-msgid "Provides support for reading model files."
-msgstr "Fornece suporte para a leitura de ficheiros modelo."
-
-#: plugins/TrimeshReader/plugin.json
-msgctxt "name"
-msgid "Trimesh Reader"
-msgstr "Leitor de Trimesh"
-
 #: plugins/UFPReader/__init__.py:22 plugins/UFPWriter/__init__.py:28
 msgctxt "@item:inlistbox"
 msgid "UltiMaker Format Package"
 msgstr "Arquivo UltiMaker Format"
-
-#: plugins/UFPReader/plugin.json
-msgctxt "description"
-msgid "Provides support for reading Ultimaker Format Packages."
-msgstr "Fornece suporte para ler pacotes de formato Ultimaker."
-
-#: plugins/UFPReader/plugin.json
-msgctxt "name"
-msgid "UFP Reader"
-msgstr "Leitor de UFP"
 
 #: plugins/UFPWriter/UFPWriter.py:64 plugins/UFPWriter/UFPWriter.py:80
 #: plugins/UFPWriter/UFPWriter.py:93 plugins/UFPWriter/UFPWriter.py:115
@@ -2984,26 +3295,6 @@ msgstr "Leitor de UFP"
 msgctxt "@info:error"
 msgid "Can't write to UFP file:"
 msgstr "Não é possível escrever no ficheiro UFP:"
-
-#: plugins/UFPWriter/plugin.json
-msgctxt "description"
-msgid "Provides support for writing Ultimaker Format Packages."
-msgstr "Permite a gravação de arquivos Ultimaker Format."
-
-#: plugins/UFPWriter/plugin.json
-msgctxt "name"
-msgid "UFP Writer"
-msgstr "Gravador de UFP"
-
-#: plugins/UM3NetworkPrinting/plugin.json
-msgctxt "description"
-msgid "Manages network connections to UltiMaker networked printers."
-msgstr "Gere as ligações de rede com as impressoras em rede Ultimaker."
-
-#: plugins/UM3NetworkPrinting/plugin.json
-msgctxt "name"
-msgid "UltiMaker Network Connection"
-msgstr "Ligação de rede UltiMaker"
 
 #: plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:44
 msgctxt "@title:window"
@@ -3740,16 +4031,6 @@ msgctxt "@message"
 msgid "Print in Progress"
 msgstr "Impressão em curso"
 
-#: plugins/USBPrinting/plugin.json
-msgctxt "description"
-msgid "Accepts G-Code and sends them to a printer. Plugin can also update firmware."
-msgstr "Aceita G-Codes e envia-os para uma impressora. O plug-in também pode atualizar firmware."
-
-#: plugins/USBPrinting/plugin.json
-msgctxt "name"
-msgid "USB printing"
-msgstr "Impressão USB"
-
 #: plugins/UltimakerMachineActions/BedLevelMachineAction.py:24
 msgctxt "@action"
 msgid "Level build plate"
@@ -3795,295 +4076,15 @@ msgctxt "@label"
 msgid "Heated Build Plate (official kit or self-built)"
 msgstr "Base de Construção Aquecida (kit oficial ou de construção própria)"
 
-#: plugins/UltimakerMachineActions/plugin.json
-msgctxt "description"
-msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
-msgstr "Disponibiliza funções especificas para as máquinas UltiMaker (tais como, o assistente de nivelamento da base, seleção de atualizações, etc.)."
-
-#: plugins/UltimakerMachineActions/plugin.json
-msgctxt "name"
-msgid "UltiMaker machine actions"
-msgstr "Funções para impressoras Ultimaker"
-
-#: plugins/VersionUpgrade/VersionUpgrade21to22/plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.1 to Cura 2.2."
-msgstr "Atualiza as configurações do Cura 2.1 para o Cura 2.2."
-
-#: plugins/VersionUpgrade/VersionUpgrade21to22/plugin.json
-msgctxt "name"
-msgid "Version Upgrade 2.1 to 2.2"
-msgstr "Atualização da versão 2.1 para 2.2"
-
-#: plugins/VersionUpgrade/VersionUpgrade22to24/plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.2 to Cura 2.4."
-msgstr "Atualiza as configurações do Cura 2.2 para o Cura 2.4."
-
-#: plugins/VersionUpgrade/VersionUpgrade22to24/plugin.json
-msgctxt "name"
-msgid "Version Upgrade 2.2 to 2.4"
-msgstr "Atualização da versão 2.2 para 2.4"
-
-#: plugins/VersionUpgrade/VersionUpgrade25to26/plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.5 to Cura 2.6."
-msgstr "Atualiza as configurações do Cura 2.5 para o Cura 2.6."
-
-#: plugins/VersionUpgrade/VersionUpgrade25to26/plugin.json
-msgctxt "name"
-msgid "Version Upgrade 2.5 to 2.6"
-msgstr "Atualização da versão 2.5 para 2.6"
-
-#: plugins/VersionUpgrade/VersionUpgrade26to27/plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.6 to Cura 2.7."
-msgstr "Atualiza as configurações do Cura 2.6 para o Cura 2.7."
-
-#: plugins/VersionUpgrade/VersionUpgrade26to27/plugin.json
-msgctxt "name"
-msgid "Version Upgrade 2.6 to 2.7"
-msgstr "Atualização da versão 2.6 para 2.7"
-
-#: plugins/VersionUpgrade/VersionUpgrade27to30/plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.7 to Cura 3.0."
-msgstr "Atualiza as configurações do Cura 2.7 para o Cura 3.0."
-
-#: plugins/VersionUpgrade/VersionUpgrade27to30/plugin.json
-msgctxt "name"
-msgid "Version Upgrade 2.7 to 3.0"
-msgstr "Atualização da versão 2.7 para 3.0"
-
-#: plugins/VersionUpgrade/VersionUpgrade30to31/plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.0 to Cura 3.1."
-msgstr "Atualiza as configurações do Cura 3.0 para o Cura 3.1."
-
-#: plugins/VersionUpgrade/VersionUpgrade30to31/plugin.json
-msgctxt "name"
-msgid "Version Upgrade 3.0 to 3.1"
-msgstr "Atualização da versão 3.0 para 3.1"
-
-#: plugins/VersionUpgrade/VersionUpgrade32to33/plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.2 to Cura 3.3."
-msgstr "Atualiza as configurações do Cura 3.2 para o Cura 3.3."
-
-#: plugins/VersionUpgrade/VersionUpgrade32to33/plugin.json
-msgctxt "name"
-msgid "Version Upgrade 3.2 to 3.3"
-msgstr "Atualização da versão 3.2 para 3.3"
-
-#: plugins/VersionUpgrade/VersionUpgrade33to34/plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.3 to Cura 3.4."
-msgstr "Atualiza as configurações do Cura 3.3 para o Cura 3.4."
-
-#: plugins/VersionUpgrade/VersionUpgrade33to34/plugin.json
-msgctxt "name"
-msgid "Version Upgrade 3.3 to 3.4"
-msgstr "Atualização da versão 3.3 para 3.4"
-
-#: plugins/VersionUpgrade/VersionUpgrade34to35/plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.4 to Cura 3.5."
-msgstr "Atualiza as configurações do Cura 3.4 para o Cura 3.5."
-
-#: plugins/VersionUpgrade/VersionUpgrade34to35/plugin.json
-msgctxt "name"
-msgid "Version Upgrade 3.4 to 3.5"
-msgstr "Atualização da versão 3.4 para 3.5"
-
-#: plugins/VersionUpgrade/VersionUpgrade35to40/plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.5 to Cura 4.0."
-msgstr "Atualiza as configurações do Cura 3.5 para o Cura 4.0."
-
-#: plugins/VersionUpgrade/VersionUpgrade35to40/plugin.json
-msgctxt "name"
-msgid "Version Upgrade 3.5 to 4.0"
-msgstr "Atualização da versão 3.5 para 4.0"
-
-#: plugins/VersionUpgrade/VersionUpgrade40to41/plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.0 to Cura 4.1."
-msgstr "Atualiza as configurações do Cura 4.0 para o Cura 4.1."
-
-#: plugins/VersionUpgrade/VersionUpgrade40to41/plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.0 to 4.1"
-msgstr "Atualização da versão 4.0 para 4.1"
-
-#: plugins/VersionUpgrade/VersionUpgrade411to412/plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.11 to Cura 4.12."
-msgstr "Atualiza as configurações do Cura 4.11 para o Cura 4.12."
-
-#: plugins/VersionUpgrade/VersionUpgrade411to412/plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.11 to 4.12"
-msgstr "Atualização da versão 4.11 para a versão 4.12"
-
-#: plugins/VersionUpgrade/VersionUpgrade413to50/plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.13 to Cura 5.0."
-msgstr "Atualiza as configurações do Cura 4.13 para o Cura 5.0."
-
-#: plugins/VersionUpgrade/VersionUpgrade413to50/plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.13 to 5.0"
-msgstr "Atualização do Cura versão 4.13 para 5.0"
-
-#: plugins/VersionUpgrade/VersionUpgrade41to42/plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.1 to Cura 4.2."
-msgstr "Atualiza as configurações do Cura 4.1 para o Cura 4.2."
-
-#: plugins/VersionUpgrade/VersionUpgrade41to42/plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.1 to 4.2"
-msgstr "Atualização da versão 4.1 para 4.2"
-
-#: plugins/VersionUpgrade/VersionUpgrade42to43/plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.2 to Cura 4.3."
-msgstr "Atualiza as configurações do Cura 4.2 para o Cura 4.3."
-
-#: plugins/VersionUpgrade/VersionUpgrade42to43/plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.2 to 4.3"
-msgstr "Atualização da versão 4.2 para 4.3"
-
-#: plugins/VersionUpgrade/VersionUpgrade43to44/plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.3 to Cura 4.4."
-msgstr "Configurações de atualizações do Cura 4.3 para o Cura 4.4."
-
-#: plugins/VersionUpgrade/VersionUpgrade43to44/plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.3 to 4.4"
-msgstr "Atualização da versão 4.3 para 4.4"
-
-#: plugins/VersionUpgrade/VersionUpgrade44to45/plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.4 to Cura 4.5."
-msgstr "Atualiza as configurações do Cura 4.4 para o Cura 4.5."
-
-#: plugins/VersionUpgrade/VersionUpgrade44to45/plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.4 to 4.5"
-msgstr "Atualização da versão 4.4 para a versão 4.5"
-
-#: plugins/VersionUpgrade/VersionUpgrade45to46/plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.5 to Cura 4.6."
-msgstr "Atualiza as configurações do Cura 4.5 para o Cura 4.6."
-
-#: plugins/VersionUpgrade/VersionUpgrade45to46/plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.5 to 4.6"
-msgstr "Atualização da versão 4.5 para a versão 4.6"
-
-#: plugins/VersionUpgrade/VersionUpgrade460to462/plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.6.0 to Cura 4.6.2."
-msgstr "Atualiza as configurações do Cura 4.6.0 para o Cura 4.6.2."
-
-#: plugins/VersionUpgrade/VersionUpgrade460to462/plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.6.0 to 4.6.2"
-msgstr "Atualização da versão 4.6.0 para a versão 4.6.2"
-
-#: plugins/VersionUpgrade/VersionUpgrade462to47/plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.6.2 to Cura 4.7."
-msgstr "Atualiza as configurações do Cura 4.6.2 para o Cura 4.7."
-
-#: plugins/VersionUpgrade/VersionUpgrade462to47/plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.6.2 to 4.7"
-msgstr "Atualização da versão 4.6.2 para a versão 4.7"
-
-#: plugins/VersionUpgrade/VersionUpgrade47to48/plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.7 to Cura 4.8."
-msgstr "Atualiza as configurações do Cura 4.7 para o Cura 4.8."
-
-#: plugins/VersionUpgrade/VersionUpgrade47to48/plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.7 to 4.8"
-msgstr "Atualização da versão 4.7 para 4.8"
-
-#: plugins/VersionUpgrade/VersionUpgrade48to49/plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.8 to Cura 4.9."
-msgstr "Atualiza as configurações do Cura 4.8 para o Cura 4.9."
-
-#: plugins/VersionUpgrade/VersionUpgrade48to49/plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.8 to 4.9"
-msgstr "Atualização da versão 4.8 para 4.9"
-
-#: plugins/VersionUpgrade/VersionUpgrade49to410/plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.9 to Cura 4.10."
-msgstr "Atualiza as configurações do Cura 4.9 para o Cura 4.10."
-
-#: plugins/VersionUpgrade/VersionUpgrade49to410/plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.9 to 4.10"
-msgstr "Atualização da versão 4.9 para 4.10"
-
-#: plugins/VersionUpgrade/VersionUpgrade52to53/plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 5.2 to Cura 5.3."
-msgstr "Upgrades configurations from Cura 5.2 to Cura 5.3."
-
-#: plugins/VersionUpgrade/VersionUpgrade52to53/plugin.json
-msgctxt "name"
-msgid "Version Upgrade 5.2 to 5.3"
-msgstr "Atualização da versão 5.2 para 5.3"
-
 #: plugins/X3DReader/__init__.py:13
 msgctxt "@item:inlistbox"
 msgid "X3D File"
 msgstr "Ficheiro X3D"
 
-#: plugins/X3DReader/plugin.json
-msgctxt "description"
-msgid "Provides support for reading X3D files."
-msgstr "Fornece suporte para ler ficheiros X3D."
-
-#: plugins/X3DReader/plugin.json
-msgctxt "name"
-msgid "X3D Reader"
-msgstr "Leitor de X3D"
-
 #: plugins/XRayView/__init__.py:12
 msgctxt "@item:inlistbox"
 msgid "X-Ray view"
 msgstr "Vista Raio-X"
-
-#: plugins/XRayView/plugin.json
-msgctxt "description"
-msgid "Provides the X-Ray view."
-msgstr "Permite a visualização em Raio-X."
-
-#: plugins/XRayView/plugin.json
-msgctxt "name"
-msgid "X-Ray View"
-msgstr "Vista Raio-X"
-
-#: plugins/XmlMaterialProfile/plugin.json
-msgctxt "name"
-msgid "Material Profiles"
-msgstr "Perfis de Materiais"
-
-#: plugins/XmlMaterialProfile/plugin.json
-msgctxt "description"
-msgid "Provides capabilities to read and write XML-based material profiles."
-msgstr "Fornece capacidades para ler e gravar perfis de material com base em XML."
 
 #: resources/qml/Account/AccountWidget.qml:24
 msgctxt "@action:button"
@@ -4102,7 +4103,8 @@ msgid ""
 "- Add material profiles and plug-ins from the Marketplace\n"
 "- Back-up and sync your material profiles and plug-ins\n"
 "- Share ideas and get help from 48,000+ users in the UltiMaker community"
-msgstr ""
+msgstr "- Adicione definições de materiais e plug-ins do Marketplace\n- Efetue uma cópia de segurança e sincronize as definições de materiais e plug-ins\n- Partilhe"
+" ideias e obtenha ajuda dos mais de 48.000 utilizadores da Comunidade Ultimaker"
 
 #: resources/qml/Account/GeneralOperations.qml:58
 msgctxt "@button"
@@ -4297,7 +4299,7 @@ msgstr "Gerir Materiais..."
 #: resources/qml/Actions.qml:218
 msgctxt "@action:inmenu Marketplace is a brand name of UltiMaker's, so don't translate."
 msgid "Add more materials from Marketplace"
-msgstr ""
+msgstr "Adicionar mais materiais disponíveis no Marketplace"
 
 #: resources/qml/Actions.qml:225
 msgctxt "@action:inmenu menubar:profile"
@@ -5610,7 +5612,8 @@ msgstr "Privacidade"
 #: resources/qml/Preferences/GeneralPage.qml:862
 msgctxt "@info:tooltip"
 msgid "Should anonymous data about your print be sent to UltiMaker? Note, no models, IP addresses or other personally identifiable information is sent or stored."
-msgstr ""
+msgstr "Podem alguns dados anónimos sobre a impressão ser enviados para a Ultimaker? Não são enviadas, nem armazenadas, quaisquer informações pessoais, incluindo"
+" modelos, endereços IP ou outro tipo de identificação pessoal."
 
 #: resources/qml/Preferences/GeneralPage.qml:867
 msgctxt "@option:check"
@@ -6300,7 +6303,7 @@ msgstr "Suportes"
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:21
 msgctxt "@label"
 msgid "Generate structures to support parts of the model which have overhangs. Without these structures, these parts would collapse during printing."
-msgstr ""
+msgstr "Criar estruturas para suportar partes do modelo, suspensas ou com saliências. Sem estas estruturas, essas partes do modelo podem desmoronar durante a impressão."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:40
 msgctxt "@action:label"
