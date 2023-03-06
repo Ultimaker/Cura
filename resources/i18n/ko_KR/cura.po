@@ -2152,7 +2152,7 @@ msgstr "%1 종료"
 #: plugins/Marketplace/resources/qml/Marketplace.qml:300
 msgctxt "@description"
 msgid "Please sign in to get verified plugins and materials for UltiMaker Cura Enterprise"
-msgstr ""
+msgstr "UltiMaker Cura Enterprise용으로 검증된 플러그인 및 재료를 받으려면 로그인하십시오."
 
 #: plugins/Marketplace/resources/qml/Materials.qml:8
 #: plugins/Marketplace/resources/qml/MissingPackages.qml:8
