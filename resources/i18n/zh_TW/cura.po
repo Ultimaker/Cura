@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-06 21:46+0100\n"
+"POT-Creation-Date: 2023-03-06 23:02+0100\n"
 "PO-Revision-Date: 2022-01-02 19:59+0800\n"
 "Last-Translator: Valen Chang  <carf17771@gmail.com>\n"
 "Language-Team: Valen Chang <carf17771@gmail.com>\n"
@@ -1252,6 +1252,7 @@ msgid "Backup and synchronize your Cura settings."
 msgstr "備份並同步你的 Cura 設定。"
 
 #: plugins/CuraDrive/src/qml/pages/WelcomePage.qml:47
+#: plugins/Marketplace/resources/qml/Marketplace.qml:312
 #: resources/qml/Account/GeneralOperations.qml:49
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:180
 #: resources/qml/WelcomePages/CloudContent.qml:212
@@ -2150,6 +2151,11 @@ msgstr ""
 msgctxt "@info:button, %1 is the application name"
 msgid "Quit %1"
 msgstr "結束 %1"
+
+#: plugins/Marketplace/resources/qml/Marketplace.qml:300
+msgctxt "@description"
+msgid "Please sign in to get verified plugins and materials for UltiMaker Cura Enterprise"
+msgstr "請登入以取得 UltiMaker Cura Enterprise 驗証的外掛及線材"
 
 #: plugins/Marketplace/resources/qml/Materials.qml:8
 #: plugins/Marketplace/resources/qml/MissingPackages.qml:8
@@ -8710,10 +8716,6 @@ msgstr "沒有可選取的專案"
 #~ msgctxt "@label"
 #~ msgid "Please select any upgrades made to this UltiMaker 2."
 #~ msgstr "請選擇適用於 UltiMaker 2 的更新檔案。"
-
-msgctxt "@description"
-msgid "Please sign in to get verified plugins and materials for UltiMaker Cura Enterprise"
-msgstr "請登入以取得 UltiMaker Cura Enterprise 驗証的外掛及線材"
 
 #~ msgctxt "name"
 #~ msgid "Plugin Browser"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-06 22:44+0100\n"
+"POT-Creation-Date: 2023-03-06 23:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1251,6 +1251,7 @@ msgid "Backup and synchronize your Cura settings."
 msgstr "Sauvegardez et synchronisez vos paramètres Cura."
 
 #: plugins/CuraDrive/src/qml/pages/WelcomePage.qml:47
+#: plugins/Marketplace/resources/qml/Marketplace.qml:312
 #: resources/qml/Account/GeneralOperations.qml:49
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:180
 #: resources/qml/WelcomePages/CloudContent.qml:212
@@ -2149,6 +2150,11 @@ msgstr "Pour pouvoir utiliser le package, vous devrez redémarrer Cura"
 msgctxt "@info:button, %1 is the application name"
 msgid "Quit %1"
 msgstr "Quitter %1"
+
+#: plugins/Marketplace/resources/qml/Marketplace.qml:300
+msgctxt "@description"
+msgid "Please sign in to get verified plugins and materials for UltiMaker Cura Enterprise"
+msgstr ""
 
 #: plugins/Marketplace/resources/qml/Materials.qml:8
 #: plugins/Marketplace/resources/qml/MissingPackages.qml:8
@@ -6987,6 +6993,10 @@ msgstr "Aucun élément à sélectionner"
 #~ "Veuillez suivre ces étapes pour configurer\n"
 #~ "Ultimaker Cura. Cela ne prendra que quelques instants."
 
+#~ msgctxt "@description"
+#~ msgid "Please sign in to get verified plugins and materials for Ultimaker Cura Enterprise"
+#~ msgstr "Veuillez vous connecter pour obtenir les plug-ins et matériaux vérifiés pour Ultimaker Cura Enterprise"
+
 #~ msgctxt "@text"
 #~ msgid "Print settings"
 #~ msgstr "Paramètres d'impression"
@@ -7007,7 +7017,3 @@ msgstr "Aucun élément à sélectionner"
 #~ msgctxt "@label"
 #~ msgid "Welcome to UltiMaker Cura"
 #~ msgstr "Bienvenue dans UltiMaker Cura"
-
-msgctxt "@description"
-msgid "Please sign in to get verified plugins and materials for Ultimaker Cura Enterprise"
-msgstr "Veuillez vous connecter pour obtenir les plug-ins et matériaux vérifiés pour Ultimaker Cura Enterprise"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-31 16:46+0100\n"
+"POT-Creation-Date: 2023-03-06 23:02+0100\n"
 "PO-Revision-Date: 2023-02-17 17:37+0100\n"
 "Last-Translator: Cláudio Sampaio <patola@gmail.com>\n"
 "Language-Team: Cláudio Sampaio <patola@gmail.com>\n"
@@ -1253,6 +1253,7 @@ msgid "Backup and synchronize your Cura settings."
 msgstr "Fazer backup e sincronizar os ajustes do Cura."
 
 #: plugins/CuraDrive/src/qml/pages/WelcomePage.qml:47
+#: plugins/Marketplace/resources/qml/Marketplace.qml:312
 #: resources/qml/Account/GeneralOperations.qml:49
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:180
 #: resources/qml/WelcomePages/CloudContent.qml:212
@@ -2151,6 +2152,11 @@ msgstr "Para usar o pacote você precisará reiniciar o Cura"
 msgctxt "@info:button, %1 is the application name"
 msgid "Quit %1"
 msgstr "Sair de %1"
+
+#: plugins/Marketplace/resources/qml/Marketplace.qml:300
+msgctxt "@description"
+msgid "Please sign in to get verified plugins and materials for UltiMaker Cura Enterprise"
+msgstr "Por favor se logue para adquirir complementos e materiais verificados para o UltiMaker Cura Enterprise"
 
 #: plugins/Marketplace/resources/qml/Materials.qml:8
 #: plugins/Marketplace/resources/qml/MissingPackages.qml:8
@@ -9181,10 +9187,6 @@ msgstr "Sem itens para selecionar"
 #~ msgctxt "@label"
 #~ msgid "Please select any upgrades made to this UltiMaker 2."
 #~ msgstr "Por favor selecione quaisquer atualizações feitas nesta UltiMaker 2."
-
-msgctxt "@description"
-msgid "Please sign in to get verified plugins and materials for UltiMaker Cura Enterprise"
-msgstr "Por favor se logue para adquirir complementos e materiais verificados para o UltiMaker Cura Enterprise"
 
 #~ msgctxt "name"
 #~ msgid "Plugin Browser"

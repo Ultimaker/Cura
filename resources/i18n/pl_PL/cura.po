@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-06 21:46+0100\n"
+"POT-Creation-Date: 2023-03-06 23:02+0100\n"
 "PO-Revision-Date: 2021-09-07 08:02+0200\n"
 "Last-Translator: Mariusz Matłosz <matliks@gmail.com>\n"
 "Language-Team: Mariusz Matłosz <matliks@gmail.com>, reprapy.pl\n"
@@ -1255,6 +1255,7 @@ msgid "Backup and synchronize your Cura settings."
 msgstr "Wykonaj kopię zapasową i zsynchronizuj ustawienia Cura."
 
 #: plugins/CuraDrive/src/qml/pages/WelcomePage.qml:47
+#: plugins/Marketplace/resources/qml/Marketplace.qml:312
 #: resources/qml/Account/GeneralOperations.qml:49
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:180
 #: resources/qml/WelcomePages/CloudContent.qml:212
@@ -2148,6 +2149,11 @@ msgstr ""
 #: plugins/Marketplace/resources/qml/Marketplace.qml:279
 msgctxt "@info:button, %1 is the application name"
 msgid "Quit %1"
+msgstr ""
+
+#: plugins/Marketplace/resources/qml/Marketplace.qml:300
+msgctxt "@description"
+msgid "Please sign in to get verified plugins and materials for UltiMaker Cura Enterprise"
 msgstr ""
 
 #: plugins/Marketplace/resources/qml/Materials.qml:8

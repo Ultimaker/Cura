@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-06 21:46+0100\n"
+"POT-Creation-Date: 2023-03-06 23:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1251,6 +1251,7 @@ msgid "Backup and synchronize your Cura settings."
 msgstr "Maak een back-up van uw Cura-instellingen en synchroniseer deze."
 
 #: plugins/CuraDrive/src/qml/pages/WelcomePage.qml:47
+#: plugins/Marketplace/resources/qml/Marketplace.qml:312
 #: resources/qml/Account/GeneralOperations.qml:49
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:180
 #: resources/qml/WelcomePages/CloudContent.qml:212
@@ -2149,6 +2150,11 @@ msgstr "Om het pakket te gebruiken moet u Cura opnieuw opstarten"
 msgctxt "@info:button, %1 is the application name"
 msgid "Quit %1"
 msgstr "Sluit %1"
+
+#: plugins/Marketplace/resources/qml/Marketplace.qml:300
+msgctxt "@description"
+msgid "Please sign in to get verified plugins and materials for UltiMaker Cura Enterprise"
+msgstr ""
 
 #: plugins/Marketplace/resources/qml/Materials.qml:8
 #: plugins/Marketplace/resources/qml/MissingPackages.qml:8
@@ -6989,6 +6995,10 @@ msgstr "Geen items om uit te kiezen"
 #~ "Volg deze stappen voor het instellen van\n"
 #~ "UltiMaker Cura. Dit duurt slechts even."
 
+#~ msgctxt "@description"
+#~ msgid "Please sign in to get verified plugins and materials for Ultimaker Cura Enterprise"
+#~ msgstr "Meld u aan voor geverifieerde plug-ins en materialen voor Ultimaker Cura Enterprise"
+
 #~ msgctxt "@text"
 #~ msgid "Print settings"
 #~ msgstr "Instellingen voor printen"
@@ -7008,7 +7018,3 @@ msgstr "Geen items om uit te kiezen"
 #~ msgctxt "@label"
 #~ msgid "Welcome to UltiMaker Cura"
 #~ msgstr "Welkom bij UltiMaker Cura"
-
-msgctxt "@description"
-msgid "Please sign in to get verified plugins and materials for Ultimaker Cura Enterprise"
-msgstr "Meld u aan voor geverifieerde plug-ins en materialen voor Ultimaker Cura Enterprise"
