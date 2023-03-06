@@ -6905,23 +6905,6 @@ msgctxt "@button"
 msgid "Decline and close"
 msgstr "Ablehnen und schließen"
 
-#: resources/qml/WelcomePages/WelcomeContent.qml:56
-msgctxt "@label"
-msgid "Welcome to UltiMaker Cura"
-msgstr "Willkommen bei UltiMaker Cura"
-
-#: resources/qml/WelcomePages/WelcomeContent.qml:67
-msgctxt "@text"
-msgid "Please follow these steps to set up UltiMaker Cura. This will only take a few moments."
-msgstr ""
-"Befolgen Sie bitte diese Schritte für das Einrichten von\n"
-"UltiMaker Cura. Dies dauert nur wenige Sekunden."
-
-#: resources/qml/WelcomePages/WelcomeContent.qml:82
-msgctxt "@button"
-msgid "Get started"
-msgstr "Erste Schritte"
-
 #: resources/qml/WelcomePages/WhatsNewContent.qml:28
 msgctxt "@label"
 msgid "What's New"
