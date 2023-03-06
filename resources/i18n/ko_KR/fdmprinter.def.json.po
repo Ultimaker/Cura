@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-02-02 16:06+0000\n"
+"POT-Creation-Date: 2023-03-06 23:02+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -70,7 +70,7 @@ msgstr "프린팅 헤드가 위치할 수 없는 구역의 목록입니다."
 #: fdmprinter.def.json
 msgctxt "brim_inside_margin description"
 msgid "A part fully enclosed inside another part can generate an outer brim that touches the inside of the other part. This removes all brim within this distance from internal holes."
-msgstr ""
+msgstr "다른 부품 내부에 완전히 포함된 부품은 다른 부품의 내부와 접촉하는 외부 브림을 생성할 수 있습니다. 이렇게 하면 내부 구멍에서 이 거리 내의 모든 브림이 제거됩니다."
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_abs label"
@@ -279,7 +279,7 @@ msgstr "익스트루더 오프셋을 좌표계에 적용하십시오. 모든 익
 #: fdmprinter.def.json
 msgctxt "interlocking_enable description"
 msgid "At the locations where models touch, generate an interlocking beam structure. This improves the adhesion between models, especially models printed in different materials."
-msgstr ""
+msgstr "모델이 닿는 위치에 연동되는 빔 구조를 생성합니다. 이렇게 하면 모델 간, 특히 다른 재료로 프린트된 모델 간의 접착력이 향상됩니다."
 
 #: fdmprinter.def.json
 msgctxt "travel_avoid_other_parts label"
@@ -479,7 +479,7 @@ msgstr "브림 거리"
 #: fdmprinter.def.json
 msgctxt "brim_inside_margin label"
 msgid "Brim Inside Avoid Margin"
-msgstr ""
+msgstr "내부 브림이 여백 회피"
 
 #: fdmprinter.def.json
 msgctxt "brim_line_count label"
@@ -1489,7 +1489,7 @@ msgstr "갠트리 높이"
 #: fdmprinter.def.json
 msgctxt "interlocking_enable label"
 msgid "Generate Interlocking Structure"
-msgstr ""
+msgstr "연동 구조 생성"
 
 #: fdmprinter.def.json
 msgctxt "support_enable label"
@@ -1554,7 +1554,7 @@ msgstr "점진적 서포트 내부채움 단계"
 #: fdmprinter.def.json
 msgctxt "cool_min_temperature description"
 msgid "Gradually reduce to this temperature when printing at reduced speeds because of minimum layer time."
-msgstr ""
+msgstr "최소 레이어 시간으로 인해 감소된 속도로 프린트할 때 이 온도로 점차 낮추십시오."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -2044,27 +2044,27 @@ msgstr "내부에서 외부로"
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_layer_count label"
 msgid "Interlocking Beam Layer Count"
-msgstr ""
+msgstr "연동 빔 레이어 수"
 
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_width label"
 msgid "Interlocking Beam Width"
-msgstr ""
+msgstr "연동 빔 너비"
 
 #: fdmprinter.def.json
 msgctxt "interlocking_boundary_avoidance label"
 msgid "Interlocking Boundary Avoidance"
-msgstr ""
+msgstr "연동 경계 회피"
 
 #: fdmprinter.def.json
 msgctxt "interlocking_depth label"
 msgid "Interlocking Depth"
-msgstr ""
+msgstr "연동 깊이"
 
 #: fdmprinter.def.json
 msgctxt "interlocking_orientation label"
 msgid "Interlocking Structure Orientation"
-msgstr ""
+msgstr "연동 구조 방향"
 
 #: fdmprinter.def.json
 msgctxt "ironing_only_highest_layer label"
@@ -3727,10 +3727,9 @@ msgid "Small Hole Max Size"
 msgstr "소형 구멍 최대 크기"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "cool_min_temperature label"
 msgid "Small Layer Printing Temperature"
-msgstr "최종 프린팅 온도"
+msgstr "소형 레이어 프린팅 온도"
 
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 description"
@@ -3883,10 +3882,9 @@ msgid "Support Bottom Distance"
 msgstr "서포트 바닥 거리"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "support_bottom_wall_count label"
 msgid "Support Bottom Wall Line Count"
-msgstr "지지대 벽 라인 카운트"
+msgstr "지지대 하단 벽 라인 개수"
 
 #: fdmprinter.def.json
 msgctxt "support_brim_line_count label"
@@ -4084,10 +4082,9 @@ msgid "Support Interface Thickness"
 msgstr "서포트 인터페이스 두께"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "support_interface_wall_count label"
 msgid "Support Interface Wall Line Count"
-msgstr "지지대 벽 라인 카운트"
+msgstr "지지대 인터페이스 벽 라인 개수"
 
 #: fdmprinter.def.json
 msgctxt "jerk_support label"
@@ -4190,10 +4187,9 @@ msgid "Support Roof Thickness"
 msgstr "서포트 지붕 두께"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "support_roof_wall_count label"
 msgid "Support Roof Wall Line Count"
-msgstr "지지대 벽 라인 카운트"
+msgstr "지지대 지붕 벽 라인 개수"
 
 #: fdmprinter.def.json
 msgctxt "speed_support label"
@@ -4598,7 +4594,7 @@ msgstr "지붕에서 연결을 할 때 안쪽까지 윤곽선을 그립니다. �
 #: fdmprinter.def.json
 msgctxt "interlocking_depth description"
 msgid "The distance from the boundary between models to generate interlocking structure measured in cells. Too few cells will result in poor adhesion."
-msgstr ""
+msgstr "셀 단위로 측정된 연동 구조를 생성하기 위한 모델 간의 경계로부터의 거리입니다. 셀 수가 너무 적으면 접착력이 떨어집니다."
 
 #: fdmprinter.def.json
 msgctxt "brim_width description"
@@ -4608,7 +4604,7 @@ msgstr "모델에서 가장 바깥 쪽 브림까지의 거리. 큰 테두리는 
 #: fdmprinter.def.json
 msgctxt "interlocking_boundary_avoidance description"
 msgid "The distance from the outside of a model where interlocking structures will not be generated, measured in cells."
-msgstr ""
+msgstr "연동 구조가 생성되지 않는 모델 외부의 거리로, 셀 단위로 측정됩니다."
 
 #: fdmprinter.def.json
 msgctxt "machine_heat_zone_length description"
@@ -4838,12 +4834,12 @@ msgstr "밀도의 절반으로 전환하기 전에 주어진 밀도의 서포트
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_layer_count description"
 msgid "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects."
-msgstr ""
+msgstr "레이어 수로 측정된 연동 구조의 빔 높이입니다. 레이어가 적을수록 강하지만 결함이 발생하기 쉽습니다."
 
 #: fdmprinter.def.json
 msgctxt "interlocking_orientation description"
 msgid "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects."
-msgstr ""
+msgstr "레이어 수로 측정된 연동 구조의 빔 높이입니다. 레이어가 적을수록 강하지만 결함이 발생하기 쉽습니다."
 
 #: fdmprinter.def.json
 msgctxt "layer_height_0 description"
@@ -5255,22 +5251,19 @@ msgid "The number of walls with which to surround support infill. Adding a wall 
 msgstr "지지대 충진물을 둘러싸는 벽의 개수. 벽을 추가하면 지지물 인쇄 안정성을 높일 수 있고 오버행 지지를 개선할 수 있지만, 인쇄 시간과 사용되는 재료가 늘어납니다."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "support_bottom_wall_count description"
 msgid "The number of walls with which to surround support interface floor. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "지지대 충진물을 둘러싸는 벽의 개수. 벽을 추가하면 지지물 인쇄 안정성을 높일 수 있고 오버행 지지를 개선할 수 있지만, 인쇄 시간과 사용되는 재료가 늘어납니다."
+msgstr "지지대 인터페이스 하단을 둘러싸는 벽의 개수입니다. 벽을 추가하면 지지물 프린트의 안정성을 높일 수 있고 오버행(경사면) 지지를 개선할 수 있지만, 프린트 시간과 사용되는 재료가 늘어납니다."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "support_roof_wall_count description"
 msgid "The number of walls with which to surround support interface roof. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "지지대 충진물을 둘러싸는 벽의 개수. 벽을 추가하면 지지물 인쇄 안정성을 높일 수 있고 오버행 지지를 개선할 수 있지만, 인쇄 시간과 사용되는 재료가 늘어납니다."
+msgstr "지지대 인터페이스 지붕을 둘러싸는 벽의 개수입니다. 벽을 추가하면 지지물 프린트의 안정성을 높일 수 있고 오버행(경사면) 지지를 개선할 수 있지만, 프린트 시간과 사용되는 재료가 늘어납니다."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "support_interface_wall_count description"
 msgid "The number of walls with which to surround support interface. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "지지대 충진물을 둘러싸는 벽의 개수. 벽을 추가하면 지지물 인쇄 안정성을 높일 수 있고 오버행 지지를 개선할 수 있지만, 인쇄 시간과 사용되는 재료가 늘어납니다."
+msgstr "지지대 인터페이스를 둘러싸는 벽의 개수입니다. 벽을 추가하면 지지물 프린트의 안정성을 높일 수 있고 오버행(경사면) 지지를 개선할 수 있지만, 프린트 시간과 사용되는 재료가 늘어납니다."
 
 #: fdmprinter.def.json
 msgctxt "wall_distribution_count description"
@@ -5693,10 +5686,9 @@ msgid "The width of the brim to print underneath the support. A larger brim enha
 msgstr "서포트 아래를 인쇄하기 위한 브림 폭. 브림이 커질수록 추가 재료가 소요되지만 빌드 플레이트에 대한 접착력이 향상됩니다."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "interlocking_beam_width description"
 msgid "The width of the interlocking structure beams."
-msgstr "프라임 타워의 너비."
+msgstr "연동 구조 빔의 너비입니다."
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_size description"
@@ -6772,19 +6764,3 @@ msgstr "지그재그"
 msgctxt "travel description"
 msgid "travel"
 msgstr "이동"
-
-#~ msgctxt "material_flow_dependent_temperature label"
-#~ msgid "Auto Temperature"
-#~ msgstr "자동 온도"
-
-#~ msgctxt "material_flow_dependent_temperature description"
-#~ msgid "Change the temperature for each layer automatically with the average flow speed of that layer."
-#~ msgstr "해당 레이어의 평균 유속으로 각 레이어의 온도를 자동으로 변경."
-
-#~ msgctxt "limit_support_retractions label"
-#~ msgid "Limit Support Retractions"
-#~ msgstr "지지대 후퇴 제한"
-
-#~ msgctxt "limit_support_retractions description"
-#~ msgid "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excessive stringing within the support structure."
-#~ msgstr "직선으로 지지대 사이를 이동하는 경우 리트랙션은 생략합니다. 이 설정을 사용하면 프린팅 시간은 절약할 수 있지만, 지지대 구조물 내에 스트링이 과도하게 증가할 수 있습니다."
