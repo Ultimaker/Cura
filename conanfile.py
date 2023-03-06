@@ -267,10 +267,6 @@ class CuraConan(ConanFile):
         copy(self, "CuraVersion.py.jinja", self.recipe_folder, self.export_sources_folder)
         copy(self, "cura_app.py", self.recipe_folder, self.export_sources_folder)
 
-    def set_version(self):
-        if self.version is None:
-            self.version = self._umdefault_version()
-
     def configure(self):
         self.options["pyarcus"].shared = True
         self.options["pysavitar"].shared = True
