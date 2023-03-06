@@ -1,12 +1,11 @@
 # Cura
-# Copyright (C) 2022 UltiMaker.
+# Copyright (C) 2023 UltiMaker.
 # This file is distributed under the same license as the Cura package.
 # UltiMaker <plugins@ultimaker.com>, 2023.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: Cura 5.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-01-31 16:46+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
@@ -1075,7 +1074,7 @@ msgstr "Proporciona asistencia para leer archivos AMF."
 #: plugin.json
 msgctxt "description"
 msgid "Provides support for reading UltiMaker Format Packages."
-msgstr ""
+msgstr "Proporciona asistencia para leer archivos paquetes de formato UltiMaker"
 
 #: plugin.json
 msgctxt "description"
@@ -1095,7 +1094,7 @@ msgstr "Proporciona asistencia para escribir archivos 3MF."
 #: plugin.json
 msgctxt "description"
 msgid "Provides support for writing UltiMaker Format Packages."
-msgstr ""
+msgstr "Permite la escritura de paquetes de formato UltiMaker."
 
 #: plugin.json
 msgctxt "description"
@@ -1184,13 +1183,13 @@ msgstr "Ultimaker Digital Library"
 
 #: plugin.json
 msgctxt "name"
-msgid "UltiMaker Network Connection"
-msgstr ""
+msgid "Ultimaker Network Connection"
+msgstr "Conexión en red de Ultimaker"
 
 #: plugin.json
 msgctxt "name"
-msgid "UltiMaker machine actions"
-msgstr ""
+msgid "Ultimaker machine actions"
+msgstr "Acciones de la máquina Ultimaker"
 
 #: plugin.json
 msgctxt "description"
@@ -1430,7 +1429,7 @@ msgstr "Actualización de la versión 4.9 a la 4.10"
 #: plugin.json
 msgctxt "name"
 msgid "Version Upgrade 5.2 to 5.3"
-msgstr "Actualización de la versión 3.2 a la 3.3"
+msgstr "Actualización de la versión 5.2 a la 5.3"
 
 #: plugin.json
 msgctxt "description"
@@ -1495,7 +1494,7 @@ msgstr "El archivo de proyecto <filename>{0}</filename> está dañado: <message>
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
 msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura."
-msgstr ""
+msgstr "El archivo de proyecto <filename>{0}</filename> se ha creado con perfiles desconocidos para esta versión de UltiMaker Cura."
 
 #: plugins/3MFReader/WorkspaceDialog.py:233
 msgctxt "@title:tab"
@@ -3816,7 +3815,7 @@ msgstr "Más información"
 #: plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:18
 msgctxt "@info:status"
 msgid "You are attempting to connect to a printer that is not running UltiMaker Connect. Please update the printer to the latest firmware."
-msgstr ""
+msgstr "Está intentando conectarse a una impresora que no está ejecutando UltiMaker Connect. Actualice la impresora al firmware más reciente."
 
 #: plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:21
 msgctxt "@info:title"
@@ -3838,8 +3837,8 @@ msgstr "Enviando materiales a la impresora"
 msgctxt "info:status"
 msgid "New printer detected from your UltiMaker account"
 msgid_plural "New printers detected from your UltiMaker account"
-msgstr[0] "Se ha detectado una nueva impresora en su cuenta de UltiMaker"
-msgstr[1] "Se han detectado nuevas impresoras en su cuenta de UltiMaker"
+msgstr[0] "Se ha detectado una nueva impresora en su cuenta de Ultimaker"
+msgstr[1] "Se han detectado nuevas impresoras en su cuenta de Ultimaker"
 
 #: plugins/UM3NetworkPrinting/src/Messages/NewPrinterDetectedMessage.py:29
 #, python-brace-format
@@ -6832,7 +6831,6 @@ msgid "If you are trying to add a new UltiMaker printer to Cura"
 msgstr "Si est intentando aadir una nueva impresora UltiMaker a Cura"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:80
-#, fuzzy
 msgctxt "@info"
 msgid "Sign in into Ultimaker Digital Factory"
 msgstr "Supervise las impresoras de Ultimaker Digital Factory."
