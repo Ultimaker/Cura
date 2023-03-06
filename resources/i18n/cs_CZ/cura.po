@@ -1191,7 +1191,7 @@ msgstr "Digitální knihovna UltiMaker"
 #: plugin.json
 #, fuzzy
 msgctxt "name"
-msgid "Ultimaker Network Connection"
+msgid "UltiMaker Network Connection"
 msgstr "Síťové připojení UltiMaker"
 
 #: plugin.json

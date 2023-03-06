@@ -1183,8 +1183,8 @@ msgstr "Ultimaker Digital Library"
 
 #: plugin.json
 msgctxt "name"
-msgid "Ultimaker Network Connection"
-msgstr "Conexión en red de Ultimaker"
+msgid "UltiMaker Network Connection"
+msgstr "Conexión en red de UltiMaker"
 
 #: plugin.json
 msgctxt "name"

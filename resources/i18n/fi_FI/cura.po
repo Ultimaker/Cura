@@ -1181,8 +1181,8 @@ msgstr ""
 #: plugin.json
 #, fuzzy
 msgctxt "name"
-msgid "Ultimaker Network Connection"
-msgstr "UM3-verkkoyhteys"
+msgid "UltiMaker Network Connection"
+msgstr "UltiMaker-verkkoyhteys"
 
 #: plugin.json
 #, fuzzy

@@ -1,5 +1,5 @@
 {
-    "name": "Ultimaker Network Connection",
+    "name": "UltiMaker Network Connection",
     "author": "Ultimaker B.V.",
     "description": "Manages network connections to UltiMaker networked printers.",
     "version": "2.0.0",

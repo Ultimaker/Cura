@@ -1191,7 +1191,7 @@ msgstr "Ultimaker Digital Library"
 #: plugin.json
 #, fuzzy
 msgctxt "name"
-msgid "Ultimaker Network Connection"
+msgid "UltiMaker Network Connection"
 msgstr "UltiMaker 网络连接"
 
 #: plugin.json

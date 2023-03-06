@@ -6558,7 +6558,7 @@ msgstr ""
 
 #: plugin.json
 msgctxt "name"
-msgid "Ultimaker Network Connection"
+msgid "UltiMaker Network Connection"
 msgstr ""
 
 #: plugin.json
