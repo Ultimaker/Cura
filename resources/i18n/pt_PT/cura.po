@@ -86,7 +86,6 @@ msgid "Cura can't start"
 msgstr "Não é possível iniciar o Cura"
 
 #: cura/CrashHandler.py:113
-#, fuzzy
 msgctxt "@label crash message"
 msgid ""
 "<p><b>Oops, UltiMaker Cura has encountered something that doesn't seem right.</p></b>\n"
@@ -95,11 +94,6 @@ msgid ""
 "                    <p>Please send us this Crash Report to fix the problem.</p>\n"
 "                "
 msgstr ""
-"<p><b>Ups, o UltiMaker Cura encontrou um possível problema.</p></b>\n"
-"                    <p>Foi encontrado um erro irrecuperável durante o arranque da aplicação. Este pode ter sido causado por alguns ficheiros de configuração incorrectos. Sugerimos que faça um backup e reponha a sua configuração.</p>\n"
-"                    <p>Os backups estão localizados na pasta de configuração.</p>\n"
-"                    <p>Por favor envie-nos este Relatório de Falhas para podermos resolver o problema.</p>\n"
-"                "
 
 #: cura/CrashHandler.py:122
 msgctxt "@action:button"
@@ -954,10 +948,9 @@ msgid "Manages extensions to the application and allows browsing extensions from
 msgstr "Faz a gestão de extensões da aplicação e permite a navegação das extensões a partir do website da UltiMaker."
 
 #: plugin.json
-#, fuzzy
 msgctxt "description"
 msgid "Manages network connections to Ultimaker networked printers."
-msgstr "Gere as ligações de rede com as impressoras em rede UltiMaker."
+msgstr "Gere as ligações de rede com as impressoras em rede Ultimaker."
 
 #: plugin.json
 msgctxt "name"
@@ -1075,10 +1068,9 @@ msgid "Provides support for reading AMF files."
 msgstr "Fornece suporte para ler ficheiros AMF."
 
 #: plugin.json
-#, fuzzy
 msgctxt "description"
 msgid "Provides support for reading Ultimaker Format Packages."
-msgstr "Fornece suporte para ler pacotes de formato UltiMaker."
+msgstr "Fornece suporte para ler pacotes de formato Ultimaker."
 
 #: plugin.json
 msgctxt "description"
@@ -1096,10 +1088,9 @@ msgid "Provides support for writing 3MF files."
 msgstr "Possiblita a gravação de ficheiros 3MF."
 
 #: plugin.json
-#, fuzzy
 msgctxt "description"
 msgid "Provides support for writing Ultimaker Format Packages."
-msgstr "Permite a gravação de arquivos UltiMaker Format."
+msgstr "Permite a gravação de arquivos Ultimaker Format."
 
 #: plugin.json
 msgctxt "description"
@@ -1187,16 +1178,14 @@ msgid "Ultimaker Digital Library"
 msgstr "Biblioteca Digital UltiMaker"
 
 #: plugin.json
-#, fuzzy
 msgctxt "name"
 msgid "Ultimaker Network Connection"
-msgstr "Ligação de rede UltiMaker"
+msgstr "Ligação de rede Ultimaker"
 
 #: plugin.json
-#, fuzzy
 msgctxt "name"
 msgid "Ultimaker machine actions"
-msgstr "Funções para impressoras UltiMaker"
+msgstr "Funções para impressoras Ultimaker"
 
 #: plugin.json
 msgctxt "description"
@@ -1314,10 +1303,9 @@ msgid "Upgrades configurations from Cura 4.9 to Cura 4.10."
 msgstr "Atualiza as configurações do Cura 4.9 para o Cura 4.10."
 
 #: plugin.json
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.2 to Cura 5.3."
-msgstr "Atualiza as configurações do Cura 3.2 para o Cura 3.3."
+msgstr "Upgrades configurations from Cura 5.2 to Cura 5.3."
 
 #: plugin.json
 msgctxt "name"
@@ -1435,10 +1423,9 @@ msgid "Version Upgrade 4.9 to 4.10"
 msgstr "Atualização da versão 4.9 para 4.10"
 
 #: plugin.json
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 5.2 to 5.3"
-msgstr "Atualização da versão 3.2 para 3.3"
+msgstr "Atualização da versão 5.2 para 5.3"
 
 #: plugin.json
 msgctxt "description"
@@ -1475,7 +1462,6 @@ msgstr "Abrir ficheiro de projeto"
 #: plugins/3MFReader/WorkspaceDialog.qml:99
 #: plugins/3MFReader/WorkspaceDialog.qml:127
 #: plugins/3MFReader/WorkspaceDialog.qml:134
-#, fuzzy
 msgctxt "@button"
 msgid "Create new"
 msgstr "Criar nova"
@@ -1572,7 +1558,6 @@ msgid "Printer Group"
 msgstr "Grupo da Impressora"
 
 #: plugins/3MFReader/WorkspaceDialog.qml:103
-#, fuzzy
 msgctxt "@action:label"
 msgid "Open With"
 msgstr "Abrir"
@@ -1580,7 +1565,7 @@ msgstr "Abrir"
 #: plugins/3MFReader/WorkspaceDialog.qml:104
 msgctxt "@info:tooltip"
 msgid "Printer settings will be updated to match the settings saved with the project."
-msgstr ""
+msgstr "As definições da impressora serão atualizadas para corresponder às definições guardadas com o projeto."
 
 #: plugins/3MFReader/WorkspaceDialog.qml:156
 #: resources/qml/Dialogs/WorkspaceSummaryDialog.qml:222
@@ -2506,7 +2491,7 @@ msgstr "Autor desconhecido"
 #: plugins/Marketplace/PackageModel.py:95
 msgctxt "@label:label Ultimaker Marketplace is a brand name, don't translate"
 msgid "The material package associated with the Cura project could not be found on the Ultimaker Marketplace. Use the partial material profile definition stored in the Cura project file at your own risk."
-msgstr ""
+msgstr "Não foi possível encontrar o pacote de materiais associado ao projeto Cura no UltiMaker Marketplace. Use a definição de perfil do material parcial armazenada no arquivo do projeto Cura por sua conta e risco."
 
 #: plugins/Marketplace/RemotePackageList.py:117
 msgctxt "@info:error"
@@ -2577,10 +2562,9 @@ msgid "Manage packages"
 msgstr "Gerir os pacotes"
 
 #: plugins/Marketplace/resources/qml/ManagedPackages.qml:16
-#, fuzzy
 msgctxt "@text"
 msgid "Manage your UltiMaker Cura plugins and material profiles here. Make sure to keep your plugins up to date and backup your setup regularly."
-msgstr "Faça aqui a gestão dos plug-ins e perfis de materiais do UltiMaker Cura. Certifique-se de que mantém os plug-ins atualizados e que efetua regularmente uma cópia de segurança da sua configuração."
+msgstr ""
 
 #: plugins/Marketplace/resources/qml/Marketplace.qml:87
 msgctxt "@title"
@@ -2619,10 +2603,9 @@ msgid "Install Materials"
 msgstr "Instalar materiais"
 
 #: plugins/Marketplace/resources/qml/Materials.qml:12
-#, fuzzy
 msgctxt "@text"
 msgid "Select and install material profiles optimised for your UltiMaker 3D printers."
-msgstr "Selecione e instale perfis de materiais otimizados para as impressoras 3D UltiMaker."
+msgstr ""
 
 #: plugins/Marketplace/resources/qml/MultipleLicenseDialog.qml:35
 msgctxt "@label"
@@ -2803,10 +2786,9 @@ msgid "Install Plugins"
 msgstr "Instale plug-ins"
 
 #: plugins/Marketplace/resources/qml/Plugins.qml:12
-#, fuzzy
 msgctxt "@text"
 msgid "Streamline your workflow and customize your UltiMaker Cura experience with plugins contributed by our amazing community of users."
-msgstr "Simplifique o seu fluxo de trabalho e personalize a sua utilização do UltiMaker Cura com plug-ins criados pela nossa incrível comunidade de utilizadores."
+msgstr ""
 
 #: plugins/Marketplace/resources/qml/VerifiedIcon.qml:21
 msgctxt "@info"
@@ -3228,10 +3210,9 @@ msgid "More information on anonymous data collection"
 msgstr "Mais informações sobre a recolha anónima de dados"
 
 #: plugins/SliceInfoPlugin/MoreInfoWindow.qml:73
-#, fuzzy
 msgctxt "@text:window"
 msgid "UltiMaker Cura collects anonymous data in order to improve the print quality and user experience. Below is an example of all the data that is shared:"
-msgstr "O UltiMaker Cura recolhe dados anónimos para melhorar a qualidade da impressão e a experiência do utilizador. Segue-se um exemplo de todos os dados partilhados:"
+msgstr ""
 
 #: plugins/SliceInfoPlugin/MoreInfoWindow.qml:107
 msgctxt "@text:window"
@@ -3849,7 +3830,6 @@ msgid "Sending materials to printer"
 msgstr "Enviar materiais para a impressora"
 
 #: plugins/UM3NetworkPrinting/src/Messages/NewPrinterDetectedMessage.py:13
-#, fuzzy
 msgctxt "info:status"
 msgid "New printer detected from your Ultimaker account"
 msgid_plural "New printers detected from your Ultimaker account"
@@ -4089,7 +4069,7 @@ msgstr "Selecionar atualizações"
 #: plugins/UltimakerMachineActions/UMOUpgradeSelectionMachineAction.qml:30
 msgctxt "@label"
 msgid "Please select any upgrades made to this UltiMaker Original"
-msgstr "Selecione quaisquer atualizações realizadas a esta UltiMaker Original"
+msgstr "Selecione quaisquer atualizações realizadas a esta UltiMaker Original"
 
 #: plugins/UltimakerMachineActions/UMOUpgradeSelectionMachineAction.qml:39
 msgctxt "@label"
@@ -4118,16 +4098,12 @@ msgid "Sign in to the UltiMaker platform"
 msgstr "Inicie a sessão na plataforma UltiMaker"
 
 #: resources/qml/Account/GeneralOperations.qml:39
-#, fuzzy
 msgctxt "@text"
 msgid ""
 "- Add material profiles and plug-ins from the Marketplace\n"
 "- Back-up and sync your material profiles and plug-ins\n"
 "- Share ideas and get help from 48,000+ users in the UltiMaker community"
 msgstr ""
-"- Adicione definições de materiais e plug-ins do Marketplace\n"
-"- Efetue uma cópia de segurança e sincronize as definições de materiais e plug-ins\n"
-"- Partilhe ideias e obtenha ajuda dos mais de 48.000 utilizadores da Comunidade Ultimaker"
 
 #: resources/qml/Account/GeneralOperations.qml:58
 msgctxt "@button"
@@ -4320,10 +4296,9 @@ msgid "Manage Materials..."
 msgstr "Gerir Materiais..."
 
 #: resources/qml/Actions.qml:218
-#, fuzzy
 msgctxt "@action:inmenu Marketplace is a brand name of UltiMaker's, so don't translate."
 msgid "Add more materials from Marketplace"
-msgstr "Adicionar mais materiais disponíveis no Marketplace"
+msgstr ""
 
 #: resources/qml/Actions.qml:225
 msgctxt "@action:inmenu menubar:profile"
@@ -4613,38 +4588,34 @@ msgid "What's New"
 msgstr "Novidades"
 
 #: resources/qml/Cura.qml:890
-#, fuzzy
 msgctxt "@title:window"
 msgid "Save Custom Profile"
-msgstr "Perfil personalizado"
+msgstr ""
 
 #: resources/qml/Cura.qml:891
-#, fuzzy
 msgctxt "@textfield:placeholder"
 msgid "New Custom Profile"
-msgstr "Perfil personalizado"
+msgstr ""
 
 #: resources/qml/Cura.qml:892
-#, fuzzy
 msgctxt "@info"
 msgid "Custom profile name:"
-msgstr "Perfil personalizado"
+msgstr ""
 
 #: resources/qml/Cura.qml:909
 msgctxt "@label %i will be replaced with a profile name"
 msgid "<b>Only user changed settings will be saved in the custom profile.</b><br/>For materials that support it, the new custom profile will inherit properties from <b>%1</b>."
-msgstr ""
+msgstr "<b>Só as definições alteradas pelo utilizador é que serão guardadas no perfil personalizado.</b><br/>Para materiais que oferecem suporte, o novo perfil personalizado herdará propriedades de <b>%1</b>."
 
 #: resources/qml/Cura.qml:917
 msgctxt "@action:button"
 msgid "Learn more about Cura print profiles"
-msgstr ""
+msgstr "Saiba mais sobre os perfis de impressão Cura"
 
 #: resources/qml/Cura.qml:926
-#, fuzzy
 msgctxt "@button"
 msgid "Save new profile"
-msgstr "Inexistente no perfil"
+msgstr ""
 
 #: resources/qml/Dialogs/AboutDialog.qml:15
 msgctxt "@title:window The argument is the application name."
@@ -4931,16 +4902,14 @@ msgid "Keep changes"
 msgstr "Manter alterações"
 
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:171
-#, fuzzy
 msgctxt "@action:button"
 msgid "Save as new custom profile"
-msgstr "Perfil personalizado"
+msgstr ""
 
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:178
-#, fuzzy
 msgctxt "@action:button"
 msgid "Save changes"
-msgstr "Manter alterações"
+msgstr ""
 
 #: resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:47
 msgctxt "@text:window"
@@ -5640,10 +5609,9 @@ msgid "Privacy"
 msgstr "Privacidade"
 
 #: resources/qml/Preferences/GeneralPage.qml:862
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Should anonymous data about your print be sent to UltiMaker? Note, no models, IP addresses or other personally identifiable information is sent or stored."
-msgstr "Podem alguns dados anónimos sobre a impressão ser enviados para a UltiMaker? Não são enviadas, nem armazenadas, quaisquer informações pessoais, incluindo modelos, endereços IP ou outro tipo de identificação pessoal."
+msgstr ""
 
 #: resources/qml/Preferences/GeneralPage.qml:867
 msgctxt "@option:check"
@@ -6231,23 +6199,22 @@ msgstr "<b>%1</b> perfil personalizado está a sobrepor-se a algumas configuraç
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:92
 msgctxt "@info %1 is the name of a profile"
 msgid "Recommended settings (for <b>%1</b>) were altered."
-msgstr ""
+msgstr "As definições recomendadas (para <b>%1</b>) foram alteradas."
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:106
-#, fuzzy
 msgctxt "@info %1 is the name of a profile"
 msgid "Some setting-values defined in <b>%1</b> were overridden."
-msgstr "Algumas definições do perfil actual foram substituídas."
+msgstr "Some setting-values defined in <b>%1</b> were overridden."
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:137
 msgctxt "@info"
 msgid "Reset to defaults."
-msgstr ""
+msgstr "Repor predefinições."
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:178
 msgctxt "@info"
 msgid "Compare and save."
-msgstr ""
+msgstr "Compare e guarde."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedAdhesionSelector.qml:15
 msgctxt "@label"
@@ -6260,16 +6227,14 @@ msgid "Enable printing a brim or raft. This will add a flat area around or under
 msgstr "Permite a impressão de uma aba ou raft. Isto irá adicionar, respetivamente, uma área plana em torno ou sob a base do seu objeto, que são fáceis de retirar posteriormente."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:102
-#, fuzzy
 msgctxt "@label"
 msgid "Recommended print settings"
-msgstr "Definições de impressão"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:111
-#, fuzzy
 msgctxt "@button"
 msgid "Show Custom"
-msgstr "Personalizado"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedResolutionSelector.qml:27
 msgctxt "@label"
@@ -6279,28 +6244,27 @@ msgstr "Resolução"
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:16
 msgctxt "@label"
 msgid "Strength"
-msgstr ""
+msgstr "Força"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:20
 msgctxt "@label"
 msgid "The following settings define the strength of your part."
-msgstr ""
+msgstr "As seguintes definições definem a força da sua peça."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:34
-#, fuzzy
 msgctxt "infill_sparse_density description"
 msgid "Infill Density"
-msgstr "Apenas objeto de enchimento"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:35
 msgctxt "@label"
 msgid "Adjusts the density of infill of the print."
-msgstr ""
+msgstr "Ajusta a densidade do enchimento da impressão."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:54
 msgctxt "@action:label"
 msgid "Infill Pattern"
-msgstr ""
+msgstr "Padrão de Enchimento"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:56
 msgctxt "@label"
@@ -6313,17 +6277,21 @@ msgid ""
 "\n"
 "For functional 3D prints which require high strenght in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
 msgstr ""
+"O padrão do material de enchimento da impressão:\n"
+"\n"
+"Para impressões rápidas de modelo não funcional, escolha linha, ziguezague ou enchimento de iluminação.Para uma parte funcional não sujeita a muito stress recomendamos grelha ou triângulo ou tri hexágono.\n"
+"\n"
+"Para impressões 3D funcionais que exigem alta tensão em múltiplas direções, use a subdivisão cúbica, cúbica, quarto cúbica, octeto e tireoide."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:67
-#, fuzzy
 msgctxt "@action:label"
 msgid "Shell Thickness"
-msgstr "Espessura da Camada"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:68
 msgctxt "@label"
 msgid "Defines the tickness of your part side walls, roof and floor."
-msgstr ""
+msgstr "Define a espessura das paredes laterais da peça, do telhado e do chão."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:16
 msgctxt "@label"
@@ -6331,16 +6299,14 @@ msgid "Support"
 msgstr "Suportes"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:21
-#, fuzzy
 msgctxt "@label"
 msgid "Generate structures to support parts of the model which have overhangs. Without these structures, these parts would collapse during printing."
-msgstr "Criar estruturas para suportar partes do modelo, suspensas ou com saliências. Sem estas estruturas, essas partes do modelo podem desmoronar durante a impressão."
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:40
-#, fuzzy
 msgctxt "@action:label"
 msgid "Support Type"
-msgstr "Suportes"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:41
 msgctxt "@label"
@@ -6351,27 +6317,29 @@ msgid ""
 "\n"
 "\"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
 msgstr ""
+"Escolha entre os tipos de estrutura de suportes disponíveis. ⏎⏎ O tipo \"Normal\" cria uma estrutura de suporte diretamente por baixo das saliências e extrude estas áreas para baixo. \n"
+"\n"
+"A estrutura tipo \"Árvore\" cria ramos em direção às saliências, de forma a que estas sejam suportadas pelas pontas dos ramos, que crescem a partir da base de construção mesmo se for necessário andar em redor do modelos."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:53
-#, fuzzy
 msgctxt "@action:label"
 msgid "Print with"
-msgstr "A Imprimir"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:54
 msgctxt "@label"
 msgid "The extruder train to use for printing the support. This is used in multi-extrusion."
-msgstr ""
+msgstr "O extrusor a utilizar para imprimir os suportes. Definição usada com múltiplos extrusores."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:67
 msgctxt "@action:label"
 msgid "Placement"
-msgstr ""
+msgstr "Colocação"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:68
 msgctxt "support_type description"
 msgid "Adjusts the placement of the support structures. The placement can be set to touching build plate or everywhere. When set to everywhere the support structures will also be printed on the model."
-msgstr ""
+msgstr "Ajusta a colocação das estruturas de suporte. A colocação pode ser definida para tocar na base de construção ou em todo o lado. Quando definida para tocar em todo o lado, as estruturas de suporte também serão impressas no modelo."
 
 #: resources/qml/PrintSetupSelector/Recommended/UnsupportedProfileIndication.qml:31
 msgctxt "@error"
@@ -6808,95 +6776,84 @@ msgid "Add a non-networked printer"
 msgstr "Adicionar uma impressora sem rede"
 
 #: resources/qml/WelcomePages/AddThirdPartyPrinter.qml:102
-#, fuzzy
 msgctxt "@button"
 msgid "Add UltiMaker printer via Digital Factory"
-msgstr "Visualize as impressoras na fábrica digital"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:29
-#, fuzzy
 msgctxt "@label"
 msgid "In order to start using Cura you will need to configure a printer."
-msgstr "Para poder utilizar este pacote terá de reiniciar o Cura"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:36
 msgctxt "@label"
 msgid "What printer would you like to setup?"
-msgstr ""
+msgstr "Qual impressora gostaria de definir?"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:55
-#, fuzzy
 msgctxt "@button"
 msgid "UltiMaker printer"
-msgstr "Suporte da UltiMaker"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:64
-#, fuzzy
 msgctxt "@button"
 msgid "Non UltiMaker printer"
-msgstr "Suporte da UltiMaker"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:73
 msgctxt "@button"
 msgid "Learn more about adding printers to Cura"
-msgstr ""
+msgstr "Saiba mais sobre como adicionar impressoras ao Cura"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinterStack.qml:29
-#, fuzzy
 msgctxt "@label"
 msgid "Add printer"
-msgstr "Adicionar Impressora"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:33
-#, fuzzy
 msgctxt "@label"
 msgid "New UltiMaker printers can be connected to Digital Factory and monitored remotely."
-msgstr "Certifique-se de que todas as impressoras estão ON e ligadas com a Digital Factory."
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:70
 msgctxt "@label"
 msgid "If you are trying to add a new UltiMaker printer to Cura"
-msgstr ""
+msgstr "Se estiver a tentar adicionar uma nova impressora UltiMaker ao Cura"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:80
-#, fuzzy
 msgctxt "@info"
 msgid "Sign in into UltiMaker Digital Factory"
-msgstr "Monitorize as impressoras no Ultimaker Digital Factory."
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:81
 msgctxt "@info"
 msgid "Follow the procedure to add a new printer"
-msgstr ""
+msgstr "Siga o procedimento para adicionar uma nova impressora"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:82
 msgctxt "@info"
 msgid "Your new printer will automatically appear in Cura"
-msgstr ""
+msgstr "A sua nova impressora aparecerá automaticamente no Cura"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:100
-#, fuzzy
 msgctxt "@button"
 msgid "Learn more"
-msgstr "Saber mais"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:121
-#, fuzzy
 msgctxt "@button"
 msgid "Add local printer"
-msgstr "Adicionar uma impressora"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:129
-#, fuzzy
 msgctxt "@button"
 msgid "Sign in to Digital Factory"
-msgstr "Visualize as impressoras na fábrica digital"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:133
-#, fuzzy
 msgctxt "@button"
 msgid "Waiting for new printers"
-msgstr "Gerir impressoras"
+msgstr ""
 
 #: resources/qml/WelcomePages/ChangelogContent.qml:24
 msgctxt "@label"
@@ -6931,13 +6888,12 @@ msgstr "Crie uma Conta UltiMaker gratuita"
 #: resources/qml/WelcomePages/DataCollectionsContent.qml:24
 msgctxt "@label"
 msgid "Help us to improve UltiMaker Cura"
-msgstr "Ajude-nos a melhorar o UltiMaker Cura"
+msgstr "Ajude-nos a melhorar o UltiMaker Cura"
 
 #: resources/qml/WelcomePages/DataCollectionsContent.qml:56
-#, fuzzy
 msgctxt "@text"
 msgid "UltiMaker Cura collects anonymous data to improve print quality and user experience, including:"
-msgstr "O UltiMaker Cura recolhe dados anónimos para melhorar a qualidade da impressão e a experiência do utilizador, incluindo:"
+msgstr ""
 
 #: resources/qml/WelcomePages/DataCollectionsContent.qml:68
 msgctxt "@text"
@@ -6960,10 +6916,9 @@ msgid "Print settings"
 msgstr "Definições de impressão"
 
 #: resources/qml/WelcomePages/DataCollectionsContent.qml:99
-#, fuzzy
 msgctxt "@text"
 msgid "Data collected by UltiMaker Cura will not contain any personal information."
-msgstr "Os dados recolhidos pelo UltiMaker Cura não conterão quaisquer informações pessoais."
+msgstr ""
 
 #: resources/qml/WelcomePages/DataCollectionsContent.qml:100
 msgctxt "@text"
@@ -6988,13 +6943,12 @@ msgstr "Rejeitar e fechar"
 #: resources/qml/WelcomePages/WelcomeContent.qml:56
 msgctxt "@label"
 msgid "Welcome to UltiMaker Cura"
-msgstr "Bem-vindo ao UltiMaker Cura"
+msgstr "Bem-vindo ao UltiMaker Cura"
 
 #: resources/qml/WelcomePages/WelcomeContent.qml:67
-#, fuzzy
 msgctxt "@text"
 msgid "Please follow these steps to set up UltiMaker Cura. This will only take a few moments."
-msgstr "Siga estes passos para configurar o UltiMaker Cura. Este processo irá demorar apenas alguns momentos."
+msgstr ""
 
 #: resources/qml/WelcomePages/WelcomeContent.qml:82
 msgctxt "@button"
@@ -7011,17 +6965,97 @@ msgctxt "@label"
 msgid "No items to select from"
 msgstr "Nenhum item para selecionar"
 
+#~ msgctxt "@text"
+#~ msgid ""
+#~ "- Add material profiles and plug-ins from the Marketplace\n"
+#~ "- Back-up and sync your material profiles and plug-ins\n"
+#~ "- Share ideas and get help from 48,000+ users in the Ultimaker community"
+#~ msgstr ""
+#~ "- Adicione definições de materiais e plug-ins do Marketplace\n"
+#~ "- Efetue uma cópia de segurança e sincronize as definições de materiais e plug-ins\n"
+#~ "- Partilhe ideias e obtenha ajuda dos mais de 48.000 utilizadores da Comunidade Ultimaker"
+
+#~ msgctxt "@label crash message"
+#~ msgid ""
+#~ "<p><b>Oops, Ultimaker Cura has encountered something that doesn't seem right.</p></b>\n"
+#~ "                    <p>We encountered an unrecoverable error during start up. It was possibly caused by some incorrect configuration files. We suggest to backup and reset your configuration.</p>\n"
+#~ "                    <p>Backups can be found in the configuration folder.</p>\n"
+#~ "                    <p>Please send us this Crash Report to fix the problem.</p>\n"
+#~ "                "
+#~ msgstr ""
+#~ "<p><b>Ups, o Ultimaker Cura encontrou um possível problema.</p></b>\n"
+#~ "                    <p>Foi encontrado um erro irrecuperável durante o arranque da aplicação. Este pode ter sido causado por alguns ficheiros de configuração incorrectos. Sugerimos que faça um backup e reponha a sua configuração.</p>\n"
+#~ "                    <p>Os backups estão localizados na pasta de configuração.</p>\n"
+#~ "                    <p>Por favor envie-nos este Relatório de Falhas para podermos resolver o problema.</p>\n"
+#~ "                "
+
+#~ msgctxt "@label"
+#~ msgid "Add a printer"
+#~ msgstr "Adicionar uma impressora"
+
 #~ msgctxt "@label"
 #~ msgid "Add cloud printer"
 #~ msgstr "Adicionar impressora de cloud"
+
+#~ msgctxt "@action:inmenu Marketplace is a brand name of Ultimaker's, so don't translate."
+#~ msgid "Add more materials from Marketplace"
+#~ msgstr "Adicionar mais materiais disponíveis no Marketplace"
 
 #~ msgctxt "@label"
 #~ msgid "Aluminum"
 #~ msgstr "Alumínio"
 
+#~ msgctxt "@tooltip:button"
+#~ msgid "Become a 3D printing expert with Ultimaker e-learning."
+#~ msgstr "Torne-se um perito em impressão 3D com os cursos de e-learning da Ultimaker."
+
+#~ msgctxt "@label"
+#~ msgid "Can't connect to your Ultimaker printer?"
+#~ msgstr "Não se consegue ligar a uma impressora Ultimaker?"
+
 #~ msgctxt "@label"
 #~ msgid "Change build plate to %1 (This cannot be overridden)."
 #~ msgstr "Alterar base de construção para %1 (isto não pode ser substituído)."
+
+#~ msgctxt "@info:title"
+#~ msgid "Changes detected from your Ultimaker account"
+#~ msgstr "Foram detetadas alterações da sua conta Ultimaker"
+
+#~ msgctxt "@tooltip:button"
+#~ msgid "Consult the Ultimaker Community."
+#~ msgstr "Consulte a Comunidade Ultimaker."
+
+#~ msgctxt "@text"
+#~ msgid "Create a free Ultimaker Account"
+#~ msgstr "Crie uma Conta Ultimaker gratuita"
+
+#~ msgctxt "@button"
+#~ msgid "Create a free Ultimaker account"
+#~ msgstr "Crie uma conta Ultimaker gratuita"
+
+#~ msgctxt "@info:credit"
+#~ msgid ""
+#~ "Cura is developed by Ultimaker B.V. in cooperation with the community.\n"
+#~ "Cura proudly uses the following open source projects:"
+#~ msgstr ""
+#~ "O Cura foi desenvolvido pela Ultimaker B.V. em colaboração com a comunidade.\n"
+#~ "O Cura tem o prazer de utilizar os seguintes projetos open source:"
+
+#~ msgctxt "@button"
+#~ msgid "Custom"
+#~ msgstr "Personalizado"
+
+#~ msgctxt "@text"
+#~ msgid "Data collected by Ultimaker Cura will not contain any personal information."
+#~ msgstr "Os dados recolhidos pelo Ultimaker Cura não conterão quaisquer informações pessoais."
+
+#~ msgctxt "@tooltip:button"
+#~ msgid "Extend Ultimaker Cura with plugins and material profiles."
+#~ msgstr "Tire mais partido do Ultimaker Cura com plug-ins e perfis de materiais."
+
+#~ msgctxt "@label"
+#~ msgid "Generate structures to support parts of the model which have overhangs. Without these structures, such parts would collapse during printing."
+#~ msgstr "Criar estruturas para suportar partes do modelo, suspensas ou com saliências. Sem estas estruturas, essas partes do modelo podem desmoronar durante a impressão."
 
 #~ msgctxt "@label"
 #~ msgid "Glass"
@@ -7035,6 +7069,10 @@ msgstr "Nenhum item para selecionar"
 #~ msgid "Gradual infill will gradually increase the amount of infill towards the top."
 #~ msgstr "O enchimento gradual irá aumentar progressivamente a densidade do enchimento em direção ao topo."
 
+#~ msgctxt "@label"
+#~ msgid "Help us to improve Ultimaker Cura"
+#~ msgstr "Ajude-nos a melhorar o Ultimaker Cura"
+
 #~ msgctxt "@info:tooltip"
 #~ msgid "How should the conflict in the machine be resolved?"
 #~ msgstr "Como deve ser resolvido o conflito da máquina?"
@@ -7047,10 +7085,102 @@ msgstr "Nenhum item para selecionar"
 #~ msgid "How should the conflict in the profile be resolved?"
 #~ msgstr "Como deve ser resolvido o conflito no perfil?"
 
+#~ msgctxt "@tooltip:button"
+#~ msgid "Learn how to get started with Ultimaker Cura."
+#~ msgstr "Saiba como começar a utilizar o Ultimaker Cura."
+
+#~ msgctxt "@text"
+#~ msgid "Manage your Ultimaker Cura plugins and material profiles here. Make sure to keep your plugins up to date and backup your setup regularly."
+#~ msgstr "Faça aqui a gestão dos plug-ins e perfis de materiais do Ultimaker Cura. Certifique-se de que mantém os plug-ins atualizados e que efetua regularmente uma cópia de segurança da sua configuração."
+
+#~ msgctxt "@text"
+#~ msgid "Please follow these steps to set up Ultimaker Cura. This will only take a few moments."
+#~ msgstr "Siga estes passos para configurar o Ultimaker Cura. Este processo irá demorar apenas alguns momentos."
+
+#~ msgctxt "@label"
+#~ msgid "Please select any upgrades made to this Ultimaker Original"
+#~ msgstr "Selecione quaisquer atualizações realizadas a esta Ultimaker Original"
+
+#~ msgctxt "@message:description"
+#~ msgid "Report a bug on Ultimaker Cura's issue tracker."
+#~ msgstr "Reportar um erro no registo de problemas do Ultimaker Cura."
+
+#~ msgctxt "@text"
+#~ msgid "Select and install material profiles optimised for your Ultimaker 3D printers."
+#~ msgstr "Selecione e instale perfis de materiais otimizados para as impressoras 3D Ultimaker."
+
+#~ msgctxt "@action:button"
+#~ msgid "Send crash report to Ultimaker"
+#~ msgstr "Enviar relatório de falhas para a Ultimaker"
+
+#~ msgctxt "@text"
+#~ msgid "Share ideas and get help from 48,000+ users in the Ultimaker Community"
+#~ msgstr "Partilhe ideias e obtenha ajuda dos mais de 48.000 utilizadores da Comunidade Ultimaker"
+
+#~ msgctxt "@info:tooltip"
+#~ msgid "Should anonymous data about your print be sent to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored."
+#~ msgstr "Podem alguns dados anónimos sobre a impressão ser enviados para a Ultimaker? Não são enviadas, nem armazenadas, quaisquer informações pessoais, incluindo modelos, endereços IP ou outro tipo de identificação pessoal."
+
+#~ msgctxt "@label"
+#~ msgid "Sign in to the Ultimaker platform"
+#~ msgstr "Inicie a sessão na plataforma Ultimaker"
+
 #~ msgctxt "@info"
 #~ msgid "Some settings were changed."
 #~ msgstr "Algumas definições foram alteradas."
 
+#~ msgctxt "@text"
+#~ msgid "Streamline your workflow and customize your Ultimaker Cura experience with plugins contributed by our amazing community of users."
+#~ msgstr "Simplifique o seu fluxo de trabalho e personalize a sua utilização do Ultimaker Cura com plug-ins criados pela nossa incrível comunidade de utilizadores."
+
+#~ msgctxt "@button"
+#~ msgid "Ultimaker Account"
+#~ msgstr "Conta Ultimaker"
+
+#~ msgctxt "@info"
+#~ msgid "Ultimaker Certified Material"
+#~ msgstr "Material Certificado pela Ultimaker"
+
+#~ msgctxt "@text:window"
+#~ msgid "Ultimaker Cura collects anonymous data in order to improve the print quality and user experience. Below is an example of all the data that is shared:"
+#~ msgstr "O Ultimaker Cura recolhe dados anónimos para melhorar a qualidade da impressão e a experiência do utilizador. Segue-se um exemplo de todos os dados partilhados:"
+
+#~ msgctxt "@text"
+#~ msgid "Ultimaker Cura collects anonymous data to improve print quality and user experience, including:"
+#~ msgstr "O Ultimaker Cura recolhe dados anónimos para melhorar a qualidade da impressão e a experiência do utilizador, incluindo:"
+
+#~ msgctxt "@item:inlistbox"
+#~ msgid "Ultimaker Format Package"
+#~ msgstr "Arquivo Ultimaker Format"
+
+#~ msgctxt "@info"
+#~ msgid "Ultimaker Verified Package"
+#~ msgstr "Pacote Aprovado pela Ultimaker"
+
+#~ msgctxt "@info"
+#~ msgid "Ultimaker Verified Plug-in"
+#~ msgstr "Plug-in Aprovado pela Ultimaker"
+
+#~ msgctxt "@label:button"
+#~ msgid "Ultimaker support"
+#~ msgstr "Suporte da Ultimaker"
+
+#~ msgctxt "@info"
+#~ msgid "Unable to reach the Ultimaker account server."
+#~ msgstr "Não é possível aceder ao servidor da conta Ultimaker."
+
 #~ msgctxt "@action:label"
 #~ msgid "Visible settings:"
 #~ msgstr "Definições visíveis:"
+
+#~ msgctxt "@tooltip:button"
+#~ msgid "Visit the Ultimaker website."
+#~ msgstr "Visite o site da Ultimaker."
+
+#~ msgctxt "@info"
+#~ msgid "Webcam feeds for cloud printers cannot be viewed from Ultimaker Cura. Click \"Manage printer\" to visit Ultimaker Digital Factory and view this webcam."
+#~ msgstr "Não é possível visualizar os feeds das câmaras das impressoras na cloud a partir do Ultimaker Cura. Clique em \"Gerir impressora\" para visitar o Ultimaker Digital Factory e ver esta câmara."
+
+#~ msgctxt "@label"
+#~ msgid "Welcome to Ultimaker Cura"
+#~ msgstr "Bem-vindo ao Ultimaker Cura"
