@@ -1,0 +1,20 @@
+{
+    "version": 2,
+    "name": "LNL3D D5",
+    "inherits": "lnl3d_base",
+    "metadata":
+    {
+        "visible": true,
+        "platform": "lnl3d_d5.stl",
+        "platform_offset": [ -1700, 6, -104 ]
+    },
+    "overrides":
+    {
+        "machine_depth": { "default_value": 500 },
+        "machine_height": { "default_value": 600 },
+        "machine_name": { "default_value": "LNL3D D5" },
+        "machine_width": { "default_value": 500 },
+        "prime_tower_position_x": { "value": "155" },
+        "prime_tower_position_y": { "value": "155" }
+    }
+}
