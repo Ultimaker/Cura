@@ -3831,7 +3831,7 @@ msgstr "プリンターに材料を送信しています"
 msgctxt "info:status"
 msgid "New printer detected from your Ultimaker account"
 msgid_plural "New printers detected from your Ultimaker account"
-msgstr[0] ""
+msgstr[0] "Ultimakerアカウントから新しいプリンターが検出されました"
 
 #: plugins/UM3NetworkPrinting/src/Messages/NewPrinterDetectedMessage.py:29
 #, python-brace-format
@@ -6896,93 +6896,3 @@ msgstr "新情報"
 msgctxt "@label"
 msgid "No items to select from"
 msgstr "選択するアイテムがありません"
-
-#~ msgctxt "@label"
-#~ msgid "Add cloud printer"
-#~ msgstr "クラウドプリンターを追加"
-
-#~ msgctxt "@label"
-#~ msgid "Aluminum"
-#~ msgstr "アルミニウム"
-
-#~ msgctxt "@label"
-#~ msgid "Change build plate to %1 (This cannot be overridden)."
-#~ msgstr "ビルドプレートを %1 に変更します（これは上書きできません）。"
-
-#~ msgctxt "@text"
-#~ msgid "Data collected by UltiMaker Cura will not contain any personal information."
-#~ msgstr "UltiMaker Cura が収集したデータには個人データは含まれません。"
-
-#~ msgctxt "@button"
-#~ msgid "Get started"
-#~ msgstr "はじめに"
-
-#~ msgctxt "@label"
-#~ msgid "Glass"
-#~ msgstr "ガラス"
-
-#~ msgctxt "@label"
-#~ msgid "Gradual infill"
-#~ msgstr "インフィル半減"
-
-#~ msgctxt "@label"
-#~ msgid "Gradual infill will gradually increase the amount of infill towards the top."
-#~ msgstr "グラデュアルインフィルはトップに向かうに従ってインフィルの量を増やします。"
-
-#~ msgctxt "@label"
-#~ msgid "Help us to improve UltiMaker Cura"
-#~ msgstr "UltiMaker Cura の改善にご協力ください"
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "How should the conflict in the machine be resolved?"
-#~ msgstr "このプリンターの問題をどのように解決すればいいか？"
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "How should the conflict in the material be resolved?"
-#~ msgstr "このフィラメントの問題をどのように解決すればいいか？"
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "How should the conflict in the profile be resolved?"
-#~ msgstr "このプロファイルの問題をどのように解決すればいいか？"
-
-#~ msgctxt "@text"
-#~ msgid "Machine types"
-#~ msgstr "プリンターのタイプ"
-
-#~ msgctxt "@text"
-#~ msgid "Material usage"
-#~ msgstr "材料の利用状況"
-
-#~ msgctxt "@text"
-#~ msgid "More information"
-#~ msgstr "詳細"
-
-#~ msgctxt "@text"
-#~ msgid "Number of slices"
-#~ msgstr "スライスの数"
-
-#~ msgctxt "@text"
-#~ msgid "Please follow these steps to set up UltiMaker Cura. This will only take a few moments."
-#~ msgstr ""
-#~ "以下の手順で\n"
-#~ "UltiMaker Cura を設定してください。数秒で完了します。"
-
-#~ msgctxt "@text"
-#~ msgid "Print settings"
-#~ msgstr "プリント設定"
-
-#~ msgctxt "@info"
-#~ msgid "Some settings were changed."
-#~ msgstr "一部の設定が変更されました。"
-
-#~ msgctxt "@text"
-#~ msgid "UltiMaker Cura collects anonymous data to improve print quality and user experience, including:"
-#~ msgstr "UltiMaker Cura は、印刷品質とユーザーエクスペリエンスを向上させるために以下の匿名データを収集します:"
-
-#~ msgctxt "@action:label"
-#~ msgid "Visible settings:"
-#~ msgstr "ビジブル設定:"
-
-#~ msgctxt "@label"
-#~ msgid "Welcome to UltiMaker Cura"
-#~ msgstr "UltiMaker Cura にようこそ"
