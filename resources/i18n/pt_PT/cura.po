@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-06 16:57+0100\n"
+"POT-Creation-Date: 2023-03-06 17:11+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -950,7 +950,7 @@ msgstr "Faz a gestão de extensões da aplicação e permite a navegação das e
 #: plugin.json
 msgctxt "description"
 msgid "Manages network connections to UltiMaker networked printers."
-msgstr "Gere as ligações de rede com as impressoras em rede Ultimaker."
+msgstr "Gere as ligações de rede com as impressoras em rede UltiMaker."
 
 #: plugin.json
 msgctxt "name"
@@ -2563,7 +2563,8 @@ msgstr "Gerir os pacotes"
 #: plugins/Marketplace/resources/qml/ManagedPackages.qml:16
 msgctxt "@text"
 msgid "Manage your UltiMaker Cura plugins and material profiles here. Make sure to keep your plugins up to date and backup your setup regularly."
-msgstr ""
+msgstr "Faça aqui a gestão dos plug-ins e perfis de materiais do Ultimaker Cura. Certifique-se de que mantém os plug-ins atualizados e que efetua regularmente"
+" uma cópia de segurança da sua configuração."
 
 #: plugins/Marketplace/resources/qml/Marketplace.qml:87
 msgctxt "@title"
@@ -2604,7 +2605,7 @@ msgstr "Instalar materiais"
 #: plugins/Marketplace/resources/qml/Materials.qml:12
 msgctxt "@text"
 msgid "Select and install material profiles optimised for your UltiMaker 3D printers."
-msgstr ""
+msgstr "Selecione e instale perfis de materiais otimizados para as impressoras 3D UltiMaker."
 
 #: plugins/Marketplace/resources/qml/MultipleLicenseDialog.qml:35
 msgctxt "@label"
@@ -2787,7 +2788,7 @@ msgstr "Instale plug-ins"
 #: plugins/Marketplace/resources/qml/Plugins.qml:12
 msgctxt "@text"
 msgid "Streamline your workflow and customize your UltiMaker Cura experience with plugins contributed by our amazing community of users."
-msgstr ""
+msgstr "Simplifique o seu fluxo de trabalho e personalize a sua utilização do Ultimaker Cura com plug-ins criados pela nossa incrível comunidade de utilizadores."
 
 #: plugins/Marketplace/resources/qml/VerifiedIcon.qml:21
 msgctxt "@info"
@@ -3211,7 +3212,7 @@ msgstr "Mais informações sobre a recolha anónima de dados"
 #: plugins/SliceInfoPlugin/MoreInfoWindow.qml:73
 msgctxt "@text:window"
 msgid "UltiMaker Cura collects anonymous data in order to improve the print quality and user experience. Below is an example of all the data that is shared:"
-msgstr ""
+msgstr "O Ultimaker Cura recolhe dados anónimos para melhorar a qualidade da impressão e a experiência do utilizador. Segue-se um exemplo de todos os dados partilhados:"
 
 #: plugins/SliceInfoPlugin/MoreInfoWindow.qml:107
 msgctxt "@text:window"
@@ -4102,7 +4103,8 @@ msgid ""
 "- Add material profiles and plug-ins from the Marketplace\n"
 "- Back-up and sync your material profiles and plug-ins\n"
 "- Share ideas and get help from 48,000+ users in the UltiMaker community"
-msgstr ""
+msgstr "- Adicione definições de materiais e plug-ins do Marketplace\n- Efetue uma cópia de segurança e sincronize as definições de materiais e plug-ins\n- Partilhe"
+" ideias e obtenha ajuda dos mais de 48.000 utilizadores da Comunidade Ultimaker"
 
 #: resources/qml/Account/GeneralOperations.qml:58
 msgctxt "@button"
@@ -4297,7 +4299,7 @@ msgstr "Gerir Materiais..."
 #: resources/qml/Actions.qml:218
 msgctxt "@action:inmenu Marketplace is a brand name of UltiMaker's, so don't translate."
 msgid "Add more materials from Marketplace"
-msgstr ""
+msgstr "Adicionar mais materiais disponíveis no Marketplace"
 
 #: resources/qml/Actions.qml:225
 msgctxt "@action:inmenu menubar:profile"
@@ -5610,7 +5612,8 @@ msgstr "Privacidade"
 #: resources/qml/Preferences/GeneralPage.qml:862
 msgctxt "@info:tooltip"
 msgid "Should anonymous data about your print be sent to UltiMaker? Note, no models, IP addresses or other personally identifiable information is sent or stored."
-msgstr ""
+msgstr "Podem alguns dados anónimos sobre a impressão ser enviados para a Ultimaker? Não são enviadas, nem armazenadas, quaisquer informações pessoais, incluindo"
+" modelos, endereços IP ou outro tipo de identificação pessoal."
 
 #: resources/qml/Preferences/GeneralPage.qml:867
 msgctxt "@option:check"
@@ -6300,7 +6303,7 @@ msgstr "Suportes"
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:21
 msgctxt "@label"
 msgid "Generate structures to support parts of the model which have overhangs. Without these structures, these parts would collapse during printing."
-msgstr ""
+msgstr "Criar estruturas para suportar partes do modelo, suspensas ou com saliências. Sem estas estruturas, essas partes do modelo podem desmoronar durante a impressão."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:40
 msgctxt "@action:label"

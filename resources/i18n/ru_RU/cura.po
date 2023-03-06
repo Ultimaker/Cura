@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-06 16:57+0100\n"
+"POT-Creation-Date: 2023-03-06 17:11+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -950,12 +950,12 @@ msgstr "Позволяет управлять расширениями прил�
 #: plugin.json
 msgctxt "description"
 msgid "Manages network connections to UltiMaker networked printers."
-msgstr ""
+msgstr "Управляет сетевыми соединениями с сетевыми принтерами UltiMaker."
 
 #: plugin.json
 msgctxt "name"
 msgid "Marketplace"
-msgstr "Магазин"
+msgstr "Marketplace"
 
 #: plugin.json
 msgctxt "name"
@@ -1175,12 +1175,12 @@ msgstr "Печать через USB"
 #: plugin.json
 msgctxt "name"
 msgid "UltiMaker Network Connection"
-msgstr ""
+msgstr "Соединение с сетью UltiMaker"
 
 #: plugin.json
 msgctxt "name"
 msgid "UltiMaker machine actions"
-msgstr ""
+msgstr "Действия с принтерами UltiMaker"
 
 #: plugin.json
 msgctxt "name"
@@ -1464,7 +1464,7 @@ msgstr "Открыть файл проекта"
 #: plugins/3MFReader/WorkspaceDialog.qml:134
 msgctxt "@button"
 msgid "Create new"
-msgstr ""
+msgstr "Создать новый"
 
 #: plugins/3MFReader/ThreeMFWorkspaceReader.py:681
 #, python-brace-format
@@ -2565,7 +2565,8 @@ msgstr "Управление пакетами"
 #: plugins/Marketplace/resources/qml/ManagedPackages.qml:16
 msgctxt "@text"
 msgid "Manage your UltiMaker Cura plugins and material profiles here. Make sure to keep your plugins up to date and backup your setup regularly."
-msgstr ""
+msgstr "Здесь можно управлять встраиваемыми модулями Ultimaker Cura и профилями материалов. Регулярно обновляйте встраиваемые модули и создавайте резервные копии"
+" настроек."
 
 #: plugins/Marketplace/resources/qml/Marketplace.qml:87
 msgctxt "@title"
@@ -2606,7 +2607,7 @@ msgstr "Установка материалов"
 #: plugins/Marketplace/resources/qml/Materials.qml:12
 msgctxt "@text"
 msgid "Select and install material profiles optimised for your UltiMaker 3D printers."
-msgstr ""
+msgstr "Выберите и установите профили материалов, оптимизированные для 3D-принтеров Ultimaker."
 
 #: plugins/Marketplace/resources/qml/MultipleLicenseDialog.qml:35
 msgctxt "@label"
@@ -2789,7 +2790,7 @@ msgstr "Установка встраиваемых модулей"
 #: plugins/Marketplace/resources/qml/Plugins.qml:12
 msgctxt "@text"
 msgid "Streamline your workflow and customize your UltiMaker Cura experience with plugins contributed by our amazing community of users."
-msgstr ""
+msgstr "Оптимизируйте свои рабочие процессы и настройте Ultimaker Cura с помощью встраиваемых модулей, разработанных экспертами нашего замечательного сообщества."
 
 #: plugins/Marketplace/resources/qml/VerifiedIcon.qml:21
 msgctxt "@info"
@@ -3214,7 +3215,7 @@ msgstr "Дополнительная информация о сборе анон
 #: plugins/SliceInfoPlugin/MoreInfoWindow.qml:73
 msgctxt "@text:window"
 msgid "UltiMaker Cura collects anonymous data in order to improve the print quality and user experience. Below is an example of all the data that is shared:"
-msgstr ""
+msgstr "UltiMaker Cura собирает анонимные данные для повышения качества печати и улучшения взаимодействия с пользователем. Ниже приведен пример всех передаваемых данных:"
 
 #: plugins/SliceInfoPlugin/MoreInfoWindow.qml:107
 msgctxt "@text:window"
@@ -3839,9 +3840,9 @@ msgstr "Отправка материалов на принтер"
 msgctxt "info:status"
 msgid "New printer detected from your Ultimaker account"
 msgid_plural "New printers detected from your Ultimaker account"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Новый принтер обнаружен из учетной записи Ultimaker"
+msgstr[1] "Новых принтера обнаружено из учетной записи Ultimaker"
+msgstr[2] "Новых принтеров обнаружено из учетной записи Ultimaker"
 
 #: plugins/UM3NetworkPrinting/src/Messages/NewPrinterDetectedMessage.py:29
 #, python-brace-format
@@ -4113,7 +4114,8 @@ msgid ""
 "- Add material profiles and plug-ins from the Marketplace\n"
 "- Back-up and sync your material profiles and plug-ins\n"
 "- Share ideas and get help from 48,000+ users in the UltiMaker community"
-msgstr ""
+msgstr "- Добавляйте настройки материалов и плагины из Marketplace \n - Выполняйте резервное копирование и синхронизацию своих настроек материалов и плагинов \n"
+" - Делитесь идеями и получайте помощь от 48 000 пользователей в сообществе Ultimaker"
 
 #: resources/qml/Account/GeneralOperations.qml:58
 msgctxt "@button"
@@ -4308,7 +4310,7 @@ msgstr "Управление материалами..."
 #: resources/qml/Actions.qml:218
 msgctxt "@action:inmenu Marketplace is a brand name of UltiMaker's, so don't translate."
 msgid "Add more materials from Marketplace"
-msgstr ""
+msgstr "Добавить больше материалов из Магазина"
 
 #: resources/qml/Actions.qml:225
 msgctxt "@action:inmenu menubar:profile"
@@ -4615,7 +4617,7 @@ msgstr ""
 #: resources/qml/Cura.qml:909
 msgctxt "@label %i will be replaced with a profile name"
 msgid "<b>Only user changed settings will be saved in the custom profile.</b><br/>For materials that support it, the new custom profile will inherit properties from <b>%1</b>."
-msgstr ""
+msgstr "<b>В пользовательском профиле будут сохранены только измененные пользователем настройки.</b><br/>Для материалов, поддерживающих новый пользовательский профиль, этот профиль будет наследовать свойства от <b>%1</b>."
 
 #: resources/qml/Cura.qml:917
 msgctxt "@action:button"
@@ -5624,7 +5626,7 @@ msgstr "Приватность"
 #: resources/qml/Preferences/GeneralPage.qml:862
 msgctxt "@info:tooltip"
 msgid "Should anonymous data about your print be sent to UltiMaker? Note, no models, IP addresses or other personally identifiable information is sent or stored."
-msgstr ""
+msgstr "Можно ли отправлять анонимную информацию о вашей печати в UltiMaker? Следует отметить, что ни модели, ни IP-адреса и никакая другая персональная информация не будет отправлена или сохранена."
 
 #: resources/qml/Preferences/GeneralPage.qml:867
 msgctxt "@option:check"
@@ -6317,7 +6319,7 @@ msgstr "Поддержки"
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:21
 msgctxt "@label"
 msgid "Generate structures to support parts of the model which have overhangs. Without these structures, these parts would collapse during printing."
-msgstr ""
+msgstr "Генерация структур для поддержки нависающих частей модели. Без этих структур такие части будут складываться во время печати."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:40
 msgctxt "@action:label"
@@ -6822,7 +6824,7 @@ msgstr "Подробно о добавлении принтеров в Cura"
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinterStack.qml:29
 msgctxt "@label"
 msgid "Add printer"
-msgstr ""
+msgstr "Добавление принтера"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:33
 msgctxt "@label"
@@ -6852,7 +6854,7 @@ msgstr "Новый принтер автоматически появится в
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:100
 msgctxt "@button"
 msgid "Learn more"
-msgstr ""
+msgstr "Узнать больше"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:121
 msgctxt "@button"

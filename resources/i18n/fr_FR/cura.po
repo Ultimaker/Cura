@@ -4110,6 +4110,10 @@ msgid ""
 "- Back-up and sync your material profiles and plug-ins\n"
 "- Share ideas and get help from 48,000+ users in the UltiMaker community"
 msgstr ""
+"- Ajoutez des profils de matériaux et des plug-ins à partir de la Marketplace"
+"- Sauvegardez et synchronisez vos profils de matériaux et vos plug-ins"
+"- Partagez vos idées et obtenez l'aide de plus de 48 000 utilisateurs de la communauté Ultimaker"
+
 
 #: resources/qml/Account/GeneralOperations.qml:58
 msgctxt "@button"
@@ -4304,7 +4308,7 @@ msgstr "Gérer les matériaux..."
 #: resources/qml/Actions.qml:218
 msgctxt "@action:inmenu Marketplace is a brand name of UltiMaker's, so don't translate."
 msgid "Add more materials from Marketplace"
-msgstr ""
+msgstr "Ajouter d'autres matériaux depuis la Marketplace"
 
 #: resources/qml/Actions.qml:225
 msgctxt "@action:inmenu menubar:profile"
@@ -4631,7 +4635,7 @@ msgstr "À propos de %1"
 #: resources/qml/Dialogs/AboutDialog.qml:59
 msgctxt "@label"
 msgid "version: %1"
-msgstr "version : %1"
+msgstr "version: %1"
 
 #: resources/qml/Dialogs/AboutDialog.qml:74
 msgctxt "@label"
@@ -5617,7 +5621,8 @@ msgstr "Confidentialité"
 #: resources/qml/Preferences/GeneralPage.qml:862
 msgctxt "@info:tooltip"
 msgid "Should anonymous data about your print be sent to UltiMaker? Note, no models, IP addresses or other personally identifiable information is sent or stored."
-msgstr ""
+msgstr "Les données anonymes de votre impression doivent-elles être envoyées à Ultimaker ? Notez qu'aucun modèle, aucune adresse IP ni aucune autre information"
+" permettant de vous identifier personnellement ne seront envoyés ou stockés."
 
 #: resources/qml/Preferences/GeneralPage.qml:867
 msgctxt "@option:check"
@@ -6309,7 +6314,7 @@ msgstr "Support"
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:21
 msgctxt "@label"
 msgid "Generate structures to support parts of the model which have overhangs. Without these structures, these parts would collapse during printing."
-msgstr ""
+msgstr "Générer des structures pour soutenir les parties du modèle qui possèdent des porte-à-faux. Sans ces structures, ces parties s'effondreront durant l'impression."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:40
 msgctxt "@action:label"
@@ -6813,7 +6818,7 @@ msgstr "En savoir plus sur l'ajout d'imprimantes à Cura"
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinterStack.qml:29
 msgctxt "@label"
 msgid "Add printer"
-msgstr ""
+msgstr "Ajouter une imprimante"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:33
 msgctxt "@label"
@@ -6843,7 +6848,7 @@ msgstr "Votre nouvelle imprimante apparaîtra automatiquement dans Cura"
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:100
 msgctxt "@button"
 msgid "Learn more"
-msgstr ""
+msgstr "En savoir plus"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:121
 msgctxt "@button"
