@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-31 16:46+0100\n"
+"POT-Creation-Date: 2023-03-06 16:57+0100\n"
 "PO-Revision-Date: 2020-03-24 09:36+0100\n"
 "Last-Translator: Nagy Attila <vokroot@gmail.com>\n"
 "Language-Team: ATI-SZOFT\n"
@@ -1183,11 +1183,6 @@ msgid "USB printing"
 msgstr "USB nyomtatás"
 
 #: plugin.json
-msgctxt "name"
-msgid "Ultimaker Digital Library"
-msgstr ""
-
-#: plugin.json
 #, fuzzy
 msgctxt "name"
 msgid "UltiMaker Network Connection"
@@ -1198,6 +1193,11 @@ msgstr "UltiMaker hálózati kapcsolat"
 msgctxt "name"
 msgid "UltiMaker machine actions"
 msgstr "UltiMaker gépi funkciók"
+
+#: plugin.json
+msgctxt "name"
+msgid "Ultimaker Digital Library"
+msgstr ""
 
 #: plugin.json
 msgctxt "description"
@@ -2086,18 +2086,18 @@ msgctxt "@item:inlistbox"
 msgid "G-code File"
 msgstr "G-code Fájl"
 
-#: plugins/GCodeReader/FlavorParser.py:350
+#: plugins/GCodeReader/FlavorParser.py:359
 msgctxt "@info:status"
 msgid "Parsing G-code"
 msgstr "G-kód elemzés"
 
-#: plugins/GCodeReader/FlavorParser.py:352
-#: plugins/GCodeReader/FlavorParser.py:506
+#: plugins/GCodeReader/FlavorParser.py:361
+#: plugins/GCodeReader/FlavorParser.py:515
 msgctxt "@info:title"
 msgid "G-code Details"
 msgstr "G-kód részletek"
 
-#: plugins/GCodeReader/FlavorParser.py:504
+#: plugins/GCodeReader/FlavorParser.py:513
 msgctxt "@info:generic"
 msgid "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."
 msgstr "Győződj meg róla, hogy a G-kód igazodik a nyomtatódhoz és beállításaihoz, mielőtt elküldöd a fájlt. A G-kód ábrázolása nem biztos, hogy pontos."
@@ -6177,7 +6177,7 @@ msgctxt "@label shown when we load a Gcode file"
 msgid "Print setup disabled. G-code file can not be modified."
 msgstr "A nyomtatás beállítása letiltva. A G-kód fájl nem módosítható."
 
-#: resources/qml/PrintSetupSelector/PrintSetupSelectorContents.qml:160
+#: resources/qml/PrintSetupSelector/PrintSetupSelectorContents.qml:179
 msgctxt "@button"
 msgid "Recommended"
 msgstr "Ajánlott"

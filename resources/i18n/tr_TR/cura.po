@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-31 16:46+0100\n"
+"POT-Creation-Date: 2023-03-06 16:57+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1182,11 +1182,6 @@ msgid "USB printing"
 msgstr "USB yazdırma"
 
 #: plugin.json
-msgctxt "name"
-msgid "Ultimaker Digital Library"
-msgstr "Ultimaker Digital Library"
-
-#: plugin.json
 #, fuzzy
 msgctxt "name"
 msgid "UltiMaker Network Connection"
@@ -1197,6 +1192,11 @@ msgstr "UltiMaker Ağ Bağlantısı"
 msgctxt "name"
 msgid "UltiMaker machine actions"
 msgstr "UltiMaker makine eylemleri"
+
+#: plugin.json
+msgctxt "name"
+msgid "Ultimaker Digital Library"
+msgstr "Ultimaker Digital Library"
 
 #: plugin.json
 msgctxt "description"
@@ -2089,18 +2089,18 @@ msgctxt "@item:inlistbox"
 msgid "G-code File"
 msgstr "G-code dosyası"
 
-#: plugins/GCodeReader/FlavorParser.py:350
+#: plugins/GCodeReader/FlavorParser.py:359
 msgctxt "@info:status"
 msgid "Parsing G-code"
 msgstr "G-code ayrıştırma"
 
-#: plugins/GCodeReader/FlavorParser.py:352
-#: plugins/GCodeReader/FlavorParser.py:506
+#: plugins/GCodeReader/FlavorParser.py:361
+#: plugins/GCodeReader/FlavorParser.py:515
 msgctxt "@info:title"
 msgid "G-code Details"
 msgstr "G-code Ayrıntıları"
 
-#: plugins/GCodeReader/FlavorParser.py:504
+#: plugins/GCodeReader/FlavorParser.py:513
 msgctxt "@info:generic"
 msgid "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."
 msgstr "Dosya göndermeden önce g-code’un yazıcınız ve yazıcı yapılandırmanız için uygun olduğundan emin olun. G-code temsili doğru olmayabilir."
@@ -6204,7 +6204,7 @@ msgctxt "@label shown when we load a Gcode file"
 msgid "Print setup disabled. G-code file can not be modified."
 msgstr "Yazıcı kurulumu devre dışı bırakıldı. G-code dosyası düzenlenemez."
 
-#: resources/qml/PrintSetupSelector/PrintSetupSelectorContents.qml:160
+#: resources/qml/PrintSetupSelector/PrintSetupSelectorContents.qml:179
 msgctxt "@button"
 msgid "Recommended"
 msgstr "Önerilen"

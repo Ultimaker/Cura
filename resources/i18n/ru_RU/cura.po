@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-31 16:46+0100\n"
+"POT-Creation-Date: 2023-03-06 16:57+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -93,8 +93,7 @@ msgid ""
 "                    <p>Backups can be found in the configuration folder.</p>\n"
 "                    <p>Please send us this Crash Report to fix the problem.</p>\n"
 "                "
-msgstr ""
-"                "
+msgstr "                "
 
 #: cura/CrashHandler.py:122
 msgctxt "@action:button"
@@ -2077,18 +2076,18 @@ msgctxt "@item:inlistbox"
 msgid "G-code File"
 msgstr "Файл G-code"
 
-#: plugins/GCodeReader/FlavorParser.py:350
+#: plugins/GCodeReader/FlavorParser.py:359
 msgctxt "@info:status"
 msgid "Parsing G-code"
 msgstr "Обработка G-code"
 
-#: plugins/GCodeReader/FlavorParser.py:352
-#: plugins/GCodeReader/FlavorParser.py:506
+#: plugins/GCodeReader/FlavorParser.py:361
+#: plugins/GCodeReader/FlavorParser.py:515
 msgctxt "@info:title"
 msgid "G-code Details"
 msgstr "Параметры G-code"
 
-#: plugins/GCodeReader/FlavorParser.py:504
+#: plugins/GCodeReader/FlavorParser.py:513
 msgctxt "@info:generic"
 msgid "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."
 msgstr "Перед отправкой G-code на принтер удостоверьтесь в его соответствии вашему принтеру и его настройкам. Возможны неточности в G-code."
@@ -6186,7 +6185,7 @@ msgctxt "@label shown when we load a Gcode file"
 msgid "Print setup disabled. G-code file can not be modified."
 msgstr "Настройка печати отключена. Невозможно изменить файл с G-кодом."
 
-#: resources/qml/PrintSetupSelector/PrintSetupSelectorContents.qml:160
+#: resources/qml/PrintSetupSelector/PrintSetupSelectorContents.qml:179
 msgctxt "@button"
 msgid "Recommended"
 msgstr "Рекомендован"

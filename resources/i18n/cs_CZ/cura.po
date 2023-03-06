@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-31 16:46+0100\n"
+"POT-Creation-Date: 2023-03-06 16:57+0100\n"
 "PO-Revision-Date: 2022-10-10 18:52+0200\n"
 "Last-Translator: Miroslav Šustek <sustmidown@centrum.cz>\n"
 "Language-Team: DenyCZ <www.github.com/DenyCZ>\n"
@@ -1184,11 +1184,6 @@ msgid "USB printing"
 msgstr "USB tisk"
 
 #: plugin.json
-msgctxt "name"
-msgid "Ultimaker Digital Library"
-msgstr "Digitální knihovna UltiMaker"
-
-#: plugin.json
 #, fuzzy
 msgctxt "name"
 msgid "UltiMaker Network Connection"
@@ -1199,6 +1194,11 @@ msgstr "Síťové připojení UltiMaker"
 msgctxt "name"
 msgid "UltiMaker machine actions"
 msgstr "Akce zařízení UltiMaker"
+
+#: plugin.json
+msgctxt "name"
+msgid "Ultimaker Digital Library"
+msgstr "Digitální knihovna UltiMaker"
 
 #: plugin.json
 msgctxt "description"
@@ -2093,18 +2093,18 @@ msgctxt "@item:inlistbox"
 msgid "G-code File"
 msgstr "Soubor G-kódu"
 
-#: plugins/GCodeReader/FlavorParser.py:350
+#: plugins/GCodeReader/FlavorParser.py:359
 msgctxt "@info:status"
 msgid "Parsing G-code"
 msgstr "Zpracovávám G kód"
 
-#: plugins/GCodeReader/FlavorParser.py:352
-#: plugins/GCodeReader/FlavorParser.py:506
+#: plugins/GCodeReader/FlavorParser.py:361
+#: plugins/GCodeReader/FlavorParser.py:515
 msgctxt "@info:title"
 msgid "G-code Details"
 msgstr "Podrobnosti G kódu"
 
-#: plugins/GCodeReader/FlavorParser.py:504
+#: plugins/GCodeReader/FlavorParser.py:513
 msgctxt "@info:generic"
 msgid "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."
 msgstr "Před odesláním souboru se ujistěte, že je g-kód vhodný pro vaši tiskárnu a konfiguraci tiskárny. Reprezentace g-kódu nemusí být přesná."
@@ -6214,7 +6214,7 @@ msgctxt "@label shown when we load a Gcode file"
 msgid "Print setup disabled. G-code file can not be modified."
 msgstr "Nastavení tisku zakázáno. Soubor G-kódu nelze změnit."
 
-#: resources/qml/PrintSetupSelector/PrintSetupSelectorContents.qml:160
+#: resources/qml/PrintSetupSelector/PrintSetupSelectorContents.qml:179
 msgctxt "@button"
 msgid "Recommended"
 msgstr "Doporučeno"

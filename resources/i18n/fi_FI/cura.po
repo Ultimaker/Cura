@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-31 16:46+0100\n"
+"POT-Creation-Date: 2023-03-06 16:57+0100\n"
 "PO-Revision-Date: 2022-07-15 10:53+0200\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: Finnish\n"
@@ -1174,11 +1174,6 @@ msgid "USB printing"
 msgstr "USB-tulostus"
 
 #: plugin.json
-msgctxt "name"
-msgid "Ultimaker Digital Library"
-msgstr ""
-
-#: plugin.json
 #, fuzzy
 msgctxt "name"
 msgid "UltiMaker Network Connection"
@@ -1189,6 +1184,11 @@ msgstr "UltiMaker-verkkoyhteys"
 msgctxt "name"
 msgid "UltiMaker machine actions"
 msgstr "UltiMaker-laitteen toiminnot"
+
+#: plugin.json
+msgctxt "name"
+msgid "Ultimaker Digital Library"
+msgstr ""
 
 #: plugin.json
 msgctxt "description"
@@ -2077,18 +2077,18 @@ msgctxt "@item:inlistbox"
 msgid "G-code File"
 msgstr "GCode-tiedosto"
 
-#: plugins/GCodeReader/FlavorParser.py:350
+#: plugins/GCodeReader/FlavorParser.py:359
 msgctxt "@info:status"
 msgid "Parsing G-code"
 msgstr "G-coden jäsennys"
 
-#: plugins/GCodeReader/FlavorParser.py:352
-#: plugins/GCodeReader/FlavorParser.py:506
+#: plugins/GCodeReader/FlavorParser.py:361
+#: plugins/GCodeReader/FlavorParser.py:515
 msgctxt "@info:title"
 msgid "G-code Details"
 msgstr "G-coden tiedot"
 
-#: plugins/GCodeReader/FlavorParser.py:504
+#: plugins/GCodeReader/FlavorParser.py:513
 msgctxt "@info:generic"
 msgid "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."
 msgstr "Varmista, että G-code on tulostimelle ja sen tulostusasetuksille soveltuva, ennen kuin lähetät tiedoston siihen. G-coden esitys ei välttämättä ole tarkka."
@@ -6161,7 +6161,7 @@ msgctxt "@label shown when we load a Gcode file"
 msgid "Print setup disabled. G-code file can not be modified."
 msgstr ""
 
-#: resources/qml/PrintSetupSelector/PrintSetupSelectorContents.qml:160
+#: resources/qml/PrintSetupSelector/PrintSetupSelectorContents.qml:179
 msgctxt "@button"
 msgid "Recommended"
 msgstr ""

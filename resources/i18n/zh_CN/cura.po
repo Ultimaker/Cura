@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-31 16:46+0100\n"
+"POT-Creation-Date: 2023-03-06 16:57+0100\n"
 "PO-Revision-Date: 2022-07-15 11:06+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -1184,11 +1184,6 @@ msgid "USB printing"
 msgstr "USB 联机打印"
 
 #: plugin.json
-msgctxt "name"
-msgid "Ultimaker Digital Library"
-msgstr "Ultimaker Digital Library"
-
-#: plugin.json
 #, fuzzy
 msgctxt "name"
 msgid "UltiMaker Network Connection"
@@ -1199,6 +1194,11 @@ msgstr "UltiMaker 网络连接"
 msgctxt "name"
 msgid "UltiMaker machine actions"
 msgstr "UltiMaker 打印机操作"
+
+#: plugin.json
+msgctxt "name"
+msgid "Ultimaker Digital Library"
+msgstr "Ultimaker Digital Library"
 
 #: plugin.json
 msgctxt "description"
@@ -2089,18 +2089,18 @@ msgctxt "@item:inlistbox"
 msgid "G-code File"
 msgstr "GCode 文件"
 
-#: plugins/GCodeReader/FlavorParser.py:350
+#: plugins/GCodeReader/FlavorParser.py:359
 msgctxt "@info:status"
 msgid "Parsing G-code"
 msgstr "解析 G-code"
 
-#: plugins/GCodeReader/FlavorParser.py:352
-#: plugins/GCodeReader/FlavorParser.py:506
+#: plugins/GCodeReader/FlavorParser.py:361
+#: plugins/GCodeReader/FlavorParser.py:515
 msgctxt "@info:title"
 msgid "G-code Details"
 msgstr "G-code 详细信息"
 
-#: plugins/GCodeReader/FlavorParser.py:504
+#: plugins/GCodeReader/FlavorParser.py:513
 msgctxt "@info:generic"
 msgid "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."
 msgstr "发送文件之前，请确保 G-code 适用于当前打印机和打印机配置。当前 G-code 文件可能不准确。"
@@ -6187,7 +6187,7 @@ msgctxt "@label shown when we load a Gcode file"
 msgid "Print setup disabled. G-code file can not be modified."
 msgstr "打印设置已禁用。无法修改 G code 文件。"
 
-#: resources/qml/PrintSetupSelector/PrintSetupSelectorContents.qml:160
+#: resources/qml/PrintSetupSelector/PrintSetupSelectorContents.qml:179
 msgctxt "@button"
 msgid "Recommended"
 msgstr "推荐"

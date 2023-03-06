@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-31 16:46+0100\n"
+"POT-Creation-Date: 2023-03-06 16:57+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1179,11 +1179,6 @@ msgstr "USB-printen"
 
 #: plugin.json
 msgctxt "name"
-msgid "Ultimaker Digital Library"
-msgstr "Ultimaker Digital Library"
-
-#: plugin.json
-msgctxt "name"
 msgid "UltiMaker Network Connection"
 msgstr "UltiMaker-netwerkverbinding"
 
@@ -1191,6 +1186,11 @@ msgstr "UltiMaker-netwerkverbinding"
 msgctxt "name"
 msgid "UltiMaker machine actions"
 msgstr "Acties UltiMaker-machines"
+
+#: plugin.json
+msgctxt "name"
+msgid "Ultimaker Digital Library"
+msgstr "Ultimaker Digital Library"
 
 #: plugin.json
 msgctxt "description"
@@ -2079,18 +2079,18 @@ msgctxt "@item:inlistbox"
 msgid "G-code File"
 msgstr "G-code-bestand"
 
-#: plugins/GCodeReader/FlavorParser.py:350
+#: plugins/GCodeReader/FlavorParser.py:359
 msgctxt "@info:status"
 msgid "Parsing G-code"
 msgstr "G-code parseren"
 
-#: plugins/GCodeReader/FlavorParser.py:352
-#: plugins/GCodeReader/FlavorParser.py:506
+#: plugins/GCodeReader/FlavorParser.py:361
+#: plugins/GCodeReader/FlavorParser.py:515
 msgctxt "@info:title"
 msgid "G-code Details"
 msgstr "Details van de G-code"
 
-#: plugins/GCodeReader/FlavorParser.py:504
+#: plugins/GCodeReader/FlavorParser.py:513
 msgctxt "@info:generic"
 msgid "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."
 msgstr "Zorg ervoor dat de G-code geschikt is voor uw printer en de printerconfiguratie voordat u het bestand verzendt. Mogelijk is de weergave van de G-code niet nauwkeurig."
@@ -6180,7 +6180,7 @@ msgctxt "@label shown when we load a Gcode file"
 msgid "Print setup disabled. G-code file can not be modified."
 msgstr "De printinstelling is uitgeschakeld. Het G-code-bestand kan niet worden gewijzigd."
 
-#: resources/qml/PrintSetupSelector/PrintSetupSelectorContents.qml:160
+#: resources/qml/PrintSetupSelector/PrintSetupSelectorContents.qml:179
 msgctxt "@button"
 msgid "Recommended"
 msgstr "Aanbevolen"

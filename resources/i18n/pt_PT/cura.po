@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-31 16:46+0100\n"
+"POT-Creation-Date: 2023-03-06 16:57+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1174,11 +1174,6 @@ msgstr "Impressão USB"
 
 #: plugin.json
 msgctxt "name"
-msgid "Ultimaker Digital Library"
-msgstr "Biblioteca Digital UltiMaker"
-
-#: plugin.json
-msgctxt "name"
 msgid "UltiMaker Network Connection"
 msgstr "Ligação de rede UltiMaker"
 
@@ -1186,6 +1181,11 @@ msgstr "Ligação de rede UltiMaker"
 msgctxt "name"
 msgid "UltiMaker machine actions"
 msgstr "Funções para impressoras Ultimaker"
+
+#: plugin.json
+msgctxt "name"
+msgid "Ultimaker Digital Library"
+msgstr "Biblioteca Digital UltiMaker"
 
 #: plugin.json
 msgctxt "description"
@@ -2074,18 +2074,18 @@ msgctxt "@item:inlistbox"
 msgid "G-code File"
 msgstr "Ficheiro G-code"
 
-#: plugins/GCodeReader/FlavorParser.py:350
+#: plugins/GCodeReader/FlavorParser.py:359
 msgctxt "@info:status"
 msgid "Parsing G-code"
 msgstr "A analisar G-code"
 
-#: plugins/GCodeReader/FlavorParser.py:352
-#: plugins/GCodeReader/FlavorParser.py:506
+#: plugins/GCodeReader/FlavorParser.py:361
+#: plugins/GCodeReader/FlavorParser.py:515
 msgctxt "@info:title"
 msgid "G-code Details"
 msgstr "Detalhes do G-code"
 
-#: plugins/GCodeReader/FlavorParser.py:504
+#: plugins/GCodeReader/FlavorParser.py:513
 msgctxt "@info:generic"
 msgid "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."
 msgstr "Certifique-se de que este g-code é apropriado para a sua impressora e respetiva configuração, antes de enviar o ficheiro para a impressora. A representação do g-code poderá não ser exata."
@@ -6170,7 +6170,7 @@ msgctxt "@label shown when we load a Gcode file"
 msgid "Print setup disabled. G-code file can not be modified."
 msgstr "Configuração de impressão desativada. O ficheiro G-code não pode ser modificado."
 
-#: resources/qml/PrintSetupSelector/PrintSetupSelectorContents.qml:160
+#: resources/qml/PrintSetupSelector/PrintSetupSelectorContents.qml:179
 msgctxt "@button"
 msgid "Recommended"
 msgstr "Recomendado"
