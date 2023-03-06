@@ -3809,7 +3809,7 @@ msgstr "詳しく見る"
 #: plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:18
 msgctxt "@info:status"
 msgid "You are attempting to connect to a printer that is not running UltiMaker Connect. Please update the printer to the latest firmware."
-msgstr ""
+msgstr "Ultimaker Connectを実行していないプリンターに接続しようとしています。プリンターを最新のファームウェアに更新してください。"
 
 #: plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:21
 msgctxt "@info:title"
@@ -6825,7 +6825,7 @@ msgstr "新しいプリンターがCuraに自動的に表示されます"
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:100
 msgctxt "@button"
 msgid "Learn more"
-msgstr ""
+msgstr "詳しく見る"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:121
 msgctxt "@button"
