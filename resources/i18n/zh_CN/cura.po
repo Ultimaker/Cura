@@ -951,7 +951,7 @@ msgstr "打印机设置操作"
 #: plugin.json
 #, fuzzy
 msgctxt "description"
-msgid "Manages extensions to the application and allows browsing extensions from the Ultimaker website."
+msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
 msgstr "管理对应用程序的扩展并允许从 UltiMaker 网站浏览扩展。"
 
 #: plugin.json
@@ -2529,7 +2529,6 @@ msgid "Dismiss"
 msgstr "解除"
 
 #: plugins/Marketplace/resources/qml/CompatibilityDialog.qml:24
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:118
 #: resources/qml/WelcomePages/FirstStartMachineActionsContent.qml:76
 #: resources/qml/WelcomePages/WhatsNewContent.qml:175
 msgctxt "@button"
@@ -6913,46 +6912,6 @@ msgctxt "@text"
 msgid "Create a free UltiMaker Account"
 msgstr "创建免费的 UltiMaker 帐户"
 
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:24
-msgctxt "@label"
-msgid "Help us to improve UltiMaker Cura"
-msgstr "帮助我们改进 UltiMaker Cura"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:56
-msgctxt "@text"
-msgid "UltiMaker Cura collects anonymous data to improve print quality and user experience, including:"
-msgstr "为了改善打印质量和用户体验，UltiMaker Cura 会收集匿名数据，这些数据包括："
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:68
-msgctxt "@text"
-msgid "Machine types"
-msgstr "﻿机器类型"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:74
-msgctxt "@text"
-msgid "Material usage"
-msgstr "材料使用"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:80
-msgctxt "@text"
-msgid "Number of slices"
-msgstr "切片数量"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:86
-msgctxt "@text"
-msgid "Print settings"
-msgstr "打印设置"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:99
-msgctxt "@text"
-msgid "Data collected by UltiMaker Cura will not contain any personal information."
-msgstr "UltiMaker Cura 收集的数据不会包含任何个人信息。"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:100
-msgctxt "@text"
-msgid "More information"
-msgstr "更多信息"
-
 #: resources/qml/WelcomePages/DropDownWidget.qml:93
 msgctxt "@label"
 msgid "Empty"
@@ -7895,6 +7854,10 @@ msgstr "没有可供选择的项目"
 #~ msgid "Customized"
 #~ msgstr "自定义"
 
+#~ msgctxt "@text"
+#~ msgid "Data collected by UltiMaker Cura will not contain any personal information."
+#~ msgstr "UltiMaker Cura 收集的数据不会包含任何个人信息。"
+
 #~ msgctxt "@info:status"
 #~ msgid ""
 #~ "Dear customer,\n"
@@ -8437,6 +8400,10 @@ msgstr "没有可供选择的项目"
 #~ msgid "Heated bed"
 #~ msgstr "加热床"
 
+#~ msgctxt "@label"
+#~ msgid "Help us to improve UltiMaker Cura"
+#~ msgstr "帮助我们改进 UltiMaker Cura"
+
 #~ msgctxt "description"
 #~ msgid "Helps to open Blender files directly in Cura."
 #~ msgstr "帮助直接在 Cura 中打开 Blender 文件。"
@@ -8640,6 +8607,10 @@ msgstr "没有可供选择的项目"
 #~ msgid "Machine Settings action"
 #~ msgstr "打印机设置操作"
 
+#~ msgctxt "@text"
+#~ msgid "Machine types"
+#~ msgstr "﻿机器类型"
+
 #~ msgctxt "@label link to connect manager"
 #~ msgid "Manage printers"
 #~ msgstr "管理打印机"
@@ -8680,6 +8651,10 @@ msgstr "没有可供选择的项目"
 #~ msgid "Material specification"
 #~ msgstr "材料规格"
 
+#~ msgctxt "@text"
+#~ msgid "Material usage"
+#~ msgstr "材料使用"
+
 #~ msgctxt "@text:window"
 #~ msgid "Materials"
 #~ msgstr "材料"
@@ -8718,6 +8693,10 @@ msgstr "没有可供选择的项目"
 #~ msgctxt "@action:button"
 #~ msgid "More information"
 #~ msgstr "详细信息"
+
+#~ msgctxt "@text"
+#~ msgid "More information"
+#~ msgstr "更多信息"
 
 #~ msgctxt "@action:inmenu menubar:edit"
 #~ msgid "Multiply Selected Model"
@@ -8831,6 +8810,10 @@ msgstr "没有可供选择的项目"
 #~ msgctxt "@label"
 #~ msgid "Nozzle Settings"
 #~ msgstr "喷嘴设置"
+
+#~ msgctxt "@text"
+#~ msgid "Number of slices"
+#~ msgstr "切片数量"
 
 #~ msgctxt "@action:button"
 #~ msgid "Ok"
@@ -9106,6 +9089,10 @@ msgstr "没有可供选择的项目"
 #~ msgctxt "@title"
 #~ msgid "Print jobs"
 #~ msgstr "打印作业"
+
+#~ msgctxt "@text"
+#~ msgid "Print settings"
+#~ msgstr "打印设置"
 
 #~ msgctxt "@label shown when we load a Gcode file"
 #~ msgid "Print setup disabled. G code file can not be modified."
@@ -10065,6 +10052,10 @@ msgstr "没有可供选择的项目"
 #~ msgctxt "@title:window"
 #~ msgid "UltiMaker Cura"
 #~ msgstr "UltiMaker Cura"
+
+#~ msgctxt "@text"
+#~ msgid "UltiMaker Cura collects anonymous data to improve print quality and user experience, including:"
+#~ msgstr "为了改善打印质量和用户体验，UltiMaker Cura 会收集匿名数据，这些数据包括："
 
 #~ msgctxt "@button"
 #~ msgid "UltiMaker account"

@@ -950,7 +950,7 @@ msgstr "컴퓨터 설정 작업"
 #: plugin.json
 #, fuzzy
 msgctxt "description"
-msgid "Manages extensions to the application and allows browsing extensions from the Ultimaker website."
+msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
 msgstr "응용 프로그램의 확장을 관리하고 UltiMaker 웹 사이트에서 확장을 검색할 수 있습니다."
 
 #: plugin.json
@@ -2528,7 +2528,6 @@ msgid "Dismiss"
 msgstr "취소"
 
 #: plugins/Marketplace/resources/qml/CompatibilityDialog.qml:24
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:118
 #: resources/qml/WelcomePages/FirstStartMachineActionsContent.qml:76
 #: resources/qml/WelcomePages/WhatsNewContent.qml:175
 msgctxt "@button"
@@ -6909,46 +6908,6 @@ msgctxt "@text"
 msgid "Create a free UltiMaker Account"
 msgstr "UltiMaker 계정 무료 생성"
 
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:24
-msgctxt "@label"
-msgid "Help us to improve UltiMaker Cura"
-msgstr "UltiMaker Cura를 개선하는 데 도움을 주십시오"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:56
-msgctxt "@text"
-msgid "UltiMaker Cura collects anonymous data to improve print quality and user experience, including:"
-msgstr "UltiMaker Cura는 인쇄 품질과 사용자 경험을 개선하기 위해 다음과 같은 익명 데이터를 수집합니다:"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:68
-msgctxt "@text"
-msgid "Machine types"
-msgstr "기기 유형"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:74
-msgctxt "@text"
-msgid "Material usage"
-msgstr "재료 사용"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:80
-msgctxt "@text"
-msgid "Number of slices"
-msgstr "슬라이드 수"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:86
-msgctxt "@text"
-msgid "Print settings"
-msgstr "인쇄 설정"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:99
-msgctxt "@text"
-msgid "Data collected by UltiMaker Cura will not contain any personal information."
-msgstr "UltiMaker Cura가 수집하는 데이터에는 개인 정보가 포함되어 있지 않습니다."
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:100
-msgctxt "@text"
-msgid "More information"
-msgstr "추가 정보"
-
 #: resources/qml/WelcomePages/DropDownWidget.qml:93
 msgctxt "@label"
 msgid "Empty"
@@ -7001,6 +6960,10 @@ msgstr "선택할 항목 없음"
 #~ msgid "Change build plate to %1 (This cannot be overridden)."
 #~ msgstr "빌드 플레이트를 %1(으)로 변경합니다(이 작업은 무효화할 수 없음)."
 
+#~ msgctxt "@text"
+#~ msgid "Data collected by UltiMaker Cura will not contain any personal information."
+#~ msgstr "UltiMaker Cura가 수집하는 데이터에는 개인 정보가 포함되어 있지 않습니다."
+
 #~ msgctxt "@label"
 #~ msgid "Glass"
 #~ msgstr "유리"
@@ -7012,6 +6975,10 @@ msgstr "선택할 항목 없음"
 #~ msgctxt "@label"
 #~ msgid "Gradual infill will gradually increase the amount of infill towards the top."
 #~ msgstr "점차적인 내부채움은 점차적으로 빈 공간 채우기의 양을 증가시킵니다."
+
+#~ msgctxt "@label"
+#~ msgid "Help us to improve UltiMaker Cura"
+#~ msgstr "UltiMaker Cura를 개선하는 데 도움을 주십시오"
 
 #~ msgctxt "@info:tooltip"
 #~ msgid "How should the conflict in the machine be resolved?"
@@ -7025,9 +6992,33 @@ msgstr "선택할 항목 없음"
 #~ msgid "How should the conflict in the profile be resolved?"
 #~ msgstr "프로파일의 충돌을 어떻게 해결해야합니까?"
 
+#~ msgctxt "@text"
+#~ msgid "Machine types"
+#~ msgstr "기기 유형"
+
+#~ msgctxt "@text"
+#~ msgid "Material usage"
+#~ msgstr "재료 사용"
+
+#~ msgctxt "@text"
+#~ msgid "More information"
+#~ msgstr "추가 정보"
+
+#~ msgctxt "@text"
+#~ msgid "Number of slices"
+#~ msgstr "슬라이드 수"
+
+#~ msgctxt "@text"
+#~ msgid "Print settings"
+#~ msgstr "인쇄 설정"
+
 #~ msgctxt "@info"
 #~ msgid "Some settings were changed."
 #~ msgstr "일부 설정이 변경되었습니다."
+
+#~ msgctxt "@text"
+#~ msgid "UltiMaker Cura collects anonymous data to improve print quality and user experience, including:"
+#~ msgstr "UltiMaker Cura는 인쇄 품질과 사용자 경험을 개선하기 위해 다음과 같은 익명 데이터를 수집합니다:"
 
 #~ msgctxt "@action:label"
 #~ msgid "Visible settings:"

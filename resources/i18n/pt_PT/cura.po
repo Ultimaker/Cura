@@ -944,7 +944,7 @@ msgstr "Função Definições da Máquina"
 
 #: plugin.json
 msgctxt "description"
-msgid "Manages extensions to the application and allows browsing extensions from the Ultimaker website."
+msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
 msgstr "Faz a gestão de extensões da aplicação e permite a navegação das extensões a partir do website da UltiMaker."
 
 #: plugin.json
@@ -2514,7 +2514,6 @@ msgid "Dismiss"
 msgstr "Descartar"
 
 #: plugins/Marketplace/resources/qml/CompatibilityDialog.qml:24
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:118
 #: resources/qml/WelcomePages/FirstStartMachineActionsContent.qml:76
 #: resources/qml/WelcomePages/WhatsNewContent.qml:175
 msgctxt "@button"
@@ -6885,46 +6884,6 @@ msgctxt "@text"
 msgid "Create a free UltiMaker Account"
 msgstr "Crie uma Conta UltiMaker gratuita"
 
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:24
-msgctxt "@label"
-msgid "Help us to improve UltiMaker Cura"
-msgstr "Ajude-nos a melhorar o UltiMaker Cura"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:56
-msgctxt "@text"
-msgid "UltiMaker Cura collects anonymous data to improve print quality and user experience, including:"
-msgstr ""
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:68
-msgctxt "@text"
-msgid "Machine types"
-msgstr "Tipos de máquina"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:74
-msgctxt "@text"
-msgid "Material usage"
-msgstr "Utilização do material"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:80
-msgctxt "@text"
-msgid "Number of slices"
-msgstr "Número de segmentos"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:86
-msgctxt "@text"
-msgid "Print settings"
-msgstr "Definições de impressão"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:99
-msgctxt "@text"
-msgid "Data collected by UltiMaker Cura will not contain any personal information."
-msgstr ""
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:100
-msgctxt "@text"
-msgid "More information"
-msgstr "Mais informações"
-
 #: resources/qml/WelcomePages/DropDownWidget.qml:93
 msgctxt "@label"
 msgid "Empty"
@@ -7070,6 +7029,10 @@ msgstr "Nenhum item para selecionar"
 #~ msgstr "O enchimento gradual irá aumentar progressivamente a densidade do enchimento em direção ao topo."
 
 #~ msgctxt "@label"
+#~ msgid "Help us to improve UltiMaker Cura"
+#~ msgstr "Ajude-nos a melhorar o UltiMaker Cura"
+
+#~ msgctxt "@label"
 #~ msgid "Help us to improve Ultimaker Cura"
 #~ msgstr "Ajude-nos a melhorar o Ultimaker Cura"
 
@@ -7090,8 +7053,24 @@ msgstr "Nenhum item para selecionar"
 #~ msgstr "Saiba como começar a utilizar o Ultimaker Cura."
 
 #~ msgctxt "@text"
+#~ msgid "Machine types"
+#~ msgstr "Tipos de máquina"
+
+#~ msgctxt "@text"
 #~ msgid "Manage your Ultimaker Cura plugins and material profiles here. Make sure to keep your plugins up to date and backup your setup regularly."
 #~ msgstr "Faça aqui a gestão dos plug-ins e perfis de materiais do Ultimaker Cura. Certifique-se de que mantém os plug-ins atualizados e que efetua regularmente uma cópia de segurança da sua configuração."
+
+#~ msgctxt "@text"
+#~ msgid "Material usage"
+#~ msgstr "Utilização do material"
+
+#~ msgctxt "@text"
+#~ msgid "More information"
+#~ msgstr "Mais informações"
+
+#~ msgctxt "@text"
+#~ msgid "Number of slices"
+#~ msgstr "Número de segmentos"
 
 #~ msgctxt "@text"
 #~ msgid "Please follow these steps to set up Ultimaker Cura. This will only take a few moments."
@@ -7100,6 +7079,10 @@ msgstr "Nenhum item para selecionar"
 #~ msgctxt "@label"
 #~ msgid "Please select any upgrades made to this Ultimaker Original"
 #~ msgstr "Selecione quaisquer atualizações realizadas a esta Ultimaker Original"
+
+#~ msgctxt "@text"
+#~ msgid "Print settings"
+#~ msgstr "Definições de impressão"
 
 #~ msgctxt "@message:description"
 #~ msgid "Report a bug on Ultimaker Cura's issue tracker."

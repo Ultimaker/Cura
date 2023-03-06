@@ -6680,7 +6680,7 @@ msgstr ""
 
 #: plugin.json
 msgctxt "description"
-msgid "Manages extensions to the application and allows browsing extensions from the Ultimaker website."
+msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
 msgstr ""
 
 #: plugin.json

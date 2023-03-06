@@ -951,7 +951,7 @@ msgstr ""
 
 #: plugin.json
 msgctxt "description"
-msgid "Manages extensions to the application and allows browsing extensions from the Ultimaker website."
+msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
 msgstr ""
 
 #: plugin.json
@@ -2527,7 +2527,6 @@ msgid "Dismiss"
 msgstr ""
 
 #: plugins/Marketplace/resources/qml/CompatibilityDialog.qml:24
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:118
 #: resources/qml/WelcomePages/FirstStartMachineActionsContent.qml:76
 #: resources/qml/WelcomePages/WhatsNewContent.qml:175
 msgctxt "@button"
@@ -6901,46 +6900,6 @@ msgctxt "@text"
 msgid "Create a free UltiMaker Account"
 msgstr ""
 
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:24
-msgctxt "@label"
-msgid "Help us to improve UltiMaker Cura"
-msgstr "Pomóż nam ulepszyć UltiMaker Cura"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:56
-msgctxt "@text"
-msgid "UltiMaker Cura collects anonymous data to improve print quality and user experience, including:"
-msgstr "UltiMaker Cura zbiera anonimowe dane w celu poprawy jakości druku i komfortu użytkownika, w tym:"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:68
-msgctxt "@text"
-msgid "Machine types"
-msgstr "Typy maszyn"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:74
-msgctxt "@text"
-msgid "Material usage"
-msgstr "Zużycie materiału"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:80
-msgctxt "@text"
-msgid "Number of slices"
-msgstr "Ilość warstw"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:86
-msgctxt "@text"
-msgid "Print settings"
-msgstr "Ustawienia druku"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:99
-msgctxt "@text"
-msgid "Data collected by UltiMaker Cura will not contain any personal information."
-msgstr "Dane zebrane przez UltiMaker Cura nie będą zawierać żadnych prywatnych danych osobowych."
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:100
-msgctxt "@text"
-msgid "More information"
-msgstr "Więcej informacji"
-
 #: resources/qml/WelcomePages/DropDownWidget.qml:93
 msgctxt "@label"
 msgid "Empty"
@@ -7793,6 +7752,10 @@ msgstr ""
 #~ msgid "Customized"
 #~ msgstr "Dostosowane"
 
+#~ msgctxt "@text"
+#~ msgid "Data collected by UltiMaker Cura will not contain any personal information."
+#~ msgstr "Dane zebrane przez UltiMaker Cura nie będą zawierać żadnych prywatnych danych osobowych."
+
 #~ msgctxt "@info:status"
 #~ msgid ""
 #~ "Dear customer,\n"
@@ -8319,6 +8282,10 @@ msgstr ""
 #~ msgid "Heated bed"
 #~ msgstr "Podgrzewany stół"
 
+#~ msgctxt "@label"
+#~ msgid "Help us to improve UltiMaker Cura"
+#~ msgstr "Pomóż nam ulepszyć UltiMaker Cura"
+
 #~ msgctxt "description"
 #~ msgid "Helps to open Blender files directly in Cura."
 #~ msgstr "Pomaga w otwieraniu plików Blender bezpośrednio w Cura."
@@ -8505,6 +8472,10 @@ msgstr ""
 #~ msgid "Machine Settings action"
 #~ msgstr "Ustawienia Maszyny"
 
+#~ msgctxt "@text"
+#~ msgid "Machine types"
+#~ msgstr "Typy maszyn"
+
 #~ msgctxt "@label link to connect manager"
 #~ msgid "Manage printers"
 #~ msgstr "Zarządzaj drukarkami"
@@ -8545,6 +8516,10 @@ msgstr ""
 #~ msgid "Material specification"
 #~ msgstr "Specyfikacja materiału"
 
+#~ msgctxt "@text"
+#~ msgid "Material usage"
+#~ msgstr "Zużycie materiału"
+
 #~ msgctxt "@text:window"
 #~ msgid "Materials"
 #~ msgstr "Materiały"
@@ -8577,6 +8552,10 @@ msgstr ""
 #~ msgstr "Więcej informacji"
 
 #~ msgctxt "@action:button"
+#~ msgid "More information"
+#~ msgstr "Więcej informacji"
+
+#~ msgctxt "@text"
 #~ msgid "More information"
 #~ msgstr "Więcej informacji"
 
@@ -8681,6 +8660,10 @@ msgstr ""
 #~ msgctxt "@label"
 #~ msgid "Nozzle Settings"
 #~ msgstr "Ustawienia dyszy"
+
+#~ msgctxt "@text"
+#~ msgid "Number of slices"
+#~ msgstr "Ilość warstw"
 
 #~ msgctxt "@action:button"
 #~ msgid "Ok"
@@ -8933,6 +8916,10 @@ msgstr ""
 #~ msgctxt "@title"
 #~ msgid "Print jobs"
 #~ msgstr "Zadania drukowania"
+
+#~ msgctxt "@text"
+#~ msgid "Print settings"
+#~ msgstr "Ustawienia druku"
 
 #~ msgctxt "@label shown when we load a Gcode file"
 #~ msgid "Print setup disabled. G code file can not be modified."
@@ -9837,6 +9824,10 @@ msgstr ""
 #~ msgctxt "@title:window"
 #~ msgid "UltiMaker Cura"
 #~ msgstr "Cura UltiMaker"
+
+#~ msgctxt "@text"
+#~ msgid "UltiMaker Cura collects anonymous data to improve print quality and user experience, including:"
+#~ msgstr "UltiMaker Cura zbiera anonimowe dane w celu poprawy jakości druku i komfortu użytkownika, w tym:"
 
 #~ msgctxt "@button"
 #~ msgid "UltiMaker account"

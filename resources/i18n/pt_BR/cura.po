@@ -951,7 +951,7 @@ msgstr "Ação de Ajustes de Máquina"
 #: plugin.json
 #, fuzzy
 msgctxt "description"
-msgid "Manages extensions to the application and allows browsing extensions from the Ultimaker website."
+msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
 msgstr "Gerencia extensões à aplicação e permite navegar extensões do sítio web da UltiMaker."
 
 #: plugin.json
@@ -2531,7 +2531,6 @@ msgid "Dismiss"
 msgstr "Dispensar"
 
 #: plugins/Marketplace/resources/qml/CompatibilityDialog.qml:24
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:118
 #: resources/qml/WelcomePages/FirstStartMachineActionsContent.qml:76
 #: resources/qml/WelcomePages/WhatsNewContent.qml:175
 msgctxt "@button"
@@ -6926,46 +6925,6 @@ msgctxt "@text"
 msgid "Create a free UltiMaker Account"
 msgstr "Criar uma conta UltiMaker gratuita"
 
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:24
-msgctxt "@label"
-msgid "Help us to improve UltiMaker Cura"
-msgstr "Nos ajude a melhor o UltiMaker Cura"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:56
-msgctxt "@text"
-msgid "UltiMaker Cura collects anonymous data to improve print quality and user experience, including:"
-msgstr "O UltiMaker Cura coleta dados anônimos para melhor a qualidade de impressão e experiência do usuário, incluindo:"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:68
-msgctxt "@text"
-msgid "Machine types"
-msgstr "Tipos de máquina"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:74
-msgctxt "@text"
-msgid "Material usage"
-msgstr "Uso do material"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:80
-msgctxt "@text"
-msgid "Number of slices"
-msgstr "Número de fatias"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:86
-msgctxt "@text"
-msgid "Print settings"
-msgstr "Ajustes de impressão"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:99
-msgctxt "@text"
-msgid "Data collected by UltiMaker Cura will not contain any personal information."
-msgstr "Dados coletados pelo UltiMaker Cura não conterão nenhuma informação pessoal."
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:100
-msgctxt "@text"
-msgid "More information"
-msgstr "Mais informações"
-
 #: resources/qml/WelcomePages/DropDownWidget.qml:93
 msgctxt "@label"
 msgid "Empty"
@@ -7960,6 +7919,10 @@ msgstr "Sem itens para selecionar"
 #~ msgid "Customized"
 #~ msgstr "Personalizado"
 
+#~ msgctxt "@text"
+#~ msgid "Data collected by UltiMaker Cura will not contain any personal information."
+#~ msgstr "Dados coletados pelo UltiMaker Cura não conterão nenhuma informação pessoal."
+
 #~ msgctxt "@info:status"
 #~ msgid ""
 #~ "Dear customer,\n"
@@ -8576,6 +8539,10 @@ msgstr "Sem itens para selecionar"
 #~ msgstr "Mesa aquecida"
 
 #~ msgctxt "@label"
+#~ msgid "Help us to improve UltiMaker Cura"
+#~ msgstr "Nos ajude a melhor o UltiMaker Cura"
+
+#~ msgctxt "@label"
 #~ msgid "Helper Parts:"
 #~ msgstr "Partes dos Assistentes:"
 
@@ -8802,6 +8769,10 @@ msgstr "Sem itens para selecionar"
 #~ msgid "Machine Settings action"
 #~ msgstr "Ação de Configurações de Máquina"
 
+#~ msgctxt "@text"
+#~ msgid "Machine types"
+#~ msgstr "Tipos de máquina"
+
 #~ msgctxt "@label link to connect manager"
 #~ msgid "Manage printers"
 #~ msgstr "Gerenciar impressoras"
@@ -8842,6 +8813,10 @@ msgstr "Sem itens para selecionar"
 #~ msgid "Material specification"
 #~ msgstr "Especificação de material"
 
+#~ msgctxt "@text"
+#~ msgid "Material usage"
+#~ msgstr "Uso do material"
+
 #~ msgctxt "@text:window"
 #~ msgid "Materials"
 #~ msgstr "Materiais"
@@ -8878,6 +8853,10 @@ msgstr "Sem itens para selecionar"
 #~ msgstr "Mais informações"
 
 #~ msgctxt "@action:button"
+#~ msgid "More information"
+#~ msgstr "Mais informações"
+
+#~ msgctxt "@text"
 #~ msgid "More information"
 #~ msgstr "Mais informações"
 
@@ -9010,6 +8989,10 @@ msgstr "Sem itens para selecionar"
 #~ msgctxt "@label"
 #~ msgid "Nozzle Settings"
 #~ msgstr "Ajustes do Bico"
+
+#~ msgctxt "@text"
+#~ msgid "Number of slices"
+#~ msgstr "Número de fatias"
 
 #~ msgctxt "@action:button"
 #~ msgid "Ok"
@@ -9323,6 +9306,10 @@ msgstr "Sem itens para selecionar"
 #~ msgctxt "@label Followed by extruder selection drop-down."
 #~ msgid "Print model with"
 #~ msgstr "Imprimir modelo com"
+
+#~ msgctxt "@text"
+#~ msgid "Print settings"
+#~ msgstr "Ajustes de impressão"
 
 #~ msgctxt "@label shown when we load a Gcode file"
 #~ msgid "Print setup disabled. G code file can not be modified."
@@ -10331,6 +10318,10 @@ msgstr "Sem itens para selecionar"
 #~ msgctxt "@title:window"
 #~ msgid "UltiMaker Cura"
 #~ msgstr "UltiMaker Cura"
+
+#~ msgctxt "@text"
+#~ msgid "UltiMaker Cura collects anonymous data to improve print quality and user experience, including:"
+#~ msgstr "O UltiMaker Cura coleta dados anônimos para melhor a qualidade de impressão e experiência do usuário, incluindo:"
 
 #~ msgctxt "@button"
 #~ msgid "UltiMaker account"

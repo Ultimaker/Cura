@@ -950,7 +950,7 @@ msgstr ""
 
 #: plugin.json
 msgctxt "description"
-msgid "Manages extensions to the application and allows browsing extensions from the Ultimaker website."
+msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
 msgstr ""
 
 #: plugin.json
@@ -2526,7 +2526,6 @@ msgid "Dismiss"
 msgstr ""
 
 #: plugins/Marketplace/resources/qml/CompatibilityDialog.qml:24
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:118
 #: resources/qml/WelcomePages/FirstStartMachineActionsContent.qml:76
 #: resources/qml/WelcomePages/WhatsNewContent.qml:175
 msgctxt "@button"
@@ -6897,46 +6896,6 @@ msgctxt "@text"
 msgid "Create a free UltiMaker Account"
 msgstr ""
 
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:24
-msgctxt "@label"
-msgid "Help us to improve UltiMaker Cura"
-msgstr "Segítsen nekünk az UltiMaker Cura fejlesztésében"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:56
-msgctxt "@text"
-msgid "UltiMaker Cura collects anonymous data to improve print quality and user experience, including:"
-msgstr "Az UltiMaker Cura névtelen adatokat gyűjt a nyomtatási minőség és a felhasználói élmény javításának érdekében, ideértve:"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:68
-msgctxt "@text"
-msgid "Machine types"
-msgstr "Géptípusok"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:74
-msgctxt "@text"
-msgid "Material usage"
-msgstr "Anyagfelhasználás"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:80
-msgctxt "@text"
-msgid "Number of slices"
-msgstr "Szeletek száma"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:86
-msgctxt "@text"
-msgid "Print settings"
-msgstr "Nyomtatási beállítások"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:99
-msgctxt "@text"
-msgid "Data collected by UltiMaker Cura will not contain any personal information."
-msgstr "Az UltiMaker Cura által gyűjtött adatok nem tartalmaznak személyes információt."
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:100
-msgctxt "@text"
-msgid "More information"
-msgstr "Több információ"
-
 #: resources/qml/WelcomePages/DropDownWidget.qml:93
 msgctxt "@label"
 msgid "Empty"
@@ -7173,6 +7132,10 @@ msgstr ""
 #~ msgid "Customized"
 #~ msgstr "Testreszabott"
 
+#~ msgctxt "@text"
+#~ msgid "Data collected by UltiMaker Cura will not contain any personal information."
+#~ msgstr "Az UltiMaker Cura által gyűjtött adatok nem tartalmaznak személyes információt."
+
 #~ msgctxt "@action:button"
 #~ msgid "Decline"
 #~ msgstr "Elutasít"
@@ -7267,6 +7230,10 @@ msgstr ""
 #~ msgid "Gradual infill will gradually increase the amount of infill towards the top."
 #~ msgstr "A fokozatos kitöltés folyamatosan növeli a kitöltés mennyiségét, ahogy közeledik a tárgy teteje felé."
 
+#~ msgctxt "@label"
+#~ msgid "Help us to improve UltiMaker Cura"
+#~ msgstr "Segítsen nekünk az UltiMaker Cura fejlesztésében"
+
 #~ msgctxt "@label The argument is a username."
 #~ msgid "Hi %1"
 #~ msgstr "Szia %1"
@@ -7319,9 +7286,17 @@ msgstr ""
 #~ msgid "Machine Settings action"
 #~ msgstr "Gépbeállítások művelete"
 
+#~ msgctxt "@text"
+#~ msgid "Machine types"
+#~ msgstr "Géptípusok"
+
 #~ msgctxt "@title"
 #~ msgid "Marketplace"
 #~ msgstr "Áruház"
+
+#~ msgctxt "@text"
+#~ msgid "Material usage"
+#~ msgstr "Anyagfelhasználás"
 
 #~ msgctxt "@text:window"
 #~ msgid "Materials"
@@ -7336,6 +7311,10 @@ msgstr ""
 #~ msgstr "Módosítsa az egyéb modellekkel való átfedés beállítását"
 
 #~ msgctxt "@action:button"
+#~ msgid "More information"
+#~ msgstr "Több információ"
+
+#~ msgctxt "@text"
 #~ msgid "More information"
 #~ msgstr "Több információ"
 
@@ -7364,6 +7343,10 @@ msgstr ""
 #~ msgctxt "@info:status"
 #~ msgid "Nothing to slice because none of the models fit the build volume or are assigned to a disabled extruder. Please scale or rotate models to fit, or enable an extruder."
 #~ msgstr "Nem lehet szeletelni, mert egyik modell sem érintkezik az alapsíkkal, vagy a modell letiltott extruderhez van hozzárendelve. Kérjük, méretezze vagy forgassa el a modelleket, hogy illeszkedjenek az alapsíkra, vagy engedélyezz egy extrudert."
+
+#~ msgctxt "@text"
+#~ msgid "Number of slices"
+#~ msgstr "Szeletek száma"
 
 #~ msgctxt "@label"
 #~ msgid "Olsson Block"
@@ -7416,6 +7399,10 @@ msgstr ""
 #~ msgctxt "@label"
 #~ msgid "Print experiment"
 #~ msgstr "Nyomtatási kísérlet"
+
+#~ msgctxt "@text"
+#~ msgid "Print settings"
+#~ msgstr "Nyomtatási beállítások"
 
 #~ msgctxt "@action:button"
 #~ msgid "Print via Cloud"
@@ -7585,6 +7572,10 @@ msgstr ""
 #~ msgctxt "@label"
 #~ msgid "UltiMaker Cloud"
 #~ msgstr "UltiMaker felhő"
+
+#~ msgctxt "@text"
+#~ msgid "UltiMaker Cura collects anonymous data to improve print quality and user experience, including:"
+#~ msgstr "Az UltiMaker Cura névtelen adatokat gyűjt a nyomtatási minőség és a felhasználói élmény javításának érdekében, ideértve:"
 
 #~ msgctxt "@action:button"
 #~ msgid "Uninstall"

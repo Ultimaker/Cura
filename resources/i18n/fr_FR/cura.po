@@ -949,7 +949,7 @@ msgstr "Action Paramètres de la machine"
 
 #: plugin.json
 msgctxt "description"
-msgid "Manages extensions to the application and allows browsing extensions from the Ultimaker website."
+msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
 msgstr "Gère les extensions de l'application et permet de parcourir les extensions à partir du site Web UltiMaker."
 
 #: plugin.json
@@ -2528,7 +2528,6 @@ msgid "Dismiss"
 msgstr "Ignorer"
 
 #: plugins/Marketplace/resources/qml/CompatibilityDialog.qml:24
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:118
 #: resources/qml/WelcomePages/FirstStartMachineActionsContent.qml:76
 #: resources/qml/WelcomePages/WhatsNewContent.qml:175
 msgctxt "@button"
@@ -6928,48 +6927,6 @@ msgctxt "@text"
 msgid "Create a free UltiMaker Account"
 msgstr "Créez gratuitement un compte UltiMaker"
 
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:24
-msgctxt "@label"
-msgid "Help us to improve UltiMaker Cura"
-msgstr "Aidez-nous à améliorer UltiMaker Cura"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:56
-#, fuzzy
-msgctxt "@text"
-msgid "UltiMaker Cura collects anonymous data to improve print quality and user experience, including:"
-msgstr "UltiMaker Cura recueille des données anonymes pour améliorer la qualité d'impression et l'expérience utilisateur, notamment :"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:68
-msgctxt "@text"
-msgid "Machine types"
-msgstr "Types de machines"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:74
-msgctxt "@text"
-msgid "Material usage"
-msgstr "Utilisation du matériau"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:80
-msgctxt "@text"
-msgid "Number of slices"
-msgstr "Nombre de découpes"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:86
-msgctxt "@text"
-msgid "Print settings"
-msgstr "Paramètres d'impression"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:99
-#, fuzzy
-msgctxt "@text"
-msgid "Data collected by UltiMaker Cura will not contain any personal information."
-msgstr "Les données recueillies par UltiMaker Cura ne contiendront aucun renseignement personnel."
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:100
-msgctxt "@text"
-msgid "More information"
-msgstr "Plus d'informations"
-
 #: resources/qml/WelcomePages/DropDownWidget.qml:93
 msgctxt "@label"
 msgid "Empty"
@@ -7025,6 +6982,11 @@ msgstr "Aucun élément à sélectionner"
 #~ msgid "Change build plate to %1 (This cannot be overridden)."
 #~ msgstr "Changer le plateau en %1 (Ceci ne peut pas être remplacé)."
 
+#, fuzzy
+#~ msgctxt "@text"
+#~ msgid "Data collected by UltiMaker Cura will not contain any personal information."
+#~ msgstr "Les données recueillies par UltiMaker Cura ne contiendront aucun renseignement personnel."
+
 #~ msgctxt "@label"
 #~ msgid "Glass"
 #~ msgstr "Verre"
@@ -7036,6 +6998,10 @@ msgstr "Aucun élément à sélectionner"
 #~ msgctxt "@label"
 #~ msgid "Gradual infill will gradually increase the amount of infill towards the top."
 #~ msgstr "Un remplissage graduel augmentera la quantité de remplissage vers le haut."
+
+#~ msgctxt "@label"
+#~ msgid "Help us to improve UltiMaker Cura"
+#~ msgstr "Aidez-nous à améliorer UltiMaker Cura"
 
 #~ msgctxt "@info:tooltip"
 #~ msgid "How should the conflict in the machine be resolved?"
@@ -7049,9 +7015,34 @@ msgstr "Aucun élément à sélectionner"
 #~ msgid "How should the conflict in the profile be resolved?"
 #~ msgstr "Comment le conflit du profil doit-il être résolu ?"
 
+#~ msgctxt "@text"
+#~ msgid "Machine types"
+#~ msgstr "Types de machines"
+
+#~ msgctxt "@text"
+#~ msgid "Material usage"
+#~ msgstr "Utilisation du matériau"
+
+#~ msgctxt "@text"
+#~ msgid "More information"
+#~ msgstr "Plus d'informations"
+
+#~ msgctxt "@text"
+#~ msgid "Number of slices"
+#~ msgstr "Nombre de découpes"
+
+#~ msgctxt "@text"
+#~ msgid "Print settings"
+#~ msgstr "Paramètres d'impression"
+
 #~ msgctxt "@info"
 #~ msgid "Some settings were changed."
 #~ msgstr "Certains paramètres ont été modifiés."
+
+#, fuzzy
+#~ msgctxt "@text"
+#~ msgid "UltiMaker Cura collects anonymous data to improve print quality and user experience, including:"
+#~ msgstr "UltiMaker Cura recueille des données anonymes pour améliorer la qualité d'impression et l'expérience utilisateur, notamment :"
 
 #~ msgctxt "@action:label"
 #~ msgid "Visible settings:"

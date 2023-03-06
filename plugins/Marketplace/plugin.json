@@ -3,6 +3,6 @@
     "author": "Ultimaker B.V.",
     "version": "1.0.0",
     "api": 8,
-    "description": "Manages extensions to the application and allows browsing extensions from the Ultimaker website.",
+    "description": "Manages extensions to the application and allows browsing extensions from the UltiMaker website.",
     "i18n-catalog": "cura"
 }

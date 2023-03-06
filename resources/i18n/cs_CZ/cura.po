@@ -951,7 +951,7 @@ msgstr "Akce nastavení zařízení"
 #: plugin.json
 #, fuzzy
 msgctxt "description"
-msgid "Manages extensions to the application and allows browsing extensions from the Ultimaker website."
+msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
 msgstr "Spravuje rozšíření aplikace a umožňuje prohlížení rozšíření z webu UltiMaker."
 
 #: plugin.json
@@ -2533,7 +2533,6 @@ msgid "Dismiss"
 msgstr "Schovat"
 
 #: plugins/Marketplace/resources/qml/CompatibilityDialog.qml:24
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:118
 #: resources/qml/WelcomePages/FirstStartMachineActionsContent.qml:76
 #: resources/qml/WelcomePages/WhatsNewContent.qml:175
 msgctxt "@button"
@@ -6942,46 +6941,6 @@ msgctxt "@text"
 msgid "Create a free UltiMaker Account"
 msgstr "Vytvořit účet UltiMaker zdarma"
 
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:24
-msgctxt "@label"
-msgid "Help us to improve UltiMaker Cura"
-msgstr "Pomožte nám zlepšovat UltiMaker Cura"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:56
-msgctxt "@text"
-msgid "UltiMaker Cura collects anonymous data to improve print quality and user experience, including:"
-msgstr "UltiMaker Cura shromažďuje anonymní data za účelem zlepšení kvality tisku a uživatelského komfortu, včetně:"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:68
-msgctxt "@text"
-msgid "Machine types"
-msgstr "Typy zařízení"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:74
-msgctxt "@text"
-msgid "Material usage"
-msgstr "Použití materiálu"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:80
-msgctxt "@text"
-msgid "Number of slices"
-msgstr "Počet sliců"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:86
-msgctxt "@text"
-msgid "Print settings"
-msgstr "Nastavení tisku"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:99
-msgctxt "@text"
-msgid "Data collected by UltiMaker Cura will not contain any personal information."
-msgstr "Data shromážděná společností UltiMaker Cura nebudou obsahovat žádné osobní údaje."
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:100
-msgctxt "@text"
-msgid "More information"
-msgstr "Více informací"
-
 #: resources/qml/WelcomePages/DropDownWidget.qml:93
 msgctxt "@label"
 msgid "Empty"
@@ -7237,6 +7196,10 @@ msgstr "Není z čeho vybírat"
 #~ msgid "Customized"
 #~ msgstr "Upraveno"
 
+#~ msgctxt "@text"
+#~ msgid "Data collected by UltiMaker Cura will not contain any personal information."
+#~ msgstr "Data shromážděná společností UltiMaker Cura nebudou obsahovat žádné osobní údaje."
+
 #~ msgctxt "@title:column"
 #~ msgid "Default"
 #~ msgstr "Výchozí"
@@ -7320,6 +7283,10 @@ msgstr "Není z čeho vybírat"
 #~ msgid "Gradual infill will gradually increase the amount of infill towards the top."
 #~ msgstr "Postupná výplň postupně zvyšuje množství výplně směrem nahoru."
 
+#~ msgctxt "@label"
+#~ msgid "Help us to improve UltiMaker Cura"
+#~ msgstr "Pomožte nám zlepšovat UltiMaker Cura"
+
 #~ msgctxt "@label The argument is a username."
 #~ msgid "Hi %1"
 #~ msgstr "Zdravím, %1"
@@ -7385,9 +7352,17 @@ msgstr "Není z čeho vybírat"
 #~ msgid "Machine Settings action"
 #~ msgstr "Akce nastavení zařízení"
 
+#~ msgctxt "@text"
+#~ msgid "Machine types"
+#~ msgstr "Typy zařízení"
+
 #~ msgctxt "@title"
 #~ msgid "Marketplace"
 #~ msgstr "Obchod"
+
+#~ msgctxt "@text"
+#~ msgid "Material usage"
+#~ msgstr "Použití materiálu"
 
 #~ msgctxt "@text:window"
 #~ msgid "Materials"
@@ -7398,6 +7373,10 @@ msgstr "Není z čeho vybírat"
 #~ msgstr "Chyby modelu"
 
 #~ msgctxt "@action:button"
+#~ msgid "More information"
+#~ msgstr "Více informací"
+
+#~ msgctxt "@text"
 #~ msgid "More information"
 #~ msgstr "Více informací"
 
@@ -7436,6 +7415,10 @@ msgstr "Není z čeho vybírat"
 #~ msgid "Nothing to slice because none of the models fit the build volume or are assigned to a disabled extruder. Please scale or rotate models to fit, or enable an extruder."
 #~ msgstr "Nic ke slicování, protože žádný z modelů neodpovídá objemu sestavení nebo není přiřazen k vytlačovacímu stroji s deaktivací. Změňte měřítko nebo otočte modely, aby se vešly, nebo povolte extrudér."
 
+#~ msgctxt "@text"
+#~ msgid "Number of slices"
+#~ msgstr "Počet sliců"
+
 #~ msgctxt "@label"
 #~ msgid "Overrides %1 setting."
 #~ msgid_plural "Overrides %1 settings."
@@ -7470,6 +7453,10 @@ msgstr "Není z čeho vybírat"
 #~ msgctxt "@label"
 #~ msgid "Premium"
 #~ msgstr "Premium"
+
+#~ msgctxt "@text"
+#~ msgid "Print settings"
+#~ msgstr "Nastavení tisku"
 
 #~ msgctxt "@action:button"
 #~ msgid "Print via Cloud"
@@ -7649,6 +7636,10 @@ msgstr "Není z čeho vybírat"
 #~ msgctxt "@label"
 #~ msgid "UltiMaker Cloud"
 #~ msgstr "UltiMaker Cloud"
+
+#~ msgctxt "@text"
+#~ msgid "UltiMaker Cura collects anonymous data to improve print quality and user experience, including:"
+#~ msgstr "UltiMaker Cura shromažďuje anonymní data za účelem zlepšení kvality tisku a uživatelského komfortu, včetně:"
 
 #~ msgctxt "@button"
 #~ msgid "UltiMaker account"

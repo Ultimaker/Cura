@@ -950,12 +950,12 @@ msgstr "Beschreibung Geräteeinstellungen"
 #: plugin.json
 msgctxt "description"
 msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
-msgstr "Verwaltet die Erweiterungen der Anwendung und ermöglicht das Durchsuchen von Erweiterungen auf der UltiMaker-Website."
+msgstr ""
 
 #: plugin.json
 msgctxt "description"
-msgid "Manages network connections to UltiMaker networked printers."
-msgstr "Verwaltet Netzwerkverbindungen zu UltiMaker-Netzwerkdruckern."
+msgid "Manages network connections to Ultimaker networked printers."
+msgstr ""
 
 #: plugin.json
 msgctxt "name"
@@ -1034,8 +1034,8 @@ msgstr "Bietet Möglichkeiten, um XML-basierte Materialprofile zu lesen und zu s
 
 #: plugin.json
 msgctxt "description"
-msgid "Provides machine actions for UltiMaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
-msgstr "Ermöglicht Maschinenabläufe für UltiMaker-Maschinen (z. B. Assistent für Bettnivellierung, Auswahl von Upgrades usw.)"
+msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
+msgstr ""
 
 #: plugin.json
 msgctxt "description"
@@ -1074,8 +1074,8 @@ msgstr "Ermöglicht das Lesen von AMF-Dateien."
 
 #: plugin.json
 msgctxt "description"
-msgid "Provides support for reading UltiMaker Format Packages."
-msgstr "Bietet Unterstützung für das Lesen von UltiMaker Format Packages."
+msgid "Provides support for reading Ultimaker Format Packages."
+msgstr ""
 
 #: plugin.json
 msgctxt "description"
@@ -1094,8 +1094,8 @@ msgstr "Bietet Unterstützung für das Schreiben von 3MF-Dateien."
 
 #: plugin.json
 msgctxt "description"
-msgid "Provides support for writing UltiMaker Format Packages."
-msgstr "Bietet Unterstützung für das Schreiben von UltiMaker Format Packages."
+msgid "Provides support for writing Ultimaker Format Packages."
+msgstr ""
 
 #: plugin.json
 msgctxt "description"
@@ -1494,8 +1494,8 @@ msgstr "Projektdatei <filename>{0}</filename> ist beschädigt: <message>{1}</mes
 #: plugins/3MFReader/ThreeMFWorkspaceReader.py:754
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
-msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura."
-msgstr "Projektdatei <filename>{0}</filename> verwendet Profile, die nicht mit dieser UltiMaker Cura-Version kompatibel sind."
+msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of Ultimaker Cura."
+msgstr ""
 
 #: plugins/3MFReader/WorkspaceDialog.py:233
 msgctxt "@title:tab"
@@ -2494,9 +2494,9 @@ msgid "Unknown Author"
 msgstr "Unbekannter Autor"
 
 #: plugins/Marketplace/PackageModel.py:95
-msgctxt "@label:label UltiMaker Marketplace is a brand name, don't translate"
-msgid "The material package associated with the Cura project could not be found on the UltiMaker Marketplace. Use the partial material profile definition stored in the Cura project file at your own risk."
-msgstr "Das mit dem Cura-Projekt verknüpfte Materialpaket konnte im UltiMaker Marketplace nicht gefunden werden. Verwenden Sie die in der Cura-Projektdatei gespeicherte unvollständige Definition des Materialprofils auf eigene Gefahr."
+msgctxt "@label:label Ultimaker Marketplace is a brand name, don't translate"
+msgid "The material package associated with the Cura project could not be found on the Ultimaker Marketplace. Use the partial material profile definition stored in the Cura project file at your own risk."
+msgstr ""
 
 #: plugins/Marketplace/RemotePackageList.py:117
 msgctxt "@info:error"
@@ -2519,7 +2519,6 @@ msgid "Dismiss"
 msgstr "Verwerfen"
 
 #: plugins/Marketplace/resources/qml/CompatibilityDialog.qml:24
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:118
 #: resources/qml/WelcomePages/FirstStartMachineActionsContent.qml:76
 #: resources/qml/WelcomePages/WhatsNewContent.qml:175
 msgctxt "@button"
@@ -3597,8 +3596,8 @@ msgstr "Drucker verwalten"
 
 #: plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:280
 msgctxt "@info"
-msgid "Webcam feeds for cloud printers cannot be viewed from UltiMaker Cura. Click \"Manage printer\" to visit UltiMaker Digital Factory and view this webcam."
-msgstr "Webcam-Feeds für Cloud-Drucker können nicht in UltiMaker Cura angezeigt werden. Klicken Sie auf „Drucker verwalten“, um die UltiMaker Digital Factory zu besuchen und diese Webcam zu sehen."
+msgid "Webcam feeds for cloud printers cannot be viewed from UltiMaker Cura. Click \"Manage printer\" to visit Ultimaker Digital Factory and view this webcam."
+msgstr ""
 
 #: plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:340
 msgctxt "@label:status"
@@ -3677,8 +3676,8 @@ msgstr "Warten auf"
 
 #: plugins/UM3NetworkPrinting/resources/qml/MonitorStage.qml:117
 msgctxt "@info"
-msgid "Monitor your printers from everywhere using UltiMaker Digital Factory"
-msgstr "Überwachen Sie Ihre Drucker standortunabhängig mit UltiMaker Digital Factory."
+msgid "Monitor your printers from everywhere using Ultimaker Digital Factory"
+msgstr ""
 
 #: plugins/UM3NetworkPrinting/resources/qml/MonitorStage.qml:129
 msgctxt "@button"
@@ -3725,8 +3724,8 @@ msgstr "Druck überwachen"
 
 #: plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:278
 msgctxt "@action:tooltip"
-msgid "Track the print in UltiMaker Digital Factory"
-msgstr "Verfolgen Sie den Druck in der UltiMaker Digital Factory"
+msgid "Track the print in Ultimaker Digital Factory"
+msgstr ""
 
 #: plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:298
 #, python-brace-format
@@ -3814,8 +3813,8 @@ msgstr "Mehr erfahren"
 
 #: plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:18
 msgctxt "@info:status"
-msgid "You are attempting to connect to a printer that is not running UltiMaker Connect. Please update the printer to the latest firmware."
-msgstr "Sie versuchen, sich mit einem Drucker zu verbinden, auf dem UltiMaker Connect nicht läuft. Bitte aktualisieren Sie die Firmware des Druckers."
+msgid "You are attempting to connect to a printer that is not running Ultimaker Connect. Please update the printer to the latest firmware."
+msgstr ""
 
 #: plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:21
 msgctxt "@info:title"
@@ -3835,10 +3834,10 @@ msgstr "Material an Drucker senden"
 
 #: plugins/UM3NetworkPrinting/src/Messages/NewPrinterDetectedMessage.py:13
 msgctxt "info:status"
-msgid "New printer detected from your UltiMaker account"
-msgid_plural "New printers detected from your UltiMaker account"
-msgstr[0] "Ihr UltiMaker-Konto hat einen neuen Drucker erkannt"
-msgstr[1] "Ihr UltiMaker-Konto hat neue Drucker erkannt"
+msgid "New printer detected from your Ultimaker account"
+msgid_plural "New printers detected from your Ultimaker account"
+msgstr[0] ""
+msgstr[1] ""
 
 #: plugins/UM3NetworkPrinting/src/Messages/NewPrinterDetectedMessage.py:29
 #, python-brace-format
@@ -4454,8 +4453,8 @@ msgstr "Meine Drucker"
 
 #: resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:34
 msgctxt "@tooltip:button"
-msgid "Monitor printers in UltiMaker Digital Factory."
-msgstr "Überwachen Sie Drucker in der UltiMaker Digital Factory."
+msgid "Monitor printers in Ultimaker Digital Factory."
+msgstr ""
 
 #: resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:41
 msgctxt "@tooltip:button"
@@ -6496,8 +6495,8 @@ msgstr "Der Cloud-Drucker ist offline. Bitte prüfen Sie, ob der Drucker eingesc
 
 #: resources/qml/PrinterSelector/MachineSelector.qml:68
 msgctxt "@status"
-msgid "This printer is not linked to your account. Please visit the UltiMaker Digital Factory to establish a connection."
-msgstr "Der Drucker ist nicht mit Ihrem Konto verbunden. Bitte besuchen Sie die UltiMaker Digital Factory, um eine Verbindung herzustellen."
+msgid "This printer is not linked to your account. Please visit the Ultimaker Digital Factory to establish a connection."
+msgstr ""
 
 #: resources/qml/PrinterSelector/MachineSelector.qml:73
 msgctxt "@status"
@@ -6891,46 +6890,6 @@ msgctxt "@text"
 msgid "Create a free UltiMaker Account"
 msgstr "Kostenloses UltiMaker-Konto erstellen"
 
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:24
-msgctxt "@label"
-msgid "Help us to improve UltiMaker Cura"
-msgstr "Helfen Sie uns, UltiMaker Cura zu verbessern"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:56
-msgctxt "@text"
-msgid "UltiMaker Cura collects anonymous data to improve print quality and user experience, including:"
-msgstr "UltiMaker Cura erfasst anonyme Daten, um die Druckqualität und Benutzererfahrung zu steigern. Dazu gehören:"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:68
-msgctxt "@text"
-msgid "Machine types"
-msgstr "Gerätetypen"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:74
-msgctxt "@text"
-msgid "Material usage"
-msgstr "Materialverbrauch"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:80
-msgctxt "@text"
-msgid "Number of slices"
-msgstr "Anzahl der Slices"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:86
-msgctxt "@text"
-msgid "Print settings"
-msgstr "Druckeinstellungen"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:99
-msgctxt "@text"
-msgid "Data collected by UltiMaker Cura will not contain any personal information."
-msgstr "Die von UltiMaker Cura erfassten Daten enthalten keine personenbezogenen Daten."
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:100
-msgctxt "@text"
-msgid "More information"
-msgstr "Mehr Informationen"
-
 #: resources/qml/WelcomePages/DropDownWidget.qml:93
 msgctxt "@label"
 msgid "Empty"
@@ -6972,3 +6931,94 @@ msgstr "Neuheiten"
 msgctxt "@label"
 msgid "No items to select from"
 msgstr "Keine auswählbaren Einträge"
+
+#~ msgctxt "@text"
+#~ msgid "Data collected by UltiMaker Cura will not contain any personal information."
+#~ msgstr "Die von UltiMaker Cura erfassten Daten enthalten keine personenbezogenen Daten."
+
+#~ msgctxt "@label"
+#~ msgid "Help us to improve UltiMaker Cura"
+#~ msgstr "Helfen Sie uns, UltiMaker Cura zu verbessern"
+
+#~ msgctxt "@text"
+#~ msgid "Machine types"
+#~ msgstr "Gerätetypen"
+
+#~ msgctxt "description"
+#~ msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
+#~ msgstr "Verwaltet die Erweiterungen der Anwendung und ermöglicht das Durchsuchen von Erweiterungen auf der UltiMaker-Website."
+
+#~ msgctxt "description"
+#~ msgid "Manages network connections to UltiMaker networked printers."
+#~ msgstr "Verwaltet Netzwerkverbindungen zu UltiMaker-Netzwerkdruckern."
+
+#~ msgctxt "@text"
+#~ msgid "Material usage"
+#~ msgstr "Materialverbrauch"
+
+#~ msgctxt "@tooltip:button"
+#~ msgid "Monitor printers in UltiMaker Digital Factory."
+#~ msgstr "Überwachen Sie Drucker in der UltiMaker Digital Factory."
+
+#~ msgctxt "@info"
+#~ msgid "Monitor your printers from everywhere using UltiMaker Digital Factory"
+#~ msgstr "Überwachen Sie Ihre Drucker standortunabhängig mit UltiMaker Digital Factory."
+
+#~ msgctxt "@text"
+#~ msgid "More information"
+#~ msgstr "Mehr Informationen"
+
+#~ msgctxt "info:status"
+#~ msgid "New printer detected from your UltiMaker account"
+#~ msgid_plural "New printers detected from your UltiMaker account"
+#~ msgstr[0] "Ihr UltiMaker-Konto hat einen neuen Drucker erkannt"
+#~ msgstr[1] "Ihr UltiMaker-Konto hat neue Drucker erkannt"
+
+#~ msgctxt "@text"
+#~ msgid "Number of slices"
+#~ msgstr "Anzahl der Slices"
+
+#~ msgctxt "@text"
+#~ msgid "Print settings"
+#~ msgstr "Druckeinstellungen"
+
+#, python-brace-format
+#~ msgctxt "@info:error Don't translate the XML tag <filename>!"
+#~ msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura."
+#~ msgstr "Projektdatei <filename>{0}</filename> verwendet Profile, die nicht mit dieser UltiMaker Cura-Version kompatibel sind."
+
+#~ msgctxt "description"
+#~ msgid "Provides machine actions for UltiMaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
+#~ msgstr "Ermöglicht Maschinenabläufe für UltiMaker-Maschinen (z. B. Assistent für Bettnivellierung, Auswahl von Upgrades usw.)"
+
+#~ msgctxt "description"
+#~ msgid "Provides support for reading UltiMaker Format Packages."
+#~ msgstr "Bietet Unterstützung für das Lesen von UltiMaker Format Packages."
+
+#~ msgctxt "description"
+#~ msgid "Provides support for writing UltiMaker Format Packages."
+#~ msgstr "Bietet Unterstützung für das Schreiben von UltiMaker Format Packages."
+
+#~ msgctxt "@label:label UltiMaker Marketplace is a brand name, don't translate"
+#~ msgid "The material package associated with the Cura project could not be found on the UltiMaker Marketplace. Use the partial material profile definition stored in the Cura project file at your own risk."
+#~ msgstr "Das mit dem Cura-Projekt verknüpfte Materialpaket konnte im UltiMaker Marketplace nicht gefunden werden. Verwenden Sie die in der Cura-Projektdatei gespeicherte unvollständige Definition des Materialprofils auf eigene Gefahr."
+
+#~ msgctxt "@status"
+#~ msgid "This printer is not linked to your account. Please visit the UltiMaker Digital Factory to establish a connection."
+#~ msgstr "Der Drucker ist nicht mit Ihrem Konto verbunden. Bitte besuchen Sie die UltiMaker Digital Factory, um eine Verbindung herzustellen."
+
+#~ msgctxt "@action:tooltip"
+#~ msgid "Track the print in UltiMaker Digital Factory"
+#~ msgstr "Verfolgen Sie den Druck in der UltiMaker Digital Factory"
+
+#~ msgctxt "@text"
+#~ msgid "UltiMaker Cura collects anonymous data to improve print quality and user experience, including:"
+#~ msgstr "UltiMaker Cura erfasst anonyme Daten, um die Druckqualität und Benutzererfahrung zu steigern. Dazu gehören:"
+
+#~ msgctxt "@info"
+#~ msgid "Webcam feeds for cloud printers cannot be viewed from UltiMaker Cura. Click \"Manage printer\" to visit UltiMaker Digital Factory and view this webcam."
+#~ msgstr "Webcam-Feeds für Cloud-Drucker können nicht in UltiMaker Cura angezeigt werden. Klicken Sie auf „Drucker verwalten“, um die UltiMaker Digital Factory zu besuchen und diese Webcam zu sehen."
+
+#~ msgctxt "@info:status"
+#~ msgid "You are attempting to connect to a printer that is not running UltiMaker Connect. Please update the printer to the latest firmware."
+#~ msgstr "Sie versuchen, sich mit einem Drucker zu verbinden, auf dem UltiMaker Connect nicht läuft. Bitte aktualisieren Sie die Firmware des Druckers."

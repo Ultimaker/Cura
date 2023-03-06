@@ -949,7 +949,7 @@ msgstr "Actie machine-instellingen"
 
 #: plugin.json
 msgctxt "description"
-msgid "Manages extensions to the application and allows browsing extensions from the Ultimaker website."
+msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
 msgstr "Beheert extensies voor de toepassing en staat browsingextensies toe van de UltiMaker-website."
 
 #: plugin.json
@@ -2519,7 +2519,6 @@ msgid "Dismiss"
 msgstr "Verwijderen"
 
 #: plugins/Marketplace/resources/qml/CompatibilityDialog.qml:24
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:118
 #: resources/qml/WelcomePages/FirstStartMachineActionsContent.qml:76
 #: resources/qml/WelcomePages/WhatsNewContent.qml:175
 msgctxt "@button"
@@ -6895,46 +6894,6 @@ msgctxt "@text"
 msgid "Create a free UltiMaker Account"
 msgstr "Maak een gratis UltiMaker-account aan"
 
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:24
-msgctxt "@label"
-msgid "Help us to improve UltiMaker Cura"
-msgstr "Help ons UltiMaker Cura te verbeteren"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:56
-msgctxt "@text"
-msgid "UltiMaker Cura collects anonymous data to improve print quality and user experience, including:"
-msgstr "UltiMaker Cura verzamelt anonieme gegevens om de printkwaliteit en gebruikerservaring te verbeteren, waaronder:"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:68
-msgctxt "@text"
-msgid "Machine types"
-msgstr "Machinetypen"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:74
-msgctxt "@text"
-msgid "Material usage"
-msgstr "Materiaalgebruik"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:80
-msgctxt "@text"
-msgid "Number of slices"
-msgstr "Aantal slices"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:86
-msgctxt "@text"
-msgid "Print settings"
-msgstr "Instellingen voor printen"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:99
-msgctxt "@text"
-msgid "Data collected by UltiMaker Cura will not contain any personal information."
-msgstr "De gegevens die UltiMaker Cura verzamelt, bevatten geen persoonlijke informatie."
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:100
-msgctxt "@text"
-msgid "More information"
-msgstr "Meer informatie"
-
 #: resources/qml/WelcomePages/DropDownWidget.qml:93
 msgctxt "@label"
 msgid "Empty"
@@ -6989,6 +6948,10 @@ msgstr "Geen items om uit te kiezen"
 #~ msgid "Change build plate to %1 (This cannot be overridden)."
 #~ msgstr "Wijzig het platform naar %1 (kan niet worden overschreven)."
 
+#~ msgctxt "@text"
+#~ msgid "Data collected by UltiMaker Cura will not contain any personal information."
+#~ msgstr "De gegevens die UltiMaker Cura verzamelt, bevatten geen persoonlijke informatie."
+
 #~ msgctxt "@label"
 #~ msgid "Glass"
 #~ msgstr "Glas"
@@ -7000,6 +6963,10 @@ msgstr "Geen items om uit te kiezen"
 #~ msgctxt "@label"
 #~ msgid "Gradual infill will gradually increase the amount of infill towards the top."
 #~ msgstr "Met geleidelijke vulling neemt de hoeveelheid vulling naar boven toe."
+
+#~ msgctxt "@label"
+#~ msgid "Help us to improve UltiMaker Cura"
+#~ msgstr "Help ons UltiMaker Cura te verbeteren"
 
 #~ msgctxt "@info:tooltip"
 #~ msgid "How should the conflict in the machine be resolved?"
@@ -7013,9 +6980,33 @@ msgstr "Geen items om uit te kiezen"
 #~ msgid "How should the conflict in the profile be resolved?"
 #~ msgstr "Hoe dient het conflict in het profiel te worden opgelost?"
 
+#~ msgctxt "@text"
+#~ msgid "Machine types"
+#~ msgstr "Machinetypen"
+
+#~ msgctxt "@text"
+#~ msgid "Material usage"
+#~ msgstr "Materiaalgebruik"
+
+#~ msgctxt "@text"
+#~ msgid "More information"
+#~ msgstr "Meer informatie"
+
+#~ msgctxt "@text"
+#~ msgid "Number of slices"
+#~ msgstr "Aantal slices"
+
+#~ msgctxt "@text"
+#~ msgid "Print settings"
+#~ msgstr "Instellingen voor printen"
+
 #~ msgctxt "@info"
 #~ msgid "Some settings were changed."
 #~ msgstr "Bepaalde instellingen zijn gewijzigd."
+
+#~ msgctxt "@text"
+#~ msgid "UltiMaker Cura collects anonymous data to improve print quality and user experience, including:"
+#~ msgstr "UltiMaker Cura verzamelt anonieme gegevens om de printkwaliteit en gebruikerservaring te verbeteren, waaronder:"
 
 #~ msgctxt "@action:label"
 #~ msgid "Visible settings:"
