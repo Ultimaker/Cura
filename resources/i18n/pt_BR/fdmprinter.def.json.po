@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.0\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-03-06 21:46+0000\n"
-"PO-Revision-Date: 2022-10-10 07:50+0200\n"
+"POT-Creation-Date: 2023-02-02 16:06+0000\n"
+"PO-Revision-Date: 2023-02-17 16:31+0100\n"
 "Last-Translator: Cláudio Sampaio <patola@gmail.com>\n"
 "Language-Team: Cláudio Sampaio <patola@gmail.com>\n"
 "Language: pt_BR\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.2.2\n"
 
 #: fdmprinter.def.json
 msgctxt "ironing_inset description"
@@ -75,7 +75,7 @@ msgstr "Uma lista de polígonos com áreas em que a cabeça de impressão é pro
 #: fdmprinter.def.json
 msgctxt "brim_inside_margin description"
 msgid "A part fully enclosed inside another part can generate an outer brim that touches the inside of the other part. This removes all brim within this distance from internal holes."
-msgstr ""
+msgstr "Uma peça completamente contida em outra peça pode gerar um brim externo que toca o interior da outra parte. Este ajuste remove todo o brim dentro desta distância dos buracos internos."
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_abs label"
@@ -284,7 +284,7 @@ msgstr "Aplicar o deslocamento de extrusor ao sistema de coordenadas. Afeta todo
 #: fdmprinter.def.json
 msgctxt "interlocking_enable description"
 msgid "At the locations where models touch, generate an interlocking beam structure. This improves the adhesion between models, especially models printed in different materials."
-msgstr ""
+msgstr "Nos lugares em que os modelos tocam, gerar uma estrutura de vigas interligada. Isto melhora a aderência entre modelos, especialmente modelos impressos com materiais diferentes."
 
 #: fdmprinter.def.json
 msgctxt "travel_avoid_other_parts label"
@@ -484,7 +484,7 @@ msgstr "Distância do Brim"
 #: fdmprinter.def.json
 msgctxt "brim_inside_margin label"
 msgid "Brim Inside Avoid Margin"
-msgstr ""
+msgstr "Brim Dentro da Margem a Evitar"
 
 #: fdmprinter.def.json
 msgctxt "brim_line_count label"
@@ -1496,7 +1496,7 @@ msgstr "Altura do Eixo"
 #: fdmprinter.def.json
 msgctxt "interlocking_enable label"
 msgid "Generate Interlocking Structure"
-msgstr ""
+msgstr "Gerar Estrutura Interligada"
 
 #: fdmprinter.def.json
 msgctxt "support_enable label"
@@ -1561,7 +1561,7 @@ msgstr "Passos de Preenchimento Gradual de Suporte"
 #: fdmprinter.def.json
 msgctxt "cool_min_temperature description"
 msgid "Gradually reduce to this temperature when printing at reduced speeds because of minimum layer time."
-msgstr ""
+msgstr "Gradualmente reduzir até esta temperatura quanto se estiver imprimindo a velocidades reduzidas devidas ao tempo mínimo de camada."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -2051,27 +2051,27 @@ msgstr "De Dentro Pra Fora"
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_layer_count label"
 msgid "Interlocking Beam Layer Count"
-msgstr ""
+msgstr "Contagem de Camadas das Vigas Interligadas"
 
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_width label"
 msgid "Interlocking Beam Width"
-msgstr ""
+msgstr "Largura da Viga Interligada"
 
 #: fdmprinter.def.json
 msgctxt "interlocking_boundary_avoidance label"
 msgid "Interlocking Boundary Avoidance"
-msgstr ""
+msgstr "Prevenção de Fronteira de Interligação"
 
 #: fdmprinter.def.json
 msgctxt "interlocking_depth label"
 msgid "Interlocking Depth"
-msgstr ""
+msgstr "Profundidade de Interligação"
 
 #: fdmprinter.def.json
 msgctxt "interlocking_orientation label"
 msgid "Interlocking Structure Orientation"
-msgstr ""
+msgstr "Orientação da Estrutura de Interligação"
 
 #: fdmprinter.def.json
 msgctxt "ironing_only_highest_layer label"
@@ -4605,7 +4605,7 @@ msgstr "A distância coberta quando é feita uma conexão do contorno do teto pa
 #: fdmprinter.def.json
 msgctxt "interlocking_depth description"
 msgid "The distance from the boundary between models to generate interlocking structure measured in cells. Too few cells will result in poor adhesion."
-msgstr ""
+msgstr "A distância da fronteira entre os modelos para gerar a estrutura de interligação, medida em células. Poucas células resultam em baixa aderência."
 
 #: fdmprinter.def.json
 msgctxt "brim_width description"
@@ -4846,12 +4846,12 @@ msgstr "A altura do preenchimento de suporte de dada densidade antes de trocar p
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_layer_count description"
 msgid "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects."
-msgstr ""
+msgstr "A altura das vigas da estrutura de interligação, medida em número de camadas. Menos camadas são mais fortes, mas mais susceptíveis a defeitos."
 
 #: fdmprinter.def.json
 msgctxt "interlocking_orientation description"
 msgid "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects."
-msgstr ""
+msgstr "A altura das vigas da estrutura de interligação, medidas em número de camadas. Menos camadas são mais fortes, mas mais susceptíveis a defeitos."
 
 #: fdmprinter.def.json
 msgctxt "layer_height_0 description"
