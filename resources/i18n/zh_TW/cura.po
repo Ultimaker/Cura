@@ -856,7 +856,7 @@ msgstr "專案檔案<filename>{0}</filename> 已毀損 : <message>{1}</message>.
 #: plugins/3MFReader/ThreeMFWorkspaceReader.py:754
 #, fuzzy, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
-msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of Ultimaker Cura."
+msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura."
 msgstr "專案檔案 <filename>{0}</filename> 使用了此版本 UltiMaker Cura 未知的參數製作。"
 
 #: plugins/3MFReader/WorkspaceDialog.py:233

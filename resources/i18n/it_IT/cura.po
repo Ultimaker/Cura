@@ -854,8 +854,8 @@ msgstr "Il file di progetto <filename>{0}</filename> è danneggiato: <message>{1
 #: plugins/3MFReader/ThreeMFWorkspaceReader.py:754
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
-msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of Ultimaker Cura."
-msgstr ""
+msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura."
+msgstr "Il file di progetto <filename>{0}</filename> è realizzato con profili sconosciuti a questa versione di UltiMaker Cura."
 
 #: plugins/3MFReader/WorkspaceDialog.py:233
 msgctxt "@title:tab"
@@ -3533,7 +3533,7 @@ msgstr "Ulteriori informazioni"
 #: plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:18
 msgctxt "@info:status"
 msgid "You are attempting to connect to a printer that is not running UltiMaker Connect. Please update the printer to the latest firmware."
-msgstr ""
+msgstr "Si sta tentando di connettersi a una stampante che non esegue Ultimaker Connect. Aggiornare la stampante con il firmware più recente."
 
 #: plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:21
 msgctxt "@info:title"
@@ -4116,6 +4116,9 @@ msgid ""
 "- Back-up and sync your material profiles and plug-ins\n"
 "- Share ideas and get help from 48,000+ users in the UltiMaker community"
 msgstr ""
+"- Aggiungi profili materiale e plugin dal Marketplace\n"
+"- Esegui il backup e la sincronizzazione dei profili materiale e dei plugin\n"
+"- Condividi idee e ottieni supporto da più di 48.000 utenti nella community di Ultimaker"
 
 #: resources/qml/Account/GeneralOperations.qml:58
 msgctxt "@button"
@@ -6920,75 +6923,3 @@ msgstr "Scopri le novità"
 msgctxt "@label"
 msgid "No items to select from"
 msgstr "Nessun elemento da selezionare da"
-
-#~ msgctxt "@text"
-#~ msgid "Data collected by UltiMaker Cura will not contain any personal information."
-#~ msgstr "Data collected by UltiMaker Cura will not contain any personal information."
-
-#~ msgctxt "@button"
-#~ msgid "Get started"
-#~ msgstr "Per iniziare"
-
-#~ msgctxt "@label"
-#~ msgid "Help us to improve UltiMaker Cura"
-#~ msgstr "Help us to improve UltiMaker Cura"
-
-#~ msgctxt "@text"
-#~ msgid "Machine types"
-#~ msgstr "Tipi di macchine"
-
-#~ msgctxt "description"
-#~ msgid "Manages extensions to the application and allows browsing extensions from the Ultimaker website."
-#~ msgstr "Gestisce le estensioni per l'applicazione e consente di ricercare le estensioni nel sito Web Ultimaker."
-
-#~ msgctxt "description"
-#~ msgid "Manages network connections to Ultimaker networked printers."
-#~ msgstr "Gestisce le connessioni di rete alle stampanti Ultimaker in rete."
-
-#~ msgctxt "@text"
-#~ msgid "Material usage"
-#~ msgstr "Utilizzo dei materiali"
-
-#~ msgctxt "@text"
-#~ msgid "More information"
-#~ msgstr "Ulteriori informazioni"
-
-#~ msgctxt "@text"
-#~ msgid "Number of slices"
-#~ msgstr "Numero di sezionamenti"
-
-#~ msgctxt "@text"
-#~ msgid "Please follow these steps to set up UltiMaker Cura. This will only take a few moments."
-#~ msgstr "Please follow these steps to set up UltiMaker Cura. This will only take a few moments."
-
-#~ msgctxt "@description"
-#~ msgid "Please sign in to get verified plugins and materials for Ultimaker Cura Enterprise"
-#~ msgstr "Accedere per ottenere i plugin e i materiali verificati per Ultimaker Cura Enterprise"
-
-#~ msgctxt "@text"
-#~ msgid "Print settings"
-#~ msgstr "Impostazioni di stampa"
-
-#~ msgctxt "@info"
-#~ msgid "Sign in into UltiMaker Digilal Factory"
-#~ msgstr "Sign in into UltiMaker Digilal Factory"
-
-#~ msgctxt "@text"
-#~ msgid "UltiMaker Cura collects anonymous data to improve print quality and user experience, including:"
-#~ msgstr "UltiMaker Cura collects anonymous data to improve print quality and user experience, including:"
-
-#~ msgctxt "name"
-#~ msgid "Ultimaker Network Connection"
-#~ msgstr "Connessione di rete Ultimaker"
-
-#~ msgctxt "name"
-#~ msgid "Ultimaker machine actions"
-#~ msgstr "Azioni della macchina Ultimaker"
-
-#~ msgctxt "@label"
-#~ msgid "Welcome to UltiMaker Cura"
-#~ msgstr "Welcome to UltiMaker Cura"
-
-#~ msgctxt "@info:status"
-#~ msgid "You are attempting to connect to a printer that is not running Ultimaker Connect. Please update the printer to the latest firmware."
-#~ msgstr "Si sta tentando di connettersi a una stampante che non esegue Ultimaker Connect. Aggiornare la stampante con il firmware più recente."

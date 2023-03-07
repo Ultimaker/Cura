@@ -849,7 +849,7 @@ msgstr "O ficheiro de projeto <filename>{0}</filename> está corrompido: <messag
 #: plugins/3MFReader/ThreeMFWorkspaceReader.py:754
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
-msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of Ultimaker Cura."
+msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura."
 msgstr "O ficheiro de projeto <filename>{0}</filename> foi criado utilizando perfis que são desconhecidos para esta versão do UltiMaker Cura."
 
 #: plugins/3MFReader/WorkspaceDialog.py:233

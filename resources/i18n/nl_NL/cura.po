@@ -854,7 +854,7 @@ msgstr "Projectbestand <filename>{0}</filename> is corrupt: <message>{1}</messag
 #: plugins/3MFReader/ThreeMFWorkspaceReader.py:754
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
-msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of Ultimaker Cura."
+msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura."
 msgstr "Projectbestand <filename>{0}</filename> wordt gemaakt met behulp van profielen die onbekend zijn bij deze versie van UltiMaker Cura."
 
 #: plugins/3MFReader/WorkspaceDialog.py:233
@@ -6812,7 +6812,7 @@ msgstr "UltiMaker printer"
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:64
 msgctxt "@button"
 msgid "Non UltiMaker printer"
-msgstr "Niet UltiMaker printer"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:73
 msgctxt "@button"

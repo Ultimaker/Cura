@@ -849,7 +849,7 @@ msgstr "Файл проекта <filename>{0}</filename> поврежден: <me
 #: plugins/3MFReader/ThreeMFWorkspaceReader.py:754
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
-msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of Ultimaker Cura."
+msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura."
 msgstr "Файл проекта <filename>{0}</filename> создан с использованием профилей, несовместимых с данной версией UltiMaker Cura."
 
 #: plugins/3MFReader/WorkspaceDialog.py:233

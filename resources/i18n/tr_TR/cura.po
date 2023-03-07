@@ -854,7 +854,7 @@ msgstr "Proje dosyası <filename>{0}</filename> bozuk: <message>{1}</message>."
 #: plugins/3MFReader/ThreeMFWorkspaceReader.py:754
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
-msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of Ultimaker Cura."
+msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura."
 msgstr "<filename>{0}</filename> proje dosyası, Ultimaker Cura'nın bu sürümünde bilinmeyen profiller kullanılarak yapılmış."
 
 #: plugins/3MFReader/WorkspaceDialog.py:233
