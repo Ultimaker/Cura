@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-06 23:02+0100\n"
+"POT-Creation-Date: 2023-03-07 09:01+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -53,7 +53,7 @@ msgstr "Não é possível criar um arquivo a partir do directório de dados do u
 #: plugins/CuraDrive/src/DrivePluginExtension.py:126
 msgctxt "@info:title"
 msgid "Backup"
-msgstr "Backup"
+msgstr ""
 
 #: cura/Backups/Backup.py:134
 msgctxt "@info:backup_failed"
@@ -329,7 +329,7 @@ msgstr "Tem a certeza de que pretende remover {0}? Esta ação não pode ser anu
 #: cura/Machines/Models/QualityManagementModel.py:347
 msgctxt "@label"
 msgid "Default"
-msgstr "Default"
+msgstr ""
 
 #: cura/Machines/Models/IntentCategoryModel.py:45
 #: cura/Machines/Models/IntentSelectionModel.py:65
@@ -350,7 +350,7 @@ msgstr "O perfil de acabamento foi criado para imprimir modelos e protótipos fi
 #: cura/Machines/Models/IntentTranslations.py:18
 msgctxt "@label"
 msgid "Engineering"
-msgstr "Engineering"
+msgstr ""
 
 #: cura/Machines/Models/IntentCategoryModel.py:50
 #: cura/Machines/Models/IntentSelectionModel.py:71
@@ -496,7 +496,7 @@ msgstr "Não foi possível estabelecer a ligação com a Digital Factory."
 #: cura/Settings/ActiveQuality.py:43
 msgctxt "@label"
 msgid "Experimental"
-msgstr "Experimental"
+msgstr ""
 
 #: cura/Settings/ContainerManager.py:207
 #: cura/Settings/CuraContainerRegistry.py:140
@@ -630,7 +630,7 @@ msgstr "Aviso: o perfil não é visível porque o respetivo tipo de qualidade '{
 #: plugins/3MFReader/ThreeMFWorkspaceReader.py:221
 msgctxt "@label"
 msgid "Nozzle"
-msgstr "Nozzle"
+msgstr ""
 
 #: cura/Settings/MachineManager.py:890
 msgctxt "@info:message Followed by a list of settings."
@@ -655,7 +655,7 @@ msgstr "Não suportado"
 #: cura/Settings/cura_empty_instance_containers.py:55
 msgctxt "@info:No intent profile selected"
 msgid "Default"
-msgstr "Default"
+msgstr ""
 
 #: cura/UI/AddPrinterPagesModel.py:17
 #: plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:61
@@ -849,7 +849,7 @@ msgstr "O ficheiro de projeto <filename>{0}</filename> está corrompido: <messag
 #: plugins/3MFReader/ThreeMFWorkspaceReader.py:754
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
-msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of Ultimaker Cura."
+msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura."
 msgstr "O ficheiro de projeto <filename>{0}</filename> foi criado utilizando perfis que são desconhecidos para esta versão do UltiMaker Cura."
 
 #: plugins/3MFReader/WorkspaceDialog.py:233
@@ -945,7 +945,7 @@ msgstr "Nome"
 #: resources/qml/Dialogs/WorkspaceSummaryDialog.qml:263
 msgctxt "@action:label"
 msgid "Intent"
-msgstr "Intent"
+msgstr ""
 
 #: plugins/3MFReader/WorkspaceDialog.qml:178
 #: resources/qml/Dialogs/WorkspaceSummaryDialog.qml:230
@@ -4044,7 +4044,7 @@ msgstr "Atualização da versão 4.9 para 4.10"
 #: plugins/VersionUpgrade/VersionUpgrade52to53/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.2 to Cura 5.3."
-msgstr "Upgrades configurations from Cura 5.2 to Cura 5.3."
+msgstr "Atualiza as configurações do Cura 5.2 para o Cura 5.3."
 
 #: plugins/VersionUpgrade/VersionUpgrade52to53/plugin.json
 msgctxt "name"
@@ -4697,7 +4697,7 @@ msgstr "Linguagem de programação"
 #: resources/qml/Dialogs/AboutDialog.qml:149
 msgctxt "@label Description for application dependency"
 msgid "GUI framework"
-msgstr "GUI framework"
+msgstr ""
 
 #: resources/qml/Dialogs/AboutDialog.qml:150
 msgctxt "@label Description for application dependency"
@@ -4727,7 +4727,7 @@ msgstr "Biblioteca de recortes de polígonos"
 #: resources/qml/Dialogs/AboutDialog.qml:157
 msgctxt "@label Description for application dependency"
 msgid "JSON parser"
-msgstr "JSON parser"
+msgstr ""
 
 #: resources/qml/Dialogs/AboutDialog.qml:158
 msgctxt "@label Description for application dependency"
@@ -4857,7 +4857,7 @@ msgstr "Impressoras compatíveis"
 
 #: resources/qml/Dialogs/ChoosePrinterDialog.qml:110
 msgctxt "@description"
-msgid "No compatible printers, that are currently online, where found."
+msgid "No compatible printers, that are currently online, were found."
 msgstr "Nenhuma impressora compatível, que esteja online no momento, foi encontrada."
 
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:13
@@ -6212,7 +6212,7 @@ msgstr "As definições recomendadas (para <b>%1</b>) foram alteradas."
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:106
 msgctxt "@info %1 is the name of a profile"
 msgid "Some setting-values defined in <b>%1</b> were overridden."
-msgstr "Some setting-values defined in <b>%1</b> were overridden."
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:137
 msgctxt "@info"
@@ -6279,11 +6279,11 @@ msgctxt "@label"
 msgid ""
 "The pattern of the infill material of the print:\n"
 "\n"
-"For quick prints of non functional model choose line, zig zag or lighting infill.\n"
+"For quick prints of non functional model choose line, zig zag or lightning infill.\n"
 "\n"
-"For functional part not subjected to a lot of stress we reccomend grid or triangle or tri hexagon.\n"
+"For functional part not subjected to a lot of stress we recommend grid or triangle or tri hexagon.\n"
 "\n"
-"For functional 3D prints which require high strenght in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
+"For functional 3D prints which require high strength in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
 msgstr ""
 "O padrão do material de enchimento da impressão:\n"
 "\n"
@@ -6298,7 +6298,7 @@ msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:68
 msgctxt "@label"
-msgid "Defines the tickness of your part side walls, roof and floor."
+msgid "Defines the thickness of your part side walls, roof and floor."
 msgstr "Define a espessura das paredes laterais da peça, do telhado e do chão."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:16

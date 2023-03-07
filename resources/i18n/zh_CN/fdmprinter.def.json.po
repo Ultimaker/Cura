@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-03-06 23:02+0000\n"
+"POT-Creation-Date: 2023-03-07 09:01+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -1158,7 +1158,7 @@ msgstr "全部支撑"
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance option exclusive"
 msgid "Exclusive"
-msgstr "Exclusive"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "experimental label"
@@ -1776,7 +1776,7 @@ msgstr "包含材料温度"
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance option inclusive"
 msgid "Inclusive"
-msgstr "Inclusive"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "infill description"
@@ -4595,7 +4595,7 @@ msgstr "在从顶板轮廓向内进行连接时所覆盖的距离。 仅应用�
 
 #: fdmprinter.def.json
 msgctxt "interlocking_depth description"
-msgid "The distance from the boundary between models to generate interlocking structure measured in cells. Too few cells will result in poor adhesion."
+msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
 msgstr "从模型之间的边界到生成联锁结构的距离，以单元格衡量。单元格太少会导致粘附不良。"
 
 #: fdmprinter.def.json

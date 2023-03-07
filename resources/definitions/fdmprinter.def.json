@@ -6909,7 +6909,7 @@
                 "interlocking_depth":
                 {
                     "label": "Interlocking Depth",
-                    "description": "The distance from the boundary between models to generate interlocking structure measured in cells. Too few cells will result in poor adhesion.",
+                    "description": "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion.",
                     "type": "int",
                     "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
                     "default_value": 2,

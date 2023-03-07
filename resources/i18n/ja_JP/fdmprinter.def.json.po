@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-03-06 23:02+0000\n"
+"POT-Creation-Date: 2023-03-07 09:01+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -3721,7 +3721,7 @@ msgstr "小型形体の最大長さ"
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor label"
 msgid "Small Feature Speed"
-msgstr "Small Feature Speed"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "small_hole_max_size label"
@@ -4597,7 +4597,7 @@ msgstr "ルーフから内側に輪郭を描くときの距離。ワイヤ印刷
 
 #: fdmprinter.def.json
 msgctxt "interlocking_depth description"
-msgid "The distance from the boundary between models to generate interlocking structure measured in cells. Too few cells will result in poor adhesion."
+msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
 msgstr "インターロック構造を生成するモデル間の境界からの距離（セル単位）。セルが少なすぎると密着性が低下します。"
 
 #: fdmprinter.def.json
