@@ -4593,7 +4593,7 @@ msgstr "지붕에서 연결을 할 때 안쪽까지 윤곽선을 그립니다. �
 
 #: fdmprinter.def.json
 msgctxt "interlocking_depth description"
-msgid "The distance from the boundary between models to generate interlocking structure measured in cells. Too few cells will result in poor adhesion."
+msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
 msgstr "셀 단위로 측정된 연동 구조를 생성하기 위한 모델 간의 경계로부터의 거리입니다. 셀 수가 너무 적으면 접착력이 떨어집니다."
 
 #: fdmprinter.def.json

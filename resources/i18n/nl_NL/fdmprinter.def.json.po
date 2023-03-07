@@ -4595,7 +4595,7 @@ msgstr "De afstand die wordt overbrugt wanneer vanaf een dakcontour een verbindi
 
 #: fdmprinter.def.json
 msgctxt "interlocking_depth description"
-msgid "The distance from the boundary between models to generate interlocking structure measured in cells. Too few cells will result in poor adhesion."
+msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
 msgstr "De afstand vanaf de grens tussen modellen om een in elkaar grijpende structuur te genereren, gemeten in cellen. Te weinig cellen leiden tot slechte hechting."
 
 #: fdmprinter.def.json

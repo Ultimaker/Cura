@@ -4595,7 +4595,7 @@ msgstr "在从顶板轮廓向内进行连接时所覆盖的距离。 仅应用�
 
 #: fdmprinter.def.json
 msgctxt "interlocking_depth description"
-msgid "The distance from the boundary between models to generate interlocking structure measured in cells. Too few cells will result in poor adhesion."
+msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
 msgstr "从模型之间的边界到生成联锁结构的距离，以单元格衡量。单元格太少会导致粘附不良。"
 
 #: fdmprinter.def.json

@@ -4597,7 +4597,7 @@ msgstr "ルーフから内側に輪郭を描くときの距離。ワイヤ印刷
 
 #: fdmprinter.def.json
 msgctxt "interlocking_depth description"
-msgid "The distance from the boundary between models to generate interlocking structure measured in cells. Too few cells will result in poor adhesion."
+msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
 msgstr "インターロック構造を生成するモデル間の境界からの距離（セル単位）。セルが少なすぎると密着性が低下します。"
 
 #: fdmprinter.def.json

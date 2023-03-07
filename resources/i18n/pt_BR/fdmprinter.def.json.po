@@ -4604,7 +4604,7 @@ msgstr "A distância coberta quando é feita uma conexão do contorno do teto pa
 
 #: fdmprinter.def.json
 msgctxt "interlocking_depth description"
-msgid "The distance from the boundary between models to generate interlocking structure measured in cells. Too few cells will result in poor adhesion."
+msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
 msgstr "A distância da fronteira entre os modelos para gerar a estrutura de interligação, medida em células. Poucas células resultam em baixa aderência."
 
 #: fdmprinter.def.json

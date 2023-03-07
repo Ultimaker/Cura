@@ -4595,7 +4595,7 @@ msgstr "Der abgedeckte Abstand beim Herstellen einer Verbindung vom Dachumriss n
 
 #: fdmprinter.def.json
 msgctxt "interlocking_depth description"
-msgid "The distance from the boundary between models to generate interlocking structure measured in cells. Too few cells will result in poor adhesion."
+msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
 msgstr "Der Abstand von der Begrenzung zwischen Modellen, in dem eine ineinandergreifende Struktur generiert wird, gemessen in Zellen. Eine zu geringe Zellenanzahl führt zu mangelnder Haftung."
 
 #: fdmprinter.def.json
