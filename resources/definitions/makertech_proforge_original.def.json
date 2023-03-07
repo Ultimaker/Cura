@@ -16,7 +16,7 @@
     },
 
     "overrides": {
-        "machine_extruder_count": { "default_value": 2 },
+        
         "machine_heated_bed": { "default_value": true },
         "gantry_height": { "default_value": 80	},
         "machine_height": { "default_value": 240 },
