@@ -6829,7 +6829,7 @@ msgstr "Agregar impresora"
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:33
 msgctxt "@label"
 msgid "New UltiMaker printers can be connected to Digital Factory and monitored remotely."
-msgstr "New UltiMaker printers can be connected to Digital Factory and monitored remotely."
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:70
 msgctxt "@label"
