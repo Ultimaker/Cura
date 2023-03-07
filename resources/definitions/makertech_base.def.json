@@ -47,7 +47,7 @@
 		
 		"skin_overlap": {"default_value": 10 },
 		
-		"speed_wall": { "value": "speed_print / 2" },
+		
 		"speed_wall_x": { "value": "speed_wall * 1.4" },
 		"speed_travel": { "value": "speed_print if magic_spiralize else 80" },
 		
