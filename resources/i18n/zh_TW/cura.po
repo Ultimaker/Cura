@@ -86,7 +86,6 @@ msgid "Cura can't start"
 msgstr "Cura 無法啟動"
 
 #: cura/CrashHandler.py:113
-#, fuzzy
 msgctxt "@label crash message"
 msgid ""
 "<p><b>Oops, UltiMaker Cura has encountered something that doesn't seem right.</p></b>\n"
@@ -95,7 +94,7 @@ msgid ""
 "                    <p>Please send us this Crash Report to fix the problem.</p>\n"
 "                "
 msgstr ""
-"<p><b>糟糕，Ultimaker Cura 遇到了一些似乎不正常的事情。</p></b>\n"
+"<p><b>糟糕，UltiMaker Cura 遇到了一些似乎不正常的事情。</p></b>\n"
 "                    <p>我們在啟動過程中遇到了無法修正的錯誤。這可能是由一些不正確的設定檔造成的。我們建議備份並重置您的設定。</p>\n"
 "                    <p>備份檔案可在設定資料夾中找到。</p>\n"
 "                    <p>請將錯誤報告傳送給我們以修正此問題。</p>\n"
@@ -828,10 +827,9 @@ msgstr "開啟專案檔案"
 #: plugins/3MFReader/WorkspaceDialog.qml:99
 #: plugins/3MFReader/WorkspaceDialog.qml:127
 #: plugins/3MFReader/WorkspaceDialog.qml:134
-#, fuzzy
 msgctxt "@button"
 msgid "Create new"
-msgstr "新建設定"
+msgstr ""
 
 #: plugins/3MFReader/ThreeMFWorkspaceReader.py:681
 #, python-brace-format
@@ -854,7 +852,7 @@ msgid "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>.
 msgstr "專案檔案<filename>{0}</filename> 已毀損 : <message>{1}</message>."
 
 #: plugins/3MFReader/ThreeMFWorkspaceReader.py:754
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
 msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura."
 msgstr "專案檔案 <filename>{0}</filename> 使用了此版本 UltiMaker Cura 未知的參數製作。"
@@ -925,10 +923,9 @@ msgid "Printer Group"
 msgstr "印表機群組"
 
 #: plugins/3MFReader/WorkspaceDialog.qml:103
-#, fuzzy
 msgctxt "@action:label"
 msgid "Open With"
-msgstr "開啟檔案"
+msgstr ""
 
 #: plugins/3MFReader/WorkspaceDialog.qml:104
 msgctxt "@info:tooltip"
@@ -2981,10 +2978,9 @@ msgid "UltiMaker Format Package"
 msgstr "UltiMaker 格式的封包"
 
 #: plugins/UFPReader/plugin.json
-#, fuzzy
 msgctxt "description"
 msgid "Provides support for reading Ultimaker Format Packages."
-msgstr "提供讀取 UltiMaker 格式封包的支援。"
+msgstr ""
 
 #: plugins/UFPReader/plugin.json
 msgctxt "name"
@@ -2999,10 +2995,9 @@ msgid "Can't write to UFP file:"
 msgstr "無法寫入 UFP 檔案："
 
 #: plugins/UFPWriter/plugin.json
-#, fuzzy
 msgctxt "description"
 msgid "Provides support for writing Ultimaker Format Packages."
-msgstr "提供寫入 UltiMaker 格式封包的支援。"
+msgstr ""
 
 #: plugins/UFPWriter/plugin.json
 msgctxt "name"
@@ -3010,13 +3005,11 @@ msgid "UFP Writer"
 msgstr "UFP 寫入器"
 
 #: plugins/UM3NetworkPrinting/plugin.json
-#, fuzzy
 msgctxt "description"
 msgid "Manages network connections to UltiMaker networked printers."
-msgstr "管理與 UltiMaker 網絡印表機的網絡連線。"
+msgstr ""
 
 #: plugins/UM3NetworkPrinting/plugin.json
-#, fuzzy
 msgctxt "name"
 msgid "UltiMaker Network Connection"
 msgstr "UltiMaker 網絡連線"
@@ -3532,7 +3525,6 @@ msgid "Learn more"
 msgstr "學習更多"
 
 #: plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:18
-#, fuzzy
 msgctxt "@info:status"
 msgid "You are attempting to connect to a printer that is not running UltiMaker Connect. Please update the printer to the latest firmware."
 msgstr "你正在嘗試連接到一台未安裝 UltiMaker Connect 的印表機。請將印表機更新至最新版本的韌體。"
@@ -3554,11 +3546,10 @@ msgid "Sending materials to printer"
 msgstr "向印表機傳送線材參數中"
 
 #: plugins/UM3NetworkPrinting/src/Messages/NewPrinterDetectedMessage.py:13
-#, fuzzy
 msgctxt "info:status"
 msgid "New printer detected from your Ultimaker account"
 msgid_plural "New printers detected from your Ultimaker account"
-msgstr[0] "從你的 Ultimaker 帳號偵測到新的印表機"
+msgstr[0] ""
 
 #: plugins/UM3NetworkPrinting/src/Messages/NewPrinterDetectedMessage.py:29
 #, python-brace-format
@@ -3808,16 +3799,14 @@ msgid "Heated Build Plate (official kit or self-built)"
 msgstr "熱床（官方版本或自製版本）"
 
 #: plugins/UltimakerMachineActions/plugin.json
-#, fuzzy
 msgctxt "description"
 msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
 msgstr "提供 UltiMaker 機器的操作（例如平台調平精靈，選擇升級等）。"
 
 #: plugins/UltimakerMachineActions/plugin.json
-#, fuzzy
 msgctxt "name"
 msgid "UltiMaker machine actions"
-msgstr "UltiMaker 印表機操作"
+msgstr ""
 
 #: plugins/VersionUpgrade/VersionUpgrade21to22/plugin.json
 msgctxt "description"
@@ -4050,16 +4039,14 @@ msgid "Version Upgrade 4.9 to 4.10"
 msgstr "升級版本 4.9 到 4.10"
 
 #: plugins/VersionUpgrade/VersionUpgrade52to53/plugin.json
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.2 to Cura 5.3."
-msgstr "將設定從 Cura 3.2 版本升級至 3.3 版本。"
+msgstr "將設定從 Cura 5.2 版本升級至 5.3 版本。"
 
 #: plugins/VersionUpgrade/VersionUpgrade52to53/plugin.json
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 5.2 to 5.3"
-msgstr "升級版本 3.2 到 3.3"
+msgstr "升級版本 5.2 到 5.3"
 
 #: plugins/X3DReader/__init__.py:13
 msgctxt "@item:inlistbox"
@@ -4113,7 +4100,6 @@ msgid "Sign in to the UltiMaker platform"
 msgstr "登入UltiMaker 論壇"
 
 #: resources/qml/Account/GeneralOperations.qml:39
-#, fuzzy
 msgctxt "@text"
 msgid ""
 "- Add material profiles and plug-ins from the Marketplace\n"
@@ -4122,7 +4108,7 @@ msgid ""
 msgstr ""
 "- 從市集中加入線材參數及插件\n"
 "-備份及同步您的線材設定與插件 \n"
-"- 分享創意並可從Ultimaker社群中超過48000的使用者得到幫助"
+"- 分享創意並可從UltiMaker社群中超過48000的使用者得到幫助"
 
 #: resources/qml/Account/GeneralOperations.qml:58
 msgctxt "@button"
@@ -4315,7 +4301,6 @@ msgid "Manage Materials..."
 msgstr "管理線材..."
 
 #: resources/qml/Actions.qml:218
-#, fuzzy
 msgctxt "@action:inmenu Marketplace is a brand name of UltiMaker's, so don't translate."
 msgid "Add more materials from Marketplace"
 msgstr "從市集增加更多線材"
@@ -4608,22 +4593,19 @@ msgid "What's New"
 msgstr "新功能"
 
 #: resources/qml/Cura.qml:890
-#, fuzzy
 msgctxt "@title:window"
 msgid "Save Custom Profile"
-msgstr "自訂列印參數"
+msgstr ""
 
 #: resources/qml/Cura.qml:891
-#, fuzzy
 msgctxt "@textfield:placeholder"
 msgid "New Custom Profile"
-msgstr "自訂列印參數"
+msgstr ""
 
 #: resources/qml/Cura.qml:892
-#, fuzzy
 msgctxt "@info"
 msgid "Custom profile name:"
-msgstr "自訂列印參數"
+msgstr ""
 
 #: resources/qml/Cura.qml:909
 msgctxt "@label %i will be replaced with a profile name"
@@ -4636,10 +4618,9 @@ msgid "Learn more about Cura print profiles"
 msgstr ""
 
 #: resources/qml/Cura.qml:926
-#, fuzzy
 msgctxt "@button"
 msgid "Save new profile"
-msgstr "建立新的列印參數"
+msgstr ""
 
 #: resources/qml/Dialogs/AboutDialog.qml:15
 msgctxt "@title:window The argument is the application name."
@@ -4923,16 +4904,14 @@ msgid "Keep changes"
 msgstr "保留更動"
 
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:171
-#, fuzzy
 msgctxt "@action:button"
 msgid "Save as new custom profile"
-msgstr "自訂列印參數"
+msgstr ""
 
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:178
-#, fuzzy
 msgctxt "@action:button"
 msgid "Save changes"
-msgstr "保留更動"
+msgstr ""
 
 #: resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:47
 msgctxt "@text:window"
@@ -6246,13 +6225,11 @@ msgid "Enable printing a brim or raft. This will add a flat area around or under
 msgstr "允許列印邊緣或木筏。這將在你的物件周圍或下方添加一個容易切斷的平面區域。"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:102
-#, fuzzy
 msgctxt "@label"
 msgid "Recommended print settings"
-msgstr "轉換設定"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:111
-#, fuzzy
 msgctxt "@button"
 msgid "Show Custom"
 msgstr ""
@@ -6273,10 +6250,9 @@ msgid "The following settings define the strength of your part."
 msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:34
-#, fuzzy
 msgctxt "infill_sparse_density description"
 msgid "Infill Density"
-msgstr "只有填充"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:35
 msgctxt "@label"
@@ -6284,10 +6260,9 @@ msgid "Adjusts the density of infill of the print."
 msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:54
-#, fuzzy
 msgctxt "@action:label"
 msgid "Infill Pattern"
-msgstr "只有填充"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:56
 msgctxt "@label"
@@ -6302,10 +6277,9 @@ msgid ""
 msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:67
-#, fuzzy
 msgctxt "@action:label"
 msgid "Shell Thickness"
-msgstr "層厚"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:68
 msgctxt "@label"
@@ -6318,16 +6292,14 @@ msgid "Support"
 msgstr "支撐"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:21
-#, fuzzy
 msgctxt "@label"
 msgid "Generate structures to support parts of the model which have overhangs. Without these structures, these parts would collapse during printing."
 msgstr "在模型的突出部分產生支撐結構。若不這樣做，這些部分在列印時將倒塌。"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:40
-#, fuzzy
 msgctxt "@action:label"
 msgid "Support Type"
-msgstr "支撐"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:41
 msgctxt "@label"
@@ -6340,9 +6312,8 @@ msgid ""
 msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:53
-#, fuzzy
 msgctxt "@action:label"
-msgid "Print with"
+msgid ""
 msgstr "使用 "
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:54
@@ -6794,16 +6765,14 @@ msgid "Add a non-networked printer"
 msgstr "新增非網路印表機"
 
 #: resources/qml/WelcomePages/AddThirdPartyPrinter.qml:102
-#, fuzzy
 msgctxt "@button"
 msgid "Add UltiMaker printer via Digital Factory"
-msgstr "Ultimaker Digital Factory"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:29
-#, fuzzy
 msgctxt "@label"
 msgid "In order to start using Cura you will need to configure a printer."
-msgstr "為了監控您的印表機，請連結印表機."
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:36
 msgctxt "@label"
@@ -6811,16 +6780,14 @@ msgid "What printer would you like to setup?"
 msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:55
-#, fuzzy
 msgctxt "@button"
 msgid "UltiMaker printer"
-msgstr "UltiMaker 支援"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:64
-#, fuzzy
 msgctxt "@button"
 msgid "Non UltiMaker printer"
-msgstr "UltiMaker 支援"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:73
 msgctxt "@button"
@@ -6828,16 +6795,14 @@ msgid "Learn more about adding printers to Cura"
 msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinterStack.qml:29
-#, fuzzy
 msgctxt "@label"
 msgid "Add printer"
-msgstr "新增印表機"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:33
-#, fuzzy
 msgctxt "@label"
 msgid "New UltiMaker printers can be connected to Digital Factory and monitored remotely."
-msgstr "確認您的列印機已開機並連接至Digital Factory."
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:70
 msgctxt "@label"
@@ -6845,10 +6810,9 @@ msgid "If you are trying to add a new UltiMaker printer to Cura"
 msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:80
-#, fuzzy
 msgctxt "@info"
 msgid "Sign in into UltiMaker Digital Factory"
-msgstr "連接到 Ultimaker Digital Factory"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:81
 msgctxt "@info"
@@ -6861,28 +6825,24 @@ msgid "Your new printer will automatically appear in Cura"
 msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:100
-#, fuzzy
 msgctxt "@button"
 msgid "Learn more"
 msgstr "學習更多"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:121
-#, fuzzy
 msgctxt "@button"
 msgid "Add local printer"
-msgstr "新增印表機"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:129
-#, fuzzy
 msgctxt "@button"
 msgid "Sign in to Digital Factory"
-msgstr "在連接至Digital Factory的過程中失敗."
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:133
-#, fuzzy
 msgctxt "@button"
 msgid "Waiting for new printers"
-msgstr "等待：印表機無法使用"
+msgstr ""
 
 #: resources/qml/WelcomePages/ChangelogContent.qml:24
 msgctxt "@label"
