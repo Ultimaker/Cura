@@ -29,7 +29,7 @@
         "machine_name": { "default_value": "Makertech Base Printer" },
         
 		"machine_extruder_count": { "default_value": 2 },
-		"machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+		
 		"material_print_temp_wait": { "default_value": false },
         "material_bed_temp_wait": { "default_value": false },
 		
