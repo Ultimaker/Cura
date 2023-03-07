@@ -1163,7 +1163,7 @@ msgstr "Exclusivo"
 #: fdmprinter.def.json
 msgctxt "experimental label"
 msgid "Experimental"
-msgstr "Experimental"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "z_seam_corner option z_seam_corner_outer"
@@ -2746,12 +2746,12 @@ msgstr "Nenhum"
 #: fdmprinter.def.json
 msgctxt "magic_mesh_surface_mode option normal"
 msgid "Normal"
-msgstr "Normal"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_structure option normal"
 msgid "Normal"
-msgstr "Normal"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "meshfix_keep_open_polygons description"
@@ -3391,7 +3391,7 @@ msgstr "Vibra aleatoriamente enquanto imprime a parede exterior, para que a supe
 #: fdmprinter.def.json
 msgctxt "machine_shape option rectangular"
 msgid "Rectangular"
-msgstr "Rectangular"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "cool_fan_speed_min label"

@@ -53,7 +53,7 @@ msgstr "Não é possível criar um arquivo a partir do directório de dados do u
 #: plugins/CuraDrive/src/DrivePluginExtension.py:126
 msgctxt "@info:title"
 msgid "Backup"
-msgstr "Backup"
+msgstr ""
 
 #: cura/Backups/Backup.py:134
 msgctxt "@info:backup_failed"
@@ -329,7 +329,7 @@ msgstr "Tem a certeza de que pretende remover {0}? Esta ação não pode ser anu
 #: cura/Machines/Models/QualityManagementModel.py:347
 msgctxt "@label"
 msgid "Default"
-msgstr "Default"
+msgstr ""
 
 #: cura/Machines/Models/IntentCategoryModel.py:45
 #: cura/Machines/Models/IntentSelectionModel.py:65
@@ -350,7 +350,7 @@ msgstr "O perfil de acabamento foi criado para imprimir modelos e protótipos fi
 #: cura/Machines/Models/IntentTranslations.py:18
 msgctxt "@label"
 msgid "Engineering"
-msgstr "Engineering"
+msgstr ""
 
 #: cura/Machines/Models/IntentCategoryModel.py:50
 #: cura/Machines/Models/IntentSelectionModel.py:71
@@ -496,7 +496,7 @@ msgstr "Não foi possível estabelecer a ligação com a Digital Factory."
 #: cura/Settings/ActiveQuality.py:43
 msgctxt "@label"
 msgid "Experimental"
-msgstr "Experimental"
+msgstr ""
 
 #: cura/Settings/ContainerManager.py:207
 #: cura/Settings/CuraContainerRegistry.py:140
@@ -630,7 +630,7 @@ msgstr "Aviso: o perfil não é visível porque o respetivo tipo de qualidade '{
 #: plugins/3MFReader/ThreeMFWorkspaceReader.py:221
 msgctxt "@label"
 msgid "Nozzle"
-msgstr "Nozzle"
+msgstr ""
 
 #: cura/Settings/MachineManager.py:890
 msgctxt "@info:message Followed by a list of settings."
@@ -655,7 +655,7 @@ msgstr "Não suportado"
 #: cura/Settings/cura_empty_instance_containers.py:55
 msgctxt "@info:No intent profile selected"
 msgid "Default"
-msgstr "Default"
+msgstr ""
 
 #: cura/UI/AddPrinterPagesModel.py:17
 #: plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:61
@@ -945,7 +945,7 @@ msgstr "Nome"
 #: resources/qml/Dialogs/WorkspaceSummaryDialog.qml:263
 msgctxt "@action:label"
 msgid "Intent"
-msgstr "Intent"
+msgstr ""
 
 #: plugins/3MFReader/WorkspaceDialog.qml:178
 #: resources/qml/Dialogs/WorkspaceSummaryDialog.qml:230
@@ -4044,7 +4044,7 @@ msgstr "Atualização da versão 4.9 para 4.10"
 #: plugins/VersionUpgrade/VersionUpgrade52to53/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.2 to Cura 5.3."
-msgstr "Upgrades configurations from Cura 5.2 to Cura 5.3."
+msgstr "Atualiza as configurações do Cura 5.2 para o Cura 5.3."
 
 #: plugins/VersionUpgrade/VersionUpgrade52to53/plugin.json
 msgctxt "name"
@@ -4697,7 +4697,7 @@ msgstr "Linguagem de programação"
 #: resources/qml/Dialogs/AboutDialog.qml:149
 msgctxt "@label Description for application dependency"
 msgid "GUI framework"
-msgstr "GUI framework"
+msgstr ""
 
 #: resources/qml/Dialogs/AboutDialog.qml:150
 msgctxt "@label Description for application dependency"
@@ -4727,7 +4727,7 @@ msgstr "Biblioteca de recortes de polígonos"
 #: resources/qml/Dialogs/AboutDialog.qml:157
 msgctxt "@label Description for application dependency"
 msgid "JSON parser"
-msgstr "JSON parser"
+msgstr ""
 
 #: resources/qml/Dialogs/AboutDialog.qml:158
 msgctxt "@label Description for application dependency"
@@ -6212,7 +6212,7 @@ msgstr "As definições recomendadas (para <b>%1</b>) foram alteradas."
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:106
 msgctxt "@info %1 is the name of a profile"
 msgid "Some setting-values defined in <b>%1</b> were overridden."
-msgstr "Some setting-values defined in <b>%1</b> were overridden."
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:137
 msgctxt "@info"

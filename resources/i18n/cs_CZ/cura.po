@@ -705,7 +705,7 @@ msgstr "Vnitřní stěna"
 #: cura/UI/PrintInformation.py:89
 msgctxt "@tooltip"
 msgid "Skin"
-msgstr "Skin"
+msgstr ""
 
 #: cura/UI/PrintInformation.py:90
 msgctxt "@tooltip"
@@ -1346,7 +1346,7 @@ msgstr "Informace"
 #: plugins/CuraEngineBackend/plugin.json
 msgctxt "name"
 msgid "CuraEngine Backend"
-msgstr "CuraEngine Backend"
+msgstr ""
 
 #: plugins/CuraEngineBackend/plugin.json
 msgctxt "description"
@@ -1519,7 +1519,7 @@ msgstr "Aktualizace firmwaru selhala kvůli chybějícímu firmwaru."
 #: plugins/FirmwareUpdater/plugin.json
 msgctxt "name"
 msgid "Firmware Updater"
-msgstr "Firmware Updater"
+msgstr ""
 
 #: plugins/FirmwareUpdater/plugin.json
 msgctxt "description"
@@ -2518,7 +2518,7 @@ msgstr "Umožňuje nastavení pro každý model."
 #: plugins/PostProcessingPlugin/PostProcessingPlugin.py:35
 msgctxt "@item:inmenu"
 msgid "Post Processing"
-msgstr "Post Processing"
+msgstr ""
 
 #: plugins/PostProcessingPlugin/PostProcessingPlugin.py:36
 msgctxt "@item:inmenu"
@@ -3125,7 +3125,7 @@ msgstr "Změny konfigurace"
 #: plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:36
 msgctxt "@action:button"
 msgid "Override"
-msgstr "Override"
+msgstr ""
 
 #: plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:83
 msgctxt "@label"
@@ -4169,7 +4169,7 @@ msgstr "Poslední aktualizace: %1"
 #: resources/qml/Account/UserOperations.qml:107
 msgctxt "@button"
 msgid "UltiMaker Account"
-msgstr "UltiMaker Account"
+msgstr ""
 
 #: resources/qml/Account/UserOperations.qml:126
 msgctxt "@button"
@@ -4715,7 +4715,7 @@ msgstr "Programovací jazyk"
 #: resources/qml/Dialogs/AboutDialog.qml:149
 msgctxt "@label Description for application dependency"
 msgid "GUI framework"
-msgstr "GUI framework"
+msgstr ""
 
 #: resources/qml/Dialogs/AboutDialog.qml:150
 msgctxt "@label Description for application dependency"
@@ -4745,7 +4745,7 @@ msgstr "Knihovna pro výstřižky z mnohoúhelníků"
 #: resources/qml/Dialogs/AboutDialog.qml:157
 msgctxt "@label Description for application dependency"
 msgid "JSON parser"
-msgstr "JSON parser"
+msgstr ""
 
 #: resources/qml/Dialogs/AboutDialog.qml:158
 msgctxt "@label Description for application dependency"
@@ -4831,7 +4831,7 @@ msgstr "Vytváření balíčků Python aplikací"
 #: resources/qml/Dialogs/AboutDialog.qml:179
 msgctxt "@label Description for development tool"
 msgid "Linux cross-distribution application deployment"
-msgstr "Linux cross-distribution application deployment"
+msgstr ""
 
 #: resources/qml/Dialogs/AboutDialog.qml:180
 msgctxt "@label Description for development tool"
@@ -5003,7 +5003,7 @@ msgstr "Nový projekt"
 #: resources/qml/MainWindow/ApplicationMenu.qml:88
 msgctxt "@info:question"
 msgid "Are you sure you want to start a new project? This will clear the build plate and any unsaved settings."
-msgstr "Are you sure you want to start a new project? This will clear the build plate and any unsaved settings."
+msgstr ""
 
 #: resources/qml/MainWindow/MainWindowHeader.qml:135
 msgctxt "@action:button"

@@ -3721,7 +3721,7 @@ msgstr "小型形体の最大長さ"
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor label"
 msgid "Small Feature Speed"
-msgstr "Small Feature Speed"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "small_hole_max_size label"

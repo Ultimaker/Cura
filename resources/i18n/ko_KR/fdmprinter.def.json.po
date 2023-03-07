@@ -3684,7 +3684,7 @@ msgstr "스커트/브림 압출량"
 #: fdmprinter.def.json
 msgctxt "jerk_skirt_brim label"
 msgid "Skirt/Brim Jerk"
-msgstr "Skirt/Brim Jerk"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_line_width label"
@@ -6113,7 +6113,7 @@ msgstr "WP 상향 조정"
 #: fdmprinter.def.json
 msgctxt "wireframe_fall_down label"
 msgid "WP Fall Down"
-msgstr "WP Fall Down"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "wireframe_flat_delay label"
@@ -6688,7 +6688,7 @@ msgstr "리트렉션했을 때의 Z Hop"
 #: fdmprinter.def.json
 msgctxt "z_seam_type label"
 msgid "Z Seam Alignment"
-msgstr "Z Seam Alignment"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "z_seam_position label"

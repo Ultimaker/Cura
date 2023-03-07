@@ -2422,7 +2422,7 @@ msgstr ""
 #: plugins/MonitorStage/__init__.py:14
 msgctxt "@item:inmenu"
 msgid "Monitor"
-msgstr "Monitor"
+msgstr ""
 
 #: plugins/MonitorStage/plugin.json
 msgctxt "name"
@@ -2560,7 +2560,7 @@ msgstr "Dodatek, który pozwala użytkownikowi tworzenie skryptów do post proce
 #: plugins/PostProcessingPlugin/plugin.json
 msgctxt "name"
 msgid "Post Processing"
-msgstr "Post Processing"
+msgstr "Przetwarzanie końcowe"
 
 #: plugins/PrepareStage/PrepareMenu.qml:74
 msgctxt "@button"

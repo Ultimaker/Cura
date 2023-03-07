@@ -4048,7 +4048,7 @@ msgstr "Actualización de la versión 4.9 a la 4.10"
 #: plugins/VersionUpgrade/VersionUpgrade52to53/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.2 to Cura 5.3."
-msgstr "Upgrades configurations from Cura 5.2 to Cura 5.3."
+msgstr "Actualiza la configuración de Cura 5.2 a Cura 5.3."
 
 #: plugins/VersionUpgrade/VersionUpgrade52to53/plugin.json
 msgctxt "name"
@@ -6869,7 +6869,7 @@ msgstr ""
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:133
 msgctxt "@button"
 msgid "Waiting for new printers"
-msgstr "Waiting for new printers"
+msgstr ""
 
 #: resources/qml/WelcomePages/ChangelogContent.qml:24
 msgctxt "@label"

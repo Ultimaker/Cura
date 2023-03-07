@@ -2421,7 +2421,7 @@ msgstr ""
 #: plugins/MonitorStage/__init__.py:14
 msgctxt "@item:inmenu"
 msgid "Monitor"
-msgstr "Monitor"
+msgstr ""
 
 #: plugins/MonitorStage/plugin.json
 msgctxt "name"

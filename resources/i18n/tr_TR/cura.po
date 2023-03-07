@@ -164,7 +164,7 @@ msgstr "İşletim sistemi dili"
 #: cura/CrashHandler.py:231
 msgctxt "@label Type of platform"
 msgid "Platform"
-msgstr "Platform"
+msgstr ""
 
 #: cura/CrashHandler.py:232
 msgctxt "@label"
@@ -334,7 +334,7 @@ msgstr "{0} yazıcısını kaldırmak istediğinizden emin misiniz? Bu işlem ge
 #: cura/Machines/Models/QualityManagementModel.py:347
 msgctxt "@label"
 msgid "Default"
-msgstr "Default"
+msgstr ""
 
 #: cura/Machines/Models/IntentCategoryModel.py:45
 #: cura/Machines/Models/IntentSelectionModel.py:65
@@ -355,7 +355,7 @@ msgstr "Görsel profili, yüksek görsel ve yüzey kalitesi oluşturmak amacıyl
 #: cura/Machines/Models/IntentTranslations.py:18
 msgctxt "@label"
 msgid "Engineering"
-msgstr "Engineering"
+msgstr ""
 
 #: cura/Machines/Models/IntentCategoryModel.py:50
 #: cura/Machines/Models/IntentSelectionModel.py:71
@@ -660,7 +660,7 @@ msgstr "Desteklenmiyor"
 #: cura/Settings/cura_empty_instance_containers.py:55
 msgctxt "@info:No intent profile selected"
 msgid "Default"
-msgstr "Default"
+msgstr ""
 
 #: cura/UI/AddPrinterPagesModel.py:17
 #: plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:61
@@ -950,7 +950,7 @@ msgstr "İsim"
 #: resources/qml/Dialogs/WorkspaceSummaryDialog.qml:263
 msgctxt "@action:label"
 msgid "Intent"
-msgstr "Intent"
+msgstr ""
 
 #: plugins/3MFReader/WorkspaceDialog.qml:178
 #: resources/qml/Dialogs/WorkspaceSummaryDialog.qml:230
@@ -2445,7 +2445,7 @@ msgstr "Ağ Tipi"
 #: plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:81
 msgctxt "@label"
 msgid "Normal model"
-msgstr "Normal model"
+msgstr ""
 
 #: plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:96
 msgctxt "@label"
@@ -5922,7 +5922,7 @@ msgstr "USB çubuğunu yazıcınıza takın ve yeni malzeme profillerini yüklem
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:689
 msgctxt "@button"
 msgid "How to load new material profiles to my printer"
-msgstr "How to load new material profiles to my printer"
+msgstr ""
 
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:703
 #: resources/qml/WelcomePages/AddPrinterByIpContent.qml:299

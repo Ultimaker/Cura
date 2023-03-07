@@ -4669,7 +4669,7 @@ msgstr "進程間通訊交互使用庫"
 #: resources/qml/Dialogs/AboutDialog.qml:142
 msgctxt "@label Description for application component"
 msgid "Python bindings for libnest2d"
-msgstr "Python bindings for libnest2d"
+msgstr ""
 
 #: resources/qml/Dialogs/AboutDialog.qml:143
 msgctxt "@label Description for application component"

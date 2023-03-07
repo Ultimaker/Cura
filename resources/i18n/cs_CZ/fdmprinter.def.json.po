@@ -4474,7 +4474,7 @@ msgstr "Úhel přesahu vnějších stěn vytvořených pro formu. 0° způsobí,
 #: fdmprinter.def.json
 msgctxt "support_tree_branch_diameter_angle description"
 msgid "The angle of the branches' diameter as they gradually become thicker towards the bottom. An angle of 0 will cause the branches to have uniform thickness over their length. A bit of an angle can increase stability of the tree support."
-msgstr "The angle of the branches' diameter as they gradually become thicker towards the bottom. An angle of 0 will cause the branches to have uniform thickness over their length. A bit of an angle can increase stability of the tree support."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_angle description"

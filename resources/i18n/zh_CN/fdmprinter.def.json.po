@@ -1158,7 +1158,7 @@ msgstr "全部支撑"
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance option exclusive"
 msgid "Exclusive"
-msgstr "Exclusive"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "experimental label"
@@ -1776,7 +1776,7 @@ msgstr "包含材料温度"
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance option inclusive"
 msgid "Inclusive"
-msgstr "Inclusive"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "infill description"

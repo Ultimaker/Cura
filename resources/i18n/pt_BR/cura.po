@@ -53,7 +53,7 @@ msgstr "Não pude criar arquivo do diretório de dados de usuário: {}"
 #: plugins/CuraDrive/src/DrivePluginExtension.py:126
 msgctxt "@info:title"
 msgid "Backup"
-msgstr "Backup"
+msgstr ""
 
 #: cura/Backups/Backup.py:134
 msgctxt "@info:backup_failed"
@@ -334,14 +334,14 @@ msgstr "Tem certeza que deseja remover {0}? Isto não pode ser defeito!"
 #: cura/Machines/Models/QualityManagementModel.py:347
 msgctxt "@label"
 msgid "Default"
-msgstr "Default"
+msgstr ""
 
 #: cura/Machines/Models/IntentCategoryModel.py:45
 #: cura/Machines/Models/IntentSelectionModel.py:65
 #: cura/Machines/Models/IntentTranslations.py:14
 msgctxt "@label"
 msgid "Visual"
-msgstr "Visual"
+msgstr ""
 
 #: cura/Machines/Models/IntentCategoryModel.py:46
 #: cura/Machines/Models/IntentSelectionModel.py:66
@@ -501,7 +501,7 @@ msgstr "Falha em conectar à Digital Factory."
 #: cura/Settings/ActiveQuality.py:43
 msgctxt "@label"
 msgid "Experimental"
-msgstr "Experimental"
+msgstr ""
 
 #: cura/Settings/ContainerManager.py:207
 #: cura/Settings/CuraContainerRegistry.py:140
@@ -660,7 +660,7 @@ msgstr "Não Suportado"
 #: cura/Settings/cura_empty_instance_containers.py:55
 msgctxt "@info:No intent profile selected"
 msgid "Default"
-msgstr "Default"
+msgstr ""
 
 #: cura/UI/AddPrinterPagesModel.py:17
 #: plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:61
@@ -1112,7 +1112,7 @@ msgstr "Backups Cura"
 #: plugins/CuraDrive/src/CreateBackupJob.py:25
 msgctxt "@info:title"
 msgid "Backups"
-msgstr "Backups"
+msgstr ""
 
 #: plugins/CuraDrive/src/CreateBackupJob.py:26
 msgctxt "@info:backup_status"
@@ -1168,7 +1168,7 @@ msgstr "Backup Agora"
 #: plugins/CuraDrive/src/qml/components/BackupListFooter.qml:43
 msgctxt "@checkbox:description"
 msgid "Auto Backup"
-msgstr "Auto Backup"
+msgstr ""
 
 #: plugins/CuraDrive/src/qml/components/BackupListFooter.qml:44
 msgctxt "@checkbox:description"
@@ -2201,7 +2201,7 @@ msgstr "Fazendo downgrade..."
 #: plugins/Marketplace/resources/qml/PackageCardHeader.qml:243
 msgctxt "@button"
 msgid "Downgrade"
-msgstr "Downgrade"
+msgstr ""
 
 #: plugins/Marketplace/resources/qml/PackageCardHeader.qml:247
 msgctxt "@button"
@@ -2425,7 +2425,7 @@ msgstr "Para monitorar sua impressão pelo Cura, por favor conecte a impressora.
 #: plugins/MonitorStage/__init__.py:14
 msgctxt "@item:inmenu"
 msgid "Monitor"
-msgstr "Monitor"
+msgstr ""
 
 #: plugins/MonitorStage/plugin.json
 msgctxt "name"
@@ -5314,12 +5314,12 @@ msgstr "Lista de objetos"
 #: resources/qml/Preferences/SettingVisibilityPage.qml:24
 msgctxt "@action:button"
 msgid "Defaults"
-msgstr "Defaults"
+msgstr ""
 
 #: resources/qml/Preferences/GeneralPage.qml:172
 msgctxt "@label"
 msgid "Interface"
-msgstr "Interface"
+msgstr ""
 
 #: resources/qml/Preferences/GeneralPage.qml:215
 msgctxt "@heading"

@@ -635,7 +635,7 @@ msgstr "Waarschuwing: het profiel is niet zichtbaar omdat het kwaliteitstype '{0
 #: plugins/3MFReader/ThreeMFWorkspaceReader.py:221
 msgctxt "@label"
 msgid "Nozzle"
-msgstr "Nozzle"
+msgstr ""
 
 #: cura/Settings/MachineManager.py:890
 msgctxt "@info:message Followed by a list of settings."
@@ -705,7 +705,7 @@ msgstr "Binnenwanden"
 #: cura/UI/PrintInformation.py:89
 msgctxt "@tooltip"
 msgid "Skin"
-msgstr "Skin"
+msgstr ""
 
 #: cura/UI/PrintInformation.py:90
 msgctxt "@tooltip"
@@ -730,7 +730,7 @@ msgstr "Supportstructuur"
 #: cura/UI/PrintInformation.py:94
 msgctxt "@tooltip"
 msgid "Skirt"
-msgstr "Skirt"
+msgstr ""
 
 #: cura/UI/PrintInformation.py:95
 msgctxt "@tooltip"
@@ -6792,12 +6792,12 @@ msgstr "Een niet-netwerkprinter toevoegen"
 #: resources/qml/WelcomePages/AddThirdPartyPrinter.qml:102
 msgctxt "@button"
 msgid "Add UltiMaker printer via Digital Factory"
-msgstr "Add UltiMaker printer via Digital Factory"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:29
 msgctxt "@label"
 msgid "In order to start using Cura you will need to configure a printer."
-msgstr "In order to start using Cura you will need to configure a printer."
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:36
 msgctxt "@label"
