@@ -6835,7 +6835,6 @@ msgid "If you are trying to add a new UltiMaker printer to Cura"
 msgstr "Als u een nieuwe UltiMaker-printer probeert toe te voegen aan Cura"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:80
-#, fuzzy
 msgctxt "@info"
 msgid "Sign in into UltiMaker Digital Factory"
 msgstr "Inloggen bij UltiMaker Digital Factory"
