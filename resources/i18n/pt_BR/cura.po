@@ -6262,7 +6262,7 @@ msgstr "Ajustes de conversão"
 #, fuzzy
 msgctxt "@button"
 msgid "Show Custom"
-msgstr "Personalizado"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedResolutionSelector.qml:27
 msgctxt "@label"

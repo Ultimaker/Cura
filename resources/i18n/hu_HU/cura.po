@@ -6248,7 +6248,7 @@ msgstr "Nyomtatási beállítások"
 #, fuzzy
 msgctxt "@button"
 msgid "Show Custom"
-msgstr "Egyéni"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedResolutionSelector.qml:27
 msgctxt "@label"

@@ -6249,7 +6249,7 @@ msgstr "Aanbevolen print instellingen"
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:111
 msgctxt "@button"
 msgid "Show Custom"
-msgstr "Toon persoonlijke print instellingen"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedResolutionSelector.qml:27
 msgctxt "@label"

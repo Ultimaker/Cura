@@ -6232,7 +6232,7 @@ msgstr "Tulostusasetukset"
 #, fuzzy
 msgctxt "@button"
 msgid "Show Custom"
-msgstr "Mukautettu"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedResolutionSelector.qml:27
 msgctxt "@label"

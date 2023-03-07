@@ -6255,7 +6255,7 @@ msgstr "轉換設定"
 #, fuzzy
 msgctxt "@button"
 msgid "Show Custom"
-msgstr "自訂選項"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedResolutionSelector.qml:27
 msgctxt "@label"
