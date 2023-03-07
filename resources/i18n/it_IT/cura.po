@@ -6318,7 +6318,7 @@ msgstr "Supporto"
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:21
 msgctxt "@label"
 msgid "Generate structures to support parts of the model which have overhangs. Without these structures, these parts would collapse during printing."
-msgstr ""
+msgstr "Genera strutture per supportare le parti del modello a sbalzo. Senza queste strutture, queste parti collasserebbero durante la stampa."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:40
 msgctxt "@action:label"
