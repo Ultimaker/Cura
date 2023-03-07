@@ -4921,7 +4921,7 @@ msgstr "Benutzerdefiniertes Profil"
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:178
 msgctxt "@action:button"
 msgid "Save changes"
-msgstr "Änderungen speichern"
+msgstr "Änderungen behalten"
 
 #: resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:47
 msgctxt "@text:window"
