@@ -23,7 +23,7 @@
         "machine_depth": { "default_value": 300 },
         "machine_width": { "default_value": 300 },
 		
-		"speed_print": { "value": 60.0 },
+		
 		"speed_travel": { "value": "speed_print if magic_spiralize else 120" },
 		"speed_wall": { "value": "speed_print" },
 		"speed_wall_0": { "value": "speed_wall" },
