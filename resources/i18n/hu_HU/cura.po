@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-06 23:02+0100\n"
+"POT-Creation-Date: 2023-03-07 09:01+0100\n"
 "PO-Revision-Date: 2020-03-24 09:36+0100\n"
 "Last-Translator: Nagy Attila <vokroot@gmail.com>\n"
 "Language-Team: ATI-SZOFT\n"
@@ -86,7 +86,6 @@ msgid "Cura can't start"
 msgstr "A Cura nem tud elindulni"
 
 #: cura/CrashHandler.py:113
-#, fuzzy
 msgctxt "@label crash message"
 msgid ""
 "<p><b>Oops, UltiMaker Cura has encountered something that doesn't seem right.</p></b>\n"
@@ -828,7 +827,6 @@ msgstr "Projekt fájl megnyitása"
 #: plugins/3MFReader/WorkspaceDialog.qml:99
 #: plugins/3MFReader/WorkspaceDialog.qml:127
 #: plugins/3MFReader/WorkspaceDialog.qml:134
-#, fuzzy
 msgctxt "@button"
 msgid "Create new"
 msgstr "Új létrehozása"
@@ -856,7 +854,7 @@ msgstr ""
 #: plugins/3MFReader/ThreeMFWorkspaceReader.py:754
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
-msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of Ultimaker Cura."
+msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura."
 msgstr ""
 
 #: plugins/3MFReader/WorkspaceDialog.py:233
@@ -925,10 +923,9 @@ msgid "Printer Group"
 msgstr "Nyomtató csoport"
 
 #: plugins/3MFReader/WorkspaceDialog.qml:103
-#, fuzzy
 msgctxt "@action:label"
 msgid "Open With"
-msgstr "Megnyitás"
+msgstr ""
 
 #: plugins/3MFReader/WorkspaceDialog.qml:104
 msgctxt "@info:tooltip"
@@ -2424,7 +2421,7 @@ msgstr ""
 #: plugins/MonitorStage/__init__.py:14
 msgctxt "@item:inmenu"
 msgid "Monitor"
-msgstr "Monitor"
+msgstr ""
 
 #: plugins/MonitorStage/plugin.json
 msgctxt "name"
@@ -2979,10 +2976,9 @@ msgid "UltiMaker Format Package"
 msgstr "UltiMaker formátumcsomag"
 
 #: plugins/UFPReader/plugin.json
-#, fuzzy
 msgctxt "description"
 msgid "Provides support for reading Ultimaker Format Packages."
-msgstr "Támogatást nyújt az UltiMaker formátumú csomagok olvasásához."
+msgstr ""
 
 #: plugins/UFPReader/plugin.json
 msgctxt "name"
@@ -2997,10 +2993,9 @@ msgid "Can't write to UFP file:"
 msgstr ""
 
 #: plugins/UFPWriter/plugin.json
-#, fuzzy
 msgctxt "description"
 msgid "Provides support for writing Ultimaker Format Packages."
-msgstr "Támogatást nyújt az UltiMaker formátumú csomagok írásához."
+msgstr ""
 
 #: plugins/UFPWriter/plugin.json
 msgctxt "name"
@@ -3008,13 +3003,11 @@ msgid "UFP Writer"
 msgstr "UFP Író"
 
 #: plugins/UM3NetworkPrinting/plugin.json
-#, fuzzy
 msgctxt "description"
 msgid "Manages network connections to UltiMaker networked printers."
 msgstr "Kezeli a hálózati csatlakozásokat az UltiMaker hálózati nyomtatókhoz."
 
 #: plugins/UM3NetworkPrinting/plugin.json
-#, fuzzy
 msgctxt "name"
 msgid "UltiMaker Network Connection"
 msgstr "UltiMaker hálózati kapcsolat"
@@ -3526,7 +3519,6 @@ msgid "Learn more"
 msgstr ""
 
 #: plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:18
-#, fuzzy
 msgctxt "@info:status"
 msgid "You are attempting to connect to a printer that is not running UltiMaker Connect. Please update the printer to the latest firmware."
 msgstr "Olyan nyomtatóval próbál csatlakozni, amelyen nem fut az UltiMaker Connect. Kérjük, frissítse a nyomtatón a firmware-t."
@@ -3805,16 +3797,14 @@ msgid "Heated Build Plate (official kit or self-built)"
 msgstr "Fűthető tárgyasztal (eredeti vagy utólag épített)"
 
 #: plugins/UltimakerMachineActions/plugin.json
-#, fuzzy
 msgctxt "description"
 msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
 msgstr "Gépi funkciók biztosítása az UltiMaker nyomtatók számára.(pl.: ágyszintezés varázsló, frissítések kiválasztása.)"
 
 #: plugins/UltimakerMachineActions/plugin.json
-#, fuzzy
 msgctxt "name"
 msgid "UltiMaker machine actions"
-msgstr "UltiMaker gépi funkciók"
+msgstr ""
 
 #: plugins/VersionUpgrade/VersionUpgrade21to22/plugin.json
 msgctxt "description"
@@ -3929,22 +3919,22 @@ msgstr "A 4.0-s verzió frissítése 4.1-re"
 #: plugins/VersionUpgrade/VersionUpgrade411to412/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.11 to Cura 4.12."
-msgstr ""
+msgstr "A konfigurációk frissítése Cura 4.11-ről Cura 4.12-re."
 
 #: plugins/VersionUpgrade/VersionUpgrade411to412/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.11 to 4.12"
-msgstr ""
+msgstr "A 4.11-es verzió frissítése 4.12-re"
 
 #: plugins/VersionUpgrade/VersionUpgrade413to50/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.13 to Cura 5.0."
-msgstr ""
+msgstr "A konfigurációk frissítése Cura 4.13-ről Cura 5.0-ra."
 
 #: plugins/VersionUpgrade/VersionUpgrade413to50/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.13 to 5.0"
-msgstr ""
+msgstr "A 4.13-as verzió frissítése 5.0-re"
 
 #: plugins/VersionUpgrade/VersionUpgrade41to42/plugin.json
 msgctxt "description"
@@ -3969,94 +3959,92 @@ msgstr "A 4.2-es verzió frissítése 4.3-ra"
 #: plugins/VersionUpgrade/VersionUpgrade43to44/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.3 to Cura 4.4."
-msgstr ""
+msgstr "A konfigurációk frissítése Cura 4.3-ról Cura 4.4-re."
 
 #: plugins/VersionUpgrade/VersionUpgrade43to44/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.3 to 4.4"
-msgstr ""
+msgstr "A 4.3-as verzió frissítése 4.4-re"
 
 #: plugins/VersionUpgrade/VersionUpgrade44to45/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.4 to Cura 4.5."
-msgstr ""
+msgstr "A konfigurációk frissítése Cura 4.4-ről Cura 4.5-re."
 
 #: plugins/VersionUpgrade/VersionUpgrade44to45/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.4 to 4.5"
-msgstr ""
+msgstr "A 4.4-es verzió frissítése 4.5-re"
 
 #: plugins/VersionUpgrade/VersionUpgrade45to46/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.5 to Cura 4.6."
-msgstr ""
+msgstr "A konfigurációk frissítése Cura 4.5-ről Cura 4.6-ra."
 
 #: plugins/VersionUpgrade/VersionUpgrade45to46/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.5 to 4.6"
-msgstr ""
+msgstr "A 4.5-ös verzió frissítése 4.6-ra"
 
 #: plugins/VersionUpgrade/VersionUpgrade460to462/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.6.0 to Cura 4.6.2."
-msgstr ""
+msgstr "A konfigurációk frissítése Cura 4.6.0-ról Cura 4.6.2-re."
 
 #: plugins/VersionUpgrade/VersionUpgrade460to462/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.6.0 to 4.6.2"
-msgstr ""
+msgstr "A 4.6.0-os verzió frissítése 4.6.2-re"
 
 #: plugins/VersionUpgrade/VersionUpgrade462to47/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.6.2 to Cura 4.7."
-msgstr ""
+msgstr "A konfigurációk frissítése Cura 4.6.2-ről Cura 4.7-re."
 
 #: plugins/VersionUpgrade/VersionUpgrade462to47/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.6.2 to 4.7"
-msgstr ""
+msgstr "A 4.6.2-es verzió frissítése 4.7-re"
 
 #: plugins/VersionUpgrade/VersionUpgrade47to48/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.7 to Cura 4.8."
-msgstr ""
+msgstr "A konfigurációk frissítése Cura 4.7-ről Cura 4.8-ra."
 
 #: plugins/VersionUpgrade/VersionUpgrade47to48/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.7 to 4.8"
-msgstr ""
+msgstr "A 4.7-es verzió frissítése 4.8-ra"
 
 #: plugins/VersionUpgrade/VersionUpgrade48to49/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.8 to Cura 4.9."
-msgstr ""
+msgstr "A konfigurációk frissítése Cura 4.8-ról Cura 4.9-re."
 
 #: plugins/VersionUpgrade/VersionUpgrade48to49/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.8 to 4.9"
-msgstr ""
+msgstr "A 4.8-es verzió frissítése 4.9-ra"
 
 #: plugins/VersionUpgrade/VersionUpgrade49to410/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.9 to Cura 4.10."
-msgstr ""
+msgstr "A konfigurációk frissítése Cura 4.9-ről Cura 4.10-re."
 
 #: plugins/VersionUpgrade/VersionUpgrade49to410/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.9 to 4.10"
-msgstr ""
+msgstr "A 4.9-es verzió frissítése 4.10-ra"
 
 #: plugins/VersionUpgrade/VersionUpgrade52to53/plugin.json
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.2 to Cura 5.3."
-msgstr "A konfigurációk frissítése Cura 3.2-ről Cura 3.3-ra."
+msgstr "A konfigurációk frissítése Cura 5.2-ről Cura 5.3-ra."
 
 #: plugins/VersionUpgrade/VersionUpgrade52to53/plugin.json
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 5.2 to 5.3"
-msgstr "A 3.2-es verzió frissítése 3.3-ra"
+msgstr "A 5.2-es verzió frissítése 5.3-ra"
 
 #: plugins/X3DReader/__init__.py:13
 msgctxt "@item:inlistbox"
@@ -4600,22 +4588,19 @@ msgid "What's New"
 msgstr "Újdonságok"
 
 #: resources/qml/Cura.qml:890
-#, fuzzy
 msgctxt "@title:window"
 msgid "Save Custom Profile"
-msgstr "Egyedi profil"
+msgstr ""
 
 #: resources/qml/Cura.qml:891
-#, fuzzy
 msgctxt "@textfield:placeholder"
 msgid "New Custom Profile"
-msgstr "Egyedi profil"
+msgstr ""
 
 #: resources/qml/Cura.qml:892
-#, fuzzy
 msgctxt "@info"
 msgid "Custom profile name:"
-msgstr "Egyedi profil"
+msgstr ""
 
 #: resources/qml/Cura.qml:909
 msgctxt "@label %i will be replaced with a profile name"
@@ -4628,10 +4613,9 @@ msgid "Learn more about Cura print profiles"
 msgstr ""
 
 #: resources/qml/Cura.qml:926
-#, fuzzy
 msgctxt "@button"
 msgid "Save new profile"
-msgstr "Új profil létrehozás"
+msgstr ""
 
 #: resources/qml/Dialogs/AboutDialog.qml:15
 msgctxt "@title:window The argument is the application name."
@@ -4863,7 +4847,7 @@ msgstr ""
 
 #: resources/qml/Dialogs/ChoosePrinterDialog.qml:110
 msgctxt "@description"
-msgid "No compatible printers, that are currently online, where found."
+msgid "No compatible printers, that are currently online, were found."
 msgstr ""
 
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:13
@@ -4913,10 +4897,9 @@ msgid "Keep changes"
 msgstr ""
 
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:171
-#, fuzzy
 msgctxt "@action:button"
 msgid "Save as new custom profile"
-msgstr "Egyedi profil"
+msgstr ""
 
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:178
 msgctxt "@action:button"
@@ -6239,16 +6222,14 @@ msgid "Enable printing a brim or raft. This will add a flat area around or under
 msgstr "Engedélyezze a peremet, vagy az aláúsztatást. Ez létre fog hozni a test szélén illetve az alján egy olyan részt, ami segíti a letapadást, viszont nyomtatás után ezek könnyen eltávolíthatóak a testről."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:102
-#, fuzzy
 msgctxt "@label"
 msgid "Recommended print settings"
-msgstr "Nyomtatási beállítások"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:111
-#, fuzzy
 msgctxt "@button"
 msgid "Show Custom"
-msgstr "Egyéni"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedResolutionSelector.qml:27
 msgctxt "@label"
@@ -6266,10 +6247,9 @@ msgid "The following settings define the strength of your part."
 msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:34
-#, fuzzy
 msgctxt "infill_sparse_density description"
 msgid "Infill Density"
-msgstr "Sűrűség"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:35
 msgctxt "@label"
@@ -6286,22 +6266,21 @@ msgctxt "@label"
 msgid ""
 "The pattern of the infill material of the print:\n"
 "\n"
-"For quick prints of non functional model choose line, zig zag or lighting infill.\n"
+"For quick prints of non functional model choose line, zig zag or lightning infill.\n"
 "\n"
-"For functional part not subjected to a lot of stress we reccomend grid or triangle or tri hexagon.\n"
+"For functional part not subjected to a lot of stress we recommend grid or triangle or tri hexagon.\n"
 "\n"
-"For functional 3D prints which require high strenght in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
+"For functional 3D prints which require high strength in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
 msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:67
-#, fuzzy
 msgctxt "@action:label"
 msgid "Shell Thickness"
-msgstr "Réteg vastagság"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:68
 msgctxt "@label"
-msgid "Defines the tickness of your part side walls, roof and floor."
+msgid "Defines the thickness of your part side walls, roof and floor."
 msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:16
@@ -6310,16 +6289,14 @@ msgid "Support"
 msgstr "Támasz"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:21
-#, fuzzy
 msgctxt "@label"
 msgid "Generate structures to support parts of the model which have overhangs. Without these structures, these parts would collapse during printing."
 msgstr "A támasz létrehozása segíti a modell kinyúló részeinek hibátlan nyomatását. Támasz nélkül, ezek a részek összeomlanak, és nem lehetséges a hibátlan nyomtatás."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:40
-#, fuzzy
 msgctxt "@action:label"
 msgid "Support Type"
-msgstr "Támasz"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:41
 msgctxt "@label"
@@ -6332,10 +6309,9 @@ msgid ""
 msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:53
-#, fuzzy
 msgctxt "@action:label"
 msgid "Print with"
-msgstr "Nyomtatás"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:54
 msgctxt "@label"
@@ -6802,16 +6778,14 @@ msgid "What printer would you like to setup?"
 msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:55
-#, fuzzy
 msgctxt "@button"
 msgid "UltiMaker printer"
-msgstr "UltiMaker Cura"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:64
-#, fuzzy
 msgctxt "@button"
 msgid "Non UltiMaker printer"
-msgstr "UltiMaker fiók"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:73
 msgctxt "@button"
@@ -6819,7 +6793,6 @@ msgid "Learn more about adding printers to Cura"
 msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinterStack.qml:29
-#, fuzzy
 msgctxt "@label"
 msgid "Add printer"
 msgstr "Nyomtató hozzáadása"
@@ -6850,16 +6823,14 @@ msgid "Your new printer will automatically appear in Cura"
 msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:100
-#, fuzzy
 msgctxt "@button"
 msgid "Learn more"
-msgstr "Többet szeretnél?"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:121
-#, fuzzy
 msgctxt "@button"
 msgid "Add local printer"
-msgstr "Nyomtató hozzáadása"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:129
 msgctxt "@button"
@@ -6867,10 +6838,9 @@ msgid "Sign in to Digital Factory"
 msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:133
-#, fuzzy
 msgctxt "@button"
 msgid "Waiting for new printers"
-msgstr "Nyomtatók kezelése"
+msgstr ""
 
 #: resources/qml/WelcomePages/ChangelogContent.qml:24
 msgctxt "@label"
@@ -6926,772 +6896,3 @@ msgstr ""
 msgctxt "@label"
 msgid "No items to select from"
 msgstr ""
-
-#~ msgctxt "@action:inmenu menubar:view"
-#~ msgid "&Build plate"
-#~ msgstr "&Tárgyasztal"
-
-#~ msgctxt "@title:menu"
-#~ msgid "&Build plate"
-#~ msgstr "&Tárgyasztal"
-
-#~ msgctxt "@action:menu"
-#~ msgid "&Marketplace"
-#~ msgstr "&Piactér"
-
-#~ msgctxt "@title:settings"
-#~ msgid "&Profile"
-#~ msgstr "&Profil"
-
-#~ msgctxt "@title:menu menubar:file"
-#~ msgid "&Save..."
-#~ msgstr "Mentés..."
-
-#~ msgctxt "@text"
-#~ msgid "- Get exclusive access to print profiles from leading brands"
-#~ msgstr "- Exkluzív hozzáférés a vezető márkák nyomtatási profiljaihoz"
-
-#~ msgctxt "@text"
-#~ msgid "- Send print jobs to UltiMaker printers outside your local network"
-#~ msgstr "- Küldjön nyomtatási feladatokat az UltiMaker nyomtatóknak a helyi hálózaton kívülről"
-
-#~ msgctxt "@text"
-#~ msgid ""
-#~ "- Send print jobs to Ultimaker printers outside your local network\n"
-#~ "- Store your Ultimaker Cura settings in the cloud for use anywhere\n"
-#~ "- Get exclusive access to print profiles from leading brands"
-#~ msgstr ""
-#~ "- Nyomtatási feladatok küldése Ultimaker nyomtatóknak helyi hálózaton kívülről\n"
-#~ "- Tárolja az Ultimaker Cura beállításait felhőben, így az bárhonnan elérhető lesz\n"
-#~ "- Exklúzív hozzáférés a vezető nyomtató márkák nyomtatási profiljaikhoz"
-
-#~ msgctxt "@text"
-#~ msgid "- Store your UltiMaker Cura settings in the cloud for use anywhere"
-#~ msgstr "- Tárolja az UltiMaker Cura beállításait a felhőben így azok bárhol használhatóak"
-
-#~ msgctxt "@label:The string between <a href=> and </a> is the highlighted link"
-#~ msgid "<a href='%1'>Buy material spools</a>"
-#~ msgstr "<a href='%1'>Anyagtekercsek vásárlása</a>"
-
-#~ msgctxt "@label:The string between <a href=> and </a> is the highlighted link"
-#~ msgid "<a href='%1'>Log in</a> is required to install or update"
-#~ msgstr "<a href='%1'>Bejelentkezés</a> szükséges a telepítéshez vagy frissítéshez"
-
-#~ msgctxt "@label:The string between <a href=> and </a> is the highlighted link"
-#~ msgid "<a href='%1'>Log in</a> is required to update"
-#~ msgstr "<a href='%1'>Bejelentkezés</a> szükséges a frissítéshez"
-
-#~ msgctxt "@tooltip"
-#~ msgid "A custom profile is currently active. To enable the quality slider, choose a default quality profile in Custom tab"
-#~ msgstr "Az egyéni profil jelenleg aktív. A minőségi csúszka engedélyezéséhez válassza az alapértelmezett minőségi profilt az Egyéni lapon"
-
-#~ msgctxt "@title:window"
-#~ msgid "About Cura"
-#~ msgstr "A Cura -ról"
-
-#~ msgctxt "@action:button"
-#~ msgid "Accept"
-#~ msgstr "Elfogad"
-
-#~ msgctxt "description"
-#~ msgid "Allows material manufacturers to create new material and quality profiles using a drop-in UI."
-#~ msgstr "Lehetővé teszi az anyaggyártók számára, hogy új anyag- és minőségi profilokat hozzanak létre egy beépülő felhasználói felület használatával."
-
-#~ msgctxt "@label"
-#~ msgid "Aluminum"
-#~ msgstr "Alumínium"
-
-#~ msgctxt "@label"
-#~ msgid "Are you sure you want to exit Cura?"
-#~ msgstr "Biztos, hogy kilépsz a Cura -ból?"
-
-#~ msgctxt "@action:inmenu menubar:edit"
-#~ msgid "Arrange All Models To All Build Plates"
-#~ msgstr "Minden modell elrendezése a tárgyasztalon"
-
-#~ msgctxt "@label"
-#~ msgid "Author"
-#~ msgstr "Szerző"
-
-#~ msgctxt "@action:button"
-#~ msgid "Back"
-#~ msgstr "Vissza"
-
-#~ msgctxt "@label:table_header"
-#~ msgid "Build Plate"
-#~ msgstr "Tárgyasztal"
-
-#~ msgctxt "@action:label"
-#~ msgid "Build plate"
-#~ msgstr "Tárgyasztal"
-
-#~ msgctxt "@window:text"
-#~ msgid "Camera rendering: "
-#~ msgstr "Kamera megjelenítés: "
-
-#~ msgctxt "@action:inmenu menubar:edit"
-#~ msgid "Center Selected Model"
-#~ msgid_plural "Center Selected Models"
-#~ msgstr[0] "A kijelölt modellt középre"
-#~ msgstr[1] "A kijelölt modelleket középre"
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "Change active post-processing scripts"
-#~ msgstr "Állítsd aktívra az utó művelet szkriptet"
-
-#~ msgctxt "@label"
-#~ msgid "Change build plate to %1 (This cannot be overridden)."
-#~ msgstr "Változtasd meg a tálcát %1 -re (Ez nem felülbírálható)."
-
-#~ msgctxt "@label"
-#~ msgid "Checklist"
-#~ msgstr "Ellenőrző lista"
-
-#~ msgctxt "@title:window"
-#~ msgid "Closing Cura"
-#~ msgstr "Cura bezárása"
-
-#~ msgctxt "@label"
-#~ msgid "Community Contributions"
-#~ msgstr "Közösségi hozzájárulások"
-
-#~ msgctxt "@label"
-#~ msgid "Community Plugins"
-#~ msgstr "Közösségi bővítmények"
-
-#~ msgctxt "@label"
-#~ msgid "Compatibility"
-#~ msgstr "Kompatibilitás"
-
-#~ msgctxt "@action:button"
-#~ msgid "Confirm"
-#~ msgstr "Jóváhagy"
-
-#~ msgctxt "@label"
-#~ msgid "Confirm"
-#~ msgstr "Jóváhagy"
-
-#~ msgctxt "@title:window"
-#~ msgid "Confirm uninstall"
-#~ msgstr "Eltávolítás jóváhagyása"
-
-#~ msgctxt "@info:status Ultimaker Cloud should not be translated."
-#~ msgid "Connect to UltiMaker Cloud"
-#~ msgstr "Csatlakozás az UltiMaker felhőhöz"
-
-#~ msgctxt "@info:status"
-#~ msgid "Connected via Cloud"
-#~ msgstr "Csatlakozás felhőn keresztül"
-
-#~ msgctxt "@title:window"
-#~ msgid "Convert Image..."
-#~ msgstr "Kép konvertálás..."
-
-#~ msgctxt "@info"
-#~ msgid "Could not connect to the Cura Package database. Please check your connection."
-#~ msgstr "Nem sikerült csatlakozni a Cura Package adatbázishoz. Kérjük, ellenőrizze a kapcsolatot."
-
-#~ msgctxt "@info:status"
-#~ msgid "Could not find a quality type {0} for the current configuration."
-#~ msgstr "Nem található a (z) {0} minőségi típus az aktuális konfigurációhoz."
-
-#~ msgctxt "@action:button"
-#~ msgid "Create"
-#~ msgstr "Létrehoz"
-
-#~ msgctxt "@label"
-#~ msgid "Create"
-#~ msgstr "Létrehozás"
-
-#~ msgctxt "description"
-#~ msgid "Create a flattened quality changes profile."
-#~ msgstr "Hozzon létre egy simított tulajdonságú profilt."
-
-#~ msgctxt "@button"
-#~ msgid "Create account"
-#~ msgstr "Fiók létrehozása"
-
-#~ msgctxt "@button"
-#~ msgid "Create an account"
-#~ msgstr "Fiók létrehozása"
-
-#~ msgctxt "@info:status"
-#~ msgid "Cura does not accurately display layers when Wire Printing is enabled"
-#~ msgstr "A Cura nem jeleníti meg pontosan a rétegeket, ha a huzalnyomtatás engedélyezve van"
-
-#~ msgctxt "@title:column"
-#~ msgid "Customized"
-#~ msgstr "Testreszabott"
-
-#~ msgctxt "@text"
-#~ msgid "Data collected by UltiMaker Cura will not contain any personal information."
-#~ msgstr "Az UltiMaker Cura által gyűjtött adatok nem tartalmaznak személyes információt."
-
-#~ msgctxt "@action:button"
-#~ msgid "Decline"
-#~ msgstr "Elutasít"
-
-#~ msgctxt "@title:column"
-#~ msgid "Default"
-#~ msgstr "Alapértelmezett"
-
-#~ msgctxt "@label"
-#~ msgid "Default profiles"
-#~ msgstr "Alapértelemezett profil"
-
-#~ msgctxt "@action:inmenu menubar:edit"
-#~ msgid "Delete Selected Model"
-#~ msgid_plural "Delete Selected Models"
-#~ msgstr[0] "Kiválasztott modell törlése"
-#~ msgstr[1] "Kiválasztott modellek törlése"
-
-#~ msgctxt "@action:button"
-#~ msgid "Discard"
-#~ msgstr "Eldob"
-
-#~ msgctxt "@label"
-#~ msgid "Don't support overlap with other models"
-#~ msgstr "Nem támogatott az egyéb modellekkel való átfedés"
-
-#~ msgctxt "@action:button"
-#~ msgid "Downgrade"
-#~ msgstr "Leminősítés"
-
-#~ msgctxt "@label"
-#~ msgid "Downloads"
-#~ msgstr "Letöltések"
-
-#~ msgctxt "description"
-#~ msgid "Dump the contents of all settings to a HTML file."
-#~ msgstr "Az összes beállítás tartalmát HTML-fájlba teheti."
-
-#~ msgctxt "@label"
-#~ msgid "Duplicate"
-#~ msgstr "Másolás"
-
-#~ msgctxt "@label"
-#~ msgid "Email"
-#~ msgstr "Email"
-
-#~ msgctxt "@title:menu menubar:file"
-#~ msgid "Export..."
-#~ msgstr "&Exportál..."
-
-#~ msgctxt "@label"
-#~ msgid "Featured"
-#~ msgstr "Kiemelt"
-
-#~ msgctxt "@label:listbox"
-#~ msgid "Feedrate"
-#~ msgstr "Előtolás"
-
-#~ msgctxt "@info"
-#~ msgid "Fetching packages..."
-#~ msgstr "Csomagok beolvasása..."
-
-#~ msgctxt "description"
-#~ msgid "Find, manage and install new Cura packages."
-#~ msgstr "Keressen, kezeljen és telepítsen új Cura csomagokat."
-
-#~ msgctxt "@button"
-#~ msgid "Finish"
-#~ msgstr "Befejezés"
-
-#~ msgctxt "@item:inmenu"
-#~ msgid "Flatten active settings"
-#~ msgstr "Aktív beállítások simítása"
-
-#~ msgctxt "@label"
-#~ msgid "Generic Materials"
-#~ msgstr "Általános anyagok"
-
-#~ msgctxt "@button"
-#~ msgid "Get started"
-#~ msgstr "Kezdj hozzá"
-
-#~ msgctxt "@label"
-#~ msgid "Glass"
-#~ msgstr "Üveg"
-
-#~ msgctxt "name"
-#~ msgid "God Mode"
-#~ msgstr "Isten mód"
-
-#~ msgctxt "@label"
-#~ msgid "Gradual infill"
-#~ msgstr "Fokozatos kitöltés"
-
-#~ msgctxt "@label"
-#~ msgid "Gradual infill will gradually increase the amount of infill towards the top."
-#~ msgstr "A fokozatos kitöltés folyamatosan növeli a kitöltés mennyiségét, ahogy közeledik a tárgy teteje felé."
-
-#~ msgctxt "@label"
-#~ msgid "Help us to improve UltiMaker Cura"
-#~ msgstr "Segítsen nekünk az UltiMaker Cura fejlesztésében"
-
-#~ msgctxt "@label The argument is a username."
-#~ msgid "Hi %1"
-#~ msgstr "Szia %1"
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "How should the conflict in the machine be resolved?"
-#~ msgstr "Hogyan lehet megoldani a gépet érintő konfliktust?"
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "How should the conflict in the material be resolved?"
-#~ msgstr "Hogyan lehet megoldani az alapanyaggal kapcsolatos konfliktust?"
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "How should the conflict in the profile be resolved?"
-#~ msgstr "Hogyan lehet megoldani a profilt érintő konfliktust?"
-
-#~ msgctxt "@action:button"
-#~ msgid "Install"
-#~ msgstr "Telepítés"
-
-#~ msgctxt "@action:button"
-#~ msgid "Installed"
-#~ msgstr "Telepítve"
-
-#~ msgctxt "@title:tab"
-#~ msgid "Installed"
-#~ msgstr "Telepítve"
-
-#~ msgctxt "@action:button"
-#~ msgid "Keep"
-#~ msgstr "Megtart"
-
-#~ msgctxt "@label"
-#~ msgid "Language:"
-#~ msgstr "Nyelv:"
-
-#~ msgctxt "@label"
-#~ msgid "Last updated"
-#~ msgstr "Utosó frissítés"
-
-#~ msgctxt "@label"
-#~ msgid "Layer Height"
-#~ msgstr "Réteg magasság"
-
-#~ msgctxt "@label:table_header"
-#~ msgid "Machine"
-#~ msgstr "Gép"
-
-#~ msgctxt "name"
-#~ msgid "Machine Settings action"
-#~ msgstr "Gépbeállítások művelete"
-
-#~ msgctxt "@text"
-#~ msgid "Machine types"
-#~ msgstr "Géptípusok"
-
-#~ msgctxt "@title"
-#~ msgid "Marketplace"
-#~ msgstr "Áruház"
-
-#~ msgctxt "@text"
-#~ msgid "Material usage"
-#~ msgstr "Anyagfelhasználás"
-
-#~ msgctxt "@text:window"
-#~ msgid "Materials"
-#~ msgstr "Alapanyagok"
-
-#~ msgctxt "@label"
-#~ msgid "Modify settings for infill of other models"
-#~ msgstr "Módosítsa a többi modell kitöltés beállításait"
-
-#~ msgctxt "@label"
-#~ msgid "Modify settings for overlap with other models"
-#~ msgstr "Módosítsa az egyéb modellekkel való átfedés beállítását"
-
-#~ msgctxt "@action:button"
-#~ msgid "More information"
-#~ msgstr "Több információ"
-
-#~ msgctxt "@text"
-#~ msgid "More information"
-#~ msgstr "Több információ"
-
-#~ msgctxt "@action:inmenu menubar:edit"
-#~ msgid "Multiply Selected Model"
-#~ msgid_plural "Multiply Selected Models"
-#~ msgstr[0] "A kijelölt modell többszörözése"
-#~ msgstr[1] "A kijelölt modellek többszörözése"
-
-#~ msgctxt "@info:title The %s gets replaced with the printer name."
-#~ msgid "New %s firmware available"
-#~ msgstr "Új %s firmware elérhető"
-
-#~ msgctxt "@info Don't translate {machine_name}, since it gets replaced by a printer name!"
-#~ msgid "New features are available for your {machine_name}! It is recommended to update the firmware on your printer."
-#~ msgstr "Új funkciók érhetők el a (z) {machine_name} készülékken! Javasoljuk, hogy frissítse a nyomtató firmware-jét."
-
-#~ msgctxt "@label"
-#~ msgid "Not supported"
-#~ msgstr "Nem támogatott"
-
-#~ msgctxt "@label"
-#~ msgid "Not yet initialized<br/>"
-#~ msgstr "Még nincs inicializálva<br/>"
-
-#~ msgctxt "@info:status"
-#~ msgid "Nothing to slice because none of the models fit the build volume or are assigned to a disabled extruder. Please scale or rotate models to fit, or enable an extruder."
-#~ msgstr "Nem lehet szeletelni, mert egyik modell sem érintkezik az alapsíkkal, vagy a modell letiltott extruderhez van hozzárendelve. Kérjük, méretezze vagy forgassa el a modelleket, hogy illeszkedjenek az alapsíkra, vagy engedélyezz egy extrudert."
-
-#~ msgctxt "@text"
-#~ msgid "Number of slices"
-#~ msgstr "Szeletek száma"
-
-#~ msgctxt "@label"
-#~ msgid "Olsson Block"
-#~ msgstr "Olsson blokk"
-
-#~ msgctxt "@item:inlistbox"
-#~ msgid "Open Compressed Triangle Mesh"
-#~ msgstr "Tömörített háromszög háló megnyitása"
-
-#~ msgctxt "@text"
-#~ msgid "Place enter your printer's IP address."
-#~ msgstr "Írja be a nyomtató IP címét."
-
-#~ msgctxt "@text"
-#~ msgid ""
-#~ "Please follow these steps to set up\n"
-#~ "Ultimaker Cura. This will only take a few moments."
-#~ msgstr ""
-#~ "Kéjük, kövesd a következő lépéseket\n"
-#~ "az Ultimaker Cura beállításához. Pár pillanat az egész."
-
-#~ msgctxt "@text"
-#~ msgid "Please give your printer a name"
-#~ msgstr "Adja meg a nyomtató nevét"
-
-#~ msgctxt "@label"
-#~ msgid "Please select any upgrades made to this UltiMaker 2."
-#~ msgstr "Kérjük, válassza ki az UltiMaker 2 frissítéseit."
-
-#~ msgctxt "@title:tab"
-#~ msgid "Plugins"
-#~ msgstr "Kiegészítők"
-
-#~ msgctxt "@label"
-#~ msgid "Pre-sliced file {0}"
-#~ msgstr "Elő szeletelt fájl {0}"
-
-#~ msgctxt "@action:button"
-#~ msgid "Previous"
-#~ msgstr "Előző"
-
-#~ msgctxt "@label:table_header"
-#~ msgid "Print Core"
-#~ msgstr "Nyomtató motor"
-
-#~ msgctxt "name"
-#~ msgid "Print Profile Assistant"
-#~ msgstr "Nyomtatási profil-asszisztens"
-
-#~ msgctxt "@label"
-#~ msgid "Print experiment"
-#~ msgstr "Nyomtatási kísérlet"
-
-#~ msgctxt "@text"
-#~ msgid "Print settings"
-#~ msgstr "Nyomtatási beállítások"
-
-#~ msgctxt "@action:button"
-#~ msgid "Print via Cloud"
-#~ msgstr "Nyomtatás felhőn keresztül"
-
-#~ msgctxt "@properties:tooltip"
-#~ msgid "Print via Cloud"
-#~ msgstr "Nyomtatás felhőn keresztül"
-
-#~ msgctxt "@action:label"
-#~ msgid "Printer"
-#~ msgstr "Nyomtató"
-
-#~ msgctxt "@label"
-#~ msgid "Printer"
-#~ msgstr "Nyomtató"
-
-#~ msgctxt "@label %1 is printer name"
-#~ msgid "Printer: %1"
-#~ msgstr "Nyomtató: %1"
-
-#~ msgctxt "@action:label"
-#~ msgid "Printing Guidelines"
-#~ msgstr "Nyomtatási útmutató"
-
-#~ msgctxt "@item:inlistbox"
-#~ msgid "Profile Assistant"
-#~ msgstr "Profil segéd"
-
-#~ msgctxt "@item:inmenu"
-#~ msgid "Profile Assistant"
-#~ msgstr "Profil segéd"
-
-#~ msgctxt "name"
-#~ msgid "Profile Flattener"
-#~ msgstr "Profil simító"
-
-#~ msgctxt "@info:status"
-#~ msgid "Profile has been flattened & activated."
-#~ msgstr "A profil simítva és aktiválva."
-
-#~ msgctxt "@text:window"
-#~ msgid "Profiles"
-#~ msgstr "Profilok"
-
-#~ msgctxt "description"
-#~ msgid "Provides the Simulation view."
-#~ msgstr "Szimulációs nézetet biztosít."
-
-#~ msgctxt "@Label"
-#~ msgid "Python HTTP library"
-#~ msgstr "Python HTTP könyvtár"
-
-#~ msgctxt "@label:table_header"
-#~ msgid "Quality"
-#~ msgstr "Minőség"
-
-#~ msgctxt "@info:button"
-#~ msgid "Quit Cura"
-#~ msgstr "Kilépés a Cura-ból"
-
-#~ msgctxt "@action:button"
-#~ msgid "Retry"
-#~ msgstr "Újra"
-
-#~ msgctxt "@label"
-#~ msgid "SVG icons"
-#~ msgstr "SVG ikonok"
-
-#~ msgctxt "@action:label"
-#~ msgid "Safety Data Sheet"
-#~ msgstr "Biztonsági adatlap"
-
-#~ msgctxt "@info:status"
-#~ msgid "Send and monitor print jobs from anywhere using your UltiMaker account."
-#~ msgstr "Küldjön és felügyeljen nyomtatási feladatokat bárhonnan az UltiMaker fiókjával."
-
-#~ msgctxt "@action:inmenu"
-#~ msgid "Show All Settings"
-#~ msgstr "Minden beállítást mutat"
-
-#~ msgctxt "@action:inmenu"
-#~ msgid "Show Online Troubleshooting Guide"
-#~ msgstr "Mutassa az online hibaelhárítási útmutatót"
-
-#~ msgctxt "@button"
-#~ msgid "Sign out"
-#~ msgstr "Kijelentkezés"
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "Some things could be problematic in this print. Click to see tips for adjustment."
-#~ msgstr "Néhány dolog problémát jelenthet ebben a nyomtatásban.Kattintson ide a beállítási tippek megtekintéséhez."
-
-#~ msgctxt "@info:status"
-#~ msgid "Successfully imported profile {0}"
-#~ msgstr "Sikeres profil importálás {0}"
-
-#~ msgctxt "@label:table_header"
-#~ msgid "Support"
-#~ msgstr "Támasz"
-
-#~ msgctxt "@label"
-#~ msgid "Support library for analysis of complex networks"
-#~ msgstr "Támogató könyvtár a komplex hálózatok elemzéséhez"
-
-#~ msgctxt "@label"
-#~ msgid "Support library for handling planar objects"
-#~ msgstr "Támogató könyvtár a sík objektumok kezeléséhez"
-
-#~ msgctxt "@action:label"
-#~ msgid "Technical Data Sheet"
-#~ msgstr "Technikai adatlap"
-
-#~ msgctxt "@label"
-#~ msgid "The next generation 3D printing workflow"
-#~ msgstr "A következő generációs 3D nyomtatási munkafolyamat"
-
-#~ msgctxt "@text"
-#~ msgid "The next generation 3D printing workflow"
-#~ msgstr "Következő generációs 3D nyomtatási munkafolyamat"
-
-#~ msgctxt "@info:status"
-#~ msgid "The selected model was too small to load."
-#~ msgstr "A kiválasztott tárgy túl kicsi volt a betöltéshez."
-
-#~ msgctxt "@label"
-#~ msgid "The value is resolved from per-extruder values "
-#~ msgstr "Az értékek meghatározása az extruderek értékei alapján történik "
-
-#~ msgctxt "@info"
-#~ msgid "The webcam is not available because you are monitoring a cloud printer."
-#~ msgstr "A webkamera nem érhető el, mert felhőben lévő nyomtatót szeretne figyelni."
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "The width in millimeters on the build plate."
-#~ msgstr "A szélesség mm -ben a tárgyasztalon."
-
-#~ msgctxt "@label"
-#~ msgid "Theme:"
-#~ msgstr "Téma:"
-
-#~ msgctxt "@info:backup_status"
-#~ msgid "There was an error listing your backups."
-#~ msgstr "Hiba történt a biztonsági mentések listázásánál."
-
-#~ msgctxt "@label"
-#~ msgid ""
-#~ "This plugin contains a license.\n"
-#~ "You need to accept this license to install this plugin.\n"
-#~ "Do you agree with the terms below?"
-#~ msgstr ""
-#~ "A bővítmény telepítéséhez el kell fogadnia ezt a licencet. \n"
-#~ "Egyetért az alábbi feltételekkel?"
-
-#~ msgctxt "@tooltip"
-#~ msgid "This quality profile is not available for your current material and nozzle configuration. Please change these to enable this quality profile."
-#~ msgstr "Ez a minőségi profil nem áll rendelkezésre a jelenlegi anyag- és fúvóka-konfigurációhoz. Kérjük, módosítsa ezeket a minőségprofil engedélyezéséhez."
-
-#~ msgctxt "@label"
-#~ msgid "Tip"
-#~ msgstr "Tipp"
-
-#~ msgctxt "name"
-#~ msgid "Toolbox"
-#~ msgstr "Eszköztár"
-
-#~ msgctxt "@label"
-#~ msgid "UltiMaker Cloud"
-#~ msgstr "UltiMaker felhő"
-
-#~ msgctxt "@text"
-#~ msgid "UltiMaker Cura collects anonymous data to improve print quality and user experience, including:"
-#~ msgstr "Az UltiMaker Cura névtelen adatokat gyűjt a nyomtatási minőség és a felhasználói élmény javításának érdekében, ideértve:"
-
-#~ msgctxt "@action:button"
-#~ msgid "Uninstall"
-#~ msgstr "Eltávolítás"
-
-#~ msgctxt "@title:column"
-#~ msgid "Unit"
-#~ msgstr "Egység"
-
-#~ msgctxt "@action:ComboBox option"
-#~ msgid "Update"
-#~ msgstr "Frissítés"
-
-#~ msgctxt "@action:button"
-#~ msgid "Update"
-#~ msgstr "Frissítés"
-
-#~ msgctxt "@action:ComboBox option"
-#~ msgid "Update existing"
-#~ msgstr "Meglévő frissítése"
-
-#~ msgctxt "@action:button"
-#~ msgid "Update profile with current settings/overrides"
-#~ msgstr "Frissítse a profilt az aktuális beállításokkal/felülbírálásokkal"
-
-#~ msgctxt "@action:button"
-#~ msgid "Updated"
-#~ msgstr "Frissítve"
-
-#~ msgctxt "@action:button"
-#~ msgid "Updating"
-#~ msgstr "Frissítés"
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "Use multi build plate functionality"
-#~ msgstr "Többrétegű tárgyasztal használata"
-
-#~ msgctxt "@option:check"
-#~ msgid "Use multi build plate functionality (restart required)"
-#~ msgstr "Többrétegű tárgyasztal használata (újraindítás szükséges)"
-
-#~ msgctxt "@title:groupbox"
-#~ msgid "User description (Note: Developers may not speak your language, please use English if possible)"
-#~ msgstr "Felhasználói leírás (Megjegyzés: Lehet, hogy a fejlesztők nem beszélnek az Ön nyelvén,ezért kérjük, használja az Angol nyelvet, ha lehetséges.)"
-
-#~ msgctxt "@label"
-#~ msgid "Version"
-#~ msgstr "Verzió"
-
-#~ msgctxt "@action:label"
-#~ msgid "Visible settings:"
-#~ msgstr "Látható beállítások:"
-
-#~ msgctxt "@action:label"
-#~ msgid "Website"
-#~ msgstr "Weboldal"
-
-#~ msgctxt "@label"
-#~ msgid "Website"
-#~ msgstr "Weboldal"
-
-#~ msgctxt "@label"
-#~ msgid "Welcome to UltiMaker Cura"
-#~ msgstr "Üdvözöljük az UltiMaker Cura-ban"
-
-#~ msgctxt "@label"
-#~ msgid "What's new in UltiMaker Cura"
-#~ msgstr "Újdonságok az UltiMaker Cura-ban"
-
-#~ msgctxt "@label"
-#~ msgid "Will install upon restarting"
-#~ msgstr "Telepítés után újraindul"
-
-#~ msgctxt "X3g Writer Plugin Description"
-#~ msgid "Writes X3g to files"
-#~ msgstr "Írás X3g fájlba"
-
-#~ msgctxt "X3G Writer File Description"
-#~ msgid "X3G File"
-#~ msgstr "X3g fájl"
-
-#~ msgctxt "X3g Writer File Description"
-#~ msgid "X3g File"
-#~ msgstr "X3g fájl"
-
-#~ msgctxt "@text:window"
-#~ msgid "You are uninstalling materials and/or profiles that are still in use. Confirming will reset the following materials/profiles to their defaults."
-#~ msgstr "Távolítsd el a még használatban lévő anyagokat és / vagy profilokat.A megerősítés visszaállítja az alapanyagokat / profilokat alapértelmezett értékükre."
-
-#~ msgctxt "@text:window"
-#~ msgid ""
-#~ "You have customized some profile settings.\n"
-#~ "Would you like to keep or discard those settings?"
-#~ msgstr ""
-#~ "Van néhány testreszabott beállításod a profilban. \n"
-#~ "Szeretnéd ezeket megtartani, vagy eldobod őket?"
-
-#~ msgctxt "@tooltip"
-#~ msgid "You have modified some profile settings. If you want to change these go to custom mode."
-#~ msgstr "Megváltoztattál néhány profilbeállítást. Ha ezeket szeretnéd folyamatosan megtartani, akkor válaszd az 'Egyéni mód' -ot."
-
-#~ msgctxt "@label"
-#~ msgid "You need to install the package before you can rate"
-#~ msgstr "Mielőtt értékelni tudná, telepítenie kell a csomagot"
-
-#~ msgctxt "@info"
-#~ msgid "You will need to restart Cura before changes in packages have effect."
-#~ msgstr "A csomagok változásainak érvénybe lépése előtt újra kell indítania a Cura-t."
-
-#~ msgctxt "@label"
-#~ msgid "You will need to restart the application for these changes to have effect."
-#~ msgstr "A módosítások érvénybe lépéséhez újra kell indítania az alkalmazást."
-
-#~ msgctxt "@label"
-#~ msgid "Your rating"
-#~ msgstr "Értékelésed"
-
-#~ msgctxt "@label"
-#~ msgid "ratings"
-#~ msgstr "értékelés"
-
-#~ msgctxt "@label:textbox"
-#~ msgid "search settings"
-#~ msgstr "keresési beállítások"

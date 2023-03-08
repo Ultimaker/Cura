@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-03-06 23:02+0000\n"
+"POT-Creation-Date: 2023-03-08 09:03+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -3684,7 +3684,7 @@ msgstr "스커트/브림 압출량"
 #: fdmprinter.def.json
 msgctxt "jerk_skirt_brim label"
 msgid "Skirt/Brim Jerk"
-msgstr "Skirt/Brim Jerk"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_line_width label"
@@ -4593,7 +4593,7 @@ msgstr "지붕에서 연결을 할 때 안쪽까지 윤곽선을 그립니다. �
 
 #: fdmprinter.def.json
 msgctxt "interlocking_depth description"
-msgid "The distance from the boundary between models to generate interlocking structure measured in cells. Too few cells will result in poor adhesion."
+msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
 msgstr "셀 단위로 측정된 연동 구조를 생성하기 위한 모델 간의 경계로부터의 거리입니다. 셀 수가 너무 적으면 접착력이 떨어집니다."
 
 #: fdmprinter.def.json
@@ -6113,7 +6113,7 @@ msgstr "WP 상향 조정"
 #: fdmprinter.def.json
 msgctxt "wireframe_fall_down label"
 msgid "WP Fall Down"
-msgstr "WP Fall Down"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "wireframe_flat_delay label"
@@ -6688,7 +6688,7 @@ msgstr "리트렉션했을 때의 Z Hop"
 #: fdmprinter.def.json
 msgctxt "z_seam_type label"
 msgid "Z Seam Alignment"
-msgstr "Z Seam Alignment"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "z_seam_position label"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-06 23:02+0100\n"
+"POT-Creation-Date: 2023-03-07 09:01+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -635,7 +635,7 @@ msgstr "Waarschuwing: het profiel is niet zichtbaar omdat het kwaliteitstype '{0
 #: plugins/3MFReader/ThreeMFWorkspaceReader.py:221
 msgctxt "@label"
 msgid "Nozzle"
-msgstr "Nozzle"
+msgstr ""
 
 #: cura/Settings/MachineManager.py:890
 msgctxt "@info:message Followed by a list of settings."
@@ -705,7 +705,7 @@ msgstr "Binnenwanden"
 #: cura/UI/PrintInformation.py:89
 msgctxt "@tooltip"
 msgid "Skin"
-msgstr "Skin"
+msgstr ""
 
 #: cura/UI/PrintInformation.py:90
 msgctxt "@tooltip"
@@ -730,7 +730,7 @@ msgstr "Supportstructuur"
 #: cura/UI/PrintInformation.py:94
 msgctxt "@tooltip"
 msgid "Skirt"
-msgstr "Skirt"
+msgstr ""
 
 #: cura/UI/PrintInformation.py:95
 msgctxt "@tooltip"
@@ -854,7 +854,7 @@ msgstr "Projectbestand <filename>{0}</filename> is corrupt: <message>{1}</messag
 #: plugins/3MFReader/ThreeMFWorkspaceReader.py:754
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
-msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of Ultimaker Cura."
+msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura."
 msgstr "Projectbestand <filename>{0}</filename> wordt gemaakt met behulp van profielen die onbekend zijn bij deze versie van UltiMaker Cura."
 
 #: plugins/3MFReader/WorkspaceDialog.py:233
@@ -4864,7 +4864,7 @@ msgstr "Compatibele printers"
 
 #: resources/qml/Dialogs/ChoosePrinterDialog.qml:110
 msgctxt "@description"
-msgid "No compatible printers, that are currently online, where found."
+msgid "No compatible printers, that are currently online, were found."
 msgstr "Geen compatibele printers, die momenteel online zijn, indien gevonden."
 
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:13
@@ -6249,7 +6249,7 @@ msgstr "Aanbevolen print instellingen"
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:111
 msgctxt "@button"
 msgid "Show Custom"
-msgstr "Toon persoonlijke print instellingen"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedResolutionSelector.qml:27
 msgctxt "@label"
@@ -6286,11 +6286,11 @@ msgctxt "@label"
 msgid ""
 "The pattern of the infill material of the print:\n"
 "\n"
-"For quick prints of non functional model choose line, zig zag or lighting infill.\n"
+"For quick prints of non functional model choose line, zig zag or lightning infill.\n"
 "\n"
-"For functional part not subjected to a lot of stress we reccomend grid or triangle or tri hexagon.\n"
+"For functional part not subjected to a lot of stress we recommend grid or triangle or tri hexagon.\n"
 "\n"
-"For functional 3D prints which require high strenght in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
+"For functional 3D prints which require high strength in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
 msgstr ""
 "Het patroon van het invulmateriaal van de print:\n"
 "\n"
@@ -6307,7 +6307,7 @@ msgstr "Wand Dikte"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:68
 msgctxt "@label"
-msgid "Defines the tickness of your part side walls, roof and floor."
+msgid "Defines the thickness of your part side walls, roof and floor."
 msgstr "Definieert de dikte van de zijwanden, dak en vloer van uw onderdeel."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:16
@@ -6792,12 +6792,12 @@ msgstr "Een niet-netwerkprinter toevoegen"
 #: resources/qml/WelcomePages/AddThirdPartyPrinter.qml:102
 msgctxt "@button"
 msgid "Add UltiMaker printer via Digital Factory"
-msgstr "Add UltiMaker printer via Digital Factory"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:29
 msgctxt "@label"
 msgid "In order to start using Cura you will need to configure a printer."
-msgstr "In order to start using Cura you will need to configure a printer."
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:36
 msgctxt "@label"
@@ -6812,7 +6812,7 @@ msgstr "UltiMaker printer"
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:64
 msgctxt "@button"
 msgid "Non UltiMaker printer"
-msgstr "Niet UltiMaker printer"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:73
 msgctxt "@button"
@@ -6835,7 +6835,6 @@ msgid "If you are trying to add a new UltiMaker printer to Cura"
 msgstr "Als u een nieuwe UltiMaker-printer probeert toe te voegen aan Cura"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:80
-#, fuzzy
 msgctxt "@info"
 msgid "Sign in into UltiMaker Digital Factory"
 msgstr "Inloggen bij UltiMaker Digital Factory"

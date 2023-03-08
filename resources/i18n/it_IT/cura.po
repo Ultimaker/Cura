@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-06 23:02+0100\n"
+"POT-Creation-Date: 2023-03-07 09:01+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -53,7 +53,7 @@ msgstr "Impossibile creare un archivio dalla directory dei dati utente: {}"
 #: plugins/CuraDrive/src/DrivePluginExtension.py:126
 msgctxt "@info:title"
 msgid "Backup"
-msgstr "Backup"
+msgstr ""
 
 #: cura/Backups/Backup.py:134
 msgctxt "@info:backup_failed"
@@ -334,7 +334,7 @@ msgstr "Rimuovere {0}? Questa operazione non può essere annullata!"
 #: cura/Machines/Models/QualityManagementModel.py:347
 msgctxt "@label"
 msgid "Default"
-msgstr "Default"
+msgstr ""
 
 #: cura/Machines/Models/IntentCategoryModel.py:45
 #: cura/Machines/Models/IntentSelectionModel.py:65
@@ -355,7 +355,7 @@ msgstr "Il profilo visivo è destinato alla stampa di prototipi e modelli visivi
 #: cura/Machines/Models/IntentTranslations.py:18
 msgctxt "@label"
 msgid "Engineering"
-msgstr "Engineering"
+msgstr ""
 
 #: cura/Machines/Models/IntentCategoryModel.py:50
 #: cura/Machines/Models/IntentSelectionModel.py:71
@@ -660,7 +660,7 @@ msgstr "Non supportato"
 #: cura/Settings/cura_empty_instance_containers.py:55
 msgctxt "@info:No intent profile selected"
 msgid "Default"
-msgstr "Default"
+msgstr ""
 
 #: cura/UI/AddPrinterPagesModel.py:17
 #: plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:61
@@ -730,7 +730,7 @@ msgstr "Supporto"
 #: cura/UI/PrintInformation.py:94
 msgctxt "@tooltip"
 msgid "Skirt"
-msgstr "Skirt"
+msgstr ""
 
 #: cura/UI/PrintInformation.py:95
 msgctxt "@tooltip"
@@ -854,8 +854,8 @@ msgstr "Il file di progetto <filename>{0}</filename> è danneggiato: <message>{1
 #: plugins/3MFReader/ThreeMFWorkspaceReader.py:754
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
-msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of Ultimaker Cura."
-msgstr ""
+msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura."
+msgstr "Il file di progetto <filename>{0}</filename> è realizzato con profili sconosciuti a questa versione di UltiMaker Cura."
 
 #: plugins/3MFReader/WorkspaceDialog.py:233
 msgctxt "@title:tab"
@@ -950,7 +950,7 @@ msgstr "Nome"
 #: resources/qml/Dialogs/WorkspaceSummaryDialog.qml:263
 msgctxt "@action:label"
 msgid "Intent"
-msgstr "Intent"
+msgstr ""
 
 #: plugins/3MFReader/WorkspaceDialog.qml:178
 #: resources/qml/Dialogs/WorkspaceSummaryDialog.qml:230
@@ -1714,7 +1714,7 @@ msgstr "Percentuale di luce che penetra una stampa dello spessore di 1 millimetr
 #: plugins/ImageReader/ConfigUI.qml:274
 msgctxt "@action:label"
 msgid "Smoothing"
-msgstr "Smoothing"
+msgstr ""
 
 #: plugins/ImageReader/ConfigUI.qml:298
 msgctxt "@info:tooltip"
@@ -1726,7 +1726,7 @@ msgstr "La quantità di smoothing (levigatura) da applicare all'immagine."
 #: resources/qml/ColorDialog.qml:148 resources/qml/Dialogs/RenameDialog.qml:25
 msgctxt "@action:button"
 msgid "OK"
-msgstr "OK"
+msgstr ""
 
 #: plugins/ImageReader/__init__.py:14
 msgctxt "@item:inlistbox"
@@ -2201,7 +2201,7 @@ msgstr "Downgrade in corso..."
 #: plugins/Marketplace/resources/qml/PackageCardHeader.qml:243
 msgctxt "@button"
 msgid "Downgrade"
-msgstr "Downgrade"
+msgstr ""
 
 #: plugins/Marketplace/resources/qml/PackageCardHeader.qml:247
 msgctxt "@button"
@@ -3122,7 +3122,7 @@ msgstr "Modifiche configurazione"
 #: plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:36
 msgctxt "@action:button"
 msgid "Override"
-msgstr "Override"
+msgstr ""
 
 #: plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:83
 msgctxt "@label"
@@ -3533,7 +3533,7 @@ msgstr "Ulteriori informazioni"
 #: plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:18
 msgctxt "@info:status"
 msgid "You are attempting to connect to a printer that is not running UltiMaker Connect. Please update the printer to the latest firmware."
-msgstr ""
+msgstr "Si sta tentando di connettersi a una stampante che non esegue Ultimaker Connect. Aggiornare la stampante con il firmware più recente."
 
 #: plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:21
 msgctxt "@info:title"
@@ -4116,6 +4116,9 @@ msgid ""
 "- Back-up and sync your material profiles and plug-ins\n"
 "- Share ideas and get help from 48,000+ users in the UltiMaker community"
 msgstr ""
+"- Aggiungi profili materiale e plugin dal Marketplace\n"
+"- Esegui il backup e la sincronizzazione dei profili materiale e dei plugin\n"
+"- Condividi idee e ottieni supporto da più di 48.000 utenti nella community di Ultimaker"
 
 #: resources/qml/Account/GeneralOperations.qml:58
 msgctxt "@button"
@@ -4861,7 +4864,7 @@ msgstr "Stampanti compatibili"
 
 #: resources/qml/Dialogs/ChoosePrinterDialog.qml:110
 msgctxt "@description"
-msgid "No compatible printers, that are currently online, where found."
+msgid "No compatible printers, that are currently online, were found."
 msgstr "Nessuna stampante compatibile trovata online."
 
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:13
@@ -5618,7 +5621,7 @@ msgstr "Trasferisci sempre le impostazioni modificate a un nuovo profilo"
 #: resources/qml/Preferences/GeneralPage.qml:856
 msgctxt "@label"
 msgid "Privacy"
-msgstr "Privacy"
+msgstr ""
 
 #: resources/qml/Preferences/GeneralPage.qml:862
 msgctxt "@info:tooltip"
@@ -6283,11 +6286,11 @@ msgctxt "@label"
 msgid ""
 "The pattern of the infill material of the print:\n"
 "\n"
-"For quick prints of non functional model choose line, zig zag or lighting infill.\n"
+"For quick prints of non functional model choose line, zig zag or lightning infill.\n"
 "\n"
-"For functional part not subjected to a lot of stress we reccomend grid or triangle or tri hexagon.\n"
+"For functional part not subjected to a lot of stress we recommend grid or triangle or tri hexagon.\n"
 "\n"
-"For functional 3D prints which require high strenght in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
+"For functional 3D prints which require high strength in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
 msgstr ""
 "La configurazione del materiale di riempimento della stampa:\n"
 "\n"
@@ -6304,7 +6307,7 @@ msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:68
 msgctxt "@label"
-msgid "Defines the tickness of your part side walls, roof and floor."
+msgid "Defines the thickness of your part side walls, roof and floor."
 msgstr "Definisce lo spessore delle pareti laterali, del tetto e del pavimento."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:16
@@ -6315,7 +6318,7 @@ msgstr "Supporto"
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:21
 msgctxt "@label"
 msgid "Generate structures to support parts of the model which have overhangs. Without these structures, these parts would collapse during printing."
-msgstr ""
+msgstr "Genera strutture per supportare le parti del modello a sbalzo. Senza queste strutture, queste parti collasserebbero durante la stampa."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:40
 msgctxt "@action:label"
@@ -6920,75 +6923,3 @@ msgstr "Scopri le novità"
 msgctxt "@label"
 msgid "No items to select from"
 msgstr "Nessun elemento da selezionare da"
-
-#~ msgctxt "@text"
-#~ msgid "Data collected by UltiMaker Cura will not contain any personal information."
-#~ msgstr "Data collected by UltiMaker Cura will not contain any personal information."
-
-#~ msgctxt "@button"
-#~ msgid "Get started"
-#~ msgstr "Per iniziare"
-
-#~ msgctxt "@label"
-#~ msgid "Help us to improve UltiMaker Cura"
-#~ msgstr "Help us to improve UltiMaker Cura"
-
-#~ msgctxt "@text"
-#~ msgid "Machine types"
-#~ msgstr "Tipi di macchine"
-
-#~ msgctxt "description"
-#~ msgid "Manages extensions to the application and allows browsing extensions from the Ultimaker website."
-#~ msgstr "Gestisce le estensioni per l'applicazione e consente di ricercare le estensioni nel sito Web Ultimaker."
-
-#~ msgctxt "description"
-#~ msgid "Manages network connections to Ultimaker networked printers."
-#~ msgstr "Gestisce le connessioni di rete alle stampanti Ultimaker in rete."
-
-#~ msgctxt "@text"
-#~ msgid "Material usage"
-#~ msgstr "Utilizzo dei materiali"
-
-#~ msgctxt "@text"
-#~ msgid "More information"
-#~ msgstr "Ulteriori informazioni"
-
-#~ msgctxt "@text"
-#~ msgid "Number of slices"
-#~ msgstr "Numero di sezionamenti"
-
-#~ msgctxt "@text"
-#~ msgid "Please follow these steps to set up UltiMaker Cura. This will only take a few moments."
-#~ msgstr "Please follow these steps to set up UltiMaker Cura. This will only take a few moments."
-
-#~ msgctxt "@description"
-#~ msgid "Please sign in to get verified plugins and materials for Ultimaker Cura Enterprise"
-#~ msgstr "Accedere per ottenere i plugin e i materiali verificati per Ultimaker Cura Enterprise"
-
-#~ msgctxt "@text"
-#~ msgid "Print settings"
-#~ msgstr "Impostazioni di stampa"
-
-#~ msgctxt "@info"
-#~ msgid "Sign in into UltiMaker Digilal Factory"
-#~ msgstr "Sign in into UltiMaker Digilal Factory"
-
-#~ msgctxt "@text"
-#~ msgid "UltiMaker Cura collects anonymous data to improve print quality and user experience, including:"
-#~ msgstr "UltiMaker Cura collects anonymous data to improve print quality and user experience, including:"
-
-#~ msgctxt "name"
-#~ msgid "Ultimaker Network Connection"
-#~ msgstr "Connessione di rete Ultimaker"
-
-#~ msgctxt "name"
-#~ msgid "Ultimaker machine actions"
-#~ msgstr "Azioni della macchina Ultimaker"
-
-#~ msgctxt "@label"
-#~ msgid "Welcome to UltiMaker Cura"
-#~ msgstr "Welcome to UltiMaker Cura"
-
-#~ msgctxt "@info:status"
-#~ msgid "You are attempting to connect to a printer that is not running Ultimaker Connect. Please update the printer to the latest firmware."
-#~ msgstr "Si sta tentando di connettersi a una stampante che non esegue Ultimaker Connect. Aggiornare la stampante con il firmware più recente."

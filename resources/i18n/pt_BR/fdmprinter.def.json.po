@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.0\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-03-06 23:02+0000\n"
+"POT-Creation-Date: 2023-03-08 09:03+0000\n"
 "PO-Revision-Date: 2023-02-17 16:31+0100\n"
 "Last-Translator: Cláudio Sampaio <patola@gmail.com>\n"
 "Language-Team: Cláudio Sampaio <patola@gmail.com>\n"
@@ -1168,7 +1168,7 @@ msgstr "Exclusivo"
 #: fdmprinter.def.json
 msgctxt "experimental label"
 msgid "Experimental"
-msgstr "Experimental"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "z_seam_corner option z_seam_corner_outer"
@@ -2751,12 +2751,12 @@ msgstr "Nenhum"
 #: fdmprinter.def.json
 msgctxt "magic_mesh_surface_mode option normal"
 msgid "Normal"
-msgstr "Normal"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_structure option normal"
 msgid "Normal"
-msgstr "Normal"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "meshfix_keep_open_polygons description"
@@ -4604,7 +4604,7 @@ msgstr "A distância coberta quando é feita uma conexão do contorno do teto pa
 
 #: fdmprinter.def.json
 msgctxt "interlocking_depth description"
-msgid "The distance from the boundary between models to generate interlocking structure measured in cells. Too few cells will result in poor adhesion."
+msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
 msgstr "A distância da fronteira entre os modelos para gerar a estrutura de interligação, medida em células. Poucas células resultam em baixa aderência."
 
 #: fdmprinter.def.json

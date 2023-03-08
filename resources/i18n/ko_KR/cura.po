@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-06 23:02+0100\n"
+"POT-Creation-Date: 2023-03-07 09:01+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -68,7 +68,7 @@ msgstr "현재 버전보다 높은 Cura 백업을 복원하려고 시도했습�
 #: cura/Backups/Backup.py:158
 msgctxt "@info:backup_failed"
 msgid "The following error occurred while trying to restore a Cura backup:"
-msgstr "The following error occurred while trying to restore a Cura backup:"
+msgstr ""
 
 #: cura/BuildVolume.py:100
 msgctxt "@info:status"
@@ -334,7 +334,7 @@ msgstr "정말로 {0}을(를) 제거하시겠습니까? 이 작업을 실행 취
 #: cura/Machines/Models/QualityManagementModel.py:347
 msgctxt "@label"
 msgid "Default"
-msgstr "Default"
+msgstr ""
 
 #: cura/Machines/Models/IntentCategoryModel.py:45
 #: cura/Machines/Models/IntentSelectionModel.py:65
@@ -355,7 +355,7 @@ msgstr "시각적 프로파일은 높은 시각적 및 표면 품질의 의도�
 #: cura/Machines/Models/IntentTranslations.py:18
 msgctxt "@label"
 msgid "Engineering"
-msgstr "Engineering"
+msgstr ""
 
 #: cura/Machines/Models/IntentCategoryModel.py:50
 #: cura/Machines/Models/IntentSelectionModel.py:71
@@ -660,7 +660,7 @@ msgstr "지원되지 않음"
 #: cura/Settings/cura_empty_instance_containers.py:55
 msgctxt "@info:No intent profile selected"
 msgid "Default"
-msgstr "Default"
+msgstr ""
 
 #: cura/UI/AddPrinterPagesModel.py:17
 #: plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:61
@@ -854,7 +854,7 @@ msgstr "프로젝트 파일 <filename>{0}</filename>이 손상됨: <message>{1}<
 #: plugins/3MFReader/ThreeMFWorkspaceReader.py:754
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
-msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of Ultimaker Cura."
+msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura."
 msgstr "프로젝트 파일 <filename>{0}</filename>이(가) 이 버전의 UltiMaker Cura에서 확인할 수 없는 프로파일을 사용하였습니다."
 
 #: plugins/3MFReader/WorkspaceDialog.py:233
@@ -950,7 +950,7 @@ msgstr "이름"
 #: resources/qml/Dialogs/WorkspaceSummaryDialog.qml:263
 msgctxt "@action:label"
 msgid "Intent"
-msgstr "Intent"
+msgstr ""
 
 #: plugins/3MFReader/WorkspaceDialog.qml:178
 #: resources/qml/Dialogs/WorkspaceSummaryDialog.qml:230
@@ -968,7 +968,7 @@ msgstr[0] "%1 무시"
 #: plugins/3MFReader/WorkspaceDialog.qml:185
 msgctxt "@action:label"
 msgid "Derivative from"
-msgstr "Derivative from"
+msgstr ""
 
 #: plugins/3MFReader/WorkspaceDialog.qml:186
 msgctxt "@action:label"
@@ -1275,7 +1275,7 @@ msgstr "버그 보고"
 #: plugins/CuraEngineBackend/CuraEngineBackend.py:169
 msgctxt "@message:description"
 msgid "Report a bug on UltiMaker Cura's issue tracker."
-msgstr "Report a bug on UltiMaker Cura's issue tracker."
+msgstr ""
 
 #: plugins/CuraEngineBackend/CuraEngineBackend.py:401
 msgctxt "@info:status"
@@ -2927,7 +2927,7 @@ msgstr "특정 장소에서 서포트 프린팅을 막는 지우개 메쉬(erase
 #: plugins/SupportEraser/plugin.json
 msgctxt "name"
 msgid "Support Eraser"
-msgstr "Support Eraser"
+msgstr ""
 
 #: plugins/TrimeshReader/__init__.py:15
 msgctxt "@item:inlistbox 'Open' is part of the name of this file format."
@@ -4480,7 +4480,7 @@ msgstr "UltiMaker e-러닝을 통해 3D 프린팅 전문가로 거듭나십시�
 #: resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:67
 msgctxt "@label:button"
 msgid "UltiMaker support"
-msgstr "UltiMaker support"
+msgstr ""
 
 #: resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:69
 msgctxt "@tooltip:button"
@@ -4721,7 +4721,7 @@ msgstr "다각형 클리핑 라이브러리"
 #: resources/qml/Dialogs/AboutDialog.qml:157
 msgctxt "@label Description for application dependency"
 msgid "JSON parser"
-msgstr "JSON parser"
+msgstr ""
 
 #: resources/qml/Dialogs/AboutDialog.qml:158
 msgctxt "@label Description for application dependency"
@@ -4851,7 +4851,7 @@ msgstr "호환 가능한 프린터"
 
 #: resources/qml/Dialogs/ChoosePrinterDialog.qml:110
 msgctxt "@description"
-msgid "No compatible printers, that are currently online, where found."
+msgid "No compatible printers, that are currently online, were found."
 msgstr "현재 온라인 상태인 호환 가능한 프린터가 없습니다."
 
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:13
@@ -5803,7 +5803,7 @@ msgstr "재료를 USB로 동기화"
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:207
 msgctxt "@title:header"
 msgid "The following printers will receive the new material profiles:"
-msgstr "The following printers will receive the new material profiles:"
+msgstr ""
 
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:214
 msgctxt "@title:header"
@@ -5813,7 +5813,7 @@ msgstr "재료를 프린터로 전송할 때 어떤 문제가 발생했습니다
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:221
 msgctxt "@title:header"
 msgid "Material profiles successfully synced with the following printers:"
-msgstr "Material profiles successfully synced with the following printers:"
+msgstr ""
 
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:258
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:445
@@ -6269,11 +6269,11 @@ msgctxt "@label"
 msgid ""
 "The pattern of the infill material of the print:\n"
 "\n"
-"For quick prints of non functional model choose line, zig zag or lighting infill.\n"
+"For quick prints of non functional model choose line, zig zag or lightning infill.\n"
 "\n"
-"For functional part not subjected to a lot of stress we reccomend grid or triangle or tri hexagon.\n"
+"For functional part not subjected to a lot of stress we recommend grid or triangle or tri hexagon.\n"
 "\n"
-"For functional 3D prints which require high strenght in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
+"For functional 3D prints which require high strength in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
 msgstr ""
 "3D 객체의 인필 재료 패턴:\n"
 "\n"
@@ -6290,7 +6290,7 @@ msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:68
 msgctxt "@label"
-msgid "Defines the tickness of your part side walls, roof and floor."
+msgid "Defines the thickness of your part side walls, roof and floor."
 msgstr "부품 측벽, 지붕 및 바닥의 두께를 정의합니다."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:16
@@ -6673,7 +6673,7 @@ msgstr "사용자의 계정에 프린터가 없습니까?"
 #: resources/qml/WelcomePages/AddCloudPrintersView.qml:117
 msgctxt "@label"
 msgid "The following printers in your account have been added in Cura:"
-msgstr "The following printers in your account have been added in Cura:"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddCloudPrintersView.qml:186
 msgctxt "@button"

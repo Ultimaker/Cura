@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-06 23:02+0100\n"
+"POT-Creation-Date: 2023-03-07 09:01+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -854,7 +854,7 @@ msgstr "Le fichier de projet <filename>{0}</filename> est corrompu: <message>{1}
 #: plugins/3MFReader/ThreeMFWorkspaceReader.py:754
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
-msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of Ultimaker Cura."
+msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura."
 msgstr "Le fichier de projet <filename>{0}</filename> a été réalisé en utilisant des profils inconnus de cette version d'UltiMaker Cura."
 
 #: plugins/3MFReader/WorkspaceDialog.py:233
@@ -2241,7 +2241,7 @@ msgstr "Précédent"
 #: plugins/Marketplace/resources/qml/PackagePage.qml:81
 msgctxt "@header"
 msgid "Description"
-msgstr "Description"
+msgstr ""
 
 #: plugins/Marketplace/resources/qml/PackagePage.qml:110
 msgctxt "@header"
@@ -3058,7 +3058,7 @@ msgstr "Si votre imprimante n'apparaît pas dans la liste, lisez le <a href='%1'
 #: resources/qml/WelcomePages/AddPrinterByIpContent.qml:247
 msgctxt "@label"
 msgid "Type"
-msgstr "Type"
+msgstr ""
 
 #: plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:202
 #: resources/qml/WelcomePages/AddPrinterByIpContent.qml:256
@@ -3186,7 +3186,7 @@ msgstr "Reprise..."
 #: resources/qml/MonitorButton.qml:279 resources/qml/MonitorButton.qml:288
 msgctxt "@label"
 msgid "Pause"
-msgstr "Pause"
+msgstr ""
 
 #: plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:206
 msgctxt "@label"
@@ -4051,12 +4051,12 @@ msgstr "Mise à niveau de 4.9 vers 4.10"
 #: plugins/VersionUpgrade/VersionUpgrade52to53/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.2 to Cura 5.3."
-msgstr "Upgrades configurations from Cura 5.2 to Cura 5.3."
+msgstr "Mises à niveau des configurations de Cura 5.2 vers Cura 5.3."
 
 #: plugins/VersionUpgrade/VersionUpgrade52to53/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 5.2 to 5.3"
-msgstr "Version Upgrade 5.2 to 5.3"
+msgstr "Mise à niveau de 5.2 vers 5.3"
 
 #: plugins/X3DReader/__init__.py:13
 msgctxt "@item:inlistbox"
@@ -4637,7 +4637,7 @@ msgstr "À propos de %1"
 #: resources/qml/Dialogs/AboutDialog.qml:59
 msgctxt "@label"
 msgid "version: %1"
-msgstr "version: %1"
+msgstr ""
 
 #: resources/qml/Dialogs/AboutDialog.qml:74
 msgctxt "@label"
@@ -4861,7 +4861,7 @@ msgstr "Imprimantes compatibles"
 
 #: resources/qml/Dialogs/ChoosePrinterDialog.qml:110
 msgctxt "@description"
-msgid "No compatible printers, that are currently online, where found."
+msgid "No compatible printers, that are currently online, were found."
 msgstr "Aucune imprimante compatible actuellement en ligne n'a été trouvée."
 
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:13
@@ -5002,7 +5002,7 @@ msgstr "Marketplace"
 #: resources/qml/Menus/ConfigurationMenu/AutoConfiguration.qml:18
 msgctxt "@header"
 msgid "Configurations"
-msgstr "Configurations"
+msgstr ""
 
 #: resources/qml/Menus/ConfigurationMenu/ConfigurationItem.qml:137
 msgctxt "@label"
@@ -5042,7 +5042,7 @@ msgstr "Sélectionner la configuration"
 #: resources/qml/Menus/ConfigurationMenu/ConfigurationMenu.qml:358
 msgctxt "@label"
 msgid "Configurations"
-msgstr "Configurations"
+msgstr ""
 
 #: resources/qml/Menus/ConfigurationMenu/CustomConfiguration.qml:27
 msgctxt "@header"
@@ -5221,7 +5221,7 @@ msgstr "Vue de la caméra"
 #: resources/qml/Menus/ViewMenu.qml:48
 msgctxt "@action:inmenu menubar:view"
 msgid "Perspective"
-msgstr "Perspective"
+msgstr ""
 
 #: resources/qml/Menus/ViewMenu.qml:59
 msgctxt "@action:inmenu menubar:view"
@@ -5319,7 +5319,7 @@ msgstr "Rétablir les paramètres par défaut"
 #: resources/qml/Preferences/GeneralPage.qml:172
 msgctxt "@label"
 msgid "Interface"
-msgstr "Interface"
+msgstr ""
 
 #: resources/qml/Preferences/GeneralPage.qml:215
 msgctxt "@heading"
@@ -5483,7 +5483,7 @@ msgstr "Rendu caméra:"
 
 #: resources/qml/Preferences/GeneralPage.qml:576
 msgid "Perspective"
-msgstr "Perspective"
+msgstr ""
 
 #: resources/qml/Preferences/GeneralPage.qml:577
 msgid "Orthographic"
@@ -6020,7 +6020,7 @@ msgstr "Délier le matériau"
 #: resources/qml/Preferences/Materials/MaterialsView.qml:485
 msgctxt "@label"
 msgid "Description"
-msgstr "Description"
+msgstr ""
 
 #: resources/qml/Preferences/Materials/MaterialsView.qml:503
 msgctxt "@label"
@@ -6191,12 +6191,12 @@ msgstr "Recommandé"
 #: resources/qml/PrintSetupSelector/PrintSetupSelectorHeader.qml:13
 msgctxt "@label:Should be short"
 msgid "On"
-msgstr "On"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/PrintSetupSelectorHeader.qml:14
 msgctxt "@label:Should be short"
 msgid "Off"
-msgstr "Off"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:65
 msgctxt "@info, %1 is the name of the custom profile"
@@ -6283,11 +6283,11 @@ msgctxt "@label"
 msgid ""
 "The pattern of the infill material of the print:\n"
 "\n"
-"For quick prints of non functional model choose line, zig zag or lighting infill.\n"
+"For quick prints of non functional model choose line, zig zag or lightning infill.\n"
 "\n"
-"For functional part not subjected to a lot of stress we reccomend grid or triangle or tri hexagon.\n"
+"For functional part not subjected to a lot of stress we recommend grid or triangle or tri hexagon.\n"
 "\n"
-"For functional 3D prints which require high strenght in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
+"For functional 3D prints which require high strength in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
 msgstr ""
 "Motif de remplissage de la pièce :\n"
 "\n"
@@ -6304,13 +6304,13 @@ msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:68
 msgctxt "@label"
-msgid "Defines the tickness of your part side walls, roof and floor."
+msgid "Defines the thickness of your part side walls, roof and floor."
 msgstr "Définit l'épaisseur des parois et des surfaces supérieures et inférieures de votre pièce."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:16
 msgctxt "@label"
 msgid "Support"
-msgstr "Support"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:21
 msgctxt "@label"
@@ -6920,100 +6920,3 @@ msgstr "Nouveautés"
 msgctxt "@label"
 msgid "No items to select from"
 msgstr "Aucun élément à sélectionner"
-
-#~ msgctxt "@label"
-#~ msgid "Add cloud printer"
-#~ msgstr "Ajouter une imprimante cloud"
-
-#~ msgctxt "@label"
-#~ msgid "Aluminum"
-#~ msgstr "Aluminium"
-
-#~ msgctxt "@label"
-#~ msgid "Change build plate to %1 (This cannot be overridden)."
-#~ msgstr "Changer le plateau en %1 (Ceci ne peut pas être remplacé)."
-
-#, fuzzy
-#~ msgctxt "@text"
-#~ msgid "Data collected by UltiMaker Cura will not contain any personal information."
-#~ msgstr "Les données recueillies par UltiMaker Cura ne contiendront aucun renseignement personnel."
-
-#~ msgctxt "@button"
-#~ msgid "Get started"
-#~ msgstr "Prise en main"
-
-#~ msgctxt "@label"
-#~ msgid "Glass"
-#~ msgstr "Verre"
-
-#~ msgctxt "@label"
-#~ msgid "Gradual infill"
-#~ msgstr "Remplissage graduel"
-
-#~ msgctxt "@label"
-#~ msgid "Gradual infill will gradually increase the amount of infill towards the top."
-#~ msgstr "Un remplissage graduel augmentera la quantité de remplissage vers le haut."
-
-#~ msgctxt "@label"
-#~ msgid "Help us to improve UltiMaker Cura"
-#~ msgstr "Aidez-nous à améliorer UltiMaker Cura"
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "How should the conflict in the machine be resolved?"
-#~ msgstr "Comment le conflit de la machine doit-il être résolu ?"
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "How should the conflict in the material be resolved?"
-#~ msgstr "Comment le conflit du matériau doit-il être résolu ?"
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "How should the conflict in the profile be resolved?"
-#~ msgstr "Comment le conflit du profil doit-il être résolu ?"
-
-#~ msgctxt "@text"
-#~ msgid "Machine types"
-#~ msgstr "Types de machines"
-
-#~ msgctxt "@text"
-#~ msgid "Material usage"
-#~ msgstr "Utilisation du matériau"
-
-#~ msgctxt "@text"
-#~ msgid "More information"
-#~ msgstr "Plus d'informations"
-
-#~ msgctxt "@text"
-#~ msgid "Number of slices"
-#~ msgstr "Nombre de découpes"
-
-#, fuzzy
-#~ msgctxt "@text"
-#~ msgid "Please follow these steps to set up UltiMaker Cura. This will only take a few moments."
-#~ msgstr ""
-#~ "Veuillez suivre ces étapes pour configurer\n"
-#~ "Ultimaker Cura. Cela ne prendra que quelques instants."
-
-#~ msgctxt "@description"
-#~ msgid "Please sign in to get verified plugins and materials for Ultimaker Cura Enterprise"
-#~ msgstr "Veuillez vous connecter pour obtenir les plug-ins et matériaux vérifiés pour Ultimaker Cura Enterprise"
-
-#~ msgctxt "@text"
-#~ msgid "Print settings"
-#~ msgstr "Paramètres d'impression"
-
-#~ msgctxt "@info"
-#~ msgid "Some settings were changed."
-#~ msgstr "Certains paramètres ont été modifiés."
-
-#, fuzzy
-#~ msgctxt "@text"
-#~ msgid "UltiMaker Cura collects anonymous data to improve print quality and user experience, including:"
-#~ msgstr "UltiMaker Cura recueille des données anonymes pour améliorer la qualité d'impression et l'expérience utilisateur, notamment :"
-
-#~ msgctxt "@action:label"
-#~ msgid "Visible settings:"
-#~ msgstr "Paramètres visibles :"
-
-#~ msgctxt "@label"
-#~ msgid "Welcome to UltiMaker Cura"
-#~ msgstr "Bienvenue dans UltiMaker Cura"
