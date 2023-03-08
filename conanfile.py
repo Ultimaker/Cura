@@ -48,6 +48,10 @@ class CuraConan(ConanFile):
         "internal": False,
     }
 
+    def set_version(self):
+        if self.version == "auto":
+            self.version = "5.4.0-alpha"
+
     @property
     def _pycharm_targets(self):
         return self.conan_data["pycharm_targets"]
