@@ -170,6 +170,8 @@ jobs:
                                     # An actual full release has been created, we are working on patch
                                     bump_up_patch = int(str(latest_branch_version.patch)) + 1
                                     actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{bump_up_patch}-beta.1+{buildmetadata}{channel_metadata}"
+                                elif latest_branch_version.pre is None:
+                                    actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{int(latest_branch_version.patch.value) + 1}-beta.1+{buildmetadata}{channel_metadata}"
                                 else:
                                     # An beta release has been created we are working toward a next beta or full release
                                     bump_up_release_tag = int(str(latest_branch_version.pre).split('.')[1]) + 1
