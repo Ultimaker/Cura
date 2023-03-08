@@ -293,7 +293,7 @@ class CuraConan(ConanFile):
         if self.options.devtools:
             if self.settings.os != "Windows" or self.conf.get("tools.microsoft.bash:path", check_type = str):
                 # FIXME: once m4, autoconf, automake are Conan V2 ready use self.win_bash and add gettext as base tool_requirement
-                self.tool_requires("gettext/0.21", force_host_context=True)
+                self.tool_requires("gettext/0.21@ultimaker/testing")
 
     def layout(self):
         self.folders.source = "."
