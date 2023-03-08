@@ -13,3 +13,5 @@ format:
     format-profile-space-around-delimiters: true
     format-profile-sort-keys: true
 diagnostic-mesh-file-size: 1200000
+diagnostic-definition-redundant-override-ignore:
+  - machine_.*

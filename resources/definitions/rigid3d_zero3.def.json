@@ -1,0 +1,44 @@
+{
+    "version": 2,
+    "name": "Rigid3D Zero3",
+    "inherits": "rigid3d_base",
+    "metadata":
+    {
+        "visible": true,
+        "platform": "rigid3d_zero3_platform.3mf",
+        "platform_offset": [
+            0,
+            0,
+            0
+        ],
+        "preferred_material": "generic_pla_175",
+        "preferred_quality_type": "standard",
+        "quality_definition": "rigid3d_base"
+    },
+    "overrides":
+    {
+        "adhesion_type": { "value": "'none'" },
+        "gantry_height": { "value": 30 },
+        "machine_acceleration": { "value": 500 },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_depth": { "default_value": 200 },
+        "machine_end_gcode": { "default_value": "G92 E0\nT0\nG1 F1800 E-2\nG27 P2\nM107\nM104 T0 S0\nM140 S0\nG90\nG92 E0\nM18\n" },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [-20, 40],
+                [-20, -65],
+                [40, -65],
+                [40, 40]
+            ]
+        },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 200 },
+        "machine_max_acceleration_x": { "value": 500 },
+        "machine_max_acceleration_y": { "value": 500 },
+        "machine_max_acceleration_z": { "value": 100 },
+        "machine_name": { "default_value": "Rigid3D Zero3" },
+        "machine_start_gcode": { "default_value": "G21\nG92 E0\nG28\nM420 S1\nM107\nG90\nG1 X10.0 Y0.1 Z0.3 F3000.0\nG1 X190.0 Y0.1 Z0.3 F1500.0 E15\nG1 X190 Y0.4 Z0.3 F3000.0\nG1 X10.0 Y0.4 Z0.3 F1500.0 E30\nG1 Z2.0 F1500.0\nG92 E0\n" },
+        "machine_width": { "default_value": 200 }
+    }
+}

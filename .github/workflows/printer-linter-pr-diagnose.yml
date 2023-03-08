@@ -16,18 +16,19 @@ jobs:
         with:
           fetch-depth: 2
 
-      - name: Setup Python and pip
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.11.x
-          cache: "pip"
-          cache-dependency-path: .github/workflows/requirements-printer-linter.txt
-
       - uses: technote-space/get-diff-action@v6
         with:
           PATTERNS: |
             resources/+(extruders|definitions)/*.def.json
             resources/+(intent|quality|variants)/**/*.inst.cfg
+
+      - name: Setup Python and pip
+        if: env.GIT_DIFF && !env.MATCHED_FILES  # If nothing happens with python and/or pip after, the clean-up crashes.
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11.x
+          cache: "pip"
+          cache-dependency-path: .github/workflows/requirements-printer-linter.txt
 
       - name: Install Python requirements for runner
         if: env.GIT_DIFF && !env.MATCHED_FILES
