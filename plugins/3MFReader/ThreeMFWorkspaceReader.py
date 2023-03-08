@@ -751,8 +751,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             global_stacks = self._container_registry.findContainerStacks(id = self._dialog.getMachineToOverride(), type = "machine")
             if not global_stacks:
                 message = Message(i18n_catalog.i18nc("@info:error Don't translate the XML tag <filename>!", 
-                                                     "Project file <filename>{0}</filename> is made using profiles that"
-                                                     " are unknown to this version of Ultimaker Cura.", file_name),
+                                                     "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura.", file_name),
                                                      message_type = Message.MessageType.ERROR)
                 message.show()
                 self.setWorkspaceName("")
