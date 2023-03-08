@@ -26,7 +26,7 @@ class CuraConan(ConanFile):
     no_copy_source = True  # We won't build so no need to copy sources to the build folder
 
     # FIXME: Remove specific branch once merged to main
-    python_requires = "umbase/[>=0.1.7]@ultimaker/stable", "translationextractor/[>=2.0.0]@ultimaker/stable"
+    python_requires = "umbase/[>=0.1.7]@ultimaker/stable", "translationextractor/[>=2.1.1]@ultimaker/stable"
     python_requires_extend = "umbase.UMBaseConanfile"
 
     options = {
@@ -340,7 +340,8 @@ class CuraConan(ConanFile):
                 vb.generate()
 
                 # FIXME: once m4, autoconf, automake are Conan V2 ready use self.win_bash and add gettext as base tool_requirement
-                pot = self.python_requires["translationextractor"].module.ExtractTranslations(self)
+                cpp_info = self.dependencies["gettext"].cpp_info
+                pot = self.python_requires["translationextractor"].module.ExtractTranslations(self, cpp_info.bindirs[0])
                 pot.generate()
 
     def build(self):
