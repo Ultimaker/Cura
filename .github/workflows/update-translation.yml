@@ -1,21 +1,22 @@
 name: update-translations
 
-push:
-    paths:
-        - 'plugins/**'
-        - 'resources/**'
-        - 'cura/**'
-        - 'icons/**'
-        - 'tests/**'
-        - 'packaging/**'
-        - '.github/workflows/conan-*.yml'
-        - '.github/workflows/notify.yml'
-        - '.github/workflows/requirements-conan-package.txt'
-        - 'requirements*.txt'
-        - 'conanfile.py'
-        - 'conandata.yml'
-        - 'GitVersion.yml'
-        - '*.jinja'
+on:
+    push:
+        paths:
+            - 'plugins/**'
+            - 'resources/**'
+            - 'cura/**'
+            - 'icons/**'
+            - 'tests/**'
+            - 'packaging/**'
+            - '.github/workflows/conan-*.yml'
+            - '.github/workflows/notify.yml'
+            - '.github/workflows/requirements-conan-package.txt'
+            - 'requirements*.txt'
+            - 'conanfile.py'
+            - 'conandata.yml'
+            - 'GitVersion.yml'
+            - '*.jinja'
 
 jobs:
     update-translations:
