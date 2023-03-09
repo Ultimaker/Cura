@@ -4597,7 +4597,7 @@ msgstr "Drucker hinzufügen"
 #: resources/qml/Cura.qml:836
 msgctxt "@title:window"
 msgid "What's New"
-msgstr "Neuheiten"
+msgstr "Neuigkeiten"
 
 #: resources/qml/Cura.qml:890
 msgctxt "@title:window"
@@ -4607,12 +4607,12 @@ msgstr "Benutzerdefiniertes Profil"
 #: resources/qml/Cura.qml:891
 msgctxt "@textfield:placeholder"
 msgid "New Custom Profile"
-msgstr "Benutzerdefiniertes Profil"
+msgstr "Neues Profil"
 
 #: resources/qml/Cura.qml:892
 msgctxt "@info"
 msgid "Custom profile name:"
-msgstr "Benutzerdefiniertes Profil"
+msgstr "Neues Profil anlegen"
 
 #: resources/qml/Cura.qml:909
 msgctxt "@label %i will be replaced with a profile name"
@@ -4627,7 +4627,7 @@ msgstr "Mehr über Druckprofile von Cura erfahren"
 #: resources/qml/Cura.qml:926
 msgctxt "@button"
 msgid "Save new profile"
-msgstr ""
+msgstr "Neues Profil speichern"
 
 #: resources/qml/Dialogs/AboutDialog.qml:15
 msgctxt "@title:window The argument is the application name."
@@ -4656,7 +4656,7 @@ msgstr ""
 #: resources/qml/Dialogs/AboutDialog.qml:138
 msgctxt "@label Description for application component"
 msgid "Graphical user interface"
-msgstr "Grafische Benutzerschnittstelle"
+msgstr "Grafische Benutzeroberfläche"
 
 #: resources/qml/Dialogs/AboutDialog.qml:139
 msgctxt "@label Description for application component"
@@ -4911,7 +4911,7 @@ msgstr "Änderungen verwerfen"
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:164
 msgctxt "@action:button"
 msgid "Keep changes"
-msgstr "Änderungen speichern"
+msgstr "Änderungen behalten"
 
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:171
 msgctxt "@action:button"
@@ -4921,7 +4921,7 @@ msgstr "Benutzerdefiniertes Profil"
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:178
 msgctxt "@action:button"
 msgid "Save changes"
-msgstr "Änderungen behalten"
+msgstr "Änderungen speichern"
 
 #: resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:47
 msgctxt "@text:window"
