@@ -4597,7 +4597,7 @@ msgstr "Drucker hinzufügen"
 #: resources/qml/Cura.qml:836
 msgctxt "@title:window"
 msgid "What's New"
-msgstr "Neuigkeiten"
+msgstr "Neuheiten"
 
 #: resources/qml/Cura.qml:890
 msgctxt "@title:window"
