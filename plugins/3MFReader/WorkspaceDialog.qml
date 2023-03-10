@@ -28,7 +28,7 @@ UM.Dialog
         UM.Label
         {
             id: titleLabel
-            text: catalog.i18nc("@action:title", "UPDATED TITLE")
+            text: catalog.i18nc("@action:title", "UPDATED TITLE II")
             font: UM.Theme.getFont("large")
             anchors.top: parent.top
             anchors.left: parent.left
