@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-09 11:03+0000\n"
+"POT-Creation-Date: 2023-03-10 14:05+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -888,10 +888,9 @@ msgid "Open Project"
 msgstr "프로젝트 열기"
 
 #: plugins/3MFReader/WorkspaceDialog.qml:31
-#: resources/qml/Dialogs/WorkspaceSummaryDialog.qml:61
 msgctxt "@action:title"
-msgid "Summary - Cura Project"
-msgstr "요약 - Cura 프로젝트"
+msgid "UPDATED TITLE"
+msgstr ""
 
 #: plugins/3MFReader/WorkspaceDialog.qml:65
 msgctxt "@action:ComboBox Update/override existing profile"
@@ -4937,6 +4936,11 @@ msgstr "새 이름을 입력하십시오."
 msgctxt "@title:window"
 msgid "Save Project"
 msgstr "프로젝트 저장"
+
+#: resources/qml/Dialogs/WorkspaceSummaryDialog.qml:61
+msgctxt "@action:title"
+msgid "Summary - Cura Project"
+msgstr "요약 - Cura 프로젝트"
 
 #: resources/qml/Dialogs/WorkspaceSummaryDialog.qml:177
 msgctxt "@action:label"

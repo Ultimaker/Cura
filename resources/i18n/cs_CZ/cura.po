@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-09 11:03+0000\n"
+"POT-Creation-Date: 2023-03-10 14:05+0000\n"
 "PO-Revision-Date: 2023-02-16 20:28+0100\n"
 "Last-Translator: Miroslav Šustek <sustmidown@centrum.cz>\n"
 "Language-Team: DenyCZ <www.github.com/DenyCZ>\n"
@@ -888,10 +888,9 @@ msgid "Open Project"
 msgstr "Otevřit projekt"
 
 #: plugins/3MFReader/WorkspaceDialog.qml:31
-#: resources/qml/Dialogs/WorkspaceSummaryDialog.qml:61
 msgctxt "@action:title"
-msgid "Summary - Cura Project"
-msgstr "Souhrn - Projekt Cura"
+msgid "UPDATED TITLE"
+msgstr ""
 
 #: plugins/3MFReader/WorkspaceDialog.qml:65
 msgctxt "@action:ComboBox Update/override existing profile"
@@ -4958,6 +4957,11 @@ msgstr "Prosím uveďte nové jméno."
 msgctxt "@title:window"
 msgid "Save Project"
 msgstr "Uložit projekt"
+
+#: resources/qml/Dialogs/WorkspaceSummaryDialog.qml:61
+msgctxt "@action:title"
+msgid "Summary - Cura Project"
+msgstr "Souhrn - Projekt Cura"
 
 #: resources/qml/Dialogs/WorkspaceSummaryDialog.qml:177
 msgctxt "@action:label"

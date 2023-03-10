@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-09 11:03+0000\n"
+"POT-Creation-Date: 2023-03-10 14:05+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -888,10 +888,9 @@ msgid "Open Project"
 msgstr "Project openen"
 
 #: plugins/3MFReader/WorkspaceDialog.qml:31
-#: resources/qml/Dialogs/WorkspaceSummaryDialog.qml:61
 msgctxt "@action:title"
-msgid "Summary - Cura Project"
-msgstr "Samenvatting - Cura-project"
+msgid "UPDATED TITLE"
+msgstr ""
 
 #: plugins/3MFReader/WorkspaceDialog.qml:65
 msgctxt "@action:ComboBox Update/override existing profile"
@@ -4950,6 +4949,11 @@ msgstr "Geef een nieuwe naam op."
 msgctxt "@title:window"
 msgid "Save Project"
 msgstr "Project opslaan"
+
+#: resources/qml/Dialogs/WorkspaceSummaryDialog.qml:61
+msgctxt "@action:title"
+msgid "Summary - Cura Project"
+msgstr "Samenvatting - Cura-project"
 
 #: resources/qml/Dialogs/WorkspaceSummaryDialog.qml:177
 msgctxt "@action:label"
