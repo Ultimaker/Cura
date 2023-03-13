@@ -4395,9 +4395,9 @@
                     "unit": "mm/s",
                     "type": "float",
                     "default_value": 10,
-                    "enabled": "cool_min_layer_time > 0",
-                    "minimum_value": "0",
+                    "minimum_value": "1",
                     "maximum_value_warning": "100",
+                    "enabled": "cool_min_layer_time > 0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
