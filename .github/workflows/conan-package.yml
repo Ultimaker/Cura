@@ -117,7 +117,6 @@ jobs:
         if: always()
         run: |
           conan upload ${{ needs.conan-recipe-version.outputs.recipe_id_full }} -r cura --all -c
-          conan upload "*@_/_" -r cura --all -c
           conan upload ${{ needs.conan-recipe-version.outputs.recipe_id_latest }} -r cura -c
 
   notify-create:
