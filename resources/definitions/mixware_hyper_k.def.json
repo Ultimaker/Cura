@@ -100,7 +100,6 @@
         "support_interface_enable": { "value": true },
         "support_interface_height": { "value": "layer_height * 4" },
         "support_interface_pattern": { "value": "'grid'" },
-        
         "support_type": { "default_value": "buildplate" },
         "support_use_towers": { "value": false },
         "support_xy_distance": { "value": "wall_line_width_0 * 2" },
