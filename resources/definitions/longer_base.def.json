@@ -111,7 +111,6 @@
         "support_interface_pattern": { "value": "'grid'" },
         "support_interface_skip_height": { "value": 0.2 },
         "support_pattern": { "value": "'zigzag'" },
-        "support_use_towers": { "value": false },
         "support_wall_count": { "value": 1 },
         "support_xy_distance": { "value": "wall_line_width_0 * 2" },
         "support_xy_distance_overhang": { "value": "wall_line_width_0" },
