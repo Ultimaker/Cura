@@ -122,9 +122,17 @@ jobs:
                 if:  ${{ runner.os == 'Macos' }}
                 run: brew install autoconf automake ninja create-dmg # Delete create-dmg when deprecating dmg
 
+            -   name: Hack needed specifically for ubuntu-22.04 from mid-Feb 2023 onwards
+                if: ${{ runner.os == 'Linux' && startsWith(inputs.platform, 'ubuntu-22.04') }}
+                run: sudo apt remove libodbc2 libodbcinst2 unixodbc-common -y
+
+            # NOTE: Due to what are probably github issues, we have to remove the cache and reconfigure before the rest.
+            #       This is maybe because grub caches the disk it uses last time, which is recreated each time.
             -   name: Install Linux system requirements
                 if: ${{ runner.os == 'Linux' }}
                 run: |
+                    sudo rm /var/cache/debconf/config.dat
+                    sudo dpkg --configure -a
                     sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
                     sudo apt update
                     sudo apt upgrade
@@ -264,6 +272,32 @@ jobs:
                         f.writelines(f"INSTALLER_FILENAME={installer_filename}\n")
                         f.writelines(f"INSTALLER_EXT={installer_ext}\n")
                         f.writelines(f"FULL_INSTALLER_FILENAME={installer_filename}.{installer_ext}\n")
+
+            -   name: Summarize the used Conan dependencies
+                shell: python
+                run: |
+                    import os
+                    import json
+                    from pathlib import Path
+                                        
+                    conan_install_info_path = Path("cura_inst/conan_install_info.json")
+                    conan_info = {"installed": []}
+                    if os.path.exists(conan_install_info_path):
+                        with open(conan_install_info_path, "r") as f:
+                            conan_info = json.load(f)
+                    sorted_deps = sorted([dep["recipe"]["id"].replace('#', r' rev: ') for dep in conan_info["installed"]])
+                    
+                    summary_env = os.environ["GITHUB_STEP_SUMMARY"]
+                    content = ""
+                    if os.path.exists(summary_env):
+                        with open(summary_env, "r") as f:
+                            content = f.read()
+                    
+                    with open(summary_env, "w") as f:
+                        f.write(content)
+                        f.writelines("# ${{ steps.filename.outputs.FULL_INSTALLER_FILENAME }} uses:\n")
+                        for dep in sorted_deps:
+                            f.writelines(f"`{dep}`\n")
 
             -   name: Archive the artifacts (bash)
                 if: ${{ !inputs.installer && runner.os != 'Windows' }}

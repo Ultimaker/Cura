@@ -115,7 +115,6 @@
         "support_structure": { "value": "'tree'" },
         "support_top_distance": { "value": "extruderValue(support_roof_extruder_nr if support_roof_enable else support_infill_extruder_nr, 'support_z_distance') + (layer_height if support_structure == 'tree' else 0)" },
         "support_type": { "value": "'buildplate' if support_structure == 'tree' else 'everywhere'" },
-        "support_use_towers": { "value": false },
         "support_wall_count": { "value": 1 },
         "support_xy_distance": { "value": "wall_line_width_0 * 2" },
         "support_xy_distance_overhang": { "value": "wall_line_width_0" },
