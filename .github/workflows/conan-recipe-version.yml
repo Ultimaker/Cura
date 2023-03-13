@@ -132,7 +132,7 @@ jobs:
                         # %% Get the actual version
                         latest_branch_version = Version("0.0.0")
                         latest_branch_tag = None
-                        for tag in repo.git.tag(merged = True).splitlines():
+                        for tag in repo.active_branch.repo.tags:
                             if str(tag).startswith("firmware") or str(tag).startswith("master"):
                                 continue  # Quick-fix for the versioning scheme name of the embedded team in fdm_materials(_private) repo
                             try:

@@ -115,7 +115,16 @@ Item
 
         onExited:
         {
-            if (controlContainer.item && controlContainer.item.hovered)
+            if (controlContainer.children[0] && controlContainer.children[0].hovered)
+            {
+                return
+            }
+
+            // Don't trigger the hide if either of the nested buttons is hidden. This is caused by a bug in QT
+            // Documentation claims that nested mouse events don't trigger the onExit, but this is only true if they
+            // have a *direct* parent child relationship. In this case there are rows and other visual layouts in
+            // between which messes this up.
+            if(linkedSettingIcon.hovered || revertButton.hovered || inheritButton.hovered)
             {
                 return
             }
@@ -129,10 +138,7 @@ Item
             interval: 500
             repeat: false
 
-            onTriggered:
-            {
-                base.showTooltip(base.createTooltipText())
-            }
+            onTriggered: base.showTooltip(base.createTooltipText())
         }
 
         UM.Label
@@ -150,7 +156,7 @@ Item
 
             color: UM.Theme.getColor("setting_control_text")
             opacity: (definition.visible) ? 1 : 0.5
-            // emphasize the setting if it has a value in the user or quality profile
+            // Emphasize the setting if it has a value in the user or quality profile
             font: base.doQualityUserSettingEmphasis && base.stackLevel !== undefined && base.stackLevel <= 1 ? UM.Theme.getFont("default_italic") : UM.Theme.getFont("default")
         }
 
