@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-03-08 09:03+0000\n"
+"POT-Creation-Date: 2023-03-14 15:01+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -1534,26 +1534,6 @@ msgid "Go over the top surface one additional time, but this time extruding very
 msgstr "Üst yüzey üzerinden bir kere daha geçilir, ancak bu defa çok küçük malzeme ekstrüde edilir. Bu işlem en üstte bulunan plastiği eriterek daha pürüzsüz bir yüzey oluşturur. Nozül haznesindeki baskı yüksek tutularak yüzeydeki kıvrımların malzemeyle dolması sağlanır."
 
 #: fdmprinter.def.json
-msgctxt "gradual_infill_step_height label"
-msgid "Gradual Infill Step Height"
-msgstr "Aşamalı Dolgu Basamak Yüksekliği"
-
-#: fdmprinter.def.json
-msgctxt "gradual_infill_steps label"
-msgid "Gradual Infill Steps"
-msgstr "Aşamalı Dolgu Basamakları"
-
-#: fdmprinter.def.json
-msgctxt "gradual_support_infill_step_height label"
-msgid "Gradual Support Infill Step Height"
-msgstr "Aşamalı Destek Dolgusu Basamak Yüksekliği"
-
-#: fdmprinter.def.json
-msgctxt "gradual_support_infill_steps label"
-msgid "Gradual Support Infill Steps"
-msgstr "Kademeli Destek Dolgusu Aşamaları"
-
-#: fdmprinter.def.json
 msgctxt "cool_min_temperature description"
 msgid "Gradually reduce to this temperature when printing at reduced speeds because of minimum layer time."
 msgstr "Minimum katman süresi nedeniyle düşük hızlarda baskı yaparken kademeli olarak bu sıcaklığa düşürün."
@@ -1777,6 +1757,16 @@ msgstr "Malzeme Sıcaklıklarını Ekle"
 msgctxt "slicing_tolerance option inclusive"
 msgid "Inclusive"
 msgstr "Kapsayıcı"
+
+#: fdmprinter.def.json
+msgctxt "gradual_support_infill label"
+msgid "Increase Support Top Infill"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradual_infill label"
+msgid "Increase Top Infill"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "infill description"
@@ -2844,19 +2834,19 @@ msgid "Number of extruder trains. An extruder train is the combination of a feed
 msgstr "Ekstruder dişli çarklarının sayısı. Ekstruder dişli çarkı besleyici, bowden tüpü ve nozülden oluşur."
 
 #: fdmprinter.def.json
-msgctxt "wipe_repeat_count description"
-msgid "Number of times to move the nozzle across the brush."
-msgstr "Nozülün fırçadan geçirilme sayısı."
-
-#: fdmprinter.def.json
 msgctxt "gradual_infill_steps description"
-msgid "Number of times to reduce the infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Infill Density."
-msgstr "Üst yüzeylerin altına indikçe dolgu yoğunluğunu yarıya indirme sayısı. Üst yüzeylere daha yakın olan alanlarda, Dolgu Yoğunluğuna kadar yoğunluk daha yüksektir."
+msgid "Number of times to double the infill density when getting towards the top surfaces. (Previously known as Gradual Infill Steps.)"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "gradual_support_infill_steps description"
-msgid "Number of times to reduce the support infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Support Infill Density."
-msgstr "Üst yüzeylerin altına inerken destek dolgusu yoğunluğunu yarıya indirmek için inilecek yüzey sayısı. Üst yüzeylere daha yakın olan alanlarda yoğunluk daha fazladır ve Destek Dolgusu Yoğunluğuna kadar çıkabilir."
+msgid "Number of times to double the infill density when getting towards the top surfaces. (Previously known as Gradual Support Infill Steps.)"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_repeat_count description"
+msgid "Number of times to move the nozzle across the brush."
+msgstr "Nozülün fırçadan geçirilme sayısı."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option tetrahedral"
@@ -4825,13 +4815,13 @@ msgstr "Her katmanın milimetre cinsinden yüksekliği. Daha yüksek değerler d
 
 #: fdmprinter.def.json
 msgctxt "gradual_infill_step_height description"
-msgid "The height of infill of a given density before switching to half the density."
-msgstr "Yoğunluğun yarısına inmeden önce verilen bir yoğunluktaki dolgunun yüksekliği."
+msgid "The height of infill of a given density before switching to double the density. (Previously known as Gradual Infill Step Height.)"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "gradual_support_infill_step_height description"
-msgid "The height of support infill of a given density before switching to half the density."
-msgstr "Yoğunluğun yarısına inmeden önce belirli bir yoğunluktaki destek dolgusunun yüksekliği."
+msgid "The height of infill of a given density before switching to double the density. (Previously known as Gradual Support Infill Step Height.)"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_layer_count description"
@@ -4871,6 +4861,16 @@ msgid ""
 msgstr ""
 "Baskının eteği ve ilk katmanı arasındaki yatay mesafe.\n"
 "Minimum mesafedir. Bu mesafeden çok sayıda etek hattı dışarı doğru uzanır."
+
+#: fdmprinter.def.json
+msgctxt "gradual_support_infill description"
+msgid "The infill density at the top of the support is gradually increased to better support the support interface layers or the model. (Previously known as Gradual Support Infill.)"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradual_infill description"
+msgid "The infill density below the top surface is gradually increased to better support the top layers. (Previously known as Gradual Infill.)"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_straightening_angle description"
@@ -5763,6 +5763,16 @@ msgid "To compensate for the shrinkage of the material as it cools down, the mod
 msgstr "Malzemenin soğudukça büzülmesini telafi etmek için model bu faktöre göre ölçeklenecektir."
 
 #: fdmprinter.def.json
+msgctxt "gradual_infill_step_height label"
+msgid "Top Infill Step Height"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradual_infill_steps label"
+msgid "Top Infill Steps"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "top_layers label"
 msgid "Top Layers"
 msgstr "Üst Katmanlar"
@@ -5776,6 +5786,16 @@ msgstr "Üst Yüzey Genişleme Mesafesi"
 msgctxt "top_skin_preshrink label"
 msgid "Top Skin Removal Width"
 msgstr "Üst Yüzey Kaldırma Genişliği"
+
+#: fdmprinter.def.json
+msgctxt "gradual_support_infill_step_height label"
+msgid "Top Support Infill Step Height"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradual_support_infill_steps label"
+msgid "Top Support Infill Steps"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "acceleration_roofing label"
@@ -6766,3 +6786,35 @@ msgstr "Zikzak"
 msgctxt "travel description"
 msgid "travel"
 msgstr "hareket"
+
+#~ msgctxt "gradual_infill_step_height label"
+#~ msgid "Gradual Infill Step Height"
+#~ msgstr "Aşamalı Dolgu Basamak Yüksekliği"
+
+#~ msgctxt "gradual_infill_steps label"
+#~ msgid "Gradual Infill Steps"
+#~ msgstr "Aşamalı Dolgu Basamakları"
+
+#~ msgctxt "gradual_support_infill_step_height label"
+#~ msgid "Gradual Support Infill Step Height"
+#~ msgstr "Aşamalı Destek Dolgusu Basamak Yüksekliği"
+
+#~ msgctxt "gradual_support_infill_steps label"
+#~ msgid "Gradual Support Infill Steps"
+#~ msgstr "Kademeli Destek Dolgusu Aşamaları"
+
+#~ msgctxt "gradual_infill_steps description"
+#~ msgid "Number of times to reduce the infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Infill Density."
+#~ msgstr "Üst yüzeylerin altına indikçe dolgu yoğunluğunu yarıya indirme sayısı. Üst yüzeylere daha yakın olan alanlarda, Dolgu Yoğunluğuna kadar yoğunluk daha yüksektir."
+
+#~ msgctxt "gradual_support_infill_steps description"
+#~ msgid "Number of times to reduce the support infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Support Infill Density."
+#~ msgstr "Üst yüzeylerin altına inerken destek dolgusu yoğunluğunu yarıya indirmek için inilecek yüzey sayısı. Üst yüzeylere daha yakın olan alanlarda yoğunluk daha fazladır ve Destek Dolgusu Yoğunluğuna kadar çıkabilir."
+
+#~ msgctxt "gradual_infill_step_height description"
+#~ msgid "The height of infill of a given density before switching to half the density."
+#~ msgstr "Yoğunluğun yarısına inmeden önce verilen bir yoğunluktaki dolgunun yüksekliği."
+
+#~ msgctxt "gradual_support_infill_step_height description"
+#~ msgid "The height of support infill of a given density before switching to half the density."
+#~ msgstr "Yoğunluğun yarısına inmeden önce belirli bir yoğunluktaki destek dolgusunun yüksekliği."

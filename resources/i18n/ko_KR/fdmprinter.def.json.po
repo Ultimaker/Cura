@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-03-08 09:03+0000\n"
+"POT-Creation-Date: 2023-03-14 15:01+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -1532,26 +1532,6 @@ msgid "Go over the top surface one additional time, but this time extruding very
 msgstr "상단 표면을 한 번 더 이동하지만 재료를 아주 약간만 압출 성형합니다. 따라서 맨 위의 플라스틱이 녹아 부드러운 표면을 만듭니다. 노즐 챔버 내의 압력이 고압으로 유지되므로 표면상의 주름이 재료로 채워집니다."
 
 #: fdmprinter.def.json
-msgctxt "gradual_infill_step_height label"
-msgid "Gradual Infill Step Height"
-msgstr "점진적인 내부채움 단계 높이"
-
-#: fdmprinter.def.json
-msgctxt "gradual_infill_steps label"
-msgid "Gradual Infill Steps"
-msgstr "점진적인 내부채움 단계"
-
-#: fdmprinter.def.json
-msgctxt "gradual_support_infill_step_height label"
-msgid "Gradual Support Infill Step Height"
-msgstr "점진적 서포트 내부채움 단계 높이"
-
-#: fdmprinter.def.json
-msgctxt "gradual_support_infill_steps label"
-msgid "Gradual Support Infill Steps"
-msgstr "점진적 서포트 내부채움 단계"
-
-#: fdmprinter.def.json
 msgctxt "cool_min_temperature description"
 msgid "Gradually reduce to this temperature when printing at reduced speeds because of minimum layer time."
 msgstr "최소 레이어 시간으로 인해 감소된 속도로 프린트할 때 이 온도로 점차 낮추십시오."
@@ -1775,6 +1755,16 @@ msgstr "재료의 온도 포함하기"
 msgctxt "slicing_tolerance option inclusive"
 msgid "Inclusive"
 msgstr "중복"
+
+#: fdmprinter.def.json
+msgctxt "gradual_support_infill label"
+msgid "Increase Support Top Infill"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradual_infill label"
+msgid "Increase Top Infill"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "infill description"
@@ -2842,19 +2832,19 @@ msgid "Number of extruder trains. An extruder train is the combination of a feed
 msgstr "익스트루더의 수. 익스트루더는 피더, 보우 덴 튜브 및 노즐의 조합입니다."
 
 #: fdmprinter.def.json
-msgctxt "wipe_repeat_count description"
-msgid "Number of times to move the nozzle across the brush."
-msgstr "브러시 전체에 노즐을 이동하는 횟수입니다."
-
-#: fdmprinter.def.json
 msgctxt "gradual_infill_steps description"
-msgid "Number of times to reduce the infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Infill Density."
-msgstr "상단면 아래로 갈 때 내부채움 밀도를 반으로 줄이는 횟수입니다. 상단면에 더 가까운 영역은 내부채움율 농도가 더 높은 밀도를 갖습니다."
+msgid "Number of times to double the infill density when getting towards the top surfaces. (Previously known as Gradual Infill Steps.)"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "gradual_support_infill_steps description"
-msgid "Number of times to reduce the support infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Support Infill Density."
-msgstr "상단 표면 아래로 올라갈 때 서포트 채움 밀도를 반으로 줄이는 횟수입니다. 상단 표면에 더 가까운 영역은 서포트 채움 밀도까지 더 높은 밀도를 갖습니다."
+msgid "Number of times to double the infill density when getting towards the top surfaces. (Previously known as Gradual Support Infill Steps.)"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_repeat_count description"
+msgid "Number of times to move the nozzle across the brush."
+msgstr "브러시 전체에 노즐을 이동하는 횟수입니다."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option tetrahedral"
@@ -4823,13 +4813,13 @@ msgstr "각 층의 높이 (mm)입니다. 값이 클수록 해상도가 낮고 �
 
 #: fdmprinter.def.json
 msgctxt "gradual_infill_step_height description"
-msgid "The height of infill of a given density before switching to half the density."
-msgstr "밀도의 절반으로 전환하기 전에 주어진 밀도에서 내부채움의 높이."
+msgid "The height of infill of a given density before switching to double the density. (Previously known as Gradual Infill Step Height.)"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "gradual_support_infill_step_height description"
-msgid "The height of support infill of a given density before switching to half the density."
-msgstr "밀도의 절반으로 전환하기 전에 주어진 밀도의 서포트 채움 높이."
+msgid "The height of infill of a given density before switching to double the density. (Previously known as Gradual Support Infill Step Height.)"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_layer_count description"
@@ -4869,6 +4859,16 @@ msgid ""
 msgstr ""
 "프린트의 스커트와 첫 번째 레이어 사이의 수평 거리입니다.\n"
 "이것은 최소 거리입니다. 여러 개의 스커트 선이 이 거리에서 바깥쪽으로 연장됩니다."
+
+#: fdmprinter.def.json
+msgctxt "gradual_support_infill description"
+msgid "The infill density at the top of the support is gradually increased to better support the support interface layers or the model. (Previously known as Gradual Support Infill.)"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradual_infill description"
+msgid "The infill density below the top surface is gradually increased to better support the top layers. (Previously known as Gradual Infill.)"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_straightening_angle description"
@@ -5761,6 +5761,16 @@ msgid "To compensate for the shrinkage of the material as it cools down, the mod
 msgstr "냉각됨에 따라 재료 수축을 보상하기 위해 모델이 이 배율로 확장됩니다."
 
 #: fdmprinter.def.json
+msgctxt "gradual_infill_step_height label"
+msgid "Top Infill Step Height"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradual_infill_steps label"
+msgid "Top Infill Steps"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "top_layers label"
 msgid "Top Layers"
 msgstr "상단 레이어"
@@ -5774,6 +5784,16 @@ msgstr "윗면 스킨 확장 거리"
 msgctxt "top_skin_preshrink label"
 msgid "Top Skin Removal Width"
 msgstr "상단 스킨 제거 폭"
+
+#: fdmprinter.def.json
+msgctxt "gradual_support_infill_step_height label"
+msgid "Top Support Infill Step Height"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradual_support_infill_steps label"
+msgid "Top Support Infill Steps"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "acceleration_roofing label"
@@ -6764,3 +6784,35 @@ msgstr "지그재그"
 msgctxt "travel description"
 msgid "travel"
 msgstr "이동"
+
+#~ msgctxt "gradual_infill_step_height label"
+#~ msgid "Gradual Infill Step Height"
+#~ msgstr "점진적인 내부채움 단계 높이"
+
+#~ msgctxt "gradual_infill_steps label"
+#~ msgid "Gradual Infill Steps"
+#~ msgstr "점진적인 내부채움 단계"
+
+#~ msgctxt "gradual_support_infill_step_height label"
+#~ msgid "Gradual Support Infill Step Height"
+#~ msgstr "점진적 서포트 내부채움 단계 높이"
+
+#~ msgctxt "gradual_support_infill_steps label"
+#~ msgid "Gradual Support Infill Steps"
+#~ msgstr "점진적 서포트 내부채움 단계"
+
+#~ msgctxt "gradual_infill_steps description"
+#~ msgid "Number of times to reduce the infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Infill Density."
+#~ msgstr "상단면 아래로 갈 때 내부채움 밀도를 반으로 줄이는 횟수입니다. 상단면에 더 가까운 영역은 내부채움율 농도가 더 높은 밀도를 갖습니다."
+
+#~ msgctxt "gradual_support_infill_steps description"
+#~ msgid "Number of times to reduce the support infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Support Infill Density."
+#~ msgstr "상단 표면 아래로 올라갈 때 서포트 채움 밀도를 반으로 줄이는 횟수입니다. 상단 표면에 더 가까운 영역은 서포트 채움 밀도까지 더 높은 밀도를 갖습니다."
+
+#~ msgctxt "gradual_infill_step_height description"
+#~ msgid "The height of infill of a given density before switching to half the density."
+#~ msgstr "밀도의 절반으로 전환하기 전에 주어진 밀도에서 내부채움의 높이."
+
+#~ msgctxt "gradual_support_infill_step_height description"
+#~ msgid "The height of support infill of a given density before switching to half the density."
+#~ msgstr "밀도의 절반으로 전환하기 전에 주어진 밀도의 서포트 채움 높이."

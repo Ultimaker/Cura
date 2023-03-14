@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-03-08 09:03+0000\n"
+"POT-Creation-Date: 2023-03-14 15:01+0000\n"
 "PO-Revision-Date: 2019-11-15 15:34+0100\n"
 "Last-Translator: Mariusz Matłosz <matliks@gmail.com>\n"
 "Language-Team: Mariusz Matłosz <matliks@gmail.com>, reprapy.pl\n"
@@ -1538,26 +1538,6 @@ msgid "Go over the top surface one additional time, but this time extruding very
 msgstr "Ponowne przejście po górnej powierzchni, tym razem wytłaczając bardzo mało materiału. Ma to na celu lepsze stopienie tworzywa na wierzchu, tworząc gładsze wykończenie. Ciśnienie w dyszy jest utrzymywane na wysokim poziomie, aby szczeliny na powierzchni były wypełnione materiałem."
 
 #: fdmprinter.def.json
-msgctxt "gradual_infill_step_height label"
-msgid "Gradual Infill Step Height"
-msgstr "Wysokość Kroku Stopniowego Wypełnienia"
-
-#: fdmprinter.def.json
-msgctxt "gradual_infill_steps label"
-msgid "Gradual Infill Steps"
-msgstr "Stopniowe Kroki Wypełnienia"
-
-#: fdmprinter.def.json
-msgctxt "gradual_support_infill_step_height label"
-msgid "Gradual Support Infill Step Height"
-msgstr "Wys. Stopnia Stopniowego Wypełn. Podpory"
-
-#: fdmprinter.def.json
-msgctxt "gradual_support_infill_steps label"
-msgid "Gradual Support Infill Steps"
-msgstr "Stopnie Stopniowego Wypełn. Podpór"
-
-#: fdmprinter.def.json
 msgctxt "cool_min_temperature description"
 msgid "Gradually reduce to this temperature when printing at reduced speeds because of minimum layer time."
 msgstr ""
@@ -1781,6 +1761,16 @@ msgstr "Załącz Temperaturę Materiału"
 msgctxt "slicing_tolerance option inclusive"
 msgid "Inclusive"
 msgstr "Włącznie"
+
+#: fdmprinter.def.json
+msgctxt "gradual_support_infill label"
+msgid "Increase Support Top Infill"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradual_infill label"
+msgid "Increase Top Infill"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "infill description"
@@ -2848,19 +2838,19 @@ msgid "Number of extruder trains. An extruder train is the combination of a feed
 msgstr "Liczba zespołów esktruderów. Zespół ekstrudera to kombinacja podajnika, rurki Bowden i dyszy."
 
 #: fdmprinter.def.json
-msgctxt "wipe_repeat_count description"
-msgid "Number of times to move the nozzle across the brush."
-msgstr "Ilość powtórzeń przesunięcia dyszy po szczotce."
-
-#: fdmprinter.def.json
 msgctxt "gradual_infill_steps description"
-msgid "Number of times to reduce the infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Infill Density."
-msgstr "Liczba redukcji wypełnienia o połowę podczas drukowania poniżej górnych powierzchni. Obszary, które są bliżej górnej powierzchni, mają większą gęstość, aż do Gęstości Wypełnienia."
+msgid "Number of times to double the infill density when getting towards the top surfaces. (Previously known as Gradual Infill Steps.)"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "gradual_support_infill_steps description"
-msgid "Number of times to reduce the support infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Support Infill Density."
-msgstr "Ilość zmniejszeń gęstości wypełnienia podpory o połowę podczas przesuwania się dalej pod górnymi powierzchniami. Obszary, które są bliżej górnych powierzchni mają większą gęstość, aż do Gęstości Wypełn. Podpory."
+msgid "Number of times to double the infill density when getting towards the top surfaces. (Previously known as Gradual Support Infill Steps.)"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_repeat_count description"
+msgid "Number of times to move the nozzle across the brush."
+msgstr "Ilość powtórzeń przesunięcia dyszy po szczotce."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option tetrahedral"
@@ -4834,13 +4824,13 @@ msgstr "Grubość każdej warstwy w mm. Wyższe wartości powodują szybszy wydr
 
 #: fdmprinter.def.json
 msgctxt "gradual_infill_step_height description"
-msgid "The height of infill of a given density before switching to half the density."
-msgstr "Wysokość wypełnienia o danej gęstości przed przejściem na połowę gęstości."
+msgid "The height of infill of a given density before switching to double the density. (Previously known as Gradual Infill Step Height.)"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "gradual_support_infill_step_height description"
-msgid "The height of support infill of a given density before switching to half the density."
-msgstr "Wysokość wypełnienia podpory o danej gęstości przed przełączeniem na połowę gęstości."
+msgid "The height of infill of a given density before switching to double the density. (Previously known as Gradual Support Infill Step Height.)"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_layer_count description"
@@ -4880,6 +4870,16 @@ msgid ""
 msgstr ""
 "Pozioma odległość między obwódką a pierwszą warstwą nadruku.\n"
 "Jest to o minimalnej odległości. Z tej odległości linie będą nakładane w kierunku zewnętrznym."
+
+#: fdmprinter.def.json
+msgctxt "gradual_support_infill description"
+msgid "The infill density at the top of the support is gradually increased to better support the support interface layers or the model. (Previously known as Gradual Support Infill.)"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradual_infill description"
+msgid "The infill density below the top surface is gradually increased to better support the top layers. (Previously known as Gradual Infill.)"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_straightening_angle description"
@@ -5776,6 +5776,16 @@ msgid "To compensate for the shrinkage of the material as it cools down, the mod
 msgstr ""
 
 #: fdmprinter.def.json
+msgctxt "gradual_infill_step_height label"
+msgid "Top Infill Step Height"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradual_infill_steps label"
+msgid "Top Infill Steps"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "top_layers label"
 msgid "Top Layers"
 msgstr "Górne warstwy"
@@ -5789,6 +5799,16 @@ msgstr "Odległość Rozsz. Górnej Skóry"
 msgctxt "top_skin_preshrink label"
 msgid "Top Skin Removal Width"
 msgstr "Szer. Usuwania Górnej Skóry"
+
+#: fdmprinter.def.json
+msgctxt "gradual_support_infill_step_height label"
+msgid "Top Support Infill Step Height"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradual_support_infill_steps label"
+msgid "Top Support Infill Steps"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "acceleration_roofing label"
@@ -7060,6 +7080,22 @@ msgstr "ruch jałowy"
 #~ msgid "Go over the top surface one additional time, but without extruding material. This is meant to melt the plastic on top further, creating a smoother surface."
 #~ msgstr "Przejedź nad górną powierzchnią dodatkowy raz, ale bez ekstrudowania materiału. Topi to plastyk na górze, co powoduje gładszą powierzchnię."
 
+#~ msgctxt "gradual_infill_step_height label"
+#~ msgid "Gradual Infill Step Height"
+#~ msgstr "Wysokość Kroku Stopniowego Wypełnienia"
+
+#~ msgctxt "gradual_infill_steps label"
+#~ msgid "Gradual Infill Steps"
+#~ msgstr "Stopniowe Kroki Wypełnienia"
+
+#~ msgctxt "gradual_support_infill_step_height label"
+#~ msgid "Gradual Support Infill Step Height"
+#~ msgstr "Wys. Stopnia Stopniowego Wypełn. Podpory"
+
+#~ msgctxt "gradual_support_infill_steps label"
+#~ msgid "Gradual Support Infill Steps"
+#~ msgstr "Stopnie Stopniowego Wypełn. Podpór"
+
 #~ msgctxt "machine_heated_bed label"
 #~ msgid "Has heated build plate"
 #~ msgstr "Posiada podgrzewany stół"
@@ -7235,6 +7271,14 @@ msgstr "ruch jałowy"
 #~ msgctxt "extruders_enabled_count label"
 #~ msgid "Number of Extruders that are enabled"
 #~ msgstr "Liczba Ekstruderów, które są dostępne"
+
+#~ msgctxt "gradual_infill_steps description"
+#~ msgid "Number of times to reduce the infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Infill Density."
+#~ msgstr "Liczba redukcji wypełnienia o połowę podczas drukowania poniżej górnych powierzchni. Obszary, które są bliżej górnej powierzchni, mają większą gęstość, aż do Gęstości Wypełnienia."
+
+#~ msgctxt "gradual_support_infill_steps description"
+#~ msgid "Number of times to reduce the support infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Support Infill Density."
+#~ msgstr "Ilość zmniejszeń gęstości wypełnienia podpory o połowę podczas przesuwania się dalej pod górnymi powierzchniami. Obszary, które są bliżej górnych powierzchni mają większą gęstość, aż do Gęstości Wypełn. Podpory."
 
 #~ msgctxt "machine_use_extruder_offset_to_offset_coords label"
 #~ msgid "Offset With Extruder"
@@ -7427,6 +7471,14 @@ msgstr "ruch jałowy"
 #~ msgctxt "z_offset_layer_0 description"
 #~ msgid "The extruder is offset from the normal height of the first layer by this amount. It can be positive (raised) or negative (lowered). Some filament types adhere to the build plate better if the extruder is raised slightly."
 #~ msgstr "Ekstruder jest przesuwany z normalnej wysokości pierwszej warstwy o tą wartość. Może być dodatnia (uniesienie) lub ujemna (obniżenie). Niektóre typy filamentu przyklejają się lepiej do stołu jeżeli ekstruder jest lekko uniesiony."
+
+#~ msgctxt "gradual_infill_step_height description"
+#~ msgid "The height of infill of a given density before switching to half the density."
+#~ msgstr "Wysokość wypełnienia o danej gęstości przed przejściem na połowę gęstości."
+
+#~ msgctxt "gradual_support_infill_step_height description"
+#~ msgid "The height of support infill of a given density before switching to half the density."
+#~ msgstr "Wysokość wypełnienia podpory o danej gęstości przed przełączeniem na połowę gęstości."
 
 #~ msgctxt "skirt_gap description"
 #~ msgid ""

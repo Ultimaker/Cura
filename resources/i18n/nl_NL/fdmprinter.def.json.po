@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-03-08 09:03+0000\n"
+"POT-Creation-Date: 2023-03-14 15:01+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -1534,26 +1534,6 @@ msgid "Go over the top surface one additional time, but this time extruding very
 msgstr "Nog een extra keer over de bovenlaag gaan, dit keer zonder veel materiaal te extruderen. Hierdoor wordt de kunststof aan de bovenkant verder gesmolten, waardoor een gladder oppervlak wordt verkregen. De kamerdruk in de nozzle wordt hoog gehouden zodat de spleten in het oppervlak met materiaal worden gevuld."
 
 #: fdmprinter.def.json
-msgctxt "gradual_infill_step_height label"
-msgid "Gradual Infill Step Height"
-msgstr "Staphoogte Geleidelijke Vulling"
-
-#: fdmprinter.def.json
-msgctxt "gradual_infill_steps label"
-msgid "Gradual Infill Steps"
-msgstr "Stappen Geleidelijke Vulling"
-
-#: fdmprinter.def.json
-msgctxt "gradual_support_infill_step_height label"
-msgid "Gradual Support Infill Step Height"
-msgstr "Geleidelijke supportvulling hoogte traptreden"
-
-#: fdmprinter.def.json
-msgctxt "gradual_support_infill_steps label"
-msgid "Gradual Support Infill Steps"
-msgstr "Geleidelijke supportvulling traptreden"
-
-#: fdmprinter.def.json
 msgctxt "cool_min_temperature description"
 msgid "Gradually reduce to this temperature when printing at reduced speeds because of minimum layer time."
 msgstr "Verlaag vanwege de minimale laagtijd geleidelijk naar deze temperatuur bij het printen aan lagere snelheden."
@@ -1777,6 +1757,16 @@ msgstr "Materiaaltemperatuur invoegen"
 msgctxt "slicing_tolerance option inclusive"
 msgid "Inclusive"
 msgstr "Inclusief"
+
+#: fdmprinter.def.json
+msgctxt "gradual_support_infill label"
+msgid "Increase Support Top Infill"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradual_infill label"
+msgid "Increase Top Infill"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "infill description"
@@ -2844,19 +2834,19 @@ msgid "Number of extruder trains. An extruder train is the combination of a feed
 msgstr "Aantal extruder trains. Een extruder train is de combinatie van een feeder, Bowden-buis en nozzle."
 
 #: fdmprinter.def.json
-msgctxt "wipe_repeat_count description"
-msgid "Number of times to move the nozzle across the brush."
-msgstr "Aantal keren dat de nozzle over de borstel beweegt."
-
-#: fdmprinter.def.json
 msgctxt "gradual_infill_steps description"
-msgid "Number of times to reduce the infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Infill Density."
-msgstr "Het aantal keren dat de vuldichtheid wordt gehalveerd naarmate er verder onder het oppervlak wordt geprint. Gebieden die zich dichter bij het oppervlak bevinden, krijgen een hogere dichtheid, tot de waarde die is opgegeven in de optie Dichtheid vulling."
+msgid "Number of times to double the infill density when getting towards the top surfaces. (Previously known as Gradual Infill Steps.)"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "gradual_support_infill_steps description"
-msgid "Number of times to reduce the support infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Support Infill Density."
-msgstr "Het aantal keren dat de dichtheid van de supportvulling wordt gehalveerd naarmate er verder onder het oppervlak wordt geprint. Gebieden die zich dichter bij het oppervlak bevinden, krijgen een hogere dichtheid, tot de waarde die is opgegeven in de optie Dichtheid supportvulling."
+msgid "Number of times to double the infill density when getting towards the top surfaces. (Previously known as Gradual Support Infill Steps.)"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_repeat_count description"
+msgid "Number of times to move the nozzle across the brush."
+msgstr "Aantal keren dat de nozzle over de borstel beweegt."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option tetrahedral"
@@ -4825,13 +4815,13 @@ msgstr "De hoogte van elke laag in mm. Met hogere waarden print u sneller met ee
 
 #: fdmprinter.def.json
 msgctxt "gradual_infill_step_height description"
-msgid "The height of infill of a given density before switching to half the density."
-msgstr "De hoogte van de vulling van een opgegeven dichtheid voordat wordt overgeschakeld naar de helft van deze dichtheid."
+msgid "The height of infill of a given density before switching to double the density. (Previously known as Gradual Infill Step Height.)"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "gradual_support_infill_step_height description"
-msgid "The height of support infill of a given density before switching to half the density."
-msgstr "De hoogte van de supportvulling van een bepaalde dichtheid voordat de dichtheid wordt gehalveerd."
+msgid "The height of infill of a given density before switching to double the density. (Previously known as Gradual Support Infill Step Height.)"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_layer_count description"
@@ -4871,6 +4861,16 @@ msgid ""
 msgstr ""
 "De horizontale afstand tussen de skirt en de eerste laag van de print.\n"
 "Dit is de minimumafstand. Als u meerdere skirtlijnen print, worden deze vanaf deze afstand naar buiten geprint."
+
+#: fdmprinter.def.json
+msgctxt "gradual_support_infill description"
+msgid "The infill density at the top of the support is gradually increased to better support the support interface layers or the model. (Previously known as Gradual Support Infill.)"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradual_infill description"
+msgid "The infill density below the top surface is gradually increased to better support the top layers. (Previously known as Gradual Infill.)"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_straightening_angle description"
@@ -5763,6 +5763,16 @@ msgid "To compensate for the shrinkage of the material as it cools down, the mod
 msgstr "Het model wordt met deze factor geschaald ter compensatie van het krimpen van het materiaal tijdens het afkoelen."
 
 #: fdmprinter.def.json
+msgctxt "gradual_infill_step_height label"
+msgid "Top Infill Step Height"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradual_infill_steps label"
+msgid "Top Infill Steps"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "top_layers label"
 msgid "Top Layers"
 msgstr "Bovenlagen"
@@ -5776,6 +5786,16 @@ msgstr "Uitbreidingsafstand van bovenste skinlaag"
 msgctxt "top_skin_preshrink label"
 msgid "Top Skin Removal Width"
 msgstr "Verwijderingsbreedte bovenste skinlaag"
+
+#: fdmprinter.def.json
+msgctxt "gradual_support_infill_step_height label"
+msgid "Top Support Infill Step Height"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradual_support_infill_steps label"
+msgid "Top Support Infill Steps"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "acceleration_roofing label"
@@ -6775,10 +6795,42 @@ msgstr "beweging"
 #~ msgid "Change the temperature for each layer automatically with the average flow speed of that layer."
 #~ msgstr "Pas de temperatuur voor elke laag automatisch aan aan de gemiddelde doorvoersnelheid van de laag."
 
+#~ msgctxt "gradual_infill_step_height label"
+#~ msgid "Gradual Infill Step Height"
+#~ msgstr "Staphoogte Geleidelijke Vulling"
+
+#~ msgctxt "gradual_infill_steps label"
+#~ msgid "Gradual Infill Steps"
+#~ msgstr "Stappen Geleidelijke Vulling"
+
+#~ msgctxt "gradual_support_infill_step_height label"
+#~ msgid "Gradual Support Infill Step Height"
+#~ msgstr "Geleidelijke supportvulling hoogte traptreden"
+
+#~ msgctxt "gradual_support_infill_steps label"
+#~ msgid "Gradual Support Infill Steps"
+#~ msgstr "Geleidelijke supportvulling traptreden"
+
 #~ msgctxt "limit_support_retractions label"
 #~ msgid "Limit Support Retractions"
 #~ msgstr "Supportintrekkingen beperken"
 
+#~ msgctxt "gradual_infill_steps description"
+#~ msgid "Number of times to reduce the infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Infill Density."
+#~ msgstr "Het aantal keren dat de vuldichtheid wordt gehalveerd naarmate er verder onder het oppervlak wordt geprint. Gebieden die zich dichter bij het oppervlak bevinden, krijgen een hogere dichtheid, tot de waarde die is opgegeven in de optie Dichtheid vulling."
+
+#~ msgctxt "gradual_support_infill_steps description"
+#~ msgid "Number of times to reduce the support infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Support Infill Density."
+#~ msgstr "Het aantal keren dat de dichtheid van de supportvulling wordt gehalveerd naarmate er verder onder het oppervlak wordt geprint. Gebieden die zich dichter bij het oppervlak bevinden, krijgen een hogere dichtheid, tot de waarde die is opgegeven in de optie Dichtheid supportvulling."
+
 #~ msgctxt "limit_support_retractions description"
 #~ msgid "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excessive stringing within the support structure."
 #~ msgstr "Sla intrekking over tijdens bewegingen in een rechte lijn van support naar support. Deze instelling verkort de printtijd, maar kan leiden tot overmatige draadvorming in de supportstructuur."
+
+#~ msgctxt "gradual_infill_step_height description"
+#~ msgid "The height of infill of a given density before switching to half the density."
+#~ msgstr "De hoogte van de vulling van een opgegeven dichtheid voordat wordt overgeschakeld naar de helft van deze dichtheid."
+
+#~ msgctxt "gradual_support_infill_step_height description"
+#~ msgid "The height of support infill of a given density before switching to half the density."
+#~ msgstr "De hoogte van de supportvulling van een bepaalde dichtheid voordat de dichtheid wordt gehalveerd."

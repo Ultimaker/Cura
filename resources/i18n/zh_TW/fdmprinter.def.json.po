@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-03-08 09:03+0000\n"
+"POT-Creation-Date: 2023-03-14 15:01+0000\n"
 "PO-Revision-Date: 2022-01-02 20:24+0800\n"
 "Last-Translator: Valen Chang  <carf17771@gmail.com>\n"
 "Language-Team: Valen Chang <carf17771@gmail.com>\n"
@@ -1539,26 +1539,6 @@ msgid "Go over the top surface one additional time, but this time extruding very
 msgstr "噴頭額外跑過上表層一次，但這次擠出的材料非常少。這是為了進一步融化頂部的塑料，創造更平滑的表面。噴頭中的壓力會保持很高，將表面中的細縫中填滿材料。"
 
 #: fdmprinter.def.json
-msgctxt "gradual_infill_step_height label"
-msgid "Gradual Infill Step Height"
-msgstr "漸進填充步階高度"
-
-#: fdmprinter.def.json
-msgctxt "gradual_infill_steps label"
-msgid "Gradual Infill Steps"
-msgstr "漸進填充步階數"
-
-#: fdmprinter.def.json
-msgctxt "gradual_support_infill_step_height label"
-msgid "Gradual Support Infill Step Height"
-msgstr "漸進支撐填充步階高度"
-
-#: fdmprinter.def.json
-msgctxt "gradual_support_infill_steps label"
-msgid "Gradual Support Infill Steps"
-msgstr "漸進支撐填充步階"
-
-#: fdmprinter.def.json
 msgctxt "cool_min_temperature description"
 msgid "Gradually reduce to this temperature when printing at reduced speeds because of minimum layer time."
 msgstr ""
@@ -1782,6 +1762,16 @@ msgstr "插入線材溫度"
 msgctxt "slicing_tolerance option inclusive"
 msgid "Inclusive"
 msgstr "包含"
+
+#: fdmprinter.def.json
+msgctxt "gradual_support_infill label"
+msgid "Increase Support Top Infill"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradual_infill label"
+msgid "Increase Top Infill"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "infill description"
@@ -2849,19 +2839,19 @@ msgid "Number of extruder trains. An extruder train is the combination of a feed
 msgstr "擠出機組數目。擠出機組是指進料裝置、喉管和噴頭的組合。"
 
 #: fdmprinter.def.json
-msgctxt "wipe_repeat_count description"
-msgid "Number of times to move the nozzle across the brush."
-msgstr "將噴頭移動經過刷子的次數。"
-
-#: fdmprinter.def.json
 msgctxt "gradual_infill_steps description"
-msgid "Number of times to reduce the infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Infill Density."
-msgstr "由模型頂部往下，填充密度減半的次數。愈接近頂部的填充密度愈高，直到所設定的填充密度。"
+msgid "Number of times to double the infill density when getting towards the top surfaces. (Previously known as Gradual Infill Steps.)"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "gradual_support_infill_steps description"
-msgid "Number of times to reduce the support infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Support Infill Density."
-msgstr "從支撐頂層往下，填充密度減半的次數。越靠近頂層的填充密度越高，最高密度為支撐填充密度。"
+msgid "Number of times to double the infill density when getting towards the top surfaces. (Previously known as Gradual Support Infill Steps.)"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_repeat_count description"
+msgid "Number of times to move the nozzle across the brush."
+msgstr "將噴頭移動經過刷子的次數。"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option tetrahedral"
@@ -4835,13 +4825,13 @@ msgstr "每層的高度（以毫米為單位）。值越高，則列印速度越
 
 #: fdmprinter.def.json
 msgctxt "gradual_infill_step_height description"
-msgid "The height of infill of a given density before switching to half the density."
-msgstr "減半填充密度的高度。"
+msgid "The height of infill of a given density before switching to double the density. (Previously known as Gradual Infill Step Height.)"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "gradual_support_infill_step_height description"
-msgid "The height of support infill of a given density before switching to half the density."
-msgstr "支撐層密度減半的厚度。"
+msgid "The height of infill of a given density before switching to double the density. (Previously known as Gradual Support Infill Step Height.)"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_layer_count description"
@@ -4881,6 +4871,16 @@ msgid ""
 msgstr ""
 "外圍和列印第一層之間的水平距離。\n"
 "這是最小距離，多個外圍線條將從此距離向外延伸。"
+
+#: fdmprinter.def.json
+msgctxt "gradual_support_infill description"
+msgid "The infill density at the top of the support is gradually increased to better support the support interface layers or the model. (Previously known as Gradual Support Infill.)"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradual_infill description"
+msgid "The infill density below the top surface is gradually increased to better support the top layers. (Previously known as Gradual Infill.)"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_straightening_angle description"
@@ -5777,6 +5777,16 @@ msgid "To compensate for the shrinkage of the material as it cools down, the mod
 msgstr "為了補償線材在冷卻時的收縮，模型會依此比例放大列印。"
 
 #: fdmprinter.def.json
+msgctxt "gradual_infill_step_height label"
+msgid "Top Infill Step Height"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradual_infill_steps label"
+msgid "Top Infill Steps"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "top_layers label"
 msgid "Top Layers"
 msgstr "頂部層數"
@@ -5790,6 +5800,16 @@ msgstr "頂部表層延伸距離"
 msgctxt "top_skin_preshrink label"
 msgid "Top Skin Removal Width"
 msgstr "頂部表層移除寬度"
+
+#: fdmprinter.def.json
+msgctxt "gradual_support_infill_step_height label"
+msgid "Top Support Infill Step Height"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradual_support_infill_steps label"
+msgid "Top Support Infill Steps"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "acceleration_roofing label"
@@ -7069,6 +7089,22 @@ msgstr "空跑"
 #~ msgid "Go over the top surface one additional time, but without extruding material. This is meant to melt the plastic on top further, creating a smoother surface."
 #~ msgstr "再一次經過頂部表面，但不擠出耗材。這是為了進一步融化頂部的塑料，打造更平滑的表面。"
 
+#~ msgctxt "gradual_infill_step_height label"
+#~ msgid "Gradual Infill Step Height"
+#~ msgstr "漸進填充步階高度"
+
+#~ msgctxt "gradual_infill_steps label"
+#~ msgid "Gradual Infill Steps"
+#~ msgstr "漸進填充步階數"
+
+#~ msgctxt "gradual_support_infill_step_height label"
+#~ msgid "Gradual Support Infill Step Height"
+#~ msgstr "漸進支撐填充步階高度"
+
+#~ msgctxt "gradual_support_infill_steps label"
+#~ msgid "Gradual Support Infill Steps"
+#~ msgstr "漸進支撐填充步階"
+
 #~ msgctxt "machine_nozzle_heat_up_speed label"
 #~ msgid "Heat up speed"
 #~ msgstr "加熱速度"
@@ -7232,6 +7268,14 @@ msgstr "空跑"
 #~ msgctxt "extruders_enabled_count label"
 #~ msgid "Number of Extruders that are enabled"
 #~ msgstr "已啟用擠出機的數量"
+
+#~ msgctxt "gradual_infill_steps description"
+#~ msgid "Number of times to reduce the infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Infill Density."
+#~ msgstr "由模型頂部往下，填充密度減半的次數。愈接近頂部的填充密度愈高，直到所設定的填充密度。"
+
+#~ msgctxt "gradual_support_infill_steps description"
+#~ msgid "Number of times to reduce the support infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Support Infill Density."
+#~ msgstr "從支撐頂層往下，填充密度減半的次數。越靠近頂層的填充密度越高，最高密度為支撐填充密度。"
 
 #~ msgctxt "machine_use_extruder_offset_to_offset_coords label"
 #~ msgid "Offset With Extruder"
@@ -7404,6 +7448,14 @@ msgstr "空跑"
 #~ msgctxt "z_offset_layer_0 description"
 #~ msgid "The extruder is offset from the normal height of the first layer by this amount. It can be positive (raised) or negative (lowered). Some filament types adhere to the build plate better if the extruder is raised slightly."
 #~ msgstr "擠出機在第一層從正常高度偏移了此設定量。它可以是正值（上升）或負值（下降）。某些耗材類型在擠出機稍微上升情況下，會更好地附著在列印平台上。"
+
+#~ msgctxt "gradual_infill_step_height description"
+#~ msgid "The height of infill of a given density before switching to half the density."
+#~ msgstr "減半填充密度的高度。"
+
+#~ msgctxt "gradual_support_infill_step_height description"
+#~ msgid "The height of support infill of a given density before switching to half the density."
+#~ msgstr "支撐層密度減半的厚度。"
 
 #~ msgctxt "infill_offset_x description"
 #~ msgid "The infill pattern is offset this distance along the X axis."
