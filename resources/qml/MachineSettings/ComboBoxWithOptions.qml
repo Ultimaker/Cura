@@ -65,32 +65,30 @@ UM.TooltipArea
     {
         id: defaultOptionsModel
 
-        function updateModel()
-        {
-            clear()
+        function updateModel() {
+            clear();
 
-            if(!propertyProvider.properties.options)
-            {
-                return
+            if (!propertyProvider.properties.options) {
+                return;
             }
 
-            if (typeof propertyProvider.properties["options"] === "string")
-            {
-                return
+            if (typeof propertyProvider.properties["options"] === "string") {
+                return;
             }
 
+            let currentIndex = -1;
+            const keys = propertyProvider.properties["options"].keys();
+            for (let index = 0; index < propertyProvider.properties["options"].keys().length; index ++) {
+                const key = propertyProvider.properties["options"].keys()[index];
+                const value = propertyProvider.properties["options"][key];
 
-            for (var i = 0; i < propertyProvider.properties["options"].keys().length; i++)
-            {
-                var key = propertyProvider.properties["options"].keys()[i]
-                var value = propertyProvider.properties["options"][key]
-                append({ text: value, code: key })
-
-                if (propertyProvider.properties.value === key)
-                {
-                    comboBox.currentIndex = i
+                if (propertyProvider.properties.value === key) {
+                    currentIndex = index;
                 }
+                defaultOptionsModel.append({ text: value, code: key });
             }
+
+            comboBox.currentIndex = currentIndex;
         }
 
         Component.onCompleted: updateModel()
@@ -114,36 +112,28 @@ UM.TooltipArea
         model: defaultOptionsModel
         textRole: "text"
 
-        currentIndex:
-        {
-            var currentValue = propertyProvider.properties.value
-            var index = 0
-            for (var i = 0; i < model.count; i++)
-            {
-                if (model.get(i).value == currentValue)
-                {
-                    index = i
-                    break
+        currentIndex: function () {
+            const currentValue = propertyProvider.properties.value
+            for (let i = 0; i < model.count; i ++) {
+                if (model.get(i).value === currentValue) {
+                    return i;
                 }
             }
-            return index
+            return -1;
         }
 
-        onActivated:
-        {
-            var newValue = model.get(index).value
-            if (propertyProvider.properties.value !== newValue && newValue !== undefined)
-            {
-                if (setValueFunction !== null)
-                {
-                    setValueFunction(newValue)
+        onActivated: function (index) {
+            const key = propertyProvider.properties["options"].keys()[index];
+            const newValue = model.get(index).value;
+
+            if (propertyProvider.properties.value !== newValue && newValue !== undefined) {
+                if (setValueFunction !== null) {
+                    setValueFunction(newValue);
+                } else {
+                    propertyProvider.setPropertyValue("value", newValue);
                 }
-                else
-                {
-                    propertyProvider.setPropertyValue("value", newValue)
-                }
-                forceUpdateOnChangeFunction()
-                afterOnEditingFinishedFunction()
+                forceUpdateOnChangeFunction();
+                afterOnEditingFinishedFunction();
             }
         }
     }
