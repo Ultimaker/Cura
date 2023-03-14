@@ -85,7 +85,7 @@ UM.TooltipArea
                 if (propertyProvider.properties.value === key) {
                     currentIndex = index;
                 }
-                defaultOptionsModel.append({ text: value, code: key });
+                defaultOptionsModel.append({ text: value, value: key });
             }
 
             comboBox.currentIndex = currentIndex;
