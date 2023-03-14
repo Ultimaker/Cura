@@ -45,6 +45,9 @@
 - Fixed a bug where an "object of type SettingFunction is not JSON serializable" error would prevent users from using certain plug-ins. 
 - Fixed a bug where hole expansion would affect interlocking holes.
 - Fixed a bug where fuzzy skin would also apply to interlocking structures. 
+- Fixed a bug where you could not load gcodes in Cura in some cases
+- Fixed a bug where some models would slice slower with Skin-Edge Support Layers
+- Fixed a bug where layers were skipped by inserting support interface on a raft
 - Fixed a bug where Relative Extrusion was not calculated correctly when using Retract Continue.
 - Fixed a bug that would prevent advanced users from slicing a batch with multiple STLs in a script.
 - Fixed a bug where skirt lines would not follow the convex contours of models.
@@ -68,9 +71,21 @@
 - Fixed a bug where WallToolPaths are not simplified, contributed by Piezoid
 - Fixed a bug where iterators were moving out of range, contributed by Piezoid and plaintoothpaste
 - Fixed a bug where the Maximum Area Deviation value was too small, contributed by Piezoid
+- Fixed a bug where we did not 'pickle' DefinitionContainers correctly, contributed by Piezoid
 - Fixed a bug where an airgap was present in Spiralized Outer Contour, contributed by richfelker
 - Fixed a bug where speeds defined for slower layers would impact speeds accelerations and jerks for the whole print, contributed by richfelker
 - Fixed a bug where materials with longer names in Materials Preferences were harder to read, contributed by Ghostkeeper 
+
+* Bugs resolved in the Beta Release
+- Fixed a bug where no support would be generated for narrow ridges
+- Fixed a bug where Hole Horizontal Expansion would remove part of the model
+- Fixed a bug where Support Horizontal Expansion was broken
+- Fixed a bug where Enable Conical Support would prevent support from being generated
+- Fixed a bug where the brim would be printed from inside out 
+- Fixed a bug where the brim width would not be respected in multi-extrusion
+- Fixed a bug where missing Geetech A10, Geetech Mizar S, and Geetech A30 definitions would cause a corrupt error message  
+- Fixed a bug where you could not resize the Recommended settings window
+- Fixed a bug where wiping in the walls (as opposed to infill) wasn't working
 
 * Printer definitions, profiles and materials:
 - Support Towers are working again and enabled by default for all printers.
@@ -88,6 +103,7 @@
 - Updated Rigid3D machine definitions, contributed by mehmetsutas
 - Updated Sovol SV01, SV02, and SV03, contributed by eropple
 - Updated Sovol's SV01 and SV02 bed dimensions, contributed by eropple
+- Updated VzBot definition, contributed by ckvsoft
 - Added AnkerMake M5, contributed by just-trey
 - Added Anycubic Kobra Go, contributed by Razzeee
 - Added Artillery Hornet, contributed by wilds
@@ -103,7 +119,7 @@
 - Added Fusion3 F410, contributed by 64bittuning
 - Added Geetech A10Pro, A30Pro, A30T, E180, GiantArmD200, I3ProB, i3ProC, I3PrW, MeCreator, MeCreator2, MeDucer, Mizar, MizarM, MizarMax, MizarMax, MizarPro, and Thunder, contributed by whoseyoung
 - Added Klema 180, Klema 250, Klema 250 Pro, Klema 250 Twin, and Klema 500, contributed by polyntsev
-- Added Modix V3 BIG-120X, Modix V3 BIG-120Z, Modix V3 BIG-180X, Modix V3 BIG-40, Modix V3 BIG-60, and Modix V3 BIG-Meter, contributed by Modix3D
+- Added Modix V3 BIG-120X, V3 BIG-120Z, V3 BIG-180X, V3 BIG-40, V3 BIG-60, V3 BIG-Meter, V4 BIG 60, V4 120x, V4 120z, V4 180x, and V4 BIG-Meter contributed by Modix3D
 - Added SnakeOil Standard 180, and SnakeOil Standard 250, contributed by ChipCE
 - Added Sovol SV01PRO, SV05, and SV06, contributed by eropple
 - Added UMO+ DXU, contributed by ansonl
@@ -114,9 +130,9 @@
 - Updated a typo in Japanese translations, contributed by tamorikawa
 
 * Known critical issues:
-- Under certain angles, the Interlocking Structures are not effective, yet.
-- The Gcode Reader Plug-in is broken since Cura 5.2, and will not load gcodes correctly yet. 
-- Some models have been slicing slower since Cura 5.1. <a href="https://github.com/Ultimaker/Cura/issues/14108"> We are collecting cases here</a>. 
+- Translations are not complete yet, we hope to resolve this before 5.4. 
+- Part of models are not being Fuzzyfied when fuzzy skin is enable yet, we hope to resolve this before 5.4.
+- The experimental setting Wire printing seems to be broken
 - Reports have been coming in that Cura is running slow on Windows 11 <a href="https://github.com/Ultimaker/Cura/issues/13820"> We are collecting cases here</a>. 
 - Multiple external monitors on Windows (especially if from the same brand) <a href="https://support.ultimaker.com/hc/en-us/articles/6103674944156">might be a problem under some circumstances</a>. 
 - Does Cura (not) work on your OS (version)? See <a href="https://support.ultimaker.com/hc/en-us/articles/360011889579">this article</a> for clarification.

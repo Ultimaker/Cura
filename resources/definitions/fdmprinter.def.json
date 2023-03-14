@@ -4409,9 +4409,9 @@
                     "unit": "mm/s",
                     "type": "float",
                     "default_value": 10,
-                    "enabled": "cool_min_layer_time > 0",
-                    "minimum_value": "0",
+                    "minimum_value": "1",
                     "maximum_value_warning": "100",
+                    "enabled": "cool_min_layer_time > 0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -4433,8 +4433,10 @@
                     "type": "float",
                     "value": "material_print_temperature",
                     "enabled": "cool_min_layer_time > 0",
-                    "minimum_value": "max(material_final_print_temperature, material_initial_print_temperature)",
-                    "maximum_value": "material_print_temperature",
+                    "minimum_value_warning": "max(material_final_print_temperature, material_initial_print_temperature)",
+                    "maximum_value_warning": "material_print_temperature",
+                    "minimum_value": "-273.15",
+                    "maximum_value": "365",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 }
@@ -6936,7 +6938,7 @@
                 "interlocking_depth":
                 {
                     "label": "Interlocking Depth",
-                    "description": "The distance from the boundary between models to generate interlocking structure measured in cells. Too few cells will result in poor adhesion.",
+                    "description": "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion.",
                     "type": "int",
                     "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
                     "default_value": 2,
