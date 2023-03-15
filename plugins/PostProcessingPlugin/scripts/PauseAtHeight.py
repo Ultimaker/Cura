@@ -46,7 +46,7 @@ class PauseAtHeight(Script):
                 "pause_layer":
                 {
                     "label": "Pause Layer",
-                    "description": "Enter the Number of the LAST layer you want to finish prior to the pause (from the Cura preview).",
+                    "description": "Enter the Number of the LAST layer you want to finish prior to the pause. Note that 0 is the first layer printed.",
                     "type": "int",
                     "value": "math.floor((pause_height - 0.27) / 0.1) + 1",
                     "minimum_value": "0",
