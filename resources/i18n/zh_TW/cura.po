@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-31 16:46+0100\n"
+"POT-Creation-Date: 2023-03-09 11:03+0000\n"
 "PO-Revision-Date: 2022-01-02 19:59+0800\n"
 "Last-Translator: Valen Chang  <carf17771@gmail.com>\n"
 "Language-Team: Valen Chang <carf17771@gmail.com>\n"
@@ -86,7 +86,6 @@ msgid "Cura can't start"
 msgstr "Cura 無法啟動"
 
 #: cura/CrashHandler.py:113
-#, fuzzy
 msgctxt "@label crash message"
 msgid ""
 "<p><b>Oops, UltiMaker Cura has encountered something that doesn't seem right.</p></b>\n"
@@ -95,7 +94,7 @@ msgid ""
 "                    <p>Please send us this Crash Report to fix the problem.</p>\n"
 "                "
 msgstr ""
-"<p><b>糟糕，Ultimaker Cura 遇到了一些似乎不正常的事情。</p></b>\n"
+"<p><b>糟糕，UltiMaker Cura 遇到了一些似乎不正常的事情。</p></b>\n"
 "                    <p>我們在啟動過程中遇到了無法修正的錯誤。這可能是由一些不正確的設定檔造成的。我們建議備份並重置您的設定。</p>\n"
 "                    <p>備份檔案可在設定資料夾中找到。</p>\n"
 "                    <p>請將錯誤報告傳送給我們以修正此問題。</p>\n"
@@ -813,654 +812,6 @@ msgctxt "@text"
 msgid "Unknown error."
 msgstr "未知的錯誤."
 
-#: plugin.json
-msgctxt "name"
-msgid "3MF Reader"
-msgstr "3MF 讀取器"
-
-#: plugin.json
-msgctxt "name"
-msgid "3MF Writer"
-msgstr "3MF 寫入器"
-
-#: plugin.json
-msgctxt "name"
-msgid "AMF Reader"
-msgstr "AMF 讀取器"
-
-#: plugin.json
-msgctxt "description"
-msgid "Accepts G-Code and sends them to a printer. Plugin can also update firmware."
-msgstr "接受 G-Code 並且傳送到印表機。此外掛也可以更新韌體。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Allows loading and displaying G-code files."
-msgstr "允許載入和顯示 G-code 檔案。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Backup and restore your configuration."
-msgstr "備份和復原你的設定。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Checks for firmware updates."
-msgstr "檢查是否有韌體更新。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Checks models and print configuration for possible printing issues and give suggestions."
-msgstr "檢查模型和列印設定以了解可能發生的問題並給出建議。"
-
-#: plugin.json
-msgctxt "name"
-msgid "Compressed G-code Reader"
-msgstr "壓縮檔案 G-code 讀取器"
-
-#: plugin.json
-msgctxt "name"
-msgid "Compressed G-code Writer"
-msgstr "壓縮檔案 G-code 寫入器"
-
-#: plugin.json
-msgctxt "description"
-msgid "Connects to the Digital Library, allowing Cura to open files from and save files to the Digital Library."
-msgstr "連結至\"數位博物館\"，允許Cura從\"數位博物館\"打開或保存文件."
-
-#: plugin.json
-msgctxt "description"
-msgid "Creates an eraser mesh to block the printing of support in certain places"
-msgstr "建立一個抹除器網格放在某些地方用來防止列印支撐"
-
-#: plugin.json
-msgctxt "name"
-msgid "Cura Backups"
-msgstr "Cura 備份"
-
-#: plugin.json
-msgctxt "name"
-msgid "Cura Profile Reader"
-msgstr "Cura 列印參數讀取器"
-
-#: plugin.json
-msgctxt "name"
-msgid "Cura Profile Writer"
-msgstr "Cura 列印參數寫入器"
-
-#: plugin.json
-msgctxt "name"
-msgid "CuraEngine Backend"
-msgstr "Cura 引擎後台"
-
-#: plugin.json
-msgctxt "description"
-msgid "Enables ability to generate printable geometry from 2D image files."
-msgstr "支援從 2D 圖片檔案產生可列印 3D 模型的能力。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Extension that allows for user created scripts for post processing"
-msgstr "擴充程式（允許用戶建立腳本進行後處理）"
-
-#: plugin.json
-msgctxt "name"
-msgid "Firmware Update Checker"
-msgstr "韌體更新檢查"
-
-#: plugin.json
-msgctxt "name"
-msgid "Firmware Updater"
-msgstr "韌體更新器"
-
-#: plugin.json
-msgctxt "name"
-msgid "G-code Profile Reader"
-msgstr "G-code 列印參數讀取器"
-
-#: plugin.json
-msgctxt "name"
-msgid "G-code Reader"
-msgstr "G-code 讀取器"
-
-#: plugin.json
-msgctxt "name"
-msgid "G-code Writer"
-msgstr "G-code 寫入器"
-
-#: plugin.json
-msgctxt "name"
-msgid "Image Reader"
-msgstr "圖片讀取器"
-
-#: plugin.json
-msgctxt "name"
-msgid "Legacy Cura Profile Reader"
-msgstr "舊版 Cura 列印參數讀取器"
-
-#: plugin.json
-msgctxt "description"
-msgid "Logs certain events so that they can be used by the crash reporter"
-msgstr "記錄某些事件以便在錯誤報告中使用"
-
-#: plugin.json
-msgctxt "name"
-msgid "Machine Settings Action"
-msgstr "印表機設定操作"
-
-#: plugin.json
-msgctxt "description"
-msgid "Manages extensions to the application and allows browsing extensions from the Ultimaker website."
-msgstr ""
-
-#: plugin.json
-#, fuzzy
-msgctxt "description"
-msgid "Manages network connections to Ultimaker networked printers."
-msgstr "管理與 UltiMaker 網絡印表機的網絡連線。"
-
-#: plugin.json
-msgctxt "name"
-msgid "Marketplace"
-msgstr ""
-
-#: plugin.json
-msgctxt "name"
-msgid "Material Profiles"
-msgstr "線材參數"
-
-#: plugin.json
-msgctxt "name"
-msgid "Model Checker"
-msgstr "模器檢查器"
-
-#: plugin.json
-msgctxt "name"
-msgid "Monitor Stage"
-msgstr "監控介面"
-
-#: plugin.json
-msgctxt "name"
-msgid "Per Model Settings Tool"
-msgstr "單一模型設定工具"
-
-#: plugin.json
-msgctxt "name"
-msgid "Post Processing"
-msgstr "後處理"
-
-#: plugin.json
-msgctxt "name"
-msgid "Prepare Stage"
-msgstr "準備介面"
-
-#: plugin.json
-msgctxt "name"
-msgid "Preview Stage"
-msgstr "預覽介面"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides a machine actions for updating firmware."
-msgstr "提供升級韌體用的機器操作。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides a monitor stage in Cura."
-msgstr "在 cura 提供一個監控介面。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides a normal solid mesh view."
-msgstr "提供一個基本的實體網格檢視。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides a prepare stage in Cura."
-msgstr "在 cura 提供一個準備介面。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides a preview stage in Cura."
-msgstr "在 Cura 提供一個預覽介面。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc.)."
-msgstr "提供更改機器設定的方法（如列印範圍，噴頭大小等）。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides capabilities to read and write XML-based material profiles."
-msgstr "提供讀寫 XML 格式線材參數的功能。"
-
-#: plugin.json
-#, fuzzy
-msgctxt "description"
-msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
-msgstr "提供 UltiMaker 機器的操作（例如平台調平精靈，選擇升級等）。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides removable drive hotplugging and writing support."
-msgstr "提供行動裝置熱插拔和寫入檔案的支援。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for exporting Cura profiles."
-msgstr "提供匯出 Cura 列印參數的支援。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for importing Cura profiles."
-msgstr "提供匯入 Cura 列印參數的支援。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for importing profiles from g-code files."
-msgstr "提供匯入 G-code 檔案中列印參數的支援。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for importing profiles from legacy Cura versions."
-msgstr "提供匯入 Cura 舊版本列印參數的支援。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for reading 3MF files."
-msgstr "提供讀取 3MF 格式檔案的支援。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for reading AMF files."
-msgstr "提供對讀取 AMF 格式檔案的支援。"
-
-#: plugin.json
-#, fuzzy
-msgctxt "description"
-msgid "Provides support for reading Ultimaker Format Packages."
-msgstr "提供讀取 UltiMaker 格式封包的支援。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for reading X3D files."
-msgstr "提供讀取 X3D 檔案的支援。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for reading model files."
-msgstr "提供讀取模型檔案的支援。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for writing 3MF files."
-msgstr "提供寫入 3MF 檔案的支援。"
-
-#: plugin.json
-#, fuzzy
-msgctxt "description"
-msgid "Provides support for writing Ultimaker Format Packages."
-msgstr "提供寫入 UltiMaker 格式封包的支援。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides the Per Model Settings."
-msgstr "提供對每個模型的單獨設定。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides the X-Ray view."
-msgstr "提供透視檢視。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides the link to the CuraEngine slicing backend."
-msgstr "提供連結到 Cura 切片引擎後台。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides the preview of sliced layerdata."
-msgstr ""
-
-#: plugin.json
-msgctxt "description"
-msgid "Reads g-code from a compressed archive."
-msgstr "從一個壓縮檔案中讀取 G-code。"
-
-#: plugin.json
-msgctxt "name"
-msgid "Removable Drive Output Device Plugin"
-msgstr "行動裝置輸出設備外掛"
-
-#: plugin.json
-msgctxt "name"
-msgid "Sentry Logger"
-msgstr "哨兵記錄器"
-
-#: plugin.json
-msgctxt "name"
-msgid "Simulation View"
-msgstr "模擬檢視"
-
-#: plugin.json
-msgctxt "name"
-msgid "Slice info"
-msgstr "切片資訊"
-
-#: plugin.json
-msgctxt "name"
-msgid "Solid View"
-msgstr "實體檢視"
-
-#: plugin.json
-msgctxt "description"
-msgid "Submits anonymous slice info. Can be disabled through preferences."
-msgstr "提交匿名切片資訊。這項功能可以在偏好設定中關閉。"
-
-#: plugin.json
-msgctxt "name"
-msgid "Support Eraser"
-msgstr "支援抹除器"
-
-#: plugin.json
-msgctxt "name"
-msgid "Trimesh Reader"
-msgstr "Trimesh 讀取器"
-
-#: plugin.json
-msgctxt "name"
-msgid "UFP Reader"
-msgstr "UFP 讀取器"
-
-#: plugin.json
-msgctxt "name"
-msgid "UFP Writer"
-msgstr "UFP 寫入器"
-
-#: plugin.json
-msgctxt "name"
-msgid "USB printing"
-msgstr "USB 連線列印"
-
-#: plugin.json
-msgctxt "name"
-msgid "Ultimaker Digital Library"
-msgstr "UltiMaker 數位博物館"
-
-#: plugin.json
-#, fuzzy
-msgctxt "name"
-msgid "Ultimaker Network Connection"
-msgstr "UltiMaker 網絡連線"
-
-#: plugin.json
-#, fuzzy
-msgctxt "name"
-msgid "Ultimaker machine actions"
-msgstr "UltiMaker 印表機操作"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.1 to Cura 2.2."
-msgstr "將設定從 Cura 2.1 版本升級至 2.2 版本。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.2 to Cura 2.4."
-msgstr "將設定從 Cura 2.2 版本升級至 2.4 版本。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.5 to Cura 2.6."
-msgstr "將設定從 Cura 2.5 版本升級至 2.6 版本。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.6 to Cura 2.7."
-msgstr "將設定從 Cura 2.6 版本升級至 2.7 版本。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.7 to Cura 3.0."
-msgstr "將設定從 Cura 2.7 版本升級至 3.0 版本。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.0 to Cura 3.1."
-msgstr "將設定從 Cura 3.0 版本升級至 3.1 版本。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.2 to Cura 3.3."
-msgstr "將設定從 Cura 3.2 版本升級至 3.3 版本。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.3 to Cura 3.4."
-msgstr "將設定從 Cura 3.3 版本升級至 3.4 版本。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.4 to Cura 3.5."
-msgstr "將設定從 Cura 3.4 版本升級至 3.5 版本。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.5 to Cura 4.0."
-msgstr "將設定從 Cura 3.5 版本升級至 4.0 版本。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.0 to Cura 4.1."
-msgstr "將設定從 Cura 4.0 版本升級至 4.1 版本。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.1 to Cura 4.2."
-msgstr "將設定從 Cura 4.1 版本升級至 4.2 版本。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.11 to Cura 4.12."
-msgstr "將設定從 Cura 4.11 版本升級至 4.12 版本。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.13 to Cura 5.0."
-msgstr ""
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.2 to Cura 4.3."
-msgstr "將設定從 Cura 4.2 版本升級至 4.3 版本。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.3 to Cura 4.4."
-msgstr "將設定從 Cura 4.3 版本升級至 4.4 版本。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.4 to Cura 4.5."
-msgstr "將設定從 Cura 4.4 版本升級至 4.5 版本。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.5 to Cura 4.6."
-msgstr "將設定從 Cura 4.5 版本升級至 4.6 版本。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.6.0 to Cura 4.6.2."
-msgstr "將設定從 Cura 4.6.0 版本升級至 4.6.2 版本。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.6.2 to Cura 4.7."
-msgstr "將設定從 Cura 4.6.2 版本升級至 4.7 版本。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.7 to Cura 4.8."
-msgstr "將設定從 Cura 4.7 版本升級至 4.8 版本。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.8 to Cura 4.9."
-msgstr "將設定從 Cura 4.8 版本升級至 4.9 版本。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.9 to Cura 4.10."
-msgstr "將設定從 Cura 4.9 版本升級至 4.10 版本。"
-
-#: plugin.json
-#, fuzzy
-msgctxt "description"
-msgid "Upgrades configurations from Cura 5.2 to Cura 5.3."
-msgstr "將設定從 Cura 3.2 版本升級至 3.3 版本。"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 2.1 to 2.2"
-msgstr "升級版本 2.1 到 2.2"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 2.2 to 2.4"
-msgstr "升級版本 2.2 到 2.4"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 2.5 to 2.6"
-msgstr "升級版本 2.5 到 2.6"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 2.6 to 2.7"
-msgstr "升級版本 2.6 到 2.7"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 2.7 to 3.0"
-msgstr "升級版本 2.7 到 3.0"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 3.0 to 3.1"
-msgstr "升級版本 3.0 到 3.1"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 3.2 to 3.3"
-msgstr "升級版本 3.2 到 3.3"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 3.3 to 3.4"
-msgstr "升級版本 3.3 到 3.4"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 3.4 to 3.5"
-msgstr "升級版本 3.4 到 3.5"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 3.5 to 4.0"
-msgstr "升級版本 3.5 到 4.0"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.0 to 4.1"
-msgstr "升級版本 4.0 到 4.1"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.1 to 4.2"
-msgstr "升級版本 4.1 到 4.2"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.11 to 4.12"
-msgstr "升級版本 4.11 到 4.12"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.13 to 5.0"
-msgstr ""
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.2 to 4.3"
-msgstr "升級版本 4.2 到 4.3"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.3 to 4.4"
-msgstr "升級版本 4.3 到 4.4"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.4 to 4.5"
-msgstr "升級版本 4.4 到 4.5"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.5 to 4.6"
-msgstr "升級版本 4.5 到 4.6"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.6.0 to 4.6.2"
-msgstr "升級版本 4.6.0 到 4.6.2"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.6.2 to 4.7"
-msgstr "升級版本 4.6.2 到 4.7"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.7 to 4.8"
-msgstr "升級版本 4.7 到 4.8"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.8 to 4.9"
-msgstr "升級版本 4.8 到 4.9"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.9 to 4.10"
-msgstr "升級版本 4.9 到 4.10"
-
-#: plugin.json
-#, fuzzy
-msgctxt "name"
-msgid "Version Upgrade 5.2 to 5.3"
-msgstr "升級版本 3.2 到 3.3"
-
-#: plugin.json
-msgctxt "description"
-msgid "Writes g-code to a compressed archive."
-msgstr "將 G-code 寫入壓縮檔案。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Writes g-code to a file."
-msgstr "將 G-code 寫入檔案。"
-
-#: plugin.json
-msgctxt "name"
-msgid "X-Ray View"
-msgstr "透視檢視"
-
-#: plugin.json
-msgctxt "name"
-msgid "X3D Reader"
-msgstr "X3D 讀取器"
-
 #: plugins/3MFReader/ThreeMFWorkspaceReader.py:547
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
@@ -1476,10 +827,9 @@ msgstr "開啟專案檔案"
 #: plugins/3MFReader/WorkspaceDialog.qml:99
 #: plugins/3MFReader/WorkspaceDialog.qml:127
 #: plugins/3MFReader/WorkspaceDialog.qml:134
-#, fuzzy
 msgctxt "@button"
 msgid "Create new"
-msgstr "新建設定"
+msgstr ""
 
 #: plugins/3MFReader/ThreeMFWorkspaceReader.py:681
 #, python-brace-format
@@ -1502,9 +852,9 @@ msgid "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>.
 msgstr "專案檔案<filename>{0}</filename> 已毀損 : <message>{1}</message>."
 
 #: plugins/3MFReader/ThreeMFWorkspaceReader.py:754
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
-msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of Ultimaker Cura."
+msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura."
 msgstr "專案檔案 <filename>{0}</filename> 使用了此版本 UltiMaker Cura 未知的參數製作。"
 
 #: plugins/3MFReader/WorkspaceDialog.py:233
@@ -1573,10 +923,9 @@ msgid "Printer Group"
 msgstr "印表機群組"
 
 #: plugins/3MFReader/WorkspaceDialog.qml:103
-#, fuzzy
 msgctxt "@action:label"
 msgid "Open With"
-msgstr "開啟檔案"
+msgstr ""
 
 #: plugins/3MFReader/WorkspaceDialog.qml:104
 msgctxt "@info:tooltip"
@@ -1677,6 +1026,16 @@ msgctxt "@item:inlistbox"
 msgid "3MF File"
 msgstr "3MF 檔案"
 
+#: plugins/3MFReader/plugin.json
+msgctxt "name"
+msgid "3MF Reader"
+msgstr "3MF 讀取器"
+
+#: plugins/3MFReader/plugin.json
+msgctxt "description"
+msgid "Provides support for reading 3MF files."
+msgstr "提供讀取 3MF 格式檔案的支援。"
+
 #: plugins/3MFWriter/ThreeMFWorkspaceWriter.py:31
 msgctxt "@error:zip"
 msgid "3MF Writer plug-in is corrupt."
@@ -1713,10 +1072,40 @@ msgctxt "@item:inlistbox"
 msgid "Cura Project 3MF file"
 msgstr "Cura 專案 3MF 檔案"
 
+#: plugins/3MFWriter/plugin.json
+msgctxt "name"
+msgid "3MF Writer"
+msgstr "3MF 寫入器"
+
+#: plugins/3MFWriter/plugin.json
+msgctxt "description"
+msgid "Provides support for writing 3MF files."
+msgstr "提供寫入 3MF 檔案的支援。"
+
 #: plugins/AMFReader/__init__.py:15
 msgctxt "@item:inlistbox"
 msgid "AMF File"
 msgstr "AMF 檔案"
+
+#: plugins/AMFReader/plugin.json
+msgctxt "name"
+msgid "AMF Reader"
+msgstr "AMF 讀取器"
+
+#: plugins/AMFReader/plugin.json
+msgctxt "description"
+msgid "Provides support for reading AMF files."
+msgstr "提供對讀取 AMF 格式檔案的支援。"
+
+#: plugins/CuraDrive/plugin.json
+msgctxt "description"
+msgid "Backup and restore your configuration."
+msgstr "備份和復原你的設定。"
+
+#: plugins/CuraDrive/plugin.json
+msgctxt "name"
+msgid "Cura Backups"
+msgstr "Cura 備份"
 
 #: plugins/CuraDrive/src/CreateBackupJob.py:25
 msgctxt "@info:title"
@@ -1860,6 +1249,7 @@ msgid "Backup and synchronize your Cura settings."
 msgstr "備份並同步你的 Cura 設定。"
 
 #: plugins/CuraDrive/src/qml/pages/WelcomePage.qml:47
+#: plugins/Marketplace/resources/qml/Marketplace.qml:312
 #: resources/qml/Account/GeneralOperations.qml:49
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:180
 #: resources/qml/WelcomePages/CloudContent.qml:212
@@ -1887,45 +1277,45 @@ msgctxt "@message:description"
 msgid "Report a bug on UltiMaker Cura's issue tracker."
 msgstr "於UltiMaker Cura問題追蹤器中回報問題."
 
-#: plugins/CuraEngineBackend/CuraEngineBackend.py:401
+#: plugins/CuraEngineBackend/CuraEngineBackend.py:416
 msgctxt "@info:status"
 msgid "Unable to slice with the current material as it is incompatible with the selected machine or configuration."
 msgstr "無法使用目前線材切片，因為它與所選機器或設定不相容。"
 
-#: plugins/CuraEngineBackend/CuraEngineBackend.py:402
-#: plugins/CuraEngineBackend/CuraEngineBackend.py:435
-#: plugins/CuraEngineBackend/CuraEngineBackend.py:462
-#: plugins/CuraEngineBackend/CuraEngineBackend.py:474
-#: plugins/CuraEngineBackend/CuraEngineBackend.py:486
-#: plugins/CuraEngineBackend/CuraEngineBackend.py:499
+#: plugins/CuraEngineBackend/CuraEngineBackend.py:417
+#: plugins/CuraEngineBackend/CuraEngineBackend.py:450
+#: plugins/CuraEngineBackend/CuraEngineBackend.py:477
+#: plugins/CuraEngineBackend/CuraEngineBackend.py:489
+#: plugins/CuraEngineBackend/CuraEngineBackend.py:501
+#: plugins/CuraEngineBackend/CuraEngineBackend.py:514
 msgctxt "@info:title"
 msgid "Unable to slice"
 msgstr "無法切片"
 
-#: plugins/CuraEngineBackend/CuraEngineBackend.py:434
+#: plugins/CuraEngineBackend/CuraEngineBackend.py:449
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Unable to slice with the current settings. The following settings have errors: {0}"
 msgstr "無法使用目前設定進行切片。以下設定存在錯誤：{0}"
 
-#: plugins/CuraEngineBackend/CuraEngineBackend.py:461
+#: plugins/CuraEngineBackend/CuraEngineBackend.py:476
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Unable to slice due to some per-model settings. The following settings have errors on one or more models: {error_labels}"
 msgstr "因部份模型設定問題無法進行切片。部份模型的下列設定有錯誤：{error_labels}"
 
-#: plugins/CuraEngineBackend/CuraEngineBackend.py:473
+#: plugins/CuraEngineBackend/CuraEngineBackend.py:488
 msgctxt "@info:status"
 msgid "Unable to slice because the prime tower or prime position(s) are invalid."
 msgstr "無法切片（原因：換料塔或主位置無效）。"
 
-#: plugins/CuraEngineBackend/CuraEngineBackend.py:485
+#: plugins/CuraEngineBackend/CuraEngineBackend.py:500
 #, python-format
 msgctxt "@info:status"
 msgid "Unable to slice because there are objects associated with disabled Extruder %s."
 msgstr "有物件使用了被停用的擠出機 %s ，因此無法進行切片。"
 
-#: plugins/CuraEngineBackend/CuraEngineBackend.py:495
+#: plugins/CuraEngineBackend/CuraEngineBackend.py:510
 msgctxt "@info:status"
 msgid ""
 "Please review settings and check if your models:\n"
@@ -1949,11 +1339,51 @@ msgctxt "@info:title"
 msgid "Information"
 msgstr "資訊"
 
+#: plugins/CuraEngineBackend/plugin.json
+msgctxt "name"
+msgid "CuraEngine Backend"
+msgstr "Cura 引擎後台"
+
+#: plugins/CuraEngineBackend/plugin.json
+msgctxt "description"
+msgid "Provides the link to the CuraEngine slicing backend."
+msgstr "提供連結到 Cura 切片引擎後台。"
+
 #: plugins/CuraProfileReader/__init__.py:14
 #: plugins/CuraProfileWriter/__init__.py:14
 msgctxt "@item:inlistbox"
 msgid "Cura Profile"
 msgstr "Cura 列印參數"
+
+#: plugins/CuraProfileReader/plugin.json
+msgctxt "name"
+msgid "Cura Profile Reader"
+msgstr "Cura 列印參數讀取器"
+
+#: plugins/CuraProfileReader/plugin.json
+msgctxt "description"
+msgid "Provides support for importing Cura profiles."
+msgstr "提供匯入 Cura 列印參數的支援。"
+
+#: plugins/CuraProfileWriter/plugin.json
+msgctxt "name"
+msgid "Cura Profile Writer"
+msgstr "Cura 列印參數寫入器"
+
+#: plugins/CuraProfileWriter/plugin.json
+msgctxt "description"
+msgid "Provides support for exporting Cura profiles."
+msgstr "提供匯出 Cura 列印參數的支援。"
+
+#: plugins/DigitalLibrary/plugin.json
+msgctxt "description"
+msgid "Connects to the Digital Library, allowing Cura to open files from and save files to the Digital Library."
+msgstr "連結至\"數位博物館\"，允許Cura從\"數位博物館\"打開或保存文件."
+
+#: plugins/DigitalLibrary/plugin.json
+msgctxt "name"
+msgid "Ultimaker Digital Library"
+msgstr "UltiMaker 數位博物館"
 
 #: plugins/DigitalLibrary/resources/qml/SaveProjectFilesPage.qml:216
 msgctxt "@option"
@@ -1991,6 +1421,16 @@ msgstr "新的%s軟體已可使用"
 msgctxt "@action:button"
 msgid "How to update"
 msgstr "如何更新"
+
+#: plugins/FirmwareUpdateChecker/plugin.json
+msgctxt "description"
+msgid "Checks for firmware updates."
+msgstr "檢查是否有韌體更新。"
+
+#: plugins/FirmwareUpdateChecker/plugin.json
+msgctxt "name"
+msgid "Firmware Update Checker"
+msgstr "韌體更新檢查"
 
 #: plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.py:27
 msgctxt "@action"
@@ -2072,15 +1512,45 @@ msgctxt "@label"
 msgid "Firmware update failed due to missing firmware."
 msgstr "由於韌體遺失，導致韌體更新失敗。"
 
+#: plugins/FirmwareUpdater/plugin.json
+msgctxt "name"
+msgid "Firmware Updater"
+msgstr "韌體更新器"
+
+#: plugins/FirmwareUpdater/plugin.json
+msgctxt "description"
+msgid "Provides a machine actions for updating firmware."
+msgstr "提供升級韌體用的機器操作。"
+
 #: plugins/GCodeGzReader/__init__.py:17 plugins/GCodeGzWriter/__init__.py:17
 msgctxt "@item:inlistbox"
 msgid "Compressed G-code File"
 msgstr "壓縮 G-code 檔案"
 
+#: plugins/GCodeGzReader/plugin.json
+msgctxt "name"
+msgid "Compressed G-code Reader"
+msgstr "壓縮檔案 G-code 讀取器"
+
+#: plugins/GCodeGzReader/plugin.json
+msgctxt "description"
+msgid "Reads g-code from a compressed archive."
+msgstr "從一個壓縮檔案中讀取 G-code。"
+
 #: plugins/GCodeGzWriter/GCodeGzWriter.py:43
 msgctxt "@error:not supported"
 msgid "GCodeGzWriter does not support text mode."
 msgstr "G-code GZ 寫入器不支援非文字模式。"
+
+#: plugins/GCodeGzWriter/plugin.json
+msgctxt "name"
+msgid "Compressed G-code Writer"
+msgstr "壓縮檔案 G-code 寫入器"
+
+#: plugins/GCodeGzWriter/plugin.json
+msgctxt "description"
+msgid "Writes g-code to a compressed archive."
+msgstr "將 G-code 寫入壓縮檔案。"
 
 #: plugins/GCodeProfileReader/__init__.py:14 plugins/GCodeReader/__init__.py:14
 #: plugins/GCodeWriter/__init__.py:16
@@ -2088,18 +1558,28 @@ msgctxt "@item:inlistbox"
 msgid "G-code File"
 msgstr "G-code 檔案"
 
-#: plugins/GCodeReader/FlavorParser.py:350
+#: plugins/GCodeProfileReader/plugin.json
+msgctxt "name"
+msgid "G-code Profile Reader"
+msgstr "G-code 列印參數讀取器"
+
+#: plugins/GCodeProfileReader/plugin.json
+msgctxt "description"
+msgid "Provides support for importing profiles from g-code files."
+msgstr "提供匯入 G-code 檔案中列印參數的支援。"
+
+#: plugins/GCodeReader/FlavorParser.py:359
 msgctxt "@info:status"
 msgid "Parsing G-code"
 msgstr "正在解析 G-code"
 
-#: plugins/GCodeReader/FlavorParser.py:352
-#: plugins/GCodeReader/FlavorParser.py:506
+#: plugins/GCodeReader/FlavorParser.py:361
+#: plugins/GCodeReader/FlavorParser.py:515
 msgctxt "@info:title"
 msgid "G-code Details"
 msgstr "G-code 細項設定"
 
-#: plugins/GCodeReader/FlavorParser.py:504
+#: plugins/GCodeReader/FlavorParser.py:513
 msgctxt "@info:generic"
 msgid "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."
 msgstr "發送檔案之前，請確保 G-code 適用於目前印表機和印表機設定。目前 G-code 檔案可能不準確。"
@@ -2108,6 +1588,16 @@ msgstr "發送檔案之前，請確保 G-code 適用於目前印表機和印表�
 msgctxt "@item:inlistbox"
 msgid "G File"
 msgstr "G 檔案"
+
+#: plugins/GCodeReader/plugin.json
+msgctxt "description"
+msgid "Allows loading and displaying G-code files."
+msgstr "允許載入和顯示 G-code 檔案。"
+
+#: plugins/GCodeReader/plugin.json
+msgctxt "name"
+msgid "G-code Reader"
+msgstr "G-code 讀取器"
 
 #: plugins/GCodeWriter/GCodeWriter.py:75
 msgctxt "@error:not supported"
@@ -2118,6 +1608,16 @@ msgstr "G-code 寫入器不支援非文字模式。"
 msgctxt "@warning:status"
 msgid "Please prepare G-code before exporting."
 msgstr "匯出前請先將 G-code 準備好。"
+
+#: plugins/GCodeWriter/plugin.json
+msgctxt "name"
+msgid "G-code Writer"
+msgstr "G-code 寫入器"
+
+#: plugins/GCodeWriter/plugin.json
+msgctxt "description"
+msgid "Writes g-code to a file."
+msgstr "將 G-code 寫入檔案。"
 
 #: plugins/ImageReader/ConfigUI.qml:14
 msgctxt "@title:window"
@@ -2251,10 +1751,30 @@ msgctxt "@item:inlistbox"
 msgid "GIF Image"
 msgstr "GIF 圖片"
 
+#: plugins/ImageReader/plugin.json
+msgctxt "description"
+msgid "Enables ability to generate printable geometry from 2D image files."
+msgstr "支援從 2D 圖片檔案產生可列印 3D 模型的能力。"
+
+#: plugins/ImageReader/plugin.json
+msgctxt "name"
+msgid "Image Reader"
+msgstr "圖片讀取器"
+
 #: plugins/LegacyProfileReader/__init__.py:14
 msgctxt "@item:inlistbox"
 msgid "Cura 15.04 profiles"
 msgstr "Cura 15.04 列印參數"
+
+#: plugins/LegacyProfileReader/plugin.json
+msgctxt "name"
+msgid "Legacy Cura Profile Reader"
+msgstr "舊版 Cura 列印參數讀取器"
+
+#: plugins/LegacyProfileReader/plugin.json
+msgctxt "description"
+msgid "Provides support for importing profiles from legacy Cura versions."
+msgstr "提供匯入 Cura 舊版本列印參數的支援。"
 
 #: plugins/MachineSettingsAction/MachineSettingsAction.py:32
 msgctxt "@action"
@@ -2419,6 +1939,16 @@ msgctxt "@title:label"
 msgid "End G-code"
 msgstr "結束 G-code"
 
+#: plugins/MachineSettingsAction/plugin.json
+msgctxt "name"
+msgid "Machine Settings Action"
+msgstr "印表機設定操作"
+
+#: plugins/MachineSettingsAction/plugin.json
+msgctxt "description"
+msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc.)."
+msgstr "提供更改機器設定的方法（如列印範圍，噴頭大小等）。"
+
 #: plugins/Marketplace/CloudSync/CloudPackageChecker.py:144
 msgctxt "@info:generic"
 msgid "Do you want to sync material and software packages with your account?"
@@ -2517,6 +2047,16 @@ msgctxt "@info:error"
 msgid "Could not reach Marketplace."
 msgstr ""
 
+#: plugins/Marketplace/plugin.json
+msgctxt "description"
+msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
+msgstr ""
+
+#: plugins/Marketplace/plugin.json
+msgctxt "name"
+msgid "Marketplace"
+msgstr ""
+
 #: plugins/Marketplace/resources/qml/CompatibilityDialog.qml:15
 msgctxt "@title"
 msgid "Changes from your account"
@@ -2528,7 +2068,6 @@ msgid "Dismiss"
 msgstr "捨棄"
 
 #: plugins/Marketplace/resources/qml/CompatibilityDialog.qml:24
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:118
 #: resources/qml/WelcomePages/FirstStartMachineActionsContent.qml:76
 #: resources/qml/WelcomePages/WhatsNewContent.qml:175
 msgctxt "@button"
@@ -2609,6 +2148,11 @@ msgstr ""
 msgctxt "@info:button, %1 is the application name"
 msgid "Quit %1"
 msgstr "結束 %1"
+
+#: plugins/Marketplace/resources/qml/Marketplace.qml:300
+msgctxt "@description"
+msgid "Please sign in to get verified plugins and materials for UltiMaker Cura Enterprise"
+msgstr "請登入以取得 UltiMaker Cura Enterprise 驗証的外掛及線材"
 
 #: plugins/Marketplace/resources/qml/Materials.qml:8
 #: plugins/Marketplace/resources/qml/MissingPackages.qml:8
@@ -2838,6 +2382,16 @@ msgstr ""
 "<p>了解如何確保最佳的列印品質和可靠性。</p>\n"
 "<p><a href=\"https://ultimaker.com/3D-model-assistant\">閱讀列印品質指南</a></p>"
 
+#: plugins/ModelChecker/plugin.json
+msgctxt "description"
+msgid "Checks models and print configuration for possible printing issues and give suggestions."
+msgstr "檢查模型和列印設定以了解可能發生的問題並給出建議。"
+
+#: plugins/ModelChecker/plugin.json
+msgctxt "name"
+msgid "Model Checker"
+msgstr "模器檢查器"
+
 #: plugins/MonitorStage/MonitorMain.qml:100
 msgctxt "@info"
 msgid ""
@@ -2870,6 +2424,16 @@ msgstr "為了監控您的印表機，請連結印表機."
 msgctxt "@item:inmenu"
 msgid "Monitor"
 msgstr "監控"
+
+#: plugins/MonitorStage/plugin.json
+msgctxt "name"
+msgid "Monitor Stage"
+msgstr "監控介面"
+
+#: plugins/MonitorStage/plugin.json
+msgctxt "description"
+msgid "Provides a monitor stage in Cura."
+msgstr "在 cura 提供一個監控介面。"
 
 #: plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:41
 msgctxt "@label"
@@ -2937,6 +2501,16 @@ msgctxt "@info:tooltip"
 msgid "Configure Per Model Settings"
 msgstr "設定對每個模型的單獨設定"
 
+#: plugins/PerObjectSettingsTool/plugin.json
+msgctxt "name"
+msgid "Per Model Settings Tool"
+msgstr "單一模型設定工具"
+
+#: plugins/PerObjectSettingsTool/plugin.json
+msgctxt "description"
+msgid "Provides the Per Model Settings."
+msgstr "提供對每個模型的單獨設定。"
+
 #: plugins/PostProcessingPlugin/PostProcessingPlugin.py:35
 msgctxt "@item:inmenu"
 msgid "Post Processing"
@@ -2978,6 +2552,16 @@ msgid "The following script is active:"
 msgid_plural "The following scripts are active:"
 msgstr[0] "下列為啟用中的腳本："
 
+#: plugins/PostProcessingPlugin/plugin.json
+msgctxt "description"
+msgid "Extension that allows for user created scripts for post processing"
+msgstr "擴充程式（允許用戶建立腳本進行後處理）"
+
+#: plugins/PostProcessingPlugin/plugin.json
+msgctxt "name"
+msgid "Post Processing"
+msgstr "後處理"
+
 #: plugins/PrepareStage/PrepareMenu.qml:74
 msgctxt "@button"
 msgid "Add printer"
@@ -2993,10 +2577,30 @@ msgctxt "@item:inmenu"
 msgid "Prepare"
 msgstr "準備"
 
+#: plugins/PrepareStage/plugin.json
+msgctxt "name"
+msgid "Prepare Stage"
+msgstr "準備介面"
+
+#: plugins/PrepareStage/plugin.json
+msgctxt "description"
+msgid "Provides a prepare stage in Cura."
+msgstr "在 cura 提供一個準備介面。"
+
 #: plugins/PreviewStage/__init__.py:13
 msgctxt "@item:inmenu"
 msgid "Preview"
 msgstr "預覽"
+
+#: plugins/PreviewStage/plugin.json
+msgctxt "name"
+msgid "Preview Stage"
+msgstr "預覽介面"
+
+#: plugins/PreviewStage/plugin.json
+msgctxt "description"
+msgid "Provides a preview stage in Cura."
+msgstr "在 Cura 提供一個預覽介面。"
 
 #: plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:23
 msgctxt "@action:button Preceded by 'Ready to'."
@@ -3089,6 +2693,26 @@ msgstr "無法卸載 {0}，可能有其它程式正在使用行動裝置。"
 msgctxt "@item:intext"
 msgid "Removable Drive"
 msgstr "行動裝置"
+
+#: plugins/RemovableDriveOutputDevice/plugin.json
+msgctxt "description"
+msgid "Provides removable drive hotplugging and writing support."
+msgstr "提供行動裝置熱插拔和寫入檔案的支援。"
+
+#: plugins/RemovableDriveOutputDevice/plugin.json
+msgctxt "name"
+msgid "Removable Drive Output Device Plugin"
+msgstr "行動裝置輸出設備外掛"
+
+#: plugins/SentryLogger/plugin.json
+msgctxt "description"
+msgid "Logs certain events so that they can be used by the crash reporter"
+msgstr "記錄某些事件以便在錯誤報告中使用"
+
+#: plugins/SentryLogger/plugin.json
+msgctxt "name"
+msgid "Sentry Logger"
+msgstr "哨兵記錄器"
 
 #: plugins/SimulationView/SimulationView.py:129
 msgctxt "@info:status"
@@ -3218,6 +2842,16 @@ msgctxt "@item:inlistbox"
 msgid "Layer view"
 msgstr "分層檢視"
 
+#: plugins/SimulationView/plugin.json
+msgctxt "description"
+msgid "Provides the preview of sliced layerdata."
+msgstr ""
+
+#: plugins/SimulationView/plugin.json
+msgctxt "name"
+msgid "Simulation View"
+msgstr "模擬檢視"
+
 #: plugins/SliceInfoPlugin/MoreInfoWindow.qml:16
 msgctxt "@title:window"
 msgid "More information on anonymous data collection"
@@ -3243,6 +2877,16 @@ msgctxt "@text"
 msgid "Unable to read example data file."
 msgstr "無法讀取範例資料檔案."
 
+#: plugins/SliceInfoPlugin/plugin.json
+msgctxt "name"
+msgid "Slice info"
+msgstr "切片資訊"
+
+#: plugins/SliceInfoPlugin/plugin.json
+msgctxt "description"
+msgid "Submits anonymous slice info. Can be disabled through preferences."
+msgstr "提交匿名切片資訊。這項功能可以在偏好設定中關閉。"
+
 #: plugins/SolidView/SolidView.py:71
 msgctxt "@info:status"
 msgid "The highlighted areas indicate either missing or extraneous surfaces. Fix your model and open it again into Cura."
@@ -3258,6 +2902,16 @@ msgctxt "@item:inmenu"
 msgid "Solid view"
 msgstr "實體檢視"
 
+#: plugins/SolidView/plugin.json
+msgctxt "description"
+msgid "Provides a normal solid mesh view."
+msgstr "提供一個基本的實體網格檢視。"
+
+#: plugins/SolidView/plugin.json
+msgctxt "name"
+msgid "Solid View"
+msgstr "實體檢視"
+
 #: plugins/SupportEraser/__init__.py:12
 msgctxt "@label"
 msgid "Support Blocker"
@@ -3267,6 +2921,16 @@ msgstr "支撐阻斷器"
 msgctxt "@info:tooltip"
 msgid "Create a volume in which supports are not printed."
 msgstr "建立一塊不列印支撐的空間。"
+
+#: plugins/SupportEraser/plugin.json
+msgctxt "description"
+msgid "Creates an eraser mesh to block the printing of support in certain places"
+msgstr "建立一個抹除器網格放在某些地方用來防止列印支撐"
+
+#: plugins/SupportEraser/plugin.json
+msgctxt "name"
+msgid "Support Eraser"
+msgstr "支援抹除器"
 
 #: plugins/TrimeshReader/__init__.py:15
 msgctxt "@item:inlistbox 'Open' is part of the name of this file format."
@@ -3298,10 +2962,30 @@ msgctxt "@item:inlistbox"
 msgid "Compressed COLLADA Digital Asset Exchange"
 msgstr "Compressed COLLADA Digital Asset Exchange"
 
+#: plugins/TrimeshReader/plugin.json
+msgctxt "description"
+msgid "Provides support for reading model files."
+msgstr "提供讀取模型檔案的支援。"
+
+#: plugins/TrimeshReader/plugin.json
+msgctxt "name"
+msgid "Trimesh Reader"
+msgstr "Trimesh 讀取器"
+
 #: plugins/UFPReader/__init__.py:22 plugins/UFPWriter/__init__.py:28
 msgctxt "@item:inlistbox"
 msgid "UltiMaker Format Package"
 msgstr "UltiMaker 格式的封包"
+
+#: plugins/UFPReader/plugin.json
+msgctxt "description"
+msgid "Provides support for reading Ultimaker Format Packages."
+msgstr ""
+
+#: plugins/UFPReader/plugin.json
+msgctxt "name"
+msgid "UFP Reader"
+msgstr "UFP 讀取器"
 
 #: plugins/UFPWriter/UFPWriter.py:64 plugins/UFPWriter/UFPWriter.py:80
 #: plugins/UFPWriter/UFPWriter.py:93 plugins/UFPWriter/UFPWriter.py:115
@@ -3309,6 +2993,26 @@ msgstr "UltiMaker 格式的封包"
 msgctxt "@info:error"
 msgid "Can't write to UFP file:"
 msgstr "無法寫入 UFP 檔案："
+
+#: plugins/UFPWriter/plugin.json
+msgctxt "description"
+msgid "Provides support for writing Ultimaker Format Packages."
+msgstr ""
+
+#: plugins/UFPWriter/plugin.json
+msgctxt "name"
+msgid "UFP Writer"
+msgstr "UFP 寫入器"
+
+#: plugins/UM3NetworkPrinting/plugin.json
+msgctxt "description"
+msgid "Manages network connections to UltiMaker networked printers."
+msgstr ""
+
+#: plugins/UM3NetworkPrinting/plugin.json
+msgctxt "name"
+msgid "UltiMaker Network Connection"
+msgstr "UltiMaker 網絡連線"
 
 #: plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:44
 msgctxt "@title:window"
@@ -3821,9 +3525,8 @@ msgid "Learn more"
 msgstr "學習更多"
 
 #: plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:18
-#, fuzzy
 msgctxt "@info:status"
-msgid "You are attempting to connect to a printer that is not running Ultimaker Connect. Please update the printer to the latest firmware."
+msgid "You are attempting to connect to a printer that is not running UltiMaker Connect. Please update the printer to the latest firmware."
 msgstr "你正在嘗試連接到一台未安裝 UltiMaker Connect 的印表機。請將印表機更新至最新版本的韌體。"
 
 #: plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:21
@@ -3843,11 +3546,10 @@ msgid "Sending materials to printer"
 msgstr "向印表機傳送線材參數中"
 
 #: plugins/UM3NetworkPrinting/src/Messages/NewPrinterDetectedMessage.py:13
-#, fuzzy
 msgctxt "info:status"
 msgid "New printer detected from your Ultimaker account"
 msgid_plural "New printers detected from your Ultimaker account"
-msgstr[0] "從你的 Ultimaker 帳號偵測到新的印表機"
+msgstr[0] ""
 
 #: plugins/UM3NetworkPrinting/src/Messages/NewPrinterDetectedMessage.py:29
 #, python-brace-format
@@ -4041,6 +3743,16 @@ msgctxt "@message"
 msgid "Print in Progress"
 msgstr "列印正在進行中"
 
+#: plugins/USBPrinting/plugin.json
+msgctxt "description"
+msgid "Accepts G-Code and sends them to a printer. Plugin can also update firmware."
+msgstr "接受 G-Code 並且傳送到印表機。此外掛也可以更新韌體。"
+
+#: plugins/USBPrinting/plugin.json
+msgctxt "name"
+msgid "USB printing"
+msgstr "USB 連線列印"
+
 #: plugins/UltimakerMachineActions/BedLevelMachineAction.py:24
 msgctxt "@action"
 msgid "Level build plate"
@@ -4086,15 +3798,295 @@ msgctxt "@label"
 msgid "Heated Build Plate (official kit or self-built)"
 msgstr "熱床（官方版本或自製版本）"
 
+#: plugins/UltimakerMachineActions/plugin.json
+msgctxt "description"
+msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
+msgstr "提供 UltiMaker 機器的操作（例如平台調平精靈，選擇升級等）。"
+
+#: plugins/UltimakerMachineActions/plugin.json
+msgctxt "name"
+msgid "UltiMaker machine actions"
+msgstr ""
+
+#: plugins/VersionUpgrade/VersionUpgrade21to22/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.1 to Cura 2.2."
+msgstr "將設定從 Cura 2.1 版本升級至 2.2 版本。"
+
+#: plugins/VersionUpgrade/VersionUpgrade21to22/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 2.1 to 2.2"
+msgstr "升級版本 2.1 到 2.2"
+
+#: plugins/VersionUpgrade/VersionUpgrade22to24/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.2 to Cura 2.4."
+msgstr "將設定從 Cura 2.2 版本升級至 2.4 版本。"
+
+#: plugins/VersionUpgrade/VersionUpgrade22to24/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 2.2 to 2.4"
+msgstr "升級版本 2.2 到 2.4"
+
+#: plugins/VersionUpgrade/VersionUpgrade25to26/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.5 to Cura 2.6."
+msgstr "將設定從 Cura 2.5 版本升級至 2.6 版本。"
+
+#: plugins/VersionUpgrade/VersionUpgrade25to26/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 2.5 to 2.6"
+msgstr "升級版本 2.5 到 2.6"
+
+#: plugins/VersionUpgrade/VersionUpgrade26to27/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.6 to Cura 2.7."
+msgstr "將設定從 Cura 2.6 版本升級至 2.7 版本。"
+
+#: plugins/VersionUpgrade/VersionUpgrade26to27/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 2.6 to 2.7"
+msgstr "升級版本 2.6 到 2.7"
+
+#: plugins/VersionUpgrade/VersionUpgrade27to30/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.7 to Cura 3.0."
+msgstr "將設定從 Cura 2.7 版本升級至 3.0 版本。"
+
+#: plugins/VersionUpgrade/VersionUpgrade27to30/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 2.7 to 3.0"
+msgstr "升級版本 2.7 到 3.0"
+
+#: plugins/VersionUpgrade/VersionUpgrade30to31/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.0 to Cura 3.1."
+msgstr "將設定從 Cura 3.0 版本升級至 3.1 版本。"
+
+#: plugins/VersionUpgrade/VersionUpgrade30to31/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 3.0 to 3.1"
+msgstr "升級版本 3.0 到 3.1"
+
+#: plugins/VersionUpgrade/VersionUpgrade32to33/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.2 to Cura 3.3."
+msgstr "將設定從 Cura 3.2 版本升級至 3.3 版本。"
+
+#: plugins/VersionUpgrade/VersionUpgrade32to33/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 3.2 to 3.3"
+msgstr "升級版本 3.2 到 3.3"
+
+#: plugins/VersionUpgrade/VersionUpgrade33to34/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.3 to Cura 3.4."
+msgstr "將設定從 Cura 3.3 版本升級至 3.4 版本。"
+
+#: plugins/VersionUpgrade/VersionUpgrade33to34/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 3.3 to 3.4"
+msgstr "升級版本 3.3 到 3.4"
+
+#: plugins/VersionUpgrade/VersionUpgrade34to35/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.4 to Cura 3.5."
+msgstr "將設定從 Cura 3.4 版本升級至 3.5 版本。"
+
+#: plugins/VersionUpgrade/VersionUpgrade34to35/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 3.4 to 3.5"
+msgstr "升級版本 3.4 到 3.5"
+
+#: plugins/VersionUpgrade/VersionUpgrade35to40/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.5 to Cura 4.0."
+msgstr "將設定從 Cura 3.5 版本升級至 4.0 版本。"
+
+#: plugins/VersionUpgrade/VersionUpgrade35to40/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 3.5 to 4.0"
+msgstr "升級版本 3.5 到 4.0"
+
+#: plugins/VersionUpgrade/VersionUpgrade40to41/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.0 to Cura 4.1."
+msgstr "將設定從 Cura 4.0 版本升級至 4.1 版本。"
+
+#: plugins/VersionUpgrade/VersionUpgrade40to41/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.0 to 4.1"
+msgstr "升級版本 4.0 到 4.1"
+
+#: plugins/VersionUpgrade/VersionUpgrade411to412/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.11 to Cura 4.12."
+msgstr "將設定從 Cura 4.11 版本升級至 4.12 版本。"
+
+#: plugins/VersionUpgrade/VersionUpgrade411to412/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.11 to 4.12"
+msgstr "升級版本 4.11 到 4.12"
+
+#: plugins/VersionUpgrade/VersionUpgrade413to50/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.13 to Cura 5.0."
+msgstr ""
+
+#: plugins/VersionUpgrade/VersionUpgrade413to50/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.13 to 5.0"
+msgstr ""
+
+#: plugins/VersionUpgrade/VersionUpgrade41to42/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.1 to Cura 4.2."
+msgstr "將設定從 Cura 4.1 版本升級至 4.2 版本。"
+
+#: plugins/VersionUpgrade/VersionUpgrade41to42/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.1 to 4.2"
+msgstr "升級版本 4.1 到 4.2"
+
+#: plugins/VersionUpgrade/VersionUpgrade42to43/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.2 to Cura 4.3."
+msgstr "將設定從 Cura 4.2 版本升級至 4.3 版本。"
+
+#: plugins/VersionUpgrade/VersionUpgrade42to43/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.2 to 4.3"
+msgstr "升級版本 4.2 到 4.3"
+
+#: plugins/VersionUpgrade/VersionUpgrade43to44/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.3 to Cura 4.4."
+msgstr "將設定從 Cura 4.3 版本升級至 4.4 版本。"
+
+#: plugins/VersionUpgrade/VersionUpgrade43to44/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.3 to 4.4"
+msgstr "升級版本 4.3 到 4.4"
+
+#: plugins/VersionUpgrade/VersionUpgrade44to45/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.4 to Cura 4.5."
+msgstr "將設定從 Cura 4.4 版本升級至 4.5 版本。"
+
+#: plugins/VersionUpgrade/VersionUpgrade44to45/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.4 to 4.5"
+msgstr "升級版本 4.4 到 4.5"
+
+#: plugins/VersionUpgrade/VersionUpgrade45to46/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.5 to Cura 4.6."
+msgstr "將設定從 Cura 4.5 版本升級至 4.6 版本。"
+
+#: plugins/VersionUpgrade/VersionUpgrade45to46/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.5 to 4.6"
+msgstr "升級版本 4.5 到 4.6"
+
+#: plugins/VersionUpgrade/VersionUpgrade460to462/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.6.0 to Cura 4.6.2."
+msgstr "將設定從 Cura 4.6.0 版本升級至 4.6.2 版本。"
+
+#: plugins/VersionUpgrade/VersionUpgrade460to462/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.6.0 to 4.6.2"
+msgstr "升級版本 4.6.0 到 4.6.2"
+
+#: plugins/VersionUpgrade/VersionUpgrade462to47/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.6.2 to Cura 4.7."
+msgstr "將設定從 Cura 4.6.2 版本升級至 4.7 版本。"
+
+#: plugins/VersionUpgrade/VersionUpgrade462to47/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.6.2 to 4.7"
+msgstr "升級版本 4.6.2 到 4.7"
+
+#: plugins/VersionUpgrade/VersionUpgrade47to48/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.7 to Cura 4.8."
+msgstr "將設定從 Cura 4.7 版本升級至 4.8 版本。"
+
+#: plugins/VersionUpgrade/VersionUpgrade47to48/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.7 to 4.8"
+msgstr "升級版本 4.7 到 4.8"
+
+#: plugins/VersionUpgrade/VersionUpgrade48to49/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.8 to Cura 4.9."
+msgstr "將設定從 Cura 4.8 版本升級至 4.9 版本。"
+
+#: plugins/VersionUpgrade/VersionUpgrade48to49/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.8 to 4.9"
+msgstr "升級版本 4.8 到 4.9"
+
+#: plugins/VersionUpgrade/VersionUpgrade49to410/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.9 to Cura 4.10."
+msgstr "將設定從 Cura 4.9 版本升級至 4.10 版本。"
+
+#: plugins/VersionUpgrade/VersionUpgrade49to410/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.9 to 4.10"
+msgstr "升級版本 4.9 到 4.10"
+
+#: plugins/VersionUpgrade/VersionUpgrade52to53/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.2 to Cura 5.3."
+msgstr "將設定從 Cura 5.2 版本升級至 5.3 版本。"
+
+#: plugins/VersionUpgrade/VersionUpgrade52to53/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 5.2 to 5.3"
+msgstr "升級版本 5.2 到 5.3"
+
 #: plugins/X3DReader/__init__.py:13
 msgctxt "@item:inlistbox"
 msgid "X3D File"
 msgstr "X3D 檔案"
 
+#: plugins/X3DReader/plugin.json
+msgctxt "description"
+msgid "Provides support for reading X3D files."
+msgstr "提供讀取 X3D 檔案的支援。"
+
+#: plugins/X3DReader/plugin.json
+msgctxt "name"
+msgid "X3D Reader"
+msgstr "X3D 讀取器"
+
 #: plugins/XRayView/__init__.py:12
 msgctxt "@item:inlistbox"
 msgid "X-Ray view"
 msgstr "透視檢視"
+
+#: plugins/XRayView/plugin.json
+msgctxt "description"
+msgid "Provides the X-Ray view."
+msgstr "提供透視檢視。"
+
+#: plugins/XRayView/plugin.json
+msgctxt "name"
+msgid "X-Ray View"
+msgstr "透視檢視"
+
+#: plugins/XmlMaterialProfile/plugin.json
+msgctxt "name"
+msgid "Material Profiles"
+msgstr "線材參數"
+
+#: plugins/XmlMaterialProfile/plugin.json
+msgctxt "description"
+msgid "Provides capabilities to read and write XML-based material profiles."
+msgstr "提供讀寫 XML 格式線材參數的功能。"
 
 #: resources/qml/Account/AccountWidget.qml:24
 msgctxt "@action:button"
@@ -4108,7 +4100,6 @@ msgid "Sign in to the UltiMaker platform"
 msgstr "登入UltiMaker 論壇"
 
 #: resources/qml/Account/GeneralOperations.qml:39
-#, fuzzy
 msgctxt "@text"
 msgid ""
 "- Add material profiles and plug-ins from the Marketplace\n"
@@ -4117,7 +4108,7 @@ msgid ""
 msgstr ""
 "- 從市集中加入線材參數及插件\n"
 "-備份及同步您的線材設定與插件 \n"
-"- 分享創意並可從Ultimaker社群中超過48000的使用者得到幫助"
+"- 分享創意並可從UltiMaker社群中超過48000的使用者得到幫助"
 
 #: resources/qml/Account/GeneralOperations.qml:58
 msgctxt "@button"
@@ -4310,7 +4301,6 @@ msgid "Manage Materials..."
 msgstr "管理線材..."
 
 #: resources/qml/Actions.qml:218
-#, fuzzy
 msgctxt "@action:inmenu Marketplace is a brand name of UltiMaker's, so don't translate."
 msgid "Add more materials from Marketplace"
 msgstr "從市集增加更多線材"
@@ -4603,22 +4593,19 @@ msgid "What's New"
 msgstr "新功能"
 
 #: resources/qml/Cura.qml:890
-#, fuzzy
 msgctxt "@title:window"
 msgid "Save Custom Profile"
-msgstr "自訂列印參數"
+msgstr ""
 
 #: resources/qml/Cura.qml:891
-#, fuzzy
 msgctxt "@textfield:placeholder"
 msgid "New Custom Profile"
-msgstr "自訂列印參數"
+msgstr ""
 
 #: resources/qml/Cura.qml:892
-#, fuzzy
 msgctxt "@info"
 msgid "Custom profile name:"
-msgstr "自訂列印參數"
+msgstr ""
 
 #: resources/qml/Cura.qml:909
 msgctxt "@label %i will be replaced with a profile name"
@@ -4631,10 +4618,9 @@ msgid "Learn more about Cura print profiles"
 msgstr ""
 
 #: resources/qml/Cura.qml:926
-#, fuzzy
 msgctxt "@button"
 msgid "Save new profile"
-msgstr "建立新的列印參數"
+msgstr ""
 
 #: resources/qml/Dialogs/AboutDialog.qml:15
 msgctxt "@title:window The argument is the application name."
@@ -4683,7 +4669,7 @@ msgstr "進程間通訊交互使用庫"
 #: resources/qml/Dialogs/AboutDialog.qml:142
 msgctxt "@label Description for application component"
 msgid "Python bindings for libnest2d"
-msgstr "Python bindings for libnest2d"
+msgstr ""
 
 #: resources/qml/Dialogs/AboutDialog.qml:143
 msgctxt "@label Description for application component"
@@ -4868,7 +4854,7 @@ msgstr ""
 
 #: resources/qml/Dialogs/ChoosePrinterDialog.qml:110
 msgctxt "@description"
-msgid "No compatible printers, that are currently online, where found."
+msgid "No compatible printers, that are currently online, were found."
 msgstr ""
 
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:13
@@ -4918,16 +4904,14 @@ msgid "Keep changes"
 msgstr "保留更動"
 
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:171
-#, fuzzy
 msgctxt "@action:button"
 msgid "Save as new custom profile"
-msgstr "自訂列印參數"
+msgstr ""
 
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:178
-#, fuzzy
 msgctxt "@action:button"
 msgid "Save changes"
-msgstr "保留更動"
+msgstr ""
 
 #: resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:47
 msgctxt "@text:window"
@@ -6185,7 +6169,7 @@ msgctxt "@label shown when we load a Gcode file"
 msgid "Print setup disabled. G-code file can not be modified."
 msgstr "列印設定已被停用。 G-code 檔案無法修改。"
 
-#: resources/qml/PrintSetupSelector/PrintSetupSelectorContents.qml:160
+#: resources/qml/PrintSetupSelector/PrintSetupSelectorContents.qml:179
 msgctxt "@button"
 msgid "Recommended"
 msgstr "推薦"
@@ -6241,16 +6225,14 @@ msgid "Enable printing a brim or raft. This will add a flat area around or under
 msgstr "允許列印邊緣或木筏。這將在你的物件周圍或下方添加一個容易切斷的平面區域。"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:102
-#, fuzzy
 msgctxt "@label"
 msgid "Recommended print settings"
-msgstr "轉換設定"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:111
-#, fuzzy
 msgctxt "@button"
 msgid "Show Custom"
-msgstr "自訂選項"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedResolutionSelector.qml:27
 msgctxt "@label"
@@ -6268,10 +6250,9 @@ msgid "The following settings define the strength of your part."
 msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:34
-#, fuzzy
 msgctxt "infill_sparse_density description"
 msgid "Infill Density"
-msgstr "只有填充"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:35
 msgctxt "@label"
@@ -6279,32 +6260,30 @@ msgid "Adjusts the density of infill of the print."
 msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:54
-#, fuzzy
 msgctxt "@action:label"
 msgid "Infill Pattern"
-msgstr "只有填充"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:56
 msgctxt "@label"
 msgid ""
 "The pattern of the infill material of the print:\n"
 "\n"
-"For quick prints of non functional model choose line, zig zag or lighting infill.\n"
+"For quick prints of non functional model choose line, zig zag or lightning infill.\n"
 "\n"
-"For functional part not subjected to a lot of stress we reccomend grid or triangle or tri hexagon.\n"
+"For functional part not subjected to a lot of stress we recommend grid or triangle or tri hexagon.\n"
 "\n"
-"For functional 3D prints which require high strenght in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
+"For functional 3D prints which require high strength in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
 msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:67
-#, fuzzy
 msgctxt "@action:label"
 msgid "Shell Thickness"
-msgstr "層厚"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:68
 msgctxt "@label"
-msgid "Defines the tickness of your part side walls, roof and floor."
+msgid "Defines the thickness of your part side walls, roof and floor."
 msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:16
@@ -6313,16 +6292,14 @@ msgid "Support"
 msgstr "支撐"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:21
-#, fuzzy
 msgctxt "@label"
 msgid "Generate structures to support parts of the model which have overhangs. Without these structures, these parts would collapse during printing."
 msgstr "在模型的突出部分產生支撐結構。若不這樣做，這些部分在列印時將倒塌。"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:40
-#, fuzzy
 msgctxt "@action:label"
 msgid "Support Type"
-msgstr "支撐"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:41
 msgctxt "@label"
@@ -6335,10 +6312,9 @@ msgid ""
 msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:53
-#, fuzzy
 msgctxt "@action:label"
 msgid "Print with"
-msgstr "使用 "
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:54
 msgctxt "@label"
@@ -6574,17 +6550,17 @@ msgctxt "@label Header for list of settings."
 msgid "Affected By"
 msgstr "影響因素"
 
-#: resources/qml/Settings/SettingItem.qml:190
+#: resources/qml/Settings/SettingItem.qml:196
 msgctxt "@label"
 msgid "This setting is always shared between all extruders. Changing it here will change the value for all extruders."
 msgstr "這個設定是所有擠出機共用的。修改它會同時更動到所有擠出機的值。"
 
-#: resources/qml/Settings/SettingItem.qml:194
+#: resources/qml/Settings/SettingItem.qml:200
 msgctxt "@label"
 msgid "This setting is resolved from conflicting extruder-specific values:"
 msgstr "此設定是透過解決擠出機設定值衝突獲得："
 
-#: resources/qml/Settings/SettingItem.qml:234
+#: resources/qml/Settings/SettingItem.qml:240
 msgctxt "@label"
 msgid ""
 "This setting has a value that is different from the profile.\n"
@@ -6595,7 +6571,7 @@ msgstr ""
 "\n"
 "單擊以復原列印參數的值。"
 
-#: resources/qml/Settings/SettingItem.qml:334
+#: resources/qml/Settings/SettingItem.qml:340
 msgctxt "@label"
 msgid ""
 "This setting is normally calculated, but it currently has an absolute value set.\n"
@@ -6789,16 +6765,14 @@ msgid "Add a non-networked printer"
 msgstr "新增非網路印表機"
 
 #: resources/qml/WelcomePages/AddThirdPartyPrinter.qml:102
-#, fuzzy
 msgctxt "@button"
 msgid "Add UltiMaker printer via Digital Factory"
-msgstr "Ultimaker Digital Factory"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:29
-#, fuzzy
 msgctxt "@label"
 msgid "In order to start using Cura you will need to configure a printer."
-msgstr "為了監控您的印表機，請連結印表機."
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:36
 msgctxt "@label"
@@ -6806,16 +6780,14 @@ msgid "What printer would you like to setup?"
 msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:55
-#, fuzzy
 msgctxt "@button"
 msgid "UltiMaker printer"
-msgstr "UltiMaker 支援"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:64
-#, fuzzy
 msgctxt "@button"
 msgid "Non UltiMaker printer"
-msgstr "UltiMaker 支援"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:73
 msgctxt "@button"
@@ -6823,16 +6795,14 @@ msgid "Learn more about adding printers to Cura"
 msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinterStack.qml:29
-#, fuzzy
 msgctxt "@label"
 msgid "Add printer"
-msgstr "新增印表機"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:33
-#, fuzzy
 msgctxt "@label"
 msgid "New UltiMaker printers can be connected to Digital Factory and monitored remotely."
-msgstr "確認您的列印機已開機並連接至Digital Factory."
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:70
 msgctxt "@label"
@@ -6840,10 +6810,9 @@ msgid "If you are trying to add a new UltiMaker printer to Cura"
 msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:80
-#, fuzzy
 msgctxt "@info"
-msgid "Sign in into UltiMaker Digilal Factory"
-msgstr "連接到 Ultimaker Digital Factory"
+msgid "Sign in into UltiMaker Digital Factory"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:81
 msgctxt "@info"
@@ -6856,28 +6825,24 @@ msgid "Your new printer will automatically appear in Cura"
 msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:100
-#, fuzzy
 msgctxt "@button"
 msgid "Learn more"
 msgstr "學習更多"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:121
-#, fuzzy
 msgctxt "@button"
 msgid "Add local printer"
-msgstr "新增印表機"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:129
-#, fuzzy
 msgctxt "@button"
 msgid "Sign in to Digital Factory"
-msgstr "在連接至Digital Factory的過程中失敗."
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:133
-#, fuzzy
 msgctxt "@button"
 msgid "Waiting for new printers"
-msgstr "等待：印表機無法使用"
+msgstr ""
 
 #: resources/qml/WelcomePages/ChangelogContent.qml:24
 msgctxt "@label"
@@ -6909,46 +6874,6 @@ msgctxt "@text"
 msgid "Create a free UltiMaker Account"
 msgstr "創建免費的UltiMaker帳戶"
 
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:24
-msgctxt "@label"
-msgid "Help us to improve UltiMaker Cura"
-msgstr "協助我們改進 UltiMaker Cura"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:56
-msgctxt "@text"
-msgid "UltiMaker Cura collects anonymous data to improve print quality and user experience, including:"
-msgstr "UltiMaker Cura 搜集匿名資料以提高列印品質和使用者體驗，包含："
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:68
-msgctxt "@text"
-msgid "Machine types"
-msgstr "機器類型"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:74
-msgctxt "@text"
-msgid "Material usage"
-msgstr "線材用法"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:80
-msgctxt "@text"
-msgid "Number of slices"
-msgstr "切片次數"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:86
-msgctxt "@text"
-msgid "Print settings"
-msgstr "列印設定"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:99
-msgctxt "@text"
-msgid "Data collected by UltiMaker Cura will not contain any personal information."
-msgstr "UltiMaker Cura 收集的資料不包含任何個人資訊。"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:100
-msgctxt "@text"
-msgid "More information"
-msgstr "更多資訊"
-
 #: resources/qml/WelcomePages/DropDownWidget.qml:93
 msgctxt "@label"
 msgid "Empty"
@@ -6964,21 +6889,6 @@ msgctxt "@button"
 msgid "Decline and close"
 msgstr "拒絕並關閉"
 
-#: resources/qml/WelcomePages/WelcomeContent.qml:56
-msgctxt "@label"
-msgid "Welcome to UltiMaker Cura"
-msgstr "歡迎來到 UltiMaker Cura"
-
-#: resources/qml/WelcomePages/WelcomeContent.qml:67
-msgctxt "@text"
-msgid "Please follow these steps to set up UltiMaker Cura. This will only take a few moments."
-msgstr "請依照步驟安裝UltiMaker Cura. 這會需要幾分鐘的時間."
-
-#: resources/qml/WelcomePages/WelcomeContent.qml:82
-msgctxt "@button"
-msgid "Get started"
-msgstr "開始"
-
 #: resources/qml/WelcomePages/WhatsNewContent.qml:28
 msgctxt "@label"
 msgid "What's New"
@@ -6988,6 +6898,10 @@ msgstr "新功能"
 msgctxt "@label"
 msgid "No items to select from"
 msgstr "沒有可選取的專案"
+
+#~ msgctxt "@action:label"
+#~ msgid ""
+#~ msgstr "使用 "
 
 #~ msgctxt "@info:generic"
 #~ msgid ""
@@ -7761,6 +7675,10 @@ msgstr "沒有可選取的專案"
 #~ msgid "Customized"
 #~ msgstr "自訂"
 
+#~ msgctxt "@text"
+#~ msgid "Data collected by UltiMaker Cura will not contain any personal information."
+#~ msgstr "UltiMaker Cura 收集的資料不包含任何個人資訊。"
+
 #~ msgctxt "@info:status"
 #~ msgid ""
 #~ "Dear customer,\n"
@@ -8195,6 +8113,10 @@ msgstr "沒有可選取的專案"
 #~ msgid "Get plugins and materials verified by UltiMaker"
 #~ msgstr "取得經 UltiMaker 驗証過的外掛和耗材"
 
+#~ msgctxt "@button"
+#~ msgid "Get started"
+#~ msgstr "開始"
+
 #~ msgctxt "description"
 #~ msgid "Gives you the possibility to open certain files using SolidWorks itself. Conversion is done by this plugin and additional optimizations."
 #~ msgstr "讓你可以使用 SolidWorks 開啟某些檔案。此外掛會完成轉換和最佳化的工作。"
@@ -8242,6 +8164,10 @@ msgstr "沒有可選取的專案"
 #~ msgctxt "@option:check"
 #~ msgid "Heated bed"
 #~ msgstr "熱床"
+
+#~ msgctxt "@label"
+#~ msgid "Help us to improve UltiMaker Cura"
+#~ msgstr "協助我們改進 UltiMaker Cura"
 
 #~ msgctxt "description"
 #~ msgid "Helps to open Blender files directly in Cura."
@@ -8413,6 +8339,10 @@ msgstr "沒有可選取的專案"
 #~ msgid "Machine Settings action"
 #~ msgstr "印表機設定操作"
 
+#~ msgctxt "@text"
+#~ msgid "Machine types"
+#~ msgstr "機器類型"
+
 #~ msgctxt "@label link to connect manager"
 #~ msgid "Manage printers"
 #~ msgstr "管理印表機"
@@ -8440,6 +8370,10 @@ msgstr "沒有可選取的專案"
 #~ msgctxt "@label"
 #~ msgid "Material specification"
 #~ msgstr "耗材規格"
+
+#~ msgctxt "@text"
+#~ msgid "Material usage"
+#~ msgstr "線材用法"
 
 #~ msgctxt "@text:window"
 #~ msgid "Materials"
@@ -8477,6 +8411,10 @@ msgstr "沒有可選取的專案"
 #~ msgstr "更多資訊"
 
 #~ msgctxt "@action:button"
+#~ msgid "More information"
+#~ msgstr "更多資訊"
+
+#~ msgctxt "@text"
 #~ msgid "More information"
 #~ msgstr "更多資訊"
 
@@ -8593,6 +8531,10 @@ msgstr "沒有可選取的專案"
 #~ msgid "Nozzle Settings"
 #~ msgstr "噴頭設定"
 
+#~ msgctxt "@text"
+#~ msgid "Number of slices"
+#~ msgstr "切片次數"
+
 #~ msgctxt "@action:button"
 #~ msgid "Ok"
 #~ msgstr "確定"
@@ -8701,6 +8643,10 @@ msgstr "沒有可選取的專案"
 #~ "請按照以下步驟進行設定\n"
 #~ "Ultimaker Cura。這只需要一點時間。"
 
+#~ msgctxt "@text"
+#~ msgid "Please follow these steps to set up UltiMaker Cura. This will only take a few moments."
+#~ msgstr "請依照步驟安裝UltiMaker Cura. 這會需要幾分鐘的時間."
+
 #~ msgctxt "@warning:status"
 #~ msgid "Please generate G-code before saving."
 #~ msgstr "請在儲存前產出 G-code。"
@@ -8734,10 +8680,6 @@ msgstr "沒有可選取的專案"
 #~ msgctxt "@label"
 #~ msgid "Please select any upgrades made to this UltiMaker 2."
 #~ msgstr "請選擇適用於 UltiMaker 2 的更新檔案。"
-
-#~ msgctxt "@description"
-#~ msgid "Please sign in to get verified plugins and materials for UltiMaker Cura Enterprise"
-#~ msgstr "請登入以取得 UltiMaker Cura Enterprise 驗証的外掛及線材"
 
 #~ msgctxt "name"
 #~ msgid "Plugin Browser"
@@ -8838,6 +8780,10 @@ msgstr "沒有可選取的專案"
 #~ msgctxt "@title"
 #~ msgid "Print jobs"
 #~ msgstr "列印作業"
+
+#~ msgctxt "@text"
+#~ msgid "Print settings"
+#~ msgstr "列印設定"
 
 #~ msgctxt "@label shown when we load a Gcode file"
 #~ msgid "Print setup disabled. G code file can not be modified."
@@ -9666,6 +9612,10 @@ msgstr "沒有可選取的專案"
 #~ msgid "UltiMaker Cura"
 #~ msgstr "UltiMaker Cura"
 
+#~ msgctxt "@text"
+#~ msgid "UltiMaker Cura collects anonymous data to improve print quality and user experience, including:"
+#~ msgstr "UltiMaker Cura 搜集匿名資料以提高列印品質和使用者體驗，包含："
+
 #~ msgctxt "@button"
 #~ msgid "UltiMaker account"
 #~ msgstr "UltiMaker 帳號"
@@ -9910,6 +9860,10 @@ msgstr "沒有可選取的專案"
 #~ msgctxt "@label"
 #~ msgid "Website"
 #~ msgstr "網站"
+
+#~ msgctxt "@label"
+#~ msgid "Welcome to UltiMaker Cura"
+#~ msgstr "歡迎來到 UltiMaker Cura"
 
 #~ msgctxt "@label"
 #~ msgid "What's new in UltiMaker Cura"

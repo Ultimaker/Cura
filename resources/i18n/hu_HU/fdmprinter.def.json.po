@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-02-02 16:06+0000\n"
+"POT-Creation-Date: 2023-03-14 17:27+0000\n"
 "PO-Revision-Date: 2020-03-24 09:43+0100\n"
 "Last-Translator: Nagy Attila <vokroot@gmail.com>\n"
 "Language-Team: AT-VLOG\n"
@@ -3182,6 +3182,11 @@ msgid "Printing Temperature Initial Layer"
 msgstr "Kezdő réteg nyomtatási hőmérséklete"
 
 #: fdmprinter.def.json
+msgctxt "skirt_height description"
+msgid "Printing the innermost skirt line with multiple layers makes it easy to remove the skirt."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "alternate_extra_perimeter description"
 msgid "Prints an extra wall at every other layer. This way infill gets caught between these extra walls, resulting in stronger prints."
 msgstr "Minden rétegben egy további extra falat nyomtat. Ez segít a kitöltésnek hozzáépülni a falhoz, ezáltal erősebb lesz a tárgy szerkezete."
@@ -3665,6 +3670,11 @@ msgstr "Szoknya"
 msgctxt "skirt_gap label"
 msgid "Skirt Distance"
 msgstr "Szoknya távolság"
+
+#: fdmprinter.def.json
+msgctxt "skirt_height label"
+msgid "Skirt Height"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "skirt_line_count label"
@@ -4602,7 +4612,7 @@ msgstr "A beépített távolság, amikor a tetőtől körvonalakat bekapcsolnak.
 
 #: fdmprinter.def.json
 msgctxt "interlocking_depth description"
-msgid "The distance from the boundary between models to generate interlocking structure measured in cells. Too few cells will result in poor adhesion."
+msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
 msgstr ""
 
 #: fdmprinter.def.json
