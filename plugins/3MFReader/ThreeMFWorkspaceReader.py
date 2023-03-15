@@ -43,7 +43,7 @@ from .WorkspaceDialog import WorkspaceDialog
 i18n_catalog = i18nCatalog("cura")
 
 
-_ignored_machine_network_metadata = {
+_ignored_machine_network_metadata: Set[str] = {
     "um_cloud_cluster_id",
     "um_network_key",
     "um_linked_to_account",
@@ -55,7 +55,7 @@ _ignored_machine_network_metadata = {
     "capabilities",
     "octoprint_api_key",
     "is_abstract_machine"
-}  # type: Set[str]
+}
 
 
 class ContainerInfo:
@@ -131,14 +131,14 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         #  - variant
         self._ignored_instance_container_types = {"quality", "variant"}
 
-        self._resolve_strategies = {} # type: Dict[str, str]
+        self._resolve_strategies: Dict[str, str] = {}
 
-        self._id_mapping = {} # type: Dict[str, str]
+        self._id_mapping: Dict[str, str] = {}
 
         # In Cura 2.5 and 2.6, the empty profiles used to have those long names
         self._old_empty_profile_id_dict = {"empty_%s" % k: "empty" for k in ["material", "variant"]}
 
-        self._old_new_materials = {} # type: Dict[str, str]
+        self._old_new_materials: Dict[str, str] = {}
         self._machine_info = None
 
     def _clearState(self):
@@ -739,7 +739,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             # quality_changes file. If that's the case, take the extruder count into account when creating the machine
             # or else the extruderList will return only the first extruder, leading to missing non-global settings in
             # the other extruders.
-            machine_extruder_count = self._getMachineExtruderCount()  # type: Optional[int]
+            machine_extruder_count: Optional[int] = self._getMachineExtruderCount()
             global_stack = CuraStackBuilder.createMachine(machine_name, self._machine_info.definition_id, machine_extruder_count)
             if global_stack:  # Only switch if creating the machine was successful.
                 extruder_stack_dict = {str(position): extruder for position, extruder in enumerate(global_stack.extruderList)}
@@ -866,7 +866,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
     @staticmethod
     def _loadMetadata(file_name: str) -> Dict[str, Dict[str, Any]]:
-        result = dict()  # type: Dict[str, Dict[str, Any]]
+        result: Dict[str, Dict[str, Any]] = dict()
         try:
             archive = zipfile.ZipFile(file_name, "r")
         except zipfile.BadZipFile:
@@ -877,7 +877,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             return result
 
         metadata_files = [name for name in archive.namelist() if name.endswith("plugin_metadata.json")]
-
 
         for metadata_file in metadata_files:
             try:
@@ -919,7 +918,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 quality_changes_name = self._container_registry.uniqueName(quality_changes_name)
                 for position, container_info in container_info_dict.items():
                     extruder_stack = None
-                    intent_category = None  # type: Optional[str]
+                    intent_category: Optional[str] = None
                     if position is not None:
                         try:
                             extruder_stack = global_stack.extruderList[int(position)]
@@ -1160,7 +1159,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             root_material_id = self._old_new_materials.get(root_material_id, root_material_id)
 
             material_node = machine_node.variants[extruder_stack.variant.getName()].materials[root_material_id]
-            extruder_stack.material = material_node.container  # type: InstanceContainer
+            extruder_stack.material = material_node.container
 
     def _applyChangesToMachine(self, global_stack, extruder_stack_dict):
         # Clear all first
