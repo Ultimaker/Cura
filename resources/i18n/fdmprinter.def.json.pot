@@ -1162,6 +1162,16 @@ msgid "Amount of offset applied to all holes in each layer. Positive values incr
 msgstr ""
 
 #: fdmprinter.def.json
+msgctxt "hole_xy_offset_max_diameter label"
+msgid "Hole Horizontal Expansion Max Diameter"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "hole_xy_offset_max_diameter description"
+msgid "When greater then zero, the Hole Horizontal Expansion is gradually applied on small holes (small holes are expanded more). When set to zero the Hole Horizontal Expansion will be applied to all holes. Holes larger then the Hole Horizontal Expansion Max Diameter are not expanded."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "z_seam_type label"
 msgid "Z Seam Alignment"
 msgstr ""

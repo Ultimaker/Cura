@@ -1639,6 +1639,11 @@ msgid "Hole Horizontal Expansion"
 msgstr "Expansión horizontal de orificios"
 
 #: fdmprinter.def.json
+msgctxt "hole_xy_offset_max_diameter label"
+msgid "Hole Horizontal Expansion Max Diameter"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "small_hole_max_size description"
 msgid "Holes and part outlines with a diameter smaller than this will be printed using Small Feature Speed."
 msgstr "Los agujeros y contornos de las piezas con un diámetro menor que estos se imprimen utilizando la función Velocidad de pequeñas partes."
@@ -6316,6 +6321,11 @@ msgstr "Cuando se habilita, las coordenadas de la costura en z son relativas al 
 msgctxt "retraction_combing_max_distance description"
 msgid "When greater than zero, combing travel moves that are longer than this distance will use retraction. If set to zero, there is no maximum and combing moves will not use retraction."
 msgstr "Si es mayor que cero, los movimientos de desplazamiento de peinada que sean superiores a esta distancia utilizarán retracción. Si se establece como cero, no hay un máximo y los movimientos de peinada no utilizarán la retracción."
+
+#: fdmprinter.def.json
+msgctxt "hole_xy_offset_max_diameter description"
+msgid "When greater then zero, the Hole Horizontal Expansion is gradually applied on small holes (small holes are expanded more). When set to zero the Hole Horizontal Expansion will be applied to all holes. Holes larger then the Hole Horizontal Expansion Max Diameter are not expanded."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_material_flow description"

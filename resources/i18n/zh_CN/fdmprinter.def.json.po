@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-03-14 17:27+0000\n"
+"POT-Creation-Date: 2023-03-15 10:57+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -1637,6 +1637,11 @@ msgstr "隐藏或外露缝隙"
 msgctxt "hole_xy_offset label"
 msgid "Hole Horizontal Expansion"
 msgstr "孔洞水平扩展"
+
+#: fdmprinter.def.json
+msgctxt "hole_xy_offset_max_diameter label"
+msgid "Hole Horizontal Expansion Max Diameter"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "small_hole_max_size description"
@@ -6316,6 +6321,11 @@ msgstr "启用时，Z 缝坐标为相对于各个部分中心的值。 禁用时
 msgctxt "retraction_combing_max_distance description"
 msgid "When greater than zero, combing travel moves that are longer than this distance will use retraction. If set to zero, there is no maximum and combing moves will not use retraction."
 msgstr "当大于零时，比这段距离更长的梳理空驶将会使用回抽。如果设置为零，则没有最大值，梳理空驶将不会使用回抽。"
+
+#: fdmprinter.def.json
+msgctxt "hole_xy_offset_max_diameter description"
+msgid "When greater then zero, the Hole Horizontal Expansion is gradually applied on small holes (small holes are expanded more). When set to zero the Hole Horizontal Expansion will be applied to all holes. Holes larger then the Hole Horizontal Expansion Max Diameter are not expanded."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_material_flow description"
