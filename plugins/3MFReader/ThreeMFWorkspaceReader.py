@@ -71,7 +71,7 @@ class QualityChangesInfo:
     def __init__(self) -> None:
         self.name = None
         self.global_info = None
-        self.extruder_info_dict = {} # type: Dict[str, ContainerInfo]
+        self.extruder_info_dict = {}  # type: Dict[str, ContainerInfo]
 
 
 class MachineInfo:
@@ -461,10 +461,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         materials_in_extruders_dict = {}  # Which material is in which extruder
 
-        # if the global stack is found, we check if there are conflicts in the extruder stacks
+        # If the global stack is found, we check if there are conflicts in the extruder stacks
         for extruder_stack_file in extruder_stack_files:
             serialized = archive.open(extruder_stack_file).read().decode("utf-8")
-            serialized = ExtruderStack._updateSerialized(serialized, extruder_stack_file)
             parser = ConfigParser(interpolation = None)
             parser.read_string(serialized)
 
@@ -506,10 +505,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     continue
 
                 existing_extruder_stack = global_stack.extruderList[int(position)]
-                # check if there are any changes at all in any of the container stacks.
+                # Check if there are any changes at all in any of the container stacks.
                 id_list = self._getContainerIdListFromSerialized(serialized)
                 for index, container_id in enumerate(id_list):
-                    # take into account the old empty container IDs
+                    # Take into account the old empty container IDs
                     container_id = self._old_empty_profile_id_dict.get(container_id, container_id)
                     if existing_extruder_stack.getContainer(index).getId() != container_id:
                         machine_conflict = True
