@@ -3188,6 +3188,11 @@ msgid "Printing Temperature Initial Layer"
 msgstr "Temp. Druku Początk. Warstwy"
 
 #: fdmprinter.def.json
+msgctxt "skirt_height description"
+msgid "Printing the innermost skirt line with multiple layers makes it easy to remove the skirt."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "alternate_extra_perimeter description"
 msgid "Prints an extra wall at every other layer. This way infill gets caught between these extra walls, resulting in stronger prints."
 msgstr "Drukuje dodatkową ścianę na każdej warstwie. W ten sposób wypełnienie jest tworzone pomiędzy tymi dod. ścianami, co skutkuje mocniejszymi wydrukami."
@@ -3671,6 +3676,11 @@ msgstr "Obwódka"
 msgctxt "skirt_gap label"
 msgid "Skirt Distance"
 msgstr "Odległ. Obwódki"
+
+#: fdmprinter.def.json
+msgctxt "skirt_height label"
+msgid "Skirt Height"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "skirt_line_count label"

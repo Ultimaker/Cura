@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-03-15 10:57+0000\n"
+"POT-Creation-Date: 2023-03-14 17:27+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -3184,6 +3184,11 @@ msgid "Printing Temperature Initial Layer"
 msgstr "Температура печати первого слоя"
 
 #: fdmprinter.def.json
+msgctxt "skirt_height description"
+msgid "Printing the innermost skirt line with multiple layers makes it easy to remove the skirt."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "alternate_extra_perimeter description"
 msgid "Prints an extra wall at every other layer. This way infill gets caught between these extra walls, resulting in stronger prints."
 msgstr "Печатает дополнительную стенку через слой. Таким образом, заполнение заключается между этими дополнительными стенками, что приводит к повышению прочности печати."
@@ -3667,6 +3672,11 @@ msgstr "Юбка"
 msgctxt "skirt_gap label"
 msgid "Skirt Distance"
 msgstr "Дистанция до юбки"
+
+#: fdmprinter.def.json
+msgctxt "skirt_height label"
+msgid "Skirt Height"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "skirt_line_count label"

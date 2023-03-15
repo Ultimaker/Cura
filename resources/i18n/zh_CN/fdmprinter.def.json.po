@@ -3184,6 +3184,11 @@ msgid "Printing Temperature Initial Layer"
 msgstr "打印温度起始层"
 
 #: fdmprinter.def.json
+msgctxt "skirt_height description"
+msgid "Printing the innermost skirt line with multiple layers makes it easy to remove the skirt."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "alternate_extra_perimeter description"
 msgid "Prints an extra wall at every other layer. This way infill gets caught between these extra walls, resulting in stronger prints."
 msgstr "每隔一层打印一个额外的壁。 通过这种方法，填充物会卡在这些额外的壁之间，从而产生更强韧的打印质量。"
@@ -3667,6 +3672,11 @@ msgstr "Skirt"
 msgctxt "skirt_gap label"
 msgid "Skirt Distance"
 msgstr "Skirt 距离"
+
+#: fdmprinter.def.json
+msgctxt "skirt_height label"
+msgid "Skirt Height"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "skirt_line_count label"
