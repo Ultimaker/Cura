@@ -69,41 +69,41 @@ class ContainerInfo:
 
 class QualityChangesInfo:
     def __init__(self) -> None:
-        self.name = None
+        self.name: Optional[str] = None
         self.global_info = None
-        self.extruder_info_dict = {}  # type: Dict[str, ContainerInfo]
+        self.extruder_info_dict: Dict[str, ContainerInfo] = {}
 
 
 class MachineInfo:
     def __init__(self) -> None:
-        self.container_id = None
-        self.name = None
-        self.definition_id = None
+        self.container_id: Optional[str] = None
+        self.name: Optional[str] = None
+        self.definition_id: Optional[str] = None
 
-        self.metadata_dict = {}  # type: Dict[str, str]
+        self.metadata_dict: Dict[str, str] = {}
 
-        self.quality_type = None
-        self.intent_category = None
-        self.custom_quality_name = None
-        self.quality_changes_info = None
-        self.variant_info = None
+        self.quality_type: Optional[str] = None
+        self.intent_category: Optional[str] = None
+        self.custom_quality_name: Optional[str] = None
+        self.quality_changes_info: Optional[QualityChangesInfo] = None
+        self.variant_info: Optional[ContainerInfo] = None
 
-        self.definition_changes_info = None
-        self.user_changes_info = None
+        self.definition_changes_info: Optional[ContainerInfo] = None
+        self.user_changes_info: Optional[ContainerInfo] = None
 
-        self.extruder_info_dict = {} # type: Dict[str, ExtruderInfo]
+        self.extruder_info_dict: Dict[str, str] = {}
 
 
 class ExtruderInfo:
     def __init__(self) -> None:
         self.position = None
         self.enabled = True
-        self.variant_info = None
-        self.root_material_id = None
+        self.variant_info: Optional[ContainerInfo] = None
+        self.root_material_id: Optional[str] = None
 
-        self.definition_changes_info = None
-        self.user_changes_info = None
-        self.intent_info = None
+        self.definition_changes_info: Optional[ContainerInfo] = None
+        self.user_changes_info: Optional[ContainerInfo] = None
+        self.intent_info: Optional[ContainerInfo] = None
 
 
 class ThreeMFWorkspaceReader(WorkspaceReader):
