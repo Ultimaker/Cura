@@ -5679,6 +5679,21 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "skirt_height":
+                {
+                    "label": "Skirt Height",
+                    "description": "Printing the innermost skirt line with multiple layers makes it easy to remove the skirt.",
+                    "type": "int",
+                    "default_value": 3,
+                    "value": "3 if resolveOrValue('skirt_gap') > 0.0 else 1",
+                    "minimum_value": "1",
+                    "maximum_value_warning": "10",
+                    "maximum_value": "machine_height / layer_height",
+                    "enabled": "resolveOrValue('adhesion_type') == 'skirt'",
+                    "limit_to_extruder": "skirt_brim_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "skirt_gap":
                 {
                     "label": "Skirt Distance",
