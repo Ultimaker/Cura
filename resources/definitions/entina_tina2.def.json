@@ -25,7 +25,7 @@
         "machine_end_gcode": {
           "default_value": ";(**** end.gcode for TINA2****)\nM104 S0\nM107\nG92 E0 (Reset after prime)\nG0 E-1 F300\nG1 Z105 F300\nG28 X0 Y0\nG1 Y90 F1000\nM203 Z30"
         },
-        "material_print_temp_prepend":{"default_value":false},
+        
         "retraction_amount":
         {
             "default_value": 3
