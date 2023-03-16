@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "ENTINA TINA 2",
+    "name": "ENTINA TINA2",
     "inherits": "entina_base",
     "metadata": {
         "visible": true,
@@ -18,7 +18,7 @@
         "machine_height": { "default_value": 100 },
         "machine_depth": { "default_value": 120 },
         "machine_width": { "default_value": 100 },
-        "machine_name": { "default_value": "ENTINA TINA 2" },
+        "machine_name": { "default_value": "ENTINA TINA2" },
         "machine_start_gcode": {
           "default_value": ";(**** start.gcode for TINA2****)\nM104 S150\nG28 Z\nG28 X Y; Home extruder\nG1 X55 Y55 F1000\nG1 Z10 F200\nG29\nG1 Z15 F100\nM107 ; Turn off fan\nG90 ; Absolute positioning\nM82 ; Extruder in absolute mode\nM109 S{material_print_temperature_layer_0}\nG92 E0 ; Reset extruder position\nG1 X90 Y6 Z0.27 F2000\nG1 X20 Y6 Z0.27 E15 F1000 \nG92 E0 ; Reset extruder position\n\nM203 Z5"
         },
