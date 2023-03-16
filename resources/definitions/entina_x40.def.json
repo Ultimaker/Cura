@@ -43,33 +43,16 @@
         "prime_tower_position_x": { "default_value": 50 },
         "prime_tower_position_y": { "default_value": 250 },
         
-        "material_standby_enable":
-        {
-          "default_value": false
-        },
         "retraction_amount":
         {
           "default_value": 5
-        },
-        "retraction_speed":
-        {
-          "default_value": 28
         },
         "switch_extruder_retraction_amount":
         {
           "value": 0
         },
-        "speed_wall_0": {
-          "value": 25.0
-        },
-        "speed_wall_x": {
-          "value": 30.0
-        },
         "speed_topbottom": {
           "value": 35.0
-        },
-        "speed_infill": {
-          "value": 60.0
         },
         "speed_support_infill": {
           "value": 58.0

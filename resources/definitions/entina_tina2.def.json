@@ -49,9 +49,6 @@
         "speed_support_infill": {
           "value": 45.0
         },
-        "speed_print_layer_0": {
-          "value": 22.0
-        },
         "speed_travel_layer_0": {
           "value": 60
         },
@@ -59,17 +56,8 @@
           "default_value": 65.0,
           "value": "speed_print if magic_spiralize else 65"
         },
-        "speed_support_roof": {
-          "value": 30.0
-        },
         "speed_support_bottom": {
           "dvalue": 30.0
-        },
-        "speed_roofing": {
-          "value": 25.0
-        },
-        "raft_base_thickness":{
-          "default_value":0.35
         }
 	}
 }

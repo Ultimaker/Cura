@@ -68,20 +68,11 @@
         "machine_feeder_wheel_diameter": {
             "default_value": 10.61
         },
-        "wall_0_wipe_dist": {
-            "default_value": 0.2
-        },
-        "roofing_layer_count": {
-            "default_value": 0
-        },
         "travel_compensate_overlapping_walls_0_enabled": {
             "default_value": true
         },
         "travel_compensate_overlapping_walls_x_enabled": {
             "default_value": true
-        },
-        "skin_no_small_gaps_heuristic": {
-            "default_value": false
         },
         "infill_sparse_density": {
             "default_value": 10
@@ -90,18 +81,15 @@
             "default_value": 95
         },
         "material_initial_print_temperature": {
-            "default_value": 200,
             "minimum_value_warning": "0",
             "maximum_value": "300"
         },
         "material_final_print_temperature": {
-            "default_value": 195,
             "minimum_value_warning": "0",
             "maximum_value": "300"
         },
         "material_print_temperature": {
             "default_value": 200,
-            "minimum_value_warning": "0",
             "maximum_value": "300"
         },
         "material_standby_enable": {
@@ -119,9 +107,6 @@
         "material_bed_temperature": {
             "default_value": 35
         },
-        "speed_wall": {
-            "value": 30.0
-        },
         "speed_wall_0": {
             "default_value": 25.0,
             "value": "speed_wall * 0.85"
@@ -132,9 +117,6 @@
         },
         "speed_topbottom": {
             "default_value": 38.0
-        },
-        "speed_infill": {
-            "default_value": 60.0
         },
         "speed_support_infill": {
             "default_value": 50.0
@@ -153,9 +135,6 @@
         },
         "speed_support_bottom": {
             "default_value": 30.0
-        },
-        "speed_roofing": {
-            "default_value": 25.0
         },
         "retraction_amount": {
             "default_value": 1.5
@@ -210,9 +189,6 @@
             "minimum_value": "0",
             "maximum_value": "machine_width"
         },
-        "prime_tower_enable": {
-            "default_value": false
-        },
         "prime_tower_size": {
             "default_value": 15
         },
@@ -224,12 +200,6 @@
         },
         "prime_tower_position_y": {
             "default_value": 80
-        },
-        "prime_tower_wipe_enabled": {
-            "default_value": true
-        },
-        "prime_tower_brim_enable": {
-            "default_value": false
         },
         "raft_surface_fan_speed": {
             "value": 100
