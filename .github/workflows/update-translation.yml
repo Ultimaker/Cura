@@ -30,8 +30,8 @@ jobs:
             -   name: Setup Python and pip
                 uses: actions/setup-python@v4
                 with:
-                    python-version: '3.11.x'
-                    cache: 'pip'
+                    python-version: 3.11.x
+                    cache: pip
                     cache-dependency-path: .github/workflows/requirements-conan-package.txt
 
             -   name: Install Python requirements for runner
@@ -63,6 +63,6 @@ jobs:
 
             -   uses: stefanzweifel/git-auto-commit-action@v4
                 with:
-                    file_pattern: 'resources/i18n/*.po resources/i18n/*.pot'
-                    status_options: '--untracked-files=no'
-                    commit_message: "update translations"
+                    file_pattern: resources/i18n/*.po resources/i18n/*.pot
+                    status_options: --untracked-files=no
+                    commit_message: update translations
