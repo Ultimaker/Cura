@@ -42,7 +42,7 @@
         "machine_name": { "default_value": "ENTINA X40" },
         "prime_tower_position_x": { "default_value": 50 },
         "prime_tower_position_y": { "default_value": 250 },
-        "material_print_temp_prepend":{"default_value":false},
+        
         "material_standby_enable":
         {
           "default_value": false
