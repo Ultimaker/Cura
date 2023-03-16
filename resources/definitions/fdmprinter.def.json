@@ -1298,6 +1298,18 @@
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "hole_xy_offset_max_diameter":
+                {
+                    "label": "Hole Horizontal Expansion Max Diameter",
+                    "description": "When greater then zero, the Hole Horizontal Expansion is gradually applied on small holes (small holes are expanded more). When set to zero the Hole Horizontal Expansion will be applied to all holes. Holes larger then the Hole Horizontal Expansion Max Diameter are not expanded.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value": "0",
+                    "enabled": "hole_xy_offset > 0",
+                    "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_mesh": true
+                },
                 "z_seam_type":
                 {
                     "label": "Z Seam Alignment",
@@ -4395,9 +4407,9 @@
                     "unit": "mm/s",
                     "type": "float",
                     "default_value": 10,
-                    "enabled": "cool_min_layer_time > 0",
-                    "minimum_value": "0",
+                    "minimum_value": "1",
                     "maximum_value_warning": "100",
+                    "enabled": "cool_min_layer_time > 0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -5674,6 +5686,21 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "10",
                     "maximum_value": "0.5 * min(machine_width, machine_depth) / skirt_brim_line_width",
+                    "enabled": "resolveOrValue('adhesion_type') == 'skirt'",
+                    "limit_to_extruder": "skirt_brim_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "skirt_height":
+                {
+                    "label": "Skirt Height",
+                    "description": "Printing the innermost skirt line with multiple layers makes it easy to remove the skirt.",
+                    "type": "int",
+                    "default_value": 3,
+                    "value": "3 if resolveOrValue('skirt_gap') > 0.0 else 1",
+                    "minimum_value": "1",
+                    "maximum_value_warning": "10",
+                    "maximum_value": "machine_height / layer_height",
                     "enabled": "resolveOrValue('adhesion_type') == 'skirt'",
                     "limit_to_extruder": "skirt_brim_extruder_nr",
                     "settable_per_mesh": false,
