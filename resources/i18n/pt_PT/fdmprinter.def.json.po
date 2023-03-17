@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-03-08 09:03+0000\n"
+"POT-Creation-Date: 2023-03-16 17:19+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -1639,6 +1639,11 @@ msgid "Hole Horizontal Expansion"
 msgstr "Expansão horizontal de buraco"
 
 #: fdmprinter.def.json
+msgctxt "hole_xy_offset_max_diameter label"
+msgid "Hole Horizontal Expansion Max Diameter"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "small_hole_max_size description"
 msgid "Holes and part outlines with a diameter smaller than this will be printed using Small Feature Speed."
 msgstr "Os buracos e os contornos das peças com um diâmetro inferior a este valor serão impressos à Velocidade de elemento pequeno."
@@ -3179,6 +3184,11 @@ msgid "Printing Temperature Initial Layer"
 msgstr "Temperatura Impressão Camada Inicial"
 
 #: fdmprinter.def.json
+msgctxt "skirt_height description"
+msgid "Printing the innermost skirt line with multiple layers makes it easy to remove the skirt."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "alternate_extra_perimeter description"
 msgid "Prints an extra wall at every other layer. This way infill gets caught between these extra walls, resulting in stronger prints."
 msgstr "Imprimir uma parede adicional em camadas alternadas. Deste modo, o enchimento é \"capturado\" entre estas paredes adicionais, resultando em impressões mais robustas."
@@ -3662,6 +3672,11 @@ msgstr "Contorno"
 msgctxt "skirt_gap label"
 msgid "Skirt Distance"
 msgstr "Distância Contorno"
+
+#: fdmprinter.def.json
+msgctxt "skirt_height label"
+msgid "Skirt Height"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "skirt_line_count label"
@@ -6306,6 +6321,11 @@ msgstr "Quando ativado, as coordenadas da junta-Z são relativas ao centro de ca
 msgctxt "retraction_combing_max_distance description"
 msgid "When greater than zero, combing travel moves that are longer than this distance will use retraction. If set to zero, there is no maximum and combing moves will not use retraction."
 msgstr "Os movimentos de deslocação de Combing com uma distância maior que este valor, quando este é superior a zero, utilizam retrações. Se o valor for definido como zero, não existirá qualquer valor máximo e os movimentos Combing não utilizarão retrações."
+
+#: fdmprinter.def.json
+msgctxt "hole_xy_offset_max_diameter description"
+msgid "When greater than zero, the Hole Horizontal Expansion is gradually applied on small holes (small holes are expanded more). When set to zero the Hole Horizontal Expansion will be applied to all holes. Holes larger than the Hole Horizontal Expansion Max Diameter are not expanded."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_material_flow description"

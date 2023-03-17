@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-17 15:28+0000\n"
+"POT-Creation-Date: 2023-03-15 11:58+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -812,18 +812,18 @@ msgctxt "@text"
 msgid "Unknown error."
 msgstr "알 수 없는 오류입니다."
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:559
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:547
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> contains an unknown machine type <message>{1}</message>. Cannot import the machine. Models will be imported instead."
 msgstr "프로젝트 파일 <filename>{0}</filename>에 알 수 없는 기기 유형 <message>{1}</message>이(가) 포함되어 있습니다. 기기를 가져올 수 없습니다. 대신 모델을 가져옵니다."
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:562
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:550
 msgctxt "@info:title"
 msgid "Open Project File"
 msgstr "프로젝트 파일 열기"
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:643
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:631
 #: plugins/3MFReader/WorkspaceDialog.qml:99
 #: plugins/3MFReader/WorkspaceDialog.qml:127
 #: plugins/3MFReader/WorkspaceDialog.qml:134
@@ -831,27 +831,27 @@ msgctxt "@button"
 msgid "Create new"
 msgstr ""
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:693
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:681
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is suddenly inaccessible: <message>{1}</message>."
 msgstr "프로젝트 파일 <filename>{0}</filename>에 갑자기 접근할 수 없습니다: <message>{1}</message>."
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:694
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:702
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:721
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:682
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:690
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:709
 msgctxt "@info:title"
 msgid "Can't Open Project File"
 msgstr "프로젝트 파일 열 수 없음"
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:701
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:719
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:689
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:707
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>."
 msgstr "프로젝트 파일 <filename>{0}</filename>이 손상됨: <message>{1}</message>."
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:766
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:754
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
 msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura."

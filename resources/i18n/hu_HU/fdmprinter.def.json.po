@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-03-08 09:03+0000\n"
+"POT-Creation-Date: 2023-03-16 17:19+0000\n"
 "PO-Revision-Date: 2020-03-24 09:43+0100\n"
 "Last-Translator: Nagy Attila <vokroot@gmail.com>\n"
 "Language-Team: AT-VLOG\n"
@@ -1642,6 +1642,11 @@ msgid "Hole Horizontal Expansion"
 msgstr ""
 
 #: fdmprinter.def.json
+msgctxt "hole_xy_offset_max_diameter label"
+msgid "Hole Horizontal Expansion Max Diameter"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "small_hole_max_size description"
 msgid "Holes and part outlines with a diameter smaller than this will be printed using Small Feature Speed."
 msgstr "Az ennél kisebb átmérőjű lyukakat és részek körvonalait a Kis funkciósebesség használatával nyomtatják ki."
@@ -3182,6 +3187,11 @@ msgid "Printing Temperature Initial Layer"
 msgstr "Kezdő réteg nyomtatási hőmérséklete"
 
 #: fdmprinter.def.json
+msgctxt "skirt_height description"
+msgid "Printing the innermost skirt line with multiple layers makes it easy to remove the skirt."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "alternate_extra_perimeter description"
 msgid "Prints an extra wall at every other layer. This way infill gets caught between these extra walls, resulting in stronger prints."
 msgstr "Minden rétegben egy további extra falat nyomtat. Ez segít a kitöltésnek hozzáépülni a falhoz, ezáltal erősebb lesz a tárgy szerkezete."
@@ -3665,6 +3675,11 @@ msgstr "Szoknya"
 msgctxt "skirt_gap label"
 msgid "Skirt Distance"
 msgstr "Szoknya távolság"
+
+#: fdmprinter.def.json
+msgctxt "skirt_height label"
+msgid "Skirt Height"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "skirt_line_count label"
@@ -6317,6 +6332,11 @@ msgstr "Ha engedélyezve van, a z varrás koordinátái az egyes alkatrészek k�
 #: fdmprinter.def.json
 msgctxt "retraction_combing_max_distance description"
 msgid "When greater than zero, combing travel moves that are longer than this distance will use retraction. If set to zero, there is no maximum and combing moves will not use retraction."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "hole_xy_offset_max_diameter description"
+msgid "When greater than zero, the Hole Horizontal Expansion is gradually applied on small holes (small holes are expanded more). When set to zero the Hole Horizontal Expansion will be applied to all holes. Holes larger than the Hole Horizontal Expansion Max Diameter are not expanded."
 msgstr ""
 
 #: fdmprinter.def.json
