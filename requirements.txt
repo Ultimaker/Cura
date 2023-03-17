@@ -76,11 +76,7 @@ keyring==23.0.1 \
 
 # Use Numpy wheel that is compiled with Intel optimizations (MKL). Obtained from https://www.lfd.uci.edu/~gohlke/pythonlibs/#numpy
 # We cache this at software.ultimaker.com since this website tends to remove older versions rather quickly.
-https://software.ultimaker.com/cura-binary-dependencies/numpy-1.21.5+mkl-cp310-cp310-win_amd64.whl; \
-    sys_platform=="win32" \
-    --hash=sha256:fbd5d5126b730a151134d21994a951fe28df06464e0c9a2cba2a4132e542a5fc
 numpy==1.21.5; \
-    sys_platform!="win32" \
     --hash=sha256:00c9fa73a6989895b8815d98300a20ac993c49ac36c8277e8ffeaa3631c0dbbb \
     --hash=sha256:025b497014bc33fc23897859350f284323f32a2fff7654697f5a5fc2a19e9939 \
     --hash=sha256:08de8472d9f7571f9d51b27b75e827f5296295fa78817032e84464be8bb905bc \
