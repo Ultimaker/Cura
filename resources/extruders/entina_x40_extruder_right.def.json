@@ -1,5 +1,4 @@
 {
-    "id": "entina_x40_extruder_right",
     "version": 2,
     "name": "Extruder Right",
     "inherits": "fdmextruder",

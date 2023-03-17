@@ -6,7 +6,6 @@
         "visible": false,
         "author": "cgobat, ENTINA",
         "manufacturer": "ENTINA",
-        "category": "ENTINA",
         "file_formats": "text/x-gcode",
         "machine_extruder_trains": {
             "0": "entina_base_extruder_0"
@@ -89,7 +88,7 @@
             "maximum_value": "300"
         },
         "material_print_temperature": {
-            "default_value": 200,
+            "default_value": 210,
             "maximum_value": "300"
         },
         "material_standby_enable": {

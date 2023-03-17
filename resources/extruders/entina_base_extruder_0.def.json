@@ -1,10 +1,9 @@
 {
-    "id": "entina_base_extruder_0",
     "version": 2,
     "name": "Default Extruder",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "mp_base",
+        "machine": "entina_base",
         "position": "0"
     },
     "overrides": {

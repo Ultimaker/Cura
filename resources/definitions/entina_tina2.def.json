@@ -6,7 +6,6 @@
         "visible": true,
         "author": "cgobat, ENTINA",
         "manufacturer": "ENTINA",
-        "category": "ENTINA",
         "file_formats": "text/x-gcode",
         "platform_offset": [0, 0, 0]
     },
