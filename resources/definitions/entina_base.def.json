@@ -88,7 +88,6 @@
             "maximum_value": "300"
         },
         "material_print_temperature": {
-            "default_value": 210,
             "maximum_value": "300"
         },
         "material_standby_enable": {
