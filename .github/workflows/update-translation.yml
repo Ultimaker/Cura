@@ -27,6 +27,13 @@ jobs:
             -   name: Checkout
                 uses: actions/checkout@v3
 
+            -   name: Cache Conan data
+                id: cache-conan
+                uses: actions/cache@v3
+                with:
+                    path: ~/.conan
+                    key: ${{ runner.os }}-conan
+
             -   name: Setup Python and pip
                 uses: actions/setup-python@v4
                 with:
