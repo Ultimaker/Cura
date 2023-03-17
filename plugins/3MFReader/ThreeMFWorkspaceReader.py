@@ -464,14 +464,13 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # If the global stack is found, we check if there are conflicts in the extruder stacks
         for extruder_stack_file in extruder_stack_files:
             serialized = archive.open(extruder_stack_file).read().decode("utf-8")
-            not_upgraded_serialize = serialized
+
+            not_upgraded_parser = ConfigParser(interpolation=None)
+            not_upgraded_parser.read_string(serialized)
 
             serialized = ExtruderStack._updateSerialized(serialized, extruder_stack_file)
-            parser = ConfigParser(interpolation = None)
+            parser = ConfigParser(interpolation=None)
             parser.read_string(serialized)
-
-            not_upgraded_parser = ConfigParser(interpolation = None)
-            not_upgraded_parser.read_string(not_upgraded_serialize)
 
             # The check should be done for the extruder stack that's associated with the existing global stack,
             # and those extruder stacks may have different IDs.
