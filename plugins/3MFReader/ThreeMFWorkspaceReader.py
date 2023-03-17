@@ -464,8 +464,14 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # If the global stack is found, we check if there are conflicts in the extruder stacks
         for extruder_stack_file in extruder_stack_files:
             serialized = archive.open(extruder_stack_file).read().decode("utf-8")
+            not_upgraded_serialize = serialized
+
+            serialized = ExtruderStack._updateSerialized(serialized, extruder_stack_file)
             parser = ConfigParser(interpolation = None)
             parser.read_string(serialized)
+
+            not_upgraded_parser = ConfigParser(interpolation = None)
+            not_upgraded_parser.read_string(not_upgraded_serialize)
 
             # The check should be done for the extruder stack that's associated with the existing global stack,
             # and those extruder stacks may have different IDs.
@@ -496,9 +502,16 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 extruder_info.user_changes_info = instance_container_info_dict[user_changes_id]
             self._machine_info.extruder_info_dict[position] = extruder_info
 
+            intent_container_id = parser["containers"][str(_ContainerIndexes.Intent)]
+
             intent_id = parser["containers"][str(_ContainerIndexes.Intent)]
             if intent_id not in ("empty", "empty_intent"):
-                extruder_info.intent_info = instance_container_info_dict[intent_id]
+                if intent_container_id in instance_container_info_dict:
+                    extruder_info.intent_info = instance_container_info_dict[intent_id]
+                else:
+                    # It can happen that an intent has been renamed. In that case, we should still use the old
+                    # name, since we used that to generate the instance_container_info_dict keys. 
+                    extruder_info.intent_info = instance_container_info_dict[not_upgraded_parser["containers"][str(_ContainerIndexes.Intent)]]
 
             if not machine_conflict and containers_found_dict["machine"] and global_stack:
                 if int(position) >= len(global_stack.extruderList):
