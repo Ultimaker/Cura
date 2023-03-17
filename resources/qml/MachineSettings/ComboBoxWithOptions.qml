@@ -72,23 +72,16 @@ UM.TooltipArea
                 return;
             }
 
-            if (typeof propertyProvider.properties["options"] === "string") {
+            if (typeof(propertyProvider.properties["options"]) === "string") {
                 return;
             }
 
-            let currentIndex = -1;
             const keys = propertyProvider.properties["options"].keys();
             for (let index = 0; index < propertyProvider.properties["options"].keys().length; index ++) {
                 const key = propertyProvider.properties["options"].keys()[index];
                 const value = propertyProvider.properties["options"][key];
-
-                if (propertyProvider.properties.value === key) {
-                    currentIndex = index;
-                }
                 defaultOptionsModel.append({ text: value, value: key });
             }
-
-            comboBox.currentIndex = currentIndex;
         }
 
         Component.onCompleted: updateModel()
@@ -112,7 +105,7 @@ UM.TooltipArea
         model: defaultOptionsModel
         textRole: "text"
 
-        currentIndex: function () {
+        currentIndex: {
             const currentValue = propertyProvider.properties.value
             for (let i = 0; i < model.count; i ++) {
                 if (model.get(i).value === currentValue) {
@@ -123,7 +116,6 @@ UM.TooltipArea
         }
 
         onActivated: function (index) {
-            const key = propertyProvider.properties["options"].keys()[index];
             const newValue = model.get(index).value;
 
             if (propertyProvider.properties.value !== newValue && newValue !== undefined) {
