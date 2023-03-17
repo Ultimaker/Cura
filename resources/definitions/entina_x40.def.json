@@ -16,15 +16,6 @@
     },
 
     "overrides": {
-        "model_thumbnail":{
-            "default_value": true
-        },
-        "model_thumbnail_size":{
-            "default_value": 180
-        },
-        "model_thumbnail_angle":{
-            "default_value": 0
-        },
         "machine_start_gcode": {
           "default_value": ";(**** start.gcode for X40 DUAL****)\nM104 S150\nM203 Z15\nG28 ; Home extruder\nG29\nM107 ; Turn off fan\nG90 ; Absolute positioning\nM82 ; Extruder in absolute mode\nG1 X-47 F3000\nT1 S\nM109 S{material_print_temperature_layer_0} T1\nG92 E0\nG1 E40 F300\nG92 E0\nT0 S\nM109 S{material_print_temperature_layer_0} T0\nG92 E0\nG1 E40 F300\nG92 E0\nM203 Z2"
         },
@@ -37,7 +28,6 @@
         "machine_height": { "default_value": 400 },
         "machine_depth": { "default_value": 300 },
         "machine_width": { "default_value": 300 },
-        "max_feedrate_z_override": { "default_value": 5 },
         "machine_name": { "default_value": "ENTINA X40" },
         "prime_tower_position_x": { "default_value": 50 },
         "prime_tower_position_y": { "default_value": 250 },
