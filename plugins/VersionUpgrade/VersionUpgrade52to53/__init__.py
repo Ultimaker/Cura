@@ -10,6 +10,7 @@ if TYPE_CHECKING:
 
 upgrade = VersionUpgrade52to53.VersionUpgrade52to53()
 
+
 def getMetaData() -> Dict[str, Any]:
     return {
         "version_upgrade": {
@@ -21,6 +22,7 @@ def getMetaData() -> Dict[str, Any]:
             ("quality_changes", 4000020):    ("quality_changes", 4000021,    upgrade.upgradeInstanceContainer),
             ("quality", 4000020):            ("quality", 4000021,            upgrade.upgradeInstanceContainer),
             ("user", 4000020):               ("user", 4000021,               upgrade.upgradeInstanceContainer),
+            ("intent", 4000020):               ("intent", 4000021,               upgrade.upgradeInstanceContainer),
         },
         "sources": {
             "preferences": {
