@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-03-14 17:27+0000\n"
+"POT-Creation-Date: 2023-03-16 17:19+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -6324,7 +6324,7 @@ msgstr "Si es mayor que cero, los movimientos de desplazamiento de peinada que s
 
 #: fdmprinter.def.json
 msgctxt "hole_xy_offset_max_diameter description"
-msgid "When greater then zero, the Hole Horizontal Expansion is gradually applied on small holes (small holes are expanded more). When set to zero the Hole Horizontal Expansion will be applied to all holes. Holes larger then the Hole Horizontal Expansion Max Diameter are not expanded."
+msgid "When greater than zero, the Hole Horizontal Expansion is gradually applied on small holes (small holes are expanded more). When set to zero the Hole Horizontal Expansion will be applied to all holes. Holes larger than the Hole Horizontal Expansion Max Diameter are not expanded."
 msgstr ""
 
 #: fdmprinter.def.json
