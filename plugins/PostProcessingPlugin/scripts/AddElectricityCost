@@ -1,3 +1,9 @@
+# Cura PostProcessingPlugin
+# Author:   Adrian Krawczyk 
+# Date:     March 19, 2023
+# Description: This script, AddElectricityCost, is a Cura post-processing script that calculates the cost of electricity for a 3D print based on the print time, 
+#              power usage of the printer, and the cost per kilowatt-hour.
+
 from ..Script import Script
 
 class AddElectricityCost(Script):
