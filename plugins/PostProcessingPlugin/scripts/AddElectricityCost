@@ -1,0 +1,70 @@
+from ..Script import Script
+
+class AddElectricityCost(Script):
+    def __init__(self):
+        super().__init__()
+
+    def getSettingDataString(self):
+        return """{
+            "name": "Add Electricity Cost",
+            "key": "AddElectricityCost",
+            "metadata": {},
+            "version": 2,
+            "settings":
+            {
+                "electricity_cost":
+                {
+                    "label": "Electricity Cost per kWh",
+                    "description": "Cost of electricity per kilowatt-hour",
+                    "type": "float",
+                    "default_value": 0.74,
+                    "minimum_value": 0,
+                    "unit": "currency/kWh"
+                },
+                "printer_power_usage":
+                {
+                    "label": "Power Usage",
+                    "description": "Average power usage of the 3D printer",
+                    "type": "float",
+                    "default_value": 80,
+                    "minimum_value": 0,
+                    "unit": "W"
+                },
+                "currency_unit":
+                {
+                    "label": "Currency Unit",
+                    "description": "Unit of the currency",
+                    "type": "str",
+                    "default_value": "zł"
+                }
+            }
+        }"""
+
+    def execute(self, data):
+        electricity_cost = self.getSettingValueByKey("electricity_cost")
+        printer_power_usage = self.getSettingValueByKey("printer_power_usage")
+        currency_unit = self.getSettingValueByKey("currency_unit")
+
+        # Find the estimated print time in the G-code (formatted as ";TIME:XXXX")
+        import re
+        time_regex = re.compile(r";TIME:(\d+)")
+        estimated_print_time_seconds = 0
+
+        for layer in data:
+            match = time_regex.search(layer)
+            if match:
+                estimated_print_time_seconds = int(match.group(1))
+                break
+
+        if estimated_print_time_seconds == 0:
+            return data  # No estimated print time found in G-code
+
+        # Calculate electricity cost
+        kWh = estimated_print_time_seconds * printer_power_usage / (3600 * 1000)
+        total_cost = electricity_cost * kWh
+
+        # Insert the electricity cost into the G-code as a comment
+        cost_comment = ";Electricity cost: {:.2f} {}\n".format(total_cost, currency_unit)
+        data[0] = cost_comment + data[0]
+
+        return data
