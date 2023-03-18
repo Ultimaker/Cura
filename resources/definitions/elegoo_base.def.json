@@ -31,6 +31,8 @@
             "generic_pp"
         ],
         "has_machine_quality": true,
+        "has_materials": true,
+        "has_variants": true,
         "machine_extruder_trains": { "0": "elegoo_extruder_0" },
         "platform_offset": [
             -2.2,
@@ -38,7 +40,9 @@
             -31
         ],
         "preferred_material": "generic_pla_175",
-        "preferred_quality_type": "fine"
+        "preferred_quality_type": "Elegoo_layer_020",
+        "preferred_variant_name": "0.40mm_Elegoo_Nozzle",
+        "variants_name": "Nozzle Size"
     },
     "overrides":
     {
