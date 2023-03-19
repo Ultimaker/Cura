@@ -4,7 +4,7 @@
     "inherits": "fdmextruder",
     "metadata":
     {
-        "machine": "ankermake_m5",
+        "machine": "ankermake_base",
         "position": "0"
     },
     "overrides":
