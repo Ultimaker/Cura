@@ -107,7 +107,6 @@
         "support_interface_density": { "value": 33.333 },
         "support_interface_enable": { "value": true },
         "support_interface_pattern": { "value": "'grid'" },
-        
         "support_roof_enable": { "value": true },
         "support_xy_distance": { "value": "wall_line_width_0 * 2" },
         "support_xy_distance_overhang": { "value": "wall_line_width_0" },
