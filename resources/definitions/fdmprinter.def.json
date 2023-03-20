@@ -5816,6 +5816,17 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "brim_smart_ordering":
+                {
+                    "label": "Smart Brim",
+                    "description": "Swap print order of the innermost and second innermost brim lines. This improves brim removal.",
+                    "type": "bool",
+                    "enabled": "resolveOrValue('adhesion_type') == 'brim'",
+                    "default_value": false,
+                    "limit_to_extruder": "skirt_brim_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
                 "raft_margin":
                 {
                     "label": "Raft Extra Margin",
