@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-03-16 17:19+0000\n"
+"POT-Creation-Date: 2023-03-20 12:56+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -3757,6 +3757,11 @@ msgid "Small features will be printed at this percentage of their normal print s
 msgstr "소형 피처는 정상적인 프린트 속도의 이 비율로 프린팅됩니다. 프린트 속도가 느리면 부착과 정확도가 개선됩니다."
 
 #: fdmprinter.def.json
+msgctxt "brim_smart_ordering label"
+msgid "Smart Brim"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "z_seam_corner option z_seam_corner_weighted"
 msgid "Smart Hiding"
 msgstr "스마트 숨김"
@@ -4280,6 +4285,11 @@ msgstr "표면에 점착되는 성항입니다."
 msgctxt "material_surface_energy description"
 msgid "Surface energy."
 msgstr "표면의 에너지입니다."
+
+#: fdmprinter.def.json
+msgctxt "brim_smart_ordering description"
+msgid "Swap print order of the innermost and second innermost brim lines. This improves brim removal."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "alternate_carve_order description"

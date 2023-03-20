@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-03-16 17:19+0000\n"
+"POT-Creation-Date: 2023-03-20 12:56+0000\n"
 "PO-Revision-Date: 2022-01-02 20:24+0800\n"
 "Last-Translator: Valen Chang  <carf17771@gmail.com>\n"
 "Language-Team: Valen Chang <carf17771@gmail.com>\n"
@@ -3765,6 +3765,11 @@ msgid "Small features will be printed at this percentage of their normal print s
 msgstr "細部模式將以正常列印速度的此百分比值列印。 較慢的列印有助於黏合和精度。"
 
 #: fdmprinter.def.json
+msgctxt "brim_smart_ordering label"
+msgid "Smart Brim"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "z_seam_corner option z_seam_corner_weighted"
 msgid "Smart Hiding"
 msgstr "智慧隱藏"
@@ -4291,6 +4296,11 @@ msgstr "表面附著趨勢。"
 msgctxt "material_surface_energy description"
 msgid "Surface energy."
 msgstr "表面能量。"
+
+#: fdmprinter.def.json
+msgctxt "brim_smart_ordering description"
+msgid "Swap print order of the innermost and second innermost brim lines. This improves brim removal."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "alternate_carve_order description"

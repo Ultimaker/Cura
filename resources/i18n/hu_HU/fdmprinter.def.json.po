@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-03-16 17:19+0000\n"
+"POT-Creation-Date: 2023-03-20 12:56+0000\n"
 "PO-Revision-Date: 2020-03-24 09:43+0100\n"
 "Last-Translator: Nagy Attila <vokroot@gmail.com>\n"
 "Language-Team: AT-VLOG\n"
@@ -3763,6 +3763,11 @@ msgid "Small features will be printed at this percentage of their normal print s
 msgstr ""
 
 #: fdmprinter.def.json
+msgctxt "brim_smart_ordering label"
+msgid "Smart Brim"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "z_seam_corner option z_seam_corner_weighted"
 msgid "Smart Hiding"
 msgstr "Okos rejtés"
@@ -4289,6 +4294,11 @@ msgstr "A felület tapadási jellemzője."
 msgctxt "material_surface_energy description"
 msgid "Surface energy."
 msgstr "Felületi energia."
+
+#: fdmprinter.def.json
+msgctxt "brim_smart_ordering description"
+msgid "Swap print order of the innermost and second innermost brim lines. This improves brim removal."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "alternate_carve_order description"
