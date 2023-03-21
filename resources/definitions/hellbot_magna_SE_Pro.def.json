@@ -8,7 +8,7 @@
         "author": "Hellbot Development Team",
         "manufacturer": "Hellbot",
         "file_formats": "text/x-gcode",
-        "platform": "Hellbot_magna_SE_Pro.obj",
+        "platform": "Hellbot_Magna_SE_Pro.obj",
         "has_materials": true,
         "machine_extruder_trains": { "0": "hellbot_magna_SE_Pro_extruder" },
         "platform_texture": "Hellbot_magna_SE_Pro.png"
