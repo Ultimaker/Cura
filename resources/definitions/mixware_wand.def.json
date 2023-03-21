@@ -44,9 +44,9 @@
         "material_bed_temperature": { "value": 0 },
         "material_print_temperature":
         {
-            "value": 200,
             "maximum_warning_value": "220",
-            "minimum_warning_value": "180"
+            "minimum_warning_value": "180",
+            "value": 200
         },
         "optimize_wall_printing_order": { "default_value": true },
         "raft_airgap":
@@ -71,21 +71,21 @@
         },
         "retraction_extrusion_window":
         {
-            "value": 3,
             "maximum_warning_value": "5.5",
-            "minimum_warning_value": "2"
+            "minimum_warning_value": "2",
+            "value": 3
         },
         "retraction_prime_speed":
         {
-            "value": 40,
             "maximum_warning_value": "55",
-            "minimum_warning_value": "40"
+            "minimum_warning_value": "40",
+            "value": 40
         },
         "retraction_retract_speed":
         {
-            "value": 40,
             "maximum_warning_value": "55",
-            "minimum_warning_value": "40"
+            "minimum_warning_value": "40",
+            "value": 40
         },
         "retraction_speed":
         {
@@ -107,9 +107,9 @@
         },
         "speed_travel":
         {
-            "value": 80,
             "maximum_warning_value": "120",
-            "minimum_warning_value": "80"
+            "minimum_warning_value": "80",
+            "value": 80
         },
         "support_angle": { "default_value": 60 },
         "support_enable": { "default_value": true },
@@ -119,9 +119,9 @@
         "support_roof_enable": { "value": true },
         "support_top_distance":
         {
-            "value": 0.25,
             "maximum_warning_value": "0.25",
-            "minimum_warning_value": "0.15"
+            "minimum_warning_value": "0.15",
+            "value": 0.25
         },
         "support_z_distance":
         {
