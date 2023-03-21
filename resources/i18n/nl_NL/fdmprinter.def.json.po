@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-03-20 12:56+0000\n"
+"POT-Creation-Date: 2023-03-21 13:32+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -3749,6 +3749,11 @@ msgid "Small Layer Printing Temperature"
 msgstr "De printtemperatuur van kleine lagens"
 
 #: fdmprinter.def.json
+msgctxt "small_skin_width label"
+msgid "Small Top/Bottom Width"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 description"
 msgid "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
 msgstr "Kleine kenmerken op de eerste laag worden geprint met een snelheid die gelijk is aan dit percentage van hun normale printsnelheid. Langzamer printen kan de hechting en nauwkeurigheid verbeteren."
@@ -3757,6 +3762,11 @@ msgstr "Kleine kenmerken op de eerste laag worden geprint met een snelheid die g
 msgctxt "small_feature_speed_factor description"
 msgid "Small features will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
 msgstr "Kleine kernmerken worden geprint met een snelheid die gelijk is aan dit percentage van hun normale printsnelheid. Langzamer printen kan de hechting en nauwkeurigheid verbeteren."
+
+#: fdmprinter.def.json
+msgctxt "small_skin_width description"
+msgid "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "brim_smart_ordering label"
