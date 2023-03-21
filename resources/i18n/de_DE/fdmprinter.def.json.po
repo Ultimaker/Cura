@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-03-16 17:14+0000\n"
+"POT-Creation-Date: 2023-03-21 13:32+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -3749,6 +3749,11 @@ msgid "Small Layer Printing Temperature"
 msgstr "Drucktemperatur für kleine Schichten"
 
 #: fdmprinter.def.json
+msgctxt "small_skin_width label"
+msgid "Small Top/Bottom Width"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 description"
 msgid "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
 msgstr "Bei kleinen Details wird die Geschwindigkeit bei der ersten Schicht auf diesen Prozentsatz der normalen Druckgeschwindigkeit gesetzt. Durch eine niedrigere Druckgeschwindigkeit können die Haftung und die Genauigkeit verbessert werden."
@@ -3757,6 +3762,16 @@ msgstr "Bei kleinen Details wird die Geschwindigkeit bei der ersten Schicht auf 
 msgctxt "small_feature_speed_factor description"
 msgid "Small features will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
 msgstr "Bei kleinen Details wird die Geschwindigkeit auf diesen Prozentsatz der normalen Druckgeschwindigkeit gesetzt. Durch eine niedrigere Druckgeschwindigkeit können die Haftung und die Genauigkeit verbessert werden."
+
+#: fdmprinter.def.json
+msgctxt "small_skin_width description"
+msgid "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "brim_smart_ordering label"
+msgid "Smart Brim"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "z_seam_corner option z_seam_corner_weighted"
@@ -4282,6 +4297,11 @@ msgstr "Oberflächenhaftungstendenz."
 msgctxt "material_surface_energy description"
 msgid "Surface energy."
 msgstr "Oberflächenenergie."
+
+#: fdmprinter.def.json
+msgctxt "brim_smart_ordering description"
+msgid "Swap print order of the innermost and second innermost brim lines. This improves brim removal."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "alternate_carve_order description"

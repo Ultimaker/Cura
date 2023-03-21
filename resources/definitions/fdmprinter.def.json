@@ -1661,6 +1661,20 @@
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "small_skin_width":
+                {
+                    "label": "Small Top/Bottom Width",
+                    "description": "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions.",
+                    "value": "skin_line_width * 2",
+                    "default_value": 1,
+                    "minimum_value": "0",
+                    "maximum_value_warning": "skin_line_width * 10",
+                    "type": "float",
+                    "enabled": "(top_layers > 0 or bottom_layers > 0) and top_bottom_pattern != 'concentric'",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true,
+                    "unit": "mm"
+                },
                 "skin_no_small_gaps_heuristic":
                 {
                     "label": "No Skin in Z Gaps",
@@ -5961,6 +5975,17 @@
                     "limit_to_extruder": "skirt_brim_extruder_nr",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
+                },
+                "brim_smart_ordering":
+                {
+                    "label": "Smart Brim",
+                    "description": "Swap print order of the innermost and second innermost brim lines. This improves brim removal.",
+                    "type": "bool",
+                    "enabled": "resolveOrValue('adhesion_type') == 'brim'",
+                    "default_value": true,
+                    "limit_to_extruder": "skirt_brim_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
                 },
                 "raft_margin":
                 {
