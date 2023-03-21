@@ -1125,21 +1125,28 @@ class XmlMaterialProfile(InstanceContainer):
         id_list = list(id_list)
         return id_list
 
+    __product_to_id_map: Optional[Dict[str, List[str]]] = None
+
     @classmethod
     def getProductIdMap(cls) -> Dict[str, List[str]]:
         """Gets a mapping from product names in the XML files to their definition IDs.
 
         This loads the mapping from a file.
         """
+        if cls.__product_to_id_map is not None:
+            return cls.__product_to_id_map
 
         plugin_path = cast(str, PluginRegistry.getInstance().getPluginPath("XmlMaterialProfile"))
         product_to_id_file = os.path.join(plugin_path, "product_to_id.json")
         with open(product_to_id_file, encoding = "utf-8") as f:
-            product_to_id_map = json.load(f)
-        product_to_id_map = {key: [value] for key, value in product_to_id_map.items()}
+            contents = ""
+            for line in f:
+                contents += line if "#" not in line else "".join([line.replace("#", str(n)) for n in range(1, 12)])
+            cls.__product_to_id_map = json.loads(contents)
+        cls.__product_to_id_map = {key: [value] for key, value in cls.__product_to_id_map.items()}
         #This also loads "Ultimaker S5" -> "ultimaker_s5" even though that is not strictly necessary with the default to change spaces into underscores.
         #However it is not always loaded with that default; this mapping is also used in serialize() without that default.
-        return product_to_id_map
+        return cls.__product_to_id_map
 
     @staticmethod
     def _parseCompatibleValue(value: str):

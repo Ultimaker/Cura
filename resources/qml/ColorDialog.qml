@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Ultimaker B.V.
+// Copyright (c) 2022 UltiMaker
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.15
@@ -6,8 +6,8 @@ import QtQuick.Controls 2.2
 import QtQuick.Window 2.1
 import QtQuick.Layouts 1.1
 
-import UM 1.5 as UM
-import Cura 1.1 as Cura
+import UM 1.7 as UM
+import Cura 1.7 as Cura
 
 
 /*
@@ -28,8 +28,11 @@ UM.Dialog
     // however with the current implementation of the dialog this is not possible, so instead we calculate
     // the size of the dialog ourselves.
     // Ugly workaround for windows having overlapping elements due to incorrect dialog width
-    minimumWidth: content.width + (Qt.platform.os == "windows" ? 4 * margin : 2 * margin)
-    minimumHeight: content.height + footer.height + (Qt.platform.os == "windows" ? 5 * margin : 3 * margin)
+    minimumWidth: content.width + (Qt.platform.os === "windows" ? 4 * margin : 2 * margin)
+    minimumHeight: {
+        const footerHeight = Math.max(okButton.height, cancelButton.height);
+        return content.height + footerHeight + (Qt.platform.os === "windows" ? 5 * margin : 3 * margin);
+    }
 
     property alias color: colorInput.text
     property var swatchColors: [
@@ -119,7 +122,7 @@ UM.Dialog
                         text = `#${text}`;
                     }
                 }
-                validator: RegularExpressionValidator { regularExpression: /^#([a-fA-F0-9]{0,6})$/ }
+                validator: UM.HexColorValidator {}
             }
 
             Rectangle
@@ -136,10 +139,12 @@ UM.Dialog
     rightButtons:
     [
         Cura.TertiaryButton {
+            id: cancelButton
             text: catalog.i18nc("@action:button", "Cancel")
             onClicked: base.close()
         },
         Cura.PrimaryButton {
+            id: okButton
             text: catalog.i18nc("@action:button", "OK")
             onClicked: base.accept()
         }

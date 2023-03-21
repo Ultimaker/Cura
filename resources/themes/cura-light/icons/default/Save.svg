@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+<path fill-rule="evenodd" d="M3 18C3 19.6569 4.34315 21 6 21H18C19.6569 21 21 19.6569 21 18V8L16 3H6C4.34315 3 3 4.34315 3 6V18ZM5 5H15.1716L19 8.82843V19H5V5Z"/>
+<path fill-rule="evenodd" d="M7 5H15V9H7V5ZM9 5V7H13V5H9Z"/>
+<path fill-rule="evenodd" d="M15 15H9V19H15V15ZM7 13V20H17V13H7Z"/>
+</svg>

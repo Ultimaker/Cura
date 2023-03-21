@@ -1,0 +1,15 @@
+{
+    "version": 2,
+    "name": "Extruder",
+    "inherits": "fdmextruder",
+    "metadata":
+    {
+        "machine": "dagoma_pro_430_bowden",
+        "position": "0"
+    },
+    "overrides":
+    {
+        "extruder_nr": { "default_value": 0 },
+        "material_diameter": { "default_value": 1.75 }
+    }
+}

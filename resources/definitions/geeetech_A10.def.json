@@ -2,58 +2,48 @@
     "version": 2,
     "name": "Geeetech A10",
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "visible": true,
         "author": "Amit L",
         "manufacturer": "Geeetech",
         "file_formats": "text/x-gcode",
         "has_materials": true,
-        "machine_extruder_trains":
-        {
-            "0": "geeetech_A10_1"
-        }
-
+        "machine_extruder_trains": { "0": "geeetech_A10_1" }
     },
-
-    "overrides": {
-        "machine_name": { "default_value": "Geeetech A10" },
-        "machine_width": {
-            "default_value": 220
-        },
-        "machine_height": {
-            "default_value": 260
-        },
-        "machine_depth": {
-            "default_value": 220
-        },        
-        "machine_center_is_zero": {
-            "default_value": false
-        },
+    "overrides":
+    {
+        "adhesion_type": { "default_value": "skirt" },
+        "gantry_height": { "value": "28" },
         "layer_height": { "default_value": 0.1 },
         "layer_height_0": { "default_value": 0.15 },
-        "retraction_amount": { "default_value": 0.8 },
-        "retraction_speed": { "default_value": 35 },
-        "adhesion_type": { "default_value": "skirt" },
-        "machine_head_with_fans_polygon": { "default_value": [[-31,31],[34,31],[34,-40],[-31,-40]] },
-        "gantry_height": { "value": "28" },
-        "machine_max_feedrate_z": { "default_value": 12 },
-        "machine_max_feedrate_e": { "default_value": 120 },
-        "machine_max_acceleration_z": { "default_value": 500 },
         "machine_acceleration": { "default_value": 1000 },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_depth": { "default_value": 220 },
+        "machine_end_gcode": { "default_value": "G91 ;Switch to relative positioning\nG1 E-1 ;Retract filament to lower pressure\nG0 X0 Y200 ;Move hotend to left and bed forward\nM104 S0 ;Cooldown hotend\nG90 ;Switch to absolute mode\nG92 E0 ;Set extruder to zero\nM140 S0 ;Cooldown bed\nM84 ; Disable steppers" },
+        "machine_extruder_count": { "default_value": 1 },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [-31, 31],
+                [34, 31],
+                [34, -40],
+                [-31, -40]
+            ]
+        },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 260 },
+        "machine_max_acceleration_z": { "default_value": 500 },
+        "machine_max_feedrate_e": { "default_value": 120 },
+        "machine_max_feedrate_z": { "default_value": 12 },
+        "machine_max_jerk_e": { "default_value": 2.5 },
         "machine_max_jerk_xy": { "default_value": 10 },
         "machine_max_jerk_z": { "default_value": 0.2 },
-        "machine_max_jerk_e": { "default_value": 2.5 },
-        "machine_heated_bed": { "default_value": true },
-        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
-        "machine_start_gcode": {
-            "default_value": "G28 ; Auto home\nG1 Z15 F300 ;Move up slightly\nM107 ;Off fans\nG90 ;Switch to absolute positioning\nM82 ;Extruder absolute mode\nG92 E0 ;Set position of extruder to 0\nG0 X10 Y20 F1500 ;Move to X10 Y20 at 1500mms\nG1 Z0.8 ;Move Z to 0.8\nG1 F300 X180 E40 ;Extrude a line of filament\nG1 F1200 Z2 ;Raise Z\nG92 E0 ;Set extruder position to zero\nG28 ;Auto home"
-        },
-        "machine_end_gcode": {
-            "default_value": "G91 ;Switch to relative positioning\nG1 E-1 ;Retract filament to lower pressure\nG0 X0 Y200 ;Move hotend to left and bed forward\nM104 S0 ;Cooldown hotend\nG90 ;Switch to absolute mode\nG92 E0 ;Set extruder to zero\nM140 S0 ;Cooldown bed\nM84 ; Disable steppers"
-        },
-        "machine_extruder_count": {
-            "default_value": 1
-        }
-
+        "machine_name": { "default_value": "Geeetech A10" },
+        "machine_start_gcode": { "default_value": "G28 ; Auto home\nG1 Z15 F300 ;Move up slightly\nM107 ;Off fans\nG90 ;Switch to absolute positioning\nM82 ;Extruder absolute mode\nG92 E0 ;Set position of extruder to 0\nG0 X10 Y20 F1500 ;Move to X10 Y20 at 1500mms\nG1 Z0.8 ;Move Z to 0.8\nG1 F300 X180 E40 ;Extrude a line of filament\nG1 F1200 Z2 ;Raise Z\nG92 E0 ;Set extruder position to zero\nG28 ;Auto home" },
+        "machine_width": { "default_value": 220 },
+        "retraction_amount": { "default_value": 0.8 },
+        "retraction_speed": { "default_value": 35 }
     }
 }

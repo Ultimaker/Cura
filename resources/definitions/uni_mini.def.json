@@ -1,18 +1,20 @@
 {
-    "name":      "Uni Mini",
-    "version":   2,
-    "inherits":  "uni_base",
-    "metadata":  {
-                  "author": "Nail` Gimadeev (C)",
-                  "visible": true,
-                  "quality_definition": "uni_base",
-                  "platform": "uni_mini_platform.stl",
-                  "platform_texture": "uni.png"
-                 },
-    "overrides": {
-                  "machine_name":   {"default_value": "uni_mini"},
-                  "machine_width":  {"default_value": 160},
-				  "machine_depth":  {"default_value": 160},
-                  "machine_height": {"default_value": 175}
-                 }
+    "version": 2,
+    "name": "Uni Mini",
+    "inherits": "uni_base",
+    "metadata":
+    {
+        "visible": true,
+        "author": "Nail` Gimadeev (C)",
+        "platform": "uni_mini_platform.stl",
+        "platform_texture": "uni.png",
+        "quality_definition": "uni_base"
+    },
+    "overrides":
+    {
+        "machine_depth": { "default_value": 160 },
+        "machine_height": { "default_value": 175 },
+        "machine_name": { "default_value": "uni_mini" },
+        "machine_width": { "default_value": 160 }
+    }
 }

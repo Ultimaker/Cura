@@ -2,13 +2,15 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt6.QtCore import pyqtSignal, pyqtProperty, QObject, QVariant  # For communicating data and events to Qt.
+
+from UM.Application import Application
 from UM.FlameProfiler import pyqtSlot
 
 import cura.CuraApplication # To get the global container stack to find the current machine.
+from UM.Util import parseBool
 from cura.Settings.GlobalStack import GlobalStack
 from UM.Logger import Logger
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
-from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Selection import Selection
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from UM.Settings.ContainerRegistry import ContainerRegistry  # Finding containers by ID.
@@ -45,12 +47,28 @@ class ExtruderManager(QObject):
         self._selected_object_extruders = []  # type: List[Union[str, "ExtruderStack"]]
 
         Selection.selectionChanged.connect(self.resetSelectedObjectExtruders)
+        Application.getInstance().globalContainerStackChanged.connect(self.emitGlobalStackExtrudersChanged)  # When the machine is swapped we must update the active machine extruders
 
     extrudersChanged = pyqtSignal(QVariant)
     """Signal to notify other components when the list of extruders for a machine definition changes."""
 
     activeExtruderChanged = pyqtSignal()
     """Notify when the user switches the currently active extruder."""
+
+    def emitGlobalStackExtrudersChanged(self):
+        # HACK
+        # The emit function can't be directly connected to another signal. This wrapper function is required.
+        # The extrudersChanged signal is emitted early when changing machines. This triggers it a second time
+        # after the extruder have changed properly. This is important for any QML using ExtruderManager.extruderIds
+        # This is a hack, but other behaviour relys on the updating in this order.
+        self.extrudersChanged.emit(self._application.getGlobalContainerStack().getId())
+
+    @pyqtProperty(int, notify = extrudersChanged)
+    def enabledExtruderCount(self) -> int:
+        global_container_stack = self._application.getGlobalContainerStack()
+        if global_container_stack:
+            return len([extruder for extruder in global_container_stack.extruderList if parseBool(extruder.getMetaDataEntry("enabled", "True"))])
+        return 0
 
     @pyqtProperty(str, notify = activeExtruderChanged)
     def activeExtruderStackId(self) -> Optional[str]:
@@ -275,7 +293,7 @@ class ExtruderManager(QObject):
         for extruder_setting in used_adhesion_extruders:
             extruder_str_nr = str(global_stack.getProperty(extruder_setting, "value"))
             if extruder_str_nr == "-1":
-                extruder_str_nr = self._application.getMachineManager().defaultExtruderPosition
+                continue  # An optional extruder doesn't force any extruder to be used if it isn't used already
             if extruder_str_nr in self.extruderIds:
                 used_extruder_stack_ids.add(self.extruderIds[extruder_str_nr])
 
@@ -298,7 +316,7 @@ class ExtruderManager(QObject):
         # Starts with the adhesion extruder.
         adhesion_type = global_stack.getProperty("adhesion_type", "value")
         if adhesion_type in {"skirt", "brim"}:
-            return global_stack.getProperty("skirt_brim_extruder_nr", "value")
+            return max(0, int(global_stack.getProperty("skirt_brim_extruder_nr", "value")))  # optional skirt/brim extruder defaults to zero
         if adhesion_type == "raft":
             return global_stack.getProperty("raft_base_extruder_nr", "value")
 
@@ -447,7 +465,6 @@ class ExtruderManager(QObject):
         if not active_material_node_qualities:
             return False
         return list(active_material_node_qualities.keys())[0] != "empty_quality"
-
 
     @pyqtSlot(str, result="QVariant")
     def getInstanceExtruderValues(self, key: str) -> List:

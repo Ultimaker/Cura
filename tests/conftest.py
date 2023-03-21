@@ -6,6 +6,7 @@
 from unittest.mock import MagicMock, patch
 import pytest
 
+from UM.Application import Application
 from UM.Qt.QtApplication import QtApplication  # QtApplication import is required, even though it isn't used.
 
 from cura.CuraApplication import CuraApplication
@@ -20,6 +21,12 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 @pytest.fixture()
 def application() -> CuraApplication:
     app = MagicMock()
+    return app
+
+@pytest.fixture()
+def um_application() -> Application:
+    app = MagicMock()
+    app.getInstance = MagicMock(return_value=app)
     return app
 
 
@@ -43,14 +50,15 @@ def container_registry(application, global_stack) -> ContainerRegistry:
 
 
 @pytest.fixture()
-def extruder_manager(application, container_registry) -> ExtruderManager:
+def extruder_manager(application, um_application, container_registry) -> ExtruderManager:
     if ExtruderManager.getInstance() is not None:
         # Reset the data
         ExtruderManager._ExtruderManager__instance = None
 
     with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value=application)):
         with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value=container_registry)):
-            manager = ExtruderManager()
+            with patch("UM.Application.Application.getInstance", um_application):
+                manager = ExtruderManager()
     return manager
 
 

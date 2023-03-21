@@ -1,6 +1,6 @@
 {
-    "name": "VzBot Custom",
     "version": 2,
+    "name": "VzBot Custom",
     "inherits": "vzbot_base",
     "metadata":
     {
@@ -9,9 +9,9 @@
     },
     "overrides":
     {
-        "machine_name":     { "default_value": "VzBot Custom" },
-        "machine_width":    { "default_value": 400 },
-        "machine_depth":    { "default_value": 400 },
-        "machine_height":   { "default_value": 400 }
+        "machine_depth": { "default_value": 400 },
+        "machine_height": { "default_value": 400 },
+        "machine_name": { "default_value": "VzBot Custom" },
+        "machine_width": { "default_value": 400 }
     }
 }

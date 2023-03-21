@@ -2,98 +2,44 @@
     "version": 2,
     "name": "3DMaker Starter",
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "visible": true,
         "author": "tvlgiao",
         "manufacturer": "3DMaker",
         "file_formats": "text/x-gcode;model/stl;application/x-wavefront-obj",
         "platform": "makerstarter_platform.3mf",
-        "preferred_quality_type": "draft",
-        "machine_extruder_trains":
-        {
-            "0": "maker_starter_extruder_0"
-        }
+        "machine_extruder_trains": { "0": "maker_starter_extruder_0" },
+        "preferred_quality_type": "draft"
     },
-
-    "overrides": {
+    "overrides":
+    {
+        "adhesion_type": { "default_value": "raft" },
+        "cool_min_layer_time": { "default_value": 5 },
+        "cool_min_layer_time_fan_speed_max": { "default_value": 10 },
+        "gantry_height": { "value": "55" },
+        "infill_sparse_density": { "default_value": 20 },
+        "layer_height_0": { "default_value": 0.2 },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_depth": { "default_value": 185 },
+        "machine_disallowed_areas": { "default_value": [] },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_heated_bed": { "default_value": false },
+        "machine_height": { "default_value": 200 },
         "machine_name": { "default_value": "3DMaker Starter" },
-        "machine_width": {
-            "default_value": 210
-        },
-        "machine_depth": {
-            "default_value": 185
-        },
-        "machine_height": {
-            "default_value": 200
-        },
-        "machine_heated_bed": {
-            "default_value": false
-        },
-        "machine_center_is_zero": {
-            "default_value": false
-        },
-        "gantry_height": {
-            "value": "55"
-        },
-        "machine_gcode_flavor": {
-            "default_value": "RepRap (Marlin/Sprinter)"
-        },
-        "machine_disallowed_areas": {
-            "default_value": []
-        },
-        "machine_nozzle_tip_outer_diameter": {
-            "default_value": 1
-        },
-        "machine_nozzle_head_distance": {
-            "default_value": 3
-        },
-        "layer_height_0": {
-            "default_value": 0.2
-        },
-        "speed_print": {
-            "default_value": 50
-        },
-        "speed_slowdown_layers": {
-            "default_value": 4
-        },
-        "infill_sparse_density": {
-            "default_value": 20
-        },
-        "cool_min_layer_time": {
-            "default_value": 5
-        },
-        "cool_min_layer_time_fan_speed_max": {
-            "default_value": 10
-        },
-        "support_type": {
-            "default_value": "Everywhere"
-        },
-        "support_angle": {
-            "default_value": 45
-        },
-        "support_xy_distance": {
-            "default_value": 1
-        },
-        "support_z_distance": {
-            "default_value": 0.2
-        },
-        "support_pattern": {
-            "default_value": "zigzag"
-        },
-        "support_infill_rate": {
-            "value": "15 if support_enable and support_structure == 'normal' else 0 if support_enable and support_structure == 'tree' else 15"
-        },
-        "adhesion_type": {
-            "default_value": "raft"
-        },
-        "skirt_brim_minimal_length": {
-            "default_value": 100
-        },
-        "raft_airgap": {
-            "default_value": 0.2
-        },
-        "raft_surface_layers": {
-            "default_value": 2
-        }
+        "machine_nozzle_head_distance": { "default_value": 3 },
+        "machine_nozzle_tip_outer_diameter": { "default_value": 1 },
+        "machine_width": { "default_value": 210 },
+        "raft_airgap": { "default_value": 0.2 },
+        "raft_surface_layers": { "default_value": 2 },
+        "skirt_brim_minimal_length": { "default_value": 100 },
+        "speed_print": { "default_value": 50 },
+        "speed_slowdown_layers": { "default_value": 4 },
+        "support_angle": { "default_value": 45 },
+        "support_infill_rate": { "value": "15 if support_enable and support_structure == 'normal' else 0 if support_enable and support_structure == 'tree' else 15" },
+        "support_pattern": { "default_value": "zigzag" },
+        "support_type": { "default_value": "Everywhere" },
+        "support_xy_distance": { "default_value": 1 },
+        "support_z_distance": { "default_value": 0.2 }
     }
 }

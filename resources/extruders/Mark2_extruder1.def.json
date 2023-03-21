@@ -2,13 +2,15 @@
     "version": 2,
     "name": "Extruder 1",
     "inherits": "fdmextruder",
-    "metadata": {
+    "metadata":
+    {
         "machine": "Mark2_for_Ultimaker2",
         "position": "0"
     },
-
-    "overrides": {
-        "extruder_nr": {
+    "overrides":
+    {
+        "extruder_nr":
+        {
             "default_value": 0,
             "maximum_value": "1"
         },

@@ -184,7 +184,8 @@ class QualityManagementModel(ListModel):
                 container_registry.addContainer(container.duplicate(new_id, new_name))
 
     @pyqtSlot(str)
-    def createQualityChanges(self, base_name: str) -> None:
+    @pyqtSlot(str, bool)
+    def createQualityChanges(self, base_name: str, activate_after_success: bool = False) -> None:
         """Create quality changes containers from the user containers in the active stacks.
 
         This will go through the global and extruder stacks and create quality_changes containers from the user
@@ -232,6 +233,14 @@ class QualityManagementModel(ListModel):
             container_manager._performMerge(new_changes, stack.userChanges)
 
             container_registry.addContainer(new_changes)
+
+        if activate_after_success:
+            # At this point, the QualityChangesGroup object for the new changes may not exist yet.
+            # This can be forced by asking for all of them. At that point it's just as well to loop.
+            for quality_changes in ContainerTree.getInstance().getCurrentQualityChangesGroups():
+                if quality_changes.name == unique_name:
+                    machine_manager.setQualityChangesGroup(quality_changes)
+                    break
 
     def _createQualityChanges(self, quality_type: str, intent_category: Optional[str], new_name: str, machine: "GlobalStack", extruder_stack: Optional["ExtruderStack"]) -> "InstanceContainer":
         """Create a quality changes container with the given set-up.
