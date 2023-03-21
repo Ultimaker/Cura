@@ -142,7 +142,6 @@
         "speed_wall_x": { "value": "speed_wall" },
         "support_angle": { "value": "45" },
         "support_pattern": { "value": "'triangles'" },
-        "support_use_towers": { "value": "False" },
         "support_xy_distance": { "value": "wall_line_width_0 * 2.5" },
         "support_xy_distance_overhang": { "value": "wall_line_width_0" },
         "support_z_distance": { "value": "0" },
