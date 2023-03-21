@@ -1,21 +1,24 @@
 {
-    "name": "Mingda D3/Pro",
     "version": 2,
+    "name": "Mingda D3/Pro",
     "inherits": "mingda_base",
-    "overrides": {
-        "machine_name": { "default_value": "MINGDA D3/Pro" },
-        "machine_width": { "default_value": 320 },
+    "metadata":
+    {
+        "visible": true,
+        "platform": "mingda_rock3_base.stl",
+        "platform_offset": [
+            -179,
+            -108,
+            150
+        ],
+        "quality_definition": "mingda_base"
+    },
+    "overrides":
+    {
+        "gantry_height": { "value": 25 },
         "machine_depth": { "default_value": 320 },
         "machine_height": { "default_value": 400 },
-        "gantry_height": { "value": 25 }
-		
-        
-
-    },
-    "metadata": {
-        "quality_definition": "mingda_base",
-        "visible": true,
-       "platform": "mingda_rock3_base.stl",
-        "platform_offset": [ -179, -108, 150]
+        "machine_name": { "default_value": "MINGDA D3/Pro" },
+        "machine_width": { "default_value": 320 }
     }
 }

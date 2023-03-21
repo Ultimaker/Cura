@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import List, Optional
 
-from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt6.QtCore import Qt, pyqtSignal
 
 from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
@@ -12,12 +12,12 @@ PROJECT_UPDATED_AT_DATETIME_FORMAT = "%d-%m-%Y"
 
 
 class DigitalFactoryProjectModel(ListModel):
-    DisplayNameRole = Qt.UserRole + 1
-    LibraryProjectIdRole = Qt.UserRole + 2
-    DescriptionRole = Qt.UserRole + 3
-    ThumbnailUrlRole = Qt.UserRole + 5
-    UsernameRole = Qt.UserRole + 6
-    LastUpdatedRole = Qt.UserRole + 7
+    DisplayNameRole = Qt.ItemDataRole.UserRole + 1
+    LibraryProjectIdRole = Qt.ItemDataRole.UserRole + 2
+    DescriptionRole = Qt.ItemDataRole.UserRole + 3
+    ThumbnailUrlRole = Qt.ItemDataRole.UserRole + 5
+    UsernameRole = Qt.ItemDataRole.UserRole + 6
+    LastUpdatedRole = Qt.ItemDataRole.UserRole + 7
 
     dfProjectModelChanged = pyqtSignal()
 

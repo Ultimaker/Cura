@@ -1,0 +1,13 @@
+{
+    "version": 2,
+    "name": "Modix V4 BIG-180X",
+    "inherits": "modix_v4_base",
+    "metadata": { "visible": true },
+    "overrides":
+    {
+        "machine_depth": { "default_value": 600 },
+        "machine_height": { "default_value": 600 },
+        "machine_name": { "default_value": "Modix BIG-180X V4" },
+        "machine_width": { "default_value": 1800 }
+    }
+}

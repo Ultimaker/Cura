@@ -1,10 +1,12 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import Optional, TYPE_CHECKING, List
 
-from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, pyqtSlot, QUrl
-from PyQt5.QtGui import QImage
+from PyQt6.QtCore import pyqtSignal, pyqtProperty, QObject, pyqtSlot, QUrl
+from PyQt6.QtGui import QImage
+
+from cura.CuraApplication import CuraApplication
 
 if TYPE_CHECKING:
     from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
@@ -42,7 +44,7 @@ class PrintJobOutputModel(QObject):
         self._preview_image = None  # type: Optional[QImage]
 
     @pyqtProperty("QStringList", notify=compatibleMachineFamiliesChanged)
-    def compatibleMachineFamilies(self):
+    def compatibleMachineFamilies(self) -> List[str]:
         # Hack; Some versions of cluster will return a family more than once...
         return list(set(self._compatible_machine_families))
 
@@ -58,7 +60,7 @@ class PrintJobOutputModel(QObject):
         # requires a QUrl to function, updates correctly we add an increasing number. This causes to see the QUrl
         # as new (instead of relying on cached version and thus forces an update.
         temp = "image://print_job_preview/" + str(self._preview_image_id) + "/" + self._key
-        return QUrl(temp, QUrl.TolerantMode)
+        return QUrl(temp, QUrl.ParsingMode.TolerantMode)
 
     def getPreviewImage(self) -> Optional[QImage]:
         return self._preview_image
@@ -77,14 +79,26 @@ class PrintJobOutputModel(QObject):
             self._configuration = configuration
             self.configurationChanged.emit()
 
-    @pyqtProperty(str, notify=ownerChanged)
-    def owner(self):
+    @pyqtProperty(str, notify = ownerChanged)
+    def owner(self) -> str:
         return self._owner
 
-    def updateOwner(self, owner):
+    def updateOwner(self, owner: str) -> None:
         if self._owner != owner:
             self._owner = owner
             self.ownerChanged.emit()
+
+    @pyqtProperty(bool, notify = ownerChanged)
+    def isMine(self) -> bool:
+        """
+        Returns whether this print job was sent by the currently logged in user.
+
+        This checks the owner of the print job with the owner of the currently
+        logged in account. Both of these are human-readable account names which
+        may be duplicate. In practice the harm here is limited, but it's the
+        best we can do with the information available to the API.
+        """
+        return self._owner == CuraApplication.getInstance().getCuraAPI().account.userName
 
     @pyqtProperty(QObject, notify=assignedPrinterChanged)
     def assignedPrinter(self):
@@ -119,20 +133,20 @@ class PrintJobOutputModel(QObject):
 
     @pyqtProperty(int, notify = timeTotalChanged)
     def timeTotal(self) -> int:
-        return self._time_total
+        return int(self._time_total)
 
     @pyqtProperty(int, notify = timeElapsedChanged)
     def timeElapsed(self) -> int:
-        return self._time_elapsed
+        return int(self._time_elapsed)
 
     @pyqtProperty(int, notify = timeElapsedChanged)
     def timeRemaining(self) -> int:
         # Never get a negative time remaining
-        return max(self.timeTotal - self.timeElapsed, 0)
+        return int(max(self.timeTotal - self.timeElapsed, 0))
 
     @pyqtProperty(float, notify = timeElapsedChanged)
     def progress(self) -> float:
-        result = float(self.timeElapsed) / max(self.timeTotal, 1.0) # Prevent a division by zero exception.
+        result = float(self.timeElapsed) / max(self.timeTotal, 1.0)  # Prevent a division by zero exception.
         return min(result, 1.0)  # Never get a progress past 1.0
 
     @pyqtProperty(str, notify=stateChanged)
@@ -151,12 +165,12 @@ class PrintJobOutputModel(QObject):
             return False
         return True
 
-    def updateTimeTotal(self, new_time_total):
+    def updateTimeTotal(self, new_time_total: int) -> None:
         if self._time_total != new_time_total:
             self._time_total = new_time_total
             self.timeTotalChanged.emit()
 
-    def updateTimeElapsed(self, new_time_elapsed):
+    def updateTimeElapsed(self, new_time_elapsed: int) -> None:
         if self._time_elapsed != new_time_elapsed:
             self._time_elapsed = new_time_elapsed
             self.timeElapsedChanged.emit()

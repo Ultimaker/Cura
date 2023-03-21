@@ -1,13 +1,11 @@
-// Copyright (c) 2021 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
-import QtQuick.Controls 1.4
-import QtQuick.Controls 2.0 as Controls2
+import QtQuick.Controls 2.9
 import QtQuick.Layouts 1.3
-import QtQuick.Window 2.2
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 UM.Dialog
@@ -15,30 +13,27 @@ UM.Dialog
     id: base
     title: catalog.i18nc("@title:window", "Save Project")
 
-    minimumWidth: 500 * screenScaleFactor
-    minimumHeight: 400 * screenScaleFactor
+    minimumWidth: UM.Theme.getSize("popup_dialog").width
+    minimumHeight: UM.Theme.getSize("popup_dialog").height
     width: minimumWidth
     height: minimumHeight
 
-    property int spacerHeight: 10 * screenScaleFactor
+    backgroundColor: UM.Theme.getColor("main_background")
 
     property bool dontShowAgain: true
 
-    signal yes();
-
-    function accept() {  // pressing enter will call this function
-        close();
-        yes();
-    }
-
-    onClosing:
+    function storeDontShowAgain()
     {
         UM.Preferences.setValue("cura/dialog_on_project_save", !dontShowAgainCheckbox.checked)
+        UM.Preferences.setValue("asked_dialog_on_project_save", true)
     }
 
+    onClosing: storeDontShowAgain()
+    onRejected: storeDontShowAgain()
+    onAccepted: storeDontShowAgain()
     onVisibleChanged:
     {
-        if(visible)
+        if(visible && UM.Preferences.getValue("cura/asked_dialog_on_project_save"))
         {
             dontShowAgain = !UM.Preferences.getValue("cura/dialog_on_project_save")
         }
@@ -59,11 +54,7 @@ UM.Dialog
             visibilityHandler: UM.SettingPreferenceVisibilityHandler { }
         }
 
-        SystemPalette
-        {
-            id: palette
-        }
-        Label
+        UM.Label
         {
             id: mainHeading
             width: parent.width
@@ -79,16 +70,28 @@ UM.Dialog
             {
                 top: mainHeading.bottom
                 topMargin: UM.Theme.getSize("default_margin").height
-                bottom: controls.top
+                bottom: parent.bottom
                 bottomMargin: UM.Theme.getSize("default_margin").height
             }
-            style: UM.Theme.styles.scrollview
+
+            ScrollBar.vertical: UM.ScrollBar
+            {
+                parent: scroll.parent
+                anchors
+                {
+                    top: parent.top
+                    right: parent.right
+                    bottom: parent.bottom
+                }
+            }
+            clip: true
+
             ColumnLayout
             {
                 spacing: UM.Theme.getSize("default_margin").height
                 Column
                 {
-                    Label
+                    UM.Label
                     {
                         id: settingsHeading
                         text: catalog.i18nc("@action:label", "Printer settings")
@@ -98,14 +101,14 @@ UM.Dialog
                     {
                         width: parent.width
                         height: childrenRect.height
-                        Label
+                        UM.Label
                         {
                             text: catalog.i18nc("@action:label", "Type")
                             width: Math.floor(scroll.width / 3) | 0
                         }
-                        Label
+                        UM.Label
                         {
-                            text: (Cura.MachineManager.activeMachine == null) ? "" : Cura.MachineManager.activeMachine.definition.name
+                            text: Cura.MachineManager.activeMachine == null ? "" : Cura.MachineManager.activeMachine.definition.name
                             width: Math.floor(scroll.width / 3) | 0
                         }
                     }
@@ -113,12 +116,12 @@ UM.Dialog
                     {
                         width: parent.width
                         height: childrenRect.height
-                        Label
+                        UM.Label
                         {
                             text: Cura.MachineManager.activeMachineNetworkGroupName != "" ? catalog.i18nc("@action:label", "Printer Group") : catalog.i18nc("@action:label", "Name")
                             width: Math.floor(scroll.width / 3) | 0
                         }
-                        Label
+                        UM.Label
                         {
                             text:
                             {
@@ -157,7 +160,7 @@ UM.Dialog
                             var material_name = extruder.material.name
                             return (material_name !== undefined) ? material_name : ""
                         }
-                        Label
+                        UM.Label
                         {
                             text: {
                                 var extruder = Number(modelData.position)
@@ -181,7 +184,7 @@ UM.Dialog
                             width: parent.width
                             height: childrenRect.height
 
-                            Label
+                            UM.Label
                             {
                                 text:
                                 {
@@ -194,7 +197,7 @@ UM.Dialog
                                 width: Math.floor(scroll.width / 3) | 0
                                 enabled: modelData.isEnabled
                             }
-                            Label
+                            UM.Label
                             {
                                 text:
                                 {
@@ -214,7 +217,7 @@ UM.Dialog
                 {
                     width: parent.width
                     height: childrenRect.height
-                    Label
+                    UM.Label
                     {
                         text: catalog.i18nc("@action:label", "Profile settings")
                         font.bold: true
@@ -222,12 +225,12 @@ UM.Dialog
                     Row
                     {
                         width: parent.width
-                        Label
+                        UM.Label
                         {
                             text: catalog.i18nc("@action:label", "Not in profile")
                             width: Math.floor(scroll.width / 3) | 0
                         }
-                        Label
+                        UM.Label
                         {
                             text: catalog.i18ncp("@action:label", "%1 override", "%1 overrides", Cura.MachineManager.numUserSettings).arg(Cura.MachineManager.numUserSettings)
                             width: Math.floor(scroll.width / 3) | 0
@@ -238,12 +241,12 @@ UM.Dialog
                     {
                         width: parent.width
                         height: childrenRect.height
-                        Label
+                        UM.Label
                         {
                             text: catalog.i18nc("@action:label", "Name")
                             width: Math.floor(scroll.width / 3) | 0
                         }
-                        Label
+                        UM.Label
                         {
                             text: Cura.MachineManager.activeQualityOrQualityChangesName
                             width: Math.floor(scroll.width / 3) | 0
@@ -255,12 +258,12 @@ UM.Dialog
                     {
                         width: parent.width
                         height: childrenRect.height
-                        Label
+                        UM.Label
                         {
                             text: catalog.i18nc("@action:label", "Intent")
                             width: Math.floor(scroll.width / 3) | 0
                         }
-                        Label
+                        UM.Label
                         {
                             text: Cura.MachineManager.activeIntentCategory
                             width: Math.floor(scroll.width / 3) | 0
@@ -269,43 +272,31 @@ UM.Dialog
                 }
             }
         }
-        Item
-        {
-            id: controls
-            width: parent.width
-            height: childrenRect.height
-            anchors.bottom: parent.bottom
-            CheckBox
-            {
-                id: dontShowAgainCheckbox
-                anchors.left: parent.left
-                text: catalog.i18nc("@action:label", "Don't show project summary on save again")
-                checked: dontShowAgain
-            }
-            Controls2.Button
-            {
-                id: cancel_button
-                anchors
-                {
-                    right: ok_button.left
-                    rightMargin: UM.Theme.getSize("default_margin").width
-                }
-                text: catalog.i18nc("@action:button","Cancel");
-                enabled: true
-                onClicked: close()
-            }
-            Controls2.Button
-            {
-                id: ok_button
-                anchors.right: parent.right
-                text: catalog.i18nc("@action:button","Save");
-                enabled: true
-                onClicked:
-                {
-                    close()
-                    yes()
-                }
-            }
-        }
     }
+
+    buttonSpacing: UM.Theme.getSize("thin_margin").width
+
+    leftButtons:
+    [
+        UM.CheckBox
+        {
+            id: dontShowAgainCheckbox
+            text: catalog.i18nc("@action:label", "Don't show project summary on save again")
+            checked: dontShowAgain
+        }
+    ]
+
+    rightButtons:
+    [
+        Cura.SecondaryButton
+        {
+            text: catalog.i18nc("@action:button", "Cancel")
+            onClicked: base.reject()
+        },
+        Cura.PrimaryButton
+        {
+            text: catalog.i18nc("@action:button", "Save")
+            onClicked: base.accept()
+        }
+    ]
 }

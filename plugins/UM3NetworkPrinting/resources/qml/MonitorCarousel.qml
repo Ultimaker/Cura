@@ -3,7 +3,6 @@
 
 import QtQuick 2.3
 import QtQuick.Controls 2.0
-import QtGraphicalEffects 1.0
 import UM 1.3 as UM
 
 Item
@@ -39,24 +38,10 @@ Item
         }
         height: parent.height
         z: 10
-        LinearGradient
+        Rectangle
         {
             anchors.fill: parent
-            start: Qt.point(0, 0)
-            end: Qt.point(leftHint.width, 0)
-            gradient: Gradient
-            {
-                GradientStop
-                {
-                    position: 0.0
-                    color: UM.Theme.getColor("monitor_stage_background")
-                }
-                GradientStop
-                {
-                    position: 1.0
-                    color: UM.Theme.getColor("monitor_stage_background_fade")
-                }
-            }
+            color: UM.Theme.getColor("monitor_stage_background")
         }
         MouseArea
         {
@@ -90,13 +75,11 @@ Item
         contentItem: Item
         {
             anchors.fill: parent
-            UM.RecolorImage
+            UM.ColorImage
             {
                 anchors.centerIn: parent
                 width: 18 // TODO: Theme!
                 height: width // TODO: Theme!
-                sourceSize.width: width // TODO: Theme!
-                sourceSize.height: width // TODO: Theme!
                 color: UM.Theme.getColor("text")
                 source: UM.Theme.getIcon("ChevronSingleLeft")
             }
@@ -169,13 +152,11 @@ Item
         contentItem: Item
         {
             anchors.fill: parent
-            UM.RecolorImage
+            UM.ColorImage
             {
                 anchors.centerIn: parent
                 width: 18 // TODO: Theme!
                 height: width // TODO: Theme!
-                sourceSize.width: width // TODO: Theme!
-                sourceSize.height: width // TODO: Theme!
                 color: UM.Theme.getColor("text")
                 source: UM.Theme.getIcon("ChevronSingleRight")
             }
@@ -194,24 +175,11 @@ Item
         height: centerSection.height
         z: 10
 
-        LinearGradient
+        Rectangle
         {
             anchors.fill: parent
-            start: Qt.point(0, 0)
-            end: Qt.point(rightHint.width, 0)
-            gradient: Gradient
-            {
-                GradientStop
-                {
-                    position: 0.0
-                    color: UM.Theme.getColor("monitor_stage_background_fade")
-                }
-                GradientStop
-                {
-                    position: 1.0
-                    color: UM.Theme.getColor("monitor_stage_background")
-                }
-            }
+            color: UM.Theme.getColor("monitor_stage_background_fade")
+
         }
         MouseArea
         {

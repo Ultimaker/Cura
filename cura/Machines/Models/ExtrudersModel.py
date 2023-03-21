@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import Qt, pyqtSignal, pyqtProperty, QTimer
+from PyQt6.QtCore import Qt, pyqtSignal, pyqtProperty, QTimer
 from typing import Iterable, TYPE_CHECKING
 
 from UM.i18n import i18nCatalog
@@ -23,43 +23,43 @@ class ExtrudersModel(ListModel):
     """
 
     # The ID of the container stack for the extruder.
-    IdRole = Qt.UserRole + 1
+    IdRole = Qt.ItemDataRole.UserRole + 1
 
-    NameRole = Qt.UserRole + 2
+    NameRole = Qt.ItemDataRole.UserRole + 2
     """Human-readable name of the extruder."""
 
-    ColorRole = Qt.UserRole + 3
+    ColorRole = Qt.ItemDataRole.UserRole + 3
     """Colour of the material loaded in the extruder."""
 
-    IndexRole = Qt.UserRole + 4
+    IndexRole = Qt.ItemDataRole.UserRole + 4
     """Index of the extruder, which is also the value of the setting itself.
 
     An index of 0 indicates the first extruder, an index of 1 the second one, and so on. This is the value that will 
     be saved in instance containers. """
 
     # The ID of the definition of the extruder.
-    DefinitionRole = Qt.UserRole + 5
+    DefinitionRole = Qt.ItemDataRole.UserRole + 5
 
     # The material of the extruder.
-    MaterialRole = Qt.UserRole + 6
+    MaterialRole = Qt.ItemDataRole.UserRole + 6
 
     # The variant of the extruder.
-    VariantRole = Qt.UserRole + 7
-    StackRole = Qt.UserRole + 8
+    VariantRole = Qt.ItemDataRole.UserRole + 7
+    StackRole = Qt.ItemDataRole.UserRole + 8
 
-    MaterialBrandRole = Qt.UserRole + 9
-    ColorNameRole = Qt.UserRole + 10
+    MaterialBrandRole = Qt.ItemDataRole.UserRole + 9
+    ColorNameRole = Qt.ItemDataRole.UserRole + 10
 
-    EnabledRole = Qt.UserRole + 11
+    EnabledRole = Qt.ItemDataRole.UserRole + 11
     """Is the extruder enabled?"""
 
-    MaterialTypeRole = Qt.UserRole + 12
+    MaterialTypeRole = Qt.ItemDataRole.UserRole + 12
     """The type of the material (e.g. PLA, ABS, PETG, etc.)."""
 
     defaultColors = ["#ffc924", "#86ec21", "#22eeee", "#245bff", "#9124ff", "#ff24c8"]
     """List of colours to display if there is no material or the material has no known colour. """
 
-    MaterialNameRole = Qt.UserRole + 13
+    MaterialNameRole = Qt.ItemDataRole.UserRole + 13
 
     def __init__(self, parent = None):
         """Initialises the extruders model, defining the roles and listening for changes in the data.

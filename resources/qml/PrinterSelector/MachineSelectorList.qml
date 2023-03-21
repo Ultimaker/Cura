@@ -4,40 +4,59 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.3
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 ListView
 {
     id: listView
-    model: Cura.GlobalStacksModel {}
-    section.property: "hasRemoteConnection"
+    section.property: "category"
     property real contentHeight: childrenRect.height
+    property var onSelectPrinter
 
-    section.delegate: Label
+    ScrollBar.vertical: UM.ScrollBar
     {
-        text: section == "true" ? catalog.i18nc("@label", "Connected printers") : catalog.i18nc("@label", "Preset printers")
-        width: parent.width
-        height: UM.Theme.getSize("action_button").height
-        leftPadding: UM.Theme.getSize("default_margin").width
-        renderType: Text.NativeRendering
-        font: UM.Theme.getFont("medium")
-        color: UM.Theme.getColor("text_medium")
-        verticalAlignment: Text.AlignVCenter
+        id: scrollBar
     }
 
-    delegate: MachineSelectorButton
+    section.delegate: UM.Label
     {
-        text: model.name ? model.name : ""
-        width: listView.width
-        outputDevice: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
+        text: {
+            switch (section)
+            {
+                case "connected":
+                    return catalog.i18nc("@label", "Connected printers");
+                case "other":
+                    return catalog.i18nc("@label", "Other printers");
+                default:
+                    return catalog.i18nc("@label", "Other printers");
+            }
+        }
+        height: UM.Theme.getSize("action_button").height
+        width: parent.width - scrollBar.width
+        leftPadding: UM.Theme.getSize("default_margin").width
+        font: UM.Theme.getFont("medium")
+        color: UM.Theme.getColor("text_medium")
+    }
 
-        checked: Cura.MachineManager.activeMachine ? Cura.MachineManager.activeMachine.id == model.id : false
+    delegate: MachineListButton
+    {
+        width: listView.width - scrollBar.width
 
-        onClicked:
+        onClicked: function()
         {
-            toggleContent()
-            Cura.MachineManager.setActiveMachine(model.id)
+            switch (model.componentType) {
+                case "HIDE_BUTTON":
+                    listView.model.setShowCloudPrinters(false);
+                    break;
+                case "SHOW_BUTTON":
+                    listView.model.setShowCloudPrinters(true);
+                    break;
+                case "MACHINE":
+                    if (typeof onSelectPrinter === "function") onSelectPrinter(model);
+                    break;
+                default:
+            }
         }
     }
 }

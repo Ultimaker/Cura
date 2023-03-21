@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import Any, cast, Dict, Optional, TYPE_CHECKING
-from PyQt5.QtCore import pyqtSlot, QObject, Qt, QTimer
+from PyQt6.QtCore import pyqtSlot, QObject, Qt, QTimer
 
 from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
@@ -29,13 +29,13 @@ if TYPE_CHECKING:
 class QualityManagementModel(ListModel):
     """This the QML model for the quality management page."""
 
-    NameRole = Qt.UserRole + 1
-    IsReadOnlyRole = Qt.UserRole + 2
-    QualityGroupRole = Qt.UserRole + 3
-    QualityTypeRole = Qt.UserRole + 4
-    QualityChangesGroupRole = Qt.UserRole + 5
-    IntentCategoryRole = Qt.UserRole + 6
-    SectionNameRole = Qt.UserRole + 7
+    NameRole = Qt.ItemDataRole.UserRole + 1
+    IsReadOnlyRole = Qt.ItemDataRole.UserRole + 2
+    QualityGroupRole = Qt.ItemDataRole.UserRole + 3
+    QualityTypeRole = Qt.ItemDataRole.UserRole + 4
+    QualityChangesGroupRole = Qt.ItemDataRole.UserRole + 5
+    IntentCategoryRole = Qt.ItemDataRole.UserRole + 6
+    SectionNameRole = Qt.ItemDataRole.UserRole + 7
 
     def __init__(self, parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)
@@ -184,7 +184,8 @@ class QualityManagementModel(ListModel):
                 container_registry.addContainer(container.duplicate(new_id, new_name))
 
     @pyqtSlot(str)
-    def createQualityChanges(self, base_name: str) -> None:
+    @pyqtSlot(str, bool)
+    def createQualityChanges(self, base_name: str, activate_after_success: bool = False) -> None:
         """Create quality changes containers from the user containers in the active stacks.
 
         This will go through the global and extruder stacks and create quality_changes containers from the user
@@ -232,6 +233,14 @@ class QualityManagementModel(ListModel):
             container_manager._performMerge(new_changes, stack.userChanges)
 
             container_registry.addContainer(new_changes)
+
+        if activate_after_success:
+            # At this point, the QualityChangesGroup object for the new changes may not exist yet.
+            # This can be forced by asking for all of them. At that point it's just as well to loop.
+            for quality_changes in ContainerTree.getInstance().getCurrentQualityChangesGroups():
+                if quality_changes.name == unique_name:
+                    machine_manager.setQualityChangesGroup(quality_changes)
+                    break
 
     def _createQualityChanges(self, quality_type: str, intent_category: Optional[str], new_name: str, machine: "GlobalStack", extruder_stack: Optional["ExtruderStack"]) -> "InstanceContainer":
         """Create a quality changes container with the given set-up.
@@ -358,11 +367,19 @@ class QualityManagementModel(ListModel):
                 "quality_type": quality_type,
                 "quality_changes_group": None,
                 "intent_category": intent_category,
-                "section_name": catalog.i18nc("@label", intent_translations.get(intent_category, {}).get("name", catalog.i18nc("@label", "Unknown"))),
+                "section_name": catalog.i18nc("@label", intent_translations.get(intent_category, {}).get("name", catalog.i18nc("@label", intent_category.title()))),
             })
-        # Sort by quality_type for each intent category
 
-        result = sorted(result, key = lambda x: (list(intent_translations).index(x["intent_category"]), x["quality_type"]))
+        # Sort by quality_type for each intent category
+        intent_translations_list = list(intent_translations)
+
+        def getIntentWeight(intent_category):
+            try:
+                return intent_translations_list.index(intent_category)
+            except ValueError:
+                return 99
+
+        result = sorted(result, key = lambda x: (getIntentWeight(x["intent_category"]), x["quality_type"]))
         item_list += result
 
         # Create quality_changes group items

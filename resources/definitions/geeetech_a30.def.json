@@ -2,64 +2,29 @@
     "version": 2,
     "name": "Geeetech A30",
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
+        "visible": true,
         "author": "William & Cataldo URSO",
         "manufacturer": "Geeetech",
         "file_formats": "text/x-gcode",
-        "visible": true,
         "has_materials": true,
-        "preferred_quality_type": "draft",
-        "machine_extruder_trains": {
-            "0": "geeetech_a30_extruder_0"
-        }
+        "machine_extruder_trains": { "0": "geeetech_a30_extruder_0" },
+        "preferred_quality_type": "draft"
     },
-    "overrides": {
-        "machine_name": {
-            "default_value": "Geeetech A30"
-        },
-        "machine_start_gcode": {
-            "default_value": "G28 ;Home\nM190 S{material_bed_temperature}\nM109 S{material_print_temperature} T0\nG1 Z15.0 F6000 ;Move the platform down 15mm\nG92 E0\nG1 F200 E3\nG92 E0"
-        },
-        "machine_end_gcode": {
-            "default_value": "M104 S0;Cooling the heat end\nM140 S0;Cooling the heat bed\nG92 E1\nG1 E-1 F300\nG28 X0 Y0;Home X axis and Y axis\nM84"
-        },
-        "machine_width": {
-            "default_value": 320
-        },
-        "machine_height": {
-            "default_value": 420
-        },
-        "machine_depth": {
-            "default_value": 320
-        },
-        "machine_heated_bed": {
-            "default_value": true
-        },
-        "machine_center_is_zero": {
-            "default_value": false
-        },
-        "material_diameter": {
-            "default_value": 1.75
-        },
-        "machine_nozzle_size": {
-            "default_value": 0.4
-        },
-        "layer_height": {
-            "default_value": 0.1
-        },
-        "layer_height_0": {
-            "default_value": 0.3
-        },
-        "retraction_amount": {
-            "default_value": 2
-        },
-        "retraction_speed": {
-            "default_value": 25
-        },
-        "adhesion_type": {
-            "default_value": "skirt"
-        },
-        "machine_head_with_fans_polygon": {
+    "overrides":
+    {
+        "adhesion_type": { "default_value": "skirt" },
+        "gantry_height": { "value": "55" },
+        "layer_height": { "default_value": 0.1 },
+        "layer_height_0": { "default_value": 0.3 },
+        "machine_acceleration": { "default_value": 2000 },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_depth": { "default_value": 320 },
+        "machine_end_gcode": { "default_value": "M104 S0;Cooling the heat end\nM140 S0;Cooling the heat bed\nG92 E1\nG1 E-1 F300\nG28 X0 Y0;Home X axis and Y axis\nM84" },
+        "machine_gcode_flavor": { "default_value": "Repetier" },
+        "machine_head_with_fans_polygon":
+        {
             "default_value": [
                 [-75, 35],
                 [18, 35],
@@ -67,47 +32,25 @@
                 [-75, -18]
             ]
         },
-        "gantry_height": {
-            "value": "55"
-        },
-        "machine_max_feedrate_x": {
-            "default_value": 300
-        },
-        "machine_max_feedrate_y": {
-            "default_value": 300
-        },
-        "machine_max_feedrate_z": {
-            "default_value": 7
-        },
-        "machine_max_feedrate_e": {
-            "default_value": 50
-        },
-        "machine_max_acceleration_x": {
-            "default_value": 2000
-        },
-        "machine_max_acceleration_y": {
-            "default_value": 2000
-        },
-        "machine_max_acceleration_z": {
-            "default_value": 100
-        },
-        "machine_max_acceleration_e": {
-            "default_value": 10000
-        },
-        "machine_acceleration": {
-            "default_value": 2000
-        },
-        "machine_max_jerk_xy": {
-            "default_value": 10
-        },
-        "machine_max_jerk_z": {
-            "default_value": 1
-        },
-        "machine_max_jerk_e": {
-            "default_value": 5
-        },
-        "machine_gcode_flavor": {
-            "default_value": "Repetier"
-        }
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 420 },
+        "machine_max_acceleration_e": { "default_value": 10000 },
+        "machine_max_acceleration_x": { "default_value": 2000 },
+        "machine_max_acceleration_y": { "default_value": 2000 },
+        "machine_max_acceleration_z": { "default_value": 100 },
+        "machine_max_feedrate_e": { "default_value": 50 },
+        "machine_max_feedrate_x": { "default_value": 300 },
+        "machine_max_feedrate_y": { "default_value": 300 },
+        "machine_max_feedrate_z": { "default_value": 7 },
+        "machine_max_jerk_e": { "default_value": 5 },
+        "machine_max_jerk_xy": { "default_value": 10 },
+        "machine_max_jerk_z": { "default_value": 1 },
+        "machine_name": { "default_value": "Geeetech A30" },
+        "machine_nozzle_size": { "default_value": 0.4 },
+        "machine_start_gcode": { "default_value": "G28 ;Home\nM190 S{material_bed_temperature}\nM109 S{material_print_temperature} T0\nG1 Z15.0 F6000 ;Move the platform down 15mm\nG92 E0\nG1 F200 E3\nG92 E0" },
+        "machine_width": { "default_value": 320 },
+        "material_diameter": { "default_value": 1.75 },
+        "retraction_amount": { "default_value": 2 },
+        "retraction_speed": { "default_value": 25 }
     }
 }

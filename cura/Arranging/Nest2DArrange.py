@@ -40,7 +40,7 @@ def findNodePlacement(nodes_to_arrange: List["SceneNode"], build_volume: "BuildV
 
     machine_width = build_volume.getWidth()
     machine_depth = build_volume.getDepth()
-    build_plate_bounding_box = Box(machine_width * factor, machine_depth * factor)
+    build_plate_bounding_box = Box(int(machine_width * factor), int(machine_depth * factor))
 
     if fixed_nodes is None:
         fixed_nodes = []

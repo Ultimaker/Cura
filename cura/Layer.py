@@ -15,7 +15,6 @@ class Layer:
         self._height = 0.0
         self._thickness = 0.0
         self._polygons = []  # type: List[LayerPolygon]
-        self._vertex_count = 0
         self._element_count = 0
 
     @property
@@ -31,10 +30,6 @@ class Layer:
         return self._polygons
 
     @property
-    def vertexCount(self):
-        return self._vertex_count
-
-    @property
     def elementCount(self):
         return self._element_count
 
@@ -48,40 +43,24 @@ class Layer:
         result = 0
         for polygon in self._polygons:
             result += polygon.lineMeshVertexCount()
+
         return result
 
     def lineMeshElementCount(self) -> int:
         result = 0
         for polygon in self._polygons:
             result += polygon.lineMeshElementCount()
-        return result
 
-    def lineMeshCumulativeTypeChangeCount(self, path: int) -> int:
-        """ The number of line-type changes in this layer up until #path.
-        See also LayerPolygon::cumulativeTypeChangeCounts.
-
-        :param path: The path-index up until which the cumulative changes are counted.
-        :return: The cumulative number of line-type changes up until this path.
-        """
-        result = 0
-        for polygon in self._polygons:
-            num_counts = len(polygon.cumulativeTypeChangeCounts)
-            if path < num_counts:
-                return result + polygon.cumulativeTypeChangeCounts[path]
-            path -= num_counts
-            result += polygon.cumulativeTypeChangeCounts[num_counts - 1]
         return result
 
     def build(self, vertex_offset, index_offset, vertices, colors, line_dimensions, feedrates, extruders, line_types, indices):
         result_vertex_offset = vertex_offset
         result_index_offset = index_offset
-        self._vertex_count = 0
         self._element_count = 0
         for polygon in self._polygons:
             polygon.build(result_vertex_offset, result_index_offset, vertices, colors, line_dimensions, feedrates, extruders, line_types, indices)
             result_vertex_offset += polygon.lineMeshVertexCount()
             result_index_offset += polygon.lineMeshElementCount()
-            self._vertex_count += polygon.vertexCount
             self._element_count += polygon.elementCount
 
         return result_vertex_offset, result_index_offset

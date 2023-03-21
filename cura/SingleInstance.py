@@ -5,7 +5,7 @@ import json
 import os
 from typing import List, Optional
 
-from PyQt5.QtNetwork import QLocalServer, QLocalSocket
+from PyQt6.QtNetwork import QLocalServer, QLocalSocket
 
 from UM.Qt.QtApplication import QtApplication #For typing.
 from UM.Logger import Logger
@@ -29,7 +29,7 @@ class SingleInstance:
         single_instance_socket.connectToServer("ultimaker-cura")
         single_instance_socket.waitForConnected(msecs = 3000)  # wait for 3 seconds
 
-        if single_instance_socket.state() != QLocalSocket.ConnectedState:
+        if single_instance_socket.state() != QLocalSocket.LocalSocketState.ConnectedState:
             return False
 
         # We only send the files that need to be opened.
@@ -37,7 +37,7 @@ class SingleInstance:
             Logger.log("i", "No file need to be opened, do nothing.")
             return True
 
-        if single_instance_socket.state() == QLocalSocket.ConnectedState:
+        if single_instance_socket.state() == QLocalSocket.LocalSocketState.ConnectedState:
             Logger.log("i", "Connection has been made to the single-instance Cura socket.")
 
             # Protocol is one line of JSON terminated with a carriage return.

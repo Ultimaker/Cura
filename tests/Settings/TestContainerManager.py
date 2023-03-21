@@ -1,7 +1,7 @@
 from unittest import TestCase
 from unittest.mock import MagicMock
 
-from PyQt5.QtCore import QUrl
+from PyQt6.QtCore import QUrl
 from unittest.mock import patch
 from UM.MimeTypeDatabase import MimeTypeDatabase
 from cura.Settings.ContainerManager import ContainerManager

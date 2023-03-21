@@ -3,7 +3,7 @@
 
 from . import PerObjectSettingsTool
 from . import PerObjectSettingVisibilityHandler
-from PyQt5.QtQml import qmlRegisterType
+from PyQt6.QtQml import qmlRegisterType
 
 from UM.i18n import i18nCatalog
 i18n_catalog = i18nCatalog("cura")

@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.Math.Color import Color
@@ -142,7 +142,6 @@ class SimulationPass(RenderPass):
                 if self._layer_view._current_layer_num > -1 and ((not self._layer_view._only_show_top_layers) or (not self._layer_view.getCompatibilityMode())):
                     start = 0
                     end = 0
-                    current_polygon_offset = 0
                     element_counts = layer_data.getElementCounts()
                     for layer in sorted(element_counts.keys()):
                         # In the current layer, we show just the indicated paths
@@ -156,26 +155,18 @@ class SimulationPass(RenderPass):
                                 if index >= polygon.data.size // 3 - offset:
                                     index -= polygon.data.size // 3 - offset
                                     offset = 1  # This is to avoid the first point when there is more than one polygon, since has the same value as the last point in the previous polygon
-                                    current_polygon_offset += 1
                                     continue
                                 # The head position is calculated and translated
                                 head_position = Vector(polygon.data[index+offset][0], polygon.data[index+offset][1], polygon.data[index+offset][2]) + node.getWorldPosition()
                                 break
                             break
-                        end += layer_data.getLayer(layer).vertexCount
-                        if layer < self._layer_view._minimum_layer_num:
-                            start = end
+                        if self._layer_view._minimum_layer_num > layer:
+                            start += element_counts[layer]
+                        end += element_counts[layer]
 
-                    # Calculate the range of paths in the last layer. -- The type-change count is needed to keep the
-                    # vertex-indices aligned between the two different ways we represent polygons here.
-                    # Since there is one type per line, that could give a vertex two different types, if it's a vertex
-                    # where a type-chage occurs. However, the shader expects vertices to have only one type. In order to
-                    # fix this, those vertices are duplicated. This introduces a discrepancy that we have to take into
-                    # account, which is done by the type-change-count.
-                    layer = layer_data.getLayer(self._layer_view._current_layer_num)
-                    type_change_count = 0 if layer is None else layer.lineMeshCumulativeTypeChangeCount(max(self._layer_view._current_path_num - 1, 0))
+                    # Calculate the range of paths in the last layer
                     current_layer_start = end
-                    current_layer_end = current_layer_start + self._layer_view._current_path_num + current_polygon_offset + type_change_count
+                    current_layer_end = end + self._layer_view._current_path_num * 2 # Because each point is used twice
 
                     # This uses glDrawRangeElements internally to only draw a certain range of lines.
                     # All the layers but the current selected layer are rendered first

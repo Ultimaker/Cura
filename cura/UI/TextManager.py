@@ -4,7 +4,7 @@
 import collections
 from typing import Optional, Dict, List, cast
 
-from PyQt5.QtCore import QObject, pyqtSlot
+from PyQt6.QtCore import QObject, pyqtSlot
 
 from UM.i18n import i18nCatalog
 from UM.Resources import Resources
@@ -46,7 +46,9 @@ class TextManager(QObject):
                         line = line.replace("[", "")
                         line = line.replace("]", "")
                         open_version = Version(line)
-                        if open_version > Version([14, 99, 99]):  # Bit of a hack: We released the 15.x.x versions before 2.x
+                        if open_version < Version([0, 0, 1]):  # Something went wrong with parsing, assume non-numerical alternate version that should be on top.
+                            open_version = Version([99, 99, 99])
+                        if Version([14, 99, 99]) < open_version < Version([16, 0, 0]):  # Bit of a hack: We released the 15.x.x versions before 2.x
                             open_version = Version([0, open_version.getMinor(), open_version.getRevision(), open_version.getPostfixVersion()])
                         open_header = ""
                         change_logs_dict[open_version] = collections.OrderedDict()
@@ -66,7 +68,9 @@ class TextManager(QObject):
             text_version = version
             if version < Version([1, 0, 0]):  # Bit of a hack: We released the 15.x.x versions before 2.x
                 text_version = Version([15, version.getMinor(), version.getRevision(), version.getPostfixVersion()])
-            content += "<h1>" + str(text_version) + "</h1><br>"
+            if version > Version([99, 0, 0]):  # Leave it out altogether if it was originally a non-numbered version.
+                text_version = ""
+            content += ("<h1>" + str(text_version) + "</h1><br>") if text_version else ""
             content += ""
             for change in change_logs_dict[version]:
                 if str(change) != "":

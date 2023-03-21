@@ -1,0 +1,53 @@
+{
+    "version": 2,
+    "name": "HCTECH_HC300-M1&M1H",
+    "inherits": "fdmprinter",
+    "metadata":
+    {
+        "visible": true,
+        "author": "HCTECH",
+        "manufacturer": "HCTECH",
+        "file_formats": "text/x-gcode",
+        "platform": "hctech_hc300-m1&m1h.3mf",
+        "has_machine_quality": false,
+        "machine_extruder_trains": { "0": "hctech_hc300-m1&m1h_extruder_0" }
+    },
+    "overrides":
+    {
+        "adhesion_type": { "default_value": "skirt" },
+        "cool_fan_speed": { "value": 75 },
+        "gantry_height": { "value": "55" },
+        "infill_before_walls": { "value": false },
+        "line_width": { "value": 0.38 },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_depth": { "default_value": 300 },
+        "machine_end_gcode": { "default_value": "G91 ;Relative positioning\nG1 E-1 F2700 ;Retract a bit\nG1 Z1 E-1 F2400 ;Retract and raise Z\nG1 Z2 ;Raise Z\nG90 ;Absolute positioning\nG12 P1;clean nozzle\nG1 X5 Y300 ;Return to Start Point\nM106 S0 ;Switch off part cooling fan\nM104 S0 ;turn off temperature\nM140 S0 ;turn off Heated Bed\nM84 X Y E ;Disable all steppers but Z\nM81 ;turn-off power" },
+        "machine_extruder_count": { "default_value": 1 },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [-61, 86],
+                [-61, -31],
+                [21, -31],
+                [21, 86]
+            ]
+        },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 300 },
+        "machine_name": { "default_value": "HCTECH HC300-M1&M1H" },
+        "machine_start_gcode": { "default_value": "G1 Z2 ;Raise Z\nG28 X Y ;Home XY\nG92 E0 ;Reset Extruder\nG1 E-1 F2400 ;Retract\nG92 E0 ;Reset Extruder\nG28 Z ;home Z\nG29 ; Measure the bed\nM500 ; Store to EEPROM\nG1 Z2.0 F3000 ; Move Z Axis up little to prevent scratching of Heat Bed\nG1 X0.1 Y20 Z0.36 F5000.0 ; Move to start position\nG1 X0.1 Y200.0 Z0.36 F1500.0 E15 ; Draw the first line\nG1 X0.4 Y200.0 Z0.36 F5000.0 ; Move to side a little\nG1 X0.4 Y20 Z0.36 F1500.0 E30 ; Draw the second line\nG92 E0 ; Reset Extruder" },
+        "machine_width": { "default_value": 300 },
+        "material_diameter": { "default_value": 1.75 },
+        "retraction_amount":
+        {
+            "default_value": 0.3,
+            "maximum_value_warning": 2.0
+        },
+        "retraction_speed": { "default_value": 35 },
+        "speed_print": { "default_value": 60.0 },
+        "travel_avoid_distance": { "value": 1 },
+        "travel_avoid_supports": { "value": true },
+        "travel_retract_before_outer_wall": { "value": true }
+    }
+}

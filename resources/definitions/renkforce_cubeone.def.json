@@ -1,0 +1,30 @@
+{
+    "version": 2,
+    "name": "Renkforce Cube One",
+    "inherits": "goofoo_small",
+    "metadata":
+    {
+        "visible": true,
+        "author": "Woosh (based on RF100.ini by Conrad Electronic SE)",
+        "manufacturer": "Renkforce"
+    },
+    "overrides":
+    {
+        "adhesion_type": { "default_value": "skirt" },
+        "layer_height": { "default_value": 0.4 },
+        "layer_height_0": { "default_value": 0.5 },
+        "machine_depth": { "default_value": 80 },
+        "machine_heated_bed": { "default_value": false },
+        "machine_height": { "default_value": 80 },
+        "machine_name": { "default_value": "Renkforce Cube One" },
+        "machine_width": { "default_value": 80 },
+        "raft_margin": { "default_value": 5 },
+        "retraction_prime_speed": { "value": 80 },
+        "retraction_speed": { "default_value": 60 },
+        "speed_layer_0": { "value": 10 },
+        "speed_print": { "value": 10 },
+        "speed_print_layer_0": { "value": 10 },
+        "speed_travel": { "value": 10 },
+        "speed_travel_layer_0": { "value": 10 }
+    }
+}

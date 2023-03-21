@@ -27,7 +27,6 @@ vertex41core =
     in highp float a_extruder;
     in highp float a_prev_line_type;
     in highp float a_line_type;
-    in highp float a_vertex_index;
     in highp float a_feedrate;
     in highp float a_thickness;
 
@@ -38,9 +37,8 @@ vertex41core =
     out lowp vec2 v_line_dim;
     out highp int v_extruder;
     out highp mat4 v_extruder_opacity;
-    out highp float v_prev_line_type;
-    out highp float v_line_type;
-    out highp float v_index;
+    out float v_prev_line_type;
+    out float v_line_type;
 
     out lowp vec4 f_color;
     out highp vec3 f_vertex;
@@ -170,7 +168,6 @@ vertex41core =
         v_extruder = int(a_extruder);
         v_prev_line_type = a_prev_line_type;
         v_line_type = a_line_type;
-        v_index = a_vertex_index;
         v_extruder_opacity = u_extruder_opacity;
 
         // for testing without geometry shader
@@ -194,8 +191,6 @@ geometry41core =
     uniform int u_show_infill;
     uniform int u_show_starts;
 
-    uniform highp vec2 u_drawRange;
-
     layout(lines) in;
     layout(triangle_strip, max_vertices = 40) out;
 
@@ -207,7 +202,6 @@ geometry41core =
     in mat4 v_extruder_opacity[];
     in float v_prev_line_type[];
     in float v_line_type[];
-    in float v_index[];
 
     out vec4 f_color;
     out vec3 f_normal;
@@ -237,10 +231,6 @@ geometry41core =
         float size_x;
         float size_y;
 
-        if (u_drawRange[0] >= 0.0 && u_drawRange[1] >= 0.0 && (v_index[0] < u_drawRange[0] || v_index[0] >= u_drawRange[1]))
-        {
-             return;
-        }
         if ((v_extruder_opacity[0][int(mod(v_extruder[0], 4))][v_extruder[0] / 4] == 0.0) && (v_line_type[0] != 8) && (v_line_type[0] != 9)) {
             return;
         }
@@ -437,15 +427,12 @@ u_max_feedrate = 1
 u_min_thickness = 0
 u_max_thickness = 1
 
-u_drawRange = [-1.0, -1.0]
-
 [bindings]
 u_modelMatrix = model_matrix
 u_viewMatrix = view_matrix
 u_projectionMatrix = projection_matrix
 u_normalMatrix = normal_matrix
 u_lightPosition = light_0_position
-u_drawRange = draw_range
 
 [attributes]
 a_vertex = vertex
@@ -458,4 +445,3 @@ a_prev_line_type = prev_line_type
 a_line_type = line_type
 a_feedrate = feedrate
 a_thickness = thickness
-a_vertex_index = vertex_index

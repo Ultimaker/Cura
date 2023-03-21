@@ -1,10 +1,9 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2022 UltiMaker
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.3
 import QtQuick.Controls 2.0
-import QtQuick.Dialogs 1.1
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 /**
@@ -64,7 +63,7 @@ Item
                 leftMargin: 36 * screenScaleFactor // TODO: Theme!
                 verticalCenter: parent.verticalCenter
             }
-            spacing: 18 * screenScaleFactor // TODO: Theme!
+            spacing: UM.Theme.getSize("default_margin").width
 
             Rectangle
             {
@@ -96,23 +95,18 @@ Item
                 {
                     id: printerNameLabel
                     color: printer ? "transparent" : UM.Theme.getColor("monitor_skeleton_loading")
-                    height: 18 * screenScaleFactor // TODO: Theme!
+                    height: UM.Theme.getSize("default_margin").width
                     width: parent.width
-                    radius: 2 * screenScaleFactor // TODO: Theme!
+                    radius: UM.Theme.getSize("default_radius").width
 
-                    Label
+                    UM.Label
                     {
                         text: printer && printer.name ? printer.name : ""
-                        color: UM.Theme.getColor("text")
                         elide: Text.ElideRight
                         font: UM.Theme.getFont("large") // 16pt, bold
                         width: parent.width
                         visible: printer
-
-                        // FIXED-LINE-HEIGHT:
                         height: parent.height
-                        verticalAlignment: Text.AlignVCenter
-                        renderType: Text.NativeRendering
                     }
                 }
 
@@ -120,7 +114,7 @@ Item
                 {
                     color: UM.Theme.getColor("monitor_skeleton_loading")
                     height: 18 * screenScaleFactor // TODO: Theme!
-                    radius: 2 * screenScaleFactor // TODO: Theme!
+                    radius: UM.Theme.getSize("default_radius").width
                     visible: !printer
                     width: 48 * screenScaleFactor // TODO: Theme!
                 }
@@ -138,23 +132,22 @@ Item
                 Item
                 {
                     id: managePrinterLink
-                    anchors {
+                    anchors
+                    {
                         top: printerFamilyPill.bottom
                         topMargin: UM.Theme.getSize("narrow_margin").height
                     }
                     height: 18 * screenScaleFactor // TODO: Theme!
                     width: childrenRect.width
   
-                    Label
+                    UM.Label
                     {
                         id: managePrinterText
                         anchors.verticalCenter: managePrinterLink.verticalCenter
                         color: UM.Theme.getColor("text_link")
-                        font: UM.Theme.getFont("default")
                         text: catalog.i18nc("@label link to Connect and Cloud interfaces", "Manage printer")
-                        renderType: Text.NativeRendering
                     }
-                    UM.RecolorImage
+                    UM.ColorImage
                     {
                         id: externalLinkIcon
                         anchors
@@ -165,22 +158,16 @@ Item
                         }
                         color: UM.Theme.getColor("text_link")
                         source: UM.Theme.getIcon("LinkExternal")
-                        width: 12 * screenScaleFactor
-                        height: 12 * screenScaleFactor
+                        width: UM.Theme.getSize("icon").width
+                        height: UM.Theme.getSize("icon").height
                     }
                 }
                 MouseArea
                 {
                     anchors.fill: managePrinterLink
                     onClicked: OutputDevice.openPrinterControlPanel()
-                    onEntered:
-                    {
-                        manageQueueText.font.underline = true
-                    }
-                    onExited:
-                    {
-                        manageQueueText.font.underline = false
-                    }
+                    onEntered: manageQueueText.font.underline = true
+                    onExited: manageQueueText.font.underline = false
                 }
             }
 
@@ -188,7 +175,7 @@ Item
             {
                 id: printerConfiguration
                 anchors.verticalCenter: parent.verticalCenter
-                buildplate: printer ? catalog.i18nc("@label", "Glass") : null // 'Glass' as a default
+
                 configurations:
                 {
                     var configs = []
@@ -222,8 +209,13 @@ Item
             onClicked: enabled ? contextMenu.switchPopupState() : {}
             visible:
             {
-                if (!printer || !printer.activePrintJob) {
-                    return false
+                if(!printer || !printer.activePrintJob)
+                {
+                    return false;
+                }
+                if(!contextMenu.hasItems)
+                {
+                    return false;
                 }
                 var states = ["queued", "error", "sent_to_printer", "pre_print", "printing", "pausing", "paused", "resuming"]
                 return states.indexOf(printer.activePrintJob.state) !== -1
@@ -265,7 +257,7 @@ Item
                 bottom: parent.bottom
                 bottomMargin: 20 * screenScaleFactor // TODO: Theme!
             }
-            iconSource: "../svg/icons/CameraPhoto.svg"
+            iconSource: Qt.resolvedUrl("../svg/icons/CameraPhoto.svg")
             enabled: !cloudConnection
             visible: printer
         }
@@ -285,7 +277,7 @@ Item
         MonitorInfoBlurb
         {
             id: cameraDisabledInfo
-            text: catalog.i18nc("@info", "Webcam feeds for cloud printers cannot be viewed from Ultimaker Cura." +
+            text: catalog.i18nc("@info", "Webcam feeds for cloud printers cannot be viewed from UltiMaker Cura." +
                 " Click \"Manage printer\" to visit Ultimaker Digital Factory and view this webcam.")
             target: cameraButton
         }
@@ -332,9 +324,9 @@ Item
                 leftMargin: 36 * screenScaleFactor // TODO: Theme!
             }
             height: childrenRect.height
-            spacing: 18 * screenScaleFactor // TODO: Theme!
+            spacing: UM.Theme.getSize("default_margin").width
 
-            Label
+            UM.Label
             {
                 id: printerStatus
                 anchors
@@ -371,7 +363,6 @@ Item
                     return ""
                 }
                 visible: text !== ""
-                renderType: Text.NativeRendering
             }
 
             Item
@@ -401,22 +392,18 @@ Item
                 height: printerNameLabel.height + printerFamilyPill.height + 6 * screenScaleFactor // TODO: Theme!
                 visible: printer && printer.activePrintJob && !printerStatus.visible
 
-                Label
+                UM.Label
                 {
                     id: printerJobNameLabel
                     color: printer && printer.activePrintJob && printer.activePrintJob.isActive ? UM.Theme.getColor("text") : UM.Theme.getColor("monitor_text_disabled")
                     elide: Text.ElideRight
+                    wrapMode: Text.NoWrap
                     font: UM.Theme.getFont("large") // 16pt, bold
                     text: printer && printer.activePrintJob ? printer.activePrintJob.name : catalog.i18nc("@label", "Untitled")
                     width: parent.width
-
-                    // FIXED-LINE-HEIGHT:
-                    height: 18 * screenScaleFactor // TODO: Theme!
-                    verticalAlignment: Text.AlignVCenter
-                    renderType: Text.NativeRendering
                 }
 
-                Label
+                UM.Label
                 {
                     id: printerJobOwnerLabel
                     anchors
@@ -427,14 +414,8 @@ Item
                     }
                     color: printer && printer.activePrintJob && printer.activePrintJob.isActive ? UM.Theme.getColor("text") : UM.Theme.getColor("monitor_text_disabled")
                     elide: Text.ElideRight
-                    font: UM.Theme.getFont("default") // 12pt, regular
                     text: printer && printer.activePrintJob ? printer.activePrintJob.owner : catalog.i18nc("@label", "Anonymous")
                     width: parent.width
-
-                    // FIXED-LINE-HEIGHT:
-                    height: 18 * screenScaleFactor // TODO: Theme!
-                    verticalAlignment: Text.AlignVCenter
-                    renderType: Text.NativeRendering
                 }
             }
 
@@ -448,59 +429,27 @@ Item
                 visible: printer && printer.activePrintJob && printer.activePrintJob.configurationChanges.length === 0 && !printerStatus.visible
             }
 
-            Label
+            UM.Label
             {
                 anchors
                 {
                     verticalCenter: parent.verticalCenter
                 }
-                font: UM.Theme.getFont("default")
                 text: catalog.i18nc("@label:status", "Requires configuration changes")
                 visible: printer && printer.activePrintJob && printer.activePrintJob.configurationChanges.length > 0 && !printerStatus.visible
-                color: UM.Theme.getColor("text")
-
-                // FIXED-LINE-HEIGHT:
-                height: 18 * screenScaleFactor // TODO: Theme!
-                verticalAlignment: Text.AlignVCenter
-                renderType: Text.NativeRendering
             }
         }
 
-        Button
+        Cura.SecondaryButton
         {
             id: detailsButton
             anchors
             {
                 verticalCenter: parent.verticalCenter
                 right: parent.right
-                rightMargin: 18 * screenScaleFactor // TODO: Theme!
+                rightMargin: UM.Theme.getSize("default_margin").width
             }
-            background: Rectangle
-            {
-                color: UM.Theme.getColor("monitor_secondary_button_shadow")
-                radius: 2 * screenScaleFactor // Todo: Theme!
-                Rectangle
-                {
-                    anchors.fill: parent
-                    anchors.bottomMargin: 2 * screenScaleFactor // TODO: Theme!
-                    color: detailsButton.hovered ? UM.Theme.getColor("monitor_secondary_button_hover") : UM.Theme.getColor("monitor_secondary_button")
-                    radius: 2 * screenScaleFactor // Todo: Theme!
-                }
-            }
-            contentItem: Label
-            {
-                anchors.fill: parent
-                anchors.bottomMargin: 2 * screenScaleFactor // TODO: Theme!
-                color: UM.Theme.getColor("monitor_secondary_button_text")
-                font: UM.Theme.getFont("medium") // 14pt, regular
-                text: catalog.i18nc("@action:button", "Details");
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-                height: 18 * screenScaleFactor // TODO: Theme!
-                renderType: Text.NativeRendering
-            }
-            implicitHeight: 32 * screenScaleFactor // TODO: Theme!
-            implicitWidth: 96 * screenScaleFactor // TODO: Theme!
+            text: catalog.i18nc("@action:button", "Details")
             visible: printer && printer.activePrintJob && printer.activePrintJob.configurationChanges.length > 0 && !printerStatus.visible
             onClicked: base.enabled ? overrideConfirmationDialog.open() : {}
             enabled: OutputDevice.supportsPrintJobActions

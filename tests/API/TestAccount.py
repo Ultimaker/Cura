@@ -1,3 +1,6 @@
+# Copyright (c) 2022 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -26,7 +29,8 @@ def test_login():
     mocked_auth_service.startAuthorizationFlow.assert_called_once_with(False)
 
     # Fake a successful login
-    account._onLoginStateChanged(True)
+    with patch("UM.TaskManagement.HttpRequestManager.HttpRequestManager.getInstance"):  # Don't want triggers for account information to actually make HTTP requests.
+        account._onLoginStateChanged(True)
 
     # Attempting to log in again shouldn't change anything.
     account.login()
@@ -59,7 +63,8 @@ def test_logout():
     assert not account.isLoggedIn
 
     # Pretend the stage changed
-    account._onLoginStateChanged(True)
+    with patch("UM.TaskManagement.HttpRequestManager.HttpRequestManager.getInstance"):  # Don't want triggers for account information to actually make HTTP requests.
+        account._onLoginStateChanged(True)
     assert account.isLoggedIn
 
     account.logout()
@@ -72,12 +77,14 @@ def test_errorLoginState(application):
     account._authorization_service = mocked_auth_service
     account.loginStateChanged = MagicMock()
 
-    account._onLoginStateChanged(True, "BLARG!")
+    with patch("UM.TaskManagement.HttpRequestManager.HttpRequestManager.getInstance"):  # Don't want triggers for account information to actually make HTTP requests.
+        account._onLoginStateChanged(True, "BLARG!")
     # Even though we said that the login worked, it had an error message, so the login failed.
     account.loginStateChanged.emit.called_with(False)
 
-    account._onLoginStateChanged(True)
-    account._onLoginStateChanged(False, "OMGZOMG!")
+    with patch("UM.TaskManagement.HttpRequestManager.HttpRequestManager.getInstance"):
+        account._onLoginStateChanged(True)
+        account._onLoginStateChanged(False, "OMGZOMG!")
     account.loginStateChanged.emit.called_with(False)
 
 def test_sync_success():
@@ -86,18 +93,19 @@ def test_sync_success():
     service1 = "test_service1"
     service2 = "test_service2"
 
-    account.setSyncState(service1, SyncState.SYNCING)
-    assert account.syncState == SyncState.SYNCING
+    with patch("UM.TaskManagement.HttpRequestManager.HttpRequestManager.getInstance"):  # Don't want triggers for account information to actually make HTTP requests.
+        account.setSyncState(service1, SyncState.SYNCING)
+        assert account.syncState == SyncState.SYNCING
 
-    account.setSyncState(service2, SyncState.SYNCING)
-    assert account.syncState == SyncState.SYNCING
+        account.setSyncState(service2, SyncState.SYNCING)
+        assert account.syncState == SyncState.SYNCING
 
-    account.setSyncState(service1, SyncState.SUCCESS)
-    # service2 still syncing
-    assert account.syncState == SyncState.SYNCING
+        account.setSyncState(service1, SyncState.SUCCESS)
+        # service2 still syncing
+        assert account.syncState == SyncState.SYNCING
 
-    account.setSyncState(service2, SyncState.SUCCESS)
-    assert account.syncState == SyncState.SUCCESS
+        account.setSyncState(service2, SyncState.SUCCESS)
+        assert account.syncState == SyncState.SUCCESS
 
 
 def test_sync_update_action():
@@ -107,23 +115,24 @@ def test_sync_update_action():
 
     mockUpdateCallback = MagicMock()
 
-    account.setSyncState(service1, SyncState.SYNCING)
-    assert account.syncState == SyncState.SYNCING
+    with patch("UM.TaskManagement.HttpRequestManager.HttpRequestManager.getInstance"):  # Don't want triggers for account information to actually make HTTP requests.
+        account.setSyncState(service1, SyncState.SYNCING)
+        assert account.syncState == SyncState.SYNCING
 
-    account.setUpdatePackagesAction(mockUpdateCallback)
-    account.onUpdatePackagesClicked()
-    mockUpdateCallback.assert_called_once_with()
-    account.setSyncState(service1, SyncState.SUCCESS)
+        account.setUpdatePackagesAction(mockUpdateCallback)
+        account.onUpdatePackagesClicked()
+        mockUpdateCallback.assert_called_once_with()
+        account.setSyncState(service1, SyncState.SUCCESS)
 
-    account.sync()  # starting a new sync resets the update action to None
+        account.sync()  # starting a new sync resets the update action to None
 
-    account.setSyncState(service1, SyncState.SYNCING)
-    assert account.syncState == SyncState.SYNCING
+        account.setSyncState(service1, SyncState.SYNCING)
+        assert account.syncState == SyncState.SYNCING
 
-    account.onUpdatePackagesClicked()  # Should not be connected to an action anymore
-    mockUpdateCallback.assert_called_once_with()  # No additional calls
-    assert account.updatePackagesEnabled is False
-    account.setSyncState(service1, SyncState.SUCCESS)
+        account.onUpdatePackagesClicked()  # Should not be connected to an action anymore
+        mockUpdateCallback.assert_called_once_with()  # No additional calls
+        assert account.updatePackagesEnabled is False
+        account.setSyncState(service1, SyncState.SUCCESS)
 
 
 

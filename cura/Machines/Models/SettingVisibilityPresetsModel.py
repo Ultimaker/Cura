@@ -3,7 +3,7 @@
 
 from typing import Optional, List
 
-from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject
+from PyQt6.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject
 
 from UM.Logger import Logger
 from UM.Preferences import Preferences

@@ -12,7 +12,7 @@ from urllib.error import URLError
 from typing import Dict
 import ssl
 
-import certifi
+import certifi  # type: ignore
 
 from .FirmwareUpdateCheckerLookup import FirmwareUpdateCheckerLookup, getSettingsKeyForMachine
 from .FirmwareUpdateCheckerMessage import FirmwareUpdateCheckerMessage

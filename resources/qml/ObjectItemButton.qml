@@ -4,7 +4,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 
-import UM 1.1 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 Button
@@ -56,7 +56,7 @@ Button
             visible: showExtruderSwatches && extruderColor != ""
         }
 
-        Label
+        UM.Label
         {
             id: buttonText
             anchors
@@ -67,12 +67,9 @@ Button
                 verticalCenter: parent.verticalCenter
             }
             text: objectItemButton.text
-            font: UM.Theme.getFont("default")
             color: UM.Theme.getColor("text_scene")
             opacity: (outsideBuildArea) ? 0.5 : 1.0
             visible: text != ""
-            renderType: Text.NativeRendering
-            verticalAlignment: Text.AlignVCenter
             elide: Text.ElideRight
         }
 
@@ -85,7 +82,7 @@ Button
                 right: parent.right
                 rightMargin: 0
             }
-            width: childrenRect.width
+            width: meshTypeIcon.width + perObjectSettingsCountLabel.width + UM.Theme.getSize("narrow_margin").width
             height: parent.height
             padding: 0
             leftPadding: UM.Theme.getSize("thin_margin").width
@@ -134,7 +131,7 @@ Button
             contentItem: Item
             {
                 height: parent.height
-                width: meshTypeIcon.width + perObjectSettingsCountLabel.width + UM.Theme.getSize("narrow_margin").width
+                width: perObjectSettingsInfo.width
 
                 Cura.NotificationIcon
                 {
@@ -149,7 +146,7 @@ Button
                     labelText: perObjectSettingsCount.toString()
                 }
 
-                UM.RecolorImage
+                UM.ColorImage
                 {
                     id: meshTypeIcon
                     anchors
@@ -191,7 +188,7 @@ Button
         elideWidth: buttonText.width
     }
 
-    Cura.ToolTip
+    UM.ToolTip
     {
         id: tooltip
         tooltipText: objectItemButton.text + perObjectSettingsInfo.tooltipText

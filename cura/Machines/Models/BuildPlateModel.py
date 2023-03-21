@@ -1,14 +1,14 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import Qt
+from PyQt6.QtCore import Qt
 from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
 
 
 class BuildPlateModel(ListModel):
-    NameRole = Qt.UserRole + 1
-    ContainerNodeRole = Qt.UserRole + 2
+    NameRole = Qt.ItemDataRole.UserRole + 1
+    ContainerNodeRole = Qt.ItemDataRole.UserRole + 2
 
     def __init__(self, parent = None):
         super().__init__(parent)

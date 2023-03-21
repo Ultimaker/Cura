@@ -5,7 +5,7 @@ import enum
 import functools  # For partial methods to use as callbacks with information pre-filled.
 import json  # To serialise metadata for API calls.
 import os  # To delete the archive when we're done.
-from PyQt5.QtCore import QUrl
+from PyQt6.QtCore import QUrl
 import tempfile  # To create an archive before we upload it.
 
 import cura.CuraApplication  # Imported like this to prevent circular imports.
@@ -21,7 +21,7 @@ from UM.TaskManagement.HttpRequestScope import JsonDecoratorScope
 
 from typing import Any, cast, Dict, List, Optional, TYPE_CHECKING
 if TYPE_CHECKING:
-    from PyQt5.QtNetwork import QNetworkReply
+    from PyQt6.QtNetwork import QNetworkReply
     from cura.UltimakerCloud.CloudMaterialSync import CloudMaterialSync
 
 catalog = i18nCatalog("cura")
@@ -83,6 +83,14 @@ class UploadMaterialsJob(Job):
             host_guid = "*",  # Required metadata field. Otherwise we get a KeyError.
             um_cloud_cluster_id = "*"  # Required metadata field. Otherwise we get a KeyError.
         )
+
+        # Filter out any printer not capable of the 'import_material' capability. Needs FW 7.0.1-RC at the least!
+        self._printer_metadata = [ printer_data for printer_data in self._printer_metadata if (
+                UltimakerCloudConstants.META_CAPABILITIES in printer_data and
+                "import_material" in printer_data[UltimakerCloudConstants.META_CAPABILITIES]
+            )
+        ]
+
         for printer in self._printer_metadata:
             self._printer_sync_status[printer["host_guid"]] = self.PrinterStatus.UPLOADING.value
 

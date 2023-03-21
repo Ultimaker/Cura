@@ -1,7 +1,9 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt6.QtCore import Qt, pyqtSignal
+from PyQt6.QtQml import QQmlEngine
+
 from UM.Qt.ListModel import ListModel
 from cura.Machines.Models.BaseMaterialsModel import BaseMaterialsModel
 
@@ -9,10 +11,11 @@ class MaterialTypesModel(ListModel):
 
     def __init__(self, parent = None):
         super().__init__(parent)
+        QQmlEngine.setObjectOwnership(self, QQmlEngine.ObjectOwnership.CppOwnership)
 
-        self.addRoleName(Qt.UserRole + 1, "name")
-        self.addRoleName(Qt.UserRole + 2, "brand")
-        self.addRoleName(Qt.UserRole + 3, "colors")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 1, "name")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 2, "brand")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 3, "colors")
 
 class MaterialBrandsModel(BaseMaterialsModel):
 
@@ -20,9 +23,10 @@ class MaterialBrandsModel(BaseMaterialsModel):
 
     def __init__(self, parent = None):
         super().__init__(parent)
+        QQmlEngine.setObjectOwnership(self, QQmlEngine.ObjectOwnership.CppOwnership)
 
-        self.addRoleName(Qt.UserRole + 1, "name")
-        self.addRoleName(Qt.UserRole + 2, "material_types")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 1, "name")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 2, "material_types")
 
         self._update()
 
@@ -74,16 +78,15 @@ class MaterialBrandsModel(BaseMaterialsModel):
             material_type_item_list = []
             brand_item = {
                 "name": brand,
-                "material_types": MaterialTypesModel(self)
+                "material_types": MaterialTypesModel()
             }
 
             for material_type, material_list in material_dict.items():
                 material_type_item = {
                     "name": material_type,
                     "brand": brand,
-                    "colors": BaseMaterialsModel(self)
+                    "colors": BaseMaterialsModel()
                 }
-                material_type_item["colors"].clear()
 
                 # Sort materials by name
                 material_list = sorted(material_list, key = lambda x: x["name"].upper())

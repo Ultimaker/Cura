@@ -3,7 +3,7 @@
 
 from typing import TYPE_CHECKING, Set, Union, Optional
 
-from PyQt5.QtCore import QTimer
+from PyQt6.QtCore import QTimer
 
 from .PrinterOutputController import PrinterOutputController
 

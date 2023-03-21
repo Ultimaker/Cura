@@ -8,7 +8,6 @@ from ..BaseModel import BaseModel
 class CloudClusterResponse(BaseModel):
     """Class representing a cloud connected cluster."""
 
-
     def __init__(self, cluster_id: str, host_guid: str, host_name: str, is_online: bool, status: str,
                  host_internal_ip: Optional[str] = None, host_version: Optional[str] = None,
                  friendly_name: Optional[str] = None, printer_type: str = "ultimaker3", printer_count: int = 1,
@@ -37,7 +36,7 @@ class CloudClusterResponse(BaseModel):
         self.friendly_name = friendly_name
         self.printer_type = printer_type
         self.printer_count = printer_count
-        self.capabilities = capabilities
+        self.capabilities = capabilities if capabilities is not None else []
         super().__init__(**kwargs)
 
     # Validates the model, raising an exception if the model is invalid.
@@ -45,3 +44,10 @@ class CloudClusterResponse(BaseModel):
         super().validate()
         if not self.cluster_id:
             raise ValueError("cluster_id is required on CloudCluster")
+
+    def __repr__(self) -> str:
+        """
+        Convenience function for printing when debugging.
+        :return: A human-readable representation of the data in this object.
+        """
+        return str({k: v for k, v in self.__dict__.items() if k in {"cluster_id", "host_guid", "host_name", "status", "is_online", "host_version", "host_internal_ip", "friendly_name", "printer_type", "printer_count", "capabilities"}})

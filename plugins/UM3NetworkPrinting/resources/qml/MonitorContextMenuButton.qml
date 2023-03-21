@@ -3,7 +3,7 @@
 
 import QtQuick 2.3
 import QtQuick.Controls 2.0
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 Button
@@ -17,13 +17,12 @@ Button
         radius: Math.round(0.5 * width)
         width: base.width
     }
-    contentItem: Label {
+    contentItem: UM.Label
+    {
         color: enabled ? UM.Theme.getColor("text") : UM.Theme.getColor("monitor_text_disabled")
         font.pixelSize: 32 * screenScaleFactor
         horizontalAlignment: Text.AlignHCenter
         text: base.text
-        verticalAlignment: Text.AlignVCenter
-        renderType: Text.NativeRendering;
     }
     height: width
     hoverEnabled: enabled

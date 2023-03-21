@@ -2,24 +2,22 @@
     "version": 2,
     "name": "Tool 7",
     "inherits": "fdmextruder",
-    "metadata": {
+    "metadata":
+    {
         "machine": "hms434",
         "position": "6"
     },
-
-    "overrides": {
-        "extruder_nr": {
+    "overrides":
+    {
+        "extruder_nr":
+        {
             "default_value": 6,
             "maximum_value": "8"
         },
+        "machine_extruder_end_code": { "default_value": "\n;ending tool7" },
+        "machine_extruder_start_code": { "default_value": "\n;changing to tool7" },
         "machine_nozzle_offset_x": { "default_value": 0.0 },
         "machine_nozzle_offset_y": { "default_value": 0.0 },
-        "material_diameter": { "default_value": 1.75 },
-        "machine_extruder_start_code": {
-          "default_value": "\n;changing to tool7"
-        },
-        "machine_extruder_end_code": {
-           "default_value": "\n;ending tool7"
-        }
+        "material_diameter": { "default_value": 1.75 }
     }
 }
