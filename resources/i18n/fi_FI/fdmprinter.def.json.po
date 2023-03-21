@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-03-20 12:56+0000\n"
+"POT-Creation-Date: 2023-03-21 13:25+0000\n"
 "PO-Revision-Date: 2022-07-15 11:17+0200\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: Finnish\n"
@@ -3748,6 +3748,11 @@ msgid "Small Layer Printing Temperature"
 msgstr "Tulostuslämpötila lopussa"
 
 #: fdmprinter.def.json
+msgctxt "small_skin_width label"
+msgid "Small Top/Bottom Width"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 description"
 msgid "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
 msgstr ""
@@ -3755,6 +3760,11 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor description"
 msgid "Small features will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "small_skin_width description"
+msgid "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions."
 msgstr ""
 
 #: fdmprinter.def.json
