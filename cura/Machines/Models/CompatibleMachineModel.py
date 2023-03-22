@@ -54,6 +54,8 @@ class CompatibleMachineModel(ListModel):
 
                 # initialize & add current active material:
                 for extruder in printer.extruders:
+                    if not extruder.activeMaterial:
+                        continue
                     materials = [_makeMaterial(
                         extruder.activeMaterial.brand, extruder.activeMaterial.name, extruder.activeMaterial.color)]
                     extruder_configs[extruder.getPosition()] = {
