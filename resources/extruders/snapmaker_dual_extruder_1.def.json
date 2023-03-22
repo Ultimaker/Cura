@@ -13,7 +13,6 @@
         {
             "default_value": 1,
             "maximum_value": "1"
-            
         },
         "machine_extruder_cooling_fan_number": { "default_value": 1 },
         "machine_nozzle_size": { "default_value": 0.4 },
