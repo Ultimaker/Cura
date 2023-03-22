@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-02-02 16:06+0000\n"
+"POT-Creation-Date: 2023-03-21 13:32+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -70,7 +70,7 @@ msgstr "Uma lista de polígonos com áreas onde a cabeça de impressão não pod
 #: fdmprinter.def.json
 msgctxt "brim_inside_margin description"
 msgid "A part fully enclosed inside another part can generate an outer brim that touches the inside of the other part. This removes all brim within this distance from internal holes."
-msgstr ""
+msgstr "Uma peça totalmente fechada dentro de outra peça pode gerar uma aba externa que toca a parte interna da outra peça. Isto remove todas as bordas dentro dessa distância dos orifícios internos."
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_abs label"
@@ -279,7 +279,7 @@ msgstr "Aplique o desvio do alinhamento da extrusora ao sistema de coordenadas. 
 #: fdmprinter.def.json
 msgctxt "interlocking_enable description"
 msgid "At the locations where models touch, generate an interlocking beam structure. This improves the adhesion between models, especially models printed in different materials."
-msgstr ""
+msgstr "Nos locais onde os modelos tocam, gere uma estrutura de vigas interligadas. Isto melhora a adesão entre os modelos, especialmente os modelos impressos em materiais diferentes."
 
 #: fdmprinter.def.json
 msgctxt "travel_avoid_other_parts label"
@@ -479,7 +479,7 @@ msgstr "Distância da Aba"
 #: fdmprinter.def.json
 msgctxt "brim_inside_margin label"
 msgid "Brim Inside Avoid Margin"
-msgstr ""
+msgstr "Borda interna evitar margem"
 
 #: fdmprinter.def.json
 msgctxt "brim_line_count label"
@@ -1163,7 +1163,7 @@ msgstr "Exclusivo"
 #: fdmprinter.def.json
 msgctxt "experimental label"
 msgid "Experimental"
-msgstr "Experimental"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "z_seam_corner option z_seam_corner_outer"
@@ -1491,7 +1491,7 @@ msgstr "Altura do pórtico"
 #: fdmprinter.def.json
 msgctxt "interlocking_enable label"
 msgid "Generate Interlocking Structure"
-msgstr ""
+msgstr "Gerar estrutura de interligação"
 
 #: fdmprinter.def.json
 msgctxt "support_enable label"
@@ -1556,7 +1556,7 @@ msgstr "Enchimento Gradual Suporte"
 #: fdmprinter.def.json
 msgctxt "cool_min_temperature description"
 msgid "Gradually reduce to this temperature when printing at reduced speeds because of minimum layer time."
-msgstr ""
+msgstr "Reduz gradualmente para esta temperatura ao imprimir a velocidades reduzidas devido ao tempo mínimo da camada."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1637,6 +1637,11 @@ msgstr "Ocultar ou Expor Junta"
 msgctxt "hole_xy_offset label"
 msgid "Hole Horizontal Expansion"
 msgstr "Expansão horizontal de buraco"
+
+#: fdmprinter.def.json
+msgctxt "hole_xy_offset_max_diameter label"
+msgid "Hole Horizontal Expansion Max Diameter"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "small_hole_max_size description"
@@ -2046,27 +2051,27 @@ msgstr "De dentro para fora"
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_layer_count label"
 msgid "Interlocking Beam Layer Count"
-msgstr ""
+msgstr "Contagem de camada de feixe de interligação"
 
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_width label"
 msgid "Interlocking Beam Width"
-msgstr ""
+msgstr "Largura do feixe de interligação"
 
 #: fdmprinter.def.json
 msgctxt "interlocking_boundary_avoidance label"
 msgid "Interlocking Boundary Avoidance"
-msgstr ""
+msgstr "Evitar a interligação de fronteiras"
 
 #: fdmprinter.def.json
 msgctxt "interlocking_depth label"
 msgid "Interlocking Depth"
-msgstr ""
+msgstr "Profundidade de interligação"
 
 #: fdmprinter.def.json
 msgctxt "interlocking_orientation label"
 msgid "Interlocking Structure Orientation"
-msgstr ""
+msgstr "Orientação da estrutura de interligação"
 
 #: fdmprinter.def.json
 msgctxt "ironing_only_highest_layer label"
@@ -2746,12 +2751,12 @@ msgstr "Nenhum"
 #: fdmprinter.def.json
 msgctxt "magic_mesh_surface_mode option normal"
 msgid "Normal"
-msgstr "Normal"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_structure option normal"
 msgid "Normal"
-msgstr "Normal"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "meshfix_keep_open_polygons description"
@@ -3179,6 +3184,11 @@ msgid "Printing Temperature Initial Layer"
 msgstr "Temperatura Impressão Camada Inicial"
 
 #: fdmprinter.def.json
+msgctxt "skirt_height description"
+msgid "Printing the innermost skirt line with multiple layers makes it easy to remove the skirt."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "alternate_extra_perimeter description"
 msgid "Prints an extra wall at every other layer. This way infill gets caught between these extra walls, resulting in stronger prints."
 msgstr "Imprimir uma parede adicional em camadas alternadas. Deste modo, o enchimento é \"capturado\" entre estas paredes adicionais, resultando em impressões mais robustas."
@@ -3391,7 +3401,7 @@ msgstr "Vibra aleatoriamente enquanto imprime a parede exterior, para que a supe
 #: fdmprinter.def.json
 msgctxt "machine_shape option rectangular"
 msgid "Rectangular"
-msgstr "Rectangular"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "cool_fan_speed_min label"
@@ -3664,6 +3674,11 @@ msgid "Skirt Distance"
 msgstr "Distância Contorno"
 
 #: fdmprinter.def.json
+msgctxt "skirt_height label"
+msgid "Skirt Height"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "skirt_line_count label"
 msgid "Skirt Line Count"
 msgstr "Número Linhas Contorno"
@@ -3729,10 +3744,14 @@ msgid "Small Hole Max Size"
 msgstr "Tamanho máximo do buraco pequeno"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "cool_min_temperature label"
 msgid "Small Layer Printing Temperature"
-msgstr "Temperatura de impressão final"
+msgstr "Temperatura de impressão de camada pequena"
+
+#: fdmprinter.def.json
+msgctxt "small_skin_width label"
+msgid "Small Top/Bottom Width"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 description"
@@ -3743,6 +3762,16 @@ msgstr "Os elementos pequenos na primeira camada serão impressos a esta percent
 msgctxt "small_feature_speed_factor description"
 msgid "Small features will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
 msgstr "Os elementos pequenos serão impressos a esta percentagem da respetiva velocidade de impressão normal. Uma impressão mais lenta pode ajudar em termos de aderência e precisão."
+
+#: fdmprinter.def.json
+msgctxt "small_skin_width description"
+msgid "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "brim_smart_ordering label"
+msgid "Smart Brim"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "z_seam_corner option z_seam_corner_weighted"
@@ -3885,10 +3914,9 @@ msgid "Support Bottom Distance"
 msgstr "Distância inferior do suporte"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "support_bottom_wall_count label"
 msgid "Support Bottom Wall Line Count"
-msgstr "Número Linhas Paredes Suporte"
+msgstr "Contagem das linhas da parede inferior de suporte"
 
 #: fdmprinter.def.json
 msgctxt "support_brim_line_count label"
@@ -4086,10 +4114,9 @@ msgid "Support Interface Thickness"
 msgstr "Espessura Interface Suporte"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "support_interface_wall_count label"
 msgid "Support Interface Wall Line Count"
-msgstr "Número Linhas Paredes Suporte"
+msgstr "Contagem das linhas de parede da interface de suporte"
 
 #: fdmprinter.def.json
 msgctxt "jerk_support label"
@@ -4192,10 +4219,9 @@ msgid "Support Roof Thickness"
 msgstr "Espessura do tecto de suporte"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "support_roof_wall_count label"
 msgid "Support Roof Wall Line Count"
-msgstr "Número Linhas Paredes Suporte"
+msgstr "Contagem das linhas de parede do telhado de suporte"
 
 #: fdmprinter.def.json
 msgctxt "speed_support label"
@@ -4271,6 +4297,11 @@ msgstr "A tendência de aderência à superfície."
 msgctxt "material_surface_energy description"
 msgid "Surface energy."
 msgstr "Energia da superfície."
+
+#: fdmprinter.def.json
+msgctxt "brim_smart_ordering description"
+msgid "Swap print order of the innermost and second innermost brim lines. This improves brim removal."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "alternate_carve_order description"
@@ -4599,8 +4630,8 @@ msgstr "A distância percorrida ao efetuar uma ligação a partir de um contorno
 
 #: fdmprinter.def.json
 msgctxt "interlocking_depth description"
-msgid "The distance from the boundary between models to generate interlocking structure measured in cells. Too few cells will result in poor adhesion."
-msgstr ""
+msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
+msgstr "A distância do limite entre modelos para gerar estrutura de interligação medida em células. Um pequeno número de células resultará numa fraca adesão."
 
 #: fdmprinter.def.json
 msgctxt "brim_width description"
@@ -4610,7 +4641,7 @@ msgstr "A distância desde o modelo até à linha mais exterior da Aba. Uma Aba 
 #: fdmprinter.def.json
 msgctxt "interlocking_boundary_avoidance description"
 msgid "The distance from the outside of a model where interlocking structures will not be generated, measured in cells."
-msgstr ""
+msgstr "A distância do lado de fora de um modelo onde estruturas interligadas não serão geradas, medidas nas células."
 
 #: fdmprinter.def.json
 msgctxt "machine_heat_zone_length description"
@@ -4840,12 +4871,12 @@ msgstr "A altura do enchimento de suporte de uma determinada densidade antes de 
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_layer_count description"
 msgid "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects."
-msgstr ""
+msgstr "A altura das vigas da estrutura de interligação, medida em número de camadas. Menos camadas são mais fortes, mas mais propensas a defeitos."
 
 #: fdmprinter.def.json
 msgctxt "interlocking_orientation description"
 msgid "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects."
-msgstr ""
+msgstr "A altura dos vigas da estrutura de interligação, medida em número de camadas. Menos camadas são mais fortes, mas mais propensas a defeitos."
 
 #: fdmprinter.def.json
 msgctxt "layer_height_0 description"
@@ -5257,22 +5288,19 @@ msgid "The number of walls with which to surround support infill. Adding a wall 
 msgstr "O número de paredes que envolvem o enchimento de suporte. Acrescentar uma parede pode tornar a impressão do suporte mais fiável e pode suportar melhor as saliências, mas aumenta o tempo de impressão assim como a quantidade de material utilizado."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "support_bottom_wall_count description"
 msgid "The number of walls with which to surround support interface floor. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "O número de paredes que envolvem o enchimento de suporte. Acrescentar uma parede pode tornar a impressão do suporte mais fiável e pode suportar melhor as saliências, mas aumenta o tempo de impressão assim como a quantidade de material utilizado."
+msgstr "O número de paredes com as quais cercar o piso da interface de suporte. Adicionar uma parede pode tornar a impressão de suporte mais fiável e pode suportar as saliências melhor, mas aumenta o tempo de impressão e o material usado."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "support_roof_wall_count description"
 msgid "The number of walls with which to surround support interface roof. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "O número de paredes que envolvem o enchimento de suporte. Acrescentar uma parede pode tornar a impressão do suporte mais fiável e pode suportar melhor as saliências, mas aumenta o tempo de impressão assim como a quantidade de material utilizado."
+msgstr "O número de paredes com as quais envolver o telhado da interface de suporte. Adicionar uma parede pode tornar a impressão de suporte mais fiável e pode suportar as saliências melhor, mas aumenta o tempo de impressão e o material usado."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "support_interface_wall_count description"
 msgid "The number of walls with which to surround support interface. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "O número de paredes que envolvem o enchimento de suporte. Acrescentar uma parede pode tornar a impressão do suporte mais fiável e pode suportar melhor as saliências, mas aumenta o tempo de impressão assim como a quantidade de material utilizado."
+msgstr "O número de paredes com as quais envolver a interface de suporte. Adicionar uma parede pode tornar a impressão de suporte mais fiável e pode suportar as saliências melhor, mas aumenta o tempo de impressão e o material usado."
 
 #: fdmprinter.def.json
 msgctxt "wall_distribution_count description"
@@ -5695,10 +5723,9 @@ msgid "The width of the brim to print underneath the support. A larger brim enha
 msgstr "A largura da aba para imprimir na parte por baixo do suporte. Uma aba mais larga melhora a aderência à base de construção à custa de algum material adicional."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "interlocking_beam_width description"
 msgid "The width of the interlocking structure beams."
-msgstr "A largura da torre de preparação."
+msgstr "A largura das vigas da estrutura de interligação."
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_size description"
@@ -6314,6 +6341,11 @@ msgstr "Quando ativado, as coordenadas da junta-Z são relativas ao centro de ca
 msgctxt "retraction_combing_max_distance description"
 msgid "When greater than zero, combing travel moves that are longer than this distance will use retraction. If set to zero, there is no maximum and combing moves will not use retraction."
 msgstr "Os movimentos de deslocação de Combing com uma distância maior que este valor, quando este é superior a zero, utilizam retrações. Se o valor for definido como zero, não existirá qualquer valor máximo e os movimentos Combing não utilizarão retrações."
+
+#: fdmprinter.def.json
+msgctxt "hole_xy_offset_max_diameter description"
+msgid "When greater than zero, the Hole Horizontal Expansion is gradually applied on small holes (small holes are expanded more). When set to zero the Hole Horizontal Expansion will be applied to all holes. Holes larger than the Hole Horizontal Expansion Max Diameter are not expanded."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_material_flow description"

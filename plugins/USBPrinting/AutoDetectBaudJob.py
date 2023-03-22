@@ -53,7 +53,7 @@ class AutoDetectBaudJob(Job):
                     try:
                         serial = Serial(str(self._serial_port), baud_rate, timeout = read_timeout, writeTimeout = write_timeout)
                     except SerialException:
-                        Logger.logException("w", "Unable to create serial")
+                        Logger.warning(f"Unable to create serial connection to {serial} with baud rate {baud_rate}")
                         continue
                 else:
                     # We already have a serial connection, just change the baud rate.

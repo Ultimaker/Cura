@@ -26,8 +26,7 @@ class CuraConan(ConanFile):
     no_copy_source = True  # We won't build so no need to copy sources to the build folder
 
     # FIXME: Remove specific branch once merged to main
-    # Extending the conanfile with the UMBaseConanfile https://github.com/Ultimaker/conan-ultimaker-index/tree/CURA-9177_Fix_CI_CD/recipes/umbase
-    python_requires = "umbase/[>=0.1.7]@ultimaker/stable", "translationextractor/[>=1.0.0]@ultimaker/stable"
+    python_requires = "umbase/[>=0.1.7]@ultimaker/stable", "translationextractor/[>=2.1.1]@ultimaker/stable"
     python_requires_extend = "umbase.UMBaseConanfile"
 
     options = {
@@ -48,6 +47,10 @@ class CuraConan(ConanFile):
         "cura_debug_mode": False,  # Not yet implemented
         "internal": False,
     }
+
+    def set_version(self):
+        if self.version == "auto":
+            self.version = "5.4.0-alpha"
 
     @property
     def _pycharm_targets(self):
@@ -275,10 +278,6 @@ class CuraConan(ConanFile):
         copy(self, "CuraVersion.py.jinja", self.recipe_folder, self.export_sources_folder)
         copy(self, "cura_app.py", self.recipe_folder, self.export_sources_folder)
 
-    def set_version(self):
-        if self.version is None:
-            self.version = self._umdefault_version()
-
     def configure(self):
         self.options["pyarcus"].shared = True
         self.options["pysavitar"].shared = True
@@ -306,7 +305,7 @@ class CuraConan(ConanFile):
         if self.options.devtools:
             if self.settings.os != "Windows" or self.conf.get("tools.microsoft.bash:path", check_type = str):
                 # FIXME: once m4, autoconf, automake are Conan V2 ready use self.win_bash and add gettext as base tool_requirement
-                self.tool_requires("gettext/0.21", force_host_context=True)
+                self.tool_requires("gettext/0.21@ultimaker/testing", force_host_context = True)
 
     def layout(self):
         self.folders.source = "."
@@ -335,19 +334,15 @@ class CuraConan(ConanFile):
                                             icon_path = "'{}'".format(os.path.join(self.source_folder, "packaging", self.conan_data["pyinstaller"]["icon"][str(self.settings.os)])).replace("\\", "\\\\"),
                                             entitlements_file = entitlements_file if self.settings.os == "Macos" else "None")
 
-            # Update the po files
+            # Update the po and pot files
             if self.settings.os != "Windows" or self.conf.get("tools.microsoft.bash:path", check_type=str):
                 vb = VirtualBuildEnv(self)
                 vb.generate()
 
                 # FIXME: once m4, autoconf, automake are Conan V2 ready use self.win_bash and add gettext as base tool_requirement
                 cpp_info = self.dependencies["gettext"].cpp_info
-                for po_file in self.source_path.joinpath("resources", "i18n").glob("**/*.po"):
-                    pot_file = self.source_path.joinpath("resources", "i18n", po_file.with_suffix('.pot').name)
-                    mkdir(self, str(unix_path(self, pot_file.parent)))
-                    self.run(
-                        f"{cpp_info.bindirs[0]}/msgmerge --no-wrap --no-fuzzy-matching -width=140 -o {po_file} {po_file} {pot_file}",
-                        env="conanbuild", ignore_errors=True)
+                pot = self.python_requires["translationextractor"].module.ExtractTranslations(self, cpp_info.bindirs[0])
+                pot.generate()
 
     def build(self):
         if self.options.devtools:
