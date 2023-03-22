@@ -615,12 +615,6 @@ UM.MainWindow
         function onTriggered() { base.toggleFullscreen() }
     }
 
-    Connections
-    {
-        target: Cura.Actions.exitFullScreen
-        function onTriggered() { base.exitFullscreen() }
-    }
-
     FileDialog
     {
         id: openDialog;

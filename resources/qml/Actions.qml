@@ -65,7 +65,6 @@ Item
     property alias about: aboutAction
 
     property alias toggleFullScreen: toggleFullScreenAction
-    property alias exitFullScreen: exitFullScreenAction
 
     property alias configureSettingVisibility: configureSettingVisibilityAction
 
@@ -86,13 +85,6 @@ Item
         id: toggleFullScreenAction
         shortcut: StandardKey.FullScreen
         text: catalog.i18nc("@action:inmenu", "Toggle Full Screen")
-        icon.name: "view-fullscreen"
-    }
-
-    Action
-    {
-        id: exitFullScreenAction
-        text: catalog.i18nc("@action:inmenu", "Exit Full Screen")
         icon.name: "view-fullscreen"
     }
 
