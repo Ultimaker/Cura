@@ -5,8 +5,8 @@
     "metadata":
     {
         "visible": true,
-        "platform": "lnl3d_d6.3mf",
-        "platform_offset": [ -700, 6, -100 ]
+        "platform": "lnl3d_d6.stl",
+        "platform_offset": [ 0, 0, 0 ]
     },
     "overrides":
     {
