@@ -285,4 +285,33 @@ Window
             }
         }
     }
+
+    Rectangle
+    {
+        color: UM.Theme.getColor("main_background")
+        anchors.fill: parent
+        visible: !Cura.API.account.isLoggedIn && CuraApplication.isEnterprise
+
+        UM.Label
+        {
+            id: signInLabel
+            anchors.centerIn: parent
+            width: Math.round(UM.Theme.getSize("modal_window_minimum").width / 2.5)
+            text: catalog.i18nc("@description","Please sign in to get verified plugins and materials for UltiMaker Cura Enterprise")
+            horizontalAlignment: Text.AlignHCenter
+        }
+
+        Cura.PrimaryButton
+        {
+            id: loginButton
+            width: UM.Theme.getSize("account_button").width
+            height: UM.Theme.getSize("account_button").height
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: signInLabel.bottom
+            anchors.topMargin: UM.Theme.getSize("default_margin").height * 2
+            text: catalog.i18nc("@button", "Sign in")
+            fixedWidthMode: true
+            onClicked: Cura.API.account.login()
+        }
+    }
 }
