@@ -61,7 +61,6 @@
         "speed_wall_x": { "value": 32 },
         "support_infill_rate": { "value": 5 },
         "support_pattern": { "default_value": "lines" },
-        "support_use_towers": { "value": false },
         "switch_extruder_retraction_amount": { "value": 100 },
         "switch_extruder_retraction_speeds": { "value": 60 },
         "wall_overhang_speed_factor": { "value": 50 },
