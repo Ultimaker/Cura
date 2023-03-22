@@ -1,20 +1,19 @@
 {
     "version": 2,
-    "name": "Right Extruder",
+    "name": "Left Extruder",
     "inherits": "fdmextruder",
-    "metadata":
-    {
-        "machine": "SV04 Single Mode 02",
+    "metadata": {
+        "machine": "sovol_sv04_dual_mode",
         "position": "0"
     },
-    "overrides":
-    {
+
+    "overrides": {
         "extruder_nr":
         {
             "default_value": 0,
             "maximum_value": "1"
         },
         "machine_nozzle_size": { "default_value": 0.4 },
-        "material_diameter": { "default_value": 1.75 }
+		"material_diameter": { "default_value": 1.75 }
     }
 }
