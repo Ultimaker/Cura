@@ -27,6 +27,13 @@ jobs:
             -   name: Checkout
                 uses: actions/checkout@v3
 
+            -   name: Cache Conan data
+                id: cache-conan
+                uses: actions/cache@v3
+                with:
+                    path: ~/.conan
+                    key: ${{ runner.os }}-conan
+
             -   name: Setup Python and pip
                 uses: actions/setup-python@v4
                 with:
@@ -53,7 +60,7 @@ jobs:
                     sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 12
 
             -   name: Create the default Conan profile
-                run: conan profile new default --detect
+                run: conan profile new default --detect --force
 
             -   name: Get Conan configuration
                 run: conan config install https://github.com/Ultimaker/conan-config.git

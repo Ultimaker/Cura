@@ -1298,6 +1298,18 @@
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "hole_xy_offset_max_diameter":
+                {
+                    "label": "Hole Horizontal Expansion Max Diameter",
+                    "description": "When greater than zero, the Hole Horizontal Expansion is gradually applied on small holes (small holes are expanded more). When set to zero the Hole Horizontal Expansion will be applied to all holes. Holes larger than the Hole Horizontal Expansion Max Diameter are not expanded.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value": "0",
+                    "enabled": "hole_xy_offset > 0",
+                    "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_mesh": true
+                },
                 "z_seam_type":
                 {
                     "label": "Z Seam Alignment",
@@ -1648,6 +1660,20 @@
                     "enabled": "(top_layers > 0 or bottom_layers > 0) and top_bottom_pattern != 'concentric'",
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
+                },
+                "small_skin_width":
+                {
+                    "label": "Small Top/Bottom Width",
+                    "description": "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions.",
+                    "value": "skin_line_width * 2",
+                    "default_value": 1,
+                    "minimum_value": "0",
+                    "maximum_value_warning": "skin_line_width * 10",
+                    "type": "float",
+                    "enabled": "(top_layers > 0 or bottom_layers > 0) and top_bottom_pattern != 'concentric'",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true,
+                    "unit": "mm"
                 },
                 "skin_no_small_gaps_heuristic":
                 {
@@ -5679,6 +5705,21 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "skirt_height":
+                {
+                    "label": "Skirt Height",
+                    "description": "Printing the innermost skirt line with multiple layers makes it easy to remove the skirt.",
+                    "type": "int",
+                    "default_value": 3,
+                    "value": "3 if resolveOrValue('skirt_gap') > 0.0 else 1",
+                    "minimum_value": "1",
+                    "maximum_value_warning": "10",
+                    "maximum_value": "machine_height / layer_height",
+                    "enabled": "resolveOrValue('adhesion_type') == 'skirt'",
+                    "limit_to_extruder": "skirt_brim_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "skirt_gap":
                 {
                     "label": "Skirt Distance",
@@ -5788,6 +5829,17 @@
                     "limit_to_extruder": "skirt_brim_extruder_nr",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
+                },
+                "brim_smart_ordering":
+                {
+                    "label": "Smart Brim",
+                    "description": "Swap print order of the innermost and second innermost brim lines. This improves brim removal.",
+                    "type": "bool",
+                    "enabled": "resolveOrValue('adhesion_type') == 'brim'",
+                    "default_value": true,
+                    "limit_to_extruder": "skirt_brim_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
                 },
                 "raft_margin":
                 {

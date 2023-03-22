@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.0\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-03-08 09:03+0000\n"
+"POT-Creation-Date: 2023-03-21 13:32+0000\n"
 "PO-Revision-Date: 2023-02-17 16:31+0100\n"
 "Last-Translator: Cláudio Sampaio <patola@gmail.com>\n"
 "Language-Team: Cláudio Sampaio <patola@gmail.com>\n"
@@ -1644,6 +1644,11 @@ msgid "Hole Horizontal Expansion"
 msgstr "Expansão Horizontal do Furo"
 
 #: fdmprinter.def.json
+msgctxt "hole_xy_offset_max_diameter label"
+msgid "Hole Horizontal Expansion Max Diameter"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "small_hole_max_size description"
 msgid "Holes and part outlines with a diameter smaller than this will be printed using Small Feature Speed."
 msgstr "Furos e contornos de partes com diâmetro menor que este serão impressos usando a Velocidade de Aspecto Pequeno."
@@ -3184,6 +3189,11 @@ msgid "Printing Temperature Initial Layer"
 msgstr "Temperatura de Impressão da Camada Inicial"
 
 #: fdmprinter.def.json
+msgctxt "skirt_height description"
+msgid "Printing the innermost skirt line with multiple layers makes it easy to remove the skirt."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "alternate_extra_perimeter description"
 msgid "Prints an extra wall at every other layer. This way infill gets caught between these extra walls, resulting in stronger prints."
 msgstr "Imprime uma parede adicional a cada duas camadas. Deste jeito o preenchimento fica aprisionado entre estas paredes extras, resultando em impressões mais fortes."
@@ -3669,6 +3679,11 @@ msgid "Skirt Distance"
 msgstr "Distância do Skirt"
 
 #: fdmprinter.def.json
+msgctxt "skirt_height label"
+msgid "Skirt Height"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "skirt_line_count label"
 msgid "Skirt Line Count"
 msgstr "Contagem de linhas de Skirt"
@@ -3740,6 +3755,11 @@ msgid "Small Layer Printing Temperature"
 msgstr "Temperatura de Impressão Final"
 
 #: fdmprinter.def.json
+msgctxt "small_skin_width label"
+msgid "Small Top/Bottom Width"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 description"
 msgid "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
 msgstr "Aspectos pequenos na primeira camada serão impressos nesta porcentagem de sua velocidade de impressão normal. Impressão mais lenta pode ajudar com aderência e precisão."
@@ -3748,6 +3768,16 @@ msgstr "Aspectos pequenos na primeira camada serão impressos nesta porcentagem 
 msgctxt "small_feature_speed_factor description"
 msgid "Small features will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
 msgstr "Aspectos pequenos serão impressos nessa porcentagem da velocidade normal. Impressão mais lenta pode ajudar com aderência e precisão."
+
+#: fdmprinter.def.json
+msgctxt "small_skin_width description"
+msgid "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "brim_smart_ordering label"
+msgid "Smart Brim"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "z_seam_corner option z_seam_corner_weighted"
@@ -4276,6 +4306,11 @@ msgstr "Tendência de aderência da superfície."
 msgctxt "material_surface_energy description"
 msgid "Surface energy."
 msgstr "Energia de superfície."
+
+#: fdmprinter.def.json
+msgctxt "brim_smart_ordering description"
+msgid "Swap print order of the innermost and second innermost brim lines. This improves brim removal."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "alternate_carve_order description"
@@ -6320,6 +6355,11 @@ msgstr "Quando habilitado, as coordenadas da costura Z são relativas ao centro 
 msgctxt "retraction_combing_max_distance description"
 msgid "When greater than zero, combing travel moves that are longer than this distance will use retraction. If set to zero, there is no maximum and combing moves will not use retraction."
 msgstr "Quando maior que zero, os movimentos de percurso de combing que forem maiores que essa distância usarão retração. Se deixado em zero, não haverá máximo e os movimentos de combing não usarão retração."
+
+#: fdmprinter.def.json
+msgctxt "hole_xy_offset_max_diameter description"
+msgid "When greater than zero, the Hole Horizontal Expansion is gradually applied on small holes (small holes are expanded more). When set to zero the Hole Horizontal Expansion will be applied to all holes. Holes larger than the Hole Horizontal Expansion Max Diameter are not expanded."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_material_flow description"
