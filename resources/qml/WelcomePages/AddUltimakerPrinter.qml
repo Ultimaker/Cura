@@ -77,7 +77,7 @@ Control
 
                     Repeater {
                         model: [
-                            catalog.i18nc("@info", "Sign in into UltiMaker Digilal Factory"),
+                            catalog.i18nc("@info", "Sign in into UltiMaker Digital Factory"),
                             catalog.i18nc("@info", "Follow the procedure to add a new printer"),
                             catalog.i18nc("@info", "Your new printer will automatically appear in Cura"),
                         ]

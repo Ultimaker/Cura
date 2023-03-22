@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-02-02 16:06+0000\n"
+"POT-Creation-Date: 2023-03-21 13:32+0000\n"
 "PO-Revision-Date: 2019-11-15 15:34+0100\n"
 "Last-Translator: Mariusz Matłosz <matliks@gmail.com>\n"
 "Language-Team: Mariusz Matłosz <matliks@gmail.com>, reprapy.pl\n"
@@ -1643,6 +1643,11 @@ msgid "Hole Horizontal Expansion"
 msgstr ""
 
 #: fdmprinter.def.json
+msgctxt "hole_xy_offset_max_diameter label"
+msgid "Hole Horizontal Expansion Max Diameter"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "small_hole_max_size description"
 msgid "Holes and part outlines with a diameter smaller than this will be printed using Small Feature Speed."
 msgstr "Otwory i kontury części o średnicy mniejszej niż podana zostaną wydrukowane przy małej szybkości operacji."
@@ -3183,6 +3188,11 @@ msgid "Printing Temperature Initial Layer"
 msgstr "Temp. Druku Początk. Warstwy"
 
 #: fdmprinter.def.json
+msgctxt "skirt_height description"
+msgid "Printing the innermost skirt line with multiple layers makes it easy to remove the skirt."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "alternate_extra_perimeter description"
 msgid "Prints an extra wall at every other layer. This way infill gets caught between these extra walls, resulting in stronger prints."
 msgstr "Drukuje dodatkową ścianę na każdej warstwie. W ten sposób wypełnienie jest tworzone pomiędzy tymi dod. ścianami, co skutkuje mocniejszymi wydrukami."
@@ -3668,6 +3678,11 @@ msgid "Skirt Distance"
 msgstr "Odległ. Obwódki"
 
 #: fdmprinter.def.json
+msgctxt "skirt_height label"
+msgid "Skirt Height"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "skirt_line_count label"
 msgid "Skirt Line Count"
 msgstr "Liczba Linii Obwódki"
@@ -3739,6 +3754,11 @@ msgid "Small Layer Printing Temperature"
 msgstr "Końcowa Temp. Druku"
 
 #: fdmprinter.def.json
+msgctxt "small_skin_width label"
+msgid "Small Top/Bottom Width"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 description"
 msgid "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
 msgstr "Pierwsza warstwa małych obiektów zostanie wydrukowana z zadanym procentem ich normalnej prędkości drukowania. Wolniejsze drukowanie może poprawić przyczepność i dokładność."
@@ -3747,6 +3767,16 @@ msgstr "Pierwsza warstwa małych obiektów zostanie wydrukowana z zadanym procen
 msgctxt "small_feature_speed_factor description"
 msgid "Small features will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
 msgstr "Małe obiekty zostaną wydrukowane z zadanym procentem ich normalnej prędkości drukowania. Wolniejsze drukowanie może poprawić przyczepność i dokładność."
+
+#: fdmprinter.def.json
+msgctxt "small_skin_width description"
+msgid "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "brim_smart_ordering label"
+msgid "Smart Brim"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "z_seam_corner option z_seam_corner_weighted"
@@ -4277,6 +4307,11 @@ msgid "Surface energy."
 msgstr "Energia powierzchni."
 
 #: fdmprinter.def.json
+msgctxt "brim_smart_ordering description"
+msgid "Swap print order of the innermost and second innermost brim lines. This improves brim removal."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "alternate_carve_order description"
 msgid "Switch to which mesh intersecting volumes will belong with every layer, so that the overlapping meshes become interwoven. Turning this setting off will cause one of the meshes to obtain all of the volume in the overlap, while it is removed from the other meshes."
 msgstr "Przełącz się, to której przecinającej się siatki będą należały z każdą warstwą, tak że nakładające się siatki przeplatają się. Wyłączenie tej opcji spowoduje, że jedna siatka uzyska całą objętość podczas nakładania się, kiedy jest usunięta z pozostałych siatek."
@@ -4603,7 +4638,7 @@ msgstr "Odległość jaka zostaje pokryta podczas tworzenia połączenia z wewn�
 
 #: fdmprinter.def.json
 msgctxt "interlocking_depth description"
-msgid "The distance from the boundary between models to generate interlocking structure measured in cells. Too few cells will result in poor adhesion."
+msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -6318,6 +6353,11 @@ msgstr "Kiedy włączone, współrzędne szwu są względne do każdego środka 
 #: fdmprinter.def.json
 msgctxt "retraction_combing_max_distance description"
 msgid "When greater than zero, combing travel moves that are longer than this distance will use retraction. If set to zero, there is no maximum and combing moves will not use retraction."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "hole_xy_offset_max_diameter description"
+msgid "When greater than zero, the Hole Horizontal Expansion is gradually applied on small holes (small holes are expanded more). When set to zero the Hole Horizontal Expansion will be applied to all holes. Holes larger than the Hole Horizontal Expansion Max Diameter are not expanded."
 msgstr ""
 
 #: fdmprinter.def.json

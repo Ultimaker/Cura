@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-02-02 16:06+0000\n"
+"POT-Creation-Date: 2023-03-21 13:32+0000\n"
 "PO-Revision-Date: 2022-01-02 20:24+0800\n"
 "Last-Translator: Valen Chang  <carf17771@gmail.com>\n"
 "Language-Team: Valen Chang <carf17771@gmail.com>\n"
@@ -1644,6 +1644,11 @@ msgid "Hole Horizontal Expansion"
 msgstr "孔洞水平擴展"
 
 #: fdmprinter.def.json
+msgctxt "hole_xy_offset_max_diameter label"
+msgid "Hole Horizontal Expansion Max Diameter"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "small_hole_max_size description"
 msgid "Holes and part outlines with a diameter smaller than this will be printed using Small Feature Speed."
 msgstr "小於此直徑的孔洞和零件輪廓，使用細部模式速度列印。"
@@ -3184,6 +3189,11 @@ msgid "Printing Temperature Initial Layer"
 msgstr "列印溫度起始層"
 
 #: fdmprinter.def.json
+msgctxt "skirt_height description"
+msgid "Printing the innermost skirt line with multiple layers makes it easy to remove the skirt."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "alternate_extra_perimeter description"
 msgid "Prints an extra wall at every other layer. This way infill gets caught between these extra walls, resulting in stronger prints."
 msgstr "每兩層建立一個額外牆壁，這些額外的牆壁能更緊密地抓填充部分，產生較強壯的模型。"
@@ -3669,6 +3679,11 @@ msgid "Skirt Distance"
 msgstr "外圍間距"
 
 #: fdmprinter.def.json
+msgctxt "skirt_height label"
+msgid "Skirt Height"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "skirt_line_count label"
 msgid "Skirt Line Count"
 msgstr "外圍線條數量"
@@ -3740,6 +3755,11 @@ msgid "Small Layer Printing Temperature"
 msgstr "最終列印溫度"
 
 #: fdmprinter.def.json
+msgctxt "small_skin_width label"
+msgid "Small Top/Bottom Width"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 description"
 msgid "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
 msgstr "第一層的細部模式將以正常列印速度的此百分比值列印。 較慢的列印有助於黏合和精度。"
@@ -3748,6 +3768,16 @@ msgstr "第一層的細部模式將以正常列印速度的此百分比值列印
 msgctxt "small_feature_speed_factor description"
 msgid "Small features will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
 msgstr "細部模式將以正常列印速度的此百分比值列印。 較慢的列印有助於黏合和精度。"
+
+#: fdmprinter.def.json
+msgctxt "small_skin_width description"
+msgid "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "brim_smart_ordering label"
+msgid "Smart Brim"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "z_seam_corner option z_seam_corner_weighted"
@@ -4278,6 +4308,11 @@ msgid "Surface energy."
 msgstr "表面能量。"
 
 #: fdmprinter.def.json
+msgctxt "brim_smart_ordering description"
+msgid "Swap print order of the innermost and second innermost brim lines. This improves brim removal."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "alternate_carve_order description"
 msgid "Switch to which mesh intersecting volumes will belong with every layer, so that the overlapping meshes become interwoven. Turning this setting off will cause one of the meshes to obtain all of the volume in the overlap, while it is removed from the other meshes."
 msgstr "將網格重疊的部分，交互的在每一層中歸屬到不同的網格，以便重疊的網格交織在一起。關閉此設定將使其中一個網格物體獲得重疊中的所有體積，而從其他網格物體中移除。"
@@ -4604,7 +4639,7 @@ msgstr "在從頂板輪廓向內進行連接時所覆蓋的距離。僅套用於
 
 #: fdmprinter.def.json
 msgctxt "interlocking_depth description"
-msgid "The distance from the boundary between models to generate interlocking structure measured in cells. Too few cells will result in poor adhesion."
+msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -6320,6 +6355,11 @@ msgstr "啟用時，Z 接縫座標為相對於各個部分中心的值。關閉�
 msgctxt "retraction_combing_max_distance description"
 msgid "When greater than zero, combing travel moves that are longer than this distance will use retraction. If set to zero, there is no maximum and combing moves will not use retraction."
 msgstr "觸發回抽時之最小距離，如大於此數值，便開啟回抽；如設置為0，則關閉回抽."
+
+#: fdmprinter.def.json
+msgctxt "hole_xy_offset_max_diameter description"
+msgid "When greater than zero, the Hole Horizontal Expansion is gradually applied on small holes (small holes are expanded more). When set to zero the Hole Horizontal Expansion will be applied to all holes. Holes larger than the Hole Horizontal Expansion Max Diameter are not expanded."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_material_flow description"

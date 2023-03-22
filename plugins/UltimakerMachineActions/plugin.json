@@ -1,5 +1,5 @@
 {
-    "name": "Ultimaker machine actions",
+    "name": "UltiMaker machine actions",
     "author": "Ultimaker B.V.",
     "version": "1.0.1",
     "description": "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.).",
