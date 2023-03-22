@@ -6,7 +6,11 @@
     {
         "visible": true,
         "platform": "lnl3d_d5.stl",
-        "platform_offset": [ 0, 0, 0 ]
+        "platform_offset": [
+            0,
+            0,
+            0
+        ]
     },
     "overrides":
     {
