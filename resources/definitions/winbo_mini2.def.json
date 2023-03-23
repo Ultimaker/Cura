@@ -41,27 +41,62 @@
         "jerk_prime_tower": { "value": "math.ceil(jerk_print * 15 / 25)" },
         "jerk_print": { "value": "25" },
         "jerk_support": { "value": "math.ceil(jerk_print * 15 / 25)" },
-        "jerk_support_interface": { "value": "jerk_topbottom" },
-        "jerk_topbottom": { "value": "math.ceil(jerk_print * 5 / 25)" },
-        "jerk_travel": { "value": "25" },
-        "jerk_wall": { "value": "math.ceil(jerk_print * 10 / 25)" },
-        "jerk_wall_0": { "value": "math.ceil(jerk_wall * 5 / 10)" },
-        "line_width": { "value": "extruderValue(-1,'machine_nozzle_size')" },
-        "machine_acceleration": { "default_value": 3000 },
-        "machine_depth": { "default_value": 155 },
-        "machine_end_gcode": { "default_value": "M104 S0\nM140 S0\nG92 E2\nG1 E0 F200\nG28 X0 Y0\nM84 X Y E" },
-        "machine_extruder_count": { "default_value": 1 },
-        "machine_gcode_flavor": { "default_value": "Marlin" },
-        "machine_head_with_fans_polygon":
-        {
+        "jerk_support_interface": {
+            "value": "jerk_topbottom"
+        },
+        "jerk_topbottom": {
+            "value": "math.ceil(jerk_print * 5 / 25)"
+        },
+        "jerk_travel": {
+            "value": "25"
+        },
+        "jerk_wall": {
+            "value": "math.ceil(jerk_print * 10 / 25)"
+        },
+        "jerk_wall_0": {
+            "value": "math.ceil(jerk_wall * 5 / 10)"
+        },
+        "line_width": {
+            "value": "extruderValue(-1,'machine_nozzle_size')"
+        },
+        "machine_acceleration": {
+            "default_value": 3000
+        },
+        "machine_depth": {
+            "default_value": 155
+        },
+        "machine_end_gcode": {
+            "default_value": "M104 S0\nM140 S0\nG92 E2\nG1 E0 F200\nG28 X0 Y0\nM84 X Y E"
+        },
+        "machine_extruder_count": {
+            "default_value": 1
+        },
+        "machine_gcode_flavor": {
+            "default_value": "RepRap (Marlin/Sprinter)"
+        },
+        "machine_head_with_fans_polygon": {
             "default_value": [
-                [-52, 30],
-                [-52, -40],
-                [13, -40],
-                [13, 30]
+                [
+                    -52,
+                    30
+                ],
+                [
+                    -52,
+                    -40
+                ],
+                [
+                    13,
+                    -40
+                ],
+                [
+                    13,
+                    30
+                ]
             ]
         },
-        "machine_heated_bed": { "default_value": false },
+        "machine_heated_bed": {
+            "default_value": false
+        },
         "machine_height": { "default_value": 205 },
         "machine_max_feedrate_x": { "default_value": 250 },
         "machine_max_feedrate_y": { "default_value": 200 },

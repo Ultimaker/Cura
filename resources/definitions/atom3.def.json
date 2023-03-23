@@ -40,26 +40,54 @@
         "infill_before_walls": { "value": false },
         "infill_sparse_density": { "default_value": 17 },
         "initial_layer_line_width_factor": { "default_value": 100 },
-        "layer_height": { "default_value": 0.2 },
-        "layer_height_0":
-        {
+        "layer_height": {
+            "default_value": 0.2
+        },
+        "layer_height_0": {
             "default_value": 0.2,
             "value": "layer_height"
         },
-        "line_width": { "value": "machine_nozzle_size" },
-        "machine_center_is_zero": { "default_value": true },
-        "machine_depth": { "default_value": 270 },
-        "machine_end_gcode": { "default_value": ";MACHINE END CODE\nG91 ;relative positioning\nG1 E-1 F300  ;retract  filament release pressure\nG1 Z+1.0 E-5 F9000 ;move up a and retract more\nG90 ;absolute positioning\nG28; home\nM84 ;steppers off\n;MACHINE END CODE" },
-        "machine_gcode_flavor": { "RepRap (Marlin/Sprinter)": "Marlin" },
-        "machine_head_with_fans_polygon":
-        {
+        "line_width": {
+            "value": "machine_nozzle_size"
+        },
+        "machine_center_is_zero": {
+            "default_value": true
+        },
+        "machine_depth": {
+            "default_value": 270
+        },
+        "machine_end_gcode": {
+            "default_value": ";MACHINE END CODE\nG91 ;relative positioning\nG1 E-1 F300  ;retract  filament release pressure\nG1 Z+1.0 E-5 F9000 ;move up a and retract more\nG90 ;absolute positioning\nG28; home\nM84 ;steppers off\n;MACHINE END CODE"
+        },
+        "machine_gcode_flavor": {
+            "default_value": "RepRap (Marlin/Sprinter)"
+        },
+        "machine_head_with_fans_polygon": {
             "default_value": [
-                [-23.82, 51.25],
-                [23.82, 51.25],
-                [56.292, -5.0],
-                [32.476, -46.25],
-                [-32.476, -46.25],
-                [-56.292, -5.0]
+                [
+                    -23.82,
+                    51.25
+                ],
+                [
+                    23.82,
+                    51.25
+                ],
+                [
+                    56.292,
+                    -5.0
+                ],
+                [
+                    32.476,
+                    -46.25
+                ],
+                [
+                    -32.476,
+                    -46.25
+                ],
+                [
+                    -56.292,
+                    -5.0
+                ]
             ]
         },
         "machine_heated_bed": { "default_value": true },

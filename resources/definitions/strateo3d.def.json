@@ -162,25 +162,56 @@
             "maximum_value_warning": "0.01",
             "value": "jerk_wall * 5 / 10"
         },
-        "jerk_wall_x": { "maximum_value_warning": "0.01" },
-        "layer_start_x": { "value": "sum(extruderValues('machine_extruder_start_pos_x')) / len(extruderValues('machine_extruder_start_pos_x'))" },
-        "layer_start_y": { "value": "sum(extruderValues('machine_extruder_start_pos_y')) / len(extruderValues('machine_extruder_start_pos_y'))" },
-        "machine_acceleration": { "default_value": 1500 },
-        "machine_center_is_zero": { "default_value": false },
-        "machine_depth": { "default_value": 420 },
-        "machine_end_gcode": { "default_value": "T1 \nM104 S0 \nT0 \nM104 S0 \nM140 S0 \nM141 S0 \nG91 \nG0 z1 \nG90 \nG28 \nM801.0 \nM84 \nM192" },
-        "machine_extruder_count": { "default_value": 2 },
-        "machine_gcode_flavor": { "default_value": "Marlin" },
-        "machine_head_with_fans_polygon":
-        {
+        "jerk_wall_x": {
+            "maximum_value_warning": "0.01"
+        },
+        "layer_start_x": {
+            "value": "sum(extruderValues('machine_extruder_start_pos_x')) / len(extruderValues('machine_extruder_start_pos_x'))"
+        },
+        "layer_start_y": {
+            "value": "sum(extruderValues('machine_extruder_start_pos_y')) / len(extruderValues('machine_extruder_start_pos_y'))"
+        },
+        "machine_acceleration": {
+            "default_value": 1500
+        },
+        "machine_center_is_zero": {
+            "default_value": false
+        },
+        "machine_depth": {
+            "default_value": 420
+        },
+        "machine_end_gcode": {
+            "default_value": "T1 \nM104 S0 \nT0 \nM104 S0 \nM140 S0 \nM141 S0 \nG91 \nG0 z1 \nG90 \nG28 \nM801.0 \nM84 \nM192"
+        },
+        "machine_extruder_count": {
+            "default_value": 2
+        },
+        "machine_gcode_flavor": {
+            "default_value": "RepRap (Marlin/Sprinter)"
+        },
+        "machine_head_with_fans_polygon": {
             "default_value": [
-                [-76, -51.8],
-                [25, -51.8],
-                [25, 38.2],
-                [-76, 38.2]
+                [
+                    -76,
+                    -51.8
+                ],
+                [
+                    25,
+                    -51.8
+                ],
+                [
+                    25,
+                    38.2
+                ],
+                [
+                    -76,
+                    38.2
+                ]
             ]
         },
-        "machine_heat_zone_length": { "default_value": 7 },
+        "machine_heat_zone_length": {
+            "default_value": 7
+        },
         "machine_heated_bed": { "default_value": true },
         "machine_heated_build_volume": { "default_value": true },
         "machine_height": { "default_value": 495 },

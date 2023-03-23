@@ -129,27 +129,62 @@
         "jerk_support": { "value": "jerk_print" },
         "jerk_support_interface": { "value": "jerk_print" },
         "jerk_topbottom": { "value": "jerk_print" },
-        "jerk_travel": { "value": "jerk_layer_0" },
-        "jerk_travel_layer_0": { "value": "jerk_layer_0" },
-        "jerk_wall": { "value": "jerk_print" },
-        "jerk_wall_0": { "value": "jerk_print" },
-        "layer_height_0": { "resolve": "max(0.2, min(extruderValues('layer_height')))" },
-        "line_width": { "value": "machine_nozzle_size * 1.125" },
-        "machine_acceleration": { "default_value": 1500 },
-        "machine_depth": { "default_value": 300 },
-        "machine_end_gcode": { "default_value": "M104 T0 S0                     ;extruder heater off\nM104 T1 S0                     ;extruder heater off\nM140 S0                     ;heated bed heater off\nG91\nG1 Z1 F420                                        ;relative positioning\nG1 E-1 F300                            ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+1 E-1 F300 ;move Z up a bit and retract filament even more\nG90                         ;absolute positioning\nG1 X0 Y300 F6000                              ;move the head out of the way\nM84                         ;steppers off" },
-        "machine_extruder_count": { "default_value": 2 },
-        "machine_gcode_flavor": { "default_value": "Marlin" },
-        "machine_head_with_fans_polygon":
-        {
+        "jerk_travel": {
+            "value": "jerk_layer_0"
+        },
+        "jerk_travel_layer_0": {
+            "value": "jerk_layer_0"
+        },
+        "jerk_wall": {
+            "value": "jerk_print"
+        },
+        "jerk_wall_0": {
+            "value": "jerk_print"
+        },
+        "layer_height_0": {
+            "resolve": "max(0.2, min(extruderValues('layer_height')))"
+        },
+        "line_width": {
+            "value": "machine_nozzle_size * 1.125"
+        },
+        "machine_acceleration": {
+            "default_value": 1500
+        },
+        "machine_depth": {
+            "default_value": 300
+        },
+        "machine_end_gcode": {
+            "default_value": "M104 T0 S0                     ;extruder heater off\nM104 T1 S0                     ;extruder heater off\nM140 S0                     ;heated bed heater off\nG91\nG1 Z1 F420                                        ;relative positioning\nG1 E-1 F300                            ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+1 E-1 F300 ;move Z up a bit and retract filament even more\nG90                         ;absolute positioning\nG1 X0 Y300 F6000                              ;move the head out of the way\nM84                         ;steppers off"
+        },
+        "machine_extruder_count": {
+            "default_value": 2
+        },
+        "machine_gcode_flavor": {
+            "default_value": "RepRap (Marlin/Sprinter)"
+        },
+        "machine_head_with_fans_polygon": {
             "default_value": [
-                [-35, 65],
-                [-35, -50],
-                [35, -50],
-                [35, 65]
+                [
+                    -35,
+                    65
+                ],
+                [
+                    -35,
+                    -50
+                ],
+                [
+                    35,
+                    -50
+                ],
+                [
+                    35,
+                    65
+                ]
             ]
         },
-        "machine_heated_bed": { "default_value": true },
+        "machine_heated_bed": {
+            "default_value": true
+        },
         "machine_heated_build_volume": { "default_value": true },
         "machine_height": { "default_value": 300 },
         "machine_max_acceleration_x": { "default_value": 1500 },
