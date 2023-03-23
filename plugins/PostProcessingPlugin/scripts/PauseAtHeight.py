@@ -67,7 +67,7 @@ class PauseAtHeight(Script):
                     "label": "Keep motors engaged",
                     "description": "Keep the steppers engaged to allow change of filament without moving the head. Applying too much force will move the head/bed anyway",
                     "type": "bool",
-                    "default_value": true,
+                    "default_value": false,
                     "enabled": "pause_method != \\\"griffin\\\""
                 },
                 "disarm_timeout":
@@ -218,7 +218,7 @@ class PauseAtHeight(Script):
                     "label": "Beep at pause",
                     "description": "Make a beep when pausing",
                     "type": "bool",
-                    "default_value": true
+                    "default_value": false
                 },                
                 "beep_length":
                 {
