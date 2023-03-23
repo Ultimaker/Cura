@@ -88,27 +88,62 @@
         "infill_pattern": { "value": "'grid' if infill_sparse_density > 40 else 'cubic'" },
         "infill_sparse_density": { "value": 35 },
         "jerk_roofing": { "value": 10 },
-        "jerk_wall_0": { "value": 10 },
-        "layer_height_0": { "resolve": "max(0.2, min(extruderValues('layer_height')))" },
-        "line_width": { "value": "machine_nozzle_size * 1.125" },
-        "machine_acceleration": { "default_value": 15000 },
-        "machine_depth": { "default_value": 330 },
-        "machine_end_gcode": { "default_value": "end_print" },
-        "machine_endstop_positive_direction_x": { "default_value": true },
-        "machine_endstop_positive_direction_y": { "default_value": true },
-        "machine_endstop_positive_direction_z": { "default_value": false },
-        "machine_feeder_wheel_diameter": { "default_value": 7.5 },
-        "machine_gcode_flavor": { "default_value": "Marlin" },
-        "machine_head_with_fans_polygon":
-        {
+        "jerk_wall_0": {
+            "value": 10
+        },
+        "layer_height_0": {
+            "resolve": "max(0.2, min(extruderValues('layer_height')))"
+        },
+        "line_width": {
+            "value": "machine_nozzle_size * 1.125"
+        },
+        "machine_acceleration": {
+            "default_value": 15000
+        },
+        "machine_depth": {
+            "default_value": 330
+        },
+        "machine_end_gcode": {
+            "default_value": "end_print"
+        },
+        "machine_endstop_positive_direction_x": {
+            "default_value": true
+        },
+        "machine_endstop_positive_direction_y": {
+            "default_value": true
+        },
+        "machine_endstop_positive_direction_z": {
+            "default_value": false
+        },
+        "machine_feeder_wheel_diameter": {
+            "default_value": 7.5
+        },
+        "machine_gcode_flavor": {
+            "default_value": "RepRap (Marlin/Sprinter)"
+        },
+        "machine_head_with_fans_polygon": {
             "default_value": [
-                [-35, 65],
-                [-35, -50],
-                [35, -50],
-                [35, 65]
+                [
+                    -35,
+                    65
+                ],
+                [
+                    -35,
+                    -50
+                ],
+                [
+                    35,
+                    -50
+                ],
+                [
+                    35,
+                    65
+                ]
             ]
         },
-        "machine_heated_bed": { "default_value": true },
+        "machine_heated_bed": {
+            "default_value": true
+        },
         "machine_height": { "default_value": 400 },
         "machine_max_acceleration_x": { "default_value": 15000 },
         "machine_max_acceleration_y": { "default_value": 15000 },
