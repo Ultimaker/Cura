@@ -478,10 +478,11 @@ class PauseAtHeight(Script):
                     prepend_gcode += "M117 " + display_text + "\n"
 
                 # Set the disarm timeout
-                if hold_steppers_on:
-                    prepend_gcode += self.putValue(M = 84, S = 3600) + " ; Keep steppers engaged for 1h\n"
-                elif disarm_timeout > 0:
-                    prepend_gcode += self.putValue(M = 84, S = disarm_timeout) + " ; Set the disarm timeout\n"
+                if pause_method != "griffin":
+                    if hold_steppers_on:
+                        prepend_gcode += self.putValue(M = 84, S = 3600) + " ; Keep steppers engaged for 1h\n"
+                    elif disarm_timeout > 0:
+                        prepend_gcode += self.putValue(M = 84, S = disarm_timeout) + " ; Set the disarm timeout\n"
 
                 # Beep at pause
                 if beep_at_pause:
