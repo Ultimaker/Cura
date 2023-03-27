@@ -17,6 +17,12 @@ UM.MainWindow
 {
     id: base
 
+    Item
+    {
+        id: mainWindow
+        anchors.fill: parent
+    }
+
     // Cura application window title
     title:
     {

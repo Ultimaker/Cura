@@ -6,7 +6,7 @@
         "type": "machine",
         "author": "Unknown",
         "manufacturer": "Unknown",
-        "setting_version": 20,
+        "setting_version": 21,
         "file_formats": "text/x-gcode;model/stl;application/x-wavefront-obj;application/x3g",
         "visible": false,
         "has_materials": true,
@@ -1298,6 +1298,18 @@
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "hole_xy_offset_max_diameter":
+                {
+                    "label": "Hole Horizontal Expansion Max Diameter",
+                    "description": "When greater than zero, the Hole Horizontal Expansion is gradually applied on small holes (small holes are expanded more). When set to zero the Hole Horizontal Expansion will be applied to all holes. Holes larger than the Hole Horizontal Expansion Max Diameter are not expanded.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value": "0",
+                    "enabled": "hole_xy_offset > 0",
+                    "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_mesh": true
+                },
                 "z_seam_type":
                 {
                     "label": "Z Seam Alignment",
@@ -1648,6 +1660,20 @@
                     "enabled": "(top_layers > 0 or bottom_layers > 0) and top_bottom_pattern != 'concentric'",
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
+                },
+                "small_skin_width":
+                {
+                    "label": "Small Top/Bottom Width",
+                    "description": "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions.",
+                    "value": "skin_line_width * 2",
+                    "default_value": 1,
+                    "minimum_value": "0",
+                    "maximum_value_warning": "skin_line_width * 10",
+                    "type": "float",
+                    "enabled": "(top_layers > 0 or bottom_layers > 0) and top_bottom_pattern != 'concentric'",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true,
+                    "unit": "mm"
                 },
                 "skin_no_small_gaps_heuristic":
                 {
@@ -2409,7 +2435,7 @@
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "285",
                     "maximum_value": "365",
-                    "enabled": "machine_nozzle_temp_enabled and not (material_flow_dependent_temperature)",
+                    "enabled": "machine_nozzle_temp_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -2471,7 +2497,7 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "10.0",
                     "maximum_value": "machine_nozzle_heat_up_speed",
-                    "enabled": "material_flow_dependent_temperature or (extruders_enabled_count > 1 and material_final_print_temperature != material_print_temperature)",
+                    "enabled": "extruders_enabled_count > 1 and material_final_print_temperature != material_print_temperature",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -4103,16 +4129,6 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "limit_support_retractions":
-                {
-                    "label": "Limit Support Retractions",
-                    "description": "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excessive stringing within the support structure.",
-                    "type": "bool",
-                    "default_value": true,
-                    "enabled": "retraction_enable and (support_enable or support_meshes_present)",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
                 "retraction_combing":
                 {
                     "label": "Combing Mode",
@@ -4405,8 +4421,9 @@
                     "unit": "mm/s",
                     "type": "float",
                     "default_value": 10,
-                    "minimum_value": "0",
+                    "minimum_value": "1",
                     "maximum_value_warning": "100",
+                    "enabled": "cool_min_layer_time > 0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -4416,6 +4433,22 @@
                     "description": "When the minimum speed is hit because of minimum layer time, lift the head away from the print and wait the extra time until the minimum layer time is reached.",
                     "type": "bool",
                     "default_value": false,
+                    "enabled": "cool_min_layer_time > 0",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "cool_min_temperature":
+                {
+                    "label": "Small Layer Printing Temperature",
+                    "description": "Gradually reduce to this temperature when printing at reduced speeds because of minimum layer time.",
+                    "unit": "\u00b0C",
+                    "type": "float",
+                    "value": "material_print_temperature",
+                    "enabled": "cool_min_layer_time > 0",
+                    "minimum_value_warning": "max(material_final_print_temperature, material_initial_print_temperature)",
+                    "maximum_value_warning": "material_print_temperature",
+                    "minimum_value": "-273.15",
+                    "maximum_value": "365",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 }
@@ -4693,7 +4726,7 @@
                     "maximum_value": "999999",
                     "type": "int",
                     "value": "1 if (support_interface_pattern == 'zigzag') else 0",
-                    "enabled": "support_interface_enable or support_meshes_present",
+                    "enabled": "(support_enable and support_interface_enable) or support_meshes_present",
                     "limit_to_extruder": "support_interface_extruder_nr",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
@@ -4710,7 +4743,7 @@
                             "maximum_value": "999999",
                             "type": "int",
                             "value": "support_interface_wall_count",
-                            "enabled": "support_interface_enable or support_meshes_present",
+                            "enabled": "(support_enable and support_interface_enable) or support_meshes_present",
                             "limit_to_extruder": "support_interface_extruder_nr",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
@@ -4726,7 +4759,7 @@
                             "maximum_value": "999999",
                             "type": "int",
                             "value": "support_interface_wall_count",
-                            "enabled": "support_interface_enable or support_meshes_present",
+                            "enabled": "(support_enable and support_interface_enable) or support_meshes_present",
                             "limit_to_extruder": "support_interface_extruder_nr",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
@@ -4952,6 +4985,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.3,
+                    "value": "0 if support_bottom_enable else 0.3",
                     "limit_to_extruder": "support_bottom_extruder_nr if support_bottom_enable else support_infill_extruder_nr",
                     "minimum_value": "0",
                     "maximum_value_warning": "1.0",
@@ -4965,10 +4999,10 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 5.0,
-                    "limit_to_extruder": "support_interface_extruder_nr if support_interface_enable else support_infill_extruder_nr",
+                    "limit_to_extruder": "support_interface_extruder_nr if support_bottom_enable else support_infill_extruder_nr",
                     "minimum_value": "0",
                     "maximum_value_warning": "10.0",
-                    "enabled": "support_enable or support_meshes_present",
+                    "enabled": "(support_enable or support_meshes_present) and support_bottom_stair_step_height > 0",
                     "settable_per_mesh": true
                 },
                 "support_bottom_stair_step_min_slope":
@@ -4981,7 +5015,7 @@
                     "limit_to_extruder": "support_bottom_extruder_nr if support_bottom_enable else support_infill_extruder_nr",
                     "minimum_value": "0.01",
                     "maximum_value": "89.99",
-                    "enabled": "support_enable or support_meshes_present",
+                    "enabled": "(support_enable or support_meshes_present) and support_bottom_stair_step_height > 0",
                     "settable_per_mesh": true
                 },
                 "support_join_distance":
@@ -5004,7 +5038,8 @@
                     "description": "Amount of offset applied to all support polygons in each layer. Positive values can smooth out the support areas and result in more sturdy support.",
                     "unit": "mm",
                     "type": "float",
-                    "default_value": 0,
+                    "default_value": 0.8,
+                    "value": "support_line_width + 0.4",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "minimum_value_warning": "-1 * machine_nozzle_size",
                     "maximum_value_warning": "10 * machine_nozzle_size",
@@ -5088,7 +5123,7 @@
                             "default_value": false,
                             "value": "extruderValue(support_roof_extruder_nr, 'support_interface_enable')",
                             "limit_to_extruder": "support_roof_extruder_nr",
-                            "enabled": "support_enable or support_meshes_present",
+                            "enabled": "(support_enable or support_meshes_present) and support_interface_enable",
                             "settable_per_mesh": true
                         },
                         "support_bottom_enable":
@@ -5099,7 +5134,7 @@
                             "default_value": false,
                             "value": "extruderValue(support_bottom_extruder_nr, 'support_interface_enable')",
                             "limit_to_extruder": "support_bottom_extruder_nr",
-                            "enabled": "support_enable or support_meshes_present",
+                            "enabled": "(support_enable or support_meshes_present) and support_interface_enable",
                             "settable_per_mesh": true
                         }
                     }
@@ -5157,7 +5192,8 @@
                     "description": "When checking where there's model above and below the support, take steps of the given height. Lower values will slice slower, while higher values may cause normal support to be printed in some places where there should have been support interface.",
                     "unit": "mm",
                     "type": "float",
-                    "default_value": 0.3,
+                    "default_value": 0.2,
+                    "value": "layer_height",
                     "minimum_value": "0",
                     "maximum_value_warning": "support_interface_height",
                     "limit_to_extruder": "support_interface_extruder_nr",
@@ -5596,9 +5632,9 @@
                 {
                     "label": "Build Plate Adhesion Extruder",
                     "description": "The extruder train to use for printing the skirt/brim/raft. This is used in multi-extrusion.",
-                    "type": "extruder",
-                    "default_value": "0",
-                    "value": "int(defaultExtruderPosition())",
+                    "type": "optional_extruder",
+                    "default_value": "-1",
+                    "value": "int(defaultExtruderPosition()) if resolveOrValue('adhesion_type') == 'raft' else -1",
                     "enabled": "extruders_enabled_count > 1 and (resolveOrValue('adhesion_type') != 'none' or resolveOrValue('prime_tower_brim_enable'))",
                     "resolve": "max(extruderValues('adhesion_extruder_nr'))",
                     "settable_per_mesh": false,
@@ -5611,8 +5647,9 @@
                             "description": "The extruder train to use for printing the skirt or brim. This is used in multi-extrusion.",
                             "type": "optional_extruder",
                             "default_value": "-1",
-                            "enabled": "extruders_enabled_count > 1 and (resolveOrValue('adhesion_type') == 'skirt' or resolveOrValue('adhesion_type') == 'brim' or resolveOrValue('prime_tower_brim_enable'))",
-                            "resolve": "'-1' if '-1' in extruderValues('skirt_brim_extruder_nr') else adhesion_extruder_nr",
+                            "value": "adhesion_extruder_nr",
+                            "enabled": "extruders_enabled_count > 1 and (resolveOrValue('adhesion_type') in ['skirt', 'brim'] or resolveOrValue('prime_tower_brim_enable'))",
+                            "resolve": "max(extruderValues('skirt_brim_extruder_nr'))",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false
                         },
@@ -5622,7 +5659,7 @@
                             "description": "The extruder train to use for printing the first layer of the raft. This is used in multi-extrusion.",
                             "type": "extruder",
                             "default_value": "0",
-                            "value": "adhesion_extruder_nr",
+                            "value": "0 if adhesion_extruder_nr == -1 else adhesion_extruder_nr",
                             "enabled": "extruders_enabled_count > 1 and resolveOrValue('adhesion_type') == 'raft'",
                             "resolve": "max(extruderValues('raft_base_extruder_nr'))",
                             "settable_per_mesh": false,
@@ -5634,7 +5671,7 @@
                             "description": "The extruder train to use for printing the middle layer of the raft. This is used in multi-extrusion.",
                             "type": "extruder",
                             "default_value": "0",
-                            "value": "adhesion_extruder_nr",
+                            "value": "0 if adhesion_extruder_nr == -1 else adhesion_extruder_nr",
                             "enabled": "extruders_enabled_count > 1 and resolveOrValue('adhesion_type') == 'raft'",
                             "resolve": "max(extruderValues('raft_interface_extruder_nr'))",
                             "settable_per_mesh": false,
@@ -5646,7 +5683,7 @@
                             "description": "The extruder train to use for printing the top layer(s) of the raft. This is used in multi-extrusion.",
                             "type": "extruder",
                             "default_value": "0",
-                            "value": "adhesion_extruder_nr",
+                            "value": "0 if adhesion_extruder_nr == -1 else adhesion_extruder_nr",
                             "enabled": "extruders_enabled_count > 1 and resolveOrValue('adhesion_type') == 'raft'",
                             "resolve": "max(extruderValues('raft_surface_extruder_nr'))",
                             "settable_per_mesh": false,
@@ -5668,6 +5705,21 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "skirt_height":
+                {
+                    "label": "Skirt Height",
+                    "description": "Printing the innermost skirt line with multiple layers makes it easy to remove the skirt.",
+                    "type": "int",
+                    "default_value": 3,
+                    "value": "3 if resolveOrValue('skirt_gap') > 0.0 else 1",
+                    "minimum_value": "1",
+                    "maximum_value_warning": "10",
+                    "maximum_value": "machine_height / layer_height",
+                    "enabled": "resolveOrValue('adhesion_type') == 'skirt'",
+                    "limit_to_extruder": "skirt_brim_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "skirt_gap":
                 {
                     "label": "Skirt Distance",
@@ -5675,6 +5727,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 3,
+                    "minimum_value": "0",
                     "minimum_value_warning": "max(extruderValues('machine_nozzle_size'))",
                     "maximum_value_warning": "10",
                     "enabled": "resolveOrValue('adhesion_type') == 'skirt'",
@@ -5735,7 +5788,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0,
-                    "minimum_value": "0",
+                    "minimum_value": "-skirt_brim_line_width / 2",
                     "maximum_value_warning": "skirt_brim_line_width",
                     "enabled": "resolveOrValue('adhesion_type') == 'brim'",
                     "limit_to_extruder": "skirt_brim_extruder_nr",
@@ -5767,7 +5820,7 @@
                 "brim_inside_margin":
                 {
                     "label": "Brim Inside Avoid Margin",
-                    "description": "If brim is only on outside then parts fully enclosed inside another part will get a brim which might overlap with the internal holes of the outer part. This setting controls how far to stay away from those internal holes. Set to a high value to prevent any brim from being generated for parts enclosed within the holes of other parts.",
+                    "description": "A part fully enclosed inside another part can generate an outer brim that touches the inside of the other part. This removes all brim within this distance from internal holes.",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 2.5,
@@ -5776,6 +5829,17 @@
                     "limit_to_extruder": "skirt_brim_extruder_nr",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
+                },
+                "brim_smart_ordering":
+                {
+                    "label": "Smart Brim",
+                    "description": "Swap print order of the innermost and second innermost brim lines. This improves brim removal.",
+                    "type": "bool",
+                    "enabled": "resolveOrValue('adhesion_type') == 'brim'",
+                    "default_value": true,
+                    "limit_to_extruder": "skirt_brim_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
                 },
                 "raft_margin":
                 {
@@ -6397,81 +6461,6 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
-                "interlocking_enable":
-                {
-                    "label": "Generate Interlocking Structure",
-                    "description": "Whether to generate a structure at the interface between two models of a different material in order to improve the adhesion. The structure consists of cells of horizontal beams with alternating direction which connect to each other over the Z direction in order to interlock with the beams of the other material.",
-                    "type": "bool",
-                    "enabled": "extruders_enabled_count > 1",
-                    "default_value": false,
-                    "resolve": "(extruders_enabled_count > 1) and any(extruderValues('interlocking_enable'))",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false
-                },
-                "interlocking_beam_width":
-                {
-                    "label": "Interlocking Beam Width",
-                    "description": "The width of the beams of this material in the interlocking structure.",
-                    "type": "float",
-                    "unit": "mm",
-                    "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
-                    "default_value": 0.8,
-                    "value": "2 * wall_line_width_0",
-                    "minimum_value": "0.001",
-                    "maximum_value": "min(0.5 * machine_width, 0.5 * machine_depth)",
-                    "maximum_value_warning": "max(extruderValues('wall_line_width_0')) * 6",
-                    "settable_per_mesh": true,
-                    "settable_per_extruder": true
-                },
-                "interlocking_orientation":
-                {
-                    "label": "Interlocking Structure Orientation",
-                    "description": "The direction of the beams of the interlocking structure in the XY plane as a rotation about the Z axis.",
-                    "unit": "\u00b0",
-                    "type": "float",
-                    "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
-                    "default_value": 22.5,
-                    "resolve": "min(extruderValues('interlocking_orientation'))",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false
-                },
-                "interlocking_beam_layer_count":
-                {
-                    "label": "Interlocking Beam Layer Count",
-                    "description": "The height of the beams of the interlocking structure as measured in number of layers. Less layers is stronger, but more prone to manufacturing defects.",
-                    "type": "int",
-                    "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
-                    "default_value": 2,
-                    "minimum_value": "1",
-                    "resolve": "max(extruderValues('interlocking_beam_layer_count'))",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false
-                },
-                "interlocking_depth":
-                {
-                    "label": "Interlocking Depth",
-                    "description": "The number of cells along the depth of the interface between two models where an interlocking structure is to be generated. Less cells is better, but too little cells can cause the not to be connected properly, which reduces the adhesion performance of the interlocking structure.",
-                    "type": "int",
-                    "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
-                    "default_value": 2,
-                    "minimum_value": "1",
-                    "resolve": "max(extruderValues('interlocking_depth'))",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false
-                },
-                "interlocking_boundary_avoidance":
-                {
-                    "label": "Interlocking Boundary Avoidance",
-                    "description": "The distance close to the boundary of the print where not to generate an interlocking structure as measued in number of cells times 2. If set to a value lower than the Inerlocking Depth then the interlocking structure can become visible on the outside of the print near the interfaces where two models meet.",
-                    "type": "int",
-                    "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
-                    "default_value": 3,
-                    "minimum_value": "0",
-                    "resolve": "max(extruderValues('interlocking_boundary_avoidance'))",
-                    "minimum_value_warning": "resolveOrValue('interlocking_depth')",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false
-                },
                 "switch_extruder_retraction_amount":
                 {
                     "label": "Nozzle Switch Retraction Distance",
@@ -6894,16 +6883,6 @@
                     "default_value": false,
                     "settable_per_mesh": true
                 },
-                "material_flow_dependent_temperature":
-                {
-                    "label": "Auto Temperature",
-                    "description": "Change the temperature for each layer automatically with the average flow speed of that layer.",
-                    "type": "bool",
-                    "default_value": false,
-                    "enabled": "machine_nozzle_temp_enabled and False",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
                 "material_flow_temp_graph":
                 {
                     "label": "Flow Temperature Graph",
@@ -6911,7 +6890,7 @@
                     "unit": "[[mm\u00b3,\u00b0C]]",
                     "type": "str",
                     "default_value": "[[3.5, 200],[7.0, 240]]",
-                    "enabled": "False and machine_nozzle_temp_enabled and material_flow_dependent_temperature",
+                    "enabled": "False and machine_nozzle_temp_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -6926,6 +6905,88 @@
                     "minimum_value_warning": "0.05",
                     "maximum_value_warning": "1.0",
                     "settable_per_mesh": true,
+                    "settable_per_extruder": false
+                },
+                "interlocking_enable":
+                {
+                    "label": "Generate Interlocking Structure",
+                    "description": "At the locations where models touch, generate an interlocking beam structure. This improves the adhesion between models, especially models printed in different materials.",
+                    "type": "bool",
+                    "enabled": "extruders_enabled_count > 1",
+                    "default_value": false,
+                    "resolve": "(extruders_enabled_count > 1) and any(extruderValues('interlocking_enable'))",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "interlocking_beam_width":
+                {
+                    "label": "Interlocking Beam Width",
+                    "description": "The width of the interlocking structure beams.",
+                    "type": "float",
+                    "unit": "mm",
+                    "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
+                    "default_value": 0.8,
+                    "value": "2 * wall_line_width_0",
+                    "minimum_value": "min_odd_wall_line_width",
+                    "maximum_value": "min(0.5 * machine_width, 0.5 * machine_depth)",
+                    "maximum_value_warning": "max(extruderValues('wall_line_width_0')) * 6",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true
+                },
+                "interlocking_orientation":
+                {
+                    "label": "Interlocking Structure Orientation",
+                    "description": "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects.",
+                    "unit": "\u00b0",
+                    "type": "float",
+                    "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
+                    "default_value": 22.5,
+                    "minimum_value": "0",
+                    "maximum_value": "360",
+                    "resolve": "min(extruderValues('interlocking_orientation'))",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "interlocking_beam_layer_count":
+                {
+                    "label": "Interlocking Beam Layer Count",
+                    "description": "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects.",
+                    "type": "int",
+                    "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
+                    "default_value": 2,
+                    "minimum_value": "1",
+                    "maximum_value_warning": "50",
+                    "resolve": "max(extruderValues('interlocking_beam_layer_count'))",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "interlocking_depth":
+                {
+                    "label": "Interlocking Depth",
+                    "description": "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion.",
+                    "type": "int",
+                    "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
+                    "default_value": 2,
+                    "minimum_value": "1",
+                    "maximum_value": "10",
+                    "maximum_value_warning": "5",
+                    "resolve": "max(extruderValues('interlocking_depth'))",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "interlocking_boundary_avoidance":
+                {
+                    "label": "Interlocking Boundary Avoidance",
+                    "description": "The distance from the outside of a model where interlocking structures will not be generated, measured in cells.",
+                    "type": "int",
+                    "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
+                    "default_value": 2,
+                    "minimum_value": "0",
+                    "minimum_value_warning": "resolveOrValue('interlocking_depth')",
+                    "maximum_value": "10",
+                    "maximum_value_warning": "5",
+                    "resolve": "max(extruderValues('interlocking_boundary_avoidance'))",
+                    "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
                 "support_skip_some_zags":
@@ -7181,6 +7242,7 @@
                     "description": "Randomly jitter while printing the outer wall, so that the surface has a rough and fuzzy look.",
                     "type": "bool",
                     "default_value": false,
+                    "enabled": "not interlocking_enable",
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -7190,7 +7252,7 @@
                     "description": "Jitter only the parts' outlines and not the parts' holes.",
                     "type": "bool",
                     "default_value": false,
-                    "enabled": "magic_fuzzy_skin_enabled",
+                    "enabled": "magic_fuzzy_skin_enabled and not interlocking_enable",
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -7203,7 +7265,7 @@
                     "default_value": 0.3,
                     "minimum_value": "0.001",
                     "maximum_value_warning": "wall_line_width_0",
-                    "enabled": "magic_fuzzy_skin_enabled",
+                    "enabled": "magic_fuzzy_skin_enabled and not interlocking_enable",
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -7218,7 +7280,7 @@
                     "minimum_value_warning": "0.1",
                     "maximum_value_warning": "10",
                     "maximum_value": "2 / magic_fuzzy_skin_thickness",
-                    "enabled": "magic_fuzzy_skin_enabled",
+                    "enabled": "magic_fuzzy_skin_enabled and not interlocking_enable",
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true,
                     "children":
@@ -7234,7 +7296,7 @@
                             "minimum_value_warning": "0.1",
                             "maximum_value_warning": "10",
                             "value": "10000 if magic_fuzzy_skin_point_density == 0 else 1 / magic_fuzzy_skin_point_density",
-                            "enabled": "magic_fuzzy_skin_enabled",
+                            "enabled": "magic_fuzzy_skin_enabled and not interlocking_enable",
                             "limit_to_extruder": "wall_0_extruder_nr",
                             "settable_per_mesh": true
                         }
@@ -7757,7 +7819,7 @@
                     "description": "The speed at which the bridge walls are printed.",
                     "unit": "mm/s",
                     "type": "float",
-                    "minimum_value": "cool_min_speed",
+                    "minimum_value": "0",
                     "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
                     "maximum_value_warning": "300",
                     "default_value": 15,
@@ -7784,7 +7846,7 @@
                     "description": "The speed at which bridge skin regions are printed.",
                     "unit": "mm/s",
                     "type": "float",
-                    "minimum_value": "cool_min_speed",
+                    "minimum_value": "0",
                     "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
                     "maximum_value_warning": "300",
                     "default_value": 15,
@@ -7845,7 +7907,7 @@
                     "description": "Print speed to use when printing the second bridge skin layer.",
                     "unit": "mm/s",
                     "type": "float",
-                    "minimum_value": "cool_min_speed",
+                    "minimum_value": "0",
                     "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
                     "maximum_value_warning": "300",
                     "default_value": 25,
@@ -7897,7 +7959,7 @@
                     "description": "Print speed to use when printing the third bridge skin layer.",
                     "unit": "mm/s",
                     "type": "float",
-                    "minimum_value": "cool_min_speed",
+                    "minimum_value": "0",
                     "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
                     "maximum_value_warning": "300",
                     "default_value": 15,

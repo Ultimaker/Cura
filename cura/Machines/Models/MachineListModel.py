@@ -115,7 +115,9 @@ class MachineListModel(ListModel):
             online_machine_stacks = list(filter(lambda machine: machine.hasNetworkedConnection(), online_machine_stacks))
             online_machine_stacks.sort(key=lambda machine: machine.getName().upper())
 
-            other_machine_stacks.remove(abstract_machine)
+            if abstract_machine in other_machine_stacks:
+                other_machine_stacks.remove(abstract_machine)
+
             if abstract_machine in online_machine_stacks:
                 online_machine_stacks.remove(abstract_machine)
 

@@ -1,0 +1,19 @@
+{
+    "version": 2,
+    "name": "E2",
+    "inherits": "fdmextruder",
+    "metadata":
+    {
+        "machine": "Geeetech_Base_Multi_Extruder",
+        "position": "2"
+    },
+    "overrides":
+    {
+        "extruder_nr":
+        {
+            "default_value": 2,
+            "maximum_value": "2"
+        },
+        "material_diameter": { "default_value": 1.75 }
+    }
+}

@@ -1,20 +1,21 @@
 {
-    "version":              2,
-    "name":                 "Extruder 3",
-    "inherits":             "fdmextruder",
-    "metadata": {
-        "machine":          "deltacomb_dc30flux",
-        "position":         "2"
+    "version": 2,
+    "name": "Extruder 3",
+    "inherits": "fdmextruder",
+    "metadata":
+    {
+        "machine": "deltacomb_dc30flux",
+        "position": "2"
     },
-
-    "overrides": {
-        "extruder_nr":                   { "default_value": 2 },
-        "machine_nozzle_size":           { "default_value": 0.4 },
-        "material_diameter":             { "default_value": 1.75 },
-        "machine_nozzle_offset_x":       { "default_value": 0.0 },
-        "machine_nozzle_offset_y":       { "default_value": 0.0 },
-        "machine_extruder_start_code":   { "default_value": ";---------------------------------------\n;DC3x Flux Extruder 3 Start\n;---------------------------------------\nG91 ;relative positioning\nG1 E57 F5000 ;fast insert\nG90 ;absolute positioning\nG92 E0 ;zero the extruded length\n;---------------------------------------\n;---------------------------------------"},
-        "machine_extruder_end_code":     { "default_value": ";---------------------------------------\n;DC3x Flux Extruder 3 End\n;---------------------------------------\nG91 ;relative positioning\nG1 E-10 F6000 ;filament shaping\nG0 Z2\nG1 E9\nG1 E-9\nG1 E8\nG1 E-8\nG1 E-10 F110\nG1 E-40 F5000 ; move to park position\nG90 ;absolute positioning\nG92 E0 ;zero the extruded length\n;---------------------------------------\n;---------------------------------------"},
-        "prime_tower_flow":              { "value": "200" }
+    "overrides":
+    {
+        "extruder_nr": { "default_value": 2 },
+        "machine_extruder_end_code": { "default_value": ";---------------------------------------\n;DC3x Flux Extruder 3 End\n;---------------------------------------\nG91 ;relative positioning\nG1 E-10 F6000 ;filament shaping\nG0 Z2\nG1 E9\nG1 E-9\nG1 E8\nG1 E-8\nG1 E-10 F110\nG1 E-40 F5000 ; move to park position\nG90 ;absolute positioning\nG92 E0 ;zero the extruded length\n;---------------------------------------\n;---------------------------------------" },
+        "machine_extruder_start_code": { "default_value": ";---------------------------------------\n;DC3x Flux Extruder 3 Start\n;---------------------------------------\nG91 ;relative positioning\nG1 E57 F5000 ;fast insert\nG90 ;absolute positioning\nG92 E0 ;zero the extruded length\n;---------------------------------------\n;---------------------------------------" },
+        "machine_nozzle_offset_x": { "default_value": 0.0 },
+        "machine_nozzle_offset_y": { "default_value": 0.0 },
+        "machine_nozzle_size": { "default_value": 0.4 },
+        "material_diameter": { "default_value": 1.75 },
+        "prime_tower_flow": { "value": "200" }
     }
 }

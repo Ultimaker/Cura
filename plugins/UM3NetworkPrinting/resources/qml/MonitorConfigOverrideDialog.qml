@@ -102,9 +102,6 @@ UM.Dialog
                     case "print_core_change":
                         text = catalog.i18nc("@label", "Change print core %1 from %2 to %3.").arg(change.index + 1).arg(change.originName).arg(change.targetName)
                         break
-                    case "buildplate_change":
-                        text = catalog.i18nc("@label", "Change build plate to %1 (This cannot be overridden).").arg(formatBuildPlateType(change.target_name))
-                        break
                     default:
                         text = "unknown"
                 }
@@ -142,20 +139,5 @@ UM.Dialog
             return false
         }
         return true
-    }
-    function formatBuildPlateType(buildPlateType)
-    {
-        var translationText = ""
-        switch (buildPlateType) {
-            case "glass":
-                translationText = catalog.i18nc("@label", "Glass")
-                break
-            case "aluminum":
-                translationText = catalog.i18nc("@label", "Aluminum")
-                break
-            default:
-                translationText = null
-        }
-        return translationText
     }
 }

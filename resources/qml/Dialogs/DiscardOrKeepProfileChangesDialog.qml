@@ -107,7 +107,7 @@ UM.Dialog
     [
         Cura.ComboBox
         {
-            visible: buttonState == DiscardOrKeepProfileChangesDialog.ButtonsType.DiscardOrKeep
+            visible: buttonState === DiscardOrKeepProfileChangesDialog.ButtonsType.DiscardOrKeep
 
             implicitHeight: UM.Theme.getSize("combobox").height
             implicitWidth: UM.Theme.getSize("combobox").width
@@ -128,20 +128,22 @@ UM.Dialog
 
             onActivated:
             {
-                var code = model.get(index).code;
+                const code = model.get(index).code;
                 UM.Preferences.setValue("cura/choice_on_profile_override", code);
 
-                if (code == "always_keep") {
-                    keepButton.enabled = true;
-                    discardButton.enabled = false;
-                }
-                else if (code == "always_discard") {
-                    keepButton.enabled = false;
-                    discardButton.enabled = true;
-                }
-                else {
-                    keepButton.enabled = true;
-                    discardButton.enabled = true;
+                switch (code) {
+                    case "always_keep":
+                        keepButton.enabled = true;
+                        discardButton.enabled = false;
+                        break;
+                    case "always_discard":
+                        keepButton.enabled = false;
+                        discardButton.enabled = true;
+                        break;
+                    default:
+                        keepButton.enabled = true;
+                        discardButton.enabled = true;
+                        break;
                 }
             }
         }

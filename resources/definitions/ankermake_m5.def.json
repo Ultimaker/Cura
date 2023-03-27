@@ -17,7 +17,37 @@
     },
     "overrides":
     {
-        "acceleration_print": { "value": "2500" },
+        "acceleration_enabled": { "value": "true" },
+        "acceleration_infill": { "maximum_value_warning": "2500" },
+        "acceleration_layer_0": { "maximum_value_warning": "2500" },
+        "acceleration_prime_tower": { "maximum_value_warning": "2500" },
+        "acceleration_print":
+        {
+            "maximum_value_warning": "2500",
+            "value": "2500"
+        },
+        "acceleration_print_layer_0": { "maximum_value_warning": "2500" },
+        "acceleration_roofing": { "maximum_value_warning": "2500" },
+        "acceleration_skirt_brim": { "maximum_value_warning": "2500" },
+        "acceleration_support": { "maximum_value_warning": "2500" },
+        "acceleration_support_bottom": { "maximum_value_warning": "2500" },
+        "acceleration_support_infill": { "maximum_value_warning": "2500" },
+        "acceleration_support_interface": { "maximum_value_warning": "2500" },
+        "acceleration_support_roof": { "maximum_value_warning": "2500" },
+        "acceleration_topbottom": { "maximum_value_warning": "2500" },
+        "acceleration_travel":
+        {
+            "maximum_value_warning": "2500",
+            "value": "acceleration_print"
+        },
+        "acceleration_travel_layer_0":
+        {
+            "maximum_value_warning": "2500",
+            "value": "acceleration_travel"
+        },
+        "acceleration_wall": { "maximum_value_warning": "2500" },
+        "acceleration_wall_0": { "maximum_value_warning": "2500" },
+        "acceleration_wall_x": { "maximum_value_warning": "2500" },
         "adhesion_type": { "default_value": "skirt" },
         "cool_min_layer_time": { "value": 6 },
         "cool_min_speed": { "value": 30 },
@@ -91,7 +121,6 @@
         "top_bottom_thickness": { "value": "layer_height * 4" },
         "wall_overhang_angle": { "value": 55 },
         "wall_overhang_speed_factor": { "value": 55 },
-        "xy_offset_layer_0": { "value": -0.2 },
         "zig_zaggify_infill": { "value": "infill_pattern == 'cross' or infill_pattern == 'cross_3d' or infill_pattern == 'lines'" }
     }
 }

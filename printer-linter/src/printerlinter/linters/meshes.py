@@ -4,12 +4,14 @@ from typing import Iterator
 from ..diagnostic import Diagnostic
 from .linter import Linter
 
+MAX_MESH_FILE_SIZE = 1 * 1024 * 1024  # 1MB
+
 
 class Meshes(Linter):
     def __init__(self, file: Path, settings: dict) -> None:
         """ Finds issues in model files, such as incorrect file format or too large size """
         super().__init__(file, settings)
-        self._max_file_size = self._settings.get("diagnostic-mesh-file-size", 1e6)
+        self._max_file_size = self._settings.get("diagnostic-mesh-file-size", MAX_MESH_FILE_SIZE)
 
     def check(self) -> Iterator[Diagnostic]:
         if self._settings["checks"].get("diagnostic-mesh-file-extension", False):
