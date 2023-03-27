@@ -21,7 +21,6 @@ class CuraConan(ConanFile):
     description = "3D printer / slicing GUI built on top of the Uranium framework"
     topics = ("conan", "python", "pyqt6", "qt", "qml", "3d-printing", "slicer")
     build_policy = "missing"
-    exports = "LICENSE*", "UltiMaker-Cura.spec.jinja", "CuraVersion.py.jinja"
     settings = "os", "compiler", "build_type", "arch"
     no_copy_source = True  # We won't build so no need to copy sources to the build folder
 
@@ -140,7 +139,7 @@ class CuraConan(ConanFile):
         return "None"
 
     def _generate_cura_version(self, location):
-        with open(os.path.join(self.recipe_folder, "CuraVersion.py.jinja"), "r") as f:
+        with open(os.path.join(self.source_folder, "CuraVersion.py.jinja"), "r") as f:
             cura_version_py = Template(f.read())
 
         # If you want a specific Cura version to show up on the splash screen add the user configuration `user.cura:version=VERSION`
@@ -259,6 +258,7 @@ class CuraConan(ConanFile):
         copy(self, "UltiMaker-Cura.spec.jinja", self.recipe_folder, self.export_sources_folder)
         copy(self, "CuraVersion.py.jinja", self.recipe_folder, self.export_sources_folder)
         copy(self, "cura_app.py", self.recipe_folder, self.export_sources_folder)
+        copy(self, "LICENSE", self.recipe_folder, self.export_sources_folder)
 
     def configure(self):
         self.options["pyarcus"].shared = True
