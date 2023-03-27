@@ -101,7 +101,7 @@
         "support_brim_width": { "value": 3 },
 
         "support_interface_en
-        "support_interface_height": { "value": "layer_height * 4" },
+        "support_interface_height": { "value":
         "support_interface_density": { "value": 33.333 },
         "support_interface_pattern": { "value": "'grid'" },
         
