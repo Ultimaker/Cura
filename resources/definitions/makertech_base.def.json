@@ -109,7 +109,7 @@
         "minimum_interface_area": { "value": 10 },
 		
 		"bridge_s
-		"bridge_wall_speed": { "value": 60 },
+		"bridge_wall_speed": { "value": 6
 		"bridge_skin_speed": { "value": 60 },
 		"bridge_enable_more_layers": { "default_value": false },
 		
