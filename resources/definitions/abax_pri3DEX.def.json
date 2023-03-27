@@ -10,7 +10,11 @@
         "file_formats": "text/x-gcode",
         "has_machine_quality": true,
         "has_variants": true,
-        "machine_extruder_trains": { "0": "abax_pri3_extruder_0" },
+        "machine_extruder_trains": 
+        { 
+            "0": "abax_pri3DEX_extruder_0",
+            "1": "abax_pri3DEX_extruder_1"
+        },
         "preferred_quality_type": "fast",
         "preferred_variant_name": "0.4 mm"
     },
@@ -20,11 +24,13 @@
         "layer_height_0": { "default_value": 0.2 },
         "machine_center_is_zero": { "default_value": false },
         "machine_depth": { "default_value": 230 },
-        "machine_end_gcode": { "default_value": "; -- END GCODE --\nG91                     ;set to relative positioning\nG1 F2000 E-10            ;retract the filament a bit to release some of the pressure\nG90                     ;set to absolute positioning\nM104 S0                 ;turn off extruder\nM140 S0                 ; turn off bed\nM106 S0                 ; turn off cooling fan\nG1 F2000 X1 Y229                 ;move X to min and Y to max\nM84                     ;turn off steppers\n; -- end of END GCODE --" },
+        "machine_extruder_count": { "default_value": 2 },
+        "machine_end_gcode": { "default_value": "; -- END GCODE --\nG91                         ; relative positioning\nT0                          ; Switch to the 1st extruder\nG1 F2000 E-10.0             ; retract the filament a bit before lifting the nozzle, to release some of the pressure\nT1                          ; Switch to the 2nd extruder\nG1 F2000 E-20.0             ; retract the filament a bit before lifting the nozzle, to release some of the pressure\nG90                         ; absolute positioning\nM104 S0 T0                  ; turn off extruder temperature\nM104 S0 T1                  ; turn off extruder temperature\nM140 S0                     ; turn off heat bed temperature\nM106 S0                     ; turn off cooling fan\nG1 X2 Y229 F5000            ; move X to min and Y to max\nM84                         ; disable motors\n; -- end of END GCODE --" },
         "machine_gcode_flavor": { "default_value": "RepRap" },
         "machine_heated_bed": { "default_value": true },
         "machine_height": { "default_value": 200 },
         "machine_start_gcode": { "default_value": "; -- START GCODE --\nG28                     ;home all axes\nM114             ;Get Current Position\nG1 F200 Z5 \n; -- START GCODE --" },
+        "machine_use_extruder_offset_to_offset_coords": { "default_value": true },
         "machine_width": { "default_value": 230 },
         "speed_print": { "default_value": 40 },
         "machine_max_acceleration_x": { "default_value": 500 },

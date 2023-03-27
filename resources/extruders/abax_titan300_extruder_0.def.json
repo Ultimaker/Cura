@@ -4,7 +4,7 @@
     "inherits": "fdmextruder",
     "metadata":
     {
-        "machine": "abax_titan",
+        "machine": "abax_titan300",
         "position": "0"
     },
     "overrides":
