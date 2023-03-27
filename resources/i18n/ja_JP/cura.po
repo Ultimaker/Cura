@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-31 16:46+0100\n"
+"POT-Creation-Date: 2023-03-15 11:58+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -68,7 +68,7 @@ msgstr "現行バージョンより上の Cura バックアップをリストア
 #: cura/Backups/Backup.py:158
 msgctxt "@info:backup_failed"
 msgid "The following error occurred while trying to restore a Cura backup:"
-msgstr "The following error occurred while trying to restore a Cura backup:"
+msgstr "Curaのバックアップのリストア中に次のエラーが発生しました："
 
 #: cura/BuildVolume.py:100
 msgctxt "@info:status"
@@ -334,7 +334,7 @@ msgstr "{0}を取り除いてもよろしいですか？この操作は元に戻
 #: cura/Machines/Models/QualityManagementModel.py:347
 msgctxt "@label"
 msgid "Default"
-msgstr "Default"
+msgstr ""
 
 #: cura/Machines/Models/IntentCategoryModel.py:45
 #: cura/Machines/Models/IntentSelectionModel.py:65
@@ -355,7 +355,7 @@ msgstr "ビジュアルプロファイルは、優れたビジュアルと表面
 #: cura/Machines/Models/IntentTranslations.py:18
 msgctxt "@label"
 msgid "Engineering"
-msgstr "Engineering"
+msgstr ""
 
 #: cura/Machines/Models/IntentCategoryModel.py:50
 #: cura/Machines/Models/IntentSelectionModel.py:71
@@ -660,7 +660,7 @@ msgstr "サポート対象外"
 #: cura/Settings/cura_empty_instance_containers.py:55
 msgctxt "@info:No intent profile selected"
 msgid "Default"
-msgstr "Default"
+msgstr ""
 
 #: cura/UI/AddPrinterPagesModel.py:17
 #: plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:61
@@ -812,653 +812,6 @@ msgctxt "@text"
 msgid "Unknown error."
 msgstr "不明なエラー。"
 
-#: plugin.json
-msgctxt "name"
-msgid "3MF Reader"
-msgstr "3MFリーダー"
-
-#: plugin.json
-msgctxt "name"
-msgid "3MF Writer"
-msgstr "3MFリーダー"
-
-#: plugin.json
-msgctxt "name"
-msgid "AMF Reader"
-msgstr "AMFリーダー"
-
-#: plugin.json
-msgctxt "description"
-msgid "Accepts G-Code and sends them to a printer. Plugin can also update firmware."
-msgstr "G-codeを承認し、プリンターに送信する。またプラグインはファームウェアをアップデートできます。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Allows loading and displaying G-code files."
-msgstr "G-codeファイルの読み込み、表示を許可する。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Backup and restore your configuration."
-msgstr "構成をバックアップしてリストアします。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Checks for firmware updates."
-msgstr "ファームウェアアップデートをチェックする。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Checks models and print configuration for possible printing issues and give suggestions."
-msgstr "プリント問題の可能性のあるモデルをプリント構成を確認し、解決案を提示してください。"
-
-#: plugin.json
-msgctxt "name"
-msgid "Compressed G-code Reader"
-msgstr "圧縮G-codeリーダー"
-
-#: plugin.json
-msgctxt "name"
-msgid "Compressed G-code Writer"
-msgstr "圧縮G-codeライター"
-
-#: plugin.json
-msgctxt "description"
-msgid "Connects to the Digital Library, allowing Cura to open files from and save files to the Digital Library."
-msgstr "Digital Libraryに接続し、CuraでDigital Libraryからファイルを開いたりDigital Libraryにファイルを保存したりできるようにします。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Creates an eraser mesh to block the printing of support in certain places"
-msgstr "特定箇所のサポートを印刷するブロックを消去するメッシュを作成する"
-
-#: plugin.json
-msgctxt "name"
-msgid "Cura Backups"
-msgstr "Cura バックアップ"
-
-#: plugin.json
-msgctxt "name"
-msgid "Cura Profile Reader"
-msgstr "Curaプロファイルリーダー"
-
-#: plugin.json
-msgctxt "name"
-msgid "Cura Profile Writer"
-msgstr "Curaプロファイルライター"
-
-#: plugin.json
-msgctxt "name"
-msgid "CuraEngine Backend"
-msgstr "Curaエンジンバックエンド"
-
-#: plugin.json
-msgctxt "description"
-msgid "Enables ability to generate printable geometry from 2D image files."
-msgstr "2Dの画像ファイルからプリント可能なジオメトリーを生成を可能にする。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Extension that allows for user created scripts for post processing"
-msgstr "後処理のためにユーザーが作成したスクリプト用拡張"
-
-#: plugin.json
-msgctxt "name"
-msgid "Firmware Update Checker"
-msgstr "ファームウェアアップデートチェッカー"
-
-#: plugin.json
-msgctxt "name"
-msgid "Firmware Updater"
-msgstr "ファームウェアアップデーター"
-
-#: plugin.json
-msgctxt "name"
-msgid "G-code Profile Reader"
-msgstr "G-codeプロファイルリーダー"
-
-#: plugin.json
-msgctxt "name"
-msgid "G-code Reader"
-msgstr "G-codeリーダー"
-
-#: plugin.json
-msgctxt "name"
-msgid "G-code Writer"
-msgstr "G-codeライター"
-
-#: plugin.json
-msgctxt "name"
-msgid "Image Reader"
-msgstr "画像リーダー"
-
-#: plugin.json
-msgctxt "name"
-msgid "Legacy Cura Profile Reader"
-msgstr "レガシーCuraプロファイルリーダー"
-
-#: plugin.json
-msgctxt "description"
-msgid "Logs certain events so that they can be used by the crash reporter"
-msgstr "クラッシュレポーターで使用できるように、特定のイベントをログに記録します"
-
-#: plugin.json
-msgctxt "name"
-msgid "Machine Settings Action"
-msgstr "プリンターの設定アクション"
-
-#: plugin.json
-msgctxt "description"
-msgid "Manages extensions to the application and allows browsing extensions from the Ultimaker website."
-msgstr "アプリケーションの拡張機能を管理し、UltiMakerウェブサイトから拡張機能を参照できるようにします。"
-
-#: plugin.json
-#, fuzzy
-msgctxt "description"
-msgid "Manages network connections to Ultimaker networked printers."
-msgstr "UltiMakerのネットワーク接属できるプリンターのネットワーク接続を管理します。"
-
-#: plugin.json
-msgctxt "name"
-msgid "Marketplace"
-msgstr "マーケットプレース"
-
-#: plugin.json
-msgctxt "name"
-msgid "Material Profiles"
-msgstr "フィラメントプロファイル"
-
-#: plugin.json
-msgctxt "name"
-msgid "Model Checker"
-msgstr "モデルチェッカー"
-
-#: plugin.json
-msgctxt "name"
-msgid "Monitor Stage"
-msgstr "モニターステージ"
-
-#: plugin.json
-msgctxt "name"
-msgid "Per Model Settings Tool"
-msgstr "各モデル設定ツール"
-
-#: plugin.json
-msgctxt "name"
-msgid "Post Processing"
-msgstr "後処理"
-
-#: plugin.json
-msgctxt "name"
-msgid "Prepare Stage"
-msgstr "ステージの準備"
-
-#: plugin.json
-msgctxt "name"
-msgid "Preview Stage"
-msgstr "プレビューステージ"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides a machine actions for updating firmware."
-msgstr "ファームウェアアップデートのためのマシン操作を提供します。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides a monitor stage in Cura."
-msgstr "Curaでモニターステージを提供します。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides a normal solid mesh view."
-msgstr "ノーマルなソリットメッシュビューを供給する。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides a prepare stage in Cura."
-msgstr "Curaで準備ステージを提供します。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides a preview stage in Cura."
-msgstr "Curaでプレビューステージを提供します。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc.)."
-msgstr "プリンターの設定を変更（印刷ボリューム、ノズルサイズ、その他）"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides capabilities to read and write XML-based material profiles."
-msgstr "XMLベースフィラメントのプロファイルを読み書きするための機能を供給する。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
-msgstr "UltiMakerのプリンターのアクションを供給する（ベッドレベリングウィザード、アップグレードの選択、他）"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides removable drive hotplugging and writing support."
-msgstr "取り外し可能なドライブホットプラギング及びサポートの書き出しの供給。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for exporting Cura profiles."
-msgstr "Curaプロファイルを書き出すためのサポートを供給する。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for importing Cura profiles."
-msgstr "Curaプロファイルを取り込むためのサポートを供給する。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for importing profiles from g-code files."
-msgstr "g-codeファイルからプロファイルを読み込むサポートを供給する。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for importing profiles from legacy Cura versions."
-msgstr "レガシーCura Versionsからプロファイルを取り込むためのサポートを供給する。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for reading 3MF files."
-msgstr "３MFファイルを読むこむためのサポートを供給する。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for reading AMF files."
-msgstr "AMFファイルの読込みをサポートしています。"
-
-#: plugin.json
-#, fuzzy
-msgctxt "description"
-msgid "Provides support for reading Ultimaker Format Packages."
-msgstr "UltiMakerフォーマットパッケージの読み込みをサポートします。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for reading X3D files."
-msgstr "X3Dファイルを読むこむためのサポートを供給する。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for reading model files."
-msgstr "モデルファイルを読み込むためのサポートを供給します。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides support for writing 3MF files."
-msgstr "３MFファイルを読むこむためのサポートを供給する。"
-
-#: plugin.json
-#, fuzzy
-msgctxt "description"
-msgid "Provides support for writing Ultimaker Format Packages."
-msgstr "UltiMakerフォーマットパッケージへの書き込みをサポートします。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides the Per Model Settings."
-msgstr "各モデル設定を与える。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides the X-Ray view."
-msgstr "透視ビューイング。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides the link to the CuraEngine slicing backend."
-msgstr "CuraEngineスライシングバックエンドにリンクを供給する。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Provides the preview of sliced layerdata."
-msgstr "スライスされたレイヤーデータのプレビューを提供します。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Reads g-code from a compressed archive."
-msgstr "圧縮ファイルからG-codeを読み取ります。"
-
-#: plugin.json
-msgctxt "name"
-msgid "Removable Drive Output Device Plugin"
-msgstr "取り外し可能なドライブアウトプットデバイスプラグイン"
-
-#: plugin.json
-msgctxt "name"
-msgid "Sentry Logger"
-msgstr "監視ロガー"
-
-#: plugin.json
-msgctxt "name"
-msgid "Simulation View"
-msgstr "シミュレーションビュー"
-
-#: plugin.json
-msgctxt "name"
-msgid "Slice info"
-msgstr "スライスインフォメーション"
-
-#: plugin.json
-msgctxt "name"
-msgid "Solid View"
-msgstr "ソリッドビュー"
-
-#: plugin.json
-msgctxt "description"
-msgid "Submits anonymous slice info. Can be disabled through preferences."
-msgstr "不特定なスライス情報を提出。プレファレンスの中で無効になる可能性もある。"
-
-#: plugin.json
-msgctxt "name"
-msgid "Support Eraser"
-msgstr "サポート消去機能"
-
-#: plugin.json
-msgctxt "name"
-msgid "Trimesh Reader"
-msgstr "Trimeshリーダー"
-
-#: plugin.json
-msgctxt "name"
-msgid "UFP Reader"
-msgstr "UFP リーダー"
-
-#: plugin.json
-msgctxt "name"
-msgid "UFP Writer"
-msgstr "UFPライター"
-
-#: plugin.json
-msgctxt "name"
-msgid "USB printing"
-msgstr "USBプリンティング"
-
-#: plugin.json
-msgctxt "name"
-msgid "Ultimaker Digital Library"
-msgstr "Ultimaker Digital Library"
-
-#: plugin.json
-#, fuzzy
-msgctxt "name"
-msgid "Ultimaker Network Connection"
-msgstr "UltiMakerネットワーク接続"
-
-#: plugin.json
-#, fuzzy
-msgctxt "name"
-msgid "Ultimaker machine actions"
-msgstr "Ultimkerプリンターのアクション"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.1 to Cura 2.2."
-msgstr "Cura 2.1 からCura 2.2のコンフィグレーションアップグレート。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.2 to Cura 2.4."
-msgstr "Cura 2.2 からCura 2.4のコンフィグレーションアップグレート。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.5 to Cura 2.6."
-msgstr "Cura 2.5 からCura 2.6のコンフィグレーションアップグレート。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.6 to Cura 2.7."
-msgstr "Cura 2.6 からCura 2.7のコンフィグレーションアップグレート。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.7 to Cura 3.0."
-msgstr "Cura 2.7からCura 3.0のコンフィグレーションアップグレート。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.0 to Cura 3.1."
-msgstr "Cura 3.0からCura 3.1のコンフィグレーションアップグレート。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.2 to Cura 3.3."
-msgstr "Cura 3.2からCura 3.3のコンフィグレーションアップグレート。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.3 to Cura 3.4."
-msgstr "Cura 3.3からCura 3.4のコンフィグレーションアップグレート。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.4 to Cura 3.5."
-msgstr "Cura 3.4 から Cura 3.5 のコンフィグレーションアップグレート。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.5 to Cura 4.0."
-msgstr "Cura 3.5 から Cura 4.0 のコンフィグレーションアップグレート。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.0 to Cura 4.1."
-msgstr "Cura 4.0 から Cura 4.1 のコンフィグレーションアップグレート。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.1 to Cura 4.2."
-msgstr "コンフィギュレーションを Cura 4.1 から Cura 4.2 にアップグレートする。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.11 to Cura 4.12."
-msgstr "Cura 4.11からCura 4.12に設定をアップグレードします。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.13 to Cura 5.0."
-msgstr "Cura 4.13からCura 5.0に設定をアップグレードします。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.2 to Cura 4.3."
-msgstr "Cura 4.2からCura 4.3の設定をアップグレードします。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.3 to Cura 4.4."
-msgstr "Cura 4.3からCura 4.4へのコンフィグレーションアップグレート。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.4 to Cura 4.5."
-msgstr "Cura 4.4からCura 4.5に設定をアップグレードします。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.5 to Cura 4.6."
-msgstr "Cura 4.5からCura 4.6に設定をアップグレードします。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.6.0 to Cura 4.6.2."
-msgstr "構成をCura 4.6.0からCura 4.6.2に更新します。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.6.2 to Cura 4.7."
-msgstr "構成をCura 4.6.2からCura 4.7に更新します。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.7 to Cura 4.8."
-msgstr "Cura 4.7からCura 4.8に設定をアップグレードします。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.8 to Cura 4.9."
-msgstr "Cura 4.8からCura 4.9に設定をアップグレードします。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.9 to Cura 4.10."
-msgstr "Cura 4.9からCura 4.10に設定をアップグレードします。"
-
-#: plugin.json
-#, fuzzy
-msgctxt "description"
-msgid "Upgrades configurations from Cura 5.2 to Cura 5.3."
-msgstr "Cura 3.2からCura 3.3のコンフィグレーションアップグレート。"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 2.1 to 2.2"
-msgstr "2.1 から2.2にバージョンアップグレート"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 2.2 to 2.4"
-msgstr "2.2 から2.4にバージョンアップグレート"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 2.5 to 2.6"
-msgstr "2.5から2.6にバージョンアップグレート"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 2.6 to 2.7"
-msgstr "2.6から2.7にバージョンアップグレート"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 2.7 to 3.0"
-msgstr "2.7から3.0にバージョンアップグレート"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 3.0 to 3.1"
-msgstr "3.0から3.1にバージョンアップグレート"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 3.2 to 3.3"
-msgstr "3.2から3.3にバージョンアップグレート"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 3.3 to 3.4"
-msgstr "3.3から3.4にバージョンアップグレート"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 3.4 to 3.5"
-msgstr "3.4 から 3.5 にバージョンアップグレート"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 3.5 to 4.0"
-msgstr "3.5 から 4.0 にバージョンアップグレート"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.0 to 4.1"
-msgstr "4.0 から 4.1 にバージョンアップグレート"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.1 to 4.2"
-msgstr "4.0 から 4.1 にバージョンアップグレート"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.11 to 4.12"
-msgstr "バージョン4.11から4.12へのアップグレード"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.13 to 5.0"
-msgstr "バージョン4.13から5.0へのアップグレード"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.2 to 4.3"
-msgstr "4.2から4.3にバージョンをアップグレート"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.3 to 4.4"
-msgstr "4.3から4.4にバージョンアップグレート"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.4 to 4.5"
-msgstr "4.4から4.5にバージョンアップグレート"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.5 to 4.6"
-msgstr "バージョン4.5から4.6へのアップグレード"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.6.0 to 4.6.2"
-msgstr "4.6.0から4.6.2へのバージョン更新"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.6.2 to 4.7"
-msgstr "4.6.2から4.7へのバージョン更新"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.7 to 4.8"
-msgstr "バージョン4.7から4.8へのアップグレード"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.8 to 4.9"
-msgstr "バージョン4.8から4.9へのアップグレード"
-
-#: plugin.json
-msgctxt "name"
-msgid "Version Upgrade 4.9 to 4.10"
-msgstr "バージョン4.9から4.10へのアップグレード"
-
-#: plugin.json
-#, fuzzy
-msgctxt "name"
-msgid "Version Upgrade 5.2 to 5.3"
-msgstr "3.2から3.3にバージョンアップグレート"
-
-#: plugin.json
-msgctxt "description"
-msgid "Writes g-code to a compressed archive."
-msgstr "圧縮ファイルにG-codeを書き込みます。"
-
-#: plugin.json
-msgctxt "description"
-msgid "Writes g-code to a file."
-msgstr "ファイルにG-codeを書き込みます。"
-
-#: plugin.json
-msgctxt "name"
-msgid "X-Ray View"
-msgstr "透視ビュー"
-
-#: plugin.json
-msgctxt "name"
-msgid "X3D Reader"
-msgstr "X3Dリーダー"
-
 #: plugins/3MFReader/ThreeMFWorkspaceReader.py:547
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
@@ -1474,10 +827,9 @@ msgstr "プロジェクトファイルを開く"
 #: plugins/3MFReader/WorkspaceDialog.qml:99
 #: plugins/3MFReader/WorkspaceDialog.qml:127
 #: plugins/3MFReader/WorkspaceDialog.qml:134
-#, fuzzy
 msgctxt "@button"
 msgid "Create new"
-msgstr "新しいものを作成する"
+msgstr ""
 
 #: plugins/3MFReader/ThreeMFWorkspaceReader.py:681
 #, python-brace-format
@@ -1500,9 +852,9 @@ msgid "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>.
 msgstr "プロジェクトファイル<filename>{0}</filename>は破損しています：<message>{1}</message>。"
 
 #: plugins/3MFReader/ThreeMFWorkspaceReader.py:754
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
-msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of Ultimaker Cura."
+msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura."
 msgstr "プロジェクトファイル<filename>{0}</filename>はこのバージョンのUltiMaker Curaでは認識できないプロファイルを使用して作成されています。"
 
 #: plugins/3MFReader/WorkspaceDialog.py:233
@@ -1571,15 +923,14 @@ msgid "Printer Group"
 msgstr "プリンターグループ"
 
 #: plugins/3MFReader/WorkspaceDialog.qml:103
-#, fuzzy
 msgctxt "@action:label"
 msgid "Open With"
-msgstr "開く"
+msgstr ""
 
 #: plugins/3MFReader/WorkspaceDialog.qml:104
 msgctxt "@info:tooltip"
 msgid "Printer settings will be updated to match the settings saved with the project."
-msgstr ""
+msgstr "プリンター設定は、プロジェクトに保存された設定と一致するように更新されます。"
 
 #: plugins/3MFReader/WorkspaceDialog.qml:156
 #: resources/qml/Dialogs/WorkspaceSummaryDialog.qml:222
@@ -1599,7 +950,7 @@ msgstr "ネーム"
 #: resources/qml/Dialogs/WorkspaceSummaryDialog.qml:263
 msgctxt "@action:label"
 msgid "Intent"
-msgstr "Intent"
+msgstr ""
 
 #: plugins/3MFReader/WorkspaceDialog.qml:178
 #: resources/qml/Dialogs/WorkspaceSummaryDialog.qml:230
@@ -1675,6 +1026,16 @@ msgctxt "@item:inlistbox"
 msgid "3MF File"
 msgstr "3MF ファイル"
 
+#: plugins/3MFReader/plugin.json
+msgctxt "name"
+msgid "3MF Reader"
+msgstr "3MFリーダー"
+
+#: plugins/3MFReader/plugin.json
+msgctxt "description"
+msgid "Provides support for reading 3MF files."
+msgstr "３MFファイルを読むこむためのサポートを供給する。"
+
 #: plugins/3MFWriter/ThreeMFWorkspaceWriter.py:31
 msgctxt "@error:zip"
 msgid "3MF Writer plug-in is corrupt."
@@ -1711,10 +1072,40 @@ msgctxt "@item:inlistbox"
 msgid "Cura Project 3MF file"
 msgstr "Curaが3MF fileを算出します"
 
+#: plugins/3MFWriter/plugin.json
+msgctxt "name"
+msgid "3MF Writer"
+msgstr "3MFリーダー"
+
+#: plugins/3MFWriter/plugin.json
+msgctxt "description"
+msgid "Provides support for writing 3MF files."
+msgstr "３MFファイルを読むこむためのサポートを供給する。"
+
 #: plugins/AMFReader/__init__.py:15
 msgctxt "@item:inlistbox"
 msgid "AMF File"
 msgstr "AMF ファイル"
+
+#: plugins/AMFReader/plugin.json
+msgctxt "name"
+msgid "AMF Reader"
+msgstr "AMFリーダー"
+
+#: plugins/AMFReader/plugin.json
+msgctxt "description"
+msgid "Provides support for reading AMF files."
+msgstr "AMFファイルの読込みをサポートしています。"
+
+#: plugins/CuraDrive/plugin.json
+msgctxt "description"
+msgid "Backup and restore your configuration."
+msgstr "構成をバックアップしてリストアします。"
+
+#: plugins/CuraDrive/plugin.json
+msgctxt "name"
+msgid "Cura Backups"
+msgstr "Cura バックアップ"
 
 #: plugins/CuraDrive/src/CreateBackupJob.py:25
 msgctxt "@info:title"
@@ -1858,6 +1249,7 @@ msgid "Backup and synchronize your Cura settings."
 msgstr "Cura のバックアップおよび同期を設定します。"
 
 #: plugins/CuraDrive/src/qml/pages/WelcomePage.qml:47
+#: plugins/Marketplace/resources/qml/Marketplace.qml:312
 #: resources/qml/Account/GeneralOperations.qml:49
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:180
 #: resources/qml/WelcomePages/CloudContent.qml:212
@@ -1885,45 +1277,45 @@ msgctxt "@message:description"
 msgid "Report a bug on UltiMaker Cura's issue tracker."
 msgstr "UltiMaker Curaの問題追跡ツールでバグを報告してください。"
 
-#: plugins/CuraEngineBackend/CuraEngineBackend.py:401
+#: plugins/CuraEngineBackend/CuraEngineBackend.py:416
 msgctxt "@info:status"
 msgid "Unable to slice with the current material as it is incompatible with the selected machine or configuration."
 msgstr "選ばれたプリンターまたは選ばれたプリント構成が異なるため進行中の材料にてスライスを完了できません。"
 
-#: plugins/CuraEngineBackend/CuraEngineBackend.py:402
-#: plugins/CuraEngineBackend/CuraEngineBackend.py:435
-#: plugins/CuraEngineBackend/CuraEngineBackend.py:462
-#: plugins/CuraEngineBackend/CuraEngineBackend.py:474
-#: plugins/CuraEngineBackend/CuraEngineBackend.py:486
-#: plugins/CuraEngineBackend/CuraEngineBackend.py:499
+#: plugins/CuraEngineBackend/CuraEngineBackend.py:417
+#: plugins/CuraEngineBackend/CuraEngineBackend.py:450
+#: plugins/CuraEngineBackend/CuraEngineBackend.py:477
+#: plugins/CuraEngineBackend/CuraEngineBackend.py:489
+#: plugins/CuraEngineBackend/CuraEngineBackend.py:501
+#: plugins/CuraEngineBackend/CuraEngineBackend.py:514
 msgctxt "@info:title"
 msgid "Unable to slice"
 msgstr "スライスできません"
 
-#: plugins/CuraEngineBackend/CuraEngineBackend.py:434
+#: plugins/CuraEngineBackend/CuraEngineBackend.py:449
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Unable to slice with the current settings. The following settings have errors: {0}"
 msgstr "現在の設定でスライスが完了できません。以下の設定にエラーがあります: {0}"
 
-#: plugins/CuraEngineBackend/CuraEngineBackend.py:461
+#: plugins/CuraEngineBackend/CuraEngineBackend.py:476
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Unable to slice due to some per-model settings. The following settings have errors on one or more models: {error_labels}"
 msgstr "モデル別の設定があるためスライスできません。1つまたは複数のモデルで以下の設定にエラーが発生しました：{error_labels}"
 
-#: plugins/CuraEngineBackend/CuraEngineBackend.py:473
+#: plugins/CuraEngineBackend/CuraEngineBackend.py:488
 msgctxt "@info:status"
 msgid "Unable to slice because the prime tower or prime position(s) are invalid."
 msgstr "プライムタワーまたはプライム位置が無効なためスライスできません。"
 
-#: plugins/CuraEngineBackend/CuraEngineBackend.py:485
+#: plugins/CuraEngineBackend/CuraEngineBackend.py:500
 #, python-format
 msgctxt "@info:status"
 msgid "Unable to slice because there are objects associated with disabled Extruder %s."
 msgstr "無効な Extruder %s に関連付けられている造形物があるため、スライスできません。"
 
-#: plugins/CuraEngineBackend/CuraEngineBackend.py:495
+#: plugins/CuraEngineBackend/CuraEngineBackend.py:510
 msgctxt "@info:status"
 msgid ""
 "Please review settings and check if your models:\n"
@@ -1947,11 +1339,51 @@ msgctxt "@info:title"
 msgid "Information"
 msgstr "インフォメーション"
 
+#: plugins/CuraEngineBackend/plugin.json
+msgctxt "name"
+msgid "CuraEngine Backend"
+msgstr "Curaエンジンバックエンド"
+
+#: plugins/CuraEngineBackend/plugin.json
+msgctxt "description"
+msgid "Provides the link to the CuraEngine slicing backend."
+msgstr "CuraEngineスライシングバックエンドにリンクを供給する。"
+
 #: plugins/CuraProfileReader/__init__.py:14
 #: plugins/CuraProfileWriter/__init__.py:14
 msgctxt "@item:inlistbox"
 msgid "Cura Profile"
 msgstr "Curaプロファイル"
+
+#: plugins/CuraProfileReader/plugin.json
+msgctxt "name"
+msgid "Cura Profile Reader"
+msgstr "Curaプロファイルリーダー"
+
+#: plugins/CuraProfileReader/plugin.json
+msgctxt "description"
+msgid "Provides support for importing Cura profiles."
+msgstr "Curaプロファイルを取り込むためのサポートを供給する。"
+
+#: plugins/CuraProfileWriter/plugin.json
+msgctxt "name"
+msgid "Cura Profile Writer"
+msgstr "Curaプロファイルライター"
+
+#: plugins/CuraProfileWriter/plugin.json
+msgctxt "description"
+msgid "Provides support for exporting Cura profiles."
+msgstr "Curaプロファイルを書き出すためのサポートを供給する。"
+
+#: plugins/DigitalLibrary/plugin.json
+msgctxt "description"
+msgid "Connects to the Digital Library, allowing Cura to open files from and save files to the Digital Library."
+msgstr "Digital Libraryに接続し、CuraでDigital Libraryからファイルを開いたりDigital Libraryにファイルを保存したりできるようにします。"
+
+#: plugins/DigitalLibrary/plugin.json
+msgctxt "name"
+msgid "Ultimaker Digital Library"
+msgstr "Ultimaker Digital Library"
 
 #: plugins/DigitalLibrary/resources/qml/SaveProjectFilesPage.qml:216
 msgctxt "@option"
@@ -1989,6 +1421,16 @@ msgstr "%sの新しい安定版ファームウェアが利用可能です"
 msgctxt "@action:button"
 msgid "How to update"
 msgstr "アップデートの仕方"
+
+#: plugins/FirmwareUpdateChecker/plugin.json
+msgctxt "description"
+msgid "Checks for firmware updates."
+msgstr "ファームウェアアップデートをチェックする。"
+
+#: plugins/FirmwareUpdateChecker/plugin.json
+msgctxt "name"
+msgid "Firmware Update Checker"
+msgstr "ファームウェアアップデートチェッカー"
 
 #: plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.py:27
 msgctxt "@action"
@@ -2070,15 +1512,45 @@ msgctxt "@label"
 msgid "Firmware update failed due to missing firmware."
 msgstr "ファームウェアが見つからず、ファームウェアアップデート失敗しました。"
 
+#: plugins/FirmwareUpdater/plugin.json
+msgctxt "name"
+msgid "Firmware Updater"
+msgstr "ファームウェアアップデーター"
+
+#: plugins/FirmwareUpdater/plugin.json
+msgctxt "description"
+msgid "Provides a machine actions for updating firmware."
+msgstr "ファームウェアアップデートのためのマシン操作を提供します。"
+
 #: plugins/GCodeGzReader/__init__.py:17 plugins/GCodeGzWriter/__init__.py:17
 msgctxt "@item:inlistbox"
 msgid "Compressed G-code File"
 msgstr "圧縮G-codeファイル"
 
+#: plugins/GCodeGzReader/plugin.json
+msgctxt "name"
+msgid "Compressed G-code Reader"
+msgstr "圧縮G-codeリーダー"
+
+#: plugins/GCodeGzReader/plugin.json
+msgctxt "description"
+msgid "Reads g-code from a compressed archive."
+msgstr "圧縮ファイルからG-codeを読み取ります。"
+
 #: plugins/GCodeGzWriter/GCodeGzWriter.py:43
 msgctxt "@error:not supported"
 msgid "GCodeGzWriter does not support text mode."
 msgstr "GCodeGzWriter はテキストモードをサポートしていません。"
+
+#: plugins/GCodeGzWriter/plugin.json
+msgctxt "name"
+msgid "Compressed G-code Writer"
+msgstr "圧縮G-codeライター"
+
+#: plugins/GCodeGzWriter/plugin.json
+msgctxt "description"
+msgid "Writes g-code to a compressed archive."
+msgstr "圧縮ファイルにG-codeを書き込みます。"
 
 #: plugins/GCodeProfileReader/__init__.py:14 plugins/GCodeReader/__init__.py:14
 #: plugins/GCodeWriter/__init__.py:16
@@ -2086,18 +1558,28 @@ msgctxt "@item:inlistbox"
 msgid "G-code File"
 msgstr "G-codeファイル"
 
-#: plugins/GCodeReader/FlavorParser.py:350
+#: plugins/GCodeProfileReader/plugin.json
+msgctxt "name"
+msgid "G-code Profile Reader"
+msgstr "G-codeプロファイルリーダー"
+
+#: plugins/GCodeProfileReader/plugin.json
+msgctxt "description"
+msgid "Provides support for importing profiles from g-code files."
+msgstr "g-codeファイルからプロファイルを読み込むサポートを供給する。"
+
+#: plugins/GCodeReader/FlavorParser.py:359
 msgctxt "@info:status"
 msgid "Parsing G-code"
 msgstr "G-codeを解析"
 
-#: plugins/GCodeReader/FlavorParser.py:352
-#: plugins/GCodeReader/FlavorParser.py:506
+#: plugins/GCodeReader/FlavorParser.py:361
+#: plugins/GCodeReader/FlavorParser.py:515
 msgctxt "@info:title"
 msgid "G-code Details"
 msgstr "G-codeの詳細"
 
-#: plugins/GCodeReader/FlavorParser.py:504
+#: plugins/GCodeReader/FlavorParser.py:513
 msgctxt "@info:generic"
 msgid "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."
 msgstr "データファイルを送信する前に、プリンターとプリンターの構成設定にそのG-codeが適応しているか確認してください。G-codeの表示が適切でない場合があります。"
@@ -2106,6 +1588,16 @@ msgstr "データファイルを送信する前に、プリンターとプリン
 msgctxt "@item:inlistbox"
 msgid "G File"
 msgstr "Gファイル"
+
+#: plugins/GCodeReader/plugin.json
+msgctxt "description"
+msgid "Allows loading and displaying G-code files."
+msgstr "G-codeファイルの読み込み、表示を許可する。"
+
+#: plugins/GCodeReader/plugin.json
+msgctxt "name"
+msgid "G-code Reader"
+msgstr "G-codeリーダー"
 
 #: plugins/GCodeWriter/GCodeWriter.py:75
 msgctxt "@error:not supported"
@@ -2116,6 +1608,16 @@ msgstr "GCodeWriter は非テキストモードはサポートしていません
 msgctxt "@warning:status"
 msgid "Please prepare G-code before exporting."
 msgstr "エクスポートする前にG-codeの準備をしてください。"
+
+#: plugins/GCodeWriter/plugin.json
+msgctxt "name"
+msgid "G-code Writer"
+msgstr "G-codeライター"
+
+#: plugins/GCodeWriter/plugin.json
+msgctxt "description"
+msgid "Writes g-code to a file."
+msgstr "ファイルにG-codeを書き込みます。"
 
 #: plugins/ImageReader/ConfigUI.qml:14
 msgctxt "@title:window"
@@ -2222,7 +1724,7 @@ msgstr "画像に適応したスムージング量。"
 #: resources/qml/ColorDialog.qml:148 resources/qml/Dialogs/RenameDialog.qml:25
 msgctxt "@action:button"
 msgid "OK"
-msgstr "OK"
+msgstr ""
 
 #: plugins/ImageReader/__init__.py:14
 msgctxt "@item:inlistbox"
@@ -2249,10 +1751,30 @@ msgctxt "@item:inlistbox"
 msgid "GIF Image"
 msgstr "GIF画像"
 
+#: plugins/ImageReader/plugin.json
+msgctxt "description"
+msgid "Enables ability to generate printable geometry from 2D image files."
+msgstr "2Dの画像ファイルからプリント可能なジオメトリーを生成を可能にする。"
+
+#: plugins/ImageReader/plugin.json
+msgctxt "name"
+msgid "Image Reader"
+msgstr "画像リーダー"
+
 #: plugins/LegacyProfileReader/__init__.py:14
 msgctxt "@item:inlistbox"
 msgid "Cura 15.04 profiles"
 msgstr "Cura 15.04 プロファイル"
+
+#: plugins/LegacyProfileReader/plugin.json
+msgctxt "name"
+msgid "Legacy Cura Profile Reader"
+msgstr "レガシーCuraプロファイルリーダー"
+
+#: plugins/LegacyProfileReader/plugin.json
+msgctxt "description"
+msgid "Provides support for importing profiles from legacy Cura versions."
+msgstr "レガシーCura Versionsからプロファイルを取り込むためのサポートを供給する。"
 
 #: plugins/MachineSettingsAction/MachineSettingsAction.py:32
 msgctxt "@action"
@@ -2417,6 +1939,16 @@ msgctxt "@title:label"
 msgid "End G-code"
 msgstr "G-codeの終了"
 
+#: plugins/MachineSettingsAction/plugin.json
+msgctxt "name"
+msgid "Machine Settings Action"
+msgstr "プリンターの設定アクション"
+
+#: plugins/MachineSettingsAction/plugin.json
+msgctxt "description"
+msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc.)."
+msgstr "プリンターの設定を変更（印刷ボリューム、ノズルサイズ、その他）"
+
 #: plugins/Marketplace/CloudSync/CloudPackageChecker.py:144
 msgctxt "@info:generic"
 msgid "Do you want to sync material and software packages with your account?"
@@ -2503,7 +2035,7 @@ msgstr "不明な作成者"
 #: plugins/Marketplace/PackageModel.py:95
 msgctxt "@label:label Ultimaker Marketplace is a brand name, don't translate"
 msgid "The material package associated with the Cura project could not be found on the Ultimaker Marketplace. Use the partial material profile definition stored in the Cura project file at your own risk."
-msgstr ""
+msgstr "Curaプロジェクトに関連付けられている材料パッケージがUltimaker Marketplaceで見つかりませんでした。Curaプロジェクトファイルに保存されている材料パッケージ定義を部分的に使用する場合は自己責任で行ってください。"
 
 #: plugins/Marketplace/RemotePackageList.py:117
 msgctxt "@info:error"
@@ -2514,6 +2046,16 @@ msgstr "サーバーの応答を解釈できませんでした。"
 msgctxt "@info:error"
 msgid "Could not reach Marketplace."
 msgstr "マーケットプレースにアクセスできませんでした。"
+
+#: plugins/Marketplace/plugin.json
+msgctxt "description"
+msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
+msgstr "アプリケーションの拡張機能を管理し、UltiMakerウェブサイトから拡張機能を参照できるようにします。"
+
+#: plugins/Marketplace/plugin.json
+msgctxt "name"
+msgid "Marketplace"
+msgstr "マーケットプレース"
 
 #: plugins/Marketplace/resources/qml/CompatibilityDialog.qml:15
 msgctxt "@title"
@@ -2526,7 +2068,6 @@ msgid "Dismiss"
 msgstr "無視"
 
 #: plugins/Marketplace/resources/qml/CompatibilityDialog.qml:24
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:118
 #: resources/qml/WelcomePages/FirstStartMachineActionsContent.qml:76
 #: resources/qml/WelcomePages/WhatsNewContent.qml:175
 msgctxt "@button"
@@ -2607,6 +2148,11 @@ msgstr "このパッケージを使用するには、Curaを再始動する必�
 msgctxt "@info:button, %1 is the application name"
 msgid "Quit %1"
 msgstr "%1を終了する"
+
+#: plugins/Marketplace/resources/qml/Marketplace.qml:300
+msgctxt "@description"
+msgid "Please sign in to get verified plugins and materials for UltiMaker Cura Enterprise"
+msgstr "検証済みのUltiMaker Cura Enterprise用プラグインおよび材料を入手するにはサインインしてください。"
 
 #: plugins/Marketplace/resources/qml/Materials.qml:8
 #: plugins/Marketplace/resources/qml/MissingPackages.qml:8
@@ -2834,7 +2380,17 @@ msgstr ""
 "<p>モデルのサイズまたは材料の設定によっては、適切に印刷しない3Dモデルがあります。:</p>\n"
 "<p>{model_names}</p>\n"
 "<p>可能な限り最高の品質および信頼性を得る方法をご覧ください。</p>\n"
-"<p><a href=\"https://UltiMaker.com/3D-model-assistant\">印字品質ガイドを見る</a></p>"
+"<p><a href=\"https://ultimaker.com/3D-model-assistant\">印字品質ガイドを見る</a></p>"
+
+#: plugins/ModelChecker/plugin.json
+msgctxt "description"
+msgid "Checks models and print configuration for possible printing issues and give suggestions."
+msgstr "プリント問題の可能性のあるモデルをプリント構成を確認し、解決案を提示してください。"
+
+#: plugins/ModelChecker/plugin.json
+msgctxt "name"
+msgid "Model Checker"
+msgstr "モデルチェッカー"
 
 #: plugins/MonitorStage/MonitorMain.qml:100
 msgctxt "@info"
@@ -2867,6 +2423,16 @@ msgstr "Cura から印刷を監視するには、プリンタを接続してく�
 msgctxt "@item:inmenu"
 msgid "Monitor"
 msgstr "モニター"
+
+#: plugins/MonitorStage/plugin.json
+msgctxt "name"
+msgid "Monitor Stage"
+msgstr "モニターステージ"
+
+#: plugins/MonitorStage/plugin.json
+msgctxt "description"
+msgid "Provides a monitor stage in Cura."
+msgstr "Curaでモニターステージを提供します。"
 
 #: plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:41
 msgctxt "@label"
@@ -2934,6 +2500,16 @@ msgctxt "@info:tooltip"
 msgid "Configure Per Model Settings"
 msgstr "各モデル構成設定"
 
+#: plugins/PerObjectSettingsTool/plugin.json
+msgctxt "name"
+msgid "Per Model Settings Tool"
+msgstr "各モデル設定ツール"
+
+#: plugins/PerObjectSettingsTool/plugin.json
+msgctxt "description"
+msgid "Provides the Per Model Settings."
+msgstr "各モデル設定を与える。"
+
 #: plugins/PostProcessingPlugin/PostProcessingPlugin.py:35
 msgctxt "@item:inmenu"
 msgid "Post Processing"
@@ -2975,6 +2551,16 @@ msgid "The following script is active:"
 msgid_plural "The following scripts are active:"
 msgstr[0] "次のスクリプトがアクティブです:"
 
+#: plugins/PostProcessingPlugin/plugin.json
+msgctxt "description"
+msgid "Extension that allows for user created scripts for post processing"
+msgstr "後処理のためにユーザーが作成したスクリプト用拡張子"
+
+#: plugins/PostProcessingPlugin/plugin.json
+msgctxt "name"
+msgid "Post Processing"
+msgstr "後処理"
+
 #: plugins/PrepareStage/PrepareMenu.qml:74
 msgctxt "@button"
 msgid "Add printer"
@@ -2990,10 +2576,30 @@ msgctxt "@item:inmenu"
 msgid "Prepare"
 msgstr "準備する"
 
+#: plugins/PrepareStage/plugin.json
+msgctxt "name"
+msgid "Prepare Stage"
+msgstr "ステージの準備"
+
+#: plugins/PrepareStage/plugin.json
+msgctxt "description"
+msgid "Provides a prepare stage in Cura."
+msgstr "Curaで準備ステージを提供します。"
+
 #: plugins/PreviewStage/__init__.py:13
 msgctxt "@item:inmenu"
 msgid "Preview"
 msgstr "プレビュー"
+
+#: plugins/PreviewStage/plugin.json
+msgctxt "name"
+msgid "Preview Stage"
+msgstr "プレビューステージ"
+
+#: plugins/PreviewStage/plugin.json
+msgctxt "description"
+msgid "Provides a preview stage in Cura."
+msgstr "Curaでプレビューステージを提供します。"
 
 #: plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:23
 msgctxt "@action:button Preceded by 'Ready to'."
@@ -3086,6 +2692,26 @@ msgstr "{0}取り出し失敗。他のプログラムがデバイスを使用し
 msgctxt "@item:intext"
 msgid "Removable Drive"
 msgstr "リムーバブルドライブ"
+
+#: plugins/RemovableDriveOutputDevice/plugin.json
+msgctxt "description"
+msgid "Provides removable drive hotplugging and writing support."
+msgstr "取り外し可能なドライブホットプラギング及びサポートの書き出しの供給。"
+
+#: plugins/RemovableDriveOutputDevice/plugin.json
+msgctxt "name"
+msgid "Removable Drive Output Device Plugin"
+msgstr "取り外し可能なドライブアウトプットデバイスプラグイン"
+
+#: plugins/SentryLogger/plugin.json
+msgctxt "description"
+msgid "Logs certain events so that they can be used by the crash reporter"
+msgstr "クラッシュレポーターで使用できるように、特定のイベントをログに記録します"
+
+#: plugins/SentryLogger/plugin.json
+msgctxt "name"
+msgid "Sentry Logger"
+msgstr "監視ロガー"
 
 #: plugins/SimulationView/SimulationView.py:129
 msgctxt "@info:status"
@@ -3214,6 +2840,16 @@ msgctxt "@item:inlistbox"
 msgid "Layer view"
 msgstr "レイヤービュー"
 
+#: plugins/SimulationView/plugin.json
+msgctxt "description"
+msgid "Provides the preview of sliced layerdata."
+msgstr "スライスされたレイヤーデータのプレビューを提供します。"
+
+#: plugins/SimulationView/plugin.json
+msgctxt "name"
+msgid "Simulation View"
+msgstr "シミュレーションビュー"
+
 #: plugins/SliceInfoPlugin/MoreInfoWindow.qml:16
 msgctxt "@title:window"
 msgid "More information on anonymous data collection"
@@ -3239,6 +2875,16 @@ msgctxt "@text"
 msgid "Unable to read example data file."
 msgstr "サンプルのデータファイルを読み取ることができません。"
 
+#: plugins/SliceInfoPlugin/plugin.json
+msgctxt "name"
+msgid "Slice info"
+msgstr "スライスインフォメーション"
+
+#: plugins/SliceInfoPlugin/plugin.json
+msgctxt "description"
+msgid "Submits anonymous slice info. Can be disabled through preferences."
+msgstr "不特定なスライス情報を提出。プレファレンスの中で無効になる可能性もある。"
+
 #: plugins/SolidView/SolidView.py:71
 msgctxt "@info:status"
 msgid "The highlighted areas indicate either missing or extraneous surfaces. Fix your model and open it again into Cura."
@@ -3254,6 +2900,16 @@ msgctxt "@item:inmenu"
 msgid "Solid view"
 msgstr "ソリッドビュー"
 
+#: plugins/SolidView/plugin.json
+msgctxt "description"
+msgid "Provides a normal solid mesh view."
+msgstr "ノーマルなソリットメッシュビューを供給する。"
+
+#: plugins/SolidView/plugin.json
+msgctxt "name"
+msgid "Solid View"
+msgstr "ソリッドビュー"
+
 #: plugins/SupportEraser/__init__.py:12
 msgctxt "@label"
 msgid "Support Blocker"
@@ -3263,6 +2919,16 @@ msgstr "サポートブロッカー"
 msgctxt "@info:tooltip"
 msgid "Create a volume in which supports are not printed."
 msgstr "サポートが印刷されないボリュームを作成します。"
+
+#: plugins/SupportEraser/plugin.json
+msgctxt "description"
+msgid "Creates an eraser mesh to block the printing of support in certain places"
+msgstr "特定箇所のサポートを印刷するブロックを消去するメッシュを作成する"
+
+#: plugins/SupportEraser/plugin.json
+msgctxt "name"
+msgid "Support Eraser"
+msgstr "サポート消去機能"
 
 #: plugins/TrimeshReader/__init__.py:15
 msgctxt "@item:inlistbox 'Open' is part of the name of this file format."
@@ -3294,10 +2960,30 @@ msgctxt "@item:inlistbox"
 msgid "Compressed COLLADA Digital Asset Exchange"
 msgstr "圧縮COLLADA Digital Asset Exchange"
 
+#: plugins/TrimeshReader/plugin.json
+msgctxt "description"
+msgid "Provides support for reading model files."
+msgstr "モデルファイルを読み込むためのサポートを供給します。"
+
+#: plugins/TrimeshReader/plugin.json
+msgctxt "name"
+msgid "Trimesh Reader"
+msgstr "Trimeshリーダー"
+
 #: plugins/UFPReader/__init__.py:22 plugins/UFPWriter/__init__.py:28
 msgctxt "@item:inlistbox"
 msgid "UltiMaker Format Package"
 msgstr "UltiMakerフォーマットパッケージ"
+
+#: plugins/UFPReader/plugin.json
+msgctxt "description"
+msgid "Provides support for reading Ultimaker Format Packages."
+msgstr ""
+
+#: plugins/UFPReader/plugin.json
+msgctxt "name"
+msgid "UFP Reader"
+msgstr "UFP リーダー"
 
 #: plugins/UFPWriter/UFPWriter.py:64 plugins/UFPWriter/UFPWriter.py:80
 #: plugins/UFPWriter/UFPWriter.py:93 plugins/UFPWriter/UFPWriter.py:115
@@ -3305,6 +2991,26 @@ msgstr "UltiMakerフォーマットパッケージ"
 msgctxt "@info:error"
 msgid "Can't write to UFP file:"
 msgstr "UFPファイルに書き込めません："
+
+#: plugins/UFPWriter/plugin.json
+msgctxt "description"
+msgid "Provides support for writing Ultimaker Format Packages."
+msgstr ""
+
+#: plugins/UFPWriter/plugin.json
+msgctxt "name"
+msgid "UFP Writer"
+msgstr "UFPライター"
+
+#: plugins/UM3NetworkPrinting/plugin.json
+msgctxt "description"
+msgid "Manages network connections to UltiMaker networked printers."
+msgstr ""
+
+#: plugins/UM3NetworkPrinting/plugin.json
+msgctxt "name"
+msgid "UltiMaker Network Connection"
+msgstr ""
 
 #: plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:44
 msgctxt "@title:window"
@@ -3817,10 +3523,9 @@ msgid "Learn more"
 msgstr "詳しく見る"
 
 #: plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:18
-#, fuzzy
 msgctxt "@info:status"
-msgid "You are attempting to connect to a printer that is not running Ultimaker Connect. Please update the printer to the latest firmware."
-msgstr "UltiMaker Connectを実行していないプリンターに接続しようとしています。プリンターを最新のファームウェアに更新してください。"
+msgid "You are attempting to connect to a printer that is not running UltiMaker Connect. Please update the printer to the latest firmware."
+msgstr "Ultimaker Connectを実行していないプリンターに接続しようとしています。プリンターを最新のファームウェアに更新してください。"
 
 #: plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:21
 msgctxt "@info:title"
@@ -3839,11 +3544,10 @@ msgid "Sending materials to printer"
 msgstr "プリンターに材料を送信しています"
 
 #: plugins/UM3NetworkPrinting/src/Messages/NewPrinterDetectedMessage.py:13
-#, fuzzy
 msgctxt "info:status"
 msgid "New printer detected from your Ultimaker account"
 msgid_plural "New printers detected from your Ultimaker account"
-msgstr[0] "UltiMakerアカウントから新しいプリンターが検出されました"
+msgstr[0] "Ultimakerアカウントから新しいプリンターが検出されました"
 
 #: plugins/UM3NetworkPrinting/src/Messages/NewPrinterDetectedMessage.py:29
 #, python-brace-format
@@ -4037,6 +3741,16 @@ msgctxt "@message"
 msgid "Print in Progress"
 msgstr "現在印刷中"
 
+#: plugins/USBPrinting/plugin.json
+msgctxt "description"
+msgid "Accepts G-Code and sends them to a printer. Plugin can also update firmware."
+msgstr "G-codeを承認し、プリンターに送信する。またプラグインはファームウェアをアップデートできます。"
+
+#: plugins/USBPrinting/plugin.json
+msgctxt "name"
+msgid "USB printing"
+msgstr "USBプリンティング"
+
 #: plugins/UltimakerMachineActions/BedLevelMachineAction.py:24
 msgctxt "@action"
 msgid "Level build plate"
@@ -4082,15 +3796,295 @@ msgctxt "@label"
 msgid "Heated Build Plate (official kit or self-built)"
 msgstr "ヒーティッドビルドプレート（オフィシャルキットまたはセルフビルド）"
 
+#: plugins/UltimakerMachineActions/plugin.json
+msgctxt "description"
+msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
+msgstr "UltiMakerのプリンターのアクションを供給する（ベッドレベリングウィザード、アップグレードの選択、他）"
+
+#: plugins/UltimakerMachineActions/plugin.json
+msgctxt "name"
+msgid "UltiMaker machine actions"
+msgstr ""
+
+#: plugins/VersionUpgrade/VersionUpgrade21to22/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.1 to Cura 2.2."
+msgstr "Cura 2.1 からCura 2.2のコンフィグレーションアップグレート。"
+
+#: plugins/VersionUpgrade/VersionUpgrade21to22/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 2.1 to 2.2"
+msgstr "2.1 から2.2にバージョンアップグレート"
+
+#: plugins/VersionUpgrade/VersionUpgrade22to24/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.2 to Cura 2.4."
+msgstr "Cura 2.2 からCura 2.4のコンフィグレーションアップグレート。"
+
+#: plugins/VersionUpgrade/VersionUpgrade22to24/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 2.2 to 2.4"
+msgstr "2.2 から2.4にバージョンアップグレート"
+
+#: plugins/VersionUpgrade/VersionUpgrade25to26/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.5 to Cura 2.6."
+msgstr "Cura 2.5 からCura 2.6のコンフィグレーションアップグレート。"
+
+#: plugins/VersionUpgrade/VersionUpgrade25to26/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 2.5 to 2.6"
+msgstr "2.5から2.6にバージョンアップグレート"
+
+#: plugins/VersionUpgrade/VersionUpgrade26to27/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.6 to Cura 2.7."
+msgstr "Cura 2.6 からCura 2.7のコンフィグレーションアップグレート。"
+
+#: plugins/VersionUpgrade/VersionUpgrade26to27/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 2.6 to 2.7"
+msgstr "2.6から2.7にバージョンアップグレート"
+
+#: plugins/VersionUpgrade/VersionUpgrade27to30/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.7 to Cura 3.0."
+msgstr "Cura 2.7からCura 3.0のコンフィグレーションアップグレート。"
+
+#: plugins/VersionUpgrade/VersionUpgrade27to30/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 2.7 to 3.0"
+msgstr "2.7から3.0にバージョンアップグレート"
+
+#: plugins/VersionUpgrade/VersionUpgrade30to31/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.0 to Cura 3.1."
+msgstr "Cura 3.0からCura 3.1のコンフィグレーションアップグレート。"
+
+#: plugins/VersionUpgrade/VersionUpgrade30to31/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 3.0 to 3.1"
+msgstr "3.0から3.1にバージョンアップグレート"
+
+#: plugins/VersionUpgrade/VersionUpgrade32to33/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.2 to Cura 3.3."
+msgstr "Cura 3.2からCura 3.3のコンフィグレーションアップグレート。"
+
+#: plugins/VersionUpgrade/VersionUpgrade32to33/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 3.2 to 3.3"
+msgstr "3.2から3.3にバージョンアップグレート"
+
+#: plugins/VersionUpgrade/VersionUpgrade33to34/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.3 to Cura 3.4."
+msgstr "Cura 3.3からCura 3.4のコンフィグレーションアップグレート。"
+
+#: plugins/VersionUpgrade/VersionUpgrade33to34/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 3.3 to 3.4"
+msgstr "3.3から3.4にバージョンアップグレート"
+
+#: plugins/VersionUpgrade/VersionUpgrade34to35/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.4 to Cura 3.5."
+msgstr "Cura 3.4 から Cura 3.5 のコンフィグレーションアップグレート。"
+
+#: plugins/VersionUpgrade/VersionUpgrade34to35/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 3.4 to 3.5"
+msgstr "3.4 から 3.5 にバージョンアップグレート"
+
+#: plugins/VersionUpgrade/VersionUpgrade35to40/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.5 to Cura 4.0."
+msgstr "Cura 3.5 から Cura 4.0 のコンフィグレーションアップグレート。"
+
+#: plugins/VersionUpgrade/VersionUpgrade35to40/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 3.5 to 4.0"
+msgstr "3.5 から 4.0 にバージョンアップグレート"
+
+#: plugins/VersionUpgrade/VersionUpgrade40to41/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.0 to Cura 4.1."
+msgstr "Cura 4.0 から Cura 4.1 のコンフィグレーションアップグレート。"
+
+#: plugins/VersionUpgrade/VersionUpgrade40to41/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.0 to 4.1"
+msgstr "4.0 から 4.1 にバージョンアップグレート"
+
+#: plugins/VersionUpgrade/VersionUpgrade411to412/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.11 to Cura 4.12."
+msgstr "Cura 4.11からCura 4.12に設定をアップグレードします。"
+
+#: plugins/VersionUpgrade/VersionUpgrade411to412/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.11 to 4.12"
+msgstr "バージョン4.11から4.12へのアップグレード"
+
+#: plugins/VersionUpgrade/VersionUpgrade413to50/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.13 to Cura 5.0."
+msgstr "Cura 4.13からCura 5.0に設定をアップグレードします。"
+
+#: plugins/VersionUpgrade/VersionUpgrade413to50/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.13 to 5.0"
+msgstr "バージョン4.13から5.0へのアップグレード"
+
+#: plugins/VersionUpgrade/VersionUpgrade41to42/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.1 to Cura 4.2."
+msgstr "コンフィギュレーションを Cura 4.1 から Cura 4.2 にアップグレートする。"
+
+#: plugins/VersionUpgrade/VersionUpgrade41to42/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.1 to 4.2"
+msgstr "4.0 から 4.1 にバージョンアップグレート"
+
+#: plugins/VersionUpgrade/VersionUpgrade42to43/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.2 to Cura 4.3."
+msgstr "Cura 4.2からCura 4.3の設定をアップグレードします。"
+
+#: plugins/VersionUpgrade/VersionUpgrade42to43/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.2 to 4.3"
+msgstr "4.2から4.3にバージョンをアップグレート"
+
+#: plugins/VersionUpgrade/VersionUpgrade43to44/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.3 to Cura 4.4."
+msgstr "Cura 4.3からCura 4.4へのコンフィグレーションアップグレート。"
+
+#: plugins/VersionUpgrade/VersionUpgrade43to44/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.3 to 4.4"
+msgstr "4.3から4.4にバージョンアップグレート"
+
+#: plugins/VersionUpgrade/VersionUpgrade44to45/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.4 to Cura 4.5."
+msgstr "Cura 4.4からCura 4.5に設定をアップグレードします。"
+
+#: plugins/VersionUpgrade/VersionUpgrade44to45/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.4 to 4.5"
+msgstr "4.4から4.5にバージョンアップグレート"
+
+#: plugins/VersionUpgrade/VersionUpgrade45to46/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.5 to Cura 4.6."
+msgstr "Cura 4.5からCura 4.6に設定をアップグレードします。"
+
+#: plugins/VersionUpgrade/VersionUpgrade45to46/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.5 to 4.6"
+msgstr "バージョン4.5から4.6へのアップグレード"
+
+#: plugins/VersionUpgrade/VersionUpgrade460to462/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.6.0 to Cura 4.6.2."
+msgstr "構成をCura 4.6.0からCura 4.6.2に更新します。"
+
+#: plugins/VersionUpgrade/VersionUpgrade460to462/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.6.0 to 4.6.2"
+msgstr "4.6.0から4.6.2へのバージョン更新"
+
+#: plugins/VersionUpgrade/VersionUpgrade462to47/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.6.2 to Cura 4.7."
+msgstr "構成をCura 4.6.2からCura 4.7に更新します。"
+
+#: plugins/VersionUpgrade/VersionUpgrade462to47/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.6.2 to 4.7"
+msgstr "4.6.2から4.7へのバージョン更新"
+
+#: plugins/VersionUpgrade/VersionUpgrade47to48/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.7 to Cura 4.8."
+msgstr "Cura 4.7からCura 4.8に設定をアップグレードします。"
+
+#: plugins/VersionUpgrade/VersionUpgrade47to48/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.7 to 4.8"
+msgstr "バージョン4.7から4.8へのアップグレード"
+
+#: plugins/VersionUpgrade/VersionUpgrade48to49/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.8 to Cura 4.9."
+msgstr "Cura 4.8からCura 4.9に設定をアップグレードします。"
+
+#: plugins/VersionUpgrade/VersionUpgrade48to49/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.8 to 4.9"
+msgstr "バージョン4.8から4.9へのアップグレード"
+
+#: plugins/VersionUpgrade/VersionUpgrade49to410/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.9 to Cura 4.10."
+msgstr "Cura 4.9からCura 4.10に設定をアップグレードします。"
+
+#: plugins/VersionUpgrade/VersionUpgrade49to410/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.9 to 4.10"
+msgstr "バージョン4.9から4.10へのアップグレード"
+
+#: plugins/VersionUpgrade/VersionUpgrade52to53/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.2 to Cura 5.3."
+msgstr "Cura 5.2からCura 5.3のコンフィグレーションアップグレート。"
+
+#: plugins/VersionUpgrade/VersionUpgrade52to53/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 5.2 to 5.3"
+msgstr "5.2から5.3にバージョンアップグレート"
+
 #: plugins/X3DReader/__init__.py:13
 msgctxt "@item:inlistbox"
 msgid "X3D File"
 msgstr "X3Dファイル"
 
+#: plugins/X3DReader/plugin.json
+msgctxt "description"
+msgid "Provides support for reading X3D files."
+msgstr "X3Dファイルを読むこむためのサポートを供給する。"
+
+#: plugins/X3DReader/plugin.json
+msgctxt "name"
+msgid "X3D Reader"
+msgstr "X3Dリーダー"
+
 #: plugins/XRayView/__init__.py:12
 msgctxt "@item:inlistbox"
 msgid "X-Ray view"
 msgstr "透視ビューイング"
+
+#: plugins/XRayView/plugin.json
+msgctxt "description"
+msgid "Provides the X-Ray view."
+msgstr "透視ビューイング。"
+
+#: plugins/XRayView/plugin.json
+msgctxt "name"
+msgid "X-Ray View"
+msgstr "透視ビュー"
+
+#: plugins/XmlMaterialProfile/plugin.json
+msgctxt "name"
+msgid "Material Profiles"
+msgstr "フィラメントプロファイル"
+
+#: plugins/XmlMaterialProfile/plugin.json
+msgctxt "description"
+msgid "Provides capabilities to read and write XML-based material profiles."
+msgstr "XMLベースフィラメントのプロファイルを読み書きするための機能を供給する。"
 
 #: resources/qml/Account/AccountWidget.qml:24
 msgctxt "@action:button"
@@ -4104,7 +4098,6 @@ msgid "Sign in to the UltiMaker platform"
 msgstr "UltiMakerのプラットフォームにサインイン"
 
 #: resources/qml/Account/GeneralOperations.qml:39
-#, fuzzy
 msgctxt "@text"
 msgid ""
 "- Add material profiles and plug-ins from the Marketplace\n"
@@ -4598,38 +4591,34 @@ msgid "What's New"
 msgstr "新情報"
 
 #: resources/qml/Cura.qml:890
-#, fuzzy
 msgctxt "@title:window"
 msgid "Save Custom Profile"
-msgstr "カスタムプロファイル"
+msgstr ""
 
 #: resources/qml/Cura.qml:891
-#, fuzzy
 msgctxt "@textfield:placeholder"
 msgid "New Custom Profile"
-msgstr "カスタムプロファイル"
+msgstr ""
 
 #: resources/qml/Cura.qml:892
-#, fuzzy
 msgctxt "@info"
 msgid "Custom profile name:"
-msgstr "カスタムプロファイル"
+msgstr ""
 
 #: resources/qml/Cura.qml:909
 msgctxt "@label %i will be replaced with a profile name"
 msgid "<b>Only user changed settings will be saved in the custom profile.</b><br/>For materials that support it, the new custom profile will inherit properties from <b>%1</b>."
-msgstr ""
+msgstr "<b>ユーザーが変更した設定のみがカスタムプロファイルに保存されます。</b><br/>新しいカスタムプロファイルは<b>%1</b>からプロパティを継承します（材料がサポートしている場合）。"
 
 #: resources/qml/Cura.qml:917
 msgctxt "@action:button"
 msgid "Learn more about Cura print profiles"
-msgstr ""
+msgstr "Curaプリントプロファイルについて詳しく見る"
 
 #: resources/qml/Cura.qml:926
-#, fuzzy
 msgctxt "@button"
 msgid "Save new profile"
-msgstr "プロファイル内にない"
+msgstr ""
 
 #: resources/qml/Dialogs/AboutDialog.qml:15
 msgctxt "@title:window The argument is the application name."
@@ -4651,7 +4640,9 @@ msgctxt "@info:credit"
 msgid ""
 "Cura is developed by UltiMaker in cooperation with the community.\n"
 "Cura proudly uses the following open source projects:"
-msgstr "CuraはUltiMakerB.Vのコミュニティの協力によって開発され、Curaはオープンソースで使えることを誇りに思います:"
+msgstr ""
+"CuraはUltiMakerのコミュニティの協力によって開発され、\n"
+"Curaはオープンソースで使えることを誇りに思います:"
 
 #: resources/qml/Dialogs/AboutDialog.qml:138
 msgctxt "@label Description for application component"
@@ -4861,7 +4852,7 @@ msgstr "互換性のあるプリンター"
 
 #: resources/qml/Dialogs/ChoosePrinterDialog.qml:110
 msgctxt "@description"
-msgid "No compatible printers, that are currently online, where found."
+msgid "No compatible printers, that are currently online, were found."
 msgstr "現在オンライン状態で互換性があるプリンターは見つかりませんでした。"
 
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:13
@@ -4914,16 +4905,14 @@ msgid "Keep changes"
 msgstr "変更を維持"
 
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:171
-#, fuzzy
 msgctxt "@action:button"
 msgid "Save as new custom profile"
-msgstr "カスタムプロファイル"
+msgstr ""
 
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:178
-#, fuzzy
 msgctxt "@action:button"
 msgid "Save changes"
-msgstr "変更を維持"
+msgstr ""
 
 #: resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:47
 msgctxt "@text:window"
@@ -5667,7 +5656,7 @@ msgstr "安定版およびベータ版リリース"
 #: resources/qml/Preferences/GeneralPage.qml:957
 msgctxt "@info:tooltip"
 msgid "Should an automatic check for new plugins be done every time Cura is started? It is highly recommended that you do not disable this!"
-msgstr "Should an automatic check for new plugins be done every time Cura is started? It is highly recommended that you do not disable this!"
+msgstr ""
 
 #: resources/qml/Preferences/GeneralPage.qml:962
 msgctxt "@option:check"
@@ -5815,7 +5804,7 @@ msgstr "材料をUSBで同期"
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:207
 msgctxt "@title:header"
 msgid "The following printers will receive the new material profiles:"
-msgstr "The following printers will receive the new material profiles:"
+msgstr ""
 
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:214
 msgctxt "@title:header"
@@ -5825,7 +5814,7 @@ msgstr "材料をプリンターに送信する際に問題が発生しました
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:221
 msgctxt "@title:header"
 msgid "Material profiles successfully synced with the following printers:"
-msgstr "Material profiles successfully synced with the following printers:"
+msgstr ""
 
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:258
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:445
@@ -6180,7 +6169,7 @@ msgctxt "@label shown when we load a Gcode file"
 msgid "Print setup disabled. G-code file can not be modified."
 msgstr "印刷設定は無効にされました。G-code ファイルは変更できません。"
 
-#: resources/qml/PrintSetupSelector/PrintSetupSelectorContents.qml:160
+#: resources/qml/PrintSetupSelector/PrintSetupSelectorContents.qml:179
 msgctxt "@button"
 msgid "Recommended"
 msgstr "推奨"
@@ -6208,23 +6197,22 @@ msgstr "<b>%1</b>カスタムプロファイルが、一部の設定を上書き
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:92
 msgctxt "@info %1 is the name of a profile"
 msgid "Recommended settings (for <b>%1</b>) were altered."
-msgstr ""
+msgstr "<b>%1</b>の推奨設定が変更されました。"
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:106
-#, fuzzy
 msgctxt "@info %1 is the name of a profile"
 msgid "Some setting-values defined in <b>%1</b> were overridden."
-msgstr "現在のプロファイルの一部の設定が上書きされました。"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:137
 msgctxt "@info"
 msgid "Reset to defaults."
-msgstr ""
+msgstr "デフォルトにリセットします。"
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:178
 msgctxt "@info"
 msgid "Compare and save."
-msgstr ""
+msgstr "比較して保存します。"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedAdhesionSelector.qml:15
 msgctxt "@label"
@@ -6237,16 +6225,14 @@ msgid "Enable printing a brim or raft. This will add a flat area around or under
 msgstr "ブリムまたはラフトのプリントの有効化。それぞれ、プリントの周り、また造形物の下に底面を加え切り取りやすくします。"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:102
-#, fuzzy
 msgctxt "@label"
 msgid "Recommended print settings"
-msgstr "プリント設定"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:111
-#, fuzzy
 msgctxt "@button"
 msgid "Show Custom"
-msgstr "カスタム"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedResolutionSelector.qml:27
 msgctxt "@label"
@@ -6256,51 +6242,56 @@ msgstr "解像度"
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:16
 msgctxt "@label"
 msgid "Strength"
-msgstr ""
+msgstr "強度"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:20
 msgctxt "@label"
 msgid "The following settings define the strength of your part."
-msgstr ""
+msgstr "以下の設定は、部品の強度を定義します。"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:34
-#, fuzzy
 msgctxt "infill_sparse_density description"
 msgid "Infill Density"
-msgstr "インフィルメッシュのみ"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:35
 msgctxt "@label"
 msgid "Adjusts the density of infill of the print."
-msgstr ""
+msgstr "プリントのインフィルの密度を調整します。"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:54
 msgctxt "@action:label"
 msgid "Infill Pattern"
-msgstr ""
+msgstr "インフィルパターン"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:56
 msgctxt "@label"
 msgid ""
 "The pattern of the infill material of the print:\n"
 "\n"
-"For quick prints of non functional model choose line, zig zag or lighting infill.\n"
+"For quick prints of non functional model choose line, zig zag or lightning infill.\n"
 "\n"
-"For functional part not subjected to a lot of stress we reccomend grid or triangle or tri hexagon.\n"
+"For functional part not subjected to a lot of stress we recommend grid or triangle or tri hexagon.\n"
 "\n"
-"For functional 3D prints which require high strenght in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
+"For functional 3D prints which require high strength in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
 msgstr ""
+"プリントのインフィル材料のパターン：\n"
+"\n"
+"非機能モデルをクイックプリントする場合は、ライン、ジグザグ、ライトニングインフィルを選択します。 \n"
+"\n"
+"応力があまりかからない機能部品の場合は、グリッド、トライアングル、トライヘキサゴンをお勧めします。\n"
+"\n"
+"複数の方向に高い強度を必要とする機能的な3Dプリントの場合は、キュービック、キュービックサブディビジョン、クォーターキュービック、オクテット、ジャイロイドを使用します。"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:67
-#, fuzzy
 msgctxt "@action:label"
 msgid "Shell Thickness"
-msgstr "レイヤーの厚さ"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:68
 msgctxt "@label"
-msgid "Defines the tickness of your part side walls, roof and floor."
-msgstr ""
+msgid "Defines the thickness of your part side walls, roof and floor."
+msgstr "部品のサイドウォール、ルーフ、フロアの厚さを定義します。"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:16
 msgctxt "@label"
@@ -6308,16 +6299,14 @@ msgid "Support"
 msgstr "サポート"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:21
-#, fuzzy
 msgctxt "@label"
 msgid "Generate structures to support parts of the model which have overhangs. Without these structures, these parts would collapse during printing."
 msgstr "オーバーハングがあるモデルにサポートを生成します。このサポート構造なしでは、プリント中にオーバーハングのパーツが崩壊してしまいます。"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:40
-#, fuzzy
 msgctxt "@action:label"
 msgid "Support Type"
-msgstr "サポート"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:41
 msgctxt "@label"
@@ -6327,28 +6316,27 @@ msgid ""
 "\"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. \n"
 "\n"
 "\"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
-msgstr ""
+msgstr "サポートを生成するために利用できる技術を選択します。「標準」のサポート構造はオーバーハング部品のすぐ下に作成し、そのエリアを真下に生成します。「ツリー」サポートはオーバーハングエリアに向かって枝を作成し、モデルを枝の先端で支えます。枝をモデルのまわりにはわせて、できる限りビルドプレートから支えます。"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:53
-#, fuzzy
 msgctxt "@action:label"
 msgid "Print with"
-msgstr "プリント中"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:54
 msgctxt "@label"
 msgid "The extruder train to use for printing the support. This is used in multi-extrusion."
-msgstr ""
+msgstr "サポート材を印刷するためのエクストルーダー。複数のエクストルーダーがある場合に使用されます。"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:67
 msgctxt "@action:label"
 msgid "Placement"
-msgstr ""
+msgstr "配置"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:68
 msgctxt "support_type description"
 msgid "Adjusts the placement of the support structures. The placement can be set to touching build plate or everywhere. When set to everywhere the support structures will also be printed on the model."
-msgstr ""
+msgstr "サポート材の配置を調整します。配置はTouching BuildplateまたはEveryWhereに設定することができます。EveryWhereに設定した場合、サポート材がモデルの上にもプリントされます。"
 
 #: resources/qml/PrintSetupSelector/Recommended/UnsupportedProfileIndication.qml:31
 msgctxt "@error"
@@ -6568,17 +6556,17 @@ msgctxt "@label Header for list of settings."
 msgid "Affected By"
 msgstr "次によって影響を受ける"
 
-#: resources/qml/Settings/SettingItem.qml:190
+#: resources/qml/Settings/SettingItem.qml:196
 msgctxt "@label"
 msgid "This setting is always shared between all extruders. Changing it here will change the value for all extruders."
 msgstr "この設定は常に全てのエクストルーダーに共有されています。ここですべてのエクストルーダーの数値を変更できます。"
 
-#: resources/qml/Settings/SettingItem.qml:194
+#: resources/qml/Settings/SettingItem.qml:200
 msgctxt "@label"
 msgid "This setting is resolved from conflicting extruder-specific values:"
 msgstr "この設定はエクストルーダー固有の競合する値から取得します:"
 
-#: resources/qml/Settings/SettingItem.qml:234
+#: resources/qml/Settings/SettingItem.qml:240
 msgctxt "@label"
 msgid ""
 "This setting has a value that is different from the profile.\n"
@@ -6588,7 +6576,7 @@ msgstr ""
 "この設定にプロファイルと異なった値があります。\n"
 "プロファイルの値を戻すためにクリックしてください。"
 
-#: resources/qml/Settings/SettingItem.qml:334
+#: resources/qml/Settings/SettingItem.qml:340
 msgctxt "@label"
 msgid ""
 "This setting is normally calculated, but it currently has an absolute value set.\n"
@@ -6682,7 +6670,7 @@ msgstr "アカウントにプリンターが見つかりませんか？"
 #: resources/qml/WelcomePages/AddCloudPrintersView.qml:117
 msgctxt "@label"
 msgid "The following printers in your account have been added in Cura:"
-msgstr "The following printers in your account have been added in Cura:"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddCloudPrintersView.qml:186
 msgctxt "@button"
@@ -6781,95 +6769,84 @@ msgid "Add a non-networked printer"
 msgstr "非ネットワークプリンターの追加"
 
 #: resources/qml/WelcomePages/AddThirdPartyPrinter.qml:102
-#, fuzzy
 msgctxt "@button"
 msgid "Add UltiMaker printer via Digital Factory"
-msgstr "Digital Factoryでプリンターを表示する"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:29
-#, fuzzy
 msgctxt "@label"
 msgid "In order to start using Cura you will need to configure a printer."
-msgstr "このパッケージを使用するには、Curaを再始動する必要があります"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:36
 msgctxt "@label"
 msgid "What printer would you like to setup?"
-msgstr ""
+msgstr "どのプリンターをセットアップしますか？"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:55
-#, fuzzy
 msgctxt "@button"
 msgid "UltiMaker printer"
-msgstr "UltiMakerのサポート"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:64
-#, fuzzy
 msgctxt "@button"
 msgid "Non UltiMaker printer"
-msgstr "UltiMakerのサポート"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:73
 msgctxt "@button"
 msgid "Learn more about adding printers to Cura"
-msgstr ""
+msgstr "Curaへのプリンターの追加について詳しく見る"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinterStack.qml:29
-#, fuzzy
 msgctxt "@label"
 msgid "Add printer"
-msgstr "プリンターの追加"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:33
-#, fuzzy
 msgctxt "@label"
 msgid "New UltiMaker printers can be connected to Digital Factory and monitored remotely."
-msgstr "すべてのプリンターの電源が入っていて、Digital Factoryに接続されていることを確認してください。"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:70
 msgctxt "@label"
 msgid "If you are trying to add a new UltiMaker printer to Cura"
-msgstr ""
+msgstr "新しいUltiMakerプリンターをCuraに追加する場合"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:80
-#, fuzzy
 msgctxt "@info"
-msgid "Sign in into UltiMaker Digilal Factory"
-msgstr "Ultimaker Digital Factoryでプリンターをモニタリングします。"
+msgid "Sign in into UltiMaker Digital Factory"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:81
 msgctxt "@info"
 msgid "Follow the procedure to add a new printer"
-msgstr ""
+msgstr "新しいプリンターを追加する場合は、以下の手順で行います"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:82
 msgctxt "@info"
 msgid "Your new printer will automatically appear in Cura"
-msgstr ""
+msgstr "新しいプリンターがCuraに自動的に表示されます"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:100
-#, fuzzy
 msgctxt "@button"
 msgid "Learn more"
 msgstr "詳しく見る"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:121
-#, fuzzy
 msgctxt "@button"
 msgid "Add local printer"
-msgstr "プリンターの追加"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:129
-#, fuzzy
 msgctxt "@button"
 msgid "Sign in to Digital Factory"
-msgstr "Digital Factoryでプリンターを表示する"
+msgstr ""
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:133
-#, fuzzy
 msgctxt "@button"
 msgid "Waiting for new printers"
-msgstr "プリンター管理"
+msgstr ""
 
 #: resources/qml/WelcomePages/ChangelogContent.qml:24
 msgctxt "@label"
@@ -6901,46 +6878,6 @@ msgctxt "@text"
 msgid "Create a free UltiMaker Account"
 msgstr "無料のUltiMakerアカウントを作成"
 
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:24
-msgctxt "@label"
-msgid "Help us to improve UltiMaker Cura"
-msgstr "UltiMaker Cura の改善にご協力ください"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:56
-msgctxt "@text"
-msgid "UltiMaker Cura collects anonymous data to improve print quality and user experience, including:"
-msgstr "UltiMaker Cura は、印刷品質とユーザーエクスペリエンスを向上させるために以下の匿名データを収集します:"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:68
-msgctxt "@text"
-msgid "Machine types"
-msgstr "プリンターのタイプ"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:74
-msgctxt "@text"
-msgid "Material usage"
-msgstr "材料の利用状況"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:80
-msgctxt "@text"
-msgid "Number of slices"
-msgstr "スライスの数"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:86
-msgctxt "@text"
-msgid "Print settings"
-msgstr "プリント設定"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:99
-msgctxt "@text"
-msgid "Data collected by UltiMaker Cura will not contain any personal information."
-msgstr "UltiMaker Cura が収集したデータには個人データは含まれません。"
-
-#: resources/qml/WelcomePages/DataCollectionsContent.qml:100
-msgctxt "@text"
-msgid "More information"
-msgstr "詳細"
-
 #: resources/qml/WelcomePages/DropDownWidget.qml:93
 msgctxt "@label"
 msgid "Empty"
@@ -6956,23 +6893,6 @@ msgctxt "@button"
 msgid "Decline and close"
 msgstr "拒否して閉じる"
 
-#: resources/qml/WelcomePages/WelcomeContent.qml:56
-msgctxt "@label"
-msgid "Welcome to UltiMaker Cura"
-msgstr "UltiMaker Cura にようこそ"
-
-#: resources/qml/WelcomePages/WelcomeContent.qml:67
-msgctxt "@text"
-msgid "Please follow these steps to set up UltiMaker Cura. This will only take a few moments."
-msgstr ""
-"以下の手順で\n"
-"UltiMaker Cura を設定してください。数秒で完了します。"
-
-#: resources/qml/WelcomePages/WelcomeContent.qml:82
-msgctxt "@button"
-msgid "Get started"
-msgstr "はじめに"
-
 #: resources/qml/WelcomePages/WhatsNewContent.qml:28
 msgctxt "@label"
 msgid "What's New"
@@ -6983,46 +6903,6 @@ msgctxt "@label"
 msgid "No items to select from"
 msgstr "選択するアイテムがありません"
 
-#~ msgctxt "@label"
-#~ msgid "Add cloud printer"
-#~ msgstr "クラウドプリンターを追加"
-
-#~ msgctxt "@label"
-#~ msgid "Aluminum"
-#~ msgstr "アルミニウム"
-
-#~ msgctxt "@label"
-#~ msgid "Change build plate to %1 (This cannot be overridden)."
-#~ msgstr "ビルドプレートを %1 に変更します（これは上書きできません）。"
-
-#~ msgctxt "@label"
-#~ msgid "Glass"
-#~ msgstr "ガラス"
-
-#~ msgctxt "@label"
-#~ msgid "Gradual infill"
-#~ msgstr "インフィル半減"
-
-#~ msgctxt "@label"
-#~ msgid "Gradual infill will gradually increase the amount of infill towards the top."
-#~ msgstr "グラデュアルインフィルはトップに向かうに従ってインフィルの量を増やします。"
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "How should the conflict in the machine be resolved?"
-#~ msgstr "このプリンターの問題をどのように解決すればいいか？"
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "How should the conflict in the material be resolved?"
-#~ msgstr "このフィラメントの問題をどのように解決すればいいか？"
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "How should the conflict in the profile be resolved?"
-#~ msgstr "このプロファイルの問題をどのように解決すればいいか？"
-
-#~ msgctxt "@info"
-#~ msgid "Some settings were changed."
-#~ msgstr "一部の設定が変更されました。"
-
-#~ msgctxt "@action:label"
-#~ msgid "Visible settings:"
-#~ msgstr "ビジブル設定:"
+#~ msgctxt "@description"
+#~ msgid "Please sign in to get verified plugins and materials for Ultimaker Cura Enterprise"
+#~ msgstr "検証済みのUltimaker Cura Enterprise用プラグインおよび材料を入手するにはサインインしてください。"
