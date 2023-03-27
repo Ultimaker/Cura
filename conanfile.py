@@ -368,10 +368,10 @@ class CuraConan(ConanFile):
                        keep_path = False)
 
         # Copy resources of Cura (keep folder structure)
-        copy(self, "*", self.cpp_info.bindirs[0], str(self._base_dir), keep_path = False)
-        copy(self, "*", self.cpp_info.libdirs[0], str(self._site_packages.joinpath("cura")), keep_path = True)
-        copy(self, "*", self.cpp_info.resdirs[0], str(self._share_dir.joinpath("cura", "resources")), keep_path = True)
-        copy(self, "*", self.cpp_info.resdirs[1], str(self._share_dir.joinpath("cura", "plugins")), keep_path = True)
+        copy(self, "*", os.path.join(self.package_folder, self.cpp_info.bindirs[0]), str(self._base_dir), keep_path = False)
+        copy(self, "*", os.path.join(self.package_folder, self.cpp_info.libdirs[0]), str(self._site_packages.joinpath("cura")), keep_path = True)
+        copy(self, "*", os.path.join(self.package_folder, self.cpp_info.resdirs[0]), str(self._share_dir.joinpath("cura", "resources")), keep_path = True)
+        copy(self, "*", os.path.join(self.package_folder, self.cpp_info.resdirs[1]), str(self._share_dir.joinpath("cura", "plugins")), keep_path = True)
 
         # Copy materials (flat)
         fdm_materials = self.dependencies["fdm_materials"].cpp_info
