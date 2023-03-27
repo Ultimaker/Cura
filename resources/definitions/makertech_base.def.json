@@ -51,7 +51,7 @@
 		
 		"speed_travel": { "value": "
 		
-		"wall_0_wipe_dist": { "default_value": "machine_nozzle_size * 1.7" },
+		"wall_0_wipe_dist": { "d
 		"coasting_enable": { "default_value": true },
 		"coasting_volume": { "default_value": 0.2 },
 
