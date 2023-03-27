@@ -362,8 +362,11 @@ class CuraConan(ConanFile):
 
     def deploy(self):
         # Copy CuraEngine.exe to bindirs of Virtual Python Environment
-        curaengine_exe = Path(self.conf.get("user.curaengine:curaengine"))
-        copy(self, "*", str(curaengine_exe.parent), self._base_dir, keep_path=False)
+        self.copy_deps("CuraEngine.exe", root_package = "curaengine", src = self.deps_cpp_info["curaengine"].bindirs[0],
+                       dst = self._base_dir,
+                       keep_path = False)
+        self.copy_deps("CuraEngine", root_package = "curaengine", src = self.deps_cpp_info["curaengine"].bindirs[0], dst = self._base_dir,
+                       keep_path = False)
 
         # Copy resources of Cura (keep folder structure)
         copy(self, "*", self.cpp_info.bindirs[0], str(self._base_dir), keep_path = False)
