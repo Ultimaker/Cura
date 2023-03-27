@@ -108,7 +108,7 @@
         "minimum_support_area": { "value": 2 },
         "minimum_interface_area": { "value": 10 },
 		
-		"bridge_settings_enabled": { "value": true },
+		"bridge_s
 		"bridge_wall_speed": { "value": 60 },
 		"bridge_skin_speed": { "value": 60 },
 		"bridge_enable_more_layers": { "default_value": false },
