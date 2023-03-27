@@ -43,7 +43,7 @@
 
 		
 		
-		"infill_pattern": { "default_value": "zigzag" },
+		"infill_pattern": { "default_v
 		
 		"skin_overlap": {"default_value": 10 },
 		
