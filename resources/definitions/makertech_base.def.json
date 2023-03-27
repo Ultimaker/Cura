@@ -49,7 +49,7 @@
 		
 		
 		"speed_wall_x": { "value": "speed_wall * 1.4" },
-		"speed_travel": { "value": "speed_print if magic_spiralize else 80" },
+		"speed_travel": { "value": "
 		
 		"wall_0_wipe_dist": { "default_value": "machine_nozzle_size * 1.7" },
 		"coasting_enable": { "default_value": true },
