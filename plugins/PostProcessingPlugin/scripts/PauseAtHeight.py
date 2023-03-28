@@ -67,7 +67,7 @@ class PauseAtHeight(Script):
                     "label": "Keep motors engaged",
                     "description": "Keep the steppers engaged to allow change of filament without moving the head. Applying too much force will move the head/bed anyway",
                     "type": "bool",
-                    "default_value": true,
+                    "default_value": false,
                     "enabled": "pause_method != \\\"griffin\\\""
                 },
                 "disarm_timeout":
@@ -218,7 +218,7 @@ class PauseAtHeight(Script):
                     "label": "Beep at pause",
                     "description": "Make a beep when pausing",
                     "type": "bool",
-                    "default_value": true
+                    "default_value": false
                 },                
                 "beep_length":
                 {
@@ -478,10 +478,11 @@ class PauseAtHeight(Script):
                     prepend_gcode += "M117 " + display_text + "\n"
 
                 # Set the disarm timeout
-                if hold_steppers_on:
-                    prepend_gcode += self.putValue(M = 84, S = 3600) + " ; Keep steppers engaged for 1h\n"
-                elif disarm_timeout > 0:
-                    prepend_gcode += self.putValue(M = 84, S = disarm_timeout) + " ; Set the disarm timeout\n"
+                if pause_method != "griffin":
+                    if hold_steppers_on:
+                        prepend_gcode += self.putValue(M = 84, S = 3600) + " ; Keep steppers engaged for 1h\n"
+                    elif disarm_timeout > 0:
+                        prepend_gcode += self.putValue(M = 84, S = disarm_timeout) + " ; Set the disarm timeout\n"
 
                 # Beep at pause
                 if beep_at_pause:
