@@ -5839,7 +5839,7 @@
                     "default_value": true,
                     "limit_to_extruder": "skirt_brim_extruder_nr",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": false
+                    "settable_per_extruder": true
                 },
                 "raft_margin":
                 {
