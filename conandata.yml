@@ -25,8 +25,8 @@ pyinstaller:
             dst: "share/cura/resources"
         cura_private_data:
             package: "cura_private_data"
-            src: "resources"
-            dst: "share/cura/resources"
+            src: "res"
+            dst: "share/cura"
             internal: true
         uranium_plugins:
             package: "uranium"
@@ -54,7 +54,7 @@ pyinstaller:
             dst: "share/windows"
         fdm_materials:
             package: "fdm_materials"
-            src: "materials"
+            src: "res/resources/materials"
             dst: "share/cura/resources/materials"
         tcl:
             package: "tcl"
