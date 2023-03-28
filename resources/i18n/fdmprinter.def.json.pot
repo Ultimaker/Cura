@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-03-28 11:57+0000\n"
+"POT-Creation-Date: 2023-03-28 14:45+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -2042,23 +2042,33 @@ msgid "The thickness per layer of infill material. This value should always be a
 msgstr ""
 
 #: fdmprinter.def.json
+msgctxt "gradual_infill label"
+msgid "Increase Top Infill"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradual_infill description"
+msgid "The infill density below the top surface is gradually increased to better support the top layers. (Previously known as Gradual Infill.)"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "gradual_infill_steps label"
-msgid "Gradual Infill Steps"
+msgid "Top Infill Steps"
 msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "gradual_infill_steps description"
-msgid "Number of times to reduce the infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Infill Density."
+msgid "Number of times to double the infill density when getting towards the top surfaces. (Previously known as Gradual Infill Steps.)"
 msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "gradual_infill_step_height label"
-msgid "Gradual Infill Step Height"
+msgid "Top Infill Step Height"
 msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "gradual_infill_step_height description"
-msgid "The height of infill of a given density before switching to half the density."
+msgid "The height of infill of a given density before switching to double the density. (Previously known as Gradual Infill Step Height.)"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -4162,23 +4172,33 @@ msgid "The thickness per layer of support infill material. This value should alw
 msgstr ""
 
 #: fdmprinter.def.json
+msgctxt "gradual_support_infill label"
+msgid "Increase Support Top Infill"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradual_support_infill description"
+msgid "The infill density at the top of the support is gradually increased to better support the support interface layers or the model. (Previously known as Gradual Support Infill.)"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "gradual_support_infill_steps label"
-msgid "Gradual Support Infill Steps"
+msgid "Top Support Infill Steps"
 msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "gradual_support_infill_steps description"
-msgid "Number of times to reduce the support infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Support Infill Density."
+msgid "Number of times to double the infill density when getting towards the top surfaces. (Previously known as Gradual Support Infill Steps.)"
 msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "gradual_support_infill_step_height label"
-msgid "Gradual Support Infill Step Height"
+msgid "Top Support Infill Step Height"
 msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "gradual_support_infill_step_height description"
-msgid "The height of support infill of a given density before switching to half the density."
+msgid "The height of infill of a given density before switching to double the density. (Previously known as Gradual Support Infill Step Height.)"
 msgstr ""
 
 #: fdmprinter.def.json

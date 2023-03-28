@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-03-28 11:57+0000\n"
+"POT-Creation-Date: 2023-03-28 14:45+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -1470,26 +1470,6 @@ msgid "Go over the top surface one additional time, but this time extruding very
 msgstr "Andare ancora una volta sulla superficie superiore, questa volta estrudendo una piccolissima quantità di materiale. Lo scopo è quello di sciogliere ulteriormente la plastica sulla parte superiore, creando una superficie più liscia. La pressione nella camera dell'ugello viene mantenuta elevata, in modo che le grinze nella superficie siano riempite con il materiale."
 
 #: fdmprinter.def.json
-msgctxt "gradual_infill_step_height label"
-msgid "Gradual Infill Step Height"
-msgstr "Altezza fasi di riempimento graduale"
-
-#: fdmprinter.def.json
-msgctxt "gradual_infill_steps label"
-msgid "Gradual Infill Steps"
-msgstr "Fasi di riempimento graduale"
-
-#: fdmprinter.def.json
-msgctxt "gradual_support_infill_step_height label"
-msgid "Gradual Support Infill Step Height"
-msgstr "Altezza fasi di riempimento graduale del supporto"
-
-#: fdmprinter.def.json
-msgctxt "gradual_support_infill_steps label"
-msgid "Gradual Support Infill Steps"
-msgstr "Fasi di riempimento graduale del supporto"
-
-#: fdmprinter.def.json
 msgctxt "cool_min_temperature description"
 msgid "Gradually reduce to this temperature when printing at reduced speeds because of minimum layer time."
 msgstr "Riduci gradualmente a questa temperatura quando si stampa a velocità ridotte a causa del tempo minimo di stratificazione."
@@ -1718,6 +1698,16 @@ msgstr "Includi le temperature del materiale"
 msgctxt "slicing_tolerance option inclusive"
 msgid "Inclusive"
 msgstr "Inclusiva"
+
+#: fdmprinter.def.json
+msgctxt "gradual_support_infill label"
+msgid "Increase Support Top Infill"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradual_infill label"
+msgid "Increase Top Infill"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "infill description"
@@ -2780,19 +2770,19 @@ msgid "Number of extruder trains. An extruder train is the combination of a feed
 msgstr "Il numero di treni di estrusori. Un treno di estrusori è la combinazione di un alimentatore, un tubo bowden e un ugello."
 
 #: fdmprinter.def.json
-msgctxt "wipe_repeat_count description"
-msgid "Number of times to move the nozzle across the brush."
-msgstr "Numero di passaggi dell'ugello attraverso lo spazzolino."
-
-#: fdmprinter.def.json
 msgctxt "gradual_infill_steps description"
-msgid "Number of times to reduce the infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Infill Density."
-msgstr "Indica il numero di volte per dimezzare la densità del riempimento quando si va al di sotto degli strati superiori. Le aree più vicine agli strati superiori avranno una densità maggiore, fino alla densità del riempimento."
+msgid "Number of times to double the infill density when getting towards the top surfaces. (Previously known as Gradual Infill Steps.)"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "gradual_support_infill_steps description"
-msgid "Number of times to reduce the support infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Support Infill Density."
-msgstr "Indica il numero di volte per dimezzare la densità del riempimento quando si va al di sotto delle superfici superiori. Le aree più vicine alle superfici superiori avranno una densità maggiore, fino alla densità del riempimento."
+msgid "Number of times to double the infill density when getting towards the top surfaces. (Previously known as Gradual Support Infill Steps.)"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_repeat_count description"
+msgid "Number of times to move the nozzle across the brush."
+msgstr "Numero di passaggi dell'ugello attraverso lo spazzolino."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option tetrahedral"
@@ -4731,13 +4721,13 @@ msgstr "Indica l’altezza di ciascuno strato in mm. Valori più elevati generan
 
 #: fdmprinter.def.json
 msgctxt "gradual_infill_step_height description"
-msgid "The height of infill of a given density before switching to half the density."
-msgstr "Indica l’altezza di riempimento di una data densità prima di passare a metà densità."
+msgid "The height of infill of a given density before switching to double the density. (Previously known as Gradual Infill Step Height.)"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "gradual_support_infill_step_height description"
-msgid "The height of support infill of a given density before switching to half the density."
-msgstr "Indica l’altezza di riempimento del supporto di una data densità prima di passare a metà densità."
+msgid "The height of infill of a given density before switching to double the density. (Previously known as Gradual Support Infill Step Height.)"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_layer_count description"
@@ -4772,6 +4762,16 @@ msgid ""
 msgstr ""
 "Indica la distanza orizzontale tra lo skirt ed il primo strato della stampa.\n"
 "Questa è la distanza minima. Più linee di skirt aumenteranno tale distanza."
+
+#: fdmprinter.def.json
+msgctxt "gradual_support_infill description"
+msgid "The infill density at the top of the support is gradually increased to better support the support interface layers or the model. (Previously known as Gradual Support Infill.)"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradual_infill description"
+msgid "The infill density below the top surface is gradually increased to better support the top layers. (Previously known as Gradual Infill.)"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_straightening_angle description"
@@ -5659,6 +5659,16 @@ msgid "To compensate for the shrinkage of the material as it cools down, the mod
 msgstr "Per compensare la contrazione del materiale durante il raffreddamento, il modello sarà scalato con questo fattore."
 
 #: fdmprinter.def.json
+msgctxt "gradual_infill_step_height label"
+msgid "Top Infill Step Height"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradual_infill_steps label"
+msgid "Top Infill Steps"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "top_layers label"
 msgid "Top Layers"
 msgstr "Strati superiori"
@@ -5672,6 +5682,16 @@ msgstr "Distanza prolunga rivestimento superiore"
 msgctxt "top_skin_preshrink label"
 msgid "Top Skin Removal Width"
 msgstr "Larghezza rimozione rivestimento superiore"
+
+#: fdmprinter.def.json
+msgctxt "gradual_support_infill_step_height label"
+msgid "Top Support Infill Step Height"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradual_support_infill_steps label"
+msgid "Top Support Infill Steps"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "acceleration_roofing label"
@@ -6600,9 +6620,33 @@ msgstr "spostamenti"
 #~ msgid "Flow compensation: the amount of material extruded is multiplied by this value. Only applies to Wire Printing."
 #~ msgstr "Determina la compensazione del flusso: la quantità di materiale estruso viene moltiplicata per questo valore. Applicabile solo alla funzione Wire Printing."
 
+#~ msgctxt "gradual_infill_step_height label"
+#~ msgid "Gradual Infill Step Height"
+#~ msgstr "Altezza fasi di riempimento graduale"
+
+#~ msgctxt "gradual_infill_steps label"
+#~ msgid "Gradual Infill Steps"
+#~ msgstr "Fasi di riempimento graduale"
+
+#~ msgctxt "gradual_support_infill_step_height label"
+#~ msgid "Gradual Support Infill Step Height"
+#~ msgstr "Altezza fasi di riempimento graduale del supporto"
+
+#~ msgctxt "gradual_support_infill_steps label"
+#~ msgid "Gradual Support Infill Steps"
+#~ msgstr "Fasi di riempimento graduale del supporto"
+
 #~ msgctxt "wireframe_strategy option knot"
 #~ msgid "Knot"
 #~ msgstr "Nodo"
+
+#~ msgctxt "gradual_infill_steps description"
+#~ msgid "Number of times to reduce the infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Infill Density."
+#~ msgstr "Indica il numero di volte per dimezzare la densità del riempimento quando si va al di sotto degli strati superiori. Le aree più vicine agli strati superiori avranno una densità maggiore, fino alla densità del riempimento."
+
+#~ msgctxt "gradual_support_infill_steps description"
+#~ msgid "Number of times to reduce the support infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Support Infill Density."
+#~ msgstr "Indica il numero di volte per dimezzare la densità del riempimento quando si va al di sotto delle superfici superiori. Le aree più vicine alle superfici superiori avranno una densità maggiore, fino alla densità del riempimento."
 
 #~ msgctxt "wireframe_straight_before_down description"
 #~ msgid "Percentage of a diagonally downward line which is covered by a horizontal line piece. This can prevent sagging of the top most point of upward lines. Only applies to Wire Printing."
@@ -6651,6 +6695,14 @@ msgstr "spostamenti"
 #~ msgctxt "wireframe_roof_fall_down description"
 #~ msgid "The distance which horizontal roof lines printed 'in thin air' fall down when being printed. This distance is compensated for. Only applies to Wire Printing."
 #~ msgstr "Indica la distanza di caduta delle linee della superficie superiore (tetto) della struttura \"sospesa nell'aria\" durante la stampa. Questa distanza viene compensata. Applicabile solo alla funzione Wire Printing."
+
+#~ msgctxt "gradual_infill_step_height description"
+#~ msgid "The height of infill of a given density before switching to half the density."
+#~ msgstr "Indica l’altezza di riempimento di una data densità prima di passare a metà densità."
+
+#~ msgctxt "gradual_support_infill_step_height description"
+#~ msgid "The height of support infill of a given density before switching to half the density."
+#~ msgstr "Indica l’altezza di riempimento del supporto di una data densità prima di passare a metà densità."
 
 #~ msgctxt "wireframe_height description"
 #~ msgid "The height of the upward and diagonally downward lines between two horizontal parts. This determines the overall density of the net structure. Only applies to Wire Printing."

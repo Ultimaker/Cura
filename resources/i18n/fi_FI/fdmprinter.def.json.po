@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-03-28 11:57+0000\n"
+"POT-Creation-Date: 2023-03-28 14:45+0000\n"
 "PO-Revision-Date: 2022-07-15 11:17+0200\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: Finnish\n"
@@ -1468,26 +1468,6 @@ msgid "Go over the top surface one additional time, but this time extruding very
 msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "gradual_infill_step_height label"
-msgid "Gradual Infill Step Height"
-msgstr "Asteittaisen täyttöarvon korkeus"
-
-#: fdmprinter.def.json
-msgctxt "gradual_infill_steps label"
-msgid "Gradual Infill Steps"
-msgstr "Asteittainen täyttöarvo"
-
-#: fdmprinter.def.json
-msgctxt "gradual_support_infill_step_height label"
-msgid "Gradual Support Infill Step Height"
-msgstr "Asteittaisen tuen täyttöarvon korkeus"
-
-#: fdmprinter.def.json
-msgctxt "gradual_support_infill_steps label"
-msgid "Gradual Support Infill Steps"
-msgstr "Asteittainen tuen täyttöarvo"
-
-#: fdmprinter.def.json
 msgctxt "cool_min_temperature description"
 msgid "Gradually reduce to this temperature when printing at reduced speeds because of minimum layer time."
 msgstr ""
@@ -1715,6 +1695,16 @@ msgstr "Sisällytä materiaalilämpötilat"
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance option inclusive"
 msgid "Inclusive"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradual_support_infill label"
+msgid "Increase Support Top Infill"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradual_infill label"
+msgid "Increase Top Infill"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -2778,19 +2768,19 @@ msgid "Number of extruder trains. An extruder train is the combination of a feed
 msgstr "Suulakeryhmien määrä. Suulakeryhmä on syöttölaitteen, Bowden-putken ja suuttimen yhdistelmä."
 
 #: fdmprinter.def.json
-msgctxt "wipe_repeat_count description"
-msgid "Number of times to move the nozzle across the brush."
+msgctxt "gradual_infill_steps description"
+msgid "Number of times to double the infill density when getting towards the top surfaces. (Previously known as Gradual Infill Steps.)"
 msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "gradual_infill_steps description"
-msgid "Number of times to reduce the infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Infill Density."
-msgstr "Määrä kertoja, joilla täytön tiheyttä vähennetään puolella kauemmaksi yläpintojen alle siirryttäessä. Yläpintoja lähempänä olevista alueista tulee tiheämpiä enintään täytön tiheyden arvoon asti."
+msgctxt "gradual_support_infill_steps description"
+msgid "Number of times to double the infill density when getting towards the top surfaces. (Previously known as Gradual Support Infill Steps.)"
+msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "gradual_support_infill_steps description"
-msgid "Number of times to reduce the support infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Support Infill Density."
-msgstr "Määrä kertoja, joilla tuen täytön tiheyttä vähennetään puolella kauemmaksi yläpintojen alle siirryttäessä. Yläpintoja lähempänä olevista alueista tulee tiheämpiä enintään tuen täytön tiheyden arvoon asti."
+msgctxt "wipe_repeat_count description"
+msgid "Number of times to move the nozzle across the brush."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option tetrahedral"
@@ -4734,13 +4724,13 @@ msgstr "Kunkin kerroksen korkeus milleinä. Korkeammat arvot tuottavat nopeampia
 
 #: fdmprinter.def.json
 msgctxt "gradual_infill_step_height description"
-msgid "The height of infill of a given density before switching to half the density."
-msgstr "Tietyn tiheysarvon täytön korkeus ennen puoleen tiheyteen vaihtamista."
+msgid "The height of infill of a given density before switching to double the density. (Previously known as Gradual Infill Step Height.)"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "gradual_support_infill_step_height description"
-msgid "The height of support infill of a given density before switching to half the density."
-msgstr "Tietyn tiheysarvon tuen täytön korkeus ennen puoleen tiheyteen vaihtamista."
+msgid "The height of infill of a given density before switching to double the density. (Previously known as Gradual Support Infill Step Height.)"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_layer_count description"
@@ -4772,6 +4762,16 @@ msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradual_support_infill description"
+msgid "The infill density at the top of the support is gradually increased to better support the support interface layers or the model. (Previously known as Gradual Support Infill.)"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradual_infill description"
+msgid "The infill density below the top surface is gradually increased to better support the top layers. (Previously known as Gradual Infill.)"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -5661,6 +5661,16 @@ msgid "To compensate for the shrinkage of the material as it cools down, the mod
 msgstr ""
 
 #: fdmprinter.def.json
+msgctxt "gradual_infill_step_height label"
+msgid "Top Infill Step Height"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradual_infill_steps label"
+msgid "Top Infill Steps"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "top_layers label"
 msgid "Top Layers"
 msgstr "Yläkerrokset"
@@ -5674,6 +5684,16 @@ msgstr "Yläpintakalvon laajennuksen etäisyys"
 msgctxt "top_skin_preshrink label"
 msgid "Top Skin Removal Width"
 msgstr "Yläpintakalvon poistoleveys"
+
+#: fdmprinter.def.json
+msgctxt "gradual_support_infill_step_height label"
+msgid "Top Support Infill Step Height"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradual_support_infill_steps label"
+msgid "Top Support Infill Steps"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "acceleration_roofing label"
@@ -6870,6 +6890,22 @@ msgstr "siirtoliike"
 #~ msgid "Go over the top surface one additional time, but without extruding material. This is meant to melt the plastic on top further, creating a smoother surface."
 #~ msgstr "Yläpinnan läpikäynti yhden ylimääräisen kerran ilman materiaalin pursotusta. Tämän tarkoitus on sulattaa yläosan muovia enemmän, jolloin saadaan sileämpi pinta."
 
+#~ msgctxt "gradual_infill_step_height label"
+#~ msgid "Gradual Infill Step Height"
+#~ msgstr "Asteittaisen täyttöarvon korkeus"
+
+#~ msgctxt "gradual_infill_steps label"
+#~ msgid "Gradual Infill Steps"
+#~ msgstr "Asteittainen täyttöarvo"
+
+#~ msgctxt "gradual_support_infill_step_height label"
+#~ msgid "Gradual Support Infill Step Height"
+#~ msgstr "Asteittaisen tuen täyttöarvon korkeus"
+
+#~ msgctxt "gradual_support_infill_steps label"
+#~ msgid "Gradual Support Infill Steps"
+#~ msgstr "Asteittainen tuen täyttöarvo"
+
 #~ msgctxt "machine_heated_bed label"
 #~ msgid "Has heated build plate"
 #~ msgstr "Sisältää lämmitettävän alustan"
@@ -6997,6 +7033,14 @@ msgstr "siirtoliike"
 #~ msgctxt "machine_nozzle_head_distance label"
 #~ msgid "Nozzle length"
 #~ msgstr "Suuttimen pituus"
+
+#~ msgctxt "gradual_infill_steps description"
+#~ msgid "Number of times to reduce the infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Infill Density."
+#~ msgstr "Määrä kertoja, joilla täytön tiheyttä vähennetään puolella kauemmaksi yläpintojen alle siirryttäessä. Yläpintoja lähempänä olevista alueista tulee tiheämpiä enintään täytön tiheyden arvoon asti."
+
+#~ msgctxt "gradual_support_infill_steps description"
+#~ msgid "Number of times to reduce the support infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Support Infill Density."
+#~ msgstr "Määrä kertoja, joilla tuen täytön tiheyttä vähennetään puolella kauemmaksi yläpintojen alle siirryttäessä. Yläpintoja lähempänä olevista alueista tulee tiheämpiä enintään tuen täytön tiheyden arvoon asti."
 
 #~ msgctxt "machine_use_extruder_offset_to_offset_coords label"
 #~ msgid "Offset With Extruder"
@@ -7217,6 +7261,14 @@ msgstr "siirtoliike"
 #~ msgctxt "support_interface_extruder_nr description"
 #~ msgid "The extruder train to use for printing the roofs and bottoms of the support. This is used in multi-extrusion."
 #~ msgstr "Tuen kattojen ja alaosien tulostukseen käytettävä suulakeryhmä. Tätä käytetään monipursotuksessa."
+
+#~ msgctxt "gradual_infill_step_height description"
+#~ msgid "The height of infill of a given density before switching to half the density."
+#~ msgstr "Tietyn tiheysarvon täytön korkeus ennen puoleen tiheyteen vaihtamista."
+
+#~ msgctxt "gradual_support_infill_step_height description"
+#~ msgid "The height of support infill of a given density before switching to half the density."
+#~ msgstr "Tietyn tiheysarvon tuen täytön korkeus ennen puoleen tiheyteen vaihtamista."
 
 #~ msgctxt "support_bottom_stair_step_height description"
 #~ msgid "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures."
