@@ -361,11 +361,9 @@ class CuraConan(ConanFile):
 
     def deploy(self):
         # Copy CuraEngine.exe to bindirs of Virtual Python Environment
-        self.copy_deps("CuraEngine.exe", root_package = "curaengine", src = self.deps_cpp_info["curaengine"].bindirs[0],
-                       dst = self._base_dir,
-                       keep_path = False)
-        self.copy_deps("CuraEngine", root_package = "curaengine", src = self.deps_cpp_info["curaengine"].bindirs[0], dst = self._base_dir,
-                       keep_path = False)
+        curaengine = self.dependencies["curaengine"].cpp_info
+        copy(self, "CuraEngine.exe", curaengine.bindirs[0], str(self._base_dir), keep_path = False)
+        copy(self, "CuraEngine", curaengine.bindirs[0], str(self._base_dir), keep_path = False)
 
         # Copy resources of Cura (keep folder structure)
         copy(self, "*", os.path.join(self.package_folder, self.cpp_info.bindirs[0]), str(self._base_dir), keep_path = False)
@@ -383,36 +381,34 @@ class CuraConan(ConanFile):
             copy(self, "*", cura_private_data.resdirs[0], str(self._share_dir.joinpath("cura")))
 
         # Copy resources of Uranium (keep folder structure)
-        self.copy_deps("*", root_package = "uranium", src = self.deps_cpp_info["uranium"].resdirs[0],
-                       dst = self._share_dir.joinpath("uranium", "resources"), keep_path = True)
-        self.copy_deps("*", root_package = "uranium", src = self.deps_cpp_info["uranium"].resdirs[1],
-                       dst = self._share_dir.joinpath("uranium", "plugins"), keep_path = True)
-        self.copy_deps("*", root_package = "uranium", src = self.deps_cpp_info["uranium"].libdirs[0],
-                       dst = self._site_packages.joinpath("UM"),
-                       keep_path = True)
-        self.copy_deps("*", root_package = "uranium", src = str(os.path.join(self.deps_cpp_info["uranium"].libdirs[0], "Qt", "qml", "UM")),
-                       dst = self._site_packages.joinpath("PyQt6", "Qt6", "qml", "UM"),
-                       keep_path = True)
+        uranium = self.dependencies["uranium"].cpp_info
+        copy(self, "*", uranium.resdirs[0], str(self._share_dir.joinpath("uranium", "resources")), keep_path = True)
+        copy(self, "*", uranium.resdirs[1], str(self._share_dir.joinpath("uranium", "plugins")), keep_path = True)
+        copy(self, "*", uranium.libdirs[0], str(self._site_packages.joinpath("UM")), keep_path = True)
+
+        # TODO: figure out if this is still needed
+        copy(self, "*", os.path.join(uranium.libdirs[0], "Qt", "qml", "UM"), str(self._site_packages.joinpath("PyQt6", "Qt6", "qml", "UM")), keep_path = True)
 
         # Copy resources of cura_binary_data
-        self.copy_deps("*", root_package = "cura_binary_data", src = self.deps_cpp_info["cura_binary_data"].resdirs[0],
-                       dst = self._share_dir.joinpath("cura"), keep_path = True)
-        self.copy_deps("*", root_package = "cura_binary_data", src = self.deps_cpp_info["cura_binary_data"].resdirs[1],
-                       dst = self._share_dir.joinpath("uranium"), keep_path = True)
+        cura_binary_data = self.dependencies["cura_binary_data"].cpp_info
+        copy(self, "*", cura_binary_data.resdirs[0], str(self._share_dir.joinpath("cura")), keep_path = True)
+        copy(self, "*", cura_binary_data.resdirs[1], str(self._share_dir.joinpath("uranium")), keep_path = True)
         if self.settings.os == "Windows":
-            self.copy_deps("*", root_package = "cura_binary_data", src = self.deps_cpp_info["cura_binary_data"].resdirs[2],
-                           dst = self._share_dir.joinpath("windows"), keep_path = True)
+            copy(self, "*", cura_binary_data.resdirs[2], str(self._share_dir.joinpath("windows")), keep_path = True)
 
-        self.copy_deps("*.dll", src = "@bindirs", dst = self._site_packages)
-        self.copy_deps("*.pyd", src = "@libdirs", dst = self._site_packages)
-        self.copy_deps("*.pyi", src = "@libdirs", dst = self._site_packages)
-        self.copy_deps("*.dylib", src = "@libdirs", dst = self._base_dir.joinpath("lib"))
+        for dependency in self.dependencies.host.values():
+            for bindir in dependency.cpp_info.bindirs:
+                copy(self, "*.dll", bindir, str(self._site_packages), keep_path = False)
+            for libdir in dependency.cpp_info.libdirs:
+                copy(self, "*.pyd", libdir, str(self._site_packages), keep_path = False)
+                copy(self, "*.pyi", libdir, str(self._site_packages), keep_path = False)
+                copy(self, "*.dylib", libdir, str(self._base_dir.joinpath("lib")), keep_path = False)
 
         # Copy packaging scripts
-        self.copy("*", src = self.cpp_info.resdirs[2], dst = self._base_dir.joinpath("packaging"))
+        copy(self, "*", os.path.join(self.package_folder, self.cpp_info.resdirs[2]), str(self._base_dir.joinpath("packaging")), keep_path = True)
 
         # Copy requirements.txt's
-        self.copy("*.txt", src = self.cpp_info.resdirs[-1], dst = self._base_dir.joinpath("pip_requirements"))
+        copy(self, "*.txt", os.path.join(self.package_folder, self.cpp_info.resdirs[-1]), str(self._base_dir.joinpath("pip_requirements")), keep_path = False)
 
         # Generate the GitHub Action version info Environment
         version = self.conf_info.get("user.cura:version", default = self.version, check_type = str)
