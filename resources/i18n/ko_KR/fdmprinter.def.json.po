@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-03-14 15:01+0000\n"
+"POT-Creation-Date: 2023-03-28 11:57+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -587,11 +587,6 @@ msgid "Command Line Settings"
 msgstr "커맨드 라인 설정"
 
 #: fdmprinter.def.json
-msgctxt "wireframe_strategy option compensate"
-msgid "Compensate"
-msgstr "보상"
-
-#: fdmprinter.def.json
 msgctxt "infill_pattern option concentric"
 msgid "Concentric"
 msgstr "동심원"
@@ -722,11 +717,6 @@ msgid "Cooling"
 msgstr "냉각"
 
 #: fdmprinter.def.json
-msgctxt "wireframe_top_jump description"
-msgid "Creates a small knot at the top of an upward line, so that the consecutive horizontal layer has a better chance to connect to it. Only applies to Wire Printing."
-msgstr "상향 선의 상단에 작은 매듭을 만들어 연속적인 수평 레이어에 연결할 수 있게 합니다. 와이어 프린팅에만 적용됩니다."
-
-#: fdmprinter.def.json
 msgctxt "infill_pattern option cross"
 msgid "Cross"
 msgstr "십자형"
@@ -832,21 +822,6 @@ msgid "Default jerk for the motor of the filament."
 msgstr "필라멘트를 구동하는 모터의 기본 Jerk."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_bottom_delay description"
-msgid "Delay time after a downward move. Only applies to Wire Printing."
-msgstr "하강 후 지연 시간. 와이어 프린팅에만 적용됩니다."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_top_delay description"
-msgid "Delay time after an upward move, so that the upward line can harden. Only applies to Wire Printing."
-msgstr "상향 라인이 강화 될 수 있도록 상향 이동 후 지연 시간. 와이어 프린팅에만 적용됩니다."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flat_delay description"
-msgid "Delay time between two horizontal segments. Introducing such a delay can cause better adhesion to previous layers at the connection points, while too long delays cause sagging. Only applies to Wire Printing."
-msgstr "두 개의 수평 세그먼트 사이의 지연 시간. 이러한 지연을 도입하면 연결 지점에서 이전 레이어와의 접착력이 향상 될 수 있으며 너무 긴 지연으로 인해 처짐이 발생할 수 있습니다. 와이어 프린팅에만 적용됩니다."
-
-#: fdmprinter.def.json
 msgctxt "bridge_settings_enabled description"
 msgid "Detect bridges and modify print speed, flow and fan settings while bridges are printed."
 msgstr "브릿지가 출력되는 중에 브리지를 감지하고 인쇄 속도, 흐름 및 팬 설정을 수정합니다."
@@ -885,11 +860,6 @@ msgstr "빌드 플레이트에 대한 접착력을 향상시키는 데 도움이
 msgctxt "machine_disallowed_areas label"
 msgid "Disallowed Areas"
 msgstr "허용되지 않는 지역"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_nozzle_clearance description"
-msgid "Distance between the nozzle and horizontally downward lines. Larger clearance results in diagonally downward lines with a less steep angle, which in turn results in less upward connections with the next layer. Only applies to Wire Printing."
-msgstr "노즐과 수평 아래쪽 라인 사이의 거리. 거리가 클수록 비스듬한 각도에서 비스듬히 아래쪽으로 선이 그어져 다음 층과의 연결이보다 적어집니다. 와이어 프린팅에만 적용됩니다."
 
 #: fdmprinter.def.json
 msgctxt "infill_line_distance description"
@@ -942,13 +912,6 @@ msgid "Distance of a travel move inserted after the outer wall, to hide the Z se
 msgstr "Z 층의 경계면을 더 잘 가리기 위해 바깥쪽 벽 뒤에 삽입되어 이동한 거리."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_up_half_speed description"
-msgid ""
-"Distance of an upward move which is extruded with half speed.\n"
-"This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-msgstr "기본 속도의 반으로 압출 된 상향 이동 거리. 이로 인해 이전 레이어에 더 나은 접착력을 유발할 수 있지만 레이어에 있는 소재는 너무 많이 가열하지 않습니다. 와이어 프린팅에만 적용됩니다."
-
-#: fdmprinter.def.json
 msgctxt "draft_shield_dist description"
 msgid "Distance of the draft shield from the print, in the X/Y directions."
 msgstr "X/Y 방향으로 프린트와 드래프트 쉴드까지의 거리입니다."
@@ -967,16 +930,6 @@ msgstr "X/Y 방향에서 오버행으로부터 서포트까지의 거리."
 msgctxt "support_xy_distance description"
 msgid "Distance of the support structure from the print in the X/Y directions."
 msgstr "X/Y 방향에서 출력물로과 서포트까지의 거리."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_fall_down description"
-msgid "Distance with which the material falls down after an upward extrusion. This distance is compensated for. Only applies to Wire Printing."
-msgstr "위쪽으로 밀어 낸 후 재료가 떨어지는 거리. 이 거리는 보상됩니다. 와이어 프린팅에만 적용됩니다."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_drag_along description"
-msgid "Distance with which the material of an upward extrusion is dragged along with the diagonally downward extrusion. This distance is compensated for. Only applies to Wire Printing."
-msgstr "대각선 방향으로 압출 된 압출부의 재료가 위쪽으로 밀어내는 거리. 이 거리는 보상됩니다. 와이어 프린팅에만 적용됩니다."
 
 #: fdmprinter.def.json
 msgctxt "min_infill_area description"
@@ -1374,24 +1327,9 @@ msgid "Flow compensation on wall lines."
 msgstr "벽 라인의 압출 보상입니다."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_flow_connection description"
-msgid "Flow compensation when going up or down. Only applies to Wire Printing."
-msgstr "위 또는 아래로 이동할 때 압출량 보정. 와이어 프린팅에만 적용됩니다."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow_flat description"
-msgid "Flow compensation when printing flat lines. Only applies to Wire Printing."
-msgstr "평평한 선을 프린팅 할 때 압출량 보정. 와이어 프린팅에만 적용됩니다."
-
-#: fdmprinter.def.json
 msgctxt "material_flow description"
 msgid "Flow compensation: the amount of material extruded is multiplied by this value."
 msgstr "압출량 보상: 압출 된 재료의 양에 이 값을 곱합니다."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow description"
-msgid "Flow compensation: the amount of material extruded is multiplied by this value. Only applies to Wire Printing."
-msgstr "압출량 보상 : 압출 된 재료의 양에 이 값을 곱합니다. 와이어 프린팅에만 적용됩니다."
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length label"
@@ -1532,6 +1470,26 @@ msgid "Go over the top surface one additional time, but this time extruding very
 msgstr "상단 표면을 한 번 더 이동하지만 재료를 아주 약간만 압출 성형합니다. 따라서 맨 위의 플라스틱이 녹아 부드러운 표면을 만듭니다. 노즐 챔버 내의 압력이 고압으로 유지되므로 표면상의 주름이 재료로 채워집니다."
 
 #: fdmprinter.def.json
+msgctxt "gradual_infill_step_height label"
+msgid "Gradual Infill Step Height"
+msgstr "점진적인 내부채움 단계 높이"
+
+#: fdmprinter.def.json
+msgctxt "gradual_infill_steps label"
+msgid "Gradual Infill Steps"
+msgstr "점진적인 내부채움 단계"
+
+#: fdmprinter.def.json
+msgctxt "gradual_support_infill_step_height label"
+msgid "Gradual Support Infill Step Height"
+msgstr "점진적 서포트 내부채움 단계 높이"
+
+#: fdmprinter.def.json
+msgctxt "gradual_support_infill_steps label"
+msgid "Gradual Support Infill Steps"
+msgstr "점진적 서포트 내부채움 단계"
+
+#: fdmprinter.def.json
 msgctxt "cool_min_temperature description"
 msgid "Gradually reduce to this temperature when printing at reduced speeds because of minimum layer time."
 msgstr "최소 레이어 시간으로 인해 감소된 속도로 프린트할 때 이 온도로 점차 낮추십시오."
@@ -1615,6 +1573,11 @@ msgstr "솔기 숨기기 또는 노출"
 msgctxt "hole_xy_offset label"
 msgid "Hole Horizontal Expansion"
 msgstr "구멍 수평 확장"
+
+#: fdmprinter.def.json
+msgctxt "hole_xy_offset_max_diameter label"
+msgid "Hole Horizontal Expansion Max Diameter"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "small_hole_max_size description"
@@ -1755,16 +1718,6 @@ msgstr "재료의 온도 포함하기"
 msgctxt "slicing_tolerance option inclusive"
 msgid "Inclusive"
 msgstr "중복"
-
-#: fdmprinter.def.json
-msgctxt "gradual_support_infill label"
-msgid "Increase Support Top Infill"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "gradual_infill label"
-msgid "Increase Top Infill"
-msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "infill description"
@@ -2115,11 +2068,6 @@ msgstr "부품의 윤곽만 지터하고 부품의 구멍은 지터하지 않습
 msgctxt "meshfix_keep_open_polygons label"
 msgid "Keep Disconnected Faces"
 msgstr "끊긴 면 유지"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_strategy option knot"
-msgid "Knot"
-msgstr "매듭"
 
 #: fdmprinter.def.json
 msgctxt "layer_height label"
@@ -2832,19 +2780,19 @@ msgid "Number of extruder trains. An extruder train is the combination of a feed
 msgstr "익스트루더의 수. 익스트루더는 피더, 보우 덴 튜브 및 노즐의 조합입니다."
 
 #: fdmprinter.def.json
-msgctxt "gradual_infill_steps description"
-msgid "Number of times to double the infill density when getting towards the top surfaces. (Previously known as Gradual Infill Steps.)"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "gradual_support_infill_steps description"
-msgid "Number of times to double the infill density when getting towards the top surfaces. (Previously known as Gradual Support Infill Steps.)"
-msgstr ""
-
-#: fdmprinter.def.json
 msgctxt "wipe_repeat_count description"
 msgid "Number of times to move the nozzle across the brush."
 msgstr "브러시 전체에 노즐을 이동하는 횟수입니다."
+
+#: fdmprinter.def.json
+msgctxt "gradual_infill_steps description"
+msgid "Number of times to reduce the infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Infill Density."
+msgstr "상단면 아래로 갈 때 내부채움 밀도를 반으로 줄이는 횟수입니다. 상단면에 더 가까운 영역은 내부채움율 농도가 더 높은 밀도를 갖습니다."
+
+#: fdmprinter.def.json
+msgctxt "gradual_support_infill_steps description"
+msgid "Number of times to reduce the support infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Support Infill Density."
+msgstr "상단 표면 아래로 올라갈 때 서포트 채움 밀도를 반으로 줄이는 횟수입니다. 상단 표면에 더 가까운 영역은 서포트 채움 밀도까지 더 높은 밀도를 갖습니다."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option tetrahedral"
@@ -3007,11 +2955,6 @@ msgid "Percentage fan speed to use when printing the third bridge skin layer."
 msgstr "세번째 브리지 벽과 스킨을 인쇄 할 때 사용하는 팬 속도 백분율."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_straight_before_down description"
-msgid "Percentage of a diagonally downward line which is covered by a horizontal line piece. This can prevent sagging of the top most point of upward lines. Only applies to Wire Printing."
-msgstr "수평선 조각에 의해 덮여있는 비스듬한 하향 선의 백분율. 이렇게 하면 상향 선의 맨 위 지점이 처지는 것을 방지 할 수 있습니다. 와이어 프린팅에만 적용됩니다."
-
-#: fdmprinter.def.json
 msgctxt "minimum_polygon_circumference description"
 msgid "Polygons in sliced layers that have a circumference smaller than this amount will be filtered out. Lower values lead to higher resolution mesh at the cost of slicing time. It is meant mostly for high resolution SLA printers and very tiny 3D models with a lot of details."
 msgstr "레이어가 슬라이스 된, 이 값보다 둘레가 작은 다각형은 필터링됩니다. 값을 낮을수록 슬라이스가 느려지지만, 해상도 메쉬가 높아집니다. 주로 고해상도 SLA 프린터 및 세부 사항이 많은 매우 작은 3D 모델에 적합합니다."
@@ -3122,11 +3065,6 @@ msgid "Print models as a mold, which can be cast in order to get a model which r
 msgstr "모형을 몰드으로 프린팅하여 모형에 몰드과 유사한 모형을 만들 수 있습니다."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_enabled description"
-msgid "Print only the outside surface with a sparse webbed structure, printing 'in thin air'. This is realized by horizontally printing the contours of the model at given Z intervals which are connected via upward and diagonally downward lines."
-msgstr "외벽의 표면만 거미줄 같은 형태로 공중에서 프린팅합니다. 이것은 상향 및 대각선 하향 라인을 통해 연결된 Z 간격으로 모형의 윤곽을 수평으로 인쇄함으로써 구현됩니다."
-
-#: fdmprinter.def.json
 msgctxt "fill_outline_gaps description"
 msgid "Print pieces of the model which are horizontally thinner than the nozzle size."
 msgstr "노즐 크기보다 수평으로 더 얇은 모델 조각을 프린팅하십시오."
@@ -3165,6 +3103,11 @@ msgstr "프린팅 온도"
 msgctxt "material_print_temperature_layer_0 label"
 msgid "Printing Temperature Initial Layer"
 msgstr "첫번째 레이어의 프린팅 온도"
+
+#: fdmprinter.def.json
+msgctxt "skirt_height description"
+msgid "Printing the innermost skirt line with multiple layers makes it easy to remove the skirt."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "alternate_extra_perimeter description"
@@ -3467,11 +3410,6 @@ msgid "Resolution to compute collisions with to avoid hitting the model. Setting
 msgstr "모델에 부딪히는 것을 피하기 위해 충돌을 계산하는 정밀도. 이 값을 낮게 설정하면 실패도가 낮은 더 정확한 트리를 생성하지만, 슬라이싱 시간이 현격하게 늘어납니다."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_strategy option retract"
-msgid "Retract"
-msgstr "리트렉트"
-
-#: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"
 msgid "Retract Before Outer Wall"
 msgstr "외벽 전에 리트렉션"
@@ -3652,6 +3590,11 @@ msgid "Skirt Distance"
 msgstr "스커트 거리"
 
 #: fdmprinter.def.json
+msgctxt "skirt_height label"
+msgid "Skirt Height"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "skirt_line_count label"
 msgid "Skirt Line Count"
 msgstr "스커트 선 수"
@@ -3722,6 +3665,11 @@ msgid "Small Layer Printing Temperature"
 msgstr "소형 레이어 프린팅 온도"
 
 #: fdmprinter.def.json
+msgctxt "small_skin_width label"
+msgid "Small Top/Bottom Width"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 description"
 msgid "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
 msgstr "첫 번째 레이어의 소형 피처는 정상적인 프린트 속도의 이 비율로 프린팅됩니다. 프린트 속도가 느리면 부착과 정확도가 개선됩니다."
@@ -3730,6 +3678,16 @@ msgstr "첫 번째 레이어의 소형 피처는 정상적인 프린트 속도�
 msgctxt "small_feature_speed_factor description"
 msgid "Small features will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
 msgstr "소형 피처는 정상적인 프린트 속도의 이 비율로 프린팅됩니다. 프린트 속도가 느리면 부착과 정확도가 개선됩니다."
+
+#: fdmprinter.def.json
+msgctxt "small_skin_width description"
+msgid "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "brim_smart_ordering label"
+msgid "Smart Brim"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "z_seam_corner option z_seam_corner_weighted"
@@ -3770,31 +3728,6 @@ msgstr "속도"
 msgctxt "speed label"
 msgid "Speed"
 msgstr "속도"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed description"
-msgid "Speed at which the nozzle moves when extruding material. Only applies to Wire Printing."
-msgstr "재료를 압출 할 때 노즐이 움직이는 속도. 와이어 프린팅에만 적용됩니다."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_down description"
-msgid "Speed of printing a line diagonally downward. Only applies to Wire Printing."
-msgstr "대각선 방향으로 선을 프린팅하는 속도. 와이어 프린팅에만 적용됩니다."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_up description"
-msgid "Speed of printing a line upward 'in thin air'. Only applies to Wire Printing."
-msgstr "공중에서 위쪽으로 선을 프린팅하는 속도. 와이어 프린팅에만 적용됩니다."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_bottom description"
-msgid "Speed of printing the first layer, which is the only layer touching the build platform. Only applies to Wire Printing."
-msgstr "첫 번째 레이어 프린팅 속도. 와이어 프린팅에만 적용됩니다."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_flat description"
-msgid "Speed of printing the horizontal contours of the model. Only applies to Wire Printing."
-msgstr "모델의 수평 윤곽 프린팅 속도입니다. 와이어 프린팅에만 적용됩니다."
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_speed description"
@@ -3845,11 +3778,6 @@ msgstr "밀리미터 당 스텝 수 (Y)"
 msgctxt "machine_steps_per_mm_z label"
 msgid "Steps per Millimeter (Z)"
 msgstr "밀리미터 당 스텝 수 (Z)"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_strategy description"
-msgid "Strategy for making sure two consecutive layers connect at each connection point. Retraction lets the upward lines harden in the right position, but may cause filament grinding. A knot can be made at the end of an upward line to heighten the chance of connecting to it and to let the line cool; however, it may require slow printing speeds. Another strategy is to compensate for the sagging of the top of an upward line; however, the lines won't always fall down as predicted."
-msgstr "각 연결 지점에서 두 개의 연속 된 레이어가 연결되도록 하는 전략입니다. 리트렉션을 하면 상향 선이 올바른 위치에서 경화되지만 필라멘트가 갈릴 수 있습니다. 상향 선의 끝에 매듭을 만들어 연결 기회를 높이고 선을 차게 할 수 있습니다. 그러나 느린 프린팅 속도가 필요할 수 있습니다. 또 다른 전략은 상향 라인의 윗부분의 처짐을 보충하는 것입니다. 그러나 선은 항상 예측대로 떨어지지는 않습니다."
 
 #: fdmprinter.def.json
 msgctxt "support description"
@@ -4257,6 +4185,11 @@ msgid "Surface energy."
 msgstr "표면의 에너지입니다."
 
 #: fdmprinter.def.json
+msgctxt "brim_smart_ordering description"
+msgid "Swap print order of the innermost and second innermost brim lines. This improves brim removal."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "alternate_carve_order description"
 msgid "Switch to which mesh intersecting volumes will belong with every layer, so that the overlapping meshes become interwoven. Turning this setting off will cause one of the meshes to obtain all of the volume in the overlap, while it is removed from the other meshes."
 msgstr "교차하는 메쉬로 교차하는 볼륨으로 전환하면 겹치는 메쉬가 서로 얽히게됩니다. 이 설정을 해제하면 메시 중 하나가 다른 메시에서 제거되는 동안 오버랩의 모든 볼륨을 가져옵니다."
@@ -4577,11 +4510,6 @@ msgid "The distance between the raft lines for the top raft layers. The spacing 
 msgstr "상단 래프트 레이어에 대한 래프트 사이의 거리. 간격은 선 너비와 동일해야 표면이 단색입니다."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_roof_inset description"
-msgid "The distance covered when making a connection from a roof outline inward. Only applies to Wire Printing."
-msgstr "지붕에서 연결을 할 때 안쪽까지 윤곽선을 그립니다. 와이어 프린팅에만 적용됩니다."
-
-#: fdmprinter.def.json
 msgctxt "interlocking_depth description"
 msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
 msgstr "셀 단위로 측정된 연동 구조를 생성하기 위한 모델 간의 경계로부터의 거리입니다. 셀 수가 너무 적으면 접착력이 떨어집니다."
@@ -4602,11 +4530,6 @@ msgid "The distance from the tip of the nozzle in which heat from the nozzle is 
 msgstr "노즐의 열이 필라멘트로 전달되는 노즐의 끝에서부터의 거리."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_roof_drag_along description"
-msgid "The distance of the end piece of an inward line which gets dragged along when going back to the outer outline of the roof. This distance is compensated for. Only applies to Wire Printing."
-msgstr "루프의 외곽 윤곽으로 돌아갈 때 끌린 내향 선의 끝 부분 거리. 이 거리는 보상됩니다. 와이어 프린팅에만 적용됩니다."
-
-#: fdmprinter.def.json
 msgctxt "bottom_skin_expand_distance description"
 msgid "The distance the bottom skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the skin adhere better to the walls on the layer below. Lower values save amount of material used."
 msgstr "바닥 스킨의 거리가 내부채움으로 확장됩니다. 값이 높을수록 스킨가 내부채움 패턴에 더 잘 붙어 스킨가 아래 층의 벽에 잘 밀착됩니다. 값이 낮을수록 사용 된 재료의 양이 절약됩니다."
@@ -4625,11 +4548,6 @@ msgstr "상단 스킨의 거리가 내부채움으로 확장됩니다. 값이 �
 msgctxt "wipe_move_distance description"
 msgid "The distance to move the head back and forth across the brush."
 msgstr "브러시 전체에 헤드를 앞뒤로 이동하는 거리입니다."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_fall_down description"
-msgid "The distance which horizontal roof lines printed 'in thin air' fall down when being printed. This distance is compensated for. Only applies to Wire Printing."
-msgstr "공중에서 프린팅된 수평 지붕 라인의 거리는 프린팅 될 때 떨어집니다. 이 거리는 보상됩니다. 와이어 프린팅에만 적용됩니다."
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_prune_angle description"
@@ -4813,13 +4731,13 @@ msgstr "각 층의 높이 (mm)입니다. 값이 클수록 해상도가 낮고 �
 
 #: fdmprinter.def.json
 msgctxt "gradual_infill_step_height description"
-msgid "The height of infill of a given density before switching to double the density. (Previously known as Gradual Infill Step Height.)"
-msgstr ""
+msgid "The height of infill of a given density before switching to half the density."
+msgstr "밀도의 절반으로 전환하기 전에 주어진 밀도에서 내부채움의 높이."
 
 #: fdmprinter.def.json
 msgctxt "gradual_support_infill_step_height description"
-msgid "The height of infill of a given density before switching to double the density. (Previously known as Gradual Support Infill Step Height.)"
-msgstr ""
+msgid "The height of support infill of a given density before switching to half the density."
+msgstr "밀도의 절반으로 전환하기 전에 주어진 밀도의 서포트 채움 높이."
 
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_layer_count description"
@@ -4842,11 +4760,6 @@ msgid "The height of the steps of the stair-like bottom of support resting on th
 msgstr "모델에있는 서포트의 계단 모양 바닥의 계단 높이. 값이 낮으면 서포트를 제거하기가 어려워 서포트만 값이 너무 높으면 불안정한 서포트 구조가 생길 수 있습니다. 계단 모양의 동작을 해제하려면 0으로 설정하십시오."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_height description"
-msgid "The height of the upward and diagonally downward lines between two horizontal parts. This determines the overall density of the net structure. Only applies to Wire Printing."
-msgstr "두 개의 수평 부분 사이의 상향 및 대각선 방향의 높이입니다. 이것은 네트 구조의 전체 밀도를 결정합니다. 와이어 프린팅에만 적용됩니다."
-
-#: fdmprinter.def.json
 msgctxt "brim_gap description"
 msgid "The horizontal distance between the first brim line and the outline of the first layer of the print. A small gap can make the brim easier to remove while still providing the thermal benefits."
 msgstr "첫 번째 브림 선과 첫 번째 레이어 프린팅의 윤곽 사이의 수평 거리입니다. 작은 간격은 브림을 제거하기 쉽도록 하면서 내열성의 이점을 제공할 수 있습니다."
@@ -4859,16 +4772,6 @@ msgid ""
 msgstr ""
 "프린트의 스커트와 첫 번째 레이어 사이의 수평 거리입니다.\n"
 "이것은 최소 거리입니다. 여러 개의 스커트 선이 이 거리에서 바깥쪽으로 연장됩니다."
-
-#: fdmprinter.def.json
-msgctxt "gradual_support_infill description"
-msgid "The infill density at the top of the support is gradually increased to better support the support interface layers or the model. (Previously known as Gradual Support Infill.)"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "gradual_infill description"
-msgid "The infill density below the top surface is gradually increased to better support the top layers. (Previously known as Gradual Infill.)"
-msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_straightening_angle description"
@@ -5741,11 +5644,6 @@ msgid "This will create a wall around the model, which traps (hot) air and shiel
 msgstr "모델 주위에 벽이 생겨 외부 공기 흐름을 막아 (뜨거운) 공기를 막을 수 있습니다. 왜곡이 쉬운 소재에 특히 유용합니다."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_roof_outer_delay description"
-msgid "Time spent at the outer perimeters of hole which is to become a roof. Longer times can ensure a better connection. Only applies to Wire Printing."
-msgstr "지붕이 될 구멍의 바깥 둘레에서의 시간. 시간이 길면 연결이 더 잘됩니다. 와이어 프린팅에만 적용됩니다."
-
-#: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage_xy description"
 msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor in the XY-direction (horizontally)."
 msgstr "냉각됨에 따라 재료의 수축을 보정하기 위해 모델이 이 배율로 XY 방향으로(수평으로) 확장됩니다."
@@ -5761,16 +5659,6 @@ msgid "To compensate for the shrinkage of the material as it cools down, the mod
 msgstr "냉각됨에 따라 재료 수축을 보상하기 위해 모델이 이 배율로 확장됩니다."
 
 #: fdmprinter.def.json
-msgctxt "gradual_infill_step_height label"
-msgid "Top Infill Step Height"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "gradual_infill_steps label"
-msgid "Top Infill Steps"
-msgstr ""
-
-#: fdmprinter.def.json
 msgctxt "top_layers label"
 msgid "Top Layers"
 msgstr "상단 레이어"
@@ -5784,16 +5672,6 @@ msgstr "윗면 스킨 확장 거리"
 msgctxt "top_skin_preshrink label"
 msgid "Top Skin Removal Width"
 msgstr "상단 스킨 제거 폭"
-
-#: fdmprinter.def.json
-msgctxt "gradual_support_infill_step_height label"
-msgid "Top Support Infill Step Height"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "gradual_support_infill_steps label"
-msgid "Top Support Infill Steps"
-msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "acceleration_roofing label"
@@ -6096,121 +5974,6 @@ msgid "Vertical tolerance in the sliced layers. The contours of a layer are norm
 msgstr "슬라이스 레이어의 수직 허용 오차입니다. 레이어의 윤곽선은 일반적으로 각 레이어의 두께 중간(중간)을 교차하는 부분을 기준으로 생성됩니다. 또는 각 레이어가 레이어의 높이 전체의 볼륨에 들어가는 영역(포함하지 않음)이 있거나 레이어 안의 어느 지점에 들어가는 영역(포함)이 있을 수 있습니다. 포함된 영역에서 가장 많은 디테일이 포함되고 포함되지 않은 영역을 통해 가장 맞게 만들 수 있으며 중간을 통해 원래 표면과 가장 유사하게 만들어냅니다."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_bottom_delay label"
-msgid "WP Bottom Delay"
-msgstr "WP 최저 지연"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_bottom label"
-msgid "WP Bottom Printing Speed"
-msgstr "WP 하단 프린팅 속도"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow_connection label"
-msgid "WP Connection Flow"
-msgstr "WP 연결 흐름"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_height label"
-msgid "WP Connection Height"
-msgstr "WP 연결 높이"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_down label"
-msgid "WP Downward Printing Speed"
-msgstr "WP 하향 프린팅 속도"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_drag_along label"
-msgid "WP Drag Along"
-msgstr "WP 드래그를 따라"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_up_half_speed label"
-msgid "WP Ease Upward"
-msgstr "WP 상향 조정"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_fall_down label"
-msgid "WP Fall Down"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flat_delay label"
-msgid "WP Flat Delay"
-msgstr "WP 평탄한 지연"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow_flat label"
-msgid "WP Flat Flow"
-msgstr "WP 플랫 플로우"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow label"
-msgid "WP Flow"
-msgstr "WP 흐름"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_flat label"
-msgid "WP Horizontal Printing Speed"
-msgstr "WP 가로 프린팅 속도"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_top_jump label"
-msgid "WP Knot Size"
-msgstr "WP 매듭 크기"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_nozzle_clearance label"
-msgid "WP Nozzle Clearance"
-msgstr "WP 노즐 유격"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_drag_along label"
-msgid "WP Roof Drag Along"
-msgstr "WP 지붕 끌기"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_fall_down label"
-msgid "WP Roof Fall Down"
-msgstr "WP 지붕 Fall Down"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_inset label"
-msgid "WP Roof Inset Distance"
-msgstr "WP 지붕 인셋 거리"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_outer_delay label"
-msgid "WP Roof Outer Delay"
-msgstr "WP 지붕 외부 지연"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed label"
-msgid "WP Speed"
-msgstr "WP 속도"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_straight_before_down label"
-msgid "WP Straighten Downward Lines"
-msgstr "WP 직선화 하향 라인"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_strategy label"
-msgid "WP Strategy"
-msgstr "WP 전략"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_top_delay label"
-msgid "WP Top Delay"
-msgstr "WP 상단 지연"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_up label"
-msgid "WP Upward Printing Speed"
-msgstr "WP 상향 프린팅 속도"
-
-#: fdmprinter.def.json
 msgctxt "material_bed_temp_wait label"
 msgid "Wait for Build Plate Heatup"
 msgstr "빌드 플레이트가 가열될 때까지 기다리십시오"
@@ -6324,6 +6087,11 @@ msgstr "활성화 된 경우 z 솔기 좌표는 각 부품의 중심을 기준�
 msgctxt "retraction_combing_max_distance description"
 msgid "When greater than zero, combing travel moves that are longer than this distance will use retraction. If set to zero, there is no maximum and combing moves will not use retraction."
 msgstr "0보다 큰 경우 이 거리보다 긴 combing travel은 retraction을 사용합니다. 0으로 설정한 경우 최댓값이 없으며 combing travel은 retraction을 사용하지 않습니다."
+
+#: fdmprinter.def.json
+msgctxt "hole_xy_offset_max_diameter description"
+msgid "When greater than zero, the Hole Horizontal Expansion is gradually applied on small holes (small holes are expanded more). When set to zero the Hole Horizontal Expansion will be applied to all holes. Holes larger than the Hole Horizontal Expansion Max Diameter are not expanded."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_material_flow description"
@@ -6636,11 +6404,6 @@ msgid "Wipe Z Hop Height"
 msgstr "화이프 Z 홉 높이"
 
 #: fdmprinter.def.json
-msgctxt "wireframe_enabled label"
-msgid "Wire Printing"
-msgstr "와이어 프린팅"
-
-#: fdmprinter.def.json
 msgctxt "retraction_combing option infill"
 msgid "Within Infill"
 msgstr "내부채움 내"
@@ -6785,34 +6548,204 @@ msgctxt "travel description"
 msgid "travel"
 msgstr "이동"
 
-#~ msgctxt "gradual_infill_step_height label"
-#~ msgid "Gradual Infill Step Height"
-#~ msgstr "점진적인 내부채움 단계 높이"
+#~ msgctxt "wireframe_strategy option compensate"
+#~ msgid "Compensate"
+#~ msgstr "보상"
 
-#~ msgctxt "gradual_infill_steps label"
-#~ msgid "Gradual Infill Steps"
-#~ msgstr "점진적인 내부채움 단계"
+#~ msgctxt "wireframe_top_jump description"
+#~ msgid "Creates a small knot at the top of an upward line, so that the consecutive horizontal layer has a better chance to connect to it. Only applies to Wire Printing."
+#~ msgstr "상향 선의 상단에 작은 매듭을 만들어 연속적인 수평 레이어에 연결할 수 있게 합니다. 와이어 프린팅에만 적용됩니다."
 
-#~ msgctxt "gradual_support_infill_step_height label"
-#~ msgid "Gradual Support Infill Step Height"
-#~ msgstr "점진적 서포트 내부채움 단계 높이"
+#~ msgctxt "wireframe_bottom_delay description"
+#~ msgid "Delay time after a downward move. Only applies to Wire Printing."
+#~ msgstr "하강 후 지연 시간. 와이어 프린팅에만 적용됩니다."
 
-#~ msgctxt "gradual_support_infill_steps label"
-#~ msgid "Gradual Support Infill Steps"
-#~ msgstr "점진적 서포트 내부채움 단계"
+#~ msgctxt "wireframe_top_delay description"
+#~ msgid "Delay time after an upward move, so that the upward line can harden. Only applies to Wire Printing."
+#~ msgstr "상향 라인이 강화 될 수 있도록 상향 이동 후 지연 시간. 와이어 프린팅에만 적용됩니다."
 
-#~ msgctxt "gradual_infill_steps description"
-#~ msgid "Number of times to reduce the infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Infill Density."
-#~ msgstr "상단면 아래로 갈 때 내부채움 밀도를 반으로 줄이는 횟수입니다. 상단면에 더 가까운 영역은 내부채움율 농도가 더 높은 밀도를 갖습니다."
+#~ msgctxt "wireframe_flat_delay description"
+#~ msgid "Delay time between two horizontal segments. Introducing such a delay can cause better adhesion to previous layers at the connection points, while too long delays cause sagging. Only applies to Wire Printing."
+#~ msgstr "두 개의 수평 세그먼트 사이의 지연 시간. 이러한 지연을 도입하면 연결 지점에서 이전 레이어와의 접착력이 향상 될 수 있으며 너무 긴 지연으로 인해 처짐이 발생할 수 있습니다. 와이어 프린팅에만 적용됩니다."
 
-#~ msgctxt "gradual_support_infill_steps description"
-#~ msgid "Number of times to reduce the support infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Support Infill Density."
-#~ msgstr "상단 표면 아래로 올라갈 때 서포트 채움 밀도를 반으로 줄이는 횟수입니다. 상단 표면에 더 가까운 영역은 서포트 채움 밀도까지 더 높은 밀도를 갖습니다."
+#~ msgctxt "wireframe_nozzle_clearance description"
+#~ msgid "Distance between the nozzle and horizontally downward lines. Larger clearance results in diagonally downward lines with a less steep angle, which in turn results in less upward connections with the next layer. Only applies to Wire Printing."
+#~ msgstr "노즐과 수평 아래쪽 라인 사이의 거리. 거리가 클수록 비스듬한 각도에서 비스듬히 아래쪽으로 선이 그어져 다음 층과의 연결이보다 적어집니다. 와이어 프린팅에만 적용됩니다."
 
-#~ msgctxt "gradual_infill_step_height description"
-#~ msgid "The height of infill of a given density before switching to half the density."
-#~ msgstr "밀도의 절반으로 전환하기 전에 주어진 밀도에서 내부채움의 높이."
+#~ msgctxt "wireframe_up_half_speed description"
+#~ msgid ""
+#~ "Distance of an upward move which is extruded with half speed.\n"
+#~ "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
+#~ msgstr "기본 속도의 반으로 압출 된 상향 이동 거리. 이로 인해 이전 레이어에 더 나은 접착력을 유발할 수 있지만 레이어에 있는 소재는 너무 많이 가열하지 않습니다. 와이어 프린팅에만 적용됩니다."
 
-#~ msgctxt "gradual_support_infill_step_height description"
-#~ msgid "The height of support infill of a given density before switching to half the density."
-#~ msgstr "밀도의 절반으로 전환하기 전에 주어진 밀도의 서포트 채움 높이."
+#~ msgctxt "wireframe_fall_down description"
+#~ msgid "Distance with which the material falls down after an upward extrusion. This distance is compensated for. Only applies to Wire Printing."
+#~ msgstr "위쪽으로 밀어 낸 후 재료가 떨어지는 거리. 이 거리는 보상됩니다. 와이어 프린팅에만 적용됩니다."
+
+#~ msgctxt "wireframe_drag_along description"
+#~ msgid "Distance with which the material of an upward extrusion is dragged along with the diagonally downward extrusion. This distance is compensated for. Only applies to Wire Printing."
+#~ msgstr "대각선 방향으로 압출 된 압출부의 재료가 위쪽으로 밀어내는 거리. 이 거리는 보상됩니다. 와이어 프린팅에만 적용됩니다."
+
+#~ msgctxt "wireframe_flow_connection description"
+#~ msgid "Flow compensation when going up or down. Only applies to Wire Printing."
+#~ msgstr "위 또는 아래로 이동할 때 압출량 보정. 와이어 프린팅에만 적용됩니다."
+
+#~ msgctxt "wireframe_flow_flat description"
+#~ msgid "Flow compensation when printing flat lines. Only applies to Wire Printing."
+#~ msgstr "평평한 선을 프린팅 할 때 압출량 보정. 와이어 프린팅에만 적용됩니다."
+
+#~ msgctxt "wireframe_flow description"
+#~ msgid "Flow compensation: the amount of material extruded is multiplied by this value. Only applies to Wire Printing."
+#~ msgstr "압출량 보상 : 압출 된 재료의 양에 이 값을 곱합니다. 와이어 프린팅에만 적용됩니다."
+
+#~ msgctxt "wireframe_strategy option knot"
+#~ msgid "Knot"
+#~ msgstr "매듭"
+
+#~ msgctxt "wireframe_straight_before_down description"
+#~ msgid "Percentage of a diagonally downward line which is covered by a horizontal line piece. This can prevent sagging of the top most point of upward lines. Only applies to Wire Printing."
+#~ msgstr "수평선 조각에 의해 덮여있는 비스듬한 하향 선의 백분율. 이렇게 하면 상향 선의 맨 위 지점이 처지는 것을 방지 할 수 있습니다. 와이어 프린팅에만 적용됩니다."
+
+#~ msgctxt "wireframe_enabled description"
+#~ msgid "Print only the outside surface with a sparse webbed structure, printing 'in thin air'. This is realized by horizontally printing the contours of the model at given Z intervals which are connected via upward and diagonally downward lines."
+#~ msgstr "외벽의 표면만 거미줄 같은 형태로 공중에서 프린팅합니다. 이것은 상향 및 대각선 하향 라인을 통해 연결된 Z 간격으로 모형의 윤곽을 수평으로 인쇄함으로써 구현됩니다."
+
+#~ msgctxt "wireframe_strategy option retract"
+#~ msgid "Retract"
+#~ msgstr "리트렉트"
+
+#~ msgctxt "wireframe_printspeed description"
+#~ msgid "Speed at which the nozzle moves when extruding material. Only applies to Wire Printing."
+#~ msgstr "재료를 압출 할 때 노즐이 움직이는 속도. 와이어 프린팅에만 적용됩니다."
+
+#~ msgctxt "wireframe_printspeed_down description"
+#~ msgid "Speed of printing a line diagonally downward. Only applies to Wire Printing."
+#~ msgstr "대각선 방향으로 선을 프린팅하는 속도. 와이어 프린팅에만 적용됩니다."
+
+#~ msgctxt "wireframe_printspeed_up description"
+#~ msgid "Speed of printing a line upward 'in thin air'. Only applies to Wire Printing."
+#~ msgstr "공중에서 위쪽으로 선을 프린팅하는 속도. 와이어 프린팅에만 적용됩니다."
+
+#~ msgctxt "wireframe_printspeed_bottom description"
+#~ msgid "Speed of printing the first layer, which is the only layer touching the build platform. Only applies to Wire Printing."
+#~ msgstr "첫 번째 레이어 프린팅 속도. 와이어 프린팅에만 적용됩니다."
+
+#~ msgctxt "wireframe_printspeed_flat description"
+#~ msgid "Speed of printing the horizontal contours of the model. Only applies to Wire Printing."
+#~ msgstr "모델의 수평 윤곽 프린팅 속도입니다. 와이어 프린팅에만 적용됩니다."
+
+#~ msgctxt "wireframe_strategy description"
+#~ msgid "Strategy for making sure two consecutive layers connect at each connection point. Retraction lets the upward lines harden in the right position, but may cause filament grinding. A knot can be made at the end of an upward line to heighten the chance of connecting to it and to let the line cool; however, it may require slow printing speeds. Another strategy is to compensate for the sagging of the top of an upward line; however, the lines won't always fall down as predicted."
+#~ msgstr "각 연결 지점에서 두 개의 연속 된 레이어가 연결되도록 하는 전략입니다. 리트렉션을 하면 상향 선이 올바른 위치에서 경화되지만 필라멘트가 갈릴 수 있습니다. 상향 선의 끝에 매듭을 만들어 연결 기회를 높이고 선을 차게 할 수 있습니다. 그러나 느린 프린팅 속도가 필요할 수 있습니다. 또 다른 전략은 상향 라인의 윗부분의 처짐을 보충하는 것입니다. 그러나 선은 항상 예측대로 떨어지지는 않습니다."
+
+#~ msgctxt "wireframe_roof_inset description"
+#~ msgid "The distance covered when making a connection from a roof outline inward. Only applies to Wire Printing."
+#~ msgstr "지붕에서 연결을 할 때 안쪽까지 윤곽선을 그립니다. 와이어 프린팅에만 적용됩니다."
+
+#~ msgctxt "wireframe_roof_drag_along description"
+#~ msgid "The distance of the end piece of an inward line which gets dragged along when going back to the outer outline of the roof. This distance is compensated for. Only applies to Wire Printing."
+#~ msgstr "루프의 외곽 윤곽으로 돌아갈 때 끌린 내향 선의 끝 부분 거리. 이 거리는 보상됩니다. 와이어 프린팅에만 적용됩니다."
+
+#~ msgctxt "wireframe_roof_fall_down description"
+#~ msgid "The distance which horizontal roof lines printed 'in thin air' fall down when being printed. This distance is compensated for. Only applies to Wire Printing."
+#~ msgstr "공중에서 프린팅된 수평 지붕 라인의 거리는 프린팅 될 때 떨어집니다. 이 거리는 보상됩니다. 와이어 프린팅에만 적용됩니다."
+
+#~ msgctxt "wireframe_height description"
+#~ msgid "The height of the upward and diagonally downward lines between two horizontal parts. This determines the overall density of the net structure. Only applies to Wire Printing."
+#~ msgstr "두 개의 수평 부분 사이의 상향 및 대각선 방향의 높이입니다. 이것은 네트 구조의 전체 밀도를 결정합니다. 와이어 프린팅에만 적용됩니다."
+
+#~ msgctxt "wireframe_roof_outer_delay description"
+#~ msgid "Time spent at the outer perimeters of hole which is to become a roof. Longer times can ensure a better connection. Only applies to Wire Printing."
+#~ msgstr "지붕이 될 구멍의 바깥 둘레에서의 시간. 시간이 길면 연결이 더 잘됩니다. 와이어 프린팅에만 적용됩니다."
+
+#~ msgctxt "wireframe_bottom_delay label"
+#~ msgid "WP Bottom Delay"
+#~ msgstr "WP 최저 지연"
+
+#~ msgctxt "wireframe_printspeed_bottom label"
+#~ msgid "WP Bottom Printing Speed"
+#~ msgstr "WP 하단 프린팅 속도"
+
+#~ msgctxt "wireframe_flow_connection label"
+#~ msgid "WP Connection Flow"
+#~ msgstr "WP 연결 흐름"
+
+#~ msgctxt "wireframe_height label"
+#~ msgid "WP Connection Height"
+#~ msgstr "WP 연결 높이"
+
+#~ msgctxt "wireframe_printspeed_down label"
+#~ msgid "WP Downward Printing Speed"
+#~ msgstr "WP 하향 프린팅 속도"
+
+#~ msgctxt "wireframe_drag_along label"
+#~ msgid "WP Drag Along"
+#~ msgstr "WP 드래그를 따라"
+
+#~ msgctxt "wireframe_up_half_speed label"
+#~ msgid "WP Ease Upward"
+#~ msgstr "WP 상향 조정"
+
+#~ msgctxt "wireframe_flat_delay label"
+#~ msgid "WP Flat Delay"
+#~ msgstr "WP 평탄한 지연"
+
+#~ msgctxt "wireframe_flow_flat label"
+#~ msgid "WP Flat Flow"
+#~ msgstr "WP 플랫 플로우"
+
+#~ msgctxt "wireframe_flow label"
+#~ msgid "WP Flow"
+#~ msgstr "WP 흐름"
+
+#~ msgctxt "wireframe_printspeed_flat label"
+#~ msgid "WP Horizontal Printing Speed"
+#~ msgstr "WP 가로 프린팅 속도"
+
+#~ msgctxt "wireframe_top_jump label"
+#~ msgid "WP Knot Size"
+#~ msgstr "WP 매듭 크기"
+
+#~ msgctxt "wireframe_nozzle_clearance label"
+#~ msgid "WP Nozzle Clearance"
+#~ msgstr "WP 노즐 유격"
+
+#~ msgctxt "wireframe_roof_drag_along label"
+#~ msgid "WP Roof Drag Along"
+#~ msgstr "WP 지붕 끌기"
+
+#~ msgctxt "wireframe_roof_fall_down label"
+#~ msgid "WP Roof Fall Down"
+#~ msgstr "WP 지붕 Fall Down"
+
+#~ msgctxt "wireframe_roof_inset label"
+#~ msgid "WP Roof Inset Distance"
+#~ msgstr "WP 지붕 인셋 거리"
+
+#~ msgctxt "wireframe_roof_outer_delay label"
+#~ msgid "WP Roof Outer Delay"
+#~ msgstr "WP 지붕 외부 지연"
+
+#~ msgctxt "wireframe_printspeed label"
+#~ msgid "WP Speed"
+#~ msgstr "WP 속도"
+
+#~ msgctxt "wireframe_straight_before_down label"
+#~ msgid "WP Straighten Downward Lines"
+#~ msgstr "WP 직선화 하향 라인"
+
+#~ msgctxt "wireframe_strategy label"
+#~ msgid "WP Strategy"
+#~ msgstr "WP 전략"
+
+#~ msgctxt "wireframe_top_delay label"
+#~ msgid "WP Top Delay"
+#~ msgstr "WP 상단 지연"
+
+#~ msgctxt "wireframe_printspeed_up label"
+#~ msgid "WP Upward Printing Speed"
+#~ msgstr "WP 상향 프린팅 속도"
+
+#~ msgctxt "wireframe_enabled label"
+#~ msgid "Wire Printing"
+#~ msgstr "와이어 프린팅"

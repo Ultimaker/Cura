@@ -98,7 +98,7 @@
         "machine_endstop_positive_direction_y": { "default_value": true },
         "machine_endstop_positive_direction_z": { "default_value": false },
         "machine_feeder_wheel_diameter": { "default_value": 7.5 },
-        "machine_gcode_flavor": { "default_value": "Marlin" },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
         "machine_head_with_fans_polygon":
         {
             "default_value": [
