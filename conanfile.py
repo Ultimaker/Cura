@@ -49,7 +49,7 @@ class CuraConan(ConanFile):
     }
 
     def set_version(self):
-        if self.version == "auto":
+        if not self.version:
             self.version = "5.4.0-alpha"
 
     @property
