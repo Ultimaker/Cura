@@ -4564,8 +4564,8 @@
                 },
                 "support_tree_angle":
                 {
-                    "label": "Tree Support Branch Angle",
-                    "description": "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach.",
+                    "label": "Tree Support Maximum Branch Angle",
+                    "description": "The maximum angle of the branches while they grow around the model. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach.",
                     "unit": "\u00b0",
                     "type": "float",
                     "minimum_value": "0",
@@ -4579,25 +4579,13 @@
                     "settable_per_mesh": true,
                     "settable_per_extruder": true
                 },
-                "support_tree_branch_distance":
-                {
-                    "label": "Tree Support Branch Distance",
-                    "description": "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove.",
-                    "unit": "mm",
-                    "type": "float",
-                    "minimum_value": "0.001",
-                    "default_value": 1,
-                    "limit_to_extruder": "support_infill_extruder_nr",
-                    "enabled": "support_enable and support_structure=='tree'",
-                    "settable_per_mesh": true
-                },
                 "support_tree_branch_diameter":
                 {
                     "label": "Tree Support Branch Diameter",
                     "description": "The diameter of the thinnest branches of tree support. Thicker branches are more sturdy. Branches towards the base will be thicker than this.",
                     "unit": "mm",
                     "type": "float",
-                    "minimum_value": "0.001",
+                    "minimum_value": "support_tree_tip_diameter",
                     "minimum_value_warning": "support_line_width * 2",
                     "default_value": 5,
                     "limit_to_extruder": "support_infill_extruder_nr",
@@ -4632,22 +4620,6 @@
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "enabled": "support_enable and support_structure=='tree'",
                     "settable_per_mesh": true,
-                    "settable_per_extruder": true
-                },
-                "support_tree_collision_resolution":
-                {
-                    "label": "Tree Support Collision Resolution",
-                    "description": "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically.",
-                    "unit": "mm",
-                    "type": "float",
-                    "minimum_value": "0.001",
-                    "minimum_value_warning": "support_line_width / 4",
-                    "maximum_value_warning": "support_line_width * 2",
-                    "default_value": 0.4,
-                    "value": "support_line_width / 2",
-                    "limit_to_extruder": "support_infill_extruder_nr",
-                    "enabled": "support_enable and support_structure=='tree' and support_tree_branch_diameter_angle > 0",
-                    "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
                 "support_type":
@@ -4833,7 +4805,7 @@
                     "description": "The number of walls with which to surround support infill. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used.",
                     "default_value": 1,
                     "minimum_value": "0",
-                    "minimum_value_warning": "1 if support_pattern == 'concentric' else 0",
+                    "minimum_value_warning": "(1 if support_pattern == 'concentric' else 0) if support_structure == 'normal' else 1",
                     "maximum_value_warning": "0 if (support_skip_some_zags and support_pattern == 'zigzag') else 3",
                     "maximum_value": "999999",
                     "type": "int",
@@ -5043,7 +5015,7 @@
                             "default_value": 0.1,
                             "type": "float",
                             "enabled": "support_enable or support_meshes_present",
-                            "value": "extruderValue(support_roof_extruder_nr if support_roof_enable else support_infill_extruder_nr, 'support_z_distance') + (layer_height if support_structure == 'tree' else 0)",
+                            "value": "extruderValue(support_roof_extruder_nr if support_roof_enable else support_infill_extruder_nr, 'support_z_distance')",
                             "limit_to_extruder": "support_roof_extruder_nr if support_roof_enable else support_infill_extruder_nr",
                             "settable_per_mesh": true
                         },
@@ -5117,7 +5089,7 @@
                     "limit_to_extruder": "support_bottom_extruder_nr if support_bottom_enable else support_infill_extruder_nr",
                     "minimum_value": "0",
                     "maximum_value_warning": "1.0",
-                    "enabled": "support_enable or support_meshes_present",
+                    "enabled": "(support_enable and support_structure == 'normal') or support_meshes_present",
                     "settable_per_mesh": true
                 },
                 "support_bottom_stair_step_width":
@@ -5130,7 +5102,7 @@
                     "limit_to_extruder": "support_interface_extruder_nr if support_bottom_enable else support_infill_extruder_nr",
                     "minimum_value": "0",
                     "maximum_value_warning": "10.0",
-                    "enabled": "(support_enable or support_meshes_present) and support_bottom_stair_step_height > 0",
+                    "enabled": "((support_enable and support_structure == 'normal') or support_meshes_present) and support_bottom_stair_step_height > 0",
                     "settable_per_mesh": true
                 },
                 "support_bottom_stair_step_min_slope":
@@ -5143,7 +5115,7 @@
                     "limit_to_extruder": "support_bottom_extruder_nr if support_bottom_enable else support_infill_extruder_nr",
                     "minimum_value": "0.01",
                     "maximum_value": "89.99",
-                    "enabled": "(support_enable or support_meshes_present) and support_bottom_stair_step_height > 0",
+                    "enabled": "((support_enable and support_structure == 'normal') or support_meshes_present) and support_bottom_stair_step_height > 0",
                     "settable_per_mesh": true
                 },
                 "support_join_distance":
@@ -5171,7 +5143,7 @@
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "minimum_value_warning": "-1 * machine_nozzle_size",
                     "maximum_value_warning": "10 * machine_nozzle_size",
-                    "enabled": "(support_enable and support_structure == 'normal') or support_meshes_present",
+                    "enabled": "support_enable or support_meshes_present",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -5227,8 +5199,8 @@
                     "type": "float",
                     "default_value": 0.0,
                     "minimum_value": "0",
-                    "maximum_value_warning": "10",
-                    "enabled": "(support_enable or support_meshes_present) and support_structure == 'normal'",
+                    "maximum_value_warning": "10 if support_structure == 'normal' else 0",
+                    "enabled": "(support_enable or support_meshes_present)",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -5509,7 +5481,7 @@
                             "value": "extruderValue(support_bottom_extruder_nr, 'minimum_interface_area')",
                             "minimum_value": "0",
                             "limit_to_extruder": "support_bottom_extruder_nr",
-                            "enabled": "support_bottom_enable and (support_enable or support_meshes_present)",
+                            "enabled": "support_bottom_enable and ((support_enable and support_structure == 'normal') or support_meshes_present)",
                             "settable_per_mesh": true
                         }
                     }
