@@ -4684,7 +4684,7 @@
                 },
                 "support_tree_bp_diameter":
                 {
-                    "label": "Tree Support Inital Layer Diameter",
+                    "label": "Tree Support Initial Layer Diameter",
                     "description": "Diameter every branch tries to achieve when reaching the buildplate. Improves bed adhesion.",
                     "unit": "mm",
                     "type": "float",
