@@ -6,13 +6,13 @@
 
     "base_colors":
     {
-        "background_1": [31, 31, 32, 255],
-        "background_2": [57, 57, 58, 255],
-        "background_3": [85, 85, 87, 255],
-        "background_4": [23, 23, 23, 255],
+        "background_1": [48, 48, 49, 255],
+        "background_2": [54, 54, 54, 255],
+        "background_3": [61, 61, 61, 255],
+        "background_4": [58, 58, 58, 255],
 
-        "accent_1": [25, 110, 240, 255],
-        "accent_2": [16, 70, 156, 255],
+        "accent_1": [89, 175, 123, 255],
+        "accent_2": [58, 114, 80, 255],
         "border_main": [118, 118, 119, 255],
         "border_accent_1": [255, 255, 255, 255],
         "border_accent_2": [243, 243, 243, 255],
@@ -22,7 +22,7 @@
         "text_disabled": [118, 118, 118, 255],
         "text_primary_button": [255, 255, 255, 255],
         "text_secondary_button": [255, 255, 255, 255],
-        "text_link_hover": [156, 195, 255, 255],
+        "text_link_hover": [186, 201, 225, 255],
         "text_lighter": [243, 243, 243, 255],
 
         "um_green_1": [233, 245, 237, 255],
@@ -90,30 +90,30 @@
         "error": [212, 31, 53, 255],
         "disabled": [32, 32, 32, 255],
 
-        "button": [39, 44, 48, 255],
-        "button_hover": [39, 44, 48, 255],
+        "button": [42, 40, 47, 255],
+        "button_hover": [42, 44, 45, 255],
         "button_text": "text_default",
-        "button_disabled": [39, 44, 48, 255],
+        "button_disabled": [42, 44, 45, 255],
         "button_disabled_text": [255, 255, 255, 101],
 
         "small_button_text": [255, 255, 255, 197],
         "small_button_text_hover": [255, 255, 255, 255],
 
-        "button_tooltip": [39, 44, 48, 255],
+        "button_tooltip": [42, 44, 45, 255],
 
-        "tab_checked": [39, 44, 48, 255],
+        "tab_checked": [42, 44, 45, 255],
         "tab_checked_border": [255, 255, 255, 30],
         "tab_checked_text": [255, 255, 255, 255],
-        "tab_unchecked": [39, 44, 48, 255],
+        "tab_unchecked": [42, 44, 45, 255],
         "tab_unchecked_border": [255, 255, 255, 30],
         "tab_unchecked_text": [255, 255, 255, 101],
-        "tab_hovered": [39, 44, 48, 255],
+        "tab_hovered":[42, 44, 45, 255],
         "tab_hovered_border": [255, 255, 255, 30],
         "tab_hovered_text": [255, 255, 255, 255],
-        "tab_active": [39, 44, 48, 255],
+        "tab_active": [42, 44, 45, 255],
         "tab_active_border": [255, 255, 255, 30],
         "tab_active_text": [255, 255, 255, 255],
-        "tab_background": [39, 44, 48, 255],
+        "tab_background":[42, 44, 45, 255],
 
         "action_button": "background_1",
         "action_button_text": [255, 255, 255, 200],
@@ -140,7 +140,7 @@
         "setting_control_selected": [34, 39, 42, 38],
         "setting_control_highlight": "background_3",
         "setting_control_border": [255, 255, 255, 38],
-        "setting_control_border_highlight": [12, 169, 227, 255],
+        "setting_control_border_highlight": [76, 139, 162, 255],
         "setting_control_text": "text_default",
         "setting_control_button": [255, 255, 255, 127],
         "setting_control_button_hover": [255, 255, 255, 204],
@@ -159,7 +159,7 @@
         "slider_groove_border": [127, 127, 127, 255],
         "slider_groove_fill": [245, 245, 245, 255],
         "slider_handle": [255, 255, 255, 255],
-        "slider_handle_active": [68, 192, 255, 255],
+        "slider_handle_active": [124, 174, 199, 255],
 
         "category_background": "background_3",
 
@@ -169,13 +169,13 @@
         "tool_panel_background": "background_1",
 
         "viewport_background": "background_1",
-        "volume_outline": [12, 169, 227, 128],
-        "buildplate": [169, 169, 169, 255],
+        "volume_outline": [76, 139, 162, 128],
+        "buildplate": [157, 169, 182, 255],
         "buildplate_grid_minor": [154, 154, 155, 255],
 
         "disallowed_area": [0, 0, 0, 52],
 
-        "model_selection_outline": [12, 169, 227, 255],
+        "model_selection_outline": [76, 139, 162, 128],
 
         "material_compatibility_warning": [255, 255, 255, 255],
 
@@ -200,7 +200,7 @@
 
         "monitor_tooltip_text": [229, 229, 229, 255],
         "monitor_context_menu": [67, 67, 67, 255],
-        "monitor_context_menu_hover": [30, 102, 215, 255],
+        "monitor_context_menu_hover": [85, 159, 114, 255],
 
         "monitor_skeleton_loading": [102, 102, 102, 255],
         "monitor_placeholder_image": [102, 102, 102, 255],
