@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-03-21 13:32+0000\n"
+"POT-Creation-Date: 2023-03-28 11:57+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -587,11 +587,6 @@ msgid "Command Line Settings"
 msgstr "コマンドライン設定"
 
 #: fdmprinter.def.json
-msgctxt "wireframe_strategy option compensate"
-msgid "Compensate"
-msgstr "補正"
-
-#: fdmprinter.def.json
 msgctxt "infill_pattern option concentric"
 msgid "Concentric"
 msgstr "同心円"
@@ -722,11 +717,6 @@ msgid "Cooling"
 msgstr "冷却"
 
 #: fdmprinter.def.json
-msgctxt "wireframe_top_jump description"
-msgid "Creates a small knot at the top of an upward line, so that the consecutive horizontal layer has a better chance to connect to it. Only applies to Wire Printing."
-msgstr "上向きの線の上端に小さな結び目を作成し、連続する水平レイヤーを接着力を高めます。ワイヤ印刷のみに適用されます。"
-
-#: fdmprinter.def.json
 msgctxt "infill_pattern option cross"
 msgid "Cross"
 msgstr "クロス"
@@ -832,21 +822,6 @@ msgid "Default jerk for the motor of the filament."
 msgstr "フィラメントのモーターのデフォルトジャーク。"
 
 #: fdmprinter.def.json
-msgctxt "wireframe_bottom_delay description"
-msgid "Delay time after a downward move. Only applies to Wire Printing."
-msgstr "下降後の遅延時間。ワイヤ印刷のみに適用されます。"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_top_delay description"
-msgid "Delay time after an upward move, so that the upward line can harden. Only applies to Wire Printing."
-msgstr "上向きの線が硬くなるように、上向きの動きの後の時間を遅らせる。ワイヤ印刷のみに適用されます。"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flat_delay description"
-msgid "Delay time between two horizontal segments. Introducing such a delay can cause better adhesion to previous layers at the connection points, while too long delays cause sagging. Only applies to Wire Printing."
-msgstr "2つの水平セグメント間の遅延時間。このような遅延を挿入すると、前のレイヤーとの接着性が向上することがありますが、遅延が長すぎると垂れ下がりが発生します。ワイヤ印刷のみに適用されます。"
-
-#: fdmprinter.def.json
 msgctxt "bridge_settings_enabled description"
 msgid "Detect bridges and modify print speed, flow and fan settings while bridges are printed."
 msgstr "ブリッジを検出し、ブリッジを印刷しながらて印刷速度、フロー、ファンの設定を変更します。"
@@ -885,11 +860,6 @@ msgstr "エクストルーダーとビルドプレートへの接着両方を改
 msgctxt "machine_disallowed_areas label"
 msgid "Disallowed Areas"
 msgstr "拒否エリア"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_nozzle_clearance description"
-msgid "Distance between the nozzle and horizontally downward lines. Larger clearance results in diagonally downward lines with a less steep angle, which in turn results in less upward connections with the next layer. Only applies to Wire Printing."
-msgstr "ノズルと水平方向に下向きの線間の距離。大きな隙間がある場合、急な角度で斜め下方線となり、次の層が上方接続しずらくなる。ワイヤ印刷にのみ適用されます。"
 
 #: fdmprinter.def.json
 msgctxt "infill_line_distance description"
@@ -942,13 +912,6 @@ msgid "Distance of a travel move inserted after the outer wall, to hide the Z se
 msgstr "外壁の後に挿入された移動の距離はZシームをよりよく隠します。"
 
 #: fdmprinter.def.json
-msgctxt "wireframe_up_half_speed description"
-msgid ""
-"Distance of an upward move which is extruded with half speed.\n"
-"This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-msgstr "半分の速度で押出される上方への移動距離。過度にマテリアルを加熱することなく、前の層とのより良い接着を作ります。ワイヤ印刷のみに適用されます。"
-
-#: fdmprinter.def.json
 msgctxt "draft_shield_dist description"
 msgid "Distance of the draft shield from the print, in the X/Y directions."
 msgstr "ドラフトシールドと造形物のX / Y方向の距離。"
@@ -967,16 +930,6 @@ msgstr "X/Y方向におけるオーバーハングからサポートまでの距
 msgctxt "support_xy_distance description"
 msgid "Distance of the support structure from the print in the X/Y directions."
 msgstr "印刷物からX/Y方向へのサポート材との距離。"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_fall_down description"
-msgid "Distance with which the material falls down after an upward extrusion. This distance is compensated for. Only applies to Wire Printing."
-msgstr "上向き押出後にマテリアルが落下する距離。この距離は補正される。ワイヤ印刷のみに適用されます。"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_drag_along description"
-msgid "Distance with which the material of an upward extrusion is dragged along with the diagonally downward extrusion. This distance is compensated for. Only applies to Wire Printing."
-msgstr "斜め下方への押出に伴い上向き押出しているマテリアルが引きずられる距離。この距離は補正される。ワイヤ印刷のみに適用されます。"
 
 #: fdmprinter.def.json
 msgctxt "min_infill_area description"
@@ -1374,24 +1327,9 @@ msgid "Flow compensation on wall lines."
 msgstr "壁のフロー補正。"
 
 #: fdmprinter.def.json
-msgctxt "wireframe_flow_connection description"
-msgid "Flow compensation when going up or down. Only applies to Wire Printing."
-msgstr "上下に動くときの吐出補正。ワイヤ印刷のみに適用されます。"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow_flat description"
-msgid "Flow compensation when printing flat lines. Only applies to Wire Printing."
-msgstr "フラットラインを印刷する際の吐出補正。ワイヤ印刷のみに適用されます。"
-
-#: fdmprinter.def.json
 msgctxt "material_flow description"
 msgid "Flow compensation: the amount of material extruded is multiplied by this value."
 msgstr "流れの補修: 押出されるマテリアルの量は、この値から乗算されます。"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow description"
-msgid "Flow compensation: the amount of material extruded is multiplied by this value. Only applies to Wire Printing."
-msgstr "流れ補正：押出されたマテリアルの量はこの値の乗算になります。ワイヤ印刷のみに適用されます。"
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length label"
@@ -2130,11 +2068,6 @@ msgstr "部品の輪郭のみに振動が起こり、部品の穴には起こり
 msgctxt "meshfix_keep_open_polygons label"
 msgid "Keep Disconnected Faces"
 msgstr "スティッチできない部分を保持"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_strategy option knot"
-msgid "Knot"
-msgstr "ノット"
 
 #: fdmprinter.def.json
 msgctxt "layer_height label"
@@ -3022,11 +2955,6 @@ msgid "Percentage fan speed to use when printing the third bridge skin layer."
 msgstr "サードブリッジのスキンレイヤーを印刷する際に使用するファン速度の割合。"
 
 #: fdmprinter.def.json
-msgctxt "wireframe_straight_before_down description"
-msgid "Percentage of a diagonally downward line which is covered by a horizontal line piece. This can prevent sagging of the top most point of upward lines. Only applies to Wire Printing."
-msgstr "水平方向の直線部分で覆われた斜めに下降線の割合です。これは上向きラインのほとんどのポイント、上部のたるみを防ぐことができます。ワイヤ印刷にのみ適用されます。"
-
-#: fdmprinter.def.json
 msgctxt "minimum_polygon_circumference description"
 msgid "Polygons in sliced layers that have a circumference smaller than this amount will be filtered out. Lower values lead to higher resolution mesh at the cost of slicing time. It is meant mostly for high resolution SLA printers and very tiny 3D models with a lot of details."
 msgstr "この量よりも小さい円周を持つスライスレイヤーのポリゴンは、除外されます。値を小さくすると、スライス時間のコストで、メッシュの解像度が高くなります。つまり、ほとんどが高解像 SLA プリンター、極小多機能 3D モデルです。"
@@ -3135,11 +3063,6 @@ msgstr "アイロンラインを、隣接するラインと常に一方向で重
 msgctxt "mold_enabled description"
 msgid "Print models as a mold, which can be cast in order to get a model which resembles the models on the build plate."
 msgstr "型を取るため印刷し、ビルドプレート上の同じようなモデルを得るためにキャスト用の印刷をします。"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_enabled description"
-msgid "Print only the outside surface with a sparse webbed structure, printing 'in thin air'. This is realized by horizontally printing the contours of the model at given Z intervals which are connected via upward and diagonally downward lines."
-msgstr "薄い空気中に印刷し、疎なウエブ構造で外面のみを印刷します。これは、上向きおよび斜め下向きの線を介して接続された所定のZ間隔でモデルの輪郭を水平に印刷することによって実現される。"
 
 #: fdmprinter.def.json
 msgctxt "fill_outline_gaps description"
@@ -3489,11 +3412,6 @@ msgid "Resolution to compute collisions with to avoid hitting the model. Setting
 msgstr "モデルに干渉しないようにする衝突計算の精細度。小さい値を設定すると、失敗の少ない正確なツリーが生成されますが、スライス時間は大きく増加します。"
 
 #: fdmprinter.def.json
-msgctxt "wireframe_strategy option retract"
-msgid "Retract"
-msgstr "引き戻し"
-
-#: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"
 msgid "Retract Before Outer Wall"
 msgstr "外壁の前に引き戻す"
@@ -3814,31 +3732,6 @@ msgid "Speed"
 msgstr "スピード"
 
 #: fdmprinter.def.json
-msgctxt "wireframe_printspeed description"
-msgid "Speed at which the nozzle moves when extruding material. Only applies to Wire Printing."
-msgstr "マテリアルを押し出すときにノズルが動く速度。ワイヤ印刷のみに適用されます。"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_down description"
-msgid "Speed of printing a line diagonally downward. Only applies to Wire Printing."
-msgstr "斜め下方に線を印刷する速度。ワイヤ印刷のみに適用されます。"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_up description"
-msgid "Speed of printing a line upward 'in thin air'. Only applies to Wire Printing."
-msgstr "薄い空気の中で上向きに線を印刷する速度。ワイヤ印刷のみに適用されます。"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_bottom description"
-msgid "Speed of printing the first layer, which is the only layer touching the build platform. Only applies to Wire Printing."
-msgstr "ブルドプラットフォームに接触する第1層の印刷速度。ワイヤ印刷のみに適用されます。"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_flat description"
-msgid "Speed of printing the horizontal contours of the model. Only applies to Wire Printing."
-msgstr "モデルの水平輪郭を印刷する速度。ワイヤ印刷のみに適用されます。"
-
-#: fdmprinter.def.json
 msgctxt "wipe_hop_speed description"
 msgid "Speed to move the z-axis during the hop."
 msgstr "ホップ中に z 軸を移動する速度。"
@@ -3887,11 +3780,6 @@ msgstr "ミリメートルあたりのステップ (Y)"
 msgctxt "machine_steps_per_mm_z label"
 msgid "Steps per Millimeter (Z)"
 msgstr "ミリメートルあたりのステップ (Z)"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_strategy description"
-msgid "Strategy for making sure two consecutive layers connect at each connection point. Retraction lets the upward lines harden in the right position, but may cause filament grinding. A knot can be made at the end of an upward line to heighten the chance of connecting to it and to let the line cool; however, it may require slow printing speeds. Another strategy is to compensate for the sagging of the top of an upward line; however, the lines won't always fall down as predicted."
-msgstr "各接続ポイントで2つの連続したレイヤーが密着していることを確認するためのストラテジー。収縮すると上向きの線が正しい位置で硬化しますが、フィラメントの研削が行われる可能性があります。上向きの線の終わりに結び目をつけて接続する機会を増やし、線を冷やすことができます。ただし、印刷速度が遅くなることがあります。別の方法は、上向きの線の上端のたるみを補償することである。しかし、予測どおりにラインが必ずしも落ちるとは限りません。"
 
 #: fdmprinter.def.json
 msgctxt "support description"
@@ -4626,11 +4514,6 @@ msgid "The distance between the raft lines for the top raft layers. The spacing 
 msgstr "上のラフト層とラフト線の間の距離。間隔は線の幅と同じにして、サーフェスがソリッドになるようにします。"
 
 #: fdmprinter.def.json
-msgctxt "wireframe_roof_inset description"
-msgid "The distance covered when making a connection from a roof outline inward. Only applies to Wire Printing."
-msgstr "ルーフから内側に輪郭を描くときの距離。ワイヤ印刷のみに適用されます。"
-
-#: fdmprinter.def.json
 msgctxt "interlocking_depth description"
 msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
 msgstr "インターロック構造を生成するモデル間の境界からの距離（セル単位）。セルが少なすぎると密着性が低下します。"
@@ -4651,11 +4534,6 @@ msgid "The distance from the tip of the nozzle in which heat from the nozzle is 
 msgstr "ノズルからの熱がフィラメントに伝達される距離。"
 
 #: fdmprinter.def.json
-msgctxt "wireframe_roof_drag_along description"
-msgid "The distance of the end piece of an inward line which gets dragged along when going back to the outer outline of the roof. This distance is compensated for. Only applies to Wire Printing."
-msgstr "ルーフの外側の輪郭に戻る際に引きずる内側ラインの終わり部分の距離。この距離は補正されていてワイヤ印刷のみ適用されます。"
-
-#: fdmprinter.def.json
 msgctxt "bottom_skin_expand_distance description"
 msgid "The distance the bottom skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the skin adhere better to the walls on the layer below. Lower values save amount of material used."
 msgstr "スキンがインフィルまで到達する距離です。高い数値の場合、スキンはインフィルのパターンに隣接しやすく、近接する壁のレイヤーもスキンに密着しやすくなります。低値の場合、材料の使用量を節約します。"
@@ -4674,11 +4552,6 @@ msgstr "スキンがインフィルまで到達する距離です。高い数値
 msgctxt "wipe_move_distance description"
 msgid "The distance to move the head back and forth across the brush."
 msgstr "ブラシ全体でヘッド前後に動かす距離。"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_fall_down description"
-msgid "The distance which horizontal roof lines printed 'in thin air' fall down when being printed. This distance is compensated for. Only applies to Wire Printing."
-msgstr "水平ルーフが ”薄い空気”に印刷され落ちる距離。この距離は補正されています。ワイヤ印刷に適用されます。"
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_prune_angle description"
@@ -4889,11 +4762,6 @@ msgstr "初期レイヤーの高さ（mm）。厚い初期層はビルドプレ�
 msgctxt "support_bottom_stair_step_height description"
 msgid "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures. Set to zero to turn off the stair-like behaviour."
 msgstr "モデルにのっている階段状のサポートの底のステップの高さ。値を小さくするとサポートを除去するのが困難になりますが、値が大きすぎるとサポートの構造が不安定になる可能性があります。ゼロに設定すると、階段状の動作をオフにします。"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_height description"
-msgid "The height of the upward and diagonally downward lines between two horizontal parts. This determines the overall density of the net structure. Only applies to Wire Printing."
-msgstr "2つの水平なパーツ間の、上向きおよび斜め下向きの線の高さ。これは、ネット構造の全体密度を決定します。ワイヤ印刷のみに適用されます。"
 
 #: fdmprinter.def.json
 msgctxt "brim_gap description"
@@ -5780,11 +5648,6 @@ msgid "This will create a wall around the model, which traps (hot) air and shiel
 msgstr "これにより、モデルの周囲に壁ができ、熱を閉じ込め、外気の流れを遮蔽します。特に反りやすい材料に有効です。"
 
 #: fdmprinter.def.json
-msgctxt "wireframe_roof_outer_delay description"
-msgid "Time spent at the outer perimeters of hole which is to become a roof. Longer times can ensure a better connection. Only applies to Wire Printing."
-msgstr "トップレイヤーにある穴の外側に掛ける時間。長い時間の方はより良い密着を得られます。ワイヤ印刷にのみ適用されます。"
-
-#: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage_xy description"
 msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor in the XY-direction (horizontally)."
 msgstr "材料の冷却時の収縮を補正するために、モデルはXY（水平）方向にこのファクタでスケールされます。"
@@ -6113,121 +5976,6 @@ msgstr "垂直スケールファクタ収縮補正"
 msgctxt "slicing_tolerance description"
 msgid "Vertical tolerance in the sliced layers. The contours of a layer are normally generated by taking cross sections through the middle of each layer's thickness (Middle). Alternatively each layer can have the areas which fall inside of the volume throughout the entire thickness of the layer (Exclusive) or a layer has the areas which fall inside anywhere within the layer (Inclusive). Inclusive retains the most details, Exclusive makes for the best fit and Middle stays closest to the original surface."
 msgstr "スライスされたレイヤーにおける垂直方向の公差です。レイヤーの輪郭は通常、各レイヤーの厚さの中間を通る断面で生成されます（中間）。代わりに、レイヤーごとに、ボリューム内にレイヤーの厚さの分だけ入り込んだエリアにしたり（排他）、レイヤー内の任意の位置まで入り込んだエリアにしたりする（包括）こともできます。排他は最も細かく、包括は最もフィットし、中間は元の表面に最も近くなります。"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_bottom_delay label"
-msgid "WP Bottom Delay"
-msgstr "WP底面遅延"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_bottom label"
-msgid "WP Bottom Printing Speed"
-msgstr "WP底面印字速度"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow_connection label"
-msgid "WP Connection Flow"
-msgstr "WP接続フロー"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_height label"
-msgid "WP Connection Height"
-msgstr "WPの高さ"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_down label"
-msgid "WP Downward Printing Speed"
-msgstr "WP下向き印字速度"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_drag_along label"
-msgid "WP Drag Along"
-msgstr "WP引きづり距離"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_up_half_speed label"
-msgid "WP Ease Upward"
-msgstr "WP低速移動距離"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_fall_down label"
-msgid "WP Fall Down"
-msgstr "WP落下距離"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flat_delay label"
-msgid "WP Flat Delay"
-msgstr "WP水平遅延"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow_flat label"
-msgid "WP Flat Flow"
-msgstr "WPフラットフロー"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow label"
-msgid "WP Flow"
-msgstr "WPフロー"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_flat label"
-msgid "WP Horizontal Printing Speed"
-msgstr "WP水平印字速度"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_top_jump label"
-msgid "WP Knot Size"
-msgstr "WPノットサイズ"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_nozzle_clearance label"
-msgid "WP Nozzle Clearance"
-msgstr "WPノズル隙間"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_drag_along label"
-msgid "WP Roof Drag Along"
-msgstr "WPルーフ引きずり距離"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_fall_down label"
-msgid "WP Roof Fall Down"
-msgstr "WPルーフ落下距離"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_inset label"
-msgid "WP Roof Inset Distance"
-msgstr "WPルーフ距離のオフセット"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_outer_delay label"
-msgid "WP Roof Outer Delay"
-msgstr "WPルーフ外側処理時間"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed label"
-msgid "WP Speed"
-msgstr "WP速度"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_straight_before_down label"
-msgid "WP Straighten Downward Lines"
-msgstr "WP下向き直線ライン"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_strategy label"
-msgid "WP Strategy"
-msgstr "WPストラテジー"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_top_delay label"
-msgid "WP Top Delay"
-msgstr "WP上面遅延"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_up label"
-msgid "WP Upward Printing Speed"
-msgstr "WP上向き印字速度"
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temp_wait label"
@@ -6660,11 +6408,6 @@ msgid "Wipe Z Hop Height"
 msgstr "ワイプZホップ高さ"
 
 #: fdmprinter.def.json
-msgctxt "wireframe_enabled label"
-msgid "Wire Printing"
-msgstr "ワイヤ印刷"
-
-#: fdmprinter.def.json
 msgctxt "retraction_combing option infill"
 msgid "Within Infill"
 msgstr "インフィル内"
@@ -6817,6 +6560,60 @@ msgstr "移動"
 #~ msgid "Change the temperature for each layer automatically with the average flow speed of that layer."
 #~ msgstr "その画層の平均流速で自動的にレイヤーごとに温度を変更します。"
 
+#~ msgctxt "wireframe_strategy option compensate"
+#~ msgid "Compensate"
+#~ msgstr "補正"
+
+#~ msgctxt "wireframe_top_jump description"
+#~ msgid "Creates a small knot at the top of an upward line, so that the consecutive horizontal layer has a better chance to connect to it. Only applies to Wire Printing."
+#~ msgstr "上向きの線の上端に小さな結び目を作成し、連続する水平レイヤーを接着力を高めます。ワイヤ印刷のみに適用されます。"
+
+#~ msgctxt "wireframe_bottom_delay description"
+#~ msgid "Delay time after a downward move. Only applies to Wire Printing."
+#~ msgstr "下降後の遅延時間。ワイヤ印刷のみに適用されます。"
+
+#~ msgctxt "wireframe_top_delay description"
+#~ msgid "Delay time after an upward move, so that the upward line can harden. Only applies to Wire Printing."
+#~ msgstr "上向きの線が硬くなるように、上向きの動きの後の時間を遅らせる。ワイヤ印刷のみに適用されます。"
+
+#~ msgctxt "wireframe_flat_delay description"
+#~ msgid "Delay time between two horizontal segments. Introducing such a delay can cause better adhesion to previous layers at the connection points, while too long delays cause sagging. Only applies to Wire Printing."
+#~ msgstr "2つの水平セグメント間の遅延時間。このような遅延を挿入すると、前のレイヤーとの接着性が向上することがありますが、遅延が長すぎると垂れ下がりが発生します。ワイヤ印刷のみに適用されます。"
+
+#~ msgctxt "wireframe_nozzle_clearance description"
+#~ msgid "Distance between the nozzle and horizontally downward lines. Larger clearance results in diagonally downward lines with a less steep angle, which in turn results in less upward connections with the next layer. Only applies to Wire Printing."
+#~ msgstr "ノズルと水平方向に下向きの線間の距離。大きな隙間がある場合、急な角度で斜め下方線となり、次の層が上方接続しずらくなる。ワイヤ印刷にのみ適用されます。"
+
+#~ msgctxt "wireframe_up_half_speed description"
+#~ msgid ""
+#~ "Distance of an upward move which is extruded with half speed.\n"
+#~ "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
+#~ msgstr "半分の速度で押出される上方への移動距離。過度にマテリアルを加熱することなく、前の層とのより良い接着を作ります。ワイヤ印刷のみに適用されます。"
+
+#~ msgctxt "wireframe_fall_down description"
+#~ msgid "Distance with which the material falls down after an upward extrusion. This distance is compensated for. Only applies to Wire Printing."
+#~ msgstr "上向き押出後にマテリアルが落下する距離。この距離は補正される。ワイヤ印刷のみに適用されます。"
+
+#~ msgctxt "wireframe_drag_along description"
+#~ msgid "Distance with which the material of an upward extrusion is dragged along with the diagonally downward extrusion. This distance is compensated for. Only applies to Wire Printing."
+#~ msgstr "斜め下方への押出に伴い上向き押出しているマテリアルが引きずられる距離。この距離は補正される。ワイヤ印刷のみに適用されます。"
+
+#~ msgctxt "wireframe_flow_connection description"
+#~ msgid "Flow compensation when going up or down. Only applies to Wire Printing."
+#~ msgstr "上下に動くときの吐出補正。ワイヤ印刷のみに適用されます。"
+
+#~ msgctxt "wireframe_flow_flat description"
+#~ msgid "Flow compensation when printing flat lines. Only applies to Wire Printing."
+#~ msgstr "フラットラインを印刷する際の吐出補正。ワイヤ印刷のみに適用されます。"
+
+#~ msgctxt "wireframe_flow description"
+#~ msgid "Flow compensation: the amount of material extruded is multiplied by this value. Only applies to Wire Printing."
+#~ msgstr "流れ補正：押出されたマテリアルの量はこの値の乗算になります。ワイヤ印刷のみに適用されます。"
+
+#~ msgctxt "wireframe_strategy option knot"
+#~ msgid "Knot"
+#~ msgstr "ノット"
+
 #~ msgctxt "limit_support_retractions label"
 #~ msgid "Limit Support Retractions"
 #~ msgstr "サポート引き戻し限界"
@@ -6824,3 +6621,155 @@ msgstr "移動"
 #~ msgctxt "limit_support_retractions description"
 #~ msgid "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excessive stringing within the support structure."
 #~ msgstr "支持材から支持材に直線移動する場合は、引戻しを省略します。この設定を有効にすると、印刷時間は節約できますが、支持材内で過剰な糸引きが発生する可能性があります。"
+
+#~ msgctxt "wireframe_straight_before_down description"
+#~ msgid "Percentage of a diagonally downward line which is covered by a horizontal line piece. This can prevent sagging of the top most point of upward lines. Only applies to Wire Printing."
+#~ msgstr "水平方向の直線部分で覆われた斜めに下降線の割合です。これは上向きラインのほとんどのポイント、上部のたるみを防ぐことができます。ワイヤ印刷にのみ適用されます。"
+
+#~ msgctxt "wireframe_enabled description"
+#~ msgid "Print only the outside surface with a sparse webbed structure, printing 'in thin air'. This is realized by horizontally printing the contours of the model at given Z intervals which are connected via upward and diagonally downward lines."
+#~ msgstr "薄い空気中に印刷し、疎なウエブ構造で外面のみを印刷します。これは、上向きおよび斜め下向きの線を介して接続された所定のZ間隔でモデルの輪郭を水平に印刷することによって実現される。"
+
+#~ msgctxt "wireframe_strategy option retract"
+#~ msgid "Retract"
+#~ msgstr "引き戻し"
+
+#~ msgctxt "wireframe_printspeed description"
+#~ msgid "Speed at which the nozzle moves when extruding material. Only applies to Wire Printing."
+#~ msgstr "マテリアルを押し出すときにノズルが動く速度。ワイヤ印刷のみに適用されます。"
+
+#~ msgctxt "wireframe_printspeed_down description"
+#~ msgid "Speed of printing a line diagonally downward. Only applies to Wire Printing."
+#~ msgstr "斜め下方に線を印刷する速度。ワイヤ印刷のみに適用されます。"
+
+#~ msgctxt "wireframe_printspeed_up description"
+#~ msgid "Speed of printing a line upward 'in thin air'. Only applies to Wire Printing."
+#~ msgstr "薄い空気の中で上向きに線を印刷する速度。ワイヤ印刷のみに適用されます。"
+
+#~ msgctxt "wireframe_printspeed_bottom description"
+#~ msgid "Speed of printing the first layer, which is the only layer touching the build platform. Only applies to Wire Printing."
+#~ msgstr "ブルドプラットフォームに接触する第1層の印刷速度。ワイヤ印刷のみに適用されます。"
+
+#~ msgctxt "wireframe_printspeed_flat description"
+#~ msgid "Speed of printing the horizontal contours of the model. Only applies to Wire Printing."
+#~ msgstr "モデルの水平輪郭を印刷する速度。ワイヤ印刷のみに適用されます。"
+
+#~ msgctxt "wireframe_strategy description"
+#~ msgid "Strategy for making sure two consecutive layers connect at each connection point. Retraction lets the upward lines harden in the right position, but may cause filament grinding. A knot can be made at the end of an upward line to heighten the chance of connecting to it and to let the line cool; however, it may require slow printing speeds. Another strategy is to compensate for the sagging of the top of an upward line; however, the lines won't always fall down as predicted."
+#~ msgstr "各接続ポイントで2つの連続したレイヤーが密着していることを確認するためのストラテジー。収縮すると上向きの線が正しい位置で硬化しますが、フィラメントの研削が行われる可能性があります。上向きの線の終わりに結び目をつけて接続する機会を増やし、線を冷やすことができます。ただし、印刷速度が遅くなることがあります。別の方法は、上向きの線の上端のたるみを補償することである。しかし、予測どおりにラインが必ずしも落ちるとは限りません。"
+
+#~ msgctxt "wireframe_roof_inset description"
+#~ msgid "The distance covered when making a connection from a roof outline inward. Only applies to Wire Printing."
+#~ msgstr "ルーフから内側に輪郭を描くときの距離。ワイヤ印刷のみに適用されます。"
+
+#~ msgctxt "wireframe_roof_drag_along description"
+#~ msgid "The distance of the end piece of an inward line which gets dragged along when going back to the outer outline of the roof. This distance is compensated for. Only applies to Wire Printing."
+#~ msgstr "ルーフの外側の輪郭に戻る際に引きずる内側ラインの終わり部分の距離。この距離は補正されていてワイヤ印刷のみ適用されます。"
+
+#~ msgctxt "wireframe_roof_fall_down description"
+#~ msgid "The distance which horizontal roof lines printed 'in thin air' fall down when being printed. This distance is compensated for. Only applies to Wire Printing."
+#~ msgstr "水平ルーフが ”薄い空気”に印刷され落ちる距離。この距離は補正されています。ワイヤ印刷に適用されます。"
+
+#~ msgctxt "wireframe_height description"
+#~ msgid "The height of the upward and diagonally downward lines between two horizontal parts. This determines the overall density of the net structure. Only applies to Wire Printing."
+#~ msgstr "2つの水平なパーツ間の、上向きおよび斜め下向きの線の高さ。これは、ネット構造の全体密度を決定します。ワイヤ印刷のみに適用されます。"
+
+#~ msgctxt "wireframe_roof_outer_delay description"
+#~ msgid "Time spent at the outer perimeters of hole which is to become a roof. Longer times can ensure a better connection. Only applies to Wire Printing."
+#~ msgstr "トップレイヤーにある穴の外側に掛ける時間。長い時間の方はより良い密着を得られます。ワイヤ印刷にのみ適用されます。"
+
+#~ msgctxt "wireframe_bottom_delay label"
+#~ msgid "WP Bottom Delay"
+#~ msgstr "WP底面遅延"
+
+#~ msgctxt "wireframe_printspeed_bottom label"
+#~ msgid "WP Bottom Printing Speed"
+#~ msgstr "WP底面印字速度"
+
+#~ msgctxt "wireframe_flow_connection label"
+#~ msgid "WP Connection Flow"
+#~ msgstr "WP接続フロー"
+
+#~ msgctxt "wireframe_height label"
+#~ msgid "WP Connection Height"
+#~ msgstr "WPの高さ"
+
+#~ msgctxt "wireframe_printspeed_down label"
+#~ msgid "WP Downward Printing Speed"
+#~ msgstr "WP下向き印字速度"
+
+#~ msgctxt "wireframe_drag_along label"
+#~ msgid "WP Drag Along"
+#~ msgstr "WP引きづり距離"
+
+#~ msgctxt "wireframe_up_half_speed label"
+#~ msgid "WP Ease Upward"
+#~ msgstr "WP低速移動距離"
+
+#~ msgctxt "wireframe_fall_down label"
+#~ msgid "WP Fall Down"
+#~ msgstr "WP落下距離"
+
+#~ msgctxt "wireframe_flat_delay label"
+#~ msgid "WP Flat Delay"
+#~ msgstr "WP水平遅延"
+
+#~ msgctxt "wireframe_flow_flat label"
+#~ msgid "WP Flat Flow"
+#~ msgstr "WPフラットフロー"
+
+#~ msgctxt "wireframe_flow label"
+#~ msgid "WP Flow"
+#~ msgstr "WPフロー"
+
+#~ msgctxt "wireframe_printspeed_flat label"
+#~ msgid "WP Horizontal Printing Speed"
+#~ msgstr "WP水平印字速度"
+
+#~ msgctxt "wireframe_top_jump label"
+#~ msgid "WP Knot Size"
+#~ msgstr "WPノットサイズ"
+
+#~ msgctxt "wireframe_nozzle_clearance label"
+#~ msgid "WP Nozzle Clearance"
+#~ msgstr "WPノズル隙間"
+
+#~ msgctxt "wireframe_roof_drag_along label"
+#~ msgid "WP Roof Drag Along"
+#~ msgstr "WPルーフ引きずり距離"
+
+#~ msgctxt "wireframe_roof_fall_down label"
+#~ msgid "WP Roof Fall Down"
+#~ msgstr "WPルーフ落下距離"
+
+#~ msgctxt "wireframe_roof_inset label"
+#~ msgid "WP Roof Inset Distance"
+#~ msgstr "WPルーフ距離のオフセット"
+
+#~ msgctxt "wireframe_roof_outer_delay label"
+#~ msgid "WP Roof Outer Delay"
+#~ msgstr "WPルーフ外側処理時間"
+
+#~ msgctxt "wireframe_printspeed label"
+#~ msgid "WP Speed"
+#~ msgstr "WP速度"
+
+#~ msgctxt "wireframe_straight_before_down label"
+#~ msgid "WP Straighten Downward Lines"
+#~ msgstr "WP下向き直線ライン"
+
+#~ msgctxt "wireframe_strategy label"
+#~ msgid "WP Strategy"
+#~ msgstr "WPストラテジー"
+
+#~ msgctxt "wireframe_top_delay label"
+#~ msgid "WP Top Delay"
+#~ msgstr "WP上面遅延"
+
+#~ msgctxt "wireframe_printspeed_up label"
+#~ msgid "WP Upward Printing Speed"
+#~ msgstr "WP上向き印字速度"
+
+#~ msgctxt "wireframe_enabled label"
+#~ msgid "Wire Printing"
+#~ msgstr "ワイヤ印刷"

@@ -125,10 +125,6 @@ class SimulationView(CuraView):
         self._only_show_top_layers = bool(Application.getInstance().getPreferences().getValue("view/only_show_top_layers"))
         self._compatibility_mode = self._evaluateCompatibilityMode()
 
-        self._wireprint_warning_message = Message(catalog.i18nc("@info:status",
-                                                                "Cura does not accurately display layers when Wire Printing is enabled."),
-                                                  title = catalog.i18nc("@info:title", "Simulation View"),
-                                                  message_type = Message.MessageType.WARNING)
         self._slice_first_warning_message = Message(catalog.i18nc("@info:status",
                                                                   "Nothing is shown because you need to slice first."),
                                                     title = catalog.i18nc("@info:title", "No layers to show"),
@@ -671,11 +667,8 @@ class SimulationView(CuraView):
         elif event.type == Event.ViewDeactivateEvent:
             self._controller.getScene().getRoot().childrenChanged.disconnect(self._onSceneChanged)
             Application.getInstance().getPreferences().preferenceChanged.disconnect(self._onPreferencesChanged)
-            self._wireprint_warning_message.hide()
             self._slice_first_warning_message.hide()
             Application.getInstance().globalContainerStackChanged.disconnect(self._onGlobalStackChanged)
-            if self._global_container_stack:
-                self._global_container_stack.propertyChanged.disconnect(self._onPropertyChanged)
             if self._nozzle_node:
                 self._nozzle_node.setParent(None)
 
@@ -698,23 +691,10 @@ class SimulationView(CuraView):
         return self._current_layer_jumps
 
     def _onGlobalStackChanged(self) -> None:
-        if self._global_container_stack:
-            self._global_container_stack.propertyChanged.disconnect(self._onPropertyChanged)
         self._global_container_stack = Application.getInstance().getGlobalContainerStack()
         if self._global_container_stack:
-            self._global_container_stack.propertyChanged.connect(self._onPropertyChanged)
             self._extruder_count = self._global_container_stack.getProperty("machine_extruder_count", "value")
-            self._onPropertyChanged("wireframe_enabled", "value")
             self.globalStackChanged.emit()
-        else:
-            self._wireprint_warning_message.hide()
-
-    def _onPropertyChanged(self, key: str, property_name: str) -> None:
-        if key == "wireframe_enabled" and property_name == "value":
-            if self._global_container_stack and self._global_container_stack.getProperty("wireframe_enabled", "value"):
-                self._wireprint_warning_message.show()
-            else:
-                self._wireprint_warning_message.hide()
 
     def _onCurrentLayerNumChanged(self) -> None:
         self.calculateMaxPathsOnLayer(self._current_layer_num)

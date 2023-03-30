@@ -50,7 +50,7 @@
         "machine_center_is_zero": { "default_value": true },
         "machine_depth": { "default_value": 270 },
         "machine_end_gcode": { "default_value": ";MACHINE END CODE\nG91 ;relative positioning\nG1 E-1 F300  ;retract  filament release pressure\nG1 Z+1.0 E-5 F9000 ;move up a and retract more\nG90 ;absolute positioning\nG28; home\nM84 ;steppers off\n;MACHINE END CODE" },
-        "machine_gcode_flavor": { "RepRap (Marlin/Sprinter)": "Marlin" },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
         "machine_head_with_fans_polygon":
         {
             "default_value": [

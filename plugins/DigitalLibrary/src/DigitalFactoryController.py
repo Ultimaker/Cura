@@ -501,6 +501,12 @@ class DigitalFactoryController(QObject):
         """
         if not download_url:
             Logger.log("e", "No download url for file '{}'".format(file_name))
+            getBackwardsCompatibleMessage(
+                    text = "Download error",
+                    title = f"No download url could be found for '{file_name}'.",
+                    message_type_str = "ERROR",
+                    lifetime = 0
+            ).show()
             return
 
         progress_message = Message(text = "{0}/{1}".format(project_name, file_name), dismissable = False, lifetime = 0,
@@ -584,6 +590,12 @@ class DigitalFactoryController(QObject):
         """
         if self._selected_project_idx == -1:
             Logger.log("e", "No DF Library project is selected.")
+            getBackwardsCompatibleMessage(
+                    text = "No Digital Library project was selected",
+                    title = "No project selected",
+                    message_type_str = "ERROR",
+                    lifetime = 0
+            ).show()
             return
 
         if filename == "":

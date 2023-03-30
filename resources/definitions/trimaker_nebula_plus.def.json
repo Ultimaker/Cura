@@ -88,7 +88,7 @@
         "machine_depth": { "default_value": 230 },
         "machine_end_gcode": { "default_value": ";Trimaker Nebula End Code\n M107; Apagamos fan\n G90\n G92 E0\n G1 X0 Y200\n G91\n G1 Z5\n G92 E0\n M140 S0; Enfriamos\n M104 S0; Enfriamos\n M84\n G90\n M117 Impresion finalizada\n M300 S440 P700\n" },
         "machine_extruder_count": { "default_value": 1 },
-        "machine_gcode_flavor": { "default_value": "Marlin (Volumetric)" },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
         "machine_heated_bed": { "default_value": true },
         "machine_height": { "default_value": 260 },
         "machine_max_feedrate_x": { "default_value": 300 },

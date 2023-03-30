@@ -26,7 +26,7 @@
         "infill_before_walls": { "value": "False" },
         "inset_direction": { "value": "'inside_out'" },
         "machine_depth": { "default_value": 320 },
-        "machine_gcode_flavor": { "default_value": "Marlin" },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
         "machine_heated_bed": { "default_value": true },
         "machine_width": { "default_value": 430 },
         "material_break_preparation_temperature": { "maximum_value": "430" },

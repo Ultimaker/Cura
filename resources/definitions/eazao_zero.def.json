@@ -35,7 +35,7 @@
         "machine_center_is_zero": { "default_value": false },
         "machine_depth": { "default_value": 150 },
         "machine_end_gcode": { "default_value": "G92 E10\nG1 E-10 F300\nG28 X0 Y0 ;move X Y to min endstops\nM82\nM84 ;steppers off\n" },
-        "machine_gcode_flavor": { "default_value": "Marlin (Marlin/Sprinter)" },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
         "machine_heated_bed": { "default_value": false },
         "machine_height": { "default_value": 240 },
         "machine_max_acceleration_e": { "value": 500 },
