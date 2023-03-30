@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-15 11:58+0000\n"
+"POT-Creation-Date: 2023-03-28 11:57+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -812,18 +812,18 @@ msgctxt "@text"
 msgid "Unknown error."
 msgstr "Bilinmeyen hata."
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:547
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:558
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> contains an unknown machine type <message>{1}</message>. Cannot import the machine. Models will be imported instead."
 msgstr "Proje dosyası <filename>{0}</filename> bilinmeyen bir makine tipi içeriyor: <message>{1}</message>. Makine alınamıyor. Bunun yerine modeller alınacak."
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:550
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:561
 msgctxt "@info:title"
 msgid "Open Project File"
 msgstr "Proje Dosyası Aç"
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:631
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:642
 #: plugins/3MFReader/WorkspaceDialog.qml:99
 #: plugins/3MFReader/WorkspaceDialog.qml:127
 #: plugins/3MFReader/WorkspaceDialog.qml:134
@@ -831,27 +831,27 @@ msgctxt "@button"
 msgid "Create new"
 msgstr "Yeni oluştur"
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:681
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:692
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is suddenly inaccessible: <message>{1}</message>."
 msgstr "<filename>{0}</filename> proje dosyası aniden erişilemez oldu: <message>{1}</message>."
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:682
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:690
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:709
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:693
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:701
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:720
 msgctxt "@info:title"
 msgid "Can't Open Project File"
 msgstr "Proje Dosyası Açılamıyor"
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:689
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:707
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:700
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:718
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>."
 msgstr "Proje dosyası <filename>{0}</filename> bozuk: <message>{1}</message>."
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:754
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:765
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
 msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura."
@@ -1926,17 +1926,17 @@ msgctxt "@label"
 msgid "Number of Extruders"
 msgstr "Ekstrüder Sayısı"
 
-#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:341
+#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:342
 msgctxt "@label"
 msgid "Apply Extruder offsets to GCode"
 msgstr "Ekstrüder ofsetlerini GCode'a uygula"
 
-#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:389
+#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:390
 msgctxt "@title:label"
 msgid "Start G-code"
 msgstr "G-code’u Başlat"
 
-#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:400
+#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:401
 msgctxt "@title:label"
 msgid "End G-code"
 msgstr "G-code’u Sonlandır"
@@ -2719,25 +2719,15 @@ msgstr "Nöbetçi Günlükçü"
 
 #: plugins/SimulationView/SimulationView.py:129
 msgctxt "@info:status"
-msgid "Cura does not accurately display layers when Wire Printing is enabled."
-msgstr "Kablo Yazdırma etkinleştirildiğinde Cura, katmanları doğru olarak görüntülemez."
-
-#: plugins/SimulationView/SimulationView.py:130
-msgctxt "@info:title"
-msgid "Simulation View"
-msgstr "Simülasyon Görünümü"
-
-#: plugins/SimulationView/SimulationView.py:133
-msgctxt "@info:status"
 msgid "Nothing is shown because you need to slice first."
 msgstr "Önce dilimleme yapmanız gerektiğinden hiçbir şey gösterilmez."
 
-#: plugins/SimulationView/SimulationView.py:134
+#: plugins/SimulationView/SimulationView.py:130
 msgctxt "@info:title"
 msgid "No layers to show"
 msgstr "Görüntülenecek katman yok"
 
-#: plugins/SimulationView/SimulationView.py:136
+#: plugins/SimulationView/SimulationView.py:132
 #: plugins/SolidView/SolidView.py:74
 msgctxt "@info:option_text"
 msgid "Do not show this message again"
@@ -4057,6 +4047,16 @@ msgstr "Yapılandırmaları Cura 5.2'dan Cura 5.3'a yükseltir."
 msgctxt "name"
 msgid "Version Upgrade 5.2 to 5.3"
 msgstr "5.2'dan 5.3'a Sürüm Yükseltme"
+
+#: plugins/VersionUpgrade/VersionUpgrade53to54/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.3 to Cura 5.4."
+msgstr ""
+
+#: plugins/VersionUpgrade/VersionUpgrade53to54/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 5.3 to 5.4"
+msgstr ""
 
 #: plugins/X3DReader/__init__.py:13
 msgctxt "@item:inlistbox"
@@ -6923,3 +6923,11 @@ msgstr "Yenilikler"
 msgctxt "@label"
 msgid "No items to select from"
 msgstr "Seçilecek öğe yok"
+
+#~ msgctxt "@info:status"
+#~ msgid "Cura does not accurately display layers when Wire Printing is enabled."
+#~ msgstr "Kablo Yazdırma etkinleştirildiğinde Cura, katmanları doğru olarak görüntülemez."
+
+#~ msgctxt "@info:title"
+#~ msgid "Simulation View"
+#~ msgstr "Simülasyon Görünümü"
