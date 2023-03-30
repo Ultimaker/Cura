@@ -1,0 +1,75 @@
+{
+    "name": "WEEFUN TINA2S",
+    "version": 2,
+    "inherits": "weedo_base",
+    "metadata": {
+        "visible": true,
+        "author": "WEEFUN",
+        "manufacturer": "WEEFUN",
+        "file_formats": "text/x-gcode",
+        "platform_offset": [ 0, 0, 0]
+    },
+
+    "overrides": {
+        "machine_extruder_count": { "default_value": 1 },
+        "machine_heated_bed": { "default_value": true },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_height": { "default_value": 100 },
+        "machine_depth": { "default_value": 120 },
+        "machine_width": { "default_value": 100 },
+		"gantry_height": { "value": "20" },
+        "machine_name": { "default_value": "WEEFUN TINA2S" },
+        "machine_start_gcode": {
+          "default_value": ";(**** start.gcode for tina2s****)\nM203 Z15 ;Move Z axis up 15mm\nM117 Homing axes\nG28 Z; Home extruder axis Z\nG28 X Y; Home extruder axis X Y\nM117 Start Warm Up\nM140 S60 ;start heating the bed to what is set in Cura\nM104 S130 ;start heating E to 130 for preheat\nM190 S60 ;Wait for Bed Temperature\nM117 Levling the build plate\nG29\nG1 Z1.0 F3000 ;Move Z Axis up to 1mm\nG1 X0.5 Y1 ;Move hotend to starting position\nM117 Heating Hotend\nM104 S215.0 T0 ;start heating T0 to what is set in Cura\nM109 S215.0 T0 ;Wait for Hotend Temperature\nG92 E0 ;Reset Extruder\nM117 Purging and cleaning nozzle\nG1 X1.1 Y10 Z0.28 F1000.0 ;Move to start position\nG1 X1.1 Y90.0 Z0.28 F2000.0 E15 ;Draw the first line\nG1 X1.4 Y90.0 Z0.23 F5000.0 ;Move to side a little\nG1 X1.4 Y10 Z0.20 F2000.0 E15 ;Draw the second line\nG92 E0 ;Reset Extruder\nG1 Z2.0 F3000 ;Move Z Axis up\nG1 X1 Y5 Z0.2 F5000.0 ;Move over to prevent blob squish\nM117 Printing..."
+		},
+        "machine_end_gcode": {
+		  "default_value": ";(**** end.gcode for tina2s****)\nM203 Z15 ;Move Z axis up 5mm\nM104 S0 ;Turn off extruder heating\nM140 S0 ;Turn off bed heating\nM107 ;Turn Fans off\nG92 E0 ;(Reset after prime)\nG0 E-1 F300 ;Retract Fillament 1mm\nG28 Z F300 ;Park Hotend up\nG28 X0 Y0 ;Park Hotend\nG1 Y90 F1000 ;Present finished model\nG0 E-2 F300 ;Retract Fillament 2mm\nM82 ;absolute extrusion mode\nM104 S0 ;Ensure hotend is off\nM117 Print Complete"
+        },
+        "material_print_temp_prepend":{"default_value":false},
+        "retraction_amount":
+        {
+            "default_value": 3
+        },
+        "retraction_speed":
+        {
+            "default_value": 28
+        },
+        "speed_wall_0": {
+          "value": 20.0
+        },
+        "speed_wall_x": {
+          "value": 25.0
+        },
+        "speed_topbottom": {
+          "value": 30.0
+        },
+        "speed_infill": {
+          "value": 40.0
+        },
+        "speed_support_infill": {
+          "value": 45.0
+        },
+        "speed_print_layer_0": {
+          "value": 22.0
+        },
+        "speed_travel_layer_0": {
+          "value": 60
+        },
+        "speed_travel": {
+          "default_value": 65.0,
+          "value": "speed_print if magic_spiralize else 65"
+        },
+        "speed_support_roof": {
+          "value": 30.0
+        },
+        "speed_support_bottom": {
+          "dvalue": 30.0
+        },
+        "speed_roofing": {
+          "value": 25.0
+        },
+        "raft_base_thickness":{
+          "default_value":0.35
+        }
+	}
+}
