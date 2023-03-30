@@ -29,10 +29,6 @@
         {
             "default_value": 3
         },
-        "retraction_speed":
-        {
-            "default_value": 28
-        },
         "speed_wall_0": {
           "value": 20.0
         },
