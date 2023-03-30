@@ -188,7 +188,7 @@ Item
             left: parent.left
         }
         clip: true
-        cacheBuffer: 2000
+        cacheBuffer: 1000000 // Set a large cache to effectively just cache every list item.
         ScrollBar.vertical: UM.ScrollBar
         {
             id: scrollBar
