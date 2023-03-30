@@ -219,20 +219,11 @@
     "machine_feeder_wheel_diameter": {
       "default_value": 10.61
     },
-    "wall_0_wipe_dist": {
-      "default_value": 0.2
-    },
-    "roofing_layer_count": {
-      "default_value": 0
-    },
     "travel_compensate_overlapping_walls_0_enabled": {
       "default_value": true
     },
     "travel_compensate_overlapping_walls_x_enabled": {
       "default_value": true
-    },
-    "skin_no_small_gaps_heuristic": {
-      "default_value": false
     },
     "infill_sparse_density": {
       "default_value": 10
@@ -241,17 +232,17 @@
       "default_value": 95
     },
     "material_initial_print_temperature": {
-      "default_value": 200,
+      "default_value": 215,
       "minimum_value_warning": "0",
       "maximum_value": "300"
     },
     "material_final_print_temperature": {
-      "default_value": 195,
+      "default_value": 205,
       "minimum_value_warning": "0",
       "maximum_value": "300"
     },
     "material_print_temperature": {
-      "default_value": 200,
+      "default_value": 205,
       "minimum_value_warning": "0",
       "maximum_value": "300"
     },
@@ -270,12 +261,6 @@
     "material_bed_temperature": {
       "default_value": 35
     },
-    "speed_print": {
-      "default_value": 60.0
-    },
-    "speed_infill": {
-      "default_value": 60.0
-    },
     "speed_wall": {
       "value": "max(5,round(speed_print / 2,1))"
     },
@@ -290,9 +275,6 @@
     },
     "speed_support": {
       "value": "round(speed_print*0.82,1)"
-    },
-    "speed_support_infill": {
-      "value": "speed_support"
     },
     "speed_support_interface": {
       "value": "round(speed_support*0.689,1)"
@@ -371,9 +353,6 @@
       "minimum_value": "0",
       "maximum_value": "machine_width"
     },
-    "prime_tower_enable": {
-      "default_value": false
-    },
     "prime_tower_size": {
       "default_value": 15
     },
@@ -385,12 +364,6 @@
     },
     "prime_tower_position_y": {
       "default_value": 80
-    },
-    "prime_tower_wipe_enabled": {
-      "default_value": true
-    },
-    "prime_tower_brim_enable": {
-      "default_value": false
     },
     "raft_surface_fan_speed": {
       "value": 100
