@@ -1,74 +1,91 @@
 {
-    "name": "WEEFUN TINA2",
-    "version": 2,
-    "inherits": "weedo_base",
-    "metadata": {
-        "visible": true,
-        "author": "WEEFUN",
-        "manufacturer": "WEEFUN",
-        "file_formats": "text/x-gcode",
-        "platform_offset": [ 0, 0, 0]
-    },
-
-    "overrides": {
-        "machine_extruder_count": { "default_value": 1 },
-        "machine_heated_bed": { "default_value": false },
-        "machine_center_is_zero": { "default_value": false },
-        "machine_height": { "default_value": 100 },
-        "machine_depth": { "default_value": 120 },
-        "machine_width": { "default_value": 100 },
-        "machine_name": { "default_value": "WEEFUN TINA2" },
-        "machine_start_gcode": {
-          "default_value": ";(**** start.gcode for TINA2****)\nM104 S150\nG28 Z\nG28 X Y; Home extruder\nG1 X55 Y55 F1000\nG1 Z10 F200\nG29\nG1 Z15 F100\nM107 ; Turn off fan\nG90 ; Absolute positioning\nM82 ; Extruder in absolute mode\nM109 S{material_print_temperature_layer_0}\nG92 E0 ; Reset extruder position\nG1 X90 Y6 Z0.27 F2000\nG1 X20 Y6 Z0.27 E15 F1000 \nG92 E0 ; Reset extruder position\n\nM203 Z5"
-        },
-        "machine_end_gcode": {
-          "default_value": ";(**** end.gcode for TINA2****)\nM104 S0\nM107\nG92 E0 (Reset after prime)\nG0 E-1 F300\nG1 Z105 F300\nG28 X0 Y0\nG1 Y90 F1000\nM203 Z30"
-        },
-        "material_print_temp_prepend":{"default_value":false},
-        "retraction_amount":
-        {
-            "default_value": 3
-        },
-        "retraction_speed":
-        {
-            "default_value": 35
-        },
-        "speed_wall_0": {
-          "value": 20.0
-        },
-        "speed_wall_x": {
-          "value": 25.0
-        },
-        "speed_topbottom": {
-          "value": 30.0
-        },
-        "speed_infill": {
-          "value": 40.0
-        },
-        "speed_support_infill": {
-          "value": 45.0
-        },
-        "speed_print_layer_0": {
-          "value": 22.0
-        },
-        "speed_travel_layer_0": {
-          "value": 60
-        },
-        "speed_travel": {
-          "default_value": 65.0,
-          "value": "speed_print if magic_spiralize else 65"
-        },
-        "speed_support_roof": {
-          "value": 30.0
-        },
-        "speed_support_bottom": {
-          "dvalue": 30.0
-        },
-        "speed_roofing": {
-          "value": 25.0
-        },
-        "raft_base_thickness":{
-          "default_value":0.35
-        }
-	}
+   "name":"WEEFUN TINA2",
+   "version":2,
+   "inherits":"weedo_base",
+   "metadata":{
+      "visible":true,
+      "author":"WEEFUN",
+      "manufacturer":"WEEFUN",
+      "file_formats":"text/x-gcode",
+      "platform_offset":[
+         0,
+         0,
+         0
+      ]
+   },
+   "overrides":{
+      "machine_extruder_count":{
+         "default_value":1
+      },
+      "machine_heated_bed":{
+         "default_value":false
+      },
+      "machine_center_is_zero":{
+         "default_value":false
+      },
+      "machine_height":{
+         "default_value":100
+      },
+      "machine_depth":{
+         "default_value":120
+      },
+      "machine_width":{
+         "default_value":100
+      },
+      "machine_name":{
+         "default_value":"WEEFUN TINA2"
+      },
+      "machine_start_gcode":{
+         "default_value":";(**** start.gcode for TINA2****)\nM104 S150\nG28 Z\nG28 X Y; Home extruder\nG1 X55 Y55 F1000\nG1 Z10 F200\nG29\nG1 Z15 F100\nM107 ; Turn off fan\nG90 ; Absolute positioning\nM82 ; Extruder in absolute mode\nM109 S{material_print_temperature_layer_0}\nG92 E0 ; Reset extruder position\nG1 X90 Y6 Z0.27 F2000\nG1 X20 Y6 Z0.27 E15 F1000 \nG92 E0 ; Reset extruder position\n\nM203 Z5"
+      },
+      "machine_end_gcode":{
+         "default_value":";(**** end.gcode for TINA2****)\nM104 S0\nM107\nG92 E0 (Reset after prime)\nG0 E-1 F300\nG1 Z105 F300\nG28 X0 Y0\nG1 Y90 F1000\nM203 Z30"
+      },
+      "material_print_temp_prepend":{
+         "default_value":false
+      },
+      "retraction_amount":{
+         "default_value":3
+      },
+      "retraction_speed":{
+         "default_value":35
+      },
+      "speed_wall_0":{
+         "value":20.0
+      },
+      "speed_wall_x":{
+         "value":25.0
+      },
+      "speed_topbottom":{
+         "value":30.0
+      },
+      "speed_infill":{
+         "value":40.0
+      },
+      "speed_support_infill":{
+         "value":45.0
+      },
+      "speed_print_layer_0":{
+         "value":22.0
+      },
+      "speed_travel_layer_0":{
+         "value":60
+      },
+      "speed_travel":{
+         "default_value":65.0,
+         "value":"speed_print if magic_spiralize else 65"
+      },
+      "speed_support_roof":{
+         "value":30.0
+      },
+      "speed_support_bottom":{
+         "dvalue":30.0
+      },
+      "speed_roofing":{
+         "value":25.0
+      },
+      "raft_base_thickness":{
+         "default_value":0.35
+      }
+   }
 }
