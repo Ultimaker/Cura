@@ -4,7 +4,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.1 as Cura
 
 
@@ -58,11 +58,10 @@ Item
 
             spacing: base.columnSpacing
 
-            Label   // Title Label
+            UM.Label   // Title Label
             {
                 text: catalog.i18nc("@title:label", "Nozzle Settings")
                 font: UM.Theme.getFont("medium_bold")
-                renderType: Text.NativeRendering
             }
 
             Cura.NumericTextFieldWithUnit  // "Nozzle size"

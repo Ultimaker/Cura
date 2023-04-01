@@ -1,4 +1,4 @@
-// Copyright (c) 2020 Ultimaker B.V.
+// Copyright (c) 2022 UltiMaker
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -90,8 +90,9 @@ Column
     Cura.TertiaryButton
     {
         id: cloudButton
-        width: UM.Theme.getSize("account_button").width
+        width: parent.width
         height: UM.Theme.getSize("account_button").height
+
         text: "Ultimaker Digital Factory"
         onClicked: Qt.openUrlExternally(CuraApplication.ultimakerDigitalFactoryUrl + "?utm_source=cura&utm_medium=software&utm_campaign=menu-visit-DF")
         fixedWidthMode: false
@@ -100,9 +101,10 @@ Column
     Cura.TertiaryButton
     {
         id: accountButton
-        width: UM.Theme.getSize("account_button").width
+        width: parent.width
         height: UM.Theme.getSize("account_button").height
-        text: catalog.i18nc("@button", "Ultimaker Account")
+
+        text: catalog.i18nc("@button", "UltiMaker Account")
         onClicked: Qt.openUrlExternally(CuraApplication.ultimakerCloudAccountRootUrl + "?utm_source=cura&utm_medium=software&utm_campaign=menu-visit-account")
         fixedWidthMode: false
     }
@@ -117,7 +119,11 @@ Column
     Cura.TertiaryButton
     {
         id: signOutButton
+        width: parent.width
+        height: UM.Theme.getSize("account_button").height
+
         onClicked: Cura.API.account.logout()
         text: catalog.i18nc("@button", "Sign Out")
+        fixedWidthMode: false
     }
 }

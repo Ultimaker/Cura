@@ -29,6 +29,6 @@ Cura.Menu
             }
         }
         onObjectAdded: function(index, object) { return menu.insertItem(index, object); }
-        onObjectRemoved: function(object) { return menu.removeItem(object); }
+        onObjectRemoved: function(index, object) { return menu.removeItem(object); }
     }
 }

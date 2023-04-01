@@ -1,20 +1,24 @@
 {
-    "version":                 2,
-    "name":                    "Deltacomb DC-21",    
-    "inherits":                "deltacomb_base",
-
-    "metadata": {
-        "visible":                 true,
-        "platform":                "deltacomb_dc20.stl",
-        "quality_definition":      "deltacomb_base",
-        "preferred_variant_name":  "FBE 0.40mm"
+    "version": 2,
+    "name": "Deltacomb DC-21",
+    "inherits": "deltacomb_base",
+    "metadata":
+    {
+        "visible": true,
+        "platform": "deltacomb_dc20.stl",
+        "preferred_variant_name": "FBE 0.40mm",
+        "quality_definition": "deltacomb_base"
     },
-
-    "overrides": {
-        "machine_name":            { "default_value": "Deltacomb DC-21" },
-        "machine_width":           { "default_value": 190 },
-        "machine_depth":           { "default_value": 190 },
-        "machine_height":          { "default_value": 400 },
-        "machine_extruder_count":  { "default_value": 1, "maximum_value": "4" }
+    "overrides":
+    {
+        "machine_depth": { "default_value": 190 },
+        "machine_extruder_count":
+        {
+            "default_value": 1,
+            "maximum_value": "4"
+        },
+        "machine_height": { "default_value": 400 },
+        "machine_name": { "default_value": "Deltacomb DC-21" },
+        "machine_width": { "default_value": 190 }
     }
 }

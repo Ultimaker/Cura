@@ -1,6 +1,6 @@
 name: Bug Report
 description: Create a report to help us fix issues.
-labels: "Type: Bug"
+labels: ["Type: Bug", "Status: Triage"]
 body:
 - type: markdown
   attributes:
@@ -14,7 +14,7 @@ body:
   attributes:
     label: Application Version
     description: The version of Cura this issue occurs with.
-    placeholder: 4.9.0
+    placeholder: 5.0.0
   validations:
     required: true
 - type: input

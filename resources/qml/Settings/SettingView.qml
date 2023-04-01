@@ -46,7 +46,7 @@ Item
             topPadding: height / 4
             leftPadding: searchIcon.width + UM.Theme.getSize("default_margin").width * 2
             placeholderText: catalog.i18nc("@label:textbox", "Search settings")
-            font.italic: true
+            font: UM.Theme.getFont("default_italic")
 
             property var expandedCategories
             property bool lastFindingSettings: false

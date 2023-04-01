@@ -9,40 +9,46 @@
         "manufacturer": "Eryone",
         "file_formats": "text/x-gcode",
         "platform": "eryone_thinker_platform.obj",
-        "platform_texture": "eryone_thinker_plate.png",
-        "platform_offset": [0, -120, 0],
-        "has_materials": true,
-        "preferred_material": "eryone_pla",
+        "first_start_actions": [ "MachineSettingsAction" ],
         "has_machine_quality": true,
-        "preferred_quality_type": "normal",
-        "machine_extruder_trains": 
-        { 
-            "0": "eryone_thinker_extruder_0" 
-        },
-        "first_start_actions": ["MachineSettingsAction"]
+        "has_materials": true,
+        "machine_extruder_trains": { "0": "eryone_thinker_extruder_0" },
+        "platform_offset": [
+            0,
+            -120,
+            0
+        ],
+        "platform_texture": "eryone_thinker_plate.png",
+        "preferred_material": "eryone_pla",
+        "preferred_quality_type": "normal"
     },
-
     "overrides":
     {
-        "machine_name": { 
-            "default_value": "Eryone Thinker Series" 
-        },
-        "machine_heated_bed": { 
-            "default_value": true 
-        },
-        "machine_width": {
-            "default_value": 300 
-        },
-        "machine_height": { 
-            "default_value": 400 
-        },
-        "machine_depth": { 
-            "default_value": 300 
-        },
-        "machine_center_is_zero": { 
-            "default_value": false 
-        },
-        "machine_head_with_fans_polygon": { 
+        "acceleration_enabled": { "value": true },
+        "acceleration_print": { "value": 750 },
+        "acceleration_travel": { "value": 1500 },
+        "adhesion_type": { "value": "'skirt'" },
+        "bottom_layers": { "value": 4 },
+        "bottom_thickness": { "value": "layer_height * bottom_layers" },
+        "brim_width": { "value": 5 },
+        "gantry_height": { "value": 30 },
+        "infill_before_walls": { "value": false },
+        "infill_overlap": { "value": "25 if infill_sparse_density < 95 and infill_pattern != 'concentric' else 0" },
+        "infill_pattern": { "value": "'lines' if infill_sparse_density > 25 else 'grid'" },
+        "infill_sparse_density": { "value": 20 },
+        "initial_layer_line_width_factor": { "value": 120 },
+        "inset_direction": { "default_value": "inside_out" },
+        "jerk_enabled": { "value": true },
+        "jerk_print": { "value": 10 },
+        "jerk_travel": { "value": 15 },
+        "layer_height": { "value": 0.2 },
+        "layer_height_0": { "resolve": "max(0.1, layer_height)" },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_depth": { "default_value": 300 },
+        "machine_end_gcode": { "default_value": "M104 S0 ;turn off extruder\nM140 S0 ;turn off bed\nM107 ;turn off all fans\nG91 ;relative positioning\nG1 E-1 F300 ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+0.5 E-5 ;move Z up a bit and retract filament even more\nG90 ;absolute positioning\nG1 X0 Y250 F4800 ; position for easy part removal\nM84 ;steppers off" },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_head_with_fans_polygon":
+        {
             "default_value": [
                 [-20, 30],
                 [-20, -20],
@@ -50,209 +56,72 @@
                 [20, 30]
             ]
         },
-        "gantry_height": { 
-            "value": 30 
-        },
-        "machine_gcode_flavor": { 
-            "default_value": "RepRap (Marlin/Sprinter)" 
-        },
-        "machine_start_gcode": { 
-            "default_value": "G21 ;metric values\nG90 ;absolute positioning\nM82 ;set extruder to absolute mode\nM107 ;start with the fan off\nG28 X0 Y0 ;move X/Y to min endstops\nG28 Z0 ;move Z to min endstops\nG1 Z10.0 F600 ;move the platform down 10mm\nG92 E0 ;zero the extruded length\nG1 F200 E3 ;extrude 3mm of feed stock\nG92 E0 ;zero the extruded length again\nG1 Y-3 F1200 ;move to prime\nG1 X10 F1200 ;\nG1 Z0.1 F600 ;get ready to prime\nG1 X120 E15 F1200 ;prime nozzle \nG1 X120 F3600 ;quick wipe\nG92 E0 ;zero the extruded length\nM413 S1 ;enable resume from power failure\nM117 Printing..." 
-        },
-        "machine_end_gcode": { 
-            "default_value": "M104 S0 ;turn off extruder\nM140 S0 ;turn off bed\nM107 ;turn off all fans\nG91 ;relative positioning\nG1 E-1 F300 ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+0.5 E-5 ;move Z up a bit and retract filament even more\nG90 ;absolute positioning\nG1 X0 Y250 F4800 ; position for easy part removal\nM84 ;steppers off" 
-        },
-        "layer_height": {
-            "value": 0.2
-        },
-        "layer_height_0": {
-            "resolve": "max(0.1, layer_height)"
-        },
-        "initial_layer_line_width_factor": {
-            "value": 120
-        },
-        "wall_line_count": {
-            "value": 3
-        },
-        "wall_thickness": {
-            "value": "line_width * wall_line_count"
-        },
-        "optimize_wall_printing_order": {
-            "default_value": true 
-        },
-        "z_seam_type": {
-            "value": "'shortest'"
-        },
-        "z_seam_corner": {
-            "value": "'z_seam_corner_inner'"
-        },
-        "roofing_layer_count": {
-            "value": 1
-        },
-        "top_layers": {
-            "value": 6
-        },
-        "top_thickness":{
-            "value": "layer_height * top_layers"
-        },
-        "bottom_layers": {
-            "value": 4
-        },
-        "bottom_thickness":{
-            "value": "layer_height * bottom_layers"
-        },
-        "skin_overlap": {
-            "value": 10
-        },
-        "infill_sparse_density": {
-            "value": 20
-        },
-        "infill_pattern": {
-            "value": "'lines' if infill_sparse_density > 25 else 'grid'"
-        },
-        "infill_overlap": {
-            "value": "25 if infill_sparse_density < 95 and infill_pattern != 'concentric' else 0"
-        },
-        "infill_before_walls": {
-            "value": false
-        },
-        "inset_direction": {
-            "default_value": "inside_out"
-        },
-        "material_print_temperature": {
-            "value": "default_material_print_temperature",
-            "maximum_value_warning": 250
-        },
-        "material_print_temperature_layer_0": {
-            "value": "material_print_temperature + 5",
-            "maximum_value_warning": 250
-        },
-        "material_initial_print_temperature": {
-            "value": "material_print_temperature",
-            "maximum_value_warning": 250
-        },
-        "material_final_print_temperature": {
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 400 },
+        "machine_name": { "default_value": "Eryone Thinker Series" },
+        "machine_start_gcode": { "default_value": "G21 ;metric values\nG90 ;absolute positioning\nM82 ;set extruder to absolute mode\nM107 ;start with the fan off\nG28 X0 Y0 ;move X/Y to min endstops\nG28 Z0 ;move Z to min endstops\nG1 Z10.0 F600 ;move the platform down 10mm\nG92 E0 ;zero the extruded length\nG1 F200 E3 ;extrude 3mm of feed stock\nG92 E0 ;zero the extruded length again\nG1 Y-3 F1200 ;move to prime\nG1 X10 F1200 ;\nG1 Z0.1 F600 ;get ready to prime\nG1 X120 E15 F1200 ;prime nozzle \nG1 X120 F3600 ;quick wipe\nG92 E0 ;zero the extruded length\nM413 S1 ;enable resume from power failure\nM117 Printing..." },
+        "machine_width": { "default_value": 300 },
+        "material_bed_temperature": { "maximum_value_warning": 100 },
+        "material_bed_temperature_layer_0": { "value": "material_bed_temperature" },
+        "material_diameter": { "default_value": 1.75 },
+        "material_final_print_temperature": { "value": "material_print_temperature" },
+        "material_initial_print_temperature":
+        {
+            "maximum_value_warning": 250,
             "value": "material_print_temperature"
         },
-        "material_bed_temperature": {
-            "value": "default_material_bed_temperature",
-            "maximum_value_warning": 100
+        "material_print_temperature":
+        {
+            "maximum_value_warning": 250,
+            "value": "default_material_print_temperature"
         },
-        "material_bed_temperature_layer_0": {
-            "value": "material_bed_temperature"
+        "material_print_temperature_layer_0":
+        {
+            "maximum_value_warning": 250,
+            "value": "material_print_temperature + 5"
         },
-        "speed_infill": {
-            "value": "speed_print"
+        "optimize_wall_printing_order": { "default_value": true },
+        "retract_at_layer_change": { "value": true },
+        "retraction_amount": { "default_value": 4.5 },
+        "retraction_combing": { "value": "'off' if retraction_hop_enabled else 'noskin'" },
+        "retraction_hop": { "value": 0.1 },
+        "retraction_hop_enabled": { "value": false },
+        "retraction_hop_only_when_collides": { "value": true },
+        "retraction_min_travel": { "value": "max(line_width * 2, 1.5)" },
+        "retraction_prime_speed":
+        {
+            "maximum_value_warning": 130,
+            "value": "math.ceil(retraction_speed * 0.4)"
         },
-        "speed_wall": {
-            "value": "speed_print"
-        },
-        "speed_wall_0": {
-            "value": "math.ceil(speed_print * 30 / 50)"
-        },
-        "speed_wall_x": {
-            "value": "speed_print"
-        },
-        "speed_topbottom": {
-            "value": "math.ceil(speed_print * 20 / 50)"
-        },
-        "speed_travel": {
-            "value": "speed_print if magic_spiralize else 120"
-        },
-        "speed_layer_0": {
-            "value": "math.ceil(speed_print * 30 / 50)"
-        },
-        "skirt_brim_speed": {
-            "value": "math.ceil(speed_print * 40 / 60)"
-        },
-        "speed_z_hop": {
-            "value": "math.ceil(speed_print * 30 / 60)"
-        },
-        "acceleration_enabled": {
-            "value": true
-        },
-        "acceleration_print": {
-            "value": 750
-        },
-        "acceleration_travel": {
-            "value": 1500
-        },
-        "jerk_enabled": {
-            "value": true
-        },
-        "jerk_print": {
-            "value": 10
-        },
-        "jerk_travel": {
-            "value": 15
-        },
-        "retract_at_layer_change": {
-            "value": true
-        },
-        "retraction_amount": {
-            "default_value": 4.5
-        },
-        "retraction_speed": {
+        "retraction_retract_speed": { "maximum_value_warning": 130 },
+        "retraction_speed":
+        {
             "default_value": 85,
             "maximum_value_warning": 100
         },
-        "retraction_retract_speed": {
-            "maximum_value_warning": 130
-        },
-        "retraction_prime_speed": {
-            "value": "math.ceil(retraction_speed * 0.4)",
-            "maximum_value_warning": 130
-        },
-        "retraction_min_travel": {
-            "value": "max(line_width * 2, 1.5)"
-        },
-        "retraction_combing": {
-            "value": "'off' if retraction_hop_enabled else 'noskin'"
-        },
-        "travel_retract_before_outer_wall": {
-            "value": true
-        },
-        "retraction_hop_enabled": {
-            "value": false
-        },
-        "retraction_hop_only_when_collides": {
-            "value": true
-        },
-        "retraction_hop": {
-            "value": 0.1
-        },
-        "support_pattern": {
-            "value": "'triangles'"
-        },
-        "support_z_distance": {
-            "value": 0.3
-        },
-        "support_interface_enable": {
-            "value": true
-        },
-        "support_roof_enable": {
-            "value": true
-        },
-        "support_use_towers": {
-            "value": false
-        },
-        "adhesion_type": { 
-            "value": "'skirt'"
-        },
-        "skirt_line_count": {
-            "value": 3
-        },
-        "skirt_gap": {
-            "value": 5
-        },
-        "brim_width": {
-            "value": 5
-        },
-        "smooth_spiralized_contours": {
-            "value": false
-        },
-        "roofing_monotonic": {
-            "value": true
-        }
+        "roofing_layer_count": { "value": 1 },
+        "skin_overlap": { "value": 10 },
+        "skirt_brim_speed": { "value": "math.ceil(speed_print * 40 / 60)" },
+        "skirt_gap": { "value": 5 },
+        "skirt_line_count": { "value": 3 },
+        "smooth_spiralized_contours": { "value": false },
+        "speed_layer_0": { "value": "math.ceil(speed_print * 30 / 50)" },
+        "speed_topbottom": { "value": "math.ceil(speed_print * 20 / 50)" },
+        "speed_travel": { "value": "speed_print if magic_spiralize else 120" },
+        "speed_wall": { "value": "speed_print" },
+        "speed_wall_0": { "value": "math.ceil(speed_print * 30 / 50)" },
+        "speed_wall_x": { "value": "speed_print" },
+        "speed_z_hop": { "value": "math.ceil(speed_print * 30 / 60)" },
+        "support_interface_enable": { "value": true },
+        "support_pattern": { "value": "'triangles'" },
+        "support_roof_enable": { "value": true },
+        "support_z_distance": { "value": 0.3 },
+        "top_layers": { "value": 6 },
+        "top_thickness": { "value": "layer_height * top_layers" },
+        "travel_retract_before_outer_wall": { "value": true },
+        "wall_line_count": { "value": 3 },
+        "wall_thickness": { "value": "line_width * wall_line_count" },
+        "z_seam_corner": { "value": "'z_seam_corner_inner'" },
+        "z_seam_type": { "value": "'shortest'" }
     }
 }

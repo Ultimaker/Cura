@@ -64,7 +64,7 @@ class VersionUpgrade22to24(VersionUpgrade):
 
             config.remove_option("general", "containers")
 
-            for idx in range(len(container_list)):
+            for idx, _ in enumerate(container_list):
                 config.set("containers", str(idx), container_list[idx])
 
         output = io.StringIO()

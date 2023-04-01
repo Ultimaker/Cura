@@ -1,0 +1,23 @@
+{
+    "version": 2,
+    "name": "Left Extruder",
+    "inherits": "fdmextruder",
+    "metadata":
+    {
+        "machine": "vivedino_trex3",
+        "position": "0"
+    },
+    "overrides":
+    {
+        "extruder_nr":
+        {
+            "default_value": 0,
+            "maximum_value": "3"
+        },
+        "machine_extruder_end_code": { "default_value": "M106 P0 S0" },
+        "machine_extruder_start_code": { "default_value": "M106 P0 S[fan_speed_pwm]" },
+        "machine_nozzle_offset_x": { "default_value": 0.0 },
+        "machine_nozzle_offset_y": { "default_value": 0.0 },
+        "material_diameter": { "default_value": 1.75 }
+    }
+}

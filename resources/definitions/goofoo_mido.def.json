@@ -1,15 +1,13 @@
 {
-    "name": "Goofoo Mido",
     "version": 2,
+    "name": "Goofoo Mido",
     "inherits": "goofoo_near",
-    "overrides": {
-        "machine_name": { "default_value": "Goofoo Mido" },
-        "machine_width": { "default_value": 200 },
+    "metadata": { "visible": true },
+    "overrides":
+    {
         "machine_depth": { "default_value": 200 },
-        "machine_height": { "default_value": 200 }
-
-    },
-    "metadata": {
-        "visible": true
+        "machine_height": { "default_value": 200 },
+        "machine_name": { "default_value": "Goofoo Mido" },
+        "machine_width": { "default_value": 200 }
     }
 }

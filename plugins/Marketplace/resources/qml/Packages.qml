@@ -40,7 +40,7 @@ ListView
 
         color: UM.Theme.getColor("detail_background")
 
-        Label
+        UM.Label
         {
             id: sectionHeaderText
             anchors.verticalCenter: parent.verticalCenter
@@ -48,7 +48,6 @@ ListView
 
             text: section
             font: UM.Theme.getFont("large")
-            color: UM.Theme.getColor("text")
         }
     }
 
@@ -63,8 +62,11 @@ ListView
         hoverEnabled: true
         onClicked:
         {
-            packages.selectedPackage = model.package;
-            contextStack.push(packageDetailsComponent);
+            if (!model.package.isMissingPackageInformation)
+            {
+                packages.selectedPackage = model.package;
+                contextStack.push(packageDetailsComponent);
+            }
         }
 
         PackageCard

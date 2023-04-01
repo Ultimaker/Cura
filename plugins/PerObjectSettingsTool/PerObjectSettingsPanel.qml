@@ -150,6 +150,7 @@ Item
             width: parent.width / 2 - UM.Theme.getSize("default_margin").width
             height: UM.Theme.getSize("setting_control").height
             textRole: "text"
+            forceHighlight: base.hovered
 
             model: ListModel
             {

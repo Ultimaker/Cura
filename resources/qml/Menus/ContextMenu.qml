@@ -46,7 +46,7 @@ Cura.Menu
         }
         // Add it to the fifth position (and above) as we want it to be added after the extruder header.
         onObjectAdded: function(index, object) { base.insertItem(index + 5, object) }
-        onObjectRemoved: function(object) {  base.removeItem(object) }
+        onObjectRemoved: function(index, object) {  base.removeItem(object) }
     }
 
     // Global actions
@@ -134,6 +134,7 @@ Cura.Menu
                 from: 1
                 to: 99
                 width: 2 * UM.Theme.getSize("button").width
+                value: 1
             }
         }
     }
