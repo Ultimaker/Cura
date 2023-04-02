@@ -53,7 +53,7 @@ RecommendedSettingSection
         {
             settingName: catalog.i18nc("@action:label", "Infill Pattern")
             tooltipText: catalog.i18nc("@label",
-            "The pattern of the infill material of the print:\n\nFor quick prints of non functional model choose line, zig zag or lighting infill.\n\nFor functional part not subjected to a lot of stress we reccomend grid or triangle or tri hexagon.\n\nFor functional 3D prints which require high strenght in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid.")
+            "The pattern of the infill material of the print:\n\nFor quick prints of non functional model choose line, zig zag or lightning infill.\n\nFor functional part not subjected to a lot of stress we recommend grid or triangle or tri hexagon.\n\nFor functional 3D prints which require high strength in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid.")
 
             settingControl: Cura.SingleSettingComboBox
             {
@@ -65,7 +65,7 @@ RecommendedSettingSection
         RecommendedSettingItem
         {
             settingName: catalog.i18nc("@action:label", "Shell Thickness")
-            tooltipText: catalog.i18nc("@label", "Defines the tickness of your part side walls, roof and floor.")
+            tooltipText: catalog.i18nc("@label", "Defines the thickness of your part side walls, roof and floor.")
 
             settingControl: RowLayout
             {

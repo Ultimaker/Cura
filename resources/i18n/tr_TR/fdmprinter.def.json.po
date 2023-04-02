@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-02-02 16:06+0000\n"
+"POT-Creation-Date: 2023-03-21 13:32+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -70,7 +70,7 @@ msgstr "Yazıcı başlığının giremediği alanları olan poligon listesi."
 #: fdmprinter.def.json
 msgctxt "brim_inside_margin description"
 msgid "A part fully enclosed inside another part can generate an outer brim that touches the inside of the other part. This removes all brim within this distance from internal holes."
-msgstr ""
+msgstr "Bir başka parçanın içine tamamen kapatılmış bir parça, diğer parçanın içine temas eden bir dış kenar oluşturabilir. Bu, iç deliklerden bu mesafe içindeki tüm kenarları kaldırır."
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_abs label"
@@ -279,7 +279,7 @@ msgstr "Ekstrüder ofsetini koordinat sistemine uygulayın. Tüm ekstrüderleri 
 #: fdmprinter.def.json
 msgctxt "interlocking_enable description"
 msgid "At the locations where models touch, generate an interlocking beam structure. This improves the adhesion between models, especially models printed in different materials."
-msgstr ""
+msgstr "Modellerin temas ettiği yerlerde, iç içe geçen bir kiriş yapısı oluşturun. Bu, özellikle farklı malzemelerden basılmış modellerde, modeller arasındaki yapışmayı iyileştirir."
 
 #: fdmprinter.def.json
 msgctxt "travel_avoid_other_parts label"
@@ -479,7 +479,7 @@ msgstr "Uç Mesafesi"
 #: fdmprinter.def.json
 msgctxt "brim_inside_margin label"
 msgid "Brim Inside Avoid Margin"
-msgstr ""
+msgstr "Kenar İçi Kaçınma Payı"
 
 #: fdmprinter.def.json
 msgctxt "brim_line_count label"
@@ -1491,7 +1491,7 @@ msgstr "Portal Yüksekliği"
 #: fdmprinter.def.json
 msgctxt "interlocking_enable label"
 msgid "Generate Interlocking Structure"
-msgstr ""
+msgstr "İç İçe Geçen Yapı Oluşturma"
 
 #: fdmprinter.def.json
 msgctxt "support_enable label"
@@ -1556,7 +1556,7 @@ msgstr "Kademeli Destek Dolgusu Aşamaları"
 #: fdmprinter.def.json
 msgctxt "cool_min_temperature description"
 msgid "Gradually reduce to this temperature when printing at reduced speeds because of minimum layer time."
-msgstr ""
+msgstr "Minimum katman süresi nedeniyle düşük hızlarda baskı yaparken kademeli olarak bu sıcaklığa düşürün."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1637,6 +1637,11 @@ msgstr "Dikişi Gizle veya Açığa Çıkar"
 msgctxt "hole_xy_offset label"
 msgid "Hole Horizontal Expansion"
 msgstr "Delik Yatay Büyüme"
+
+#: fdmprinter.def.json
+msgctxt "hole_xy_offset_max_diameter label"
+msgid "Hole Horizontal Expansion Max Diameter"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "small_hole_max_size description"
@@ -2046,27 +2051,27 @@ msgstr "İçten Dışa"
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_layer_count label"
 msgid "Interlocking Beam Layer Count"
-msgstr ""
+msgstr "İç İçe Geçen Kiriş Katman Sayısı"
 
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_width label"
 msgid "Interlocking Beam Width"
-msgstr ""
+msgstr "İç İçe Geçen Kiriş Genişliği"
 
 #: fdmprinter.def.json
 msgctxt "interlocking_boundary_avoidance label"
 msgid "Interlocking Boundary Avoidance"
-msgstr ""
+msgstr "İç İçe Geçme Sınırından Kaçınma"
 
 #: fdmprinter.def.json
 msgctxt "interlocking_depth label"
 msgid "Interlocking Depth"
-msgstr ""
+msgstr "İç İçe Geçme Derinliği"
 
 #: fdmprinter.def.json
 msgctxt "interlocking_orientation label"
 msgid "Interlocking Structure Orientation"
-msgstr ""
+msgstr "İç İçe Geçen Yapı Uyumlaması"
 
 #: fdmprinter.def.json
 msgctxt "ironing_only_highest_layer label"
@@ -3179,6 +3184,11 @@ msgid "Printing Temperature Initial Layer"
 msgstr "İlk Katman Yazdırma Sıcaklığı"
 
 #: fdmprinter.def.json
+msgctxt "skirt_height description"
+msgid "Printing the innermost skirt line with multiple layers makes it easy to remove the skirt."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "alternate_extra_perimeter description"
 msgid "Prints an extra wall at every other layer. This way infill gets caught between these extra walls, resulting in stronger prints."
 msgstr "Her katmanda ek duvar yazdırır. Bu şekilde dolgu ek duvarların arasında alır ve daha sağlam baskılar ortaya çıkar."
@@ -3664,6 +3674,11 @@ msgid "Skirt Distance"
 msgstr "Etek Mesafesi"
 
 #: fdmprinter.def.json
+msgctxt "skirt_height label"
+msgid "Skirt Height"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "skirt_line_count label"
 msgid "Skirt Line Count"
 msgstr "Etek Hattı Sayısı"
@@ -3729,10 +3744,14 @@ msgid "Small Hole Max Size"
 msgstr "Maksimum Küçük Delik Boyutu"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "cool_min_temperature label"
 msgid "Small Layer Printing Temperature"
-msgstr "Son Yazdırma Sıcaklığı"
+msgstr "Küçük Katmanlı Baskı Sıcaklığı"
+
+#: fdmprinter.def.json
+msgctxt "small_skin_width label"
+msgid "Small Top/Bottom Width"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 description"
@@ -3743,6 +3762,16 @@ msgstr "İlk katman üzerindeki küçük özellikler normal baskı hızının bu
 msgctxt "small_feature_speed_factor description"
 msgid "Small features will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
 msgstr "Küçük özellikler normal baskı hızının bu yüzdesinde basılacaktır. Daha yavaş baskı, yapışma ve doğruluğu artırmaya yardımcı olabilir."
+
+#: fdmprinter.def.json
+msgctxt "small_skin_width description"
+msgid "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "brim_smart_ordering label"
+msgid "Smart Brim"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "z_seam_corner option z_seam_corner_weighted"
@@ -3885,10 +3914,9 @@ msgid "Support Bottom Distance"
 msgstr "Destek Alt Mesafesi"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "support_bottom_wall_count label"
 msgid "Support Bottom Wall Line Count"
-msgstr "Duvar Hattı Sayısını Destekle"
+msgstr "Destek Alt Duvar Hattı Sayısı"
 
 #: fdmprinter.def.json
 msgctxt "support_brim_line_count label"
@@ -4086,10 +4114,9 @@ msgid "Support Interface Thickness"
 msgstr "Destek Arayüzü Kalınlığı"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "support_interface_wall_count label"
 msgid "Support Interface Wall Line Count"
-msgstr "Duvar Hattı Sayısını Destekle"
+msgstr "Destek Arayüzü Duvar Hattı Sayısı"
 
 #: fdmprinter.def.json
 msgctxt "jerk_support label"
@@ -4192,10 +4219,9 @@ msgid "Support Roof Thickness"
 msgstr "Destek Tavanı Kalınlığı"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "support_roof_wall_count label"
 msgid "Support Roof Wall Line Count"
-msgstr "Duvar Hattı Sayısını Destekle"
+msgstr "Destek Çatı Duvar Hattı Sayısı"
 
 #: fdmprinter.def.json
 msgctxt "speed_support label"
@@ -4271,6 +4297,11 @@ msgstr "Yüzeye yapışma eğilimi."
 msgctxt "material_surface_energy description"
 msgid "Surface energy."
 msgstr "Yüzey enerjisi."
+
+#: fdmprinter.def.json
+msgctxt "brim_smart_ordering description"
+msgid "Swap print order of the innermost and second innermost brim lines. This improves brim removal."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "alternate_carve_order description"
@@ -4599,8 +4630,8 @@ msgstr "İçerideki ana tavan hattından bağlantı yaparken kapatılan mesafe. 
 
 #: fdmprinter.def.json
 msgctxt "interlocking_depth description"
-msgid "The distance from the boundary between models to generate interlocking structure measured in cells. Too few cells will result in poor adhesion."
-msgstr ""
+msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
+msgstr "İç içe geçen yapı oluşturmak için modeller arası sınırdan hücre sayısı olarak ölçülen mesafe. Çok az hücre kullanmak zayıf yapışmaya neden olur."
 
 #: fdmprinter.def.json
 msgctxt "brim_width description"
@@ -4610,7 +4641,7 @@ msgstr "Modelin en dış kenar hattını olan mesafesi. Daha büyük kenar hatt�
 #: fdmprinter.def.json
 msgctxt "interlocking_boundary_avoidance description"
 msgid "The distance from the outside of a model where interlocking structures will not be generated, measured in cells."
-msgstr ""
+msgstr "İç içe geçen yapıların üretilmeyeceği bir modelin dışından hücre sayısı olarak ölçülen mesafe."
 
 #: fdmprinter.def.json
 msgctxt "machine_heat_zone_length description"
@@ -4840,12 +4871,12 @@ msgstr "Yoğunluğun yarısına inmeden önce belirli bir yoğunluktaki destek d
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_layer_count description"
 msgid "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects."
-msgstr ""
+msgstr "İç içe geçen yapı kirişlerinin katman sayısı olarak ölçülen yüksekliği. Daha az katman daha güçlüdür, ancak kusurlara daha yatkındır."
 
 #: fdmprinter.def.json
 msgctxt "interlocking_orientation description"
 msgid "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects."
-msgstr ""
+msgstr "İç içe geçen yapı kirişlerinin katman sayısı olarak ölçülen yüksekliği. Daha az katman daha güçlüdür, ancak kusurlara daha yatkındır."
 
 #: fdmprinter.def.json
 msgctxt "layer_height_0 description"
@@ -5257,22 +5288,19 @@ msgid "The number of walls with which to surround support infill. Adding a wall 
 msgstr "Destek dolgusunun çevreleneceği duvar sayısı. Bir duvarın eklenmesi destek yazdırmasını daha güvenilir kılabilir ve çıkıntıları daha iyi destekleyebilir. Ancak yazdırma süresini ve kullanılan malzemeyi artırır."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "support_bottom_wall_count description"
 msgid "The number of walls with which to surround support interface floor. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "Destek dolgusunun çevreleneceği duvar sayısı. Bir duvarın eklenmesi destek yazdırmasını daha güvenilir kılabilir ve çıkıntıları daha iyi destekleyebilir. Ancak yazdırma süresini ve kullanılan malzemeyi artırır."
+msgstr "Destek arayüz zeminini çevreleyecek duvar sayısı. Duvar eklemek, destek baskıyı daha güvenilir hale getirebilir ve çıkıntıları daha iyi destekleyebilir ama baskı süresini ve kullanılan malzemeyi artırır."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "support_roof_wall_count description"
 msgid "The number of walls with which to surround support interface roof. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "Destek dolgusunun çevreleneceği duvar sayısı. Bir duvarın eklenmesi destek yazdırmasını daha güvenilir kılabilir ve çıkıntıları daha iyi destekleyebilir. Ancak yazdırma süresini ve kullanılan malzemeyi artırır."
+msgstr "Destek arayüz çatısını çevreleyecek duvar sayısı. Duvar eklemek, destek baskıyı daha güvenilir hale getirebilir ve çıkıntıları daha iyi destekleyebilir ama baskı süresini ve kullanılan malzemeyi artırır."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "support_interface_wall_count description"
 msgid "The number of walls with which to surround support interface. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "Destek dolgusunun çevreleneceği duvar sayısı. Bir duvarın eklenmesi destek yazdırmasını daha güvenilir kılabilir ve çıkıntıları daha iyi destekleyebilir. Ancak yazdırma süresini ve kullanılan malzemeyi artırır."
+msgstr "Destek arayüzünü çevreleyecek duvar sayısı. Duvar eklemek, destek baskıyı daha güvenilir hale getirebilir ve çıkıntıları daha iyi destekleyebilir ama baskı süresini ve kullanılan malzemeyi artırır."
 
 #: fdmprinter.def.json
 msgctxt "wall_distribution_count description"
@@ -5695,10 +5723,9 @@ msgid "The width of the brim to print underneath the support. A larger brim enha
 msgstr "Desteğin altına yazdırılacak kenarın genişliği. Daha geniş kenar, ekstra malzeme karşılığında baskı tablasına daha fazla alanın yapışacağı anlamına gelir."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "interlocking_beam_width description"
 msgid "The width of the interlocking structure beams."
-msgstr "İlk Direk Genişliği."
+msgstr "İç içe geçen yapı kirişlerinin genişliği."
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_size description"
@@ -6316,6 +6343,11 @@ msgid "When greater than zero, combing travel moves that are longer than this di
 msgstr "Sıfırdan büyük olduğunda, bu mesafeden daha uzun tarama mesafelerinde geri çekme yapılır. Sıfıra ayarlandığında, bir maksimum belirlenmez ve tarama hareketlerinde geri çekme kullanılmaz."
 
 #: fdmprinter.def.json
+msgctxt "hole_xy_offset_max_diameter description"
+msgid "When greater than zero, the Hole Horizontal Expansion is gradually applied on small holes (small holes are expanded more). When set to zero the Hole Horizontal Expansion will be applied to all holes. Holes larger than the Hole Horizontal Expansion Max Diameter are not expanded."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "bridge_skin_material_flow description"
 msgid "When printing bridge skin regions, the amount of material extruded is multiplied by this value."
 msgstr "Köprü yüzey alanı bölgeleri yazdırılırken, ekstrude edilen malzeme miktarı bu değerle çarpılır."
@@ -6774,19 +6806,3 @@ msgstr "Zikzak"
 msgctxt "travel description"
 msgid "travel"
 msgstr "hareket"
-
-#~ msgctxt "material_flow_dependent_temperature label"
-#~ msgid "Auto Temperature"
-#~ msgstr "Otomatik Sıcaklık"
-
-#~ msgctxt "material_flow_dependent_temperature description"
-#~ msgid "Change the temperature for each layer automatically with the average flow speed of that layer."
-#~ msgstr "Katmanın ortalama akış hızıyla otomatik olarak her katman için sıcaklığı değiştirir."
-
-#~ msgctxt "limit_support_retractions label"
-#~ msgid "Limit Support Retractions"
-#~ msgstr "Destek Geri Çekmelerini Sınırlandır"
-
-#~ msgctxt "limit_support_retractions description"
-#~ msgid "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excessive stringing within the support structure."
-#~ msgstr "Düz hat üzerinde destekler arasında hareket ederken geri çekmeyi atlayın. Bu ayarın etkinleştirilmesi baskı süresini kısaltır ancak destek yapısında ölçüsüz dizilime yol açabilir."
