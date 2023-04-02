@@ -47,6 +47,15 @@
       "retraction_speed":{
          "default_value":35
       },
+      "support_xy_distance":{
+         "default_value": 1.0
+      },
+      "retraction_min_travel":{
+      "default_value":3
+      },
+      "retraction_count_max":{
+         "default_value": 10,
+      },
       "speed_wall_0":{
          "value":20.0
       },
