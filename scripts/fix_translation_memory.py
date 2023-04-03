@@ -46,6 +46,7 @@ def main(tmx_source_path: Path, tmx_target_path: Path, i18n_path: Path):
             fuzz_match_key = list(po_content[key_lang].keys())[fuzz_match_ratio.index(fuzz_max_ratio)]
             if fuzz_max_ratio > 90:
                 fuzz_match_po_value = po_content[key_lang][fuzz_match_key]
+                tuvs[0].find("seg").text = fuzz_match_key
                 tuvs[1].find("seg").text = fuzz_match_po_value
                 # print(f"[{key_lang}] Fuzz match: {key_source} -> {fuzz_match_key} -> {fuzz_match_po_value} with a ratio of {fuzz_max_ratio}")
             else:
