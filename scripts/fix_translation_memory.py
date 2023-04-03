@@ -23,12 +23,12 @@ def load_existing_po(path: Path) -> dict:
 
 def sanitize(text: str) -> str:
     """Sanitize the text"""
-    return unescape(text.replace("\"\"", "").replace("\"#~", ""))
+    return unescape(text.replace("Ultimaker", "UltiMaker").replace("\"\"", "").replace("\"#~", ""))
 
 def main(tmx_source_path: Path, tmx_target_path: Path, i18n_path: Path):
 
     po_content = {}
-    for file in i18n_path.rglob("cura.po"):
+    for file in i18n_path.rglob("*.po"):
         print(os.path.join(i18n_path, file))
         po_content[file.relative_to(i18n_path).parts[0].replace("_", "-")] = load_existing_po(Path(os.path.join(i18n_path, file)))
 
@@ -45,7 +45,7 @@ def main(tmx_source_path: Path, tmx_target_path: Path, i18n_path: Path):
         if key_lang in po_content and key_source in po_content[key_lang]:
             replaced_translation = po_content[key_lang][key_source]
         else:
-            fuzz_match_ratio = [fuzz.ratio(k, key_source) for k in po_content[key_lang].keys()]
+            fuzz_match_ratio = [fuzz.ratio(sanitize(k), key_source) for k in po_content[key_lang].keys()]
             fuzz_max_ratio = max(fuzz_match_ratio)
             fuzz_match_key = list(po_content[key_lang].keys())[fuzz_match_ratio.index(fuzz_max_ratio)]
             if fuzz_max_ratio > 90:
