@@ -36,7 +36,7 @@ def main(tmx_source_path: Path, tmx_target_path: Path, i18n_path: Path):
 
     root = load_existing_xmtm(tmx_source_path)
     root_old = ET.ElementTree(root)
-    ET.indent(root_old, '  ')
+    # ET.indent(root_old, '  ')
     root_old.write("old.tmx", encoding="utf-8", xml_declaration=True)
     to_be_removed = []
     for tu in root.iter("tu"):
@@ -63,10 +63,10 @@ def main(tmx_source_path: Path, tmx_target_path: Path, i18n_path: Path):
         if tuvs[1].find("seg").text == "\"":
             to_be_removed.append(tu)
 
+    body = root.find("body")
     for tu in to_be_removed:
-        root.remove(tu)
+        body.remove(tu)
     fixed_root = ET.ElementTree(root)
-    ET.indent(fixed_root, '  ')
     fixed_root.write(tmx_target_path, encoding="utf-8", xml_declaration=True)
 
 
