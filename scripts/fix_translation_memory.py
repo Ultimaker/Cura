@@ -25,7 +25,12 @@ def load_existing_po(path: Path) -> dict:
 def sanitize(text: str) -> str:
     """Sanitize the text"""
     # TODO: check if Digitial Factory Ultimaker etc handled correctly
-    return unescape(text.replace("Ultimaker", "UltiMaker").replace("\"\"", "").replace("\"#~", ""))
+    text = text.replace("\"\"", "").replace("\"#~", "")
+    text = text.replace("Ultimaker", "UltiMaker")
+    text = text.replace("UltiMaker Digital Library", "Ultimaker Digital Library")
+    text = text.replace("UltiMaker Digital Factory", "Ultimaker Digital Factory")
+    text = text.replace("UltiMaker Marketplace", "Ultimaker Marketplace")
+    return unescape(text)
 
 def main(tmx_source_path: Path, tmx_target_path: Path, i18n_path: Path):
 
