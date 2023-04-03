@@ -7,7 +7,7 @@ from pathlib import Path
 from fuzzywuzzy import fuzz
 from fuzzywuzzy import process
 import xml.etree.ElementTree as ET
-from xml.sax.saxutils import unescape
+from xml.sax.saxutils import unescape, escape, quoteattr
 
 
 def load_existing_xmtm(path: Path) -> ET.Element:
@@ -21,6 +21,9 @@ def load_existing_po(path: Path) -> dict:
     content = "".join(content.splitlines()[16:])
     return dict(re.findall(r'[^#]msgid.?\"+\s?([\s|\S]+?)\"*?msgstr.?\"([\s|\S]+?)\"?#', content))
 
+def sanitize(text: str) -> str:
+    """Sanitize the text"""
+    return unescape(text.replace("\"\"", "").replace("\"#~", ""))
 
 def main(tmx_source_path: Path, tmx_target_path: Path, i18n_path: Path):
 
@@ -31,6 +34,7 @@ def main(tmx_source_path: Path, tmx_target_path: Path, i18n_path: Path):
 
     root = load_existing_xmtm(tmx_source_path)
     root_old = ET.ElementTree(root)
+    ET.indent(root_old, '  ')
     root_old.write("old.tmx", encoding="utf-8", xml_declaration=True)
     for tu in root.iter("tu"):
         if "cura.pot" not in [t.text for t in tu.findall("prop") if t.attrib["type"] == "x-smartling-file"]:
@@ -39,20 +43,20 @@ def main(tmx_source_path: Path, tmx_target_path: Path, i18n_path: Path):
         key_source = tuvs[0].find("seg").text
         key_lang = tuvs[1].attrib["{http://www.w3.org/XML/1998/namespace}lang"]
         if key_lang in po_content and key_source in po_content[key_lang]:
-            tuvs[1].find("seg").text = po_content[key_lang][key_source]
+            replaced_translation = po_content[key_lang][key_source]
         else:
             fuzz_match_ratio = [fuzz.ratio(k, key_source) for k in po_content[key_lang].keys()]
             fuzz_max_ratio = max(fuzz_match_ratio)
             fuzz_match_key = list(po_content[key_lang].keys())[fuzz_match_ratio.index(fuzz_max_ratio)]
             if fuzz_max_ratio > 90:
-                fuzz_match_po_value = po_content[key_lang][fuzz_match_key]
-                tuvs[0].find("seg").text = fuzz_match_key
-                tuvs[1].find("seg").text = fuzz_match_po_value
-                # print(f"[{key_lang}] Fuzz match: {key_source} -> {fuzz_match_key} -> {fuzz_match_po_value} with a ratio of {fuzz_max_ratio}")
+                replaced_translation = po_content[key_lang][fuzz_match_key]
+                tuvs[0].find("seg").text = sanitize(fuzz_match_key)
             else:
-                # print(f"[{key_lang}] No match for: {key_source} -> {tuvs[1].find('seg').text} -> highest ratio: {fuzz_max_ratio}")
                 print(f"[{key_lang}] {key_source} == {fuzz_match_key} [{fuzz_max_ratio}]")
+                continue
+        tuvs[1].find("seg").text = sanitize(replaced_translation)
     fixed_root = ET.ElementTree(root)
+    ET.indent(fixed_root, '  ')
     fixed_root.write(tmx_target_path, encoding="utf-8", xml_declaration=True)
 
 
