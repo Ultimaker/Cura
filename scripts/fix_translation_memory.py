@@ -19,10 +19,12 @@ def load_existing_po(path: Path) -> dict:
     """Load existing po file and return a dictionary of msgid and msgstr"""
     content = path.read_text(encoding="utf-8")
     content = "".join(content.splitlines()[16:])
+    # TODO: check languages with plural forms
     return dict(re.findall(r'[^#]msgid.?\"+\s?([\s|\S]+?)\"*?msgstr.?\"([\s|\S]+?)\"?#', content))
 
 def sanitize(text: str) -> str:
     """Sanitize the text"""
+    # TODO: check if Digitial Factory Ultimaker etc handled correctly
     return unescape(text.replace("Ultimaker", "UltiMaker").replace("\"\"", "").replace("\"#~", ""))
 
 def main(tmx_source_path: Path, tmx_target_path: Path, i18n_path: Path):
@@ -36,7 +38,9 @@ def main(tmx_source_path: Path, tmx_target_path: Path, i18n_path: Path):
     root_old = ET.ElementTree(root)
     ET.indent(root_old, '  ')
     root_old.write("old.tmx", encoding="utf-8", xml_declaration=True)
+    to_be_removed = []
     for tu in root.iter("tu"):
+        # TODO: also add logic for other pot files
         if "cura.pot" not in [t.text for t in tu.findall("prop") if t.attrib["type"] == "x-smartling-file"]:
             continue
         tuvs = tu.findall("tuv")
@@ -55,6 +59,12 @@ def main(tmx_source_path: Path, tmx_target_path: Path, i18n_path: Path):
                 print(f"[{key_lang}] {key_source} == {fuzz_match_key} [{fuzz_max_ratio}]")
                 continue
         tuvs[1].find("seg").text = sanitize(replaced_translation)
+        # if the tvus[1].find("seg").text is a single ", remove the tu element as whole (since this is an untranslated string)
+        if tuvs[1].find("seg").text == "\"":
+            to_be_removed.append(tu)
+
+    for tu in to_be_removed:
+        root.remove(tu)
     fixed_root = ET.ElementTree(root)
     ET.indent(fixed_root, '  ')
     fixed_root.write(tmx_target_path, encoding="utf-8", xml_declaration=True)
