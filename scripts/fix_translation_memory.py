@@ -46,7 +46,7 @@ def main(tmx_source_path: Path, tmx_target_path: Path, i18n_path: Path):
     to_be_removed = []
     for tu in root.iter("tu"):
         # TODO: also add logic for other pot files
-        if [t.text for t in tu.findall("prop") if t.attrib["type"] == "x-smartling-file"][0] not in ("cura.pot", "fdmprinter.def.json.pot", "fdmextruder.def.json.pot"):
+        if [t.text for t in tu.findall("prop") if t.attrib["type"] == "x-smartling-file"][0] not in ("cura.pot", "fdmprinter.def.json.pot", "fdmextruder.def.json.pot", "uranium.pot"):
             continue
         tuvs = tu.findall("tuv")
         key_source = tuvs[0].find("seg").text
