@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-03-08 09:03+0000\n"
+"POT-Creation-Date: 2023-03-28 11:57+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -587,11 +587,6 @@ msgid "Command Line Settings"
 msgstr "Ajustes de la línea de comandos"
 
 #: fdmprinter.def.json
-msgctxt "wireframe_strategy option compensate"
-msgid "Compensate"
-msgstr "Compensar"
-
-#: fdmprinter.def.json
 msgctxt "infill_pattern option concentric"
 msgid "Concentric"
 msgstr "Concéntrico"
@@ -722,11 +717,6 @@ msgid "Cooling"
 msgstr "Refrigeración"
 
 #: fdmprinter.def.json
-msgctxt "wireframe_top_jump description"
-msgid "Creates a small knot at the top of an upward line, so that the consecutive horizontal layer has a better chance to connect to it. Only applies to Wire Printing."
-msgstr "Crea un pequeño nudo en la parte superior de una línea ascendente, de modo que la siguiente capa horizontal tendrá mayor probabilidad de conectarse a la misma. Solo se aplica a la impresión de alambre."
-
-#: fdmprinter.def.json
 msgctxt "infill_pattern option cross"
 msgid "Cross"
 msgstr "Cruz"
@@ -832,21 +822,6 @@ msgid "Default jerk for the motor of the filament."
 msgstr "Impulso predeterminado del motor del filamento."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_bottom_delay description"
-msgid "Delay time after a downward move. Only applies to Wire Printing."
-msgstr "Tiempo de retardo después de un movimiento descendente. Solo se aplica a la impresión de alambre."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_top_delay description"
-msgid "Delay time after an upward move, so that the upward line can harden. Only applies to Wire Printing."
-msgstr "Tiempo de retardo después de un movimiento ascendente, para que la línea ascendente pueda endurecerse. Solo se aplica a la impresión de alambre."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flat_delay description"
-msgid "Delay time between two horizontal segments. Introducing such a delay can cause better adhesion to previous layers at the connection points, while too long delays cause sagging. Only applies to Wire Printing."
-msgstr "Tiempo de retardo entre dos segmentos horizontales. La introducción de este retardo puede causar una mejor adherencia a las capas anteriores en los puntos de conexión, mientras que los retardos demasiado prolongados causan combados. Solo se aplica a la impresión de alambre."
-
-#: fdmprinter.def.json
 msgctxt "bridge_settings_enabled description"
 msgid "Detect bridges and modify print speed, flow and fan settings while bridges are printed."
 msgstr "Detección de puentes y modificación de los ajustes de velocidad de impresión, flujo y ventilador durante la impresión de puentes."
@@ -885,11 +860,6 @@ msgstr "Opciones diferentes que ayudan a mejorar tanto la extrusión como la adh
 msgctxt "machine_disallowed_areas label"
 msgid "Disallowed Areas"
 msgstr "Áreas no permitidas"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_nozzle_clearance description"
-msgid "Distance between the nozzle and horizontally downward lines. Larger clearance results in diagonally downward lines with a less steep angle, which in turn results in less upward connections with the next layer. Only applies to Wire Printing."
-msgstr "Distancia entre la tobera y líneas descendentes en horizontal. Cuanto mayor sea la holgura, menos pronunciado será el ángulo de las líneas descendentes en diagonal, lo que a su vez se traduce en menos conexiones ascendentes con la siguiente capa. Solo se aplica a la impresión de alambre."
 
 #: fdmprinter.def.json
 msgctxt "infill_line_distance description"
@@ -942,15 +912,6 @@ msgid "Distance of a travel move inserted after the outer wall, to hide the Z se
 msgstr "Distancia de un movimiento de desplazamiento insertado tras la pared exterior con el fin de ocultar mejor la costura sobre el eje Z."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_up_half_speed description"
-msgid ""
-"Distance of an upward move which is extruded with half speed.\n"
-"This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-msgstr ""
-"Distancia de un movimiento ascendente que se extrude a media velocidad.\n"
-"Esto puede causar una mejor adherencia a las capas anteriores, aunque no calienta demasiado el material en esas capas. Solo se aplica a la impresión de alambre."
-
-#: fdmprinter.def.json
 msgctxt "draft_shield_dist description"
 msgid "Distance of the draft shield from the print, in the X/Y directions."
 msgstr "Distancia entre el parabrisas y la impresión, en las direcciones X/Y."
@@ -969,16 +930,6 @@ msgstr "Distancia de la estructura de soporte desde el voladizo en las direccion
 msgctxt "support_xy_distance description"
 msgid "Distance of the support structure from the print in the X/Y directions."
 msgstr "Distancia de la estructura del soporte desde la impresión en las direcciones X/Y."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_fall_down description"
-msgid "Distance with which the material falls down after an upward extrusion. This distance is compensated for. Only applies to Wire Printing."
-msgstr "Distancia a la que cae el material después de una extrusión ascendente. Esta distancia se compensa. Solo se aplica a la impresión de alambre."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_drag_along description"
-msgid "Distance with which the material of an upward extrusion is dragged along with the diagonally downward extrusion. This distance is compensated for. Only applies to Wire Printing."
-msgstr "Distancia a la que el material de una extrusión ascendente se arrastra junto con la extrusión descendente en diagonal. Esta distancia se compensa. Solo se aplica a la impresión de alambre."
 
 #: fdmprinter.def.json
 msgctxt "min_infill_area description"
@@ -1376,24 +1327,9 @@ msgid "Flow compensation on wall lines."
 msgstr "Compensación de flujo en líneas de pared."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_flow_connection description"
-msgid "Flow compensation when going up or down. Only applies to Wire Printing."
-msgstr "Compensación de flujo cuando se va hacia arriba o hacia abajo. Solo se aplica a la impresión de alambre."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow_flat description"
-msgid "Flow compensation when printing flat lines. Only applies to Wire Printing."
-msgstr "Compensación de flujo al imprimir líneas planas. Solo se aplica a la impresión de alambre."
-
-#: fdmprinter.def.json
 msgctxt "material_flow description"
 msgid "Flow compensation: the amount of material extruded is multiplied by this value."
 msgstr "Compensación de flujo: la cantidad de material extruido se multiplica por este valor."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow description"
-msgid "Flow compensation: the amount of material extruded is multiplied by this value. Only applies to Wire Printing."
-msgstr "Compensación de flujo: la cantidad de material extruido se multiplica por este valor. Solo se aplica a la impresión de alambre."
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length label"
@@ -1637,6 +1573,11 @@ msgstr "Ocultar o mostrar costura"
 msgctxt "hole_xy_offset label"
 msgid "Hole Horizontal Expansion"
 msgstr "Expansión horizontal de orificios"
+
+#: fdmprinter.def.json
+msgctxt "hole_xy_offset_max_diameter label"
+msgid "Hole Horizontal Expansion Max Diameter"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "small_hole_max_size description"
@@ -2127,11 +2068,6 @@ msgstr "Use solo los contornos de las piezas, no los orificios de las piezas."
 msgctxt "meshfix_keep_open_polygons label"
 msgid "Keep Disconnected Faces"
 msgstr "Mantener caras desconectadas"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_strategy option knot"
-msgid "Knot"
-msgstr "Nudo"
 
 #: fdmprinter.def.json
 msgctxt "layer_height label"
@@ -3019,11 +2955,6 @@ msgid "Percentage fan speed to use when printing the third bridge skin layer."
 msgstr "Velocidad del ventilador en porcentaje que se utiliza para imprimir la tercera capa del forro del puente."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_straight_before_down description"
-msgid "Percentage of a diagonally downward line which is covered by a horizontal line piece. This can prevent sagging of the top most point of upward lines. Only applies to Wire Printing."
-msgstr "Porcentaje de una línea descendente en diagonal que está cubierta por un trozo de línea horizontal. Esto puede evitar el combado del punto de nivel superior de las líneas ascendentes. Solo se aplica a la impresión de alambre."
-
-#: fdmprinter.def.json
 msgctxt "minimum_polygon_circumference description"
 msgid "Polygons in sliced layers that have a circumference smaller than this amount will be filtered out. Lower values lead to higher resolution mesh at the cost of slicing time. It is meant mostly for high resolution SLA printers and very tiny 3D models with a lot of details."
 msgstr "Se filtran los polígonos en capas segmentadas que tienen una circunferencia más pequeña que esta. Los valores más pequeños suponen una resolución de malla mayor a costa de un tiempo de segmentación. Está indicado, sobre todo, para impresoras SLA y modelos 3D muy pequeños con muchos detalles."
@@ -3134,11 +3065,6 @@ msgid "Print models as a mold, which can be cast in order to get a model which r
 msgstr "Imprimir modelos como un molde que se pueden fundir para obtener un modelo que se parezca a los modelos de la placa de impresión."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_enabled description"
-msgid "Print only the outside surface with a sparse webbed structure, printing 'in thin air'. This is realized by horizontally printing the contours of the model at given Z intervals which are connected via upward and diagonally downward lines."
-msgstr "Imprime solo la superficie exterior con una estructura reticulada poco densa, imprimiendo 'en el aire'. Esto se realiza mediante la impresión horizontal de los contornos del modelo a intervalos Z dados que están conectados a través de líneas ascendentes y descendentes en diagonal."
-
-#: fdmprinter.def.json
 msgctxt "fill_outline_gaps description"
 msgid "Print pieces of the model which are horizontally thinner than the nozzle size."
 msgstr "Imprime las piezas del modelo que son horizontalmente más finas que el tamaño de la tobera."
@@ -3177,6 +3103,11 @@ msgstr "Temperatura de impresión"
 msgctxt "material_print_temperature_layer_0 label"
 msgid "Printing Temperature Initial Layer"
 msgstr "Temperatura de impresión de la capa inicial"
+
+#: fdmprinter.def.json
+msgctxt "skirt_height description"
+msgid "Printing the innermost skirt line with multiple layers makes it easy to remove the skirt."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "alternate_extra_perimeter description"
@@ -3479,11 +3410,6 @@ msgid "Resolution to compute collisions with to avoid hitting the model. Setting
 msgstr "Resolución para computar colisiones para evitar golpear el modelo. Establecer un ajuste bajo producirá árboles más precisos que producen fallos con menor frecuencia, pero aumenta significativamente el tiempo de fragmentación."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_strategy option retract"
-msgid "Retract"
-msgstr "Retraer"
-
-#: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"
 msgid "Retract Before Outer Wall"
 msgstr "Retracción antes de la pared exterior"
@@ -3664,6 +3590,11 @@ msgid "Skirt Distance"
 msgstr "Distancia de falda"
 
 #: fdmprinter.def.json
+msgctxt "skirt_height label"
+msgid "Skirt Height"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "skirt_line_count label"
 msgid "Skirt Line Count"
 msgstr "Recuento de líneas de falda"
@@ -3734,6 +3665,11 @@ msgid "Small Layer Printing Temperature"
 msgstr "Temperatura de impresión de capas pequeñas"
 
 #: fdmprinter.def.json
+msgctxt "small_skin_width label"
+msgid "Small Top/Bottom Width"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 description"
 msgid "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
 msgstr "Las pequeñas partes de la primera capa se imprimirán a este porcentaje de su velocidad de impresión normal. Una impresión más lenta puede mejorar la adhesión y la precisión."
@@ -3742,6 +3678,16 @@ msgstr "Las pequeñas partes de la primera capa se imprimirán a este porcentaje
 msgctxt "small_feature_speed_factor description"
 msgid "Small features will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
 msgstr "Las pequeñas partes se imprimirán a este porcentaje de su velocidad de impresión normal. Una impresión más lenta puede mejorar la adhesión y la precisión."
+
+#: fdmprinter.def.json
+msgctxt "small_skin_width description"
+msgid "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "brim_smart_ordering label"
+msgid "Smart Brim"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "z_seam_corner option z_seam_corner_weighted"
@@ -3782,31 +3728,6 @@ msgstr "Velocidad"
 msgctxt "speed label"
 msgid "Speed"
 msgstr "Velocidad"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed description"
-msgid "Speed at which the nozzle moves when extruding material. Only applies to Wire Printing."
-msgstr "Velocidad a la que la tobera se desplaza durante la extrusión de material. Solo se aplica a la impresión de alambre."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_down description"
-msgid "Speed of printing a line diagonally downward. Only applies to Wire Printing."
-msgstr "Velocidad de impresión de una línea descendente en diagonal 'en el aire'. Solo se aplica a la impresión de alambre."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_up description"
-msgid "Speed of printing a line upward 'in thin air'. Only applies to Wire Printing."
-msgstr "Velocidad de impresión de una línea ascendente 'en el aire'. Solo se aplica a la impresión de alambre."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_bottom description"
-msgid "Speed of printing the first layer, which is the only layer touching the build platform. Only applies to Wire Printing."
-msgstr "Velocidad de impresión de la primera capa, que es la única capa que toca la plataforma de impresión. Solo se aplica a la impresión de alambre."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_flat description"
-msgid "Speed of printing the horizontal contours of the model. Only applies to Wire Printing."
-msgstr "Velocidad de impresión de los contornos horizontales del modelo. Solo se aplica a la impresión de alambre."
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_speed description"
@@ -3857,11 +3778,6 @@ msgstr "Pasos por milímetro (Y)"
 msgctxt "machine_steps_per_mm_z label"
 msgid "Steps per Millimeter (Z)"
 msgstr "Pasos por milímetro (Z)"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_strategy description"
-msgid "Strategy for making sure two consecutive layers connect at each connection point. Retraction lets the upward lines harden in the right position, but may cause filament grinding. A knot can be made at the end of an upward line to heighten the chance of connecting to it and to let the line cool; however, it may require slow printing speeds. Another strategy is to compensate for the sagging of the top of an upward line; however, the lines won't always fall down as predicted."
-msgstr "Estrategia para asegurarse de que dos capas consecutivas conecten en cada punto de conexión. La retracción permite que las líneas ascendentes se endurezcan en la posición correcta, pero pueden hacer que filamento se desmenuce. Se puede realizar un nudo al final de una línea ascendente para aumentar la posibilidad de conexión a la misma y dejar que la línea se enfríe; sin embargo, esto puede requerir velocidades de impresión lentas. Otra estrategia consiste en compensar el combado de la parte superior de una línea ascendente; sin embargo, las líneas no siempre caen como se espera."
 
 #: fdmprinter.def.json
 msgctxt "support description"
@@ -4269,6 +4185,11 @@ msgid "Surface energy."
 msgstr "Energía de la superficie."
 
 #: fdmprinter.def.json
+msgctxt "brim_smart_ordering description"
+msgid "Swap print order of the innermost and second innermost brim lines. This improves brim removal."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "alternate_carve_order description"
 msgid "Switch to which mesh intersecting volumes will belong with every layer, so that the overlapping meshes become interwoven. Turning this setting off will cause one of the meshes to obtain all of the volume in the overlap, while it is removed from the other meshes."
 msgstr "Cambiar la malla a la que pertenecerán los volúmenes que se cruzan en cada capa, de forma que las mallas superpuestas se entrelacen. Desactivar esta opción dará lugar a que una de las mallas reciba todo el volumen de la superposición y que este se elimine de las demás mallas."
@@ -4589,11 +4510,6 @@ msgid "The distance between the raft lines for the top raft layers. The spacing 
 msgstr "Distancia entre las líneas de la balsa para las capas superiores de la balsa. La separación debe ser igual a la ancho de línea para producir una superficie sólida."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_roof_inset description"
-msgid "The distance covered when making a connection from a roof outline inward. Only applies to Wire Printing."
-msgstr "Distancia cubierta al hacer una conexión desde un contorno del techo hacia el interior. Solo se aplica a la impresión de alambre."
-
-#: fdmprinter.def.json
 msgctxt "interlocking_depth description"
 msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
 msgstr "La distancia del límite entre los modelos para generar una estructura entrelazada, medida en celdas. Un número demasiado bajo de celdas provocará una adhesión deficiente."
@@ -4614,11 +4530,6 @@ msgid "The distance from the tip of the nozzle in which heat from the nozzle is 
 msgstr "Distancia desde la punta de la tobera que transfiere calor al filamento."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_roof_drag_along description"
-msgid "The distance of the end piece of an inward line which gets dragged along when going back to the outer outline of the roof. This distance is compensated for. Only applies to Wire Printing."
-msgstr "La distancia del trozo final de una línea entrante que se arrastra al volver al contorno exterior del techo. Esta distancia se compensa. Solo se aplica a la impresión de alambre."
-
-#: fdmprinter.def.json
 msgctxt "bottom_skin_expand_distance description"
 msgid "The distance the bottom skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the skin adhere better to the walls on the layer below. Lower values save amount of material used."
 msgstr "La distancia a la que los forros inferiores se expanden en el relleno. Los valores superiores hacen que el forro se adhiera mejor al patrón de relleno y que el forro se adhiera mejor a las paredes de la capa inferior. Los valores inferiores ahorran material."
@@ -4637,11 +4548,6 @@ msgstr "La distancia a la que los forros superiores se expanden en el relleno. L
 msgctxt "wipe_move_distance description"
 msgid "The distance to move the head back and forth across the brush."
 msgstr "La distancia para mover el cabezal hacia adelante y hacia atrás a lo largo del cepillo."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_fall_down description"
-msgid "The distance which horizontal roof lines printed 'in thin air' fall down when being printed. This distance is compensated for. Only applies to Wire Printing."
-msgstr "Distancia a la que las líneas horizontales del techo impresas 'en el aire' caen mientras se imprime. Esta distancia se compensa. Solo se aplica a la impresión de alambre."
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_prune_angle description"
@@ -4852,11 +4758,6 @@ msgstr "Altura de capa inicial en mm. Una capa inicial más gruesa se adhiere a 
 msgctxt "support_bottom_stair_step_height description"
 msgid "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures. Set to zero to turn off the stair-like behaviour."
 msgstr "Altura de los escalones de la parte inferior de la escalera del soporte que descansa sobre el modelo. Un valor más bajo hace que el soporte sea difícil de retirar pero valores demasiado altos pueden producir estructuras del soporte inestables. Configúrelo en cero para desactivar el comportamiento de escalera."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_height description"
-msgid "The height of the upward and diagonally downward lines between two horizontal parts. This determines the overall density of the net structure. Only applies to Wire Printing."
-msgstr "Altura de las líneas ascendentes y descendentes en diagonal entre dos partes horizontales. Esto determina la densidad global de la estructura reticulada. Solo se aplica a la Impresión de Alambre."
 
 #: fdmprinter.def.json
 msgctxt "brim_gap description"
@@ -5743,11 +5644,6 @@ msgid "This will create a wall around the model, which traps (hot) air and shiel
 msgstr "Esto creará una pared alrededor del modelo que atrapa el aire (caliente) y lo protege contra flujos de aire exterior. Es especialmente útil para materiales que se deforman fácilmente."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_roof_outer_delay description"
-msgid "Time spent at the outer perimeters of hole which is to become a roof. Longer times can ensure a better connection. Only applies to Wire Printing."
-msgstr "El tiempo empleado en los perímetros exteriores del agujero que se convertirá en un techo. Cuanto mayor sea el tiempo, mejor será la conexión. Solo se aplica a la impresión de alambre."
-
-#: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage_xy description"
 msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor in the XY-direction (horizontally)."
 msgstr "Para compensar la contracción del material al enfriarse, el modelo se escala con este factor en la dirección XY (horizontalmente)."
@@ -6078,121 +5974,6 @@ msgid "Vertical tolerance in the sliced layers. The contours of a layer are norm
 msgstr "Tolerancia vertical en las capas cortadas. Los contornos de una capa se generan normalmente pasando las secciones entrecruzadas a través del medio de cada espesor de capa (Media). Alternativamente, cada capa puede tener áreas ubicadas dentro del volumen a través de todo el grosor de la capa (Exclusiva) o una capa puede tener áreas ubicadas dentro en cualquier lugar de la capa (Inclusiva). La opción Inclusiva permite conservar la mayoría de los detalles, la opción Exclusiva permite obtener una adaptación óptima y la opción Media permite permanecer cerca de la superficie original."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_bottom_delay label"
-msgid "WP Bottom Delay"
-msgstr "Retardo inferior en IA"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_bottom label"
-msgid "WP Bottom Printing Speed"
-msgstr "Velocidad de impresión de la parte inferior en IA"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow_connection label"
-msgid "WP Connection Flow"
-msgstr "Flujo de conexión en IA"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_height label"
-msgid "WP Connection Height"
-msgstr "Altura de conexión en IA"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_down label"
-msgid "WP Downward Printing Speed"
-msgstr "Velocidad de impresión descendente en IA"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_drag_along label"
-msgid "WP Drag Along"
-msgstr "Arrastre en IA"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_up_half_speed label"
-msgid "WP Ease Upward"
-msgstr "Facilidad de ascenso en IA"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_fall_down label"
-msgid "WP Fall Down"
-msgstr "Caída en IA"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flat_delay label"
-msgid "WP Flat Delay"
-msgstr "Retardo plano en IA"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow_flat label"
-msgid "WP Flat Flow"
-msgstr "Flujo plano en IA"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow label"
-msgid "WP Flow"
-msgstr "Flujo en IA"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_flat label"
-msgid "WP Horizontal Printing Speed"
-msgstr "Velocidad de impresión horizontal en IA"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_top_jump label"
-msgid "WP Knot Size"
-msgstr "Tamaño de nudo de IA"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_nozzle_clearance label"
-msgid "WP Nozzle Clearance"
-msgstr "Holgura de la tobera en IA"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_drag_along label"
-msgid "WP Roof Drag Along"
-msgstr "Arrastre del techo en IA"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_fall_down label"
-msgid "WP Roof Fall Down"
-msgstr "Caída del techo en IA"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_inset label"
-msgid "WP Roof Inset Distance"
-msgstr "Distancia a la inserción del techo en IA"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_outer_delay label"
-msgid "WP Roof Outer Delay"
-msgstr "Retardo exterior del techo en IA"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed label"
-msgid "WP Speed"
-msgstr "Velocidad de IA"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_straight_before_down label"
-msgid "WP Straighten Downward Lines"
-msgstr "Enderezar líneas descendentes en IA"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_strategy label"
-msgid "WP Strategy"
-msgstr "Estrategia en IA"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_top_delay label"
-msgid "WP Top Delay"
-msgstr "Retardo superior en IA"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_up label"
-msgid "WP Upward Printing Speed"
-msgstr "Velocidad de impresión ascendente en IA"
-
-#: fdmprinter.def.json
 msgctxt "material_bed_temp_wait label"
 msgid "Wait for Build Plate Heatup"
 msgstr "Esperar a que la placa de impresión se caliente"
@@ -6306,6 +6087,11 @@ msgstr "Cuando se habilita, las coordenadas de la costura en z son relativas al 
 msgctxt "retraction_combing_max_distance description"
 msgid "When greater than zero, combing travel moves that are longer than this distance will use retraction. If set to zero, there is no maximum and combing moves will not use retraction."
 msgstr "Si es mayor que cero, los movimientos de desplazamiento de peinada que sean superiores a esta distancia utilizarán retracción. Si se establece como cero, no hay un máximo y los movimientos de peinada no utilizarán la retracción."
+
+#: fdmprinter.def.json
+msgctxt "hole_xy_offset_max_diameter description"
+msgid "When greater than zero, the Hole Horizontal Expansion is gradually applied on small holes (small holes are expanded more). When set to zero the Hole Horizontal Expansion will be applied to all holes. Holes larger than the Hole Horizontal Expansion Max Diameter are not expanded."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_material_flow description"
@@ -6618,11 +6404,6 @@ msgid "Wipe Z Hop Height"
 msgstr "Limpiar altura del salto en Z"
 
 #: fdmprinter.def.json
-msgctxt "wireframe_enabled label"
-msgid "Wire Printing"
-msgstr "Impresión de alambre"
-
-#: fdmprinter.def.json
 msgctxt "retraction_combing option infill"
 msgid "Within Infill"
 msgstr "Sobre el relleno"
@@ -6766,3 +6547,211 @@ msgstr "Zigzag"
 msgctxt "travel description"
 msgid "travel"
 msgstr "desplazamiento"
+
+#~ msgctxt "wireframe_strategy option compensate"
+#~ msgid "Compensate"
+#~ msgstr "Compensar"
+
+#~ msgctxt "wireframe_top_jump description"
+#~ msgid "Creates a small knot at the top of an upward line, so that the consecutive horizontal layer has a better chance to connect to it. Only applies to Wire Printing."
+#~ msgstr "Crea un pequeño nudo en la parte superior de una línea ascendente, de modo que la siguiente capa horizontal tendrá mayor probabilidad de conectarse a la misma. Solo se aplica a la impresión de alambre."
+
+#~ msgctxt "wireframe_bottom_delay description"
+#~ msgid "Delay time after a downward move. Only applies to Wire Printing."
+#~ msgstr "Tiempo de retardo después de un movimiento descendente. Solo se aplica a la impresión de alambre."
+
+#~ msgctxt "wireframe_top_delay description"
+#~ msgid "Delay time after an upward move, so that the upward line can harden. Only applies to Wire Printing."
+#~ msgstr "Tiempo de retardo después de un movimiento ascendente, para que la línea ascendente pueda endurecerse. Solo se aplica a la impresión de alambre."
+
+#~ msgctxt "wireframe_flat_delay description"
+#~ msgid "Delay time between two horizontal segments. Introducing such a delay can cause better adhesion to previous layers at the connection points, while too long delays cause sagging. Only applies to Wire Printing."
+#~ msgstr "Tiempo de retardo entre dos segmentos horizontales. La introducción de este retardo puede causar una mejor adherencia a las capas anteriores en los puntos de conexión, mientras que los retardos demasiado prolongados causan combados. Solo se aplica a la impresión de alambre."
+
+#~ msgctxt "wireframe_nozzle_clearance description"
+#~ msgid "Distance between the nozzle and horizontally downward lines. Larger clearance results in diagonally downward lines with a less steep angle, which in turn results in less upward connections with the next layer. Only applies to Wire Printing."
+#~ msgstr "Distancia entre la tobera y líneas descendentes en horizontal. Cuanto mayor sea la holgura, menos pronunciado será el ángulo de las líneas descendentes en diagonal, lo que a su vez se traduce en menos conexiones ascendentes con la siguiente capa. Solo se aplica a la impresión de alambre."
+
+#~ msgctxt "wireframe_up_half_speed description"
+#~ msgid ""
+#~ "Distance of an upward move which is extruded with half speed.\n"
+#~ "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
+#~ msgstr ""
+#~ "Distancia de un movimiento ascendente que se extrude a media velocidad.\n"
+#~ "Esto puede causar una mejor adherencia a las capas anteriores, aunque no calienta demasiado el material en esas capas. Solo se aplica a la impresión de alambre."
+
+#~ msgctxt "wireframe_fall_down description"
+#~ msgid "Distance with which the material falls down after an upward extrusion. This distance is compensated for. Only applies to Wire Printing."
+#~ msgstr "Distancia a la que cae el material después de una extrusión ascendente. Esta distancia se compensa. Solo se aplica a la impresión de alambre."
+
+#~ msgctxt "wireframe_drag_along description"
+#~ msgid "Distance with which the material of an upward extrusion is dragged along with the diagonally downward extrusion. This distance is compensated for. Only applies to Wire Printing."
+#~ msgstr "Distancia a la que el material de una extrusión ascendente se arrastra junto con la extrusión descendente en diagonal. Esta distancia se compensa. Solo se aplica a la impresión de alambre."
+
+#~ msgctxt "wireframe_flow_connection description"
+#~ msgid "Flow compensation when going up or down. Only applies to Wire Printing."
+#~ msgstr "Compensación de flujo cuando se va hacia arriba o hacia abajo. Solo se aplica a la impresión de alambre."
+
+#~ msgctxt "wireframe_flow_flat description"
+#~ msgid "Flow compensation when printing flat lines. Only applies to Wire Printing."
+#~ msgstr "Compensación de flujo al imprimir líneas planas. Solo se aplica a la impresión de alambre."
+
+#~ msgctxt "wireframe_flow description"
+#~ msgid "Flow compensation: the amount of material extruded is multiplied by this value. Only applies to Wire Printing."
+#~ msgstr "Compensación de flujo: la cantidad de material extruido se multiplica por este valor. Solo se aplica a la impresión de alambre."
+
+#~ msgctxt "wireframe_strategy option knot"
+#~ msgid "Knot"
+#~ msgstr "Nudo"
+
+#~ msgctxt "wireframe_straight_before_down description"
+#~ msgid "Percentage of a diagonally downward line which is covered by a horizontal line piece. This can prevent sagging of the top most point of upward lines. Only applies to Wire Printing."
+#~ msgstr "Porcentaje de una línea descendente en diagonal que está cubierta por un trozo de línea horizontal. Esto puede evitar el combado del punto de nivel superior de las líneas ascendentes. Solo se aplica a la impresión de alambre."
+
+#~ msgctxt "wireframe_enabled description"
+#~ msgid "Print only the outside surface with a sparse webbed structure, printing 'in thin air'. This is realized by horizontally printing the contours of the model at given Z intervals which are connected via upward and diagonally downward lines."
+#~ msgstr "Imprime solo la superficie exterior con una estructura reticulada poco densa, imprimiendo 'en el aire'. Esto se realiza mediante la impresión horizontal de los contornos del modelo a intervalos Z dados que están conectados a través de líneas ascendentes y descendentes en diagonal."
+
+#~ msgctxt "wireframe_strategy option retract"
+#~ msgid "Retract"
+#~ msgstr "Retraer"
+
+#~ msgctxt "wireframe_printspeed description"
+#~ msgid "Speed at which the nozzle moves when extruding material. Only applies to Wire Printing."
+#~ msgstr "Velocidad a la que la tobera se desplaza durante la extrusión de material. Solo se aplica a la impresión de alambre."
+
+#~ msgctxt "wireframe_printspeed_down description"
+#~ msgid "Speed of printing a line diagonally downward. Only applies to Wire Printing."
+#~ msgstr "Velocidad de impresión de una línea descendente en diagonal 'en el aire'. Solo se aplica a la impresión de alambre."
+
+#~ msgctxt "wireframe_printspeed_up description"
+#~ msgid "Speed of printing a line upward 'in thin air'. Only applies to Wire Printing."
+#~ msgstr "Velocidad de impresión de una línea ascendente 'en el aire'. Solo se aplica a la impresión de alambre."
+
+#~ msgctxt "wireframe_printspeed_bottom description"
+#~ msgid "Speed of printing the first layer, which is the only layer touching the build platform. Only applies to Wire Printing."
+#~ msgstr "Velocidad de impresión de la primera capa, que es la única capa que toca la plataforma de impresión. Solo se aplica a la impresión de alambre."
+
+#~ msgctxt "wireframe_printspeed_flat description"
+#~ msgid "Speed of printing the horizontal contours of the model. Only applies to Wire Printing."
+#~ msgstr "Velocidad de impresión de los contornos horizontales del modelo. Solo se aplica a la impresión de alambre."
+
+#~ msgctxt "wireframe_strategy description"
+#~ msgid "Strategy for making sure two consecutive layers connect at each connection point. Retraction lets the upward lines harden in the right position, but may cause filament grinding. A knot can be made at the end of an upward line to heighten the chance of connecting to it and to let the line cool; however, it may require slow printing speeds. Another strategy is to compensate for the sagging of the top of an upward line; however, the lines won't always fall down as predicted."
+#~ msgstr "Estrategia para asegurarse de que dos capas consecutivas conecten en cada punto de conexión. La retracción permite que las líneas ascendentes se endurezcan en la posición correcta, pero pueden hacer que filamento se desmenuce. Se puede realizar un nudo al final de una línea ascendente para aumentar la posibilidad de conexión a la misma y dejar que la línea se enfríe; sin embargo, esto puede requerir velocidades de impresión lentas. Otra estrategia consiste en compensar el combado de la parte superior de una línea ascendente; sin embargo, las líneas no siempre caen como se espera."
+
+#~ msgctxt "wireframe_roof_inset description"
+#~ msgid "The distance covered when making a connection from a roof outline inward. Only applies to Wire Printing."
+#~ msgstr "Distancia cubierta al hacer una conexión desde un contorno del techo hacia el interior. Solo se aplica a la impresión de alambre."
+
+#~ msgctxt "wireframe_roof_drag_along description"
+#~ msgid "The distance of the end piece of an inward line which gets dragged along when going back to the outer outline of the roof. This distance is compensated for. Only applies to Wire Printing."
+#~ msgstr "La distancia del trozo final de una línea entrante que se arrastra al volver al contorno exterior del techo. Esta distancia se compensa. Solo se aplica a la impresión de alambre."
+
+#~ msgctxt "wireframe_roof_fall_down description"
+#~ msgid "The distance which horizontal roof lines printed 'in thin air' fall down when being printed. This distance is compensated for. Only applies to Wire Printing."
+#~ msgstr "Distancia a la que las líneas horizontales del techo impresas 'en el aire' caen mientras se imprime. Esta distancia se compensa. Solo se aplica a la impresión de alambre."
+
+#~ msgctxt "wireframe_height description"
+#~ msgid "The height of the upward and diagonally downward lines between two horizontal parts. This determines the overall density of the net structure. Only applies to Wire Printing."
+#~ msgstr "Altura de las líneas ascendentes y descendentes en diagonal entre dos partes horizontales. Esto determina la densidad global de la estructura reticulada. Solo se aplica a la Impresión de Alambre."
+
+#~ msgctxt "wireframe_roof_outer_delay description"
+#~ msgid "Time spent at the outer perimeters of hole which is to become a roof. Longer times can ensure a better connection. Only applies to Wire Printing."
+#~ msgstr "El tiempo empleado en los perímetros exteriores del agujero que se convertirá en un techo. Cuanto mayor sea el tiempo, mejor será la conexión. Solo se aplica a la impresión de alambre."
+
+#~ msgctxt "wireframe_bottom_delay label"
+#~ msgid "WP Bottom Delay"
+#~ msgstr "Retardo inferior en IA"
+
+#~ msgctxt "wireframe_printspeed_bottom label"
+#~ msgid "WP Bottom Printing Speed"
+#~ msgstr "Velocidad de impresión de la parte inferior en IA"
+
+#~ msgctxt "wireframe_flow_connection label"
+#~ msgid "WP Connection Flow"
+#~ msgstr "Flujo de conexión en IA"
+
+#~ msgctxt "wireframe_height label"
+#~ msgid "WP Connection Height"
+#~ msgstr "Altura de conexión en IA"
+
+#~ msgctxt "wireframe_printspeed_down label"
+#~ msgid "WP Downward Printing Speed"
+#~ msgstr "Velocidad de impresión descendente en IA"
+
+#~ msgctxt "wireframe_drag_along label"
+#~ msgid "WP Drag Along"
+#~ msgstr "Arrastre en IA"
+
+#~ msgctxt "wireframe_up_half_speed label"
+#~ msgid "WP Ease Upward"
+#~ msgstr "Facilidad de ascenso en IA"
+
+#~ msgctxt "wireframe_fall_down label"
+#~ msgid "WP Fall Down"
+#~ msgstr "Caída en IA"
+
+#~ msgctxt "wireframe_flat_delay label"
+#~ msgid "WP Flat Delay"
+#~ msgstr "Retardo plano en IA"
+
+#~ msgctxt "wireframe_flow_flat label"
+#~ msgid "WP Flat Flow"
+#~ msgstr "Flujo plano en IA"
+
+#~ msgctxt "wireframe_flow label"
+#~ msgid "WP Flow"
+#~ msgstr "Flujo en IA"
+
+#~ msgctxt "wireframe_printspeed_flat label"
+#~ msgid "WP Horizontal Printing Speed"
+#~ msgstr "Velocidad de impresión horizontal en IA"
+
+#~ msgctxt "wireframe_top_jump label"
+#~ msgid "WP Knot Size"
+#~ msgstr "Tamaño de nudo de IA"
+
+#~ msgctxt "wireframe_nozzle_clearance label"
+#~ msgid "WP Nozzle Clearance"
+#~ msgstr "Holgura de la tobera en IA"
+
+#~ msgctxt "wireframe_roof_drag_along label"
+#~ msgid "WP Roof Drag Along"
+#~ msgstr "Arrastre del techo en IA"
+
+#~ msgctxt "wireframe_roof_fall_down label"
+#~ msgid "WP Roof Fall Down"
+#~ msgstr "Caída del techo en IA"
+
+#~ msgctxt "wireframe_roof_inset label"
+#~ msgid "WP Roof Inset Distance"
+#~ msgstr "Distancia a la inserción del techo en IA"
+
+#~ msgctxt "wireframe_roof_outer_delay label"
+#~ msgid "WP Roof Outer Delay"
+#~ msgstr "Retardo exterior del techo en IA"
+
+#~ msgctxt "wireframe_printspeed label"
+#~ msgid "WP Speed"
+#~ msgstr "Velocidad de IA"
+
+#~ msgctxt "wireframe_straight_before_down label"
+#~ msgid "WP Straighten Downward Lines"
+#~ msgstr "Enderezar líneas descendentes en IA"
+
+#~ msgctxt "wireframe_strategy label"
+#~ msgid "WP Strategy"
+#~ msgstr "Estrategia en IA"
+
+#~ msgctxt "wireframe_top_delay label"
+#~ msgid "WP Top Delay"
+#~ msgstr "Retardo superior en IA"
+
+#~ msgctxt "wireframe_printspeed_up label"
+#~ msgid "WP Upward Printing Speed"
+#~ msgstr "Velocidad de impresión ascendente en IA"
+
+#~ msgctxt "wireframe_enabled label"
+#~ msgid "Wire Printing"
+#~ msgstr "Impresión de alambre"

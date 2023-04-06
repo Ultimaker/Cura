@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-03-08 09:03+0000\n"
+"POT-Creation-Date: 2023-03-28 11:57+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -587,11 +587,6 @@ msgid "Command Line Settings"
 msgstr "Instellingen opdrachtregel"
 
 #: fdmprinter.def.json
-msgctxt "wireframe_strategy option compensate"
-msgid "Compensate"
-msgstr "Compenseren"
-
-#: fdmprinter.def.json
 msgctxt "infill_pattern option concentric"
 msgid "Concentric"
 msgstr "Concentrisch"
@@ -722,11 +717,6 @@ msgid "Cooling"
 msgstr "Koelen"
 
 #: fdmprinter.def.json
-msgctxt "wireframe_top_jump description"
-msgid "Creates a small knot at the top of an upward line, so that the consecutive horizontal layer has a better chance to connect to it. Only applies to Wire Printing."
-msgstr "Maakt een kleine verdikking boven aan een opwaartse lijn, zodat de volgende horizontale laag hier beter op kan aansluiten. Alleen van toepassing op Draadprinten."
-
-#: fdmprinter.def.json
 msgctxt "infill_pattern option cross"
 msgid "Cross"
 msgstr "Kruis"
@@ -832,21 +822,6 @@ msgid "Default jerk for the motor of the filament."
 msgstr "De standaardschok voor de motor voor het filament."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_bottom_delay description"
-msgid "Delay time after a downward move. Only applies to Wire Printing."
-msgstr "Vertraging na een neerwaartse beweging. Alleen van toepassing op Draadprinten."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_top_delay description"
-msgid "Delay time after an upward move, so that the upward line can harden. Only applies to Wire Printing."
-msgstr "Vertraging na een opwaartse beweging, zodat de opwaartse lijn kan uitharden. Alleen van toepassing op Draadprinten."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flat_delay description"
-msgid "Delay time between two horizontal segments. Introducing such a delay can cause better adhesion to previous layers at the connection points, while too long delays cause sagging. Only applies to Wire Printing."
-msgstr "Vertragingstijd tussen twee horizontale segmenten. Een dergelijke vertraging zorgt voor een betere hechting aan voorgaande lagen op de verbindingspunten. Bij een te lange vertraging kan het object echter gaan doorzakken. Alleen van toepassing op Draadprinten."
-
-#: fdmprinter.def.json
 msgctxt "bridge_settings_enabled description"
 msgid "Detect bridges and modify print speed, flow and fan settings while bridges are printed."
 msgstr "Hiermee detecteert u bruggen en past u de instellingen voor de printsnelheid, doorvoer en ventilator aan tijdens het printen van bruggen."
@@ -885,11 +860,6 @@ msgstr "Er zijn verschillende opties die u helpen zowel de voorbereiding van de 
 msgctxt "machine_disallowed_areas label"
 msgid "Disallowed Areas"
 msgstr "Verboden gebieden"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_nozzle_clearance description"
-msgid "Distance between the nozzle and horizontally downward lines. Larger clearance results in diagonally downward lines with a less steep angle, which in turn results in less upward connections with the next layer. Only applies to Wire Printing."
-msgstr "De afstand tussen de nozzle en horizontaal neergaande lijnen. Een grotere tussenruimte zorgt voor diagonaal neerwaarts gaande lijnen met een minder steile hoek. Hierdoor ontstaan minder opwaartse verbindingen met de volgende laag. Alleen van toepassing op Draadprinten."
 
 #: fdmprinter.def.json
 msgctxt "infill_line_distance description"
@@ -942,15 +912,6 @@ msgid "Distance of a travel move inserted after the outer wall, to hide the Z se
 msgstr "Afstand van een beweging die ingevoegd is na de buitenwand, om de Z-naad beter te maskeren."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_up_half_speed description"
-msgid ""
-"Distance of an upward move which is extruded with half speed.\n"
-"This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-msgstr ""
-"De afstand van een opwaartse beweging waarbij de doorvoersnelheid wordt gehalveerd.\n"
-"Hierdoor ontstaat een betere hechting aan voorgaande lagen, zonder dat het materiaal in die lagen te zeer wordt verwarmd. Alleen van toepassing op Draadprinten."
-
-#: fdmprinter.def.json
 msgctxt "draft_shield_dist description"
 msgid "Distance of the draft shield from the print, in the X/Y directions."
 msgstr "De afstand tussen het tochtscherm en de print, in de X- en Y-richting."
@@ -969,16 +930,6 @@ msgstr "Afstand tussen de supportstructuur en de overhang in de X- en Y-richting
 msgctxt "support_xy_distance description"
 msgid "Distance of the support structure from the print in the X/Y directions."
 msgstr "Afstand tussen de supportstructuur en de print, in de X- en Y-richting."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_fall_down description"
-msgid "Distance with which the material falls down after an upward extrusion. This distance is compensated for. Only applies to Wire Printing."
-msgstr "De afstand die het materiaal valt na een opwaartse doorvoer. Deze afstand wordt gecompenseerd. Alleen van toepassing op Draadprinten."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_drag_along description"
-msgid "Distance with which the material of an upward extrusion is dragged along with the diagonally downward extrusion. This distance is compensated for. Only applies to Wire Printing."
-msgstr "De afstand waarover het materiaal van een opwaartse doorvoer wordt meegesleept tijdens een diagonaal neerwaartse doorvoer. Deze afstand wordt gecompenseerd. Alleen van toepassing op Draadprinten."
 
 #: fdmprinter.def.json
 msgctxt "min_infill_area description"
@@ -1376,24 +1327,9 @@ msgid "Flow compensation on wall lines."
 msgstr "Doorvoercompensatie op wandlijnen."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_flow_connection description"
-msgid "Flow compensation when going up or down. Only applies to Wire Printing."
-msgstr "Doorvoercompensatie tijdens bewegingen naar boven of beneden. Alleen van toepassing op Draadprinten."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow_flat description"
-msgid "Flow compensation when printing flat lines. Only applies to Wire Printing."
-msgstr "Doorvoercompensatie tijdens het printen van platte lijnen. Alleen van toepassing op Draadprinten."
-
-#: fdmprinter.def.json
 msgctxt "material_flow description"
 msgid "Flow compensation: the amount of material extruded is multiplied by this value."
 msgstr "Doorvoercompensatie: de hoeveelheid materiaal die wordt doorgevoerd, wordt vermenigvuldigd met deze waarde."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow description"
-msgid "Flow compensation: the amount of material extruded is multiplied by this value. Only applies to Wire Printing."
-msgstr "Doorvoercompensatie: de hoeveelheid materiaal die wordt doorgevoerd, wordt vermenigvuldigd met deze waarde. Alleen van toepassing op Draadprinten."
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length label"
@@ -1637,6 +1573,11 @@ msgstr "Naad verbergen of zichtbaar maken"
 msgctxt "hole_xy_offset label"
 msgid "Hole Horizontal Expansion"
 msgstr "Horizontale uitbreiding gaten"
+
+#: fdmprinter.def.json
+msgctxt "hole_xy_offset_max_diameter label"
+msgid "Hole Horizontal Expansion Max Diameter"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "small_hole_max_size description"
@@ -2127,11 +2068,6 @@ msgstr "Trillen alleen voor de contouren van de onderdelen en niet voor de gaten
 msgctxt "meshfix_keep_open_polygons label"
 msgid "Keep Disconnected Faces"
 msgstr "Onderbroken Oppervlakken Behouden"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_strategy option knot"
-msgid "Knot"
-msgstr "Verdikken"
 
 #: fdmprinter.def.json
 msgctxt "layer_height label"
@@ -3019,11 +2955,6 @@ msgid "Percentage fan speed to use when printing the third bridge skin layer."
 msgstr "Percentage ventilatorsnelheid tijdens het printen van de derde brugskinlaag."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_straight_before_down description"
-msgid "Percentage of a diagonally downward line which is covered by a horizontal line piece. This can prevent sagging of the top most point of upward lines. Only applies to Wire Printing."
-msgstr "Het percentage van een diagonaal neerwaartse lijn die wordt afgedekt door een deel van een horizontale lijn. Hiermee kunt u voorkomen dat het bovenste deel van een opwaartse lijn doorzakt. Alleen van toepassing op Draadprinten."
-
-#: fdmprinter.def.json
 msgctxt "minimum_polygon_circumference description"
 msgid "Polygons in sliced layers that have a circumference smaller than this amount will be filtered out. Lower values lead to higher resolution mesh at the cost of slicing time. It is meant mostly for high resolution SLA printers and very tiny 3D models with a lot of details."
 msgstr "Polygonen in geslicete lagen, die een kleinere omtrek hebben dan deze waarde, worden eruit gefilterd. Bij lagere waarden krijgt het raster een hogere resolutie, waardoor het slicen langer duurt. Dit is voornamelijk bedoeld voor SLA-printers met een hoge resolutie en zeer kleine 3D-modellen die veel details bevatten."
@@ -3134,11 +3065,6 @@ msgid "Print models as a mold, which can be cast in order to get a model which r
 msgstr "Print modellen als matrijs, die vervolgens kan worden gegoten om een model te krijgen dat lijkt op de modellen op het platform."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_enabled description"
-msgid "Print only the outside surface with a sparse webbed structure, printing 'in thin air'. This is realized by horizontally printing the contours of the model at given Z intervals which are connected via upward and diagonally downward lines."
-msgstr "Print alleen de buitenkant van het object in een dunne webstructuur, 'in het luchtledige'. Hiervoor worden de contouren van het model horizontaal geprint op bepaalde Z-intervallen die door middel van opgaande en diagonaal neergaande lijnen zijn verbonden."
-
-#: fdmprinter.def.json
 msgctxt "fill_outline_gaps description"
 msgid "Print pieces of the model which are horizontally thinner than the nozzle size."
 msgstr "Print delen van het model die horizontaal dunner zijn dan de maat van de nozzle."
@@ -3177,6 +3103,11 @@ msgstr "Printtemperatuur"
 msgctxt "material_print_temperature_layer_0 label"
 msgid "Printing Temperature Initial Layer"
 msgstr "Printtemperatuur van de eerste laag"
+
+#: fdmprinter.def.json
+msgctxt "skirt_height description"
+msgid "Printing the innermost skirt line with multiple layers makes it easy to remove the skirt."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "alternate_extra_perimeter description"
@@ -3479,11 +3410,6 @@ msgid "Resolution to compute collisions with to avoid hitting the model. Setting
 msgstr "Resolutie voor het berekenen van botsingen om te voorkomen dat het model wordt geraakt. Als u deze optie op een lagere waarde instelt, creëert u nauwkeurigere bomen die minder vaak fouten vertonen, maar wordt de slicetijd aanzienlijk verlengd."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_strategy option retract"
-msgid "Retract"
-msgstr "Intrekken"
-
-#: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"
 msgid "Retract Before Outer Wall"
 msgstr "Intrekken voor buitenwand"
@@ -3664,6 +3590,11 @@ msgid "Skirt Distance"
 msgstr "Skirtafstand"
 
 #: fdmprinter.def.json
+msgctxt "skirt_height label"
+msgid "Skirt Height"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "skirt_line_count label"
 msgid "Skirt Line Count"
 msgstr "Aantal Skirtlijnen"
@@ -3734,6 +3665,11 @@ msgid "Small Layer Printing Temperature"
 msgstr "Printtemperatuur van de kleine laag"
 
 #: fdmprinter.def.json
+msgctxt "small_skin_width label"
+msgid "Small Top/Bottom Width"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 description"
 msgid "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
 msgstr "Kleine kenmerken op de eerste laag worden geprint met een snelheid die gelijk is aan dit percentage van hun normale printsnelheid. Langzamer printen kan de hechting en nauwkeurigheid verbeteren."
@@ -3742,6 +3678,16 @@ msgstr "Kleine kenmerken op de eerste laag worden geprint met een snelheid die g
 msgctxt "small_feature_speed_factor description"
 msgid "Small features will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
 msgstr "Kleine kernmerken worden geprint met een snelheid die gelijk is aan dit percentage van hun normale printsnelheid. Langzamer printen kan de hechting en nauwkeurigheid verbeteren."
+
+#: fdmprinter.def.json
+msgctxt "small_skin_width description"
+msgid "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "brim_smart_ordering label"
+msgid "Smart Brim"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "z_seam_corner option z_seam_corner_weighted"
@@ -3782,31 +3728,6 @@ msgstr "Snelheid"
 msgctxt "speed label"
 msgid "Speed"
 msgstr "Snelheid"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed description"
-msgid "Speed at which the nozzle moves when extruding material. Only applies to Wire Printing."
-msgstr "De snelheid waarmee de nozzle beweegt tijdens het doorvoeren van materiaal. Alleen van toepassing op Draadprinten."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_down description"
-msgid "Speed of printing a line diagonally downward. Only applies to Wire Printing."
-msgstr "De snelheid waarmee een lijn diagonaal naar beneden wordt geprint. Alleen van toepassing op Draadprinten."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_up description"
-msgid "Speed of printing a line upward 'in thin air'. Only applies to Wire Printing."
-msgstr "De snelheid waarmee een lijn naar boven 'in het luchtledige' wordt geprint. Alleen van toepassing op Draadprinten."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_bottom description"
-msgid "Speed of printing the first layer, which is the only layer touching the build platform. Only applies to Wire Printing."
-msgstr "De snelheid waarmee de eerste laag wordt geprint. Dit is tevens de enige laag die het platform raakt. Alleen van toepassing op Draadprinten."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_flat description"
-msgid "Speed of printing the horizontal contours of the model. Only applies to Wire Printing."
-msgstr "De snelheid waarmee de contouren van een model worden geprint. Alleen van toepassing op draadprinten."
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_speed description"
@@ -3857,11 +3778,6 @@ msgstr "Stappen per millimeter (Y)"
 msgctxt "machine_steps_per_mm_z label"
 msgid "Steps per Millimeter (Z)"
 msgstr "Stappen per millimeter (Z)"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_strategy description"
-msgid "Strategy for making sure two consecutive layers connect at each connection point. Retraction lets the upward lines harden in the right position, but may cause filament grinding. A knot can be made at the end of an upward line to heighten the chance of connecting to it and to let the line cool; however, it may require slow printing speeds. Another strategy is to compensate for the sagging of the top of an upward line; however, the lines won't always fall down as predicted."
-msgstr "Strategie om ervoor te zorgen dat twee opeenvolgende lagen bij elk verbindingspunt op elkaar aansluiten. Met intrekken kunnen de opwaartse lijnen in de juiste positie uitharden, maar kan het filament gaan haperen. Aan het eind van een opwaartse lijn kan een verdikking worden gemaakt om een volgende lijn hierop eenvoudiger te kunnen laten aansluiten en om de lijn te laten afkoelen. Hiervoor is mogelijk een lage printsnelheid vereist. U kunt echter ook het doorzakken van de bovenkant van een opwaartse lijn compenseren. De lijnen vallen echter niet altijd zoals verwacht."
 
 #: fdmprinter.def.json
 msgctxt "support description"
@@ -4269,6 +4185,11 @@ msgid "Surface energy."
 msgstr "Oppervlakte-energie."
 
 #: fdmprinter.def.json
+msgctxt "brim_smart_ordering description"
+msgid "Swap print order of the innermost and second innermost brim lines. This improves brim removal."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "alternate_carve_order description"
 msgid "Switch to which mesh intersecting volumes will belong with every layer, so that the overlapping meshes become interwoven. Turning this setting off will cause one of the meshes to obtain all of the volume in the overlap, while it is removed from the other meshes."
 msgstr "Schakel naar de rastersnijpuntvolumes die bij elke laag horen, zodat de overlappende rasters worden verweven. Als u deze instelling uitschakelt, krijgt een van de rasters al het volume in de overlap, terwijl dit uit de andere rasters wordt verwijderd."
@@ -4589,11 +4510,6 @@ msgid "The distance between the raft lines for the top raft layers. The spacing 
 msgstr "De afstand tussen de raftlijnen voor de bovenste lagen van de raft. Als u een solide oppervlak wilt maken, moet de ruimte gelijk zijn aan de lijnbreedte."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_roof_inset description"
-msgid "The distance covered when making a connection from a roof outline inward. Only applies to Wire Printing."
-msgstr "De afstand die wordt overbrugt wanneer vanaf een dakcontour een verbinding naar binnen wordt gemaakt. Alleen van toepassing op Draadprinten."
-
-#: fdmprinter.def.json
 msgctxt "interlocking_depth description"
 msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
 msgstr "De afstand vanaf de grens tussen modellen om een in elkaar grijpende structuur te genereren, gemeten in cellen. Te weinig cellen leiden tot slechte hechting."
@@ -4614,11 +4530,6 @@ msgid "The distance from the tip of the nozzle in which heat from the nozzle is 
 msgstr "De afstand tussen de punt van de nozzle waarin de warmte uit de nozzle wordt overgedragen aan het filament."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_roof_drag_along description"
-msgid "The distance of the end piece of an inward line which gets dragged along when going back to the outer outline of the roof. This distance is compensated for. Only applies to Wire Printing."
-msgstr "De afstand die het eindstuk van een inwaartse lijn wordt meegesleept wanneer de nozzle terugkeert naar de buitencontouren van het dak. Deze afstand wordt gecompenseerd. Alleen van toepassing op Draadprinten."
-
-#: fdmprinter.def.json
 msgctxt "bottom_skin_expand_distance description"
 msgid "The distance the bottom skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the skin adhere better to the walls on the layer below. Lower values save amount of material used."
 msgstr "De afstand waarmee de onderste skinlagen worden uitgebreid in de vulling. Bij hogere waarden hecht de skin beter aan het vulpatroon en de wanden van de onderliggende laag. Bij lagere waarden wordt er minder materiaal gebruikt."
@@ -4637,11 +4548,6 @@ msgstr "De afstand waarmee de bovenste skinlagen worden uitgebreid in de vulling
 msgctxt "wipe_move_distance description"
 msgid "The distance to move the head back and forth across the brush."
 msgstr "De afstand die de kop heen en weer wordt bewogen over de borstel."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_fall_down description"
-msgid "The distance which horizontal roof lines printed 'in thin air' fall down when being printed. This distance is compensated for. Only applies to Wire Printing."
-msgstr "De afstand die horizontale daklijnen die 'in het luchtledige' worden geprint, naar beneden vallen tijdens het printen. Deze afstand wordt gecompenseerd. Alleen van toepassing op Draadprinten."
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_prune_angle description"
@@ -4852,11 +4758,6 @@ msgstr "De hoogte van de eerste laag in mm. Met een dikkere eerste laag hecht he
 msgctxt "support_bottom_stair_step_height description"
 msgid "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures. Set to zero to turn off the stair-like behaviour."
 msgstr "De hoogte van de treden van het trapvormige grondvlak van de supportstructuur die op het model rust. Wanneer u een lage waarde invoert, kan de supportstructuur minder gemakkelijk worden verwijderd. Wanneer u echter een te hoge waarde invoert, kan de supportstructuur instabiel worden. Stel deze waarde in op nul om het trapvormige gedrag uit te schakelen."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_height description"
-msgid "The height of the upward and diagonally downward lines between two horizontal parts. This determines the overall density of the net structure. Only applies to Wire Printing."
-msgstr "De hoogte van de opgaande en diagonaal neergaande lijnen tussen twee horizontale delen. Hiermee bepaalt u de algehele dichtheid van de webstructuur. Alleen van toepassing op Draadprinten."
 
 #: fdmprinter.def.json
 msgctxt "brim_gap description"
@@ -5743,11 +5644,6 @@ msgid "This will create a wall around the model, which traps (hot) air and shiel
 msgstr "Maak een wand rond het model. Deze vangt (warme) lucht en biedt bescherming tegen externe luchtbewegingen. De optie is met name geschikt voor materialen die snel kromtrekken."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_roof_outer_delay description"
-msgid "Time spent at the outer perimeters of hole which is to become a roof. Longer times can ensure a better connection. Only applies to Wire Printing."
-msgstr "De wachttijd aan de buitenkant van een gat dat een dak moet gaan vormen. Een langere wachttijd kan zorgen voor een betere aansluiting. Alleen van toepassing op Draadprinten."
-
-#: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage_xy description"
 msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor in the XY-direction (horizontally)."
 msgstr "Om te compenseren voor het krimpen van het materiaal wanneer het afkoelt, wordt het model met deze factor geschaald in de richting XY (horizontaal)."
@@ -6078,121 +5974,6 @@ msgid "Vertical tolerance in the sliced layers. The contours of a layer are norm
 msgstr "Verticale tolerantie in de gesneden lagen. De contouren van een laag kunnen worden normaal gesproken gegenereerd door dwarsdoorsneden te nemen door het midden van de dikte van de laag (Midden). Daarnaast kan elke laag gebieden hebben die over de gehele dikte van de laag binnen het volume vallen (Exclusief), of kan een laag gebieden hebben die overal binnen de laag vallen (Inclusief). Met Inclusief worden de meeste details behouden, met Exclusief verkrijgt u de beste pasvorm en met Midden behoudt u het originele oppervlak het meest."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_bottom_delay label"
-msgid "WP Bottom Delay"
-msgstr "Neerwaartse Vertraging Draadprinten"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_bottom label"
-msgid "WP Bottom Printing Speed"
-msgstr "Printsnelheid Bodem Draadprinten"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow_connection label"
-msgid "WP Connection Flow"
-msgstr "Verbindingsdoorvoer Draadprinten"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_height label"
-msgid "WP Connection Height"
-msgstr "Verbindingshoogte Draadprinten"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_down label"
-msgid "WP Downward Printing Speed"
-msgstr "Neerwaartse Printsnelheid Draadprinten"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_drag_along label"
-msgid "WP Drag Along"
-msgstr "Meeslepen Draadprinten"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_up_half_speed label"
-msgid "WP Ease Upward"
-msgstr "Langzaam Opwaarts Draadprinten"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_fall_down label"
-msgid "WP Fall Down"
-msgstr "Valafstand Draadprinten"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flat_delay label"
-msgid "WP Flat Delay"
-msgstr "Vertraging Platte Lijn Draadprinten"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow_flat label"
-msgid "WP Flat Flow"
-msgstr "Doorvoer Platte Lijn Draadprinten"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow label"
-msgid "WP Flow"
-msgstr "Doorvoer Draadprinten"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_flat label"
-msgid "WP Horizontal Printing Speed"
-msgstr "Horizontale Printsnelheid Draadprinten"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_top_jump label"
-msgid "WP Knot Size"
-msgstr "Knoopgrootte Draadprinten"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_nozzle_clearance label"
-msgid "WP Nozzle Clearance"
-msgstr "Tussenruimte Nozzle Draadprinten"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_drag_along label"
-msgid "WP Roof Drag Along"
-msgstr "Meeslepen Dak Draadprinten"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_fall_down label"
-msgid "WP Roof Fall Down"
-msgstr "Valafstand Dak Draadprinten"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_inset label"
-msgid "WP Roof Inset Distance"
-msgstr "Afstand Dakuitsparingen Draadprinten"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_outer_delay label"
-msgid "WP Roof Outer Delay"
-msgstr "Vertraging buitenzijde dak tijdens draadprinten"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed label"
-msgid "WP Speed"
-msgstr "Snelheid Draadprinten"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_straight_before_down label"
-msgid "WP Straighten Downward Lines"
-msgstr "Neerwaartse Lijnen Rechtbuigen Draadprinten"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_strategy label"
-msgid "WP Strategy"
-msgstr "Draadprintstrategie"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_top_delay label"
-msgid "WP Top Delay"
-msgstr "Opwaartse Vertraging Draadprinten"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_up label"
-msgid "WP Upward Printing Speed"
-msgstr "Opwaartse Printsnelheid Draadprinten"
-
-#: fdmprinter.def.json
 msgctxt "material_bed_temp_wait label"
 msgid "Wait for Build Plate Heatup"
 msgstr "Wachten op verwarmen van platform"
@@ -6306,6 +6087,11 @@ msgstr "Als deze optie ingeschakeld is, zijn de Z-naadcoördinaten relatief ten 
 msgctxt "retraction_combing_max_distance description"
 msgid "When greater than zero, combing travel moves that are longer than this distance will use retraction. If set to zero, there is no maximum and combing moves will not use retraction."
 msgstr "Wanneer dit groter dan nul is, vindt bij een combing-beweging die langer is dan deze afstand, intrekking plaats. Wanneer dit nul is, is er geen maximum en vindt bij combing-bewegingen geen intrekking plaats."
+
+#: fdmprinter.def.json
+msgctxt "hole_xy_offset_max_diameter description"
+msgid "When greater than zero, the Hole Horizontal Expansion is gradually applied on small holes (small holes are expanded more). When set to zero the Hole Horizontal Expansion will be applied to all holes. Holes larger than the Hole Horizontal Expansion Max Diameter are not expanded."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_material_flow description"
@@ -6618,11 +6404,6 @@ msgid "Wipe Z Hop Height"
 msgstr "Hoogte Z-sprong voor afvegen"
 
 #: fdmprinter.def.json
-msgctxt "wireframe_enabled label"
-msgid "Wire Printing"
-msgstr "Draadprinten"
-
-#: fdmprinter.def.json
 msgctxt "retraction_combing option infill"
 msgid "Within Infill"
 msgstr "Binnen Vulling"
@@ -6766,3 +6547,211 @@ msgstr "Zigzag"
 msgctxt "travel description"
 msgid "travel"
 msgstr "beweging"
+
+#~ msgctxt "wireframe_strategy option compensate"
+#~ msgid "Compensate"
+#~ msgstr "Compenseren"
+
+#~ msgctxt "wireframe_top_jump description"
+#~ msgid "Creates a small knot at the top of an upward line, so that the consecutive horizontal layer has a better chance to connect to it. Only applies to Wire Printing."
+#~ msgstr "Maakt een kleine verdikking boven aan een opwaartse lijn, zodat de volgende horizontale laag hier beter op kan aansluiten. Alleen van toepassing op Draadprinten."
+
+#~ msgctxt "wireframe_bottom_delay description"
+#~ msgid "Delay time after a downward move. Only applies to Wire Printing."
+#~ msgstr "Vertraging na een neerwaartse beweging. Alleen van toepassing op Draadprinten."
+
+#~ msgctxt "wireframe_top_delay description"
+#~ msgid "Delay time after an upward move, so that the upward line can harden. Only applies to Wire Printing."
+#~ msgstr "Vertraging na een opwaartse beweging, zodat de opwaartse lijn kan uitharden. Alleen van toepassing op Draadprinten."
+
+#~ msgctxt "wireframe_flat_delay description"
+#~ msgid "Delay time between two horizontal segments. Introducing such a delay can cause better adhesion to previous layers at the connection points, while too long delays cause sagging. Only applies to Wire Printing."
+#~ msgstr "Vertragingstijd tussen twee horizontale segmenten. Een dergelijke vertraging zorgt voor een betere hechting aan voorgaande lagen op de verbindingspunten. Bij een te lange vertraging kan het object echter gaan doorzakken. Alleen van toepassing op Draadprinten."
+
+#~ msgctxt "wireframe_nozzle_clearance description"
+#~ msgid "Distance between the nozzle and horizontally downward lines. Larger clearance results in diagonally downward lines with a less steep angle, which in turn results in less upward connections with the next layer. Only applies to Wire Printing."
+#~ msgstr "De afstand tussen de nozzle en horizontaal neergaande lijnen. Een grotere tussenruimte zorgt voor diagonaal neerwaarts gaande lijnen met een minder steile hoek. Hierdoor ontstaan minder opwaartse verbindingen met de volgende laag. Alleen van toepassing op Draadprinten."
+
+#~ msgctxt "wireframe_up_half_speed description"
+#~ msgid ""
+#~ "Distance of an upward move which is extruded with half speed.\n"
+#~ "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
+#~ msgstr ""
+#~ "De afstand van een opwaartse beweging waarbij de doorvoersnelheid wordt gehalveerd.\n"
+#~ "Hierdoor ontstaat een betere hechting aan voorgaande lagen, zonder dat het materiaal in die lagen te zeer wordt verwarmd. Alleen van toepassing op Draadprinten."
+
+#~ msgctxt "wireframe_fall_down description"
+#~ msgid "Distance with which the material falls down after an upward extrusion. This distance is compensated for. Only applies to Wire Printing."
+#~ msgstr "De afstand die het materiaal valt na een opwaartse doorvoer. Deze afstand wordt gecompenseerd. Alleen van toepassing op Draadprinten."
+
+#~ msgctxt "wireframe_drag_along description"
+#~ msgid "Distance with which the material of an upward extrusion is dragged along with the diagonally downward extrusion. This distance is compensated for. Only applies to Wire Printing."
+#~ msgstr "De afstand waarover het materiaal van een opwaartse doorvoer wordt meegesleept tijdens een diagonaal neerwaartse doorvoer. Deze afstand wordt gecompenseerd. Alleen van toepassing op Draadprinten."
+
+#~ msgctxt "wireframe_flow_connection description"
+#~ msgid "Flow compensation when going up or down. Only applies to Wire Printing."
+#~ msgstr "Doorvoercompensatie tijdens bewegingen naar boven of beneden. Alleen van toepassing op Draadprinten."
+
+#~ msgctxt "wireframe_flow_flat description"
+#~ msgid "Flow compensation when printing flat lines. Only applies to Wire Printing."
+#~ msgstr "Doorvoercompensatie tijdens het printen van platte lijnen. Alleen van toepassing op Draadprinten."
+
+#~ msgctxt "wireframe_flow description"
+#~ msgid "Flow compensation: the amount of material extruded is multiplied by this value. Only applies to Wire Printing."
+#~ msgstr "Doorvoercompensatie: de hoeveelheid materiaal die wordt doorgevoerd, wordt vermenigvuldigd met deze waarde. Alleen van toepassing op Draadprinten."
+
+#~ msgctxt "wireframe_strategy option knot"
+#~ msgid "Knot"
+#~ msgstr "Verdikken"
+
+#~ msgctxt "wireframe_straight_before_down description"
+#~ msgid "Percentage of a diagonally downward line which is covered by a horizontal line piece. This can prevent sagging of the top most point of upward lines. Only applies to Wire Printing."
+#~ msgstr "Het percentage van een diagonaal neerwaartse lijn die wordt afgedekt door een deel van een horizontale lijn. Hiermee kunt u voorkomen dat het bovenste deel van een opwaartse lijn doorzakt. Alleen van toepassing op Draadprinten."
+
+#~ msgctxt "wireframe_enabled description"
+#~ msgid "Print only the outside surface with a sparse webbed structure, printing 'in thin air'. This is realized by horizontally printing the contours of the model at given Z intervals which are connected via upward and diagonally downward lines."
+#~ msgstr "Print alleen de buitenkant van het object in een dunne webstructuur, 'in het luchtledige'. Hiervoor worden de contouren van het model horizontaal geprint op bepaalde Z-intervallen die door middel van opgaande en diagonaal neergaande lijnen zijn verbonden."
+
+#~ msgctxt "wireframe_strategy option retract"
+#~ msgid "Retract"
+#~ msgstr "Intrekken"
+
+#~ msgctxt "wireframe_printspeed description"
+#~ msgid "Speed at which the nozzle moves when extruding material. Only applies to Wire Printing."
+#~ msgstr "De snelheid waarmee de nozzle beweegt tijdens het doorvoeren van materiaal. Alleen van toepassing op Draadprinten."
+
+#~ msgctxt "wireframe_printspeed_down description"
+#~ msgid "Speed of printing a line diagonally downward. Only applies to Wire Printing."
+#~ msgstr "De snelheid waarmee een lijn diagonaal naar beneden wordt geprint. Alleen van toepassing op Draadprinten."
+
+#~ msgctxt "wireframe_printspeed_up description"
+#~ msgid "Speed of printing a line upward 'in thin air'. Only applies to Wire Printing."
+#~ msgstr "De snelheid waarmee een lijn naar boven 'in het luchtledige' wordt geprint. Alleen van toepassing op Draadprinten."
+
+#~ msgctxt "wireframe_printspeed_bottom description"
+#~ msgid "Speed of printing the first layer, which is the only layer touching the build platform. Only applies to Wire Printing."
+#~ msgstr "De snelheid waarmee de eerste laag wordt geprint. Dit is tevens de enige laag die het platform raakt. Alleen van toepassing op Draadprinten."
+
+#~ msgctxt "wireframe_printspeed_flat description"
+#~ msgid "Speed of printing the horizontal contours of the model. Only applies to Wire Printing."
+#~ msgstr "De snelheid waarmee de contouren van een model worden geprint. Alleen van toepassing op draadprinten."
+
+#~ msgctxt "wireframe_strategy description"
+#~ msgid "Strategy for making sure two consecutive layers connect at each connection point. Retraction lets the upward lines harden in the right position, but may cause filament grinding. A knot can be made at the end of an upward line to heighten the chance of connecting to it and to let the line cool; however, it may require slow printing speeds. Another strategy is to compensate for the sagging of the top of an upward line; however, the lines won't always fall down as predicted."
+#~ msgstr "Strategie om ervoor te zorgen dat twee opeenvolgende lagen bij elk verbindingspunt op elkaar aansluiten. Met intrekken kunnen de opwaartse lijnen in de juiste positie uitharden, maar kan het filament gaan haperen. Aan het eind van een opwaartse lijn kan een verdikking worden gemaakt om een volgende lijn hierop eenvoudiger te kunnen laten aansluiten en om de lijn te laten afkoelen. Hiervoor is mogelijk een lage printsnelheid vereist. U kunt echter ook het doorzakken van de bovenkant van een opwaartse lijn compenseren. De lijnen vallen echter niet altijd zoals verwacht."
+
+#~ msgctxt "wireframe_roof_inset description"
+#~ msgid "The distance covered when making a connection from a roof outline inward. Only applies to Wire Printing."
+#~ msgstr "De afstand die wordt overbrugt wanneer vanaf een dakcontour een verbinding naar binnen wordt gemaakt. Alleen van toepassing op Draadprinten."
+
+#~ msgctxt "wireframe_roof_drag_along description"
+#~ msgid "The distance of the end piece of an inward line which gets dragged along when going back to the outer outline of the roof. This distance is compensated for. Only applies to Wire Printing."
+#~ msgstr "De afstand die het eindstuk van een inwaartse lijn wordt meegesleept wanneer de nozzle terugkeert naar de buitencontouren van het dak. Deze afstand wordt gecompenseerd. Alleen van toepassing op Draadprinten."
+
+#~ msgctxt "wireframe_roof_fall_down description"
+#~ msgid "The distance which horizontal roof lines printed 'in thin air' fall down when being printed. This distance is compensated for. Only applies to Wire Printing."
+#~ msgstr "De afstand die horizontale daklijnen die 'in het luchtledige' worden geprint, naar beneden vallen tijdens het printen. Deze afstand wordt gecompenseerd. Alleen van toepassing op Draadprinten."
+
+#~ msgctxt "wireframe_height description"
+#~ msgid "The height of the upward and diagonally downward lines between two horizontal parts. This determines the overall density of the net structure. Only applies to Wire Printing."
+#~ msgstr "De hoogte van de opgaande en diagonaal neergaande lijnen tussen twee horizontale delen. Hiermee bepaalt u de algehele dichtheid van de webstructuur. Alleen van toepassing op Draadprinten."
+
+#~ msgctxt "wireframe_roof_outer_delay description"
+#~ msgid "Time spent at the outer perimeters of hole which is to become a roof. Longer times can ensure a better connection. Only applies to Wire Printing."
+#~ msgstr "De wachttijd aan de buitenkant van een gat dat een dak moet gaan vormen. Een langere wachttijd kan zorgen voor een betere aansluiting. Alleen van toepassing op Draadprinten."
+
+#~ msgctxt "wireframe_bottom_delay label"
+#~ msgid "WP Bottom Delay"
+#~ msgstr "Neerwaartse Vertraging Draadprinten"
+
+#~ msgctxt "wireframe_printspeed_bottom label"
+#~ msgid "WP Bottom Printing Speed"
+#~ msgstr "Printsnelheid Bodem Draadprinten"
+
+#~ msgctxt "wireframe_flow_connection label"
+#~ msgid "WP Connection Flow"
+#~ msgstr "Verbindingsdoorvoer Draadprinten"
+
+#~ msgctxt "wireframe_height label"
+#~ msgid "WP Connection Height"
+#~ msgstr "Verbindingshoogte Draadprinten"
+
+#~ msgctxt "wireframe_printspeed_down label"
+#~ msgid "WP Downward Printing Speed"
+#~ msgstr "Neerwaartse Printsnelheid Draadprinten"
+
+#~ msgctxt "wireframe_drag_along label"
+#~ msgid "WP Drag Along"
+#~ msgstr "Meeslepen Draadprinten"
+
+#~ msgctxt "wireframe_up_half_speed label"
+#~ msgid "WP Ease Upward"
+#~ msgstr "Langzaam Opwaarts Draadprinten"
+
+#~ msgctxt "wireframe_fall_down label"
+#~ msgid "WP Fall Down"
+#~ msgstr "Valafstand Draadprinten"
+
+#~ msgctxt "wireframe_flat_delay label"
+#~ msgid "WP Flat Delay"
+#~ msgstr "Vertraging Platte Lijn Draadprinten"
+
+#~ msgctxt "wireframe_flow_flat label"
+#~ msgid "WP Flat Flow"
+#~ msgstr "Doorvoer Platte Lijn Draadprinten"
+
+#~ msgctxt "wireframe_flow label"
+#~ msgid "WP Flow"
+#~ msgstr "Doorvoer Draadprinten"
+
+#~ msgctxt "wireframe_printspeed_flat label"
+#~ msgid "WP Horizontal Printing Speed"
+#~ msgstr "Horizontale Printsnelheid Draadprinten"
+
+#~ msgctxt "wireframe_top_jump label"
+#~ msgid "WP Knot Size"
+#~ msgstr "Knoopgrootte Draadprinten"
+
+#~ msgctxt "wireframe_nozzle_clearance label"
+#~ msgid "WP Nozzle Clearance"
+#~ msgstr "Tussenruimte Nozzle Draadprinten"
+
+#~ msgctxt "wireframe_roof_drag_along label"
+#~ msgid "WP Roof Drag Along"
+#~ msgstr "Meeslepen Dak Draadprinten"
+
+#~ msgctxt "wireframe_roof_fall_down label"
+#~ msgid "WP Roof Fall Down"
+#~ msgstr "Valafstand Dak Draadprinten"
+
+#~ msgctxt "wireframe_roof_inset label"
+#~ msgid "WP Roof Inset Distance"
+#~ msgstr "Afstand Dakuitsparingen Draadprinten"
+
+#~ msgctxt "wireframe_roof_outer_delay label"
+#~ msgid "WP Roof Outer Delay"
+#~ msgstr "Vertraging buitenzijde dak tijdens draadprinten"
+
+#~ msgctxt "wireframe_printspeed label"
+#~ msgid "WP Speed"
+#~ msgstr "Snelheid Draadprinten"
+
+#~ msgctxt "wireframe_straight_before_down label"
+#~ msgid "WP Straighten Downward Lines"
+#~ msgstr "Neerwaartse Lijnen Rechtbuigen Draadprinten"
+
+#~ msgctxt "wireframe_strategy label"
+#~ msgid "WP Strategy"
+#~ msgstr "Draadprintstrategie"
+
+#~ msgctxt "wireframe_top_delay label"
+#~ msgid "WP Top Delay"
+#~ msgstr "Opwaartse Vertraging Draadprinten"
+
+#~ msgctxt "wireframe_printspeed_up label"
+#~ msgid "WP Upward Printing Speed"
+#~ msgstr "Opwaartse Printsnelheid Draadprinten"
+
+#~ msgctxt "wireframe_enabled label"
+#~ msgid "Wire Printing"
+#~ msgstr "Draadprinten"
