@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-28 11:57+0000\n"
+"POT-Creation-Date: 2023-03-07 09:01+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -812,18 +812,18 @@ msgctxt "@text"
 msgid "Unknown error."
 msgstr "알 수 없는 오류입니다."
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:558
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:547
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> contains an unknown machine type <message>{1}</message>. Cannot import the machine. Models will be imported instead."
 msgstr "프로젝트 파일 <filename>{0}</filename>에 알 수 없는 기기 유형 <message>{1}</message>이(가) 포함되어 있습니다. 기기를 가져올 수 없습니다. 대신 모델을 가져옵니다."
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:561
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:550
 msgctxt "@info:title"
 msgid "Open Project File"
 msgstr "프로젝트 파일 열기"
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:642
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:631
 #: plugins/3MFReader/WorkspaceDialog.qml:99
 #: plugins/3MFReader/WorkspaceDialog.qml:127
 #: plugins/3MFReader/WorkspaceDialog.qml:134
@@ -831,27 +831,27 @@ msgctxt "@button"
 msgid "Create new"
 msgstr ""
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:692
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:681
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is suddenly inaccessible: <message>{1}</message>."
 msgstr "프로젝트 파일 <filename>{0}</filename>에 갑자기 접근할 수 없습니다: <message>{1}</message>."
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:693
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:701
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:720
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:682
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:690
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:709
 msgctxt "@info:title"
 msgid "Can't Open Project File"
 msgstr "프로젝트 파일 열 수 없음"
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:700
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:718
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:689
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:707
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>."
 msgstr "프로젝트 파일 <filename>{0}</filename>이 손상됨: <message>{1}</message>."
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:765
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:754
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
 msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura."
@@ -1277,45 +1277,45 @@ msgctxt "@message:description"
 msgid "Report a bug on UltiMaker Cura's issue tracker."
 msgstr ""
 
-#: plugins/CuraEngineBackend/CuraEngineBackend.py:416
+#: plugins/CuraEngineBackend/CuraEngineBackend.py:401
 msgctxt "@info:status"
 msgid "Unable to slice with the current material as it is incompatible with the selected machine or configuration."
 msgstr "선택한 소재 또는 구성과 호환되지 않기 때문에 현재 소재로 슬라이스 할 수 없습니다."
 
-#: plugins/CuraEngineBackend/CuraEngineBackend.py:417
-#: plugins/CuraEngineBackend/CuraEngineBackend.py:450
-#: plugins/CuraEngineBackend/CuraEngineBackend.py:477
-#: plugins/CuraEngineBackend/CuraEngineBackend.py:489
-#: plugins/CuraEngineBackend/CuraEngineBackend.py:501
-#: plugins/CuraEngineBackend/CuraEngineBackend.py:514
+#: plugins/CuraEngineBackend/CuraEngineBackend.py:402
+#: plugins/CuraEngineBackend/CuraEngineBackend.py:435
+#: plugins/CuraEngineBackend/CuraEngineBackend.py:462
+#: plugins/CuraEngineBackend/CuraEngineBackend.py:474
+#: plugins/CuraEngineBackend/CuraEngineBackend.py:486
+#: plugins/CuraEngineBackend/CuraEngineBackend.py:499
 msgctxt "@info:title"
 msgid "Unable to slice"
 msgstr "슬라이스 할 수 없습니다"
 
-#: plugins/CuraEngineBackend/CuraEngineBackend.py:449
+#: plugins/CuraEngineBackend/CuraEngineBackend.py:434
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Unable to slice with the current settings. The following settings have errors: {0}"
 msgstr "현재 설정으로 슬라이스 할 수 없습니다. 다음 설정에는 오류가 있습니다 : {0}"
 
-#: plugins/CuraEngineBackend/CuraEngineBackend.py:476
+#: plugins/CuraEngineBackend/CuraEngineBackend.py:461
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Unable to slice due to some per-model settings. The following settings have errors on one or more models: {error_labels}"
 msgstr "일부 모델별 설정으로 인해 슬라이스할 수 없습니다. 하나 이상의 모델에서 다음 설정에 오류가 있습니다. {error_labels}"
 
-#: plugins/CuraEngineBackend/CuraEngineBackend.py:488
+#: plugins/CuraEngineBackend/CuraEngineBackend.py:473
 msgctxt "@info:status"
 msgid "Unable to slice because the prime tower or prime position(s) are invalid."
 msgstr "프라임 타워 또는 위치가 유효하지 않아 슬라이스 할 수 없습니다."
 
-#: plugins/CuraEngineBackend/CuraEngineBackend.py:500
+#: plugins/CuraEngineBackend/CuraEngineBackend.py:485
 #, python-format
 msgctxt "@info:status"
 msgid "Unable to slice because there are objects associated with disabled Extruder %s."
 msgstr "비활성화된 익스트루더 %s(와)과 연결된 개체가 있기 때문에 슬라이스할 수 없습니다."
 
-#: plugins/CuraEngineBackend/CuraEngineBackend.py:510
+#: plugins/CuraEngineBackend/CuraEngineBackend.py:495
 msgctxt "@info:status"
 msgid ""
 "Please review settings and check if your models:\n"
@@ -1924,17 +1924,17 @@ msgctxt "@label"
 msgid "Number of Extruders"
 msgstr "익스트루더의 수"
 
-#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:342
+#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:341
 msgctxt "@label"
 msgid "Apply Extruder offsets to GCode"
 msgstr "익스트루더 오프셋을 GCode에 적용"
 
-#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:390
+#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:389
 msgctxt "@title:label"
 msgid "Start G-code"
 msgstr "시작 GCode"
 
-#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:401
+#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:400
 msgctxt "@title:label"
 msgid "End G-code"
 msgstr "End GCode"
@@ -2050,7 +2050,7 @@ msgstr "마켓플레이스에 도달할 수 없습니다."
 #: plugins/Marketplace/plugin.json
 msgctxt "description"
 msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
-msgstr ""
+msgstr "응용 프로그램의 확장을 관리하고 UltiMaker 웹 사이트에서 확장을 검색할 수 있습니다."
 
 #: plugins/Marketplace/plugin.json
 msgctxt "name"
@@ -2714,15 +2714,25 @@ msgstr "보초 로거"
 
 #: plugins/SimulationView/SimulationView.py:129
 msgctxt "@info:status"
+msgid "Cura does not accurately display layers when Wire Printing is enabled."
+msgstr "와이어 프린팅이 활성화되어 있을 때 Cura는 레이어를 정확하게 표시하지 않습니다."
+
+#: plugins/SimulationView/SimulationView.py:130
+msgctxt "@info:title"
+msgid "Simulation View"
+msgstr "시뮬레이션 뷰"
+
+#: plugins/SimulationView/SimulationView.py:133
+msgctxt "@info:status"
 msgid "Nothing is shown because you need to slice first."
 msgstr "먼저 슬라이스해야 하기 때문에 아무것도 표시되지 않습니다."
 
-#: plugins/SimulationView/SimulationView.py:130
+#: plugins/SimulationView/SimulationView.py:134
 msgctxt "@info:title"
 msgid "No layers to show"
 msgstr "표시할 레이어 없음"
 
-#: plugins/SimulationView/SimulationView.py:132
+#: plugins/SimulationView/SimulationView.py:136
 #: plugins/SolidView/SolidView.py:74
 msgctxt "@info:option_text"
 msgid "Do not show this message again"
@@ -2967,7 +2977,7 @@ msgstr "UltiMaker 포맷 패키지"
 #: plugins/UFPReader/plugin.json
 msgctxt "description"
 msgid "Provides support for reading Ultimaker Format Packages."
-msgstr ""
+msgstr "Ultimaker 포맷 패키지 읽기를 지원합니다."
 
 #: plugins/UFPReader/plugin.json
 msgctxt "name"
@@ -2984,7 +2994,7 @@ msgstr "UFP 파일에 쓸 수 없음:"
 #: plugins/UFPWriter/plugin.json
 msgctxt "description"
 msgid "Provides support for writing Ultimaker Format Packages."
-msgstr ""
+msgstr "Ultimaker 포맷 패키지 작성을 지원합니다."
 
 #: plugins/UFPWriter/plugin.json
 msgctxt "name"
@@ -2994,12 +3004,12 @@ msgstr "UFP 작성자"
 #: plugins/UM3NetworkPrinting/plugin.json
 msgctxt "description"
 msgid "Manages network connections to UltiMaker networked printers."
-msgstr ""
+msgstr "UltiMaker 네트워크 연결 프린터에 대한 네트워크 연결을 관리합니다."
 
 #: plugins/UM3NetworkPrinting/plugin.json
 msgctxt "name"
 msgid "UltiMaker Network Connection"
-msgstr ""
+msgstr "UltiMaker 네트워크 연결"
 
 #: plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:44
 msgctxt "@title:window"
@@ -3514,7 +3524,7 @@ msgstr "자세히 알아보기"
 #: plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:18
 msgctxt "@info:status"
 msgid "You are attempting to connect to a printer that is not running UltiMaker Connect. Please update the printer to the latest firmware."
-msgstr ""
+msgstr "UltiMaker Connect를 실행하지 않는 프린터에 연결하려 합니다. 프린터를 최신 펌웨어로 업데이트해 주십시오."
 
 #: plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:21
 msgctxt "@info:title"
@@ -3788,12 +3798,12 @@ msgstr "히팅 빌드 플레이트 (공식 키트 또는 자체 조립식)"
 #: plugins/UltimakerMachineActions/plugin.json
 msgctxt "description"
 msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
-msgstr ""
+msgstr "Ultimaker 기계에 대한 기계 작동 제공(예 : 침대 수평 조정 마법사, 업그레이드 선택 등)"
 
 #: plugins/UltimakerMachineActions/plugin.json
 msgctxt "name"
 msgid "UltiMaker machine actions"
-msgstr ""
+msgstr "UltiMaker 기기 동작"
 
 #: plugins/VersionUpgrade/VersionUpgrade21to22/plugin.json
 msgctxt "description"
@@ -4034,16 +4044,6 @@ msgstr "Cura 5.2에서 Cura 5.3으로 구성을 업그레이드합니다."
 msgctxt "name"
 msgid "Version Upgrade 5.2 to 5.3"
 msgstr "5.2에서 5.3으로 버전 업그레이드"
-
-#: plugins/VersionUpgrade/VersionUpgrade53to54/plugin.json
-msgctxt "description"
-msgid "Upgrades configurations from Cura 5.3 to Cura 5.4."
-msgstr ""
-
-#: plugins/VersionUpgrade/VersionUpgrade53to54/plugin.json
-msgctxt "name"
-msgid "Version Upgrade 5.3 to 5.4"
-msgstr ""
 
 #: plugins/X3DReader/__init__.py:13
 msgctxt "@item:inlistbox"
@@ -4612,7 +4612,7 @@ msgstr "<b>사용자 지정 프로필에는 사용자가 변경한 설정만 저
 #: resources/qml/Cura.qml:917
 msgctxt "@action:button"
 msgid "Learn more about Cura print profiles"
-msgstr "Cura 프린트 프로필 자세히 알아보기"
+msgstr "Cura 프린트 프로필에 대해 자세히 알아보기"
 
 #: resources/qml/Cura.qml:926
 msgctxt "@button"
@@ -4852,7 +4852,7 @@ msgstr "호환 가능한 프린터"
 #: resources/qml/Dialogs/ChoosePrinterDialog.qml:110
 msgctxt "@description"
 msgid "No compatible printers, that are currently online, were found."
-msgstr "현재 온라인 상태인 호환 가능한 프린터가 없습니다."
+msgstr "현재 온라인 상태인 호환 가능 프린터를 찾을 수 없습니다."
 
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:13
 msgctxt "@title:window"
@@ -6197,7 +6197,7 @@ msgstr "<b>%1</b>개의 사용자 정의 프로파일이 일부 설정을 무시
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:92
 msgctxt "@info %1 is the name of a profile"
 msgid "Recommended settings (for <b>%1</b>) were altered."
-msgstr "(<b>%1</b>) 권장 설정이 변경되었습니다."
+msgstr "(<b>%1</b>)에 대한 권장 설정이 변경되었습니다."
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:106
 msgctxt "@info %1 is the name of a profile"
@@ -6232,7 +6232,7 @@ msgstr ""
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:111
 msgctxt "@button"
 msgid "Show Custom"
-msgstr ""
+msgstr "사용자 지정 표시"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedResolutionSelector.qml:27
 msgctxt "@label"
@@ -6275,13 +6275,13 @@ msgid ""
 "\n"
 "For functional 3D prints which require high strength in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
 msgstr ""
-"3D 객체의 인필 재료 패턴:\n"
+"프린트의 인필 재료 패턴:\n"
 "\n"
-" 비기능성 모델을 빠르게 프린트하기 위해 선, 지그재그 또는 라이트닝 인필을 선택합니다.\n"
+"비기능성 모델을 빠르게 프린트하려면 선, 지그재그 또는 라이트닝 인필을 선택합니다.\n"
 "\n"
-"많은 응력을 받지 않는 기능성 부품에 대해서는 그리드 또는 삼각형 또는 세 개로 된 육각형을 권장합니다.\n"
+"많은 응력을 받지 않는 기능성 부품의 경우 그리드 또는 삼각형 또는 삼-육각형을 사용하는 것이 좋습니다.\n"
 "\n"
-"여러 방향에서 높은 강도를 요구하는 기능성 3D 객체의 경우 입방체, 입방체 세분, 쿼터 큐빅, 옥텟 및 자이로이드를 사용합니다."
+"여러 방향에서 높은 강도를 요구하는 기능성 3D 객체의 경우에는 큐빅, 세분된 큐빅, 쿼터 큐빅, 옥텟 및 자이로이드를 사용합니다."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:67
 msgctxt "@action:label"
@@ -6488,7 +6488,7 @@ msgstr "클라우드 프린터가 오프라인 상태입니다. 프린터가 켜
 #: resources/qml/PrinterSelector/MachineSelector.qml:68
 msgctxt "@status"
 msgid "This printer is not linked to your account. Please visit the Ultimaker Digital Factory to establish a connection."
-msgstr ""
+msgstr "해당 프린터가 사용자의 계정에 연결되어 있지 않습니다. Ultimaker Digital Factory에 방문하여 연결을 설정하십시오."
 
 #: resources/qml/PrinterSelector/MachineSelector.qml:73
 msgctxt "@status"
@@ -6557,17 +6557,17 @@ msgctxt "@label Header for list of settings."
 msgid "Affected By"
 msgstr "영향을 받다"
 
-#: resources/qml/Settings/SettingItem.qml:196
+#: resources/qml/Settings/SettingItem.qml:190
 msgctxt "@label"
 msgid "This setting is always shared between all extruders. Changing it here will change the value for all extruders."
 msgstr "이 설정은 항상 모든 익스트루더 사이에 공유됩니다. 여기서 변경하면 모든 익스트루더에 대한 값이 변경됩니다."
 
-#: resources/qml/Settings/SettingItem.qml:200
+#: resources/qml/Settings/SettingItem.qml:194
 msgctxt "@label"
 msgid "This setting is resolved from conflicting extruder-specific values:"
 msgstr "이 설정은 충돌하는 압출기별 값으로 결정됩니다:"
 
-#: resources/qml/Settings/SettingItem.qml:240
+#: resources/qml/Settings/SettingItem.qml:234
 msgctxt "@label"
 msgid ""
 "This setting has a value that is different from the profile.\n"
@@ -6578,7 +6578,7 @@ msgstr ""
 "\n"
 "프로파일 값을 복원하려면 클릭하십시오."
 
-#: resources/qml/Settings/SettingItem.qml:340
+#: resources/qml/Settings/SettingItem.qml:334
 msgctxt "@label"
 msgid ""
 "This setting is normally calculated, but it currently has an absolute value set.\n"
@@ -6784,7 +6784,7 @@ msgstr ""
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:36
 msgctxt "@label"
 msgid "What printer would you like to setup?"
-msgstr ""
+msgstr "어떤 프린터를 설정하시겠습니까?"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:55
 msgctxt "@button"
@@ -6819,12 +6819,12 @@ msgstr "Cura에 새 UltiMaker 프린터를 추가하려는 경우"
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:80
 msgctxt "@info"
 msgid "Sign in into UltiMaker Digital Factory"
-msgstr ""
+msgstr "UltiMaker Digital Factory에 로그인합니다."
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:81
 msgctxt "@info"
 msgid "Follow the procedure to add a new printer"
-msgstr "절차에 따라 새 프린터를 추가하세요."
+msgstr "절차를 따라 새 프린터를 추가합니다."
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:82
 msgctxt "@info"
@@ -6905,15 +6905,3 @@ msgstr "새로운 기능"
 msgctxt "@label"
 msgid "No items to select from"
 msgstr "선택할 항목 없음"
-
-#~ msgctxt "@info:status"
-#~ msgid "Cura does not accurately display layers when Wire Printing is enabled."
-#~ msgstr "와이어 프린팅이 활성화되어 있을 때 Cura는 레이어를 정확하게 표시하지 않습니다."
-
-#~ msgctxt "@description"
-#~ msgid "Please sign in to get verified plugins and materials for Ultimaker Cura Enterprise"
-#~ msgstr "Ultimaker Cura Enterprise용으로 검증된 플러그인 및 재료를 받으려면 로그인하십시오."
-
-#~ msgctxt "@info:title"
-#~ msgid "Simulation View"
-#~ msgstr "시뮬레이션 뷰"

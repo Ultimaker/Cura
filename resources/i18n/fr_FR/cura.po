@@ -2999,7 +2999,7 @@ msgstr "Générateur UFP"
 #: plugins/UM3NetworkPrinting/plugin.json
 msgctxt "description"
 msgid "Manages network connections to UltiMaker networked printers."
-msgstr ""
+msgstr "Gère les connexions réseau vers les imprimantes UltiMaker en réseau."
 
 #: plugins/UM3NetworkPrinting/plugin.json
 msgctxt "name"
@@ -6246,7 +6246,7 @@ msgstr ""
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:111
 msgctxt "@button"
 msgid "Show Custom"
-msgstr ""
+msgstr "Personnalisé"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedResolutionSelector.qml:27
 msgctxt "@label"
