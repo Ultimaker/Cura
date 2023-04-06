@@ -6249,7 +6249,7 @@ msgstr "Aanbevolen print instellingen"
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:111
 msgctxt "@button"
 msgid "Show Custom"
-msgstr ""
+msgstr "Aangepast"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedResolutionSelector.qml:27
 msgctxt "@label"
@@ -6923,97 +6923,3 @@ msgstr "Nieuwe functies"
 msgctxt "@label"
 msgid "No items to select from"
 msgstr "Geen items om uit te kiezen"
-
-#~ msgctxt "@label"
-#~ msgid "Add cloud printer"
-#~ msgstr "Een cloudprinter toevoegen"
-
-#~ msgctxt "@label"
-#~ msgid "Aluminum"
-#~ msgstr "Aluminium"
-
-#~ msgctxt "@label"
-#~ msgid "Change build plate to %1 (This cannot be overridden)."
-#~ msgstr "Wijzig het platform naar %1 (kan niet worden overschreven)."
-
-#~ msgctxt "@text"
-#~ msgid "Data collected by UltiMaker Cura will not contain any personal information."
-#~ msgstr "De gegevens die UltiMaker Cura verzamelt, bevatten geen persoonlijke informatie."
-
-#~ msgctxt "@button"
-#~ msgid "Get started"
-#~ msgstr "Aan de slag"
-
-#~ msgctxt "@label"
-#~ msgid "Glass"
-#~ msgstr "Glas"
-
-#~ msgctxt "@label"
-#~ msgid "Gradual infill"
-#~ msgstr "Geleidelijke vulling"
-
-#~ msgctxt "@label"
-#~ msgid "Gradual infill will gradually increase the amount of infill towards the top."
-#~ msgstr "Met geleidelijke vulling neemt de hoeveelheid vulling naar boven toe."
-
-#~ msgctxt "@label"
-#~ msgid "Help us to improve UltiMaker Cura"
-#~ msgstr "Help ons UltiMaker Cura te verbeteren"
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "How should the conflict in the machine be resolved?"
-#~ msgstr "Hoe dient het conflict in de machine te worden opgelost?"
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "How should the conflict in the material be resolved?"
-#~ msgstr "Hoe dient het materiaalconflict te worden opgelost?"
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "How should the conflict in the profile be resolved?"
-#~ msgstr "Hoe dient het conflict in het profiel te worden opgelost?"
-
-#~ msgctxt "@text"
-#~ msgid "Machine types"
-#~ msgstr "Machinetypen"
-
-#~ msgctxt "@text"
-#~ msgid "Material usage"
-#~ msgstr "Materiaalgebruik"
-
-#~ msgctxt "@text"
-#~ msgid "More information"
-#~ msgstr "Meer informatie"
-
-#~ msgctxt "@text"
-#~ msgid "Number of slices"
-#~ msgstr "Aantal slices"
-
-#~ msgctxt "@text"
-#~ msgid "Please follow these steps to set up UltiMaker Cura. This will only take a few moments."
-#~ msgstr ""
-#~ "Volg deze stappen voor het instellen van\n"
-#~ "UltiMaker Cura. Dit duurt slechts even."
-
-#~ msgctxt "@description"
-#~ msgid "Please sign in to get verified plugins and materials for Ultimaker Cura Enterprise"
-#~ msgstr "Meld u aan voor geverifieerde plug-ins en materialen voor Ultimaker Cura Enterprise"
-
-#~ msgctxt "@text"
-#~ msgid "Print settings"
-#~ msgstr "Instellingen voor printen"
-
-#~ msgctxt "@info"
-#~ msgid "Some settings were changed."
-#~ msgstr "Bepaalde instellingen zijn gewijzigd."
-
-#~ msgctxt "@text"
-#~ msgid "UltiMaker Cura collects anonymous data to improve print quality and user experience, including:"
-#~ msgstr "UltiMaker Cura verzamelt anonieme gegevens om de printkwaliteit en gebruikerservaring te verbeteren, waaronder:"
-
-#~ msgctxt "@action:label"
-#~ msgid "Visible settings:"
-#~ msgstr "Zichtbare instellingen:"
-
-#~ msgctxt "@label"
-#~ msgid "Welcome to UltiMaker Cura"
-#~ msgstr "Welkom bij UltiMaker Cura"

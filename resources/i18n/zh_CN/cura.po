@@ -930,7 +930,7 @@ msgstr ""
 #: plugins/3MFReader/WorkspaceDialog.qml:104
 msgctxt "@info:tooltip"
 msgid "Printer settings will be updated to match the settings saved with the project."
-msgstr "打印机设置将更新以匹配随项目保存的设置。"
+msgstr "打印机设置将更新，以便与项目一起保存的设置相一致。"
 
 #: plugins/3MFReader/WorkspaceDialog.qml:156
 #: resources/qml/Dialogs/WorkspaceSummaryDialog.qml:222
@@ -1004,7 +1004,7 @@ msgstr "加载项目将清除打印平台上的所有模型。"
 #: plugins/3MFReader/WorkspaceDialog.qml:367
 msgctxt "@label"
 msgid "The material used in this project is currently not installed in Cura.<br/>Install the material profile and reopen the project."
-msgstr "此项目中使用的材料当前未安装在 Cura 中。<br/>安装材料配置文件并重新打开项目。"
+msgstr "该项目使用的材料当前未安装在 Cura 中。<br/>安装材料配置文件并重新打开项目。"
 
 #: plugins/3MFReader/WorkspaceDialog.qml:392
 msgctxt "@action:button"
@@ -2035,7 +2035,7 @@ msgstr "未知作者"
 #: plugins/Marketplace/PackageModel.py:95
 msgctxt "@label:label Ultimaker Marketplace is a brand name, don't translate"
 msgid "The material package associated with the Cura project could not be found on the Ultimaker Marketplace. Use the partial material profile definition stored in the Cura project file at your own risk."
-msgstr "Ultimaker Marketplace 上找不到与该 Cura 项目相关的材料包。如果您要使用存储在 Cura 项目文件中的部分材料配置文件定义，由此引发的风险由您自行承担。"
+msgstr "在 Ultimaker Marketplace 上找不到与 Cura 项目相关的材料包。使用存储在 Cura 项目文件中的部分材料配置文件定义，风险自负。"
 
 #: plugins/Marketplace/RemotePackageList.py:117
 msgctxt "@info:error"
@@ -3390,12 +3390,12 @@ msgstr "等待"
 #: plugins/UM3NetworkPrinting/resources/qml/MonitorStage.qml:117
 msgctxt "@info"
 msgid "Monitor your printers from everywhere using Ultimaker Digital Factory"
-msgstr "使用 Ultimaker Digital Factory 从任意位置监控打印机"
+msgstr "使用 UltiMaker Digital Factory 随时随地监控您的打印机"
 
 #: plugins/UM3NetworkPrinting/resources/qml/MonitorStage.qml:129
 msgctxt "@button"
 msgid "View printers in Digital Factory"
-msgstr "查看 Digital Factory 中的打印机"
+msgstr "在 Digital Factory 中查看打印机"
 
 #: plugins/UM3NetworkPrinting/resources/qml/PrintWindow.qml:12
 msgctxt "@title:window"
@@ -3587,7 +3587,7 @@ msgstr "配置组"
 #: plugins/UM3NetworkPrinting/src/Messages/PrintJobAwaitingApprovalMessage.py:18
 msgctxt "@info:status"
 msgid "You will receive a confirmation via email when the print job is approved"
-msgstr "打印作业获得批准后，您将收到确认电子邮件"
+msgstr "打印作业获得批准后，您将收到电子邮件确认信息"
 
 #: plugins/UM3NetworkPrinting/src/Messages/PrintJobAwaitingApprovalMessage.py:19
 msgctxt "@info:title"
@@ -4609,12 +4609,12 @@ msgstr ""
 #: resources/qml/Cura.qml:909
 msgctxt "@label %i will be replaced with a profile name"
 msgid "<b>Only user changed settings will be saved in the custom profile.</b><br/>For materials that support it, the new custom profile will inherit properties from <b>%1</b>."
-msgstr "<b>只有用户更改的设置才会保存在自定义配置文件中。</b><br/>对于支持该设置的材料，新的自定义配置文件将从 <b>%1</b> 继承属性。"
+msgstr "<b>只有用户更改的设置才会保存在自定义配置文件中。</b><br/>对于支持材料，新的自定义配置文件将从 <b>%1</b> 继承属性。"
 
 #: resources/qml/Cura.qml:917
 msgctxt "@action:button"
 msgid "Learn more about Cura print profiles"
-msgstr "了解更多有关 Cura 打印配置文件的信息"
+msgstr "了解有关 Cura 打印配置文件的更多信息"
 
 #: resources/qml/Cura.qml:926
 msgctxt "@button"
@@ -6189,17 +6189,17 @@ msgstr "关"
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:65
 msgctxt "@info, %1 is the name of the custom profile"
 msgid "<b>%1</b> custom profile is active and you overwrote some settings."
-msgstr "<b>%1</b>自定义配置文件处于活动状态，并且已覆盖某些设置。"
+msgstr "<b>%1</b> 自定义配置文件处于活动状态，并且已覆盖某些设置。"
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:78
 msgctxt "@info, %1 is the name of the custom profile"
 msgid "<b>%1</b> custom profile is overriding some settings."
-msgstr "<b>%1</b>自定义配置文件正在覆盖某些设置。"
+msgstr "<b>%1</b> 自定义配置文件正在覆盖某些设置。"
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:92
 msgctxt "@info %1 is the name of a profile"
 msgid "Recommended settings (for <b>%1</b>) were altered."
-msgstr "推荐设置（针对 <b>%1</b> ）已更改。"
+msgstr "建议的设置（适用于 <b>%1</b>）已更改。"
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:106
 msgctxt "@info %1 is the name of a profile"
@@ -6209,7 +6209,7 @@ msgstr "当前配置文件的一些设置已经重写。"
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:137
 msgctxt "@info"
 msgid "Reset to defaults."
-msgstr "重置为默认。"
+msgstr "重置为默认值。"
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:178
 msgctxt "@info"
@@ -6234,7 +6234,7 @@ msgstr ""
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:111
 msgctxt "@button"
 msgid "Show Custom"
-msgstr ""
+msgstr "显示自定义"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedResolutionSelector.qml:27
 msgctxt "@label"
@@ -6293,7 +6293,7 @@ msgstr ""
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:68
 msgctxt "@label"
 msgid "Defines the thickness of your part side walls, roof and floor."
-msgstr "定义零件侧壁、屋顶和地板的厚度。"
+msgstr "定义零件侧壁、顶和底板的厚度。"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:16
 msgctxt "@label"
@@ -6786,7 +6786,7 @@ msgstr ""
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:36
 msgctxt "@label"
 msgid "What printer would you like to setup?"
-msgstr "您要设置哪种型号的打印机？"
+msgstr "您要设置什么打印机？"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:55
 msgctxt "@button"
@@ -6801,7 +6801,7 @@ msgstr ""
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:73
 msgctxt "@button"
 msgid "Learn more about adding printers to Cura"
-msgstr "了解更多有关将打印机添加到 Cura 的信息"
+msgstr "了解有关将打印机添加到 Cura 的更多信息"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinterStack.qml:29
 msgctxt "@label"
@@ -6816,22 +6816,22 @@ msgstr ""
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:70
 msgctxt "@label"
 msgid "If you are trying to add a new UltiMaker printer to Cura"
-msgstr "如果您尝试将新的 UltiMaker 打印机添加到 Cura，"
+msgstr "如果您想向 Cura 添加一台新的 UltiMaker 打印机"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:80
 msgctxt "@info"
 msgid "Sign in into UltiMaker Digital Factory"
-msgstr ""
+msgstr "登录 UltiMaker Digital Factory"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:81
 msgctxt "@info"
 msgid "Follow the procedure to add a new printer"
-msgstr "请按照以下步骤添加新打印机"
+msgstr "按照步骤添加新打印机"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:82
 msgctxt "@info"
 msgid "Your new printer will automatically appear in Cura"
-msgstr "您的新打印机将自动在 Cura 中显示"
+msgstr "新打印机将自动出现在 Cura 中"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:100
 msgctxt "@button"

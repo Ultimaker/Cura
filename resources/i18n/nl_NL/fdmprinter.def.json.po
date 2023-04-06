@@ -70,7 +70,7 @@ msgstr "Een lijst polygonen met gebieden waarin de printkop niet mag komen."
 #: fdmprinter.def.json
 msgctxt "brim_inside_margin description"
 msgid "A part fully enclosed inside another part can generate an outer brim that touches the inside of the other part. This removes all brim within this distance from internal holes."
-msgstr "Een deel dat volledig in een ander deel is ingesloten, kan een buitenste brim genereren die de binnenkant van het andere deel raakt. Dit verwijdert alle brim binnen deze afstand van interne gaten."
+msgstr "Een deel dat volledig is ingesloten in een ander deel kan een buitenste brim genereren die de binnenkant van het andere deel raakt. Dit verwijdert alle brim binnen deze afstand van de interne gaten."
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_abs label"
@@ -279,7 +279,7 @@ msgstr "Pas de extruderoffset toe op het coördinatensysteem. Van toepassing op 
 #: fdmprinter.def.json
 msgctxt "interlocking_enable description"
 msgid "At the locations where models touch, generate an interlocking beam structure. This improves the adhesion between models, especially models printed in different materials."
-msgstr "Genereer op de plaatsen waar modellen elkaar raken een in elkaar grijpende balkstructuur. Dit verbetert de hechting tussen modellen, vooral modellen die in verschillende materialen zijn gedrukt."
+msgstr "Genereer op de plaatsen waar modellen elkaar raken een in elkaar grijpende balkstructuur. Dit verbetert de hechting tussen modellen, vooral modellen die in verschillende materialen zijn geprint."
 
 #: fdmprinter.def.json
 msgctxt "travel_avoid_other_parts label"
@@ -854,7 +854,7 @@ msgstr "Hiermee detecteert u bruggen en past u de instellingen voor de printsnel
 #: fdmprinter.def.json
 msgctxt "inset_direction description"
 msgid "Determines the order in which walls are printed. Printing outer walls earlier helps with dimensional accuracy, as faults from inner walls cannot propagate to the outside. However printing them later allows them to stack better when overhangs are printed. When there is an uneven amount of total innner walls, the 'center last line' is always printed last."
-msgstr "Bepaalt de volgorde waarin de wanden worden geprint. Wanneer u de buitenwanden het eerst print, bevordert u de nauwkeurigheid van de afmetingen, omdat fouten in de binnenwanden niet worden overgedragen op de buitenzijde. Door ze later te printen kunt u echter beter stapelen wanneer de overhangs worden geprint. Bij een oneven aantal binnenwanden wordt de 'middelste laatste regel' altijd als laatste afgedrukt."
+msgstr "Bepaalt de volgorde waarin de wanden worden geprint. Wanneer u de buitenwanden het eerst print, bevordert u de nauwkeurigheid van de afmetingen, omdat fouten in de binnenwanden niet worden overgedragen op de buitenzijde. Door ze later te printen kunt u echter beter stapelen wanneer de overhangs worden geprint. Bij een oneven aantal binnenwanden wordt de 'middelste laatste lijn' altijd als laatste afgedrukt."
 
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order description"
@@ -1348,7 +1348,7 @@ msgstr "Doorvoercompensatie op de supportstructuurlijnen."
 #: fdmprinter.def.json
 msgctxt "wall_0_material_flow_layer_0 description"
 msgid "Flow compensation on the outermost wall line of the first layer."
-msgstr "Doorvoercompensatie op de buitenmuurlijn van de eerste laag."
+msgstr "Stroomcompensatie op de buitenste wandlijn van de eerste laag."
 
 #: fdmprinter.def.json
 msgctxt "wall_0_material_flow description"
@@ -1491,7 +1491,7 @@ msgstr "Rijbrughoogte"
 #: fdmprinter.def.json
 msgctxt "interlocking_enable label"
 msgid "Generate Interlocking Structure"
-msgstr "Genereer een in elkaar grijpende structuur"
+msgstr "Genereer in elkaar grijpende structuur"
 
 #: fdmprinter.def.json
 msgctxt "support_enable label"
@@ -1556,7 +1556,7 @@ msgstr "Geleidelijke supportvulling traptreden"
 #: fdmprinter.def.json
 msgctxt "cool_min_temperature description"
 msgid "Gradually reduce to this temperature when printing at reduced speeds because of minimum layer time."
-msgstr "Verlaag vanwege de minimale laagtijd geleidelijk naar deze temperatuur bij het printen aan lagere snelheden."
+msgstr "Verlaag geleidelijk naar deze temperatuur bij het printen met lagere snelheden vanwege de minimale laagtijd."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1916,7 +1916,7 @@ msgstr "Acceleratie Eerste Laag"
 #: fdmprinter.def.json
 msgctxt "skin_material_flow_layer_0 label"
 msgid "Initial Layer Bottom Flow"
-msgstr "Initiële laag bodemstroom"
+msgstr "Initiële laag onderste lijn"
 
 #: fdmprinter.def.json
 msgctxt "material_flow_layer_0 label"
@@ -2066,7 +2066,7 @@ msgstr "In elkaar grijpende diepte"
 #: fdmprinter.def.json
 msgctxt "interlocking_orientation label"
 msgid "Interlocking Structure Orientation"
-msgstr "Oriëntatie van de in elkaar grijpende structuur"
+msgstr "In elkaar grijpende structuuroriëntatie"
 
 #: fdmprinter.def.json
 msgctxt "ironing_only_highest_layer label"
@@ -3731,7 +3731,7 @@ msgstr "Maximale grootte kleine gaten"
 #: fdmprinter.def.json
 msgctxt "cool_min_temperature label"
 msgid "Small Layer Printing Temperature"
-msgstr "De printtemperatuur van kleine lagens"
+msgstr "Printtemperatuur van de kleine laag"
 
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 description"
@@ -3886,7 +3886,7 @@ msgstr "Afstand van Onderkant Supportstructuur"
 #: fdmprinter.def.json
 msgctxt "support_bottom_wall_count label"
 msgid "Support Bottom Wall Line Count"
-msgstr "Aantal wandlijnen van de ondersteuningsonderzijde"
+msgstr "Aantal wandlijnen van de ondersteuningsbodem"
 
 #: fdmprinter.def.json
 msgctxt "support_brim_line_count label"
@@ -4086,7 +4086,7 @@ msgstr "Dikte Verbindingsstructuur"
 #: fdmprinter.def.json
 msgctxt "support_interface_wall_count label"
 msgid "Support Interface Wall Line Count"
-msgstr "Aantal wandlijnen van de ondersteuningsinterface"
+msgstr "Ondersteuning Interface Wandlijn"
 
 #: fdmprinter.def.json
 msgctxt "jerk_support label"
@@ -4191,7 +4191,7 @@ msgstr "Dikte Supportdak"
 #: fdmprinter.def.json
 msgctxt "support_roof_wall_count label"
 msgid "Support Roof Wall Line Count"
-msgstr "Aantal wandlijnen van het ondersteuningsdak"
+msgstr "Aantal wandlijnen ondersteuningsdak"
 
 #: fdmprinter.def.json
 msgctxt "speed_support label"
@@ -4556,7 +4556,7 @@ msgstr "De diameter van het tandwiel waarmee het materiaal in de feeder wordt ge
 #: fdmprinter.def.json
 msgctxt "support_tree_max_diameter description"
 msgid "The diameter of the widest branches of tree support. A thicker trunk is more sturdy; a thinner trunk takes up less space on the build plate."
-msgstr "De diameter van de breedste takken boomondersteuning. Een dikkere kofferbak is steviger; een dunnere kofferbak neemt minder ruimte in op het platform."
+msgstr "De diameter van de breedste takken van de boomondersteuning. Een dikkere tak is steviger; een dunnere tak neemt minder ruimte in beslag op het platform."
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation_step description"
@@ -5140,7 +5140,7 @@ msgstr "De minimale lengte van de skirt of de brim. Als deze minimumlengte niet 
 #: fdmprinter.def.json
 msgctxt "min_odd_wall_line_width description"
 msgid "The minimum line width for middle line gap filler polyline walls. This setting determines at which model thickness we switch from printing two wall lines, to printing two outer walls and a single central wall in the middle. A higher Minimum Odd Wall Line Width leads to a higher maximum even wall line width. The maximum odd wall line width is calculated as 2 * Minimum Even Wall Line Width."
-msgstr "De minimum lijnbreedte voor opvuller voor ruimte middelste lijn bij wanden met meerdere lijnen. Deze instelling bepaalt bij welke modeldikte we overschakelen van het printen van twee wandlijnen naar het printen van twee buitenwanden en één centrale wand in het midden. Een hogere Minimum breedte ongelijkmatige wandlijn leidt naar een hogere maximale lijnbreedte bij een gelijkmatige wand. De maximum breedte ongelijkmatige wandlijn wordt berekend als 2 * de Minimum breedte gelijkmatige wandlijn."
+msgstr "De minimum lijnbreedte voor opvuller voor ruimte middelste lijn bij muren met meerdere lijnen. Deze instelling bepaalt bij welke modeldikte we overschakelen van het printen van twee wandlijnen naar het printen van twee buitenwanden en één centrale wand in het midden. Een hogere Minimum breedte ongelijkmatige wandlijn leidt naar een hogere maximale lijnbreedte bij een gelijkmatige wand. De maximale breedte ongelijkmatige wandlijn wordt berekend als 2 * Minimum breedte gelijkmatige wandlijn."
 
 #: fdmprinter.def.json
 msgctxt "min_even_wall_line_width description"
@@ -5255,17 +5255,17 @@ msgstr "Het aantal wanden rond de vulling van de supportstructuur. Met een extra
 #: fdmprinter.def.json
 msgctxt "support_bottom_wall_count description"
 msgid "The number of walls with which to surround support interface floor. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "Het aantal muren waarmee de ondersteuningsinterfacevloer kan worden omgeven. Door een muur toe te voegen, kan de ondersteuningsprint betrouwbaarder worden gemaakt en kunnen overhangen beter worden ondersteund, maar neemt de printtijd en het gebruikte materiaal toe."
+msgstr "Het aantal muren waarmee de ondersteuningsinterfacevloer moet worden omgeven. Door een muur toe te voegen, kan de ondersteuningsprint betrouwbaarder worden gemaakt en kunnen overhangen beter worden ondersteund, maar neemt de printtijd en het gebruikte materiaal toe."
 
 #: fdmprinter.def.json
 msgctxt "support_roof_wall_count description"
 msgid "The number of walls with which to surround support interface roof. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "Het aantal muren waarmee het dak van de ondersteuningsinterface moet worden omgeven. Door een muur toe te voegen, kan de ondersteuningsprint betrouwbaarder worden gemaakt en kunnen overhangen beter worden ondersteund, maar neemt de printtijd en het gebruikte materiaal toe."
+msgstr "Het aantal muren waarmee het ondersteuningsinterfacedak kan worden omgeven. Door een muur toe te voegen, kan de ondersteuningsprint betrouwbaarder worden gemaakt en kunnen overhangen beter worden ondersteund, maar neemt de printtijd en het gebruikte materiaal toe."
 
 #: fdmprinter.def.json
 msgctxt "support_interface_wall_count description"
 msgid "The number of walls with which to surround support interface. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "Het aantal muren waarmee de ondersteuningsinterface kan worden omgeven. Door een muur toe te voegen, kan de ondersteuningsprint betrouwbaarder worden gemaakt en kunnen overhangen beter worden ondersteund, maar neemt de printtijd en het gebruikte materiaal toe."
+msgstr "Het aantal muren waarmee de ondersteuningsinterface moet worden omgeven. Door een muur toe te voegen, kan de ondersteuningsprint betrouwbaarder worden gemaakt en kunnen overhangen beter worden ondersteund, maar neemt de printtijd en het gebruikte materiaal toe."
 
 #: fdmprinter.def.json
 msgctxt "wall_distribution_count description"
@@ -6030,12 +6030,12 @@ msgstr "Pijlers Gebruiken"
 #: fdmprinter.def.json
 msgctxt "acceleration_travel_enabled description"
 msgid "Use a separate acceleration rate for travel moves. If disabled, travel moves will use the acceleration value of the printed line at their destination."
-msgstr "Gebruik een andere acceleratiesnelheid voor bewegingen. Indien uitgeschakeld, gebruikt de beweging de acceleratiewaarde van de geprinte lijn op de bestemming."
+msgstr "Gebruik een aparte acceleratiesnelheid voor verplaatsingen. Indien uitgeschakeld, gebruikt de beweging de acceleratiewaarde van de geprinte lijn op de bestemming."
 
 #: fdmprinter.def.json
 msgctxt "jerk_travel_enabled description"
 msgid "Use a separate jerk rate for travel moves. If disabled, travel moves will use the jerk value of the printed line at their destination."
-msgstr "Gebruik een andere bewegingsschok voor bewegingen. Indien uitgeschakeld, gebruikt de beweging de bewegingsschokwaarde van de geprinte lijn op de bestemming."
+msgstr "Gebruik een apart schokpercentage voor verplaatsingen. Indien uitgeschakeld, gebruikt de beweging de schokwaarde van de geprinte lijn op de bestemming."
 
 #: fdmprinter.def.json
 msgctxt "relative_extrusion description"
@@ -6766,19 +6766,3 @@ msgstr "Zigzag"
 msgctxt "travel description"
 msgid "travel"
 msgstr "beweging"
-
-#~ msgctxt "material_flow_dependent_temperature label"
-#~ msgid "Auto Temperature"
-#~ msgstr "Automatische Temperatuurinstelling"
-
-#~ msgctxt "material_flow_dependent_temperature description"
-#~ msgid "Change the temperature for each layer automatically with the average flow speed of that layer."
-#~ msgstr "Pas de temperatuur voor elke laag automatisch aan aan de gemiddelde doorvoersnelheid van de laag."
-
-#~ msgctxt "limit_support_retractions label"
-#~ msgid "Limit Support Retractions"
-#~ msgstr "Supportintrekkingen beperken"
-
-#~ msgctxt "limit_support_retractions description"
-#~ msgid "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excessive stringing within the support structure."
-#~ msgstr "Sla intrekking over tijdens bewegingen in een rechte lijn van support naar support. Deze instelling verkort de printtijd, maar kan leiden tot overmatige draadvorming in de supportstructuur."

@@ -70,7 +70,7 @@ msgstr "Un elenco di poligoni con aree alle quali la testina di stampa non può 
 #: fdmprinter.def.json
 msgctxt "brim_inside_margin description"
 msgid "A part fully enclosed inside another part can generate an outer brim that touches the inside of the other part. This removes all brim within this distance from internal holes."
-msgstr "Una parte completamente racchiusa all'interno di un'altra parte può generare un brim esterno che tocca l'interno dell'altra parte. Questo rimuove tutto il brim entro questa distanza dai fori interni."
+msgstr "Una parte completamente racchiusa all'interno di un'altra parte può generare un brim esterno che tocca l'interno dell'altra parte. Questo rimuove tutti i brim entro questa distanza dai fori interni."
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_abs label"
@@ -279,7 +279,7 @@ msgstr "Applica l’offset estrusore al sistema coordinate. Influisce su tutti g
 #: fdmprinter.def.json
 msgctxt "interlocking_enable description"
 msgid "At the locations where models touch, generate an interlocking beam structure. This improves the adhesion between models, especially models printed in different materials."
-msgstr "Nei punti in cui i modelli si toccano, genera una struttura di travi a incastro. Ciò migliora l'adesione tra i modelli, in particolare i modelli stampati in diversi materiali."
+msgstr "Nei punti in cui i modelli si toccano, viene generata una struttura del fascio ad incastro. Questo migliora l'adesione tra i modelli, soprattutto quelli stampati in materiali diversi."
 
 #: fdmprinter.def.json
 msgctxt "travel_avoid_other_parts label"
@@ -854,7 +854,7 @@ msgstr "Rileva i ponti e modifica la velocità di stampa, il flusso e le imposta
 #: fdmprinter.def.json
 msgctxt "inset_direction description"
 msgid "Determines the order in which walls are printed. Printing outer walls earlier helps with dimensional accuracy, as faults from inner walls cannot propagate to the outside. However printing them later allows them to stack better when overhangs are printed. When there is an uneven amount of total innner walls, the 'center last line' is always printed last."
-msgstr "Determina l'ordine di stampa delle pareti. La stampa anticipata delle pareti esterne migliora la precisione dimensionale poiché i guasti dalle pareti interne non possono propagarsi all'esterno. Se si esegue la stampa in un momento successivo, tuttavia, è possibile impilarle meglio quando vengono stampati gli sbalzi. In presenza di una quantità disomogenea di pareti interne totali, l'\"ultima riga centrale\" viene sempre stampata per ultima."
+msgstr "Determina l'ordine di stampa delle pareti. La stampa anticipata delle pareti esterne migliora la precisione dimensionale poiché i guasti dalle pareti interne non possono propagarsi all'esterno. Se si esegue la stampa in un momento successivo, tuttavia, è possibile impilarle meglio quando vengono stampati gli sbalzi. Quando c'è una quantità irregolare di pareti interne totali, l'ultima riga centrale viene sempre stampata per ultima."
 
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order description"
@@ -1103,7 +1103,7 @@ msgstr "Abilitazione irrobustimento parte superiore (tetto) del supporto"
 #: fdmprinter.def.json
 msgctxt "acceleration_travel_enabled label"
 msgid "Enable Travel Acceleration"
-msgstr "Abilita Accelerazione spostamenti"
+msgstr "Abilita l'accelerazione spostamenti"
 
 #: fdmprinter.def.json
 msgctxt "jerk_travel_enabled label"
@@ -1348,7 +1348,7 @@ msgstr "Compensazione del flusso sulle linee di supporto."
 #: fdmprinter.def.json
 msgctxt "wall_0_material_flow_layer_0 description"
 msgid "Flow compensation on the outermost wall line of the first layer."
-msgstr "Compensazione del flusso sulla linea perimetrale più esterna del primo strato."
+msgstr "Compensazione del flusso sulla linea a parete più esterna del primo strato."
 
 #: fdmprinter.def.json
 msgctxt "wall_0_material_flow description"
@@ -1363,7 +1363,7 @@ msgstr "Compensazione del flusso sulle linee superiore/inferiore."
 #: fdmprinter.def.json
 msgctxt "wall_x_material_flow_layer_0 description"
 msgid "Flow compensation on wall lines for all wall lines except the outermost one, but only for the first layer"
-msgstr "Compensazione del flusso sulle linee perimetrali per tutte le linee perimetrali tranne quella più esterna, ma solo per il primo strato"
+msgstr "Compensazione del flusso sulle linee di parete per tutte le linee di parete tranne quella più esterna, ma solo per il primo strato"
 
 #: fdmprinter.def.json
 msgctxt "wall_x_material_flow description"
@@ -1556,7 +1556,7 @@ msgstr "Fasi di riempimento graduale del supporto"
 #: fdmprinter.def.json
 msgctxt "cool_min_temperature description"
 msgid "Gradually reduce to this temperature when printing at reduced speeds because of minimum layer time."
-msgstr "Riduci gradualmente a questa temperatura quando si stampa a velocità ridotte a causa del tempo minimo di stratificazione."
+msgstr "Riduci gradualmente questa temperatura quando si stampa a velocità ridotte a causa del tempo di strato minimo."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -2046,17 +2046,17 @@ msgstr "Dall'interno all'esterno"
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_layer_count label"
 msgid "Interlocking Beam Layer Count"
-msgstr "Numero di strati delle travi a incastro"
+msgstr "Conteggio degli strati delle travi ad incastro"
 
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_width label"
 msgid "Interlocking Beam Width"
-msgstr "Larghezza delle travi a incastro"
+msgstr "Larghezza della trave a incastro"
 
 #: fdmprinter.def.json
 msgctxt "interlocking_boundary_avoidance label"
 msgid "Interlocking Boundary Avoidance"
-msgstr "Aggiramento dei confini a incastro"
+msgstr "Prevenzione incastro dei bordi"
 
 #: fdmprinter.def.json
 msgctxt "interlocking_depth label"
@@ -2066,7 +2066,7 @@ msgstr "Profondità di incastro"
 #: fdmprinter.def.json
 msgctxt "interlocking_orientation label"
 msgid "Interlocking Structure Orientation"
-msgstr "Orientamento della struttura a incastro"
+msgstr "Orientamento della struttura ad incastro"
 
 #: fdmprinter.def.json
 msgctxt "ironing_only_highest_layer label"
@@ -4556,7 +4556,7 @@ msgstr "Il diametro della ruota che guida il materiale nel tirafilo."
 #: fdmprinter.def.json
 msgctxt "support_tree_max_diameter description"
 msgid "The diameter of the widest branches of tree support. A thicker trunk is more sturdy; a thinner trunk takes up less space on the build plate."
-msgstr "Il diametro dei rami più spessi del supporto ad albero. Un tronco più spesso è più resistente, mentre uno più sottile occuperà meno spazio sul piano di stampa."
+msgstr "Il diametro dei rami più larghi del supporto dell'albero. Un tronco più spesso è più robusto; un tronco più sottile occupa meno spazio sul piano di stampa."
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation_step description"
@@ -4596,7 +4596,7 @@ msgstr "Indica la distanza percorsa durante la realizzazione di una connessione 
 #: fdmprinter.def.json
 msgctxt "interlocking_depth description"
 msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
-msgstr "La distanza dal confine tra i modelli per generare una struttura a incastro misurata in celle. Un numero troppo basso di celle determina una scarsa adesione."
+msgstr "La distanza dal confine tra i modelli per generare una struttura a incastro, misurata in celle. Un numero troppo basso di celle determina una scarsa adesione."
 
 #: fdmprinter.def.json
 msgctxt "brim_width description"
@@ -5140,7 +5140,7 @@ msgstr "Indica la lunghezza minima dello skirt o del brim. Se tale lunghezza min
 #: fdmprinter.def.json
 msgctxt "min_odd_wall_line_width description"
 msgid "The minimum line width for middle line gap filler polyline walls. This setting determines at which model thickness we switch from printing two wall lines, to printing two outer walls and a single central wall in the middle. A higher Minimum Odd Wall Line Width leads to a higher maximum even wall line width. The maximum odd wall line width is calculated as 2 * Minimum Even Wall Line Width."
-msgstr "La larghezza minima della linea per pareti polilinea di riempimento interstizi linea intermedia. Questa impostazione determina lo spessore modello in corrispondenza del quale si passa dalla stampa di due linee perimetrali alla stampa di due pareti esterne e di una singola parete centrale al centro. Una larghezza minima della linea perimetrale pari più elevata porta a una larghezza massima della linea perimetrale dispari più elevata. La larghezza massima della linea perimetrale dispari viene calcolata come 2 * Larghezza minima della linea perimetrale pari."
+msgstr "La larghezza minima della linea per pareti polilinea di riempimento interstizi linea intermedia. Questa impostazione determina lo spessore modello in corrispondenza del quale si passa dalla stampa di due linee perimetrali alla stampa di due pareti esterne e di una singola parete centrale al centro. Una larghezza minima della linea perimetrale pari più elevata porta a una larghezza massima della linea perimetrale dispari più elevata. La larghezza massima della linea di parete dispari viene calcolata come 2 * Larghezza minima della linea di parete pari."
 
 #: fdmprinter.def.json
 msgctxt "min_even_wall_line_width description"
@@ -5690,7 +5690,7 @@ msgstr "Corrisponde alla larghezza del brim da stampare al di sotto del supporto
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_width description"
 msgid "The width of the interlocking structure beams."
-msgstr "La larghezza delle travi della struttura a incastro."
+msgstr "La larghezza delle travi della struttura ad incastro."
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_size description"
@@ -5970,7 +5970,7 @@ msgstr "Risoluzione collisione supporto ad albero"
 #: fdmprinter.def.json
 msgctxt "support_tree_max_diameter label"
 msgid "Tree Support Trunk Diameter"
-msgstr "Diametro del tronco di supporto ad albero"
+msgstr "Diametro del tronco di supporto dell'albero"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option trihexagon"
@@ -6030,12 +6030,12 @@ msgstr "Utilizzo delle torri"
 #: fdmprinter.def.json
 msgctxt "acceleration_travel_enabled description"
 msgid "Use a separate acceleration rate for travel moves. If disabled, travel moves will use the acceleration value of the printed line at their destination."
-msgstr "Utilizza un tasso di accelerazione separato per i movimenti di spostamento. Se disabilitata, i movimenti di spostamento utilizzeranno il valore di accelerazione della linea stampata alla destinazione."
+msgstr "Usa una velocità di accelerazione separata per i movimenti di spostamento. Se disabilitato, i movimenti di spostamento utilizzeranno il valore di accelerazione della linea stampata alla destinazione."
 
 #: fdmprinter.def.json
 msgctxt "jerk_travel_enabled description"
 msgid "Use a separate jerk rate for travel moves. If disabled, travel moves will use the jerk value of the printed line at their destination."
-msgstr "Utilizza un tasso di jerk distinto per i movimenti di spostamento. Se disabilitato, i movimenti di spostamento utilizzeranno il valore di jerk della linea stampata alla destinazione."
+msgstr "Usa un tasso di jerk separato per i movimenti di spostamento. Se disabilitata, i movimenti di spostamento utilizzeranno il valore di jerk della linea stampata alla destinazione."
 
 #: fdmprinter.def.json
 msgctxt "relative_extrusion description"

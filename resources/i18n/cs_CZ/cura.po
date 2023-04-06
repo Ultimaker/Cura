@@ -2054,7 +2054,7 @@ msgstr "Nelze se připojit k Obchodu."
 #: plugins/Marketplace/plugin.json
 msgctxt "description"
 msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
-msgstr ""
+msgstr "Spravuje rozšíření aplikace a umožňuje prohlížení rozšíření z webu UltiMaker."
 
 #: plugins/Marketplace/plugin.json
 msgctxt "name"
@@ -3012,12 +3012,12 @@ msgstr "Zapisovač UFP"
 #: plugins/UM3NetworkPrinting/plugin.json
 msgctxt "description"
 msgid "Manages network connections to UltiMaker networked printers."
-msgstr ""
+msgstr "Spravuje síťová připojení k síťovým tiskárnám UltiMaker."
 
 #: plugins/UM3NetworkPrinting/plugin.json
 msgctxt "name"
 msgid "UltiMaker Network Connection"
-msgstr ""
+msgstr "Síťové připojení UltiMaker"
 
 #: plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:44
 msgctxt "@title:window"
@@ -3827,7 +3827,7 @@ msgstr "Poskytuje akce strojů pro stroje UltiMaker (jako je průvodce vyrovnáv
 #: plugins/UltimakerMachineActions/plugin.json
 msgctxt "name"
 msgid "UltiMaker machine actions"
-msgstr ""
+msgstr "Akce zařízení UltiMaker"
 
 #: plugins/VersionUpgrade/VersionUpgrade21to22/plugin.json
 msgctxt "description"
@@ -4664,7 +4664,7 @@ msgid ""
 "Cura is developed by UltiMaker in cooperation with the community.\n"
 "Cura proudly uses the following open source projects:"
 msgstr ""
-"Cura vyvíjí Ultimaker B.V. ve spolupráci s komunitou.\n"
+"Cura vyvíjí UltiMaker ve spolupráci s komunitou.\n"
 "Cura hrdě používá následující open source projekty:"
 
 #: resources/qml/Dialogs/AboutDialog.qml:138
@@ -6850,7 +6850,7 @@ msgstr "Nové tiskárny UltiMaker mohou být připojeny k Digital Factory a vzd�
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:70
 msgctxt "@label"
 msgid "If you are trying to add a new UltiMaker printer to Cura"
-msgstr "Pokud se pokoušíte přidat novou tiskárnu UltiMaker do Cury"
+msgstr "Pokud se pokoušíte přidat novou tiskárnu UltiMaker do Cura"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:80
 msgctxt "@info"

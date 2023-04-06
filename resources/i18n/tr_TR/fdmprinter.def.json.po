@@ -854,7 +854,7 @@ msgstr "Köprüleri tespit edin ve köprüler yazdırılırken yazdırma hızın
 #: fdmprinter.def.json
 msgctxt "inset_direction description"
 msgid "Determines the order in which walls are printed. Printing outer walls earlier helps with dimensional accuracy, as faults from inner walls cannot propagate to the outside. However printing them later allows them to stack better when overhangs are printed. When there is an uneven amount of total innner walls, the 'center last line' is always printed last."
-msgstr "Duvarların basılacağı sırayı belirler. Dış duvarların önce basılması, iç duvarlardaki hataların dışarıya taşmasını önleyerek boyutların doğru olmasını sağlar. Bu duvarların daha sonra basılması ise çıkıntılar basılırken daha iyi yığınlanma sağlar. Toplam iç duvar sayısı çift olmadığında ’ortadaki son hat’ her zaman en son yazdırılır."
+msgstr "Duvarların basılacağı sırayı belirler. Dış duvarların önce basılması, iç duvarlardaki hataların dışarıya taşmasını önleyerek boyutların doğru olmasını sağlar. Bu duvarların daha sonra basılması ise çıkıntılar basılırken daha iyi yığınlanma sağlar. Toplam iç duvar miktarı eşit değilse ”ortadaki son hat” her zaman en son yazdırılır."
 
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order description"
@@ -1303,7 +1303,7 @@ msgstr "İlk katman için akış dengelemesi: ilk katmana ekstrude edilen malzem
 #: fdmprinter.def.json
 msgctxt "skin_material_flow_layer_0 description"
 msgid "Flow compensation on bottom lines of the first layer"
-msgstr "İlk katmanın alt hatları için akış telafisi"
+msgstr "İlk katmanın alt hatlarında akış telafisi"
 
 #: fdmprinter.def.json
 msgctxt "infill_material_flow description"
@@ -1348,7 +1348,7 @@ msgstr "Destek yapı hatlarının akış telafisidir."
 #: fdmprinter.def.json
 msgctxt "wall_0_material_flow_layer_0 description"
 msgid "Flow compensation on the outermost wall line of the first layer."
-msgstr "İlk katmanın en dış duvar hattı için akış telafisi."
+msgstr "İlk katmanın en dış duvar hattında akış telafisi."
 
 #: fdmprinter.def.json
 msgctxt "wall_0_material_flow description"
@@ -1363,7 +1363,7 @@ msgstr "Üst/alt hatların akış telafisidir."
 #: fdmprinter.def.json
 msgctxt "wall_x_material_flow_layer_0 description"
 msgid "Flow compensation on wall lines for all wall lines except the outermost one, but only for the first layer"
-msgstr "En dıştaki hariç tüm duvar hatları için duvar hatların için akış telafisi, ancak yalnızca ilk katman için"
+msgstr "En dıştaki duvar hatları hariç tüm duvar hatları için duvar hatlarında akış telafisi, ancak sadece ilk katman içindir."
 
 #: fdmprinter.def.json
 msgctxt "wall_x_material_flow description"
@@ -1556,7 +1556,7 @@ msgstr "Kademeli Destek Dolgusu Aşamaları"
 #: fdmprinter.def.json
 msgctxt "cool_min_temperature description"
 msgid "Gradually reduce to this temperature when printing at reduced speeds because of minimum layer time."
-msgstr "Minimum katman süresi nedeniyle düşük hızlarda baskı yaparken kademeli olarak bu sıcaklığa düşürün."
+msgstr "Minimum katman süresi nedeniyle düşük hızlarda yazdırırken bu sıcaklığa kademeli olarak düşürün."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1916,7 +1916,7 @@ msgstr "İlk Katman İvmesi"
 #: fdmprinter.def.json
 msgctxt "skin_material_flow_layer_0 label"
 msgid "Initial Layer Bottom Flow"
-msgstr "İlk Katman Alt Akış"
+msgstr "İlk Katman Alt Akışı"
 
 #: fdmprinter.def.json
 msgctxt "material_flow_layer_0 label"
@@ -2051,7 +2051,7 @@ msgstr "İç İçe Geçen Kiriş Katman Sayısı"
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_width label"
 msgid "Interlocking Beam Width"
-msgstr "İç İçe Geçen Kiriş Genişliği"
+msgstr "İç İçe Geçme Genişliği"
 
 #: fdmprinter.def.json
 msgctxt "interlocking_boundary_avoidance label"
@@ -3731,7 +3731,7 @@ msgstr "Maksimum Küçük Delik Boyutu"
 #: fdmprinter.def.json
 msgctxt "cool_min_temperature label"
 msgid "Small Layer Printing Temperature"
-msgstr "Küçük Katmanlı Baskı Sıcaklığı"
+msgstr "Küçük Katman Yazdırma Sıcaklığı"
 
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 description"
@@ -4556,7 +4556,7 @@ msgstr "Besleyiciye malzeme veren çarkın çapı."
 #: fdmprinter.def.json
 msgctxt "support_tree_max_diameter description"
 msgid "The diameter of the widest branches of tree support. A thicker trunk is more sturdy; a thinner trunk takes up less space on the build plate."
-msgstr "Ağaç desteğinin en geniş dallarının çapı. Daha kalın bir gövde daha sağlam olur; daha ince bir gövde, yapı plakasında daha az yer kaplar."
+msgstr "Ağaç desteğinin en geniş dallarının çapı. Daha kalın bir gövde daha sağlamdır; daha ince bir gövde, yapı plakasında daha az yer kaplar."
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation_step description"
@@ -4606,7 +4606,7 @@ msgstr "Modelin en dış kenar hattını olan mesafesi. Daha büyük kenar hatt�
 #: fdmprinter.def.json
 msgctxt "interlocking_boundary_avoidance description"
 msgid "The distance from the outside of a model where interlocking structures will not be generated, measured in cells."
-msgstr "İç içe geçen yapıların üretilmeyeceği bir modelin dışından hücre sayısı olarak ölçülen mesafe."
+msgstr "İç içe geçen yapıların oluşturulmayacağı bir modelin dışından hücre cinsinden ölçülen mesafe."
 
 #: fdmprinter.def.json
 msgctxt "machine_heat_zone_length description"
@@ -4836,12 +4836,12 @@ msgstr "Yoğunluğun yarısına inmeden önce belirli bir yoğunluktaki destek d
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_layer_count description"
 msgid "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects."
-msgstr "İç içe geçen yapı kirişlerinin katman sayısı olarak ölçülen yüksekliği. Daha az katman daha güçlüdür, ancak kusurlara daha yatkındır."
+msgstr "İç içe geçen yapı kirişlerinin katman sayısı olarak ölçülen yüksekliği. Daha az katman daha güçlüdür, ama kusurlara daha yatkındır."
 
 #: fdmprinter.def.json
 msgctxt "interlocking_orientation description"
 msgid "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects."
-msgstr "İç içe geçen yapı kirişlerinin katman sayısı olarak ölçülen yüksekliği. Daha az katman daha güçlüdür, ancak kusurlara daha yatkındır."
+msgstr "İç içe geçen yapı kirişlerinin katman sayısı olarak ölçülen yüksekliği. Daha az katman daha güçlüdür, ama kusurlara daha yatkındır."
 
 #: fdmprinter.def.json
 msgctxt "layer_height_0 description"
@@ -5255,17 +5255,17 @@ msgstr "Destek dolgusunun çevreleneceği duvar sayısı. Bir duvarın eklenmesi
 #: fdmprinter.def.json
 msgctxt "support_bottom_wall_count description"
 msgid "The number of walls with which to surround support interface floor. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "Destek arayüz zeminini çevreleyecek duvar sayısı. Duvar eklemek, destek baskıyı daha güvenilir hale getirebilir ve çıkıntıları daha iyi destekleyebilir ama baskı süresini ve kullanılan malzemeyi artırır."
+msgstr "Destek arayüz zeminini çevreleyecek duvar sayısı. Duvar eklemek, destek baskıyı daha güvenilir hale getirebilir ve çıkıntıları daha iyi destekleyebilir, ama baskı süresini ve kullanılan malzemeyi artırır."
 
 #: fdmprinter.def.json
 msgctxt "support_roof_wall_count description"
 msgid "The number of walls with which to surround support interface roof. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "Destek arayüz çatısını çevreleyecek duvar sayısı. Duvar eklemek, destek baskıyı daha güvenilir hale getirebilir ve çıkıntıları daha iyi destekleyebilir ama baskı süresini ve kullanılan malzemeyi artırır."
+msgstr "Destek arayüz çatısını çevreleyecek duvar sayısı. Duvar eklemek, destek baskıyı daha güvenilir hale getirebilir ve çıkıntıları daha iyi destekleyebilir, ama baskı süresini ve kullanılan malzemeyi artırır."
 
 #: fdmprinter.def.json
 msgctxt "support_interface_wall_count description"
 msgid "The number of walls with which to surround support interface. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "Destek arayüzünü çevreleyecek duvar sayısı. Duvar eklemek, destek baskıyı daha güvenilir hale getirebilir ve çıkıntıları daha iyi destekleyebilir ama baskı süresini ve kullanılan malzemeyi artırır."
+msgstr "Destek arayüzünü çevreleyecek duvar sayısı. Duvar eklemek, destek baskıyı daha güvenilir hale getirebilir ve çıkıntıları daha iyi destekleyebilir, ama baskı süresini ve kullanılan malzemeyi artırır."
 
 #: fdmprinter.def.json
 msgctxt "wall_distribution_count description"
@@ -5970,7 +5970,7 @@ msgstr "Ağaç Destek Çarpışma Çözünürlüğü"
 #: fdmprinter.def.json
 msgctxt "support_tree_max_diameter label"
 msgid "Tree Support Trunk Diameter"
-msgstr "Ağaç Destek Gövde Çapı"
+msgstr "Ağaç Desteği Gövde Çapı"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option trihexagon"
@@ -6030,12 +6030,12 @@ msgstr "Direkleri kullan"
 #: fdmprinter.def.json
 msgctxt "acceleration_travel_enabled description"
 msgid "Use a separate acceleration rate for travel moves. If disabled, travel moves will use the acceleration value of the printed line at their destination."
-msgstr "Hareket hamleleri için farklı bir ivme oranı kullanın. Devre dışı bırakılırsa hareket hamleleri, varış noktasındaki yazdırılmış hattın ivme değerini kullanır."
+msgstr "Hareket hamleleri için ayrı bir ivme oranı kullanın. Hareket hamleleri devre dışı bırakılırsa varış noktasında yazdırılan hattın ivme değerini kullanır."
 
 #: fdmprinter.def.json
 msgctxt "jerk_travel_enabled description"
 msgid "Use a separate jerk rate for travel moves. If disabled, travel moves will use the jerk value of the printed line at their destination."
-msgstr "Hareket hamleleri için farklı bir salınım oranı kullanın. Devre dışı bırakılırsa hareket hamleleri, varış noktasındaki yazdırılmış hattın salınım değerini kullanır."
+msgstr "Hareket hamleleri için ayrı bir salınım oranı kullanın. Hareket hamleleri devre dışı bırakılırsa varış noktasında yazdırılan hattın ivme değerini kullanır."
 
 #: fdmprinter.def.json
 msgctxt "relative_extrusion description"
