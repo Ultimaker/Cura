@@ -19,7 +19,7 @@ Item
     // The currently selected machine item in the local machine list.
     property var currentItem: machineList.currentIndex >= 0 ? machineList.model.getItem(machineList.currentIndex) : null
     // The currently active (expanded) section/category, where section/category is the grouping of local machine items.
-    property var currentSection: new Set()
+    property var currentSections: new Set()
     // By default (when this list shows up) we always expand the "Ultimaker" section.
     property var preferredCategories: {
         "Ultimaker B.V.": -2,
