@@ -50,9 +50,6 @@
       "support_xy_distance":{
          "default_value":1.0
       },
-      "retraction_min_travel":{
-      "default_value":3
-      },
       "retraction_count_max":{
          "default_value":10
       },
@@ -76,10 +73,6 @@
       },
       "speed_travel_layer_0":{
          "value":60
-      },
-      "speed_travel":{
-         "default_value":65.0,
-         "value":"speed_print if magic_spiralize else 65"
       },
       "speed_support_roof":{
          "value":30.0
