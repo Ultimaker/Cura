@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-03-28 11:57+0000\n"
+"POT-Creation-Date: 2023-04-08 08:31+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -73,6 +73,11 @@ msgid "A part fully enclosed inside another part can generate an outer brim that
 msgstr "다른 부품 내부에 완전히 둘러싸인 부품은 다른 부품의 내부에 닿는 외부 브림을 생성할 수 있습니다. 이렇게 하면 내부 구멍에서 이 거리 내에 있는 모든 브림이 제거됩니다."
 
 #: fdmprinter.def.json
+msgctxt "support_tree_branch_reach_limit description"
+msgid "A recomendation to how far branches can move from the points they support. Branches can violate this value to reach their destination (buildplate or a flat part of the model). Lowering this value will make the support more sturdy, but increase the amount of branches (and because of that material usage/print time) "
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "extruder_prime_pos_abs label"
 msgid "Absolute Extruder Prime Position"
 msgstr "독립 익스트루더 프라임 포지션"
@@ -135,6 +140,11 @@ msgstr "출력물의 내부채움을 조절합니다."
 msgctxt "support_interface_density description"
 msgid "Adjusts the density of the roofs and floors of the support structure. A higher value results in better overhangs, but the supports are harder to remove."
 msgstr "서포트의 지붕 및 바닥 밀도를 조정합니다. 값이 높을수록 오버행에서 좋지만 서포트를 제거하기가 더 어렵습니다."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_top_rate description"
+msgid "Adjusts the density of the support structure used to generate the tips of the branches. A higher value results in better overhangs, but the supports are harder to remove. Use Support Roof for very high values or ensure support density is similarly high at the top."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_infill_rate description"
@@ -315,6 +325,11 @@ msgstr "Bits from Bytes"
 msgctxt "magic_mesh_surface_mode option both"
 msgid "Both"
 msgstr "모두"
+
+#: fdmprinter.def.json
+msgctxt "support_interface_priority option nothing"
+msgid "Both overlap"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "bottom_layers label"
@@ -540,6 +555,11 @@ msgstr "초기 레이어의 빌드 플레이트 온도"
 msgctxt "build_volume_temperature label"
 msgid "Build Volume Temperature"
 msgstr "빌드 볼륨 온도"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_rest_preference option buildplate"
+msgid "Buildplate"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "center_object label"
@@ -850,6 +870,11 @@ msgstr "라이트닝 내부채움 레이어가 레이어 위에 있는 모델을
 msgctxt "material_diameter label"
 msgid "Diameter"
 msgstr "직경"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_bp_diameter description"
+msgid "Diameter every branch tries to achieve when reaching the buildplate. Improves bed adhesion."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "adhesion_type description"
@@ -1680,6 +1705,16 @@ msgid "How much the filament of each extruder is assumed to have been retracted 
 msgstr "프린터 시작 gcode 스크립트가 완료될 때 공유된 노즐 끝에서 각 익스트루더의 필라멘트가 수축된 것으로 가정하는 정도입니다. 이 값은 노즐 덕트의 공통 부분의 길이와 같거나 커야 합니다."
 
 #: fdmprinter.def.json
+msgctxt "support_interface_priority description"
+msgid "How support interface and support will interact when they overlap. Currently only implemented for support roof."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_min_height_to_model description"
+msgid "How tall a branch has to be if it is placed on the model. Prevents small blobs of support. This setting is ignored when a branch is supporting a support roof."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "bridge_skin_support_threshold description"
 msgid "If a skin region is supported for less than this percentage of its area, print it using the bridge settings. Otherwise it is printed using the normal skin settings."
 msgstr "스킨 영역이 해당 영역의 비율 미만으로 생성되면 브릿지 설정을 사용하여 인쇄하십시오. 그렇지 않으면 일반 스킨 설정을 사용하여 인쇄됩니다."
@@ -1985,6 +2020,16 @@ msgid "Inside To Outside"
 msgstr "내부에서 외부로"
 
 #: fdmprinter.def.json
+msgctxt "support_interface_priority option interface_lines_overwrite_support_area"
+msgid "Interface lines preferred"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_interface_priority option interface_area_overwrite_support_area"
+msgid "Interface preferred"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "interlocking_beam_layer_count label"
 msgid "Interlocking Beam Layer Count"
 msgstr "연동 빔 레이어 수"
@@ -2138,6 +2183,11 @@ msgstr "라이트닝 내부채움 정리 각도"
 msgctxt "lightning_infill_support_angle label"
 msgid "Lightning Infill Support Angle"
 msgstr "라이트닝 내부채움 서포트 각도"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_limit_branch_reach description"
+msgid "Limit how far each branch should travel from the point it supports. This can make the support more sturdy, but will increase the amount of branches (and because of that material usage/print time)"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "cutting_mesh description"
@@ -2823,6 +2873,11 @@ msgstr "z 방향으로 객체에 적용된 오프셋입니다. 이것을 사용�
 msgctxt "machine_use_extruder_offset_to_offset_coords label"
 msgid "Offset with Extruder"
 msgstr "익스트루더로 오프셋"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_rest_preference option graceful"
+msgid "On any flat surface"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "print_sequence option one_at_a_time"
@@ -3985,6 +4040,11 @@ msgid "Support Interface Pattern"
 msgstr "서포트 인터페이스 패턴"
 
 #: fdmprinter.def.json
+msgctxt "support_interface_priority label"
+msgid "Support Interface Priority"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "support_interface_skip_height label"
 msgid "Support Interface Resolution"
 msgstr "서포트 인터페이스 해상도"
@@ -4153,6 +4213,16 @@ msgstr "X/Y 서포트 거리"
 msgctxt "support_z_distance label"
 msgid "Support Z Distance"
 msgstr "서포트 Z 거리"
+
+#: fdmprinter.def.json
+msgctxt "support_interface_priority option support_lines_overwrite_interface_area"
+msgid "Support lines preferred"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_interface_priority option support_area_overwrite_interface_area"
+msgid "Support preferred"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_supported_skin_fan_speed label"
@@ -4468,6 +4538,11 @@ msgstr "특수 타워의 지름."
 msgctxt "support_tree_branch_diameter description"
 msgid "The diameter of the thinnest branches of tree support. Thicker branches are more sturdy. Branches towards the base will be thicker than this."
 msgstr "트리 서포트의 가장 얇은 브랜치의 직경. 브랜치가 두꺼울수록 더 견고해집니다. 바닥을 향한 브랜치는 이보다 더 두꺼워집니다."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_tip_diameter description"
+msgid "The diameter of the top of the tip of the branches of tree support."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_feeder_wheel_diameter description"
@@ -5079,6 +5154,11 @@ msgid "The minimum volume for each layer of the prime tower in order to purge en
 msgstr "충분한 재료를 퍼지하기 위해 프라임 타워 각 층의 최소 부피."
 
 #: fdmprinter.def.json
+msgctxt "support_tree_max_diameter_increase_by_merges_when_support_to_model description"
+msgid "The most the diameter of a branch that has to connect to the model may increase by merging with branches that could reach the buildplate. Increasing this reduces print time, but increases the area of support that rests on model"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "machine_name description"
 msgid "The name of your 3D printer model."
 msgstr "3D 프린터 모델의 이름."
@@ -5232,6 +5312,16 @@ msgstr "서포트의 지붕이 프린팅되는 패턴."
 msgctxt "z_seam_position description"
 msgid "The position near where to start printing each part in a layer."
 msgstr "레이어에서 각 부품의 프린팅이 시작할 위치 근처입니다."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle_slow description"
+msgid "The preferred angle of the branches, when they do not have to avoid the model. Use a lower angle to make them more vertical and more stable. Use a higher angle for branches to merge faster."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_rest_preference description"
+msgid "The preferred placement of the support structures. If structures cant be placed at the prefered location, they will be place elsewhere"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "jerk_layer_0 description"
@@ -5844,6 +5934,11 @@ msgid "Tree Support Branch Angle"
 msgstr "트리 서포트 브랜치 각도"
 
 #: fdmprinter.def.json
+msgctxt "support_tree_top_rate label"
+msgid "Tree Support Branch Density"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "support_tree_branch_diameter label"
 msgid "Tree Support Branch Diameter"
 msgstr "트리 서포트 브랜치 직경"
@@ -5862,6 +5957,46 @@ msgstr "트리 서포트 브랜치 거리"
 msgctxt "support_tree_collision_resolution label"
 msgid "Tree Support Collision Resolution"
 msgstr "트리 서포트 충돌 정밀도"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_max_diameter_increase_by_merges_when_support_to_model label"
+msgid "Tree Support Diameter Increase To Model"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_bp_diameter label"
+msgid "Tree Support Inital Layer Diameter"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_limit_branch_reach label"
+msgid "Tree Support Limit Branch Reach"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_min_height_to_model label"
+msgid "Tree Support Minimum Height To Model"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_reach_limit label"
+msgid "Tree Support Optimal Branch Range"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle_slow label"
+msgid "Tree Support Preferred Branch Angle"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_rest_preference label"
+msgid "Tree Support Rest Preference"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_tip_diameter label"
+msgid "Tree Support Tip Diameter"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_max_diameter label"

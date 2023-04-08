@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-03-28 11:57+0000\n"
+"POT-Creation-Date: 2023-04-08 08:31+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -73,6 +73,11 @@ msgid "A part fully enclosed inside another part can generate an outer brim that
 msgstr "Ist ein Teil vollständig von einem anderen Teil eingeschlossen, wird bei diesem möglicherweise ein äußeres Brim-Element erzeugt, das die Innenseite des anderen Teils berührt. Hiermit wird der Teil des Brim-Elements entfernt, der sich innerhalb dieses Abstands zu inneren Löchern befindet."
 
 #: fdmprinter.def.json
+msgctxt "support_tree_branch_reach_limit description"
+msgid "A recomendation to how far branches can move from the points they support. Branches can violate this value to reach their destination (buildplate or a flat part of the model). Lowering this value will make the support more sturdy, but increase the amount of branches (and because of that material usage/print time) "
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "extruder_prime_pos_abs label"
 msgid "Absolute Extruder Prime Position"
 msgstr "Extruder absolute Einzugsposition"
@@ -135,6 +140,11 @@ msgstr "Passt die Fülldichte des Drucks an."
 msgctxt "support_interface_density description"
 msgid "Adjusts the density of the roofs and floors of the support structure. A higher value results in better overhangs, but the supports are harder to remove."
 msgstr "Die Dichte der Stützstrukturdächer und -böden wird eingestellt. Ein höherer Wert führt zu besseren Überhängen, aber die Stützstrukturen sind schwieriger zu entfernen."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_top_rate description"
+msgid "Adjusts the density of the support structure used to generate the tips of the branches. A higher value results in better overhangs, but the supports are harder to remove. Use Support Roof for very high values or ensure support density is similarly high at the top."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_infill_rate description"
@@ -315,6 +325,11 @@ msgstr "Bits von Bytes"
 msgctxt "magic_mesh_surface_mode option both"
 msgid "Both"
 msgstr "Beides"
+
+#: fdmprinter.def.json
+msgctxt "support_interface_priority option nothing"
+msgid "Both overlap"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "bottom_layers label"
@@ -540,6 +555,11 @@ msgstr "Temperatur der Druckplatte für die erste Schicht"
 msgctxt "build_volume_temperature label"
 msgid "Build Volume Temperature"
 msgstr "Temperatur Druckabmessung"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_rest_preference option buildplate"
+msgid "Buildplate"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "center_object label"
@@ -850,6 +870,11 @@ msgstr "Legt fest, wann eine Blitz-Füllschicht das Modell darüber tragen soll.
 msgctxt "material_diameter label"
 msgid "Diameter"
 msgstr "Durchmesser"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_bp_diameter description"
+msgid "Diameter every branch tries to achieve when reaching the buildplate. Improves bed adhesion."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "adhesion_type description"
@@ -1680,6 +1705,16 @@ msgid "How much the filament of each extruder is assumed to have been retracted 
 msgstr "Bestimmt, wie weit das Filament jedes Extruders bei Abschluss des GCode-Skripts „printer-start“ von der gemeinsam genutzten Düsenspitze zurückgezogen sein soll; der Wert sollte gleich oder größer sein als die Länge des gemeinsamen Teils der Düsenkanäle."
 
 #: fdmprinter.def.json
+msgctxt "support_interface_priority description"
+msgid "How support interface and support will interact when they overlap. Currently only implemented for support roof."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_min_height_to_model description"
+msgid "How tall a branch has to be if it is placed on the model. Prevents small blobs of support. This setting is ignored when a branch is supporting a support roof."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "bridge_skin_support_threshold description"
 msgid "If a skin region is supported for less than this percentage of its area, print it using the bridge settings. Otherwise it is printed using the normal skin settings."
 msgstr "Wenn ein Außenhautbereich für weniger als diesen Prozentwert seines Bereichs unterstützt wird, drucken Sie ihn mit den Brückeneinstellungen. Ansonsten erfolgt der Druck mit den normalen Außenhauteinstellungen."
@@ -1985,6 +2020,16 @@ msgid "Inside To Outside"
 msgstr "Von innen nach außen"
 
 #: fdmprinter.def.json
+msgctxt "support_interface_priority option interface_lines_overwrite_support_area"
+msgid "Interface lines preferred"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_interface_priority option interface_area_overwrite_support_area"
+msgid "Interface preferred"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "interlocking_beam_layer_count label"
 msgid "Interlocking Beam Layer Count"
 msgstr "Anzahl der Schichten ineinandergreifender Balken"
@@ -2138,6 +2183,11 @@ msgstr "Begradigungswinkel der Blitz-Füllung"
 msgctxt "lightning_infill_support_angle label"
 msgid "Lightning Infill Support Angle"
 msgstr "Stützwinkel der Blitz-Füllung"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_limit_branch_reach description"
+msgid "Limit how far each branch should travel from the point it supports. This can make the support more sturdy, but will increase the amount of branches (and because of that material usage/print time)"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "cutting_mesh description"
@@ -2823,6 +2873,11 @@ msgstr "Der für das Objekt in Z-Richtung verwendete Versatz. Damit können Sie 
 msgctxt "machine_use_extruder_offset_to_offset_coords label"
 msgid "Offset with Extruder"
 msgstr "Versatz mit Extruder"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_rest_preference option graceful"
+msgid "On any flat surface"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "print_sequence option one_at_a_time"
@@ -3985,6 +4040,11 @@ msgid "Support Interface Pattern"
 msgstr "Muster Stützstrukturschnittstelle"
 
 #: fdmprinter.def.json
+msgctxt "support_interface_priority label"
+msgid "Support Interface Priority"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "support_interface_skip_height label"
 msgid "Support Interface Resolution"
 msgstr "Auflösung Stützstrukturschnittstelle"
@@ -4153,6 +4213,16 @@ msgstr "X/Y-Abstand der Stützstruktur"
 msgctxt "support_z_distance label"
 msgid "Support Z Distance"
 msgstr "Z-Abstand der Stützstruktur"
+
+#: fdmprinter.def.json
+msgctxt "support_interface_priority option support_lines_overwrite_interface_area"
+msgid "Support lines preferred"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_interface_priority option support_area_overwrite_interface_area"
+msgid "Support preferred"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_supported_skin_fan_speed label"
@@ -4468,6 +4538,11 @@ msgstr "Der Durchmesser eines speziellen Pfeilers."
 msgctxt "support_tree_branch_diameter description"
 msgid "The diameter of the thinnest branches of tree support. Thicker branches are more sturdy. Branches towards the base will be thicker than this."
 msgstr "Dies beschreibt den Durchmesser der dünnsten Äste der Baumstützstruktur. Dickere Äste sind stabiler. Äste zur Basis hin werden dicker als diese sein."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_tip_diameter description"
+msgid "The diameter of the top of the tip of the branches of tree support."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_feeder_wheel_diameter description"
@@ -5079,6 +5154,11 @@ msgid "The minimum volume for each layer of the prime tower in order to purge en
 msgstr "Das Mindestvolumen für jede Schicht des Einzugsturms, um ausreichend Material zu spülen."
 
 #: fdmprinter.def.json
+msgctxt "support_tree_max_diameter_increase_by_merges_when_support_to_model description"
+msgid "The most the diameter of a branch that has to connect to the model may increase by merging with branches that could reach the buildplate. Increasing this reduces print time, but increases the area of support that rests on model"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "machine_name description"
 msgid "The name of your 3D printer model."
 msgstr "Die Bezeichnung Ihres 3D-Druckermodells."
@@ -5232,6 +5312,16 @@ msgstr "Das Muster, mit dem die Dächer der Stützstruktur gedruckt werden."
 msgctxt "z_seam_position description"
 msgid "The position near where to start printing each part in a layer."
 msgstr "Die Position in der Nähe der Stelle, an der die einzelnen Teile einer Ebene gedruckt werden sollen."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle_slow description"
+msgid "The preferred angle of the branches, when they do not have to avoid the model. Use a lower angle to make them more vertical and more stable. Use a higher angle for branches to merge faster."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_rest_preference description"
+msgid "The preferred placement of the support structures. If structures cant be placed at the prefered location, they will be place elsewhere"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "jerk_layer_0 description"
@@ -5844,6 +5934,11 @@ msgid "Tree Support Branch Angle"
 msgstr "Astwinkel der Baumstützstruktur"
 
 #: fdmprinter.def.json
+msgctxt "support_tree_top_rate label"
+msgid "Tree Support Branch Density"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "support_tree_branch_diameter label"
 msgid "Tree Support Branch Diameter"
 msgstr "Astdurchmesser der Baumstützstruktur"
@@ -5862,6 +5957,46 @@ msgstr "Astabstand der Baumstützstruktur"
 msgctxt "support_tree_collision_resolution label"
 msgid "Tree Support Collision Resolution"
 msgstr "Kollisionsauflösung der Baumstützstruktur"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_max_diameter_increase_by_merges_when_support_to_model label"
+msgid "Tree Support Diameter Increase To Model"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_bp_diameter label"
+msgid "Tree Support Inital Layer Diameter"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_limit_branch_reach label"
+msgid "Tree Support Limit Branch Reach"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_min_height_to_model label"
+msgid "Tree Support Minimum Height To Model"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_reach_limit label"
+msgid "Tree Support Optimal Branch Range"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle_slow label"
+msgid "Tree Support Preferred Branch Angle"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_rest_preference label"
+msgid "Tree Support Rest Preference"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_tip_diameter label"
+msgid "Tree Support Tip Diameter"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_max_diameter label"
