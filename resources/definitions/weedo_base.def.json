@@ -230,20 +230,6 @@
       "material_flow":{
          "default_value":95
       },
-      "material_initial_print_temperature":{
-         "default_value":215,
-         "minimum_value_warning":"0",
-         "maximum_value":"300"
-      },
-      "material_final_print_temperature":{
-         "default_value":205,
-         "minimum_value_warning":"0",
-         "maximum_value":"300"
-      },
-      "material_print_temperature":{
-         "default_value":205,
-         "maximum_value":"300"
-      },
       "material_standby_enable":{
          "default_value":false
       },
@@ -254,9 +240,6 @@
          "default_value":false
       },
       "default_material_bed_temperature":{
-         "default_value":35
-      },
-      "material_bed_temperature":{
          "default_value":35
       },
       "speed_wall":{
@@ -313,15 +296,6 @@
       "support_angle":{
          "default_value":60
       },
-      "support_wall_count":{
-         "default_value":0
-      },
-      "support_roof_line_distance":{
-         "default_value":0.57
-      },
-      "support_bottom_line_distance":{
-         "default_value":0.57
-      },
       "support_interface_pattern":{
          "default_value":"lines"
       },
@@ -357,17 +331,8 @@
       "prime_tower_min_volume":{
          "default_value":10
       },
-      "prime_tower_position_x":{
-         "default_value":-90
-      },
-      "prime_tower_position_y":{
-         "default_value":80
-      },
       "raft_surface_fan_speed":{
          "value":100
-      },
-      "raft_base_thickness":{
-         "default_value":0.35
       }
    }
 }
