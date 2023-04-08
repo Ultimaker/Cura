@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-28 11:57+0000\n"
+"POT-Creation-Date: 2023-04-06 15:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2054,7 +2054,7 @@ msgstr "Позволяет управлять расширениями прил�
 #: plugins/Marketplace/plugin.json
 msgctxt "name"
 msgid "Marketplace"
-msgstr "Marketplace"
+msgstr "Магазин"
 
 #: plugins/Marketplace/resources/qml/CompatibilityDialog.qml:15
 msgctxt "@title"
@@ -4624,7 +4624,7 @@ msgstr ""
 #: resources/qml/Cura.qml:909
 msgctxt "@label %i will be replaced with a profile name"
 msgid "<b>Only user changed settings will be saved in the custom profile.</b><br/>For materials that support it, the new custom profile will inherit properties from <b>%1</b>."
-msgstr "<b>В пользовательском профиле будут сохранены только измененные пользователем настройки.</b><br/>Для материалов, поддерживающих новый пользовательский профиль, этот профиль будет наследовать свойства от <b>%1</b>."
+msgstr "<b>В пользовательском профиле будут сохранены только измененные пользователем настройки.</b><br/>Для поддерживающих его материалов новый пользовательский профиль будет наследовать свойства от <b>%1</b>."
 
 #: resources/qml/Cura.qml:917
 msgctxt "@action:button"
@@ -4869,7 +4869,7 @@ msgstr "Совместимые принтеры"
 #: resources/qml/Dialogs/ChoosePrinterDialog.qml:110
 msgctxt "@description"
 msgid "No compatible printers, that are currently online, were found."
-msgstr "Нет совместимых принтеров, которые в настоящее время находятся в сети."
+msgstr "В настоящее время в сети нет совместимых принтеров."
 
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:13
 msgctxt "@title:window"
@@ -6217,7 +6217,7 @@ msgstr "Активен <b>%1</b> собственный профиль, и вы 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:78
 msgctxt "@info, %1 is the name of the custom profile"
 msgid "<b>%1</b> custom profile is overriding some settings."
-msgstr "<b>%1</b> собственный профиль переопределяет некоторые параметры."
+msgstr "Собственный профиль <b>%1</b> переопределяет некоторые настройки."
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:92
 msgctxt "@info %1 is the name of a profile"
@@ -6237,7 +6237,7 @@ msgstr "Восстановить значения по умолчанию."
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:178
 msgctxt "@info"
 msgid "Compare and save."
-msgstr "Сравните и экономьте."
+msgstr "Сравнивайте и экономьте."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedAdhesionSelector.qml:15
 msgctxt "@label"
@@ -6257,7 +6257,7 @@ msgstr ""
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:111
 msgctxt "@button"
 msgid "Show Custom"
-msgstr ""
+msgstr "Показать свое"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedResolutionSelector.qml:27
 msgctxt "@label"
@@ -6826,7 +6826,7 @@ msgstr ""
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:73
 msgctxt "@button"
 msgid "Learn more about adding printers to Cura"
-msgstr "Подробно о добавлении принтеров в Cura"
+msgstr "Подробнее о добавлении принтеров в Cura"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinterStack.qml:29
 msgctxt "@label"
@@ -6846,7 +6846,7 @@ msgstr "Если вы пытаетесь добавить новый принт�
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:80
 msgctxt "@info"
 msgid "Sign in into UltiMaker Digital Factory"
-msgstr ""
+msgstr "Войти в UltiMaker Digital Factory"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:81
 msgctxt "@info"
@@ -6856,7 +6856,7 @@ msgstr "Следуйте процедуре добавления нового п
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:82
 msgctxt "@info"
 msgid "Your new printer will automatically appear in Cura"
-msgstr "Новый принтер автоматически появится в Cura"
+msgstr "Ваш новый принтер автоматически появится в Cura"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:100
 msgctxt "@button"

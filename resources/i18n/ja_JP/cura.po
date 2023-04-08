@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-28 11:57+0000\n"
+"POT-Creation-Date: 2023-04-06 15:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -930,7 +930,7 @@ msgstr ""
 #: plugins/3MFReader/WorkspaceDialog.qml:104
 msgctxt "@info:tooltip"
 msgid "Printer settings will be updated to match the settings saved with the project."
-msgstr "プリンター設定は、プロジェクトに保存された設定と一致するように更新されます。"
+msgstr "プリンターの設定は、プロジェクトに保存されている設定に合わせて更新されます。"
 
 #: plugins/3MFReader/WorkspaceDialog.qml:156
 #: resources/qml/Dialogs/WorkspaceSummaryDialog.qml:222
@@ -1004,7 +1004,7 @@ msgstr "プロジェクトを読み込むとビルドプレート上のすべて
 #: plugins/3MFReader/WorkspaceDialog.qml:367
 msgctxt "@label"
 msgid "The material used in this project is currently not installed in Cura.<br/>Install the material profile and reopen the project."
-msgstr "このプロジェクトで使用する材料は、現在Curaにインストールされていません。<br/>材料プロファイルをインストールし、再度プロジェクトを開いてください。"
+msgstr "このプロジェクトで使用される材料は現在、UltiMaker Curaにインストールされていません。<br/>材料プロファイルをインストールし、プロジェクトを再度開いてください。"
 
 #: plugins/3MFReader/WorkspaceDialog.qml:392
 msgctxt "@action:button"
@@ -2968,7 +2968,7 @@ msgstr "UltiMakerフォーマットパッケージ"
 #: plugins/UFPReader/plugin.json
 msgctxt "description"
 msgid "Provides support for reading Ultimaker Format Packages."
-msgstr ""
+msgstr "Ultimakerフォーマットパッケージの読み込みをサポートします。"
 
 #: plugins/UFPReader/plugin.json
 msgctxt "name"
@@ -2985,7 +2985,7 @@ msgstr "UFPファイルに書き込めません："
 #: plugins/UFPWriter/plugin.json
 msgctxt "description"
 msgid "Provides support for writing Ultimaker Format Packages."
-msgstr ""
+msgstr "Ultimakerフォーマットパッケージへの書き込みをサポートします。"
 
 #: plugins/UFPWriter/plugin.json
 msgctxt "name"
@@ -2995,12 +2995,12 @@ msgstr "UFPライター"
 #: plugins/UM3NetworkPrinting/plugin.json
 msgctxt "description"
 msgid "Manages network connections to UltiMaker networked printers."
-msgstr ""
+msgstr "Ultimakerのネットワーク接属できるプリンターのネットワーク接続を管理します。"
 
 #: plugins/UM3NetworkPrinting/plugin.json
 msgctxt "name"
 msgid "UltiMaker Network Connection"
-msgstr ""
+msgstr "Ultimakerネットワーク接続"
 
 #: plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:44
 msgctxt "@title:window"
@@ -3576,12 +3576,12 @@ msgstr "グループの設定"
 #: plugins/UM3NetworkPrinting/src/Messages/PrintJobAwaitingApprovalMessage.py:18
 msgctxt "@info:status"
 msgid "You will receive a confirmation via email when the print job is approved"
-msgstr "プリントジョブが承認されると、確認の電子メールが届きます"
+msgstr "プリントジョブが承認されると確認メールが届きます"
 
 #: plugins/UM3NetworkPrinting/src/Messages/PrintJobAwaitingApprovalMessage.py:19
 msgctxt "@info:title"
 msgid "The print job was successfully submitted"
-msgstr "プリントジョブは正常に送信されました"
+msgstr "プリントジョブが正常に送信されました"
 
 #: plugins/UM3NetworkPrinting/src/Messages/PrintJobAwaitingApprovalMessage.py:22
 msgctxt "@action"
@@ -3794,7 +3794,7 @@ msgstr "UltiMakerのプリンターのアクションを供給する（ベッド
 #: plugins/UltimakerMachineActions/plugin.json
 msgctxt "name"
 msgid "UltiMaker machine actions"
-msgstr ""
+msgstr "UltiMakerプリンターのアクション"
 
 #: plugins/VersionUpgrade/VersionUpgrade21to22/plugin.json
 msgctxt "description"
@@ -4301,7 +4301,7 @@ msgstr "フィラメントを管理する..."
 #: resources/qml/Actions.qml:218
 msgctxt "@action:inmenu Marketplace is a brand name of UltiMaker's, so don't translate."
 msgid "Add more materials from Marketplace"
-msgstr "マーケットプレイスから材料を追加"
+msgstr "Add more materials from Marketplace"
 
 #: resources/qml/Actions.qml:225
 msgctxt "@action:inmenu menubar:profile"
@@ -4608,12 +4608,12 @@ msgstr ""
 #: resources/qml/Cura.qml:909
 msgctxt "@label %i will be replaced with a profile name"
 msgid "<b>Only user changed settings will be saved in the custom profile.</b><br/>For materials that support it, the new custom profile will inherit properties from <b>%1</b>."
-msgstr "<b>ユーザーが変更した設定のみがカスタムプロファイルに保存されます。</b><br/>新しいカスタムプロファイルは<b>%1</b>からプロパティを継承します（材料がサポートしている場合）。"
+msgstr "<b>ユーザーが変更した設定のみがカスタムプロファイルに保存されます。</b><br/>その設定に対応する材料の場合、新しいカスタムプロファイルは <b>%1</b>からプロパティを継承します。"
 
 #: resources/qml/Cura.qml:917
 msgctxt "@action:button"
 msgid "Learn more about Cura print profiles"
-msgstr "Curaプリントプロファイルについて詳しく見る"
+msgstr "Curaのプリントプロファイルについて詳しくはこちら"
 
 #: resources/qml/Cura.qml:926
 msgctxt "@button"
@@ -4843,7 +4843,7 @@ msgstr "モデルを取り込む"
 #: resources/qml/Dialogs/ChoosePrinterDialog.qml:17
 msgctxt "@title:window"
 msgid "Select Printer"
-msgstr "プリンターを選択する"
+msgstr "プリンターの選択"
 
 #: resources/qml/Dialogs/ChoosePrinterDialog.qml:54
 msgctxt "@title:label"
@@ -5080,7 +5080,7 @@ msgstr "&編集"
 #: resources/qml/Menus/ExtensionMenu.qml:13
 msgctxt "@title:menu menubar:toplevel"
 msgid "E&xtensions"
-msgstr "拡張"
+msgstr "拡張子"
 
 #: resources/qml/Menus/FileMenu.qml:13
 msgctxt "@title:menu menubar:toplevel"
@@ -5337,12 +5337,12 @@ msgstr "自動的にスライスする"
 #: resources/qml/Preferences/GeneralPage.qml:340
 msgctxt "@info:tooltip"
 msgid "Show an icon and notifications in the system notification area."
-msgstr "システムの通知領域に、アイコンと通知を表示します。"
+msgstr "システム通知領域にアイコンと通知を表示します。"
 
 #: resources/qml/Preferences/GeneralPage.qml:348
 msgctxt "@option:check"
 msgid "Add icon to system tray *"
-msgstr "システムトレイにアイコンを追加する *"
+msgstr "システムトレイにアイコンを追加 *"
 
 #: resources/qml/Preferences/GeneralPage.qml:357
 msgctxt "@label"
@@ -6187,17 +6187,17 @@ msgstr "オフ"
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:65
 msgctxt "@info, %1 is the name of the custom profile"
 msgid "<b>%1</b> custom profile is active and you overwrote some settings."
-msgstr "<b>%1</b>カスタムプロファイルが稼働し、一部の設定を上書きしました。"
+msgstr "<b>%1</b>カスタムプロファイルが有効になり、一部の設定を上書きしました。"
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:78
 msgctxt "@info, %1 is the name of the custom profile"
 msgid "<b>%1</b> custom profile is overriding some settings."
-msgstr "<b>%1</b>カスタムプロファイルが、一部の設定を上書き中です。"
+msgstr "<b>%1</b>カスタムプロファイルが一部の設定を上書き中です。"
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:92
 msgctxt "@info %1 is the name of a profile"
 msgid "Recommended settings (for <b>%1</b>) were altered."
-msgstr "<b>%1</b>の推奨設定が変更されました。"
+msgstr "推奨設定(<b>%1</b>)が変更されました。"
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:106
 msgctxt "@info %1 is the name of a profile"
@@ -6207,12 +6207,12 @@ msgstr ""
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:137
 msgctxt "@info"
 msgid "Reset to defaults."
-msgstr "デフォルトにリセットします。"
+msgstr "デフォルトに戻します。"
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:178
 msgctxt "@info"
 msgid "Compare and save."
-msgstr "比較して保存します。"
+msgstr "比較して保存してください。"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedAdhesionSelector.qml:15
 msgctxt "@label"
@@ -6232,7 +6232,7 @@ msgstr ""
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:111
 msgctxt "@button"
 msgid "Show Custom"
-msgstr ""
+msgstr "カスタムを表示"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedResolutionSelector.qml:27
 msgctxt "@label"
@@ -6247,7 +6247,7 @@ msgstr "強度"
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:20
 msgctxt "@label"
 msgid "The following settings define the strength of your part."
-msgstr "以下の設定は、部品の強度を定義します。"
+msgstr "次の設定では、部材の強度を定義します。"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:34
 msgctxt "infill_sparse_density description"
@@ -6277,7 +6277,7 @@ msgid ""
 msgstr ""
 "プリントのインフィル材料のパターン：\n"
 "\n"
-"非機能モデルをクイックプリントする場合は、ライン、ジグザグ、ライトニングインフィルを選択します。 \n"
+"非機能モデルをクイックプリントする場合は、ライン、ジグザグ、ライトニングインフィルから選択します。 \n"
 "\n"
 "応力があまりかからない機能部品の場合は、グリッド、トライアングル、トライヘキサゴンをお勧めします。\n"
 "\n"
@@ -6473,7 +6473,7 @@ msgstr "このプリンターはつながっていません。"
 #: resources/qml/PrinterSelector/MachineListButton.qml:34
 msgctxt "@label"
 msgid "Hide all connected printers"
-msgstr "接続されているすべてのプリンターを隠す"
+msgstr "接続されているすべてのプリンターを非表示にする"
 
 #: resources/qml/PrinterSelector/MachineListButton.qml:47
 msgctxt "@label"
@@ -6796,7 +6796,7 @@ msgstr ""
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:73
 msgctxt "@button"
 msgid "Learn more about adding printers to Cura"
-msgstr "Curaへのプリンターの追加について詳しく見る"
+msgstr "Curaへのプリンターの追加方法はこちら"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinterStack.qml:29
 msgctxt "@label"
@@ -6816,17 +6816,17 @@ msgstr "新しいUltiMakerプリンターをCuraに追加する場合"
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:80
 msgctxt "@info"
 msgid "Sign in into UltiMaker Digital Factory"
-msgstr ""
+msgstr "UltiMaker Digital Factoryにサインインしてください"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:81
 msgctxt "@info"
 msgid "Follow the procedure to add a new printer"
-msgstr "新しいプリンターを追加する場合は、以下の手順で行います"
+msgstr "新規にプリンターを追加する場合は、以下の手順で行います"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:82
 msgctxt "@info"
 msgid "Your new printer will automatically appear in Cura"
-msgstr "新しいプリンターがCuraに自動的に表示されます"
+msgstr "新しいプリンターがUltiMaker Curaに自動的に表示されます"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:100
 msgctxt "@button"
@@ -6906,10 +6906,6 @@ msgstr "選択するアイテムがありません"
 #~ msgctxt "@info:status"
 #~ msgid "Cura does not accurately display layers when Wire Printing is enabled."
 #~ msgstr "Curaはワイヤープリンティングが有効な場合は正確にレイヤーを表示しません。"
-
-#~ msgctxt "@description"
-#~ msgid "Please sign in to get verified plugins and materials for Ultimaker Cura Enterprise"
-#~ msgstr "検証済みのUltimaker Cura Enterprise用プラグインおよび材料を入手するにはサインインしてください。"
 
 #~ msgctxt "@info:title"
 #~ msgid "Simulation View"
