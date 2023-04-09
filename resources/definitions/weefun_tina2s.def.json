@@ -68,10 +68,6 @@
       "speed_travel_layer_0":{
          "value":60
       },
-      "speed_travel":{
-         "default_value":65.0,
-         "value":"speed_print if magic_spiralize else 65"
-      },
       "speed_support_roof":{
          "value":30.0
       },
