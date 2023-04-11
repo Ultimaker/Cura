@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-03-16 17:19+0000\n"
+"POT-Creation-Date: 2023-03-28 11:57+0000\n"
 "PO-Revision-Date: 2020-03-24 09:43+0100\n"
 "Last-Translator: Nagy Attila <vokroot@gmail.com>\n"
 "Language-Team: AT-VLOG\n"
@@ -592,11 +592,6 @@ msgid "Command Line Settings"
 msgstr "Parancssor beállításai"
 
 #: fdmprinter.def.json
-msgctxt "wireframe_strategy option compensate"
-msgid "Compensate"
-msgstr "Kompenzáció"
-
-#: fdmprinter.def.json
 msgctxt "infill_pattern option concentric"
 msgid "Concentric"
 msgstr "Körkörös"
@@ -727,11 +722,6 @@ msgid "Cooling"
 msgstr "Hűtés"
 
 #: fdmprinter.def.json
-msgctxt "wireframe_top_jump description"
-msgid "Creates a small knot at the top of an upward line, so that the consecutive horizontal layer has a better chance to connect to it. Only applies to Wire Printing."
-msgstr "Kicsi csomót hoz létre egy felfelé mutató vonal tetején, hogy az egymást követő vízszintes réteg nagyobb eséllyel csatlakozzon hozzá. Csak a huzalnyomásra vonatkozik."
-
-#: fdmprinter.def.json
 msgctxt "infill_pattern option cross"
 msgid "Cross"
 msgstr "Kereszt"
@@ -837,21 +827,6 @@ msgid "Default jerk for the motor of the filament."
 msgstr "Alapértelmezett extrudálási löket."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_bottom_delay description"
-msgid "Delay time after a downward move. Only applies to Wire Printing."
-msgstr "Késleltesse az időt lefelé történő mozgatás után, hogy a lefelé mutató vonal megszilárduljon. Csak a huzalnyomásra vonatkozik."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_top_delay description"
-msgid "Delay time after an upward move, so that the upward line can harden. Only applies to Wire Printing."
-msgstr "Késleltesse az időt felfelé történő mozgatás után, hogy a felfelé mutató vonal megszilárduljon. Csak a huzalnyomásra vonatkozik."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flat_delay description"
-msgid "Delay time between two horizontal segments. Introducing such a delay can cause better adhesion to previous layers at the connection points, while too long delays cause sagging. Only applies to Wire Printing."
-msgstr "Késleltetési idő két vízszintes szegmens között. Egy ilyen késleltetés bevezetése jobb tapadást okozhat az előző rétegekhez a csatlakozási pontokon, míg a túl hosszú késleltetések megereszkedést okozhatnak. Csak a huzalnyomásra vonatkozik."
-
-#: fdmprinter.def.json
 msgctxt "bridge_settings_enabled description"
 msgid "Detect bridges and modify print speed, flow and fan settings while bridges are printed."
 msgstr "Érzékelje a hidakat, és módosítsa a nyomtatási sebességet, az adagolást és a ventilátorbeállításokat, a nyomtatásuk idejére."
@@ -890,11 +865,6 @@ msgstr "Itt különböző lehetőségek közül választhatunk, amelyek előseg�
 msgctxt "machine_disallowed_areas label"
 msgid "Disallowed Areas"
 msgstr "Tiltott területek"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_nozzle_clearance description"
-msgid "Distance between the nozzle and horizontally downward lines. Larger clearance results in diagonally downward lines with a less steep angle, which in turn results in less upward connections with the next layer. Only applies to Wire Printing."
-msgstr "A fúvóka és a vízszintesen lefelé mutató vonalak közötti távolság. A nagyobb hézag átlósan lefelé mutató vonalakat eredményez, kevésbé meredek szöggel, ami viszont kevésbé felfelé irányuló kapcsolatokat eredményez a következő réteggel. Csak a huzalnyomásra vonatkozik."
 
 #: fdmprinter.def.json
 msgctxt "infill_line_distance description"
@@ -947,13 +917,6 @@ msgid "Distance of a travel move inserted after the outer wall, to hide the Z se
 msgstr "A külső fal nyomtatása után, beilleszt egy fej átemelést, a meghatározott távolságra. Ez segít elrejteni a Z varratot."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_up_half_speed description"
-msgid ""
-"Distance of an upward move which is extruded with half speed.\n"
-"This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-msgstr "A felfelé irányuló mozgás távolsága, amelyet fél sebességgel extrudálunk. Ez jobb tapadást eredményez az előző rétegekhez, miközben az anyag nem melegíti túl az anyagot ezekben a rétegekben. Csak a huzalnyomásra vonatkozik."
-
-#: fdmprinter.def.json
 msgctxt "draft_shield_dist description"
 msgid "Distance of the draft shield from the print, in the X/Y directions."
 msgstr "A modell és a huzatpajzs közötti távolság X/Y irányban."
@@ -972,16 +935,6 @@ msgstr ""
 msgctxt "support_xy_distance description"
 msgid "Distance of the support structure from the print in the X/Y directions."
 msgstr "A támasz szerkezete és a nyomtatvány közötti távolság X/Y irányban."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_fall_down description"
-msgid "Distance with which the material falls down after an upward extrusion. This distance is compensated for. Only applies to Wire Printing."
-msgstr "Az a távolság, amellyel az anyag leesik egy felfelé történő extrudálás után. Ezt a távolságot tudjuk itt kompenzálni. Csak a huzalnyomásra vonatkozik."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_drag_along description"
-msgid "Distance with which the material of an upward extrusion is dragged along with the diagonally downward extrusion. This distance is compensated for. Only applies to Wire Printing."
-msgstr "Az a távolság, ameddig egy felfelé irányuló extrudálás anyagát az átlósan lefelé irányuló extrudálással együtt meghúzzuk. Ezt a távolságot kompenzálni kell. Csak a huzalnyomásra vonatkozik."
 
 #: fdmprinter.def.json
 msgctxt "min_infill_area description"
@@ -1379,24 +1332,9 @@ msgid "Flow compensation on wall lines."
 msgstr "Áramláskompenzálás a fal vonalak nyomtatásánál."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_flow_connection description"
-msgid "Flow compensation when going up or down. Only applies to Wire Printing."
-msgstr "Ádagoláskompenzáció felfelé vagy lefelé irányban haladva. Csak a huzalnyomásra vonatkozik."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow_flat description"
-msgid "Flow compensation when printing flat lines. Only applies to Wire Printing."
-msgstr "Ádagoláskompenzáció vízszintes vonalak nyomtatásakor. Csak a huzalnyomásra vonatkozik."
-
-#: fdmprinter.def.json
 msgctxt "material_flow description"
 msgid "Flow compensation: the amount of material extruded is multiplied by this value."
 msgstr "Áramláskompenzáció: az extrudált anyag mennyiségét megszorozzuk ezzel az értékkel."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow description"
-msgid "Flow compensation: the amount of material extruded is multiplied by this value. Only applies to Wire Printing."
-msgstr "Ádagoláskompenzáció: az extrudált anyag mennyiségét megszorozzuk ezzel az értékkel. Csak a huzalnyomásra vonatkozik."
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length label"
@@ -2135,11 +2073,6 @@ msgstr ""
 msgctxt "meshfix_keep_open_polygons label"
 msgid "Keep Disconnected Faces"
 msgstr "Nyílt poligonok megtartása"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_strategy option knot"
-msgid "Knot"
-msgstr "Csomó"
 
 #: fdmprinter.def.json
 msgctxt "layer_height label"
@@ -3027,11 +2960,6 @@ msgid "Percentage fan speed to use when printing the third bridge skin layer."
 msgstr "A harmadik hídréteg nyomtatásakor használt ventillátor sebesség százalékos értékben megadva."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_straight_before_down description"
-msgid "Percentage of a diagonally downward line which is covered by a horizontal line piece. This can prevent sagging of the top most point of upward lines. Only applies to Wire Printing."
-msgstr "Az átlósan lefelé mutató vonal százaléka, amelyet egy vízszintes vonaldarab fed le. Ez megakadályozhatja a felfelé mutató vonalak legfelső pontjának elhajlását. Csak a huzalnyomásra vonatkozik."
-
-#: fdmprinter.def.json
 msgctxt "minimum_polygon_circumference description"
 msgid "Polygons in sliced layers that have a circumference smaller than this amount will be filtered out. Lower values lead to higher resolution mesh at the cost of slicing time. It is meant mostly for high resolution SLA printers and very tiny 3D models with a lot of details."
 msgstr "A szeletelt rétegekben lévő sokszögeket, amelyek kerülete kisebb, mint ez az összeg, kiszűrjük. Az alacsonyabb értékek magasabb felbontású hálóhoz vezetnek a szeletelési idő költségén. Elsősorban nagy felbontású SLA nyomtatókhoz és nagyon apró, sok részlettel rendelkező 3D modellekhez készült."
@@ -3140,11 +3068,6 @@ msgstr ""
 msgctxt "mold_enabled description"
 msgid "Print models as a mold, which can be cast in order to get a model which resembles the models on the build plate."
 msgstr "Nyomtassa a modelt úgy, mint ha egy öntőforma lenne. Ezzel elérhetjük, hogy olyan nyomtatványt kapunk, amit  ha kiöntünk, akkor a tárgyasztalon lévő modelt kapjuk vissza."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_enabled description"
-msgid "Print only the outside surface with a sparse webbed structure, printing 'in thin air'. This is realized by horizontally printing the contours of the model at given Z intervals which are connected via upward and diagonally downward lines."
-msgstr "Csak a külső felületet nyomtatja, egy ritkás hevederezett szerkezettel, a levegőben. Ez úgy valósul meg, hogy a modell kontúrjai vízszintesen kinyomtatásra kerülnek meghatározott Z intervallumban, amiket felfelé, és átlósan lefelé egyenesen összeköt."
 
 #: fdmprinter.def.json
 msgctxt "fill_outline_gaps description"
@@ -3492,11 +3415,6 @@ msgid "Resolution to compute collisions with to avoid hitting the model. Setting
 msgstr "Felbontás az ütközések kiszámítására, annak érdekében, hogy elkerüljük a modellel való ütközést. Ha alacsonyabb a beállítás, az pontosabb fákat eredményez, amik kevésbé dőlnek el, de a szeletelési időt drámai módon megnöveli."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_strategy option retract"
-msgid "Retract"
-msgstr "Visszahúzás"
-
-#: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"
 msgid "Retract Before Outer Wall"
 msgstr "Visszahúzás külső fal előtt"
@@ -3753,6 +3671,11 @@ msgid "Small Layer Printing Temperature"
 msgstr "Befejező nyomtatási hőmérséklet"
 
 #: fdmprinter.def.json
+msgctxt "small_skin_width label"
+msgid "Small Top/Bottom Width"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 description"
 msgid "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
 msgstr ""
@@ -3760,6 +3683,16 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor description"
 msgid "Small features will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "small_skin_width description"
+msgid "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "brim_smart_ordering label"
+msgid "Smart Brim"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -3801,31 +3734,6 @@ msgstr "Sebesség"
 msgctxt "speed label"
 msgid "Speed"
 msgstr "Sebesség"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed description"
-msgid "Speed at which the nozzle moves when extruding material. Only applies to Wire Printing."
-msgstr "A fúvóka mozgásának sebessége az anyag extrudálásakor. Csak a huzalnyomtatásra vonatkozik."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_down description"
-msgid "Speed of printing a line diagonally downward. Only applies to Wire Printing."
-msgstr "A vonalak lefelé, Z irányban 'a levegőben' történő nyomtatási sebessége. Csak a huzalnyomásra vonatkozik."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_up description"
-msgid "Speed of printing a line upward 'in thin air'. Only applies to Wire Printing."
-msgstr "A vonalak felfelé, Z irányban 'a levegőben' történő nyomtatási sebessége. Csak a huzalnyomásra vonatkozik."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_bottom description"
-msgid "Speed of printing the first layer, which is the only layer touching the build platform. Only applies to Wire Printing."
-msgstr "Az első réteg nyomtatásának sebessége, amely az egyetlen réteg, amely megérinti a tárgyasztalt. Csak a huzalnyomásra vonatkozik."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_flat description"
-msgid "Speed of printing the horizontal contours of the model. Only applies to Wire Printing."
-msgstr "A modell kontúrjának vizszintes irnyban történő nyomtatási sebessége.Csak a huzalnyomásra vonatkozik."
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_speed description"
@@ -3876,11 +3784,6 @@ msgstr "Lépés per milliméter (Y)"
 msgctxt "machine_steps_per_mm_z label"
 msgid "Steps per Millimeter (Z)"
 msgstr "Lépés per milliméter (Z)"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_strategy description"
-msgid "Strategy for making sure two consecutive layers connect at each connection point. Retraction lets the upward lines harden in the right position, but may cause filament grinding. A knot can be made at the end of an upward line to heighten the chance of connecting to it and to let the line cool; however, it may require slow printing speeds. Another strategy is to compensate for the sagging of the top of an upward line; however, the lines won't always fall down as predicted."
-msgstr "Stratégia annak biztosítására, hogy két egymást követő réteg kapcsolódjon minden egyes csatlakozási ponthoz. A visszahúzás lehetővé teszi, hogy a felfelé mutató vonalak a megfelelő helyzetben megkeményedjenek, de ez az adagolókerék megcsúszását, és a szál eldarálását okozhatja. Egy felfelé mutató vonal végén csomót lehet készíteni, hogy növeljük az ahhoz való csatlakozás eredményességét, és hagyjuk, hogy a vonal vége lehűljön; ez azonban lassú nyomtatási sebességet igényelhet. Egy másik stratégia, a felfelé mutató vonal tetejének elmaradásának kompenzálása; azonban a vonalak nem mindig esnek le a várt módon."
 
 #: fdmprinter.def.json
 msgctxt "support description"
@@ -4291,6 +4194,11 @@ msgid "Surface energy."
 msgstr "Felületi energia."
 
 #: fdmprinter.def.json
+msgctxt "brim_smart_ordering description"
+msgid "Swap print order of the innermost and second innermost brim lines. This improves brim removal."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "alternate_carve_order description"
 msgid "Switch to which mesh intersecting volumes will belong with every layer, so that the overlapping meshes become interwoven. Turning this setting off will cause one of the meshes to obtain all of the volume in the overlap, while it is removed from the other meshes."
 msgstr "Bekapcsolja, hogy minden egyes rétegnél, ahol kereszteződő hálók találhatóak, azok fonódjanak össze. Ha kikapcsoljuk ezt az opciót, akkor a kereszteződő hálók közül az egyik megkapja az átfedésben lévő háló teljes térfogatát, míg a többi hálót eltávolítja."
@@ -4611,11 +4519,6 @@ msgid "The distance between the raft lines for the top raft layers. The spacing 
 msgstr "A tutajvonalak közötti távolság a felső tutajrétegeknél. A távolságnak meg kell egyeznie a vonalszélességgel, hogy a felület tömör legyen."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_roof_inset description"
-msgid "The distance covered when making a connection from a roof outline inward. Only applies to Wire Printing."
-msgstr "A beépített távolság, amikor a tetőtől körvonalakat bekapcsolnak. Csak a huzalnyomásra vonatkozik."
-
-#: fdmprinter.def.json
 msgctxt "interlocking_depth description"
 msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
 msgstr ""
@@ -4637,11 +4540,6 @@ msgid "The distance from the tip of the nozzle in which heat from the nozzle is 
 msgstr "Az a távolság, ami a fúvóka csúcstól a még szilárd nyomtatószálig tart.Ez gyakorlatilag az esetek nagy részében a fúvóka teljes hossza, a csúcstól a torokig tart."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_roof_drag_along description"
-msgid "The distance of the end piece of an inward line which gets dragged along when going back to the outer outline of the roof. This distance is compensated for. Only applies to Wire Printing."
-msgstr "A belső vonal végdarabjának távolsága, amely elhúzódik, amikor visszamegy a tető külső körvonalaihoz. Ezt a távolságot kompenzálni kell. Csak a huzalnyomásra vonatkozik."
-
-#: fdmprinter.def.json
 msgctxt "bottom_skin_expand_distance description"
 msgid "The distance the bottom skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the skin adhere better to the walls on the layer below. Lower values save amount of material used."
 msgstr "Az alsó kéreg felületek a kitöltésig jönnek létre. Ha bővítjük az alsó kérget, és növeljük ezt az értéket, akkor jobb tapadást érhetünk el a kitöltéssel kapcsolatban, illetve a szomszédos falak jobban tudnak tapadni a kéreghez. Az alacsonyabb érték anyagmegtakarítást eredményez."
@@ -4660,11 +4558,6 @@ msgstr "A felső kéreg felületek a kitöltésig jönnek létre. Ha bővítjük
 msgctxt "wipe_move_distance description"
 msgid "The distance to move the head back and forth across the brush."
 msgstr "A fej oda-vissza mozgatásának távolsága a kefén."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_fall_down description"
-msgid "The distance which horizontal roof lines printed 'in thin air' fall down when being printed. This distance is compensated for. Only applies to Wire Printing."
-msgstr "A 'vékony, levegőben' nyomtatott vízszintes tetővonalak nyomtatáskor csökkennek a távolságok. Ezeket a távolságokat kompenzálni kell. Csak a huzalnyomásra vonatkozik."
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_prune_angle description"
@@ -4875,11 +4768,6 @@ msgstr "A kezdő réteg magassága mm-ben. A vastagabb kezdőréteg megkönnyít
 msgctxt "support_bottom_stair_step_height description"
 msgid "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures. Set to zero to turn off the stair-like behaviour."
 msgstr "A támasz lépcsőinek magassága azona a részen, ahol a modellen támaszkodik.Ha az érték alacsony, a támasz eltávolítása nehéz lehet, viszont a túl magas érték instabillá teheti a támaszt. Ha az érték 0, akkor kikapcsolja a lépcsőt."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_height description"
-msgid "The height of the upward and diagonally downward lines between two horizontal parts. This determines the overall density of the net structure. Only applies to Wire Printing."
-msgstr "Két vízszintes rész közötti felfelé és átlósan lefelé mutató vonalak magassága. Ez határozza meg a nettó szerkezet általános sűrűségét. Csak a huzalnyomásra vonatkozik."
 
 #: fdmprinter.def.json
 msgctxt "brim_gap description"
@@ -5770,11 +5658,6 @@ msgid "This will create a wall around the model, which traps (hot) air and shiel
 msgstr "A beállítással létrehozhatunk egy falat a modell körül, ami segít abban, hogy a külső levegő, vagy légáramlat érje a nyomtatott testet.Ez különösen azoknál az alapanyagoknál lehet segítség, amelyek hajlamosak a felválásra, repedésre, mint pl. az ABS, ASA."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_roof_outer_delay description"
-msgid "Time spent at the outer perimeters of hole which is to become a roof. Longer times can ensure a better connection. Only applies to Wire Printing."
-msgstr "A tetővé váló lyuk külső kerületein eltöltött idő. A hosszabb idő biztosítja a jobb kapcsolódást. Csak a huzalnyomásra vonatkozik."
-
-#: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage_xy description"
 msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor in the XY-direction (horizontally)."
 msgstr ""
@@ -6103,121 +5986,6 @@ msgstr ""
 msgctxt "slicing_tolerance description"
 msgid "Vertical tolerance in the sliced layers. The contours of a layer are normally generated by taking cross sections through the middle of each layer's thickness (Middle). Alternatively each layer can have the areas which fall inside of the volume throughout the entire thickness of the layer (Exclusive) or a layer has the areas which fall inside anywhere within the layer (Inclusive). Inclusive retains the most details, Exclusive makes for the best fit and Middle stays closest to the original surface."
 msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "wireframe_bottom_delay label"
-msgid "WP Bottom Delay"
-msgstr "Alsó késleltetés"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_bottom label"
-msgid "WP Bottom Printing Speed"
-msgstr "Aljzat nyomtatási sebesség"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow_connection label"
-msgid "WP Connection Flow"
-msgstr "Kapcsolódási adagolás"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_height label"
-msgid "WP Connection Height"
-msgstr "Kapcsolódási magasság"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_down label"
-msgid "WP Downward Printing Speed"
-msgstr "Lefelé nyomtatási sebesség"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_drag_along label"
-msgid "WP Drag Along"
-msgstr "Húzási távolság"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_up_half_speed label"
-msgid "WP Ease Upward"
-msgstr "Emelés távolság"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_fall_down label"
-msgid "WP Fall Down"
-msgstr "Ejtés távolság"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flat_delay label"
-msgid "WP Flat Delay"
-msgstr "Vízszintes késleltetés"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow_flat label"
-msgid "WP Flat Flow"
-msgstr "Vízszintes adagolás"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow label"
-msgid "WP Flow"
-msgstr "Adagolás"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_flat label"
-msgid "WP Horizontal Printing Speed"
-msgstr "Vízszintes nyomtatási sebesség"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_top_jump label"
-msgid "WP Knot Size"
-msgstr "Csomó méret"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_nozzle_clearance label"
-msgid "WP Nozzle Clearance"
-msgstr "Fúvúka hézag"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_drag_along label"
-msgid "WP Roof Drag Along"
-msgstr "Fedél húzás"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_fall_down label"
-msgid "WP Roof Fall Down"
-msgstr "Fedél ejtés"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_inset label"
-msgid "WP Roof Inset Distance"
-msgstr "Fedél betét távolság"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_outer_delay label"
-msgid "WP Roof Outer Delay"
-msgstr "Fedél külső késleltetése"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed label"
-msgid "WP Speed"
-msgstr "Sebesség"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_straight_before_down label"
-msgid "WP Straighten Downward Lines"
-msgstr "Vonal egyenesítés lefelé"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_strategy label"
-msgid "WP Strategy"
-msgstr "Startégia"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_top_delay label"
-msgid "WP Top Delay"
-msgstr "Felső késleltetés"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_up label"
-msgid "WP Upward Printing Speed"
-msgstr "Felfelé nyomtatási sebesség"
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temp_wait label"
@@ -6650,11 +6418,6 @@ msgid "Wipe Z Hop Height"
 msgstr "Z emelés magasság"
 
 #: fdmprinter.def.json
-msgctxt "wireframe_enabled label"
-msgid "Wire Printing"
-msgstr "Huzalváz nyomtatás"
-
-#: fdmprinter.def.json
 msgctxt "retraction_combing option infill"
 msgid "Within Infill"
 msgstr "Kitöltésen belül"
@@ -6839,6 +6602,10 @@ msgstr "fej átpozícionálás"
 #~ msgid "Change the temperature for each layer automatically with the average flow speed of that layer."
 #~ msgstr "Automatikusan változtassuk a hőmérsékletet az egyes rétegeknél, annak függvényében, hogy milyen az adott réteg átlagos adagolási sebessége."
 
+#~ msgctxt "wireframe_strategy option compensate"
+#~ msgid "Compensate"
+#~ msgstr "Kompenzáció"
+
 #~ msgctxt "travel_compensate_overlapping_walls_x_enabled label"
 #~ msgid "Compensate Inner Wall Overlaps"
 #~ msgstr "Kompenzálja a belső fal átfedéseit"
@@ -6863,13 +6630,47 @@ msgstr "fej átpozícionálás"
 #~ msgid "Compensate the flow for parts of an outer wall being printed where there is already a wall in place."
 #~ msgstr "Kompenzálja a száladagolást a külső fal azon részeinél, ahol az már elkészült."
 
+#~ msgctxt "wireframe_top_jump description"
+#~ msgid "Creates a small knot at the top of an upward line, so that the consecutive horizontal layer has a better chance to connect to it. Only applies to Wire Printing."
+#~ msgstr "Kicsi csomót hoz létre egy felfelé mutató vonal tetején, hogy az egymást követő vízszintes réteg nagyobb eséllyel csatlakozzon hozzá. Csak a huzalnyomásra vonatkozik."
+
+#~ msgctxt "wireframe_bottom_delay description"
+#~ msgid "Delay time after a downward move. Only applies to Wire Printing."
+#~ msgstr "Késleltesse az időt lefelé történő mozgatás után, hogy a lefelé mutató vonal megszilárduljon. Csak a huzalnyomásra vonatkozik."
+
+#~ msgctxt "wireframe_top_delay description"
+#~ msgid "Delay time after an upward move, so that the upward line can harden. Only applies to Wire Printing."
+#~ msgstr "Késleltesse az időt felfelé történő mozgatás után, hogy a felfelé mutató vonal megszilárduljon. Csak a huzalnyomásra vonatkozik."
+
+#~ msgctxt "wireframe_flat_delay description"
+#~ msgid "Delay time between two horizontal segments. Introducing such a delay can cause better adhesion to previous layers at the connection points, while too long delays cause sagging. Only applies to Wire Printing."
+#~ msgstr "Késleltetési idő két vízszintes szegmens között. Egy ilyen késleltetés bevezetése jobb tapadást okozhat az előző rétegekhez a csatlakozási pontokon, míg a túl hosszú késleltetések megereszkedést okozhatnak. Csak a huzalnyomásra vonatkozik."
+
 #~ msgctxt "infill_mesh_order description"
 #~ msgid "Determines which infill mesh is inside the infill of another infill mesh. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
 #~ msgstr "Meghatározza, hogy melyik kitöltési háló helyezkedjen el egy másik kitöltési hálón. A magasabb rendű kitöltési háló megváltoztatja az alacsonyabb rendű és normál hálókat."
 
+#~ msgctxt "wireframe_nozzle_clearance description"
+#~ msgid "Distance between the nozzle and horizontally downward lines. Larger clearance results in diagonally downward lines with a less steep angle, which in turn results in less upward connections with the next layer. Only applies to Wire Printing."
+#~ msgstr "A fúvóka és a vízszintesen lefelé mutató vonalak közötti távolság. A nagyobb hézag átlósan lefelé mutató vonalakat eredményez, kevésbé meredek szöggel, ami viszont kevésbé felfelé irányuló kapcsolatokat eredményez a következő réteggel. Csak a huzalnyomásra vonatkozik."
+
+#~ msgctxt "wireframe_up_half_speed description"
+#~ msgid ""
+#~ "Distance of an upward move which is extruded with half speed.\n"
+#~ "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
+#~ msgstr "A felfelé irányuló mozgás távolsága, amelyet fél sebességgel extrudálunk. Ez jobb tapadást eredményez az előző rétegekhez, miközben az anyag nem melegíti túl az anyagot ezekben a rétegekben. Csak a huzalnyomásra vonatkozik."
+
 #~ msgctxt "support_xy_distance_overhang description"
 #~ msgid "Distance of the support structure from the overhang in the X/Y directions. "
 #~ msgstr "A támasz X/Y távolsága az alátamasztott kinyúlástól. "
+
+#~ msgctxt "wireframe_fall_down description"
+#~ msgid "Distance with which the material falls down after an upward extrusion. This distance is compensated for. Only applies to Wire Printing."
+#~ msgstr "Az a távolság, amellyel az anyag leesik egy felfelé történő extrudálás után. Ezt a távolságot tudjuk itt kompenzálni. Csak a huzalnyomásra vonatkozik."
+
+#~ msgctxt "wireframe_drag_along description"
+#~ msgid "Distance with which the material of an upward extrusion is dragged along with the diagonally downward extrusion. This distance is compensated for. Only applies to Wire Printing."
+#~ msgstr "Az a távolság, ameddig egy felfelé irányuló extrudálás anyagát az átlósan lefelé irányuló extrudálással együtt meghúzzuk. Ezt a távolságot kompenzálni kell. Csak a huzalnyomásra vonatkozik."
 
 #~ msgctxt "speed_equalize_flow_enabled label"
 #~ msgid "Equalize Filament Flow"
@@ -6903,6 +6704,18 @@ msgstr "fej átpozícionálás"
 #~ msgid "First Layer Speed"
 #~ msgstr "Első réteg sebesség"
 
+#~ msgctxt "wireframe_flow_connection description"
+#~ msgid "Flow compensation when going up or down. Only applies to Wire Printing."
+#~ msgstr "Ádagoláskompenzáció felfelé vagy lefelé irányban haladva. Csak a huzalnyomásra vonatkozik."
+
+#~ msgctxt "wireframe_flow_flat description"
+#~ msgid "Flow compensation when printing flat lines. Only applies to Wire Printing."
+#~ msgstr "Ádagoláskompenzáció vízszintes vonalak nyomtatásakor. Csak a huzalnyomásra vonatkozik."
+
+#~ msgctxt "wireframe_flow description"
+#~ msgid "Flow compensation: the amount of material extruded is multiplied by this value. Only applies to Wire Printing."
+#~ msgstr "Ádagoláskompenzáció: az extrudált anyag mennyiségét megszorozzuk ezzel az értékkel. Csak a huzalnyomásra vonatkozik."
+
 #~ msgctxt "flow_rate_extrusion_offset_factor label"
 #~ msgid "Flow rate compensation factor"
 #~ msgstr "Adagoláskompenzáció faktor"
@@ -6934,6 +6747,10 @@ msgstr "fej átpozícionálás"
 #~ msgctxt "infill_mesh_order label"
 #~ msgid "Infill Mesh Order"
 #~ msgstr "Kitöltés háló rend"
+
+#~ msgctxt "wireframe_strategy option knot"
+#~ msgid "Knot"
+#~ msgstr "Csomó"
 
 #~ msgctxt "limit_support_retractions label"
 #~ msgid "Limit Support Retractions"
@@ -6991,9 +6808,17 @@ msgstr "fej átpozícionálás"
 #~ msgid "Outer Before Inner Walls"
 #~ msgstr "Külső falak a belsők előtt"
 
+#~ msgctxt "wireframe_straight_before_down description"
+#~ msgid "Percentage of a diagonally downward line which is covered by a horizontal line piece. This can prevent sagging of the top most point of upward lines. Only applies to Wire Printing."
+#~ msgstr "Az átlósan lefelé mutató vonal százaléka, amelyet egy vízszintes vonaldarab fed le. Ez megakadályozhatja a felfelé mutató vonalak legfelső pontjának elhajlását. Csak a huzalnyomásra vonatkozik."
+
 #~ msgctxt "wall_min_flow_retract label"
 #~ msgid "Prefer Retract"
 #~ msgstr "Visszahúzás preferálása"
+
+#~ msgctxt "wireframe_enabled description"
+#~ msgid "Print only the outside surface with a sparse webbed structure, printing 'in thin air'. This is realized by horizontally printing the contours of the model at given Z intervals which are connected via upward and diagonally downward lines."
+#~ msgstr "Csak a külső felületet nyomtatja, egy ritkás hevederezett szerkezettel, a levegőben. Ez úgy valósul meg, hogy a modell kontúrjai vízszintesen kinyomtatásra kerülnek meghatározott Z intervallumban, amiket felfelé, és átlósan lefelé egyenesen összeköt."
 
 #~ msgctxt "spaghetti_infill_enabled description"
 #~ msgid "Print the infill every so often, so that the filament will curl up chaotically inside the object. This reduces print time, but the behaviour is rather unpredictable."
@@ -7006,6 +6831,10 @@ msgstr "fej átpozícionálás"
 #~ msgctxt "outer_inset_first description"
 #~ msgid "Prints walls in order of outside to inside when enabled. This can help improve dimensional accuracy in X and Y when using a high viscosity plastic like ABS; however it can decrease outer surface print quality, especially on overhangs."
 #~ msgstr "A falakat külső, majd belső sorrendben nyomtatja, ha ez engedélyezve van.Ez hozzájárulhat a X és Y méret pontosságának javításához, különösen nagy viszkozitású műanyag, például ABS használatakor. Ez azonban csökkentheti a külső felület nyomtatási minőségét, különösen az átlapolásoknál."
+
+#~ msgctxt "wireframe_strategy option retract"
+#~ msgid "Retract"
+#~ msgstr "Visszahúzás"
 
 #~ msgctxt "retraction_enable description"
 #~ msgid "Retract the filament when the nozzle is moving over a non-printed area. "
@@ -7063,6 +6892,46 @@ msgstr "fej átpozícionálás"
 #~ msgid "Spaghetti Maximum Infill Angle"
 #~ msgstr "Maximális kitöltési szög"
 
+#~ msgctxt "wireframe_printspeed description"
+#~ msgid "Speed at which the nozzle moves when extruding material. Only applies to Wire Printing."
+#~ msgstr "A fúvóka mozgásának sebessége az anyag extrudálásakor. Csak a huzalnyomtatásra vonatkozik."
+
+#~ msgctxt "wireframe_printspeed_down description"
+#~ msgid "Speed of printing a line diagonally downward. Only applies to Wire Printing."
+#~ msgstr "A vonalak lefelé, Z irányban 'a levegőben' történő nyomtatási sebessége. Csak a huzalnyomásra vonatkozik."
+
+#~ msgctxt "wireframe_printspeed_up description"
+#~ msgid "Speed of printing a line upward 'in thin air'. Only applies to Wire Printing."
+#~ msgstr "A vonalak felfelé, Z irányban 'a levegőben' történő nyomtatási sebessége. Csak a huzalnyomásra vonatkozik."
+
+#~ msgctxt "wireframe_printspeed_bottom description"
+#~ msgid "Speed of printing the first layer, which is the only layer touching the build platform. Only applies to Wire Printing."
+#~ msgstr "Az első réteg nyomtatásának sebessége, amely az egyetlen réteg, amely megérinti a tárgyasztalt. Csak a huzalnyomásra vonatkozik."
+
+#~ msgctxt "wireframe_printspeed_flat description"
+#~ msgid "Speed of printing the horizontal contours of the model. Only applies to Wire Printing."
+#~ msgstr "A modell kontúrjának vizszintes irnyban történő nyomtatási sebessége.Csak a huzalnyomásra vonatkozik."
+
+#~ msgctxt "wireframe_strategy description"
+#~ msgid "Strategy for making sure two consecutive layers connect at each connection point. Retraction lets the upward lines harden in the right position, but may cause filament grinding. A knot can be made at the end of an upward line to heighten the chance of connecting to it and to let the line cool; however, it may require slow printing speeds. Another strategy is to compensate for the sagging of the top of an upward line; however, the lines won't always fall down as predicted."
+#~ msgstr "Stratégia annak biztosítására, hogy két egymást követő réteg kapcsolódjon minden egyes csatlakozási ponthoz. A visszahúzás lehetővé teszi, hogy a felfelé mutató vonalak a megfelelő helyzetben megkeményedjenek, de ez az adagolókerék megcsúszását, és a szál eldarálását okozhatja. Egy felfelé mutató vonal végén csomót lehet készíteni, hogy növeljük az ahhoz való csatlakozás eredményességét, és hagyjuk, hogy a vonal vége lehűljön; ez azonban lassú nyomtatási sebességet igényelhet. Egy másik stratégia, a felfelé mutató vonal tetejének elmaradásának kompenzálása; azonban a vonalak nem mindig esnek le a várt módon."
+
+#~ msgctxt "wireframe_roof_inset description"
+#~ msgid "The distance covered when making a connection from a roof outline inward. Only applies to Wire Printing."
+#~ msgstr "A beépített távolság, amikor a tetőtől körvonalakat bekapcsolnak. Csak a huzalnyomásra vonatkozik."
+
+#~ msgctxt "wireframe_roof_drag_along description"
+#~ msgid "The distance of the end piece of an inward line which gets dragged along when going back to the outer outline of the roof. This distance is compensated for. Only applies to Wire Printing."
+#~ msgstr "A belső vonal végdarabjának távolsága, amely elhúzódik, amikor visszamegy a tető külső körvonalaihoz. Ezt a távolságot kompenzálni kell. Csak a huzalnyomásra vonatkozik."
+
+#~ msgctxt "wireframe_roof_fall_down description"
+#~ msgid "The distance which horizontal roof lines printed 'in thin air' fall down when being printed. This distance is compensated for. Only applies to Wire Printing."
+#~ msgstr "A 'vékony, levegőben' nyomtatott vízszintes tetővonalak nyomtatáskor csökkennek a távolságok. Ezeket a távolságokat kompenzálni kell. Csak a huzalnyomásra vonatkozik."
+
+#~ msgctxt "wireframe_height description"
+#~ msgid "The height of the upward and diagonally downward lines between two horizontal parts. This determines the overall density of the net structure. Only applies to Wire Printing."
+#~ msgstr "Két vízszintes rész közötti felfelé és átlósan lefelé mutató vonalak magassága. Ez határozza meg a nettó szerkezet általános sűrűségét. Csak a huzalnyomásra vonatkozik."
+
 #~ msgctxt "spaghetti_max_infill_angle description"
 #~ msgid "The maximum angle w.r.t. the Z axis of the inside of the print for areas which are to be filled with spaghetti infill afterwards. Lowering this value causes more angled parts in your model to be filled on each layer."
 #~ msgstr "A maximális w.r.t. szög a nyomtatás belsejében, és a Z tengelye azokon a területeken, amelyeket utána spagetti töltelékkel kell kitölteni. Ennek az értéknek a csökkentésével több olyan szögben lévő részeket hoz létre, amit minden rétegben meg kell tölteni."
@@ -7115,6 +6984,10 @@ msgstr "fej átpozícionálás"
 #~ msgid "Threshold whether to use a smaller layer or not. This number is compared to the tan of the steepest slope in a layer."
 #~ msgstr "Annak a küszöbértéke, hogy kisebb legyen a rétegmagasság, vagy sem.Ezt a számot hasonlítják össze a réteg legmeredekebb meredekségével."
 
+#~ msgctxt "wireframe_roof_outer_delay description"
+#~ msgid "Time spent at the outer perimeters of hole which is to become a roof. Longer times can ensure a better connection. Only applies to Wire Printing."
+#~ msgstr "A tetővé váló lyuk külső kerületein eltöltött idő. A hosszabb idő biztosítja a jobb kapcsolódást. Csak a huzalnyomásra vonatkozik."
+
 #~ msgctxt "max_skin_angle_for_expansion description"
 #~ msgid "Top and/or bottom surfaces of your object with an angle larger than this setting, won't have their top/bottom skin expanded. This avoids expanding the narrow skin areas that are created when the model surface has a near vertical slope. An angle of 0° is horizontal, while an angle of 90° is vertical."
 #~ msgstr "A tárgy alsó/felső felületén, az itt megadott szögnél nagyobb szög esetén a kéreg nem lesz kibővítve. Így elkerülhető, hogy a keskeny kéregrészek ne legyenek kibővítve, amik akkor jönnek létre, mikor a modell felülete közel függőleges szögben áll. A 0° szög a vízszintes, míg a 90° szög a függőlegest jelenti."
@@ -7130,6 +7003,98 @@ msgstr "fej átpozícionálás"
 #~ msgctxt "support_tree_wall_thickness label"
 #~ msgid "Tree Support Wall Thickness"
 #~ msgstr "Fal vastagság"
+
+#~ msgctxt "wireframe_bottom_delay label"
+#~ msgid "WP Bottom Delay"
+#~ msgstr "Alsó késleltetés"
+
+#~ msgctxt "wireframe_printspeed_bottom label"
+#~ msgid "WP Bottom Printing Speed"
+#~ msgstr "Aljzat nyomtatási sebesség"
+
+#~ msgctxt "wireframe_flow_connection label"
+#~ msgid "WP Connection Flow"
+#~ msgstr "Kapcsolódási adagolás"
+
+#~ msgctxt "wireframe_height label"
+#~ msgid "WP Connection Height"
+#~ msgstr "Kapcsolódási magasság"
+
+#~ msgctxt "wireframe_printspeed_down label"
+#~ msgid "WP Downward Printing Speed"
+#~ msgstr "Lefelé nyomtatási sebesség"
+
+#~ msgctxt "wireframe_drag_along label"
+#~ msgid "WP Drag Along"
+#~ msgstr "Húzási távolság"
+
+#~ msgctxt "wireframe_up_half_speed label"
+#~ msgid "WP Ease Upward"
+#~ msgstr "Emelés távolság"
+
+#~ msgctxt "wireframe_fall_down label"
+#~ msgid "WP Fall Down"
+#~ msgstr "Ejtés távolság"
+
+#~ msgctxt "wireframe_flat_delay label"
+#~ msgid "WP Flat Delay"
+#~ msgstr "Vízszintes késleltetés"
+
+#~ msgctxt "wireframe_flow_flat label"
+#~ msgid "WP Flat Flow"
+#~ msgstr "Vízszintes adagolás"
+
+#~ msgctxt "wireframe_flow label"
+#~ msgid "WP Flow"
+#~ msgstr "Adagolás"
+
+#~ msgctxt "wireframe_printspeed_flat label"
+#~ msgid "WP Horizontal Printing Speed"
+#~ msgstr "Vízszintes nyomtatási sebesség"
+
+#~ msgctxt "wireframe_top_jump label"
+#~ msgid "WP Knot Size"
+#~ msgstr "Csomó méret"
+
+#~ msgctxt "wireframe_nozzle_clearance label"
+#~ msgid "WP Nozzle Clearance"
+#~ msgstr "Fúvúka hézag"
+
+#~ msgctxt "wireframe_roof_drag_along label"
+#~ msgid "WP Roof Drag Along"
+#~ msgstr "Fedél húzás"
+
+#~ msgctxt "wireframe_roof_fall_down label"
+#~ msgid "WP Roof Fall Down"
+#~ msgstr "Fedél ejtés"
+
+#~ msgctxt "wireframe_roof_inset label"
+#~ msgid "WP Roof Inset Distance"
+#~ msgstr "Fedél betét távolság"
+
+#~ msgctxt "wireframe_roof_outer_delay label"
+#~ msgid "WP Roof Outer Delay"
+#~ msgstr "Fedél külső késleltetése"
+
+#~ msgctxt "wireframe_printspeed label"
+#~ msgid "WP Speed"
+#~ msgstr "Sebesség"
+
+#~ msgctxt "wireframe_straight_before_down label"
+#~ msgid "WP Straighten Downward Lines"
+#~ msgstr "Vonal egyenesítés lefelé"
+
+#~ msgctxt "wireframe_strategy label"
+#~ msgid "WP Strategy"
+#~ msgstr "Startégia"
+
+#~ msgctxt "wireframe_top_delay label"
+#~ msgid "WP Top Delay"
+#~ msgstr "Felső késleltetés"
+
+#~ msgctxt "wireframe_printspeed_up label"
+#~ msgid "WP Upward Printing Speed"
+#~ msgstr "Felfelé nyomtatási sebesség"
 
 #~ msgctxt "wall_overhang_angle description"
 #~ msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging."
@@ -7158,6 +7123,10 @@ msgstr "fej átpozícionálás"
 #~ msgctxt "wipe_hop_enable label"
 #~ msgid "Wipe Z Hop When Retracted"
 #~ msgstr "Törlési Z emelés visszahúzáskor"
+
+#~ msgctxt "wireframe_enabled label"
+#~ msgid "Wire Printing"
+#~ msgstr "Huzalváz nyomtatás"
 
 #~ msgctxt "blackmagic description"
 #~ msgid "category_blackmagic"
