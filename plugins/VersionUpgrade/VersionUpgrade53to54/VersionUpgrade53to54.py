@@ -32,19 +32,19 @@ _REMOVED_SETTINGS = {
     "wireframe_roof_outer_delay",
     "wireframe_nozzle_clearance",
 }
-"elegoo_global_012_high"
-_RENAMED_PROFILES = {
-    "abs_040012" : "elegoo_abs_nozzle_0.40_layer_0.10",
-    "abs_040016" : "elegoo_abs_nozzle_0.40_layer_0.15",
-    "abs_040020" : "elegoo_abs_nozzle_0.40_layer_0.20",
-    "abs_040024" : "elegoo_abs_nozzle_0.40_layer_0.20",
-    "abs_040028" : "elegoo_abs_nozzle_0.40_layer_0.30",
 
-    "asa_040012" : "elegoo_asa_nozzle_0.40_layer_0.10",
-    "asa_040016" : "elegoo_asa_nozzle_0.40_layer_0.15",
-    "asa_040020" : "elegoo_asa_nozzle_0.40_layer_0.20",
-    "asa_040024" : "elegoo_asa_nozzle_0.40_layer_0.20",
-    "asa_040028" : "elegoo_asa_nozzle_0.40_layer_0.30",
+_RENAMED_PROFILES = {
+    "abs_040012": "elegoo_abs_nozzle_0.40_layer_0.10",
+    "abs_040016": "elegoo_abs_nozzle_0.40_layer_0.15",
+    "abs_040020": "elegoo_abs_nozzle_0.40_layer_0.20",
+    "abs_040024": "elegoo_abs_nozzle_0.40_layer_0.20",
+    "abs_040028": "elegoo_abs_nozzle_0.40_layer_0.30",
+
+    "asa_040012": "elegoo_asa_nozzle_0.40_layer_0.10",
+    "asa_040016": "elegoo_asa_nozzle_0.40_layer_0.15",
+    "asa_040020": "elegoo_asa_nozzle_0.40_layer_0.20",
+    "asa_040024": "elegoo_asa_nozzle_0.40_layer_0.20",
+    "asa_040028": "elegoo_asa_nozzle_0.40_layer_0.30",
 
     "petg_040012": "elegoo_petg_nozzle_0.40_layer_0.10",
     "petg_040016": "elegoo_petg_nozzle_0.40_layer_0.15",
