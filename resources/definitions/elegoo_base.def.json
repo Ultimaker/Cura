@@ -138,6 +138,6 @@
         "z_seam_corner": { "default_value": "z_seam_corner_weighted" },
         "z_seam_position": { "default_value": "left" },
         "z_seam_type": { "default_value": "back" },
-        "zig_zaggify_infill": { "value": "infill_pattern == 'cross' or infill_pattern == 'cross_3d' or infill_sparse_density < 30 " }
+        "zig_zaggify_infill": { "value": "resolveOrValue('infill_pattern') == 'cross' or resolveOrValue('infill_pattern') == 'cross_3d' or resolveOrValue('infill_sparse_density') < 30 " }
     }
 }
