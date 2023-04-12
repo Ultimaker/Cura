@@ -32,6 +32,44 @@ _REMOVED_SETTINGS = {
     "wireframe_roof_outer_delay",
     "wireframe_nozzle_clearance",
 }
+"elegoo_global_012_high"
+_RENAMED_PROFILES = {
+    "abs_040012" : "elegoo_abs_nozzle_0.40_layer_0.10",
+    "abs_040016" : "elegoo_abs_nozzle_0.40_layer_0.15",
+    "abs_040020" : "elegoo_abs_nozzle_0.40_layer_0.20",
+    "abs_040024" : "elegoo_abs_nozzle_0.40_layer_0.20",
+    "abs_040028" : "elegoo_abs_nozzle_0.40_layer_0.30",
+
+    "asa_040012" : "elegoo_asa_nozzle_0.40_layer_0.10",
+    "asa_040016" : "elegoo_asa_nozzle_0.40_layer_0.15",
+    "asa_040020" : "elegoo_asa_nozzle_0.40_layer_0.20",
+    "asa_040024" : "elegoo_asa_nozzle_0.40_layer_0.20",
+    "asa_040028" : "elegoo_asa_nozzle_0.40_layer_0.30",
+
+    "petg_040012": "elegoo_petg_nozzle_0.40_layer_0.10",
+    "petg_040016": "elegoo_petg_nozzle_0.40_layer_0.15",
+    "petg_040020": "elegoo_petg_nozzle_0.40_layer_0.20",
+    "petg_040024": "elegoo_petg_nozzle_0.40_layer_0.20",
+    "petg_040028": "elegoo_petg_nozzle_0.40_layer_0.30",
+
+    "pla_040012": "elegoo_pla_nozzle_0.40_layer_0.10",
+    "pla_040016": "elegoo_pla_nozzle_0.40_layer_0.15",
+    "pla_040020": "elegoo_pla_nozzle_0.40_layer_0.20",
+    "pla_040024": "elegoo_pla_nozzle_0.40_layer_0.20",
+    "pla_040028": "elegoo_pla_nozzle_0.40_layer_0.30",
+
+    "tpu_040012": "elegoo_tpu_nozzle_0.40_layer_0.10",
+    "tpu_040016": "elegoo_tpu_nozzle_0.40_layer_0.15",
+    "tpu_040020": "elegoo_tpu_nozzle_0.40_layer_0.20",
+    "tpu_040024": "elegoo_tpu_nozzle_0.40_layer_0.20",
+    "tpu_040028": "elegoo_tpu_nozzle_0.40_layer_0.30",
+
+    "elegoo_global_012_high.inst.cfg": "elegoo_layer_0.10.inst.cfg",
+    "elegoo_global_016_normal.inst.cfg": "elegoo_layer_0.15.inst.cfg",
+    "elegoo_global_020_fine.inst.cfg": "elegoo_layer_0.20.inst.cfg",
+    "elegoo_global_024_medium.inst.cfg": "elegoo_layer_0.20.inst.cfg",
+    "elegoo_global_028_draft.inst.cfg": "elegoo_layer_0.30.inst.cfg",
+}
 
 
 class VersionUpgrade53to54(VersionUpgrade):
@@ -111,6 +149,9 @@ class VersionUpgrade53to54(VersionUpgrade):
             parser["metadata"] = {}
 
         parser["metadata"]["setting_version"] = "22"
+
+        for container in parser['containers']:
+            parser['containers'][container] = _RENAMED_PROFILES.get(parser['containers'][container], parser['containers'][container])
 
         result = io.StringIO()
         parser.write(result)
