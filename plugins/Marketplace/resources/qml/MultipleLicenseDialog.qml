@@ -51,7 +51,7 @@ UM.Dialog
                 sourceSize.width: width
                 sourceSize.height: height
                 fillMode: Image.PreserveAspectFit
-                source: licenseModel.iconUrl || Qt.resolvedUrl("../../images/placeholder.svg")
+                source: licenseModel.iconUrl || Qt.resolvedUrl("../images/placeholder.svg")
                 mipmap: true
             }
 

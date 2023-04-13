@@ -1,0 +1,28 @@
+{
+    "version": 2,
+    "name": "UMO+ DXU Dual",
+    "inherits": "dxu_dual",
+    "overrides":
+    {
+        "machine_depth": { "default_value": 205 },
+        "machine_disallowed_areas":
+        {
+            "default_value": [
+                [
+                    [100, -102.5],
+                    [110, -102.5],
+                    [110, -62.5],
+                    [100, -62.5]
+                ]
+            ]
+        },
+        "machine_end_gcode": { "value": "\"\"  if machine_gcode_flavor == \"UltiGCode\" else \";end code from UM3\\nG91 ;Relative movement\\nG0 F15000 X8.0 Y8.0 Z3.5 E-4.5 ;Wiping+material retraction ;increase bed lower 0.5>5.0 and add Y movement\\nG0 F10000 Z1.5 E4.5 ;Compensation for the retraction\\nG90 ;Disable relative movement\\n\\nG90 ;absolute positioning\\nM104 S0 T0 ;extruder heater off\\nM104 S0 T1\\nM140 S0 ;turn off bed\\nT0 ; move to the first head\\nM107 ;fan off\\nM355 S0 ;turn off case light\"" },
+        "machine_height": { "default_value": 200 },
+        "machine_nozzle_cool_down_speed": { "default_value": 0.8 },
+        "machine_nozzle_heat_up_speed": { "default_value": 1.95 },
+        "machine_nozzle_size": { "default_value": 0.4 },
+        "machine_start_gcode": { "value": "\"\"  if machine_gcode_flavor == \"UltiGCode\" else \"; Script based on an original created by tjjfvi (https://github.com/tjjfvi)\\n; An up-to-date version of the tjjfvi's original script can be found\\n; here:  https://csi.t6.fyi/\\n; Note - This script will only work in Cura V4.2 and above!\\n; --- Global Settings\\n; layer_height = {layer_height}\\n; smooth_spiralized_contours = {smooth_spiralized_contours}\\n; magic_mesh_surface_mode = {magic_mesh_surface_mode}\\n; machine_extruder_count = {machine_extruder_count}\\n; --- Single Extruder Settings\\n; speed_z_hop = {speed_z_hop}\\n; retraction_amount = {retraction_amount}\\n; retraction_hop = {retraction_hop}\\n; retraction_hop_enabled = {retraction_hop_enabled}\\n; retraction_enable = {retraction_enable}\\n; retraction_speed = {retraction_speed}\\n; retraction_retract_speed = {retraction_retract_speed}\\n; retraction_prime_speed = {retraction_prime_speed}\\n; speed_travel = {speed_travel}\\n; --- Multi-Extruder Settings\\n; speed_z_hop_0 = {speed_z_hop, 0}\\n; speed_z_hop_1 = {speed_z_hop, 1}\\n; retraction_amount_0 = {retraction_amount, 0}\\n; retraction_amount_1 = {retraction_amount, 1}\\n; retraction_hop_0 = {retraction_hop, 0}\\n; retraction_hop_1 = {retraction_hop, 1}\\n; retraction_hop_enabled_0 = {retraction_hop_enabled, 0}\\n; retraction_hop_enabled_1 = {retraction_hop_enabled, 1}\\n; retraction_prime_speed_0 = {retraction_prime_speed, 0}\\n; retraction_prime_speed_1 = {retraction_prime_speed, 1}\\n; retraction_retract_speed_0 = {retraction_retract_speed, 0}\\n; retraction_retract_speed_1 = {retraction_retract_speed, 1}\\n; retraction_speed_0 = {retraction_speed, 0}\\n; retraction_speed_1 = {retraction_speed, 1}\\n; retraction_enable_0 = {retraction_enable, 0}\\n; retraction_enable_1 = {retraction_enable, 1}\\n; speed_travel_0 = {speed_travel, 0}\\n; speed_travel_1 = {speed_travel, 1}\\n\\nM355 S1 P25;turn on case light\\n\\n;material_bed_temperature={material_bed_temperature} material_print_temperature={material_print_temperature} material_print_temperature_layer_0={material_print_temperature_layer_0}\\nM190 S{material_bed_temperature_layer_0}\\nM104 T0 S{material_standby_temperature, 0}\\nM104 T0 S{material_print_temperature_layer_0, 0}\\nG21 ;metric values\\nG90 ;absolute positioning\\nM82 ;set extruder to absolute mode\\nM107 ;start with the fan off\\nM200 D0 T0 ;reset filament diameter\\nM200 D0 T1\\nG28 ;home all\\nT1 ; move to the nozzle 2\\nG0 Z20 F2400 ;move the platform to 30mm\\nM109 T1 S{material_print_temperature_layer_0, 1}\\nG0 X210 Y0 F7200 ;change Y20 to Y0 ansonl\\nG92 E0\\nG92 E-12.0 ;prime distance ;increase purge 6.5 to 12\\nG1 E0 F200 ;purge nozzle ;change F45 to F200 like ultimaker code ansonl\\nG1 E-6.5 F1500 ; retract\\nT0 ; move to the nozzle 1\\nM104 T1 S{material_standby_temperature, 1}\\nG0 Z20 F2400\\nM109 T0 S{material_print_temperature_layer_0, 0}\\nG0 X210 Y0 F7200 ;change Y20 to Y0 ansonl\\nG92 E0\\nG92 E-12.0\\nG1 E0 F200 ;purge nozzle\\nG1 E-6.5 F1500\\nM104 T0 S{material_standby_temperature, 0}\\nT{initial_extruder_nr} ;switch to the first nozzle used for print\\nM109 T{initial_extruder_nr} S{material_print_temperature_layer_0, initial_extruder_nr}\\nM400 ;finish all moves\\nG1 E0 F1500\\nG92 E0\\nG1 Y100 F9000 ;add quick movement to Y50 like ultimaker code ansonl\\n;end of startup sequence\\n\\nM355 S1 P50;turn on case light\"" },
+        "machine_width": { "default_value": 220 },
+        "material_diameter": { "default_value": 1.75 }
+    }
+}

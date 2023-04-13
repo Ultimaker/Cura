@@ -1,38 +1,32 @@
 {
-  "version": 2,
-  "name": "Cremaker M V2",
-  "inherits": "cremaker_common",
-  "metadata": {
-    "visible": true,
-    "platform": "cremaker_platform_220.obj"
-  },
-
-  "overrides": {
-    "machine_name": { "default_value": "Cremaker M V2" },
-    "machine_width": { "default_value": 220 },
-    "machine_depth": { "default_value": 220 },
-    "machine_height": { "default_value": 260 },
-    "initial_layer_line_width_factor": { "default_value": 100.0 },
-    "machine_head_with_fans_polygon": {
-      "default_value": [
-        [ -35, 48 ],
-        [ 54, 48 ],
-        [ 54, -67 ],
-        [ -35, -67 ]
-      ]
+    "version": 2,
+    "name": "Cremaker M V2",
+    "inherits": "cremaker_common",
+    "metadata":
+    {
+        "visible": true,
+        "platform": "cremaker_platform_220.obj"
     },
-    "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
-    "machine_start_gcode": {
-      "default_value": "G28\nG29\nG1 Z5.0 F6000\nG1 X2 Y5 Z0.3 F3000\nG92 E0\nG1 Y100 E10 F1500\nG0 X2.3 F3000\nG1 Y20 E8.5 F1500\nG92 E0\nG1 F2400 E-2"
-    },
-    "machine_end_gcode": {
-      "default_value": "M104 S0\nM140 S0\nG92 E1\nG1 E-1 F300\nG28 X0 Y200\nM84"
-    },
-    
-    "cool_fan_speed": { "value": 50 },
-    "coasting_enable": { "value": true },
-    "coasting_volume": { "value": 0.05 },
-    "coasting_min_volume": { "value": 1.0 },
-    "jerk_enabled": { "value": false }
-  }
+    "overrides":
+    {
+        "cool_fan_speed": { "value": 50 },
+        "initial_layer_line_width_factor": { "default_value": 100.0 },
+        "jerk_enabled": { "value": false },
+        "machine_depth": { "default_value": 220 },
+        "machine_end_gcode": { "default_value": "M104 S0\nM140 S0\nG92 E1\nG1 E-1 F300\nG28 X0 Y200\nM84" },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [-35, 48],
+                [54, 48],
+                [54, -67],
+                [-35, -67]
+            ]
+        },
+        "machine_height": { "default_value": 260 },
+        "machine_name": { "default_value": "Cremaker M V2" },
+        "machine_start_gcode": { "default_value": "G28\nG29\nG1 Z5.0 F6000\nG1 X2 Y5 Z0.3 F3000\nG92 E0\nG1 Y100 E10 F1500\nG0 X2.3 F3000\nG1 Y20 E8.5 F1500\nG92 E0\nG1 F2400 E-2" },
+        "machine_width": { "default_value": 220 }
+    }
 }

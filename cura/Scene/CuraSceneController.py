@@ -139,7 +139,7 @@ class CuraSceneController(QObject):
     def setActiveBuildPlate(self, nr):
         if nr == self._active_build_plate:
             return
-        Logger.log("d", "Select build plate: %s" % nr)
+        Logger.debug(f"Selected build plate: {nr}")
         self._active_build_plate = nr
         Selection.clear()
 

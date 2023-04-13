@@ -1,22 +1,23 @@
 {
-    "name": "Kingroon KP3",
     "version": 2,
+    "name": "Kingroon KP3",
     "inherits": "kingroon_base",
-    "overrides": {
-        "machine_name": { "default_value": "Kingroon KP3" },
-		"machine_steps_per_mm_x": { "value": 80 },
-		"machine_steps_per_mm_y": { "value": 80 },
-		"machine_steps_per_mm_z": { "value": 400 },
-		"machine_steps_per_mm_e": { "value": 95 },
-		"retraction_amount": { "value": 4 },
-		"retraction_speed": { "value": 40 },
-        "retraction_extrusion_window": { "value": 4 },
-        "speed_travel": { "value": 100 }
-
-    },
-    "metadata": {
-        "quality_definition": "kingroon_base",
+    "metadata":
+    {
         "visible": true,
-        "platform": "kingroon_kp3.stl"
+        "platform": "kingroon_kp3.stl",
+        "quality_definition": "kingroon_base"
+    },
+    "overrides":
+    {
+        "machine_name": { "default_value": "Kingroon KP3" },
+        "machine_steps_per_mm_e": { "value": 95 },
+        "machine_steps_per_mm_x": { "value": 80 },
+        "machine_steps_per_mm_y": { "value": 80 },
+        "machine_steps_per_mm_z": { "value": 400 },
+        "retraction_amount": { "value": 4 },
+        "retraction_extrusion_window": { "value": 4 },
+        "retraction_speed": { "value": 40 },
+        "speed_travel": { "value": 100 }
     }
 }

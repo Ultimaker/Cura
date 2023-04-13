@@ -2,31 +2,25 @@
     "version": 2,
     "name": "Ultimaker Original+",
     "inherits": "ultimaker_original",
-    "metadata": {
+    "metadata":
+    {
         "author": "Ultimaker",
         "manufacturer": "Ultimaker B.V.",
-        "weight": 4,
         "file_formats": "text/x-gcode",
         "platform": "ultimaker2_platform.obj",
+        "firmware_file": "MarlinUltimaker-UMOP-{baudrate}.hex",
+        "firmware_hbk_file": "MarlinUltimaker-UMOP-{baudrate}.hex",
+        "first_start_actions": [ "BedLevel" ],
+        "machine_extruder_trains": { "0": "ultimaker_original_plus_extruder_0" },
         "platform_texture": "UltimakerPlusbackplate.png",
         "quality_definition": "ultimaker_original",
-        "first_start_actions": ["BedLevel"],
-        "supported_actions": ["BedLevel"],
-        "machine_extruder_trains":
-        {
-            "0": "ultimaker_original_plus_extruder_0"
-        },
-        "firmware_file": "MarlinUltimaker-UMOP-{baudrate}.hex",
-        "firmware_hbk_file": "MarlinUltimaker-UMOP-{baudrate}.hex"
+        "supported_actions": [ "BedLevel" ],
+        "weight": 4
     },
-
-    "overrides": {
-        "machine_name": { "default_value": "Ultimaker Original+" },
-        "machine_heated_bed": {
-            "default_value": true
-        },
-        "machine_max_feedrate_z": {
-            "default_value": 30
-        }
+    "overrides":
+    {
+        "machine_heated_bed": { "default_value": true },
+        "machine_max_feedrate_z": { "default_value": 30 },
+        "machine_name": { "default_value": "Ultimaker Original+" }
     }
 }

@@ -156,6 +156,7 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
                 "connection_type",
                 "capabilities",
                 "octoprint_api_key",
+                "is_online",
             }
             serialized_data = container.serialize(ignored_metadata_keys = ignore_keys)
 

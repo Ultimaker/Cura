@@ -39,8 +39,8 @@ class DFFileUploader:
         :param on_error: The method to be called when an error occurs.
         """
 
-        self._http = http  # type: HttpRequestManager
-        self._df_file = df_file  # type: Union[DFLibraryFileUploadResponse, DFPrintJobUploadResponse]
+        self._http: HttpRequestManager = http
+        self._df_file: Union[DFLibraryFileUploadResponse, DFPrintJobUploadResponse] = df_file
         self._file_name = ""
         if isinstance(self._df_file, DFLibraryFileUploadResponse):
             self._file_name = self._df_file.file_name
@@ -51,7 +51,7 @@ class DFFileUploader:
                 self._file_name = ""
         else:
             raise TypeError("Incorrect input type")
-        self._data = data  # type: bytes
+        self._data: bytes = data
 
         self._on_finished = on_finished
         self._on_success = on_success

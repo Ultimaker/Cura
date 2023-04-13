@@ -2,7 +2,8 @@
     "version": 2,
     "name": "Kemiq Q2 Gama",
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "visible": true,
         "author": "Kemiq",
         "manufacturer": "Kemiq",
@@ -10,48 +11,21 @@
         "platform": "kemiq_q2.3mf",
         "has_machine_quality": true,
         "has_materials": true,
-        "machine_extruder_trains":
-        {
-            "0": "kemiq_q2_gama_extruder_0"
-        }
+        "machine_extruder_trains": { "0": "kemiq_q2_gama_extruder_0" }
     },
-
-    "overrides": {
-        "machine_name": { 
-            "default_value": "Kemiq Q2 Gama" 
-        },
-        "machine_width": {
-            "default_value": 190
-        },
-        "machine_depth": {
-            "default_value": 200
-        },
-        "machine_height": {
-            "default_value": 273
-        },
-        "machine_heated_bed": {
-            "default_value": false
-        },
-        "machine_center_is_zero": {
-            "default_value": false
-        },
-        "machine_nozzle_heat_up_speed": {
-            "default_value": 2
-        },
-        "machine_nozzle_cool_down_speed": {
-            "default_value": 2
-        },
-        "gantry_height": {
-            "value": "0"
-        },
-        "machine_gcode_flavor": {
-            "default_value": "RepRap (Marlin/Sprinter)"
-        },
-        "machine_start_gcode": {
-            "default_value": "G28 ;Home\nG1 Z15.0 F6000 ;Move the platform down 15mm\nG92 E0\nG1 F200 E3\nG92 E0\nM80 ;Lights On"
-        },
-        "machine_end_gcode": {
-            "default_value": "M104 S0\nM140 S0\nG92 E1\nG1 E-1 F300\nG28 X0 Y0\nM84\nM80 ;Lights Off"
-        }
+    "overrides":
+    {
+        "gantry_height": { "value": "0" },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_depth": { "default_value": 200 },
+        "machine_end_gcode": { "default_value": "M104 S0\nM140 S0\nG92 E1\nG1 E-1 F300\nG28 X0 Y0\nM84\nM80 ;Lights Off" },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_heated_bed": { "default_value": false },
+        "machine_height": { "default_value": 273 },
+        "machine_name": { "default_value": "Kemiq Q2 Gama" },
+        "machine_nozzle_cool_down_speed": { "default_value": 2 },
+        "machine_nozzle_heat_up_speed": { "default_value": 2 },
+        "machine_start_gcode": { "default_value": "G28 ;Home\nG1 Z15.0 F6000 ;Move the platform down 15mm\nG92 E0\nG1 F200 E3\nG92 E0\nM80 ;Lights On" },
+        "machine_width": { "default_value": 190 }
     }
 }

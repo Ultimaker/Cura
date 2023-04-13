@@ -2,53 +2,33 @@
     "version": 2,
     "name": "Hellbot Magna 2 300 dual",
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "visible": true,
         "author": "Hellbot Development Team",
         "manufacturer": "Hellbot",
         "file_formats": "text/x-gcode",
         "platform": "Hellbot_Magna_2_300.obj",
-        "platform_texture": "Magna2_300.png",
         "has_materials": true,
         "machine_extruder_trains":
         {
             "0": "hellbot_magna_2_300_dual_extruder_0",
             "1": "hellbot_magna_2_300_dual_extruder_1"
-        }
-
+        },
+        "platform_texture": "Magna2_300.png"
     },
-
-    "overrides": {
+    "overrides":
+    {
+        "machine_center_is_zero": { "default_value": false },
+        "machine_depth": { "default_value": 300 },
+        "machine_end_gcode": { "default_value": "M104 T0 S0\nM104 T1 S0\nM140 S0\nG92 E1\nG1 E-1 F300\nG28 X0 Y0\nM84" },
+        "machine_extruder_count": { "default_value": 2 },
+        "machine_extruders_share_heater": { "default_value": true },
+        "machine_extruders_share_nozzle": { "default_value": true },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 400 },
         "machine_name": { "default_value": "Hellbot Magna 2 300 Dual" },
-        "machine_width": {
-            "default_value": 300
-        },
-        "machine_height": {
-            "default_value": 400
-        },
-        "machine_depth": {
-            "default_value": 300
-        },        
-        "machine_heated_bed": {
-            "default_value": true
-        },
-        "machine_center_is_zero": {
-            "default_value": false
-        },
-        "machine_extruder_count": {
-            "default_value": 2
-        },
-	     "machine_extruders_share_heater": {
-            "default_value": true
-        },
-	      "machine_extruders_share_nozzle": {
-            "default_value": true
-        },
-        "machine_start_gcode": {
-            "default_value": "M104 T0 S{material_print_temperature}\nM104 T1 S{material_print_temperature}\nM109 T0 S{material_print_temperature}\nM109 T1 S{material_print_temperature}\nG21\nG90 \nG28 X0 Y0 \nG28 Z0 \nG1 Z15.0 F300 \nT0 \nG92 E0 \nG1 F700 E-80 \nT1 \nG92 E0 \nG1 F1000 X1 Y1 Z0.3 \nG1 F600 X200 E60 \nG1 F1000 Y3 \nG1 F600 X1 E120 \nT1 \nG92 E0 \nG28 X0 Y0 \nG1 F700 E-80 \nT0 \nG92 E0"
-        },
-        "machine_end_gcode": {
-            "default_value": "M104 T0 S0\nM104 T1 S0\nM140 S0\nG92 E1\nG1 E-1 F300\nG28 X0 Y0\nM84"
-        }
+        "machine_start_gcode": { "default_value": "M104 T0 S{material_print_temperature}\nM104 T1 S{material_print_temperature}\nM109 T0 S{material_print_temperature}\nM109 T1 S{material_print_temperature}\nG21\nG90 \nG28 X0 Y0 \nG28 Z0 \nG1 Z15.0 F300 \nT0 \nG92 E0 \nG1 F700 E-80 \nT1 \nG92 E0 \nG1 F1000 X1 Y1 Z0.3 \nG1 F600 X200 E60 \nG1 F1000 Y3 \nG1 F600 X1 E120 \nT1 \nG92 E0 \nG28 X0 Y0 \nG1 F700 E-80 \nT0 \nG92 E0" },
+        "machine_width": { "default_value": 300 }
     }
 }

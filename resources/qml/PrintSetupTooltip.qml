@@ -11,16 +11,18 @@ UM.PointingRectangle
     id: base
     property real sourceWidth: 0
     width: UM.Theme.getSize("tooltip").width
-    height: UM.Theme.getSize("tooltip").height
+    height: textScroll.height + UM.Theme.getSize("tooltip_margins").height
     color: UM.Theme.getColor("tooltip")
 
     arrowSize: UM.Theme.getSize("default_arrow").width
 
     opacity: 0
+    // This should be disabled when invisible, otherwise it will catch mouse events.
+    enabled: opacity > 0
 
     Behavior on opacity
     {
-        NumberAnimation { duration: 100; }
+        NumberAnimation { duration: 200; }
     }
 
     property alias text: label.text
@@ -59,16 +61,19 @@ UM.PointingRectangle
         base.opacity = 0;
     }
 
-    MouseArea
+    ScrollView
     {
-        enabled: parent.opacity > 0
-        visible: enabled
-        anchors.fill: parent
-        acceptedButtons: Qt.NoButton
-        hoverEnabled: true
+        id: textScroll
+        width: parent.width
+        height: Math.min(label.height + UM.Theme.getSize("tooltip_margins").height, base.parent.height)
+
+        ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+        ScrollBar.vertical.policy: ScrollBar.AsNeeded
+
+        hoverEnabled: parent.opacity > 0
         onHoveredChanged:
         {
-            if(containsMouse && base.opacity > 0)
+            if(hovered && base.opacity > 0)
             {
                 base.show(Qt.point(target.x - 1, target.y - UM.Theme.getSize("tooltip_arrow_margins").height / 2)); //Same arrow position as before.
             }
@@ -78,26 +83,15 @@ UM.PointingRectangle
             }
         }
 
-        ScrollView
+        UM.Label
         {
-            id: textScroll
-            width: base.width
-            height: base.height
+            id: label
+            x: UM.Theme.getSize("tooltip_margins").width
+            y: UM.Theme.getSize("tooltip_margins").height
+            width: textScroll.width - 2 * UM.Theme.getSize("tooltip_margins").width
 
-            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-            ScrollBar.vertical.policy: ScrollBar.AsNeeded
-
-            UM.Label
-            {
-                id: label
-                x: UM.Theme.getSize("tooltip_margins").width
-                y: UM.Theme.getSize("tooltip_margins").height
-                width: base.width - UM.Theme.getSize("tooltip_margins").width * 2
-
-                wrapMode: Text.Wrap
-                textFormat: Text.RichText
-                color: UM.Theme.getColor("tooltip_text")
-            }
+            textFormat: Text.RichText
+            color: UM.Theme.getColor("tooltip_text")
         }
     }
 }

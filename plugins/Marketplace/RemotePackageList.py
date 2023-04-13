@@ -28,6 +28,7 @@ class RemotePackageList(PackageList):
         self._package_type_filter = ""
         self._requested_search_string = ""
         self._current_search_string = ""
+        self._search_type = "search"
         self._request_url = self._initialRequestUrl()
         self._ongoing_requests["get_packages"] = None
         self.isLoadingChanged.connect(self._onLoadingChanged)
@@ -100,7 +101,7 @@ class RemotePackageList(PackageList):
         if self._package_type_filter != "":
             request_url += f"&package_type={self._package_type_filter}"
         if self._current_search_string != "":
-            request_url += f"&search={self._current_search_string}"
+            request_url += f"&{self._search_type}={self._current_search_string}"
         return request_url
 
     def _parseResponse(self, reply: "QNetworkReply") -> None:
@@ -138,9 +139,10 @@ class RemotePackageList(PackageList):
         :param reply: The reply with packages. This will most likely be incomplete and should be ignored.
         :param error: The error status of the request.
         """
-        if error == QNetworkReply.NetworkError.OperationCanceledError:
+        if error == QNetworkReply.NetworkError.OperationCanceledError or error == QNetworkReply.NetworkError.ProtocolUnknownError:
             Logger.debug("Cancelled request for packages.")
             self._ongoing_requests["get_packages"] = None
+            self.setIsLoading(False)
             return  # Don't show an error about this to the user.
         Logger.error("Could not reach Marketplace server.")
         self.setErrorMessage(catalog.i18nc("@info:error", "Could not reach Marketplace."))

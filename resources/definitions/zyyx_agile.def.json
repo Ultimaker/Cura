@@ -1,61 +1,63 @@
 {
-    "name": "Zyyx Agile",
     "version": 2,
+    "name": "Zyyx Agile",
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "visible": true,
         "author": "Magicfirm Europe",
         "manufacturer": "Magicfirm Europe",
         "file_formats": "application/x3g",
         "platform": "zyyx_platform.3mf",
         "has_machine_quality": true,
-        "quality_definition": "zyyx_agile",
+        "machine_extruder_trains": { "0": "zyyx_agile_extruder_0" },
+        "machine_x3g_variant": "z",
         "preferred_material": "zyyx_pro_pla",
         "preferred_quality_type": "normal",
-        "machine_x3g_variant": "z",
-        "machine_extruder_trains":
-        {
-            "0": "zyyx_agile_extruder_0"
-        }
+        "quality_definition": "zyyx_agile"
     },
-
-    "overrides": {
-        "machine_name": { "default_value": "ZYYX Agile" },
-        "machine_start_gcode": {
-            "default_value": "; ZYYX 3D Printer start gcode\nM73 P0; enable build progress\nG21; set units to mm\nG90; set positioning to absolute\nG130 X80 Y80 A127 B127 ; Set Stepper Vref to default value\nG162 X Y F3000; home XY axes maximum\nM133 T0 ; stabilize extruder temperature\nG161 Z F450\nG161 Z F450; home Z axis minimum\nG92 X0 Y0 Z0 E0\nG1 X0 Y0 Z5 F200\nG161 Z F200; home Z axis minimum again\nG92 X0 Y0 Z0 E0\nM131 A; store surface calibration point 1\nG1 X0 Y0 Z5 F200\nG1 X-177 Y0 Z5 F3000; move to 2nd probing point\nG161 Z F200\nM131 B; store surface calibration point 2\nG92 X-177 Y0 Z0 E0\nG1 X-177 Y0 Z5 F200\nG1 X0 Y0 Z5 F3000; move to home point\nG161 Z F200; home Z axis minimum again\nG92 X0 Y0 Z0 E0; set reference again\nG1 X0 Y0 Z5 F200; clear Z\nG1 X0 Y-225 Z5 F3000; move to 3rd calibration point\nG161 Z F200\nM131 AB; store surface calibration point 3\nM132 AB; activate auto leveling\nG92 X0 Y-225 Z0 E0\nG1 X0 Y-225 Z5 F200\nG162 X Y F3000\nG161 Z F200\nG92 X135 Y115 Z0 E0\nM132 Z; Recall stored home offset for Z axis\nG1 X135 Y115 Z5 F450; clear nozzle from hole\nG1 X0 Y115 Z5 F3000; clear nozzle from hole\nG92 E0 ; Set E to 0"
-        },
-        "machine_end_gcode": {
-            "default_value": "; ZYYX 3D Printer end gcode\nM73 P100 ; end build progress\nG0 Z195 F1000 ; send Z axis to bottom of machine\nM104 S0 T0 ; cool down extruder\nM127 ; stop blower fan\nG162 X Y F3000 ; home XY maximum\nM18 ; disable stepper\nM70 P5 (ZYYX Print Finished!)\nM72 P1 ; play Ta-Da song\n"
-        },
-        "machine_width": { "default_value": 265 },
-        "machine_depth": { "default_value": 225 },
-        "machine_height": { "default_value": 195 },
-        "machine_center_is_zero": { "default_value": true },
-        "machine_gcode_flavor": { "default_value": "Makerbot" },
-        "machine_head_with_fans_polygon": { "default_value": [ [ -37, 50 ], [ 25, 50 ], [ 25, -40 ], [ -37, -40 ] ] },
+    "overrides":
+    {
         "gantry_height": { "value": "10" },
+        "infill_overlap": { "value": "12 if infill_sparse_density < 95 and infill_pattern != 'concentric' else 0" },
+        "machine_center_is_zero": { "default_value": true },
+        "machine_depth": { "default_value": 225 },
+        "machine_end_gcode": { "default_value": "; ZYYX 3D Printer end gcode\nM73 P100 ; end build progress\nG0 Z195 F1000 ; send Z axis to bottom of machine\nM104 S0 T0 ; cool down extruder\nM127 ; stop blower fan\nG162 X Y F3000 ; home XY maximum\nM18 ; disable stepper\nM70 P5 (ZYYX Print Finished!)\nM72 P1 ; play Ta-Da song\n" },
+        "machine_gcode_flavor": { "default_value": "Makerbot" },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [-37, 50],
+                [25, 50],
+                [25, -40],
+                [-37, -40]
+            ]
+        },
+        "machine_height": { "default_value": 195 },
+        "machine_name": { "default_value": "ZYYX Agile" },
+        "machine_start_gcode": { "default_value": "; ZYYX 3D Printer start gcode\nM73 P0; enable build progress\nG21; set units to mm\nG90; set positioning to absolute\nG130 X80 Y80 A127 B127 ; Set Stepper Vref to default value\nG162 X Y F3000; home XY axes maximum\nM133 T0 ; stabilize extruder temperature\nG161 Z F450\nG161 Z F450; home Z axis minimum\nG92 X0 Y0 Z0 E0\nG1 X0 Y0 Z5 F200\nG161 Z F200; home Z axis minimum again\nG92 X0 Y0 Z0 E0\nM131 A; store surface calibration point 1\nG1 X0 Y0 Z5 F200\nG1 X-177 Y0 Z5 F3000; move to 2nd probing point\nG161 Z F200\nM131 B; store surface calibration point 2\nG92 X-177 Y0 Z0 E0\nG1 X-177 Y0 Z5 F200\nG1 X0 Y0 Z5 F3000; move to home point\nG161 Z F200; home Z axis minimum again\nG92 X0 Y0 Z0 E0; set reference again\nG1 X0 Y0 Z5 F200; clear Z\nG1 X0 Y-225 Z5 F3000; move to 3rd calibration point\nG161 Z F200\nM131 AB; store surface calibration point 3\nM132 AB; activate auto leveling\nG92 X0 Y-225 Z0 E0\nG1 X0 Y-225 Z5 F200\nG162 X Y F3000\nG161 Z F200\nG92 X135 Y115 Z0 E0\nM132 Z; Recall stored home offset for Z axis\nG1 X135 Y115 Z5 F450; clear nozzle from hole\nG1 X0 Y115 Z5 F3000; clear nozzle from hole\nG92 E0 ; Set E to 0" },
+        "machine_steps_per_mm_e": { "default_value": 96.27520187033366 },
         "machine_steps_per_mm_x": { "default_value": 88.888889 },
         "machine_steps_per_mm_y": { "default_value": 88.888889 },
         "machine_steps_per_mm_z": { "default_value": 400 },
-        "machine_steps_per_mm_e": { "default_value": 96.27520187033366 },
+        "machine_width": { "default_value": 265 },
+        "material_final_print_temperature": { "value": "material_print_temperature" },
+        "material_initial_print_temperature": { "value": "material_print_temperature" },
+        "raft_airgap": { "default_value": 0.15 },
+        "raft_margin": { "default_value": 6 },
+        "retract_at_layer_change": { "default_value": true },
         "retraction_amount": { "default_value": 0.7 },
         "retraction_speed": { "default_value": 15 },
+        "speed_layer_0": { "value": 15 },
         "speed_print": { "default_value": 50 },
+        "speed_travel": { "value": 80 },
         "speed_wall": { "value": 25 },
         "speed_wall_x": { "value": 35 },
-        "speed_travel": { "value": 80 },
-        "speed_layer_0": { "value": 15 },
+        "support_interface_density": { "default_value": 80 },
         "support_interface_enable": { "default_value": true },
         "support_interface_height": { "default_value": 0.8 },
-        "support_interface_density": { "default_value": 80 },
         "support_interface_pattern": { "default_value": "grid" },
-        "infill_overlap": { "value": "12 if infill_sparse_density < 95 and infill_pattern != 'concentric' else 0" },
-        "retract_at_layer_change": { "default_value": true },
-        "travel_retract_before_outer_wall": { "default_value": true },
-        "material_initial_print_temperature": { "value": "material_print_temperature" },
-        "material_final_print_temperature": { "value": "material_print_temperature" },
         "travel_avoid_other_parts": { "default_value": false },
-        "raft_airgap": { "default_value": 0.15 },
-        "raft_margin": { "default_value": 6 }
+        "travel_retract_before_outer_wall": { "default_value": true }
     }
 }

@@ -22,6 +22,9 @@ Item
     property alias elide: label.elide
     property real margin: UM.Theme.getSize("narrow_margin").width
     property alias wrapMode: label.wrapMode
+    property real spacing: UM.Theme.getSize("narrow_margin").width
+
+    property string tooltipText: ""
 
     // These properties can be used in combination with layouts.
     readonly property real contentWidth: icon.width + margin + label.contentWidth
@@ -61,7 +64,17 @@ Item
             top: parent.top
             bottom: parent.bottom
             rightMargin: 0
+            leftMargin: spacing
             margins: margin
         }
+    }
+
+    MouseArea
+    {
+        enabled: tooltipText != ""
+        anchors.fill: parent
+        hoverEnabled: true
+        onEntered: base.showTooltip(parent, Qt.point(-UM.Theme.getSize("thick_margin").width, 0), tooltipText)
+        onExited: base.hideTooltip()
     }
 }

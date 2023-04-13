@@ -2,13 +2,15 @@
     "version": 2,
     "name": "Extruder E2",
     "inherits": "fdmextruder",
-    "metadata": {
+    "metadata":
+    {
         "machine": "hellbot_hidra",
         "position": "1"
     },
-
-    "overrides": {
-        "extruder_nr": {
+    "overrides":
+    {
+        "extruder_nr":
+        {
             "default_value": 1,
             "maximum_value": "1"
         },

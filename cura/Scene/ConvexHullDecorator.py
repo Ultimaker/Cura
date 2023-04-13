@@ -390,7 +390,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
             if self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time":
                 # Find the root node that's placed in the scene; the root of the mesh group.
                 ancestor = self.getNode()
-                while ancestor.getParent() != self._root:
+                while ancestor.getParent() != self._root and ancestor.getParent() is not None:
                     ancestor = ancestor.getParent()
                 center = ancestor.getBoundingBox().center
             else:

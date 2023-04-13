@@ -1,33 +1,34 @@
 {
-    "name": "Kingroon KP3S",
     "version": 2,
+    "name": "Kingroon KP3S",
     "inherits": "kingroon_base",
-    "overrides": {
-        "machine_name": { "default_value": "Kingroon KP3S" },
-		"machine_steps_per_mm_x": { "value": 160 },
-		"machine_steps_per_mm_y": { "value": 160 },
-		"machine_steps_per_mm_z": { "value": 800 },
-		"machine_steps_per_mm_e": { "value": 764 },
+    "metadata":
+    {
+        "visible": true,
+        "platform": "kingroon_kp3s.stl",
+        "quality_definition": "kingroon_base"
+    },
+    "overrides":
+    {
+        "machine_acceleration": { "value": 1000 },
+        "machine_max_acceleration_e": { "value": 1000 },
+        "machine_max_acceleration_x": { "value": 1000 },
+        "machine_max_acceleration_y": { "value": 1000 },
+        "machine_max_acceleration_z": { "value": 100 },
+        "machine_max_feedrate_e": { "value": 100 },
         "machine_max_feedrate_x": { "value": 200 },
         "machine_max_feedrate_y": { "value": 200 },
         "machine_max_feedrate_z": { "value": 4 },
-		"machine_max_feedrate_e": { "value": 100 },
-		"machine_max_acceleration_x": { "value": 1000 },
-        "machine_max_acceleration_y": { "value": 1000 },
-        "machine_max_acceleration_z": { "value": 100 },
-        "machine_max_acceleration_e": { "value": 1000 },
-        "machine_acceleration": { "value": 1000 },
-		"machine_max_jerk_xy": { "value": 15 },
+        "machine_max_jerk_xy": { "value": 15 },
         "machine_max_jerk_z": { "value": 0.4 },
-		"retraction_amount": { "value": 1 },
-		"retraction_speed": { "value": 40 },
+        "machine_name": { "default_value": "Kingroon KP3S" },
+        "machine_steps_per_mm_e": { "value": 764 },
+        "machine_steps_per_mm_x": { "value": 160 },
+        "machine_steps_per_mm_y": { "value": 160 },
+        "machine_steps_per_mm_z": { "value": 800 },
+        "retraction_amount": { "value": 1 },
         "retraction_extrusion_window": { "value": 1 },
+        "retraction_speed": { "value": 40 },
         "speed_z_hop": { "value": 4 }
-
-    },
-    "metadata": {
-        "quality_definition": "kingroon_base",
-        "visible": true,
-        "platform": "kingroon_kp3s.stl"
     }
 }

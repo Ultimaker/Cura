@@ -1,0 +1,60 @@
+name: printer-linter-pr-diagnose
+
+on:
+  pull_request:
+    path:
+      - "resources/**"
+
+jobs:
+  printer-linter-diagnose:
+    name: Printer linter PR diagnose
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+
+      - uses: technote-space/get-diff-action@v6
+        with:
+          PATTERNS: |
+            resources/+(extruders|definitions)/*.def.json
+            resources/+(intent|quality|variants)/**/*.inst.cfg
+
+      - name: Setup Python and pip
+        if: env.GIT_DIFF && !env.MATCHED_FILES  # If nothing happens with python and/or pip after, the clean-up crashes.
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11.x
+          cache: "pip"
+          cache-dependency-path: .github/workflows/requirements-printer-linter.txt
+
+      - name: Install Python requirements for runner
+        if: env.GIT_DIFF && !env.MATCHED_FILES
+        run: pip install -r .github/workflows/requirements-printer-linter.txt
+
+      - name: Create results directory
+        run: mkdir printer-linter-result
+
+      - name: Diagnose file(s)
+        if: env.GIT_DIFF && !env.MATCHED_FILES
+        run: python printer-linter/src/terminal.py --diagnose --report printer-linter-result/fixes.yml ${{ env.GIT_DIFF_FILTERED }}
+
+      - name: Save PR metadata
+        run: |
+          echo ${{ github.event.number }} > printer-linter-result/pr-id.txt
+          echo ${{ github.event.pull_request.head.repo.full_name }} > printer-linter-result/pr-head-repo.txt
+          echo ${{ github.event.pull_request.head.ref }} > printer-linter-result/pr-head-ref.txt
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: printer-linter-result
+          path: printer-linter-result/
+
+      - name: Run clang-tidy-pr-comments action
+        uses: platisd/clang-tidy-pr-comments@bc0bb7da034a8317d54e7fe1e819159002f4cc40
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          clang_tidy_fixes: result.yml
+          request_changes: true

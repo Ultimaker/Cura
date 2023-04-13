@@ -106,13 +106,11 @@ def test_validateQualityProfiles(file_name):
 
                 has_unknown_settings = not quality_setting_keys.issubset(all_setting_ids)
                 if has_unknown_settings:
-                    print("The following setting(s) %s are defined in the quality %s, but not in fdmprinter.def.json" % ([key for key in quality_setting_keys if key not in all_setting_ids], file_name))
-                    assert False
+                    assert False, "The following setting(s) %s are defined in the quality %s, but not in fdmprinter.def.json" % ([key for key in quality_setting_keys if key not in all_setting_ids], file_name)
 
     except Exception as e:
         # File can't be read, header sections missing, whatever the case, this shouldn't happen!
-        print("Got an Exception while reading the file [%s]: %s" % (file_name, e))
-        assert False
+        assert False, f"Got an Exception while reading the file [{file_name}]: {e}"
 
 
 @pytest.mark.parametrize("file_name", intent_filepaths)
@@ -163,8 +161,7 @@ def test_validateVariantProfiles(file_name):
                     assert False, "The following setting(s) %s are defined in the variant %s, but not in fdmprinter.def.json" % ([key for key in variant_setting_keys if key not in all_setting_ids], file_name)
     except Exception as e:
         # File can't be read, header sections missing, whatever the case, this shouldn't happen!
-        print("Got an Exception while reading the file [%s]: %s" % (file_name, e))
-        assert False
+        assert False, "Got an exception while reading the file {file_name}: {err}".format(file_name = file_name, err = str(e))
 
 
 @pytest.mark.parametrize("file_name", quality_filepaths + variant_filepaths + intent_filepaths)
@@ -182,5 +179,4 @@ def test_versionUpToDate(file_name):
             assert int(parser["metadata"]["setting_version"]) == CuraApplication.SettingVersion, "The version of this profile is not up to date!"
     except Exception as e:
         # File can't be read, header sections missing, whatever the case, this shouldn't happen!
-        print("Got an exception while reading the file {file_name}: {err}".format(file_name = file_name, err = str(e)))
-        assert False
+        assert False, "Got an exception while reading the file {file_name}: {err}".format(file_name = file_name, err = str(e))

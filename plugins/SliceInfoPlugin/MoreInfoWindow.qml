@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2022 UltiMaker
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -61,7 +61,7 @@ Window
                 right: parent.right
             }
 
-            Label
+            UM.Label
             {
                 id: headerText
                 anchors
@@ -70,10 +70,8 @@ Window
                     left: parent.left
                     right: parent.right
                 }
-                text: catalog.i18nc("@text:window", "Ultimaker Cura collects anonymous data in order to improve the print quality and user experience. Below is an example of all the data that is shared:")
-                color: UM.Theme.getColor("text")
+                text: catalog.i18nc("@text:window", "UltiMaker Cura collects anonymous data in order to improve the print quality and user experience. Below is an example of all the data that is shared:")
                 wrapMode: Text.WordWrap
-                renderType: Text.NativeRendering
             }
 
             Cura.ScrollableTextArea

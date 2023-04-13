@@ -3,15 +3,15 @@
 
 import os.path
 from PyQt6.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject
-from typing import Optional, cast
+from typing import Callable, cast, Dict, List, Optional
 
 from cura.CuraApplication import CuraApplication  # Creating QML objects and managing packages.
-
 from UM.Extension import Extension  # We are implementing the main object of an extension here.
 from UM.PluginRegistry import PluginRegistry  # To find out where we are stored (the proper way).
 
-from .RemotePackageList import RemotePackageList  # To register this type with QML.
+from .InstallMissingPackagesDialog import InstallMissingPackageDialog  # To allow creating this dialogue from outside of the plug-in.
 from .LocalPackageList import LocalPackageList  # To register this type with QML.
+from .RemotePackageList import RemotePackageList  # To register this type with QML.
 
 
 class Marketplace(Extension, QObject):
@@ -22,7 +22,6 @@ class Marketplace(Extension, QObject):
         QObject.__init__(self, parent)
         Extension.__init__(self)
         self._window: Optional["QObject"] = None  # If the window has been loaded yet, it'll be cached in here.
-        self._plugin_registry: Optional[PluginRegistry] = None
         self._package_manager = CuraApplication.getInstance().getPackageManager()
 
         self._material_package_list: Optional[RemotePackageList] = None
@@ -41,6 +40,7 @@ class Marketplace(Extension, QObject):
 
         self._tab_shown: int = 0
         self._restart_needed = False
+        self.missingPackageDialog = None
 
     def getTabShown(self) -> int:
         return self._tab_shown
@@ -80,9 +80,9 @@ class Marketplace(Extension, QObject):
         If the window hadn't been loaded yet into Qt, it will be created lazily.
         """
         if self._window is None:
-            self._plugin_registry = PluginRegistry.getInstance()
-            self._plugin_registry.pluginsEnabledOrDisabledChanged.connect(self.checkIfRestartNeeded)
-            plugin_path = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
+            plugin_registry = PluginRegistry.getInstance()
+            plugin_registry.pluginsEnabledOrDisabledChanged.connect(self.checkIfRestartNeeded)
+            plugin_path = plugin_registry.getPluginPath(self.getPluginId())
             if plugin_path is None:
                 plugin_path = os.path.dirname(__file__)
             path = os.path.join(plugin_path, "resources", "qml", "Marketplace.qml")
@@ -103,8 +103,11 @@ class Marketplace(Extension, QObject):
         self.setTabShown(1)
 
     def checkIfRestartNeeded(self) -> None:
+        if self._window is None:
+            return
+
         if self._package_manager.hasPackagesToRemoveOrInstall or \
-                cast(PluginRegistry, self._plugin_registry).getCurrentSessionActivationChangedPlugins():
+                PluginRegistry.getInstance().getCurrentSessionActivationChangedPlugins():
             self._restart_needed = True
         else:
             self._restart_needed = False
@@ -112,6 +115,18 @@ class Marketplace(Extension, QObject):
 
     showRestartNotificationChanged = pyqtSignal()
 
-    @pyqtProperty(bool, notify=showRestartNotificationChanged)
+    @pyqtProperty(bool, notify = showRestartNotificationChanged)
     def showRestartNotification(self) -> bool:
         return self._restart_needed
+
+    def showInstallMissingPackageDialog(self, packages_metadata: List[Dict[str, str]], ignore_warning_callback: Callable[[], None]) -> None:
+        """
+        Show a dialog that prompts the user to install certain packages.
+
+        The dialog is worded for packages that are missing and required for a certain operation.
+        :param packages_metadata: The metadata of the packages that are missing.
+        :param ignore_warning_callback: A callback that gets executed when the user ignores the pop-up, to show them a
+        warning.
+        """
+        self.missingPackageDialog = InstallMissingPackageDialog(packages_metadata, ignore_warning_callback)
+        self.missingPackageDialog.show()

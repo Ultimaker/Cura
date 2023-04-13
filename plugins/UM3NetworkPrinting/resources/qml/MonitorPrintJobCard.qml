@@ -153,7 +153,7 @@ Item
 
                     MonitorPrinterPill
                     {
-                        text: printJob.configuration.printerType
+                        text: printJob ? printJob.configuration.printerType : ""
                     }
                 }
             }
@@ -172,8 +172,7 @@ Item
             {
                 id: printerConfiguration
                 anchors.verticalCenter: parent.verticalCenter
-                buildplate: catalog.i18nc("@label", "Glass")
-                configurations: base.printJob.configuration.extruderConfigurations
+                configurations: base.printJob ? base.printJob.configuration.extruderConfigurations : null
                 height: Math.round(72 * screenScaleFactor) // TODO: Theme!
             }
 
@@ -206,7 +205,11 @@ Item
         onClicked: enabled ? contextMenu.switchPopupState() : {}
         visible:
         {
-            if (!printJob)
+            if(!printJob)
+            {
+                return false;
+            }
+            if(!contextMenu.hasItems)
             {
                 return false;
             }

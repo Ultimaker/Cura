@@ -1,0 +1,15 @@
+name: process-pull-request
+
+on:
+    pull_request_target:
+        types: [opened, reopened, edited, synchronize, review_requested, ready_for_review, assigned]
+
+jobs:
+    add_label:
+        runs-on: ubuntu-latest
+        steps:
+            -   uses: actions/checkout@v2
+            -   uses: actions-ecosystem/action-add-labels@v1
+                if: ${{ github.event.pull_request.head.repo.full_name != github.repository }}
+                with:
+                    labels: 'PR: Community Contribution :crown:'
