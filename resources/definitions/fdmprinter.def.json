@@ -4779,12 +4779,12 @@
                 "support_tree_rest_preference":
                 {
                     "label": "Tree Support Rest Preference",
-                    "description": "The preferred placement of the support structures. If structures cant be placed at the prefered location, they will be place elsewhere",
+                    "description": "The preferred placement of the support structures. If structures can't be placed at the preferred location, they will be place elsewhere, even if that means placing them on the model.",
                     "type": "enum",
                     "options":
                     {
-                        "buildplate": "Buildplate",
-                        "graceful": "On any flat surface"
+                        "buildplate": "Force Only Buildplate",
+                        "graceful": "On Model If Necessary"
                     },
                     "default_value": "buildplate",
                     "value": "'buildplate' if support_type == 'buildplate' else 'graceful'",
