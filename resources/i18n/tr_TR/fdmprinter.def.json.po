@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-03-21 13:32+0000\n"
+"POT-Creation-Date: 2023-03-28 11:57+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -587,11 +587,6 @@ msgid "Command Line Settings"
 msgstr "Komut Satırı Ayarları"
 
 #: fdmprinter.def.json
-msgctxt "wireframe_strategy option compensate"
-msgid "Compensate"
-msgstr "Dengele"
-
-#: fdmprinter.def.json
 msgctxt "infill_pattern option concentric"
 msgid "Concentric"
 msgstr "Eş merkezli"
@@ -722,11 +717,6 @@ msgid "Cooling"
 msgstr "Soğuma"
 
 #: fdmprinter.def.json
-msgctxt "wireframe_top_jump description"
-msgid "Creates a small knot at the top of an upward line, so that the consecutive horizontal layer has a better chance to connect to it. Only applies to Wire Printing."
-msgstr "Ardından gelen yatay katmanın daha iyi bir bağlanma şansının olması için, yukarı doğru çıkan hattın ucunda küçük bir düğüm oluşturulur. Sadece kablo yazdırmaya uygulanır."
-
-#: fdmprinter.def.json
 msgctxt "infill_pattern option cross"
 msgid "Cross"
 msgstr "Çapraz"
@@ -832,21 +822,6 @@ msgid "Default jerk for the motor of the filament."
 msgstr "Filaman motoru için varsayılan salınım."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_bottom_delay description"
-msgid "Delay time after a downward move. Only applies to Wire Printing."
-msgstr "Aşağı doğru hareketten sonraki bekleme süresi. Sadece kablo yazdırmaya uygulanır."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_top_delay description"
-msgid "Delay time after an upward move, so that the upward line can harden. Only applies to Wire Printing."
-msgstr "Yukarı hattın sertleşmesi için, yukarıya doğru hareketten sonraki gecikme süresi. Sadece kablo yazdırmaya uygulanır."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flat_delay description"
-msgid "Delay time between two horizontal segments. Introducing such a delay can cause better adhesion to previous layers at the connection points, while too long delays cause sagging. Only applies to Wire Printing."
-msgstr "İki yatay dilim arasındaki gecikme süresi. Haha uzun gecikmeler düşüşe neden olduğu halde, bu tür bir gecikme uygulamak bağlantı noktalarındaki önceki katmanlara daha iyi yapışma sağlayabilir. Sadece kablo yazdırmaya uygulanır."
-
-#: fdmprinter.def.json
 msgctxt "bridge_settings_enabled description"
 msgid "Detect bridges and modify print speed, flow and fan settings while bridges are printed."
 msgstr "Köprüleri tespit edin ve köprüler yazdırılırken yazdırma hızını, akışı ve fan ayarlarını değiştirin."
@@ -854,7 +829,7 @@ msgstr "Köprüleri tespit edin ve köprüler yazdırılırken yazdırma hızın
 #: fdmprinter.def.json
 msgctxt "inset_direction description"
 msgid "Determines the order in which walls are printed. Printing outer walls earlier helps with dimensional accuracy, as faults from inner walls cannot propagate to the outside. However printing them later allows them to stack better when overhangs are printed. When there is an uneven amount of total innner walls, the 'center last line' is always printed last."
-msgstr "Duvarların basılacağı sırayı belirler. Dış duvarların önce basılması, iç duvarlardaki hataların dışarıya taşmasını önleyerek boyutların doğru olmasını sağlar. Bu duvarların daha sonra basılması ise çıkıntılar basılırken daha iyi yığınlanma sağlar. Toplam iç duvar sayısı çift olmadığında ’ortadaki son hat’ her zaman en son yazdırılır."
+msgstr "Duvarların basılacağı sırayı belirler. Dış duvarların önce basılması, iç duvarlardaki hataların dışarıya taşmasını önleyerek boyutların doğru olmasını sağlar. Bu duvarların daha sonra basılması ise çıkıntılar basılırken daha iyi yığınlanma sağlar. Toplam iç duvar miktarı eşit değilse ”ortadaki son hat” her zaman en son yazdırılır."
 
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order description"
@@ -885,11 +860,6 @@ msgstr "Ekstrüzyon işlemine hazırlamayı ve yapı levhasına yapışmayı art
 msgctxt "machine_disallowed_areas label"
 msgid "Disallowed Areas"
 msgstr "İzin Verilmeyen Alanlar"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_nozzle_clearance description"
-msgid "Distance between the nozzle and horizontally downward lines. Larger clearance results in diagonally downward lines with a less steep angle, which in turn results in less upward connections with the next layer. Only applies to Wire Printing."
-msgstr "Nozül ve aşağı yöndeki hatlar arasındaki mesafe. Daha büyük açıklık, dik açısı daha küçük çapraz şekilde aşağı yöndeki hatların oluşmasına neden olur, dolayısıyla bu durum bir sonraki katman ile yukarı yönde daha az bağlantıya yol açar. Sadece kablo yazdırmaya uygulanır."
 
 #: fdmprinter.def.json
 msgctxt "infill_line_distance description"
@@ -942,15 +912,6 @@ msgid "Distance of a travel move inserted after the outer wall, to hide the Z se
 msgstr "Z dikişini daha iyi gizlemek için dış duvardan sonra eklenen hareket mesafesi."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_up_half_speed description"
-msgid ""
-"Distance of an upward move which is extruded with half speed.\n"
-"This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-msgstr ""
-"Yarı hızda sıkıştırılmış yukarı doğru hareket mesafesi.\n"
-"Bu katmanlarda malzemeyi çok fazla ısıtmayarak önceki katmanlarda daha iyi yapışma sağlayabilir. Sadece kablo yazdırmaya uygulanır."
-
-#: fdmprinter.def.json
 msgctxt "draft_shield_dist description"
 msgid "Distance of the draft shield from the print, in the X/Y directions."
 msgstr "Cereyan kalkanını X/Y yönlerindeki baskıya mesafesi."
@@ -969,16 +930,6 @@ msgstr "Destek yapısının X/Y yönlerindeki çıkıntıya mesafesi."
 msgctxt "support_xy_distance description"
 msgid "Distance of the support structure from the print in the X/Y directions."
 msgstr "Destek yapısının X/Y yönlerindeki baskıya mesafesi."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_fall_down description"
-msgid "Distance with which the material falls down after an upward extrusion. This distance is compensated for. Only applies to Wire Printing."
-msgstr "Malzemenin yukarı doğru ekstrüzyondan sonra aşağı inme mesafesi. Mesafe telafi edilir. Sadece kablo yazdırmaya uygulanır."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_drag_along description"
-msgid "Distance with which the material of an upward extrusion is dragged along with the diagonally downward extrusion. This distance is compensated for. Only applies to Wire Printing."
-msgstr "Yukarı yönlü ekstrüzyon materyalinin çapraz şekilde aşağı yönlü ekstrüzyona sürüklendiği mesafe. Mesafe telafi edilir. Sadece kablo yazdırmaya uygulanır."
 
 #: fdmprinter.def.json
 msgctxt "min_infill_area description"
@@ -1303,7 +1254,7 @@ msgstr "İlk katman için akış dengelemesi: ilk katmana ekstrude edilen malzem
 #: fdmprinter.def.json
 msgctxt "skin_material_flow_layer_0 description"
 msgid "Flow compensation on bottom lines of the first layer"
-msgstr "İlk katmanın alt hatları için akış telafisi"
+msgstr "İlk katmanın alt hatlarında akış telafisi"
 
 #: fdmprinter.def.json
 msgctxt "infill_material_flow description"
@@ -1348,7 +1299,7 @@ msgstr "Destek yapı hatlarının akış telafisidir."
 #: fdmprinter.def.json
 msgctxt "wall_0_material_flow_layer_0 description"
 msgid "Flow compensation on the outermost wall line of the first layer."
-msgstr "İlk katmanın en dış duvar hattı için akış telafisi."
+msgstr "İlk katmanın en dış duvar hattında akış telafisi."
 
 #: fdmprinter.def.json
 msgctxt "wall_0_material_flow description"
@@ -1363,7 +1314,7 @@ msgstr "Üst/alt hatların akış telafisidir."
 #: fdmprinter.def.json
 msgctxt "wall_x_material_flow_layer_0 description"
 msgid "Flow compensation on wall lines for all wall lines except the outermost one, but only for the first layer"
-msgstr "En dıştaki hariç tüm duvar hatları için duvar hatların için akış telafisi, ancak yalnızca ilk katman için"
+msgstr "En dıştaki duvar hatları hariç tüm duvar hatları için duvar hatlarında akış telafisi, ancak sadece ilk katman içindir."
 
 #: fdmprinter.def.json
 msgctxt "wall_x_material_flow description"
@@ -1376,24 +1327,9 @@ msgid "Flow compensation on wall lines."
 msgstr "Duvar hatlarının akış telafisidir."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_flow_connection description"
-msgid "Flow compensation when going up or down. Only applies to Wire Printing."
-msgstr "Yukarı veya aşağı yönde hareket ederken akış dengelenmesi. Sadece kablo yazdırmaya uygulanır."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow_flat description"
-msgid "Flow compensation when printing flat lines. Only applies to Wire Printing."
-msgstr "Düz hatlar yazdırılırken akış dengelenmesi. Sadece kablo yazdırmaya uygulanır."
-
-#: fdmprinter.def.json
 msgctxt "material_flow description"
 msgid "Flow compensation: the amount of material extruded is multiplied by this value."
 msgstr "Akış dengeleme: sıkıştırılan malzeme miktarı bu değerle çoğaltılır."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow description"
-msgid "Flow compensation: the amount of material extruded is multiplied by this value. Only applies to Wire Printing."
-msgstr "Akış dengeleme: sıkıştırılan malzeme miktarı bu değerle çoğaltılır. Sadece kablo yazdırmaya uygulanır."
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length label"
@@ -1556,7 +1492,7 @@ msgstr "Kademeli Destek Dolgusu Aşamaları"
 #: fdmprinter.def.json
 msgctxt "cool_min_temperature description"
 msgid "Gradually reduce to this temperature when printing at reduced speeds because of minimum layer time."
-msgstr "Minimum katman süresi nedeniyle düşük hızlarda baskı yaparken kademeli olarak bu sıcaklığa düşürün."
+msgstr "Minimum katman süresi nedeniyle düşük hızlarda yazdırırken bu sıcaklığa kademeli olarak düşürün."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1921,7 +1857,7 @@ msgstr "İlk Katman İvmesi"
 #: fdmprinter.def.json
 msgctxt "skin_material_flow_layer_0 label"
 msgid "Initial Layer Bottom Flow"
-msgstr "İlk Katman Alt Akış"
+msgstr "İlk Katman Alt Akışı"
 
 #: fdmprinter.def.json
 msgctxt "material_flow_layer_0 label"
@@ -2056,7 +1992,7 @@ msgstr "İç İçe Geçen Kiriş Katman Sayısı"
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_width label"
 msgid "Interlocking Beam Width"
-msgstr "İç İçe Geçen Kiriş Genişliği"
+msgstr "İç İçe Geçme Genişliği"
 
 #: fdmprinter.def.json
 msgctxt "interlocking_boundary_avoidance label"
@@ -2132,11 +2068,6 @@ msgstr "Parçalardaki delikleri değil, yalnızca ana hatlarını titretir."
 msgctxt "meshfix_keep_open_polygons label"
 msgid "Keep Disconnected Faces"
 msgstr "Bağlı Olmayan Yüzleri Tut"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_strategy option knot"
-msgid "Knot"
-msgstr "Düğüm"
 
 #: fdmprinter.def.json
 msgctxt "layer_height label"
@@ -3024,11 +2955,6 @@ msgid "Percentage fan speed to use when printing the third bridge skin layer."
 msgstr "Üçüncü köprü yüzey alanı katmanı yazdırılırken kullanılacak yüzde fan hızı."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_straight_before_down description"
-msgid "Percentage of a diagonally downward line which is covered by a horizontal line piece. This can prevent sagging of the top most point of upward lines. Only applies to Wire Printing."
-msgstr "Yatay hat parçasıyla kaplanan çapraz şekilde aşağı yöndeki hat yüzdesi. Bu, yukarı yöndeki hatların en baştaki noktasının düşmesini engelleyebilir. Sadece kablo yazdırmaya uygulanır."
-
-#: fdmprinter.def.json
 msgctxt "minimum_polygon_circumference description"
 msgid "Polygons in sliced layers that have a circumference smaller than this amount will be filtered out. Lower values lead to higher resolution mesh at the cost of slicing time. It is meant mostly for high resolution SLA printers and very tiny 3D models with a lot of details."
 msgstr "Bu miktardan daha kısa çevre uzunluğuna sahip dilimlenmiş katmanlardaki poligonlar filtre ile elenecektir. Daha düşük değerler dilimleme süresini uzatacak ancak daha yüksek çözünürlükte bir ağ oluşturacaktır. Genellikle yüksek çözünürlüklü SLA yazıcılarına yöneliktir ve çok fazla detay içeren çok küçük 3D modellerinde kullanılır."
@@ -3137,11 +3063,6 @@ msgstr "Her zaman bitişik hatlarla tek yönde çakışmaya neden olan bir düze
 msgctxt "mold_enabled description"
 msgid "Print models as a mold, which can be cast in order to get a model which resembles the models on the build plate."
 msgstr "Yapı levhası üzerinde modelleri toplayan bir model elde etmek amacıyla döküm olabilecek modelleri kalıp olarak yazdırır."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_enabled description"
-msgid "Print only the outside surface with a sparse webbed structure, printing 'in thin air'. This is realized by horizontally printing the contours of the model at given Z intervals which are connected via upward and diagonally downward lines."
-msgstr "“Belli belirsiz” yazdıran seyrek gövdeli bir yapı ile sadece dış yüzeyi yazdırın. Bu işlem, yukarı ve çapraz olarak aşağı yöndeki hatlar ile bağlı olan verilen Z aralıklarındaki modelin çevresini yatay olarak yazdırarak gerçekleştirilir."
 
 #: fdmprinter.def.json
 msgctxt "fill_outline_gaps description"
@@ -3489,11 +3410,6 @@ msgid "Resolution to compute collisions with to avoid hitting the model. Setting
 msgstr "Modele çarpmamak adına çarpışmaları hesaplamak için çözünürlük. Buna düşük bir değerin verilmesi daha az hata çıkaran daha isabetli ağaçların üretilmesini sağlar ancak dilimleme süresini önemli ölçüde artırır."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_strategy option retract"
-msgid "Retract"
-msgstr "Geri Çek"
-
-#: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"
 msgid "Retract Before Outer Wall"
 msgstr "Dış Duvardan Önce Geri Çek"
@@ -3746,7 +3662,7 @@ msgstr "Maksimum Küçük Delik Boyutu"
 #: fdmprinter.def.json
 msgctxt "cool_min_temperature label"
 msgid "Small Layer Printing Temperature"
-msgstr "Küçük Katmanlı Baskı Sıcaklığı"
+msgstr "Küçük Katman Yazdırma Sıcaklığı"
 
 #: fdmprinter.def.json
 msgctxt "small_skin_width label"
@@ -3814,31 +3730,6 @@ msgid "Speed"
 msgstr "Hız"
 
 #: fdmprinter.def.json
-msgctxt "wireframe_printspeed description"
-msgid "Speed at which the nozzle moves when extruding material. Only applies to Wire Printing."
-msgstr "Malzemeleri sıkarken nozül hareketlerinin hızı. Sadece kablo yazdırmaya uygulanır."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_down description"
-msgid "Speed of printing a line diagonally downward. Only applies to Wire Printing."
-msgstr "Çapraz şekilde aşağı doğru bir hat yazdırma hızı. Sadece kablo yazdırmaya uygulanır."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_up description"
-msgid "Speed of printing a line upward 'in thin air'. Only applies to Wire Printing."
-msgstr "“Belli belirsiz” yukarı doğru bir hat yazdırma hızı. Sadece kablo yazdırmaya uygulanır."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_bottom description"
-msgid "Speed of printing the first layer, which is the only layer touching the build platform. Only applies to Wire Printing."
-msgstr "Yapı platformuna değen tek katman olan ilk katmanın yazdırılma hızı. Sadece kablo yazdırmaya uygulanır."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_flat description"
-msgid "Speed of printing the horizontal contours of the model. Only applies to Wire Printing."
-msgstr "Modelin yatay dış çevresini yazdırma hızı. Sadece kablo yazdırmaya uygulanır."
-
-#: fdmprinter.def.json
 msgctxt "wipe_hop_speed description"
 msgid "Speed to move the z-axis during the hop."
 msgstr "Sıçrama sırasında z eksenini hareket ettirmek için gerekli hız."
@@ -3887,11 +3778,6 @@ msgstr "Milimetre Başına Adım (Y)"
 msgctxt "machine_steps_per_mm_z label"
 msgid "Steps per Millimeter (Z)"
 msgstr "Milimetre Başına Adım (Z)"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_strategy description"
-msgid "Strategy for making sure two consecutive layers connect at each connection point. Retraction lets the upward lines harden in the right position, but may cause filament grinding. A knot can be made at the end of an upward line to heighten the chance of connecting to it and to let the line cool; however, it may require slow printing speeds. Another strategy is to compensate for the sagging of the top of an upward line; however, the lines won't always fall down as predicted."
-msgstr "Art arda gelen iki katmanın her bir bağlantı noktasına bağlı olduğundan emin olma stratejisi. Geri çekme yukarı yöndeki hatların doğru konumda sertleşmesini sağlar ancak filaman aşınmasına neden olabilir. Düğüme bağlanma şansını artırmak ve hattın soğumasını sağlamak için yukarı yöndeki hattın ucunda bir düğüm oluşturulabilir, fakat bu işlem daha yavaş yazdırma hızı gerektirir. Başka bir strateji de yukarı yöndeki hat ucunun düşmesini dengelemektir, ancak hatlar her zaman beklenildiği gibi düşmez."
 
 #: fdmprinter.def.json
 msgctxt "support description"
@@ -4591,7 +4477,7 @@ msgstr "Besleyiciye malzeme veren çarkın çapı."
 #: fdmprinter.def.json
 msgctxt "support_tree_max_diameter description"
 msgid "The diameter of the widest branches of tree support. A thicker trunk is more sturdy; a thinner trunk takes up less space on the build plate."
-msgstr "Ağaç desteğinin en geniş dallarının çapı. Daha kalın bir gövde daha sağlam olur; daha ince bir gövde, yapı plakasında daha az yer kaplar."
+msgstr "Ağaç desteğinin en geniş dallarının çapı. Daha kalın bir gövde daha sağlamdır; daha ince bir gövde, yapı plakasında daha az yer kaplar."
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation_step description"
@@ -4624,11 +4510,6 @@ msgid "The distance between the raft lines for the top raft layers. The spacing 
 msgstr "Üst radye katmanları için radye hatları arasındaki mesafe. Yüzeyin katı olabilmesi için aralık hat genişliğine eşit olmalıdır."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_roof_inset description"
-msgid "The distance covered when making a connection from a roof outline inward. Only applies to Wire Printing."
-msgstr "İçerideki ana tavan hattından bağlantı yaparken kapatılan mesafe. Sadece kablo yazdırmaya uygulanır."
-
-#: fdmprinter.def.json
 msgctxt "interlocking_depth description"
 msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
 msgstr "İç içe geçen yapı oluşturmak için modeller arası sınırdan hücre sayısı olarak ölçülen mesafe. Çok az hücre kullanmak zayıf yapışmaya neden olur."
@@ -4641,17 +4522,12 @@ msgstr "Modelin en dış kenar hattını olan mesafesi. Daha büyük kenar hatt�
 #: fdmprinter.def.json
 msgctxt "interlocking_boundary_avoidance description"
 msgid "The distance from the outside of a model where interlocking structures will not be generated, measured in cells."
-msgstr "İç içe geçen yapıların üretilmeyeceği bir modelin dışından hücre sayısı olarak ölçülen mesafe."
+msgstr "İç içe geçen yapıların oluşturulmayacağı bir modelin dışından hücre cinsinden ölçülen mesafe."
 
 #: fdmprinter.def.json
 msgctxt "machine_heat_zone_length description"
 msgid "The distance from the tip of the nozzle in which heat from the nozzle is transferred to the filament."
 msgstr "Nozülden gelen ısının filamana aktarıldığı nozül ucuna olan mesafe."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_drag_along description"
-msgid "The distance of the end piece of an inward line which gets dragged along when going back to the outer outline of the roof. This distance is compensated for. Only applies to Wire Printing."
-msgstr "Tavanın ana dış kısmına geri gelirken sürüklenen iç kısımdaki bir hattın son parçasının mesafesi. Mesafe telafi edilir. Sadece kablo yazdırmaya uygulanır."
 
 #: fdmprinter.def.json
 msgctxt "bottom_skin_expand_distance description"
@@ -4672,11 +4548,6 @@ msgstr "Üst yüzeylerin dolgunun içine doğru genişleyeceği mesafedir. Daha 
 msgctxt "wipe_move_distance description"
 msgid "The distance to move the head back and forth across the brush."
 msgstr "Başlığı fırçada ileri ve geri hareket ettirme mesafesi."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_fall_down description"
-msgid "The distance which horizontal roof lines printed 'in thin air' fall down when being printed. This distance is compensated for. Only applies to Wire Printing."
-msgstr "“Belli belirsiz” yazdırılan yatay tavan hatlarının yazdırıldıklarındaki düşme mesafesi. Mesafe telafi edilir. Sadece kablo yazdırmaya uygulanır."
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_prune_angle description"
@@ -4871,12 +4742,12 @@ msgstr "Yoğunluğun yarısına inmeden önce belirli bir yoğunluktaki destek d
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_layer_count description"
 msgid "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects."
-msgstr "İç içe geçen yapı kirişlerinin katman sayısı olarak ölçülen yüksekliği. Daha az katman daha güçlüdür, ancak kusurlara daha yatkındır."
+msgstr "İç içe geçen yapı kirişlerinin katman sayısı olarak ölçülen yüksekliği. Daha az katman daha güçlüdür, ama kusurlara daha yatkındır."
 
 #: fdmprinter.def.json
 msgctxt "interlocking_orientation description"
 msgid "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects."
-msgstr "İç içe geçen yapı kirişlerinin katman sayısı olarak ölçülen yüksekliği. Daha az katman daha güçlüdür, ancak kusurlara daha yatkındır."
+msgstr "İç içe geçen yapı kirişlerinin katman sayısı olarak ölçülen yüksekliği. Daha az katman daha güçlüdür, ama kusurlara daha yatkındır."
 
 #: fdmprinter.def.json
 msgctxt "layer_height_0 description"
@@ -4887,11 +4758,6 @@ msgstr "İlk katmanın milimetre cinsinden yüksekliği. Kalın ilk katmanlar ya
 msgctxt "support_bottom_stair_step_height description"
 msgid "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures. Set to zero to turn off the stair-like behaviour."
 msgstr "Modelin üzerinde sabit duran desteğin merdiven benzeri alt kısmının basamak yüksekliği. Daha düşük bir değer desteğin hareket ettirilmesini zorlaştırırken, daha yüksek bir değer kararsız destek yapılarına yol açabilir. Merdiven benzeri davranışı kapatmak için sıfır değerine ayarlayın."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_height description"
-msgid "The height of the upward and diagonally downward lines between two horizontal parts. This determines the overall density of the net structure. Only applies to Wire Printing."
-msgstr "İki yatay bölüm arasındaki yukarı ve çapraz olarak aşağı yöndeki hatların yüksekliği. Net yapının genel yoğunluğunu belirler. Sadece kablo yazdırmaya uygulanır."
 
 #: fdmprinter.def.json
 msgctxt "brim_gap description"
@@ -5290,17 +5156,17 @@ msgstr "Destek dolgusunun çevreleneceği duvar sayısı. Bir duvarın eklenmesi
 #: fdmprinter.def.json
 msgctxt "support_bottom_wall_count description"
 msgid "The number of walls with which to surround support interface floor. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "Destek arayüz zeminini çevreleyecek duvar sayısı. Duvar eklemek, destek baskıyı daha güvenilir hale getirebilir ve çıkıntıları daha iyi destekleyebilir ama baskı süresini ve kullanılan malzemeyi artırır."
+msgstr "Destek arayüz zeminini çevreleyecek duvar sayısı. Duvar eklemek, destek baskıyı daha güvenilir hale getirebilir ve çıkıntıları daha iyi destekleyebilir, ama baskı süresini ve kullanılan malzemeyi artırır."
 
 #: fdmprinter.def.json
 msgctxt "support_roof_wall_count description"
 msgid "The number of walls with which to surround support interface roof. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "Destek arayüz çatısını çevreleyecek duvar sayısı. Duvar eklemek, destek baskıyı daha güvenilir hale getirebilir ve çıkıntıları daha iyi destekleyebilir ama baskı süresini ve kullanılan malzemeyi artırır."
+msgstr "Destek arayüz çatısını çevreleyecek duvar sayısı. Duvar eklemek, destek baskıyı daha güvenilir hale getirebilir ve çıkıntıları daha iyi destekleyebilir, ama baskı süresini ve kullanılan malzemeyi artırır."
 
 #: fdmprinter.def.json
 msgctxt "support_interface_wall_count description"
 msgid "The number of walls with which to surround support interface. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "Destek arayüzünü çevreleyecek duvar sayısı. Duvar eklemek, destek baskıyı daha güvenilir hale getirebilir ve çıkıntıları daha iyi destekleyebilir ama baskı süresini ve kullanılan malzemeyi artırır."
+msgstr "Destek arayüzünü çevreleyecek duvar sayısı. Duvar eklemek, destek baskıyı daha güvenilir hale getirebilir ve çıkıntıları daha iyi destekleyebilir, ama baskı süresini ve kullanılan malzemeyi artırır."
 
 #: fdmprinter.def.json
 msgctxt "wall_distribution_count description"
@@ -5778,11 +5644,6 @@ msgid "This will create a wall around the model, which traps (hot) air and shiel
 msgstr "Modelin etrafında (sıcak) hava ve kalkanlara dışarıdaki hava akımına karşı set çeken bir duvar oluşturur. Özellikle kolayca eğrilebilen malzemeler için kullanışlıdır."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_roof_outer_delay description"
-msgid "Time spent at the outer perimeters of hole which is to become a roof. Longer times can ensure a better connection. Only applies to Wire Printing."
-msgstr "Tavanı oluşturacak dış çevresel uzunluklara harcanan zaman. Sürenin daha uzun olması daha iyi bir bağlantı sağlayabilir. Sadece kablo yazdırmaya uygulanır."
-
-#: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage_xy description"
 msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor in the XY-direction (horizontally)."
 msgstr "Malzemenin soğudukça büzülmesini telafi etmek için model bu faktöre göre XY yönünde (yatay olarak) ölçeklenecektir."
@@ -6005,7 +5866,7 @@ msgstr "Ağaç Destek Çarpışma Çözünürlüğü"
 #: fdmprinter.def.json
 msgctxt "support_tree_max_diameter label"
 msgid "Tree Support Trunk Diameter"
-msgstr "Ağaç Destek Gövde Çapı"
+msgstr "Ağaç Desteği Gövde Çapı"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option trihexagon"
@@ -6065,12 +5926,12 @@ msgstr "Direkleri kullan"
 #: fdmprinter.def.json
 msgctxt "acceleration_travel_enabled description"
 msgid "Use a separate acceleration rate for travel moves. If disabled, travel moves will use the acceleration value of the printed line at their destination."
-msgstr "Hareket hamleleri için farklı bir ivme oranı kullanın. Devre dışı bırakılırsa hareket hamleleri, varış noktasındaki yazdırılmış hattın ivme değerini kullanır."
+msgstr "Hareket hamleleri için ayrı bir ivme oranı kullanın. Hareket hamleleri devre dışı bırakılırsa varış noktasında yazdırılan hattın ivme değerini kullanır."
 
 #: fdmprinter.def.json
 msgctxt "jerk_travel_enabled description"
 msgid "Use a separate jerk rate for travel moves. If disabled, travel moves will use the jerk value of the printed line at their destination."
-msgstr "Hareket hamleleri için farklı bir salınım oranı kullanın. Devre dışı bırakılırsa hareket hamleleri, varış noktasındaki yazdırılmış hattın salınım değerini kullanır."
+msgstr "Hareket hamleleri için ayrı bir salınım oranı kullanın. Hareket hamleleri devre dışı bırakılırsa varış noktasında yazdırılan hattın ivme değerini kullanır."
 
 #: fdmprinter.def.json
 msgctxt "relative_extrusion description"
@@ -6111,121 +5972,6 @@ msgstr "Dikey Ölçekleme Faktörü Büzülme Telafisi"
 msgctxt "slicing_tolerance description"
 msgid "Vertical tolerance in the sliced layers. The contours of a layer are normally generated by taking cross sections through the middle of each layer's thickness (Middle). Alternatively each layer can have the areas which fall inside of the volume throughout the entire thickness of the layer (Exclusive) or a layer has the areas which fall inside anywhere within the layer (Inclusive). Inclusive retains the most details, Exclusive makes for the best fit and Middle stays closest to the original surface."
 msgstr "Dilimlenmiş katmanlardaki dikey tolerans. Bir katmanın konturları her katmanın kalınlığının ortasından enine kesitler (Ortalayan) alınarak normal şekilde oluşturulur. Alternatif olarak, her katman, katmanın tüm kalınlığı boyunca hacmin iç kısmına düşen alanlara (Dışlayan) sahip olabilir; veya bir katman, katman içinde herhangi bir yere düşen alanlara (İçeren) sahip olabilir. İçeren seçeneğinde katmandaki çoğu ayrıntı korunur, Dışlayan seçeneği en iyi uyum içindir ve Ortalayan seçeneği ise katmanı orijinal yüzeyin en yakınında tutar."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_bottom_delay label"
-msgid "WP Bottom Delay"
-msgstr "WP Alt Gecikme"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_bottom label"
-msgid "WP Bottom Printing Speed"
-msgstr "WP Alt Yazdırma Hızı"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow_connection label"
-msgid "WP Connection Flow"
-msgstr "WP Bağlantı Akışı"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_height label"
-msgid "WP Connection Height"
-msgstr "WP Bağlantı Yüksekliği"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_down label"
-msgid "WP Downward Printing Speed"
-msgstr "WP Aşağı Doğru Yazdırma Hızı"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_drag_along label"
-msgid "WP Drag Along"
-msgstr "WP Sürüklenme"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_up_half_speed label"
-msgid "WP Ease Upward"
-msgstr "WP Kolay Yukarı Çıkma"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_fall_down label"
-msgid "WP Fall Down"
-msgstr "WP Aşağı İnme"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flat_delay label"
-msgid "WP Flat Delay"
-msgstr "WP Düz Gecikme"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow_flat label"
-msgid "WP Flat Flow"
-msgstr "WP Düz Akışı"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow label"
-msgid "WP Flow"
-msgstr "WP Akışı"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_flat label"
-msgid "WP Horizontal Printing Speed"
-msgstr "WP Yatay Yazdırma Hızı"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_top_jump label"
-msgid "WP Knot Size"
-msgstr "WP Düğüm Boyutu"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_nozzle_clearance label"
-msgid "WP Nozzle Clearance"
-msgstr "WP Nozül Açıklığı"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_drag_along label"
-msgid "WP Roof Drag Along"
-msgstr "WP Tavandan Sürüklenme"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_fall_down label"
-msgid "WP Roof Fall Down"
-msgstr "WP Tavandan Aşağı İnme"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_inset label"
-msgid "WP Roof Inset Distance"
-msgstr "WP Tavan İlave Mesafesi"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_outer_delay label"
-msgid "WP Roof Outer Delay"
-msgstr "WP Tavan Dış Gecikmesi"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed label"
-msgid "WP Speed"
-msgstr "WP Hızı"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_straight_before_down label"
-msgid "WP Straighten Downward Lines"
-msgstr "WP Aşağı Yöndeki Hatları Güçlendirme"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_strategy label"
-msgid "WP Strategy"
-msgstr "WP Stratejisi"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_top_delay label"
-msgid "WP Top Delay"
-msgstr "WP Üst Gecikme"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_up label"
-msgid "WP Upward Printing Speed"
-msgstr "WP Yukarı Doğru Yazdırma Hızı"
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temp_wait label"
@@ -6658,11 +6404,6 @@ msgid "Wipe Z Hop Height"
 msgstr "Sürme Z Sıçraması Yüksekliği"
 
 #: fdmprinter.def.json
-msgctxt "wireframe_enabled label"
-msgid "Wire Printing"
-msgstr "Kablo Yazdırma"
-
-#: fdmprinter.def.json
 msgctxt "retraction_combing option infill"
 msgid "Within Infill"
 msgstr "Dolgu İçinde"
@@ -6806,3 +6547,211 @@ msgstr "Zikzak"
 msgctxt "travel description"
 msgid "travel"
 msgstr "hareket"
+
+#~ msgctxt "wireframe_strategy option compensate"
+#~ msgid "Compensate"
+#~ msgstr "Dengele"
+
+#~ msgctxt "wireframe_top_jump description"
+#~ msgid "Creates a small knot at the top of an upward line, so that the consecutive horizontal layer has a better chance to connect to it. Only applies to Wire Printing."
+#~ msgstr "Ardından gelen yatay katmanın daha iyi bir bağlanma şansının olması için, yukarı doğru çıkan hattın ucunda küçük bir düğüm oluşturulur. Sadece kablo yazdırmaya uygulanır."
+
+#~ msgctxt "wireframe_bottom_delay description"
+#~ msgid "Delay time after a downward move. Only applies to Wire Printing."
+#~ msgstr "Aşağı doğru hareketten sonraki bekleme süresi. Sadece kablo yazdırmaya uygulanır."
+
+#~ msgctxt "wireframe_top_delay description"
+#~ msgid "Delay time after an upward move, so that the upward line can harden. Only applies to Wire Printing."
+#~ msgstr "Yukarı hattın sertleşmesi için, yukarıya doğru hareketten sonraki gecikme süresi. Sadece kablo yazdırmaya uygulanır."
+
+#~ msgctxt "wireframe_flat_delay description"
+#~ msgid "Delay time between two horizontal segments. Introducing such a delay can cause better adhesion to previous layers at the connection points, while too long delays cause sagging. Only applies to Wire Printing."
+#~ msgstr "İki yatay dilim arasındaki gecikme süresi. Haha uzun gecikmeler düşüşe neden olduğu halde, bu tür bir gecikme uygulamak bağlantı noktalarındaki önceki katmanlara daha iyi yapışma sağlayabilir. Sadece kablo yazdırmaya uygulanır."
+
+#~ msgctxt "wireframe_nozzle_clearance description"
+#~ msgid "Distance between the nozzle and horizontally downward lines. Larger clearance results in diagonally downward lines with a less steep angle, which in turn results in less upward connections with the next layer. Only applies to Wire Printing."
+#~ msgstr "Nozül ve aşağı yöndeki hatlar arasındaki mesafe. Daha büyük açıklık, dik açısı daha küçük çapraz şekilde aşağı yöndeki hatların oluşmasına neden olur, dolayısıyla bu durum bir sonraki katman ile yukarı yönde daha az bağlantıya yol açar. Sadece kablo yazdırmaya uygulanır."
+
+#~ msgctxt "wireframe_up_half_speed description"
+#~ msgid ""
+#~ "Distance of an upward move which is extruded with half speed.\n"
+#~ "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
+#~ msgstr ""
+#~ "Yarı hızda sıkıştırılmış yukarı doğru hareket mesafesi.\n"
+#~ "Bu katmanlarda malzemeyi çok fazla ısıtmayarak önceki katmanlarda daha iyi yapışma sağlayabilir. Sadece kablo yazdırmaya uygulanır."
+
+#~ msgctxt "wireframe_fall_down description"
+#~ msgid "Distance with which the material falls down after an upward extrusion. This distance is compensated for. Only applies to Wire Printing."
+#~ msgstr "Malzemenin yukarı doğru ekstrüzyondan sonra aşağı inme mesafesi. Mesafe telafi edilir. Sadece kablo yazdırmaya uygulanır."
+
+#~ msgctxt "wireframe_drag_along description"
+#~ msgid "Distance with which the material of an upward extrusion is dragged along with the diagonally downward extrusion. This distance is compensated for. Only applies to Wire Printing."
+#~ msgstr "Yukarı yönlü ekstrüzyon materyalinin çapraz şekilde aşağı yönlü ekstrüzyona sürüklendiği mesafe. Mesafe telafi edilir. Sadece kablo yazdırmaya uygulanır."
+
+#~ msgctxt "wireframe_flow_connection description"
+#~ msgid "Flow compensation when going up or down. Only applies to Wire Printing."
+#~ msgstr "Yukarı veya aşağı yönde hareket ederken akış dengelenmesi. Sadece kablo yazdırmaya uygulanır."
+
+#~ msgctxt "wireframe_flow_flat description"
+#~ msgid "Flow compensation when printing flat lines. Only applies to Wire Printing."
+#~ msgstr "Düz hatlar yazdırılırken akış dengelenmesi. Sadece kablo yazdırmaya uygulanır."
+
+#~ msgctxt "wireframe_flow description"
+#~ msgid "Flow compensation: the amount of material extruded is multiplied by this value. Only applies to Wire Printing."
+#~ msgstr "Akış dengeleme: sıkıştırılan malzeme miktarı bu değerle çoğaltılır. Sadece kablo yazdırmaya uygulanır."
+
+#~ msgctxt "wireframe_strategy option knot"
+#~ msgid "Knot"
+#~ msgstr "Düğüm"
+
+#~ msgctxt "wireframe_straight_before_down description"
+#~ msgid "Percentage of a diagonally downward line which is covered by a horizontal line piece. This can prevent sagging of the top most point of upward lines. Only applies to Wire Printing."
+#~ msgstr "Yatay hat parçasıyla kaplanan çapraz şekilde aşağı yöndeki hat yüzdesi. Bu, yukarı yöndeki hatların en baştaki noktasının düşmesini engelleyebilir. Sadece kablo yazdırmaya uygulanır."
+
+#~ msgctxt "wireframe_enabled description"
+#~ msgid "Print only the outside surface with a sparse webbed structure, printing 'in thin air'. This is realized by horizontally printing the contours of the model at given Z intervals which are connected via upward and diagonally downward lines."
+#~ msgstr "“Belli belirsiz” yazdıran seyrek gövdeli bir yapı ile sadece dış yüzeyi yazdırın. Bu işlem, yukarı ve çapraz olarak aşağı yöndeki hatlar ile bağlı olan verilen Z aralıklarındaki modelin çevresini yatay olarak yazdırarak gerçekleştirilir."
+
+#~ msgctxt "wireframe_strategy option retract"
+#~ msgid "Retract"
+#~ msgstr "Geri Çek"
+
+#~ msgctxt "wireframe_printspeed description"
+#~ msgid "Speed at which the nozzle moves when extruding material. Only applies to Wire Printing."
+#~ msgstr "Malzemeleri sıkarken nozül hareketlerinin hızı. Sadece kablo yazdırmaya uygulanır."
+
+#~ msgctxt "wireframe_printspeed_down description"
+#~ msgid "Speed of printing a line diagonally downward. Only applies to Wire Printing."
+#~ msgstr "Çapraz şekilde aşağı doğru bir hat yazdırma hızı. Sadece kablo yazdırmaya uygulanır."
+
+#~ msgctxt "wireframe_printspeed_up description"
+#~ msgid "Speed of printing a line upward 'in thin air'. Only applies to Wire Printing."
+#~ msgstr "“Belli belirsiz” yukarı doğru bir hat yazdırma hızı. Sadece kablo yazdırmaya uygulanır."
+
+#~ msgctxt "wireframe_printspeed_bottom description"
+#~ msgid "Speed of printing the first layer, which is the only layer touching the build platform. Only applies to Wire Printing."
+#~ msgstr "Yapı platformuna değen tek katman olan ilk katmanın yazdırılma hızı. Sadece kablo yazdırmaya uygulanır."
+
+#~ msgctxt "wireframe_printspeed_flat description"
+#~ msgid "Speed of printing the horizontal contours of the model. Only applies to Wire Printing."
+#~ msgstr "Modelin yatay dış çevresini yazdırma hızı. Sadece kablo yazdırmaya uygulanır."
+
+#~ msgctxt "wireframe_strategy description"
+#~ msgid "Strategy for making sure two consecutive layers connect at each connection point. Retraction lets the upward lines harden in the right position, but may cause filament grinding. A knot can be made at the end of an upward line to heighten the chance of connecting to it and to let the line cool; however, it may require slow printing speeds. Another strategy is to compensate for the sagging of the top of an upward line; however, the lines won't always fall down as predicted."
+#~ msgstr "Art arda gelen iki katmanın her bir bağlantı noktasına bağlı olduğundan emin olma stratejisi. Geri çekme yukarı yöndeki hatların doğru konumda sertleşmesini sağlar ancak filaman aşınmasına neden olabilir. Düğüme bağlanma şansını artırmak ve hattın soğumasını sağlamak için yukarı yöndeki hattın ucunda bir düğüm oluşturulabilir, fakat bu işlem daha yavaş yazdırma hızı gerektirir. Başka bir strateji de yukarı yöndeki hat ucunun düşmesini dengelemektir, ancak hatlar her zaman beklenildiği gibi düşmez."
+
+#~ msgctxt "wireframe_roof_inset description"
+#~ msgid "The distance covered when making a connection from a roof outline inward. Only applies to Wire Printing."
+#~ msgstr "İçerideki ana tavan hattından bağlantı yaparken kapatılan mesafe. Sadece kablo yazdırmaya uygulanır."
+
+#~ msgctxt "wireframe_roof_drag_along description"
+#~ msgid "The distance of the end piece of an inward line which gets dragged along when going back to the outer outline of the roof. This distance is compensated for. Only applies to Wire Printing."
+#~ msgstr "Tavanın ana dış kısmına geri gelirken sürüklenen iç kısımdaki bir hattın son parçasının mesafesi. Mesafe telafi edilir. Sadece kablo yazdırmaya uygulanır."
+
+#~ msgctxt "wireframe_roof_fall_down description"
+#~ msgid "The distance which horizontal roof lines printed 'in thin air' fall down when being printed. This distance is compensated for. Only applies to Wire Printing."
+#~ msgstr "“Belli belirsiz” yazdırılan yatay tavan hatlarının yazdırıldıklarındaki düşme mesafesi. Mesafe telafi edilir. Sadece kablo yazdırmaya uygulanır."
+
+#~ msgctxt "wireframe_height description"
+#~ msgid "The height of the upward and diagonally downward lines between two horizontal parts. This determines the overall density of the net structure. Only applies to Wire Printing."
+#~ msgstr "İki yatay bölüm arasındaki yukarı ve çapraz olarak aşağı yöndeki hatların yüksekliği. Net yapının genel yoğunluğunu belirler. Sadece kablo yazdırmaya uygulanır."
+
+#~ msgctxt "wireframe_roof_outer_delay description"
+#~ msgid "Time spent at the outer perimeters of hole which is to become a roof. Longer times can ensure a better connection. Only applies to Wire Printing."
+#~ msgstr "Tavanı oluşturacak dış çevresel uzunluklara harcanan zaman. Sürenin daha uzun olması daha iyi bir bağlantı sağlayabilir. Sadece kablo yazdırmaya uygulanır."
+
+#~ msgctxt "wireframe_bottom_delay label"
+#~ msgid "WP Bottom Delay"
+#~ msgstr "WP Alt Gecikme"
+
+#~ msgctxt "wireframe_printspeed_bottom label"
+#~ msgid "WP Bottom Printing Speed"
+#~ msgstr "WP Alt Yazdırma Hızı"
+
+#~ msgctxt "wireframe_flow_connection label"
+#~ msgid "WP Connection Flow"
+#~ msgstr "WP Bağlantı Akışı"
+
+#~ msgctxt "wireframe_height label"
+#~ msgid "WP Connection Height"
+#~ msgstr "WP Bağlantı Yüksekliği"
+
+#~ msgctxt "wireframe_printspeed_down label"
+#~ msgid "WP Downward Printing Speed"
+#~ msgstr "WP Aşağı Doğru Yazdırma Hızı"
+
+#~ msgctxt "wireframe_drag_along label"
+#~ msgid "WP Drag Along"
+#~ msgstr "WP Sürüklenme"
+
+#~ msgctxt "wireframe_up_half_speed label"
+#~ msgid "WP Ease Upward"
+#~ msgstr "WP Kolay Yukarı Çıkma"
+
+#~ msgctxt "wireframe_fall_down label"
+#~ msgid "WP Fall Down"
+#~ msgstr "WP Aşağı İnme"
+
+#~ msgctxt "wireframe_flat_delay label"
+#~ msgid "WP Flat Delay"
+#~ msgstr "WP Düz Gecikme"
+
+#~ msgctxt "wireframe_flow_flat label"
+#~ msgid "WP Flat Flow"
+#~ msgstr "WP Düz Akışı"
+
+#~ msgctxt "wireframe_flow label"
+#~ msgid "WP Flow"
+#~ msgstr "WP Akışı"
+
+#~ msgctxt "wireframe_printspeed_flat label"
+#~ msgid "WP Horizontal Printing Speed"
+#~ msgstr "WP Yatay Yazdırma Hızı"
+
+#~ msgctxt "wireframe_top_jump label"
+#~ msgid "WP Knot Size"
+#~ msgstr "WP Düğüm Boyutu"
+
+#~ msgctxt "wireframe_nozzle_clearance label"
+#~ msgid "WP Nozzle Clearance"
+#~ msgstr "WP Nozül Açıklığı"
+
+#~ msgctxt "wireframe_roof_drag_along label"
+#~ msgid "WP Roof Drag Along"
+#~ msgstr "WP Tavandan Sürüklenme"
+
+#~ msgctxt "wireframe_roof_fall_down label"
+#~ msgid "WP Roof Fall Down"
+#~ msgstr "WP Tavandan Aşağı İnme"
+
+#~ msgctxt "wireframe_roof_inset label"
+#~ msgid "WP Roof Inset Distance"
+#~ msgstr "WP Tavan İlave Mesafesi"
+
+#~ msgctxt "wireframe_roof_outer_delay label"
+#~ msgid "WP Roof Outer Delay"
+#~ msgstr "WP Tavan Dış Gecikmesi"
+
+#~ msgctxt "wireframe_printspeed label"
+#~ msgid "WP Speed"
+#~ msgstr "WP Hızı"
+
+#~ msgctxt "wireframe_straight_before_down label"
+#~ msgid "WP Straighten Downward Lines"
+#~ msgstr "WP Aşağı Yöndeki Hatları Güçlendirme"
+
+#~ msgctxt "wireframe_strategy label"
+#~ msgid "WP Strategy"
+#~ msgstr "WP Stratejisi"
+
+#~ msgctxt "wireframe_top_delay label"
+#~ msgid "WP Top Delay"
+#~ msgstr "WP Üst Gecikme"
+
+#~ msgctxt "wireframe_printspeed_up label"
+#~ msgid "WP Upward Printing Speed"
+#~ msgstr "WP Yukarı Doğru Yazdırma Hızı"
+
+#~ msgctxt "wireframe_enabled label"
+#~ msgid "Wire Printing"
+#~ msgstr "Kablo Yazdırma"

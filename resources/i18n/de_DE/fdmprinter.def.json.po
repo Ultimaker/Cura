@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-03-21 13:32+0000\n"
+"POT-Creation-Date: 2023-03-28 11:57+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -70,7 +70,7 @@ msgstr "Eine Liste mit Polygonen mit Bereichen, die für den Druckkopf unzuläss
 #: fdmprinter.def.json
 msgctxt "brim_inside_margin description"
 msgid "A part fully enclosed inside another part can generate an outer brim that touches the inside of the other part. This removes all brim within this distance from internal holes."
-msgstr "Ist ein Teil vollständig von einem anderen Teil eingeschlossen, wird möglicherweise ein äußeres Brim-Element erzeugt, das die Innenseite des anderen Teils berührt. Hierdurch wird der Teil des Brim-Elements entfernt, der sich innerhalb dieses Abstands zu inneren Löchern befindet."
+msgstr "Ist ein Teil vollständig von einem anderen Teil eingeschlossen, wird bei diesem möglicherweise ein äußeres Brim-Element erzeugt, das die Innenseite des anderen Teils berührt. Hiermit wird der Teil des Brim-Elements entfernt, der sich innerhalb dieses Abstands zu inneren Löchern befindet."
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_abs label"
@@ -279,7 +279,7 @@ msgstr "Verwenden Sie den Extruder-Versatz für das Koordinatensystem. Betrifft 
 #: fdmprinter.def.json
 msgctxt "interlocking_enable description"
 msgid "At the locations where models touch, generate an interlocking beam structure. This improves the adhesion between models, especially models printed in different materials."
-msgstr "Erzeugen Sie an den Stellen, an denen sich Modelle berühren, eine Struktur aus ineinandergreifenden Balken. Dies verbessert die Haftung zwischen Modellen, insbesondere Modellen, die aus verschiedenen Materialien gedruckt sind."
+msgstr "Erzeugt eine Struktur aus ineinandergreifenden Balken an den Stellen, an denen sich Modelle berühren. Dies verbessert die Haftung zwischen Modellen, insbesondere bei Modellen, die aus verschiedenen Materialien gedruckt werden."
 
 #: fdmprinter.def.json
 msgctxt "travel_avoid_other_parts label"
@@ -479,7 +479,7 @@ msgstr "Abstand zum Brim-Element"
 #: fdmprinter.def.json
 msgctxt "brim_inside_margin label"
 msgid "Brim Inside Avoid Margin"
-msgstr "Innerer Umgehungsabstand zum Brim-Element"
+msgstr "Abstand zur Vermeidung des inneren Brim-Elements"
 
 #: fdmprinter.def.json
 msgctxt "brim_line_count label"
@@ -585,11 +585,6 @@ msgstr "Durch Combing bleibt die Düse während der Bewegung innerhalb von berei
 msgctxt "command_line_settings label"
 msgid "Command Line Settings"
 msgstr "Einstellungen Befehlszeile"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_strategy option compensate"
-msgid "Compensate"
-msgstr "Kompensieren"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option concentric"
@@ -722,11 +717,6 @@ msgid "Cooling"
 msgstr "Kühlung"
 
 #: fdmprinter.def.json
-msgctxt "wireframe_top_jump description"
-msgid "Creates a small knot at the top of an upward line, so that the consecutive horizontal layer has a better chance to connect to it. Only applies to Wire Printing."
-msgstr "Es wird ein kleiner Knoten oben auf einer Aufwärtslinie hergestellt, damit die nächste horizontale Schicht eine bessere Verbindung mit dieser herstellen kann. Dies gilt nur für das Drucken mit Drahtstruktur."
-
-#: fdmprinter.def.json
 msgctxt "infill_pattern option cross"
 msgid "Cross"
 msgstr "Kreuz"
@@ -832,21 +822,6 @@ msgid "Default jerk for the motor of the filament."
 msgstr "Voreingestellter Ruck für den Motor des Filaments."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_bottom_delay description"
-msgid "Delay time after a downward move. Only applies to Wire Printing."
-msgstr "Die Verzögerungszeit nach einer Abwärtsbewegung. Dies gilt nur für das Drucken mit Drahtstruktur."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_top_delay description"
-msgid "Delay time after an upward move, so that the upward line can harden. Only applies to Wire Printing."
-msgstr "Die Verzögerungszeit nach einer Aufwärtsbewegung, damit die Aufwärtslinie härten kann. Dies gilt nur für das Drucken mit Drahtstruktur."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flat_delay description"
-msgid "Delay time between two horizontal segments. Introducing such a delay can cause better adhesion to previous layers at the connection points, while too long delays cause sagging. Only applies to Wire Printing."
-msgstr "Die Verzögerungszeit zwischen zwei horizontalen Segmenten. Durch eine solche Verzögerung kann eine bessere Haftung an den Verbindungspunkten zu vorherigen Schichten erreicht werden; bei einer zu langen Verzögerungszeit kann es allerdings zum Herabsinken von Bestandteilen kommen. Dies gilt nur für das Drucken mit Drahtstruktur."
-
-#: fdmprinter.def.json
 msgctxt "bridge_settings_enabled description"
 msgid "Detect bridges and modify print speed, flow and fan settings while bridges are printed."
 msgstr "Erkennt Brücken und ändert die Druckgeschwindigkeit, Fluss- und Lüftereinstellungen während des Drucks von Brücken."
@@ -854,7 +829,7 @@ msgstr "Erkennt Brücken und ändert die Druckgeschwindigkeit, Fluss- und Lüfte
 #: fdmprinter.def.json
 msgctxt "inset_direction description"
 msgid "Determines the order in which walls are printed. Printing outer walls earlier helps with dimensional accuracy, as faults from inner walls cannot propagate to the outside. However printing them later allows them to stack better when overhangs are printed. When there is an uneven amount of total innner walls, the 'center last line' is always printed last."
-msgstr "Bestimmt die Reihenfolge, in der die Wände gedruckt werden. Das frühe Drucken der Außenwände hilft bei der Maßgenauigkeit, da Fehler von Innenwänden nicht an die Außenseite weitergegeben werden können. Wenn sie jedoch später gedruckt werden, ist ein Stapeldruck besser möglich, wenn Überhänge gedruckt werden. Bei einer ungeraden Gesamtzahl von Innenwänden wird die „mittlere letzte Linie“ immer zuletzt gedruckt."
+msgstr "Bestimmt die Reihenfolge, in der die Wände gedruckt werden. Das frühe Drucken der Außenwände hilft bei der Maßgenauigkeit, da Fehler von Innenwänden nicht an die Außenseite weitergegeben werden können. Wenn sie jedoch später gedruckt werden, ist ein Stapeldruck besser möglich, wenn Überhänge gedruckt werden. Bei einer ungleichmäßigen Anzahl an Gesamtinnenwänden wird die „mittlere letzte Linie“ immer zuletzt gedruckt."
 
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order description"
@@ -885,11 +860,6 @@ msgstr "Verschiedene Optionen, die die Materialbereitstellung für die Extrusion
 msgctxt "machine_disallowed_areas label"
 msgid "Disallowed Areas"
 msgstr "Unzulässige Bereiche"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_nozzle_clearance description"
-msgid "Distance between the nozzle and horizontally downward lines. Larger clearance results in diagonally downward lines with a less steep angle, which in turn results in less upward connections with the next layer. Only applies to Wire Printing."
-msgstr "Der Abstand zwischen der Düse und den horizontalen Abwärtslinien. Bei einem größeren Abstand haben die diagonalen Abwärtslinien einen weniger spitzen Winkel, was wiederum weniger Aufwärtsverbindungen zur nächsten Schicht zur Folge hat. Dies gilt nur für das Drucken mit Drahtstruktur."
 
 #: fdmprinter.def.json
 msgctxt "infill_line_distance description"
@@ -942,15 +912,6 @@ msgid "Distance of a travel move inserted after the outer wall, to hide the Z se
 msgstr "Entfernung einer Bewegung nach der Außenwand, um die Z-Naht besser zu verbergen."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_up_half_speed description"
-msgid ""
-"Distance of an upward move which is extruded with half speed.\n"
-"This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-msgstr ""
-"Die Strecke einer Aufwärtsbewegung, die mit halber Geschwindigkeit extrudiert wird.\n"
-"Dies kann zu einer besseren Haftung an vorhergehenden Schichten führen, während gleichzeitig ein Überhitzen des Materials in diesen Schichten vermieden wird. Dies gilt nur für das Drucken mit Drahtstruktur."
-
-#: fdmprinter.def.json
 msgctxt "draft_shield_dist description"
 msgid "Distance of the draft shield from the print, in the X/Y directions."
 msgstr "Der Abstand des Windschutzes zum gedruckten Objekt in den X/Y-Richtungen."
@@ -969,16 +930,6 @@ msgstr "Der Abstand der Stützstruktur zum Überhang in der X- und Y-Richtung."
 msgctxt "support_xy_distance description"
 msgid "Distance of the support structure from the print in the X/Y directions."
 msgstr "Der Abstand der Stützstruktur zum gedruckten Objekt in der X- und Y-Richtung."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_fall_down description"
-msgid "Distance with which the material falls down after an upward extrusion. This distance is compensated for. Only applies to Wire Printing."
-msgstr "Die Strecke, die das Material nach einer Aufwärts-Extrusion herunterfällt. Diese Strecke wird kompensiert. Dies gilt nur für das Drucken mit Drahtstruktur."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_drag_along description"
-msgid "Distance with which the material of an upward extrusion is dragged along with the diagonally downward extrusion. This distance is compensated for. Only applies to Wire Printing."
-msgstr "Die Strecke, die das Material bei einer Aufwärts-Extrusion mit der diagonalen Abwärts-Extrusion nach unten gezogen wird. Diese Strecke wird kompensiert. Dies gilt nur für das Drucken mit Drahtstruktur."
 
 #: fdmprinter.def.json
 msgctxt "min_infill_area description"
@@ -1103,12 +1054,12 @@ msgstr "Stützdach aktivieren"
 #: fdmprinter.def.json
 msgctxt "acceleration_travel_enabled label"
 msgid "Enable Travel Acceleration"
-msgstr "Beschleunigung für Bewegung aktivieren"
+msgstr "Beschleunigung für Bewegungen aktivieren"
 
 #: fdmprinter.def.json
 msgctxt "jerk_travel_enabled label"
 msgid "Enable Travel Jerk"
-msgstr "Ruckfunktion für Bewegung aktivieren"
+msgstr "Ruckfunktion für Bewegungen aktivieren"
 
 #: fdmprinter.def.json
 msgctxt "ooze_shield_enabled description"
@@ -1348,7 +1299,7 @@ msgstr "Durchflusskompensation an Stützstrukturlinien."
 #: fdmprinter.def.json
 msgctxt "wall_0_material_flow_layer_0 description"
 msgid "Flow compensation on the outermost wall line of the first layer."
-msgstr "Durchflusskompensation an der äußersten Wandlinie der ersten Schicht."
+msgstr "Durchflusskompensation an der äußersten Wandlinie der ersten Schicht"
 
 #: fdmprinter.def.json
 msgctxt "wall_0_material_flow description"
@@ -1363,7 +1314,7 @@ msgstr "Durchflusskompensation an oberen/unteren Linien."
 #: fdmprinter.def.json
 msgctxt "wall_x_material_flow_layer_0 description"
 msgid "Flow compensation on wall lines for all wall lines except the outermost one, but only for the first layer"
-msgstr "Durchflusskompensation an allen Wandlinien bis auf die äußere, aber nur für die erste Schicht."
+msgstr "Durchflusskompensation an allen Wandlinien bis auf die äußere, aber nur für die erste Schicht"
 
 #: fdmprinter.def.json
 msgctxt "wall_x_material_flow description"
@@ -1376,24 +1327,9 @@ msgid "Flow compensation on wall lines."
 msgstr "Durchflusskompensation an Wandlinien."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_flow_connection description"
-msgid "Flow compensation when going up or down. Only applies to Wire Printing."
-msgstr "Flusskompensation bei der Aufwärts- und Abwärtsbewegung. Dies gilt nur für das Drucken mit Drahtstruktur."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow_flat description"
-msgid "Flow compensation when printing flat lines. Only applies to Wire Printing."
-msgstr "Flusskompensation beim Drucken flacher Linien. Dies gilt nur für das Drucken mit Drahtstruktur."
-
-#: fdmprinter.def.json
 msgctxt "material_flow description"
 msgid "Flow compensation: the amount of material extruded is multiplied by this value."
 msgstr "Fluss-Kompensation: Die extrudierte Materialmenge wird mit diesem Wert multipliziert."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow description"
-msgid "Flow compensation: the amount of material extruded is multiplied by this value. Only applies to Wire Printing."
-msgstr "Flusskompensation: Die extrudierte Materialmenge wird mit diesem Wert multipliziert. Dies gilt nur für das Drucken mit Drahtstruktur."
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length label"
@@ -2134,11 +2070,6 @@ msgid "Keep Disconnected Faces"
 msgstr "Unterbrochene Flächen beibehalten"
 
 #: fdmprinter.def.json
-msgctxt "wireframe_strategy option knot"
-msgid "Knot"
-msgstr "Knoten"
-
-#: fdmprinter.def.json
 msgctxt "layer_height label"
 msgid "Layer Height"
 msgstr "Schichtdicke"
@@ -2446,7 +2377,7 @@ msgstr "Maximaler Winkel Außenhaut für Expansion"
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e label"
 msgid "Maximum Speed E"
-msgstr ""
+msgstr "Maximaldrehzahl E"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_x label"
@@ -3024,11 +2955,6 @@ msgid "Percentage fan speed to use when printing the third bridge skin layer."
 msgstr "Prozentwert der Lüfterdrehzahl für das Drucken der dritten Brücken-Außenhautschicht."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_straight_before_down description"
-msgid "Percentage of a diagonally downward line which is covered by a horizontal line piece. This can prevent sagging of the top most point of upward lines. Only applies to Wire Printing."
-msgstr "Der Prozentsatz einer diagonalen Abwärtslinie, die von einem horizontalen Linienteil bedeckt wird. Dies kann das Herabsinken des höchsten Punktes einer Aufwärtslinie verhindern. Dies gilt nur für das Drucken mit Drahtstruktur."
-
-#: fdmprinter.def.json
 msgctxt "minimum_polygon_circumference description"
 msgid "Polygons in sliced layers that have a circumference smaller than this amount will be filtered out. Lower values lead to higher resolution mesh at the cost of slicing time. It is meant mostly for high resolution SLA printers and very tiny 3D models with a lot of details."
 msgstr "Polygone in geschnittenen Schichten, die einen Umfang unter diesem Wert haben, werden ausgefiltert. Niedrigere Werte führen zu einem Mesh mit höherer Auflösung zulasten der Slicing-Zeit. Dies gilt in erster Linie für SLA-Drucker mit höherer Auflösung und sehr kleine 3D-Modelle mit zahlreichen Details."
@@ -3137,11 +3063,6 @@ msgstr "Linien werden hin und her in einer Reihenfolge gedruckt, so dass sie sic
 msgctxt "mold_enabled description"
 msgid "Print models as a mold, which can be cast in order to get a model which resembles the models on the build plate."
 msgstr "Damit werden Modelle als Form gedruckt, die gegossen werden kann, um ein Modell zu erhalten, das den Modellen des Druckbetts ähnelt."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_enabled description"
-msgid "Print only the outside surface with a sparse webbed structure, printing 'in thin air'. This is realized by horizontally printing the contours of the model at given Z intervals which are connected via upward and diagonally downward lines."
-msgstr "Es wird „schwebend“ nur die äußere Oberfläche mit einer dünnen Netzstruktur gedruckt. Dazu werden die Konturen des Modells horizontal gemäß den gegebenen Z-Intervallen gedruckt, welche durch aufwärts und diagonal abwärts verlaufende Linien verbunden werden."
 
 #: fdmprinter.def.json
 msgctxt "fill_outline_gaps description"
@@ -3489,11 +3410,6 @@ msgid "Resolution to compute collisions with to avoid hitting the model. Setting
 msgstr "Dies ist die Auflösung für die Berechnung von Kollisionen, um ein Anschlagen des Modells zu verhindern. Eine niedrigere Einstellung sorgt für akkuratere Bäume, die weniger häufig fehlschlagen, erhöht jedoch die Slicing-Zeit erheblich."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_strategy option retract"
-msgid "Retract"
-msgstr "Einziehen"
-
-#: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"
 msgid "Retract Before Outer Wall"
 msgstr "Vor Außenwand zurückziehen"
@@ -3814,31 +3730,6 @@ msgid "Speed"
 msgstr "Geschwindigkeit"
 
 #: fdmprinter.def.json
-msgctxt "wireframe_printspeed description"
-msgid "Speed at which the nozzle moves when extruding material. Only applies to Wire Printing."
-msgstr "Die Geschwindigkeit, mit der sich die Düse bei der Materialextrusion bewegt. Dies gilt nur für das Drucken mit Drahtstruktur."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_down description"
-msgid "Speed of printing a line diagonally downward. Only applies to Wire Printing."
-msgstr "Die Geschwindigkeit beim Drucken einer Linie in diagonaler Abwärtsrichtung. Dies gilt nur für das Drucken mit Drahtstruktur."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_up description"
-msgid "Speed of printing a line upward 'in thin air'. Only applies to Wire Printing."
-msgstr "Die Geschwindigkeit beim Drucken einer „schwebenden“ Linie in Aufwärtsrichtung. Dies gilt nur für das Drucken mit Drahtstruktur."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_bottom description"
-msgid "Speed of printing the first layer, which is the only layer touching the build platform. Only applies to Wire Printing."
-msgstr "Die Geschwindigkeit beim drucken der ersten Schicht, also der einzigen Schicht, welche das Druckbett berührt. Dies gilt nur für das Drucken mit Drahtstruktur."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_flat description"
-msgid "Speed of printing the horizontal contours of the model. Only applies to Wire Printing."
-msgstr "Die Geschwindigkeit beim Drucken der horizontalen Konturen des Modells. Dies gilt nur für das Drucken mit Drahtstruktur."
-
-#: fdmprinter.def.json
 msgctxt "wipe_hop_speed description"
 msgid "Speed to move the z-axis during the hop."
 msgstr "Geschwindigkeit für das Verfahren der Z-Achse während des Sprungs."
@@ -3887,11 +3778,6 @@ msgstr "Schritte pro Millimeter (Y)"
 msgctxt "machine_steps_per_mm_z label"
 msgid "Steps per Millimeter (Z)"
 msgstr "Schritte pro Millimeter (Z)"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_strategy description"
-msgid "Strategy for making sure two consecutive layers connect at each connection point. Retraction lets the upward lines harden in the right position, but may cause filament grinding. A knot can be made at the end of an upward line to heighten the chance of connecting to it and to let the line cool; however, it may require slow printing speeds. Another strategy is to compensate for the sagging of the top of an upward line; however, the lines won't always fall down as predicted."
-msgstr "Eine Strategie, um sicherzustellen, dass an jedem Verbindungspunkt zwei Schichten miteinander verbunden werden. Durch den Einzug härten die Aufwärtslinien in der richtigen Position, allerdings kann es dabei zum Schleifen des Filaments kommen. Am Ende jeder Aufwärtslinie kann ein Knoten gemacht werden, um die Chance einer erfolgreichen Verbindung zu erhöhen und die Linie abkühlen zu lassen; allerdings ist dafür möglicherweise eine niedrige Druckgeschwindigkeit erforderlich. Eine andere Strategie ist die es an der Oberseite einer Aufwärtslinie das Herabsinken zu kompensieren; allerdings sinken nicht alle Linien immer genauso ab, wie dies erwartet wird."
 
 #: fdmprinter.def.json
 msgctxt "support description"
@@ -4591,7 +4477,7 @@ msgstr "Der Durchmesser des Rades für den Transport des Materials in den Feeder
 #: fdmprinter.def.json
 msgctxt "support_tree_max_diameter description"
 msgid "The diameter of the widest branches of tree support. A thicker trunk is more sturdy; a thinner trunk takes up less space on the build plate."
-msgstr "Der Durchmesser der breitesten Äste der Baumstützstruktur. Ein dickerer Stamm ist robuster; ein dünnerer Stamm nimmt weniger Platz auf dem Druckbett ein."
+msgstr "Durchmesser der breitesten Äste der Baumstützstruktur. Ein dickerer Stamm ist stabiler, ein dünnerer Stamm nimmt weniger Platz auf dem Druckbett ein."
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation_step description"
@@ -4624,14 +4510,9 @@ msgid "The distance between the raft lines for the top raft layers. The spacing 
 msgstr "Der Abstand zwischen den Raft-Linien der Raft-Oberflächenschichten. Der Abstand sollte der Linienbreite entsprechen, damit die Oberfläche stabil ist."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_roof_inset description"
-msgid "The distance covered when making a connection from a roof outline inward. Only applies to Wire Printing."
-msgstr "Der abgedeckte Abstand beim Herstellen einer Verbindung vom Dachumriss nach innen. Dies gilt nur für das Drucken mit Drahtstruktur."
-
-#: fdmprinter.def.json
 msgctxt "interlocking_depth description"
 msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
-msgstr "Der Abstand von der Begrenzung zwischen Modellen, in dem eine ineinandergreifende Struktur generiert wird, gemessen in Zellen. Eine zu geringe Zellenanzahl führt zu mangelnder Haftung."
+msgstr "Der Abstand von der Begrenzung zwischen Modellen, der eine ineinandergreifende Struktur erzeugt, gemessen in Zellen. Eine zu geringe Zellenanzahl führt zu mangelnder Haftung."
 
 #: fdmprinter.def.json
 msgctxt "brim_width description"
@@ -4647,11 +4528,6 @@ msgstr "Der Abstand von der Außenseite eines Modells, in dem keine ineinandergr
 msgctxt "machine_heat_zone_length description"
 msgid "The distance from the tip of the nozzle in which heat from the nozzle is transferred to the filament."
 msgstr "Die Distanz von der Düsenspitze, in der Wärme von der Düse zum Filament geleitet wird."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_drag_along description"
-msgid "The distance of the end piece of an inward line which gets dragged along when going back to the outer outline of the roof. This distance is compensated for. Only applies to Wire Printing."
-msgstr "Die Strecke des Endstücks einer nach innen verlaufenden Linie, um die diese bei der Rückkehr zur äußeren Umfangslinie des Dachs nachgezogen wird. Diese Strecke wird kompensiert. Dies gilt nur für das Drucken mit Drahtstruktur."
 
 #: fdmprinter.def.json
 msgctxt "bottom_skin_expand_distance description"
@@ -4672,11 +4548,6 @@ msgstr "Die Distanz, um die die oberen Außenhäute in die Füllung expandiert w
 msgctxt "wipe_move_distance description"
 msgid "The distance to move the head back and forth across the brush."
 msgstr "Die Strecke, die der Kopf durch Vorwärts- und Rückwärtsbewegung über die Bürste hinweg fährt."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_fall_down description"
-msgid "The distance which horizontal roof lines printed 'in thin air' fall down when being printed. This distance is compensated for. Only applies to Wire Printing."
-msgstr "Die Strecke, um die horizontale Dachlinien, die „schwebend“ gedruckt werden, beim Druck herunterfallen. Diese Strecke wird kompensiert. Dies gilt nur für das Drucken mit Drahtstruktur."
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_prune_angle description"
@@ -4887,11 +4758,6 @@ msgstr "Die Dicke der ersten Schicht in mm. Eine dicke erste Schicht erleichtert
 msgctxt "support_bottom_stair_step_height description"
 msgid "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures. Set to zero to turn off the stair-like behaviour."
 msgstr "Die Höhe der Stufen der treppenförmigen Unterlage für die Stützstruktur des Modells. Ein niedriger Wert kann das Entfernen der Stützstruktur erschweren, ein zu hoher Wert kann jedoch zu instabilen Stützstrukturen führen. Auf Null einstellen, um das Stufenverhalten zu deaktivieren."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_height description"
-msgid "The height of the upward and diagonally downward lines between two horizontal parts. This determines the overall density of the net structure. Only applies to Wire Printing."
-msgstr "Die Höhe der Aufwärtslinien und diagonalen Abwärtslinien zwischen zwei horizontalen Teilen. Dies legt die Gesamtdichte der Netzstruktur fest. Dies gilt nur für das Drucken mit Drahtstruktur."
 
 #: fdmprinter.def.json
 msgctxt "brim_gap description"
@@ -5175,7 +5041,7 @@ msgstr "Die Mindestlänge für das Skirt- oder Brim-Element. Wenn diese Mindestl
 #: fdmprinter.def.json
 msgctxt "min_odd_wall_line_width description"
 msgid "The minimum line width for middle line gap filler polyline walls. This setting determines at which model thickness we switch from printing two wall lines, to printing two outer walls and a single central wall in the middle. A higher Minimum Odd Wall Line Width leads to a higher maximum even wall line width. The maximum odd wall line width is calculated as 2 * Minimum Even Wall Line Width."
-msgstr "Die minimale Linienbreite für Polylinienwände mit Lücken in der mittleren Linie. Diese Einstellung legt fest, bei welcher Stärke im Modell ein Übergang vom Druck zweier Wandlinien zum Druck zweier Außenwände und einer einzigen zentralen Wand in der Mitte erfolgt. Eine höhere minimale ungeradzahlige Wandlinienstärke führt zu einer höheren maximalen geradzahligen Wandlinienstärke. Die maximale ungerade Wandlinienbreite wird berechnet als 2 x Minimale Wandlinienstärke (geradzahlig)."
+msgstr "Die minimale Linienbreite für Polylinienwände mit Lücken in der mittleren Linie. Diese Einstellung legt fest, bei welcher Stärke im Modell ein Übergang vom Druck zweier Wandlinien zum Druck zweier Außenwände und einer einzigen zentralen Wand in der Mitte erfolgt. Eine höhere minimale ungeradzahlige Wandlinienstärke führt zu einer höheren maximalen ungeradzahligen Wandlinienstärke. Die maximale ungerade Wandlinienbreite wird berechnet als 2 x Minimale Wandlinienbreite."
 
 #: fdmprinter.def.json
 msgctxt "min_even_wall_line_width description"
@@ -5290,7 +5156,7 @@ msgstr "Die Anzahl der Wände, mit denen die Stützstruktur-Füllung umgeben wir
 #: fdmprinter.def.json
 msgctxt "support_bottom_wall_count description"
 msgid "The number of walls with which to surround support interface floor. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "Die Anzahl der Wände, mit denen der Stützstruktur-Schnittstellenboden umgeben werden soll. Das Hinzufügen einer Wand kann den Druck der Stützstruktur zuverlässiger machen und Überhänge besser unterstützen. Es erhöht jedoch die Druckzeit und den Materialverbrauch."
+msgstr "Die Anzahl der Wände, mit denen der Stützstruktur-Schnittstellenboden umgeben wird. Das Hinzufügen einer Wand kann den Druck der Stützstruktur zuverlässiger machen und Überhänge besser unterstützen. Es erhöht jedoch die Druckzeit und den Materialverbrauch."
 
 #: fdmprinter.def.json
 msgctxt "support_roof_wall_count description"
@@ -5778,11 +5644,6 @@ msgid "This will create a wall around the model, which traps (hot) air and shiel
 msgstr "Es wird rund um das Modell eine Wand erstellt, die (heiße) Luft festhält und vor externen Luftströmen schützt. Dies ist besonders nützlich bei Materialien, die sich leicht verbiegen."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_roof_outer_delay description"
-msgid "Time spent at the outer perimeters of hole which is to become a roof. Longer times can ensure a better connection. Only applies to Wire Printing."
-msgstr "Die Zeit, die für die äußeren Umfänge eines Lochs aufgewendet wird, das später zu einem Dach werden soll. Durch längere Zeiten kann die Verbindung besser werden. Dies gilt nur für das Drucken mit Drahtstruktur."
-
-#: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage_xy description"
 msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor in the XY-direction (horizontally)."
 msgstr "Um die Schrumpfung des Materials beim Abkühlen auszugleichen, wird das Modell mit diesem Faktor in XY-Richtung (horizontal) skaliert."
@@ -6070,7 +5931,7 @@ msgstr "Verwenden Sie eine separate Beschleunigungsrate für Bewegungen. Wenn di
 #: fdmprinter.def.json
 msgctxt "jerk_travel_enabled description"
 msgid "Use a separate jerk rate for travel moves. If disabled, travel moves will use the jerk value of the printed line at their destination."
-msgstr "Verwenden Sie eine separate Ruckfunktionsrate für Bewegungen. Wenn diese Option deaktiviert ist, wird für Bewegungen der Ruckfunktionswert der gedruckten Linie an der Zielposition verwendet."
+msgstr "Verwenden Sie eine separate Ruckrate für Bewegungen. Wenn diese Option deaktiviert ist, wird für Bewegungen der Ruckfunktionswert der gedruckten Linie an der Zielposition verwendet."
 
 #: fdmprinter.def.json
 msgctxt "relative_extrusion description"
@@ -6111,121 +5972,6 @@ msgstr "Schrumpfungskompensation für vertikalen Skalierungsfaktor"
 msgctxt "slicing_tolerance description"
 msgid "Vertical tolerance in the sliced layers. The contours of a layer are normally generated by taking cross sections through the middle of each layer's thickness (Middle). Alternatively each layer can have the areas which fall inside of the volume throughout the entire thickness of the layer (Exclusive) or a layer has the areas which fall inside anywhere within the layer (Inclusive). Inclusive retains the most details, Exclusive makes for the best fit and Middle stays closest to the original surface."
 msgstr "Vertikale Toleranz der geschnittenen (Slicing) Schichten. Die Konturen einer Schicht werden normalerweise erzeugt, indem ein Querschnitt durch die Mitte der Höhe jeder Schicht (Mitte) vorgenommen wird. Alternativ kann jede Schicht die Bereiche aufweisen, die über die gesamte Dicke der Schicht (Exklusiv) in das Volumen fallen, oder eine Schicht weist die Bereiche auf, die innerhalb der Schicht (Inklusiv) irgendwo hineinfallen. Inklusiv ermöglicht die meisten Details, Exklusiv die beste Passform und Mitte entspricht der ursprünglichen Fläche am ehesten."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_bottom_delay label"
-msgid "WP Bottom Delay"
-msgstr "Abwärtsverzögerung beim Drucken mit Drahtstruktur"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_bottom label"
-msgid "WP Bottom Printing Speed"
-msgstr "Geschwindigkeit beim Drucken der Unterseite mit Drahtstruktur"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow_connection label"
-msgid "WP Connection Flow"
-msgstr "Fluss für Drucken von Verbindungen mit Drahtstruktur"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_height label"
-msgid "WP Connection Height"
-msgstr "Verbindungshöhe bei Drucken mit Drahtstruktur"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_down label"
-msgid "WP Downward Printing Speed"
-msgstr "Geschwindigkeit beim Drucken in Abwärtsrichtung mit Drahtstruktur"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_drag_along label"
-msgid "WP Drag Along"
-msgstr "Nachziehen bei Drucken mit Drahtstruktur"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_up_half_speed label"
-msgid "WP Ease Upward"
-msgstr "Langsame Aufwärtsbewegung bei Drucken mit Drahtstruktur"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_fall_down label"
-msgid "WP Fall Down"
-msgstr "Herunterfallen bei Drucken mit Drahtstruktur"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flat_delay label"
-msgid "WP Flat Delay"
-msgstr "Horizontale Verzögerung beim Drucken mit Drahtstruktur"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow_flat label"
-msgid "WP Flat Flow"
-msgstr "Fluss für Drucken von flachen Linien mit Drahtstruktur"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow label"
-msgid "WP Flow"
-msgstr "Fluss für Drucken mit Drahtstruktur"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_flat label"
-msgid "WP Horizontal Printing Speed"
-msgstr "Geschwindigkeit beim Drucken in horizontaler Richtung mit Drahtstruktur"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_top_jump label"
-msgid "WP Knot Size"
-msgstr "Knotengröße für Drucken mit Drahtstruktur"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_nozzle_clearance label"
-msgid "WP Nozzle Clearance"
-msgstr "Düsenabstand bei Drucken mit Drahtstruktur"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_drag_along label"
-msgid "WP Roof Drag Along"
-msgstr "Nachziehen für Dach bei Drucken mit Drahtstruktur"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_fall_down label"
-msgid "WP Roof Fall Down"
-msgstr "Herunterfallen des Dachs bei Drucken mit Drahtstruktur"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_inset label"
-msgid "WP Roof Inset Distance"
-msgstr "Einfügeabstand für Dach bei Drucken mit Drahtstruktur"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_outer_delay label"
-msgid "WP Roof Outer Delay"
-msgstr "Verzögerung für Dachumfänge bei Drucken mit Drahtstruktur"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed label"
-msgid "WP Speed"
-msgstr "Geschwindigkeit beim Drucken mit Drahtstruktur"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_straight_before_down label"
-msgid "WP Straighten Downward Lines"
-msgstr "Abwärtslinien beim Drucken mit Drahtstruktur geraderichten"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_strategy label"
-msgid "WP Strategy"
-msgstr "Strategie für Drucken mit Drahtstruktur"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_top_delay label"
-msgid "WP Top Delay"
-msgstr "Aufwärtsverzögerung beim Drucken mit Drahtstruktur"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_up label"
-msgid "WP Upward Printing Speed"
-msgstr "Geschwindigkeit beim Drucken in Aufwärtsrichtung mit Drahtstruktur"
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temp_wait label"
@@ -6658,11 +6404,6 @@ msgid "Wipe Z Hop Height"
 msgstr "Z-Sprung Höhe - Abwischen"
 
 #: fdmprinter.def.json
-msgctxt "wireframe_enabled label"
-msgid "Wire Printing"
-msgstr "Drucken mit Drahtstruktur"
-
-#: fdmprinter.def.json
 msgctxt "retraction_combing option infill"
 msgid "Within Infill"
 msgstr "Innerhalb der Füllung"
@@ -6806,3 +6547,211 @@ msgstr "Zickzack"
 msgctxt "travel description"
 msgid "travel"
 msgstr "Bewegungen"
+
+#~ msgctxt "wireframe_strategy option compensate"
+#~ msgid "Compensate"
+#~ msgstr "Kompensieren"
+
+#~ msgctxt "wireframe_top_jump description"
+#~ msgid "Creates a small knot at the top of an upward line, so that the consecutive horizontal layer has a better chance to connect to it. Only applies to Wire Printing."
+#~ msgstr "Es wird ein kleiner Knoten oben auf einer Aufwärtslinie hergestellt, damit die nächste horizontale Schicht eine bessere Verbindung mit dieser herstellen kann. Dies gilt nur für das Drucken mit Drahtstruktur."
+
+#~ msgctxt "wireframe_bottom_delay description"
+#~ msgid "Delay time after a downward move. Only applies to Wire Printing."
+#~ msgstr "Die Verzögerungszeit nach einer Abwärtsbewegung. Dies gilt nur für das Drucken mit Drahtstruktur."
+
+#~ msgctxt "wireframe_top_delay description"
+#~ msgid "Delay time after an upward move, so that the upward line can harden. Only applies to Wire Printing."
+#~ msgstr "Die Verzögerungszeit nach einer Aufwärtsbewegung, damit die Aufwärtslinie härten kann. Dies gilt nur für das Drucken mit Drahtstruktur."
+
+#~ msgctxt "wireframe_flat_delay description"
+#~ msgid "Delay time between two horizontal segments. Introducing such a delay can cause better adhesion to previous layers at the connection points, while too long delays cause sagging. Only applies to Wire Printing."
+#~ msgstr "Die Verzögerungszeit zwischen zwei horizontalen Segmenten. Durch eine solche Verzögerung kann eine bessere Haftung an den Verbindungspunkten zu vorherigen Schichten erreicht werden; bei einer zu langen Verzögerungszeit kann es allerdings zum Herabsinken von Bestandteilen kommen. Dies gilt nur für das Drucken mit Drahtstruktur."
+
+#~ msgctxt "wireframe_nozzle_clearance description"
+#~ msgid "Distance between the nozzle and horizontally downward lines. Larger clearance results in diagonally downward lines with a less steep angle, which in turn results in less upward connections with the next layer. Only applies to Wire Printing."
+#~ msgstr "Der Abstand zwischen der Düse und den horizontalen Abwärtslinien. Bei einem größeren Abstand haben die diagonalen Abwärtslinien einen weniger spitzen Winkel, was wiederum weniger Aufwärtsverbindungen zur nächsten Schicht zur Folge hat. Dies gilt nur für das Drucken mit Drahtstruktur."
+
+#~ msgctxt "wireframe_up_half_speed description"
+#~ msgid ""
+#~ "Distance of an upward move which is extruded with half speed.\n"
+#~ "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
+#~ msgstr ""
+#~ "Die Strecke einer Aufwärtsbewegung, die mit halber Geschwindigkeit extrudiert wird.\n"
+#~ "Dies kann zu einer besseren Haftung an vorhergehenden Schichten führen, während gleichzeitig ein Überhitzen des Materials in diesen Schichten vermieden wird. Dies gilt nur für das Drucken mit Drahtstruktur."
+
+#~ msgctxt "wireframe_fall_down description"
+#~ msgid "Distance with which the material falls down after an upward extrusion. This distance is compensated for. Only applies to Wire Printing."
+#~ msgstr "Die Strecke, die das Material nach einer Aufwärts-Extrusion herunterfällt. Diese Strecke wird kompensiert. Dies gilt nur für das Drucken mit Drahtstruktur."
+
+#~ msgctxt "wireframe_drag_along description"
+#~ msgid "Distance with which the material of an upward extrusion is dragged along with the diagonally downward extrusion. This distance is compensated for. Only applies to Wire Printing."
+#~ msgstr "Die Strecke, die das Material bei einer Aufwärts-Extrusion mit der diagonalen Abwärts-Extrusion nach unten gezogen wird. Diese Strecke wird kompensiert. Dies gilt nur für das Drucken mit Drahtstruktur."
+
+#~ msgctxt "wireframe_flow_connection description"
+#~ msgid "Flow compensation when going up or down. Only applies to Wire Printing."
+#~ msgstr "Flusskompensation bei der Aufwärts- und Abwärtsbewegung. Dies gilt nur für das Drucken mit Drahtstruktur."
+
+#~ msgctxt "wireframe_flow_flat description"
+#~ msgid "Flow compensation when printing flat lines. Only applies to Wire Printing."
+#~ msgstr "Flusskompensation beim Drucken flacher Linien. Dies gilt nur für das Drucken mit Drahtstruktur."
+
+#~ msgctxt "wireframe_flow description"
+#~ msgid "Flow compensation: the amount of material extruded is multiplied by this value. Only applies to Wire Printing."
+#~ msgstr "Flusskompensation: Die extrudierte Materialmenge wird mit diesem Wert multipliziert. Dies gilt nur für das Drucken mit Drahtstruktur."
+
+#~ msgctxt "wireframe_strategy option knot"
+#~ msgid "Knot"
+#~ msgstr "Knoten"
+
+#~ msgctxt "wireframe_straight_before_down description"
+#~ msgid "Percentage of a diagonally downward line which is covered by a horizontal line piece. This can prevent sagging of the top most point of upward lines. Only applies to Wire Printing."
+#~ msgstr "Der Prozentsatz einer diagonalen Abwärtslinie, die von einem horizontalen Linienteil bedeckt wird. Dies kann das Herabsinken des höchsten Punktes einer Aufwärtslinie verhindern. Dies gilt nur für das Drucken mit Drahtstruktur."
+
+#~ msgctxt "wireframe_enabled description"
+#~ msgid "Print only the outside surface with a sparse webbed structure, printing 'in thin air'. This is realized by horizontally printing the contours of the model at given Z intervals which are connected via upward and diagonally downward lines."
+#~ msgstr "Es wird „schwebend“ nur die äußere Oberfläche mit einer dünnen Netzstruktur gedruckt. Dazu werden die Konturen des Modells horizontal gemäß den gegebenen Z-Intervallen gedruckt, welche durch aufwärts und diagonal abwärts verlaufende Linien verbunden werden."
+
+#~ msgctxt "wireframe_strategy option retract"
+#~ msgid "Retract"
+#~ msgstr "Einziehen"
+
+#~ msgctxt "wireframe_printspeed description"
+#~ msgid "Speed at which the nozzle moves when extruding material. Only applies to Wire Printing."
+#~ msgstr "Die Geschwindigkeit, mit der sich die Düse bei der Materialextrusion bewegt. Dies gilt nur für das Drucken mit Drahtstruktur."
+
+#~ msgctxt "wireframe_printspeed_down description"
+#~ msgid "Speed of printing a line diagonally downward. Only applies to Wire Printing."
+#~ msgstr "Die Geschwindigkeit beim Drucken einer Linie in diagonaler Abwärtsrichtung. Dies gilt nur für das Drucken mit Drahtstruktur."
+
+#~ msgctxt "wireframe_printspeed_up description"
+#~ msgid "Speed of printing a line upward 'in thin air'. Only applies to Wire Printing."
+#~ msgstr "Die Geschwindigkeit beim Drucken einer „schwebenden“ Linie in Aufwärtsrichtung. Dies gilt nur für das Drucken mit Drahtstruktur."
+
+#~ msgctxt "wireframe_printspeed_bottom description"
+#~ msgid "Speed of printing the first layer, which is the only layer touching the build platform. Only applies to Wire Printing."
+#~ msgstr "Die Geschwindigkeit beim drucken der ersten Schicht, also der einzigen Schicht, welche das Druckbett berührt. Dies gilt nur für das Drucken mit Drahtstruktur."
+
+#~ msgctxt "wireframe_printspeed_flat description"
+#~ msgid "Speed of printing the horizontal contours of the model. Only applies to Wire Printing."
+#~ msgstr "Die Geschwindigkeit beim Drucken der horizontalen Konturen des Modells. Dies gilt nur für das Drucken mit Drahtstruktur."
+
+#~ msgctxt "wireframe_strategy description"
+#~ msgid "Strategy for making sure two consecutive layers connect at each connection point. Retraction lets the upward lines harden in the right position, but may cause filament grinding. A knot can be made at the end of an upward line to heighten the chance of connecting to it and to let the line cool; however, it may require slow printing speeds. Another strategy is to compensate for the sagging of the top of an upward line; however, the lines won't always fall down as predicted."
+#~ msgstr "Eine Strategie, um sicherzustellen, dass an jedem Verbindungspunkt zwei Schichten miteinander verbunden werden. Durch den Einzug härten die Aufwärtslinien in der richtigen Position, allerdings kann es dabei zum Schleifen des Filaments kommen. Am Ende jeder Aufwärtslinie kann ein Knoten gemacht werden, um die Chance einer erfolgreichen Verbindung zu erhöhen und die Linie abkühlen zu lassen; allerdings ist dafür möglicherweise eine niedrige Druckgeschwindigkeit erforderlich. Eine andere Strategie ist die es an der Oberseite einer Aufwärtslinie das Herabsinken zu kompensieren; allerdings sinken nicht alle Linien immer genauso ab, wie dies erwartet wird."
+
+#~ msgctxt "wireframe_roof_inset description"
+#~ msgid "The distance covered when making a connection from a roof outline inward. Only applies to Wire Printing."
+#~ msgstr "Der abgedeckte Abstand beim Herstellen einer Verbindung vom Dachumriss nach innen. Dies gilt nur für das Drucken mit Drahtstruktur."
+
+#~ msgctxt "wireframe_roof_drag_along description"
+#~ msgid "The distance of the end piece of an inward line which gets dragged along when going back to the outer outline of the roof. This distance is compensated for. Only applies to Wire Printing."
+#~ msgstr "Die Strecke des Endstücks einer nach innen verlaufenden Linie, um die diese bei der Rückkehr zur äußeren Umfangslinie des Dachs nachgezogen wird. Diese Strecke wird kompensiert. Dies gilt nur für das Drucken mit Drahtstruktur."
+
+#~ msgctxt "wireframe_roof_fall_down description"
+#~ msgid "The distance which horizontal roof lines printed 'in thin air' fall down when being printed. This distance is compensated for. Only applies to Wire Printing."
+#~ msgstr "Die Strecke, um die horizontale Dachlinien, die „schwebend“ gedruckt werden, beim Druck herunterfallen. Diese Strecke wird kompensiert. Dies gilt nur für das Drucken mit Drahtstruktur."
+
+#~ msgctxt "wireframe_height description"
+#~ msgid "The height of the upward and diagonally downward lines between two horizontal parts. This determines the overall density of the net structure. Only applies to Wire Printing."
+#~ msgstr "Die Höhe der Aufwärtslinien und diagonalen Abwärtslinien zwischen zwei horizontalen Teilen. Dies legt die Gesamtdichte der Netzstruktur fest. Dies gilt nur für das Drucken mit Drahtstruktur."
+
+#~ msgctxt "wireframe_roof_outer_delay description"
+#~ msgid "Time spent at the outer perimeters of hole which is to become a roof. Longer times can ensure a better connection. Only applies to Wire Printing."
+#~ msgstr "Die Zeit, die für die äußeren Umfänge eines Lochs aufgewendet wird, das später zu einem Dach werden soll. Durch längere Zeiten kann die Verbindung besser werden. Dies gilt nur für das Drucken mit Drahtstruktur."
+
+#~ msgctxt "wireframe_bottom_delay label"
+#~ msgid "WP Bottom Delay"
+#~ msgstr "Abwärtsverzögerung beim Drucken mit Drahtstruktur"
+
+#~ msgctxt "wireframe_printspeed_bottom label"
+#~ msgid "WP Bottom Printing Speed"
+#~ msgstr "Geschwindigkeit beim Drucken der Unterseite mit Drahtstruktur"
+
+#~ msgctxt "wireframe_flow_connection label"
+#~ msgid "WP Connection Flow"
+#~ msgstr "Fluss für Drucken von Verbindungen mit Drahtstruktur"
+
+#~ msgctxt "wireframe_height label"
+#~ msgid "WP Connection Height"
+#~ msgstr "Verbindungshöhe bei Drucken mit Drahtstruktur"
+
+#~ msgctxt "wireframe_printspeed_down label"
+#~ msgid "WP Downward Printing Speed"
+#~ msgstr "Geschwindigkeit beim Drucken in Abwärtsrichtung mit Drahtstruktur"
+
+#~ msgctxt "wireframe_drag_along label"
+#~ msgid "WP Drag Along"
+#~ msgstr "Nachziehen bei Drucken mit Drahtstruktur"
+
+#~ msgctxt "wireframe_up_half_speed label"
+#~ msgid "WP Ease Upward"
+#~ msgstr "Langsame Aufwärtsbewegung bei Drucken mit Drahtstruktur"
+
+#~ msgctxt "wireframe_fall_down label"
+#~ msgid "WP Fall Down"
+#~ msgstr "Herunterfallen bei Drucken mit Drahtstruktur"
+
+#~ msgctxt "wireframe_flat_delay label"
+#~ msgid "WP Flat Delay"
+#~ msgstr "Horizontale Verzögerung beim Drucken mit Drahtstruktur"
+
+#~ msgctxt "wireframe_flow_flat label"
+#~ msgid "WP Flat Flow"
+#~ msgstr "Fluss für Drucken von flachen Linien mit Drahtstruktur"
+
+#~ msgctxt "wireframe_flow label"
+#~ msgid "WP Flow"
+#~ msgstr "Fluss für Drucken mit Drahtstruktur"
+
+#~ msgctxt "wireframe_printspeed_flat label"
+#~ msgid "WP Horizontal Printing Speed"
+#~ msgstr "Geschwindigkeit beim Drucken in horizontaler Richtung mit Drahtstruktur"
+
+#~ msgctxt "wireframe_top_jump label"
+#~ msgid "WP Knot Size"
+#~ msgstr "Knotengröße für Drucken mit Drahtstruktur"
+
+#~ msgctxt "wireframe_nozzle_clearance label"
+#~ msgid "WP Nozzle Clearance"
+#~ msgstr "Düsenabstand bei Drucken mit Drahtstruktur"
+
+#~ msgctxt "wireframe_roof_drag_along label"
+#~ msgid "WP Roof Drag Along"
+#~ msgstr "Nachziehen für Dach bei Drucken mit Drahtstruktur"
+
+#~ msgctxt "wireframe_roof_fall_down label"
+#~ msgid "WP Roof Fall Down"
+#~ msgstr "Herunterfallen des Dachs bei Drucken mit Drahtstruktur"
+
+#~ msgctxt "wireframe_roof_inset label"
+#~ msgid "WP Roof Inset Distance"
+#~ msgstr "Einfügeabstand für Dach bei Drucken mit Drahtstruktur"
+
+#~ msgctxt "wireframe_roof_outer_delay label"
+#~ msgid "WP Roof Outer Delay"
+#~ msgstr "Verzögerung für Dachumfänge bei Drucken mit Drahtstruktur"
+
+#~ msgctxt "wireframe_printspeed label"
+#~ msgid "WP Speed"
+#~ msgstr "Geschwindigkeit beim Drucken mit Drahtstruktur"
+
+#~ msgctxt "wireframe_straight_before_down label"
+#~ msgid "WP Straighten Downward Lines"
+#~ msgstr "Abwärtslinien beim Drucken mit Drahtstruktur geraderichten"
+
+#~ msgctxt "wireframe_strategy label"
+#~ msgid "WP Strategy"
+#~ msgstr "Strategie für Drucken mit Drahtstruktur"
+
+#~ msgctxt "wireframe_top_delay label"
+#~ msgid "WP Top Delay"
+#~ msgstr "Aufwärtsverzögerung beim Drucken mit Drahtstruktur"
+
+#~ msgctxt "wireframe_printspeed_up label"
+#~ msgid "WP Upward Printing Speed"
+#~ msgstr "Geschwindigkeit beim Drucken in Aufwärtsrichtung mit Drahtstruktur"
+
+#~ msgctxt "wireframe_enabled label"
+#~ msgid "Wire Printing"
+#~ msgstr "Drucken mit Drahtstruktur"

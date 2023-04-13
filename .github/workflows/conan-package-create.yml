@@ -51,10 +51,8 @@ on:
                 type: boolean
 
 env:
-    CONAN_LOGIN_USERNAME_CURA: ${{ secrets.CONAN_USER }}
-    CONAN_PASSWORD_CURA: ${{ secrets.CONAN_PASS }}
-    CONAN_LOGIN_USERNAME_CURA_CE: ${{ secrets.CONAN_USER }}
-    CONAN_PASSWORD_CURA_CE: ${{ secrets.CONAN_PASS }}
+    CONAN_LOGIN_USERNAME: ${{ secrets.CONAN_USER }}
+    CONAN_PASSWORD: ${{ secrets.CONAN_PASS }}
     CONAN_LOG_RUN_TO_OUTPUT: 1
     CONAN_LOGGING_LEVEL: ${{ inputs.conan_logging_level }}
     CONAN_NON_INTERACTIVE: 1
@@ -145,20 +143,16 @@ jobs:
                 if: ${{ inputs.conan_config_branch == '' }}
                 run: conan config install https://github.com/Ultimaker/conan-config.git
 
-            -   name: Create the lock file
-                if: ${{ inputs.build_info }}
-                run: |
-                    conan_build_info --v2 start ${{ inputs.project_name }} ${{ github.run_number }}000${{ inputs.build_id }}
-                    conan lock create --reference ${{ inputs.recipe_id_full }} --lockfile-out=conan.lock                    
-
-            -   name: Create the Packages using lockfile
-                if: ${{ inputs.build_info }}
-                run: conan install ${{ inputs.recipe_id_full }} --build=missing --update --lockfile=conan.lock --lockfile-out=conan.lock
+            -   name: Add Cura private Artifactory remote
+                run: conan remote add cura-private https://ultimaker.jfrog.io/artifactory/api/conan/cura-private True
 
             -   name: Create the Packages
                 run: conan install ${{ inputs.recipe_id_full }} --build=missing --update
 
             -   name: Upload the Package(s)
-                if: always()
-                run: |
-                    conan upload ${{ inputs.recipe_id_full }} -r cura --all -c
+                if: ${{ always() && inputs.conan_upload_community }}
+                run: conan upload ${{ inputs.recipe_id_full }} -r cura --all -c
+
+            -   name: Upload the Package(s) to the private Artifactory
+                if: ${{ always() && ! inputs.conan_upload_community }}
+                run: conan upload ${{ inputs.recipe_id_full }} -r cura-private --all -c
