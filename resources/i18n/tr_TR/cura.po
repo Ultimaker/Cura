@@ -6827,7 +6827,7 @@ msgstr "Yazıcı Ekle"
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:33
 msgctxt "@label"
 msgid "New UltiMaker printers can be connected to Digital Factory and monitored remotely."
-msgstr "Yeni Ultimaker yazıcılar Digital Factory’ye bağlanabilir ve uzaktan izlenebilir."
+msgstr "Yeni UltiMaker yazıcılar Digital Factory’ye bağlanabilir ve uzaktan izlenebilir."
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:70
 msgctxt "@label"

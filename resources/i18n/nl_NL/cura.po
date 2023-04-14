@@ -6792,7 +6792,7 @@ msgstr "Een niet-netwerkprinter toevoegen"
 #: resources/qml/WelcomePages/AddThirdPartyPrinter.qml:102
 msgctxt "@button"
 msgid "Add UltiMaker printer via Digital Factory"
-msgstr "Ultimaker printer toevoegen via Digital Factory"
+msgstr "UltiMaker printer toevoegen via Digital Factory"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:29
 msgctxt "@label"

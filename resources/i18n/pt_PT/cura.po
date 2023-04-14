@@ -6809,7 +6809,7 @@ msgstr "Impressora da UltiMaker"
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:64
 msgctxt "@button"
 msgid "Non UltiMaker printer"
-msgstr "Impressora não Ultimaker"
+msgstr "Impressora não UltiMaker"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:73
 msgctxt "@button"
