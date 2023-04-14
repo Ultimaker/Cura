@@ -829,7 +829,7 @@ msgstr "프로젝트 파일 열기"
 #: plugins/3MFReader/WorkspaceDialog.qml:134
 msgctxt "@button"
 msgid "Create new"
-msgstr ""
+msgstr "새로 만들기"
 
 #: plugins/3MFReader/ThreeMFWorkspaceReader.py:681
 #, python-brace-format
@@ -925,7 +925,7 @@ msgstr "프린터 그룹"
 #: plugins/3MFReader/WorkspaceDialog.qml:103
 msgctxt "@action:label"
 msgid "Open With"
-msgstr ""
+msgstr "다음으로 열기"
 
 #: plugins/3MFReader/WorkspaceDialog.qml:104
 msgctxt "@info:tooltip"
@@ -4592,17 +4592,17 @@ msgstr "새로운 기능"
 #: resources/qml/Cura.qml:890
 msgctxt "@title:window"
 msgid "Save Custom Profile"
-msgstr ""
+msgstr "사용자 지정 프로필 저장"
 
 #: resources/qml/Cura.qml:891
 msgctxt "@textfield:placeholder"
 msgid "New Custom Profile"
-msgstr ""
+msgstr "새 사용자 지정 프로필"
 
 #: resources/qml/Cura.qml:892
 msgctxt "@info"
 msgid "Custom profile name:"
-msgstr ""
+msgstr "사용자 지정 프로필 이름:"
 
 #: resources/qml/Cura.qml:909
 msgctxt "@label %i will be replaced with a profile name"
@@ -4617,7 +4617,7 @@ msgstr "Cura 프린트 프로필에 대해 자세히 알아보기"
 #: resources/qml/Cura.qml:926
 msgctxt "@button"
 msgid "Save new profile"
-msgstr ""
+msgstr "새 프로필 저장"
 
 #: resources/qml/Dialogs/AboutDialog.qml:15
 msgctxt "@title:window The argument is the application name."
@@ -4906,12 +4906,12 @@ msgstr "변경 사항 유지"
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:171
 msgctxt "@action:button"
 msgid "Save as new custom profile"
-msgstr ""
+msgstr "새 사용자 지정 프로필로 저장"
 
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:178
 msgctxt "@action:button"
 msgid "Save changes"
-msgstr ""
+msgstr "변경 사항 저장"
 
 #: resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:47
 msgctxt "@text:window"
@@ -6202,7 +6202,7 @@ msgstr "(<b>%1</b>)에 대한 권장 설정이 변경되었습니다."
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:106
 msgctxt "@info %1 is the name of a profile"
 msgid "Some setting-values defined in <b>%1</b> were overridden."
-msgstr ""
+msgstr "현재 프로파일의 일부 설정을 덮어썼습니다."
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:137
 msgctxt "@info"
@@ -6227,7 +6227,7 @@ msgstr "브림이나 라프트를 사용합니다. 이렇게하면 출력물 주
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:102
 msgctxt "@label"
 msgid "Recommended print settings"
-msgstr ""
+msgstr "권장 프린트 설정"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:111
 msgctxt "@button"
@@ -6252,7 +6252,7 @@ msgstr "다음 설정은 부품의 강도를 정의합니다."
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:34
 msgctxt "infill_sparse_density description"
 msgid "Infill Density"
-msgstr ""
+msgstr "내부채움 밀도"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:35
 msgctxt "@label"
@@ -6286,7 +6286,7 @@ msgstr ""
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:67
 msgctxt "@action:label"
 msgid "Shell Thickness"
-msgstr ""
+msgstr "셸 두께"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:68
 msgctxt "@label"
@@ -6306,7 +6306,7 @@ msgstr "오버행이 있는 모델 서포트를 생성합니다. 이러한 구�
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:40
 msgctxt "@action:label"
 msgid "Support Type"
-msgstr ""
+msgstr "지원 유형"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:41
 msgctxt "@label"
@@ -6321,7 +6321,7 @@ msgstr "서포트를 생성하는 데 사용할 수 있는 기술 중 하나를 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:53
 msgctxt "@action:label"
 msgid "Print with"
-msgstr ""
+msgstr "다음으로 프린트"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:54
 msgctxt "@label"
@@ -6774,12 +6774,12 @@ msgstr "비 네트워크 프린터 추가"
 #: resources/qml/WelcomePages/AddThirdPartyPrinter.qml:102
 msgctxt "@button"
 msgid "Add UltiMaker printer via Digital Factory"
-msgstr ""
+msgstr "Digital Factory를 통해 UltiMaker 프린터 추가"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:29
 msgctxt "@label"
 msgid "In order to start using Cura you will need to configure a printer."
-msgstr ""
+msgstr "Cura를 사용하려면 프린터를 구성해야 합니다."
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:36
 msgctxt "@label"
@@ -6789,12 +6789,12 @@ msgstr "어떤 프린터를 설정하시겠습니까?"
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:55
 msgctxt "@button"
 msgid "UltiMaker printer"
-msgstr ""
+msgstr "UltiMaker 프린터"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:64
 msgctxt "@button"
 msgid "Non UltiMaker printer"
-msgstr ""
+msgstr "UltiMaker 프린터가 아님"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:73
 msgctxt "@button"
@@ -6804,12 +6804,12 @@ msgstr "Cura에 프린터를 추가하는 방법 자세히 알아보기"
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinterStack.qml:29
 msgctxt "@label"
 msgid "Add printer"
-msgstr ""
+msgstr "프린터 추가"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:33
 msgctxt "@label"
 msgid "New UltiMaker printers can be connected to Digital Factory and monitored remotely."
-msgstr ""
+msgstr "새 UltiMaker 프린터를 Digital Factory에 연결하여 원격으로 모니터링할 수 있습니다."
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:70
 msgctxt "@label"
@@ -6839,17 +6839,17 @@ msgstr "자세히 알아보기"
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:121
 msgctxt "@button"
 msgid "Add local printer"
-msgstr ""
+msgstr "로컬 프린터 추가"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:129
 msgctxt "@button"
 msgid "Sign in to Digital Factory"
-msgstr ""
+msgstr "Digital Factory에 로그인"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:133
 msgctxt "@button"
 msgid "Waiting for new printers"
-msgstr ""
+msgstr "새 프린터 대기 중"
 
 #: resources/qml/WelcomePages/ChangelogContent.qml:24
 msgctxt "@label"
