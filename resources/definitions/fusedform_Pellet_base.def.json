@@ -61,7 +61,7 @@
 
  	
  	"cool_fan_full_at_height": {"value":1},
- 	"cool_fan_full_layer": {"value":2},
+ 	
  	"cool_min_speed": {"value":0},
 
 	"support_enable": {"value":true},
