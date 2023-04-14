@@ -65,7 +65,7 @@
  	"cool_min_speed": {"value":0},
 
 	"support_enable": {"value":true},
- 	"support_angle": {"default_value": 50},
+ 	
  	"support_brim_enable": {"value":true},
  	"support_infill_angles": {"value":[-45]},
  	"support_interface_density": {"value": 70},
