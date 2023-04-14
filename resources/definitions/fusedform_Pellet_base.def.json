@@ -16,7 +16,7 @@
 
     "overrides": {
         "machine_heated_bed": { "default_value": true },
-        "machine_center_is_zero": {"default_value": false},
+        
         "machine_head_with_fans_polygon":{"default_value": [
                 [ -20, 20 ],
                 [ -20, -20 ],
