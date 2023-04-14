@@ -51,7 +51,7 @@
 	
 	
 
- 	"retraction_enable": {"default_value":true},
+ 	
 	
         "retraction_speed": { "default_value": 70},
  	"retraction_min_travel": {"value":5 },
