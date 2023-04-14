@@ -10,7 +10,8 @@
         "file_formats": "application/x-ufp;text/x-gcode",
         "platform": "ultimaker_s7_platform.obj",
         "bom_numbers": [
-            5078167
+            5078167,
+            5078168
         ],
         "firmware_update_info":
         {
