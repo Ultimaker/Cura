@@ -41,7 +41,7 @@
 
 	"infill_sparse_density": {"value":15},
  	
-	"xy_offset": {"value": "-machine_nozzle_size/2"},
+	
 
 	"speed_print": { "value": 45 },
 	"speed_infill": { "value": 45 },
