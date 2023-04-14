@@ -59,7 +59,7 @@
 	"speed_z_hop": {"value":2 },
 	"retraction_combing": {"value":"off"},
 
- 	"cool_fan_enabled": {"default_value":true},
+ 	
  	"cool_fan_full_at_height": {"value":1},
  	"cool_fan_full_layer": {"value":2},
  	"cool_min_speed": {"value":0},
