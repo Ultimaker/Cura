@@ -159,6 +159,8 @@ class PostProcessingPlugin(QObject, Extension):
             if root is None:
                 continue
             path = os.path.join(root, "scripts")
+            if not os.path.isdir(path):
+                continue
             self.loadScripts(path)
 
     def loadScripts(self, path: str) -> None:
