@@ -52,7 +52,7 @@
 	"speed_equalize_flow_max": { "value": 70 },
 
  	"retraction_enable": {"default_value":true},
-	"retraction_amount": { "default_value": 4 },
+	
         "retraction_speed": { "default_value": 70},
  	"retraction_min_travel": {"value":5 },
 	"retraction_count_max": {"default_value":10 },
