@@ -44,7 +44,7 @@
 	
 
 	"speed_print": { "value": 45 },
-	"speed_infill": { "value": 45 },
+	
 	"speed_travel": { "value": 75 },
  	"speed_topbottom": {"value": 40 },
 	"speed_wall": { "value": 35 },
