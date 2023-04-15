@@ -64,7 +64,6 @@
         "wall_0_wipe_dist": { "value": 0.0 },
 
         "fill_outline_gaps": { "value": false },
-        "filter_out_tiny_gaps": { "value": false },
 
         "retraction_hop_enabled": { "value": "False" },
         "retraction_hop": { "value": 0.2 },

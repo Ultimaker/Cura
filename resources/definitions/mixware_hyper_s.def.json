@@ -150,9 +150,6 @@
         "fill_outline_gaps": {
             "default_value": false
         },
-        "filter_out_tiny_gaps": {
-            "default_value": false
-        },
         "retraction_hop": {
             "default_value": 0.2
         },

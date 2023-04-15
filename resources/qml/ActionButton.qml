@@ -155,6 +155,7 @@ Button
         height: parent.height
 
         visible: false
+        running: visible
 
         RotationAnimator
         {

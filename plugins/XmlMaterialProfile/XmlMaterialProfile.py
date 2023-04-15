@@ -343,6 +343,9 @@ class XmlMaterialProfile(InstanceContainer):
 
         return stream.getvalue().decode("utf-8")
 
+    def getFileName(self) -> str:
+        return (self.getMetaDataEntry("base_file") + ".xml.fdm_material").replace(" ", "+")
+
     # Recursively resolve loading inherited files
     def _resolveInheritance(self, file_name):
         xml = self._loadFile(file_name)
@@ -476,6 +479,15 @@ class XmlMaterialProfile(InstanceContainer):
             setting_version = cls.xmlVersionToSettingVersion("1.2")
 
         return version * 1000000 + setting_version
+
+    @classmethod
+    def getMetadataFromSerialized(cls, serialized: str, property_name: str) -> str:
+        data = ET.fromstring(serialized)
+        metadata = data.find("./um:metadata", cls.__namespaces)
+        property = metadata.find("./um:" + property_name, cls.__namespaces)
+
+        # This is a necessary property != None check, xml library overrides __bool__ to return False in cases when Element is not None.
+        return property.text if property != None else ""
 
     def deserialize(self, serialized, file_name = None):
         """Overridden from InstanceContainer"""

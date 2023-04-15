@@ -15,7 +15,7 @@
         "accent_2": [16, 70, 156, 255],
         "border_main": [118, 118, 119, 255],
         "border_accent_1": [255, 255, 255, 255],
-        "border_accent_2": [16, 70, 156, 255],
+        "border_accent_2": [243, 243, 243, 255],
         "border_field": [57, 57, 58, 255],
 
         "text_default": [255, 255, 255, 255],

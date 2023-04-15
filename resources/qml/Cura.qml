@@ -309,10 +309,13 @@ UM.MainWindow
 
                 property int mouseX: base.mouseX
                 property int mouseY: base.mouseY
+                property bool tallerThanParent: height > parent.height
+
+                z: 1 // Ensure toolbar and toolpanels are drawn on top
 
                 anchors
                 {
-                    verticalCenter: parent.verticalCenter
+                    verticalCenter: tallerThanParent ? undefined : parent.verticalCenter
                     left: parent.left
                 }
                 visible: CuraApplication.platformActivity && !PrintInformation.preSliced

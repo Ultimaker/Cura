@@ -27,7 +27,6 @@
         "infill_overlap": { "value": 15.0 },
         "skin_overlap": { "value": 20.0 },
         "fill_outline_gaps": { "value": true },
-        "filter_out_tiny_gaps": { "value": true },
         "roofing_layer_count": { "value": 2 },
         "xy_offset_layer_0": { "value": -0.1 },
         "speed_print": { "value": 50 },

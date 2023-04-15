@@ -17,7 +17,7 @@ class CuraStackBuilder:
     """Contains helper functions to create new machines."""
 
     @classmethod
-    def createMachine(cls, name: str, definition_id: str, machine_extruder_count: Optional[int] = None) -> Optional[GlobalStack]:
+    def createMachine(cls, name: str, definition_id: str, machine_extruder_count: Optional[int] = None, show_warning_message: bool = True) -> Optional[GlobalStack]:
         """Create a new instance of a machine.
 
         :param name: The name of the new machine.
@@ -34,7 +34,8 @@ class CuraStackBuilder:
 
         definitions = registry.findDefinitionContainers(id = definition_id)
         if not definitions:
-            ConfigurationErrorMessage.getInstance().addFaultyContainers(definition_id)
+            if show_warning_message:
+                ConfigurationErrorMessage.getInstance().addFaultyContainers(definition_id)
             Logger.log("w", "Definition {definition} was not found!", definition = definition_id)
             return None
 

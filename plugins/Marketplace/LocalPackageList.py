@@ -108,7 +108,7 @@ class LocalPackageList(PackageList):
         :param reply: A reply containing information about a number of packages.
         """
         response_data = HttpRequestManager.readJSON(reply)
-        if "data" not in response_data:
+        if response_data is None or "data" not in response_data:
             Logger.error(
                 f"Could not interpret the server's response. Missing 'data' from response data. Keys in response: {response_data.keys()}")
             return

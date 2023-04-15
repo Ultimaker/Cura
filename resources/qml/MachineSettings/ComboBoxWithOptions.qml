@@ -5,7 +5,7 @@ import QtQuick 2.10
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
 
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.1 as Cura
 
 import "../Widgets"
@@ -52,15 +52,13 @@ UM.TooltipArea
         watchedProperties: [ "value", "options", "description" ]
     }
 
-    Label
+    UM.Label
     {
         id: fieldLabel
         anchors.left: parent.left
         anchors.verticalCenter: comboBox.verticalCenter
         visible: text != ""
         font: UM.Theme.getFont("medium")
-        color: UM.Theme.getColor("text")
-        renderType: Text.NativeRendering
     }
 
     ListModel

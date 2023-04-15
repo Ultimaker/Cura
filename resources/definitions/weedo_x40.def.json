@@ -211,7 +211,6 @@
         "cool_fan_speed_max": { "value": "100" },
         "cool_min_speed": { "value": "7" },
         "fill_outline_gaps": { "value": false },
-        "filter_out_tiny_gaps": { "value": false },
         "infill_line_width": { "value": "round(line_width * 0.42 / 0.35, 2)" },
         "infill_overlap": { "value": 30.0 },
         "infill_pattern": { "value": "'lines' if infill_sparse_density > 50 else 'cubic'" },

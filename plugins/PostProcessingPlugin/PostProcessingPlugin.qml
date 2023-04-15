@@ -232,7 +232,7 @@ UM.Dialog
                 }
 
                 onObjectAdded: function(index, object) { scriptsMenu.insertItem(index, object)}
-                onObjectRemoved: function(object) {  scriptsMenu.removeItem(object) }
+                onObjectRemoved: function(index, object) {  scriptsMenu.removeItem(object) }
             }
         }
 
@@ -245,7 +245,7 @@ UM.Dialog
             height: parent.height
             id: settingsPanel
 
-            Label
+            UM.Label
             {
                 id: scriptSpecsHeader
                 text: manager.selectedScriptIndex == -1 ? catalog.i18nc("@label", "Settings") : base.activeScriptName
@@ -262,7 +262,6 @@ UM.Dialog
                 elide: Text.ElideRight
                 height: 20 * screenScaleFactor
                 font: UM.Theme.getFont("large_bold")
-                color: UM.Theme.getColor("text")
             }
 
             ListView
@@ -475,7 +474,7 @@ UM.Dialog
             }
             toolTipContentAlignment: UM.Enums.ContentAlignment.AlignLeft
             onClicked: dialog.show()
-//            iconSource: "Script.svg"
+            iconSource: Qt.resolvedUrl("Script.svg")
             fixedWidthMode: false
         }
 

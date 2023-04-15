@@ -87,10 +87,24 @@ Cura.MenuItem
     Popup
     {
         id: menuPopup
-        x: parent.width - UM.Theme.getSize("default_lining").width
-        y: -UM.Theme.getSize("default_lining").width
         width: materialTypesList.width + padding * 2
         height: materialTypesList.height + padding * 2
+
+        property var flipped: false
+
+        x: parent.width - UM.Theme.getSize("default_lining").width
+        y: {
+            // Checks if popup is more than halfway down the screen AND further than 400 down (this avoids popup going off the top of screen)
+            // If it is then the popup will push up instead of down
+            // This fixes the popups appearing bellow the bottom of the screen.
+
+            if (materialBrandMenu.parent.height / 2 < parent.y && parent.y > 400) {
+                flipped = true
+                return -UM.Theme.getSize("default_lining").width - height + UM.Theme.getSize("menu").height
+            }
+            flipped = false
+            return -UM.Theme.getSize("default_lining").width
+        }
 
         padding: background.border.width
         // Nasty hack to ensure that we can keep track if the popup contains the mouse.
@@ -128,10 +142,13 @@ Cura.MenuItem
                 //With a custom MouseArea, we can prevent the events from being accepted.
                 delegate: Rectangle
                 {
+                    id: brandMaterialBase
                     height: UM.Theme.getSize("menu").height
                     width: UM.Theme.getSize("menu").width
 
                     color: materialTypeButton.containsMouse ? UM.Theme.getColor("background_2") : UM.Theme.getColor("background_1")
+
+                    property var isFlipped:  menuPopup.flipped
 
                     RowLayout
                     {
@@ -225,7 +242,13 @@ Cura.MenuItem
                         width: materialColorsList.width + padding * 2
                         height: materialColorsList.height + padding * 2
                         x: parent.width
-                        y: -UM.Theme.getSize("default_lining").width
+                        y: {
+                            // If flipped the popup should push up rather than down from the parent
+                            if (brandMaterialBase.isFlipped) {
+                                return -height + UM.Theme.getSize("menu").height + UM.Theme.getSize("default_lining").width
+                            }
+                            return -UM.Theme.getSize("default_lining").width
+                        }
 
                         property int itemHovered: 0
                         padding: background.border.width

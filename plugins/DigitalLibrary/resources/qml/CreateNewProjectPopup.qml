@@ -5,7 +5,7 @@ import QtQuick 2.15
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.3
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.6 as Cura
 
 import DigitalFactory 1.0 as DF
@@ -64,12 +64,10 @@ Popup
         }
     }
 
-    Label
+    UM.Label
     {
         id: projectNameLabel
         text: "Project Name"
-        font: UM.Theme.getFont("default")
-        color: UM.Theme.getColor("text")
         anchors
         {
             top: createNewLibraryProjectLabel.bottom
@@ -107,13 +105,12 @@ Popup
         }
     }
 
-    Label
+    UM.Label
     {
         id: errorWhileCreatingProjectLabel
         text: manager.projectCreationErrorText
         width: parent.width
         wrapMode: Text.WordWrap
-        font: UM.Theme.getFont("default")
         color: UM.Theme.getColor("error")
         visible: manager.creatingNewProjectStatus == DF.RetrievalStatus.Failed
         anchors

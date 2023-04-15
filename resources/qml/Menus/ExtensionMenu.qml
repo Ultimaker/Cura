@@ -54,11 +54,11 @@ Cura.Menu
                 }
 
                 onObjectAdded: function(index, object) { sub_menu.insertItem(index, object.item)}
-                onObjectRemoved: function(object) { sub_menu.removeItem(object.item)}
+                onObjectRemoved: function(index, object) { sub_menu.removeItem(object.item)}
             }
         }
 
         onObjectAdded: function(index, object) { extensionMenu.insertMenu(index, object) }
-        onObjectRemoved: function(object) { extensionMenu.removeMenu(object)}
+        onObjectRemoved: function(index, object) { extensionMenu.removeMenu(object)}
     }
 }

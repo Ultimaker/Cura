@@ -36,6 +36,8 @@ Cura.ExpandablePopup
 
     headerItem: Item
     {
+        id: headerBase
+
         // Horizontal list that shows the extruders and their materials
         RowLayout
         {
@@ -51,9 +53,12 @@ Cura.ExpandablePopup
                 {
                     id: extruderItem
 
-                    Layout.preferredWidth: Math.round(parent.width / extrudersModel.count)
-                    Layout.maximumWidth: Math.round(parent.width / extrudersModel.count)
+                    Layout.preferredWidth: Math.floor(headerBase.width / extrudersModel.count)
+                    Layout.maximumWidth: Math.floor(headerBase.width / extrudersModel.count)
+                    Layout.preferredHeight: headerBase.height
+                    Layout.maximumHeight: headerBase.height
                     Layout.fillHeight: true
+                    Layout.alignment: Qt.AlignCenter
 
                     property var extruderStack: activeMachine ? activeMachine.extruderList[model.index]: null
                     property bool valueWarning: !Cura.ExtruderManager.getExtruderHasQualityForMaterial(extruderStack)

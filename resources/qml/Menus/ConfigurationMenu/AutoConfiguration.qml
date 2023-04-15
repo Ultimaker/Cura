@@ -4,7 +4,7 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.0
 
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 Item
@@ -12,14 +12,13 @@ Item
     width: parent.width
     height: childrenRect.height
 
-    Label
+    UM.Label
     {
         id: header
         text: catalog.i18nc("@header", "Configurations")
         font: UM.Theme.getFont("medium")
         color: UM.Theme.getColor("small_button_text")
         height: contentHeight
-        renderType: Text.NativeRendering
 
         anchors
         {

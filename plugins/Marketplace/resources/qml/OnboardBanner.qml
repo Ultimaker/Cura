@@ -30,6 +30,8 @@ Rectangle
         }
         width: UM.Theme.getSize("banner_icon_size").width
         height: UM.Theme.getSize("banner_icon_size").height
+
+        color: UM.Theme.getColor("primary_text")
     }
 
     UM.SimpleButton

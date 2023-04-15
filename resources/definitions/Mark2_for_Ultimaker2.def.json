@@ -162,10 +162,6 @@
         {
             "default_value": true
         },
-        "jerk_print":
-        {
-            "default_value": 12
-        },
         "jerk_travel":
         {
             "value": "jerk_print if magic_spiralize else 20"

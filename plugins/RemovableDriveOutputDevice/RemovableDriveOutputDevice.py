@@ -80,6 +80,18 @@ class RemovableDriveOutputDevice(OutputDevice):
         if extension:  # Not empty string.
             extension = "." + extension
         file_name = os.path.join(self.getId(), file_name + extension)
+        self._performWrite(file_name, preferred_format, writer, nodes)
+
+    def _performWrite(self, file_name, preferred_format, writer, nodes):
+        """Writes the specified nodes to the removable drive. This is split from
+        requestWrite to allow interception in other plugins. See Ultimaker/Cura#10917.
+
+        :param file_name: File path to write to.
+        :param preferred_format: Preferred file format to write to.
+        :param writer: Writer for writing to the file.
+        :param nodes: A collection of scene nodes that should be written to the
+        file.
+        """
 
         try:
             Logger.log("d", "Writing to %s", file_name)

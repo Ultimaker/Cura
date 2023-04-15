@@ -51,7 +51,6 @@
         "optimize_wall_printing_order": {"value": false },
         "inset_direction": {"value": "'inside_out'" },
         "alternate_extra_perimeter": {"value": false },
-        "filter_out_tiny_gaps": {"value": true },
         "fill_outline_gaps": {"value": true },
         "xy_offset": {"value": 0},
         "skin_no_small_gaps_heuristic": {"value": true },

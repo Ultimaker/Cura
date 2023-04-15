@@ -99,18 +99,17 @@ Item
             {
                 id: digitalFactoryImage
                 anchors.horizontalCenter: parent.horizontalCenter
-                source: searchBar.text === "" ? "../images/digital_factory.svg" : "../images/projects_not_found.svg"
+                source: Qt.resolvedUrl(searchBar.text === "" ? "../images/digital_factory.svg" : "../images/projects_not_found.svg")
                 fillMode: Image.PreserveAspectFit
                 width: parent.width - 2 * UM.Theme.getSize("thick_margin").width
             }
 
-            Label
+            UM.Label
             {
                 id: noLibraryProjectsLabel
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: searchBar.text === "" ? "It appears that you don't have any projects in the Library yet." : "No projects found that match the search query."
                 font: UM.Theme.getFont("medium")
-                color: UM.Theme.getColor("text")
             }
 
             Cura.TertiaryButton

@@ -97,13 +97,16 @@ Item
                 checked: model.index == 0
                 contentItem: Item
                 {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.verticalCenter: parent.verticalCenter
+                    width: Math.floor(tabBar.height / extrudersModel.count)
+                    height: tabBar.height
                     Cura.ExtruderIcon
                     {
                         anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.verticalCenter: parent.verticalCenter
                         materialColor: model.color
                         extruderEnabled: model.enabled
-                        width: parent.height
-                        height: parent.height
                     }
                 }
                 onClicked:

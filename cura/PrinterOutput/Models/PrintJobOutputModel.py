@@ -119,16 +119,16 @@ class PrintJobOutputModel(QObject):
 
     @pyqtProperty(int, notify = timeTotalChanged)
     def timeTotal(self) -> int:
-        return self._time_total
+        return int(self._time_total)
 
     @pyqtProperty(int, notify = timeElapsedChanged)
     def timeElapsed(self) -> int:
-        return self._time_elapsed
+        return int(self._time_elapsed)
 
     @pyqtProperty(int, notify = timeElapsedChanged)
     def timeRemaining(self) -> int:
         # Never get a negative time remaining
-        return max(self.timeTotal - self.timeElapsed, 0)
+        return int(max(self.timeTotal - self.timeElapsed, 0))
 
     @pyqtProperty(float, notify = timeElapsedChanged)
     def progress(self) -> float:

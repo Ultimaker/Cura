@@ -358,8 +358,9 @@ class QualityManagementModel(ListModel):
                 "quality_type": quality_type,
                 "quality_changes_group": None,
                 "intent_category": intent_category,
-                "section_name": catalog.i18nc("@label", intent_translations.get(intent_category, {}).get("name", catalog.i18nc("@label", "Unknown"))),
+                "section_name": catalog.i18nc("@label", intent_translations.get(intent_category, {}).get("name", catalog.i18nc("@label", intent_category.title()))),
             })
+
         # Sort by quality_type for each intent category
         intent_translations_list = list(intent_translations)
 

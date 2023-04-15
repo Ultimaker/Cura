@@ -261,7 +261,7 @@ class CrashHandler:
         opengl_instance = OpenGL.getInstance()
         if not opengl_instance:
             self.data["opengl"] = {"version": "n/a", "vendor": "n/a", "type": "n/a"}
-            return catalog.i18nc("@label", "Not yet initialized<br/>")
+            return catalog.i18nc("@label", "Not yet initialized") + "<br />"
 
         info = "<ul>"
         info += catalog.i18nc("@label OpenGL version", "<li>OpenGL Version: {version}</li>").format(version = opengl_instance.getOpenGLVersion())
@@ -291,6 +291,7 @@ class CrashHandler:
         if with_sentry_sdk:
             with configure_scope() as scope:
                 scope.set_tag("opengl_version", opengl_instance.getOpenGLVersion())
+                scope.set_tag("opengl_version_short", opengl_instance.getOpenGLVersionShort())
                 scope.set_tag("gpu_vendor", opengl_instance.getGPUVendorName())
                 scope.set_tag("gpu_type", opengl_instance.getGPUType())
                 scope.set_tag("active_machine", active_machine_definition_id)
