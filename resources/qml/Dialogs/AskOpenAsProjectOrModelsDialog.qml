@@ -17,6 +17,7 @@ UM.Dialog
     title: catalog.i18nc("@title:window", "Open project file")
     width: UM.Theme.getSize("small_popup_dialog").width
     height: UM.Theme.getSize("small_popup_dialog").height
+    backgroundColor: UM.Theme.getColor("main_background")
 
     maximumHeight: height
     maximumWidth: width

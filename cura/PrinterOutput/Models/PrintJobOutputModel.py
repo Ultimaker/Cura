@@ -1,10 +1,12 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import Optional, TYPE_CHECKING, List
 
 from PyQt6.QtCore import pyqtSignal, pyqtProperty, QObject, pyqtSlot, QUrl
 from PyQt6.QtGui import QImage
+
+from cura.CuraApplication import CuraApplication
 
 if TYPE_CHECKING:
     from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
@@ -85,6 +87,18 @@ class PrintJobOutputModel(QObject):
         if self._owner != owner:
             self._owner = owner
             self.ownerChanged.emit()
+
+    @pyqtProperty(bool, notify = ownerChanged)
+    def isMine(self) -> bool:
+        """
+        Returns whether this print job was sent by the currently logged in user.
+
+        This checks the owner of the print job with the owner of the currently
+        logged in account. Both of these are human-readable account names which
+        may be duplicate. In practice the harm here is limited, but it's the
+        best we can do with the information available to the API.
+        """
+        return self._owner == CuraApplication.getInstance().getCuraAPI().account.userName
 
     @pyqtProperty(QObject, notify=assignedPrinterChanged)
     def assignedPrinter(self):

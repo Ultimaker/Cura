@@ -1,14 +1,9 @@
 {
-    "name": "Goofoo E-one",
     "version": 2,
+    "name": "Goofoo E-one",
     "inherits": "goofoo_open",
-    "overrides": {
-        "machine_name": { "default_value": "Goofoo E-one" },
-        "machine_width": { "default_value": 300 },
-        "machine_depth": { "default_value": 300 },
-        "machine_height": { "default_value": 400 }
-    },
-    "metadata": {
+    "metadata":
+    {
         "visible": true,
         "exclude_materials": [
             "goofoo_bronze_pla",
@@ -25,5 +20,12 @@
             "goofoo_hips",
             "goofoo_pva"
         ]
+    },
+    "overrides":
+    {
+        "machine_depth": { "default_value": 300 },
+        "machine_height": { "default_value": 400 },
+        "machine_name": { "default_value": "Goofoo E-one" },
+        "machine_width": { "default_value": 300 }
     }
 }

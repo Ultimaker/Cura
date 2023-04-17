@@ -44,6 +44,7 @@ class GlobalStacksModel(ListModel):
         self._filter_connection_type = None  # type: Optional[ConnectionType]
         self._filter_online_only = False
         self._filter_capabilities: List[str] = []  # Required capabilities that all listed printers must have.
+        self._filter_abstract_machines: Optional[bool] = None
 
         # Listen to changes
         CuraContainerRegistry.getInstance().containerAdded.connect(self._onContainerChanged)
@@ -54,6 +55,7 @@ class GlobalStacksModel(ListModel):
     filterConnectionTypeChanged = pyqtSignal()
     filterCapabilitiesChanged = pyqtSignal()
     filterOnlineOnlyChanged = pyqtSignal()
+    filterAbstractMachinesChanged = pyqtSignal()
 
     def setFilterConnectionType(self, new_filter: Optional[ConnectionType]) -> None:
         if self._filter_connection_type != new_filter:
@@ -98,6 +100,22 @@ class GlobalStacksModel(ListModel):
         """
         return self._filter_capabilities
 
+    def setFilterAbstractMachines(self, new_filter: Optional[bool]) -> None:
+        if self._filter_abstract_machines != new_filter:
+            self._filter_abstract_machines = new_filter
+            self.filterAbstractMachinesChanged.emit()
+
+    @pyqtProperty(bool, fset = setFilterAbstractMachines, notify = filterAbstractMachinesChanged)
+    def filterAbstractMachines(self) -> Optional[bool]:
+        """
+        Weather we include abstract printers, non-abstract printers or both
+
+        if this is set to None both abstract and non-abstract printers will be included in the list
+                   set to True will only include abstract printers
+                   set to False will only inclde non-abstract printers
+        """
+        return self._filter_abstract_machines
+
     def _onContainerChanged(self, container) -> None:
         """Handler for container added/removed events from registry"""
 
@@ -128,6 +146,10 @@ class GlobalStacksModel(ListModel):
 
             is_online = container_stack.getMetaDataEntry("is_online", False)
             if self._filter_online_only and not is_online:
+                continue
+
+            is_abstract_machine = parseBool(container_stack.getMetaDataEntry("is_abstract_machine", False))
+            if self._filter_abstract_machines is not None and self._filter_abstract_machines is not is_abstract_machine:
                 continue
 
             capabilities = set(container_stack.getMetaDataEntry(META_CAPABILITIES, "").split(","))

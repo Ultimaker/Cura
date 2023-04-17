@@ -221,10 +221,7 @@ Button
         }
     }
 
-    Component.onCompleted:
-    {
-        configurationItem.checked = Cura.MachineManager.matchesConfiguration(configuration)
-    }
+    Component.onCompleted: configurationItem.checked = Cura.MachineManager.matchesConfiguration(configuration)
 
     onClicked:
     {

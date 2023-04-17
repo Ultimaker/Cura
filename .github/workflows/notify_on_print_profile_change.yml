@@ -1,0 +1,36 @@
+name: notify_on_print_profile_change
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+        - 'resources/definitions/fdmprinter.def.json'
+        - 'resources/definitions/ultimaker**'
+        - 'resources/extruders/ultimaker**'
+        - 'resources/intent/ultimaker**'
+        - 'resources/quality/ultimaker**'
+        - 'resources/variants/ultimaker**'
+  pull_request:
+    branches: [ "main" ]
+    paths:
+        - 'resources/definitions/fdmprinter.def.json'
+        - 'resources/definitions/ultimaker**'
+        - 'resources/extruders/ultimaker**'
+        - 'resources/intent/ultimaker**'
+        - 'resources/quality/ultimaker**'
+        - 'resources/variants/ultimaker**'
+permissions: {}
+jobs:
+    slackNotification:
+        name: Slack Notification
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Ultimaker Print Profile Changed
+                uses: rtCamp/action-slack-notify@v2
+                env:
+                    SLACK_CHANNEL: profile-changes
+                    SLACK_USERNAME: ${{ github.repository }}
+                    SLACK_COLOR: '#00FF00'
+                    SLACK_TITLE: Print profiles changed
+                    MSG_MINIMAL: commit
+                    SLACK_WEBHOOK: ${{ secrets.SLACK_CURA_PPM_HOOK }}

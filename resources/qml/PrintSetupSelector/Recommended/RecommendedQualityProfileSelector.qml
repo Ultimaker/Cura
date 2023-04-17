@@ -32,7 +32,7 @@ Item
             {
                 profileName: model.name
                 icon: model.icon
-
+                tooltipText: model.description ? model.description : ""
 
                 selected: Cura.MachineManager.activeIntentCategory == model.intent_category
 
@@ -43,7 +43,6 @@ Item
                         qualityType = Cura.MachineManager.activeQualityType
                     } else {
                         qualityType = Cura.MachineManager.getDefaultQualityTypeForIntent(model.intent_category)
-                        print(Cura.MachineManager.getDefaultQualityTypeForIntent(model.intent_category))
                     }
                     Cura.IntentManager.selectIntent(model.intent_category, qualityType)
                 }

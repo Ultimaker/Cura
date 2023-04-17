@@ -1,6 +1,6 @@
 {
-    "name": "Voron2 Custom",
     "version": 2,
+    "name": "Voron2 Custom",
     "inherits": "voron2_base",
     "metadata":
     {
@@ -9,6 +9,6 @@
     },
     "overrides":
     {
-        "machine_name":     { "default_value": "VORON2 Custom" }
+        "machine_name": { "default_value": "VORON2 Custom" }
     }
 }

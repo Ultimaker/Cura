@@ -1,41 +1,38 @@
 {
-    "name": "Creality Ender-3 Max",
     "version": 2,
+    "name": "Creality Ender-3 Max",
     "inherits": "creality_base",
-    "metadata": {
-        "author": "Radlab Ecuador",
-        "quality_definition": "creality_base",
+    "metadata":
+    {
         "visible": true,
-        "platform": "creality_ender3max.stl"
+        "author": "Radlab Ecuador",
+        "platform": "creality_ender3max.stl",
+        "quality_definition": "creality_base"
     },
-    "overrides": {
-        "machine_name": { "default_value": "Creality Ender-3 Max" },
-        "machine_width": { "default_value": 300 },
+    "overrides":
+    {
+        "acceleration_travel": { "value": 1000 },
+        "gantry_height": { "value": 35 },
         "machine_depth": { "default_value": 300 },
-        "machine_height": { "default_value": 340 },
-        "machine_head_with_fans_polygon": { "default_value": [
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
                 [-42.5, 30],
                 [-42.5, -40],
                 [42.5, -40],
                 [42.5, 30]
             ]
         },
-        "machine_start_gcode": {
-            "default_value": "; Ender 3 Max Custom Start G-code\nG92 E0 ; Reset Extruder\nG28 ; Home all axes\nG1 Z2.0 F3000 ; Move Z Axis up little to prevent scratching of Heat Bed\nG1 X0.1 Y20 Z0.3 F5000.0 ; Move to start position\nG1 X0.1 Y200.0 Z0.3 F1500.0 E15 ; Draw the first line\nG1 X0.4 Y200.0 Z0.3 F5000.0 ; Move to side a little\nG1 X0.4 Y20 Z0.3 F1500.0 E30 ; Draw the second line\nG92 E0 ; Reset Extruder\nG1 Z2.0 F3000 ; Move Z Axis up little to prevent scratching of Heat Bed\nG1 X5 Y20 Z0.3 F5000.0 ; Move over to prevent blob squish"
-        },
-
-        "machine_max_feedrate_z": { "value": 5 },
-        "machine_max_feedrate_e": { "value": 25 },
-
+        "machine_height": { "default_value": 340 },
+        "machine_max_acceleration_e": { "value": 1000 },
         "machine_max_acceleration_x": { "value": 500 },
         "machine_max_acceleration_y": { "value": 500 },
         "machine_max_acceleration_z": { "value": 100 },
-        "machine_max_acceleration_e": { "value": 1000 },
-
-        "acceleration_travel": { "value": 1000 },
-
+        "machine_max_feedrate_e": { "value": 25 },
+        "machine_max_feedrate_z": { "value": 5 },
         "machine_max_jerk_z": { "value": 0.3 },
-
-        "gantry_height": { "value": 35 }
+        "machine_name": { "default_value": "Creality Ender-3 Max" },
+        "machine_start_gcode": { "default_value": "; Ender 3 Max Custom Start G-code\nG92 E0 ; Reset Extruder\nG28 ; Home all axes\nG1 Z2.0 F3000 ; Move Z Axis up little to prevent scratching of Heat Bed\nG1 X0.1 Y20 Z0.3 F5000.0 ; Move to start position\nG1 X0.1 Y200.0 Z0.3 F1500.0 E15 ; Draw the first line\nG1 X0.4 Y200.0 Z0.3 F5000.0 ; Move to side a little\nG1 X0.4 Y20 Z0.3 F1500.0 E30 ; Draw the second line\nG92 E0 ; Reset Extruder\nG1 Z2.0 F3000 ; Move Z Axis up little to prevent scratching of Heat Bed\nG1 X5 Y20 Z0.3 F5000.0 ; Move over to prevent blob squish" },
+        "machine_width": { "default_value": 300 }
     }
 }

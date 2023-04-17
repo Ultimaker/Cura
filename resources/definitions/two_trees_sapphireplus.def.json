@@ -1,38 +1,37 @@
 {
-    "name": "Two Trees Sapphire Plus",
     "version": 2,
+    "name": "Two Trees Sapphire Plus",
     "inherits": "two_trees_base",
-    "overrides": {
+    "metadata":
+    {
+        "visible": true,
+        "platform": "sapphireplus_platform.stl",
+        "quality_definition": "two_trees_base"
+    },
+    "overrides":
+    {
+        "gantry_height": { "value": 65 },
+        "infill_material_flow": { "value": 100 },
+        "infill_overlap": { "value": 30 },
+        "machine_depth": { "default_value": 300 },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [-30, 19],
+                [30, 19],
+                [30, -49],
+                [-30, -49]
+            ]
+        },
+        "machine_height": { "default_value": 350 },
         "machine_name": { "default_value": "Two Trees Sapphire Plus" },
         "machine_width": { "default_value": 300 },
-        "machine_depth": { "default_value": 300 },
-        "machine_height": { "default_value": 350 },
-        "machine_head_with_fans_polygon": { "default_value": [
-        [-30,19],
-        [30,19],
-        [30,-49],
-        [-30,-49]
-        ] 
-        },
-
-        "gantry_height": { "value": 65 },
-
+        "material_flow": { "value": 90 },
+        "retraction_amount": { "default_value": 7 },
+        "retraction_speed": { "default_value": 40 },
+        "skin_overlap": { "value": 20 },
         "speed_print": { "value": 60.0 },
         "speed_travel": { "value": 180 },
-        "speed_travel_layer_0": { "value": 100 },
-        "retraction_speed": { "default_value" : 40 },
-        "retraction_amount": { "default_value" : 7 },
-		
-        "material_flow": { "value": 90 },
-        "infill_material_flow": { "value": 100 },
-        
-        "infill_overlap": { "value": 30 },
-        "skin_overlap": { "value": 20 }
-    },
-    "metadata": {
-        "quality_definition": "two_trees_base",
-        "visible": true,
-        "platform": "sapphireplus_platform.stl"
-        
+        "speed_travel_layer_0": { "value": 100 }
     }
 }

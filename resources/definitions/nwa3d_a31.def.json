@@ -1,40 +1,35 @@
 {
-    "name": "Nwa3D A31",
     "version": 2,
+    "name": "Nwa3D A31",
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "visible": true,
         "author": "DragonJe",
         "manufacturer": "Nwa 3D LLC",
         "file_formats": "text/x-gcode",
-        "platform_offset": [0, 0, 0],
+        "has_machine_quality": true,
         "has_materials": true,
         "has_variants": true,
-        "variants_name": "Nozzle Size",
-        "preferred_variant_name": "Standard 0.4mm",
-        "preferred_quality_type": "normal",
-        "has_machine_quality": true,
+        "machine_extruder_trains": { "0": "nwa3d_a31_extruder_0" },
+        "platform_offset": [
+            0,
+            0,
+            0
+        ],
         "preferred_material": "generic_pla",
-        "machine_extruder_trains":
-        {
-            "0": "nwa3d_a31_extruder_0"
-        }
+        "preferred_quality_type": "normal",
+        "preferred_variant_name": "Standard 0.4mm",
+        "variants_name": "Nozzle Size"
     },
-
-    "overrides": {
-        "machine_name": {
-            "default_value": "NWA3D A31"
-        },
-        "machine_width": {
-            "default_value": 300
-        },
-        "machine_height": {
-            "default_value": 400
-        },
-        "machine_depth": {
-            "default_value": 300
-        },
-        "machine_head_with_fans_polygon": {
+    "overrides":
+    {
+        "gantry_height": { "value": "30" },
+        "machine_depth": { "default_value": 300 },
+        "machine_end_gcode": { "default_value": "M104 S0\nM140 S0\n ; Retract the filament\nG92 E1\nG1 E-1 F300\nG28 X0 Y0\nM84" },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_head_with_fans_polygon":
+        {
             "default_value": [
                 [-30, 34],
                 [-30, -32],
@@ -42,23 +37,11 @@
                 [30, 34]
             ]
         },
-        "gantry_height": {
-            "value": "30"
-        },
-        "machine_heated_bed": {
-            "default_value": true
-        },
-        "material_diameter": {
-            "default_value": 1.75
-        },
-        "machine_gcode_flavor": {
-            "default_value": "RepRap (Marlin/Sprinter)"
-        },
-        "machine_start_gcode": {
-            "default_value": "G28 ; Home\nG1 Z15.0 F6000 ; Move Z axis up 15mm\n ; Prime the extruder\nG92 E0\nG1 F200 E3\nG92 E0"
-        },
-        "machine_end_gcode": {
-            "default_value": "M104 S0\nM140 S0\n ; Retract the filament\nG92 E1\nG1 E-1 F300\nG28 X0 Y0\nM84"
-        }
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 400 },
+        "machine_name": { "default_value": "NWA3D A31" },
+        "machine_start_gcode": { "default_value": "G28 ; Home\nG1 Z15.0 F6000 ; Move Z axis up 15mm\n ; Prime the extruder\nG92 E0\nG1 F200 E3\nG92 E0" },
+        "machine_width": { "default_value": 300 },
+        "material_diameter": { "default_value": 1.75 }
     }
 }

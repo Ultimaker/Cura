@@ -1,4 +1,4 @@
-#  Copyright (c) 2021-2022 Ultimaker B.V.
+#  Copyright (c) 2022 UltiMaker
 #  Cura is released under the terms of the LGPLv3 or higher.
 
 import argparse #To run the engine in debug mode if the front-end is in debug mode.
@@ -124,6 +124,7 @@ class CuraEngineBackend(QObject, Backend):
         self._message_handlers["cura.proto.Progress"] = self._onProgressMessage
         self._message_handlers["cura.proto.GCodeLayer"] = self._onGCodeLayerMessage
         self._message_handlers["cura.proto.GCodePrefix"] = self._onGCodePrefixMessage
+        self._message_handlers["cura.proto.SliceUUID"] = self._onSliceUUIDMessage
         self._message_handlers["cura.proto.PrintTimeMaterialEstimates"] = self._onPrintTimeMaterialEstimates
         self._message_handlers["cura.proto.SlicingFinished"] = self._onSlicingFinishedMessage
 
@@ -142,7 +143,7 @@ class CuraEngineBackend(QObject, Backend):
         self._last_num_objects = defaultdict(int) #type: Dict[int, int] # Count number of objects to see if there is something changed
         self._postponed_scene_change_sources = [] #type: List[SceneNode] # scene change is postponed (by a tool)
 
-        self._slice_start_time = None #type: Optional[float]
+        self._time_start_process = None #type: Optional[float]
         self._is_disabled = False #type: bool
 
         application.getPreferences().addPreference("general/auto_slice", False)
@@ -165,14 +166,29 @@ class CuraEngineBackend(QObject, Backend):
         self._slicing_error_message.addAction(
             action_id = "report_bug",
             name = catalog.i18nc("@message:button", "Report a bug"),
-            description = catalog.i18nc("@message:description", "Report a bug on Ultimaker Cura's issue tracker."),
+            description = catalog.i18nc("@message:description", "Report a bug on UltiMaker Cura's issue tracker."),
             icon = "[no_icon]"
         )
         self._slicing_error_message.actionTriggered.connect(self._reportBackendError)
 
+        self._resetLastSliceTimeStats()
         self._snapshot = None #type: Optional[QImage]
 
         application.initializationFinished.connect(self.initialize)
+
+    def _resetLastSliceTimeStats(self) -> None:
+        self._time_start_process = None
+        self._time_send_message = None
+        self._time_end_slice = None
+
+    def resetAndReturnLastSliceTimeStats(self) -> Dict[str, float]:
+        last_slice_data = {
+            "time_start_process": self._time_start_process,
+            "time_send_message": self._time_send_message,
+            "time_end_slice": self._time_end_slice,
+        }
+        self._resetLastSliceTimeStats()
+        return last_slice_data
 
     def initialize(self) -> None:
         application = CuraApplication.getInstance()
@@ -287,7 +303,7 @@ class CuraEngineBackend(QObject, Backend):
         self._createSnapshot()
 
         Logger.log("i", "Starting to slice...")
-        self._slice_start_time = time()
+        self._time_start_process = time()
         if not self._build_plates_to_be_sliced:
             self.processingProgress.emit(1.0)
             Logger.log("w", "Slice unnecessary, nothing has changed that needs reslicing.")
@@ -511,8 +527,10 @@ class CuraEngineBackend(QObject, Backend):
         # Notify the user that it's now up to the backend to do it's job
         self.setState(BackendState.Processing)
 
-        if self._slice_start_time:
-            Logger.log("d", "Sending slice message took %s seconds", time() - self._slice_start_time )
+        # Handle time reporting.
+        self._time_send_message = time()
+        if self._time_start_process:
+            Logger.log("d", "Sending slice message took %s seconds", self._time_send_message - self._time_start_process)
 
     def determineAutoSlicing(self) -> bool:
         """Determine enable or disable auto slicing. Return True for enable timer and False otherwise.
@@ -749,6 +767,7 @@ class CuraEngineBackend(QObject, Backend):
 
         self.setState(BackendState.Done)
         self.processingProgress.emit(1.0)
+        self._time_end_slice = time()
 
         try:
             gcode_list = self._scene.gcode_dict[self._start_slice_job_build_plate] #type: ignore #Because we generate this attribute dynamically.
@@ -765,8 +784,8 @@ class CuraEngineBackend(QObject, Backend):
             gcode_list[index] = replaced
 
         self._slicing = False
-        if self._slice_start_time:
-            Logger.log("d", "Slicing took %s seconds", time() - self._slice_start_time )
+        if self._time_start_process:
+            Logger.log("d", "Slicing took %s seconds", time() - self._time_start_process)
         Logger.log("d", "Number of models per buildplate: %s", dict(self._numObjectsPerBuildPlate()))
 
         # See if we need to process the sliced layers job.
@@ -811,6 +830,10 @@ class CuraEngineBackend(QObject, Backend):
             self._scene.gcode_dict[self._start_slice_job_build_plate].insert(0, message.data.decode("utf-8", "replace")) #type: ignore #Because we generate this attribute dynamically.
         except KeyError:  # Can occur if the g-code has been cleared while a slice message is still arriving from the other end.
             pass  # Throw the message away.
+
+    def _onSliceUUIDMessage(self, message: Arcus.PythonMessage) -> None:
+        application = CuraApplication.getInstance()
+        application.getPrintInformation().slice_uuid = message.slice_uuid
 
     def _createSocket(self, protocol_file: str = None) -> None:
         """Creates a new socket connection."""

@@ -1,0 +1,15 @@
+{
+    "version": 2,
+    "name": "Sovol Base Bowden Printer",
+    "inherits": "sovol_base",
+    "metadata":
+    {
+        "machine_extruder_trains": { "0": "sovol_bowden_extruder_0" },
+        "quality_definition": "sovol_base_bowden"
+    },
+    "overrides":
+    {
+        "retraction_amount": { "default_value": 5 },
+        "retraction_speed": { "value": "machine_max_feedrate_e" }
+    }
+}

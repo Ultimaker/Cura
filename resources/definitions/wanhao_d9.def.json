@@ -2,38 +2,37 @@
     "version": 2,
     "name": "Wanhao Duplicator 9",
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "visible": true,
         "manufacturer": "Wanhao",
         "file_formats": "text/x-gcode",
-        "has_materials": true,
         "platform": "wanhao_300_300_platform.obj",
-        "platform_texture": "Wanhaobackplate.png",
-        "machine_extruder_trains": {
-            "0": "wanhao_d9_extruder_0"
-        },
-        "platform_offset": [ 0, -55, 0]
+        "has_materials": true,
+        "machine_extruder_trains": { "0": "wanhao_d9_extruder_0" },
+        "platform_offset": [
+            0,
+            -55,
+            0
+        ],
+        "platform_texture": "Wanhaobackplate.png"
     },
-
-    "overrides": {
-        "machine_name": { "default_value": "Wanhao Duplicator 9" },
-        "machine_width": { "default_value": 300 },
-        "machine_height": { "default_value": 400 },
+    "overrides":
+    {
+        "adhesion_type": { "default_value": "raft" },
+        "layer_height": { "default_value": 0.2 },
+        "layer_height_0": { "default_value": 0.15 },
         "machine_depth": { "default_value": 300 },
-        "machine_heated_bed": { "default_value": true },
+        "machine_end_gcode": { "default_value": "M104 S0 ;extruder heater off \n G91 ;relative positioning\n G1 E-1 F300  ;retract the filament a bit before lifting the nozzle, to release some of the pressure\n G1 Z+0.5 E-5 X-20 Y-20 F{speed_travel} ;move Z up a bit and retract filament even more\n G28 X0 Y0 ;move X/Y to min endstops, so the head is out of the way\n M84 ;steppers off\n G90 ;absolute positioning" },
         "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
-        "machine_start_gcode": {
-            "default_value": "G21 ;metric values\n G90 ;absolute positioning\n M82 ;set extruder to absolute mode\n M107 ;start with the fan off\n G28 X0 Y0 ;move X/Y to min endstops\n G28 Z0 ;move Z to min endstops\n G1 Z15.0 F{speed_travel} ;move the platform down 15mm\n G92 E0 ;zero the extruded length\n G1 F200 E6 ;extrude 6 mm of feed stock\n G92 E0 ;zero the extruded length again\n G1 F{speed_travel} \n ;Put printing message on LCD screen\n M117 Printing..."
-        },
-        "machine_end_gcode": {
-            "default_value": "M104 S0 ;extruder heater off \n G91 ;relative positioning\n G1 E-1 F300  ;retract the filament a bit before lifting the nozzle, to release some of the pressure\n G1 Z+0.5 E-5 X-20 Y-20 F{speed_travel} ;move Z up a bit and retract filament even more\n G28 X0 Y0 ;move X/Y to min endstops, so the head is out of the way\n M84 ;steppers off\n G90 ;absolute positioning"
-        },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 400 },
+        "machine_name": { "default_value": "Wanhao Duplicator 9" },
+        "machine_start_gcode": { "default_value": "G21 ;metric values\n G90 ;absolute positioning\n M82 ;set extruder to absolute mode\n M107 ;start with the fan off\n G28 X0 Y0 ;move X/Y to min endstops\n G28 Z0 ;move Z to min endstops\n G1 Z15.0 F{speed_travel} ;move the platform down 15mm\n G92 E0 ;zero the extruded length\n G1 F200 E6 ;extrude 6 mm of feed stock\n G92 E0 ;zero the extruded length again\n G1 F{speed_travel} \n ;Put printing message on LCD screen\n M117 Printing..." },
+        "machine_width": { "default_value": 300 },
+        "speed_print": { "default_value": 30 },
         "support_angle": { "default_value": 60 },
         "support_enable": { "default_value": true },
-        "layer_height_0": { "default_value": 0.15 },
-        "layer_height": { "default_value": 0.2 },
-        "speed_print": { "default_value": 30 },
-        "adhesion_type": { "default_value": "raft" },
         "support_z_distance": { "default_value": 0.22 }
     }
 }

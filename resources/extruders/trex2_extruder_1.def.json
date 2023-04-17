@@ -1,0 +1,23 @@
+{
+    "version": 2,
+    "name": "Right Extruder",
+    "inherits": "fdmextruder",
+    "metadata":
+    {
+        "machine": "vivedino_trex2plus",
+        "position": "1"
+    },
+    "overrides":
+    {
+        "extruder_nr":
+        {
+            "default_value": 1,
+            "maximum_value": "3"
+        },
+        "machine_extruder_end_code": { "default_value": "" },
+        "machine_extruder_start_code": { "default_value": "G0 X438.2" },
+        "machine_nozzle_offset_x": { "default_value": 0.0 },
+        "machine_nozzle_offset_y": { "default_value": 0.0 },
+        "material_diameter": { "default_value": 1.75 }
+    }
+}

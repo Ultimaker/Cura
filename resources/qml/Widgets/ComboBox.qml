@@ -18,8 +18,14 @@ ComboBox
     property var defaultTextOnEmptyModel: catalog.i18nc("@label", "No items to select from")  // Text displayed in the combobox when the model is empty
     property var defaultTextOnEmptyIndex: ""  // Text displayed in the combobox when the model has items but no item is selected
     property alias textFormat: contentLabel.textFormat
+    property alias backgroundColor: background.color
+    property bool forceHighlight: false
+    property int contentLeftPadding: UM.Theme.getSize("setting_unit_margin").width
+    property var textFont: UM.Theme.getFont("default")
 
     enabled: delegateModel.count > 0
+
+    height: UM.Theme.getSize("combobox").height
 
     onVisibleChanged: { popup.close() }
 
@@ -45,7 +51,7 @@ ComboBox
         State
         {
             name: "highlighted"
-            when: (base.hovered || control.hovered) && !control.activeFocus
+            when: (control.hovered && !control.activeFocus) || forceHighlight
             PropertyChanges
             {
                 target: background
@@ -56,28 +62,31 @@ ComboBox
 
     background: UM.UnderlineBackground
     {
-        //Rectangle for highlighting when this combobox needs to pulse.
+        id: background
+        // Rectangle for highlighting when this combobox needs to pulse.
         Rectangle
         {
             anchors.fill: parent
             opacity: 0
-            color: UM.Theme.getColor("warning")
+            color: "transparent"
+
+            border.color: UM.Theme.getColor("text_field_border_active")
+            border.width: UM.Theme.getSize("default_lining").width
 
             SequentialAnimation on opacity
             {
                 id: pulseAnimation
                 running: false
-                loops: 1
-                alwaysRunToEnd: true
+                loops: 2
                 PropertyAnimation
                 {
                     to: 1
-                    duration: 300
+                    duration: 150
                 }
                 PropertyAnimation
                 {
                     to: 0
-                    duration : 2000
+                    duration : 150
                 }
             }
         }
@@ -99,9 +108,10 @@ ComboBox
     contentItem: UM.Label
     {
         id: contentLabel
-        leftPadding: UM.Theme.getSize("setting_unit_margin").width + UM.Theme.getSize("default_margin").width
+        leftPadding: contentLeftPadding + UM.Theme.getSize("default_margin").width
         anchors.right: downArrow.left
         wrapMode: Text.NoWrap
+        font: textFont
         text:
         {
             if (control.delegateModel.count == 0)
@@ -171,11 +181,12 @@ ComboBox
             id: delegateLabel
             // FIXME: Somehow the top/bottom anchoring is not correct on Linux and it results in invisible texts.
             anchors.fill: parent
-            anchors.leftMargin: UM.Theme.getSize("setting_unit_margin").width
+            anchors.leftMargin: contentLeftPadding
             anchors.rightMargin: UM.Theme.getSize("setting_unit_margin").width
 
             text: delegateItem.text
             textFormat: control.textFormat
+            font: textFont
             color: UM.Theme.getColor("setting_control_text")
             elide: Text.ElideRight
             wrapMode: Text.NoWrap
