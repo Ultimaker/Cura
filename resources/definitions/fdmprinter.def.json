@@ -5167,11 +5167,11 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.8,
-                    "value": "support_line_width + 0.4 if support_type == 'normal' else 0.0",
+                    "value": "support_line_width + 0.4 if support_structure == 'normal' else 0.0",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "minimum_value_warning": "-1 * machine_nozzle_size",
                     "maximum_value_warning": "10 * machine_nozzle_size",
-                    "enabled": "(support_enable or support_meshes_present) and support_type == 'normal'",
+                    "enabled": "(support_enable or support_meshes_present) and support_structure == 'normal'",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
