@@ -6216,7 +6216,7 @@ msgstr "Se ha modificado la configuración recomendada (para <b>%1</b>)."
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:106
 msgctxt "@info %1 is the name of a profile"
 msgid "Some setting-values defined in <b>%1</b> were overridden."
-msgstr "Algunas configuraciones del perfil actual se han sobrescrito."
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:137
 msgctxt "@info"

@@ -6202,7 +6202,7 @@ msgstr "(<b>%1</b>)에 대한 권장 설정이 변경되었습니다."
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:106
 msgctxt "@info %1 is the name of a profile"
 msgid "Some setting-values defined in <b>%1</b> were overridden."
-msgstr "현재 프로파일의 일부 설정을 덮어썼습니다."
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:137
 msgctxt "@info"

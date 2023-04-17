@@ -6219,7 +6219,7 @@ msgstr "Önerilen ayarlar (<b>%1</b> için) değiştirildi."
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:106
 msgctxt "@info %1 is the name of a profile"
 msgid "Some setting-values defined in <b>%1</b> were overridden."
-msgstr "Mevcut profilin bazı ayarlarının üzerine yazılmış."
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:137
 msgctxt "@info"
