@@ -70,7 +70,7 @@ msgstr "Lista de polígonos con áreas que el cabezal de impresión no tiene per
 #: fdmprinter.def.json
 msgctxt "brim_inside_margin description"
 msgid "A part fully enclosed inside another part can generate an outer brim that touches the inside of the other part. This removes all brim within this distance from internal holes."
-msgstr "Una pieza completamente cerrada dentro de otra pieza puede generar un borde exterior que toque el interior de la otra pieza. Esta función elimina todos los bordes situados a menos de esta distancia de los orificios internos."
+msgstr "Una pieza completamente encerrada dentro de otra puede generar un borde exterior que toque el interior de la pieza exterior. Esto elimina cualquier borde dentro de esta distancia de los orificios internos."
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_abs label"
@@ -279,7 +279,7 @@ msgstr "Aplicar el desplazamiento del extrusor al sistema de coordenadas. Influy
 #: fdmprinter.def.json
 msgctxt "interlocking_enable description"
 msgid "At the locations where models touch, generate an interlocking beam structure. This improves the adhesion between models, especially models printed in different materials."
-msgstr "En las zonas donde se tocan los modelos, genere una estructura de haz entrelazado. Esta función mejora la adhesión entre modelos, especialmente en los modelos impresos con diferentes materiales."
+msgstr "En las ubicaciones donde se tocan los modelos, genere una estructura de haz entrelazado. Esto mejora la adhesión entre los modelos, especialmente de aquellos impresos en materiales diferentes."
 
 #: fdmprinter.def.json
 msgctxt "travel_avoid_other_parts label"
@@ -479,7 +479,7 @@ msgstr "Distancia del borde"
 #: fdmprinter.def.json
 msgctxt "brim_inside_margin label"
 msgid "Brim Inside Avoid Margin"
-msgstr "Margen a evitar del borde interior"
+msgstr "Margen de distancia del borde interior"
 
 #: fdmprinter.def.json
 msgctxt "brim_line_count label"
@@ -829,7 +829,7 @@ msgstr "Detección de puentes y modificación de los ajustes de velocidad de imp
 #: fdmprinter.def.json
 msgctxt "inset_direction description"
 msgid "Determines the order in which walls are printed. Printing outer walls earlier helps with dimensional accuracy, as faults from inner walls cannot propagate to the outside. However printing them later allows them to stack better when overhangs are printed. When there is an uneven amount of total innner walls, the 'center last line' is always printed last."
-msgstr "Determina el orden de impresión de las paredes. La preimpresión de las paredes exteriores mejora la precisión dimensional ya que las fallas de las paredes internas no pueden propagarse hacia el exterior. Sin embargo, si imprime más tarde, podrá apilarlos mejor cuando se impriman los voladizos. Cuando hay una cantidad desigual de paredes interiores totales, la \"última línea central\" siempre se imprime al final."
+msgstr "Determina el orden de impresión de las paredes. Empezar imprimiendo las paredes exteriores ayuda a la precisión dimensional, ya que evita que los defectos de las paredes interiores se propaguen al exterior. Sin embargo, si las imprime más tarde, podrá apilarlas mejor cuando se impriman los voladizos. Cuando hay una cantidad impar de paredes interiores totales, la «última línea central» siempre se imprime en último lugar."
 
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order description"
@@ -1054,12 +1054,12 @@ msgstr "Habilitar techo del soporte"
 #: fdmprinter.def.json
 msgctxt "acceleration_travel_enabled label"
 msgid "Enable Travel Acceleration"
-msgstr "Habilitar la aceleración de desplazamiento"
+msgstr "Habilitar aceleración de desplazamiento"
 
 #: fdmprinter.def.json
 msgctxt "jerk_travel_enabled label"
 msgid "Enable Travel Jerk"
-msgstr "Habilitar el impulso de desplazamiento"
+msgstr "Activar impulso de desplazamiento"
 
 #: fdmprinter.def.json
 msgctxt "ooze_shield_enabled description"
@@ -1314,7 +1314,7 @@ msgstr "Compensación de flujo en las líneas superiores o inferiores."
 #: fdmprinter.def.json
 msgctxt "wall_x_material_flow_layer_0 description"
 msgid "Flow compensation on wall lines for all wall lines except the outermost one, but only for the first layer"
-msgstr "Compensación de flujo en líneas de pared para todas las líneas excepto la más externa, pero solo para la primera capa"
+msgstr "Compensación de caudal en líneas de pared para todas, excepto la más exterior, pero solo para la primera capa."
 
 #: fdmprinter.def.json
 msgctxt "wall_x_material_flow description"
@@ -1427,7 +1427,7 @@ msgstr "Altura del puente"
 #: fdmprinter.def.json
 msgctxt "interlocking_enable label"
 msgid "Generate Interlocking Structure"
-msgstr "Generar estructuras de entrelazado"
+msgstr "Generar estructura entrelazada"
 
 #: fdmprinter.def.json
 msgctxt "support_enable label"
@@ -1492,7 +1492,7 @@ msgstr "Escalones de relleno de soporte"
 #: fdmprinter.def.json
 msgctxt "cool_min_temperature description"
 msgid "Gradually reduce to this temperature when printing at reduced speeds because of minimum layer time."
-msgstr "Reducir gradualmente a esta temperatura al imprimir a velocidades bajas debido al tiempo mínimo por capa."
+msgstr "Reduzca gradualmente a esta temperatura cuando imprima a velocidades bajas debido al tiempo mínimo de capa."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1997,7 +1997,7 @@ msgstr "Ancho del haz entrelazado"
 #: fdmprinter.def.json
 msgctxt "interlocking_boundary_avoidance label"
 msgid "Interlocking Boundary Avoidance"
-msgstr "Evitar los límites del entrelazado"
+msgstr "Distancia a los límites de entrelazado"
 
 #: fdmprinter.def.json
 msgctxt "interlocking_depth label"
@@ -2007,7 +2007,7 @@ msgstr "Profundidad del entrelazado"
 #: fdmprinter.def.json
 msgctxt "interlocking_orientation label"
 msgid "Interlocking Structure Orientation"
-msgstr "Orientación de la estructura entrelazada"
+msgstr "Orientación de estructura entrelazada"
 
 #: fdmprinter.def.json
 msgctxt "ironing_only_highest_layer label"
@@ -3662,7 +3662,7 @@ msgstr "Tamaño máximo de agujero pequeño"
 #: fdmprinter.def.json
 msgctxt "cool_min_temperature label"
 msgid "Small Layer Printing Temperature"
-msgstr "Temperatura de impresión para capas pequeñas"
+msgstr "Temperatura de impresión de capas pequeñas"
 
 #: fdmprinter.def.json
 msgctxt "small_skin_width label"
@@ -4477,7 +4477,7 @@ msgstr "El diámetro de la rueda que dirige el material hacia el alimentador."
 #: fdmprinter.def.json
 msgctxt "support_tree_max_diameter description"
 msgid "The diameter of the widest branches of tree support. A thicker trunk is more sturdy; a thinner trunk takes up less space on the build plate."
-msgstr "El diámetro de las ramas más anchas del soporte en árbol. Un tronco más grueso es más resistente; un tronco más delgado ocupa menos espacio en la placa de impresión."
+msgstr "El diámetro de las ramas más anchas del soporte en árbol. Un tronco más grueso es más resistente, pero uno más delgado ocupa menos espacio en la placa de impresión."
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation_step description"
@@ -4512,7 +4512,7 @@ msgstr "Distancia entre las líneas de la balsa para las capas superiores de la 
 #: fdmprinter.def.json
 msgctxt "interlocking_depth description"
 msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
-msgstr "La distancia del límite entre los modelos para generar una estructura entrelazada medida en celdas. Un número demasiado bajo de celdas provocará una adhesión deficiente."
+msgstr "La distancia del límite entre los modelos para generar una estructura entrelazada, medida en celdas. Un número demasiado bajo de celdas provocará una adhesión deficiente."
 
 #: fdmprinter.def.json
 msgctxt "brim_width description"
@@ -4522,7 +4522,7 @@ msgstr "Distancia desde el modelo hasta la línea del borde exterior. Un borde m
 #: fdmprinter.def.json
 msgctxt "interlocking_boundary_avoidance description"
 msgid "The distance from the outside of a model where interlocking structures will not be generated, measured in cells."
-msgstr "La distancia desde el exterior de un modelo en la que no se generarán estructuras entrelazadas, medida en celdas."
+msgstr "La distancia desde el exterior de un modelo en el que no se generarán estructuras entrelazadas, medida en celdas."
 
 #: fdmprinter.def.json
 msgctxt "machine_heat_zone_length description"
@@ -5041,7 +5041,7 @@ msgstr "La longitud mínima de la falda o el borde. Si el número de líneas de 
 #: fdmprinter.def.json
 msgctxt "min_odd_wall_line_width description"
 msgid "The minimum line width for middle line gap filler polyline walls. This setting determines at which model thickness we switch from printing two wall lines, to printing two outer walls and a single central wall in the middle. A higher Minimum Odd Wall Line Width leads to a higher maximum even wall line width. The maximum odd wall line width is calculated as 2 * Minimum Even Wall Line Width."
-msgstr "El ancho de línea mínimo para paredes de polilínea de relleno de hueco de línea intermedia. Este parámetro determina a partir de qué grosor de modelo pasamos de imprimir dos líneas de paredes a imprimir dos paredes exteriores y una sola pared central en el medio. Un ancho mínimo más alto de la línea perimetral impar conduce a un ancho máximo más alto de la línea perimetral par. El ancho máximo de línea perimetral impar se calcula como 2 * ancho mínimo de línea perimetral par."
+msgstr "La anchura mínima de línea para las paredes tipo polilínea para rellenar el hueco de la línea central. Este parámetro determina a partir de qué grosor de modelo pasamos de imprimir dos líneas de pared a imprimir dos paredes exteriores y una sola pared central en el medio. Un ancho mínimo más alto de la línea de pared impar conduce a un ancho máximo más alto de la línea de pared par. El ancho máximo de línea de pared impar se calcula como el doble del ancho mínimo de línea de pared par."
 
 #: fdmprinter.def.json
 msgctxt "min_even_wall_line_width description"
@@ -5156,17 +5156,17 @@ msgstr "El número de paredes con las que el soporte rodea el relleno. Añadir u
 #: fdmprinter.def.json
 msgctxt "support_bottom_wall_count description"
 msgid "The number of walls with which to surround support interface floor. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "El número de paredes con las que rodear la base de la interfaz de soporte. Añadir una pared puede hacer que la impresión del soporte sea más fiable y pueda sostener mejor los voladizos, pero aumentará el tiempo de impresión y el material utilizado."
+msgstr "El número de paredes con las que rodear el suelo de la interfaz de soporte. Añadir una pared puede hacer que la copia impresa del soporte sea más fiable y pueda sostener mejor los voladizos, pero aumentará el tiempo de impresión y el material utilizado."
 
 #: fdmprinter.def.json
 msgctxt "support_roof_wall_count description"
 msgid "The number of walls with which to surround support interface roof. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "El número de paredes con las que rodear el techo de la interfaz de soporte. Añadir una pared puede hacer que la impresión del soporte sea más fiable y pueda sostener mejor los voladizos, pero aumentará el tiempo de impresión y el material utilizado."
+msgstr "El número de paredes con las que rodear el techo de la interfaz de soporte. Añadir una pared puede hacer que la copia impresa del soporte sea más fiable y pueda sostener mejor los voladizos, pero aumentará el tiempo de impresión y el material utilizado."
 
 #: fdmprinter.def.json
 msgctxt "support_interface_wall_count description"
 msgid "The number of walls with which to surround support interface. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "El número de paredes con las que rodear la interfaz de soporte. Añadir una pared puede hacer que la impresión del soporte sea más fiable y pueda sostener mejor los voladizos, pero aumentará el tiempo de impresión y el material utilizado."
+msgstr "El número de paredes con las que rodear la interfaz de soporte. Añadir una pared puede hacer que la copia impresa del soporte sea más fiable y pueda sostener mejor los voladizos, pero aumentará el tiempo de impresión y el material utilizado."
 
 #: fdmprinter.def.json
 msgctxt "wall_distribution_count description"
@@ -5866,7 +5866,7 @@ msgstr "Resolución de colisión del soporte en árbol"
 #: fdmprinter.def.json
 msgctxt "support_tree_max_diameter label"
 msgid "Tree Support Trunk Diameter"
-msgstr "Diámetro del tronco de soporte en árbol"
+msgstr "Diámetro del tronco del soporte en árbol"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option trihexagon"
@@ -6548,14 +6548,6 @@ msgctxt "travel description"
 msgid "travel"
 msgstr "desplazamiento"
 
-#~ msgctxt "material_flow_dependent_temperature label"
-#~ msgid "Auto Temperature"
-#~ msgstr "Temperatura automática"
-
-#~ msgctxt "material_flow_dependent_temperature description"
-#~ msgid "Change the temperature for each layer automatically with the average flow speed of that layer."
-#~ msgstr "Cambia automáticamente la temperatura para cada capa con la velocidad media de flujo de esa capa."
-
 #~ msgctxt "wireframe_strategy option compensate"
 #~ msgid "Compensate"
 #~ msgstr "Compensar"
@@ -6611,14 +6603,6 @@ msgstr "desplazamiento"
 #~ msgctxt "wireframe_strategy option knot"
 #~ msgid "Knot"
 #~ msgstr "Nudo"
-
-#~ msgctxt "limit_support_retractions label"
-#~ msgid "Limit Support Retractions"
-#~ msgstr "Limitar las retracciones de soporte"
-
-#~ msgctxt "limit_support_retractions description"
-#~ msgid "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excessive stringing within the support structure."
-#~ msgstr "Omitir la retracción al moverse de soporte a soporte en línea recta. Habilitar este ajuste ahorra tiempo de impresión pero puede ocasionar un encordado excesivo en la estructura de soporte."
 
 #~ msgctxt "wireframe_straight_before_down description"
 #~ msgid "Percentage of a diagonally downward line which is covered by a horizontal line piece. This can prevent sagging of the top most point of upward lines. Only applies to Wire Printing."

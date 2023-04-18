@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-28 11:57+0000\n"
+"POT-Creation-Date: 2023-04-06 15:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2050,7 +2050,7 @@ msgstr "마켓플레이스에 도달할 수 없습니다."
 #: plugins/Marketplace/plugin.json
 msgctxt "description"
 msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
-msgstr ""
+msgstr "응용 프로그램의 확장을 관리하고 UltiMaker 웹 사이트에서 확장을 검색할 수 있습니다."
 
 #: plugins/Marketplace/plugin.json
 msgctxt "name"
@@ -2967,7 +2967,7 @@ msgstr "UltiMaker 포맷 패키지"
 #: plugins/UFPReader/plugin.json
 msgctxt "description"
 msgid "Provides support for reading Ultimaker Format Packages."
-msgstr ""
+msgstr "Ultimaker 포맷 패키지 읽기를 지원합니다."
 
 #: plugins/UFPReader/plugin.json
 msgctxt "name"
@@ -2984,7 +2984,7 @@ msgstr "UFP 파일에 쓸 수 없음:"
 #: plugins/UFPWriter/plugin.json
 msgctxt "description"
 msgid "Provides support for writing Ultimaker Format Packages."
-msgstr ""
+msgstr "Ultimaker 포맷 패키지 작성을 지원합니다."
 
 #: plugins/UFPWriter/plugin.json
 msgctxt "name"
@@ -2994,12 +2994,12 @@ msgstr "UFP 작성자"
 #: plugins/UM3NetworkPrinting/plugin.json
 msgctxt "description"
 msgid "Manages network connections to UltiMaker networked printers."
-msgstr ""
+msgstr "UltiMaker 네트워크 연결 프린터에 대한 네트워크 연결을 관리합니다."
 
 #: plugins/UM3NetworkPrinting/plugin.json
 msgctxt "name"
 msgid "UltiMaker Network Connection"
-msgstr ""
+msgstr "UltiMaker 네트워크 연결"
 
 #: plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:44
 msgctxt "@title:window"
@@ -3514,7 +3514,7 @@ msgstr "자세히 알아보기"
 #: plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:18
 msgctxt "@info:status"
 msgid "You are attempting to connect to a printer that is not running UltiMaker Connect. Please update the printer to the latest firmware."
-msgstr ""
+msgstr "UltiMaker Connect를 실행하지 않는 프린터에 연결하려 합니다. 프린터를 최신 펌웨어로 업데이트해 주십시오."
 
 #: plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:21
 msgctxt "@info:title"
@@ -3788,12 +3788,12 @@ msgstr "히팅 빌드 플레이트 (공식 키트 또는 자체 조립식)"
 #: plugins/UltimakerMachineActions/plugin.json
 msgctxt "description"
 msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
-msgstr ""
+msgstr "Ultimaker 기계에 대한 기계 작동 제공(예 : 침대 수평 조정 마법사, 업그레이드 선택 등)"
 
 #: plugins/UltimakerMachineActions/plugin.json
 msgctxt "name"
 msgid "UltiMaker machine actions"
-msgstr ""
+msgstr "UltiMaker 기기 동작"
 
 #: plugins/VersionUpgrade/VersionUpgrade21to22/plugin.json
 msgctxt "description"
@@ -4612,7 +4612,7 @@ msgstr "<b>사용자 지정 프로필에는 사용자가 변경한 설정만 저
 #: resources/qml/Cura.qml:917
 msgctxt "@action:button"
 msgid "Learn more about Cura print profiles"
-msgstr "Cura 프린트 프로필 자세히 알아보기"
+msgstr "Cura 프린트 프로필에 대해 자세히 알아보기"
 
 #: resources/qml/Cura.qml:926
 msgctxt "@button"
@@ -4852,7 +4852,7 @@ msgstr "호환 가능한 프린터"
 #: resources/qml/Dialogs/ChoosePrinterDialog.qml:110
 msgctxt "@description"
 msgid "No compatible printers, that are currently online, were found."
-msgstr "현재 온라인 상태인 호환 가능한 프린터가 없습니다."
+msgstr "현재 온라인 상태인 호환 가능 프린터를 찾을 수 없습니다."
 
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:13
 msgctxt "@title:window"
@@ -6197,7 +6197,7 @@ msgstr "<b>%1</b>개의 사용자 정의 프로파일이 일부 설정을 무시
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:92
 msgctxt "@info %1 is the name of a profile"
 msgid "Recommended settings (for <b>%1</b>) were altered."
-msgstr "(<b>%1</b>) 권장 설정이 변경되었습니다."
+msgstr "(<b>%1</b>)에 대한 권장 설정이 변경되었습니다."
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:106
 msgctxt "@info %1 is the name of a profile"
@@ -6232,7 +6232,7 @@ msgstr ""
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:111
 msgctxt "@button"
 msgid "Show Custom"
-msgstr ""
+msgstr "사용자 지정 표시"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedResolutionSelector.qml:27
 msgctxt "@label"
@@ -6275,13 +6275,13 @@ msgid ""
 "\n"
 "For functional 3D prints which require high strength in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
 msgstr ""
-"3D 객체의 인필 재료 패턴:\n"
+"프린트의 인필 재료 패턴:\n"
 "\n"
-" 비기능성 모델을 빠르게 프린트하기 위해 선, 지그재그 또는 라이트닝 인필을 선택합니다.\n"
+"비기능성 모델을 빠르게 프린트하려면 선, 지그재그 또는 라이트닝 인필을 선택합니다.\n"
 "\n"
-"많은 응력을 받지 않는 기능성 부품에 대해서는 그리드 또는 삼각형 또는 세 개로 된 육각형을 권장합니다.\n"
+"많은 응력을 받지 않는 기능성 부품의 경우 그리드 또는 삼각형 또는 삼-육각형을 사용하는 것이 좋습니다.\n"
 "\n"
-"여러 방향에서 높은 강도를 요구하는 기능성 3D 객체의 경우 입방체, 입방체 세분, 쿼터 큐빅, 옥텟 및 자이로이드를 사용합니다."
+"여러 방향에서 높은 강도를 요구하는 기능성 3D 객체의 경우에는 큐빅, 세분된 큐빅, 쿼터 큐빅, 옥텟 및 자이로이드를 사용합니다."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:67
 msgctxt "@action:label"
@@ -6488,7 +6488,7 @@ msgstr "클라우드 프린터가 오프라인 상태입니다. 프린터가 켜
 #: resources/qml/PrinterSelector/MachineSelector.qml:68
 msgctxt "@status"
 msgid "This printer is not linked to your account. Please visit the Ultimaker Digital Factory to establish a connection."
-msgstr ""
+msgstr "해당 프린터가 사용자의 계정에 연결되어 있지 않습니다. Ultimaker Digital Factory에 방문하여 연결을 설정하십시오."
 
 #: resources/qml/PrinterSelector/MachineSelector.qml:73
 msgctxt "@status"
@@ -6784,7 +6784,7 @@ msgstr ""
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:36
 msgctxt "@label"
 msgid "What printer would you like to setup?"
-msgstr ""
+msgstr "어떤 프린터를 설정하시겠습니까?"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:55
 msgctxt "@button"
@@ -6819,12 +6819,12 @@ msgstr "Cura에 새 UltiMaker 프린터를 추가하려는 경우"
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:80
 msgctxt "@info"
 msgid "Sign in into UltiMaker Digital Factory"
-msgstr ""
+msgstr "UltiMaker Digital Factory에 로그인합니다."
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:81
 msgctxt "@info"
 msgid "Follow the procedure to add a new printer"
-msgstr "절차에 따라 새 프린터를 추가하세요."
+msgstr "절차를 따라 새 프린터를 추가합니다."
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:82
 msgctxt "@info"
@@ -6909,10 +6909,6 @@ msgstr "선택할 항목 없음"
 #~ msgctxt "@info:status"
 #~ msgid "Cura does not accurately display layers when Wire Printing is enabled."
 #~ msgstr "와이어 프린팅이 활성화되어 있을 때 Cura는 레이어를 정확하게 표시하지 않습니다."
-
-#~ msgctxt "@description"
-#~ msgid "Please sign in to get verified plugins and materials for Ultimaker Cura Enterprise"
-#~ msgstr "Ultimaker Cura Enterprise용으로 검증된 플러그인 및 재료를 받으려면 로그인하십시오."
 
 #~ msgctxt "@info:title"
 #~ msgid "Simulation View"

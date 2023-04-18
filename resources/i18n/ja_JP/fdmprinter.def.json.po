@@ -70,7 +70,7 @@ msgstr "プリントヘッドの領域を持つポリゴンのリストは入力
 #: fdmprinter.def.json
 msgctxt "brim_inside_margin description"
 msgid "A part fully enclosed inside another part can generate an outer brim that touches the inside of the other part. This removes all brim within this distance from internal holes."
-msgstr "部品が他の部品に完全に囲まれている場合、外壁ブリムが他の部品の内側に接触する場合があります。この設定では、内部の穴からこの距離内にあるすべてのブリムを取り除きます。"
+msgstr "別の部品内に完全に囲まれた部品は、別の部品の内側に接触する外側縁ができることがあります。この設定によって、内部の穴からこの間隔内のすべての縁が除去されます。"
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_abs label"
@@ -279,7 +279,7 @@ msgstr "エクストルーダーのオフセットを座標システムに適用
 #: fdmprinter.def.json
 msgctxt "interlocking_enable description"
 msgid "At the locations where models touch, generate an interlocking beam structure. This improves the adhesion between models, especially models printed in different materials."
-msgstr "モデルが接触する場所にインターロックビーム構造を生成します。これにより、モデル間、特に異なる材料で印刷されたモデル間の密着性が向上します。"
+msgstr "モデルが接触する箇所に、インターロックビーム構造を生成します。その結果、モデル、特に異なる材料でプリントされたモデル間の密着性が向上します。"
 
 #: fdmprinter.def.json
 msgctxt "travel_avoid_other_parts label"
@@ -479,7 +479,7 @@ msgstr "ブリム距離"
 #: fdmprinter.def.json
 msgctxt "brim_inside_margin label"
 msgid "Brim Inside Avoid Margin"
-msgstr "内部ブリムを回避するためのマージン"
+msgstr "内側縁がマージンに接触しないようにする"
 
 #: fdmprinter.def.json
 msgctxt "brim_line_count label"
@@ -829,7 +829,7 @@ msgstr "ブリッジを検出し、ブリッジを印刷しながらて印刷速
 #: fdmprinter.def.json
 msgctxt "inset_direction description"
 msgid "Determines the order in which walls are printed. Printing outer walls earlier helps with dimensional accuracy, as faults from inner walls cannot propagate to the outside. However printing them later allows them to stack better when overhangs are printed. When there is an uneven amount of total innner walls, the 'center last line' is always printed last."
-msgstr "ウォールをプリントする順序を決定します。アウターウォールを先にプリントすると、インナーウォールの不具合が外側に影響しないため、寸法精度が向上します。一方、アウターウォールを後からプリントすると、オーバーハングをプリントする際の積み重ねがより良くなります。インナーウォールの量が全体で不均一な場合、「中央の最後のライン」は常に最後に印刷されます。"
+msgstr "ウォールをプリントする順序を決定します。アウターウォールを先にプリントすると、インナーウォールの不具合が外側に影響しないため、寸法精度が向上します。一方、アウターウォールを後からプリントすると、オーバーハングをプリントする際にうまく積み重ねることができます。インナーウォールの合計が奇数の場合、「中央の最後のライン」は必ず最後にプリントされます。"
 
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order description"
@@ -1254,7 +1254,7 @@ msgstr "初期レイヤーの流量補修:初期レイヤーの マテリアル�
 #: fdmprinter.def.json
 msgctxt "skin_material_flow_layer_0 description"
 msgid "Flow compensation on bottom lines of the first layer"
-msgstr "第1レイヤーのボトムラインでのフロー補正"
+msgstr "最初のレイヤーの底面ラインのフロー補正"
 
 #: fdmprinter.def.json
 msgctxt "infill_material_flow description"
@@ -1299,7 +1299,7 @@ msgstr "支持材のフロー補正。"
 #: fdmprinter.def.json
 msgctxt "wall_0_material_flow_layer_0 description"
 msgid "Flow compensation on the outermost wall line of the first layer."
-msgstr "初期レイヤーでの、最も外側のウォールラインにおけるフロー補正です。"
+msgstr "最初のレイヤーの最も外側のウォールライン上のフロー補正。"
 
 #: fdmprinter.def.json
 msgctxt "wall_0_material_flow description"
@@ -1314,7 +1314,7 @@ msgstr "上面/下面のフロー補正。"
 #: fdmprinter.def.json
 msgctxt "wall_x_material_flow_layer_0 description"
 msgid "Flow compensation on wall lines for all wall lines except the outermost one, but only for the first layer"
-msgstr "最も外側のものを除く、すべてのウォールラインに関するフロー補正です（ただし、初期レイヤーのみ）。"
+msgstr "最も外側のウォールラインを除くすべてのウォールラインのフロー補正（ただし、最初のレイヤーのみ）"
 
 #: fdmprinter.def.json
 msgctxt "wall_x_material_flow description"
@@ -1492,7 +1492,7 @@ msgstr "サポートインフィル半減回数"
 #: fdmprinter.def.json
 msgctxt "cool_min_temperature description"
 msgid "Gradually reduce to this temperature when printing at reduced speeds because of minimum layer time."
-msgstr "最小レイヤー時間の制限を満たすために速度を落としてプリントする場合、温度は徐々にこの温度まで下がります。"
+msgstr "レイヤー時間が最小であるため、速度を落としてプリントする場合は、この温度まで徐々に下げてください。"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1857,7 +1857,7 @@ msgstr "初期レイヤー加速度"
 #: fdmprinter.def.json
 msgctxt "skin_material_flow_layer_0 label"
 msgid "Initial Layer Bottom Flow"
-msgstr "初期レイヤーのボトムでのフロー"
+msgstr "初期レイヤーの底面フロー"
 
 #: fdmprinter.def.json
 msgctxt "material_flow_layer_0 label"
@@ -3664,7 +3664,7 @@ msgstr "小さい穴の最大サイズ"
 #: fdmprinter.def.json
 msgctxt "cool_min_temperature label"
 msgid "Small Layer Printing Temperature"
-msgstr "最終印刷温度"
+msgstr "小さいレイヤーのプリント温度"
 
 #: fdmprinter.def.json
 msgctxt "small_skin_width label"
@@ -3804,7 +3804,7 @@ msgstr "サポート底部距離"
 #: fdmprinter.def.json
 msgctxt "support_bottom_wall_count label"
 msgid "Support Bottom Wall Line Count"
-msgstr "サポートウォールライン数"
+msgstr "サポート底面ウォールライン数"
 
 #: fdmprinter.def.json
 msgctxt "support_brim_line_count label"
@@ -4004,7 +4004,7 @@ msgstr "サポートインタフェース厚さ"
 #: fdmprinter.def.json
 msgctxt "support_interface_wall_count label"
 msgid "Support Interface Wall Line Count"
-msgstr "サポートインターフェースウォールライン数"
+msgstr "サポートインターフェースのウォールライン数"
 
 #: fdmprinter.def.json
 msgctxt "jerk_support label"
@@ -4481,7 +4481,7 @@ msgstr "材料をフィーダーに送るホイールの直径。"
 #: fdmprinter.def.json
 msgctxt "support_tree_max_diameter description"
 msgid "The diameter of the widest branches of tree support. A thicker trunk is more sturdy; a thinner trunk takes up less space on the build plate."
-msgstr "ツリーサポートにおける最も太い枝の直径です。本体は太いほど強固になり、また、細いほどビルドプレート上で占有するスペースが少なくなります。"
+msgstr "ツリーサポートの最も広い枝の直径。本体が太いほど丈夫です。本体が細いほど、ビルドプレートを占有するスペースが少なくなります。"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation_step description"
@@ -4526,7 +4526,7 @@ msgstr "モデルから最外線のブリムまでの距離。大きなブリム
 #: fdmprinter.def.json
 msgctxt "interlocking_boundary_avoidance description"
 msgid "The distance from the outside of a model where interlocking structures will not be generated, measured in cells."
-msgstr "インターロック構造を生成しないモデルの外側からの距離（セル単位）。"
+msgstr "インターロック構造が生成されないモデルの外側からの距離（セル単位で測定）。"
 
 #: fdmprinter.def.json
 msgctxt "machine_heat_zone_length description"
@@ -5045,7 +5045,7 @@ msgstr "スカートまたはブリム最短の長さ。この長さにすべて
 #: fdmprinter.def.json
 msgctxt "min_odd_wall_line_width description"
 msgid "The minimum line width for middle line gap filler polyline walls. This setting determines at which model thickness we switch from printing two wall lines, to printing two outer walls and a single central wall in the middle. A higher Minimum Odd Wall Line Width leads to a higher maximum even wall line width. The maximum odd wall line width is calculated as 2 * Minimum Even Wall Line Width."
-msgstr "中央ラインギャップフィラーのポリラインウォールにおける最小ライン幅。この設定は、2本のウォールラインのプリントから、2個のアウターウォールと中央の1個の中心ウォールのプリントに切り替わるモデルの厚さを決定します。最小奇数ウォールライン幅を大きくすると、最大偶数ウォールライン幅も大きくなります。最大奇数ウォールライン幅は、2 * 最小偶数ウォールライン幅（2倍）として計算されます。"
+msgstr "中央ラインギャップフィラーのポリラインウォールの最小ライン幅。この設定は、2本のウォールラインのプリントから、2個のアウターウォールと中央の1個の中心ウォールのプリントに切り替わるモデルの厚さを決定します。最小奇数ウォールライン幅を大きくすると、最大偶数ウォールライン幅も大きくなります。最大奇数ウォールライン幅は、2×最小偶数ウォールライン幅として計算されます。"
 
 #: fdmprinter.def.json
 msgctxt "min_even_wall_line_width description"
@@ -5595,7 +5595,7 @@ msgstr "サポートの下に印刷されるブリムの幅。ブリムが大き
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_width description"
 msgid "The width of the interlocking structure beams."
-msgstr "インターロック構造のビームの幅。"
+msgstr "インターロック構造ビームの幅。"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_size description"
@@ -6552,14 +6552,6 @@ msgctxt "travel description"
 msgid "travel"
 msgstr "移動"
 
-#~ msgctxt "material_flow_dependent_temperature label"
-#~ msgid "Auto Temperature"
-#~ msgstr "自動温度"
-
-#~ msgctxt "material_flow_dependent_temperature description"
-#~ msgid "Change the temperature for each layer automatically with the average flow speed of that layer."
-#~ msgstr "その画層の平均流速で自動的にレイヤーごとに温度を変更します。"
-
 #~ msgctxt "wireframe_strategy option compensate"
 #~ msgid "Compensate"
 #~ msgstr "補正"
@@ -6613,14 +6605,6 @@ msgstr "移動"
 #~ msgctxt "wireframe_strategy option knot"
 #~ msgid "Knot"
 #~ msgstr "ノット"
-
-#~ msgctxt "limit_support_retractions label"
-#~ msgid "Limit Support Retractions"
-#~ msgstr "サポート引き戻し限界"
-
-#~ msgctxt "limit_support_retractions description"
-#~ msgid "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excessive stringing within the support structure."
-#~ msgstr "支持材から支持材に直線移動する場合は、引戻しを省略します。この設定を有効にすると、印刷時間は節約できますが、支持材内で過剰な糸引きが発生する可能性があります。"
 
 #~ msgctxt "wireframe_straight_before_down description"
 #~ msgid "Percentage of a diagonally downward line which is covered by a horizontal line piece. This can prevent sagging of the top most point of upward lines. Only applies to Wire Printing."

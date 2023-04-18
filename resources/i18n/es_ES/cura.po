@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-28 11:57+0000\n"
+"POT-Creation-Date: 2023-04-06 15:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3593,7 +3593,7 @@ msgstr "El trabajo de impresión se ha enviado correctamente"
 #: plugins/UM3NetworkPrinting/src/Messages/PrintJobAwaitingApprovalMessage.py:22
 msgctxt "@action"
 msgid "Manage print jobs"
-msgstr "Gestionar trabajos de impresión"
+msgstr "Administrar trabajos de impresión"
 
 #: plugins/UM3NetworkPrinting/src/Messages/PrintJobUploadBlockedMessage.py:15
 msgctxt "@info:status"
@@ -6201,12 +6201,12 @@ msgstr "Apagado"
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:65
 msgctxt "@info, %1 is the name of the custom profile"
 msgid "<b>%1</b> custom profile is active and you overwrote some settings."
-msgstr "el perfil personalizado <b>%1</b> está activo y ha sobrescrito algunos ajustes."
+msgstr "El perfil personalizado <b>%1</b> está activo y ha sobrescrito algunos ajustes."
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:78
 msgctxt "@info, %1 is the name of the custom profile"
 msgid "<b>%1</b> custom profile is overriding some settings."
-msgstr "El perfil personalizado <b>%1</b> está sobreescribiendo algunos ajustes."
+msgstr "El perfil personalizado <b>%1</b> anula algunos ajustes."
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:92
 msgctxt "@info %1 is the name of a profile"
@@ -6221,12 +6221,12 @@ msgstr ""
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:137
 msgctxt "@info"
 msgid "Reset to defaults."
-msgstr "Restablecer los valores predeterminados."
+msgstr "Restablecer los valores por defecto."
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:178
 msgctxt "@info"
 msgid "Compare and save."
-msgstr "Compare y ahorre."
+msgstr "Comparar y guardar."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedAdhesionSelector.qml:15
 msgctxt "@label"
@@ -6246,7 +6246,7 @@ msgstr ""
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:111
 msgctxt "@button"
 msgid "Show Custom"
-msgstr ""
+msgstr "Mostrar personalización"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedResolutionSelector.qml:27
 msgctxt "@label"
@@ -6330,12 +6330,7 @@ msgid ""
 "\"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. \n"
 "\n"
 "\"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
-msgstr ""
-"Elige entre las tcnicas disponibles para generar soporte. \n"
-"\n"
-"El soporte \"Normal\" crea una estructura de soporte directamente debajo de las partes en voladizo y lleva estas reas hacia abajo. \n"
-"\n"
-"El soporte en \"rbol\" crea ramas en las reas en voladizo que sostienen el modelo al final de estas ramas y permite que las ramas se arrastren alrededor del modelo para sostenerlo tanto como sea posible en la placa de impresión."
+msgstr "Elige entre las técnicas disponibles para generar soporte. El soporte \"Normal\" crea una estructura de soporte directamente debajo de las partes en voladizo y lleva estas áreas hacia abajo. El soporte en \"Árbol\" crea ramas en las áreas en voladizo que sostienen el modelo al final de estas ramas y permite que las ramas se arrastren alrededor del modelo para sostenerlo tanto como sea posible en la placa de impresión."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:53
 msgctxt "@action:label"
@@ -6839,7 +6834,7 @@ msgstr "Si está intentando añadir una nueva impresora UltiMaker a Cura"
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:80
 msgctxt "@info"
 msgid "Sign in into UltiMaker Digital Factory"
-msgstr ""
+msgstr "Inicie sesión en UltiMaker Digital Factory"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:81
 msgctxt "@info"
@@ -6849,7 +6844,7 @@ msgstr "Siga el procedimiento para añadir una nueva impresora"
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:82
 msgctxt "@info"
 msgid "Your new printer will automatically appear in Cura"
-msgstr "La nueva impresora aparecerá automáticamente en Cura"
+msgstr "Su nueva impresora aparecerá automáticamente en Cura"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:100
 msgctxt "@button"

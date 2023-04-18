@@ -1054,12 +1054,12 @@ msgstr "Activer les plafonds de support"
 #: fdmprinter.def.json
 msgctxt "acceleration_travel_enabled label"
 msgid "Enable Travel Acceleration"
-msgstr "Activer l'accélération de déplacement"
+msgstr "Activer l'accélération des déplacements"
 
 #: fdmprinter.def.json
 msgctxt "jerk_travel_enabled label"
 msgid "Enable Travel Jerk"
-msgstr "Activer la saccade de déplacement"
+msgstr "Activer les saccades de déplacement"
 
 #: fdmprinter.def.json
 msgctxt "ooze_shield_enabled description"
@@ -1254,7 +1254,7 @@ msgstr "Compensation du débit pour la couche initiale : la quantité de matér
 #: fdmprinter.def.json
 msgctxt "skin_material_flow_layer_0 description"
 msgid "Flow compensation on bottom lines of the first layer"
-msgstr "Compensation de débit sur les lignes du dessous de la première couche"
+msgstr "Compensation de débit sur les lignes inférieures de la première couche"
 
 #: fdmprinter.def.json
 msgctxt "infill_material_flow description"
@@ -1299,7 +1299,7 @@ msgstr "Compensation de débit sur les lignes de support."
 #: fdmprinter.def.json
 msgctxt "wall_0_material_flow_layer_0 description"
 msgid "Flow compensation on the outermost wall line of the first layer."
-msgstr "Compensation de débit sur la ligne de la paroi la plus à l'extérieur de la première couche."
+msgstr "Compensation de débit sur la ligne de paroi la plus externe de la première couche."
 
 #: fdmprinter.def.json
 msgctxt "wall_0_material_flow description"
@@ -1314,7 +1314,7 @@ msgstr "Compensation de débit sur les lignes du dessus/dessous."
 #: fdmprinter.def.json
 msgctxt "wall_x_material_flow_layer_0 description"
 msgid "Flow compensation on wall lines for all wall lines except the outermost one, but only for the first layer"
-msgstr "Compensation de débit sur les lignes de la paroi pour toutes les lignes de paroi, à l'exception de la ligne la plus externe, mais uniquement pour la première couche."
+msgstr "Compensation de débit sur les lignes de paroi pour toutes les lignes de paroi, à l'exception de la ligne la plus plus externe, mais uniquement pour la première couche"
 
 #: fdmprinter.def.json
 msgctxt "wall_x_material_flow description"
@@ -1492,7 +1492,7 @@ msgstr "Étapes de remplissage graduel du support"
 #: fdmprinter.def.json
 msgctxt "cool_min_temperature description"
 msgid "Gradually reduce to this temperature when printing at reduced speeds because of minimum layer time."
-msgstr "Abaissez progressivement la température jusqu'à ce niveau lors de l'impression à vitesse réduite, en raison du temps d'impression minimum de chaque couche."
+msgstr "Réduisez progressivement à cette température lors de l'impression à des vitesses réduites en raison de la durée minimale d’une couche."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1857,7 +1857,7 @@ msgstr "Accélération de la couche initiale"
 #: fdmprinter.def.json
 msgctxt "skin_material_flow_layer_0 label"
 msgid "Initial Layer Bottom Flow"
-msgstr "Débit des lignes du dessous de la couche initiale"
+msgstr "Débit inférieur de la couche initiale"
 
 #: fdmprinter.def.json
 msgctxt "material_flow_layer_0 label"
@@ -1987,17 +1987,17 @@ msgstr "De l'intérieur vers l'extérieur"
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_layer_count label"
 msgid "Interlocking Beam Layer Count"
-msgstr "Nombre de couches de l'attache de connexion"
+msgstr "Nombre de couches des attaches de connexion"
 
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_width label"
 msgid "Interlocking Beam Width"
-msgstr "Largeur de l'attache de connexion"
+msgstr "Largeur des attaches de connexion"
 
 #: fdmprinter.def.json
 msgctxt "interlocking_boundary_avoidance label"
 msgid "Interlocking Boundary Avoidance"
-msgstr "Limite de la distance de connexion"
+msgstr "Distance limite de connexion"
 
 #: fdmprinter.def.json
 msgctxt "interlocking_depth label"
@@ -3662,7 +3662,7 @@ msgstr "Taille maximale des petits trous"
 #: fdmprinter.def.json
 msgctxt "cool_min_temperature label"
 msgid "Small Layer Printing Temperature"
-msgstr "Température d'impression pour couches fines"
+msgstr "Température d'impression en cas de petite couche"
 
 #: fdmprinter.def.json
 msgctxt "small_skin_width label"
@@ -3802,7 +3802,7 @@ msgstr "Distance inférieure des supports"
 #: fdmprinter.def.json
 msgctxt "support_bottom_wall_count label"
 msgid "Support Bottom Wall Line Count"
-msgstr "Nombre de lignes de la paroi inférieure du support"
+msgstr "Nombre de lignes de parois inférieures du support"
 
 #: fdmprinter.def.json
 msgctxt "support_brim_line_count label"
@@ -4002,7 +4002,7 @@ msgstr "Épaisseur de l'interface de support"
 #: fdmprinter.def.json
 msgctxt "support_interface_wall_count label"
 msgid "Support Interface Wall Line Count"
-msgstr "Nombre de lignes de la paroi de la surface de support"
+msgstr "Nombre de lignes de parois de l'interface du support"
 
 #: fdmprinter.def.json
 msgctxt "jerk_support label"
@@ -4107,7 +4107,7 @@ msgstr "Épaisseur du plafond de support"
 #: fdmprinter.def.json
 msgctxt "support_roof_wall_count label"
 msgid "Support Roof Wall Line Count"
-msgstr "Nombre de lignes de la paroi du plafond de support"
+msgstr "Nombre de lignes de parois du toit du support"
 
 #: fdmprinter.def.json
 msgctxt "speed_support label"
@@ -4477,7 +4477,7 @@ msgstr "Diamètre de la roue qui entraîne le matériau dans le chargeur."
 #: fdmprinter.def.json
 msgctxt "support_tree_max_diameter description"
 msgid "The diameter of the widest branches of tree support. A thicker trunk is more sturdy; a thinner trunk takes up less space on the build plate."
-msgstr "Diamètre des branches les plus larges du support arborescent. Un tronc plus épais est plus robuste ; un tronc plus fin prend moins de place sur le plateau de fabrication."
+msgstr "Le diamètre des branches les plus larges du support arborescent. Un tronc plus épais est plus robuste ; un tronc plus fin prend moins de place sur le plateau de fabrication."
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation_step description"
@@ -4512,7 +4512,7 @@ msgstr "La distance entre les lignes du radeau pour les couches supérieures de 
 #: fdmprinter.def.json
 msgctxt "interlocking_depth description"
 msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
-msgstr "Limite de la distance entre modèles 3D lors de la génération d'une structure de connexion, mesurée en cellules. Un trop petit nombre de cellules entraînera une mauvaise adhérence."
+msgstr "Limite de distance entre les modèles 3D à partir de laquelle générer une structure de connexion, mesurée en cellules. Un nombre de cellules trop bas entraînera une mauvaise adhérence."
 
 #: fdmprinter.def.json
 msgctxt "brim_width description"
@@ -4522,7 +4522,7 @@ msgstr "La distance entre le modèle et la ligne de bordure la plus à l'extéri
 #: fdmprinter.def.json
 msgctxt "interlocking_boundary_avoidance description"
 msgid "The distance from the outside of a model where interlocking structures will not be generated, measured in cells."
-msgstr "Distance à partir de l'extérieur d'un modèle 3D où les structures de connexion ne seront plus générées, mesurée en cellules."
+msgstr "Distance depuis l'extérieur d'un modèle 3D à partir de laquelle les structures de connexion ne seront pas générées, mesurée en cellules."
 
 #: fdmprinter.def.json
 msgctxt "machine_heat_zone_length description"
@@ -4742,12 +4742,12 @@ msgstr "La hauteur de remplissage de support d'une densité donnée avant de pas
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_layer_count description"
 msgid "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects."
-msgstr "La hauteur des attaches de la structure de connexion, mesurée en nombre de couches. Des couches moins nombreuses seront plus solides, mais sujettes à des imperfections."
+msgstr "La hauteur des attaches de la structure de connexion, mesurée en nombre de couches. Des couches moins nombreuses seront plus solides, mais davantage sujettes à des imperfections."
 
 #: fdmprinter.def.json
 msgctxt "interlocking_orientation description"
 msgid "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects."
-msgstr "La hauteur des attaches de la structure de connexion, mesurée en nombre de couches. Des couches moins nombreuses seront plus solides, mais sujettes à des imperfections."
+msgstr "La hauteur des attaches de la structure de connexion, mesurée en nombre de couches. Des couches moins nombreuses seront plus solides, mais davantage sujettes à des imperfections."
 
 #: fdmprinter.def.json
 msgctxt "layer_height_0 description"
@@ -5041,7 +5041,7 @@ msgstr "La longueur minimale de la jupe ou bordure. Si cette longueur n’est pa
 #: fdmprinter.def.json
 msgctxt "min_odd_wall_line_width description"
 msgid "The minimum line width for middle line gap filler polyline walls. This setting determines at which model thickness we switch from printing two wall lines, to printing two outer walls and a single central wall in the middle. A higher Minimum Odd Wall Line Width leads to a higher maximum even wall line width. The maximum odd wall line width is calculated as 2 * Minimum Even Wall Line Width."
-msgstr "Largeur de ligne minimale pour les parois de polyligne de remplissage de l'espace de ligne médiane. Ce paramètre détermine à partir de quelle épaisseur de modèle nous passons de l'impression de deux lignes de parois à l'impression de deux parois extérieures et d'une seule paroi centrale au milieu. Une largeur de ligne de paroi impaire minimale plus élevée conduit à une largeur de ligne de paroi uniforme plus élevée. La largeur maximale de la ligne de paroi impaire est calculée comme 2 × largeur minimale de la ligne de paroi paire."
+msgstr "Largeur de ligne minimale pour les parois de polyligne de remplissage de l'espace de ligne médiane. Ce paramètre détermine à partir de quelle épaisseur de modèle 3D nous passons de l'impression de deux lignes de parois à l'impression de deux parois extérieures et d'une seule paroi centrale au milieu. Une largeur de ligne de paroi impaire minimale plus élevée conduit à une largeur de ligne de paroi paire plus élevée. La largeur maximale de la ligne de paroi impaire représente 2 fois la largeur minimale de la ligne de paroi paire."
 
 #: fdmprinter.def.json
 msgctxt "min_even_wall_line_width description"
@@ -5156,12 +5156,12 @@ msgstr "Nombre de parois qui entourent le remplissage de support. L'ajout d'une 
 #: fdmprinter.def.json
 msgctxt "support_bottom_wall_count description"
 msgid "The number of walls with which to surround support interface floor. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "Nombre de parois avec lesquelles entourer le plancher de la surface de support. L'ajout d'une paroi rend l'impression du support plus fiable et permet de mieux soutenir les saillies, mais augmente le temps d'impression et la quantité de matériau utilisé."
+msgstr "Le nombre de parois avec lesquelles entourer la surface inférieure de l'interface du support. L'ajout d'une paroi rend l'impression du support plus fiable et permet de mieux soutenir les saillies, mais augmente le temps d'impression et la quantité de matériau utilisé."
 
 #: fdmprinter.def.json
 msgctxt "support_roof_wall_count description"
 msgid "The number of walls with which to surround support interface roof. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "Le nombre de parois avec lesquelles entourer le plafond de la surface de support. L'ajout d'une paroi rend l'impression du support plus fiable et permet de mieux soutenir les saillies, mais augmente le temps d'impression et la quantité de matériau utilisé."
+msgstr "Nombre de parois avec lesquelles entourer le toit de l'interface du support. L'ajout d'une paroi rend l'impression du support plus fiable et permet de mieux soutenir les saillies, mais augmente le temps d'impression et la quantité de matériau utilisé."
 
 #: fdmprinter.def.json
 msgctxt "support_interface_wall_count description"
@@ -5926,12 +5926,12 @@ msgstr "Utilisation de tours"
 #: fdmprinter.def.json
 msgctxt "acceleration_travel_enabled description"
 msgid "Use a separate acceleration rate for travel moves. If disabled, travel moves will use the acceleration value of the printed line at their destination."
-msgstr "Utilisez un taux d'accélération différent pour les déplacements. Si cette option est désactivée, les déplacements utiliseront la même accélération que celle de la ligne imprimée à l'emplacement cible."
+msgstr "Utilisez un taux d'accélération distinct pour les déplacements. Si cette option est désactivée, les déplacements utiliseront la même accélération que celle de la ligne imprimée à l'emplacement cible."
 
 #: fdmprinter.def.json
 msgctxt "jerk_travel_enabled description"
 msgid "Use a separate jerk rate for travel moves. If disabled, travel moves will use the jerk value of the printed line at their destination."
-msgstr "Utilisez un taux de saccades différent pour les déplacements. Si cette option est désactivée, les déplacements utiliseront les mêmes saccades que celle de la ligne imprimée à l'emplacement cible."
+msgstr "Utilisez un taux de saccades différent pour les déplacements. Si cette option est désactivée, les déplacements utiliseront les mêmes saccades que celles de la ligne imprimée à l'emplacement cible."
 
 #: fdmprinter.def.json
 msgctxt "relative_extrusion description"
@@ -6548,14 +6548,6 @@ msgctxt "travel description"
 msgid "travel"
 msgstr "déplacement"
 
-#~ msgctxt "material_flow_dependent_temperature label"
-#~ msgid "Auto Temperature"
-#~ msgstr "Température auto"
-
-#~ msgctxt "material_flow_dependent_temperature description"
-#~ msgid "Change the temperature for each layer automatically with the average flow speed of that layer."
-#~ msgstr "Modifie automatiquement la température pour chaque couche en fonction de la vitesse de flux moyenne pour cette couche."
-
 #~ msgctxt "wireframe_strategy option compensate"
 #~ msgid "Compensate"
 #~ msgstr "Compenser"
@@ -6611,14 +6603,6 @@ msgstr "déplacement"
 #~ msgctxt "wireframe_strategy option knot"
 #~ msgid "Knot"
 #~ msgstr "Nœud"
-
-#~ msgctxt "limit_support_retractions label"
-#~ msgid "Limit Support Retractions"
-#~ msgstr "Limiter les rétractations du support"
-
-#~ msgctxt "limit_support_retractions description"
-#~ msgid "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excessive stringing within the support structure."
-#~ msgstr "Omettre la rétraction lors du passage entre supports en ligne droite. L'activation de ce paramètre permet de gagner du temps lors de l'impression, mais peut conduire à un stringing excessif à l'intérieur de la structure de support."
 
 #~ msgctxt "wireframe_straight_before_down description"
 #~ msgid "Percentage of a diagonally downward line which is covered by a horizontal line piece. This can prevent sagging of the top most point of upward lines. Only applies to Wire Printing."
