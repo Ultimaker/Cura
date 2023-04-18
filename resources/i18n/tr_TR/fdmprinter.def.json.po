@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-04-08 08:31+0000\n"
+"POT-Creation-Date: 2023-04-18 08:40+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -555,11 +555,6 @@ msgstr "İlk Katman Yapı Levhası Sıcaklığı"
 msgctxt "build_volume_temperature label"
 msgid "Build Volume Temperature"
 msgstr "Yapı Disk Bölümü Sıcaklığı"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_rest_preference option buildplate"
-msgid "Buildplate"
-msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "center_object label"
@@ -1370,6 +1365,11 @@ msgstr "Temizleme Hızı"
 msgctxt "min_wall_line_width description"
 msgid "For thin structures around once or twice the nozzle size, the line widths need to be altered to adhere to the thickness of the model. This setting controls the minimum line width allowed for the walls. The minimum line widths inherently also determine the maximum line widths, since we transition from N to N+1 walls at some geometry thickness where the N walls are wide and the N+1 walls are narrow. The widest possible wall line is twice the Minimum Wall Line Width."
 msgstr "Nozül boyutunun bir veya iki katı kadar olan ince yapılarda modelin kalınlığına bağlı olarak hat genişliklerinin değiştirilmesi gerekir. Bu ayar, duvarlar için izin verilen minimum hat genişliğini kontrol eder. Minimum hat genişlikleri, N duvarlarının geniş ve N+1 duvarlarının dar olduğu bazı geometrik kalınlıklarda N duvardan N+1 duvara geçildiği için maksimum hat genişliklerini de belirler. Mümkün olan en geniş duvar hattı Minimum Duvar Hattı Genişliğinin iki katıdır."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_rest_preference option buildplate"
+msgid "Force Only Buildplate"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "z_seam_position option front"
@@ -2876,7 +2876,7 @@ msgstr "Ekstruder Ofseti"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_rest_preference option graceful"
-msgid "On any flat surface"
+msgid "On Model If Necessary"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -5320,7 +5320,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_rest_preference description"
-msgid "The preferred placement of the support structures. If structures cant be placed at the prefered location, they will be place elsewhere"
+msgid "The preferred placement of the support structures. If structures can't be placed at the preferred location, they will be place elsewhere, even if that means placing them on the model."
 msgstr ""
 
 #: fdmprinter.def.json

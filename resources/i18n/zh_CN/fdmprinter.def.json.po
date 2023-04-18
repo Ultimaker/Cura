@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-04-08 08:31+0000\n"
+"POT-Creation-Date: 2023-04-18 08:40+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -555,11 +555,6 @@ msgstr "打印平台温度起始层"
 msgctxt "build_volume_temperature label"
 msgid "Build Volume Temperature"
 msgstr "打印体积温度"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_rest_preference option buildplate"
-msgid "Buildplate"
-msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "center_object label"
@@ -1370,6 +1365,11 @@ msgstr "冲洗清除速度"
 msgctxt "min_wall_line_width description"
 msgid "For thin structures around once or twice the nozzle size, the line widths need to be altered to adhere to the thickness of the model. This setting controls the minimum line width allowed for the walls. The minimum line widths inherently also determine the maximum line widths, since we transition from N to N+1 walls at some geometry thickness where the N walls are wide and the N+1 walls are narrow. The widest possible wall line is twice the Minimum Wall Line Width."
 msgstr "对于一倍或两倍于喷嘴孔径的薄结构，需要更改走线宽度以遵循模型的厚度。此设置控制壁允许的最小走线宽度。同样，最小走线宽度内在地决定了最大走线宽度，因为我们在某些几何厚度中从 N 壁过渡到 N+1 壁时，N 壁宽而 N+1 壁窄。允许的最大壁走线宽度是最小壁走线宽度的两倍。"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_rest_preference option buildplate"
+msgid "Force Only Buildplate"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "z_seam_position option front"
@@ -2876,7 +2876,7 @@ msgstr "挤出机偏移量"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_rest_preference option graceful"
-msgid "On any flat surface"
+msgid "On Model If Necessary"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -5320,7 +5320,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_rest_preference description"
-msgid "The preferred placement of the support structures. If structures cant be placed at the prefered location, they will be place elsewhere"
+msgid "The preferred placement of the support structures. If structures can't be placed at the preferred location, they will be place elsewhere, even if that means placing them on the model."
 msgstr ""
 
 #: fdmprinter.def.json

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-04-08 08:31+0000\n"
+"POT-Creation-Date: 2023-04-18 08:40+0000\n"
 "PO-Revision-Date: 2022-01-02 20:24+0800\n"
 "Last-Translator: Valen Chang  <carf17771@gmail.com>\n"
 "Language-Team: Valen Chang <carf17771@gmail.com>\n"
@@ -560,11 +560,6 @@ msgstr "列印平台溫度起始層"
 msgctxt "build_volume_temperature label"
 msgid "Build Volume Temperature"
 msgstr "列印空間溫度"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_rest_preference option buildplate"
-msgid "Buildplate"
-msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "center_object label"
@@ -1374,6 +1369,11 @@ msgstr "沖洗速度"
 #: fdmprinter.def.json
 msgctxt "min_wall_line_width description"
 msgid "For thin structures around once or twice the nozzle size, the line widths need to be altered to adhere to the thickness of the model. This setting controls the minimum line width allowed for the walls. The minimum line widths inherently also determine the maximum line widths, since we transition from N to N+1 walls at some geometry thickness where the N walls are wide and the N+1 walls are narrow. The widest possible wall line is twice the Minimum Wall Line Width."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_rest_preference option buildplate"
+msgid "Force Only Buildplate"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -2881,7 +2881,7 @@ msgstr "擠出機偏移量"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_rest_preference option graceful"
-msgid "On any flat surface"
+msgid "On Model If Necessary"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -5333,7 +5333,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_rest_preference description"
-msgid "The preferred placement of the support structures. If structures cant be placed at the prefered location, they will be place elsewhere"
+msgid "The preferred placement of the support structures. If structures can't be placed at the preferred location, they will be place elsewhere, even if that means placing them on the model."
 msgstr ""
 
 #: fdmprinter.def.json

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-04-08 08:31+0000\n"
+"POT-Creation-Date: 2023-04-18 08:40+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -3933,17 +3933,17 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_rest_preference description"
-msgid "The preferred placement of the support structures. If structures cant be placed at the prefered location, they will be place elsewhere"
+msgid "The preferred placement of the support structures. If structures can't be placed at the preferred location, they will be place elsewhere, even if that means placing them on the model."
 msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_rest_preference option buildplate"
-msgid "Buildplate"
+msgid "Force Only Buildplate"
 msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_rest_preference option graceful"
-msgid "On any flat surface"
+msgid "On Model If Necessary"
 msgstr ""
 
 #: fdmprinter.def.json
