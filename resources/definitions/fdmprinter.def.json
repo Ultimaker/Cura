@@ -4314,7 +4314,7 @@
                             "description": "The speed at which the fans spin on the minimum layer time. The fan speed gradually increases between the regular fan speed and maximum fan speed when the threshold is hit.",
                             "unit": "%",
                             "type": "float",
-                            "minimum_value": "max(0, cool_fan_speed_min)",
+                            "minimum_value": "0",
                             "maximum_value": "100",
                             "default_value": 100,
                             "enabled": "cool_fan_enabled",
