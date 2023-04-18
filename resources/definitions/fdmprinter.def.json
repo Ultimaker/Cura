@@ -5228,7 +5228,7 @@
                     "default_value": 0.0,
                     "minimum_value": "0",
                     "maximum_value_warning": "10",
-                    "enabled": "(support_enable or support_meshes_present) and support_structure == 'normal'",
+                    "enabled": "support_enable or support_meshes_present",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": true
                 },
