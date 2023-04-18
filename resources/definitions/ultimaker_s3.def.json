@@ -12,7 +12,7 @@
         "bom_numbers": [
             213482,
             213483,
-            213484
+            213484,
         ],
         "exclude_materials": [
             "generic_hips",
