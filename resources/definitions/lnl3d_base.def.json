@@ -7,7 +7,7 @@
         "author": "LNL3D",
         "manufacturer": "LNL3D",
         "file_formats": "text/x-gcode",
-        "first_start_actions": ["MachineSettingsAction"],
+        "first_start_actions": [ "MachineSettingsAction" ],
         "has_machine_quality": true,
         "has_materials": true,
         "has_variants": true,
@@ -51,13 +51,13 @@
         "machine_max_acceleration_x": { "value": 500 },
         "machine_max_acceleration_y": { "value": 500 },
         "machine_max_acceleration_z": { "value": 100 },
-        "machine_max_jerk_e": { "value": 5 },
-        "machine_max_jerk_xy": { "value": 10 },
-        "machine_max_jerk_z": { "value": 0.4 },
         "machine_max_feedrate_e": { "value": 80 },
         "machine_max_feedrate_x": { "value": 500 },
         "machine_max_feedrate_y": { "value": 500 },
         "machine_max_feedrate_z": { "value": 10 },
+        "machine_max_jerk_e": { "value": 5 },
+        "machine_max_jerk_xy": { "value": 10 },
+        "machine_max_jerk_z": { "value": 0.4 },
         "machine_start_gcode": { "default_value": "G21              ;metric values\nG90              ;absolute positioning\nM82              ;set extruder to absolute mode\nM107             ;start with the fan off\nG28              ;move to min endstops\nG92 E0           ;reset extruder\nG1 E15 F1500     ;move extruder 15mm\nG1 Z15.0 F3000   ;move the header up 15mm\nM117 printing... ;LCD message" },
         "material_diameter": { "default_value": 1.75 },
         "material_final_print_temperature": { "value": "material_print_temperature" },
@@ -70,7 +70,7 @@
         "prime_tower_brim_enable": { "default_value": true },
         "prime_tower_wipe_enabled": { "default_value": false },
         "raft_airgap": { "default_value": 0.2 },
-        "raft_margin": {"default_value": 2 },
+        "raft_margin": { "default_value": 2 },
         "retraction_combing": { "value": "'off' if retraction_hop_enabled else 'noskin'" },
         "retraction_count_max": { "value": 100 },
         "retraction_extrusion_window": { "value": 4 },
@@ -79,18 +79,18 @@
         "retraction_hop_enabled": { "value": "False" },
         "retraction_prime_speed":
         {
-            "maximum_value_warning": "machine_max_feedrate_e if retraction_enable else float('inf')",
-            "maximum_value": 200
+            "maximum_value": 200,
+            "maximum_value_warning": "machine_max_feedrate_e if retraction_enable else float('inf')"
         },
         "retraction_retract_speed":
         {
-            "maximum_value_warning": "machine_max_feedrate_e if retraction_enable else float('inf')",
-            "maximum_value": 200
+            "maximum_value": 200,
+            "maximum_value_warning": "machine_max_feedrate_e if retraction_enable else float('inf')"
         },
         "retraction_speed":
         {
-            "maximum_value_warning": "machine_max_feedrate_e if retraction_enable else float('inf')",
-            "maximum_value": 200
+            "maximum_value": 200,
+            "maximum_value_warning": "machine_max_feedrate_e if retraction_enable else float('inf')"
         },
         "skin_overlap": { "value": 25 },
         "skirt_line_count": { "value": 2 },
@@ -117,14 +117,14 @@
         "support_z_distance": { "value": "layer_height if layer_height >= 0.16 else layer_height*2" },
         "switch_extruder_retraction_amount": { "value": 8.0 },
         "switch_extruder_retraction_speeds": { "default_value": 60.0 },
-        "top_bottom_thickness": { "value":  "layer_height_0 + layer_height * 4" },
+        "top_bottom_thickness": { "value": "layer_height_0 + layer_height * 4" },
         "travel_avoid_other_parts": { "value": false },
         "travel_avoid_supports": { "value": true },
         "travel_retract_before_outer_wall": { "value": true },
         "wall_0_wipe_dist": { "value": 0.0 },
         "wall_thickness": { "value": "line_width * 2" },
-        "z_seam_type": { "value": "'back'" },
         "z_seam_corner": { "value": "'z_seam_corner_weighted'" },
+        "z_seam_type": { "value": "'back'" },
         "zig_zaggify_infill": { "value": true }
     }
 }

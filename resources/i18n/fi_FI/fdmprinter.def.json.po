@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-03-23 11:03+0000\n"
+"POT-Creation-Date: 2023-04-18 08:40+0000\n"
 "PO-Revision-Date: 2022-07-15 11:17+0200\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: Finnish\n"
@@ -559,11 +559,6 @@ msgid "Build Volume Temperature"
 msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "support_tree_rest_preference option buildplate"
-msgid "Buildplate"
-msgstr ""
-
-#: fdmprinter.def.json
 msgctxt "center_object label"
 msgid "Center Object"
 msgstr ""
@@ -607,11 +602,6 @@ msgstr ""
 msgctxt "command_line_settings label"
 msgid "Command Line Settings"
 msgstr "Komentorivin asetukset"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_strategy option compensate"
-msgid "Compensate"
-msgstr "Kompensoi"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option concentric"
@@ -744,11 +734,6 @@ msgid "Cooling"
 msgstr "Jäähdytys"
 
 #: fdmprinter.def.json
-msgctxt "wireframe_top_jump description"
-msgid "Creates a small knot at the top of an upward line, so that the consecutive horizontal layer has a better chance to connect to it. Only applies to Wire Printing."
-msgstr "Tekee pienen solmun nousulinjan yläpäähän, jotta seuraava vaakasuora kerros pystyy paremmin liittymään siihen. Koskee vain rautalankamallin tulostusta."
-
-#: fdmprinter.def.json
 msgctxt "infill_pattern option cross"
 msgid "Cross"
 msgstr "Risti"
@@ -854,21 +839,6 @@ msgid "Default jerk for the motor of the filament."
 msgstr "Tulostuslangan moottorin oletusnykäisy."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_bottom_delay description"
-msgid "Delay time after a downward move. Only applies to Wire Printing."
-msgstr "Viive laskuliikkeen jälkeen. Koskee vain rautalankamallin tulostusta."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_top_delay description"
-msgid "Delay time after an upward move, so that the upward line can harden. Only applies to Wire Printing."
-msgstr "Viive nousuliikkeen jälkeen, jotta linja voi kovettua. Koskee vain rautalankamallin tulostusta."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flat_delay description"
-msgid "Delay time between two horizontal segments. Introducing such a delay can cause better adhesion to previous layers at the connection points, while too long delays cause sagging. Only applies to Wire Printing."
-msgstr "Viive kahden vaakasuoran segmentin välillä. Tämän viiveen käyttöönotto voi parantaa tarttuvuutta edellisiin kerroksiin liitoskohdissa, mutta liian suuret viiveet aiheuttavat riippumista. Koskee vain rautalankamallin tulostusta."
-
-#: fdmprinter.def.json
 msgctxt "bridge_settings_enabled description"
 msgid "Detect bridges and modify print speed, flow and fan settings while bridges are printed."
 msgstr ""
@@ -912,11 +882,6 @@ msgstr "Erilaisia vaihtoehtoja, jotka auttavat pursotuksen esitäytössä ja mal
 msgctxt "machine_disallowed_areas label"
 msgid "Disallowed Areas"
 msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "wireframe_nozzle_clearance description"
-msgid "Distance between the nozzle and horizontally downward lines. Larger clearance results in diagonally downward lines with a less steep angle, which in turn results in less upward connections with the next layer. Only applies to Wire Printing."
-msgstr "Suuttimen ja vaakasuoraan laskevien linjojen välinen etäisyys. Suurempi väli aiheuttaa vähemmän jyrkän kulman diagonaalisesti laskeviin linjoihin, mikä puolestaan johtaa harvempiin yläliitoksiin seuraavan kerroksen kanssa. Koskee vain rautalankamallin tulostusta."
 
 #: fdmprinter.def.json
 msgctxt "infill_line_distance description"
@@ -969,15 +934,6 @@ msgid "Distance of a travel move inserted after the outer wall, to hide the Z se
 msgstr "Siirtoliikkeen etäisyys ulkoseinämän jälkeen Z-sauman piilottamiseksi paremmin."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_up_half_speed description"
-msgid ""
-"Distance of an upward move which is extruded with half speed.\n"
-"This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-msgstr ""
-"Puolella nopeudella pursotetun nousuliikkeen etäisyys.\n"
-"Se voi parantaa tarttuvuutta edellisiin kerroksiin kuumentamatta materiaalia liikaa kyseisissä kerroksissa. Koskee vain rautalankamallin tulostusta."
-
-#: fdmprinter.def.json
 msgctxt "draft_shield_dist description"
 msgid "Distance of the draft shield from the print, in the X/Y directions."
 msgstr "Vetosuojuksen etäisyys tulosteesta X-/Y-suunnissa."
@@ -996,16 +952,6 @@ msgstr ""
 msgctxt "support_xy_distance description"
 msgid "Distance of the support structure from the print in the X/Y directions."
 msgstr "Tukirakenteen etäisyys tulosteesta X-/Y-suunnissa."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_fall_down description"
-msgid "Distance with which the material falls down after an upward extrusion. This distance is compensated for. Only applies to Wire Printing."
-msgstr "Etäisyys, jonka materiaali putoaa ylöspäin menevän pursotuksen jälkeen. Tämä etäisyys kompensoidaan. Koskee vain rautalankamallin tulostusta."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_drag_along description"
-msgid "Distance with which the material of an upward extrusion is dragged along with the diagonally downward extrusion. This distance is compensated for. Only applies to Wire Printing."
-msgstr "Etäisyys, jonka ylöspäin pursotettu materiaali laahautuu diagonaalisen laskevan pursotuksen mukana. Tämä etäisyys kompensoidaan. Koskee vain rautalankamallin tulostusta."
 
 #: fdmprinter.def.json
 msgctxt "min_infill_area description"
@@ -1403,24 +1349,9 @@ msgid "Flow compensation on wall lines."
 msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "wireframe_flow_connection description"
-msgid "Flow compensation when going up or down. Only applies to Wire Printing."
-msgstr "Virtauksen kompensointi ylös tai alas mentäessä. Koskee vain rautalankamallin tulostusta."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow_flat description"
-msgid "Flow compensation when printing flat lines. Only applies to Wire Printing."
-msgstr "Virtauksen kompensointi tulostettaessa latteita linjoja. Koskee vain rautalankamallin tulostusta."
-
-#: fdmprinter.def.json
 msgctxt "material_flow description"
 msgid "Flow compensation: the amount of material extruded is multiplied by this value."
 msgstr "Virtauksen kompensointi: pursotetun materiaalin määrä kerrotaan tällä arvolla."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow description"
-msgid "Flow compensation: the amount of material extruded is multiplied by this value. Only applies to Wire Printing."
-msgstr "Virtauksen kompensointi: Pursotetun materiaalin määrä kerrotaan tällä arvolla. Koskee vain rautalankamallin tulostusta."
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length label"
@@ -1435,6 +1366,11 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "min_wall_line_width description"
 msgid "For thin structures around once or twice the nozzle size, the line widths need to be altered to adhere to the thickness of the model. This setting controls the minimum line width allowed for the walls. The minimum line widths inherently also determine the maximum line widths, since we transition from N to N+1 walls at some geometry thickness where the N walls are wide and the N+1 walls are narrow. The widest possible wall line is twice the Minimum Wall Line Width."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_rest_preference option buildplate"
+msgid "Force Only Buildplate"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -2175,11 +2111,6 @@ msgstr ""
 msgctxt "meshfix_keep_open_polygons label"
 msgid "Keep Disconnected Faces"
 msgstr "Pidä erilliset pinnat"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_strategy option knot"
-msgid "Knot"
-msgstr "Solmu"
 
 #: fdmprinter.def.json
 msgctxt "layer_height label"
@@ -2943,7 +2874,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_rest_preference option graceful"
-msgid "On any flat surface"
+msgid "On Model If Necessary"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -3077,11 +3008,6 @@ msgid "Percentage fan speed to use when printing the third bridge skin layer."
 msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "wireframe_straight_before_down description"
-msgid "Percentage of a diagonally downward line which is covered by a horizontal line piece. This can prevent sagging of the top most point of upward lines. Only applies to Wire Printing."
-msgstr "Prosenttiluku diagonaalisesti laskevasta linjasta, jota peittää vaakalinjan pätkä. Tämä voi estää nousulinjojen ylimmän kohdan riippumista. Koskee vain rautalankamallin tulostusta."
-
-#: fdmprinter.def.json
 msgctxt "minimum_polygon_circumference description"
 msgid "Polygons in sliced layers that have a circumference smaller than this amount will be filtered out. Lower values lead to higher resolution mesh at the cost of slicing time. It is meant mostly for high resolution SLA printers and very tiny 3D models with a lot of details."
 msgstr ""
@@ -3190,11 +3116,6 @@ msgstr ""
 msgctxt "mold_enabled description"
 msgid "Print models as a mold, which can be cast in order to get a model which resembles the models on the build plate."
 msgstr "Tulosta malleja muotteina, jotka voidaan valaa niin, että saadaan alustalla olevia malleja muistuttava malli."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_enabled description"
-msgid "Print only the outside surface with a sparse webbed structure, printing 'in thin air'. This is realized by horizontally printing the contours of the model at given Z intervals which are connected via upward and diagonally downward lines."
-msgstr "Tulostetaan vain ulkopinta harvalla verkkorakenteella eli tulostetaan \"suoraan ilmaan\". Tämä toteutetaan tulostamalla mallin ääriviivat vaakasuoraan tietyin Z-välein, jotka yhdistetään ylöspäin menevillä linjoilla ja alaspäin menevillä diagonaalilinjoilla."
 
 #: fdmprinter.def.json
 msgctxt "fill_outline_gaps description"
@@ -3542,11 +3463,6 @@ msgid "Resolution to compute collisions with to avoid hitting the model. Setting
 msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "wireframe_strategy option retract"
-msgid "Retract"
-msgstr "Takaisinveto"
-
-#: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"
 msgid "Retract Before Outer Wall"
 msgstr "Vedä takaisin ennen ulkoseinämää"
@@ -3868,31 +3784,6 @@ msgid "Speed"
 msgstr "Nopeus"
 
 #: fdmprinter.def.json
-msgctxt "wireframe_printspeed description"
-msgid "Speed at which the nozzle moves when extruding material. Only applies to Wire Printing."
-msgstr "Nopeus, jolla suutin liikkuu materiaalia pursottaessaan. Koskee vain rautalankamallin tulostusta."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_down description"
-msgid "Speed of printing a line diagonally downward. Only applies to Wire Printing."
-msgstr "Nopeus, jolla tulostetaan linja diagonaalisesti alaspäin. Koskee vain rautalankamallin tulostusta."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_up description"
-msgid "Speed of printing a line upward 'in thin air'. Only applies to Wire Printing."
-msgstr "Nopeus, jolla tulostetaan linja ylöspäin \"suoraan ilmaan\". Koskee vain rautalankamallin tulostusta."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_bottom description"
-msgid "Speed of printing the first layer, which is the only layer touching the build platform. Only applies to Wire Printing."
-msgstr "Nopeus, jolla tulostetaan ensimmäinen kerros, joka on ainoa alustaa koskettava kerros. Koskee vain rautalankamallin tulostusta."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_flat description"
-msgid "Speed of printing the horizontal contours of the model. Only applies to Wire Printing."
-msgstr "Nopeus, jolla tulostetaan mallin vaakasuorat ääriviivat. Koskee vain rautalankamallin tulostusta."
-
-#: fdmprinter.def.json
 msgctxt "wipe_hop_speed description"
 msgid "Speed to move the z-axis during the hop."
 msgstr ""
@@ -3941,11 +3832,6 @@ msgstr ""
 msgctxt "machine_steps_per_mm_z label"
 msgid "Steps per Millimeter (Z)"
 msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "wireframe_strategy description"
-msgid "Strategy for making sure two consecutive layers connect at each connection point. Retraction lets the upward lines harden in the right position, but may cause filament grinding. A knot can be made at the end of an upward line to heighten the chance of connecting to it and to let the line cool; however, it may require slow printing speeds. Another strategy is to compensate for the sagging of the top of an upward line; however, the lines won't always fall down as predicted."
-msgstr "Strategia, jolla varmistetaan, että kaksi peräkkäistä kerrosta liittyy toisiinsa kussakin liitoskohdassa. Takaisinveto antaa nousulinjojen kovettua oikeaan asentoon, mutta voi aiheuttaa tulostuslangan hiertymistä. Solmu voidaan tehdä nousulinjan päähän, jolloin siihen liittyminen helpottuu ja linja jäähtyy, mutta se voi vaatia hitaampia tulostusnopeuksia. Toisena strategiana on kompensoida nousulinjan yläpään riippumista, mutta linjat eivät aina putoa ennustettavalla tavalla."
 
 #: fdmprinter.def.json
 msgctxt "support description"
@@ -4701,11 +4587,6 @@ msgid "The distance between the raft lines for the top raft layers. The spacing 
 msgstr "Pohjaristikon pintakerrosten linjojen välinen etäisyys. Linjajaon tulisi olla sama kuin linjaleveys, jotta pinta on kiinteä."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_roof_inset description"
-msgid "The distance covered when making a connection from a roof outline inward. Only applies to Wire Printing."
-msgstr "Etäisyys, jolla tehdään liitos katon ääriviivalta sisäänpäin. Koskee vain rautalankamallin tulostusta."
-
-#: fdmprinter.def.json
 msgctxt "interlocking_depth description"
 msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
 msgstr ""
@@ -4727,11 +4608,6 @@ msgid "The distance from the tip of the nozzle in which heat from the nozzle is 
 msgstr "Suuttimen kärjestä mitattu etäisyys, jonka suuttimen lämpö siirtyy tulostuslankaan."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_roof_drag_along description"
-msgid "The distance of the end piece of an inward line which gets dragged along when going back to the outer outline of the roof. This distance is compensated for. Only applies to Wire Printing."
-msgstr "Sisäpuolisen linjan päätyosan etäisyys ko. linjan laahautuessa mukana, kun mennään takaisin katon ulommalle ulkolinjalle. Tämä etäisyys kompensoidaan. Koskee vain rautalankamallin tulostusta."
-
-#: fdmprinter.def.json
 msgctxt "bottom_skin_expand_distance description"
 msgid "The distance the bottom skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the skin adhere better to the walls on the layer below. Lower values save amount of material used."
 msgstr "Etäisyys, jonka verran alapintakalvot laajentuvat täyttöön. Suuremmat arvot saavat pintakalvon kiinnittymään paremmin täyttökuvioon ja tarttumaan paremmin alla olevan kerroksen seinämiin. Pienemmät arvot vähentävät käytettävän materiaalin määrää."
@@ -4750,11 +4626,6 @@ msgstr "Etäisyys, jonka verran yläpintakalvot laajentuvat täyttöön. Suuremm
 msgctxt "wipe_move_distance description"
 msgid "The distance to move the head back and forth across the brush."
 msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_fall_down description"
-msgid "The distance which horizontal roof lines printed 'in thin air' fall down when being printed. This distance is compensated for. Only applies to Wire Printing."
-msgstr "Etäisyys, jonka \"suoraan ilmaan\" tulostetut vaakasuorat kattolinjat roikkuvat tulostettaessa. Tämä etäisyys kompensoidaan. Koskee vain rautalankamallin tulostusta."
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_prune_angle description"
@@ -4965,11 +4836,6 @@ msgstr "Alkukerroksen korkeus milleinä. Paksumpi alkukerros helpottaa alustaan 
 msgctxt "support_bottom_stair_step_height description"
 msgid "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures. Set to zero to turn off the stair-like behaviour."
 msgstr "Mallin päällä olevan porrasmaisen tuen pohjan portaiden korkeus. Matala arvo tekee tuesta vaikeamman poistaa, mutta liian korkeat arvot voivat johtaa epävakaisiin tukirakenteisiin. Poista porrasmainen ominaisuus käytöstä valitsemalla asetukseksi nolla."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_height description"
-msgid "The height of the upward and diagonally downward lines between two horizontal parts. This determines the overall density of the net structure. Only applies to Wire Printing."
-msgstr "Kahden vaakaosan välisen nousulinjan ja laskevan diagonaalilinjan korkeus. Tämä määrää verkkorakenteen kokonaistiheyden. Koskee vain rautalankamallin tulostusta."
 
 #: fdmprinter.def.json
 msgctxt "brim_gap description"
@@ -5455,7 +5321,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_rest_preference description"
-msgid "The preferred placement of the support structures. If structures cant be placed at the prefered location, they will be place elsewhere"
+msgid "The preferred placement of the support structures. If structures can't be placed at the preferred location, they will be place elsewhere, even if that means placing them on the model."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -5870,11 +5736,6 @@ msgid "This will create a wall around the model, which traps (hot) air and shiel
 msgstr "Tämä luo mallin ympärille seinämän, joka pidättää (kuumaa) ilmaa ja suojaa ulkoiselta ilmavirtaukselta. Erityisen käyttökelpoinen materiaaleilla, jotka vääntyvät helposti."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_roof_outer_delay description"
-msgid "Time spent at the outer perimeters of hole which is to become a roof. Longer times can ensure a better connection. Only applies to Wire Printing."
-msgstr "Katoksi tulevan aukon ulkoreunoihin käytetty aika. Pitemmät ajat varmistavat paremman liitoksen. Koskee vain rautalankamallin tulostusta."
-
-#: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage_xy description"
 msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor in the XY-direction (horizontally)."
 msgstr ""
@@ -6248,121 +6109,6 @@ msgstr ""
 msgctxt "slicing_tolerance description"
 msgid "Vertical tolerance in the sliced layers. The contours of a layer are normally generated by taking cross sections through the middle of each layer's thickness (Middle). Alternatively each layer can have the areas which fall inside of the volume throughout the entire thickness of the layer (Exclusive) or a layer has the areas which fall inside anywhere within the layer (Inclusive). Inclusive retains the most details, Exclusive makes for the best fit and Middle stays closest to the original surface."
 msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "wireframe_bottom_delay label"
-msgid "WP Bottom Delay"
-msgstr "Rautalankatulostuksen viive alhaalla"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_bottom label"
-msgid "WP Bottom Printing Speed"
-msgstr "Rautalankapohjan tulostusnopeus"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow_connection label"
-msgid "WP Connection Flow"
-msgstr "Rautalankatulostuksen liitosvirtaus"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_height label"
-msgid "WP Connection Height"
-msgstr "Rautalankatulostuksen liitoskorkeus"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_down label"
-msgid "WP Downward Printing Speed"
-msgstr "Rautalangan tulostusnopeus alaspäin"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_drag_along label"
-msgid "WP Drag Along"
-msgstr "Rautalankatulostuksen laahaus"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_up_half_speed label"
-msgid "WP Ease Upward"
-msgstr "Rautalankatulostuksen hidas liike ylöspäin"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_fall_down label"
-msgid "WP Fall Down"
-msgstr "Rautalankatulostuksen pudotus"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flat_delay label"
-msgid "WP Flat Delay"
-msgstr "Rautalankatulostuksen lattea viive"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow_flat label"
-msgid "WP Flat Flow"
-msgstr "Rautalangan lattea virtaus"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow label"
-msgid "WP Flow"
-msgstr "Rautalankatulostuksen virtaus"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_flat label"
-msgid "WP Horizontal Printing Speed"
-msgstr "Rautalangan tulostusnopeus vaakasuoraan"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_top_jump label"
-msgid "WP Knot Size"
-msgstr "Rautalankatulostuksen solmukoko"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_nozzle_clearance label"
-msgid "WP Nozzle Clearance"
-msgstr "Rautalankatulostuksen suutinväli"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_drag_along label"
-msgid "WP Roof Drag Along"
-msgstr "Rautalankatulostuksen katon laahaus"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_fall_down label"
-msgid "WP Roof Fall Down"
-msgstr "Rautalankatulostuksen katon pudotus"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_inset label"
-msgid "WP Roof Inset Distance"
-msgstr "Rautalankatulostuksen katon liitosetäisyys"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_outer_delay label"
-msgid "WP Roof Outer Delay"
-msgstr "Rautalankatulostuksen katon ulompi viive"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed label"
-msgid "WP Speed"
-msgstr "Rautalankatulostuksen nopeus"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_straight_before_down label"
-msgid "WP Straighten Downward Lines"
-msgstr "Rautalankatulostuksen laskulinjojen suoristus"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_strategy label"
-msgid "WP Strategy"
-msgstr "Rautalankatulostuksen strategia"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_top_delay label"
-msgid "WP Top Delay"
-msgstr "Rautalankatulostuksen viive ylhäällä"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_up label"
-msgid "WP Upward Printing Speed"
-msgstr "Rautalangan tulostusnopeus ylöspäin"
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temp_wait label"
@@ -6795,11 +6541,6 @@ msgid "Wipe Z Hop Height"
 msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "wireframe_enabled label"
-msgid "Wire Printing"
-msgstr "Rautalankatulostus"
-
-#: fdmprinter.def.json
 msgctxt "retraction_combing option infill"
 msgid "Within Infill"
 msgstr ""
@@ -7016,6 +6757,10 @@ msgstr "siirtoliike"
 #~ msgid "Combing keeps the nozzle within already printed areas when traveling. This results in slightly longer travel moves but reduces the need for retractions. If combing is off, the material will retract and the nozzle moves in a straight line to the next point. It is also possible to avoid combing over top/bottom skin areas by combing within the infill only."
 #~ msgstr "Pyyhkäisy pitää suuttimen aiemmin tulostetuilla alueilla siirtoliikkeitä tehtäessä. Tämä johtaa hieman pidempiin siirtoliikkeisiin, mutta vähentää takaisinvedon tarvetta. Jos pyyhkäisy on poistettu käytöstä, materiaalille tehdään takaisinveto ja suutin liikkuu suoraan seuraavaan pisteeseen. On myös mahdollista välttää pyyhkäisy ylä- tai alapintakalvojen yli pyyhkäisemällä vain täytössä."
 
+#~ msgctxt "wireframe_strategy option compensate"
+#~ msgid "Compensate"
+#~ msgstr "Kompensoi"
+
 #~ msgctxt "travel_compensate_overlapping_walls_x_enabled label"
 #~ msgid "Compensate Inner Wall Overlaps"
 #~ msgstr "Kompensoi sisäseinämän limityksiä"
@@ -7072,9 +6817,25 @@ msgstr "siirtoliike"
 #~ msgid "Cool down speed"
 #~ msgstr "Jäähdytysnopeus"
 
+#~ msgctxt "wireframe_top_jump description"
+#~ msgid "Creates a small knot at the top of an upward line, so that the consecutive horizontal layer has a better chance to connect to it. Only applies to Wire Printing."
+#~ msgstr "Tekee pienen solmun nousulinjan yläpäähän, jotta seuraava vaakasuora kerros pystyy paremmin liittymään siihen. Koskee vain rautalankamallin tulostusta."
+
 #~ msgctxt "sub_div_rad_mult label"
 #~ msgid "Cubic Subdivision Radius"
 #~ msgstr "Kuution alajaon säde"
+
+#~ msgctxt "wireframe_bottom_delay description"
+#~ msgid "Delay time after a downward move. Only applies to Wire Printing."
+#~ msgstr "Viive laskuliikkeen jälkeen. Koskee vain rautalankamallin tulostusta."
+
+#~ msgctxt "wireframe_top_delay description"
+#~ msgid "Delay time after an upward move, so that the upward line can harden. Only applies to Wire Printing."
+#~ msgstr "Viive nousuliikkeen jälkeen, jotta linja voi kovettua. Koskee vain rautalankamallin tulostusta."
+
+#~ msgctxt "wireframe_flat_delay description"
+#~ msgid "Delay time between two horizontal segments. Introducing such a delay can cause better adhesion to previous layers at the connection points, while too long delays cause sagging. Only applies to Wire Printing."
+#~ msgstr "Viive kahden vaakasuoran segmentin välillä. Tämän viiveen käyttöönotto voi parantaa tarttuvuutta edellisiin kerroksiin liitoskohdissa, mutta liian suuret viiveet aiheuttavat riippumista. Koskee vain rautalankamallin tulostusta."
 
 #~ msgctxt "infill_mesh_order description"
 #~ msgid "Determines which infill mesh is inside the infill of another infill mesh. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
@@ -7084,6 +6845,10 @@ msgstr "siirtoliike"
 #~ msgid "Disallowed areas"
 #~ msgstr "Kielletyt alueet"
 
+#~ msgctxt "wireframe_nozzle_clearance description"
+#~ msgid "Distance between the nozzle and horizontally downward lines. Larger clearance results in diagonally downward lines with a less steep angle, which in turn results in less upward connections with the next layer. Only applies to Wire Printing."
+#~ msgstr "Suuttimen ja vaakasuoraan laskevien linjojen välinen etäisyys. Suurempi väli aiheuttaa vähemmän jyrkän kulman diagonaalisesti laskeviin linjoihin, mikä puolestaan johtaa harvempiin yläliitoksiin seuraavan kerroksen kanssa. Koskee vain rautalankamallin tulostusta."
+
 #~ msgctxt "support_interface_line_distance description"
 #~ msgid "Distance between the printed support interface lines. This setting is calculated by the Support Interface Density, but can be adjusted separately."
 #~ msgstr "Tulostettujen tukiliittymän linjojen välinen etäisyys. Tämä asetus lasketaan tukiliittymän tiheysarvosta, mutta sitä voidaan säätää erikseen."
@@ -7092,9 +6857,25 @@ msgstr "siirtoliike"
 #~ msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. This value is rounded down to a multiple of the layer height."
 #~ msgstr "Tukirakenteen etäisyys tulosteesta ylä-/alasuunnassa. Tämä rako sallii tukien poistamisen mallin tulostuksen jälkeen. Tämä arvo pyöristetään alaspäin kerroksen korkeuden kerrannaiseksi."
 
+#~ msgctxt "wireframe_up_half_speed description"
+#~ msgid ""
+#~ "Distance of an upward move which is extruded with half speed.\n"
+#~ "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
+#~ msgstr ""
+#~ "Puolella nopeudella pursotetun nousuliikkeen etäisyys.\n"
+#~ "Se voi parantaa tarttuvuutta edellisiin kerroksiin kuumentamatta materiaalia liikaa kyseisissä kerroksissa. Koskee vain rautalankamallin tulostusta."
+
 #~ msgctxt "support_xy_distance_overhang description"
 #~ msgid "Distance of the support structure from the overhang in the X/Y directions. "
 #~ msgstr "Tukirakenteen etäisyys ulokkeesta X-/Y-suunnissa. "
+
+#~ msgctxt "wireframe_fall_down description"
+#~ msgid "Distance with which the material falls down after an upward extrusion. This distance is compensated for. Only applies to Wire Printing."
+#~ msgstr "Etäisyys, jonka materiaali putoaa ylöspäin menevän pursotuksen jälkeen. Tämä etäisyys kompensoidaan. Koskee vain rautalankamallin tulostusta."
+
+#~ msgctxt "wireframe_drag_along description"
+#~ msgid "Distance with which the material of an upward extrusion is dragged along with the diagonally downward extrusion. This distance is compensated for. Only applies to Wire Printing."
+#~ msgstr "Etäisyys, jonka ylöspäin pursotettu materiaali laahautuu diagonaalisen laskevan pursotuksen mukana. Tämä etäisyys kompensoidaan. Koskee vain rautalankamallin tulostusta."
 
 #~ msgctxt "multiple_mesh_overlap label"
 #~ msgid "Dual Extrusion Overlap"
@@ -7176,9 +6957,21 @@ msgstr "siirtoliike"
 #~ msgid "Fills the gaps between walls where no walls fit."
 #~ msgstr "Täyttää raot seinämien välissä, kun seinämät eivät ole sopivia."
 
+#~ msgctxt "wireframe_flow_connection description"
+#~ msgid "Flow compensation when going up or down. Only applies to Wire Printing."
+#~ msgstr "Virtauksen kompensointi ylös tai alas mentäessä. Koskee vain rautalankamallin tulostusta."
+
+#~ msgctxt "wireframe_flow_flat description"
+#~ msgid "Flow compensation when printing flat lines. Only applies to Wire Printing."
+#~ msgstr "Virtauksen kompensointi tulostettaessa latteita linjoja. Koskee vain rautalankamallin tulostusta."
+
 #~ msgctxt "prime_tower_flow description"
 #~ msgid "Flow compensation: the amount of material extruded is multiplied by this value."
 #~ msgstr "Virtauksen kompensointi: pursotetun materiaalin määrä kerrotaan tällä arvolla."
+
+#~ msgctxt "wireframe_flow description"
+#~ msgid "Flow compensation: the amount of material extruded is multiplied by this value. Only applies to Wire Printing."
+#~ msgstr "Virtauksen kompensointi: Pursotetun materiaalin määrä kerrotaan tällä arvolla. Koskee vain rautalankamallin tulostusta."
 
 #~ msgctxt "material_guid description"
 #~ msgid "GUID of the material. This is set automatically. "
@@ -7259,6 +7052,10 @@ msgstr "siirtoliike"
 #~ msgctxt "machine_center_is_zero label"
 #~ msgid "Is center origin"
 #~ msgstr "On keskikohdassa"
+
+#~ msgctxt "wireframe_strategy option knot"
+#~ msgid "Knot"
+#~ msgstr "Solmu"
 
 #~ msgctxt "machine_depth label"
 #~ msgid "Machine depth"
@@ -7356,6 +7153,10 @@ msgstr "siirtoliike"
 #~ msgid "Outer nozzle diameter"
 #~ msgstr "Suuttimen ulkoläpimitta"
 
+#~ msgctxt "wireframe_straight_before_down description"
+#~ msgid "Percentage of a diagonally downward line which is covered by a horizontal line piece. This can prevent sagging of the top most point of upward lines. Only applies to Wire Printing."
+#~ msgstr "Prosenttiluku diagonaalisesti laskevasta linjasta, jota peittää vaakalinjan pätkä. Tämä voi estää nousulinjojen ylimmän kohdan riippumista. Koskee vain rautalankamallin tulostusta."
+
 #~ msgctxt "prime_tower_purge_volume label"
 #~ msgid "Prime Tower Purge Volume"
 #~ msgstr "Esitäyttötornin poistoainemäärä"
@@ -7363,6 +7164,10 @@ msgstr "siirtoliike"
 #~ msgctxt "prime_tower_wall_thickness label"
 #~ msgid "Prime Tower Thickness"
 #~ msgstr "Esitäyttötornin paksuus"
+
+#~ msgctxt "wireframe_enabled description"
+#~ msgid "Print only the outside surface with a sparse webbed structure, printing 'in thin air'. This is realized by horizontally printing the contours of the model at given Z intervals which are connected via upward and diagonally downward lines."
+#~ msgstr "Tulostetaan vain ulkopinta harvalla verkkorakenteella eli tulostetaan \"suoraan ilmaan\". Tämä toteutetaan tulostamalla mallin ääriviivat vaakasuoraan tietyin Z-välein, jotka yhdistetään ylöspäin menevillä linjoilla ja alaspäin menevillä diagonaalilinjoilla."
 
 #~ msgctxt "spaghetti_infill_enabled description"
 #~ msgid "Print the infill every so often, so that the filament will curl up chaotically inside the object. This reduces print time, but the behaviour is rather unpredictable."
@@ -7391,6 +7196,10 @@ msgstr "siirtoliike"
 #~ msgctxt "machine_gcode_flavor option RepRap (Volumatric)"
 #~ msgid "RepRap (Volumetric)"
 #~ msgstr "RepRap (volymetrinen)"
+
+#~ msgctxt "wireframe_strategy option retract"
+#~ msgid "Retract"
+#~ msgstr "Takaisinveto"
 
 #~ msgctxt "retraction_enable description"
 #~ msgid "Retract the filament when the nozzle is moving over a non-printed area. "
@@ -7448,6 +7257,26 @@ msgstr "siirtoliike"
 #~ msgid "Spaghetti Maximum Infill Angle"
 #~ msgstr "Spagettitäytön enimmäiskulma"
 
+#~ msgctxt "wireframe_printspeed description"
+#~ msgid "Speed at which the nozzle moves when extruding material. Only applies to Wire Printing."
+#~ msgstr "Nopeus, jolla suutin liikkuu materiaalia pursottaessaan. Koskee vain rautalankamallin tulostusta."
+
+#~ msgctxt "wireframe_printspeed_down description"
+#~ msgid "Speed of printing a line diagonally downward. Only applies to Wire Printing."
+#~ msgstr "Nopeus, jolla tulostetaan linja diagonaalisesti alaspäin. Koskee vain rautalankamallin tulostusta."
+
+#~ msgctxt "wireframe_printspeed_up description"
+#~ msgid "Speed of printing a line upward 'in thin air'. Only applies to Wire Printing."
+#~ msgstr "Nopeus, jolla tulostetaan linja ylöspäin \"suoraan ilmaan\". Koskee vain rautalankamallin tulostusta."
+
+#~ msgctxt "wireframe_printspeed_bottom description"
+#~ msgid "Speed of printing the first layer, which is the only layer touching the build platform. Only applies to Wire Printing."
+#~ msgstr "Nopeus, jolla tulostetaan ensimmäinen kerros, joka on ainoa alustaa koskettava kerros. Koskee vain rautalankamallin tulostusta."
+
+#~ msgctxt "wireframe_printspeed_flat description"
+#~ msgid "Speed of printing the horizontal contours of the model. Only applies to Wire Printing."
+#~ msgstr "Nopeus, jolla tulostetaan mallin vaakasuorat ääriviivat. Koskee vain rautalankamallin tulostusta."
+
 #~ msgctxt "magic_spiralize description"
 #~ msgid "Spiralize smooths out the Z move of the outer edge. This will create a steady Z increase over the whole print. This feature turns a solid model into a single walled print with a solid bottom. This feature used to be called Joris in older versions."
 #~ msgstr "Kierukointi pehmentää ulkoreunan Z-liikettä. Se muodostaa tasaisen Z-lisän koko tulosteelle. Tämä toiminto muuttaa umpinaisen mallin yksiseinäiseksi tulosteeksi, jossa on umpinainen pohja. Vanhemmissa versioissa tätä toimintoa kutsuttiin nimellä Joris."
@@ -7459,6 +7288,10 @@ msgstr "siirtoliike"
 #~ msgctxt "start_layers_at_same_position label"
 #~ msgid "Start Layers with the Same Part"
 #~ msgstr "Aloita kerrokset samalla osalla"
+
+#~ msgctxt "wireframe_strategy description"
+#~ msgid "Strategy for making sure two consecutive layers connect at each connection point. Retraction lets the upward lines harden in the right position, but may cause filament grinding. A knot can be made at the end of an upward line to heighten the chance of connecting to it and to let the line cool; however, it may require slow printing speeds. Another strategy is to compensate for the sagging of the top of an upward line; however, the lines won't always fall down as predicted."
+#~ msgstr "Strategia, jolla varmistetaan, että kaksi peräkkäistä kerrosta liittyy toisiinsa kussakin liitoskohdassa. Takaisinveto antaa nousulinjojen kovettua oikeaan asentoon, mutta voi aiheuttaa tulostuslangan hiertymistä. Solmu voidaan tehdä nousulinjan päähän, jolloin siihen liittyminen helpottuu ja linja jäähtyy, mutta se voi vaatia hitaampia tulostusnopeuksia. Toisena strategiana on kompensoida nousulinjan yläpään riippumista, mutta linjat eivät aina putoa ennustettavalla tavalla."
 
 #~ msgctxt "support_bottom_height label"
 #~ msgid "Support Bottom Thickness"
@@ -7496,9 +7329,21 @@ msgstr "siirtoliike"
 #~ msgid "The amount of retraction: Set at 0 for no retraction at all. This should generally be the same as the length of the heat zone."
 #~ msgstr "Takaisinvedon määrä: 0 tarkoittaa, että takaisinvetoa ei ole lainkaan. Tämän on yleensä oltava sama kuin lämpöalueen pituus."
 
+#~ msgctxt "wireframe_roof_inset description"
+#~ msgid "The distance covered when making a connection from a roof outline inward. Only applies to Wire Printing."
+#~ msgstr "Etäisyys, jolla tehdään liitos katon ääriviivalta sisäänpäin. Koskee vain rautalankamallin tulostusta."
+
+#~ msgctxt "wireframe_roof_drag_along description"
+#~ msgid "The distance of the end piece of an inward line which gets dragged along when going back to the outer outline of the roof. This distance is compensated for. Only applies to Wire Printing."
+#~ msgstr "Sisäpuolisen linjan päätyosan etäisyys ko. linjan laahautuessa mukana, kun mennään takaisin katon ulommalle ulkolinjalle. Tämä etäisyys kompensoidaan. Koskee vain rautalankamallin tulostusta."
+
 #~ msgctxt "expand_skins_expand_distance description"
 #~ msgid "The distance the skins are expanded into the infill. The default distance is enough to bridge the gap between the infill lines and will stop holes appearing in the skin where it meets the wall when the infill density is low. A smaller distance will often be sufficient."
 #~ msgstr "Pintakalvojen laajennusetäisyys täyttöalueelle. Oletusetäisyys riittää kuromaan umpeen täyttölinjojen väliset raot, ja se estää reikien ilmestymisen pintakalvoon seinämän liitoskohdassa, kun täytön tiheys on alhainen."
+
+#~ msgctxt "wireframe_roof_fall_down description"
+#~ msgid "The distance which horizontal roof lines printed 'in thin air' fall down when being printed. This distance is compensated for. Only applies to Wire Printing."
+#~ msgstr "Etäisyys, jonka \"suoraan ilmaan\" tulostetut vaakasuorat kattolinjat roikkuvat tulostettaessa. Tämä etäisyys kompensoidaan. Koskee vain rautalankamallin tulostusta."
 
 #~ msgctxt "z_offset_layer_0 description"
 #~ msgid "The extruder is offset from the normal height of the first layer by this amount. It can be positive (raised) or negative (lowered). Some filament types adhere to the build plate better if the extruder is raised slightly."
@@ -7511,6 +7356,10 @@ msgstr "siirtoliike"
 #~ msgctxt "support_bottom_stair_step_height description"
 #~ msgid "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures."
 #~ msgstr "Mallin päällä olevan porrasmaisen tuen pohjan portaiden korkeus. Matala arvo tekee tuesta vaikeamman poistaa, mutta liian korkeat arvot voivat johtaa epävakaisiin tukirakenteisiin."
+
+#~ msgctxt "wireframe_height description"
+#~ msgid "The height of the upward and diagonally downward lines between two horizontal parts. This determines the overall density of the net structure. Only applies to Wire Printing."
+#~ msgstr "Kahden vaakaosan välisen nousulinjan ja laskevan diagonaalilinjan korkeus. Tämä määrää verkkorakenteen kokonaistiheyden. Koskee vain rautalankamallin tulostusta."
 
 #~ msgctxt "skirt_gap description"
 #~ msgid ""
@@ -7600,6 +7449,10 @@ msgstr "siirtoliike"
 #~ msgid "This setting control how much inner corners in the raft outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
 #~ msgstr "Tällä asetuksella säädetään, kuinka paljon pohjaristikon ulkolinjan sisäkulmia pyöristetään. Sisäpuoliset kulmat pyöristetään puoliympyräksi, jonka säde on yhtä suuri kuin tässä annettu arvo. Asetuksella myös poistetaan pohjaristikon ulkolinjan reiät, jotka ovat pienempiä kuin tällainen ympyrä."
 
+#~ msgctxt "wireframe_roof_outer_delay description"
+#~ msgid "Time spent at the outer perimeters of hole which is to become a roof. Longer times can ensure a better connection. Only applies to Wire Printing."
+#~ msgstr "Katoksi tulevan aukon ulkoreunoihin käytetty aika. Pitemmät ajat varmistavat paremman liitoksen. Koskee vain rautalankamallin tulostusta."
+
 #~ msgctxt "max_skin_angle_for_expansion description"
 #~ msgid "Top and/or bottom surfaces of your object with an angle larger than this setting, won't have their top/bottom skin expanded. This avoids expanding the narrow skin areas that are created when the model surface has a near vertical slope. An angle of 0° is horizontal, while an angle of 90° is vertical."
 #~ msgstr "Kappaleesi ylä- ja/tai alapinnan ylä- ja alapintakalvoja ei laajenneta, jos niiden kulma on suurempi kuin tämä asetus. Tällä vältetään laajentamasta kapeita pintakalvoja, jotka syntyvät, kun mallin pinnalla on lähes pystysuora rinne. 0 °:n kulma on vaakasuora ja 90 °:n kulma on pystysuora."
@@ -7607,6 +7460,98 @@ msgstr "siirtoliike"
 #~ msgctxt "relative_extrusion description"
 #~ msgid "Use relative extrusion rather than absolute extrusion. Using relative E-steps makes for easier post-processing of the Gcode. However, it's not supported by all printers and it may produce very slight deviations in the amount of deposited material compared to absolute E-steps. Irrespective of this setting, the extrusion mode will always be set to absolute before any Gcode script is output."
 #~ msgstr "Käytä suhteellista pursotusta absoluuttisen pursotuksen sijaan. Suhteellisten E-askelten käyttö helpottaa Gcoden jälkikäsittelyä. Kaikki tulostimet eivät kuitenkaan tue sitä, ja se saattaa aiheuttaa hyvin vähäisiä poikkeamia materiaalin määrässä absoluuttisiin E-askeliin verrattuna. Tästä asetuksesta riippumatta pursotustila on aina absoluuttinen, ennen kuin mitään Gcode-komentosarjaa tuotetaan."
+
+#~ msgctxt "wireframe_bottom_delay label"
+#~ msgid "WP Bottom Delay"
+#~ msgstr "Rautalankatulostuksen viive alhaalla"
+
+#~ msgctxt "wireframe_printspeed_bottom label"
+#~ msgid "WP Bottom Printing Speed"
+#~ msgstr "Rautalankapohjan tulostusnopeus"
+
+#~ msgctxt "wireframe_flow_connection label"
+#~ msgid "WP Connection Flow"
+#~ msgstr "Rautalankatulostuksen liitosvirtaus"
+
+#~ msgctxt "wireframe_height label"
+#~ msgid "WP Connection Height"
+#~ msgstr "Rautalankatulostuksen liitoskorkeus"
+
+#~ msgctxt "wireframe_printspeed_down label"
+#~ msgid "WP Downward Printing Speed"
+#~ msgstr "Rautalangan tulostusnopeus alaspäin"
+
+#~ msgctxt "wireframe_drag_along label"
+#~ msgid "WP Drag Along"
+#~ msgstr "Rautalankatulostuksen laahaus"
+
+#~ msgctxt "wireframe_up_half_speed label"
+#~ msgid "WP Ease Upward"
+#~ msgstr "Rautalankatulostuksen hidas liike ylöspäin"
+
+#~ msgctxt "wireframe_fall_down label"
+#~ msgid "WP Fall Down"
+#~ msgstr "Rautalankatulostuksen pudotus"
+
+#~ msgctxt "wireframe_flat_delay label"
+#~ msgid "WP Flat Delay"
+#~ msgstr "Rautalankatulostuksen lattea viive"
+
+#~ msgctxt "wireframe_flow_flat label"
+#~ msgid "WP Flat Flow"
+#~ msgstr "Rautalangan lattea virtaus"
+
+#~ msgctxt "wireframe_flow label"
+#~ msgid "WP Flow"
+#~ msgstr "Rautalankatulostuksen virtaus"
+
+#~ msgctxt "wireframe_printspeed_flat label"
+#~ msgid "WP Horizontal Printing Speed"
+#~ msgstr "Rautalangan tulostusnopeus vaakasuoraan"
+
+#~ msgctxt "wireframe_top_jump label"
+#~ msgid "WP Knot Size"
+#~ msgstr "Rautalankatulostuksen solmukoko"
+
+#~ msgctxt "wireframe_nozzle_clearance label"
+#~ msgid "WP Nozzle Clearance"
+#~ msgstr "Rautalankatulostuksen suutinväli"
+
+#~ msgctxt "wireframe_roof_drag_along label"
+#~ msgid "WP Roof Drag Along"
+#~ msgstr "Rautalankatulostuksen katon laahaus"
+
+#~ msgctxt "wireframe_roof_fall_down label"
+#~ msgid "WP Roof Fall Down"
+#~ msgstr "Rautalankatulostuksen katon pudotus"
+
+#~ msgctxt "wireframe_roof_inset label"
+#~ msgid "WP Roof Inset Distance"
+#~ msgstr "Rautalankatulostuksen katon liitosetäisyys"
+
+#~ msgctxt "wireframe_roof_outer_delay label"
+#~ msgid "WP Roof Outer Delay"
+#~ msgstr "Rautalankatulostuksen katon ulompi viive"
+
+#~ msgctxt "wireframe_printspeed label"
+#~ msgid "WP Speed"
+#~ msgstr "Rautalankatulostuksen nopeus"
+
+#~ msgctxt "wireframe_straight_before_down label"
+#~ msgid "WP Straighten Downward Lines"
+#~ msgstr "Rautalankatulostuksen laskulinjojen suoristus"
+
+#~ msgctxt "wireframe_strategy label"
+#~ msgid "WP Strategy"
+#~ msgstr "Rautalankatulostuksen strategia"
+
+#~ msgctxt "wireframe_top_delay label"
+#~ msgid "WP Top Delay"
+#~ msgstr "Rautalankatulostuksen viive ylhäällä"
+
+#~ msgctxt "wireframe_printspeed_up label"
+#~ msgid "WP Upward Printing Speed"
+#~ msgstr "Rautalangan tulostusnopeus ylöspäin"
 
 #~ msgctxt "material_bed_temp_wait label"
 #~ msgid "Wait for build plate heatup"
@@ -7643,6 +7588,10 @@ msgstr "siirtoliike"
 #~ msgctxt "dual_pre_wipe label"
 #~ msgid "Wipe Nozzle After Switch"
 #~ msgstr "Pyyhi suutin vaihdon jälkeen"
+
+#~ msgctxt "wireframe_enabled label"
+#~ msgid "Wire Printing"
+#~ msgstr "Rautalankatulostus"
 
 #~ msgctxt "z_offset_taper_layers label"
 #~ msgid "Z Offset Taper Layers"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-15 11:58+0000\n"
+"POT-Creation-Date: 2023-04-06 15:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -812,18 +812,18 @@ msgctxt "@text"
 msgid "Unknown error."
 msgstr "Unbekannter Fehler."
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:547
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:558
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> contains an unknown machine type <message>{1}</message>. Cannot import the machine. Models will be imported instead."
 msgstr "Projektdatei <filename>{0}</filename> enthält einen unbekannten Maschinentyp <message>{1}</message>. Importieren der Maschine ist nicht möglich. Stattdessen werden die Modelle importiert."
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:550
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:561
 msgctxt "@info:title"
 msgid "Open Project File"
 msgstr "Projektdatei öffnen"
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:631
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:642
 #: plugins/3MFReader/WorkspaceDialog.qml:99
 #: plugins/3MFReader/WorkspaceDialog.qml:127
 #: plugins/3MFReader/WorkspaceDialog.qml:134
@@ -831,31 +831,31 @@ msgctxt "@button"
 msgid "Create new"
 msgstr "Neu erstellen"
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:681
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:692
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is suddenly inaccessible: <message>{1}</message>."
 msgstr "Auf Projektdatei <filename>{0}</filename> kann plötzlich nicht mehr zugegriffen werden: <message>{1}</message>."
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:682
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:690
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:709
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:693
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:701
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:720
 msgctxt "@info:title"
 msgid "Can't Open Project File"
 msgstr "Projektdatei kann nicht geöffnet werden"
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:689
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:707
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:700
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:718
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>."
 msgstr "Projektdatei <filename>{0}</filename> ist beschädigt: <message>{1}</message>."
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:754
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:765
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
 msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura."
-msgstr ""
+msgstr "Projektdatei <filename>{0}</filename> verwendet Profile, die nicht mit dieser UltiMaker Cura-Version kompatibel sind."
 
 #: plugins/3MFReader/WorkspaceDialog.py:233
 msgctxt "@title:tab"
@@ -1926,17 +1926,17 @@ msgctxt "@label"
 msgid "Number of Extruders"
 msgstr "Anzahl Extruder"
 
-#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:341
+#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:342
 msgctxt "@label"
 msgid "Apply Extruder offsets to GCode"
 msgstr "Extruder-Versatzwerte auf GCode anwenden"
 
-#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:389
+#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:390
 msgctxt "@title:label"
 msgid "Start G-code"
 msgstr "Start G-Code"
 
-#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:400
+#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:401
 msgctxt "@title:label"
 msgid "End G-code"
 msgstr "Ende G-Code"
@@ -2037,7 +2037,7 @@ msgstr "Unbekannter Autor"
 #: plugins/Marketplace/PackageModel.py:95
 msgctxt "@label:label Ultimaker Marketplace is a brand name, don't translate"
 msgid "The material package associated with the Cura project could not be found on the Ultimaker Marketplace. Use the partial material profile definition stored in the Cura project file at your own risk."
-msgstr ""
+msgstr "Das mit dem Cura-Projekt verbundene Materialpaket konnte nicht auf dem UltiMaker Marketplace gefunden werden. Die Verwendung der in der Cura-Projektdatei gespeicherten Definition des Teilmaterialprofils erfolgt auf eigene Gefahr."
 
 #: plugins/Marketplace/RemotePackageList.py:117
 msgctxt "@info:error"
@@ -2052,7 +2052,7 @@ msgstr "Der Marktplatz konnte nicht erreicht werden."
 #: plugins/Marketplace/plugin.json
 msgctxt "description"
 msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
-msgstr ""
+msgstr "Verwaltet die Erweiterungen der Anwendung und ermöglicht das Durchsuchen von Erweiterungen auf der Ultimaker-Website."
 
 #: plugins/Marketplace/plugin.json
 msgctxt "name"
@@ -2718,25 +2718,15 @@ msgstr "Sentry-Protokolleinrichtung"
 
 #: plugins/SimulationView/SimulationView.py:129
 msgctxt "@info:status"
-msgid "Cura does not accurately display layers when Wire Printing is enabled."
-msgstr "Cura zeigt die Schichten nicht präzise an, wenn „Drucken mit Drahtstruktur“ aktiviert ist."
-
-#: plugins/SimulationView/SimulationView.py:130
-msgctxt "@info:title"
-msgid "Simulation View"
-msgstr "Simulationsansicht"
-
-#: plugins/SimulationView/SimulationView.py:133
-msgctxt "@info:status"
 msgid "Nothing is shown because you need to slice first."
 msgstr "Es kann nichts angezeigt werden, weil Sie zuerst das Slicing vornehmen müssen."
 
-#: plugins/SimulationView/SimulationView.py:134
+#: plugins/SimulationView/SimulationView.py:130
 msgctxt "@info:title"
 msgid "No layers to show"
 msgstr "Keine anzeigbaren Schichten vorhanden"
 
-#: plugins/SimulationView/SimulationView.py:136
+#: plugins/SimulationView/SimulationView.py:132
 #: plugins/SolidView/SolidView.py:74
 msgctxt "@info:option_text"
 msgid "Do not show this message again"
@@ -2981,7 +2971,7 @@ msgstr "UltiMaker Format Package"
 #: plugins/UFPReader/plugin.json
 msgctxt "description"
 msgid "Provides support for reading Ultimaker Format Packages."
-msgstr ""
+msgstr "Bietet Unterstützung für das Lesen von Ultimaker Format Packages."
 
 #: plugins/UFPReader/plugin.json
 msgctxt "name"
@@ -2998,7 +2988,7 @@ msgstr "Kann nicht in UFP-Datei schreiben:"
 #: plugins/UFPWriter/plugin.json
 msgctxt "description"
 msgid "Provides support for writing Ultimaker Format Packages."
-msgstr ""
+msgstr "Bietet Unterstützung für das Schreiben von Ultimaker Format Packages."
 
 #: plugins/UFPWriter/plugin.json
 msgctxt "name"
@@ -3008,7 +2998,7 @@ msgstr "UFP-Writer"
 #: plugins/UM3NetworkPrinting/plugin.json
 msgctxt "description"
 msgid "Manages network connections to UltiMaker networked printers."
-msgstr ""
+msgstr "Verwaltet Netzwerkverbindungen zu Ultimaker-Netzwerkdruckern."
 
 #: plugins/UM3NetworkPrinting/plugin.json
 msgctxt "name"
@@ -3393,7 +3383,7 @@ msgstr "Warten auf"
 #: plugins/UM3NetworkPrinting/resources/qml/MonitorStage.qml:117
 msgctxt "@info"
 msgid "Monitor your printers from everywhere using Ultimaker Digital Factory"
-msgstr ""
+msgstr "Überwachen Sie Ihre Drucker standortunabhängig mit Ultimaker Digital Factory."
 
 #: plugins/UM3NetworkPrinting/resources/qml/MonitorStage.qml:129
 msgctxt "@button"
@@ -3441,7 +3431,7 @@ msgstr "Druck überwachen"
 #: plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:278
 msgctxt "@action:tooltip"
 msgid "Track the print in Ultimaker Digital Factory"
-msgstr ""
+msgstr "Verfolgen Sie den Druck in der Ultimaker Digital Factory"
 
 #: plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:298
 #, python-brace-format
@@ -3530,7 +3520,7 @@ msgstr "Mehr erfahren"
 #: plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:18
 msgctxt "@info:status"
 msgid "You are attempting to connect to a printer that is not running UltiMaker Connect. Please update the printer to the latest firmware."
-msgstr ""
+msgstr "Sie versuchen, sich mit einem Drucker zu verbinden, auf dem Ultimaker Connect nicht läuft. Bitte aktualisieren Sie die Firmware des Druckers."
 
 #: plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:21
 msgctxt "@info:title"
@@ -3552,8 +3542,8 @@ msgstr "Material an Drucker senden"
 msgctxt "info:status"
 msgid "New printer detected from your Ultimaker account"
 msgid_plural "New printers detected from your Ultimaker account"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Ihr UltiMaker-Konto hat einen neuen Drucker erkannt"
+msgstr[1] "Ihr UltiMaker-Konto hat neue Drucker erkannt"
 
 #: plugins/UM3NetworkPrinting/src/Messages/NewPrinterDetectedMessage.py:29
 #, python-brace-format
@@ -3808,7 +3798,7 @@ msgstr "Beheizte Druckplatte (offizielles Kit oder Eigenbau)"
 #: plugins/UltimakerMachineActions/plugin.json
 msgctxt "description"
 msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
-msgstr ""
+msgstr "Ermöglicht Maschinenabläufe für UltiMaker-Maschinen (z. B. Assistent für Bettnivellierung, Auswahl von Upgrades usw.)"
 
 #: plugins/UltimakerMachineActions/plugin.json
 msgctxt "name"
@@ -4054,6 +4044,16 @@ msgstr "Upgrade der Konfigurationen von Cura 5.2 auf Cura 5.3."
 msgctxt "name"
 msgid "Version Upgrade 5.2 to 5.3"
 msgstr "Upgrade von Version 5.2 auf 5.3"
+
+#: plugins/VersionUpgrade/VersionUpgrade53to54/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.3 to Cura 5.4."
+msgstr ""
+
+#: plugins/VersionUpgrade/VersionUpgrade53to54/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 5.3 to 5.4"
+msgstr ""
 
 #: plugins/X3DReader/__init__.py:13
 msgctxt "@item:inlistbox"
@@ -4460,7 +4460,7 @@ msgstr "Meine Drucker"
 #: resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:34
 msgctxt "@tooltip:button"
 msgid "Monitor printers in Ultimaker Digital Factory."
-msgstr ""
+msgstr "Überwachen Sie Drucker in der Ultimaker Digital Factory."
 
 #: resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:41
 msgctxt "@tooltip:button"
@@ -4650,7 +4650,7 @@ msgid ""
 "Cura is developed by UltiMaker in cooperation with the community.\n"
 "Cura proudly uses the following open source projects:"
 msgstr ""
-"Cura wurde von UltiMaker B.V. in Zusammenarbeit mit der Community entwickelt.\n"
+"Cura wurde von UltiMaker in Zusammenarbeit mit der Community entwickelt.\n"
 "Cura verwendet mit Stolz die folgenden Open Source-Projekte:"
 
 #: resources/qml/Dialogs/AboutDialog.qml:138
@@ -6201,17 +6201,17 @@ msgstr "Aus"
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:65
 msgctxt "@info, %1 is the name of the custom profile"
 msgid "<b>%1</b> custom profile is active and you overwrote some settings."
-msgstr "<b>%1</b> benutzerdefiniertes Profil ist aktiv und einige Einstellungen wurden überschrieben."
+msgstr "Benutzerdefiniertes Profil für <b>%1</b> ist aktiv und einige Einstellungen wurden überschrieben."
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:78
 msgctxt "@info, %1 is the name of the custom profile"
 msgid "<b>%1</b> custom profile is overriding some settings."
-msgstr "<b>%1</b> benutzerdefiniertes Profil überschreibt einige Einstellungen."
+msgstr "Benutzerdefiniertes Profil von <b>%1</b> überschreibt einige Einstellungen."
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:92
 msgctxt "@info %1 is the name of a profile"
 msgid "Recommended settings (for <b>%1</b>) were altered."
-msgstr "Die empfohlenen Einstellungen (für <b>%1</b>) wurden geändert."
+msgstr "Empfohlene Einstellungen (für <b>%1</b>) wurden geändert."
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:106
 msgctxt "@info %1 is the name of a profile"
@@ -6221,7 +6221,7 @@ msgstr "Einige Einstellungen des aktuellen Profils wurden überschrieben."
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:137
 msgctxt "@info"
 msgid "Reset to defaults."
-msgstr "Auf die Standardeinstellungen zurücksetzen."
+msgstr "Auf Standardeinstellung zurücksetzen."
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:178
 msgctxt "@info"
@@ -6246,7 +6246,7 @@ msgstr "Druckeinstellungen"
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:111
 msgctxt "@button"
 msgid "Show Custom"
-msgstr ""
+msgstr "Benutzerdefinierte Anzeige"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedResolutionSelector.qml:27
 msgctxt "@label"
@@ -6502,7 +6502,7 @@ msgstr "Der Cloud-Drucker ist offline. Bitte prüfen Sie, ob der Drucker eingesc
 #: resources/qml/PrinterSelector/MachineSelector.qml:68
 msgctxt "@status"
 msgid "This printer is not linked to your account. Please visit the Ultimaker Digital Factory to establish a connection."
-msgstr ""
+msgstr "Der Drucker ist nicht mit Ihrem Konto verbunden. Bitte besuchen Sie die Ultimaker Digital Factory, um eine Verbindung herzustellen."
 
 #: resources/qml/PrinterSelector/MachineSelector.qml:73
 msgctxt "@status"
@@ -6814,7 +6814,7 @@ msgstr ""
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:73
 msgctxt "@button"
 msgid "Learn more about adding printers to Cura"
-msgstr "Mehr über das Hinzufügen von Druckern zu Cura erfahren"
+msgstr "Weitere Informationen zum Hinzufügen von Druckern zu Cura"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinterStack.qml:29
 msgctxt "@label"
@@ -6829,22 +6829,22 @@ msgstr ""
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:70
 msgctxt "@label"
 msgid "If you are trying to add a new UltiMaker printer to Cura"
-msgstr "Wenn Sie versuchen, einen neuen UltiMaker-Drucker zu Cura hinzuzufügen"
+msgstr "Wenn Sie einen neuen UltiMaker-Drucker zu Cura hinzufügen möchten"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:80
 msgctxt "@info"
 msgid "Sign in into UltiMaker Digital Factory"
-msgstr "Überwachen Sie Drucker in der UltiMaker Digital Factory."
+msgstr "Melden Sie sich bei UltiMaker Digital Factory an."
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:81
 msgctxt "@info"
 msgid "Follow the procedure to add a new printer"
-msgstr "Befolgen Sie die Anweisungen zum Hinzufügen eines neuen Druckers"
+msgstr "Befolgen Sie die Anweisungen zum Hinzufügen eines neuen Druckers."
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:82
 msgctxt "@info"
 msgid "Your new printer will automatically appear in Cura"
-msgstr "Ihr neuer Drucker wird automatisch in Cura angezeigt"
+msgstr "Ihr neuer Drucker wird automatisch in Cura angezeigt."
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:100
 msgctxt "@button"
@@ -6921,6 +6921,14 @@ msgctxt "@label"
 msgid "No items to select from"
 msgstr "Keine auswählbaren Einträge"
 
+#~ msgctxt "@info:status"
+#~ msgid "Cura does not accurately display layers when Wire Printing is enabled."
+#~ msgstr "Cura zeigt die Schichten nicht präzise an, wenn „Drucken mit Drahtstruktur“ aktiviert ist."
+
 #~ msgctxt "@description"
 #~ msgid "Please sign in to get verified plugins and materials for Ultimaker Cura Enterprise"
 #~ msgstr "Bitte melden Sie sich an, um verifizierte Plugins und Materialien für Ultimaker Cura Enterprise zu erhalten"
+
+#~ msgctxt "@info:title"
+#~ msgid "Simulation View"
+#~ msgstr "Simulationsansicht"

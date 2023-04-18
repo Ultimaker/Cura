@@ -170,7 +170,7 @@
         "machine_depth": { "default_value": 420 },
         "machine_end_gcode": { "default_value": "T1 \nM104 S0 \nT0 \nM104 S0 \nM140 S0 \nM141 S0 \nG91 \nG0 z1 \nG90 \nG28 \nM801.0 \nM84 \nM192" },
         "machine_extruder_count": { "default_value": 2 },
-        "machine_gcode_flavor": { "default_value": "Marlin" },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
         "machine_head_with_fans_polygon":
         {
             "default_value": [
