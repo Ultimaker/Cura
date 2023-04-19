@@ -4,7 +4,7 @@
     "inherits": "fdmextruder",
     "metadata":
     {
-        "machine": "matterhacker_pulsexe",
+        "machine": "matterhackers_pulsexe",
         "position": "0"
     },
     "overrides":
