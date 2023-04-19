@@ -11,8 +11,7 @@
         "first_start_actions": [ "MachineSettingsAction" ],
         "machine_extruder_trains":
         {
-            "0": "matterhackers_e3dlite_extruder",
-            "1": "matterhackers_e3dv6_extruder"
+            "0": "matterhackers_e3dlite_extruder"
         }
     },
     "overrides":
