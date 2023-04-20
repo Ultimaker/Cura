@@ -199,7 +199,7 @@ class FilamentChange(Script):
         if enable_before_macro:
             color_change = color_change + before_macro + "\n"
 
-        color_change = color_change + "M600\n"
+        color_change = color_change + "M600"
 
         if not firmware_config:
             if initial_retract is not None and initial_retract > 0.:
@@ -220,6 +220,8 @@ class FilamentChange(Script):
             if z_pos is not None and z_pos > 0.:
                 color_change = color_change + (" Z%.2f" % z_pos)
 
+        color_change = color_change + "\n"
+                
         if enable_after_macro:
             color_change = color_change + after_macro + "\n"
 
