@@ -328,7 +328,11 @@ class FlavorParser:
         if not global_stack:
             return None
 
-        self._current_filament_diameter = global_stack.extruderList[self._extruder_number].getProperty("material_diameter", "value")
+        try:
+            self._current_filament_diameter = global_stack.extruderList[self._extruder_number].getProperty("material_diameter", "value")
+        except IndexError:
+            # There can be a mismatch between the number of extruders in the G-Code file and the number of extruders in the current machine.
+            self._current_filament_diameter = self.DEFAULT_FILAMENT_DIAMETER
 
         scene_node = CuraSceneNode()
 

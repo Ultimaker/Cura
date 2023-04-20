@@ -139,7 +139,7 @@
         "machine_depth": { "default_value": 300 },
         "machine_end_gcode": { "default_value": "M104 T0 S0                     ;extruder heater off\nM104 T1 S0                     ;extruder heater off\nM140 S0                     ;heated bed heater off\nG91\nG1 Z1 F420                                        ;relative positioning\nG1 E-1 F300                            ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+1 E-1 F300 ;move Z up a bit and retract filament even more\nG90                         ;absolute positioning\nG1 X0 Y300 F6000                              ;move the head out of the way\nM84                         ;steppers off" },
         "machine_extruder_count": { "default_value": 2 },
-        "machine_gcode_flavor": { "default_value": "Marlin" },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
         "machine_head_with_fans_polygon":
         {
             "default_value": [
@@ -221,7 +221,6 @@
         "support_offset": { "value": "1.5" },
         "support_pattern": { "default_value": "zigzag" },
         "support_top_distance": { "value": "support_z_distance" },
-        "support_use_towers": { "value": "True" },
         "support_xy_distance": { "value": "wall_line_width_0 * 2.5" },
         "support_xy_distance_overhang": { "value": "wall_line_width_0" },
         "support_z_distance": { "value": "layer_height" },
