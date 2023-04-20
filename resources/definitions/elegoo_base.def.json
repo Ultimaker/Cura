@@ -116,7 +116,6 @@
         "support_brim_enable": { "value": "support_structure == 'normal' or support_structure == 'tree'" },
         "support_brim_width":
         {
-            "default_value": 3,
             "value": "6 if support_structure == 'tree' else line_width * initial_layer_line_width_factor * 0.02 "
         },
         "support_infill_angles": { "default_value": "[65]" },

@@ -125,7 +125,6 @@
         "speed_z_hop": { "default_value": 5 },
         "support_angle": { "default_value": 60 },
         "support_brim_enable": { "value": false },
-        "support_brim_width": { "default_value": 4 },
         "support_enable": { "default_value": true },
         "support_infill_rate": { "value": 15 },
         "support_interface_density": { "default_value": 33.333 },
