@@ -8,7 +8,7 @@ Restored and updated translations for 11 languages
 - Fixed a bug where a project files that contain an intent profile would not load correctly
 - Fixed a bug where Pause At Height was not working correctly for Griffin (UltiMaker printers)
 - Fixed a bug where slicing was blocked if initial printing temperature was higher than the printing temperature
-- Fixed a bug where Gcode would display NOMESH instead of NONMESH
+- Fixed a bug where Gcode would display NOMESH instead of NONMESH, contributed by ckvsoft
 - Fixed a bug where users were unable to slice with certain materials
 
 [5.3]
