@@ -64,7 +64,6 @@
         "jerk_topbottom": { "value": "5" },
         "jerk_wall": { "value": "10" },
         "jerk_wall_0": { "value": "5" },
-        "limit_support_retractions": { "value": "False" },
         "machine_acceleration": { "value": "1000" },
         "machine_center_is_zero": { "default_value": true },
         "machine_depth": { "default_value": 320 },
