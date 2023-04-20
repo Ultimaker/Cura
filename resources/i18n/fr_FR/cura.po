@@ -829,7 +829,7 @@ msgstr "Ouvrir un fichier de projet"
 #: plugins/3MFReader/WorkspaceDialog.qml:134
 msgctxt "@button"
 msgid "Create new"
-msgstr ""
+msgstr "Créer"
 
 #: plugins/3MFReader/ThreeMFWorkspaceReader.py:692
 #, python-brace-format
@@ -925,7 +925,7 @@ msgstr "Groupe d'imprimantes"
 #: plugins/3MFReader/WorkspaceDialog.qml:103
 msgctxt "@action:label"
 msgid "Open With"
-msgstr ""
+msgstr "Ouvrir avec"
 
 #: plugins/3MFReader/WorkspaceDialog.qml:104
 msgctxt "@info:tooltip"
@@ -2119,7 +2119,7 @@ msgstr "Gérer les packages"
 #: plugins/Marketplace/resources/qml/ManagedPackages.qml:16
 msgctxt "@text"
 msgid "Manage your UltiMaker Cura plugins and material profiles here. Make sure to keep your plugins up to date and backup your setup regularly."
-msgstr ""
+msgstr "Gérez vos plug-ins Ultimaker Cura et vos profils matériaux ici. Assurez-vous de maintenir vos plug-ins à jour et de sauvegarder régulièrement votre configuration."
 
 #: plugins/Marketplace/resources/qml/Marketplace.qml:87
 msgctxt "@title"
@@ -4602,17 +4602,17 @@ msgstr "Quoi de neuf"
 #: resources/qml/Cura.qml:890
 msgctxt "@title:window"
 msgid "Save Custom Profile"
-msgstr ""
+msgstr "Enregistrer le profil personnalisé"
 
 #: resources/qml/Cura.qml:891
 msgctxt "@textfield:placeholder"
 msgid "New Custom Profile"
-msgstr ""
+msgstr "Nouveau profil personnalisé"
 
 #: resources/qml/Cura.qml:892
 msgctxt "@info"
 msgid "Custom profile name:"
-msgstr ""
+msgstr "Nom du profil personnalisé :"
 
 #: resources/qml/Cura.qml:909
 msgctxt "@label %i will be replaced with a profile name"
@@ -4627,7 +4627,7 @@ msgstr "En savoir plus sur les profils d'impression Cura"
 #: resources/qml/Cura.qml:926
 msgctxt "@button"
 msgid "Save new profile"
-msgstr ""
+msgstr "Enregistrer le nouveau profil"
 
 #: resources/qml/Dialogs/AboutDialog.qml:15
 msgctxt "@title:window The argument is the application name."
@@ -4916,12 +4916,12 @@ msgstr "Conserver les modifications"
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:171
 msgctxt "@action:button"
 msgid "Save as new custom profile"
-msgstr ""
+msgstr "Enregistrer comme nouveau profil personnalisé"
 
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:178
 msgctxt "@action:button"
 msgid "Save changes"
-msgstr ""
+msgstr "Conserver les modifications"
 
 #: resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:47
 msgctxt "@text:window"
@@ -6241,7 +6241,7 @@ msgstr "Activez l'impression d'une bordure ou plaquette (Brim/Raft). Cela ajoute
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:102
 msgctxt "@label"
 msgid "Recommended print settings"
-msgstr ""
+msgstr "Paramètres d'impression recommandés"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:111
 msgctxt "@button"
@@ -6266,7 +6266,7 @@ msgstr "Les paramètres suivants déterminent la résistance de votre pièce."
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:34
 msgctxt "infill_sparse_density description"
 msgid "Infill Density"
-msgstr ""
+msgstr "Densité du remplissage"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:35
 msgctxt "@label"
@@ -6300,7 +6300,7 @@ msgstr ""
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:67
 msgctxt "@action:label"
 msgid "Shell Thickness"
-msgstr ""
+msgstr "Épaisseur de la coque"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:68
 msgctxt "@label"
@@ -6320,7 +6320,7 @@ msgstr "Générer des structures pour soutenir les parties du modèle qui possè
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:40
 msgctxt "@action:label"
 msgid "Support Type"
-msgstr ""
+msgstr "Type de prise en charge"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:41
 msgctxt "@label"
@@ -6335,7 +6335,7 @@ msgstr "Choisit entre les stratégies de support disponibles. Le support « Nor
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:53
 msgctxt "@action:label"
 msgid "Print with"
-msgstr ""
+msgstr "Imprimer avec"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:54
 msgctxt "@label"
@@ -6789,12 +6789,12 @@ msgstr "Ajouter une imprimante hors réseau"
 #: resources/qml/WelcomePages/AddThirdPartyPrinter.qml:102
 msgctxt "@button"
 msgid "Add UltiMaker printer via Digital Factory"
-msgstr ""
+msgstr "Ajouter l'imprimante UltiMaker par le biais de Digital Factory"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:29
 msgctxt "@label"
 msgid "In order to start using Cura you will need to configure a printer."
-msgstr ""
+msgstr "Pour pouvoir utiliser Cura, vous devez configurer une imprimante."
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:36
 msgctxt "@label"
@@ -6804,12 +6804,12 @@ msgstr "Quelle imprimante souhaitez-vous configurer?"
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:55
 msgctxt "@button"
 msgid "UltiMaker printer"
-msgstr ""
+msgstr "Imprimante UltiMaker"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:64
 msgctxt "@button"
 msgid "Non UltiMaker printer"
-msgstr ""
+msgstr "Imprimante d'une autre marque"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:73
 msgctxt "@button"
@@ -6824,7 +6824,7 @@ msgstr "Ajouter une imprimante"
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:33
 msgctxt "@label"
 msgid "New UltiMaker printers can be connected to Digital Factory and monitored remotely."
-msgstr ""
+msgstr "Les nouvelles imprimantes UltiMaker peuvent être connectées à Digital Factory et contrôlées à distance."
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:70
 msgctxt "@label"
@@ -6834,7 +6834,7 @@ msgstr "Si vous essayez d'ajouter une nouvelle imprimante UltiMaker à Cura"
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:80
 msgctxt "@info"
 msgid "Sign in into UltiMaker Digital Factory"
-msgstr ""
+msgstr "Se connecter à UltiMaker Digital Factory"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:81
 msgctxt "@info"
@@ -6854,17 +6854,17 @@ msgstr "En savoir plus"
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:121
 msgctxt "@button"
 msgid "Add local printer"
-msgstr ""
+msgstr "Ajouter une imprimante locale"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:129
 msgctxt "@button"
 msgid "Sign in to Digital Factory"
-msgstr ""
+msgstr "Se connecter à Digital Factory"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:133
 msgctxt "@button"
 msgid "Waiting for new printers"
-msgstr ""
+msgstr "En attente de nouvelles imprimantes"
 
 #: resources/qml/WelcomePages/ChangelogContent.qml:24
 msgctxt "@label"

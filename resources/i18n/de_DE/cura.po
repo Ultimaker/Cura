@@ -3303,7 +3303,8 @@ msgstr "Drucker verwalten"
 #: plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:280
 msgctxt "@info"
 msgid "Webcam feeds for cloud printers cannot be viewed from UltiMaker Cura. Click \"Manage printer\" to visit Ultimaker Digital Factory and view this webcam."
-msgstr ""
+msgstr "Webcam-Feeds für Cloud-Drucker können nicht in Ultimaker Cura angezeigt werden. Klicken Sie auf „Drucker verwalten“, um die Ultimaker Digital Factory zu"
+" besuchen und diese Webcam zu sehen."
 
 #: plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:340
 msgctxt "@label:status"
@@ -4627,7 +4628,7 @@ msgstr "Mehr über Druckprofile von Cura erfahren"
 #: resources/qml/Cura.qml:926
 msgctxt "@button"
 msgid "Save new profile"
-msgstr ""
+msgstr "Neues Profil speichern"
 
 #: resources/qml/Dialogs/AboutDialog.qml:15
 msgctxt "@title:window The argument is the application name."
@@ -6216,7 +6217,7 @@ msgstr "Empfohlene Einstellungen (für <b>%1</b>) wurden geändert."
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:106
 msgctxt "@info %1 is the name of a profile"
 msgid "Some setting-values defined in <b>%1</b> were overridden."
-msgstr "Einige Einstellungen des aktuellen Profils wurden überschrieben."
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:137
 msgctxt "@info"
@@ -6804,12 +6805,12 @@ msgstr "Welchen Drucker möchten Sie einrichten?"
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:55
 msgctxt "@button"
 msgid "UltiMaker printer"
-msgstr ""
+msgstr "UltiMaker-Drucker"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:64
 msgctxt "@button"
 msgid "Non UltiMaker printer"
-msgstr ""
+msgstr "Nicht-UltiMaker-Drucker"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:73
 msgctxt "@button"
@@ -6824,7 +6825,7 @@ msgstr "Drucker hinzufügen"
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:33
 msgctxt "@label"
 msgid "New UltiMaker printers can be connected to Digital Factory and monitored remotely."
-msgstr ""
+msgstr "Neue UltiMaker-Drucker können mit Digital Factory verbunden und aus der Ferne überwacht werden."
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:70
 msgctxt "@label"
