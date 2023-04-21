@@ -118,7 +118,7 @@
         "speed_z_hop": { "default_value": 5 },
         "support_angle": { "default_value": 60 },
         "support_bottom_stair_step_height": { "value": 0.2 },
-        "support_brim_width": { "default_value": 4 },
+        "support_brim_enable": { "value": false },
         "support_enable": { "default_value": true },
         "support_interface_density": { "default_value": 80 },
         "support_interface_enable": { "default_value": true },
