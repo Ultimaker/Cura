@@ -3303,8 +3303,7 @@ msgstr "Drucker verwalten"
 #: plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:280
 msgctxt "@info"
 msgid "Webcam feeds for cloud printers cannot be viewed from UltiMaker Cura. Click \"Manage printer\" to visit Ultimaker Digital Factory and view this webcam."
-msgstr "Webcam-Feeds für Cloud-Drucker können nicht in Ultimaker Cura angezeigt werden. Klicken Sie auf „Drucker verwalten“, um die Ultimaker Digital Factory zu"
-" besuchen und diese Webcam zu sehen."
+msgstr "Webcam-Feeds für Cloud-Drucker können nicht in Ultimaker Cura angezeigt werden. Klicken Sie auf „Drucker verwalten“, um die Ultimaker Digital Factory zu besuchen und diese Webcam zu sehen."
 
 #: plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:340
 msgctxt "@label:status"

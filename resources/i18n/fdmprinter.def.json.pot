@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-04-18 08:40+0000\n"
+"POT-Creation-Date: 2023-04-24 09:08+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -3768,22 +3768,12 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_angle label"
-msgid "Tree Support Branch Angle"
+msgid "Tree Support Maximum Branch Angle"
 msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_angle description"
-msgid "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_distance label"
-msgid "Tree Support Branch Distance"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_distance description"
-msgid "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove."
+msgid "The maximum angle of the branches while they grow around the model. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -3814,16 +3804,6 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "support_tree_branch_diameter_angle description"
 msgid "The angle of the branches' diameter as they gradually become thicker towards the bottom. An angle of 0 will cause the branches to have uniform thickness over their length. A bit of an angle can increase stability of the tree support."
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_collision_resolution label"
-msgid "Tree Support Collision Resolution"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_collision_resolution description"
-msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -3878,7 +3858,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_bp_diameter label"
-msgid "Tree Support Inital Layer Diameter"
+msgid "Tree Support Initial Layer Diameter"
 msgstr ""
 
 #: fdmprinter.def.json

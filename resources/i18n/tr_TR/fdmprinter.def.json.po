@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-04-18 08:40+0000\n"
+"POT-Creation-Date: 2023-04-24 09:08+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -1618,11 +1618,6 @@ msgstr "Yatay Büyüme"
 msgctxt "material_shrinkage_percentage_xy label"
 msgid "Horizontal Scaling Factor Shrinkage Compensation"
 msgstr "Yatay Ölçekleme Faktörü Büzülme Telafisi"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_distance description"
-msgid "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove."
-msgstr "Dalların modele temas ettiklerinde birbirlerine ne kadar uzaklıkta olacakları. Bu mesafenin kısa yapılması ağaç desteğin modele daha fazla noktada temas etmesini sağlayarak daha iyi bir sarkma sunacaktır ancak desteğin sökülmesini de daha güç hale getirecektir."
 
 #: fdmprinter.def.json
 msgctxt "material_break_preparation_retracted_position description"
@@ -3460,11 +3455,6 @@ msgid "Replaces the outermost part of the top/bottom pattern with a number of co
 msgstr "Üst/alt şeklin en dıştaki parçasını eş merkezli hatlar ile değiştirir. Bir veya iki hat kullanmak, dolgu malzemesinde başlayan tavanları geliştirir."
 
 #: fdmprinter.def.json
-msgctxt "support_tree_collision_resolution description"
-msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
-msgstr "Modele çarpmamak adına çarpışmaları hesaplamak için çözünürlük. Buna düşük bir değerin verilmesi daha az hata çıkaran daha isabetli ağaçların üretilmesini sağlar ancak dilimleme süresini önemli ölçüde artırır."
-
-#: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"
 msgid "Retract Before Outer Wall"
 msgstr "Dış Duvardan Önce Geri Çek"
@@ -4465,11 +4455,6 @@ msgid "The angle of the branches' diameter as they gradually become thicker towa
 msgstr "Alta doğru gidildikçe kademeli olarak kalınlaşan dalların açısı. 0 derecelik bir açı dalların uzunluklarını gözetmeksizin tekdüze bir kalınlığa sahip olmalarını sağlayacaktır. Birazcık açı ağaç desteğin sabitliğini artırabilir."
 
 #: fdmprinter.def.json
-msgctxt "support_tree_angle description"
-msgid "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
-msgstr "Dalların açısı. Daha dikey ve daha stabil olmaları için daha düşük bir açı kullanın. Daha fazla erişim için daha yüksek bir açı kullanın."
-
-#: fdmprinter.def.json
 msgctxt "support_conical_angle description"
 msgid "The angle of the tilt of conical support. With 0 degrees being vertical, and 90 degrees being horizontal. Smaller angles cause the support to be more sturdy, but consist of more material. Negative angles cause the base of the support to be wider than the top."
 msgstr "Konik desteğin eğim açısı. Dikey 0 derece ve yatay 90 derece. Daha küçük açılar desteğin daha sağlam olmasını sağlar, ancak çok fazla malzeme içerir. Negatif açılar destek tabanının üst kısımdan daha geniş olmasına yol açar."
@@ -4937,6 +4922,11 @@ msgstr "Sızdırma kalkanında bir bölümün sahip olacağı en büyük açı. 
 msgctxt "conical_overhang_angle description"
 msgid "The maximum angle of overhangs after the they have been made printable. At a value of 0° all overhangs are replaced by a piece of model connected to the build plate, 90° will not change the model in any way."
 msgstr "Yazdırılabilir yapıldıktan sonra çıkıntıların en büyük açısı. 0° değerindeyken tüm modeller yapı levhasına bağlı bir model parçasıyla değiştirilirken 90° modeli hiçbir şekilde değiştirmez."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle description"
+msgid "The maximum angle of the branches while they grow around the model. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "conical_overhang_hole_size description"
@@ -5929,11 +5919,6 @@ msgid "Tree"
 msgstr "Ağaç"
 
 #: fdmprinter.def.json
-msgctxt "support_tree_angle label"
-msgid "Tree Support Branch Angle"
-msgstr "Ağaç Destek Dal Açısı"
-
-#: fdmprinter.def.json
 msgctxt "support_tree_top_rate label"
 msgid "Tree Support Branch Density"
 msgstr ""
@@ -5949,28 +5934,23 @@ msgid "Tree Support Branch Diameter Angle"
 msgstr "Ağaç Destek Dalının Çap Açısı"
 
 #: fdmprinter.def.json
-msgctxt "support_tree_branch_distance label"
-msgid "Tree Support Branch Distance"
-msgstr "Ağaç Destek Dal Mesafesi"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_collision_resolution label"
-msgid "Tree Support Collision Resolution"
-msgstr "Ağaç Destek Çarpışma Çözünürlüğü"
-
-#: fdmprinter.def.json
 msgctxt "support_tree_max_diameter_increase_by_merges_when_support_to_model label"
 msgid "Tree Support Diameter Increase To Model"
 msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_bp_diameter label"
-msgid "Tree Support Inital Layer Diameter"
+msgid "Tree Support Initial Layer Diameter"
 msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_limit_branch_reach label"
 msgid "Tree Support Limit Branch Reach"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle label"
+msgid "Tree Support Maximum Branch Angle"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -6735,6 +6715,10 @@ msgstr "hareket"
 #~ msgid "Flow compensation: the amount of material extruded is multiplied by this value. Only applies to Wire Printing."
 #~ msgstr "Akış dengeleme: sıkıştırılan malzeme miktarı bu değerle çoğaltılır. Sadece kablo yazdırmaya uygulanır."
 
+#~ msgctxt "support_tree_branch_distance description"
+#~ msgid "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove."
+#~ msgstr "Dalların modele temas ettiklerinde birbirlerine ne kadar uzaklıkta olacakları. Bu mesafenin kısa yapılması ağaç desteğin modele daha fazla noktada temas etmesini sağlayarak daha iyi bir sarkma sunacaktır ancak desteğin sökülmesini de daha güç hale getirecektir."
+
 #~ msgctxt "wireframe_strategy option knot"
 #~ msgid "Knot"
 #~ msgstr "Düğüm"
@@ -6746,6 +6730,10 @@ msgstr "hareket"
 #~ msgctxt "wireframe_enabled description"
 #~ msgid "Print only the outside surface with a sparse webbed structure, printing 'in thin air'. This is realized by horizontally printing the contours of the model at given Z intervals which are connected via upward and diagonally downward lines."
 #~ msgstr "“Belli belirsiz” yazdıran seyrek gövdeli bir yapı ile sadece dış yüzeyi yazdırın. Bu işlem, yukarı ve çapraz olarak aşağı yöndeki hatlar ile bağlı olan verilen Z aralıklarındaki modelin çevresini yatay olarak yazdırarak gerçekleştirilir."
+
+#~ msgctxt "support_tree_collision_resolution description"
+#~ msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
+#~ msgstr "Modele çarpmamak adına çarpışmaları hesaplamak için çözünürlük. Buna düşük bir değerin verilmesi daha az hata çıkaran daha isabetli ağaçların üretilmesini sağlar ancak dilimleme süresini önemli ölçüde artırır."
 
 #~ msgctxt "wireframe_strategy option retract"
 #~ msgid "Retract"
@@ -6775,6 +6763,10 @@ msgstr "hareket"
 #~ msgid "Strategy for making sure two consecutive layers connect at each connection point. Retraction lets the upward lines harden in the right position, but may cause filament grinding. A knot can be made at the end of an upward line to heighten the chance of connecting to it and to let the line cool; however, it may require slow printing speeds. Another strategy is to compensate for the sagging of the top of an upward line; however, the lines won't always fall down as predicted."
 #~ msgstr "Art arda gelen iki katmanın her bir bağlantı noktasına bağlı olduğundan emin olma stratejisi. Geri çekme yukarı yöndeki hatların doğru konumda sertleşmesini sağlar ancak filaman aşınmasına neden olabilir. Düğüme bağlanma şansını artırmak ve hattın soğumasını sağlamak için yukarı yöndeki hattın ucunda bir düğüm oluşturulabilir, fakat bu işlem daha yavaş yazdırma hızı gerektirir. Başka bir strateji de yukarı yöndeki hat ucunun düşmesini dengelemektir, ancak hatlar her zaman beklenildiği gibi düşmez."
 
+#~ msgctxt "support_tree_angle description"
+#~ msgid "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
+#~ msgstr "Dalların açısı. Daha dikey ve daha stabil olmaları için daha düşük bir açı kullanın. Daha fazla erişim için daha yüksek bir açı kullanın."
+
 #~ msgctxt "wireframe_roof_inset description"
 #~ msgid "The distance covered when making a connection from a roof outline inward. Only applies to Wire Printing."
 #~ msgstr "İçerideki ana tavan hattından bağlantı yaparken kapatılan mesafe. Sadece kablo yazdırmaya uygulanır."
@@ -6794,6 +6786,18 @@ msgstr "hareket"
 #~ msgctxt "wireframe_roof_outer_delay description"
 #~ msgid "Time spent at the outer perimeters of hole which is to become a roof. Longer times can ensure a better connection. Only applies to Wire Printing."
 #~ msgstr "Tavanı oluşturacak dış çevresel uzunluklara harcanan zaman. Sürenin daha uzun olması daha iyi bir bağlantı sağlayabilir. Sadece kablo yazdırmaya uygulanır."
+
+#~ msgctxt "support_tree_angle label"
+#~ msgid "Tree Support Branch Angle"
+#~ msgstr "Ağaç Destek Dal Açısı"
+
+#~ msgctxt "support_tree_branch_distance label"
+#~ msgid "Tree Support Branch Distance"
+#~ msgstr "Ağaç Destek Dal Mesafesi"
+
+#~ msgctxt "support_tree_collision_resolution label"
+#~ msgid "Tree Support Collision Resolution"
+#~ msgstr "Ağaç Destek Çarpışma Çözünürlüğü"
 
 #~ msgctxt "wireframe_bottom_delay label"
 #~ msgid "WP Bottom Delay"

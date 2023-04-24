@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-04-18 08:40+0000\n"
+"POT-Creation-Date: 2023-04-24 09:08+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -1618,11 +1618,6 @@ msgstr "수평 확장"
 msgctxt "material_shrinkage_percentage_xy label"
 msgid "Horizontal Scaling Factor Shrinkage Compensation"
 msgstr "수평 확장 배율 수축 보정"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_distance description"
-msgid "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove."
-msgstr "모델에 붙는 브랜치를 떨어뜨리는 거리. 이 거리를 짧게 하면 트리 서포트이 더 많은 접점에서 모델에 접촉하여, 오버행이 더 좋아지지만 서포트를 제거하기가 더 어렵게 됩니다."
 
 #: fdmprinter.def.json
 msgctxt "material_break_preparation_retracted_position description"
@@ -3460,11 +3455,6 @@ msgid "Replaces the outermost part of the top/bottom pattern with a number of co
 msgstr "위쪽/아래쪽 패턴의 가장 바깥 쪽 부분을 여러 동심 선으로 바꿉니다. 하나 또는 두 개의 선을 사용하면 내부채움 재료로 시작하는 지붕면이 향상됩니다."
 
 #: fdmprinter.def.json
-msgctxt "support_tree_collision_resolution description"
-msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
-msgstr "모델에 부딪히는 것을 피하기 위해 충돌을 계산하는 정밀도. 이 값을 낮게 설정하면 실패도가 낮은 더 정확한 트리를 생성하지만, 슬라이싱 시간이 현격하게 늘어납니다."
-
-#: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"
 msgid "Retract Before Outer Wall"
 msgstr "외벽 전에 리트렉션"
@@ -4465,11 +4455,6 @@ msgid "The angle of the branches' diameter as they gradually become thicker towa
 msgstr "바닥면을 향할수록 점점 더 두꺼워짐에 따른 브랜치의 직경 각도. 이 각도가 0이면 브랜치는 길이 전체에 균일한 두께를 갖게 됩니다. 약간의 각도가 있으면 트리 서포트의 안정성을 높여 줍니다."
 
 #: fdmprinter.def.json
-msgctxt "support_tree_angle description"
-msgid "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
-msgstr "브랜치의 각도. 적은 각도를 사용하면 더 수직이 되어 더 안정됩니다. 높은 각도를 사용하면 더 많이 도달할 수 있습니다."
-
-#: fdmprinter.def.json
 msgctxt "support_conical_angle description"
 msgid "The angle of the tilt of conical support. With 0 degrees being vertical, and 90 degrees being horizontal. Smaller angles cause the support to be more sturdy, but consist of more material. Negative angles cause the base of the support to be wider than the top."
 msgstr "원추형 서포트점의 기울기 각도입니다. 0도가 수직이고 90도가 수평입니다. 각도가 작 으면 서포트가 더 튼튼하지만 더 많은 재료로 구성됩니다. 음수 각도는 서포트의 받침대가 상단보다 넓게 만듭니다."
@@ -4937,6 +4922,11 @@ msgstr "Ooze 쉴드가 가질 최대 각도. 0도가 수직이고 90도가 수�
 msgctxt "conical_overhang_angle description"
 msgid "The maximum angle of overhangs after the they have been made printable. At a value of 0° all overhangs are replaced by a piece of model connected to the build plate, 90° will not change the model in any way."
 msgstr "프린팅 가능하게 된 후 오버행의 최대 각도. 0도의 값에서 모든 오버행은 빌드 플레이트에 연결된 모델로 대체됩니다. 90도는 모델을 변경하지 않습니다."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle description"
+msgid "The maximum angle of the branches while they grow around the model. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "conical_overhang_hole_size description"
@@ -5929,11 +5919,6 @@ msgid "Tree"
 msgstr "트리"
 
 #: fdmprinter.def.json
-msgctxt "support_tree_angle label"
-msgid "Tree Support Branch Angle"
-msgstr "트리 서포트 브랜치 각도"
-
-#: fdmprinter.def.json
 msgctxt "support_tree_top_rate label"
 msgid "Tree Support Branch Density"
 msgstr ""
@@ -5949,28 +5934,23 @@ msgid "Tree Support Branch Diameter Angle"
 msgstr "트리 서포트 브랜치 직경 각도"
 
 #: fdmprinter.def.json
-msgctxt "support_tree_branch_distance label"
-msgid "Tree Support Branch Distance"
-msgstr "트리 서포트 브랜치 거리"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_collision_resolution label"
-msgid "Tree Support Collision Resolution"
-msgstr "트리 서포트 충돌 정밀도"
-
-#: fdmprinter.def.json
 msgctxt "support_tree_max_diameter_increase_by_merges_when_support_to_model label"
 msgid "Tree Support Diameter Increase To Model"
 msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_bp_diameter label"
-msgid "Tree Support Inital Layer Diameter"
+msgid "Tree Support Initial Layer Diameter"
 msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_limit_branch_reach label"
 msgid "Tree Support Limit Branch Reach"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle label"
+msgid "Tree Support Maximum Branch Angle"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -6733,6 +6713,10 @@ msgstr "이동"
 #~ msgid "Flow compensation: the amount of material extruded is multiplied by this value. Only applies to Wire Printing."
 #~ msgstr "압출량 보상 : 압출 된 재료의 양에 이 값을 곱합니다. 와이어 프린팅에만 적용됩니다."
 
+#~ msgctxt "support_tree_branch_distance description"
+#~ msgid "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove."
+#~ msgstr "모델에 붙는 브랜치를 떨어뜨리는 거리. 이 거리를 짧게 하면 트리 서포트이 더 많은 접점에서 모델에 접촉하여, 오버행이 더 좋아지지만 서포트를 제거하기가 더 어렵게 됩니다."
+
 #~ msgctxt "wireframe_strategy option knot"
 #~ msgid "Knot"
 #~ msgstr "매듭"
@@ -6744,6 +6728,10 @@ msgstr "이동"
 #~ msgctxt "wireframe_enabled description"
 #~ msgid "Print only the outside surface with a sparse webbed structure, printing 'in thin air'. This is realized by horizontally printing the contours of the model at given Z intervals which are connected via upward and diagonally downward lines."
 #~ msgstr "외벽의 표면만 거미줄 같은 형태로 공중에서 프린팅합니다. 이것은 상향 및 대각선 하향 라인을 통해 연결된 Z 간격으로 모형의 윤곽을 수평으로 인쇄함으로써 구현됩니다."
+
+#~ msgctxt "support_tree_collision_resolution description"
+#~ msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
+#~ msgstr "모델에 부딪히는 것을 피하기 위해 충돌을 계산하는 정밀도. 이 값을 낮게 설정하면 실패도가 낮은 더 정확한 트리를 생성하지만, 슬라이싱 시간이 현격하게 늘어납니다."
 
 #~ msgctxt "wireframe_strategy option retract"
 #~ msgid "Retract"
@@ -6773,6 +6761,10 @@ msgstr "이동"
 #~ msgid "Strategy for making sure two consecutive layers connect at each connection point. Retraction lets the upward lines harden in the right position, but may cause filament grinding. A knot can be made at the end of an upward line to heighten the chance of connecting to it and to let the line cool; however, it may require slow printing speeds. Another strategy is to compensate for the sagging of the top of an upward line; however, the lines won't always fall down as predicted."
 #~ msgstr "각 연결 지점에서 두 개의 연속 된 레이어가 연결되도록 하는 전략입니다. 리트렉션을 하면 상향 선이 올바른 위치에서 경화되지만 필라멘트가 갈릴 수 있습니다. 상향 선의 끝에 매듭을 만들어 연결 기회를 높이고 선을 차게 할 수 있습니다. 그러나 느린 프린팅 속도가 필요할 수 있습니다. 또 다른 전략은 상향 라인의 윗부분의 처짐을 보충하는 것입니다. 그러나 선은 항상 예측대로 떨어지지는 않습니다."
 
+#~ msgctxt "support_tree_angle description"
+#~ msgid "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
+#~ msgstr "브랜치의 각도. 적은 각도를 사용하면 더 수직이 되어 더 안정됩니다. 높은 각도를 사용하면 더 많이 도달할 수 있습니다."
+
 #~ msgctxt "wireframe_roof_inset description"
 #~ msgid "The distance covered when making a connection from a roof outline inward. Only applies to Wire Printing."
 #~ msgstr "지붕에서 연결을 할 때 안쪽까지 윤곽선을 그립니다. 와이어 프린팅에만 적용됩니다."
@@ -6792,6 +6784,18 @@ msgstr "이동"
 #~ msgctxt "wireframe_roof_outer_delay description"
 #~ msgid "Time spent at the outer perimeters of hole which is to become a roof. Longer times can ensure a better connection. Only applies to Wire Printing."
 #~ msgstr "지붕이 될 구멍의 바깥 둘레에서의 시간. 시간이 길면 연결이 더 잘됩니다. 와이어 프린팅에만 적용됩니다."
+
+#~ msgctxt "support_tree_angle label"
+#~ msgid "Tree Support Branch Angle"
+#~ msgstr "트리 서포트 브랜치 각도"
+
+#~ msgctxt "support_tree_branch_distance label"
+#~ msgid "Tree Support Branch Distance"
+#~ msgstr "트리 서포트 브랜치 거리"
+
+#~ msgctxt "support_tree_collision_resolution label"
+#~ msgid "Tree Support Collision Resolution"
+#~ msgstr "트리 서포트 충돌 정밀도"
 
 #~ msgctxt "wireframe_bottom_delay label"
 #~ msgid "WP Bottom Delay"

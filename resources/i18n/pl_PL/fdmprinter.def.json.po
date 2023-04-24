@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-04-18 08:40+0000\n"
+"POT-Creation-Date: 2023-04-24 09:08+0000\n"
 "PO-Revision-Date: 2019-11-15 15:34+0100\n"
 "Last-Translator: Mariusz Matłosz <matliks@gmail.com>\n"
 "Language-Team: Mariusz Matłosz <matliks@gmail.com>, reprapy.pl\n"
@@ -1622,11 +1622,6 @@ msgstr "Poziome Poszerzenie"
 msgctxt "material_shrinkage_percentage_xy label"
 msgid "Horizontal Scaling Factor Shrinkage Compensation"
 msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_distance description"
-msgid "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove."
-msgstr "W jakich odległościach powinny znajdować się gałęzie kiedy dotykają modelu.  Mały dystans spowoduje więcej punktów podparcia, co da lepsze nawisy, ale utrudni usuwanie podpór."
 
 #: fdmprinter.def.json
 msgctxt "material_break_preparation_retracted_position description"
@@ -3464,11 +3459,6 @@ msgid "Replaces the outermost part of the top/bottom pattern with a number of co
 msgstr "Zastępuje najbardziej zewnętrzną część wzoru górnego/dolnego za pomocą kilku koncentrycznych linii. Korzystanie z jednej lub dwóch linii poprawia dachy, które zaczynają się na wypełnieniu."
 
 #: fdmprinter.def.json
-msgctxt "support_tree_collision_resolution description"
-msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
-msgstr "Rozdzielczość przeliczania kolizji, aby unikać zderzeń z modelem. Ustawienie niższej wartości spowoduje bardziej dokładne drzewa, które rzadziej zawodzą, ale zwiększa to drastycznie czas cięcia."
-
-#: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"
 msgid "Retract Before Outer Wall"
 msgstr "Cofnij Przed Zew. Ścianą"
@@ -4473,11 +4463,6 @@ msgid "The angle of the branches' diameter as they gradually become thicker towa
 msgstr "Kąt średnicy gałęzi, które stają się grubsze bliżej podłoża. Kąt 0 spowoduje równą grubość na całej długości gałęzi. Delikatny kąt może spowodować lepszą stabilność podpór."
 
 #: fdmprinter.def.json
-msgctxt "support_tree_angle description"
-msgid "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
-msgstr "Kąt gałęzi. Użyj mniejszego kąta, aby były bardziej pionowe i stabilne. Użyj większego kąta, aby mieć większy zasięg."
-
-#: fdmprinter.def.json
 msgctxt "support_conical_angle description"
 msgid "The angle of the tilt of conical support. With 0 degrees being vertical, and 90 degrees being horizontal. Smaller angles cause the support to be more sturdy, but consist of more material. Negative angles cause the base of the support to be wider than the top."
 msgstr "Kąt nachylenia podpory stożkowej. Przy 0 stopniach jest pionowa a przy 90 stopniach jest pozioma. Mniejsze kąty sprawiają, że podparcie jest bardziej wytrzymałe, ale składa się z większej ilości materiału. Kąty ujemne powodują, że podstawa wspornika jest szersza niż góra."
@@ -4946,6 +4931,11 @@ msgstr "Maksymalny kąt, jaki będzie mieć część w tarczy wycierającej. Prz
 msgctxt "conical_overhang_angle description"
 msgid "The maximum angle of overhangs after the they have been made printable. At a value of 0° all overhangs are replaced by a piece of model connected to the build plate, 90° will not change the model in any way."
 msgstr "Maksymalny kąt zwisów po którym będą one drukowalne. Przy wartości 0 ° wszystkie zwisy są zastępowane przez fragment modelu połączony ze stołem, a 90 ° w żaden sposób nie zmienia modelu."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle description"
+msgid "The maximum angle of the branches while they grow around the model. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "conical_overhang_hole_size description"
@@ -5942,11 +5932,6 @@ msgid "Tree"
 msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "support_tree_angle label"
-msgid "Tree Support Branch Angle"
-msgstr "Kąt Gałęzi Drzewnej Podpory"
-
-#: fdmprinter.def.json
 msgctxt "support_tree_top_rate label"
 msgid "Tree Support Branch Density"
 msgstr ""
@@ -5962,28 +5947,23 @@ msgid "Tree Support Branch Diameter Angle"
 msgstr "Kąt Średnicy Gałęzi Drzewiastej Podpory"
 
 #: fdmprinter.def.json
-msgctxt "support_tree_branch_distance label"
-msgid "Tree Support Branch Distance"
-msgstr "Odległość Gałęzi Drzewiastej Podpory"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_collision_resolution label"
-msgid "Tree Support Collision Resolution"
-msgstr "Rozdzielczość Kolizji Drzewiastej Podpory"
-
-#: fdmprinter.def.json
 msgctxt "support_tree_max_diameter_increase_by_merges_when_support_to_model label"
 msgid "Tree Support Diameter Increase To Model"
 msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_bp_diameter label"
-msgid "Tree Support Inital Layer Diameter"
+msgid "Tree Support Initial Layer Diameter"
 msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_limit_branch_reach label"
 msgid "Tree Support Limit Branch Reach"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle label"
+msgid "Tree Support Maximum Branch Angle"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -7044,6 +7024,10 @@ msgstr "ruch jałowy"
 #~ msgid "Hollow Out Objects"
 #~ msgstr "Wydrąż Model"
 
+#~ msgctxt "support_tree_branch_distance description"
+#~ msgid "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove."
+#~ msgstr "W jakich odległościach powinny znajdować się gałęzie kiedy dotykają modelu.  Mały dystans spowoduje więcej punktów podparcia, co da lepsze nawisy, ale utrudni usuwanie podpór."
+
 #~ msgctxt "machine_steps_per_mm_e description"
 #~ msgid "How many steps of the stepper motors will result in one millimeter of extrusion."
 #~ msgstr "Ile kroków silnika krokowego będzie skutkowało ekstruzją 1mm."
@@ -7288,6 +7272,10 @@ msgstr "ruch jałowy"
 #~ msgid "RepRap (Volumetric)"
 #~ msgstr "RepRap (Objętościowy)"
 
+#~ msgctxt "support_tree_collision_resolution description"
+#~ msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
+#~ msgstr "Rozdzielczość przeliczania kolizji, aby unikać zderzeń z modelem. Ustawienie niższej wartości spowoduje bardziej dokładne drzewa, które rzadziej zawodzą, ale zwiększa to drastycznie czas cięcia."
+
 #~ msgctxt "wireframe_strategy option retract"
 #~ msgid "Retract"
 #~ msgstr "Wycofanie"
@@ -7427,6 +7415,10 @@ msgstr "ruch jałowy"
 #~ msgctxt "switch_extruder_retraction_amount description"
 #~ msgid "The amount of retraction: Set at 0 for no retraction at all. This should generally be the same as the length of the heat zone."
 #~ msgstr "Długość retrakcji: Ustaw na 0, aby wyłączyć retrkację. To powinno ogólnie być takie samo jak długość strefy grzewczej."
+
+#~ msgctxt "support_tree_angle description"
+#~ msgid "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
+#~ msgstr "Kąt gałęzi. Użyj mniejszego kąta, aby były bardziej pionowe i stabilne. Użyj większego kąta, aby mieć większy zasięg."
 
 #~ msgctxt "wireframe_roof_inset description"
 #~ msgid "The distance covered when making a connection from a roof outline inward. Only applies to Wire Printing."
@@ -7587,6 +7579,18 @@ msgstr "ruch jałowy"
 #~ msgctxt "support_tree_enable label"
 #~ msgid "Tree Support"
 #~ msgstr "Drzewne Podpory"
+
+#~ msgctxt "support_tree_angle label"
+#~ msgid "Tree Support Branch Angle"
+#~ msgstr "Kąt Gałęzi Drzewnej Podpory"
+
+#~ msgctxt "support_tree_branch_distance label"
+#~ msgid "Tree Support Branch Distance"
+#~ msgstr "Odległość Gałęzi Drzewiastej Podpory"
+
+#~ msgctxt "support_tree_collision_resolution label"
+#~ msgid "Tree Support Collision Resolution"
+#~ msgstr "Rozdzielczość Kolizji Drzewiastej Podpory"
 
 #~ msgctxt "support_tree_wall_count label"
 #~ msgid "Tree Support Wall Line Count"
