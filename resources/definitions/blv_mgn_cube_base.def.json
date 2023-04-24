@@ -1,213 +1,105 @@
 {
-  "name": "BLV MGN Cube Base",
-  "version": 2,
-  "inherits": "anet3d",
-  "metadata": {
-    "visible": false,
-    "author": "wolfgangmauer",
-    "manufacturer": "BLV",
-    "file_formats": "text/x-gcode",
-    "first_start_actions": [
-      "MachineSettingsAction"
-    ],
-    "preferred_quality_type": "normal",
-    "machine_extruder_trains": {
-      "0": "blv_mgn_cube_extruder_0"
+    "version": 2,
+    "name": "BLV MGN Cube Base",
+    "inherits": "anet3d",
+    "metadata":
+    {
+        "visible": false,
+        "author": "wolfgangmauer",
+        "manufacturer": "BLV",
+        "file_formats": "text/x-gcode",
+        "first_start_actions": [ "MachineSettingsAction" ],
+        "has_machine_quality": false,
+        "has_materials": true,
+        "has_variants": false,
+        "machine_extruder_trains": { "0": "blv_mgn_cube_extruder_0" },
+        "preferred_material": "generic_pla",
+        "preferred_quality_type": "normal",
+        "preferred_variant_name": "0.4mm Nozzle"
     },
-    "preferred_material": "generic_pla",
-    "has_variants": false,
-    "has_materials": true,
-    "preferred_variant_name": "0.4mm Nozzle",
-    "has_machine_quality": false
-  },
-  "overrides": {
-    "machine_name": {
-      "default_value": "BLV mgn Cube"
-    },
-    "initial_layer_line_width_factor": {
-      "default_value": 130.0
-    },
-    "speed_slowdown_layers": {
-      "default_value": 1
-    },
-    "optimize_wall_printing_order": {
-      "value": true
-    },
-    "infill_enable_travel_optimization": {
-      "default_value": true
-    },
-    "machine_heated_bed": {
-      "default_value": true
-    },
-    "machine_center_is_zero": {
-      "default_value": false
-    },
-    "machine_gcode_flavor": {
-      "default_value": "RepRap (RepRap)"
-    },
-    "fill_outline_gaps": {
-      "value": true
-    },
-    "retraction_speed": {
-      "default_value": 85,
-      "maximum_value_warning": 130
-    },
-    "retraction_amount": {
-      "default_value": 5.5
-    },
-    "retraction_hop_enabled": {
-      "value": true
-    },
-    "retraction_hop": {
-      "value": 0.4
-    },
-    "retraction_combing": {
-      "value": "'infill'"
-    },
-    "retraction_combing_max_distance": {
-      "value": 10
-    },
-    "machine_start_gcode": {
-      "default_value": "G21 ;metric values\nG90 ;absolute positioning\nM82 ;set extruder to absolute mode\nM107 ;start with the fan off\nG92 E0 ;zero the extruded length\nM104 S170 T0; start preheat hotend_0\nM140 S{material_bed_temperature_layer_0} ; start preheating the bed\nM190 S{material_bed_temperature_layer_0} ; heat to Cura Bed setting\nG28\nG12 P1 S2 T3\nG34\nG29\nG1 X0 Y0 Z1 F9000\nM109 S{material_print_temperature_layer_0} T0\nG1 X100 Y0 Z{layer_height_0} E30 F500 ;intro line\nG92 E0 ;zero the extruded length again\nM117 Printing...\n"
-    },
-    "machine_end_gcode": {
-      "default_value": "G91 ;relative positioning\nG1 Z5 F500; move nozzle relative to position\nG90 ;absolute positioning\nG1 X0 Y{machine_depth}\nG12 P1 T3\nM104 S0\nM140 S0\nG92 E0\nM84\nM109 S50\nM81\n"
-    },
-    "top_bottom_pattern": {
-      "value": "'zigzag'"
-    },
-    "speed_layer_0": {
-      "value": "math.ceil(speed_print * 0.25)"
-    },
-    "adhesion_type": {
-      "value": "'none'"
-    },
-    "speed_travel": {
-      "value": 120,
-      "maximum_value_warning": 251,
-      "maximum_value": 300
-    },
-    "infill_pattern": {
-      "value": "'tetrahedral'"
-    },
-    "bridge_settings_enabled": {
-      "default_value": true
-    },
-    "layer_height_0": {
-      "resolve": "max(0.2, min(extruderValues('layer_height')))"
-    },
-    "line_width": {
-      "value": "machine_nozzle_size"
-    },
-    "wall_line_width": {
-      "value": "machine_nozzle_size"
-    },
-    "infill_before_walls": {
-      "value": true
-    },
-    "zig_zaggify_infill": {
-      "value": true
-    },
-    "acceleration_enabled": {
-      "value": false
-    },
-    "jerk_enabled": {
-      "value": false
-    },
-    "bridge_wall_coast": {
-      "default_value": 10
-    },
-    "bridge_fan_speed": {
-      "default_value": 100
-    },
-    "bridge_fan_speed_2": {
-      "resolve": "max(cool_fan_speed, 50)"
-    },
-    "bridge_fan_speed_3": {
-      "resolve": "max(cool_fan_speed, 20)"
-    },
-    "cool_min_layer_time_fan_speed_max": {
-      "default_value": 20
-    },
-    "cool_min_layer_time": {
-      "value": 15
-    },
-    "cool_fan_speed_min": {
-      "value": "cool_fan_speed"
-    },
-    "cool_fan_full_at_height": {
-      "value": "resolveOrValue('layer_height_0') + resolveOrValue('layer_height') * max(1, cool_fan_full_layer - 1)"
-    },
-    "cool_fan_full_layer": {
-      "value": 4
-    },
-    "wall_line_count": {
-      "value": 3
-    },
-    "bottom_layers": {
-      "value": 3
-    },
-    "top_layers": {
-      "value": 3
-    },
-    "travel_retract_before_outer_wall": {
-      "value": false
-    },
-    "z_seam_type": {
-      "value": "'shortest'"
-    },
-    "brim_width": {
-      "default_value": 5
-    },
-    "infill_randomize_start_location": {
-      "default_value": true
-    },
-    "skin_overlap": {
-      "value": 10.0
-    },
-    "speed_infill": {
-      "value": "speed_print"
-    },
-    "speed_travel_layer_0": {
-      "value": "math.ceil(speed_travel * 0.4)"
-    },
-    "speed_print": {
-      "value": 100,
-      "maximum_value_warning": 151,
-      "maximum_value": 250
-    },
-    "retraction_count_max": {
-      "value": 20
-    },
-    "speed_wall": {
-      "value": "math.ceil(speed_print * 0.33)"
-    },
-    "speed_wall_0": {
-      "value": "math.ceil(speed_print * 0.33)"
-    },
-    "speed_wall_x": {
-      "value": "math.ceil(speed_print * 0.66)"
-    },
-    "speed_topbottom": {
-      "value": "math.ceil(speed_print * 0.33)"
-    },
-    "speed_roofing": {
-      "value": "math.ceil(speed_print * 0.33)"
-    },
-    "retraction_retract_speed": {
-      "maximum_value_warning": 130
-    },
-    "retraction_prime_speed": {
-      "value": "math.ceil(retraction_speed * 0.4)",
-      "maximum_value_warning": 130
-    },
-    "retraction_extrusion_window": {
-      "value": "retraction_amount"
-    },
-    "infill_overlap": {
-      "value": "10 if infill_sparse_density < 95 and infill_pattern != 'concentric' else 0",
-      "maximum_value_warning": 100,
-      "minimum_value_warning": -50
+    "overrides":
+    {
+        "acceleration_enabled": { "value": false },
+        "adhesion_type": { "value": "'none'" },
+        "bottom_layers": { "value": 3 },
+        "bridge_fan_speed": { "default_value": 100 },
+        "bridge_fan_speed_2": { "resolve": "max(cool_fan_speed, 50)" },
+        "bridge_fan_speed_3": { "resolve": "max(cool_fan_speed, 20)" },
+        "bridge_settings_enabled": { "default_value": true },
+        "bridge_wall_coast": { "default_value": 10 },
+        "brim_width": { "default_value": 5 },
+        "cool_fan_full_at_height": { "value": "resolveOrValue('layer_height_0') + resolveOrValue('layer_height') * max(1, cool_fan_full_layer - 1)" },
+        "cool_fan_full_layer": { "value": 4 },
+        "cool_fan_speed_min": { "value": "cool_fan_speed" },
+        "cool_min_layer_time": { "value": 15 },
+        "cool_min_layer_time_fan_speed_max": { "default_value": 20 },
+        "fill_outline_gaps": { "value": true },
+        "infill_before_walls": { "value": true },
+        "infill_enable_travel_optimization": { "default_value": true },
+        "infill_overlap":
+        {
+            "maximum_value_warning": 100,
+            "minimum_value_warning": -50,
+            "value": "10 if infill_sparse_density < 95 and infill_pattern != 'concentric' else 0"
+        },
+        "infill_pattern": { "value": "'tetrahedral'" },
+        "infill_randomize_start_location": { "default_value": true },
+        "initial_layer_line_width_factor": { "default_value": 130.0 },
+        "jerk_enabled": { "value": false },
+        "layer_height_0": { "resolve": "max(0.2, min(extruderValues('layer_height')))" },
+        "line_width": { "value": "machine_nozzle_size" },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_end_gcode": { "default_value": "G91 ;relative positioning\nG1 Z5 F500; move nozzle relative to position\nG90 ;absolute positioning\nG1 X0 Y{machine_depth}\nG12 P1 T3\nM104 S0\nM140 S0\nG92 E0\nM84\nM109 S50\nM81\n" },
+        "machine_gcode_flavor": { "default_value": "RepRap (RepRap)" },
+        "machine_heated_bed": { "default_value": true },
+        "machine_name": { "default_value": "BLV mgn Cube" },
+        "machine_start_gcode": { "default_value": "G21 ;metric values\nG90 ;absolute positioning\nM82 ;set extruder to absolute mode\nM107 ;start with the fan off\nG92 E0 ;zero the extruded length\nM104 S170 T0; start preheat hotend_0\nM140 S{material_bed_temperature_layer_0} ; start preheating the bed\nM190 S{material_bed_temperature_layer_0} ; heat to Cura Bed setting\nG28\nG12 P1 S2 T3\nG34\nG29\nG1 X0 Y0 Z1 F9000\nM109 S{material_print_temperature_layer_0} T0\nG1 X100 Y0 Z{layer_height_0} E30 F500 ;intro line\nG92 E0 ;zero the extruded length again\nM117 Printing...\n" },
+        "optimize_wall_printing_order": { "value": true },
+        "retraction_amount": { "default_value": 5.5 },
+        "retraction_combing": { "value": "'infill'" },
+        "retraction_combing_max_distance": { "value": 10 },
+        "retraction_count_max": { "value": 20 },
+        "retraction_extrusion_window": { "value": "retraction_amount" },
+        "retraction_hop": { "value": 0.4 },
+        "retraction_hop_enabled": { "value": true },
+        "retraction_prime_speed":
+        {
+            "maximum_value_warning": 130,
+            "value": "math.ceil(retraction_speed * 0.4)"
+        },
+        "retraction_retract_speed": { "maximum_value_warning": 130 },
+        "retraction_speed":
+        {
+            "default_value": 85,
+            "maximum_value_warning": 130
+        },
+        "skin_overlap": { "value": 10.0 },
+        "speed_layer_0": { "value": "math.ceil(speed_print * 0.25)" },
+        "speed_print":
+        {
+            "maximum_value": 250,
+            "maximum_value_warning": 151,
+            "value": 100
+        },
+        "speed_roofing": { "value": "math.ceil(speed_print * 0.33)" },
+        "speed_slowdown_layers": { "default_value": 1 },
+        "speed_topbottom": { "value": "math.ceil(speed_print * 0.33)" },
+        "speed_travel":
+        {
+            "maximum_value": 300,
+            "maximum_value_warning": 251,
+            "value": 120
+        },
+        "speed_travel_layer_0": { "value": "math.ceil(speed_travel * 0.4)" },
+        "speed_wall": { "value": "math.ceil(speed_print * 0.33)" },
+        "speed_wall_0": { "value": "math.ceil(speed_print * 0.33)" },
+        "speed_wall_x": { "value": "math.ceil(speed_print * 0.66)" },
+        "top_bottom_pattern": { "value": "'zigzag'" },
+        "top_layers": { "value": 3 },
+        "travel_retract_before_outer_wall": { "value": false },
+        "wall_line_count": { "value": 3 },
+        "wall_line_width": { "value": "machine_nozzle_size" },
+        "z_seam_type": { "value": "'shortest'" },
+        "zig_zaggify_infill": { "value": true }
     }
-  }
 }

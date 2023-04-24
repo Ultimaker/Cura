@@ -9,6 +9,7 @@ from typing import cast, Dict, List, Optional, Tuple, Any, Set
 
 import xml.etree.ElementTree as ET
 
+from UM.Util import parseBool
 from UM.Workspace.WorkspaceReader import WorkspaceReader
 from UM.Application import Application
 
@@ -23,6 +24,7 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
 from UM.Job import Job
 from UM.Preferences import Preferences
+from cura.CuraPackageManager import CuraPackageManager
 
 from cura.Machines.ContainerTree import ContainerTree
 from cura.Settings.CuraStackBuilder import CuraStackBuilder
@@ -41,7 +43,7 @@ from .WorkspaceDialog import WorkspaceDialog
 i18n_catalog = i18nCatalog("cura")
 
 
-_ignored_machine_network_metadata = {
+_ignored_machine_network_metadata: Set[str] = {
     "um_cloud_cluster_id",
     "um_network_key",
     "um_linked_to_account",
@@ -52,7 +54,8 @@ _ignored_machine_network_metadata = {
     "connection_type",
     "capabilities",
     "octoprint_api_key",
-}  # type: Set[str]
+    "is_abstract_machine"
+}
 
 
 class ContainerInfo:
@@ -66,41 +69,41 @@ class ContainerInfo:
 
 class QualityChangesInfo:
     def __init__(self) -> None:
-        self.name = None
+        self.name: Optional[str] = None
         self.global_info = None
-        self.extruder_info_dict = {} # type: Dict[str, ContainerInfo]
+        self.extruder_info_dict: Dict[str, ContainerInfo] = {}
 
 
 class MachineInfo:
     def __init__(self) -> None:
-        self.container_id = None
-        self.name = None
-        self.definition_id = None
+        self.container_id: Optional[str] = None
+        self.name: Optional[str] = None
+        self.definition_id: Optional[str] = None
 
-        self.metadata_dict = {}  # type: Dict[str, str]
+        self.metadata_dict: Dict[str, str] = {}
 
-        self.quality_type = None
-        self.intent_category = None
-        self.custom_quality_name = None
-        self.quality_changes_info = None
-        self.variant_info = None
+        self.quality_type: Optional[str] = None
+        self.intent_category: Optional[str] = None
+        self.custom_quality_name: Optional[str] = None
+        self.quality_changes_info: Optional[QualityChangesInfo] = None
+        self.variant_info: Optional[ContainerInfo] = None
 
-        self.definition_changes_info = None
-        self.user_changes_info = None
+        self.definition_changes_info: Optional[ContainerInfo] = None
+        self.user_changes_info: Optional[ContainerInfo] = None
 
-        self.extruder_info_dict = {} # type: Dict[str, ExtruderInfo]
+        self.extruder_info_dict: Dict[str, str] = {}
 
 
 class ExtruderInfo:
     def __init__(self) -> None:
         self.position = None
         self.enabled = True
-        self.variant_info = None
-        self.root_material_id = None
+        self.variant_info: Optional[ContainerInfo] = None
+        self.root_material_id: Optional[str] = None
 
-        self.definition_changes_info = None
-        self.user_changes_info = None
-        self.intent_info = None
+        self.definition_changes_info: Optional[ContainerInfo] = None
+        self.user_changes_info: Optional[ContainerInfo] = None
+        self.intent_info: Optional[ContainerInfo] = None
 
 
 class ThreeMFWorkspaceReader(WorkspaceReader):
@@ -128,14 +131,14 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         #  - variant
         self._ignored_instance_container_types = {"quality", "variant"}
 
-        self._resolve_strategies = {} # type: Dict[str, str]
+        self._resolve_strategies: Dict[str, str] = {}
 
-        self._id_mapping = {} # type: Dict[str, str]
+        self._id_mapping: Dict[str, str] = {}
 
         # In Cura 2.5 and 2.6, the empty profiles used to have those long names
         self._old_empty_profile_id_dict = {"empty_%s" % k: "empty" for k in ["material", "variant"]}
 
-        self._old_new_materials = {} # type: Dict[str, str]
+        self._old_new_materials: Dict[str, str] = {}
         self._machine_info = None
 
     def _clearState(self):
@@ -458,11 +461,15 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         materials_in_extruders_dict = {}  # Which material is in which extruder
 
-        # if the global stack is found, we check if there are conflicts in the extruder stacks
+        # If the global stack is found, we check if there are conflicts in the extruder stacks
         for extruder_stack_file in extruder_stack_files:
             serialized = archive.open(extruder_stack_file).read().decode("utf-8")
+
+            not_upgraded_parser = ConfigParser(interpolation=None)
+            not_upgraded_parser.read_string(serialized)
+
             serialized = ExtruderStack._updateSerialized(serialized, extruder_stack_file)
-            parser = ConfigParser(interpolation = None)
+            parser = ConfigParser(interpolation=None)
             parser.read_string(serialized)
 
             # The check should be done for the extruder stack that's associated with the existing global stack,
@@ -494,19 +501,26 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 extruder_info.user_changes_info = instance_container_info_dict[user_changes_id]
             self._machine_info.extruder_info_dict[position] = extruder_info
 
+            intent_container_id = parser["containers"][str(_ContainerIndexes.Intent)]
+
             intent_id = parser["containers"][str(_ContainerIndexes.Intent)]
             if intent_id not in ("empty", "empty_intent"):
-                extruder_info.intent_info = instance_container_info_dict[intent_id]
+                if intent_container_id in instance_container_info_dict:
+                    extruder_info.intent_info = instance_container_info_dict[intent_id]
+                else:
+                    # It can happen that an intent has been renamed. In that case, we should still use the old
+                    # name, since we used that to generate the instance_container_info_dict keys. 
+                    extruder_info.intent_info = instance_container_info_dict[not_upgraded_parser["containers"][str(_ContainerIndexes.Intent)]]
 
             if not machine_conflict and containers_found_dict["machine"] and global_stack:
                 if int(position) >= len(global_stack.extruderList):
                     continue
 
                 existing_extruder_stack = global_stack.extruderList[int(position)]
-                # check if there are any changes at all in any of the container stacks.
+                # Check if there are any changes at all in any of the container stacks.
                 id_list = self._getContainerIdListFromSerialized(serialized)
                 for index, container_id in enumerate(id_list):
-                    # take into account the old empty container IDs
+                    # Take into account the old empty container IDs
                     container_id = self._old_empty_profile_id_dict.get(container_id, container_id)
                     if existing_extruder_stack.getContainer(index).getId() != container_id:
                         machine_conflict = True
@@ -579,6 +593,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 is_printer_group = True
                 machine_name = group_name
 
+        # Getting missing required package ids
+        package_metadata = self._parse_packages_metadata(archive)
+        missing_package_metadata = self._filter_missing_package_metadata(package_metadata)
+
         # Show the dialog, informing the user what is about to happen.
         self._dialog.setMachineConflict(machine_conflict)
         self._dialog.setIsPrinterGroup(is_printer_group)
@@ -593,13 +611,43 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._dialog.setNumUserSettings(num_user_settings)
         self._dialog.setActiveMode(active_mode)
         self._dialog.setUpdatableMachines(updatable_machines)
-        self._dialog.setMachineName(machine_name)
         self._dialog.setMaterialLabels(material_labels)
         self._dialog.setMachineType(machine_type)
         self._dialog.setExtruders(extruders)
         self._dialog.setVariantType(variant_type_name)
         self._dialog.setHasObjectsOnPlate(Application.getInstance().platformActivity)
+        self._dialog.setMissingPackagesMetadata(missing_package_metadata)
         self._dialog.show()
+
+        # Choosing the initially selected printer in MachineSelector
+        is_networked_machine = False
+        is_abstract_machine = False
+        if global_stack and isinstance(global_stack, GlobalStack):
+            # The machine included in the project file exists locally already, no need to change selected printers.
+            is_networked_machine = global_stack.hasNetworkedConnection()
+            is_abstract_machine = parseBool(existing_global_stack.getMetaDataEntry("is_abstract_machine", False))
+            self._dialog.setMachineToOverride(global_stack.getId())
+            self._dialog.setResolveStrategy("machine", "override")
+        elif self._dialog.updatableMachinesModel.count > 0:
+            # The machine included in the project file does not exist. There is another machine of the same type.
+            # This will always default to an abstract machine first.
+            machine = self._dialog.updatableMachinesModel.getItem(0)
+            machine_name = machine["name"]
+            is_networked_machine = machine["isNetworked"]
+            is_abstract_machine = machine["isAbstractMachine"]
+            self._dialog.setMachineToOverride(machine["id"])
+            self._dialog.setResolveStrategy("machine", "override")
+        else:
+            # The machine included in the project file does not exist. There are no other printers of the same type. Default to "Create New".
+            machine_name = i18n_catalog.i18nc("@button", "Create new")
+            is_networked_machine = False
+            is_abstract_machine = False
+            self._dialog.setMachineToOverride(None)
+            self._dialog.setResolveStrategy("machine", "new")
+
+        self._dialog.setIsNetworkedMachine(is_networked_machine)
+        self._dialog.setIsAbstractMachine(is_abstract_machine)
+        self._dialog.setMachineName(machine_name)
 
         # Block until the dialog is closed.
         self._dialog.waitForClose()
@@ -658,10 +706,22 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         cura_file_names = [name for name in archive.namelist() if name.startswith("Cura/")]
 
-        # Create a shadow copy of the preferences (we don't want all of the preferences, but we do want to re-use its
+        # Create a shadow copy of the preferences (We don't want all of the preferences, but we do want to re-use its
         # parsing code.
         temp_preferences = Preferences()
-        serialized = archive.open("Cura/preferences.cfg").read().decode("utf-8")
+        try:
+            serialized = archive.open("Cura/preferences.cfg").read().decode("utf-8")
+        except KeyError as e:
+            # If there is no preferences file, it's not a workspace, so notify user of failure.
+            Logger.log("w", "File %s is not a valid workspace.", file_name)
+            message = Message(i18n_catalog.i18nc("@info:error Don't translate the XML tags <filename> or <message>!",
+                                                 "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>.",
+                                                 file_name, str(e)),
+                              title=i18n_catalog.i18nc("@info:title", "Can't Open Project File"),
+                              message_type=Message.MessageType.ERROR)
+            message.show()
+            self.setWorkspaceName("")
+            return [], {}
         temp_preferences.deserialize(serialized)
 
         # Copy a number of settings from the temp preferences to the global
@@ -683,7 +743,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         application.expandedCategoriesChanged.emit()  # Notify the GUI of the change
 
         # If there are no machines of the same type, create a new machine.
-        if self._resolve_strategies["machine"] != "override" or self._dialog.updatableMachinesModel.count <= 1:
+        if self._resolve_strategies["machine"] != "override" or self._dialog.updatableMachinesModel.count == 0:
             # We need to create a new machine
             machine_name = self._container_registry.uniqueName(self._machine_info.name)
 
@@ -691,7 +751,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             # quality_changes file. If that's the case, take the extruder count into account when creating the machine
             # or else the extruderList will return only the first extruder, leading to missing non-global settings in
             # the other extruders.
-            machine_extruder_count = self._getMachineExtruderCount()  # type: Optional[int]
+            machine_extruder_count: Optional[int] = self._getMachineExtruderCount()
             global_stack = CuraStackBuilder.createMachine(machine_name, self._machine_info.definition_id, machine_extruder_count)
             if global_stack:  # Only switch if creating the machine was successful.
                 extruder_stack_dict = {str(position): extruder for position, extruder in enumerate(global_stack.extruderList)}
@@ -702,8 +762,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             global_stacks = self._container_registry.findContainerStacks(id = self._dialog.getMachineToOverride(), type = "machine")
             if not global_stacks:
                 message = Message(i18n_catalog.i18nc("@info:error Don't translate the XML tag <filename>!", 
-                                                     "Project file <filename>{0}</filename> is made using profiles that"
-                                                     " are unknown to this version of Ultimaker Cura.", file_name),
+                                                     "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura.", file_name),
                                                      message_type = Message.MessageType.ERROR)
                 message.show()
                 self.setWorkspaceName("")
@@ -819,7 +878,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
     @staticmethod
     def _loadMetadata(file_name: str) -> Dict[str, Dict[str, Any]]:
-        result = dict()  # type: Dict[str, Dict[str, Any]]
+        result: Dict[str, Dict[str, Any]] = dict()
         try:
             archive = zipfile.ZipFile(file_name, "r")
         except zipfile.BadZipFile:
@@ -830,7 +889,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             return result
 
         metadata_files = [name for name in archive.namelist() if name.endswith("plugin_metadata.json")]
-
 
         for metadata_file in metadata_files:
             try:
@@ -872,7 +930,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 quality_changes_name = self._container_registry.uniqueName(quality_changes_name)
                 for position, container_info in container_info_dict.items():
                     extruder_stack = None
-                    intent_category = None  # type: Optional[str]
+                    intent_category: Optional[str] = None
                     if position is not None:
                         try:
                             extruder_stack = global_stack.extruderList[int(position)]
@@ -1113,7 +1171,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             root_material_id = self._old_new_materials.get(root_material_id, root_material_id)
 
             material_node = machine_node.variants[extruder_stack.variant.getName()].materials[root_material_id]
-            extruder_stack.material = material_node.container  # type: InstanceContainer
+            extruder_stack.material = material_node.container
 
     def _applyChangesToMachine(self, global_stack, extruder_stack_dict):
         # Clear all first
@@ -1243,3 +1301,29 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         metadata = data.iterfind("./um:metadata/um:name/um:label", {"um": "http://www.ultimaker.com/material"})
         for entry in metadata:
             return entry.text
+
+    @staticmethod
+    def _parse_packages_metadata(archive: zipfile.ZipFile) -> List[Dict[str, str]]:
+        try:
+            package_metadata = json.loads(archive.open("Cura/packages.json").read().decode("utf-8"))
+            return package_metadata["packages"]
+        except KeyError:
+            Logger.warning("No package metadata was found in .3mf file.")
+        except Exception:
+            Logger.error("Failed to load packages metadata from .3mf file.")
+
+        return []
+
+
+    @staticmethod
+    def _filter_missing_package_metadata(package_metadata: List[Dict[str, str]]) -> List[Dict[str, str]]:
+        """Filters out installed packages from package_metadata"""
+        missing_packages = []
+        package_manager = cast(CuraPackageManager, CuraApplication.getInstance().getPackageManager())
+
+        for package in package_metadata:
+            package_id = package["id"]
+            if not package_manager.isPackageInstalled(package_id):
+                missing_packages.append(package)
+
+        return missing_packages

@@ -40,7 +40,7 @@ class DigitalFactoryApiClient:
     DEFAULT_REQUEST_TIMEOUT = 10  # seconds
 
     # In order to avoid garbage collection we keep the callbacks in this list.
-    _anti_gc_callbacks = []  # type: List[Callable[[Any], None]]
+    _anti_gc_callbacks: List[Callable[[Any], None]] = []
 
     def __init__(self, application: CuraApplication, on_error: Callable[[List[CloudError]], None], projects_limit_per_page: Optional[int] = None) -> None:
         """Initializes a new digital factory API client.
@@ -54,7 +54,7 @@ class DigitalFactoryApiClient:
         self._scope = JsonDecoratorScope(UltimakerCloudScope(application))
         self._http = HttpRequestManager.getInstance()
         self._on_error = on_error
-        self._file_uploader = None  # type: Optional[DFFileUploader]
+        self._file_uploader: Optional[DFFileUploader] = None
         self._library_max_private_projects: Optional[int] = None
 
         self._projects_pagination_mgr = PaginationManager(limit = projects_limit_per_page) if projects_limit_per_page else None  # type: Optional[PaginationManager]
@@ -71,8 +71,6 @@ class DigitalFactoryApiClient:
                 has_access = response.library_max_private_projects == -1 or response.library_max_private_projects > 0
                 callback(has_access)
                 self._library_max_private_projects = response.library_max_private_projects
-                # update the account with the additional user rights
-                self._account.updateAdditionalRight(df_access = has_access)
             else:
                 Logger.warning(f"Digital Factory: Response is not a feature budget, likely an error: {str(response)}")
                 callback(False)

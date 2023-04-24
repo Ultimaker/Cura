@@ -5,7 +5,7 @@ import QtQuick 2.7
 import QtQuick.Layouts 1.2
 import QtQuick.Controls 2.0
 
-import UM 1.1 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 import "."
@@ -62,13 +62,19 @@ Item
         var affected_by_list = ""
         for (var i in affected_by)
         {
-            affected_by_list += "<li>%1</li>\n".arg(affected_by[i].label)
+            if(affected_by[i].label != "")
+            {
+                affected_by_list += "<li>%1</li>\n".arg(affected_by[i].label)
+            }
         }
 
         var affects_list = ""
         for (var i in affects)
         {
-            affects_list += "<li>%1</li>\n".arg(affects[i].label)
+            if(affects[i].label != "")
+            {
+                affects_list += "<li>%1</li>\n".arg(affects[i].label)
+            }
         }
 
         var tooltip = "<b>%1</b>\n<p>%2</p>".arg(definition.label).arg(definition.description)
@@ -109,7 +115,16 @@ Item
 
         onExited:
         {
-            if (controlContainer.item && controlContainer.item.hovered)
+            if (controlContainer.children[0] && controlContainer.children[0].hovered)
+            {
+                return
+            }
+
+            // Don't trigger the hide if either of the nested buttons is hidden. This is caused by a bug in QT
+            // Documentation claims that nested mouse events don't trigger the onExit, but this is only true if they
+            // have a *direct* parent child relationship. In this case there are rows and other visual layouts in
+            // between which messes this up.
+            if(linkedSettingIcon.hovered || revertButton.hovered || inheritButton.hovered)
             {
                 return
             }
@@ -123,13 +138,10 @@ Item
             interval: 500
             repeat: false
 
-            onTriggered:
-            {
-                base.showTooltip(base.createTooltipText())
-            }
+            onTriggered: base.showTooltip(base.createTooltipText())
         }
 
-        Label
+        UM.Label
         {
             id: label
 
@@ -140,12 +152,11 @@ Item
 
             text: definition.label
             elide: Text.ElideMiddle
-            renderType: Text.NativeRendering
             textFormat: Text.PlainText
 
             color: UM.Theme.getColor("setting_control_text")
             opacity: (definition.visible) ? 1 : 0.5
-            // emphasize the setting if it has a value in the user or quality profile
+            // Emphasize the setting if it has a value in the user or quality profile
             font: base.doQualityUserSettingEmphasis && base.stackLevel !== undefined && base.stackLevel <= 1 ? UM.Theme.getFont("default_italic") : UM.Theme.getFont("default")
         }
 
@@ -204,7 +215,7 @@ Item
                 height: UM.Theme.getSize("small_button_icon").height
                 width: height
 
-                color: UM.Theme.getColor("setting_control_button")
+                color: UM.Theme.getColor("accent_1")
                 hoverColor: UM.Theme.getColor("setting_control_button_hover")
 
                 iconSource: UM.Theme.getIcon("ArrowReset")

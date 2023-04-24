@@ -1,52 +1,46 @@
 {
-    "version": 2, 
+    "version": 2,
     "name": "101Hero",
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "visible": true,
         "author": "rikky",
         "manufacturer": "101Hero",
         "file_formats": "text/x-gcode",
         "platform": "101hero-platform.3mf",
-        "supports_usb_connection": true,
+        "machine_extruder_trains": { "0": "101Hero_extruder_0" },
         "preferred_quality_type": "draft",
-        "machine_extruder_trains":
-        {
-            "0": "101Hero_extruder_0"
-        }
+        "supports_usb_connection": true
     },
-
-    "overrides": {
-        "machine_name": { "default_value": "101Hero" },
-        "machine_shape": { "default_value": "elliptic"},
-        "machine_heated_bed": { "default_value": false },
-        "machine_width": { "default_value": 149.86 },
-        "machine_depth": { "default_value": 149.86 },
-        "machine_height": { "default_value": 99.822 },
+    "overrides":
+    {
+        "gantry_height": { "value": "0" },
         "machine_center_is_zero": { "default_value": true },
-        "machine_head_with_fans_polygon": {
+        "machine_depth": { "default_value": 149.86 },
+        "machine_end_gcode": { "default_value": "M104 S0     ;extruder heater off\nM140 S0     ;heated bed heater off (if you have it)\nG91         ;relative positioning\nG1 E-1 F300 ;retract the filament a bit\nG1 Z0.5 E-5 F840 ;move Z up a bit and retract even more\nG28 X0 Y0   ;home X/Y, so the head is out of the way\nM84         ;steppers off\nG90         ;absolute positioning" },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_head_with_fans_polygon":
+        {
             "default_value": [
-                [ 0, 0 ],
-                [ 0, 0 ],
-                [ 0, 0 ],
-                [ 0, 0 ]
+                [0, 0],
+                [0, 0],
+                [0, 0],
+                [0, 0]
             ]
         },
-        "speed_print": {  "default_value": 14 },
-        "speed_travel": { "value": "speed_print" },
-        "speed_wall": { "value": "speed_print * 0.7" },
-        "speed_topbottom": { "value": "speed_print * 0.7" },
+        "machine_heated_bed": { "default_value": false },
+        "machine_height": { "default_value": 99.822 },
+        "machine_name": { "default_value": "101Hero" },
+        "machine_shape": { "default_value": "elliptic" },
+        "machine_start_gcode": { "default_value": "G21       ;metric values\nG90       ;absolute positioning\nM82       ;set extruder to absolute mode\nM107      ;start with the fan off\nG28 Z0    ;home Z\nG1 Z15.0 F840\nG92 E0    ;zero the extruded length\nG1 F200 E3              ;extrude 3mm of feed stock\nG92 E0                  ;zero the extruded length again\nG1 F840\n;Put printing message on LCD screen\nM117 Printing...\n" },
+        "machine_width": { "default_value": 149.86 },
+        "retraction_amount": { "default_value": 2.5 },
+        "retraction_speed": { "default_value": 10 },
         "speed_layer_0": { "value": "speed_print * 0.7" },
-        "gantry_height": { "value": "0" },
-        "retraction_speed": { "default_value" : 10 },
-        "retraction_amount": { "default_value" : 2.5 },
-        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
-
-        "machine_start_gcode": {
-            "default_value": "G21       ;metric values\nG90       ;absolute positioning\nM82       ;set extruder to absolute mode\nM107      ;start with the fan off\nG28 Z0    ;home Z\nG1 Z15.0 F840\nG92 E0    ;zero the extruded length\nG1 F200 E3              ;extrude 3mm of feed stock\nG92 E0                  ;zero the extruded length again\nG1 F840\n;Put printing message on LCD screen\nM117 Printing...\n"
-         },
-        "machine_end_gcode": {
-            "default_value": "M104 S0     ;extruder heater off\nM140 S0     ;heated bed heater off (if you have it)\nG91         ;relative positioning\nG1 E-1 F300 ;retract the filament a bit\nG1 Z0.5 E-5 F840 ;move Z up a bit and retract even more\nG28 X0 Y0   ;home X/Y, so the head is out of the way\nM84         ;steppers off\nG90         ;absolute positioning"
-        }
+        "speed_print": { "default_value": 14 },
+        "speed_topbottom": { "value": "speed_print * 0.7" },
+        "speed_travel": { "value": "speed_print" },
+        "speed_wall": { "value": "speed_print * 0.7" }
     }
 }

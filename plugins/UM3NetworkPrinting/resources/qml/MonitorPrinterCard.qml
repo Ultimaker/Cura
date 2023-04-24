@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2022 UltiMaker
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.3
@@ -175,7 +175,7 @@ Item
             {
                 id: printerConfiguration
                 anchors.verticalCenter: parent.verticalCenter
-                buildplate: printer ? catalog.i18nc("@label", "Glass") : null // 'Glass' as a default
+
                 configurations:
                 {
                     var configs = []
@@ -209,8 +209,13 @@ Item
             onClicked: enabled ? contextMenu.switchPopupState() : {}
             visible:
             {
-                if (!printer || !printer.activePrintJob) {
-                    return false
+                if(!printer || !printer.activePrintJob)
+                {
+                    return false;
+                }
+                if(!contextMenu.hasItems)
+                {
+                    return false;
                 }
                 var states = ["queued", "error", "sent_to_printer", "pre_print", "printing", "pausing", "paused", "resuming"]
                 return states.indexOf(printer.activePrintJob.state) !== -1
@@ -252,7 +257,7 @@ Item
                 bottom: parent.bottom
                 bottomMargin: 20 * screenScaleFactor // TODO: Theme!
             }
-            iconSource: "../svg/icons/CameraPhoto.svg"
+            iconSource: Qt.resolvedUrl("../svg/icons/CameraPhoto.svg")
             enabled: !cloudConnection
             visible: printer
         }
@@ -272,7 +277,7 @@ Item
         MonitorInfoBlurb
         {
             id: cameraDisabledInfo
-            text: catalog.i18nc("@info", "Webcam feeds for cloud printers cannot be viewed from Ultimaker Cura." +
+            text: catalog.i18nc("@info", "Webcam feeds for cloud printers cannot be viewed from UltiMaker Cura." +
                 " Click \"Manage printer\" to visit Ultimaker Digital Factory and view this webcam.")
             target: cameraButton
         }

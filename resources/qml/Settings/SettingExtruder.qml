@@ -17,6 +17,8 @@ SettingItem
         id: control
         anchors.fill: parent
 
+        forceHighlight: base.hovered
+
         property var extrudersModel: CuraApplication.getExtrudersModel()
 
         model: extrudersModel
@@ -125,17 +127,22 @@ SettingItem
                 }
                 return UM.Theme.getColor("setting_control")
             }
+            borderColor: control.activeFocus ? UM.Theme.getSize("text_field_border_active") : "transparent"
             liningColor:
             {
-                if (!enabled)
+                if(!enabled)
                 {
-                    return UM.Theme.getColor("setting_control_disabled_border")
+                    return UM.Theme.getColor("setting_control_disabled_border");
                 }
-                if (control.hovered || control.activeFocus)
+                if(control.activeFocus)
                 {
-                    return UM.Theme.getColor("border_main")
+                    return UM.Theme.getColor("text_field_border_active");
                 }
-                return UM.Theme.getColor("border_field_light")
+                if(base.hovered)
+                {
+                    return UM.Theme.getColor("text_field_border_hovered");
+                }
+                return UM.Theme.getColor("border_field_light");
             }
         }
 
@@ -154,7 +161,7 @@ SettingItem
             background: Rectangle
             {
                 id: swatch
-                height: Math.round(parent.height / 2)
+                height: UM.Theme.getSize("standard_arrow").width
                 width: height
                 radius: Math.round(width / 2)
                 anchors.right: parent.right

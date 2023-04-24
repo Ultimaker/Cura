@@ -46,15 +46,13 @@ UM.TooltipArea
         watchedProperties: [ "value", "description" ]
     }
 
-    Label
+    UM.Label
     {
         id: fieldLabel
         anchors.left: parent.left
         anchors.verticalCenter: checkBox.verticalCenter
         visible: text != ""
         font: UM.Theme.getFont("medium")
-        color: UM.Theme.getColor("text")
-        renderType: Text.NativeRendering
     }
 
     UM.CheckBox
