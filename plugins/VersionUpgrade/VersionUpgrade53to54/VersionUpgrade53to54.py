@@ -31,6 +31,8 @@ _REMOVED_SETTINGS = {
     "wireframe_roof_drag_along",
     "wireframe_roof_outer_delay",
     "wireframe_nozzle_clearance",
+    "support_tree_branch_distance",
+    "support_tree_collision_resolution",
 }
 
 
