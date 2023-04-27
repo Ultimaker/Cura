@@ -90,7 +90,7 @@
         "machine_min_cool_heat_time_window": { "value": "15" },
         "machine_name": { "default_value": "IDEX420" },
         "machine_nozzle_size": { "default_value": 0.4 },
-        "machine_start_gcode": { "default_value": "G90 ; switch to absolute coordinate mode\nT{initial_extruder_nr} ; select the firstly used tool\nG1 F18000 Y-160 Z15 ; move fast to the coordinates\nG1 F18000 X0 Z0.3 ; move fast to the coordinates\nG92 E0 ; set the extruder to 0\nG1 F300 X60 E24 ; purge the hotend\nG1 F600 X40 ; swipe the nozzle\nG1 F600 Z3 ; perform Z hop" },
+        "machine_start_gcode": { "default_value": "G90 ; switch to absolute coordinate mode\nG1 F18000 Y-160 Z15 ; move fast to the coordinates\nG1 F18000 X0 Z0.3 ; move fast to the coordinates\nG92 E0 ; set the extruder to 0\nG1 F300 X60 E24 ; purge the hotend\nG1 F600 X40 ; swipe the nozzle\nG1 F600 Z3 ; perform Z hop" },
         "machine_use_extruder_offset_to_offset_coords": { "default_value": false },
         "machine_width": { "default_value": 420 },
         "material_diameter": { "default_value": 1.75 },
