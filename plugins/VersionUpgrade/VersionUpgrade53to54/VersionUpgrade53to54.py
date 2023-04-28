@@ -64,11 +64,11 @@ _RENAMED_PROFILES = {
     "tpu_040024": "elegoo_tpu_nozzle_0.40_layer_0.20",
     "tpu_040028": "elegoo_tpu_nozzle_0.40_layer_0.30",
 
-    "elegoo_global_012_high.inst.cfg": "elegoo_layer_0.10.inst.cfg",
-    "elegoo_global_016_normal.inst.cfg": "elegoo_layer_0.15.inst.cfg",
-    "elegoo_global_020_fine.inst.cfg": "elegoo_layer_0.20.inst.cfg",
-    "elegoo_global_024_medium.inst.cfg": "elegoo_layer_0.20.inst.cfg",
-    "elegoo_global_028_draft.inst.cfg": "elegoo_layer_0.30.inst.cfg",
+    "elegoo_global_012_high": "elegoo_layer_0.10",
+    "elegoo_global_016_normal": "elegoo_layer_0.15",
+    "elegoo_global_020_fine": "elegoo_layer_0.20",
+    "elegoo_global_024_medium": "elegoo_layer_0.20",
+    "elegoo_global_028_draft": "elegoo_layer_0.30",
 }
 
 
