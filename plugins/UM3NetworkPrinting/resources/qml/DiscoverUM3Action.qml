@@ -295,7 +295,6 @@ Cura.MachineAction
             UM.Label
             {
                 text: catalog.i18nc("@label", "Enter the IP address of your printer on the network.")
-                renderType: Text.NativeRendering
             }
 
             Cura.TextField

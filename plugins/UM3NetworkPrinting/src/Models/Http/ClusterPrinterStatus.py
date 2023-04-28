@@ -20,7 +20,6 @@ from ..BaseModel import BaseModel
 class ClusterPrinterStatus(BaseModel):
     """Class representing a cluster printer"""
 
-
     def __init__(self, enabled: bool, firmware_version: str, friendly_name: str, ip_address: str, machine_variant: str,
                  status: str, unique_name: str, uuid: str,
                  configuration: List[Union[Dict[str, Any], ClusterPrintCoreConfiguration]],
@@ -28,9 +27,9 @@ class ClusterPrinterStatus(BaseModel):
                  firmware_update_status: Optional[str] = None, latest_available_firmware: Optional[str] = None,
                  build_plate: Union[Dict[str, Any], ClusterBuildPlate] = None,
                  material_station: Union[Dict[str, Any], ClusterPrinterMaterialStation] = None, **kwargs) -> None:
-        """Creates a new cluster printer status
-
-        :param enabled: A printer can be disabled if it should not receive new jobs. By default every printer is enabled.
+        """
+        Creates a new cluster printer status
+        :param enabled: A printer can be disabled if it should not receive new jobs. By default, every printer is enabled.
         :param firmware_version: Firmware version installed on the printer. Can differ for each printer in a cluster.
         :param friendly_name: Human readable name of the printer. Can be used for identification purposes.
         :param ip_address: The IP address of the printer in the local network.

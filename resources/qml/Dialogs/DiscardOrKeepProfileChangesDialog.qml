@@ -12,8 +12,13 @@ UM.Dialog
     id: base
     title: catalog.i18nc("@title:window", "Discard or Keep changes")
 
-    onAccepted: CuraApplication.discardOrKeepProfileChangesClosed("discard")
-    onRejected: CuraApplication.discardOrKeepProfileChangesClosed("keep")
+    enum ButtonsType { DiscardOrKeep, SaveFromBuiltIn, SaveFromCustom}
+    property int buttonState: DiscardOrKeepProfileChangesDialog.ButtonsType.DiscardOrKeep
+
+    onAccepted: buttonState == DiscardOrKeepProfileChangesDialog.ButtonsType.DiscardOrKeep ?
+        CuraApplication.discardOrKeepProfileChangesClosed("discard") : Cura.Actions.addProfile.trigger()
+    onRejected: buttonState == DiscardOrKeepProfileChangesDialog.ButtonsType.DiscardOrKeep ?
+        CuraApplication.discardOrKeepProfileChangesClosed("keep") : Cura.Actions.updateProfile.trigger()
 
     minimumWidth: UM.Theme.getSize("popup_dialog").width
     minimumHeight: UM.Theme.getSize("popup_dialog").height
@@ -23,6 +28,16 @@ UM.Dialog
     margin: UM.Theme.getSize("thick_margin").width
 
     property var changesModel: Cura.UserChangesModel { id: userChangesModel }
+
+    // Hack to make sure that when the data of our model changes the tablemodel is also updated
+    // If we directly set the rows (So without the clear being called) it doesn't seem to
+    // get updated correctly.
+    property var modelRows: userChangesModel.items
+    onModelRowsChanged:
+    {
+        tableModel.clear()
+        tableModel.rows = modelRows
+    }
 
     onVisibilityChanged:
     {
@@ -46,7 +61,7 @@ UM.Dialog
     UM.Label
     {
         id: infoText
-        text: catalog.i18nc("@text:window, %1 is a profile name", "You have customized some profile settings. Would you like to Keep these changed settings after switching profiles? Alternatively, you can discard the changes to load the defaults from '%1'.").arg(Cura.MachineManager.activeQualityDisplayNameMap["main"])
+        text: catalog.i18nc("@text:window, %1 is a profile name", "You have customized some profile settings. Would you like to Keep these changed settings after switching profiles? Alternatively, you can discard the changes to load the defaults from '%1'.").arg(Cura.MachineManager.activeQualityDisplayNameMainStringParts.join(" - "))
         anchors.left: parent.left
         anchors.right: parent.right
         wrapMode: Text.WordWrap
@@ -73,13 +88,14 @@ UM.Dialog
 
             columnHeaders: [
                 catalog.i18nc("@title:column", "Profile settings"),
-                Cura.MachineManager.activeQualityDisplayNameMap["main"],
+                Cura.MachineManager.activeQualityDisplayNameMainStringParts.join(" - "),
                 catalog.i18nc("@title:column", "Current changes")
             ]
             model: UM.TableModel
             {
+                id: tableModel
                 headers: ["label", "original_value", "user_value"]
-                rows: userChangesModel.items
+                rows: modelRows
             }
             sectionRole: "category"
         }
@@ -87,9 +103,12 @@ UM.Dialog
 
     buttonSpacing: UM.Theme.getSize("thin_margin").width
 
-    leftButtons: [
+    leftButtons:
+    [
         Cura.ComboBox
         {
+            visible: buttonState === DiscardOrKeepProfileChangesDialog.ButtonsType.DiscardOrKeep
+
             implicitHeight: UM.Theme.getSize("combobox").height
             implicitWidth: UM.Theme.getSize("combobox").width
 
@@ -109,20 +128,22 @@ UM.Dialog
 
             onActivated:
             {
-                var code = model.get(index).code;
+                const code = model.get(index).code;
                 UM.Preferences.setValue("cura/choice_on_profile_override", code);
 
-                if (code == "always_keep") {
-                    keepButton.enabled = true;
-                    discardButton.enabled = false;
-                }
-                else if (code == "always_discard") {
-                    keepButton.enabled = false;
-                    discardButton.enabled = true;
-                }
-                else {
-                    keepButton.enabled = true;
-                    discardButton.enabled = true;
+                switch (code) {
+                    case "always_keep":
+                        keepButton.enabled = true;
+                        discardButton.enabled = false;
+                        break;
+                    case "always_discard":
+                        keepButton.enabled = false;
+                        discardButton.enabled = true;
+                        break;
+                    default:
+                        keepButton.enabled = true;
+                        discardButton.enabled = true;
+                        break;
                 }
             }
         }
@@ -135,11 +156,27 @@ UM.Dialog
             id: discardButton
             text: catalog.i18nc("@action:button", "Discard changes")
             onClicked: base.accept()
+            visible: buttonState == DiscardOrKeepProfileChangesDialog.ButtonsType.DiscardOrKeep
         },
         Cura.SecondaryButton
         {
             id: keepButton
             text: catalog.i18nc("@action:button", "Keep changes")
+            onClicked: base.reject()
+            visible: buttonState == DiscardOrKeepProfileChangesDialog.ButtonsType.DiscardOrKeep
+        },
+        Cura.SecondaryButton
+        {
+            id: overwriteButton
+            text: catalog.i18nc("@action:button", "Save as new custom profile")
+            visible: buttonState != DiscardOrKeepProfileChangesDialog.ButtonsType.DiscardOrKeep
+            onClicked: base.accept()
+        },
+        Cura.PrimaryButton
+        {
+            id: saveButton
+            text: catalog.i18nc("@action:button", "Save changes")
+            visible: buttonState == DiscardOrKeepProfileChangesDialog.ButtonsType.SaveFromCustom
             onClicked: base.reject()
         }
     ]

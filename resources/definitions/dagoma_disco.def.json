@@ -1,26 +1,24 @@
 {
-    "name": "Dagoma Disco",
     "version": 2,
+    "name": "Dagoma Disco",
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "visible": false,
         "author": "Dagoma",
         "manufacturer": "Dagoma"
     },
-    "overrides": {
-        "machine_width": {
-            "default_value": 205
-        },
-        "machine_height": {
-            "default_value": 205
-        },
-        "machine_depth": {
-            "default_value": 205
-        },
-        "machine_center_is_zero": {
-            "default_value": false
-        },
-        "machine_head_with_fans_polygon": {
+    "overrides":
+    {
+        "adhesion_type": { "default_value": "skirt" },
+        "default_material_print_temperature": { "default_value": 205 },
+        "gantry_height": { "value": "10" },
+        "layer_height_0": { "default_value": 0.26 },
+        "machine_acceleration": { "value": 3000 },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_depth": { "default_value": 205 },
+        "machine_head_with_fans_polygon":
+        {
             "default_value": [
                 [-17, -70],
                 [-17, 40],
@@ -28,52 +26,29 @@
                 [17, -70]
             ]
         },
-        "gantry_height": {
-            "value": "10"
-        },
-        "default_material_print_temperature": {
-            "default_value": 205
-        },
-        "material_standby_temperature": {
-            "default_value": 90
-        },
-        "speed_print": {
-            "default_value": 60
-        },
-        "retraction_amount": {
-            "default_value": 3.5
-        },
-        "retraction_speed": {
-            "default_value": 50
-        },
-        "adhesion_type": {
-            "default_value": "skirt"
-        },
-        "skirt_line_count": {
-            "default_value": 2
-        },
-        "layer_height_0": {
-            "default_value": 0.26
-        },
-        "top_bottom_thickness": {
-            "default_value": 1
-        },
-        "machine_max_feedrate_x": { "default_value": 500 },
-        "machine_max_feedrate_y": { "default_value": 500 },
-        "machine_max_feedrate_z": { "default_value": 4 },
-        "machine_max_feedrate_e": { "default_value": 170 },
+        "machine_height": { "default_value": 205 },
+        "machine_max_acceleration_e": { "value": 10000 },
         "machine_max_acceleration_x": { "value": 3000 },
         "machine_max_acceleration_y": { "value": 1000 },
         "machine_max_acceleration_z": { "value": 20 },
-        "machine_max_acceleration_e": { "value": 10000 },
-        "machine_acceleration": { "value": 3000 },
+        "machine_max_feedrate_e": { "default_value": 170 },
+        "machine_max_feedrate_x": { "default_value": 500 },
+        "machine_max_feedrate_y": { "default_value": 500 },
+        "machine_max_feedrate_z": { "default_value": 4 },
+        "machine_max_jerk_e": { "value": 5 },
         "machine_max_jerk_xy": { "value": 20 },
         "machine_max_jerk_z": { "value": 0.4 },
-        "machine_max_jerk_e": { "value": 5 },
+        "machine_steps_per_mm_e": { "default_value": 98 },
         "machine_steps_per_mm_x": { "default_value": 80 },
         "machine_steps_per_mm_y": { "default_value": 80 },
         "machine_steps_per_mm_z": { "default_value": 2560 },
-        "machine_steps_per_mm_e": { "default_value": 98 },
-        "speed_z_hop": {"default_value": 4}
+        "machine_width": { "default_value": 205 },
+        "material_standby_temperature": { "default_value": 90 },
+        "retraction_amount": { "default_value": 3.5 },
+        "retraction_speed": { "default_value": 50 },
+        "skirt_line_count": { "default_value": 2 },
+        "speed_print": { "default_value": 60 },
+        "speed_z_hop": { "default_value": 4 },
+        "top_bottom_thickness": { "default_value": 1 }
     }
 }

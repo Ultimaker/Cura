@@ -1,0 +1,34 @@
+{
+    "version": 2,
+    "name": "Creality Sermoon V1 & V1 Pro",
+    "inherits": "creality_base",
+    "metadata":
+    {
+        "visible": true,
+        "author": "Luis Gabriel Gomez",
+        "has_variants": true,
+        "quality_definition": "creality_base"
+    },
+    "overrides":
+    {
+        "gantry_height": { "value": 25 },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_depth": { "default_value": 175 },
+        "machine_end_gcode": { "default_value": "; -- END GCODE --\nG91 ;Relative positioning\nG1 E-2 F2700 ;Retract a bit\nG1 E-2 Z0.2 F2400 ;Retract and raise Z\nG1 X5 Y5 F3000 ;Wipe out\nG1 Z0.5 ;Raise Z more\nG90 ;Absolute positioning\n\nG1 X0 Y0 ;Present print\nM106 S0 ;Turn-off fan\nM104 S0 ;Turn-off hotend\nM140 S0 ;Turn-off bed\n\nM84 X Y E ;Disable all steppers but Z" },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [-26, 34],
+                [-26, -32],
+                [32, -32],
+                [32, 34]
+            ]
+        },
+        "machine_height": { "default_value": 165 },
+        "machine_name": { "default_value": "Creality Sermoon V1" },
+        "machine_start_gcode": { "default_value": "; -- START GCODE --\nG28 ;Home\n\nG92 E0 ;Reset Extruder\nG1 Z2.0 F3000 ;Move Z Axis up\nG1 X10.1 Y20 Z0.28 F5000.0 ;Move to start position\nG1 X10.1 Y170.0 Z0.28 F1500.0 E12 ;Draw the first line\nG1 X10.4 Y170.0 Z0.28 F5000.0 ;Move to side a little\nG1 X10.4 Y20 Z0.28 F1500.0 E25 ;Draw the second line\nG92 E0 ;Reset Extruder\nG1 Z2.0 F3000 ;Move Z Axis up" },
+        "machine_width": { "default_value": 175 },
+        "retraction_amount": { "value": 0.8 },
+        "retraction_speed": { "default_value": 40 }
+    }
+}

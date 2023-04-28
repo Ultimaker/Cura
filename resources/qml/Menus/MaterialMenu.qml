@@ -67,7 +67,7 @@ Cura.Menu
             onTriggered: Cura.MachineManager.setMaterial(extruderIndex, model.container_node)
         }
         onObjectAdded: function(index, object) { materialMenu.insertItem(index + 1, object) }
-        onObjectRemoved: function(object) { materialMenu.removeItem(index) }
+        onObjectRemoved: function(index, object) { materialMenu.removeItem(index) }
     }
 
     Cura.MenuSeparator { visible: favoriteMaterialsModel.items.length > 0}
@@ -89,7 +89,7 @@ Cura.Menu
                 onTriggered: Cura.MachineManager.setMaterial(extruderIndex, model.container_node)
             }
             onObjectAdded: function(index, object) { genericMenu.insertItem(index, object)}
-            onObjectRemoved: function(object) {genericMenu.removeItem(index) }
+            onObjectRemoved: function(index, object) {genericMenu.removeItem(index) }
         }
     }
 
@@ -103,7 +103,7 @@ Cura.Menu
             materialTypesModel: model
         }
         onObjectAdded: function(index, object) { materialMenu.insertItem(index + 4, object)}
-        onObjectRemoved: function(object) { materialMenu.removeItem(index) }
+        onObjectRemoved: function(index, object) { materialMenu.removeItem(index) }
     }
 
     Cura.MenuSeparator {}

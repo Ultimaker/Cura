@@ -2,35 +2,37 @@
     "version": 2,
     "name": "HardPrint Hozo iX",
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "visible": true,
         "author": "HardPrint",
         "manufacturer": "HardPrint",
         "file_formats": "text/x-gcode",
         "platform": "hardprint_hozo_ix_platform.stl",
-	"machine_extruder_trains":
-        {
-            "0": "hardprint_hozo_ix_extruder_0"
-        }
+        "machine_extruder_trains": { "0": "hardprint_hozo_ix_extruder_0" }
     },
-
-    "overrides": {
-	"machine_name": { "default_value": "HardPrint Hozo iX" },
-        "machine_heated_bed": { "default_value": true },
-        "machine_width": { "default_value": 180 },
-        "machine_height": { "default_value": 180 },
-        "machine_depth": { "default_value": 180 },
-        "machine_center_is_zero": { "default_value": false },
-	"machine_head_with_fans_polygon": { "default_value": [[0,0],[0,0],[0,0],[0,0]] },
+    "overrides":
+    {
         "gantry_height": { "value": 180 },
-        "retraction_amount": { "default_value": 5 },
-        "retraction_speed": { "default_value": 50 },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_depth": { "default_value": 180 },
+        "machine_end_gcode": { "default_value": "M104 S0 ; turn off extruder\nM140 S0 ; turn off heatbed\nM107 ; turn off fan\nG1 X178 Y180 F4200 ; park print head\nM18 ; disable motors" },
         "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
-        "machine_start_gcode": {
-            "default_value": "M221 S100 ; reset flow\nG90 ; use absolute positioning\nM82 ; absolute extrusion mode\nG28 ; home all\nM140 S{material_bed_temperature_layer_0} ; set bed temp\nM104 S{material_print_temperature_layer_0} ; set extruder temp\nG92 E0.0\nG1 Y-2 X0 F2400\nG1 Z3 F720\nM109 S{material_print_temperature_layer_0} ; wait for extruder temp\nG92 E0.0\nG1 X32 F1000\nG1 Z0.2 F720\nG1 X108 E8 F900\nG1 X148 E18 F900\nG92 E0.0"
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [0, 0],
+                [0, 0],
+                [0, 0],
+                [0, 0]
+            ]
         },
-        "machine_end_gcode": {
-            "default_value": "M104 S0 ; turn off extruder\nM140 S0 ; turn off heatbed\nM107 ; turn off fan\nG1 X178 Y180 F4200 ; park print head\nM18 ; disable motors"
-        }
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 180 },
+        "machine_name": { "default_value": "HardPrint Hozo iX" },
+        "machine_start_gcode": { "default_value": "M221 S100 ; reset flow\nG90 ; use absolute positioning\nM82 ; absolute extrusion mode\nG28 ; home all\nM140 S{material_bed_temperature_layer_0} ; set bed temp\nM104 S{material_print_temperature_layer_0} ; set extruder temp\nG92 E0.0\nG1 Y-2 X0 F2400\nG1 Z3 F720\nM109 S{material_print_temperature_layer_0} ; wait for extruder temp\nG92 E0.0\nG1 X32 F1000\nG1 Z0.2 F720\nG1 X108 E8 F900\nG1 X148 E18 F900\nG92 E0.0" },
+        "machine_width": { "default_value": 180 },
+        "retraction_amount": { "default_value": 5 },
+        "retraction_speed": { "default_value": 50 }
     }
 }

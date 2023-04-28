@@ -171,6 +171,12 @@ Item
 
                 acceptedButtons: Qt.LeftButton
                 text: (cellTextMetrics.elidedText == cellContent.text) ? "" : cellContent.text //Show full text in tooltip if it was elided.
+            }
+
+            MouseArea
+            {
+                anchors.fill: parent
+                propagateComposedEvents: true
                 onClicked:
                 {
                     if(tableBase.allowSelection)

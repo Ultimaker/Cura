@@ -2,15 +2,14 @@
     "version": 2,
     "name": "PrintHead",
     "inherits": "fdmextruder",
-    "metadata": {
+    "metadata":
+    {
         "machine": "farm2",
         "position": "0"
     },
-
-    "overrides": {
+    "overrides":
+    {
         "extruder_nr": { "default_value": 0 },
         "material_diameter": { "default_value": 1.75 }
-        
     }
 }
-

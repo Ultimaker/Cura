@@ -2,7 +2,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.6 as Cura
 
 Cura.RoundedRectangle
@@ -58,34 +58,31 @@ Cura.RoundedRectangle
             width: parent.width - x - UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: parent.verticalCenter
 
-            Label
+            UM.Label
             {
                 id: displayNameLabel
                 width: parent.width
                 height: Math.round(parent.height / 3)
                 elide: Text.ElideRight
-                color: UM.Theme.getColor("text")
                 font: UM.Theme.getFont("default_bold")
             }
 
-            Label
+            UM.Label
             {
                 id: usernameLabel
                 width: parent.width
                 height: Math.round(parent.height / 3)
                 elide: Text.ElideRight
                 color: UM.Theme.getColor("small_button_text")
-                font: UM.Theme.getFont("default")
             }
 
-            Label
+            UM.Label
             {
                 id: lastUpdatedLabel
                 width: parent.width
                 height: Math.round(parent.height / 3)
                 elide: Text.ElideRight
                 color: UM.Theme.getColor("small_button_text")
-                font: UM.Theme.getFont("default")
             }
         }
     }

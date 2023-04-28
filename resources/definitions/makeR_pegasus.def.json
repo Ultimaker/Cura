@@ -2,37 +2,29 @@
     "version": 2,
     "name": "Maker Pegasus",
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "visible": true,
         "author": "Maker",
         "manufacturer": "Maker",
         "file_formats": "text/x-gcode",
         "platform": "makeR_pegasus_platform.3mf",
-        "platform_offset": [-200, -10, 200],
-        "machine_extruder_trains":
-        {
-            "0": "makeR_pegasus_extruder_0"
-        }
+        "machine_extruder_trains": { "0": "makeR_pegasus_extruder_0" },
+        "platform_offset": [
+            -200,
+            -10,
+            200
+        ]
     },
-
-    "overrides": {
-        "machine_name": { "default_value": "makeR Pegasus" },
-        "machine_heated_bed": {
-            "default_value": true
-        },
-        "machine_width": {
-            "default_value": 400
-        },
-        "machine_height": {
-            "default_value": 400
-        },
-        "machine_depth": {
-            "default_value": 400
-        },
-        "machine_center_is_zero": {
-            "default_value": false
-        },
-        "machine_head_with_fans_polygon": {
+    "overrides":
+    {
+        "gantry_height": { "value": "25" },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_depth": { "default_value": 400 },
+        "machine_end_gcode": { "default_value": "M104 S0;Turn off temperature\nG28 X0; Home X\nM84; Disable Motors" },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_head_with_fans_polygon":
+        {
             "default_value": [
                 [-75, -18],
                 [-75, 35],
@@ -40,17 +32,10 @@
                 [18, -18]
             ]
         },
-        "gantry_height": {
-            "value": "25"
-        },
-        "machine_gcode_flavor": {
-            "default_value": "RepRap (Marlin/Sprinter)"
-        },
-        "machine_start_gcode": {
-            "default_value": "G1 Z15;\nG28;Home\nG29;Auto Level\nG1 Z5 F5000;Move the platform down 15mm"
-        },
-        "machine_end_gcode": {
-            "default_value": "M104 S0;Turn off temperature\nG28 X0; Home X\nM84; Disable Motors"
-        }
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 400 },
+        "machine_name": { "default_value": "makeR Pegasus" },
+        "machine_start_gcode": { "default_value": "G1 Z15;\nG28;Home\nG29;Auto Level\nG1 Z5 F5000;Move the platform down 15mm" },
+        "machine_width": { "default_value": 400 }
     }
 }

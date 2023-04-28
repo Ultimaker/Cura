@@ -2,25 +2,17 @@
     "version": 2,
     "name": "Extruder 1",
     "inherits": "fdmextruder",
-    "metadata": {
+    "metadata":
+    {
         "machine": "cubicon_3dp_110f",
         "position": "0"
     },
-    "overrides": {
-        "extruder_nr": {
-            "default_value": 0
-        },
-        "machine_nozzle_size": {
-            "default_value": 0.4
-        },
-        "machine_nozzle_offset_x": {
-            "default_value": -15
-        },
-        "machine_nozzle_offset_y": {
-            "default_value": -5
-        },
-        "material_diameter": {
-            "default_value": 1.75
-        }
+    "overrides":
+    {
+        "extruder_nr": { "default_value": 0 },
+        "machine_nozzle_offset_x": { "default_value": -15 },
+        "machine_nozzle_offset_y": { "default_value": -5 },
+        "machine_nozzle_size": { "default_value": 0.4 },
+        "material_diameter": { "default_value": 1.75 }
     }
 }

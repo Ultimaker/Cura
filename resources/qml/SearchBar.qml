@@ -15,7 +15,7 @@ Cura.TextField
     leftPadding: searchIcon.width + UM.Theme.getSize("default_margin").width * 2
 
     placeholderText: catalog.i18nc("@placeholder", "Search")
-    font.italic: true
+    font: UM.Theme.getFont("default_italic")
 
     UM.ColorImage
     {

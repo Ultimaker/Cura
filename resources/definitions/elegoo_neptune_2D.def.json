@@ -1,0 +1,74 @@
+{
+    "version": 2,
+    "name": "Neptune 2D",
+    "inherits": "fdmprinter",
+    "metadata":
+    {
+        "visible": true,
+        "author": "Toylerrr",
+        "manufacturer": "Elegoo",
+        "file_formats": "text/x-gcode",
+        "platform": "elegoo_neptune_2.stl",
+        "has_machine_quality": true,
+        "machine_extruder_trains":
+        {
+            "0": "elegoo_neptune2D_extruder_0",
+            "1": "elegoo_neptune2D_extruder_1"
+        },
+        "platform_offset": [
+            0,
+            0,
+            0
+        ],
+        "preferred_quality_type": "normal"
+    },
+    "overrides":
+    {
+        "adhesion_type": { "default_value": "skirt" },
+        "brim_width": { "default_value": 5 },
+        "gantry_height": { "value": 30 },
+        "machine_always_write_active_tool": { "default_value": true },
+        "machine_depth": { "default_value": 235 },
+        "machine_end_gcode": { "default_value": "G91 ;Relative positionning\nG1 E-2 F2700 ;Retract a bit\nG1 E-80 Z0.2 F1600 ;Retract and raise Z\nG1 X5 Y5 F3000 ;Wipe out\nG1 Z10 ;Raise Z more\nG90 ;Absolute positionning\nG1 X0 Y{machine_depth} ;Present print\nM106 S0 ;Turn-off fan\nM104 S0 ;Turn-off hotend\nM140 S0 ;Turn-off bed\nM84 X Y E ;Disable all steppers but Z" },
+        "machine_extruder_count": { "default_value": 2 },
+        "machine_extruders_share_heater": { "default_value": true },
+        "machine_extruders_share_nozzle": { "default_value": true },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_head_with_fans_polygon":
+        {
+            "value": [
+                [-30, 35],
+                [-30, -10],
+                [25, 35],
+                [25, -10]
+            ]
+        },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 260 },
+        "machine_name": { "default_value": "ELEGOO Neptune 2D" },
+        "machine_start_gcode": { "default_value": ";simage\n;gimage\nG28 ;home\n;G29 ;Run ABL\n;M420 S1 ;Enable ABL mesh\nG92 E0 ;Reset Extruder\nG1 Z4.0 F3000 ;Move Z Axis up\nG92 E0 ;Reset Extruder\nG1 X2.0 Y20 Z0.28 F5000.0 ;Move to start position\nG1 E90 F1200 ;Load filament\nG92 E0 ;Reset Extruder\nG1 X2.0 Y200.0 Z0.28 F1500.0 E15 ;Draw the first line\nG1 X2.3 Y200.0 Z0.28 F5000.0 ;Move to side a little\nG1 X2.3 Y20 Z0.28 F1500.0 E30 ;Draw the second line\nG92 E0 ;Reset Extruder\nG1 Z2.0 F3000 ;Move Z Axis up" },
+        "machine_width": { "default_value": 235 },
+        "material_diameter": { "default_value": 1.75 },
+        "material_standby_temperature":
+        {
+            "default_value": 200,
+            "settable_per_extruder": false
+        },
+        "prime_blob_enable": { "default_value": false },
+        "prime_tower_enable": { "default_value": true },
+        "prime_tower_min_volume": { "default_value": 90 },
+        "prime_tower_size": { "default_value": 30 },
+        "raft_airgap": { "default_value": 0.25 },
+        "raft_margin": { "default_value": 5 },
+        "retraction_amount": { "default_value": 5 },
+        "retraction_enable": { "default_value": true },
+        "retraction_speed": { "default_value": 70 },
+        "skin_angles":
+        {
+            "default_value": [45, 135]
+        },
+        "speed_print": { "value": 60.0 },
+        "z_seam_corner": { "default_value": "z_seam_corner_weighted" },
+        "z_seam_type": { "default_value": "back" }
+    }
+}

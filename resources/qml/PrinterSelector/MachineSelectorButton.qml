@@ -40,7 +40,7 @@ Button
 
     contentItem: Item
     {
-        width: machineSelectorButton.width - machineSelectorButton.leftPadding
+        width: machineSelectorButton.width - machineSelectorButton.leftPadding - machineSelectorButton.rightPadding
         height: UM.Theme.getSize("action_button").height
 
         UM.Label

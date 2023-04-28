@@ -31,7 +31,7 @@ Item
 
         Cura.SecondaryButton
         {
-            Layout.alignment: Qt.AlignmentFlag.AlignVCenter
+            Layout.alignment: Qt.AlignVCenter
             Layout.preferredHeight: UM.Theme.getSize("action_button").height
             Layout.preferredWidth: height
 
@@ -45,14 +45,13 @@ Item
             iconSize: height - leftPadding * 2
         }
 
-        Label
+        UM.Label
         {
-            Layout.alignment: Qt.AlignmentFlag.AlignVCenter
+            Layout.alignment: Qt.AlignVCenter
             Layout.fillWidth: true
 
             text: detailPage.title
             font: UM.Theme.getFont("large")
-            color: UM.Theme.getColor("text")
         }
     }
 

@@ -40,7 +40,7 @@ UM.Dialog
         }
     }
 
-    onAccepted: loadModelFiles(base.fileUrls)
+    onAccepted: loadModelFiles(base.selectedFiles)
 
     UM.Label
     {

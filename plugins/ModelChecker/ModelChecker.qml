@@ -14,7 +14,7 @@ UM.SimpleButton
 
     width: UM.Theme.getSize("save_button_specs_icons").width
     height: UM.Theme.getSize("save_button_specs_icons").height
-    iconSource: "model_checker.svg"
+    iconSource: Qt.resolvedUrl("model_checker.svg")
     anchors.verticalCenter: parent ? parent.verticalCenter : undefined
     color: UM.Theme.getColor("text_scene")
     hoverColor: UM.Theme.getColor("text_scene_hover")

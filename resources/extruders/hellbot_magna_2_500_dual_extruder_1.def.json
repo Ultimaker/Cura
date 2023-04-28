@@ -2,23 +2,21 @@
     "version": 2,
     "name": "Extruder 1",
     "inherits": "fdmextruder",
-    "metadata": {
+    "metadata":
+    {
         "machine": "hellbot_magna_2_500_dual",
         "position": "1"
     },
-
-    "overrides": {
-        "extruder_nr": {
+    "overrides":
+    {
+        "extruder_nr":
+        {
             "default_value": 1,
             "maximum_value": "1"
         },
+        "machine_extruder_end_code": { "default_value": "G92 E0 \nG1 F2500 E-5 \nG1 F2400 X495 Y450 \nG1 F3000 E-100 \nG92 E0 \nG90" },
+        "machine_extruder_start_code": { "default_value": "T1 \nG92 E0 \nG1 F1000 E100 \nG92 E0 \nM104 S{material_print_temperature}" },
         "machine_nozzle_size": { "default_value": 0.4 },
-        "material_diameter": { "default_value": 1.75 },
-        "machine_extruder_start_code": {
-            "default_value": "T1 \nG92 E0 \nG1 F1000 E100 \nG92 E0 \nM104 S{material_print_temperature}"
-        },
-        "machine_extruder_end_code": {
-            "default_value": "G92 E0 \nG1 F2500 E-5 \nG1 F2400 X495 Y450 \nG1 F3000 E-100 \nG92 E0 \nG90"
-        }
+        "material_diameter": { "default_value": 1.75 }
     }
 }

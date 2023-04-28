@@ -369,6 +369,9 @@ class StartSliceJob(Job):
         result["material_name"] = stack.material.getMetaDataEntry("name", "")
         result["material_brand"] = stack.material.getMetaDataEntry("brand", "")
 
+        result["quality_name"] = stack.quality.getMetaDataEntry("name", "")
+        result["quality_changes_name"] = stack.qualityChanges.getMetaDataEntry("name")
+
         # Renamed settings.
         result["print_bed_temperature"] = result["material_bed_temperature"]
         result["print_temperature"] = result["material_print_temperature"]
@@ -483,6 +486,10 @@ class StartSliceJob(Job):
         initial_extruder_nr = CuraApplication.getInstance().getExtruderManager().getInitialExtruderNr()
         settings["machine_start_gcode"] = self._expandGcodeTokens(settings["machine_start_gcode"], initial_extruder_nr)
         settings["machine_end_gcode"] = self._expandGcodeTokens(settings["machine_end_gcode"], initial_extruder_nr)
+
+        # Manually add 'nozzle offsetting', since that is a metadata-entry instead for some reason.
+        # NOTE: This probably needs to be an actual setting at some point.
+        settings["nozzle_offsetting_for_disallowed_areas"] = CuraApplication.getInstance().getGlobalContainerStack().getMetaDataEntry("nozzle_offsetting_for_disallowed_areas", True)
 
         # Add all sub-messages for each individual setting.
         for key, value in settings.items():

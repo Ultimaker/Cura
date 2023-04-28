@@ -8,7 +8,7 @@ import time
 from typing import cast, TYPE_CHECKING, Optional, Callable, List, Any, Dict
 
 import numpy
-from PyQt6.QtCore import QObject, QTimer, QUrl, pyqtSignal, pyqtProperty, QEvent, pyqtEnum
+from PyQt6.QtCore import QObject, QTimer, QUrl, pyqtSignal, pyqtProperty, QEvent, pyqtEnum, QCoreApplication
 from PyQt6.QtGui import QColor, QIcon
 from PyQt6.QtQml import qmlRegisterUncreatableType, qmlRegisterUncreatableMetaObject, qmlRegisterSingletonType, qmlRegisterType
 from PyQt6.QtWidgets import QMessageBox
@@ -115,6 +115,10 @@ from . import CuraActions
 from . import PlatformPhysics
 from . import PrintJobPreviewImageProvider
 from .AutoSave import AutoSave
+from .Machines.Models.CompatibleMachineModel import CompatibleMachineModel
+from .Machines.Models.MachineListModel import MachineListModel
+from .Machines.Models.ActiveIntentQualitiesModel import ActiveIntentQualitiesModel
+from .Machines.Models.IntentSelectionModel import IntentSelectionModel
 from .SingleInstance import SingleInstance
 
 if TYPE_CHECKING:
@@ -122,12 +126,11 @@ if TYPE_CHECKING:
 
 numpy.seterr(all = "ignore")
 
-
 class CuraApplication(QtApplication):
     # SettingVersion represents the set of settings available in the machine/extruder definitions.
     # You need to make sure that this version number needs to be increased if there is any non-backwards-compatible
     # changes of the settings.
-    SettingVersion = 20
+    SettingVersion = 22
 
     Created = False
 
@@ -151,6 +154,7 @@ class CuraApplication(QtApplication):
         super().__init__(name = ApplicationMetadata.CuraAppName,
                          app_display_name = ApplicationMetadata.CuraAppDisplayName,
                          version = ApplicationMetadata.CuraVersion if not ApplicationMetadata.IsAlternateVersion else ApplicationMetadata.CuraBuildType,
+                         latest_url = ApplicationMetadata.CuraLatestURL,
                          api_version = ApplicationMetadata.CuraSDKVersion,
                          build_type = ApplicationMetadata.CuraBuildType,
                          is_debug_mode = ApplicationMetadata.CuraDebugMode,
@@ -258,6 +262,7 @@ class CuraApplication(QtApplication):
 
         from UM.CentralFileStorage import CentralFileStorage
         CentralFileStorage.setIsEnterprise(ApplicationMetadata.IsEnterpriseVersion)
+        Resources.setIsEnterprise(ApplicationMetadata.IsEnterpriseVersion)
 
     @pyqtProperty(str, constant=True)
     def ultimakerCloudApiRootUrl(self) -> str:
@@ -316,7 +321,7 @@ class CuraApplication(QtApplication):
     def initialize(self) -> None:
         self.__addExpectedResourceDirsAndSearchPaths()  # Must be added before init of super
 
-        super().initialize()
+        super().initialize(ApplicationMetadata.IsEnterpriseVersion)
 
         self._preferences.addPreference("cura/single_instance", False)
         self._use_single_instance = self._preferences.getValue("cura/single_instance") or self._cli_args.single_instance
@@ -349,13 +354,18 @@ class CuraApplication(QtApplication):
             Resources.addExpectedDirNameInData(dir_name)
 
         app_root = os.path.abspath(os.path.join(os.path.dirname(sys.executable)))
-        Resources.addSearchPath(os.path.join(app_root, "share", "cura", "resources"))
-        Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "share", "cura", "resources"))
+        Resources.addSecureSearchPath(os.path.join(app_root, "share", "cura", "resources"))
 
-        Resources.addSearchPath(os.path.join(self._app_install_dir, "share", "cura", "resources"))
+        Resources.addSecureSearchPath(os.path.join(self._app_install_dir, "share", "cura", "resources"))
         if not hasattr(sys, "frozen"):
-            resource_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "resources")
-            Resources.addSearchPath(resource_path)
+            Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "resources"))
+
+            # local Conan cache
+            Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "..", "resources"))
+            Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "..", "plugins"))
+
+            # venv site-packages
+            Resources.addSearchPath(os.path.join(app_root, "..", "share", "cura", "resources"))
 
     @classmethod
     def _initializeSettingDefinitions(cls):
@@ -623,11 +633,14 @@ class CuraApplication(QtApplication):
         # the QML code then gets `null` as the global stack and can deal with that as it deems fit.
         self.getMachineManager().setActiveMachine(None)
 
+        QtApplication.getInstance().closeAllWindows()
+
         main_window = self.getMainWindow()
         if main_window is not None:
             main_window.close()
-        else:
-            self.exit(0)
+
+        QtApplication.closeAllWindows()
+        QCoreApplication.quit()
 
     # This function first performs all upon-exit checks such as USB printing that is in progress.
     # Use this to close the application.
@@ -696,6 +709,7 @@ class CuraApplication(QtApplication):
         self.showMessageBox.emit(title, text, informativeText, detailedText, buttons, icon)
 
     showDiscardOrKeepProfileChanges = pyqtSignal()
+    showCompareAndSaveProfileChanges = pyqtSignal(int)
 
     def discardOrKeepProfileChanges(self) -> bool:
         has_user_interaction = False
@@ -809,6 +823,12 @@ class CuraApplication(QtApplication):
 
     def run(self):
         super().run()
+
+        if len(ApplicationMetadata.DEPENDENCY_INFO) > 0:
+            Logger.debug("Using Conan managed dependencies: " + ", ".join(
+                [dep["recipe"]["id"] for dep in ApplicationMetadata.DEPENDENCY_INFO["installed"] if dep["recipe"]["version"] != "latest"]))
+        else:
+            Logger.warning("Could not find conan_install_info.json")
 
         Logger.log("i", "Initializing machine error checker")
         self._machine_error_checker = MachineErrorChecker(self)
@@ -941,6 +961,7 @@ class CuraApplication(QtApplication):
         self._qml_import_paths.append(Resources.getPath(self.ResourceTypes.QmlFiles))
         self._setLoadingHint(self._i18n_catalog.i18nc("@info:progress", "Initializing engine..."))
         self.initializeEngine()
+        self.getTheme().setCheckIfTrusted(ApplicationMetadata.IsEnterpriseVersion)
 
         # Initialize UI state
         controller.setActiveStage("PrepareStage")
@@ -1098,6 +1119,12 @@ class CuraApplication(QtApplication):
             else:
                 self._open_file_queue.append(event.file())
 
+        if int(event.type()) == 20:  # 'QEvent.Type.Quit' enum isn't there, even though it should be according to docs.
+            # Once we're at this point, everything should have been flushed already (past OnExitCallbackManager).
+            # It's more difficult to call sys.exit(0): That requires that it happens as the result of a pyqtSignal-emit.
+            # (See https://doc.qt.io/qt-6/qcoreapplication.html#quit)
+            os._exit(0)
+
         return super().event(event)
 
     def getAutoSave(self) -> Optional[AutoSave]:
@@ -1165,6 +1192,8 @@ class CuraApplication(QtApplication):
         qmlRegisterType(InstanceContainer, "Cura", 1, 0, "InstanceContainer")
         qmlRegisterType(ExtrudersModel, "Cura", 1, 0, "ExtrudersModel")
         qmlRegisterType(GlobalStacksModel, "Cura", 1, 0, "GlobalStacksModel")
+        qmlRegisterType(MachineListModel, "Cura", 1, 0, "MachineListModel")
+        qmlRegisterType(CompatibleMachineModel, "Cura", 1, 0, "CompatibleMachineModel")
 
         self.processEvents()
         qmlRegisterType(FavoriteMaterialsModel, "Cura", 1, 0, "FavoriteMaterialsModel")
@@ -1183,6 +1212,8 @@ class CuraApplication(QtApplication):
         qmlRegisterType(NozzleModel, "Cura", 1, 0, "NozzleModel")
         qmlRegisterType(IntentModel, "Cura", 1, 6, "IntentModel")
         qmlRegisterType(IntentCategoryModel, "Cura", 1, 6, "IntentCategoryModel")
+        qmlRegisterType(IntentSelectionModel, "Cura", 1, 7, "IntentSelectionModel")
+        qmlRegisterType(ActiveIntentQualitiesModel, "Cura", 1, 7, "ActiveIntentQualitiesModel")
 
         self.processEvents()
         qmlRegisterType(MaterialSettingsVisibilityHandler, "Cura", 1, 0, "MaterialSettingsVisibilityHandler")
@@ -1417,7 +1448,7 @@ class CuraApplication(QtApplication):
                 bounding_box = node.getBoundingBox()
                 if bounding_box is None or bounding_box.width < self._volume.getBoundingBox().width or bounding_box.depth < self._volume.getBoundingBox().depth:
                     # Arrange only the unlocked nodes and keep the locked ones in place
-                    if UM.Util.parseBool(node.getSetting(SceneNodeSettings.LockPosition)):
+                    if node.getSetting(SceneNodeSettings.LockPosition):
                         locked_nodes.append(node)
                     else:
                         nodes_to_arrange.append(node)
@@ -2045,3 +2076,7 @@ class CuraApplication(QtApplication):
     @classmethod
     def getInstance(cls, *args, **kwargs) -> "CuraApplication":
         return cast(CuraApplication, super().getInstance(**kwargs))
+
+    @pyqtProperty(bool, constant=True)
+    def isEnterprise(self) -> bool:
+        return ApplicationMetadata.IsEnterpriseVersion

@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Ultimaker B.V.
+// Copyright (c) 2022 UltiMaker
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -14,6 +14,7 @@ Instead we'll use a pop-up which doesn't seem to have that problem. */
 Cura.MenuItem
 {
     id: materialBrandMenu
+    height: UM.Theme.getSize("menu").height + UM.Theme.getSize("narrow_margin").height
     overrideShowArrow: true
 
     property var materialTypesModel
@@ -36,6 +37,7 @@ Cura.MenuItem
 
             UM.Label
             {
+                id: brandLabelText
                 text: replaceText(materialBrandMenu.text)
                 Layout.fillWidth: true
                 Layout.fillHeight:true
@@ -84,19 +86,15 @@ Cura.MenuItem
         onTriggered: menuPopup.close()
     }
 
-    Popup
+    MaterialBrandSubMenu
     {
         id: menuPopup
-        x: parent.width - UM.Theme.getSize("default_lining").width
-        y: -UM.Theme.getSize("default_lining").width
-        width: materialTypesList.width + padding * 2
-        height: materialTypesList.height + padding * 2
 
-        padding: background.border.width
         // Nasty hack to ensure that we can keep track if the popup contains the mouse.
         // Since we also want a hover for the sub items (and these events are sent async)
         // We have to keep a count of itemHovered (instead of just a bool)
         property int itemHovered: 0
+
         MouseArea
         {
             id: submenuArea
@@ -106,16 +104,11 @@ Cura.MenuItem
             onEntered: hideTimer.restartTimer()
         }
 
-        background: Rectangle
-        {
-            color: UM.Theme.getColor("main_background")
-            border.color: UM.Theme.getColor("lining")
-            border.width: UM.Theme.getSize("default_lining").width
-        }
-
         Column
         {
             id: materialTypesList
+            width: UM.Theme.getSize("menu").width
+            height: childrenRect.height
             spacing: 0
 
             property var brandMaterials: materialTypesModel.material_types
@@ -128,10 +121,11 @@ Cura.MenuItem
                 //With a custom MouseArea, we can prevent the events from being accepted.
                 delegate: Rectangle
                 {
+                    id: brandMaterialBase
                     height: UM.Theme.getSize("menu").height
                     width: UM.Theme.getSize("menu").width
 
-                    color: materialTypeButton.containsMouse ? UM.Theme.getColor("background_2") : UM.Theme.getColor("background_1")
+                    color: materialTypeButton.containsMouse ? UM.Theme.getColor("background_2") : "transparent"
 
                     RowLayout
                     {
@@ -168,7 +162,7 @@ Cura.MenuItem
                             source: UM.Theme.getIcon("ChevronSingleRight")
                         }
 
-                                                Item
+                        Item
                         {
                             // Right side margin
                             width: UM.Theme.getSize("default_margin").width
@@ -219,28 +213,19 @@ Cura.MenuItem
                         onTriggered: colorPopup.close()
                     }
 
-                    Popup
+                    MaterialBrandSubMenu
                     {
                         id: colorPopup
-                        width: materialColorsList.width + padding * 2
-                        height: materialColorsList.height + padding * 2
-                        x: parent.width
-                        y: -UM.Theme.getSize("default_lining").width
+                        implicitX: parent.width
 
                         property int itemHovered: 0
-                        padding: background.border.width
-
-                        background: Rectangle
-                        {
-                            color: UM.Theme.getColor("main_background")
-                            border.color: UM.Theme.getColor("lining")
-                            border.width: UM.Theme.getSize("default_lining").width
-                        }
 
                         Column
                         {
                             id: materialColorsList
                             property var brandColors: model.colors
+                            width: UM.Theme.getSize("menu").width
+                            height: childrenRect.height
                             spacing: 0
 
                             Repeater
@@ -250,12 +235,38 @@ Cura.MenuItem
                                 delegate: Rectangle
                                 {
                                     height: UM.Theme.getSize("menu").height
-                                    width: UM.Theme.getSize("menu").width
+                                    width: parent.width
 
-                                    color: materialColorButton.containsMouse ? UM.Theme.getColor("background_2") : UM.Theme.getColor("background_1")
+                                    color: materialColorButton.containsMouse ? UM.Theme.getColor("background_2") : UM.Theme.getColor("main_background")
+
+                                    MouseArea
+                                    {
+                                        id: materialColorButton
+                                        anchors.fill: parent
+                                        hoverEnabled: true
+                                        onClicked:
+                                        {
+                                            Cura.MachineManager.setMaterial(extruderIndex, model.container_node);
+                                            menuPopup.close();
+                                            colorPopup.close();
+                                            materialMenu.close();
+                                        }
+                                        onEntered:
+                                        {
+                                            menuPopup.itemHovered += 1;
+                                            colorPopup.itemHovered += 1;
+                                        }
+                                        onExited:
+                                        {
+                                            menuPopup.itemHovered -= 1;
+                                            colorPopup.itemHovered -= 1;
+                                        }
+                                    }
 
                                     Item
                                     {
+                                        height: parent.height
+                                        width: parent.width
                                         opacity: materialBrandMenu.enabled ? 1 : 0.5
                                         anchors.fill: parent
 
@@ -284,31 +295,6 @@ Cura.MenuItem
 
                                             elide: Label.ElideRight
                                             wrapMode: Text.NoWrap
-                                        }
-                                    }
-
-                                    MouseArea
-                                    {
-                                        id: materialColorButton
-                                        anchors.fill: parent
-
-                                        hoverEnabled: true
-                                        onClicked:
-                                        {
-                                            Cura.MachineManager.setMaterial(extruderIndex, model.container_node);
-                                            menuPopup.close();
-                                            colorPopup.close();
-                                            materialMenu.close();
-                                        }
-                                        onEntered:
-                                        {
-                                            menuPopup.itemHovered += 1;
-                                            colorPopup.itemHovered += 1;
-                                        }
-                                        onExited:
-                                        {
-                                            menuPopup.itemHovered -= 1;
-                                            colorPopup.itemHovered -= 1;
                                         }
                                     }
                                 }

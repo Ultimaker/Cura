@@ -4,7 +4,7 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.1
 
-import UM 1.1 as UM
+import UM 1.5 as UM
 
 // This component creates a label with the abbreviated name of a printer, with a rectangle surrounding the label.
 // It is created in a separated place in order to be reused whenever needed.
@@ -24,14 +24,11 @@ Item
         radius: UM.Theme.getSize("checkbox_radius").width
     }
 
-    Label
+    UM.Label
     {
         id: printerTypeLabel
         text: "CFFFP" // As an abbreviated name of the Custom FFF Printer
         anchors.verticalCenter: parent.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
-        renderType: Text.NativeRendering
-        font: UM.Theme.getFont("default")
-        color: UM.Theme.getColor("text")
     }
 }

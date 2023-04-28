@@ -1,0 +1,124 @@
+{
+    "version": 2,
+    "name": "Trimaker Nebula Plus",
+    "inherits": "fdmprinter",
+    "metadata":
+    {
+        "visible": true,
+        "author": "Trimaker",
+        "manufacturer": "Trimaker",
+        "file_formats": "text/x-gcode",
+        "platform": "trimaker_nebula_platform.stl",
+        "has_machine_quality": true,
+        "has_materials": true,
+        "machine_extruder_trains": { "0": "trimaker_nebula_extruder" },
+        "platform_offset": [
+            -117.5,
+            -40,
+            147.5
+        ],
+        "preferred_material": "redd_pla",
+        "preferred_quality_type": "normal"
+    },
+    "overrides":
+    {
+        "acceleration_layer_0": { "value": "acceleration_topbottom" },
+        "acceleration_print": { "value": "4000" },
+        "acceleration_support": { "value": "math.ceil(acceleration_print * 2000 / 4000)" },
+        "acceleration_support_interface": { "value": "acceleration_topbottom" },
+        "acceleration_topbottom": { "value": "math.ceil(acceleration_print * 500 / 4000)" },
+        "acceleration_wall": { "value": "math.ceil(acceleration_print * 1000 / 4000)" },
+        "acceleration_wall_0": { "value": "math.ceil(acceleration_wall * 500 / 1000)" },
+        "adhesion_type": { "default_value": "skirt" },
+        "cool_fan_enabled": { "default_value": true },
+        "cool_fan_speed": { "value": "100.0 if cool_fan_enabled else 0.0" },
+        "default_material_bed_temperature": { "default_value": 60 },
+        "default_material_print_temperature": { "default_value": 200 },
+        "gantry_height": { "value": 2 },
+        "infill_before_walls": { "value": false },
+        "infill_line_width": { "value": "round(line_width * 0.5 / 0.35, 2)" },
+        "infill_overlap": { "value": "0" },
+        "infill_pattern": { "value": "'grid'" },
+        "infill_sparse_density": { "default_value": 25 },
+        "infill_sparse_thickness": { "value": "resolveOrValue('layer_height')" },
+        "infill_wipe_dist": { "value": "0" },
+        "jerk_enabled": { "value": "True" },
+        "jerk_infill": { "minimum_value_warning": 20 },
+        "jerk_layer_0":
+        {
+            "minimum_value_warning": 20,
+            "value": "jerk_topbottom"
+        },
+        "jerk_print":
+        {
+            "minimum_value_warning": 20,
+            "value": "20"
+        },
+        "jerk_print_layer_0": { "minimum_value_warning": 20 },
+        "jerk_roofing": { "minimum_value_warning": 20 },
+        "jerk_skirt_brim": { "minimum_value_warning": 20 },
+        "jerk_support":
+        {
+            "minimum_value_warning": 20,
+            "value": "jerk_print"
+        },
+        "jerk_support_infill": { "minimum_value_warning": 20 },
+        "jerk_support_interface": { "value": "math.ceil(jerk_print * 5 / 20)" },
+        "jerk_topbottom":
+        {
+            "minimum_value_warning": 20,
+            "value": "jerk_print"
+        },
+        "jerk_travel": { "minimum_value_warning": 20 },
+        "jerk_travel_layer_0": { "minimum_value_warning": 20 },
+        "jerk_wall":
+        {
+            "minimum_value_warning": 20,
+            "value": "jerk_print"
+        },
+        "jerk_wall_0":
+        {
+            "minimum_value_warning": 20,
+            "value": "jerk_wall"
+        },
+        "layer_height": { "default_value": 0.2 },
+        "line_width": { "value": "machine_nozzle_size * 0.875" },
+        "machine_acceleration": { "default_value": 3000 },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_depth": { "default_value": 230 },
+        "machine_end_gcode": { "default_value": ";Trimaker Nebula End Code\n M107; Apagamos fan\n G90\n G92 E0\n G1 X0 Y200\n G91\n G1 Z5\n G92 E0\n M140 S0; Enfriamos\n M104 S0; Enfriamos\n M84\n G90\n M117 Impresion finalizada\n M300 S440 P700\n" },
+        "machine_extruder_count": { "default_value": 1 },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 260 },
+        "machine_max_feedrate_x": { "default_value": 300 },
+        "machine_max_feedrate_y": { "default_value": 300 },
+        "machine_max_feedrate_z": { "default_value": 40 },
+        "machine_name": { "default_value": "Trimaker Nebula" },
+        "machine_start_gcode": { "default_value": ";Trimaker Nebula Start Code\n G21; Unidades en mm\n G90; Posicion absoluta\n M82; Extrusor en modo absoluto\n M107; Fan apagado\n G28 X Y Z; Enviamos a home a todos los ejes\n M900 K=0; Linear advance desactivado\n M104 S110; Precalentamos el extrusor hasta 110 grados\n M190 S{material_bed_temperature_layer_0};\n G29; Senso la cama\n M500\n G1 F5000 X0.5 Y0.5\n Calentamos cama y esperamos\n M109 S{material_print_temperature}; Calentamos extrusor y esperamos\n G92 E0; E=0\n G1 F200 X0.5 Y0.5 Z0.300\n G1 F900 X0.5 Y51.5 E2.56436; Hacemos una linea para limpiar extrusor\n" },
+        "machine_width": { "default_value": 230 },
+        "material_diameter": { "default_value": 1.75 },
+        "material_flow": { "value": 100 },
+        "optimize_wall_printing_order": { "value": "True" },
+        "retraction_amount": { "default_value": 1 },
+        "retraction_enable": { "default_value": true },
+        "retraction_speed": { "default_value": 45 },
+        "skin_monotonic": { "value": true },
+        "skin_overlap": { "value": "10" },
+        "speed_layer_0": { "value": 20 },
+        "speed_print": { "default_value": 45 },
+        "speed_travel": { "value": "speed_print if magic_spiralize else 100" },
+        "speed_wall_0": { "value": 35 },
+        "speed_wall_x": { "value": 45 },
+        "support_angle": { "default_value": 50 },
+        "support_enable": { "default_value": true },
+        "support_pattern": { "default_value": "zigzag" },
+        "support_type": { "default_value": "everywhere" },
+        "support_xy_distance": { "default_value": 0.7 },
+        "support_z_distance": { "default_value": 0.17 },
+        "top_bottom_thickness": { "value": "layer_height * 6" },
+        "wall_thickness": { "value": "line_width * 3" },
+        "xy_offset": { "default_value": 0 },
+        "xy_offset_layer_0": { "value": -0.1 }
+    }
+}
