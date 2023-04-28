@@ -992,8 +992,42 @@
             "display_name": "Version Upgrade 4.11 to 4.12",
             "description": "Upgrades configurations from Cura 4.11 to Cura 4.12",
             "package_version": "1.0.0",
-            "sdk_version": 7,
+            "sdk_version": "8.2.0",
             "sdk_version_semver": "7.7.0",
+            "website": "https://ultimaker.com",
+            "author": {
+                "author_id": "UltimakerPackages",
+                "display_name": "UltiMaker",
+                "email": "plugins@ultimaker.com",
+                "website": "https://ultimaker.com"
+            }
+        }
+    },
+    "VersionUpgrade413to50": {
+        "package_info": {
+            "package_id": "VersionUpgrade413to50",
+            "package_type": "plugin",
+            "display_name": "Version Upgrade 4.13 to 5.0",
+            "description": "Upgrades configurations from Cura 4.13 to Cura 5.0",
+            "package_version": "1.0.0",
+            "sdk_version": "8.2.0",
+            "website": "https://ultimaker.com",
+            "author": {
+                "author_id": "UltimakerPackages",
+                "display_name": "UltiMaker",
+                "email": "plugins@ultimaker.com",
+                "website": "https://ultimaker.com"
+            }
+        }
+    },
+    "VersionUpgrade52to53": {
+        "package_info": {
+            "package_id": "VersionUpgrade52to53",
+            "package_type": "plugin",
+            "display_name": "Version Upgrade 5.2 to 5.3",
+            "description": "Upgrades configurations from Cura 5.2 to Cura 5.3",
+            "package_version": "1.0.0",
+            "sdk_version": "8.2.0",
             "website": "https://ultimaker.com",
             "author": {
                 "author_id": "UltimakerPackages",

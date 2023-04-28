@@ -1,17 +1,18 @@
 {
-    "name": "Renkforce Pro 3",
     "version": 2,
+    "name": "Renkforce Pro 3",
     "inherits": "goofoo_near",
-    "overrides": {
-        "machine_name": { "default_value": "Renkforce Pro 3" },
-        "machine_width": { "default_value": 200 },
-        "machine_depth": { "default_value": 200 },
-        "machine_height": { "default_value": 150 }
-
-    },
-    "metadata": {
+    "metadata":
+    {
+        "visible": true,
         "author": "Simon Peter (based on RF100.ini by Conrad Electronic SE)",
-        "manufacturer": "Renkforce",
-        "visible": true
+        "manufacturer": "Renkforce"
+    },
+    "overrides":
+    {
+        "machine_depth": { "default_value": 200 },
+        "machine_height": { "default_value": 150 },
+        "machine_name": { "default_value": "Renkforce Pro 3" },
+        "machine_width": { "default_value": 200 }
     }
 }

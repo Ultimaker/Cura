@@ -79,4 +79,4 @@ jobs:
                     files: "tests/**/*.xml"
 
             -   name: Conclusion
-                run: echo "Conclusion is ${{ fromJSON( steps.test-results.outputs.json ).conclusion }}"
+                run: echo "Conclusion is ${{ steps.test-results.outputs.json && fromJSON( steps.test-results.outputs.json ).conclusion }}"

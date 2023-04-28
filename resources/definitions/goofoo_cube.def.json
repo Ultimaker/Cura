@@ -1,29 +1,29 @@
 {
-    "name": "Goofoo Cube",
     "version": 2,
+    "name": "Goofoo Cube",
     "inherits": "goofoo_small",
-    "overrides": {
-
+    "metadata":
+    {
+        "visible": true,
+        "author": "goofoo"
+    },
+    "overrides":
+    {
+        "adhesion_type": { "default_value": "skirt" },
+        "layer_height": { "default_value": 0.4 },
+        "layer_height_0": { "default_value": 0.5 },
+        "machine_depth": { "default_value": 80 },
+        "machine_heated_bed": { "default_value": false },
+        "machine_height": { "default_value": 80 },
         "machine_name": { "default_value": "Goofoo Cube" },
         "machine_width": { "default_value": 80 },
-        "machine_depth": { "default_value": 80 },
-        "machine_height": { "default_value": 80 },
-        "machine_heated_bed": { "default_value": false },
         "raft_margin": { "default_value": 5 },
-        "layer_height":{"default_value": 0.4},
-        "layer_height_0": {"default_value": 0.5},
-        "speed_print": {"value": 10},
-        "speed_travel": {"value": 10},
-        "speed_layer_0":{"value": 10},
-        "speed_print_layer_0":{"value": 10},
-        "speed_travel_layer_0":{"value": 10},
-        
-        "retraction_speed": {"default_value": 60},
-        "retraction_prime_speed":{"value": 80},
-        "adhesion_type": {"default_value": "skirt"}
-    },
-    "metadata": {
-        "author": "goofoo",
-        "visible": true
+        "retraction_prime_speed": { "value": 80 },
+        "retraction_speed": { "default_value": 60 },
+        "speed_layer_0": { "value": 10 },
+        "speed_print": { "value": 10 },
+        "speed_print_layer_0": { "value": 10 },
+        "speed_travel": { "value": 10 },
+        "speed_travel_layer_0": { "value": 10 }
     }
 }

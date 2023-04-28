@@ -17,6 +17,12 @@ UM.MainWindow
 {
     id: base
 
+    Item
+    {
+        id: mainWindow
+        anchors.fill: parent
+    }
+
     // Cura application window title
     title:
     {
@@ -622,7 +628,7 @@ UM.MainWindow
         //: File open dialog title
         title: catalog.i18nc("@title:window","Open file(s)")
         modality: Qt.WindowModal
-        fileMode: FileDialog.OpenFiles
+        fileMode: FileDialog.FileMode.ExistingFile
         nameFilters: UM.MeshFileHandler.supportedReadFileTypes;
         currentFolder: CuraApplication.getDefaultPath("dialog_load_path")
         onAccepted:

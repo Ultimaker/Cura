@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "Sovol-SV01",
+    "name": "Sovol-SV01 (Legacy)",
     "inherits": "fdmprinter",
     "metadata":
     {
@@ -15,7 +15,6 @@
     },
     "overrides":
     {
-        "acceleration_enabled": { "value": false },
         "acceleration_print": { "value": 500 },
         "acceleration_roofing": { "enabled": "acceleration_enabled and roofing_layer_count > 0 and top_layers > 0" },
         "acceleration_travel": { "value": 500 },
@@ -38,7 +37,6 @@
         "machine_max_acceleration_e": { "value": 5000 },
         "machine_max_acceleration_x": { "value": 500 },
         "machine_max_acceleration_y": { "value": 500 },
-        "machine_max_acceleration_z": { "value": 100 },
         "machine_max_feedrate_e": { "value": 50 },
         "machine_max_feedrate_x": { "value": 500 },
         "machine_max_feedrate_y": { "value": 500 },
@@ -56,7 +54,6 @@
         "retraction_amount": { "default_value": 3 },
         "retraction_speed": { "default_value": 50 },
         "skin_overlap": { "value": 10.0 },
-        "skirt_brim_speed": { "value": "speed_layer_0" },
         "speed_print": { "value": 50.0 },
         "wall_0_wipe_dist": { "value": 0.0 },
         "z_seam_corner": { "value": "'z_seam_corner_weighted'" },

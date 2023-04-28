@@ -37,10 +37,8 @@ on:
                 type: boolean
 
 env:
-    CONAN_LOGIN_USERNAME_CURA: ${{ secrets.CONAN_USER }}
-    CONAN_PASSWORD_CURA: ${{ secrets.CONAN_PASS }}
-    CONAN_LOGIN_USERNAME_CURA_CE: ${{ secrets.CONAN_USER }}
-    CONAN_PASSWORD_CURA_CE: ${{ secrets.CONAN_PASS }}
+    CONAN_LOGIN_USERNAME: ${{ secrets.CONAN_USER }}
+    CONAN_PASSWORD: ${{ secrets.CONAN_PASS }}
     CONAN_LOG_RUN_TO_OUTPUT: 1
     CONAN_LOGGING_LEVEL: ${{ inputs.conan_logging_level }}
     CONAN_NON_INTERACTIVE: 1
@@ -62,8 +60,9 @@ jobs:
 
             -   name: Install Python requirements and Create default Conan profile
                 run: |
-                    pip install -r .github/workflows/requirements-conan-package.txt
+                    pip install -r https://raw.githubusercontent.com/Ultimaker/Cura/main/.github/workflows/requirements-conan-package.txt
                     conan profile new default --detect
+                #  Note the runner requirements are always installed from the main branch in the Ultimaker/Cura repo
 
             -   name: Cache Conan local repository packages
                 uses: actions/cache@v3
@@ -79,6 +78,9 @@ jobs:
                 if: ${{ inputs.conan_config_branch == '' }}
                 run: conan config install https://github.com/Ultimaker/conan-config.git
 
+            -   name: Add Cura private Artifactory remote
+                run: conan remote add cura-private https://ultimaker.jfrog.io/artifactory/api/conan/cura-private True
+
             -   name: Export the Package (binaries)
                 if: ${{ inputs.conan_export_binaries }}
                 run: conan create . ${{ inputs.recipe_id_full }} --build=missing --update
@@ -87,20 +89,18 @@ jobs:
                 if: ${{ !inputs.conan_export_binaries }}
                 run: conan export . ${{ inputs.recipe_id_full }}
 
-            -   name: Remove the latest alias
-                if: ${{ inputs.recipe_id_latest != '' && runner.os == 'Linux' }}
-                run: |
-                    conan remove ${{ inputs.recipe_id_latest }} -r cura -f || true
-                    conan remove ${{ inputs.recipe_id_latest }} -r cura-ce -f || true
-
             -   name: Create the latest alias
-                if: ${{ inputs.recipe_id_latest != '' && always() }}
+                if: always()
                 run: conan alias ${{ inputs.recipe_id_latest }} ${{ inputs.recipe_id_full }}
 
             -   name: Upload the Package(s)
-                if: always()
-                run: conan upload "*" -r cura --all -c
+                if: ${{ always() && inputs.conan_upload_community }}
+                run: |
+                    conan upload ${{ inputs.recipe_id_full }} -r cura --all -c
+                    conan upload ${{ inputs.recipe_id_latest }} -r cura -c
 
-            -   name: Upload the Package(s) community
-                if: ${{ always() && inputs.conan_upload_community == true }}
-                run: conan upload "*" -r cura-ce -c
+            -   name: Upload the Package(s) to the private Artifactory
+                if: ${{ always() && ! inputs.conan_upload_community }}
+                run: |
+                    conan upload ${{ inputs.recipe_id_full }} -r cura-private --all -c
+                    conan upload ${{ inputs.recipe_id_latest }} -r cura-private -c

@@ -41,21 +41,28 @@ class Definition(Linter):
         definition = self._definitions[definition_name]
         if "overrides" in definition and definition_name not in ("fdmprinter", "fdmextruder"):
             for key, value_dict in definition["overrides"].items():
-                is_redefined, value, parent = self._isDefinedInParent(key, value_dict, definition['inherits'])
+                is_redefined, child_key, child_value, parent = self._isDefinedInParent(key, value_dict, definition['inherits'])
                 if is_redefined:
                     redefined = re.compile(r'.*(\"' + key + r'\"[\s\:\S]*?)\{[\s\S]*?\},?')
                     found = redefined.search(self._content)
-                    yield Diagnostic(
-                        file = self._file,
-                        diagnostic_name = "diagnostic-definition-redundant-override",
-                        message = f"Overriding {key} with the same value ({value}) as defined in parent definition: {definition['inherits']}",
-                        level = "Warning",
-                        offset = found.span(0)[0],
+                    # TODO: Figure out a way to support multiline fixes in the PR review GH Action, for now suggest no fix to ensure no ill-formed json are created
+                    #  see: https://github.com/platisd/clang-tidy-pr-comments/issues/37
+                    if len(found.group().splitlines()) > 1:
+                        replacements = []
+                    else:
                         replacements = [Replacement(
                             file = self._file,
                             offset = found.span(1)[0],
                             length = len(found.group()),
                             replacement_text = "")]
+
+                    yield Diagnostic(
+                        file = self._file,
+                        diagnostic_name = "diagnostic-definition-redundant-override",
+                        message = f"Overriding {key} with the same value ({child_key}: {child_value}) as defined in parent definition: {definition['inherits']}",
+                        level = "Warning",
+                        offset = found.span(0)[0],
+                        replacements = replacements
                     )
 
     def _loadDefinitionFiles(self, definition_file) -> None:
@@ -77,6 +84,8 @@ class Definition(Linter):
             self._loadDefinitionFiles(parent_file)
 
     def _isDefinedInParent(self, key, value_dict, inherits_from):
+        if self._ignore(key, "diagnostic-definition-redundant-override"):
+            return False, None, None, None
         if "overrides" not in self._definitions[inherits_from]:
             return self._isDefinedInParent(key, value_dict, self._definitions[inherits_from]["inherits"])
 
@@ -85,31 +94,33 @@ class Definition(Linter):
             is_number = False
         else:
             is_number = self._definitions[self.base_def]["overrides"][key]["type"] in ("float", "int")
-        for value in value_dict.values():
+        for child_key, child_value in value_dict.items():
             if key in parent:
-                check_values = [cv for cv in [parent[key].get("default_value", None), parent[key].get("value", None)] if cv is not None]
+                if child_key in ("default_value", "value"):
+                    check_values = [cv for cv in [parent[key].get("default_value", None), parent[key].get("value", None)] if cv is not None]
+                else:
+                    check_values = [parent[key].get(child_key, None)]
                 for check_value in check_values:
-                    if is_number:
+                    if is_number and child_key in ("default_value", "value"):
                         try:
-                            v = str(float(value))
+                            v = str(float(child_value))
                         except:
-                            v = value
+                            v = child_value
                         try:
                             cv = str(float(check_value))
                         except:
                             cv = check_value
                     else:
-                        v = value
+                        v = child_value
                         cv = check_value
                     if v == cv:
-                        return True, value, parent
+                        return True, child_key, child_value, parent
 
                 if "inherits" in parent:
                     return self._isDefinedInParent(key, value_dict, parent["inherits"])
-        return False, None, None
+        return False, None, None, None
 
     def _loadBasePrinterSettings(self):
-        """ TODO @Jelle please explain why this """
         settings = {}
         for k, v in self._definitions[self.base_def]["settings"].items():
             self._getSetting(k, v, settings)
@@ -120,3 +131,11 @@ class Definition(Linter):
             for childname, child in setting["children"].items():
                 self._getSetting(childname, child, settings)
         settings |= {name: setting}
+
+    def _ignore(self, key: dict, type_of_check: str) -> bool:
+        if f"{type_of_check}-ignore" in self._settings:
+            filters = [re.compile(f) for f in self._settings[f"{type_of_check}-ignore"]]
+            for f in filters:
+                if f.match(key):
+                    return True
+        return False

@@ -2,19 +2,17 @@
     "version": 2,
     "name": "Monoprice Select Mini V1",
     "inherits": "malyan_m200",
-    "metadata": {
+    "metadata":
+    {
+        "visible": true,
         "author": "Brian Corbino, Tyler Gibson",
         "manufacturer": "Monoprice",
         "file_formats": "text/x-gcode",
-        "quality_definition": "malyan_m200",
-        "visible": true,
-        "machine_extruder_trains":
-        {
-            "0": "monoprice_select_mini_v1_extruder_0"
-        }
-   },
-
-    "overrides": {
+        "machine_extruder_trains": { "0": "monoprice_select_mini_v1_extruder_0" },
+        "quality_definition": "malyan_m200"
+    },
+    "overrides":
+    {
         "machine_name": { "default_value": "Monoprice Select Mini V1" }
     }
 }

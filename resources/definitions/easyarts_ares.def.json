@@ -1,59 +1,30 @@
 {
-    "name": "EasyArts Ares",
     "version": 2,
+    "name": "EasyArts Ares",
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "visible": true,
         "author": "nliaudat",
         "manufacturer": "EasyArts",
         "file_formats": "text/x-gcode",
-        "machine_extruder_trains":
-        {
-            "0": "easyarts_ares_extruder_0"
-        }
+        "machine_extruder_trains": { "0": "easyarts_ares_extruder_0" }
     },
-    "overrides": {
-        "machine_start_gcode": {
-           "default_value": "; -- START GCODE --\nG21        ;metric values\nG90        ;absolute positioning\nM82        ;set extruder to absolute mode\nM107       ;start with the fan off\nG28        \nG29 Z0.12   ;Auto-bedleveling with Z offset        \nG92 E0                  ;zero the extruded length        \nG1 F2000 E3              ;extrude 3mm of feed stock\nG92 E0                  ;zero the extruded length again\nG1 F{speed_travel}\nM117 Printing...\n; -- end of START GCODE --"
-         },
-        "machine_end_gcode": {
-            "default_value": "; -- START GCODE --\nG28     ; Home all axes\nM104 S0        ;extruder heater off\n;M140 S0        ;heated bed heater off (if you have it)\nG91                       ;relative positioning\nG1 E-1 F300               ;retract the filament a bit before lifting the nozzle, to release some of the pressure\n;M84            ;steppers off\nG90            ;absolute positioning\n; -- end of START GCODE --"
-        },
-        "machine_width": {
-            "default_value": 180
-        },
-        "machine_depth": {
-            "default_value": 180
-        },
-        "machine_height": {
-            "default_value": 200
-        },
-        "machine_heated_bed": {
-            "default_value": false
-        },
-        "machine_center_is_zero": {
-            "default_value": true
-        },
-        "machine_gcode_flavor": {
-            "default_value": "RepRap"
-        },
-        "layer_height": {
-            "default_value": 0.2
-        },
-        "layer_height_0": {
-            "default_value": 0.2
-        },
-        "wall_thickness": {
-            "value": "1"
-        },
-        "top_bottom_thickness": {
-            "default_value": 1
-        },
-        "speed_print": {
-            "default_value": 75
-        },
-        "support_enable": {
-            "default_value": true
-        }
+    "overrides":
+    {
+        "layer_height": { "default_value": 0.2 },
+        "layer_height_0": { "default_value": 0.2 },
+        "machine_center_is_zero": { "default_value": true },
+        "machine_depth": { "default_value": 180 },
+        "machine_end_gcode": { "default_value": "; -- START GCODE --\nG28     ; Home all axes\nM104 S0        ;extruder heater off\n;M140 S0        ;heated bed heater off (if you have it)\nG91                       ;relative positioning\nG1 E-1 F300               ;retract the filament a bit before lifting the nozzle, to release some of the pressure\n;M84            ;steppers off\nG90            ;absolute positioning\n; -- end of START GCODE --" },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_heated_bed": { "default_value": false },
+        "machine_height": { "default_value": 200 },
+        "machine_start_gcode": { "default_value": "; -- START GCODE --\nG21        ;metric values\nG90        ;absolute positioning\nM82        ;set extruder to absolute mode\nM107       ;start with the fan off\nG28        \nG29 Z0.12   ;Auto-bedleveling with Z offset        \nG92 E0                  ;zero the extruded length        \nG1 F2000 E3              ;extrude 3mm of feed stock\nG92 E0                  ;zero the extruded length again\nG1 F{speed_travel}\nM117 Printing...\n; -- end of START GCODE --" },
+        "machine_width": { "default_value": 180 },
+        "speed_print": { "default_value": 75 },
+        "support_enable": { "default_value": true },
+        "top_bottom_thickness": { "default_value": 1 },
+        "wall_thickness": { "value": "1" }
     }
 }
