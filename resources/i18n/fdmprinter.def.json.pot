@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-04-24 09:08+0000\n"
+"POT-Creation-Date: 2023-04-28 10:03+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -3768,7 +3768,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_angle label"
-msgid "Tree Support Maximum Branch Angle"
+msgid "Maximum Branch Angle"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -3778,7 +3778,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_branch_diameter label"
-msgid "Tree Support Branch Diameter"
+msgid "Branch Diameter"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -3788,7 +3788,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_max_diameter label"
-msgid "Tree Support Trunk Diameter"
+msgid "Trunk Diameter"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -3798,7 +3798,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_branch_diameter_angle label"
-msgid "Tree Support Branch Diameter Angle"
+msgid "Branch Diameter Angle"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -3828,7 +3828,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_angle_slow label"
-msgid "Tree Support Preferred Branch Angle"
+msgid "Preferred Branch Angle"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -3838,7 +3838,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_max_diameter_increase_by_merges_when_support_to_model label"
-msgid "Tree Support Diameter Increase To Model"
+msgid "Diameter Increase To Model"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -3848,7 +3848,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_min_height_to_model label"
-msgid "Tree Support Minimum Height To Model"
+msgid "Minimum Height To Model"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -3858,7 +3858,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_bp_diameter label"
-msgid "Tree Support Initial Layer Diameter"
+msgid "Initial Layer Diameter"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -3868,7 +3868,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_top_rate label"
-msgid "Tree Support Branch Density"
+msgid "Branch Density"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -3878,7 +3878,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_tip_diameter label"
-msgid "Tree Support Tip Diameter"
+msgid "Tip Diameter"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -3888,7 +3888,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_limit_branch_reach label"
-msgid "Tree Support Limit Branch Reach"
+msgid "Limit Branch Reach"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -3898,7 +3898,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_branch_reach_limit label"
-msgid "Tree Support Optimal Branch Range"
+msgid "Optimal Branch Range"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -3908,7 +3908,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_rest_preference label"
-msgid "Tree Support Rest Preference"
+msgid "Rest Preference"
 msgstr ""
 
 #: fdmprinter.def.json
