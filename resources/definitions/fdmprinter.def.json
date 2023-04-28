@@ -5171,7 +5171,7 @@
                     "type": "int",
                     "minimum_value": "0",
                     "maximum_value_warning": "1 if (support_pattern == 'cross' or support_pattern == 'lines' or support_pattern == 'concentric') else 5",
-                    "maximum_value": "999999 if support_line_distance == 0 else (20 - math.log(support_line_distance) / math.log(2))",
+                    "maximum_value": "(999999 if support_line_distance == 0 else (20 - math.log(support_line_distance) / math.log(2))) if support_structure != 'tree' else 0",
                     "enabled": "(support_enable or support_meshes_present) and support_infill_rate > 0",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false,
