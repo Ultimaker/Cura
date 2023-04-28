@@ -139,22 +139,28 @@ class PostProcessingPlugin(QObject, Extension):
         if self._loaded_scripts: # Already loaded.
             return
 
-        # The PostProcessingPlugin path is for built-in scripts.
-        # The Resources path is where the user should store custom scripts.
-        # The Preferences path is legacy, where the user may previously have stored scripts.
-        resource_folders = [PluginRegistry.getInstance().getPluginPath("PostProcessingPlugin"), Resources.getStoragePath(Resources.Preferences)]
-        resource_folders.extend(Resources.getAllPathsForType(Resources.Resources))
-        for root in resource_folders:
-            if root is None:
-                continue
-            path = os.path.join(root, "scripts")
+        # Make sure a "scripts" folder exists in the main configuration folder and the preferences folder.
+        # On some platforms the resources and preferences folders resolve to the same folder,
+        # but on Linux they can be different.
+        for path in set([os.path.join(Resources.getStoragePath(r), "scripts") for r in [Resources.Resources, Resources.Preferences]]):
             if not os.path.isdir(path):
                 try:
                     os.makedirs(path)
                 except OSError:
                     Logger.log("w", "Unable to create a folder for scripts: " + path)
-                    continue
 
+        # The PostProcessingPlugin path is for built-in scripts.
+        # The Resources path is where the user should store custom scripts.
+        # The Preferences path is legacy, where the user may previously have stored scripts.
+        resource_folders = [PluginRegistry.getInstance().getPluginPath("PostProcessingPlugin"), Resources.getStoragePath(Resources.Preferences)]
+        resource_folders.extend(Resources.getAllPathsForType(Resources.Resources))
+
+        for root in resource_folders:
+            if root is None:
+                continue
+            path = os.path.join(root, "scripts")
+            if not os.path.isdir(path):
+                continue
             self.loadScripts(path)
 
     def loadScripts(self, path: str) -> None:

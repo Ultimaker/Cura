@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-03-28 11:57+0000\n"
+"POT-Creation-Date: 2023-04-28 10:03+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -73,6 +73,11 @@ msgid "A part fully enclosed inside another part can generate an outer brim that
 msgstr "Bir başka parçanın içine tamamen kapatılmış bir parça, diğer parçanın içine temas eden bir dış kenar oluşturabilir. Bu, iç deliklerden bu mesafe içindeki tüm kenarları kaldırır."
 
 #: fdmprinter.def.json
+msgctxt "support_tree_branch_reach_limit description"
+msgid "A recomendation to how far branches can move from the points they support. Branches can violate this value to reach their destination (buildplate or a flat part of the model). Lowering this value will make the support more sturdy, but increase the amount of branches (and because of that material usage/print time) "
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "extruder_prime_pos_abs label"
 msgid "Absolute Extruder Prime Position"
 msgstr "Mutlak Ekstruder İlk Konumu"
@@ -135,6 +140,11 @@ msgstr "Yazdırma dolgusunun yoğunluğunu ayarlar."
 msgctxt "support_interface_density description"
 msgid "Adjusts the density of the roofs and floors of the support structure. A higher value results in better overhangs, but the supports are harder to remove."
 msgstr "Destek yapısının çatılarının ve zeminlerinin yoğunluğunu ayarlar. Daha yüksek bir değer daha iyi çıkıntılar ortaya çıkarırken, desteklerin kaldırılmasını zorlaştırır."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_top_rate description"
+msgid "Adjusts the density of the support structure used to generate the tips of the branches. A higher value results in better overhangs, but the supports are harder to remove. Use Support Roof for very high values or ensure support density is similarly high at the top."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_infill_rate description"
@@ -317,6 +327,11 @@ msgid "Both"
 msgstr "Her İkisi"
 
 #: fdmprinter.def.json
+msgctxt "support_interface_priority option nothing"
+msgid "Both overlap"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "bottom_layers label"
 msgid "Bottom Layers"
 msgstr "Alt katmanlar"
@@ -340,6 +355,21 @@ msgstr "Alt Yüzey Kaldırma Genişliği"
 msgctxt "bottom_thickness label"
 msgid "Bottom Thickness"
 msgstr "Alt Kalınlık"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_top_rate label"
+msgid "Branch Density"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_diameter label"
+msgid "Branch Diameter"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_diameter_angle label"
+msgid "Branch Diameter Angle"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_break_preparation_retracted_position label"
@@ -829,7 +859,7 @@ msgstr "Köprüleri tespit edin ve köprüler yazdırılırken yazdırma hızın
 #: fdmprinter.def.json
 msgctxt "inset_direction description"
 msgid "Determines the order in which walls are printed. Printing outer walls earlier helps with dimensional accuracy, as faults from inner walls cannot propagate to the outside. However printing them later allows them to stack better when overhangs are printed. When there is an uneven amount of total innner walls, the 'center last line' is always printed last."
-msgstr "Duvarların basılacağı sırayı belirler. Dış duvarların önce basılması, iç duvarlardaki hataların dışarıya taşmasını önleyerek boyutların doğru olmasını sağlar. Bu duvarların daha sonra basılması ise çıkıntılar basılırken daha iyi yığınlanma sağlar. Toplam iç duvar sayısı çift olmadığında ’ortadaki son hat’ her zaman en son yazdırılır."
+msgstr "Duvarların basılacağı sırayı belirler. Dış duvarların önce basılması, iç duvarlardaki hataların dışarıya taşmasını önleyerek boyutların doğru olmasını sağlar. Bu duvarların daha sonra basılması ise çıkıntılar basılırken daha iyi yığınlanma sağlar. Toplam iç duvar miktarı eşit değilse ”ortadaki son hat” her zaman en son yazdırılır."
 
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order description"
@@ -850,6 +880,16 @@ msgstr "Bir yıldırım dolgu tabakasının üstündeki modeli ne zaman destekle
 msgctxt "material_diameter label"
 msgid "Diameter"
 msgstr "Çap"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_max_diameter_increase_by_merges_when_support_to_model label"
+msgid "Diameter Increase To Model"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_bp_diameter description"
+msgid "Diameter every branch tries to achieve when reaching the buildplate. Improves bed adhesion."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "adhesion_type description"
@@ -1254,7 +1294,7 @@ msgstr "İlk katman için akış dengelemesi: ilk katmana ekstrude edilen malzem
 #: fdmprinter.def.json
 msgctxt "skin_material_flow_layer_0 description"
 msgid "Flow compensation on bottom lines of the first layer"
-msgstr "İlk katmanın alt hatları için akış telafisi"
+msgstr "İlk katmanın alt hatlarında akış telafisi"
 
 #: fdmprinter.def.json
 msgctxt "infill_material_flow description"
@@ -1299,7 +1339,7 @@ msgstr "Destek yapı hatlarının akış telafisidir."
 #: fdmprinter.def.json
 msgctxt "wall_0_material_flow_layer_0 description"
 msgid "Flow compensation on the outermost wall line of the first layer."
-msgstr "İlk katmanın en dış duvar hattı için akış telafisi."
+msgstr "İlk katmanın en dış duvar hattında akış telafisi."
 
 #: fdmprinter.def.json
 msgctxt "wall_0_material_flow description"
@@ -1314,7 +1354,7 @@ msgstr "Üst/alt hatların akış telafisidir."
 #: fdmprinter.def.json
 msgctxt "wall_x_material_flow_layer_0 description"
 msgid "Flow compensation on wall lines for all wall lines except the outermost one, but only for the first layer"
-msgstr "En dıştaki hariç tüm duvar hatları için duvar hatların için akış telafisi, ancak yalnızca ilk katman için"
+msgstr "En dıştaki duvar hatları hariç tüm duvar hatları için duvar hatlarında akış telafisi, ancak sadece ilk katman içindir."
 
 #: fdmprinter.def.json
 msgctxt "wall_x_material_flow description"
@@ -1345,6 +1385,11 @@ msgstr "Temizleme Hızı"
 msgctxt "min_wall_line_width description"
 msgid "For thin structures around once or twice the nozzle size, the line widths need to be altered to adhere to the thickness of the model. This setting controls the minimum line width allowed for the walls. The minimum line widths inherently also determine the maximum line widths, since we transition from N to N+1 walls at some geometry thickness where the N walls are wide and the N+1 walls are narrow. The widest possible wall line is twice the Minimum Wall Line Width."
 msgstr "Nozül boyutunun bir veya iki katı kadar olan ince yapılarda modelin kalınlığına bağlı olarak hat genişliklerinin değiştirilmesi gerekir. Bu ayar, duvarlar için izin verilen minimum hat genişliğini kontrol eder. Minimum hat genişlikleri, N duvarlarının geniş ve N+1 duvarlarının dar olduğu bazı geometrik kalınlıklarda N duvardan N+1 duvara geçildiği için maksimum hat genişliklerini de belirler. Mümkün olan en geniş duvar hattı Minimum Duvar Hattı Genişliğinin iki katıdır."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_rest_preference option buildplate"
+msgid "Force Only Buildplate"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "z_seam_position option front"
@@ -1492,7 +1537,7 @@ msgstr "Kademeli Destek Dolgusu Aşamaları"
 #: fdmprinter.def.json
 msgctxt "cool_min_temperature description"
 msgid "Gradually reduce to this temperature when printing at reduced speeds because of minimum layer time."
-msgstr "Minimum katman süresi nedeniyle düşük hızlarda baskı yaparken kademeli olarak bu sıcaklığa düşürün."
+msgstr "Minimum katman süresi nedeniyle düşük hızlarda yazdırırken bu sıcaklığa kademeli olarak düşürün."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1595,11 +1640,6 @@ msgid "Horizontal Scaling Factor Shrinkage Compensation"
 msgstr "Yatay Ölçekleme Faktörü Büzülme Telafisi"
 
 #: fdmprinter.def.json
-msgctxt "support_tree_branch_distance description"
-msgid "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove."
-msgstr "Dalların modele temas ettiklerinde birbirlerine ne kadar uzaklıkta olacakları. Bu mesafenin kısa yapılması ağaç desteğin modele daha fazla noktada temas etmesini sağlayarak daha iyi bir sarkma sunacaktır ancak desteğin sökülmesini de daha güç hale getirecektir."
-
-#: fdmprinter.def.json
 msgctxt "material_break_preparation_retracted_position description"
 msgid "How far the filament can be stretched before it breaks, while heated."
 msgstr "Filamentin ısıtıldığında kopmadan esneyebileceği mesafedir."
@@ -1678,6 +1718,16 @@ msgstr "Farklı bir malzemeye geçilirken nozülün önceki malzemeden temizlenm
 msgctxt "machine_extruders_shared_nozzle_initial_retraction description"
 msgid "How much the filament of each extruder is assumed to have been retracted from the shared nozzle tip at the completion of the printer-start gcode script; the value should be equal to or greater than the length of the common part of the nozzle's ducts."
 msgstr "Printer-start gcode betiğinin tamamlanmasında her bir ekstrüder filamentinin paylaşılan nozül ucundan ne kadar geri çekildiğinin varsayıldığıdır. Değer, nozül kanallarının ortak parçasının uzunluğuna eşit veya daha büyük olmalıdır."
+
+#: fdmprinter.def.json
+msgctxt "support_interface_priority description"
+msgid "How support interface and support will interact when they overlap. Currently only implemented for support roof."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_min_height_to_model description"
+msgid "How tall a branch has to be if it is placed on the model. Prevents small blobs of support. This setting is ignored when a branch is supporting a support roof."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_support_threshold description"
@@ -1857,7 +1907,12 @@ msgstr "İlk Katman İvmesi"
 #: fdmprinter.def.json
 msgctxt "skin_material_flow_layer_0 label"
 msgid "Initial Layer Bottom Flow"
-msgstr "İlk Katman Alt Akış"
+msgstr "İlk Katman Alt Akışı"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_bp_diameter label"
+msgid "Initial Layer Diameter"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_flow_layer_0 label"
@@ -1985,6 +2040,16 @@ msgid "Inside To Outside"
 msgstr "İçten Dışa"
 
 #: fdmprinter.def.json
+msgctxt "support_interface_priority option interface_lines_overwrite_support_area"
+msgid "Interface lines preferred"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_interface_priority option interface_area_overwrite_support_area"
+msgid "Interface preferred"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "interlocking_beam_layer_count label"
 msgid "Interlocking Beam Layer Count"
 msgstr "İç İçe Geçen Kiriş Katman Sayısı"
@@ -1992,7 +2057,7 @@ msgstr "İç İçe Geçen Kiriş Katman Sayısı"
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_width label"
 msgid "Interlocking Beam Width"
-msgstr "İç İçe Geçen Kiriş Genişliği"
+msgstr "İç İçe Geçme Genişliği"
 
 #: fdmprinter.def.json
 msgctxt "interlocking_boundary_avoidance label"
@@ -2138,6 +2203,16 @@ msgstr "Yıldırım Dolgu Düzleştirme Açısı"
 msgctxt "lightning_infill_support_angle label"
 msgid "Lightning Infill Support Angle"
 msgstr "Yıldırım Dolgu Destek Açısı"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_limit_branch_reach label"
+msgid "Limit Branch Reach"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_limit_branch_reach description"
+msgid "Limit how far each branch should travel from the point it supports. This can make the support more sturdy, but will increase the amount of branches (and because of that material usage/print time)"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "cutting_mesh description"
@@ -2323,6 +2398,11 @@ msgstr "Maksimum Y İvmesi"
 msgctxt "machine_max_acceleration_z label"
 msgid "Maximum Acceleration Z"
 msgstr "Maksimum Z İvmesi"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle label"
+msgid "Maximum Branch Angle"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "meshfix_maximum_deviation label"
@@ -2513,6 +2593,11 @@ msgstr "Minimum Yüz Hattı Boyutu"
 msgctxt "machine_minimum_feedrate label"
 msgid "Minimum Feedrate"
 msgstr "Minimum Besleme Hızı"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_min_height_to_model label"
+msgid "Minimum Height To Model"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "min_infill_area label"
@@ -2825,6 +2910,11 @@ msgid "Offset with Extruder"
 msgstr "Ekstruder Ofseti"
 
 #: fdmprinter.def.json
+msgctxt "support_tree_rest_preference option graceful"
+msgid "On Model If Necessary"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "print_sequence option one_at_a_time"
 msgid "One at a Time"
 msgstr "Birer Birer"
@@ -2853,6 +2943,11 @@ msgstr "Sızdırma Kalkanı Açısı"
 msgctxt "ooze_shield_dist label"
 msgid "Ooze Shield Distance"
 msgstr "Sızdırma Kalkanı Mesafesi"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_reach_limit label"
+msgid "Optimal Branch Range"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "optimize_wall_printing_order label"
@@ -2958,6 +3053,11 @@ msgstr "Üçüncü köprü yüzey alanı katmanı yazdırılırken kullanılacak
 msgctxt "minimum_polygon_circumference description"
 msgid "Polygons in sliced layers that have a circumference smaller than this amount will be filtered out. Lower values lead to higher resolution mesh at the cost of slicing time. It is meant mostly for high resolution SLA printers and very tiny 3D models with a lot of details."
 msgstr "Bu miktardan daha kısa çevre uzunluğuna sahip dilimlenmiş katmanlardaki poligonlar filtre ile elenecektir. Daha düşük değerler dilimleme süresini uzatacak ancak daha yüksek çözünürlükte bir ağ oluşturacaktır. Genellikle yüksek çözünürlüklü SLA yazıcılarına yöneliktir ve çok fazla detay içeren çok küçük 3D modellerinde kullanılır."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle_slow label"
+msgid "Preferred Branch Angle"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "wall_transition_filter_deviation description"
@@ -3405,9 +3505,9 @@ msgid "Replaces the outermost part of the top/bottom pattern with a number of co
 msgstr "Üst/alt şeklin en dıştaki parçasını eş merkezli hatlar ile değiştirir. Bir veya iki hat kullanmak, dolgu malzemesinde başlayan tavanları geliştirir."
 
 #: fdmprinter.def.json
-msgctxt "support_tree_collision_resolution description"
-msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
-msgstr "Modele çarpmamak adına çarpışmaları hesaplamak için çözünürlük. Buna düşük bir değerin verilmesi daha az hata çıkaran daha isabetli ağaçların üretilmesini sağlar ancak dilimleme süresini önemli ölçüde artırır."
+msgctxt "support_tree_rest_preference label"
+msgid "Rest Preference"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"
@@ -3662,7 +3762,7 @@ msgstr "Maksimum Küçük Delik Boyutu"
 #: fdmprinter.def.json
 msgctxt "cool_min_temperature label"
 msgid "Small Layer Printing Temperature"
-msgstr "Küçük Katmanlı Baskı Sıcaklığı"
+msgstr "Küçük Katman Yazdırma Sıcaklığı"
 
 #: fdmprinter.def.json
 msgctxt "small_skin_width label"
@@ -3985,6 +4085,11 @@ msgid "Support Interface Pattern"
 msgstr "Destek Arayüzü Şekli"
 
 #: fdmprinter.def.json
+msgctxt "support_interface_priority label"
+msgid "Support Interface Priority"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "support_interface_skip_height label"
 msgid "Support Interface Resolution"
 msgstr "Destek Arayüz Çözünürlüğü"
@@ -4153,6 +4258,16 @@ msgstr "Destek X/Y Mesafesi"
 msgctxt "support_z_distance label"
 msgid "Support Z Distance"
 msgstr "Destek Z Mesafesi"
+
+#: fdmprinter.def.json
+msgctxt "support_interface_priority option support_lines_overwrite_interface_area"
+msgid "Support lines preferred"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_interface_priority option support_area_overwrite_interface_area"
+msgid "Support preferred"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_supported_skin_fan_speed label"
@@ -4395,11 +4510,6 @@ msgid "The angle of the branches' diameter as they gradually become thicker towa
 msgstr "Alta doğru gidildikçe kademeli olarak kalınlaşan dalların açısı. 0 derecelik bir açı dalların uzunluklarını gözetmeksizin tekdüze bir kalınlığa sahip olmalarını sağlayacaktır. Birazcık açı ağaç desteğin sabitliğini artırabilir."
 
 #: fdmprinter.def.json
-msgctxt "support_tree_angle description"
-msgid "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
-msgstr "Dalların açısı. Daha dikey ve daha stabil olmaları için daha düşük bir açı kullanın. Daha fazla erişim için daha yüksek bir açı kullanın."
-
-#: fdmprinter.def.json
 msgctxt "support_conical_angle description"
 msgid "The angle of the tilt of conical support. With 0 degrees being vertical, and 90 degrees being horizontal. Smaller angles cause the support to be more sturdy, but consist of more material. Negative angles cause the base of the support to be wider than the top."
 msgstr "Konik desteğin eğim açısı. Dikey 0 derece ve yatay 90 derece. Daha küçük açılar desteğin daha sağlam olmasını sağlar, ancak çok fazla malzeme içerir. Negatif açılar destek tabanının üst kısımdan daha geniş olmasına yol açar."
@@ -4470,6 +4580,11 @@ msgid "The diameter of the thinnest branches of tree support. Thicker branches a
 msgstr "Ağaç desteğin en ince dallarının çapı. Daha kalın dallar daha dayanıklı olur. Tabana doğru uzanan dallar bundan daha kalın olacaktır."
 
 #: fdmprinter.def.json
+msgctxt "support_tree_tip_diameter description"
+msgid "The diameter of the top of the tip of the branches of tree support."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "machine_feeder_wheel_diameter description"
 msgid "The diameter of the wheel that drives the material in the feeder."
 msgstr "Besleyiciye malzeme veren çarkın çapı."
@@ -4477,7 +4592,7 @@ msgstr "Besleyiciye malzeme veren çarkın çapı."
 #: fdmprinter.def.json
 msgctxt "support_tree_max_diameter description"
 msgid "The diameter of the widest branches of tree support. A thicker trunk is more sturdy; a thinner trunk takes up less space on the build plate."
-msgstr "Ağaç desteğinin en geniş dallarının çapı. Daha kalın bir gövde daha sağlam olur; daha ince bir gövde, yapı plakasında daha az yer kaplar."
+msgstr "Ağaç desteğinin en geniş dallarının çapı. Daha kalın bir gövde daha sağlamdır; daha ince bir gövde, yapı plakasında daha az yer kaplar."
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation_step description"
@@ -4522,7 +4637,7 @@ msgstr "Modelin en dış kenar hattını olan mesafesi. Daha büyük kenar hatt�
 #: fdmprinter.def.json
 msgctxt "interlocking_boundary_avoidance description"
 msgid "The distance from the outside of a model where interlocking structures will not be generated, measured in cells."
-msgstr "İç içe geçen yapıların üretilmeyeceği bir modelin dışından hücre sayısı olarak ölçülen mesafe."
+msgstr "İç içe geçen yapıların oluşturulmayacağı bir modelin dışından hücre cinsinden ölçülen mesafe."
 
 #: fdmprinter.def.json
 msgctxt "machine_heat_zone_length description"
@@ -4742,12 +4857,12 @@ msgstr "Yoğunluğun yarısına inmeden önce belirli bir yoğunluktaki destek d
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_layer_count description"
 msgid "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects."
-msgstr "İç içe geçen yapı kirişlerinin katman sayısı olarak ölçülen yüksekliği. Daha az katman daha güçlüdür, ancak kusurlara daha yatkındır."
+msgstr "İç içe geçen yapı kirişlerinin katman sayısı olarak ölçülen yüksekliği. Daha az katman daha güçlüdür, ama kusurlara daha yatkındır."
 
 #: fdmprinter.def.json
 msgctxt "interlocking_orientation description"
 msgid "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects."
-msgstr "İç içe geçen yapı kirişlerinin katman sayısı olarak ölçülen yüksekliği. Daha az katman daha güçlüdür, ancak kusurlara daha yatkındır."
+msgstr "İç içe geçen yapı kirişlerinin katman sayısı olarak ölçülen yüksekliği. Daha az katman daha güçlüdür, ama kusurlara daha yatkındır."
 
 #: fdmprinter.def.json
 msgctxt "layer_height_0 description"
@@ -4862,6 +4977,11 @@ msgstr "Sızdırma kalkanında bir bölümün sahip olacağı en büyük açı. 
 msgctxt "conical_overhang_angle description"
 msgid "The maximum angle of overhangs after the they have been made printable. At a value of 0° all overhangs are replaced by a piece of model connected to the build plate, 90° will not change the model in any way."
 msgstr "Yazdırılabilir yapıldıktan sonra çıkıntıların en büyük açısı. 0° değerindeyken tüm modeller yapı levhasına bağlı bir model parçasıyla değiştirilirken 90° modeli hiçbir şekilde değiştirmez."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle description"
+msgid "The maximum angle of the branches while they grow around the model. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "conical_overhang_hole_size description"
@@ -5079,6 +5199,11 @@ msgid "The minimum volume for each layer of the prime tower in order to purge en
 msgstr "Yeterince malzeme temizlemek için ilk direğin her bir katmanı için minimum hacim."
 
 #: fdmprinter.def.json
+msgctxt "support_tree_max_diameter_increase_by_merges_when_support_to_model description"
+msgid "The most the diameter of a branch that has to connect to the model may increase by merging with branches that could reach the buildplate. Increasing this reduces print time, but increases the area of support that rests on model"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "machine_name description"
 msgid "The name of your 3D printer model."
 msgstr "3B yazıcı modelinin adı."
@@ -5156,17 +5281,17 @@ msgstr "Destek dolgusunun çevreleneceği duvar sayısı. Bir duvarın eklenmesi
 #: fdmprinter.def.json
 msgctxt "support_bottom_wall_count description"
 msgid "The number of walls with which to surround support interface floor. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "Destek arayüz zeminini çevreleyecek duvar sayısı. Duvar eklemek, destek baskıyı daha güvenilir hale getirebilir ve çıkıntıları daha iyi destekleyebilir ama baskı süresini ve kullanılan malzemeyi artırır."
+msgstr "Destek arayüz zeminini çevreleyecek duvar sayısı. Duvar eklemek, destek baskıyı daha güvenilir hale getirebilir ve çıkıntıları daha iyi destekleyebilir, ama baskı süresini ve kullanılan malzemeyi artırır."
 
 #: fdmprinter.def.json
 msgctxt "support_roof_wall_count description"
 msgid "The number of walls with which to surround support interface roof. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "Destek arayüz çatısını çevreleyecek duvar sayısı. Duvar eklemek, destek baskıyı daha güvenilir hale getirebilir ve çıkıntıları daha iyi destekleyebilir ama baskı süresini ve kullanılan malzemeyi artırır."
+msgstr "Destek arayüz çatısını çevreleyecek duvar sayısı. Duvar eklemek, destek baskıyı daha güvenilir hale getirebilir ve çıkıntıları daha iyi destekleyebilir, ama baskı süresini ve kullanılan malzemeyi artırır."
 
 #: fdmprinter.def.json
 msgctxt "support_interface_wall_count description"
 msgid "The number of walls with which to surround support interface. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "Destek arayüzünü çevreleyecek duvar sayısı. Duvar eklemek, destek baskıyı daha güvenilir hale getirebilir ve çıkıntıları daha iyi destekleyebilir ama baskı süresini ve kullanılan malzemeyi artırır."
+msgstr "Destek arayüzünü çevreleyecek duvar sayısı. Duvar eklemek, destek baskıyı daha güvenilir hale getirebilir ve çıkıntıları daha iyi destekleyebilir, ama baskı süresini ve kullanılan malzemeyi artırır."
 
 #: fdmprinter.def.json
 msgctxt "wall_distribution_count description"
@@ -5232,6 +5357,16 @@ msgstr "Destek çatısının yazdırıldığı desen."
 msgctxt "z_seam_position description"
 msgid "The position near where to start printing each part in a layer."
 msgstr "Bir katmandaki her kısmın basılmaya başlanacağı yere yakın konum."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle_slow description"
+msgid "The preferred angle of the branches, when they do not have to avoid the model. Use a lower angle to make them more vertical and more stable. Use a higher angle for branches to merge faster."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_rest_preference description"
+msgid "The preferred placement of the support structures. If structures can't be placed at the preferred location, they will be place elsewhere, even if that means placing them on the model."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "jerk_layer_0 description"
@@ -5644,6 +5779,11 @@ msgid "This will create a wall around the model, which traps (hot) air and shiel
 msgstr "Modelin etrafında (sıcak) hava ve kalkanlara dışarıdaki hava akımına karşı set çeken bir duvar oluşturur. Özellikle kolayca eğrilebilen malzemeler için kullanışlıdır."
 
 #: fdmprinter.def.json
+msgctxt "support_tree_tip_diameter label"
+msgid "Tip Diameter"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage_xy description"
 msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor in the XY-direction (horizontally)."
 msgstr "Malzemenin soğudukça büzülmesini telafi etmek için model bu faktöre göre XY yönünde (yatay olarak) ölçeklenecektir."
@@ -5839,36 +5979,6 @@ msgid "Tree"
 msgstr "Ağaç"
 
 #: fdmprinter.def.json
-msgctxt "support_tree_angle label"
-msgid "Tree Support Branch Angle"
-msgstr "Ağaç Destek Dal Açısı"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_diameter label"
-msgid "Tree Support Branch Diameter"
-msgstr "Ağaç Destek Dalının Çapı"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_diameter_angle label"
-msgid "Tree Support Branch Diameter Angle"
-msgstr "Ağaç Destek Dalının Çap Açısı"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_distance label"
-msgid "Tree Support Branch Distance"
-msgstr "Ağaç Destek Dal Mesafesi"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_collision_resolution label"
-msgid "Tree Support Collision Resolution"
-msgstr "Ağaç Destek Çarpışma Çözünürlüğü"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_max_diameter label"
-msgid "Tree Support Trunk Diameter"
-msgstr "Ağaç Destek Gövde Çapı"
-
-#: fdmprinter.def.json
 msgctxt "infill_pattern option trihexagon"
 msgid "Tri-Hexagon"
 msgstr "Üçlü Altıgen"
@@ -5899,6 +6009,11 @@ msgid "Triangles"
 msgstr "Üçgenler"
 
 #: fdmprinter.def.json
+msgctxt "support_tree_max_diameter label"
+msgid "Trunk Diameter"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "machine_gcode_flavor option UltiGCode"
 msgid "Ultimaker 2"
 msgstr "Ultimaker 2"
@@ -5926,12 +6041,12 @@ msgstr "Direkleri kullan"
 #: fdmprinter.def.json
 msgctxt "acceleration_travel_enabled description"
 msgid "Use a separate acceleration rate for travel moves. If disabled, travel moves will use the acceleration value of the printed line at their destination."
-msgstr "Hareket hamleleri için farklı bir ivme oranı kullanın. Devre dışı bırakılırsa hareket hamleleri, varış noktasındaki yazdırılmış hattın ivme değerini kullanır."
+msgstr "Hareket hamleleri için ayrı bir ivme oranı kullanın. Hareket hamleleri devre dışı bırakılırsa varış noktasında yazdırılan hattın ivme değerini kullanır."
 
 #: fdmprinter.def.json
 msgctxt "jerk_travel_enabled description"
 msgid "Use a separate jerk rate for travel moves. If disabled, travel moves will use the jerk value of the printed line at their destination."
-msgstr "Hareket hamleleri için farklı bir salınım oranı kullanın. Devre dışı bırakılırsa hareket hamleleri, varış noktasındaki yazdırılmış hattın salınım değerini kullanır."
+msgstr "Hareket hamleleri için ayrı bir salınım oranı kullanın. Hareket hamleleri devre dışı bırakılırsa varış noktasında yazdırılan hattın ivme değerini kullanır."
 
 #: fdmprinter.def.json
 msgctxt "relative_extrusion description"
@@ -6600,6 +6715,10 @@ msgstr "hareket"
 #~ msgid "Flow compensation: the amount of material extruded is multiplied by this value. Only applies to Wire Printing."
 #~ msgstr "Akış dengeleme: sıkıştırılan malzeme miktarı bu değerle çoğaltılır. Sadece kablo yazdırmaya uygulanır."
 
+#~ msgctxt "support_tree_branch_distance description"
+#~ msgid "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove."
+#~ msgstr "Dalların modele temas ettiklerinde birbirlerine ne kadar uzaklıkta olacakları. Bu mesafenin kısa yapılması ağaç desteğin modele daha fazla noktada temas etmesini sağlayarak daha iyi bir sarkma sunacaktır ancak desteğin sökülmesini de daha güç hale getirecektir."
+
 #~ msgctxt "wireframe_strategy option knot"
 #~ msgid "Knot"
 #~ msgstr "Düğüm"
@@ -6611,6 +6730,10 @@ msgstr "hareket"
 #~ msgctxt "wireframe_enabled description"
 #~ msgid "Print only the outside surface with a sparse webbed structure, printing 'in thin air'. This is realized by horizontally printing the contours of the model at given Z intervals which are connected via upward and diagonally downward lines."
 #~ msgstr "“Belli belirsiz” yazdıran seyrek gövdeli bir yapı ile sadece dış yüzeyi yazdırın. Bu işlem, yukarı ve çapraz olarak aşağı yöndeki hatlar ile bağlı olan verilen Z aralıklarındaki modelin çevresini yatay olarak yazdırarak gerçekleştirilir."
+
+#~ msgctxt "support_tree_collision_resolution description"
+#~ msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
+#~ msgstr "Modele çarpmamak adına çarpışmaları hesaplamak için çözünürlük. Buna düşük bir değerin verilmesi daha az hata çıkaran daha isabetli ağaçların üretilmesini sağlar ancak dilimleme süresini önemli ölçüde artırır."
 
 #~ msgctxt "wireframe_strategy option retract"
 #~ msgid "Retract"
@@ -6640,6 +6763,10 @@ msgstr "hareket"
 #~ msgid "Strategy for making sure two consecutive layers connect at each connection point. Retraction lets the upward lines harden in the right position, but may cause filament grinding. A knot can be made at the end of an upward line to heighten the chance of connecting to it and to let the line cool; however, it may require slow printing speeds. Another strategy is to compensate for the sagging of the top of an upward line; however, the lines won't always fall down as predicted."
 #~ msgstr "Art arda gelen iki katmanın her bir bağlantı noktasına bağlı olduğundan emin olma stratejisi. Geri çekme yukarı yöndeki hatların doğru konumda sertleşmesini sağlar ancak filaman aşınmasına neden olabilir. Düğüme bağlanma şansını artırmak ve hattın soğumasını sağlamak için yukarı yöndeki hattın ucunda bir düğüm oluşturulabilir, fakat bu işlem daha yavaş yazdırma hızı gerektirir. Başka bir strateji de yukarı yöndeki hat ucunun düşmesini dengelemektir, ancak hatlar her zaman beklenildiği gibi düşmez."
 
+#~ msgctxt "support_tree_angle description"
+#~ msgid "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
+#~ msgstr "Dalların açısı. Daha dikey ve daha stabil olmaları için daha düşük bir açı kullanın. Daha fazla erişim için daha yüksek bir açı kullanın."
+
 #~ msgctxt "wireframe_roof_inset description"
 #~ msgid "The distance covered when making a connection from a roof outline inward. Only applies to Wire Printing."
 #~ msgstr "İçerideki ana tavan hattından bağlantı yaparken kapatılan mesafe. Sadece kablo yazdırmaya uygulanır."
@@ -6659,6 +6786,30 @@ msgstr "hareket"
 #~ msgctxt "wireframe_roof_outer_delay description"
 #~ msgid "Time spent at the outer perimeters of hole which is to become a roof. Longer times can ensure a better connection. Only applies to Wire Printing."
 #~ msgstr "Tavanı oluşturacak dış çevresel uzunluklara harcanan zaman. Sürenin daha uzun olması daha iyi bir bağlantı sağlayabilir. Sadece kablo yazdırmaya uygulanır."
+
+#~ msgctxt "support_tree_angle label"
+#~ msgid "Tree Support Branch Angle"
+#~ msgstr "Ağaç Destek Dal Açısı"
+
+#~ msgctxt "support_tree_branch_diameter label"
+#~ msgid "Tree Support Branch Diameter"
+#~ msgstr "Ağaç Destek Dalının Çapı"
+
+#~ msgctxt "support_tree_branch_diameter_angle label"
+#~ msgid "Tree Support Branch Diameter Angle"
+#~ msgstr "Ağaç Destek Dalının Çap Açısı"
+
+#~ msgctxt "support_tree_branch_distance label"
+#~ msgid "Tree Support Branch Distance"
+#~ msgstr "Ağaç Destek Dal Mesafesi"
+
+#~ msgctxt "support_tree_collision_resolution label"
+#~ msgid "Tree Support Collision Resolution"
+#~ msgstr "Ağaç Destek Çarpışma Çözünürlüğü"
+
+#~ msgctxt "support_tree_max_diameter label"
+#~ msgid "Tree Support Trunk Diameter"
+#~ msgstr "Ağaç Desteği Gövde Çapı"
 
 #~ msgctxt "wireframe_bottom_delay label"
 #~ msgid "WP Bottom Delay"

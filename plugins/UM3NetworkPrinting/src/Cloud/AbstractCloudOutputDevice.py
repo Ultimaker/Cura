@@ -96,6 +96,9 @@ class AbstractCloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
     @pyqtSlot(str)
     def printerSelected(self, unique_id: str):
+        # The device that it defers the actual write to isn't hooked up correctly. So we should emit the write signal
+        # here.
+        self.writeStarted.emit(self)
         self._request_write_callback(unique_id, self._nodes)
         if self._on_print_dialog:
             self._on_print_dialog.close()

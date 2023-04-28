@@ -6,6 +6,7 @@ from threading import Lock  # To turn an asynchronous call synchronous.
 from typing import Optional, Callable, Tuple, Dict, Any, List, TYPE_CHECKING
 from urllib.parse import parse_qs, urlparse
 
+from UM.Logger import Logger
 from cura.OAuth2.Models import AuthenticationResponse, ResponseData, HTTP_STATUS
 from UM.i18n import i18nCatalog
 
@@ -70,11 +71,13 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
         code = self._queryGet(query, "code")
         state = self._queryGet(query, "state")
         if state != self.state:
+            Logger.log("w", f"The provided state was not correct. Got {state} and expected {self.state}")
             token_response = AuthenticationResponse(
                 success = False,
                 err_message = catalog.i18nc("@message", "The provided state is not correct.")
             )
         elif code and self.authorization_helpers is not None and self.verification_code is not None:
+            Logger.log("d", "Timeout when authenticating with the account server.")
             token_response = AuthenticationResponse(
                 success = False,
                 err_message = catalog.i18nc("@message", "Timeout when authenticating with the account server.")
@@ -92,6 +95,7 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
 
         elif self._queryGet(query, "error_code") == "user_denied":
             # Otherwise we show an error message (probably the user clicked "Deny" in the auth dialog).
+            Logger.log("d", "User did not give the required permission when authorizing this application")
             token_response = AuthenticationResponse(
                 success = False,
                 err_message = catalog.i18nc("@message", "Please give the required permissions when authorizing this application.")
@@ -99,6 +103,7 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
 
         else:
             # We don't know what went wrong here, so instruct the user to check the logs.
+            Logger.log("w", f"Unexpected error when logging in. Error_code: {self._queryGet(query, 'error_code')}, State: {state}")
             token_response = AuthenticationResponse(
                 success = False,
                 error_message = catalog.i18nc("@message", "Something unexpected happened when trying to log in, please try again.")

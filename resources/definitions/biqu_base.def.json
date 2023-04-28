@@ -63,7 +63,7 @@
         "meshfix_maximum_resolution": { "value": "0.25" },
         "meshfix_maximum_travel_resolution": { "value": "meshfix_maximum_resolution" },
         "minimum_interface_area": { "value": 10 },
-        "minimum_support_area": { "value": 2 },
+        "minimum_support_area": { "value": "2 if support_structure == 'normal' else 0" },
         "optimize_wall_printing_order": { "value": "True" },
         "retraction_combing": { "value": "'off' if retraction_hop_enabled else 'noskin'" },
         "retraction_combing_max_distance": { "value": 30 },

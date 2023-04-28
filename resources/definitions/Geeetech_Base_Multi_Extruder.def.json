@@ -82,7 +82,7 @@
             "value": "material_print_temperature + 5"
         },
         "minimum_interface_area": { "value": 10 },
-        "minimum_support_area": { "value": 2 },
+        "minimum_support_area": { "value": "2 if support_structure == 'normal' else 0" },
         "optimize_wall_printing_order": { "value": true },
         "prime_tower_brim_enable": { "value": true },
         "prime_tower_min_volume":

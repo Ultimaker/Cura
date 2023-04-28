@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-03-28 11:57+0000\n"
+"POT-Creation-Date: 2023-04-28 10:03+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -3768,27 +3768,17 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_angle label"
-msgid "Tree Support Branch Angle"
+msgid "Maximum Branch Angle"
 msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_angle description"
-msgid "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_distance label"
-msgid "Tree Support Branch Distance"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_distance description"
-msgid "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove."
+msgid "The maximum angle of the branches while they grow around the model. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
 msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_branch_diameter label"
-msgid "Tree Support Branch Diameter"
+msgid "Branch Diameter"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -3798,7 +3788,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_max_diameter label"
-msgid "Tree Support Trunk Diameter"
+msgid "Trunk Diameter"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -3808,22 +3798,12 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_branch_diameter_angle label"
-msgid "Tree Support Branch Diameter Angle"
+msgid "Branch Diameter Angle"
 msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_branch_diameter_angle description"
 msgid "The angle of the branches' diameter as they gradually become thicker towards the bottom. An angle of 0 will cause the branches to have uniform thickness over their length. A bit of an angle can increase stability of the tree support."
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_collision_resolution label"
-msgid "Tree Support Collision Resolution"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_collision_resolution description"
-msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -3844,6 +3824,106 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "support_type option everywhere"
 msgid "Everywhere"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle_slow label"
+msgid "Preferred Branch Angle"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle_slow description"
+msgid "The preferred angle of the branches, when they do not have to avoid the model. Use a lower angle to make them more vertical and more stable. Use a higher angle for branches to merge faster."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_max_diameter_increase_by_merges_when_support_to_model label"
+msgid "Diameter Increase To Model"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_max_diameter_increase_by_merges_when_support_to_model description"
+msgid "The most the diameter of a branch that has to connect to the model may increase by merging with branches that could reach the buildplate. Increasing this reduces print time, but increases the area of support that rests on model"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_min_height_to_model label"
+msgid "Minimum Height To Model"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_min_height_to_model description"
+msgid "How tall a branch has to be if it is placed on the model. Prevents small blobs of support. This setting is ignored when a branch is supporting a support roof."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_bp_diameter label"
+msgid "Initial Layer Diameter"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_bp_diameter description"
+msgid "Diameter every branch tries to achieve when reaching the buildplate. Improves bed adhesion."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_top_rate label"
+msgid "Branch Density"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_top_rate description"
+msgid "Adjusts the density of the support structure used to generate the tips of the branches. A higher value results in better overhangs, but the supports are harder to remove. Use Support Roof for very high values or ensure support density is similarly high at the top."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_tip_diameter label"
+msgid "Tip Diameter"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_tip_diameter description"
+msgid "The diameter of the top of the tip of the branches of tree support."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_limit_branch_reach label"
+msgid "Limit Branch Reach"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_limit_branch_reach description"
+msgid "Limit how far each branch should travel from the point it supports. This can make the support more sturdy, but will increase the amount of branches (and because of that material usage/print time)"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_reach_limit label"
+msgid "Optimal Branch Range"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_reach_limit description"
+msgid "A recomendation to how far branches can move from the points they support. Branches can violate this value to reach their destination (buildplate or a flat part of the model). Lowering this value will make the support more sturdy, but increase the amount of branches (and because of that material usage/print time) "
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_rest_preference label"
+msgid "Rest Preference"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_rest_preference description"
+msgid "The preferred placement of the support structures. If structures can't be placed at the preferred location, they will be place elsewhere, even if that means placing them on the model."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_rest_preference option buildplate"
+msgid "Force Only Buildplate"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_rest_preference option graceful"
+msgid "On Model If Necessary"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -4474,6 +4554,41 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "support_bottom_offset description"
 msgid "Amount of offset applied to the floors of the support."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_interface_priority label"
+msgid "Support Interface Priority"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_interface_priority description"
+msgid "How support interface and support will interact when they overlap. Currently only implemented for support roof."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_interface_priority option support_area_overwrite_interface_area"
+msgid "Support preferred"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_interface_priority option interface_area_overwrite_support_area"
+msgid "Interface preferred"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_interface_priority option support_lines_overwrite_interface_area"
+msgid "Support lines preferred"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_interface_priority option interface_lines_overwrite_support_area"
+msgid "Interface lines preferred"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_interface_priority option nothing"
+msgid "Both overlap"
 msgstr ""
 
 #: fdmprinter.def.json

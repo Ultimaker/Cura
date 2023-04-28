@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-03-28 11:57+0000\n"
+"POT-Creation-Date: 2023-04-28 10:03+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -70,7 +70,12 @@ msgstr "Een lijst polygonen met gebieden waarin de printkop niet mag komen."
 #: fdmprinter.def.json
 msgctxt "brim_inside_margin description"
 msgid "A part fully enclosed inside another part can generate an outer brim that touches the inside of the other part. This removes all brim within this distance from internal holes."
-msgstr "Een deel dat volledig in een ander deel is ingesloten, kan een buitenste brim genereren die de binnenkant van het andere deel raakt. Dit verwijdert alle brim binnen deze afstand van interne gaten."
+msgstr "Een deel dat volledig is ingesloten in een ander deel kan een buitenste brim genereren die de binnenkant van het andere deel raakt. Dit verwijdert alle brim binnen deze afstand van de interne gaten."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_reach_limit description"
+msgid "A recomendation to how far branches can move from the points they support. Branches can violate this value to reach their destination (buildplate or a flat part of the model). Lowering this value will make the support more sturdy, but increase the amount of branches (and because of that material usage/print time) "
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_abs label"
@@ -135,6 +140,11 @@ msgstr "Past de vuldichtheid van de print aan."
 msgctxt "support_interface_density description"
 msgid "Adjusts the density of the roofs and floors of the support structure. A higher value results in better overhangs, but the supports are harder to remove."
 msgstr "Past de dichtheid van de daken en vloeren van de supportstructuur aan. Met een hogere waarde krijgt u een betere overhang, maar is de supportstructuur moeilijker te verwijderen."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_top_rate description"
+msgid "Adjusts the density of the support structure used to generate the tips of the branches. A higher value results in better overhangs, but the supports are harder to remove. Use Support Roof for very high values or ensure support density is similarly high at the top."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_infill_rate description"
@@ -279,7 +289,7 @@ msgstr "Pas de extruderoffset toe op het coördinatensysteem. Van toepassing op 
 #: fdmprinter.def.json
 msgctxt "interlocking_enable description"
 msgid "At the locations where models touch, generate an interlocking beam structure. This improves the adhesion between models, especially models printed in different materials."
-msgstr "Genereer op de plaatsen waar modellen elkaar raken een in elkaar grijpende balkstructuur. Dit verbetert de hechting tussen modellen, vooral modellen die in verschillende materialen zijn gedrukt."
+msgstr "Genereer op de plaatsen waar modellen elkaar raken een in elkaar grijpende balkstructuur. Dit verbetert de hechting tussen modellen, vooral modellen die in verschillende materialen zijn geprint."
 
 #: fdmprinter.def.json
 msgctxt "travel_avoid_other_parts label"
@@ -317,6 +327,11 @@ msgid "Both"
 msgstr "Beide"
 
 #: fdmprinter.def.json
+msgctxt "support_interface_priority option nothing"
+msgid "Both overlap"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "bottom_layers label"
 msgid "Bottom Layers"
 msgstr "Bodemlagen"
@@ -340,6 +355,21 @@ msgstr "Verwijderingsbreedte onderste skinlaag"
 msgctxt "bottom_thickness label"
 msgid "Bottom Thickness"
 msgstr "Bodemdikte"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_top_rate label"
+msgid "Branch Density"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_diameter label"
+msgid "Branch Diameter"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_diameter_angle label"
+msgid "Branch Diameter Angle"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_break_preparation_retracted_position label"
@@ -829,7 +859,7 @@ msgstr "Hiermee detecteert u bruggen en past u de instellingen voor de printsnel
 #: fdmprinter.def.json
 msgctxt "inset_direction description"
 msgid "Determines the order in which walls are printed. Printing outer walls earlier helps with dimensional accuracy, as faults from inner walls cannot propagate to the outside. However printing them later allows them to stack better when overhangs are printed. When there is an uneven amount of total innner walls, the 'center last line' is always printed last."
-msgstr "Bepaalt de volgorde waarin de wanden worden geprint. Wanneer u de buitenwanden het eerst print, bevordert u de nauwkeurigheid van de afmetingen, omdat fouten in de binnenwanden niet worden overgedragen op de buitenzijde. Door ze later te printen kunt u echter beter stapelen wanneer de overhangs worden geprint. Bij een oneven aantal binnenwanden wordt de 'middelste laatste regel' altijd als laatste afgedrukt."
+msgstr "Bepaalt de volgorde waarin de wanden worden geprint. Wanneer u de buitenwanden het eerst print, bevordert u de nauwkeurigheid van de afmetingen, omdat fouten in de binnenwanden niet worden overgedragen op de buitenzijde. Door ze later te printen kunt u echter beter stapelen wanneer de overhangs worden geprint. Bij een oneven aantal binnenwanden wordt de 'middelste laatste lijn' altijd als laatste afgedrukt."
 
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order description"
@@ -850,6 +880,16 @@ msgstr "Bepaalt wanneer een bliksemvullaag het model boven de laag moet onderste
 msgctxt "material_diameter label"
 msgid "Diameter"
 msgstr "Diameter"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_max_diameter_increase_by_merges_when_support_to_model label"
+msgid "Diameter Increase To Model"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_bp_diameter description"
+msgid "Diameter every branch tries to achieve when reaching the buildplate. Improves bed adhesion."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "adhesion_type description"
@@ -1299,7 +1339,7 @@ msgstr "Doorvoercompensatie op de supportstructuurlijnen."
 #: fdmprinter.def.json
 msgctxt "wall_0_material_flow_layer_0 description"
 msgid "Flow compensation on the outermost wall line of the first layer."
-msgstr "Doorvoercompensatie op de buitenmuurlijn van de eerste laag."
+msgstr "Stroomcompensatie op de buitenste wandlijn van de eerste laag."
 
 #: fdmprinter.def.json
 msgctxt "wall_0_material_flow description"
@@ -1345,6 +1385,11 @@ msgstr "Afvoersnelheid flush"
 msgctxt "min_wall_line_width description"
 msgid "For thin structures around once or twice the nozzle size, the line widths need to be altered to adhere to the thickness of the model. This setting controls the minimum line width allowed for the walls. The minimum line widths inherently also determine the maximum line widths, since we transition from N to N+1 walls at some geometry thickness where the N walls are wide and the N+1 walls are narrow. The widest possible wall line is twice the Minimum Wall Line Width."
 msgstr "Bij dunne structuren die ongeveer één of tweemaal zo groot als de nozzle zijn, moeten de lijnbreedtes worden aangepast aan de dikte van het model. Met deze instelling beheert u de minimum lijnbreedte die voor wanden is toegestaan. De minimum lijnbreedte bepaalt automatisch ook de maximale lijnbreedte, omdat we bij een bepaalde geometriedikte overgaan van wanden van N naar wanden van N+1, waarbij de N-wanden breed zijn en de N+1-wanden smal. De breedst mogelijke wandlijn is tweemaal de minimumbreedte van de wandlijn."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_rest_preference option buildplate"
+msgid "Force Only Buildplate"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "z_seam_position option front"
@@ -1427,7 +1472,7 @@ msgstr "Rijbrughoogte"
 #: fdmprinter.def.json
 msgctxt "interlocking_enable label"
 msgid "Generate Interlocking Structure"
-msgstr "Genereer een in elkaar grijpende structuur"
+msgstr "Genereer in elkaar grijpende structuur"
 
 #: fdmprinter.def.json
 msgctxt "support_enable label"
@@ -1492,7 +1537,7 @@ msgstr "Geleidelijke supportvulling traptreden"
 #: fdmprinter.def.json
 msgctxt "cool_min_temperature description"
 msgid "Gradually reduce to this temperature when printing at reduced speeds because of minimum layer time."
-msgstr "Verlaag vanwege de minimale laagtijd geleidelijk naar deze temperatuur bij het printen aan lagere snelheden."
+msgstr "Verlaag geleidelijk naar deze temperatuur bij het printen met lagere snelheden vanwege de minimale laagtijd."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1595,11 +1640,6 @@ msgid "Horizontal Scaling Factor Shrinkage Compensation"
 msgstr "Horizontale schaalfactor krimpcompensatie"
 
 #: fdmprinter.def.json
-msgctxt "support_tree_branch_distance description"
-msgid "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove."
-msgstr "Hiermee stelt u in hoe ver de takken moeten uitsteken als ze het model raken. Met een kleinere afstand raakt de boomsupportstructuur het model op meer plaatsen. Hierdoor creëert u een betere overhang maar is de supportstructuur moeilijker te verwijderen."
-
-#: fdmprinter.def.json
 msgctxt "material_break_preparation_retracted_position description"
 msgid "How far the filament can be stretched before it breaks, while heated."
 msgstr "Hoe ver het filament kan worden uitgerekt voordat het afbreekt, wanneer het wordt verwarmd."
@@ -1678,6 +1718,16 @@ msgstr "Hoeveel materiaal moet worden gebruikt om het vorige materiaal uit de no
 msgctxt "machine_extruders_shared_nozzle_initial_retraction description"
 msgid "How much the filament of each extruder is assumed to have been retracted from the shared nozzle tip at the completion of the printer-start gcode script; the value should be equal to or greater than the length of the common part of the nozzle's ducts."
 msgstr "Hoever het filament van elke extruder geacht wordt te zijn ingetrokken vanuit de gedeelde nozzle als het G-code-script voor het opstarten van de printer is uitgevoerd. De waarde mag niet gelijk zijn aan of groter zijn dan de lengte van het gemeenschappelijke deel van de kanalen in de nozzle."
+
+#: fdmprinter.def.json
+msgctxt "support_interface_priority description"
+msgid "How support interface and support will interact when they overlap. Currently only implemented for support roof."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_min_height_to_model description"
+msgid "How tall a branch has to be if it is placed on the model. Prevents small blobs of support. This setting is ignored when a branch is supporting a support roof."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_support_threshold description"
@@ -1857,7 +1907,12 @@ msgstr "Acceleratie Eerste Laag"
 #: fdmprinter.def.json
 msgctxt "skin_material_flow_layer_0 label"
 msgid "Initial Layer Bottom Flow"
-msgstr "Initiële laag bodemstroom"
+msgstr "Initiële laag onderste lijn"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_bp_diameter label"
+msgid "Initial Layer Diameter"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_flow_layer_0 label"
@@ -1985,6 +2040,16 @@ msgid "Inside To Outside"
 msgstr "Van binnen naar buiten"
 
 #: fdmprinter.def.json
+msgctxt "support_interface_priority option interface_lines_overwrite_support_area"
+msgid "Interface lines preferred"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_interface_priority option interface_area_overwrite_support_area"
+msgid "Interface preferred"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "interlocking_beam_layer_count label"
 msgid "Interlocking Beam Layer Count"
 msgstr "Aantal in elkaar grijpende balklagen"
@@ -2007,7 +2072,7 @@ msgstr "In elkaar grijpende diepte"
 #: fdmprinter.def.json
 msgctxt "interlocking_orientation label"
 msgid "Interlocking Structure Orientation"
-msgstr "Oriëntatie van de in elkaar grijpende structuur"
+msgstr "In elkaar grijpende structuuroriëntatie"
 
 #: fdmprinter.def.json
 msgctxt "ironing_only_highest_layer label"
@@ -2138,6 +2203,16 @@ msgstr "Rechtbuighoek bliksemvulling"
 msgctxt "lightning_infill_support_angle label"
 msgid "Lightning Infill Support Angle"
 msgstr "Hoek supportstructuur bliksemvulling"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_limit_branch_reach label"
+msgid "Limit Branch Reach"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_limit_branch_reach description"
+msgid "Limit how far each branch should travel from the point it supports. This can make the support more sturdy, but will increase the amount of branches (and because of that material usage/print time)"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "cutting_mesh description"
@@ -2323,6 +2398,11 @@ msgstr "Maximale Acceleratie Y"
 msgctxt "machine_max_acceleration_z label"
 msgid "Maximum Acceleration Z"
 msgstr "Maximale Acceleratie Z"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle label"
+msgid "Maximum Branch Angle"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "meshfix_maximum_deviation label"
@@ -2513,6 +2593,11 @@ msgstr "Minimum elementgrootte"
 msgctxt "machine_minimum_feedrate label"
 msgid "Minimum Feedrate"
 msgstr "Minimale Doorvoersnelheid"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_min_height_to_model label"
+msgid "Minimum Height To Model"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "min_infill_area label"
@@ -2825,6 +2910,11 @@ msgid "Offset with Extruder"
 msgstr "Offset met extruder"
 
 #: fdmprinter.def.json
+msgctxt "support_tree_rest_preference option graceful"
+msgid "On Model If Necessary"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "print_sequence option one_at_a_time"
 msgid "One at a Time"
 msgstr "Eén voor Eén"
@@ -2853,6 +2943,11 @@ msgstr "Hoek Uitloopscherm"
 msgctxt "ooze_shield_dist label"
 msgid "Ooze Shield Distance"
 msgstr "Afstand Uitloopscherm"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_reach_limit label"
+msgid "Optimal Branch Range"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "optimize_wall_printing_order label"
@@ -2958,6 +3053,11 @@ msgstr "Percentage ventilatorsnelheid tijdens het printen van de derde brugskinl
 msgctxt "minimum_polygon_circumference description"
 msgid "Polygons in sliced layers that have a circumference smaller than this amount will be filtered out. Lower values lead to higher resolution mesh at the cost of slicing time. It is meant mostly for high resolution SLA printers and very tiny 3D models with a lot of details."
 msgstr "Polygonen in geslicete lagen, die een kleinere omtrek hebben dan deze waarde, worden eruit gefilterd. Bij lagere waarden krijgt het raster een hogere resolutie, waardoor het slicen langer duurt. Dit is voornamelijk bedoeld voor SLA-printers met een hoge resolutie en zeer kleine 3D-modellen die veel details bevatten."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle_slow label"
+msgid "Preferred Branch Angle"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "wall_transition_filter_deviation description"
@@ -3405,9 +3505,9 @@ msgid "Replaces the outermost part of the top/bottom pattern with a number of co
 msgstr "Vervang het buitenste gedeelte van het patroon boven-/onderkant door een aantal concentrische lijnen. Het gebruik van 1 of 2 lijnen verbetert daken die op vulmateriaal beginnen."
 
 #: fdmprinter.def.json
-msgctxt "support_tree_collision_resolution description"
-msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
-msgstr "Resolutie voor het berekenen van botsingen om te voorkomen dat het model wordt geraakt. Als u deze optie op een lagere waarde instelt, creëert u nauwkeurigere bomen die minder vaak fouten vertonen, maar wordt de slicetijd aanzienlijk verlengd."
+msgctxt "support_tree_rest_preference label"
+msgid "Rest Preference"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"
@@ -3662,7 +3762,7 @@ msgstr "Maximale grootte kleine gaten"
 #: fdmprinter.def.json
 msgctxt "cool_min_temperature label"
 msgid "Small Layer Printing Temperature"
-msgstr "De printtemperatuur van kleine lagens"
+msgstr "Printtemperatuur van de kleine laag"
 
 #: fdmprinter.def.json
 msgctxt "small_skin_width label"
@@ -3802,7 +3902,7 @@ msgstr "Afstand van Onderkant Supportstructuur"
 #: fdmprinter.def.json
 msgctxt "support_bottom_wall_count label"
 msgid "Support Bottom Wall Line Count"
-msgstr "Aantal wandlijnen van de ondersteuningsonderzijde"
+msgstr "Aantal wandlijnen van de ondersteuningsbodem"
 
 #: fdmprinter.def.json
 msgctxt "support_brim_line_count label"
@@ -3985,6 +4085,11 @@ msgid "Support Interface Pattern"
 msgstr "Patroon Verbindingsstructuur"
 
 #: fdmprinter.def.json
+msgctxt "support_interface_priority label"
+msgid "Support Interface Priority"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "support_interface_skip_height label"
 msgid "Support Interface Resolution"
 msgstr "Resolutie Verbindingsstructuur"
@@ -4002,7 +4107,7 @@ msgstr "Dikte Verbindingsstructuur"
 #: fdmprinter.def.json
 msgctxt "support_interface_wall_count label"
 msgid "Support Interface Wall Line Count"
-msgstr "Aantal wandlijnen van de ondersteuningsinterface"
+msgstr "Ondersteuning Interface Wandlijn"
 
 #: fdmprinter.def.json
 msgctxt "jerk_support label"
@@ -4107,7 +4212,7 @@ msgstr "Dikte Supportdak"
 #: fdmprinter.def.json
 msgctxt "support_roof_wall_count label"
 msgid "Support Roof Wall Line Count"
-msgstr "Aantal wandlijnen van het ondersteuningsdak"
+msgstr "Aantal wandlijnen ondersteuningsdak"
 
 #: fdmprinter.def.json
 msgctxt "speed_support label"
@@ -4153,6 +4258,16 @@ msgstr "X-/Y-afstand Supportstructuur"
 msgctxt "support_z_distance label"
 msgid "Support Z Distance"
 msgstr "Z-afstand Supportstructuur"
+
+#: fdmprinter.def.json
+msgctxt "support_interface_priority option support_lines_overwrite_interface_area"
+msgid "Support lines preferred"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_interface_priority option support_area_overwrite_interface_area"
+msgid "Support preferred"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_supported_skin_fan_speed label"
@@ -4395,11 +4510,6 @@ msgid "The angle of the branches' diameter as they gradually become thicker towa
 msgstr "De hoek van de diameter van de takken terwijl ze naar beneden toe geleidelijk dikker worden. Met de hoekinstelling 0 zijn de takken over de gehele lengte even dik. Een kleine hoek verbetert de stabiliteit van de boomsupportstructuur."
 
 #: fdmprinter.def.json
-msgctxt "support_tree_angle description"
-msgid "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
-msgstr "Hiermee stelt u de hoek van de takken in. Met een kleinere hoek worden de takken verticaler en stabieler. Met een grotere hoek hebben ze een groter bereik."
-
-#: fdmprinter.def.json
 msgctxt "support_conical_angle description"
 msgid "The angle of the tilt of conical support. With 0 degrees being vertical, and 90 degrees being horizontal. Smaller angles cause the support to be more sturdy, but consist of more material. Negative angles cause the base of the support to be wider than the top."
 msgstr "De hoek van de schuine kant van de conische supportstructuur, waarbij 0 graden verticaal en 90 horizontaal is. Met een kleinere hoek is de supportstructuur steviger, maar bestaat deze uit meer materiaal. Met een negatieve hoek is het grondvlak van de supportstructuur breder dan de top."
@@ -4470,6 +4580,11 @@ msgid "The diameter of the thinnest branches of tree support. Thicker branches a
 msgstr "Hiermee stelt u de diameter in van de dunste takken van de boomsupportstructuur. Dikkere takken zijn steviger. Takken die dichter bij de stam liggen, zijn dikker dan dit."
 
 #: fdmprinter.def.json
+msgctxt "support_tree_tip_diameter description"
+msgid "The diameter of the top of the tip of the branches of tree support."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "machine_feeder_wheel_diameter description"
 msgid "The diameter of the wheel that drives the material in the feeder."
 msgstr "De diameter van het tandwiel waarmee het materiaal in de feeder wordt gevoerd."
@@ -4477,7 +4592,7 @@ msgstr "De diameter van het tandwiel waarmee het materiaal in de feeder wordt ge
 #: fdmprinter.def.json
 msgctxt "support_tree_max_diameter description"
 msgid "The diameter of the widest branches of tree support. A thicker trunk is more sturdy; a thinner trunk takes up less space on the build plate."
-msgstr "De diameter van de breedste takken boomondersteuning. Een dikkere kofferbak is steviger; een dunnere kofferbak neemt minder ruimte in op het platform."
+msgstr "De diameter van de breedste takken van de boomondersteuning. Een dikkere tak is steviger; een dunnere tak neemt minder ruimte in beslag op het platform."
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation_step description"
@@ -4864,6 +4979,11 @@ msgid "The maximum angle of overhangs after the they have been made printable. A
 msgstr "De maximale hoek van een overhang nadat deze printbaar is gemaakt. Bij een hoek van 0° worden alle overhangende gedeelten vervangen door een deel van het model dat is verbonden met het platform; bij een hoek van 90° wordt het model niet gewijzigd."
 
 #: fdmprinter.def.json
+msgctxt "support_tree_angle description"
+msgid "The maximum angle of the branches while they grow around the model. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "conical_overhang_hole_size description"
 msgid "The maximum area of a hole in the base of the model before it's removed by Make Overhang Printable.  Holes smaller than this will be retained.  A value of 0 mm² will fill all holes in the models base."
 msgstr "Het maximale oppervlak van een gat in de basis van het model voordat het wordt verwijderd om de overhang printbaar te maken.  Gaten die kleiner zijn dan dit oppervlak worden behouden.  Bij een waarde van 0 mm² worden alle gaten in de basis van het model gevuld."
@@ -5041,7 +5161,7 @@ msgstr "De minimale lengte van de skirt of de brim. Als deze minimumlengte niet 
 #: fdmprinter.def.json
 msgctxt "min_odd_wall_line_width description"
 msgid "The minimum line width for middle line gap filler polyline walls. This setting determines at which model thickness we switch from printing two wall lines, to printing two outer walls and a single central wall in the middle. A higher Minimum Odd Wall Line Width leads to a higher maximum even wall line width. The maximum odd wall line width is calculated as 2 * Minimum Even Wall Line Width."
-msgstr "De minimum lijnbreedte voor opvuller voor ruimte middelste lijn bij wanden met meerdere lijnen. Deze instelling bepaalt bij welke modeldikte we overschakelen van het printen van twee wandlijnen naar het printen van twee buitenwanden en één centrale wand in het midden. Een hogere Minimum breedte ongelijkmatige wandlijn leidt naar een hogere maximale lijnbreedte bij een gelijkmatige wand. De maximum breedte ongelijkmatige wandlijn wordt berekend als 2 * de Minimum breedte gelijkmatige wandlijn."
+msgstr "De minimum lijnbreedte voor opvuller voor ruimte middelste lijn bij muren met meerdere lijnen. Deze instelling bepaalt bij welke modeldikte we overschakelen van het printen van twee wandlijnen naar het printen van twee buitenwanden en één centrale wand in het midden. Een hogere Minimum breedte ongelijkmatige wandlijn leidt naar een hogere maximale lijnbreedte bij een gelijkmatige wand. De maximale breedte ongelijkmatige wandlijn wordt berekend als 2 * Minimum breedte gelijkmatige wandlijn."
 
 #: fdmprinter.def.json
 msgctxt "min_even_wall_line_width description"
@@ -5077,6 +5197,11 @@ msgstr "De tijd die minimaal aan het printen van een laag wordt besteed. Hierdoo
 msgctxt "prime_tower_min_volume description"
 msgid "The minimum volume for each layer of the prime tower in order to purge enough material."
 msgstr "Het minimale volume voor elke laag van de primepijler om voldoende materiaal te zuiveren."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_max_diameter_increase_by_merges_when_support_to_model description"
+msgid "The most the diameter of a branch that has to connect to the model may increase by merging with branches that could reach the buildplate. Increasing this reduces print time, but increases the area of support that rests on model"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_name description"
@@ -5156,17 +5281,17 @@ msgstr "Het aantal wanden rond de vulling van de supportstructuur. Met een extra
 #: fdmprinter.def.json
 msgctxt "support_bottom_wall_count description"
 msgid "The number of walls with which to surround support interface floor. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "Het aantal muren waarmee de ondersteuningsinterfacevloer kan worden omgeven. Door een muur toe te voegen, kan de ondersteuningsprint betrouwbaarder worden gemaakt en kunnen overhangen beter worden ondersteund, maar neemt de printtijd en het gebruikte materiaal toe."
+msgstr "Het aantal muren waarmee de ondersteuningsinterfacevloer moet worden omgeven. Door een muur toe te voegen, kan de ondersteuningsprint betrouwbaarder worden gemaakt en kunnen overhangen beter worden ondersteund, maar neemt de printtijd en het gebruikte materiaal toe."
 
 #: fdmprinter.def.json
 msgctxt "support_roof_wall_count description"
 msgid "The number of walls with which to surround support interface roof. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "Het aantal muren waarmee het dak van de ondersteuningsinterface moet worden omgeven. Door een muur toe te voegen, kan de ondersteuningsprint betrouwbaarder worden gemaakt en kunnen overhangen beter worden ondersteund, maar neemt de printtijd en het gebruikte materiaal toe."
+msgstr "Het aantal muren waarmee het ondersteuningsinterfacedak kan worden omgeven. Door een muur toe te voegen, kan de ondersteuningsprint betrouwbaarder worden gemaakt en kunnen overhangen beter worden ondersteund, maar neemt de printtijd en het gebruikte materiaal toe."
 
 #: fdmprinter.def.json
 msgctxt "support_interface_wall_count description"
 msgid "The number of walls with which to surround support interface. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "Het aantal muren waarmee de ondersteuningsinterface kan worden omgeven. Door een muur toe te voegen, kan de ondersteuningsprint betrouwbaarder worden gemaakt en kunnen overhangen beter worden ondersteund, maar neemt de printtijd en het gebruikte materiaal toe."
+msgstr "Het aantal muren waarmee de ondersteuningsinterface moet worden omgeven. Door een muur toe te voegen, kan de ondersteuningsprint betrouwbaarder worden gemaakt en kunnen overhangen beter worden ondersteund, maar neemt de printtijd en het gebruikte materiaal toe."
 
 #: fdmprinter.def.json
 msgctxt "wall_distribution_count description"
@@ -5232,6 +5357,16 @@ msgstr "Het patroon waarmee de daken van de supportstructuur worden geprint."
 msgctxt "z_seam_position description"
 msgid "The position near where to start printing each part in a layer."
 msgstr "De positie nabij waar met het printen van elk deel van een laag moet worden begonnen."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle_slow description"
+msgid "The preferred angle of the branches, when they do not have to avoid the model. Use a lower angle to make them more vertical and more stable. Use a higher angle for branches to merge faster."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_rest_preference description"
+msgid "The preferred placement of the support structures. If structures can't be placed at the preferred location, they will be place elsewhere, even if that means placing them on the model."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "jerk_layer_0 description"
@@ -5644,6 +5779,11 @@ msgid "This will create a wall around the model, which traps (hot) air and shiel
 msgstr "Maak een wand rond het model. Deze vangt (warme) lucht en biedt bescherming tegen externe luchtbewegingen. De optie is met name geschikt voor materialen die snel kromtrekken."
 
 #: fdmprinter.def.json
+msgctxt "support_tree_tip_diameter label"
+msgid "Tip Diameter"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage_xy description"
 msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor in the XY-direction (horizontally)."
 msgstr "Om te compenseren voor het krimpen van het materiaal wanneer het afkoelt, wordt het model met deze factor geschaald in de richting XY (horizontaal)."
@@ -5839,36 +5979,6 @@ msgid "Tree"
 msgstr "Boom"
 
 #: fdmprinter.def.json
-msgctxt "support_tree_angle label"
-msgid "Tree Support Branch Angle"
-msgstr "Hoek van takken van boomsupportstructuur"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_diameter label"
-msgid "Tree Support Branch Diameter"
-msgstr "Takdiameter van boomsupportstructuur"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_diameter_angle label"
-msgid "Tree Support Branch Diameter Angle"
-msgstr "Hoek van takdiameter van boomsupportstructuur"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_distance label"
-msgid "Tree Support Branch Distance"
-msgstr "Takafstand van boomsupportstructuur"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_collision_resolution label"
-msgid "Tree Support Collision Resolution"
-msgstr "Resolutie bij botsingen van de boomsupportstructuur"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_max_diameter label"
-msgid "Tree Support Trunk Diameter"
-msgstr "Takdiameter van boomsupportstructuur"
-
-#: fdmprinter.def.json
 msgctxt "infill_pattern option trihexagon"
 msgid "Tri-Hexagon"
 msgstr "Tri-hexagonaal"
@@ -5899,6 +6009,11 @@ msgid "Triangles"
 msgstr "Driehoeken"
 
 #: fdmprinter.def.json
+msgctxt "support_tree_max_diameter label"
+msgid "Trunk Diameter"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "machine_gcode_flavor option UltiGCode"
 msgid "Ultimaker 2"
 msgstr "Ultimaker 2"
@@ -5926,12 +6041,12 @@ msgstr "Pijlers Gebruiken"
 #: fdmprinter.def.json
 msgctxt "acceleration_travel_enabled description"
 msgid "Use a separate acceleration rate for travel moves. If disabled, travel moves will use the acceleration value of the printed line at their destination."
-msgstr "Gebruik een andere acceleratiesnelheid voor bewegingen. Indien uitgeschakeld, gebruikt de beweging de acceleratiewaarde van de geprinte lijn op de bestemming."
+msgstr "Gebruik een aparte acceleratiesnelheid voor verplaatsingen. Indien uitgeschakeld, gebruikt de beweging de acceleratiewaarde van de geprinte lijn op de bestemming."
 
 #: fdmprinter.def.json
 msgctxt "jerk_travel_enabled description"
 msgid "Use a separate jerk rate for travel moves. If disabled, travel moves will use the jerk value of the printed line at their destination."
-msgstr "Gebruik een andere bewegingsschok voor bewegingen. Indien uitgeschakeld, gebruikt de beweging de bewegingsschokwaarde van de geprinte lijn op de bestemming."
+msgstr "Gebruik een apart schokpercentage voor verplaatsingen. Indien uitgeschakeld, gebruikt de beweging de schokwaarde van de geprinte lijn op de bestemming."
 
 #: fdmprinter.def.json
 msgctxt "relative_extrusion description"
@@ -6548,14 +6663,6 @@ msgctxt "travel description"
 msgid "travel"
 msgstr "beweging"
 
-#~ msgctxt "material_flow_dependent_temperature label"
-#~ msgid "Auto Temperature"
-#~ msgstr "Automatische Temperatuurinstelling"
-
-#~ msgctxt "material_flow_dependent_temperature description"
-#~ msgid "Change the temperature for each layer automatically with the average flow speed of that layer."
-#~ msgstr "Pas de temperatuur voor elke laag automatisch aan aan de gemiddelde doorvoersnelheid van de laag."
-
 #~ msgctxt "wireframe_strategy option compensate"
 #~ msgid "Compensate"
 #~ msgstr "Compenseren"
@@ -6608,17 +6715,13 @@ msgstr "beweging"
 #~ msgid "Flow compensation: the amount of material extruded is multiplied by this value. Only applies to Wire Printing."
 #~ msgstr "Doorvoercompensatie: de hoeveelheid materiaal die wordt doorgevoerd, wordt vermenigvuldigd met deze waarde. Alleen van toepassing op Draadprinten."
 
+#~ msgctxt "support_tree_branch_distance description"
+#~ msgid "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove."
+#~ msgstr "Hiermee stelt u in hoe ver de takken moeten uitsteken als ze het model raken. Met een kleinere afstand raakt de boomsupportstructuur het model op meer plaatsen. Hierdoor creëert u een betere overhang maar is de supportstructuur moeilijker te verwijderen."
+
 #~ msgctxt "wireframe_strategy option knot"
 #~ msgid "Knot"
 #~ msgstr "Verdikken"
-
-#~ msgctxt "limit_support_retractions label"
-#~ msgid "Limit Support Retractions"
-#~ msgstr "Supportintrekkingen beperken"
-
-#~ msgctxt "limit_support_retractions description"
-#~ msgid "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excessive stringing within the support structure."
-#~ msgstr "Sla intrekking over tijdens bewegingen in een rechte lijn van support naar support. Deze instelling verkort de printtijd, maar kan leiden tot overmatige draadvorming in de supportstructuur."
 
 #~ msgctxt "wireframe_straight_before_down description"
 #~ msgid "Percentage of a diagonally downward line which is covered by a horizontal line piece. This can prevent sagging of the top most point of upward lines. Only applies to Wire Printing."
@@ -6627,6 +6730,10 @@ msgstr "beweging"
 #~ msgctxt "wireframe_enabled description"
 #~ msgid "Print only the outside surface with a sparse webbed structure, printing 'in thin air'. This is realized by horizontally printing the contours of the model at given Z intervals which are connected via upward and diagonally downward lines."
 #~ msgstr "Print alleen de buitenkant van het object in een dunne webstructuur, 'in het luchtledige'. Hiervoor worden de contouren van het model horizontaal geprint op bepaalde Z-intervallen die door middel van opgaande en diagonaal neergaande lijnen zijn verbonden."
+
+#~ msgctxt "support_tree_collision_resolution description"
+#~ msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
+#~ msgstr "Resolutie voor het berekenen van botsingen om te voorkomen dat het model wordt geraakt. Als u deze optie op een lagere waarde instelt, creëert u nauwkeurigere bomen die minder vaak fouten vertonen, maar wordt de slicetijd aanzienlijk verlengd."
 
 #~ msgctxt "wireframe_strategy option retract"
 #~ msgid "Retract"
@@ -6656,6 +6763,10 @@ msgstr "beweging"
 #~ msgid "Strategy for making sure two consecutive layers connect at each connection point. Retraction lets the upward lines harden in the right position, but may cause filament grinding. A knot can be made at the end of an upward line to heighten the chance of connecting to it and to let the line cool; however, it may require slow printing speeds. Another strategy is to compensate for the sagging of the top of an upward line; however, the lines won't always fall down as predicted."
 #~ msgstr "Strategie om ervoor te zorgen dat twee opeenvolgende lagen bij elk verbindingspunt op elkaar aansluiten. Met intrekken kunnen de opwaartse lijnen in de juiste positie uitharden, maar kan het filament gaan haperen. Aan het eind van een opwaartse lijn kan een verdikking worden gemaakt om een volgende lijn hierop eenvoudiger te kunnen laten aansluiten en om de lijn te laten afkoelen. Hiervoor is mogelijk een lage printsnelheid vereist. U kunt echter ook het doorzakken van de bovenkant van een opwaartse lijn compenseren. De lijnen vallen echter niet altijd zoals verwacht."
 
+#~ msgctxt "support_tree_angle description"
+#~ msgid "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
+#~ msgstr "Hiermee stelt u de hoek van de takken in. Met een kleinere hoek worden de takken verticaler en stabieler. Met een grotere hoek hebben ze een groter bereik."
+
 #~ msgctxt "wireframe_roof_inset description"
 #~ msgid "The distance covered when making a connection from a roof outline inward. Only applies to Wire Printing."
 #~ msgstr "De afstand die wordt overbrugt wanneer vanaf een dakcontour een verbinding naar binnen wordt gemaakt. Alleen van toepassing op Draadprinten."
@@ -6675,6 +6786,30 @@ msgstr "beweging"
 #~ msgctxt "wireframe_roof_outer_delay description"
 #~ msgid "Time spent at the outer perimeters of hole which is to become a roof. Longer times can ensure a better connection. Only applies to Wire Printing."
 #~ msgstr "De wachttijd aan de buitenkant van een gat dat een dak moet gaan vormen. Een langere wachttijd kan zorgen voor een betere aansluiting. Alleen van toepassing op Draadprinten."
+
+#~ msgctxt "support_tree_angle label"
+#~ msgid "Tree Support Branch Angle"
+#~ msgstr "Hoek van takken van boomsupportstructuur"
+
+#~ msgctxt "support_tree_branch_diameter label"
+#~ msgid "Tree Support Branch Diameter"
+#~ msgstr "Takdiameter van boomsupportstructuur"
+
+#~ msgctxt "support_tree_branch_diameter_angle label"
+#~ msgid "Tree Support Branch Diameter Angle"
+#~ msgstr "Hoek van takdiameter van boomsupportstructuur"
+
+#~ msgctxt "support_tree_branch_distance label"
+#~ msgid "Tree Support Branch Distance"
+#~ msgstr "Takafstand van boomsupportstructuur"
+
+#~ msgctxt "support_tree_collision_resolution label"
+#~ msgid "Tree Support Collision Resolution"
+#~ msgstr "Resolutie bij botsingen van de boomsupportstructuur"
+
+#~ msgctxt "support_tree_max_diameter label"
+#~ msgid "Tree Support Trunk Diameter"
+#~ msgstr "Takdiameter van boomsupportstructuur"
 
 #~ msgctxt "wireframe_bottom_delay label"
 #~ msgid "WP Bottom Delay"

@@ -183,7 +183,7 @@ jobs:
                                     try:
                                         if "remotes/origin" in branch.abspath:
                                             b_version = Version(branch.name.split("/")[-1])
-                                            if b_version < Version("10.0.0") and b_version > max_branches_version:
+                                            if b_version <  Version("6.0.0") and b_version > max_branches_version:
                                                 max_branches_version = b_version
                                                 branches_no_commits = repo.commit().count() - branch.commit.count()
                                     except:

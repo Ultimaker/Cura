@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-03-28 11:57+0000\n"
+"POT-Creation-Date: 2023-04-28 10:03+0000\n"
 "PO-Revision-Date: 2022-01-02 20:24+0800\n"
 "Last-Translator: Valen Chang  <carf17771@gmail.com>\n"
 "Language-Team: Valen Chang <carf17771@gmail.com>\n"
@@ -78,6 +78,11 @@ msgid "A part fully enclosed inside another part can generate an outer brim that
 msgstr ""
 
 #: fdmprinter.def.json
+msgctxt "support_tree_branch_reach_limit description"
+msgid "A recomendation to how far branches can move from the points they support. Branches can violate this value to reach their destination (buildplate or a flat part of the model). Lowering this value will make the support more sturdy, but increase the amount of branches (and because of that material usage/print time) "
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "extruder_prime_pos_abs label"
 msgid "Absolute Extruder Prime Position"
 msgstr "擠出機使用絕對位置"
@@ -140,6 +145,11 @@ msgstr "調整列印填充的密度。"
 msgctxt "support_interface_density description"
 msgid "Adjusts the density of the roofs and floors of the support structure. A higher value results in better overhangs, but the supports are harder to remove."
 msgstr "調整支撐結構頂板和底板的密度。較高的值會實現更好的突出部分，但支撐將更加難以移除。"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_top_rate description"
+msgid "Adjusts the density of the support structure used to generate the tips of the branches. A higher value results in better overhangs, but the supports are harder to remove. Use Support Roof for very high values or ensure support density is similarly high at the top."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_infill_rate description"
@@ -322,6 +332,11 @@ msgid "Both"
 msgstr "兩者"
 
 #: fdmprinter.def.json
+msgctxt "support_interface_priority option nothing"
+msgid "Both overlap"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "bottom_layers label"
 msgid "Bottom Layers"
 msgstr "底部層數"
@@ -345,6 +360,21 @@ msgstr "底部表層移除寬度"
 msgctxt "bottom_thickness label"
 msgid "Bottom Thickness"
 msgstr "底部厚度"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_top_rate label"
+msgid "Branch Density"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_diameter label"
+msgid "Branch Diameter"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_diameter_angle label"
+msgid "Branch Diameter Angle"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_break_preparation_retracted_position label"
@@ -857,6 +887,16 @@ msgid "Diameter"
 msgstr "直徑"
 
 #: fdmprinter.def.json
+msgctxt "support_tree_max_diameter_increase_by_merges_when_support_to_model label"
+msgid "Diameter Increase To Model"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_bp_diameter description"
+msgid "Diameter every branch tries to achieve when reaching the buildplate. Improves bed adhesion."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "adhesion_type description"
 msgid "Different options that help to improve both priming your extrusion and adhesion to the build plate. Brim adds a single layer flat area around the base of your model to prevent warping. Raft adds a thick grid with a roof below the model. Skirt is a line printed around the model, but not connected to the model."
 msgstr "幫助改善擠出裝填以及與列印平台附著的不同選項。邊緣會在模型基座周圍添加單層平面區域，以防止翹曲。木筏會在模型底下添加一個有頂板的厚網格。外圍是在模型四周列印的一條線，但並不與模型連接。"
@@ -1352,6 +1392,11 @@ msgid "For thin structures around once or twice the nozzle size, the line widths
 msgstr ""
 
 #: fdmprinter.def.json
+msgctxt "support_tree_rest_preference option buildplate"
+msgid "Force Only Buildplate"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "z_seam_position option front"
 msgid "Front"
 msgstr "前方"
@@ -1600,11 +1645,6 @@ msgid "Horizontal Scaling Factor Shrinkage Compensation"
 msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "support_tree_branch_distance description"
-msgid "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove."
-msgstr "樹支與模型接觸的點與點之間的間隔距離。較小的距離會讓支撐和模型有較多的接觸點，會有較佳的突出部分但支撐也較難移除。"
-
-#: fdmprinter.def.json
 msgctxt "material_break_preparation_retracted_position description"
 msgid "How far the filament can be stretched before it breaks, while heated."
 msgstr "在加熱時，線材在脆斷前可以拉伸多長的距離。"
@@ -1683,6 +1723,16 @@ msgstr "切換到另一線材時，要使用多少線材（以線材長度計算
 msgctxt "machine_extruders_shared_nozzle_initial_retraction description"
 msgid "How much the filament of each extruder is assumed to have been retracted from the shared nozzle tip at the completion of the printer-start gcode script; the value should be equal to or greater than the length of the common part of the nozzle's ducts."
 msgstr "在完成\"Printer-start G-code\"後，各擠出機將從共用噴頭回抽多少的線材。此數值應等於或大於噴頭的共用管道長度。"
+
+#: fdmprinter.def.json
+msgctxt "support_interface_priority description"
+msgid "How support interface and support will interact when they overlap. Currently only implemented for support roof."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_min_height_to_model description"
+msgid "How tall a branch has to be if it is placed on the model. Prevents small blobs of support. This setting is ignored when a branch is supporting a support roof."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_support_threshold description"
@@ -1865,6 +1915,11 @@ msgid "Initial Layer Bottom Flow"
 msgstr ""
 
 #: fdmprinter.def.json
+msgctxt "support_tree_bp_diameter label"
+msgid "Initial Layer Diameter"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "material_flow_layer_0 label"
 msgid "Initial Layer Flow"
 msgstr "起始層流量"
@@ -1987,6 +2042,16 @@ msgstr "內嵌是套用在外壁路徑上的功能。如果外壁小於噴頭，
 #: fdmprinter.def.json
 msgctxt "inset_direction option inside_out"
 msgid "Inside To Outside"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_interface_priority option interface_lines_overwrite_support_area"
+msgid "Interface lines preferred"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_interface_priority option interface_area_overwrite_support_area"
+msgid "Interface preferred"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -2143,6 +2208,16 @@ msgstr "閃電形填充層間垂直堆疊角度"
 msgctxt "lightning_infill_support_angle label"
 msgid "Lightning Infill Support Angle"
 msgstr "閃電形填充支撐堆疊角度"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_limit_branch_reach label"
+msgid "Limit Branch Reach"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_limit_branch_reach description"
+msgid "Limit how far each branch should travel from the point it supports. This can make the support more sturdy, but will increase the amount of branches (and because of that material usage/print time)"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "cutting_mesh description"
@@ -2328,6 +2403,11 @@ msgstr "Y 軸最大加速度"
 msgctxt "machine_max_acceleration_z label"
 msgid "Maximum Acceleration Z"
 msgstr "Z 軸最大加速度"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle label"
+msgid "Maximum Branch Angle"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "meshfix_maximum_deviation label"
@@ -2518,6 +2598,11 @@ msgstr ""
 msgctxt "machine_minimum_feedrate label"
 msgid "Minimum Feedrate"
 msgstr "最小進料速率"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_min_height_to_model label"
+msgid "Minimum Height To Model"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "min_infill_area label"
@@ -2830,6 +2915,11 @@ msgid "Offset with Extruder"
 msgstr "擠出機偏移量"
 
 #: fdmprinter.def.json
+msgctxt "support_tree_rest_preference option graceful"
+msgid "On Model If Necessary"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "print_sequence option one_at_a_time"
 msgid "One at a Time"
 msgstr "排隊列印"
@@ -2858,6 +2948,11 @@ msgstr "擦拭牆角度"
 msgctxt "ooze_shield_dist label"
 msgid "Ooze Shield Distance"
 msgstr "擦拭牆距離"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_reach_limit label"
+msgid "Optimal Branch Range"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "optimize_wall_printing_order label"
@@ -2963,6 +3058,11 @@ msgstr "列印橋樑表層第三層時，風扇轉速的百分比。"
 msgctxt "minimum_polygon_circumference description"
 msgid "Polygons in sliced layers that have a circumference smaller than this amount will be filtered out. Lower values lead to higher resolution mesh at the cost of slicing time. It is meant mostly for high resolution SLA printers and very tiny 3D models with a lot of details."
 msgstr "切片層中周長小於此值的多邊形將被過濾掉。設定較低的值會花費較多的切片時間，以獲得較高解析度的網格。它主要用於高解析度的 SLA 印表機和具有大量細節的微小 3D 模型。"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle_slow label"
+msgid "Preferred Branch Angle"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "wall_transition_filter_deviation description"
@@ -3410,9 +3510,9 @@ msgid "Replaces the outermost part of the top/bottom pattern with a number of co
 msgstr "用多個同心線代替頂部/底部列印樣式的最外面部分。使用一條或兩條線可以改善列印在填充上的頂板。"
 
 #: fdmprinter.def.json
-msgctxt "support_tree_collision_resolution description"
-msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
-msgstr "計算避免碰撞模型的計算精度。設定較低的值可產生較精確的樹狀支撐，這樣的支撐問題較少但會嚴重的增加切片所需的時間。"
+msgctxt "support_tree_rest_preference label"
+msgid "Rest Preference"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"
@@ -3992,6 +4092,11 @@ msgid "Support Interface Pattern"
 msgstr "支撐介面列印樣式"
 
 #: fdmprinter.def.json
+msgctxt "support_interface_priority label"
+msgid "Support Interface Priority"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "support_interface_skip_height label"
 msgid "Support Interface Resolution"
 msgstr "支撐介面解析度"
@@ -4162,6 +4267,16 @@ msgstr "支撐 X/Y 間距"
 msgctxt "support_z_distance label"
 msgid "Support Z Distance"
 msgstr "支撐 Z 間距"
+
+#: fdmprinter.def.json
+msgctxt "support_interface_priority option support_lines_overwrite_interface_area"
+msgid "Support lines preferred"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_interface_priority option support_area_overwrite_interface_area"
+msgid "Support preferred"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_supported_skin_fan_speed label"
@@ -4404,11 +4519,6 @@ msgid "The angle of the branches' diameter as they gradually become thicker towa
 msgstr "樹枝向底部逐漸變粗時，外徑變化的角度。設為 0 可讓整條樹枝的粗細一致, 而有點角度可增加樹狀支撐的穩定性。"
 
 #: fdmprinter.def.json
-msgctxt "support_tree_angle description"
-msgid "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
-msgstr "樹枝的角度。使用較小的角度讓樹枝較垂直且較平穩。使用較大的角度則可以支撐較大的範圍。"
-
-#: fdmprinter.def.json
 msgctxt "support_conical_angle description"
 msgid "The angle of the tilt of conical support. With 0 degrees being vertical, and 90 degrees being horizontal. Smaller angles cause the support to be more sturdy, but consist of more material. Negative angles cause the base of the support to be wider than the top."
 msgstr "錐形支撐的傾斜角度。角度 0 度時為垂直，角度 90 度時為水平。較小的角度會讓支撐更為牢固，但需要更多線材。負值會讓支撐底座比頂部寬。"
@@ -4477,6 +4587,11 @@ msgstr "特殊塔的直徑。"
 msgctxt "support_tree_branch_diameter description"
 msgid "The diameter of the thinnest branches of tree support. Thicker branches are more sturdy. Branches towards the base will be thicker than this."
 msgstr "樹狀支撐中最細樹枝的直徑。越粗的樹枝越堅固。底部的樹枝會比這更粗。"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_tip_diameter description"
+msgid "The diameter of the top of the tip of the branches of tree support."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_feeder_wheel_diameter description"
@@ -4874,6 +4989,11 @@ msgid "The maximum angle of overhangs after the they have been made printable. A
 msgstr "在突出部分變得可列印後突出的最大角度。當該值為 0° 時，所有突出部分將被與列印平台連接的模型的一個部分替代，如果為 90° 時，不會以任何方式更改模型。"
 
 #: fdmprinter.def.json
+msgctxt "support_tree_angle description"
+msgid "The maximum angle of the branches while they grow around the model. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "conical_overhang_hole_size description"
 msgid "The maximum area of a hole in the base of the model before it's removed by Make Overhang Printable.  Holes smaller than this will be retained.  A value of 0 mm² will fill all holes in the models base."
 msgstr "啟用\"使突出可列印\"前之模型底層孔洞最大面積. 如孔洞面積低於此值會被保留, 如設為0會填補所有模型底層孔洞."
@@ -5089,6 +5209,11 @@ msgid "The minimum volume for each layer of the prime tower in order to purge en
 msgstr "為了清除足夠的線材，換料塔每層的最小體積。"
 
 #: fdmprinter.def.json
+msgctxt "support_tree_max_diameter_increase_by_merges_when_support_to_model description"
+msgid "The most the diameter of a branch that has to connect to the model may increase by merging with branches that could reach the buildplate. Increasing this reduces print time, but increases the area of support that rests on model"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "machine_name description"
 msgid "The name of your 3D printer model."
 msgstr "你的 3D 印表機型號的名稱。"
@@ -5245,6 +5370,16 @@ msgstr "列印支撐頂板的列印樣式。"
 msgctxt "z_seam_position description"
 msgid "The position near where to start printing each part in a layer."
 msgstr "每一層開始列印位置要靠近哪個方向。"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle_slow description"
+msgid "The preferred angle of the branches, when they do not have to avoid the model. Use a lower angle to make them more vertical and more stable. Use a higher angle for branches to merge faster."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_rest_preference description"
+msgid "The preferred placement of the support structures. If structures can't be placed at the preferred location, they will be place elsewhere, even if that means placing them on the model."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "jerk_layer_0 description"
@@ -5658,6 +5793,11 @@ msgid "This will create a wall around the model, which traps (hot) air and shiel
 msgstr "這將在模型周圍建立一個牆壁留住（熱）空氣並遮住外部氣流。對於容易翹曲的線材非常有用。"
 
 #: fdmprinter.def.json
+msgctxt "support_tree_tip_diameter label"
+msgid "Tip Diameter"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage_xy description"
 msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor in the XY-direction (horizontally)."
 msgstr ""
@@ -5853,36 +5993,6 @@ msgid "Tree"
 msgstr "樹狀"
 
 #: fdmprinter.def.json
-msgctxt "support_tree_angle label"
-msgid "Tree Support Branch Angle"
-msgstr "樹狀支撐樹枝角度"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_diameter label"
-msgid "Tree Support Branch Diameter"
-msgstr "樹狀支撐樹枝直徑"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_diameter_angle label"
-msgid "Tree Support Branch Diameter Angle"
-msgstr "樹狀支撐樹枝外徑角度"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_distance label"
-msgid "Tree Support Branch Distance"
-msgstr "樹狀支撐樹枝距離"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_collision_resolution label"
-msgid "Tree Support Collision Resolution"
-msgstr "樹狀支撐碰撞計算精度"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_max_diameter label"
-msgid "Tree Support Trunk Diameter"
-msgstr ""
-
-#: fdmprinter.def.json
 msgctxt "infill_pattern option trihexagon"
 msgid "Tri-Hexagon"
 msgstr "三角-六邊形混和"
@@ -5911,6 +6021,11 @@ msgstr "三角形"
 msgctxt "support_roof_pattern option triangles"
 msgid "Triangles"
 msgstr "三角形"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_max_diameter label"
+msgid "Trunk Diameter"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor option UltiGCode"
@@ -6914,6 +7029,10 @@ msgstr "空跑"
 #~ msgid "Hollow Out Objects"
 #~ msgstr "挖空模型"
 
+#~ msgctxt "support_tree_branch_distance description"
+#~ msgid "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove."
+#~ msgstr "樹支與模型接觸的點與點之間的間隔距離。較小的距離會讓支撐和模型有較多的接觸點，會有較佳的突出部分但支撐也較難移除。"
+
 #~ msgctxt "machine_steps_per_mm_e description"
 #~ msgid "How many steps of the stepper motors will result in one millimeter of extrusion."
 #~ msgstr "擠出機移動一毫米時，步進馬達所需移動的步數。"
@@ -7142,6 +7261,10 @@ msgstr "空跑"
 #~ msgid "Remove all infill and make the inside of the object eligible for support."
 #~ msgstr "移除所有填充並讓模型內部可以進行支撐。"
 
+#~ msgctxt "support_tree_collision_resolution description"
+#~ msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
+#~ msgstr "計算避免碰撞模型的計算精度。設定較低的值可產生較精確的樹狀支撐，這樣的支撐問題較少但會嚴重的增加切片所需的時間。"
+
 #~ msgctxt "wireframe_strategy option retract"
 #~ msgid "Retract"
 #~ msgstr "回抽"
@@ -7265,6 +7388,10 @@ msgstr "空跑"
 #~ msgctxt "switch_extruder_retraction_amount description"
 #~ msgid "The amount of retraction: Set at 0 for no retraction at all. This should generally be the same as the length of the heat zone."
 #~ msgstr "回抽量：設為 0，不進行任何回抽。該值通常應與加熱區的長度相同。"
+
+#~ msgctxt "support_tree_angle description"
+#~ msgid "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
+#~ msgstr "樹枝的角度。使用較小的角度讓樹枝較垂直且較平穩。使用較大的角度則可以支撐較大的範圍。"
 
 #~ msgctxt "lightning_infill_prune_angle description"
 #~ msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the pruning of the outer extremities of trees. Measured in the angle given the thickness."
@@ -7409,6 +7536,26 @@ msgstr "空跑"
 #~ msgctxt "support_tree_enable label"
 #~ msgid "Tree Support"
 #~ msgstr "樹狀支撐"
+
+#~ msgctxt "support_tree_angle label"
+#~ msgid "Tree Support Branch Angle"
+#~ msgstr "樹狀支撐樹枝角度"
+
+#~ msgctxt "support_tree_branch_diameter label"
+#~ msgid "Tree Support Branch Diameter"
+#~ msgstr "樹狀支撐樹枝直徑"
+
+#~ msgctxt "support_tree_branch_diameter_angle label"
+#~ msgid "Tree Support Branch Diameter Angle"
+#~ msgstr "樹狀支撐樹枝外徑角度"
+
+#~ msgctxt "support_tree_branch_distance label"
+#~ msgid "Tree Support Branch Distance"
+#~ msgstr "樹狀支撐樹枝距離"
+
+#~ msgctxt "support_tree_collision_resolution label"
+#~ msgid "Tree Support Collision Resolution"
+#~ msgstr "樹狀支撐碰撞計算精度"
 
 #~ msgctxt "support_tree_wall_count label"
 #~ msgid "Tree Support Wall Line Count"

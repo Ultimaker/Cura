@@ -45,7 +45,7 @@
         "material_final_print_temperature": { "value": "material_print_temperature" },
         "material_initial_print_temperature": { "value": "material_print_temperature" },
         "minimum_interface_area": { "value": 10 },
-        "minimum_support_area": { "value": 2 },
+        "minimum_support_area": { "value": "2 if support_structure == 'normal' else 0" },
         "optimize_wall_printing_order": { "value": "True" },
         "retraction_amount": { "value": 1 },
         "retraction_combing": { "value": "'off' if retraction_hop_enabled else 'infill'" },
