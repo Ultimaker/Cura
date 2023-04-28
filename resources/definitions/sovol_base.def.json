@@ -114,8 +114,8 @@
         "speed_wall": { "value": "math.ceil(speed_print * (50 / 100))" },
         "wall_0_wipe_dist": { "value": 0.0 },
         "wall_thickness": { "value": "line_width * 2" },
-        "zig_zaggify_infill": { "value": true },
         "z_seam_corner": { "value": "'z_seam_corner_inner'" },
-        "z_seam_type": { "value": "'sharpest_corner'" }
+        "z_seam_type": { "value": "'sharpest_corner'" },
+        "zig_zaggify_infill": { "value": true }
     }
 }

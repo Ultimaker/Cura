@@ -37,7 +37,6 @@
         "speed_wall_0": { "value": "speed_wall / 1.2" },
         "speed_wall_x": { "value": "speed_wall" },
         "wall_thickness": { "value": 1.2 },
-        
         "z_seam_type": { "value": "'back'" }
     }
 }
