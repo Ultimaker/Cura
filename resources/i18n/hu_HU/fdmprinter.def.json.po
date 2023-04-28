@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-04-24 09:08+0000\n"
+"POT-Creation-Date: 2023-04-28 10:03+0000\n"
 "PO-Revision-Date: 2020-03-24 09:43+0100\n"
 "Last-Translator: Nagy Attila <vokroot@gmail.com>\n"
 "Language-Team: AT-VLOG\n"
@@ -360,6 +360,21 @@ msgstr "Alsó kéreg eltávolítási szélesség"
 msgctxt "bottom_thickness label"
 msgid "Bottom Thickness"
 msgstr "Alsó vastagság"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_top_rate label"
+msgid "Branch Density"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_diameter label"
+msgid "Branch Diameter"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_diameter_angle label"
+msgid "Branch Diameter Angle"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_break_preparation_retracted_position label"
@@ -870,6 +885,11 @@ msgstr ""
 msgctxt "material_diameter label"
 msgid "Diameter"
 msgstr "Átmérő"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_max_diameter_increase_by_merges_when_support_to_model label"
+msgid "Diameter Increase To Model"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_bp_diameter description"
@@ -1895,6 +1915,11 @@ msgid "Initial Layer Bottom Flow"
 msgstr ""
 
 #: fdmprinter.def.json
+msgctxt "support_tree_bp_diameter label"
+msgid "Initial Layer Diameter"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "material_flow_layer_0 label"
 msgid "Initial Layer Flow"
 msgstr "Kezdő réteg áramlás"
@@ -2185,6 +2210,11 @@ msgid "Lightning Infill Support Angle"
 msgstr ""
 
 #: fdmprinter.def.json
+msgctxt "support_tree_limit_branch_reach label"
+msgid "Limit Branch Reach"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "support_tree_limit_branch_reach description"
 msgid "Limit how far each branch should travel from the point it supports. This can make the support more sturdy, but will increase the amount of branches (and because of that material usage/print time)"
 msgstr ""
@@ -2375,6 +2405,11 @@ msgid "Maximum Acceleration Z"
 msgstr "Maximális Z gyorsulás"
 
 #: fdmprinter.def.json
+msgctxt "support_tree_angle label"
+msgid "Maximum Branch Angle"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "meshfix_maximum_deviation label"
 msgid "Maximum Deviation"
 msgstr "Maximális eltérés"
@@ -2563,6 +2598,11 @@ msgstr ""
 msgctxt "machine_minimum_feedrate label"
 msgid "Minimum Feedrate"
 msgstr "Minimális sebesség"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_min_height_to_model label"
+msgid "Minimum Height To Model"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "min_infill_area label"
@@ -2910,6 +2950,11 @@ msgid "Ooze Shield Distance"
 msgstr "Szivárgáspajzs távolság"
 
 #: fdmprinter.def.json
+msgctxt "support_tree_branch_reach_limit label"
+msgid "Optimal Branch Range"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "optimize_wall_printing_order label"
 msgid "Optimize Wall Printing Order"
 msgstr "Optimalizálás a falnyomtatási sorrendre"
@@ -3013,6 +3058,11 @@ msgstr "A harmadik hídréteg nyomtatásakor használt ventillátor sebesség sz
 msgctxt "minimum_polygon_circumference description"
 msgid "Polygons in sliced layers that have a circumference smaller than this amount will be filtered out. Lower values lead to higher resolution mesh at the cost of slicing time. It is meant mostly for high resolution SLA printers and very tiny 3D models with a lot of details."
 msgstr "A szeletelt rétegekben lévő sokszögeket, amelyek kerülete kisebb, mint ez az összeg, kiszűrjük. Az alacsonyabb értékek magasabb felbontású hálóhoz vezetnek a szeletelési idő költségén. Elsősorban nagy felbontású SLA nyomtatókhoz és nagyon apró, sok részlettel rendelkező 3D modellekhez készült."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle_slow label"
+msgid "Preferred Branch Angle"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "wall_transition_filter_deviation description"
@@ -3458,6 +3508,11 @@ msgstr "Repetier"
 msgctxt "skin_outline_count description"
 msgid "Replaces the outermost part of the top/bottom pattern with a number of concentric lines. Using one or two lines improves roofs that start on infill material."
 msgstr "Lecseréli az alsó/felső felületi minta legkülsőbb falait koncentrikus vonalra.Egy vagy két vonal használata javítja a felső záró felületeket, ott, ahol még a kitöltés látható."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_rest_preference label"
+msgid "Rest Preference"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"
@@ -5738,6 +5793,11 @@ msgid "This will create a wall around the model, which traps (hot) air and shiel
 msgstr "A beállítással létrehozhatunk egy falat a modell körül, ami segít abban, hogy a külső levegő, vagy légáramlat érje a nyomtatott testet.Ez különösen azoknál az alapanyagoknál lehet segítség, amelyek hajlamosak a felválásra, repedésre, mint pl. az ABS, ASA."
 
 #: fdmprinter.def.json
+msgctxt "support_tree_tip_diameter label"
+msgid "Tip Diameter"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage_xy description"
 msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor in the XY-direction (horizontally)."
 msgstr ""
@@ -5933,71 +5993,6 @@ msgid "Tree"
 msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "support_tree_top_rate label"
-msgid "Tree Support Branch Density"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_diameter label"
-msgid "Tree Support Branch Diameter"
-msgstr "Támaszágak átmérője"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_diameter_angle label"
-msgid "Tree Support Branch Diameter Angle"
-msgstr "Támaszágak átmérő szög"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_max_diameter_increase_by_merges_when_support_to_model label"
-msgid "Tree Support Diameter Increase To Model"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_bp_diameter label"
-msgid "Tree Support Initial Layer Diameter"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_limit_branch_reach label"
-msgid "Tree Support Limit Branch Reach"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_angle label"
-msgid "Tree Support Maximum Branch Angle"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_min_height_to_model label"
-msgid "Tree Support Minimum Height To Model"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_reach_limit label"
-msgid "Tree Support Optimal Branch Range"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_angle_slow label"
-msgid "Tree Support Preferred Branch Angle"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_rest_preference label"
-msgid "Tree Support Rest Preference"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_tip_diameter label"
-msgid "Tree Support Tip Diameter"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_max_diameter label"
-msgid "Tree Support Trunk Diameter"
-msgstr ""
-
-#: fdmprinter.def.json
 msgctxt "infill_pattern option trihexagon"
 msgid "Tri-Hexagon"
 msgstr "Három-hatszög"
@@ -6026,6 +6021,11 @@ msgstr "Háromszög"
 msgctxt "support_roof_pattern option triangles"
 msgid "Triangles"
 msgstr "Háromszögek"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_max_diameter label"
+msgid "Trunk Diameter"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor option UltiGCode"
@@ -7126,6 +7126,14 @@ msgstr "fej átpozícionálás"
 #~ msgctxt "support_tree_angle label"
 #~ msgid "Tree Support Branch Angle"
 #~ msgstr "Támaszágak szöge"
+
+#~ msgctxt "support_tree_branch_diameter label"
+#~ msgid "Tree Support Branch Diameter"
+#~ msgstr "Támaszágak átmérője"
+
+#~ msgctxt "support_tree_branch_diameter_angle label"
+#~ msgid "Tree Support Branch Diameter Angle"
+#~ msgstr "Támaszágak átmérő szög"
 
 #~ msgctxt "support_tree_branch_distance label"
 #~ msgid "Tree Support Branch Distance"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-04-24 09:08+0000\n"
+"POT-Creation-Date: 2023-04-28 10:03+0000\n"
 "PO-Revision-Date: 2023-02-16 20:35+0100\n"
 "Last-Translator: Miroslav Šustek <sustmidown@centrum.cz>\n"
 "Language-Team: DenyCZ <www.github.com/DenyCZ>\n"
@@ -360,6 +360,21 @@ msgstr "Dolní šířka odstranění povrchu"
 msgctxt "bottom_thickness label"
 msgid "Bottom Thickness"
 msgstr "Spodní tloušťka"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_top_rate label"
+msgid "Branch Density"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_diameter label"
+msgid "Branch Diameter"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_diameter_angle label"
+msgid "Branch Diameter Angle"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_break_preparation_retracted_position label"
@@ -870,6 +885,11 @@ msgstr "Určuje, od jakého úhlu převisu bude vrstva bleskové výplň podporo
 msgctxt "material_diameter label"
 msgid "Diameter"
 msgstr "Průměr"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_max_diameter_increase_by_merges_when_support_to_model label"
+msgid "Diameter Increase To Model"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_bp_diameter description"
@@ -1893,6 +1913,11 @@ msgid "Initial Layer Bottom Flow"
 msgstr "Průtok první vrstvy spodku"
 
 #: fdmprinter.def.json
+msgctxt "support_tree_bp_diameter label"
+msgid "Initial Layer Diameter"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "material_flow_layer_0 label"
 msgid "Initial Layer Flow"
 msgstr "Průtok při prvotní vrstvě"
@@ -2183,6 +2208,11 @@ msgid "Lightning Infill Support Angle"
 msgstr "Úhel podpory bleskové výplně"
 
 #: fdmprinter.def.json
+msgctxt "support_tree_limit_branch_reach label"
+msgid "Limit Branch Reach"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "support_tree_limit_branch_reach description"
 msgid "Limit how far each branch should travel from the point it supports. This can make the support more sturdy, but will increase the amount of branches (and because of that material usage/print time)"
 msgstr ""
@@ -2373,6 +2403,11 @@ msgid "Maximum Acceleration Z"
 msgstr "Maximální akcelerace Z"
 
 #: fdmprinter.def.json
+msgctxt "support_tree_angle label"
+msgid "Maximum Branch Angle"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "meshfix_maximum_deviation label"
 msgid "Maximum Deviation"
 msgstr "Maximální odchylka"
@@ -2561,6 +2596,11 @@ msgstr "Minimální velikost částí"
 msgctxt "machine_minimum_feedrate label"
 msgid "Minimum Feedrate"
 msgstr "Minimální feedrate"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_min_height_to_model label"
+msgid "Minimum Height To Model"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "min_infill_area label"
@@ -2908,6 +2948,11 @@ msgid "Ooze Shield Distance"
 msgstr "Vzdálenost Ooze štítu"
 
 #: fdmprinter.def.json
+msgctxt "support_tree_branch_reach_limit label"
+msgid "Optimal Branch Range"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "optimize_wall_printing_order label"
 msgid "Optimize Wall Printing Order"
 msgstr "Optimalizace pořadí tisku stěn"
@@ -3011,6 +3056,11 @@ msgstr "Procentuální rychlost ventilátoru, která se použije při tisku tře
 msgctxt "minimum_polygon_circumference description"
 msgid "Polygons in sliced layers that have a circumference smaller than this amount will be filtered out. Lower values lead to higher resolution mesh at the cost of slicing time. It is meant mostly for high resolution SLA printers and very tiny 3D models with a lot of details."
 msgstr "Polygony v krájených vrstvách, jejichž obvod je menší než toto množství, budou odfiltrovány. Nižší hodnoty vedou k vyššímu rozlišení ok za cenu krájení. Je určen především pro tiskárny SLA s vysokým rozlišením a velmi malé 3D modely se spoustou detailů."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle_slow label"
+msgid "Preferred Branch Angle"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "wall_transition_filter_deviation description"
@@ -3456,6 +3506,11 @@ msgstr "Repetier"
 msgctxt "skin_outline_count description"
 msgid "Replaces the outermost part of the top/bottom pattern with a number of concentric lines. Using one or two lines improves roofs that start on infill material."
 msgstr "Nahrazuje nejvzdálenější část horního / spodního vzoru řadou soustředných čar. Použití jedné nebo dvou čar zlepšuje střechy, které začínají na výplňovém materiálu."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_rest_preference label"
+msgid "Rest Preference"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"
@@ -5727,6 +5782,11 @@ msgid "This will create a wall around the model, which traps (hot) air and shiel
 msgstr "Tím se vytvoří kolem modelu zeď, která zachycuje (horký) vzduch a chrání před vnějším proudem vzduchu. Obzvláště užitečné pro materiály, které se snadno deformují."
 
 #: fdmprinter.def.json
+msgctxt "support_tree_tip_diameter label"
+msgid "Tip Diameter"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage_xy description"
 msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor in the XY-direction (horizontally)."
 msgstr "Model bude zvětšen tímto faktorem ve směru XY (horizontálně), aby bylo kompenzováno smrštění materiálu po vychladnutí."
@@ -5922,71 +5982,6 @@ msgid "Tree"
 msgstr "Strom"
 
 #: fdmprinter.def.json
-msgctxt "support_tree_top_rate label"
-msgid "Tree Support Branch Density"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_diameter label"
-msgid "Tree Support Branch Diameter"
-msgstr "Průměr větve podpěry stromu"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_diameter_angle label"
-msgid "Tree Support Branch Diameter Angle"
-msgstr "Průměr úhlu větve podpěry stromu"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_max_diameter_increase_by_merges_when_support_to_model label"
-msgid "Tree Support Diameter Increase To Model"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_bp_diameter label"
-msgid "Tree Support Initial Layer Diameter"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_limit_branch_reach label"
-msgid "Tree Support Limit Branch Reach"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_angle label"
-msgid "Tree Support Maximum Branch Angle"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_min_height_to_model label"
-msgid "Tree Support Minimum Height To Model"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_reach_limit label"
-msgid "Tree Support Optimal Branch Range"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_angle_slow label"
-msgid "Tree Support Preferred Branch Angle"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_rest_preference label"
-msgid "Tree Support Rest Preference"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_tip_diameter label"
-msgid "Tree Support Tip Diameter"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_max_diameter label"
-msgid "Tree Support Trunk Diameter"
-msgstr "Průměr kmene stromové podpory"
-
-#: fdmprinter.def.json
 msgctxt "infill_pattern option trihexagon"
 msgid "Tri-Hexagon"
 msgstr "Tri-Hexagony"
@@ -6015,6 +6010,11 @@ msgstr "Trojúhelníky"
 msgctxt "support_roof_pattern option triangles"
 msgid "Triangles"
 msgstr "Trojúhelníky"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_max_diameter label"
+msgid "Trunk Diameter"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor option UltiGCode"
@@ -7114,6 +7114,14 @@ msgstr "cestování"
 #~ msgid "Tree Support Branch Angle"
 #~ msgstr "Úhel větve stromové podpory"
 
+#~ msgctxt "support_tree_branch_diameter label"
+#~ msgid "Tree Support Branch Diameter"
+#~ msgstr "Průměr větve podpěry stromu"
+
+#~ msgctxt "support_tree_branch_diameter_angle label"
+#~ msgid "Tree Support Branch Diameter Angle"
+#~ msgstr "Průměr úhlu větve podpěry stromu"
+
 #~ msgctxt "support_tree_branch_distance label"
 #~ msgid "Tree Support Branch Distance"
 #~ msgstr "Vzdálenost větví stromu"
@@ -7121,6 +7129,10 @@ msgstr "cestování"
 #~ msgctxt "support_tree_collision_resolution label"
 #~ msgid "Tree Support Collision Resolution"
 #~ msgstr "Stromová podpora - rozlišení kolize"
+
+#~ msgctxt "support_tree_max_diameter label"
+#~ msgid "Tree Support Trunk Diameter"
+#~ msgstr "Průměr kmene stromové podpory"
 
 #~ msgctxt "wireframe_bottom_delay label"
 #~ msgid "WP Bottom Delay"

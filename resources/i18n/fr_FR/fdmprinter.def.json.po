@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-04-24 09:08+0000\n"
+"POT-Creation-Date: 2023-04-28 10:03+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -355,6 +355,21 @@ msgstr "Largeur de retrait de la couche extérieure inférieure"
 msgctxt "bottom_thickness label"
 msgid "Bottom Thickness"
 msgstr "Épaisseur du dessous"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_top_rate label"
+msgid "Branch Density"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_diameter label"
+msgid "Branch Diameter"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_diameter_angle label"
+msgid "Branch Diameter Angle"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_break_preparation_retracted_position label"
@@ -865,6 +880,11 @@ msgstr "Détermine quand une couche de remplissage éclair doit soutenir le mod�
 msgctxt "material_diameter label"
 msgid "Diameter"
 msgstr "Diamètre"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_max_diameter_increase_by_merges_when_support_to_model label"
+msgid "Diameter Increase To Model"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_bp_diameter description"
@@ -1890,6 +1910,11 @@ msgid "Initial Layer Bottom Flow"
 msgstr "Débit inférieur de la couche initiale"
 
 #: fdmprinter.def.json
+msgctxt "support_tree_bp_diameter label"
+msgid "Initial Layer Diameter"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "material_flow_layer_0 label"
 msgid "Initial Layer Flow"
 msgstr "Débit de la couche initiale"
@@ -2180,6 +2205,11 @@ msgid "Lightning Infill Support Angle"
 msgstr "Angle de support du remplissage éclair"
 
 #: fdmprinter.def.json
+msgctxt "support_tree_limit_branch_reach label"
+msgid "Limit Branch Reach"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "support_tree_limit_branch_reach description"
 msgid "Limit how far each branch should travel from the point it supports. This can make the support more sturdy, but will increase the amount of branches (and because of that material usage/print time)"
 msgstr ""
@@ -2370,6 +2400,11 @@ msgid "Maximum Acceleration Z"
 msgstr "Accélération maximale Z"
 
 #: fdmprinter.def.json
+msgctxt "support_tree_angle label"
+msgid "Maximum Branch Angle"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "meshfix_maximum_deviation label"
 msgid "Maximum Deviation"
 msgstr "Écart maximum"
@@ -2558,6 +2593,11 @@ msgstr "Taille minimale des entités"
 msgctxt "machine_minimum_feedrate label"
 msgid "Minimum Feedrate"
 msgstr "Taux d'alimentation minimal"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_min_height_to_model label"
+msgid "Minimum Height To Model"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "min_infill_area label"
@@ -2905,6 +2945,11 @@ msgid "Ooze Shield Distance"
 msgstr "Distance du bouclier de suintage"
 
 #: fdmprinter.def.json
+msgctxt "support_tree_branch_reach_limit label"
+msgid "Optimal Branch Range"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "optimize_wall_printing_order label"
 msgid "Optimize Wall Printing Order"
 msgstr "Optimiser l'ordre d'impression des parois"
@@ -3008,6 +3053,11 @@ msgstr "Vitesse du ventilateur en pourcentage à utiliser pour l'impression de l
 msgctxt "minimum_polygon_circumference description"
 msgid "Polygons in sliced layers that have a circumference smaller than this amount will be filtered out. Lower values lead to higher resolution mesh at the cost of slicing time. It is meant mostly for high resolution SLA printers and very tiny 3D models with a lot of details."
 msgstr "Les polygones en couches tranchées dont la circonférence est inférieure à cette valeur seront filtrés. Des valeurs élevées permettent d'obtenir un maillage de meilleure résolution mais augmentent le temps de découpe. Cette option est principalement destinée aux imprimantes SLA haute résolution et aux modèles 3D de très petite taille avec beaucoup de détails."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle_slow label"
+msgid "Preferred Branch Angle"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "wall_transition_filter_deviation description"
@@ -3453,6 +3503,11 @@ msgstr "Repetier"
 msgctxt "skin_outline_count description"
 msgid "Replaces the outermost part of the top/bottom pattern with a number of concentric lines. Using one or two lines improves roofs that start on infill material."
 msgstr "Remplace la partie la plus externe du motif du dessus/dessous par un certain nombre de lignes concentriques. Le fait d'utiliser une ou deux lignes améliore les plafonds qui commencent sur du matériau de remplissage."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_rest_preference label"
+msgid "Rest Preference"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"
@@ -5724,6 +5779,11 @@ msgid "This will create a wall around the model, which traps (hot) air and shiel
 msgstr "Cela créera une paroi autour du modèle qui retient l'air (chaud) et protège contre les courants d'air. Particulièrement utile pour les matériaux qui se soulèvent facilement."
 
 #: fdmprinter.def.json
+msgctxt "support_tree_tip_diameter label"
+msgid "Tip Diameter"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage_xy description"
 msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor in the XY-direction (horizontally)."
 msgstr "Pour compenser le rétrécissement du matériau lors du refroidissement, le modèle sera mis à l'échelle avec ce facteur dans la direction XY (horizontalement)."
@@ -5919,71 +5979,6 @@ msgid "Tree"
 msgstr "Arborescence"
 
 #: fdmprinter.def.json
-msgctxt "support_tree_top_rate label"
-msgid "Tree Support Branch Density"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_diameter label"
-msgid "Tree Support Branch Diameter"
-msgstr "Diamètre des branches de support arborescent"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_diameter_angle label"
-msgid "Tree Support Branch Diameter Angle"
-msgstr "Angle de diamètre des branches de support arborescent"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_max_diameter_increase_by_merges_when_support_to_model label"
-msgid "Tree Support Diameter Increase To Model"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_bp_diameter label"
-msgid "Tree Support Initial Layer Diameter"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_limit_branch_reach label"
-msgid "Tree Support Limit Branch Reach"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_angle label"
-msgid "Tree Support Maximum Branch Angle"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_min_height_to_model label"
-msgid "Tree Support Minimum Height To Model"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_reach_limit label"
-msgid "Tree Support Optimal Branch Range"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_angle_slow label"
-msgid "Tree Support Preferred Branch Angle"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_rest_preference label"
-msgid "Tree Support Rest Preference"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_tip_diameter label"
-msgid "Tree Support Tip Diameter"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_max_diameter label"
-msgid "Tree Support Trunk Diameter"
-msgstr "Diamètre du tronc du support arborescent"
-
-#: fdmprinter.def.json
 msgctxt "infill_pattern option trihexagon"
 msgid "Tri-Hexagon"
 msgstr "Trihexagonal"
@@ -6012,6 +6007,11 @@ msgstr "Triangles"
 msgctxt "support_roof_pattern option triangles"
 msgid "Triangles"
 msgstr "Triangles"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_max_diameter label"
+msgid "Trunk Diameter"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor option UltiGCode"
@@ -6791,6 +6791,14 @@ msgstr "déplacement"
 #~ msgid "Tree Support Branch Angle"
 #~ msgstr "Angle des branches de support arborescent"
 
+#~ msgctxt "support_tree_branch_diameter label"
+#~ msgid "Tree Support Branch Diameter"
+#~ msgstr "Diamètre des branches de support arborescent"
+
+#~ msgctxt "support_tree_branch_diameter_angle label"
+#~ msgid "Tree Support Branch Diameter Angle"
+#~ msgstr "Angle de diamètre des branches de support arborescent"
+
 #~ msgctxt "support_tree_branch_distance label"
 #~ msgid "Tree Support Branch Distance"
 #~ msgstr "Distance des branches de support arborescent"
@@ -6798,6 +6806,10 @@ msgstr "déplacement"
 #~ msgctxt "support_tree_collision_resolution label"
 #~ msgid "Tree Support Collision Resolution"
 #~ msgstr "Résolution de collision du support arborescent"
+
+#~ msgctxt "support_tree_max_diameter label"
+#~ msgid "Tree Support Trunk Diameter"
+#~ msgstr "Diamètre du tronc du support arborescent"
 
 #~ msgctxt "wireframe_bottom_delay label"
 #~ msgid "WP Bottom Delay"
