@@ -41,12 +41,9 @@ def copy_metadata_files(dist_path, version):
 
     packaging_dir = os.path.dirname(__file__)
     for source, dest in copied_files.items():
-        source_file_path = source
         dest_file_path = os.path.join(dist_path, dest)
-        dir_path = dest_file_path
-        print("Copying", source_file_path, "to", dest_file_path)
-        os.makedirs(os.path.dirname(dir_path), exist_ok=True)
-        shutil.copyfile(source_file_path, dest_file_path)
+        os.makedirs(os.path.dirname(dest_file_path), exist_ok=True)
+        shutil.copyfile(os.path.join(packaging_dir, source), dest_file_path)
 
     # Ensure that AppRun has the proper permissions: 755 (user reads, writes and executes, group reads and executes, world reads and executes).
     print("Changing permissions for AppRun")
