@@ -29,9 +29,10 @@ class VersionUpgrade48to49(VersionUpgrade):
         parser["general"]["version"] = "7"
 
         # Update visibility settings to include new top_bottom category
-        parser["general"]["visible_settings"] += ";top_bottom"
+        if "visible_settings" in parser["general"]:
+            parser["general"]["visible_settings"] += ";top_bottom"
 
-        if "categories_expanded" in parser["cura"] and any([setting in parser["cura"]["categories_expanded"] for setting in self._moved_visibility_settings]):
+        if "cura" in parser and "categories_expanded" in parser["cura"] and any([setting in parser["cura"]["categories_expanded"] for setting in self._moved_visibility_settings]):
             parser["cura"]["categories_expanded"] += ";top_bottom"
 
         # If the account scope in 4.8 is outdated, delete it so that the user is enforced to log in again and get the

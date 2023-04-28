@@ -4,7 +4,7 @@
 import collections
 from typing import Optional, Dict, List, cast
 
-from PyQt5.QtCore import QObject, pyqtSlot
+from PyQt6.QtCore import QObject, pyqtSlot
 
 from UM.i18n import i18nCatalog
 from UM.Resources import Resources

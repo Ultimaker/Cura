@@ -2,14 +2,14 @@
 #Cura is released under the terms of the LGPLv3 or higher.
 
 import collections
-from PyQt5.QtCore import Qt, QTimer
+from PyQt6.QtCore import Qt, QTimer
 from typing import TYPE_CHECKING, Optional, Dict
 
 from cura.Machines.Models.IntentModel import IntentModel
 from cura.Settings.IntentManager import IntentManager
 from UM.Qt.ListModel import ListModel
 from UM.Settings.ContainerRegistry import ContainerRegistry #To update the list if anything changes.
-from PyQt5.QtCore import pyqtSignal
+from PyQt6.QtCore import pyqtSignal
 import cura.CuraApplication
 if TYPE_CHECKING:
     from UM.Settings.ContainerRegistry import ContainerInterface
@@ -21,11 +21,11 @@ catalog = i18nCatalog("cura")
 class IntentCategoryModel(ListModel):
     """Lists the intent categories that are available for the current printer configuration. """
 
-    NameRole = Qt.UserRole + 1
-    IntentCategoryRole = Qt.UserRole + 2
-    WeightRole = Qt.UserRole + 3
-    QualitiesRole = Qt.UserRole + 4
-    DescriptionRole = Qt.UserRole + 5
+    NameRole = Qt.ItemDataRole.UserRole + 1
+    IntentCategoryRole = Qt.ItemDataRole.UserRole + 2
+    WeightRole = Qt.ItemDataRole.UserRole + 3
+    QualitiesRole = Qt.ItemDataRole.UserRole + 4
+    DescriptionRole = Qt.ItemDataRole.UserRole + 5
 
     modelUpdated = pyqtSignal()
 
@@ -111,7 +111,7 @@ class IntentCategoryModel(ListModel):
             except ValueError:
                 weight = 99
             result.append({
-                "name": IntentCategoryModel.translation(category, "name", category),
+                "name": IntentCategoryModel.translation(category, "name", category.title()),
                 "description": IntentCategoryModel.translation(category, "description", None),
                 "intent_category": category,
                 "weight": weight,

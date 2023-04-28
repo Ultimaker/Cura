@@ -3,7 +3,7 @@
 
 from typing import Any, Dict, List, Optional, TYPE_CHECKING
 
-from PyQt5.QtCore import pyqtSlot, QObject
+from PyQt6.QtCore import pyqtSlot, QObject
 
 from UM.Version import Version
 from UM.i18n import i18nCatalog
@@ -15,8 +15,8 @@ from .PackageModel import PackageModel
 from .Constants import PACKAGE_UPDATES_URL
 
 if TYPE_CHECKING:
-    from PyQt5.QtCore import QObject
-    from PyQt5.QtNetwork import QNetworkReply
+    from PyQt6.QtCore import QObject
+    from PyQt6.QtNetwork import QNetworkReply
 
 catalog = i18nCatalog("cura")
 
@@ -44,7 +44,7 @@ class LocalPackageList(PackageList):
 
     def _sortSectionsOnUpdate(self) -> None:
         section_order = dict(zip([i for k, v in self.PACKAGE_CATEGORIES.items() for i in self.PACKAGE_CATEGORIES[k].values()], ["a", "b", "c", "d"]))
-        self.sort(lambda model: (section_order[model.sectionTitle], model.canUpdate, model.displayName.lower()), key = "package")
+        self.sort(lambda model: (section_order[model.sectionTitle], not model.canUpdate, model.displayName.lower()), key = "package")
 
     def _removePackageModel(self, package_id: str) -> None:
         """
@@ -108,7 +108,7 @@ class LocalPackageList(PackageList):
         :param reply: A reply containing information about a number of packages.
         """
         response_data = HttpRequestManager.readJSON(reply)
-        if "data" not in response_data:
+        if response_data is None or "data" not in response_data:
             Logger.error(
                 f"Could not interpret the server's response. Missing 'data' from response data. Keys in response: {response_data.keys()}")
             return

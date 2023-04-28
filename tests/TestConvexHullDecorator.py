@@ -149,7 +149,7 @@ def test_compute2DConvexHullNoMeshData(convex_hull_decorator):
 def test_compute2DConvexHullMeshData(convex_hull_decorator):
     node = SceneNode()
     mb = MeshBuilder()
-    mb.addCube(10,10,10)
+    mb.addCube(10, 10, 10)
     node.setMeshData(mb.build())
 
     convex_hull_decorator._getSettingProperty = MagicMock(return_value = 0)
@@ -157,7 +157,11 @@ def test_compute2DConvexHullMeshData(convex_hull_decorator):
     with patch("UM.Application.Application.getInstance", MagicMock(return_value=mocked_application)):
         convex_hull_decorator.setNode(node)
 
-    assert convex_hull_decorator._compute2DConvexHull() == Polygon([[5.0,-5.0], [-5.0,-5.0], [-5.0,5.0], [5.0,5.0]])
+    mocked_stack = MagicMock()
+    mocked_stack.getProperty = MagicMock(return_value=1)
+    convex_hull_decorator._global_stack = mocked_stack
+
+    assert convex_hull_decorator._compute2DConvexHull() == Polygon([[5.0, -5.0], [-5.0, -5.0], [-5.0, 5.0], [5.0, 5.0]])
 
 
 def test_compute2DConvexHullMeshDataGrouped(convex_hull_decorator):
@@ -169,6 +173,9 @@ def test_compute2DConvexHullMeshDataGrouped(convex_hull_decorator):
     mb = MeshBuilder()
     mb.addCube(10, 10, 10)
     node.setMeshData(mb.build())
+    mocked_stack = MagicMock()
+    mocked_stack.getProperty = MagicMock(return_value=1)
+    convex_hull_decorator._global_stack = mocked_stack
 
     convex_hull_decorator._getSettingProperty = MagicMock(return_value=0)
 
@@ -176,6 +183,9 @@ def test_compute2DConvexHullMeshDataGrouped(convex_hull_decorator):
         convex_hull_decorator.setNode(parent_node)
         with patch("cura.Settings.ExtruderManager.ExtruderManager.getInstance"):
             copied_decorator = copy.deepcopy(convex_hull_decorator)
+            mocked_stack = MagicMock()
+            mocked_stack.getProperty = MagicMock(return_value=1)
+            copied_decorator._global_stack = mocked_stack
             copied_decorator._getSettingProperty = MagicMock(return_value=0)
         node.addDecorator(copied_decorator)
-    assert convex_hull_decorator._compute2DConvexHull() == Polygon([[-5.0,5.0], [5.0,5.0], [5.0,-5.0], [-5.0,-5.0]])
+    assert convex_hull_decorator._compute2DConvexHull() == Polygon([[-5.0, 5.0], [5.0, 5.0], [5.0, -5.0], [-5.0, -5.0]])

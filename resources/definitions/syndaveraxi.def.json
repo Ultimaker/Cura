@@ -1,46 +1,39 @@
 {
-    "version": 2, 
+    "version": 2,
     "name": "SyndaverAxi",
     "inherits": "fdmprinter",
-    "metadata": 
-{
-        "type": "machine",
+    "metadata":
+    {
         "visible": true,
         "author": "Syndaver3D",
         "manufacturer": "Syndaver3D",
         "file_formats": "text/x-gcode",
-        "supports_usb_connection": true,
+        "machine_extruder_trains": { "0": "syndaveraxi_extruder_0" },
         "preferred_quality_type": "draft",
-        "machine_extruder_trains":
-        {
-            "0": "syndaveraxi_extruder_0"
-        }
+        "supports_usb_connection": true,
+        "type": "machine"
     },
-
-    "overrides": {
-        "machine_name": { "default_value": "AXI" },
-        "machine_shape": { "default_value": "rectangular"},
-        "machine_heated_bed": { "default_value": true },
-        "machine_width": { "default_value": 280 },
-        "machine_depth": { "default_value": 280 },
-        "machine_height": { "default_value": 285 },
+    "overrides":
+    {
+        "gantry_height": { "value": "30" },
         "machine_center_is_zero": { "default_value": false },
-        "machine_head_with_fans_polygon": {
+        "machine_depth": { "default_value": 280 },
+        "machine_end_gcode": { "default_value": "M400                                               ; wait for moves to finish\nM140 S50                                           ; start bed cooling\nM104 S0                                            ; disable hotend\nM107                                               ; disable fans\nM117 Cooling please wait\nG91                                                ; relative positioning\nG1 Z5 F3000                                        ; move Z up 5mm so it wont drag on the print\nG90                                                ; absolute positioning\nG1 X5 Y5 F3000                                     ; move to cooling position\nM190 R50                                           ; wait for bed to cool down to removal temp\nG1 X145 Y260 F1000                                 ; present finished print\nM140 S0                                            ; cool down bed\nM77                                                ; End LCD Print Timer\nM18 X Y E                                          ; turn off x y and e axis\nM117 Print Complete." },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_head_with_fans_polygon":
+        {
             "default_value": [
-                [ 0, 0 ],
-                [ 0, 0 ],
-                [ 0, 0 ],
-                [ 0, 0 ]
+                [0, 0],
+                [0, 0],
+                [0, 0],
+                [0, 0]
             ]
         },
-        "gantry_height": { "value": "30" },
-        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
-
-        "machine_start_gcode": {
-            "default_value": ";This G-Code has been generated specifically for Syndaver AXI with Hemera toolhead\nM73 P0                                       ; clear LCD progress bar\nM75                                          ; Start LCD Print Timer\nM107                                         ; disable fans\nM420 S0                                      ; disable leveling matrix\nM82                                          ; set extruder to absolute mode\nG92 E0                                       ; set extruder position to 0\nM140 S{material_bed_temperature_layer_0}     ; start bed heating up\nM104 S170                                    ; start nozzle heating up\nG28                                          ; home all axes\nM117 AXI Heating Up...\nG1 X-17.5 Y100 F3000                         ; move to wiper pad\nG1 Z10 F5000                                 ; move to wiper pad\nG29 L1                                       ; load leveling matrix slot 1\nG29 A                                        ; ensure mesh is enabled\nM109 R170                                    ; wait for nozzle to reach wiping temp\nG1 E-3                                       ; retract material before wipe\nM117 AXI Wiping Nozzle...\nG1 Z-3                                       ; lower nozzle\nG1 Y90 F1000                                 ; slow wipe\nG1 Y65 F1000                                 ; slow wipe\nG1 Y80 F1000                                 ; slow wipe\nG1 Y65 F1000                                 ; slow wipe\nG1 Y55 F1000                                 ; slow wipe\nG1 Y30 F3000                                 ; fast wipe\nG1 Y55 F3000                                 ; fast wipe\nG1 Y30 F3000                                 ; fast wipe\nG1 Y55 F3000                                 ; fast wipe\nG1 Z10                                       ; raise nozzle\nM117 Heating...\nM190 R{material_bed_temperature_layer_0}     ; wait for bed to reach printing temp\nM104 S{material_print_temperature_layer_0}   ; set extruder to reach initial printing temp, held back for ooze reasons\nM117 Probe Z at Temp\nG28 Z                                        ; re-probe Z0 to account for any thermal expansion in the bed\nG1 X-17.5 Y80 F3000                          ; move to wiper pad\nG1 Z10 F5000                                 ; move to wiper pad\nM117 Heating...\nM109 R{material_print_temperature_layer_0}   ; wait for extruder to reach initial printing temp\nM117 AXI Wiping Nozzle...\nG1 E0                                        ; prime material in nozzle\nG1 Z-3                                       ; final ooze wipe\nG1 Y60 F2000                                 ; final ooze wipe\nG1 Y20 F2000                                 ; final ooze wipe\nM117 AXI Starting Print\nG1 Z2                                        ; move nozzle back up to not run into things on print start\nM400                                         ; wait for moves to finish\nM117 AXI Printing"
-         },
-        "machine_end_gcode": {
-            "default_value": "M400                                               ; wait for moves to finish\nM140 S50                                           ; start bed cooling\nM104 S0                                            ; disable hotend\nM107                                               ; disable fans\nM117 Cooling please wait\nG91                                                ; relative positioning\nG1 Z5 F3000                                        ; move Z up 5mm so it wont drag on the print\nG90                                                ; absolute positioning\nG1 X5 Y5 F3000                                     ; move to cooling position\nM190 R50                                           ; wait for bed to cool down to removal temp\nG1 X145 Y260 F1000                                 ; present finished print\nM140 S0                                            ; cool down bed\nM77                                                ; End LCD Print Timer\nM18 X Y E                                          ; turn off x y and e axis\nM117 Print Complete."
-        }
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 285 },
+        "machine_name": { "default_value": "AXI" },
+        "machine_shape": { "default_value": "rectangular" },
+        "machine_start_gcode": { "default_value": ";This G-Code has been generated specifically for Syndaver AXI with Hemera toolhead\nM73 P0                                       ; clear LCD progress bar\nM75                                          ; Start LCD Print Timer\nM107                                         ; disable fans\nM420 S0                                      ; disable leveling matrix\nM82                                          ; set extruder to absolute mode\nG92 E0                                       ; set extruder position to 0\nM140 S{material_bed_temperature_layer_0}     ; start bed heating up\nM104 S170                                    ; start nozzle heating up\nG28                                          ; home all axes\nM117 AXI Heating Up...\nG1 X-17.5 Y100 F3000                         ; move to wiper pad\nG1 Z10 F5000                                 ; move to wiper pad\nG29 L1                                       ; load leveling matrix slot 1\nG29 A                                        ; ensure mesh is enabled\nM109 R170                                    ; wait for nozzle to reach wiping temp\nG1 E-3                                       ; retract material before wipe\nM117 AXI Wiping Nozzle...\nG1 Z-3                                       ; lower nozzle\nG1 Y90 F1000                                 ; slow wipe\nG1 Y65 F1000                                 ; slow wipe\nG1 Y80 F1000                                 ; slow wipe\nG1 Y65 F1000                                 ; slow wipe\nG1 Y55 F1000                                 ; slow wipe\nG1 Y30 F3000                                 ; fast wipe\nG1 Y55 F3000                                 ; fast wipe\nG1 Y30 F3000                                 ; fast wipe\nG1 Y55 F3000                                 ; fast wipe\nG1 Z10                                       ; raise nozzle\nM117 Heating...\nM190 R{material_bed_temperature_layer_0}     ; wait for bed to reach printing temp\nM104 S{material_print_temperature_layer_0}   ; set extruder to reach initial printing temp, held back for ooze reasons\nM117 Probe Z at Temp\nG28 Z                                        ; re-probe Z0 to account for any thermal expansion in the bed\nG1 X-17.5 Y80 F3000                          ; move to wiper pad\nG1 Z10 F5000                                 ; move to wiper pad\nM117 Heating...\nM109 R{material_print_temperature_layer_0}   ; wait for extruder to reach initial printing temp\nM117 AXI Wiping Nozzle...\nG1 E0                                        ; prime material in nozzle\nG1 Z-3                                       ; final ooze wipe\nG1 Y60 F2000                                 ; final ooze wipe\nG1 Y20 F2000                                 ; final ooze wipe\nM117 AXI Starting Print\nG1 Z2                                        ; move nozzle back up to not run into things on print start\nM400                                         ; wait for moves to finish\nM117 AXI Printing" },
+        "machine_width": { "default_value": 280 }
     }
 }

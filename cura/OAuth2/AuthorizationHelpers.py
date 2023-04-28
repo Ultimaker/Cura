@@ -4,7 +4,7 @@
 from base64 import b64encode
 from datetime import datetime
 from hashlib import sha512
-from PyQt5.QtNetwork import QNetworkReply
+from PyQt6.QtNetwork import QNetworkReply
 import secrets
 from typing import Callable, Optional
 import urllib.parse

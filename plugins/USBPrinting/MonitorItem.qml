@@ -3,7 +3,6 @@
 
 import QtQuick 2.10
 import QtQuick.Controls 2.0
-import QtQuick.Layouts 1.3
 
 import UM 1.2 as UM
 import Cura 1.0 as Cura
@@ -22,7 +21,10 @@ Component
 
             Cura.PrintMonitor
             {
-                anchors.fill: parent
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.bottom: footerSeparator.top
             }
 
             Rectangle

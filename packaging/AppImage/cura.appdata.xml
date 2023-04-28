@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+	<id>com.ultimaker.cura</id>
+	<metadata_license>CC0-1.0</metadata_license>
+	<project_license>LGPL-3.0</project_license>
+	<name>UltiMaker Cura</name>
+	<summary>Slicer to prepare your 3D printing projects</summary>
+	<description>
+		<p>UltiMaker Cura is a slicer, an application that prepares your model for 3D printing. Optimized, expert-tested profiles for 3D printers and materials mean you can start printing reliably in no time. And with industry-standard software integration, you can streamline your workflow for maximum efficiency.</p>
+	</description>
+	<url type="homepage">https://ultimaker.com/en/software/ultimaker-cura</url>
+	<screenshots>
+		<screenshot type="default">
+			<caption>Print preparation screen</caption>
+			<image>https://raw.githubusercontent.com/Ultimaker/Cura/main/cura-logo.PNG</image>
+		</screenshot>
+	</screenshots>
+</component>

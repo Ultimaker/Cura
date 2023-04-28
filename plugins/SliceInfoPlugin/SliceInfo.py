@@ -1,4 +1,4 @@
-# Copyright (c) 2021 Ultimaker B.V.
+# Copyright (c) 2023 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import json
@@ -7,8 +7,8 @@ import platform
 import time
 from typing import cast, Optional, Set, TYPE_CHECKING
 
-from PyQt5.QtCore import pyqtSlot, QObject
-from PyQt5.QtNetwork import QNetworkRequest
+from PyQt6.QtCore import pyqtSlot, QObject
+from PyQt6.QtNetwork import QNetworkRequest
 
 from UM.Extension import Extension
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
@@ -20,14 +20,14 @@ from UM.Qt.Duration import DurationFormat
 from cura import ApplicationMetadata
 
 if TYPE_CHECKING:
-    from PyQt5.QtNetwork import QNetworkReply
+    from PyQt6.QtNetwork import QNetworkReply
 
 
 catalog = i18nCatalog("cura")
 
 
 class SliceInfo(QObject, Extension):
-    """This Extension runs in the background and sends several bits of information to the Ultimaker servers.
+    """This Extension runs in the background and sends several bits of information to the UltiMaker servers.
 
     The data is only sent when the user in question gave permission to do so. All data is anonymous and
     no model files are being sent (Just a SHA256 hash of the model).
@@ -133,6 +133,7 @@ class SliceInfo(QObject, Extension):
             data["is_logged_in"] = self._application.getCuraAPI().account.isLoggedIn
             data["organization_id"] = org_id if org_id else None
             data["subscriptions"] = user_profile.get("subscriptions", []) if user_profile else []
+            data["slice_uuid"] = print_information.slice_uuid
 
             active_mode = self._application.getPreferences().getValue("cura/active_mode")
             if active_mode == 0:
@@ -276,6 +277,26 @@ class SliceInfo(QObject, Extension):
             # Send the name of the output device type that is used.
             data["output_to"] = type(output_device).__name__
 
+            # Engine Statistics (Slicing Time, ...)
+            # Call it backend-time, sice we might want to get the actual slice time from the engine itself,
+            #   to also identify problems in between the users pressing the button and the engine actually starting
+            #   (and the other way around with data that arrives back from the engine).
+            time_setup = 0.0
+            time_backend = 0.0
+            if not print_information.preSliced:
+                backend_info = self._application.getBackend().resetAndReturnLastSliceTimeStats()
+                time_start_process = backend_info["time_start_process"]
+                time_send_message = backend_info["time_send_message"]
+                time_end_slice = backend_info["time_end_slice"]
+                if time_start_process and time_send_message and time_end_slice:
+                    time_setup = time_send_message - time_start_process
+                    time_backend = time_end_slice - time_send_message
+            data["engine_stats"] = {
+                "is_presliced": int(print_information.preSliced),
+                "time_setup": int(round(time_setup)),
+                "time_backend": int(round(time_backend)),
+            }
+
             # Convert data to bytes
             binary_data = json.dumps(data).encode("utf-8")
 
@@ -289,7 +310,7 @@ class SliceInfo(QObject, Extension):
             Logger.logException("e", "Exception raised while sending slice info.") # But we should be notified about these problems of course.
 
     def _onRequestFinished(self, reply: "QNetworkReply") -> None:
-        status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
+        status_code = reply.attribute(QNetworkRequest.Attribute.HttpStatusCodeAttribute)
         if status_code == 200:
             Logger.log("i", "SliceInfo sent successfully")
             return

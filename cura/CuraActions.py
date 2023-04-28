@@ -1,8 +1,8 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import QObject, QUrl
-from PyQt5.QtGui import QDesktopServices
+from PyQt6.QtCore import QObject, QUrl
+from PyQt6.QtGui import QDesktopServices
 from typing import List, cast
 
 from UM.Event import CallFunctionEvent

@@ -2,61 +2,29 @@
     "version": 2,
     "name": "Tevo Black Widow",
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "visible": true,
         "author": "TheTobby",
         "manufacturer": "Tevo",
         "file_formats": "text/x-gcode",
-        "has_materials": false,
-        "has_machine_quality": true,
         "platform": "tevo_blackwidow.3mf",
-        "preferred_quality_type": "normal",
-        "machine_extruder_trains":
-        {
-            "0": "tevo_blackwidow_extruder_0"
-        }
+        "has_machine_quality": true,
+        "has_materials": false,
+        "machine_extruder_trains": { "0": "tevo_blackwidow_extruder_0" },
+        "preferred_quality_type": "normal"
     },
     "overrides":
     {
-        "machine_name":
-        {
-            "default_value": "Tevo Black Widow"
-        },
-        "machine_heated_bed":
-        {
-            "default_value": true
-        },
-        "machine_width":
-        {
-            "default_value": 350
-        },
-        "machine_height":
-        {
-            "default_value": 250
-        },
-        "machine_depth":
-        {
-            "default_value": 250
-        },
-        "machine_center_is_zero":
-        {
-            "default_value": false
-        },
-        "gantry_height":
-        {
-            "value": "0"
-        },
-        "machine_gcode_flavor":
-        {
-            "default_value": "RepRap (Marlin/Sprinter)"
-        },
-        "machine_start_gcode":
-        {
-            "default_value": "M280 P0 S160 ; release BLTouch alarm (OK to send for Non BLTouch)\nM420 Z2 ; set fade leveling at 2mm for BLTouch (OK to send for Non BLTouch)\nG28 ; home all\nG29 ; probe bed\nG92 E0 ;zero the extruded length\nG1 X0.0 Y50.0 Z10.0 F3600\n; perform wipe and prime\nG1 Z0.0 F1000\nG1 Z0.2 Y70.0 E9.0 F1000.0 ; prime\nG1 Y100.0 E12.5 F1000.0 ; prime\nG92 E0 ; zero extruder again\nM117 Printing..."
-        },
-        "machine_end_gcode":
-        {
-            "default_value": "G92 E0 ; zero the extruded length again\nG1 E-1.5 F500 ; retract the filament to release some of the pressure\nM104 S0 ; turn off extruder\nM140 S0 ; turn off bed\nG28 X0 ; home X axis\nG1 Y245 ; move Y axis to end position\nM84 ; disable motors\nM107 ; turn off fan"
-        }
+        "gantry_height": { "value": "0" },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_depth": { "default_value": 250 },
+        "machine_end_gcode": { "default_value": "G92 E0 ; zero the extruded length again\nG1 E-1.5 F500 ; retract the filament to release some of the pressure\nM104 S0 ; turn off extruder\nM140 S0 ; turn off bed\nG28 X0 ; home X axis\nG1 Y245 ; move Y axis to end position\nM84 ; disable motors\nM107 ; turn off fan" },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 250 },
+        "machine_name": { "default_value": "Tevo Black Widow" },
+        "machine_start_gcode": { "default_value": "M280 P0 S160 ; release BLTouch alarm (OK to send for Non BLTouch)\nM420 Z2 ; set fade leveling at 2mm for BLTouch (OK to send for Non BLTouch)\nG28 ; home all\nG29 ; probe bed\nG92 E0 ;zero the extruded length\nG1 X0.0 Y50.0 Z10.0 F3600\n; perform wipe and prime\nG1 Z0.0 F1000\nG1 Z0.2 Y70.0 E9.0 F1000.0 ; prime\nG1 Y100.0 E12.5 F1000.0 ; prime\nG92 E0 ; zero extruder again\nM117 Printing..." },
+        "machine_width": { "default_value": 350 }
     }
 }

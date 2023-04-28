@@ -1,7 +1,7 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # !/usr/bin/env python
 # -*- coding: utf-8 -*-
-from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply
+from PyQt6.QtNetwork import QNetworkRequest, QNetworkReply
 from typing import Callable, Any, Tuple, cast, Dict, Optional
 
 from UM.Logger import Logger
@@ -106,9 +106,9 @@ class ToolPathUploader:
         """Checks whether a chunk of data was uploaded successfully, starting the next chunk if needed."""
 
         Logger.log("i", "Finished callback %s %s",
-                   reply.attribute(QNetworkRequest.HttpStatusCodeAttribute), reply.url().toString())
+                   reply.attribute(QNetworkRequest.Attribute.HttpStatusCodeAttribute), reply.url().toString())
 
-        status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)  # type: Optional[int]
+        status_code = reply.attribute(QNetworkRequest.Attribute.HttpStatusCodeAttribute)  # type: Optional[int]
         if not status_code:
             Logger.log("e", "Reply contained no status code.")
             self._errorCallback(reply, None)

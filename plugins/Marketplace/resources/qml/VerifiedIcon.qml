@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Ultimaker B.V.
+// Copyright (c) 2022 UltiMaker
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.15
@@ -12,15 +12,15 @@ Control
     implicitWidth: UM.Theme.getSize("card_tiny_icon").width
     implicitHeight: UM.Theme.getSize("card_tiny_icon").height
 
-    Cura.ToolTip
+    UM.ToolTip
     {
         tooltipText:
         {
             switch(packageData.packageType)
             {
-                case "plugin": return catalog.i18nc("@info", "Ultimaker Verified Plug-in");
-                case "material": return catalog.i18nc("@info", "Ultimaker Certified Material");
-                default: return catalog.i18nc("@info", "Ultimaker Verified Package");
+                case "plugin": return catalog.i18nc("@info", "UltiMaker Verified Plug-in");
+                case "material": return catalog.i18nc("@info", "UltiMaker Certified Material");
+                default: return catalog.i18nc("@info", "UltiMaker Verified Package");
             }
         }
         visible: parent.hovered
@@ -32,7 +32,7 @@ Control
         anchors.fill: parent
         color: UM.Theme.getColor("action_button_hovered")
         radius: width
-        UM.RecolorImage
+        UM.ColorImage
         {
             anchors.fill: parent
             color: UM.Theme.getColor("primary")

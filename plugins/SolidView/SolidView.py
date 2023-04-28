@@ -6,8 +6,8 @@ from UM.View.View import View
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.Selection import Selection
 from UM.Resources import Resources
-from PyQt5.QtGui import QOpenGLContext, QDesktopServices, QImage
-from PyQt5.QtCore import QSize, QUrl
+from PyQt6.QtGui import QOpenGLContext, QDesktopServices, QImage
+from PyQt6.QtCore import QSize, QUrl
 
 import numpy as np
 import time
@@ -296,7 +296,7 @@ class SolidView(View):
             self._next_xray_checking_time = time.time() + self._xray_checking_update_time
 
             xray_img = self._xray_pass.getOutput()
-            xray_img = xray_img.convertToFormat(QImage.Format_RGB888)
+            xray_img = xray_img.convertToFormat(QImage.Format.Format_RGB888)
 
             # We can't just read the image since the pixels are aligned to internal memory positions.
             # xray_img.byteCount() != xray_img.width() * xray_img.height() * 3

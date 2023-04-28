@@ -1,19 +1,24 @@
 {
-    "name": "Artillery Genius",
     "version": 2,
+    "name": "Artillery Genius",
     "inherits": "artillery_base",
-    "overrides": {
-        "machine_name": { "default_value": "Artillery Genius" },
-        "machine_width": { "default_value": 220 },
+    "metadata":
+    {
+        "visible": true,
+        "platform": "artillery_genius.stl",
+        "platform_offset": [
+            0,
+            -72,
+            -20
+        ],
+        "quality_definition": "artillery_base"
+    },
+    "overrides":
+    {
+        "gantry_height": { "value": 25 },
         "machine_depth": { "default_value": 220 },
         "machine_height": { "default_value": 250 },
-        "gantry_height": { "value": 25 }
-
-    },
-    "metadata": {
-        "quality_definition": "artillery_base",
-        "visible": true,
-		"platform": "artillery_genius.stl",
-        "platform_offset": [ -0, -72, -20]
+        "machine_name": { "default_value": "Artillery Genius" },
+        "machine_width": { "default_value": 220 }
     }
 }

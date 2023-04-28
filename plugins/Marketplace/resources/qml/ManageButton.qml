@@ -46,7 +46,7 @@ Item
             height: UM.Theme.getSize("action_button").height
             width: childrenRect.width
 
-            UM.RecolorImage
+            UM.ColorImage
             {
                 id: busyIndicator
                 visible: parent.visible

@@ -4,7 +4,7 @@
 import os
 from typing import Optional, Dict, List, Tuple, TYPE_CHECKING
 
-from PyQt5.QtCore import pyqtProperty, pyqtSlot
+from PyQt6.QtCore import pyqtProperty, pyqtSlot
 
 from UM.Logger import Logger
 from UM.Resources import Resources
@@ -12,7 +12,7 @@ from UM.Resources import Resources
 from cura.UI.WelcomePagesModel import WelcomePagesModel
 
 if TYPE_CHECKING:
-    from PyQt5.QtCore import QObject
+    from PyQt6.QtCore import QObject
     from cura.CuraApplication import CuraApplication
 
 
@@ -62,15 +62,21 @@ class WhatsNewPagesModel(WelcomePagesModel):
 
     def initialize(self) -> None:
         self._pages = []
-        self._pages.append({"id": "whats_new",
-                            "page_url": self._getBuiltinWelcomePagePath("WhatsNewContent.qml"),
-                            "next_page_button_text": self._catalog.i18nc("@action:button", "Skip"),
-                            "next_page_id": "changelog"
-                            })
-        self._pages.append({"id": "changelog",
-                            "page_url": self._getBuiltinWelcomePagePath("ChangelogContent.qml"),
-                            "next_page_button_text": self._catalog.i18nc("@action:button", "Close"),
-                            })
+        try:
+            self._pages.append({"id": "whats_new",
+                                "page_url": self._getBuiltinWelcomePagePath("WhatsNewContent.qml"),
+                                "next_page_button_text": self._catalog.i18nc("@action:button", "Skip"),
+                                "next_page_id": "changelog"
+                                })
+        except FileNotFoundError:
+            Logger.warning("Unable to find what's new page")
+        try:
+            self._pages.append({"id": "changelog",
+                                "page_url": self._getBuiltinWelcomePagePath("ChangelogContent.qml"),
+                                "next_page_button_text": self._catalog.i18nc("@action:button", "Close"),
+                                })
+        except FileNotFoundError:
+            Logger.warning("Unable to find changelog page")
         self.setItems(self._pages)
 
         images, max_image = WhatsNewPagesModel._collectOrdinalFiles(Resources.Images, WhatsNewPagesModel.image_formats)

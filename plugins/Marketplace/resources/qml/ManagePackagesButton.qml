@@ -1,7 +1,7 @@
 // Copyright (c) 2021 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.6 as Cura
 
 import QtQuick 2.15
@@ -25,7 +25,7 @@ TabButton
         radius: Math.round(width * 0.5)
     }
 
-    Cura.ToolTip
+    UM.ToolTip
     {
         id: tooltip
 
@@ -33,7 +33,7 @@ TabButton
         visible: root.hovered
     }
 
-    UM.RecolorImage
+    UM.ColorImage
     {
         id: icon
 

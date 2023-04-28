@@ -2,7 +2,6 @@
 //Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
-import QtQuick.Dialogs 1.1
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
@@ -14,8 +13,8 @@ UM.Dialog
 {
     id: licenseDialog
     title: catalog.i18nc("@button", "Plugin license agreement")
-    minimumWidth: UM.Theme.getSize("license_window_minimum").width
-    minimumHeight: UM.Theme.getSize("license_window_minimum").height
+    minimumWidth: UM.Theme.getSize("modal_window_minimum").width
+    minimumHeight: UM.Theme.getSize("modal_window_minimum").height
     width: minimumWidth
     height: minimumHeight
     backgroundColor: UM.Theme.getColor("main_background")
@@ -34,7 +33,7 @@ UM.Dialog
             spacing: UM.Theme.getSize("default_margin").width
             leftPadding: UM.Theme.getSize("narrow_margin").width
 
-            UM.RecolorImage
+            UM.ColorImage
             {
                 id: icon
                 width: UM.Theme.getSize("marketplace_large_icon").width
@@ -43,16 +42,13 @@ UM.Dialog
                 source: UM.Theme.getIcon("Certificate", "high")
             }
 
-            Label
+            UM.Label
             {
                 text: catalog.i18nc("@text", "Please read and agree with the plugin licence.")
-                color: UM.Theme.getColor("text")
                 font: UM.Theme.getFont("large")
                 anchors.verticalCenter: icon.verticalCenter
                 height: UM.Theme.getSize("marketplace_large_icon").height
                 verticalAlignment: Qt.AlignVCenter
-                wrapMode: Text.Wrap
-                renderType: Text.NativeRendering
             }
         }
 

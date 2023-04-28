@@ -1,17 +1,19 @@
 {
-    "name": "Renkforce Basic 3",
     "version": 2,
+    "name": "Renkforce Basic 3",
     "inherits": "goofoo_small",
-    "overrides": {
-        "machine_name": { "default_value": "Renkforce Basic 3" },
-        "machine_width": { "default_value": 120 },
-        "machine_depth": { "default_value": 120 },
-        "machine_height": { "default_value": 180 },
-        "machine_heated_bed": { "default_value": false }
-    },
-    "metadata": {
+    "metadata":
+    {
+        "visible": true,
         "author": "Simon Peter (based on RF100.ini by Conrad Electronic SE)",
-        "manufacturer": "Renkforce",
-        "visible": true
+        "manufacturer": "Renkforce"
+    },
+    "overrides":
+    {
+        "machine_depth": { "default_value": 120 },
+        "machine_heated_bed": { "default_value": false },
+        "machine_height": { "default_value": 180 },
+        "machine_name": { "default_value": "Renkforce Basic 3" },
+        "machine_width": { "default_value": 120 }
     }
 }

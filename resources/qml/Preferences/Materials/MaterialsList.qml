@@ -1,11 +1,9 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Uranium is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
-import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
-import QtQuick.Dialogs 1.2
+import QtQuick.Dialogs
 
 import UM 1.2 as UM
 import Cura 1.0 as Cura
@@ -16,7 +14,6 @@ Item
     height: childrenRect.height
 
     // Children
-    UM.I18nCatalog { id: catalog; name: "cura"; }
     Cura.MaterialBrandsModel
     {
         id: materialsModel

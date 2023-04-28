@@ -2,50 +2,55 @@
     "version": 2,
     "name": "Volumic Stream30Pro MK2",
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "visible": true,
         "author": "Volumic",
         "manufacturer": "Volumic",
         "file_formats": "text/x-gcode",
-        "icon": "volumic-icon",
         "platform": "STREAM30PRO_platform.STL",
-        "has_materials": true,
         "has_machine_quality": true,
-        "machine_extruder_trains":{"0": "stream30_extruder"}
+        "has_materials": true,
+        "icon": "volumic-icon",
+        "machine_extruder_trains": { "0": "stream30_extruder" }
     },
-
-    "overrides": {
-        "machine_name": { "default_value": "VOLUMIC STREAM30PRO MK2" },
-        "machine_heated_bed": { "default_value": true },
-        "machine_width": { "default_value": 300 },
-        "machine_height": { "default_value": 300 },
-        "machine_depth": { "default_value": 200 },
-        "machine_center_is_zero": { "default_value": false },
-        "material_diameter": { "default_value": 1.75 },
-        "machine_nozzle_size": { "default_value": 0.4 },
+    "overrides":
+    {
+        "adhesion_type": { "default_value": "none" },
+        "fill_outline_gaps": { "default_value": true },
+        "infill_sparse_density": { "default_value": 25 },
         "layer_height": { "default_value": 0.1 },
         "layer_height_0": { "default_value": 0.1 },
-        "retraction_amount": { "default_value": 2 },
-        "retraction_speed": { "default_value": 25 },
-        "adhesion_type": { "default_value": "none" },
-		"infill_sparse_density": { "default_value": 25 },
-		"fill_outline_gaps": { "default_value": true },
-		"retract_at_layer_change": { "default_value": true },
-		"retraction_combing_max_distance": { "default_value": 200 },
-        "machine_head_with_fans_polygon": { "default_value": [[-38,30],[38,30],[38,-40],[-38,-40]] },
-        "machine_max_feedrate_z": { "default_value": 50 },
-        "machine_max_feedrate_e": { "default_value": 60 },
-        "machine_max_acceleration_z": { "default_value": 500 },
         "machine_acceleration": { "default_value": 2000 },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_depth": { "default_value": 200 },
+        "machine_end_gcode": { "default_value": "M107\nG91\nT0\nG1 E-1\nM104 T0 S0\nG90\nG0 X1 Y190 F5000\nG92 E0\nM140 S0\nM84\nM300" },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [-38, 30],
+                [38, 30],
+                [38, -40],
+                [-38, -40]
+            ]
+        },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 300 },
+        "machine_max_acceleration_z": { "default_value": 500 },
+        "machine_max_feedrate_e": { "default_value": 60 },
+        "machine_max_feedrate_z": { "default_value": 50 },
+        "machine_max_jerk_e": { "default_value": 5 },
         "machine_max_jerk_xy": { "default_value": 10 },
         "machine_max_jerk_z": { "default_value": 0.4 },
-        "machine_max_jerk_e": { "default_value": 5 },
-        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
-        "machine_start_gcode": {
-            "default_value": "M117 Demarrage\nM106 S0\nM140 S{material_bed_temperature_layer_0}\nM104 T0 S{material_print_temperature_layer_0}\nG28\nG90\nM82\nG92 E0\nG1 Z3 F600\n;M190 S{material_bed_temperature_layer_0}\nM109 T0 S{material_print_temperature_layer_0}\nM300 P350\nM117 Purge\nG1 Z0.15 F600\nG1 E10 F400\nG92 E0\nM117 Impression"
-        },
-        "machine_end_gcode": {
-            "default_value": "M107\nG91\nT0\nG1 E-1\nM104 T0 S0\nG90\nG0 X1 Y190 F5000\nG92 E0\nM140 S0\nM84\nM300"
-        }
+        "machine_name": { "default_value": "VOLUMIC STREAM30PRO MK2" },
+        "machine_nozzle_size": { "default_value": 0.4 },
+        "machine_start_gcode": { "default_value": "M117 Demarrage\nM106 S0\nM140 S{material_bed_temperature_layer_0}\nM104 T0 S{material_print_temperature_layer_0}\nG28\nG90\nM82\nG92 E0\nG1 Z3 F600\n;M190 S{material_bed_temperature_layer_0}\nM109 T0 S{material_print_temperature_layer_0}\nM300 P350\nM117 Purge\nG1 Z0.15 F600\nG1 E10 F400\nG92 E0\nM117 Impression" },
+        "machine_width": { "default_value": 300 },
+        "material_diameter": { "default_value": 1.75 },
+        "retract_at_layer_change": { "default_value": true },
+        "retraction_amount": { "default_value": 2 },
+        "retraction_combing_max_distance": { "default_value": 200 },
+        "retraction_speed": { "default_value": 25 }
     }
 }
