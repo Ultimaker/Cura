@@ -5,7 +5,7 @@ on:
     types: [published]
 
 env:
-  packageFileName: UltiMaker-Cura-(.+)-win64.exe
+  packageFileName: UltiMaker-Cura-(.+)-win64.msi
   packageId: Ultimaker.Cura
 
 jobs:
