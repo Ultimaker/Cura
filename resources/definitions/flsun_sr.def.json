@@ -27,7 +27,7 @@
         "machine_depth": { "default_value": 264 },
         "machine_end_gcode": { "default_value": "G91 ; relative coordinates\nG1 E-1 F300 ; retract filament a bit before lifting\nG1 Z+5 E-5 F6000 ; raise platform from current position\nG28 X0 Y0 ; home axis\nG90 ; absolute coordinates\nG92 E0 ; reset extruder\nM104 S0 ; turn off hotend\nM140 S0 ; turn off heat bed\nM107 ; turn off fans\nM84 ; disable motors\n" },
         "machine_extruder_count": { "default_value": 1 },
-        "machine_gcode_flavor": { "default_value": "Marlin" },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
         "machine_head_with_fans_polygon":
         {
             "default_value": [
