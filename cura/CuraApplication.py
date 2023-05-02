@@ -122,7 +122,7 @@ from .Machines.Models.IntentSelectionModel import IntentSelectionModel
 from .SingleInstance import SingleInstance
 
 #BCN3D IDEX (print_mode) INCLUSION
-from cura.Utils.BCN3Dutils.Bcn3dIdexSupport import duplicatedGroupSelected, onDuplicatedgroupSelected, onReadMeshFinished
+from cura.Utils.BCN3Dutils.Bcn3dIdexSupport import duplicatedGroupSelected, onDuplicatedgroupSelected, onReadMeshFinished, removeDuplicatedNodes, onRemoveNodesWithLayerData
 
 if TYPE_CHECKING:
     from UM.Settings.EmptyInstanceContainer import EmptyInstanceContainer
@@ -1649,7 +1649,7 @@ class CuraApplication(QtApplication):
         Selection.applyOperation(SetParentOperation, group_node)
 
         #BCN3D IDEX INCLUSION
-        duplicatedGroupSelected(self.getGlobalContainerStack(), self._controller, group_node, Selection, SetParentOperation)
+        duplicatedGroupSelected(self._controller, group_node, Selection, SetParentOperation)
 
         # Deselect individual nodes and select the group-node instead
         for node in group_node.getChildren():
@@ -1677,7 +1677,7 @@ class CuraApplication(QtApplication):
                     Selection.add(child)
 
                 #BCN3D IDEX INCLUSION
-                op = onDuplicatedgroupSelected(op, self.getGlobalContainerStack(), node)
+                op = onDuplicatedgroupSelected(op, node)
 
                 op.push()
                 # Note: The group removes itself from the scene once all its children have left it,
@@ -1955,7 +1955,7 @@ class CuraApplication(QtApplication):
             scene.sceneChanged.emit(node)
 
             #BCN3D IDEX INCLUSION
-            nodes_to_arrange = onReadMeshFinished(nodes_to_arrange, self.getGlobalContainerStack(), node, scene)
+            nodes_to_arrange = onReadMeshFinished(nodes_to_arrange, node, scene)
 
             if select_models_on_load:
                 Selection.add(node)
@@ -2049,6 +2049,8 @@ class CuraApplication(QtApplication):
 
     @pyqtSlot()
     def deleteAll(self, only_selectable: bool = True) -> None:
+        #BCN3D IDEX INCLUSION
+        removeDuplicatedNodes()
         super().deleteAll(only_selectable = only_selectable)
 
         # Also remove nodes with LayerData
@@ -2075,7 +2077,9 @@ class CuraApplication(QtApplication):
 
             for node in nodes:
                 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
-                op.addOperation(RemoveSceneNodeOperation(node))
+                #op.addOperation(RemoveSceneNodeOperation(node))
+                #BCN3D IDEX INCLUSION, we keep the RemoveSceneNodeOperation import for less messing
+                op = onRemoveNodesWithLayerData(node, op)
 
                 # Reset the print information
                 self.getController().getScene().sceneChanged.emit(node)

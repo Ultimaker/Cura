@@ -16,6 +16,9 @@ from UM.Scene.SceneNode import SceneNode
 from UM.i18n import i18nCatalog
 from cura.Arranging.Nest2DArrange import arrange, createGroupOperationForArrange
 
+#BCN3D IDEX (print_mode) INCLUSION
+from cura.Utils.BCN3Dutils.Bcn3dIdexSupport import runMultiplyObjectsJob
+
 i18n_catalog = i18nCatalog("cura")
 
 
@@ -76,11 +79,21 @@ class MultiplyObjectsJob(Job):
         found_solution_for_all = True
         group_operation = GroupedOperation()
         if nodes:
+            runMultiplyObjectsJob()
+            print_mode_enabled = Application.getInstance().getGlobalContainerStack().getProperty("print_mode", "enabled")
+            if print_mode_enabled:
+                node_dup = DuplicatedNode(new_node)
+                op.addOperation(AddNodesOperation(node_dup, current_node.getParent()))
+            else:
+                op.addOperation(AddSceneNodeOperation(new_node, current_node.getParent()))
+            op.push()
+            
             group_operation, not_fit_count = createGroupOperationForArrange(nodes,
                                                                             Application.getInstance().getBuildVolume(),
                                                                             fixed_nodes,
                                                                             factor = 10000,
                                                                             add_new_nodes_in_scene = True)
+            #sds
             found_solution_for_all = not_fit_count == 0
 
         if nodes_to_add_without_arrange:

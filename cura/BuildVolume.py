@@ -305,8 +305,7 @@ class BuildVolume(SceneNode):
                 node.setOutsideBuildArea(False)
         
         #BCN3D IDEX INCLUSION
-        updateNodeBoundaryCheckForDuplicated(self._global_container_stack)
-        
+        updateNodeBoundaryCheckForDuplicated()  
 
         # Group nodes should override the _outside_buildarea property of their children.
         for group_node in group_nodes:
