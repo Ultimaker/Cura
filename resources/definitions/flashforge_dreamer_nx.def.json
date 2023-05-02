@@ -2,32 +2,41 @@
     "version": 2,
     "name": "Dreamer NX",
     "inherits": "flashforge_base",
-    "metadata": {
+    "metadata":
+    {
         "visible": true,
         "author": "Egon",
         "manufacturer": "Flashforge",
         "file_formats": "text/x-gcode",
         "platform": "FlashForge_DreamerNX.obj",
-        "platform_offset": [0, 0, 0],
+        "platform_offset": [
+            0,
+            0,
+            0
+        ],
         "quality_definition": "flashforge_base"
     },
-
-    "overrides": {
-        "machine_name": { "default_value": "Dreamer NX" },
-        "retraction_amount": { "default_value": 1.3 },
-        "retraction_speed": { "default_value": 40 },
-        "machine_width": {"default_value": 230},
-        "machine_height": {"default_value": 140},
-        "machine_depth": {"default_value": 150},
-        "machine_center_is_zero": {"default_value": true},
-        "machine_head_with_fans_polygon":{"default_value": [[ -15, -25 ],[ -15, 35 ],[ 40, 35 ],[ 40, -25 ]]
+    "overrides":
+    {
+        "gantry_height": { "value": "30" },
+        "machine_center_is_zero": { "default_value": true },
+        "machine_depth": { "default_value": 150 },
+        "machine_end_gcode": { "default_value": ";end gcode\nM104 S0 T0\nM140 S0 T0\nG162 Z F1800\nG28 X Y\nM652\nM132 X Y Z A B\nG91\nM18" },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [-15, -25],
+                [-15, 35],
+                [40, 35],
+                [40, -25]
+            ]
         },
-        "gantry_height": {"value": "30"},
-
-
-        "machine_gcode_flavor": {"default_value": "RepRap (Marlin/Sprinter)"},
-        "machine_start_gcode": {"default_value": ";Start Gcode\nG90 ;absolute positioning\nM118 X25.00 Y25.00 Z20.00 T0\nM140 S{material_bed_temperature_layer_0} T0 ;Heat bed up to first layer temperature\nM104 S{material_print_temperature_layer_0} T0 ;Set nozzle temperature to first layer temperature\nM107 ;start with the fan off\nG90\nG28\nM132 X Y Z A B\nG1 Z50.000 F420\nG161 X Y F3300\nM7 T0\nM6 T0\nM651\nM907 X100 Y100 Z40 A100 B20 ;Digital potentiometer value\nM108 T0\n;Purge line\nG1 X-110.00 Y-60.00 F4800\nG1 Z{layer_height_0} F420\nG1 X-110.00 Y60.00 E17,4 F1200\n;Purge line end"},
-        "machine_end_gcode": {"default_value": ";end gcode\nM104 S0 T0\nM140 S0 T0\nG162 Z F1800\nG28 X Y\nM652\nM132 X Y Z A B\nG91\nM18"
-        }
+        "machine_height": { "default_value": 140 },
+        "machine_name": { "default_value": "Dreamer NX" },
+        "machine_start_gcode": { "default_value": ";Start Gcode\nG90 ;absolute positioning\nM118 X25.00 Y25.00 Z20.00 T0\nM140 S{material_bed_temperature_layer_0} T0 ;Heat bed up to first layer temperature\nM104 S{material_print_temperature_layer_0} T0 ;Set nozzle temperature to first layer temperature\nM107 ;start with the fan off\nG90\nG28\nM132 X Y Z A B\nG1 Z50.000 F420\nG161 X Y F3300\nM7 T0\nM6 T0\nM651\nM907 X100 Y100 Z40 A100 B20 ;Digital potentiometer value\nM108 T0\n;Purge line\nG1 X-110.00 Y-60.00 F4800\nG1 Z{layer_height_0} F420\nG1 X-110.00 Y60.00 E17,4 F1200\n;Purge line end" },
+        "machine_width": { "default_value": 230 },
+        "retraction_amount": { "default_value": 1.3 },
+        "retraction_speed": { "default_value": 40 }
     }
 }

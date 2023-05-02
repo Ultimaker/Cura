@@ -2,80 +2,53 @@
     "version": 2,
     "name": "Ultimaker S5",
     "inherits": "ultimaker",
-    "metadata": {
+    "metadata":
+    {
+        "visible": true,
         "author": "Ultimaker",
         "manufacturer": "Ultimaker B.V.",
-        "visible": true,
         "file_formats": "application/x-ufp;text/x-gcode",
         "platform": "ultimaker_s5_platform.obj",
-        "platform_texture": "UltimakerS5backplate.png",
-        "platform_offset": [0, -30, -10],
+        "bom_numbers": [
+            9051,
+            214475,
+            214476
+        ],
+        "firmware_update_info":
+        {
+            "check_urls": [ "https://software.ultimaker.com/releases/firmware/9051/stable/um-update.swu.version" ],
+            "id": 9051,
+            "update_url": "https://ultimaker.com/firmware?utm_source=cura&utm_medium=software&utm_campaign=fw-update"
+        },
+        "first_start_actions": [ "DiscoverUM3Action" ],
         "has_machine_quality": true,
         "has_materials": true,
         "has_variant_buildplates": true,
         "has_variants": true,
-        "preferred_variant_name": "AA 0.4",
-        "preferred_variant_buildplate_name": "Glass",
-        "preferred_quality_type": "normal",
-        "variants_name": "Print core",
-        "nozzle_offsetting_for_disallowed_areas": false,
         "machine_extruder_trains":
         {
             "0": "ultimaker_s5_extruder_left",
             "1": "ultimaker_s5_extruder_right"
         },
-        "first_start_actions": [ "DiscoverUM3Action" ],
+        "nozzle_offsetting_for_disallowed_areas": false,
+        "platform_offset": [
+            0,
+            -30,
+            -10
+        ],
+        "platform_texture": "UltimakerS5backplate.png",
+        "preferred_quality_type": "fast",
+        "preferred_variant_buildplate_name": "Glass",
+        "preferred_variant_name": "AA 0.4",
         "supported_actions": [ "DiscoverUM3Action" ],
-        "supports_usb_connection": false,
-        "supports_network_connection": true,
         "supports_material_export": true,
-        "weight": -2,
-        "firmware_update_info": {
-            "id": 9051,
-            "check_urls": ["https://software.ultimaker.com/releases/firmware/9051/stable/um-update.swu.version"],
-            "update_url": "https://ultimaker.com/firmware?utm_source=cura&utm_medium=software&utm_campaign=fw-update"
-        },
-        "bom_numbers": [
-            9051, 214475, 214476
-        ]
+        "supports_network_connection": true,
+        "supports_usb_connection": false,
+        "variants_name": "Print core",
+        "weight": -2
     },
-
-    "overrides": {
-        "machine_name": { "default_value": "Ultimaker S5" },
-        "machine_width": { "default_value": 330 },
-        "machine_depth": { "default_value": 240 },
-        "machine_height": { "default_value": 300 },
-        "machine_heated_bed": { "default_value": true },
-        "machine_heated_build_volume": { "default_value": true },
-        "machine_nozzle_heat_up_speed": { "default_value": 1.4 },
-        "machine_nozzle_cool_down_speed": { "default_value": 0.8 },
-        "machine_head_with_fans_polygon":
-        {
-            "default_value":
-            [
-                [ -41.4, -45.8 ],
-                [ -41.4, 36.0 ],
-                [ 63.3, 36.0 ],
-                [ 63.3, -45.8 ]
-            ]
-        },
-        "machine_gcode_flavor": { "default_value": "Griffin" },
-        "machine_max_feedrate_x": { "default_value": 300 },
-        "machine_max_feedrate_y": { "default_value": 300 },
-        "machine_max_feedrate_z": { "default_value": 40 },
-        "machine_acceleration": { "default_value": 3000 },
-        "gantry_height": { "value": "55" },
-        "machine_extruder_count": { "default_value": 2 },
-        "extruder_prime_pos_abs": { "default_value": true },
-        "machine_start_gcode": { "default_value": "" },
-        "machine_end_gcode": { "default_value": "" },
-        "prime_blob_enable": { "enabled": true, "default_value": false },
-
-        "speed_travel":
-        {
-            "maximum_value": "150",
-            "value": "150"
-        },
+    "overrides":
+    {
         "acceleration_enabled": { "value": true },
         "acceleration_prime_tower": { "value": "math.ceil(acceleration_print * 2000 / 3500)" },
         "acceleration_print": { "value": "3500" },
@@ -85,33 +58,70 @@
         "acceleration_wall": { "value": "math.ceil(acceleration_print * 1500 / 3500)" },
         "acceleration_wall_0": { "value": "math.ceil(acceleration_wall * 1000 / 1000)" },
         "brim_width": { "value": "3" },
+        "build_volume_temperature": { "maximum_value": 50 },
         "cool_fan_speed": { "value": "50" },
-        "cool_fan_speed_max": { "value": "100" },
-        "cool_min_speed": { "value": "5" },
+        "default_material_print_temperature": { "value": "200" },
+        "extruder_prime_pos_abs": { "default_value": true },
+        "gantry_height": { "value": "55" },
         "infill_overlap": { "value": "0" },
         "infill_pattern": { "value": "'zigzag' if infill_sparse_density > 80 else 'triangles'" },
         "infill_wipe_dist": { "value": "0" },
         "jerk_enabled": { "value": "True" },
         "layer_start_x": { "value": "sum(extruderValues('machine_extruder_start_pos_x')) / len(extruderValues('machine_extruder_start_pos_x'))" },
         "layer_start_y": { "value": "sum(extruderValues('machine_extruder_start_pos_y')) / len(extruderValues('machine_extruder_start_pos_y'))" },
+        "machine_acceleration": { "default_value": 3000 },
+        "machine_depth": { "default_value": 240 },
+        "machine_end_gcode": { "default_value": "" },
+        "machine_extruder_count": { "default_value": 2 },
+        "machine_gcode_flavor": { "default_value": "Griffin" },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [-41.4, -45.8],
+                [-41.4, 36.0],
+                [63.3, 36.0],
+                [63.3, -45.8]
+            ]
+        },
+        "machine_heated_bed": { "default_value": true },
+        "machine_heated_build_volume": { "default_value": true },
+        "machine_height": { "default_value": 300 },
+        "machine_max_feedrate_x": { "default_value": 300 },
+        "machine_max_feedrate_y": { "default_value": 300 },
+        "machine_max_feedrate_z": { "default_value": 40 },
         "machine_min_cool_heat_time_window": { "value": "15" },
-        "default_material_print_temperature": { "value": "200" },
+        "machine_name": { "default_value": "Ultimaker S5" },
+        "machine_nozzle_cool_down_speed": { "default_value": 0.8 },
+        "machine_nozzle_heat_up_speed": { "default_value": 1.4 },
+        "machine_start_gcode": { "default_value": "" },
+        "machine_width": { "default_value": 330 },
         "multiple_mesh_overlap": { "value": "0" },
+        "optimize_wall_printing_order": { "value": "True" },
+        "prime_blob_enable":
+        {
+            "default_value": false,
+            "enabled": true
+        },
         "prime_tower_enable": { "value": "True" },
         "retraction_amount": { "value": "6.5" },
-        "retraction_combing": { "value": "'no_outer_surfaces'"},
+        "retraction_combing": { "value": "'no_outer_surfaces'" },
         "retraction_hop": { "value": "2" },
-        "retraction_hop_enabled": { "value": "extruders_enabled_count > 1"  },
+        "retraction_hop_enabled": { "value": "extruders_enabled_count > 1" },
         "retraction_hop_only_when_collides": { "value": "True" },
         "retraction_min_travel": { "value": "5" },
         "retraction_prime_speed": { "value": "15" },
-        "retraction_speed": {"value": "45" },
+        "retraction_speed": { "value": "45" },
         "skin_overlap": { "value": "10" },
         "speed_prime_tower": { "value": "speed_topbottom" },
         "speed_print": { "value": "35" },
         "speed_support": { "value": "speed_wall_0" },
         "speed_support_interface": { "value": "speed_topbottom" },
         "speed_topbottom": { "value": "math.ceil(speed_print * 20 / 35)" },
+        "speed_travel":
+        {
+            "maximum_value": "150",
+            "value": "150"
+        },
         "speed_wall": { "value": "math.ceil(speed_print * 30 / 35)" },
         "speed_wall_0": { "value": "math.ceil(speed_wall * 20 / 30)" },
         "speed_wall_x": { "value": "speed_wall" },
@@ -121,8 +131,6 @@
         "top_bottom_thickness": { "value": "1" },
         "travel_avoid_distance": { "value": "3 if extruders_enabled_count > 1 else machine_nozzle_tip_outer_diameter / 2 * 1.5" },
         "wall_0_inset": { "value": "0" },
-        "optimize_wall_printing_order": { "value": "True" },
-        "zig_zaggify_infill": { "value": "gradual_infill_steps == 0" },
-        "build_volume_temperature": { "maximum_value": 50 }
+        "zig_zaggify_infill": { "value": "gradual_infill_steps == 0" }
     }
 }

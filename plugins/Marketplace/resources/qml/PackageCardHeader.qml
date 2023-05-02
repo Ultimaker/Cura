@@ -45,8 +45,6 @@ Item
             visible: parent.packageHasIcon
             anchors.fill: parent
             source: packageData.iconUrl
-            sourceSize.height: height
-            sourceSize.width: width
         }
 
         UM.ColorImage

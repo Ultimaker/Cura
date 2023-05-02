@@ -10,9 +10,9 @@ import Cura 1.0 as Cura
 ListView
 {
     id: listView
-    model: Cura.MachineListModel {}
-    section.property: "isOnline"
+    section.property: "category"
     property real contentHeight: childrenRect.height
+    property var onSelectPrinter
 
     ScrollBar.vertical: UM.ScrollBar
     {
@@ -21,7 +21,17 @@ ListView
 
     section.delegate: UM.Label
     {
-        text: section == "true" ? catalog.i18nc("@label", "Connected printers") : catalog.i18nc("@label", "Other printers")
+        text: {
+            switch (section)
+            {
+                case "connected":
+                    return catalog.i18nc("@label", "Connected printers");
+                case "other":
+                    return catalog.i18nc("@label", "Other printers");
+                default:
+                    return catalog.i18nc("@label", "Other printers");
+            }
+        }
         height: UM.Theme.getSize("action_button").height
         width: parent.width - scrollBar.width
         leftPadding: UM.Theme.getSize("default_margin").width
@@ -43,8 +53,7 @@ ListView
                     listView.model.setShowCloudPrinters(true);
                     break;
                 case "MACHINE":
-                    toggleContent()
-                    Cura.MachineManager.setActiveMachine(model.id)
+                    if (typeof onSelectPrinter === "function") onSelectPrinter(model);
                     break;
                 default:
             }

@@ -1,19 +1,18 @@
 {
-    "name": "Mingda 4H",
     "version": 2,
+    "name": "Mingda 4H",
     "inherits": "mingda_base",
-    "overrides":
-    {
-        "machine_name": { "default_value": "Mingda 4H" },
-		
-        "machine_width": { "default_value": 300 },
-        "machine_depth": { "default_value": 200 },
-        "machine_height": { "default_value": 200 },
-        "gantry_height": { "value": 25 }
-    },
     "metadata":
     {
-        "quality_definition": "mingda_base",
-        "visible": true
+        "visible": true,
+        "quality_definition": "mingda_base"
+    },
+    "overrides":
+    {
+        "gantry_height": { "value": 25 },
+        "machine_depth": { "default_value": 200 },
+        "machine_height": { "default_value": 200 },
+        "machine_name": { "default_value": "Mingda 4H" },
+        "machine_width": { "default_value": 300 }
     }
 }

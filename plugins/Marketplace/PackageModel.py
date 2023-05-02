@@ -92,7 +92,7 @@ class PackageModel(QObject):
             "display_name": display_name,
             "package_version": package_version,
             "package_type": package_type,
-            "description": "The material package associated with the Cura project could not be found on the Ultimaker marketplace. Use the partial material profile definition stored in the Cura project file at your own risk."
+            "description": catalog.i18nc("@label:label Ultimaker Marketplace is a brand name, don't translate", "The material package associated with the Cura project could not be found on the Ultimaker Marketplace. Use the partial material profile definition stored in the Cura project file at your own risk.")
         }
         package_model = cls(package_data)
         package_model.setIsMissingPackageInformation(True)

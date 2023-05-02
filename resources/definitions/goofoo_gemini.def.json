@@ -1,22 +1,31 @@
 {
-    "name": "Goofoo Gemini",
     "version": 2,
+    "name": "Goofoo Gemini",
     "inherits": "goofoo_far",
-    "overrides": {
-        "machine_name": { "default_value": "Goofoo Gemini" },
-        "machine_width": { "default_value": 360 },
-        "machine_depth": { "default_value": 250 },
-        "machine_height": { "default_value": 200 },
-        "machine_head_with_fans_polygon":{"default_value":[[0, 0], [0, 0], [0, 0], [0, 0]]},
-        "machine_extruder_count": {
-            "default_value": 2
-        }
-    },
-    "metadata": {
-        "machine_extruder_trains": {
+    "metadata":
+    {
+        "visible": true,
+        "machine_extruder_trains":
+        {
             "0": "goofoo_gemini_1st",
             "1": "goofoo_gemini_2st"
+        }
+    },
+    "overrides":
+    {
+        "machine_depth": { "default_value": 250 },
+        "machine_extruder_count": { "default_value": 2 },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [0, 0],
+                [0, 0],
+                [0, 0],
+                [0, 0]
+            ]
         },
-        "visible": true
+        "machine_height": { "default_value": 200 },
+        "machine_name": { "default_value": "Goofoo Gemini" },
+        "machine_width": { "default_value": 360 }
     }
 }

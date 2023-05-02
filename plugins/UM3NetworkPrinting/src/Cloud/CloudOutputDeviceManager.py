@@ -1,5 +1,5 @@
-# Copyright (c) 2021 Ultimaker B.V.
-# Cura is released under the terms of the LGPLv3 or higher.
+#  Copyright (c) 2022 UltiMaker
+#  Cura is released under the terms of the LGPLv3 or higher.
 
 import os
 from typing import Dict, List, Optional, Set

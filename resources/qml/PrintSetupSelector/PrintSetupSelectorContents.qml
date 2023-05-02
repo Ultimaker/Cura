@@ -67,6 +67,35 @@ Item
                 top: parent.top
             }
             visible: currentModeIndex == PrintSetupSelectorContents.Mode.Recommended
+            height: {
+                const height = base.height - (recommendedPrintSetup.mapToItem(null, 0, 0).y + buttonRow.height + UM.Theme.getSize("default_margin").height);
+                const maxHeight = UM.Preferences.getValue("view/settings_list_height");
+                return Math.min(height, maxHeight);
+            }
+
+            Connections
+            {
+                target: UM.Preferences
+                function onPreferenceChanged(preference)
+                {
+                    if (preference !== "view/settings_list_height" && preference !== "general/window_height" && preference !== "general/window_state")
+                    {
+                        return;
+                    }
+
+                    const height = base.height - (recommendedPrintSetup.mapToItem(null, 0, 0).y + buttonRow.height + UM.Theme.getSize("default_margin").height);
+                    const maxHeight = UM.Preferences.getValue("view/settings_list_height");
+
+                    recommendedPrintSetup.height = Math.min(maxHeight, height);
+
+                    updateDragPosition();
+                }
+            }
+
+            function onModeChanged()
+            {
+                currentModeIndex = PrintSetupSelectorContents.Mode.Custom;
+            }
         }
 
         CustomPrintSetup
@@ -122,7 +151,15 @@ Item
     {
         id: buttonRow
         property real padding: UM.Theme.getSize("default_margin").width
-        height: recommendedButton.height + 2 * padding + (draggableArea.visible ? draggableArea.height : 0)
+        height:
+        {
+            const draggable_area_height = draggableArea.visible ? draggableArea.height : 0;
+            if (currentModeIndex == PrintSetupSelectorContents.Mode.Custom)
+            {
+                return recommendedButton.height + 2 * padding + draggable_area_height;
+            }
+            return draggable_area_height;
+        }
 
         anchors
         {
@@ -145,25 +182,6 @@ Item
             onClicked: currentModeIndex = PrintSetupSelectorContents.Mode.Recommended
         }
 
-        Cura.SecondaryButton
-        {
-            id: customSettingsButton
-            anchors.top: parent.top
-            anchors.right: parent.right
-            anchors.margins: UM.Theme.getSize("default_margin").width
-            leftPadding: UM.Theme.getSize("default_margin").width
-            rightPadding: UM.Theme.getSize("default_margin").width
-            text: catalog.i18nc("@button", "Custom")
-            iconSource: UM.Theme.getIcon("ChevronSingleRight")
-            isIconOnRightSide: true
-            visible: currentModeIndex == PrintSetupSelectorContents.Mode.Recommended
-            onClicked:
-            {
-                currentModeIndex = PrintSetupSelectorContents.Mode.Custom
-                updateDragPosition();
-            }
-        }
-
         //Invisible area at the bottom with which you can resize the panel.
         MouseArea
         {
@@ -176,7 +194,6 @@ Item
             }
             height: childrenRect.height
             cursorShape: Qt.SplitVCursor
-            visible: currentModeIndex == PrintSetupSelectorContents.Mode.Custom
             drag
             {
                 target: parent

@@ -2,37 +2,30 @@
     "version": 2,
     "name": "Innovo Inventor",
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "visible": true,
         "author": "Adam Rumjahn",
         "manufacturer": "Innovo",
         "file_formats": "text/x-gcode",
         "platform": "inventor_platform.3mf",
-        "platform_offset": [-180, -0.25, 160],
-        "machine_extruder_trains":
-        {
-            "0": "innovo_inventor_extruder_0"
-        }
+        "machine_extruder_trains": { "0": "innovo_inventor_extruder_0" },
+        "platform_offset": [
+            -180,
+            -0.25,
+            160
+        ]
     },
-
-    "overrides": {
-        "machine_name": { "default_value": "Innovo INVENTOR" },
-        "machine_width": {
-            "default_value": 340
-        },
-        "machine_height": {
-            "default_value": 290
-        },
-        "machine_depth": {
-            "default_value": 300
-        },
-        "machine_heated_bed": {
-            "default_value": true
-        },
-        "machine_center_is_zero": {
-            "default_value": true
-        },
-        "machine_head_with_fans_polygon": {
+    "overrides":
+    {
+        "gantry_height": { "value": "82.3" },
+        "layer_height": { "default_value": 0.15 },
+        "machine_center_is_zero": { "default_value": true },
+        "machine_depth": { "default_value": 300 },
+        "machine_end_gcode": { "default_value": "M104 S0 ; turn off extruders\nM140 S0 ; heated bed heater off\nG91 ; relative positioning\nG1 E-2 F5000; retract 2mm\nG28 Z; move bed down\nG90 ; absolute positioning\nM84   ; disable motors" },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_head_with_fans_polygon":
+        {
             "default_value": [
                 [-43.7, -19.2],
                 [-43.7, 55],
@@ -40,32 +33,14 @@
                 [43.7, -19.2]
             ]
         },
-        "gantry_height": {
-            "value": "82.3"
-        },
-        "machine_gcode_flavor": {
-            "default_value": "RepRap (Marlin/Sprinter)"
-        },
-        "machine_start_gcode": {
-            "default_value": "G28 ; Home extruder\nM107 ; Turn off fan\nG90 ; Absolute positioning\nM82 ; Extruder in absolute mode\nM190 S{material_bed_temperature}\nM104 T0 S{material_print_temperature}\nM109 T0 S{material_print_temperature}\nM104 T1 S{material_print_temperature}\nM109 T1 S{material_print_temperature}\n;G32 S3 ; auto level\nG92 E0 ; Reset extruder position"
-        },
-        "machine_end_gcode": {
-            "default_value": "M104 S0 ; turn off extruders\nM140 S0 ; heated bed heater off\nG91 ; relative positioning\nG1 E-2 F5000; retract 2mm\nG28 Z; move bed down\nG90 ; absolute positioning\nM84   ; disable motors"
-        },
-        "layer_height": {
-            "default_value": 0.15
-        },
-        "wall_thickness": {
-            "value": "0.8"
-        },
-        "top_bottom_thickness": {
-            "default_value": 1.2
-        },
-        "speed_print": {
-            "default_value": 50
-        },
-        "speed_layer_0": {
-            "minimum_value": 0.1
-        }
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 290 },
+        "machine_name": { "default_value": "Innovo INVENTOR" },
+        "machine_start_gcode": { "default_value": "G28 ; Home extruder\nM107 ; Turn off fan\nG90 ; Absolute positioning\nM82 ; Extruder in absolute mode\nM190 S{material_bed_temperature}\nM104 T0 S{material_print_temperature}\nM109 T0 S{material_print_temperature}\nM104 T1 S{material_print_temperature}\nM109 T1 S{material_print_temperature}\n;G32 S3 ; auto level\nG92 E0 ; Reset extruder position" },
+        "machine_width": { "default_value": 340 },
+        "speed_layer_0": { "minimum_value": 0.1 },
+        "speed_print": { "default_value": 50 },
+        "top_bottom_thickness": { "default_value": 1.2 },
+        "wall_thickness": { "value": "0.8" }
     }
 }

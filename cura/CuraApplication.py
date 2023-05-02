@@ -133,7 +133,7 @@ class CuraApplication(QtApplication):
     # SettingVersion represents the set of settings available in the machine/extruder definitions.
     # You need to make sure that this version number needs to be increased if there is any non-backwards-compatible
     # changes of the settings.
-    SettingVersion = 20
+    SettingVersion = 22
 
     Created = False
 
@@ -712,6 +712,7 @@ class CuraApplication(QtApplication):
         self.showMessageBox.emit(title, text, informativeText, detailedText, buttons, icon)
 
     showDiscardOrKeepProfileChanges = pyqtSignal()
+    showCompareAndSaveProfileChanges = pyqtSignal(int)
 
     def discardOrKeepProfileChanges(self) -> bool:
         has_user_interaction = False
@@ -2091,3 +2092,7 @@ class CuraApplication(QtApplication):
     @classmethod
     def getInstance(cls, *args, **kwargs) -> "CuraApplication":
         return cast(CuraApplication, super().getInstance(**kwargs))
+
+    @pyqtProperty(bool, constant=True)
+    def isEnterprise(self) -> bool:
+        return ApplicationMetadata.IsEnterpriseVersion

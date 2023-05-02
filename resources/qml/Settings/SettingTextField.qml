@@ -4,7 +4,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
-import UM 1.5 as UM
+import UM 1.7 as UM
 
 SettingItem
 {
@@ -14,6 +14,11 @@ SettingItem
     property string textBeforeEdit
     property bool textHasChanged
     property bool focusGainedByClick: false
+
+    readonly property UM.IntValidator intValidator: UM.IntValidator {}
+    readonly property UM.FloatValidator floatValidator: UM.FloatValidator {}
+    readonly property UM.IntListValidator intListValidator: UM.IntListValidator {}
+
     onFocusReceived:
     {
         textHasChanged = false;
@@ -159,7 +164,23 @@ SettingItem
             // should be done as little as possible)
             clip: definition.type == "str" || definition.type == "[int]"
 
-            validator: RegularExpressionValidator { regularExpression: (definition.type == "[int]") ? /^\[?(\s*-?[0-9]{0,11}\s*,)*(\s*-?[0-9]{0,11})\s*\]?$/ : (definition.type == "int") ? /^-?[0-9]{0,12}$/ : (definition.type == "float") ? /^-?[0-9]{0,11}[.,]?[0-9]{0,3}$/ : /^.*$/ } // definition.type property from parent loader used to disallow fractional number entry
+            validator: RegularExpressionValidator
+            {
+                regularExpression:
+                {
+                    switch (definition.type)
+                    {
+                        case "[int]":
+                            return new RegExp(intListValidator.regexString)
+                        case "int":
+                            return new RegExp(intValidator.regexString)
+                        case "float":
+                            return new RegExp(floatValidator.regexString)
+                        default:
+                            return new RegExp("^.*$")
+                    }
+                }
+            }
 
             Binding
             {

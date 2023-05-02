@@ -1,5 +1,6 @@
-# Copyright (c) 2022 Ultimaker B.V.
+# Copyright (c) 2022 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
+
 
 import argparse  # Command line arguments parsing and help.
 from jinja2 import Template
@@ -71,6 +72,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = "Create AppImages of Cura.")
     parser.add_argument("dist_path", type=str, help="Path to where PyInstaller installed the distribution of Cura.")
     parser.add_argument("version", type=str, help="Full version number of Cura (e.g. '5.1.0-beta')")
-    parser.add_argument("filename", type = str, help = "Filename of the AppImage (e.g. 'Ultimaker-Cura-5.1.0-beta-Linux-X64.AppImage')")
+    parser.add_argument("filename", type = str, help = "Filename of the AppImage (e.g. 'UltiMaker-Cura-5.1.0-beta-Linux-X64.AppImage')")
     args = parser.parse_args()
     build_appimage(args.dist_path, args.version, args.filename)

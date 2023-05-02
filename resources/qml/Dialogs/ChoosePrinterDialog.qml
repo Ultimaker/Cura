@@ -107,7 +107,7 @@ UM.Dialog
             UM.Label
             {
                 visible: contents.count < 1
-                text: catalog.i18nc("@description", "No compatible printers, that are currently online, where found.")
+                text: catalog.i18nc("@description", "No compatible printers, that are currently online, were found.")
             }
         }
     }
