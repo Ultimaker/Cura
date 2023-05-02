@@ -6791,7 +6791,7 @@
                     "unit": "\u03bcm\u00b2",
                     "default_value": 50000,
                     "minimum_value": "0",
-                    "minimum_value_warning": "500",
+                    "minimum_value_warning": "10000",
                     "maximum_value_warning": "100000",
                     "settable_per_mesh": true
                 }
