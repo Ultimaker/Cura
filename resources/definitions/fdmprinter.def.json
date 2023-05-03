@@ -4573,7 +4573,7 @@
                     "maximum_value": "89",
                     "maximum_value_warning": "85",
                     "default_value": 60,
-                    "value": "support_angle",
+                    "value": "max(min(support_angle, 85), 20)",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "enabled": "support_enable and support_structure=='tree'",
                     "settable_per_mesh": true,
