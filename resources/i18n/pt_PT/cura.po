@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-06 15:55+0000\n"
+"POT-Creation-Date: 2023-04-27 12:22+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -93,10 +93,12 @@ msgid ""
 "                    <p>Backups can be found in the configuration folder.</p>\n"
 "                    <p>Please send us this Crash Report to fix the problem.</p>\n"
 "                "
-msgstr "<p><b>Ups, o UltiMaker Cura encontrou um possível problema.</p></b>\n                    <p>Foi encontrado um erro irrecuperável durante o arranque da"
-" aplicação. Este pode ter sido causado por alguns ficheiros de configuração incorrectos. Sugerimos que faça um backup e reponha a sua configuração.</p>\n"
-"                    <p>Os backups estão localizados na pasta de configuração.</p>\n                    <p>Por favor envie-nos este Relatório de Falhas"
-" para podermos resolver o problema.</p>\n                "
+msgstr ""
+"<p><b>Ups, o UltiMaker Cura encontrou um possível problema.</p></b>\n"
+"                    <p>Foi encontrado um erro irrecuperável durante o arranque da aplicação. Este pode ter sido causado por alguns ficheiros de configuração incorrectos. Sugerimos que faça um backup e reponha a sua configuração.</p>\n"
+"                    <p>Os backups estão localizados na pasta de configuração.</p>\n"
+"                    <p>Por favor envie-nos este Relatório de Falhas para podermos resolver o problema.</p>\n"
+"                "
 
 #: cura/CrashHandler.py:122
 msgctxt "@action:button"
@@ -428,22 +430,22 @@ msgctxt "@message"
 msgid "Could not read response."
 msgstr "Não foi possível ler a resposta."
 
-#: cura/OAuth2/AuthorizationRequestHandler.py:75
+#: cura/OAuth2/AuthorizationRequestHandler.py:77
 msgctxt "@message"
 msgid "The provided state is not correct."
 msgstr "O estado apresentado não está correto."
 
-#: cura/OAuth2/AuthorizationRequestHandler.py:80
+#: cura/OAuth2/AuthorizationRequestHandler.py:83
 msgctxt "@message"
 msgid "Timeout when authenticating with the account server."
 msgstr "Foi excedido o tempo limite de autenticação com o servidor."
 
-#: cura/OAuth2/AuthorizationRequestHandler.py:97
+#: cura/OAuth2/AuthorizationRequestHandler.py:101
 msgctxt "@message"
 msgid "Please give the required permissions when authorizing this application."
 msgstr "Forneça as permissões necessárias ao autorizar esta aplicação."
 
-#: cura/OAuth2/AuthorizationRequestHandler.py:104
+#: cura/OAuth2/AuthorizationRequestHandler.py:109
 msgctxt "@message"
 msgid "Something unexpected happened when trying to log in, please try again."
 msgstr "Ocorreu algo inesperado ao tentar iniciar sessão, tente novamente."
@@ -6695,22 +6697,22 @@ msgctxt "@button"
 msgid "Add printer manually"
 msgstr "Adicionar impressora manualmente"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:203
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:212
 msgctxt "@label"
 msgid "Manufacturer"
 msgstr "Fabricante"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:214
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:223
 msgctxt "@label"
 msgid "Profile author"
 msgstr "Autor do perfil"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:226
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:235
 msgctxt "@label"
 msgid "Printer name"
 msgstr "Nome da impressora"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:232
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:241
 msgctxt "@text"
 msgid "Please name your printer"
 msgstr "Atribuir um nome à impressora"

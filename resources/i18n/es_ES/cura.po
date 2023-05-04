@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-06 15:55+0000\n"
+"POT-Creation-Date: 2023-04-27 12:22+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -429,22 +429,22 @@ msgctxt "@message"
 msgid "Could not read response."
 msgstr "No se ha podido leer la respuesta."
 
-#: cura/OAuth2/AuthorizationRequestHandler.py:75
+#: cura/OAuth2/AuthorizationRequestHandler.py:77
 msgctxt "@message"
 msgid "The provided state is not correct."
 msgstr "El estado indicado no es correcto."
 
-#: cura/OAuth2/AuthorizationRequestHandler.py:80
+#: cura/OAuth2/AuthorizationRequestHandler.py:83
 msgctxt "@message"
 msgid "Timeout when authenticating with the account server."
 msgstr "Se agotó el tiempo de autenticación con el servidor de la cuenta."
 
-#: cura/OAuth2/AuthorizationRequestHandler.py:97
+#: cura/OAuth2/AuthorizationRequestHandler.py:101
 msgctxt "@message"
 msgid "Please give the required permissions when authorizing this application."
 msgstr "Conceda los permisos necesarios al autorizar esta aplicación."
 
-#: cura/OAuth2/AuthorizationRequestHandler.py:104
+#: cura/OAuth2/AuthorizationRequestHandler.py:109
 msgctxt "@message"
 msgid "Something unexpected happened when trying to log in, please try again."
 msgstr "Se ha producido un problema al intentar iniciar sesión, vuelva a intentarlo."
@@ -6695,22 +6695,22 @@ msgctxt "@button"
 msgid "Add printer manually"
 msgstr "Añadir impresora manualmente"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:203
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:212
 msgctxt "@label"
 msgid "Manufacturer"
 msgstr "Fabricante"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:214
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:223
 msgctxt "@label"
 msgid "Profile author"
 msgstr "Autor del perfil"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:226
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:235
 msgctxt "@label"
 msgid "Printer name"
 msgstr "Nombre de la impresora"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:232
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:241
 msgctxt "@text"
 msgid "Please name your printer"
 msgstr "Asigne un nombre a su impresora"

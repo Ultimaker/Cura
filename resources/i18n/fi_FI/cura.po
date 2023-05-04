@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-06 15:55+0000\n"
+"POT-Creation-Date: 2023-04-27 12:22+0000\n"
 "PO-Revision-Date: 2022-07-15 10:53+0200\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: Finnish\n"
@@ -422,22 +422,22 @@ msgctxt "@message"
 msgid "Could not read response."
 msgstr ""
 
-#: cura/OAuth2/AuthorizationRequestHandler.py:75
+#: cura/OAuth2/AuthorizationRequestHandler.py:77
 msgctxt "@message"
 msgid "The provided state is not correct."
 msgstr ""
 
-#: cura/OAuth2/AuthorizationRequestHandler.py:80
+#: cura/OAuth2/AuthorizationRequestHandler.py:83
 msgctxt "@message"
 msgid "Timeout when authenticating with the account server."
 msgstr ""
 
-#: cura/OAuth2/AuthorizationRequestHandler.py:97
+#: cura/OAuth2/AuthorizationRequestHandler.py:101
 msgctxt "@message"
 msgid "Please give the required permissions when authorizing this application."
 msgstr ""
 
-#: cura/OAuth2/AuthorizationRequestHandler.py:104
+#: cura/OAuth2/AuthorizationRequestHandler.py:109
 msgctxt "@message"
 msgid "Something unexpected happened when trying to log in, please try again."
 msgstr ""
@@ -6657,22 +6657,22 @@ msgctxt "@button"
 msgid "Add printer manually"
 msgstr ""
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:203
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:212
 msgctxt "@label"
 msgid "Manufacturer"
 msgstr ""
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:214
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:223
 msgctxt "@label"
 msgid "Profile author"
 msgstr ""
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:226
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:235
 msgctxt "@label"
 msgid "Printer name"
 msgstr ""
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:232
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:241
 msgctxt "@text"
 msgid "Please name your printer"
 msgstr ""
