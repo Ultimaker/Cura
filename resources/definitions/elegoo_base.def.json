@@ -114,11 +114,7 @@
         "support_angle": { "value": "45 if speed_print > 99.9 else 50" },
         "support_bottom_offset": { "value": "-0.4" },
         "support_brim_enable": { "value": "support_structure == 'normal' or support_structure == 'tree'" },
-        "support_brim_width":
-        {
-            "default_value": 3,
-            "value": "6 if support_structure == 'tree' else line_width * initial_layer_line_width_factor * 0.02 "
-        },
+        "support_brim_width": { "value": "6 if support_structure == 'tree' else line_width * initial_layer_line_width_factor * 0.02 " },
         "support_infill_angles": { "default_value": "[65]" },
         "support_interface_density": { "default_value": 33.333 },
         "support_interface_pattern": { "default_value": "lines" },
