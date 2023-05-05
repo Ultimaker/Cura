@@ -37,7 +37,7 @@ Rectangle
             Layout.preferredWidth: parent.width / 3
             Layout.preferredHeight: childrenRect.height
             Layout.fillWidth: true
-            Layout.alignment: Qt.AlignCenter
+            Layout.alignment: extruders[0].materials.length > 1 ? Qt.AlignTop : Qt.AlignCenter
             Layout.fillHeight: false
 
             source: UM.Theme.getIcon("Printer")
@@ -52,7 +52,7 @@ Rectangle
             Layout.fillWidth: true
             Layout.preferredWidth: parent.width / 2
             Layout.preferredHeight: childrenRect.height
-            Layout.alignment: Qt.AlignCenter
+            Layout.alignment: extruders[0].materials.length > 1 ? Qt.AlignTop : Qt.AlignCenter
             spacing: UM.Theme.getSize("narrow_margin").height
 
             Repeater
@@ -119,7 +119,7 @@ Rectangle
 
             implicitWidth: UM.Theme.getSize("large_button").width
             implicitHeight: implicitWidth
-            Layout.alignment: Qt.AlignCenter
+            Layout.alignment: extruders[0].materials.length > 1 ? Qt.AlignTop : Qt.AlignCenter
             Layout.preferredHeight: childrenRect.height
             padding: 0
 
