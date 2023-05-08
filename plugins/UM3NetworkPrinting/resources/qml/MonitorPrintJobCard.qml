@@ -172,14 +172,6 @@ Item
             {
                 id: printerConfiguration
                 anchors.verticalCenter: parent.verticalCenter
-                buildplate: {
-                    switch (printJob.assignedPrinter.buildplate) {
-                        case "glass":
-                            return catalog.i18nc("@label", "Glass");
-                        default:
-                            return null
-                    }
-                }
                 configurations: base.printJob ? base.printJob.configuration.extruderConfigurations : null
                 height: Math.round(72 * screenScaleFactor) // TODO: Theme!
             }

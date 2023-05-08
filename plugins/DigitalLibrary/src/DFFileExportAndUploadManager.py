@@ -135,9 +135,21 @@ class DFFileExportAndUploadManager:
             file_name = file_upload_response.job_name if file_upload_response.job_name is not None else ""
         else:
             Logger.log("e", "Wrong response type received. Aborting uploading file to the Digital Library")
+            getBackwardsCompatibleMessage(
+                    text = "Upload error",
+                    title = f"Failed to upload {file_name}. Received unexpected response from server.",
+                    message_type_str = "ERROR",
+                    lifetime = 0
+            ).show()
             return
         if file_name not in self._file_upload_job_metadata:
             Logger.error(f"API response for uploading doesn't match the file name we just uploaded: {file_name} was never uploaded.")
+            getBackwardsCompatibleMessage(
+                    text = "Upload error",
+                    title = f"Failed to upload {file_name}. Name doesn't match the one sent back in confirmation.",
+                    message_type_str = "ERROR",
+                    lifetime = 0
+            ).show()
             return
         with self._message_lock:
             self.progress_message.show()

@@ -10,7 +10,7 @@ import Cura 1.6 as Cura
 /**
  * This component comprises a colored extruder icon, the material name, and the
  * print core name. It is used by the MonitorPrinterConfiguration component with
- * a sibling instance as well as a MonitorBuildplateConfiguration instance.
+ * a sibling instance.
  *
  * NOTE: For most labels, a fixed height with vertical alignment is used to make
  * layouts more deterministic (like the fixed-size textboxes used in original

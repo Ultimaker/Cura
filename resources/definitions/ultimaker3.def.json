@@ -60,8 +60,6 @@
         "acceleration_wall_0": { "value": "math.ceil(acceleration_wall * 1000 / 3500)" },
         "brim_width": { "value": "3" },
         "cool_fan_speed": { "value": "50" },
-        "cool_fan_speed_max": { "value": "100" },
-        "cool_min_speed": { "value": "5" },
         "default_material_print_temperature": { "value": "200" },
         "extruder_prime_pos_abs": { "default_value": true },
         "gantry_height": { "value": "60" },
