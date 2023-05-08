@@ -76,7 +76,7 @@
             "value": "material_print_temperature + 5"
         },
         "minimum_interface_area": { "value": 10 },
-        "minimum_support_area": { "value": 2 },
+        "minimum_support_area": { "value": "2 if support_structure == 'normal' else 0" },
         "optimize_wall_printing_order": { "value": true },
         "retraction_combing": { "value": "'off' if retraction_hop_enabled else 'all'" },
         "retraction_combing_max_distance": { "value": 30 },
@@ -121,7 +121,6 @@
         "support_interface_pattern": { "value": "zigzag" },
         "support_interface_skip_height": { "value": 0.2 },
         "support_pattern": { "value": "'zigzag'" },
-        "support_use_towers": { "value": false },
         "support_wall_count": { "value": 0 },
         "support_xy_distance": { "value": "wall_line_width_0 * 2" },
         "support_xy_distance_overhang": { "value": "wall_line_width_0" },

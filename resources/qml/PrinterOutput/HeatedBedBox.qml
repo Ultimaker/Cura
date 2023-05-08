@@ -32,7 +32,7 @@ Item
         UM.Label
         {
             id: bedTargetTemperature
-            text: printerModel != null ? printerModel.targetBedTemperature + "°C" : ""
+            text: printerModel != null ? Math.round(printerModel.targetBedTemperature) + "°C" : ""
             font: UM.Theme.getFont("default_bold")
             color: UM.Theme.getColor("text_inactive")
             anchors.right: parent.right
@@ -66,7 +66,7 @@ Item
         UM.Label
         {
             id: bedCurrentTemperature
-            text: printerModel != null ? printerModel.bedTemperature + "°C" : ""
+            text: printerModel != null ? Math.round(printerModel.bedTemperature) + "°C" : ""
             font: UM.Theme.getFont("large_bold")
             anchors.right: bedTargetTemperature.left
             anchors.top: parent.top
