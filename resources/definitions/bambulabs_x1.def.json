@@ -40,8 +40,10 @@
 	# FIXME(Krey): No idea what this is
 	# "weight": 4
     },
-    # "overrides":
-    # {
-    #     ...
-    # }
+    "overrides":
+    {
+        # Add GCODE values
+        "machine_start_gcode": { "default_value": ""},
+        "machine_end_gcode": { "default_value": "" },
+    }
 }
