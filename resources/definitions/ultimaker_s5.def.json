@@ -22,6 +22,14 @@
             "update_url": "https://ultimaker.com/firmware?utm_source=cura&utm_medium=software&utm_campaign=fw-update"
         },
         "first_start_actions": [ "DiscoverUM3Action" ],
+        "exclude_materials": [
+            "structur3d_dap100silicone",
+            "generic_hips",
+            "generic_petcf",
+            "ultimaker_petcf_black",
+            "ultimaker_petcf_blue",
+            "ultimaker_petcf_gray"
+        ],
         "has_machine_quality": true,
         "has_materials": true,
         "has_variant_buildplates": true,

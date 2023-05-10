@@ -1,0 +1,641 @@
+{
+    "inherits": "ultimaker",
+    "metadata":
+    {
+        "author": "Ultimaker",
+        "exclude_materials": [
+            "dsm_175_novamidid1030cf",
+            "Essentium_175_UltrafuseZPCTG",
+            "imade3d_petg_175",
+            "imade3d_pla_175",
+            "imade3d_petg_green",
+            "imade3d_pla_green",
+            "imade3d_petg_pink",
+            "imade3d_pla_pink",
+            "chromatik_pla",
+            "3D-Fuel_PLA_PRO_Black",
+            "3D-Fuel_PLA_SnapSupport",
+            "bestfilament_abs_skyblue",
+            "bestfilament_petg_orange",
+            "bestfilament_pla_green",
+            "dsm_arnitel2045_175",
+            "dsm_novamid1070_175",
+            "emotiontech_abs",
+            "emotiontech_absx",
+            "emotiontech_acetate",
+            "emotiontech_asax",
+            "emotiontech_bvoh",
+            "emotiontech_copa",
+            "emotiontech_hips",
+            "emotiontech_nylon_1030",
+            "emotiontech_nylon_1030cf",
+            "emotiontech_nylon_1070",
+            "emotiontech_pc",
+            "emotiontech_pekk",
+            "emotiontech_petg",
+            "emotiontech_pla",
+            "emotiontech_pla_hr_870",
+            "emotiontech_pva-m",
+            "emotiontech_pva-s",
+            "emotiontech_tpu98a",
+            "eryone_petg",
+            "eryone_pla",
+            "eryone_pla_glow",
+            "eryone_pla_matte",
+            "eryone_pla_wood",
+            "eryone_tpu",
+            "eSUN_PETG_Black",
+            "eSUN_PETG_Grey",
+            "eSUN_PETG_Purple",
+            "eSUN_PLA_PRO_Black",
+            "eSUN_PLA_PRO_Grey",
+            "eSUN_PLA_PRO_Purple",
+            "eSUN_PLA_PRO_White",
+            "Extrudr_GreenTECPro_Anthracite_175",
+            "Extrudr_GreenTECPro_Black_175",
+            "Extrudr_GreenTECPro_Blue_175",
+            "Extrudr_GreenTECPro_Nature_175",
+            "Extrudr_GreenTECPro_Red_175",
+            "Extrudr_GreenTECPro_Silver_175",
+            "Extrudr_GreenTECPro_White_175",
+            "fabtotum_abs",
+            "fabtotum_nylon",
+            "fabtotum_pla",
+            "fabtotum_tpu",
+            "fdplast_abs_tomato",
+            "fdplast_petg_gray",
+            "fdplast_pla_olive",
+            "filo3d_pla",
+            "filo3d_pla_green",
+            "filo3d_pla_red",
+            "generic_bvoh_175",
+            "generic_cpe_175",
+            "generic_hips_175",
+            "generic_pc_175",
+            "goofoo_abs",
+            "goofoo_asa",
+            "goofoo_bronze_pla",
+            "goofoo_emarble_pla",
+            "goofoo_esilk_pla",
+            "goofoo_hips",
+            "goofoo_pa",
+            "goofoo_pa_cf",
+            "goofoo_pc",
+            "goofoo_peek",
+            "goofoo_petg",
+            "goofoo_pla",
+            "goofoo_pva",
+            "goofoo_tpe_83a",
+            "goofoo_tpu_87a",
+            "goofoo_tpu_95a",
+            "goofoo_wood_pla",
+            "ideagen3D_ToughPLA",
+            "imade3d_petg_175",
+            "imade3d_pla_175",
+            "innofill_innoflex60_175",
+            "layer_one_black_pla",
+            "layer_one_dark_gray_pla",
+            "layer_one_white_pla",
+            "leapfrog_abs_natural",
+            "leapfrog_epla_natural",
+            "leapfrog_pva_natural",
+            "polyflex_pla",
+            "polymax_pla",
+            "polyplus_pla",
+            "polywood_pla",
+            "redd_abs",
+            "redd_asa",
+            "redd_hips",
+            "redd_nylon",
+            "redd_petg",
+            "redd_pla",
+            "redd_tpe",
+            "tizyx_abs",
+            "tizyx_flex",
+            "tizyx_petg",
+            "tizyx_pla",
+            "tizyx_pla_bois",
+            "tizyx_pva",
+            "verbatim_bvoh_175",
+            "Vertex_Delta_ABS",
+            "Vertex_Delta_PET",
+            "Vertex_Delta_PLA",
+            "Vertex_Delta_PLA_Glitter",
+            "Vertex_Delta_PLA_Mat",
+            "Vertex_Delta_PLA_Satin",
+            "Vertex_Delta_PLA_Wood",
+            "Vertex_Delta_TPU",
+            "volumic_abs_ultra",
+            "volumic_arma_ultra",
+            "volumic_asa_ultra",
+            "volumic_br80_ultra",
+            "volumic_bumper_ultra",
+            "volumic_cu80_ultra",
+            "volumic_flex93_ultra",
+            "volumic_medical_ultra",
+            "volumic_nylon_ultra",
+            "volumic_pekk_carbone",
+            "volumic_petgcarbone_ultra",
+            "volumic_petg_ultra",
+            "volumic_pla_ultra",
+            "volumic_pp_ultra",
+            "volumic_strong_ultra",
+            "volumic_support_ultra",
+            "xyzprinting_abs",
+            "xyzprinting_antibact_pla",
+            "xyzprinting_carbon_fiber",
+            "xyzprinting_colorinkjet_pla",
+            "xyzprinting_flexible",
+            "xyzprinting_metallic_pla",
+            "xyzprinting_nylon",
+            "xyzprinting_pahtcf15",
+            "xyzprinting_pc",
+            "xyzprinting_petcf15",
+            "xyzprinting_petg",
+            "xyzprinting_pla",
+            "xyzprinting_ppgf30",
+            "xyzprinting_tough_pla",
+            "xyzprinting_tpu",
+            "zyyx_pro_flex",
+            "zyyx_pro_pla",
+            "octofiber_pla",
+            "fiberlogy_hd_pla",
+            "generic_tpu_175"
+        ],
+        "file_formats": "application/x-makerbot",
+        "has_machine_materials": true,
+        "has_machine_quality": true,
+        "has_materials": true,
+        "has_variants": true,
+        "machine_extruder_trains":
+        {
+            "0": "ultimaker_methodx_extruder_left",
+            "1": "ultimaker_methodx_extruder_right"
+        },
+        "manufacturer": "Ultimaker B.V.",
+        "nozzle_offsetting_for_disallowed_areas": false,
+        "platform": "ultimaker_methodx_platform.stl",
+        "platform_offset": [
+            0,
+            0,
+            0
+        ],
+        "platform_texture": "MakerbotMethodX.png",
+        "preferred_quality_type": "fast",
+        "preferred_variant_name": "1A",
+        "supports_material_export": true,
+        "supports_network_connection": true,
+        "supports_usb_connection": false,
+        "variants_name": "Extruder",
+        "visible": true,
+        "weight": -1
+    },
+    "name": "Makerbot Method X",
+    "overrides":
+    {
+        "acceleration_enabled":
+        {
+            "enabled": false,
+            "value": "False"
+        },
+        "adhesion_extruder_nr":
+        {
+            "value": 0
+        },
+        "adhesion_type":
+        {
+            "value": "'raft'"
+        },
+        "bridge_enable_more_layers":
+        {
+            "value": "True"
+        },
+        "bridge_fan_speed":
+        {
+            "value": "cool_fan_speed_max"
+        },
+        "bridge_fan_speed_2":
+        {
+            "value": "(cool_fan_speed_max + cool_fan_speed_min) / 2"
+        },
+        "bridge_fan_speed_3":
+        {
+            "value": "cool_fan_speed_min"
+        },
+        "bridge_settings_enabled":
+        {
+            "value": "True"
+        },
+        "bridge_skin_density":
+        {
+            "value": "100"
+        },
+        "bridge_skin_density_2":
+        {
+            "value": "100"
+        },
+        "bridge_skin_density_3":
+        {
+            "value": "100"
+        },
+        "bridge_skin_material_flow":
+        {
+            "value": "material_flow"
+        },
+        "bridge_skin_material_flow_2":
+        {
+            "value": "material_flow"
+        },
+        "bridge_skin_material_flow_3":
+        {
+            "value": "material_flow"
+        },
+        "bridge_skin_speed":
+        {
+            "value": "speed_topbottom"
+        },
+        "bridge_skin_speed_2":
+        {
+            "value": "speed_topbottom"
+        },
+        "bridge_skin_speed_3":
+        {
+            "value": "speed_topbottom"
+        },
+        "bridge_wall_coast":
+        {
+            "value": "0"
+        },
+        "bridge_wall_material_flow":
+        {
+            "value": "material_flow"
+        },
+        "bridge_wall_speed":
+        {
+            "value": "speed_wall"
+        },
+        "brim_width":
+        {
+            "value": "5"
+        },
+        "extruder_prime_pos_abs":
+        {
+            "default_value": true
+        },
+        "infill_enable_travel_optimization":
+        {
+            "value": "True"
+        },
+        "infill_material_flow":
+        {
+            "value": "material_flow"
+        },
+        "infill_overlap":
+        {
+            "value": "0"
+        },
+        "infill_pattern":
+        {
+            "value": "'zigzag' if infill_sparse_density > 80 else 'triangles'"
+        },
+        "infill_wipe_dist":
+        {
+            "value": "0"
+        },
+        "jerk_enabled":
+        {
+            "enabled": false,
+            "value": "False"
+        },
+        "layer_start_x":
+        {
+            "value": "sum(extruderValues('machine_extruder_start_pos_x')) / len(extruderValues('machine_extruder_start_pos_x'))"
+        },
+        "layer_start_y":
+        {
+            "value": "sum(extruderValues('machine_extruder_start_pos_y')) / len(extruderValues('machine_extruder_start_pos_y'))"
+        },
+        "limit_support_retractions":
+        {
+            "value": "False"
+        },
+        "machine_acceleration":
+        {
+            "default_value": 3000
+        },
+        "machine_depth":
+        {
+            "default_value": 190
+        },
+        "machine_end_gcode":
+        {
+            "default_value": ""
+        },
+        "machine_extruder_count":
+        {
+            "default_value": 2
+        },
+        "machine_gcode_flavor":
+        {
+            "default_value": "Griffin"
+        },
+        "machine_heated_bed":
+        {
+            "default_value": false
+        },
+        "machine_heated_build_volume":
+        {
+            "default_value": true
+        },
+        "machine_height":
+        {
+            "default_value": 196
+        },
+        "machine_min_cool_heat_time_window":
+        {
+            "value": "15"
+        },
+        "machine_name":
+        {
+            "default_value": "Makerbot Method X"
+        },
+        "machine_start_gcode":
+        {
+            "default_value": ""
+        },
+        "machine_width":
+        {
+            "default_value": 150
+        },
+        "material_flow":
+        {
+            "value": "100"
+        },
+        "material_print_temperature":
+        {
+            "value": "default_material_print_temperature"
+        },
+        "material_shrinkage_percentage":
+        {
+            "enabled": true
+        },
+        "multiple_mesh_overlap":
+        {
+            "value": "0"
+        },
+        "optimize_wall_printing_order":
+        {
+            "value": "True"
+        },
+        "prime_blob_enable":
+        {
+            "default_value": false,
+            "enabled": true
+        },
+        "prime_tower_enable":
+        {
+            "value": "True"
+        },
+        "prime_tower_flow":
+        {
+            "value": "material_flow"
+        },
+        "prime_tower_position_x":
+        {
+            "value": 142
+        },
+        "prime_tower_position_y":
+        {
+            "value": 90
+        },
+        "prime_tower_wipe_enabled":
+        {
+            "value": "True"
+        },
+        "raft_base_line_width":
+        {
+            "value": 1.2
+        },
+        "raft_base_speed":
+        {
+            "value": 15
+        },
+        "raft_base_thickness":
+        {
+            "value": 0.4
+        },
+        "raft_margin":
+        {
+            "value": "5"
+        },
+        "raft_surface_extruder_nr":
+        {
+            "value": 1
+        },
+        "retraction_amount":
+        {
+            "value": "0.5"
+        },
+        "retraction_combing_max_distance":
+        {
+            "value": "speed_travel / 10"
+        },
+        "retraction_count_max":
+        {
+            "value": "200"
+        },
+        "retraction_hop":
+        {
+            "value": "0.2"
+        },
+        "retraction_hop_enabled":
+        {
+            "value": "True"
+        },
+        "retraction_hop_only_when_collides":
+        {
+            "value": "True"
+        },
+        "retraction_min_travel":
+        {
+            "value": "line_width * 2"
+        },
+        "retraction_prime_speed":
+        {
+            "value": "5"
+        },
+        "retraction_speed":
+        {
+            "value": "10"
+        },
+        "roofing_layer_count":
+        {
+            "value": "1"
+        },
+        "roofing_material_flow":
+        {
+            "value": "material_flow * 0.98"
+        },
+        "roofing_monotonic":
+        {
+            "value": "True"
+        },
+        "skin_material_flow":
+        {
+            "value": "material_flow * 0.965"
+        },
+        "skin_monotonic":
+        {
+            "value": "False"
+        },
+        "skin_overlap":
+        {
+            "value": "0"
+        },
+        "skirt_brim_material_flow":
+        {
+            "value": "material_flow"
+        },
+        "skirt_brim_minimal_length":
+        {
+            "value": "500"
+        },
+        "speed_prime_tower":
+        {
+            "value": "speed_topbottom"
+        },
+        "speed_print":
+        {
+            "value": "50"
+        },
+        "speed_roofing":
+        {
+            "value": "speed_wall_0"
+        },
+        "speed_support":
+        {
+            "value": "speed_wall"
+        },
+        "speed_support_interface":
+        {
+            "value": "speed_topbottom"
+        },
+        "speed_topbottom":
+        {
+            "value": "speed_wall"
+        },
+        "speed_travel":
+        {
+            "value": "150"
+        },
+        "speed_wall":
+        {
+            "value": "speed_print * 40/50"
+        },
+        "speed_wall_0":
+        {
+            "value": "speed_wall * 30/40"
+        },
+        "speed_wall_x":
+        {
+            "value": "speed_wall"
+        },
+        "support_angle":
+        {
+            "value": "60"
+        },
+        "support_bottom_distance":
+        {
+            "value": "support_z_distance / 2"
+        },
+        "support_bottom_material_flow":
+        {
+            "value": "material_flow * 0.98"
+        },
+        "support_brim_enable":
+        {
+            "value": "True"
+        },
+        "support_enable":
+        {
+            "value": true
+        },
+        "support_extruder_nr":
+        {
+            "value": 1
+        },
+        "support_fan_enable":
+        {
+            "value": "True"
+        },
+        "support_interface_material_flow":
+        {
+            "value": "material_flow * 0.98"
+        },
+        "support_material_flow":
+        {
+            "value": "material_flow"
+        },
+        "support_roof_material_flow":
+        {
+            "value": "material_flow * 0.98"
+        },
+        "support_supported_skin_fan_speed":
+        {
+            "value": "cool_fan_speed_max"
+        },
+        "support_top_distance":
+        {
+            "value": "support_z_distance"
+        },
+        "support_z_distance":
+        {
+            "value": "layer_height * 2"
+        },
+        "switch_extruder_retraction_amount":
+        {
+            "value": "1.0"
+        },
+        "switch_extruder_retraction_speeds":
+        {
+            "value": "retraction_speed"
+        },
+        "top_bottom_thickness":
+        {
+            "value": "wall_thickness"
+        },
+        "travel_avoid_distance":
+        {
+            "value": "3 if extruders_enabled_count > 1 else machine_nozzle_tip_outer_diameter / 2 * 1.5"
+        },
+        "travel_avoid_supports":
+        {
+            "value": "True"
+        },
+        "wall_0_inset":
+        {
+            "value": "0"
+        },
+        "wall_0_material_flow":
+        {
+            "value": "material_flow"
+        },
+        "wall_0_wipe_dist":
+        {
+            "value": "0"
+        },
+        "wall_material_flow":
+        {
+            "value": "material_flow"
+        },
+        "wall_x_material_flow":
+        {
+            "value": "material_flow * 0.98"
+        },
+        "zig_zaggify_infill":
+        {
+            "value": "True"
+        }
+    },
+    "version": 2
+}

@@ -1,0 +1,38 @@
+{
+  "version": 2,
+  "name": "Makerbot Method",
+  "inherits": "ultimaker_methodx",
+  "metadata": {
+    "visible": true,
+    "author": "Ultimaker",
+    "manufacturer": "Ultimaker B.V.",
+    "file_formats": "application/x-makerbot",
+    "platform": "ultimaker_methodx_platform.obj",
+    "has_machine_materials": true,
+    "has_machine_quality": true,
+    "has_materials": true,
+    "has_variants": true,
+    "machine_extruder_trains":
+    {
+        "0": "ultimaker_methodx_extruder_left",
+        "1": "ultimaker_methodx_extruder_right"
+    },
+    "platform_offset": [
+      0,
+      0,
+      0
+    ],
+    "platform_texture": "MakerbotMethodX.png",
+    "preferred_quality_type": "draft",
+    "quality_definition": "ultimaker_methodx",
+    "supports_network_connection": true,
+    "supports_usb_connection": false,
+    "variants_name": "Extruder",
+    "weight": -1
+  },
+  "overrides": {
+    "machine_name": {
+      "default_value": "Makerbot Method"
+    }
+  }
+}
