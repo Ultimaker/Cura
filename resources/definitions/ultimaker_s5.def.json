@@ -15,13 +15,6 @@
             214476,
             214477
         ],
-        "firmware_update_info":
-        {
-            "check_urls": [ "https://software.ultimaker.com/releases/firmware/9051/stable/um-update.swu.version" ],
-            "id": 9051,
-            "update_url": "https://ultimaker.com/firmware?utm_source=cura&utm_medium=software&utm_campaign=fw-update"
-        },
-        "first_start_actions": [ "DiscoverUM3Action" ],
         "exclude_materials": [
             "structur3d_dap100silicone",
             "generic_hips",
@@ -30,6 +23,13 @@
             "ultimaker_petcf_blue",
             "ultimaker_petcf_gray"
         ],
+        "firmware_update_info":
+        {
+            "check_urls": [ "https://software.ultimaker.com/releases/firmware/9051/stable/um-update.swu.version" ],
+            "id": 9051,
+            "update_url": "https://ultimaker.com/firmware?utm_source=cura&utm_medium=software&utm_campaign=fw-update"
+        },
+        "first_start_actions": [ "DiscoverUM3Action" ],
         "has_machine_quality": true,
         "has_materials": true,
         "has_variant_buildplates": true,
