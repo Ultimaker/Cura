@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-27 12:22+0000\n"
+"POT-Creation-Date: 2023-05-11 14:19+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,22 +23,22 @@ msgctxt "@info:title"
 msgid "Login failed"
 msgstr "Вход не выполнен"
 
-#: cura/Arranging/ArrangeObjectsJob.py:25
+#: cura/Arranging/ArrangeObjectsJob.py:27
 msgctxt "@info:status"
 msgid "Finding new location for objects"
 msgstr "Поиск места для новых объектов"
 
-#: cura/Arranging/ArrangeObjectsJob.py:29
+#: cura/Arranging/ArrangeObjectsJob.py:31
 msgctxt "@info:title"
 msgid "Finding Location"
 msgstr "Поиск места"
 
-#: cura/Arranging/ArrangeObjectsJob.py:42 cura/MultiplyObjectsJob.py:99
+#: cura/Arranging/ArrangeObjectsJob.py:45 cura/MultiplyObjectsJob.py:101
 msgctxt "@info:status"
 msgid "Unable to find a location within the build volume for all objects"
 msgstr "Невозможно разместить все объекты внутри печатаемого объёма"
 
-#: cura/Arranging/ArrangeObjectsJob.py:43
+#: cura/Arranging/ArrangeObjectsJob.py:46
 msgctxt "@info:title"
 msgid "Can't Find Location"
 msgstr "Не могу найти место"
@@ -265,25 +265,25 @@ msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be
 msgid "%(width).1f x %(depth).1f x %(height).1f mm"
 msgstr "%(width).1f x %(depth).1f x %(height).1f мм"
 
-#: cura/CuraApplication.py:1816
+#: cura/CuraApplication.py:1817
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Only one G-code file can be loaded at a time. Skipped importing {0}"
 msgstr "Только один G-code файла может быть загружен в момент времени. Пропускаю импортирование {0}"
 
-#: cura/CuraApplication.py:1818 cura/OAuth2/AuthorizationService.py:217
+#: cura/CuraApplication.py:1819 cura/OAuth2/AuthorizationService.py:217
 #: plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:189
 msgctxt "@info:title"
 msgid "Warning"
 msgstr "Внимание"
 
-#: cura/CuraApplication.py:1828
+#: cura/CuraApplication.py:1829
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Can't open any other file if G-code is loading. Skipped importing {0}"
 msgstr "Невозможно открыть любой другой файл, если G-code файл уже загружен. Пропускаю импортирование {0}"
 
-#: cura/CuraApplication.py:1830 cura/Settings/CuraContainerRegistry.py:156
+#: cura/CuraApplication.py:1831 cura/Settings/CuraContainerRegistry.py:156
 #: cura/Settings/CuraContainerRegistry.py:166
 #: plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:153
 #: plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:173
@@ -410,17 +410,17 @@ msgctxt "@info:status"
 msgid "Calculated"
 msgstr "Вычислено"
 
-#: cura/MultiplyObjectsJob.py:30
+#: cura/MultiplyObjectsJob.py:31
 msgctxt "@info:status"
 msgid "Multiplying and placing objects"
 msgstr "Размножение и размещение объектов"
 
-#: cura/MultiplyObjectsJob.py:32
+#: cura/MultiplyObjectsJob.py:33
 msgctxt "@info:title"
 msgid "Placing Objects"
 msgstr "Размещение объектов"
 
-#: cura/MultiplyObjectsJob.py:100
+#: cura/MultiplyObjectsJob.py:102
 msgctxt "@info:title"
 msgid "Placing Object"
 msgstr "Размещение объекта"
@@ -3687,17 +3687,17 @@ msgctxt "@action:button"
 msgid "Remove printers"
 msgstr "Удалить принтеры"
 
-#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:62
+#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:63
 msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Print over network"
 msgstr "Печать через сеть"
 
-#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:63
+#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:64
 msgctxt "@properties:tooltip"
 msgid "Print over network"
 msgstr "Печать через сеть"
 
-#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:64
+#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:65
 msgctxt "@info:status"
 msgid "Connected over the network"
 msgstr "Подключен по сети"
@@ -4239,227 +4239,237 @@ msgctxt "@button"
 msgid "Cancel"
 msgstr "Отмена"
 
-#: resources/qml/Actions.qml:81
+#: resources/qml/Actions.qml:83
 msgctxt "@action:inmenu"
 msgid "Show Online Troubleshooting"
 msgstr "Показать сетевое руководство по устранению неполадок"
 
-#: resources/qml/Actions.qml:88
+#: resources/qml/Actions.qml:90
 msgctxt "@action:inmenu"
 msgid "Toggle Full Screen"
 msgstr "Полный экран"
 
-#: resources/qml/Actions.qml:96
+#: resources/qml/Actions.qml:98
 msgctxt "@action:inmenu"
 msgid "Exit Full Screen"
 msgstr "Выйти из полноэкранного режима"
 
-#: resources/qml/Actions.qml:103
+#: resources/qml/Actions.qml:105
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Undo"
 msgstr "Отмена"
 
-#: resources/qml/Actions.qml:113
+#: resources/qml/Actions.qml:115
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Redo"
 msgstr "Возврат"
 
-#: resources/qml/Actions.qml:131
+#: resources/qml/Actions.qml:133
 msgctxt "@action:inmenu menubar:file"
 msgid "&Quit"
 msgstr "Выход"
 
-#: resources/qml/Actions.qml:139
+#: resources/qml/Actions.qml:141
 msgctxt "@action:inmenu menubar:view"
 msgid "3D View"
 msgstr "Трехмерный вид"
 
-#: resources/qml/Actions.qml:146
+#: resources/qml/Actions.qml:148
 msgctxt "@action:inmenu menubar:view"
 msgid "Front View"
 msgstr "Вид спереди"
 
-#: resources/qml/Actions.qml:153
+#: resources/qml/Actions.qml:155
 msgctxt "@action:inmenu menubar:view"
 msgid "Top View"
 msgstr "Вид сверху"
 
-#: resources/qml/Actions.qml:160
+#: resources/qml/Actions.qml:162
 msgctxt "@action:inmenu menubar:view"
 msgid "Bottom View"
 msgstr "Вид снизу"
 
-#: resources/qml/Actions.qml:167
+#: resources/qml/Actions.qml:169
 msgctxt "@action:inmenu menubar:view"
 msgid "Left Side View"
 msgstr "Вид слева"
 
-#: resources/qml/Actions.qml:174
+#: resources/qml/Actions.qml:176
 msgctxt "@action:inmenu menubar:view"
 msgid "Right Side View"
 msgstr "Вид справа"
 
-#: resources/qml/Actions.qml:188
+#: resources/qml/Actions.qml:190
 msgctxt "@action:inmenu"
 msgid "Configure Cura..."
 msgstr "Настроить Cura..."
 
-#: resources/qml/Actions.qml:197
+#: resources/qml/Actions.qml:199
 msgctxt "@action:inmenu menubar:printer"
 msgid "&Add Printer..."
 msgstr "Добавить принтер..."
 
-#: resources/qml/Actions.qml:203
+#: resources/qml/Actions.qml:205
 msgctxt "@action:inmenu menubar:printer"
 msgid "Manage Pr&inters..."
 msgstr "Управление принтерами..."
 
-#: resources/qml/Actions.qml:210
+#: resources/qml/Actions.qml:212
 msgctxt "@action:inmenu"
 msgid "Manage Materials..."
 msgstr "Управление материалами..."
 
-#: resources/qml/Actions.qml:218
+#: resources/qml/Actions.qml:220
 msgctxt "@action:inmenu Marketplace is a brand name of UltiMaker's, so don't translate."
 msgid "Add more materials from Marketplace"
 msgstr "Добавить больше материалов из Магазина"
 
-#: resources/qml/Actions.qml:225
+#: resources/qml/Actions.qml:227
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Update profile with current settings/overrides"
 msgstr "Обновить профиль текущими параметрами"
 
-#: resources/qml/Actions.qml:233
+#: resources/qml/Actions.qml:235
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Discard current changes"
 msgstr "Сбросить текущие параметры"
 
-#: resources/qml/Actions.qml:245
+#: resources/qml/Actions.qml:247
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Create profile from current settings/overrides..."
 msgstr "Создать профиль из текущих параметров..."
 
-#: resources/qml/Actions.qml:251
+#: resources/qml/Actions.qml:253
 msgctxt "@action:inmenu menubar:profile"
 msgid "Manage Profiles..."
 msgstr "Управление профилями..."
 
-#: resources/qml/Actions.qml:259
+#: resources/qml/Actions.qml:261
 msgctxt "@action:inmenu menubar:help"
 msgid "Show Online &Documentation"
 msgstr "Показать онлайн документацию"
 
-#: resources/qml/Actions.qml:267
+#: resources/qml/Actions.qml:269
 msgctxt "@action:inmenu menubar:help"
 msgid "Report a &Bug"
 msgstr "Отправить отчёт об ошибке"
 
-#: resources/qml/Actions.qml:275
+#: resources/qml/Actions.qml:277
 msgctxt "@action:inmenu menubar:help"
 msgid "What's New"
 msgstr "Что нового"
 
-#: resources/qml/Actions.qml:289
+#: resources/qml/Actions.qml:291
 msgctxt "@action:inmenu menubar:help"
 msgid "About..."
 msgstr "О Cura..."
 
-#: resources/qml/Actions.qml:296
+#: resources/qml/Actions.qml:298
 msgctxt "@action:inmenu menubar:edit"
 msgid "Delete Selected"
 msgstr "Удалить выбранное"
 
-#: resources/qml/Actions.qml:306
+#: resources/qml/Actions.qml:308
 msgctxt "@action:inmenu menubar:edit"
 msgid "Center Selected"
 msgstr "Центрировать выбранное"
 
-#: resources/qml/Actions.qml:315
+#: resources/qml/Actions.qml:317
 msgctxt "@action:inmenu menubar:edit"
 msgid "Multiply Selected"
 msgstr "Размножить выбранное"
 
-#: resources/qml/Actions.qml:324
+#: resources/qml/Actions.qml:326
 msgctxt "@action:inmenu"
 msgid "Delete Model"
 msgstr "Удалить модель"
 
-#: resources/qml/Actions.qml:332
+#: resources/qml/Actions.qml:334
 msgctxt "@action:inmenu"
 msgid "Ce&nter Model on Platform"
 msgstr "Поместить модель по центру"
 
-#: resources/qml/Actions.qml:338
+#: resources/qml/Actions.qml:340
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Group Models"
 msgstr "Сгруппировать модели"
 
-#: resources/qml/Actions.qml:358
+#: resources/qml/Actions.qml:360
 msgctxt "@action:inmenu menubar:edit"
 msgid "Ungroup Models"
 msgstr "Разгруппировать модели"
 
-#: resources/qml/Actions.qml:368
+#: resources/qml/Actions.qml:370
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Merge Models"
 msgstr "Объединить модели"
 
-#: resources/qml/Actions.qml:378
+#: resources/qml/Actions.qml:380
 msgctxt "@action:inmenu"
 msgid "&Multiply Model..."
 msgstr "Дублировать модель..."
 
-#: resources/qml/Actions.qml:385
+#: resources/qml/Actions.qml:387
 msgctxt "@action:inmenu menubar:edit"
 msgid "Select All Models"
 msgstr "Выбрать все модели"
 
-#: resources/qml/Actions.qml:395
+#: resources/qml/Actions.qml:397
 msgctxt "@action:inmenu menubar:edit"
 msgid "Clear Build Plate"
 msgstr "Очистить стол"
 
-#: resources/qml/Actions.qml:405
+#: resources/qml/Actions.qml:407
 msgctxt "@action:inmenu menubar:file"
 msgid "Reload All Models"
 msgstr "Перезагрузить все модели"
 
-#: resources/qml/Actions.qml:414
+#: resources/qml/Actions.qml:416
 msgctxt "@action:inmenu menubar:edit"
 msgid "Arrange All Models"
 msgstr "Выровнять все модели"
 
-#: resources/qml/Actions.qml:422
+#: resources/qml/Actions.qml:424
+msgctxt "@action:inmenu menubar:edit"
+msgid "Arrange All Models Without Rotation"
+msgstr ""
+
+#: resources/qml/Actions.qml:431
 msgctxt "@action:inmenu menubar:edit"
 msgid "Arrange Selection"
 msgstr "Выровнять выбранные"
 
-#: resources/qml/Actions.qml:429
+#: resources/qml/Actions.qml:438
+msgctxt "@action:inmenu menubar:edit"
+msgid "Arrange Selection Without Rotation"
+msgstr ""
+
+#: resources/qml/Actions.qml:445
 msgctxt "@action:inmenu menubar:edit"
 msgid "Reset All Model Positions"
 msgstr "Сбросить позиции всех моделей"
 
-#: resources/qml/Actions.qml:436
+#: resources/qml/Actions.qml:452
 msgctxt "@action:inmenu menubar:edit"
 msgid "Reset All Model Transformations"
 msgstr "Сбросить преобразования всех моделей"
 
-#: resources/qml/Actions.qml:445
+#: resources/qml/Actions.qml:461
 msgctxt "@action:inmenu menubar:file"
 msgid "&Open File(s)..."
 msgstr "Открыть файл(ы)..."
 
-#: resources/qml/Actions.qml:455
+#: resources/qml/Actions.qml:471
 msgctxt "@action:inmenu menubar:file"
 msgid "&New Project..."
 msgstr "Новый проект..."
 
-#: resources/qml/Actions.qml:462
+#: resources/qml/Actions.qml:478
 msgctxt "@action:inmenu menubar:help"
 msgid "Show Configuration Folder"
 msgstr "Показать конфигурационный каталог"
 
-#: resources/qml/Actions.qml:469 resources/qml/Settings/SettingView.qml:476
+#: resources/qml/Actions.qml:485 resources/qml/Settings/SettingView.qml:476
 msgctxt "@action:menu"
 msgid "Configure setting visibility..."
 msgstr "Видимость параметров..."
@@ -5084,7 +5094,7 @@ msgstr[0] "Печать выбранной модели:"
 msgstr[1] "Печать выбранных моделей:"
 msgstr[2] "Печать выбранных моделей:"
 
-#: resources/qml/Menus/ContextMenu.qml:92
+#: resources/qml/Menus/ContextMenu.qml:93
 msgctxt "@title:window"
 msgid "Multiply Selected Model"
 msgid_plural "Multiply Selected Models"
@@ -5092,10 +5102,15 @@ msgstr[0] "Размножить выбранную модель"
 msgstr[1] "Размножить выбранные модели"
 msgstr[2] "Размножить выбранные модели"
 
-#: resources/qml/Menus/ContextMenu.qml:123
+#: resources/qml/Menus/ContextMenu.qml:128
 msgctxt "@label"
 msgid "Number of Copies"
 msgstr "Количество копий"
+
+#: resources/qml/Menus/ContextMenu.qml:149
+msgctxt "@label"
+msgid "Lock Rotation"
+msgstr ""
 
 #: resources/qml/Menus/EditMenu.qml:12
 msgctxt "@title:menu menubar:toplevel"

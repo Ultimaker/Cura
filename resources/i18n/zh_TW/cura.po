@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-27 12:22+0000\n"
+"POT-Creation-Date: 2023-05-11 14:19+0000\n"
 "PO-Revision-Date: 2022-01-02 19:59+0800\n"
 "Last-Translator: Valen Chang  <carf17771@gmail.com>\n"
 "Language-Team: Valen Chang <carf17771@gmail.com>\n"
@@ -23,22 +23,22 @@ msgctxt "@info:title"
 msgid "Login failed"
 msgstr "登入失敗"
 
-#: cura/Arranging/ArrangeObjectsJob.py:25
+#: cura/Arranging/ArrangeObjectsJob.py:27
 msgctxt "@info:status"
 msgid "Finding new location for objects"
 msgstr "正在為物件尋找新位置"
 
-#: cura/Arranging/ArrangeObjectsJob.py:29
+#: cura/Arranging/ArrangeObjectsJob.py:31
 msgctxt "@info:title"
 msgid "Finding Location"
 msgstr "尋找位置中"
 
-#: cura/Arranging/ArrangeObjectsJob.py:42 cura/MultiplyObjectsJob.py:99
+#: cura/Arranging/ArrangeObjectsJob.py:45 cura/MultiplyObjectsJob.py:101
 msgctxt "@info:status"
 msgid "Unable to find a location within the build volume for all objects"
 msgstr "無法在列印範圍內放下全部物件"
 
-#: cura/Arranging/ArrangeObjectsJob.py:43
+#: cura/Arranging/ArrangeObjectsJob.py:46
 msgctxt "@info:title"
 msgid "Can't Find Location"
 msgstr "無法找到位置"
@@ -265,25 +265,25 @@ msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be
 msgid "%(width).1f x %(depth).1f x %(height).1f mm"
 msgstr "%(width).1f x %(depth).1f x %(height).1f mm"
 
-#: cura/CuraApplication.py:1816
+#: cura/CuraApplication.py:1817
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Only one G-code file can be loaded at a time. Skipped importing {0}"
 msgstr "一次只能載入一個 G-code 檔案。{0} 已跳過匯入"
 
-#: cura/CuraApplication.py:1818 cura/OAuth2/AuthorizationService.py:217
+#: cura/CuraApplication.py:1819 cura/OAuth2/AuthorizationService.py:217
 #: plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:189
 msgctxt "@info:title"
 msgid "Warning"
 msgstr "警告"
 
-#: cura/CuraApplication.py:1828
+#: cura/CuraApplication.py:1829
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Can't open any other file if G-code is loading. Skipped importing {0}"
 msgstr "如果載入 G-code，則無法開啟其他任何檔案。{0} 已跳過匯入"
 
-#: cura/CuraApplication.py:1830 cura/Settings/CuraContainerRegistry.py:156
+#: cura/CuraApplication.py:1831 cura/Settings/CuraContainerRegistry.py:156
 #: cura/Settings/CuraContainerRegistry.py:166
 #: plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:153
 #: plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:173
@@ -410,17 +410,17 @@ msgctxt "@info:status"
 msgid "Calculated"
 msgstr "已計算"
 
-#: cura/MultiplyObjectsJob.py:30
+#: cura/MultiplyObjectsJob.py:31
 msgctxt "@info:status"
 msgid "Multiplying and placing objects"
 msgstr "正在複製並放置模型"
 
-#: cura/MultiplyObjectsJob.py:32
+#: cura/MultiplyObjectsJob.py:33
 msgctxt "@info:title"
 msgid "Placing Objects"
 msgstr "正在放置模型"
 
-#: cura/MultiplyObjectsJob.py:100
+#: cura/MultiplyObjectsJob.py:102
 msgctxt "@info:title"
 msgid "Placing Object"
 msgstr "擺放物件中"
@@ -3668,17 +3668,17 @@ msgctxt "@action:button"
 msgid "Remove printers"
 msgstr "移除印表機"
 
-#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:62
+#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:63
 msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Print over network"
 msgstr "網路連線列印"
 
-#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:63
+#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:64
 msgctxt "@properties:tooltip"
 msgid "Print over network"
 msgstr "網路連線列印"
 
-#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:64
+#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:65
 msgctxt "@info:status"
 msgid "Connected over the network"
 msgstr "透過網路連接"
@@ -4220,227 +4220,237 @@ msgctxt "@button"
 msgid "Cancel"
 msgstr "取消"
 
-#: resources/qml/Actions.qml:81
+#: resources/qml/Actions.qml:83
 msgctxt "@action:inmenu"
 msgid "Show Online Troubleshooting"
 msgstr ""
 
-#: resources/qml/Actions.qml:88
+#: resources/qml/Actions.qml:90
 msgctxt "@action:inmenu"
 msgid "Toggle Full Screen"
 msgstr "切換全螢幕"
 
-#: resources/qml/Actions.qml:96
+#: resources/qml/Actions.qml:98
 msgctxt "@action:inmenu"
 msgid "Exit Full Screen"
 msgstr "離開全螢幕"
 
-#: resources/qml/Actions.qml:103
+#: resources/qml/Actions.qml:105
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Undo"
 msgstr "復原（&U）"
 
-#: resources/qml/Actions.qml:113
+#: resources/qml/Actions.qml:115
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Redo"
 msgstr "取消復原（&R）"
 
-#: resources/qml/Actions.qml:131
+#: resources/qml/Actions.qml:133
 msgctxt "@action:inmenu menubar:file"
 msgid "&Quit"
 msgstr "退出（&Q）"
 
-#: resources/qml/Actions.qml:139
+#: resources/qml/Actions.qml:141
 msgctxt "@action:inmenu menubar:view"
 msgid "3D View"
 msgstr "立體圖"
 
-#: resources/qml/Actions.qml:146
+#: resources/qml/Actions.qml:148
 msgctxt "@action:inmenu menubar:view"
 msgid "Front View"
 msgstr "前視圖"
 
-#: resources/qml/Actions.qml:153
+#: resources/qml/Actions.qml:155
 msgctxt "@action:inmenu menubar:view"
 msgid "Top View"
 msgstr "上視圖"
 
-#: resources/qml/Actions.qml:160
+#: resources/qml/Actions.qml:162
 msgctxt "@action:inmenu menubar:view"
 msgid "Bottom View"
 msgstr "下視圖"
 
-#: resources/qml/Actions.qml:167
+#: resources/qml/Actions.qml:169
 msgctxt "@action:inmenu menubar:view"
 msgid "Left Side View"
 msgstr "左視圖"
 
-#: resources/qml/Actions.qml:174
+#: resources/qml/Actions.qml:176
 msgctxt "@action:inmenu menubar:view"
 msgid "Right Side View"
 msgstr "右視圖"
 
-#: resources/qml/Actions.qml:188
+#: resources/qml/Actions.qml:190
 msgctxt "@action:inmenu"
 msgid "Configure Cura..."
 msgstr "設定 Cura..."
 
-#: resources/qml/Actions.qml:197
+#: resources/qml/Actions.qml:199
 msgctxt "@action:inmenu menubar:printer"
 msgid "&Add Printer..."
 msgstr "新增印表機（&A）..."
 
-#: resources/qml/Actions.qml:203
+#: resources/qml/Actions.qml:205
 msgctxt "@action:inmenu menubar:printer"
 msgid "Manage Pr&inters..."
 msgstr "管理印表機（&I）..."
 
-#: resources/qml/Actions.qml:210
+#: resources/qml/Actions.qml:212
 msgctxt "@action:inmenu"
 msgid "Manage Materials..."
 msgstr "管理線材..."
 
-#: resources/qml/Actions.qml:218
+#: resources/qml/Actions.qml:220
 msgctxt "@action:inmenu Marketplace is a brand name of UltiMaker's, so don't translate."
 msgid "Add more materials from Marketplace"
 msgstr "從市集增加更多線材"
 
-#: resources/qml/Actions.qml:225
+#: resources/qml/Actions.qml:227
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Update profile with current settings/overrides"
 msgstr "使用目前設定 / 覆寫更新列印參數（&U）"
 
-#: resources/qml/Actions.qml:233
+#: resources/qml/Actions.qml:235
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Discard current changes"
 msgstr "捨棄目前更改（&D）"
 
-#: resources/qml/Actions.qml:245
+#: resources/qml/Actions.qml:247
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Create profile from current settings/overrides..."
 msgstr "從目前設定 / 覆寫值建立列印參數（&C）..."
 
-#: resources/qml/Actions.qml:251
+#: resources/qml/Actions.qml:253
 msgctxt "@action:inmenu menubar:profile"
 msgid "Manage Profiles..."
 msgstr "管理列印參數.."
 
-#: resources/qml/Actions.qml:259
+#: resources/qml/Actions.qml:261
 msgctxt "@action:inmenu menubar:help"
 msgid "Show Online &Documentation"
 msgstr "顯示線上說明文件（&D）"
 
-#: resources/qml/Actions.qml:267
+#: resources/qml/Actions.qml:269
 msgctxt "@action:inmenu menubar:help"
 msgid "Report a &Bug"
 msgstr "BUG 回報（&B）"
 
-#: resources/qml/Actions.qml:275
+#: resources/qml/Actions.qml:277
 msgctxt "@action:inmenu menubar:help"
 msgid "What's New"
 msgstr "新功能"
 
-#: resources/qml/Actions.qml:289
+#: resources/qml/Actions.qml:291
 msgctxt "@action:inmenu menubar:help"
 msgid "About..."
 msgstr "關於..."
 
-#: resources/qml/Actions.qml:296
+#: resources/qml/Actions.qml:298
 msgctxt "@action:inmenu menubar:edit"
 msgid "Delete Selected"
 msgstr "刪除選取"
 
-#: resources/qml/Actions.qml:306
+#: resources/qml/Actions.qml:308
 msgctxt "@action:inmenu menubar:edit"
 msgid "Center Selected"
 msgstr "置中選取"
 
-#: resources/qml/Actions.qml:315
+#: resources/qml/Actions.qml:317
 msgctxt "@action:inmenu menubar:edit"
 msgid "Multiply Selected"
 msgstr "複製選取"
 
-#: resources/qml/Actions.qml:324
+#: resources/qml/Actions.qml:326
 msgctxt "@action:inmenu"
 msgid "Delete Model"
 msgstr "刪除模型"
 
-#: resources/qml/Actions.qml:332
+#: resources/qml/Actions.qml:334
 msgctxt "@action:inmenu"
 msgid "Ce&nter Model on Platform"
 msgstr "將模型置中（&N）"
 
-#: resources/qml/Actions.qml:338
+#: resources/qml/Actions.qml:340
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Group Models"
 msgstr "群組模型（&G）"
 
-#: resources/qml/Actions.qml:358
+#: resources/qml/Actions.qml:360
 msgctxt "@action:inmenu menubar:edit"
 msgid "Ungroup Models"
 msgstr "取消模型群組"
 
-#: resources/qml/Actions.qml:368
+#: resources/qml/Actions.qml:370
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Merge Models"
 msgstr "結合模型（&M）"
 
-#: resources/qml/Actions.qml:378
+#: resources/qml/Actions.qml:380
 msgctxt "@action:inmenu"
 msgid "&Multiply Model..."
 msgstr "複製模型...（&M）"
 
-#: resources/qml/Actions.qml:385
+#: resources/qml/Actions.qml:387
 msgctxt "@action:inmenu menubar:edit"
 msgid "Select All Models"
 msgstr "選擇所有模型"
 
-#: resources/qml/Actions.qml:395
+#: resources/qml/Actions.qml:397
 msgctxt "@action:inmenu menubar:edit"
 msgid "Clear Build Plate"
 msgstr "清空列印平台"
 
-#: resources/qml/Actions.qml:405
+#: resources/qml/Actions.qml:407
 msgctxt "@action:inmenu menubar:file"
 msgid "Reload All Models"
 msgstr "重新載入所有模型"
 
-#: resources/qml/Actions.qml:414
+#: resources/qml/Actions.qml:416
 msgctxt "@action:inmenu menubar:edit"
 msgid "Arrange All Models"
 msgstr "排列所有模型"
 
-#: resources/qml/Actions.qml:422
+#: resources/qml/Actions.qml:424
+msgctxt "@action:inmenu menubar:edit"
+msgid "Arrange All Models Without Rotation"
+msgstr ""
+
+#: resources/qml/Actions.qml:431
 msgctxt "@action:inmenu menubar:edit"
 msgid "Arrange Selection"
 msgstr "排列所選模型"
 
-#: resources/qml/Actions.qml:429
+#: resources/qml/Actions.qml:438
+msgctxt "@action:inmenu menubar:edit"
+msgid "Arrange Selection Without Rotation"
+msgstr ""
+
+#: resources/qml/Actions.qml:445
 msgctxt "@action:inmenu menubar:edit"
 msgid "Reset All Model Positions"
 msgstr "重置所有模型位置"
 
-#: resources/qml/Actions.qml:436
+#: resources/qml/Actions.qml:452
 msgctxt "@action:inmenu menubar:edit"
 msgid "Reset All Model Transformations"
 msgstr "重置所有模型旋轉"
 
-#: resources/qml/Actions.qml:445
+#: resources/qml/Actions.qml:461
 msgctxt "@action:inmenu menubar:file"
 msgid "&Open File(s)..."
 msgstr "開啟檔案（&O）..."
 
-#: resources/qml/Actions.qml:455
+#: resources/qml/Actions.qml:471
 msgctxt "@action:inmenu menubar:file"
 msgid "&New Project..."
 msgstr "新建專案（&N）..."
 
-#: resources/qml/Actions.qml:462
+#: resources/qml/Actions.qml:478
 msgctxt "@action:inmenu menubar:help"
 msgid "Show Configuration Folder"
 msgstr "顯示設定資料夾"
 
-#: resources/qml/Actions.qml:469 resources/qml/Settings/SettingView.qml:476
+#: resources/qml/Actions.qml:485 resources/qml/Settings/SettingView.qml:476
 msgctxt "@action:menu"
 msgid "Configure setting visibility..."
 msgstr "參數顯示設定..."
@@ -5060,16 +5070,21 @@ msgid "Print Selected Model With:"
 msgid_plural "Print Selected Models With:"
 msgstr[0] "列印所選模型："
 
-#: resources/qml/Menus/ContextMenu.qml:92
+#: resources/qml/Menus/ContextMenu.qml:93
 msgctxt "@title:window"
 msgid "Multiply Selected Model"
 msgid_plural "Multiply Selected Models"
 msgstr[0] "複製所選模型"
 
-#: resources/qml/Menus/ContextMenu.qml:123
+#: resources/qml/Menus/ContextMenu.qml:128
 msgctxt "@label"
 msgid "Number of Copies"
 msgstr "複製個數"
+
+#: resources/qml/Menus/ContextMenu.qml:149
+msgctxt "@label"
+msgid "Lock Rotation"
+msgstr ""
 
 #: resources/qml/Menus/EditMenu.qml:12
 msgctxt "@title:menu menubar:toplevel"

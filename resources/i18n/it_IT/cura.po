@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-27 12:22+0000\n"
+"POT-Creation-Date: 2023-05-11 14:19+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,22 +23,22 @@ msgctxt "@info:title"
 msgid "Login failed"
 msgstr "Login non riuscito"
 
-#: cura/Arranging/ArrangeObjectsJob.py:25
+#: cura/Arranging/ArrangeObjectsJob.py:27
 msgctxt "@info:status"
 msgid "Finding new location for objects"
 msgstr "Ricerca nuova posizione per gli oggetti"
 
-#: cura/Arranging/ArrangeObjectsJob.py:29
+#: cura/Arranging/ArrangeObjectsJob.py:31
 msgctxt "@info:title"
 msgid "Finding Location"
 msgstr "Ricerca posizione"
 
-#: cura/Arranging/ArrangeObjectsJob.py:42 cura/MultiplyObjectsJob.py:99
+#: cura/Arranging/ArrangeObjectsJob.py:45 cura/MultiplyObjectsJob.py:101
 msgctxt "@info:status"
 msgid "Unable to find a location within the build volume for all objects"
 msgstr "Impossibile individuare una posizione nel volume di stampa per tutti gli oggetti"
 
-#: cura/Arranging/ArrangeObjectsJob.py:43
+#: cura/Arranging/ArrangeObjectsJob.py:46
 msgctxt "@info:title"
 msgid "Can't Find Location"
 msgstr "Impossibile individuare posizione"
@@ -265,25 +265,25 @@ msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be
 msgid "%(width).1f x %(depth).1f x %(height).1f mm"
 msgstr "%(width).1f x %(depth).1f x %(height).1f mm"
 
-#: cura/CuraApplication.py:1816
+#: cura/CuraApplication.py:1817
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Only one G-code file can be loaded at a time. Skipped importing {0}"
 msgstr "È possibile caricare un solo file codice G per volta. Importazione saltata {0}"
 
-#: cura/CuraApplication.py:1818 cura/OAuth2/AuthorizationService.py:217
+#: cura/CuraApplication.py:1819 cura/OAuth2/AuthorizationService.py:217
 #: plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:189
 msgctxt "@info:title"
 msgid "Warning"
 msgstr "Avvertenza"
 
-#: cura/CuraApplication.py:1828
+#: cura/CuraApplication.py:1829
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Can't open any other file if G-code is loading. Skipped importing {0}"
 msgstr "Impossibile aprire altri file durante il caricamento del codice G. Importazione saltata {0}"
 
-#: cura/CuraApplication.py:1830 cura/Settings/CuraContainerRegistry.py:156
+#: cura/CuraApplication.py:1831 cura/Settings/CuraContainerRegistry.py:156
 #: cura/Settings/CuraContainerRegistry.py:166
 #: plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:153
 #: plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:173
@@ -410,17 +410,17 @@ msgctxt "@info:status"
 msgid "Calculated"
 msgstr "Calcolato"
 
-#: cura/MultiplyObjectsJob.py:30
+#: cura/MultiplyObjectsJob.py:31
 msgctxt "@info:status"
 msgid "Multiplying and placing objects"
 msgstr "Moltiplicazione e collocazione degli oggetti"
 
-#: cura/MultiplyObjectsJob.py:32
+#: cura/MultiplyObjectsJob.py:33
 msgctxt "@info:title"
 msgid "Placing Objects"
 msgstr "Sistemazione oggetti"
 
-#: cura/MultiplyObjectsJob.py:100
+#: cura/MultiplyObjectsJob.py:102
 msgctxt "@info:title"
 msgid "Placing Object"
 msgstr "Sistemazione oggetto"
@@ -3678,17 +3678,17 @@ msgctxt "@action:button"
 msgid "Remove printers"
 msgstr "Rimuovere le stampanti"
 
-#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:62
+#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:63
 msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Print over network"
 msgstr "Stampa sulla rete"
 
-#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:63
+#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:64
 msgctxt "@properties:tooltip"
 msgid "Print over network"
 msgstr "Stampa sulla rete"
 
-#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:64
+#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:65
 msgctxt "@info:status"
 msgid "Connected over the network"
 msgstr "Collegato alla rete"
@@ -4230,227 +4230,237 @@ msgctxt "@button"
 msgid "Cancel"
 msgstr "Annulla"
 
-#: resources/qml/Actions.qml:81
+#: resources/qml/Actions.qml:83
 msgctxt "@action:inmenu"
 msgid "Show Online Troubleshooting"
 msgstr "Mostra ricerca e riparazione dei guasti online"
 
-#: resources/qml/Actions.qml:88
+#: resources/qml/Actions.qml:90
 msgctxt "@action:inmenu"
 msgid "Toggle Full Screen"
 msgstr "Attiva/disattiva schermo intero"
 
-#: resources/qml/Actions.qml:96
+#: resources/qml/Actions.qml:98
 msgctxt "@action:inmenu"
 msgid "Exit Full Screen"
 msgstr "Esci da schermo intero"
 
-#: resources/qml/Actions.qml:103
+#: resources/qml/Actions.qml:105
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Undo"
 msgstr "&Annulla"
 
-#: resources/qml/Actions.qml:113
+#: resources/qml/Actions.qml:115
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Redo"
 msgstr "Ri&peti"
 
-#: resources/qml/Actions.qml:131
+#: resources/qml/Actions.qml:133
 msgctxt "@action:inmenu menubar:file"
 msgid "&Quit"
 msgstr "&Esci"
 
-#: resources/qml/Actions.qml:139
+#: resources/qml/Actions.qml:141
 msgctxt "@action:inmenu menubar:view"
 msgid "3D View"
 msgstr "Visualizzazione 3D"
 
-#: resources/qml/Actions.qml:146
+#: resources/qml/Actions.qml:148
 msgctxt "@action:inmenu menubar:view"
 msgid "Front View"
 msgstr "Visualizzazione frontale"
 
-#: resources/qml/Actions.qml:153
+#: resources/qml/Actions.qml:155
 msgctxt "@action:inmenu menubar:view"
 msgid "Top View"
 msgstr "Visualizzazione superiore"
 
-#: resources/qml/Actions.qml:160
+#: resources/qml/Actions.qml:162
 msgctxt "@action:inmenu menubar:view"
 msgid "Bottom View"
 msgstr "Vista inferiore"
 
-#: resources/qml/Actions.qml:167
+#: resources/qml/Actions.qml:169
 msgctxt "@action:inmenu menubar:view"
 msgid "Left Side View"
 msgstr "Visualizzazione lato sinistro"
 
-#: resources/qml/Actions.qml:174
+#: resources/qml/Actions.qml:176
 msgctxt "@action:inmenu menubar:view"
 msgid "Right Side View"
 msgstr "Visualizzazione lato destro"
 
-#: resources/qml/Actions.qml:188
+#: resources/qml/Actions.qml:190
 msgctxt "@action:inmenu"
 msgid "Configure Cura..."
 msgstr "Configura Cura..."
 
-#: resources/qml/Actions.qml:197
+#: resources/qml/Actions.qml:199
 msgctxt "@action:inmenu menubar:printer"
 msgid "&Add Printer..."
 msgstr "&Aggiungi stampante..."
 
-#: resources/qml/Actions.qml:203
+#: resources/qml/Actions.qml:205
 msgctxt "@action:inmenu menubar:printer"
 msgid "Manage Pr&inters..."
 msgstr "Gestione stampanti..."
 
-#: resources/qml/Actions.qml:210
+#: resources/qml/Actions.qml:212
 msgctxt "@action:inmenu"
 msgid "Manage Materials..."
 msgstr "Gestione materiali..."
 
-#: resources/qml/Actions.qml:218
+#: resources/qml/Actions.qml:220
 msgctxt "@action:inmenu Marketplace is a brand name of UltiMaker's, so don't translate."
 msgid "Add more materials from Marketplace"
 msgstr "Aggiungere altri materiali da Marketplace"
 
-#: resources/qml/Actions.qml:225
+#: resources/qml/Actions.qml:227
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Update profile with current settings/overrides"
 msgstr "&Aggiorna il profilo con le impostazioni/esclusioni correnti"
 
-#: resources/qml/Actions.qml:233
+#: resources/qml/Actions.qml:235
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Discard current changes"
 msgstr "&Elimina le modifiche correnti"
 
-#: resources/qml/Actions.qml:245
+#: resources/qml/Actions.qml:247
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Create profile from current settings/overrides..."
 msgstr "&Crea profilo dalle impostazioni/esclusioni correnti..."
 
-#: resources/qml/Actions.qml:251
+#: resources/qml/Actions.qml:253
 msgctxt "@action:inmenu menubar:profile"
 msgid "Manage Profiles..."
 msgstr "Gestione profili..."
 
-#: resources/qml/Actions.qml:259
+#: resources/qml/Actions.qml:261
 msgctxt "@action:inmenu menubar:help"
 msgid "Show Online &Documentation"
 msgstr "Mostra documentazione &online"
 
-#: resources/qml/Actions.qml:267
+#: resources/qml/Actions.qml:269
 msgctxt "@action:inmenu menubar:help"
 msgid "Report a &Bug"
 msgstr "Se&gnala un errore"
 
-#: resources/qml/Actions.qml:275
+#: resources/qml/Actions.qml:277
 msgctxt "@action:inmenu menubar:help"
 msgid "What's New"
 msgstr "Scopri le novità"
 
-#: resources/qml/Actions.qml:289
+#: resources/qml/Actions.qml:291
 msgctxt "@action:inmenu menubar:help"
 msgid "About..."
 msgstr "Informazioni..."
 
-#: resources/qml/Actions.qml:296
+#: resources/qml/Actions.qml:298
 msgctxt "@action:inmenu menubar:edit"
 msgid "Delete Selected"
 msgstr "Cancella selezionati"
 
-#: resources/qml/Actions.qml:306
+#: resources/qml/Actions.qml:308
 msgctxt "@action:inmenu menubar:edit"
 msgid "Center Selected"
 msgstr "Centra selezionati"
 
-#: resources/qml/Actions.qml:315
+#: resources/qml/Actions.qml:317
 msgctxt "@action:inmenu menubar:edit"
 msgid "Multiply Selected"
 msgstr "Moltiplica selezionati"
 
-#: resources/qml/Actions.qml:324
+#: resources/qml/Actions.qml:326
 msgctxt "@action:inmenu"
 msgid "Delete Model"
 msgstr "Elimina modello"
 
-#: resources/qml/Actions.qml:332
+#: resources/qml/Actions.qml:334
 msgctxt "@action:inmenu"
 msgid "Ce&nter Model on Platform"
 msgstr "C&entra modello su piattaforma"
 
-#: resources/qml/Actions.qml:338
+#: resources/qml/Actions.qml:340
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Group Models"
 msgstr "&Raggruppa modelli"
 
-#: resources/qml/Actions.qml:358
+#: resources/qml/Actions.qml:360
 msgctxt "@action:inmenu menubar:edit"
 msgid "Ungroup Models"
 msgstr "Separa modelli"
 
-#: resources/qml/Actions.qml:368
+#: resources/qml/Actions.qml:370
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Merge Models"
 msgstr "&Unisci modelli"
 
-#: resources/qml/Actions.qml:378
+#: resources/qml/Actions.qml:380
 msgctxt "@action:inmenu"
 msgid "&Multiply Model..."
 msgstr "Mo&ltiplica modello..."
 
-#: resources/qml/Actions.qml:385
+#: resources/qml/Actions.qml:387
 msgctxt "@action:inmenu menubar:edit"
 msgid "Select All Models"
 msgstr "Seleziona tutti i modelli"
 
-#: resources/qml/Actions.qml:395
+#: resources/qml/Actions.qml:397
 msgctxt "@action:inmenu menubar:edit"
 msgid "Clear Build Plate"
 msgstr "Cancellare piano di stampa"
 
-#: resources/qml/Actions.qml:405
+#: resources/qml/Actions.qml:407
 msgctxt "@action:inmenu menubar:file"
 msgid "Reload All Models"
 msgstr "Ricarica tutti i modelli"
 
-#: resources/qml/Actions.qml:414
+#: resources/qml/Actions.qml:416
 msgctxt "@action:inmenu menubar:edit"
 msgid "Arrange All Models"
 msgstr "Sistema tutti i modelli"
 
-#: resources/qml/Actions.qml:422
+#: resources/qml/Actions.qml:424
+msgctxt "@action:inmenu menubar:edit"
+msgid "Arrange All Models Without Rotation"
+msgstr ""
+
+#: resources/qml/Actions.qml:431
 msgctxt "@action:inmenu menubar:edit"
 msgid "Arrange Selection"
 msgstr "Sistema selezione"
 
-#: resources/qml/Actions.qml:429
+#: resources/qml/Actions.qml:438
+msgctxt "@action:inmenu menubar:edit"
+msgid "Arrange Selection Without Rotation"
+msgstr ""
+
+#: resources/qml/Actions.qml:445
 msgctxt "@action:inmenu menubar:edit"
 msgid "Reset All Model Positions"
 msgstr "Reimposta tutte le posizioni dei modelli"
 
-#: resources/qml/Actions.qml:436
+#: resources/qml/Actions.qml:452
 msgctxt "@action:inmenu menubar:edit"
 msgid "Reset All Model Transformations"
 msgstr "Reimposta tutte le trasformazioni dei modelli"
 
-#: resources/qml/Actions.qml:445
+#: resources/qml/Actions.qml:461
 msgctxt "@action:inmenu menubar:file"
 msgid "&Open File(s)..."
 msgstr "&Apri file..."
 
-#: resources/qml/Actions.qml:455
+#: resources/qml/Actions.qml:471
 msgctxt "@action:inmenu menubar:file"
 msgid "&New Project..."
 msgstr "&Nuovo Progetto..."
 
-#: resources/qml/Actions.qml:462
+#: resources/qml/Actions.qml:478
 msgctxt "@action:inmenu menubar:help"
 msgid "Show Configuration Folder"
 msgstr "Mostra cartella di configurazione"
 
-#: resources/qml/Actions.qml:469 resources/qml/Settings/SettingView.qml:476
+#: resources/qml/Actions.qml:485 resources/qml/Settings/SettingView.qml:476
 msgctxt "@action:menu"
 msgid "Configure setting visibility..."
 msgstr "Configura visibilità delle impostazioni..."
@@ -5074,17 +5084,22 @@ msgid_plural "Print Selected Models With:"
 msgstr[0] "Stampa modello selezionato con:"
 msgstr[1] "Stampa modelli selezionati con:"
 
-#: resources/qml/Menus/ContextMenu.qml:92
+#: resources/qml/Menus/ContextMenu.qml:93
 msgctxt "@title:window"
 msgid "Multiply Selected Model"
 msgid_plural "Multiply Selected Models"
 msgstr[0] "Moltiplica modello selezionato"
 msgstr[1] "Moltiplica modelli selezionati"
 
-#: resources/qml/Menus/ContextMenu.qml:123
+#: resources/qml/Menus/ContextMenu.qml:128
 msgctxt "@label"
 msgid "Number of Copies"
 msgstr "Numero di copie"
+
+#: resources/qml/Menus/ContextMenu.qml:149
+msgctxt "@label"
+msgid "Lock Rotation"
+msgstr ""
 
 #: resources/qml/Menus/EditMenu.qml:12
 msgctxt "@title:menu menubar:toplevel"
