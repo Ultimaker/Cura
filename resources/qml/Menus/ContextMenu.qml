@@ -53,6 +53,7 @@ Cura.Menu
     Cura.MenuSeparator {}
     Cura.MenuItem { action: Cura.Actions.selectAll }
     Cura.MenuItem { action: Cura.Actions.arrangeAll }
+    Cura.MenuItem { action: Cura.Actions.arrangeAllLock }
     Cura.MenuItem { action: Cura.Actions.deleteAll }
     Cura.MenuItem { action: Cura.Actions.reloadAll }
     Cura.MenuItem { action: Cura.Actions.resetAllTranslation }
@@ -96,7 +97,7 @@ Cura.Menu
         minimumWidth: UM.Theme.getSize("small_popup_dialog").width
         minimumHeight: UM.Theme.getSize("small_popup_dialog").height
 
-        onAccepted: CuraActions.multiplySelection(copiesField.value)
+        onAccepted: CuraActions.multiplySelection(copiesField.value, lockRotationField.checked)
 
         buttonSpacing: UM.Theme.getSize("thin_margin").width
 
@@ -114,27 +115,38 @@ Cura.Menu
             }
         ]
 
-        Row
+        Column
         {
-            spacing: UM.Theme.getSize("default_margin").width
+            spacing: UM.Theme.getSize("default_margin").height
 
-            UM.Label
+            Row
             {
-                text: catalog.i18nc("@label", "Number of Copies")
-                anchors.verticalCenter: copiesField.verticalCenter
-                width: contentWidth
-                wrapMode: Text.NoWrap
+                spacing: UM.Theme.getSize("default_margin").width
+
+                UM.Label
+                {
+                    text: catalog.i18nc("@label", "Number of Copies")
+                    anchors.verticalCenter: copiesField.verticalCenter
+                    width: contentWidth
+                    wrapMode: Text.NoWrap
+                }
+
+                Cura.SpinBox
+                {
+                    id: copiesField
+                    editable: true
+                    focus: true
+                    from: 1
+                    to: 99
+                    width: 2 * UM.Theme.getSize("button").width
+                    value: 1
+                }
             }
 
-            Cura.SpinBox
+            UM.CheckBox
             {
-                id: copiesField
-                editable: true
-                focus: true
-                from: 1
-                to: 99
-                width: 2 * UM.Theme.getSize("button").width
-                value: 1
+                id: lockRotationField
+                text: catalog.i18nc("@label", "Lock Rotation")
             }
         }
     }

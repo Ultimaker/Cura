@@ -22,7 +22,13 @@ if TYPE_CHECKING:
     from cura.BuildVolume import BuildVolume
 
 
-def findNodePlacement(nodes_to_arrange: List["SceneNode"], build_volume: "BuildVolume", fixed_nodes: Optional[List["SceneNode"]] = None, factor = 10000) -> Tuple[bool, List[Item]]:
+def findNodePlacement(
+        nodes_to_arrange: List["SceneNode"],
+        build_volume: "BuildVolume",
+        fixed_nodes: Optional[List["SceneNode"]] = None,
+        factor: int = 10000,
+        lock_rotation: bool = False
+) -> Tuple[bool, List[Item]]:
     """
     Find placement for a set of scene nodes, but don't actually move them just yet.
     :param nodes_to_arrange: The list of nodes that need to be moved.
@@ -30,6 +36,7 @@ def findNodePlacement(nodes_to_arrange: List["SceneNode"], build_volume: "BuildV
     :param fixed_nodes: List of nods that should not be moved, but should be used when deciding where the others nodes
                         are placed.
     :param factor: The library that we use is int based. This factor defines how accurate we want it to be.
+    :param lock_rotation: If set to true the orientation of the object will remain the same
 
     :return: tuple (found_solution_for_all, node_items)
         WHERE
@@ -100,6 +107,8 @@ def findNodePlacement(nodes_to_arrange: List["SceneNode"], build_volume: "BuildV
     config = NfpConfig()
     config.accuracy = 1.0
     config.alignment = NfpConfig.Alignment.DONT_ALIGN
+    if lock_rotation:
+        config.rotations = [0.0]
 
     num_bins = nest(node_items, build_plate_bounding_box, spacing, config)
 
@@ -114,10 +123,12 @@ def findNodePlacement(nodes_to_arrange: List["SceneNode"], build_volume: "BuildV
 def createGroupOperationForArrange(nodes_to_arrange: List["SceneNode"],
                                    build_volume: "BuildVolume",
                                    fixed_nodes: Optional[List["SceneNode"]] = None,
-                                   factor = 10000,
-                                   add_new_nodes_in_scene: bool = False)  -> Tuple[GroupedOperation, int]:
+                                   factor: int = 10000,
+                                   add_new_nodes_in_scene: bool = False,
+                                   lock_rotation: bool = False) -> Tuple[GroupedOperation, int]:
     scene_root = Application.getInstance().getController().getScene().getRoot()
-    found_solution_for_all, node_items = findNodePlacement(nodes_to_arrange, build_volume, fixed_nodes, factor)
+    found_solution_for_all, node_items = findNodePlacement(nodes_to_arrange, build_volume, fixed_nodes, factor,
+                                                           lock_rotation)
 
     not_fit_count = 0
     grouped_operation = GroupedOperation()
@@ -141,11 +152,14 @@ def createGroupOperationForArrange(nodes_to_arrange: List["SceneNode"],
     return grouped_operation, not_fit_count
 
 
-def arrange(nodes_to_arrange: List["SceneNode"],
-            build_volume: "BuildVolume",
-            fixed_nodes: Optional[List["SceneNode"]] = None,
-            factor = 10000,
-            add_new_nodes_in_scene: bool = False) -> bool:
+def arrange(
+        nodes_to_arrange: List["SceneNode"],
+        build_volume: "BuildVolume",
+        fixed_nodes: Optional[List["SceneNode"]] = None,
+        factor=10000,
+        add_new_nodes_in_scene: bool = False,
+        lock_rotation: bool = False
+) -> bool:
     """
     Find placement for a set of scene nodes, and move them by using a single grouped operation.
     :param nodes_to_arrange: The list of nodes that need to be moved.
@@ -154,10 +168,12 @@ def arrange(nodes_to_arrange: List["SceneNode"],
                         are placed.
     :param factor: The library that we use is int based. This factor defines how accuracte we want it to be.
     :param add_new_nodes_in_scene: Whether to create new scene nodes before applying the transformations and rotations
+    :param lock_rotation: If set to true the orientation of the object will remain the same
 
     :return: found_solution_for_all: Whether the algorithm found a place on the buildplate for all the objects
     """
 
-    grouped_operation, not_fit_count = createGroupOperationForArrange(nodes_to_arrange, build_volume, fixed_nodes, factor, add_new_nodes_in_scene)
+    grouped_operation, not_fit_count = createGroupOperationForArrange(nodes_to_arrange, build_volume, fixed_nodes,
+                                                                      factor, add_new_nodes_in_scene, lock_rotation)
     grouped_operation.push()
     return not_fit_count == 0

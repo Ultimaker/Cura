@@ -75,19 +75,21 @@ class CuraActions(QObject):
                 center_y = 0
 
             # Move the object so that it's bottom is on to of the buildplate
-            center_operation = TranslateOperation(current_node, Vector(0, center_y, 0), set_position = True)
+            center_operation = TranslateOperation(current_node, Vector(0, center_y, 0), set_position=True)
             operation.addOperation(center_operation)
         operation.push()
 
-    @pyqtSlot(int)
-    def multiplySelection(self, count: int) -> None:
+    @pyqtSlot(int, bool)
+    def multiplySelection(self, count: int, lock_rotation: bool) -> None:
         """Multiply all objects in the selection
 
         :param count: The number of times to multiply the selection.
+        :param lock_rotation: If set to true the orientation of the object will remain the same
         """
 
         min_offset = cura.CuraApplication.CuraApplication.getInstance().getBuildVolume().getEdgeDisallowedSize() + 2  # Allow for some rounding errors
-        job = MultiplyObjectsJob(Selection.getAllSelectedObjects(), count, min_offset = max(min_offset, 8))
+        job = MultiplyObjectsJob(Selection.getAllSelectedObjects(), count, min_offset=max(min_offset, 8),
+                                 lock_rotation=lock_rotation)
         job.start()
 
     @pyqtSlot()
