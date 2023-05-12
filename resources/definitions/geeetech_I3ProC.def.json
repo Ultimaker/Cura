@@ -9,8 +9,7 @@
         {
             "0": "Geeetech_Dual_Extruder_0",
             "1": "Geeetech_Dual_Extruder_1"
-        },
-        "preferred_material": "Geeetech_PLA_Black"
+        }
     },
     "overrides":
     {

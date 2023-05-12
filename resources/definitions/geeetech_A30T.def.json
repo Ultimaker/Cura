@@ -10,8 +10,7 @@
             "0": "Geeetech_Multi_Extruder_0",
             "1": "Geeetech_Multi_Extruder_1",
             "2": "Geeetech_Multi_Extruder_2"
-        },
-        "preferred_material": "Geeetech_PLA_Blue"
+        }
     },
     "overrides":
     {
