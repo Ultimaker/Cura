@@ -423,6 +423,7 @@ Item
         id: arrangeAllLockAction
         text: catalog.i18nc("@action:inmenu menubar:edit","Arrange All Models Without Rotation")
         onTriggered: Printer.arrangeAll(true)
+        shortcut: "Shift+Ctrl+R"
     }
 
     Action
