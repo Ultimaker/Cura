@@ -112,6 +112,7 @@
         "skin_material_flow": { "value": "0.95 * material_flow" },
         "skin_material_flow_layer_0": { "value": "0.9 * material_flow_layer_0" },
         "skin_monotonic": { "value": "roofing_layer_count == 0" },
+        "skin_overlap": { "value": "20" },
         "speed_equalize_flow_width_factor": { "value": "110.0" },
         "speed_layer_0": { "value": "min(30, layer_height / layer_height_0 * speed_wall_0)" },
         "speed_slowdown_layers": { "value": 1 },
