@@ -36,7 +36,7 @@
         "bridge_wall_coast": { "value": 0 },
         "bridge_wall_material_flow": { "value": "wall_material_flow" },
         "bridge_wall_speed": { "value": "bridge_skin_speed" },
-        "brim_gap": {"value":  "-xy_offset_layer_0 + 0.05"},
+        "brim_gap": { "value": "-xy_offset_layer_0 + 0.05" },
         "cool_fan_speed_0": { "value": "cool_fan_speed_min" },
         "cool_fan_speed_max": { "value": "100" },
         "cool_min_layer_time": { "value": 6 },
