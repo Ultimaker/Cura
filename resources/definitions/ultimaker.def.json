@@ -45,6 +45,7 @@
         "gradual_support_infill_step_height": { "value": "4 * layer_height" },
         "gradual_support_infill_steps": { "value": "2 if support_interface_enable and support_structure != 'tree' else 0" },
         "infill_material_flow": { "value": "(1.95-infill_sparse_density / 100 if infill_sparse_density > 95 else 1) * material_flow" },
+        "infill_overlap": { "value": "0 if infill_sparse_density > 80 else 10" },
         "inset_direction": { "value": "'outside_in'" },
         "jerk_infill": { "minimum_value_warning": 20 },
         "jerk_prime_tower": { "minimum_value_warning": 20 },
