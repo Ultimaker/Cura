@@ -262,6 +262,8 @@ class CuraConan(ConanFile):
         self.options["pysavitar"].shared = True
         self.options["pynest2d"].shared = True
         self.options["cpython"].shared = True
+        if self._enterprise:
+            self.options["curaengine"].enable_plugins = False
 
     def validate(self):
         version = self.conf_info.get("user.cura:version", default = self.version, check_type = str)
