@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-27 12:22+0000\n"
+"POT-Creation-Date: 2023-05-19 09:22+0000\n"
 "PO-Revision-Date: 2022-07-15 10:53+0200\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: Finnish\n"
@@ -3650,17 +3650,17 @@ msgctxt "@action:button"
 msgid "Remove printers"
 msgstr ""
 
-#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:62
+#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:63
 msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Print over network"
 msgstr "Tulosta verkon kautta"
 
-#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:63
+#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:64
 msgctxt "@properties:tooltip"
 msgid "Print over network"
 msgstr "Tulosta verkon kautta"
 
-#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:64
+#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:65
 msgctxt "@info:status"
 msgid "Connected over the network"
 msgstr ""

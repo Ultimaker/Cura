@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-27 12:22+0000\n"
+"POT-Creation-Date: 2023-05-19 09:22+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3665,17 +3665,17 @@ msgctxt "@action:button"
 msgid "Remove printers"
 msgstr "프린터 제거"
 
-#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:62
+#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:63
 msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Print over network"
 msgstr "네트워크를 통해 프린팅"
 
-#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:63
+#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:64
 msgctxt "@properties:tooltip"
 msgid "Print over network"
 msgstr "네트워크를 통해 프린팅"
 
-#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:64
+#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:65
 msgctxt "@info:status"
 msgid "Connected over the network"
 msgstr "네트워크를 통해 연결됨"
