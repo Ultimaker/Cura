@@ -278,6 +278,7 @@ class CuraConan(ConanFile):
         self.requires("uranium/(latest)@ultimaker/testing")
         self.requires("cura_binary_data/(latest)@ultimaker/testing")
         self.requires("cpython/3.10.4")
+        self.requires("boost/1.81.0")
         if self.options.internal:
             self.requires("cura_private_data/(latest)@ultimaker/testing")
             self.requires("fdm_materials/(latest)@internal/testing")
