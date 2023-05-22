@@ -1,4 +1,4 @@
-# Copyright (c) 2021 Ultimaker B.V.
+# Copyright (c) 2023 Ultimaker B.V.
 # The PostProcessingPlugin is released under the terms of the AGPLv3 or higher.
 
 # Modification 06.09.2020
@@ -198,8 +198,8 @@ class FilamentChange(Script):
 
         if enable_before_macro:
             color_change = color_change + before_macro + "\n"
-        
-		color_change = color_change + "M600" # Left out the /n, some printers are not retracting correctly with the new line - CURA-10615
+
+        color_change = color_change + "M600" # Left out the /n, some printers are not retracting correctly with the new line - CURA-10615
 
         if not firmware_config:
             if initial_retract is not None and initial_retract > 0.:
