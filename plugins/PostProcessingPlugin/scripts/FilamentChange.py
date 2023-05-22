@@ -198,8 +198,8 @@ class FilamentChange(Script):
 
         if enable_before_macro:
             color_change = color_change + before_macro + "\n"
-
-        color_change = color_change + "M600\n"
+        
+		color_change = color_change + "M600" # Left out the /n, some printers are not retracting correctly with the new line - CURA-10615
 
         if not firmware_config:
             if initial_retract is not None and initial_retract > 0.:
