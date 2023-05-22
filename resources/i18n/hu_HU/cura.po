@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-27 12:22+0000\n"
+"POT-Creation-Date: 2023-05-22 08:55+0000\n"
 "PO-Revision-Date: 2020-03-24 09:36+0100\n"
 "Last-Translator: Nagy Attila <vokroot@gmail.com>\n"
 "Language-Team: ATI-SZOFT\n"
@@ -3666,17 +3666,17 @@ msgctxt "@action:button"
 msgid "Remove printers"
 msgstr ""
 
-#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:62
+#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:63
 msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Print over network"
 msgstr "Hálózati nyomtatás"
 
-#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:63
+#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:64
 msgctxt "@properties:tooltip"
 msgid "Print over network"
 msgstr "Hálózati nyomtatás"
 
-#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:64
+#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:65
 msgctxt "@info:status"
 msgid "Connected over the network"
 msgstr "Csatlakozva hálózaton keresztül"
