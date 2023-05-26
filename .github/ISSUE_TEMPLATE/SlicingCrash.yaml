@@ -46,13 +46,13 @@ body:
     required: true
 - type: input
   attributes:
-    label: Name any abnormal settings
+    label: Name abnormal settings
     description: Are there any settings that you might have changed that caused the crash? Does your model slice when you select the default profiles?
     placeholder:
   validations:
 - type: input
   attributes:
-    label: Describe the location of your model on the buildplate
+    label: Describe model location
     description: Does your model slice if you rotate the model 90 degrees or if you move it away from the center of the buildplate? 
     placeholder:
   validations:
