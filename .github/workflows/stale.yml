@@ -15,7 +15,7 @@ jobs:
           exempt-issue-labels: 'Status: Triage,Developer Environment :computer:,Status: On Backlog,PR: Community Contribution :crown:,PR: Printer Definitions :factory:,PR: Translations :books:'
           stale-issue-label: 'Status: Stale :hourglass:'
           labels-to-add-when-unstale: 'Status: Triage'
-          only-labels: "Type: Bug,Status: Deferred,Status: Won't Fix/Do"
+          only-labels: "Type: Bug,Status: Deferred"
           stale-issue-message: |
            Hi 👋, 
            We are cleaning our list of issues to improve our focus. 
