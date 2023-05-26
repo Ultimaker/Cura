@@ -1,0 +1,36 @@
+name: 'Close stale issues and PRs'
+on:
+  schedule:
+    - cron: '* */12 * * *'
+
+    
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/stale@v8
+        with:
+          days-before-pr-close: -1 
+          days-before-stale: 365
+          days-before-close: 14
+          exempt-issue-labels: 'Status: Triage,Developer Environment :computer:,Status: On Backlog,PR: Community Contribution :crown:,PR: Printer Definitions :factory:,PR: Translations :books:'
+          stale-issue-label: 'Status: Stale :hourglass:'
+          labels-to-add-when-unstale: 'Status: Triage'
+          only-labels: "Type: Bug,Status: Deferred,Status: Won't Fix/Do"
+          stale-issue-message: |
+           Hi 👋, 
+           We are cleaning our list of issues to improve our focus. 
+           This bug seems to be older than a year, which is at least three major Cura releases ago. 
+           It also received the label Deferred indicating that we did not have time to work on it back then and haven't found time to work on it since. 
+           
+           If this is still a problem for you in the current version of Cura, can you please leave a comment? 
+           We will have a fresh set of eyes to look at it. 
+
+           If it is not a problem anymore, you don't have to do anything, and this issue will be automatically closed in 14 days.
+          close-issue-message: |
+           This issue was closed because it has been inactive for 14 days since being marked as stale. 
+           If you encounter this issue and still experience this to be a problem, you are welcome to make a fresh new issue with an updated description and screenshots.
+permissions:
+  contents: write # only for delete-branch option
+  issues: write
+  pull-requests: write
