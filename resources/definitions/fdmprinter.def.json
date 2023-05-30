@@ -3065,6 +3065,16 @@
                     "enabled": "extruders_enabled_count > 1 and machine_nozzle_temp_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
+                },
+                "material_is_support_material":
+                {
+                    "label": "Is support material",
+                    "description": "Is this material typically used as a support material during printing.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": false,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 }
             }
         },
@@ -4478,7 +4488,7 @@
                     "description": "The extruder train to use for printing the support. This is used in multi-extrusion.",
                     "type": "extruder",
                     "default_value": "0",
-                    "value": "int(defaultExtruderPosition())",
+                    "value": "[*map(lamda x: str(x).lower() == 'true', (extruderValues('support_enable') and extruderValues('material_is_support_material')))].index(True) if any([*map(lamda x: str(x).lower() == 'true', (extruderValues('support_enable') and extruderValues('material_is_support_material')))]) else int(defaultExtruderPosition())",
                     "enabled": "(support_enable or support_meshes_present) and extruders_enabled_count > 1",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
