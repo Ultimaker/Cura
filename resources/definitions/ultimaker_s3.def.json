@@ -61,6 +61,7 @@
         "acceleration_wall": { "value": "math.ceil(acceleration_print * 1500 / 3500)" },
         "acceleration_wall_0": { "value": "math.ceil(acceleration_wall * 1000 / 1000)" },
         "brim_width": { "value": "3" },
+        "brim_gap": {"value": "-xy_offset_layer_0 + 0.05"},
         "cool_fan_speed": { "value": "50" },
         "default_material_print_temperature": { "value": "200" },
         "extruder_prime_pos_abs": { "default_value": true },
