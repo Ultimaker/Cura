@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Ultimaker B.V.
+// Copyright (c) 2023 UltiMaker
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.15
@@ -69,6 +69,8 @@ Item
         const initialSection = "Ultimaker B.V.";
         base.currentSections.add(initialSection);
         updateCurrentItemUponSectionChange(initialSection);
+        // Trigger update on base.currentSections
+        base.currentSections = base.currentSections;
     }
 
     Row
