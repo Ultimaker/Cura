@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-15 14:32+0000\n"
+"POT-Creation-Date: 2023-06-02 11:57+0000\n"
 "PO-Revision-Date: 2023-02-16 20:28+0100\n"
 "Last-Translator: Miroslav Šustek <sustmidown@centrum.cz>\n"
 "Language-Team: DenyCZ <www.github.com/DenyCZ>\n"
@@ -5083,7 +5083,7 @@ msgstr[0] "Tisknout vybraný model pomocí:"
 msgstr[1] "Tisknout vybrané modely pomocí:"
 msgstr[2] "Tisknout vybrané modely pomocí:"
 
-#: resources/qml/Menus/ContextMenu.qml:92
+#: resources/qml/Menus/ContextMenu.qml:103
 msgctxt "@title:window"
 msgid "Multiply Selected Model"
 msgid_plural "Multiply Selected Models"
@@ -5091,7 +5091,7 @@ msgstr[0] "Násobit vybraný model"
 msgstr[1] "Násobit vybrané modele"
 msgstr[2] "Násobit vybrané modele"
 
-#: resources/qml/Menus/ContextMenu.qml:123
+#: resources/qml/Menus/ContextMenu.qml:134
 msgctxt "@label"
 msgid "Number of Copies"
 msgstr "Počet kopií"
@@ -6716,22 +6716,22 @@ msgctxt "@button"
 msgid "Add printer manually"
 msgstr "Přidat tiskárnu manuálně"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:212
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:214
 msgctxt "@label"
 msgid "Manufacturer"
 msgstr "Výrobce"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:223
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:225
 msgctxt "@label"
 msgid "Profile author"
 msgstr "Autor profilu"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:235
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:237
 msgctxt "@label"
 msgid "Printer name"
 msgstr "Název tiskárny"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:241
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:243
 msgctxt "@text"
 msgid "Please name your printer"
 msgstr "Pojmenujte prosím svou tiskárnu"
