@@ -16,7 +16,7 @@
     },
     "overrides":
     {
-        "acceleration_enabled": { "value": false },
+        
         "acceleration_print": { "value": 300 },
         "acceleration_travel": { "value": 300 },
         "adhesion_type": { "default_value": "none" },
