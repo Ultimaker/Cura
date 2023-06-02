@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-06 15:55+0000\n"
+"POT-Creation-Date: 2023-06-02 11:57+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -430,22 +430,22 @@ msgctxt "@message"
 msgid "Could not read response."
 msgstr "応答を読み取れません。"
 
-#: cura/OAuth2/AuthorizationRequestHandler.py:75
+#: cura/OAuth2/AuthorizationRequestHandler.py:77
 msgctxt "@message"
 msgid "The provided state is not correct."
 msgstr "指定された状態が正しくありません。"
 
-#: cura/OAuth2/AuthorizationRequestHandler.py:80
+#: cura/OAuth2/AuthorizationRequestHandler.py:83
 msgctxt "@message"
 msgid "Timeout when authenticating with the account server."
 msgstr "アカウントサーバーでの認証中にタイムアウトしました。"
 
-#: cura/OAuth2/AuthorizationRequestHandler.py:97
+#: cura/OAuth2/AuthorizationRequestHandler.py:101
 msgctxt "@message"
 msgid "Please give the required permissions when authorizing this application."
 msgstr "このアプリケーションの許可において必要な権限を与えてください。"
 
-#: cura/OAuth2/AuthorizationRequestHandler.py:104
+#: cura/OAuth2/AuthorizationRequestHandler.py:109
 msgctxt "@message"
 msgid "Something unexpected happened when trying to log in, please try again."
 msgstr "ログイン時に予期しないエラーが発生しました。やり直してください。"
@@ -829,7 +829,7 @@ msgstr "プロジェクトファイルを開く"
 #: plugins/3MFReader/WorkspaceDialog.qml:134
 msgctxt "@button"
 msgid "Create new"
-msgstr ""
+msgstr "新しいものを作成する"
 
 #: plugins/3MFReader/ThreeMFWorkspaceReader.py:692
 #, python-brace-format
@@ -925,7 +925,7 @@ msgstr "プリンターグループ"
 #: plugins/3MFReader/WorkspaceDialog.qml:103
 msgctxt "@action:label"
 msgid "Open With"
-msgstr ""
+msgstr "開く"
 
 #: plugins/3MFReader/WorkspaceDialog.qml:104
 msgctxt "@info:tooltip"
@@ -3666,17 +3666,17 @@ msgctxt "@action:button"
 msgid "Remove printers"
 msgstr "プリンターを取り除く"
 
-#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:62
+#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:63
 msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Print over network"
 msgstr "ネットワーク上のプリント"
 
-#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:63
+#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:64
 msgctxt "@properties:tooltip"
 msgid "Print over network"
 msgstr "ネットワークのプリント"
 
-#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:64
+#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:65
 msgctxt "@info:status"
 msgid "Connected over the network"
 msgstr "ネットワーク上で接続"
@@ -4593,17 +4593,17 @@ msgstr "新情報"
 #: resources/qml/Cura.qml:890
 msgctxt "@title:window"
 msgid "Save Custom Profile"
-msgstr ""
+msgstr "カスタムプロファイルを保存"
 
 #: resources/qml/Cura.qml:891
 msgctxt "@textfield:placeholder"
 msgid "New Custom Profile"
-msgstr ""
+msgstr "新しいカスタムプロファイル"
 
 #: resources/qml/Cura.qml:892
 msgctxt "@info"
 msgid "Custom profile name:"
-msgstr ""
+msgstr "カスタムプロファイル名："
 
 #: resources/qml/Cura.qml:909
 msgctxt "@label %i will be replaced with a profile name"
@@ -4618,7 +4618,7 @@ msgstr "Curaのプリントプロファイルについて詳しくはこちら"
 #: resources/qml/Cura.qml:926
 msgctxt "@button"
 msgid "Save new profile"
-msgstr ""
+msgstr "新しいプロファイルを保存"
 
 #: resources/qml/Dialogs/AboutDialog.qml:15
 msgctxt "@title:window The argument is the application name."
@@ -4907,12 +4907,12 @@ msgstr "変更を維持"
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:171
 msgctxt "@action:button"
 msgid "Save as new custom profile"
-msgstr ""
+msgstr "新しいカスタムプロファイルとして保存"
 
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:178
 msgctxt "@action:button"
 msgid "Save changes"
-msgstr ""
+msgstr "変更を保存"
 
 #: resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:47
 msgctxt "@text:window"
@@ -5061,13 +5061,13 @@ msgid "Print Selected Model With:"
 msgid_plural "Print Selected Models With:"
 msgstr[0] "選択したモデルで印刷:"
 
-#: resources/qml/Menus/ContextMenu.qml:92
+#: resources/qml/Menus/ContextMenu.qml:103
 msgctxt "@title:window"
 msgid "Multiply Selected Model"
 msgid_plural "Multiply Selected Models"
 msgstr[0] "選択した複数のモデル"
 
-#: resources/qml/Menus/ContextMenu.qml:123
+#: resources/qml/Menus/ContextMenu.qml:134
 msgctxt "@label"
 msgid "Number of Copies"
 msgstr "コピーの数"
@@ -6227,7 +6227,7 @@ msgstr "ブリムまたはラフトのプリントの有効化。それぞれ、
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:102
 msgctxt "@label"
 msgid "Recommended print settings"
-msgstr ""
+msgstr "推奨される印刷設定"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:111
 msgctxt "@button"
@@ -6252,7 +6252,7 @@ msgstr "次の設定では、部材の強度を定義します。"
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:34
 msgctxt "infill_sparse_density description"
 msgid "Infill Density"
-msgstr ""
+msgstr "インフィル密度"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:35
 msgctxt "@label"
@@ -6286,7 +6286,7 @@ msgstr ""
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:67
 msgctxt "@action:label"
 msgid "Shell Thickness"
-msgstr ""
+msgstr "シェルの厚さ"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:68
 msgctxt "@label"
@@ -6306,7 +6306,7 @@ msgstr "オーバーハングがあるモデルにサポートを生成します
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:40
 msgctxt "@action:label"
 msgid "Support Type"
-msgstr ""
+msgstr "サポートタイプ"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:41
 msgctxt "@label"
@@ -6321,7 +6321,7 @@ msgstr "サポートを生成するために利用できる技術を選択しま
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:53
 msgctxt "@action:label"
 msgid "Print with"
-msgstr ""
+msgstr "印刷する"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:54
 msgctxt "@label"
@@ -6677,22 +6677,22 @@ msgctxt "@button"
 msgid "Add printer manually"
 msgstr "プリンタを手動で追加する"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:203
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:214
 msgctxt "@label"
 msgid "Manufacturer"
 msgstr "製造元"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:214
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:225
 msgctxt "@label"
 msgid "Profile author"
 msgstr "プロファイル作成者"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:226
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:237
 msgctxt "@label"
 msgid "Printer name"
 msgstr "プリンター名"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:232
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:243
 msgctxt "@text"
 msgid "Please name your printer"
 msgstr "プリンターに名前を付けてください"
@@ -6771,12 +6771,12 @@ msgstr "非ネットワークプリンターの追加"
 #: resources/qml/WelcomePages/AddThirdPartyPrinter.qml:102
 msgctxt "@button"
 msgid "Add UltiMaker printer via Digital Factory"
-msgstr ""
+msgstr "Digital FactoryでUltiMakerプリンターを追加する"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:29
 msgctxt "@label"
 msgid "In order to start using Cura you will need to configure a printer."
-msgstr ""
+msgstr "Curaの使用を開始するには、プリンターを設定する必要があります。"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:36
 msgctxt "@label"
@@ -6786,12 +6786,12 @@ msgstr "どのプリンターをセットアップしますか？"
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:55
 msgctxt "@button"
 msgid "UltiMaker printer"
-msgstr ""
+msgstr "UltiMakerプリンター"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:64
 msgctxt "@button"
 msgid "Non UltiMaker printer"
-msgstr ""
+msgstr "非UltiMakerプリンター"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:73
 msgctxt "@button"
@@ -6801,12 +6801,12 @@ msgstr "Curaへのプリンターの追加方法はこちら"
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinterStack.qml:29
 msgctxt "@label"
 msgid "Add printer"
-msgstr ""
+msgstr "プリンターの追加"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:33
 msgctxt "@label"
 msgid "New UltiMaker printers can be connected to Digital Factory and monitored remotely."
-msgstr ""
+msgstr "新しいUltiMakerプリンターは、Digital Factoryに接続してリモートで監視できます。"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:70
 msgctxt "@label"
@@ -6836,17 +6836,17 @@ msgstr "詳しく見る"
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:121
 msgctxt "@button"
 msgid "Add local printer"
-msgstr ""
+msgstr "ローカルプリンターの追加"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:129
 msgctxt "@button"
 msgid "Sign in to Digital Factory"
-msgstr ""
+msgstr "Digital Factoryにサインイン"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:133
 msgctxt "@button"
 msgid "Waiting for new printers"
-msgstr ""
+msgstr "新しいプリンターのため待機中"
 
 #: resources/qml/WelcomePages/ChangelogContent.qml:24
 msgctxt "@label"

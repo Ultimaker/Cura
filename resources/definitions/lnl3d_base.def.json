@@ -65,7 +65,7 @@
         "meshfix_maximum_resolution": { "value": "0.25" },
         "meshfix_maximum_travel_resolution": { "value": "meshfix_maximum_resolution" },
         "minimum_interface_area": { "value": 10 },
-        "minimum_support_area": { "value": 2 },
+        "minimum_support_area": { "value": "2 if support_structure == 'normal' else 0" },
         "optimize_wall_printing_order": { "value": "True" },
         "prime_tower_brim_enable": { "default_value": true },
         "prime_tower_wipe_enabled": { "default_value": false },

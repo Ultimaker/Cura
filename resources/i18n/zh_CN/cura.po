@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-06 15:55+0000\n"
+"POT-Creation-Date: 2023-06-02 11:57+0000\n"
 "PO-Revision-Date: 2022-07-15 11:06+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -430,22 +430,22 @@ msgctxt "@message"
 msgid "Could not read response."
 msgstr "无法读取响应。"
 
-#: cura/OAuth2/AuthorizationRequestHandler.py:75
+#: cura/OAuth2/AuthorizationRequestHandler.py:77
 msgctxt "@message"
 msgid "The provided state is not correct."
 msgstr "所提供的状态不正确。"
 
-#: cura/OAuth2/AuthorizationRequestHandler.py:80
+#: cura/OAuth2/AuthorizationRequestHandler.py:83
 msgctxt "@message"
 msgid "Timeout when authenticating with the account server."
 msgstr "使用帐户服务器进行身份验证超时。"
 
-#: cura/OAuth2/AuthorizationRequestHandler.py:97
+#: cura/OAuth2/AuthorizationRequestHandler.py:101
 msgctxt "@message"
 msgid "Please give the required permissions when authorizing this application."
 msgstr "在授权此应用程序时，须提供所需权限。"
 
-#: cura/OAuth2/AuthorizationRequestHandler.py:104
+#: cura/OAuth2/AuthorizationRequestHandler.py:109
 msgctxt "@message"
 msgid "Something unexpected happened when trying to log in, please try again."
 msgstr "尝试登录时出现意外情况，请重试。"
@@ -925,7 +925,7 @@ msgstr "打印机组"
 #: plugins/3MFReader/WorkspaceDialog.qml:103
 msgctxt "@action:label"
 msgid "Open With"
-msgstr ""
+msgstr "打开方式"
 
 #: plugins/3MFReader/WorkspaceDialog.qml:104
 msgctxt "@info:tooltip"
@@ -3667,17 +3667,17 @@ msgctxt "@action:button"
 msgid "Remove printers"
 msgstr "删除打印机"
 
-#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:62
+#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:63
 msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Print over network"
 msgstr "通过网络打印"
 
-#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:63
+#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:64
 msgctxt "@properties:tooltip"
 msgid "Print over network"
 msgstr "通过网络打印"
 
-#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:64
+#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:65
 msgctxt "@info:status"
 msgid "Connected over the network"
 msgstr "已通过网络连接"
@@ -4594,17 +4594,17 @@ msgstr "新增功能"
 #: resources/qml/Cura.qml:890
 msgctxt "@title:window"
 msgid "Save Custom Profile"
-msgstr ""
+msgstr "保存自定义配置文件"
 
 #: resources/qml/Cura.qml:891
 msgctxt "@textfield:placeholder"
 msgid "New Custom Profile"
-msgstr ""
+msgstr "新建自定义配置文件"
 
 #: resources/qml/Cura.qml:892
 msgctxt "@info"
 msgid "Custom profile name:"
-msgstr ""
+msgstr "自定义配置文件名称："
 
 #: resources/qml/Cura.qml:909
 msgctxt "@label %i will be replaced with a profile name"
@@ -4619,7 +4619,7 @@ msgstr "了解有关 Cura 打印配置文件的更多信息"
 #: resources/qml/Cura.qml:926
 msgctxt "@button"
 msgid "Save new profile"
-msgstr ""
+msgstr "保存新配置文件"
 
 #: resources/qml/Dialogs/AboutDialog.qml:15
 msgctxt "@title:window The argument is the application name."
@@ -4908,12 +4908,12 @@ msgstr "保留更改"
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:171
 msgctxt "@action:button"
 msgid "Save as new custom profile"
-msgstr ""
+msgstr "另存为新自定义配置文件"
 
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:178
 msgctxt "@action:button"
 msgid "Save changes"
-msgstr ""
+msgstr "保存更改"
 
 #: resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:47
 msgctxt "@text:window"
@@ -5062,13 +5062,13 @@ msgid "Print Selected Model With:"
 msgid_plural "Print Selected Models With:"
 msgstr[0] "打印所选模型："
 
-#: resources/qml/Menus/ContextMenu.qml:92
+#: resources/qml/Menus/ContextMenu.qml:103
 msgctxt "@title:window"
 msgid "Multiply Selected Model"
 msgid_plural "Multiply Selected Models"
 msgstr[0] "复制所选模型"
 
-#: resources/qml/Menus/ContextMenu.qml:123
+#: resources/qml/Menus/ContextMenu.qml:134
 msgctxt "@label"
 msgid "Number of Copies"
 msgstr "复制个数"
@@ -6204,7 +6204,7 @@ msgstr "建议的设置（适用于 <b>%1</b>）已更改。"
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:106
 msgctxt "@info %1 is the name of a profile"
 msgid "Some setting-values defined in <b>%1</b> were overridden."
-msgstr "当前配置文件的一些设置已经重写。"
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:137
 msgctxt "@info"
@@ -6229,7 +6229,7 @@ msgstr "允许打印 Brim 或 Raft。这将在您的对象周围或下方添加�
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:102
 msgctxt "@label"
 msgid "Recommended print settings"
-msgstr ""
+msgstr "建议的打印设置"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:111
 msgctxt "@button"
@@ -6254,7 +6254,7 @@ msgstr "以下设置定义零件的强度。"
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:34
 msgctxt "infill_sparse_density description"
 msgid "Infill Density"
-msgstr ""
+msgstr "填充密度"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:35
 msgctxt "@label"
@@ -6264,7 +6264,7 @@ msgstr "调整打印填充的密度。"
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:54
 msgctxt "@action:label"
 msgid "Infill Pattern"
-msgstr ""
+msgstr "填充图案"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:56
 msgctxt "@label"
@@ -6288,7 +6288,7 @@ msgstr ""
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:67
 msgctxt "@action:label"
 msgid "Shell Thickness"
-msgstr ""
+msgstr "外壳厚度"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:68
 msgctxt "@label"
@@ -6308,7 +6308,7 @@ msgstr "在模型的悬垂（Overhangs）部分生成支撑结构。若不这样
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:40
 msgctxt "@action:label"
 msgid "Support Type"
-msgstr ""
+msgstr "支撑类型"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:41
 msgctxt "@label"
@@ -6323,7 +6323,7 @@ msgstr "在可用于产生支撑的方法之间进行选择。“普通”支撑
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:53
 msgctxt "@action:label"
 msgid "Print with"
-msgstr ""
+msgstr "打印方式"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:54
 msgctxt "@label"
@@ -6682,22 +6682,22 @@ msgctxt "@button"
 msgid "Add printer manually"
 msgstr "手动添加打印机"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:203
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:214
 msgctxt "@label"
 msgid "Manufacturer"
 msgstr "制造商"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:214
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:225
 msgctxt "@label"
 msgid "Profile author"
 msgstr "配置文件作者"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:226
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:237
 msgctxt "@label"
 msgid "Printer name"
 msgstr "打印机名称"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:232
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:243
 msgctxt "@text"
 msgid "Please name your printer"
 msgstr "请为您的打印机命名"
@@ -6776,12 +6776,12 @@ msgstr "添加未联网打印机"
 #: resources/qml/WelcomePages/AddThirdPartyPrinter.qml:102
 msgctxt "@button"
 msgid "Add UltiMaker printer via Digital Factory"
-msgstr ""
+msgstr "通过 Digital Factory 添加 UltiMaker 打印机"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:29
 msgctxt "@label"
 msgid "In order to start using Cura you will need to configure a printer."
-msgstr ""
+msgstr "要开始使用 Cura，您需要配置一台打印机。"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:36
 msgctxt "@label"
@@ -6791,12 +6791,12 @@ msgstr "您要设置什么打印机？"
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:55
 msgctxt "@button"
 msgid "UltiMaker printer"
-msgstr ""
+msgstr "UltiMaker 打印机"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:64
 msgctxt "@button"
 msgid "Non UltiMaker printer"
-msgstr ""
+msgstr "非 UltiMaker 打印机"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:73
 msgctxt "@button"
@@ -6811,7 +6811,7 @@ msgstr "添加打印机"
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:33
 msgctxt "@label"
 msgid "New UltiMaker printers can be connected to Digital Factory and monitored remotely."
-msgstr ""
+msgstr "新的 UltiMaker 打印机可连接到 Digital Factory，用户可对其进行远程监控。"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:70
 msgctxt "@label"
@@ -6841,17 +6841,17 @@ msgstr "详细了解"
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:121
 msgctxt "@button"
 msgid "Add local printer"
-msgstr ""
+msgstr "添加本地打印机"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:129
 msgctxt "@button"
 msgid "Sign in to Digital Factory"
-msgstr ""
+msgstr "登录 Digital Factory"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:133
 msgctxt "@button"
 msgid "Waiting for new printers"
-msgstr ""
+msgstr "等待新打印机"
 
 #: resources/qml/WelcomePages/ChangelogContent.qml:24
 msgctxt "@label"
