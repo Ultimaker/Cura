@@ -4488,7 +4488,7 @@
                     "description": "The extruder train to use for printing the support. This is used in multi-extrusion.",
                     "type": "extruder",
                     "default_value": "0",
-                    "value": "[*map(lamda x: str(x).lower() == 'true', (extruderValues('support_enable') and extruderValues('material_is_support_material')))].index(True) if any([*map(lamda x: str(x).lower() == 'true', (extruderValues('support_enable') and extruderValues('material_is_support_material')))]) else int(defaultExtruderPosition())",
+                    "value": "int(defaultExtruderPosition())",
                     "enabled": "(support_enable or support_meshes_present) and extruders_enabled_count > 1",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
