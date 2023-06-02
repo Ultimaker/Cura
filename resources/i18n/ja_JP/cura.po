@@ -58,22 +58,22 @@ msgstr "バックアップ"
 #: cura/Backups/Backup.py:134
 msgctxt "@info:backup_failed"
 msgid "Tried to restore a Cura backup without having proper data or meta data."
-msgstr "適切なデータまたはメタデータがないのにCuraバックアップをリストアしようとしました。"
+msgstr "適切なデータまたはメタデータなしでCuraバックアップを復元しようとしました。"
 
 #: cura/Backups/Backup.py:145
 msgctxt "@info:backup_failed"
 msgid "Tried to restore a Cura backup that is higher than the current version."
-msgstr "現行バージョンより上の Cura バックアップをリストアしようとしました。"
+msgstr "現在のバージョンより上のCuraバックアップを復元しようとしました。"
 
 #: cura/Backups/Backup.py:158
 msgctxt "@info:backup_failed"
 msgid "The following error occurred while trying to restore a Cura backup:"
-msgstr "Curaのバックアップのリストア中に次のエラーが発生しました："
+msgstr "Curaのバックアップの復元中に次のエラーが発生しました："
 
 #: cura/BuildVolume.py:100
 msgctxt "@info:status"
 msgid "The build volume height has been reduced due to the value of the \"Print Sequence\" setting to prevent the gantry from colliding with printed models."
-msgstr "プリントシークエンス設定値により、ガントリーと造形物の衝突を避けるため印刷データの高さを低くしました。"
+msgstr "\"印刷シーケンス\"設定値により、ガントリーと造形物の衝突を避けるため印刷データの高さを低くしました。"
 
 #: cura/BuildVolume.py:103
 msgctxt "@info:title"
@@ -94,26 +94,26 @@ msgid ""
 "                    <p>Please send us this Crash Report to fix the problem.</p>\n"
 "                "
 msgstr ""
-"<p><b>申し訳ありません。UltiMaker Cura で何らかの不具合が生じています。</p></b>\n"
+"<p><b>申し訳ありません。UltiMaker Curaで何らかの不具合が生じました。</p></b>\n"
 "                    <p>開始時に回復不能のエラーが発生しました。不適切なファイル設定が原因の可能性があります。バックアップを実行してからリセットしてください。</p>\n"
-"                    <p>バックアップは、設定フォルダに保存されます。</p>\n"
-"                    <p>問題解決のために、このクラッシュ報告をお送りください。</p>\n"
+"                    <p>バックアップは設定フォルダに保存されます。</p>\n"
+"                    <p>問題解決のためにこのクラッシュレポートをお送りください。</p>\n"
 "                "
 
 #: cura/CrashHandler.py:122
 msgctxt "@action:button"
 msgid "Send crash report to UltiMaker"
-msgstr "クラッシュ報告をUltiMakerに送信する"
+msgstr "クラッシュレポートをUltiMakerに送信"
 
 #: cura/CrashHandler.py:125
 msgctxt "@action:button"
 msgid "Show detailed crash report"
-msgstr "詳しいクラッシュ報告を表示する"
+msgstr "詳しいクラッシュレポートを表示"
 
 #: cura/CrashHandler.py:129
 msgctxt "@action:button"
 msgid "Show configuration folder"
-msgstr "コンフィグレーションのフォルダーを表示する"
+msgstr "コンフィグレーションのフォルダーを表示"
 
 #: cura/CrashHandler.py:140
 msgctxt "@action:button"
@@ -123,7 +123,7 @@ msgstr "バックアップとリセットの設定"
 #: cura/CrashHandler.py:171
 msgctxt "@title:window"
 msgid "Crash Report"
-msgstr "クラッシュ報告"
+msgstr "クラッシュレポート"
 
 #: cura/CrashHandler.py:190
 msgctxt "@label crash message"
@@ -133,7 +133,7 @@ msgid ""
 "        "
 msgstr ""
 "<p><b>致命的なエラーが発生しました。問題解決のためこのクラッシュレポートを送信してください</p></b>\n"
-"            <p>「レポート送信」ボタンを使用してバグレポートが自動的に当社サーバーに送られるようにしてください</p>\n"
+"            <p>バグレポートを自動的にサーバーへ送信するには「レポートを送信」ボタンを使用して下さい</p>\n"
 "        "
 
 #: cura/CrashHandler.py:198
@@ -207,7 +207,7 @@ msgstr "<li>OpenGLレンダラー: {renderer}</li>"
 #: cura/CrashHandler.py:304
 msgctxt "@title:groupbox"
 msgid "Error traceback"
-msgstr "エラー・トレースバック"
+msgstr "エラートレースバック"
 
 #: cura/CrashHandler.py:390
 msgctxt "@title:groupbox"
@@ -217,7 +217,7 @@ msgstr "ログ"
 #: cura/CrashHandler.py:418
 msgctxt "@action:button"
 msgid "Send report"
-msgstr "レポート送信"
+msgstr "レポートを送信"
 
 #: cura/CuraApplication.py:540
 msgctxt "@info:progress"
@@ -299,7 +299,7 @@ msgstr "不明"
 #: cura/Machines/Models/DiscoveredPrintersModel.py:113
 msgctxt "@label"
 msgid "The printer(s) below cannot be connected because they are part of a group"
-msgstr "下のプリンターはグループの一員であるため接続できません"
+msgstr "下のプリンターはグループの一部であるため接続できません"
 
 #: cura/Machines/Models/DiscoveredPrintersModel.py:115
 msgctxt "@label"
@@ -315,7 +315,7 @@ msgstr "上書きできません"
 #: resources/qml/PrinterSelector/MachineSelectorList.qml:28
 msgctxt "@label"
 msgid "Connected printers"
-msgstr "キャンセルしたプリンター"
+msgstr "接続済みプリンター"
 
 #: cura/Machines/Models/GlobalStacksModel.py:160
 msgctxt "@label"
@@ -334,7 +334,7 @@ msgstr "{0}を取り除いてもよろしいですか？この操作は元に戻
 #: cura/Machines/Models/QualityManagementModel.py:347
 msgctxt "@label"
 msgid "Default"
-msgstr ""
+msgstr "デフォルト"
 
 #: cura/Machines/Models/IntentCategoryModel.py:45
 #: cura/Machines/Models/IntentSelectionModel.py:65
@@ -355,7 +355,7 @@ msgstr "ビジュアルプロファイルは、優れたビジュアルと表面
 #: cura/Machines/Models/IntentTranslations.py:18
 msgctxt "@label"
 msgid "Engineering"
-msgstr ""
+msgstr "エンジニアリング"
 
 #: cura/Machines/Models/IntentCategoryModel.py:50
 #: cura/Machines/Models/IntentSelectionModel.py:71
@@ -468,13 +468,13 @@ msgstr "ログインに失敗しました"
 #: cura/PrinterOutput/UploadMaterialsJob.py:104
 msgctxt "@text:error"
 msgid "Failed to create archive of materials to sync with printers."
-msgstr "材料のアーカイブを作成してプリンターと同期するのに失敗しました。"
+msgstr "フィラメントのアーカイブを作成してプリンターと同期するのに失敗しました。"
 
 #: cura/PrinterOutput/UploadMaterialsJob.py:111
 #: cura/PrinterOutput/UploadMaterialsJob.py:165
 msgctxt "@text:error"
 msgid "Failed to load the archive of materials to sync it with printers."
-msgstr "材料のアーカイブを読み込んでプリンターと同期するのに失敗しました。"
+msgstr "フィラメントのアーカイブを読み込んでプリンターと同期するのに失敗しました。"
 
 #: cura/PrinterOutput/UploadMaterialsJob.py:143
 msgctxt "@text:error"
@@ -491,7 +491,7 @@ msgstr "Digital Factoryからの応答に重要な情報がありません。"
 #: cura/PrinterOutput/UploadMaterialsJob.py:218
 msgctxt "@text:error"
 msgid "Failed to connect to Digital Factory to sync materials with some of the printers."
-msgstr "Digital Factoryに接続して一部のプリンターと材料を同期するのに失敗しました。"
+msgstr "Digital Factoryに接続して一部のプリンターとフィラメントを同期するのに失敗しました。"
 
 #: cura/PrinterOutput/UploadMaterialsJob.py:232
 msgctxt "@text:error"
@@ -531,7 +531,7 @@ msgstr "<filename>{0}</filename>にプロファイルを書き出すのに失敗
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Failed to export profile to <filename>{0}</filename>: Writer plugin reported failure."
-msgstr "<filename>{0}</filename>にプロファイルを書き出すことに失敗しました。：ライタープラグイン失敗の報告。"
+msgstr "<filename>{0}</filename>にプロファイルを書き出すことに失敗しました。：ライタープラグインが失敗を報告。"
 
 #: cura/Settings/CuraContainerRegistry.py:171
 #, python-brace-format
@@ -542,7 +542,7 @@ msgstr "<filename>{0}</filename>にプロファイルを書き出しました"
 #: cura/Settings/CuraContainerRegistry.py:173
 msgctxt "@info:title"
 msgid "Export succeeded"
-msgstr "書き出し完了"
+msgstr "書き出し成功"
 
 #: cura/Settings/CuraContainerRegistry.py:205
 #, python-brace-format
@@ -617,7 +617,7 @@ msgstr "アクティブなプリンターはありません。"
 #: cura/Settings/CuraContainerRegistry.py:469
 msgctxt "@info:status"
 msgid "Unable to add the profile."
-msgstr "プロファイルを追加できません。"
+msgstr "プロファイルを追加できませんでした。"
 
 #: cura/Settings/CuraContainerRegistry.py:483
 #, python-brace-format
@@ -629,7 +629,7 @@ msgstr "クオリティータイプ「{0}」は、現在アクティブなプリ
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Warning: The profile is not visible because its quality type '{0}' is not available for the current configuration. Switch to a material/nozzle combination that can use this quality type."
-msgstr "警告：現在の構成ではクオリティータイプ「{0}」を使用できないため、プロファイルは表示されません。このクオリティータイプを使用できる材料/ノズルの組み合わせに切り替えてください。"
+msgstr "警告：現在の構成ではクオリティータイプ「{0}」を使用できないため、プロファイルは表示されません。このクオリティータイプを使用できるフィラメント/ノズルの組み合わせに切り替えてください。"
 
 #: cura/Settings/MachineManager.py:746
 #: plugins/3MFReader/ThreeMFWorkspaceReader.py:221
@@ -671,7 +671,7 @@ msgstr "追加"
 #: cura/UI/AddPrinterPagesModel.py:26 cura/UI/WelcomePagesModel.py:290
 msgctxt "@action:button"
 msgid "Finish"
-msgstr "終わる"
+msgstr "終了"
 
 #: cura/UI/AddPrinterPagesModel.py:33 plugins/3MFReader/WorkspaceDialog.qml:386
 #: plugins/ImageReader/ConfigUI.qml:323
@@ -750,7 +750,7 @@ msgstr "退却"
 #: cura/UI/PrintInformation.py:98
 msgctxt "@tooltip"
 msgid "Other"
-msgstr "他"
+msgstr "その他"
 
 #: cura/UI/TextManager.py:37 cura/UI/TextManager.py:63
 msgctxt "@text:window"
@@ -774,22 +774,22 @@ msgstr "スキップ"
 #: resources/qml/Dialogs/AboutDialog.qml:188
 msgctxt "@action:button"
 msgid "Close"
-msgstr "閉める"
+msgstr "閉じる"
 
 #: cura/UltimakerCloud/CloudMaterialSync.py:66
 msgctxt "@action:button"
 msgid "Please sync the material profiles with your printers before starting to print."
-msgstr "プリントを開始する前に、材料プロファイルをプリンターと同期させてください。"
+msgstr "プリントを開始する前に、フィラメントプロファイルをプリンターと同期させてください。"
 
 #: cura/UltimakerCloud/CloudMaterialSync.py:67
 msgctxt "@action:button"
 msgid "New materials installed"
-msgstr "新しい材料がインストールされました"
+msgstr "新しいフィラメントがインストールされました"
 
 #: cura/UltimakerCloud/CloudMaterialSync.py:74
 msgctxt "@action:button"
 msgid "Sync materials"
-msgstr "材料を同期"
+msgstr "フィラメントを同期"
 
 #: cura/UltimakerCloud/CloudMaterialSync.py:82
 #: plugins/3MFReader/WorkspaceDialog.py:418 plugins/SolidView/SolidView.py:80
@@ -800,12 +800,12 @@ msgstr "詳しく見る"
 #: cura/UltimakerCloud/CloudMaterialSync.py:135
 msgctxt "@message:text"
 msgid "Could not save material archive to {}:"
-msgstr "材料アーカイブを{}に保存できませんでした："
+msgstr "フィラメントアーカイブを{}に保存できませんでした："
 
 #: cura/UltimakerCloud/CloudMaterialSync.py:136
 msgctxt "@message:title"
 msgid "Failed to save material archive"
-msgstr "材料アーカイブの保存に失敗しました"
+msgstr "フィラメントアーカイブの保存に失敗しました"
 
 #: cura/UltimakerCloud/CloudMaterialSync.py:188
 msgctxt "@text"
@@ -870,17 +870,17 @@ msgstr "カスタム"
 #: plugins/3MFReader/WorkspaceDialog.py:411
 msgctxt "@info:status"
 msgid "The material used in this project relies on some material definitions not available in Cura, this might produce undesirable print results. We highly recommend installing the full material package from the Marketplace."
-msgstr "このプロジェクトで使用される材料にはCuraで利用できないいくつかの材料コードが使用されているため、望ましくないプリント結果になる可能性があります。Marketplaceから材料パッケージ一式をインストールすることを強くお勧めします。"
+msgstr "このプロジェクトで使用されるフィラメントにはCuraで利用できないいくつかのフィラメントコードが使用されているため、望ましくないプリント結果になる可能性があります。Marketplaceからフィラメントパッケージ一式をインストールすることを強くお勧めします。"
 
 #: plugins/3MFReader/WorkspaceDialog.py:413
 msgctxt "@info:title"
 msgid "Material profiles not installed"
-msgstr "材料プロファイルがインストールされていません"
+msgstr "フィラメントプロファイルがインストールされていません"
 
 #: plugins/3MFReader/WorkspaceDialog.py:426
 msgctxt "@action:button"
 msgid "Install Materials"
-msgstr "材料のインストール"
+msgstr "フィラメントのインストール"
 
 #: plugins/3MFReader/WorkspaceDialog.qml:15
 msgctxt "@title:window"
@@ -891,7 +891,7 @@ msgstr "プロジェクトを開く"
 #: resources/qml/Dialogs/WorkspaceSummaryDialog.qml:61
 msgctxt "@action:title"
 msgid "Summary - Cura Project"
-msgstr "サマリーCuraプロジェクト"
+msgstr "サマリー - Curaプロジェクト"
 
 #: plugins/3MFReader/WorkspaceDialog.qml:65
 msgctxt "@action:ComboBox Update/override existing profile"
@@ -944,19 +944,19 @@ msgstr "プロファイル設定"
 #: resources/qml/Dialogs/WorkspaceSummaryDialog.qml:246
 msgctxt "@action:label"
 msgid "Name"
-msgstr "ネーム"
+msgstr "名前"
 
 #: plugins/3MFReader/WorkspaceDialog.qml:172
 #: resources/qml/Dialogs/WorkspaceSummaryDialog.qml:263
 msgctxt "@action:label"
 msgid "Intent"
-msgstr ""
+msgstr "インテント"
 
 #: plugins/3MFReader/WorkspaceDialog.qml:178
 #: resources/qml/Dialogs/WorkspaceSummaryDialog.qml:230
 msgctxt "@action:label"
 msgid "Not in profile"
-msgstr "プロファイル内にない"
+msgstr "プロファイルにありません"
 
 #: plugins/3MFReader/WorkspaceDialog.qml:179
 #: resources/qml/Dialogs/WorkspaceSummaryDialog.qml:235
@@ -1004,7 +1004,7 @@ msgstr "プロジェクトを読み込むとビルドプレート上のすべて
 #: plugins/3MFReader/WorkspaceDialog.qml:367
 msgctxt "@label"
 msgid "The material used in this project is currently not installed in Cura.<br/>Install the material profile and reopen the project."
-msgstr "このプロジェクトで使用される材料は現在、UltiMaker Curaにインストールされていません。<br/>材料プロファイルをインストールし、プロジェクトを再度開いてください。"
+msgstr "このプロジェクトで使用されるフィラメントは現在、UltiMaker Curaにインストールされていません。<br/>フィラメントプロファイルをインストールし、プロジェクトを再度開いてください。"
 
 #: plugins/3MFReader/WorkspaceDialog.qml:392
 msgctxt "@action:button"
@@ -1019,7 +1019,7 @@ msgstr "それでもプロジェクトを開く"
 #: plugins/3MFReader/WorkspaceDialog.qml:407
 msgctxt "@action:button"
 msgid "Install missing material"
-msgstr "未ダウンロードの材料をインストールする"
+msgstr "未ダウンロードのフィラメントをインストールする"
 
 #: plugins/3MFReader/__init__.py:27 plugins/3MFReader/__init__.py:33
 msgctxt "@item:inlistbox"
@@ -1176,7 +1176,7 @@ msgstr "Cura を起動した日は常にバックアップを自動生成しま�
 #: plugins/CuraDrive/src/qml/components/BackupListItem.qml:64
 msgctxt "@button"
 msgid "Restore"
-msgstr "リストア"
+msgstr "復元"
 
 #: plugins/CuraDrive/src/qml/components/BackupListItem.qml:93
 msgctxt "@dialog:title"
@@ -1186,17 +1186,17 @@ msgstr "バックアップの削除"
 #: plugins/CuraDrive/src/qml/components/BackupListItem.qml:94
 msgctxt "@dialog:info"
 msgid "Are you sure you want to delete this backup? This cannot be undone."
-msgstr "このバックアップを削除しますか？これは取り消しできません。"
+msgstr "このバックアップを削除しますか？この操作は取り消しできません。"
 
 #: plugins/CuraDrive/src/qml/components/BackupListItem.qml:102
 msgctxt "@dialog:title"
 msgid "Restore Backup"
-msgstr "バックアップのリストア"
+msgstr "バックアップの復元"
 
 #: plugins/CuraDrive/src/qml/components/BackupListItem.qml:103
 msgctxt "@dialog:info"
 msgid "You will need to restart Cura before your backup is restored. Do you want to close Cura now?"
-msgstr "バックアップをリストアする前に Cura を再起動する必要があります。今すぐ Cura を閉じますか？"
+msgstr "バックアップを復元する前にCuraを再起動する必要があります。今すぐCuraを閉じますか？"
 
 #: plugins/CuraDrive/src/qml/components/BackupListItemDetails.qml:21
 msgctxt "@backuplist:label"
@@ -1211,7 +1211,7 @@ msgstr "プリンタ"
 #: plugins/CuraDrive/src/qml/components/BackupListItemDetails.qml:37
 msgctxt "@backuplist:label"
 msgid "Materials"
-msgstr "材料"
+msgstr "フィラメント"
 
 #: plugins/CuraDrive/src/qml/components/BackupListItemDetails.qml:45
 msgctxt "@backuplist:label"
@@ -1280,7 +1280,7 @@ msgstr "UltiMaker Curaの問題追跡ツールでバグを報告してくださ�
 #: plugins/CuraEngineBackend/CuraEngineBackend.py:416
 msgctxt "@info:status"
 msgid "Unable to slice with the current material as it is incompatible with the selected machine or configuration."
-msgstr "選ばれたプリンターまたは選ばれたプリント構成が異なるため進行中の材料にてスライスを完了できません。"
+msgstr "選ばれたプリンターまたは選ばれたプリント構成が異なるため進行中のフィラメントにてスライスを完了できません。"
 
 #: plugins/CuraEngineBackend/CuraEngineBackend.py:417
 #: plugins/CuraEngineBackend/CuraEngineBackend.py:450
@@ -1510,7 +1510,7 @@ msgstr "インプット/アウトプットエラーによりファームウェ�
 #: plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:147
 msgctxt "@label"
 msgid "Firmware update failed due to missing firmware."
-msgstr "ファームウェアが見つからず、ファームウェアアップデート失敗しました。"
+msgstr "ファームウェアが見つからなかったためファームウェアアップデートに失敗しました。"
 
 #: plugins/FirmwareUpdater/plugin.json
 msgctxt "name"
@@ -1622,7 +1622,7 @@ msgstr "ファイルにG-codeを書き込みます。"
 #: plugins/ImageReader/ConfigUI.qml:14
 msgctxt "@title:window"
 msgid "Convert Image"
-msgstr "画像の変換"
+msgstr "画像を変換"
 
 #: plugins/ImageReader/ConfigUI.qml:33
 msgctxt "@action:label"
@@ -1817,7 +1817,7 @@ msgstr "mm"
 #: plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:88
 msgctxt "@label"
 msgid "Compatible material diameter"
-msgstr "適合する材料直径"
+msgstr "適合するフィラメント直径"
 
 #: plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:104
 msgctxt "@label"
@@ -1952,7 +1952,7 @@ msgstr "プリンターの設定を変更（印刷ボリューム、ノズルサ
 #: plugins/Marketplace/CloudSync/CloudPackageChecker.py:144
 msgctxt "@info:generic"
 msgid "Do you want to sync material and software packages with your account?"
-msgstr "材料パッケージとソフトウェアパッケージをアカウントと同期しますか？"
+msgstr "フィラメントパッケージとソフトウェアパッケージをアカウントと同期しますか？"
 
 #: plugins/Marketplace/CloudSync/CloudPackageChecker.py:145
 #: plugins/Marketplace/CloudSync/DownloadPresenter.py:95
@@ -1974,13 +1974,13 @@ msgstr "同期中..."
 #: plugins/Marketplace/resources/qml/LicenseDialog.qml:79
 msgctxt "@button"
 msgid "Decline"
-msgstr "拒否する"
+msgstr "拒否"
 
 #: plugins/Marketplace/CloudSync/LicenseModel.py:13
 #: resources/qml/WelcomePages/UserAgreementContent.qml:53
 msgctxt "@button"
 msgid "Agree"
-msgstr "同意する"
+msgstr "同意"
 
 #: plugins/Marketplace/CloudSync/LicenseModel.py:77
 msgctxt "@title:window"
@@ -2010,7 +2010,7 @@ msgstr "インストールされたプラグイン"
 #: plugins/Marketplace/LocalPackageList.py:29
 msgctxt "@label"
 msgid "Installed Materials"
-msgstr "インストールされた材料"
+msgstr "インストールされたフィラメント"
 
 #: plugins/Marketplace/LocalPackageList.py:33
 msgctxt "@label"
@@ -2020,7 +2020,7 @@ msgstr "バンドルされたプラグイン"
 #: plugins/Marketplace/LocalPackageList.py:34
 msgctxt "@label"
 msgid "Bundled Materials"
-msgstr "バンドルされた材料"
+msgstr "バンドルされたフィラメント"
 
 #: plugins/Marketplace/PackageModel.py:43
 msgctxt "@label:property"
@@ -2035,7 +2035,7 @@ msgstr "不明な作成者"
 #: plugins/Marketplace/PackageModel.py:95
 msgctxt "@label:label Ultimaker Marketplace is a brand name, don't translate"
 msgid "The material package associated with the Cura project could not be found on the Ultimaker Marketplace. Use the partial material profile definition stored in the Cura project file at your own risk."
-msgstr "Curaプロジェクトに関連付けられている材料パッケージがUltimaker Marketplaceで見つかりませんでした。Curaプロジェクトファイルに保存されている材料パッケージ定義を部分的に使用する場合は自己責任で行ってください。"
+msgstr "Curaプロジェクトに関連付けられているフィラメントパッケージがUltimaker Marketplaceで見つかりませんでした。Curaプロジェクトファイルに保存されているフィラメントパッケージ定義を部分的に使用する場合は自己責任で行ってください。"
 
 #: plugins/Marketplace/RemotePackageList.py:117
 msgctxt "@info:error"
@@ -2087,7 +2087,7 @@ msgstr "次のパッケージは、Curaバージョンに互換性がないた�
 #: plugins/Marketplace/resources/qml/InstallMissingPackagesDialog.qml:15
 msgctxt "@title"
 msgid "Install missing Materials"
-msgstr "未ダウンロードの材料をインストールする"
+msgstr "未ダウンロードのフィラメントをインストールする"
 
 #: plugins/Marketplace/resources/qml/LicenseDialog.qml:15
 msgctxt "@button"
@@ -2102,7 +2102,7 @@ msgstr "プラグインライセンスをお読みになり、同意してくだ
 #: plugins/Marketplace/resources/qml/LicenseDialog.qml:70
 msgctxt "@button"
 msgid "Accept"
-msgstr "承認する"
+msgstr "承認"
 
 #: plugins/Marketplace/resources/qml/ManagePackagesButton.qml:32
 msgctxt "@info:tooltip"
@@ -2117,7 +2117,7 @@ msgstr "パッケージの管理"
 #: plugins/Marketplace/resources/qml/ManagedPackages.qml:16
 msgctxt "@text"
 msgid "Manage your UltiMaker Cura plugins and material profiles here. Make sure to keep your plugins up to date and backup your setup regularly."
-msgstr "UltiMaker Curaのプラグインと材料プロファイルはここで管理します。プラグインを常に最新の状態に保ち、セットアップのバックアップを定期的に取るようにしてください。"
+msgstr "UltiMaker Curaのプラグインとフィラメントプロファイルはここで管理します。プラグインを常に最新の状態に保ち、セットアップのバックアップを定期的に取るようにしてください。"
 
 #: plugins/Marketplace/resources/qml/Marketplace.qml:87
 msgctxt "@title"
@@ -2132,7 +2132,7 @@ msgstr "プラグイン"
 #: plugins/Marketplace/resources/qml/Marketplace.qml:156
 msgctxt "@button"
 msgid "Materials"
-msgstr "材料"
+msgstr "フィラメント"
 
 #: plugins/Marketplace/resources/qml/Marketplace.qml:193
 msgctxt "@info"
@@ -2152,18 +2152,18 @@ msgstr "%1を終了する"
 #: plugins/Marketplace/resources/qml/Marketplace.qml:300
 msgctxt "@description"
 msgid "Please sign in to get verified plugins and materials for UltiMaker Cura Enterprise"
-msgstr "検証済みのUltiMaker Cura Enterprise用プラグインおよび材料を入手するにはサインインしてください。"
+msgstr "検証済みのUltiMaker Cura Enterprise用プラグインおよびフィラメントを入手するにはサインインしてください。"
 
 #: plugins/Marketplace/resources/qml/Materials.qml:8
 #: plugins/Marketplace/resources/qml/MissingPackages.qml:8
 msgctxt "@header"
 msgid "Install Materials"
-msgstr "材料のインストール"
+msgstr "フィラメントのインストール"
 
 #: plugins/Marketplace/resources/qml/Materials.qml:12
 msgctxt "@text"
 msgid "Select and install material profiles optimised for your UltiMaker 3D printers."
-msgstr "UltiMaker 3Dプリンターに最適な材料プロファイルを選択してインストールします。"
+msgstr "UltiMaker 3Dプリンターに最適なフィラメントプロファイルを選択してインストールします。"
 
 #: plugins/Marketplace/resources/qml/MultipleLicenseDialog.qml:35
 msgctxt "@label"
@@ -2254,7 +2254,7 @@ msgstr "互換性情報なし"
 #: plugins/Marketplace/resources/qml/PackagePage.qml:152
 msgctxt "@header"
 msgid "Compatible support materials"
-msgstr "互換性のあるサポート材料"
+msgstr "互換性のあるサポートフィラメント"
 
 #: plugins/Marketplace/resources/qml/PackagePage.qml:176
 msgctxt "@info No materials"
@@ -2356,7 +2356,7 @@ msgstr "UltiMaker検証済みプラグイン"
 #: plugins/Marketplace/resources/qml/VerifiedIcon.qml:22
 msgctxt "@info"
 msgid "UltiMaker Certified Material"
-msgstr "UltiMaker認定材料"
+msgstr "UltiMaker認定フィラメント"
 
 #: plugins/Marketplace/resources/qml/VerifiedIcon.qml:23
 msgctxt "@info"
@@ -2377,7 +2377,7 @@ msgid ""
 "<p>Find out how to ensure the best possible print quality and reliability.</p>\n"
 "<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
 msgstr ""
-"<p>モデルのサイズまたは材料の設定によっては、適切に印刷しない3Dモデルがあります。:</p>\n"
+"<p>モデルのサイズまたはフィラメントの設定によっては、適切に印刷しない3Dモデルがあります。:</p>\n"
 "<p>{model_names}</p>\n"
 "<p>可能な限り最高の品質および信頼性を得る方法をご覧ください。</p>\n"
 "<p><a href=\"https://ultimaker.com/3D-model-assistant\">印字品質ガイドを見る</a></p>"
@@ -2554,7 +2554,7 @@ msgstr[0] "次のスクリプトがアクティブです:"
 #: plugins/PostProcessingPlugin/plugin.json
 msgctxt "description"
 msgid "Extension that allows for user created scripts for post processing"
-msgstr "後処理のためにユーザーが作成したスクリプト用拡張子"
+msgstr "後処理のためにユーザーが作成したスクリプト用拡張機能"
 
 #: plugins/PostProcessingPlugin/plugin.json
 msgctxt "name"
@@ -3119,17 +3119,17 @@ msgstr[0] "割り当てられたプリンター %1 には以下の構成変更�
 #: plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:87
 msgctxt "@label"
 msgid "The printer %1 is assigned, but the job contains an unknown material configuration."
-msgstr "プリンター %1 が割り当てられましたが、ジョブには不明な材料構成があります。"
+msgstr "プリンター %1 が割り当てられましたが、ジョブには不明なフィラメント構成があります。"
 
 #: plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:97
 msgctxt "@label"
 msgid "Change material %1 from %2 to %3."
-msgstr "材料 %1 を %2 から %3 に変更します。"
+msgstr "フィラメント %1 を %2 から %3 に変更します。"
 
 #: plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:100
 msgctxt "@label"
 msgid "Load %3 as material %1 (This cannot be overridden)."
-msgstr "%3 を 材料 %1 にロードします（これは上書きできません）。"
+msgstr "%3 を フィラメント %1 にロードします（これは上書きできません）。"
 
 #: plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:103
 msgctxt "@label"
@@ -3526,12 +3526,12 @@ msgstr "プリンターの更新"
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Cura has detected material profiles that were not yet installed on the host printer of group {0}."
-msgstr "Curaはグループ{0}のホストプリンターにまだインストールされていない材料プロフィールを検出しました。"
+msgstr "Curaはグループ{0}のホストプリンターにまだインストールされていないフィラメントプロフィールを検出しました。"
 
 #: plugins/UM3NetworkPrinting/src/Messages/MaterialSyncMessage.py:26
 msgctxt "@info:title"
 msgid "Sending materials to printer"
-msgstr "プリンターに材料を送信しています"
+msgstr "プリンターにフィラメントを送信しています"
 
 #: plugins/UM3NetworkPrinting/src/Messages/NewPrinterDetectedMessage.py:13
 msgctxt "info:status"
@@ -4104,8 +4104,8 @@ msgid ""
 "- Back-up and sync your material profiles and plug-ins\n"
 "- Share ideas and get help from 48,000+ users in the UltiMaker community"
 msgstr ""
-"- マーケットプレースから材料プロファイルとプラグインを追加\n"
-"- 材料プロファイルとプラグインのバックアップと同期\n"
+"- マーケットプレースからフィラメントプロファイルとプラグインを追加\n"
+"- フィラメントプロファイルとプラグインのバックアップと同期\n"
 "- UltiMakerコミュニティで48,000人以上のユーザーとアイデアを共有してアドバイスをもらう"
 
 #: resources/qml/Account/GeneralOperations.qml:58
@@ -4176,7 +4176,7 @@ msgstr "時間予測"
 #: resources/qml/ActionPanel/PrintJobInformation.qml:107
 msgctxt "@label"
 msgid "Material estimation"
-msgstr "材料予測"
+msgstr "フィラメント予測"
 
 #: resources/qml/ActionPanel/PrintJobInformation.qml:156
 msgctxt "@label m for meter"
@@ -4226,27 +4226,27 @@ msgstr "オンライントラブルシューティングを表示"
 #: resources/qml/Actions.qml:88
 msgctxt "@action:inmenu"
 msgid "Toggle Full Screen"
-msgstr "留め金 フルスクリーン"
+msgstr "全画面表示を切り替え"
 
 #: resources/qml/Actions.qml:96
 msgctxt "@action:inmenu"
 msgid "Exit Full Screen"
-msgstr "全画面表示を終了する"
+msgstr "全画面表示を終了"
 
 #: resources/qml/Actions.qml:103
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Undo"
-msgstr "&取り消す"
+msgstr "取り消す(&U)"
 
 #: resources/qml/Actions.qml:113
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Redo"
-msgstr "&やりなおす"
+msgstr "やりなおす(&R)"
 
 #: resources/qml/Actions.qml:131
 msgctxt "@action:inmenu menubar:file"
 msgid "&Quit"
-msgstr "&やめる"
+msgstr "やめる(&Q)"
 
 #: resources/qml/Actions.qml:139
 msgctxt "@action:inmenu menubar:view"
@@ -4286,12 +4286,12 @@ msgstr "Curaを構成する..."
 #: resources/qml/Actions.qml:197
 msgctxt "@action:inmenu menubar:printer"
 msgid "&Add Printer..."
-msgstr "＆プリンターを追加する..."
+msgstr "プリンターを追加する...(&A)"
 
 #: resources/qml/Actions.qml:203
 msgctxt "@action:inmenu menubar:printer"
 msgid "Manage Pr&inters..."
-msgstr "プリンターを管理する..."
+msgstr "プリンターを管理する...(&I)"
 
 #: resources/qml/Actions.qml:210
 msgctxt "@action:inmenu"
@@ -4306,17 +4306,17 @@ msgstr "Add more materials from Marketplace"
 #: resources/qml/Actions.qml:225
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Update profile with current settings/overrides"
-msgstr "&現在の設定/無効にプロファイルをアップデートする"
+msgstr "現在の設定/無効にプロファイルをアップデートする(&U)"
 
 #: resources/qml/Actions.qml:233
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Discard current changes"
-msgstr "&変更を破棄する"
+msgstr "変更を破棄する(&D)"
 
 #: resources/qml/Actions.qml:245
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Create profile from current settings/overrides..."
-msgstr "&今の設定/無効からプロファイルを作成する..."
+msgstr "今の設定/無効からプロファイルを作成する...(&C)"
 
 #: resources/qml/Actions.qml:251
 msgctxt "@action:inmenu menubar:profile"
@@ -4326,12 +4326,12 @@ msgstr "プロファイルを管理する..."
 #: resources/qml/Actions.qml:259
 msgctxt "@action:inmenu menubar:help"
 msgid "Show Online &Documentation"
-msgstr "オンラインドキュメントを表示する"
+msgstr "オンラインドキュメントを表示する(&D)"
 
 #: resources/qml/Actions.qml:267
 msgctxt "@action:inmenu menubar:help"
 msgid "Report a &Bug"
-msgstr "報告＆バグ"
+msgstr "バグを報告(&B)"
 
 #: resources/qml/Actions.qml:275
 msgctxt "@action:inmenu menubar:help"
@@ -4366,12 +4366,12 @@ msgstr "モデルを消去する"
 #: resources/qml/Actions.qml:332
 msgctxt "@action:inmenu"
 msgid "Ce&nter Model on Platform"
-msgstr "プラットホームの中心にモデルを配置"
+msgstr "プラットホームの中心にモデルを配置(&N)"
 
 #: resources/qml/Actions.qml:338
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Group Models"
-msgstr "&モデルグループ"
+msgstr "モデルグループ(&G)"
 
 #: resources/qml/Actions.qml:358
 msgctxt "@action:inmenu menubar:edit"
@@ -4381,12 +4381,12 @@ msgstr "モデルを非グループ化"
 #: resources/qml/Actions.qml:368
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Merge Models"
-msgstr "モ&デルの合体"
+msgstr "モデルの合体(&M)"
 
 #: resources/qml/Actions.qml:378
 msgctxt "@action:inmenu"
 msgid "&Multiply Model..."
-msgstr "&モデルを増倍する..."
+msgstr "モデルを増倍する...(&M)"
 
 #: resources/qml/Actions.qml:385
 msgctxt "@action:inmenu menubar:edit"
@@ -4426,12 +4426,12 @@ msgstr "すべてのモデル＆変更点をリセットする"
 #: resources/qml/Actions.qml:445
 msgctxt "@action:inmenu menubar:file"
 msgid "&Open File(s)..."
-msgstr "&ファイルを開く(s)..."
+msgstr "ファイルを開く...(&O)"
 
 #: resources/qml/Actions.qml:455
 msgctxt "@action:inmenu menubar:file"
 msgid "&New Project..."
-msgstr "&新しいプロジェクト..."
+msgstr "新しいプロジェクト...(&N)"
 
 #: resources/qml/Actions.qml:462
 msgctxt "@action:inmenu menubar:help"
@@ -4471,7 +4471,7 @@ msgstr "プリントジョブをモニタリングしてプリント履歴から
 #: resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:55
 msgctxt "@tooltip:button"
 msgid "Extend UltiMaker Cura with plugins and material profiles."
-msgstr "UltiMaker Curaをプラグインと材料プロファイルで拡張します。"
+msgstr "UltiMaker Curaをプラグインとフィラメントプロファイルで拡張します。"
 
 #: resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:62
 msgctxt "@tooltip:button"
@@ -4542,7 +4542,7 @@ msgstr "プリンター"
 #: resources/qml/Preferences/Materials/MaterialsPage.qml:70
 msgctxt "@title:tab"
 msgid "Materials"
-msgstr "マテリアル"
+msgstr "フィラメント"
 
 #: resources/qml/Cura.qml:476 resources/qml/Preferences/ProfilesPage.qml:57
 msgctxt "@title:tab"
@@ -4573,7 +4573,7 @@ msgstr "パッケージをインストール"
 #: resources/qml/Cura.qml:741
 msgctxt "@title:window"
 msgid "Open File(s)"
-msgstr "ファイルを開く(s)"
+msgstr "ファイルを開く"
 
 #: resources/qml/Cura.qml:743
 msgctxt "@text:window"
@@ -4608,7 +4608,7 @@ msgstr "カスタムプロファイル名："
 #: resources/qml/Cura.qml:909
 msgctxt "@label %i will be replaced with a profile name"
 msgid "<b>Only user changed settings will be saved in the custom profile.</b><br/>For materials that support it, the new custom profile will inherit properties from <b>%1</b>."
-msgstr "<b>ユーザーが変更した設定のみがカスタムプロファイルに保存されます。</b><br/>その設定に対応する材料の場合、新しいカスタムプロファイルは <b>%1</b>からプロパティを継承します。"
+msgstr "<b>ユーザーが変更した設定のみがカスタムプロファイルに保存されます。</b><br/>その設定に対応するフィラメントの場合、新しいカスタムプロファイルは <b>%1</b>からプロパティを継承します。"
 
 #: resources/qml/Cura.qml:917
 msgctxt "@action:button"
@@ -4917,7 +4917,7 @@ msgstr "変更を保存"
 #: resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:47
 msgctxt "@text:window"
 msgid "We have found one or more project file(s) within the files you have selected. You can open only one project file at a time. We suggest to only import models from those files. Would you like to proceed?"
-msgstr "選択したファイルの中に複数のプロジェクトが存在します。1ファイルのみ一度に開けます。ファイルからモデルを先に取り込むことをお勧めします。続けますか？"
+msgstr "選択したファイルの中に複数のプロジェクトが存在します。1ファイルのみ一度に開けます。ファイルからモデルを先に取り込むことをお勧めします。続行しますか？"
 
 #: resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:64
 msgctxt "@action:button"
@@ -4952,7 +4952,7 @@ msgstr "%1とフィラメント"
 #: resources/qml/Dialogs/WorkspaceSummaryDialog.qml:195
 msgctxt "@action:label"
 msgid "Material"
-msgstr "材料"
+msgstr "フィラメント"
 
 #: resources/qml/Dialogs/WorkspaceSummaryDialog.qml:284
 msgctxt "@action:label"
@@ -4973,7 +4973,7 @@ msgstr "無題"
 #: resources/qml/Menus/SettingsMenu.qml:13
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Settings"
-msgstr "&設定"
+msgstr "設定(&S)"
 
 #: resources/qml/MainWindow/ApplicationMenu.qml:87
 msgctxt "@title:window"
@@ -4998,7 +4998,7 @@ msgstr "構成"
 #: resources/qml/Menus/ConfigurationMenu/ConfigurationItem.qml:137
 msgctxt "@label"
 msgid "This configuration is not available because %1 is not recognized. Please visit %2 to download the correct material profile."
-msgstr "%1 が認識されていないためこの構成は利用できません。%2 から適切な材料プロファイルをダウンロードしてください。"
+msgstr "%1 が認識されていないためこの構成は利用できません。%2 から適切なフィラメントプロファイルをダウンロードしてください。"
 
 #: resources/qml/Menus/ConfigurationMenu/ConfigurationItem.qml:138
 msgctxt "@label"
@@ -5053,7 +5053,7 @@ msgstr "フィラメント"
 #: resources/qml/Menus/ConfigurationMenu/CustomConfiguration.qml:348
 msgctxt "@label"
 msgid "Use glue for better adhesion with this material combination."
-msgstr "この材料の組み合わせの接着に接着材を使用する。"
+msgstr "このフィラメントの組み合わせの接着に接着材を使用する。"
 
 #: resources/qml/Menus/ContextMenu.qml:29
 msgctxt "@label"
@@ -5075,27 +5075,27 @@ msgstr "コピーの数"
 #: resources/qml/Menus/EditMenu.qml:12
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Edit"
-msgstr "&編集"
+msgstr "編集(&E)"
 
 #: resources/qml/Menus/ExtensionMenu.qml:13
 msgctxt "@title:menu menubar:toplevel"
 msgid "E&xtensions"
-msgstr "拡張子"
+msgstr "拡張機能(&X)"
 
 #: resources/qml/Menus/FileMenu.qml:13
 msgctxt "@title:menu menubar:toplevel"
 msgid "&File"
-msgstr "&ファイル"
+msgstr "ファイル(&F)"
 
 #: resources/qml/Menus/FileMenu.qml:45
 msgctxt "@title:menu menubar:file"
 msgid "&Save Project..."
-msgstr "プロジェクトを保存... (&S)"
+msgstr "プロジェクトを保存...(&S)"
 
 #: resources/qml/Menus/FileMenu.qml:78
 msgctxt "@title:menu menubar:file"
 msgid "&Export..."
-msgstr "エクスポート... (&E)"
+msgstr "エクスポート...(&E)"
 
 #: resources/qml/Menus/FileMenu.qml:89
 msgctxt "@action:inmenu menubar:file"
@@ -5105,12 +5105,12 @@ msgstr "選択エクスポート..."
 #: resources/qml/Menus/HelpMenu.qml:14
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Help"
-msgstr "ヘルプ"
+msgstr "ヘルプ(&H)"
 
 #: resources/qml/Menus/MaterialMenu.qml:13
 msgctxt "@label:category menu label"
 msgid "Material"
-msgstr "材料"
+msgstr "フィラメント"
 
 #: resources/qml/Menus/MaterialMenu.qml:53
 msgctxt "@label:category menu label"
@@ -5130,12 +5130,12 @@ msgstr "ファイルを開く..."
 #: resources/qml/Menus/PreferencesMenu.qml:21
 msgctxt "@title:menu menubar:toplevel"
 msgid "P&references"
-msgstr "プレファレンス"
+msgstr "環境設定(&R)"
 
 #: resources/qml/Menus/PrinterMenu.qml:13
 msgctxt "@title:menu menubar:settings"
 msgid "&Printer"
-msgstr "&プリンター"
+msgstr "プリンター(&P)"
 
 #: resources/qml/Menus/PrinterMenu.qml:17
 msgctxt "@label:category menu label"
@@ -5150,7 +5150,7 @@ msgstr "ローカルプリンター"
 #: resources/qml/Menus/RecentFilesMenu.qml:15
 msgctxt "@title:menu menubar:file"
 msgid "Open &Recent"
-msgstr "最近開いたファイルを開く"
+msgstr "最近開いたファイルを開く(&R)"
 
 #: resources/qml/Menus/SaveProjectMenu.qml:15
 msgctxt "@title:menu menubar:file"
@@ -5175,7 +5175,7 @@ msgstr "視野のセッティングを管理する..."
 #: resources/qml/Menus/SettingsMenu.qml:34
 msgctxt "@title:menu"
 msgid "&Material"
-msgstr "&フィラメント"
+msgstr "フィラメント(&M)"
 
 #: resources/qml/Menus/SettingsMenu.qml:49
 msgctxt "@action:inmenu"
@@ -5195,12 +5195,12 @@ msgstr "エクストルーダーを無効にする"
 #: resources/qml/Menus/ViewMenu.qml:13
 msgctxt "@title:menu menubar:toplevel"
 msgid "&View"
-msgstr "&ビュー"
+msgstr "ビュー(&V)"
 
 #: resources/qml/Menus/ViewMenu.qml:17
 msgctxt "@action:inmenu menubar:view"
 msgid "&Camera position"
-msgstr "カメラ位置 (&C)"
+msgstr "カメラ位置(&C)"
 
 #: resources/qml/Menus/ViewMenu.qml:30
 msgctxt "@action:inmenu menubar:view"
@@ -5210,7 +5210,7 @@ msgstr "カメラビュー"
 #: resources/qml/Menus/ViewMenu.qml:48
 msgctxt "@action:inmenu menubar:view"
 msgid "Perspective"
-msgstr "パースペクティブ表示"
+msgstr "透視投影表示"
 
 #: resources/qml/Menus/ViewMenu.qml:59
 msgctxt "@action:inmenu menubar:view"
@@ -5402,7 +5402,7 @@ msgstr "ズームはマウスの方向に動くべきか？"
 #: resources/qml/Preferences/GeneralPage.qml:453
 msgctxt "@info:tooltip"
 msgid "Zooming towards the mouse is not supported in the orthographic perspective."
-msgstr "マウスに対するズームは、正射投影ではサポートされていません。"
+msgstr "マウスに対するズームは、平行投影表示ではサポートされていません。"
 
 #: resources/qml/Preferences/GeneralPage.qml:458
 msgctxt "@action:button"
@@ -5471,7 +5471,7 @@ msgstr "カメラレンダリング:"
 
 #: resources/qml/Preferences/GeneralPage.qml:576
 msgid "Perspective"
-msgstr "パースペクティブ表示"
+msgstr "透視投影表示表示"
 
 #: resources/qml/Preferences/GeneralPage.qml:577
 msgid "Orthographic"
@@ -5684,7 +5684,7 @@ msgstr "名を変える"
 #: resources/qml/Preferences/Materials/MaterialsPage.qml:72
 msgctxt "@label"
 msgid "Materials compatible with active printer:"
-msgstr "アクティブなプリンターと互換性のある材料："
+msgstr "アクティブなプリンターと互換性のあるフィラメント："
 
 #: resources/qml/Preferences/Materials/MaterialsPage.qml:78
 #: resources/qml/Preferences/ProfilesPage.qml:94
@@ -5762,22 +5762,22 @@ msgstr "フィラメントの<filename>%1</filename>への書き出しが完了�
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:18
 msgctxt "@title:window"
 msgid "Sync materials with printers"
-msgstr "材料をプリンターと同期"
+msgstr "フィラメントをプリンターと同期"
 
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:49
 msgctxt "@title:header"
 msgid "Sync materials with printers"
-msgstr "材料をプリンターと同期"
+msgstr "フィラメントをプリンターと同期"
 
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:55
 msgctxt "@text"
 msgid "Following a few simple steps, you will be able to synchronize all your material profiles with your printers."
-msgstr "簡単な数ステップの手順に従うことで、すべての材料プロファイルをプリンターと同期できるようになります。"
+msgstr "簡単な数ステップの手順に従うことで、すべてのフィラメントプロファイルをプリンターと同期できるようになります。"
 
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:77
 msgctxt "@button"
 msgid "Why do I need to sync material profiles?"
-msgstr "材料プロファイルを同期する必要があるのはなぜですか？"
+msgstr "フィラメントプロファイルを同期する必要があるのはなぜですか？"
 
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:86
 msgctxt "@button"
@@ -5792,14 +5792,14 @@ msgstr "サインイン"
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:150
 msgctxt "@text"
 msgid "To automatically sync the material profiles with all your printers connected to Digital Factory you need to be signed in in Cura."
-msgstr "材料プロファイルをDigital Factoryに接続されているすべてのプリンターと自動的に同期するには、Curaにサインインしている必要があります。"
+msgstr "フィラメントプロファイルをDigital Factoryに接続されているすべてのプリンターと自動的に同期するには、Curaにサインインしている必要があります。"
 
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:174
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:462
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:602
 msgctxt "@button"
 msgid "Sync materials with USB"
-msgstr "材料をUSBで同期"
+msgstr "フィラメントをUSBで同期"
 
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:207
 msgctxt "@title:header"
@@ -5809,7 +5809,7 @@ msgstr ""
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:214
 msgctxt "@title:header"
 msgid "Something went wrong when sending the materials to the printers."
-msgstr "材料をプリンターに送信する際に問題が発生しました。"
+msgstr "フィラメントをプリンターに送信する際に問題が発生しました。"
 
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:221
 msgctxt "@title:header"
@@ -5882,17 +5882,17 @@ msgstr "更新"
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:642
 msgctxt "@title:header"
 msgid "Sync material profiles via USB"
-msgstr "材料プロファイルをUSB経由で同期する"
+msgstr "フィラメントプロファイルをUSB経由で同期する"
 
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:648
 msgctxt "@text In the UI this is followed by a list of steps the user needs to take."
 msgid "Follow the following steps to load the new material profiles to your printer."
-msgstr "以下の手順に従って、新しい材料プロファイルをプリンターに読み込みます。"
+msgstr "以下の手順に従って、新しいフィラメントプロファイルをプリンターに読み込みます。"
 
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:679
 msgctxt "@text"
 msgid "Click the export material archive button."
-msgstr "材料アーカイブのエクスポートボタンをクリックします。"
+msgstr "フィラメントアーカイブのエクスポートボタンをクリックします。"
 
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:680
 msgctxt "@text"
@@ -5902,12 +5902,12 @@ msgstr ".ummファイルをUSBメモリーに保存します。"
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:681
 msgctxt "@text"
 msgid "Insert the USB stick into your printer and launch the procedure to load new material profiles."
-msgstr "USBメモリーをプリンターに差し込み、新しい材料プロファイルを読み込む手順を開始します。"
+msgstr "USBメモリーをプリンターに差し込み、新しいフィラメントプロファイルを読み込む手順を開始します。"
 
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:689
 msgctxt "@button"
 msgid "How to load new material profiles to my printer"
-msgstr "新しい材料プロファイルをプリンターに読み込む方法"
+msgstr "新しいフィラメントプロファイルをプリンターに読み込む方法"
 
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:703
 #: resources/qml/WelcomePages/AddPrinterByIpContent.qml:299
@@ -5918,12 +5918,12 @@ msgstr "戻る"
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:712
 msgctxt "@button"
 msgid "Export material archive"
-msgstr "材料アーカイブのエクスポート"
+msgstr "フィラメントアーカイブのエクスポート"
 
 #: resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:747
 msgctxt "@title:window"
 msgid "Export All Materials"
-msgstr "すべての材料を書き出す"
+msgstr "すべてのフィラメントを書き出す"
 
 #: resources/qml/Preferences/Materials/MaterialsView.qml:121
 msgctxt "@title:window"
@@ -5958,7 +5958,7 @@ msgstr "色"
 #: resources/qml/Preferences/Materials/MaterialsView.qml:262
 msgctxt "@title"
 msgid "Material color picker"
-msgstr "材料の色の選択"
+msgstr "フィラメントの色の選択"
 
 #: resources/qml/Preferences/Materials/MaterialsView.qml:275
 msgctxt "@label"
@@ -6275,7 +6275,7 @@ msgid ""
 "\n"
 "For functional 3D prints which require high strength in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
 msgstr ""
-"プリントのインフィル材料のパターン：\n"
+"プリントのインフィルフィラメントのパターン：\n"
 "\n"
 "非機能モデルをクイックプリントする場合は、ライン、ジグザグ、ライトニングインフィルから選択します。 \n"
 "\n"
@@ -6346,7 +6346,7 @@ msgstr "サポートされていない構成設定です"
 #: resources/qml/PrintSetupSelector/Recommended/UnsupportedProfileIndication.qml:39
 msgctxt "@message:text %1 is the name the printer uses for 'nozzle'."
 msgid "No profiles are available for the selected material/%1 configuration. Please change your configuration."
-msgstr "選択した/%1材料の設定で利用可能なプロファイルがありません。設定を変更してください。"
+msgstr "選択した/%1フィラメントの設定で利用可能なプロファイルがありません。設定を変更してください。"
 
 #: resources/qml/PrintSetupSelector/Recommended/UnsupportedProfileIndication.qml:47
 msgctxt "@button:label"
@@ -6393,7 +6393,7 @@ msgstr "プリント開始前にホットエンドを加熱します。加熱中
 #: resources/qml/PrinterOutput/ExtruderBox.qml:335
 msgctxt "@tooltip"
 msgid "The colour of the material in this extruder."
-msgstr "エクストルーダーのマテリアルの色。"
+msgstr "エクストルーダーのフィラメント色。"
 
 #: resources/qml/PrinterOutput/ExtruderBox.qml:367
 msgctxt "@tooltip"
@@ -6856,12 +6856,12 @@ msgstr "リリースノート"
 #: resources/qml/WelcomePages/CloudContent.qml:123
 msgctxt "@text"
 msgid "Add material settings and plugins from the Marketplace"
-msgstr "マーケットプレイスから材料設定とプラグインを追加"
+msgstr "マーケットプレイスからフィラメント設定とプラグインを追加"
 
 #: resources/qml/WelcomePages/CloudContent.qml:149
 msgctxt "@text"
 msgid "Backup and sync your material settings and plugins"
-msgstr "材料設定とプラグインのバックアップと同期"
+msgstr "フィラメント設定とプラグインのバックアップと同期"
 
 #: resources/qml/WelcomePages/CloudContent.qml:175
 msgctxt "@text"
