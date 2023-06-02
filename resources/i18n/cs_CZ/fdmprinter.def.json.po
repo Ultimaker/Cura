@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-04-28 10:03+0000\n"
+"POT-Creation-Date: 2023-05-30 15:31+0000\n"
 "PO-Revision-Date: 2023-02-16 20:35+0100\n"
 "Last-Translator: Miroslav Šustek <sustmidown@centrum.cz>\n"
 "Language-Team: DenyCZ <www.github.com/DenyCZ>\n"
@@ -2123,9 +2123,19 @@ msgid "Is Center Origin"
 msgstr "Je střed počátek"
 
 #: fdmprinter.def.json
+msgctxt "material_is_support_material label"
+msgid "Is support material"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "material_crystallinity description"
 msgid "Is this material the type that breaks off cleanly when heated (crystalline), or is it the type that produces long intertwined polymer chains (non-crystalline)?"
 msgstr "Je tento materiál typem, který se při zahřívání (krystalický) čistě rozpadá, nebo jde o typ, který vytváří dlouhé propletené polymerní řetězce (nekrystalické)?"
+
+#: fdmprinter.def.json
+msgctxt "material_is_support_material description"
+msgid "Is this material typically used as a support material during printing."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_outside_only description"
