@@ -15,7 +15,7 @@ Making pull requests
 If you want to propose a change to Cura's source code, please create a pull request in the appropriate repository. Since Cura has multiple repositories that influence it, we've listed the most important ones below:
 * [Cura](https://github.com/Ultimaker/Cura)
 * [Uranium](https://github.com/Ultimaker/Uranium)
-* [CuraEngine](https://github.com/Ultimaker/CuraEngine)*
+* [CuraEngine](https://github.com/Ultimaker/CuraEngine)
 * [fdm_materials](https://github.com/Ultimaker/fdm_materials)
 * [libArcus](https://github.com/Ultimaker/libArcus)
 * [libSavitar](https://github.com/Ultimaker/libSavitar)
