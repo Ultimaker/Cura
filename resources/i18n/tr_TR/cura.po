@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-15 11:58+0000\n"
+"POT-Creation-Date: 2023-06-02 11:57+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -430,22 +430,22 @@ msgctxt "@message"
 msgid "Could not read response."
 msgstr "Yanıt okunamadı."
 
-#: cura/OAuth2/AuthorizationRequestHandler.py:75
+#: cura/OAuth2/AuthorizationRequestHandler.py:77
 msgctxt "@message"
 msgid "The provided state is not correct."
 msgstr "Sağlanan durum doğru değil."
 
-#: cura/OAuth2/AuthorizationRequestHandler.py:80
+#: cura/OAuth2/AuthorizationRequestHandler.py:83
 msgctxt "@message"
 msgid "Timeout when authenticating with the account server."
 msgstr "Hesap sunucusuyla kimlik doğrulaması yapılırken zaman aşımı oluştu."
 
-#: cura/OAuth2/AuthorizationRequestHandler.py:97
+#: cura/OAuth2/AuthorizationRequestHandler.py:101
 msgctxt "@message"
 msgid "Please give the required permissions when authorizing this application."
 msgstr "Lütfen bu başvuruya yetki verirken gerekli izinleri verin."
 
-#: cura/OAuth2/AuthorizationRequestHandler.py:104
+#: cura/OAuth2/AuthorizationRequestHandler.py:109
 msgctxt "@message"
 msgid "Something unexpected happened when trying to log in, please try again."
 msgstr "Oturum açmaya çalışırken beklenmeyen bir sorun oluştu, lütfen tekrar deneyin."
@@ -812,18 +812,18 @@ msgctxt "@text"
 msgid "Unknown error."
 msgstr "Bilinmeyen hata."
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:547
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:558
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> contains an unknown machine type <message>{1}</message>. Cannot import the machine. Models will be imported instead."
 msgstr "Proje dosyası <filename>{0}</filename> bilinmeyen bir makine tipi içeriyor: <message>{1}</message>. Makine alınamıyor. Bunun yerine modeller alınacak."
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:550
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:561
 msgctxt "@info:title"
 msgid "Open Project File"
 msgstr "Proje Dosyası Aç"
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:631
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:642
 #: plugins/3MFReader/WorkspaceDialog.qml:99
 #: plugins/3MFReader/WorkspaceDialog.qml:127
 #: plugins/3MFReader/WorkspaceDialog.qml:134
@@ -831,27 +831,27 @@ msgctxt "@button"
 msgid "Create new"
 msgstr "Yeni oluştur"
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:681
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:692
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is suddenly inaccessible: <message>{1}</message>."
 msgstr "<filename>{0}</filename> proje dosyası aniden erişilemez oldu: <message>{1}</message>."
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:682
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:690
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:709
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:693
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:701
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:720
 msgctxt "@info:title"
 msgid "Can't Open Project File"
 msgstr "Proje Dosyası Açılamıyor"
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:689
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:707
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:700
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:718
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>."
 msgstr "Proje dosyası <filename>{0}</filename> bozuk: <message>{1}</message>."
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:754
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:765
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
 msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura."
@@ -925,12 +925,12 @@ msgstr "Yazıcı Grubu"
 #: plugins/3MFReader/WorkspaceDialog.qml:103
 msgctxt "@action:label"
 msgid "Open With"
-msgstr ""
+msgstr "Birlikte Aç"
 
 #: plugins/3MFReader/WorkspaceDialog.qml:104
 msgctxt "@info:tooltip"
 msgid "Printer settings will be updated to match the settings saved with the project."
-msgstr ""
+msgstr "Yazıcı ayarları, projeyle birlikte kaydedilen ayarlarla eşleşecek şekilde güncellenir."
 
 #: plugins/3MFReader/WorkspaceDialog.qml:156
 #: resources/qml/Dialogs/WorkspaceSummaryDialog.qml:222
@@ -1277,7 +1277,7 @@ msgstr "Hata bildirin"
 #: plugins/CuraEngineBackend/CuraEngineBackend.py:169
 msgctxt "@message:description"
 msgid "Report a bug on UltiMaker Cura's issue tracker."
-msgstr "Ultimaker Cura'nın sorun izleyicisinde hata bildirin."
+msgstr "UltiMaker Cura'nın sorun izleyicisinde hata bildirin."
 
 #: plugins/CuraEngineBackend/CuraEngineBackend.py:416
 msgctxt "@info:status"
@@ -1926,17 +1926,17 @@ msgctxt "@label"
 msgid "Number of Extruders"
 msgstr "Ekstrüder Sayısı"
 
-#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:341
+#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:342
 msgctxt "@label"
 msgid "Apply Extruder offsets to GCode"
 msgstr "Ekstrüder ofsetlerini GCode'a uygula"
 
-#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:389
+#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:390
 msgctxt "@title:label"
 msgid "Start G-code"
 msgstr "G-code’u Başlat"
 
-#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:400
+#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:401
 msgctxt "@title:label"
 msgid "End G-code"
 msgstr "G-code’u Sonlandır"
@@ -1960,7 +1960,7 @@ msgstr "Malzeme ve yazılım paketlerini hesabınızla senkronize etmek istiyor 
 #: plugins/Marketplace/CloudSync/DownloadPresenter.py:95
 msgctxt "@info:title"
 msgid "Changes detected from your UltiMaker account"
-msgstr "Ultimaker hesabınızda değişiklik tespit edildi"
+msgstr "UltiMaker hesabınızda değişiklik tespit edildi"
 
 #: plugins/Marketplace/CloudSync/CloudPackageChecker.py:147
 msgctxt "@action:button"
@@ -2052,7 +2052,7 @@ msgstr "Pazar Yerine ulaşılamadı."
 #: plugins/Marketplace/plugin.json
 msgctxt "description"
 msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
-msgstr ""
+msgstr "Uygulamanın uzantılarını yönetir ve Ultimaker web sitesinden uzantıların incelenmesini sağlar."
 
 #: plugins/Marketplace/plugin.json
 msgctxt "name"
@@ -2119,7 +2119,7 @@ msgstr "Paketleri yönet"
 #: plugins/Marketplace/resources/qml/ManagedPackages.qml:16
 msgctxt "@text"
 msgid "Manage your UltiMaker Cura plugins and material profiles here. Make sure to keep your plugins up to date and backup your setup regularly."
-msgstr "Ultimaker Cura eklentilerinizi ve malzeme profillerini burada yönetin. Eklentilerinizi güncel tuttuğunuzdan ve ayarınızı düzenli olarak yedeklediğinizden emin olun."
+msgstr "UltiMaker Cura eklentilerinizi ve malzeme profillerini burada yönetin. Eklentilerinizi güncel tuttuğunuzdan ve ayarınızı düzenli olarak yedeklediğinizden emin olun."
 
 #: plugins/Marketplace/resources/qml/Marketplace.qml:87
 msgctxt "@title"
@@ -2165,7 +2165,7 @@ msgstr "Malzeme Yükle"
 #: plugins/Marketplace/resources/qml/Materials.qml:12
 msgctxt "@text"
 msgid "Select and install material profiles optimised for your UltiMaker 3D printers."
-msgstr "Ultimaker 3D yazıcılarınız için optimize edilmiş malzeme profillerini seçin ve yükleyin."
+msgstr "UltiMaker 3D yazıcılarınız için optimize edilmiş malzeme profillerini seçin ve yükleyin."
 
 #: plugins/Marketplace/resources/qml/MultipleLicenseDialog.qml:35
 msgctxt "@label"
@@ -2348,22 +2348,22 @@ msgstr "Eklentileri Yükle"
 #: plugins/Marketplace/resources/qml/Plugins.qml:12
 msgctxt "@text"
 msgid "Streamline your workflow and customize your UltiMaker Cura experience with plugins contributed by our amazing community of users."
-msgstr "Muhteşem kullanıcı topluluğumuzun katkıda bulunduğu eklentilerle iş akışınızı kolaylaştırın ve Ultimaker Cura deneyiminizi kendinize uygun hale getirin."
+msgstr "Muhteşem kullanıcı topluluğumuzun katkıda bulunduğu eklentilerle iş akışınızı kolaylaştırın ve UltiMaker Cura deneyiminizi kendinize uygun hale getirin."
 
 #: plugins/Marketplace/resources/qml/VerifiedIcon.qml:21
 msgctxt "@info"
 msgid "UltiMaker Verified Plug-in"
-msgstr "Ultimaker Tarafından Doğrulanmış Eklenti"
+msgstr "UltiMaker Tarafından Doğrulanmış Eklenti"
 
 #: plugins/Marketplace/resources/qml/VerifiedIcon.qml:22
 msgctxt "@info"
 msgid "UltiMaker Certified Material"
-msgstr "Ultimaker Sertifikalı Malzeme"
+msgstr "UltiMaker Sertifikalı Malzeme"
 
 #: plugins/Marketplace/resources/qml/VerifiedIcon.qml:23
 msgctxt "@info"
 msgid "UltiMaker Verified Package"
-msgstr "Ultimaker Tarafından Doğrulanmış Paket"
+msgstr "UltiMaker Tarafından Doğrulanmış Paket"
 
 #: plugins/ModelChecker/ModelChecker.py:31
 msgctxt "@info:title"
@@ -2719,25 +2719,15 @@ msgstr "Nöbetçi Günlükçü"
 
 #: plugins/SimulationView/SimulationView.py:129
 msgctxt "@info:status"
-msgid "Cura does not accurately display layers when Wire Printing is enabled."
-msgstr "Kablo Yazdırma etkinleştirildiğinde Cura, katmanları doğru olarak görüntülemez."
-
-#: plugins/SimulationView/SimulationView.py:130
-msgctxt "@info:title"
-msgid "Simulation View"
-msgstr "Simülasyon Görünümü"
-
-#: plugins/SimulationView/SimulationView.py:133
-msgctxt "@info:status"
 msgid "Nothing is shown because you need to slice first."
 msgstr "Önce dilimleme yapmanız gerektiğinden hiçbir şey gösterilmez."
 
-#: plugins/SimulationView/SimulationView.py:134
+#: plugins/SimulationView/SimulationView.py:130
 msgctxt "@info:title"
 msgid "No layers to show"
 msgstr "Görüntülenecek katman yok"
 
-#: plugins/SimulationView/SimulationView.py:136
+#: plugins/SimulationView/SimulationView.py:132
 #: plugins/SolidView/SolidView.py:74
 msgctxt "@info:option_text"
 msgid "Do not show this message again"
@@ -2862,7 +2852,7 @@ msgstr "Anonim veri toplama hakkında daha fazla bilgi"
 #: plugins/SliceInfoPlugin/MoreInfoWindow.qml:73
 msgctxt "@text:window"
 msgid "UltiMaker Cura collects anonymous data in order to improve the print quality and user experience. Below is an example of all the data that is shared:"
-msgstr "Ultimaker Cura, yazdırma kalitesini ve kullanıcı deneyimini iyileştirmek için anonim veri toplar. Aşağıda, paylaşılan tüm verilerin bir örneği verilmiştir:"
+msgstr "UltiMaker Cura, yazdırma kalitesini ve kullanıcı deneyimini iyileştirmek için anonim veri toplar. Aşağıda, paylaşılan tüm verilerin bir örneği verilmiştir:"
 
 #: plugins/SliceInfoPlugin/MoreInfoWindow.qml:107
 msgctxt "@text:window"
@@ -2977,7 +2967,7 @@ msgstr "Trimesh Okuyucu"
 #: plugins/UFPReader/__init__.py:22 plugins/UFPWriter/__init__.py:28
 msgctxt "@item:inlistbox"
 msgid "UltiMaker Format Package"
-msgstr "Ultimaker Biçim Paketi"
+msgstr "UltiMaker Biçim Paketi"
 
 #: plugins/UFPReader/plugin.json
 msgctxt "description"
@@ -3009,7 +2999,7 @@ msgstr "UPF Yazıcı"
 #: plugins/UM3NetworkPrinting/plugin.json
 msgctxt "description"
 msgid "Manages network connections to UltiMaker networked printers."
-msgstr ""
+msgstr "UltiMaker ağındaki yazıcılar için ağ bağlantılarını yönetir."
 
 #: plugins/UM3NetworkPrinting/plugin.json
 msgctxt "name"
@@ -3394,12 +3384,12 @@ msgstr "Bekleniyor"
 #: plugins/UM3NetworkPrinting/resources/qml/MonitorStage.qml:117
 msgctxt "@info"
 msgid "Monitor your printers from everywhere using Ultimaker Digital Factory"
-msgstr "Ultimaker Digital Factory'yi kullanarak yazıcılarınızı her yerden izleyin"
+msgstr "Ultimaker Digital Factory’yi kullanarak yazıcılarınızı her yerden takip edin"
 
 #: plugins/UM3NetworkPrinting/resources/qml/MonitorStage.qml:129
 msgctxt "@button"
 msgid "View printers in Digital Factory"
-msgstr "Digital Factory’deki yazıcıları görüntüle"
+msgstr "Yazıcıları Digital Factory’de görüntüleyin"
 
 #: plugins/UM3NetworkPrinting/resources/qml/PrintWindow.qml:12
 msgctxt "@title:window"
@@ -3596,7 +3586,7 @@ msgstr "Grubu yapılandır"
 #: plugins/UM3NetworkPrinting/src/Messages/PrintJobAwaitingApprovalMessage.py:18
 msgctxt "@info:status"
 msgid "You will receive a confirmation via email when the print job is approved"
-msgstr "Baskı işi onaylandığında e-posta yoluyla bir onay alacaksınız"
+msgstr "Baskı işi onaylandığında e-posta üzerinden bir onay alacaksınız"
 
 #: plugins/UM3NetworkPrinting/src/Messages/PrintJobAwaitingApprovalMessage.py:19
 msgctxt "@info:title"
@@ -3606,7 +3596,7 @@ msgstr "Baskı işi başarıyla gönderildi"
 #: plugins/UM3NetworkPrinting/src/Messages/PrintJobAwaitingApprovalMessage.py:22
 msgctxt "@action"
 msgid "Manage print jobs"
-msgstr "Baskı işlerini yönet"
+msgstr "Baskı işlerini yönetin"
 
 #: plugins/UM3NetworkPrinting/src/Messages/PrintJobUploadBlockedMessage.py:15
 msgctxt "@info:status"
@@ -3688,17 +3678,17 @@ msgctxt "@action:button"
 msgid "Remove printers"
 msgstr "Yazıcıları kaldır"
 
-#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:62
+#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:63
 msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Print over network"
 msgstr "Ağ üzerinden yazdır"
 
-#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:63
+#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:64
 msgctxt "@properties:tooltip"
 msgid "Print over network"
 msgstr "Ağ üzerinden yazdır"
 
-#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:64
+#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:65
 msgctxt "@info:status"
 msgid "Connected over the network"
 msgstr "Ağ üzerinden bağlandı"
@@ -3801,7 +3791,7 @@ msgstr "Yükseltmeleri seçin"
 #: plugins/UltimakerMachineActions/UMOUpgradeSelectionMachineAction.qml:30
 msgctxt "@label"
 msgid "Please select any upgrades made to this UltiMaker Original"
-msgstr "Lütfen Ultimaker Original’e yapılan herhangi bir yükseltmeyi seçin"
+msgstr "Lütfen UltiMaker Original’e yapılan herhangi bir yükseltmeyi seçin"
 
 #: plugins/UltimakerMachineActions/UMOUpgradeSelectionMachineAction.qml:39
 msgctxt "@label"
@@ -4058,6 +4048,16 @@ msgctxt "name"
 msgid "Version Upgrade 5.2 to 5.3"
 msgstr "5.2'dan 5.3'a Sürüm Yükseltme"
 
+#: plugins/VersionUpgrade/VersionUpgrade53to54/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.3 to Cura 5.4."
+msgstr ""
+
+#: plugins/VersionUpgrade/VersionUpgrade53to54/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 5.3 to 5.4"
+msgstr ""
+
 #: plugins/X3DReader/__init__.py:13
 msgctxt "@item:inlistbox"
 msgid "X3D File"
@@ -4118,7 +4118,7 @@ msgid ""
 msgstr ""
 "- Marketplace'den malzeme profilleri ve eklentiler ekleyin\n"
 "- Malzeme profillerinizi ve eklentilerinizi yedekleyin ve senkronize edin\n"
-"- Ultimaker topluluğunda fikirlerinizi paylaşın ve 48.000'den fazla kullanıcıdan yardım alın"
+"- UltiMaker topluluğunda fikirlerinizi paylaşın ve 48.000'den fazla kullanıcıdan yardım alın"
 
 #: resources/qml/Account/GeneralOperations.qml:58
 msgctxt "@button"
@@ -4605,22 +4605,22 @@ msgstr "Yenilikler"
 #: resources/qml/Cura.qml:890
 msgctxt "@title:window"
 msgid "Save Custom Profile"
-msgstr ""
+msgstr "Özel Profili Kaydet"
 
 #: resources/qml/Cura.qml:891
 msgctxt "@textfield:placeholder"
 msgid "New Custom Profile"
-msgstr ""
+msgstr "Yeni Özel Profil"
 
 #: resources/qml/Cura.qml:892
 msgctxt "@info"
 msgid "Custom profile name:"
-msgstr ""
+msgstr "Özel profil adı:"
 
 #: resources/qml/Cura.qml:909
 msgctxt "@label %i will be replaced with a profile name"
 msgid "<b>Only user changed settings will be saved in the custom profile.</b><br/>For materials that support it, the new custom profile will inherit properties from <b>%1</b>."
-msgstr "<b>Özel profile yalnızca kullanıcı tarafından değiştirilen ayarlar kaydedilir.</b><br/>Yeni özel profil, bunu destekleyen malzemeler için gerekli özellikleri <b>%1</b> adresinden devralır."
+msgstr "<b>Özel profilde yalnızca kullanıcı tarafından değiştirilen ayarlar kaydedilir.</b><br/>Yeni özel profil, bunu destekleyen malzemeler için <b>%1</b>adresindeki özellikleri devralır."
 
 #: resources/qml/Cura.qml:917
 msgctxt "@action:button"
@@ -4630,7 +4630,7 @@ msgstr "Cura baskı profilleri hakkında daha fazla bilgi edinin"
 #: resources/qml/Cura.qml:926
 msgctxt "@button"
 msgid "Save new profile"
-msgstr ""
+msgstr "Yeni profil kaydet"
 
 #: resources/qml/Dialogs/AboutDialog.qml:15
 msgctxt "@title:window The argument is the application name."
@@ -4855,7 +4855,7 @@ msgstr "Modelleri içe aktar"
 #: resources/qml/Dialogs/ChoosePrinterDialog.qml:17
 msgctxt "@title:window"
 msgid "Select Printer"
-msgstr "Yazıcı Seç"
+msgstr "Yazıcı seçin"
 
 #: resources/qml/Dialogs/ChoosePrinterDialog.qml:54
 msgctxt "@title:label"
@@ -4919,12 +4919,12 @@ msgstr "Değişiklikleri tut"
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:171
 msgctxt "@action:button"
 msgid "Save as new custom profile"
-msgstr ""
+msgstr "Yeni özel profil olarak kaydet"
 
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:178
 msgctxt "@action:button"
 msgid "Save changes"
-msgstr ""
+msgstr "Değişiklikleri kaydet"
 
 #: resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:47
 msgctxt "@text:window"
@@ -5074,14 +5074,14 @@ msgid_plural "Print Selected Models With:"
 msgstr[0] "Seçili Modeli Şununla Yazdır:"
 msgstr[1] "Seçili Modelleri Şununla Yazdır:"
 
-#: resources/qml/Menus/ContextMenu.qml:92
+#: resources/qml/Menus/ContextMenu.qml:103
 msgctxt "@title:window"
 msgid "Multiply Selected Model"
 msgid_plural "Multiply Selected Models"
 msgstr[0] "Seçili Modeli Çoğalt"
 msgstr[1] "Seçili Modelleri Çoğalt"
 
-#: resources/qml/Menus/ContextMenu.qml:123
+#: resources/qml/Menus/ContextMenu.qml:134
 msgctxt "@label"
 msgid "Number of Copies"
 msgstr "Kopya Sayısı"
@@ -5352,7 +5352,7 @@ msgstr "Otomatik olarak dilimle"
 #: resources/qml/Preferences/GeneralPage.qml:340
 msgctxt "@info:tooltip"
 msgid "Show an icon and notifications in the system notification area."
-msgstr "Sistem bildirim alanında bir simge ve bildirim göster."
+msgstr "Sistem bildirim alanında bir simge ve bildirimler gösterin."
 
 #: resources/qml/Preferences/GeneralPage.qml:348
 msgctxt "@option:check"
@@ -5626,7 +5626,7 @@ msgstr "Gizlilik"
 #: resources/qml/Preferences/GeneralPage.qml:862
 msgctxt "@info:tooltip"
 msgid "Should anonymous data about your print be sent to UltiMaker? Note, no models, IP addresses or other personally identifiable information is sent or stored."
-msgstr "Yazdırmanızdaki anonim veriler Ultimaker’a gönderilmeli mi? Unutmayın; hiçbir model, IP adresi veya diğer kişiye özgü bilgiler gönderilmez veya saklanmaz."
+msgstr "Yazdırmanızdaki anonim veriler UltiMaker’a gönderilmeli mi? Unutmayın; hiçbir model, IP adresi veya diğer kişiye özgü bilgiler gönderilmez veya saklanmaz."
 
 #: resources/qml/Preferences/GeneralPage.qml:867
 msgctxt "@option:check"
@@ -6204,12 +6204,12 @@ msgstr "Kapalı"
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:65
 msgctxt "@info, %1 is the name of the custom profile"
 msgid "<b>%1</b> custom profile is active and you overwrote some settings."
-msgstr "<b>%1</b> özel profili etkin ve bazı ayarların üzerine yazdınız."
+msgstr "<b>%1</b> özel profil etkin ve bazı ayarların üzerine yazdınız."
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:78
 msgctxt "@info, %1 is the name of the custom profile"
 msgid "<b>%1</b> custom profile is overriding some settings."
-msgstr "<b>%1</b> özel profili bazı ayarları geçersiz kılıyor."
+msgstr "<b>%1</b> özel profil, bazı ayarları geçersiz kılıyor."
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:92
 msgctxt "@info %1 is the name of a profile"
@@ -6229,7 +6229,7 @@ msgstr "Varsayılanlara sıfırla."
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:178
 msgctxt "@info"
 msgid "Compare and save."
-msgstr "Karşılaştır ve kaydet."
+msgstr "Karşılaştırın ve tasarruf edin."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedAdhesionSelector.qml:15
 msgctxt "@label"
@@ -6244,12 +6244,12 @@ msgstr "Bir kenar veya radye yazdırın. Bu nesnenizin etrafına veya altına da
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:102
 msgctxt "@label"
 msgid "Recommended print settings"
-msgstr ""
+msgstr "Tavsiye edilen baskı ayarları"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:111
 msgctxt "@button"
 msgid "Show Custom"
-msgstr ""
+msgstr "Özeli Göster"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedResolutionSelector.qml:27
 msgctxt "@label"
@@ -6269,7 +6269,7 @@ msgstr "Aşağıdaki ayarlar parçanızın sağlamlığını tanımlar."
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:34
 msgctxt "infill_sparse_density description"
 msgid "Infill Density"
-msgstr ""
+msgstr "Dolgu Yoğunluğu"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:35
 msgctxt "@label"
@@ -6292,7 +6292,7 @@ msgid ""
 "\n"
 "For functional 3D prints which require high strength in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
 msgstr ""
-"Baskının dolgu malzemesinin deseni:\n"
+"Baskı dolgu malzemesinin deseni:\n"
 "\n"
 "İşlevsel olmayan modellerin hızlı baskıları için çizgi, zikzak veya aydınlatma dolgusunu seçin.\n"
 "\n"
@@ -6303,7 +6303,7 @@ msgstr ""
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:67
 msgctxt "@action:label"
 msgid "Shell Thickness"
-msgstr ""
+msgstr "Katman Kalınlığı"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:68
 msgctxt "@label"
@@ -6318,12 +6318,12 @@ msgstr "Destek"
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:21
 msgctxt "@label"
 msgid "Generate structures to support parts of the model which have overhangs. Without these structures, these parts would collapse during printing."
-msgstr ""
+msgstr "Modelde çıkıntılı olan kısımlarını desteklemek için yapılar oluşturun. Bu yapılar olmadan, bu parçalar baskı sırasında çökecektir."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:40
 msgctxt "@action:label"
 msgid "Support Type"
-msgstr ""
+msgstr "Destek Türü"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:41
 msgctxt "@label"
@@ -6338,7 +6338,7 @@ msgstr "Destek oluşturmak için kullanılabilir teknikler arasından seçim yap
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:53
 msgctxt "@action:label"
 msgid "Print with"
-msgstr ""
+msgstr "Şununla yazdır:"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:54
 msgctxt "@label"
@@ -6698,22 +6698,22 @@ msgctxt "@button"
 msgid "Add printer manually"
 msgstr "Yazıcıyı manuel olarak ekle"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:203
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:214
 msgctxt "@label"
 msgid "Manufacturer"
 msgstr "Üretici"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:214
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:225
 msgctxt "@label"
 msgid "Profile author"
 msgstr "Profil sahibi"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:226
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:237
 msgctxt "@label"
 msgid "Printer name"
 msgstr "Yazıcı adı"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:232
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:243
 msgctxt "@text"
 msgid "Please name your printer"
 msgstr "Lütfen yazıcınızı adlandırın"
@@ -6792,12 +6792,12 @@ msgstr "Ağ dışı bir yazıcı ekleyin"
 #: resources/qml/WelcomePages/AddThirdPartyPrinter.qml:102
 msgctxt "@button"
 msgid "Add UltiMaker printer via Digital Factory"
-msgstr ""
+msgstr "Digital Factory üzerinden UltiMaker yazıcı ekle"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:29
 msgctxt "@label"
 msgid "In order to start using Cura you will need to configure a printer."
-msgstr ""
+msgstr "Cura’yı kullanmaya başlamak için bir yazıcı yapılandırmanız gerekir."
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:36
 msgctxt "@label"
@@ -6807,12 +6807,12 @@ msgstr "Hangi yazıcıyı kurmak istersiniz?"
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:55
 msgctxt "@button"
 msgid "UltiMaker printer"
-msgstr ""
+msgstr "UltiMaker yazıcı"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:64
 msgctxt "@button"
 msgid "Non UltiMaker printer"
-msgstr ""
+msgstr "UltiMaker olmayan yazıcı"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:73
 msgctxt "@button"
@@ -6827,7 +6827,7 @@ msgstr "Yazıcı Ekle"
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:33
 msgctxt "@label"
 msgid "New UltiMaker printers can be connected to Digital Factory and monitored remotely."
-msgstr ""
+msgstr "Yeni UltiMaker yazıcılar Digital Factory’ye bağlanabilir ve uzaktan izlenebilir."
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:70
 msgctxt "@label"
@@ -6837,7 +6837,7 @@ msgstr "Cura’ya yeni bir UltiMaker yazıcı eklemeye çalışıyorsanız"
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:80
 msgctxt "@info"
 msgid "Sign in into UltiMaker Digital Factory"
-msgstr ""
+msgstr "Ultimaker Digital Factory’ye giriş yapın"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:81
 msgctxt "@info"
@@ -6847,7 +6847,7 @@ msgstr "Yeni bir yazıcı eklemek için prosedürü takip edin"
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:82
 msgctxt "@info"
 msgid "Your new printer will automatically appear in Cura"
-msgstr "Yeni yazıcınız otomatik olarak Cura’da görünecektir"
+msgstr "Yeni yazıcınız Cura’da otomatik olarak görünecektir"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:100
 msgctxt "@button"
@@ -6857,17 +6857,17 @@ msgstr "Daha fazla bilgi edinin"
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:121
 msgctxt "@button"
 msgid "Add local printer"
-msgstr ""
+msgstr "Yerel yazıcı ekleyin"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:129
 msgctxt "@button"
 msgid "Sign in to Digital Factory"
-msgstr ""
+msgstr "Digital Factory’de oturum aç"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:133
 msgctxt "@button"
 msgid "Waiting for new printers"
-msgstr ""
+msgstr "Yeni yazıcılar bekleniyor"
 
 #: resources/qml/WelcomePages/ChangelogContent.qml:24
 msgctxt "@label"
@@ -6923,3 +6923,11 @@ msgstr "Yenilikler"
 msgctxt "@label"
 msgid "No items to select from"
 msgstr "Seçilecek öğe yok"
+
+#~ msgctxt "@info:status"
+#~ msgid "Cura does not accurately display layers when Wire Printing is enabled."
+#~ msgstr "Kablo Yazdırma etkinleştirildiğinde Cura, katmanları doğru olarak görüntülemez."
+
+#~ msgctxt "@info:title"
+#~ msgid "Simulation View"
+#~ msgstr "Simülasyon Görünümü"

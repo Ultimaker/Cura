@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-15 11:58+0000\n"
+"POT-Creation-Date: 2023-06-02 11:57+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -429,22 +429,22 @@ msgctxt "@message"
 msgid "Could not read response."
 msgstr "No se ha podido leer la respuesta."
 
-#: cura/OAuth2/AuthorizationRequestHandler.py:75
+#: cura/OAuth2/AuthorizationRequestHandler.py:77
 msgctxt "@message"
 msgid "The provided state is not correct."
 msgstr "El estado indicado no es correcto."
 
-#: cura/OAuth2/AuthorizationRequestHandler.py:80
+#: cura/OAuth2/AuthorizationRequestHandler.py:83
 msgctxt "@message"
 msgid "Timeout when authenticating with the account server."
 msgstr "Se agotó el tiempo de autenticación con el servidor de la cuenta."
 
-#: cura/OAuth2/AuthorizationRequestHandler.py:97
+#: cura/OAuth2/AuthorizationRequestHandler.py:101
 msgctxt "@message"
 msgid "Please give the required permissions when authorizing this application."
 msgstr "Conceda los permisos necesarios al autorizar esta aplicación."
 
-#: cura/OAuth2/AuthorizationRequestHandler.py:104
+#: cura/OAuth2/AuthorizationRequestHandler.py:109
 msgctxt "@message"
 msgid "Something unexpected happened when trying to log in, please try again."
 msgstr "Se ha producido un problema al intentar iniciar sesión, vuelva a intentarlo."
@@ -811,18 +811,18 @@ msgctxt "@text"
 msgid "Unknown error."
 msgstr "Error desconocido."
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:547
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:558
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> contains an unknown machine type <message>{1}</message>. Cannot import the machine. Models will be imported instead."
 msgstr "El archivo del proyecto <filename>{0}</filename> contiene un tipo de máquina desconocida <message>{1}</message>. No se puede importar la máquina, en su lugar, se importarán los modelos."
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:550
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:561
 msgctxt "@info:title"
 msgid "Open Project File"
 msgstr "Abrir archivo de proyecto"
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:631
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:642
 #: plugins/3MFReader/WorkspaceDialog.qml:99
 #: plugins/3MFReader/WorkspaceDialog.qml:127
 #: plugins/3MFReader/WorkspaceDialog.qml:134
@@ -830,27 +830,27 @@ msgctxt "@button"
 msgid "Create new"
 msgstr "Crear nuevo"
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:681
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:692
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is suddenly inaccessible: <message>{1}</message>."
 msgstr "El archivo de proyecto <filename>{0}</filename> está repentinamente inaccesible: <message>{1}</message>."
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:682
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:690
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:709
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:693
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:701
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:720
 msgctxt "@info:title"
 msgid "Can't Open Project File"
 msgstr "No se puede abrir el archivo de proyecto"
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:689
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:707
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:700
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:718
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>."
 msgstr "El archivo de proyecto <filename>{0}</filename> está dañado: <message>{1}</message>."
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:754
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:765
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
 msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura."
@@ -924,7 +924,7 @@ msgstr "Grupo de impresoras"
 #: plugins/3MFReader/WorkspaceDialog.qml:103
 msgctxt "@action:label"
 msgid "Open With"
-msgstr ""
+msgstr "Abrir con"
 
 #: plugins/3MFReader/WorkspaceDialog.qml:104
 msgctxt "@info:tooltip"
@@ -1925,17 +1925,17 @@ msgctxt "@label"
 msgid "Number of Extruders"
 msgstr "Número de extrusores"
 
-#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:341
+#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:342
 msgctxt "@label"
 msgid "Apply Extruder offsets to GCode"
 msgstr "Aplicar compensaciones del extrusor a GCode"
 
-#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:389
+#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:390
 msgctxt "@title:label"
 msgid "Start G-code"
 msgstr "Iniciar GCode"
 
-#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:400
+#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:401
 msgctxt "@title:label"
 msgid "End G-code"
 msgstr "Finalizar GCode"
@@ -2718,25 +2718,15 @@ msgstr "Registro de Sentry"
 
 #: plugins/SimulationView/SimulationView.py:129
 msgctxt "@info:status"
-msgid "Cura does not accurately display layers when Wire Printing is enabled."
-msgstr "Cura no muestra correctamente las capas si la impresión de alambre está habilitada."
-
-#: plugins/SimulationView/SimulationView.py:130
-msgctxt "@info:title"
-msgid "Simulation View"
-msgstr "Vista de simulación"
-
-#: plugins/SimulationView/SimulationView.py:133
-msgctxt "@info:status"
 msgid "Nothing is shown because you need to slice first."
 msgstr "No se muestra nada porque primero hay que cortar."
 
-#: plugins/SimulationView/SimulationView.py:134
+#: plugins/SimulationView/SimulationView.py:130
 msgctxt "@info:title"
 msgid "No layers to show"
 msgstr "No hay capas para mostrar"
 
-#: plugins/SimulationView/SimulationView.py:136
+#: plugins/SimulationView/SimulationView.py:132
 #: plugins/SolidView/SolidView.py:74
 msgctxt "@info:option_text"
 msgid "Do not show this message again"
@@ -3603,7 +3593,7 @@ msgstr "El trabajo de impresión se ha enviado correctamente"
 #: plugins/UM3NetworkPrinting/src/Messages/PrintJobAwaitingApprovalMessage.py:22
 msgctxt "@action"
 msgid "Manage print jobs"
-msgstr "Gestionar trabajos de impresión"
+msgstr "Administrar trabajos de impresión"
 
 #: plugins/UM3NetworkPrinting/src/Messages/PrintJobUploadBlockedMessage.py:15
 msgctxt "@info:status"
@@ -3685,17 +3675,17 @@ msgctxt "@action:button"
 msgid "Remove printers"
 msgstr "Eliminar impresoras"
 
-#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:62
+#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:63
 msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Print over network"
 msgstr "Imprimir a través de la red"
 
-#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:63
+#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:64
 msgctxt "@properties:tooltip"
 msgid "Print over network"
 msgstr "Imprime a través de la red"
 
-#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:64
+#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:65
 msgctxt "@info:status"
 msgid "Connected over the network"
 msgstr "Conectado a través de la red"
@@ -4054,6 +4044,16 @@ msgstr "Actualiza la configuración de Cura 5.2 a Cura 5.3."
 msgctxt "name"
 msgid "Version Upgrade 5.2 to 5.3"
 msgstr "Actualización de la versión 5.2 a la 5.3"
+
+#: plugins/VersionUpgrade/VersionUpgrade53to54/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.3 to Cura 5.4."
+msgstr ""
+
+#: plugins/VersionUpgrade/VersionUpgrade53to54/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 5.3 to 5.4"
+msgstr ""
 
 #: plugins/X3DReader/__init__.py:13
 msgctxt "@item:inlistbox"
@@ -4602,17 +4602,17 @@ msgstr "Novedades"
 #: resources/qml/Cura.qml:890
 msgctxt "@title:window"
 msgid "Save Custom Profile"
-msgstr ""
+msgstr "Guardar perfil personalizado"
 
 #: resources/qml/Cura.qml:891
 msgctxt "@textfield:placeholder"
 msgid "New Custom Profile"
-msgstr ""
+msgstr "Nuevo perfil personalizado"
 
 #: resources/qml/Cura.qml:892
 msgctxt "@info"
 msgid "Custom profile name:"
-msgstr ""
+msgstr "Nombre del perfil personalizado:"
 
 #: resources/qml/Cura.qml:909
 msgctxt "@label %i will be replaced with a profile name"
@@ -4627,7 +4627,7 @@ msgstr "Más información sobre los perfiles de impresión de Cura"
 #: resources/qml/Cura.qml:926
 msgctxt "@button"
 msgid "Save new profile"
-msgstr ""
+msgstr "Guardar nuevo perfil"
 
 #: resources/qml/Dialogs/AboutDialog.qml:15
 msgctxt "@title:window The argument is the application name."
@@ -4916,12 +4916,12 @@ msgstr "Mantener los cambios"
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:171
 msgctxt "@action:button"
 msgid "Save as new custom profile"
-msgstr ""
+msgstr "Guardar como nuevo perfil personalizado"
 
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:178
 msgctxt "@action:button"
 msgid "Save changes"
-msgstr ""
+msgstr "Guardar cambios"
 
 #: resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:47
 msgctxt "@text:window"
@@ -5071,14 +5071,14 @@ msgid_plural "Print Selected Models With:"
 msgstr[0] "Imprimir modelo seleccionado con:"
 msgstr[1] "Imprimir modelos seleccionados con:"
 
-#: resources/qml/Menus/ContextMenu.qml:92
+#: resources/qml/Menus/ContextMenu.qml:103
 msgctxt "@title:window"
 msgid "Multiply Selected Model"
 msgid_plural "Multiply Selected Models"
 msgstr[0] "Multiplicar modelo seleccionado"
 msgstr[1] "Multiplicar modelos seleccionados"
 
-#: resources/qml/Menus/ContextMenu.qml:123
+#: resources/qml/Menus/ContextMenu.qml:134
 msgctxt "@label"
 msgid "Number of Copies"
 msgstr "Número de copias"
@@ -6201,12 +6201,12 @@ msgstr "Apagado"
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:65
 msgctxt "@info, %1 is the name of the custom profile"
 msgid "<b>%1</b> custom profile is active and you overwrote some settings."
-msgstr "el perfil personalizado <b>%1</b> está activo y ha sobrescrito algunos ajustes."
+msgstr "El perfil personalizado <b>%1</b> está activo y ha sobrescrito algunos ajustes."
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:78
 msgctxt "@info, %1 is the name of the custom profile"
 msgid "<b>%1</b> custom profile is overriding some settings."
-msgstr "El perfil personalizado <b>%1</b> está sobreescribiendo algunos ajustes."
+msgstr "El perfil personalizado <b>%1</b> anula algunos ajustes."
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:92
 msgctxt "@info %1 is the name of a profile"
@@ -6221,12 +6221,12 @@ msgstr ""
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:137
 msgctxt "@info"
 msgid "Reset to defaults."
-msgstr "Restablecer los valores predeterminados."
+msgstr "Restablecer los valores por defecto."
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:178
 msgctxt "@info"
 msgid "Compare and save."
-msgstr "Compare y ahorre."
+msgstr "Comparar y guardar."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedAdhesionSelector.qml:15
 msgctxt "@label"
@@ -6241,12 +6241,12 @@ msgstr "Habilita la impresión de un borde o una balsa. Esta opción agregará u
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:102
 msgctxt "@label"
 msgid "Recommended print settings"
-msgstr ""
+msgstr "Ajustes de impresión recomendados"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:111
 msgctxt "@button"
 msgid "Show Custom"
-msgstr ""
+msgstr "Mostrar personalización"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedResolutionSelector.qml:27
 msgctxt "@label"
@@ -6266,7 +6266,7 @@ msgstr "Los siguientes ajustes definen la resistencia de la pieza."
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:34
 msgctxt "infill_sparse_density description"
 msgid "Infill Density"
-msgstr ""
+msgstr "Densidad de relleno"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:35
 msgctxt "@label"
@@ -6300,7 +6300,7 @@ msgstr ""
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:67
 msgctxt "@action:label"
 msgid "Shell Thickness"
-msgstr ""
+msgstr "Grosor del perímetro"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:68
 msgctxt "@label"
@@ -6320,7 +6320,7 @@ msgstr "Generar estructuras para soportar piezas del modelo que tengan voladizos
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:40
 msgctxt "@action:label"
 msgid "Support Type"
-msgstr ""
+msgstr "Tipo de soporte"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:41
 msgctxt "@label"
@@ -6330,12 +6330,7 @@ msgid ""
 "\"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. \n"
 "\n"
 "\"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
-msgstr ""
-"Elige entre las tcnicas disponibles para generar soporte. \n"
-"\n"
-"El soporte \"Normal\" crea una estructura de soporte directamente debajo de las partes en voladizo y lleva estas reas hacia abajo. \n"
-"\n"
-"El soporte en \"rbol\" crea ramas en las reas en voladizo que sostienen el modelo al final de estas ramas y permite que las ramas se arrastren alrededor del modelo para sostenerlo tanto como sea posible en la placa de impresión."
+msgstr "Elige entre las técnicas disponibles para generar soporte. El soporte \"Normal\" crea una estructura de soporte directamente debajo de las partes en voladizo y lleva estas áreas hacia abajo. El soporte en \"Árbol\" crea ramas en las áreas en voladizo que sostienen el modelo al final de estas ramas y permite que las ramas se arrastren alrededor del modelo para sostenerlo tanto como sea posible en la placa de impresión."
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:53
 msgctxt "@action:label"
@@ -6700,22 +6695,22 @@ msgctxt "@button"
 msgid "Add printer manually"
 msgstr "Añadir impresora manualmente"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:203
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:214
 msgctxt "@label"
 msgid "Manufacturer"
 msgstr "Fabricante"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:214
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:225
 msgctxt "@label"
 msgid "Profile author"
 msgstr "Autor del perfil"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:226
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:237
 msgctxt "@label"
 msgid "Printer name"
 msgstr "Nombre de la impresora"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:232
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:243
 msgctxt "@text"
 msgid "Please name your printer"
 msgstr "Asigne un nombre a su impresora"
@@ -6794,12 +6789,12 @@ msgstr "Agregar una impresora fuera de red"
 #: resources/qml/WelcomePages/AddThirdPartyPrinter.qml:102
 msgctxt "@button"
 msgid "Add UltiMaker printer via Digital Factory"
-msgstr ""
+msgstr "Añadir impresora UltiMaker a través de Digital Factory"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:29
 msgctxt "@label"
 msgid "In order to start using Cura you will need to configure a printer."
-msgstr ""
+msgstr "Para empezar a utilizar Cura, deberá configurar una impresora."
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:36
 msgctxt "@label"
@@ -6829,7 +6824,7 @@ msgstr "Agregar impresora"
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:33
 msgctxt "@label"
 msgid "New UltiMaker printers can be connected to Digital Factory and monitored remotely."
-msgstr ""
+msgstr "Las nuevas impresoras UltiMaker pueden conectarse a Digital Factory y supervisarse a distancia."
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:70
 msgctxt "@label"
@@ -6839,7 +6834,7 @@ msgstr "Si está intentando añadir una nueva impresora UltiMaker a Cura"
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:80
 msgctxt "@info"
 msgid "Sign in into UltiMaker Digital Factory"
-msgstr ""
+msgstr "Inicie sesión en UltiMaker Digital Factory"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:81
 msgctxt "@info"
@@ -6849,7 +6844,7 @@ msgstr "Siga el procedimiento para añadir una nueva impresora"
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:82
 msgctxt "@info"
 msgid "Your new printer will automatically appear in Cura"
-msgstr "La nueva impresora aparecerá automáticamente en Cura"
+msgstr "Su nueva impresora aparecerá automáticamente en Cura"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:100
 msgctxt "@button"
@@ -6859,17 +6854,17 @@ msgstr "Más Información"
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:121
 msgctxt "@button"
 msgid "Add local printer"
-msgstr ""
+msgstr "Añadir impresora local"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:129
 msgctxt "@button"
 msgid "Sign in to Digital Factory"
-msgstr ""
+msgstr "Iniciar sesión en Digital Factory"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:133
 msgctxt "@button"
 msgid "Waiting for new printers"
-msgstr ""
+msgstr "A la espera de nuevas impresoras"
 
 #: resources/qml/WelcomePages/ChangelogContent.qml:24
 msgctxt "@label"
@@ -6926,6 +6921,10 @@ msgctxt "@label"
 msgid "No items to select from"
 msgstr "No hay elementos para seleccionar"
 
+#~ msgctxt "@info:status"
+#~ msgid "Cura does not accurately display layers when Wire Printing is enabled."
+#~ msgstr "Cura no muestra correctamente las capas si la impresión de alambre está habilitada."
+
 #~ msgctxt "description"
 #~ msgid "Manages extensions to the application and allows browsing extensions from the Ultimaker website."
 #~ msgstr "Gestiona las extensiones de la aplicación y permite navegar por las extensiones desde el sitio web de Ultimaker."
@@ -6937,6 +6936,10 @@ msgstr "No hay elementos para seleccionar"
 #~ msgctxt "@description"
 #~ msgid "Please sign in to get verified plugins and materials for Ultimaker Cura Enterprise"
 #~ msgstr "Inicie sesión para obtener complementos y materiales verificados para Ultimaker Cura Enterprise"
+
+#~ msgctxt "@info:title"
+#~ msgid "Simulation View"
+#~ msgstr "Vista de simulación"
 
 #~ msgctxt "name"
 #~ msgid "Ultimaker Network Connection"

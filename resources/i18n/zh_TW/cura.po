@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-15 11:58+0000\n"
+"POT-Creation-Date: 2023-06-02 11:57+0000\n"
 "PO-Revision-Date: 2022-01-02 19:59+0800\n"
 "Last-Translator: Valen Chang  <carf17771@gmail.com>\n"
 "Language-Team: Valen Chang <carf17771@gmail.com>\n"
@@ -430,22 +430,22 @@ msgctxt "@message"
 msgid "Could not read response."
 msgstr "雲端沒有讀取回應。"
 
-#: cura/OAuth2/AuthorizationRequestHandler.py:75
+#: cura/OAuth2/AuthorizationRequestHandler.py:77
 msgctxt "@message"
 msgid "The provided state is not correct."
 msgstr "提供的狀態不正確。"
 
-#: cura/OAuth2/AuthorizationRequestHandler.py:80
+#: cura/OAuth2/AuthorizationRequestHandler.py:83
 msgctxt "@message"
 msgid "Timeout when authenticating with the account server."
 msgstr "在向帳戶伺服器進行身分驗證時逾時."
 
-#: cura/OAuth2/AuthorizationRequestHandler.py:97
+#: cura/OAuth2/AuthorizationRequestHandler.py:101
 msgctxt "@message"
 msgid "Please give the required permissions when authorizing this application."
 msgstr "核准此應用程式時，請給予所需的權限。"
 
-#: cura/OAuth2/AuthorizationRequestHandler.py:104
+#: cura/OAuth2/AuthorizationRequestHandler.py:109
 msgctxt "@message"
 msgid "Something unexpected happened when trying to log in, please try again."
 msgstr "嘗試登入時出現意外狀況，請再試一次。"
@@ -812,18 +812,18 @@ msgctxt "@text"
 msgid "Unknown error."
 msgstr "未知的錯誤."
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:547
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:558
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> contains an unknown machine type <message>{1}</message>. Cannot import the machine. Models will be imported instead."
 msgstr "專案檔案 <filename>{0}</filename> 包含未知的機器類型 <message>{1}</message>。機器無法被匯入，但模型將被匯入。"
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:550
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:561
 msgctxt "@info:title"
 msgid "Open Project File"
 msgstr "開啟專案檔案"
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:631
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:642
 #: plugins/3MFReader/WorkspaceDialog.qml:99
 #: plugins/3MFReader/WorkspaceDialog.qml:127
 #: plugins/3MFReader/WorkspaceDialog.qml:134
@@ -831,27 +831,27 @@ msgctxt "@button"
 msgid "Create new"
 msgstr ""
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:681
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:692
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is suddenly inaccessible: <message>{1}</message>."
 msgstr "專案檔案 <filename>{0}</filename> 無法存取：<message>{1}</message>。"
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:682
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:690
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:709
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:693
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:701
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:720
 msgctxt "@info:title"
 msgid "Can't Open Project File"
 msgstr "無法開啟專案檔案"
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:689
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:707
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:700
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:718
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>."
 msgstr "專案檔案<filename>{0}</filename> 已毀損 : <message>{1}</message>."
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:754
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:765
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
 msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura."
@@ -1924,17 +1924,17 @@ msgctxt "@label"
 msgid "Number of Extruders"
 msgstr "擠出機數目"
 
-#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:341
+#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:342
 msgctxt "@label"
 msgid "Apply Extruder offsets to GCode"
 msgstr "將擠出機偏移設定至Gcode"
 
-#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:389
+#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:390
 msgctxt "@title:label"
 msgid "Start G-code"
 msgstr "起始 G-code"
 
-#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:400
+#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:401
 msgctxt "@title:label"
 msgid "End G-code"
 msgstr "結束 G-code"
@@ -2716,25 +2716,15 @@ msgstr "哨兵記錄器"
 
 #: plugins/SimulationView/SimulationView.py:129
 msgctxt "@info:status"
-msgid "Cura does not accurately display layers when Wire Printing is enabled."
-msgstr "當鐵絲網列印（Wire Printing）功能開啟時，Cura 將無法準確地顯示列印層。"
-
-#: plugins/SimulationView/SimulationView.py:130
-msgctxt "@info:title"
-msgid "Simulation View"
-msgstr "模擬檢視"
-
-#: plugins/SimulationView/SimulationView.py:133
-msgctxt "@info:status"
 msgid "Nothing is shown because you need to slice first."
 msgstr "因為你還沒切片，沒有東西可顯示。"
 
-#: plugins/SimulationView/SimulationView.py:134
+#: plugins/SimulationView/SimulationView.py:130
 msgctxt "@info:title"
 msgid "No layers to show"
 msgstr "沒有列印層可顯示"
 
-#: plugins/SimulationView/SimulationView.py:136
+#: plugins/SimulationView/SimulationView.py:132
 #: plugins/SolidView/SolidView.py:74
 msgctxt "@info:option_text"
 msgid "Do not show this message again"
@@ -3678,17 +3668,17 @@ msgctxt "@action:button"
 msgid "Remove printers"
 msgstr "移除印表機"
 
-#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:62
+#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:63
 msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Print over network"
 msgstr "網路連線列印"
 
-#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:63
+#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:64
 msgctxt "@properties:tooltip"
 msgid "Print over network"
 msgstr "網路連線列印"
 
-#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:64
+#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:65
 msgctxt "@info:status"
 msgid "Connected over the network"
 msgstr "透過網路連接"
@@ -4047,6 +4037,16 @@ msgstr "將設定從 Cura 5.2 版本升級至 5.3 版本。"
 msgctxt "name"
 msgid "Version Upgrade 5.2 to 5.3"
 msgstr "升級版本 5.2 到 5.3"
+
+#: plugins/VersionUpgrade/VersionUpgrade53to54/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.3 to Cura 5.4."
+msgstr ""
+
+#: plugins/VersionUpgrade/VersionUpgrade53to54/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 5.3 to 5.4"
+msgstr ""
 
 #: plugins/X3DReader/__init__.py:13
 msgctxt "@item:inlistbox"
@@ -5060,13 +5060,13 @@ msgid "Print Selected Model With:"
 msgid_plural "Print Selected Models With:"
 msgstr[0] "列印所選模型："
 
-#: resources/qml/Menus/ContextMenu.qml:92
+#: resources/qml/Menus/ContextMenu.qml:103
 msgctxt "@title:window"
 msgid "Multiply Selected Model"
 msgid_plural "Multiply Selected Models"
 msgstr[0] "複製所選模型"
 
-#: resources/qml/Menus/ContextMenu.qml:123
+#: resources/qml/Menus/ContextMenu.qml:134
 msgctxt "@label"
 msgid "Number of Copies"
 msgstr "複製個數"
@@ -6673,22 +6673,22 @@ msgctxt "@button"
 msgid "Add printer manually"
 msgstr "手動新增印表機"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:203
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:214
 msgctxt "@label"
 msgid "Manufacturer"
 msgstr "製造商"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:214
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:225
 msgctxt "@label"
 msgid "Profile author"
 msgstr "列印參數作者"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:226
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:237
 msgctxt "@label"
 msgid "Printer name"
 msgstr "印表機名稱"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:232
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:243
 msgctxt "@text"
 msgid "Please name your printer"
 msgstr "請為你的印表機取一個名稱"
@@ -7666,6 +7666,10 @@ msgstr "沒有可選取的專案"
 #~ msgctxt "@info:status"
 #~ msgid "Cura does not accurately display layers when Wire Printing is enabled"
 #~ msgstr "當鐵絲網列印（Wire Printing）功能開啟時，Cura 將無法準確地顯示列印層（Layers）"
+
+#~ msgctxt "@info:status"
+#~ msgid "Cura does not accurately display layers when Wire Printing is enabled."
+#~ msgstr "當鐵絲網列印（Wire Printing）功能開啟時，Cura 將無法準確地顯示列印層。"
 
 #~ msgctxt "@text:window"
 #~ msgid "Cura sends anonymous data to UltiMaker in order to improve the print quality and user experience. Below is an example of all the data that is sent."
@@ -9214,6 +9218,10 @@ msgstr "沒有可選取的專案"
 #~ msgctxt "@button"
 #~ msgid "Sign out"
 #~ msgstr "登出"
+
+#~ msgctxt "@info:title"
+#~ msgid "Simulation View"
+#~ msgstr "模擬檢視"
 
 #~ msgctxt "@item:inlistbox"
 #~ msgid "Simulation view"

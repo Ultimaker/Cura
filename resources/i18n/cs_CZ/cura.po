@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-15 11:58+0000\n"
+"POT-Creation-Date: 2023-06-02 11:57+0000\n"
 "PO-Revision-Date: 2023-02-16 20:28+0100\n"
 "Last-Translator: Miroslav Šustek <sustmidown@centrum.cz>\n"
 "Language-Team: DenyCZ <www.github.com/DenyCZ>\n"
@@ -430,22 +430,22 @@ msgctxt "@message"
 msgid "Could not read response."
 msgstr "Nelze přečíst odpověď."
 
-#: cura/OAuth2/AuthorizationRequestHandler.py:75
+#: cura/OAuth2/AuthorizationRequestHandler.py:77
 msgctxt "@message"
 msgid "The provided state is not correct."
 msgstr "Poskytnutý stav není správný."
 
-#: cura/OAuth2/AuthorizationRequestHandler.py:80
+#: cura/OAuth2/AuthorizationRequestHandler.py:83
 msgctxt "@message"
 msgid "Timeout when authenticating with the account server."
 msgstr "Vypršel časový limit při autentizaci se serverem s účty."
 
-#: cura/OAuth2/AuthorizationRequestHandler.py:97
+#: cura/OAuth2/AuthorizationRequestHandler.py:101
 msgctxt "@message"
 msgid "Please give the required permissions when authorizing this application."
 msgstr "Při autorizaci této aplikace zadejte požadovaná oprávnění."
 
-#: cura/OAuth2/AuthorizationRequestHandler.py:104
+#: cura/OAuth2/AuthorizationRequestHandler.py:109
 msgctxt "@message"
 msgid "Something unexpected happened when trying to log in, please try again."
 msgstr "Při pokusu o přihlášení se stalo něco neočekávaného, zkuste to znovu."
@@ -812,18 +812,18 @@ msgctxt "@text"
 msgid "Unknown error."
 msgstr "Neznámá chyba."
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:547
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:558
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> contains an unknown machine type <message>{1}</message>. Cannot import the machine. Models will be imported instead."
 msgstr "Projektový soubor <filename>{0}</filename> obsahuje neznámý typ zařízení <message>{1}</message>. Nelze importovat zařízení. Místo toho budou importovány modely."
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:550
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:561
 msgctxt "@info:title"
 msgid "Open Project File"
 msgstr "Otevřít soubor s projektem"
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:631
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:642
 #: plugins/3MFReader/WorkspaceDialog.qml:99
 #: plugins/3MFReader/WorkspaceDialog.qml:127
 #: plugins/3MFReader/WorkspaceDialog.qml:134
@@ -831,27 +831,27 @@ msgctxt "@button"
 msgid "Create new"
 msgstr "Vytvořit nový"
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:681
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:692
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is suddenly inaccessible: <message>{1}</message>."
 msgstr "Soubor projektu <filename>{0}</filename> je neočekávaně nedostupný: <message>{1}</message>."
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:682
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:690
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:709
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:693
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:701
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:720
 msgctxt "@info:title"
 msgid "Can't Open Project File"
 msgstr "Nepovedlo se otevřít soubor projektu"
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:689
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:707
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:700
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:718
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>."
 msgstr "Soubor projektu <filename>{0}</filename> je poškozený: <message>{1}</message>."
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:754
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:765
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
 msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura."
@@ -1928,17 +1928,17 @@ msgctxt "@label"
 msgid "Number of Extruders"
 msgstr "Počet extrůderů"
 
-#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:341
+#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:342
 msgctxt "@label"
 msgid "Apply Extruder offsets to GCode"
 msgstr "Aplikovat offsety extruderu do G kódu"
 
-#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:389
+#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:390
 msgctxt "@title:label"
 msgid "Start G-code"
 msgstr "Počáteční G kód"
 
-#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:400
+#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:401
 msgctxt "@title:label"
 msgid "End G-code"
 msgstr "Ukončující G kód"
@@ -2054,7 +2054,7 @@ msgstr "Nelze se připojit k Obchodu."
 #: plugins/Marketplace/plugin.json
 msgctxt "description"
 msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
-msgstr ""
+msgstr "Spravuje rozšíření aplikace a umožňuje prohlížení rozšíření z webu UltiMaker."
 
 #: plugins/Marketplace/plugin.json
 msgctxt "name"
@@ -2722,25 +2722,15 @@ msgstr "Záznamník hlavy"
 
 #: plugins/SimulationView/SimulationView.py:129
 msgctxt "@info:status"
-msgid "Cura does not accurately display layers when Wire Printing is enabled."
-msgstr "Když je aktivován síťový tisk, Cura přesně nezobrazuje vrstvy."
-
-#: plugins/SimulationView/SimulationView.py:130
-msgctxt "@info:title"
-msgid "Simulation View"
-msgstr "Pohled simulace"
-
-#: plugins/SimulationView/SimulationView.py:133
-msgctxt "@info:status"
 msgid "Nothing is shown because you need to slice first."
 msgstr "Nic není zobrazeno, nejdříve musíte slicovat."
 
-#: plugins/SimulationView/SimulationView.py:134
+#: plugins/SimulationView/SimulationView.py:130
 msgctxt "@info:title"
 msgid "No layers to show"
 msgstr "Žádné vrstvy k zobrazení"
 
-#: plugins/SimulationView/SimulationView.py:136
+#: plugins/SimulationView/SimulationView.py:132
 #: plugins/SolidView/SolidView.py:74
 msgctxt "@info:option_text"
 msgid "Do not show this message again"
@@ -3012,12 +3002,12 @@ msgstr "Zapisovač UFP"
 #: plugins/UM3NetworkPrinting/plugin.json
 msgctxt "description"
 msgid "Manages network connections to UltiMaker networked printers."
-msgstr ""
+msgstr "Spravuje síťová připojení k síťovým tiskárnám UltiMaker."
 
 #: plugins/UM3NetworkPrinting/plugin.json
 msgctxt "name"
 msgid "UltiMaker Network Connection"
-msgstr ""
+msgstr "Síťové připojení UltiMaker"
 
 #: plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:44
 msgctxt "@title:window"
@@ -3699,17 +3689,17 @@ msgctxt "@action:button"
 msgid "Remove printers"
 msgstr "Odstranit tiskárnu"
 
-#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:62
+#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:63
 msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Print over network"
 msgstr "Tisk přes síť"
 
-#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:63
+#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:64
 msgctxt "@properties:tooltip"
 msgid "Print over network"
 msgstr "Tisk přes síť"
 
-#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:64
+#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:65
 msgctxt "@info:status"
 msgid "Connected over the network"
 msgstr "Připojeno přes síť"
@@ -3827,7 +3817,7 @@ msgstr "Poskytuje akce strojů pro stroje UltiMaker (jako je průvodce vyrovnáv
 #: plugins/UltimakerMachineActions/plugin.json
 msgctxt "name"
 msgid "UltiMaker machine actions"
-msgstr ""
+msgstr "Akce zařízení UltiMaker"
 
 #: plugins/VersionUpgrade/VersionUpgrade21to22/plugin.json
 msgctxt "description"
@@ -4068,6 +4058,16 @@ msgstr "Aktualizuje konfigurace z Cura 5.2 na Cura 5.3."
 msgctxt "name"
 msgid "Version Upgrade 5.2 to 5.3"
 msgstr "Aktualizace verze 5.2 na 5.3"
+
+#: plugins/VersionUpgrade/VersionUpgrade53to54/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.3 to Cura 5.4."
+msgstr ""
+
+#: plugins/VersionUpgrade/VersionUpgrade53to54/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 5.3 to 5.4"
+msgstr ""
 
 #: plugins/X3DReader/__init__.py:13
 msgctxt "@item:inlistbox"
@@ -4664,7 +4664,7 @@ msgid ""
 "Cura is developed by UltiMaker in cooperation with the community.\n"
 "Cura proudly uses the following open source projects:"
 msgstr ""
-"Cura vyvíjí Ultimaker B.V. ve spolupráci s komunitou.\n"
+"Cura vyvíjí UltiMaker ve spolupráci s komunitou.\n"
 "Cura hrdě používá následující open source projekty:"
 
 #: resources/qml/Dialogs/AboutDialog.qml:138
@@ -5083,7 +5083,7 @@ msgstr[0] "Tisknout vybraný model pomocí:"
 msgstr[1] "Tisknout vybrané modely pomocí:"
 msgstr[2] "Tisknout vybrané modely pomocí:"
 
-#: resources/qml/Menus/ContextMenu.qml:92
+#: resources/qml/Menus/ContextMenu.qml:103
 msgctxt "@title:window"
 msgid "Multiply Selected Model"
 msgid_plural "Multiply Selected Models"
@@ -5091,7 +5091,7 @@ msgstr[0] "Násobit vybraný model"
 msgstr[1] "Násobit vybrané modele"
 msgstr[2] "Násobit vybrané modele"
 
-#: resources/qml/Menus/ContextMenu.qml:123
+#: resources/qml/Menus/ContextMenu.qml:134
 msgctxt "@label"
 msgid "Number of Copies"
 msgstr "Počet kopií"
@@ -6716,22 +6716,22 @@ msgctxt "@button"
 msgid "Add printer manually"
 msgstr "Přidat tiskárnu manuálně"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:203
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:214
 msgctxt "@label"
 msgid "Manufacturer"
 msgstr "Výrobce"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:214
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:225
 msgctxt "@label"
 msgid "Profile author"
 msgstr "Autor profilu"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:226
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:237
 msgctxt "@label"
 msgid "Printer name"
 msgstr "Název tiskárny"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:232
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:243
 msgctxt "@text"
 msgid "Please name your printer"
 msgstr "Pojmenujte prosím svou tiskárnu"
@@ -6850,7 +6850,7 @@ msgstr "Nové tiskárny UltiMaker mohou být připojeny k Digital Factory a vzd�
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:70
 msgctxt "@label"
 msgid "If you are trying to add a new UltiMaker printer to Cura"
-msgstr "Pokud se pokoušíte přidat novou tiskárnu UltiMaker do Cury"
+msgstr "Pokud se pokoušíte přidat novou tiskárnu UltiMaker do Cura"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:80
 msgctxt "@info"
@@ -6941,3 +6941,11 @@ msgstr "Co je nového"
 msgctxt "@label"
 msgid "No items to select from"
 msgstr "Není z čeho vybírat"
+
+#~ msgctxt "@info:status"
+#~ msgid "Cura does not accurately display layers when Wire Printing is enabled."
+#~ msgstr "Když je aktivován síťový tisk, Cura přesně nezobrazuje vrstvy."
+
+#~ msgctxt "@info:title"
+#~ msgid "Simulation View"
+#~ msgstr "Pohled simulace"

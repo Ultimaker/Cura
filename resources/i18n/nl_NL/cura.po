@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-15 11:58+0000\n"
+"POT-Creation-Date: 2023-06-02 11:57+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -430,22 +430,22 @@ msgctxt "@message"
 msgid "Could not read response."
 msgstr "Kan het antwoord niet lezen."
 
-#: cura/OAuth2/AuthorizationRequestHandler.py:75
+#: cura/OAuth2/AuthorizationRequestHandler.py:77
 msgctxt "@message"
 msgid "The provided state is not correct."
 msgstr "De opgegeven status is niet juist."
 
-#: cura/OAuth2/AuthorizationRequestHandler.py:80
+#: cura/OAuth2/AuthorizationRequestHandler.py:83
 msgctxt "@message"
 msgid "Timeout when authenticating with the account server."
 msgstr "Time-out tijdens verificatie bij de accountserver."
 
-#: cura/OAuth2/AuthorizationRequestHandler.py:97
+#: cura/OAuth2/AuthorizationRequestHandler.py:101
 msgctxt "@message"
 msgid "Please give the required permissions when authorizing this application."
 msgstr "Verleen de vereiste toestemmingen toe bij het autoriseren van deze toepassing."
 
-#: cura/OAuth2/AuthorizationRequestHandler.py:104
+#: cura/OAuth2/AuthorizationRequestHandler.py:109
 msgctxt "@message"
 msgid "Something unexpected happened when trying to log in, please try again."
 msgstr "Er heeft een onverwachte gebeurtenis plaatsgevonden bij het aanmelden. Probeer het opnieuw."
@@ -812,18 +812,18 @@ msgctxt "@text"
 msgid "Unknown error."
 msgstr "Onbekende fout."
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:547
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:558
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> contains an unknown machine type <message>{1}</message>. Cannot import the machine. Models will be imported instead."
 msgstr "Projectbestand <filename>{0}</filename> bevat een onbekend type machine <message>{1}</message>. Kan de machine niet importeren. In plaats daarvan worden er modellen geïmporteerd."
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:550
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:561
 msgctxt "@info:title"
 msgid "Open Project File"
 msgstr "Projectbestand Openen"
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:631
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:642
 #: plugins/3MFReader/WorkspaceDialog.qml:99
 #: plugins/3MFReader/WorkspaceDialog.qml:127
 #: plugins/3MFReader/WorkspaceDialog.qml:134
@@ -831,27 +831,27 @@ msgctxt "@button"
 msgid "Create new"
 msgstr "Nieuw maken"
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:681
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:692
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is suddenly inaccessible: <message>{1}</message>."
 msgstr "Projectbestand <filename>{0}</filename> is plotseling ontoegankelijk: <message>{1}</message>."
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:682
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:690
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:709
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:693
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:701
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:720
 msgctxt "@info:title"
 msgid "Can't Open Project File"
 msgstr "Kan projectbestand niet openen"
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:689
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:707
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:700
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:718
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>."
 msgstr "Projectbestand <filename>{0}</filename> is corrupt: <message>{1}</message>."
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:754
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:765
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
 msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura."
@@ -1926,17 +1926,17 @@ msgctxt "@label"
 msgid "Number of Extruders"
 msgstr "Aantal extruders"
 
-#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:341
+#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:342
 msgctxt "@label"
 msgid "Apply Extruder offsets to GCode"
 msgstr "Pas extruderoffsets toe op GCode"
 
-#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:389
+#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:390
 msgctxt "@title:label"
 msgid "Start G-code"
 msgstr "Start G-code"
 
-#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:400
+#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:401
 msgctxt "@title:label"
 msgid "End G-code"
 msgstr "Eind G-code"
@@ -2719,25 +2719,15 @@ msgstr "Sentrylogger"
 
 #: plugins/SimulationView/SimulationView.py:129
 msgctxt "@info:status"
-msgid "Cura does not accurately display layers when Wire Printing is enabled."
-msgstr "Als Draadprinten is ingeschakeld, geeft Cura lagen niet goed weer."
-
-#: plugins/SimulationView/SimulationView.py:130
-msgctxt "@info:title"
-msgid "Simulation View"
-msgstr "Simulatieweergave"
-
-#: plugins/SimulationView/SimulationView.py:133
-msgctxt "@info:status"
 msgid "Nothing is shown because you need to slice first."
 msgstr "Er wordt niets weergegeven omdat u eerst moet slicen."
 
-#: plugins/SimulationView/SimulationView.py:134
+#: plugins/SimulationView/SimulationView.py:130
 msgctxt "@info:title"
 msgid "No layers to show"
 msgstr "Geen lagen om weer te geven"
 
-#: plugins/SimulationView/SimulationView.py:136
+#: plugins/SimulationView/SimulationView.py:132
 #: plugins/SolidView/SolidView.py:74
 msgctxt "@info:option_text"
 msgid "Do not show this message again"
@@ -3688,17 +3678,17 @@ msgctxt "@action:button"
 msgid "Remove printers"
 msgstr "Printers verwijderen"
 
-#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:62
+#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:63
 msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Print over network"
 msgstr "Printen via netwerk"
 
-#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:63
+#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:64
 msgctxt "@properties:tooltip"
 msgid "Print over network"
 msgstr "Printen via netwerk"
 
-#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:64
+#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:65
 msgctxt "@info:status"
 msgid "Connected over the network"
 msgstr "Via het netwerk verbonden"
@@ -4057,6 +4047,16 @@ msgstr "Hiermee worden configuraties bijgewerkt van Cura 5.2 naar Cura 5.3."
 msgctxt "name"
 msgid "Version Upgrade 5.2 to 5.3"
 msgstr "Versie-upgrade van 5.2 naar 5.3"
+
+#: plugins/VersionUpgrade/VersionUpgrade53to54/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.3 to Cura 5.4."
+msgstr ""
+
+#: plugins/VersionUpgrade/VersionUpgrade53to54/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 5.3 to 5.4"
+msgstr ""
 
 #: plugins/X3DReader/__init__.py:13
 msgctxt "@item:inlistbox"
@@ -5074,14 +5074,14 @@ msgid_plural "Print Selected Models With:"
 msgstr[0] "Geselecteerd model printen met:"
 msgstr[1] "Geselecteerde modellen printen met:"
 
-#: resources/qml/Menus/ContextMenu.qml:92
+#: resources/qml/Menus/ContextMenu.qml:103
 msgctxt "@title:window"
 msgid "Multiply Selected Model"
 msgid_plural "Multiply Selected Models"
 msgstr[0] "Geselecteerd model verveelvoudigen"
 msgstr[1] "Geselecteerde modellen verveelvoudigen"
 
-#: resources/qml/Menus/ContextMenu.qml:123
+#: resources/qml/Menus/ContextMenu.qml:134
 msgctxt "@label"
 msgid "Number of Copies"
 msgstr "Aantal exemplaren"
@@ -6219,7 +6219,7 @@ msgstr "Aanbevolen instellingen (voor <b>%1</b>) zijn gewijzigd."
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:106
 msgctxt "@info %1 is the name of a profile"
 msgid "Some setting-values defined in <b>%1</b> were overridden."
-msgstr "Enkele instellingen van het huidige profiel zijn overschreven."
+msgstr ""
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:137
 msgctxt "@info"
@@ -6249,7 +6249,7 @@ msgstr "Aanbevolen print instellingen"
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:111
 msgctxt "@button"
 msgid "Show Custom"
-msgstr ""
+msgstr "Aangepast"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedResolutionSelector.qml:27
 msgctxt "@label"
@@ -6698,22 +6698,22 @@ msgctxt "@button"
 msgid "Add printer manually"
 msgstr "Printer handmatig toevoegen"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:203
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:214
 msgctxt "@label"
 msgid "Manufacturer"
 msgstr "Fabrikant"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:214
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:225
 msgctxt "@label"
 msgid "Profile author"
 msgstr "Profieleigenaar"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:226
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:237
 msgctxt "@label"
 msgid "Printer name"
 msgstr "Printernaam"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:232
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:243
 msgctxt "@text"
 msgid "Please name your printer"
 msgstr "Geef uw printer een naam"
@@ -6792,12 +6792,12 @@ msgstr "Een niet-netwerkprinter toevoegen"
 #: resources/qml/WelcomePages/AddThirdPartyPrinter.qml:102
 msgctxt "@button"
 msgid "Add UltiMaker printer via Digital Factory"
-msgstr ""
+msgstr "UltiMaker printer toevoegen via Digital Factory"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:29
 msgctxt "@label"
 msgid "In order to start using Cura you will need to configure a printer."
-msgstr ""
+msgstr "Om Cura te gebruiken moet u een printer configureren."
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:36
 msgctxt "@label"
@@ -6812,7 +6812,7 @@ msgstr "UltiMaker printer"
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:64
 msgctxt "@button"
 msgid "Non UltiMaker printer"
-msgstr ""
+msgstr "Non UltiMaker printer"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:73
 msgctxt "@button"
@@ -6924,96 +6924,10 @@ msgctxt "@label"
 msgid "No items to select from"
 msgstr "Geen items om uit te kiezen"
 
-#~ msgctxt "@label"
-#~ msgid "Add cloud printer"
-#~ msgstr "Een cloudprinter toevoegen"
+#~ msgctxt "@info:status"
+#~ msgid "Cura does not accurately display layers when Wire Printing is enabled."
+#~ msgstr "Als Draadprinten is ingeschakeld, geeft Cura lagen niet goed weer."
 
-#~ msgctxt "@label"
-#~ msgid "Aluminum"
-#~ msgstr "Aluminium"
-
-#~ msgctxt "@label"
-#~ msgid "Change build plate to %1 (This cannot be overridden)."
-#~ msgstr "Wijzig het platform naar %1 (kan niet worden overschreven)."
-
-#~ msgctxt "@text"
-#~ msgid "Data collected by UltiMaker Cura will not contain any personal information."
-#~ msgstr "De gegevens die UltiMaker Cura verzamelt, bevatten geen persoonlijke informatie."
-
-#~ msgctxt "@button"
-#~ msgid "Get started"
-#~ msgstr "Aan de slag"
-
-#~ msgctxt "@label"
-#~ msgid "Glass"
-#~ msgstr "Glas"
-
-#~ msgctxt "@label"
-#~ msgid "Gradual infill"
-#~ msgstr "Geleidelijke vulling"
-
-#~ msgctxt "@label"
-#~ msgid "Gradual infill will gradually increase the amount of infill towards the top."
-#~ msgstr "Met geleidelijke vulling neemt de hoeveelheid vulling naar boven toe."
-
-#~ msgctxt "@label"
-#~ msgid "Help us to improve UltiMaker Cura"
-#~ msgstr "Help ons UltiMaker Cura te verbeteren"
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "How should the conflict in the machine be resolved?"
-#~ msgstr "Hoe dient het conflict in de machine te worden opgelost?"
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "How should the conflict in the material be resolved?"
-#~ msgstr "Hoe dient het materiaalconflict te worden opgelost?"
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "How should the conflict in the profile be resolved?"
-#~ msgstr "Hoe dient het conflict in het profiel te worden opgelost?"
-
-#~ msgctxt "@text"
-#~ msgid "Machine types"
-#~ msgstr "Machinetypen"
-
-#~ msgctxt "@text"
-#~ msgid "Material usage"
-#~ msgstr "Materiaalgebruik"
-
-#~ msgctxt "@text"
-#~ msgid "More information"
-#~ msgstr "Meer informatie"
-
-#~ msgctxt "@text"
-#~ msgid "Number of slices"
-#~ msgstr "Aantal slices"
-
-#~ msgctxt "@text"
-#~ msgid "Please follow these steps to set up UltiMaker Cura. This will only take a few moments."
-#~ msgstr ""
-#~ "Volg deze stappen voor het instellen van\n"
-#~ "UltiMaker Cura. Dit duurt slechts even."
-
-#~ msgctxt "@description"
-#~ msgid "Please sign in to get verified plugins and materials for Ultimaker Cura Enterprise"
-#~ msgstr "Meld u aan voor geverifieerde plug-ins en materialen voor Ultimaker Cura Enterprise"
-
-#~ msgctxt "@text"
-#~ msgid "Print settings"
-#~ msgstr "Instellingen voor printen"
-
-#~ msgctxt "@info"
-#~ msgid "Some settings were changed."
-#~ msgstr "Bepaalde instellingen zijn gewijzigd."
-
-#~ msgctxt "@text"
-#~ msgid "UltiMaker Cura collects anonymous data to improve print quality and user experience, including:"
-#~ msgstr "UltiMaker Cura verzamelt anonieme gegevens om de printkwaliteit en gebruikerservaring te verbeteren, waaronder:"
-
-#~ msgctxt "@action:label"
-#~ msgid "Visible settings:"
-#~ msgstr "Zichtbare instellingen:"
-
-#~ msgctxt "@label"
-#~ msgid "Welcome to UltiMaker Cura"
-#~ msgstr "Welkom bij UltiMaker Cura"
+#~ msgctxt "@info:title"
+#~ msgid "Simulation View"
+#~ msgstr "Simulatieweergave"

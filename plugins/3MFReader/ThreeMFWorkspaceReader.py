@@ -43,7 +43,7 @@ from .WorkspaceDialog import WorkspaceDialog
 i18n_catalog = i18nCatalog("cura")
 
 
-_ignored_machine_network_metadata = {
+_ignored_machine_network_metadata: Set[str] = {
     "um_cloud_cluster_id",
     "um_network_key",
     "um_linked_to_account",
@@ -55,7 +55,7 @@ _ignored_machine_network_metadata = {
     "capabilities",
     "octoprint_api_key",
     "is_abstract_machine"
-}  # type: Set[str]
+}
 
 
 class ContainerInfo:
@@ -69,41 +69,41 @@ class ContainerInfo:
 
 class QualityChangesInfo:
     def __init__(self) -> None:
-        self.name = None
+        self.name: Optional[str] = None
         self.global_info = None
-        self.extruder_info_dict = {} # type: Dict[str, ContainerInfo]
+        self.extruder_info_dict: Dict[str, ContainerInfo] = {}
 
 
 class MachineInfo:
     def __init__(self) -> None:
-        self.container_id = None
-        self.name = None
-        self.definition_id = None
+        self.container_id: Optional[str] = None
+        self.name: Optional[str] = None
+        self.definition_id: Optional[str] = None
 
-        self.metadata_dict = {}  # type: Dict[str, str]
+        self.metadata_dict: Dict[str, str] = {}
 
-        self.quality_type = None
-        self.intent_category = None
-        self.custom_quality_name = None
-        self.quality_changes_info = None
-        self.variant_info = None
+        self.quality_type: Optional[str] = None
+        self.intent_category: Optional[str] = None
+        self.custom_quality_name: Optional[str] = None
+        self.quality_changes_info: Optional[QualityChangesInfo] = None
+        self.variant_info: Optional[ContainerInfo] = None
 
-        self.definition_changes_info = None
-        self.user_changes_info = None
+        self.definition_changes_info: Optional[ContainerInfo] = None
+        self.user_changes_info: Optional[ContainerInfo] = None
 
-        self.extruder_info_dict = {} # type: Dict[str, ExtruderInfo]
+        self.extruder_info_dict: Dict[str, str] = {}
 
 
 class ExtruderInfo:
     def __init__(self) -> None:
         self.position = None
         self.enabled = True
-        self.variant_info = None
-        self.root_material_id = None
+        self.variant_info: Optional[ContainerInfo] = None
+        self.root_material_id: Optional[str] = None
 
-        self.definition_changes_info = None
-        self.user_changes_info = None
-        self.intent_info = None
+        self.definition_changes_info: Optional[ContainerInfo] = None
+        self.user_changes_info: Optional[ContainerInfo] = None
+        self.intent_info: Optional[ContainerInfo] = None
 
 
 class ThreeMFWorkspaceReader(WorkspaceReader):
@@ -131,14 +131,14 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         #  - variant
         self._ignored_instance_container_types = {"quality", "variant"}
 
-        self._resolve_strategies = {} # type: Dict[str, str]
+        self._resolve_strategies: Dict[str, str] = {}
 
-        self._id_mapping = {} # type: Dict[str, str]
+        self._id_mapping: Dict[str, str] = {}
 
         # In Cura 2.5 and 2.6, the empty profiles used to have those long names
         self._old_empty_profile_id_dict = {"empty_%s" % k: "empty" for k in ["material", "variant"]}
 
-        self._old_new_materials = {} # type: Dict[str, str]
+        self._old_new_materials: Dict[str, str] = {}
         self._machine_info = None
 
     def _clearState(self):
@@ -461,11 +461,15 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         materials_in_extruders_dict = {}  # Which material is in which extruder
 
-        # if the global stack is found, we check if there are conflicts in the extruder stacks
+        # If the global stack is found, we check if there are conflicts in the extruder stacks
         for extruder_stack_file in extruder_stack_files:
             serialized = archive.open(extruder_stack_file).read().decode("utf-8")
+
+            not_upgraded_parser = ConfigParser(interpolation=None)
+            not_upgraded_parser.read_string(serialized)
+
             serialized = ExtruderStack._updateSerialized(serialized, extruder_stack_file)
-            parser = ConfigParser(interpolation = None)
+            parser = ConfigParser(interpolation=None)
             parser.read_string(serialized)
 
             # The check should be done for the extruder stack that's associated with the existing global stack,
@@ -497,19 +501,26 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 extruder_info.user_changes_info = instance_container_info_dict[user_changes_id]
             self._machine_info.extruder_info_dict[position] = extruder_info
 
+            intent_container_id = parser["containers"][str(_ContainerIndexes.Intent)]
+
             intent_id = parser["containers"][str(_ContainerIndexes.Intent)]
             if intent_id not in ("empty", "empty_intent"):
-                extruder_info.intent_info = instance_container_info_dict[intent_id]
+                if intent_container_id in instance_container_info_dict:
+                    extruder_info.intent_info = instance_container_info_dict[intent_id]
+                else:
+                    # It can happen that an intent has been renamed. In that case, we should still use the old
+                    # name, since we used that to generate the instance_container_info_dict keys. 
+                    extruder_info.intent_info = instance_container_info_dict[not_upgraded_parser["containers"][str(_ContainerIndexes.Intent)]]
 
             if not machine_conflict and containers_found_dict["machine"] and global_stack:
                 if int(position) >= len(global_stack.extruderList):
                     continue
 
                 existing_extruder_stack = global_stack.extruderList[int(position)]
-                # check if there are any changes at all in any of the container stacks.
+                # Check if there are any changes at all in any of the container stacks.
                 id_list = self._getContainerIdListFromSerialized(serialized)
                 for index, container_id in enumerate(id_list):
-                    # take into account the old empty container IDs
+                    # Take into account the old empty container IDs
                     container_id = self._old_empty_profile_id_dict.get(container_id, container_id)
                     if existing_extruder_stack.getContainer(index).getId() != container_id:
                         machine_conflict = True
@@ -740,7 +751,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             # quality_changes file. If that's the case, take the extruder count into account when creating the machine
             # or else the extruderList will return only the first extruder, leading to missing non-global settings in
             # the other extruders.
-            machine_extruder_count = self._getMachineExtruderCount()  # type: Optional[int]
+            machine_extruder_count: Optional[int] = self._getMachineExtruderCount()
             global_stack = CuraStackBuilder.createMachine(machine_name, self._machine_info.definition_id, machine_extruder_count)
             if global_stack:  # Only switch if creating the machine was successful.
                 extruder_stack_dict = {str(position): extruder for position, extruder in enumerate(global_stack.extruderList)}
@@ -867,7 +878,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
     @staticmethod
     def _loadMetadata(file_name: str) -> Dict[str, Dict[str, Any]]:
-        result = dict()  # type: Dict[str, Dict[str, Any]]
+        result: Dict[str, Dict[str, Any]] = dict()
         try:
             archive = zipfile.ZipFile(file_name, "r")
         except zipfile.BadZipFile:
@@ -878,7 +889,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             return result
 
         metadata_files = [name for name in archive.namelist() if name.endswith("plugin_metadata.json")]
-
 
         for metadata_file in metadata_files:
             try:
@@ -920,7 +930,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 quality_changes_name = self._container_registry.uniqueName(quality_changes_name)
                 for position, container_info in container_info_dict.items():
                     extruder_stack = None
-                    intent_category = None  # type: Optional[str]
+                    intent_category: Optional[str] = None
                     if position is not None:
                         try:
                             extruder_stack = global_stack.extruderList[int(position)]
@@ -1161,7 +1171,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             root_material_id = self._old_new_materials.get(root_material_id, root_material_id)
 
             material_node = machine_node.variants[extruder_stack.variant.getName()].materials[root_material_id]
-            extruder_stack.material = material_node.container  # type: InstanceContainer
+            extruder_stack.material = material_node.container
 
     def _applyChangesToMachine(self, global_stack, extruder_stack_dict):
         # Clear all first

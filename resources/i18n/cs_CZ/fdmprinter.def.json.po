@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-03-14 17:27+0000\n"
+"POT-Creation-Date: 2023-05-30 15:31+0000\n"
 "PO-Revision-Date: 2023-02-16 20:35+0100\n"
 "Last-Translator: Miroslav Šustek <sustmidown@centrum.cz>\n"
 "Language-Team: DenyCZ <www.github.com/DenyCZ>\n"
@@ -78,6 +78,11 @@ msgid "A part fully enclosed inside another part can generate an outer brim that
 msgstr "Část plně obklopená jinou částí může generovat vnější límec, který se dotýká vnitřku obklopující části. Toto nastavení odstraní límec v dané vzdálenosti od vnitřních otvorů."
 
 #: fdmprinter.def.json
+msgctxt "support_tree_branch_reach_limit description"
+msgid "A recomendation to how far branches can move from the points they support. Branches can violate this value to reach their destination (buildplate or a flat part of the model). Lowering this value will make the support more sturdy, but increase the amount of branches (and because of that material usage/print time) "
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "extruder_prime_pos_abs label"
 msgid "Absolute Extruder Prime Position"
 msgstr "Absolutní výchozí pozice extruderu"
@@ -140,6 +145,11 @@ msgstr "Upravuje hustotu výplně tisku."
 msgctxt "support_interface_density description"
 msgid "Adjusts the density of the roofs and floors of the support structure. A higher value results in better overhangs, but the supports are harder to remove."
 msgstr "Upravuje hustotu střech a podlah nosné konstrukce. Vyšší hodnota má za následek lepší přesahy, ale podpory je těžší odstranit."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_top_rate description"
+msgid "Adjusts the density of the support structure used to generate the tips of the branches. A higher value results in better overhangs, but the supports are harder to remove. Use Support Roof for very high values or ensure support density is similarly high at the top."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_infill_rate description"
@@ -322,6 +332,11 @@ msgid "Both"
 msgstr "Obojí"
 
 #: fdmprinter.def.json
+msgctxt "support_interface_priority option nothing"
+msgid "Both overlap"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "bottom_layers label"
 msgid "Bottom Layers"
 msgstr "Spodní vrstvy"
@@ -345,6 +360,21 @@ msgstr "Dolní šířka odstranění povrchu"
 msgctxt "bottom_thickness label"
 msgid "Bottom Thickness"
 msgstr "Spodní tloušťka"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_top_rate label"
+msgid "Branch Density"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_diameter label"
+msgid "Branch Diameter"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_diameter_angle label"
+msgid "Branch Diameter Angle"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_break_preparation_retracted_position label"
@@ -592,11 +622,6 @@ msgid "Command Line Settings"
 msgstr "Nastavení příkazové řádky"
 
 #: fdmprinter.def.json
-msgctxt "wireframe_strategy option compensate"
-msgid "Compensate"
-msgstr "Kompenzovat"
-
-#: fdmprinter.def.json
 msgctxt "infill_pattern option concentric"
 msgid "Concentric"
 msgstr "Soustředný"
@@ -727,11 +752,6 @@ msgid "Cooling"
 msgstr "Chlazení"
 
 #: fdmprinter.def.json
-msgctxt "wireframe_top_jump description"
-msgid "Creates a small knot at the top of an upward line, so that the consecutive horizontal layer has a better chance to connect to it. Only applies to Wire Printing."
-msgstr "Vytvoří malý uzel v horní části vzestupné linie, takže po sobě jdoucí vodorovná vrstva má lepší šanci se k němu připojit. Platí pouze pro drátový tisk."
-
-#: fdmprinter.def.json
 msgctxt "infill_pattern option cross"
 msgid "Cross"
 msgstr "Křížek"
@@ -837,21 +857,6 @@ msgid "Default jerk for the motor of the filament."
 msgstr "Výchozí trhnutí pro motor filamentu."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_bottom_delay description"
-msgid "Delay time after a downward move. Only applies to Wire Printing."
-msgstr "Zpoždění po pohybu dolů. Platí pouze pro drátový tisk."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_top_delay description"
-msgid "Delay time after an upward move, so that the upward line can harden. Only applies to Wire Printing."
-msgstr "Zpoždění po pohybu vzhůru, aby mohla stoupající čára ztvrdnout. Platí pouze pro drátový tisk."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flat_delay description"
-msgid "Delay time between two horizontal segments. Introducing such a delay can cause better adhesion to previous layers at the connection points, while too long delays cause sagging. Only applies to Wire Printing."
-msgstr "Doba zpoždění mezi dvěma vodorovnými segmenty. Zavedení takového zpoždění může způsobit lepší přilnavost k předchozím vrstvám ve spojovacích bodech, zatímco příliš dlouhé zpoždění může způsobit ochabnutí. Platí pouze pro drátový tisk."
-
-#: fdmprinter.def.json
 msgctxt "bridge_settings_enabled description"
 msgid "Detect bridges and modify print speed, flow and fan settings while bridges are printed."
 msgstr "Zjistěte mosty a upravte rychlost tisku, průtok a nastavení ventilátoru během tisku mostů."
@@ -882,6 +887,16 @@ msgid "Diameter"
 msgstr "Průměr"
 
 #: fdmprinter.def.json
+msgctxt "support_tree_max_diameter_increase_by_merges_when_support_to_model label"
+msgid "Diameter Increase To Model"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_bp_diameter description"
+msgid "Diameter every branch tries to achieve when reaching the buildplate. Improves bed adhesion."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "adhesion_type description"
 msgid "Different options that help to improve both priming your extrusion and adhesion to the build plate. Brim adds a single layer flat area around the base of your model to prevent warping. Raft adds a thick grid with a roof below the model. Skirt is a line printed around the model, but not connected to the model."
 msgstr "Různé možnosti, které pomáhají zlepšit jak vytlačování, tak adhezi k sestavovací desce. Límec přidává jedinou vrstvu roviny kolem základny vašeho modelu, aby se zabránilo deformaci. Raft přidává tlustou mřížku se střechou pod modelem. Okraj je čára vytištěná kolem modelu, ale není k modelu připojena."
@@ -890,11 +905,6 @@ msgstr "Různé možnosti, které pomáhají zlepšit jak vytlačování, tak ad
 msgctxt "machine_disallowed_areas label"
 msgid "Disallowed Areas"
 msgstr "Zakázané zóny"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_nozzle_clearance description"
-msgid "Distance between the nozzle and horizontally downward lines. Larger clearance results in diagonally downward lines with a less steep angle, which in turn results in less upward connections with the next layer. Only applies to Wire Printing."
-msgstr "Vzdálenost mezi tryskou a vodorovnými liniemi dolů. Větší vůle vede k diagonálně dolů směřujícím liniím s menším strmým úhlem, což zase vede k menšímu spojení nahoru s další vrstvou. Platí pouze pro drátový tisk."
 
 #: fdmprinter.def.json
 msgctxt "infill_line_distance description"
@@ -947,15 +957,6 @@ msgid "Distance of a travel move inserted after the outer wall, to hide the Z se
 msgstr "Vzdálenost pohybového posunu vloženého za vnější stěnu, aby se skryla Z šev lépe."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_up_half_speed description"
-msgid ""
-"Distance of an upward move which is extruded with half speed.\n"
-"This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-msgstr ""
-"Vzdálenost pohybu nahoru, který je vytlačován poloviční rychlostí.\n"
-"To může způsobit lepší přilnavost k předchozím vrstvám, aniž by se materiál v těchto vrstvách příliš zahříval. Platí pouze pro drátový tisk."
-
-#: fdmprinter.def.json
 msgctxt "draft_shield_dist description"
 msgid "Distance of the draft shield from the print, in the X/Y directions."
 msgstr "Vzdálenost štítu před tiskem ve směru X / Y."
@@ -974,16 +975,6 @@ msgstr "Vzdálenost podpor od převisu ve směru X/Y."
 msgctxt "support_xy_distance description"
 msgid "Distance of the support structure from the print in the X/Y directions."
 msgstr "Vzdálenost podpůrné struktury od tisku ve směru X / Y."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_fall_down description"
-msgid "Distance with which the material falls down after an upward extrusion. This distance is compensated for. Only applies to Wire Printing."
-msgstr "Vzdálenost, se kterou materiál padá po vytlačení směrem nahoru. Tato vzdálenost je kompenzována. Platí pouze pro drátový tisk."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_drag_along description"
-msgid "Distance with which the material of an upward extrusion is dragged along with the diagonally downward extrusion. This distance is compensated for. Only applies to Wire Printing."
-msgstr "Vzdálenost, se kterou je materiál vytlačování směrem vzhůru tažen spolu s diagonálně směrem dolů vytlačováním. Tato vzdálenost je kompenzována. Platí pouze pro drátový tisk."
 
 #: fdmprinter.def.json
 msgctxt "min_infill_area description"
@@ -1381,24 +1372,9 @@ msgid "Flow compensation on wall lines."
 msgstr "Kompenzace průtoku na stěnách."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_flow_connection description"
-msgid "Flow compensation when going up or down. Only applies to Wire Printing."
-msgstr "Kompenzace toku při stoupání nebo klesání. Platí pouze pro drátový tisk."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow_flat description"
-msgid "Flow compensation when printing flat lines. Only applies to Wire Printing."
-msgstr "Kompenzace toku při tisku rovných čar. Platí pouze pro drátový tisk."
-
-#: fdmprinter.def.json
 msgctxt "material_flow description"
 msgid "Flow compensation: the amount of material extruded is multiplied by this value."
 msgstr "Kompenzace toku: množství vytlačovaného materiálu se vynásobí touto hodnotou."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow description"
-msgid "Flow compensation: the amount of material extruded is multiplied by this value. Only applies to Wire Printing."
-msgstr "Kompenzace toku: množství vytlačovaného materiálu se vynásobí touto hodnotou. Platí pouze pro drátový tisk."
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length label"
@@ -1414,6 +1390,11 @@ msgstr "Rychlost proplachování"
 msgctxt "min_wall_line_width description"
 msgid "For thin structures around once or twice the nozzle size, the line widths need to be altered to adhere to the thickness of the model. This setting controls the minimum line width allowed for the walls. The minimum line widths inherently also determine the maximum line widths, since we transition from N to N+1 walls at some geometry thickness where the N walls are wide and the N+1 walls are narrow. The widest possible wall line is twice the Minimum Wall Line Width."
 msgstr "Pro struktury o šířce okolo jedno až dvojnásobku velikosti trysky musí být šířky čar upravovány, aby to se dodržovala správná tloušťka modelu. Toto nastavení ovládá minimální dovolenou šířku čáry pro zdi. Z minimální šířky čáry se také odvozuje maximální šířka, jelikož při určité tloušťce tvaru se přechází z N na N + 1 zdí, kdy je N zdí širokých, zatímco N + 1 zdi jsou úzké. Nejvyšší možná šířka čáry zdi je tedy dvojnásobek tohoto nastavení."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_rest_preference option buildplate"
+msgid "Force Only Buildplate"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "z_seam_position option front"
@@ -1662,11 +1643,6 @@ msgid "Horizontal Scaling Factor Shrinkage Compensation"
 msgstr "Horizontální faktor zvětšení pro kompenzaci smrštění"
 
 #: fdmprinter.def.json
-msgctxt "support_tree_branch_distance description"
-msgid "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove."
-msgstr "Jak daleko od sebe musí být větve, když se dotýkají modelu. Zmenšení této vzdálenosti způsobí, že se stromová podpora dotkne modelu ve více bodech, což způsobí lepší přesah, ale těžší odstranění podpory."
-
-#: fdmprinter.def.json
 msgctxt "material_break_preparation_retracted_position description"
 msgid "How far the filament can be stretched before it breaks, while heated."
 msgstr "Jak daleko může být filament natažen, než se rozbije při zahřátí."
@@ -1745,6 +1721,16 @@ msgstr "Kolik materiálu použít k vyčištění předchozího materiálu z try
 msgctxt "machine_extruders_shared_nozzle_initial_retraction description"
 msgid "How much the filament of each extruder is assumed to have been retracted from the shared nozzle tip at the completion of the printer-start gcode script; the value should be equal to or greater than the length of the common part of the nozzle's ducts."
 msgstr "Jak daleko je zatažen filament každého extruderu sdílené trysky po dokončení počátečního G kódu tiskárny. Tato hodnota by se měla rovnat nebo být vyšší než je délka společné části vedení trysky."
+
+#: fdmprinter.def.json
+msgctxt "support_interface_priority description"
+msgid "How support interface and support will interact when they overlap. Currently only implemented for support roof."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_min_height_to_model description"
+msgid "How tall a branch has to be if it is placed on the model. Prevents small blobs of support. This setting is ignored when a branch is supporting a support roof."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_support_threshold description"
@@ -1927,6 +1913,11 @@ msgid "Initial Layer Bottom Flow"
 msgstr "Průtok první vrstvy spodku"
 
 #: fdmprinter.def.json
+msgctxt "support_tree_bp_diameter label"
+msgid "Initial Layer Diameter"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "material_flow_layer_0 label"
 msgid "Initial Layer Flow"
 msgstr "Průtok při prvotní vrstvě"
@@ -2052,6 +2043,16 @@ msgid "Inside To Outside"
 msgstr "Zevnitř ven"
 
 #: fdmprinter.def.json
+msgctxt "support_interface_priority option interface_lines_overwrite_support_area"
+msgid "Interface lines preferred"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_interface_priority option interface_area_overwrite_support_area"
+msgid "Interface preferred"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "interlocking_beam_layer_count label"
 msgid "Interlocking Beam Layer Count"
 msgstr "Počet vrstev paprsků vzájemného propletení"
@@ -2122,9 +2123,19 @@ msgid "Is Center Origin"
 msgstr "Je střed počátek"
 
 #: fdmprinter.def.json
+msgctxt "material_is_support_material label"
+msgid "Is support material"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "material_crystallinity description"
 msgid "Is this material the type that breaks off cleanly when heated (crystalline), or is it the type that produces long intertwined polymer chains (non-crystalline)?"
 msgstr "Je tento materiál typem, který se při zahřívání (krystalický) čistě rozpadá, nebo jde o typ, který vytváří dlouhé propletené polymerní řetězce (nekrystalické)?"
+
+#: fdmprinter.def.json
+msgctxt "material_is_support_material description"
+msgid "Is this material typically used as a support material during printing."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_outside_only description"
@@ -2135,11 +2146,6 @@ msgstr "Rozmazat jen okrajové části modelu a žádné díry modelu."
 msgctxt "meshfix_keep_open_polygons label"
 msgid "Keep Disconnected Faces"
 msgstr "Ponechat odpojené plochy"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_strategy option knot"
-msgid "Knot"
-msgstr "Uzel"
 
 #: fdmprinter.def.json
 msgctxt "layer_height label"
@@ -2210,6 +2216,16 @@ msgstr "Úhel vyrovnávání bleskové vrstvy"
 msgctxt "lightning_infill_support_angle label"
 msgid "Lightning Infill Support Angle"
 msgstr "Úhel podpory bleskové výplně"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_limit_branch_reach label"
+msgid "Limit Branch Reach"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_limit_branch_reach description"
+msgid "Limit how far each branch should travel from the point it supports. This can make the support more sturdy, but will increase the amount of branches (and because of that material usage/print time)"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "cutting_mesh description"
@@ -2395,6 +2411,11 @@ msgstr "Maximální akcelerace Y"
 msgctxt "machine_max_acceleration_z label"
 msgid "Maximum Acceleration Z"
 msgstr "Maximální akcelerace Z"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle label"
+msgid "Maximum Branch Angle"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "meshfix_maximum_deviation label"
@@ -2585,6 +2606,11 @@ msgstr "Minimální velikost částí"
 msgctxt "machine_minimum_feedrate label"
 msgid "Minimum Feedrate"
 msgstr "Minimální feedrate"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_min_height_to_model label"
+msgid "Minimum Height To Model"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "min_infill_area label"
@@ -2897,6 +2923,11 @@ msgid "Offset with Extruder"
 msgstr "Offset s extrudérem"
 
 #: fdmprinter.def.json
+msgctxt "support_tree_rest_preference option graceful"
+msgid "On Model If Necessary"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "print_sequence option one_at_a_time"
 msgid "One at a Time"
 msgstr "Pouze jedna"
@@ -2925,6 +2956,11 @@ msgstr "Úhel Ooze štítu"
 msgctxt "ooze_shield_dist label"
 msgid "Ooze Shield Distance"
 msgstr "Vzdálenost Ooze štítu"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_reach_limit label"
+msgid "Optimal Branch Range"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "optimize_wall_printing_order label"
@@ -3027,14 +3063,14 @@ msgid "Percentage fan speed to use when printing the third bridge skin layer."
 msgstr "Procentuální rychlost ventilátoru, která se použije při tisku třetí vrstvy povrchu mostu."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_straight_before_down description"
-msgid "Percentage of a diagonally downward line which is covered by a horizontal line piece. This can prevent sagging of the top most point of upward lines. Only applies to Wire Printing."
-msgstr "Procento diagonálně sestupné linie, která je zakryta vodorovnou čárou. To může zabránit ochabnutí nejvyššího bodu vzhůru. Platí pouze pro drátový tisk."
-
-#: fdmprinter.def.json
 msgctxt "minimum_polygon_circumference description"
 msgid "Polygons in sliced layers that have a circumference smaller than this amount will be filtered out. Lower values lead to higher resolution mesh at the cost of slicing time. It is meant mostly for high resolution SLA printers and very tiny 3D models with a lot of details."
 msgstr "Polygony v krájených vrstvách, jejichž obvod je menší než toto množství, budou odfiltrovány. Nižší hodnoty vedou k vyššímu rozlišení ok za cenu krájení. Je určen především pro tiskárny SLA s vysokým rozlišením a velmi malé 3D modely se spoustou detailů."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle_slow label"
+msgid "Preferred Branch Angle"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "wall_transition_filter_deviation description"
@@ -3140,11 +3176,6 @@ msgstr "Tisknout žehlící linky v takovém pořadí, aby se navazující linky
 msgctxt "mold_enabled description"
 msgid "Print models as a mold, which can be cast in order to get a model which resembles the models on the build plate."
 msgstr "Vytiskněte modely jako formu, kterou lze odlít, abyste získali model, který se podobá modelům na podložce."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_enabled description"
-msgid "Print only the outside surface with a sparse webbed structure, printing 'in thin air'. This is realized by horizontally printing the contours of the model at given Z intervals which are connected via upward and diagonally downward lines."
-msgstr "Tiskněte pouze vnější povrch s řídkou strukturou struktury a tiskněte „na vzduchu“. To je realizováno horizontálním tiskem kontur modelu v daných intervalech Z, které jsou spojeny pomocí linií nahoru a diagonálně dolů."
 
 #: fdmprinter.def.json
 msgctxt "fill_outline_gaps description"
@@ -3487,14 +3518,9 @@ msgid "Replaces the outermost part of the top/bottom pattern with a number of co
 msgstr "Nahrazuje nejvzdálenější část horního / spodního vzoru řadou soustředných čar. Použití jedné nebo dvou čar zlepšuje střechy, které začínají na výplňovém materiálu."
 
 #: fdmprinter.def.json
-msgctxt "support_tree_collision_resolution description"
-msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
-msgstr "Rozlišení pro výpočet kolizí, aby nedošlo k nárazu do modelu. Nastavením této nižší se vytvoří přesnější stromy, které selhávají méně často, ale dramaticky se zvyšuje doba slicování."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_strategy option retract"
-msgid "Retract"
-msgstr "Retrakce"
+msgctxt "support_tree_rest_preference label"
+msgid "Rest Preference"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"
@@ -3752,6 +3778,11 @@ msgid "Small Layer Printing Temperature"
 msgstr "Teplota tisku malých vrstev"
 
 #: fdmprinter.def.json
+msgctxt "small_skin_width label"
+msgid "Small Top/Bottom Width"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 description"
 msgid "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
 msgstr "Malé části v první vrstvě budou vytištěny při tomto procentuálním poměru jejich normální rychlosti tisku. Pomalejší tisk může pomoci s přilnavostí a přesností."
@@ -3760,6 +3791,16 @@ msgstr "Malé části v první vrstvě budou vytištěny při tomto procentuáln
 msgctxt "small_feature_speed_factor description"
 msgid "Small features will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
 msgstr "Drobné části budou vytištěny v procentech jejich normální rychlosti tisku. Pomalejší tisk může pomoci s přilnavostí a přesností."
+
+#: fdmprinter.def.json
+msgctxt "small_skin_width description"
+msgid "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "brim_smart_ordering label"
+msgid "Smart Brim"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "z_seam_corner option z_seam_corner_weighted"
@@ -3800,31 +3841,6 @@ msgstr "Rychlost"
 msgctxt "speed label"
 msgid "Speed"
 msgstr "Rychlost"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed description"
-msgid "Speed at which the nozzle moves when extruding material. Only applies to Wire Printing."
-msgstr "Rychlost, jakou se tryska pohybuje při vytlačování materiálu. Platí pouze pro drátový tisk."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_down description"
-msgid "Speed of printing a line diagonally downward. Only applies to Wire Printing."
-msgstr "Rychlost tisku linie šikmo dolů. Platí pouze pro drátový tisk."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_up description"
-msgid "Speed of printing a line upward 'in thin air'. Only applies to Wire Printing."
-msgstr "Rychlost tisku řádku nahoru „na vzduchu“. Platí pouze pro drátový tisk."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_bottom description"
-msgid "Speed of printing the first layer, which is the only layer touching the build platform. Only applies to Wire Printing."
-msgstr "Rychlost tisku první vrstvy, která je jedinou vrstvou dotýkající se platformy sestavení. Platí pouze pro drátový tisk."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_flat description"
-msgid "Speed of printing the horizontal contours of the model. Only applies to Wire Printing."
-msgstr "Rychlost tisku vodorovných obrysů modelu. Platí pouze pro drátový tisk."
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_speed description"
@@ -3875,11 +3891,6 @@ msgstr "Kroků za milimetr (Y)"
 msgctxt "machine_steps_per_mm_z label"
 msgid "Steps per Millimeter (Z)"
 msgstr "Kroků za milimetr (Z)"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_strategy description"
-msgid "Strategy for making sure two consecutive layers connect at each connection point. Retraction lets the upward lines harden in the right position, but may cause filament grinding. A knot can be made at the end of an upward line to heighten the chance of connecting to it and to let the line cool; however, it may require slow printing speeds. Another strategy is to compensate for the sagging of the top of an upward line; however, the lines won't always fall down as predicted."
-msgstr "Strategie pro zajištění toho, aby se v každém místě připojení připojily dvě po sobě následující vrstvy. Zpětné zasunutí umožní, aby linie vzhůru ztvrdly ve správné poloze, ale mohou způsobit broušení vlákna. Uzel může být vytvořen na konci vzestupné linie, aby se zvýšila šance na připojení k ní a aby se linka ochladila; to však může vyžadovat nízké rychlosti tisku. Další strategií je kompenzovat prohnutý vrchol horní linie; čáry však nebudou vždy klesat, jak bylo předpovězeno."
 
 #: fdmprinter.def.json
 msgctxt "support description"
@@ -4087,6 +4098,11 @@ msgid "Support Interface Pattern"
 msgstr "Vzor rozhraní podpor"
 
 #: fdmprinter.def.json
+msgctxt "support_interface_priority label"
+msgid "Support Interface Priority"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "support_interface_skip_height label"
 msgid "Support Interface Resolution"
 msgstr "Rozlišení rozhraní podpor"
@@ -4257,6 +4273,16 @@ msgid "Support Z Distance"
 msgstr "Vzdálenost Z podor"
 
 #: fdmprinter.def.json
+msgctxt "support_interface_priority option support_lines_overwrite_interface_area"
+msgid "Support lines preferred"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_interface_priority option support_area_overwrite_interface_area"
+msgid "Support preferred"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "support_supported_skin_fan_speed label"
 msgid "Supported Skin Fan Speed"
 msgstr "Rychlost ventilátoru při tisku podpor povrch"
@@ -4285,6 +4311,11 @@ msgstr "Tendence povrchové přilnavosti."
 msgctxt "material_surface_energy description"
 msgid "Surface energy."
 msgstr "Povrchová energie."
+
+#: fdmprinter.def.json
+msgctxt "brim_smart_ordering description"
+msgid "Swap print order of the innermost and second innermost brim lines. This improves brim removal."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "alternate_carve_order description"
@@ -4492,11 +4523,6 @@ msgid "The angle of the branches' diameter as they gradually become thicker towa
 msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "support_tree_angle description"
-msgid "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
-msgstr "Úhel větví. Použijte nižší úhel, aby byly více vertikální a stabilnější. K dosažení většího dosahu použijte vyšší úhel."
-
-#: fdmprinter.def.json
 msgctxt "support_conical_angle description"
 msgid "The angle of the tilt of conical support. With 0 degrees being vertical, and 90 degrees being horizontal. Smaller angles cause the support to be more sturdy, but consist of more material. Negative angles cause the base of the support to be wider than the top."
 msgstr "Úhel náklonu kuželové podpory. S 0° svislým a 90° vodorovným. Menší úhly způsobují, že podpora je robustnější, ale sestává z více materiálu. Záporné úhly způsobují, že základna podpory je širší než horní část."
@@ -4567,6 +4593,11 @@ msgid "The diameter of the thinnest branches of tree support. Thicker branches a
 msgstr "Průměr větve stromu podpory Průměr nejtenčí větve stromu podpory. Silnější větve jsou odolnější. Větve směrem k základně budou silnější než tato."
 
 #: fdmprinter.def.json
+msgctxt "support_tree_tip_diameter description"
+msgid "The diameter of the top of the tip of the branches of tree support."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "machine_feeder_wheel_diameter description"
 msgid "The diameter of the wheel that drives the material in the feeder."
 msgstr "Průměr kola, který pohání materiál v podavači."
@@ -4607,11 +4638,6 @@ msgid "The distance between the raft lines for the top raft layers. The spacing 
 msgstr "Vzdálenost mezi liniemi raftů pro horní vrstvy raftů. Rozestup by měl být roven šířce čáry, takže povrch je pevný."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_roof_inset description"
-msgid "The distance covered when making a connection from a roof outline inward. Only applies to Wire Printing."
-msgstr "Vzdálenost ujetá při vytváření spojení od obrysu střechy dovnitř. Platí pouze pro drátový tisk."
-
-#: fdmprinter.def.json
 msgctxt "interlocking_depth description"
 msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
 msgstr "Vzdálenost od hranic mezi modely, do jaké generovat vzájemně propletené struktury (měřeno v buňkách). Příliš málo buněk způsobí špatnou přilnavost."
@@ -4632,11 +4658,6 @@ msgid "The distance from the tip of the nozzle in which heat from the nozzle is 
 msgstr "Vzdálenost od špičky trysky, ve které se teplo z trysky přenáší na filament."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_roof_drag_along description"
-msgid "The distance of the end piece of an inward line which gets dragged along when going back to the outer outline of the roof. This distance is compensated for. Only applies to Wire Printing."
-msgstr "Vzdálenost koncového kusu vnitřní linie, která se táhne, když se vrací zpět k vnějšímu obrysu střechy. Tato vzdálenost je kompenzována. Platí pouze pro drátový tisk."
-
-#: fdmprinter.def.json
 msgctxt "bottom_skin_expand_distance description"
 msgid "The distance the bottom skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the skin adhere better to the walls on the layer below. Lower values save amount of material used."
 msgstr "Vzdálenost spodního povrchu, který se rozšiřuje do výplně. Vyšší hodnoty umožňují lepší přilnavost povrchu k vzoru výplně a lepší přilnavost povrchu ke stěnám na spodní vrstvě. Nižší hodnoty šetří množství použitého materiálu."
@@ -4655,11 +4676,6 @@ msgstr "Vzdálenost, ve které jsou vrchní vrstvy povrchu rozšířeny do výpl
 msgctxt "wipe_move_distance description"
 msgid "The distance to move the head back and forth across the brush."
 msgstr "Vzdálenost k pohybu hlavy tam a zpět přes štětec."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_fall_down description"
-msgid "The distance which horizontal roof lines printed 'in thin air' fall down when being printed. This distance is compensated for. Only applies to Wire Printing."
-msgstr "Vzdálenost, kterou vodorovné linie střechy vytištěné „na vzduchu“ klesají při tisku. Tato vzdálenost je kompenzována. Platí pouze pro drátový tisk."
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_prune_angle description"
@@ -4872,11 +4888,6 @@ msgid "The height of the steps of the stair-like bottom of support resting on th
 msgstr "Výška stupňů schodišťového dna podpory spočívá na modelu. Nízká hodnota ztěžuje odstranění podpory, ale příliš vysoké hodnoty mohou vést k nestabilním podpůrným strukturám. Nastavením na nulu vypnete chování podobné schodišti."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_height description"
-msgid "The height of the upward and diagonally downward lines between two horizontal parts. This determines the overall density of the net structure. Only applies to Wire Printing."
-msgstr "Výška nahoru a diagonálně dolů směřujících čar mezi dvěma vodorovnými částmi. To určuje celkovou hustotu struktury sítě. Platí pouze pro drátový tisk."
-
-#: fdmprinter.def.json
 msgctxt "brim_gap description"
 msgid "The horizontal distance between the first brim line and the outline of the first layer of the print. A small gap can make the brim easier to remove while still providing the thermal benefits."
 msgstr "Vodorovná vzdálenost mezi první čarou límce a obrysem první vrstvy tisku. Malá mezera může usnadnit demontáž límce a přitom poskytovat tepelné výhody."
@@ -4979,6 +4990,11 @@ msgstr "Maximální úhel, který bude mít část štítu. S 0° svislým a 90�
 msgctxt "conical_overhang_angle description"
 msgid "The maximum angle of overhangs after the they have been made printable. At a value of 0° all overhangs are replaced by a piece of model connected to the build plate, 90° will not change the model in any way."
 msgstr "Maximální úhel přesahů po jejich tisku. Při hodnotě 0 ° jsou všechny převisy nahrazeny kusem modelu připojeným k podložce, 90 ° model nijak nijak nezmění."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle description"
+msgid "The maximum angle of the branches while they grow around the model. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "conical_overhang_hole_size description"
@@ -5196,6 +5212,11 @@ msgid "The minimum volume for each layer of the prime tower in order to purge en
 msgstr "Minimální objem pro každou vrstvu hlavní věže, aby se propláchlo dost materiálu."
 
 #: fdmprinter.def.json
+msgctxt "support_tree_max_diameter_increase_by_merges_when_support_to_model description"
+msgid "The most the diameter of a branch that has to connect to the model may increase by merging with branches that could reach the buildplate. Increasing this reduces print time, but increases the area of support that rests on model"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "machine_name description"
 msgid "The name of your 3D printer model."
 msgstr "Název vašeho modelu 3D tiskárny."
@@ -5349,6 +5370,16 @@ msgstr "Vzor, kterým se tisknou střechy podpěry."
 msgctxt "z_seam_position description"
 msgid "The position near where to start printing each part in a layer."
 msgstr "Poloha poblíž místa, kde začít tisknout každou část ve vrstvě."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle_slow description"
+msgid "The preferred angle of the branches, when they do not have to avoid the model. Use a lower angle to make them more vertical and more stable. Use a higher angle for branches to merge faster."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_rest_preference description"
+msgid "The preferred placement of the support structures. If structures can't be placed at the preferred location, they will be place elsewhere, even if that means placing them on the model."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "jerk_layer_0 description"
@@ -5761,9 +5792,9 @@ msgid "This will create a wall around the model, which traps (hot) air and shiel
 msgstr "Tím se vytvoří kolem modelu zeď, která zachycuje (horký) vzduch a chrání před vnějším proudem vzduchu. Obzvláště užitečné pro materiály, které se snadno deformují."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_roof_outer_delay description"
-msgid "Time spent at the outer perimeters of hole which is to become a roof. Longer times can ensure a better connection. Only applies to Wire Printing."
-msgstr "Čas strávený na vnějším obvodu díry, která se má stát střechou. Delší časy mohou zajistit lepší spojení. Platí pouze pro drátový tisk."
+msgctxt "support_tree_tip_diameter label"
+msgid "Tip Diameter"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage_xy description"
@@ -5961,36 +5992,6 @@ msgid "Tree"
 msgstr "Strom"
 
 #: fdmprinter.def.json
-msgctxt "support_tree_angle label"
-msgid "Tree Support Branch Angle"
-msgstr "Úhel větve stromové podpory"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_diameter label"
-msgid "Tree Support Branch Diameter"
-msgstr "Průměr větve podpěry stromu"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_diameter_angle label"
-msgid "Tree Support Branch Diameter Angle"
-msgstr "Průměr úhlu větve podpěry stromu"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_distance label"
-msgid "Tree Support Branch Distance"
-msgstr "Vzdálenost větví stromu"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_collision_resolution label"
-msgid "Tree Support Collision Resolution"
-msgstr "Stromová podpora - rozlišení kolize"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_max_diameter label"
-msgid "Tree Support Trunk Diameter"
-msgstr "Průměr kmene stromové podpory"
-
-#: fdmprinter.def.json
 msgctxt "infill_pattern option trihexagon"
 msgid "Tri-Hexagon"
 msgstr "Tri-Hexagony"
@@ -6019,6 +6020,11 @@ msgstr "Trojúhelníky"
 msgctxt "support_roof_pattern option triangles"
 msgid "Triangles"
 msgstr "Trojúhelníky"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_max_diameter label"
+msgid "Trunk Diameter"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor option UltiGCode"
@@ -6094,121 +6100,6 @@ msgstr "Vertikální faktor zvětšení pro kompenzaci smrštění"
 msgctxt "slicing_tolerance description"
 msgid "Vertical tolerance in the sliced layers. The contours of a layer are normally generated by taking cross sections through the middle of each layer's thickness (Middle). Alternatively each layer can have the areas which fall inside of the volume throughout the entire thickness of the layer (Exclusive) or a layer has the areas which fall inside anywhere within the layer (Inclusive). Inclusive retains the most details, Exclusive makes for the best fit and Middle stays closest to the original surface."
 msgstr "Vertikální tolerance ve slicovaných vrstvách. Obrysy vrstvy jsou obvykle vytvářeny průřezy středem tloušťky každé vrstvy (uprostřed). Alternativně každá vrstva může mít oblasti, které spadají dovnitř objemu po celé tloušťce vrstvy (Exkluzivní), nebo vrstva má oblasti, které padají dovnitř kdekoli v rámci vrstvy (Inkluzivní). Inclusive si zachovává nejpodrobnější detaily, Exclusive dělá to nejlepší a Middle zůstává co nejblíže původnímu povrchu."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_bottom_delay label"
-msgid "WP Bottom Delay"
-msgstr "Zpoždení pohybu dole při tisku DT"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_bottom label"
-msgid "WP Bottom Printing Speed"
-msgstr "Rychlost tisku spodního DT"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow_connection label"
-msgid "WP Connection Flow"
-msgstr "Průtok při spojování DT"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_height label"
-msgid "WP Connection Height"
-msgstr "Výška připojení DT"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_down label"
-msgid "WP Downward Printing Speed"
-msgstr "Rychlost tisku směrem dolů u DT"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_drag_along label"
-msgid "WP Drag Along"
-msgstr "Tah DT"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_up_half_speed label"
-msgid "WP Ease Upward"
-msgstr "Poloviční rychlost DT"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_fall_down label"
-msgid "WP Fall Down"
-msgstr "Pád materiálu DT"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flat_delay label"
-msgid "WP Flat Delay"
-msgstr "Zpoždění při tisku plochých segmentů DT"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow_flat label"
-msgid "WP Flat Flow"
-msgstr "Průtok při plochém DT"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow label"
-msgid "WP Flow"
-msgstr "Průtok při DT"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_flat label"
-msgid "WP Horizontal Printing Speed"
-msgstr "Rychlost horizontálního tisku DT"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_top_jump label"
-msgid "WP Knot Size"
-msgstr "Velikost uzlu DT"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_nozzle_clearance label"
-msgid "WP Nozzle Clearance"
-msgstr "Vyčištění trysky DT"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_drag_along label"
-msgid "WP Roof Drag Along"
-msgstr "Tah střechy DT"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_fall_down label"
-msgid "WP Roof Fall Down"
-msgstr "Pád materiálu střechy DT"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_inset label"
-msgid "WP Roof Inset Distance"
-msgstr "Vzdálenost střechy DT"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_outer_delay label"
-msgid "WP Roof Outer Delay"
-msgstr "Vnější zpoždění střechy DT"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed label"
-msgid "WP Speed"
-msgstr "Rychlost DT"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_straight_before_down label"
-msgid "WP Straighten Downward Lines"
-msgstr "Vyrovnat spodní linky DT"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_strategy label"
-msgid "WP Strategy"
-msgstr "Strategie DT"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_top_delay label"
-msgid "WP Top Delay"
-msgstr "Zpoždení pohybu nahoře při tisku DT"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_up label"
-msgid "WP Upward Printing Speed"
-msgstr "Rychlost tisku nahoru u DT"
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temp_wait label"
@@ -6327,7 +6218,7 @@ msgstr "Pokud je větší než nula, combingové pohyby delší než tato vzdál
 
 #: fdmprinter.def.json
 msgctxt "hole_xy_offset_max_diameter description"
-msgid "When greater then zero, the Hole Horizontal Expansion is gradually applied on small holes (small holes are expanded more). When set to zero the Hole Horizontal Expansion will be applied to all holes. Holes larger then the Hole Horizontal Expansion Max Diameter are not expanded."
+msgid "When greater than zero, the Hole Horizontal Expansion is gradually applied on small holes (small holes are expanded more). When set to zero the Hole Horizontal Expansion will be applied to all holes. Holes larger than the Hole Horizontal Expansion Max Diameter are not expanded."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -6641,11 +6532,6 @@ msgid "Wipe Z Hop Height"
 msgstr "Výška čištění Z Hopu"
 
 #: fdmprinter.def.json
-msgctxt "wireframe_enabled label"
-msgid "Wire Printing"
-msgstr "Drátový tisk"
-
-#: fdmprinter.def.json
 msgctxt "retraction_combing option infill"
 msgid "Within Infill"
 msgstr "V rámci výplně"
@@ -6818,6 +6704,10 @@ msgstr "cestování"
 #~ msgid "Change the temperature for each layer automatically with the average flow speed of that layer."
 #~ msgstr "Změňte teplotu pro každou vrstvu automaticky s průměrnou rychlostí průtoku této vrstvy."
 
+#~ msgctxt "wireframe_strategy option compensate"
+#~ msgid "Compensate"
+#~ msgstr "Kompenzovat"
+
 #~ msgctxt "travel_compensate_overlapping_walls_x_enabled label"
 #~ msgid "Compensate Inner Wall Overlaps"
 #~ msgstr "Kompenzujte překrytí vnitřní stěny"
@@ -6842,6 +6732,22 @@ msgstr "cestování"
 #~ msgid "Compensate the flow for parts of an outer wall being printed where there is already a wall in place."
 #~ msgstr "Vykompenzujte tok částí tisknuté vnější stěny, kde již je zeď na místě."
 
+#~ msgctxt "wireframe_top_jump description"
+#~ msgid "Creates a small knot at the top of an upward line, so that the consecutive horizontal layer has a better chance to connect to it. Only applies to Wire Printing."
+#~ msgstr "Vytvoří malý uzel v horní části vzestupné linie, takže po sobě jdoucí vodorovná vrstva má lepší šanci se k němu připojit. Platí pouze pro drátový tisk."
+
+#~ msgctxt "wireframe_bottom_delay description"
+#~ msgid "Delay time after a downward move. Only applies to Wire Printing."
+#~ msgstr "Zpoždění po pohybu dolů. Platí pouze pro drátový tisk."
+
+#~ msgctxt "wireframe_top_delay description"
+#~ msgid "Delay time after an upward move, so that the upward line can harden. Only applies to Wire Printing."
+#~ msgstr "Zpoždění po pohybu vzhůru, aby mohla stoupající čára ztvrdnout. Platí pouze pro drátový tisk."
+
+#~ msgctxt "wireframe_flat_delay description"
+#~ msgid "Delay time between two horizontal segments. Introducing such a delay can cause better adhesion to previous layers at the connection points, while too long delays cause sagging. Only applies to Wire Printing."
+#~ msgstr "Doba zpoždění mezi dvěma vodorovnými segmenty. Zavedení takového zpoždění může způsobit lepší přilnavost k předchozím vrstvám ve spojovacích bodech, zatímco příliš dlouhé zpoždění může způsobit ochabnutí. Platí pouze pro drátový tisk."
+
 #~ msgctxt "inset_direction description"
 #~ msgid "Determines the order in which walls are printed. Printing outer walls earlier helps with dimensional accuracy, as faults from inner walls cannot propagate to the outside. However printing them later allows them to stack better when overhangs are printed."
 #~ msgstr "Určuje pořadí, v jakém budou tištěny zdi. Tištění vnějších zdí jako prvních pomáhá s rozměrovou přesností, jelikož se vady z vnitřních stěn nemohou přenášet na vnějšek. Naproti tomu tištění vnějších zdí nakonec dovoluje jejich lepší vrstvení při tištění převisů."
@@ -6858,9 +6764,29 @@ msgstr "cestování"
 #~ msgid "Determines which infill mesh is inside the infill of another infill mesh. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
 #~ msgstr "Určuje, která výplň je uvnitř výplně jiné výplně. Výplňová síť s vyšším pořádkem upraví výplň síťových výplní s nižším řádem a normálními oky."
 
+#~ msgctxt "wireframe_nozzle_clearance description"
+#~ msgid "Distance between the nozzle and horizontally downward lines. Larger clearance results in diagonally downward lines with a less steep angle, which in turn results in less upward connections with the next layer. Only applies to Wire Printing."
+#~ msgstr "Vzdálenost mezi tryskou a vodorovnými liniemi dolů. Větší vůle vede k diagonálně dolů směřujícím liniím s menším strmým úhlem, což zase vede k menšímu spojení nahoru s další vrstvou. Platí pouze pro drátový tisk."
+
+#~ msgctxt "wireframe_up_half_speed description"
+#~ msgid ""
+#~ "Distance of an upward move which is extruded with half speed.\n"
+#~ "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
+#~ msgstr ""
+#~ "Vzdálenost pohybu nahoru, který je vytlačován poloviční rychlostí.\n"
+#~ "To může způsobit lepší přilnavost k předchozím vrstvám, aniž by se materiál v těchto vrstvách příliš zahříval. Platí pouze pro drátový tisk."
+
 #~ msgctxt "support_xy_distance_overhang description"
 #~ msgid "Distance of the support structure from the overhang in the X/Y directions. "
 #~ msgstr "Vzdálenost podpor od převisu ve směru X / Y. "
+
+#~ msgctxt "wireframe_fall_down description"
+#~ msgid "Distance with which the material falls down after an upward extrusion. This distance is compensated for. Only applies to Wire Printing."
+#~ msgstr "Vzdálenost, se kterou materiál padá po vytlačení směrem nahoru. Tato vzdálenost je kompenzována. Platí pouze pro drátový tisk."
+
+#~ msgctxt "wireframe_drag_along description"
+#~ msgid "Distance with which the material of an upward extrusion is dragged along with the diagonally downward extrusion. This distance is compensated for. Only applies to Wire Printing."
+#~ msgstr "Vzdálenost, se kterou je materiál vytlačování směrem vzhůru tažen spolu s diagonálně směrem dolů vytlačováním. Tato vzdálenost je kompenzována. Platí pouze pro drátový tisk."
 
 #~ msgctxt "material_end_of_filament_purge_length label"
 #~ msgid "End Of Filament Purge Length"
@@ -6898,6 +6824,18 @@ msgstr "cestování"
 #~ msgid "Filter out tiny gaps to reduce blobs on outside of model."
 #~ msgstr "Filtrujte drobné mezery, abyste zmenšili kuličky na vnější straně modelu."
 
+#~ msgctxt "wireframe_flow_connection description"
+#~ msgid "Flow compensation when going up or down. Only applies to Wire Printing."
+#~ msgstr "Kompenzace toku při stoupání nebo klesání. Platí pouze pro drátový tisk."
+
+#~ msgctxt "wireframe_flow_flat description"
+#~ msgid "Flow compensation when printing flat lines. Only applies to Wire Printing."
+#~ msgstr "Kompenzace toku při tisku rovných čar. Platí pouze pro drátový tisk."
+
+#~ msgctxt "wireframe_flow description"
+#~ msgid "Flow compensation: the amount of material extruded is multiplied by this value. Only applies to Wire Printing."
+#~ msgstr "Kompenzace toku: množství vytlačovaného materiálu se vynásobí touto hodnotou. Platí pouze pro drátový tisk."
+
 #~ msgctxt "material_guid description"
 #~ msgid "GUID of the material. This is set automatically. "
 #~ msgstr "GUID materiálu. Toto je nastaveno automaticky. "
@@ -6905,6 +6843,10 @@ msgstr "cestování"
 #~ msgctxt "support_tree_enable description"
 #~ msgid "Generate a tree-like support with branches that support your print. This may reduce material usage and print time, but greatly increases slicing time."
 #~ msgstr "Vygenerujte stromovou podporu s větvemi, které podporují váš tisk. To může snížit spotřebu materiálu a dobu tisku, ale výrazně prodlužuje dobu slicování."
+
+#~ msgctxt "support_tree_branch_distance description"
+#~ msgid "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove."
+#~ msgstr "Jak daleko od sebe musí být větve, když se dotýkají modelu. Zmenšení této vzdálenosti způsobí, že se stromová podpora dotkne modelu ve více bodech, což způsobí lepší přesah, ale těžší odstranění podpory."
 
 #~ msgctxt "machine_steps_per_mm_e description"
 #~ msgid "How many steps of the stepper motors will result in one millimeter of extrusion."
@@ -6921,6 +6863,10 @@ msgstr "cestování"
 #~ msgctxt "infill_mesh_order label"
 #~ msgid "Infill Mesh Order"
 #~ msgstr "Pořadí sítě výplně"
+
+#~ msgctxt "wireframe_strategy option knot"
+#~ msgid "Knot"
+#~ msgstr "Uzel"
 
 #~ msgctxt "limit_support_retractions label"
 #~ msgid "Limit Support Retractions"
@@ -6982,9 +6928,17 @@ msgstr "cestování"
 #~ msgid "Outer Before Inner Walls"
 #~ msgstr "Vnější stěny před vnitřními"
 
+#~ msgctxt "wireframe_straight_before_down description"
+#~ msgid "Percentage of a diagonally downward line which is covered by a horizontal line piece. This can prevent sagging of the top most point of upward lines. Only applies to Wire Printing."
+#~ msgstr "Procento diagonálně sestupné linie, která je zakryta vodorovnou čárou. To může zabránit ochabnutí nejvyššího bodu vzhůru. Platí pouze pro drátový tisk."
+
 #~ msgctxt "wall_min_flow_retract label"
 #~ msgid "Prefer Retract"
 #~ msgstr "Preferovat retrakci"
+
+#~ msgctxt "wireframe_enabled description"
+#~ msgid "Print only the outside surface with a sparse webbed structure, printing 'in thin air'. This is realized by horizontally printing the contours of the model at given Z intervals which are connected via upward and diagonally downward lines."
+#~ msgstr "Tiskněte pouze vnější povrch s řídkou strukturou struktury a tiskněte „na vzduchu“. To je realizováno horizontálním tiskem kontur modelu v daných intervalech Z, které jsou spojeny pomocí linií nahoru a diagonálně dolů."
 
 #~ msgctxt "spaghetti_infill_enabled description"
 #~ msgid "Print the infill every so often, so that the filament will curl up chaotically inside the object. This reduces print time, but the behaviour is rather unpredictable."
@@ -6997,6 +6951,14 @@ msgstr "cestování"
 #~ msgctxt "outer_inset_first description"
 #~ msgid "Prints walls in order of outside to inside when enabled. This can help improve dimensional accuracy in X and Y when using a high viscosity plastic like ABS; however it can decrease outer surface print quality, especially on overhangs."
 #~ msgstr "Když je povoleno, tiskne stěny v pořadí od vnějšku dovnitř. To může pomoci zlepšit rozměrovou přesnost v X a Y při použití plastu s vysokou viskozitou, jako je ABS; může však snížit kvalitu tisku vnějšího povrchu, zejména na převisy."
+
+#~ msgctxt "support_tree_collision_resolution description"
+#~ msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
+#~ msgstr "Rozlišení pro výpočet kolizí, aby nedošlo k nárazu do modelu. Nastavením této nižší se vytvoří přesnější stromy, které selhávají méně často, ale dramaticky se zvyšuje doba slicování."
+
+#~ msgctxt "wireframe_strategy option retract"
+#~ msgid "Retract"
+#~ msgstr "Retrakce"
 
 #~ msgctxt "retraction_enable description"
 #~ msgid "Retract the filament when the nozzle is moving over a non-printed area. "
@@ -7042,9 +7004,37 @@ msgstr "cestování"
 #~ msgid "Spaghetti Maximum Infill Angle"
 #~ msgstr "Maximální úhel špagetové výplně"
 
+#~ msgctxt "wireframe_printspeed description"
+#~ msgid "Speed at which the nozzle moves when extruding material. Only applies to Wire Printing."
+#~ msgstr "Rychlost, jakou se tryska pohybuje při vytlačování materiálu. Platí pouze pro drátový tisk."
+
+#~ msgctxt "wireframe_printspeed_down description"
+#~ msgid "Speed of printing a line diagonally downward. Only applies to Wire Printing."
+#~ msgstr "Rychlost tisku linie šikmo dolů. Platí pouze pro drátový tisk."
+
+#~ msgctxt "wireframe_printspeed_up description"
+#~ msgid "Speed of printing a line upward 'in thin air'. Only applies to Wire Printing."
+#~ msgstr "Rychlost tisku řádku nahoru „na vzduchu“. Platí pouze pro drátový tisk."
+
+#~ msgctxt "wireframe_printspeed_bottom description"
+#~ msgid "Speed of printing the first layer, which is the only layer touching the build platform. Only applies to Wire Printing."
+#~ msgstr "Rychlost tisku první vrstvy, která je jedinou vrstvou dotýkající se platformy sestavení. Platí pouze pro drátový tisk."
+
+#~ msgctxt "wireframe_printspeed_flat description"
+#~ msgid "Speed of printing the horizontal contours of the model. Only applies to Wire Printing."
+#~ msgstr "Rychlost tisku vodorovných obrysů modelu. Platí pouze pro drátový tisk."
+
 #~ msgctxt "wall_split_middle_threshold label"
 #~ msgid "Split Middle Line Threshold"
 #~ msgstr "Mez pro rozdělení prostřední čáry"
+
+#~ msgctxt "wireframe_strategy description"
+#~ msgid "Strategy for making sure two consecutive layers connect at each connection point. Retraction lets the upward lines harden in the right position, but may cause filament grinding. A knot can be made at the end of an upward line to heighten the chance of connecting to it and to let the line cool; however, it may require slow printing speeds. Another strategy is to compensate for the sagging of the top of an upward line; however, the lines won't always fall down as predicted."
+#~ msgstr "Strategie pro zajištění toho, aby se v každém místě připojení připojily dvě po sobě následující vrstvy. Zpětné zasunutí umožní, aby linie vzhůru ztvrdly ve správné poloze, ale mohou způsobit broušení vlákna. Uzel může být vytvořen na konci vzestupné linie, aby se zvýšila šance na připojení k ní a aby se linka ochladila; to však může vyžadovat nízké rychlosti tisku. Další strategií je kompenzovat prohnutý vrchol horní linie; čáry však nebudou vždy klesat, jak bylo předpovězeno."
+
+#~ msgctxt "support_tree_angle description"
+#~ msgid "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
+#~ msgstr "Úhel větví. Použijte nižší úhel, aby byly více vertikální a stabilnější. K dosažení většího dosahu použijte vyšší úhel."
 
 #~ msgctxt "lightning_infill_prune_angle description"
 #~ msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the pruning of the outer extremities of trees. Measured in the angle given the thickness."
@@ -7053,6 +7043,22 @@ msgstr "cestování"
 #~ msgctxt "lightning_infill_straightening_angle description"
 #~ msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the smoothing of trees. Measured in the angle given the thickness."
 #~ msgstr "Určuje, pod jakým úhlem mezi jednotlivými vrstvami může docházet k vyrovnávání větví bleskové výplně."
+
+#~ msgctxt "wireframe_roof_inset description"
+#~ msgid "The distance covered when making a connection from a roof outline inward. Only applies to Wire Printing."
+#~ msgstr "Vzdálenost ujetá při vytváření spojení od obrysu střechy dovnitř. Platí pouze pro drátový tisk."
+
+#~ msgctxt "wireframe_roof_drag_along description"
+#~ msgid "The distance of the end piece of an inward line which gets dragged along when going back to the outer outline of the roof. This distance is compensated for. Only applies to Wire Printing."
+#~ msgstr "Vzdálenost koncového kusu vnitřní linie, která se táhne, když se vrací zpět k vnějšímu obrysu střechy. Tato vzdálenost je kompenzována. Platí pouze pro drátový tisk."
+
+#~ msgctxt "wireframe_roof_fall_down description"
+#~ msgid "The distance which horizontal roof lines printed 'in thin air' fall down when being printed. This distance is compensated for. Only applies to Wire Printing."
+#~ msgstr "Vzdálenost, kterou vodorovné linie střechy vytištěné „na vzduchu“ klesají při tisku. Tato vzdálenost je kompenzována. Platí pouze pro drátový tisk."
+
+#~ msgctxt "wireframe_height description"
+#~ msgid "The height of the upward and diagonally downward lines between two horizontal parts. This determines the overall density of the net structure. Only applies to Wire Printing."
+#~ msgstr "Výška nahoru a diagonálně dolů směřujících čar mezi dvěma vodorovnými částmi. To určuje celkovou hustotu struktury sítě. Platí pouze pro drátový tisk."
 
 #~ msgctxt "spaghetti_max_infill_angle description"
 #~ msgid "The maximum angle w.r.t. the Z axis of the inside of the print for areas which are to be filled with spaghetti infill afterwards. Lowering this value causes more angled parts in your model to be filled on each layer."
@@ -7102,6 +7108,10 @@ msgstr "cestování"
 #~ msgid "The temperature used for the heated build plate. If this is 0, the bed temperature will not be adjusted."
 #~ msgstr "Teplota použitá pro vyhřívanou podložku. Pokud je to 0, teplota podložky nebude upravena."
 
+#~ msgctxt "wireframe_roof_outer_delay description"
+#~ msgid "Time spent at the outer perimeters of hole which is to become a roof. Longer times can ensure a better connection. Only applies to Wire Printing."
+#~ msgstr "Čas strávený na vnějším obvodu díry, která se má stát střechou. Delší časy mohou zajistit lepší spojení. Platí pouze pro drátový tisk."
+
 #~ msgctxt "max_skin_angle_for_expansion description"
 #~ msgid "Top and/or bottom surfaces of your object with an angle larger than this setting, won't have their top/bottom skin expanded. This avoids expanding the narrow skin areas that are created when the model surface has a near vertical slope. An angle of 0° is horizontal, while an angle of 90° is vertical."
 #~ msgstr "Horní a/nebo dolní povrch objektu s větším úhlem, než je toto nastavení, nebudou mít rozbalenou horní/dolní plochu. Tím se zabrání rozšíření úzkých oblastí vzhledu, které jsou vytvořeny, když má povrch modelu téměř svislý sklon. Úhel 0° je vodorovný, zatímco úhel 90° je svislý."
@@ -7109,6 +7119,122 @@ msgstr "cestování"
 #~ msgctxt "support_tree_enable label"
 #~ msgid "Tree Support"
 #~ msgstr "Stromová podpora"
+
+#~ msgctxt "support_tree_angle label"
+#~ msgid "Tree Support Branch Angle"
+#~ msgstr "Úhel větve stromové podpory"
+
+#~ msgctxt "support_tree_branch_diameter label"
+#~ msgid "Tree Support Branch Diameter"
+#~ msgstr "Průměr větve podpěry stromu"
+
+#~ msgctxt "support_tree_branch_diameter_angle label"
+#~ msgid "Tree Support Branch Diameter Angle"
+#~ msgstr "Průměr úhlu větve podpěry stromu"
+
+#~ msgctxt "support_tree_branch_distance label"
+#~ msgid "Tree Support Branch Distance"
+#~ msgstr "Vzdálenost větví stromu"
+
+#~ msgctxt "support_tree_collision_resolution label"
+#~ msgid "Tree Support Collision Resolution"
+#~ msgstr "Stromová podpora - rozlišení kolize"
+
+#~ msgctxt "support_tree_max_diameter label"
+#~ msgid "Tree Support Trunk Diameter"
+#~ msgstr "Průměr kmene stromové podpory"
+
+#~ msgctxt "wireframe_bottom_delay label"
+#~ msgid "WP Bottom Delay"
+#~ msgstr "Zpoždení pohybu dole při tisku DT"
+
+#~ msgctxt "wireframe_printspeed_bottom label"
+#~ msgid "WP Bottom Printing Speed"
+#~ msgstr "Rychlost tisku spodního DT"
+
+#~ msgctxt "wireframe_flow_connection label"
+#~ msgid "WP Connection Flow"
+#~ msgstr "Průtok při spojování DT"
+
+#~ msgctxt "wireframe_height label"
+#~ msgid "WP Connection Height"
+#~ msgstr "Výška připojení DT"
+
+#~ msgctxt "wireframe_printspeed_down label"
+#~ msgid "WP Downward Printing Speed"
+#~ msgstr "Rychlost tisku směrem dolů u DT"
+
+#~ msgctxt "wireframe_drag_along label"
+#~ msgid "WP Drag Along"
+#~ msgstr "Tah DT"
+
+#~ msgctxt "wireframe_up_half_speed label"
+#~ msgid "WP Ease Upward"
+#~ msgstr "Poloviční rychlost DT"
+
+#~ msgctxt "wireframe_fall_down label"
+#~ msgid "WP Fall Down"
+#~ msgstr "Pád materiálu DT"
+
+#~ msgctxt "wireframe_flat_delay label"
+#~ msgid "WP Flat Delay"
+#~ msgstr "Zpoždění při tisku plochých segmentů DT"
+
+#~ msgctxt "wireframe_flow_flat label"
+#~ msgid "WP Flat Flow"
+#~ msgstr "Průtok při plochém DT"
+
+#~ msgctxt "wireframe_flow label"
+#~ msgid "WP Flow"
+#~ msgstr "Průtok při DT"
+
+#~ msgctxt "wireframe_printspeed_flat label"
+#~ msgid "WP Horizontal Printing Speed"
+#~ msgstr "Rychlost horizontálního tisku DT"
+
+#~ msgctxt "wireframe_top_jump label"
+#~ msgid "WP Knot Size"
+#~ msgstr "Velikost uzlu DT"
+
+#~ msgctxt "wireframe_nozzle_clearance label"
+#~ msgid "WP Nozzle Clearance"
+#~ msgstr "Vyčištění trysky DT"
+
+#~ msgctxt "wireframe_roof_drag_along label"
+#~ msgid "WP Roof Drag Along"
+#~ msgstr "Tah střechy DT"
+
+#~ msgctxt "wireframe_roof_fall_down label"
+#~ msgid "WP Roof Fall Down"
+#~ msgstr "Pád materiálu střechy DT"
+
+#~ msgctxt "wireframe_roof_inset label"
+#~ msgid "WP Roof Inset Distance"
+#~ msgstr "Vzdálenost střechy DT"
+
+#~ msgctxt "wireframe_roof_outer_delay label"
+#~ msgid "WP Roof Outer Delay"
+#~ msgstr "Vnější zpoždění střechy DT"
+
+#~ msgctxt "wireframe_printspeed label"
+#~ msgid "WP Speed"
+#~ msgstr "Rychlost DT"
+
+#~ msgctxt "wireframe_straight_before_down label"
+#~ msgid "WP Straighten Downward Lines"
+#~ msgstr "Vyrovnat spodní linky DT"
+
+#~ msgctxt "wireframe_strategy label"
+#~ msgid "WP Strategy"
+#~ msgstr "Strategie DT"
+
+#~ msgctxt "wireframe_top_delay label"
+#~ msgid "WP Top Delay"
+#~ msgstr "Zpoždení pohybu nahoře při tisku DT"
+
+#~ msgctxt "wireframe_printspeed_up label"
+#~ msgid "WP Upward Printing Speed"
+#~ msgstr "Rychlost tisku nahoru u DT"
 
 #~ msgctxt "retraction_combing_max_distance description"
 #~ msgid "When non-zero, combing travel moves that are longer than this distance will use retraction."
@@ -7121,6 +7247,10 @@ msgstr "cestování"
 #~ msgctxt "spaghetti_infill_stepped description"
 #~ msgid "Whether to print spaghetti infill in steps or extrude all the infill filament at the end of the print."
 #~ msgstr "Zda se má tisknout špagetová výplň po krocích, nebo se vytlačí veškeré výplňové vlákno na konci tisku."
+
+#~ msgctxt "wireframe_enabled label"
+#~ msgid "Wire Printing"
+#~ msgstr "Drátový tisk"
 
 #~ msgctxt "blackmagic description"
 #~ msgid "category_blackmagic"
