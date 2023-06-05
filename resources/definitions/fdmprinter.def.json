@@ -4478,7 +4478,7 @@
                     "description": "Generate structures to support parts of the model which have overhangs. Without these structures, such parts would collapse during printing.",
                     "type": "bool",
                     "default_value": false,
-                    "resolve": "any(extruderValues('support_enable'))",
+                    "resolve": "[*map(lambda x: str(x).lower() == 'true', (extruderValues('support_enable') and extruderValues('material_is_support_material')))].index(True) if any([*map(lambda x: str(x).lower() == 'true', (extruderValues('support_enable') and extruderValues('material_is_support_material')))]) else int(defaultExtruderPosition())",
                     "settable_per_mesh": true,
                     "settable_per_extruder": false
                 },
