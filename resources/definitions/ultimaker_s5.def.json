@@ -112,7 +112,6 @@
         "retraction_min_travel": { "value": "5" },
         "retraction_prime_speed": { "value": "15" },
         "retraction_speed": { "value": "45" },
-        "skin_overlap": { "value": "10" },
         "speed_prime_tower": { "value": "speed_topbottom" },
         "speed_print": { "value": "35" },
         "speed_support": { "value": "speed_wall_0" },
