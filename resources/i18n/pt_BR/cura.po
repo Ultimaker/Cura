@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-15 10:00+0000\n"
+"POT-Creation-Date: 2023-06-02 11:57+0000\n"
 "PO-Revision-Date: 2023-02-17 17:37+0100\n"
 "Last-Translator: Cláudio Sampaio <patola@gmail.com>\n"
 "Language-Team: Cláudio Sampaio <patola@gmail.com>\n"
@@ -5071,14 +5071,14 @@ msgid_plural "Print Selected Models With:"
 msgstr[0] "Imprimir Modelo Selecionado Com:"
 msgstr[1] "Imprimir Modelos Selecionados Com:"
 
-#: resources/qml/Menus/ContextMenu.qml:92
+#: resources/qml/Menus/ContextMenu.qml:103
 msgctxt "@title:window"
 msgid "Multiply Selected Model"
 msgid_plural "Multiply Selected Models"
 msgstr[0] "Multiplicar Modelo Selecionado"
 msgstr[1] "Multiplicar Modelos Selecionados"
 
-#: resources/qml/Menus/ContextMenu.qml:123
+#: resources/qml/Menus/ContextMenu.qml:134
 msgctxt "@label"
 msgid "Number of Copies"
 msgstr "Número de Cópias"
@@ -6700,22 +6700,22 @@ msgctxt "@button"
 msgid "Add printer manually"
 msgstr "Adicionar impressora manualmente"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:212
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:214
 msgctxt "@label"
 msgid "Manufacturer"
 msgstr "Fabricante"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:223
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:225
 msgctxt "@label"
 msgid "Profile author"
 msgstr "Autor do perfil"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:235
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:237
 msgctxt "@label"
 msgid "Printer name"
 msgstr "Nome da impressora"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:241
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:243
 msgctxt "@text"
 msgid "Please name your printer"
 msgstr "Por favor dê um nome à sua impressora"
