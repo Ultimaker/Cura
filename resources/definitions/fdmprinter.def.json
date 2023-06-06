@@ -4765,8 +4765,8 @@
                     "type": "enum",
                     "options":
                     {
-                        "buildplate": "Force Only Buildplate",
-                        "graceful": "On Model If Necessary"
+                        "buildplate": "On buildplate when possible",
+                        "graceful": "On model if required"
                     },
                     "default_value": "buildplate",
                     "value": "'buildplate' if support_type == 'buildplate' else 'graceful'",
