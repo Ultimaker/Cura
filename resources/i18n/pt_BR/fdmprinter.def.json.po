@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.0\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-05-30 15:31+0000\n"
+"POT-Creation-Date: 2023-06-06 13:48+0000\n"
 "PO-Revision-Date: 2023-02-17 16:31+0100\n"
 "Last-Translator: Cláudio Sampaio <patola@gmail.com>\n"
 "Language-Team: Cláudio Sampaio <patola@gmail.com>\n"
@@ -1390,11 +1390,6 @@ msgstr "Velocidade de Descarga de Purga"
 msgctxt "min_wall_line_width description"
 msgid "For thin structures around once or twice the nozzle size, the line widths need to be altered to adhere to the thickness of the model. This setting controls the minimum line width allowed for the walls. The minimum line widths inherently also determine the maximum line widths, since we transition from N to N+1 walls at some geometry thickness where the N walls are wide and the N+1 walls are narrow. The widest possible wall line is twice the Minimum Wall Line Width."
 msgstr "Para estruturas finas por volta de uma ou duas vezes o tamanho do bico, as larguras de linhas precisam ser alteradas para aderir à grossura do modelo. Este ajuste controla a largura mínima de filete permite para as paredes. As larguras mínimas de filete inerentemente também determinam as larguras máximas, já que transicionamos de N pra N+1 parede na grossura de geometria onde paredes N são largas e as paredes N+1 são estreitas. A  maior largura possível de parede é duas vezes a Largura Mínima de Filete de Parede."
-
-#: fdmprinter.def.json
-msgctxt "support_tree_rest_preference option buildplate"
-msgid "Force Only Buildplate"
-msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "z_seam_position option front"
@@ -2925,8 +2920,13 @@ msgid "Offset with Extruder"
 msgstr "Deslocamento com o Extrusor"
 
 #: fdmprinter.def.json
+msgctxt "support_tree_rest_preference option buildplate"
+msgid "On buildplate when possible"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "support_tree_rest_preference option graceful"
-msgid "On Model If Necessary"
+msgid "On model if required"
 msgstr ""
 
 #: fdmprinter.def.json

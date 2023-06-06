@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-05-30 15:31+0000\n"
+"POT-Creation-Date: 2023-06-06 13:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -1385,11 +1385,6 @@ msgstr "Vitesse de purge d'insertion"
 msgctxt "min_wall_line_width description"
 msgid "For thin structures around once or twice the nozzle size, the line widths need to be altered to adhere to the thickness of the model. This setting controls the minimum line width allowed for the walls. The minimum line widths inherently also determine the maximum line widths, since we transition from N to N+1 walls at some geometry thickness where the N walls are wide and the N+1 walls are narrow. The widest possible wall line is twice the Minimum Wall Line Width."
 msgstr "Pour les structures fines dont la taille correspond à une ou deux fois celle de la buse, il faut modifier la largeur des lignes pour respecter l'épaisseur du modèle. Ce paramètre contrôle la largeur de ligne minimale autorisée pour les parois. Les largeurs de lignes minimales déterminent également les largeurs de lignes maximales, puisque nous passons de N à N+1 parois à une certaine épaisseur géométrique où les N parois sont larges et les N+1 parois sont étroites. La ligne de paroi la plus large possible est égale à deux fois la largeur minimale de la ligne de paroi."
-
-#: fdmprinter.def.json
-msgctxt "support_tree_rest_preference option buildplate"
-msgid "Force Only Buildplate"
-msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "z_seam_position option front"
@@ -2920,8 +2915,13 @@ msgid "Offset with Extruder"
 msgstr "Décalage avec extrudeuse"
 
 #: fdmprinter.def.json
+msgctxt "support_tree_rest_preference option buildplate"
+msgid "On buildplate when possible"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "support_tree_rest_preference option graceful"
-msgid "On Model If Necessary"
+msgid "On model if required"
 msgstr ""
 
 #: fdmprinter.def.json
