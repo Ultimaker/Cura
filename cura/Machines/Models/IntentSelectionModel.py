@@ -76,6 +76,12 @@ class IntentSelectionModel(ListModel):
             "description": catalog.i18nc("@text", "The draft profile is designed to print initial prototypes and concept validation with the intent of significant print time reduction."),
             "icon": "SpeedOMeter"
         }
+        default_profile_information["annealing"] = {
+            "name": catalog.i18nc("@label", "Annealing"),
+            "description": catalog.i18nc("@text",
+                                         "The annealing profile requires post-processing in an oven after the print is finished. This profile retains the dimensional accuracy of the printed part after annealing and improves strength, stiffness, and thermal resistance."),
+            "icon": "Anneal"
+        }
         return default_profile_information
 
     def _onContainerChange(self, container: ContainerInterface) -> None:

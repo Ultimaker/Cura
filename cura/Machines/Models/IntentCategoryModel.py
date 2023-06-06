@@ -53,6 +53,12 @@ class IntentCategoryModel(ListModel):
                 "name": catalog.i18nc("@label", "Draft"),
                 "description": catalog.i18nc("@text", "The draft profile is designed to print initial prototypes and concept validation with the intent of significant print time reduction.")
             }
+            cls._translations["annealing"] = {
+                "name": catalog.i18nc("@label", "Annealing"),
+                "description": catalog.i18nc("@text",
+                                             "The annealing profile requires post-processing in an oven after the print is finished. This profile retains the dimensional accuracy of the printed part after annealing and improves strength, stiffness, and thermal resistance.")
+
+            }
         return cls._translations
 
     def __init__(self, intent_category: str) -> None:
