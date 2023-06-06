@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-02 11:57+0000\n"
+"POT-Creation-Date: 2023-06-06 10:46+0000\n"
 "PO-Revision-Date: 2023-02-16 20:28+0100\n"
 "Last-Translator: Miroslav Šustek <sustmidown@centrum.cz>\n"
 "Language-Team: DenyCZ <www.github.com/DenyCZ>\n"
@@ -377,6 +377,18 @@ msgstr "Návrh"
 msgctxt "@text"
 msgid "The draft profile is designed to print initial prototypes and concept validation with the intent of significant print time reduction."
 msgstr "Návrhový profil je navržen pro tisk počátečních prototypů a ověření koncepce s cílem podstatného zkrácení doby tisku."
+
+#: cura/Machines/Models/IntentCategoryModel.py:57
+#: cura/Machines/Models/IntentSelectionModel.py:80
+msgctxt "@label"
+msgid "Annealing"
+msgstr ""
+
+#: cura/Machines/Models/IntentCategoryModel.py:59
+#: cura/Machines/Models/IntentSelectionModel.py:82
+msgctxt "@text"
+msgid "The annealing profile requires post-processing in an oven after the print is finished. This profile retains the dimensional accuracy of the printed part after annealing and improves strength, stiffness, and thermal resistance."
+msgstr ""
 
 #: cura/Machines/Models/MaterialManagementModel.py:232
 msgctxt "@label"

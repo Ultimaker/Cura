@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-02 11:57+0000\n"
+"POT-Creation-Date: 2023-06-06 10:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -377,6 +377,18 @@ msgstr "Ébauche"
 msgctxt "@text"
 msgid "The draft profile is designed to print initial prototypes and concept validation with the intent of significant print time reduction."
 msgstr "L'ébauche du profil est conçue pour imprimer les prototypes initiaux et la validation du concept dans le but de réduire considérablement le temps d'impression."
+
+#: cura/Machines/Models/IntentCategoryModel.py:57
+#: cura/Machines/Models/IntentSelectionModel.py:80
+msgctxt "@label"
+msgid "Annealing"
+msgstr ""
+
+#: cura/Machines/Models/IntentCategoryModel.py:59
+#: cura/Machines/Models/IntentSelectionModel.py:82
+msgctxt "@text"
+msgid "The annealing profile requires post-processing in an oven after the print is finished. This profile retains the dimensional accuracy of the printed part after annealing and improves strength, stiffness, and thermal resistance."
+msgstr ""
 
 #: cura/Machines/Models/MaterialManagementModel.py:232
 msgctxt "@label"

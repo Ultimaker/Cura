@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-02 11:57+0000\n"
+"POT-Creation-Date: 2023-06-06 10:46+0000\n"
 "PO-Revision-Date: 2022-01-02 19:59+0800\n"
 "Last-Translator: Valen Chang  <carf17771@gmail.com>\n"
 "Language-Team: Valen Chang <carf17771@gmail.com>\n"
@@ -377,6 +377,18 @@ msgstr "草稿"
 msgctxt "@text"
 msgid "The draft profile is designed to print initial prototypes and concept validation with the intent of significant print time reduction."
 msgstr "草稿參數是設計來縮短時間，快速列印初始原型和概念驗證。"
+
+#: cura/Machines/Models/IntentCategoryModel.py:57
+#: cura/Machines/Models/IntentSelectionModel.py:80
+msgctxt "@label"
+msgid "Annealing"
+msgstr ""
+
+#: cura/Machines/Models/IntentCategoryModel.py:59
+#: cura/Machines/Models/IntentSelectionModel.py:82
+msgctxt "@text"
+msgid "The annealing profile requires post-processing in an oven after the print is finished. This profile retains the dimensional accuracy of the printed part after annealing and improves strength, stiffness, and thermal resistance."
+msgstr ""
 
 #: cura/Machines/Models/MaterialManagementModel.py:232
 msgctxt "@label"
