@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-05-30 15:31+0000\n"
+"POT-Creation-Date: 2023-06-06 13:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -1385,11 +1385,6 @@ msgstr "Velocidade da purga da descarga"
 msgctxt "min_wall_line_width description"
 msgid "For thin structures around once or twice the nozzle size, the line widths need to be altered to adhere to the thickness of the model. This setting controls the minimum line width allowed for the walls. The minimum line widths inherently also determine the maximum line widths, since we transition from N to N+1 walls at some geometry thickness where the N walls are wide and the N+1 walls are narrow. The widest possible wall line is twice the Minimum Wall Line Width."
 msgstr "Para estruturas finas de cerca de uma ou duas vezes o tamanho do bocal, os diâmetros da linha têm de ser alterados para aderir à espessura do modelo. Esta definição controla o diâmetro mínimo da linha permitido para as paredes. Os diâmetros mínimos de linha determinam também os diâmetros máximos de linha, uma vez que fazemos a transição de paredes N para N+1 com uma determinada espessura da geometria em que as paredes N são largas e as paredes N+1 são estreitas. A linha de parede mais larga possível é o dobro do diâmetro mínimo de linha da parede."
-
-#: fdmprinter.def.json
-msgctxt "support_tree_rest_preference option buildplate"
-msgid "Force Only Buildplate"
-msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "z_seam_position option front"
@@ -2920,8 +2915,13 @@ msgid "Offset with Extruder"
 msgstr "Desviar com extrusor"
 
 #: fdmprinter.def.json
+msgctxt "support_tree_rest_preference option buildplate"
+msgid "On buildplate when possible"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "support_tree_rest_preference option graceful"
-msgid "On Model If Necessary"
+msgid "On model if required"
 msgstr ""
 
 #: fdmprinter.def.json

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-05-30 15:31+0000\n"
+"POT-Creation-Date: 2023-06-06 13:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -1385,11 +1385,6 @@ msgstr "수평 퍼지 속도"
 msgctxt "min_wall_line_width description"
 msgid "For thin structures around once or twice the nozzle size, the line widths need to be altered to adhere to the thickness of the model. This setting controls the minimum line width allowed for the walls. The minimum line widths inherently also determine the maximum line widths, since we transition from N to N+1 walls at some geometry thickness where the N walls are wide and the N+1 walls are narrow. The widest possible wall line is twice the Minimum Wall Line Width."
 msgstr "노즐 크기의 1~2배 정도의 얇은 구조물의 경우 모델의 두께에 맞게 선 너비를 변경해야 합니다. 이 설정은 벽에 허용되는 최소 선 너비를 제어합니다. N개의 벽이 넓고 N+1개의 벽이 좁은 일부 형상 두께에서는 N개의 벽에서 N+1개의 벽으로 전환하기 때문에, 최소 선 너비가 내재적으로 최대 선 너비를 결정합니다. 가장 넓을 가능성이 있는 벽 선은 최소 벽 선 너비의 두 배입니다."
-
-#: fdmprinter.def.json
-msgctxt "support_tree_rest_preference option buildplate"
-msgid "Force Only Buildplate"
-msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "z_seam_position option front"
@@ -2920,8 +2915,13 @@ msgid "Offset with Extruder"
 msgstr "익스트루더로 오프셋"
 
 #: fdmprinter.def.json
+msgctxt "support_tree_rest_preference option buildplate"
+msgid "On buildplate when possible"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "support_tree_rest_preference option graceful"
-msgid "On Model If Necessary"
+msgid "On model if required"
 msgstr ""
 
 #: fdmprinter.def.json
