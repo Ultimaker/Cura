@@ -4478,7 +4478,7 @@
                     "description": "Generate structures to support parts of the model which have overhangs. Without these structures, such parts would collapse during printing.",
                     "type": "bool",
                     "default_value": false,
-                    "resolve": "[*map(lambda x: str(x).lower() == 'true', (extruderValues('support_enable') and extruderValues('material_is_support_material')))].index(True) if any([*map(lambda x: str(x).lower() == 'true', (extruderValues('support_enable') and extruderValues('material_is_support_material')))]) else int(defaultExtruderPosition())",
+                    "resolve": "any(extruderValues('support_enable'))",
                     "settable_per_mesh": true,
                     "settable_per_extruder": false
                 },
@@ -4488,8 +4488,9 @@
                     "description": "The extruder train to use for printing the support. This is used in multi-extrusion.",
                     "type": "extruder",
                     "default_value": "0",
-                    "value": "int(defaultExtruderPosition())",
                     "enabled": "(support_enable or support_meshes_present) and extruders_enabled_count > 1",
+                    "value": "[*map(lambda x: str(x).lower() == 'true', (extruderValues('support_enable') and extruderValues('material_is_support_material')))].index(True) if any([*map(lambda x: str(x).lower() == 'true', (extruderValues('support_enable') and extruderValues('material_is_support_material')))]) else int(defaultExtruderPosition())",
+
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "children":
