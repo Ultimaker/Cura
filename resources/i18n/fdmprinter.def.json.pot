@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-04-28 10:03+0000\n"
+"POT-Creation-Date: 2023-06-06 13:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -2652,6 +2652,16 @@ msgid "The temperature of the nozzle when another nozzle is currently used for p
 msgstr ""
 
 #: fdmprinter.def.json
+msgctxt "material_is_support_material label"
+msgid "Is support material"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_is_support_material description"
+msgid "Is this material typically used as a support material during printing."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "speed label"
 msgid "Speed"
 msgstr ""
@@ -3918,12 +3928,12 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_rest_preference option buildplate"
-msgid "Force Only Buildplate"
+msgid "On buildplate when possible"
 msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_rest_preference option graceful"
-msgid "On Model If Necessary"
+msgid "On model if required"
 msgstr ""
 
 #: fdmprinter.def.json

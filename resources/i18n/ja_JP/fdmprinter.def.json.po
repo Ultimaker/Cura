@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-04-28 10:03+0000\n"
+"POT-Creation-Date: 2023-06-06 13:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -1387,11 +1387,6 @@ msgid "For thin structures around once or twice the nozzle size, the line widths
 msgstr "ノズルサイズの1～2倍程度の薄い構造の場合、モデルの厚さに合わせてライン幅を変更する必要があります。この設定は、ウォールに許容される最小ライン幅を制御します。ジオメトリーの厚さが、Nのウォールが幅広く、N+1のウォールが狭い場所で、NからN+1のウォールに移行するため、最小ライン幅は本質的に最大ライン幅も決定します。ウォールラインの許容最大幅は、最小ウォールライン幅の2倍です。"
 
 #: fdmprinter.def.json
-msgctxt "support_tree_rest_preference option buildplate"
-msgid "Force Only Buildplate"
-msgstr ""
-
-#: fdmprinter.def.json
 msgctxt "z_seam_position option front"
 msgid "Front"
 msgstr "前"
@@ -2120,9 +2115,19 @@ msgid "Is Center Origin"
 msgstr "中心位置"
 
 #: fdmprinter.def.json
+msgctxt "material_is_support_material label"
+msgid "Is support material"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "material_crystallinity description"
 msgid "Is this material the type that breaks off cleanly when heated (crystalline), or is it the type that produces long intertwined polymer chains (non-crystalline)?"
 msgstr "この材料は加熱時にきれいに分解するタイプ (結晶性) または長く絡み合ったポリマー鎖 (非結晶) を作り出すタイプのいずれですか?"
+
+#: fdmprinter.def.json
+msgctxt "material_is_support_material description"
+msgid "Is this material typically used as a support material during printing."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_outside_only description"
@@ -2910,8 +2915,13 @@ msgid "Offset with Extruder"
 msgstr "エクストルーダーのオフセット"
 
 #: fdmprinter.def.json
+msgctxt "support_tree_rest_preference option buildplate"
+msgid "On buildplate when possible"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "support_tree_rest_preference option graceful"
-msgid "On Model If Necessary"
+msgid "On model if required"
 msgstr ""
 
 #: fdmprinter.def.json

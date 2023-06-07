@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-04-28 10:03+0000\n"
+"POT-Creation-Date: 2023-06-06 13:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -1387,11 +1387,6 @@ msgid "For thin structures around once or twice the nozzle size, the line widths
 msgstr "Per strutture sottili, circa una o due volte la dimensione dell'ugello, le larghezze delle linee devono essere modificate per rispettare lo spessore del modello. Questa impostazione controlla la larghezza minima della linea consentita per le pareti. Le larghezze minime delle linee determinano intrinsecamente anche le larghezze massime delle linee, poiché si esegue la transizione da N a N+1 pareti ad uno spessore geometrico in cui le pareti N sono larghe e le pareti N+1 sono strette. La linea perimetrale più larga possible è due volte la larghezza minima della linea perimetrale."
 
 #: fdmprinter.def.json
-msgctxt "support_tree_rest_preference option buildplate"
-msgid "Force Only Buildplate"
-msgstr ""
-
-#: fdmprinter.def.json
 msgctxt "z_seam_position option front"
 msgid "Front"
 msgstr "Avanti"
@@ -2120,9 +2115,19 @@ msgid "Is Center Origin"
 msgstr "Origine del centro"
 
 #: fdmprinter.def.json
+msgctxt "material_is_support_material label"
+msgid "Is support material"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "material_crystallinity description"
 msgid "Is this material the type that breaks off cleanly when heated (crystalline), or is it the type that produces long intertwined polymer chains (non-crystalline)?"
 msgstr "Questo tipo di materiale è quello che si stacca in modo netto quando viene riscaldato (cristallino) oppure è il tipo che produce lunghe catene di polimeri intrecciati (non cristallino)?"
+
+#: fdmprinter.def.json
+msgctxt "material_is_support_material description"
+msgid "Is this material typically used as a support material during printing."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_outside_only description"
@@ -2910,8 +2915,13 @@ msgid "Offset with Extruder"
 msgstr "Offset con estrusore"
 
 #: fdmprinter.def.json
+msgctxt "support_tree_rest_preference option buildplate"
+msgid "On buildplate when possible"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "support_tree_rest_preference option graceful"
-msgid "On Model If Necessary"
+msgid "On model if required"
 msgstr ""
 
 #: fdmprinter.def.json

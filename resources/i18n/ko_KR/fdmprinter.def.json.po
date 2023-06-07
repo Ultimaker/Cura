@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-04-28 10:03+0000\n"
+"POT-Creation-Date: 2023-06-06 13:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -1387,11 +1387,6 @@ msgid "For thin structures around once or twice the nozzle size, the line widths
 msgstr "노즐 크기의 1~2배 정도의 얇은 구조물의 경우 모델의 두께에 맞게 선 너비를 변경해야 합니다. 이 설정은 벽에 허용되는 최소 선 너비를 제어합니다. N개의 벽이 넓고 N+1개의 벽이 좁은 일부 형상 두께에서는 N개의 벽에서 N+1개의 벽으로 전환하기 때문에, 최소 선 너비가 내재적으로 최대 선 너비를 결정합니다. 가장 넓을 가능성이 있는 벽 선은 최소 벽 선 너비의 두 배입니다."
 
 #: fdmprinter.def.json
-msgctxt "support_tree_rest_preference option buildplate"
-msgid "Force Only Buildplate"
-msgstr ""
-
-#: fdmprinter.def.json
 msgctxt "z_seam_position option front"
 msgid "Front"
 msgstr "전면"
@@ -2120,9 +2115,19 @@ msgid "Is Center Origin"
 msgstr "센터 원점"
 
 #: fdmprinter.def.json
+msgctxt "material_is_support_material label"
+msgid "Is support material"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "material_crystallinity description"
 msgid "Is this material the type that breaks off cleanly when heated (crystalline), or is it the type that produces long intertwined polymer chains (non-crystalline)?"
 msgstr "이 소재는 가열 시 깔끔하게 분리되는 유형(결정형)입니까? 아니면 길게 얽힌 폴리머 체인을 생성하는 유형(비결정형)입니까?"
+
+#: fdmprinter.def.json
+msgctxt "material_is_support_material description"
+msgid "Is this material typically used as a support material during printing."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_outside_only description"
@@ -2910,8 +2915,13 @@ msgid "Offset with Extruder"
 msgstr "익스트루더로 오프셋"
 
 #: fdmprinter.def.json
+msgctxt "support_tree_rest_preference option buildplate"
+msgid "On buildplate when possible"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "support_tree_rest_preference option graceful"
-msgid "On Model If Necessary"
+msgid "On model if required"
 msgstr ""
 
 #: fdmprinter.def.json

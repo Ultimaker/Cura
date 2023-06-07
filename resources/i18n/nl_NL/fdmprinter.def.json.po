@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-04-28 10:03+0000\n"
+"POT-Creation-Date: 2023-06-06 13:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -1387,11 +1387,6 @@ msgid "For thin structures around once or twice the nozzle size, the line widths
 msgstr "Bij dunne structuren die ongeveer één of tweemaal zo groot als de nozzle zijn, moeten de lijnbreedtes worden aangepast aan de dikte van het model. Met deze instelling beheert u de minimum lijnbreedte die voor wanden is toegestaan. De minimum lijnbreedte bepaalt automatisch ook de maximale lijnbreedte, omdat we bij een bepaalde geometriedikte overgaan van wanden van N naar wanden van N+1, waarbij de N-wanden breed zijn en de N+1-wanden smal. De breedst mogelijke wandlijn is tweemaal de minimumbreedte van de wandlijn."
 
 #: fdmprinter.def.json
-msgctxt "support_tree_rest_preference option buildplate"
-msgid "Force Only Buildplate"
-msgstr ""
-
-#: fdmprinter.def.json
 msgctxt "z_seam_position option front"
 msgid "Front"
 msgstr "Voor"
@@ -2120,9 +2115,19 @@ msgid "Is Center Origin"
 msgstr "Is oorsprongpunt centraal"
 
 #: fdmprinter.def.json
+msgctxt "material_is_support_material label"
+msgid "Is support material"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "material_crystallinity description"
 msgid "Is this material the type that breaks off cleanly when heated (crystalline), or is it the type that produces long intertwined polymer chains (non-crystalline)?"
 msgstr "Breekt dit materiaal recht af wanneer het wordt verwarmd (kristallijn) of produceert het lange, met elkaar verweven polymeerketens (niet-kristallijn)?"
+
+#: fdmprinter.def.json
+msgctxt "material_is_support_material description"
+msgid "Is this material typically used as a support material during printing."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_outside_only description"
@@ -2910,8 +2915,13 @@ msgid "Offset with Extruder"
 msgstr "Offset met extruder"
 
 #: fdmprinter.def.json
+msgctxt "support_tree_rest_preference option buildplate"
+msgid "On buildplate when possible"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "support_tree_rest_preference option graceful"
-msgid "On Model If Necessary"
+msgid "On model if required"
 msgstr ""
 
 #: fdmprinter.def.json

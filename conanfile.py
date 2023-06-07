@@ -49,7 +49,7 @@ class CuraConan(ConanFile):
 
     def set_version(self):
         if not self.version:
-            self.version = "5.4.0-alpha"
+            self.version = "5.4.0-beta"
 
     @property
     def _pycharm_targets(self):
@@ -270,17 +270,17 @@ class CuraConan(ConanFile):
 
     def requirements(self):
         self.requires("pyarcus/5.2.2")
-        self.requires("curaengine/latest@ultimaker/testing")
+        self.requires("curaengine/(latest)@ultimaker/stable")
         self.requires("pysavitar/5.2.2")
         self.requires("pynest2d/5.2.2")
-        self.requires("uranium/(latest)@ultimaker/testing")
-        self.requires("cura_binary_data/(latest)@ultimaker/testing")
+        self.requires("uranium/(latest)@ultimaker/stable")
+        self.requires("cura_binary_data/(latest)@ultimaker/stable")
         self.requires("cpython/3.10.4")
         if self.options.internal:
             self.requires("cura_private_data/(latest)@ultimaker/testing")
             self.requires("fdm_materials/(latest)@internal/testing")
         else:
-            self.requires("fdm_materials/(latest)@ultimaker/testing")
+            self.requires("fdm_materials/(latest)@ultimaker/stable")
 
     def build_requirements(self):
         if self.options.devtools:

@@ -6,7 +6,7 @@
         "type": "machine",
         "author": "Unknown",
         "manufacturer": "Unknown",
-        "setting_version": 21,
+        "setting_version": 22,
         "file_formats": "text/x-gcode;model/stl;application/x-wavefront-obj;application/x3g",
         "visible": false,
         "has_materials": true,
@@ -3065,6 +3065,16 @@
                     "enabled": "extruders_enabled_count > 1 and machine_nozzle_temp_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
+                },
+                "material_is_support_material":
+                {
+                    "label": "Is support material",
+                    "description": "Is this material typically used as a support material during printing.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": false,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 }
             }
         },
@@ -4478,8 +4488,8 @@
                     "description": "The extruder train to use for printing the support. This is used in multi-extrusion.",
                     "type": "extruder",
                     "default_value": "0",
-                    "value": "int(defaultExtruderPosition())",
                     "enabled": "(support_enable or support_meshes_present) and extruders_enabled_count > 1",
+                    "value": "[*map(lambda x: str(x).lower() == 'true', (extruderValues('support_enable') and extruderValues('material_is_support_material')))].index(True) if any([*map(lambda x: str(x).lower() == 'true', (extruderValues('support_enable') and extruderValues('material_is_support_material')))]) else int(defaultExtruderPosition())",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "children":
@@ -4755,8 +4765,8 @@
                     "type": "enum",
                     "options":
                     {
-                        "buildplate": "Force Only Buildplate",
-                        "graceful": "On Model If Necessary"
+                        "buildplate": "On buildplate when possible",
+                        "graceful": "On model if required"
                     },
                     "default_value": "buildplate",
                     "value": "'buildplate' if support_type == 'buildplate' else 'graceful'",
