@@ -1665,15 +1665,16 @@
                 {
                     "label": "Small Top/Bottom Width",
                     "description": "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions.",
-                    "value": "skin_line_width * 2",
-                    "default_value": 1,
+                    "value": "0",
+                    "default_value": 0,
                     "minimum_value": "0",
                     "maximum_value_warning": "skin_line_width * 10",
                     "type": "float",
-                    "enabled": "(top_layers > 0 or bottom_layers > 0) and top_bottom_pattern != 'concentric'",
+                    "enabled": false,
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true,
-                    "unit": "mm"
+                    "unit": "mm",
+                    "comment": "Disabled for 5.4.x, as we're worried about micro-segments in the infill. Also disabled in the engine, so forcing this > 0 will not do anything at the moment."
                 },
                 "skin_no_small_gaps_heuristic":
                 {
