@@ -1,4 +1,4 @@
-# Copyright (c) 2021 Ultimaker B.V.
+# Copyright (c) 2023 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.Settings.SQLQueryFactory import SQLQueryFactory
@@ -10,8 +10,8 @@ class IntentDatabaseHandler(DatabaseMetadataContainerController):
     """The Database handler for Intent containers"""
 
     def __init__(self) -> None:
-        super().__init__(SQLQueryFactory(table = "intent",
-                                         fields = {
+        super().__init__(SQLQueryFactory(table="intent",
+                                         fields={
                                              "id": "text",
                                              "name": "text",
                                              "quality_type": "text",
@@ -20,6 +20,8 @@ class IntentDatabaseHandler(DatabaseMetadataContainerController):
                                              "definition": "text",
                                              "material": "text",
                                              "version": "text",
-                                             "setting_version": "text"
+                                             "setting_version": "text",
+                                             "icon": "text",
+                                             "description": "text",
                                          }))
         self._container_type = InstanceContainer
