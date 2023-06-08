@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-06 10:46+0000\n"
+"POT-Creation-Date: 2023-06-08 07:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5607,7 +5607,7 @@ msgid "When you have made changes to a profile and switched to a different one, 
 msgstr "Lorsque vous apportez des modifications à un profil puis passez à un autre profil, une boîte de dialogue apparaît, vous demandant si vous souhaitez conserver les modifications. Vous pouvez aussi choisir une option par défaut, et le dialogue ne s'affichera plus."
 
 #: resources/qml/Preferences/GeneralPage.qml:801
-#: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:46
+#: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:49
 msgctxt "@label"
 msgid "Profiles"
 msgstr "Profils"
@@ -6250,12 +6250,12 @@ msgctxt "@label"
 msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards."
 msgstr "Activez l'impression d'une bordure ou plaquette (Brim/Raft). Cela ajoutera une zone plate autour de ou sous votre objet qui est facile à découper par la suite."
 
-#: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:102
+#: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:104
 msgctxt "@label"
 msgid "Recommended print settings"
 msgstr "Paramètres d'impression recommandés"
 
-#: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:111
+#: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:112
 msgctxt "@button"
 msgid "Show Custom"
 msgstr "Personnalisé"

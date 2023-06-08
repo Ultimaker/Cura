@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-06 10:46+0000\n"
+"POT-Creation-Date: 2023-06-08 07:48+0000\n"
 "PO-Revision-Date: 2023-02-16 20:28+0100\n"
 "Last-Translator: Miroslav Šustek <sustmidown@centrum.cz>\n"
 "Language-Team: DenyCZ <www.github.com/DenyCZ>\n"
@@ -5621,7 +5621,7 @@ msgid "When you have made changes to a profile and switched to a different one, 
 msgstr "Pokud jste provedli změny v profilu a přepnuli na jiný, zobrazí se dialogové okno s dotazem, zda si přejete zachovat své modifikace nebo ne, nebo si můžete zvolit výchozí chování a už nikdy toto dialogové okno nezobrazovat."
 
 #: resources/qml/Preferences/GeneralPage.qml:801
-#: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:46
+#: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:49
 msgctxt "@label"
 msgid "Profiles"
 msgstr "Profily"
@@ -6265,12 +6265,12 @@ msgctxt "@label"
 msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards."
 msgstr "Umožňuje tisk okraje nebo voru. Tímto způsobem se kolem nebo pod objekt přidá plochá oblast, kterou lze snadno odříznout."
 
-#: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:102
+#: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:104
 msgctxt "@label"
 msgid "Recommended print settings"
 msgstr "Doporučená nastavení tisku"
 
-#: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:111
+#: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:112
 msgctxt "@button"
 msgid "Show Custom"
 msgstr "Zobrazit vlastní"

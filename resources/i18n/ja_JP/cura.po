@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-06 10:46+0000\n"
+"POT-Creation-Date: 2023-06-08 07:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5595,7 +5595,7 @@ msgid "When you have made changes to a profile and switched to a different one, 
 msgstr "プロファイル内を変更し異なるプロファイルにしました、どこの変更点を保持、破棄したいのダイアログが表示されます、また何度もダイアログが表示されないようにデフォルト機能を選ぶことができます。"
 
 #: resources/qml/Preferences/GeneralPage.qml:801
-#: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:46
+#: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:49
 msgctxt "@label"
 msgid "Profiles"
 msgstr "プロファイル"
@@ -6236,12 +6236,12 @@ msgctxt "@label"
 msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards."
 msgstr "ブリムまたはラフトのプリントの有効化。それぞれ、プリントの周り、また造形物の下に底面を加え切り取りやすくします。"
 
-#: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:102
+#: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:104
 msgctxt "@label"
 msgid "Recommended print settings"
 msgstr "推奨される印刷設定"
 
-#: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:111
+#: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:112
 msgctxt "@button"
 msgid "Show Custom"
 msgstr "カスタムを表示"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-06 10:46+0000\n"
+"POT-Creation-Date: 2023-06-08 07:48+0000\n"
 "PO-Revision-Date: 2020-03-24 09:36+0100\n"
 "Last-Translator: Nagy Attila <vokroot@gmail.com>\n"
 "Language-Team: ATI-SZOFT\n"
@@ -5590,7 +5590,7 @@ msgid "When you have made changes to a profile and switched to a different one, 
 msgstr "Ha módosított egy profilt, és váltott egy másikra, akkor megjelenik egy párbeszédpanel, amelyben megkérdezi, hogy meg kívánja-e tartani a módosításokat, vagy nem. Vagy választhat egy alapértelmezett viselkedést, és soha többé nem jeleníti meg ezt a párbeszédablakot."
 
 #: resources/qml/Preferences/GeneralPage.qml:801
-#: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:46
+#: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:49
 msgctxt "@label"
 msgid "Profiles"
 msgstr "Profilok"
@@ -6233,12 +6233,12 @@ msgctxt "@label"
 msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards."
 msgstr "Engedélyezze a peremet, vagy az aláúsztatást. Ez létre fog hozni a test szélén illetve az alján egy olyan részt, ami segíti a letapadást, viszont nyomtatás után ezek könnyen eltávolíthatóak a testről."
 
-#: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:102
+#: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:104
 msgctxt "@label"
 msgid "Recommended print settings"
 msgstr ""
 
-#: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:111
+#: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:112
 msgctxt "@button"
 msgid "Show Custom"
 msgstr ""
