@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-06 10:46+0000\n"
+"POT-Creation-Date: 2023-06-08 10:36+0000\n"
 "PO-Revision-Date: 2023-02-17 17:37+0100\n"
 "Last-Translator: Cláudio Sampaio <patola@gmail.com>\n"
 "Language-Team: Cláudio Sampaio <patola@gmail.com>\n"
@@ -219,71 +219,71 @@ msgctxt "@action:button"
 msgid "Send report"
 msgstr "Enviar relatório"
 
-#: cura/CuraApplication.py:540
+#: cura/CuraApplication.py:543
 msgctxt "@info:progress"
 msgid "Loading machines..."
 msgstr "Carregando máquinas..."
 
-#: cura/CuraApplication.py:547
+#: cura/CuraApplication.py:550
 msgctxt "@info:progress"
 msgid "Setting up preferences..."
 msgstr "Ajustando preferências..."
 
-#: cura/CuraApplication.py:692
+#: cura/CuraApplication.py:695
 msgctxt "@info:progress"
 msgid "Initializing Active Machine..."
 msgstr "Inicializando Máquina Ativa..."
 
-#: cura/CuraApplication.py:839
+#: cura/CuraApplication.py:842
 msgctxt "@info:progress"
 msgid "Initializing machine manager..."
 msgstr "Inicializando gestor de máquinas..."
 
-#: cura/CuraApplication.py:853
+#: cura/CuraApplication.py:856
 msgctxt "@info:progress"
 msgid "Initializing build volume..."
 msgstr "Inicializando volume de impressão..."
 
-#: cura/CuraApplication.py:921
+#: cura/CuraApplication.py:924
 msgctxt "@info:progress"
 msgid "Setting up scene..."
 msgstr "Configurando cena..."
 
-#: cura/CuraApplication.py:957
+#: cura/CuraApplication.py:960
 msgctxt "@info:progress"
 msgid "Loading interface..."
 msgstr "Carregando interface..."
 
-#: cura/CuraApplication.py:962
+#: cura/CuraApplication.py:965
 msgctxt "@info:progress"
 msgid "Initializing engine..."
 msgstr "Inicializando motor..."
 
-#: cura/CuraApplication.py:1290
+#: cura/CuraApplication.py:1293
 #, python-format
 msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm."
 msgid "%(width).1f x %(depth).1f x %(height).1f mm"
 msgstr "%(width).1f x %(depth).1f x %(height).1f mm"
 
-#: cura/CuraApplication.py:1816
+#: cura/CuraApplication.py:1819
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Only one G-code file can be loaded at a time. Skipped importing {0}"
 msgstr "Somente um arquivo G-Code pode ser carregado por vez. Pulando importação de {0}"
 
-#: cura/CuraApplication.py:1818 cura/OAuth2/AuthorizationService.py:217
+#: cura/CuraApplication.py:1821 cura/OAuth2/AuthorizationService.py:217
 #: plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:189
 msgctxt "@info:title"
 msgid "Warning"
 msgstr "Aviso"
 
-#: cura/CuraApplication.py:1828
+#: cura/CuraApplication.py:1831
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Can't open any other file if G-code is loading. Skipped importing {0}"
 msgstr "Não é possível abrir nenhum outro arquivo se G-Code estiver sendo carregado. Pulando importação de {0}"
 
-#: cura/CuraApplication.py:1830 cura/Settings/CuraContainerRegistry.py:156
+#: cura/CuraApplication.py:1833 cura/Settings/CuraContainerRegistry.py:156
 #: cura/Settings/CuraContainerRegistry.py:166
 #: plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:153
 #: plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:173
@@ -329,7 +329,6 @@ msgid "Are you sure you wish to remove {0}? This cannot be undone!"
 msgstr "Tem certeza que deseja remover {0}? Isto não pode ser defeito!"
 
 #: cura/Machines/Models/IntentCategoryModel.py:42
-#: cura/Machines/Models/IntentSelectionModel.py:61
 #: cura/Machines/Models/IntentTranslations.py:11
 #: cura/Machines/Models/QualityManagementModel.py:347
 msgctxt "@label"
@@ -337,55 +336,47 @@ msgid "Default"
 msgstr ""
 
 #: cura/Machines/Models/IntentCategoryModel.py:45
-#: cura/Machines/Models/IntentSelectionModel.py:65
 #: cura/Machines/Models/IntentTranslations.py:14
 msgctxt "@label"
 msgid "Visual"
 msgstr ""
 
 #: cura/Machines/Models/IntentCategoryModel.py:46
-#: cura/Machines/Models/IntentSelectionModel.py:66
 #: cura/Machines/Models/IntentTranslations.py:15
 msgctxt "@text"
 msgid "The visual profile is designed to print visual prototypes and models with the intent of high visual and surface quality."
 msgstr "O perfil visual é projetado para imprimir protótipos e modelos virtuais com o objetivo de alta qualidade visual e de superfície."
 
 #: cura/Machines/Models/IntentCategoryModel.py:49
-#: cura/Machines/Models/IntentSelectionModel.py:70
 #: cura/Machines/Models/IntentTranslations.py:18
 msgctxt "@label"
 msgid "Engineering"
 msgstr "Engenharia"
 
 #: cura/Machines/Models/IntentCategoryModel.py:50
-#: cura/Machines/Models/IntentSelectionModel.py:71
 #: cura/Machines/Models/IntentTranslations.py:19
 msgctxt "@text"
 msgid "The engineering profile is designed to print functional prototypes and end-use parts with the intent of better accuracy and for closer tolerances."
 msgstr "O perfil de engenharia é projetado para imprimir protótipos funcionais e partes de uso final com o objetivo de melhor precisão e tolerâncias mais estritas."
 
 #: cura/Machines/Models/IntentCategoryModel.py:53
-#: cura/Machines/Models/IntentSelectionModel.py:75
 #: cura/Machines/Models/IntentTranslations.py:22
 msgctxt "@label"
 msgid "Draft"
 msgstr "Rascunho"
 
 #: cura/Machines/Models/IntentCategoryModel.py:54
-#: cura/Machines/Models/IntentSelectionModel.py:76
 #: cura/Machines/Models/IntentTranslations.py:23
 msgctxt "@text"
 msgid "The draft profile is designed to print initial prototypes and concept validation with the intent of significant print time reduction."
 msgstr "O perfil de rascunho é projetado para imprimir protótipos iniciais e validações de conceito com o objetivo de redução significativa de tempo de impressão."
 
 #: cura/Machines/Models/IntentCategoryModel.py:57
-#: cura/Machines/Models/IntentSelectionModel.py:80
 msgctxt "@label"
 msgid "Annealing"
 msgstr ""
 
 #: cura/Machines/Models/IntentCategoryModel.py:59
-#: cura/Machines/Models/IntentSelectionModel.py:82
 msgctxt "@text"
 msgid "The annealing profile requires post-processing in an oven after the print is finished. This profile retains the dimensional accuracy of the printed part after annealing and improves strength, stiffness, and thermal resistance."
 msgstr ""

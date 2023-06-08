@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-06 10:46+0000\n"
+"POT-Creation-Date: 2023-06-08 10:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -219,71 +219,71 @@ msgctxt "@action:button"
 msgid "Send report"
 msgstr "Отправить отчёт"
 
-#: cura/CuraApplication.py:540
+#: cura/CuraApplication.py:543
 msgctxt "@info:progress"
 msgid "Loading machines..."
 msgstr "Загрузка принтеров..."
 
-#: cura/CuraApplication.py:547
+#: cura/CuraApplication.py:550
 msgctxt "@info:progress"
 msgid "Setting up preferences..."
 msgstr "Настройка параметров..."
 
-#: cura/CuraApplication.py:692
+#: cura/CuraApplication.py:695
 msgctxt "@info:progress"
 msgid "Initializing Active Machine..."
 msgstr "Инициализация активной машины..."
 
-#: cura/CuraApplication.py:839
+#: cura/CuraApplication.py:842
 msgctxt "@info:progress"
 msgid "Initializing machine manager..."
 msgstr "Инициализация диспетчера машин..."
 
-#: cura/CuraApplication.py:853
+#: cura/CuraApplication.py:856
 msgctxt "@info:progress"
 msgid "Initializing build volume..."
 msgstr "Инициализация объема печати..."
 
-#: cura/CuraApplication.py:921
+#: cura/CuraApplication.py:924
 msgctxt "@info:progress"
 msgid "Setting up scene..."
 msgstr "Настройка сцены..."
 
-#: cura/CuraApplication.py:957
+#: cura/CuraApplication.py:960
 msgctxt "@info:progress"
 msgid "Loading interface..."
 msgstr "Загрузка интерфейса..."
 
-#: cura/CuraApplication.py:962
+#: cura/CuraApplication.py:965
 msgctxt "@info:progress"
 msgid "Initializing engine..."
 msgstr "Инициализация ядра..."
 
-#: cura/CuraApplication.py:1290
+#: cura/CuraApplication.py:1293
 #, python-format
 msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm."
 msgid "%(width).1f x %(depth).1f x %(height).1f mm"
 msgstr "%(width).1f x %(depth).1f x %(height).1f мм"
 
-#: cura/CuraApplication.py:1816
+#: cura/CuraApplication.py:1819
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Only one G-code file can be loaded at a time. Skipped importing {0}"
 msgstr "Только один G-code файла может быть загружен в момент времени. Пропускаю импортирование {0}"
 
-#: cura/CuraApplication.py:1818 cura/OAuth2/AuthorizationService.py:217
+#: cura/CuraApplication.py:1821 cura/OAuth2/AuthorizationService.py:217
 #: plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:189
 msgctxt "@info:title"
 msgid "Warning"
 msgstr "Внимание"
 
-#: cura/CuraApplication.py:1828
+#: cura/CuraApplication.py:1831
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Can't open any other file if G-code is loading. Skipped importing {0}"
 msgstr "Невозможно открыть любой другой файл, если G-code файл уже загружен. Пропускаю импортирование {0}"
 
-#: cura/CuraApplication.py:1830 cura/Settings/CuraContainerRegistry.py:156
+#: cura/CuraApplication.py:1833 cura/Settings/CuraContainerRegistry.py:156
 #: cura/Settings/CuraContainerRegistry.py:166
 #: plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:153
 #: plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:173
@@ -329,7 +329,6 @@ msgid "Are you sure you wish to remove {0}? This cannot be undone!"
 msgstr "Действительно удалить {0}? Это действие невозможно будет отменить!"
 
 #: cura/Machines/Models/IntentCategoryModel.py:42
-#: cura/Machines/Models/IntentSelectionModel.py:61
 #: cura/Machines/Models/IntentTranslations.py:11
 #: cura/Machines/Models/QualityManagementModel.py:347
 msgctxt "@label"
@@ -337,55 +336,47 @@ msgid "Default"
 msgstr ""
 
 #: cura/Machines/Models/IntentCategoryModel.py:45
-#: cura/Machines/Models/IntentSelectionModel.py:65
 #: cura/Machines/Models/IntentTranslations.py:14
 msgctxt "@label"
 msgid "Visual"
 msgstr "Визуальный"
 
 #: cura/Machines/Models/IntentCategoryModel.py:46
-#: cura/Machines/Models/IntentSelectionModel.py:66
 #: cura/Machines/Models/IntentTranslations.py:15
 msgctxt "@text"
 msgid "The visual profile is designed to print visual prototypes and models with the intent of high visual and surface quality."
 msgstr "Визуальный профиль предназначен для печати визуальных прототипов и моделей, для которых требуется высокое качество поверхности и внешнего вида."
 
 #: cura/Machines/Models/IntentCategoryModel.py:49
-#: cura/Machines/Models/IntentSelectionModel.py:70
 #: cura/Machines/Models/IntentTranslations.py:18
 msgctxt "@label"
 msgid "Engineering"
 msgstr ""
 
 #: cura/Machines/Models/IntentCategoryModel.py:50
-#: cura/Machines/Models/IntentSelectionModel.py:71
 #: cura/Machines/Models/IntentTranslations.py:19
 msgctxt "@text"
 msgid "The engineering profile is designed to print functional prototypes and end-use parts with the intent of better accuracy and for closer tolerances."
 msgstr "Инженерный профиль предназначен для печати функциональных прототипов и готовых деталей, для которых требуется высокая точность и малые допуски."
 
 #: cura/Machines/Models/IntentCategoryModel.py:53
-#: cura/Machines/Models/IntentSelectionModel.py:75
 #: cura/Machines/Models/IntentTranslations.py:22
 msgctxt "@label"
 msgid "Draft"
 msgstr "Черновой"
 
 #: cura/Machines/Models/IntentCategoryModel.py:54
-#: cura/Machines/Models/IntentSelectionModel.py:76
 #: cura/Machines/Models/IntentTranslations.py:23
 msgctxt "@text"
 msgid "The draft profile is designed to print initial prototypes and concept validation with the intent of significant print time reduction."
 msgstr "Черновой профиль предназначен для печати начальных прототипов и проверки концепции, где приоритетом является скорость печати."
 
 #: cura/Machines/Models/IntentCategoryModel.py:57
-#: cura/Machines/Models/IntentSelectionModel.py:80
 msgctxt "@label"
 msgid "Annealing"
 msgstr ""
 
 #: cura/Machines/Models/IntentCategoryModel.py:59
-#: cura/Machines/Models/IntentSelectionModel.py:82
 msgctxt "@text"
 msgid "The annealing profile requires post-processing in an oven after the print is finished. This profile retains the dimensional accuracy of the printed part after annealing and improves strength, stiffness, and thermal resistance."
 msgstr ""
