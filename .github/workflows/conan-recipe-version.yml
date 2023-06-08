@@ -160,7 +160,7 @@ jobs:
                                 else:
                                     channel_metadata = f"{channel}_{sha_commit}"
                             if is_release_branch:
-                                if latest_branch_version.pre == "" and branch_version > latest_branch_version:
+                                if (latest_branch_version.pre == "" or latest_branch_version.pre is None) and branch_version > latest_branch_version:
                                     actual_version = f"{branch_version.major}.{branch_version.minor}.0-beta.1+{buildmetadata}{channel_metadata}"
                                 elif latest_branch_version.pre == "":
                                     # An actual full release has been created, we are working on patch
