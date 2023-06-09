@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-15 11:58+0000\n"
+"POT-Creation-Date: 2023-06-06 10:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -378,6 +378,18 @@ msgctxt "@text"
 msgid "The draft profile is designed to print initial prototypes and concept validation with the intent of significant print time reduction."
 msgstr "ドラフトプロファイルは、プリント時間の大幅短縮を目的とした初期プロトタイプとコンセプト検証をプリントするために設計されています。"
 
+#: cura/Machines/Models/IntentCategoryModel.py:57
+#: cura/Machines/Models/IntentSelectionModel.py:80
+msgctxt "@label"
+msgid "Annealing"
+msgstr ""
+
+#: cura/Machines/Models/IntentCategoryModel.py:59
+#: cura/Machines/Models/IntentSelectionModel.py:82
+msgctxt "@text"
+msgid "The annealing profile requires post-processing in an oven after the print is finished. This profile retains the dimensional accuracy of the printed part after annealing and improves strength, stiffness, and thermal resistance."
+msgstr ""
+
 #: cura/Machines/Models/MaterialManagementModel.py:232
 msgctxt "@label"
 msgid "Custom Material"
@@ -430,22 +442,22 @@ msgctxt "@message"
 msgid "Could not read response."
 msgstr "応答を読み取れません。"
 
-#: cura/OAuth2/AuthorizationRequestHandler.py:75
+#: cura/OAuth2/AuthorizationRequestHandler.py:77
 msgctxt "@message"
 msgid "The provided state is not correct."
 msgstr "指定された状態が正しくありません。"
 
-#: cura/OAuth2/AuthorizationRequestHandler.py:80
+#: cura/OAuth2/AuthorizationRequestHandler.py:83
 msgctxt "@message"
 msgid "Timeout when authenticating with the account server."
 msgstr "アカウントサーバーでの認証中にタイムアウトしました。"
 
-#: cura/OAuth2/AuthorizationRequestHandler.py:97
+#: cura/OAuth2/AuthorizationRequestHandler.py:101
 msgctxt "@message"
 msgid "Please give the required permissions when authorizing this application."
 msgstr "このアプリケーションの許可において必要な権限を与えてください。"
 
-#: cura/OAuth2/AuthorizationRequestHandler.py:104
+#: cura/OAuth2/AuthorizationRequestHandler.py:109
 msgctxt "@message"
 msgid "Something unexpected happened when trying to log in, please try again."
 msgstr "ログイン時に予期しないエラーが発生しました。やり直してください。"
@@ -812,46 +824,46 @@ msgctxt "@text"
 msgid "Unknown error."
 msgstr "不明なエラー。"
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:547
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:558
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> contains an unknown machine type <message>{1}</message>. Cannot import the machine. Models will be imported instead."
 msgstr "プロジェクトファイル <filename>{0}</filename> に不明なマシンタイプ <message>{1}</message> があります。マシンをインポートできません。代わりにモデルをインポートします。"
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:550
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:561
 msgctxt "@info:title"
 msgid "Open Project File"
 msgstr "プロジェクトファイルを開く"
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:631
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:642
 #: plugins/3MFReader/WorkspaceDialog.qml:99
 #: plugins/3MFReader/WorkspaceDialog.qml:127
 #: plugins/3MFReader/WorkspaceDialog.qml:134
 msgctxt "@button"
 msgid "Create new"
-msgstr ""
+msgstr "新しいものを作成する"
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:681
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:692
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is suddenly inaccessible: <message>{1}</message>."
 msgstr "プロジェクトファイル<filename>{0}</filename>が突然アクセスできなくなりました：<message>{1}</message>。"
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:682
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:690
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:709
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:693
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:701
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:720
 msgctxt "@info:title"
 msgid "Can't Open Project File"
 msgstr "プロジェクトファイルを開けません"
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:689
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:707
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:700
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:718
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>."
 msgstr "プロジェクトファイル<filename>{0}</filename>は破損しています：<message>{1}</message>。"
 
-#: plugins/3MFReader/ThreeMFWorkspaceReader.py:754
+#: plugins/3MFReader/ThreeMFWorkspaceReader.py:765
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
 msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura."
@@ -925,12 +937,12 @@ msgstr "プリンターグループ"
 #: plugins/3MFReader/WorkspaceDialog.qml:103
 msgctxt "@action:label"
 msgid "Open With"
-msgstr ""
+msgstr "開く"
 
 #: plugins/3MFReader/WorkspaceDialog.qml:104
 msgctxt "@info:tooltip"
 msgid "Printer settings will be updated to match the settings saved with the project."
-msgstr "プリンター設定は、プロジェクトに保存された設定と一致するように更新されます。"
+msgstr "プリンターの設定は、プロジェクトに保存されている設定に合わせて更新されます。"
 
 #: plugins/3MFReader/WorkspaceDialog.qml:156
 #: resources/qml/Dialogs/WorkspaceSummaryDialog.qml:222
@@ -1004,7 +1016,7 @@ msgstr "プロジェクトを読み込むとビルドプレート上のすべて
 #: plugins/3MFReader/WorkspaceDialog.qml:367
 msgctxt "@label"
 msgid "The material used in this project is currently not installed in Cura.<br/>Install the material profile and reopen the project."
-msgstr "このプロジェクトで使用する材料は、現在Curaにインストールされていません。<br/>材料プロファイルをインストールし、再度プロジェクトを開いてください。"
+msgstr "このプロジェクトで使用される材料は現在、UltiMaker Curaにインストールされていません。<br/>材料プロファイルをインストールし、プロジェクトを再度開いてください。"
 
 #: plugins/3MFReader/WorkspaceDialog.qml:392
 msgctxt "@action:button"
@@ -1924,17 +1936,17 @@ msgctxt "@label"
 msgid "Number of Extruders"
 msgstr "エクストルーダーの数"
 
-#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:341
+#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:342
 msgctxt "@label"
 msgid "Apply Extruder offsets to GCode"
 msgstr "エクストルーダーのオフセットをGCodeに適用します"
 
-#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:389
+#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:390
 msgctxt "@title:label"
 msgid "Start G-code"
 msgstr "G-Codeの開始"
 
-#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:400
+#: plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:401
 msgctxt "@title:label"
 msgid "End G-code"
 msgstr "G-codeの終了"
@@ -2715,25 +2727,15 @@ msgstr "監視ロガー"
 
 #: plugins/SimulationView/SimulationView.py:129
 msgctxt "@info:status"
-msgid "Cura does not accurately display layers when Wire Printing is enabled."
-msgstr "Curaはワイヤープリンティングが有効な場合は正確にレイヤーを表示しません。"
-
-#: plugins/SimulationView/SimulationView.py:130
-msgctxt "@info:title"
-msgid "Simulation View"
-msgstr "シミュレーションビュー"
-
-#: plugins/SimulationView/SimulationView.py:133
-msgctxt "@info:status"
 msgid "Nothing is shown because you need to slice first."
 msgstr "最初にスライスする必要があるため、何も表示されません。"
 
-#: plugins/SimulationView/SimulationView.py:134
+#: plugins/SimulationView/SimulationView.py:130
 msgctxt "@info:title"
 msgid "No layers to show"
 msgstr "表示するレイヤーがありません"
 
-#: plugins/SimulationView/SimulationView.py:136
+#: plugins/SimulationView/SimulationView.py:132
 #: plugins/SolidView/SolidView.py:74
 msgctxt "@info:option_text"
 msgid "Do not show this message again"
@@ -2978,7 +2980,7 @@ msgstr "UltiMakerフォーマットパッケージ"
 #: plugins/UFPReader/plugin.json
 msgctxt "description"
 msgid "Provides support for reading Ultimaker Format Packages."
-msgstr ""
+msgstr "Ultimakerフォーマットパッケージの読み込みをサポートします。"
 
 #: plugins/UFPReader/plugin.json
 msgctxt "name"
@@ -2995,7 +2997,7 @@ msgstr "UFPファイルに書き込めません："
 #: plugins/UFPWriter/plugin.json
 msgctxt "description"
 msgid "Provides support for writing Ultimaker Format Packages."
-msgstr ""
+msgstr "Ultimakerフォーマットパッケージへの書き込みをサポートします。"
 
 #: plugins/UFPWriter/plugin.json
 msgctxt "name"
@@ -3005,12 +3007,12 @@ msgstr "UFPライター"
 #: plugins/UM3NetworkPrinting/plugin.json
 msgctxt "description"
 msgid "Manages network connections to UltiMaker networked printers."
-msgstr ""
+msgstr "Ultimakerのネットワーク接属できるプリンターのネットワーク接続を管理します。"
 
 #: plugins/UM3NetworkPrinting/plugin.json
 msgctxt "name"
 msgid "UltiMaker Network Connection"
-msgstr ""
+msgstr "Ultimakerネットワーク接続"
 
 #: plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:44
 msgctxt "@title:window"
@@ -3586,12 +3588,12 @@ msgstr "グループの設定"
 #: plugins/UM3NetworkPrinting/src/Messages/PrintJobAwaitingApprovalMessage.py:18
 msgctxt "@info:status"
 msgid "You will receive a confirmation via email when the print job is approved"
-msgstr "プリントジョブが承認されると、確認の電子メールが届きます"
+msgstr "プリントジョブが承認されると確認メールが届きます"
 
 #: plugins/UM3NetworkPrinting/src/Messages/PrintJobAwaitingApprovalMessage.py:19
 msgctxt "@info:title"
 msgid "The print job was successfully submitted"
-msgstr "プリントジョブは正常に送信されました"
+msgstr "プリントジョブが正常に送信されました"
 
 #: plugins/UM3NetworkPrinting/src/Messages/PrintJobAwaitingApprovalMessage.py:22
 msgctxt "@action"
@@ -3676,17 +3678,17 @@ msgctxt "@action:button"
 msgid "Remove printers"
 msgstr "プリンターを取り除く"
 
-#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:62
+#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:63
 msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Print over network"
 msgstr "ネットワーク上のプリント"
 
-#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:63
+#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:64
 msgctxt "@properties:tooltip"
 msgid "Print over network"
 msgstr "ネットワークのプリント"
 
-#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:64
+#: plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:65
 msgctxt "@info:status"
 msgid "Connected over the network"
 msgstr "ネットワーク上で接続"
@@ -3804,7 +3806,7 @@ msgstr "UltiMakerのプリンターのアクションを供給する（ベッド
 #: plugins/UltimakerMachineActions/plugin.json
 msgctxt "name"
 msgid "UltiMaker machine actions"
-msgstr ""
+msgstr "UltiMakerプリンターのアクション"
 
 #: plugins/VersionUpgrade/VersionUpgrade21to22/plugin.json
 msgctxt "description"
@@ -4045,6 +4047,16 @@ msgstr "Cura 5.2からCura 5.3のコンフィグレーションアップグレ�
 msgctxt "name"
 msgid "Version Upgrade 5.2 to 5.3"
 msgstr "5.2から5.3にバージョンアップグレート"
+
+#: plugins/VersionUpgrade/VersionUpgrade53to54/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.3 to Cura 5.4."
+msgstr ""
+
+#: plugins/VersionUpgrade/VersionUpgrade53to54/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 5.3 to 5.4"
+msgstr ""
 
 #: plugins/X3DReader/__init__.py:13
 msgctxt "@item:inlistbox"
@@ -4301,7 +4313,7 @@ msgstr "フィラメントを管理する..."
 #: resources/qml/Actions.qml:218
 msgctxt "@action:inmenu Marketplace is a brand name of UltiMaker's, so don't translate."
 msgid "Add more materials from Marketplace"
-msgstr "マーケットプレイスから材料を追加"
+msgstr "Add more materials from Marketplace"
 
 #: resources/qml/Actions.qml:225
 msgctxt "@action:inmenu menubar:profile"
@@ -4593,32 +4605,32 @@ msgstr "新情報"
 #: resources/qml/Cura.qml:890
 msgctxt "@title:window"
 msgid "Save Custom Profile"
-msgstr ""
+msgstr "カスタムプロファイルを保存"
 
 #: resources/qml/Cura.qml:891
 msgctxt "@textfield:placeholder"
 msgid "New Custom Profile"
-msgstr ""
+msgstr "新しいカスタムプロファイル"
 
 #: resources/qml/Cura.qml:892
 msgctxt "@info"
 msgid "Custom profile name:"
-msgstr ""
+msgstr "カスタムプロファイル名："
 
 #: resources/qml/Cura.qml:909
 msgctxt "@label %i will be replaced with a profile name"
 msgid "<b>Only user changed settings will be saved in the custom profile.</b><br/>For materials that support it, the new custom profile will inherit properties from <b>%1</b>."
-msgstr "<b>ユーザーが変更した設定のみがカスタムプロファイルに保存されます。</b><br/>新しいカスタムプロファイルは<b>%1</b>からプロパティを継承します（材料がサポートしている場合）。"
+msgstr "<b>ユーザーが変更した設定のみがカスタムプロファイルに保存されます。</b><br/>その設定に対応する材料の場合、新しいカスタムプロファイルは <b>%1</b>からプロパティを継承します。"
 
 #: resources/qml/Cura.qml:917
 msgctxt "@action:button"
 msgid "Learn more about Cura print profiles"
-msgstr "Curaプリントプロファイルについて詳しく見る"
+msgstr "Curaのプリントプロファイルについて詳しくはこちら"
 
 #: resources/qml/Cura.qml:926
 msgctxt "@button"
 msgid "Save new profile"
-msgstr ""
+msgstr "新しいプロファイルを保存"
 
 #: resources/qml/Dialogs/AboutDialog.qml:15
 msgctxt "@title:window The argument is the application name."
@@ -4843,7 +4855,7 @@ msgstr "モデルを取り込む"
 #: resources/qml/Dialogs/ChoosePrinterDialog.qml:17
 msgctxt "@title:window"
 msgid "Select Printer"
-msgstr "プリンターを選択する"
+msgstr "プリンターの選択"
 
 #: resources/qml/Dialogs/ChoosePrinterDialog.qml:54
 msgctxt "@title:label"
@@ -4907,12 +4919,12 @@ msgstr "変更を維持"
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:171
 msgctxt "@action:button"
 msgid "Save as new custom profile"
-msgstr ""
+msgstr "新しいカスタムプロファイルとして保存"
 
 #: resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:178
 msgctxt "@action:button"
 msgid "Save changes"
-msgstr ""
+msgstr "変更を保存"
 
 #: resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:47
 msgctxt "@text:window"
@@ -5061,13 +5073,13 @@ msgid "Print Selected Model With:"
 msgid_plural "Print Selected Models With:"
 msgstr[0] "選択したモデルで印刷:"
 
-#: resources/qml/Menus/ContextMenu.qml:92
+#: resources/qml/Menus/ContextMenu.qml:103
 msgctxt "@title:window"
 msgid "Multiply Selected Model"
 msgid_plural "Multiply Selected Models"
 msgstr[0] "選択した複数のモデル"
 
-#: resources/qml/Menus/ContextMenu.qml:123
+#: resources/qml/Menus/ContextMenu.qml:134
 msgctxt "@label"
 msgid "Number of Copies"
 msgstr "コピーの数"
@@ -5080,7 +5092,7 @@ msgstr "&編集"
 #: resources/qml/Menus/ExtensionMenu.qml:13
 msgctxt "@title:menu menubar:toplevel"
 msgid "E&xtensions"
-msgstr "拡張"
+msgstr "拡張子"
 
 #: resources/qml/Menus/FileMenu.qml:13
 msgctxt "@title:menu menubar:toplevel"
@@ -5337,12 +5349,12 @@ msgstr "自動的にスライスする"
 #: resources/qml/Preferences/GeneralPage.qml:340
 msgctxt "@info:tooltip"
 msgid "Show an icon and notifications in the system notification area."
-msgstr "システムの通知領域に、アイコンと通知を表示します。"
+msgstr "システム通知領域にアイコンと通知を表示します。"
 
 #: resources/qml/Preferences/GeneralPage.qml:348
 msgctxt "@option:check"
 msgid "Add icon to system tray *"
-msgstr "システムトレイにアイコンを追加する *"
+msgstr "システムトレイにアイコンを追加 *"
 
 #: resources/qml/Preferences/GeneralPage.qml:357
 msgctxt "@label"
@@ -6187,17 +6199,17 @@ msgstr "オフ"
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:65
 msgctxt "@info, %1 is the name of the custom profile"
 msgid "<b>%1</b> custom profile is active and you overwrote some settings."
-msgstr "<b>%1</b>カスタムプロファイルが稼働し、一部の設定を上書きしました。"
+msgstr "<b>%1</b>カスタムプロファイルが有効になり、一部の設定を上書きしました。"
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:78
 msgctxt "@info, %1 is the name of the custom profile"
 msgid "<b>%1</b> custom profile is overriding some settings."
-msgstr "<b>%1</b>カスタムプロファイルが、一部の設定を上書き中です。"
+msgstr "<b>%1</b>カスタムプロファイルが一部の設定を上書き中です。"
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:92
 msgctxt "@info %1 is the name of a profile"
 msgid "Recommended settings (for <b>%1</b>) were altered."
-msgstr "<b>%1</b>の推奨設定が変更されました。"
+msgstr "推奨設定(<b>%1</b>)が変更されました。"
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:106
 msgctxt "@info %1 is the name of a profile"
@@ -6207,12 +6219,12 @@ msgstr ""
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:137
 msgctxt "@info"
 msgid "Reset to defaults."
-msgstr "デフォルトにリセットします。"
+msgstr "デフォルトに戻します。"
 
 #: resources/qml/PrintSetupSelector/ProfileWarningReset.qml:178
 msgctxt "@info"
 msgid "Compare and save."
-msgstr "比較して保存します。"
+msgstr "比較して保存してください。"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedAdhesionSelector.qml:15
 msgctxt "@label"
@@ -6227,12 +6239,12 @@ msgstr "ブリムまたはラフトのプリントの有効化。それぞれ、
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:102
 msgctxt "@label"
 msgid "Recommended print settings"
-msgstr ""
+msgstr "推奨される印刷設定"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedPrintSetup.qml:111
 msgctxt "@button"
 msgid "Show Custom"
-msgstr ""
+msgstr "カスタムを表示"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedResolutionSelector.qml:27
 msgctxt "@label"
@@ -6247,12 +6259,12 @@ msgstr "強度"
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:20
 msgctxt "@label"
 msgid "The following settings define the strength of your part."
-msgstr "以下の設定は、部品の強度を定義します。"
+msgstr "次の設定では、部材の強度を定義します。"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:34
 msgctxt "infill_sparse_density description"
 msgid "Infill Density"
-msgstr ""
+msgstr "インフィル密度"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:35
 msgctxt "@label"
@@ -6277,7 +6289,7 @@ msgid ""
 msgstr ""
 "プリントのインフィル材料のパターン：\n"
 "\n"
-"非機能モデルをクイックプリントする場合は、ライン、ジグザグ、ライトニングインフィルを選択します。 \n"
+"非機能モデルをクイックプリントする場合は、ライン、ジグザグ、ライトニングインフィルから選択します。 \n"
 "\n"
 "応力があまりかからない機能部品の場合は、グリッド、トライアングル、トライヘキサゴンをお勧めします。\n"
 "\n"
@@ -6286,7 +6298,7 @@ msgstr ""
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:67
 msgctxt "@action:label"
 msgid "Shell Thickness"
-msgstr ""
+msgstr "シェルの厚さ"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedStrengthSelector.qml:68
 msgctxt "@label"
@@ -6306,7 +6318,7 @@ msgstr "オーバーハングがあるモデルにサポートを生成します
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:40
 msgctxt "@action:label"
 msgid "Support Type"
-msgstr ""
+msgstr "サポートタイプ"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:41
 msgctxt "@label"
@@ -6321,7 +6333,7 @@ msgstr "サポートを生成するために利用できる技術を選択しま
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:53
 msgctxt "@action:label"
 msgid "Print with"
-msgstr ""
+msgstr "印刷する"
 
 #: resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:54
 msgctxt "@label"
@@ -6473,7 +6485,7 @@ msgstr "このプリンターはつながっていません。"
 #: resources/qml/PrinterSelector/MachineListButton.qml:34
 msgctxt "@label"
 msgid "Hide all connected printers"
-msgstr "接続されているすべてのプリンターを隠す"
+msgstr "接続されているすべてのプリンターを非表示にする"
 
 #: resources/qml/PrinterSelector/MachineListButton.qml:47
 msgctxt "@label"
@@ -6677,22 +6689,22 @@ msgctxt "@button"
 msgid "Add printer manually"
 msgstr "プリンタを手動で追加する"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:203
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:214
 msgctxt "@label"
 msgid "Manufacturer"
 msgstr "製造元"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:214
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:225
 msgctxt "@label"
 msgid "Profile author"
 msgstr "プロファイル作成者"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:226
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:237
 msgctxt "@label"
 msgid "Printer name"
 msgstr "プリンター名"
 
-#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:232
+#: resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:243
 msgctxt "@text"
 msgid "Please name your printer"
 msgstr "プリンターに名前を付けてください"
@@ -6771,12 +6783,12 @@ msgstr "非ネットワークプリンターの追加"
 #: resources/qml/WelcomePages/AddThirdPartyPrinter.qml:102
 msgctxt "@button"
 msgid "Add UltiMaker printer via Digital Factory"
-msgstr ""
+msgstr "Digital FactoryでUltiMakerプリンターを追加する"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:29
 msgctxt "@label"
 msgid "In order to start using Cura you will need to configure a printer."
-msgstr ""
+msgstr "Curaの使用を開始するには、プリンターを設定する必要があります。"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:36
 msgctxt "@label"
@@ -6786,27 +6798,27 @@ msgstr "どのプリンターをセットアップしますか？"
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:55
 msgctxt "@button"
 msgid "UltiMaker printer"
-msgstr ""
+msgstr "UltiMakerプリンター"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:64
 msgctxt "@button"
 msgid "Non UltiMaker printer"
-msgstr ""
+msgstr "非UltiMakerプリンター"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinter.qml:73
 msgctxt "@button"
 msgid "Learn more about adding printers to Cura"
-msgstr "Curaへのプリンターの追加について詳しく見る"
+msgstr "Curaへのプリンターの追加方法はこちら"
 
 #: resources/qml/WelcomePages/AddUltimakerOrThirdPartyPrinterStack.qml:29
 msgctxt "@label"
 msgid "Add printer"
-msgstr ""
+msgstr "プリンターの追加"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:33
 msgctxt "@label"
 msgid "New UltiMaker printers can be connected to Digital Factory and monitored remotely."
-msgstr ""
+msgstr "新しいUltiMakerプリンターは、Digital Factoryに接続してリモートで監視できます。"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:70
 msgctxt "@label"
@@ -6816,17 +6828,17 @@ msgstr "新しいUltiMakerプリンターをCuraに追加する場合"
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:80
 msgctxt "@info"
 msgid "Sign in into UltiMaker Digital Factory"
-msgstr ""
+msgstr "UltiMaker Digital Factoryにサインインしてください"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:81
 msgctxt "@info"
 msgid "Follow the procedure to add a new printer"
-msgstr "新しいプリンターを追加する場合は、以下の手順で行います"
+msgstr "新規にプリンターを追加する場合は、以下の手順で行います"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:82
 msgctxt "@info"
 msgid "Your new printer will automatically appear in Cura"
-msgstr "新しいプリンターがCuraに自動的に表示されます"
+msgstr "新しいプリンターがUltiMaker Curaに自動的に表示されます"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:100
 msgctxt "@button"
@@ -6836,17 +6848,17 @@ msgstr "詳しく見る"
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:121
 msgctxt "@button"
 msgid "Add local printer"
-msgstr ""
+msgstr "ローカルプリンターの追加"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:129
 msgctxt "@button"
 msgid "Sign in to Digital Factory"
-msgstr ""
+msgstr "Digital Factoryにサインイン"
 
 #: resources/qml/WelcomePages/AddUltimakerPrinter.qml:133
 msgctxt "@button"
 msgid "Waiting for new printers"
-msgstr ""
+msgstr "新しいプリンターのため待機中"
 
 #: resources/qml/WelcomePages/ChangelogContent.qml:24
 msgctxt "@label"
@@ -6903,6 +6915,10 @@ msgctxt "@label"
 msgid "No items to select from"
 msgstr "選択するアイテムがありません"
 
-#~ msgctxt "@description"
-#~ msgid "Please sign in to get verified plugins and materials for Ultimaker Cura Enterprise"
-#~ msgstr "検証済みのUltimaker Cura Enterprise用プラグインおよび材料を入手するにはサインインしてください。"
+#~ msgctxt "@info:status"
+#~ msgid "Cura does not accurately display layers when Wire Printing is enabled."
+#~ msgstr "Curaはワイヤープリンティングが有効な場合は正確にレイヤーを表示しません。"
+
+#~ msgctxt "@info:title"
+#~ msgid "Simulation View"
+#~ msgstr "シミュレーションビュー"

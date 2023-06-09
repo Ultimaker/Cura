@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-03-21 13:32+0000\n"
+"POT-Creation-Date: 2023-06-06 13:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -70,7 +70,12 @@ msgstr "Список полигонов с областями, в которые
 #: fdmprinter.def.json
 msgctxt "brim_inside_margin description"
 msgid "A part fully enclosed inside another part can generate an outer brim that touches the inside of the other part. This removes all brim within this distance from internal holes."
-msgstr "Деталь, полностью заключенная внутри другой детали, может иметь внешний край, который касается внутренней части другой детали. Это опция удаляет все края на этом расстоянии от внутренних отверстий."
+msgstr "Деталь, полностью заключенная внутри другой детали, может создать внешнюю кайму, которая касается внутренней части другой детали. Эта опция убирает всю кайму в пределах этого расстояния от внутренних отверстий."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_reach_limit description"
+msgid "A recomendation to how far branches can move from the points they support. Branches can violate this value to reach their destination (buildplate or a flat part of the model). Lowering this value will make the support more sturdy, but increase the amount of branches (and because of that material usage/print time) "
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_abs label"
@@ -135,6 +140,11 @@ msgstr "Отрегулируйте плотность заполнения пр�
 msgctxt "support_interface_density description"
 msgid "Adjusts the density of the roofs and floors of the support structure. A higher value results in better overhangs, but the supports are harder to remove."
 msgstr "Настройте плотность верха и низа структуры поддержек. Большее значение приведёт к улучшению нависаний, но такие поддержки будет труднее удалять."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_top_rate description"
+msgid "Adjusts the density of the support structure used to generate the tips of the branches. A higher value results in better overhangs, but the supports are harder to remove. Use Support Roof for very high values or ensure support density is similarly high at the top."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_infill_rate description"
@@ -279,7 +289,7 @@ msgstr "Применить смещение экструдера к систем
 #: fdmprinter.def.json
 msgctxt "interlocking_enable description"
 msgid "At the locations where models touch, generate an interlocking beam structure. This improves the adhesion between models, especially models printed in different materials."
-msgstr "Создать взаимосвязанную структуру балок в местах соприкосновения моделей. Это улучшает адгезию между моделями, особенно моделями, напечатанными с использованием разных материалов."
+msgstr "Создать взаимосвязанную структуру балок в местах соприкосновения моделей. Это улучшит адгезию между моделями, особенно моделями из разных материалов."
 
 #: fdmprinter.def.json
 msgctxt "travel_avoid_other_parts label"
@@ -317,6 +327,11 @@ msgid "Both"
 msgstr "Оба варианта"
 
 #: fdmprinter.def.json
+msgctxt "support_interface_priority option nothing"
+msgid "Both overlap"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "bottom_layers label"
 msgid "Bottom Layers"
 msgstr "Слои дна"
@@ -340,6 +355,21 @@ msgstr "Ширина удаляемой оболочки снизу"
 msgctxt "bottom_thickness label"
 msgid "Bottom Thickness"
 msgstr "Толщина дна"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_top_rate label"
+msgid "Branch Density"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_diameter label"
+msgid "Branch Diameter"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_diameter_angle label"
+msgid "Branch Diameter Angle"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_break_preparation_retracted_position label"
@@ -479,7 +509,7 @@ msgstr "Расстояние до каймы"
 #: fdmprinter.def.json
 msgctxt "brim_inside_margin label"
 msgid "Brim Inside Avoid Margin"
-msgstr "Края на расстоянии избегания"
+msgstr "Кайма внутри зоны избегания"
 
 #: fdmprinter.def.json
 msgctxt "brim_line_count label"
@@ -585,11 +615,6 @@ msgstr "Комбинг удерживает сопло внутри напеча
 msgctxt "command_line_settings label"
 msgid "Command Line Settings"
 msgstr "Параметры командной строки"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_strategy option compensate"
-msgid "Compensate"
-msgstr "Компенсация"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option concentric"
@@ -722,11 +747,6 @@ msgid "Cooling"
 msgstr "Охлаждение"
 
 #: fdmprinter.def.json
-msgctxt "wireframe_top_jump description"
-msgid "Creates a small knot at the top of an upward line, so that the consecutive horizontal layer has a better chance to connect to it. Only applies to Wire Printing."
-msgstr "Создаёт небольшой узел наверху возвышающейся линии так, чтобы последующий горизонтальный слой имел больший шанс к присоединению. Применяется только при каркасной печати."
-
-#: fdmprinter.def.json
 msgctxt "infill_pattern option cross"
 msgid "Cross"
 msgstr "Крестовое"
@@ -832,21 +852,6 @@ msgid "Default jerk for the motor of the filament."
 msgstr "Стандартное изменение ускорения для мотора, подающего материал."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_bottom_delay description"
-msgid "Delay time after a downward move. Only applies to Wire Printing."
-msgstr "Задержка после движения вниз. Применяется только при каркасной печати."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_top_delay description"
-msgid "Delay time after an upward move, so that the upward line can harden. Only applies to Wire Printing."
-msgstr "Задержка после движения вверх, чтобы такие линии были твёрже. Применяется только при каркасной печати."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flat_delay description"
-msgid "Delay time between two horizontal segments. Introducing such a delay can cause better adhesion to previous layers at the connection points, while too long delays cause sagging. Only applies to Wire Printing."
-msgstr "Задержка между двумя горизонтальными сегментами. Внесение такой задержки может улучшить прилипание к предыдущим слоям в местах соединений, в то время как более длинные задержки могут вызывать провисания. Применяется только при нитевой печати."
-
-#: fdmprinter.def.json
 msgctxt "bridge_settings_enabled description"
 msgid "Detect bridges and modify print speed, flow and fan settings while bridges are printed."
 msgstr "Обнаружение мостиков и изменение скорости печати, настроек потока и вентилятора во время печати мостиков."
@@ -854,7 +859,7 @@ msgstr "Обнаружение мостиков и изменение скоро
 #: fdmprinter.def.json
 msgctxt "inset_direction description"
 msgid "Determines the order in which walls are printed. Printing outer walls earlier helps with dimensional accuracy, as faults from inner walls cannot propagate to the outside. However printing them later allows them to stack better when overhangs are printed. When there is an uneven amount of total innner walls, the 'center last line' is always printed last."
-msgstr "Определяет порядок печати стенок. Если сначала печатать наружные стенки, это поможет более точно определять размеры стенок, поскольку дефекты внутренних стенок не смогут распространяться наружу. Если печатать внешние стенки позже, это позволит лучше укладывать их друг на друга при печати выступов. При нечетном количестве общих внутренних стен «центральная последняя линия» всегда печатается последней."
+msgstr "Определяет порядок печати стенок. Если сначала печатать наружные стенки, это поможет более точно определять размеры стенок, поскольку дефекты внутренних стенок не смогут распространяться наружу. Если печатать внешние стенки позже, это позволит лучше укладывать их друг на друга при печати выступов. При неравномерном количестве общих внутренних стен «центральная последняя линия» всегда печатается последней."
 
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order description"
@@ -877,6 +882,16 @@ msgid "Diameter"
 msgstr "Диаметр"
 
 #: fdmprinter.def.json
+msgctxt "support_tree_max_diameter_increase_by_merges_when_support_to_model label"
+msgid "Diameter Increase To Model"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_bp_diameter description"
+msgid "Diameter every branch tries to achieve when reaching the buildplate. Improves bed adhesion."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "adhesion_type description"
 msgid "Different options that help to improve both priming your extrusion and adhesion to the build plate. Brim adds a single layer flat area around the base of your model to prevent warping. Raft adds a thick grid with a roof below the model. Skirt is a line printed around the model, but not connected to the model."
 msgstr "Различные варианты, которые помогают улучшить прилипание пластика к столу. Кайма добавляет однослойную плоскую область вокруг основания печатаемой модели, предотвращая её деформацию. Подложка добавляет толстую сетку с крышей под модель. Юбка - это линия, печатаемая вокруг модели, но не соединённая с ней."
@@ -885,11 +900,6 @@ msgstr "Различные варианты, которые помогают у�
 msgctxt "machine_disallowed_areas label"
 msgid "Disallowed Areas"
 msgstr "Запрещенные области"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_nozzle_clearance description"
-msgid "Distance between the nozzle and horizontally downward lines. Larger clearance results in diagonally downward lines with a less steep angle, which in turn results in less upward connections with the next layer. Only applies to Wire Printing."
-msgstr "Зазор между соплом и горизонтально нисходящими линиями. Большее значение уменьшает угол нисхождения, что приводит уменьшению восходящих соединений на следующем слое. Применяется только при каркасной печати."
 
 #: fdmprinter.def.json
 msgctxt "infill_line_distance description"
@@ -942,15 +952,6 @@ msgid "Distance of a travel move inserted after the outer wall, to hide the Z se
 msgstr "Расстояние перемещения, добавленное после печати внешней стенки, чтобы лучше спрятать Z шов."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_up_half_speed description"
-msgid ""
-"Distance of an upward move which is extruded with half speed.\n"
-"This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-msgstr ""
-"Расстояние движения вверх, при котором выдавливание идёт на половине скорости.\n"
-"Это может улучшить прилипание к предыдущим слоям, не перегревая материал тех слоёв. Применяется только при каркасной печати."
-
-#: fdmprinter.def.json
 msgctxt "draft_shield_dist description"
 msgid "Distance of the draft shield from the print, in the X/Y directions."
 msgstr "Дистанция до стенки кожуха от модели, по осям X/Y."
@@ -969,16 +970,6 @@ msgstr "Зазор между структурами поддержек и на�
 msgctxt "support_xy_distance description"
 msgid "Distance of the support structure from the print in the X/Y directions."
 msgstr "Расстояние между структурами поддержек и печатаемой модели по осям X/Y."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_fall_down description"
-msgid "Distance with which the material falls down after an upward extrusion. This distance is compensated for. Only applies to Wire Printing."
-msgstr "Расстояние, с которого материал падает вниз после восходящего выдавливания. Расстояние компенсируется. Применяется только при каркасной печати."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_drag_along description"
-msgid "Distance with which the material of an upward extrusion is dragged along with the diagonally downward extrusion. This distance is compensated for. Only applies to Wire Printing."
-msgstr "Расстояние, на которое материал от восходящего выдавливания тянется во время нисходящего выдавливания. Расстояние компенсируется. Применяется только при каркасной печати."
 
 #: fdmprinter.def.json
 msgctxt "min_infill_area description"
@@ -1303,7 +1294,7 @@ msgstr "Компенсация потока для первого слоя: об
 #: fdmprinter.def.json
 msgctxt "skin_material_flow_layer_0 description"
 msgid "Flow compensation on bottom lines of the first layer"
-msgstr "Компенсация потока на нижних линиях первого слоя"
+msgstr "Компенсация потока на нижних линиях первого слоя."
 
 #: fdmprinter.def.json
 msgctxt "infill_material_flow description"
@@ -1363,7 +1354,7 @@ msgstr "Компенсация потока на верхних/нижних л�
 #: fdmprinter.def.json
 msgctxt "wall_x_material_flow_layer_0 description"
 msgid "Flow compensation on wall lines for all wall lines except the outermost one, but only for the first layer"
-msgstr "Компенсация потока на линиях стен для всех линий стен, кроме самой внешней, но только для первого слоя"
+msgstr "Компенсация потока на линиях стенки для всех линий, за исключением внешней, но только для первого слоя."
 
 #: fdmprinter.def.json
 msgctxt "wall_x_material_flow description"
@@ -1376,24 +1367,9 @@ msgid "Flow compensation on wall lines."
 msgstr "Компенсация потока на линиях стенки."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_flow_connection description"
-msgid "Flow compensation when going up or down. Only applies to Wire Printing."
-msgstr "Компенсация потока при движении вверх и вниз. Применяется только при каркасной печати."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow_flat description"
-msgid "Flow compensation when printing flat lines. Only applies to Wire Printing."
-msgstr "Компенсация потока при печати плоских линий. Применяется только при каркасной печати."
-
-#: fdmprinter.def.json
 msgctxt "material_flow description"
 msgid "Flow compensation: the amount of material extruded is multiplied by this value."
 msgstr "Компенсация потока: объём выдавленного материала умножается на этот коэффициент."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow description"
-msgid "Flow compensation: the amount of material extruded is multiplied by this value. Only applies to Wire Printing."
-msgstr "Компенсация потока: объём выдавленного материала умножается на это значение. Применяется только при каркасной печати."
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length label"
@@ -1556,7 +1532,7 @@ msgstr "Степень заполнения поддержек"
 #: fdmprinter.def.json
 msgctxt "cool_min_temperature description"
 msgid "Gradually reduce to this temperature when printing at reduced speeds because of minimum layer time."
-msgstr "Постепенно снижайте до этой температуры при печати на пониженных скоростях из-за минимального времени слоя."
+msgstr "Постепенно снижать температуру до этой температуры при печати на пониженных скоростях из-за минимального времени нанесения слоя."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1659,11 +1635,6 @@ msgid "Horizontal Scaling Factor Shrinkage Compensation"
 msgstr "Горизонтальный коэффициент масштабирования для компенсации усадки"
 
 #: fdmprinter.def.json
-msgctxt "support_tree_branch_distance description"
-msgid "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove."
-msgstr "Указывает, насколько далеко должны друг от друга располагаться ответвления при касании модели. Если задать небольшое расстояние, увеличится количество точек, в которых древовидная поддержка касается модели; это улучшает нависание, но при этом усложняет удаление поддержки."
-
-#: fdmprinter.def.json
 msgctxt "material_break_preparation_retracted_position description"
 msgid "How far the filament can be stretched before it breaks, while heated."
 msgstr "Насколько сильно можно растянуть материал при нагревании, до тех пор пока он не отломится."
@@ -1742,6 +1713,16 @@ msgstr "Объем материала, используемый для выда�
 msgctxt "machine_extruders_shared_nozzle_initial_retraction description"
 msgid "How much the filament of each extruder is assumed to have been retracted from the shared nozzle tip at the completion of the printer-start gcode script; the value should be equal to or greater than the length of the common part of the nozzle's ducts."
 msgstr "Показывает, насколько материал каждого экструдера предположительно вытянут от наконечника общего сопла по завершении запуска сценария gcode принтера; значение должно быть равно длине общей части каналов сопла или превышать ее."
+
+#: fdmprinter.def.json
+msgctxt "support_interface_priority description"
+msgid "How support interface and support will interact when they overlap. Currently only implemented for support roof."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_min_height_to_model description"
+msgid "How tall a branch has to be if it is placed on the model. Prevents small blobs of support. This setting is ignored when a branch is supporting a support roof."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_support_threshold description"
@@ -1924,6 +1905,11 @@ msgid "Initial Layer Bottom Flow"
 msgstr "Поток низа первого слоя"
 
 #: fdmprinter.def.json
+msgctxt "support_tree_bp_diameter label"
+msgid "Initial Layer Diameter"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "material_flow_layer_0 label"
 msgid "Initial Layer Flow"
 msgstr "Поток для первого слоя"
@@ -1941,7 +1927,7 @@ msgstr "Горизонтальное расширение первого сло�
 #: fdmprinter.def.json
 msgctxt "wall_x_material_flow_layer_0 label"
 msgid "Initial Layer Inner Wall Flow"
-msgstr "Обтекание внутренней стенки начального слоя"
+msgstr "Поток внутренней стенки первого слоя"
 
 #: fdmprinter.def.json
 msgctxt "jerk_layer_0 label"
@@ -2049,6 +2035,16 @@ msgid "Inside To Outside"
 msgstr "От внутренних к внешним"
 
 #: fdmprinter.def.json
+msgctxt "support_interface_priority option interface_lines_overwrite_support_area"
+msgid "Interface lines preferred"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_interface_priority option interface_area_overwrite_support_area"
+msgid "Interface preferred"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "interlocking_beam_layer_count label"
 msgid "Interlocking Beam Layer Count"
 msgstr "Количество слоев взаимосвязанных балок"
@@ -2061,7 +2057,7 @@ msgstr "Ширина взаимосвязанных балок"
 #: fdmprinter.def.json
 msgctxt "interlocking_boundary_avoidance label"
 msgid "Interlocking Boundary Avoidance"
-msgstr "Избегание взаимосвязанной структуры"
+msgstr "Избегание границ взаимосвязанной структуры"
 
 #: fdmprinter.def.json
 msgctxt "interlocking_depth label"
@@ -2119,9 +2115,19 @@ msgid "Is Center Origin"
 msgstr "Начало координат в центре"
 
 #: fdmprinter.def.json
+msgctxt "material_is_support_material label"
+msgid "Is support material"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "material_crystallinity description"
 msgid "Is this material the type that breaks off cleanly when heated (crystalline), or is it the type that produces long intertwined polymer chains (non-crystalline)?"
 msgstr "Это материал, который при нагревании легко ломается по четким линиям (кристаллический) или образует длинные сплетающиеся полимерные цепочки (некристаллический)?"
+
+#: fdmprinter.def.json
+msgctxt "material_is_support_material description"
+msgid "Is this material typically used as a support material during printing."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_outside_only description"
@@ -2132,11 +2138,6 @@ msgstr "Дрожание только контуров деталей, но не
 msgctxt "meshfix_keep_open_polygons label"
 msgid "Keep Disconnected Faces"
 msgstr "Сохранить отсоединённые поверхности"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_strategy option knot"
-msgid "Knot"
-msgstr "Узел"
 
 #: fdmprinter.def.json
 msgctxt "layer_height label"
@@ -2207,6 +2208,16 @@ msgstr "Угол выпрямления шаблона заполнения «м
 msgctxt "lightning_infill_support_angle label"
 msgid "Lightning Infill Support Angle"
 msgstr "Угол поддержки шаблона заполнения «молния»"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_limit_branch_reach label"
+msgid "Limit Branch Reach"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_limit_branch_reach description"
+msgid "Limit how far each branch should travel from the point it supports. This can make the support more sturdy, but will increase the amount of branches (and because of that material usage/print time)"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "cutting_mesh description"
@@ -2392,6 +2403,11 @@ msgstr "Максимальное ускорение по оси Y"
 msgctxt "machine_max_acceleration_z label"
 msgid "Maximum Acceleration Z"
 msgstr "Максимальное ускорение по оси Z"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle label"
+msgid "Maximum Branch Angle"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "meshfix_maximum_deviation label"
@@ -2582,6 +2598,11 @@ msgstr "Минимальный размер элемента"
 msgctxt "machine_minimum_feedrate label"
 msgid "Minimum Feedrate"
 msgstr "Минимальная подача"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_min_height_to_model label"
+msgid "Minimum Height To Model"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "min_infill_area label"
@@ -2894,6 +2915,16 @@ msgid "Offset with Extruder"
 msgstr "Смещение с экструдером"
 
 #: fdmprinter.def.json
+msgctxt "support_tree_rest_preference option buildplate"
+msgid "On buildplate when possible"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_rest_preference option graceful"
+msgid "On model if required"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "print_sequence option one_at_a_time"
 msgid "One at a Time"
 msgstr "По отдельности"
@@ -2922,6 +2953,11 @@ msgstr "Угол защиты от капель"
 msgctxt "ooze_shield_dist label"
 msgid "Ooze Shield Distance"
 msgstr "Дистанция до защиты от капель"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_reach_limit label"
+msgid "Optimal Branch Range"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "optimize_wall_printing_order label"
@@ -3024,14 +3060,14 @@ msgid "Percentage fan speed to use when printing the third bridge skin layer."
 msgstr "Скорость вентилятора в процентах, с которой печатается слой третьей оболочки мостика."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_straight_before_down description"
-msgid "Percentage of a diagonally downward line which is covered by a horizontal line piece. This can prevent sagging of the top most point of upward lines. Only applies to Wire Printing."
-msgstr "Процент диагонально нисходящей линии, которая покрывается куском горизонтальной линии. Это может предотвратить провисание самых верхних точек восходящих линий. Применяется только при каркасной печати."
-
-#: fdmprinter.def.json
 msgctxt "minimum_polygon_circumference description"
 msgid "Polygons in sliced layers that have a circumference smaller than this amount will be filtered out. Lower values lead to higher resolution mesh at the cost of slicing time. It is meant mostly for high resolution SLA printers and very tiny 3D models with a lot of details."
 msgstr "Полигоны в разделенных слоях, длина окружности которых меньше указанной величины, будут отфильтрованы. Пониженные значения приводят к увеличению разрешения объекта за счет времени разделения. Это предназначено главным образом для принтеров SLA с высоким разрешением и миниатюрных 3D-моделей с множеством деталей."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle_slow label"
+msgid "Preferred Branch Angle"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "wall_transition_filter_deviation description"
@@ -3137,11 +3173,6 @@ msgstr "Печатайте линии разглаживания в таком �
 msgctxt "mold_enabled description"
 msgid "Print models as a mold, which can be cast in order to get a model which resembles the models on the build plate."
 msgstr "Печатать модель в виде формы, которая может использоваться для отливки оригинальной модели."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_enabled description"
-msgid "Print only the outside surface with a sparse webbed structure, printing 'in thin air'. This is realized by horizontally printing the contours of the model at given Z intervals which are connected via upward and diagonally downward lines."
-msgstr "Печатать только внешнюю поверхность с редкой перепончатой структурой, печатаемой \"прямо в воздухе\". Это реализуется горизонтальной печатью контуров модели с заданными Z интервалами, которые соединяются диагональными линиями."
 
 #: fdmprinter.def.json
 msgctxt "fill_outline_gaps description"
@@ -3484,14 +3515,9 @@ msgid "Replaces the outermost part of the top/bottom pattern with a number of co
 msgstr "Заменяет внешнюю часть шаблона крышки/дна рядом концентрических линий. Использование одной или двух линий улучшает мосты, которые печатаются поверх материала заполнения."
 
 #: fdmprinter.def.json
-msgctxt "support_tree_collision_resolution description"
-msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
-msgstr "Разрешение, применяемое при расчете столкновений во избежание столкновений с моделью. Если указать меньшее значение, древовидные структуры будут получаться более точными и устойчивыми, однако при этом значительно увеличится время разделения на слои."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_strategy option retract"
-msgid "Retract"
-msgstr "Откат"
+msgctxt "support_tree_rest_preference label"
+msgid "Rest Preference"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"
@@ -3814,31 +3840,6 @@ msgid "Speed"
 msgstr "Скорость"
 
 #: fdmprinter.def.json
-msgctxt "wireframe_printspeed description"
-msgid "Speed at which the nozzle moves when extruding material. Only applies to Wire Printing."
-msgstr "Скорость с которой двигается сопло, выдавая материал. Применяется только при каркасной печати."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_down description"
-msgid "Speed of printing a line diagonally downward. Only applies to Wire Printing."
-msgstr "Скорость печати линии диагонально вниз. Применяется только при каркасной печати."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_up description"
-msgid "Speed of printing a line upward 'in thin air'. Only applies to Wire Printing."
-msgstr "Скорость печати линии вверх \"в разрежённом воздухе\". Применяется только при каркасной печати."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_bottom description"
-msgid "Speed of printing the first layer, which is the only layer touching the build platform. Only applies to Wire Printing."
-msgstr "Скорость, с которой печатается первый слой, касающийся стола. Применяется только при каркасной печати."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_flat description"
-msgid "Speed of printing the horizontal contours of the model. Only applies to Wire Printing."
-msgstr "Скорость, с которой печатаются горизонтальные контуры модели. Применяется только при нитевой печати."
-
-#: fdmprinter.def.json
 msgctxt "wipe_hop_speed description"
 msgid "Speed to move the z-axis during the hop."
 msgstr "Скорость перемещения оси Z во время поднятия."
@@ -3889,11 +3890,6 @@ msgid "Steps per Millimeter (Z)"
 msgstr "Количество шагов на миллиметр (Z)"
 
 #: fdmprinter.def.json
-msgctxt "wireframe_strategy description"
-msgid "Strategy for making sure two consecutive layers connect at each connection point. Retraction lets the upward lines harden in the right position, but may cause filament grinding. A knot can be made at the end of an upward line to heighten the chance of connecting to it and to let the line cool; however, it may require slow printing speeds. Another strategy is to compensate for the sagging of the top of an upward line; however, the lines won't always fall down as predicted."
-msgstr "Стратегия проверки соединения двух соседних слоёв в соответствующих точках. Откат укрепляет восходящие линии в нужных местах, но может привести к истиранию нити материала. Узел может быть сделан в конце восходящей линии для повышения шанса соединения с ним и позволить линии охладиться; однако, это может потребовать пониженных скоростей печати. Другая стратегия состоит в том, чтобы компенсировать провисание вершины восходящей линии; однако, строки будут не всегда падать, как предсказано."
-
-#: fdmprinter.def.json
 msgctxt "support description"
 msgid "Support"
 msgstr "Поддержки"
@@ -3916,7 +3912,7 @@ msgstr "Дистанция поддержки снизу"
 #: fdmprinter.def.json
 msgctxt "support_bottom_wall_count label"
 msgid "Support Bottom Wall Line Count"
-msgstr "Количество линий нижней стены опоры"
+msgstr "Количество линий стенок основания"
 
 #: fdmprinter.def.json
 msgctxt "support_brim_line_count label"
@@ -4099,6 +4095,11 @@ msgid "Support Interface Pattern"
 msgstr "Шаблон связующего слоя"
 
 #: fdmprinter.def.json
+msgctxt "support_interface_priority label"
+msgid "Support Interface Priority"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "support_interface_skip_height label"
 msgid "Support Interface Resolution"
 msgstr "Разрешение связующего слоя поддержек"
@@ -4116,7 +4117,7 @@ msgstr "Толщина связующего слоя поддержки"
 #: fdmprinter.def.json
 msgctxt "support_interface_wall_count label"
 msgid "Support Interface Wall Line Count"
-msgstr "Количество линий связующего слоя поддержки"
+msgstr "Количество линий стенок связующего слоя поддержки"
 
 #: fdmprinter.def.json
 msgctxt "jerk_support label"
@@ -4221,7 +4222,7 @@ msgstr "Толщина крыши"
 #: fdmprinter.def.json
 msgctxt "support_roof_wall_count label"
 msgid "Support Roof Wall Line Count"
-msgstr "Количество линий опорной крыши"
+msgstr "Количество линий стенок крыши"
 
 #: fdmprinter.def.json
 msgctxt "speed_support label"
@@ -4267,6 +4268,16 @@ msgstr "Зазор поддержки по осям X/Y"
 msgctxt "support_z_distance label"
 msgid "Support Z Distance"
 msgstr "Зазор поддержки по оси Z"
+
+#: fdmprinter.def.json
+msgctxt "support_interface_priority option support_lines_overwrite_interface_area"
+msgid "Support lines preferred"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_interface_priority option support_area_overwrite_interface_area"
+msgid "Support preferred"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_supported_skin_fan_speed label"
@@ -4509,11 +4520,6 @@ msgid "The angle of the branches' diameter as they gradually become thicker towa
 msgstr "Угол диаметра ответвлений по мере их постепенного утолщения к основанию. Если значение угла равно 0, ответвления будут иметь одинаковую толщину по всей своей длине. Небольшой угол может повысить устойчивость древовидной поддержки."
 
 #: fdmprinter.def.json
-msgctxt "support_tree_angle description"
-msgid "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
-msgstr "Угол ответвлений. При указании меньшего угла поддержка будет более вертикальной и устойчивой. Для получения большего охвата указывайте более высокий угол."
-
-#: fdmprinter.def.json
 msgctxt "support_conical_angle description"
 msgid "The angle of the tilt of conical support. With 0 degrees being vertical, and 90 degrees being horizontal. Smaller angles cause the support to be more sturdy, but consist of more material. Negative angles cause the base of the support to be wider than the top."
 msgstr "Угол наклона конических поддержек. При 0 градусах поддержки будут вертикальными, при 90 градусах будут горизонтальными. Меньшее значение углов укрепляет поддержки, но требует больше материала для них. Отрицательные углы приводят утолщению основания поддержек по сравнению с их верхней частью."
@@ -4584,6 +4590,11 @@ msgid "The diameter of the thinnest branches of tree support. Thicker branches a
 msgstr "Диаметр самых тонких ответвлений древовидной поддержки. Чем толще ответвление, тем оно крепче. Ответвления возле основания будут иметь толщину, превышающую данное значение."
 
 #: fdmprinter.def.json
+msgctxt "support_tree_tip_diameter description"
+msgid "The diameter of the top of the tip of the branches of tree support."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "machine_feeder_wheel_diameter description"
 msgid "The diameter of the wheel that drives the material in the feeder."
 msgstr "Диаметр колесика, перемещающего материал в питатель."
@@ -4591,7 +4602,7 @@ msgstr "Диаметр колесика, перемещающего матери
 #: fdmprinter.def.json
 msgctxt "support_tree_max_diameter description"
 msgid "The diameter of the widest branches of tree support. A thicker trunk is more sturdy; a thinner trunk takes up less space on the build plate."
-msgstr "Диаметр самых широких ветвей древовидной поддержки. Более толстый ствол будет более прочным. Более тонкий ствол занимает меньше места на печатной пластине."
+msgstr "Диаметр самых широких веток древовидной поддержки. Более толстый ствол будет более прочным; более тонкий ствол займет меньше места на печатной пластине."
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation_step description"
@@ -4624,11 +4635,6 @@ msgid "The distance between the raft lines for the top raft layers. The spacing 
 msgstr "Расстояние между линиями подложки на её верхних слоях. Расстояние должно быть равно ширине линии, тогда поверхность будет сплошной."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_roof_inset description"
-msgid "The distance covered when making a connection from a roof outline inward. Only applies to Wire Printing."
-msgstr "Покрываемое расстояние при создании соединения от внешней части крыши внутрь. Применяется только при каркасной печати."
-
-#: fdmprinter.def.json
 msgctxt "interlocking_depth description"
 msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
 msgstr "Расстояние от границы между моделями для создания взаимосвязанной структуры, измеряемое в ячейках. Слишком малое количество ячеек приведет к плохой адгезии."
@@ -4641,17 +4647,12 @@ msgstr "Расстояние между моделью и самой удалё�
 #: fdmprinter.def.json
 msgctxt "interlocking_boundary_avoidance description"
 msgid "The distance from the outside of a model where interlocking structures will not be generated, measured in cells."
-msgstr "Расстояние от внешней стороны модели, на котором не будут создаваться взаимосвязанные структуры, измеряемое в ячейках."
+msgstr "Расстояние от внешней стороны модели, где взаимосвязанные структуры не будут создаваться, измеряемое в ячейках."
 
 #: fdmprinter.def.json
 msgctxt "machine_heat_zone_length description"
 msgid "The distance from the tip of the nozzle in which heat from the nozzle is transferred to the filament."
 msgstr "Расстояние от кончика сопла до места, где тепло передаётся материалу."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_drag_along description"
-msgid "The distance of the end piece of an inward line which gets dragged along when going back to the outer outline of the roof. This distance is compensated for. Only applies to Wire Printing."
-msgstr "Расстояние финальной части восходящей линии, которая протягивается при возвращении к внешнему контуру крыши. Это расстояние скомпенсировано. Применяется только при каркасной печати."
 
 #: fdmprinter.def.json
 msgctxt "bottom_skin_expand_distance description"
@@ -4672,11 +4673,6 @@ msgstr "Расстояние на которое верхние оболочки
 msgctxt "wipe_move_distance description"
 msgid "The distance to move the head back and forth across the brush."
 msgstr "Расстояние перемещения головки назад и вперед поперек щетки."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_fall_down description"
-msgid "The distance which horizontal roof lines printed 'in thin air' fall down when being printed. This distance is compensated for. Only applies to Wire Printing."
-msgstr "Расстояние, на котором линии горизонтальной крыши печатаемые \"в воздухе\" падают вниз при печати. Это расстояние скомпенсировано. Применяется только при каркасной печати."
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_prune_angle description"
@@ -4889,11 +4885,6 @@ msgid "The height of the steps of the stair-like bottom of support resting on th
 msgstr "Высота в шагах низа лестничной поддержки, лежащей на модели. Малые значения усложняют удаление поддержки, а большие значения могут сделать структуру поддержек нестабильной. Установите ноль для выключения лестничной поддержки."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_height description"
-msgid "The height of the upward and diagonally downward lines between two horizontal parts. This determines the overall density of the net structure. Only applies to Wire Printing."
-msgstr "Высота диагональных линий между двумя горизонтальными частями. Она определяет общую плотность сетевой структуры. Применяется только при каркасной печати."
-
-#: fdmprinter.def.json
 msgctxt "brim_gap description"
 msgid "The horizontal distance between the first brim line and the outline of the first layer of the print. A small gap can make the brim easier to remove while still providing the thermal benefits."
 msgstr "Горизонтальное расстояние между первой линией каймы и контуром первого слоя изделия. Небольшой зазор облегчит удаление каймы и позволит сохранить термические преимущества."
@@ -4996,6 +4987,11 @@ msgstr "Максимальный угол, который может иметь 
 msgctxt "conical_overhang_angle description"
 msgid "The maximum angle of overhangs after the they have been made printable. At a value of 0° all overhangs are replaced by a piece of model connected to the build plate, 90° will not change the model in any way."
 msgstr "Максимальный угол нависания, после которого они становятся печатаемыми. При значении в 0° все нависания заменяются частью модели, соединённой со столом, при 90° в модель не вносится никаких изменений."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle description"
+msgid "The maximum angle of the branches while they grow around the model. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "conical_overhang_hole_size description"
@@ -5175,7 +5171,7 @@ msgstr "Минимальная длина печатаемой линии юбк
 #: fdmprinter.def.json
 msgctxt "min_odd_wall_line_width description"
 msgid "The minimum line width for middle line gap filler polyline walls. This setting determines at which model thickness we switch from printing two wall lines, to printing two outer walls and a single central wall in the middle. A higher Minimum Odd Wall Line Width leads to a higher maximum even wall line width. The maximum odd wall line width is calculated as 2 * Minimum Even Wall Line Width."
-msgstr "Минимальная ширина линии для полилинейных стенок, заполняющих зазоры средней линии. Этот параметр определяет, при какой толщине модели выполняется переключение с печати стенки в две линии на печать двух внешних стенок и одной центральной стенки посередине. Чем выше значение минимальной ширины линии нечетной стенки, тем выше максимальная ширина линии четной стенки. Максимальная ширина линии нечетной стенки вычисляется по формуле: 2 × ширина линии четной стенки."
+msgstr "Минимальная ширина линии для полилинейных стенок, заполняющих зазоры средней линии. Этот параметр определяет, при какой толщине модели выполняется переключение с печати стенки в две линии на печать двух внешних стенок и одной центральной стенки посередине. Чем выше значение минимальной ширины линии нечетной стенки, тем выше максимальная ширина линии четной стенки. Максимальная ширина линии нечетной стенки вычисляется по формуле: 2 * минимальную ширину линии четной стенки."
 
 #: fdmprinter.def.json
 msgctxt "min_even_wall_line_width description"
@@ -5211,6 +5207,11 @@ msgstr "Минимальное время, затрачиваемое на пе�
 msgctxt "prime_tower_min_volume description"
 msgid "The minimum volume for each layer of the prime tower in order to purge enough material."
 msgstr "Минимальный объём материала на каждый слой черновой башни, который требуется выдавить."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_max_diameter_increase_by_merges_when_support_to_model description"
+msgid "The most the diameter of a branch that has to connect to the model may increase by merging with branches that could reach the buildplate. Increasing this reduces print time, but increases the area of support that rests on model"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_name description"
@@ -5290,17 +5291,17 @@ msgstr "Количество стенок, окружающих заполнен
 #: fdmprinter.def.json
 msgctxt "support_bottom_wall_count description"
 msgid "The number of walls with which to surround support interface floor. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "Количество стенок, которыми можно окружить опору связующего слоя поддержек. Добавление стенки может повысить надежность печати поддержки и оптимизировать выступы поддержки, однако оно увеличивает время печати и расход материалов."
+msgstr "Количество стенок, которыми можно окружить основание связующего слоя поддержек. Добавление стенки может повысить надежность печати поддержки и оптимизировать выступы поддержки, однако оно увеличивает время печати и расход материалов."
 
 #: fdmprinter.def.json
 msgctxt "support_roof_wall_count description"
 msgid "The number of walls with which to surround support interface roof. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "Количество стен, которыми можно окружить связующий слой крыши поддержек. Добавление стенки может повысить надежность печати поддержки и оптимизировать выступы поддержки, однако оно увеличивает время печати и расход материалов."
+msgstr "Количество стенок, которыми можно окружить крышу связующего слоя поддержек. Добавление стенки может повысить надежность печати поддержки и оптимизировать выступы поддержки, однако оно увеличивает время печати и расход материалов."
 
 #: fdmprinter.def.json
 msgctxt "support_interface_wall_count description"
 msgid "The number of walls with which to surround support interface. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "Количество стен, которыми можно окружить связующий слой поддержек. Добавление стенки может повысить надежность печати поддержки и оптимизировать выступы поддержки, однако оно увеличивает время печати и расход материалов."
+msgstr "Количество стен, которыми можно окружить связующий слой крыши поддержек. Добавление стенки может повысить надежность печати поддержки и оптимизировать выступы поддержки, однако оно увеличивает время печати и расход материалов."
 
 #: fdmprinter.def.json
 msgctxt "wall_distribution_count description"
@@ -5366,6 +5367,16 @@ msgstr "Шаблон, который будет использоваться д�
 msgctxt "z_seam_position description"
 msgid "The position near where to start printing each part in a layer."
 msgstr "Позиция, рядом с которой следует начинать путь на каждом слое."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle_slow description"
+msgid "The preferred angle of the branches, when they do not have to avoid the model. Use a lower angle to make them more vertical and more stable. Use a higher angle for branches to merge faster."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_rest_preference description"
+msgid "The preferred placement of the support structures. If structures can't be placed at the preferred location, they will be place elsewhere, even if that means placing them on the model."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "jerk_layer_0 description"
@@ -5725,7 +5736,7 @@ msgstr "Ширина каймы для печати под поддержкой.
 #: fdmprinter.def.json
 msgctxt "interlocking_beam_width description"
 msgid "The width of the interlocking structure beams."
-msgstr "Ширина взаимосвязанных балок конструкции."
+msgstr "Ширина балок взаимосвязанной конструкции."
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_size description"
@@ -5778,9 +5789,9 @@ msgid "This will create a wall around the model, which traps (hot) air and shiel
 msgstr "Создаёт стенку вокруг модели, которая удерживает (горячий) воздух и препятствует обдуву модели внешним воздушным потоком. Очень пригодится для материалов, которые легко деформируются."
 
 #: fdmprinter.def.json
-msgctxt "wireframe_roof_outer_delay description"
-msgid "Time spent at the outer perimeters of hole which is to become a roof. Longer times can ensure a better connection. Only applies to Wire Printing."
-msgstr "Время, потраченное на внешних периметрах отверстия, которое станет крышей. Увеличенное время может придать прочности. Применяется только при каркасной печати."
+msgctxt "support_tree_tip_diameter label"
+msgid "Tip Diameter"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage_xy description"
@@ -5978,36 +5989,6 @@ msgid "Tree"
 msgstr "Дерево"
 
 #: fdmprinter.def.json
-msgctxt "support_tree_angle label"
-msgid "Tree Support Branch Angle"
-msgstr "Угол ответвления древовидной поддержки"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_diameter label"
-msgid "Tree Support Branch Diameter"
-msgstr "Диаметр ответвления древовидной поддержки"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_diameter_angle label"
-msgid "Tree Support Branch Diameter Angle"
-msgstr "Угол диаметра ответвления древовидной поддержки"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_distance label"
-msgid "Tree Support Branch Distance"
-msgstr "Расстояние ответвления древовидной поддержки"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_collision_resolution label"
-msgid "Tree Support Collision Resolution"
-msgstr "Разрешение для расчета столкновений древовидной поддержки"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_max_diameter label"
-msgid "Tree Support Trunk Diameter"
-msgstr "Диаметр ствола древовидной поддержки"
-
-#: fdmprinter.def.json
 msgctxt "infill_pattern option trihexagon"
 msgid "Tri-Hexagon"
 msgstr "Шестигранник из треугольников"
@@ -6036,6 +6017,11 @@ msgstr "Треугольники"
 msgctxt "support_roof_pattern option triangles"
 msgid "Triangles"
 msgstr "Треугольники"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_max_diameter label"
+msgid "Trunk Diameter"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor option UltiGCode"
@@ -6111,121 +6097,6 @@ msgstr "Вертикальный коэффициент масштабирова
 msgctxt "slicing_tolerance description"
 msgid "Vertical tolerance in the sliced layers. The contours of a layer are normally generated by taking cross sections through the middle of each layer's thickness (Middle). Alternatively each layer can have the areas which fall inside of the volume throughout the entire thickness of the layer (Exclusive) or a layer has the areas which fall inside anywhere within the layer (Inclusive). Inclusive retains the most details, Exclusive makes for the best fit and Middle stays closest to the original surface."
 msgstr "Вертикальный допуск в нарезанных слоях. В общем случае контуры слоя создаются путем снятия поперечных сечений по середине толщины каждого слоя (Середина). Кроме того, каждый слой может иметь области, попадающие в объем по всей толщине слоя (Исключение), или области, попадающие в любое место слоя (Включение). Способ «Включение» сохраняет больше деталей, способ «Исключение» обеспечивает наилучшую подгонку, а способ «Середина» — наиболее близкое соответствие оригинальной поверхности."
-
-#: fdmprinter.def.json
-msgctxt "wireframe_bottom_delay label"
-msgid "WP Bottom Delay"
-msgstr "Нижняя задержка (КП)"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_bottom label"
-msgid "WP Bottom Printing Speed"
-msgstr "Скорость печати низа (КП)"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow_connection label"
-msgid "WP Connection Flow"
-msgstr "Поток соединений (КП)"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_height label"
-msgid "WP Connection Height"
-msgstr "Высота соединений (КП)"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_down label"
-msgid "WP Downward Printing Speed"
-msgstr "Скорость печати вниз (КП)"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_drag_along label"
-msgid "WP Drag Along"
-msgstr "Протягивание (КП)"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_up_half_speed label"
-msgid "WP Ease Upward"
-msgstr "Ослабление вверх (КП)"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_fall_down label"
-msgid "WP Fall Down"
-msgstr "Падение (КП)"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flat_delay label"
-msgid "WP Flat Delay"
-msgstr "Горизонтальная задержка (КП)"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow_flat label"
-msgid "WP Flat Flow"
-msgstr "Поток горизонтальных линий (КП)"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_flow label"
-msgid "WP Flow"
-msgstr "Поток каркасной печати"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_flat label"
-msgid "WP Horizontal Printing Speed"
-msgstr "Скорость горизонтальной печати (КП)"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_top_jump label"
-msgid "WP Knot Size"
-msgstr "Размер узла (КП)"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_nozzle_clearance label"
-msgid "WP Nozzle Clearance"
-msgstr "Зазор сопла (КП)"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_drag_along label"
-msgid "WP Roof Drag Along"
-msgstr "Протягивание крыши (КП)"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_fall_down label"
-msgid "WP Roof Fall Down"
-msgstr "Опадание крыши (КП)"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_inset label"
-msgid "WP Roof Inset Distance"
-msgstr "Расстояние крыши внутрь (КП)"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_roof_outer_delay label"
-msgid "WP Roof Outer Delay"
-msgstr "Задержка внешней крыши (КП)"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed label"
-msgid "WP Speed"
-msgstr "Скорость каркасной печати"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_straight_before_down label"
-msgid "WP Straighten Downward Lines"
-msgstr "Прямые нисходящие линии (КП)"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_strategy label"
-msgid "WP Strategy"
-msgstr "Стратегия (КП)"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_top_delay label"
-msgid "WP Top Delay"
-msgstr "Верхняя задержка (КП)"
-
-#: fdmprinter.def.json
-msgctxt "wireframe_printspeed_up label"
-msgid "WP Upward Printing Speed"
-msgstr "Скорость печати вверх (КП)"
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temp_wait label"
@@ -6658,11 +6529,6 @@ msgid "Wipe Z Hop Height"
 msgstr "Высота поднятия оси Z при очистке"
 
 #: fdmprinter.def.json
-msgctxt "wireframe_enabled label"
-msgid "Wire Printing"
-msgstr "Каркасная печать (КП)"
-
-#: fdmprinter.def.json
 msgctxt "retraction_combing option infill"
 msgid "Within Infill"
 msgstr "В области заполнения"
@@ -6807,18 +6673,246 @@ msgctxt "travel description"
 msgid "travel"
 msgstr "перемещение"
 
-#~ msgctxt "material_flow_dependent_temperature label"
-#~ msgid "Auto Temperature"
-#~ msgstr "Автоматическая температура"
+#~ msgctxt "wireframe_strategy option compensate"
+#~ msgid "Compensate"
+#~ msgstr "Компенсация"
 
-#~ msgctxt "material_flow_dependent_temperature description"
-#~ msgid "Change the temperature for each layer automatically with the average flow speed of that layer."
-#~ msgstr "Изменять температуру каждого слоя автоматически в соответствии со средней скоростью потока на этом слое."
+#~ msgctxt "wireframe_top_jump description"
+#~ msgid "Creates a small knot at the top of an upward line, so that the consecutive horizontal layer has a better chance to connect to it. Only applies to Wire Printing."
+#~ msgstr "Создаёт небольшой узел наверху возвышающейся линии так, чтобы последующий горизонтальный слой имел больший шанс к присоединению. Применяется только при каркасной печати."
 
-#~ msgctxt "limit_support_retractions label"
-#~ msgid "Limit Support Retractions"
-#~ msgstr "Ограничить откаты поддержки"
+#~ msgctxt "wireframe_bottom_delay description"
+#~ msgid "Delay time after a downward move. Only applies to Wire Printing."
+#~ msgstr "Задержка после движения вниз. Применяется только при каркасной печати."
 
-#~ msgctxt "limit_support_retractions description"
-#~ msgid "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excessive stringing within the support structure."
-#~ msgstr "Пропустить откат при переходе от поддержки к поддержке по прямой линии. Включение этого параметра обеспечивает экономию времени печати, но может привести к чрезмерной строчности структуры поддержек."
+#~ msgctxt "wireframe_top_delay description"
+#~ msgid "Delay time after an upward move, so that the upward line can harden. Only applies to Wire Printing."
+#~ msgstr "Задержка после движения вверх, чтобы такие линии были твёрже. Применяется только при каркасной печати."
+
+#~ msgctxt "wireframe_flat_delay description"
+#~ msgid "Delay time between two horizontal segments. Introducing such a delay can cause better adhesion to previous layers at the connection points, while too long delays cause sagging. Only applies to Wire Printing."
+#~ msgstr "Задержка между двумя горизонтальными сегментами. Внесение такой задержки может улучшить прилипание к предыдущим слоям в местах соединений, в то время как более длинные задержки могут вызывать провисания. Применяется только при нитевой печати."
+
+#~ msgctxt "wireframe_nozzle_clearance description"
+#~ msgid "Distance between the nozzle and horizontally downward lines. Larger clearance results in diagonally downward lines with a less steep angle, which in turn results in less upward connections with the next layer. Only applies to Wire Printing."
+#~ msgstr "Зазор между соплом и горизонтально нисходящими линиями. Большее значение уменьшает угол нисхождения, что приводит уменьшению восходящих соединений на следующем слое. Применяется только при каркасной печати."
+
+#~ msgctxt "wireframe_up_half_speed description"
+#~ msgid ""
+#~ "Distance of an upward move which is extruded with half speed.\n"
+#~ "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
+#~ msgstr ""
+#~ "Расстояние движения вверх, при котором выдавливание идёт на половине скорости.\n"
+#~ "Это может улучшить прилипание к предыдущим слоям, не перегревая материал тех слоёв. Применяется только при каркасной печати."
+
+#~ msgctxt "wireframe_fall_down description"
+#~ msgid "Distance with which the material falls down after an upward extrusion. This distance is compensated for. Only applies to Wire Printing."
+#~ msgstr "Расстояние, с которого материал падает вниз после восходящего выдавливания. Расстояние компенсируется. Применяется только при каркасной печати."
+
+#~ msgctxt "wireframe_drag_along description"
+#~ msgid "Distance with which the material of an upward extrusion is dragged along with the diagonally downward extrusion. This distance is compensated for. Only applies to Wire Printing."
+#~ msgstr "Расстояние, на которое материал от восходящего выдавливания тянется во время нисходящего выдавливания. Расстояние компенсируется. Применяется только при каркасной печати."
+
+#~ msgctxt "wireframe_flow_connection description"
+#~ msgid "Flow compensation when going up or down. Only applies to Wire Printing."
+#~ msgstr "Компенсация потока при движении вверх и вниз. Применяется только при каркасной печати."
+
+#~ msgctxt "wireframe_flow_flat description"
+#~ msgid "Flow compensation when printing flat lines. Only applies to Wire Printing."
+#~ msgstr "Компенсация потока при печати плоских линий. Применяется только при каркасной печати."
+
+#~ msgctxt "wireframe_flow description"
+#~ msgid "Flow compensation: the amount of material extruded is multiplied by this value. Only applies to Wire Printing."
+#~ msgstr "Компенсация потока: объём выдавленного материала умножается на это значение. Применяется только при каркасной печати."
+
+#~ msgctxt "support_tree_branch_distance description"
+#~ msgid "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove."
+#~ msgstr "Указывает, насколько далеко должны друг от друга располагаться ответвления при касании модели. Если задать небольшое расстояние, увеличится количество точек, в которых древовидная поддержка касается модели; это улучшает нависание, но при этом усложняет удаление поддержки."
+
+#~ msgctxt "wireframe_strategy option knot"
+#~ msgid "Knot"
+#~ msgstr "Узел"
+
+#~ msgctxt "wireframe_straight_before_down description"
+#~ msgid "Percentage of a diagonally downward line which is covered by a horizontal line piece. This can prevent sagging of the top most point of upward lines. Only applies to Wire Printing."
+#~ msgstr "Процент диагонально нисходящей линии, которая покрывается куском горизонтальной линии. Это может предотвратить провисание самых верхних точек восходящих линий. Применяется только при каркасной печати."
+
+#~ msgctxt "wireframe_enabled description"
+#~ msgid "Print only the outside surface with a sparse webbed structure, printing 'in thin air'. This is realized by horizontally printing the contours of the model at given Z intervals which are connected via upward and diagonally downward lines."
+#~ msgstr "Печатать только внешнюю поверхность с редкой перепончатой структурой, печатаемой \"прямо в воздухе\". Это реализуется горизонтальной печатью контуров модели с заданными Z интервалами, которые соединяются диагональными линиями."
+
+#~ msgctxt "support_tree_collision_resolution description"
+#~ msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
+#~ msgstr "Разрешение, применяемое при расчете столкновений во избежание столкновений с моделью. Если указать меньшее значение, древовидные структуры будут получаться более точными и устойчивыми, однако при этом значительно увеличится время разделения на слои."
+
+#~ msgctxt "wireframe_strategy option retract"
+#~ msgid "Retract"
+#~ msgstr "Откат"
+
+#~ msgctxt "wireframe_printspeed description"
+#~ msgid "Speed at which the nozzle moves when extruding material. Only applies to Wire Printing."
+#~ msgstr "Скорость с которой двигается сопло, выдавая материал. Применяется только при каркасной печати."
+
+#~ msgctxt "wireframe_printspeed_down description"
+#~ msgid "Speed of printing a line diagonally downward. Only applies to Wire Printing."
+#~ msgstr "Скорость печати линии диагонально вниз. Применяется только при каркасной печати."
+
+#~ msgctxt "wireframe_printspeed_up description"
+#~ msgid "Speed of printing a line upward 'in thin air'. Only applies to Wire Printing."
+#~ msgstr "Скорость печати линии вверх \"в разрежённом воздухе\". Применяется только при каркасной печати."
+
+#~ msgctxt "wireframe_printspeed_bottom description"
+#~ msgid "Speed of printing the first layer, which is the only layer touching the build platform. Only applies to Wire Printing."
+#~ msgstr "Скорость, с которой печатается первый слой, касающийся стола. Применяется только при каркасной печати."
+
+#~ msgctxt "wireframe_printspeed_flat description"
+#~ msgid "Speed of printing the horizontal contours of the model. Only applies to Wire Printing."
+#~ msgstr "Скорость, с которой печатаются горизонтальные контуры модели. Применяется только при нитевой печати."
+
+#~ msgctxt "wireframe_strategy description"
+#~ msgid "Strategy for making sure two consecutive layers connect at each connection point. Retraction lets the upward lines harden in the right position, but may cause filament grinding. A knot can be made at the end of an upward line to heighten the chance of connecting to it and to let the line cool; however, it may require slow printing speeds. Another strategy is to compensate for the sagging of the top of an upward line; however, the lines won't always fall down as predicted."
+#~ msgstr "Стратегия проверки соединения двух соседних слоёв в соответствующих точках. Откат укрепляет восходящие линии в нужных местах, но может привести к истиранию нити материала. Узел может быть сделан в конце восходящей линии для повышения шанса соединения с ним и позволить линии охладиться; однако, это может потребовать пониженных скоростей печати. Другая стратегия состоит в том, чтобы компенсировать провисание вершины восходящей линии; однако, строки будут не всегда падать, как предсказано."
+
+#~ msgctxt "support_tree_angle description"
+#~ msgid "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
+#~ msgstr "Угол ответвлений. При указании меньшего угла поддержка будет более вертикальной и устойчивой. Для получения большего охвата указывайте более высокий угол."
+
+#~ msgctxt "wireframe_roof_inset description"
+#~ msgid "The distance covered when making a connection from a roof outline inward. Only applies to Wire Printing."
+#~ msgstr "Покрываемое расстояние при создании соединения от внешней части крыши внутрь. Применяется только при каркасной печати."
+
+#~ msgctxt "wireframe_roof_drag_along description"
+#~ msgid "The distance of the end piece of an inward line which gets dragged along when going back to the outer outline of the roof. This distance is compensated for. Only applies to Wire Printing."
+#~ msgstr "Расстояние финальной части восходящей линии, которая протягивается при возвращении к внешнему контуру крыши. Это расстояние скомпенсировано. Применяется только при каркасной печати."
+
+#~ msgctxt "wireframe_roof_fall_down description"
+#~ msgid "The distance which horizontal roof lines printed 'in thin air' fall down when being printed. This distance is compensated for. Only applies to Wire Printing."
+#~ msgstr "Расстояние, на котором линии горизонтальной крыши печатаемые \"в воздухе\" падают вниз при печати. Это расстояние скомпенсировано. Применяется только при каркасной печати."
+
+#~ msgctxt "wireframe_height description"
+#~ msgid "The height of the upward and diagonally downward lines between two horizontal parts. This determines the overall density of the net structure. Only applies to Wire Printing."
+#~ msgstr "Высота диагональных линий между двумя горизонтальными частями. Она определяет общую плотность сетевой структуры. Применяется только при каркасной печати."
+
+#~ msgctxt "wireframe_roof_outer_delay description"
+#~ msgid "Time spent at the outer perimeters of hole which is to become a roof. Longer times can ensure a better connection. Only applies to Wire Printing."
+#~ msgstr "Время, потраченное на внешних периметрах отверстия, которое станет крышей. Увеличенное время может придать прочности. Применяется только при каркасной печати."
+
+#~ msgctxt "support_tree_angle label"
+#~ msgid "Tree Support Branch Angle"
+#~ msgstr "Угол ответвления древовидной поддержки"
+
+#~ msgctxt "support_tree_branch_diameter label"
+#~ msgid "Tree Support Branch Diameter"
+#~ msgstr "Диаметр ответвления древовидной поддержки"
+
+#~ msgctxt "support_tree_branch_diameter_angle label"
+#~ msgid "Tree Support Branch Diameter Angle"
+#~ msgstr "Угол диаметра ответвления древовидной поддержки"
+
+#~ msgctxt "support_tree_branch_distance label"
+#~ msgid "Tree Support Branch Distance"
+#~ msgstr "Расстояние ответвления древовидной поддержки"
+
+#~ msgctxt "support_tree_collision_resolution label"
+#~ msgid "Tree Support Collision Resolution"
+#~ msgstr "Разрешение для расчета столкновений древовидной поддержки"
+
+#~ msgctxt "support_tree_max_diameter label"
+#~ msgid "Tree Support Trunk Diameter"
+#~ msgstr "Диаметр ствола древовидной поддержки"
+
+#~ msgctxt "wireframe_bottom_delay label"
+#~ msgid "WP Bottom Delay"
+#~ msgstr "Нижняя задержка (КП)"
+
+#~ msgctxt "wireframe_printspeed_bottom label"
+#~ msgid "WP Bottom Printing Speed"
+#~ msgstr "Скорость печати низа (КП)"
+
+#~ msgctxt "wireframe_flow_connection label"
+#~ msgid "WP Connection Flow"
+#~ msgstr "Поток соединений (КП)"
+
+#~ msgctxt "wireframe_height label"
+#~ msgid "WP Connection Height"
+#~ msgstr "Высота соединений (КП)"
+
+#~ msgctxt "wireframe_printspeed_down label"
+#~ msgid "WP Downward Printing Speed"
+#~ msgstr "Скорость печати вниз (КП)"
+
+#~ msgctxt "wireframe_drag_along label"
+#~ msgid "WP Drag Along"
+#~ msgstr "Протягивание (КП)"
+
+#~ msgctxt "wireframe_up_half_speed label"
+#~ msgid "WP Ease Upward"
+#~ msgstr "Ослабление вверх (КП)"
+
+#~ msgctxt "wireframe_fall_down label"
+#~ msgid "WP Fall Down"
+#~ msgstr "Падение (КП)"
+
+#~ msgctxt "wireframe_flat_delay label"
+#~ msgid "WP Flat Delay"
+#~ msgstr "Горизонтальная задержка (КП)"
+
+#~ msgctxt "wireframe_flow_flat label"
+#~ msgid "WP Flat Flow"
+#~ msgstr "Поток горизонтальных линий (КП)"
+
+#~ msgctxt "wireframe_flow label"
+#~ msgid "WP Flow"
+#~ msgstr "Поток каркасной печати"
+
+#~ msgctxt "wireframe_printspeed_flat label"
+#~ msgid "WP Horizontal Printing Speed"
+#~ msgstr "Скорость горизонтальной печати (КП)"
+
+#~ msgctxt "wireframe_top_jump label"
+#~ msgid "WP Knot Size"
+#~ msgstr "Размер узла (КП)"
+
+#~ msgctxt "wireframe_nozzle_clearance label"
+#~ msgid "WP Nozzle Clearance"
+#~ msgstr "Зазор сопла (КП)"
+
+#~ msgctxt "wireframe_roof_drag_along label"
+#~ msgid "WP Roof Drag Along"
+#~ msgstr "Протягивание крыши (КП)"
+
+#~ msgctxt "wireframe_roof_fall_down label"
+#~ msgid "WP Roof Fall Down"
+#~ msgstr "Опадание крыши (КП)"
+
+#~ msgctxt "wireframe_roof_inset label"
+#~ msgid "WP Roof Inset Distance"
+#~ msgstr "Расстояние крыши внутрь (КП)"
+
+#~ msgctxt "wireframe_roof_outer_delay label"
+#~ msgid "WP Roof Outer Delay"
+#~ msgstr "Задержка внешней крыши (КП)"
+
+#~ msgctxt "wireframe_printspeed label"
+#~ msgid "WP Speed"
+#~ msgstr "Скорость каркасной печати"
+
+#~ msgctxt "wireframe_straight_before_down label"
+#~ msgid "WP Straighten Downward Lines"
+#~ msgstr "Прямые нисходящие линии (КП)"
+
+#~ msgctxt "wireframe_strategy label"
+#~ msgid "WP Strategy"
+#~ msgstr "Стратегия (КП)"
+
+#~ msgctxt "wireframe_top_delay label"
+#~ msgid "WP Top Delay"
+#~ msgstr "Верхняя задержка (КП)"
+
+#~ msgctxt "wireframe_printspeed_up label"
+#~ msgid "WP Upward Printing Speed"
+#~ msgstr "Скорость печати вверх (КП)"
+
+#~ msgctxt "wireframe_enabled label"
+#~ msgid "Wire Printing"
+#~ msgstr "Каркасная печать (КП)"
