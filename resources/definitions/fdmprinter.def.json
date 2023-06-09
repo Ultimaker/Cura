@@ -6,7 +6,7 @@
         "type": "machine",
         "author": "Unknown",
         "manufacturer": "Unknown",
-        "setting_version": 21,
+        "setting_version": 22,
         "file_formats": "text/x-gcode;model/stl;application/x-wavefront-obj;application/x3g",
         "visible": false,
         "has_materials": true,
@@ -1665,15 +1665,16 @@
                 {
                     "label": "Small Top/Bottom Width",
                     "description": "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions.",
-                    "value": "skin_line_width * 2",
-                    "default_value": 1,
+                    "value": "0",
+                    "default_value": 0,
                     "minimum_value": "0",
                     "maximum_value_warning": "skin_line_width * 10",
                     "type": "float",
-                    "enabled": "(top_layers > 0 or bottom_layers > 0) and top_bottom_pattern != 'concentric'",
+                    "enabled": false,
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true,
-                    "unit": "mm"
+                    "unit": "mm",
+                    "comment": "Disabled for 5.4.x, as we're worried about micro-segments in the infill. Also disabled in the engine, so forcing this > 0 will not do anything at the moment."
                 },
                 "skin_no_small_gaps_heuristic":
                 {
@@ -3063,6 +3064,16 @@
                     "maximum_value_warning": "260",
                     "maximum_value": "365",
                     "enabled": "extruders_enabled_count > 1 and machine_nozzle_temp_enabled",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "material_is_support_material":
+                {
+                    "label": "Is support material",
+                    "description": "Is this material typically used as a support material during printing.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 }
@@ -4478,8 +4489,8 @@
                     "description": "The extruder train to use for printing the support. This is used in multi-extrusion.",
                     "type": "extruder",
                     "default_value": "0",
-                    "value": "int(defaultExtruderPosition())",
                     "enabled": "(support_enable or support_meshes_present) and extruders_enabled_count > 1",
+                    "value": "[*map(lambda x: str(x).lower() == 'true', (extruderValues('support_enable') and extruderValues('material_is_support_material')))].index(True) if any([*map(lambda x: str(x).lower() == 'true', (extruderValues('support_enable') and extruderValues('material_is_support_material')))]) else int(defaultExtruderPosition())",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "children":
@@ -4573,7 +4584,7 @@
                     "maximum_value": "89",
                     "maximum_value_warning": "85",
                     "default_value": 60,
-                    "value": "support_angle",
+                    "value": "max(min(support_angle, 85), 20)",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "enabled": "support_enable and support_structure=='tree'",
                     "settable_per_mesh": true,
@@ -4755,8 +4766,8 @@
                     "type": "enum",
                     "options":
                     {
-                        "buildplate": "Force Only Buildplate",
-                        "graceful": "On Model If Necessary"
+                        "buildplate": "On buildplate when possible",
+                        "graceful": "On model if required"
                     },
                     "default_value": "buildplate",
                     "value": "'buildplate' if support_type == 'buildplate' else 'graceful'",
