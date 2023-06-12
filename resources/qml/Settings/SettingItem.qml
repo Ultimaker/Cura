@@ -13,7 +13,7 @@ import "."
 Item
 {
     id: base
-    height: enabled ? UM.Theme.getSize("section").height + UM.Theme.getSize("narrow_margin").height : 0
+    height: UM.Theme.getSize("section").height + UM.Theme.getSize("narrow_margin").height
     anchors.left: parent.left
     anchors.right: parent.right
 
