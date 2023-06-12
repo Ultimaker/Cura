@@ -168,7 +168,7 @@ class MachineNode(ContainerNode):
 
         return self.global_qualities.get(self.preferred_quality_type, next(iter(self.global_qualities.values())))
 
-    def is_excluded_material(self, material: MaterialNode) -> bool:
+    def isExcludedMaterial(self, material: MaterialNode) -> bool:
         """Returns whether the material should be excluded from the list of materials."""
         for exclude_material in self.exclude_materials:
             if exclude_material in material["id"]:
