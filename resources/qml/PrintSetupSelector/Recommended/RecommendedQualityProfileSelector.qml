@@ -31,8 +31,8 @@ Item
             RecommendedQualityProfileSelectorButton
             {
                 profileName: model.name
-                icon: model.icon
-                custom_icon: model.custom_icon
+                icon: model.icon ? model.icon : ""
+                custom_icon: model.custom_icon ? model.custom_icon : ""
                 tooltipText: model.description ? model.description : ""
 
                 selected: Cura.MachineManager.activeIntentCategory == model.intent_category
