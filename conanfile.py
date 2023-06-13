@@ -49,7 +49,7 @@ class CuraConan(ConanFile):
 
     def set_version(self):
         if not self.version:
-            self.version = "5.4.0-alpha.1"
+            self.version = "5.5.0-alpha"
 
     @property
     def _pycharm_targets(self):
@@ -262,8 +262,6 @@ class CuraConan(ConanFile):
         self.options["pysavitar"].shared = True
         self.options["pynest2d"].shared = True
         self.options["cpython"].shared = True
-        if self._enterprise:
-            self.options["curaengine"].enable_plugins = False
 
     def validate(self):
         version = self.conf_info.get("user.cura:version", default = self.version, check_type = str)
@@ -271,14 +269,13 @@ class CuraConan(ConanFile):
             raise ConanInvalidConfiguration("Only versions 5+ are support")
 
     def requirements(self):
-        self.requires("pyarcus/latest@ultimaker/cura_10475")  # TODO: point to `testing` once the CURA-10475 from CuraEngine is main
-        self.requires("curaengine/latest@ultimaker/cura_10475")  # TODO: point to `testing` once the CURA-10475 from CuraEngine is main
+        self.requires("pyarcus/5.2.2")
+        self.requires("curaengine/(latest)@ultimaker/testing")
         self.requires("pysavitar/5.2.2")
         self.requires("pynest2d/5.2.2")
         self.requires("uranium/(latest)@ultimaker/testing")
         self.requires("cura_binary_data/(latest)@ultimaker/testing")
         self.requires("cpython/3.10.4")
-        self.requires("boost/1.81.0")
         if self.options.internal:
             self.requires("cura_private_data/(latest)@ultimaker/testing")
             self.requires("fdm_materials/(latest)@internal/testing")
