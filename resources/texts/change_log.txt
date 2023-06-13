@@ -24,7 +24,6 @@ Introduced the Smart Brim setting that changes the order in which the brim lines
 - Improved accuracy of when the M104 Hotend Temperature command is added
 - Improved printing order of the prime tower to include a dual brim, primed every layer, and primed before and after the extruder switch.
 - Improved behavior for opening and closing categories when adding a new printer
-- Improved accuracy of when the M104 Hotend Temperature command is added
 - Removed the settings related to Wire Printing since it was broken and barely used.
 
 * Other Bug Fixes
