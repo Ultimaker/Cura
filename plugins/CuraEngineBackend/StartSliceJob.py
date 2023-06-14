@@ -307,8 +307,12 @@ class StartSliceJob(Job):
         # Ports: are chosen based on https://stackoverflow.com/questions/10476987/best-tcp-port-number-range-for-internal-applications
 
         plugins = {
-            0: {"address": os.environ.get("SIMPLIFY_ADDRESS", "localhost"), "port": os.environ.get("SIMPLIFY_PORT", 33700)} if os.environ.get("SIMPLIFY_ENABLE") is not None else None,
-            1: {"address": os.environ.get("POSTPROCESS_ADDRESS", "localhost"), "port": os.environ.get("POSTPROCESS_PORT", 33701)} if os.environ.get("POSTPROCESS_ENABLE") is not None else None,
+            0: {"address": os.environ.get("SIMPLIFY_ADDRESS", "localhost"),
+                "port": os.environ.get("SIMPLIFY_PORT", 33700),
+                "subscriptions": ["settings"]} if os.environ.get("SIMPLIFY_ENABLE") is not None else None,
+            1: {"address": os.environ.get("POSTPROCESS_ADDRESS", "localhost"),
+                "port": os.environ.get("POSTPROCESS_PORT", 33701),
+                "subscriptions": ["a", "b"]} if os.environ.get("POSTPROCESS_ENABLE") is not None else None,
         }
 
         for plugin, connection in plugins.items():
@@ -317,6 +321,9 @@ class StartSliceJob(Job):
             if connection:
                 plugin_message.address = connection["address"]
                 plugin_message.port = connection["port"]
+                for subscription in connection["subscriptions"]:
+                    subs_msg = plugin_message.addRepeatedMessage("subscriptions")
+                    subs_msg.subscription = subscription
 
         for group in filtered_object_groups:
             group_message = self._slice_message.addRepeatedMessage("object_lists")
