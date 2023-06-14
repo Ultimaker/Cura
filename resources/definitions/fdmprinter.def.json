@@ -4493,8 +4493,10 @@
                     "value": "int(defaultExtruderPosition())",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
-                    "children": {
-                        "support_infill_extruder_nr": {
+                    "children":
+                    {
+                        "support_infill_extruder_nr":
+                        {
                             "label": "Support Infill Extruder",
                             "description": "The extruder train to use for printing the infill of the support. This is used in multi-extrusion.",
                             "type": "extruder",
