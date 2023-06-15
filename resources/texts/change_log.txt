@@ -25,6 +25,7 @@ Introduced the Smart Brim setting that changes the order in which the brim lines
 - Improved printing order of the prime tower to include a dual brim, primed every layer, and primed before and after the extruder switch.
 - Improved behavior for opening and closing categories when adding a new printer
 - Removed the settings related to Wire Printing since it was broken and barely used.
+- Upgraded PyQt to version 6.4.2 which improves responsiveness in the UI
 
 * Other Bug Fixes
 - Fixed a bug where undesirable micro segments would introduce jagged paths on curved surfaces.
