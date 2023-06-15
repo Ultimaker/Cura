@@ -115,7 +115,7 @@ class IntentSelectionModel(ListModel):
                     try:
                         icon = QUrl.fromLocalFile(
                             Resources.getPath(cura.CuraApplication.CuraApplication.ResourceTypes.ImageFiles, icon))
-                    except FileNotFoundError:
+                    except (FileNotFoundError, NotADirectoryError, PermissionError):
                         Logger.log("e", f"Icon file for intent {intent_name} not found.")
                         icon = None
 
