@@ -41,7 +41,6 @@ def generate_wxs(source_path: Path, dist_path: Path, filename: Path, app_name: s
         web_site="https://ultimaker.com",
         year=datetime.now().year,
         upgrade_code=str(uuid.uuid5(uuid.NAMESPACE_DNS, app_name)),
-        shortcut_uuid=str(uuid.uuid5(uuid.NAMESPACE_DNS, f"Shortcut {app_name}")),
         cura_license_file=str(source_loc.joinpath("packaging", "msi", "cura_license.rtf")),
         cura_banner_top=str(source_loc.joinpath("packaging", "msi", "banner_top.bmp")),
         cura_banner_side=str(source_loc.joinpath("packaging", "msi", "banner_side.bmp")),
@@ -50,12 +49,6 @@ def generate_wxs(source_path: Path, dist_path: Path, filename: Path, app_name: s
 
     with open(work_loc.joinpath("UltiMaker-Cura.wxs"), "w") as f:
         f.write(wxs_content)
-
-    try:
-        shutil.copy(source_loc.joinpath("packaging", "msi", "CustomizeCuraDlg.wxs"),
-                    work_loc.joinpath("CustomizeCuraDlg.wxs"))
-    except shutil.SameFileError:
-        pass
 
     try:
         shutil.copy(source_loc.joinpath("packaging", "msi", "ExcludeComponents.xslt"),
@@ -79,23 +72,37 @@ def build(dist_path: Path, filename: Path):
     wxs_loc = work_loc.joinpath("UltiMaker-Cura.wxs")
     heat_loc = work_loc.joinpath("HeatFile.wxs")
     exclude_components_loc = work_loc.joinpath("ExcludeComponents.xslt")
-    manageoldcuradlg_loc = work_loc.joinpath("CustomizeCuraDlg.wxs")
     build_loc = work_loc.joinpath("build_msi")
 
-    heat_command = ["heat", "dir", f"{dist_loc.as_posix()}\\", "-dr", "APPLICATIONFOLDER", "-cg", "NewFilesGroup", "-sw5150",
-                    "-gg", "-g1", "-sf", "-srd", "-var", "var.CuraDir", "-t", f"{exclude_components_loc.as_posix()}",
+    heat_command = ["heat",
+                    "dir", f"{dist_loc.as_posix()}\\",
+                    "-dr", "APPLICATIONFOLDER",
+                    "-cg", "NewFilesGroup",
+                    "-sw5150",  # Don't pollute logs with warnings from auto generated content
+                    "-gg",
+                    "-g1",
+                    "-sf",
+                    "-srd",
+                    "-var", "var.CuraDir",
+                    "-t", f"{exclude_components_loc.as_posix()}",
                     "-out", f"{heat_loc.as_posix()}"]
     subprocess.call(heat_command)
 
-    build_command = ["candle", "-arch", "x64", f"-dCuraDir={dist_loc}\\",
+    build_command = ["candle",
+                     "-arch", "x64",
+                     f"-dCuraDir={dist_loc}\\",
                      "-ext", "WixFirewallExtension",
                      "-out", f"{build_loc.as_posix()}\\",
-                     f"{wxs_loc.as_posix()}", f"{heat_loc.as_posix()}", f"{manageoldcuradlg_loc.as_posix()}"]
+                     f"{wxs_loc.as_posix()}",
+                     f"{heat_loc.as_posix()}"]
     subprocess.call(build_command)
 
-    link_command = ["light", f"{build_loc.joinpath(wxs_loc.name).with_suffix('.wixobj')}",
+    link_command = ["light",
+                    f"{build_loc.joinpath(wxs_loc.name).with_suffix('.wixobj')}",
                     f"{build_loc.joinpath(heat_loc.name).with_suffix('.wixobj')}",
-                    f"{build_loc.joinpath(manageoldcuradlg_loc.name).with_suffix('.wixobj')}",
+                    "-sw1076",  # Don't pollute logs with warnings from auto generated content
+                    "-dcl:high",  # Use high compression ratio
+                    "-sval",  # Disable ICE validation otherwise the CI complains
                     "-ext", "WixUIExtension",
                     "-ext", "WixFirewallExtension",
                     "-out", f"{work_loc.joinpath(filename.name)}"]

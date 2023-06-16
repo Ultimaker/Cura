@@ -99,6 +99,7 @@ def findNodePlacement(nodes_to_arrange: List["SceneNode"], build_volume: "BuildV
 
     config = NfpConfig()
     config.accuracy = 1.0
+    config.alignment = NfpConfig.Alignment.DONT_ALIGN
 
     num_bins = nest(node_items, build_plate_bounding_box, spacing, config)
 

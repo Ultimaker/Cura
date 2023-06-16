@@ -1,4 +1,3 @@
-
 <br>
 
 <div align = center>
@@ -51,6 +50,9 @@
 
 <br>
 
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/Ultimaker/Cura/badge)](https://api.securityscorecards.dev/projects/github.com/Ultimaker/Cura)
+
+<br>
 
 <!----------------------------------------------------------------------------->
 

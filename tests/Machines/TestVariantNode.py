@@ -46,6 +46,7 @@ def getInstanceContainerSideEffect(*args, **kwargs):
 def machine_node():
     mocked_machine_node = MagicMock()
     mocked_machine_node.container_id = "machine_1"
+    mocked_machine_node.isExcludedMaterial = MagicMock(return_value=False)
     mocked_machine_node.preferred_material = "preferred_material"
     return mocked_machine_node
 
@@ -95,6 +96,7 @@ def test_variantNodeInit(container_registry, machine_node):
 
 def test_variantNodeInit_excludedMaterial(container_registry, machine_node):
     machine_node.exclude_materials = ["material_1"]
+    machine_node.isExcludedMaterial = MagicMock(side_effect=lambda material: material["id"] == "material_1")
     node = createVariantNode("variant_1", machine_node, container_registry)
 
     assert "material_1" not in node.materials

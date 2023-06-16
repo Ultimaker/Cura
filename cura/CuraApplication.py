@@ -1,4 +1,4 @@
-# Copyright (c) 2022 Ultimaker B.V.
+# Copyright (c) 2023 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 import enum
 import os
@@ -130,7 +130,7 @@ class CuraApplication(QtApplication):
     # SettingVersion represents the set of settings available in the machine/extruder definitions.
     # You need to make sure that this version number needs to be increased if there is any non-backwards-compatible
     # changes of the settings.
-    SettingVersion = 20
+    SettingVersion = 22
 
     Created = False
 
@@ -147,6 +147,7 @@ class CuraApplication(QtApplication):
         DefinitionChangesContainer = Resources.UserType + 10
         SettingVisibilityPreset = Resources.UserType + 11
         IntentInstanceContainer = Resources.UserType + 12
+        ImageFiles = Resources.UserType + 13
 
     pyqtEnum(ResourceTypes)
 
@@ -407,6 +408,7 @@ class CuraApplication(QtApplication):
 
         SettingFunction.registerOperator("extruderValue", self._cura_formula_functions.getValueInExtruder)
         SettingFunction.registerOperator("extruderValues", self._cura_formula_functions.getValuesInAllExtruders)
+        SettingFunction.registerOperator("anyExtruderNrWithOrDefault", self._cura_formula_functions.getAnyExtruderPositionWithOrDefault)
         SettingFunction.registerOperator("resolveOrValue", self._cura_formula_functions.getResolveOrValue)
         SettingFunction.registerOperator("defaultExtruderPosition", self._cura_formula_functions.getDefaultExtruderPosition)
         SettingFunction.registerOperator("valueFromContainer", self._cura_formula_functions.getValueFromContainerAtIndex)
@@ -425,6 +427,7 @@ class CuraApplication(QtApplication):
         Resources.addStorageType(self.ResourceTypes.DefinitionChangesContainer, "definition_changes")
         Resources.addStorageType(self.ResourceTypes.SettingVisibilityPreset, "setting_visibility")
         Resources.addStorageType(self.ResourceTypes.IntentInstanceContainer, "intent")
+        Resources.addStorageType(self.ResourceTypes.ImageFiles, "images")
 
         self._container_registry.addResourceType(self.ResourceTypes.QualityInstanceContainer, "quality")
         self._container_registry.addResourceType(self.ResourceTypes.QualityChangesInstanceContainer, "quality_changes")
@@ -435,6 +438,7 @@ class CuraApplication(QtApplication):
         self._container_registry.addResourceType(self.ResourceTypes.MachineStack, "machine")
         self._container_registry.addResourceType(self.ResourceTypes.DefinitionChangesContainer, "definition_changes")
         self._container_registry.addResourceType(self.ResourceTypes.IntentInstanceContainer, "intent")
+        self._container_registry.addResourceType(self.ResourceTypes.ImageFiles, "images")
 
         Resources.addType(self.ResourceTypes.QmlFiles, "qml")
         Resources.addType(self.ResourceTypes.Firmware, "firmware")
@@ -2076,3 +2080,7 @@ class CuraApplication(QtApplication):
     @classmethod
     def getInstance(cls, *args, **kwargs) -> "CuraApplication":
         return cast(CuraApplication, super().getInstance(**kwargs))
+
+    @pyqtProperty(bool, constant=True)
+    def isEnterprise(self) -> bool:
+        return ApplicationMetadata.IsEnterpriseVersion

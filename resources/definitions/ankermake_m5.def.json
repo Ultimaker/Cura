@@ -17,7 +17,7 @@
     },
     "overrides":
     {
-        "acceleration_enabled": { "value": "true" },
+        "acceleration_enabled": { "value": "True" },
         "acceleration_infill": { "maximum_value_warning": "2500" },
         "acceleration_layer_0": { "maximum_value_warning": "2500" },
         "acceleration_prime_tower": { "maximum_value_warning": "2500" },
@@ -74,7 +74,7 @@
             "value": "material_print_temperature + 5"
         },
         "minimum_interface_area": { "value": 10 },
-        "minimum_support_area": { "value": 2 },
+        "minimum_support_area": { "value": "2 if support_structure == 'normal' else 0" },
         "retraction_amount": { "default_value": 1.5 },
         "retraction_combing": { "value": "'off' if retraction_hop_enabled else 'infill'" },
         "retraction_hop": { "value": 0.2 },
