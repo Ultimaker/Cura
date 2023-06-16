@@ -309,10 +309,10 @@ class StartSliceJob(Job):
         plugins = {
             0: {"address": os.environ.get("SIMPLIFY_ADDRESS", "localhost"),
                 "port": os.environ.get("SIMPLIFY_PORT", 33700),
-                "subscriptions": ["settings"]} if os.environ.get("SIMPLIFY_ENABLE") is not None else None,
+                "subscriptions": ["BroadcastSettings"]} if os.environ.get("SIMPLIFY_ENABLE") is not None else None,
             1: {"address": os.environ.get("POSTPROCESS_ADDRESS", "localhost"),
                 "port": os.environ.get("POSTPROCESS_PORT", 33701),
-                "subscriptions": ["a", "b"]} if os.environ.get("POSTPROCESS_ENABLE") is not None else None,
+                "subscriptions": []} if os.environ.get("POSTPROCESS_ENABLE") is not None else None,
         }
 
         for plugin, connection in plugins.items():
