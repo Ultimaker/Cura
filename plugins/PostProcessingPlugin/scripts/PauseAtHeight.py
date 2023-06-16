@@ -338,8 +338,8 @@ class PauseAtHeight(Script):
                     nbr_negative_layers += 1
 
                 #Track the latest printing temperature in order to resume at the correct temperature.
-                if line.startswith("T"):
-                    current_t = self.getValue(line, "T", current_t)
+                if re.match("T(\d*)", line):
+                    current_t = self.getValue(line, "T")
                 m = self.getValue(line, "M")
                 if m is not None and (m == 104 or m == 109) and self.getValue(line, "S") is not None:
                     extruder = current_t
