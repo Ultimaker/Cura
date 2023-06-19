@@ -54,8 +54,9 @@ There are also a few extra things that can be used in these expressions:
 * The function `extruderValue(extruder, key)` will evaluate a particular setting for a particular extruder.
 * The function `resolveOrValue(key)` will perform the full setting evaluation as described in this document for the current context (so if this setting is being evaluated for the second extruder it would perform it as if coming from the second extruder).
 * The function `defaultExtruderPosition()` will get the first extruder that is not disabled. For instance, if a printer has three extruders but the first is disabled, this would return `1` to indicate the second extruder (0-indexed).
+* The function `anyExtruderNrWithOrDefault(key)` will filter the list of extruders on the key, and then give the first index for which it is true, or if none of them are, the default one as specified by the 'default extruder position' function above. 
 * The function `valueFromContainer(key, index)` will get a setting value from the global stack, but skip the first few containers in that stack. It will skip until it reaches a particular index in the container stack.
-* The function `valueFromExtruderContainer(key, index)` will get a setting value from the current extruder stack, but skip the first few containers in that stack. It will skip until it reaches a particular index in the container stack.
+* The function `extruderValueFromContainer(key, index)` will get a setting value from the current extruder stack, but skip the first few containers in that stack. It will skip until it reaches a particular index in the container stack.
 
 CuraEngine
 ----
