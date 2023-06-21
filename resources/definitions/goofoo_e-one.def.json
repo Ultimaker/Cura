@@ -2,10 +2,7 @@
     "version": 2,
     "name": "Goofoo E-one",
     "inherits": "goofoo_open",
-    "metadata":
-    {
-        "visible": true
-    },
+    "metadata": { "visible": true },
     "overrides":
     {
         "machine_depth": { "default_value": 300 },
