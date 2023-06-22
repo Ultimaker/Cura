@@ -9,7 +9,7 @@
         "manufacturer": "Weedo",
         "file_formats": "text/x-gcode",
         "platform": "weedo_x40.3mf",
-         "exclude_materials": [
+        "exclude_materials": [
             "3D-Fuel_PLA_PRO_Black",
             "3D-Fuel_PLA_SnapSupport",
             "bestfilament_abs_skyblue",
