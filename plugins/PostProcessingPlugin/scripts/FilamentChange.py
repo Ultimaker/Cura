@@ -1,11 +1,15 @@
-# Copyright (c) 2023 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # The PostProcessingPlugin is released under the terms of the AGPLv3 or higher.
 
 # Modification 06.09.2020
 # add checkbox, now you can choose and use configuration from the firmware itself.
+# Altered by GregValiant (Greg Foresi) 5-30-2023
+#   Add the pp name to the post processor list in the gcode
+#   Moved the FilamentChange code below the ";LAYER:" line
 
 from typing import List
 from ..Script import Script
+import re
 
 from UM.Application import Application #To get the current printer's settings.
 
@@ -37,7 +41,7 @@ class FilamentChange(Script):
                     "description": "At what layer should color change occur. This will be before the layer starts printing. Specify multiple color changes with a comma.",
                     "unit": "",
                     "type": "str",
-                    "default_value": "1",
+                    "default_value": "10",
                     "enabled": "enabled"
                 },
                 "firmware_config":
@@ -135,10 +139,10 @@ class FilamentChange(Script):
                 "before_macro":
                 {
                     "label": "G-code Before",
-                    "description": "Any custom G-code to run before the filament change happens, for example, M300 S1000 P10000 for a long beep.",
+                    "description": "Any custom G-code to run before the filament change happens.  Ex: M300 S400 P1000 for a beep.  For Multi-Line insertions de-limit with a comma.",
                     "unit": "",
                     "type": "str",
-                    "default_value": "M300 S1000 P10000",
+                    "default_value": "M300 S400 P1000",
                     "enabled": "enabled and enable_before_macro"
                 },
                 "enable_after_macro":
@@ -152,10 +156,10 @@ class FilamentChange(Script):
                 "after_macro":
                 {
                     "label": "G-code After",
-                    "description": "Any custom G-code to run after the filament has been changed right before continuing the print, for example, you can add a sequence to purge filament and wipe the nozzle.",
+                    "description": "Any custom G-code to run after the filament has been changed.  For Multi-Line insertions de-limit with a comma.",
                     "unit": "",
                     "type": "str",
-                    "default_value": "M300 S440 P500",
+                    "default_value": "",
                     "enabled": "enabled and enable_after_macro"
                 }
             }
@@ -173,11 +177,6 @@ class FilamentChange(Script):
             self._instance.setProperty(key, "value", global_container_stack.getProperty(key, "value"))
 
     def execute(self, data: List[str]):
-        """Inserts the filament change g-code at specific layer numbers.
-
-        :param data: A list of layers of g-code.
-        :return: A similar list, with filament change commands inserted.
-        """
         enabled = self.getSettingValueByKey("enabled")
         layer_nums = self.getSettingValueByKey("layer_number")
         initial_retract = self.getSettingValueByKey("initial_retract")
@@ -188,15 +187,21 @@ class FilamentChange(Script):
         firmware_config = self.getSettingValueByKey("firmware_config")
         enable_before_macro = self.getSettingValueByKey("enable_before_macro")
         before_macro = self.getSettingValueByKey("before_macro")
+        if "," in before_macro:
+            before_macro = re.sub(",","\n",before_macro)
+        
         enable_after_macro = self.getSettingValueByKey("enable_after_macro")
         after_macro = self.getSettingValueByKey("after_macro")
-
+        if "," in after_macro:
+            after_macro = re.sub(",","\n",after_macro)
+        
         if not enabled:
+            data[0] += ";  Filament Change (disabled by user)" + "\n"
             return data
 
-        color_change = ";BEGIN FilamentChange plugin\n"
+        color_change = ";  Start of Filament Change\n"
 
-        if enable_before_macro:
+        if enable_before_macro and before_macro != "":
             color_change = color_change + before_macro + "\n"
 
         color_change = color_change + "M600"
@@ -213,19 +218,16 @@ class FilamentChange(Script):
 
             if x_pos is not None:
                 color_change = color_change + (" X%.2f" % x_pos)
-
+                
             if y_pos is not None:
                 color_change = color_change + (" Y%.2f" % y_pos)
-
+                
             if z_pos is not None and z_pos > 0.:
                 color_change = color_change + (" Z%.2f" % z_pos)
+        if enable_after_macro and after_macro != "":
+            color_change = color_change + "\n" + after_macro
 
-        color_change = color_change + "\n"
-
-        if enable_after_macro:
-            color_change = color_change + after_macro + "\n"
-
-        color_change = color_change + ";END FilamentChange plugin\n"
+        color_change = color_change + "\n;  End of Filament Change\n"
 
         layer_targets = layer_nums.split(",")
         if len(layer_targets) > 0:
@@ -235,6 +237,7 @@ class FilamentChange(Script):
                 except ValueError: #Layer number is not an integer.
                     continue
                 if 0 < layer_num < len(data):
-                    data[layer_num] = color_change + data[layer_num]
-
+                    layer_line = data[layer_num].split("\n")[0]
+                    data[layer_num] = data[layer_num].replace(layer_line + "\n", layer_line + "\n" + color_change)
+        data[0] += ";  Filament Change at Layer: " + str(layer_num-1) + "\n"
         return data
