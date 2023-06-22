@@ -20,8 +20,6 @@ from cura.MultiplyObjectsJob import MultiplyObjectsJob
 from cura.Settings.SetObjectExtruderOperation import SetObjectExtruderOperation
 from cura.Settings.ExtruderManager import ExtruderManager
 
-#BCN3D IDEX (print_mode) INCLUSION
-from cura.Utils.BCN3Dutils.Bcn3dIdexSupport import removeDuplitedNode, recaltulateDuplicatedNodeCenterMoveOperation
 
 from cura.Operations.SetBuildPlateNumberOperation import SetBuildPlateNumberOperation
 
@@ -81,6 +79,7 @@ class CuraActions(QObject):
             center_operation = TranslateOperation(current_node, Vector(0, center_y, 0), set_position = True)
             
             #BCN3D IDEX inclusion
+            from cura.Utils.BCN3Dutils.Bcn3dIdexSupport import recaltulateDuplicatedNodeCenterMoveOperation
             center_operation = recaltulateDuplicatedNodeCenterMoveOperation(center_operation, current_node)
 
             operation.addOperation(center_operation)
@@ -110,6 +109,7 @@ class CuraActions(QObject):
         for node in nodes:
 
             #BCN3D IDEX inclusion
+            from cura.Utils.BCN3Dutils.Bcn3dIdexSupport import removeDuplitedNode
             op = removeDuplitedNode(op, node)
 
             op.addOperation(RemoveSceneNodeOperation(node))

@@ -33,8 +33,6 @@ from cura.Settings.ExtruderManager import ExtruderManager
 
 from PyQt6.QtCore import QTimer
 
-#BCN3D IDEX (print_mode) INCLUSION
-from cura.Utils.BCN3Dutils.Bcn3dIdexSupport import updateNodeBoundaryCheckForDuplicated
 
 
 if TYPE_CHECKING:
@@ -303,9 +301,10 @@ class BuildVolume(SceneNode):
                     continue
 
                 node.setOutsideBuildArea(False)
-        
+                
         #BCN3D IDEX INCLUSION
-        updateNodeBoundaryCheckForDuplicated()  
+        from cura.Utils.BCN3Dutils.Bcn3dIdexSupport import updateNodeBoundaryCheckForDuplicated
+        updateNodeBoundaryCheckForDuplicated() 
 
         # Group nodes should override the _outside_buildarea property of their children.
         for group_node in group_nodes:
@@ -654,11 +653,13 @@ class BuildVolume(SceneNode):
             self._width = self._global_container_stack.getProperty("machine_width", "value")
             machine_height = self._global_container_stack.getProperty("machine_height", "value")
             if self._global_container_stack.getProperty("print_sequence", "value") == "one_at_a_time" and len(self._scene_objects) > 1:
-                self._height = min(self._global_container_stack.getProperty("gantry_height", "value") * self._scale_vector.z, machine_height)
-                if self._height < (machine_height * self._scale_vector.z):
+                new_height = min(self._global_container_stack.getProperty("gantry_height", "value") * self._scale_vector.z, machine_height)
+
+                if self._height > new_height:
                     self._build_volume_message.show()
-                else:
+                elif self._height < new_height:
                     self._build_volume_message.hide()
+                self._height = new_height
             else:
                 self._height = self._global_container_stack.getProperty("machine_height", "value")
                 self._build_volume_message.hide()
@@ -696,11 +697,15 @@ class BuildVolume(SceneNode):
             if setting_key == "print_sequence":
                 machine_height = self._global_container_stack.getProperty("machine_height", "value")
                 if self._application.getGlobalContainerStack().getProperty("print_sequence", "value") == "one_at_a_time" and len(self._scene_objects) > 1:
-                    self._height = min(self._global_container_stack.getProperty("gantry_height", "value") * self._scale_vector.z, machine_height)
-                    if self._height < (machine_height * self._scale_vector.z):
+                    new_height = min(
+                        self._global_container_stack.getProperty("gantry_height", "value") * self._scale_vector.z,
+                        machine_height)
+
+                    if self._height > new_height:
                         self._build_volume_message.show()
-                    else:
+                    elif self._height < new_height:
                         self._build_volume_message.hide()
+                    self._height = new_height
                 else:
                     self._height = self._global_container_stack.getProperty("machine_height", "value") * self._scale_vector.z
                     self._build_volume_message.hide()

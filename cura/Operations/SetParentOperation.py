@@ -4,7 +4,7 @@ from typing import Optional
 
 from UM.Scene.SceneNode import SceneNode
 from UM.Operations import Operation
-
+from UM.Application import Application
 
 class SetParentOperation(Operation.Operation):
     """An operation that parents a scene node to another scene node."""
@@ -24,12 +24,17 @@ class SetParentOperation(Operation.Operation):
     def undo(self) -> None:
         """Undoes the set-parent operation, restoring the old parent."""
 
-        self._set_parent(self._old_parent)
+        #BCN3D IDEX INCLUSION
+        from cura.Utils.BCN3Dutils.Bcn3dIdexSupport import setParentOperationUndo
+        setParentOperationUndo(self._set_parent, self._old_parent, self._node, Application.getInstance().getController().getScene().getRoot())
+        #self._set_parent(self._old_parent)
 
     def redo(self) -> None:
         """Re-applies the set-parent operation."""
-
-        self._set_parent(self._parent)
+        #BCN3D IDEX INCLUSION
+        from cura.Utils.BCN3Dutils.Bcn3dIdexSupport import setParentOperationRedo
+        setParentOperationRedo(self._set_parent, self._old_parent, self._node)
+        #self._set_parent(self._parent)
 
     def _set_parent(self, new_parent: Optional[SceneNode]) -> None:
         """Sets the parent of the node while applying transformations to the world-transform of the node stays the same.

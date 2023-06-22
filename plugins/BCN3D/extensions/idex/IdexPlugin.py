@@ -6,7 +6,7 @@ from cura import CuraApplication
 from cura.CuraApplication import CuraApplication
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
-from.PrintModeManager import PrintModeManager
+from cura.Utils.BCN3Dutils.PrintModeManager import PrintModeManager
 
 i18n_catalog = i18nCatalog("BCN3DIdex")
 
@@ -20,19 +20,19 @@ class IdexPlugin(Extension):
         self._application = CuraApplication.getInstance()
         self._i18n_catalog = None  # type: Optional[i18nCatalog]
         self._global_container_stack = self._application.getGlobalContainerStack()
-        self._application.globalContainerStackChanged.connect(self._onGlobalContainerStackChanged)
+        self.printModeManager = PrintModeManager.getInstance()
+        #self._application.globalContainerStackChanged.connect(self._onGlobalContainerStackChanged)
 
         self._settings_dict = {}  # type: Dict[str, Any]
         self._expanded_categories = []  # type: List[str]  # temporary list used while creating nested settings
 
-        self._onGlobalContainerStackChanged()
+        #self._onGlobalContainerStackChanged()
         self.cura_actions =  CuraApplication.getInstance()._cura_actions
 
         #application = CuraApplication.CuraApplication.getInstance()
 
 
     def _onGlobalContainerStackChanged(self):
-        Logger.info(f"IDEX: _onGlobalContainerStackChanged")
 
         self._global_container_stack = self._application.getGlobalContainerStack()
 
@@ -43,7 +43,6 @@ class IdexPlugin(Extension):
             self._onPropertyChanged("print_mode", "value")
 
     def _onPropertyChanged(self, key: str, property_name: str) -> None:
-        Logger.info(f"IDEX _onPropertyChange: (any property has changed)")
         if key == "print_mode" and property_name == "value":
             Logger.info(f"IdexPlugin: print_mode property changed")
             print_mode = self._global_container_stack.getProperty("print_mode", "value")
@@ -87,7 +86,6 @@ class IdexPlugin(Extension):
             right_extruder.enabledChanged.connect(self._onEnabledChangedRight)
 
     def _onEnabledChangedLeft(self):
-        Logger.info(f"IdexPlugin _onEnabledChangedLeft")
         print_mode = self._global_container_stack.getProperty("print_mode", "value")
         if print_mode == "singleT0":
             left_extruder = self._global_container_stack.extruderList[0]
@@ -106,7 +104,6 @@ class IdexPlugin(Extension):
                 self._application.getMachineManager().setExtruderEnabled(0, True)
 
     def _onEnabledChangedRight(self):
-        Logger.info(f"IdexPlugin _onEnabledChangedRight")
         print_mode = self._global_container_stack.getProperty("print_mode", "value")
 
         if print_mode == "singleT0":

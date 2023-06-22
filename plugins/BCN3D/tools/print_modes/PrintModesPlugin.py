@@ -25,15 +25,8 @@ class PrintModesPlugin(Tool):
         self._multi_extrusion = False
         self._single_model_selected = False
         self.visibility_handler = None
-        Logger.info(f"PrintModesPlugin init")
         self._print_mode = PrintModesLitsener.getInstance()
-        Selection.selectionChanged.connect(self.propertyChanged)
-        Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerChanged)
-        self._onGlobalContainerChanged()
-        Selection.selectionChanged.connect(self._updateEnabled)
-        qmlRegisterSingletonType(PrintModesLitsener, "Cura", 1, 1, self.getModeManager, "PrintModeService")
-        #qmlRegisterSingletonType(PrintModesLitsener, "Cura", 1, 1, self.getModeManager, "CuraActions")
-
+        qmlRegisterSingletonType(PrintModesLitsener, "Cura", 1, 1, self.getPrintModeManager, "PrintModeService")
         Logger.info(f"PrintModesLitsener registered")
 
 
@@ -43,7 +36,7 @@ class PrintModesPlugin(Tool):
             self.operationStopped.emit(self)
         return False
 
-    def getModeManager(self, *args):
+    def getPrintModeManager(self, *args):
         return self._print_mode
 
     def _onGlobalContainerChanged(self):

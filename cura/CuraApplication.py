@@ -1,4 +1,4 @@
-# Copyright (c) 2022 Ultimaker B.V.
+# Copyright (c) 2023 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 import enum
 import os
@@ -121,9 +121,6 @@ from .Machines.Models.ActiveIntentQualitiesModel import ActiveIntentQualitiesMod
 from .Machines.Models.IntentSelectionModel import IntentSelectionModel
 from .SingleInstance import SingleInstance
 
-#BCN3D IDEX (print_mode) INCLUSION
-from cura.Utils.BCN3Dutils.Bcn3dIdexSupport import duplicatedGroupSelected, onDuplicatedgroupSelected, onReadMeshFinished, removeDuplicatedNodes, onRemoveNodesWithLayerData
-
 if TYPE_CHECKING:
     from UM.Settings.EmptyInstanceContainer import EmptyInstanceContainer
 
@@ -150,6 +147,7 @@ class CuraApplication(QtApplication):
         DefinitionChangesContainer = Resources.UserType + 10
         SettingVisibilityPreset = Resources.UserType + 11
         IntentInstanceContainer = Resources.UserType + 12
+        ImageFiles = Resources.UserType + 13
 
     pyqtEnum(ResourceTypes)
 
@@ -410,6 +408,7 @@ class CuraApplication(QtApplication):
 
         SettingFunction.registerOperator("extruderValue", self._cura_formula_functions.getValueInExtruder)
         SettingFunction.registerOperator("extruderValues", self._cura_formula_functions.getValuesInAllExtruders)
+        SettingFunction.registerOperator("anyExtruderNrWithOrDefault", self._cura_formula_functions.getAnyExtruderPositionWithOrDefault)
         SettingFunction.registerOperator("resolveOrValue", self._cura_formula_functions.getResolveOrValue)
         SettingFunction.registerOperator("defaultExtruderPosition", self._cura_formula_functions.getDefaultExtruderPosition)
         SettingFunction.registerOperator("valueFromContainer", self._cura_formula_functions.getValueFromContainerAtIndex)
@@ -428,6 +427,7 @@ class CuraApplication(QtApplication):
         Resources.addStorageType(self.ResourceTypes.DefinitionChangesContainer, "definition_changes")
         Resources.addStorageType(self.ResourceTypes.SettingVisibilityPreset, "setting_visibility")
         Resources.addStorageType(self.ResourceTypes.IntentInstanceContainer, "intent")
+        Resources.addStorageType(self.ResourceTypes.ImageFiles, "images")
 
         self._container_registry.addResourceType(self.ResourceTypes.QualityInstanceContainer, "quality")
         self._container_registry.addResourceType(self.ResourceTypes.QualityChangesInstanceContainer, "quality_changes")
@@ -438,6 +438,7 @@ class CuraApplication(QtApplication):
         self._container_registry.addResourceType(self.ResourceTypes.MachineStack, "machine")
         self._container_registry.addResourceType(self.ResourceTypes.DefinitionChangesContainer, "definition_changes")
         self._container_registry.addResourceType(self.ResourceTypes.IntentInstanceContainer, "intent")
+        self._container_registry.addResourceType(self.ResourceTypes.ImageFiles, "images")
 
         Resources.addType(self.ResourceTypes.QmlFiles, "qml")
         Resources.addType(self.ResourceTypes.Firmware, "firmware")
@@ -627,6 +628,9 @@ class CuraApplication(QtApplication):
     @pyqtSlot()
     def closeApplication(self) -> None:
         Logger.log("i", "Close application")
+
+        #BCN3D IDEX INCLUSION
+        self._global_container_stack.setProperty("print_mode", "value", "singleT0")
 
         # Workaround: Before closing the window, remove the global stack.
         # This is necessary because as the main window gets closed, hundreds of QML elements get updated which often
@@ -1646,11 +1650,12 @@ class CuraApplication(QtApplication):
             if parent is not None and parent in selected_nodes and not parent.callDecoration("isGroup"):
                 Selection.remove(node)
 
+        #BCN3D IDEX INCLUSION
+        from cura.Utils.BCN3Dutils.Bcn3dIdexSupport import duplicatedGroupSelected
+        duplicatedGroupSelected(self.getController(), group_node, Selection, SetParentOperation)
+
         # Move selected nodes into the group-node
         Selection.applyOperation(SetParentOperation, group_node)
-
-        #BCN3D IDEX INCLUSION
-        duplicatedGroupSelected(self._controller, group_node, Selection, SetParentOperation)
 
         # Deselect individual nodes and select the group-node instead
         for node in group_node.getChildren():
@@ -1678,6 +1683,7 @@ class CuraApplication(QtApplication):
                     Selection.add(child)
 
                 #BCN3D IDEX INCLUSION
+                from cura.Utils.BCN3Dutils.Bcn3dIdexSupport import onDuplicatedgroupSelected
                 op = onDuplicatedgroupSelected(op, node)
 
                 op.push()
@@ -1952,11 +1958,12 @@ class CuraApplication(QtApplication):
             operation = AddSceneNodeOperation(node, scene.getRoot())
             operation.push()
 
+            #BCN3D IDEX INCLUSION
+            from cura.Utils.BCN3Dutils.Bcn3dIdexSupport import onReadMeshFinished
+            nodes_to_arrange = onReadMeshFinished(nodes_to_arrange, node, scene)
+            
             node.callDecoration("setActiveExtruder", default_extruder_id)
             scene.sceneChanged.emit(node)
-
-            #BCN3D IDEX INCLUSION
-            nodes_to_arrange = onReadMeshFinished(nodes_to_arrange, node, scene)
 
             if select_models_on_load:
                 Selection.add(node)
@@ -2050,8 +2057,6 @@ class CuraApplication(QtApplication):
 
     @pyqtSlot()
     def deleteAll(self, only_selectable: bool = True) -> None:
-        #BCN3D IDEX INCLUSION
-        removeDuplicatedNodes()
         super().deleteAll(only_selectable = only_selectable)
 
         # Also remove nodes with LayerData
@@ -2078,9 +2083,7 @@ class CuraApplication(QtApplication):
 
             for node in nodes:
                 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
-                #op.addOperation(RemoveSceneNodeOperation(node))
-                #BCN3D IDEX INCLUSION, we keep the RemoveSceneNodeOperation import for less messing
-                op = onRemoveNodesWithLayerData(node, op)
+                op.addOperation(RemoveSceneNodeOperation(node))
 
                 # Reset the print information
                 self.getController().getScene().sceneChanged.emit(node)

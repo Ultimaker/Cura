@@ -7,7 +7,7 @@ from PyQt6.QtCore import QObject, pyqtSlot
 
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
-
+from cura.Utils.BCN3Dutils.PrintModeManager import PrintModeManager
 
 class PrintModesLitsener(QObject):
 
@@ -17,7 +17,7 @@ class PrintModesLitsener(QObject):
             raise ValueError("Duplicate singleton creation")
         self._cura_application = CuraApplication.getInstance()
         self._application = CuraApplication.getInstance()
-        Logger.info("PrintModesLitsener initialized")
+        self.printModeManager = PrintModeManager.getInstance()
 
     # Function to set the state checked inside the qml of the plugin
     @pyqtSlot(result = str)
@@ -28,28 +28,24 @@ class PrintModesLitsener(QObject):
 
     @pyqtSlot(str)
     def setPrintMode(self, print_mode: str):
-        Logger.info(f"set printmode")
-        # setPrintModeToLoad does not exists in CuraApplication, we need either to modifify it as a plugin to override functions and params, or save the parameter in our plugins"""
-        #self._application.setPrintModeToLoad(print_mode)
+        Logger.debug("Set printmode: %s ", print_mode)
+        self.printModeManager.setPrintModeToLoad(print_mode)
         self._global_container_stack = self._application.getGlobalContainerStack()
-        #left_extruder = self._global_container_stack.extruderList[0]
-        #right_extruder = self._global_container_stack.extruderList[1]
+        left_extruder = self._global_container_stack.extruderList[0]
+        right_extruder = self._global_container_stack.extruderList[1]
+        self._global_container_stack = self._application.getGlobalContainerStack()
+        left_extruder = self._global_container_stack.extruderList[0]
+        right_extruder = self._global_container_stack.extruderList[1]
         try:
-            '''Exception on self._onEnabledChangedLeft/_onEnabledChangedRight Due it does not exits
-                in class, perhaps this should be in other class but why do we disable it?
-            '''
-            #left_extruder.enabledChanged.disconnect(self._onEnabledChangedLeft)
-            #right_extruder.enabledChanged.disconnect(self._onEnabledChangedRight)
+            left_extruder.enabledChanged.disconnect(self._onEnabledChangedLeft)
+            right_extruder.enabledChanged.disconnect(self._onEnabledChangedRight)
             self._application.getMachineManager().setExtruderEnabled(0, False)
             self._application.getMachineManager().setExtruderEnabled(1, False)
-        except Exception as e:
-            Logger.error ("error setting extruders: ".format(e))
+        except Exception:
+            # Just in case the connection didn't exists
             pass
         if print_mode == "singleT0":
             self._global_container_stack.setProperty("print_mode", "value", "singleT0")
-
-            # Now we select all the nodes and set the printmode to them to avoid different nodes on differents printmodes
-
             CuraApplication.selectAll(CuraApplication.getInstance())
             for node in Selection.getAllSelectedObjects():
                 node.setSetting("print_mode", "singleTO")
@@ -61,7 +57,6 @@ class PrintModesLitsener(QObject):
                 node.setSetting("print_mode", "singleT1")
 
         elif print_mode == "dual":
-            Logger.info(f"print mode is dual")
             self._global_container_stack.setProperty("print_mode", "value", "dual")
             CuraApplication.selectAll(CuraApplication.getInstance())
             for node in Selection.getAllSelectedObjects():
@@ -78,6 +73,44 @@ class PrintModesLitsener(QObject):
             CuraApplication.selectAll(CuraApplication.getInstance())
             for node in Selection.getAllSelectedObjects():
                 node.setSetting("print_mode", "duplication")
+
+    def _onEnabledChangedLeft(self):
+        print_mode = self._global_container_stack.getProperty("print_mode", "value")
+        if print_mode == "singleT0":
+            left_extruder = self._global_container_stack.extruderList[0]
+            if not left_extruder.isEnabled:
+                self._application.getMachineManager().setExtruderEnabled(0, True)
+
+        elif print_mode == "singleT1":
+            self._global_container_stack.setProperty("print_mode", "value", "dual")
+
+        elif print_mode == "dual":
+            self._global_container_stack.setProperty("print_mode", "value", "singleT1")
+
+        else:
+            left_extruder = self._global_container_stack.extruderList[0]
+            if not left_extruder.isEnabled:
+                self._application.getMachineManager().setExtruderEnabled(0, True)
+
+    def _onEnabledChangedRight(self):
+        print_mode = self._global_container_stack.getProperty("print_mode", "value")
+
+        if print_mode == "singleT0":
+            self._global_container_stack.setProperty("print_mode", "value", "dual")
+
+        elif print_mode == "singleT1":
+            right_extruder = self._global_container_stack.extruderList[1]
+            if not right_extruder.isEnabled:
+                self._application.getMachineManager().setExtruderEnabled(1, True)
+
+        elif print_mode == "dual":
+            self._global_container_stack.setProperty("print_mode", "value", "singleT0")
+
+        else:
+            right_extruder = self._global_container_stack.extruderList[1]
+            if right_extruder.isEnabled:
+                # When in duplication/mirror modes force the right extruder to be disabled
+                self._application.getMachineManager().setExtruderEnabled(1, False)
 
     @classmethod
     def getInstance(cls) -> "PrintModesLitsener":

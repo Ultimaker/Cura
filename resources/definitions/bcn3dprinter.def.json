@@ -6,7 +6,7 @@
     "visible": false,
     "author": "BCN3D Technologies",
     "manufacturer": "BCN3D Technologies",
-    "preferred_material": "generic_pla",
+    "preferred_material": "BCN3D_Filaments_PLA_Light_Blue",
     "preferred_variant_name": "0.4mm",
     "preferred_quality_type": "normal",
     "variants_name": "Hotend",
@@ -362,7 +362,17 @@
           "description": "Comment with the materials used.",
           "type": "str",
           "default_value": "",
-          "value": "'T' + str(extruderValue(extruder_nr, 'extruder_nr')) + ' ' + str(extruderValue(extruder_nr, 'material_type')) if adhesion_extruder_nr == extruder_nr or extruders_enabled_count == 2 else 'T' + str(extruderValue(extruder_nr, 'extruder_nr')) + ' ' + str(extruderValue(0, 'material_type')) if print_mode == \"mirror\" or print_mode == \"duplication\" else ''",
+          "value": "'T' + str(extruderValue(extruder_nr, 'extruder_nr')) + ' ' + str(materialInfoInExtruder(extruder_nr, 'material')) if adhesion_extruder_nr == extruder_nr or extruders_enabled_count == 2 else 'T' + str(extruderValue(extruder_nr, 'extruder_nr')) + ' ' + str(materialInfoInExtruder(0, 'material')) if print_mode == \"mirror\" or print_mode == \"duplication\" else ''",
+          "enabled": false,
+          "settable_per_extruder": true,
+          "comments": "BCN3D setting"
+        },
+        "used_material_brand": {
+          "label": "Used materials",
+          "description": "Comment with the brand used.",
+          "type": "str",
+          "default_value": "",
+          "value": "'T' + str(extruderValue(extruder_nr, 'extruder_nr')) + ' ' + str(materialInfoInExtruder(extruder_nr, 'brand')) if adhesion_extruder_nr == extruder_nr or extruders_enabled_count == 2 else 'T' + str(extruderValue(extruder_nr, 'extruder_nr')) + ' ' + str(materialInfoInExtruder(0, 'brand')) if print_mode == \"mirror\" or print_mode == \"duplication\" else ''",
           "enabled": false,
           "settable_per_extruder": true,
           "comments": "BCN3D setting"
