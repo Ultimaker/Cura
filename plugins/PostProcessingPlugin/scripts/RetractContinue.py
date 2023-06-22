@@ -1,8 +1,11 @@
 # Copyright (c) 2023 UltiMaker B.V.
 # The PostProcessingPlugin is released under the terms of the AGPLv3 or higher.
+# Altered 06-01-2023 by GregValiant (Greg Foresi)
+#  Added regex to check for Zhop lines because they were interfering with the script during combing.
+#  Changed the significant digits to: F=0, X=3, Y=3, Z=2
 
 from ..Script import Script
-
+import re
 from UM.Application import Application  # To get current absolute/relative setting.
 from UM.Math.Vector import Vector
 
@@ -24,6 +27,7 @@ class RetractContinue(Script):
                 {
                     "label": "Extra Retraction Ratio",
                     "description": "How much does it retract during the travel move, by ratio of the travel length.",
+                    "unit": "mmRet/mmDist",
                     "type": "float",
                     "default_value": 0.05
                 }
@@ -42,9 +46,9 @@ class RetractContinue(Script):
     def _travelMoveString(self, travel: Vector, f: float, e: float) -> str:
         # Note that only G1 moves are written, since extrusion is included.
         if f <= 0.0:
-            return f"G1 X{travel.x:.5f} Y{travel.y:.5f} Z{travel.z:.5f} E{e:.5f}"
+            return f"G1 X{travel.x:.3f} Y{travel.y:.3f} Z{travel.z:.2f} E{e:.5f}"
         else:
-            return f"G1 F{f:.5f} X{travel.x:.5f} Y{travel.y:.5f} Z{travel.z:.5f} E{e:.5f}"
+            return f"G1 F{f:.0f} X{travel.x:.3f} Y{travel.y:.3f} Z{travel.z:.2f} E{e:.5f}"
 
     def execute(self, data: List[str]) -> List[str]:
         current_e = 0.0
@@ -83,7 +87,8 @@ class RetractContinue(Script):
                     current_e = (current_e if relative_extrusion else 0) + e_value
 
                 # Handle lines: Detect retractions and compensate relative if G1, potential retract-continue if G0.
-                if code_g == 1:
+                # and ignore Zhop lines
+                if code_g == 1 and re.search("G1 F(\d*) Z(\d.*)", line) == None:
                     if last_e > (current_e + 0.0001):  # Account for floating point inaccuracies.
 
                         # There is a retraction, each following G0 command needs to continue the retraction.
@@ -99,21 +104,23 @@ class RetractContinue(Script):
 
                     # There is no retraction (see continue in the retract-clause) and everything else has been handled.
                     is_active = False
-
-                elif code_g == 0:
+                # If the line is G0 or a Zhop then maake changes----------------------------------------
+                elif code_g == 0 or re.search("G1 F(\d*) Z(\d.*)", line) != None:
                     if not is_active:
                         continue
-
-                    # The retract-continue is active, so each G0 until the next extrusion needs to continue retraction.
-                    travel, f = self._getTravelMove(lines[line_number], current_pos)
-                    travel_length = (current_pos - last_pos).length()
-                    extra_retract = travel_length * extra_retraction_speed
-                    new_e = (0 if relative_extrusion else current_e) - extra_retract
-                    to_compensate += extra_retract
-                    current_e -= extra_retract
-                    lines[line_number] = self._travelMoveString(travel, f, new_e)
+                    #Ignore G1 Z hop lines and act on the G0 lines----------------------------
+                    if re.search("G1 F(\d*) Z(\d.*)", line) == None:
+                        # The retract-continue is active, so each G0 until the next extrusion needs to continue retraction.
+                        travel, f = self._getTravelMove(lines[line_number], current_pos)
+                        travel_length = (current_pos - last_pos).length()
+                        extra_retract = travel_length * extra_retraction_speed
+                        new_e = (0 if relative_extrusion else current_e) - extra_retract
+                        to_compensate += extra_retract
+                        current_e -= extra_retract
+                        lines[line_number] = self._travelMoveString(travel, f, new_e)
 
             new_layer = "\n".join(lines)
             data[layer_number] = new_layer
-
+        # Add post processor name to the gcode---------------------------------------------------------
+        data[0] += ";  Retract Continue (ratio: " + str(extra_retraction_speed) + ")\n"
         return data
