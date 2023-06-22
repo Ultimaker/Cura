@@ -499,7 +499,7 @@ msgstr "Un modèle peut apparaître en tout petit si son unité est par exemple 
 
 msgctxt "@label"
 msgid "Annealing"
-msgstr ""
+msgstr "Recuit"
 
 msgctxt "@label"
 msgid "Anonymous"
@@ -900,11 +900,11 @@ msgstr "Configuration non supportée"
 
 msgctxt "@header"
 msgid "Configurations"
-msgstr ""
+msgstr "Configurations"
 
 msgctxt "@label"
 msgid "Configurations"
-msgstr ""
+msgstr "Configurations"
 
 msgctxt "@action:inmenu"
 msgid "Configure Cura..."
@@ -1288,11 +1288,11 @@ msgstr "Dérivé de"
 
 msgctxt "@header"
 msgid "Description"
-msgstr ""
+msgstr "Description"
 
 msgctxt "@label"
 msgid "Description"
-msgstr ""
+msgstr "Description"
 
 msgctxt "@action:button"
 msgid "Details"
@@ -2071,7 +2071,7 @@ msgstr "Intent"
 
 msgctxt "@label"
 msgid "Interface"
-msgstr ""
+msgstr "Interface"
 
 msgctxt "@label Description for application component"
 msgid "Interprocess communication library"
@@ -2718,11 +2718,11 @@ msgstr "Liste d'objets"
 
 msgctxt "@label:Should be short"
 msgid "Off"
-msgstr ""
+msgstr "Désactivé"
 
 msgctxt "@label:Should be short"
 msgid "On"
-msgstr ""
+msgstr "Activé"
 
 msgctxt "@label"
 msgid "Only Show Top Layers"
@@ -2860,7 +2860,7 @@ msgstr "Analyse du G-Code"
 
 msgctxt "@label"
 msgid "Pause"
-msgstr ""
+msgstr "Pause"
 
 msgctxt "@label:MonitorStatus"
 msgid "Paused"
@@ -2887,11 +2887,11 @@ msgid "Per Model Settings Tool"
 msgstr "Outil de paramètres par modèle"
 
 msgid "Perspective"
-msgstr ""
+msgstr "Perspective"
 
 msgctxt "@action:inmenu menubar:view"
 msgid "Perspective"
-msgstr ""
+msgstr "Perspective"
 
 msgctxt "@action:label"
 msgid "Placement"
@@ -4121,7 +4121,7 @@ msgstr "Résumé - Projet Cura"
 
 msgctxt "@label"
 msgid "Support"
-msgstr ""
+msgstr "Support"
 
 msgctxt "@tooltip"
 msgid "Support"
@@ -4229,7 +4229,7 @@ msgstr "La quantité de lissage à appliquer à l'image."
 
 msgctxt "@text"
 msgid "The annealing profile requires post-processing in an oven after the print is finished. This profile retains the dimensional accuracy of the printed part after annealing and improves strength, stiffness, and thermal resistance."
-msgstr ""
+msgstr "Le profil de recuit nécessite un post-traitement dans un four une fois l'impression terminée. Ce profil conserve la précision dimensionnelle de la pièce imprimée après le recuit et améliore la solidité, la rigidité et la résistance thermique."
 
 msgctxt "@label"
 msgid "The assigned printer, %1, requires the following configuration change:"
@@ -4683,7 +4683,7 @@ msgstr "Type"
 
 msgctxt "@label"
 msgid "Type"
-msgstr ""
+msgstr "Type"
 
 msgctxt "name"
 msgid "UFP Reader"
@@ -5003,7 +5003,7 @@ msgstr "Mises à niveau des configurations de Cura 5.2 vers Cura 5.3."
 
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.3 to Cura 5.4."
-msgstr ""
+msgstr "Configurations des mises à niveau de Cura 5.3 vers Cura 5.4."
 
 msgctxt "@action:button"
 msgid "Upload custom Firmware"
@@ -5135,7 +5135,7 @@ msgstr "Mise à niveau de 5.2 vers 5.3"
 
 msgctxt "name"
 msgid "Version Upgrade 5.3 to 5.4"
-msgstr ""
+msgstr "Mise à niveau de 5.3 vers 5.4"
 
 msgctxt "@button"
 msgid "View printers in Digital Factory"
@@ -5440,7 +5440,7 @@ msgstr "demain"
 
 msgctxt "@label"
 msgid "version: %1"
-msgstr ""
+msgstr "version: %1"
 
 #, python-brace-format
 msgctxt "@message {printer_name} is replaced with the name of the printer"

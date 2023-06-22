@@ -502,7 +502,7 @@ msgstr "Bir modelin birimi milimetre değil de metre ise oldukça küçük gör�
 
 msgctxt "@label"
 msgid "Annealing"
-msgstr ""
+msgstr "Tav verme"
 
 msgctxt "@label"
 msgid "Anonymous"
@@ -1902,7 +1902,7 @@ msgstr "Modelin desteklenmeyen alanlarını kırmızı ile gösterin. Destek al�
 
 msgctxt "@button"
 msgid "How to load new material profiles to my printer"
-msgstr ""
+msgstr "Yeni malzeme profillerini yazıcıma nasıl yüklerim"
 
 msgctxt "@action:button"
 msgid "How to update"
@@ -2070,7 +2070,7 @@ msgstr "Yükleniyor..."
 
 msgctxt "@action:label"
 msgid "Intent"
-msgstr ""
+msgstr "Amaç"
 
 msgctxt "@label"
 msgid "Interface"
@@ -4232,7 +4232,7 @@ msgstr "Resme uygulanacak düzeltme miktarı."
 
 msgctxt "@text"
 msgid "The annealing profile requires post-processing in an oven after the print is finished. This profile retains the dimensional accuracy of the printed part after annealing and improves strength, stiffness, and thermal resistance."
-msgstr ""
+msgstr "Tav verme profili, baskının bitiminden sonra bir fırında son işlem gerektirir. Bu profil, tav vermenin ardından basılı parçanın boyutsal doğruluğunu korur ve mukavemeti, sertliği ve termal direnci artırır."
 
 msgctxt "@label"
 msgid "The assigned printer, %1, requires the following configuration change:"
@@ -5006,7 +5006,7 @@ msgstr "Yapılandırmaları Cura 5.2'dan Cura 5.3'a yükseltir."
 
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.3 to Cura 5.4."
-msgstr ""
+msgstr "Yapılandırmaları Cura 5.2’den Cura 5.3’e yükseltir."
 
 msgctxt "@action:button"
 msgid "Upload custom Firmware"
@@ -5138,7 +5138,7 @@ msgstr "5.2'dan 5.3'a Sürüm Yükseltme"
 
 msgctxt "name"
 msgid "Version Upgrade 5.3 to 5.4"
-msgstr ""
+msgstr "5.2’den 5.3’e Sürüm Yükseltme"
 
 msgctxt "@button"
 msgid "View printers in Digital Factory"

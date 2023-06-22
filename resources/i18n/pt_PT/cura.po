@@ -502,7 +502,7 @@ msgstr "Um modelo pode parecer extremamente pequeno se, por exemplo, este tiver 
 
 msgctxt "@label"
 msgid "Annealing"
-msgstr ""
+msgstr "Annealing"
 
 msgctxt "@label"
 msgid "Anonymous"
@@ -608,7 +608,7 @@ msgstr "Anterior"
 
 msgctxt "@info:title"
 msgid "Backup"
-msgstr ""
+msgstr "Cópia de segurança"
 
 msgctxt "@button"
 msgid "Backup Now"
@@ -1230,11 +1230,11 @@ msgstr "Rejeitar e remover da conta"
 
 msgctxt "@info:No intent profile selected"
 msgid "Default"
-msgstr ""
+msgstr "Predefinição"
 
 msgctxt "@label"
 msgid "Default"
-msgstr ""
+msgstr "Predefinição"
 
 msgctxt "@window:text"
 msgid "Default behavior for changed setting values when switching to a different profile: "
@@ -1452,7 +1452,7 @@ msgstr "A Solução completa para a impressão 3D por filamento fundido."
 
 msgctxt "@label"
 msgid "Engineering"
-msgstr ""
+msgstr "Engenharia"
 
 msgctxt "@option:check"
 msgid "Ensure models are kept apart"
@@ -1488,7 +1488,7 @@ msgstr "Sair do Ecrã Inteiro"
 
 msgctxt "@label"
 msgid "Experimental"
-msgstr ""
+msgstr "Experimental"
 
 msgctxt "@action:button"
 msgid "Export"
@@ -1808,7 +1808,7 @@ msgstr "Imagem GIF"
 
 msgctxt "@label Description for application dependency"
 msgid "GUI framework"
-msgstr ""
+msgstr "GUI framework"
 
 msgctxt "@label Description for application dependency"
 msgid "GUI framework bindings"
@@ -2073,7 +2073,7 @@ msgstr "A instalar..."
 
 msgctxt "@action:label"
 msgid "Intent"
-msgstr ""
+msgstr "Propósito"
 
 msgctxt "@label"
 msgid "Interface"
@@ -2113,7 +2113,7 @@ msgstr "Imagem JPG"
 
 msgctxt "@label Description for application dependency"
 msgid "JSON parser"
-msgstr ""
+msgstr "JSON parser"
 
 msgctxt "@label"
 msgid "Job Name"
@@ -2684,7 +2684,7 @@ msgstr "Não consegue visualizar, porque precisa de fazer o seccionamento primei
 
 msgctxt "@label"
 msgid "Nozzle"
-msgstr ""
+msgstr "Nozzle"
 
 msgctxt "@title:label"
 msgid "Nozzle Settings"
@@ -4235,7 +4235,7 @@ msgstr "A quantidade de suavização a aplicar à imagem."
 
 msgctxt "@text"
 msgid "The annealing profile requires post-processing in an oven after the print is finished. This profile retains the dimensional accuracy of the printed part after annealing and improves strength, stiffness, and thermal resistance."
-msgstr ""
+msgstr "O perfil de annealing requer o pós-processamento num forno após a conclusão da impressão. Este perfil mantém a precisão dimensional da peça impressa após o processo de annealing e melhora a resistência, a rigidez e a resistência térmica."
 
 msgctxt "@label"
 msgid "The assigned printer, %1, requires the following configuration change:"
@@ -5007,7 +5007,7 @@ msgstr "Atualiza as configurações do Cura 5.2 para o Cura 5.3."
 
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.3 to Cura 5.4."
-msgstr ""
+msgstr "Atualiza as configurações do Cura 5.3 para o Cura 5.4."
 
 msgctxt "@action:button"
 msgid "Upload custom Firmware"
@@ -5139,7 +5139,7 @@ msgstr "Atualização da versão 5.2 para 5.3"
 
 msgctxt "name"
 msgid "Version Upgrade 5.3 to 5.4"
-msgstr ""
+msgstr "Atualização da versão 5.3 para 5.4"
 
 msgctxt "@button"
 msgid "View printers in Digital Factory"

@@ -502,7 +502,7 @@ msgstr "Un modello può apparire eccessivamente piccolo se la sua unità di misu
 
 msgctxt "@label"
 msgid "Annealing"
-msgstr ""
+msgstr "Ricottura"
 
 msgctxt "@label"
 msgid "Anonymous"
@@ -608,7 +608,7 @@ msgstr "Indietro"
 
 msgctxt "@info:title"
 msgid "Backup"
-msgstr ""
+msgstr "Backup"
 
 msgctxt "@button"
 msgid "Backup Now"
@@ -1227,11 +1227,11 @@ msgstr "Rifiuta e rimuovi dall'account"
 
 msgctxt "@info:No intent profile selected"
 msgid "Default"
-msgstr ""
+msgstr "Predefinito"
 
 msgctxt "@label"
 msgid "Default"
-msgstr ""
+msgstr "Predefinito"
 
 msgctxt "@window:text"
 msgid "Default behavior for changed setting values when switching to a different profile: "
@@ -1371,7 +1371,7 @@ msgstr "Eseguito"
 
 msgctxt "@button"
 msgid "Downgrade"
-msgstr ""
+msgstr "Downgrade"
 
 msgctxt "@button"
 msgid "Downgrading..."
@@ -1449,7 +1449,7 @@ msgstr "Soluzione end-to-end per la stampa 3D con filamento fuso."
 
 msgctxt "@label"
 msgid "Engineering"
-msgstr ""
+msgstr "Ingegneria"
 
 msgctxt "@option:check"
 msgid "Ensure models are kept apart"
@@ -2070,7 +2070,7 @@ msgstr "Installazione in corso..."
 
 msgctxt "@action:label"
 msgid "Intent"
-msgstr ""
+msgstr "Scopo"
 
 msgctxt "@label"
 msgid "Interface"
@@ -2709,7 +2709,7 @@ msgstr "Numero di estrusori"
 
 msgctxt "@action:button"
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 msgctxt "@label"
 msgid "OS language"
@@ -3975,7 +3975,7 @@ msgstr "Salta"
 
 msgctxt "@tooltip"
 msgid "Skirt"
-msgstr ""
+msgstr "Skirt"
 
 msgctxt "@button"
 msgid "Slice"
@@ -4007,7 +4007,7 @@ msgstr "Sezionamento in corso..."
 
 msgctxt "@action:label"
 msgid "Smoothing"
-msgstr ""
+msgstr "Smoothing"
 
 msgctxt "name"
 msgid "Solid View"
@@ -4232,7 +4232,7 @@ msgstr "La quantità di smoothing (levigatura) da applicare all'immagine."
 
 msgctxt "@text"
 msgid "The annealing profile requires post-processing in an oven after the print is finished. This profile retains the dimensional accuracy of the printed part after annealing and improves strength, stiffness, and thermal resistance."
-msgstr ""
+msgstr "Il profilo di ricottura richiede la post-elaborazione in forno al termine della stampa. Questo profilo mantiene la precisione dimensionale della parte stampata dopo la ricottura e migliora resistenza, rigidità e resistenza termica."
 
 msgctxt "@label"
 msgid "The assigned printer, %1, requires the following configuration change:"
@@ -5006,7 +5006,7 @@ msgstr "Aggiorna le configurazioni da Cura 5.2 a Cura 5.3."
 
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.3 to Cura 5.4."
-msgstr ""
+msgstr "Aggiorna le configurazioni da Cura 5.3 a Cura 5.4."
 
 msgctxt "@action:button"
 msgid "Upload custom Firmware"
@@ -5138,7 +5138,7 @@ msgstr "Aggiornamento della versione da 5.2 a 5.3"
 
 msgctxt "name"
 msgid "Version Upgrade 5.3 to 5.4"
-msgstr ""
+msgstr "Aggiornamento della versione da 5.3 a 5.4"
 
 msgctxt "@button"
 msgid "View printers in Digital Factory"
