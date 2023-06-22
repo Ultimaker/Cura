@@ -9,13 +9,13 @@
         "file_formats": "text/x-gcode",
         "platform": "elegoo_platform.3mf",
         "exclude_materials": [
-            "generic_nylon",
-            "generic_hips",
-            "generic_bvoh",
-            "generic_cpe",
-            "generic_pc",
-            "generic_pva",
-            "generic_pvc"
+            "generic_nylon_175",
+            "generic_hips_175",
+            "generic_bvoh_175",
+            "generic_cpe_175",
+            "generic_pc_175",
+            "generic_pva_175",
+            "generic_pvc_175"
         ],
         "has_machine_quality": true,
         "has_materials": true,
