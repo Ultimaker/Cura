@@ -187,6 +187,7 @@ class Stretcher:
                 layer_steps = []
         retdata.append(";Wide circle stretch distance " + str(self.wc_stretch) + "\n")
         retdata.append(";Push wall stretch distance " + str(self.pw_stretch) + "\n")
+        data[0] += ";  Post Stretch" + "\n"
         return retdata
 
     def extrusionBreak(self, layer_steps, i_pos):
@@ -518,5 +519,6 @@ class Stretch(Script):
         stretcher = Stretcher(
             ExtruderManager.getInstance().getActiveExtruderStack().getProperty("machine_nozzle_size", "value")
             , self.getSettingValueByKey("wc_stretch"), self.getSettingValueByKey("pw_stretch"))
+        data[0] += ";  Post Stretch Script\n"
         return stretcher.execute(data)
 

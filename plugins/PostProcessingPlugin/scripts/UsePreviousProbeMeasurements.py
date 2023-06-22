@@ -43,4 +43,5 @@ class UsePreviousProbeMeasurements(Script):
                         lines[line_index] = text
                 final_lines = "\n".join(lines)
                 data[layer_index] = final_lines
+        data[0] += ";  Use Previous Probe Measurements" + "\n"
         return data

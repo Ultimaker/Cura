@@ -1,3 +1,6 @@
+#  5-30-2023 GregValiant (Greg Foresi)
+#  Added line to insert the name into the gcode post processor list
+
 import base64
 
 from UM.Logger import Logger
@@ -105,5 +108,5 @@ class CreateThumbnail(Script):
 
                 final_lines = "\n".join(lines)
                 data[layer_index] = final_lines
-
+        data[0] += ";  Create Thumbnail" + "\n"
         return data

@@ -43,7 +43,7 @@
 # class for better detection of G1 vs G10 or G11 commands, and accessing arguments. Moved most GCode methods to GCodeCommand class. Improved wording
 # of Single Layer vs Keep Layer to better reflect what was happening.
 # V5.3.0    Alex Jaxon, Added option to modify Build Volume Temperature keeping current format
-#
+# 5-30-23 Added line to add the pp name to the post processor list in the gcode - Greg Valiant
 
 
 
@@ -68,7 +68,7 @@ class ChangeAtZ(Script):
 
     def getSettingDataString(self):
         return """{
-            "name": "ChangeAtZ """ + self.version + """(Experimental)",
+            "name": "ChangeAtZ """ + self.version + """ (Experimental)",
             "key": "ChangeAtZ",
             "metadata": {},
             "version": 2,
@@ -717,6 +717,7 @@ class ChangeAtZProcessor:
 
         # short cut the whole thing if we're not enabled
         if not self.enabled:
+            data[0] += ";  Change at Z (disabled by user)" + "\n"
             return data
 
         # our layer cursor
@@ -764,6 +765,7 @@ class ChangeAtZProcessor:
             index += 1
 
         # return our modified gcode
+        data[0] += ";  Change at Z" + "\n"
         return data
 
     # Builds the restored layer settings based on the previous settings and returns the relevant GCODE lines

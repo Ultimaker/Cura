@@ -46,7 +46,7 @@ class PauseAtHeight(Script):
                 "pause_layer":
                 {
                     "label": "Pause Layer",
-                    "description": "Enter the Number of the LAST layer you want to finish prior to the pause. Note that 0 is the first layer printed.",
+                    "description": "Enter the Number of the LAST layer you want to finish prior to the pause (from the Cura preview).",
                     "type": "int",
                     "value": "math.floor((pause_height - 0.27) / 0.1) + 1",
                     "minimum_value": "0",
@@ -58,7 +58,15 @@ class PauseAtHeight(Script):
                     "label": "Method",
                     "description": "The method or gcode command to use for pausing.",
                     "type": "enum",
-                    "options": {"marlin": "Marlin (M0)", "griffin": "Griffin (M0, firmware retract)", "bq": "BQ (M25)", "reprap": "RepRap (M226)", "repetier": "Repetier/OctoPrint (@pause)"},
+                    "options": {
+                        "marlin": "Marlin (M0)",
+                        "griffin": "Griffin (M0, firmware retract)",
+                        "bq": "BQ (M25)",
+                        "reprap": "RepRap (M226)",
+                        "repetier": "Repetier/OctoPrint (@pause)",
+                        "klipper": "Klipper (PAUSE)",
+                        "raise3d": "Raise3D (M2000)"
+                        },
                     "default_value": "marlin",
                     "value": "\\\"griffin\\\" if machine_gcode_flavor==\\\"Griffin\\\" else \\\"reprap\\\" if machine_gcode_flavor==\\\"RepRap (RepRap)\\\" else \\\"repetier\\\" if machine_gcode_flavor==\\\"Repetier\\\" else \\\"bq\\\" if \\\"BQ\\\" in machine_name or \\\"Flying Bear Ghost 4S\\\" in machine_name  else \\\"marlin\\\""
                 },
@@ -67,7 +75,7 @@ class PauseAtHeight(Script):
                     "label": "Keep motors engaged",
                     "description": "Keep the steppers engaged to allow change of filament without moving the head. Applying too much force will move the head/bed anyway",
                     "type": "bool",
-                    "default_value": false,
+                    "default_value": true,
                     "enabled": "pause_method != \\\"griffin\\\""
                 },
                 "disarm_timeout":
@@ -96,7 +104,7 @@ class PauseAtHeight(Script):
                     "description": "What X location does the head move to when pausing.",
                     "unit": "mm",
                     "type": "float",
-                    "default_value": 190,
+                    "default_value": 0,
                     "enabled": "head_park_enabled and pause_method != \\\"griffin\\\""
                 },
                 "head_park_y":
@@ -105,7 +113,7 @@ class PauseAtHeight(Script):
                     "description": "What Y location does the head move to when pausing.",
                     "unit": "mm",
                     "type": "float",
-                    "default_value": 190,
+                    "default_value": 0,
                     "enabled": "head_park_enabled and pause_method != \\\"griffin\\\""
                 },
                 "head_move_z":
@@ -150,7 +158,7 @@ class PauseAtHeight(Script):
                     "description": "How fast to extrude the material after pause.",
                     "unit": "mm/s",
                     "type": "float",
-                    "default_value": 3.3333,
+                    "default_value": 25,
                     "enabled": "pause_method not in [\\\"griffin\\\", \\\"repetier\\\"]"
                 },
                 "redo_layer":
@@ -253,7 +261,9 @@ class PauseAtHeight(Script):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack is None or self._instance is None:
             return
-
+        extruder = Application.getInstance().getGlobalContainerStack().extruderList
+        print_temperature = str(extruder[0].getProperty("material_print_temperature", "value"))
+        self._instance.setProperty("standby_temperature", "value", print_temperature)
         for key in ["machine_name", "machine_gcode_flavor"]:
             self._instance.setProperty(key, "value", global_container_stack.getProperty(key, "value"))
 
@@ -308,6 +318,8 @@ class PauseAtHeight(Script):
             "griffin": self.putValue(M = 0),
             "bq": self.putValue(M = 25),
             "reprap": self.putValue(M = 226),
+            "klipper":self.putValue("PAUSE"),            
+            "raise3d":self.putValue(M = 2000),
             "repetier": self.putValue("@pause now change filament and press continue printing")
         }[pause_method]
 
@@ -441,7 +453,7 @@ class PauseAtHeight(Script):
 
                     if park_enabled:
                         #Move the head away
-                        prepend_gcode += self.putValue(G = 1, Z = current_z + 1, F = 300) + " ; move up a millimeter to get out of the way\n"
+                        prepend_gcode += self.putValue(G = 1, Z = round(current_z + 1,3), F = 300) + " ; move up a millimeter to get out of the way\n"
                         prepend_gcode += self.putValue(G = 1, X = park_x, Y = park_y, F = 9000) + "\n"
                         if current_z < move_z:
                             prepend_gcode += self.putValue(G = 1, Z = current_z + move_z, F = 300) + "\n"
@@ -598,10 +610,11 @@ class PauseAtHeight(Script):
                     # If it's not yet reset, it still needs to be reset if there were any redo layers.
                     prepend_gcode += self.putValue(G = 92, E = current_e) + "\n"
 
-                layer = prepend_gcode + layer
-
-                # Override the data of this layer with the
-                # modified data
-                data[index] = layer
+                # Add the new PrePend_Gcode to the end of the previous layer.
+                lines = data[index-1].split("\n")
+                data[index-1] = data[index-1].replace(lines[-3],lines[-3] + "\n" + prepend_gcode[0:-1],1)
+                
+                # Add the post processor name
+                data[0] += ";  Pause At Height (Layer: " + str(pause_layer) + ")" + "\n"
                 return data
         return data
