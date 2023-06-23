@@ -266,7 +266,7 @@ class MultiExtColorMix(Script):
         
         # If it is a single extruder printer or if only one extruder is enabled then exit with a message-----------
         if extruder_count == 1 or enabled_extruders < 2:
-            data[0] += ";  Multi-Extruder Color Mixer (did not run because - Single extruder printer or single extruder enabled)" + "\n"
+            data[0] += ";  Multi-Extruder Color Mixer did not run because - Single extruder printer or single extruder enabled" + "\n"
             Message(text = "Color Mixer: {}".format("The post processor exited: single extruder printer OR single extruder enabled.")).show()
             return data
             
@@ -275,7 +275,7 @@ class MultiExtColorMix(Script):
         shared_nozzle = bool(MyCura.getProperty("machine_extruders_share_nozzle", "value"))
         if not shared_heater and not shared_nozzle:
             Message(text = "Color Mixer: {}".format("This post is for machines with 'Shared Heaters' and 'Shared Nozzles'.  Separate hot ends won't work.  Those settings are NOT enabled in Cura.  The Post Process will exit.")).show()
-            data[0] += ";  Multi-Extruder Color Mixer (did not run because - 'Shared Heaters' and/or 'Shared Nozzles' are diabled in Cura.)" + "\n"
+            data[0] += ";  Multi-Extruder Color Mixer did not run because - 'Shared Heaters' and/or 'Shared Nozzles' are diabled in Cura." + "\n"
             return data
             
         # Set variables---------------------------------------------------------------------
@@ -341,7 +341,7 @@ class MultiExtColorMix(Script):
         if total_start_percent != 100 or total_end_percent != 100:
             textstring = "The post processor exited due to a 'Total Percentage' error. Start Total Percent = " + str(total_start_percent) + " EndTotalPercent = " + str(total_end_percent) + " Both sums must equal 100"
             Message(text = "Color Mixer: {}".format(textstring)).show()
-            data[0] += ";  Multi-Extruder Color Mixer (did not run because - Start Total Percent = " + str(total_start_percent) + " EndTotalPercent = " + str(total_end_percent) + " Both sums must equal 100)\n"
+            data[0] += ";  Multi-Extruder Color Mixer did not run because - Start Total Percent = " + str(total_start_percent) + " EndTotalPercent = " + str(total_end_percent) + " Both sums must equal 100\n"
             return data
         
         # Put together the Reset String-----------------------------------------------------------
@@ -447,9 +447,7 @@ class MultiExtColorMix(Script):
                                 break
                         except:
                             all
-                    if layer_num == end_layer: break        
-        # Add the post processor name to the gcode-----------------------------------------------------------------
-        data[0] += ";  Multi-Extruder Color Mixer (from ;LAYER:" + str(start_layer) + " to ;LAYER:" + str(end_layer) + "\n"
+                    if layer_num == end_layer: break    
         # Add a reset if there isn't already one in place----------------------------------------------------------
         if not reset_present:
             data[len(data)-1] = M163_reset + "T" + str(resume_extruder) + "\n" + data[len(data)-1]
