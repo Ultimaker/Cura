@@ -93,6 +93,11 @@ class PostProcessingPlugin(QObject, Extension):
                     Logger.logException("e", "Exception in post-processing script.")
             if len(self._script_list):  # Add comment to g-code if any changes were made.
                 gcode_list[0] += ";POSTPROCESSED\n"
+            # Add all the active post processor names to data[0]
+                pp_name_list = Application.getInstance().getGlobalContainerStack().getMetaDataEntry("post_processing_scripts")
+                for pp_name in pp_name_list.split("\n"):
+                    pp_name = pp_name.split("]")
+                    gcode_list[0] += ";  " + str(pp_name[0]) + "]\n"
             gcode_dict[active_build_plate_id] = gcode_list
             setattr(scene, "gcode_dict", gcode_dict)
         else:
