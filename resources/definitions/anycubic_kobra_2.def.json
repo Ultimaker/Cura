@@ -238,7 +238,7 @@
         "machine_max_jerk_z": { "value": 2 },
         "machine_name": { "value": "Anycubic Kobra 2" },
         "machine_nozzle_size": { "value": 0.4 },
-        "machine_start_gcode": { "value": "G28 ;Home\nG1 Z15.0 F1200 ;Move the platform down 15mm\n;Prime the extruder\nG92 E0\nG1 F200 E3\nG92 E0G90 ; use absolute coordinates\nM83 ; extruder relative mode\n;M104 S[first_layer_temperature] ; set extruder temp\n;M140 S[first_layer_bed_temperature] ; set bed temp\n;M190 S[first_layer_bed_temperature] ; wait for bed temp\n;M109 S[first_layer_temperature] ; wait for extruder temp\n;G28                                        ; move X/Y/Z to min endstops\nG1 Z0.28                                   ; lift nozzle a bit \nG92 E0 \nG1 Y3 F1800                             ; zero the extruded length \nG1 X60  E25 F500                       ; Extrude 25mm of filament in a 5cm line. \nG92 E0                                     ; zero the extruded length again \nG1 E-2 F500                                ; Retract a little \nG1 X70 F4000                              ; Quickly wipe away from the filament line\nM117" },
+        "machine_start_gcode": { "value": "G28 ;Home\nG1 Z15.0 F1200 ;Move the platform down 15mm\n;Prime the extruder\nG92 E0\nG1 F200 E3\nG92 E0G90 ; use absolute coordinates\nM83 ; extruder relative mode\n;G28          ; move X/Y/Z to min endstops\nG1 Z0.28      ; lift nozzle a bit \nG92 E0 \nG1 Y3 F1800   ; zero the extruded length \nG1 X60  E25 F500; Extrude 25mm of filament in a 5cm line. \nG92 E0          ; zero the extruded length again \nG1 E-2 F500     ; Retract a little \nG1 X70 F4000    ; Quickly wipe away from the filament line\nM117" },
         "machine_width": { "value": 230 },
         "material_diameter": { "value": 1.75 },
         "retract_at_layer_change": { "value": true },
@@ -356,6 +356,7 @@
             "maximum_value_warning": "200",
             "value": 150
         },
+        "speed_z_hop": { "value": 8 },
         "travel_avoid_supports": { "value": true }
     }
 }
