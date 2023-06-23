@@ -71,6 +71,7 @@
         "prime_tower_wipe_enabled": { "default_value": false },
         "raft_airgap": { "default_value": 0.2 },
         "raft_margin": { "default_value": 2 },
+        "retraction_amount": { "default_value": 1 },
         "retraction_combing": { "value": "'off' if retraction_hop_enabled else 'noskin'" },
         "retraction_count_max": { "value": 100 },
         "retraction_extrusion_window": { "value": 4 },
@@ -79,16 +80,19 @@
         "retraction_hop_enabled": { "value": "False" },
         "retraction_prime_speed":
         {
+            "default_value": 45,
             "maximum_value": 200,
             "maximum_value_warning": "machine_max_feedrate_e if retraction_enable else float('inf')"
         },
         "retraction_retract_speed":
         {
+            "default_value": 45,
             "maximum_value": 200,
             "maximum_value_warning": "machine_max_feedrate_e if retraction_enable else float('inf')"
         },
         "retraction_speed":
         {
+            "default_value": 45,
             "maximum_value": 200,
             "maximum_value_warning": "machine_max_feedrate_e if retraction_enable else float('inf')"
         },
