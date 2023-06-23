@@ -10,122 +10,86 @@
             "0": "anycubic_kobra_2_direct_0"
         },
         "manufacturer": "Anycubic",
+        "platform": "anycubic_kobra_2_platform.stl",
         "preferred_material": "generic_pla",
         "preferred_quality_type": "pla",
         "quality_definition": "anycubic_kobra_2",
-        "visible": true,
-		"platform": "anycubic_kobra_2_platform.stl"
+        "visible": true
     },
     "name": "Anycubic Kobra 2",
-	
     "overrides": {
         "acceleration_infill": {
-            "default_value": 3000,
-            "maximum_value_warning": "2500",
-            "minimum_value": "0.1",
-            "minimum_value_warning": "100"
+            "maximum_value_warning": "2500"
         },
         "acceleration_layer_0": {
             "default_value": 2000,
-            "maximum_value_warning": "2500",
-            "minimum_value": "0.1",
-            "minimum_value_warning": "100"
+            "maximum_value_warning": "2500"
         },
         "acceleration_prime_tower": {
             "default_value": 2500,
-            "maximum_value_warning": "2500",
-            "minimum_value": "0.1",
-            "minimum_value_warning": "100"
+            "maximum_value_warning": "2500"
         },
         "acceleration_print": {
             "default_value": 2500,
             "maximum_value_warning": "2500",
-            "minimum_value": "0.1",
             "minimum_value_warning": "100"
         },
         "acceleration_print_layer_0": {
             "default_value": 2000,
-            "maximum_value_warning": "2500",
-            "minimum_value": "0.1",
-            "minimum_value_warning": "100"
+            "maximum_value_warning": "2500"
         },
         "acceleration_roofing": {
             "default_value": 2500,
-            "maximum_value_warning": "2500",
-            "minimum_value": "0.1",
-            "minimum_value_warning": "100"
+            "maximum_value_warning": "2500"
         },
         "acceleration_skirt_brim": {
             "default_value": 2000,
             "maximum_value_warning": "2500",
-            "minimum_value": "0.1",
             "minimum_value_warning": "100"
         },
         "acceleration_support": {
             "default_value": 2500,
-            "maximum_value_warning": "2500",
-            "minimum_value": "0.1",
-            "minimum_value_warning": "100"
+            "maximum_value_warning": "2500"
         },
         "acceleration_support_bottom": {
             "default_value": 2000,
-            "maximum_value_warning": "2500",
-            "minimum_value": "0.1",
-            "minimum_value_warning": "100"
+            "maximum_value_warning": "2500"
         },
         "acceleration_support_infill": {
             "default_value": 2500,
-            "maximum_value_warning": "2500",
-            "minimum_value": "0.1",
-            "minimum_value_warning": "100"
+            "maximum_value_warning": "2500"
         },
         "acceleration_support_interface": {
             "default_value": 2500,
-            "maximum_value_warning": "2500",
-            "minimum_value": "0.1",
-            "minimum_value_warning": "100"
+            "maximum_value_warning": "2500"
         },
         "acceleration_support_roof": {
             "default_value": 2500,
-            "maximum_value_warning": "2500",
-            "minimum_value": "0.1",
-            "minimum_value_warning": "100"
+            "maximum_value_warning": "2500"
         },
         "acceleration_topbottom": {
             "default_value": 2500,
-            "maximum_value_warning": "2500",
-            "minimum_value": "0.1",
-            "minimum_value_warning": "100"
+            "maximum_value_warning": "2500"
         },
         "acceleration_travel": {
             "default_value": 3000,
-            "maximum_value_warning": "2500",
-            "minimum_value": "0.1",
-            "minimum_value_warning": "100"
+            "maximum_value_warning": "2500"
         },
         "acceleration_travel_layer_0": {
             "default_value": 2000,
-            "maximum_value_warning": "2500",
-            "minimum_value": "0.1",
-            "minimum_value_warning": "100"
+            "maximum_value_warning": "2500"
         },
         "acceleration_wall": {
             "default_value": 2500,
-            "maximum_value_warning": "2500",
-            "minimum_value": "0.1",
-            "minimum_value_warning": "100"
+            "maximum_value_warning": "2500"
         },
         "acceleration_wall_0": {
             "default_value": 2000,
-            "maximum_value_warning": "2500",
-            "minimum_value": "0.1",
-            "minimum_value_warning": "100"
+            "maximum_value_warning": "2500"
         },
         "acceleration_wall_x": {
             "default_value": 2500,
-            "maximum_value_warning": "2500",
-            "minimum_value": "0.1",
-            "minimum_value_warning": "100"
+            "maximum_value_warning": "2500"
         },
         "gantry_height": {
             "value": "55"
@@ -221,7 +185,6 @@
             "minimum_value": "0"
         },
         "layer_height": {
-            "default_value": 0.1,
             "maximum_value_warning": "0.28",
             "minimum_value": "0.04",
             "minimum_value_warning": "0.04"
