@@ -172,7 +172,6 @@ class SearchAndReplace(Script):
                         replaceone = True
                         break
                 if replaceone: break
-            data[0] += ";  Search and Replace (Search: " + str(self.getSettingValueByKey("search")) + " | Replace: " + str(self.getSettingValueByKey("replace")) + ")\n"
             return data
             
     #Do all the replacements---------------------------------------------------------------------------------------
@@ -186,8 +185,5 @@ class SearchAndReplace(Script):
         elif end_index == start_index:
             layer = data[start_index]
             data[start_index] = re.sub(search_regex, replace_string, layer)
-        
-#Add the post-processor name and settings to the gcode----------------------------------------------------
-        data[0] += ";  Search and Replace (Search: " + str(self.getSettingValueByKey("search")) + " | Replace: " + str(self.getSettingValueByKey("replace")) + ")\n"        
         return data
         

@@ -159,13 +159,22 @@ class TimeLapse(Script):
                         last_y = self.getValue(line, "Y", last_y)
                         last_z = self.getValue(line, "Z", last_z)
                 #Track the E location so that if there is already a retraction we don't double dip.        
-                        if " E" in line:
-                            last_e = line.split("E")[1]
-                            if float(last_e) < float(prev_e):
-                                is_retracted = True
-                            else:
-                                is_retracted = False
-                            prev_e = last_e
+                        if rel_cmd == 82:
+                            if " E" in line:
+                                last_e = line.split("E")[1]
+                                if float(last_e) < float(prev_e):
+                                    is_retracted = True
+                                else:
+                                    is_retracted = False
+                                prev_e = last_e
+                        elif rel_cmd == 83:
+                            if " E" in line:
+                                last_e = line.split("E")[1]
+                                if float(last_e) < 0:
+                                    is_retracted = True
+                                else:
+                                    is_retracted = False
+                                prev_e = last_e
                 lines = layer.split("\n")
                 # Insert the code----------------------------------------------------
                 for line in lines:
@@ -190,6 +199,4 @@ class TimeLapse(Script):
                         break
             except:
                 all
-        # Add the post processor name to the gcode----------------------------------
-        data[0] += ";  Time Lapse (" + when_to_insert + ")\n"
         return data

@@ -117,9 +117,6 @@ class InsertAtLayerChange(Script):
         if when_to_insert == "once_only":
             the_search_layer = int(self.getSettingValueByKey("single_end_layer"))-1
 
-#Add the post processor name to the gcode file
-        data[0] += ";  Insert at Layer Change (Insert; " + str(mycode) + "  Insert Frequency; " + when_to_insert + " layer)" + "\n"
-
 #Single insertion
         index = 0
         if when_to_insert == "once_only":
