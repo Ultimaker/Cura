@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-15 13:37+0000\n"
+"POT-Creation-Date: 2023-06-22 14:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -498,7 +498,7 @@ msgstr "ユニット値がミリメートルではなくメートルの場合、
 
 msgctxt "@label"
 msgid "Annealing"
-msgstr ""
+msgstr "アニーリング"
 
 msgctxt "@label"
 msgid "Anonymous"
@@ -1445,7 +1445,7 @@ msgstr "熱溶解積層型3Dプリンティングのエンドtoエンドソリ�
 
 msgctxt "@label"
 msgid "Engineering"
-msgstr ""
+msgstr "エンジニアリング"
 
 msgctxt "@option:check"
 msgid "Ensure models are kept apart"
@@ -2414,7 +2414,7 @@ msgstr "材料プロファイルがインストールされていません"
 
 msgctxt "@title:header"
 msgid "Material profiles successfully synced with the following printers:"
-msgstr ""
+msgstr "材料プロファイルが以下のプリンターと正常に同期されました："
 
 msgctxt "@action:label"
 msgid "Material settings"
@@ -3829,7 +3829,7 @@ msgstr "プロジェクトファイルを保存時にサマリーを表示する
 
 msgctxt "@info:tooltip"
 msgid "Should an automatic check for new plugins be done every time Cura is started? It is highly recommended that you do not disable this!"
-msgstr ""
+msgstr "Curaを起動するたびに新しいプラグインを自動的にチェックしますか？これは無効にしないことを強くお勧めします。"
 
 msgctxt "@info:tooltip"
 msgid "Should anonymous data about your print be sent to UltiMaker? Note, no models, IP addresses or other personally identifiable information is sent or stored."
@@ -4220,7 +4220,7 @@ msgstr "画像に適応したスムージング量。"
 
 msgctxt "@text"
 msgid "The annealing profile requires post-processing in an oven after the print is finished. This profile retains the dimensional accuracy of the printed part after annealing and improves strength, stiffness, and thermal resistance."
-msgstr ""
+msgstr "アニーリングプロファイルを使用する場合、プリント終了後にオーブンでの後処理が必要となります。このプロファイルでは、アニーリング後もプリント部品の寸法精度が維持され、強度、剛性、耐熱性が向上します。"
 
 msgctxt "@label"
 msgid "The assigned printer, %1, requires the following configuration change:"
@@ -4310,11 +4310,11 @@ msgstr "次のパッケージが追加されます:"
 
 msgctxt "@label"
 msgid "The following printers in your account have been added in Cura:"
-msgstr ""
+msgstr "アカウント内の以下のプリンターがCuraに追加されました："
 
 msgctxt "@title:header"
 msgid "The following printers will receive the new material profiles:"
-msgstr ""
+msgstr "以下のプリンターが新しい材料プロファイルを受信します。"
 
 msgctxt "@info:tooltip"
 msgid "The following script is active:"
@@ -4988,7 +4988,7 @@ msgstr "Cura 5.2からCura 5.3のコンフィグレーションアップグレ�
 
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.3 to Cura 5.4."
-msgstr ""
+msgstr "Cura 5.3からCura 5.4へのコンフィグレーションアップグレート。"
 
 msgctxt "@action:button"
 msgid "Upload custom Firmware"
@@ -5120,7 +5120,7 @@ msgstr "5.2から5.3にバージョンアップグレート"
 
 msgctxt "name"
 msgid "Version Upgrade 5.3 to 5.4"
-msgstr ""
+msgstr "5.3から5.4にバージョンアップグレート"
 
 msgctxt "@button"
 msgid "View printers in Digital Factory"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-15 13:37+0000\n"
+"POT-Creation-Date: 2023-06-22 14:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -501,7 +501,7 @@ msgstr "Un modelo puede mostrarse demasiado pequeño si su unidad son metros en 
 
 msgctxt "@label"
 msgid "Annealing"
-msgstr ""
+msgstr "Recocido"
 
 msgctxt "@label"
 msgid "Anonymous"
@@ -4231,7 +4231,7 @@ msgstr "La cantidad de suavizado que se aplica a la imagen."
 
 msgctxt "@text"
 msgid "The annealing profile requires post-processing in an oven after the print is finished. This profile retains the dimensional accuracy of the printed part after annealing and improves strength, stiffness, and thermal resistance."
-msgstr ""
+msgstr "El perfil de recocido requiere posprocesamiento en un horno una vez finalizada la impresión. Este perfil conserva la precisión dimensional de la pieza impresa tras el recocido y mejora la solidez, la rigidez y la resistencia térmica."
 
 msgctxt "@label"
 msgid "The assigned printer, %1, requires the following configuration change:"
@@ -5005,7 +5005,7 @@ msgstr "Actualiza la configuración de Cura 5.2 a Cura 5.3."
 
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.3 to Cura 5.4."
-msgstr ""
+msgstr "Actualiza la configuración de Cura 5.3 a Cura 5.4."
 
 msgctxt "@action:button"
 msgid "Upload custom Firmware"
@@ -5137,7 +5137,7 @@ msgstr "Actualización de la versión 5.2 a la 5.3"
 
 msgctxt "name"
 msgid "Version Upgrade 5.3 to 5.4"
-msgstr ""
+msgstr "Actualización de la versión 5.3 a la 5.4"
 
 msgctxt "@button"
 msgid "View printers in Digital Factory"
