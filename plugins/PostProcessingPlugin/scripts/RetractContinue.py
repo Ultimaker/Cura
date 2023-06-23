@@ -121,6 +121,4 @@ class RetractContinue(Script):
 
             new_layer = "\n".join(lines)
             data[layer_number] = new_layer
-        # Add post processor name to the gcode---------------------------------------------------------
-        data[0] += ";  Retract Continue (ratio: " + str(extra_retraction_speed) + ")\n"
         return data
