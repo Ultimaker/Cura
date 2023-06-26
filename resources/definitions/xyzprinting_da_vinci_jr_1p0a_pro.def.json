@@ -8,7 +8,9 @@
         "author": "XYZprinting Software",
         "manufacturer": "XYZprinting",
         "file_formats": "text/x-gcode",
-        "exclude_materials": [ "structur3d_dap100silicone" ],
+        "exclude_materials": [
+            "structur3d_dap100silicone"
+        ],
         "has_machine_quality": true,
         "has_materials": true,
         "has_variants": true,
