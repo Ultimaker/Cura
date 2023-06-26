@@ -295,7 +295,8 @@ jobs:
                     
                     with open(summary_env, "w") as f:
                         f.write(content)
-                        f.writelines("# ${{ steps.filename.outputs.FULL_INSTALLER_FILENAME }} uses:\n")
+                        f.writelines("# ${{ steps.filename.outputs.FULL_INSTALLER_FILENAME }}\n")
+                        f.writelines("## Conan packages:\n")
                         for dep in sorted_deps:
                             f.writelines(f"`{dep}`\n")
 
@@ -312,7 +313,7 @@ jobs:
                     
                     with open(summary_env, "w") as f:
                         f.write(content)
-                        f.writelines("# ${{ steps.filename.outputs.FULL_INSTALLER_FILENAME }} installed Python modules:\n")
+                        f.writelines("## Python modules:\n")
                         for package in pkg_resources.working_set:
                             f.writelines(f"`{package.key}/{package.version}`\n")
 
