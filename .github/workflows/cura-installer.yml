@@ -302,6 +302,7 @@ jobs:
             -   name: Summarize the used Python modules
                 shell: python
                 run: |
+                    import os
                     import pkg_resources
                     summary_env = os.environ["GITHUB_STEP_SUMMARY"]
                     content = ""
