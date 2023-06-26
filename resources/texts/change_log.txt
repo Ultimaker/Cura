@@ -240,7 +240,7 @@ Restored and updated translations for 11 languages
 Online cloud printers are now grouped by type. You can slice with the ('abstract') printer type, and afterwards choose a specific printer to print with.
 
 * Support For 'Guest'-Type Accounts (In Digital Factory)
-Users with the ‘Guest’ role can prepare print jobs in Ultimaker Cura and send them to the printers via Digital Factory. These print jobs will not start until they are approved by a user with an 'Member' or 'Admin' role.
+Users with the ‘Guest’ role can prepare print jobs in BCN3D Stratos and send them to the printers via Digital Factory. These print jobs will not start until they are approved by a user with an 'Member' or 'Admin' role.
 
 * More Control Over Initial Layer Flow
 Three new settings: 'Initial Layer Outer Wall Flow', 'Initial Layer Inner Wall Flow', 'Initial Layer Bottom Flow', to better counteract the 'elephants foot' phenomenon.
@@ -388,19 +388,19 @@ Newly created project files will now store which packages they require from the 
 - Support is sometimes missing in detailed parts, where previous releases supported them properly.
 
 [5.0]
-<i><a href="https://youtu.be/kRj7pR4OkQA">Watch the launch event</a> to learn more about Ultimaker Cura 5.0.</i>
+<i><a href="https://youtu.be/kRj7pR4OkQA">Watch the launch event</a> to learn more about BCN3D Stratos 5.0.</i>
 
 * New slicing engine
-Following special beta releases to test the Arachne engine, we are pleased to announce our new slicing engine is here in Ultimaker Cura! This all-new engine uses variable line widths when preparing files for printing, meaning you can now print thin and intricate parts more accurately and with greater strength. 
+Following special beta releases to test the Arachne engine, we are pleased to announce our new slicing engine is here in BCN3D Stratos! This all-new engine uses variable line widths when preparing files for printing, meaning you can now print thin and intricate parts more accurately and with greater strength. 
 
-* Renewed the Ultimaker Cura Marketplace
-We have streamlined the workflow for accessing the Ultimaker Marketplace inside of Ultimaker Cura. The UI has been improved and it’s now easier and faster to find and install plugins and material profiles.
+* Renewed the BCN3D Stratos Marketplace
+We have streamlined the workflow for accessing the Ultimaker Marketplace inside of BCN3D Stratos. The UI has been improved and it’s now easier and faster to find and install plugins and material profiles.
 
 * Improved print profiles for Ultimaker printers
-The new slicing engine in Ultimaker Cura 5.0 has helped us to improve our print profiles. This means that users of Ultimaker printers can achieve speed increases of up to 20%.
+The new slicing engine in BCN3D Stratos 5.0 has helped us to improve our print profiles. This means that users of Ultimaker printers can achieve speed increases of up to 20%.
 
 * Upgrade from Qt5 to Qt6
-Ultimaker Cura 5.0 is now compatible with Apple M1.
+BCN3D Stratos 5.0 is now compatible with Apple M1.
 
 * Other new features and improvements:
 - New Cura icon
@@ -486,7 +486,7 @@ Ultimaker Cura 5.0 is now compatible with Apple M1.
 - Updated the Czech translation, contributed by sustmi
 - Updated some of the Simplified Chinese translation, contributed by iBral
 
-<i>From version 5.0 onwards - Ultimaker Cura is only supported on operating systems actively maintained by their software manufacturer or community. This means Windows 7 and MacOS 10.14 will no longer be supported. 
+<i>From version 5.0 onwards - BCN3D Stratos is only supported on operating systems actively maintained by their software manufacturer or community. This means Windows 7 and MacOS 10.14 will no longer be supported. 
 Ubuntu 18.04 is also no longer supported because of the update to Qt6.</i>
 
 [4.13.1]
@@ -498,7 +498,7 @@ Ubuntu 18.04 is also no longer supported because of the update to Qt6.</i>
 <i>For an overview of the new features in Cura 4.13, please watch <a href="https://youtu.be/chvAuI6Eqto">our video</a>.</i>
 
 * Sync material profiles 
-With Ultimaker Cura 4.13, we give you access to a seamless material experience for Ultimaker Material Alliance materials – with the ease of use you’ve come to expect from Ultimaker materials. You can easily synchronize your Material Alliance profiles with your S-line Ultimaker hardware, at the click of a button. 
+With BCN3D Stratos 4.13, we give you access to a seamless material experience for Ultimaker Material Alliance materials – with the ease of use you’ve come to expect from Ultimaker materials. You can easily synchronize your Material Alliance profiles with your S-line Ultimaker hardware, at the click of a button. 
 
 * New print profile
 A new print profile with 0.3mm layer height for PLA Tough PLA, PVA and BAM for Ultimaker S-line printers
@@ -579,7 +579,7 @@ Resulting in reduction of ringing, improving resolution and overall print qualit
 The new switcher provides a simpler way to navigate and use other Ultimaker applications, including Ultimaker Digital Factory, Ultimaker Marketplace, and Ultimaker 3D Printing Academy. Reporting bugs to Github is now just one click away, and it’s easier to find the application you need.
 
 * Faster start-up
-We've shaved 10 seconds from Ultimaker Cura's start-up time by optimizing profile data caching.
+We've shaved 10 seconds from BCN3D Stratos's start-up time by optimizing profile data caching.
 
 * Other new features:
 - Moved the skip button to the left bottom on the sign in onboarding page and replaced with the sign in button and Create new account
@@ -636,7 +636,7 @@ We've shaved 10 seconds from Ultimaker Cura's start-up time by optimizing profil
 The new Monotonic top/bottom order setting enables users to print parts with smoother top surfaces. This is especially useful for parts that need good aesthetics, such as visual prototypes. Or for parts that benefit from smooth surfaces, such as those that contact-sensitive components. 
 
 * Complete UI refresh
-Look around and you will notice that we have refreshed over 100 icons throughout Ultimaker Cura. The new icons are designed for clarity – resulting in a simpler and more informative slicing experience. Also, when scaling the Ultimaker Cura window, the UI will adapt, resulting in less visual clutter.
+Look around and you will notice that we have refreshed over 100 icons throughout BCN3D Stratos. The new icons are designed for clarity – resulting in a simpler and more informative slicing experience. Also, when scaling the BCN3D Stratos window, the UI will adapt, resulting in less visual clutter.
 
 * Improved digital library integration
 Collaborative workflows using the Digital Library are now simpler. Every user with a cloud-connected Ultimaker 3D printer can access stored projects. And we have added a “Search” function to make finding files easier.
@@ -645,7 +645,7 @@ Collaborative workflows using the Digital Library are now simpler. Every user wi
 Users can now save all third-party material profiles to USB. <i>This feature is for Ultimaker S-line printers only and is especially useful for cloud-connected (or offline) printers.</i>
 
 * Notifications for beta and plugin releases
-Users can now set notification preferences to alert them to new Ultimaker Cura beta and plug-in releases.
+Users can now set notification preferences to alert them to new BCN3D Stratos beta and plug-in releases.
 
 * Improve logging of errors in OAuth flow
 When helping a user with log-in problems it is easier to see where the OAuth flow goes wrong.
@@ -689,7 +689,7 @@ When searching in the settings visibility menu you will also search in the descr
 - Added Farm 2 and Farm2CE printer definitions, contributed by saliery999
 - Added GooFoo and Renkforce print definitions and GooFoo materials, contributed by goofoo3d
 
-*<i>From version 4.11 onwards - Ultimaker Cura is only supported on operating systems actively maintained by their software manufacturer or community. This means Windows 7 and MacOS 10.13 will no longer be supported. Technically this means Ultimaker will stop testing and developing for such operating systems. However, even though it is no longer supported, there is still a high likelihood the application keeps functioning.</i>
+*<i>From version 4.11 onwards - BCN3D Stratos is only supported on operating systems actively maintained by their software manufacturer or community. This means Windows 7 and MacOS 10.13 will no longer be supported. Technically this means Ultimaker will stop testing and developing for such operating systems. However, even though it is no longer supported, there is still a high likelihood the application keeps functioning.</i>
 
 
 [4.10]
