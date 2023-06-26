@@ -52,7 +52,7 @@ Popup
                 {
                     displayName: "UltiMaker Marketplace", //Not translated, since it's a brand name.
                     thumbnail: UM.Theme.getIcon("Shop", "high"),
-                    description: catalog.i18nc("@tooltip:button", "Extend UltiMaker Cura with plugins and material profiles."),
+                    description: catalog.i18nc("@tooltip:button", "Extend BCN3D Stratos with plugins and material profiles."),
                     link: "https://marketplace.ultimaker.com/?utm_source=cura&utm_medium=software&utm_campaign=switcher-marketplace-materials",
                     permissionsRequired: []
                 },
@@ -66,7 +66,7 @@ Popup
                 {
                     displayName: catalog.i18nc("@label:button", "UltiMaker support"),
                     thumbnail: UM.Theme.getIcon("Help", "high"),
-                    description: catalog.i18nc("@tooltip:button", "Learn how to get started with UltiMaker Cura."),
+                    description: catalog.i18nc("@tooltip:button", "Learn how to get started with BCN3D Stratos."),
                     link: "https://support.ultimaker.com/?utm_source=cura&utm_medium=software&utm_campaign=switcher-support",
                     permissionsRequired: []
                 },
