@@ -299,6 +299,22 @@ jobs:
                         for dep in sorted_deps:
                             f.writelines(f"`{dep}`\n")
 
+            -   name: Summarize the used Python modules
+                shell: python
+                run: |
+                    import pkg_resources
+                    summary_env = os.environ["GITHUB_STEP_SUMMARY"]
+                    content = ""
+                    if os.path.exists(summary_env):
+                        with open(summary_env, "r") as f:
+                            content = f.read()
+                    
+                    with open(summary_env, "w") as f:
+                        f.write(content)
+                        f.writelines("# ${{ steps.filename.outputs.FULL_INSTALLER_FILENAME }} installed Python modules:\n")
+                        for package in pkg_resources.working_set:
+                            f.writelines(f"`{package.key}/{package.version}`\n")
+
             -   name: Archive the artifacts (bash)
                 if: ${{ !inputs.installer && runner.os != 'Windows' }}
                 run: tar -zcf "./${{ steps.filename.outputs.INSTALLER_FILENAME }}.tar.gz" "./UltiMaker-Cura/"
