@@ -4,29 +4,25 @@
     "inherits": "fdmprinter",
     "metadata":
     {
-      "visible": false,
-      "author": "3D-Nexus.com, cataclism, Wondro",
-      "manufacturer": "Artillery",
-      "file_formats": "text/x-gcode",
-      "exclude_materials": [
-        "dsm_arnitel2045_175",
-        "dsm_novamid1070_175",
-        "innofill_innoflex60_175",
-        "verbatim_bvoh_175"
-      ],
-      "first_start_actions": [
-        "MachineSettingsAction"
-      ],
-      "has_machine_quality": true,
-      "has_materials": true,
-      "has_variants": true,
-      "machine_extruder_trains": {
-        "0": "artillery_base_extruder_0"
-      },
-      "preferred_material": "generic_pla",
-      "preferred_quality_type": "standard",
-      "preferred_variant_name": "0.4mm Nozzle",
-      "variants_name": "Nozzle Size"
+        "visible": false,
+        "author": "3D-Nexus.com, cataclism, Wondro",
+        "manufacturer": "Artillery",
+        "file_formats": "text/x-gcode",
+        "exclude_materials": [
+            "dsm_arnitel2045_175",
+            "dsm_novamid1070_175",
+            "innofill_innoflex60_175",
+            "verbatim_bvoh_175"
+        ],
+        "first_start_actions": [ "MachineSettingsAction" ],
+        "has_machine_quality": true,
+        "has_materials": true,
+        "has_variants": true,
+        "machine_extruder_trains": { "0": "artillery_base_extruder_0" },
+        "preferred_material": "generic_pla",
+        "preferred_quality_type": "standard",
+        "preferred_variant_name": "0.4mm Nozzle",
+        "variants_name": "Nozzle Size"
     },
     "overrides":
     {

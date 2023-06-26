@@ -27,9 +27,7 @@
         "has_machine_quality": true,
         "has_materials": true,
         "has_variants": true,
-        "machine_extruder_trains": {
-            "0": "tizyx_k25_extruder_0"
-        },
+        "machine_extruder_trains": { "0": "tizyx_k25_extruder_0" },
         "platform_offset": [
             0,
             -4,

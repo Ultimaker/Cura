@@ -4,28 +4,29 @@
     "inherits": "fdmprinter",
     "metadata":
     {
-      "visible": false,
-      "author": "ATMAT",
-      "manufacturer": "ATMAT sp. z o.o.",
-      "file_formats": "text/x-gcode",
-      "exclude_materials": [
-        "dsm_arnitel2045",
-        "dsm_novamid1070",
-        "generic_cpe",
-        "imade3d_petg",
-        "imade3d_pla",
-        "innofill_innoflex60",
-        "verbatim_bvoh"
-      ],
-      "has_machine_quality": true,
-      "has_materials": true,
-      "has_variants": true,
-      "machine_extruder_trains": {
-        "0": "atmat_signal_pro_extruder_left",
-        "1": "atmat_signal_pro_extruder_right"
-      },
-      "preferred_material": "generic_pla_175",
-      "preferred_quality_type": "fast",
+        "visible": false,
+        "author": "ATMAT",
+        "manufacturer": "ATMAT sp. z o.o.",
+        "file_formats": "text/x-gcode",
+        "exclude_materials": [
+            "dsm_arnitel2045",
+            "dsm_novamid1070",
+            "generic_cpe",
+            "imade3d_petg",
+            "imade3d_pla",
+            "innofill_innoflex60",
+            "verbatim_bvoh"
+        ],
+        "has_machine_quality": true,
+        "has_materials": true,
+        "has_variants": true,
+        "machine_extruder_trains":
+        {
+            "0": "atmat_signal_pro_extruder_left",
+            "1": "atmat_signal_pro_extruder_right"
+        },
+        "preferred_material": "generic_pla_175",
+        "preferred_quality_type": "fast",
         "preferred_variant_name": "V6 0.40mm",
         "supports_network_connection": false,
         "supports_usb_connection": false,

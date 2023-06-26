@@ -26,9 +26,7 @@
         "has_machine_quality": true,
         "has_materials": true,
         "has_variants": false,
-        "machine_extruder_trains": {
-            "0": "alya3dp_extruder_0"
-        },
+        "machine_extruder_trains": { "0": "alya3dp_extruder_0" },
         "platform_offset": [
             -60,
             -45,
