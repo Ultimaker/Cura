@@ -4,20 +4,35 @@
     "inherits": "fdmprinter",
     "metadata":
     {
-        "visible": true,
-        "author": "Kupido",
-        "manufacturer": "Kati Hal ARGE",
-        "file_formats": "text/x-gcode",
-        "has_machine_quality": true,
-        "has_materials": true,
-        "has_variants": false,
-        "machine_extruder_trains": { "0": "kupido_extruder_0" },
-        "platform_offset": [
-            0,
-            0,
-            0
-        ],
-        "preferred_material": "generic_pla",
+      "visible": true,
+      "author": "Kupido",
+      "manufacturer": "Kati Hal ARGE",
+      "file_formats": "text/x-gcode",
+      "exclude_materials": [
+        "dsm_arnitel2045",
+        "dsm_novamid1070",
+        "generic_cpe",
+        "generic_hips",
+        "generic_nylon",
+        "generic_pc",
+        "generic_petg",
+        "generic_pva",
+        "generic_tpu",
+        "innofill_innoflex60",
+        "verbatim_bvoh"
+      ],
+      "has_machine_quality": true,
+      "has_materials": true,
+      "has_variants": false,
+      "machine_extruder_trains": {
+        "0": "kupido_extruder_0"
+      },
+      "platform_offset": [
+        0,
+        0,
+        0
+      ],
+      "preferred_material": "generic_pla",
         "supports_usb_connection": false
     },
     "overrides":

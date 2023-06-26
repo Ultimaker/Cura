@@ -4,21 +4,37 @@
     "inherits": "fdmprinter",
     "metadata":
     {
-        "visible": true,
-        "author": "Karan and Vincent 20191104",
-        "manufacturer": "Leapfrog B.V.",
-        "file_formats": "text/x-gcode",
-        "platform": "leapfrog_bolt_pro_platform.3mf",
-        "has_machine_quality": true,
-        "has_materials": true,
-        "has_variants": true,
-        "machine_extruder_trains":
-        {
-            "0": "leapfrog_bolt_pro_extruder_right",
-            "1": "leapfrog_bolt_pro_extruder_left"
-        },
-        "platform_offset": [
-            0,
+      "visible": true,
+      "author": "Karan and Vincent 20191104",
+      "manufacturer": "Leapfrog B.V.",
+      "file_formats": "text/x-gcode",
+      "platform": "leapfrog_bolt_pro_platform.3mf",
+      "exclude_materials": [
+        "generic_pla",
+        "generic_abs",
+        "generic_cpe",
+        "generic_hips",
+        "generic_nylon",
+        "generic_pc",
+        "generic_petg",
+        "generic_pva",
+        "generic_tpu",
+        "dsm_arnitel2045",
+        "dsm_novamid1070",
+        "imade3d_petg",
+        "imade3d_pla",
+        "innofill_innoflex60",
+        "verbatim_bvoh"
+      ],
+      "has_machine_quality": true,
+      "has_materials": true,
+      "has_variants": true,
+      "machine_extruder_trains": {
+        "0": "leapfrog_bolt_pro_extruder_right",
+        "1": "leapfrog_bolt_pro_extruder_left"
+      },
+      "platform_offset": [
+        0,
             0,
             -14
         ],

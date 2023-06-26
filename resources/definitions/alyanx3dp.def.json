@@ -9,10 +9,26 @@
         "manufacturer": "Kati Hal ARGE",
         "file_formats": "text/x-gcode",
         "platform": "alya_nx_platform.3mf",
+        "exclude_materials": [
+            "dsm_arnitel2045_175",
+            "dsm_novamid1070_175",
+            "generic_abs_175",
+            "generic_cpe_175",
+            "generic_hips_175",
+            "generic_nylon_175",
+            "generic_pc_175",
+            "generic_petg_175",
+            "generic_pva_175",
+            "generic_tpu_175",
+            "innofill_innoflex60_175",
+            "verbatim_bvoh_175"
+        ],
         "has_machine_quality": true,
         "has_materials": true,
         "has_variants": false,
-        "machine_extruder_trains": { "0": "alya3dp_extruder_0" },
+        "machine_extruder_trains": {
+            "0": "alya3dp_extruder_0"
+        },
         "platform_offset": [
             -104,
             0,

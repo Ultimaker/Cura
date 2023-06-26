@@ -4,21 +4,33 @@
     "inherits": "fdmprinter",
     "metadata":
     {
-        "visible": true,
-        "author": "Tizyx",
-        "manufacturer": "Tizyx",
-        "file_formats": "text/x-gcode",
-        "platform": "tizyx_k25_platform.3mf",
-        "first_start_actions": [ "MachineSettingsAction" ],
-        "has_machine_quality": true,
-        "has_materials": true,
-        "has_variants": true,
-        "machine_extruder_trains":
-        {
-            "0": "tizyx_evy_dual_extruder_0",
-            "1": "tizyx_evy_dual_extruder_1"
-        },
-        "platform_offset": [
+      "visible": true,
+      "author": "Tizyx",
+      "manufacturer": "Tizyx",
+      "file_formats": "text/x-gcode",
+      "platform": "tizyx_k25_platform.3mf",
+      "exclude_materials": [
+        "dsm_arnitel2045",
+        "dsm_novamid1070",
+        "generic_cpe",
+        "generic_hips",
+        "generic_nylon",
+        "generic_pc",
+        "generic_pva",
+        "innofill_innoflex60",
+        "verbatim_bvoh"
+      ],
+      "first_start_actions": [
+        "MachineSettingsAction"
+      ],
+      "has_machine_quality": true,
+      "has_materials": true,
+      "has_variants": true,
+      "machine_extruder_trains": {
+        "0": "tizyx_evy_dual_extruder_0",
+        "1": "tizyx_evy_dual_extruder_1"
+      },
+      "platform_offset": [
             0,
             -4,
             0
