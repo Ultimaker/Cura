@@ -236,13 +236,13 @@ msgstr ""
 
 msgctxt "@label crash message"
 msgid ""
-"<p><b>Oops, UltiMaker Cura has encountered something that doesn't seem right.</p></b>\n"
+"<p><b>Oops, BCN3D Stratos has encountered something that doesn't seem right.</p></b>\n"
 "                    <p>We encountered an unrecoverable error during start up. It was possibly caused by some incorrect configuration files. We suggest to backup and reset your configuration.</p>\n"
 "                    <p>Backups can be found in the configuration folder.</p>\n"
 "                    <p>Please send us this Crash Report to fix the problem.</p>\n"
 "                "
 msgstr ""
-"<p><b>申し訳ありません。UltiMaker Cura で何らかの不具合が生じています。</p></b>\n"
+"<p><b>申し訳ありません。BCN3D Stratos で何らかの不具合が生じています。</p></b>\n"
 "                    <p>開始時に回復不能のエラーが発生しました。不適切なファイル設定が原因の可能性があります。バックアップを実行してからリセットしてください。</p>\n"
 "                    <p>バックアップは、設定フォルダに保存されます。</p>\n"
 "                    <p>問題解決のために、このクラッシュ報告をお送りください。</p>\n"
@@ -1517,8 +1517,8 @@ msgid "Exported profile to <filename>{0}</filename>"
 msgstr "<filename>{0}</filename>にプロファイルを書き出しました"
 
 msgctxt "@tooltip:button"
-msgid "Extend UltiMaker Cura with plugins and material profiles."
-msgstr "UltiMaker Curaをプラグインと材料プロファイルで拡張します。"
+msgid "Extend BCN3D Stratos with plugins and material profiles."
+msgstr "BCN3D Stratosをプラグインと材料プロファイルで拡張します。"
 
 msgctxt "description"
 msgid "Extension that allows for user created scripts for post processing"
@@ -2157,8 +2157,8 @@ msgid "Learn how to connect your printer to Digital Factory"
 msgstr "Digital Factoryにプリンターを接続する方法について詳しく見る"
 
 msgctxt "@tooltip:button"
-msgid "Learn how to get started with UltiMaker Cura."
-msgstr "UltiMaker Curaの使用を開始する方法を確認します。"
+msgid "Learn how to get started with BCN3D Stratos."
+msgstr "BCN3D Stratosの使用を開始する方法を確認します。"
 
 msgctxt "@action"
 msgid "Learn more"
@@ -2349,8 +2349,8 @@ msgid "Manage printers"
 msgstr "プリンター管理"
 
 msgctxt "@text"
-msgid "Manage your UltiMaker Cura plugins and material profiles here. Make sure to keep your plugins up to date and backup your setup regularly."
-msgstr "UltiMaker Curaのプラグインと材料プロファイルはここで管理します。プラグインを常に最新の状態に保ち、セットアップのバックアップを定期的に取るようにしてください。"
+msgid "Manage your BCN3D Stratos plugins and material profiles here. Make sure to keep your plugins up to date and backup your setup regularly."
+msgstr "BCN3D Stratosのプラグインと材料プロファイルはここで管理します。プラグインを常に最新の状態に保ち、セットアップのバックアップを定期的に取るようにしてください。"
 
 msgctxt "description"
 msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
@@ -2969,8 +2969,8 @@ msgid "Please select any upgrades made to this UltiMaker Original"
 msgstr "このUltiMaker Originalに施されたアップグレートを選択する"
 
 msgctxt "@description"
-msgid "Please sign in to get verified plugins and materials for UltiMaker Cura Enterprise"
-msgstr "検証済みのUltiMaker Cura Enterprise用プラグインおよび材料を入手するにはサインインしてください。"
+msgid "Please sign in to get verified plugins and materials for BCN3D Stratos Enterprise"
+msgstr "検証済みのBCN3D Stratos Enterprise用プラグインおよび材料を入手するにはサインインしてください。"
 
 msgctxt "@action:button"
 msgid "Please sync the material profiles with your printers before starting to print."
@@ -3287,8 +3287,8 @@ msgstr "プロジェクトファイル<filename>{0}</filename>は破損してい
 
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
-msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura."
-msgstr "プロジェクトファイル<filename>{0}</filename>はこのバージョンのUltiMaker Curaでは認識できないプロファイルを使用して作成されています。"
+msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of BCN3D Stratos."
+msgstr "プロジェクトファイル<filename>{0}</filename>はこのバージョンのBCN3D Stratosでは認識できないプロファイルを使用して作成されています。"
 
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
@@ -3525,8 +3525,8 @@ msgid "Report a bug"
 msgstr "バグを報告"
 
 msgctxt "@message:description"
-msgid "Report a bug on UltiMaker Cura's issue tracker."
-msgstr "UltiMaker Curaの問題追跡ツールでバグを報告してください。"
+msgid "Report a bug on BCN3D Stratos's issue tracker."
+msgstr "BCN3D Stratosの問題追跡ツールでバグを報告してください。"
 
 msgctxt "@label:status"
 msgid "Requires configuration changes"
@@ -4082,8 +4082,8 @@ msgid "Starts"
 msgstr "開始"
 
 msgctxt "@text"
-msgid "Streamline your workflow and customize your UltiMaker Cura experience with plugins contributed by our amazing community of users."
-msgstr "素晴らしいユーザーコミュニティから提供されるプラグインを活用して、ワークフローを合理化し、UltiMaker Cura体験をカスタマイズすることができます。"
+msgid "Streamline your workflow and customize your BCN3D Stratos experience with plugins contributed by our amazing community of users."
+msgstr "素晴らしいユーザーコミュニティから提供されるプラグインを活用して、ワークフローを合理化し、BCN3D Stratos体験をカスタマイズすることができます。"
 
 msgctxt "@label"
 msgid "Strength"
@@ -4339,7 +4339,7 @@ msgstr "Curaプロジェクトに関連付けられている材料パッケー�
 
 msgctxt "@label"
 msgid "The material used in this project is currently not installed in Cura.<br/>Install the material profile and reopen the project."
-msgstr "このプロジェクトで使用される材料は現在、UltiMaker Curaにインストールされていません。<br/>材料プロファイルをインストールし、プロジェクトを再度開いてください。"
+msgstr "このプロジェクトで使用される材料は現在、BCN3D Stratosにインストールされていません。<br/>材料プロファイルをインストールし、プロジェクトを再度開いてください。"
 
 msgctxt "@info:status"
 msgid "The material used in this project relies on some material definitions not available in Cura, this might produce undesirable print results. We highly recommend installing the full material package from the Marketplace."
@@ -4695,8 +4695,8 @@ msgid "UltiMaker Certified Material"
 msgstr "UltiMaker認定材料"
 
 msgctxt "@text:window"
-msgid "UltiMaker Cura collects anonymous data in order to improve the print quality and user experience. Below is an example of all the data that is shared:"
-msgstr "UltiMaker Cura は、印刷品質とユーザーエクスペリエンスを向上させるために匿名データを収集します。以下は、共有されるすべてのデータの例です："
+msgid "BCN3D Stratos collects anonymous data in order to improve the print quality and user experience. Below is an example of all the data that is shared:"
+msgstr "BCN3D Stratos は、印刷品質とユーザーエクスペリエンスを向上させるために匿名データを収集します。以下は、共有されるすべてのデータの例です："
 
 msgctxt "@item:inlistbox"
 msgid "UltiMaker Format Package"
@@ -5188,8 +5188,8 @@ msgid "We have found one or more project file(s) within the files you have selec
 msgstr "選択したファイルの中に複数のプロジェクトが存在します。1ファイルのみ一度に開けます。ファイルからモデルを先に取り込むことをお勧めします。続けますか？"
 
 msgctxt "@info"
-msgid "Webcam feeds for cloud printers cannot be viewed from UltiMaker Cura. Click \"Manage printer\" to visit Ultimaker Digital Factory and view this webcam."
-msgstr "クラウドプリンターのウェブカムフィードをUltiMaker Curaから見ることができません。「プリンター管理」をクリックして、Ultimaker Digital Factoryにアクセスし、このウェブカムを見ます。"
+msgid "Webcam feeds for cloud printers cannot be viewed from BCN3D Stratos. Click \"Manage printer\" to visit Ultimaker Digital Factory and view this webcam."
+msgstr "クラウドプリンターのウェブカムフィードをBCN3D Stratosから見ることができません。「プリンター管理」をクリックして、Ultimaker Digital Factoryにアクセスし、このウェブカムを見ます。"
 
 msgctxt "@button"
 msgid "Website"
@@ -5357,7 +5357,7 @@ msgstr "設定は選択したプロファイルにマッチしています。"
 
 msgctxt "@info"
 msgid "Your new printer will automatically appear in Cura"
-msgstr "新しいプリンターがUltiMaker Curaに自動的に表示されます"
+msgstr "新しいプリンターがBCN3D Stratosに自動的に表示されます"
 
 #, python-brace-format
 msgctxt "@info:status"
