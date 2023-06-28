@@ -70,7 +70,7 @@ Window
                     left: parent.left
                     right: parent.right
                 }
-                text: catalog.i18nc("@text:window", "UltiMaker Cura collects anonymous data in order to improve the print quality and user experience. Below is an example of all the data that is shared:")
+                text: catalog.i18nc("@text:window", "BCN3D Stratos collects anonymous data in order to improve the print quality and user experience. Below is an example of all the data that is shared:")
                 wrapMode: Text.WordWrap
             }
 

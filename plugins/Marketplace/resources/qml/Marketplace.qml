@@ -297,7 +297,7 @@ Window
             id: signInLabel
             anchors.centerIn: parent
             width: Math.round(UM.Theme.getSize("modal_window_minimum").width / 2.5)
-            text: catalog.i18nc("@description","Please sign in to get verified plugins and materials for UltiMaker Cura Enterprise")
+            text: catalog.i18nc("@description","Please sign in to get verified plugins and materials for BCN3D Stratos Enterprise")
             horizontalAlignment: Text.AlignHCenter
         }
 

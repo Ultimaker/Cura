@@ -42,7 +42,7 @@ def generate_nsi(source_path: str, dist_path: str, filename: str):
 
 
     nsis_content = template.render(
-        app_name = f"UltiMaker Cura {os.getenv('CURA_VERSION_FULL')}",
+        app_name = f"BCN3D Stratos {os.getenv('CURA_VERSION_FULL')}",
         main_app = "UltiMaker-Cura.exe",
         version = os.getenv('CURA_VERSION_FULL'),
         version_major = os.environ.get("CURA_VERSION_MAJOR"),

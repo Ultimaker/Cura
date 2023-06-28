@@ -14,7 +14,7 @@ from printerlinter.formatters.inst_cfg_formatter import InstCfgFormatter
 
 def main() -> None:
     parser = ArgumentParser(
-        description="UltiMaker Cura printer linting, static analysis and formatting of Cura printer definitions and other resources")
+        description="BCN3D Stratos printer linting, static analysis and formatting of Cura printer definitions and other resources")
     parser.add_argument("--setting", required=False, type=Path, help="Path to the `.printer-linter` setting file")
     parser.add_argument("--report", required=False, type=Path, help="Path where the diagnostic report should be stored")
     parser.add_argument("--format", action="store_true", help="Format the files")

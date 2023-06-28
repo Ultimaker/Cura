@@ -1,0 +1,342 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Uranium json setting files\n"
+"Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
+"POT-Creation-Date: 2023-06-23 09:38+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+
+
+
+
+
+msgctxt "retraction_amount_multiplier label"
+msgid "Retraction Distance Multiplier"
+msgstr ""
+
+msgctxt "retraction_amount_multiplier description"
+msgid "Multiplier for the length of material retracted during a retraction move. This setting compensates filament compressions in the bowden tube for different bowden types/lengths."
+msgstr ""
+
+msgctxt "avoid_grinding_filament label"
+msgid "Prevent Filament Grinding"
+msgstr ""
+
+msgctxt "avoid_grinding_filament description"
+msgid "When retracting repeatedly, this option moves the hotend to the purge tray and primes the needed amount of filament to allow working on a new piece of it. Disabling this feature can flatten the filament and cause grinding issues."
+msgstr ""
+
+msgctxt "retraction_count_max_avoid_grinding_filament label"
+msgid "Maximum Retraction Count"
+msgstr ""
+
+msgctxt "retraction_count_max_avoid_grinding_filament description"
+msgid "Number of retractions occurring within the retraction distance. When the number of retractions is reached, active extruder will park, prime and come back."
+msgstr ""
+
+msgctxt "retraction_hop_after_prime_tower label"
+msgid "Z Hop After Prime Tower"
+msgstr ""
+
+msgctxt "retraction_hop_after_prime_tower description"
+msgid "After priming in the tower, the build plate is lowered to create clearance between the nozzle and the print. This prevents the nozzle from leaving oozed material on the outside of a print."
+msgstr ""
+
+msgctxt "hop_at_layer_change label"
+msgid "Z Hop At Layer Change"
+msgstr ""
+
+msgctxt "hop_at_layer_change description"
+msgid "Perform a Z Hop when the nozzle is moving to the next layer."
+msgstr ""
+
+msgctxt "retraction_hop_height_at_layer_change label"
+msgid "Z Hop Height At Layer Change"
+msgstr ""
+
+msgctxt "retraction_hop_height_at_layer_change description"
+msgid "Distance to lift Z when the nozzle is moving to the next layer."
+msgstr ""
+
+msgctxt "retraction_hop_after_extruder_switch label"
+msgid "Z Hop After Extruder Switch"
+msgstr ""
+
+msgctxt "retraction_hop_after_extruder_switch description"
+msgid "After the machine switched from one extruder to the other, the build plate is lowered to create clearance between the nozzle and the print. This prevents the nozzle from leaving oozed material on the outside of a print."
+msgstr ""
+
+msgctxt "retraction_hop_height_after_extruder_switch label"
+msgid "Z Hop Height After Extruder Switch"
+msgstr ""
+
+msgctxt "retraction_hop_height_after_extruder_switch description"
+msgid "Distance to lift Z when changing toolheads."
+msgstr ""
+
+msgctxt "clone_cool_fan label"
+msgid "Clone Print Cooling"
+msgstr ""
+
+msgctxt "clone_cool_fan description"
+msgid "Enables cooling fan for the idle extruder. This setting allows better temperature control for dual extruder prints."
+msgstr ""
+
+msgctxt "clone_cool_fan_gcode label"
+msgid "Clone Print GCode"
+msgstr ""
+
+msgctxt "clone_cool_fan_gcode description"
+msgid "GCode to enable cooling fan for the idle extruder."
+msgstr ""
+
+msgctxt "clone_cool_fan_gcode option "
+msgid "No"
+msgstr ""
+
+msgctxt "clone_cool_fan_gcode option M108 P1      ;enable layer fan for the idle extruder"
+msgid "Yes"
+msgstr ""
+
+msgctxt "start_purge_distance label"
+msgid "Start Purge Distance"
+msgstr ""
+
+msgctxt "start_purge_distance description"
+msgid "Filament distance purged before extruder starts printing."
+msgstr ""
+
+msgctxt "start_purge_speed label"
+msgid "Start Purge Speed"
+msgstr ""
+
+msgctxt "start_purge_speed description"
+msgid "The speed at which the filament is pushed by the extruder when purging in the purge tray."
+msgstr ""
+
+msgctxt "print_mode label"
+msgid "Print Mode"
+msgstr ""
+
+msgctxt "print_mode description"
+msgid "Choose the print mode"
+msgstr ""
+
+msgctxt "print_mode option dual"
+msgid "Dual"
+msgstr ""
+
+msgctxt "print_mode option singleT0"
+msgid "Single 1"
+msgstr ""
+
+msgctxt "print_mode option singleT1"
+msgid "Single 2"
+msgstr ""
+
+msgctxt "print_mode option duplication"
+msgid "Duplication"
+msgstr ""
+
+msgctxt "print_mode option mirror"
+msgid "Mirror"
+msgstr ""
+
+msgctxt "fix_tool_change_travel label"
+msgid "Fix Tool Change Travel"
+msgstr ""
+
+msgctxt "fix_tool_change_travel description"
+msgid "Allows the new tool to go straight to the position where it has to print, instead of going to the last position before tool change and then travel to the position where it has to print."
+msgstr ""
+
+msgctxt "purge_in_bucket label"
+msgid "Purge At Tool Change"
+msgstr ""
+
+msgctxt "purge_in_bucket description"
+msgid "Add an extra prime amount in the bucket to compensate oozed material while the Extruder was idle. Disable Prime tower to save time and filament."
+msgstr ""
+
+msgctxt "purge_distance label"
+msgid "Purge Distance"
+msgstr ""
+
+msgctxt "purge_distance description"
+msgid "Filament distance purged at extruder change."
+msgstr ""
+
+msgctxt "purge_in_bucket_enable_gcode label"
+msgid "Purge At Tool Change Enable GCode"
+msgstr ""
+
+msgctxt "purge_in_bucket_enable_gcode description"
+msgid "GCode to enable Purge At Tool Change commands."
+msgstr ""
+
+msgctxt "purge_in_bucket_enable_gcode option ;"
+msgid "No"
+msgstr ""
+
+msgctxt "purge_in_bucket_enable_gcode option "
+msgid "Yes"
+msgstr ""
+
+msgctxt "smart_purge label"
+msgid "Use Adaptive Purge Distance"
+msgstr ""
+
+msgctxt "smart_purge description"
+msgid "Make the purged distance variable according to idle time."
+msgstr ""
+
+msgctxt "smart_purge_minimum_purge_distance label"
+msgid "Minimum Purge Distance"
+msgstr ""
+
+msgctxt "smart_purge_minimum_purge_distance description"
+msgid "Minimum distance to purge when changing toolheads."
+msgstr ""
+
+msgctxt "smart_purge_maximum_purge_distance label"
+msgid "Maximum Purge Distance"
+msgstr ""
+
+msgctxt "smart_purge_maximum_purge_distance description"
+msgid "Maximum distance to purge when changing toolheads."
+msgstr ""
+
+msgctxt "smart_purge_slope label"
+msgid "Increase Distance by"
+msgstr ""
+
+msgctxt "smart_purge_slope description"
+msgid "Distance to purge per minute idle. Purged distance will increase this amount each minute the toolhead remains idle. The real purged distance will never be shorter than the Minimum Purge Distance, or greater than the Maximum Purge Distance."
+msgstr ""
+
+msgctxt "smart_purge_slope_gcode label"
+msgid "Distance Gradient"
+msgstr ""
+
+msgctxt "smart_purge_slope_gcode description"
+msgid "GCode to send proper value to the machine."
+msgstr ""
+
+msgctxt "smart_purge_enable_gcode label"
+msgid "Smart Purge Enable GCode"
+msgstr ""
+
+msgctxt "smart_purge_enable_gcode description"
+msgid "GCode to enable smart purge commands."
+msgstr ""
+
+msgctxt "smart_purge_enable_gcode option ;"
+msgid "No"
+msgstr ""
+
+msgctxt "smart_purge_enable_gcode option "
+msgid "Yes"
+msgstr ""
+
+msgctxt "prime_tower_closest_to label"
+msgid "Prime Tower Preferred Position"
+msgstr ""
+
+msgctxt "prime_tower_closest_to description"
+msgid "Select the preferred area of the buildplate to automatically place the prime tower."
+msgstr ""
+
+msgctxt "prime_tower_closest_to option top-left"
+msgid "Top Left"
+msgstr ""
+
+msgctxt "prime_tower_closest_to option top"
+msgid "Top"
+msgstr ""
+
+msgctxt "prime_tower_closest_to option top-right"
+msgid "Top Right"
+msgstr ""
+
+msgctxt "prime_tower_closest_to option right"
+msgid "Right"
+msgstr ""
+
+msgctxt "prime_tower_closest_to option bottom-right"
+msgid "Bottom Right"
+msgstr ""
+
+msgctxt "prime_tower_closest_to option bottom"
+msgid "Bottom"
+msgstr ""
+
+msgctxt "prime_tower_closest_to option bottom-left"
+msgid "Bottom Left"
+msgstr ""
+
+msgctxt "prime_tower_closest_to option left"
+msgid "Left"
+msgstr ""
+
+msgctxt "material_type label"
+msgid "Material type"
+msgstr ""
+
+msgctxt "material_type description"
+msgid "Material typ"
+msgstr ""
+
+msgctxt "used_material label"
+msgid "Used materials"
+msgstr ""
+
+msgctxt "used_material description"
+msgid "Comment with the materials used."
+msgstr ""
+
+msgctxt "used_material_brand label"
+msgid "Used materials"
+msgstr ""
+
+msgctxt "used_material_brand description"
+msgid "Comment with the brand used."
+msgstr ""
+
+msgctxt "machine_nozzle_type label"
+msgid "Nozzle type"
+msgstr ""
+
+msgctxt "machine_nozzle_type description"
+msgid "Nozzle type."
+msgstr ""
+
+msgctxt "used_nozzle_size label"
+msgid "Used nozzle size"
+msgstr ""
+
+msgctxt "used_nozzle_size description"
+msgid "Comment with the nozzle size used."
+msgstr ""
+
+msgctxt "print_mode_gcode label"
+msgid "Print Mode GCode"
+msgstr ""
+
+msgctxt "print_mode_gcode description"
+msgid "GCode to enable selected print mode."
+msgstr ""
+
+msgctxt "purge_in_bucket_before_start_gcode label"
+msgid "Purge in bucket before start GCode"
+msgstr ""
+
+msgctxt "purge_in_bucket_before_start_gcode description"
+msgid "GCode to purge in bucket each extruder."
+msgstr ""
+

@@ -166,7 +166,7 @@ class CuraEngineBackend(QObject, Backend):
         self._slicing_error_message.addAction(
             action_id = "report_bug",
             name = catalog.i18nc("@message:button", "Report a bug"),
-            description = catalog.i18nc("@message:description", "Report a bug on UltiMaker Cura's issue tracker."),
+            description = catalog.i18nc("@message:description", "Report a bug on BCN3D Stratos's issue tracker."),
             icon = "[no_icon]"
         )
         self._slicing_error_message.actionTriggered.connect(self._reportBackendError)

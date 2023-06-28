@@ -18,13 +18,13 @@
 
 ![Logo]
 
-# Ultimaker Cura
+# BCN3D Stratos
 
 *State-of-the-art slicer app to prepare* <br>
 *your 3D models for your 3D printer.*
 
 *With hundreds of settings & community-managed print profiles,* <br>
-*Ultimaker Cura is sure to lead your next project to a success.*
+*BCN3D Stratos is sure to lead your next project to a success.*
 
 <br>
 <br>

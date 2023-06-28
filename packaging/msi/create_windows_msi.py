@@ -115,7 +115,7 @@ if __name__ == "__main__":
     parser.add_argument("dist_path", type=Path, help="Path to Pyinstaller dist folder")
     parser.add_argument("filename", type=Path,
                         help="Filename of the exe (e.g. 'UltiMaker-Cura-5.1.0-beta-Windows-X64.msi')")
-    parser.add_argument("name", type=str, help="App name (e.g. 'UltiMaker Cura')")
+    parser.add_argument("name", type=str, help="App name (e.g. 'BCN3D Stratos')")
     args = parser.parse_args()
     generate_wxs(args.source_path.resolve(), args.dist_path.resolve(), args.filename.resolve(), args.name)
     cleanup_artifacts(args.dist_path.resolve())

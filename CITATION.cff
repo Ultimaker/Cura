@@ -5,7 +5,7 @@ type: software
 message: >-
   If you use this software, please cite it using the
   metadata from this file.
-title: Ultimaker Cura
+title: BCN3D Stratos
 abstract: >-
   A state-of-the-art slicer application built on top
   of the Uranium framework.
