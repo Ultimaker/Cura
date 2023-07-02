@@ -77,7 +77,7 @@ jobs:
             -   name: Setup Python and pip
                 uses: actions/setup-python@v4
                 with:
-                    python-version: "3.10.x"
+                    python-version: "3.11.x"
                     cache: 'pip'
                     cache-dependency-path: .github/workflows/requirements-conan-package.txt
 
@@ -146,25 +146,21 @@ jobs:
                         
                         if latest_branch_tag:
                             # %% Get the actual version
-                            no_commits = 0
-                            for commit in repo.iter_commits("HEAD"):
-                                if commit == latest_branch_tag.commit:
-                                    break
-                                no_commits += 1
+                            sha_commit = repo.commit().hexsha[:6]
                             latest_branch_version_prerelease = latest_branch_version.pre
                             if latest_branch_version.pre and not "." in str(latest_branch_version.pre):
                                 # The prerealese did not contain a version number, default it to 1
                                 latest_branch_version_prerelease = f"{latest_branch_version.pre}.1"
                             if event_name == "pull_request":
-                                actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-{str(latest_branch_version_prerelease).lower()}+{buildmetadata}pr_{issue_number}_{no_commits}"
-                                channel_metadata = f"{channel}_{no_commits}"
+                                actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-{str(latest_branch_version_prerelease).lower()}+{buildmetadata}pr_{issue_number}_{sha_commit}"
+                                channel_metadata = f"{channel}_{sha_commit}"
                             else:
                                 if channel in ("stable", "_", ""):
-                                    channel_metadata = f"{no_commits}"
+                                    channel_metadata = f"{sha_commit}"
                                 else:
-                                    channel_metadata = f"{channel}_{no_commits}"
+                                    channel_metadata = f"{channel}_{sha_commit}"
                             if is_release_branch:
-                                if latest_branch_version.pre == "" and branch_version > latest_branch_version:
+                                if (latest_branch_version.pre == "" or latest_branch_version.pre is None) and branch_version > latest_branch_version:
                                     actual_version = f"{branch_version.major}.{branch_version.minor}.0-beta.1+{buildmetadata}{channel_metadata}"
                                 elif latest_branch_version.pre == "":
                                     # An actual full release has been created, we are working on patch
@@ -178,18 +174,16 @@ jobs:
                                     actual_version = f"{latest_branch_version.major}.{latest_branch_version.minor}.{latest_branch_version.patch}-{str(latest_branch_version.pre).split('.')[0]}.{bump_up_release_tag}+{buildmetadata}{channel_metadata}"
                             else:
                                 max_branches_version = Version("0.0.0")
-                                branches_no_commits = no_commits
                                 for branch in repo.references:
                                     try:
                                         if "remotes/origin" in branch.abspath:
                                             b_version = Version(branch.name.split("/")[-1])
                                             if b_version <  Version("6.0.0") and b_version > max_branches_version:
                                                 max_branches_version = b_version
-                                                branches_no_commits = repo.commit().count() - branch.commit.count()
                                     except:
                                         pass
                                 if max_branches_version > latest_branch_version:
-                                    actual_version = f"{max_branches_version.major}.{int(str(max_branches_version.minor)) + 1}.0-alpha+{buildmetadata}{channel}_{branches_no_commits}"
+                                    actual_version = f"{max_branches_version.major}.{int(str(max_branches_version.minor)) + 1}.0-alpha+{buildmetadata}{channel}_{sha_commit}"
                                 else:
                                     actual_version = f"{latest_branch_version.major}.{int(str(latest_branch_version.minor)) + 1}.0-alpha+{buildmetadata}{channel_metadata}"
 
