@@ -3,7 +3,7 @@
     "version": 2,
     "inherits": "creality_base",
     "overrides": {
-        "machine_name": { "default_value": "Creality Ender-5/Ender-3Pro" },
+        "machine_name": { "default_value": "Creality Ender-5 S1" },
         "machine_end_gcode": { "default_value": "G91 ;Relative positionning\nG1 E-2 F2700 ;Retract a bit\nG1 E-2 Z0.2 F2400 ;Retract and raise Z\nG1 X5 Y5 F3000 ;Wipe out\nG1 Z10 ;Raise Z more\nG90 ;Absolute positionning\n\nG1 X0 Y0 ;Present print\nM106 S0 ;Turn-off fan\nM104 S0 ;Turn-off hotend\nM140 S0 ;Turn-off bed\n\nM84 X Y E ;Disable all steppers but Z\n" },
         "machine_width": { "default_value": 225 },
         "machine_depth": { "default_value": 225 },
