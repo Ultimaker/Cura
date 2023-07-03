@@ -1,0 +1,14 @@
+{
+    "version": 2,
+    "name": "Sigma D25",
+    "inherits": "bcn3dw50",
+    "metadata": {
+        "weight": "3",
+        "exclude_materials": ["basf_ultrafuse_17-4ph", "basf_ultrafuse_316l","generic_abs","BCN3D_Filaments_ABS_Black", "BCN3D_Filaments_ABS_White","generic_pa","BCN3D_Filaments_PET-CF15_Black", "generic_pet-cf15", "BCN3D_Filaments_PA_Natural","BCN3D_Filaments_PAHT-CF15_Black", "generic_paht-cf15", "BCN3D_Filaments_PP-GF30_Black", "generic_pp-gf30", "BCN3D_Filaments_PP_Natural", "generic_pp"]
+    },
+    "overrides": {
+        "machine_name": { "default_value": "Sigma D25" },
+        "machine_height": { "default_value":  200 },
+        "gantry_height": { "value": 12 }
+    }
+}
