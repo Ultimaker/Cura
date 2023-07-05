@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-08 14:43+0000\n"
-"PO-Revision-Date: 2023-02-17 17:37+0100\n"
+"POT-Creation-Date: 2023-07-04 15:52+0000\n"
+"PO-Revision-Date: 2023-06-25 17:37+0200\n"
 "Last-Translator: Cláudio Sampaio <patola@gmail.com>\n"
 "Language-Team: Cláudio Sampaio <patola@gmail.com>\n"
 "Language: pt_BR\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.3.1\n"
 
 #, python-format
 msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm."
@@ -360,7 +360,7 @@ msgstr "Adicionar Impressora"
 
 msgctxt "@button"
 msgid "Add UltiMaker printer via Digital Factory"
-msgstr ""
+msgstr "Adicionar impressora UltiMaker via Digital Factory"
 
 msgctxt "@label"
 msgid "Add a Cloud printer"
@@ -384,7 +384,7 @@ msgstr "Adicionar ícone à bandeja do sistema *"
 
 msgctxt "@button"
 msgid "Add local printer"
-msgstr ""
+msgstr "Adicionar impressora local"
 
 msgctxt "@option:check"
 msgid "Add machine prefix to job name"
@@ -502,7 +502,7 @@ msgstr "Um modelo pode ser carregado diminuto se sua unidade for por exemplo em 
 
 msgctxt "@label"
 msgid "Annealing"
-msgstr ""
+msgstr "Recozimento"
 
 msgctxt "@label"
 msgid "Anonymous"
@@ -576,7 +576,7 @@ msgstr "Fazer uma pergunta"
 
 msgctxt "@checkbox:description"
 msgid "Auto Backup"
-msgstr ""
+msgstr "Auto Backup"
 
 msgctxt "@checkbox:description"
 msgid "Automatically create a backup each day that Cura is started."
@@ -608,7 +608,7 @@ msgstr "Voltar"
 
 msgctxt "@info:title"
 msgid "Backup"
-msgstr ""
+msgstr "Backup"
 
 msgctxt "@button"
 msgid "Backup Now"
@@ -632,7 +632,7 @@ msgstr "Fazer backup e sincronizar os ajustes do Cura."
 
 msgctxt "@info:title"
 msgid "Backups"
-msgstr ""
+msgstr "Backups"
 
 msgctxt "@action:label"
 msgid "Base (mm)"
@@ -1192,7 +1192,7 @@ msgstr "Perfil personalizado"
 
 msgctxt "@info"
 msgid "Custom profile name:"
-msgstr ""
+msgstr "Nome personalizado de perfil:"
 
 msgctxt "@label"
 msgid "Custom profiles"
@@ -1232,11 +1232,11 @@ msgstr "Recusar e remover da conta"
 
 msgctxt "@info:No intent profile selected"
 msgid "Default"
-msgstr ""
+msgstr "Default"
 
 msgctxt "@label"
 msgid "Default"
-msgstr ""
+msgstr "Default"
 
 msgctxt "@window:text"
 msgid "Default behavior for changed setting values when switching to a different profile: "
@@ -1252,7 +1252,7 @@ msgstr "Comportamento default ao abrir um arquivo de projeto: "
 
 msgctxt "@action:button"
 msgid "Defaults"
-msgstr ""
+msgstr "Defaults"
 
 msgctxt "@label"
 msgid "Defines the thickness of your part side walls, roof and floor."
@@ -1376,7 +1376,7 @@ msgstr "Feito"
 
 msgctxt "@button"
 msgid "Downgrade"
-msgstr ""
+msgstr "Downgrade"
 
 msgctxt "@button"
 msgid "Downgrading..."
@@ -1490,7 +1490,7 @@ msgstr "Sair da Tela Cheia"
 
 msgctxt "@label"
 msgid "Experimental"
-msgstr ""
+msgstr "Experimental"
 
 msgctxt "@action:button"
 msgid "Export"
@@ -1963,7 +1963,7 @@ msgstr "Para monitorar sua impressão pelo Cura, por favor conecte a impressora.
 
 msgctxt "@label"
 msgid "In order to start using Cura you will need to configure a printer."
-msgstr ""
+msgstr "Para começar a usar o Cura você precisará configurar uma impressora."
 
 msgctxt "@button"
 msgid "In order to use the package you will need to restart Cura"
@@ -1979,11 +1979,11 @@ msgstr "Preenchimento"
 
 msgctxt "infill_sparse_density description"
 msgid "Infill Density"
-msgstr ""
+msgstr "Densidade de Preenchimento"
 
 msgctxt "@action:label"
 msgid "Infill Pattern"
-msgstr ""
+msgstr "Padrão de Preenchimento"
 
 msgctxt "@item:inlistbox"
 msgid "Infill mesh only"
@@ -2079,7 +2079,7 @@ msgstr "Objetivo"
 
 msgctxt "@label"
 msgid "Interface"
-msgstr ""
+msgstr "Interface"
 
 msgctxt "@label Description for application component"
 msgid "Interprocess communication library"
@@ -2363,11 +2363,11 @@ msgstr "Gerencie seu complementos e perfis de materiais do Cura aqui. Se assegur
 
 msgctxt "description"
 msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
-msgstr ""
+msgstr "Gerencia extensões para a aplicação e permite navegar pelas extensões do website da UltiMaker."
 
 msgctxt "description"
 msgid "Manages network connections to UltiMaker networked printers."
-msgstr ""
+msgstr "Gerencia conexões de rede para as impressoras conectadas da UltiMaker."
 
 msgctxt "@label"
 msgid "Manufacturer"
@@ -2471,7 +2471,7 @@ msgstr "Modificar ajustes para sobreposições"
 
 msgctxt "@item:inmenu"
 msgid "Monitor"
-msgstr ""
+msgstr "Monitor"
 
 msgctxt "name"
 msgid "Monitor Stage"
@@ -2554,11 +2554,11 @@ msgstr "Novo firmware estável de %s disponível"
 
 msgctxt "@textfield:placeholder"
 msgid "New Custom Profile"
-msgstr ""
+msgstr "Novo Perfil Personalizado"
 
 msgctxt "@label"
 msgid "New UltiMaker printers can be connected to Digital Factory and monitored remotely."
-msgstr ""
+msgstr "Novas impressoras da UltiMaker podem ser conectadas à Digital Factory e monitoradas remotamente."
 
 #, python-brace-format
 msgctxt "@info Don't translate {machine_name}, since it gets replaced by a printer name!"
@@ -2646,7 +2646,7 @@ msgstr "Sem estimativa de tempo disponível"
 
 msgctxt "@button"
 msgid "Non UltiMaker printer"
-msgstr ""
+msgstr "Impressora não-UltiMaker"
 
 msgctxt "@info No materials"
 msgid "None"
@@ -2771,7 +2771,7 @@ msgstr "Abrir Arquivo de Projeto"
 
 msgctxt "@action:label"
 msgid "Open With"
-msgstr ""
+msgstr "Abrir Com"
 
 msgctxt "@action:button"
 msgid "Open as project"
@@ -3159,7 +3159,7 @@ msgstr "Imprimir pela nuvem"
 
 msgctxt "@action:label"
 msgid "Print with"
-msgstr ""
+msgstr "Imprimir com"
 
 msgctxt "@title:tab"
 msgid "Printer"
@@ -3376,7 +3376,7 @@ msgstr "Provê suporta à leitura de arquivos AMF."
 
 msgctxt "description"
 msgid "Provides support for reading Ultimaker Format Packages."
-msgstr ""
+msgstr "Provê suporte à leitura de Ultimaker Format Packages (pacotes de formato da UltiMaker)."
 
 msgctxt "description"
 msgid "Provides support for reading X3D files."
@@ -3392,7 +3392,7 @@ msgstr "Provê suporte à escrita de arquivos 3MF."
 
 msgctxt "description"
 msgid "Provides support for writing Ultimaker Format Packages."
-msgstr ""
+msgstr "Provê suporte à escrita de Ultimaker Format Packages (pacotes de formato da UltiMaker)."
 
 msgctxt "description"
 msgid "Provides the Per Model Settings."
@@ -3461,7 +3461,7 @@ msgstr "Recomendado"
 
 msgctxt "@label"
 msgid "Recommended print settings"
-msgstr ""
+msgstr "Ajustes recomendados de impressão"
 
 msgctxt "@info %1 is the name of a profile"
 msgid "Recommended settings (for <b>%1</b>) were altered."
@@ -3629,7 +3629,7 @@ msgstr "Salvar o projeto Cura e imprimir o arquivo"
 
 msgctxt "@title:window"
 msgid "Save Custom Profile"
-msgstr ""
+msgstr "Salvar Perfil Personalizado"
 
 msgctxt "@title:window"
 msgid "Save Project"
@@ -3641,15 +3641,15 @@ msgstr "Salvar Projeto..."
 
 msgctxt "@action:button"
 msgid "Save as new custom profile"
-msgstr ""
+msgstr "Salvar como novo perfil personalizado"
 
 msgctxt "@action:button"
 msgid "Save changes"
-msgstr ""
+msgstr "Salvar mudanças"
 
 msgctxt "@button"
 msgid "Save new profile"
-msgstr ""
+msgstr "Salvar novo perfil"
 
 msgctxt "@text"
 msgid "Save the .umm file on a USB stick."
@@ -3824,7 +3824,7 @@ msgstr "Perímetro"
 
 msgctxt "@action:label"
 msgid "Shell Thickness"
-msgstr ""
+msgstr "Espessura do Perímetro"
 
 msgctxt "@info:tooltip"
 msgid "Should Cura check for updates when the program is started?"
@@ -3896,7 +3896,7 @@ msgstr "Exibir Pasta de Configuração"
 
 msgctxt "@button"
 msgid "Show Custom"
-msgstr ""
+msgstr "Mostrar Personalizado"
 
 msgctxt "@action:inmenu menubar:help"
 msgid "Show Online &Documentation"
@@ -3952,11 +3952,11 @@ msgstr "Entrar"
 
 msgctxt "@info"
 msgid "Sign in into UltiMaker Digital Factory"
-msgstr ""
+msgstr "Entrar na UltiMaker Digital Factory"
 
 msgctxt "@button"
 msgid "Sign in to Digital Factory"
-msgstr ""
+msgstr "Entrar na Digital Factory"
 
 msgctxt "@label"
 msgid "Sign in to the UltiMaker platform"
@@ -4034,7 +4034,7 @@ msgstr ""
 
 msgctxt "@info %1 is the name of a profile"
 msgid "Some setting-values defined in <b>%1</b> were overridden."
-msgstr ""
+msgstr "Alguns valores ou ajustes definidos em <b>%1</b> foram sobrescritos."
 
 msgctxt "@tooltip"
 msgid ""
@@ -4153,7 +4153,7 @@ msgstr "Interface de Suporte"
 
 msgctxt "@action:label"
 msgid "Support Type"
-msgstr ""
+msgstr "Tipo de Suporte"
 
 msgctxt "@label Description for application dependency"
 msgid "Support library for faster math"
@@ -4237,7 +4237,7 @@ msgstr "A quantidade de suavização para aplicar na imagem."
 
 msgctxt "@text"
 msgid "The annealing profile requires post-processing in an oven after the print is finished. This profile retains the dimensional accuracy of the printed part after annealing and improves strength, stiffness, and thermal resistance."
-msgstr ""
+msgstr "O perfil de recozimento requer pós-processamento em um forno após a finalização da impressão. Este perfil retém a acurácia dimensional da parte impressa depois do recozimento e aprimora força, dureza e resistência térmica."
 
 msgctxt "@label"
 msgid "The assigned printer, %1, requires the following configuration change:"
@@ -4727,7 +4727,7 @@ msgstr "Pacote de Formato da UltiMaker"
 
 msgctxt "name"
 msgid "UltiMaker Network Connection"
-msgstr ""
+msgstr "Conexão de Rede da UltiMaker"
 
 msgctxt "@info"
 msgid "UltiMaker Verified Package"
@@ -4739,11 +4739,11 @@ msgstr "Complemento Verificado UltiMaker"
 
 msgctxt "name"
 msgid "UltiMaker machine actions"
-msgstr ""
+msgstr "Ações de impressoras UltiMaker"
 
 msgctxt "@button"
 msgid "UltiMaker printer"
-msgstr ""
+msgstr "Impressora UltiMaker"
 
 msgctxt "@label:button"
 msgid "UltiMaker support"
@@ -5011,7 +5011,7 @@ msgstr "Atualiza configurações do Cura 5.2 para o Cura 5.3."
 
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.3 to Cura 5.4."
-msgstr ""
+msgstr "Atualiza configuração do Cura 5.3 para o Cura 5.4."
 
 msgctxt "@action:button"
 msgid "Upload custom Firmware"
@@ -5143,7 +5143,7 @@ msgstr "Atualização de Versão de 5.2 para 5.3"
 
 msgctxt "name"
 msgid "Version Upgrade 5.3 to 5.4"
-msgstr ""
+msgstr "Atualização de Versão do 5.3 para 5.4"
 
 msgctxt "@button"
 msgid "View printers in Digital Factory"
@@ -5175,7 +5175,7 @@ msgstr "Visita o website da UltiMaker."
 
 msgctxt "@label"
 msgid "Visual"
-msgstr ""
+msgstr "Visual"
 
 msgctxt "@label"
 msgid "Waiting for"
@@ -5187,7 +5187,7 @@ msgstr "Aguardando resposta da Nuvem"
 
 msgctxt "@button"
 msgid "Waiting for new printers"
-msgstr ""
+msgstr "Esperando por novas impressoras"
 
 msgctxt "@button"
 msgid "Want more?"
@@ -5339,7 +5339,7 @@ msgstr[1] ""
 
 msgctxt "@info:status"
 msgid "You are attempting to connect to a printer that is not running UltiMaker Connect. Please update the printer to the latest firmware."
-msgstr ""
+msgstr "Você está tentando conectar uma impressora que não está rodando UltiMaker Connect. Por favor atualize a impressora para o firmware mais novo."
 
 #, python-brace-format
 msgctxt "@info:status"

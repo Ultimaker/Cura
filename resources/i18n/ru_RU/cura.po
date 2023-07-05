@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-08 14:43+0000\n"
+"POT-Creation-Date: 2023-07-04 15:52+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -506,7 +506,7 @@ msgstr "Модель может показаться очень маленько
 
 msgctxt "@label"
 msgid "Annealing"
-msgstr ""
+msgstr "Отжиг"
 
 msgctxt "@label"
 msgid "Anonymous"
@@ -1453,7 +1453,7 @@ msgstr "Полное решение для 3D печати методом нап
 
 msgctxt "@label"
 msgid "Engineering"
-msgstr ""
+msgstr "Проектирование"
 
 msgctxt "@option:check"
 msgid "Ensure models are kept apart"
@@ -2074,7 +2074,7 @@ msgstr "Установка..."
 
 msgctxt "@action:label"
 msgid "Intent"
-msgstr ""
+msgstr "Назначение"
 
 msgctxt "@label"
 msgid "Interface"
@@ -4241,7 +4241,7 @@ msgstr "Величина сглаживания для применения к �
 
 msgctxt "@text"
 msgid "The annealing profile requires post-processing in an oven after the print is finished. This profile retains the dimensional accuracy of the printed part after annealing and improves strength, stiffness, and thermal resistance."
-msgstr ""
+msgstr "Профиль отжига требует последующей обработки в печи после завершения печати. Этот профиль сохраняет точность размеров напечатанной детали после отжига и улучшает ее прочность, жесткость и термостойкость."
 
 msgctxt "@label"
 msgid "The assigned printer, %1, requires the following configuration change:"
@@ -5019,7 +5019,7 @@ msgstr "Обновляет настройки Cura 5.2 до Cura 5.3."
 
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.3 to Cura 5.4."
-msgstr ""
+msgstr "Обновляет настройки Cura 5.3 до Cura 5.4."
 
 msgctxt "@action:button"
 msgid "Upload custom Firmware"
@@ -5151,7 +5151,7 @@ msgstr "Обновление версии 5.2 до 5.3"
 
 msgctxt "name"
 msgid "Version Upgrade 5.3 to 5.4"
-msgstr ""
+msgstr "Обновление версии 5.3 до 5.4"
 
 msgctxt "@button"
 msgid "View printers in Digital Factory"

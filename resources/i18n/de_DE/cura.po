@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-08 14:43+0000\n"
+"POT-Creation-Date: 2023-07-04 15:52+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -502,7 +502,7 @@ msgstr "Ein Modell kann extrem klein erscheinen, wenn seine Maßeinheit z. B. in
 
 msgctxt "@label"
 msgid "Annealing"
-msgstr ""
+msgstr "Glühen"
 
 msgctxt "@label"
 msgid "Anonymous"
@@ -1489,7 +1489,7 @@ msgstr "Experimentell"
 
 msgctxt "@action:button"
 msgid "Export"
-msgstr ""
+msgstr "Export"
 
 msgctxt "@title:window"
 msgid "Export All Materials"
@@ -1902,7 +1902,7 @@ msgstr "Nicht gestützte Bereiche des Modells in rot hervorheben. Ohne Support w
 
 msgctxt "@button"
 msgid "How to load new material profiles to my printer"
-msgstr ""
+msgstr "Anleitung zum Laden neuer Materialprofile in Ihren Drucker"
 
 msgctxt "@action:button"
 msgid "How to update"
@@ -1930,7 +1930,7 @@ msgstr "Bild-Reader"
 
 msgctxt "@action:button"
 msgid "Import"
-msgstr ""
+msgstr "Import"
 
 msgctxt "@title:window"
 msgid "Import Material"
@@ -3647,7 +3647,7 @@ msgstr "Neues Profil speichern"
 
 msgctxt "@text"
 msgid "Save the .umm file on a USB stick."
-msgstr ""
+msgstr "Speichern Sie die .umm-Datei auf einem USB-Stick."
 
 msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Save to Removable Drive"
@@ -4028,7 +4028,7 @@ msgstr ""
 
 msgctxt "@info %1 is the name of a profile"
 msgid "Some setting-values defined in <b>%1</b> were overridden."
-msgstr ""
+msgstr "Einige in <b>%1</b> definierte Einstellungswerte wurden überschrieben."
 
 msgctxt "@tooltip"
 msgid ""
@@ -4074,7 +4074,7 @@ msgstr "Stanford Triangle Format"
 
 msgctxt "@button"
 msgid "Start"
-msgstr ""
+msgstr "Start"
 
 msgctxt "@action:button"
 msgid "Start Build Plate Leveling"
@@ -4231,7 +4231,7 @@ msgstr "Die Stärke der Glättung, die für das Bild angewendet wird."
 
 msgctxt "@text"
 msgid "The annealing profile requires post-processing in an oven after the print is finished. This profile retains the dimensional accuracy of the printed part after annealing and improves strength, stiffness, and thermal resistance."
-msgstr ""
+msgstr "Das Glühprofil erfordert die Nachbehandlung in einem Ofen, nachdem der Druck abgeschlossen ist. Dieses Profil behält die Maßgenauigkeit des gedruckten Teils nach dem Glühen bei und verbessert die Festigkeit, Steifigkeit und Wärmebeständigkeit."
 
 msgctxt "@label"
 msgid "The assigned printer, %1, requires the following configuration change:"
@@ -4897,7 +4897,7 @@ msgstr "Drucker aktualisieren"
 
 msgctxt "@label"
 msgid "Updates"
-msgstr ""
+msgstr "Updates"
 
 msgctxt "@label"
 msgid "Updating firmware."
@@ -5005,7 +5005,7 @@ msgstr "Upgrade der Konfigurationen von Cura 5.2 auf Cura 5.3."
 
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.3 to Cura 5.4."
-msgstr ""
+msgstr "Upgrade der Konfigurationen von Cura 5.3 auf Cura 5.4."
 
 msgctxt "@action:button"
 msgid "Upload custom Firmware"
@@ -5137,7 +5137,7 @@ msgstr "Upgrade von Version 5.2 auf 5.3"
 
 msgctxt "name"
 msgid "Version Upgrade 5.3 to 5.4"
-msgstr ""
+msgstr "Upgrade von Version 5.3 auf 5.4"
 
 msgctxt "@button"
 msgid "View printers in Digital Factory"

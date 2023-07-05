@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-08 14:43+0000\n"
+"POT-Creation-Date: 2023-07-04 15:52+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -502,7 +502,7 @@ msgstr "Een model wordt mogelijk extreem klein weergegeven als de eenheden bijvo
 
 msgctxt "@label"
 msgid "Annealing"
-msgstr ""
+msgstr "Uitgloeien"
 
 msgctxt "@label"
 msgid "Anonymous"
@@ -2681,7 +2681,7 @@ msgstr "Er wordt niets weergegeven omdat u eerst moet slicen."
 
 msgctxt "@label"
 msgid "Nozzle"
-msgstr ""
+msgstr "Nozzle"
 
 msgctxt "@title:label"
 msgid "Nozzle Settings"
@@ -3963,7 +3963,7 @@ msgstr "Simulatieweergave"
 
 msgctxt "@tooltip"
 msgid "Skin"
-msgstr ""
+msgstr "Skin"
 
 msgctxt "@action:button"
 msgid "Skip"
@@ -3975,7 +3975,7 @@ msgstr "Overslaan"
 
 msgctxt "@tooltip"
 msgid "Skirt"
-msgstr ""
+msgstr "Skirt"
 
 msgctxt "@button"
 msgid "Slice"
@@ -4029,7 +4029,7 @@ msgstr ""
 
 msgctxt "@info %1 is the name of a profile"
 msgid "Some setting-values defined in <b>%1</b> were overridden."
-msgstr ""
+msgstr "Enkele instellingen uit <b>%1</b> zijn overschreven."
 
 msgctxt "@tooltip"
 msgid ""
@@ -4232,7 +4232,7 @@ msgstr "De mate van effening die op de afbeelding moet worden toegepast."
 
 msgctxt "@text"
 msgid "The annealing profile requires post-processing in an oven after the print is finished. This profile retains the dimensional accuracy of the printed part after annealing and improves strength, stiffness, and thermal resistance."
-msgstr ""
+msgstr "Het uitgloeiprofiel vereist nabewerking in een oven nadat de print is voltooid. Dit profiel behoudt de maatnauwkeurigheid van het geprinte onderdeel na uitgloeien en verbetert de sterkte, stijfheid en thermische weerstand."
 
 msgctxt "@label"
 msgid "The assigned printer, %1, requires the following configuration change:"
@@ -5006,7 +5006,7 @@ msgstr "Hiermee worden configuraties bijgewerkt van Cura 5.2 naar Cura 5.3."
 
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.3 to Cura 5.4."
-msgstr ""
+msgstr "Hiermee worden configuraties bijgewerkt van Cura 5.3 naar Cura 5.4."
 
 msgctxt "@action:button"
 msgid "Upload custom Firmware"
@@ -5138,7 +5138,7 @@ msgstr "Versie-upgrade van 5.2 naar 5.3"
 
 msgctxt "name"
 msgid "Version Upgrade 5.3 to 5.4"
-msgstr ""
+msgstr "Versie-upgrade van 5.3 naar 5.4"
 
 msgctxt "@button"
 msgid "View printers in Digital Factory"

@@ -107,14 +107,21 @@ class IntentSelectionModel(ListModel):
                     .findContainersMetadata(type="intent", definition=global_stack.definition.getId(),
                                             intent_category=category)[0]
 
+                intent_name = intent_metadata.get("name", category.title())
                 icon = intent_metadata.get("icon", None)
+                description = intent_metadata.get("description", None)
+
                 if icon is not None:
-                    icon = QUrl.fromLocalFile(
-                        Resources.getPath(cura.CuraApplication.CuraApplication.ResourceTypes.ImageFiles, icon))
+                    try:
+                        icon = QUrl.fromLocalFile(
+                            Resources.getPath(cura.CuraApplication.CuraApplication.ResourceTypes.ImageFiles, icon))
+                    except (FileNotFoundError, NotADirectoryError, PermissionError):
+                        Logger.log("e", f"Icon file for intent {intent_name} not found.")
+                        icon = None
 
                 result.append({
-                    "name": intent_metadata.get("name", category.title()),
-                    "description": intent_metadata.get("description", None),
+                    "name": intent_name,
+                    "description": description,
                     "custom_icon": icon,
                     "icon": None,
                     "intent_category": category,
