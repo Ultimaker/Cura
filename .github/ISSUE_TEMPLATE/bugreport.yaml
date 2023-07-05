@@ -56,17 +56,18 @@ body:
 - type: markdown
   attributes:
     value: |
-      ### Please add the following files if it's 🔵 applicable:
-        🔵 If you have issues with *the quality of your print.*   
-          Please add **a Project File**, It contains the printer and settings we need for troubleshooting.    
+      ### Please add the following files when they are related to...
+        * 🔵 **The quality of your print**   
+          Please add **a Project File**. It contains the printer and settings we need for troubleshooting.    
           To save a project file go to File -> Save project. 
           Please make sure to .zip your project file. For big files, you may need to use [WeTransfer](https://wetransfer.com/) or similar file-sharing sites. 
           G-code files are not project files! Before you share, please think to yourself. Is this a model that can be shared?
           ![Alt Text](https://user-images.githubusercontent.com/40423138/240616958-5a9751f2-bd34-4808-9752-6fde2e27516e.gif)
-       🔵 If you have issues with *interacting with Cura* 
-           Please add **Screenshots** showing the issue.
-       🔵 Especially for issues with *unexpected crashes and behavior.*
-           Please add a **log file** with information on what your Cura is doing.  
+       * 🔵 **Using and interacting with Cura** 
+           Please add **screenshots** showing the issue. 
+           Before and after, and arrows can help here. 
+       * 🔵 **Unexpected crashes and behavior**
+           Please add **a log file** with information on what your Cura is doing.  
            You can find your log file here:
            Windows: `%APPDATA%\cura\<Cura version>\cura.log`
            MacOS: `$USER/Library/Application Support/cura/<Cura version>/cura.log`
@@ -79,5 +80,3 @@ body:
     description: You can add the zip file and additional information that is relevant to the issue in the comments below.
   validations:
     required: true
-
-
