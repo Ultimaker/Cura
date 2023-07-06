@@ -9,6 +9,7 @@
     <description>CMG Tech-X Inconel 625 superalloy HMs filament has to be loaded from the spool holder behind the printer next to the drive. Due to the bendy and rigid nature of the filament it is important to loosen the dual screw pressure on the filament to prevent grinding. This can be done on the screw button. Gently push the filament into the dual screw for loading. It is also important to activate "Alternate Wall Direction" and "Alternative Infill Direction" for printing as this will prevent torsion warping during debinding and sintering. This profiile is for printing metal parts without support structure or minimal support stucture that can be easily removed or broken away before debinding and sintering.</description>
     <adhesion_info>The adhesion material is blue painter's tape.</adhesion_info>
     <color_code>#aaaaaa</color_code>
+    <instruction_link>https://www.bcn3d.com/open-filament-network/</instruction_link>
     <GUID>8adf011b-5513-41ec-9c38-53bc0cc96287</GUID>
     <author>
             </author>

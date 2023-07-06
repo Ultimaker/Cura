@@ -10,7 +10,8 @@
     <version>1</version>
     <GUID>eeef1d07-ff92-4c75-92e1-6261af20694f</GUID>
     <adhesion_info>Apply 3dlac to a clean build plate to improve adhesion.</adhesion_info>
-    <color_code>#FFFFFF</color_code>
+      <color_code>#FFFFFF</color_code>
+      <instruction_link>https://www.bcn3d.com/open-filament-network/</instruction_link>
     <description>Ultrafuse® TPS 90A is an elastomer based on the raw material SEBS. The combination of durable and flexible building blocks leads to a very versatile material. Compared to other flexible 3D printing materials it shows more rubber-like soft touch haptics and better non-slip properties. Furthermore, the material shows a reduced moisture uptake, which allows for printing without pre-drying. Parts printed with Ultrafuse® TPS 90A show almost no visible layers or warpage, which makes it an excellent material choice for end-use parts. Producing multi-material parts is possible by printing it together with PP.</description>
   </metadata>
   <properties>

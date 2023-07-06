@@ -11,6 +11,7 @@
     <GUID>d4337487-e400-4674-8f8d-445c09699fc6</GUID>
     <adhesion_info>Apply Magigoo PC, 3D lac or Dimafix to a clean build plate to improve adhesion</adhesion_info>
     <color_code>#FFFFFF</color_code>
+    <instruction_link>https://www.bcn3d.com/open-filament-network/</instruction_link> 
     <description>Ultrafuse ASA is a high-performance thermoplastic with similar mechanical properties as ABS. ASA offers additional benefits such as high outdoor weather resistance. The UV resistance, toughness, and rigidity make it an ideal material to 3D-print outdoor fixtures and appliances without losing its properties or color. When also taking into account the high heat resistance and high chemical resistance, this filament is a good choice for many types of applications.</description>
   </metadata>
   <properties>

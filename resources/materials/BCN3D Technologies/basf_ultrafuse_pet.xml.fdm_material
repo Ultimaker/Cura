@@ -6,6 +6,7 @@
       <material>Ultrafuse PET</material>
       <color>All Colours</color>
       <label>Ultrafuse PET</label>
+      <instruction_link>https://www.bcn3d.com/open-filament-network/</instruction_link>
     </name>
     <version>1</version>
     <GUID>ae9c8726-ce5b-4dec-bfc3-ed2c7d8fd584</GUID>

@@ -9,6 +9,7 @@
         <GUID>a2af2041-934e-46e5-ac22-a911e7efd031</GUID>
         <version>1</version>
         <color_code>#343537</color_code>
+        <instruction_link>https://www.bcn3d.com/open-filament-network/</instruction_link>
     </metadata>
     <properties>
         <density>1.23</density>
