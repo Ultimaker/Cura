@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdmmaterial xmlns="http://www.ultimaker.com/material" xmlns:cura="http://www.ultimaker.com/cura" version="1.3">
+    <metadata>
+        <name>
+            <brand>Innofill</brand>
+            <material>Innoflex 60</material>
+            <color>Generic</color>
+        </name>
+        <GUID>093c0407-a7ab-4772-a2a1-4c52677f11d3</GUID>
+        <version>3</version>
+        <color_code>#ecece7</color_code>
+        <description>Shore-A hardness of 60. Suitable for applications that require flexibility.</description>
+    </metadata>
+    <properties>
+        <density>1.23</density>
+        <diameter>1.75</diameter>
+    </properties>
+    <settings>
+        <setting key="print temperature">220</setting>
+        <cura:setting key="material_crystallinity">true</cura:setting>
+    </settings>
+</fdmmaterial>

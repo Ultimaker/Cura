@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdmmaterial xmlns="http://www.ultimaker.com/material" version="1.3">
+    <metadata>
+        <name>
+            <brand>eMotionTech</brand>
+            <material>TPU</material>
+            <color>Generic</color>
+            <label>TPU-98A</label>
+        </name>
+        <GUID>a63e93ac-3b52-402f-bc07-a6828abb27a9</GUID>
+        <version>14</version>
+        <color_code>#B22744</color_code>
+        <description> </description>
+        <adhesion_info>We recommend the use of 3DLac on the glass surface</adhesion_info>
+    </metadata>
+    <properties>
+        <density>1.16</density>
+        <diameter>1.75</diameter>
+        <weight>2300</weight>
+    </properties>
+    <settings>
+        <setting key="print temperature">235</setting>
+        <setting key="heated bed temperature">60</setting>
+        <setting key="standby temperature">175</setting>
+        <setting key="retraction amount">1.3</setting>
+        <setting key="build volume temperature">0</setting>
+        <machine>
+            <machine_identifier manufacturer="eMotionTech" product="Strateo3D"/>
+            <hotend id="Standard 0.4" >
+                <setting key="hardware compatible">yes</setting>
+                <setting key="print temperature">220</setting>
+                <setting key="retraction amount">1.3</setting>
+            </hotend>
+            <hotend id="Standard 0.6" >
+                <setting key="hardware compatible">yes</setting>
+                <setting key="print temperature">225</setting>
+                <setting key="retraction amount">1.4</setting>
+            </hotend>
+            <hotend id="Standard 0.8">
+                <setting key="hardware compatible">yes</setting>
+                <setting key="print temperature">230</setting>
+                <setting key="retraction amount">1.4</setting>
+            </hotend>
+            <hotend id="Standard 1.0 Experimental">
+                <setting key="hardware compatible">yes</setting>
+                <setting key="print temperature">235</setting>
+                <setting key="retraction amount">1.5</setting>
+            </hotend>
+            <hotend id="Standard 1.2 Experimental">
+                <setting key="hardware compatible">yes</setting>
+                <setting key="print temperature">237</setting>
+                <setting key="retraction amount">1.6</setting>
+            </hotend>
+        </machine>
+    </settings>
+</fdmmaterial>

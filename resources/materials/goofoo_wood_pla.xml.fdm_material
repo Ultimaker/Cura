@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdmmaterial xmlns="http://www.ultimaker.com/material" version="1.3">
+    <metadata>
+        <name>
+            <brand>GOOFOO</brand>
+            <material>PLA</material>
+            <color>Generic</color>
+            <label>WOOD</label>
+        </name>
+        <GUID>6a8a4700-f2be-4a0c-9370-5ef74ac1b22e</GUID>
+        <version>2</version>
+        <color_code>#ee51f8</color_code>
+    </metadata>
+    <properties>
+        <density>1.10</density>
+        <diameter>1.75</diameter>
+    </properties>
+    <settings>
+        <setting key="print temperature">180</setting>
+        <setting key="heated bed temperature">50</setting>
+        <setting key="standby temperature">180</setting>
+        <setting key="retraction amount">5</setting>
+        <setting key="retraction speed">80</setting> 
+    </settings>
+</fdmmaterial>

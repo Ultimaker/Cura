@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdmmaterial xmlns="http://www.ultimaker.com/material" version="1.3">
+    <metadata>
+        <name>
+            <brand>eMotionTech</brand>
+            <material>PEKK</material>
+            <color>Generic</color>
+            <label>PEKK</label>
+        </name>
+        <GUID>39a9c48e-8ea7-4936-8c5a-4a1834feaa9f</GUID>
+        <version>14</version>
+        <color_code>#ffaf33</color_code>
+        <description> </description>
+        <adhesion_info>We recommend the use of NanoPolymer glue on a glass bed.</adhesion_info>
+    </metadata>
+    <properties>
+        <density>1.29</density>
+        <diameter>1.75</diameter>
+        <weight>500</weight>
+    </properties>
+    <settings>
+        <setting key="print temperature">360</setting>
+        <setting key="heated bed temperature">140</setting>
+        <setting key="standby temperature">290</setting>
+        <setting key="retraction amount">1.4</setting>
+        <setting key="build volume temperature">60</setting>
+        <machine>
+            <machine_identifier manufacturer="eMotionTech" product="Strateo3D"/>
+            <hotend id="Standard 0.4" >
+                <setting key="hardware compatible">no</setting>
+                <setting key="print temperature">360</setting>
+                <setting key="retraction amount">1.3</setting>
+            </hotend>
+            <hotend id="Standard 0.6" >
+                <setting key="hardware compatible">no</setting>
+                <setting key="print temperature">365</setting>
+                <setting key="retraction amount">1.4</setting>
+            </hotend>
+            <hotend id="Standard 0.8">
+                <setting key="hardware compatible">no</setting>
+                <setting key="print temperature">370</setting>
+                <setting key="retraction amount">1.5</setting>
+            </hotend>
+            <hotend id="Standard 1.0 Experimental">
+                <setting key="hardware compatible">no</setting>
+                <setting key="print temperature">375</setting>
+                <setting key="retraction amount">1.6</setting>
+            </hotend>
+            <hotend id="Standard 1.2 Experimental">
+                <setting key="hardware compatible">no</setting>
+                <setting key="print temperature">380</setting>
+                <setting key="retraction amount">1.7</setting>
+            </hotend>
+            <hotend id="High temp 0.4">
+                <setting key="hardware compatible">yes</setting>
+                <setting key="print temperature">360</setting>
+                <setting key="retraction amount">1.5</setting>
+            </hotend>
+        </machine>
+    </settings>
+</fdmmaterial>

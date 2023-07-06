@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdmmaterial xmlns="http://www.ultimaker.com/material" xmlns:cura="http://www.ultimaker.com/cura" version="1.3">
+    <metadata>
+        <name>
+            <brand>FABtotum</brand>
+            <material>TPU</material>
+            <color>Generic</color>
+        </name>
+        <GUID>97e6aaf1-0da2-47f8-a473-16b8b485bcf5</GUID>
+        <version>3</version>
+        <color_code>#B22744</color_code>
+        <description>FABtotum TPU Black profile.</description>
+        <adhesion_info>Recommended nozzle temperature: 210...220C, bed temperature: 40...50C, layer fan: on, adhesion type: skirt.</adhesion_info>
+    </metadata>
+    <properties>
+        <density>1.24</density>
+        <diameter>1.75</diameter>
+    </properties>
+    <settings>
+        <setting key="print temperature">220.0</setting>
+        <setting key="heated bed temperature">40.0</setting>
+        <cura:setting key="material_crystallinity">true</cura:setting>
+    </settings>
+</fdmmaterial>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdmmaterial xmlns="http://www.ultimaker.com/material" version="1.3">
+    <metadata>
+        <name>
+            <brand>REDD</brand>
+            <material>PLA</material>
+            <color>Generic</color>
+        </name>
+		<GUID>0526b3f6-3452-4554-8f15-9de224445581</GUID>
+        <version>2</version>
+        <color_code>#FFC924</color_code>
+        <description>REDD generic PLA profile.</description>
+        <adhesion_info>Recommended nozzle temperature: 210 - 215 C, bed temperature: 60 -70 C, layer fan: on, adhesion type: skirt.</adhesion_info>
+    </metadata>
+    <properties>
+        <diameter>1.75</diameter>
+        <density>1.24</density>
+    </properties>
+    <settings>
+        <setting key="print temperature">210</setting>
+        <setting key="heated bed temperature">60</setting>
+    </settings>
+</fdmmaterial>

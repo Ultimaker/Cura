@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='utf-8'?>
+<fdmmaterial version="1.3" xmlns="http://www.ultimaker.com/material">
+  <metadata>
+    <name>
+      <brand>Volumic</brand>
+      <material>ASA</material>
+      <color>Generic</color>
+      <label>ASA Ultra</label>
+    </name>
+    <version>2</version>
+    <description>Professional grade ASA (Acrylonitirle Styrene Acrylate)</description>
+    <GUID>831a6fdd-80a7-4f1b-936c-cf77b469a3d4</GUID>
+    <adhesion_info>3DLac or Dimafix</adhesion_info>
+    <color_code>#00ff00</color_code>
+  </metadata>
+  <properties>
+    <density>1.05</density>
+    <diameter>1.75</diameter>
+  </properties>
+  <settings>
+    <setting key="print cooling">30.0</setting>
+    <setting key="adhesion tendency">0</setting>
+    <setting key="retraction amount">1.2</setting>
+    <setting key="standby temperature">180.0</setting>
+    <setting key="retraction speed">30.0</setting>
+    <setting key="heated bed temperature">90.0</setting>
+    <setting key="print temperature">245.0</setting>
+  </settings>
+</fdmmaterial>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdmmaterial xmlns="http://www.ultimaker.com/material" version="1.3">
+    <metadata>
+        <name>
+            <brand>eMotionTech</brand>
+            <material>Soluble</material>
+            <color>Generic</color>
+            <label>HIPS</label>
+        </name>
+        <GUID>64046874-b7c1-45c2-befa-db2d1a6dec3d</GUID>
+        <version>14</version>
+        <color_code>#D5D8DC</color_code>
+        <description>D-Limonene Soluble; Good bonding to styrene based materials</description>
+        <adhesion_info> </adhesion_info>
+    </metadata>
+    <properties>
+        <density>1.19</density>
+        <diameter>1.75</diameter>
+        <weight>900</weight>
+    </properties>
+    <settings>
+        <setting key="print temperature">245</setting>
+        <setting key="standby temperature">100</setting>
+        <setting key="retraction amount">1.3</setting>
+        <machine>
+            <machine_identifier manufacturer="eMotionTech" product="Strateo3D"/>
+            <hotend id="Standard 0.4" >
+                <setting key="hardware compatible">yes</setting>
+                <setting key="print temperature">240</setting>
+                <setting key="retraction amount">1.3</setting>
+            </hotend>
+            <hotend id="Standard 0.6" >
+                <setting key="hardware compatible">yes</setting>
+                <setting key="print temperature">245</setting>
+                <setting key="retraction amount">1.4</setting>
+            </hotend>
+            <hotend id="Standard 0.8">
+                <setting key="hardware compatible">yes</setting>
+                <setting key="print temperature">250</setting>
+                <setting key="retraction amount">1.5</setting>
+            </hotend>
+            <hotend id="Standard 1.0 Experimental">
+                <setting key="hardware compatible">yes</setting>
+                <setting key="print temperature">255</setting>
+                <setting key="retraction amount">1.6</setting>
+            </hotend>
+            <hotend id="Standard 1.2 Experimental">
+                <setting key="hardware compatible">yes</setting>
+                <setting key="print temperature">260</setting>
+                <setting key="retraction amount">1.7</setting>
+            </hotend>
+        </machine>
+    </settings>
+</fdmmaterial>

@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='utf-8'?>
+<fdmmaterial version="1.3" xmlns="http://www.ultimaker.com/material">
+  <metadata>
+    <name>
+      <brand>Layer One</brand>
+      <material>PLA</material>
+      <color>Black</color>
+      <label>Standard Black</label>
+    </name>
+
+     <version>1</version>
+     <GUID>80b4b88f-85ee-4f2a-a48b-fd7a5dccb604</GUID>
+     <color_code>#141414</color_code>
+    <description>Simple, fast and reliable option for day to day printing. Not very heat resistant (40°C), medium strength and low toughness but good surface finish.</description>
+     <adhesion_info>Use heated bed or blue tape to increase adheasion.</adhesion_info>
+     <instruction_link>https://atom3dp.squarespace.com/filament-en</instruction_link>
+     <author>
+         <organization>Layer One</organization>
+         <contact>Daniel Kurth</contact>
+         <email>software@kurth.online</email>
+     </author>
+ </metadata>
+ 
+  <properties>
+    <diameter>1.75</diameter>
+    <density>1.18</density>
+     <weight>1000</weight>
+  </properties>
+
+  <settings>
+    <setting key="print temperature">200.0</setting>
+     <setting key="heated bed temperature">60.0</setting>
+     <setting key="print cooling">100.0</setting>
+    <setting key="standby temperature">180.0</setting>
+
+     <machine>
+         <machine_identifier manufacturer="Layer One" product="Atom 3" />
+         <setting key="hardware compatible">yes</setting>
+     </machine>
+
+     <machine>
+         <machine_identifier manufacturer="Layer One" product="Atom 3 Lite" />
+         <setting key="hardware compatible">yes</setting>
+     </machine>
+
+  </settings>
+</fdmmaterial>

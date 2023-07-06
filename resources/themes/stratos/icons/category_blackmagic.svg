@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">
+    <switch>
+        <g>
+            <path d="M21 11l3-8H6l3 8-6 16h24zm-11.063-.352L7.443 4h15.113l-2.493 6.648-.131.352.132.352L25.559 26l-21.111-.008 5.49-14.64.13-.352z"/>
+            <text style="line-height:125%" x="8.428" y="19.917" transform="scale(1.05639 .94662)" font-weight="400" font-size="18.843" font-family="Sans" letter-spacing="0" word-spacing="0">
+                <tspan x="8.428" y="19.917" style="-inkscape-font-specification:'gargi Medium'" font-weight="500" font-family="gargi">?</tspan>
+            </text>
+            <path d="M10.34 23.666l-.76-1.186-1.496-.107 1.21-.707.076-1.444.76 1.186 1.496.107-1.21.707zm6.538-.254l1.746-1.965-.172-2.754 2 1.848 2.707-.073-1.746 1.964.172 2.754-2-1.847zm-3.901-7.059l1.646.62 1.58-.739-.62 1.646.738 1.58-1.646-.62-1.579.738.62-1.646z"/>
+        </g>
+    </switch>
+</svg>

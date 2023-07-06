@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<fdmmaterial version="1.3" xmlns="http://www.ultimaker.com/material">
+    <metadata>
+        <name>
+            <brand>Velleman</brand>
+            <material>PLA</material>
+            <color>Generic</color>
+            <label>Vertex Delta PLA</label>
+        </name>
+        <color_code>#ffc924</color_code>
+        <GUID>8d2731c8-b209-4202-b5d0-0d2d57070736</GUID>
+        <adhesion_info />
+        <version>4</version>
+        <description />
+    </metadata>
+    <properties>
+        <diameter>1.75</diameter>
+        <density>1.24</density>
+    </properties>
+    <settings>
+        <setting key="standby temperature">190.0</setting>
+        <setting key="print cooling">100.0</setting>
+        <setting key="retraction amount">3.0</setting>
+        <setting key="print temperature">200.0</setting>
+        <setting key="heated bed temperature">0.0</setting>
+        <setting key="retraction speed">30.0</setting>
+    </settings>
+</fdmmaterial>

@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='utf-8'?>
+<fdmmaterial version="1.3" xmlns="http://www.ultimaker.com/material" xmlns:cura="http://www.ultimaker.com/cura">
+  <metadata>
+    <name>
+      <brand>XYZprinting</brand>
+      <material>PLA</material>
+      <color>Copper</color>
+      <label>Premium Metallic PLA</label>
+    </name>
+    <adhesion_info />
+    <GUID>76309616-ac81-40e0-8c69-d6e2bc5394d9</GUID>
+    <description>Made from a mixture of PLA (polylactic acid) and copper powder, our Premium Metallic PLA filament lets you print 3D models with a unique metallic finish and appearance.
+
+* All images shown are for illustrative purposes only and may differ from the actual product. The weight of the Premium Metallic PLA is 600g.</description>
+    <color_code>#974c28</color_code>
+    <version>5</version>
+  </metadata>
+  <properties>
+    <density>2.71</density>
+    <diameter>1.75</diameter>
+    <weight>600</weight>
+  </properties>
+  <settings>
+    <setting key="print cooling">100.0</setting>
+    <setting key="print temperature">200.0</setting>
+    <setting key="heated bed temperature">45</setting>
+    <setting key="standby temperature">200</setting>
+  </settings>
+</fdmmaterial>

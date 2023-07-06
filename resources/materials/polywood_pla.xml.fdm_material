@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdmmaterial xmlns="http://www.ultimaker.com/material" version="1.3">
+    <metadata>
+        <name>
+            <brand>Polymaker</brand>
+            <label>PolyWood</label>
+            <material>PLA</material>
+            <color>Generic</color>
+        </name>
+        <GUID>adda5a78-f1e8-42e5-8837-6d6e6297dfa9</GUID>
+        <version>1</version>
+        <color_code>#ffeecc</color_code>
+    </metadata>
+    <properties>
+        <density>1.24</density>
+        <diameter>1.75</diameter>
+    </properties>
+    <settings>
+        <setting key="print temperature">210</setting>
+    </settings>
+</fdmmaterial>

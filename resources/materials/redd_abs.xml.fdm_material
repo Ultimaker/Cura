@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdmmaterial xmlns="http://www.ultimaker.com/material" version="1.3">
+    <metadata>
+        <name>
+            <brand>REDD</brand>
+            <material>ABS</material>
+            <color>Generic</color>
+        </name>
+		<GUID>5a716a8c-022e-4354-bad1-ae5bad11470a</GUID>
+        <version>2</version>
+        <color_code>#FFC924</color_code>
+        <description>REDD generic ABS profile.</description>
+        <adhesion_info>Recommended nozzle temperature: 235 - 240 C, bed temperature: 110 C, layer fan: off, adhesion type: Raft.</adhesion_info>
+    </metadata>
+    <properties>
+        <diameter>1.75</diameter>
+        <density>1.24</density>
+    </properties>
+    <settings>
+        <setting key="print temperature">240</setting>
+        <setting key="heated bed temperature">110</setting>
+    </settings>
+</fdmmaterial>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="30px" height="30px" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>icn_top_white</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <polygon id="path-1" points="7.13513514 0 21.4054054 0 14.2702703 7.33333333 0 7.33333333"></polygon>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icn_top_white">
+            <g id="Group-3-Copy" transform="translate(4.000000, 4.000000)">
+                <polygon id="Path-2-Copy" stroke="#1F2427" points="21.4567937 0 7.18652344 0 0.0555525861 7.33333333 0 22 14.3358121 22 21.4709473 14.6666667"></polygon>
+                <g id="Rectangle-3-Copy-6">
+                    <use fill="#1F2427" fill-rule="evenodd" xlink:href="#path-1"></use>
+                    <path stroke="#1F2427" stroke-width="1" d="M7.34626538,0.5 L1.18410322,6.83333333 L14.05914,6.83333333 L20.2213022,0.5 L7.34626538,0.5 Z"></path>
+                </g>
+                <path d="M14.2702703,22 L14.2702703,6.72222222" id="Path-3" stroke="#1F2427"></path>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='utf-8'?>
+<fdmmaterial version="1.3" xmlns="http://www.ultimaker.com/material">
+  <metadata>
+    <name>
+      <brand>Volumic</brand>
+      <material>PETG</material>
+      <color>Generic</color>
+      <label>PETG CARBONE Ultra</label>
+    </name>
+    <version>2</version>
+    <description>Professional PETG loaded with carbon, very easy to print, increased strength and Tg with significant weight gain, the best technical PETG.</description>
+    <adhesion_info>3DLac or Dimafix</adhesion_info>
+    <color_code>#00ff00</color_code>
+    <GUID>64569342-86c5-4bc2-90a7-e85af1acbb58</GUID>
+  </metadata>
+  <properties>
+    <density>1.2</density>
+    <diameter>1.75</diameter>
+  </properties>
+  <settings>
+    <setting key="print cooling">30.0</setting>
+    <setting key="adhesion tendency">0</setting>
+    <setting key="retraction amount">2.0</setting>
+    <setting key="standby temperature">175.0</setting>
+    <setting key="retraction speed">25.0</setting>
+    <setting key="heated bed temperature">70.0</setting>
+    <setting key="print temperature">240.0</setting>
+  </settings>
+</fdmmaterial>

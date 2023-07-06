@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='utf-8'?>
+<fdmmaterial version="1.3" xmlns="http://www.ultimaker.com/material">
+    <metadata>
+        <name>
+            <brand>eSUN</brand>
+            <material>PLA</material>
+            <color>Black</color>
+            <label>PLA+ Black</label>
+        </name>
+        <color_code>#333333</color_code>
+        <GUID>5c4e29a1-0722-4cfa-b147-338924afc075</GUID>
+        <adhesion_info />
+        <version>2</version>
+        <description />
+    </metadata>
+    <properties>
+        <diameter>1.75</diameter>
+        <density>1.24</density>
+        <weight>1000</weight>
+    </properties>
+    <settings>
+        <setting key="standby temperature">195.0</setting>
+        <setting key="print cooling">100.0</setting>
+        <setting key="retraction amount">3</setting>
+        <setting key="print temperature">210.0</setting>
+        <setting key="heated bed temperature">60.0</setting>
+        <setting key="retraction speed">40.0</setting>
+    </settings>
+</fdmmaterial>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdmmaterial xmlns="http://www.ultimaker.com/material" version="1.3">
+    <metadata>
+        <name>
+            <brand>Fiberlogy HD</brand>
+            <material>PLA</material>
+            <color>Generic</color>
+        </name>
+        <GUID>78f8b7d3-e129-4ba3-bdb1-1c9eed8a923f</GUID>
+        <version>1</version>
+        <color_code>#dba500</color_code>
+    </metadata>
+    <properties>
+        <density>1.24</density>
+        <diameter>1.74</diameter>
+    </properties>
+    <settings>
+        <setting key="print temperature">210</setting>
+    </settings>
+</fdmmaterial>

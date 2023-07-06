@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdmmaterial xmlns="http://www.ultimaker.com/material" version="1.3">
+    <metadata>
+        <name>
+            <brand>Verbatim</brand>
+            <material>BVOH</material>
+            <color>Generic</color>
+            <label>Nature BVOH</label>
+        </name>
+        <GUID>c860a504-f47c-4c57-a251-1e2ecd79600a</GUID>
+        <version>3</version>
+        <color_code>#a32bcc</color_code>
+        <description>Water soluble support material. BVOH is a matching support material for PLA, CPE and PET.</description>
+        <adhesion_info>Use the same temperatures and adhesion method as your build material(s).</adhesion_info>
+    </metadata>
+    <properties>
+        <density>1.14</density>
+        <diameter>1.75</diameter>
+        <weight>500</weight>
+    </properties>
+    <settings>
+        <setting key="print temperature">210</setting>
+        <!-- Special printer parameters -->
+        <machine>
+           <machine_identifier manufacturer="WEEDO" product="Weedo X40"/>
+           <setting key="standby temperature">175</setting>
+           <setting key="heated bed temperature">60</setting>
+           <setting key="retraction speed">45</setting>
+           <setting key="retraction amount">5</setting>
+       </machine>
+    </settings>
+</fdmmaterial>

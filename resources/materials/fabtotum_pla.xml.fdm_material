@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdmmaterial xmlns="http://www.ultimaker.com/material" version="1.3">
+    <metadata>
+        <name>
+            <brand>FABtotum</brand>
+            <material>PLA</material>
+            <color>Generic</color>
+        </name>
+        <GUID>2adcb50b-94b5-4393-bcc8-e6d4e45d8a87</GUID>
+        <version>2</version>
+        <color_code>#FFC924</color_code>
+        <description>FABtotum generic PLA profile.</description>
+        <adhesion_info>Recommended nozzle temperature: 190...200C, bed temperature: 40...50C, layer fan: on, adhesion type: skirt.</adhesion_info>
+    </metadata>
+    <properties>
+        <diameter>1.75</diameter>
+        <density>1.24</density>
+    </properties>
+    <settings>
+        <setting key="print temperature">200.0</setting>
+        <setting key="heated bed temperature">40.0</setting>
+    </settings>
+</fdmmaterial>

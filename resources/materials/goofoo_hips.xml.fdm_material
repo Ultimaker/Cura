@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdmmaterial xmlns="http://www.ultimaker.com/material" version="1.3">
+    <metadata>
+        <name>
+            <brand>GOOFOO</brand>
+            <material>HIPS</material>
+            <color>Generic</color>
+            <label>HIPS</label>
+        </name>
+        <GUID>018afb87-7e12-4489-87ee-ad482137a583</GUID>
+        <version>2</version>
+        <color_code>#ee51f8</color_code>
+    </metadata>
+    <properties>
+        <density>1.10</density>
+        <diameter>1.75</diameter>
+    </properties>
+    <settings>
+        <setting key="print temperature">210</setting>
+        <setting key="heated bed temperature">60</setting>
+        <setting key="standby temperature">210</setting>
+        <setting key="retraction amount">4.5</setting>
+        <setting key="retraction speed">60</setting>
+    </settings>
+</fdmmaterial>

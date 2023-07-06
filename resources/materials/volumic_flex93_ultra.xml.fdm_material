@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<fdmmaterial version="1.3" xmlns="http://www.ultimaker.com/material">
+  <metadata>
+    <name>
+      <brand>Volumic</brand>
+      <material>TPU</material>
+      <color>Generic</color>
+      <label>FLEX93 Ultra</label>
+    </name>
+    <version>2</version>
+	<description>The Flex93 ULTRA, finally a flexible (Shore 93A) that prints quickly! Print flex quickly with exceptional rendering.</description>
+    <adhesion_info>Clean bed, no need of lac</adhesion_info>
+    <color_code>#00ff00</color_code>
+    <GUID>4fa79814-709b-45f5-b6af-1b61dd4ded15</GUID>
+  </metadata>
+  <properties>
+    <density>1.2</density>
+    <diameter>1.75</diameter>
+  </properties>
+  <settings>
+    <setting key="print cooling">75.0</setting>
+    <setting key="retraction amount">3.0</setting>
+    <setting key="standby temperature">175.0</setting>
+    <setting key="retraction speed">15.0</setting>
+    <setting key="heated bed temperature">45.0</setting>
+    <setting key="print temperature">235.0</setting>
+  </settings>
+</fdmmaterial>

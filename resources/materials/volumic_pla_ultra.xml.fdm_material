@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<fdmmaterial version="1.3" xmlns="http://www.ultimaker.com/material">
+  <metadata>
+    <name>
+      <brand>Volumic</brand>
+      <material>PLA</material>
+      <color>Generic</color>
+      <label>PLA Ultra</label>
+    </name>
+    <version>2</version>
+    <GUID>3f84ad4e-5fc8-4b1a-83d1-1c2636053e07</GUID>
+    <description>The professional PLA. Very easy to print, excellent adhesion at low temperature, flexibility worthy of ABS, a very high quality material (industrial grade) and a perfect finish.</description>
+    <adhesion_info>3DLac or Dimafix</adhesion_info>
+    <color_code>#00ff00</color_code>
+  </metadata>
+  <properties>
+    <density>1.25</density>
+    <diameter>1.75</diameter>
+  </properties>
+  <settings>
+    <setting key="print cooling">100.0</setting>
+    <setting key="retraction amount">2.0</setting>
+    <setting key="standby temperature">165.0</setting>
+    <setting key="retraction speed">25.0</setting>
+    <setting key="heated bed temperature">50.0</setting>
+    <setting key="print temperature">210.0</setting>
+  </settings>
+</fdmmaterial>

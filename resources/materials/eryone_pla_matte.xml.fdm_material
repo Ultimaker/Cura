@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='utf-8'?>
+<fdmmaterial xmlns="http://www.ultimaker.com/material" xmlns:cura="http://www.ultimaker.com/cura" version="1.3">
+  <metadata>
+    <name>
+      <brand>Eryone</brand>
+      <material>PLA</material>
+      <color>Generic</color>
+      <label>PLA Matte</label>
+    </name>
+    <version>1</version>
+    <GUID>03e828a2-7e43-4e83-8de0-2cd7ed9f2f7c</GUID>
+    <color_code>#bfbfa7</color_code>
+    <description>Eryone Matte PLA is ideal for the fast and reliable printing of parts and prototypes with a great surface quality.</description>
+    <adhesion_info>Print on bare glass. Use tape for cold build plates.</adhesion_info>
+  </metadata>
+  <properties>
+    <density>1.45</density>
+    <diameter>1.75</diameter>
+    <weight>1000</weight>
+  </properties>
+  <settings>
+    <setting key="heated bed temperature">60.0</setting>
+    <setting key="print cooling">100.0</setting>
+    <setting key="print temperature">205.0</setting>
+    <setting key="retraction amount">3.5</setting>
+    <setting key="retraction speed">45.0</setting>
+    <setting key="standby temperature">175.0</setting>
+    <machine>
+      <machine_identifier manufacturer="Eryone" product="eryone_thinker_direct" />
+      <setting key="retraction amount">0.2</setting>
+      <setting key="retraction speed">35.0</setting>
+    </machine>
+  </settings>
+</fdmmaterial>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdmmaterial xmlns="http://www.ultimaker.com/material" version="1.3">
+    <metadata>
+        <name>
+            <brand>BCN3D Filaments</brand>
+            <material>PLA</material>
+            <color>Yellow</color>
+        </name>
+        <GUID>96a2ae42-9120-5161-ba39-45a3237dd57a</GUID>
+        <version>1</version>
+        <color_code>#FEDE00</color_code>
+        <instructions>http://bcn3dtechnologies.com/en/3d-printer-filaments</instructions>
+        <instruction_link>https://www.bcn3d.com/product/pla-bcn3d-filaments/</instruction_link>
+        <author>
+            <organization>BCN3D Technologies</organization>
+            <contact>BCN3D Support</contact>
+            <email>info@bcn3dtechnologies.com</email>
+            <phone>+34 934 137 088</phone>
+            <address>
+                <street>Esteve Terradas 1</street>
+                <city>Castelldefels</city>
+                <region>Barcelona</region>
+                <zip>08860</zip>
+                <country>Spain</country>
+            </address>
+        </author>
+        <supplier>
+            <organization>BCN3D Technologies</organization>
+            <contact>BCN3D Support</contact>
+            <email>info@bcn3dtechnologies.com</email>
+            <phone>+34 934 137 088</phone>
+            <address>
+                <street>Esteve Terradas 1</street>
+                <city>Castelldefels</city>
+                <region>Barcelona</region>
+                <zip>08860</zip>
+                <country>Spain</country>
+            </address>
+        </supplier>
+    </metadata>
+    <properties>
+        <density>1.25</density>
+        <diameter>2.85</diameter>
+    </properties>
+    <settings>
+        <setting key="print temperature">200</setting>
+        <setting key="heated bed temperature">60</setting>
+        <setting key="standby temperature">150</setting>
+        <setting key="print cooling">100</setting>
+        <setting key="retraction amount">6.5</setting>
+        <setting key="adhesion type">brim</setting>
+
+        <machine>
+           <machine_identifier manufacturer="BCN3D Technologies" product="bcn3dsigma" />
+           <hotend id="0.3mm" />
+           <hotend id="0.4mm" />
+           <hotend id="0.5mm - Hardened Steel" />
+           <hotend id="0.6mm" />
+           <hotend id="0.8mm" />
+           <hotend id="1.0mm" />
+           <hotend id="0.3mm" />
+           <hotend id="0.4mm" />
+           <hotend id="0.5mm - Hardened Steel" />
+           <hotend id="0.6mm" />
+           <hotend id="0.8mm" />
+           <hotend id="1.0mm" />
+        </machine>
+        <machine>
+           <machine_identifier manufacturer="BCN3D Technologies" product="bcn3dsigmar19" />
+           <hotend id="0.3mm" />
+           <hotend id="0.4mm" />
+           <hotend id="0.5mm - Hardened Steel" />
+           <hotend id="0.6mm" />
+           <hotend id="0.8mm" />
+           <hotend id="1.0mm" />
+        </machine>
+        <machine>
+            <machine_identifier manufacturer="BCN3D Technologies" product="bcn3dw50" />
+            <setting key="heated bed temperature">30</setting>
+            <setting key="build volume temperature">40</setting>
+            <setting key="coasting enable">False</setting>
+            <hotend id="0.4mm" />
+            <hotend id="Hotend M (0.4mm)">
+                <setting key="hardware compatible">no</setting>
+            </hotend>
+            <hotend id="0.6mm" />
+            <hotend id="Hotend X (0.6mm)">
+                <setting key="hardware compatible">no</setting>
+            </hotend>
+            <hotend id="0.8mm" />
+            <hotend id="1.0mm" />
+        </machine>
+         <machine>
+            <machine_identifier manufacturer="BCN3D Technologies" product="bcn3dw27" />
+            <setting key="heated bed temperature">30</setting>
+            <setting key="build volume temperature">40</setting>
+            <setting key="coasting enable">False</setting>
+            <hotend id="0.4mm" />
+            <hotend id="Hotend M (0.4mm)">
+                <setting key="hardware compatible">no</setting>
+            </hotend>
+            <hotend id="0.6mm" />
+            <hotend id="Hotend X (0.6mm)">
+                <setting key="hardware compatible">no</setting>
+            </hotend>
+            <hotend id="0.8mm" />
+            <hotend id="1.0mm" />
+        </machine>
+        <machine>
+            <machine_identifier manufacturer="BCN3D Technologies" product="bcn3dd25" />
+            <setting key="heated bed temperature">30</setting>
+            <setting key="build volume temperature">40</setting>
+            <setting key="coasting enable">False</setting>
+            <hotend id="0.4mm" />
+            <hotend id="0.8mm" />
+        </machine>
+    </settings>
+</fdmmaterial>

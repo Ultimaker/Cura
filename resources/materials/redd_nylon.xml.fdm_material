@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdmmaterial xmlns="http://www.ultimaker.com/material" version="1.3">
+    <metadata>
+        <name>
+            <brand>REDD</brand>
+            <material>Nylon</material>
+            <color>Generic</color>
+        </name>
+		<GUID>1f221d1a-5201-45f6-b143-d1f678224254</GUID>
+        <version>2</version>
+        <color_code>#FFC924</color_code>
+        <description>REDD generic NYLON profile.</description>
+        <adhesion_info>Recommended nozzle temperature: 240 C, bed temperature: 90 C, layer fan: off, adhesion type: raft.</adhesion_info>
+    </metadata>
+    <properties>
+        <diameter>1.75</diameter>
+        <density>1.24</density>
+    </properties>
+    <settings>
+        <setting key="print temperature">240</setting>
+        <setting key="heated bed temperature">90</setting>
+    </settings>
+</fdmmaterial>

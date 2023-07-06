@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Generic PLA 1.75mm profile. The data in this file may not be correct for your specific machine.
+-->
+<fdmmaterial xmlns="http://www.ultimaker.com/material" xmlns:cura="http://www.ultimaker.com/cura" version="1.3">
+    <metadata>
+        <name>
+            <brand>IMADE3D</brand>
+            <material>PLA</material>
+            <color>Generic</color>
+        </name>
+        <GUID>e7cda2de-0ad6-441e-9340-6d408c98def2</GUID>
+        <version>3</version>
+        <color_code>#a5da00</color_code>
+        <description>PLA is ideal for fast and reliable printing.</description>
+        <adhesion_info>Use blue tape with cold bed and a bare PEI sheet with hot bed.</adhesion_info>
+    </metadata>
+    <properties>
+        <density>1.24</density>
+        <diameter>1.75</diameter>
+    </properties>
+    <settings>
+        <setting key="print temperature">210</setting>
+        <setting key="heated bed temperature">55</setting>
+        <setting key="standby temperature">175</setting>
+        <setting key="adhesion tendency">0</setting>
+        <setting key="surface energy">100</setting>
+
+        <machine>
+            <machine_identifier manufacturer="IMADE3D" product="IMADE3D JellyBOX"/>
+            <hotend id="0.4 mm">
+                <setting key="hardware compatible">yes</setting>
+                <setting key="retraction amount">1.3</setting>
+                <setting key="retraction speed">40</setting>
+                <cura:setting key="material_flow">95</cura:setting>
+                <cura:setting key="cool_fan_speed">100</cura:setting>
+                <cura:setting key="cool_fan_speed_min">80</cura:setting>
+            </hotend>
+        </machine>
+        
+        <machine>
+            <machine_identifier manufacturer="IMADE3D" product="IMADE3D JellyBOX 2"/>
+            <hotend id="0.4 mm">
+                <setting key="hardware compatible">yes</setting>
+                <setting key="retraction amount">1.3</setting>
+                <setting key="retraction speed">40</setting>
+                <cura:setting key="material_flow">95</cura:setting>
+                <cura:setting key="cool_fan_speed">100</cura:setting>
+                <cura:setting key="cool_fan_speed_min">80</cura:setting>
+            </hotend>
+        </machine>
+        
+    </settings>
+</fdmmaterial>

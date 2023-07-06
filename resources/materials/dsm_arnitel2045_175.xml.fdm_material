@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdmmaterial xmlns="http://www.ultimaker.com/material" version="1.3">
+    <metadata>
+        <name>
+            <brand>DSM</brand>
+            <material>TPC</material>
+            <color>Generic</color>
+            <label>Arnitel2045</label>
+        </name>
+        <GUID>fc67dfa2-7f71-4ca8-8ba5-dfe802fda22c</GUID>
+        <version>2</version>
+        <color_code>#ee51f8</color_code>
+    </metadata>
+    <properties>
+        <density>1.10</density>
+        <diameter>1.75</diameter>
+    </properties>
+    <settings>
+        <setting key="print temperature">215</setting>
+        <setting key="heated bed temperature">50</setting>
+        <setting key="standby temperature">160</setting>
+
+        <machine>
+            <machine_identifier manufacturer="Cartesio bv" product="cartesio" />
+            <setting key="print cooling">40.0</setting>
+            <setting key="standby temperature">160</setting>
+            <setting key="retraction speed">20</setting>
+            <setting key="heated bed temperature">50</setting>
+            <setting key="print temperature">215</setting>
+            <hotend id="0.25mm thermoplastic extruder">
+                <setting key="hardware compatible">yes</setting>
+                <setting key="retraction amount">1.0</setting>
+            </hotend>
+            <hotend id="0.4mm thermoplastic extruder">
+                <setting key="hardware compatible">yes</setting>
+                <setting key="retraction amount">1.0</setting>
+            </hotend>
+            <hotend id="0.8mm thermoplastic extruder">
+                <setting key="hardware compatible">yes</setting>
+                <setting key="retraction amount">1.5</setting>
+            </hotend>
+        </machine>
+    </settings>
+</fdmmaterial>

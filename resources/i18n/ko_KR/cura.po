@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-23 14:32+0200\n"
+"POT-Creation-Date: 2023-07-06 12:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -498,7 +498,7 @@ msgstr "단위가 밀리미터가 아닌 미터 단위 인 경우 모델이 매�
 
 msgctxt "@label"
 msgid "Annealing"
-msgstr ""
+msgstr "어닐링"
 
 msgctxt "@label"
 msgid "Anonymous"
@@ -921,13 +921,13 @@ msgctxt "@label"
 msgid "Configurations"
 msgstr "구성"
 
-msgctxt "@action:inmenu"
-msgid "Configure Cura..."
-msgstr "Cura 구성 ..."
-
 msgctxt "@info:tooltip"
 msgid "Configure Per Model Settings"
 msgstr "모델 별 설정 구성"
+
+msgctxt "@action:inmenu"
+msgid "Configure Stratos..."
+msgstr ""
 
 msgctxt "@action"
 msgid "Configure group"
@@ -1473,7 +1473,7 @@ msgstr "3D 프린팅을 위한 엔드 투 엔트 솔루션."
 
 msgctxt "@label"
 msgid "Engineering"
-msgstr ""
+msgstr "엔지니어링"
 
 msgctxt "@option:check"
 msgid "Ensure models are kept apart"
@@ -2094,7 +2094,7 @@ msgstr "설치 중..."
 
 msgctxt "@action:label"
 msgid "Intent"
-msgstr ""
+msgstr "의도"
 
 msgctxt "@label"
 msgid "Interface"
@@ -2442,7 +2442,7 @@ msgstr "재료 프로파일이 설치되지 않음"
 
 msgctxt "@title:header"
 msgid "Material profiles successfully synced with the following printers:"
-msgstr ""
+msgstr "재료 프로파일이 다음과 같은 프린터와 성공적으로 동기화되었습니다."
 
 msgctxt "@action:label"
 msgid "Material settings"
@@ -4173,7 +4173,7 @@ msgstr "서포트 차단기"
 
 msgctxt "name"
 msgid "Support Eraser"
-msgstr ""
+msgstr "서포트 지우개"
 
 msgctxt "@tooltip"
 msgid "Support Infill"
@@ -4269,7 +4269,7 @@ msgstr "이미지에 적용할 스무딩(smoothing)의 정도."
 
 msgctxt "@text"
 msgid "The annealing profile requires post-processing in an oven after the print is finished. This profile retains the dimensional accuracy of the printed part after annealing and improves strength, stiffness, and thermal resistance."
-msgstr ""
+msgstr "어닐링 프로파일은 프린트가 완료된 후 오븐에서 후처리를 해야 합니다. 이 프로파일은 어닐링 후에도 프린트된 부품의 치수 정확도를 유지하고 강도, 강성 및 내열성을 개선합니다."
 
 msgctxt "@label"
 msgid "The assigned printer, %1, requires the following configuration change:"
@@ -4347,7 +4347,7 @@ msgstr "새 프린터와 함께 제공되는 펌웨어는 작동하지만 새로
 
 msgctxt "@info:backup_failed"
 msgid "The following error occurred while trying to restore a Cura backup:"
-msgstr ""
+msgstr "Cura 백업을 복원하는 동안 다음과 같은 오류가 발생했습니다."
 
 msgctxt "@label"
 msgid "The following packages can not be installed because of an incompatible Cura version:"
@@ -4359,11 +4359,11 @@ msgstr "다음 패키지가 추가됩니다:"
 
 msgctxt "@label"
 msgid "The following printers in your account have been added in Cura:"
-msgstr ""
+msgstr "계정에 있는 다음과 같은 프린터가 Cura에 추가되었습니다."
 
 msgctxt "@title:header"
 msgid "The following printers will receive the new material profiles:"
-msgstr ""
+msgstr "다음과 같은 프린터는 새 재료 프로파일을 받게 됩니다."
 
 msgctxt "@info:tooltip"
 msgid "The following script is active:"
@@ -5035,7 +5035,7 @@ msgstr "Cura 5.2에서 Cura 5.3으로 구성을 업그레이드합니다."
 
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.3 to Cura 5.4."
-msgstr ""
+msgstr "Cura 5.3에서 5.4로 구성을 업그레이드합니다."
 
 msgctxt "@action:button"
 msgid "Upload custom Firmware"
@@ -5167,7 +5167,7 @@ msgstr "5.2에서 5.3으로 버전 업그레이드"
 
 msgctxt "name"
 msgid "Version Upgrade 5.3 to 5.4"
-msgstr ""
+msgstr "5.3에서 5.4로 버전 업그레이드"
 
 msgctxt "@button"
 msgid "View printers in Digital Factory"
@@ -5479,6 +5479,10 @@ msgstr "다음 계정 동기화 시까지 {printer_name}이(가) 제거됩니다
 msgctxt "@info:generic"
 msgid "{} plugins failed to download"
 msgstr "{}개의 플러그인을 다운로드하지 못했습니다"
+
+#~ msgctxt "@action:inmenu"
+#~ msgid "Configure Cura..."
+#~ msgstr "Cura 구성 ..."
 
 #~ msgctxt "@info:status"
 #~ msgid "Cura does not accurately display layers when Wire Printing is enabled."

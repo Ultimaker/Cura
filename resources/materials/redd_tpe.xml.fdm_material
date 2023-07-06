@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdmmaterial xmlns="http://www.ultimaker.com/material" version="1.3">
+    <metadata>
+        <name>
+            <brand>REDD</brand>
+            <material>TPE</material>
+            <color>Generic</color>
+        </name>
+		<GUID>f0454f97-2b49-46c0-b1cf-aa2986ac62eb</GUID>
+        <version>2</version>
+        <color_code>#FFC924</color_code>
+        <description>REDD generic TPE profile.</description>
+        <adhesion_info>Recommended nozzle temperature: 240 C, bed temperature: 60 C, layer fan: off, adhesion type: skirt.</adhesion_info>
+    </metadata>
+    <properties>
+        <diameter>1.75</diameter>
+        <density>1.24</density>
+    </properties>
+    <settings>
+        <setting key="print temperature">240</setting>
+        <setting key="heated bed temperature">60</setting>
+    </settings>
+</fdmmaterial>

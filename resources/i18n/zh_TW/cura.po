@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-23 14:32+0200\n"
+"POT-Creation-Date: 2023-07-06 12:02+0200\n"
 "PO-Revision-Date: 2022-01-02 19:59+0800\n"
 "Last-Translator: Valen Chang  <carf17771@gmail.com>\n"
 "Language-Team: Valen Chang <carf17771@gmail.com>\n"
@@ -921,13 +921,13 @@ msgctxt "@label"
 msgid "Configurations"
 msgstr "設定"
 
-msgctxt "@action:inmenu"
-msgid "Configure Cura..."
-msgstr "設定 Cura..."
-
 msgctxt "@info:tooltip"
 msgid "Configure Per Model Settings"
 msgstr "設定對每個模型的單獨設定"
+
+msgctxt "@action:inmenu"
+msgid "Configure Stratos..."
+msgstr ""
 
 msgctxt "@action"
 msgid "Configure group"
@@ -6084,6 +6084,10 @@ msgstr "下載外掛 {} 失敗"
 
 #~ msgid "Configure"
 #~ msgstr "設定"
+
+#~ msgctxt "@action:inmenu"
+#~ msgid "Configure Cura..."
+#~ msgstr "設定 Cura..."
 
 #~ msgctxt "@action:menu"
 #~ msgid "Configure setting visiblity..."

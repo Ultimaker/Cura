@@ -107,6 +107,9 @@ class ThreeMFWriter(MeshWriter):
         if mesh_data is not None:
             savitar_node.getMeshData().setVerticesFromBytes(mesh_data.getVerticesAsByteArray())
             indices_array = mesh_data.getIndicesAsByteArray()
+            print_mode = Application.getInstance().getGlobalContainerStack().getProperty("print_mode", "value")
+            if print_mode not in ("mirror", "duplication"):
+                indices_array = mesh_data.getIndicesAsByteArray()
             if indices_array is not None:
                 savitar_node.getMeshData().setFacesFromBytes(indices_array)
             else:

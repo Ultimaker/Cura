@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='utf-8'?>
+<fdmmaterial version="1.3" xmlns="http://www.ultimaker.com/material">
+    <metadata>
+        <name>
+            <brand>3D-Fuel</brand>
+            <material>PLA</material>
+            <color>Black</color>
+            <label>Pro PLA (NatureWorks 3D870 Ingeo PLA)</label>
+        </name>
+        <color_code>#000000</color_code>
+        <GUID>ca27d214-ea51-418e-a43f-7f82e319d814</GUID>
+        <adhesion_info />
+        <version>1</version>
+        <description>Pro PLA has higher impact strength than ABS and Standard PLA with a heat resistance rivaling that of ABS!</description>
+    </metadata>
+    <properties>
+        <diameter>1.75</diameter>
+        <density>1.24</density>
+        <weight>1000</weight>
+    </properties>
+    <settings>
+    	<setting key="retraction speed">40.0</setting>
+	    <setting key="retraction amount">1.0</setting>
+	    <setting key="adhesion tendency">0</setting>
+	    <setting key="standby temperature">220.0</setting>
+	    <setting key="heated bed temperature">60.0</setting>
+	    <setting key="print temperature">240.0</setting>
+	    <setting key="surface energy">100</setting>
+	    <setting key="build volume temperature">28</setting>
+    </settings>
+</fdmmaterial>

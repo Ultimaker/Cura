@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdmmaterial xmlns="http://www.ultimaker.com/material" version="1.3">
+    <metadata>
+        <name>
+            <brand>GOOFOO</brand>
+            <material>PVA</material>
+            <color>Generic</color>
+            <label>PVA</label>
+        </name>
+        <GUID>698750a7-885b-4b50-b83d-daca8e86768f</GUID>
+        <version>2</version>
+        <color_code>#ee51f8</color_code>
+    </metadata>
+    <properties>
+        <density>1.10</density>
+        <diameter>1.75</diameter>
+    </properties>
+    <settings>
+        <setting key="print temperature">210</setting>
+        <setting key="heated bed temperature">60</setting>
+        <setting key="standby temperature">210</setting>
+        <setting key="retraction amount">1</setting>
+        <setting key="retraction speed">20</setting>
+    </settings>
+</fdmmaterial>

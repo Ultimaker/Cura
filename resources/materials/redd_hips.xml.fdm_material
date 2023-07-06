@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdmmaterial xmlns="http://www.ultimaker.com/material" version="1.3">
+    <metadata>
+        <name>
+            <brand>REDD</brand>
+            <material>HIPS</material>
+            <color>Generic</color>
+        </name>
+		<GUID>cc227de1-8f69-4742-9569-b7902989328a</GUID>
+        <version>2</version>
+        <color_code>#FFC924</color_code>
+        <description>REDD generic HIPS profile.</description>
+        <adhesion_info>Recommended nozzle temperature:  250 C, bed temperature: 110 C, layer fan: off, adhesion type: raft.</adhesion_info>
+    </metadata>
+    <properties>
+        <diameter>1.75</diameter>
+        <density>1.24</density>
+    </properties>
+    <settings>
+        <setting key="print temperature">250</setting>
+        <setting key="heated bed temperature">110</setting>
+    </settings>
+</fdmmaterial>

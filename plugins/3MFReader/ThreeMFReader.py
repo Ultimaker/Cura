@@ -210,6 +210,10 @@ class ThreeMFReader(MeshReader):
             scene_3mf = parser.parse(archive.open("3D/3dmodel.model").read())
             self._unit = scene_3mf.getUnit()
 
+            #BCN3D IDEX INCLUSION
+            from cura.Utils.BCN3Dutils.PrintModeManager import PrintModeManager
+            PrintModeManager.getInstance().openedFromMFReader = True
+
             for key, value in scene_3mf.getMetadata().items():
                 CuraApplication.getInstance().getController().getScene().setMetaDataEntry(key, value)
 

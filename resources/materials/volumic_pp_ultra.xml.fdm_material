@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='utf-8'?>
+<fdmmaterial version="1.3" xmlns="http://www.ultimaker.com/material">
+  <metadata>
+    <name>
+      <brand>Volumic</brand>
+      <material>PP</material>
+      <color>Generic</color>
+      <label>POLYPRO Ultra</label>
+    </name>
+    <version>2</version>
+    <description>Polypropylene ULTRA, with its exceptional properties, makes it a very versatile material for prototyping as well as for the functional part.</description>
+    <GUID>e9b053a4-bb38-4ad5-be20-3fa8198c08be</GUID>
+    <adhesion_info>Best with PP adhesive or PP juice, or 3DLac/Dimafix</adhesion_info>
+    <color_code>#00ff00</color_code>
+  </metadata>
+  <properties>
+    <density>0.9</density>
+    <diameter>1.75</diameter>
+  </properties>
+  <settings>
+    <setting key="print cooling">50.0</setting>
+    <setting key="adhesion tendency">0</setting>
+    <setting key="retraction amount">1.2</setting>
+    <setting key="standby temperature">175.0</setting>
+    <setting key="retraction speed">25.0</setting>
+    <setting key="heated bed temperature">90.0</setting>
+    <setting key="print temperature">230.0</setting>
+  </settings>
+</fdmmaterial>

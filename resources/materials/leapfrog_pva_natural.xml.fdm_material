@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdmmaterial version="1.3" xmlns="http://www.ultimaker.com/material" xmlns:cura="http://www.ultimaker.com/cura">
+    <metadata>
+        <name>
+            <brand>Leapfrog</brand>
+            <material>PVA</material>
+            <color>Natural</color>
+        </name>
+        <description>Water soluble support material. PVA is a matching support material for PLA, EPLA and Nylon.</description>
+        <GUID>570022e7-e038-40f0-af85-98f204cc558d</GUID>
+        <version>4</version>
+        <adhesion_info>Use the same temperatures and adhesion method as your build material(s).</adhesion_info>
+        <instruction_link>https://www.lpfrg.com/products/scaffold-filament/</instruction_link>
+        <color_code>#737577</color_code>
+    </metadata>
+    <properties>
+        <density>1.19</density>
+        <diameter>1.75</diameter>
+    </properties>
+    <settings>
+        <setting key="heated bed temperature">45.0</setting>
+        <setting key="print temperature">215</setting>
+        <setting key="standby temperature">215</setting>
+        <setting key="surface energy">100</setting>
+
+        <machine>
+            <machine_identifier manufacturer="Leapfrog B.V." product="Leapfrog Bolt Pro"/>
+            <hotend id="Brass 0.4">
+                <setting key="hardware compatible">yes</setting>
+            </hotend>
+            <hotend id="NozzleX 0.4">
+                <setting key="hardware compatible">yes</setting>
+            </hotend>
+        </machine>
+    </settings>
+</fdmmaterial>

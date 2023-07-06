@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='utf-8'?>
+<fdmmaterial xmlns="http://www.ultimaker.com/material" xmlns:cura="http://www.ultimaker.com/cura" version="1.3">
+  <metadata>
+    <name>
+      <brand>Extrudr</brand>
+      <material>GreenTEC Pro</material>
+      <color>Nature RAL 1013</color>
+      <label>Nature GreenTEC Pro</label>
+    </name>
+    <version>1</version>
+    <GUID>6f71f502-5ee7-4b56-8970-87eb1aa0897d</GUID>
+    <color_code>#e9e5ce</color_code>
+    <description>GreenTEC Pro from the BIO-Performance series by Extrudr was specially developed for high-performance applications. The material is characterized by good flexural strength and low warping as well as the high-quality surface. In addition, it remains dimensionally stable at temperatures of up to 160 ° C.
+Manufacturer recommendation: Nozzle 210-230°C, bed 20-90°C, speed 40-60mm/s, cooling 30-80%, max 50% Layer height.</description>
+    <adhesion_info></adhesion_info>
+  </metadata>
+  <properties>
+    <density>1.35</density>
+    <diameter>1.75</diameter>
+    <weight>750</weight>
+  </properties>
+  <settings>
+    <setting key="print temperature">220.0</setting>
+    <setting key="heated bed temperature">60</setting>
+    <setting key="standby temperature">175</setting>
+    <setting key="print cooling">50</setting>
+    <setting key="adhesion tendency">0</setting>
+    <setting key="surface energy">100</setting>
+    <setting key="build volume temperature">28</setting>
+    <setting key="retraction speed">45</setting>
+    <setting key="retraction amount">5</setting>
+    <!-- Special printer parameters -->
+    <machine>
+       <machine_identifier manufacturer="WEEDO" product="Weedo X40"/>
+       <setting key="print temperature">210.0</setting>
+       <setting key="retraction speed">40</setting>
+       <setting key="retraction amount">5.5</setting>
+    </machine>
+  </settings>
+</fdmmaterial>

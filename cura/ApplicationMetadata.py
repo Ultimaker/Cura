@@ -4,7 +4,7 @@
 # ---------
 # General constants used in Cura
 # ---------
-DEFAULT_CURA_APP_NAME = "Stratos"
+DEFAULT_CURA_APP_NAME = "BCN3D Stratos"
 DEFAULT_CURA_DISPLAY_NAME = "BCN3D Stratos"
 DEFAULT_CURA_VERSION = "dev"
 DEFAULT_CURA_BUILD_TYPE = ""

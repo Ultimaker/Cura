@@ -185,7 +185,7 @@ Item
         //For more information, see:
         //- https://doc.qt.io/qt-5/macos-issues.html#menu-bar
         //- https://doc.qt.io/qt-5/qmenubar.html#qmenubar-as-a-global-menu-bar
-        text: (Qt.platform.os == "osx") ? "Configure Cura..." : catalog.i18nc("@action:inmenu", "Configure Cura...")
+        text: (Qt.platform.os == "osx") ? "Configure Stratos..." : catalog.i18nc("@action:inmenu", "Configure Stratos...")
         icon.name: "configure"
         // on MacOS it us customary to assign the ctrl+, hotkey to open a general settings menu
         shortcut: (Qt.platform.os == "osx") ? "Ctrl+," : ""

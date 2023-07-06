@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdmmaterial xmlns="http://www.ultimaker.com/material" version="1.3">
+    <metadata>
+        <name>
+            <brand>GOOFOO</brand>
+            <material>TPU</material>
+            <color>Generic</color>
+            <label>TPU-87A</label>
+        </name>
+        <GUID>3bcc8751-3ec0-43b6-9f72-8d8202eaf42c</GUID>
+        <version>2</version>
+        <color_code>#ee51f8</color_code>
+    </metadata>
+    <properties>
+        <density>1.10</density>
+        <diameter>1.75</diameter>
+    </properties>
+    <settings>
+        <setting key="print temperature">210</setting>
+        <setting key="heated bed temperature">60</setting>
+        <setting key="standby temperature">210</setting>
+        <setting key="retraction amount">1</setting>
+        <setting key="retraction speed">10</setting>
+    </settings>
+</fdmmaterial>
