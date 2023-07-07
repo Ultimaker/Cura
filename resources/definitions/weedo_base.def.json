@@ -179,9 +179,6 @@
         "material_diameter": {
             "default_value": 1.75
         },
-        "machine_id": {
-            "default_value": 1
-        },
         "material_bed_temp_wait": {
             "default_value": false
         },
@@ -203,20 +200,16 @@
         "machine_min_cool_heat_time_window": {
             "default_value": 1200.0
         },
-        "machine_steps_per_mm_x":
-        {
+        "machine_steps_per_mm_x": {
             "default_value": 94
         },
-        "machine_steps_per_mm_y":
-        {
+        "machine_steps_per_mm_y": {
             "default_value": 94
         },
-        "machine_steps_per_mm_z":
-        {
+        "machine_steps_per_mm_z": {
             "default_value": 400
         },
-        "machine_steps_per_mm_e":
-        {
+        "machine_steps_per_mm_e": {
             "default_value": 96
         },
         "machine_max_feedrate_x": {
