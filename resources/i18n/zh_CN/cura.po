@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-04 15:52+0000\n"
+"POT-Creation-Date: 2023-07-06 14:20+0000\n"
 "PO-Revision-Date: 2022-07-15 11:06+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -498,7 +498,7 @@ msgstr "当模型以米而不是毫米为单位时，模型可能会在打印平
 
 msgctxt "@label"
 msgid "Annealing"
-msgstr "退火"
+msgstr ""
 
 msgctxt "@label"
 msgid "Anonymous"
@@ -1445,7 +1445,7 @@ msgstr "熔丝 3D 打印技术的的端对端解决方案。"
 
 msgctxt "@label"
 msgid "Engineering"
-msgstr "工程业"
+msgstr ""
 
 msgctxt "@option:check"
 msgid "Ensure models are kept apart"
@@ -1550,7 +1550,7 @@ msgstr "失败"
 
 msgctxt "@text:error"
 msgid "Failed to connect to Digital Factory to sync materials with some of the printers."
-msgstr "Digital Factory 连接失败，无法将材料与某些打印机同步。"
+msgstr ""
 
 msgctxt "@text:error"
 msgid "Failed to connect to Digital Factory."
@@ -2066,7 +2066,7 @@ msgstr "正在安装..."
 
 msgctxt "@action:label"
 msgid "Intent"
-msgstr "目的"
+msgstr ""
 
 msgctxt "@label"
 msgid "Interface"
@@ -3330,7 +3330,7 @@ msgstr "提供读取和写入基于 XML 的材料配置文件的功能。"
 
 msgctxt "description"
 msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
-msgstr "为最后的机器提供机器操作（例如，热床调平向导，选择升级等）。"
+msgstr ""
 
 msgctxt "description"
 msgid "Provides removable drive hotplugging and writing support."
@@ -3362,7 +3362,7 @@ msgstr "提供对读取 AMF 文件的支持。"
 
 msgctxt "description"
 msgid "Provides support for reading Ultimaker Format Packages."
-msgstr "支持读取 Ultimaker 格式包。"
+msgstr ""
 
 msgctxt "description"
 msgid "Provides support for reading X3D files."
@@ -3378,7 +3378,7 @@ msgstr "提供对写入 3MF 文件的支持。"
 
 msgctxt "description"
 msgid "Provides support for writing Ultimaker Format Packages."
-msgstr "支持写入 Ultimaker 格式包。"
+msgstr ""
 
 msgctxt "description"
 msgid "Provides the Per Model Settings."
@@ -4223,7 +4223,7 @@ msgstr "要应用到图像的平滑量。"
 
 msgctxt "@text"
 msgid "The annealing profile requires post-processing in an oven after the print is finished. This profile retains the dimensional accuracy of the printed part after annealing and improves strength, stiffness, and thermal resistance."
-msgstr "打印完成后，需要在烘箱中对退火型材进行后处理。经过退火处理后，这种型材可以保持打印零件的尺寸精度不变，同时提高了零件的强度、刚度和耐热性。"
+msgstr ""
 
 msgctxt "@label"
 msgid "The assigned printer, %1, requires the following configuration change:"
@@ -4993,7 +4993,7 @@ msgstr "将配置从 Cura 5.2 版本升级至 5.3 版本。"
 
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.3 to Cura 5.4."
-msgstr "将配置从 Cura 5.3 升级至 Cura 5.4。"
+msgstr ""
 
 msgctxt "@action:button"
 msgid "Upload custom Firmware"
@@ -5125,7 +5125,7 @@ msgstr "版本自 5.2 升级到 5.3"
 
 msgctxt "name"
 msgid "Version Upgrade 5.3 to 5.4"
-msgstr "从版本 5.3 升级至 5.4"
+msgstr ""
 
 msgctxt "@button"
 msgid "View printers in Digital Factory"
