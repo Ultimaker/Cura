@@ -62,7 +62,7 @@ Item
         valueFromText: function(text)
         {
 
-            var value = parseFloat(text.substring(prefix.length, text.length - suffix.length).replace(",", ".")) / base.stepSize ;
+            var value = parseFloat(text.substring(prefix.length, text.length - suffix.length).replace(",", ".")) / base.stepSize;
             if (Number.isNaN(value))
             {
                 value = from
@@ -113,8 +113,8 @@ Item
 
             onTextChanged:
             {
-                var value = spinBox.valueFromText(spinBoxText.text);
-                spinBoxText.text = spinBox.textFromValue(value);
+                var value = spinBox.valueFromText(text);
+                text = spinBox.textFromValue(value);
                 spinBox.value = value;
             }
         }
