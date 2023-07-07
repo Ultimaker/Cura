@@ -115,7 +115,7 @@ Item
             {
                 var value = spinBox.valueFromText(text);
                 text = spinBox.textFromValue(value);
-                spinBox.value = value;
+                base.value = value;
             }
         }
 
