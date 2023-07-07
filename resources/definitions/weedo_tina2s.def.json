@@ -1,11 +1,11 @@
 {
-    "name": "WEEFUN TINA2",
+    "name": "WEEDO TINA2S",
     "version": 2,
     "inherits": "weedo_base",
     "metadata": {
         "visible": true,
-        "author": "WEEFUN",
-        "manufacturer": "WEEFUN",
+        "author": "WEEDO",
+        "manufacturer": "WEEDO",
         "file_formats": "text/x-gcode",
         "platform_offset": [
             0,
@@ -23,9 +23,7 @@
             "leapfrog_pva_natural",
             "generic_abs_175",
             "generic_asa_175",
-            "generic_bvoh_175",
             "generic_cpe_175",
-            "generic_hips_175",
             "generic_nylon_175",
             "generic_pc_175",
             "generic_petg_175",
@@ -173,10 +171,10 @@
     },
     "overrides": {
         "machine_name": {
-            "default_value": "WEEFUN TINA2"
+            "default_value": "WEEDO TINA2S"
         },
         "machine_start_gcode": {
-            "default_value": ";MachineType:{machine_name}\n;FilamentType:{material_type}\n;InfillDensity:{infill_sparse_density}\n;Extruder0Temperature:{material_print_temperature}\n\n;(**** start.gcode for tina2****)\nM203 Z15\nM104 S150\nG28 Z\nG28 X Y; Home extruder\nG1 X55 Y55 F1000\nG29\nM107 ; Turn off fan\nG90 ; Absolute positioning\nM82 ; Extruder in absolute mode\nM109 S{material_print_temperature_layer_0}\nG92 E0 ; Reset extruder position\nG1 X90 Y6 Z0.27 F2000\nG1 X20 Y6 Z0.27 E15 F1000\nG92 E0 ; Reset extruder position\nM203 Z5"
+            "default_value": ";MachineType:{machine_name}\n;FilamentType:{material_type}\n;InfillDensity:{infill_sparse_density}\n;Extruder0Temperature:{material_print_temperature}\n;BedTemperature:{material_bed_temperature}\n\n;(**** start.gcode for tina2****)\nM203 Z15\nM104 S150\nG28 Z\nG28 X Y; Home extruder\nG1 X55 Y55 F1000\nG29\nM107 ; Turn off fan\nG90 ; Absolute positioning\nM82 ; Extruder in absolute mode\nM109 S{material_print_temperature_layer_0}\nG92 E0 ; Reset extruder position\nG1 X90 Y6 Z0.27 F2000\nG1 X20 Y6 Z0.27 E15 F1000\nG92 E0 ; Reset extruder position\nM203 Z5"
         },
         "machine_end_gcode": {
             "default_value": ";(**** end.gcode for tina2****)\nM203 Z15\nM104 S0\nM107\nG92 E0 (Reset after prime)\nG0 E-1 F300\nG28 Z F300\nG28 X0 Y0\nG1 Y90 F1000"
@@ -185,16 +183,14 @@
             "default_value": 100
         },
         "machine_depth": {
-            "default_value": 120
+            "default_value": 110
         },
         "machine_height": {
             "default_value": 100
         },
-        "machine_heated_bed": {
-            "default_value": false
-        },
-        "infill_pattern": {
-            "value": "'lines' if infill_sparse_density > 45 else 'grid'"
+        "material_bed_temperature": {
+            "maximum_value_warning": "60",
+            "maximum_value": "65"
         },
         "speed_print": {
             "value": 40.0
