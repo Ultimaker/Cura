@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdmmaterial xmlns="http://www.ultimaker.com/material" version="1.3">
+    <metadata>
+        <name>
+            <brand>BCN3D Filaments</brand>
+            <material>PLA</material>
+            <color>White</color>
+        </name>
+        <GUID>3dab2d12-cf72-4a9a-8737-a37476ccce9d</GUID>
+        <instruction_link>https://www.bcn3d.com/product/PLA-bcn3d-filaments/</instruction_link>
+        <version>1</version>
+        <color_code>#FEFEFE</color_code>
+        <instructions>http://bcn3dtechnologies.com/en/3d-printer-filaments</instructions>
+        <author>
+            <organization>BCN3D Technologies</organization>
+            <contact>BCN3D Support</contact>
+            <email>info@bcn3dtechnologies.com</email>
+            <phone>+34 934 137 088</phone>
+            <address>
+                <street>Esteve Terradas 1</street>
+                <city>Castelldefels</city>
+                <region>Barcelona</region>
+                <zip>08860</zip>
+                <country>Spain</country>
+            </address>
+        </author>
+        <supplier>
+            <organization>BCN3D Technologies</organization>
+            <contact>BCN3D Support</contact>
+            <email>info@bcn3dtechnologies.com</email>
+            <phone>+34 934 137 088</phone>
+            <address>
+                <street>Esteve Terradas 1</street>
+                <city>Castelldefels</city>
+                <region>Barcelona</region>
+                <zip>08860</zip>
+                <country>Spain</country>
+            </address>
+        </supplier>
+    </metadata>
+    <properties>
+        <density>1.24</density>
+        <diameter>1.75</diameter>
+    </properties>
+    <settings>
+        <setting key="print temperature">200</setting>
+        <setting key="heated bed temperature">60</setting>
+        <setting key="standby temperature">150</setting>
+        <setting key="print cooling">100</setting>
+        <setting key="retraction amount">6.5</setting>
+        <setting key="adhesion type">brim</setting>
+        
+
+        <machine>
+            <machine_identifier manufacturer="BCN3D Technologies" product="bcn3domega" />
+            <hotend id="0.4mm" />
+            <hotend id="Hotend M (0.4mm)">
+               <setting key="hardware compatible">no</setting>
+            </hotend>
+            <hotend id="Hotend X (0.6mm)">
+               <setting key="hardware compatible">no</setting>
+            </hotend>
+        </machine>
+    </settings>
+</fdmmaterial>
