@@ -8,12 +8,26 @@ message ObjectList
     repeated Setting settings = 2; // meshgroup settings (for one-at-a-time printing)
 }
 
+enum SlotID {
+  SIMPLIFY = 0;
+  POSTPROCESS = 1;
+}
+
+message EnginePlugin
+{
+    SlotID id = 1;
+    optional string address = 2;
+    optional uint32 port = 3;
+}
+
 message Slice
 {
     repeated ObjectList object_lists = 1; // The meshgroups to be printed one after another
     SettingList global_settings = 2; // The global settings used for the whole print job
     repeated Extruder extruders = 3; // The settings sent to each extruder object
     repeated SettingExtruder limit_to_extruder = 4; // From which stack the setting would inherit if not defined per object
+
+    repeated EnginePlugin engine_plugins = 5;
 }
 
 message Extruder
