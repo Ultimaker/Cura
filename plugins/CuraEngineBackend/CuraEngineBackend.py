@@ -70,7 +70,7 @@ class CuraEngineBackend(QObject, Backend):
             os.path.join(CuraApplication.getInstallPrefix(), "bin"),
             os.path.dirname(os.path.abspath(sys.executable)),
         ]
-
+        self._last_backend_plugin_port = self._port + 1000
         for path in search_path:
             engine_path = os.path.join(path, executable_name)
             if os.path.isfile(engine_path):
@@ -175,6 +175,20 @@ class CuraEngineBackend(QObject, Backend):
         self._snapshot = None #type: Optional[QImage]
 
         application.initializationFinished.connect(self.initialize)
+
+    def startPlugins(self) -> None:
+        """
+        Ensure that all backend plugins are started
+        :return:
+        """
+        backend_plugins = CuraApplication.getInstance().getBackendPlugins()
+        for backend_plugin in backend_plugins:
+            if backend_plugin.isRunning():
+                continue
+            # Set the port to prevent plugins from using the same one.
+            backend_plugin.setPort(self._last_backend_plugin_port)
+            self.__last_backend_plugin_port += 1
+            backend_plugin.start()
 
     def _resetLastSliceTimeStats(self) -> None:
         self._time_start_process = None
