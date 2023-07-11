@@ -325,6 +325,8 @@ class CuraEngineBackend(QObject, Backend):
 
         self._createSnapshot()
 
+        self.startPlugins()
+
         Logger.log("i", "Starting to slice...")
         self._time_start_process = time()
         if not self._build_plates_to_be_sliced:
