@@ -142,7 +142,9 @@ class CuraEngineBackend(QObject, Backend):
 
         self._backend_log_max_lines: int = 20000  # Maximum number of lines to buffer
         self._error_message: Optional[Message] = None  # Pop-up message that shows errors.
-        self._last_num_objects: Dict[int, int] = defaultdict(int)  # Count number of objects to see if there is something changed
+
+        # Count number of objects to see if there is something changed
+        self._last_num_objects: Dict[int, int] = defaultdict(int)
         self._postponed_scene_change_sources: List[SceneNode] = []   # scene change is postponed (by a tool)
 
         self._time_start_process: Optional[float] = None
@@ -152,8 +154,8 @@ class CuraEngineBackend(QObject, Backend):
 
         self._use_timer: bool = False
 
-        # When you update a setting and other settings get changed through inheritance, many propertyChanged signals are fired.
-        # This timer will group them up, and only slice for the last setting changed signal.
+        # When you update a setting and other settings get changed through inheritance, many propertyChanged
+        # signals are fired. This timer will group them up, and only slice for the last setting changed signal.
         # TODO: Properly group propertyChanged signals by whether they are triggered by the same user interaction.
         self._change_timer: QTimer = QTimer()
         self._change_timer.setSingleShot(True)
@@ -219,7 +221,8 @@ class CuraEngineBackend(QObject, Backend):
         application.getMachineManager().globalContainerChanged.connect(self._onGlobalStackChanged)
         self._onGlobalStackChanged()
 
-        # extruder enable / disable. Actually wanted to use machine manager here, but the initialization order causes it to crash
+        # Extruder enable / disable. Actually wanted to use machine manager here,
+        # but the initialization order causes it to crash
         ExtruderManager.getInstance().extrudersChanged.connect(self._extruderChanged)
 
         self.backendQuit.connect(self._onBackendQuit)
@@ -256,7 +259,8 @@ class CuraEngineBackend(QObject, Backend):
         command += ["connect", "127.0.0.1:{0}".format(self._port), ""]
 
         parser = argparse.ArgumentParser(prog = "cura", add_help = False)
-        parser.add_argument("--debug", action = "store_true", default = False, help = "Turn on the debug mode by setting this option.")
+        parser.add_argument("--debug", action = "store_true", default = False,
+                            help = "Turn on the debug mode by setting this option.")
         known_args = vars(parser.parse_known_args()[0])
         if known_args["debug"]:
             command.append("-vvv")
@@ -283,7 +287,8 @@ class CuraEngineBackend(QObject, Backend):
             self._terminate()
             self._createSocket()
 
-        if self._process_layers_job is not None:  # We were processing layers. Stop that, the layers are going to change soon.
+        if self._process_layers_job is not None:
+            # We were processing layers. Stop that, the layers are going to change soon.
             Logger.log("i", "Aborting process layers job...")
             self._process_layers_job.abort()
             self._process_layers_job = None
@@ -298,7 +303,7 @@ class CuraEngineBackend(QObject, Backend):
         self.markSliceAll()
         self.slice()
 
-    @call_on_qt_thread  # must be called from the main thread because of OpenGL
+    @call_on_qt_thread  # Must be called from the main thread because of OpenGL
     def _createSnapshot(self) -> None:
         self._snapshot = None
         if not CuraApplication.getInstance().isVisible:
@@ -307,7 +312,7 @@ class CuraEngineBackend(QObject, Backend):
         Logger.log("i", "Creating thumbnail image (just before slice)...")
         try:
             self._snapshot = Snapshot.snapshot(width = 300, height = 300)
-        except:
+        except Exception:
             Logger.logException("w", "Failed to create snapshot image")
             self._snapshot = None  # Failing to create thumbnail should not fail creation of UFP
 
@@ -332,7 +337,8 @@ class CuraEngineBackend(QObject, Backend):
             return
 
         if not hasattr(self._scene, "gcode_dict"):
-            self._scene.gcode_dict = {} #type: ignore #Because we are creating the missing attribute here.
+            self._scene.gcode_dict = {}  # type: ignore
+            # We need to ignore type because we are creating the missing attribute here.
 
         # see if we really have to slice
         application = CuraApplication.getInstance()
@@ -343,9 +349,9 @@ class CuraEngineBackend(QObject, Backend):
 
         self._stored_layer_data = []
 
-
         if build_plate_to_be_sliced not in num_objects or num_objects[build_plate_to_be_sliced] == 0:
-            self._scene.gcode_dict[build_plate_to_be_sliced] = [] #type: ignore #Because we created this attribute above.
+            self._scene.gcode_dict[build_plate_to_be_sliced] = []   # type: ignore
+            # We need to ignore the type because we created this attribute above.
             Logger.log("d", "Build plate %s has no objects to be sliced, skipping", build_plate_to_be_sliced)
             if self._build_plates_to_be_sliced:
                 self.slice()
@@ -354,7 +360,7 @@ class CuraEngineBackend(QObject, Backend):
         if application.getPrintInformation() and build_plate_to_be_sliced == active_build_plate:
             application.getPrintInformation().setToZeroPrintInformation(build_plate_to_be_sliced)
 
-        if self._process is None: # type: ignore
+        if self._process is None:  # type: ignore
             self._createSocket()
         self.stopSlicing()
         self._engine_is_fresh = False  # Yes we're going to use the engine
@@ -362,7 +368,7 @@ class CuraEngineBackend(QObject, Backend):
         self.processingProgress.emit(0.0)
         self.backendStateChange.emit(BackendState.NotStarted)
 
-        self._scene.gcode_dict[build_plate_to_be_sliced] = [] #type: ignore #[] indexed by build plate number
+        self._scene.gcode_dict[build_plate_to_be_sliced] = []  # type: ignore #[] indexed by build plate number
         self._slicing = True
         self.slicingStarted.emit()
 
@@ -394,14 +400,15 @@ class CuraEngineBackend(QObject, Backend):
         if CuraApplication.getInstance().getUseExternalBackend():
             return
 
-        if self._process is not None: # type: ignore
+        if self._process is not None:  # type: ignore
             Logger.log("d", "Killing engine process")
             try:
-                self._process.terminate() # type: ignore
-                Logger.log("d", "Engine process is killed. Received return code %s", self._process.wait()) # type: ignore
-                self._process = None # type: ignore
+                self._process.terminate()  # type: ignore
+                Logger.log("d", "Engine process is killed. Received return code %s", self._process.wait())  # type: ignore
+                self._process = None  # type: ignore
 
-            except Exception as e:  # terminating a process that is already terminating causes an exception, silently ignore this.
+            except Exception as e:
+                # Terminating a process that is already terminating causes an exception, silently ignore this.
                 Logger.log("d", "Exception occurred while trying to kill the engine %s", str(e))
 
     def _onStartSliceCompleted(self, job: StartSliceJob) -> None:
@@ -541,7 +548,7 @@ class CuraEngineBackend(QObject, Backend):
         # Preparation completed, send it to the backend.
         self._socket.sendMessage(job.getSliceMessage())
 
-        # Notify the user that it's now up to the backend to do it's job
+        # Notify the user that it's now up to the backend to do its job
         self.setState(BackendState.Processing)
 
         # Handle time reporting.
@@ -568,7 +575,8 @@ class CuraEngineBackend(QObject, Backend):
                 self._is_disabled = True
             gcode_list = node.callDecoration("getGCodeList")
             if gcode_list is not None:
-                self._scene.gcode_dict[node.callDecoration("getBuildPlateNumber")] = gcode_list #type: ignore #Because we generate this attribute dynamically.
+                self._scene.gcode_dict[node.callDecoration("getBuildPlateNumber")] = gcode_list  # type: ignore
+                # We need to ignore type because we generate this attribute dynamically.
 
         if self._use_timer == enable_timer:
             return self._use_timer
@@ -663,11 +671,13 @@ class CuraEngineBackend(QObject, Backend):
         self._terminate()
         self._createSocket()
 
-        if error.getErrorCode() not in [Arcus.ErrorCode.BindFailedError, Arcus.ErrorCode.ConnectionResetError, Arcus.ErrorCode.Debug]:
+        if error.getErrorCode() not in [Arcus.ErrorCode.BindFailedError,
+                                        Arcus.ErrorCode.ConnectionResetError,
+                                        Arcus.ErrorCode.Debug]:
             Logger.log("w", "A socket error caused the connection to be reset")
 
         # _terminate()' function sets the job status to 'cancel', after reconnecting to another Port the job status
-        # needs to be updated. Otherwise backendState is "Unable To Slice"
+        # needs to be updated. Otherwise, backendState is "Unable To Slice"
         if error.getErrorCode() == Arcus.ErrorCode.BindFailedError and self._start_slice_job is not None:
             self._start_slice_job.setIsCancelled(False)
 
@@ -689,7 +699,7 @@ class CuraEngineBackend(QObject, Backend):
         for node in DepthFirstIterator(self._scene.getRoot()):
             if node.callDecoration("getLayerData"):
                 if not build_plate_numbers or node.callDecoration("getBuildPlateNumber") in build_plate_numbers:
-                    # We can assume that all nodes have a parent as we're looping through the scene (and filter out root)
+                    # We can assume that all nodes have a parent as we're looping through the scene and filter out root
                     cast(SceneNode, node.getParent()).removeChild(node)
 
     def markSliceAll(self) -> None:
@@ -718,7 +728,7 @@ class CuraEngineBackend(QObject, Backend):
         :param instance: The setting instance that has changed.
         :param property: The property of the setting instance that has changed.
         """
-        if property == "value":  # Only reslice if the value has changed.
+        if property == "value":  # Only re-slice if the value has changed.
             self.needsSlicing()
             self._onChanged()
 
@@ -787,8 +797,10 @@ class CuraEngineBackend(QObject, Backend):
         self._time_end_slice = time()
 
         try:
-            gcode_list = self._scene.gcode_dict[self._start_slice_job_build_plate] #type: ignore #Because we generate this attribute dynamically.
-        except KeyError:  # Can occur if the g-code has been cleared while a slice message is still arriving from the other end.
+            gcode_list = self._scene.gcode_dict[self._start_slice_job_build_plate] #type: ignore
+            # We need to ignore the type because it was generated dynamically.
+        except KeyError:
+            # Can occur if the g-code has been cleared while a slice message is still arriving from the other end.
             gcode_list = []
         application = CuraApplication.getInstance()
         for index, line in enumerate(gcode_list):
@@ -833,7 +845,8 @@ class CuraEngineBackend(QObject, Backend):
 
         try:
             self._scene.gcode_dict[self._start_slice_job_build_plate].append(message.data.decode("utf-8", "replace")) #type: ignore #Because we generate this attribute dynamically.
-        except KeyError:  # Can occur if the g-code has been cleared while a slice message is still arriving from the other end.
+        except KeyError:
+            # Can occur if the g-code has been cleared while a slice message is still arriving from the other end.
             pass  # Throw the message away.
 
     def _onGCodePrefixMessage(self, message: Arcus.PythonMessage) -> None:
@@ -845,7 +858,8 @@ class CuraEngineBackend(QObject, Backend):
 
         try:
             self._scene.gcode_dict[self._start_slice_job_build_plate].insert(0, message.data.decode("utf-8", "replace")) #type: ignore #Because we generate this attribute dynamically.
-        except KeyError:  # Can occur if the g-code has been cleared while a slice message is still arriving from the other end.
+        except KeyError:
+            # Can occur if the g-code has been cleared while a slice message is still arriving from the other end.
             pass  # Throw the message away.
 
     def _onSliceUUIDMessage(self, message: Arcus.PythonMessage) -> None:
@@ -972,7 +986,8 @@ class CuraEngineBackend(QObject, Backend):
         view = CuraApplication.getInstance().getController().getActiveView()
         if view:
             active_build_plate = CuraApplication.getInstance().getMultiBuildPlateModel().activeBuildPlate
-            if view.getPluginId() == "SimulationView":  # If switching to layer view, we should process the layers if that hasn't been done yet.
+            if view.getPluginId() == "SimulationView":
+                # If switching to layer view, we should process the layers if that hasn't been done yet.
                 self._layer_view_active = True
                 # There is data and we're not slicing at the moment
                 # if we are slicing, there is no need to re-calculate the data as it will be invalid in a moment.
@@ -1024,7 +1039,8 @@ class CuraEngineBackend(QObject, Backend):
         self._global_container_stack = CuraApplication.getInstance().getMachineManager().activeMachine
 
         if self._global_container_stack:
-            self._global_container_stack.propertyChanged.connect(self._onSettingChanged)  # Note: Only starts slicing when the value changed.
+            # Note: Only starts slicing when the value changed.
+            self._global_container_stack.propertyChanged.connect(self._onSettingChanged)
             self._global_container_stack.containersChanged.connect(self._onChanged)
 
             for extruder in self._global_container_stack.extruderList:
