@@ -46,6 +46,19 @@ catalog = i18nCatalog("cura")
 class CuraEngineBackend(QObject, Backend):
     backendError = Signal()
 
+    printDurationMessage = Signal()
+    """Emitted when we get a message containing print duration and material amount.
+
+    This also implies the slicing has finished.
+    :param time: The amount of time the print will take.
+    :param material_amount: The amount of material the print will use.
+    """
+    slicingStarted = Signal()
+    """Emitted when the slicing process starts."""
+
+    slicingCancelled = Signal()
+    """Emitted when the slicing process is aborted forcefully."""
+
     def __init__(self) -> None:
         """Starts the back-end plug-in.
 
@@ -266,19 +279,6 @@ class CuraEngineBackend(QObject, Backend):
             command.append("-vvv")
 
         return command
-
-    printDurationMessage = Signal()
-    """Emitted when we get a message containing print duration and material amount.
-
-    This also implies the slicing has finished.
-    :param time: The amount of time the print will take.
-    :param material_amount: The amount of material the print will use.
-    """
-    slicingStarted = Signal()
-    """Emitted when the slicing process starts."""
-
-    slicingCancelled = Signal()
-    """Emitted when the slicing process is aborted forcefully."""
 
     @pyqtSlot()
     def stopSlicing(self) -> None:
