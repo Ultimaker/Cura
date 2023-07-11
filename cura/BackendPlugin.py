@@ -15,6 +15,10 @@ class BackendPlugin(PluginObject):
         self._plugin_command: Optional[List[str]] = None
         self._process = None
         self._is_running = False
+        self._supported_slots: List[int] = []
+
+    def getSupportedSlots(self) -> List[int]:
+        return self._supported_slots
 
     def isRunning(self):
         return self._is_running
@@ -24,6 +28,9 @@ class BackendPlugin(PluginObject):
 
     def getPort(self) -> int:
         return self.__port
+
+    def getAddress(self) -> str:
+        return self._plugin_address
 
     def _validatePluginCommand(self) -> list[str]:
         """
