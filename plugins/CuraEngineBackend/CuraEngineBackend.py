@@ -197,6 +197,7 @@ class CuraEngineBackend(QObject, Backend):
     def startPlugins(self) -> None:
         """
         Ensure that all backend plugins are started
+        It assigns unique ports to each plugin to avoid conflicts.
         :return:
         """
         backend_plugins = CuraApplication.getInstance().getBackendPlugins()
@@ -205,7 +206,7 @@ class CuraEngineBackend(QObject, Backend):
                 continue
             # Set the port to prevent plugins from using the same one.
             backend_plugin.setPort(self._last_backend_plugin_port)
-            self.__last_backend_plugin_port += 1
+            self._last_backend_plugin_port += 1
             backend_plugin.start()
 
     def _resetLastSliceTimeStats(self) -> None:
