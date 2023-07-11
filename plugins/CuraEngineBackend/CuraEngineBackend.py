@@ -86,9 +86,9 @@ class CuraEngineBackend(QObject, Backend):
                     self._default_engine_location = execpath
                     break
 
-        application = CuraApplication.getInstance() #type: CuraApplication
-        self._multi_build_plate_model = None #type: Optional[MultiBuildPlateModel]
-        self._machine_error_checker = None #type: Optional[MachineErrorChecker]
+        application: CuraApplication = CuraApplication.getInstance()
+        self._multi_build_plate_model: Optional[MultiBuildPlateModel] = None
+        self._machine_error_checker: Optional[MachineErrorChecker] = None
 
         if not self._default_engine_location:
             raise EnvironmentError("Could not find CuraEngine")
@@ -99,13 +99,15 @@ class CuraEngineBackend(QObject, Backend):
         application.getPreferences().addPreference("backend/location", self._default_engine_location)
 
         # Workaround to disable layer view processing if layer view is not active.
-        self._layer_view_active = False #type: bool
+        self._layer_view_active: bool = False
         self._onActiveViewChanged()
 
-        self._stored_layer_data = []  # type: List[Arcus.PythonMessage]
-        self._stored_optimized_layer_data = {}  # type: Dict[int, List[Arcus.PythonMessage]] # key is build plate number, then arrays are stored until they go to the ProcessSlicesLayersJob
+        self._stored_layer_data: List[Arcus.PythonMessage] = []
 
-        self._scene = application.getController().getScene() #type: Scene
+        # key is build plate number, then arrays are stored until they go to the ProcessSlicesLayersJob
+        self._stored_optimized_layer_data: Dict[int, List[Arcus.PythonMessage]] = {}
+
+        self._scene: Scene = application.getController().getScene()
         self._scene.sceneChanged.connect(self._onSceneChanged)
 
         # Triggers for auto-slicing. Auto-slicing is triggered as follows:
@@ -116,7 +118,7 @@ class CuraEngineBackend(QObject, Backend):
         # If there is an error check, stop the auto-slicing timer, and only wait for the error check to be finished
         # to start the auto-slicing timer again.
         #
-        self._global_container_stack = None #type: Optional[ContainerStack]
+        self._global_container_stack: Optional[ContainerStack] = None
 
         # Listeners for receiving messages from the back-end.
         self._message_handlers["cura.proto.Layer"] = self._onLayerMessage
@@ -128,31 +130,32 @@ class CuraEngineBackend(QObject, Backend):
         self._message_handlers["cura.proto.PrintTimeMaterialEstimates"] = self._onPrintTimeMaterialEstimates
         self._message_handlers["cura.proto.SlicingFinished"] = self._onSlicingFinishedMessage
 
-        self._start_slice_job = None #type: Optional[StartSliceJob]
-        self._start_slice_job_build_plate = None #type: Optional[int]
-        self._slicing = False #type: bool # Are we currently slicing?
-        self._restart = False #type: bool # Back-end is currently restarting?
-        self._tool_active = False #type: bool # If a tool is active, some tasks do not have to do anything
-        self._always_restart = True #type: bool # Always restart the engine when starting a new slice. Don't keep the process running. TODO: Fix engine statelessness.
-        self._process_layers_job = None #type: Optional[ProcessSlicedLayersJob] # The currently active job to process layers, or None if it is not processing layers.
-        self._build_plates_to_be_sliced = [] #type: List[int] # what needs slicing?
-        self._engine_is_fresh = True #type: bool # Is the newly started engine used before or not?
+        self._start_slice_job: Optional[StartSliceJob] = None
+        self._start_slice_job_build_plate: Optional[int] = None
+        self._slicing: bool = False  # Are we currently slicing?
+        self._restart: bool = False  # Back-end is currently restarting?
+        self._tool_active: bool = False  # If a tool is active, some tasks do not have to do anything
+        self._always_restart: bool = True # Always restart the engine when starting a new slice. Don't keep the process running. TODO: Fix engine statelessness.
+        self._process_layers_job: Optional[ProcessSlicedLayersJob] = None # The currently active job to process layers, or None if it is not processing layers.
+        self._build_plates_to_be_sliced: List[int] = []  # what needs slicing?
+        self._engine_is_fresh: bool = True  # Is the newly started engine used before or not?
 
-        self._backend_log_max_lines = 20000 #type: int # Maximum number of lines to buffer
-        self._error_message = None #type: Optional[Message] # Pop-up message that shows errors.
-        self._last_num_objects = defaultdict(int) #type: Dict[int, int] # Count number of objects to see if there is something changed
-        self._postponed_scene_change_sources = [] #type: List[SceneNode] # scene change is postponed (by a tool)
+        self._backend_log_max_lines: int = 20000  # Maximum number of lines to buffer
+        self._error_message: Optional[Message] = None  # Pop-up message that shows errors.
+        self._last_num_objects: Dict[int, int] = defaultdict(int)  # Count number of objects to see if there is something changed
+        self._postponed_scene_change_sources: List[SceneNode] = []   # scene change is postponed (by a tool)
 
-        self._time_start_process = None #type: Optional[float]
-        self._is_disabled = False #type: bool
+        self._time_start_process: Optional[float] = None
+        self._is_disabled: bool = False
 
         application.getPreferences().addPreference("general/auto_slice", False)
 
-        self._use_timer = False #type: bool
+        self._use_timer: bool = False
+
         # When you update a setting and other settings get changed through inheritance, many propertyChanged signals are fired.
         # This timer will group them up, and only slice for the last setting changed signal.
         # TODO: Properly group propertyChanged signals by whether they are triggered by the same user interaction.
-        self._change_timer = QTimer() #type: QTimer
+        self._change_timer: QTimer = QTimer()
         self._change_timer.setSingleShot(True)
         self._change_timer.setInterval(500)
         self.determineAutoSlicing()
@@ -172,7 +175,7 @@ class CuraEngineBackend(QObject, Backend):
         self._slicing_error_message.actionTriggered.connect(self._reportBackendError)
 
         self._resetLastSliceTimeStats()
-        self._snapshot = None #type: Optional[QImage]
+        self._snapshot: Optional[QImage] = None 
 
         application.initializationFinished.connect(self.initialize)
 
@@ -443,14 +446,14 @@ class CuraEngineBackend(QObject, Backend):
                     Logger.log("w", "Global container stack not assigned to CuraEngineBackend!")
                     return
                 extruders = ExtruderManager.getInstance().getActiveExtruderStacks()
-                error_keys = [] #type: List[str]
+                error_keys: List[str] = []
                 for extruder in extruders:
                     error_keys.extend(extruder.getErrorKeys())
                 if not extruders:
                     error_keys = self._global_container_stack.getErrorKeys()
                 error_labels = set()
                 for key in error_keys:
-                    for stack in [self._global_container_stack] + extruders: #Search all container stacks for the definition of this setting. Some are only in an extruder stack.
+                    for stack in [self._global_container_stack] + extruders:  #Search all container stacks for the definition of this setting. Some are only in an extruder stack.
                         definitions = cast(DefinitionContainerInterface, stack.getBottom()).findDefinitions(key = key)
                         if definitions:
                             break #Found it! No need to continue search.
@@ -580,7 +583,7 @@ class CuraEngineBackend(QObject, Backend):
     def _numObjectsPerBuildPlate(self) -> Dict[int, int]:
         """Return a dict with number of objects per build plate"""
 
-        num_objects = defaultdict(int) #type: Dict[int, int]
+        num_objects: Dict[int, int] = defaultdict(int)
         for node in DepthFirstIterator(self._scene.getRoot()):
             # Only count sliceable objects
             if node.callDecoration("isSliceable"):
