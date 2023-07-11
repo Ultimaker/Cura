@@ -103,6 +103,30 @@ Cura.ExpandablePopup
             {
                 return UM.Theme.getIcon("PrinterTriple", "medium")
             }
+              else if (Cura.MachineManager.activeMachine.definition.name == "Sigma D25")
+            {
+                return UM.Theme.getIcon("Sigma_d25", "default")
+            }
+            else if (Cura.MachineManager.activeMachine.definition.name == "Omega I60")
+            {
+                return UM.Theme.getIcon("Epsilon_w50", "default")
+            }
+            else if (Cura.MachineManager.activeMachine.definition.name == "Epsilon W50")
+            {
+                return UM.Theme.getIcon("Epsilon_w50", "default")
+            }
+            else if (Cura.MachineManager.activeMachine.definition.name == "Epsilon W27")
+            {
+                return UM.Theme.getIcon("Epsilon_w27", "default")
+            }
+            else if (Cura.MachineManager.activeMachine.definition.name == "Sigma R19")
+            {
+                return UM.Theme.getIcon("sigma", "default")
+            }
+            else if (Cura.MachineManager.activeMachine.definition.name == "Sigmax")
+            {
+               return UM.Theme.getIcon("sigmax", "default")
+            }
             else if (isNetworkPrinter || isCloudRegistered)
             {
                 return UM.Theme.getIcon("Printer", "medium")

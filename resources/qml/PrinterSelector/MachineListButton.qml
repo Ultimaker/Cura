@@ -81,8 +81,40 @@ Loader {
                     width: UM.Theme.getSize("medium_button").width
                     color: UM.Theme.getColor("machine_selector_printer_icon")
                     visible: model.isAbstractMachine || !model.isOnline
-                    source: model.isAbstractMachine ? UM.Theme.getIcon("PrinterTriple", "medium") : UM.Theme.getIcon("Printer", "medium")
-
+                    source:   {
+                        if (model.isAbstractMachine)
+                        {
+                            return UM.Theme.getIcon("PrinterTriple", "medium")
+                        }
+                        else if (model.name == "Sigma D25")
+                        {
+                            return UM.Theme.getIcon("Sigma_d25", "default")
+                        }
+                        else if (model.name == "Omega I60")
+                        {
+                            return UM.Theme.getIcon("Epsilon_w50", "default")
+                        }
+                        else if (model.name == "Epsilon W50")
+                        {
+                            return UM.Theme.getIcon("Epsilon_w50", "default")
+                        }
+                        else if (model.name == "Epsilon W27")
+                        {
+                            return UM.Theme.getIcon("Epsilon_w27", "default")
+                        }
+                        else if (model.name == "Sigma R19")
+                        {
+                            return UM.Theme.getIcon("sigma", "default")
+                        }
+                        else if (model.name == "Sigmax")
+                        {
+                        return UM.Theme.getIcon("sigmax", "default")
+                        }
+                        else
+                        {
+                            return UM.Theme.getIcon("Printer", "medium")
+                        }
+                    }
                     anchors
                     {
                         left: parent.left
