@@ -19,5 +19,5 @@ def getMetaData():
 
 def register(app):
     return {
-        "stage": MonitorStage.MonitorStage()
+        #"stage": MonitorStage.MonitorStage()
     }
