@@ -429,24 +429,13 @@ UM.Window
                                 Cura.SecondaryButton
                                 {
                                     id: refreshListButton
-                                    property int accountState: Cura.API.account.syncState
-                                    readonly property int _AccountSyncState_SYNCING: 0
-                                    readonly property int _AccountSyncState_SUCCESS: 1
                                     Layout.alignment: Qt.AlignVCenter
+                                    readonly property int _AccountSyncState_SYNCING: 0
+                                    visible: Cura.API.account.syncState != _AccountSyncState_SYNCING
+                                    enabled: visible
                                     text: catalog.i18nc("@button", "Refresh List")
                                     iconSource: UM.Theme.getIcon("ArrowDoubleCircleRight")
                                     onClicked: Cura.API.account.sync(true)
-
-                                    onAccountStateChanged: {
-                                        if (Cura.API.account.syncState == _AccountSyncState_SYNCING)
-                                        {
-                                            refreshListButton.visible = false;
-                                        }
-                                        else if (Cura.API.account.syncState == _AccountSyncState_SUCCESS)
-                                        {
-                                            refreshListButton.visible = true;
-                                        }
-                                    }
                                 }
 
                                 Item
