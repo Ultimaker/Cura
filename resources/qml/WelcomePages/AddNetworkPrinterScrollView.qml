@@ -1,10 +1,10 @@
-// Copyright (c) 2022 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 
-import UM 1.5 as UM
+import UM 1.3 as UM
 import Cura 1.1 as Cura
 
 //
@@ -17,7 +17,7 @@ Item
     id: base
     height: networkPrinterInfo.height + controlsRectangle.height
 
-    property alias maxItemCountAtOnce: networkPrinterListView.maxItemCountAtOnce
+    property alias maxItemCountAtOnce: networkPrinterScrollView.maxItemCountAtOnce
     property var currentItem: (networkPrinterListView.currentIndex >= 0)
                               ? networkPrinterListView.model[networkPrinterListView.currentIndex]
                               : null
@@ -29,105 +29,125 @@ Item
     Item
     {
         id: networkPrinterInfo
-        height: networkPrinterListView.visible ? networkPrinterListView.height : noPrinterLabel.height
+        height: networkPrinterScrollView.visible ? networkPrinterScrollView.height : noPrinterLabel.height
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: parent.top
 
-        UM.Label
+        Label
         {
             id: noPrinterLabel
             height: UM.Theme.getSize("setting_control").height + UM.Theme.getSize("default_margin").height
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             text: catalog.i18nc("@label", "There is no printer found over your network.")
+            color: UM.Theme.getColor("text")
+            renderType: Text.NativeRendering
+            verticalAlignment: Text.AlignVCenter
             visible: networkPrinterListView.count == 0  // Do not show if there are discovered devices.
         }
 
-        ListView
+        ScrollView
         {
-            id: networkPrinterListView
+            id: networkPrinterScrollView
             anchors.top: parent.top
             anchors.left: parent.left
             anchors.right: parent.right
+
+            ScrollBar.horizontal.policy: ScrollBar.AsNeeded
+            ScrollBar.vertical.policy: ScrollBar.AsNeeded
+
+            property int maxItemCountAtOnce: 8  // show at max 8 items at once, otherwise you need to scroll.
             height: Math.min(contentHeight, (maxItemCountAtOnce * UM.Theme.getSize("action_button").height) - UM.Theme.getSize("default_margin").height)
 
-            ScrollBar.vertical: UM.ScrollBar
-            {
-                id: networkPrinterScrollBar
-            }
-            clip: true
-            property int maxItemCountAtOnce: 8  // show at max 8 items at once, otherwise you need to scroll.
             visible: networkPrinterListView.count > 0
 
-            model: contentLoader.enabled ? CuraApplication.getDiscoveredPrintersModel().discoveredPrinters: undefined
-            cacheBuffer: 1000000   // Set a large cache to effectively just cache every list item.
+            clip: true
 
-            section.property: "modelData.sectionName"
-            section.criteria: ViewSection.FullString
-            section.delegate: UM.Label
+            ListView
             {
-                anchors.left: parent.left
-                anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                width: parent.width - networkPrinterScrollBar.width - UM.Theme.getSize("default_margin").width
-                height: UM.Theme.getSize("setting_control").height
-                text: section
-                color: UM.Theme.getColor("small_button_text")
-            }
+                id: networkPrinterListView
+                anchors.fill: parent
+                model: contentLoader.enabled ? CuraApplication.getDiscoveredPrintersModel().discoveredPrinters: undefined
 
-            Component.onCompleted:
-            {
-                var toSelectIndex = -1
-                // Select the first one that's not "unknown" and is the host a group by default.
-                for (var i = 0; i < count; i++)
+                section.property: "modelData.sectionName"
+                section.criteria: ViewSection.FullString
+                section.delegate: sectionHeading
+                boundsBehavior: Flickable.StopAtBounds
+                flickDeceleration: 20000  // To prevent the flicking behavior.
+                cacheBuffer: 1000000   // Set a large cache to effectively just cache every list item.
+
+                Component.onCompleted:
                 {
-                    if (!model[i].isUnknownMachineType && model[i].isHostOfGroup)
+                    var toSelectIndex = -1
+                    // Select the first one that's not "unknown" and is the host a group by default.
+                    for (var i = 0; i < count; i++)
                     {
-                        toSelectIndex = i
-                        break
+                        if (!model[i].isUnknownMachineType && model[i].isHostOfGroup)
+                        {
+                            toSelectIndex = i
+                            break
+                        }
+                    }
+                    currentIndex = toSelectIndex
+                }
+
+                // CURA-6483 For some reason currentIndex can be reset to 0. This check is here to prevent automatically
+                // selecting an unknown or non-host printer.
+                onCurrentIndexChanged:
+                {
+                    var item = model[currentIndex]
+                    if (!item || item.isUnknownMachineType || !item.isHostOfGroup)
+                    {
+                        currentIndex = -1
                     }
                 }
-                currentIndex = toSelectIndex
-            }
 
-            // CURA-6483 For some reason currentIndex can be reset to 0. This check is here to prevent automatically
-            // selecting an unknown or non-host printer.
-            onCurrentIndexChanged:
-            {
-                var item = model[currentIndex]
-                if (!item || item.isUnknownMachineType || !item.isHostOfGroup)
+                Component
                 {
-                    currentIndex = -1
-                }
-            }
+                    id: sectionHeading
 
-            delegate: Cura.MachineSelectorButton
-            {
-                text: modelData.device.name
-
-                width: networkPrinterListView.width - networkPrinterScrollBar.width
-                outputDevice: modelData.device
-
-                enabled: !modelData.isUnknownMachineType && modelData.isHostOfGroup
-
-                printerTypeLabelAutoFit: true
-
-                // update printer types for all items in the list
-                updatePrinterTypesOnlyWhenChecked: false
-                updatePrinterTypesFunction: updateMachineTypes
-                // show printer type as it is
-                printerTypeLabelConversionFunction: function(value) { return value }
-
-                function updateMachineTypes()
-                {
-                    printerTypesList = [ modelData.readableMachineType ]
+                    Label
+                    {
+                        anchors.left: parent.left
+                        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                        height: UM.Theme.getSize("setting_control").height
+                        text: section
+                        font: UM.Theme.getFont("default")
+                        color: UM.Theme.getColor("small_button_text")
+                        verticalAlignment: Text.AlignVCenter
+                        renderType: Text.NativeRendering
+                    }
                 }
 
-                checkable: false
-                selected: networkPrinterListView.currentIndex == model.index
-                onClicked:
+                delegate: Cura.MachineSelectorButton
                 {
-                    networkPrinterListView.currentIndex = index
+                    text: modelData.device.name
+
+                    width: networkPrinterListView.width
+                    outputDevice: modelData.device
+
+                    enabled: !modelData.isUnknownMachineType && modelData.isHostOfGroup
+
+                    printerTypeLabelAutoFit: true
+
+                    // update printer types for all items in the list
+                    updatePrinterTypesOnlyWhenChecked: false
+                    updatePrinterTypesFunction: updateMachineTypes
+                    // show printer type as it is
+                    printerTypeLabelConversionFunction: function(value) { return value }
+
+                    function updateMachineTypes()
+                    {
+                        printerTypesList = [ modelData.readableMachineType ]
+                    }
+
+                    checkable: false
+                    selected: ListView.view.currentIndex == model.index
+                    onClicked:
+                    {
+                        ListView.view.currentIndex = index
+                    }
                 }
             }
         }
@@ -166,13 +186,15 @@ Item
 
         Cura.SecondaryButton
         {
-            id: addPrinterByIpButton
+            id: addCloudPrinterButton
             anchors.left: refreshButton.right
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: parent.verticalCenter
-            text: catalog.i18nc("@label", "Add printer by IP")
+            text: catalog.i18nc("@label", "Add cloud printer")
             height: UM.Theme.getSize("message_action_button").height
-            onClicked: base.addByIpButtonClicked()
+            onClicked: {
+               onClicked: Qt.openUrlExternally("https://cloud.bcn3d.com")
+            }
         }
 
         Item
@@ -180,30 +202,33 @@ Item
             id: troubleshootingButton
 
             anchors.right: parent.right
-            anchors.rightMargin: UM.Theme.getSize("thin_margin").width
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: parent.verticalCenter
             height: troubleshootingLinkIcon.height
-            width: troubleshootingLinkIcon.width + troubleshootingLabel.width + UM.Theme.getSize("thin_margin").width
+            width: troubleshootingLinkIcon.width + troubleshootingLabel.width + UM.Theme.getSize("default_margin").width
 
             UM.ColorImage
             {
                 id: troubleshootingLinkIcon
                 anchors.right: troubleshootingLabel.left
-                anchors.rightMargin: UM.Theme.getSize("thin_margin").width
+                anchors.rightMargin: UM.Theme.getSize("default_margin").width
                 anchors.verticalCenter: parent.verticalCenter
                 height: troubleshootingLabel.height
                 width: height
                 color: UM.Theme.getColor("text_link")
-                source: UM.Theme.getIcon("LinkExternal")
+                source: UM.Theme.getIcon("external_link")
             }
 
-            UM.Label
+            Label
             {
                 id: troubleshootingLabel
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
                 text: catalog.i18nc("@label", "Troubleshooting")
+                font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text_link")
+                linkColor: UM.Theme.getColor("text_link")
+                renderType: Text.NativeRendering
             }
 
             MouseArea
@@ -213,7 +238,7 @@ Item
                 onClicked:
                 {
                     // open the troubleshooting URL with web browser
-                    const url = "https://ultimaker.com/in/cura/troubleshooting/network?utm_source=cura&utm_medium=software&utm_campaign=add-network-printer"
+                    const url = "https://support.bcn3d.com/knowledge/network-requirements-bcn3d-cloud"
                     Qt.openUrlExternally(url)
                 }
                 onEntered:

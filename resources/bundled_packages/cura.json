@@ -465,13 +465,13 @@
             "display_name": "Slice Info",
             "description": "Submits anonymous slice info. Can be disabled through preferences.",
             "package_version": "1.0.1",
-            "sdk_version": "8.4.0",
-            "website": "https://ultimaker.com",
+            "sdk_version": "7.4.0",
+            "website": "https://bcn3d.com",
             "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "UltiMaker",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
+                "author_id": "BCN3D",
+                "display_name": "BCN3D",
+                "email": "support@bcn3d.com",
+                "website": "https://bcn3d.com"
             }
         }
     },

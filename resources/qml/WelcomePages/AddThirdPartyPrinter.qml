@@ -21,7 +21,7 @@ Item
     {
         id: addNetworkPrinterDropDown
 
-        anchors.top: parent.top
+        anchors.top: titleLabel.bottom
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.topMargin: UM.Theme.getSize("wide_margin").height
@@ -35,23 +35,25 @@ Item
         }
 
         contentComponent: networkPrinterListComponent
+
         Component
         {
             id: networkPrinterListComponent
+
             AddNetworkPrinterScrollView
             {
                 id: networkPrinterScrollView
 
-                maxItemCountAtOnce: 9  // show at max 9 items at once, otherwise you need to scroll.
+                maxItemCountAtOnce: 10  // show at max 10 items at once, otherwise you need to scroll.
 
                 onRefreshButtonClicked:
                 {
-                    UM.OutputDeviceManager.startDiscovery()
+                    Cura.PrintersManagerService.refreshPrinters()
                 }
 
                 onAddByIpButtonClicked:
                 {
-                    base.goToPage("add_printer_by_ip")
+                    //base.goToPage("add_printer_by_ip")
                 }
 
                 onAddCloudPrinterButtonClicked:
@@ -94,13 +96,18 @@ Item
         }
     }
 
+    // This "Back" button only shows in the "Add Machine" dialog, which has "previous_page_button_text" set to "Cancel"
     Cura.SecondaryButton
     {
         id: backButton
         anchors.left: parent.left
         anchors.bottom: parent.bottom
-        text: catalog.i18nc("@button", "Add UltiMaker printer via Digital Factory")
-        onClicked: goToUltimakerPrinter()
+        visible: base.currentItem.previous_page_button_text ? true : false
+        text: base.currentItem.previous_page_button_text ? base.currentItem.previous_page_button_text : ""
+        onClicked:
+        {
+            base.endWizard()
+        }
     }
 
     Cura.PrimaryButton
