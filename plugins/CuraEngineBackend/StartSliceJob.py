@@ -302,21 +302,18 @@ class StartSliceJob(Job):
         for extruder_stack in global_stack.extruderList:
             self._buildExtruderMessage(extruder_stack)
 
-        # EnginePlugins
-        # TODO: don't hardcode them
-        # Ports: are chosen based on https://stackoverflow.com/questions/10476987/best-tcp-port-number-range-for-internal-applications
-
-        plugins = {
-            0: {"address": os.environ.get("SIMPLIFY_ADDRESS", "localhost"), "port": os.environ.get("SIMPLIFY_PORT", 33700)} if os.environ.get("SIMPLIFY_ENABLE") is not None else None,
-            1: {"address": os.environ.get("POSTPROCESS_ADDRESS", "localhost"), "port": os.environ.get("POSTPROCESS_PORT", 33701)} if os.environ.get("POSTPROCESS_ENABLE") is not None else None,
-        }
-
-        for plugin, connection in plugins.items():
-            plugin_message = self._slice_message.addRepeatedMessage("engine_plugins")
-            plugin_message.id = plugin
-            if connection:
-                plugin_message.address = connection["address"]
-                plugin_message.port = connection["port"]
+        for plugin in CuraApplication.getInstance().getBackendPlugins():
+            for slot in plugin.getSupportedSlots():
+                # Right now we just send the message for every slot that we support. A single plugin can support
+                # multiple slots
+                # In the future the frontend will need to decide what slots that a plugin actually supports should
+                # also be used. For instance, if you have two plugins and each of them support a_generate and b_generate
+                # only one of each can actually be used (eg; plugin 1 does both, plugin 1 does a_generate and 2 does
+                # b_generate, etc).
+                plugin_message = self._slice_message.addRepeatedMessage("engine_plugins")
+                plugin_message.id = slot
+                plugin_message.address = plugin.getAddress()
+                plugin_message.port = plugin.getPort()
 
         for group in filtered_object_groups:
             group_message = self._slice_message.addRepeatedMessage("object_lists")

@@ -205,6 +205,8 @@ class CuraApplication(QtApplication):
         self._cura_scene_controller = None
         self._machine_error_checker = None
 
+        self._backend_plugins: List[BackendPlugin] = []
+
         self._machine_settings_manager = MachineSettingsManager(self, parent = self)
         self._material_management_model = None
         self._quality_management_model = None
@@ -792,6 +794,7 @@ class CuraApplication(QtApplication):
 
         self._plugin_registry.addType("profile_reader", self._addProfileReader)
         self._plugin_registry.addType("profile_writer", self._addProfileWriter)
+        self._plugin_registry.addType("backend_plugin", self._addBackendPlugin)
 
         if Platform.isLinux():
             lib_suffixes = {"", "64", "32", "x32"}  # A few common ones on different distributions.
@@ -1729,6 +1732,12 @@ class CuraApplication(QtApplication):
 
     def _addProfileWriter(self, profile_writer):
         pass
+
+    def _addBackendPlugin(self, backend_plugin: "BackendPlugin") -> None:
+        self._backend_plugins.append(backend_plugin)
+
+    def getBackendPlugins(self) -> List["BackendPlugin"]:
+        return self._backend_plugins
 
     @pyqtSlot("QSize")
     def setMinimumWindowSize(self, size):
