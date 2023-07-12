@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="30px" height="30px" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>icn_left_white</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <polygon id="path-1" points="0 7.33333333 7.13513514 0 7.13513514 14.6666667 0 22"></polygon>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icn_left_white">
+            <g id="Group-Copy" transform="translate(4.000000, 4.000000)">
+                <polygon id="Path-2-Copy-4" stroke="#1F2427" transform="translate(10.735474, 11.000000) scale(-1, 1) translate(-10.735474, -11.000000) " points="21.4567937 0 7.18652344 0 0.0555525861 7.33333333 0 22 14.3358121 22 21.4709473 14.6666667"></polygon>
+                <g id="Rectangle-3-Copy-14" transform="translate(3.567568, 11.000000) scale(-1, 1) translate(-3.567568, -11.000000) ">
+                    <use fill="#1F2427" fill-rule="evenodd" xlink:href="#path-1"></use>
+                    <path stroke="#1F2427" stroke-width="1" d="M0.5,7.53643942 L0.5,20.7691161 L6.63513514,14.4635606 L6.63513514,1.23088386 L0.5,7.53643942 Z"></path>
+                </g>
+                <path d="M6.65507549,7.42568631 L21.5199404,7.42568631" id="Path-3" stroke="#1F2427"></path>
+            </g>
+        </g>
+    </g>
+</svg>

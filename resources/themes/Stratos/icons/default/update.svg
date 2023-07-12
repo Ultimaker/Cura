@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>update</title>
+    <desc>Created with Sketch.</desc>
+    <g id="update" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Update" transform="translate(1.000000, 0.000000)" fill="#000000" fill-rule="nonzero">
+            <path d="M12.8,8 C12.8,11.0927946 10.2927946,13.6 7.2,13.6 C5.73088329,13.6179028 4.31699148,13.0408041 3.28,12 L6.4,12 L6.4,10.4 L0.8,10.4 L0.8,16 L2.4,16 L2.4,13.36 C3.71086874,14.5564475 5.42526687,15.2136335 7.2,15.2 C11.1764502,15.2 14.4,11.9764502 14.4,8 L12.8,8 Z" id="Path"></path>
+            <path d="M7.2,2.4 C8.66911671,2.38209724 10.0830085,2.95919594 11.12,4 L8,4 L8,5.6 L13.6,5.6 L13.6,0 L12,0 L12,2.64 C10.6891313,1.44355247 8.97473313,0.786366515 7.2,0.8 C3.2235498,0.8 0,4.0235498 0,8 L1.6,8 C1.6,4.9072054 4.1072054,2.4 7.2,2.4 Z" id="Path"></path>
+        </g>
+    </g>
+</svg>
