@@ -1,29 +1,32 @@
-# Copyright (c) 2022 Ultimaker B.V.
+# Copyright (c) 2023 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import collections
-from typing import OrderedDict, Optional
+from typing import Optional
 
-from PyQt6.QtCore import Qt, QTimer, QObject
+from PyQt6.QtCore import Qt, QTimer, QObject, QUrl
 
 import cura
 from UM import i18nCatalog
 from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
+from UM.Resources import Resources
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.Interfaces import ContainerInterface
+
+from cura.Machines.Models.IntentCategoryModel import IntentCategoryModel
 from cura.Settings.IntentManager import IntentManager
 
 catalog = i18nCatalog("cura")
 
 
 class IntentSelectionModel(ListModel):
-
     NameRole = Qt.ItemDataRole.UserRole + 1
     IntentCategoryRole = Qt.ItemDataRole.UserRole + 2
     WeightRole = Qt.ItemDataRole.UserRole + 3
     DescriptionRole = Qt.ItemDataRole.UserRole + 4
     IconRole = Qt.ItemDataRole.UserRole + 5
+    CustomIconRole = Qt.ItemDataRole.UserRole + 6
 
     def __init__(self, parent: Optional[QObject] = None) -> None:
         super().__init__(parent)
@@ -33,6 +36,7 @@ class IntentSelectionModel(ListModel):
         self.addRoleName(self.WeightRole, "weight")
         self.addRoleName(self.DescriptionRole, "description")
         self.addRoleName(self.IconRole, "icon")
+        self.addRoleName(self.CustomIconRole, "custom_icon")
 
         application = cura.CuraApplication.CuraApplication.getInstance()
 
@@ -53,30 +57,8 @@ class IntentSelectionModel(ListModel):
 
         self._onChange()
 
-    @staticmethod
-    def _getDefaultProfileInformation() -> OrderedDict[str, dict]:
-        """ Default information user-visible string. Ordered by weight. """
-        default_profile_information = collections.OrderedDict()
-        default_profile_information["default"] = {
-            "name": catalog.i18nc("@label", "Default"),
-            "icon": "GearCheck"
-        }
-        default_profile_information["visual"] = {
-            "name": catalog.i18nc("@label", "Visual"),
-            "description": catalog.i18nc("@text", "The visual profile is designed to print visual prototypes and models with the intent of high visual and surface quality."),
-            "icon" : "Visual"
-        }
-        default_profile_information["engineering"] = {
-            "name": catalog.i18nc("@label", "Engineering"),
-            "description": catalog.i18nc("@text", "The engineering profile is designed to print functional prototypes and end-use parts with the intent of better accuracy and for closer tolerances."),
-            "icon": "Nut"
-        }
-        default_profile_information["quick"] = {
-            "name": catalog.i18nc("@label", "Draft"),
-            "description": catalog.i18nc("@text", "The draft profile is designed to print initial prototypes and concept validation with the intent of significant print time reduction."),
-            "icon": "SpeedOMeter"
-        }
-        return default_profile_information
+    _default_intent_categories = ["default", "visual", "engineering", "quick", "annealing"]
+    _icons = {"default": "GearCheck", "visual": "Visual", "engineering": "Nut", "quick": "SpeedOMeter", "annealing": "Anneal"}
 
     def _onContainerChange(self, container: ContainerInterface) -> None:
         """Updates the list of intents if an intent profile was added or removed."""
@@ -102,25 +84,49 @@ class IntentSelectionModel(ListModel):
             self.setItems([])
             return
 
-        default_profile_info = self._getDefaultProfileInformation()
-
         available_categories = IntentManager.getInstance().currentAvailableIntentCategories()
+
         result = []
-        for i, category in enumerate(available_categories):
-            profile_info = default_profile_info.get(category, {})
+        for category in available_categories:
 
-            try:
-                weight = list(default_profile_info.keys()).index(category)
-            except ValueError:
-                weight = len(available_categories) + i
+            if category in self._default_intent_categories:
+                result.append({
+                    "name": IntentCategoryModel.translation(category, "name", category.title()),
+                    "description": IntentCategoryModel.translation(category, "description", None),
+                    "icon": self._icons[category],
+                    "custom_icon": None,
+                    "intent_category": category,
+                    "weight": self._default_intent_categories.index(category),
+                })
+            else:
+                # There can be multiple intents with the same category, use one of these
+                # intent-metadata's for the icon/description defintions for the intent
+                intent_metadata = cura.CuraApplication.CuraApplication \
+                    .getInstance() \
+                    .getContainerRegistry() \
+                    .findContainersMetadata(type="intent", definition=global_stack.definition.getId(),
+                                            intent_category=category)[0]
 
-            result.append({
-                "name": profile_info.get("name", category.title()),
-                "description": profile_info.get("description", None),
-                "icon" : profile_info.get("icon", ""),
-                "intent_category": category,
-                "weight": weight,
-            })
+                intent_name = intent_metadata.get("name", category.title())
+                icon = intent_metadata.get("icon", None)
+                description = intent_metadata.get("description", None)
+
+                if icon is not None:
+                    try:
+                        icon = QUrl.fromLocalFile(
+                            Resources.getPath(cura.CuraApplication.CuraApplication.ResourceTypes.ImageFiles, icon))
+                    except (FileNotFoundError, NotADirectoryError, PermissionError):
+                        Logger.log("e", f"Icon file for intent {intent_name} not found.")
+                        icon = None
+
+                result.append({
+                    "name": intent_name,
+                    "description": description,
+                    "custom_icon": icon,
+                    "icon": None,
+                    "intent_category": category,
+                    "weight": 5,
+                })
 
         result.sort(key=lambda k: k["weight"])
 
