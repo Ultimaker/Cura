@@ -33,7 +33,7 @@ Item
         {
             id: curaImage
             anchors.horizontalCenter: parent.horizontalCenter
-            source: UM.Theme.getImage("welcome_cura")
+            source: UM.Theme.getImage("first_run_welcome_cura")
             fillMode: Image.PreserveAspectFit
             width: UM.Theme.getSize("welcome_wizard_content_image_big").width
             sourceSize.width: width
