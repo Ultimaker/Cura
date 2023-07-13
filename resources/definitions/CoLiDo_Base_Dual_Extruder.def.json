@@ -125,7 +125,7 @@
         "speed_wall": { "value": "60 if speed_print==60 else math.ceil(round(speed_print*0.90))" },
         "speed_wall_0": { "value": "30 if speed_print==60 else math.ceil(round(speed_print*0.75))" },
         "speed_wall_x": { "value": "60 if speed_print==60 else math.ceil(round(speed_print*0.90))" },
-        "support_brim_enable": { "value": true },
+        
         "support_brim_width": { "value": 5 },
         "support_infill_rate": { "value": "0 if support_enable and support_structure == 'tree' else 20" },
         "support_interface_density": { "value": 33.333 },
