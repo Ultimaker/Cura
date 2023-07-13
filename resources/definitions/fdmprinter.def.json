@@ -3052,6 +3052,20 @@
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "material_max_flowrate":
+                {
+                    "label": "Material Maximum Flowrate",
+                    "description": "Maximum flowrate that the printer can extrude for the material",
+                    "unit": "mm\u00b3/s",
+                    "type": "float",
+                    "default_value": 100,
+                    "value": "machine_max_feedrate_e * (material_diameter/2)**2 * math.pi",
+                    "minimum_value": "0",
+                    "maximum_value": "machine_max_feedrate_e * (material_diameter/2)**2 * math.pi",
+                    "enabled": false,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "material_standby_temperature":
                 {
                     "label": "Standby Temperature",
