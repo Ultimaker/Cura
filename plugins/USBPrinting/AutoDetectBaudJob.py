@@ -46,8 +46,7 @@ class AutoDetectBaudJob(Job):
                     wait_bootloader = wait_bootloader_times[retry]
                 else:
                     wait_bootloader = wait_bootloader_times[-1]
-                Logger.log("d", "Checking {serial} if baud rate {baud_rate} works. Retry nr: {retry}. Wait timeout: {timeout}".format(
-                    serial = self._serial_port, baud_rate = baud_rate, retry = retry, timeout = wait_response_timeout))
+                Logger.debug(f"Checking {self._serial_port} if baud rate {baud_rate} works. Retry nr: {retry}. Wait timeout: {wait_response_timeout}")
 
                 if serial is None:
                     try:
@@ -61,7 +60,9 @@ class AutoDetectBaudJob(Job):
                         serial.baudrate = baud_rate
                     except ValueError:
                         continue
-                sleep(wait_bootloader)  # Ensure that we are not talking to the boot loader. 1.5 seconds seems to be the magic number
+
+                # Ensure that we are not talking to the boot loader. 1.5 seconds seems to be the magic number
+                sleep(wait_bootloader)
 
                 serial.write(b"\n")  # Ensure we clear out previous responses
                 serial.write(b"M105\n")
@@ -83,4 +84,5 @@ class AutoDetectBaudJob(Job):
 
                     serial.write(b"M105\n")
             sleep(15)  # Give the printer some time to init and try again.
+        Logger.debug(f"Unable to find a working baudrate for {serial}")
         self.setResult(None)  # Unable to detect the correct baudrate.
