@@ -21,7 +21,7 @@ class AutoDetectBaudJob(Job):
         self._all_baud_rates = [115200, 250000, 500000, 230400, 76800, 57600, 38400, 19200, 9600]
 
     def run(self) -> None:
-        Logger.log("d", "Auto detect baud rate started.")
+        Logger.debug(f"Auto detect baud rate started for {self._serial_port}")
         wait_response_timeouts = [3, 15, 30]
         wait_bootloader_times = [1.5, 5, 15]
         write_timeout = 3
