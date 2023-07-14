@@ -9,8 +9,11 @@ message ObjectList
 }
 
 enum SlotID {
-  SIMPLIFY = 0;
-  POSTPROCESS = 1;
+  BROADCAST_SETTINGS = 0;
+  SIMPLIFY_MODIFY = 100;
+  POSTPROCESS_MODIFY = 101;
+  INFILL_MODIFY = 102;
+  INFILL_GENERATE = 200;
 }
 
 message EnginePlugin
