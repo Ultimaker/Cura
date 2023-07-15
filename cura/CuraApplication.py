@@ -5,6 +5,7 @@ import os
 import sys
 import tempfile
 import time
+import platform
 from typing import cast, TYPE_CHECKING, Optional, Callable, List, Any, Dict
 
 import numpy
@@ -828,6 +829,8 @@ class CuraApplication(QtApplication):
     def run(self):
         super().run()
 
+        self._log_hardware_info()
+
         if len(ApplicationMetadata.DEPENDENCY_INFO) > 0:
             Logger.debug("Using Conan managed dependencies: " + ", ".join(
                 [dep["recipe"]["id"] for dep in ApplicationMetadata.DEPENDENCY_INFO["installed"] if dep["recipe"]["version"] != "latest"]))
@@ -900,6 +903,14 @@ class CuraApplication(QtApplication):
         self._auto_save.initialize()
 
         self.exec()
+
+    def _log_hardware_info(self):
+        hardware_info = platform.uname()
+        Logger.info(f"System: {hardware_info.system}")
+        Logger.info(f"Release: {hardware_info.release}")
+        Logger.info(f"Version: {hardware_info.version}")
+        Logger.info(f"Processor name: {hardware_info.processor}")
+        Logger.info(f"CPU Cores: {os.cpu_count()}")
 
     def __setUpSingleInstanceServer(self):
         if self._use_single_instance:
