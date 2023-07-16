@@ -256,12 +256,12 @@ Item
 
                         // popup dialog to select a new color
                         // if successful it sets the properties.color_code value to the new color
-                        ColorDialog
+                        Cura.ColorDialog
                         {
                             id: colorDialog
                             title: catalog.i18nc("@title", "Material color picker")
-                            selectedColor: properties.color_code
-                            onAccepted: base.setMetaDataEntry("color_code", properties.color_code, selectedColor)
+                            color: properties.color_code
+                            onAccepted: base.setMetaDataEntry("color_code", properties.color_code, color)
                         }
                     }
                 }

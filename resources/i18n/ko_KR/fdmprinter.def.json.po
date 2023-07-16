@@ -62,7 +62,7 @@ msgstr "다른 부품 내부에 완전히 둘러싸인 부품은 다른 부품�
 
 msgctxt "support_tree_branch_reach_limit description"
 msgid "A recomendation to how far branches can move from the points they support. Branches can violate this value to reach their destination (buildplate or a flat part of the model). Lowering this value will make the support more sturdy, but increase the amount of branches (and because of that material usage/print time) "
-msgstr "브랜치가 서포트하는 지점에서 뻗어 나가는 거리에 대한 권장 사항입니다. 브랜치는 목적지(빌드 플레이트 또는 모델의 평평한 부분)에 도달하기 위해 이 값을 초과할 수 있습니다. 이 값을 낮추면 서포트가 더 견고해지지만, 브랜치의 양이 늘어나므로 재료 사용량/프린트 시간이 늘어납니다."
+msgstr ""
 
 msgctxt "extruder_prime_pos_abs label"
 msgid "Absolute Extruder Prime Position"
@@ -118,7 +118,7 @@ msgstr "서포트의 지붕 및 바닥 밀도를 조정합니다. 값이 높을�
 
 msgctxt "support_tree_top_rate description"
 msgid "Adjusts the density of the support structure used to generate the tips of the branches. A higher value results in better overhangs, but the supports are harder to remove. Use Support Roof for very high values or ensure support density is similarly high at the top."
-msgstr "브랜치의 팁을 생성하는 데 사용되는 서포트 구조의 밀도를 조정합니다. 값이 클수록 오버행은 개선되지만 서포트를 제거하기가 어려워집니다. 매우 큰 값을 위해서는 서포트 지붕을 사용하거나 상단의 서포트 밀도가 비슷하게 높은지 확인합니다."
+msgstr ""
 
 msgctxt "support_infill_rate description"
 msgid "Adjusts the density of the support structure. A higher value results in better overhangs, but the supports are harder to remove."
@@ -266,7 +266,7 @@ msgstr "모두"
 
 msgctxt "support_interface_priority option nothing"
 msgid "Both overlap"
-msgstr "둘 다 겹침"
+msgstr ""
 
 msgctxt "bottom_layers label"
 msgid "Bottom Layers"
@@ -290,15 +290,15 @@ msgstr "바닥 두께"
 
 msgctxt "support_tree_top_rate label"
 msgid "Branch Density"
-msgstr "브랜치 밀도"
+msgstr ""
 
 msgctxt "support_tree_branch_diameter label"
 msgid "Branch Diameter"
-msgstr "브랜치 직경"
+msgstr ""
 
 msgctxt "support_tree_branch_diameter_angle label"
 msgid "Branch Diameter Angle"
-msgstr "브랜치 직경 각도"
+msgstr ""
 
 msgctxt "material_break_preparation_retracted_position label"
 msgid "Break Preparation Retracted Position"
@@ -710,11 +710,11 @@ msgstr "직경"
 
 msgctxt "support_tree_max_diameter_increase_by_merges_when_support_to_model label"
 msgid "Diameter Increase To Model"
-msgstr "모델에 대한 직경 증가"
+msgstr ""
 
 msgctxt "support_tree_bp_diameter description"
 msgid "Diameter every branch tries to achieve when reaching the buildplate. Improves bed adhesion."
-msgstr "모든 브랜치가 빌드 플레이트에 도달할 때 달성하려고 하는 직경입니다. 이에 따라 베드 접착력이 개선됩니다."
+msgstr ""
 
 msgctxt "adhesion_type description"
 msgid "Different options that help to improve both priming your extrusion and adhesion to the build plate. Brim adds a single layer flat area around the base of your model to prevent warping. Raft adds a thick grid with a roof below the model. Skirt is a line printed around the model, but not connected to the model."
@@ -1298,7 +1298,7 @@ msgstr "구멍 수평 확장"
 
 msgctxt "hole_xy_offset_max_diameter label"
 msgid "Hole Horizontal Expansion Max Diameter"
-msgstr "구멍 수평 확장 최대 직경"
+msgstr ""
 
 msgctxt "small_hole_max_size description"
 msgid "Holes and part outlines with a diameter smaller than this will be printed using Small Feature Speed."
@@ -1378,11 +1378,11 @@ msgstr "프린터 시작 gcode 스크립트가 완료될 때 공유된 노즐 �
 
 msgctxt "support_interface_priority description"
 msgid "How support interface and support will interact when they overlap. Currently only implemented for support roof."
-msgstr "서포트 인터페이스와 서포트가 겹칠 때 상호 작용하는 방식으로, 현재 서포트 지붕에만 구현되어 있습니다."
+msgstr ""
 
 msgctxt "support_tree_min_height_to_model description"
 msgid "How tall a branch has to be if it is placed on the model. Prevents small blobs of support. This setting is ignored when a branch is supporting a support roof."
-msgstr "모델에 브랜치를 배치할 때 브랜치의 높이를 설정합니다. 이에 따라 서포트의 작은 얼룩이 방지됩니다. 브랜치가 서포트 지붕을 서포트하는 경우 이 설정은 무시됩니다."
+msgstr ""
 
 msgctxt "bridge_skin_support_threshold description"
 msgid "If a skin region is supported for less than this percentage of its area, print it using the bridge settings. Otherwise it is printed using the normal skin settings."
@@ -1530,7 +1530,7 @@ msgstr "첫 번째 레이어 하단 압출량"
 
 msgctxt "support_tree_bp_diameter label"
 msgid "Initial Layer Diameter"
-msgstr "초기 레이어 직경"
+msgstr ""
 
 msgctxt "material_flow_layer_0 label"
 msgid "Initial Layer Flow"
@@ -1634,11 +1634,11 @@ msgstr "내부에서 외부로"
 
 msgctxt "support_interface_priority option interface_lines_overwrite_support_area"
 msgid "Interface lines preferred"
-msgstr "인터페이스 라인 우선"
+msgstr ""
 
 msgctxt "support_interface_priority option interface_area_overwrite_support_area"
 msgid "Interface preferred"
-msgstr "인터페이스 우선"
+msgstr ""
 
 msgctxt "interlocking_beam_layer_count label"
 msgid "Interlocking Beam Layer Count"
@@ -1698,7 +1698,7 @@ msgstr "센터 원점"
 
 msgctxt "material_is_support_material label"
 msgid "Is support material"
-msgstr "서포트 재료임"
+msgstr ""
 
 msgctxt "material_crystallinity description"
 msgid "Is this material the type that breaks off cleanly when heated (crystalline), or is it the type that produces long intertwined polymer chains (non-crystalline)?"
@@ -1706,7 +1706,7 @@ msgstr "이 소재는 가열 시 깔끔하게 분리되는 유형(결정형)입�
 
 msgctxt "material_is_support_material description"
 msgid "Is this material typically used as a support material during printing."
-msgstr "이 재료는 일반적으로 프린팅 중에 서포트 재료로 사용됩니다."
+msgstr ""
 
 msgctxt "magic_fuzzy_skin_outside_only description"
 msgid "Jitter only the parts' outlines and not the parts' holes."
@@ -1774,11 +1774,11 @@ msgstr "라이트닝 내부채움 서포트 각도"
 
 msgctxt "support_tree_limit_branch_reach label"
 msgid "Limit Branch Reach"
-msgstr "브랜치 도달 거리 제한"
+msgstr ""
 
 msgctxt "support_tree_limit_branch_reach description"
 msgid "Limit how far each branch should travel from the point it supports. This can make the support more sturdy, but will increase the amount of branches (and because of that material usage/print time)"
-msgstr "각 브랜치가 서포트하는 지점에서 뻗어 나가는 거리를 제한합니다. 이렇게 하면 서포트가 더 견고해질 수 있지만, 브랜치의 양이 늘어나므로 재료 사용량/프린트 시간이 늘어납니다."
+msgstr ""
 
 msgctxt "cutting_mesh description"
 msgid "Limit the volume of this mesh to within other meshes. You can use this to make certain areas of one mesh print with different settings and with a whole different extruder."
@@ -1930,7 +1930,7 @@ msgstr "Z 방향 최대 가속도"
 
 msgctxt "support_tree_angle label"
 msgid "Maximum Branch Angle"
-msgstr "최대 브랜치 각도"
+msgstr ""
 
 msgctxt "meshfix_maximum_deviation label"
 msgid "Maximum Deviation"
@@ -2086,7 +2086,7 @@ msgstr "최소 이송 속도"
 
 msgctxt "support_tree_min_height_to_model label"
 msgid "Minimum Height To Model"
-msgstr "모델에 대한 최소 높이"
+msgstr ""
 
 msgctxt "min_infill_area label"
 msgid "Minimum Infill Area"
@@ -2338,11 +2338,11 @@ msgstr "익스트루더로 오프셋"
 
 msgctxt "support_tree_rest_preference option buildplate"
 msgid "On buildplate when possible"
-msgstr "가능한 경우 빌드 플레이트에"
+msgstr ""
 
 msgctxt "support_tree_rest_preference option graceful"
 msgid "On model if required"
-msgstr "필요한 경우 모델에"
+msgstr ""
 
 msgctxt "print_sequence option one_at_a_time"
 msgid "One at a Time"
@@ -2370,7 +2370,7 @@ msgstr "Ooze 쉴드 거리"
 
 msgctxt "support_tree_branch_reach_limit label"
 msgid "Optimal Branch Range"
-msgstr "최적 브랜치 범위"
+msgstr ""
 
 msgctxt "optimize_wall_printing_order label"
 msgid "Optimize Wall Printing Order"
@@ -2458,7 +2458,7 @@ msgstr "레이어가 슬라이스 된, 이 값보다 둘레가 작은 다각형�
 
 msgctxt "support_tree_angle_slow label"
 msgid "Preferred Branch Angle"
-msgstr "기본 브랜치 각도"
+msgstr ""
 
 msgctxt "wall_transition_filter_deviation description"
 msgid "Prevent transitioning back and forth between one extra wall and one less. This margin extends the range of line widths which follow to [Minimum Wall Line Width - Margin, 2 * Minimum Wall Line Width + Margin]. Increasing this margin reduces the number of transitions, which reduces the number of extrusion starts/stops and travel time. However, large line width variation can lead to under- or overextrusion problems."
@@ -2578,7 +2578,7 @@ msgstr "첫번째 레이어의 프린팅 온도"
 
 msgctxt "skirt_height description"
 msgid "Printing the innermost skirt line with multiple layers makes it easy to remove the skirt."
-msgstr "가장 안쪽의 스커트 라인을 여러 겹으로 프린트하면 스커트를 쉽게 제거할 수 있습니다."
+msgstr ""
 
 msgctxt "alternate_extra_perimeter description"
 msgid "Prints an extra wall at every other layer. This way infill gets caught between these extra walls, resulting in stronger prints."
@@ -2818,7 +2818,7 @@ msgstr "위쪽/아래쪽 패턴의 가장 바깥 쪽 부분을 여러 동심 선
 
 msgctxt "support_tree_rest_preference label"
 msgid "Rest Preference"
-msgstr "배치 기본 설정"
+msgstr ""
 
 msgctxt "travel_retract_before_outer_wall label"
 msgid "Retract Before Outer Wall"
@@ -2966,7 +2966,7 @@ msgstr "스커트 거리"
 
 msgctxt "skirt_height label"
 msgid "Skirt Height"
-msgstr "스커트 높이"
+msgstr ""
 
 msgctxt "skirt_line_count label"
 msgid "Skirt Line Count"
@@ -3026,7 +3026,7 @@ msgstr "소형 레이어 프린팅 온도"
 
 msgctxt "small_skin_width label"
 msgid "Small Top/Bottom Width"
-msgstr "작은 상단/하단 너비"
+msgstr ""
 
 msgctxt "small_feature_speed_factor_0 description"
 msgid "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
@@ -3038,11 +3038,11 @@ msgstr "소형 피처는 정상적인 프린트 속도의 이 비율로 프린�
 
 msgctxt "small_skin_width description"
 msgid "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions."
-msgstr "작은 상단/하단 영역은 기본 상단/하단 패턴 대신 벽으로 채워집니다. 이렇게 하면 갑작스러운 움직임을 방지하는 데 도움이 됩니다."
+msgstr ""
 
 msgctxt "brim_smart_ordering label"
 msgid "Smart Brim"
-msgstr "스마트 브림"
+msgstr ""
 
 msgctxt "z_seam_corner option z_seam_corner_weighted"
 msgid "Smart Hiding"
@@ -3282,7 +3282,7 @@ msgstr "서포트 인터페이스 패턴"
 
 msgctxt "support_interface_priority label"
 msgid "Support Interface Priority"
-msgstr "서포트 인터페이스 우선순위"
+msgstr ""
 
 msgctxt "support_interface_skip_height label"
 msgid "Support Interface Resolution"
@@ -3422,11 +3422,11 @@ msgstr "서포트 Z 거리"
 
 msgctxt "support_interface_priority option support_lines_overwrite_interface_area"
 msgid "Support lines preferred"
-msgstr "서포트 라인 우선"
+msgstr ""
 
 msgctxt "support_interface_priority option support_area_overwrite_interface_area"
 msgid "Support preferred"
-msgstr "서포트 우선"
+msgstr ""
 
 msgctxt "support_supported_skin_fan_speed label"
 msgid "Supported Skin Fan Speed"
@@ -3454,7 +3454,7 @@ msgstr "표면의 에너지입니다."
 
 msgctxt "brim_smart_ordering description"
 msgid "Swap print order of the innermost and second innermost brim lines. This improves brim removal."
-msgstr "가장 안쪽의 브림 라인과 그다음으로 안쪽에 있는 브림 라인의 프린트 순서를 바꿉니다. 이렇게 하면 브림이 잘 제거됩니다."
+msgstr ""
 
 msgctxt "alternate_carve_order description"
 msgid "Switch to which mesh intersecting volumes will belong with every layer, so that the overlapping meshes become interwoven. Turning this setting off will cause one of the meshes to obtain all of the volume in the overlap, while it is removed from the other meshes."
@@ -3678,7 +3678,7 @@ msgstr "트리 서포트의 가장 얇은 브랜치의 직경. 브랜치가 두�
 
 msgctxt "support_tree_tip_diameter description"
 msgid "The diameter of the top of the tip of the branches of tree support."
-msgstr "트리 서포트 브랜치 팁의 상단 직경입니다."
+msgstr ""
 
 msgctxt "machine_feeder_wheel_diameter description"
 msgid "The diameter of the wheel that drives the material in the feeder."
@@ -3998,7 +3998,7 @@ msgstr "프린팅 가능하게 된 후 오버행의 최대 각도. 0도의 값�
 
 msgctxt "support_tree_angle description"
 msgid "The maximum angle of the branches while they grow around the model. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
-msgstr "모델 주위로 브랜치가 자랄 때 브랜치의 최대 각도입니다. 브랜치가 수직에 가깝게 안정적이 되도록 만들려면 더 낮은 각도를 사용하고, 브랜치의 도달 거리를 늘리려면 더 높은 각도를 사용하십시오."
+msgstr ""
 
 msgctxt "conical_overhang_hole_size description"
 msgid "The maximum area of a hole in the base of the model before it's removed by Make Overhang Printable.  Holes smaller than this will be retained.  A value of 0 mm² will fill all holes in the models base."
@@ -4174,7 +4174,7 @@ msgstr "충분한 재료를 퍼지하기 위해 프라임 타워 각 층의 최�
 
 msgctxt "support_tree_max_diameter_increase_by_merges_when_support_to_model description"
 msgid "The most the diameter of a branch that has to connect to the model may increase by merging with branches that could reach the buildplate. Increasing this reduces print time, but increases the area of support that rests on model"
-msgstr "모델에 연결해야 하는 브랜치의 직경은 빌드 플레이트에 도달할 수 있는 브랜치와 병합하여 최대로 늘릴 수 있습니다. 이를 늘리면 프린트 시간이 단축되지만 모델에 닿는 서포트 영역이 증가합니다."
+msgstr ""
 
 msgctxt "machine_name description"
 msgid "The name of your 3D printer model."
@@ -4302,11 +4302,11 @@ msgstr "레이어에서 각 부품의 프린팅이 시작할 위치 근처입니
 
 msgctxt "support_tree_angle_slow description"
 msgid "The preferred angle of the branches, when they do not have to avoid the model. Use a lower angle to make them more vertical and more stable. Use a higher angle for branches to merge faster."
-msgstr "모델을 피할 필요가 없을 때 브랜치의 기본 각도입니다. 브랜치가 수직에 가깝게 안정적이 되도록 만들려면 더 낮은 각도를 사용하고, 브랜치가 빨리 합쳐지도록 하려면 더 높은 각도를 사용하십시오."
+msgstr ""
 
 msgctxt "support_tree_rest_preference description"
 msgid "The preferred placement of the support structures. If structures can't be placed at the preferred location, they will be place elsewhere, even if that means placing them on the model."
-msgstr "서포트 구조물의 기본 배치입니다. 구조물을 원하는 위치에 배치할 수 없는 경우 구조물을 모델 위에 놓더라도 다른 곳에 배치합니다."
+msgstr ""
 
 msgctxt "jerk_layer_0 description"
 msgid "The print maximum instantaneous velocity change for the initial layer."
@@ -4638,7 +4638,7 @@ msgstr "모델 주위에 벽이 생겨 외부 공기 흐름을 막아 (뜨거운
 
 msgctxt "support_tree_tip_diameter label"
 msgid "Tip Diameter"
-msgstr "팁 직경"
+msgstr ""
 
 msgctxt "material_shrinkage_percentage_xy description"
 msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor in the XY-direction (horizontally)."
@@ -4822,7 +4822,7 @@ msgstr "삼각형"
 
 msgctxt "support_tree_max_diameter label"
 msgid "Trunk Diameter"
-msgstr "트렁크 직경"
+msgstr ""
 
 msgctxt "machine_gcode_flavor option UltiGCode"
 msgid "Ultimaker 2"
@@ -4978,7 +4978,7 @@ msgstr "0보다 큰 경우 이 거리보다 긴 combing travel은 retraction을 
 
 msgctxt "hole_xy_offset_max_diameter description"
 msgid "When greater than zero, the Hole Horizontal Expansion is gradually applied on small holes (small holes are expanded more). When set to zero the Hole Horizontal Expansion will be applied to all holes. Holes larger than the Hole Horizontal Expansion Max Diameter are not expanded."
-msgstr "0보다 큰 값으로 설정하면 구멍 수평 확장이 작은 구멍에 점진적으로 적용되고(작은 구멍이 더 확장됨), 0으로 설정하면 구멍 수평 확장이 모든 구멍에 적용됩니다. 구멍 수평 확장 최대 직경보다 큰 구멍은 확장되지 않습니다."
+msgstr ""
 
 msgctxt "bridge_skin_material_flow description"
 msgid "When printing bridge skin regions, the amount of material extruded is multiplied by this value."

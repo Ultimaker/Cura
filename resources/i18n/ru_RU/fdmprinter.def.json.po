@@ -62,7 +62,7 @@ msgstr "Деталь, полностью заключенная внутри д�
 
 msgctxt "support_tree_branch_reach_limit description"
 msgid "A recomendation to how far branches can move from the points they support. Branches can violate this value to reach their destination (buildplate or a flat part of the model). Lowering this value will make the support more sturdy, but increase the amount of branches (and because of that material usage/print time) "
-msgstr "Рекомендация относительно того, как далеко ответвления могут отходить от точек, которые они поддерживают. Ответвления могут нарушать это значение, чтобы добраться до места назначения (рабочей пластины или плоской части модели). Снижение этого значения может сделать поддержку прочнее, но увеличит количество ответвлений (и, как следствие, расход материала и время печати)"
+msgstr ""
 
 msgctxt "extruder_prime_pos_abs label"
 msgid "Absolute Extruder Prime Position"
@@ -118,7 +118,7 @@ msgstr "Настройте плотность верха и низа струк�
 
 msgctxt "support_tree_top_rate description"
 msgid "Adjusts the density of the support structure used to generate the tips of the branches. A higher value results in better overhangs, but the supports are harder to remove. Use Support Roof for very high values or ensure support density is similarly high at the top."
-msgstr "Регулирует плотность поддержки, используемой для создания кончиков ответвлений. Большее значение приводит к улучшению качества выступов, но такие поддержки сложнее удалять. Используйте крышу поддержки для очень высоких значений или убедитесь, что плотность одинаково высокая сверху."
+msgstr ""
 
 msgctxt "support_infill_rate description"
 msgid "Adjusts the density of the support structure. A higher value results in better overhangs, but the supports are harder to remove."
@@ -266,7 +266,7 @@ msgstr "Оба варианта"
 
 msgctxt "support_interface_priority option nothing"
 msgid "Both overlap"
-msgstr "Оба пересекаются"
+msgstr ""
 
 msgctxt "bottom_layers label"
 msgid "Bottom Layers"
@@ -290,15 +290,15 @@ msgstr "Толщина дна"
 
 msgctxt "support_tree_top_rate label"
 msgid "Branch Density"
-msgstr "Плотность ответвлений"
+msgstr ""
 
 msgctxt "support_tree_branch_diameter label"
 msgid "Branch Diameter"
-msgstr "Диаметр ответвления"
+msgstr ""
 
 msgctxt "support_tree_branch_diameter_angle label"
 msgid "Branch Diameter Angle"
-msgstr "Угол диаметра ответвления"
+msgstr ""
 
 msgctxt "material_break_preparation_retracted_position label"
 msgid "Break Preparation Retracted Position"
@@ -710,11 +710,11 @@ msgstr "Диаметр"
 
 msgctxt "support_tree_max_diameter_increase_by_merges_when_support_to_model label"
 msgid "Diameter Increase To Model"
-msgstr "Увеличение диаметра до модели"
+msgstr ""
 
 msgctxt "support_tree_bp_diameter description"
 msgid "Diameter every branch tries to achieve when reaching the buildplate. Improves bed adhesion."
-msgstr "Диаметр, которого каждое ответвление пытается достичь при достижении печатной пластины. Улучшает адгезию к столу."
+msgstr ""
 
 msgctxt "adhesion_type description"
 msgid "Different options that help to improve both priming your extrusion and adhesion to the build plate. Brim adds a single layer flat area around the base of your model to prevent warping. Raft adds a thick grid with a roof below the model. Skirt is a line printed around the model, but not connected to the model."
@@ -1298,7 +1298,7 @@ msgstr "Горизонтальное расширение отверстия"
 
 msgctxt "hole_xy_offset_max_diameter label"
 msgid "Hole Horizontal Expansion Max Diameter"
-msgstr "Максимальный диаметр горизонтального расширения отверстия"
+msgstr ""
 
 msgctxt "small_hole_max_size description"
 msgid "Holes and part outlines with a diameter smaller than this will be printed using Small Feature Speed."
@@ -1378,11 +1378,11 @@ msgstr "Показывает, насколько материал каждого
 
 msgctxt "support_interface_priority description"
 msgid "How support interface and support will interact when they overlap. Currently only implemented for support roof."
-msgstr "Как интерфейс поддержки и поддержка будут взаимодействовать при пересечении. В настоящее время реализовано только для крыши поддержки."
+msgstr ""
 
 msgctxt "support_tree_min_height_to_model description"
 msgid "How tall a branch has to be if it is placed on the model. Prevents small blobs of support. This setting is ignored when a branch is supporting a support roof."
-msgstr "Какой высоты должно быть ответвление, если оно размещено на модели. Предотвращает образование небольших пузырей поддержки. Этот параметр игнорируется, если ответвление поддерживает крышу поддержки."
+msgstr ""
 
 msgctxt "bridge_skin_support_threshold description"
 msgid "If a skin region is supported for less than this percentage of its area, print it using the bridge settings. Otherwise it is printed using the normal skin settings."
@@ -1530,7 +1530,7 @@ msgstr "Поток низа первого слоя"
 
 msgctxt "support_tree_bp_diameter label"
 msgid "Initial Layer Diameter"
-msgstr "Диаметр первого слоя"
+msgstr ""
 
 msgctxt "material_flow_layer_0 label"
 msgid "Initial Layer Flow"
@@ -1634,11 +1634,11 @@ msgstr "От внутренних к внешним"
 
 msgctxt "support_interface_priority option interface_lines_overwrite_support_area"
 msgid "Interface lines preferred"
-msgstr "Предпочитать линии интерфейса"
+msgstr ""
 
 msgctxt "support_interface_priority option interface_area_overwrite_support_area"
 msgid "Interface preferred"
-msgstr "Предпочитать интерфейс"
+msgstr ""
 
 msgctxt "interlocking_beam_layer_count label"
 msgid "Interlocking Beam Layer Count"
@@ -1698,7 +1698,7 @@ msgstr "Начало координат в центре"
 
 msgctxt "material_is_support_material label"
 msgid "Is support material"
-msgstr "Является поддерживающим материалом"
+msgstr ""
 
 msgctxt "material_crystallinity description"
 msgid "Is this material the type that breaks off cleanly when heated (crystalline), or is it the type that produces long intertwined polymer chains (non-crystalline)?"
@@ -1706,7 +1706,7 @@ msgstr "Это материал, который при нагревании ле
 
 msgctxt "material_is_support_material description"
 msgid "Is this material typically used as a support material during printing."
-msgstr "Используется ли обычно этот материал в качестве поддерживающего материала при печати."
+msgstr ""
 
 msgctxt "magic_fuzzy_skin_outside_only description"
 msgid "Jitter only the parts' outlines and not the parts' holes."
@@ -1774,11 +1774,11 @@ msgstr "Угол поддержки шаблона заполнения «мол
 
 msgctxt "support_tree_limit_branch_reach label"
 msgid "Limit Branch Reach"
-msgstr "Ограничить охват ответвлений"
+msgstr ""
 
 msgctxt "support_tree_limit_branch_reach description"
 msgid "Limit how far each branch should travel from the point it supports. This can make the support more sturdy, but will increase the amount of branches (and because of that material usage/print time)"
-msgstr "Ограничьте расстояние, на которое каждое ответвление должно удаляться от опорной точки. Это может сделать поддержку прочнее, но увеличит количество ответвлений (и, как следствие, расход материала и время печати)"
+msgstr ""
 
 msgctxt "cutting_mesh description"
 msgid "Limit the volume of this mesh to within other meshes. You can use this to make certain areas of one mesh print with different settings and with a whole different extruder."
@@ -1930,7 +1930,7 @@ msgstr "Максимальное ускорение по оси Z"
 
 msgctxt "support_tree_angle label"
 msgid "Maximum Branch Angle"
-msgstr "Максимальный угол ответвления"
+msgstr ""
 
 msgctxt "meshfix_maximum_deviation label"
 msgid "Maximum Deviation"
@@ -2086,7 +2086,7 @@ msgstr "Минимальная подача"
 
 msgctxt "support_tree_min_height_to_model label"
 msgid "Minimum Height To Model"
-msgstr "Минимальная высота до модели"
+msgstr ""
 
 msgctxt "min_infill_area label"
 msgid "Minimum Infill Area"
@@ -2338,11 +2338,11 @@ msgstr "Смещение с экструдером"
 
 msgctxt "support_tree_rest_preference option buildplate"
 msgid "On buildplate when possible"
-msgstr "По возможности на печатной пластине"
+msgstr ""
 
 msgctxt "support_tree_rest_preference option graceful"
 msgid "On model if required"
-msgstr "На модели, если требуется"
+msgstr ""
 
 msgctxt "print_sequence option one_at_a_time"
 msgid "One at a Time"
@@ -2370,7 +2370,7 @@ msgstr "Дистанция до защиты от капель"
 
 msgctxt "support_tree_branch_reach_limit label"
 msgid "Optimal Branch Range"
-msgstr "Оптимальный охват ответвлений"
+msgstr ""
 
 msgctxt "optimize_wall_printing_order label"
 msgid "Optimize Wall Printing Order"
@@ -2458,7 +2458,7 @@ msgstr "Полигоны в разделенных слоях, длина окр
 
 msgctxt "support_tree_angle_slow label"
 msgid "Preferred Branch Angle"
-msgstr "Предпочтительный угол ответвления"
+msgstr ""
 
 msgctxt "wall_transition_filter_deviation description"
 msgid "Prevent transitioning back and forth between one extra wall and one less. This margin extends the range of line widths which follow to [Minimum Wall Line Width - Margin, 2 * Minimum Wall Line Width + Margin]. Increasing this margin reduces the number of transitions, which reduces the number of extrusion starts/stops and travel time. However, large line width variation can lead to under- or overextrusion problems."
@@ -2578,7 +2578,7 @@ msgstr "Температура печати первого слоя"
 
 msgctxt "skirt_height description"
 msgid "Printing the innermost skirt line with multiple layers makes it easy to remove the skirt."
-msgstr "Печать внутренней линии юбки несколькими слоями позволяет легко ее удалить."
+msgstr ""
 
 msgctxt "alternate_extra_perimeter description"
 msgid "Prints an extra wall at every other layer. This way infill gets caught between these extra walls, resulting in stronger prints."
@@ -2818,7 +2818,7 @@ msgstr "Заменяет внешнюю часть шаблона крышки/�
 
 msgctxt "support_tree_rest_preference label"
 msgid "Rest Preference"
-msgstr "Предпочтение опоры"
+msgstr ""
 
 msgctxt "travel_retract_before_outer_wall label"
 msgid "Retract Before Outer Wall"
@@ -2966,7 +2966,7 @@ msgstr "Дистанция до юбки"
 
 msgctxt "skirt_height label"
 msgid "Skirt Height"
-msgstr "Высота юбки"
+msgstr ""
 
 msgctxt "skirt_line_count label"
 msgid "Skirt Line Count"
@@ -3026,7 +3026,7 @@ msgstr "Температура малослойной печати"
 
 msgctxt "small_skin_width label"
 msgid "Small Top/Bottom Width"
-msgstr "Маленькая ширина верха/низа"
+msgstr ""
 
 msgctxt "small_feature_speed_factor_0 description"
 msgid "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
@@ -3038,11 +3038,11 @@ msgstr "Малые элементы будут напечатаны со ско�
 
 msgctxt "small_skin_width description"
 msgid "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions."
-msgstr "Небольшие области верха/низа заполняются стенками вместо стандартного шаблона верха/низа. Это помогает избежать рывков."
+msgstr ""
 
 msgctxt "brim_smart_ordering label"
 msgid "Smart Brim"
-msgstr "Умная кайма"
+msgstr ""
 
 msgctxt "z_seam_corner option z_seam_corner_weighted"
 msgid "Smart Hiding"
@@ -3282,7 +3282,7 @@ msgstr "Шаблон связующего слоя"
 
 msgctxt "support_interface_priority label"
 msgid "Support Interface Priority"
-msgstr "Приоритет интерфейса поддержки"
+msgstr ""
 
 msgctxt "support_interface_skip_height label"
 msgid "Support Interface Resolution"
@@ -3422,11 +3422,11 @@ msgstr "Зазор поддержки по оси Z"
 
 msgctxt "support_interface_priority option support_lines_overwrite_interface_area"
 msgid "Support lines preferred"
-msgstr "Предпочитать линии поддержки"
+msgstr ""
 
 msgctxt "support_interface_priority option support_area_overwrite_interface_area"
 msgid "Support preferred"
-msgstr "Предпочитать поддержку"
+msgstr ""
 
 msgctxt "support_supported_skin_fan_speed label"
 msgid "Supported Skin Fan Speed"
@@ -3454,7 +3454,7 @@ msgstr "Поверхностная энергия."
 
 msgctxt "brim_smart_ordering description"
 msgid "Swap print order of the innermost and second innermost brim lines. This improves brim removal."
-msgstr "Меняет местами порядок печати внутренней и следующей внутренней линий каймы. Это упрощает удаление каймы."
+msgstr ""
 
 msgctxt "alternate_carve_order description"
 msgid "Switch to which mesh intersecting volumes will belong with every layer, so that the overlapping meshes become interwoven. Turning this setting off will cause one of the meshes to obtain all of the volume in the overlap, while it is removed from the other meshes."
@@ -3678,7 +3678,7 @@ msgstr "Диаметр самых тонких ответвлений древо
 
 msgctxt "support_tree_tip_diameter description"
 msgid "The diameter of the top of the tip of the branches of tree support."
-msgstr "Диаметр верхушек кончиков ответвлений древовидной поддержки."
+msgstr ""
 
 msgctxt "machine_feeder_wheel_diameter description"
 msgid "The diameter of the wheel that drives the material in the feeder."
@@ -3998,7 +3998,7 @@ msgstr "Максимальный угол нависания, после кот�
 
 msgctxt "support_tree_angle description"
 msgid "The maximum angle of the branches while they grow around the model. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
-msgstr "Максимальный угол наклона ответвлений при их росте вокруг модели. При указании меньшего угла поддержка будет более вертикальной и устойчивой. Для получения большего охвата указывайте более высокий угол."
+msgstr ""
 
 msgctxt "conical_overhang_hole_size description"
 msgid "The maximum area of a hole in the base of the model before it's removed by Make Overhang Printable.  Holes smaller than this will be retained.  A value of 0 mm² will fill all holes in the models base."
@@ -4174,7 +4174,7 @@ msgstr "Минимальный объём материала на каждый �
 
 msgctxt "support_tree_max_diameter_increase_by_merges_when_support_to_model description"
 msgid "The most the diameter of a branch that has to connect to the model may increase by merging with branches that could reach the buildplate. Increasing this reduces print time, but increases the area of support that rests on model"
-msgstr "Наибольшее увеличение диаметра ответвления, которое должно быть соединено с моделью, может произойти за счет слияния с ответвлениями, которые могут достигать печатной пластины. Увеличение этого значения сокращает время печати, но увеличивает площадь поддержки, которая опирается на модель"
+msgstr ""
 
 msgctxt "machine_name description"
 msgid "The name of your 3D printer model."
@@ -4302,11 +4302,11 @@ msgstr "Позиция, рядом с которой следует начина
 
 msgctxt "support_tree_angle_slow description"
 msgid "The preferred angle of the branches, when they do not have to avoid the model. Use a lower angle to make them more vertical and more stable. Use a higher angle for branches to merge faster."
-msgstr "Предпочтительный угол ответвлений, когда им не нужно избегать модели. При указании меньшего угла поддержка будет более вертикальной и устойчивой. Используйте больший угол, чтобы ветки сливались быстрее."
+msgstr ""
 
 msgctxt "support_tree_rest_preference description"
 msgid "The preferred placement of the support structures. If structures can't be placed at the preferred location, they will be place elsewhere, even if that means placing them on the model."
-msgstr "Предпочтительное размещение поддерживающих конструкций. Если структуры не могут быть размещены в предпочтительном месте, они будут размещены в другом месте, даже если это приведет к их размещению на модели."
+msgstr ""
 
 msgctxt "jerk_layer_0 description"
 msgid "The print maximum instantaneous velocity change for the initial layer."
@@ -4638,7 +4638,7 @@ msgstr "Создаёт стенку вокруг модели, которая у
 
 msgctxt "support_tree_tip_diameter label"
 msgid "Tip Diameter"
-msgstr "Диаметр кончика"
+msgstr ""
 
 msgctxt "material_shrinkage_percentage_xy description"
 msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor in the XY-direction (horizontally)."
@@ -4822,7 +4822,7 @@ msgstr "Треугольники"
 
 msgctxt "support_tree_max_diameter label"
 msgid "Trunk Diameter"
-msgstr "Диаметр ствола"
+msgstr ""
 
 msgctxt "machine_gcode_flavor option UltiGCode"
 msgid "Ultimaker 2"
@@ -4978,7 +4978,7 @@ msgstr "При значении параметра выше нуля перем�
 
 msgctxt "hole_xy_offset_max_diameter description"
 msgid "When greater than zero, the Hole Horizontal Expansion is gradually applied on small holes (small holes are expanded more). When set to zero the Hole Horizontal Expansion will be applied to all holes. Holes larger than the Hole Horizontal Expansion Max Diameter are not expanded."
-msgstr "Если значение больше нуля, то горизонтальное расширение отверстия постепенно применяется к маленьким отверстиям (маленькие отверстия расширяются больше). Если установлено нулевое значение, то горизонтальное расширение отверстия будет применено ко всем отверстиям. Отверстия, превышающие максимальный диаметр горизонтального расширения отверстия, не расширяются."
+msgstr ""
 
 msgctxt "bridge_skin_material_flow description"
 msgid "When printing bridge skin regions, the amount of material extruded is multiplied by this value."
