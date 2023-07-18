@@ -262,6 +262,7 @@ class CuraConan(ConanFile):
         self.options["pysavitar"].shared = True
         self.options["pynest2d"].shared = True
         self.options["cpython"].shared = True
+        self.options["boost"].header_only = True
 
     def validate(self):
         version = self.conf_info.get("user.cura:version", default = self.version, check_type = str)
@@ -269,6 +270,7 @@ class CuraConan(ConanFile):
             raise ConanInvalidConfiguration("Only versions 5+ are support")
 
     def requirements(self):
+        self.requires("boost/1.81.0")
         self.requires("pyarcus/(latest)@ultimaker/cura_10475")
         self.requires("curaengine/(latest)@ultimaker/cura_10475")
         self.requires("pysavitar/5.2.2")
