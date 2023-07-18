@@ -269,7 +269,7 @@ class CuraConan(ConanFile):
             raise ConanInvalidConfiguration("Only versions 5+ are support")
 
     def requirements(self):
-        self.requires("pyarcus/5.2.2")
+        self.requires("pyarcus/(latest)@ultimaker/cura_10475")
         self.requires("curaengine/(latest)@ultimaker/cura_10475")
         self.requires("pysavitar/5.2.2")
         self.requires("pynest2d/5.2.2")
