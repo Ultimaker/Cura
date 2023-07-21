@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdmmaterial xmlns="http://www.ultimaker.com/material" version="1.3">
+    <metadata>
+        <name>
+            <brand>BASF Forward AM</brand>
+            <material>316L</material>
+            <color>Ultrafuse</color>
+        </name>
+        <GUID>fb1d9ba0-68d3-5e66-8967-6cb8990ef1af</GUID>
+        <version>1</version>
+        <color_code>#936FFF</color_code>
+        <instruction_link>https://www.bcn3d.com/product/ultrafuse-316l/</instruction_link>
+    </metadata>
+    <properties>
+        <density>5.1</density>
+        <diameter>2.85</diameter>
+    </properties>
+    <settings>
+        <setting key="print temperature">245</setting>
+        <setting key="heated bed temperature">105</setting>
+        <setting key="standby temperature">150</setting>
+        <machine>
+            <machine_identifier manufacturer="BCN3D Technologies" product="bcn3dw50" />
+            <hotend id="0.4mm">
+                <setting key="hardware compatible">no</setting>
+            </hotend>
+            <hotend id="Hotend M (0.4mm)" />
+            <hotend id="0.6mm">
+                <setting key="hardware compatible">no</setting>
+            </hotend>
+            <hotend id="Hotend X (0.6mm)">
+                <setting key="hardware compatible">no</setting>
+            </hotend>
+            <hotend id="0.8mm">
+                <setting key="hardware compatible">no</setting>
+            </hotend>
+            <hotend id="1.0mm">
+                <setting key="hardware compatible">no</setting>
+            </hotend>
+        </machine>
+        <machine>
+            <machine_identifier manufacturer="BCN3D Technologies" product="bcn3dw27" />
+            <hotend id="0.4mm">
+                <setting key="hardware compatible">no</setting>
+            </hotend>
+            <hotend id="Hotend M (0.4mm)" />
+            <hotend id="0.6mm">
+                <setting key="hardware compatible">no</setting>
+            </hotend>
+            <hotend id="Hotend X (0.6mm)">
+                <setting key="hardware compatible">no</setting>
+            </hotend>
+            <hotend id="0.8mm">
+                <setting key="hardware compatible">no</setting>
+            </hotend>
+            <hotend id="1.0mm">
+                <setting key="hardware compatible">no</setting>
+            </hotend>
+        </machine>
+    </settings>
+</fdmmaterial>
