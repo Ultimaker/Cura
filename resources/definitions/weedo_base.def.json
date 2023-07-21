@@ -73,7 +73,7 @@
         "raft_surface_fan_speed": { "value": 100 },
         "raft_surface_speed": { "value": 40 },
         "retraction_amount": { "default_value": 1.5 },
-        "retraction_combing": { "value": "off" },
+        "retraction_combing": { "value": "'off'" },
         "retraction_speed": { "default_value": 28 },
         "skirt_brim_speed": { "value": 26.0 },
         "speed_layer_0": { "value": 26.0 },
