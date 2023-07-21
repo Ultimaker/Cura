@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdmmaterial xmlns="http://www.ultimaker.com/material" version="1.3">
+    <metadata>
+        <name>
+            <brand>Generic</brand>
+            <material>ABS</material>
+            <color>Generic</color>
+        </name>
+        <GUID>a5fb3232-88cd-58fe-a358-cfa2b2555081</GUID>
+        <version>1</version>
+        <color_code>#8cb219</color_code>
+    </metadata>
+    <properties>
+        <density>1.075</density>
+        <diameter>2.85</diameter>
+    </properties>
+<settings>
+        <setting key="print temperature">250</setting>
+        <setting key="heated bed temperature">95</setting>
+        <setting key="standby temperature">150</setting>
+        <setting key="print cooling">0</setting>
+        <setting key="retraction amount">6</setting>
+        <setting key="adhesion type">raft</setting>
+
+        <machine>
+           <machine_identifier manufacturer="BCN3D Technologies" product="bcn3dsigma" />
+           <hotend id="0.3mm" />
+           <hotend id="0.4mm" />
+           <hotend id="0.5mm - Hardened Steel" />
+           <hotend id="0.6mm" />
+           <hotend id="0.8mm" />
+           <hotend id="1.0mm" />
+           <hotend id="0.3mm" />
+           <hotend id="0.4mm" />
+           <hotend id="0.5mm - Hardened Steel" />
+           <hotend id="0.6mm" />
+           <hotend id="0.8mm" />
+           <hotend id="1.0mm" />
+        </machine>
+        <machine>
+           <machine_identifier manufacturer="BCN3D Technologies" product="bcn3dsigmar19" />
+           <setting key="infill density">20</setting>
+           <hotend id="0.3mm" />
+           <hotend id="0.4mm" />
+           <hotend id="0.5mm - Hardened Steel" />
+           <hotend id="0.6mm" />
+           <hotend id="0.8mm" />
+           <hotend id="1.0mm" />
+        </machine>
+        <machine>
+           <machine_identifier manufacturer="BCN3D Technologies" product="bcn3dsigmaxr19" />
+           <setting key="infill density">20</setting>
+           <hotend id="0.3mm" />
+           <hotend id="0.4mm" />
+           <hotend id="0.5mm - Hardened Steel" />
+           <hotend id="0.6mm" />
+           <hotend id="0.8mm" />
+           <hotend id="1.0mm" />
+        </machine>
+        <machine>
+            <machine_identifier manufacturer="BCN3D Technologies" product="bcn3dw50" />
+            <hotend id="0.4mm" />
+            <hotend id="Hotend M (0.4mm)">
+                <setting key="hardware compatible">no</setting>
+            </hotend>
+            <hotend id="0.6mm" />
+            <hotend id="Hotend X (0.6mm)">
+                <setting key="hardware compatible">no</setting>
+            </hotend>
+            <hotend id="0.8mm" />
+            <hotend id="1.0mm" />
+        </machine>
+        <machine>
+            <machine_identifier manufacturer="BCN3D Technologies" product="bcn3dw27" />
+            <hotend id="0.4mm" />
+            <hotend id="Hotend M (0.4mm)">
+                <setting key="hardware compatible">no</setting>
+            </hotend>
+            <hotend id="0.6mm" />
+            <hotend id="Hotend X (0.6mm)">
+                <setting key="hardware compatible">no</setting>
+            </hotend>
+            <hotend id="0.8mm" />
+            <hotend id="1.0mm" />
+        </machine>
+    </settings>
+</fdmmaterial>
