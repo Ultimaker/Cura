@@ -1,5 +1,5 @@
 # Copyright (c) 2018 Jaime van Kessel, Ultimaker B.V.
-# The PostProcessingPlugin is released under the terms of the AGPLv3 or higher.
+# The PostProcessingPlugin is released under the terms of the LGPLv3 or higher.
 
 import configparser  # The script lists are stored in metadata as serialised config files.
 import importlib.util
