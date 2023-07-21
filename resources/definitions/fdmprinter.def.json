@@ -1289,7 +1289,7 @@
                 "hole_xy_offset":
                 {
                     "label": "Hole Horizontal Expansion",
-                    "description": "Amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes.",
+                    "description": "When greater than zero, the Hole Horizontal Expansion is the amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes. When this setting is enabled it can be further tuned with Hole Horizontal Expansion Max Diameter.",
                     "unit": "mm",
                     "type": "float",
                     "minimum_value_warning": "-1",
