@@ -74,7 +74,7 @@
         "speed_z_hop": { "value": "machine_max_feedrate_z" },
         "top_bottom_thickness": { "value": 0 },
         "travel_avoid_other_parts": { "value": true },
-        "travel_avoid_supports": { "value": false },
+        "travel_avoid_supports": {
         "travel_retract_before_outer_wall": { "value": false },
         "wall_thickness":
     }
