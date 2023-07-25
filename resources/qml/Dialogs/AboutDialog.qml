@@ -23,18 +23,10 @@ UM.Dialog
 
     property real dialogX: base.x
     property real dialogY: base.y
-    property int shakeDetected: (shakeDetector.shakeIsdetected)
-    property  UM.ShakeDetector shakeDetector: UM.ShakeDetector{    }
-
-    readonly property Timer timer : Timer
+    property int shakeDetected: shakeDetector.shakeIsdetected
+    property UM.ShakeDetector shakeDetector: UM.ShakeDetector
     {
-        interval: 100 // Update interval in milliseconds (adjust as needed)
-        running: onDialogXChanged || onDialogYChanged
-        repeat: true
-        onTriggered:
-        {
-            shakeDetector.checkForShake(dialogX, dialogY)
-        }
+        position: Qt.point(base.x, base.y)
     }
 
     Rectangle
@@ -204,16 +196,8 @@ UM.Dialog
 
     onShakeDetectedChanged:
     {
-        if (!projectBuildInfoList.visible)
-        {
-            projectsList.visible= false;
-            projectBuildInfoList.visible = true;
-        }
-        else
-        {
-            projectsList.visible = true;
-            projectBuildInfoList.visible = false;
-        }
+        projectsList.visible = !projectsList.visible;
+        projectBuildInfoList.visible = !projectBuildInfoList.visible;
     }
 
     onVisibleChanged:
