@@ -21,7 +21,7 @@ catalog = i18nCatalog("cura")
 
 class RemotePackageList(PackageList):
     ITEMS_PER_PAGE = 20  # Pagination of number of elements to download at once.
-    LAST_UPDATED = "last_updated"   # Default value to send for sort_by filter.
+    SORT_TYPE = "last_updated"   # Default value to send for sort_by filter.
 
     def __init__(self, parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)
@@ -105,7 +105,7 @@ class RemotePackageList(PackageList):
         if self._current_search_string != "":
             request_url += f"&{self._search_type}={self._current_search_string}"
         if self._search_sort != "":
-            request_url += f"&{self._search_sort}={self.LAST_UPDATED}"
+            request_url += f"&{self._search_sort}={self.SORT_TYPE}"
         return request_url
 
     def _parseResponse(self, reply: "QNetworkReply") -> None:
