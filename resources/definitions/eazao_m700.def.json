@@ -75,7 +75,7 @@
         "top_bottom_thickness": { "value": 0 },
         "travel_avoid_other_parts": { "value": true },
         "travel_avoid_supports": { "value": false },
-        "travel_retract_before_outer_wall": { "value": false },
+        
         "wall_thickness": { "value": 5.0 }
     }
 }
