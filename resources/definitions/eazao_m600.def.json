@@ -64,7 +64,7 @@
         "retraction_enable": { "value": false },
         "retraction_extrusion_window": { "value": 10 },
         "retraction_hop": { "value": 0.2 },
-        "retraction_hop_enabled": { "value": false },
+        
         "retraction_speed": { "value": 25 },
         "speed_print": { "value": 20.0 },
         "speed_travel": { "value": 20.0 },
