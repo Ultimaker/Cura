@@ -104,7 +104,7 @@ class RemotePackageList(PackageList):
             request_url += f"&package_type={self._package_type_filter}"
         if self._current_search_string != "":
             request_url += f"&{self._search_type}={self._current_search_string}"
-        if self._search_sort != "":
+        if self.SORT_TYPE:
             request_url += f"&{self._search_sort}={self.SORT_TYPE}"
         return request_url
 
