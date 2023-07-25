@@ -1,10 +1,11 @@
-# Copyright (c) 2022 Ultimaker B.V.
+# Copyright (c) 2023 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 import enum
 import os
 import sys
 import tempfile
 import time
+import platform
 from typing import cast, TYPE_CHECKING, Optional, Callable, List, Any, Dict
 
 import numpy
@@ -147,6 +148,7 @@ class CuraApplication(QtApplication):
         DefinitionChangesContainer = Resources.UserType + 10
         SettingVisibilityPreset = Resources.UserType + 11
         IntentInstanceContainer = Resources.UserType + 12
+        ImageFiles = Resources.UserType + 13
 
     pyqtEnum(ResourceTypes)
 
@@ -407,6 +409,7 @@ class CuraApplication(QtApplication):
 
         SettingFunction.registerOperator("extruderValue", self._cura_formula_functions.getValueInExtruder)
         SettingFunction.registerOperator("extruderValues", self._cura_formula_functions.getValuesInAllExtruders)
+        SettingFunction.registerOperator("anyExtruderNrWithOrDefault", self._cura_formula_functions.getAnyExtruderPositionWithOrDefault)
         SettingFunction.registerOperator("resolveOrValue", self._cura_formula_functions.getResolveOrValue)
         SettingFunction.registerOperator("defaultExtruderPosition", self._cura_formula_functions.getDefaultExtruderPosition)
         SettingFunction.registerOperator("valueFromContainer", self._cura_formula_functions.getValueFromContainerAtIndex)
@@ -425,6 +428,7 @@ class CuraApplication(QtApplication):
         Resources.addStorageType(self.ResourceTypes.DefinitionChangesContainer, "definition_changes")
         Resources.addStorageType(self.ResourceTypes.SettingVisibilityPreset, "setting_visibility")
         Resources.addStorageType(self.ResourceTypes.IntentInstanceContainer, "intent")
+        Resources.addStorageType(self.ResourceTypes.ImageFiles, "images")
 
         self._container_registry.addResourceType(self.ResourceTypes.QualityInstanceContainer, "quality")
         self._container_registry.addResourceType(self.ResourceTypes.QualityChangesInstanceContainer, "quality_changes")
@@ -435,6 +439,7 @@ class CuraApplication(QtApplication):
         self._container_registry.addResourceType(self.ResourceTypes.MachineStack, "machine")
         self._container_registry.addResourceType(self.ResourceTypes.DefinitionChangesContainer, "definition_changes")
         self._container_registry.addResourceType(self.ResourceTypes.IntentInstanceContainer, "intent")
+        self._container_registry.addResourceType(self.ResourceTypes.ImageFiles, "images")
 
         Resources.addType(self.ResourceTypes.QmlFiles, "qml")
         Resources.addType(self.ResourceTypes.Firmware, "firmware")
@@ -824,6 +829,8 @@ class CuraApplication(QtApplication):
     def run(self):
         super().run()
 
+        self._log_hardware_info()
+
         if len(ApplicationMetadata.DEPENDENCY_INFO) > 0:
             Logger.debug("Using Conan managed dependencies: " + ", ".join(
                 [dep["recipe"]["id"] for dep in ApplicationMetadata.DEPENDENCY_INFO["installed"] if dep["recipe"]["version"] != "latest"]))
@@ -896,6 +903,14 @@ class CuraApplication(QtApplication):
         self._auto_save.initialize()
 
         self.exec()
+
+    def _log_hardware_info(self):
+        hardware_info = platform.uname()
+        Logger.info(f"System: {hardware_info.system}")
+        Logger.info(f"Release: {hardware_info.release}")
+        Logger.info(f"Version: {hardware_info.version}")
+        Logger.info(f"Processor name: {hardware_info.processor}")
+        Logger.info(f"CPU Cores: {os.cpu_count()}")
 
     def __setUpSingleInstanceServer(self):
         if self._use_single_instance:
