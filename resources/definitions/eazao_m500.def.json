@@ -1,0 +1,43 @@
+{
+    "version": 2,
+    "name": "Eazao Matrix",
+    "inherits": "eazao",
+    "metadata":
+    {
+        "visible": true,
+        "author": "Eazao",
+        "manufacturer": "Eazao",
+        "file_formats": "text/x-gcode",
+        "exclude_materials": "generic_pla",
+        "has_machine_quality": true,
+        "has_materials": true,
+        "machine_extruder_trains": { "0": "eazao_matrix_extruder_0" },
+        "weight": 4
+    },
+    "overrides":
+    {
+        "cool_fan_speed_0": { "value": 0 },
+        "gantry_height": { "value": "55" },
+        "infill_before_walls": { "value": "False" },
+        "layer_height_0": { "value": 0.3 },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_depth": { "default_value": 320 },
+        "machine_end_gcode": { "value": "G92 Z0\nG1 F1500 Z10\nG28 X0 Y300 ;move X Y to min endstops\nM82\nM84 ;steppers off\n" },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [-75, 35],
+                [-75, -18],
+                [18, 35],
+                [18, -18]
+            ]
+        },
+        "machine_height": { "default_value": 520 },
+        "machine_name": { "default_value": "Eazao M500" },
+        "machine_start_gcode": { "default_value": "G21 ;set units to millimeters\nG90 ;absolute positioning\nM82 ;set extruder to absolute mode\nG28 ;Home\nG1 Z25.0 F1500 ;move the platform down 15mm\nG92 E0 ;extruder reset\nG1 F300 E5\nG92 E0 ;The extruder is forced to zero again\nM302\nM163 S0 P0.85; Set Mix Factor\nM163 S1 P0.15; Set Mix Factor\nM164 S0" },
+        "machine_use_extruder_offset_to_offset_coords": { "default_value": true },
+        "machine_width": { "default_value": 320 },
+        "speed_slowdown_layers": { "value": 2 }
+    }
+}
