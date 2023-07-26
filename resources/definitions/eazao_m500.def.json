@@ -10,7 +10,7 @@
         "file_formats": "text/x-gcode",
         "has_machine_quality": false,
         "has_materials": true,
-        "machine_extruder_trains": { "0": "eazao_matrix_extruder_0" },
+        "machine_extruder_trains": { "0": "eazao_m500_extruder_0" },
         "preferred_material": "generic_pla",
         "preferred_quality_type": "normal"
     },
