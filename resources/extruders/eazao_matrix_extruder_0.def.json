@@ -4,7 +4,7 @@
     "inherits": "fdmextruder",
     "metadata":
     {
-        "machine": "eazao_matrix",
+        "machine": "eazao_m500",
         "position": "0"
     },
     "overrides":
