@@ -310,7 +310,7 @@ class ThreeMFWriter(MeshWriter):
                 "package_version": package_data.get("package_version") if package_data.get("package_version") else "",
                 "sdk_version_semver": package_data.get("sdk_version_semver") if package_data.get(
                     "sdk_version_semver") else "",
-                "type": "backend_plugin",
+                "type": "plugin",
             }
 
         # Storing in a dict and fetching values to avoid duplicates
