@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "Trimaker Nebula Plus",
+    "name": "trimaker_nebula_plus",
     "inherits": "fdmprinter",
     "metadata":
     {
@@ -11,7 +11,7 @@
         "platform": "trimaker_nebula_platform.stl",
         "has_machine_quality": true,
         "has_materials": true,
-        "machine_extruder_trains": { "0": "trimaker_nebula_extruder" },
+        "machine_extruder_trains": { "0": "trimaker_nebula_plus_extruder" },
         "platform_offset": [
             -117.5,
             -40,

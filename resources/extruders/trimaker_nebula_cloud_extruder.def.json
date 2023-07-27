@@ -4,7 +4,7 @@
     "inherits": "fdmextruder",
     "metadata":
     {
-        "machine": "Trimaker Nebula Cloud",
+        "machine": "trimaker_nebula_cloud",
         "position": "0"
     },
     "overrides":
