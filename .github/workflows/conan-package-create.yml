@@ -151,9 +151,7 @@ jobs:
 
             -   name: Upload the Package(s)
                 if: ${{ always() && inputs.conan_upload_community }}
-                run: | 
-                    conan upload ${{ inputs.recipe_id_full }} -r cura --all -c
-                    conan upload "*" -r cura --all -c
+                run: conan upload ${{ inputs.recipe_id_full }} -r cura --all -c
 
             -   name: Upload the Package(s) to the private Artifactory
                 if: ${{ always() && ! inputs.conan_upload_community }}
