@@ -404,7 +404,7 @@ UM.Dialog
         Cura.PrimaryButton
         {
             visible: warning
-            text: catalog.i18nc("@action:button", "Install missing material")
+            text: catalog.i18nc("@action:button", "Install missing packages")
             onClicked: manager.installMissingPackages()
         }
     ]
