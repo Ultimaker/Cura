@@ -22,14 +22,7 @@
     },
     "overrides":
     {
-        "acceleration_enable" : { "default_value": false },
-        "acceleration_layer_0": { "value": "acceleration_topbottom" },
-        "acceleration_print": { "value": "4000" },
-        "acceleration_support": { "value": "math.ceil(acceleration_print * 2000 / 4000)" },
-        "acceleration_support_interface": { "value": "acceleration_topbottom" },
-        "acceleration_topbottom": { "value": "math.ceil(acceleration_print * 500 / 4000)" },
-        "acceleration_wall": { "value": "math.ceil(acceleration_print * 1000 / 4000)" },
-        "acceleration_wall_0": { "value": "math.ceil(acceleration_wall * 500 / 1000)" },
+        "acceleration_enable" : { "value": false },
         "adhesion_type": { "default_value": "skirt" },
         "default_material_print_temperature": { "default_value": 200 },
         "gantry_height": { "value": 2 },
@@ -73,7 +66,6 @@
         "support_z_distance": { "default_value": 0.17 },
         "top_bottom_thickness": { "value": "layer_height * 6" },
         "wall_thickness": { "value": "line_width * 3" },
-        "xy_offset_layer_0": { "value": -0.1 },
-        "maximun_warning_value": { "default_value": 250 }
+        "xy_offset_layer_0": { "value": -0.1 }
     }
 }
