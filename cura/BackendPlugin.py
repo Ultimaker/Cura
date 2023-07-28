@@ -4,10 +4,10 @@ import subprocess
 from typing import Optional, List
 
 from UM.Logger import Logger
-from UM.PluginObject import PluginObject
+from UM.Settings.AdditionalSettingDefinitionAppender import AdditionalSettingDefinitionsAppender
 
 
-class BackendPlugin(PluginObject):
+class BackendPlugin(AdditionalSettingDefinitionsAppender):
     def __init__(self) -> None:
         super().__init__()
         self.__port: int = 0
