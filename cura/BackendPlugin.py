@@ -16,6 +16,7 @@ class BackendPlugin(AdditionalSettingDefinitionsAppender):
         self._process = None
         self._is_running = False
         self._supported_slots: List[int] = []
+        self.appender_type = "PLUGIN"
 
     def getSupportedSlots(self) -> List[int]:
         return self._supported_slots
