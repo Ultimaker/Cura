@@ -279,7 +279,7 @@ class ThreeMFWriter(MeshWriter):
 
         plugin_ids = set()
 
-        def add_plugin_ids_in_stack(stack: CuraContainerStack):
+        def addPluginIdsInStack(stack: CuraContainerStack) -> None:
             for key in stack.getAllKeys():
                 value = str(stack.getProperty(key, "value"))
                 for plugin_id, _version, _value in backend_plugin_enum_value_regex.findall(value):
@@ -287,16 +287,16 @@ class ThreeMFWriter(MeshWriter):
 
         # go through all stacks and find all the plugin id contained in the project
         global_stack = Application.getInstance().getMachineManager().activeMachine
-        add_plugin_ids_in_stack(global_stack)
+        addPluginIdsInStack(global_stack)
 
         for container in global_stack.getContainers():
-            add_plugin_ids_in_stack(container)
+            addPluginIdsInStack(container)
 
         for extruder_stack in global_stack.extruderList:
-            add_plugin_ids_in_stack(extruder_stack)
+            addPluginIdsInStack(extruder_stack)
 
             for container in extruder_stack.getContainers():
-                add_plugin_ids_in_stack(container)
+                addPluginIdsInStack(container)
 
         metadata = {}
 
