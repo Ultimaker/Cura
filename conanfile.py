@@ -150,9 +150,14 @@ class CuraConan(ConanFile):
             conan_installs.append([dependency.ref.name,dependency.ref.version])
 
         #list of python installs
-        import pkg_resources
-        for package in pkg_resources.working_set:
-            python_installs.append([package.key, package.version])
+        python_ins_cmd = f""" python -c "import pkg_resources; import os; [open(os.path.join("'"{self.recipe_folder}"'", "'"info.txt"'"), "'"a"'").write(s.key+"'","'"+ s.version+"'";"'") for s in pkg_resources.working_set]" """
+        self.run(python_ins_cmd, run_environment= True, env = "conanrun",  output=True)
+        with open(os.path.join(self.recipe_folder, "info.txt"), "r") as f:
+            packages = f.read()
+            package = packages.split(";")
+            for pack in package:
+                python_installs.append(pack.split(","))
+        os.remove(os.path.join(self.recipe_folder, "info.txt"))
 
         with open(os.path.join(location, "AboutDialogVersionsList.qml"), "w") as f:
             f.write(cura_version_py.render(
@@ -330,7 +335,7 @@ class CuraConan(ConanFile):
         vr.generate()
 
         self._generate_cura_version(os.path.join(self.source_folder, "cura"))
-        self._generate_about_versions(os.path.join(self.source_folder, "resources/qml/Dialogs"))
+
 
         if self.options.devtools:
             entitlements_file = "'{}'".format(os.path.join(self.source_folder, "packaging", "MacOS", "cura.entitlements"))
@@ -349,6 +354,8 @@ class CuraConan(ConanFile):
                 pot = self.python_requires["translationextractor"].module.ExtractTranslations(self, cpp_info.bindirs[0])
                 pot.generate()
 
+        self._generate_about_versions(os.path.join(self.source_folder, "resources/qml/Dialogs"))
+
     def build(self):
         if self.options.devtools:
             if self.settings.os != "Windows" or self.conf.get("tools.microsoft.bash:path", check_type = str):
@@ -358,6 +365,7 @@ class CuraConan(ConanFile):
                     mo_file = mo_file.parent.joinpath("LC_MESSAGES", mo_file.name)
                     mkdir(self, str(unix_path(self, Path(mo_file).parent)))
                     cpp_info = self.dependencies["gettext"].cpp_info
+                    print("we are here /n")
                     self.run(f"{cpp_info.bindirs[0]}/msgfmt {po_file} -o {mo_file} -f", env="conanbuild", ignore_errors=True)
 
     def imports(self):

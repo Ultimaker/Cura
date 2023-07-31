@@ -58,6 +58,15 @@ UM.Dialog
             anchors.horizontalCenter: parent.horizontalCenter
 
             UM.I18nCatalog{id: catalog; name: "cura"}
+            MouseArea
+            {
+                anchors.fill: parent
+                onClicked:
+                {
+                    projectsList.visible = !projectsList.visible;
+                    projectBuildInfoList.visible = !projectBuildInfoList.visible;
+                }
+            }
         }
 
         UM.Label
