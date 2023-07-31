@@ -423,7 +423,7 @@ class WorkspaceDialog(QObject):
             button_style=Message.ActionButtonStyle.LINK
         )
         result_message.addAction(
-            "install_materials",
+            "install_packages",
             name=i18n_catalog.i18nc("@action:button", "Install Packages"),
             icon="",
             description=i18n_catalog.i18nc("@label", "Install missing packages from project file."),
