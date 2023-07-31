@@ -285,7 +285,7 @@ class ThreeMFWriter(MeshWriter):
                 for plugin_id, _version, _value in backend_plugin_enum_value_regex.findall(value):
                     plugin_ids.add(plugin_id)
 
-        # go through all stacks and find all the plugin id contained in the project
+        # Go through all stacks and find all the plugin id contained in the project
         global_stack = Application.getInstance().getMachineManager().activeMachine
         addPluginIdsInStack(global_stack)
 
