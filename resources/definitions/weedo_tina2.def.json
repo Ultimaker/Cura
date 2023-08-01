@@ -1,11 +1,11 @@
 {
-    "name": "WEEFUN TINA2",
+    "name": "WEEDO TINA2",
     "version": 2,
     "inherits": "weedo_base",
     "metadata": {
         "visible": true,
-        "author": "WEEFUN",
-        "manufacturer": "WEEFUN",
+        "author": "WEEDO",
+        "manufacturer": "WEEDO",
         "file_formats": "text/x-gcode",
         "platform_offset": [
             0,
@@ -173,7 +173,7 @@
     },
     "overrides": {
         "machine_name": {
-            "default_value": "WEEFUN TINA2"
+            "default_value": "WEEDO TINA2"
         },
         "machine_start_gcode": {
             "default_value": ";MachineType:{machine_name}\n;FilamentType:{material_type}\n;InfillDensity:{infill_sparse_density}\n;Extruder0Temperature:{material_print_temperature}\n\n;(**** start.gcode for tina2****)\nM203 Z15\nM104 S150\nG28 Z\nG28 X Y; Home extruder\nG1 X55 Y55 F1000\nG29\nM107 ; Turn off fan\nG90 ; Absolute positioning\nM82 ; Extruder in absolute mode\nM109 S{material_print_temperature_layer_0}\nG92 E0 ; Reset extruder position\nG1 X90 Y6 Z0.27 F2000\nG1 X20 Y6 Z0.27 E15 F1000\nG92 E0 ; Reset extruder position\nM203 Z5"
