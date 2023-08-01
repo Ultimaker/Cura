@@ -101,3 +101,4 @@ graph_info.json
 Ultimaker-Cura.spec
 .run/
 /printer-linter/src/printerlinter.egg-info/
+/resources/qml/Dialogs/AboutDialogVersionsList.qml
