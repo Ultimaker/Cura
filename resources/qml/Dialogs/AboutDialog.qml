@@ -1,10 +1,10 @@
 // Copyright (c) 2022 UltiMaker
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
+import QtQuick 2.4
 import QtQuick.Controls 2.9
 
-import UM 1.5 as UM
+import UM 1.6 as UM
 import Cura 1.5 as Cura
 
 UM.Dialog
@@ -20,6 +20,14 @@ UM.Dialog
     height: minimumHeight
 
     backgroundColor: UM.Theme.getColor("main_background")
+
+    property real dialogX: base.x
+    property real dialogY: base.y
+    property int shakeDetected: shakeDetector.shakeIsdetected
+    property UM.ShakeDetector shakeDetector: UM.ShakeDetector
+    {
+        position: Qt.point(base.x, base.y)
+    }
 
     Rectangle
     {
@@ -179,6 +187,23 @@ UM.Dialog
             projectsModel.append({ name: "AppImageKit", description: catalog.i18nc("@label Description for development tool", "Linux cross-distribution application deployment"), license: "MIT", url: "https://github.com/AppImage/AppImageKit" });
             projectsModel.append({ name: "NSIS", description: catalog.i18nc("@label Description for development tool", "Generating Windows installers"), license: "Zlib", url: "https://nsis.sourceforge.io/" });
         }
+    }
+
+    AboutDialogVersionsList{
+        id: projectBuildInfoList
+
+    }
+
+    onShakeDetectedChanged:
+    {
+        projectsList.visible = !projectsList.visible;
+        projectBuildInfoList.visible = !projectBuildInfoList.visible;
+    }
+
+    onVisibleChanged:
+    {
+         projectsList.visible = true;
+         projectBuildInfoList.visible = false;
     }
 
     rightButtons: Cura.TertiaryButton

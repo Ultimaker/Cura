@@ -10,7 +10,7 @@ from conan.tools.env import VirtualRunEnv, Environment, VirtualBuildEnv
 from conan.tools.scm import Version
 from conan.errors import ConanInvalidConfiguration, ConanException
 
-required_conan_version = "<=1.56.0"
+required_conan_version = "<=1.60.0"
 
 
 class CuraConan(ConanFile):
@@ -21,7 +21,7 @@ class CuraConan(ConanFile):
     description = "3D printer / slicing GUI built on top of the Uranium framework"
     topics = ("conan", "python", "pyqt6", "qt", "qml", "3d-printing", "slicer")
     build_policy = "missing"
-    exports = "LICENSE*", "UltiMaker-Cura.spec.jinja", "CuraVersion.py.jinja"
+    exports = "LICENSE*", "UltiMaker-Cura.spec.jinja", "CuraVersion.py.jinja", "AboutDialogVersionsList.qml.jinja"
     settings = "os", "compiler", "build_type", "arch"
 
     # FIXME: Remove specific branch once merged to main
@@ -137,6 +137,29 @@ class CuraConan(ConanFile):
                 return "'arm64'"
             return "'x86_64'"
         return "None"
+
+    def _generate_about_versions(self, location):
+        with open(os.path.join(self.recipe_folder, "AboutDialogVersionsList.qml.jinja"), "r") as f:
+            cura_version_py = Template(f.read())
+
+        conan_installs = []
+        python_installs = []
+
+        # list  of conan installs
+        for _, dependency in self.dependencies.host.items():
+            conan_installs.append([dependency.ref.name,dependency.ref.version])
+
+        #list of python installs
+        import pkg_resources
+        for package in pkg_resources.working_set:
+            python_installs.append([package.key, package.version])
+
+        with open(os.path.join(location, "AboutDialogVersionsList.qml"), "w") as f:
+            f.write(cura_version_py.render(
+                conan_installs = conan_installs,
+                python_installs = python_installs
+            ))
+
 
     def _generate_cura_version(self, location):
         with open(os.path.join(self.recipe_folder, "CuraVersion.py.jinja"), "r") as f:
@@ -307,6 +330,7 @@ class CuraConan(ConanFile):
         vr.generate()
 
         self._generate_cura_version(os.path.join(self.source_folder, "cura"))
+        self._generate_about_versions(os.path.join(self.source_folder, "resources/qml/Dialogs"))
 
         if self.options.devtools:
             entitlements_file = "'{}'".format(os.path.join(self.source_folder, "packaging", "MacOS", "cura.entitlements"))
