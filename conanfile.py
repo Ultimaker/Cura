@@ -21,7 +21,7 @@ class CuraConan(ConanFile):
     description = "3D printer / slicing GUI built on top of the Uranium framework"
     topics = ("conan", "python", "pyqt6", "qt", "qml", "3d-printing", "slicer")
     build_policy = "missing"
-    exports = "LICENSE*", "UltiMaker-Cura.spec.jinja", "CuraVersion.py.jinja"
+    exports = "LICENSE*", "UltiMaker-Cura.spec.jinja", "CuraVersion.py.jinja", "AboutDialogVersionsList.qml.jinja"
     settings = "os", "compiler", "build_type", "arch"
 
     # FIXME: Remove specific branch once merged to main
@@ -139,7 +139,7 @@ class CuraConan(ConanFile):
         return "None"
 
     def _generate_about_versions(self, location):
-        with open(os.path.join(self.source_folder, "AboutDialogVersionsList.qml.jinja"), "r") as f:
+        with open(os.path.join(self.recipe_folder, "AboutDialogVersionsList.qml.jinja"), "r") as f:
             cura_version_py = Template(f.read())
 
         conan_installs = []
