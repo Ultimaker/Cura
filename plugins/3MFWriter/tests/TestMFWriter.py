@@ -1,6 +1,7 @@
 import sys
 import os.path
 from typing import Dict, Optional
+import pytest
 
 from unittest.mock import patch, MagicMock, PropertyMock
 
@@ -17,6 +18,7 @@ PACKAGE_VERSION = "0.0.1"
 SDK_VERSION = "8.0.0"
 
 
+@pytest.fixture
 def package_manager() -> MagicMock:
     pm = MagicMock(spec=PackageManager)
     pm.getInstalledPackageInfo.return_value = {
@@ -27,6 +29,7 @@ def package_manager() -> MagicMock:
     return pm
 
 
+@pytest.fixture
 def machine_manager() -> MagicMock:
     mm = MagicMock(spec=PackageManager)
     active_machine = MagicMock()
@@ -38,15 +41,16 @@ def machine_manager() -> MagicMock:
     return mm
 
 
-def application():
+@pytest.fixture
+def application(package_manager, machine_manager):
     app = MagicMock()
-    app.getPackageManager.return_value = package_manager()
-    app.getMachineManager.return_value = machine_manager()
+    app.getPackageManager.return_value = package_manager
+    app.getMachineManager.return_value = machine_manager
     return app
 
 
-def test_enumParsing():
-    with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value=application())):
+def test_enumParsing(application):
+    with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value=application)):
         packages_metadata = ThreeMFWriter.ThreeMFWriter._getPluginPackageMetadata()[0]
 
         assert packages_metadata.get("id") == PLUGIN_ID
