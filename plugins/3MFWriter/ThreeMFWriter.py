@@ -286,7 +286,7 @@ class ThreeMFWriter(MeshWriter):
                     plugin_ids.add(plugin_id)
 
         # Go through all stacks and find all the plugin id contained in the project
-        global_stack = Application.getInstance().getMachineManager().activeMachine
+        global_stack = CuraApplication.getInstance().getMachineManager().activeMachine
         addPluginIdsInStack(global_stack)
 
         for container in global_stack.getContainers():
