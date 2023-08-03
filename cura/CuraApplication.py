@@ -1745,6 +1745,7 @@ class CuraApplication(QtApplication):
         pass
 
     def _addBackendPlugin(self, backend_plugin: "BackendPlugin") -> None:
+        self._container_registry.addAdditionalSettingDefinitionsAppender(backend_plugin)
         self._backend_plugins.append(backend_plugin)
 
     def getBackendPlugins(self) -> List["BackendPlugin"]:
