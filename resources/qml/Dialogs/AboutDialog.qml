@@ -21,13 +21,6 @@ UM.Dialog
 
     backgroundColor: UM.Theme.getColor("main_background")
 
-    property real dialogX: base.x
-    property real dialogY: base.y
-    property int shakeDetected: shakeDetector.shakeIsdetected
-    property UM.ShakeDetector shakeDetector: UM.ShakeDetector
-    {
-        position: Qt.point(base.x, base.y)
-    }
 
     Rectangle
     {
@@ -203,11 +196,6 @@ UM.Dialog
 
     }
 
-    onShakeDetectedChanged:
-    {
-        projectsList.visible = !projectsList.visible;
-        projectBuildInfoList.visible = !projectBuildInfoList.visible;
-    }
 
     onVisibleChanged:
     {
