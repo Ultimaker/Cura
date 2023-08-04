@@ -1,15 +1,20 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2023 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt6.QtCore import QObject, QUrl
-from PyQt6.QtGui import QDesktopServices
 from typing import List, cast
+
+from PyQt6.QtCore import QObject, QUrl, QMimeData
+from PyQt6.QtGui import QDesktopServices
+from PyQt6.QtWidgets import QApplication
+
+import pySavitar as Savitar
 
 from UM.Event import CallFunctionEvent
 from UM.FlameProfiler import pyqtSlot
 from UM.Math.Vector import Vector
 from UM.Scene.Selection import Selection
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
+from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
 from UM.Operations.TranslateOperation import TranslateOperation
@@ -19,6 +24,7 @@ from cura.Operations.SetParentOperation import SetParentOperation
 from cura.MultiplyObjectsJob import MultiplyObjectsJob
 from cura.Settings.SetObjectExtruderOperation import SetObjectExtruderOperation
 from cura.Settings.ExtruderManager import ExtruderManager
+from cura.Arranging.Nest2DArrange import createGroupOperationForArrange
 
 from cura.Operations.SetBuildPlateNumberOperation import SetBuildPlateNumberOperation
 
@@ -180,6 +186,64 @@ class CuraActions(QObject):
         operation.push()
 
         Selection.clear()
+
+    @pyqtSlot()
+    def cut(self) -> None:
+        self.copy()
+        self.deleteSelection()
+
+    @pyqtSlot()
+    def copy(self) -> None:
+        # Convert all selected objects to a Savitar scene
+        savitar_scene = Savitar.Scene()
+        mesh_writer = cura.CuraApplication.CuraApplication.getInstance().getMeshFileHandler().getWriter("3MFWriter")
+        for scene_node in Selection.getAllSelectedObjects():
+            savitar_node = mesh_writer._convertUMNodeToSavitarNode(scene_node)
+            savitar_scene.addSceneNode(savitar_node)
+
+        # Convert the scene to a string
+        parser = Savitar.ThreeMFParser()
+        scene_string = parser.sceneToString(savitar_scene)
+
+        # Copy the scene to the clipboard
+        QApplication.clipboard().setText(scene_string)
+
+    @pyqtSlot()
+    def paste(self) -> None:
+        application = cura.CuraApplication.CuraApplication.getInstance()
+
+        # Parse the scene from the clipboard
+        scene_string = QApplication.clipboard().text()
+        parser = Savitar.ThreeMFParser()
+        scene = parser.parse(scene_string)
+
+        # Convert the scene to scene nodes
+        nodes = []
+        mesh_reader = application.getMeshFileHandler().getReaderForFile(".3mf")
+        for savitar_node in scene.getSceneNodes():
+            scene_node = mesh_reader._convertSavitarNodeToUMNode(savitar_node, "file_name")
+            if scene_node is None:
+                continue
+            nodes.append(scene_node)
+
+        # Find all fixed nodes, these are the nodes that should be avoided when arranging
+        fixed_nodes = []
+        root = application.getController().getScene().getRoot()
+        for node in DepthFirstIterator(root):
+            # Only count sliceable objects
+            if node.callDecoration("isSliceable"):
+                fixed_nodes.append(node)
+        # Add the new nodes to the scene, and arrange them
+        group_operation, not_fit_count = createGroupOperationForArrange(nodes, application.getBuildVolume(),
+                                                                        fixed_nodes, factor=10000,
+                                                                        add_new_nodes_in_scene=True)
+        group_operation.push()
+
+        # deselect currently selected nodes, and select the new nodes
+        for node in Selection.getAllSelectedObjects():
+            Selection.remove(node)
+        for node in nodes:
+            Selection.add(node)
 
     def _openUrl(self, url: QUrl) -> None:
         QDesktopServices.openUrl(url)

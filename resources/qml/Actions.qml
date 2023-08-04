@@ -1,4 +1,4 @@
-// Copyright (c) 2022 UltiMaker
+// Copyright (c) 2023 UltiMaker
 // Cura is released under the terms of the LGPLv3 or higher.
 
 pragma Singleton
@@ -70,6 +70,10 @@ Item
     property alias configureSettingVisibility: configureSettingVisibilityAction
 
     property alias browsePackages: browsePackagesAction
+
+    property alias paste: pasteAction
+    property alias copy: copyAction
+    property alias cut: cutAction
 
     UM.I18nCatalog{id: catalog; name: "cura"}
 
@@ -307,6 +311,33 @@ Item
         enabled: UM.Controller.toolsEnabled && UM.Selection.hasSelection
         icon.name: "align-vertical-center"
         onTriggered: CuraActions.centerSelection()
+    }
+
+    Action
+    {
+        id: copyAction
+        text: catalog.i18nc("@action:inmenu menubar:edit", "Copy to clipboard")
+        onTriggered: CuraActions.copy()
+        enabled: UM.Controller.toolsEnabled && UM.Selection.hasSelection
+        shortcut: StandardKey.Copy
+    }
+
+    Action
+    {
+        id: pasteAction
+        text: catalog.i18nc("@action:inmenu menubar:edit", "Paste from clipboard")
+        onTriggered: CuraActions.paste()
+        enabled: UM.Controller.toolsEnabled
+        shortcut: StandardKey.Paste
+    }
+
+    Action
+    {
+        id: cutAction
+        text: catalog.i18nc("@action:inmenu menubar:edit", "Cut")
+        onTriggered: CuraActions.cut()
+        enabled: UM.Controller.toolsEnabled && UM.Selection.hasSelection
+        shortcut: StandardKey.Cut
     }
 
     Action
