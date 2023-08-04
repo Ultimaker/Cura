@@ -87,12 +87,22 @@ class PackageModel(QObject):
         self._is_missing_package_information = False
 
     @classmethod
-    def fromIncompletePackageInformation(cls, display_name: str, package_version: str, package_type: str) -> "PackageModel":
+    def fromIncompletePackageInformation(cls, display_name: str, package_version: str,
+                                         package_type: str) -> "PackageModel":
+        description = ""
+        match package_type:
+            case "material":
+                description = catalog.i18nc("@label:label Ultimaker Marketplace is a brand name, don't translate",
+                                            "The material package associated with the Cura project could not be found on the Ultimaker Marketplace. Use the partial material profile definition stored in the Cura project file at your own risk.")
+            case "plugin":
+                description = catalog.i18nc("@label:label Ultimaker Marketplace is a brand name, don't translate",
+                                            "The plugin associated with the Cura project could not be found on the Ultimaker Marketplace. As the plugin may be required to slice the project it might not be possible to correctly slice the file.")
+
         package_data = {
             "display_name": display_name,
             "package_version": package_version,
             "package_type": package_type,
-            "description": catalog.i18nc("@label:label Ultimaker Marketplace is a brand name, don't translate", "The material package associated with the Cura project could not be found on the Ultimaker Marketplace. Use the partial material profile definition stored in the Cura project file at your own risk.")
+            "description": description,
         }
         package_model = cls(package_data)
         package_model.setIsMissingPackageInformation(True)
