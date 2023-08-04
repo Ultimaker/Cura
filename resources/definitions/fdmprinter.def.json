@@ -1668,7 +1668,7 @@
                     "value": "skin_line_width * 2",
                     "default_value": 1,
                     "minimum_value": "0",
-                    "maximum_value_warning": "skin_line_width * 10",
+                    "maximum_value_warning": "skin_line_width * 3",
                     "type": "float",
                     "enabled": "(top_layers > 0 or bottom_layers > 0) and top_bottom_pattern != 'concentric'",
                     "limit_to_extruder": "top_bottom_extruder_nr",
