@@ -150,9 +150,17 @@ class CuraConan(ConanFile):
             conan_installs.append([dependency.ref.name,dependency.ref.version])
 
         #list of python installs
-        import pkg_resources
-        for package in pkg_resources.working_set:
-            python_installs.append([package.key, package.version])
+        outer = '"' if self.settings.os == "Windows" else "'"
+        inner = "'" if self.settings.os == "Windows" else '"'
+        python_ins_cmd = f"python -c {outer}import pkg_resources; print({inner};{inner}.join([(s.key+{inner},{inner}+ s.version) for s in pkg_resources.working_set])){outer}"
+        from six import StringIO
+        buffer = StringIO()
+        self.run(python_ins_cmd, run_environment= True, env = "conanrun",  output=buffer)
+
+        packages = str(buffer.getvalue()).split("-----------------\n")
+        package = packages[1].strip('\r\n').split(";")
+        for pack in package:
+            python_installs.append(pack.split(","))
 
         with open(os.path.join(location, "AboutDialogVersionsList.qml"), "w") as f:
             f.write(cura_version_py.render(
@@ -332,7 +340,7 @@ class CuraConan(ConanFile):
         vr.generate()
 
         self._generate_cura_version(os.path.join(self.source_folder, "cura"))
-        self._generate_about_versions(os.path.join(self.source_folder, "resources/qml/Dialogs"))
+
 
         if self.options.devtools:
             entitlements_file = "'{}'".format(os.path.join(self.source_folder, "packaging", "MacOS", "cura.entitlements"))
@@ -350,6 +358,8 @@ class CuraConan(ConanFile):
                 cpp_info = self.dependencies["gettext"].cpp_info
                 pot = self.python_requires["translationextractor"].module.ExtractTranslations(self, cpp_info.bindirs[0])
                 pot.generate()
+
+        self._generate_about_versions(os.path.join(self.source_folder, "resources","qml", "Dialogs"))
 
     def build(self):
         if self.options.devtools:
@@ -464,6 +474,8 @@ echo "CURA_APP_NAME={{ cura_app_name }}" >> ${{ env_prefix }}GITHUB_ENV
                                         entrypoint_location = "'{}'".format(os.path.join(self.package_folder, self.cpp_info.bindirs[0], self.conan_data["pyinstaller"]["runinfo"]["entrypoint"])).replace("\\", "\\\\"),
                                         icon_path = "'{}'".format(os.path.join(self.package_folder, self.cpp_info.resdirs[2], self.conan_data["pyinstaller"]["icon"][str(self.settings.os)])).replace("\\", "\\\\"),
                                         entitlements_file = entitlements_file if self.settings.os == "Macos" else "None")
+
+        self._generate_about_versions(os.path.join(self.source_folder, "resources", "qml", "Dialogs"))
 
     def package(self):
         copy(self, "cura_app.py", src = self.source_folder, dst = os.path.join(self.package_folder, self.cpp.package.bindirs[0]))
