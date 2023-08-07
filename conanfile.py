@@ -10,7 +10,7 @@ from conan.tools.env import VirtualRunEnv, Environment, VirtualBuildEnv
 from conan.tools.scm import Version
 from conan.errors import ConanInvalidConfiguration, ConanException
 
-required_conan_version = "<=1.60.0"
+required_conan_version = ">=1.54 <=1.56.0 || >=1.58.0 <2.0.0"
 
 
 class CuraConan(ConanFile):
