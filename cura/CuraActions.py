@@ -7,8 +7,6 @@ from PyQt6.QtCore import QObject, QUrl, QMimeData
 from PyQt6.QtGui import QDesktopServices
 from PyQt6.QtWidgets import QApplication
 
-import pySavitar as Savitar
-
 from UM.Event import CallFunctionEvent
 from UM.FlameProfiler import pyqtSlot
 from UM.Math.Vector import Vector
@@ -194,18 +192,13 @@ class CuraActions(QObject):
 
     @pyqtSlot()
     def copy(self) -> None:
-        # Convert all selected objects to a Savitar scene
-        savitar_scene = Savitar.Scene()
         mesh_writer = cura.CuraApplication.CuraApplication.getInstance().getMeshFileHandler().getWriter("3MFWriter")
-        for scene_node in Selection.getAllSelectedObjects():
-            savitar_node = mesh_writer._convertUMNodeToSavitarNode(scene_node)
-            savitar_scene.addSceneNode(savitar_node)
 
-        # Convert the scene to a string
-        parser = Savitar.ThreeMFParser()
-        scene_string = parser.sceneToString(savitar_scene)
-
-        # Copy the scene to the clipboard
+        # Get the selected nodes
+        selected_objects = Selection.getAllSelectedObjects()
+        # Serialize the nodes to a string
+        scene_string = mesh_writer.sceneNodesToString(selected_objects)
+        # Put the string on the clipboard
         QApplication.clipboard().setText(scene_string)
 
     @pyqtSlot()
@@ -214,17 +207,9 @@ class CuraActions(QObject):
 
         # Parse the scene from the clipboard
         scene_string = QApplication.clipboard().text()
-        parser = Savitar.ThreeMFParser()
-        scene = parser.parse(scene_string)
 
-        # Convert the scene to scene nodes
-        nodes = []
         mesh_reader = application.getMeshFileHandler().getReaderForFile(".3mf")
-        for savitar_node in scene.getSceneNodes():
-            scene_node = mesh_reader._convertSavitarNodeToUMNode(savitar_node, "file_name")
-            if scene_node is None:
-                continue
-            nodes.append(scene_node)
+        nodes = mesh_reader.stringToSceneNodes(scene_string)
 
         # Find all fixed nodes, these are the nodes that should be avoided when arranging
         fixed_nodes = []
