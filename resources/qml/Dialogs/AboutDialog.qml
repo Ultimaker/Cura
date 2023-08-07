@@ -21,13 +21,6 @@ UM.Dialog
 
     backgroundColor: UM.Theme.getColor("main_background")
 
-    property real dialogX: base.x
-    property real dialogY: base.y
-    property int shakeDetected: shakeDetector.shakeIsdetected
-    property UM.ShakeDetector shakeDetector: UM.ShakeDetector
-    {
-        position: Qt.point(base.x, base.y)
-    }
 
     Rectangle
     {
@@ -58,6 +51,15 @@ UM.Dialog
             anchors.horizontalCenter: parent.horizontalCenter
 
             UM.I18nCatalog{id: catalog; name: "cura"}
+            MouseArea
+            {
+                anchors.fill: parent
+                onClicked:
+                {
+                    projectsList.visible = !projectsList.visible;
+                    projectBuildInfoList.visible = !projectBuildInfoList.visible;
+                }
+            }
         }
 
         UM.Label
@@ -194,11 +196,6 @@ UM.Dialog
 
     }
 
-    onShakeDetectedChanged:
-    {
-        projectsList.visible = !projectsList.visible;
-        projectBuildInfoList.visible = !projectBuildInfoList.visible;
-    }
 
     onVisibleChanged:
     {
