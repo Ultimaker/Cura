@@ -144,7 +144,6 @@
             "value": "math.ceil(speed_print * 1.2)"
         },
         "wall_line_width": { "value": "machine_nozzle_size * 1.05" },
-        "wall_overhang_angle": { "default_value": 75 },
         "wall_overhang_speed_factor": { "default_value": 50 },
         "zig_zaggify_infill": { "value": true }
     }
