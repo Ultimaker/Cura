@@ -32,7 +32,6 @@
         "machine_width": { "default_value": 180 },
         "speed_layer_0":
         {
-            "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
             "maximum_value_warning": 800,
             "value": "math.ceil(speed_print * 0.25)"
         },
@@ -46,25 +45,21 @@
         },
         "speed_travel_layer_0":
         {
-            "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
             "maximum_value_warning": 800,
             "value": "math.ceil(speed_travel * 0.7)"
         },
         "speed_wall":
         {
-            "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
             "maximum_value_warning": 800,
             "value": "math.ceil(speed_print * 1)"
         },
         "speed_wall_0":
         {
-            "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
             "maximum_value_warning": 800,
             "value": "speed_wall"
         },
         "speed_wall_x":
         {
-            "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
             "maximum_value_warning": 800,
             "value": "math.ceil(speed_wall * 1.2)"
         }
