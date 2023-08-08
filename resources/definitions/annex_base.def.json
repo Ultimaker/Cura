@@ -23,7 +23,7 @@
     {
         "adhesion_type": { "default_value": "skirt" },
         "alternate_extra_perimeter": { "default_value": true },
-        "bridge_fan_speed": { "default_value": 100 },
+        
         "bridge_fan_speed_2": { "resolve": "max(cool_fan_speed, 50)" },
         "bridge_fan_speed_3": { "resolve": "max(cool_fan_speed, 20)" },
         "bridge_settings_enabled": { "default_value": true },
