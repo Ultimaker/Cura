@@ -29,29 +29,10 @@
         "machine_max_jerk_z": { "default_value": 1 },
         "machine_name": { "default_value": "Annex K3" },
         "machine_width": { "default_value": 180 },
-        "speed_layer_0":
-        {
-            
-            "value": "math.ceil(speed_print * 0.25)"
-        },
-        "speed_travel":
-        {
-            "value": 500
-        },
-        "speed_wall":
-        {
-            
-            "value": "math.ceil(speed_print * 1)"
-        },
-        "speed_wall_0":
-        {
-            
-            "value": "speed_wall"
-        },
-        "speed_wall_x":
-        {
-            
-            "value": "math.ceil(speed_wall * 1.2)"
-        }
+        "speed_layer_0": { "value": "math.ceil(speed_print * 0.25)" },
+        "speed_travel": { "value": 500 },
+        "speed_wall": { "value": "math.ceil(speed_print * 1)" },
+        "speed_wall_0": { "value": "speed_wall" },
+        "speed_wall_x": { "value": "math.ceil(speed_wall * 1.2)" }
     }
 }
