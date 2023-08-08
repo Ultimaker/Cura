@@ -193,6 +193,9 @@ class CuraActions(QObject):
     @pyqtSlot()
     def copy(self) -> None:
         mesh_writer = cura.CuraApplication.CuraApplication.getInstance().getMeshFileHandler().getWriter("3MFWriter")
+        if not mesh_writer:
+            Logger.log("e", "No 3MF writer found, unable to copy.")
+            return
 
         # Get the selected nodes
         selected_objects = Selection.getAllSelectedObjects()
@@ -204,11 +207,14 @@ class CuraActions(QObject):
     @pyqtSlot()
     def paste(self) -> None:
         application = cura.CuraApplication.CuraApplication.getInstance()
+        mesh_reader = application.getMeshFileHandler().getReaderForFile(".3mf")
+        if not mesh_reader:
+            Logger.log("e", "No 3MF reader found, unable to paste.")
+            return
 
         # Parse the scene from the clipboard
         scene_string = QApplication.clipboard().text()
 
-        mesh_reader = application.getMeshFileHandler().getReaderForFile(".3mf")
         nodes = mesh_reader.stringToSceneNodes(scene_string)
 
         # Find all fixed nodes, these are the nodes that should be avoided when arranging
