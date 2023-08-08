@@ -83,7 +83,6 @@
         "retraction_combing": { "value": "'noskin'" },
         "retraction_combing_max_distance": { "default_value": 10 },
         "retraction_hop": { "default_value": 0.2 },
-        "retraction_hop_enabled": { "default_value": false },
         "retraction_prime_speed":
         {
             "maximum_value_warning": 130,
@@ -148,7 +147,6 @@
             "maximum_value_warning": 800,
             "value": "math.ceil(speed_print * 1.2)"
         },
-        "travel_avoid_other_parts": { "default_value": true },
         "wall_line_width": { "value": "machine_nozzle_size * 1.05" },
         "wall_overhang_angle": { "default_value": 75 },
         "wall_overhang_speed_factor": { "default_value": 50 },
