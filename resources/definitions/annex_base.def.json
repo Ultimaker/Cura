@@ -90,7 +90,6 @@
         "retraction_retract_speed": { "maximum_value_warning": 130 },
         "retraction_speed":
         {
-            "default_value": 30,
             "maximum_value_warning": 130
         },
         "roofing_layer_count": { "value": 1 },
