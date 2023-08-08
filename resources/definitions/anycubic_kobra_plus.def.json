@@ -12,7 +12,7 @@
         "has_materials": true,
         "machine_extruder_trains": { "0": "anycubic_kobra_plus_extruder_0" },
         "preferred_material": "generic_pla",
-        "preferred_quality_type": "pla",
+        "preferred_quality_type": "normal",
         "quality_definition": "anycubic_kobra_plus"
     },
     "overrides":
