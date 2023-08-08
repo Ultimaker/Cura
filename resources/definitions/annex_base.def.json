@@ -137,10 +137,7 @@
             "maximum_value_warning": 800,
             "value": "math.ceil(speed_print * 1)"
         },
-        "speed_wall_0":
-        {
-            "maximum_value_warning": 800
-        },
+        "speed_wall_0": { "maximum_value_warning": 800 },
         "speed_wall_x":
         {
             "maximum_value_warning": 800,
