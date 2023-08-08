@@ -37,21 +37,6 @@
         "speed_travel":
         {
             "value": 500
-        },
-        "speed_wall":
-        {
-            
-            "value": "math.ceil(speed_print * 1)"
-        },
-        "speed_wall_0":
-        {
-            
-            "value": "speed_wall"
-        },
-        "speed_wall_x":
-        {
-            
-            "value": "math.ceil(speed_wall * 1.2)"
         }
     }
 }
