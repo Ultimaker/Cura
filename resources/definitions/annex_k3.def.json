@@ -15,7 +15,6 @@
     },
     "overrides":
     {
-        "layer_height": { "default_value": 0.2 },
         "machine_acceleration": { "default_value": 10000 },
         "machine_depth": { "default_value": 180 },
         "machine_endstop_positive_direction_x": { "default_value": true },
@@ -32,7 +31,7 @@
         "machine_width": { "default_value": 180 },
         "speed_layer_0":
         {
-            "maximum_value_warning": 800,
+            
             "value": "math.ceil(speed_print * 0.25)"
         },
         "speed_roofing": { "value": "math.ceil(speed_print * 0.33)" },
@@ -40,27 +39,26 @@
         "speed_topbottom": { "value": "math.ceil(speed_print * 0.33)" },
         "speed_travel":
         {
-            "maximum_value_warning": 800,
             "value": 500
         },
         "speed_travel_layer_0":
         {
-            "maximum_value_warning": 800,
+        
             "value": "math.ceil(speed_travel * 0.7)"
         },
         "speed_wall":
         {
-            "maximum_value_warning": 800,
+            
             "value": "math.ceil(speed_print * 1)"
         },
         "speed_wall_0":
         {
-            "maximum_value_warning": 800,
+            
             "value": "speed_wall"
         },
         "speed_wall_x":
         {
-            "maximum_value_warning": 800,
+            
             "value": "math.ceil(speed_wall * 1.2)"
         }
     }
