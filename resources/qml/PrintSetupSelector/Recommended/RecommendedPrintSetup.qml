@@ -111,7 +111,6 @@ Flickable
                     anchors.right: parent.right
                     text: catalog.i18nc("@button", "Show Custom")
                     textFont: UM.Theme.getFont("medium_bold")
-                    outlineColor: "transparent"
                     onClicked: onModeChanged()
                 }
             }
