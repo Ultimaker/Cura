@@ -71,7 +71,6 @@
         "machine_width": { "default_value": 180 },
         "material_print_temperature":
         {
-            "default_value": "default_material_print_temperature",
             "maximum_value": 500,
             "maximum_value_warning": 450,
             "minimum_value_warning": 0
@@ -83,7 +82,6 @@
         "retraction_amount": { "default_value": 0.75 },
         "retraction_combing": { "value": "'noskin'" },
         "retraction_combing_max_distance": { "default_value": 10 },
-        "retraction_hop": { "default_value": 0.2 },
         "retraction_prime_speed":
         {
             "maximum_value_warning": 130,
@@ -145,7 +143,6 @@
             "value": "math.ceil(speed_print * 1.2)"
         },
         "wall_line_width": { "value": "machine_nozzle_size * 1.05" },
-        "wall_overhang_speed_factor": { "default_value": 50 },
-        "zig_zaggify_infill": { "value": true }
+        "wall_overhang_speed_factor": { "default_value": 50 }
     }
 }
