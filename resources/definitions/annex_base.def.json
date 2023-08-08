@@ -23,14 +23,12 @@
     {
         "adhesion_type": { "default_value": "skirt" },
         "alternate_extra_perimeter": { "default_value": true },
-        
         "bridge_fan_speed_2": { "resolve": "max(cool_fan_speed, 50)" },
         "bridge_fan_speed_3": { "resolve": "max(cool_fan_speed, 20)" },
         "bridge_settings_enabled": { "default_value": true },
         "bridge_wall_coast": { "default_value": 10 },
         "cool_fan_full_at_height": { "value": "resolveOrValue('layer_height_0') + resolveOrValue('layer_height') * max(1, cool_fan_full_layer - 1)" },
         "cool_fan_full_layer": { "value": 4 },
-        
         "cool_min_layer_time": { "default_value": 15 },
         "cool_min_layer_time_fan_speed_max": { "default_value": 20 },
         "default_material_print_temperature":
@@ -40,7 +38,6 @@
             "maximum_value_warning": 450,
             "minimum_value_warning": 0
         },
-        
         "gantry_height": { "value": 30 },
         "infill_before_walls": { "default_value": false },
         "infill_enable_travel_optimization": { "default_value": true },
