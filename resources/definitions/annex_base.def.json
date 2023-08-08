@@ -139,8 +139,7 @@
         },
         "speed_wall_0":
         {
-            "maximum_value_warning": 800,
-            "value": "speed_wall"
+            "maximum_value_warning": 800
         },
         "speed_wall_x":
         {
