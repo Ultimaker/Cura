@@ -217,6 +217,10 @@ class CuraActions(QObject):
 
         nodes = mesh_reader.stringToSceneNodes(scene_string)
 
+        if not nodes:
+            # Nothing to paste
+            return
+
         # Find all fixed nodes, these are the nodes that should be avoided when arranging
         fixed_nodes = []
         root = application.getController().getScene().getRoot()
