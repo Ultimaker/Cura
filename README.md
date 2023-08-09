@@ -12,7 +12,7 @@
 
 [![Badge Test]][Test]   
 [![Badge Conan]][Conan]   
-[![Badge Downloads]]
+![Badge Downloads]
 <br>
 <br>
 
