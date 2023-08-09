@@ -6794,8 +6794,7 @@
                     "maximum_value_warning": "0.3",
                     "settable_per_mesh": true
                 },
-                "meshfix_maximum_extrusion_area_deviation":
-                {
+                "meshfix_maximum_extrusion_area_deviation": {
                     "label": "Maximum Extrusion Area Deviation",
                     "description": "The maximum extrusion area deviation allowed when removing intermediate points from a straight line. An intermediate point may serve as width-changing point in a long straight line. Therefore, if it is removed, it will cause the line to have a uniform width and, as a result, lose (or gain) a bit of extrusion area. If you increase this you may notice slight under- (or over-) extrusion in between straight parallel walls, as more intermediate width-changing points will be allowed to be removed. Your print will be less accurate, but the g-code will be smaller.",
                     "type": "float",
@@ -6805,6 +6804,36 @@
                     "minimum_value_warning": "500",
                     "maximum_value_warning": "100000",
                     "settable_per_mesh": true
+                },
+                "meshfix_fluid_motion_enabled": {
+                    "label": "Enable Fluid Motion",
+                    "description": "When enabled tool paths are corrected for printers with smooth motion planners. Small movements that deviate from the general tool path direction are smoothed to improve fluid motions.",
+                    "type": "bool",
+                    "default_value": true
+                },
+                "meshfix_fluid_motion_shift_distance": {
+                    "label": "Fluid Motion Shift Distance",
+                    "description": "Distance points are shifted to smooth the path",
+                    "enabled": "meshfix_fluid_motion_enabled",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 0.3
+                },
+                "meshfix_fluid_motion_small_distance": {
+                    "label": "Fluid Motion Small Distance",
+                    "description": "Distance points are shifted to smooth the path",
+                    "enabled": "meshfix_fluid_motion_enabled",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 0.001
+                },
+                "meshfix_fluid_motion_angle": {
+                    "label": "Fluid Motion Angle",
+                    "description": "Threshold angle of smooth toolpath transitions",
+                    "enabled": "meshfix_fluid_motion_enabled",
+                    "type": "float",
+                    "unit": "\u00b0",
+                    "default_value": 5
                 }
             }
         },
