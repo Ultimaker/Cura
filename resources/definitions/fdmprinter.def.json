@@ -6824,7 +6824,8 @@
                     "minimum_value": "0.01",
                     "maximum_value": "1"
                 },
-                "meshfix_fluid_motion_small_distance": {
+                "meshfix_fluid_motion_small_distance":
+                {
                     "label": "Fluid Motion Small Distance",
                     "description": "Distance points are shifted to smooth the path",
                     "enabled": "meshfix_fluid_motion_enabled",
@@ -6834,7 +6835,8 @@
                     "minimum_value": "0.01",
                     "maximum_value": "0.1"
                 },
-                "meshfix_fluid_motion_angle": {
+                "meshfix_fluid_motion_angle":
+                {
                     "label": "Fluid Motion Angle",
                     "description": "Threshold angle of smooth toolpath transitions. If a toolpath deviates more then this angle from the general direction it is smoothed.",
                     "enabled": "meshfix_fluid_motion_enabled",
