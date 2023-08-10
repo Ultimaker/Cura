@@ -6838,7 +6838,7 @@
                 "meshfix_fluid_motion_angle":
                 {
                     "label": "Fluid Motion Angle",
-                    "description": "Threshold angle of smooth toolpath transitions. If a toolpath deviates more then this angle from the general direction it is smoothed.",
+                    "description": "If a toolpath-segment deviates more than this angle from the general motion it is smoothed.",
                     "enabled": "meshfix_fluid_motion_enabled",
                     "type": "float",
                     "unit": "\u00b0",
