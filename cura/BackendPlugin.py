@@ -4,6 +4,7 @@ import subprocess
 from typing import Optional, List
 
 from UM.Logger import Logger
+from UM.Message import Message
 from UM.Settings.AdditionalSettingDefinitionAppender import AdditionalSettingDefinitionsAppender
 
 
@@ -57,13 +58,25 @@ class BackendPlugin(AdditionalSettingDefinitionsAppender):
             self._is_running = True
             return True
         except PermissionError:
-            Logger.log("e", f"Couldn't start backend_plugin [{self._plugin_id}]: No permission to execute process.")
+            Logger.log("e", f"Couldn't start EnginePlugin: {self._plugin_id} No permission to execute process.")
+            self._showMessage(self.catalog.i18nc("@info:plugin_failed",
+                                                 f"Couldn't start EnginePlugin: {self._plugin_id}\nNo permission to execute process."),
+                              message_type = Message.MessageType.ERROR)
         except FileNotFoundError:
-            Logger.logException("e", f"Unable to find backend_plugin executable [{self._plugin_id}]")
+            Logger.logException("e", f"Unable to find local EnginePlugin server executable for: {self._plugin_id}")
+            self._showMessage(self.catalog.i18nc("@info:plugin_failed",
+                                                 f"Unable to find local EnginePlugin server executable for: {self._plugin_id}"),
+                              message_type = Message.MessageType.ERROR)
         except BlockingIOError:
-            Logger.logException("e", f"Couldn't start backend_plugin [{self._plugin_id}]: Resource is temporarily unavailable")
+            Logger.logException("e", f"Couldn't start EnginePlugin: {self._plugin_id} Resource is temporarily unavailable")
+            self._showMessage(self.catalog.i18nc("@info:plugin_failed",
+                                                 f"Couldn't start EnginePlugin: {self._plugin_id}\nResource is temporarily unavailable"),
+                              message_type = Message.MessageType.ERROR)
         except OSError as e:
-            Logger.logException("e", f"Couldn't start backend_plugin [{self._plugin_id}]: Operating system is blocking it (antivirus?)")
+            Logger.logException("e", f"Couldn't start EnginePlugin {self._plugin_id} Operating system is blocking it (antivirus?)")
+            self._showMessage(self.catalog.i18nc("@info:plugin_failed",
+                                                 f"Couldn't start EnginePlugin: {self._plugin_id}\nOperating system is blocking it (antivirus?)"),
+                              message_type = Message.MessageType.ERROR)
         return False
 
     def stop(self) -> bool:
@@ -75,8 +88,15 @@ class BackendPlugin(AdditionalSettingDefinitionsAppender):
             self._process.terminate()
             return_code = self._process.wait()
             self._is_running = False
-            Logger.log("d", f"Backend_plugin [{self._plugin_id}] was killed. Received return code {return_code}")
+            Logger.log("d", f"EnginePlugin: {self._plugin_id} was killed. Received return code {return_code}")
             return True
         except PermissionError:
-            Logger.log("e", "Unable to kill running engine. Access is denied.")
+            Logger.log("e", f"Unable to kill running EnginePlugin: {self._plugin_id} Access is denied.")
+            self._showMessage(self.catalog.i18nc("@info:plugin_failed",
+                                                 f"Unable to kill running EnginePlugin: {self._plugin_id}\nAccess is denied."),
+                              message_type = Message.MessageType.ERROR)
             return False
+
+    def _showMessage(self, message: str, message_type: Message.MessageType = Message.MessageType.ERROR) -> None:
+        Message(message, title=self.catalog.i18nc("@info:title", "EnginePlugin"), message_type = message_type).show()
+

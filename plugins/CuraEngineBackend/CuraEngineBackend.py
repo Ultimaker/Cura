@@ -203,7 +203,7 @@ class CuraEngineBackend(QObject, Backend):
         backend_plugins = CuraApplication.getInstance().getBackendPlugins()
         for backend_plugin in backend_plugins:
             if backend_plugin.isRunning():
-                continue
+                backend_plugin.stop()
             # Set the port to prevent plugins from using the same one.
             backend_plugin.setPort(self._last_backend_plugin_port)
             self._last_backend_plugin_port += 1
