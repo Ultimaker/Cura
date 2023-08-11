@@ -19,6 +19,8 @@ Cura.Menu
     // Selection-related actions.
     Cura.MenuItem { action: Cura.Actions.centerSelection; }
     Cura.MenuItem { action: Cura.Actions.deleteSelection; }
+    Cura.MenuItem { action: Cura.Actions.copy; }
+    Cura.MenuItem { action: Cura.Actions.paste; }
     Cura.MenuItem { action: Cura.Actions.multiplySelection; }
 
     // Extruder selection - only visible if there is more than 1 extruder
