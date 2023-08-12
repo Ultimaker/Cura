@@ -123,6 +123,14 @@ class DisplayInfoOnLCD(Script):
                     "unit": "%",
                     "default_value": 100,
                     "enabled": "display_option == 'display_progress'"
+                },
+                "countdown_to_pause":
+                {
+                    "label": "Countdown to Pauses",
+                    "description": "Instead of layer number and remaining print time the LCD will show 'layers remaining before pause' and 'Est Time to Pause' (ETP).",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "display_option == 'display_progress'"
                 }
             }
         }"""
@@ -269,5 +277,50 @@ class DisplayInfoOnLCD(Script):
                         break
         # overwrite the layer with the modified layer
                 data[layer_index] = "\n".join(lines)
-
+        
+        # If enabled then change the ET to TP for 'Time To Pause'        
+            if bool(self.getSettingValueByKey("countdown_to_pause")):
+                time_list = []
+                time_list.append("0")
+                time_list.append("0")
+                this_time = 0
+                pause_index = 1
+                
+        # Get the layer times
+                for num in range(2,len(data) - 1):
+                    layer = data[num]
+                    lines = layer.split("\n")
+                    for line in lines:
+                        if line.startswith(";TIME_ELAPSED:"):
+                            this_time = (float(line.split(":")[1]))*speed_factor
+                            time_list.append(str(this_time))
+                            if "PauseAtHeight.py" in layer:
+                                for qnum in range(num - 1, pause_index, -1):
+                                    time_list[qnum] = str(float(this_time) - float(time_list[qnum])) + "P"
+                                pause_index = num-1
+                
+        # Make the adjustments to the M117 (and M118) lines that are prior to a pause
+                for num in range (2, len(data) - 1,1):
+                    layer = data[num]
+                    lines = layer.split("\n")
+                    for line in lines:
+                        if line.startswith("M117") and "|" in line and "P" in time_list[num]:
+                            M117_line = line.split("|")[0] + "| TP "
+                            alt_time = time_list[num][:-1]
+                            hhh = int(float(alt_time) / 3600)
+                            if hhh > 0:
+                                hhr = str(hhh) + "h"
+                            else:
+                                hhr = ""
+                            mmm = ((float(alt_time) / 3600) - (int(float(alt_time) / 3600))) * 60
+                            sss = int((mmm - int(mmm)) * 60)
+                            mmm = str(round(mmm)) + "m"
+                            time_to_go = str(hhr) + str(mmm)
+                            if hhr == "": time_to_go = time_to_go + str(sss) + "s"
+                            M117_line = M117_line + time_to_go
+                            layer = layer.replace(line, M117_line)
+                        if line.startswith("M118") and "|" in line and "P" in time_list[num]:
+                            M118_line = line.split("|")[0] + "| TP " + time_to_go
+                            layer = layer.replace(line, M118_line)
+                    data[num] = layer
         return data
