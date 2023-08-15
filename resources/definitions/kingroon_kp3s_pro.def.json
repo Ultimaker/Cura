@@ -6,7 +6,8 @@
     {
         "visible": true,
         "platform": "kingroon_kp3s.stl",
-        "quality_definition": "kingroon_base"
+        "quality_definition": "kingroon_base",
+        "author": "willuhmjs"
     },
     "overrides":
     {
