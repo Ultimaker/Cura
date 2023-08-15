@@ -1289,7 +1289,7 @@
                 "hole_xy_offset":
                 {
                     "label": "Hole Horizontal Expansion",
-                    "description": "Amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes.",
+                    "description": "When greater than zero, the Hole Horizontal Expansion is the amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes. When this setting is enabled it can be further tuned with Hole Horizontal Expansion Max Diameter.",
                     "unit": "mm",
                     "type": "float",
                     "minimum_value_warning": "-1",
@@ -5921,7 +5921,7 @@
                     "maximum_value_warning": "skirt_brim_line_width",
                     "enabled": "resolveOrValue('adhesion_type') == 'brim'",
                     "limit_to_extruder": "skirt_brim_extruder_nr",
-                    "settable_per_mesh": true,
+                    "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
                 "brim_replaces_support":
