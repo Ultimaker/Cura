@@ -6,9 +6,10 @@ from typing import Optional, List
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.Settings.AdditionalSettingDefinitionAppender import AdditionalSettingDefinitionsAppender
+from UM.PluginObject import PluginObject
 
 
-class BackendPlugin(AdditionalSettingDefinitionsAppender):
+class BackendPlugin(AdditionalSettingDefinitionsAppender, PluginObject):
     def __init__(self) -> None:
         super().__init__()
         self.__port: int = 0
