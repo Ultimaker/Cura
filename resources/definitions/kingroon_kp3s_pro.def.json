@@ -5,9 +5,9 @@
     "metadata":
     {
         "visible": true,
+        "author": "willuhmjs",
         "platform": "kingroon_kp3s.stl",
-        "quality_definition": "kingroon_base",
-        "author": "willuhmjs"
+        "quality_definition": "kingroon_base"
     },
     "overrides":
     {
