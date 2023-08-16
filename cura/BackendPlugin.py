@@ -58,7 +58,7 @@ class BackendPlugin(AdditionalSettingDefinitionsAppender, PluginObject):
             # STDIN needs to be None because we provide no input, but communicate via a local socket instead.
             # The NUL device sometimes doesn't exist on some computers.
             Logger.info(f"Starting backend_plugin [{self._plugin_id}] with command: {self._validatePluginCommand()}")
-            self._process = subprocess.Popen(self._validatePluginCommand(), stdin = None)
+            self._process = subprocess.Popen(self._validatePluginCommand(), stdin = None, creationflags = subprocess.CREATE_NO_WINDOW)
             self._is_running = True
             return True
         except PermissionError:
