@@ -43,7 +43,7 @@ class BackendPlugin(AdditionalSettingDefinitionsAppender, PluginObject):
         if not self._plugin_command or "--port" in self._plugin_command:
             return self._plugin_command or []
 
-        return self._plugin_command + ["--port", str(self.__port)]
+        return self._plugin_command + ["--address", self.getAddress(), "--port", str(self.__port)]
 
     def start(self) -> bool:
         """
