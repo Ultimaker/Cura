@@ -28,6 +28,7 @@ class PrinterOutputModel(QObject):
     cameraUrlChanged = pyqtSignal()
     configurationChanged = pyqtSignal()
     canUpdateFirmwareChanged = pyqtSignal()
+    isOnlineChanged =pyqtSignal()
 
     def __init__(self, output_controller: "PrinterOutputController", number_of_extruders: int = 1, parent=None, firmware_version = "") -> None:
         super().__init__(parent)
@@ -47,6 +48,7 @@ class PrinterOutputModel(QObject):
         self._is_preheating = False
         self._printer_type = ""
         self._buildplate = ""
+        self._is_online = False
         self._peripherals = []  # type: List[Peripheral]
 
         self._active_printer_configuration.extruderConfigurations = [extruder.extruderConfiguration for extruder in
@@ -77,6 +79,15 @@ class PrinterOutputModel(QObject):
     @pyqtProperty(bool, notify=isPreheatingChanged)
     def isPreheating(self) -> bool:
         return self._is_preheating
+
+    def printerIsOnline(self, is_online: bool) -> None:
+        if self._is_online != is_online:
+            self._is_online = is_online
+            self.isOnlineChanged.emit()
+
+    @pyqtProperty(bool, notify=isOnlineChanged)
+    def isOnline(self) -> bool:
+        return self._is_online
 
     @pyqtProperty(str, notify = typeChanged)
     def type(self) -> str:

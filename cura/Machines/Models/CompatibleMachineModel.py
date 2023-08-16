@@ -46,43 +46,36 @@ class CompatibleMachineModel(ListModel):
         from cura.CuraApplication import CuraApplication
         machine_manager = CuraApplication.getInstance().getMachineManager()
 
-        # getting the global stack that is online and extracting the name of the printer
-        definition_id = machine_manager.activeQualityDefinitionId
-        online_machine_stacks = machine_manager.getMachinesWithDefinition(definition_id, online_only=True)
-        online_printers = [machine.id for machine in online_machine_stacks]
-
+        online_printers = machine_manager.checkOnlinePrinters()
         # Loop over the output-devices, not the stacks; need all applicable configurations, not just the current loaded one.
-        for output_device in machine_manager.printerOutputDevices:
-            for printer in output_device.printers:
+        for printer in online_printers:
+            extruder_configs = dict()
+            # initialize & add current active material:
+            for extruder in printer.extruders:
+                if not extruder.activeMaterial:
+                    continue
+                materials = [_makeMaterial(
+                    extruder.activeMaterial.brand, extruder.activeMaterial.name, extruder.activeMaterial.color)]
+                extruder_configs[extruder.getPosition()] = {
+                    "position": extruder.getPosition(),
+                    "core": extruder.hotendID,
+                    "materials": materials
+                }
 
-                if printer.name in online_printers:
-                    extruder_configs = dict()
-                    # initialize & add current active material:
-                    for extruder in printer.extruders:
-                        if not extruder.activeMaterial:
-                            continue
-                        materials = [_makeMaterial(
-                            extruder.activeMaterial.brand, extruder.activeMaterial.name, extruder.activeMaterial.color)]
-                        extruder_configs[extruder.getPosition()] = {
-                            "position": extruder.getPosition(),
-                            "core": extruder.hotendID,
-                            "materials": materials
-                        }
+            # add currently inactive, but possible materials:
+            for configuration in printer.availableConfigurations:
+                for extruder in configuration.extruderConfigurations:
+                    if not extruder.position in extruder_configs:
+                        Logger.log("w", f"No active extruder for position {extruder.position}.")
+                        continue
 
-                    # add currently inactive, but possible materials:
-                    for configuration in printer.availableConfigurations:
-                        for extruder in configuration.extruderConfigurations:
-                            if not extruder.position in extruder_configs:
-                                Logger.log("w", f"No active extruder for position {extruder.position}.")
-                                continue
+                    entry = _makeMaterial(extruder.material.brand, extruder.material.name, extruder.material.color)
+                    if entry not in extruder_configs[extruder.position]["materials"]:
+                        extruder_configs[extruder.position]["materials"].append(entry)
 
-                            entry = _makeMaterial(extruder.material.brand, extruder.material.name, extruder.material.color)
-                            if entry not in extruder_configs[extruder.position]["materials"]:
-                                extruder_configs[extruder.position]["materials"].append(entry)
-
-                    if any([len(extruder["materials"]) > 0 for extruder in extruder_configs.values()]):
-                        self.appendItem({
-                            "name": printer.name,
-                            "unique_id": printer.name,  # <- Can assume the cloud doesn't have duplicate names?
-                            "extruders": list(extruder_configs.values())
-                        })
+            if any([len(extruder["materials"]) > 0 for extruder in extruder_configs.values()]):
+                self.appendItem({
+                    "name": printer.name,
+                    "unique_id": printer.name,  # <- Can assume the cloud doesn't have duplicate names?
+                    "extruders": list(extruder_configs.values())
+                })

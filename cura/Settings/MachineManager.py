@@ -214,6 +214,23 @@ class MachineManager(QObject):
 
         return list(machines)
 
+    def checkOnlinePrinters(self):
+
+        from cura.CuraApplication import CuraApplication  # In function to avoid circular import
+        application = CuraApplication.getInstance()
+        registry = application.getContainerRegistry()
+        machines_online = []
+        for n in self._printer_output_devices:
+            for machine in n.printers:
+                machine_ = registry.findContainerStacks(id=machine.name)
+                if parseBool(machine_[0].getMetaDataEntry("is_online")):
+                    machine.printerIsOnline(True)
+                    machines_online.append(machine)
+                else:
+                    machine.printerIsOnline(False)
+
+        return machines_online
+
     @pyqtProperty(QObject, notify = currentConfigurationChanged)
     def currentConfiguration(self) -> PrinterConfigurationModel:
         return self._current_printer_configuration
