@@ -7,9 +7,12 @@ from UM.Logger import Logger
 from UM.Message import Message
 from UM.Settings.AdditionalSettingDefinitionAppender import AdditionalSettingDefinitionsAppender
 from UM.PluginObject import PluginObject
+from UM.i18n import i18nCatalog
 
 
 class BackendPlugin(AdditionalSettingDefinitionsAppender, PluginObject):
+    catalog = i18nCatalog("cura")
+
     def __init__(self) -> None:
         super().__init__()
         self.__port: int = 0
