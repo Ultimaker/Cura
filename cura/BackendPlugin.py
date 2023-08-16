@@ -6,9 +6,13 @@ from typing import Optional, List
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.Settings.AdditionalSettingDefinitionAppender import AdditionalSettingDefinitionsAppender
+from UM.PluginObject import PluginObject
+from UM.i18n import i18nCatalog
 
 
-class BackendPlugin(AdditionalSettingDefinitionsAppender):
+class BackendPlugin(AdditionalSettingDefinitionsAppender, PluginObject):
+    catalog = i18nCatalog("cura")
+
     def __init__(self) -> None:
         super().__init__()
         self.__port: int = 0
@@ -42,7 +46,7 @@ class BackendPlugin(AdditionalSettingDefinitionsAppender):
         if not self._plugin_command or "--port" in self._plugin_command:
             return self._plugin_command or []
 
-        return self._plugin_command + ["--port", str(self.__port)]
+        return self._plugin_command + ["--address", self.getAddress(), "--port", str(self.__port)]
 
     def start(self) -> bool:
         """
