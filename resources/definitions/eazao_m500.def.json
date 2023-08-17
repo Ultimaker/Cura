@@ -24,7 +24,6 @@
         "cool_fan_enabled": { "value": false },
         "infill_sparse_density": { "value": 0 },
         "initial_bottom_layers": { "value": 2 },
-
         "jerk_print": { "value": 10 },
         "jerk_travel": { "value": "jerk_print" },
         "jerk_travel_layer_0": { "value": "jerk_travel" },
