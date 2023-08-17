@@ -19,7 +19,7 @@
         
         "acceleration_print": { "value": 300 },
         "acceleration_travel": { "value": 300 },
-        "adhesion_type": { "default_value": "none" },
+        "adhesion_type": { "default_value": "'none'" },
         "bottom_layers": { "value": 2 },
         "cool_fan_enabled": { "value": false },
         "infill_sparse_density": { "value": 0 },
