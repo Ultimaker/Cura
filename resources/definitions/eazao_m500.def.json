@@ -69,9 +69,6 @@
         "speed_wall_x": { "value": 20.0 },
         "speed_z_hop": { "value": "machine_max_feedrate_z" },
         "top_bottom_thickness": { "value": 0 },
-
-
-
         "wall_thickness": { "value": 5.0 }
     }
 }
