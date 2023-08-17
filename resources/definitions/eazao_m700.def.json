@@ -57,7 +57,6 @@
         "optimize_wall_printing_order": { "value": "True" },
         "retraction_amount": { "value": 7 },
         "retraction_combing": { "value": "'noskin'" },
-
         "retraction_count_max": { "value": 100 },
         "retraction_enable": { "value": false },
         "retraction_extrusion_window": { "value": 10 },
