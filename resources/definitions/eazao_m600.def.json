@@ -9,7 +9,7 @@
         "manufacturer": "Eazao",
         "file_formats": "text/x-gcode",
         "has_machine_quality": false,
-        "has_materials": true,
+        "has_materials": false,
         "machine_extruder_trains": { "0": "eazao_m600_extruder_0" },
         "preferred_material": "generic_pla",
         "preferred_quality_type": "normal"
