@@ -57,11 +57,8 @@ on:
             architecture:
                 description: 'Architecture'
                 required: true
-                default: 'x64'
-                type: choice
-                options:
-                    - x64
-                    - arm64
+                default: 'X64'
+                type: string
 
 env:
     CONAN_LOGIN_USERNAME_CURA: ${{ secrets.CONAN_USER }}
@@ -124,7 +121,9 @@ jobs:
             -   name: Get Conan configuration
                 run: conan config install https://github.com/Ultimaker/conan-config.git
 
-            -   name:
+            -   name: Set architecture conan profile
+                if: ${{ inputs.architecture == 'X64' }}
+                run: conan profile update settings.arch=x86_64 default
 
             -   name: Set Environment variables for Cura (bash)
                 run: |
