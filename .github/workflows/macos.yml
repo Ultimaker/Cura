@@ -140,7 +140,6 @@ jobs:
                 run: conan profile update settings.arch=x86_64 default
 
             -   name: Create the Packages (Bash)
-                if: ${{ runner.os != 'Windows' }}
                 run: conan install $CURA_CONAN_VERSION ${{ inputs.conan_args }} --build=missing --update -if cura_inst -g VirtualPythonEnv -o cura:enterprise=$ENTERPRISE -o cura:staging=$STAGING --json "cura_inst/conan_install_info.json"
 
             -   name: Set Environment variables for Cura (bash)
