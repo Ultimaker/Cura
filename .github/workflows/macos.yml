@@ -106,6 +106,14 @@ jobs:
             -   name: Install Python requirements for runner
                 run: pip install -r .github/workflows/requirements-conan-package.txt
 
+            -   name: Cache Conan local repository packages (Bash)
+                uses: actions/cache@v3
+                with:
+                    path: |
+                        $HOME/.conan/data
+                        $HOME/.conan/conan_download_cache
+                    key: conan-${{ runner.os }}-${{ runner.arch }}-installer-cache
+
             -   name: Install MacOS system requirements
                 run: brew install cmake autoconf automake ninja create-dmg
 
@@ -134,6 +142,9 @@ jobs:
 
             -   name: Get Conan configuration
                 run: conan config install https://github.com/Ultimaker/conan-config.git
+
+            -   name: Use Conan download cache (Bash)
+                run: conan config set storage.download_cache="$HOME/.conan/conan_download_cache"
 
             -   name: Set architecture conan profile
                 if: ${{ inputs.architecture == 'X64' }}
