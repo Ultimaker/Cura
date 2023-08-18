@@ -160,7 +160,7 @@ jobs:
                 run: |
                     import os
                     enterprise = "-Enterprise" if "${{ inputs.enterprise }}" == "true" else ""
-                    installer_filename = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-macos-${{ inputs.arch }}"
+                    installer_filename = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-macos-${{ runner.arch }}"
                     output_env = os.environ["GITHUB_OUTPUT"]
                     content = ""
                     if os.path.exists(output_env):
