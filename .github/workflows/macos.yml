@@ -242,27 +242,39 @@ jobs:
                             f.writelines(f"`{package.key}/{package.version}`\n")
 
             -   name: Archive the artifacts (bash)
-                run: tar -zcf "./${{ steps.filename.outputs.INSTALLER_FILENAME }}.tar.gz" "./dist/"
+                run: |
+                    tar -zcf "./${{ steps.filename.outputs.INSTALLER_FILENAME }}.tar.gz" "./dist/"
+                    tar -zcf "./${{ steps.filename.outputs.INSTALLER_FILENAME }}-package.tar.gz" "./cura_inst/packaging/"
 
-            -   name: upload the tarred dist folder
+            -   name: upload the tarred dist and packaging folder
                 uses: actions/upload-artifact@v3
                 with:
                     name: dist
                     path: |
                         ${{ steps.filename.outputs.INSTALLER_FILENAME }}.tar.gz
+                        ${{ steps.filename.outputs.INSTALLER_FILENAME }}-package.tar.gz
                     retention-days: 5
 
     cura-installer-create-dmg:
         needs: [ cura-installer-create ]
         runs-on: macos-11
         steps:
+            -   name: Setup Python and pip
+                uses: actions/setup-python@v4
+                with:
+                    python-version: '3.10.x'
+                    cache: 'pip'
+                    cache-dependency-path: .github/workflows/requirements-conan-package.txt
+
             -   name: Download the dist
                 uses: actions/download-artifact@v3
                 with:
                     name: dist
 
             -   name: untar the dist folder
-                run: tar -zxf "./${{ needs.cura-installer-create.outputs.INSTALLER_FILENAME }}.tar.gz"
+                run: |
+                    tar -zxf "./${{ needs.cura-installer-create.outputs.INSTALLER_FILENAME }}.tar.gz"
+                    tar -zxf "./${{ needs.cura-installer-create.outputs.INSTALLER_FILENAME }}-package.tar.gz"
 
             -   name: Remove Macos keychain (Bash)
                 run: security delete-keychain signing_temp.keychain || true
@@ -309,7 +321,9 @@ jobs:
                     name: dist
 
             -   name: untar the dist folder
-                run: tar -zxf "./${{ needs.cura-installer-create.outputs.INSTALLER_FILENAME }}.tar.gz"
+                run: |
+                    tar -zxf "./${{ needs.cura-installer-create.outputs.INSTALLER_FILENAME }}.tar.gz"
+                    tar -zxf "./${{ needs.cura-installer-create.outputs.INSTALLER_FILENAME }}-package.tar.gz"
 
             -   name: Remove Macos keychain (Bash)
                 run: security delete-keychain signing_temp.keychain || true

@@ -199,29 +199,40 @@ jobs:
                         for package in pkg_resources.working_set:
                             f.writelines(f"`{package.key}/{package.version}`\n")
 
-
             -   name: Archive the artifacts (Powershell)
-                run: Compress-Archive -Path ".\dist" -DestinationPath ".\${{ steps.filename.outputs.INSTALLER_FILENAME }}.zip"
+                run: |
+                    Compress-Archive -Path ".\dist" -DestinationPath ".\${{ steps.filename.outputs.INSTALLER_FILENAME }}.zip"
+                    Compress-Archive -Path ".\cura_inst\packaging\" -DestinationPath ".\${{ steps.filename.outputs.INSTALLER_FILENAME }}-packaging.zip"
 
-            -   name: upload the zipped dist folder
+            -   name: upload the zipped dist and packaging folder
                 uses: actions/upload-artifact@v3
                 with:
                     name: dist
                     path: |
                         ${{ steps.filename.outputs.INSTALLER_FILENAME }}.zip
+                        ${{ steps.filename.outputs.INSTALLER_FILENAME }}-packaging.zip
                     retention-days: 5
 
     cura-installer-create-exe:
         needs: [ cura-installer-create ]
         runs-on: ${{ inputs.operating_system }}
         steps:
+            -   name: Setup Python and pip
+                uses: actions/setup-python@v4
+                with:
+                    python-version: '3.10.x'
+                    cache: 'pip'
+                    cache-dependency-path: .github/workflows/requirements-conan-package.txt
+
             -   name: Download the zipped dist
                 uses: actions/download-artifact@v3
                 with:
                     name: dist
 
             -   name: Extract the zipped dist
-                run: Expand-Archive -Path ".\${{ needs.cura-installer-create.outputs.INSTALLER_FILENAME }}.zip" -DestinationPath "."
+                run: |
+                    Expand-Archive -Path ".\${{ needs.cura-installer-create.outputs.INSTALLER_FILENAME }}.zip" -DestinationPath "."
+                    Expand-Archive -Path ".\${{ needs.cura-installer-create.outputs.INSTALLER_FILENAME }}-packaging.zip" -DestinationPath "."
                 shell: powershell
 
             -   name: Create PFX certificate from BASE64_PFX_CONTENT secret
@@ -258,13 +269,22 @@ jobs:
         needs: [ cura-installer-create ]
         runs-on: ${{ inputs.operating_system }}
         steps:
+            -   name: Setup Python and pip
+                uses: actions/setup-python@v4
+                with:
+                    python-version: '3.10.x'
+                    cache: 'pip'
+                    cache-dependency-path: .github/workflows/requirements-conan-package.txt
+
             -   name: Download the dist
                 uses: actions/download-artifact@v3
                 with:
                     name: dist
 
             -   name: Extract the zipped dist
-                run: Expand-Archive -Path ".\${{ needs.cura-installer-create.outputs.INSTALLER_FILENAME }}.zip" -DestinationPath "."
+                run: |
+                    Expand-Archive -Path ".\${{ needs.cura-installer-create.outputs.INSTALLER_FILENAME }}.zip" -DestinationPath "."
+                    Expand-Archive -Path ".\${{ needs.cura-installer-create.outputs.INSTALLER_FILENAME }}-packaging.zip" -DestinationPath "."
                 shell: powershell
 
             -   name: Create PFX certificate from BASE64_PFX_CONTENT secret
