@@ -168,7 +168,7 @@ jobs:
 
             -   name: Configure Macos keychain Developer Cert(Bash)
                 id: macos-keychain-developer-cert
-                if: ${{ runner.os == 'Macos' && inputs.runner != 'self-hosted' }}  # will be installed on the first-run, if reinitializing the keychain is needed, set to true
+                if: ${{ runner.os == 'Macos' }}
                 uses: apple-actions/import-codesign-certs@v1
                 with:
                     keychain-password: ${{ secrets.MACOS_KEYCHAIN_PASSWORD }}
@@ -177,7 +177,7 @@ jobs:
 
             -   name: Configure Macos keychain Installer Cert (Bash)
                 id: macos-keychain-installer-cert
-                if: ${{ runner.os == 'Macos' && inputs.runner != 'self-hosted' }}  # will be installed on the first-run, if reinitializing the keychain is needed, set to true
+                if: ${{ runner.os == 'Macos' }}
                 uses: apple-actions/import-codesign-certs@v1
                 with:
                     keychain-password: ${{ secrets.MACOS_KEYCHAIN_PASSWORD }}
