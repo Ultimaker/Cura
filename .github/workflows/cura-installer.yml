@@ -4,6 +4,11 @@ run-name: ${{ inputs.cura_conan_version }} for ${{ inputs.platform }} by @${{ gi
 on:
     workflow_call:
         inputs:
+            runner:
+                description: 'Selected runner'
+                default: 'ubuntu-20.04'
+                required: true
+                type: string
             platform:
                 description: 'Selected Installer OS'
                 default: 'ubuntu-20.04'
@@ -74,7 +79,7 @@ env:
 
 jobs:
     cura-installer-create:
-        runs-on: ${{ inputs.platform }}
+        runs-on: ${{ inputs.runner }}
 
         steps:
             -   name: Checkout
