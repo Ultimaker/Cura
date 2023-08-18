@@ -5,7 +5,7 @@ import QtQuick 2.10
 import QtQuick.Controls 2.3
 import QtQuick.Window 2.2
 
-import UM 1.5 as UM
+import UM 1.7 as UM
 import Cura 1.1 as Cura
 
 Window
@@ -74,7 +74,7 @@ Window
                 wrapMode: Text.WordWrap
             }
 
-            Cura.ScrollableTextArea
+            UM.ScrollableTextArea
             {
                 anchors
                 {

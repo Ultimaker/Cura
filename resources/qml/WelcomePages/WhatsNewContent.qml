@@ -5,7 +5,7 @@ import QtQuick 2.10
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
 
-import UM 1.5 as UM
+import UM 1.7 as UM
 import Cura 1.1 as Cura
 
 
@@ -90,7 +90,7 @@ Item
                         source: manager.getSubpageImageSource(index)
                     }
 
-                    Cura.ScrollableTextArea
+                    UM.ScrollableTextArea
                     {
                         id: subpageText
 
