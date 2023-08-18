@@ -160,7 +160,7 @@ jobs:
                     sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 10
 
             -   name: Create the default Conan profile
-                run:  conan profile new default --detect
+                run:  conan profile new default --detect --force
 
             -   name: Configure GPG Key Linux (Bash)
                 if: ${{ runner.os == 'Linux' }}
