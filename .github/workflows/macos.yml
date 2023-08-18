@@ -57,11 +57,8 @@ on:
             architecture:
                 description: 'Architecture'
                 required: true
-                default: 'x64'
-                type: choice
-                options:
-                    - x64
-                    - arm64
+                default: 'X64'
+                type: string
 
 env:
     CONAN_LOGIN_USERNAME_CURA: ${{ secrets.CONAN_USER }}
