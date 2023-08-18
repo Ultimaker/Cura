@@ -75,8 +75,17 @@ env:
     STAGING: ${{ inputs.staging }}
 
 jobs:
+    get-runner-label:
+        runs-on: ubuntu-latest
+        outputs:
+            label: ${{ steps.determine-label.outputs.label }} # You must define the specific step inside the job
+        steps:
+            -   id: determine-label
+                run: echo "::set-output name=label::$(if [ "${{ inputs.architecture }}" = "ARM64" ]; then echo 'self-hosted'; else echo 'macos-11'; fi)"
+
     cura-installer-create:
-        runs-on: [ self-hosted, "${{ inputs.architecture }}" ]
+        needs: [ get-runner-label ]
+        runs-on: ${{ needs.get-runner-label.outputs.label }}
 
         steps:
             -   name: Checkout
