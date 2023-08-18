@@ -166,6 +166,10 @@ jobs:
                 if: ${{ runner.os == 'Linux' }}
                 run: echo -n "$GPG_PRIVATE_KEY" | base64 --decode | gpg --import
 
+            -   name: Remove Macos keychain (Bash)
+                if: ${{ runner.os == 'Macos' && inputs.runner == 'self-hosted' }}
+                run: security delete-keychain signing_temp.keychain || true
+
             -   name: Configure Macos keychain Developer Cert(Bash)
                 id: macos-keychain-developer-cert
                 if: ${{ runner.os == 'Macos' }}
