@@ -81,7 +81,7 @@ jobs:
             label: ${{ steps.determine-label.outputs.label }} # You must define the specific step inside the job
         steps:
             -   id: determine-label
-                run: echo "::set-output name=label::$(if [ "${{ inputs.architecture }}" = "ARM64" ]; then echo 'self-hosted'; else echo 'macos-11'; fi)"
+                run: echo "label=$(if [ "${{ inputs.architecture }}" = "ARM64" ]; then echo 'self-hosted'; else echo 'macos-11'; fi)" >> $GITHUB_OUTPUT
 
     cura-installer-create:
         needs: [ get-runner-label ]
