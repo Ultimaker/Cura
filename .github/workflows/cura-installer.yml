@@ -264,7 +264,7 @@ jobs:
                 run: |
                     import os
                     enterprise = "-Enterprise" if "${{ inputs.enterprise }}" == "true" else ""
-                    installer_filename = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-${{ inputs.os_name }}"
+                    installer_filename = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-${{ inputs.os_name }}-${{ inputs.arch }}"
                     if "${{ runner.os }}" == "Windows":
                         installer_ext = "msi" if "${{ inputs.msi_installer }}" == "true" else "exe"
                     elif "${{ runner.os }}" == "macOS":
