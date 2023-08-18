@@ -199,22 +199,31 @@ jobs:
                         for package in pkg_resources.working_set:
                             f.writelines(f"`{package.key}/{package.version}`\n")
 
-            -   name: upload the dist folder
+
+            -   name: Archive the artifacts (Powershell)
+                run: Compress-Archive -Path ".\UltiMaker-Cura" -DestinationPath ".\${{ steps.filename.outputs.INSTALLER_FILENAME }}.zip"
+                working-directory: dist
+
+            -   name: upload the zipped dist folder
                 uses: actions/upload-artifact@v3
                 with:
                     name: dist
                     path: |
-                        dist/
+                        dist/${{ steps.filename.outputs.INSTALLER_FILENAME }}.zip
                     retention-days: 5
 
     cura-installer-create-exe:
         needs: [ cura-installer-create ]
         runs-on: ${{ inputs.operating_system }}
         steps:
-            -   name: Download the dist
+            -   name: Download the zipped dist
                 uses: actions/download-artifact@v3
                 with:
                     name: dist
+
+            -   name: Extract the zipped dist
+                run: Expand-Archive -Path ".\dist\${{ needs.cura-installer-create.outputs.INSTALLER_FILENAME }}.zip" -DestinationPath ".\dist"
+                shell: powershell
 
             -   name: Create PFX certificate from BASE64_PFX_CONTENT secret
                 id: create-pfx
@@ -254,6 +263,10 @@ jobs:
                 uses: actions/download-artifact@v3
                 with:
                     name: dist
+
+            -   name: Extract the zipped dist
+                run: Expand-Archive -Path ".\dist\${{ needs.cura-installer-create.outputs.INSTALLER_FILENAME }}.zip" -DestinationPath ".\dist"
+                shell: powershell
 
             -   name: Create PFX certificate from BASE64_PFX_CONTENT secret
                 id: create-pfx
