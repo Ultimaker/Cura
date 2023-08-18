@@ -139,13 +139,13 @@ def create_dmg(filename: str, dist_path: str, source_path: str, app_name: str) -
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = "Create installer for Cura.")
-    parser.add_argument("source_path", type = str, help = "Path to Pyinstaller source folder")
-    parser.add_argument("dist_path", type = str, help = "Path to Pyinstaller dist folder")
-    parser.add_argument("cura_conan_version", type = str, help="The version of cura")
-    parser.add_argument("filename", type = str, help = "Filename of the pkg/dmg (e.g. 'UltiMaker-Cura-5.1.0-beta-Macos-X64' or 'UltiMaker-Cura-5.1.0-beta-Macos-X64')")
-    parser.add_argument("build_pkg", type = bool, default = False, help = "build the pkg")
-    parser.add_argument("build_dmg", type = bool, default = True, help = "build the dmg")
-    parser.add_argument("app_name", type = str, help = "Filename of the .app that will be contained within the dmg/pkg")
+    parser.add_argument("--source_path", required = True, type = str, help = "Path to Pyinstaller source folder")
+    parser.add_argument("--dist_path", required = True, type = str, help = "Path to Pyinstaller dist folder")
+    parser.add_argument("--cura_conan_version", required = True, type = str, help = "The version of cura")
+    parser.add_argument("--filename", required = True, type = str, help = "Filename of the pkg/dmg (e.g. 'UltiMaker-Cura-5.5.0-Macos-X64' or 'UltiMaker-Cura-5.5.0-beta.1-Macos-ARM64')")
+    parser.add_argument("--build_pkg", type = bool, default = False, help = "build the pkg")
+    parser.add_argument("--build_dmg", type = bool, default = True, help = "build the dmg")
+    parser.add_argument("--app_name", required = True, type = str, help = "Filename of the .app that will be contained within the dmg/pkg")
     args = parser.parse_args()
 
     cura_version = args.cura_conan_version.split("/")[-1]
