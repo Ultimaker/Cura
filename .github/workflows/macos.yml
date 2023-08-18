@@ -242,15 +242,14 @@ jobs:
                             f.writelines(f"`{package.key}/{package.version}`\n")
 
             -   name: Archive the artifacts (bash)
-                run: tar -zcf "./${{ steps.filename.outputs.INSTALLER_FILENAME }}.tar.gz" "./UltiMaker-Cura/"
-                working-directory: dist
+                run: tar -zcf "./${{ steps.filename.outputs.INSTALLER_FILENAME }}.tar.gz" "./dist/"
 
             -   name: upload the tarred dist folder
                 uses: actions/upload-artifact@v3
                 with:
                     name: dist
                     path: |
-                        dist/${{ steps.filename.outputs.INSTALLER_FILENAME }}.tar.gz
+                        ${{ steps.filename.outputs.INSTALLER_FILENAME }}.tar.gz
                     retention-days: 5
 
     cura-installer-create-dmg:
@@ -264,7 +263,6 @@ jobs:
 
             -   name: untar the dist folder
                 run: tar -zxf "./${{ needs.cura-installer-create.outputs.INSTALLER_FILENAME }}.tar.gz"
-                working-directory: dist
 
             -   name: Remove Macos keychain (Bash)
                 run: security delete-keychain signing_temp.keychain || true
@@ -312,7 +310,6 @@ jobs:
 
             -   name: untar the dist folder
                 run: tar -zxf "./${{ needs.cura-installer-create.outputs.INSTALLER_FILENAME }}.tar.gz"
-                working-directory: dist
 
             -   name: Remove Macos keychain (Bash)
                 run: security delete-keychain signing_temp.keychain || true

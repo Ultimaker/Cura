@@ -201,15 +201,14 @@ jobs:
 
 
             -   name: Archive the artifacts (Powershell)
-                run: Compress-Archive -Path ".\UltiMaker-Cura" -DestinationPath ".\${{ steps.filename.outputs.INSTALLER_FILENAME }}.zip"
-                working-directory: dist
+                run: Compress-Archive -Path ".\dist" -DestinationPath ".\${{ steps.filename.outputs.INSTALLER_FILENAME }}.zip"
 
             -   name: upload the zipped dist folder
                 uses: actions/upload-artifact@v3
                 with:
                     name: dist
                     path: |
-                        dist/${{ steps.filename.outputs.INSTALLER_FILENAME }}.zip
+                        ${{ steps.filename.outputs.INSTALLER_FILENAME }}.zip
                     retention-days: 5
 
     cura-installer-create-exe:
@@ -222,7 +221,7 @@ jobs:
                     name: dist
 
             -   name: Extract the zipped dist
-                run: Expand-Archive -Path ".\dist\${{ needs.cura-installer-create.outputs.INSTALLER_FILENAME }}.zip" -DestinationPath ".\dist"
+                run: Expand-Archive -Path ".\${{ needs.cura-installer-create.outputs.INSTALLER_FILENAME }}.zip" -DestinationPath "."
                 shell: powershell
 
             -   name: Create PFX certificate from BASE64_PFX_CONTENT secret
@@ -265,7 +264,7 @@ jobs:
                     name: dist
 
             -   name: Extract the zipped dist
-                run: Expand-Archive -Path ".\dist\${{ needs.cura-installer-create.outputs.INSTALLER_FILENAME }}.zip" -DestinationPath ".\dist"
+                run: Expand-Archive -Path ".\${{ needs.cura-installer-create.outputs.INSTALLER_FILENAME }}.zip" -DestinationPath "."
                 shell: powershell
 
             -   name: Create PFX certificate from BASE64_PFX_CONTENT secret
