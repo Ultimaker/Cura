@@ -57,7 +57,7 @@ Popup
                     permissionsRequired: []
                 },
                 {
-                    displayName: "Sponsor Cura", //Not translated, since it's a brand name.
+                    displayName: catalog.i18nc("@label:button", "Sponsor Cura"),
                     thumbnail: UM.Theme.getIcon("Heart"),
                     description: catalog.i18nc("@tooltip:button", "Show your support for Cura with a donation."),
                     link: "https://ultimaker.com/software/ultimaker-cura/sponsor/",
