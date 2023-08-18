@@ -32,6 +32,15 @@ on:
                 options:
                     - X64
                     - ARM64
+            operating_system:
+                description: 'OS'
+                required: true
+                default: 'macos-11'
+                type: choice
+                options:
+                    - self-hosted
+                    - macos-11
+                    - macos-12
     workflow_call:
         inputs:
             cura_conan_version:
@@ -59,6 +68,11 @@ on:
                 required: true
                 default: 'X64'
                 type: string
+            operating_system:
+                description: 'OS'
+                required: true
+                default: 'macos-11'
+                type: string
 
 env:
     CONAN_LOGIN_USERNAME_CURA: ${{ secrets.CONAN_USER }}
@@ -75,17 +89,8 @@ env:
     STAGING: ${{ inputs.staging }}
 
 jobs:
-    get-runner-label:
-        runs-on: ubuntu-latest
-        outputs:
-            label: ${{ steps.determine-label.outputs.label }} # You must define the specific step inside the job
-        steps:
-            -   id: determine-label
-                run: echo "label=$(if [ "${{ inputs.architecture }}" = "ARM64" ]; then echo 'self-hosted'; else echo 'macos-11'; fi)" >> $GITHUB_OUTPUT
-
     cura-installer-create:
-        needs: [ get-runner-label ]
-        runs-on: ${{ needs.get-runner-label.outputs.label }}
+        runs-on: ${{ inputs.operating_system }}
 
         steps:
             -   name: Checkout
