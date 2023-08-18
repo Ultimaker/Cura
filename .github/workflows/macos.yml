@@ -32,6 +32,15 @@ on:
                 options:
                     - X64
                     - ARM64
+            operating_system:
+                description: 'OS'
+                required: true
+                default: 'macos-11'
+                type: choice
+                options:
+                    - self-hosted
+                    - macos-11
+                    - macos-12
     workflow_call:
         inputs:
             cura_conan_version:
@@ -59,6 +68,11 @@ on:
                 required: true
                 default: 'X64'
                 type: string
+            operating_system:
+                description: 'OS'
+                required: true
+                default: 'macos-11'
+                type: string
 
 env:
     CONAN_LOGIN_USERNAME_CURA: ${{ secrets.CONAN_USER }}
@@ -76,7 +90,7 @@ env:
 
 jobs:
     cura-installer-create:
-        runs-on: [ self-hosted, "${{ inputs.architecture }}" ]
+        runs-on: ${{ inputs.operating_system }}
 
         steps:
             -   name: Checkout

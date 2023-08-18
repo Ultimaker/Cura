@@ -31,6 +31,14 @@ on:
                 type: choice
                 options:
                     - X64
+            operating_system:
+                description: 'OS'
+                required: true
+                default: 'ubuntu-22.04'
+                type: choice
+                options:
+                    - ubuntu-22.04
+                    - ubuntu-20.04
     workflow_call:
         inputs:
             cura_conan_version:
@@ -58,6 +66,11 @@ on:
                 required: true
                 default: 'X64'
                 type: string
+            operating_system:
+                description: 'OS'
+                required: true
+                default: 'ubuntu-22.04'
+                type: string
 
 env:
     CONAN_LOGIN_USERNAME_CURA: ${{ secrets.CONAN_USER }}
@@ -69,10 +82,7 @@ env:
 
 jobs:
     cura-installer-create:
-        strategy:
-            matrix:
-                os: [ "ubuntu-20.04", "ubuntu-22.04" ]
-        runs-on: ${{ matrix.os }}
+        runs-on: ${{ inputs.operating_system }}
 
         steps:
             -   name: Checkout
