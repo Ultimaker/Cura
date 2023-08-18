@@ -76,7 +76,7 @@ env:
 
 jobs:
     cura-installer-create:
-        runs-on: [ self-hosted, "${{ inputs.architecture }}" ]
+        runs-on: [ self-hosted ]
 
         steps:
             -   name: Checkout
