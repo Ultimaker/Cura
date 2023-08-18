@@ -98,9 +98,6 @@ jobs:
             -   name: Install Python requirements for runner
                 run: pip install -r .github/workflows/requirements-conan-package.txt
 
-            -   name: Use Conan download cache (Powershell)
-                run: conan config set storage.download_cache="C:\Users\runneradmin\.conan\conan_download_cache"
-
             -   name: Cache Conan local repository packages (Powershell)
                 uses: actions/cache@v3
                 with:
@@ -125,6 +122,9 @@ jobs:
 
             -   name: Get Conan configuration
                 run: conan config install https://github.com/Ultimaker/conan-config.git
+
+            -   name: Use Conan download cache (Powershell)
+                run: conan config set storage.download_cache="C:\Users\runneradmin\.conan\conan_download_cache"
 
             -   name: Create the Packages (Powershell)
                 run: conan install $Env:CURA_CONAN_VERSION ${{ inputs.conan_args }} --build=missing --update -if cura_inst -g VirtualPythonEnv -o cura:enterprise=$Env:ENTERPRISE -o cura:staging=$Env:STAGING --json "cura_inst/conan_install_info.json"
