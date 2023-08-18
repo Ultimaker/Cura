@@ -143,8 +143,8 @@ if __name__ == "__main__":
     parser.add_argument("--dist_path", required = True, type = str, help = "Path to Pyinstaller dist folder")
     parser.add_argument("--cura_conan_version", required = True, type = str, help = "The version of cura")
     parser.add_argument("--filename", required = True, type = str, help = "Filename of the pkg/dmg (e.g. 'UltiMaker-Cura-5.5.0-Macos-X64' or 'UltiMaker-Cura-5.5.0-beta.1-Macos-ARM64')")
-    parser.add_argument("--build_pkg", type = bool, default = False, help = "build the pkg")
-    parser.add_argument("--build_dmg", type = bool, default = True, help = "build the dmg")
+    parser.add_argument("--build_pkg", action="store_true", default = False, help = "build the pkg")
+    parser.add_argument("--build_dmg", action="store_true", default = True, help = "build the dmg")
     parser.add_argument("--app_name", required = True, type = str, help = "Filename of the .app that will be contained within the dmg/pkg")
     args = parser.parse_args()
 
