@@ -9,6 +9,10 @@
 from ..Script import Script
 from cura.CuraApplication import CuraApplication
 import re
+<<<<<<< Updated upstream
+=======
+from UM.Message import Message
+>>>>>>> Stashed changes
 
 class LimitXYAccelJerk(Script):
     def __init__(self):
@@ -16,13 +20,18 @@ class LimitXYAccelJerk(Script):
         
     def initialize(self) -> None:
         super().initialize()
+<<<<<<< Updated upstream
         # Get the Accel and Jerk and set the values in the setting boxes---------------------------------------------    
+=======
+        # Get the Accel and Jerk and set the values in the setting boxes--
+>>>>>>> Stashed changes
         mycura = CuraApplication.getInstance().getGlobalContainerStack()
         extruder = mycura.extruderList
         accel_print = extruder[0].getProperty("acceleration_print", "value")
         accel_travel = extruder[0].getProperty("acceleration_travel", "value")
         jerk_print_old = extruder[0].getProperty("jerk_print", "value")
         jerk_travel_old = extruder[0].getProperty("jerk_travel", "value")
+<<<<<<< Updated upstream
         self._instance.setProperty("X_accel_limit", "value", round(accel_print))
         self._instance.setProperty("Y_accel_limit", "value", round(accel_print))
         self._instance.setProperty("X_jerk", "value", jerk_print_old)
@@ -31,12 +40,36 @@ class LimitXYAccelJerk(Script):
     def getSettingDataString(self):
             return """{
             "name": "Limit the X-Y Accel/Jerk",
+=======
+        self._instance.setProperty("x_accel_limit", "value", round(accel_print))
+        self._instance.setProperty("y_accel_limit", "value", round(accel_print))
+        self._instance.setProperty("x_jerk", "value", jerk_print_old)
+        self._instance.setProperty("y_jerk", "value", jerk_print_old)
+        ext_count = int(mycura.getProperty("machine_extruder_count", "value"))
+        machine_name = str(mycura.getProperty("machine_name", "value"))
+                
+        # Warn the user if the printer is an Ultimaker-------------------------
+        if "Ultimaker" in machine_name:
+            Message(text = "<NOTICE> [Limit the X-Y Accel/Jerk] WILL NOT RUN because Ultimaker printers have fixed beds (it is intended for 'bed slinger' printers only.").show()
+        
+        # Warn the user if the printer is multi-extruder------------------
+        if ext_count > 1:
+            Message(text = "<NOTICE> 'Limit the X-Y Accel/Jerk': The post processor treats all extruders the same.  If you have multiple extruders they will all be subject to the same Accel and Jerk limits imposed.  If you have different Travel and Print Accel they will be subject to the same limit.  If that is not acceptable then you should not use this Post Processor.").show()
+ 
+    def getSettingDataString(self):
+            return """{
+            "name": "Limit the X-Y Accel/Jerk (all extruders equal)",
+>>>>>>> Stashed changes
             "key": "LimitXYAccelJerk",
             "metadata": {},
             "version": 2,
             "settings":
             {
+<<<<<<< Updated upstream
                 "X_accel_limit":
+=======
+                "x_accel_limit":
+>>>>>>> Stashed changes
                 {
                     "label": "X MAX Acceleration",
                     "description": "If this number is lower than the 'X Print Accel' in Cura then this will limit the Accel on the X axis.  Enter the Maximum Acceleration value for the X axis.  This will affect both Print and Travel Accel.  If you enable an End Layer then at the end of that layer the Accel Limit will be reset (unless you choose 'Gradual' in which case the new limit goes to the top layer).",
@@ -46,7 +79,11 @@ class LimitXYAccelJerk(Script):
                     "unit": "mm/sec² ",
                     "default_value": 500
                 },
+<<<<<<< Updated upstream
                 "Y_accel_limit":
+=======
+                "y_accel_limit":
+>>>>>>> Stashed changes
                 {
                     "label": "Y MAX Acceleration",
                     "description": "If this number is lower than the Y accel in Cura then this will limit the Accel on the Y axis.  Enter the Maximum Acceleration value for the Y axis.  This will affect both Print and Travel Accel.  If you enable an End Layer then at the end of that layer the Accel Limit will be reset (unless you choose 'Gradual' in which case the new limit goes to the top layer).",
@@ -64,7 +101,11 @@ class LimitXYAccelJerk(Script):
                     "enabled": true,
                     "default_value": false
                 },
+<<<<<<< Updated upstream
                 "X_jerk":
+=======
+                "x_jerk":
+>>>>>>> Stashed changes
                 {
                     "label": "    X jerk",
                     "description": "Enter the Jerk value for the X axis.  Enter '0' to use the existing X Jerk.  This setting will affect both the Print and Travel jerk.",
@@ -73,7 +114,11 @@ class LimitXYAccelJerk(Script):
                     "unit": "mm/sec ",
                     "default_value": 8
                 },
+<<<<<<< Updated upstream
                 "Y_jerk":
+=======
+                "y_jerk":
+>>>>>>> Stashed changes
                 {
                     "label": "    Y jerk",
                     "description": "Enter the Jerk value for the Y axis. Enter '0' to use the existing Y Jerk.    This setting will affect both the Print and Travel jerk.",
@@ -136,6 +181,17 @@ class LimitXYAccelJerk(Script):
     def execute(self, data):
         mycura = CuraApplication.getInstance().getGlobalContainerStack()
         extruder = mycura.extruderList
+<<<<<<< Updated upstream
+=======
+        machine_name = str(mycura.getProperty("machine_name", "value"))
+                
+        # Exit if the printer is an Ultimaker-------------------------
+        if "Ultimaker" in machine_name:
+            Message(text = "<NOTICE> [Limit the X-Y Accel/Jerk]  DID NOT RUN.  This post processor is not intended for fixed printers (for 'bed slinger' printers only.").show()
+            data[0] += ";  [LimitXYAccelJerk] DID NOT RUN because the printer doesn't have a sliding bed.\n"
+            return data
+            
+>>>>>>> Stashed changes
         constant_change = not bool(self.getSettingValueByKey("gradient_change"))
         accel_print_enabled = bool(extruder[0].getProperty("acceleration_enabled", "value"))
         accel_travel_enabled = bool(extruder[0].getProperty("acceleration_travel_enabled", "value"))
@@ -145,6 +201,10 @@ class LimitXYAccelJerk(Script):
         jerk_travel_enabled = str(extruder[0].getProperty("jerk_travel_enabled", "value"))
         jerk_print_old = extruder[0].getProperty("jerk_print", "value")
         jerk_travel_old = extruder[0].getProperty("jerk_travel", "value")
+<<<<<<< Updated upstream
+=======
+        
+>>>>>>> Stashed changes
         if int(accel_print) >= int(accel_travel):
             accel_old = accel_print
         else:
@@ -156,10 +216,17 @@ class LimitXYAccelJerk(Script):
             jerk_old = jerk_travel_old
 
         #Set the new Accel values---------------------------------------------------------------------------------
+<<<<<<< Updated upstream
         x_accel = str(self.getSettingValueByKey("X_accel_limit"))
         y_accel = str(self.getSettingValueByKey("Y_accel_limit"))
         x_jerk = int(self.getSettingValueByKey("X_jerk"))  
         y_jerk = int(self.getSettingValueByKey("Y_jerk"))
+=======
+        x_accel = str(self.getSettingValueByKey("x_accel_limit"))
+        y_accel = str(self.getSettingValueByKey("y_accel_limit"))
+        x_jerk = int(self.getSettingValueByKey("x_jerk"))  
+        y_jerk = int(self.getSettingValueByKey("y_jerk"))
+>>>>>>> Stashed changes
         # Put the strings together
         M201_limit_new = "M201 X" + x_accel + " Y" + y_accel
         M201_limit_old = "M201 X" + str(round(accel_old)) + " Y" + str(round(accel_old))
@@ -227,6 +294,7 @@ class LimitXYAccelJerk(Script):
                     all
             else:
                 data[len(data)-1] = M201_limit_old + "\n" + M205_jerk_old + "\n" + data[len(data)-1]
+<<<<<<< Updated upstream
             return data
         
         
@@ -236,6 +304,29 @@ class LimitXYAccelJerk(Script):
             y_accel_hyst = round((accel_old - int(y_accel)) / layer_spread)
             x_accel_start = round(round((accel_old - x_accel_hyst)/50)*50)
             y_accel_start = round(round((accel_old - y_accel_hyst)/50)*50)
+=======
+            return data        
+        
+        elif not constant_change:
+            layer_spread = end_index - start_index
+            if accel_old >= int(x_accel):
+                x_accel_hyst = round((accel_old - int(x_accel)) / layer_spread)
+            else:
+                x_accel_hyst = round((int(x_accel) - accel_old) / layer_spread)
+            if accel_old >= int(y_accel):
+                y_accel_hyst = round((accel_old - int(y_accel)) / layer_spread)
+            else:                
+                y_accel_hyst = round((int(y_accel) - accel_old) / layer_spread)
+            
+            if accel_old >= int(x_accel):
+                x_accel_start = round(round((accel_old - x_accel_hyst)/25)*25)
+            else:
+                x_accel_start = round(round((x_accel_hyst + accel_old)/25)*25)
+            if accel_old >= int(y_accel):
+                y_accel_start = round(round((accel_old - y_accel_hyst)/25)*25)
+            else:
+                y_accel_start = round(round((y_accel_hyst + accel_old)/25)*25)
+>>>>>>> Stashed changes
             M201_limit_new = "M201 X" + str(x_accel_start) + " Y" + str(y_accel_start)
             #Add Accel limit and new Jerk at start layer-------------------------------------------------------------
             layer = data[start_index]
@@ -250,11 +341,27 @@ class LimitXYAccelJerk(Script):
             for num in range(start_index + 1, end_index,1):
                 layer = data[num]
                 lines = layer.split("\n")
+<<<<<<< Updated upstream
                 x_accel_start -= x_accel_hyst
                 if x_accel_start < int(x_accel): x_accel_start = int(x_accel)
                 y_accel_start -= y_accel_hyst
                 if y_accel_start < int(y_accel): y_accel_start = int(y_accel)
                 M201_limit_new = "M201 X" + str(round(round(x_accel_start/50)*50)) + " Y" + str(round(round(y_accel_start/50)*50))
+=======
+                if accel_old >= int(x_accel):
+                    x_accel_start -= x_accel_hyst
+                    if x_accel_start < int(x_accel): x_accel_start = int(x_accel)
+                else:
+                    x_accel_start += x_accel_hyst                
+                    if x_accel_start > int(x_accel): x_accel_start = int(x_accel)
+                if accel_old >= int(y_accel):
+                    y_accel_start -= y_accel_hyst
+                    if y_accel_start < int(y_accel): y_accel_start = int(y_accel)
+                else:
+                    y_accel_start += y_accel_hyst
+                    if y_accel_start > int(y_accel): y_accel_start = int(y_accel)
+                M201_limit_new = "M201 X" + str(round(round(x_accel_start/25)*25)) + " Y" + str(round(round(y_accel_start/25)*25))
+>>>>>>> Stashed changes
                 for index, line in enumerate(lines):
                     if line.startswith(";LAYER:"):
                         lines.insert(index+1, M201_limit_new)
