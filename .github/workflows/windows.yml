@@ -217,12 +217,10 @@ jobs:
         needs: [ cura-installer-create ]
         runs-on: ${{ inputs.operating_system }}
         steps:
-            -   name: Setup Python and pip
+            -   name: Setup Python
                 uses: actions/setup-python@v4
                 with:
                     python-version: '3.10.x'
-                    cache: 'pip'
-                    cache-dependency-path: .github/workflows/requirements-conan-package.txt
 
             -   name: Download the zipped dist
                 uses: actions/download-artifact@v3
@@ -269,12 +267,10 @@ jobs:
         needs: [ cura-installer-create ]
         runs-on: ${{ inputs.operating_system }}
         steps:
-            -   name: Setup Python and pip
+            -   name: Setup Python
                 uses: actions/setup-python@v4
                 with:
                     python-version: '3.10.x'
-                    cache: 'pip'
-                    cache-dependency-path: .github/workflows/requirements-conan-package.txt
 
             -   name: Download the dist
                 uses: actions/download-artifact@v3
