@@ -202,7 +202,7 @@ jobs:
             -   name: Archive the artifacts (Powershell)
                 run: |
                     Compress-Archive -Path ".\dist" -DestinationPath ".\${{ steps.filename.outputs.INSTALLER_FILENAME }}.zip"
-                    Compress-Archive -Path ".\cura_inst\packaging\" -DestinationPath ".\${{ steps.filename.outputs.INSTALLER_FILENAME }}-packaging.zip"
+                    Compress-Archive -Path ".\cura_inst\packaging" -DestinationPath ".\${{ steps.filename.outputs.INSTALLER_FILENAME }}-packaging.zip"
 
             -   name: upload the zipped dist and packaging folder
                 uses: actions/upload-artifact@v3
