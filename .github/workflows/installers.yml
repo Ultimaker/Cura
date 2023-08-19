@@ -1,0 +1,77 @@
+name: All installers
+run-name: ${{ inputs.cura_conan_version }} by @${{ github.actor }}
+
+on:
+    workflow_dispatch:
+        inputs:
+            cura_conan_version:
+                description: 'Cura Conan Version'
+                default: 'cura/latest@ultimaker/testing'
+                required: true
+                type: string
+            conan_args:
+                description: 'Conan args: eq.: --require-override'
+                default: ''
+                required: false
+                type: string
+            enterprise:
+                description: 'Build Cura as an Enterprise edition'
+                default: false
+                required: true
+                type: boolean
+            staging:
+                description: 'Use staging API'
+                default: false
+                required: true
+                type: boolean
+
+jobs:
+    windows-installer:
+        uses: ./.github/workflows/windows.yml
+        with:
+            cura_conan_version: ${{ inputs.cura_conan_version }}
+            conan_args: ${{ inputs.conan_args }}
+            enterprise: ${{ inputs.enterprise }}
+            staging: ${{ inputs.staging }}
+            architecture: X64
+            operating_system: windows-2022
+
+    linux-modern-installer:
+        uses: ./.github/workflows/linux.yml
+        with:
+            cura_conan_version: ${{ inputs.cura_conan_version }}
+            conan_args: ${{ inputs.conan_args }}
+            enterprise: ${{ inputs.enterprise }}
+            staging: ${{ inputs.staging }}
+            architecture: X64
+            operating_system: ubuntu-22.04
+
+    linux-legacy-installer:
+        uses: ./.github/workflows/linux.yml
+        with:
+            cura_conan_version: ${{ inputs.cura_conan_version }}
+            conan_args: ${{ inputs.conan_args }}
+            enterprise: ${{ inputs.enterprise }}
+            staging: ${{ inputs.staging }}
+            architecture: X64
+            operating_system: ubuntu-20.04
+
+    macos-installer:
+        uses: ./.github/workflows/macos.yml
+        with:
+            cura_conan_version: ${{ inputs.cura_conan_version }}
+            conan_args: ${{ inputs.conan_args }}
+            enterprise: ${{ inputs.enterprise }}
+            staging: ${{ inputs.staging }}
+            architecture: X64
+            operating_system: macos-11.0
+
+    macos-arm-installer:
+        uses: ./.github/workflows/macos.yml
+        with:
+            cura_conan_version: ${{ inputs.cura_conan_version }}
+            conan_args: ${{ inputs.conan_args }}
+            enterprise: ${{ inputs.enterprise }}
+            staging: ${{ inputs.staging }}
+            architecture: ARM64
+            operating_system: self-hosted

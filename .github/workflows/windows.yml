@@ -1,0 +1,89 @@
+name: Windows Installer
+run-name: ${{ inputs.cura_conan_version }} for Windows-${{ inputs.architecture }} by @${{ github.actor }}
+
+on:
+    workflow_dispatch:
+        inputs:
+            cura_conan_version:
+                description: 'Cura Conan Version'
+                default: 'cura/latest@ultimaker/testing'
+                required: true
+                type: string
+            conan_args:
+                description: 'Conan args: eq.: --require-override'
+                default: ''
+                required: false
+                type: string
+            enterprise:
+                description: 'Build Cura as an Enterprise edition'
+                default: false
+                required: true
+                type: boolean
+            staging:
+                description: 'Use staging API'
+                default: false
+                required: true
+                type: boolean
+            architecture:
+                description: 'Architecture'
+                required: true
+                default: 'X64'
+                type: choice
+                options:
+                    - X64
+            operating_system:
+                description: 'OS'
+                required: true
+                default: 'windows-2022'
+                type: choice
+                options:
+                    - windows-2022
+    workflow_call:
+        inputs:
+            cura_conan_version:
+                description: 'Cura Conan Version'
+                default: 'cura/latest@ultimaker/testing'
+                required: true
+                type: string
+            conan_args:
+                description: 'Conan args: eq.: --require-override'
+                default: ''
+                required: false
+                type: string
+            enterprise:
+                description: 'Build Cura as an Enterprise edition'
+                default: false
+                required: true
+                type: boolean
+            staging:
+                description: 'Use staging API'
+                default: false
+                required: true
+                type: boolean
+            architecture:
+                description: 'Architecture'
+                required: true
+                default: 'X64'
+                type: string
+            operating_system:
+                description: 'OS'
+                required: true
+                default: 'windows-2022'
+                type: string
+
+env:
+    CONAN_LOGIN_USERNAME_CURA: ${{ secrets.CONAN_USER }}
+    CONAN_PASSWORD_CURA: ${{ secrets.CONAN_PASS }}
+    WIN_CERT_INSTALLER_CER: ${{ secrets.WIN_CERT_INSTALLER_CER }}
+    WIN_CERT_INSTALLER_CER_PASS: ${{ secrets.WIN_CERT_INSTALLER_CER_PASS }}
+    CURA_CONAN_VERSION: ${{ inputs.cura_conan_version }}
+    ENTERPRISE: ${{ inputs.enterprise }}
+    STAGING: ${{ inputs.staging }}
+
+jobs:
+    cura-installer-create:
+        runs-on: ${{ inputs.operating_system }}
+
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v3
