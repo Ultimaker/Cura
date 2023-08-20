@@ -114,7 +114,9 @@ jobs:
                 run: conan profile new default --detect --force
 
             -   name: Get Conan configuration
-                run: conan config install https://github.com/Ultimaker/conan-config.git
+                run: |
+                    conan config install https://github.com/Ultimaker/conan-config.git
+                    conan config install https://github.com/Ultimaker/conan-config.git -a "-b runner/${{ runner.os }}/${{ runner.arch }}"
 
             -   name: Use Conan download cache (Powershell)
                 run: conan config set storage.download_cache="C:\Users\runneradmin\.conan\conan_download_cache"
