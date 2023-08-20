@@ -114,7 +114,9 @@ jobs:
                 run: conan profile new default --detect --force
 
             -   name: Get Conan configuration
-                run: conan config install https://github.com/Ultimaker/conan-config.git
+                run: |
+                    conan config install https://github.com/Ultimaker/conan-config.git
+                    conan config install https://github.com/Ultimaker/conan-config.git -a "-b runner/${{ runner.os }}/${{ runner.arch }}"
 
             -   name: Use Conan download cache (Powershell)
                 run: conan config set storage.download_cache="C:\Users\runneradmin\.conan\conan_download_cache"
@@ -199,96 +201,6 @@ jobs:
                         for package in pkg_resources.working_set:
                             f.writelines(f"`{package.key}/{package.version}`\n")
 
-            -   name: Archive the artifacts (Powershell)
-                run: |
-                    Compress-Archive -Path ".\dist" -DestinationPath ".\${{ steps.filename.outputs.INSTALLER_FILENAME }}.zip"
-                    Compress-Archive -Path ".\cura_inst\packaging" -DestinationPath ".\${{ steps.filename.outputs.INSTALLER_FILENAME }}-packaging.zip"
-
-            -   name: upload the zipped dist and packaging folder
-                uses: actions/upload-artifact@v3
-                with:
-                    name: dist
-                    path: |
-                        ${{ steps.filename.outputs.INSTALLER_FILENAME }}.zip
-                        ${{ steps.filename.outputs.INSTALLER_FILENAME }}-packaging.zip
-                    retention-days: 5
-
-    cura-installer-create-exe:
-        needs: [ cura-installer-create ]
-        runs-on: ${{ inputs.operating_system }}
-        steps:
-            -   name: Checkout
-                uses: actions/checkout@v3
-
-            -   name: Setup Python
-                uses: actions/setup-python@v4
-                with:
-                    python-version: '3.10.x'
-
-            -   name: Download the zipped dist
-                uses: actions/download-artifact@v3
-                with:
-                    name: dist
-
-            -   name: Extract the zipped dist
-                run: |
-                    Expand-Archive -Path ".\${{ needs.cura-installer-create.outputs.INSTALLER_FILENAME }}.zip" -DestinationPath "."
-                    Expand-Archive -Path ".\${{ needs.cura-installer-create.outputs.INSTALLER_FILENAME }}-packaging.zip" -DestinationPath "."
-                shell: powershell
-
-            -   name: Create PFX certificate from BASE64_PFX_CONTENT secret
-                id: create-pfx
-                env:
-                    PFX_CONTENT: ${{ secrets.WIN_CERT_INSTALLER_CER }}
-                run: |
-                    $pfxPath = Join-Path -Path $env:RUNNER_TEMP -ChildPath "cert.pfx"; 
-                    $encodedBytes = [System.Convert]::FromBase64String($env:PFX_CONTENT); 
-                    Set-Content $pfxPath -Value $encodedBytes -AsByteStream;
-                    echo "PFX_PATH=$pfxPath" >> $env:GITHUB_OUTPUT;
-
-            -   name: Create the Windows exe installer (Powershell)
-                run: |
-                    python ..\cura_inst\packaging\NSIS\create_windows_installer.py ../cura_inst . "${{ needs.cura-installer-create.outputs.INSTALLER_FILENAME }}.exe"
-                working-directory: dist
-
-            -   name: Sign the Windows exe installer (Powershell)
-                env:
-                    PFX_PATH: ${{ steps.create-pfx.outputs.PFX_PATH }}
-                run: |
-                    & "C:/Program Files (x86)/Windows Kits/10/bin/10.0.17763.0/x86/signtool.exe" sign /f $Env:PFX_PATH /p "$Env:WIN_CERT_INSTALLER_CER_PASS" /fd SHA256 /t http://timestamp.digicert.com "${{ needs.cura-installer-create.outputs.INSTALLER_FILENAME }}.exe"
-                working-directory: dist
-
-            -   name: Upload the exe
-                uses: actions/upload-artifact@v3
-                with:
-                    name: ${{ needs.cura-installer-create.outputs.INSTALLER_FILENAME }}-exe
-                    path: |
-                        dist/${{ needs.cura-installer-create.outputs.INSTALLER_FILENAME }}.exe
-                    retention-days: 5
-
-    cura-installer-create-msi:
-        needs: [ cura-installer-create ]
-        runs-on: ${{ inputs.operating_system }}
-        steps:
-            -   name: Checkout
-                uses: actions/checkout@v3
-
-            -   name: Setup Python
-                uses: actions/setup-python@v4
-                with:
-                    python-version: '3.10.x'
-
-            -   name: Download the dist
-                uses: actions/download-artifact@v3
-                with:
-                    name: dist
-
-            -   name: Extract the zipped dist
-                run: |
-                    Expand-Archive -Path ".\${{ needs.cura-installer-create.outputs.INSTALLER_FILENAME }}.zip" -DestinationPath "."
-                    Expand-Archive -Path ".\${{ needs.cura-installer-create.outputs.INSTALLER_FILENAME }}-packaging.zip" -DestinationPath "."
-                shell: powershell
-
             -   name: Create PFX certificate from BASE64_PFX_CONTENT secret
                 id: create-pfx
                 env:
@@ -301,27 +213,47 @@ jobs:
 
             -   name: Create the Windows msi installer (Powershell)
                 run: |
-                    python ..\cura_inst\packaging\msi\create_windows_msi.py ..\cura_inst .\UltiMaker-Cura "${{ needs.cura-installer-create.outputs.INSTALLER_FILENAME }}.msi" "$Env:CURA_APP_NAME"
+                    python ..\cura_inst\packaging\msi\create_windows_msi.py ..\cura_inst .\UltiMaker-Cura "${{steps.filename.outputs.INSTALLER_FILENAME }}.msi" "$Env:CURA_APP_NAME"
                 working-directory: dist
 
             -   name: Sign the Windows msi installer (Powershell)
                 env:
                     PFX_PATH: ${{ steps.create-pfx.outputs.PFX_PATH }}
                 run: |
-                    & "C:/Program Files (x86)/Windows Kits/10/bin/10.0.17763.0/x86/signtool.exe" sign /f $Env:PFX_PATH /p "$Env:WIN_CERT_INSTALLER_CER_PASS" /fd SHA256 /t http://timestamp.digicert.com "${{ needs.cura-installer-create.outputs.INSTALLER_FILENAME }}.msi"
+                    & "C:/Program Files (x86)/Windows Kits/10/bin/10.0.17763.0/x86/signtool.exe" sign /f $Env:PFX_PATH /p "$Env:WIN_CERT_INSTALLER_CER_PASS" /fd SHA256 /t http://timestamp.digicert.com "${{steps.filename.outputs.INSTALLER_FILENAME }}.msi"
+                working-directory: dist
+
+            -   name: Create the Windows exe installer (Powershell)
+                run: |
+                    python ..\cura_inst\packaging\NSIS\create_windows_installer.py ../cura_inst . "${{steps.filename.outputs.INSTALLER_FILENAME }}.exe"
+                working-directory: dist
+
+            -   name: Sign the Windows exe installer (Powershell)
+                env:
+                    PFX_PATH: ${{ steps.create-pfx.outputs.PFX_PATH }}
+                run: |
+                    & "C:/Program Files (x86)/Windows Kits/10/bin/10.0.17763.0/x86/signtool.exe" sign /f $Env:PFX_PATH /p "$Env:WIN_CERT_INSTALLER_CER_PASS" /fd SHA256 /t http://timestamp.digicert.com "${{steps.filename.outputs.INSTALLER_FILENAME }}.exe"
                 working-directory: dist
 
             -   name: Upload the msi
                 uses: actions/upload-artifact@v3
                 with:
-                    name: ${{ needs.cura-installer-create.outputs.INSTALLER_FILENAME }}-msi
+                    name: ${{steps.filename.outputs.INSTALLER_FILENAME }}-msi
                     path: |
-                        dist/${{ needs.cura-installer-create.outputs.INSTALLER_FILENAME }}.msi
+                        dist/${{steps.filename.outputs.INSTALLER_FILENAME }}.msi
+                    retention-days: 5
+
+            -   name: Upload the exe
+                uses: actions/upload-artifact@v3
+                with:
+                    name: ${{steps.filename.outputs.INSTALLER_FILENAME }}-exe
+                    path: |
+                        dist/${{steps.filename.outputs.INSTALLER_FILENAME }}.exe
                     retention-days: 5
 
     notify-export:
         if: ${{ always() }}
-        needs: [ cura-installer-create-exe, cura-installer-create-msi ]
+        needs: [ cura-installer-create ]
 
         uses: ultimaker/cura/.github/workflows/notify.yml@main
         with:
