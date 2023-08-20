@@ -221,7 +221,7 @@ jobs:
 
             -   name: Update nightly release description (with date)
                 run: |
-                    gh release edit nightly --title "${{ steps.filename.outputs.NIGHTLY_NAME }}-alpha" --notes "Nightly release created on: ${{ steps.filename.outputs.NIGHTLY_TIME }}"
+                    gh release edit nightly --title "${{ steps.filename.outputs.NIGHTLY_NAME }}" --notes "Nightly release created on: ${{ steps.filename.outputs.NIGHTLY_TIME }}"
                 env:
                     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                 
