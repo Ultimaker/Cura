@@ -50,6 +50,7 @@ from UM.Settings.Validator import Validator
 from UM.View.SelectionPass import SelectionPass  # For typing.
 from UM.Workspace.WorkspaceReader import WorkspaceReader
 from UM.i18n import i18nCatalog
+from UM.Version import Version
 from cura import ApplicationMetadata
 from cura.API import CuraAPI
 from cura.API.Account import Account
@@ -614,6 +615,9 @@ class CuraApplication(QtApplication):
 
     def _onEngineCreated(self):
         self._qml_engine.addImageProvider("print_job_preview", PrintJobPreviewImageProvider.PrintJobPreviewImageProvider())
+        version = Version(self.getVersion())
+        if version.hasPostFix():
+            self._qml_engine.rootObjects()[0].setTitle(f"{ApplicationMetadata.CuraAppDisplayName} {ApplicationMetadata.CuraVersion}")
 
     @pyqtProperty(bool)
     def needToShowUserAgreement(self) -> bool:
