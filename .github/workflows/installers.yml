@@ -29,6 +29,9 @@ on:
                 default: false
                 required: true
                 type: boolean
+    schedule:
+        # Daily at 5:20 CET
+        -   cron: '20 4 * * *'
 
 env:
     CURA_CONAN_VERSION: ${{ inputs.cura_conan_version }}
@@ -91,26 +94,41 @@ jobs:
             operating_system: self-hosted
         secrets: inherit
 
+    # Run and update nightly release when the nightly input is set to true or if the schedule is triggered
     update-nightly-release:
-        if: ${{ inputs.nightly }}
+        if: ${{ inputs.nightly == 'true' || github.event_name == 'schedule' }}
         runs-on: ubuntu-latest
         needs: [ windows-installer, linux-modern-installer, linux-legacy-installer, macos-installer, macos-arm-installer ]
         steps:
+            -   name: Checkout
+                uses: actions/checkout@v3
+
+            -   name: Download the run info
+                uses: actions/download-artifact@v2
+                with:
+                    name: macos-run-info
+
+            -   name: Set the run info as environment variables
+                run: |
+                    . run_info.sh 
 
             -   name: Output the name file name and extension
                 id: filename
                 shell: python
                 run: |
                     import os
+                    import datetime
                     enterprise = "-Enterprise" if "${{ inputs.enterprise }}" == "true" else ""
-                    linux_modern = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-linux-modern-X64-AppImage"
-                    linux_legacy = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-linux-X64-AppImage"
-                    mac_x64_dmg = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-macos-X64-dmg"
-                    mac_x64_pkg = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-macos-X64-pkg"
-                    mac_arm_dmg = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-macos-ARM64-dmg"
-                    mac_arm_pkg = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-macos-ARM64-pkg"
-                    win_msi = installer_filename = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-win64-X64-msi
-                    win_exe = installer_filename = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-win64-X64-exe"
+                    linux_modern = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-linux-modern-X64"
+                    linux_legacy = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-linux-X64"
+                    mac_x64_dmg = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-macos-X64"
+                    mac_x64_pkg = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-macos-X64"
+                    mac_arm_dmg = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-macos-ARM64"
+                    mac_arm_pkg = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-macos-ARM64"
+                    win_msi = installer_filename = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-win64-X64"
+                    win_exe = installer_filename = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-win64-X64"
+                    nightly_name = "UltiMaker-Cura-" + os.getenv('CURA_VERSION_FULL').split("+")[0]
+                    nightly_creation_time = str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
                     output_env = os.environ["GITHUB_OUTPUT"]
                     content = ""
                     if os.path.exists(output_env):
@@ -126,59 +144,84 @@ jobs:
                         f.writelines(f"MAC_ARM_PKG={mac_arm_pkg}\n")
                         f.writelines(f"WIN_MSI={win_msi}\n")
                         f.writelines(f"WIN_EXE={win_exe}\n")
+                        f.writelines(f"NIGHTLY_NAME={nightly_name}\n")
+                        f.writelines(f"NIGHTLY_TIME={nightly_creation_time}\n")
 
             -   name: Download linux modern installer jobs artifacts
                 uses: actions/download-artifact@v2
                 with:
-                    name: ${{ steps.filename.outputs.LINUX_MODERN }}
+                    name: ${{ steps.filename.outputs.LINUX_MODERN }}-AppImage
                     path: installers
 
             -   name: Download linux legacy installer jobs artifacts
                 uses: actions/download-artifact@v2
                 with:
-                    name: ${{ steps.filename.outputs.LINUX_LEGACY }}
+                    name: ${{ steps.filename.outputs.LINUX_LEGACY }}-AppImage
                     path: installers
 
             -   name: Download mac x64 dmg installer jobs artifacts
                 uses: actions/download-artifact@v2
                 with:
-                    name: ${{ steps.filename.outputs.MAC_X64_DMG }}
+                    name: ${{ steps.filename.outputs.MAC_X64_DMG }}-dmg
                     path: installers
 
             -   name: Download mac x64 pkg installer jobs artifacts
                 uses: actions/download-artifact@v2
                 with:
-                    name: ${{ steps.filename.outputs.MAC_X64_PKG }}
+                    name: ${{ steps.filename.outputs.MAC_X64_PKG }}-pkg
                     path: installers
 
             -   name: Download mac arm dmg installer jobs artifacts
                 uses: actions/download-artifact@v2
                 with:
-                    name: ${{ steps.filename.outputs.MAC_ARM_DMG }}
+                    name: ${{ steps.filename.outputs.MAC_ARM_DMG }}-dmg
                     path: installers
 
             -   name: Download mac arm pkg installer jobs artifacts
                 uses: actions/download-artifact@v2
                 with:
-                    name: ${{ steps.filename.outputs.MAC_ARM_PKG }}
+                    name: ${{ steps.filename.outputs.MAC_ARM_PKG }}-pkg
                     path: installers
 
             -   name: Download win msi installer jobs artifacts
                 uses: actions/download-artifact@v2
                 with:
-                    name: ${{ steps.filename.outputs.WIN_MSI }}
+                    name: ${{ steps.filename.outputs.WIN_MSI }}-msi
                     path: installers
 
             -   name: Download win exe installer jobs artifacts
                 uses: actions/download-artifact@v2
                 with:
-                    name: ${{ steps.filename.outputs.WIN_EXE }}
+                    name: ${{ steps.filename.outputs.WIN_EXE }}-exe
                     path: installers
 
+            -   name: Rename installers to nightlies
+                run: |
+                    mv installers/${{ steps.filename.outputs.LINUX_MODERN }}.AppImage installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-linux-modern-X64.AppImage
+                    mv installers/${{ steps.filename.outputs.LINUX_LEGACY }}.AppImage installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-linux-X64.AppImage
+                    mv installers/${{ steps.filename.outputs.MAC_X64_DMG }}.dmg installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-macos-X64.dmg
+                    mv installers/${{ steps.filename.outputs.MAC_X64_PKG }}.pkg installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-macos-X64.pkg
+                    mv installers/${{ steps.filename.outputs.MAC_ARM_DMG }}.dmg installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-macos-ARM64.dmg
+                    mv installers/${{ steps.filename.outputs.MAC_ARM_PKG }}.pkg installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-macos-ARM64.pkg
+                    mv installers/${{ steps.filename.outputs.WIN_MSI }}.msi installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-win64-X64.msi
+                    mv installers/${{ steps.filename.outputs.WIN_EXE }}.exe installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-win64-X64.exe
+
             -   name: Update nightly release
-                uses: pyTooling/Actions/releaser@main
-                with:
-                    tag: nightly
-                    rm: true
-                    token: ${{ secrets.GITHUB_TOKEN }}
-                    files: installers/*.*
+                run: |
+                    gh release upload nightly installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-linux-modern-X64.AppImage --clobber
+                    gh release upload nightly installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-linux-X64.AppImage --clobber
+                    gh release upload nightly installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-macos-X64.dmg --clobber
+                    gh release upload nightly installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-macos-X64.pkg --clobber
+                    gh release upload nightly installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-macos-ARM64.dmg --clobber
+                    gh release upload nightly installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-macos-ARM64.pkg --clobber
+                    gh release upload nightly installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-win64-X64.msi --clobber
+                    gh release upload nightly installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-win64-X64.exe --clobber
+                env:
+                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            -   name: Update nightly release description (with date)
+                run: |
+                    gh release edit nightly --title "${{ steps.filename.outputs.NIGHTLY_NAME }}-alpha" --notes "Nightly release created on: ${{ steps.filename.outputs.NIGHTLY_TIME }}"
+                env:
+                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                
