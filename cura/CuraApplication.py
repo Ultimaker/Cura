@@ -616,8 +616,15 @@ class CuraApplication(QtApplication):
     def _onEngineCreated(self):
         self._qml_engine.addImageProvider("print_job_preview", PrintJobPreviewImageProvider.PrintJobPreviewImageProvider())
         version = Version(self.getVersion())
-        if version.hasPostFix():
+        if hasattr(sys, "frozen") and version.hasPostFix() and "beta" not in version.getPostfixType():
             self._qml_engine.rootObjects()[0].setTitle(f"{ApplicationMetadata.CuraAppDisplayName} {ApplicationMetadata.CuraVersion}")
+            message = Message(
+                self._i18n_catalog.i18nc("@info:warning",
+                                         f"This version is not intended for production use. If you encounter any issues, please report them on our GitHub page, mentioning the full version {self.getVersion()}"),
+                lifetime = 0,
+                title = self._i18n_catalog.i18nc("@info:title", "Nightly build"),
+                message_type = Message.MessageType.WARNING)
+            message.show()
 
     @pyqtProperty(bool)
     def needToShowUserAgreement(self) -> bool:
