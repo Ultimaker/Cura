@@ -4488,7 +4488,7 @@
                     "type": "extruder",
                     "default_value": "0",
                     "enabled": "(support_enable or support_meshes_present) and extruders_enabled_count > 1",
-                    "value": "int(defaultExtruderPosition())",
+                    "value": "int(anyExtruderNrWithOrDefault('material_is_support_material'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "children":
