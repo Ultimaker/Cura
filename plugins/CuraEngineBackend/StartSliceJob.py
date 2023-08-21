@@ -314,6 +314,8 @@ class StartSliceJob(Job):
                 plugin_message.id = slot
                 plugin_message.address = plugin.getAddress()
                 plugin_message.port = plugin.getPort()
+                plugin_message.plugin_name = plugin.getPluginId()
+                plugin_message.plugin_version = plugin.getVersion()
 
         for group in filtered_object_groups:
             group_message = self._slice_message.addRepeatedMessage("object_lists")

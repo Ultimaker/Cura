@@ -6,9 +6,14 @@ from typing import Optional, List
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.Settings.AdditionalSettingDefinitionAppender import AdditionalSettingDefinitionsAppender
+from UM.PluginObject import PluginObject
+from UM.i18n import i18nCatalog
+from UM.Platform import Platform
 
 
-class BackendPlugin(AdditionalSettingDefinitionsAppender):
+class BackendPlugin(AdditionalSettingDefinitionsAppender, PluginObject):
+    catalog = i18nCatalog("cura")
+
     def __init__(self) -> None:
         super().__init__()
         self.__port: int = 0
@@ -42,7 +47,7 @@ class BackendPlugin(AdditionalSettingDefinitionsAppender):
         if not self._plugin_command or "--port" in self._plugin_command:
             return self._plugin_command or []
 
-        return self._plugin_command + ["--port", str(self.__port)]
+        return self._plugin_command + ["--address", self.getAddress(), "--port", str(self.__port)]
 
     def start(self) -> bool:
         """
@@ -54,7 +59,10 @@ class BackendPlugin(AdditionalSettingDefinitionsAppender):
             # STDIN needs to be None because we provide no input, but communicate via a local socket instead.
             # The NUL device sometimes doesn't exist on some computers.
             Logger.info(f"Starting backend_plugin [{self._plugin_id}] with command: {self._validatePluginCommand()}")
-            self._process = subprocess.Popen(self._validatePluginCommand(), stdin = None)
+            popen_kwargs = {"stdin": None}
+            if Platform.isWindows():
+                popen_kwargs["creationflags"] = subprocess.CREATE_NO_WINDOW
+            self._process = subprocess.Popen(self._validatePluginCommand(), **popen_kwargs)
             self._is_running = True
             return True
         except PermissionError:

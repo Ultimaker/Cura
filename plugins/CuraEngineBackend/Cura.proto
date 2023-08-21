@@ -20,8 +20,10 @@ enum SlotID {
 message EnginePlugin
 {
     SlotID id = 1;
-    optional string address = 2;
-    optional uint32 port = 3;
+    string address = 2;
+    uint32 port = 3;
+    string plugin_name = 4;
+    string plugin_version = 5;
 }
 
 message Slice
