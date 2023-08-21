@@ -6,7 +6,7 @@ import QtQuick.Window 2.2
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
 
-import UM 1.7 as UM
+import UM 1.5 as UM
 import Cura 1.6 as Cura
 
 UM.Dialog
