@@ -6,7 +6,7 @@
         "type": "machine",
         "author": "Unknown",
         "manufacturer": "Unknown",
-        "setting_version": 21,
+        "setting_version": 22,
         "file_formats": "text/x-gcode;model/stl;application/x-wavefront-obj;application/x3g",
         "visible": false,
         "has_materials": true,
@@ -1289,7 +1289,7 @@
                 "hole_xy_offset":
                 {
                     "label": "Hole Horizontal Expansion",
-                    "description": "Amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes.",
+                    "description": "When greater than zero, the Hole Horizontal Expansion is the amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes. When this setting is enabled it can be further tuned with Hole Horizontal Expansion Max Diameter.",
                     "unit": "mm",
                     "type": "float",
                     "minimum_value_warning": "-1",
@@ -1668,7 +1668,6 @@
                     "value": "skin_line_width * 2",
                     "default_value": 1,
                     "minimum_value": "0",
-                    "maximum_value_warning": "skin_line_width * 10",
                     "type": "float",
                     "enabled": "(top_layers > 0 or bottom_layers > 0) and top_bottom_pattern != 'concentric'",
                     "limit_to_extruder": "top_bottom_extruder_nr",
@@ -3063,6 +3062,16 @@
                     "maximum_value_warning": "260",
                     "maximum_value": "365",
                     "enabled": "extruders_enabled_count > 1 and machine_nozzle_temp_enabled",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "material_is_support_material":
+                {
+                    "label": "Is support material",
+                    "description": "Is this material typically used as a support material during printing.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 }
@@ -4478,8 +4487,8 @@
                     "description": "The extruder train to use for printing the support. This is used in multi-extrusion.",
                     "type": "extruder",
                     "default_value": "0",
-                    "value": "int(defaultExtruderPosition())",
                     "enabled": "(support_enable or support_meshes_present) and extruders_enabled_count > 1",
+                    "value": "int(defaultExtruderPosition())",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "children":
@@ -4755,8 +4764,8 @@
                     "type": "enum",
                     "options":
                     {
-                        "buildplate": "Force Only Buildplate",
-                        "graceful": "On Model If Necessary"
+                        "buildplate": "On buildplate when possible",
+                        "graceful": "On model if required"
                     },
                     "default_value": "buildplate",
                     "value": "'buildplate' if support_type == 'buildplate' else 'graceful'",
@@ -5910,7 +5919,7 @@
                     "maximum_value_warning": "skirt_brim_line_width",
                     "enabled": "resolveOrValue('adhesion_type') == 'brim'",
                     "limit_to_extruder": "skirt_brim_extruder_nr",
-                    "settable_per_mesh": true,
+                    "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
                 "brim_replaces_support":
@@ -6794,6 +6803,48 @@
                     "minimum_value_warning": "500",
                     "maximum_value_warning": "100000",
                     "settable_per_mesh": true
+                },
+                "meshfix_fluid_motion_enabled":
+                {
+                    "label": "Enable Fluid Motion",
+                    "description": "When enabled tool paths are corrected for printers with smooth motion planners. Small movements that deviate from the general tool path direction are smoothed to improve fluid motions.",
+                    "type": "bool",
+                    "default_value": true
+                },
+                "meshfix_fluid_motion_shift_distance":
+                {
+                    "label": "Fluid Motion Shift Distance",
+                    "description": "Distance points are shifted to smooth the path",
+                    "enabled": "meshfix_fluid_motion_enabled",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 0.1,
+                    "minimum_value": "0.01",
+                    "maximum_value": "1"
+                },
+                "meshfix_fluid_motion_small_distance":
+                {
+                    "label": "Fluid Motion Small Distance",
+                    "description": "Distance points are shifted to smooth the path",
+                    "enabled": "meshfix_fluid_motion_enabled",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 0.01,
+                    "minimum_value": "0.01",
+                    "maximum_value": "0.1"
+                },
+                "meshfix_fluid_motion_angle":
+                {
+                    "label": "Fluid Motion Angle",
+                    "description": "If a toolpath-segment deviates more than this angle from the general motion it is smoothed.",
+                    "enabled": "meshfix_fluid_motion_enabled",
+                    "type": "float",
+                    "unit": "\u00b0",
+                    "default_value": 15,
+                    "maximum_value": "90",
+                    "minimum_value": "0",
+                    "minimum_value_warning": "1",
+                    "maximum_value_warning": "35"
                 }
             }
         },

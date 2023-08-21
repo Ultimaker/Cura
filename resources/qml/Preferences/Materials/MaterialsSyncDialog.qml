@@ -430,9 +430,49 @@ UM.Window
                                 {
                                     id: refreshListButton
                                     Layout.alignment: Qt.AlignVCenter
+                                    readonly property int _AccountSyncState_SYNCING: 0
+                                    visible: Cura.API.account.syncState != _AccountSyncState_SYNCING
+                                    enabled: visible
                                     text: catalog.i18nc("@button", "Refresh List")
                                     iconSource: UM.Theme.getIcon("ArrowDoubleCircleRight")
                                     onClicked: Cura.API.account.sync(true)
+                                }
+
+                                Item
+                                {
+                                    width: childrenRect.width
+                                    Layout.alignment: Qt.AlignVCenter
+                                    height: refreshListButton.height
+                                    visible: !refreshListButton.visible
+
+                                    UM.ColorImage
+                                    {
+                                        id: refreshingIcon
+                                        height: UM.Theme.getSize("action_button_icon").height
+                                        width: height
+                                        anchors.verticalCenter: refreshingLabel.verticalCenter
+                                        source: UM.Theme.getIcon("ArrowDoubleCircleRight")
+                                        color: UM.Theme.getColor("primary")
+
+                                        RotationAnimator
+                                        {
+                                            target: refreshingIcon
+                                            from: 0
+                                            to: 360
+                                            duration: 1000
+                                            loops: Animation.Infinite
+                                            running: true
+                                        }
+                                    }
+                                    UM.Label
+                                    {
+                                        id: refreshingLabel
+                                        anchors.left: refreshingIcon.right
+                                        anchors.leftMargin: UM.Theme.getSize("narrow_margin").width
+                                        text: catalog.i18nc("@button", "Refreshing...")
+                                        color: UM.Theme.getColor("primary")
+                                        font: UM.Theme.getFont("medium")
+                                    }
                                 }
 
                                 Cura.TertiaryButton

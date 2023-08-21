@@ -19,6 +19,8 @@ Cura.Menu
     // Selection-related actions.
     Cura.MenuItem { action: Cura.Actions.centerSelection; }
     Cura.MenuItem { action: Cura.Actions.deleteSelection; }
+    Cura.MenuItem { action: Cura.Actions.copy; }
+    Cura.MenuItem { action: Cura.Actions.paste; }
     Cura.MenuItem { action: Cura.Actions.multiplySelection; }
 
     // Extruder selection - only visible if there is more than 1 extruder
@@ -44,8 +46,19 @@ Cura.Menu
             onTriggered: CuraActions.setExtruderForSelection(model.id)
             shortcut: "Ctrl+" + (model.index + 1)
         }
-        // Add it to the fifth position (and above) as we want it to be added after the extruder header.
-        onObjectAdded: function(index, object) { base.insertItem(index + 5, object) }
+
+        onObjectAdded: function(index, object) {
+            var extruder_header_location = 5;
+            // Find the location of the extruder header and insert it below that.
+            for (var i = 0; i < base.count; i++)
+            {
+                if(base.itemAt(i) === extruderHeader)
+                {
+                    extruder_header_location = i + 1;
+                }
+            }
+            base.insertItem(extruder_header_location + index, object)
+        }
         onObjectRemoved: function(index, object) {  base.removeItem(object) }
     }
 

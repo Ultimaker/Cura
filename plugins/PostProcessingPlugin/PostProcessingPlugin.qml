@@ -1,5 +1,5 @@
 // Copyright (c) 2022 Jaime van Kessel, Ultimaker B.V.
-// The PostProcessingPlugin is released under the terms of the AGPLv3 or higher.
+// The PostProcessingPlugin is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Controls 2.15

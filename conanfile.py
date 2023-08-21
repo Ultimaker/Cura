@@ -10,7 +10,7 @@ from conan.tools.env import VirtualRunEnv, Environment, VirtualBuildEnv
 from conan.tools.scm import Version
 from conan.errors import ConanInvalidConfiguration, ConanException
 
-required_conan_version = "<=1.56.0"
+required_conan_version = ">=1.54 <=1.56.0 || >=1.58.0 <2.0.0"
 
 
 class CuraConan(ConanFile):
@@ -21,7 +21,7 @@ class CuraConan(ConanFile):
     description = "3D printer / slicing GUI built on top of the Uranium framework"
     topics = ("conan", "python", "pyqt6", "qt", "qml", "3d-printing", "slicer")
     build_policy = "missing"
-    exports = "LICENSE*", "UltiMaker-Cura.spec.jinja", "CuraVersion.py.jinja"
+    exports = "LICENSE*", "UltiMaker-Cura.spec.jinja", "CuraVersion.py.jinja", "AboutDialogVersionsList.qml.jinja"
     settings = "os", "compiler", "build_type", "arch"
 
     # FIXME: Remove specific branch once merged to main
@@ -49,7 +49,7 @@ class CuraConan(ConanFile):
 
     def set_version(self):
         if not self.version:
-            self.version = "5.4.0-alpha"
+            self.version = "5.5.0-alpha"
 
     @property
     def _pycharm_targets(self):
@@ -137,6 +137,37 @@ class CuraConan(ConanFile):
                 return "'arm64'"
             return "'x86_64'"
         return "None"
+
+    def _generate_about_versions(self, location):
+        with open(os.path.join(self.recipe_folder, "AboutDialogVersionsList.qml.jinja"), "r") as f:
+            cura_version_py = Template(f.read())
+
+        conan_installs = []
+        python_installs = []
+
+        # list  of conan installs
+        for _, dependency in self.dependencies.host.items():
+            conan_installs.append([dependency.ref.name,dependency.ref.version])
+
+        #list of python installs
+        outer = '"' if self.settings.os == "Windows" else "'"
+        inner = "'" if self.settings.os == "Windows" else '"'
+        python_ins_cmd = f"python -c {outer}import pkg_resources; print({inner};{inner}.join([(s.key+{inner},{inner}+ s.version) for s in pkg_resources.working_set])){outer}"
+        from six import StringIO
+        buffer = StringIO()
+        self.run(python_ins_cmd, run_environment= True, env = "conanrun",  output=buffer)
+
+        packages = str(buffer.getvalue()).split("-----------------\n")
+        package = packages[1].strip('\r\n').split(";")
+        for pack in package:
+            python_installs.append(pack.split(","))
+
+        with open(os.path.join(location, "AboutDialogVersionsList.qml"), "w") as f:
+            f.write(cura_version_py.render(
+                conan_installs = conan_installs,
+                python_installs = python_installs
+            ))
+
 
     def _generate_cura_version(self, location):
         with open(os.path.join(self.recipe_folder, "CuraVersion.py.jinja"), "r") as f:
@@ -270,7 +301,7 @@ class CuraConan(ConanFile):
 
     def requirements(self):
         self.requires("pyarcus/5.2.2")
-        self.requires("curaengine/latest@ultimaker/testing")
+        self.requires("curaengine/(latest)@ultimaker/testing")
         self.requires("pysavitar/5.2.2")
         self.requires("pynest2d/5.2.2")
         self.requires("uranium/(latest)@ultimaker/testing")
@@ -308,6 +339,7 @@ class CuraConan(ConanFile):
 
         self._generate_cura_version(os.path.join(self.source_folder, "cura"))
 
+
         if self.options.devtools:
             entitlements_file = "'{}'".format(os.path.join(self.source_folder, "packaging", "MacOS", "cura.entitlements"))
             self._generate_pyinstaller_spec(location = self.generators_folder,
@@ -324,6 +356,8 @@ class CuraConan(ConanFile):
                 cpp_info = self.dependencies["gettext"].cpp_info
                 pot = self.python_requires["translationextractor"].module.ExtractTranslations(self, cpp_info.bindirs[0])
                 pot.generate()
+
+        self._generate_about_versions(os.path.join(self.source_folder, "resources","qml", "Dialogs"))
 
     def build(self):
         if self.options.devtools:
@@ -432,12 +466,14 @@ echo "CURA_APP_NAME={{ cura_app_name }}" >> ${{ env_prefix }}GITHUB_ENV
         save(self, os.path.join(self._script_dir, f"activate_github_actions_version_env{ext}"), activate_github_actions_version_env)
 
         self._generate_cura_version(os.path.join(self._site_packages, "cura"))
+        self._generate_about_versions(str(self._share_dir.joinpath("cura", "resources", "qml", "Dialogs")))
 
         entitlements_file = "'{}'".format(Path(self.cpp_info.res_paths[2], "MacOS", "cura.entitlements"))
         self._generate_pyinstaller_spec(location = self._base_dir,
                                         entrypoint_location = "'{}'".format(os.path.join(self.package_folder, self.cpp_info.bindirs[0], self.conan_data["pyinstaller"]["runinfo"]["entrypoint"])).replace("\\", "\\\\"),
                                         icon_path = "'{}'".format(os.path.join(self.package_folder, self.cpp_info.resdirs[2], self.conan_data["pyinstaller"]["icon"][str(self.settings.os)])).replace("\\", "\\\\"),
                                         entitlements_file = entitlements_file if self.settings.os == "Macos" else "None")
+
 
     def package(self):
         copy(self, "cura_app.py", src = self.source_folder, dst = os.path.join(self.package_folder, self.cpp.package.bindirs[0]))

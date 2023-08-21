@@ -1,4 +1,4 @@
-// Copyright (c) 2022 UltiMaker
+// Copyright (c) 2023 UltiMaker
 //Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -9,15 +9,15 @@ import UM 1.6 as UM
 import Cura 1.6 as Cura
 import ".."
 
-ScrollView
+Flickable
 {
     id: recommendedPrintSetup
+    clip: true
 
-    implicitHeight: settingsColumn.height + 2 * padding
+    contentHeight: settingsColumn.height
+    implicitHeight: settingsColumn.height
 
     property bool settingsEnabled: Cura.ExtruderManager.activeExtruderStackId || extrudersEnabledCount.properties.value == 1
-
-    padding: UM.Theme.getSize("default_margin").width
 
     function onModeChanged() {}
 
@@ -31,12 +31,15 @@ ScrollView
         }
     }
 
+    boundsBehavior: Flickable.StopAtBounds
+
     Column
     {
         id: settingsColumn
+        padding: UM.Theme.getSize("default_margin").width
         spacing: UM.Theme.getSize("default_margin").height
 
-        width: recommendedPrintSetup.width - 2 * recommendedPrintSetup.padding - (scroll.visible ? scroll.width : 0)
+        width: recommendedPrintSetup.width - 2 * padding - (scroll.visible ? scroll.width : 0)
 
         // TODO
         property real firstColumnWidth: Math.round(width / 3)
@@ -97,7 +100,6 @@ ScrollView
                 width: parent.width
                 UM.Label
                 {
-                    anchors.verticalCenter: parent.verticalCenter
                     anchors.left: parent.left
                     text: catalog.i18nc("@label", "Recommended print settings")
                     font: UM.Theme.getFont("medium")
@@ -106,11 +108,9 @@ ScrollView
                 Cura.SecondaryButton
                 {
                     id: customSettingsButton
-                    anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right
                     text: catalog.i18nc("@button", "Show Custom")
                     textFont: UM.Theme.getFont("medium_bold")
-                    outlineColor: "transparent"
                     onClicked: onModeChanged()
                 }
             }

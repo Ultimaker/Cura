@@ -155,7 +155,7 @@ jobs:
                     sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 10
 
             -   name: Create the default Conan profile
-                run:  conan profile new default --detect
+                run:  conan profile new default --detect --force
 
             -   name: Configure GPG Key Linux (Bash)
                 if: ${{ runner.os == 'Linux' }}
@@ -295,9 +295,27 @@ jobs:
                     
                     with open(summary_env, "w") as f:
                         f.write(content)
-                        f.writelines("# ${{ steps.filename.outputs.FULL_INSTALLER_FILENAME }} uses:\n")
+                        f.writelines("# ${{ steps.filename.outputs.FULL_INSTALLER_FILENAME }}\n")
+                        f.writelines("## Conan packages:\n")
                         for dep in sorted_deps:
                             f.writelines(f"`{dep}`\n")
+
+            -   name: Summarize the used Python modules
+                shell: python
+                run: |
+                    import os
+                    import pkg_resources
+                    summary_env = os.environ["GITHUB_STEP_SUMMARY"]
+                    content = ""
+                    if os.path.exists(summary_env):
+                        with open(summary_env, "r") as f:
+                            content = f.read()
+                    
+                    with open(summary_env, "w") as f:
+                        f.write(content)
+                        f.writelines("## Python modules:\n")
+                        for package in pkg_resources.working_set:
+                            f.writelines(f"`{package.key}/{package.version}`\n")
 
             -   name: Archive the artifacts (bash)
                 if: ${{ !inputs.installer && runner.os != 'Windows' }}
