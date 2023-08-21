@@ -66,7 +66,7 @@ UM.Dialog
             }
         }
 
-        UM.ScrollableTextArea
+        Cura.ScrollableTextArea
         {
             Layout.fillWidth: true
             Layout.fillHeight: true

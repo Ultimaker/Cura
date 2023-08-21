@@ -74,7 +74,7 @@ Window
                 wrapMode: Text.WordWrap
             }
 
-            UM.ScrollableTextArea
+            Cura.ScrollableTextArea
             {
                 anchors
                 {

@@ -26,7 +26,7 @@ Item
         font: UM.Theme.getFont("huge")
     }
 
-    UM.ScrollableTextArea
+    Cura.ScrollableTextArea
     {
         id: changelogTextArea
 

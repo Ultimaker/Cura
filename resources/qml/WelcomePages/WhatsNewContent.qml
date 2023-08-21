@@ -90,7 +90,7 @@ Item
                         source: manager.getSubpageImageSource(index)
                     }
 
-                    UM.ScrollableTextArea
+                    Cura.ScrollableTextArea
                     {
                         id: subpageText
 
