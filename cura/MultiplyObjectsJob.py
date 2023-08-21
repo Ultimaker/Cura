@@ -14,7 +14,6 @@ from UM.Operations.TranslateOperation import TranslateOperation
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
 from UM.i18n import i18nCatalog
-from cura.Arranging.GridArrange import GridArrange
 from cura.Arranging.Nest2DArrange import arrange, createGroupOperationForArrange
 
 i18n_catalog = i18nCatalog("cura")
@@ -78,17 +77,12 @@ class MultiplyObjectsJob(Job):
         found_solution_for_all = True
         group_operation = GroupedOperation()
         if nodes:
-            grid_arrange = GridArrange(nodes,Application.getInstance().getBuildVolume(),
-                                                                            fixed_nodes)
-
-            group_operation, not_fit_count = grid_arrange.arrange()
-            print("group_operation", group_operation)
-            # group_operation, not_fit_count = createGroupOperationForArrange(nodes,
-            #                                                                 Application.getInstance().getBuildVolume(),
-            #                                                                 fixed_nodes,
-            #                                                                 factor=10000,
-            #                                                                 add_new_nodes_in_scene=True,
-            #                                                                 lock_rotation=self._lock_rotation)
+            group_operation, not_fit_count = createGroupOperationForArrange(nodes,
+                                                                            Application.getInstance().getBuildVolume(),
+                                                                            fixed_nodes,
+                                                                            factor=10000,
+                                                                            add_new_nodes_in_scene=True,
+                                                                            lock_rotation=self._lock_rotation)
             found_solution_for_all = not_fit_count == 0
 
         if nodes_to_add_without_arrange:
