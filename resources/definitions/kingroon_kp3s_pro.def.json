@@ -5,16 +5,15 @@
     "metadata":
     {
         "visible": true,
+        "author": "willuhmjs",
         "platform": "kingroon_kp3s.stl",
-        "quality_definition": "kingroon_base",
-        "author": "willuhmjs"
+        "quality_definition": "kingroon_base"
     },
     "overrides":
     {
         "machine_acceleration": { "value": 1000 },
-        "machine_height": { "default_value": 200 },
-        "machine_width": { "default_value": 200 },
         "machine_depth": { "default_value": 200 },
+        "machine_height": { "default_value": 200 },
         "machine_max_acceleration_e": { "value": 1000 },
         "machine_max_acceleration_x": { "value": 1000 },
         "machine_max_acceleration_y": { "value": 1000 },
@@ -30,6 +29,7 @@
         "machine_steps_per_mm_x": { "value": 160 },
         "machine_steps_per_mm_y": { "value": 160 },
         "machine_steps_per_mm_z": { "value": 800 },
+        "machine_width": { "default_value": 200 },
         "retraction_amount": { "value": 1 },
         "retraction_extrusion_window": { "value": 1 },
         "retraction_speed": { "value": 40 },
