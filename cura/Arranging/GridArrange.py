@@ -97,8 +97,8 @@ class GridArrange:
 
     def moveNodeOnGrid(self, node: "SceneNode", grid_x: int, grid_y: int) -> "Operation.Operation":
         coord_grid_x, coord_grid_y = self.gridSpaceToCoordSpace(grid_x, grid_y)
-        center_grid_x = coord_grid_x + (0.5 * self._grid_width)
-        center_grid_y = coord_grid_y + (0.5 * self._grid_height)
+        center_grid_x = coord_grid_x + (0.5 * (self._grid_width + self.offset_x))
+        center_grid_y = coord_grid_y + (0.5 * (self._grid_height + self.offset_y))
 
         bounding_box = node.getBoundingBox()
         center_node_x = (bounding_box.left + bounding_box.right) * 0.5
