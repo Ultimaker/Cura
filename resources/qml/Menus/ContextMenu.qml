@@ -110,7 +110,16 @@ Cura.Menu
         minimumWidth: UM.Theme.getSize("small_popup_dialog").width
         minimumHeight: UM.Theme.getSize("small_popup_dialog").height
 
-        onAccepted: CuraActions.multiplySelection(copiesField.value, gridPlacementSelected.checked)
+        onAccepted: {
+            if (gridPlacementSelected.checked)
+            {
+                CuraActions.multiplySelectionToGrid(copiesField.value)
+            }
+            else
+            {
+                 CuraActions.multiplySelection(copiesField.value)
+            }
+        }
 
         buttonSpacing: UM.Theme.getSize("thin_margin").width
 

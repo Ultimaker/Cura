@@ -83,18 +83,25 @@ class CuraActions(QObject):
             center_operation = TranslateOperation(current_node, Vector(0, center_y, 0), set_position=True)
             operation.addOperation(center_operation)
         operation.push()
+    @pyqtSlot(int)
+    def multiplySelection(self, count: int) -> None:
+        """Multiply all objects in the selection
+        :param count: The number of times to multiply the selection.
+        """
+        min_offset = cura.CuraApplication.CuraApplication.getInstance().getBuildVolume().getEdgeDisallowedSize() + 2  # Allow for some rounding errors
+        job = MultiplyObjectsJob(Selection.getAllSelectedObjects(), count, min_offset = max(min_offset, 8))
+        job.start()
 
-    @pyqtSlot(int, bool)
-    def multiplySelection(self, count: int, grid_placement: bool) -> None:
+    @pyqtSlot(int)
+    def multiplySelectionToGrid(self, count: int) -> None:
         """Multiply all objects in the selection
 
         :param count: The number of times to multiply the selection.
-        :param grid_placement: If set to true objects are placed in a grid
         """
 
         min_offset = cura.CuraApplication.CuraApplication.getInstance().getBuildVolume().getEdgeDisallowedSize() + 2  # Allow for some rounding errors
         job = MultiplyObjectsJob(Selection.getAllSelectedObjects(), count, min_offset=max(min_offset, 8),
-                                 grid_arrange=grid_placement)
+                                 grid_arrange=True)
         job.start()
 
     @pyqtSlot()

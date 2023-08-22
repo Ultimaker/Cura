@@ -1440,8 +1440,15 @@ class CuraApplication(QtApplication):
             op.push()
 
     # Single build plate
-    @pyqtSlot(bool)
-    def arrangeAll(self, grid_arrangement: bool) -> None:
+    @pyqtSlot()
+    def arrangeAll(self) -> None:
+        self._arrangeAll(False)
+
+    @pyqtSlot()
+    def arrangeAllInGrid(self) -> None:
+        self._arrangeAll(True)
+
+    def _arrangeAll(self, grid_arrangement: bool) -> None:
         nodes_to_arrange = []
         active_build_plate = self.getMultiBuildPlateModel().activeBuildPlate
         locked_nodes = []

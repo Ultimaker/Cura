@@ -458,7 +458,7 @@ Item
     {
         id: arrangeAllAction
         text: catalog.i18nc("@action:inmenu menubar:edit","Arrange All Models")
-        onTriggered: Printer.arrangeAll(false)
+        onTriggered: Printer.arrangeAll()
         shortcut: "Ctrl+R"
     }
 
@@ -466,7 +466,7 @@ Item
     {
         id: arrangeAllGridAction
         text: catalog.i18nc("@action:inmenu menubar:edit","Arrange All Models in a grid")
-        onTriggered: Printer.arrangeAll(true)
+        onTriggered: Printer.arrangeAllInGrid()
         shortcut: "Shift+Ctrl+R"
     }
 

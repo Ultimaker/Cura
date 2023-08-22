@@ -21,7 +21,6 @@ class GridArrange:
     _build_volume_bounding_box = AxisAlignedBox
 
     def __init__(self, nodes_to_arrange: List["SceneNode"], build_volume: "BuildVolume", fixed_nodes: List["SceneNode"] = []):
-        print("len(nodes_to_arrange)", len(nodes_to_arrange))
         self._nodes_to_arrange = nodes_to_arrange
         self._build_volume_bounding_box = build_volume.getBoundingBox()
         self._fixed_nodes = fixed_nodes
@@ -72,7 +71,6 @@ class GridArrange:
         for grid_id, node in zip(sequence, self._nodes_to_arrange):
             grouped_operation.addOperation(AddSceneNodeOperation(node, scene_root))
             grid_x, grid_y = grid_id
-
             operation = self.moveNodeOnGrid(node, grid_x, grid_y)
             grouped_operation.addOperation(operation)
 
@@ -81,17 +79,13 @@ class GridArrange:
         left_over_grid_y = self._initial_leftover_grid_y
         for node in leftover_nodes:
             grouped_operation.addOperation(AddSceneNodeOperation(node, scene_root))
-
             # find the first next grid position that isn't occupied by a fixed node
             while (self._initial_leftover_grid_x, left_over_grid_y) in fixed_nodes_grid_ids:
                 left_over_grid_y = left_over_grid_y - 1
 
             operation = self.moveNodeOnGrid(node, self._initial_leftover_grid_x, left_over_grid_y)
             grouped_operation.addOperation(operation)
-
             left_over_grid_y = left_over_grid_y - 1
-
-        self.drawDebugSvg()
 
         return grouped_operation, len(leftover_nodes)
 
