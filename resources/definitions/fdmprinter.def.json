@@ -1664,7 +1664,6 @@
                 "small_skin_width":
                 {
                     "label": "Small Top/Bottom Width",
-
                     "description": "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions. Off for the topmost (air-exposed) layer by default (see 'Small Top/Bottom On Surface').",
                     "value": "skin_line_width * 2",
                     "default_value": 1,
