@@ -26,13 +26,6 @@ class GridArrange:
         self._build_volume_bounding_box = build_volume.getBoundingBox()
         self._fixed_nodes = fixed_nodes
 
-    def arrange(self)-> bool:
-
-        grouped_operation, not_fit_count = self.createGroupOperationForArrange()
-        grouped_operation.push()
-        return not_fit_count == 0
-
-    def createGroupOperationForArrange(self) -> Tuple[GroupedOperation, int]:
         self._grid_width = 0
         self._grid_height = 0
         for node in self._nodes_to_arrange:
@@ -40,6 +33,19 @@ class GridArrange:
             self._grid_width = max(self._grid_width, bounding_box.width)
             self._grid_height = max(self._grid_height, bounding_box.depth)
 
+        coord_initial_leftover_x = self._build_volume_bounding_box.right + 2 * self._grid_width
+        coord_initial_leftover_y = (self._build_volume_bounding_box.back + self._build_volume_bounding_box.front) * 0.5
+        self._initial_leftover_grid_x, self._initial_leftover_grid_y = self.coordSpaceToGridSpace(coord_initial_leftover_x, coord_initial_leftover_y)
+        self._initial_leftover_grid_x = math.floor(self._initial_leftover_grid_x)
+        self._initial_leftover_grid_y = math.floor(self._initial_leftover_grid_y)
+
+    def arrange(self)-> bool:
+
+        grouped_operation, not_fit_count = self.createGroupOperationForArrange()
+        grouped_operation.push()
+        return not_fit_count == 0
+
+    def createGroupOperationForArrange(self) -> Tuple[GroupedOperation, int]:
         # Find grid indexes that intersect with fixed objects
         fixed_nodes_grid_ids = set()
         for node in self._fixed_nodes:
@@ -67,21 +73,41 @@ class GridArrange:
             grouped_operation.addOperation(AddSceneNodeOperation(node, scene_root))
             grid_x, grid_y = grid_id
 
-            coord_grid_x, coord_grid_y = self.gridSpaceToCoordSpace(grid_x, grid_y)
-            center_grid_x = coord_grid_x+(0.5 * self._grid_width)
-            center_grid_y = coord_grid_y+(0.5 * self._grid_height)
+            operation = self.moveNodeOnGrid(node, grid_x, grid_y)
+            grouped_operation.addOperation(operation)
 
-            bounding_box = node.getBoundingBox()
-            center_node_x = (bounding_box.left + bounding_box.right) * 0.5
-            center_node_y = (bounding_box.back + bounding_box.front) * 0.5
+        leftover_nodes = self._nodes_to_arrange[len(sequence):]
 
-            delta_x = center_grid_x - center_node_x
-            delta_y = center_grid_y - center_node_y
-            grouped_operation.addOperation(TranslateOperation(node, Vector(delta_x, 0, delta_y)))
+        left_over_grid_y = self._initial_leftover_grid_y
+        for node in leftover_nodes:
+            grouped_operation.addOperation(AddSceneNodeOperation(node, scene_root))
+
+            # find the first next grid position that isn't occupied by a fixed node
+            while (self._initial_leftover_grid_x, left_over_grid_y) in fixed_nodes_grid_ids:
+                left_over_grid_y = left_over_grid_y - 1
+
+            operation = self.moveNodeOnGrid(node, self._initial_leftover_grid_x, left_over_grid_y)
+            grouped_operation.addOperation(operation)
+
+            left_over_grid_y = left_over_grid_y - 1
 
         self.drawDebugSvg()
 
-        return grouped_operation, 0
+        return grouped_operation, len(leftover_nodes)
+
+    def moveNodeOnGrid(self, node: "SceneNode", grid_x: int, grid_y: int) -> "Operation.Operation":
+        coord_grid_x, coord_grid_y = self.gridSpaceToCoordSpace(grid_x, grid_y)
+        center_grid_x = coord_grid_x + (0.5 * self._grid_width)
+        center_grid_y = coord_grid_y + (0.5 * self._grid_height)
+
+        bounding_box = node.getBoundingBox()
+        center_node_x = (bounding_box.left + bounding_box.right) * 0.5
+        center_node_y = (bounding_box.back + bounding_box.front) * 0.5
+
+        delta_x = center_grid_x - center_node_x
+        delta_y = center_grid_y - center_node_y
+
+        return TranslateOperation(node, Vector(delta_x, 0, delta_y))
 
     def getGridCornerPoints(self, bounding_box: "BoundingVolume") -> Tuple[float, float, float, float]:
         coord_x1 = bounding_box.left
