@@ -18,6 +18,7 @@ from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
 from UM.Operations.TranslateOperation import TranslateOperation
 
 import cura.CuraApplication
+from cura.Arranging.GridArrange import GridArrange
 from cura.Operations.SetParentOperation import SetParentOperation
 from cura.MultiplyObjectsJob import MultiplyObjectsJob
 from cura.Settings.SetObjectExtruderOperation import SetObjectExtruderOperation
@@ -84,16 +85,16 @@ class CuraActions(QObject):
         operation.push()
 
     @pyqtSlot(int, bool)
-    def multiplySelection(self, count: int, lock_rotation: bool) -> None:
+    def multiplySelection(self, count: int, grid_placement: bool) -> None:
         """Multiply all objects in the selection
 
         :param count: The number of times to multiply the selection.
-        :param lock_rotation: If set to true the orientation of the object will remain the same
+        :param grid_placement: If set to true objects are placed in a grid
         """
 
         min_offset = cura.CuraApplication.CuraApplication.getInstance().getBuildVolume().getEdgeDisallowedSize() + 2  # Allow for some rounding errors
         job = MultiplyObjectsJob(Selection.getAllSelectedObjects(), count, min_offset=max(min_offset, 8),
-                                 lock_rotation=lock_rotation)
+                                 grid_arrange=grid_placement)
         job.start()
 
     @pyqtSlot()
@@ -231,9 +232,8 @@ class CuraActions(QObject):
             if node.callDecoration("isSliceable"):
                 fixed_nodes.append(node)
         # Add the new nodes to the scene, and arrange them
-        group_operation, not_fit_count = createGroupOperationForArrange(nodes, application.getBuildVolume(),
-                                                                        fixed_nodes, factor=10000,
-                                                                        add_new_nodes_in_scene=True)
+        grid_arrange = GridArrange(nodes, application.getBuildVolume(), fixed_nodes)
+        group_operation, not_fit_count = grid_arrange.createGroupOperationForArrange()
         group_operation.push()
 
         # deselect currently selected nodes, and select the new nodes

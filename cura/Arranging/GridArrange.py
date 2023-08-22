@@ -26,7 +26,13 @@ class GridArrange:
         self._build_volume_bounding_box = build_volume.getBoundingBox()
         self._fixed_nodes = fixed_nodes
 
-    def arrange(self) -> Tuple[GroupedOperation, int]:
+    def arrange(self)-> bool:
+
+        grouped_operation, not_fit_count = self.createGroupOperationForArrange()
+        grouped_operation.push()
+        return not_fit_count == 0
+
+    def createGroupOperationForArrange(self) -> Tuple[GroupedOperation, int]:
         self._grid_width = 0
         self._grid_height = 0
         for node in self._nodes_to_arrange:

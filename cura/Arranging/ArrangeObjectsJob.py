@@ -8,6 +8,7 @@ from UM.Logger import Logger
 from UM.Message import Message
 from UM.Scene.SceneNode import SceneNode
 from UM.i18n import i18nCatalog
+from cura.Arranging.GridArrange import GridArrange
 from cura.Arranging.Nest2DArrange import arrange
 
 i18n_catalog = i18nCatalog("cura")
@@ -15,12 +16,12 @@ i18n_catalog = i18nCatalog("cura")
 
 class ArrangeObjectsJob(Job):
     def __init__(self, nodes: List[SceneNode], fixed_nodes: List[SceneNode], min_offset=8,
-                 lock_rotation: bool = False) -> None:
+                 grid_arrange: bool = False) -> None:
         super().__init__()
         self._nodes = nodes
         self._fixed_nodes = fixed_nodes
         self._min_offset = min_offset
-        self._lock_rotation = lock_rotation
+        self._grid_arrange = grid_arrange
 
     def run(self):
         found_solution_for_all = False
@@ -32,8 +33,14 @@ class ArrangeObjectsJob(Job):
         status_message.show()
 
         try:
-            found_solution_for_all = arrange(self._nodes, Application.getInstance().getBuildVolume(), self._fixed_nodes,
-                                             lock_rotation=self._lock_rotation)
+
+            if self._grid_arrange:
+                grid_arrange = GridArrange(self._nodes, Application.getInstance().getBuildVolume(), self._fixed_nodes)
+                found_solution_for_all = grid_arrange.arrange()
+
+            else:
+                found_solution_for_all = arrange(self._nodes, Application.getInstance().getBuildVolume(), self._fixed_nodes)
+
         except:  # If the thread crashes, the message should still close
             Logger.logException("e", "Unable to arrange the objects on the buildplate. The arrange algorithm has crashed.")
 

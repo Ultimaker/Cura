@@ -66,7 +66,7 @@ Cura.Menu
     Cura.MenuSeparator {}
     Cura.MenuItem { action: Cura.Actions.selectAll }
     Cura.MenuItem { action: Cura.Actions.arrangeAll }
-    Cura.MenuItem { action: Cura.Actions.arrangeAllLock }
+    Cura.MenuItem { action: Cura.Actions.arrangeAllGrid }
     Cura.MenuItem { action: Cura.Actions.deleteAll }
     Cura.MenuItem { action: Cura.Actions.reloadAll }
     Cura.MenuItem { action: Cura.Actions.resetAllTranslation }
@@ -110,7 +110,7 @@ Cura.Menu
         minimumWidth: UM.Theme.getSize("small_popup_dialog").width
         minimumHeight: UM.Theme.getSize("small_popup_dialog").height
 
-        onAccepted: CuraActions.multiplySelection(copiesField.value, lockRotationField.checked)
+        onAccepted: CuraActions.multiplySelection(copiesField.value, gridPlacementSelected.checked)
 
         buttonSpacing: UM.Theme.getSize("thin_margin").width
 
@@ -158,8 +158,8 @@ Cura.Menu
 
             UM.CheckBox
             {
-                id: lockRotationField
-                text: catalog.i18nc("@label", "Lock Rotation")
+                id: gridPlacementSelected
+                text: catalog.i18nc("@label", "Grid Placement")
             }
         }
     }

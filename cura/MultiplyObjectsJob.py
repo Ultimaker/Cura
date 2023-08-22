@@ -21,12 +21,12 @@ i18n_catalog = i18nCatalog("cura")
 
 
 class MultiplyObjectsJob(Job):
-    def __init__(self, objects, count: int, min_offset: int = 8, lock_rotation: bool = False):
+    def __init__(self, objects, count: int, min_offset: int = 8, grid_arrange: bool = False):
         super().__init__()
         self._objects = objects
         self._count: int = count
         self._min_offset: int = min_offset
-        self._lock_rotation: bool = lock_rotation
+        self._grid_arrange: bool = grid_arrange
 
     def run(self) -> None:
         status_message = Message(i18n_catalog.i18nc("@info:status", "Multiplying and placing objects"), lifetime = 0,
@@ -78,18 +78,16 @@ class MultiplyObjectsJob(Job):
         found_solution_for_all = True
         group_operation = GroupedOperation()
         if nodes:
-            grid_arrange = GridArrange(nodes,Application.getInstance().getBuildVolume(),
-                                                                            fixed_nodes)
+            if(self._grid_arrange):
+                grid_arrange = GridArrange(nodes,Application.getInstance().getBuildVolume(),fixed_nodes)
+                group_operation, not_fit_count = grid_arrange.createGroupOperationForArrange()
 
-            group_operation, not_fit_count = grid_arrange.arrange()
-            print("group_operation", group_operation)
-            # group_operation, not_fit_count = createGroupOperationForArrange(nodes,
-            #                                                                 Application.getInstance().getBuildVolume(),
-            #                                                                 fixed_nodes,
-            #                                                                 factor=10000,
-            #                                                                 add_new_nodes_in_scene=True,
-            #                                                                 lock_rotation=self._lock_rotation)
-            found_solution_for_all = not_fit_count == 0
+            else:
+                group_operation, not_fit_count = createGroupOperationForArrange(nodes,
+                                                                                Application.getInstance().getBuildVolume(),
+                                                                                fixed_nodes,
+                                                                                factor=10000,
+                                                                                add_new_nodes_in_scene=True)
 
         if nodes_to_add_without_arrange:
             for nested_node in nodes_to_add_without_arrange:

@@ -1441,7 +1441,7 @@ class CuraApplication(QtApplication):
 
     # Single build plate
     @pyqtSlot(bool)
-    def arrangeAll(self, lock_rotation: bool) -> None:
+    def arrangeAll(self, grid_arrangement: bool) -> None:
         nodes_to_arrange = []
         active_build_plate = self.getMultiBuildPlateModel().activeBuildPlate
         locked_nodes = []
@@ -1471,18 +1471,18 @@ class CuraApplication(QtApplication):
                         locked_nodes.append(node)
                     else:
                         nodes_to_arrange.append(node)
-        self.arrange(nodes_to_arrange, locked_nodes, lock_rotation)
+        self.arrange(nodes_to_arrange, locked_nodes, grid_arrangement)
 
-    def arrange(self, nodes: List[SceneNode], fixed_nodes: List[SceneNode], lock_rotation: bool = False) -> None:
+    def arrange(self, nodes: List[SceneNode], fixed_nodes: List[SceneNode], grid_arrangement: bool = False) -> None:
         """Arrange a set of nodes given a set of fixed nodes
 
         :param nodes: nodes that we have to place
         :param fixed_nodes: nodes that are placed in the arranger before finding spots for nodes
-        :param lock_rotation: If set to true the orientation of the object will remain the same
+        :param grid_arrangement: If set to true if objects are to be placed in a grid
         """
 
         min_offset = self.getBuildVolume().getEdgeDisallowedSize() + 2  # Allow for some rounding errors
-        job = ArrangeObjectsJob(nodes, fixed_nodes, min_offset=max(min_offset, 8), lock_rotation=lock_rotation)
+        job = ArrangeObjectsJob(nodes, fixed_nodes, min_offset=max(min_offset, 8), grid_arrange =grid_arrangement)
         job.start()
 
     @pyqtSlot()

@@ -41,7 +41,7 @@ Item
     property alias deleteAll: deleteAllAction
     property alias reloadAll: reloadAllAction
     property alias arrangeAll: arrangeAllAction
-    property alias arrangeAllLock: arrangeAllLockAction
+    property alias arrangeAllGrid: arrangeAllGridAction
     property alias arrangeSelection: arrangeSelectionAction
     property alias arrangeSelectionLock: arrangeSelectionLockAction
     property alias resetAllTranslation: resetAllTranslationAction
@@ -464,8 +464,8 @@ Item
 
     Action
     {
-        id: arrangeAllLockAction
-        text: catalog.i18nc("@action:inmenu menubar:edit","Arrange All Models Without Rotation")
+        id: arrangeAllGridAction
+        text: catalog.i18nc("@action:inmenu menubar:edit","Arrange All Models in a grid")
         onTriggered: Printer.arrangeAll(true)
         shortcut: "Shift+Ctrl+R"
     }
