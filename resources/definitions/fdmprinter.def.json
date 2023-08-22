@@ -1664,15 +1664,27 @@
                 "small_skin_width":
                 {
                     "label": "Small Top/Bottom Width",
-                    "description": "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions.",
+                    "description": "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions. Off for the topmost (air-exposed) layer by default (see 'Small Top/Bottom On Surface').",
                     "value": "skin_line_width * 2",
                     "default_value": 1,
                     "minimum_value": "0",
+                    "maximum_value_warning": "skin_line_width * 3",
                     "type": "float",
                     "enabled": "(top_layers > 0 or bottom_layers > 0) and top_bottom_pattern != 'concentric'",
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true,
                     "unit": "mm"
+                },
+                "small_skin_on_surface":
+                {
+                    "label": "Small Top/Bottom On Surface",
+                    "description": "Enable small (up to 'Small Top/Bottom Width') regions on the topmost skinned layer (exposed to air) to be filled with walls instead of the default pattern.",
+                    "value": "False",
+                    "default_value": false,
+                    "type": "bool",
+                    "enabled": "small_skin_width > 0 and top_layers > 0",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true
                 },
                 "skin_no_small_gaps_heuristic":
                 {
