@@ -80,7 +80,7 @@ class CuraActions(QObject):
                 center_y = 0
 
             # Move the object so that it's bottom is on to of the buildplate
-            center_operation = TranslateOperation(current_node, Vector(0, center_y, 0), set_position=True)
+            center_operation = TranslateOperation(current_node, Vector(0, center_y, 0), set_position = True)
             operation.addOperation(center_operation)
         operation.push()
     @pyqtSlot(int)

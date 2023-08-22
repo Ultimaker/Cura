@@ -15,7 +15,7 @@ i18n_catalog = i18nCatalog("cura")
 
 
 class ArrangeObjectsJob(Job):
-    def __init__(self, nodes: List[SceneNode], fixed_nodes: List[SceneNode], min_offset=8,
+    def __init__(self, nodes: List[SceneNode], fixed_nodes: List[SceneNode], min_offset = 8,
                  grid_arrange: bool = False) -> None:
         super().__init__()
         self._nodes = nodes

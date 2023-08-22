@@ -18,10 +18,12 @@ class GridArrange:
 
     _nodes_to_arrange: List["SceneNode"]
     _fixed_nodes: List["SceneNode"]
-    _build_volume_bounding_box = AxisAlignedBox
+    _build_volume: "BuildVolume"
+    _build_volume_bounding_box: AxisAlignedBox
 
     def __init__(self, nodes_to_arrange: List["SceneNode"], build_volume: "BuildVolume", fixed_nodes: List["SceneNode"] = []):
         self._nodes_to_arrange = nodes_to_arrange
+        self._build_volume = build_volume
         self._build_volume_bounding_box = build_volume.getBoundingBox()
         self._fixed_nodes = fixed_nodes
 
@@ -39,7 +41,6 @@ class GridArrange:
         self._initial_leftover_grid_y = math.floor(self._initial_leftover_grid_y)
 
     def arrange(self)-> bool:
-
         grouped_operation, not_fit_count = self.createGroupOperationForArrange()
         grouped_operation.push()
         return not_fit_count == 0
@@ -51,6 +52,11 @@ class GridArrange:
             fixed_nodes_grid_ids = fixed_nodes_grid_ids.union(self.intersectingGridIdxInclusive(node.getBoundingBox()))
 
         build_plate_grid_ids = self.intersectingGridIdxExclusive(self._build_volume_bounding_box)
+
+        # Filter out the corner grid squares if the build plate shape is elliptic
+        if self._build_volume.getShape() == "elliptic":
+            build_plate_grid_ids = set(filter(lambda grid_id: self.checkGridUnderDiscSpace(grid_id[0], grid_id[1]), build_plate_grid_ids))
+
         allowed_grid_idx = build_plate_grid_ids.difference(fixed_nodes_grid_ids)
 
         # Find the sequence in which items are placed
@@ -86,7 +92,6 @@ class GridArrange:
             operation = self.moveNodeOnGrid(node, self._initial_leftover_grid_x, left_over_grid_y)
             grouped_operation.addOperation(operation)
             left_over_grid_y = left_over_grid_y - 1
-
         return grouped_operation, len(leftover_nodes)
 
     def moveNodeOnGrid(self, node: "SceneNode", grid_x: int, grid_y: int) -> "Operation.Operation":
@@ -138,6 +143,35 @@ class GridArrange:
         coord_y = (grid_y - self._build_volume_bounding_box.back) / (self._grid_height + self.offset_y)
         return coord_x, coord_y
 
+    def checkGridUnderDiscSpace(self, grid_x: int, grid_y: int) -> bool:
+        left, back = self.gridSpaceToCoordSpace(grid_x, grid_y)
+        right, front = self.gridSpaceToCoordSpace(grid_x + 1, grid_y + 1)
+        corners = [(left, back), (right, back), (right, front), (left, front)]
+        return all([self.checkPointUnderDiscSpace(x, y) for x, y in corners])
+
+    def checkPointUnderDiscSpace(self, x: float, y: float) -> bool:
+        disc_x, disc_y = self.coordSpaceToDiscSpace(x, y)
+        distance_to_center_squared = disc_x ** 2 + disc_y ** 2
+        return distance_to_center_squared <= 1.0
+
+    def coordSpaceToDiscSpace(self, x: float, y: float) -> Tuple[float, float]:
+        # Transform coordinate system to
+        #
+        #       coord_build_plate_left = -1
+        #       |               coord_build_plate_right = 1
+        #       v     (0,1)     v
+        #       ┌───────┬───────┐  < coord_build_plate_back = -1
+        #       │       │       │
+        #       │       │(0,0)  │
+        # (-1,0)│───────o───────┤(1,0)
+        #       │       │       │
+        #       │       │       │
+        #       └───────┴───────┘  < coord_build_plate_front = +1
+        #             (0,-1)
+        disc_x = ((x - self._build_volume_bounding_box.left) / self._build_volume_bounding_box.width) * 2.0 - 1.0
+        disc_y = ((y - self._build_volume_bounding_box.back) / self._build_volume_bounding_box.depth) * 2.0 - 1.0
+        return disc_x, disc_y
+
     def drawDebugSvg(self):
         with open("Builvolume_test.svg", "w") as f:
             build_volume_bounding_box = self._build_volume_bounding_box
@@ -145,25 +179,39 @@ class GridArrange:
             f.write(
                 f"<svg xmlns='http://www.w3.org/2000/svg' viewBox='{build_volume_bounding_box.left - 100} {build_volume_bounding_box.back - 100} {build_volume_bounding_box.width + 200} {build_volume_bounding_box.depth + 200}'>\n")
 
-            f.write(
-                f"""
-                <rect
-                    x='{build_volume_bounding_box.left}'
-                    y='{build_volume_bounding_box.back}'
-                    width='{build_volume_bounding_box.width}' 
-                    height='{build_volume_bounding_box.depth}' 
-                    fill=\"lightgrey\"
-                />
-                """)
+            ellipse = True
+            if ellipse:
+                f.write(
+                    f"""
+                    <ellipse
+                        cx='{(build_volume_bounding_box.left + build_volume_bounding_box.right) * 0.5}'
+                        cy='{(build_volume_bounding_box.back + build_volume_bounding_box.front) * 0.5}'
+                        rx='{build_volume_bounding_box.width * 0.5}' 
+                        ry='{build_volume_bounding_box.depth * 0.5}' 
+                        fill=\"blue\"
+                    />
+                    """)
+            else:
+                f.write(
+                    f"""
+                    <rect
+                        x='{build_volume_bounding_box.left}'
+                        y='{build_volume_bounding_box.back}'
+                        width='{build_volume_bounding_box.width}' 
+                        height='{build_volume_bounding_box.depth}' 
+                        fill=\"lightgrey\"
+                    />
+                    """)
 
-            for grid_x in range(-10, 10):
-                for grid_y in range(-10, 10):
+            for grid_x in range(0, 100):
+                for grid_y in range(0, 100):
                     # if (grid_x, grid_y) in intersecting_grid_idx:
                     #     fill_color = "red"
                     # elif (grid_x, grid_y) in build_plate_grid_idx:
                     #     fill_color = "green"
                     # else:
                     #     fill_color = "orange"
+
                     coord_grid_x, coord_grid_y = self.gridSpaceToCoordSpace(grid_x, grid_y)
                     f.write(
                         f"""
@@ -172,12 +220,13 @@ class GridArrange:
                             y="{coord_grid_y}"
                             width="{self._grid_width}" 
                             height="{self._grid_height}" 
-                            fill="green"
+                            fill="#ff00ff88"
                             stroke="black"
                         />
                         """)
                     f.write(f"""
                         <text 
+                            font-size="8"
                             x="{coord_grid_x + self._grid_width * 0.5}" 
                             y="{coord_grid_y + self._grid_height * 0.5}"
                         >
@@ -208,4 +257,11 @@ class GridArrange:
                         stroke-width="3"
                     />
                 """)
+
+            for x in range(math.floor(self._build_volume_bounding_box.left), math.floor(self._build_volume_bounding_box.right), 50):
+                for y in range(math.floor(self._build_volume_bounding_box.back), math.floor(self._build_volume_bounding_box.front), 50):
+                    color = "green" if self.checkPointUnderDiscSpace(x, y) else "red"
+                    f.write(f"""
+                      <circle cx="{x}" cy="{y}" r="10" fill="{color}" />
+                    """)
             f.write(f"</svg>")

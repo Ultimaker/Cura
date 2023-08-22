@@ -42,8 +42,6 @@ Item
     property alias reloadAll: reloadAllAction
     property alias arrangeAll: arrangeAllAction
     property alias arrangeAllGrid: arrangeAllGridAction
-    property alias arrangeSelection: arrangeSelectionAction
-    property alias arrangeSelectionLock: arrangeSelectionLockAction
     property alias resetAllTranslation: resetAllTranslationAction
     property alias resetAll: resetAllAction
 
@@ -468,20 +466,6 @@ Item
         text: catalog.i18nc("@action:inmenu menubar:edit","Arrange All Models in a grid")
         onTriggered: Printer.arrangeAllInGrid()
         shortcut: "Shift+Ctrl+R"
-    }
-
-    Action
-    {
-        id: arrangeSelectionAction
-        text: catalog.i18nc("@action:inmenu menubar:edit","Arrange Selection")
-        onTriggered: Printer.arrangeSelection(false)
-    }
-
-    Action
-    {
-        id: arrangeSelectionLockAction
-        text: catalog.i18nc("@action:inmenu menubar:edit","Arrange Selection Without Rotation")
-        onTriggered: Printer.arrangeSelection(true)
     }
 
     Action
