@@ -1,0 +1,89 @@
+name: Linux Installer
+run-name: ${{ inputs.cura_conan_version }} for Linux-${{ inputs.architecture }} by @${{ github.actor }}
+
+on:
+    workflow_dispatch:
+        inputs:
+            cura_conan_version:
+                description: 'Cura Conan Version'
+                default: 'cura/latest@ultimaker/testing'
+                required: true
+                type: string
+            conan_args:
+                description: 'Conan args: eq.: --require-override'
+                default: ''
+                required: false
+                type: string
+            enterprise:
+                description: 'Build Cura as an Enterprise edition'
+                default: false
+                required: true
+                type: boolean
+            staging:
+                description: 'Use staging API'
+                default: false
+                required: true
+                type: boolean
+            architecture:
+                description: 'Architecture'
+                required: true
+                default: 'X64'
+                type: choice
+                options:
+                    - X64
+            operating_system:
+                description: 'OS'
+                required: true
+                default: 'ubuntu-22.04'
+                type: choice
+                options:
+                    - ubuntu-22.04
+                    - ubuntu-20.04
+    workflow_call:
+        inputs:
+            cura_conan_version:
+                description: 'Cura Conan Version'
+                default: 'cura/latest@ultimaker/testing'
+                required: true
+                type: string
+            conan_args:
+                description: 'Conan args: eq.: --require-override'
+                default: ''
+                required: false
+                type: string
+            enterprise:
+                description: 'Build Cura as an Enterprise edition'
+                default: false
+                required: true
+                type: boolean
+            staging:
+                description: 'Use staging API'
+                default: false
+                required: true
+                type: boolean
+            architecture:
+                description: 'Architecture'
+                required: true
+                default: 'X64'
+                type: string
+            operating_system:
+                description: 'OS'
+                required: true
+                default: 'ubuntu-22.04'
+                type: string
+
+env:
+    CONAN_LOGIN_USERNAME_CURA: ${{ secrets.CONAN_USER }}
+    CONAN_PASSWORD_CURA: ${{ secrets.CONAN_PASS }}
+    GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+    CURA_CONAN_VERSION: ${{ inputs.cura_conan_version }}
+    ENTERPRISE: ${{ inputs.enterprise }}
+    STAGING: ${{ inputs.staging }}
+
+jobs:
+    cura-installer-create:
+        runs-on: ${{ inputs.operating_system }}
+
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v3
