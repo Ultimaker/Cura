@@ -1,6 +1,11 @@
 import math
 from typing import List, TYPE_CHECKING, Optional, Tuple, Set
 
+
+
+if TYPE_CHECKING:
+    from UM.Scene.SceneNode import SceneNode
+
 from UM.Application import Application
 from UM.Math import AxisAlignedBox
 from UM.Math.Vector import Vector
@@ -10,23 +15,16 @@ from UM.Operations.TranslateOperation import TranslateOperation
 
 
 class GridArrange:
-    offset_x: float = 10
-    offset_y: float = 10
-
-    _grid_width: float
-    _grid_height: float
-
-    _nodes_to_arrange: List["SceneNode"]
-    _fixed_nodes: List["SceneNode"]
-    _build_volume: "BuildVolume"
-    _build_volume_bounding_box: AxisAlignedBox
-
-    def __init__(self, nodes_to_arrange: List["SceneNode"], build_volume: "BuildVolume", fixed_nodes: List["SceneNode"] = []):
+    def __init__(self, nodes_to_arrange: List["SceneNode"], build_volume: "BuildVolume", fixed_nodes: List["SceneNode"] = None):
+        if fixed_nodes is None:
+            fixed_nodes = []
         self._nodes_to_arrange = nodes_to_arrange
         self._build_volume = build_volume
         self._build_volume_bounding_box = build_volume.getBoundingBox()
         self._fixed_nodes = fixed_nodes
 
+        self._offset_x: float = 10
+        self._offset_y: float = 10
         self._grid_width = 0
         self._grid_height = 0
         for node in self._nodes_to_arrange:
@@ -39,11 +37,6 @@ class GridArrange:
         self._initial_leftover_grid_x, self._initial_leftover_grid_y = self.coordSpaceToGridSpace(coord_initial_leftover_x, coord_initial_leftover_y)
         self._initial_leftover_grid_x = math.floor(self._initial_leftover_grid_x)
         self._initial_leftover_grid_y = math.floor(self._initial_leftover_grid_y)
-
-    def arrange(self)-> bool:
-        grouped_operation, not_fit_count = self.createGroupOperationForArrange()
-        grouped_operation.push()
-        return not_fit_count == 0
 
     def createGroupOperationForArrange(self) -> Tuple[GroupedOperation, int]:
         # Find grid indexes that intersect with fixed objects
@@ -96,8 +89,8 @@ class GridArrange:
 
     def moveNodeOnGrid(self, node: "SceneNode", grid_x: int, grid_y: int) -> "Operation.Operation":
         coord_grid_x, coord_grid_y = self.gridSpaceToCoordSpace(grid_x, grid_y)
-        center_grid_x = coord_grid_x + (0.5 * (self._grid_width + self.offset_x))
-        center_grid_y = coord_grid_y + (0.5 * (self._grid_height + self.offset_y))
+        center_grid_x = coord_grid_x + (0.5 * (self._grid_width + self._offset_x))
+        center_grid_y = coord_grid_y + (0.5 * (self._grid_height + self._offset_y))
 
         bounding_box = node.getBoundingBox()
         center_node_x = (bounding_box.left + bounding_box.right) * 0.5
@@ -134,13 +127,13 @@ class GridArrange:
         return grid_idx
 
     def gridSpaceToCoordSpace(self, x: float, y: float) -> Tuple[float, float]:
-        grid_x = x * (self._grid_width + self.offset_x) + self._build_volume_bounding_box.left
-        grid_y = y * (self._grid_height + self.offset_y) + self._build_volume_bounding_box.back
+        grid_x = x * (self._grid_width + self._offset_x) + self._build_volume_bounding_box.left
+        grid_y = y * (self._grid_height + self._offset_y) + self._build_volume_bounding_box.back
         return grid_x, grid_y
 
     def coordSpaceToGridSpace(self, grid_x: float, grid_y: float) -> Tuple[float, float]:
-        coord_x = (grid_x - self._build_volume_bounding_box.left) / (self._grid_width + self.offset_x)
-        coord_y = (grid_y - self._build_volume_bounding_box.back) / (self._grid_height + self.offset_y)
+        coord_x = (grid_x - self._build_volume_bounding_box.left) / (self._grid_width + self._offset_x)
+        coord_y = (grid_y - self._build_volume_bounding_box.back) / (self._grid_height + self._offset_y)
         return coord_x, coord_y
 
     def checkGridUnderDiscSpace(self, grid_x: int, grid_y: int) -> bool:

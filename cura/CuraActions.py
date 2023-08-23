@@ -18,7 +18,6 @@ from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
 from UM.Operations.TranslateOperation import TranslateOperation
 
 import cura.CuraApplication
-from cura.Arranging.GridArrange import GridArrange
 from cura.Operations.SetParentOperation import SetParentOperation
 from cura.MultiplyObjectsJob import MultiplyObjectsJob
 from cura.Settings.SetObjectExtruderOperation import SetObjectExtruderOperation
@@ -239,8 +238,7 @@ class CuraActions(QObject):
             if node.callDecoration("isSliceable"):
                 fixed_nodes.append(node)
         # Add the new nodes to the scene, and arrange them
-        grid_arrange = GridArrange(nodes, application.getBuildVolume(), fixed_nodes)
-        group_operation, not_fit_count = grid_arrange.createGroupOperationForArrange()
+        group_operation, not_fit_count = createGroupOperationForArrange(nodes, application.getBuildVolume(), fixed_nodes, grid_arrange = True)
         group_operation.push()
 
         # deselect currently selected nodes, and select the new nodes

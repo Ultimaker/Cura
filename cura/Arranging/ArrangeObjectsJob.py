@@ -16,7 +16,7 @@ i18n_catalog = i18nCatalog("cura")
 
 class ArrangeObjectsJob(Job):
     def __init__(self, nodes: List[SceneNode], fixed_nodes: List[SceneNode], min_offset = 8,
-                 grid_arrange: bool = False) -> None:
+                *, grid_arrange: bool = False) -> None:
         super().__init__()
         self._nodes = nodes
         self._fixed_nodes = fixed_nodes
@@ -33,13 +33,7 @@ class ArrangeObjectsJob(Job):
         status_message.show()
 
         try:
-
-            if self._grid_arrange:
-                grid_arrange = GridArrange(self._nodes, Application.getInstance().getBuildVolume(), self._fixed_nodes)
-                found_solution_for_all = grid_arrange.arrange()
-
-            else:
-                found_solution_for_all = arrange(self._nodes, Application.getInstance().getBuildVolume(), self._fixed_nodes)
+            found_solution_for_all = arrange(self._nodes, Application.getInstance().getBuildVolume(), self._fixed_nodes, grid_arrange= self._grid_arrange)
 
         except:  # If the thread crashes, the message should still close
             Logger.logException("e", "Unable to arrange the objects on the buildplate. The arrange algorithm has crashed.")

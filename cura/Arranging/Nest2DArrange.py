@@ -15,7 +15,7 @@ from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.RotateOperation import RotateOperation
 from UM.Operations.TranslateOperation import TranslateOperation
-
+from cura.Arranging.GridArrange import GridArrange
 
 if TYPE_CHECKING:
     from UM.Scene.SceneNode import SceneNode
@@ -27,6 +27,7 @@ def findNodePlacement(
         build_volume: "BuildVolume",
         fixed_nodes: Optional[List["SceneNode"]] = None,
         factor: int = 10000,
+        *,
         lock_rotation: bool = False
 ) -> Tuple[bool, List[Item]]:
     """
@@ -124,30 +125,36 @@ def createGroupOperationForArrange(nodes_to_arrange: List["SceneNode"],
                                    build_volume: "BuildVolume",
                                    fixed_nodes: Optional[List["SceneNode"]] = None,
                                    factor: int = 10000,
+                                   *,
                                    add_new_nodes_in_scene: bool = False,
-                                   lock_rotation: bool = False) -> Tuple[GroupedOperation, int]:
-    scene_root = Application.getInstance().getController().getScene().getRoot()
-    found_solution_for_all, node_items = findNodePlacement(nodes_to_arrange, build_volume, fixed_nodes, factor,
-                                                           lock_rotation)
+                                   lock_rotation: bool = False,
+                                   grid_arrange: bool = False) -> Tuple[GroupedOperation, int]:
+    if grid_arrange:
+        grid = GridArrange(nodes_to_arrange, build_volume, fixed_nodes)
+        return grid.createGroupOperationForArrange()
+    else:
+        scene_root = Application.getInstance().getController().getScene().getRoot()
+        found_solution_for_all, node_items = findNodePlacement(nodes_to_arrange, build_volume, fixed_nodes, factor,
+                                                               lock_rotation = lock_rotation)
 
-    not_fit_count = 0
-    grouped_operation = GroupedOperation()
-    for node, node_item in zip(nodes_to_arrange, node_items):
-        if add_new_nodes_in_scene:
-            grouped_operation.addOperation(AddSceneNodeOperation(node, scene_root))
+        not_fit_count = 0
+        grouped_operation = GroupedOperation()
+        for node, node_item in zip(nodes_to_arrange, node_items):
+            if add_new_nodes_in_scene:
+                grouped_operation.addOperation(AddSceneNodeOperation(node, scene_root))
 
-        if node_item.binId() == 0:
-            # We found a spot for it
-            rotation_matrix = Matrix()
-            rotation_matrix.setByRotationAxis(node_item.rotation(), Vector(0, -1, 0))
-            grouped_operation.addOperation(RotateOperation(node, Quaternion.fromMatrix(rotation_matrix)))
-            grouped_operation.addOperation(TranslateOperation(node, Vector(node_item.translation().x() / factor, 0,
-                                                                           node_item.translation().y() / factor)))
-        else:
-            # We didn't find a spot
-            grouped_operation.addOperation(
-                TranslateOperation(node, Vector(200, node.getWorldPosition().y, -not_fit_count * 20), set_position = True))
-            not_fit_count += 1
+            if node_item.binId() == 0:
+                # We found a spot for it
+                rotation_matrix = Matrix()
+                rotation_matrix.setByRotationAxis(node_item.rotation(), Vector(0, -1, 0))
+                grouped_operation.addOperation(RotateOperation(node, Quaternion.fromMatrix(rotation_matrix)))
+                grouped_operation.addOperation(TranslateOperation(node, Vector(node_item.translation().x() / factor, 0,
+                                                                               node_item.translation().y() / factor)))
+            else:
+                # We didn't find a spot
+                grouped_operation.addOperation(
+                    TranslateOperation(node, Vector(200, node.getWorldPosition().y, -not_fit_count * 20), set_position = True))
+                not_fit_count += 1
 
     return grouped_operation, not_fit_count
 
@@ -158,7 +165,8 @@ def arrange(
         fixed_nodes: Optional[List["SceneNode"]] = None,
         factor=10000,
         add_new_nodes_in_scene: bool = False,
-        lock_rotation: bool = False
+        lock_rotation: bool = False,
+        grid_arrange: bool = False
 ) -> bool:
     """
     Find placement for a set of scene nodes, and move them by using a single grouped operation.
@@ -174,6 +182,6 @@ def arrange(
     """
 
     grouped_operation, not_fit_count = createGroupOperationForArrange(nodes_to_arrange, build_volume, fixed_nodes,
-                                                                      factor, add_new_nodes_in_scene, lock_rotation)
+                                                                      factor, add_new_nodes_in_scene = add_new_nodes_in_scene, lock_rotation = lock_rotation, grid_arrange = grid_arrange)
     grouped_operation.push()
     return not_fit_count == 0
