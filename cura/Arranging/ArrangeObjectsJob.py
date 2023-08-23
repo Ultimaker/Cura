@@ -9,7 +9,7 @@ from UM.Message import Message
 from UM.Scene.SceneNode import SceneNode
 from UM.i18n import i18nCatalog
 from cura.Arranging.GridArrange import GridArrange
-from cura.Arranging.Nest2DArrange import arrange
+from cura.Arranging.Nest2DArrange import Nest2DArrange
 
 i18n_catalog = i18nCatalog("cura")
 
@@ -33,7 +33,13 @@ class ArrangeObjectsJob(Job):
         status_message.show()
 
         try:
-            found_solution_for_all = arrange(self._nodes, Application.getInstance().getBuildVolume(), self._fixed_nodes, grid_arrange= self._grid_arrange)
+            if self._grid_arrange:
+                arranger = GridArrange(self._nodes, Application.getInstance().getBuildVolume(), self._fixed_nodes)
+            else:
+                arranger = Nest2DArrange(self._nodes, Application.getInstance().getBuildVolume(), self._fixed_nodes,
+                                         factor=1000)
+
+            found_solution_for_all = arranger.arrange()
 
         except:  # If the thread crashes, the message should still close
             Logger.logException("e", "Unable to arrange the objects on the buildplate. The arrange algorithm has crashed.")

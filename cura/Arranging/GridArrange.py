@@ -1,8 +1,6 @@
 import math
 from typing import List, TYPE_CHECKING, Optional, Tuple, Set
 
-
-
 if TYPE_CHECKING:
     from UM.Scene.SceneNode import SceneNode
 
@@ -12,9 +10,10 @@ from UM.Math.Vector import Vector
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.TranslateOperation import TranslateOperation
+from cura.Arranging.Arranger import Arranger
 
 
-class GridArrange:
+class GridArrange(Arranger):
     def __init__(self, nodes_to_arrange: List["SceneNode"], build_volume: "BuildVolume", fixed_nodes: List["SceneNode"] = None):
         if fixed_nodes is None:
             fixed_nodes = []
@@ -38,7 +37,7 @@ class GridArrange:
         self._initial_leftover_grid_x = math.floor(self._initial_leftover_grid_x)
         self._initial_leftover_grid_y = math.floor(self._initial_leftover_grid_y)
 
-    def createGroupOperationForArrange(self) -> Tuple[GroupedOperation, int]:
+    def createGroupOperationForArrange(self, add_new_nodes_in_scene: bool = True) -> Tuple[GroupedOperation, int]:
         # Find grid indexes that intersect with fixed objects
         fixed_nodes_grid_ids = set()
         for node in self._fixed_nodes:
@@ -77,7 +76,8 @@ class GridArrange:
 
         left_over_grid_y = self._initial_leftover_grid_y
         for node in leftover_nodes:
-            grouped_operation.addOperation(AddSceneNodeOperation(node, scene_root))
+            if add_new_nodes_in_scene:
+                grouped_operation.addOperation(AddSceneNodeOperation(node, scene_root))
             # find the first next grid position that isn't occupied by a fixed node
             while (self._initial_leftover_grid_x, left_over_grid_y) in fixed_nodes_grid_ids:
                 left_over_grid_y = left_over_grid_y - 1
@@ -156,7 +156,7 @@ class GridArrange:
         #       ┌───────┬───────┐  < coord_build_plate_back = -1
         #       │       │       │
         #       │       │(0,0)  │
-        # (-1,0)│───────o───────┤(1,0)
+        # (-1,0)├───────o───────┤(1,0)
         #       │       │       │
         #       │       │       │
         #       └───────┴───────┘  < coord_build_plate_front = +1

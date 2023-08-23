@@ -14,7 +14,8 @@ from UM.Operations.TranslateOperation import TranslateOperation
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
 from UM.i18n import i18nCatalog
-from cura.Arranging.Nest2DArrange import createGroupOperationForArrange
+from cura.Arranging.GridArrange import GridArrange
+from cura.Arranging.Nest2DArrange import Nest2DArrange
 
 i18n_catalog = i18nCatalog("cura")
 
@@ -77,12 +78,12 @@ class MultiplyObjectsJob(Job):
         found_solution_for_all = True
         group_operation = GroupedOperation()
         if nodes:
-            group_operation, not_fit_count = createGroupOperationForArrange(nodes,
-                                                                            Application.getInstance().getBuildVolume(),
-                                                                            fixed_nodes,
-                                                                            factor=10000,
-                                                                            add_new_nodes_in_scene=True,
-                                                                            grid_arrange=self._grid_arrange)
+            if self._grid_arrange:
+                arranger = GridArrange(nodes, Application.getInstance().getBuildVolume(), fixed_nodes)
+            else:
+                arranger = Nest2DArrange(nodes, Application.getInstance().getBuildVolume(), fixed_nodes, factor=1000)
+
+            group_operation, not_fit_count = arranger.createGroupOperationForArrange(add_new_nodes_in_scene=True)
 
         if nodes_to_add_without_arrange:
             for nested_node in nodes_to_add_without_arrange:
