@@ -35,6 +35,7 @@ jobs:
             staging: ${{ inputs.staging }}
             architecture: X64
             operating_system: windows-2022
+        secrets: inherit
 
     linux-modern-installer:
         uses: ./.github/workflows/linux.yml
@@ -45,6 +46,7 @@ jobs:
             staging: ${{ inputs.staging }}
             architecture: X64
             operating_system: ubuntu-22.04
+        secrets: inherit
 
     linux-legacy-installer:
         uses: ./.github/workflows/linux.yml
@@ -55,6 +57,7 @@ jobs:
             staging: ${{ inputs.staging }}
             architecture: X64
             operating_system: ubuntu-20.04
+        secrets: inherit
 
     macos-installer:
         uses: ./.github/workflows/macos.yml
@@ -65,6 +68,7 @@ jobs:
             staging: ${{ inputs.staging }}
             architecture: X64
             operating_system: macos-11.0
+        secrets: inherit
 
     macos-arm-installer:
         uses: ./.github/workflows/macos.yml
@@ -75,3 +79,4 @@ jobs:
             staging: ${{ inputs.staging }}
             architecture: ARM64
             operating_system: self-hosted
+        secrets: inherit
