@@ -37,7 +37,7 @@ class GridArrange(Arranger):
         self._initial_leftover_grid_x = math.floor(self._initial_leftover_grid_x)
         self._initial_leftover_grid_y = math.floor(self._initial_leftover_grid_y)
 
-    def createGroupOperationForArrange(self, add_new_nodes_in_scene: bool = True) -> Tuple[GroupedOperation, int]:
+    def createGroupOperationForArrange(self, add_new_nodes_in_scene: bool = False) -> Tuple[GroupedOperation, int]:
         # Find grid indexes that intersect with fixed objects
         fixed_nodes_grid_ids = set()
         for node in self._fixed_nodes:

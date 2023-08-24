@@ -5,7 +5,7 @@ if TYPE_CHECKING:
 
 
 class Arranger:
-    def createGroupOperationForArrange(self, add_new_nodes_in_scene: bool = True) -> Tuple["GroupedOperation", int]:
+    def createGroupOperationForArrange(self, add_new_nodes_in_scene: bool = False) -> Tuple["GroupedOperation", int]:
         """
         Find placement for a set of scene nodes, but don't actually move them just yet.
         :param add_new_nodes_in_scene: Whether to create new scene nodes before applying the transformations and rotations
@@ -16,7 +16,7 @@ class Arranger:
         """
         raise NotImplementedError
 
-    def arrange(self, add_new_nodes_in_scene: bool = True) -> bool:
+    def arrange(self, add_new_nodes_in_scene: bool = False) -> bool:
         """
         Find placement for a set of scene nodes, and move them by using a single grouped operation.
         :param add_new_nodes_in_scene: Whether to create new scene nodes before applying the transformations and rotations
