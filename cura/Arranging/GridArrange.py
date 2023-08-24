@@ -64,7 +64,7 @@ class GridArrange(Arranger):
 
         self._allowed_grid_idx = self._build_plate_grid_ids.difference(self._fixed_nodes_grid_ids)
 
-    def createGroupOperationForArrange(self, add_new_nodes_in_scene: bool = True) -> Tuple[GroupedOperation, int]:
+    def createGroupOperationForArrange(self, add_new_nodes_in_scene: bool = False) -> Tuple[GroupedOperation, int]:
         # Find the sequence in which items are placed
         coord_build_plate_center_x = self._build_volume_bounding_box.width * 0.5 + self._build_volume_bounding_box.left
         coord_build_plate_center_y = self._build_volume_bounding_box.depth * 0.5 + self._build_volume_bounding_box.back
@@ -77,7 +77,8 @@ class GridArrange(Arranger):
         grouped_operation = GroupedOperation()
 
         for grid_id, node in zip(sequence, self._nodes_to_arrange):
-            grouped_operation.addOperation(AddSceneNodeOperation(node, scene_root))
+            if add_new_nodes_in_scene:
+                grouped_operation.addOperation(AddSceneNodeOperation(node, scene_root))
             grid_x, grid_y = grid_id
             operation = self._moveNodeOnGrid(node, grid_x, grid_y)
             grouped_operation.addOperation(operation)
