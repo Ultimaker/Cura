@@ -67,7 +67,8 @@ class GridArrange(Arranger):
         grouped_operation = GroupedOperation()
 
         for grid_id, node in zip(sequence, self._nodes_to_arrange):
-            grouped_operation.addOperation(AddSceneNodeOperation(node, scene_root))
+            if add_new_nodes_in_scene:
+                grouped_operation.addOperation(AddSceneNodeOperation(node, scene_root))
             grid_x, grid_y = grid_id
             operation = self.moveNodeOnGrid(node, grid_x, grid_y)
             grouped_operation.addOperation(operation)
