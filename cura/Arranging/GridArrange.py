@@ -54,6 +54,11 @@ class GridArrange(Arranger):
             self._fixed_nodes_grid_ids = self._fixed_nodes_grid_ids.union(
                 self.intersectingGridIdxInclusive(node.getBoundingBox()))
 
+        #grid indexes that are in disallowed area
+        for polygon in self._build_volume.getDisallowedAreas():
+            self._fixed_nodes_grid_ids = self._fixed_nodes_grid_ids.union(
+            self._getIntersectingGridIdForPolygon(polygon))
+
         self._build_plate_grid_ids = self.intersectingGridIdxExclusive(self._build_volume_bounding_box)
 
         # Filter out the corner grid squares if the build plate shape is elliptic
@@ -241,6 +246,32 @@ class GridArrange(Arranger):
         grid_x2, grid_y2 = self.coordSpaceToGridSpace(coord_x2, coord_y2)
         return grid_x1, grid_y1, grid_x2, grid_y2
 
+    def _getIntersectingGridIdForPolygon(self, polygon)-> Set[Tuple[int, int]]:
+        #       (x0, y0)
+        #       |
+        #       v
+        #       ┌─────────────┐
+        #       │             │
+        #       │             │
+        #       └─────────────┘  < (x1, y1)
+        x0 = float('inf')
+        y0 = float('inf')
+        x1 = float('-inf')
+        y1 = float('-inf')
+        grid_idx = set()
+        for [x, y] in polygon.getPoints():
+            x0 = min(x0, x)
+            y0 = min(y0, y)
+            x1 = max(x1, x)
+            y1 = max(y1, y)
+        grid_x1, grid_y1 = self.coordSpaceToGridSpace(x0, y0)
+        grid_x2, grid_y2 = self.coordSpaceToGridSpace(x1, y1)
+
+        for grid_x in range(math.floor(grid_x1), math.ceil(grid_x2)):
+            for grid_y in range(math.floor(grid_y1), math.ceil(grid_y2)):
+                grid_idx.add((grid_x, grid_y))
+        return grid_idx
+
     def intersectingGridIdxInclusive(self, bounding_box: "BoundingVolume") -> Set[Tuple[int, int]]:
         grid_x1, grid_y1, grid_x2, grid_y2 = self._getGridCornerPoints(bounding_box)
         grid_idx = set()
@@ -326,8 +357,25 @@ class GridArrange(Arranger):
                     />
                     """)
 
-            for grid_x in range(-10, 10):
-                for grid_y in range(-10, 10):
+            for polygon in self._build_volume.getDisallowedAreas():
+                    # Extract individual points and convert them to tuples
+
+                path_data = ""
+                for [x,y] in polygon.getPoints():
+                        path_data += f"{x},{y} "
+
+                f.write(
+                        f"""
+                        <polygon 
+                        points='{path_data}' 
+                        fill='#ff648888' 
+                        stroke='black' 
+                        stroke-width='2' 
+                        />
+                    """)
+
+            for grid_x in range(-10, 100):
+                for grid_y in range(-10, 100):
                     if (grid_x, grid_y) in self._allowed_grid_idx:
                         fill_color = "rgba(0, 255, 0, 0.5)"
                     elif (grid_x, grid_y) in self._build_plate_grid_ids:
