@@ -118,11 +118,40 @@ class GridArrange(Arranger):
 
             return
 
+        # If there are multiple fixed nodes, an optimal solution is not always possible
+        # We will try to find an offset that minimizes the number of grid intersections
+        # with fixed nodes. The algorithm below achieves this by utilizing a scanline
+        # algorithm. In this algorithm each axis is solved separately as offsetting
+        # is completely independent in each axis. The comments explaining the algorithm
+        # below are for the x-axis, but the same applies for the y-axis.
+        #
+        # Each node either occupies ceil((node.right - node.right) / grid_width) or
+        # ceil((node.right - node.right) / grid_width) + 1 grid squares. We will call
+        # these the node's "footprint".
+        #
+        #                      ┌────────────────┐
+        #   minimum food print │      NODE      │
+        #                      └────────────────┘
+        # │    grid 1   │    grid 2    │    grid 3    │    grid 4    |    grid 5    |
+        #                             ┌────────────────┐
+        #          maximum food print │      NODE      │
+        #                             └────────────────┘
+        #
+        # The algorithm will find the grid offset such that the number of nodes with
+        # a _minimal_ footprint is _maximized_.
+
+        # The scanline algorithm works as follows, we create events for both end points
+        # of each node's footprint. The event have two properties,
+        # - the coordinate: the amount the endpoint can move to the
+        #      left before it crosses a grid line
+        # - the change: either +1 or -1, indicating whether crossing the grid line
+        #      would result in a minimal footprint node becoming a maximal footprint
         class Event:
             def __init__(self, coord: float, change: float):
                 self.coord = coord
                 self.change = change
 
+        # create events for both the horizontal and vertical axis
         events_horizontal: List[Event] = []
         events_vertical: List[Event] = []
 
@@ -152,33 +181,39 @@ class GridArrange(Arranger):
         events_horizontal.sort(key=lambda event: event.coord)
         events_vertical.sort(key=lambda event: event.coord)
 
-        def findOptimalOffsetAxis(events: List[Event], interval: float) -> float:
-            prev_coord = events[-1].coord - interval
+        def findOptimalShiftAxis(events: List[Event], interval: float) -> float:
+            # executing the actual scanline algorithm
+            # iteratively go through events (left to right) and keep track of the
+            # current footprint. The optimal location is the one with the minimal
+            # footprint. If there are multiple locations with the same minimal
+            # footprint, the optimal location is the one with the largest range
+            # between the left and right endpoint of the footprint.
+            prev_offset = events[-1].coord - interval
+            current_minimal_footprint_count = 0
 
-            current_offset = 0
-
-            best_offset = float('inf')
-            best_coord_length = float('-inf')
-            best_coord = 0.0
+            best_minimal_footprint_count = float('inf')
+            best_offset_span = float('-inf')
+            best_offset = 0.0
 
             for event in events:
-                coord_length = event.coord - prev_coord
+                offset_span = event.coord - prev_offset
 
-                if current_offset < best_offset or (current_offset == best_offset and coord_length > best_coord_length):
-                    best_offset = current_offset
-                    best_coord_length = coord_length
-                    best_coord = event.coord
+                if current_minimal_footprint_count < best_minimal_footprint_count or (
+                        current_minimal_footprint_count == best_minimal_footprint_count and offset_span > best_offset_span):
+                    best_minimal_footprint_count = current_minimal_footprint_count
+                    best_offset_span = offset_span
+                    best_offset = event.coord
 
-                current_offset += event.change
-                prev_coord = event.coord
+                current_minimal_footprint_count += event.change
+                prev_offset = event.coord
 
-            return best_coord - best_coord_length * 0.5
+            return best_offset - best_offset_span * 0.5
 
         center_grid_x = 0.5 * self._grid_width
         center_grid_y = 0.5 * self._grid_height
 
-        optimal_center_x = self._grid_width - findOptimalOffsetAxis(events_horizontal, self._grid_width)
-        optimal_center_y = self._grid_height - findOptimalOffsetAxis(events_vertical, self._grid_height)
+        optimal_center_x = self._grid_width - findOptimalShiftAxis(events_horizontal, self._grid_width)
+        optimal_center_y = self._grid_height - findOptimalShiftAxis(events_vertical, self._grid_height)
 
         self._offset_x = optimal_center_x - center_grid_x
         self._offset_y = optimal_center_y - center_grid_y
