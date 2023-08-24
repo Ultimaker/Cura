@@ -114,6 +114,7 @@ from . import CameraAnimation
 from . import CuraActions
 from . import PlatformPhysics
 from . import PrintJobPreviewImageProvider
+from .Arranging.Nest2DArrange import Nest2DArrange
 from .AutoSave import AutoSave
 from .Machines.Models.CompatibleMachineModel import CompatibleMachineModel
 from .Machines.Models.MachineListModel import MachineListModel
@@ -1974,7 +1975,8 @@ class CuraApplication(QtApplication):
             if select_models_on_load:
                 Selection.add(node)
         try:
-            arrange(nodes_to_arrange, self.getBuildVolume(), fixed_nodes)
+            arranger = Nest2DArrange(nodes_to_arrange, self.getBuildVolume(), fixed_nodes)
+            arranger.arrange()
         except:
             Logger.logException("e", "Failed to arrange the models")
 
