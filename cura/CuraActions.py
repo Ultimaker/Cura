@@ -243,7 +243,7 @@ class CuraActions(QObject):
         # Add the new nodes to the scene, and arrange them
 
         arranger = GridArrange(nodes, application.getBuildVolume(), fixed_nodes)
-        group_operation, not_fit_count = arranger.createGroupOperationForArrange()
+        group_operation, not_fit_count = arranger.createGroupOperationForArrange(add_new_nodes_in_scene= True)
         group_operation.push()
 
         # deselect currently selected nodes, and select the new nodes
