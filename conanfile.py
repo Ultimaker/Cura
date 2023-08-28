@@ -304,6 +304,7 @@ class CuraConan(ConanFile):
         self.requires("boost/1.81.0")
         self.requires("pyarcus/(latest)@ultimaker/cura_10475")
         self.requires("curaengine/(latest)@ultimaker/cura_10446")
+        self.requires("curaengine_plugin_gradual_flow/(latest)@ultimaker/cura_10951")
         self.requires("pysavitar/5.2.2")
         self.requires("pynest2d/5.2.2")
         self.requires("uranium/(latest)@ultimaker/cura_10475")
@@ -395,6 +396,16 @@ class CuraConan(ConanFile):
         self.copy("*.pyi", src = "@libdirs", dst = self._site_packages)
         self.copy("*.dylib", src = "@libdirs", dst = self._script_dir)
 
+        if self.settings.arch == "x86_64" or self.settings.arch == "armv8":
+            # Copy the external plugins that we want to bundle with Cura
+            curaengine_plugin_gradual_flow = self.dependencies["curaengine_plugin_gradual_flow"].cpp_info
+            print(curaengine_plugin_gradual_flow.resdirs)
+            copy(self, "*.py", curaengine_plugin_gradual_flow.resdirs[0], str(self.source_path.joinpath("plugins", "CuraEngineGradualFlow")), keep_path = True)
+            copy(self, "*.json", curaengine_plugin_gradual_flow.resdirs[0], str(self.source_path.joinpath("plugins", "CuraEngineGradualFlow")), keep_path = True)
+            curaengine_plugin_gradual_flow_binary_path = self.source_path.joinpath("plugins", "CuraEngineGradualFlow", {"armv8": "arm64"}.get(str(self.settings.arch), str(self.settings.arch)), {"Macos": "Darwin"}.get(str(self.settings.os), str(self.settings.os)))
+            copy(self, "curaengine_plugin_gradual_flow.exe", curaengine_plugin_gradual_flow.bindirs[0], curaengine_plugin_gradual_flow_binary_path, keep_path = False)
+            copy(self, "curaengine_plugin_gradual_flow", curaengine_plugin_gradual_flow.bindirs[0], curaengine_plugin_gradual_flow_binary_path, keep_path = False)
+
     def deploy(self):
         # Copy CuraEngine.exe to bindirs of Virtual Python Environment
         curaengine = self.dependencies["curaengine"].cpp_info
@@ -476,6 +487,14 @@ echo "CURA_APP_NAME={{ cura_app_name }}" >> ${{ env_prefix }}GITHUB_ENV
                                         icon_path = "'{}'".format(os.path.join(self.package_folder, self.cpp_info.resdirs[2], self.conan_data["pyinstaller"]["icon"][str(self.settings.os)])).replace("\\", "\\\\"),
                                         entitlements_file = entitlements_file if self.settings.os == "Macos" else "None")
 
+        if self.settings.arch == "x86_64" or self.settings.arch == "armv8":
+            # Copy the external plugins that we want to bundle with Cura
+            curaengine_plugin_gradual_flow = self.dependencies["curaengine_plugin_gradual_flow"].cpp_info
+            copy(self, "*.py", curaengine_plugin_gradual_flow.resdirs[0], str(self._share_dir.joinpath("cura", "plugins")), keep_path = True)
+            copy(self, "*.json", curaengine_plugin_gradual_flow.resdirs[0], str(self._share_dir.joinpath("cura", "plugins")), keep_path = True)
+            curaengine_plugin_gradual_flow_binary_path = self._share_dir.joinpath("cura", "plugins", "CuraEngineGradualFlow", {"armv8": "arm64"}.get(str(self.settings.arch), str(self.settings.arch)), {"Macos": "Darwin"}.get(str(self.settings.os), str(self.settings.os)))
+            copy(self, "curaengine_plugin_gradual_flow.exe", curaengine_plugin_gradual_flow.bindirs[0], curaengine_plugin_gradual_flow_binary_path, keep_path = False)
+            copy(self, "curaengine_plugin_gradual_flow", curaengine_plugin_gradual_flow.bindirs[0], curaengine_plugin_gradual_flow_binary_path, keep_path = False)
 
     def package(self):
         copy(self, "cura_app.py", src = self.source_folder, dst = os.path.join(self.package_folder, self.cpp.package.bindirs[0]))
