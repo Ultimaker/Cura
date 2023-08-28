@@ -1,0 +1,29 @@
+{
+    "version": 2,
+    "name": "Dagoma Sigma Pro 500Z",
+    "inherits": "dagoma_delta",
+    "metadata":
+    {
+        "visible": true,
+        "author": "Dagoma",
+        "manufacturer": "Dagoma",
+        "file_formats": "text/x-gcode",
+        "platform": "dagoma_sigma_pro.obj",
+        "platform_texture": "dagoma_sigma_pro.png",
+        "first_start_actions": [ "MachineSettingsAction" ],
+        "has_machine_quality": true,
+        "has_variants": true,
+        "variants_name": "Nozzle",
+        "machine_extruder_trains": { "0": "dagoma_sigma_pro_extruder" }
+    },
+    "overrides":
+    {
+        "machine_heated_bed": { "default_value": true },
+        "machine_name": { "default_value": "Dagoma Sigma Pro 500Z" },
+        "machine_width": { "default_value": 200 },
+        "machine_depth": { "default_value": 200 },
+        "machine_height": { "default_value": 501 },
+        "machine_start_gcode": { "default_value": ";Start Gcode for {machine_name}\n;Author: Dagoma\n;Sliced: {date} {time}\n;Estimated print time: {print_time}\n;Print speed: {speed_print}mm/s\n;Layer height: {layer_height}mm\n;Wall thickness: {wall_thickness}mm\n;Infill density: {infill_sparse_density}%\n;Infill pattern: {infill_pattern}\n;Support: {support_enable}\n;Print temperature: {material_print_temperature}°C\n;Flow: {material_flow}%\n;Retraction amount: {retraction_amount}mm\n;Retraction speed: {retraction_retract_speed}mm/s\nG28 ;\nG90 ;absolute positioning\n;M190 S{material_bed_temperature_layer_0};\nM109 S140;\nG1 F200 E-1.0\nM106 S255 ;Activating layers fans\nG28 ;Homing\nG29 ;Calibration\nM107 ;Off Ventilateur\nM109 S{material_print_temperature_layer_0} ;Temperature for the first layer only\nG4 S30;\nG92 E0 ;Zero the extruded length again\nG1 E98 F3000\nG92 E0 ;Zero the extruded length again\nG1 F200 E-0.5\nG1 F{speed_travel}\nM117 Printing...\n" },
+        "machine_end_gcode": { "default_value": ";End Gcode for {machine_name}\n;Author: Dagoma\nM104 S0\nM107 ;stop fan\nM140 S0 ;heated bed heater off (if you have it)\nG91 ;relative positioning\nG91 ;Relative positioning\nG1 E-100 F6000;\nG1 E2 F500\nG0 Z15 ;Withdraw\nG90 ; Absolute positioning\nM0 Confirm Bed Free ;Wait user confirm to avoid hit\nG0 F2000 Z529\nM0 Click For Homing ;Wait user confirm to avoid hit\nG28" }
+    }
+}
