@@ -14,7 +14,10 @@
         "has_machine_quality": true,
         "has_variants": true,
         "variants_name": "Nozzle",
-        "machine_extruder_trains": { "0": "dagoma_sigma_pro_extruder" }
+        "machine_extruder_trains": { "0": "dagoma_sigma_pro_extruder" },
+        "preferred_quality_type": "h0.2",
+        "preferred_variant_name": "Brass 0.4mm",
+        "quality_definition": "dagoma_sigma_pro"
     },
     "overrides":
     {

@@ -17,7 +17,10 @@
         "machine_extruder_trains": { 
             "0": "dagoma_sigma_pro_dual_extruder_right",
             "1": "dagoma_sigma_pro_dual_extruder_left"
-        }
+        },
+        "preferred_quality_type": "h0.2",
+        "preferred_variant_name": "Brass 0.4mm",
+        "quality_definition": "dagoma_sigma_pro_dual"
     },
     "overrides":
     {
