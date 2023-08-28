@@ -144,14 +144,12 @@ jobs:
                     p12-password: ${{ secrets.MACOS_CERT_PASSPHRASE }}
 
             -   name: Get Conan configuration
-                run: conan config install https://github.com/Ultimaker/conan-config.git
+                run: |
+                    conan config install https://github.com/Ultimaker/conan-config.git
+                    conan config install https://github.com/Ultimaker/conan-config.git -a "-b runner/${{ runner.os }}/${{ runner.arch }}"
 
             -   name: Use Conan download cache (Bash)
                 run: conan config set storage.download_cache="$HOME/.conan/conan_download_cache"
-
-            -   name: Set architecture conan profile
-                if: ${{ inputs.architecture == 'X64' }}
-                run: conan profile update settings.arch=x86_64 default
 
             -   name: Create the Packages (Bash)
                 run: conan install $CURA_CONAN_VERSION ${{ inputs.conan_args }} --build=missing --update -if cura_inst -g VirtualPythonEnv -o cura:enterprise=$ENTERPRISE -o cura:staging=$STAGING --json "cura_inst/conan_install_info.json"
