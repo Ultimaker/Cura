@@ -144,7 +144,9 @@ jobs:
                 run: echo -n "$GPG_PRIVATE_KEY" | base64 --decode | gpg --import
 
             -   name: Get Conan configuration
-                run: conan config install https://github.com/Ultimaker/conan-config.git
+                run: |
+                    conan config install https://github.com/Ultimaker/conan-config.git
+                    conan config install https://github.com/Ultimaker/conan-config.git -a "-b runner/${{ runner.os }}/${{ runner.arch }}"
 
             -   name: Use Conan download cache (Bash)
                 run: conan config set storage.download_cache="$HOME/.conan/conan_download_cache"
