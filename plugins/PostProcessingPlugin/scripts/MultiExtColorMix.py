@@ -30,13 +30,19 @@ from cura.CuraApplication import CuraApplication
 import re
 
 class MultiExtColorMix(Script):
+<<<<<<< Updated upstream
     def __init__(self):
         super().__init__()
     # Enable the third extruder setting if there is one---------------------------------
+=======
+
+    # Enable the third extruder settings if there is one---------------------------------
+>>>>>>> Stashed changes
     def initialize(self) -> None:
         super().initialize()
             
         ext_cnt = Application.getInstance().getGlobalContainerStack().getProperty("machine_extruder_count", "value")
+<<<<<<< Updated upstream
         if ext_cnt > 2:
             enable_invis = True
         else:
@@ -50,6 +56,21 @@ class MultiExtColorMix(Script):
                 multi_present += 1
         if multi_present == 1:
             Message(text = "Multi-Extruder Color Mixer:" + "\n" + "You must have a Blending Hot End.  Extruders Share Heater' and 'Extruders Share Nozzle' must be enabled in the 'Printer Settings' in Cura.  Open 'MultiExtColorMix.py' in a text editor and review the opening lines for more instructions." + "\n").show()
+=======
+        enable_3rd_extruder = ext_cnt > 2
+        self._instance.setProperty("enable_3rd_extruder", "value", enable_3rd_extruder)
+    # Post a message if only a single instance of this post is running-------------------------------------------
+        multi_present = 0
+        try:
+            pp_name_list = Application.getInstance().getGlobalContainerStack().getMetaDataEntry("post_processing_scripts")
+            for pp_name in pp_name_list.split("\n"):
+                if "MultiExtColorMix" in pp_name:
+                    multi_present += 1
+            if multi_present == 1:
+                Message(text = "Multi-Extruder Color Mixer:" + "\n" + "You must have a Blending Hot End.  Extruders Share Heater' and 'Extruders Share Nozzle' must be enabled in the 'Printer Settings' in Cura." + "\n").show()
+        except:
+            all
+>>>>>>> Stashed changes
             
     def getSettingDataString(self):
         return """{
@@ -78,14 +99,24 @@ class MultiExtColorMix(Script):
                 "end_layer":
                 {
                     "label": "End Layer",
+<<<<<<< Updated upstream
                     "description": "Layer to end the mixing.  Use -1 for the top layer or the Cura preview layer you wish to end at.",
+=======
+                    "description": "Mixing stops at the end of this layer.  Use -1 for the top layer or the Cura preview layer that you wish to stop mixing at.",
+>>>>>>> Stashed changes
                     "type": "int",
                     "default_value": -1,
                     "minimum_value": -1
                 },
+<<<<<<< Updated upstream
                 "resume_ext":
                 {
                     "label": "    Resume Extruder",
+=======
+                "resume_ext_nr":
+                {
+                    "label": "    Resume Extruder #",
+>>>>>>> Stashed changes
                     "description": "The extruder to use after mixing ends.  The mixing extruder is 'Number of Extruders' + 1 (regardless of whether they are enabled or not, if the printer has 3 extruders then the mixer is Extruder #4).",
                     "type": "int",
                     "default_value": 1,
@@ -157,10 +188,17 @@ class MultiExtColorMix(Script):
                     "maximum_value_warning": "100",
                     "enabled": "T1_include and mix_style == 'gradient'"
                 },
+<<<<<<< Updated upstream
                 "invis_setting":
                 {
                     "label": "TEST:",
                     "description": "HIDDEN.  Sets 'T2_enable' visibility to true if there are 3 extruders.",
+=======
+                "enable_3rd_extruder":
+                {
+                    "label": "Enable 3rd Extruder:",
+                    "description": "Hidden from the user.  Sets 'T2_enable' visibility to true if there are 3 extruders.",
+>>>>>>> Stashed changes
                     "type": "bool",
                     "default_value": false,
                     "enabled": false
@@ -171,7 +209,11 @@ class MultiExtColorMix(Script):
                     "description": "For 3-in-1-out hot end Check if you want this extruder included in the Mix.",
                     "type": "bool",
                     "default_value": false,
+<<<<<<< Updated upstream
                     "enabled": "invis_setting"
+=======
+                    "enabled": "enable_3rd_extruder"
+>>>>>>> Stashed changes
                 },
                 "T2_mix_start":
                 {
@@ -253,6 +295,15 @@ class MultiExtColorMix(Script):
         purge_amt = str(self.getSettingValueByKey("purge_amt"))
         park_string = ""
         
+<<<<<<< Updated upstream
+=======
+        # If Extruder Count > 3 then inform the user that it only works with 3 -----------
+        if extruder_count > 3:
+            data[0] += ";  [Multi-Extruder Color Mixer] Did not run because - your printer has more than three extruders.\n"
+            Message(text = "[Color Mixer]: DID NOT RUN because the number of extruders is > 3.").show()
+            return data
+        
+>>>>>>> Stashed changes
         # If it is a single extruder printer or if only one extruder is enabled then exit with a message-----------
         if extruder_count == 1 or enabled_extruders < 2:
             data[0] += ";  Multi-Extruder Color Mixer did not run because - Single extruder printer or single extruder enabled\n"
@@ -261,7 +312,14 @@ class MultiExtColorMix(Script):
             
         # If the printer is not equipped with Shared Heater and Shared Nozzle then exit with a message------------------
         shared_heater = bool(MyCura.getProperty("machine_extruders_share_heater", "value"))
+<<<<<<< Updated upstream
         shared_nozzle = bool(MyCura.getProperty("machine_extruders_share_nozzle", "value"))
+=======
+        try:
+            shared_nozzle = bool(MyCura.getProperty("machine_extruders_share_nozzle", "value"))
+        except:
+            shared_nozzle = shared_heater
+>>>>>>> Stashed changes
         if not shared_heater and not shared_nozzle:
             Message(text = "Color Mixer: {}".format("This post is for machines with 'Shared Heaters' and 'Shared Nozzles'.  Separate hot ends won't work.  Those settings are NOT enabled in Cura.  The Post Process will exit.")).show()
             data[0] += ";  Multi-Extruder Color Mixer did not run because - 'Shared Heaters' and/or 'Shared Nozzles' are diabled in Cura.\n"
@@ -270,26 +328,45 @@ class MultiExtColorMix(Script):
         # Set variables---------------------------------------------------------------------
         start_layer = self.getSettingValueByKey("start_layer") - 1
         end_layer = self.getSettingValueByKey("end_layer")
+<<<<<<< Updated upstream
         layer_span = end_layer - start_layer
         resume_extruder = self.getSettingValueByKey("resume_ext")-1
         if resume_extruder > extruder_count: resume_extruder = extruder_count
         M164_extruder = extruder_count
+=======
+        resume_ext_nr = self.getSettingValueByKey("resume_ext_nr")-1
+        if resume_ext_nr > extruder_count: resume_ext_nr = extruder_count
+        M164_ext_nr = extruder_count
+>>>>>>> Stashed changes
         mix_style = self.getSettingValueByKey("mix_style")
         
         # Figure out the actual End Layer-------------------------------------------------------------
         if end_layer == -1:
+<<<<<<< Updated upstream
             end_layer = len(data)-3
         elif end_layer <= start_layer:
             end_layer = start_layer + 1
         else:
             end_layer -= 1            
         layer_span = end_layer - start_layer
+=======
+            end_layer = len(data)-2
+        elif end_layer <= start_layer:
+            end_layer = start_layer + 1
+        #else:
+            #end_layer -= 1
+        layer_span = end_layer - start_layer - 1
+>>>>>>> Stashed changes
         
         # If an extruder is enabled in Cura and included in this mix then calculate the 'Gradient' Indexing Factor------------
         if T0_include:
             T0_mix_start = int(self.getSettingValueByKey("T0_mix_start"))
             T0_mix_end = int(self.getSettingValueByKey("T0_mix_end"))
+<<<<<<< Updated upstream
             T0_ext_incr = ((T0_mix_start - T0_mix_end) / (layer_span - 1))
+=======
+            T0_ext_incr = (T0_mix_start - T0_mix_end) / (layer_span - 1)
+>>>>>>> Stashed changes
         else:
             T0_mix_start = 0
             T0_mix_end = 0
@@ -297,7 +374,11 @@ class MultiExtColorMix(Script):
         if T1_include:
             T1_mix_start = int(self.getSettingValueByKey("T1_mix_start"))
             T1_mix_end = int(self.getSettingValueByKey("T1_mix_end"))
+<<<<<<< Updated upstream
             T1_ext_incr = ((T1_mix_start - T1_mix_end) / (layer_span - 1))
+=======
+            T1_ext_incr = (T1_mix_start - T1_mix_end) / (layer_span - 1)
+>>>>>>> Stashed changes
         else:
             T1_mix_start = 0
             T1_mix_end = 0
@@ -305,7 +386,11 @@ class MultiExtColorMix(Script):
         if T2_include:
             T2_mix_start = int(self.getSettingValueByKey("T2_mix_start"))
             T2_mix_end = int(self.getSettingValueByKey("T2_mix_end"))
+<<<<<<< Updated upstream
             T2_ext_incr = ((T2_mix_start - T2_mix_end) / (layer_span - 1))
+=======
+            T2_ext_incr = (T2_mix_start - T2_mix_end) / (layer_span - 1)
+>>>>>>> Stashed changes
         else:
             T2_mix_start = 0
             T2_mix_end = 0
@@ -329,8 +414,13 @@ class MultiExtColorMix(Script):
             total_end_percent = 100
         if total_start_percent != 100 or total_end_percent != 100:
             textstring = "The post processor exited due to a 'Total Percentage' error. Start Total Percent = " + str(total_start_percent) + " EndTotalPercent = " + str(total_end_percent) + " Both sums must equal 100"
+<<<<<<< Updated upstream
             Message(text = "Color Mixer: {}".format(textstring)).show()
             data[0] += ";  Multi-Extruder Color Mixer did not run because - Start Total Percent = " + str(total_start_percent) + " EndTotalPercent = " + str(total_end_percent) + " Both sums must equal 100\n"
+=======
+            Message(text = "[Color Mixer]: {}".format(textstring)).show()
+            data[0] += ";  [Multi-Extruder Color Mixer] Did not run because Start Total Percent = " + str(total_start_percent) + " EndTotalPercent = " + str(total_end_percent) + " Both sums must equal 100\n"
+>>>>>>> Stashed changes
             return data
         
         # Put together the Reset String-----------------------------------------------------------
@@ -338,9 +428,15 @@ class MultiExtColorMix(Script):
             M163_reset = "M163 P0.50 S0" + "\nM163 P0.50 S1\n"
         if extruder_count == 3:
             M163_reset = "M163 P0.33 S0" + "\nM163 P0.34 S1\n" + "M163 P0.33 S2\n"
+<<<<<<< Updated upstream
         M163_reset += "M164 S" + str(M164_extruder) + "\n"
             
         # Put together the Initial Mix String----------------------------------------------------------    
+=======
+        M163_reset += "M164 S" + str(M164_ext_nr) + "\n"
+            
+        # Put together the Initial Mix String-----------------------------------   
+>>>>>>> Stashed changes
         if T0_include:
             M163_T0 = "\nM163 P" + str(T0_mix_start/100) + " S0"
         else:
@@ -353,13 +449,18 @@ class MultiExtColorMix(Script):
             M163_T2 = "\nM163 P" + str(T2_mix_start/100) + " S2"
         else:
             M163_T2 = ""
+<<<<<<< Updated upstream
         M164str = M163_T0 + M163_T1 + M163_T2 + "\nM164 S" + str(M164_extruder) + "\nT" + str(M164_extruder)
+=======
+        M164str = M163_T0 + M163_T1 + M163_T2 + "\nM164 S" + str(M164_ext_nr) + "\nT" + str(M164_ext_nr)
+>>>>>>> Stashed changes
         
         # If purge is selected--------------------------------------------------------
         initial_purge = ""
         start_purge = ""
         final_string = ""
         if park_head:
+<<<<<<< Updated upstream
             initial_purge = ParkAndPurge.park_script(0, data, park_x, park_y, purge_amt)[1]
         if park_head and M164_extruder != resume_extruder:
             start_purge = ParkAndPurge.park_script(start_layer, data, park_x, park_y, purge_amt)[1]
@@ -367,6 +468,15 @@ class MultiExtColorMix(Script):
             final_string = ParkAndPurge.park_script(end_layer, data, park_x, park_y, purge_amt)[0]
         
         # Check to see if a reset is already present and if so then move on-------------------------------
+=======
+            initial_purge = self.park_script(0, data, park_x, park_y, purge_amt)[1]
+        if park_head and M164_ext_nr != resume_ext_nr:
+            start_purge = self.park_script(start_layer, data, park_x, park_y, purge_amt)[1]
+        if park_head and self.getSettingValueByKey("end_layer") != -1:
+            final_string = self.park_script(end_layer, data, park_x, park_y, purge_amt)[0]
+        
+        # Check to see if a reset is already present (do to multiple instances of this post processor running) and if so then move on-------------------------------
+>>>>>>> Stashed changes
         reset_present = False
         start_up_sect = data[1]
         lines = start_up_sect.split("\n")
@@ -376,6 +486,7 @@ class MultiExtColorMix(Script):
                 reset_present = True
                 break
         if not reset_present:
+<<<<<<< Updated upstream
             INIT_str = M163_T0 + M163_T1 + M163_T2 + "\nM164 S" + str(M164_extruder) + "\nT" + str(init_extruder)
             if start_layer > 0: INIT_str += initial_purge
             lines = data[1].split("\n")
@@ -555,6 +666,255 @@ class MultiExtColorMix(Script):
         return data
         
 class ParkAndPurge:
+=======
+            init_str = M163_T0 + M163_T1 + M163_T2 + "\nM164 S" + str(M164_ext_nr) + "\nT" + str(init_extruder)
+            if start_layer > 0: init_str += initial_purge
+            lines = data[1].split("\n")
+            lines.insert(len(lines)-2, init_str[1:])
+            data[1] = "\n".join(lines)
+        
+        if mix_style == "constant":
+            self.processConstant(data,
+                                start_layer,
+                                end_layer,
+                                park_head,
+                                park_x,
+                                park_y,
+                                purge_amt,
+                                M164str,
+                                resume_ext_nr)
+        else:
+            self.processGradient(data,
+                                start_layer,
+                                end_layer,
+                                park_head,
+                                park_x,
+                                park_y,
+                                purge_amt,
+                                M164str,
+                                resume_ext_nr,
+                                T0_include,
+                                T0_mix_start,
+                                T0_ext_incr,
+                                T1_include,
+                                T1_mix_start,
+                                T1_ext_incr,
+                                T2_include,
+                                T2_mix_start,
+                                T2_ext_incr,
+                                M163_T0,
+                                M163_T1,
+                                M163_T2,
+                                M164_ext_nr)
+        if not reset_present:
+            data[len(data)-1] = M163_reset + "T" + str(resume_ext_nr) + "\n" + data[len(data)-1]
+        return data
+        
+    def processConstant(self,
+                        data: str,
+                        start_layer: int,
+                        end_layer: int,
+                        park_head: bool,
+                        park_x: str,
+                        park_y: str,
+                        purge_amt: str,
+                        M164str: str,
+                        resume_ext_nr: int) -> str:
+        pre_ret = False
+        post_prime = False
+        for index, layer in enumerate(data):
+            if ";LAYER:" + str(start_layer) + "\n" in layer:
+                lines = layer.split("\n")
+                # Is there a previous retraction and prime------------------------------
+                for line in lines:
+                    if re.search(" X(\d.*) Y(\d.*) E(\d.*)",line):
+                        post_prime = False
+                        break
+                    if re.search("G1 F(\d*) E(\d.*)", line):
+                        post_prime = True
+                        break
+                pre_lines = data[index-1].split("\n")
+                for pre_line in reversed(pre_lines):
+                    if re.search(" X(\d.*) Y(\d.*) E(\d.*)",pre_line):
+                        pre_ret = False
+                        break
+                    if re.search("G1 F(\d*) E(.\d*)", pre_line):
+                        pre_ret = True
+                        break
+                # Add the proper line for retraction/prime-------------------------------
+                if park_head:
+                    if not pre_ret and not post_prime:
+                        add_str = self.park_script(start_layer, data, park_x, park_y, purge_amt)[0]
+                    elif not pre_ret and post_prime:
+                        add_str = self.park_script(start_layer, data, park_x, park_y, purge_amt)[1]
+                    elif pre_ret and not post_prime:
+                        add_str = self.park_script(start_layer, data, park_x, park_y, purge_amt)[2]
+                    elif pre_ret and post_prime:
+                        add_str = self.park_script(start_layer, data, park_x, park_y, purge_amt)[3]
+                elif not park_head:
+                    add_str = ""
+                
+                data[index] = layer.replace(";LAYER:" + str(start_layer) + "\n", ";LAYER:" + str(start_layer) + M164str + add_str)
+            if ";LAYER:" + str(end_layer) in layer:
+                lines = layer.split("\n")
+                # retraction and prime------------------------------------------
+                for line in lines:
+                    if re.search(" X(\d.*) Y(\d.*) E(\d.*)",line):
+                        post_prime = False
+                        break
+                    if re.search("G1 F(\d*) E(\d.*)", line):
+                        post_prime = True
+                        break
+                pre_lines = data[index-1].split("\n")
+                for pre_line in reversed(pre_lines):
+                    if re.search(" X(\d.*) Y(\d.*) E(\d.*)",pre_line):
+                        pre_ret = False
+                        break
+                    if re.search("G1 F(\d*) E(.\d*)", pre_line):
+                        pre_ret = True
+                        break
+                # Add final line depending on retraction and prime-------------------------------        
+                if park_head:
+                    if not pre_ret and not post_prime:
+                        final_string = self.park_script(end_layer, data, park_x, park_y, purge_amt)[0]
+                    elif not pre_ret and post_prime:
+                        final_string = self.park_script(end_layer, data, park_x, park_y, purge_amt)[1]
+                    elif pre_ret and not post_prime:
+                        final_string = self.park_script(end_layer, data, park_x, park_y, purge_amt)[2]
+                    elif pre_ret and post_prime:
+                        final_string = self.park_script(end_layer, data, park_x, park_y, purge_amt)[3]
+                elif not park_head:
+                    final_string = ""
+                data[index] = data[index].replace(";LAYER:" + str(end_layer), ";LAYER:" + str(end_layer) + "\n" + "T" + str(resume_ext_nr) + final_string)
+                break
+        return
+    
+    def processGradient(self,
+                        data: str,
+                        start_layer: int,
+                        end_layer: int,
+                        park_head: bool,
+                        park_x: str,
+                        park_y: str,
+                        purge_amt: str,
+                        M164str: str,
+                        resume_ext_nr: int,
+                        T0_include: bool,
+                        T0_mix_start: int,
+                        T0_ext_incr: int,
+                        T1_include: bool,
+                        T1_mix_start: int,
+                        T1_ext_incr: int,
+                        T2_include:bool,
+                        T2_mix_start: int,
+                        T2_ext_incr: int,
+                        M163_T0: str,
+                        M163_T1: str,
+                        M163_T2: str,
+                        M164_ext_nr: int) -> str:
+        pre_ret = False
+        post_prime = False
+        for index, layer in enumerate(data):        
+            if ";LAYER:" + str(start_layer) + "\n" in layer:
+                lines = layer.split("\n")
+                # determine retraction and primes-------------------------------------------------
+                for line in lines:
+                    if re.search(" X(\d.*) Y(\d.*) E(\d.*)",line):
+                        post_prime = False
+                        break
+                    if re.search("G1 F(\d*) E(\d.*)", line):
+                        post_prime = True
+                        break
+                pre_lines = data[index-1].split("\n")
+                for pre_line in reversed(pre_lines):
+                    if re.search(" X(\d.*) Y(\d.*) E(\d.*)",pre_line):
+                        pre_ret = False
+                        break
+                    if re.search("G1 F(\d*) E(.\d*)", pre_line):
+                        pre_ret = True
+                        break
+                # Add the line depending on retraction and prime----------------------------        
+                if park_head:
+                    if not pre_ret and not post_prime:
+                        add_str = self.park_script(start_layer, data, park_x, park_y, purge_amt)[0]
+                    elif not pre_ret and post_prime:
+                        add_str = self.park_script(start_layer, data, park_x, park_y, purge_amt)[1]
+                    elif pre_ret and not post_prime:
+                        add_str = self.park_script(start_layer, data, park_x, park_y, purge_amt)[2]
+                    elif pre_ret and post_prime:
+                        add_str = self.park_script(start_layer, data, park_x, park_y, purge_amt)[3]
+                elif not park_head:
+                    add_str = ""
+                    
+                data[index] = data[index].replace(";LAYER:" + str(start_layer), ";LAYER:" + str(start_layer) + M164str + add_str)
+                for L in range(index + 1, len(data)-2):
+                    if T0_include:
+                        T0_mix_start -= T0_ext_incr
+                        if T0_mix_start > 100: T0_mix_start = 100
+                        if T0_mix_start < 0: T0_mix_start = 0
+                        M163_T0 = "\nM163 P" + str(round(T0_mix_start/100, 2)) + " S0"
+                    else:
+                        M163_T0 = ""
+                    if T1_include:
+                        T1_mix_start -= T1_ext_incr
+                        if T1_mix_start > 100: T1_mix_start = 100
+                        if T1_mix_start < 0: T1_mix_start = 0
+                        M163_T1 = "\nM163 P" + str(round(T1_mix_start/100, 2)) + " S1"
+                    else:
+                        M163_T1 = ""
+                    if T2_include:
+                        T2_mix_start -= T2_ext_incr
+                        if T2_mix_start > 100: T2_mix_start = 100
+                        if T2_mix_start < 0: T2_mix_start = 0
+                        M163_T2 = "\nM163 P" + str(round(T2_mix_start/100, 2)) + " S2"
+                    else:
+                        M163_T2 = ""
+                    M164str = M163_T0 + M163_T1 + M163_T2 + "\nM164 S" + str(M164_ext_nr) + "\nT" + str(M164_ext_nr) + "\n"
+                    try:
+                        lines = data[L].split("\n")
+                        layer_num = int(lines[0].split(":")[1])
+                        if layer_num < end_layer:
+                            data[L] = data[L].replace(";LAYER:" + str(layer_num) + "\n", ";LAYER:" + str(layer_num) + M164str)
+                        elif layer_num == end_layer:
+                            lines = layer.split("\n")
+                            # determine retraction and prime------------------------------------
+                            for line in lines:
+                                if re.search(" X(\d.*) Y(\d.*) E(\d.*)",line):
+                                    post_prime = False
+                                    break
+                                if re.search("G1 F(\d*) E(\d.*)", line):
+                                    post_prime = True
+                                    break
+                            pre_lines = data[index-1].split("\n")
+                            for pre_line in reversed(pre_lines):
+                                if re.search(" X(\d.*) Y(\d.*) E(\d.*)",pre_line):
+                                    pre_ret = False
+                                    break
+                                if re.search("G1 F(\d*) E(.\d*)", pre_line):
+                                    pre_ret = True
+                                    break
+                            # Add the final line depending on retraction and prime
+                            if park_head:
+                                if not pre_ret and not post_prime:
+                                    final_string = self.park_script(end_layer, data, park_x, park_y, purge_amt)[0]       
+                                elif not pre_ret and post_prime:
+                                    final_string = self.park_script(end_layer, data, park_x, park_y, purge_amt)[1]
+                                elif pre_ret and not post_prime:
+                                    final_string = self.park_script(end_layer, data, park_x, park_y, purge_amt)[2]
+                                elif pre_ret and post_prime:
+                                    final_string = self.park_script(end_layer, data, park_x, park_y, purge_amt)[3]
+                            elif not park_head:
+                                final_string = ""
+                            M164str = "\nT" + str(resume_ext_nr)
+                            data[L] = data[L].replace(";LAYER:" + str(end_layer), ";LAYER:" + str(end_layer) + M164str + final_string)
+                            break
+                    except:
+                        all
+                if layer_num == end_layer: break
+        return
+        
+    @staticmethod
+>>>>>>> Stashed changes
     def park_script(purge_layer: str, data: str, park_x: str, park_y: str, retract_amt: str) -> str:
         # Put together the park/purge lines to be inserted----------------------------
         MyCura = Application.getInstance().getGlobalContainerStack()
@@ -575,6 +935,7 @@ class ParkAndPurge:
                 for line in lines:
                     if line.startswith("G0") or line.startswith("G1") or line.startswith("G2") or line.startswith("G3"):
                         if " X" in line:
+<<<<<<< Updated upstream
                           xtemp = line.split("X")[1]
                           xloc = " X" + str(xtemp.split(" ")[0])
                         if " Y" in line:
@@ -583,6 +944,16 @@ class ParkAndPurge:
                             yloc = " Y" + str(ytemp.split(" ")[0])
                           except:
                             yloc = " Y" + str(ytemp)
+=======
+                            xtemp = line.split("X")[1]
+                            xloc = " X" + str(xtemp.split(" ")[0])
+                        if " Y" in line:
+                            ytemp = line.split("Y")[1]
+                            try:
+                                yloc = " Y" + str(ytemp.split(" ")[0])
+                            except:
+                                yloc = " Y" + str(ytemp)
+>>>>>>> Stashed changes
                     if xloc != "" and yloc != "":
                         break
         park_ret_prime = "\n; Color Mix Purge\nG91\nM83\n"
