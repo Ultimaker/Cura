@@ -124,6 +124,11 @@ jobs:
             -   name: Create the Packages (Powershell)
                 run: conan install $Env:CURA_CONAN_VERSION ${{ inputs.conan_args }} --build=missing --update -if cura_inst -g VirtualPythonEnv -o cura:enterprise=$Env:ENTERPRISE -o cura:staging=$Env:STAGING --json "cura_inst/conan_install_info.json"
 
+            -   name: Upload the Package(s)
+                if: always()
+                run: |
+                    conan upload "*" -r cura --all -c
+
             -   name: Set Environment variables for Cura (Powershell)
                 run: |
                     echo "${Env:WIX}\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append

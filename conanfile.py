@@ -10,7 +10,7 @@ from conan.tools.env import VirtualRunEnv, Environment, VirtualBuildEnv
 from conan.tools.scm import Version
 from conan.errors import ConanInvalidConfiguration, ConanException
 
-required_conan_version = ">=1.54 <=1.56.0 || >=1.58.0 <2.0.0"
+required_conan_version = ">=1.58.0 <2.0.0"
 
 
 class CuraConan(ConanFile):
@@ -301,7 +301,7 @@ class CuraConan(ConanFile):
             raise ConanInvalidConfiguration("Only versions 5+ are support")
 
     def requirements(self):
-        self.requires("boost/1.81.0")
+        self.requires("boost/1.82.0")
         self.requires("pyarcus/(latest)@ultimaker/cura_10951")
         self.requires("curaengine/(latest)@ultimaker/cura_10446")
         self.requires("pysavitar/(latest)@ultimaker/cura_10951")
