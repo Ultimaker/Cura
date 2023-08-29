@@ -366,7 +366,7 @@ class CuraConan(ConanFile):
             # Copy materials (flat)
             rmdir(self, os.path.join(self.source_folder, "resources", "materials"))
             fdm_materials = self.dependencies["fdm_materials"].cpp_info
-            copy(self, "*", fdm_materials.resdirs[0], str(self._share_dir.joinpath("cura")))
+            copy(self, "*", fdm_materials.resdirs[0], self.source_folder)
 
             # Copy internal resources
             if self.options.internal:
