@@ -60,6 +60,7 @@ Item
     property alias showProfileFolder: showProfileFolderAction
     property alias documentation: documentationAction
     property alias showTroubleshooting: showTroubleShootingAction
+    property alias openSponsershipPage: openSponsershipPageAction
     property alias reportBug: reportBugAction
     property alias whatsNew: whatsNewAction
     property alias about: aboutAction
@@ -88,6 +89,13 @@ Item
         id: showTroubleShootingAction
         onTriggered: Qt.openUrlExternally("https://ultimaker.com/en/troubleshooting?utm_source=cura&utm_medium=software&utm_campaign=dropdown-troubleshooting")
         text: catalog.i18nc("@action:inmenu", "Show Online Troubleshooting")
+    }
+
+    Action
+    {
+        id: openSponsershipPageAction
+        onTriggered: Qt.openUrlExternally("https://ultimaker.com/software/ultimaker-cura/sponsor/")
+        text: catalog.i18nc("@action:inmenu", "Sponsor Cura")
     }
 
     Action

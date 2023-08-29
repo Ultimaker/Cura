@@ -1,6 +1,6 @@
 # Copyright (c) 2015 Jaime van Kessel
 # Copyright (c) 2018 Ultimaker B.V.
-# The PostProcessingPlugin is released under the terms of the AGPLv3 or higher.
+# The PostProcessingPlugin is released under the terms of the LGPLv3 or higher.
 from typing import Optional, Any, Dict, TYPE_CHECKING, List
 
 from UM.Signal import Signal, signalemitter
