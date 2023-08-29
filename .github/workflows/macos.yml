@@ -154,6 +154,11 @@ jobs:
             -   name: Create the Packages (Bash)
                 run: conan install $CURA_CONAN_VERSION ${{ inputs.conan_args }} --build=missing --update -if cura_inst -g VirtualPythonEnv -o cura:enterprise=$ENTERPRISE -o cura:staging=$STAGING --json "cura_inst/conan_install_info.json"
 
+            -   name: Upload the Package(s)
+                if: always()
+                run: |
+                    conan upload "*" -r cura --all -c
+
             -   name: Set Environment variables for Cura (bash)
                 run: |
                     . ./cura_inst/bin/activate_github_actions_env.sh

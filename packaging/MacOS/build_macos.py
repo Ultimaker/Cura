@@ -153,6 +153,6 @@ if __name__ == "__main__":
     app_name = f"{args.app_name}.app"
 
     if args.build_pkg:
-        create_pkg_installer(args.filename + ".pkg", args.dist_path, cura_version, app_name)
+        create_pkg_installer(f"{args.filename}.pkg", args.dist_path, cura_version, app_name)
     if args.build_dmg:
-        create_dmg(args.filename + ".dmg", args.dist_path, args.source_path, app_name)
+        create_dmg(f"{args.filename}.dmg", args.dist_path, args.source_path, app_name)
