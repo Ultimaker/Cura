@@ -17,6 +17,7 @@ Cura.Menu
     Cura.MenuItem { action: Cura.Actions.showTroubleshooting}
     Cura.MenuItem { action: Cura.Actions.documentation }
     Cura.MenuItem { action: Cura.Actions.reportBug }
+    Cura.MenuItem { action: Cura.Actions.openSponsershipPage }
     Cura.MenuSeparator { }
     Cura.MenuItem { action: Cura.Actions.whatsNew }
     Cura.MenuItem { action: Cura.Actions.about }
