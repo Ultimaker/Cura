@@ -304,9 +304,9 @@ class CuraConan(ConanFile):
         self.requires("boost/1.81.0")
         self.requires("pyarcus/(latest)@ultimaker/cura_10951")
         self.requires("curaengine/(latest)@ultimaker/cura_10446")
+        self.requires("pysavitar/(latest)@ultimaker/cura_10951")
+        self.requires("pynest2d/(latest)@ultimaker/cura_10951")
         self.requires("curaengine_plugin_gradual_flow/(latest)@ultimaker/cura_10951")
-        self.requires("pysavitar/5.2.2")
-        self.requires("pynest2d/5.2.2")
         self.requires("uranium/(latest)@ultimaker/cura_10475")
         self.requires("cura_binary_data/(latest)@ultimaker/testing")
         self.requires("cpython/3.10.4")
@@ -399,7 +399,6 @@ class CuraConan(ConanFile):
         if self.settings.arch == "x86_64" or self.settings.arch == "armv8":
             # Copy the external plugins that we want to bundle with Cura
             curaengine_plugin_gradual_flow = self.dependencies["curaengine_plugin_gradual_flow"].cpp_info
-            print(curaengine_plugin_gradual_flow.resdirs)
             copy(self, "*.py", curaengine_plugin_gradual_flow.resdirs[0], str(self.source_path.joinpath("plugins", "CuraEngineGradualFlow")), keep_path = True)
             copy(self, "*.json", curaengine_plugin_gradual_flow.resdirs[0], str(self.source_path.joinpath("plugins", "CuraEngineGradualFlow")), keep_path = True)
             curaengine_plugin_gradual_flow_binary_path = self.source_path.joinpath("plugins", "CuraEngineGradualFlow", {"armv8": "arm64"}.get(str(self.settings.arch), str(self.settings.arch)), {"Macos": "Darwin"}.get(str(self.settings.os), str(self.settings.os)))
