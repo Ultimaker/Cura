@@ -98,7 +98,7 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
             Logger.error("No permission to write workspace to this stream.")
             return False
         except EnvironmentError as e:
-            self.setInformation(catalog.i18nc("@error:zip", "The operating system does not allow saving a project file to this location or with this file name."))
+            self.setInformation(catalog.i18nc("@error:zip", str(e)))
             Logger.error("EnvironmentError when writing workspace to this stream: {err}".format(err = str(e)))
             return False
         mesh_writer.setStoreArchive(False)
