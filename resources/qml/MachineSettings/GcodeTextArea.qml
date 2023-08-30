@@ -55,6 +55,7 @@ UM.TooltipArea
         }
 
         ScrollBar.vertical: UM.ScrollBar {}
+        clip: true
 
         TextArea.flickable: TextArea
         {
@@ -70,6 +71,7 @@ UM.TooltipArea
             selectionColor: UM.Theme.getColor("text_selection")
             selectedTextColor: UM.Theme.getColor("text")
             wrapMode: TextEdit.NoWrap
+            padding: -border.width //Take care of the border width to fit the text.
 
             onActiveFocusChanged:
             {
@@ -82,7 +84,6 @@ UM.TooltipArea
             background: Rectangle
             {
                 anchors.fill: parent
-                anchors.margins: -border.width //Wrap the border around the parent.
 
                 color: UM.Theme.getColor("detail_background")
                 border.color:
