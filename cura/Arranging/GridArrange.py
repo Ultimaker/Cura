@@ -45,7 +45,8 @@ class GridArrange(Arranger):
 
         coord_initial_leftover_x = self._build_volume_bounding_box.right + 2 * self._grid_width
         coord_initial_leftover_y = (self._build_volume_bounding_box.back + self._build_volume_bounding_box.front) * 0.5
-        self._initial_leftover_grid_x, self._initial_leftover_grid_y = self.coordSpaceToGridSpace(coord_initial_leftover_x, coord_initial_leftover_y)
+        self._initial_leftover_grid_x, self._initial_leftover_grid_y = self._coordSpaceToGridSpace(
+            coord_initial_leftover_x, coord_initial_leftover_y)
         self._initial_leftover_grid_x = math.floor(self._initial_leftover_grid_x)
         self._initial_leftover_grid_y = math.floor(self._initial_leftover_grid_y)
 
@@ -53,19 +54,19 @@ class GridArrange(Arranger):
         self._fixed_nodes_grid_ids = set()
         for node in self._fixed_nodes:
             self._fixed_nodes_grid_ids = self._fixed_nodes_grid_ids.union(
-                self.intersectingGridIdxInclusive(node.getBoundingBox()))
+                self._intersectingGridIdxInclusive(node.getBoundingBox()))
 
         #grid indexes that are in disallowed area
         for polygon in self._build_volume.getDisallowedAreas():
             self._fixed_nodes_grid_ids = self._fixed_nodes_grid_ids.union(
             self._getIntersectingGridIdForPolygon(polygon))
 
-        self._build_plate_grid_ids = self.intersectingGridIdxExclusive(self._build_volume_bounding_box)
+        self._build_plate_grid_ids = self._intersectingGridIdxExclusive(self._build_volume_bounding_box)
 
         # Filter out the corner grid squares if the build plate shape is elliptic
         if self._build_volume.getShape() == "elliptic":
             self._build_plate_grid_ids = set(
-                filter(lambda grid_id: self.checkGridUnderDiscSpace(grid_id[0], grid_id[1]),
+                filter(lambda grid_id: self._checkGridUnderDiscSpace(grid_id[0], grid_id[1]),
                        self._build_plate_grid_ids))
 
         self._allowed_grid_idx = self._build_plate_grid_ids.difference(self._fixed_nodes_grid_ids)
@@ -74,7 +75,8 @@ class GridArrange(Arranger):
         # Find the sequence in which items are placed
         coord_build_plate_center_x = self._build_volume_bounding_box.width * 0.5 + self._build_volume_bounding_box.left
         coord_build_plate_center_y = self._build_volume_bounding_box.depth * 0.5 + self._build_volume_bounding_box.back
-        grid_build_plate_center_x, grid_build_plate_center_y = self.coordSpaceToGridSpace(coord_build_plate_center_x, coord_build_plate_center_y)
+        grid_build_plate_center_x, grid_build_plate_center_y = self._coordSpaceToGridSpace(coord_build_plate_center_x,
+                                                                                           coord_build_plate_center_y)
 
         sequence: List[Tuple[int, int]] = list(self._allowed_grid_idx)
         sequence.sort(key=lambda grid_id: (grid_build_plate_center_x - grid_id[0]) ** 2 + (
@@ -243,8 +245,8 @@ class GridArrange(Arranger):
         coord_x2 = bounding_box.right
         coord_y1 = bounding_box.back
         coord_y2 = bounding_box.front
-        grid_x1, grid_y1 = self.coordSpaceToGridSpace(coord_x1, coord_y1)
-        grid_x2, grid_y2 = self.coordSpaceToGridSpace(coord_x2, coord_y2)
+        grid_x1, grid_y1 = self._coordSpaceToGridSpace(coord_x1, coord_y1)
+        grid_x2, grid_y2 = self._coordSpaceToGridSpace(coord_x2, coord_y2)
         return grid_x1, grid_y1, grid_x2, grid_y2
 
     def _getIntersectingGridIdForPolygon(self, polygon)-> Set[Tuple[int, int]]:
@@ -265,15 +267,15 @@ class GridArrange(Arranger):
             y0 = min(y0, y)
             x1 = max(x1, x)
             y1 = max(y1, y)
-        grid_x1, grid_y1 = self.coordSpaceToGridSpace(x0, y0)
-        grid_x2, grid_y2 = self.coordSpaceToGridSpace(x1, y1)
+        grid_x1, grid_y1 = self._coordSpaceToGridSpace(x0, y0)
+        grid_x2, grid_y2 = self._coordSpaceToGridSpace(x1, y1)
 
         for grid_x in range(math.floor(grid_x1), math.ceil(grid_x2)):
             for grid_y in range(math.floor(grid_y1), math.ceil(grid_y2)):
                 grid_idx.add((grid_x, grid_y))
         return grid_idx
 
-    def intersectingGridIdxInclusive(self, bounding_box: "BoundingVolume") -> Set[Tuple[int, int]]:
+    def _intersectingGridIdxInclusive(self, bounding_box: "BoundingVolume") -> Set[Tuple[int, int]]:
         grid_x1, grid_y1, grid_x2, grid_y2 = self._getGridCornerPoints(bounding_box)
         grid_idx = set()
         for grid_x in range(math.floor(grid_x1), math.ceil(grid_x2)):
@@ -281,7 +283,7 @@ class GridArrange(Arranger):
                 grid_idx.add((grid_x, grid_y))
         return grid_idx
 
-    def intersectingGridIdxExclusive(self, bounding_box: "BoundingVolume") -> Set[Tuple[int, int]]:
+    def _intersectingGridIdxExclusive(self, bounding_box: "BoundingVolume") -> Set[Tuple[int, int]]:
         grid_x1, grid_y1, grid_x2, grid_y2 = self._getGridCornerPoints(bounding_box)
         grid_idx = set()
         for grid_x in range(math.ceil(grid_x1), math.floor(grid_x2)):
@@ -294,23 +296,23 @@ class GridArrange(Arranger):
         grid_y = y * self._grid_height + self._build_volume_bounding_box.back + self._offset_y
         return grid_x, grid_y
 
-    def coordSpaceToGridSpace(self, grid_x: float, grid_y: float) -> Tuple[float, float]:
+    def _coordSpaceToGridSpace(self, grid_x: float, grid_y: float) -> Tuple[float, float]:
         coord_x = (grid_x - self._build_volume_bounding_box.left - self._offset_x) / self._grid_width
         coord_y = (grid_y - self._build_volume_bounding_box.back - self._offset_y) / self._grid_height
         return coord_x, coord_y
 
-    def checkGridUnderDiscSpace(self, grid_x: int, grid_y: int) -> bool:
+    def _checkGridUnderDiscSpace(self, grid_x: int, grid_y: int) -> bool:
         left, back = self._gridSpaceToCoordSpace(grid_x, grid_y)
         right, front = self._gridSpaceToCoordSpace(grid_x + 1, grid_y + 1)
         corners = [(left, back), (right, back), (right, front), (left, front)]
-        return all([self.checkPointUnderDiscSpace(x, y) for x, y in corners])
+        return all([self._checkPointUnderDiscSpace(x, y) for x, y in corners])
 
-    def checkPointUnderDiscSpace(self, x: float, y: float) -> bool:
-        disc_x, disc_y = self.coordSpaceToDiscSpace(x, y)
+    def _checkPointUnderDiscSpace(self, x: float, y: float) -> bool:
+        disc_x, disc_y = self._coordSpaceToDiscSpace(x, y)
         distance_to_center_squared = disc_x ** 2 + disc_y ** 2
         return distance_to_center_squared <= 1.0
 
-    def coordSpaceToDiscSpace(self, x: float, y: float) -> Tuple[float, float]:
+    def _coordSpaceToDiscSpace(self, x: float, y: float) -> Tuple[float, float]:
         # Transform coordinate system to
         #
         #       coord_build_plate_left = -1
