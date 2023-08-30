@@ -35,8 +35,9 @@ class GridArrange(Arranger):
         self._grid_height += self._margin_y
 
         # Round up the grid size to the nearest cm
-        self._grid_width = math.ceil(self._grid_width / 10) * 10
-        self._grid_height = math.ceil(self._grid_height / 10) * 10
+        grid_precision = 10  # 1cm
+        self._grid_width = math.ceil(self._grid_width / grid_precision) * grid_precision
+        self._grid_height = math.ceil(self._grid_height / grid_precision) * grid_precision
 
         self._offset_x = 0
         self._offset_y = 0
