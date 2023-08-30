@@ -353,6 +353,7 @@ class CuraConan(ConanFile):
             rmdir(self,str(self.source_path.joinpath("plugins", "CuraEngineGradualFlow")))
             curaengine_plugin_gradual_flow = self.dependencies["curaengine_plugin_gradual_flow"].cpp_info
             copy(self, "*", curaengine_plugin_gradual_flow.resdirs[0], str(self.source_path.joinpath("plugins", "CuraEngineGradualFlow")), keep_path = True, excludes = ".gitignore")
+            copy(self, "bundled_*.json", curaengine_plugin_gradual_flow.resdirs[0], str(self.source_path.joinpath("resources", "bundled_packages")), keep_path = False)
             curaengine_plugin_gradual_flow_binary_path = self.source_path.joinpath("plugins", "CuraEngineGradualFlow", {"armv8": "arm64"}.get(str(self.settings.arch), str(self.settings.arch)), {"Macos": "Darwin"}.get(str(self.settings.os), str(self.settings.os)))
             copy(self, "curaengine_plugin_gradual_flow.exe", curaengine_plugin_gradual_flow.bindirs[0], curaengine_plugin_gradual_flow_binary_path, keep_path = False)
             copy(self, "curaengine_plugin_gradual_flow", curaengine_plugin_gradual_flow.bindirs[0], curaengine_plugin_gradual_flow_binary_path, keep_path = False)
@@ -425,6 +426,7 @@ class CuraConan(ConanFile):
         # Copy the external plugins that we want to bundle with Cura
         curaengine_plugin_gradual_flow = self.dependencies["curaengine_plugin_gradual_flow"].cpp_info
         copy(self, "*", curaengine_plugin_gradual_flow.resdirs[0], str(self._share_dir.joinpath("cura", "plugins")), keep_path = True, excludes = ".gitignore")
+        copy(self, "bundled_*.json", curaengine_plugin_gradual_flow.resdirs[0], str(self._share_dir.joinpath("resources", "bundled_packages")), keep_path = False)
         curaengine_plugin_gradual_flow_binary_path = self._share_dir.joinpath("cura", "plugins", "CuraEngineGradualFlow", {"armv8": "arm64"}.get(str(self.settings.arch), str(self.settings.arch)), {"Macos": "Darwin"}.get(str(self.settings.os), str(self.settings.os)))
         copy(self, "curaengine_plugin_gradual_flow.exe", curaengine_plugin_gradual_flow.bindirs[0], curaengine_plugin_gradual_flow_binary_path, keep_path = False)
         copy(self, "curaengine_plugin_gradual_flow", curaengine_plugin_gradual_flow.bindirs[0], curaengine_plugin_gradual_flow_binary_path, keep_path = False)
