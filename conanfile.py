@@ -222,7 +222,7 @@ class CuraConan(ConanFile):
             if "package" in binary:  # get the paths from conan package
                 src_path = os.path.join(self.deps_cpp_info[binary["package"]].rootpath, binary["src"])
             elif "root" in binary:  # get the paths relative from the sourcefolder
-                src_path = str(self.source_path.joinpath(binary["root"], binary["src"]).as_posix())
+                src_path = str(self.source_path.joinpath(binary["root"], binary["src"]))
                 if self.settings.os == "Windows":
                     src_path = src_path.replace("\\", "\\\\")
             else:
@@ -354,7 +354,8 @@ class CuraConan(ConanFile):
             # Copy the external plugins that we want to bundle with Cura
             rmdir(self,str(self.source_path.joinpath("plugins", "CuraEngineGradualFlow")))
             curaengine_plugin_gradual_flow = self.dependencies["curaengine_plugin_gradual_flow"].cpp_info
-            copy(self, "*", curaengine_plugin_gradual_flow.resdirs[0], str(self.source_path.joinpath("plugins", "CuraEngineGradualFlow")), keep_path = True)
+            copy(self, "*.py", curaengine_plugin_gradual_flow.resdirs[0], str(self.source_path.joinpath("plugins", "CuraEngineGradualFlow")), keep_path = True)
+            copy(self, "*.json", curaengine_plugin_gradual_flow.resdirs[0], str(self.source_path.joinpath("plugins", "CuraEngineGradualFlow")), keep_path = True)
             copy(self, "bundled_*.json", curaengine_plugin_gradual_flow.resdirs[0], str(self.source_path.joinpath("resources", "bundled_packages")), keep_path = False)
             curaengine_plugin_gradual_flow_binary_path = self.source_path.joinpath("plugins", "CuraEngineGradualFlow", {"armv8": "arm64"}.get(str(self.settings.arch), str(self.settings.arch)), {"Macos": "Darwin"}.get(str(self.settings.os), str(self.settings.os)))
             copy(self, "curaengine_plugin_gradual_flow.exe", curaengine_plugin_gradual_flow.bindirs[0], curaengine_plugin_gradual_flow_binary_path, keep_path = False)
@@ -427,8 +428,9 @@ class CuraConan(ConanFile):
 
         # Copy the external plugins that we want to bundle with Cura
         curaengine_plugin_gradual_flow = self.dependencies["curaengine_plugin_gradual_flow"].cpp_info
-        copy(self, "*", curaengine_plugin_gradual_flow.resdirs[0], str(self._share_dir.joinpath("cura", "plugins")), keep_path = True)
-        copy(self, "bundled_*.json", curaengine_plugin_gradual_flow.resdirs[0], str(self._share_dir.joinpath("resources", "bundled_packages")), keep_path = False)
+        copy(self, "*.py", curaengine_plugin_gradual_flow.resdirs[0], str(self._share_dir.joinpath("cura", "plugins")), keep_path = True)
+        copy(self, "*.json", curaengine_plugin_gradual_flow.resdirs[0], str(self._share_dir.joinpath("cura", "plugins")), keep_path = True)
+        copy(self, "bundled_*.json", curaengine_plugin_gradual_flow.resdirs[0], str(self._share_dir.joinpath("cura", "resources", "bundled_packages")), keep_path = False)
         curaengine_plugin_gradual_flow_binary_path = self._share_dir.joinpath("cura", "plugins", "CuraEngineGradualFlow", {"armv8": "arm64"}.get(str(self.settings.arch), str(self.settings.arch)), {"Macos": "Darwin"}.get(str(self.settings.os), str(self.settings.os)))
         copy(self, "curaengine_plugin_gradual_flow.exe", curaengine_plugin_gradual_flow.bindirs[0], curaengine_plugin_gradual_flow_binary_path, keep_path = False)
         copy(self, "curaengine_plugin_gradual_flow", curaengine_plugin_gradual_flow.bindirs[0], curaengine_plugin_gradual_flow_binary_path, keep_path = False)
