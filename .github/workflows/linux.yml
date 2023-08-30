@@ -124,18 +124,11 @@ jobs:
                     chmod +x $GITHUB_WORKSPACE/appimagetool
                     echo "APPIMAGETOOL_LOCATION=$GITHUB_WORKSPACE/appimagetool" >> $GITHUB_ENV
 
-            -   name: Install GCC-12 on ubuntu-22.04
-                if: ${{ startsWith(inputs.operating_system, 'ubuntu-22.04') }}
+            -   name: Install GCC-13
                 run: |
-                    sudo apt install g++-12 gcc-12 -y
-                    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 12
-                    sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 12
-
-            -   name: Use GCC-10 on ubuntu-20.04
-                if: ${{ startsWith(inputs.operating_system, 'ubuntu-20.04') }}
-                run: |
-                    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 10
-                    sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 10
+                    sudo apt install g++-13 gcc-13 -y
+                    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 13
+                    sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 13
 
             -   name: Create the default Conan profile
                 run: conan profile new default --detect --force
