@@ -32,7 +32,7 @@
         "retraction_prime_speed": { "resolve": 25 },
         "retraction_retract_speed": { "resolve": 25 },
         "retraction_speed": { "resolve": 25 },
-        "speed_travel": { "300 if speed_print < 300 else speed_print * 1.25 if speed_print < 400 else 500" },
+        "speed_travel": { "value": "300 if speed_print < 300 else speed_print * 1.25 if speed_print < 400 else 500" },
         "speed_travel_layer_0": { "value": "200" }
     }
 }
