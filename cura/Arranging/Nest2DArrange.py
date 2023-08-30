@@ -124,7 +124,7 @@ class Nest2DArrange(Arranger):
 
         return found_solution_for_all, node_items
 
-    def createGroupOperationForArrange(self, add_new_nodes_in_scene: bool = False) -> Tuple[GroupedOperation, int]:
+    def createGroupOperationForArrange(self, *, add_new_nodes_in_scene: bool = False) -> Tuple[GroupedOperation, int]:
         scene_root = Application.getInstance().getController().getScene().getRoot()
         found_solution_for_all, node_items = self.findNodePlacement()
 
