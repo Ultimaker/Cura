@@ -41,7 +41,7 @@ Item
     property alias deleteAll: deleteAllAction
     property alias reloadAll: reloadAllAction
     property alias arrangeAll: arrangeAllAction
-    property alias arrangeSelection: arrangeSelectionAction
+    property alias arrangeAllGrid: arrangeAllGridAction
     property alias resetAllTranslation: resetAllTranslationAction
     property alias resetAll: resetAllAction
 
@@ -462,9 +462,10 @@ Item
 
     Action
     {
-        id: arrangeSelectionAction
-        text: catalog.i18nc("@action:inmenu menubar:edit","Arrange Selection")
-        onTriggered: Printer.arrangeSelection()
+        id: arrangeAllGridAction
+        text: catalog.i18nc("@action:inmenu menubar:edit","Arrange All Models in a grid")
+        onTriggered: Printer.arrangeAllInGrid()
+        shortcut: "Shift+Ctrl+R"
     }
 
     Action

@@ -54,7 +54,6 @@ from cura import ApplicationMetadata
 from cura.API import CuraAPI
 from cura.API.Account import Account
 from cura.Arranging.ArrangeObjectsJob import ArrangeObjectsJob
-from cura.Arranging.Nest2DArrange import arrange
 from cura.Machines.MachineErrorChecker import MachineErrorChecker
 from cura.Machines.Models.BuildPlateModel import BuildPlateModel
 from cura.Machines.Models.CustomQualityProfilesDropDownMenuModel import CustomQualityProfilesDropDownMenuModel
@@ -115,6 +114,7 @@ from . import CameraAnimation
 from . import CuraActions
 from . import PlatformPhysics
 from . import PrintJobPreviewImageProvider
+from .Arranging.Nest2DArrange import Nest2DArrange
 from .AutoSave import AutoSave
 from .Machines.Models.CompatibleMachineModel import CompatibleMachineModel
 from .Machines.Models.MachineListModel import MachineListModel
@@ -1447,6 +1447,13 @@ class CuraApplication(QtApplication):
     # Single build plate
     @pyqtSlot()
     def arrangeAll(self) -> None:
+        self._arrangeAll(grid_arrangement = False)
+
+    @pyqtSlot()
+    def arrangeAllInGrid(self) -> None:
+        self._arrangeAll(grid_arrangement = True)
+
+    def _arrangeAll(self, *, grid_arrangement: bool) -> None:
         nodes_to_arrange = []
         active_build_plate = self.getMultiBuildPlateModel().activeBuildPlate
         locked_nodes = []
@@ -1476,17 +1483,17 @@ class CuraApplication(QtApplication):
                         locked_nodes.append(node)
                     else:
                         nodes_to_arrange.append(node)
-        self.arrange(nodes_to_arrange, locked_nodes)
+        self.arrange(nodes_to_arrange, locked_nodes, grid_arrangement = grid_arrangement)
 
-    def arrange(self, nodes: List[SceneNode], fixed_nodes: List[SceneNode]) -> None:
+    def arrange(self, nodes: List[SceneNode], fixed_nodes: List[SceneNode], *,  grid_arrangement: bool = False) -> None:
         """Arrange a set of nodes given a set of fixed nodes
 
         :param nodes: nodes that we have to place
         :param fixed_nodes: nodes that are placed in the arranger before finding spots for nodes
+        :param grid_arrangement: If set to true if objects are to be placed in a grid
         """
-
         min_offset = self.getBuildVolume().getEdgeDisallowedSize() + 2  # Allow for some rounding errors
-        job = ArrangeObjectsJob(nodes, fixed_nodes, min_offset = max(min_offset, 8))
+        job = ArrangeObjectsJob(nodes, fixed_nodes, min_offset = max(min_offset, 8), grid_arrange = grid_arrangement)
         job.start()
 
     @pyqtSlot()
@@ -1980,7 +1987,8 @@ class CuraApplication(QtApplication):
             if select_models_on_load:
                 Selection.add(node)
         try:
-            arrange(nodes_to_arrange, self.getBuildVolume(), fixed_nodes)
+            arranger = Nest2DArrange(nodes_to_arrange, self.getBuildVolume(), fixed_nodes)
+            arranger.arrange()
         except:
             Logger.logException("e", "Failed to arrange the models")
 
