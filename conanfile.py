@@ -222,7 +222,9 @@ class CuraConan(ConanFile):
             if "package" in binary:  # get the paths from conan package
                 src_path = os.path.join(self.deps_cpp_info[binary["package"]].rootpath, binary["src"])
             elif "root" in binary:  # get the paths relative from the sourcefolder
-                src_path = os.path.join(self.source_folder, binary["root"], binary["src"])
+                src_path = str(self.source_path.joinpath(binary["root"], binary["src"]).as_posix())
+                if self.settings.os == "Windows":
+                    src_path = src_path.replace("\\", "\\\\")
             else:
                 continue
             if not Path(src_path).exists():
