@@ -200,14 +200,23 @@ class CuraEngineBackend(QObject, Backend):
         It assigns unique ports to each plugin to avoid conflicts.
         :return:
         """
+        self.stopPlugins()
+        backend_plugins = CuraApplication.getInstance().getBackendPlugins()
+        for backend_plugin in backend_plugins:
+            # Set the port to prevent plugins from using the same one.
+            if backend_plugin.getPort() < 1:
+                backend_plugin.setPort(self._last_backend_plugin_port)
+                self._last_backend_plugin_port += 1
+            backend_plugin.start()
+
+    def stopPlugins(self) -> None:
+        """
+        Ensure that all backend plugins will be terminated.
+        """
         backend_plugins = CuraApplication.getInstance().getBackendPlugins()
         for backend_plugin in backend_plugins:
             if backend_plugin.isRunning():
                 backend_plugin.stop()
-            # Set the port to prevent plugins from using the same one.
-            backend_plugin.setPort(self._last_backend_plugin_port)
-            self._last_backend_plugin_port += 1
-            backend_plugin.start()
 
     def _resetLastSliceTimeStats(self) -> None:
         self._time_start_process = None
@@ -395,6 +404,8 @@ class CuraEngineBackend(QObject, Backend):
             del self._stored_optimized_layer_data[self._start_slice_job_build_plate]
         if self._start_slice_job is not None:
             self._start_slice_job.cancel()
+
+        self.stopPlugins()
 
         self.slicingCancelled.emit()
         self.processingProgress.emit(0)
@@ -795,6 +806,8 @@ class CuraEngineBackend(QObject, Backend):
         :param message: The protobuf message signalling that slicing is finished.
         """
 
+        self.stopPlugins()
+
         self.setState(BackendState.Done)
         self.processingProgress.emit(1.0)
         self._time_end_slice = time()
@@ -1009,7 +1022,6 @@ class CuraEngineBackend(QObject, Backend):
 
         We should reset our state and start listening for new connections.
         """
-
         if not self._restart:
             if self._process: # type: ignore
                 return_code = self._process.wait()
@@ -1020,6 +1032,7 @@ class CuraEngineBackend(QObject, Backend):
                     self.stopSlicing()
                 else:
                     Logger.log("d", "Backend finished slicing. Resetting process and socket.")
+                    self.stopPlugins()
                 self._process = None # type: ignore
 
     def _reportBackendError(self, _message_id: str, _action_id: str) -> None:
