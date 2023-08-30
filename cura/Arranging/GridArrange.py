@@ -138,11 +138,11 @@ class GridArrange(Arranger):
         # these the node's "footprint".
         #
         #                      ┌────────────────┐
-        #   minimum food print │      NODE      │
+        #   minimum foot-print │      NODE      │
         #                      └────────────────┘
         # │    grid 1   │    grid 2    │    grid 3    │    grid 4    |    grid 5    |
         #                             ┌────────────────┐
-        #          maximum food print │      NODE      │
+        #          maximum foot-print │      NODE      │
         #                             └────────────────┘
         #
         # The algorithm will find the grid offset such that the number of nodes with
