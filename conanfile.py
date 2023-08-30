@@ -352,8 +352,7 @@ class CuraConan(ConanFile):
             # Copy the external plugins that we want to bundle with Cura
             rmdir(self,str(self.source_path.joinpath("plugins", "CuraEngineGradualFlow")))
             curaengine_plugin_gradual_flow = self.dependencies["curaengine_plugin_gradual_flow"].cpp_info
-            copy(self, "*.py", curaengine_plugin_gradual_flow.resdirs[0], str(self.source_path.joinpath("plugins", "CuraEngineGradualFlow")), keep_path = True)
-            copy(self, "*.json", curaengine_plugin_gradual_flow.resdirs[0], str(self.source_path.joinpath("plugins", "CuraEngineGradualFlow")), keep_path = True)
+            copy(self, "*", curaengine_plugin_gradual_flow.resdirs[0], str(self.source_path.joinpath("plugins", "CuraEngineGradualFlow")), keep_path = True, excludes = ".gitignore")
             curaengine_plugin_gradual_flow_binary_path = self.source_path.joinpath("plugins", "CuraEngineGradualFlow", {"armv8": "arm64"}.get(str(self.settings.arch), str(self.settings.arch)), {"Macos": "Darwin"}.get(str(self.settings.os), str(self.settings.os)))
             copy(self, "curaengine_plugin_gradual_flow.exe", curaengine_plugin_gradual_flow.bindirs[0], curaengine_plugin_gradual_flow_binary_path, keep_path = False)
             copy(self, "curaengine_plugin_gradual_flow", curaengine_plugin_gradual_flow.bindirs[0], curaengine_plugin_gradual_flow_binary_path, keep_path = False)
@@ -417,19 +416,18 @@ class CuraConan(ConanFile):
         copy(self, "CuraEngine.exe", curaengine.bindirs[0], str(self._base_dir), keep_path = False)
         copy(self, "CuraEngine", curaengine.bindirs[0], str(self._base_dir), keep_path = False)
 
-        # Copy the external plugins that we want to bundle with Cura
-        curaengine_plugin_gradual_flow = self.dependencies["curaengine_plugin_gradual_flow"].cpp_info
-        copy(self, "*.py", curaengine_plugin_gradual_flow.resdirs[0], str(self._share_dir.joinpath("cura", "plugins")), keep_path = True)
-        copy(self, "*.json", curaengine_plugin_gradual_flow.resdirs[0], str(self._share_dir.joinpath("cura", "plugins")), keep_path = True)
-        curaengine_plugin_gradual_flow_binary_path = self._share_dir.joinpath("cura", "plugins", "CuraEngineGradualFlow", {"armv8": "arm64"}.get(str(self.settings.arch), str(self.settings.arch)), {"Macos": "Darwin"}.get(str(self.settings.os), str(self.settings.os)))
-        copy(self, "curaengine_plugin_gradual_flow.exe", curaengine_plugin_gradual_flow.bindirs[0], curaengine_plugin_gradual_flow_binary_path, keep_path = False)
-        copy(self, "curaengine_plugin_gradual_flow", curaengine_plugin_gradual_flow.bindirs[0], curaengine_plugin_gradual_flow_binary_path, keep_path = False)
-
         # Copy resources of Cura (keep folder structure)
         copy(self, "*", os.path.join(self.package_folder, self.cpp_info.bindirs[0]), str(self._base_dir), keep_path = False)
         copy(self, "*", os.path.join(self.package_folder, self.cpp_info.libdirs[0]), str(self._site_packages.joinpath("cura")), keep_path = True)
         copy(self, "*", os.path.join(self.package_folder, self.cpp_info.resdirs[0]), str(self._share_dir.joinpath("cura", "resources")), keep_path = True)
         copy(self, "*", os.path.join(self.package_folder, self.cpp_info.resdirs[1]), str(self._share_dir.joinpath("cura", "plugins")), keep_path = True)
+
+        # Copy the external plugins that we want to bundle with Cura
+        curaengine_plugin_gradual_flow = self.dependencies["curaengine_plugin_gradual_flow"].cpp_info
+        copy(self, "*", curaengine_plugin_gradual_flow.resdirs[0], str(self._share_dir.joinpath("cura", "plugins")), keep_path = True, excludes = ".gitignore")
+        curaengine_plugin_gradual_flow_binary_path = self._share_dir.joinpath("cura", "plugins", "CuraEngineGradualFlow", {"armv8": "arm64"}.get(str(self.settings.arch), str(self.settings.arch)), {"Macos": "Darwin"}.get(str(self.settings.os), str(self.settings.os)))
+        copy(self, "curaengine_plugin_gradual_flow.exe", curaengine_plugin_gradual_flow.bindirs[0], curaengine_plugin_gradual_flow_binary_path, keep_path = False)
+        copy(self, "curaengine_plugin_gradual_flow", curaengine_plugin_gradual_flow.bindirs[0], curaengine_plugin_gradual_flow_binary_path, keep_path = False)
 
         # Copy materials (flat)
         fdm_materials = self.dependencies["fdm_materials"].cpp_info
