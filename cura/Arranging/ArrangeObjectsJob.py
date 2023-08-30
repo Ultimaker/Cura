@@ -32,17 +32,18 @@ class ArrangeObjectsJob(Job):
                                  title = i18n_catalog.i18nc("@info:title", "Finding Location"))
         status_message.show()
 
+        if self._grid_arrange:
+            arranger = GridArrange(self._nodes, Application.getInstance().getBuildVolume(), self._fixed_nodes)
+        else:
+            arranger = Nest2DArrange(self._nodes, Application.getInstance().getBuildVolume(), self._fixed_nodes,
+                                     factor=1000)
+
+        found_solution_for_all = False
         try:
-            if self._grid_arrange:
-                arranger = GridArrange(self._nodes, Application.getInstance().getBuildVolume(), self._fixed_nodes)
-            else:
-                arranger = Nest2DArrange(self._nodes, Application.getInstance().getBuildVolume(), self._fixed_nodes,
-                                         factor=1000)
-
             found_solution_for_all = arranger.arrange()
-
         except:  # If the thread crashes, the message should still close
-            Logger.logException("e", "Unable to arrange the objects on the buildplate. The arrange algorithm has crashed.")
+            Logger.logException("e",
+                                "Unable to arrange the objects on the buildplate. The arrange algorithm has crashed.")
 
         status_message.hide()
 
