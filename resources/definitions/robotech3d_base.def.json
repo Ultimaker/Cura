@@ -98,7 +98,7 @@
         "acceleration_layer_0":                         { "value": 1800 },
         "acceleration_travel_layer_0":                  { "value": 1800 },
         "acceleration_roofing":                         { "value": 1800 },
-        "jerk_enabled":                                 { "default_value": false },
+        
         "jerk_wall_0":                                  { "value": 10 },
         "jerk_roofing":                                 { "value": 10 }
     }
