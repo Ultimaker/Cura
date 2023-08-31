@@ -1,0 +1,21 @@
+{
+    "name": "Infinity XL",
+    "version": 2,
+    "inherits": "robotech3d_base",
+    "metadata":
+    {
+        "visible": true,
+        "quality_definition": "robotech3d_base",
+        "platform": "Infinity XL.obj",
+        "platform_offset":[0,-8,0]
+    },
+    "overrides":
+    {
+        "machine_name":     { "default_value": "Infinity XL" },
+        "machine_width":    { "default_value": 1350 },
+        "machine_depth":    { "default_value": 1200 },
+        "machine_height":   { "default_value": 270 },
+        "machine_head_with_fans_polygon": { "default_value": [ [-60, 10], [-60, -110], [45, -110], [45, 10] ] },
+        "gantry_height":    { "value": 270 }
+    }
+}

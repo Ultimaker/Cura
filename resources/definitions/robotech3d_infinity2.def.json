@@ -1,0 +1,22 @@
+{
+    "name": "Infinity 2",
+    "version": 2,
+    "inherits": "robotech3d_base",
+    "metadata":
+    {
+        "visible": true,
+        "quality_definition": "robotech3d_base",
+        "platform": "Infinity 2.obj",
+        "platform_offset":[-130,0,0]
+    },
+    "overrides":
+    {
+        "machine_name":     { "default_value": "Infinity 2" },
+        "machine_width":    { "default_value": 1300 },
+        "machine_depth":    { "default_value": 650 },
+        "machine_height":   { "default_value": 160 },
+        "machine_head_with_fans_polygon": { "default_value": [ [-60, 10], [-60, -110], [45, -110], [45, 10] ] },
+        "gantry_height":    { "value": 190 }
+
+    }
+}
