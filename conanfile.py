@@ -305,7 +305,7 @@ class CuraConan(ConanFile):
     def requirements(self):
         self.requires("boost/1.82.0")
         self.requires("pyarcus/(latest)@ultimaker/cura_10951")
-        self.requires("curaengine/(latest)@ultimaker/cura_10446")
+        self.requires("curaengine/(latest)@ultimaker/cura_10475")
         self.requires("pysavitar/(latest)@ultimaker/cura_10951")
         self.requires("pynest2d/(latest)@ultimaker/cura_10951")
         self.requires("curaengine_plugin_gradual_flow/(latest)@ultimaker/cura_10951")
