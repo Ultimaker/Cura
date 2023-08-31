@@ -88,7 +88,6 @@
         "line_width":                                   { "value": "machine_nozzle_size * 1.125" },
         "wall_line_width":                              { "value": "machine_nozzle_size" },
         
-        "meshfix_maximum_resolution":                   { "default_value": 0.01 },
         "infill_before_walls":                          { "default_value": false },
         "zig_zaggify_infill":                           { "value": true },
         "min_infill_area":                              { "default_value": 5.0 }
