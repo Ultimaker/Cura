@@ -120,7 +120,7 @@ Item
 
                     validator: RegularExpressionValidator
                     {
-                        regularExpression: /([a-fA-F0-9.:]+)?/
+                        regularExpression: /([a-fA-F0-9.:\?\/]+)?/
                     }
 
                     onTextEdited: invalidInputLabel.visible = false
