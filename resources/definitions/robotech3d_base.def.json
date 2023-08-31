@@ -81,7 +81,7 @@
         "alternate_extra_perimeter":                    { "default_value": true },
         "cool_min_layer_time_fan_speed_max":            { "default_value": 20 },
         "cool_min_layer_time":                          { "default_value": 15 },
-        "cool_fan_speed_min":                           { "value": "cool_fan_speed" },
+        
         "cool_fan_full_at_height":                      { "value": "resolveOrValue('layer_height_0') + resolveOrValue('layer_height') * max(1, cool_fan_full_layer - 1)" },
         "cool_fan_full_layer":                          { "value": 4 },
         "layer_height_0":                               { "resolve": "max(0.2, min(extruderValues('layer_height')))" },
