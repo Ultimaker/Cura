@@ -6,8 +6,8 @@
     {
         "visible": true,
         "quality_definition": "robotech3d_base",
-        "platform": "Infinity 2.obj",
-        "platform_offset":[-130,0,0]
+        "platform": "robotech3d-infinity-2.3mf",
+        "platform_offset":[0,330,0]
     },
     "overrides":
     {

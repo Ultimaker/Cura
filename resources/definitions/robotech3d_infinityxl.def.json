@@ -6,7 +6,7 @@
     {
         "visible": true,
         "quality_definition": "robotech3d_base",
-        "platform": "Infinity XL.obj",
+        "platform": "robotech3d-infinity-xl.3mf",
         "platform_offset":[0,-8,0]
     },
     "overrides":
