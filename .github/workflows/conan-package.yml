@@ -114,7 +114,7 @@ jobs:
         run: conan config install https://github.com/Ultimaker/conan-config.git
 
       - name: Create the Packages
-        run: conan create . ${{ needs.conan-recipe-version.outputs.recipe_id_full }} --build=missing --update -o ${{ needs.conan-recipe-version.outputs.project_name }}:devtools=True
+        run: conan create . ${{ needs.conan-recipe-version.outputs.recipe_id_full }} --build=missing --update -o ${{ needs.conan-recipe-version.outputs.project_name }}:devtools=True -c tools.build:skip_test=True
 
       - name: Create the latest alias
         if: always()

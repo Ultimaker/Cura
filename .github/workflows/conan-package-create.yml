@@ -147,7 +147,7 @@ jobs:
                 run: conan remote add cura-private https://ultimaker.jfrog.io/artifactory/api/conan/cura-private True
 
             -   name: Create the Packages
-                run: conan install ${{ inputs.recipe_id_full }} --build=missing --update
+                run: conan install ${{ inputs.recipe_id_full }} --build=missing --update -c tools.build:skip_test=True
 
             -   name: Upload the Package(s)
                 if: ${{ always() && inputs.conan_upload_community }}

@@ -83,7 +83,7 @@ jobs:
 
             -   name: Export the Package (binaries)
                 if: ${{ inputs.conan_export_binaries }}
-                run: conan create . ${{ inputs.recipe_id_full }} --build=missing --update
+                run: conan create . ${{ inputs.recipe_id_full }} --build=missing --update -c tools.build:skip_test=True
 
             -   name: Export the Package
                 if: ${{ !inputs.conan_export_binaries }}
