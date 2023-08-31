@@ -306,6 +306,7 @@ class CuraConan(ConanFile):
     def requirements(self):
         self.requires("boost/1.82.0")
         self.requires("curaengine_grpc_definitions/latest@ultimaker/testing")
+        self.requires("zlib/1.2.13")
         self.requires("pyarcus/(latest)@ultimaker/cura_10951")
         self.requires("curaengine/(latest)@ultimaker/cura_10475")
         self.requires("pysavitar/(latest)@ultimaker/cura_10951")
