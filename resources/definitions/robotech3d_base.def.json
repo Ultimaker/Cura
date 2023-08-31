@@ -75,7 +75,7 @@
         "wall_overhang_speed_factor":                   { "default_value": 50 },
         "bridge_settings_enabled":                      { "default_value": true },
         "bridge_wall_coast":                            { "default_value": 10 },
-        "bridge_fan_speed":                             { "default_value": 100 },
+        
         "bridge_fan_speed_2":                           { "resolve": "max(cool_fan_speed, 50)" },
         "bridge_fan_speed_3":                           { "resolve": "max(cool_fan_speed, 20)" },
         "alternate_extra_perimeter":                    { "default_value": true },
