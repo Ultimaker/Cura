@@ -826,8 +826,8 @@ UM.MainWindow
     {
         id: addMachineDialog
         title: catalog.i18nc("@title:window", "Add Printer")
-        maximumWidth: undefined
-        maximumHeight: undefined
+        maximumWidth: Screen.width * 2
+        maximumHeight: Screen.height * 2
         model: CuraApplication.getAddPrinterPagesModel()
         progressBarVisible: false
     }
