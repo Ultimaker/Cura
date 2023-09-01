@@ -40,7 +40,9 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
 
         # Indicate that the 3mf mesh writer should not close the archive just yet (we still need to add stuff to it).
         mesh_writer.setStoreArchive(True)
-        mesh_writer.write(stream, nodes, mode)
+        if not mesh_writer.write(stream, nodes, mode):
+            self.setInformation(mesh_writer.getInformation())
+            return False
 
         archive = mesh_writer.getArchive()
         if archive is None:  # This happens if there was no mesh data to write.
