@@ -71,7 +71,7 @@ UM.TooltipArea
             selectionColor: UM.Theme.getColor("text_selection")
             selectedTextColor: UM.Theme.getColor("text")
             wrapMode: TextEdit.NoWrap
-            padding: -border.width //Take care of the border width to fit the text.
+            padding: UM.Theme.getSize("narrow_margin").height + backgroundRectangle.border.width
 
             onActiveFocusChanged:
             {
@@ -83,6 +83,8 @@ UM.TooltipArea
 
             background: Rectangle
             {
+                id: backgroundRectangle
+
                 anchors.fill: parent
 
                 color: UM.Theme.getColor("detail_background")
