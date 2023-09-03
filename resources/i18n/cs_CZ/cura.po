@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-07-04 11:54+0000\n"
-"PO-Revision-Date: 2023-02-16 20:28+0100\n"
+"PO-Revision-Date: 2023-09-03 18:15+0200\n"
 "Last-Translator: Miroslav Šustek <sustmidown@centrum.cz>\n"
 "Language-Team: DenyCZ <www.github.com/DenyCZ>\n"
 "Language: cs_CZ\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.3.2\n"
 
 #, python-format
 msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm."
@@ -506,7 +506,7 @@ msgstr "Model se může jevit velmi malý, pokud je jeho jednotka například v 
 
 msgctxt "@label"
 msgid "Annealing"
-msgstr ""
+msgstr "Žíhání"
 
 msgctxt "@label"
 msgid "Anonymous"
@@ -555,7 +555,7 @@ msgstr "Opravdu chcete tiskárnu {printer_name} dočasně odebrat?"
 
 msgctxt "@info:question"
 msgid "Are you sure you want to start a new project? This will clear the build plate and any unsaved settings."
-msgstr ""
+msgstr "Opravdu chcete začít nový projekt? Tímto vyčistíte podložku a zrušíte neuložená nastavení."
 
 msgctxt "@label (%1 is object name)"
 msgid "Are you sure you wish to remove %1? This cannot be undone!"
@@ -1160,7 +1160,7 @@ msgstr "Verze Cura"
 
 msgctxt "name"
 msgid "CuraEngine Backend"
-msgstr ""
+msgstr "CuraEngine Backend"
 
 msgctxt "@label"
 msgid "Currency:"
@@ -1682,7 +1682,7 @@ msgstr "Kontroler aktualizace firmwaru"
 
 msgctxt "name"
 msgid "Firmware Updater"
-msgstr ""
+msgstr "Aktualizace Firmware"
 
 msgctxt "@label"
 msgid "Firmware can not be updated because the connection with the printer does not support upgrading firmware."
@@ -1814,7 +1814,7 @@ msgstr "Obrázek GIF"
 
 msgctxt "@label Description for application dependency"
 msgid "GUI framework"
-msgstr ""
+msgstr "GUI framework"
 
 msgctxt "@label Description for application dependency"
 msgid "GUI framework bindings"
@@ -2119,7 +2119,7 @@ msgstr "Obrázek JPG"
 
 msgctxt "@label Description for application dependency"
 msgid "JSON parser"
-msgstr ""
+msgstr "JSON parser"
 
 msgctxt "@label"
 msgid "Job Name"
@@ -2235,7 +2235,7 @@ msgstr "Lineární"
 
 msgctxt "@label Description for development tool"
 msgid "Linux cross-distribution application deployment"
-msgstr ""
+msgstr "Sestavování Linux aplikací nezávislých na distribuci"
 
 msgctxt "@label"
 msgid "Load %3 as material %1 (This cannot be overridden)."
@@ -2840,7 +2840,7 @@ msgstr "Přesahy na tomto modelu nejsou podporovány."
 
 msgctxt "@action:button"
 msgid "Override"
-msgstr ""
+msgstr "Přepsat"
 
 msgctxt "@label"
 msgid "Override will use the specified settings with the existing printer configuration. This may result in a failed print."
@@ -3030,7 +3030,7 @@ msgstr "Knihovna pro plošnou optimalizaci vyvinutá Prusa Research"
 
 msgctxt "@item:inmenu"
 msgid "Post Processing"
-msgstr ""
+msgstr "Post Processing"
 
 msgctxt "name"
 msgid "Post Processing"
@@ -3961,7 +3961,7 @@ msgstr "Přihlásit se"
 
 msgctxt "@info"
 msgid "Sign in into UltiMaker Digital Factory"
-msgstr ""
+msgstr "Přihlaste se do UltiMaker Digital Factory"
 
 msgctxt "@button"
 msgid "Sign in to Digital Factory"
@@ -3977,7 +3977,7 @@ msgstr "Pohled simulace"
 
 msgctxt "@tooltip"
 msgid "Skin"
-msgstr ""
+msgstr "Povrch"
 
 msgctxt "@action:button"
 msgid "Skip"
@@ -4246,7 +4246,7 @@ msgstr "Množství vyhlazení, které se použije na obrázek."
 
 msgctxt "@text"
 msgid "The annealing profile requires post-processing in an oven after the print is finished. This profile retains the dimensional accuracy of the printed part after annealing and improves strength, stiffness, and thermal resistance."
-msgstr ""
+msgstr "Profil žíhání vyžaduje post-processing v troubě poté, co je tisk dokončen. Tento profil zachovává rozměrovou přesnost výtisku po žíhání a vylepšuje pevnost, tuhost a tepelnou odolnost."
 
 msgctxt "@label"
 msgid "The assigned printer, %1, requires the following configuration change:"
@@ -4724,7 +4724,7 @@ msgstr "USB tisk"
 
 msgctxt "@button"
 msgid "UltiMaker Account"
-msgstr ""
+msgstr "Účet UltiMaker"
 
 msgctxt "@info"
 msgid "UltiMaker Certified Material"
@@ -5024,7 +5024,7 @@ msgstr "Aktualizuje konfigurace z Cura 5.2 na Cura 5.3."
 
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.3 to Cura 5.4."
-msgstr ""
+msgstr "Aktualizuje konfigurace z Cura 5.3 na Cura 5.4."
 
 msgctxt "@action:button"
 msgid "Upload custom Firmware"
@@ -5156,7 +5156,7 @@ msgstr "Aktualizace verze 5.2 na 5.3"
 
 msgctxt "name"
 msgid "Version Upgrade 5.3 to 5.4"
-msgstr ""
+msgstr "Aktualizace verze 5.3 na 5.4"
 
 msgctxt "@button"
 msgid "View printers in Digital Factory"
