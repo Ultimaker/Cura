@@ -40,7 +40,9 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
 
         # Indicate that the 3mf mesh writer should not close the archive just yet (we still need to add stuff to it).
         mesh_writer.setStoreArchive(True)
-        mesh_writer.write(stream, nodes, mode)
+        if not mesh_writer.write(stream, nodes, mode):
+            self.setInformation(mesh_writer.getInformation())
+            return False
 
         archive = mesh_writer.getArchive()
         if archive is None:  # This happens if there was no mesh data to write.
@@ -98,7 +100,7 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
             Logger.error("No permission to write workspace to this stream.")
             return False
         except EnvironmentError as e:
-            self.setInformation(catalog.i18nc("@error:zip", "The operating system does not allow saving a project file to this location or with this file name."))
+            self.setInformation(catalog.i18nc("@error:zip", str(e)))
             Logger.error("EnvironmentError when writing workspace to this stream: {err}".format(err = str(e)))
             return False
         mesh_writer.setStoreArchive(False)
