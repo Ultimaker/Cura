@@ -237,9 +237,9 @@ class ThreeMFWriter(MeshWriter):
             archive.writestr(model_file, scene_string)
             archive.writestr(content_types_file, b'<?xml version="1.0" encoding="UTF-8"?> \n' + ET.tostring(content_types))
             archive.writestr(relations_file, b'<?xml version="1.0" encoding="UTF-8"?> \n' + ET.tostring(relations_element))
-        except Exception as e:
+        except Exception as error:
             Logger.logException("e", "Error writing zip file")
-            self.setInformation(catalog.i18nc("@error:zip", "Error writing 3mf file."))
+            self.setInformation(str(error))
             return False
         finally:
             if not self._store_archive:
