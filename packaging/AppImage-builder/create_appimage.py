@@ -1,15 +1,35 @@
 # Copyright (c) 2023 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 
+import argparse
+import os
+import shutil
+import subprocess
 
 from pathlib import Path
-import argparse  # Command line arguments parsing and help.
+
 from jinja2 import Template
-import os  # Finding installation directory.
-import os.path  # Finding files.
-import shutil  # Copying files.
-import stat  # For setting file permissions.
-import subprocess  # For calling system commands.
+
+
+def prepare_workspace(dist_path, appimage_filename):
+    """
+    Prepare the workspace for building the AppImage.
+    :param dist_path: Path to the distribution of Cura created with pyinstaller.
+    :param appimage_filename: name of the AppImage file.
+    :return:
+    """
+    if not os.path.exists(dist_path):
+        raise RuntimeError(f"The dist_path {dist_path} does not exist.")
+
+    if os.path.exists(os.path.join(dist_path, appimage_filename)):
+        os.remove(os.path.join(dist_path, appimage_filename))
+
+    if not os.path.exists("AppDir"):
+        shutil.move(dist_path, "AppDir")
+    else:
+        print(f"AppDir already exists, assuming it is already prepared.")
+
+    copy_files("AppDir")
 
 
 def build_appimage(dist_path, version, appimage_filename):
@@ -17,14 +37,7 @@ def build_appimage(dist_path, version, appimage_filename):
     Creates an AppImage file from the build artefacts created so far.
     """
     generate_appimage_builder_config(dist_path, version, appimage_filename)
-    generate_appimage_entrypoint(dist_path)
-    copy_files(dist_path)
-
-    try:
-        os.remove(os.path.join(dist_path, appimage_filename))  # Ensure any old file is removed, if it exists.
-    except FileNotFoundError:
-        pass  # If it didn't exist, that's even better.
-    create_appimage(dist_path, appimage_filename)
+    create_appimage()
     sign_appimage(dist_path, appimage_filename)
 
 
@@ -43,17 +56,6 @@ def generate_appimage_builder_config(dist_path, version, appimage_filename):
         appimage_builder_file.write(appimage_builder)
 
 
-def generate_appimage_entrypoint(dist_path):
-    with open(os.path.join(Path(__file__).parent, "entrypoint.sh.jinja"), "r") as entrypoint_file:
-        entrypoint = entrypoint_file.read()
-
-    template = Template(entrypoint)
-    entrypoint = template.render(executable = "UltiMaker-Cura")
-
-    with open(os.path.join(Path(__file__).parent, "entrypoint.sh"), "w") as entrypoint_file:
-        entrypoint_file.write(entrypoint)
-
-
 def copy_files(dist_path):
     """
     Copy metadata files for the metadata of the AppImage.
@@ -64,7 +66,6 @@ def copy_files(dist_path):
         os.path.join("..", "icons", "cura-icon_128x128.png"): os.path.join("usr", "share", "icons", "hicolor", "128x128", "apps", "cura-icon.png"),
         os.path.join("..", "icons", "cura-icon_256x256.png"): os.path.join("usr", "share", "icons", "hicolor", "256x256", "apps", "cura-icon.png"),
         os.path.join("..", "icons", "cura-icon_256x256.png"): "cura-icon.png",
-        "entrypoint.sh": "entrypoint.sh"
     }
 
     # TODO: openssl.cnf ???
@@ -75,15 +76,8 @@ def copy_files(dist_path):
         os.makedirs(os.path.dirname(dest_file_path), exist_ok = True)
         shutil.copyfile(os.path.join(packaging_dir, source), dest_file_path)
 
-    # Ensure that entrypoint.sh has the proper permissions: 755 (user reads, writes and executes, group reads and executes, world reads and executes).
-    os.chmod(os.path.join(dist_path, "entrypoint.sh"), stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH)
 
-
-def create_appimage(dist_path, appimage_filename):
-    try:
-        os.rename(dist_path, "AppDir")
-    except OSError:
-        pass
+def create_appimage():
     appimagetool = os.getenv("APPIMAGEBUILDER_LOCATION", "appimage-builder-x86_64.AppImage")
     command = [appimagetool, "--recipe", os.path.join(Path(__file__).parent, "AppImageBuilder.yml")]
     result = subprocess.call(command)
@@ -105,4 +99,5 @@ if __name__ == "__main__":
     parser.add_argument("version", type = str, help = "Full version number of Cura (e.g. '5.1.0-beta')")
     parser.add_argument("filename", type = str, help = "Filename of the AppImage (e.g. 'UltiMaker-Cura-5.1.0-beta-Linux-X64.AppImage')")
     args = parser.parse_args()
+    prepare_workspace(args.dist_path, args.filename)
     build_appimage(args.dist_path, args.version, args.filename)

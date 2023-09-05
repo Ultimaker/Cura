@@ -1,8 +1,0 @@
-#!/bin/bash
-
-BIN=`basename "$ARGV0" .AppImage`
-if [ -f ${APPDIR}/$BIN ]; then
-    ${APPDIR}/$BIN "$@"
-else
-    ${APPDIR}/{{ executable }} "$@"
-fi;
