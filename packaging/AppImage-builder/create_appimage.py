@@ -86,8 +86,7 @@ def create_appimage():
 
 
 def sign_appimage(dist_path, appimage_filename):
-    appimage_path = os.path.join(dist_path, "..", appimage_filename)
-    command = ["gpg", "--yes", "--armor", "--detach-sig", appimage_path]
+    command = ["gpg", "--yes", "--armor", "--detach-sig", appimage_filename]
     result = subprocess.call(command)
     if result != 0:
         raise RuntimeError(f"The GPG command returned non-zero: {result}")

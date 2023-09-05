@@ -4,7 +4,7 @@ AppDir:
   path: {{ app_dir }}
   app_info:
     id: com.ultimaker.cura
-    name: UltiMaker-Cura
+    name: UltiMaker Cura
     icon: {{ icon }}
     version: {{ version }}
     exec: UltiMaker-Cura
@@ -47,8 +47,58 @@ AppDir:
     - sourceline: deb https://packagecloud.io/slacktechnologies/slack/debian/ jessie
         main
     include:
-    - libc6:amd64
-    - xdg-desktop-portal-kde:amd64
+      - libc6:amd64
+      - xdg-desktop-portal-kde:amd64
+      - libcap2:amd64
+      - libcom-err2:amd64
+      - libdbus-1-3:amd64
+      - libgpg-error0:amd64
+      - libgtk-3-common
+      - libkeyutils1:amd64
+      - libllvm13
+      - liblzma5:amd64
+      - libpcre3:amd64
+      - libqt6gui6
+      - libqt6qml6
+      - libqt6qmlworkerscript6
+      - libqt6quick6
+      - libselinux1:amd64
+      - libtinfo6:amd64
+      - qml6-module-qtqml-workerscript:amd64
+      - qml6-module-qtquick:amd64
+      - qt6-gtk-platformtheme:amd64
+      - qt6-qpa-plugins:amd64
+        # x11
+      - libx11-6
+      - libx11-xcb1
+      - libxcb1
+      - libxcb-render0
+      - libxcb-xfixes0
+      - libxcb-shape0
+      - libxcb-dri2-0
+      - libxcb-shm0
+      - libxcb-glx0
+      - libxcb-present0
+      - libxcb-dri3-0
+        # graphic libraries interface (safe graphics bundle including drivers, acceleration may not work in some systems)
+      - libglvnd0
+      - libglx0
+      - libglapi-mesa
+      - libgl1
+      - libegl1
+      - libgbm1
+      - libdrm2
+      - libglx-mesa0
+      - libgl1-amber-dri
+      - libgl1-mesa-dri
+      - mesa-utils
+      - libgl1-mesa-glx
+      - libdrm-amdgpu1
+      - libdrm-nouveau2
+    exclude:
+      - hicolor-icon-theme
+      - adwaita-icon-theme
+      - humanity-icon-theme
   files:
     include: []
     exclude:
@@ -59,6 +109,7 @@ AppDir:
     - usr/share/doc/*/TODO.*
   runtime:
     env:
+      APPDIR_LIBRARY_PATH: "$APPDIR/usr/lib/x86_64-linux-gnu:$APPDIR/lib/x86_64-linux-gnu:$APPDIR/usr/lib:$APPDIR/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders"
       PYTHONPATH: "$APPDIR"
       QT_PLUGIN_PATH: "$APPDIR/qt/plugins"
       QML2_IMPORT_PATH: "$APPDIR/qt/qml"
