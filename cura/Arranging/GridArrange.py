@@ -1,11 +1,13 @@
 import math
-from typing import List, TYPE_CHECKING, Tuple, Set
+from typing import List, TYPE_CHECKING, Tuple, Set, Union
 
 if TYPE_CHECKING:
     from UM.Scene.SceneNode import SceneNode
     from cura.BuildVolume import BuildVolume
 
 from UM.Application import Application
+from UM.Math.AxisAlignedBox import AxisAlignedBox
+from UM.Math.Polygon import Polygon
 from UM.Math.Vector import Vector
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.GroupedOperation import GroupedOperation
@@ -34,10 +36,18 @@ class GridArrange(Arranger):
         self._grid_width += self._margin_x
         self._grid_height += self._margin_y
 
-        # Round up the grid size to the nearest cm
+        # Round up the grid size to the nearest cm, this assures that new objects will
+        # be placed on integer offsets from each other
         grid_precision = 10  # 1cm
-        self._grid_width = math.ceil(self._grid_width / grid_precision) * grid_precision
-        self._grid_height = math.ceil(self._grid_height / grid_precision) * grid_precision
+        rounded_grid_width = math.ceil(self._grid_width / grid_precision) * grid_precision
+        rounded_grid_height = math.ceil(self._grid_height / grid_precision) * grid_precision
+
+        # The space added by the "grid precision rounding up" of the grid size
+        self._grid_round_margin_x = rounded_grid_width - self._grid_width
+        self._grid_round_margin_y = rounded_grid_height - self._grid_height
+
+        self._grid_width = rounded_grid_width
+        self._grid_height = rounded_grid_height
 
         self._offset_x = 0
         self._offset_y = 0
@@ -56,10 +66,9 @@ class GridArrange(Arranger):
             self._fixed_nodes_grid_ids = self._fixed_nodes_grid_ids.union(
                 self._intersectingGridIdxInclusive(node.getBoundingBox()))
 
-        #grid indexes that are in disallowed area
+        # grid indexes that are in disallowed area
         for polygon in self._build_volume.getDisallowedAreas():
-            self._fixed_nodes_grid_ids = self._fixed_nodes_grid_ids.union(
-            self._getIntersectingGridIdForPolygon(polygon))
+            self._fixed_nodes_grid_ids = self._fixed_nodes_grid_ids.union(self._intersectingGridIdxInclusive(polygon))
 
         self._build_plate_grid_ids = self._intersectingGridIdxExclusive(self._build_volume_bounding_box)
 
@@ -240,51 +249,58 @@ class GridArrange(Arranger):
 
         return TranslateOperation(node, Vector(delta_x, 0, delta_y))
 
-    def _getGridCornerPoints(self, bounding_box: "BoundingVolume") -> Tuple[float, float, float, float]:
-        coord_x1 = bounding_box.left
-        coord_x2 = bounding_box.right
-        coord_y1 = bounding_box.back
-        coord_y2 = bounding_box.front
+    def _getGridCornerPoints(
+            self,
+            bounds: Union[AxisAlignedBox, Polygon],
+            *,
+            margin_x: float = 0.0,
+            margin_y: float = 0.0
+    ) -> Tuple[float, float, float, float]:
+        if isinstance(bounds, AxisAlignedBox):
+            coord_x1 = bounds.left - margin_x
+            coord_x2 = bounds.right + margin_x
+            coord_y1 = bounds.back - margin_y
+            coord_y2 = bounds.front + margin_y
+        elif isinstance(bounds, Polygon):
+            coord_x1 = float('inf')
+            coord_y1 = float('inf')
+            coord_x2 = float('-inf')
+            coord_y2 = float('-inf')
+            for x, y in bounds.getPoints():
+                coord_x1 = min(coord_x1, x)
+                coord_y1 = min(coord_y1, y)
+                coord_x2 = max(coord_x2, x)
+                coord_y2 = max(coord_y2, y)
+        else:
+            raise TypeError("bounds must be either an AxisAlignedBox or a Polygon")
+
+        coord_x1 -= margin_x
+        coord_x2 += margin_x
+        coord_y1 -= margin_y
+        coord_y2 += margin_y
+
         grid_x1, grid_y1 = self._coordSpaceToGridSpace(coord_x1, coord_y1)
         grid_x2, grid_y2 = self._coordSpaceToGridSpace(coord_x2, coord_y2)
         return grid_x1, grid_y1, grid_x2, grid_y2
 
-    def _getIntersectingGridIdForPolygon(self, polygon)-> Set[Tuple[int, int]]:
-        #       (x0, y0)
-        #       |
-        #       v
-        #       ┌─────────────┐
-        #       │             │
-        #       │             │
-        #       └─────────────┘  < (x1, y1)
-        x0 = float('inf')
-        y0 = float('inf')
-        x1 = float('-inf')
-        y1 = float('-inf')
-        grid_idx = set()
-        for [x, y] in polygon.getPoints():
-            x0 = min(x0, x)
-            y0 = min(y0, y)
-            x1 = max(x1, x)
-            y1 = max(y1, y)
-        grid_x1, grid_y1 = self._coordSpaceToGridSpace(x0, y0)
-        grid_x2, grid_y2 = self._coordSpaceToGridSpace(x1, y1)
-
-        for grid_x in range(math.floor(grid_x1), math.ceil(grid_x2)):
-            for grid_y in range(math.floor(grid_y1), math.ceil(grid_y2)):
-                grid_idx.add((grid_x, grid_y))
-        return grid_idx
-
-    def _intersectingGridIdxInclusive(self, bounding_box: "BoundingVolume") -> Set[Tuple[int, int]]:
-        grid_x1, grid_y1, grid_x2, grid_y2 = self._getGridCornerPoints(bounding_box)
+    def _intersectingGridIdxInclusive(self, bounds: Union[AxisAlignedBox, Polygon]) -> Set[Tuple[int, int]]:
+        grid_x1, grid_y1, grid_x2, grid_y2 = self._getGridCornerPoints(
+            bounds,
+            margin_x=-(self._margin_x + self._grid_round_margin_x) * 0.5,
+            margin_y=-(self._margin_y + self._grid_round_margin_y) * 0.5,
+        )
         grid_idx = set()
         for grid_x in range(math.floor(grid_x1), math.ceil(grid_x2)):
             for grid_y in range(math.floor(grid_y1), math.ceil(grid_y2)):
                 grid_idx.add((grid_x, grid_y))
         return grid_idx
 
-    def _intersectingGridIdxExclusive(self, bounding_box: "BoundingVolume") -> Set[Tuple[int, int]]:
-        grid_x1, grid_y1, grid_x2, grid_y2 = self._getGridCornerPoints(bounding_box)
+    def _intersectingGridIdxExclusive(self, bounds: Union[AxisAlignedBox, Polygon]) -> Set[Tuple[int, int]]:
+        grid_x1, grid_y1, grid_x2, grid_y2 = self._getGridCornerPoints(
+            bounds,
+            margin_x=(self._margin_x + self._grid_round_margin_x) * 0.5,
+            margin_y=(self._margin_y + self._grid_round_margin_y) * 0.5,
+        )
         grid_idx = set()
         for grid_x in range(math.ceil(grid_x1), math.floor(grid_x2)):
             for grid_y in range(math.ceil(grid_y1), math.floor(grid_y2)):
