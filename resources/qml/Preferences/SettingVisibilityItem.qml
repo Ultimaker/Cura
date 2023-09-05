@@ -20,6 +20,7 @@ Item
         width: childrenRect.width;
         height: childrenRect.height;
         id: checkboxTooltipArea
+        x: check.height
         UM.CheckBox
         {
             id: check
@@ -40,7 +41,7 @@ Item
     {
         width: height
         height: check.height
-        anchors.left: checkboxTooltipArea.right
+        anchors.right: checkboxTooltipArea.left
         anchors.leftMargin: 2 * screenScaleFactor
 
         text:
@@ -82,7 +83,7 @@ Item
 
             source: UM.Theme.getIcon("Information")
 
-            color: UM.Theme.getColor("primary_button_text")
+            color: UM.Theme.getColor("small_button_text")
         }
 
         visible: provider.properties.enabled == "False"
