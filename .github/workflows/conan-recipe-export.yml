@@ -1,106 +1,107 @@
 name: Export Conan Recipe to server
 
 on:
-    workflow_call:
-        inputs:
-            recipe_id_full:
-                required: true
-                type: string
+  workflow_call:
+    inputs:
+      recipe_id_full:
+        required: true
+        type: string
 
-            recipe_id_latest:
-                required: false
-                type: string
+      recipe_id_latest:
+        required: false
+        type: string
 
-            runs_on:
-                required: true
-                type: string
+      runs_on:
+        required: true
+        type: string
 
-            python_version:
-                required: true
-                type: string
+      python_version:
+        required: true
+        type: string
 
-            conan_config_branch:
-                required: false
-                type: string
+      conan_config_branch:
+        required: false
+        type: string
 
-            conan_logging_level:
-                required: false
-                type: string
+      conan_logging_level:
+        required: false
+        type: string
 
-            conan_export_binaries:
-                required: false
-                type: boolean
+      conan_export_binaries:
+        required: false
+        type: boolean
 
-            conan_upload_community:
-                required: false
-                default: true
-                type: boolean
+      conan_upload_community:
+        required: false
+        default: true
+        type: boolean
 
 env:
-    CONAN_LOGIN_USERNAME: ${{ secrets.CONAN_USER }}
-    CONAN_PASSWORD: ${{ secrets.CONAN_PASS }}
-    CONAN_LOG_RUN_TO_OUTPUT: 1
-    CONAN_LOGGING_LEVEL: ${{ inputs.conan_logging_level }}
-    CONAN_NON_INTERACTIVE: 1
+  CONAN_LOGIN_USERNAME: ${{ secrets.CONAN_USER }}
+  CONAN_PASSWORD: ${{ secrets.CONAN_PASS }}
+  CONAN_LOG_RUN_TO_OUTPUT: 1
+  CONAN_LOGGING_LEVEL: ${{ inputs.conan_logging_level }}
+  CONAN_NON_INTERACTIVE: 1
 
 jobs:
-    package-export:
-        runs-on: ${{ inputs.runs_on }}
+  package-export:
+    runs-on: ${{ inputs.runs_on }}
 
-        steps:
-            -   name: Checkout project
-                uses: actions/checkout@v3
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v3
 
-            -   name: Setup Python and pip
-                uses: actions/setup-python@v4
-                with:
-                    python-version: ${{ inputs.python_version }}
-                    cache: 'pip'
-                    cache-dependency-path: .github/workflows/requirements-conan-package.txt
+      - name: Setup Python and pip
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ inputs.python_version }}
+          cache: 'pip'
+          cache-dependency-path: .github/workflows/requirements-conan-package.txt
 
-            -   name: Install Python requirements and Create default Conan profile
-                run: |
-                    pip install -r https://raw.githubusercontent.com/Ultimaker/Cura/main/.github/workflows/requirements-conan-package.txt
-                    conan profile new default --detect
-                #  Note the runner requirements are always installed from the main branch in the Ultimaker/Cura repo
+      - name: Install Python requirements and Create default Conan profile
+        run: |
+          pip install -r https://raw.githubusercontent.com/Ultimaker/Cura/main/.github/workflows/requirements-conan-package.txt
+          conan profile new default --detect
+        #  Note the runner requirements are always installed from the main branch in the Ultimaker/Cura repo
 
-            -   name: Cache Conan local repository packages
-                uses: actions/cache@v3
-                with:
-                    path: $HOME/.conan/data
-                    key: ${{ runner.os }}-conan-export-cache
+      - name: Cache Conan local repository packages
+        uses: actions/cache@v3
+        with:
+          path: $HOME/.conan/data
+          key: ${{ runner.os }}-conan-export-cache
 
-            -   name: Get Conan configuration from branch
-                if: ${{ inputs.conan_config_branch != '' }}
-                run: conan config install https://github.com/Ultimaker/conan-config.git -a "-b ${{ inputs.conan_config_branch }}"
+      - name: Get Conan configuration from branch
+        if: ${{ inputs.conan_config_branch != '' }}
+        run: conan config install https://github.com/Ultimaker/conan-config.git -a "-b ${{ inputs.conan_config_branch }}"
 
-            -   name: Get Conan configuration
-                if: ${{ inputs.conan_config_branch == '' }}
-                run: conan config install https://github.com/Ultimaker/conan-config.git
+      - name: Get Conan configuration
+        run: |
+          conan config install https://github.com/Ultimaker/conan-config.git
+          conan config install https://github.com/Ultimaker/conan-config.git -a "-b runner/${{ runner.os }}/${{ runner.arch }}"
 
-            -   name: Add Cura private Artifactory remote
-                run: conan remote add cura-private https://ultimaker.jfrog.io/artifactory/api/conan/cura-private True
+      - name: Add Cura private Artifactory remote
+        run: conan remote add cura-private https://ultimaker.jfrog.io/artifactory/api/conan/cura-private True
 
-            -   name: Export the Package (binaries)
-                if: ${{ inputs.conan_export_binaries }}
-                run: conan create . ${{ inputs.recipe_id_full }} --build=missing --update
+      - name: Export the Package (binaries)
+        if: ${{ inputs.conan_export_binaries }}
+        run: conan create . ${{ inputs.recipe_id_full }} --build=missing --update -c tools.build:skip_test=True
 
-            -   name: Export the Package
-                if: ${{ !inputs.conan_export_binaries }}
-                run: conan export . ${{ inputs.recipe_id_full }}
+      - name: Export the Package
+        if: ${{ !inputs.conan_export_binaries }}
+        run: conan export . ${{ inputs.recipe_id_full }}
 
-            -   name: Create the latest alias
-                if: always()
-                run: conan alias ${{ inputs.recipe_id_latest }} ${{ inputs.recipe_id_full }}
+      - name: Create the latest alias
+        if: always()
+        run: conan alias ${{ inputs.recipe_id_latest }} ${{ inputs.recipe_id_full }}
 
-            -   name: Upload the Package(s)
-                if: ${{ always() && inputs.conan_upload_community }}
-                run: |
-                    conan upload ${{ inputs.recipe_id_full }} -r cura --all -c
-                    conan upload ${{ inputs.recipe_id_latest }} -r cura -c
+      - name: Upload the Package(s)
+        if: ${{ always() && inputs.conan_upload_community }}
+        run: |
+          conan upload ${{ inputs.recipe_id_full }} -r cura --all -c
+          conan upload ${{ inputs.recipe_id_latest }} -r cura -c
 
-            -   name: Upload the Package(s) to the private Artifactory
-                if: ${{ always() && ! inputs.conan_upload_community }}
-                run: |
-                    conan upload ${{ inputs.recipe_id_full }} -r cura-private --all -c
-                    conan upload ${{ inputs.recipe_id_latest }} -r cura-private -c
+      - name: Upload the Package(s) to the private Artifactory
+        if: ${{ always() && ! inputs.conan_upload_community }}
+        run: |
+          conan upload ${{ inputs.recipe_id_full }} -r cura-private --all -c
+          conan upload ${{ inputs.recipe_id_latest }} -r cura-private -c

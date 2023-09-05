@@ -55,11 +55,12 @@ class ThreeMFWriter(MeshWriter):
             "cura": "http://software.ultimaker.com/xml/cura/3mf/2015/10"
         }
 
-        self._unit_matrix_string = self._convertMatrixToString(Matrix())
+        self._unit_matrix_string = ThreeMFWriter._convertMatrixToString(Matrix())
         self._archive: Optional[zipfile.ZipFile] = None
         self._store_archive = False
 
-    def _convertMatrixToString(self, matrix):
+    @staticmethod
+    def _convertMatrixToString(matrix):
         result = ""
         result += str(matrix._data[0, 0]) + " "
         result += str(matrix._data[1, 0]) + " "
@@ -83,7 +84,8 @@ class ThreeMFWriter(MeshWriter):
         """
         self._store_archive = store_archive
 
-    def _convertUMNodeToSavitarNode(self, um_node, transformation = Matrix()):
+    @staticmethod
+    def _convertUMNodeToSavitarNode(um_node, transformation=Matrix()):
         """Convenience function that converts an Uranium SceneNode object to a SavitarSceneNode
 
         :returns: Uranium Scene node.
@@ -100,7 +102,7 @@ class ThreeMFWriter(MeshWriter):
 
         node_matrix = um_node.getLocalTransformation()
 
-        matrix_string = self._convertMatrixToString(node_matrix.preMultiply(transformation))
+        matrix_string = ThreeMFWriter._convertMatrixToString(node_matrix.preMultiply(transformation))
 
         savitar_node.setTransformation(matrix_string)
         mesh_data = um_node.getMeshData()
@@ -133,7 +135,7 @@ class ThreeMFWriter(MeshWriter):
             # only save the nodes on the active build plate
             if child_node.callDecoration("getBuildPlateNumber") != active_build_plate_nr:
                 continue
-            savitar_child_node = self._convertUMNodeToSavitarNode(child_node)
+            savitar_child_node = ThreeMFWriter._convertUMNodeToSavitarNode(child_node)
             if savitar_child_node is not None:
                 savitar_node.addChild(savitar_child_node)
 
@@ -221,7 +223,7 @@ class ThreeMFWriter(MeshWriter):
             for node in nodes:
                 if node == root_node:
                     for root_child in node.getChildren():
-                        savitar_node = self._convertUMNodeToSavitarNode(root_child, transformation_matrix)
+                        savitar_node = ThreeMFWriter._convertUMNodeToSavitarNode(root_child, transformation_matrix)
                         if savitar_node:
                             savitar_scene.addSceneNode(savitar_node)
                 else:
@@ -235,9 +237,9 @@ class ThreeMFWriter(MeshWriter):
             archive.writestr(model_file, scene_string)
             archive.writestr(content_types_file, b'<?xml version="1.0" encoding="UTF-8"?> \n' + ET.tostring(content_types))
             archive.writestr(relations_file, b'<?xml version="1.0" encoding="UTF-8"?> \n' + ET.tostring(relations_element))
-        except Exception as e:
+        except Exception as error:
             Logger.logException("e", "Error writing zip file")
-            self.setInformation(catalog.i18nc("@error:zip", "Error writing 3mf file."))
+            self.setInformation(str(error))
             return False
         finally:
             if not self._store_archive:
@@ -303,9 +305,19 @@ class ThreeMFWriter(MeshWriter):
             Logger.log("w", "Can't create snapshot when renderer not initialized.")
             return None
         try:
-            snapshot = Snapshot.snapshot(width = 300, height = 300)
+            snapshot = Snapshot.snapshot(width=300, height=300)
         except:
             Logger.logException("w", "Failed to create snapshot image")
             return None
 
         return snapshot
+
+    @staticmethod
+    def sceneNodesToString(scene_nodes: [SceneNode]) -> str:
+        savitar_scene = Savitar.Scene()
+        for scene_node in scene_nodes:
+            savitar_node = ThreeMFWriter._convertUMNodeToSavitarNode(scene_node)
+            savitar_scene.addSceneNode(savitar_node)
+        parser = Savitar.ThreeMFParser()
+        scene_string = parser.sceneToString(savitar_scene)
+        return scene_string

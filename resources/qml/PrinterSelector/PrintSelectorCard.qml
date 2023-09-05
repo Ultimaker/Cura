@@ -35,8 +35,9 @@ Rectangle
             id: printerTitle
 
             Layout.preferredWidth: parent.width / 3
+            Layout.preferredHeight: childrenRect.height
             Layout.fillWidth: true
-            Layout.alignment: extruders[0].materials.length > 1 ? Qt.AlignTop: Qt.AlignCenter
+            Layout.alignment: extruders[0].materials.length > 1 ? Qt.AlignTop : Qt.AlignCenter
             Layout.fillHeight: false
 
             source: UM.Theme.getIcon("Printer")
@@ -45,13 +46,14 @@ Rectangle
             font: UM.Theme.getFont("medium_bold")
         }
 
-        ColumnLayout
+        Column
         {
             id: extruderInformation
             Layout.fillWidth: true
             Layout.preferredWidth: parent.width / 2
-            Layout.alignment: Qt.AlignTop
-            spacing: UM.Theme.getSize("narrow_margin").width
+            Layout.preferredHeight: childrenRect.height
+            Layout.alignment: extruders[0].materials.length > 1 ? Qt.AlignTop : Qt.AlignCenter
+            spacing: UM.Theme.getSize("narrow_margin").height
 
             Repeater
             {
@@ -59,7 +61,7 @@ Rectangle
 
                 Item
                 {
-                    Layout.preferredWidth: extruderInformation.width
+                    width: extruderInformation.width
                     height: childrenRect.height
 
                     Cura.ExtruderIcon
@@ -117,7 +119,8 @@ Rectangle
 
             implicitWidth: UM.Theme.getSize("large_button").width
             implicitHeight: implicitWidth
-            Layout.alignment: extruders[0].materials.length > 1 ? Qt.AlignTop: Qt.AlignCenter
+            Layout.alignment: extruders[0].materials.length > 1 ? Qt.AlignTop : Qt.AlignCenter
+            Layout.preferredHeight: childrenRect.height
             padding: 0
 
             background: Rectangle
