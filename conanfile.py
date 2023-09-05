@@ -4,7 +4,7 @@ from pathlib import Path
 from jinja2 import Template
 
 from conan import ConanFile
-from conan.tools.files import copy, rmdir, save, mkdir
+from conan.tools.files import copy, rmdir, save, mkdir, rm
 from conan.tools.microsoft import unix_path
 from conan.tools.env import VirtualRunEnv, Environment, VirtualBuildEnv
 from conan.tools.scm import Version
@@ -21,12 +21,11 @@ class CuraConan(ConanFile):
     description = "3D printer / slicing GUI built on top of the Uranium framework"
     topics = ("conan", "python", "pyqt6", "qt", "qml", "3d-printing", "slicer")
     build_policy = "missing"
-    exports = "LICENSE*", "UltiMaker-Cura.spec.jinja", "CuraVersion.py.jinja", "AboutDialogVersionsList.qml.jinja"
+    exports = "LICENSE*", "*.jinja"
     settings = "os", "compiler", "build_type", "arch"
 
     # FIXME: Remove specific branch once merged to main
-    python_requires = "umbase/[>=0.1.7]@ultimaker/stable", "translationextractor/[>=2.1.1]@ultimaker/stable"
-    python_requires_extend = "umbase.UMBaseConanfile"
+    python_requires = "translationextractor/[>=2.1.1]@ultimaker/stable"
 
     options = {
         "enterprise": ["True", "False", "true", "false"],  # Workaround for GH Action passing boolean as lowercase string
@@ -359,36 +358,35 @@ class CuraConan(ConanFile):
             rmdir(self,str(self.source_path.joinpath("plugins", "CuraEngineGradualFlow")))
             curaengine_plugin_gradual_flow = self.dependencies["curaengine_plugin_gradual_flow"].cpp_info
             copy(self, "*.py", curaengine_plugin_gradual_flow.resdirs[0], str(self.source_path.joinpath("plugins", "CuraEngineGradualFlow")), keep_path = True)
+            ext = ".exe" if self.settings.os == "Windows" else ""
+            copy(self, f"curaengine_plugin_gradual_flow{ext}", curaengine_plugin_gradual_flow.resdirs[0], str(self.source_path.joinpath("plugins", "CuraEngineGradualFlow")), keep_path = True)
             copy(self, "*.json", curaengine_plugin_gradual_flow.resdirs[0], str(self.source_path.joinpath("plugins", "CuraEngineGradualFlow")), keep_path = True)
-            copy(self, "bundled_*.json", curaengine_plugin_gradual_flow.resdirs[0], str(self.source_path.joinpath("resources", "bundled_packages")), keep_path = False)
-            curaengine_plugin_gradual_flow_binary_path = self.source_path.joinpath("plugins", "CuraEngineGradualFlow", {"armv8": "arm64"}.get(str(self.settings.arch), str(self.settings.arch)), {"Macos": "Darwin"}.get(str(self.settings.os), str(self.settings.os)))
-            copy(self, "curaengine_plugin_gradual_flow.exe", curaengine_plugin_gradual_flow.bindirs[0], curaengine_plugin_gradual_flow_binary_path, keep_path = False)
-            copy(self, "curaengine_plugin_gradual_flow", curaengine_plugin_gradual_flow.bindirs[0], curaengine_plugin_gradual_flow_binary_path, keep_path = False)
+            copy(self, "bundled_*.json", curaengine_plugin_gradual_flow.resdirs[1], str(self.source_path.joinpath("resources", "bundled_packages")), keep_path = False)
 
-            # Copy resources of cura_binary_data
-            cura_binary_data = self.dependencies["cura_binary_data"].cpp_info
-            copy(self, "*", cura_binary_data.resdirs[0], str(self._share_dir.joinpath("cura")), keep_path = True)
-            copy(self, "*", cura_binary_data.resdirs[1], str(self._share_dir.joinpath("uranium")), keep_path = True)
-            if self.settings.os == "Windows":
-                copy(self, "*", cura_binary_data.resdirs[2], str(self._share_dir.joinpath("windows")), keep_path = True)
+        # Copy resources of cura_binary_data
+        cura_binary_data = self.dependencies["cura_binary_data"].cpp_info
+        copy(self, "*", cura_binary_data.resdirs[0], str(self._share_dir.joinpath("cura")), keep_path = True)
+        copy(self, "*", cura_binary_data.resdirs[1], str(self._share_dir.joinpath("uranium")), keep_path = True)
+        if self.settings.os == "Windows":
+            copy(self, "*", cura_binary_data.resdirs[2], str(self._share_dir.joinpath("windows")), keep_path = True)
 
-            for dependency in self.dependencies.host.values():
-                for bindir in dependency.cpp_info.bindirs:
-                    copy(self, "*.dll", bindir, str(self._site_packages), keep_path = False)
-                for libdir in dependency.cpp_info.libdirs:
-                    copy(self, "*.pyd", libdir, str(self._site_packages), keep_path = False)
-                    copy(self, "*.pyi", libdir, str(self._site_packages), keep_path = False)
-                    copy(self, "*.dylib", libdir, str(self._base_dir.joinpath("lib")), keep_path = False)
+        for dependency in self.dependencies.host.values():
+            for bindir in dependency.cpp_info.bindirs:
+                copy(self, "*.dll", bindir, str(self._site_packages), keep_path = False)
+            for libdir in dependency.cpp_info.libdirs:
+                copy(self, "*.pyd", libdir, str(self._site_packages), keep_path = False)
+                copy(self, "*.pyi", libdir, str(self._site_packages), keep_path = False)
+                copy(self, "*.dylib", libdir, str(self._base_dir.joinpath("lib")), keep_path = False)
 
-            # Copy materials (flat)
-            rmdir(self, os.path.join(self.source_folder, "resources", "materials"))
-            fdm_materials = self.dependencies["fdm_materials"].cpp_info
-            copy(self, "*", fdm_materials.resdirs[0], self.source_folder)
+        # Copy materials (flat)
+        rmdir(self, os.path.join(self.source_folder, "resources", "materials"))
+        fdm_materials = self.dependencies["fdm_materials"].cpp_info
+        copy(self, "*", fdm_materials.resdirs[0], self.source_folder)
 
-            # Copy internal resources
-            if self.options.internal:
-                cura_private_data = self.dependencies["cura_private_data"].cpp_info
-                copy(self, "*", cura_private_data.resdirs[0], str(self._share_dir.joinpath("cura")))
+        # Copy internal resources
+        if self.options.internal:
+            cura_private_data = self.dependencies["cura_private_data"].cpp_info
+            copy(self, "*", cura_private_data.resdirs[0], str(self._share_dir.joinpath("cura")))
 
         if self.options.devtools:
             entitlements_file = "'{}'".format(os.path.join(self.source_folder, "packaging", "MacOS", "cura.entitlements"))
@@ -419,64 +417,17 @@ class CuraConan(ConanFile):
                     self.run(f"{cpp_info.bindirs[0]}/msgfmt {po_file} -o {mo_file} -f", env="conanbuild", ignore_errors=True)
 
     def deploy(self):
-        # Copy CuraEngine.exe to bindirs of Virtual Python Environment
-        curaengine = self.dependencies["curaengine"].cpp_info
-        copy(self, "CuraEngine.exe", curaengine.bindirs[0], str(self._base_dir), keep_path = False)
-        copy(self, "CuraEngine", curaengine.bindirs[0], str(self._base_dir), keep_path = False)
-
-        # Copy resources of Cura (keep folder structure)
+        # Copy resources of Cura (keep folder structure) needed by pyinstaller to determine the module structure
         copy(self, "*", os.path.join(self.package_folder, self.cpp_info.bindirs[0]), str(self._base_dir), keep_path = False)
         copy(self, "*", os.path.join(self.package_folder, self.cpp_info.libdirs[0]), str(self._site_packages.joinpath("cura")), keep_path = True)
         copy(self, "*", os.path.join(self.package_folder, self.cpp_info.resdirs[0]), str(self._share_dir.joinpath("cura", "resources")), keep_path = True)
         copy(self, "*", os.path.join(self.package_folder, self.cpp_info.resdirs[1]), str(self._share_dir.joinpath("cura", "plugins")), keep_path = True)
-
-        # Copy the external plugins that we want to bundle with Cura
-        curaengine_plugin_gradual_flow = self.dependencies["curaengine_plugin_gradual_flow"].cpp_info
-        copy(self, "*.py", curaengine_plugin_gradual_flow.resdirs[0], str(self._share_dir.joinpath("cura", "plugins")), keep_path = True)
-        copy(self, "*.json", curaengine_plugin_gradual_flow.resdirs[0], str(self._share_dir.joinpath("cura", "plugins")), keep_path = True)
-        copy(self, "bundled_*.json", curaengine_plugin_gradual_flow.resdirs[0], str(self._share_dir.joinpath("cura", "resources", "bundled_packages")), keep_path = False)
-        curaengine_plugin_gradual_flow_binary_path = self._share_dir.joinpath("cura", "plugins", "CuraEngineGradualFlow", {"armv8": "arm64"}.get(str(self.settings.arch), str(self.settings.arch)), {"Macos": "Darwin"}.get(str(self.settings.os), str(self.settings.os)))
-        copy(self, "curaengine_plugin_gradual_flow.exe", curaengine_plugin_gradual_flow.bindirs[0], curaengine_plugin_gradual_flow_binary_path, keep_path = False)
-        copy(self, "curaengine_plugin_gradual_flow", curaengine_plugin_gradual_flow.bindirs[0], curaengine_plugin_gradual_flow_binary_path, keep_path = False)
-
-        # Copy materials (flat)
-        fdm_materials = self.dependencies["fdm_materials"].cpp_info
-        copy(self, "*", fdm_materials.resdirs[0], str(self._share_dir.joinpath("cura")))
-
-        # Copy internal resources
-        if self.options.internal:
-            cura_private_data = self.dependencies["cura_private_data"].cpp_info
-            copy(self, "*", cura_private_data.resdirs[0], str(self._share_dir.joinpath("cura")))
 
         # Copy resources of Uranium (keep folder structure)
         uranium = self.dependencies["uranium"].cpp_info
         copy(self, "*", uranium.resdirs[0], str(self._share_dir.joinpath("uranium", "resources")), keep_path = True)
         copy(self, "*", uranium.resdirs[1], str(self._share_dir.joinpath("uranium", "plugins")), keep_path = True)
         copy(self, "*", uranium.libdirs[0], str(self._site_packages.joinpath("UM")), keep_path = True)
-
-        # TODO: figure out if this is still needed
-        copy(self, "*", os.path.join(uranium.libdirs[0], "Qt", "qml", "UM"), str(self._site_packages.joinpath("PyQt6", "Qt6", "qml", "UM")), keep_path = True)
-
-        # Copy resources of cura_binary_data
-        cura_binary_data = self.dependencies["cura_binary_data"].cpp_info
-        copy(self, "*", cura_binary_data.resdirs[0], str(self._share_dir.joinpath("cura")), keep_path = True)
-        copy(self, "*", cura_binary_data.resdirs[1], str(self._share_dir.joinpath("uranium")), keep_path = True)
-        if self.settings.os == "Windows":
-            copy(self, "*", cura_binary_data.resdirs[2], str(self._share_dir.joinpath("windows")), keep_path = True)
-
-        for dependency in self.dependencies.host.values():
-            for bindir in dependency.cpp_info.bindirs:
-                copy(self, "*.dll", bindir, str(self._site_packages), keep_path = False)
-            for libdir in dependency.cpp_info.libdirs:
-                copy(self, "*.pyd", libdir, str(self._site_packages), keep_path = False)
-                copy(self, "*.pyi", libdir, str(self._site_packages), keep_path = False)
-                copy(self, "*.dylib", libdir, str(self._base_dir.joinpath("lib")), keep_path = False)
-
-        # Copy packaging scripts
-        copy(self, "*", os.path.join(self.package_folder, self.cpp_info.resdirs[2]), str(self._base_dir.joinpath("packaging")), keep_path = True)
-
-        # Copy requirements.txt's
-        copy(self, "*.txt", os.path.join(self.package_folder, self.cpp_info.resdirs[-1]), str(self._base_dir.joinpath("pip_requirements")), keep_path = False)
 
         # Generate the GitHub Action version info Environment
         version = self.conf_info.get("user.cura:version", default = self.version, check_type = str)
@@ -516,6 +467,13 @@ echo "CURA_APP_NAME={{ cura_app_name }}" >> ${{ env_prefix }}GITHUB_ENV
         copy(self, "*", src = os.path.join(self.source_folder, "plugins"), dst = os.path.join(self.package_folder, self.cpp.package.resdirs[1]))
         copy(self, "requirement*.txt", src = self.source_folder, dst = os.path.join(self.package_folder, self.cpp.package.resdirs[-1]))
         copy(self, "*", src = os.path.join(self.source_folder, "packaging"), dst = os.path.join(self.package_folder, self.cpp.package.resdirs[2]))
+
+        # Remove the CuraEngineGradualFlow plugin from the package
+        rmdir(self, os.path.join(self.package_folder, self.cpp.package.resdirs[1], "CuraEngineGradualFlow"))
+        rm(self, "bundled_*.json", os.path.join(self.package_folder, self.cpp.package.resdirs[0], "bundled_packages"), recursive = False)
+
+        # Remove the fdm_materials from the package
+        rmdir(self, os.path.join(self.package_folder, self.cpp.package.resdirs[0], "materials"))
 
     def package_info(self):
         self.user_info.pip_requirements = "requirements.txt"
