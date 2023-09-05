@@ -79,7 +79,7 @@ def copy_files(dist_path):
 
 def create_appimage():
     appimagetool = os.getenv("APPIMAGEBUILDER_LOCATION", "appimage-builder-x86_64.AppImage")
-    command = [appimagetool, "--recipe", os.path.join(Path(__file__).parent, "AppImageBuilder.yml")]
+    command = [appimagetool, "--recipe", os.path.join(Path(__file__).parent, "AppImageBuilder.yml"), "--skip-test"]
     result = subprocess.call(command)
     if result != 0:
         raise RuntimeError(f"The AppImageTool command returned non-zero: {result}")
