@@ -256,7 +256,7 @@ class LimitXYAccelJerk(Script):
                     lines.insert(len(lines)-2,m205_jerk_old)
                     data[end_index-1] = "\n".join(lines)
                 except:
-                    all
+                    pass
             else:
                 data[len(data)-1] = m201_limit_old + "\n" + m205_jerk_old + "\n" + data[len(data)-1]
             return data        
