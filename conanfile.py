@@ -10,7 +10,7 @@ from conan.tools.env import VirtualRunEnv, Environment, VirtualBuildEnv
 from conan.tools.scm import Version
 from conan.errors import ConanInvalidConfiguration, ConanException
 
-required_conan_version = ">=1.54 <=1.56.0 || >=1.58.0 <2.0.0"
+required_conan_version = ">=1.58.0 <2.0.0"
 
 
 class CuraConan(ConanFile):
@@ -293,6 +293,7 @@ class CuraConan(ConanFile):
         self.options["pysavitar"].shared = True
         self.options["pynest2d"].shared = True
         self.options["cpython"].shared = True
+        self.options["boost"].header_only = True
 
     def validate(self):
         version = self.conf_info.get("user.cura:version", default = self.version, check_type = str)
@@ -300,10 +301,11 @@ class CuraConan(ConanFile):
             raise ConanInvalidConfiguration("Only versions 5+ are support")
 
     def requirements(self):
-        self.requires("pyarcus/5.2.2")
+        self.requires("boost/1.82.0")
+        self.requires("pyarcus/(latest)@ultimaker/cura_10951")
         self.requires("curaengine/(latest)@ultimaker/testing")
-        self.requires("pysavitar/5.2.2")
-        self.requires("pynest2d/5.2.2")
+        self.requires("pysavitar/(latest)@ultimaker/cura_10951")
+        self.requires("pynest2d/(latest)@ultimaker/cura_10951")
         self.requires("uranium/(latest)@ultimaker/testing")
         self.requires("cura_binary_data/(latest)@ultimaker/testing")
         self.requires("cpython/3.10.4")
@@ -338,7 +340,38 @@ class CuraConan(ConanFile):
         vr.generate()
 
         self._generate_cura_version(os.path.join(self.source_folder, "cura"))
+        self._generate_about_versions(os.path.join(self.source_folder, "resources","qml", "Dialogs"))
 
+        if not self.in_local_cache:
+            # Copy CuraEngine.exe to bindirs of Virtual Python Environment
+            curaengine = self.dependencies["curaengine"].cpp_info
+            copy(self, "CuraEngine.exe", curaengine.bindirs[0], self.source_folder, keep_path = False)
+            copy(self, "CuraEngine", curaengine.bindirs[0], self.source_folder, keep_path = False)
+
+            # Copy resources of cura_binary_data
+            cura_binary_data = self.dependencies["cura_binary_data"].cpp_info
+            copy(self, "*", cura_binary_data.resdirs[0], str(self._share_dir.joinpath("cura")), keep_path = True)
+            copy(self, "*", cura_binary_data.resdirs[1], str(self._share_dir.joinpath("uranium")), keep_path = True)
+            if self.settings.os == "Windows":
+                copy(self, "*", cura_binary_data.resdirs[2], str(self._share_dir.joinpath("windows")), keep_path = True)
+
+            for dependency in self.dependencies.host.values():
+                for bindir in dependency.cpp_info.bindirs:
+                    copy(self, "*.dll", bindir, str(self._site_packages), keep_path = False)
+                for libdir in dependency.cpp_info.libdirs:
+                    copy(self, "*.pyd", libdir, str(self._site_packages), keep_path = False)
+                    copy(self, "*.pyi", libdir, str(self._site_packages), keep_path = False)
+                    copy(self, "*.dylib", libdir, str(self._base_dir.joinpath("lib")), keep_path = False)
+
+            # Copy materials (flat)
+            rmdir(self, os.path.join(self.source_folder, "resources", "materials"))
+            fdm_materials = self.dependencies["fdm_materials"].cpp_info
+            copy(self, "*", fdm_materials.resdirs[0], self.source_folder)
+
+            # Copy internal resources
+            if self.options.internal:
+                cura_private_data = self.dependencies["cura_private_data"].cpp_info
+                copy(self, "*", cura_private_data.resdirs[0], str(self._share_dir.joinpath("cura")))
 
         if self.options.devtools:
             entitlements_file = "'{}'".format(os.path.join(self.source_folder, "packaging", "MacOS", "cura.entitlements"))
@@ -357,8 +390,6 @@ class CuraConan(ConanFile):
                 pot = self.python_requires["translationextractor"].module.ExtractTranslations(self, cpp_info.bindirs[0])
                 pot.generate()
 
-        self._generate_about_versions(os.path.join(self.source_folder, "resources","qml", "Dialogs"))
-
     def build(self):
         if self.options.devtools:
             if self.settings.os != "Windows" or self.conf.get("tools.microsoft.bash:path", check_type = str):
@@ -369,29 +400,6 @@ class CuraConan(ConanFile):
                     mkdir(self, str(unix_path(self, Path(mo_file).parent)))
                     cpp_info = self.dependencies["gettext"].cpp_info
                     self.run(f"{cpp_info.bindirs[0]}/msgfmt {po_file} -o {mo_file} -f", env="conanbuild", ignore_errors=True)
-
-    def imports(self):
-        self.copy("CuraEngine.exe", root_package = "curaengine", src = "@bindirs", dst = "", keep_path = False)
-        self.copy("CuraEngine", root_package = "curaengine", src = "@bindirs", dst = "", keep_path = False)
-
-        rmdir(self, os.path.join(self.source_folder, "resources", "materials"))
-        self.copy("*.fdm_material", root_package = "fdm_materials", src = "@resdirs", dst = "resources/materials", keep_path = False)
-        self.copy("*.sig", root_package = "fdm_materials", src = "@resdirs", dst = "resources/materials", keep_path = False)
-
-        if self.options.internal:
-            self.copy("*", root_package = "cura_private_data", src = self.deps_cpp_info["cura_private_data"].resdirs[0],
-                           dst = self._share_dir.joinpath("cura", "resources"), keep_path = True)
-
-        # Copy resources of cura_binary_data
-        self.copy("*", root_package = "cura_binary_data", src = self.deps_cpp_info["cura_binary_data"].resdirs[0],
-                       dst = self._share_dir.joinpath("cura", "resources"), keep_path = True)
-        self.copy("*", root_package = "cura_binary_data", src = self.deps_cpp_info["cura_binary_data"].resdirs[1],
-                       dst =self._share_dir.joinpath("uranium", "resources"), keep_path = True)
-
-        self.copy("*.dll", src = "@bindirs", dst = self._site_packages)
-        self.copy("*.pyd", src = "@libdirs", dst = self._site_packages)
-        self.copy("*.pyi", src = "@libdirs", dst = self._site_packages)
-        self.copy("*.dylib", src = "@libdirs", dst = self._script_dir)
 
     def deploy(self):
         # Copy CuraEngine.exe to bindirs of Virtual Python Environment
