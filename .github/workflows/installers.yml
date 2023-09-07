@@ -56,7 +56,7 @@ jobs:
                 staging: ${{ inputs.staging }}
                 architecture: X64
                 operating_system: windows-2022
-              secrets: inherit
+        secrets: inherit
 
     linux-modern-installer:
         steps:
@@ -70,7 +70,7 @@ jobs:
                 staging: ${{ inputs.staging }}
                 architecture: X64
                 operating_system: ubuntu-22.04
-              secrets: inherit
+        secrets: inherit
 
     linux-legacy-installer:
         steps:
@@ -84,7 +84,7 @@ jobs:
                 staging: ${{ inputs.staging }}
                 architecture: X64
                 operating_system: ubuntu-20.04
-              secrets: inherit
+        secrets: inherit
 
     macos-installer:
         steps:
@@ -98,7 +98,7 @@ jobs:
                 staging: ${{ inputs.staging }}
                 architecture: X64
                 operating_system: macos-11.0
-              secrets: inherit
+        secrets: inherit
 
     macos-arm-installer:
         steps:
@@ -112,7 +112,7 @@ jobs:
                 staging: ${{ inputs.staging }}
                 architecture: ARM64
                 operating_system: self-hosted
-              secrets: inherit
+        secrets: inherit
 
     # Run and update nightly release when the nightly input is set to true or if the schedule is triggered
     update-nightly-release:
