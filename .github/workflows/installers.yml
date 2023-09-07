@@ -45,73 +45,63 @@ env:
 
 jobs:
     windows-installer:
-        steps:
-            - name: Build Windows installer
-              if: ${{ contains(inputs.os_list, 'windows') }}
-              uses: ./.github/workflows/windows.yml
-              with:
-                cura_conan_version: ${{ inputs.cura_conan_version }}
-                conan_args: ${{ inputs.conan_args }}
-                enterprise: ${{ inputs.enterprise }}
-                staging: ${{ inputs.staging }}
-                architecture: X64
-                operating_system: windows-2022
+        if: ${{ contains(inputs.os_list, 'windows') }}
+        uses: ./.github/workflows/windows.yml
+        with:
+            cura_conan_version: ${{ inputs.cura_conan_version }}
+            conan_args: ${{ inputs.conan_args }}
+            enterprise: ${{ inputs.enterprise }}
+            staging: ${{ inputs.staging }}
+            architecture: X64
+            operating_system: windows-2022
         secrets: inherit
 
     linux-modern-installer:
-        steps:
-            - name: Build (modern) Linux installer
-              if: ${{ contains(inputs.os_list, 'linux-modern') }}
-              uses: ./.github/workflows/linux.yml
-              with:
-                cura_conan_version: ${{ inputs.cura_conan_version }}
-                conan_args: ${{ inputs.conan_args }}
-                enterprise: ${{ inputs.enterprise }}
-                staging: ${{ inputs.staging }}
-                architecture: X64
-                operating_system: ubuntu-22.04
+        if: ${{ contains(inputs.os_list, 'linux-modern') }}
+        uses: ./.github/workflows/linux.yml
+        with:
+            cura_conan_version: ${{ inputs.cura_conan_version }}
+            conan_args: ${{ inputs.conan_args }}
+            enterprise: ${{ inputs.enterprise }}
+            staging: ${{ inputs.staging }}
+            architecture: X64
+            operating_system: ubuntu-22.04
         secrets: inherit
 
     linux-legacy-installer:
-        steps:
-            - name: Build (legacy) Linux installer
-              if: ${{ contains(inputs.os_list, 'linux-legacy') }}
-              uses: ./.github/workflows/linux.yml
-              with:
-                cura_conan_version: ${{ inputs.cura_conan_version }}
-                conan_args: ${{ inputs.conan_args }}
-                enterprise: ${{ inputs.enterprise }}
-                staging: ${{ inputs.staging }}
-                architecture: X64
-                operating_system: ubuntu-20.04
+        if: ${{ contains(inputs.os_list, 'linux-legacy') }}
+        uses: ./.github/workflows/linux.yml
+        with:
+            cura_conan_version: ${{ inputs.cura_conan_version }}
+            conan_args: ${{ inputs.conan_args }}
+            enterprise: ${{ inputs.enterprise }}
+            staging: ${{ inputs.staging }}
+            architecture: X64
+            operating_system: ubuntu-20.04
         secrets: inherit
 
     macos-installer:
-        steps:
-            - name: Build MacOS installer for Intel chips
-              if: ${{ contains(inputs.os_list, 'macos-x64') }}
-              uses: ./.github/workflows/macos.yml
-              with:
-                cura_conan_version: ${{ inputs.cura_conan_version }}
-                conan_args: ${{ inputs.conan_args }}
-                enterprise: ${{ inputs.enterprise }}
-                staging: ${{ inputs.staging }}
-                architecture: X64
-                operating_system: macos-11.0
+        if: ${{ contains(inputs.os_list, 'macos-x64') }}
+        uses: ./.github/workflows/macos.yml
+        with:
+            cura_conan_version: ${{ inputs.cura_conan_version }}
+            conan_args: ${{ inputs.conan_args }}
+            enterprise: ${{ inputs.enterprise }}
+            staging: ${{ inputs.staging }}
+            architecture: X64
+            operating_system: macos-11.0
         secrets: inherit
 
     macos-arm-installer:
-        steps:
-            - name: Build MacOS installer for ARM chips
-              if: ${{ contains(inputs.os_list, 'macos-arm64') }}
-              uses: ./.github/workflows/macos.yml
-              with:
-                cura_conan_version: ${{ inputs.cura_conan_version }}
-                conan_args: ${{ inputs.conan_args }}
-                enterprise: ${{ inputs.enterprise }}
-                staging: ${{ inputs.staging }}
-                architecture: ARM64
-                operating_system: self-hosted
+        if: ${{ contains(inputs.os_list, 'macos-arm64') }}
+        uses: ./.github/workflows/macos.yml
+        with:
+            cura_conan_version: ${{ inputs.cura_conan_version }}
+            conan_args: ${{ inputs.conan_args }}
+            enterprise: ${{ inputs.enterprise }}
+            staging: ${{ inputs.staging }}
+            architecture: ARM64
+            operating_system: self-hosted
         secrets: inherit
 
     # Run and update nightly release when the nightly input is set to true or if the schedule is triggered
