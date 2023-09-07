@@ -451,6 +451,9 @@ class CrashHandler:
         os._exit(1)
 
     def show(self):
+        Application.getInstance().getPreferences().setValue("general/last_shutdown_severity",
+                                                            Application.ShutdownSeverity.CrashHandler)
+
         # must run the GUI code on the Qt thread, otherwise the widgets on the dialog won't react correctly.
         Application.getInstance().callLater(self._show)
 
