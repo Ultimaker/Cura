@@ -22,7 +22,10 @@ from cura.Operations.SetParentOperation import SetParentOperation
 from cura.MultiplyObjectsJob import MultiplyObjectsJob
 from cura.Settings.SetObjectExtruderOperation import SetObjectExtruderOperation
 from cura.Settings.ExtruderManager import ExtruderManager
-from cura.Arranging.Nest2DArrange import createGroupOperationForArrange
+
+from cura.Arranging.GridArrange import GridArrange
+from cura.Arranging.Nest2DArrange import Nest2DArrange
+
 
 from cura.Operations.SetBuildPlateNumberOperation import SetBuildPlateNumberOperation
 
@@ -82,16 +85,25 @@ class CuraActions(QObject):
             center_operation = TranslateOperation(current_node, Vector(0, center_y, 0), set_position = True)
             operation.addOperation(center_operation)
         operation.push()
-
     @pyqtSlot(int)
     def multiplySelection(self, count: int) -> None:
+        """Multiply all objects in the selection
+        :param count: The number of times to multiply the selection.
+        """
+        min_offset = cura.CuraApplication.CuraApplication.getInstance().getBuildVolume().getEdgeDisallowedSize() + 2  # Allow for some rounding errors
+        job = MultiplyObjectsJob(Selection.getAllSelectedObjects(), count, min_offset = max(min_offset, 8))
+        job.start()
+
+    @pyqtSlot(int)
+    def multiplySelectionToGrid(self, count: int) -> None:
         """Multiply all objects in the selection
 
         :param count: The number of times to multiply the selection.
         """
 
         min_offset = cura.CuraApplication.CuraApplication.getInstance().getBuildVolume().getEdgeDisallowedSize() + 2  # Allow for some rounding errors
-        job = MultiplyObjectsJob(Selection.getAllSelectedObjects(), count, min_offset = max(min_offset, 8))
+        job = MultiplyObjectsJob(Selection.getAllSelectedObjects(), count, min_offset=max(min_offset, 8),
+                                 grid_arrange=True)
         job.start()
 
     @pyqtSlot()
@@ -229,9 +241,9 @@ class CuraActions(QObject):
             if node.callDecoration("isSliceable"):
                 fixed_nodes.append(node)
         # Add the new nodes to the scene, and arrange them
-        group_operation, not_fit_count = createGroupOperationForArrange(nodes, application.getBuildVolume(),
-                                                                        fixed_nodes, factor=10000,
-                                                                        add_new_nodes_in_scene=True)
+
+        arranger = GridArrange(nodes, application.getBuildVolume(), fixed_nodes)
+        group_operation, not_fit_count = arranger.createGroupOperationForArrange(add_new_nodes_in_scene = True)
         group_operation.push()
 
         # deselect currently selected nodes, and select the new nodes
