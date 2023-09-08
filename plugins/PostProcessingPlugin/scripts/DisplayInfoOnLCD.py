@@ -1,13 +1,13 @@
 # Display Filename and Layer on the LCD by Amanda de Castilho on August 28, 2018
-# Modified: Joshua Pope-Lewis on November 16, 2018 
+# Modified: Joshua Pope-Lewis on November 16, 2018
 # Display Progress on LCD by Mathias Lyngklip Kjeldgaard, Alexander Gee, Kimmo Toivanen, Inigo Martinez on July 31, 2019
 # Show Progress was adapted from Display Progress by Louis Wooters on January 6, 2020.  His changes are included here.
 #---------------------------------------------------------------
 # DisplayNameOrProgressOnLCD.py
 # Cura Post-Process plugin
 # Combines 'Display Filename and Layer on the LCD' with 'Display Progress'
-# Combined and adapted by: GregValiant (Greg Foresi)
-# Date:       March 5, 2023
+# Combined and with additions by: GregValiant (Greg Foresi)
+# Date:       September 8, 2023
 # NOTE:  This combined post processor will make 'Display Filename and Layer on the LCD' and 'Display Progress' obsolete
 # Description:  Display Filename and Layer options:
 #       Status messages sent to the printer...
@@ -20,17 +20,24 @@
 #       Display Progress options:
 #           - Display Total Layer Count
 #           - Disply Time Remaining for the print
-#           - Time Fudge Factor % - Divide the Actual Print Time by the Cura Estimate.  Enter as a percentage and the displayed time will be adjusted.  This allows you to bring the displayed time closer to reality (Ex: Entering 87.5 would indicate an adjustement to 87.5% of the Cura estimate).
+#           - Time Fudge Factor % - Divide the Actual Print Time by the Cura Estimate.  Enter as a percentage and the displayed time will be adjusted.  This allows you to bring the displayed time closer to reality (Ex: Entering 87.5 would indicate an adjustment to 87.5% of the Cura estimate).
 #           - Example line on LCD:  1/479 | ET 2h13m
+#           - Time to Pauses changes the M117/M118 lines to countdown to the next pause as  1/479 | TP 2h36m
 #           - 'Add M118 Line' is available with either option.  M118 will bounce the message back to a remote print server through the USB connection.
+#           - Enable 'Finish-Time' Message when checked takes the Print Time, adds 10 minutes for print start-up, and calculates when the print will end.  It takes into account the Time Fudge Factor.  (Available for Display Filename as well.)
 
 from ..Script import Script
 from UM.Application import Application
+from UM.Qt.Duration import DurationFormat
+import UM.Util
+import configparser
+from UM.Preferences import Preferences
+import time
+import datetime
+from UM.Message import Message
 
 class DisplayInfoOnLCD(Script):
-    def __init__(self):
-        super().__init__()
-
+        
     def getSettingDataString(self):
         return """{
             "name": "Display Info on LCD",
@@ -74,7 +81,7 @@ class DisplayInfoOnLCD(Script):
                     "default_value": 0,
                     "minimum_value": 0,
                     "maximum_value": 1,
-                    "enabled": "display_option == 'filename_layer'"                 
+                    "enabled": "display_option == 'filename_layer'"
                 },
                 "maxlayer":
                 {
@@ -118,11 +125,11 @@ class DisplayInfoOnLCD(Script):
                 "speed_factor":
                 {
                     "label": "Time Fudge Factor %",
-                    "description": "Tweak this value to get better estimates. ([Actual Print Time]/[Cura Estimate]) x 100 = Time Fudge Factor.  If Cura estimated 9hr and the print actually took 10hr30min then enter 117 here to adjust any estimate closer to reality.",
+                    "description": "When using 'Display Progress' tweak this value to get better estimates. ([Actual Print Time]/[Cura Estimate]) x 100 = Time Fudge Factor.  If Cura estimated 9hr and the print actually took 10hr30min then enter 117 here to adjust any estimate closer to reality.  This Fudge Factor is also used to calculate the time that the print will end if you were to start it 10 minutes after slicing.",
                     "type": "float",
                     "unit": "%",
                     "default_value": 100,
-                    "enabled": "display_option == 'display_progress'"
+                    "enabled": "enable_end_message or display_option == 'display_progress'"
                 },
                 "countdown_to_pause":
                 {
@@ -131,6 +138,14 @@ class DisplayInfoOnLCD(Script):
                     "type": "bool",
                     "default_value": false,
                     "enabled": "display_option == 'display_progress'"
+                },
+                "enable_end_message":
+                {
+                    "label": "Enable 'Finish-Time' Message",
+                    "description": "Get a message when you save a fresh slice.  It will show the estimated date and time that the print would finish (with a 10 minute lag from the end of slicing to the start of the print).",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": true
                 }
             }
         }"""
@@ -181,7 +196,11 @@ class DisplayInfoOnLCD(Script):
                         i += 1
                 final_lines = "\n".join(lines)
                 data[layer_index] = final_lines
-
+            if bool(self.getSettingValueByKey("enable_end_message")):
+                message_str = self.message_to_user(self.getSettingValueByKey("speed_factor") / 100)
+                Message(title = "Display Info on LCD - Estimated Finish Time", text = message_str[0] + "\n\n" + message_str[1] + "\n" + message_str[2] + "\n" + message_str[3]).show()
+            return data
+    
     # Display Progress (from 'Show Progress' and 'Display Progress on LCD')---------------------------------------
         elif display_option == "display_progress":
         # get settings
@@ -215,7 +234,7 @@ class DisplayInfoOnLCD(Script):
                 base_display_text = ""
             layer = data[len(data)-1]
             data[len(data)-1] = layer.replace(";End of Gcode" + "\n", "")
-            data[len(data)-1] += ";End of Gcode" + "\n" 
+            data[len(data)-1] += ";End of Gcode" + "\n"
         # Search for the number of layers and the total time from the start code
             for index in range(len(data)):
                 data_section = data[index]
@@ -277,15 +296,15 @@ class DisplayInfoOnLCD(Script):
                         break
         # overwrite the layer with the modified layer
                 data[layer_index] = "\n".join(lines)
-        
-        # If enabled then change the ET to TP for 'Time To Pause'        
+
+        # If enabled then change the ET to TP for 'Time To Pause'
             if bool(self.getSettingValueByKey("countdown_to_pause")):
                 time_list = []
                 time_list.append("0")
                 time_list.append("0")
                 this_time = 0
                 pause_index = 1
-                
+
         # Get the layer times
                 for num in range(2,len(data) - 1):
                     layer = data[num]
@@ -298,7 +317,7 @@ class DisplayInfoOnLCD(Script):
                                 for qnum in range(num - 1, pause_index, -1):
                                     time_list[qnum] = str(float(this_time) - float(time_list[qnum])) + "P"
                                 pause_index = num-1
-                
+
         # Make the adjustments to the M117 (and M118) lines that are prior to a pause
                 for num in range (2, len(data) - 1,1):
                     layer = data[num]
@@ -323,4 +342,55 @@ class DisplayInfoOnLCD(Script):
                             M118_line = line.split("|")[0] + "| TP " + time_to_go
                             layer = layer.replace(line, M118_line)
                     data[num] = layer
+            setting_data = ""
+            if bool(self.getSettingValueByKey("enable_end_message")):
+                message_str = self.message_to_user(speed_factor)
+                Message(title = "Display Info on LCD - Estimated Finish Time", text = message_str[0] + "\n\n" + message_str[1] + "\n" + message_str[2] + "\n" + message_str[3]).show()
         return data
+    
+    def message_to_user(self, speed_factor: float):
+        # Message the user of the projected finish time of the print (figuring a 10 minute delay from end-of-slice to start-of-print
+        print_time = Application.getInstance().getPrintInformation().currentPrintTime.getDisplayString(DurationFormat.Format.ISO8601)
+        #Get the current data/time info
+        yr = int(time.strftime("%Y"))
+        day = int(time.strftime("%d"))
+        mo = int(time.strftime("%m"))
+        hr = int(time.strftime("%H"))
+        min = int(time.strftime("%M"))
+        sec = int(time.strftime("%S"))
+        date_and_time = datetime.datetime(yr, mo, day, hr, min, sec)
+        #Split the Cura print time
+        pr_hr = int(print_time.split(":")[0])
+        pr_min = int(print_time.split(":")[1])
+        pr_sec = int(print_time.split(":")[2])
+        #Adjust the print time by 10 minutes to account for a lag in starting a print
+        print_seconds = pr_hr*3600 + pr_min*60 + pr_sec + 600
+        #Adjust the total seconds by the Fudge Factor
+        adjusted_print_time = print_seconds * speed_factor
+        #Break down the adjusted seconds back into hh:mm:ss
+        adj_hr = int(adjusted_print_time/3600)
+        print_seconds = adjusted_print_time - (adj_hr * 3600)        
+        adj_min = int(print_seconds) / 60
+        adj_sec = int(print_seconds - (adj_min * 60))        
+        #Get the print time to add to the start time
+        time_change = datetime.timedelta(hours=adj_hr, minutes=adj_min, seconds=adj_sec)
+        new_time = date_and_time + time_change
+        #Get the day of the week that the print will end on
+        week_day = str(["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][int(new_time.strftime("%w"))])
+        #Get the month that the print will end in
+        mo_str = str(["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][int(new_time.strftime("%m"))-1])
+        #Make adjustments from 24hr time to 12hr time
+        if int(new_time.strftime("%H")) > 12:
+            show_hr = str(int(new_time.strftime("%H")) - 12) + ":"
+            show_ampm = " PM"
+        elif int(new_time.strftime("%H")) == 0:
+            show_hr = "12:"
+            show_ampm = " AM"
+        else:
+            show_hr = str(new_time.strftime("%H")) + ":"
+            show_ampm = " AM"
+        message_str = "\n" + "(Finish Time estimate is based on the Cura printing time estimate and using your 'Fudge Factor' of " + str(speed_factor * 100) + "% - and a 10 minute lag between saving the file and starting the print.)"
+        finish_str = week_day + " " + str(mo_str) + " " + str(new_time.strftime("%d")) + ", " + str(new_time.strftime("%Y")) + " at " + str(show_hr) + str(new_time.strftime("%M")) + str(show_ampm)
+        estimate_str = "Cura Print Time Estimate: " + str(print_time)
+        adjusted_str = "  Adjusted Time Estimate: " + str(time_change) + " (Fudged plus 10min startup delay)"
+        return finish_str, estimate_str, adjusted_str, message_str
