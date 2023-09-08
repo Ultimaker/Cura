@@ -36,7 +36,7 @@ on:
                 type: string
     schedule:
         # Daily at 5:20 CET
-        -   cron: '20 4 * * *'
+        -   cron: '23 4 * * *'
 
 env:
     CURA_CONAN_VERSION: ${{ inputs.cura_conan_version }}
@@ -45,7 +45,7 @@ env:
 
 jobs:
     windows-installer:
-        if: ${{ contains(inputs.os_list, 'windows') }}
+        if: ${{ contains(inputs.os_list, 'windows') || github.event_name == 'schedule' }}
         uses: ./.github/workflows/windows.yml
         with:
             cura_conan_version: ${{ inputs.cura_conan_version }}
@@ -57,7 +57,7 @@ jobs:
         secrets: inherit
 
     linux-modern-installer:
-        if: ${{ contains(inputs.os_list, 'linux-modern') }}
+        if: ${{ contains(inputs.os_list, 'linux-modern') || github.event_name == 'schedule' }}
         uses: ./.github/workflows/linux.yml
         with:
             cura_conan_version: ${{ inputs.cura_conan_version }}
@@ -69,7 +69,7 @@ jobs:
         secrets: inherit
 
     linux-legacy-installer:
-        if: ${{ contains(inputs.os_list, 'linux-legacy') }}
+        if: ${{ contains(inputs.os_list, 'linux-legacy') || github.event_name == 'schedule' }}
         uses: ./.github/workflows/linux.yml
         with:
             cura_conan_version: ${{ inputs.cura_conan_version }}
@@ -122,13 +122,13 @@ jobs:
                     name: macos-run-info
 
             -   name: Download the run info II
-                if:  ${{ contains(inputs.os_list, 'linux-modern') || contains(inputs.os_list, 'linux-legacy') }}
+                if:  ${{ contains(inputs.os_list, 'linux-modern') || contains(inputs.os_list, 'linux-legacy') || github.event_name == 'schedule' }}
                 uses: actions/download-artifact@v2
                 with:
                     name: linux-run-info
 
             -   name: Download the run info III
-                if: ${{ contains(inputs.os_list, 'windows') }}
+                if: ${{ contains(inputs.os_list, 'windows') || github.event_name == 'schedule' }}
                 uses: actions/download-artifact@v2
                 with:
                     name: windows-run-info
@@ -145,9 +145,10 @@ jobs:
                     import datetime
                     enterprise = "-Enterprise" if "${{ inputs.enterprise }}" == "true" else ""
                     os_list = [x.strip() for x in "${{ inputs.os_list }}".split(",")]
-                    if 'linux-modern' in os_list:
+                    scheduled = "${{ github.event_name == 'schedule' }}" == "true"
+                    if 'linux-modern' in os_list or scheduled:
                         linux_modern = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-linux-modern-X64"
-                    if 'linux-legacy' in os_list:
+                    if 'linux-legacy' in os_list or scheduled:
                         linux_legacy = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-linux-X64"
                     if 'macos-x64' in os_list:
                         mac_x64_dmg = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-macos-X64"
@@ -155,7 +156,7 @@ jobs:
                     if 'macos-arm64' in os_list:
                         mac_arm_dmg = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-macos-ARM64"
                         mac_arm_pkg = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-macos-ARM64"
-                    if 'windows' in os_list:
+                    if 'windows' in os_list or scheduled:
                         win_msi = installer_filename = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-win64-X64"
                         win_exe = installer_filename = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-win64-X64"
                     nightly_name = "UltiMaker-Cura-" + os.getenv('CURA_VERSION_FULL').split("+")[0]
@@ -167,9 +168,9 @@ jobs:
                             content = f.read()
                     with open(output_env, "w") as f:
                         f.write(content)
-                        if 'linux-modern' in os_list:
+                        if 'linux-modern' in os_list or scheduled:
                             f.writelines(f"LINUX_MODERN={linux_modern}\n")
-                        if 'linux-legacy' in os_list:
+                        if 'linux-legacy' in os_list or scheduled:
                             f.writelines(f"LINUX_LEGACY={linux_legacy}\n")
                         if 'macos-x64' in os_list:
                             f.writelines(f"MAC_X64_DMG={mac_x64_dmg}\n")
@@ -177,21 +178,21 @@ jobs:
                         if 'macos-arm64' in os_list:
                             f.writelines(f"MAC_ARM_DMG={mac_arm_dmg}\n")
                             f.writelines(f"MAC_ARM_PKG={mac_arm_pkg}\n")
-                        if 'windows' in os_list:
+                        if 'windows' in os_list or scheduled:
                             f.writelines(f"WIN_MSI={win_msi}\n")
                             f.writelines(f"WIN_EXE={win_exe}\n")
                         f.writelines(f"NIGHTLY_NAME={nightly_name}\n")
                         f.writelines(f"NIGHTLY_TIME={nightly_creation_time}\n")
 
             -   name: Download linux modern installer jobs artifacts
-                if: ${{ contains(inputs.os_list, 'linux-modern') }}
+                if: ${{ contains(inputs.os_list, 'linux-modern') || github.event_name == 'schedule' }}
                 uses: actions/download-artifact@v2
                 with:
                     name: ${{ steps.filename.outputs.LINUX_MODERN }}-AppImage
                     path: installers
 
             -   name: Download linux legacy installer jobs artifacts
-                if: ${{ contains(inputs.os_list, 'linux-legacy') }}
+                if: ${{ contains(inputs.os_list, 'linux-legacy')  || github.event_name == 'schedule'}}
                 uses: actions/download-artifact@v2
                 with:
                     name: ${{ steps.filename.outputs.LINUX_LEGACY }}-AppImage
@@ -226,26 +227,26 @@ jobs:
                     path: installers
 
             -   name: Download win msi installer jobs artifacts
-                if: ${{ contains(inputs.os_list, 'windows') }}
+                if: ${{ contains(inputs.os_list, 'windows') || github.event_name == 'schedule' }}
                 uses: actions/download-artifact@v2
                 with:
                     name: ${{ steps.filename.outputs.WIN_MSI }}-msi
                     path: installers
 
             -   name: Download win exe installer jobs artifacts
-                if: ${{ contains(inputs.os_list, 'windows') }}
+                if: ${{ contains(inputs.os_list, 'windows') || github.event_name == 'schedule' }}
                 uses: actions/download-artifact@v2
                 with:
                     name: ${{ steps.filename.outputs.WIN_EXE }}-exe
                     path: installers
 
             -   name: Rename Linux (modern) installer to nightlies
-                if: ${{ contains(inputs.os_list, 'linux-modern') }}
+                if: ${{ contains(inputs.os_list, 'linux-modern') || github.event_name == 'schedule' }}
                 run: |
                     mv installers/${{ steps.filename.outputs.LINUX_MODERN }}.AppImage installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-linux-modern-X64.AppImage
 
             -   name: Rename Linux (legacy) installer to nightlies
-                if: ${{ contains(inputs.os_list, 'linux-legacy') }}
+                if: ${{ contains(inputs.os_list, 'linux-legacy') || github.event_name == 'schedule' }}
                 run: |
                     mv installers/${{ steps.filename.outputs.LINUX_LEGACY }}.AppImage installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-linux-X64.AppImage
 
@@ -262,20 +263,20 @@ jobs:
                     mv installers/${{ steps.filename.outputs.MAC_ARM_PKG }}.pkg installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-macos-ARM64.pkg
 
             -   name: Rename Windows installers to nightlies
-                if: ${{ contains(inputs.os_list, 'windows') }}
+                if: ${{ contains(inputs.os_list, 'windows') || github.event_name == 'schedule' }}
                 run: |
                     mv installers/${{ steps.filename.outputs.WIN_MSI }}.msi installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-win64-X64.msi
                     mv installers/${{ steps.filename.outputs.WIN_EXE }}.exe installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-win64-X64.exe
 
             -   name: Update nightly release for Linux (modern)
-                if: ${{ contains(inputs.os_list, 'linux-modern') }}
+                if: ${{ contains(inputs.os_list, 'linux-modern') || github.event_name == 'schedule' }}
                 run: |
                     gh release upload nightly installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-linux-modern-X64.AppImage --clobber
                 env:
                     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
             -   name: Update nightly release for Linux (legacy)
-                if: ${{ contains(inputs.os_list, 'linux-legacy') }}
+                if: ${{ contains(inputs.os_list, 'linux-legacy') || github.event_name == 'schedule' }}
                 run: |
                     gh release upload nightly installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-linux-X64.AppImage --clobber
                 env:
@@ -298,7 +299,7 @@ jobs:
                     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
             -   name: Update nightly release for Windows
-                if: ${{ contains(inputs.os_list, 'windows') }}
+                if: ${{ contains(inputs.os_list, 'windows') || github.event_name == 'schedule' }}
                 run: |
                     gh release upload nightly installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-win64-X64.msi --clobber
                     gh release upload nightly installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-win64-X64.exe --clobber
