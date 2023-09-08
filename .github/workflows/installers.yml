@@ -36,7 +36,7 @@ on:
                 type: string
     schedule:
         # Daily at 5:20 CET
-        -   cron: '23 4 * * *'
+        -   cron: '20 4 * * *'
 
 env:
     CURA_CONAN_VERSION: ${{ inputs.cura_conan_version }}
