@@ -257,6 +257,20 @@ jobs:
             dist/${{ steps.filename.outputs.INSTALLER_FILENAME }}.AppImage
           retention-days: 5
 
+      -   name: Write the run info
+          shell: python
+          run: |
+              import os
+              with open("run_info.sh", "w") as f:
+                  f.writelines(f'echo "CURA_VERSION_FULL={os.environ["CURA_VERSION_FULL"]}" >> $GITHUB_ENV\n')
+      -   name: Upload the run info
+          uses: actions/upload-artifact@v3
+          with:
+              name: linux-run-info
+              path: |
+                  run_info.sh
+              retention-days: 5
+
   notify-export:
     if: ${{ always() }}
     needs: [ cura-installer-create ]
