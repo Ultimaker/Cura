@@ -11,7 +11,7 @@ import re
 
 class VersionUpgrade54to55(VersionUpgrade):
     profile_regex = re.compile(
-        r"um\_(?P<machine>s(3|5|7))_(?P<core_type>aa|cc|bb)(?P<nozzle_size>0\.(6|4|8))_(?P<material>pla|petg|abs)_(?P<layer_height>0\.\d{1,2}mm)")
+        r"um\_(?P<machine>s(3|5|7))_(?P<core_type>aa|cc|bb)(?P<nozzle_size>0\.(6|4|8))_(?P<material>pla|petg|abs|cpe|cpe_plus|nylon|pc|petcf|tough_pla|tpu)_(?P<layer_height>0\.\d{1,2}mm)")
 
     @staticmethod
     def _isUpgradedUltimakerDefinitionId(definition_id: str) -> bool:
@@ -62,7 +62,6 @@ class VersionUpgrade54to55(VersionUpgrade):
 
                 intent_id = VersionUpgrade54to55.profile_regex.sub(
                     "um_\g<machine>_\g<core_type>\g<nozzle_size>_um-\g<material>_\g<layer_height>", intent_id)
-
 
             parser["containers"]["3"] = quality_id
             parser["containers"]["2"] = intent_id
