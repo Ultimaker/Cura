@@ -124,7 +124,7 @@ jobs:
                     name: macos-run-info
 
             -   name: Download the run info II
-                if:  contains(github.event.inputs.os_list, 'linux-modern') || contains(inputs.os_list, 'linux-legacy') }}
+                if:  ${{ contains(github.event.inputs.os_list, 'linux-modern') || contains(inputs.os_list, 'linux-legacy') }}
                 uses: actions/download-artifact@v2
                 with:
                     name: linux-run-info
