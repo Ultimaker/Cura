@@ -50,10 +50,10 @@ jobs:
         if: ${{ contains(github.event.inputs.os_list, 'windows') || github.event_name == 'schedule' }}
         uses: ./.github/workflows/windows.yml
         with:
-            cura_conan_version: ${{ env.CURA_CONAN_VERSION }}
-            conan_args: ${{ env.CONAN_ARGS }}
-            enterprise: ${{ env.ENTERPRISE }}
-            staging: ${{ env.STAGING }}
+            cura_conan_version: ${{ github.event.inputs.CURA_CONAN_VERSION }}
+            conan_args: ${{ github.event.inputs.CONAN_ARGS }}
+            enterprise: ${{ github.event.inputs.ENTERPRISE }}
+            staging: ${{ github.event.inputs.STAGING }}
             architecture: X64
             operating_system: windows-2022
         secrets: inherit
