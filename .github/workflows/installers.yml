@@ -130,7 +130,7 @@ jobs:
                     name: linux-run-info
 
             -   name: Download the run info III
-                if: contains(github.event.inputs.os_list, windows') }}
+                if: ${{ contains(github.event.inputs.os_list, windows') }}
                 uses: actions/download-artifact@v2
                 with:
                     name: windows-run-info
