@@ -102,3 +102,5 @@ Ultimaker-Cura.spec
 .run/
 /printer-linter/src/printerlinter.egg-info/
 /resources/qml/Dialogs/AboutDialogVersionsList.qml
+/plugins/CuraEngineGradualFlow
+/resources/bundled_packages/bundled_*.json
