@@ -308,11 +308,11 @@ class CuraConan(ConanFile):
         self.requires("curaengine_grpc_definitions/latest@ultimaker/testing")
         self.requires("zlib/1.2.13")
         self.requires("pyarcus/5.3.0")
-        self.requires("curaengine/(latest)@ultimaker/cura_10475")
+        self.requires("curaengine/(latest)@ultimaker/testing")
         self.requires("pysavitar/5.3.0")
         self.requires("pynest2d/5.3.0")
         self.requires("curaengine_plugin_gradual_flow/(latest)@ultimaker/testing")
-        self.requires("uranium/(latest)@ultimaker/cura_10475")
+        self.requires("uranium/(latest)@ultimaker/testing")
         self.requires("cura_binary_data/(latest)@ultimaker/testing")
         self.requires("cpython/3.10.4")
         if self.options.internal:
