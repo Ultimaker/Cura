@@ -52,8 +52,8 @@ jobs:
         with:
             cura_conan_version: ${{ github.event.inputs.CURA_CONAN_VERSION }}
             conan_args: ${{ github.event.inputs.conan_args }}
-            enterprise: ${{ github.event.inputs.enterprise }}
-            staging: ${{ github.event.inputs.staging }}
+            enterprise: ${{ github.event.inputs.enterprise == 'true' }}
+            staging: ${{ github.event.inputs.staging == 'true' }}
             architecture: X64
             operating_system: windows-2022
         secrets: inherit
@@ -64,8 +64,8 @@ jobs:
         with:
             cura_conan_version: ${{ github.event.inputs.CURA_CONAN_VERSION }}
             conan_args: ${{ github.event.inputs.conan_args }}
-            enterprise: ${{ github.event.inputs.enterprise }}
-            staging: ${{ github.event.inputs.staging }}
+            enterprise: ${{ github.event.inputs.enterprise == 'true' }}
+            staging: ${{ github.event.inputs.staging == 'true' }}
             architecture: X64
             operating_system: ubuntu-22.04
         secrets: inherit
@@ -76,8 +76,8 @@ jobs:
         with:
             cura_conan_version: ${{ github.event.inputs.CURA_CONAN_VERSION }}
             conan_args: ${{ github.event.inputs.conan_args }}
-            enterprise: ${{ github.event.inputs.enterprise }}
-            staging: ${{ github.event.inputs.staging }}
+            enterprise: ${{ github.event.inputs.enterprise == 'true' }}
+            staging: ${{ github.event.inputs.staging == 'true' }}
             architecture: X64
             operating_system: ubuntu-20.04
         secrets: inherit
@@ -88,8 +88,8 @@ jobs:
         with:
             cura_conan_version: ${{ github.event.inputs.CURA_CONAN_VERSION }}
             conan_args: ${{ github.event.inputs.conan_args }}
-            enterprise: ${{ github.event.inputs.enterprise }}
-            staging: ${{ github.event.inputs.staging }}
+            enterprise: ${{ github.event.inputs.enterprise == 'true' }}
+            staging: ${{ github.event.inputs.staging == 'true' }}
             architecture: X64
             operating_system: macos-11.0
         secrets: inherit
@@ -100,8 +100,8 @@ jobs:
         with:
             cura_conan_version: ${{ github.event.inputs.CURA_CONAN_VERSION }}
             conan_args: ${{ github.event.inputs.conan_args }}
-            enterprise: ${{ github.event.inputs.enterprise }}
-            staging: ${{ github.event.inputs.staging }}
+            enterprise: ${{ github.event.inputs.enterprise == 'true' }}
+            staging: ${{ github.event.inputs.staging == 'true' }}
             architecture: ARM64
             operating_system: self-hosted
         secrets: inherit
