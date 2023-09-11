@@ -51,9 +51,9 @@ jobs:
         uses: ./.github/workflows/windows.yml
         with:
             cura_conan_version: ${{ github.event.inputs.CURA_CONAN_VERSION }}
-            conan_args: ${{ github.event.inputs.CONAN_ARGS }}
-            enterprise: ${{ github.event.inputs.ENTERPRISE }}
-            staging: ${{ github.event.inputs.STAGING }}
+            conan_args: ${{ github.event.inputs.conan_args }}
+            enterprise: ${{ github.event.inputs.enterprise }}
+            staging: ${{ github.event.inputs.staging }}
             architecture: X64
             operating_system: windows-2022
         secrets: inherit
@@ -62,10 +62,10 @@ jobs:
         if: ${{ contains(github.event.inputs.os_list, 'linux-modern') || github.event_name == 'schedule' }}
         uses: ./.github/workflows/linux.yml
         with:
-            cura_conan_version: ${{ env.CURA_CONAN_VERSION }}
-            conan_args: ${{ env.CONAN_ARGS }}
-            enterprise: ${{ env.ENTERPRISE }}
-            staging: ${{ env.STAGING }}
+            cura_conan_version: ${{ github.event.inputs.CURA_CONAN_VERSION }}
+            conan_args: ${{ github.event.inputs.conan_args }}
+            enterprise: ${{ github.event.inputs.enterprise }}
+            staging: ${{ github.event.inputs.staging }}
             architecture: X64
             operating_system: ubuntu-22.04
         secrets: inherit
@@ -74,10 +74,10 @@ jobs:
         if: ${{ contains(github.event.inputs.os_list, 'linux-legacy') || github.event_name == 'schedule' }}
         uses: ./.github/workflows/linux.yml
         with:
-            cura_conan_version: ${{ env.CURA_CONAN_VERSION }}
-            conan_args: ${{ env.CONAN_ARGS }}
-            enterprise: ${{ env.ENTERPRISE }}
-            staging: ${{ env.STAGING }}
+            cura_conan_version: ${{ github.event.inputs.CURA_CONAN_VERSION }}
+            conan_args: ${{ github.event.inputs.conan_args }}
+            enterprise: ${{ github.event.inputs.enterprise }}
+            staging: ${{ github.event.inputs.staging }}
             architecture: X64
             operating_system: ubuntu-20.04
         secrets: inherit
@@ -86,10 +86,10 @@ jobs:
         if: ${{ contains(github.event.inputs.os_list, 'macos-x64') || github.event_name == 'schedule' }}
         uses: ./.github/workflows/macos.yml
         with:
-            cura_conan_version: ${{ env.CURA_CONAN_VERSION }}
-            conan_args: ${{ env.CONAN_ARGS }}
-            enterprise: ${{ env.ENTERPRISE }}
-            staging: ${{ env.STAGING }}
+            cura_conan_version: ${{ github.event.inputs.CURA_CONAN_VERSION }}
+            conan_args: ${{ github.event.inputs.conan_args }}
+            enterprise: ${{ github.event.inputs.enterprise }}
+            staging: ${{ github.event.inputs.staging }}
             architecture: X64
             operating_system: macos-11.0
         secrets: inherit
@@ -98,10 +98,10 @@ jobs:
         if: ${{ contains(github.event.inputs.os_list, 'macos-arm64') || github.event_name == 'schedule' }}
         uses: ./.github/workflows/macos.yml
         with:
-            cura_conan_version: ${{ env.CURA_CONAN_VERSION }}
-            conan_args: ${{ env.CONAN_ARGS }}
-            enterprise: ${{ env.ENTERPRISE }}
-            staging: ${{ env.STAGING }}
+            cura_conan_version: ${{ github.event.inputs.CURA_CONAN_VERSION }}
+            conan_args: ${{ github.event.inputs.conan_args }}
+            enterprise: ${{ github.event.inputs.enterprise }}
+            staging: ${{ github.event.inputs.staging }}
             architecture: ARM64
             operating_system: self-hosted
         secrets: inherit
