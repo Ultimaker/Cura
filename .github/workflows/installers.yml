@@ -74,22 +74,23 @@ jobs:
       operating_system: macos-11.0
     secrets: inherit
 
-  macos-arm-installer:
-    uses: ./.github/workflows/macos.yml
-    with:
-      cura_conan_version: ${{ github.event.inputs.CURA_CONAN_VERSION }}
-      conan_args: ${{ github.event.inputs.conan_args }}
-      enterprise: ${{ github.event.inputs.enterprise == 'true' }}
-      staging: ${{ github.event.inputs.staging == 'true' }}
-      architecture: ARM64
-      operating_system: self-hosted
-    secrets: inherit
+#  macos-arm-installer:
+#    uses: ./.github/workflows/macos.yml
+#    with:
+#      cura_conan_version: ${{ github.event.inputs.CURA_CONAN_VERSION }}
+#      conan_args: ${{ github.event.inputs.conan_args }}
+#      enterprise: ${{ github.event.inputs.enterprise == 'true' }}
+#      staging: ${{ github.event.inputs.staging == 'true' }}
+#      architecture: ARM64
+#      operating_system: self-hosted
+#    secrets: inherit
 
   # Run and update nightly release when the nightly input is set to true or if the schedule is triggered
   update-nightly-release:
     if: ${{ always() && (! cancelled()) && contains(needs.*.result, 'success') && (! contains(needs.*.result, 'failure')) && (inputs.nightly || github.event_name == 'schedule') }}
     runs-on: ubuntu-latest
-    needs: [ windows-installer, linux-installer, macos-installer, macos-arm-installer ]
+    needs: [ windows-installer, linux-installer, macos-installer ]
+#    needs: [ windows-installer, linux-installer, macos-installer, macos-arm-installer ]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -202,29 +203,29 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Download MacOS (ARM-64) dmg installer jobs artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: ${{ steps.filename.outputs.MAC_ARM_DMG }}-dmg
-          path: installers
-
-      - name: Download acOS (ARM-64) pkg installer jobs artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: ${{ steps.filename.outputs.MAC_ARM_PKG }}-pkg
-          path: installers
-
-      - name: Rename MacOS (ARM-64) installers to nightlies
-        run: |
-          mv installers/${{ steps.filename.outputs.MAC_ARM_DMG }}.dmg installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-macos-ARM64.dmg
-          mv installers/${{ steps.filename.outputs.MAC_ARM_PKG }}.pkg installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-macos-ARM64.pkg
-
-      - name: Update nightly release for MacOS (ARM-64)
-        run: |
-          gh release upload nightly installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-macos-ARM64.dmg --clobber
-          gh release upload nightly installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-macos-ARM64.pkg --clobber
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      - name: Download MacOS (ARM-64) dmg installer jobs artifacts
+#        uses: actions/download-artifact@v2
+#        with:
+#          name: ${{ steps.filename.outputs.MAC_ARM_DMG }}-dmg
+#          path: installers
+#
+#      - name: Download MacOS (ARM-64) pkg installer jobs artifacts
+#        uses: actions/download-artifact@v2
+#        with:
+#          name: ${{ steps.filename.outputs.MAC_ARM_PKG }}-pkg
+#          path: installers
+#
+#      - name: Rename MacOS (ARM-64) installers to nightlies
+#        run: |
+#          mv installers/${{ steps.filename.outputs.MAC_ARM_DMG }}.dmg installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-macos-ARM64.dmg
+#          mv installers/${{ steps.filename.outputs.MAC_ARM_PKG }}.pkg installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-macos-ARM64.pkg
+#
+#      - name: Update nightly release for MacOS (ARM-64)
+#        run: |
+#          gh release upload nightly installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-macos-ARM64.dmg --clobber
+#          gh release upload nightly installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-macos-ARM64.pkg --clobber
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Update nightly release description (with date)
         if: always()
