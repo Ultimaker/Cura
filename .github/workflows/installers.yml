@@ -24,59 +24,292 @@ on:
                 default: false
                 required: true
                 type: boolean
+            nightly:
+                description: 'Upload to nightly release'
+                default: false
+                required: true
+                type: boolean
+            os_list:
+                description: 'List of OS(-variant)s to build for'
+                default: "windows, linux-modern, linux-legacy, macos-x64, macos-arm64"
+                required: true
+                type: string
+    schedule:
+        # Daily at 5:20 CET
+        -   cron: '20 4 * * *'
+
+env:
+    CURA_CONAN_VERSION: ${{ inputs.cura_conan_version || 'cura/latest@ultimaker/testing' }}
+    CONAN_ARGS: ${{ inputs.conan_args || '' }}
+    ENTERPRISE: ${{ inputs.enterprise || false }}
+    STAGING: ${{ inputs.staging || false }}
+    OS_LIST: ${{ inputs.os_list || 'windows, linux-modern, linux-legacy, macos-x64, macos-arm64' }}
 
 jobs:
     windows-installer:
+        if: ${{ contains(github.event.inputs.os_list, 'windows') || github.event_name == 'schedule' }}
         uses: ./.github/workflows/windows.yml
         with:
-            cura_conan_version: ${{ inputs.cura_conan_version }}
-            conan_args: ${{ inputs.conan_args }}
-            enterprise: ${{ inputs.enterprise }}
-            staging: ${{ inputs.staging }}
+            cura_conan_version: ${{ github.event.inputs.CURA_CONAN_VERSION }}
+            conan_args: ${{ github.event.inputs.conan_args }}
+            enterprise: ${{ github.event.inputs.enterprise == 'true' }}
+            staging: ${{ github.event.inputs.staging == 'true' }}
             architecture: X64
             operating_system: windows-2022
         secrets: inherit
 
     linux-modern-installer:
+        if: ${{ contains(github.event.inputs.os_list, 'linux-modern') || github.event_name == 'schedule' }}
         uses: ./.github/workflows/linux.yml
         with:
-            cura_conan_version: ${{ inputs.cura_conan_version }}
-            conan_args: ${{ inputs.conan_args }}
-            enterprise: ${{ inputs.enterprise }}
-            staging: ${{ inputs.staging }}
+            cura_conan_version: ${{ github.event.inputs.CURA_CONAN_VERSION }}
+            conan_args: ${{ github.event.inputs.conan_args }}
+            enterprise: ${{ github.event.inputs.enterprise == 'true' }}
+            staging: ${{ github.event.inputs.staging == 'true' }}
             architecture: X64
             operating_system: ubuntu-22.04
         secrets: inherit
 
     linux-legacy-installer:
+        if: ${{ contains(github.event.inputs.os_list, 'linux-legacy') || github.event_name == 'schedule' }}
         uses: ./.github/workflows/linux.yml
         with:
-            cura_conan_version: ${{ inputs.cura_conan_version }}
-            conan_args: ${{ inputs.conan_args }}
-            enterprise: ${{ inputs.enterprise }}
-            staging: ${{ inputs.staging }}
+            cura_conan_version: ${{ github.event.inputs.CURA_CONAN_VERSION }}
+            conan_args: ${{ github.event.inputs.conan_args }}
+            enterprise: ${{ github.event.inputs.enterprise == 'true' }}
+            staging: ${{ github.event.inputs.staging == 'true' }}
             architecture: X64
             operating_system: ubuntu-20.04
         secrets: inherit
 
     macos-installer:
+        if: ${{ contains(github.event.inputs.os_list, 'macos-x64') || github.event_name == 'schedule' }}
         uses: ./.github/workflows/macos.yml
         with:
-            cura_conan_version: ${{ inputs.cura_conan_version }}
-            conan_args: ${{ inputs.conan_args }}
-            enterprise: ${{ inputs.enterprise }}
-            staging: ${{ inputs.staging }}
+            cura_conan_version: ${{ github.event.inputs.CURA_CONAN_VERSION }}
+            conan_args: ${{ github.event.inputs.conan_args }}
+            enterprise: ${{ github.event.inputs.enterprise == 'true' }}
+            staging: ${{ github.event.inputs.staging == 'true' }}
             architecture: X64
             operating_system: macos-11.0
         secrets: inherit
 
     macos-arm-installer:
+        if: ${{ contains(github.event.inputs.os_list, 'macos-arm64') || github.event_name == 'schedule' }}
         uses: ./.github/workflows/macos.yml
         with:
-            cura_conan_version: ${{ inputs.cura_conan_version }}
-            conan_args: ${{ inputs.conan_args }}
-            enterprise: ${{ inputs.enterprise }}
-            staging: ${{ inputs.staging }}
+            cura_conan_version: ${{ github.event.inputs.CURA_CONAN_VERSION }}
+            conan_args: ${{ github.event.inputs.conan_args }}
+            enterprise: ${{ github.event.inputs.enterprise == 'true' }}
+            staging: ${{ github.event.inputs.staging == 'true' }}
             architecture: ARM64
             operating_system: self-hosted
         secrets: inherit
+
+    # Run and update nightly release when the nightly input is set to true or if the schedule is triggered
+    update-nightly-release:
+        if: ${{ always() && (! cancelled()) && contains(needs.*.result, 'success') && (! contains(needs.*.result, 'failure')) && (inputs.nightly || github.event_name == 'schedule') }}
+        runs-on: ubuntu-latest
+        needs: [ windows-installer, linux-modern-installer, linux-legacy-installer, macos-installer, macos-arm-installer ]
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v3
+
+            # It's not necessary to download all three, but it does make sure we have at least one if an OS is skipped.
+
+            -   name: Download the run info
+                if: ${{ contains(github.event.inputs.os_list, 'macos-x64') || contains(inputs.os_list, 'macos-arm64') }}
+                uses: actions/download-artifact@v2
+                with:
+                    name: macos-run-info
+
+            -   name: Download the run info II
+                if: ${{ contains(github.event.inputs.os_list, 'linux-modern') || contains(inputs.os_list, 'linux-legacy') }}
+                uses: actions/download-artifact@v2
+                with:
+                    name: linux-run-info
+
+            -   name: Download the run info III
+                if: ${{ contains(github.event.inputs.os_list, 'windows') }}
+                uses: actions/download-artifact@v2
+                with:
+                    name: windows-run-info
+
+            -   name: Set the run info as environment variables
+                run: |
+                    . run_info.sh 
+
+            -   name: Output the name file name and extension
+                id: filename
+                shell: python
+                run: |
+                    import os
+                    import datetime
+                    enterprise = "-Enterprise" if "${{ env.ENTERPRISE }}" == "true" else ""
+                    os_list = [x.strip() for x in "${{ env.OS_LIST }}".split(",")]
+                    scheduled = "${{ github.event_name == 'schedule' }}" == "true"
+                    if 'linux-modern' in os_list or scheduled:
+                        linux_modern = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-linux-modern-X64"
+                    if 'linux-legacy' in os_list or scheduled:
+                        linux_legacy = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-linux-X64"
+                    if 'macos-x64' in os_list:
+                        mac_x64_dmg = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-macos-X64"
+                        mac_x64_pkg = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-macos-X64"
+                    if 'macos-arm64' in os_list:
+                        mac_arm_dmg = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-macos-ARM64"
+                        mac_arm_pkg = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-macos-ARM64"
+                    if 'windows' in os_list or scheduled:
+                        win_msi = installer_filename = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-win64-X64"
+                        win_exe = installer_filename = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-win64-X64"
+                    nightly_name = "UltiMaker-Cura-" + os.getenv('CURA_VERSION_FULL').split("+")[0]
+                    nightly_creation_time = str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+                    output_env = os.environ["GITHUB_OUTPUT"]
+                    content = ""
+                    if os.path.exists(output_env):
+                        with open(output_env, "r") as f:
+                            content = f.read()
+                    with open(output_env, "w") as f:
+                        f.write(content)
+                        if 'linux-modern' in os_list or scheduled:
+                            f.writelines(f"LINUX_MODERN={linux_modern}\n")
+                        if 'linux-legacy' in os_list or scheduled:
+                            f.writelines(f"LINUX_LEGACY={linux_legacy}\n")
+                        if 'macos-x64' in os_list:
+                            f.writelines(f"MAC_X64_DMG={mac_x64_dmg}\n")
+                            f.writelines(f"MAC_X64_PKG={mac_x64_pkg}\n")
+                        if 'macos-arm64' in os_list:
+                            f.writelines(f"MAC_ARM_DMG={mac_arm_dmg}\n")
+                            f.writelines(f"MAC_ARM_PKG={mac_arm_pkg}\n")
+                        if 'windows' in os_list or scheduled:
+                            f.writelines(f"WIN_MSI={win_msi}\n")
+                            f.writelines(f"WIN_EXE={win_exe}\n")
+                        f.writelines(f"NIGHTLY_NAME={nightly_name}\n")
+                        f.writelines(f"NIGHTLY_TIME={nightly_creation_time}\n")
+
+            -   name: Download linux modern installer jobs artifacts
+                if: ${{ contains(github.event.inputs.os_list, 'linux-modern') }}
+                uses: actions/download-artifact@v2
+                with:
+                    name: ${{ steps.filename.outputs.LINUX_MODERN }}-AppImage
+                    path: installers
+
+            -   name: Download linux legacy installer jobs artifacts
+                if: ${{ contains(github.event.inputs.os_list, 'linux-legacy') }}
+                uses: actions/download-artifact@v2
+                with:
+                    name: ${{ steps.filename.outputs.LINUX_LEGACY }}-AppImage
+                    path: installers
+
+            -   name: Download mac x64 dmg installer jobs artifacts
+                if: ${{ contains(github.event.inputs.os_list, 'macos-x64') }}
+                uses: actions/download-artifact@v2
+                with:
+                    name: ${{ steps.filename.outputs.MAC_X64_DMG }}-dmg
+                    path: installers
+
+            -   name: Download mac x64 pkg installer jobs artifacts
+                if: ${{ contains(github.event.inputs.os_list, 'macos-x64') }}
+                uses: actions/download-artifact@v2
+                with:
+                    name: ${{ steps.filename.outputs.MAC_X64_PKG }}-pkg
+                    path: installers
+
+            -   name: Download mac arm dmg installer jobs artifacts
+                if: ${{ contains(github.event.inputs.os_list, 'macos-arm64') }}
+                uses: actions/download-artifact@v2
+                with:
+                    name: ${{ steps.filename.outputs.MAC_ARM_DMG }}-dmg
+                    path: installers
+
+            -   name: Download mac arm pkg installer jobs artifacts
+                if: ${{ contains(github.event.inputs.os_list, 'macos-arm64') }}
+                uses: actions/download-artifact@v2
+                with:
+                    name: ${{ steps.filename.outputs.MAC_ARM_PKG }}-pkg
+                    path: installers
+
+            -   name: Download win msi installer jobs artifacts
+                if: ${{ contains(github.event.inputs.os_list, 'windows') }}
+                uses: actions/download-artifact@v2
+                with:
+                    name: ${{ steps.filename.outputs.WIN_MSI }}-msi
+                    path: installers
+
+            -   name: Download win exe installer jobs artifacts
+                if: ${{ contains(github.event.inputs.os_list, 'windows') }}
+                uses: actions/download-artifact@v2
+                with:
+                    name: ${{ steps.filename.outputs.WIN_EXE }}-exe
+                    path: installers
+
+            -   name: Rename Linux (modern) installer to nightlies
+                if: ${{ contains(github.event.inputs.os_list, 'linux-modern') }}
+                run: |
+                    mv installers/${{ steps.filename.outputs.LINUX_MODERN }}.AppImage installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-linux-modern-X64.AppImage
+
+            -   name: Rename Linux (legacy) installer to nightlies
+                if: ${{ contains(github.event.inputs.os_list, 'linux-legacy') }}
+                run: |
+                    mv installers/${{ steps.filename.outputs.LINUX_LEGACY }}.AppImage installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-linux-X64.AppImage
+
+            -   name: Rename MacOS (X64) installers to nightlies
+                if: ${{ contains(github.event.inputs.os_list, 'macos-x64') }}
+                run: |
+                    mv installers/${{ steps.filename.outputs.MAC_X64_DMG }}.dmg installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-macos-X64.dmg
+                    mv installers/${{ steps.filename.outputs.MAC_X64_PKG }}.pkg installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-macos-X64.pkg
+
+            -   name: Rename MacOS (ARM-64) installers to nightlies
+                if: ${{ contains(github.event.inputs.os_list, 'macos-arm64') }}
+                run: |
+                    mv installers/${{ steps.filename.outputs.MAC_ARM_DMG }}.dmg installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-macos-ARM64.dmg
+                    mv installers/${{ steps.filename.outputs.MAC_ARM_PKG }}.pkg installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-macos-ARM64.pkg
+
+            -   name: Rename Windows installers to nightlies
+                if: ${{ contains(github.event.inputs.os_list, 'windows') }}
+                run: |
+                    mv installers/${{ steps.filename.outputs.WIN_MSI }}.msi installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-win64-X64.msi
+                    mv installers/${{ steps.filename.outputs.WIN_EXE }}.exe installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-win64-X64.exe
+
+            -   name: Update nightly release for Linux (modern)
+                if: ${{ contains(github.event.inputs.os_list, 'linux-modern') }}
+                run: |
+                    gh release upload nightly installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-linux-modern-X64.AppImage --clobber
+                env:
+                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            -   name: Update nightly release for Linux (legacy)
+                if: ${{ contains(github.event.inputs.os_list, 'linux-legacy') }}
+                run: |
+                    gh release upload nightly installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-linux-X64.AppImage --clobber
+                env:
+                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            -   name: Update nightly release for MacOS (X64)
+                if: ${{ contains(github.event.inputs.os_list, 'macos-x64') }}
+                run: |
+                    gh release upload nightly installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-macos-X64.dmg --clobber
+                    gh release upload nightly installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-macos-X64.pkg --clobber
+                env:
+                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            -   name: Update nightly release for MacOS (ARM-64)
+                if: ${{ contains(github.event.inputs.os_list, 'macos-arm64') }}
+                run: |
+                    gh release upload nightly installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-macos-ARM64.dmg --clobber
+                    gh release upload nightly installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-macos-ARM64.pkg --clobber
+                env:
+                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            -   name: Update nightly release for Windows
+                if: ${{ contains(github.event.inputs.os_list, 'windows') }}
+                run: |
+                    gh release upload nightly installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-win64-X64.msi --clobber
+                    gh release upload nightly installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-win64-X64.exe --clobber
+                env:
+                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            -   name: Update nightly release description (with date)
+                run: |
+                    gh release edit nightly --title "${{ steps.filename.outputs.NIGHTLY_NAME }}" --notes "Nightly release created on: ${{ steps.filename.outputs.NIGHTLY_TIME }}"
+                env:
+                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
