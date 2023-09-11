@@ -118,19 +118,19 @@ jobs:
             # It's not necessary to download all three, but it does make sure we have at least one if an OS is skipped.
 
             -   name: Download the run info
-                if:  ${{ contains(github.event.inputs.os_list, 'macos-x64') || contains(inputs.os_list, 'macos-arm64') }}
+                if: ${{ contains(github.event.inputs.os_list, 'macos-x64') || contains(inputs.os_list, 'macos-arm64') }}
                 uses: actions/download-artifact@v2
                 with:
                     name: macos-run-info
 
             -   name: Download the run info II
-                if:  ${{ contains(github.event.inputs.os_list, 'linux-modern') || contains(inputs.os_list, 'linux-legacy') }}
+                if: ${{ contains(github.event.inputs.os_list, 'linux-modern') || contains(inputs.os_list, 'linux-legacy') }}
                 uses: actions/download-artifact@v2
                 with:
                     name: linux-run-info
 
             -   name: Download the run info III
-                if: ${{ contains(github.event.inputs.os_list, windows') }}
+                if: ${{ contains(github.event.inputs.os_list, 'windows') }}
                 uses: actions/download-artifact@v2
                 with:
                     name: windows-run-info
