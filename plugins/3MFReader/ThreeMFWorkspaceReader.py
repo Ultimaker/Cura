@@ -1133,7 +1133,15 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         extruder_stack.userChanges.setProperty(key, "value", value)
                 if parser is not None:
                     for key, value in parser["values"].items():
-                        extruder_stack.userChanges.setProperty(key, "value", value)
+                        value_not_in_missing_package = True
+                        if "PLUGIN" in value:
+                            for package in self._dialog.missingPackages:
+                                if (package['id']+"@"+package['package_version']) in value:
+                                    value_not_in_missing_package = False
+                                    Logger.log("w", f"Ignoring {key} value {value} from missing package")
+
+                        if value_not_in_missing_package :
+                            extruder_stack.userChanges.setProperty(key, "value", value)
 
     def _applyVariants(self, global_stack, extruder_stack_dict):
         machine_node = ContainerTree.getInstance().machines[global_stack.definition.getId()]
