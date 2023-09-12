@@ -31,8 +31,8 @@ on:
         type: boolean
 
   schedule:
-    # Daily at 5:20 CET
-    - cron: '20 4 * * *'
+    # Daily at 8:10 CET
+    - cron: '10 7 * * *'
 
 env:
   CURA_CONAN_VERSION: ${{ inputs.cura_conan_version || 'cura/latest@ultimaker/testing' }}
@@ -44,7 +44,7 @@ jobs:
   windows-installer:
     uses: ./.github/workflows/windows.yml
     with:
-      cura_conan_version: ${{ github.event.inputs.CURA_CONAN_VERSION }}
+      cura_conan_version: ${{ github.event.inputs.cura_conan_version }}
       conan_args: ${{ github.event.inputs.conan_args }}
       enterprise: ${{ github.event.inputs.enterprise == 'true' }}
       staging: ${{ github.event.inputs.staging == 'true' }}
@@ -55,7 +55,7 @@ jobs:
   linux-installer:
     uses: ./.github/workflows/linux.yml
     with:
-      cura_conan_version: ${{ github.event.inputs.CURA_CONAN_VERSION }}
+      cura_conan_version: ${{ github.event.inputs.cura_conan_version }}
       conan_args: ${{ github.event.inputs.conan_args }}
       enterprise: ${{ github.event.inputs.enterprise == 'true' }}
       staging: ${{ github.event.inputs.staging == 'true' }}
@@ -66,7 +66,7 @@ jobs:
   macos-installer:
     uses: ./.github/workflows/macos.yml
     with:
-      cura_conan_version: ${{ github.event.inputs.CURA_CONAN_VERSION }}
+      cura_conan_version: ${{ github.event.inputs.cura_conan_version }}
       conan_args: ${{ github.event.inputs.conan_args }}
       enterprise: ${{ github.event.inputs.enterprise == 'true' }}
       staging: ${{ github.event.inputs.staging == 'true' }}
@@ -77,7 +77,7 @@ jobs:
 #  macos-arm-installer:
 #    uses: ./.github/workflows/macos.yml
 #    with:
-#      cura_conan_version: ${{ github.event.inputs.CURA_CONAN_VERSION }}
+#      cura_conan_version: ${{ github.event.inputs.cura_conan_version }}
 #      conan_args: ${{ github.event.inputs.conan_args }}
 #      enterprise: ${{ github.event.inputs.enterprise == 'true' }}
 #      staging: ${{ github.event.inputs.staging == 'true' }}
