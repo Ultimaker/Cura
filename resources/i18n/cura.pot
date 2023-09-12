@@ -4883,7 +4883,7 @@ msgid "Provides support for importing profiles from g-code files."
 msgstr ""
 
 msgctxt "name"
-msgid "Version Upgrade 4.8 to 4.9"
+msgid "G-code Profile Reader"
 msgstr ""
 
 msgctxt "description"
@@ -4891,7 +4891,7 @@ msgid "Provides support for reading 3MF files."
 msgstr ""
 
 msgctxt "name"
-msgid "Version Upgrade 5.2 to 5.3"
+msgid "3MF Reader"
 msgstr ""
 
 msgctxt "description"
@@ -5207,11 +5207,11 @@ msgid "Version Upgrade 4.3 to 4.4"
 msgstr ""
 
 msgctxt "description"
-msgid "Backup and restore your configuration."
+msgid "Upgrades configurations from Cura 4.7 to Cura 4.8."
 msgstr ""
 
 msgctxt "name"
-msgid "Cura Backups"
+msgid "Version Upgrade 4.7 to 4.8"
 msgstr ""
 
 msgctxt "description"
@@ -5231,11 +5231,11 @@ msgid "Version Upgrade 4.8 to 4.9"
 msgstr ""
 
 msgctxt "description"
-msgid "Reads g-code from a compressed archive."
+msgid "Upgrades configurations from Cura 3.4 to Cura 3.5."
 msgstr ""
 
 msgctxt "name"
-msgid "Compressed G-code Reader"
+msgid "Version Upgrade 3.4 to 3.5"
 msgstr ""
 
 msgctxt "description"
@@ -5267,7 +5267,7 @@ msgid "Upgrades configurations from Cura 2.7 to Cura 3.0."
 msgstr ""
 
 msgctxt "name"
-msgid "Legacy Cura Profile Reader"
+msgid "Version Upgrade 2.7 to 3.0"
 msgstr ""
 
 msgctxt "description"
@@ -5331,7 +5331,7 @@ msgid "Upgrades configurations from Cura 4.5 to Cura 4.6."
 msgstr ""
 
 msgctxt "name"
-msgid "Support Eraser"
+msgid "Version Upgrade 4.5 to 4.6"
 msgstr ""
 
 msgctxt "description"
