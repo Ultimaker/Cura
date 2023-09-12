@@ -32,7 +32,7 @@ on:
 
   schedule:
     # Daily at 23:10 CET
-    - cron: '10 21 * * *'
+    - cron: '15 * * * *'
 
 env:
   CURA_CONAN_VERSION: ${{ inputs.cura_conan_version || 'cura/latest@ultimaker/testing' }}
