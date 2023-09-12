@@ -31,8 +31,8 @@ on:
         type: boolean
 
   schedule:
-    # Daily at 23:10 CET
-    - cron: '15 * * * *'
+    # Daily at 5:15 CET
+    - cron: '15 3 * * *'
 
 env:
   CURA_CONAN_VERSION: ${{ inputs.cura_conan_version || 'cura/latest@ultimaker/testing' }}
