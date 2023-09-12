@@ -17,7 +17,7 @@
     },
     "overrides":
     {
-        "acceleration_enabled": { "value": "true" },
+        "acceleration_enabled": { "value": "True" },
         "acceleration_infill": { "maximum_value_warning": "2500" },
         "acceleration_layer_0": { "maximum_value_warning": "2500" },
         "acceleration_prime_tower": { "maximum_value_warning": "2500" },

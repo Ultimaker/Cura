@@ -19,6 +19,14 @@ pyinstaller:
             package: "cura"
             src: "plugins"
             dst: "share/cura/plugins"
+        curaengine_gradual_flow_plugin:
+            package: "curaengine_plugin_gradual_flow"
+            src: "res/plugins/CuraEngineGradualFlow"
+            dst: "share/cura/plugins/CuraEngineGradualFlow"
+        curaengine_gradual_flow_plugin_bundled:
+            package: "curaengine_plugin_gradual_flow"
+            src: "res/bundled_packages"
+            dst: "share/cura/resources/bundled_packages"
         cura_resources:
             package: "cura"
             src: "resources"

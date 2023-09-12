@@ -1,0 +1,285 @@
+name: Linux Installer
+run-name: ${{ inputs.cura_conan_version }} for Linux-${{ inputs.architecture }} by @${{ github.actor }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      cura_conan_version:
+        description: 'Cura Conan Version'
+        default: 'cura/latest@ultimaker/testing'
+        required: true
+        type: string
+      conan_args:
+        description: 'Conan args: eq.: --require-override'
+        default: ''
+        required: false
+        type: string
+      enterprise:
+        description: 'Build Cura as an Enterprise edition'
+        default: false
+        required: true
+        type: boolean
+      staging:
+        description: 'Use staging API'
+        default: false
+        required: true
+        type: boolean
+      architecture:
+        description: 'Architecture'
+        required: true
+        default: 'X64'
+        type: choice
+        options:
+          - X64
+      operating_system:
+        description: 'OS'
+        required: true
+        default: 'ubuntu-22.04'
+        type: choice
+        options:
+          - ubuntu-22.04
+
+  workflow_call:
+    inputs:
+      cura_conan_version:
+        description: 'Cura Conan Version'
+        default: 'cura/latest@ultimaker/testing'
+        required: true
+        type: string
+      conan_args:
+        description: 'Conan args: eq.: --require-override'
+        default: ''
+        required: false
+        type: string
+      enterprise:
+        description: 'Build Cura as an Enterprise edition'
+        default: false
+        required: true
+        type: boolean
+      staging:
+        description: 'Use staging API'
+        default: false
+        required: true
+        type: boolean
+      architecture:
+        description: 'Architecture'
+        required: true
+        default: 'X64'
+        type: string
+      operating_system:
+        description: 'OS'
+        required: true
+        default: 'ubuntu-22.04'
+        type: string
+
+env:
+  CONAN_LOGIN_USERNAME_CURA: ${{ secrets.CONAN_USER }}
+  CONAN_PASSWORD_CURA: ${{ secrets.CONAN_PASS }}
+  GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+  CURA_CONAN_VERSION: ${{ inputs.cura_conan_version }}
+  ENTERPRISE: ${{ inputs.enterprise }}
+  STAGING: ${{ inputs.staging }}
+
+jobs:
+  cura-installer-create:
+    runs-on: ${{ inputs.operating_system }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Python and pip
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10.x'
+          cache: 'pip'
+          cache-dependency-path: .github/workflows/requirements-conan-package.txt
+
+      - name: Install Python requirements for runner
+        run: pip install -r .github/workflows/requirements-conan-package.txt
+
+      - name: Cache Conan local repository packages (Bash)
+        uses: actions/cache@v3
+        with:
+          path: |
+            $HOME/.conan/data
+            $HOME/.conan/conan_download_cache
+          key: conan-${{ runner.os }}-${{ runner.arch }}-installer-cache
+
+      - name: Hack needed specifically for ubuntu-22.04 from mid-Feb 2023 onwards
+        if: ${{ startsWith(inputs.operating_system, 'ubuntu-22.04') }}
+        run: sudo apt remove libodbc2 libodbcinst2 unixodbc-common -y
+
+      # NOTE: Due to what are probably github issues, we have to remove the cache and reconfigure before the rest.
+      #       This is maybe because grub caches the disk it uses last time, which is recreated each time.
+      - name: Install Linux system requirements
+        run: |
+          sudo rm /var/cache/debconf/config.dat
+          sudo dpkg --configure -a
+          sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+          sudo apt update
+          sudo apt upgrade
+          sudo apt install build-essential checkinstall libegl-dev zlib1g-dev libssl-dev ninja-build autoconf libx11-dev libx11-xcb-dev libfontenc-dev libice-dev libsm-dev libxau-dev libxaw7-dev libxcomposite-dev libxcursor-dev libxdamage-dev libxdmcp-dev libxext-dev libxfixes-dev libxi-dev libxinerama-dev libxkbfile-dev libxmu-dev libxmuu-dev libxpm-dev libxrandr-dev libxrender-dev libxres-dev libxss-dev libxt-dev libxtst-dev libxv-dev libxvmc-dev libxxf86vm-dev xtrans-dev libxcb-render0-dev libxcb-render-util0-dev libxcb-xkb-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev libxcb-randr0-dev libxcb-shape0-dev libxcb-sync-dev libxcb-xfixes0-dev libxcb-xinerama0-dev xkb-data libxcb-dri3-dev uuid-dev libxcb-util-dev libxkbcommon-x11-dev pkg-config binutils coreutils desktop-file-utils fakeroot fuse libgdk-pixbuf2.0-dev patchelf squashfs-tools strace util-linux zsync -y
+          
+          # Get the AppImage tool
+          wget --no-check-certificate --quiet https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage -O $GITHUB_WORKSPACE/appimagetool
+          chmod +x $GITHUB_WORKSPACE/appimagetool
+          echo "APPIMAGETOOL_LOCATION=$GITHUB_WORKSPACE/appimagetool" >> $GITHUB_ENV
+          
+          # Get the AppImage builder
+          wget --no-check-certificate --quiet -O $GITHUB_WORKSPACE/appimage-builder-x86_64.AppImage https://github.com/AppImageCrafters/appimage-builder/releases/download/v1.1.0/appimage-builder-1.1.0-x86_64.AppImage
+          chmod +x appimage-builder-x86_64.AppImage
+          echo "APPIMAGEBUILDER_LOCATION=$GITHUB_WORKSPACE/appimage-builder-x86_64.AppImage" >> $GITHUB_ENV
+          
+          # Make sure these tools can be found on the path
+          echo "$GITHUB_WORKSPACE" >> $GITHUB_PATH          
+
+      - name: Install GCC-13
+        run: |
+          sudo apt install g++-13 gcc-13 -y
+          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 13
+          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 13
+
+      - name: Create the default Conan profile
+        run: conan profile new default --detect --force
+
+      - name: Configure GPG Key Linux (Bash)
+        run: echo -n "$GPG_PRIVATE_KEY" | base64 --decode | gpg --import
+
+      - name: Get Conan configuration
+        run: |
+          conan config install https://github.com/Ultimaker/conan-config.git
+          conan config install https://github.com/Ultimaker/conan-config.git -a "-b runner/${{ runner.os }}/${{ runner.arch }}"
+
+      - name: Use Conan download cache (Bash)
+        run: conan config set storage.download_cache="$HOME/.conan/conan_download_cache"
+
+      - name: Create the Packages (Bash)
+        run: conan install $CURA_CONAN_VERSION ${{ inputs.conan_args }} --build=missing --update -if cura_inst -g VirtualPythonEnv -o cura:enterprise=$ENTERPRISE -o cura:staging=$STAGING --json "cura_inst/conan_install_info.json"
+
+      - name: Upload the Package(s)
+        if: always()
+        run: |
+          conan upload "*" -r cura --all -c
+
+      - name: Set Environment variables for Cura (bash)
+        run: |
+          . ./cura_inst/bin/activate_github_actions_env.sh
+          . ./cura_inst/bin/activate_github_actions_version_env.sh
+
+        # FIXME: This is a workaround to ensure that we use and pack a shared library for OpenSSL 1.1.1l. We currently compile
+        #  OpenSSL statically for CPython, but our Python Dependenies (such as PyQt6) require a shared library.
+        #  Because Conan won't allow for building the same library with two different options (easily) we need to install it explicitly
+        #  and do a manual copy to the VirtualEnv, such that Pyinstaller can find it.
+
+      - name: Install OpenSSL shared
+        run: conan install openssl/1.1.1l@_/_ --build=missing --update -o openssl:shared=True -g deploy
+
+      - name: Copy OpenSSL shared (Bash)
+        run: |
+          cp ./openssl/lib/*.so* ./cura_inst/bin/ || true
+          cp ./openssl/lib/*.dylib* ./cura_inst/bin/ || true                    
+
+      - name: Create the Cura dist
+        run: pyinstaller ./cura_inst/UltiMaker-Cura.spec
+
+      - name: Output the name file name and extension
+        id: filename
+        shell: python
+        run: |
+          import os
+          enterprise = "-Enterprise" if "${{ inputs.enterprise }}" == "true" else ""
+          installer_filename = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-linux-${{ inputs.architecture }}"
+          output_env = os.environ["GITHUB_OUTPUT"]
+          content = ""
+          if os.path.exists(output_env):
+              with open(output_env, "r") as f:
+                  content = f.read()
+          with open(output_env, "w") as f:
+              f.write(content)
+              f.writelines(f"INSTALLER_FILENAME={installer_filename}\n")
+
+      - name: Summarize the used Conan dependencies
+        shell: python
+        run: |
+          import os
+          import json
+          from pathlib import Path
+          
+          conan_install_info_path = Path("cura_inst/conan_install_info.json")
+          conan_info = {"installed": []}
+          if os.path.exists(conan_install_info_path):
+              with open(conan_install_info_path, "r") as f:
+                  conan_info = json.load(f)
+          sorted_deps = sorted([dep["recipe"]["id"].replace('#', r' rev: ') for dep in conan_info["installed"]])
+          
+          summary_env = os.environ["GITHUB_STEP_SUMMARY"]
+          content = ""
+          if os.path.exists(summary_env):
+              with open(summary_env, "r") as f:
+                  content = f.read()
+          
+          with open(summary_env, "w") as f:
+              f.write(content)
+              f.writelines("# ${{ steps.filename.outputs.INSTALLER_FILENAME }}\n")
+              f.writelines("## Conan packages:\n")
+              for dep in sorted_deps:
+                  f.writelines(f"`{dep}`\n")
+
+      - name: Summarize the used Python modules
+        shell: python
+        run: |
+          import os
+          import pkg_resources
+          summary_env = os.environ["GITHUB_STEP_SUMMARY"]
+          content = ""
+          if os.path.exists(summary_env):
+              with open(summary_env, "r") as f:
+                  content = f.read()
+          
+          with open(summary_env, "w") as f:
+              f.write(content)
+              f.writelines("## Python modules:\n")
+              for package in pkg_resources.working_set:
+                  f.writelines(f"`{package.key}/{package.version}`\n")
+
+      - name: Create the Linux AppImage (Bash)
+        run: |
+          python ../cura_inst/packaging/AppImage-builder/create_appimage.py ./UltiMaker-Cura $CURA_VERSION_FULL "${{ steps.filename.outputs.INSTALLER_FILENAME }}.AppImage"
+          chmod +x "${{ steps.filename.outputs.INSTALLER_FILENAME }}.AppImage"
+        working-directory: dist
+
+      - name: Upload the AppImage
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ steps.filename.outputs.INSTALLER_FILENAME }}-AppImage
+          path: |
+            dist/${{ steps.filename.outputs.INSTALLER_FILENAME }}.AppImage
+          retention-days: 5
+
+      - name: Write the run info
+        shell: python
+        run: |
+          import os
+          with open("run_info.sh", "w") as f:
+              f.writelines(f'echo "CURA_VERSION_FULL={os.environ["CURA_VERSION_FULL"]}" >> $GITHUB_ENV\n')
+      - name: Upload the run info
+        uses: actions/upload-artifact@v3
+        with:
+          name: linux-run-info
+          path: |
+            run_info.sh
+          retention-days: 5
+
+  notify-export:
+    if: ${{ always() }}
+    needs: [ cura-installer-create ]
+
+    uses: ultimaker/cura/.github/workflows/notify.yml@main
+    with:
+      success: ${{ contains(join(needs.*.result, ','), 'success') }}
+      success_title: "Create the Cura distributions"
+      success_body: "Installers for ${{ inputs.cura_conan_version }}"
+      failure_title: "Failed to create the Cura distributions"
+      failure_body: "Failed to create at least 1 installer for ${{ inputs.cura_conan_version }}"
+    secrets: inherit

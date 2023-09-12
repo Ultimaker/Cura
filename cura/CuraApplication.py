@@ -1,10 +1,11 @@
-# Copyright (c) 2022 Ultimaker B.V.
+# Copyright (c) 2023 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 import enum
 import os
 import sys
 import tempfile
 import time
+import platform
 from typing import cast, TYPE_CHECKING, Optional, Callable, List, Any, Dict
 
 import numpy
@@ -49,11 +50,11 @@ from UM.Settings.Validator import Validator
 from UM.View.SelectionPass import SelectionPass  # For typing.
 from UM.Workspace.WorkspaceReader import WorkspaceReader
 from UM.i18n import i18nCatalog
+from UM.Version import Version
 from cura import ApplicationMetadata
 from cura.API import CuraAPI
 from cura.API.Account import Account
 from cura.Arranging.ArrangeObjectsJob import ArrangeObjectsJob
-from cura.Arranging.Nest2DArrange import arrange
 from cura.Machines.MachineErrorChecker import MachineErrorChecker
 from cura.Machines.Models.BuildPlateModel import BuildPlateModel
 from cura.Machines.Models.CustomQualityProfilesDropDownMenuModel import CustomQualityProfilesDropDownMenuModel
@@ -114,6 +115,7 @@ from . import CameraAnimation
 from . import CuraActions
 from . import PlatformPhysics
 from . import PrintJobPreviewImageProvider
+from .Arranging.Nest2DArrange import Nest2DArrange
 from .AutoSave import AutoSave
 from .Machines.Models.CompatibleMachineModel import CompatibleMachineModel
 from .Machines.Models.MachineListModel import MachineListModel
@@ -147,6 +149,7 @@ class CuraApplication(QtApplication):
         DefinitionChangesContainer = Resources.UserType + 10
         SettingVisibilityPreset = Resources.UserType + 11
         IntentInstanceContainer = Resources.UserType + 12
+        ImageFiles = Resources.UserType + 13
 
     pyqtEnum(ResourceTypes)
 
@@ -203,6 +206,8 @@ class CuraApplication(QtApplication):
         self._simple_mode_settings_manager = None
         self._cura_scene_controller = None
         self._machine_error_checker = None
+
+        self._backend_plugins: List[BackendPlugin] = []
 
         self._machine_settings_manager = MachineSettingsManager(self, parent = self)
         self._material_management_model = None
@@ -407,6 +412,9 @@ class CuraApplication(QtApplication):
 
         SettingFunction.registerOperator("extruderValue", self._cura_formula_functions.getValueInExtruder)
         SettingFunction.registerOperator("extruderValues", self._cura_formula_functions.getValuesInAllExtruders)
+        SettingFunction.registerOperator("anyExtruderWithMaterial", self._cura_formula_functions.getExtruderPositionWithMaterial)
+        SettingFunction.registerOperator("anyExtruderNrWithOrDefault",
+                                         self._cura_formula_functions.getAnyExtruderPositionWithOrDefault)
         SettingFunction.registerOperator("resolveOrValue", self._cura_formula_functions.getResolveOrValue)
         SettingFunction.registerOperator("defaultExtruderPosition", self._cura_formula_functions.getDefaultExtruderPosition)
         SettingFunction.registerOperator("valueFromContainer", self._cura_formula_functions.getValueFromContainerAtIndex)
@@ -425,6 +433,7 @@ class CuraApplication(QtApplication):
         Resources.addStorageType(self.ResourceTypes.DefinitionChangesContainer, "definition_changes")
         Resources.addStorageType(self.ResourceTypes.SettingVisibilityPreset, "setting_visibility")
         Resources.addStorageType(self.ResourceTypes.IntentInstanceContainer, "intent")
+        Resources.addStorageType(self.ResourceTypes.ImageFiles, "images")
 
         self._container_registry.addResourceType(self.ResourceTypes.QualityInstanceContainer, "quality")
         self._container_registry.addResourceType(self.ResourceTypes.QualityChangesInstanceContainer, "quality_changes")
@@ -435,6 +444,7 @@ class CuraApplication(QtApplication):
         self._container_registry.addResourceType(self.ResourceTypes.MachineStack, "machine")
         self._container_registry.addResourceType(self.ResourceTypes.DefinitionChangesContainer, "definition_changes")
         self._container_registry.addResourceType(self.ResourceTypes.IntentInstanceContainer, "intent")
+        self._container_registry.addResourceType(self.ResourceTypes.ImageFiles, "images")
 
         Resources.addType(self.ResourceTypes.QmlFiles, "qml")
         Resources.addType(self.ResourceTypes.Firmware, "firmware")
@@ -490,6 +500,36 @@ class CuraApplication(QtApplication):
     def startSplashWindowPhase(self) -> None:
         """Runs preparations that needs to be done before the starting process."""
 
+        self.setRequiredPlugins([
+            # Misc.:
+            "ConsoleLogger",  # You want to be able to read the log if something goes wrong.
+            "CuraEngineBackend",  # Cura is useless without this one since you can't slice.
+            "FileLogger",  # You want to be able to read the log if something goes wrong.
+            "XmlMaterialProfile",  # Cura crashes without this one.
+            "Marketplace",
+            # This contains the interface to enable/disable plug-ins, so if you disable it you can't enable it back.
+            "PrepareStage",  # Cura is useless without this one since you can't load models.
+            "PreviewStage",  # This shows the list of the plugin views that are installed in Cura.
+            "MonitorStage",  # Major part of Cura's functionality.
+            "LocalFileOutputDevice",  # Major part of Cura's functionality.
+            "LocalContainerProvider",  # Cura is useless without any profiles or setting definitions.
+
+            # Views:
+            "SimpleView",  # Dependency of SolidView.
+            "SolidView",  # Displays models. Cura is useless without it.
+
+            # Readers & Writers:
+            "GCodeWriter",  # Cura is useless if it can't write its output.
+            "STLReader",  # Most common model format, so disabling this makes Cura 90% useless.
+            "3MFWriter",  # Required for writing project files.
+
+            # Tools:
+            "CameraTool",  # Needed to see the scene. Cura is useless without it.
+            "SelectionTool",  # Dependency of the rest of the tools.
+            "TranslateTool",  # You'll need this for almost every print.
+        ])
+        # Plugins need to be set here, since in the super the check is done if they are actually loaded.
+
         super().startSplashWindowPhase()
 
         if not self.getIsHeadLess():
@@ -498,33 +538,7 @@ class CuraApplication(QtApplication):
             except FileNotFoundError:
                 Logger.log("w", "Unable to find the window icon.")
 
-        self.setRequiredPlugins([
-            # Misc.:
-            "ConsoleLogger", #You want to be able to read the log if something goes wrong.
-            "CuraEngineBackend", #Cura is useless without this one since you can't slice.
-            "FileLogger", #You want to be able to read the log if something goes wrong.
-            "XmlMaterialProfile", #Cura crashes without this one.
-            "Marketplace", #This contains the interface to enable/disable plug-ins, so if you disable it you can't enable it back.
-            "PrepareStage", #Cura is useless without this one since you can't load models.
-            "PreviewStage", #This shows the list of the plugin views that are installed in Cura.
-            "MonitorStage", #Major part of Cura's functionality.
-            "LocalFileOutputDevice", #Major part of Cura's functionality.
-            "LocalContainerProvider", #Cura is useless without any profiles or setting definitions.
 
-            # Views:
-            "SimpleView", #Dependency of SolidView.
-            "SolidView", #Displays models. Cura is useless without it.
-
-            # Readers & Writers:
-            "GCodeWriter", #Cura is useless if it can't write its output.
-            "STLReader", #Most common model format, so disabling this makes Cura 90% useless.
-            "3MFWriter", #Required for writing project files.
-
-            # Tools:
-            "CameraTool", #Needed to see the scene. Cura is useless without it.
-            "SelectionTool", #Dependency of the rest of the tools.
-            "TranslateTool", #You'll need this for almost every print.
-        ])
         self._i18n_catalog = i18nCatalog("cura")
 
         self._update_platform_activity_timer = QTimer()
@@ -605,6 +619,16 @@ class CuraApplication(QtApplication):
 
     def _onEngineCreated(self):
         self._qml_engine.addImageProvider("print_job_preview", PrintJobPreviewImageProvider.PrintJobPreviewImageProvider())
+        version = Version(self.getVersion())
+        if hasattr(sys, "frozen") and version.hasPostFix() and "beta" not in version.getPostfixType():
+            self._qml_engine.rootObjects()[0].setTitle(f"{ApplicationMetadata.CuraAppDisplayName} {ApplicationMetadata.CuraVersion}")
+            message = Message(
+                self._i18n_catalog.i18nc("@info:warning",
+                                         f"This version is not intended for production use. If you encounter any issues, please report them on our GitHub page, mentioning the full version {self.getVersion()}"),
+                lifetime = 0,
+                title = self._i18n_catalog.i18nc("@info:title", "Nightly build"),
+                message_type = Message.MessageType.WARNING)
+            message.show()
 
     @pyqtProperty(bool)
     def needToShowUserAgreement(self) -> bool:
@@ -788,6 +812,7 @@ class CuraApplication(QtApplication):
 
         self._plugin_registry.addType("profile_reader", self._addProfileReader)
         self._plugin_registry.addType("profile_writer", self._addProfileWriter)
+        self._plugin_registry.addType("backend_plugin", self._addBackendPlugin)
 
         if Platform.isLinux():
             lib_suffixes = {"", "64", "32", "x32"}  # A few common ones on different distributions.
@@ -823,6 +848,8 @@ class CuraApplication(QtApplication):
 
     def run(self):
         super().run()
+
+        self._log_hardware_info()
 
         if len(ApplicationMetadata.DEPENDENCY_INFO) > 0:
             Logger.debug("Using Conan managed dependencies: " + ", ".join(
@@ -896,6 +923,14 @@ class CuraApplication(QtApplication):
         self._auto_save.initialize()
 
         self.exec()
+
+    def _log_hardware_info(self):
+        hardware_info = platform.uname()
+        Logger.info(f"System: {hardware_info.system}")
+        Logger.info(f"Release: {hardware_info.release}")
+        Logger.info(f"Version: {hardware_info.version}")
+        Logger.info(f"Processor name: {hardware_info.processor}")
+        Logger.info(f"CPU Cores: {os.cpu_count()}")
 
     def __setUpSingleInstanceServer(self):
         if self._use_single_instance:
@@ -1423,6 +1458,13 @@ class CuraApplication(QtApplication):
     # Single build plate
     @pyqtSlot()
     def arrangeAll(self) -> None:
+        self._arrangeAll(grid_arrangement = False)
+
+    @pyqtSlot()
+    def arrangeAllInGrid(self) -> None:
+        self._arrangeAll(grid_arrangement = True)
+
+    def _arrangeAll(self, *, grid_arrangement: bool) -> None:
         nodes_to_arrange = []
         active_build_plate = self.getMultiBuildPlateModel().activeBuildPlate
         locked_nodes = []
@@ -1452,17 +1494,17 @@ class CuraApplication(QtApplication):
                         locked_nodes.append(node)
                     else:
                         nodes_to_arrange.append(node)
-        self.arrange(nodes_to_arrange, locked_nodes)
+        self.arrange(nodes_to_arrange, locked_nodes, grid_arrangement = grid_arrangement)
 
-    def arrange(self, nodes: List[SceneNode], fixed_nodes: List[SceneNode]) -> None:
+    def arrange(self, nodes: List[SceneNode], fixed_nodes: List[SceneNode], *,  grid_arrangement: bool = False) -> None:
         """Arrange a set of nodes given a set of fixed nodes
 
         :param nodes: nodes that we have to place
         :param fixed_nodes: nodes that are placed in the arranger before finding spots for nodes
+        :param grid_arrangement: If set to true if objects are to be placed in a grid
         """
-
         min_offset = self.getBuildVolume().getEdgeDisallowedSize() + 2  # Allow for some rounding errors
-        job = ArrangeObjectsJob(nodes, fixed_nodes, min_offset = max(min_offset, 8))
+        job = ArrangeObjectsJob(nodes, fixed_nodes, min_offset = max(min_offset, 8), grid_arrange = grid_arrangement)
         job.start()
 
     @pyqtSlot()
@@ -1726,6 +1768,13 @@ class CuraApplication(QtApplication):
     def _addProfileWriter(self, profile_writer):
         pass
 
+    def _addBackendPlugin(self, backend_plugin: "BackendPlugin") -> None:
+        self._container_registry.addAdditionalSettingDefinitionsAppender(backend_plugin)
+        self._backend_plugins.append(backend_plugin)
+
+    def getBackendPlugins(self) -> List["BackendPlugin"]:
+        return self._backend_plugins
+
     @pyqtSlot("QSize")
     def setMinimumWindowSize(self, size):
         main_window = self.getMainWindow()
@@ -1949,7 +1998,8 @@ class CuraApplication(QtApplication):
             if select_models_on_load:
                 Selection.add(node)
         try:
-            arrange(nodes_to_arrange, self.getBuildVolume(), fixed_nodes)
+            arranger = Nest2DArrange(nodes_to_arrange, self.getBuildVolume(), fixed_nodes)
+            arranger.arrange()
         except:
             Logger.logException("e", "Failed to arrange the models")
 
