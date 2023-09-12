@@ -17,8 +17,8 @@ from cura.CuraApplication import CuraApplication
 import re
 
 class AlterZhops(Script):
-    def __init__(self):
-        super().__init__()
+    #def __init__(self):
+        #super().__init__()
 
     def getSettingDataString(self):
             return """{
@@ -142,30 +142,30 @@ class AlterZhops(Script):
         
         #Exit if Adaptive layers is enabled in Cura.-----------------------------------------------------------------
         if adaptive_layers:
-            data[0] += ";  Alter Z-Hops did not run because it is not compatible with Adaptive Layers" + "\n"
-            Message(text = "Alter Z-Hops: {}".format("The post processor exited because it is not compatible with Adaptive Layers.")).show()
+            data[0] += ";  [Alter Z-Hops] did not run because it is not compatible with Adaptive Layers" + "\n"
+            Message(title = "Alter Z-Hops:", text = "The post processor exited because it is not compatible with Adaptive Layers.").show()
             return data
     
         #Exit if Z-hops aren't enabled for at least 1 extruder-----------------------------------------------------
         if extruder_count == 1:
             if not retraction_hop_enabled_T0:
-                data[0] += ";  Alter Z-Hops did not run because Z-Hops are not enabled in Cura" + "\n"
-                Message(text = "Alter Z-Hops: {}".format("The post processor exited because Z-Hops are not enabled in Cura.")).show()
+                data[0] += ";  [Alter Z-Hops] did not run because Z-Hops are not enabled in Cura" + "\n"
+                Message(title = "Alter Z-Hops:", text = "The post processor exited because Z-Hops are not enabled in Cura.").show()
                 return data
         elif extruder_count == 2:
             if not (retraction_hop_enabled_T0 or retraction_hop_enabled_T1):            
-                data[0] += ";  Alter Z-Hops did not run because Z-Hops are not enabled in Cura" + "\n"
-                Message(text = "Alter Z-Hops: {}".format("The post processor exited because Z-Hops are not enabled in Cura.")).show()
+                data[0] += ";  [Alter Z-Hops] did not run because Z-Hops are not enabled in Cura" + "\n"
+                Message(title = "Alter Z-Hops:", text = "The post processor exited because Z-Hops are not enabled in Cura.").show()
                 return data
         elif extruder_count == 3:
             if not (retraction_hop_enabled_T0 or retraction_hop_enabled_T1 or retraction_hop_enabled_T2):
-                data[0] += ";  Alter Z-Hops did not run because Z-Hops are not enabled in Cura" + "\n"
-                Message(text = "Alter Z-Hops: {}".format("The post processor exited because Z-Hops are not enabled in Cura.")).show()
+                data[0] += ";  [Alter Z-Hops] did not run because Z-Hops are not enabled in Cura" + "\n"
+                Message(title = "Alter Z-Hops:", text = "The post processor exited because Z-Hops are not enabled in Cura.").show()
                 return data
         elif extruder_count == 4:
             if not (retraction_hop_enabled_T0 or retraction_hop_enabled_T1 or retraction_hop_enabled_T2 or retraction_hop_enabled_T3):
-                data[0] += ";  Alter Z-Hops did not run because Z-Hops are not enabled in Cura" + "\n"
-                Message(text = "Alter Z-Hops: {}".format("The post processor exited because Z-Hops are not enabled in Cura.")).show()
+                data[0] += ";  [Alter Z-Hops] did not run because Z-Hops are not enabled in Cura" + "\n"
+                Message(title = "Alter Z-Hops:", text = "The post processor exited because Z-Hops are not enabled in Cura.").show()
                 return data
     
         #Set the new Z-hop heights------------------------------------------------------------------------------------------
@@ -216,7 +216,7 @@ class AlterZhops(Script):
         for index_num in range(2,len(data)-1,1):
             layer = data[index_num]
             lines = layer.split("\n")
-            search_str = "G1 " + str(z_hop_str_T0) + " Z"
+            search_str = f"G1 {z_hop_str_T0} Z"
             modified_data = ""
             #Multi extruder printers require checking a line ahead so this keeps track of the line number----------
             current_line_nr = -1
@@ -231,26 +231,26 @@ class AlterZhops(Script):
                     prev_hop_hgt = new_hop_hgt
                     new_hop_hgt = new_hop_hgt_T0
                     orig_hop_hgt = orig_hop_hgt_T0
-                    search_str = "G1 " + str(z_hop_str_T0) + " Z"
+                    search_str = f"G1 {z_hop_str_T0} Z"
                     tool_hop = tool_hop_T0
                 elif line.startswith("T1"):
             #Tool change requires one last hop from the previous tools Z-Hop height.---------------------           
                     prev_hop_hgt = new_hop_hgt
                     new_hop_hgt = new_hop_hgt_T1
                     orig_hop_hgt = orig_hop_hgt_T1
-                    search_str = "G1 " + str(z_hop_str_T1) + " Z"
+                    search_str = f"G1 {z_hop_str_T1} Z"
                     tool_hop = tool_hop_T1
                 elif line.startswith("T2"):
                     prev_hop_hgt = new_hop_hgt
                     new_hop_hgt = new_hop_hgt_T2
                     orig_hop_hgt = orig_hop_hgt_T2
-                    search_str = "G1 " + str(z_hop_str_T2) + " Z"
+                    search_str = f"G1 {z_hop_str_T2} Z"
                     tool_hop = tool_hop_T2
                 elif line.startswith("T3"):
                     prev_hop_hgt = new_hop_hgt
                     new_hop_hgt = new_hop_hgt_T3
                     orig_hop_hgt = orig_hop_hgt_T3
-                    search_str = "G1 " + str(z_hop_str_T3) + " Z"
+                    search_str = f"G1 {z_hop_str_T3} Z"
                     tool_hop = tool_hop_T3
     
             #Change the gcode between the start layer and end layer (inclusive)-----------------------------------------------
