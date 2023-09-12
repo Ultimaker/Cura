@@ -25,10 +25,8 @@ class VersionUpgrade54to55(VersionUpgrade):
         return False
 
     @staticmethod
-    def _isBrandedMaterialID(material_id):
+    def _isBrandedMaterialID(material_id: str) -> bool:
         return material_id.startswith("ultimaker_")
-
-
 
     @staticmethod
     def upgradeStack(serialized: str, filename: str) -> Tuple[List[str], List[str]]:
@@ -57,11 +55,11 @@ class VersionUpgrade54to55(VersionUpgrade):
                 # We have an Ultimaker branded material ID, so we should change the intent & quality!
 
                 quality_id = VersionUpgrade54to55.profile_regex.sub(
-                    "um_\g<machine>_\g<core_type>\g<nozzle_size>_um-\g<material>_\g<layer_height>", quality_id)
+                    r"um_\g<machine>_\g<core_type>\g<nozzle_size>_um-\g<material>_\g<layer_height>", quality_id)
 
 
                 intent_id = VersionUpgrade54to55.profile_regex.sub(
-                    "um_\g<machine>_\g<core_type>\g<nozzle_size>_um-\g<material>_\g<layer_height>", intent_id)
+                    r"um_\g<machine>_\g<core_type>\g<nozzle_size>_um-\g<material>_\g<layer_height>", intent_id)
 
             parser["containers"]["3"] = quality_id
             parser["containers"]["2"] = intent_id
