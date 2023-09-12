@@ -10,8 +10,6 @@ from UM.Message import Message
 from typing import List, Tuple
 
 class BridgeTemperatureAdjustment(Script):
-    def __init__(self) -> None:
-        super().__init__()
 
     def getSettingDataString(self) -> str:
         return """{
@@ -94,11 +92,11 @@ class BridgeTemperatureAdjustment(Script):
 
     def initialize(self) -> None:
         super().initialize()
-        
+
         extruder = Application.getInstance().getGlobalContainerStack().extruderList
-        print_temperature = str(extruder[0].getProperty("material_print_temperature", "value"))
-        self._instance.setProperty("resume_temperature", "value", print_temperature)
-        self._instance.setProperty("bridge_temperature", "value", int(print_temperature) - 10)
+        print_temperature = int(extruder[0].getProperty("material_print_temperature", "value"))
+        self._instance.setProperty("resume_temperature", "value", str(print_temperature))
+        self._instance.setProperty("bridge_temperature", "value", str(print_temperature - 10))
 
     # If AddCoolingProfile is ahead of BridgeTempAdjust then notify the user.
         scripts_list = Application.getInstance().getGlobalContainerStack().getMetaDataEntry("post_processing_scripts")
@@ -106,7 +104,7 @@ class BridgeTemperatureAdjustment(Script):
             if "BridgeTemperatureAdjustment" in script_str:
                 break
             if "AddCoolingProfile" in script_str:
-                Message(text = "Bridge Temp Adjust: {}".format("The post processor exited because it must run ahead of Advanced Cooling Fan Control.")).show()
+                Message(title = "Bridge Temp Adjust:", text = "The post processor exited because it must run ahead of Advanced Cooling Fan Control.").show()
                 return
 
     def execute(self, data: List[str]) -> List[str]:
@@ -116,22 +114,28 @@ class BridgeTemperatureAdjustment(Script):
             if "BridgeTemperatureAdjustment" in script_str:
                 break
             if "AddCoolingProfile" in script_str:
-                Message(text = "Bridge Temp Adjust: {}".format("The post processor exited because it must run ahead of Advanced Cooling Fan Control.")).show()
+                Message(title = "Bridge Temp Adjust:", text = "The post processor exited because it must run ahead of Advanced Cooling Fan Control.").show()
                 return data
-                
+
         # If bridge settings are disabled then exit.
         if not bool(Application.getInstance().getGlobalContainerStack().getProperty("bridge_settings_enabled", "value")):
             data[0] += ";  Wait for Bridge Temperature Change - did not run - Bridge settings are not enabled\n"
-            Message(text = "Bridge Temp Adjust: {}".format("The post processor exited because Bridge Settings are not enabled in Cura.")).show()
+            Message(title = "Bridge Temp Adjust:", text = "The post processor exited because Bridge Settings are not enabled in Cura.").show()
             return data
-            
+
         # Dependent on the firmware flavor; if Nozzle Temp Control is disabled then exit.
         if not bool(Application.getInstance().getGlobalContainerStack().getProperty("machine_nozzle_temp_enabled", "value")):
             data[0] += ";  Wait for Bridge Temperature Change did not run - Machine Nozzle Temp Control is disabled" + "\n"
-            Message(text = "Bridge Temp Adjust: {}".format("The post processor exited because Nozzle Temperature Control is not enabled in Cura.")).show()
+            Message(title = "Bridge Temp Adjust:", text = "The post processor exited because Nozzle Temperature Control is not enabled in Cura.").show()
             return data
-            
-        # Get some settings from Cura    
+
+        # This post currently makes no allowance for multi-extruders so inform the user it is only valid for T0
+        extruder_cnt = int(Application.getInstance().getGlobalContainerStack().getProperty("machine_extruder_count", "value"))
+        if extruder_cnt > 1:
+            data[0] += ";  Bridge Temp Adjust - is for single extruders.  All bridges must be done by Extruder #1" + "\n"
+            Message(title = "Bridge Temp Adjust:", text = "The post processor is for single extruder printers.  All bridge settings (temperature, speed, etc.) come from Extruder #1.").show()
+
+        # Get some settings from Cura
         MyCura = Application.getInstance().getGlobalContainerStack()
         extruder = Application.getInstance().getGlobalContainerStack().extruderList
         print_temperature = str(extruder[0].getProperty("material_print_temperature", "value"))
@@ -150,13 +154,13 @@ class BridgeTemperatureAdjustment(Script):
             rel_ext_cmd = "M82"
         bridge_temp = self.getSettingValueByKey("bridge_temperature")
         resume_temperature = self.getSettingValueByKey("resume_temperature")
-        
+
         # This SWAG keeps track of the time hit so the TIME and TIME_ELAPSED can be updated.
         temp_diff = bridge_temp - resume_temperature
         if temp_diff < 1: temp_diff *= -1
         time_add = (temp_diff * 2) + 9
         m109_count = 0
-        
+
         # Set the temperature commands
         if str(self.getSettingValueByKey("bridge_temp_cmd")) == "m109_cmd":
             wait_cmd = "M109 R"
@@ -166,7 +170,7 @@ class BridgeTemperatureAdjustment(Script):
             resume_cmd = "M109 R"
         else:
             resume_cmd = "M104 S"
-            
+
         # Set the Park Position
         center_is_zero = bool(MyCura.getProperty("machine_center_is_zero", "value"))
         bed_shape = str(MyCura.getProperty("machine_shape", "value"))
@@ -223,15 +227,15 @@ class BridgeTemperatureAdjustment(Script):
             elif center_is_zero and bed_shape == "elliptic":
                 park_x = 0
                 park_y = 0
-                
+
         # Relative Travel Height and initialize variables
         move_z = self.getSettingValueByKey("head_move_z")
         current_z = 0
         current_e = 0
         previous_e = 0
-        is_retracted = False        
+        is_retracted = False
         is_bridge = False
-        
+
         for lay_index, layer in enumerate(data):
             # If there is no BRIDGE in the layer then skip it
             if not ";BRIDGE\n" in layer:
@@ -247,16 +251,16 @@ class BridgeTemperatureAdjustment(Script):
                         y = self.getValue(line, "Y")
                     if self.getValue(line, "E") is not None:
                         current_e = self.getValue(line, "E")
-                        
+
                         # Track the retractions so we don't double dip if there already was one.
                         if current_e >= previous_e:
                             is_retracted = False
                         elif current_e < previous_e:
                             is_retracted = True
                         previous_e = current_e
-                
+
                 # Reverse the park and wait code to resume the print-------------------------
-                if line.startswith(feature_type) and lines[index+1].startswith(";BRIDGE"):  
+                if line.startswith(feature_type) and lines[index+1].startswith(";BRIDGE"):
                     if wait_cmd == "M104 S":
                         lines.insert(index+2,wait_cmd + str(bridge_temp))
                         next_start = index+3
@@ -266,7 +270,7 @@ class BridgeTemperatureAdjustment(Script):
                         if not is_retracted:
                             lines.insert(index+2, "G1 " + speed_retract + " E" + str(retract_dist))
                         else:
-                            lines.insert(index+2, ";Prime Not Required")                            
+                            lines.insert(index+2, ";Prime Not Required")
                         lines.insert(index+2, "G0 " + speed_z + " Z-" + str(move_z))
                         lines.insert(index+2, "G91")
                         lines.insert(index+2, "G0 " + speed_trav + " X" + str(x) + " Y" + str(y))
@@ -282,7 +286,7 @@ class BridgeTemperatureAdjustment(Script):
                         lines.insert(index+2, "G91")
                         next_start = index+15
                         m109_count += 1
-                        
+
                     # Track the XYZE while scrolling down to the next "TYPE" change
                     for num in range(next_start,len(lines),1):
                         if self.getValue(lines[num], "Z") is not None:
@@ -295,9 +299,9 @@ class BridgeTemperatureAdjustment(Script):
                             if float(current_e) >= float(previous_e):
                                 is_retracted = False
                             else:
-                                is_retracted = True           
+                                is_retracted = True
                             previous_e = current_e
-                            
+
                         # Catch TYPE or MESH.  If M104 was chosen then there is no park and wait.  Resume temp code.
                         if lines[num].startswith(";TYPE") or lines[num].startswith(";MESH"):
                             if resume_cmd == "M104 S":
@@ -325,7 +329,7 @@ class BridgeTemperatureAdjustment(Script):
                                 lines.insert(num+1, "G91")
                                 m109_count += 1
                                 break
-                                
+
                 # Adjust the elapsed time of a layer that has bridges and M109 is enabled.
                 if line.startswith(";TIME_ELAPSED:"):
                     elapsed_time = float(line.split(":")[1])
@@ -333,7 +337,7 @@ class BridgeTemperatureAdjustment(Script):
                     lines[index] = ";TIME_ELAPSED:" + str(round(elapsed_time))
             data[lay_index] = "\n".join(lines)
         layer = data[0]
-        
+
         # Adjust the print time at the start of the file
         t_str = layer.split(";TIME:")[1]
         t_str = int(t_str.split("\n")[0])
