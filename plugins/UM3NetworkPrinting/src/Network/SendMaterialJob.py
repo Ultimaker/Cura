@@ -173,7 +173,7 @@ class SendMaterialJob(Job):
 
         result = {}  # type: Dict[str, LocalMaterial]
         all_materials = CuraApplication.getInstance().getContainerRegistry().findInstanceContainersMetadata(type = "material")
-        all_base_files = [material for material in all_materials if material["id"] == material.get("base_file")]  # Don't send materials without base_file: The empty material doesn't need to be sent.
+        all_base_files = [material for material in all_materials if material["id"] == material.get("base_file") and material.get("visible", True)]  # Don't send materials without base_file: The empty material doesn't need to be sent.
 
         # Find the latest version of all material containers in the registry.
         for material_metadata in all_base_files:
