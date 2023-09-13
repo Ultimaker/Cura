@@ -303,6 +303,8 @@ class StartSliceJob(Job):
             self._buildExtruderMessage(extruder_stack)
 
         for plugin in CuraApplication.getInstance().getBackendPlugins():
+            if not plugin.usePlugin():
+                continue
             for slot in plugin.getSupportedSlots():
                 # Right now we just send the message for every slot that we support. A single plugin can support
                 # multiple slots
