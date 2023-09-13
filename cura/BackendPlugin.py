@@ -22,6 +22,10 @@ class BackendPlugin(AdditionalSettingDefinitionsAppender, PluginObject):
         self._process = None
         self._is_running = False
         self._supported_slots: List[int] = []
+        self._use_plugin = True
+
+    def usePlugin(self) -> bool:
+        return self._use_plugin
 
     def getSupportedSlots(self) -> List[int]:
         return self._supported_slots
@@ -55,6 +59,8 @@ class BackendPlugin(AdditionalSettingDefinitionsAppender, PluginObject):
 
         :return: True if the plugin process started successfully, False otherwise.
         """
+        if not self.usePlugin():
+            return False
         try:
             # STDIN needs to be None because we provide no input, but communicate via a local socket instead.
             # The NUL device sometimes doesn't exist on some computers.
