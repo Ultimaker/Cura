@@ -10,10 +10,12 @@
 #    The option for whether or not to remove the existing M106 lines is added to allow multiple instances of this post-processor to be installed without the followup instances wiping out the insertions of previous instances.  1/3 of a file can be 'By Layer' and the second third 'By Feature', and end up with 'By Layer' again.
 #    I am aware the script is long.  My design intent was to make it as full featured and "industrial strength" as I could.
 #    My thanks to @5axes, @fieldOfView(@AHoeben), @Ghostkeeper, and @Torgeir.
+#    9/14/23 added support for One-at-a-Time and removed the kick out code
 
 from ..Script import Script
 from UM.Application import Application
 import re
+from UM.Message import Message
 
 class AddCoolingProfile(Script):
 
@@ -279,28 +281,29 @@ class AddCoolingProfile(Script):
         #Initialize variables that are buried in if statements.
         t0_fan = " P0"; t1_fan = " P0"; t2_fan = " P0"; t3_fan = " P0"; is_multi_extr_print = True
 
-        #Get some information from Cura-------------------------------------------------------
+        #Get some information from Cura-----------------------------------
         extrud = Application.getInstance().getGlobalContainerStack().extruderList
 
         #This will be true when fan scale is 0-255pwm and false when it's RepRap 0-1 (Cura 5.x)
         fan_mode = True
 
-        #For 4.x versions that don't have the 0-1 option-----------------------------------------
+        #For 4.x versions that don't have the 0-1 option------------------
         try:
             fan_mode = not bool(extrud[0].getProperty("machine_scale_fan_speed_zero_to_one", "value"))
         except:
-            all
+            pass
         bed_adhesion = (extrud[0].getProperty("adhesion_type", "value"))
         extruder_count = Application.getInstance().getGlobalContainerStack().getProperty("machine_extruder_count", "value")
+        print_sequence = str(Application.getInstance().getGlobalContainerStack().getProperty("print_sequence", "value"))
 
-        #Assign the fan numbers to the tools----------------------------------------------------------
+        #Assign the fan numbers to the tools------------------------------
         if extruder_count == 1:
             is_multi_fan = False
             is_multi_extr_print = False
             if int((extrud[0].getProperty("machine_extruder_cooling_fan_number", "value"))) > 0:
                 t0_fan = " P" + str((extrud[0].getProperty("machine_extruder_cooling_fan_number", "value")))
             else:
-        #No P parameter if there is a single fan circuit-----------------------------------------------
+        #No P parameter if there is a single fan circuit------------------
                 t0_fan = ""
         elif extruder_count > 1:
             is_multi_fan = True
@@ -310,19 +313,19 @@ class AddCoolingProfile(Script):
             if extruder_count > 2: t2_fan = " P" + str((extrud[2].getProperty("machine_extruder_cooling_fan_number", "value")))
             if extruder_count > 3: t3_fan = " P" + str((extrud[3].getProperty("machine_extruder_cooling_fan_number", "value")))
 
-        #Initialize the fan_list with defaults------------------------------------------------------------
+        #Initialize the fan_list with defaults----------------------------
         fan_list = []
         for q in range(0,8,1):
             fan_list.append(len(data))
             fan_list.append("M106 S0")
 
-        #Assign the variable values if "By Layer"------------------------------------------------------------
+        #Assign the variable values if "By Layer"-------------------------
         by_layer_or_feature = self.getSettingValueByKey("fan_layer_or_feature")
         if  by_layer_or_feature == "by_layer":
             #By layer doesn't do any feature search
             fan_combing = False
 
-            #If there is no delimiter then ignore the line else put the settings in a list-------------------
+            #If there is no delimiter then ignore the line else put the settings in a list
             fan_1st = self.getSettingValueByKey("fan_1st")
             if "/" in fan_1st:
                 fan_list[0] = check_layer.layer_checker(fan_1st, "l", fan_mode)
@@ -356,7 +359,7 @@ class AddCoolingProfile(Script):
                 fan_list[14] = check_layer.layer_checker(fan_8th, "l", fan_mode)
                 fan_list[15] = check_layer.layer_checker(fan_8th, "p", fan_mode)
 
-        #Assign the variable values if "By Feature"-----------------------------------
+        #Assign the variable values if "By Feature"-----------------------
         elif by_layer_or_feature == "by_feature":
             the_start_layer = self.getSettingValueByKey("fan_start_layer") - 1
             the_end_layer = self.getSettingValueByKey("fan_end_layer")
@@ -366,10 +369,10 @@ class AddCoolingProfile(Script):
                     if the_end_layer < the_start_layer:
                         the_end_layer = the_start_layer
             except:
-            #If there is an input error default to the entire gcode file.  "Do something even if it's wrong".
+            #If there is an input error default to the entire gcode file.
                 the_end_layer = -1
 
-            #Get the speed for each feature---------------------------------------------------------
+            #Get the speed for each feature-------------------------------
             fan_sp_skirt = check_feature.feature_checker(self.getSettingValueByKey("fan_skirt"), fan_mode)
             fan_sp_wall_inner = check_feature.feature_checker(self.getSettingValueByKey("fan_wall_inner"), fan_mode)
             fan_sp_wall_outer = check_feature.feature_checker(self.getSettingValueByKey("fan_wall_outer"), fan_mode)
@@ -382,15 +385,15 @@ class AddCoolingProfile(Script):
             fan_sp_feature_final = check_feature.feature_checker(self.getSettingValueByKey("fan_feature_final"), fan_mode)
             fan_combing = self.getSettingValueByKey("fan_combing")
             if the_end_layer > -1 and by_layer_or_feature == "by_feature":
-                #Required so the final speed input can be determined---------------------------------------
+                #Required so the final speed input can be determined------
                 the_end_is_enabled = True
             else:
-                #There is no ending layer so do the whole file----------------------------------------------
+                #There is no ending layer so do the whole file------------
                 the_end_is_enabled = False
             if the_end_layer == -1 or the_end_is_enabled == False:
                 the_end_layer = len(data) + 2
 
-        #Find the Layer0Index and the RaftIndex---------------------------------
+        #Find the Layer0Index and the RaftIndex---------------------------
         raft_start_index = 0
         number_of_raft_layers = 0
         layer_0_index = 0
@@ -460,7 +463,7 @@ class AddCoolingProfile(Script):
                         init_fan = t3_fan
         else:
             init_fan = ""
-        #Assign the variable values if "Raft Enabled"----------------------------------------------------
+        #Assign the variable values if "Raft Enabled"---------------------
         raft_enabled = self.getSettingValueByKey("fan_enable_raft")
         if raft_enabled and bed_adhesion == "raft":
             fan_sp_raft = check_feature.feature_checker(self.getSettingValueByKey("fan_raft_percent"), fan_mode)
@@ -485,24 +488,48 @@ class AddCoolingProfile(Script):
                 altered_start_layer = int(the_start_layer) - 1
             start_from = int(layer_0_index) + int(altered_start_layer)
 
-        #Strip the M106 and M107 lines from the file----------------------------------------------
+        #Strip the M106 and M107 lines from the file----------------------
         for l_index in range(start_from, len(data) - 1, 1):
             data[l_index] = re.sub(re.compile("M106(.*)\n"), "", data[l_index])
             data[l_index] = re.sub(re.compile("M107(.*)\n"), "", data[l_index])
 
-        #Raft cooling if enabled-------------------------------------------------------------------
+        #Deal with a raft and with One-At-A-Time--------------------------
         if raft_enabled and bed_adhesion == "raft":
-            layer = data[raft_start_index]
-            if ";LAYER:-" in layer:
-                #Turn the raft fan on
-                layer = fan_sp_raft + str(init_fan) + "\n" + layer
-            data[raft_start_index] = layer
-            layer = data[layer_0_index]
-            #Shut the raft fan off
-            layer = "M106 S0" + str(init_fan) + "\n" + layer
-            data[layer_0_index] = layer
+            if print_sequence == "one_at_a_time":
+                for r_index in range(2,len(data)-2,1):
+                    lines = data[r_index].split("\n")
+                    if not raft_enabled or bed_adhesion != "raft":
+                        if ";LAYER:0" in data[r_index] or ";LAYER:-" in data[r_index]:
+                            lines.insert(1, "M106 S0" + str(t0_fan))
+                    if raft_enabled and bed_adhesion == "raft":
+                        if ";LAYER:-" in data[r_index]:
+                        #Turn the raft fan on-----------------------------
+                            lines.insert(1, fan_sp_raft + str(t0_fan))
+                        #Shut the raft fan off----------------------------
+                        if ";LAYER:0" in data[r_index]:
+                            lines.insert(1,"M106 S0" + str(t0_fan))
+                    data[r_index] = "\n".join(lines)
+            elif print_sequence == "all_at_once":
+                layer = data[raft_start_index]
+                lines = layer.split("\n")
+                if ";LAYER:-" in layer:
+                    #Turn the raft fan on
+                    lines.insert(1, fan_sp_raft + str(init_fan))
+                layer = "\n".join(lines)
+                data[raft_start_index] = layer
+                layer = data[layer_0_index]
+                lines = layer.split("\n")
+                #Shut the raft fan off
+                lines.insert(1, "M106 S0" + str(init_fan))
+                data[layer_0_index] = "\n".join(lines)
+        else:
+            for r_index in range(2,len(data)-2,1):
+                lines = data[r_index].split("\n")
+                if ";LAYER:0" in data[r_index] or ";LAYER:-" in data[r_index]:
+                    lines.insert(1, "M106 S0" + str(t0_fan))
+                data[r_index] = "\n".join(lines)
 
-        #Turn off all fans at the end of data[1]--------------------------------------------
+        #Turn off all fans at the end of data[1]--------------------------
         temp_startup = data[1].split("\n")
         temp_startup.insert(len(temp_startup)-2,"M106 S0" + str(t0_fan))
         #If there are multiple cooling fans shut them all off
@@ -520,7 +547,7 @@ class AddCoolingProfile(Script):
                 data[layer_num] = re.sub(";MESH:NOMESH", ";MESH:NONMESH", layer)
             data = add_mesh_nonmesh.add_travel_comment(data, layer_0_index)
 
-        #The Single Fan "By Layer" section---------------------------------------------------------------
+        #The Single Fan "By Layer" section--------------------------------
         if by_layer_or_feature == "by_layer" and not is_multi_fan:
             layer_number = "0"
             for l_index in range(layer_0_index,len(data)-1,1):
@@ -536,7 +563,7 @@ class AddCoolingProfile(Script):
                                 data[l_index] = layer
             return data
 
-        #The Multi-Fan "By Layer" section---------------------------------------------------
+        #The Multi-Fan "By Layer" section---------------------------------
         if by_layer_or_feature == "by_layer" and is_multi_fan:
             layer_number = "0"
             current_fan_speed = "0"
@@ -595,7 +622,7 @@ class AddCoolingProfile(Script):
                 data[l_index] = modified_data
             return data
 
-        #The Single Fan "By Feature" section----------------------------------------------
+        #The Single Fan "By Feature" section------------------------------
         if by_layer_or_feature == "by_feature" and (not is_multi_fan or not is_multi_extr_print):
             layer_number = "0"
             index = 1
@@ -637,7 +664,7 @@ class AddCoolingProfile(Script):
                 data[l_index] = modified_data
             return data
 
-        #The Multi Fan "By Feature" section-----------------------------------------------
+        #The Multi Fan "By Feature" section-------------------------------
         if by_layer_or_feature == "by_feature" and is_multi_fan:
             layer_number = "0"
             start_index = 1
@@ -647,7 +674,7 @@ class AddCoolingProfile(Script):
             current_fan_speed = "0"
             for my_index in range(1, len(data) - 1, 1):
                 layer = data[my_index]
-                if ";LAYER:" + str(the_start_layer) in layer:
+                if ";LAYER:" + str(the_start_layer) + "\n" in layer:
                     start_index = int(my_index) - 1
                     break
             #Track the previous tool changes
@@ -679,7 +706,7 @@ class AddCoolingProfile(Script):
                         if line == "T3": this_fan = t3_fan
                         prev_fan = this_fan
 
-            #Start to make insertions-----------------------------------------------------
+            #Start to make insertions-------------------------------------
             for l_index in range(start_index+1,len(data)-1,1):
                 layer = data[l_index]
                 lines = layer.split("\n")
@@ -698,7 +725,7 @@ class AddCoolingProfile(Script):
                     if ";LAYER:" in line:
                         layer_number = str(line.split(":")[1])
                         modified_data += line + "\n"
-                    if int(layer_number) >= int(the_start_layer):
+                    if int(layer_number) >= int(the_start_layer): # Problem with oneatatime < start
                         if ";TYPE:SKIRT" in line:
                             modified_data += line + "\n"
                             modified_data += fan_sp_skirt + this_fan + "\n"
@@ -831,12 +858,12 @@ class add_mesh_nonmesh():
                     if g0_index == -1:
                         g0_index = lines.index(line)
                 elif not line.startswith("G0 ") and not is_travel:
-                #Add to shut the fan off during long combing moves--------------------------------------------
+                #Add to shut the fan off during long combing moves--------
                     if g0_count > 5:
                         if not is_travel:
                             new_data.insert(g0_index + insert_index, ";MESH:NONMESH")
                             insert_index += 1
-                #Add the feature_type at the end of the combing move to turn the fan back on----------------
+                #Add the feature_type at the end of the combing move to turn the fan back on
                             new_data.insert(g0_index + g0_count + 1, feature_type)
                             insert_index += 1
                         g0_count = 0
