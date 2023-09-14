@@ -14,14 +14,8 @@
 from ..Script import Script
 from UM.Application import Application
 import re
-from UM.Message import Message
 
 class AddCoolingProfile(Script):
-
-    def __init__(self):
-        super().__init__()
-        if str(Application.getInstance().getGlobalContainerStack().getProperty("print_sequence", "value")) == "one_at_a_time":
-            Message(title = "Advanced Cooling Fan Control", text = "The post processor will not run because it is not compatible with 'One at a Time' mode.").show()
 
     def getSettingDataString(self):
         return """{
@@ -298,12 +292,6 @@ class AddCoolingProfile(Script):
             all
         bed_adhesion = (extrud[0].getProperty("adhesion_type", "value"))
         extruder_count = Application.getInstance().getGlobalContainerStack().getProperty("machine_extruder_count", "value")
-
-        # Message the user and exit if "One-at-a-Time" mode is enabled----------------------------
-        if str(Application.getInstance().getGlobalContainerStack().getProperty("print_sequence", "value")) == "one_at_a_time":
-            data[0] += ";  [Advanced Cooling Fan  Control] did not run because it is not compatible with 'One at a Time' mode.\n"
-            Message(title = "[Advanced Cooling Fan Control]", text = "The post processor exited because it is not compatible with 'One at a Time' mode.").show()
-            return data
 
         #Assign the fan numbers to the tools----------------------------------------------------------
         if extruder_count == 1:
@@ -659,7 +647,7 @@ class AddCoolingProfile(Script):
             current_fan_speed = "0"
             for my_index in range(1, len(data) - 1, 1):
                 layer = data[my_index]
-                if ";LAYER:" + str(the_start_layer) + "\n" in layer:
+                if ";LAYER:" + str(the_start_layer) in layer:
                     start_index = int(my_index) - 1
                     break
             #Track the previous tool changes
@@ -710,7 +698,7 @@ class AddCoolingProfile(Script):
                     if ";LAYER:" in line:
                         layer_number = str(line.split(":")[1])
                         modified_data += line + "\n"
-                    if int(layer_number) >= int(the_start_layer): # Problem with oneatatime < start
+                    if int(layer_number) >= int(the_start_layer):
                         if ";TYPE:SKIRT" in line:
                             modified_data += line + "\n"
                             modified_data += fan_sp_skirt + this_fan + "\n"
