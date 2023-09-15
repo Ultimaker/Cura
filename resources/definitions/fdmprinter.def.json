@@ -4580,6 +4580,7 @@
                     },
                     "enabled": "support_enable",
                     "default_value": "normal",
+                    "resolve": "extruderValue(support_extruder_nr, 'support_structure')",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },

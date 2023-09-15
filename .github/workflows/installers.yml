@@ -31,8 +31,8 @@ on:
         type: boolean
 
   schedule:
-    # Daily at 8:10 CET
-    - cron: '10 7 * * *'
+    # Daily at 5:15 CET
+    - cron: '15 3 * * *'
 
 env:
   CURA_CONAN_VERSION: ${{ inputs.cura_conan_version || 'cura/latest@ultimaker/testing' }}
@@ -41,10 +41,32 @@ env:
   STAGING: ${{ inputs.staging || false }}
 
 jobs:
+  default-values:
+    runs-on: ubuntu-latest
+    outputs:
+      cura_conan_version: ${{ steps.default.outputs.cura_conan_version  }}
+
+    steps:
+    - name: Output default values
+      id: default
+      shell: python
+      run: |
+        import os
+        cura_conan_version = "cura/latest@ultimaker/testing" if "${{ github.event.inputs.cura_conan_version }}" == "" else "${{ github.event.inputs.cura_conan_version }}" 
+        output_env = os.environ["GITHUB_OUTPUT"]
+        content = ""
+        if os.path.exists(output_env):
+            with open(output_env, "r") as f:
+                content = f.read()
+        with open(output_env, "w") as f:
+            f.write(content)
+            f.writelines(f"cura_conan_version={cura_conan_version}\n")
+
   windows-installer:
     uses: ./.github/workflows/windows.yml
+    needs: [ default-values ]
     with:
-      cura_conan_version: ${{ github.event.inputs.cura_conan_version }}
+      cura_conan_version: ${{ needs.default-values.outputs.cura_conan_version }}
       conan_args: ${{ github.event.inputs.conan_args }}
       enterprise: ${{ github.event.inputs.enterprise == 'true' }}
       staging: ${{ github.event.inputs.staging == 'true' }}
@@ -54,8 +76,9 @@ jobs:
 
   linux-installer:
     uses: ./.github/workflows/linux.yml
+    needs: [ default-values ]
     with:
-      cura_conan_version: ${{ github.event.inputs.cura_conan_version }}
+      cura_conan_version: ${{ needs.default-values.outputs.cura_conan_version }}
       conan_args: ${{ github.event.inputs.conan_args }}
       enterprise: ${{ github.event.inputs.enterprise == 'true' }}
       staging: ${{ github.event.inputs.staging == 'true' }}
@@ -65,8 +88,9 @@ jobs:
 
   macos-installer:
     uses: ./.github/workflows/macos.yml
+    needs: [ default-values ]
     with:
-      cura_conan_version: ${{ github.event.inputs.cura_conan_version }}
+      cura_conan_version: ${{ needs.default-values.outputs.cura_conan_version }}
       conan_args: ${{ github.event.inputs.conan_args }}
       enterprise: ${{ github.event.inputs.enterprise == 'true' }}
       staging: ${{ github.event.inputs.staging == 'true' }}
@@ -75,9 +99,9 @@ jobs:
     secrets: inherit
 
 #  macos-arm-installer:
-#    uses: ./.github/workflows/macos.yml
+#    needs: [ default-values ]
 #    with:
-#      cura_conan_version: ${{ github.event.inputs.cura_conan_version }}
+#      cura_conan_version: ${{ needs.default-values.outputs.cura_conan_version }}
 #      conan_args: ${{ github.event.inputs.conan_args }}
 #      enterprise: ${{ github.event.inputs.enterprise == 'true' }}
 #      staging: ${{ github.event.inputs.staging == 'true' }}
@@ -87,7 +111,7 @@ jobs:
 
   # Run and update nightly release when the nightly input is set to true or if the schedule is triggered
   update-nightly-release:
-    if: ${{ always() && (! cancelled()) && contains(needs.*.result, 'success') && (! contains(needs.*.result, 'failure')) && (inputs.nightly || github.event_name == 'schedule') }}
+    if: ${{ inputs.nightly || github.event_name == 'schedule' }}
     runs-on: ubuntu-latest
     needs: [ windows-installer, linux-installer, macos-installer ]
 #    needs: [ windows-installer, linux-installer, macos-installer, macos-arm-installer ]
