@@ -238,7 +238,7 @@ Item
                 delegate: Row
                 {
                     spacing: UM.Theme.getSize("default_margin").width
-                    property var settingLoader_x: settingLoader.item
+                    property var settingLoaderItem: settingLoader.item
                     Loader
                     {
                         id: settingLoader
@@ -361,11 +361,11 @@ Item
                                 }
                                 if (contents.currentItem)
                                 {
-                                    contents.currentItem.settingLoader_x.focusItem.forceActiveFocus()
+                                    contents.currentItem.settingLoaderItem.focusItem.forceActiveFocus()
                                 }
                             }
                             else
-                            {indexWithFocus
+                            {
                                 contents.currentIndex = contents.indexWithFocus - 1
                                 while(contents.currentItem && contents.currentItem.height <= 0)
                                 {
@@ -373,7 +373,7 @@ Item
                                 }
                                 if (contents.currentItem)
                                 {
-                                    contents.currentItem.settingLoader_x.focusItem.forceActiveFocus()
+                                    contents.currentItem.settingLoaderItem.focusItem.forceActiveFocus()
                                 }
                             }
                         }
