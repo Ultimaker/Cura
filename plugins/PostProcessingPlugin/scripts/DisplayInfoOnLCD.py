@@ -65,7 +65,7 @@ class DisplayInfoOnLCD(Script):
                     "default_value": false,
                     "enabled": "display_option == 'filename_layer'"
                 },
-                "name":
+                "file_name":
                 {
                     "label": "Text to display:",
                     "description": "By default the current filename will be displayed on the LCD. Enter text here to override the filename and display something else.",
@@ -158,16 +158,16 @@ class DisplayInfoOnLCD(Script):
         if display_option == "filename_layer":
             max_layer = 0
             lcd_text = "M117 "
-            if self.getSettingValueByKey("name") != "":
-                name = self.getSettingValueByKey("name")
+            if self.getSettingValueByKey("file_name") != "":
+                file_name = self.getSettingValueByKey("file_name")
             else:
-                name = Application.getInstance().getPrintInformation().jobName
+                file_name = Application.getInstance().getPrintInformation().jobName
             if self.getSettingValueByKey("addPrefixPrinting"):
                 lcd_text += "Printing "
             if not self.getSettingValueByKey("scroll"):
                 lcd_text += "Layer "
             else:
-                lcd_text += name + " - Layer "
+                lcd_text += file_name + " - Layer "
             i = self.getSettingValueByKey("startNum")
             for layer in data:
                 display_text = lcd_text + str(i)
@@ -183,10 +183,10 @@ class DisplayInfoOnLCD(Script):
                         if self.getSettingValueByKey("maxlayer"):
                             display_text = display_text + " of " + max_layer
                             if not self.getSettingValueByKey("scroll"):
-                                display_text = display_text + " " + name
+                                display_text = display_text + " " + file_name
                         else:
                             if not self.getSettingValueByKey("scroll"):
-                                display_text = display_text + " " + name + "!"
+                                display_text = display_text + " " + file_name + "!"
                             else:
                                 display_text = display_text + "!"
                         line_index = lines.index(line)
