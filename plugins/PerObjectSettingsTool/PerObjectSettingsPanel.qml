@@ -1,7 +1,7 @@
 //Copyright (c) 2022 Ultimaker B.V.
 //Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
+import QtQuick 2.15
 import QtQuick.Controls 2.15
 
 import UM 1.5 as UM
@@ -234,10 +234,11 @@ Item
                         setDestroyed(true)
                     }
                 }
-
+                property int indexWithFocus: -1
                 delegate: Row
                 {
                     spacing: UM.Theme.getSize("default_margin").width
+                    property var settingLoaderItem: settingLoader.item
                     Loader
                     {
                         id: settingLoader
@@ -338,6 +339,44 @@ Item
                     {
                         target: inheritStackProvider
                         function onPropertiesChanged() { provider.forcePropertiesChanged() }
+                    }
+
+                    Connections
+                    {
+                        target: settingLoader.item
+                        function onFocusReceived()
+                        {
+
+                            contents.indexWithFocus = index
+                            contents.positionViewAtIndex(index, ListView.Contain)
+                        }
+                        function onSetActiveFocusToNextSetting(forward)
+                        {
+                            if (forward == undefined || forward)
+                            {
+                                contents.currentIndex = contents.indexWithFocus + 1
+                                while(contents.currentItem && contents.currentItem.height <= 0)
+                                {
+                                    contents.currentIndex++
+                                }
+                                if (contents.currentItem)
+                                {
+                                    contents.currentItem.settingLoaderItem.focusItem.forceActiveFocus()
+                                }
+                            }
+                            else
+                            {
+                                contents.currentIndex = contents.indexWithFocus - 1
+                                while(contents.currentItem && contents.currentItem.height <= 0)
+                                {
+                                    contents.currentIndex--
+                                }
+                                if (contents.currentItem)
+                                {
+                                    contents.currentItem.settingLoaderItem.focusItem.forceActiveFocus()
+                                }
+                            }
+                        }
                     }
 
                     Connections
