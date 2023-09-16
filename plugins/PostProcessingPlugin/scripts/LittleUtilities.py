@@ -34,7 +34,7 @@ class LittleUtilities(Script):
         self._instance.setProperty("change_steps_Y", "value", str(extruder[0].getProperty("machine_steps_per_mm_y", "value")))
         self._instance.setProperty("change_steps_Z", "value", str(extruder[0].getProperty("machine_steps_per_mm_z", "value")))
         self._instance.setProperty("change_steps_E", "value", str(extruder[0].getProperty("machine_steps_per_mm_e", "value")))
-        self._instance.setProperty("very_cool_feed", "value", str(extruder[0].getProperty("speed_travel", "value")))
+        self._instance.setProperty("very_cool_feed", "value", str(round(int(extruder[0].getProperty("speed_travel", "value"))/4,0)))
 
     def getSettingDataString(self):
         return """{
@@ -464,22 +464,6 @@ class LittleUtilities(Script):
                     lay_num = 0
             layer = data[layer0_index - 1]
 
-        # Concatenate extraneous data[items] that Cura adds at model change.  This may help post processors that might run after this one.  This also adds the 'MESH:NONMESH' line for consistency.
-        newdata = []
-        newdata.append(data[0])
-        newdata.append(data[1])
-        for num in range(2,len(data)-1,1):
-            if not data[num].startswith(";LAYER:"):
-                newdata[len(newdata)-1] += data[num]
-                data_match = re.search("G1 F(\d*) E(\d*)",data[num])
-                if data_match:
-                    newdata[len(newdata)-1] += ";MESH:NONMESH" + "\n"
-            else:
-                newdata.append(data[num])
-        for num in range(len(data)-1, len(data),1):
-            newdata.append(data[num])
-        data = newdata
-
         # Move the 'Time_Elapsed' and 'Layer_Count' lines to the end of their data sections in case of a PauseAtHeight
         modified_data = ""
         for num in range(2,len(data)-2,1):
@@ -566,17 +550,17 @@ class LittleUtilities(Script):
                                 Y_delta = Y_max - Y_loc
                             break
                     if float(X_delta) >= float(Y_delta):
-                        park_line = "G0 F" + str(travel_speed) + " Y" + str(Y_park)
+                        park_line = f"G0 F{travel_speed} Y{Y_park}"
                     else:
-                        park_line = "G0 F" + str(travel_speed) + " X" + str(X_park)
+                        park_line = f"G0 F{travel_speed} X{X_park}"
 
                     # Insert the move and return lines--------------------
                     if self.getValue(lines[index+1], "E") is not None:
                         lines.insert(index + 3, park_line)
-                        lines.insert(index + 5, "G0 F" + str(travel_speed) + " X" + str(X_loc) + " Y" + str(Y_loc))
+                        lines.insert(index + 5, f"G0 F{travel_speed} X{X_loc} Y{Y_loc}")
                     else:
                         lines.insert(index + 2, park_line)
-                        lines.insert(index + 4, "G0 F" + str(travel_speed) + " X" + str(X_loc) + " Y" + str(Y_loc))
+                        lines.insert(index + 4, f"G0 F{travel_speed} X{X_loc} Y{Y_loc}")
                     break
             data[lay_num] = "\n".join(lines)
         return
@@ -598,13 +582,13 @@ class LittleUtilities(Script):
             if X_feedrate != "" or Y_feedrate != "" or Z_feedrate != "" or E_feedrate != "":
                 change_feed_string += "M203"
                 if X_feedrate != "":
-                    change_feed_string += " X" + str(X_feedrate)
+                    change_feed_string += f" X{X_feedrate}"
                 if Y_feedrate != "":
-                    change_feed_string += " Y" + str(Y_feedrate)
+                    change_feed_string += f" Y{Y_feedrate}"
                 if Z_feedrate != "":
-                    change_feed_string += " Z" + str(Z_feedrate)
+                    change_feed_string += f" Z{Z_feedrate}"
                 if E_feedrate != "":
-                    change_feed_string += " E" + str(E_feedrate)
+                    change_feed_string += f" E{E_feedrate}"
                 change_feed_string += " ;Change Max Feed Rate\n"
 
         # If there are Accel changes--------------------------------------
@@ -614,9 +598,9 @@ class LittleUtilities(Script):
             if X_accel != "" or Y_accel != "":
                 change_accel_string += "M201"
                 if X_accel != "":
-                    change_accel_string += " X" + str(X_accel)
+                    change_accel_string += f" X{X_accel}"
                 if Y_accel != "":
-                    change_accel_string += " Y" + str(Y_accel)
+                    change_accel_string += f" Y{Y_accel}"
                 change_accel_string += " ;Change Max Accel\n"
 
         # If there are Home Offset changes--------------------------------
@@ -627,11 +611,11 @@ class LittleUtilities(Script):
             if X_home != "" or Y_home != "" or Z_home != "":
                 change_home_string += "M206"
                 if X_home != "":
-                    change_home_string += " X" + str(X_home)
+                    change_home_string += f" X{X_home}"
                 if Y_home != "":
-                    change_home_string += " Y" + str(Y_home)
+                    change_home_string += f" Y{Y_home}"
                 if Z_home != "":
-                    change_home_string += " Z" + str(Z_home)
+                    change_home_string += f" Z{Z_home}"
                 change_home_string += " ;Change Home Offset\n"
 
         # If there are Steps/MM changes-----------------------------------
@@ -643,13 +627,13 @@ class LittleUtilities(Script):
             if X_steps != "" or Y_steps != "" or Z_steps != "" or E_steps != "":
                 change_steps_string += "M92"
                 if X_steps != "":
-                    change_steps_string += " X" + str(X_steps)
+                    change_steps_string += f" X{X_steps}"
                 if Y_steps != "":
-                    change_steps_string += " Y" + str(Y_steps)
+                    change_steps_string += f" Y{Y_steps}"
                 if Z_steps != "":
-                    change_steps_string += " Z" + str(Z_steps)
+                    change_steps_string += f" Z{Z_steps}"
                 if E_steps != "":
-                    change_steps_string += " E" + str(E_steps)
+                    change_steps_string += f" E{E_steps}"
                 change_steps_string += " ;Change Steps/MM\n"
 
         # Allow the user to save the changes to the printer and alter Cura Printer Settings
@@ -805,43 +789,43 @@ class LittleUtilities(Script):
                     # Put the travel string together----------------------
                     lines = []
                     lines.append(";TYPE:CUSTOM [Little Utilities] Very Cool FanPath")
-                    lines.append("G0 F" + zhop_speed + " Z" + str(lift_z))
+                    lines.append(f"G0 F{zhop_speed} Z{lift_z}")
                     if not retracted and retr_enabled:
-                        lines.append("G1 F" + retr_speed + " E" + str(round(ret_e - float(retr_dist),5)))
-                    lines.append("M106 S" + str(very_cool_fan_speed))
+                        lines.append(f"G1 F{retr_speed} E{round(ret_e - float(retr_dist),5)}")
+                    lines.append(f"M106 S{very_cool_fan_speed}")
                     x_index = float(min_x)
-                    lines.append("G0 F" + str(travel_rate) + " X" + min_x + " Y" + min_y)
+                    lines.append(f"G0 F{travel_rate} X{min_x} Y{min_y}")
                     while x_index < float(max_x):
-                        lines.append("G0 X" + str(round(x_index,2)) + " Y" + max_y)
+                        lines.append(f"G0 X{round(x_index,2)} Y{max_y}")
                         if x_index + 10 > bed_width:
                             break
-                        lines.append("G0 X" + str(round(x_index + 10.0,2)) + " Y" + max_y)
-                        lines.append("G0 X" + str(round(x_index + 10.0,2)) + " Y" + min_y)
+                        lines.append(f"G0 X{round(x_index + 10.0,2)} Y{max_y}")
+                        lines.append(f"G0 X{round(x_index + 10.0,2)} Y{min_y}")
                         # Break out of the loop if the move will be beyond the bed width
                         if x_index + 20 > bed_width:
                             break
-                        lines.append("G0 X" + str(round(x_index + 20.0,2)) + " Y" + min_y)
+                        lines.append(f"G0 X{round(x_index + 20.0,2)} Y{min_y}")
                         x_index = x_index + 20.0
                     if very_cool_y_index:
                         y_index = float(min_y)
                         #lines.append("G0 F" + str(travel_rate) + " X" + max_x + " Y" + min_y)
                         while y_index < float(max_y):
-                            lines.append("G0 X" + max_x + " Y" + str(round(y_index,2)))
+                            lines.append(f"G0 X{max_x} Y{round(y_index,2)}")
                             if y_index + 10 > bed_depth:
                                 break
-                            lines.append("G0 X" + max_x + " Y" + str(round(y_index + 10.0,2)))
-                            lines.append("G0 X" + min_x + " Y" + str(round(y_index + 10.0,2)) )
+                            lines.append(f"G0 X{max_x} Y{round(y_index + 10.0,2)}")
+                            lines.append(f"G0 X{min_x} Y{round(y_index + 10.0,2)}")
                             # Break out of the loop if the move will be beyond the bed width
                             if y_index + 20 > bed_depth:
                                 break
-                            lines.append("G0 X" + min_x + " Y" + str(round(y_index + 20.0,2)))
+                            lines.append(f"G0 X{min_x} Y{round(y_index + 20.0,2)}")
                             y_index = y_index + 20.0
-                    lines.append("M106 S" + str(fan_speed))
-                    lines.append("G0 F" + travel_speed + " X" + str(ret_x) + " Y" + str(ret_y))
-                    lines.append("G0 F" + zhop_speed + " Z" + str(ret_z))
+                    lines.append(f"M106 S{fan_speed}")
+                    lines.append(f"G0 F{travel_speed} X{ret_x} Y{ret_y}")
+                    lines.append(f"G0 F{zhop_speed} Z{ret_z}")
                     if not retracted and retr_enabled:
-                        lines.append("G1 F" + retr_speed + " E" + str(ret_e))
-                    lines.append("G0 F" + str(travel_speed) + " ;CUSTOM END")
+                        lines.append(f"G1 F{retr_speed} E{ret_e}")
+                    lines.append(f"G0 F{travel_speed} ;CUSTOM END")
                     fan_layer = "\n".join(lines)
                     time_line = re.search(";TIME_ELAPSED:(\d.*)", data[num])
                     data[num] = re.sub(";TIME_ELAPSED:(\d.*)", fan_layer  + "\n" + time_line[0], data[num])
