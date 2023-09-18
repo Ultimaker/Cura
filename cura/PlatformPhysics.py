@@ -84,6 +84,10 @@ class PlatformPhysics:
                 z_offset = node.callDecoration("getZOffset") if node.getDecorator(ZOffsetDecorator.ZOffsetDecorator) else 0
                 move_vector = move_vector.set(y = -bbox.bottom + z_offset)
 
+            # If there is no convex hull for the node, start calculating it and continue.
+            if not node.getDecorator(ConvexHullDecorator) and not node.callDecoration("isNonPrintingMesh"):
+                node.addDecorator(ConvexHullDecorator())
+
             # only push away objects if this node is a printing mesh
             if not node.callDecoration("isNonPrintingMesh") and app_automatic_push_free:
                 # Do not move locked nodes
