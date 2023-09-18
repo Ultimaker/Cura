@@ -99,6 +99,7 @@ jobs:
     secrets: inherit
 
   macos-arm-installer:
+    uses: ./.github/workflows/macos.yml
     needs: [ default-values ]
     with:
       cura_conan_version: ${{ needs.default-values.outputs.cura_conan_version }}
