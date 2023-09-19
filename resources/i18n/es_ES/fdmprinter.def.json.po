@@ -694,11 +694,11 @@ msgstr "Determina la prioridad de esta malla al tener en cuenta varias mallas de
 
 msgctxt "lightning_infill_support_angle description"
 msgid "Determines when a lightning infill layer has to support anything above it. Measured in the angle given the thickness of a layer."
-msgstr "Determina cuándo una capa de iluminación tiene que soportar algo por encima de ella. Medido en el ángulo dado el espesor de una capa."
+msgstr "Determina cuándo una capa de relleno de rayos tiene que soportar algo por encima de ella. Medido en el ángulo dado el espesor de una capa."
 
 msgctxt "lightning_infill_overhang_angle description"
 msgid "Determines when a lightning infill layer has to support the model above it. Measured in the angle given the thickness."
-msgstr "Determina cuándo una capa de relleno de iluminación tiene que soportar el modelo que está por encima. Medido en el ángulo dado el espesor."
+msgstr "Determina cuándo una capa de relleno de rayos tiene que soportar el modelo que está por encima. Medido en el ángulo dado el espesor."
 
 msgctxt "material_diameter label"
 msgid "Diameter"
@@ -1782,23 +1782,23 @@ msgstr "Levantar el cabezal"
 
 msgctxt "infill_pattern option lightning"
 msgid "Lightning"
-msgstr "Iluminación"
+msgstr "Rayos"
 
 msgctxt "lightning_infill_overhang_angle label"
 msgid "Lightning Infill Overhang Angle"
-msgstr "Ángulo del voladizo de relleno de iluminación"
+msgstr "Ángulo del voladizo de relleno de rayos"
 
 msgctxt "lightning_infill_prune_angle label"
 msgid "Lightning Infill Prune Angle"
-msgstr "Ángulo de recorte de relleno de iluminación"
+msgstr "Ángulo de recorte de relleno de rayos"
 
 msgctxt "lightning_infill_straightening_angle label"
 msgid "Lightning Infill Straightening Angle"
-msgstr "Ángulo de enderezamiento de iluminación"
+msgstr "Ángulo de enderezamiento de rayos"
 
 msgctxt "lightning_infill_support_angle label"
 msgid "Lightning Infill Support Angle"
-msgstr "Ángulo de sujeción de relleno de iluminación"
+msgstr "Ángulo de sujeción de relleno de rayos"
 
 msgctxt "support_tree_limit_branch_reach label"
 msgid "Limit Branch Reach"
@@ -4294,7 +4294,7 @@ msgstr "Diámetro exterior de la punta de la tobera."
 
 msgctxt "infill_pattern description"
 msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the ceiling of the object."
-msgstr "Patrón del material de relleno de la impresión. El método de llenado en línea y en zigzag cambia de dirección en capas alternas para reducir los costes de material. Los patrones de rejilla, triángulo, trihexágono, cubo, octaédrico, cubo bitruncado, transversal y concéntrico se imprimen en todas las capas por completo. Los rellenos de giroide, cúbico, cúbico bitruncado y octaédrico se alternan en cada capa para lograr una distribución más uniforme de la fuerza en todas las direcciones. El relleno de iluminación intenta minimizar el relleno apoyando solo la parte superior del objeto."
+msgstr "Patrón del material de relleno de la impresión. El método de llenado en línea y en zigzag cambia de dirección en capas alternas para reducir los costes de material. Los patrones de rejilla, triángulo, trihexágono, cubo, octaédrico, cubo bitruncado, transversal y concéntrico se imprimen en todas las capas por completo. Los rellenos de giroide, cúbico, cúbico bitruncado y octaédrico se alternan en cada capa para lograr una distribución más uniforme de la fuerza en todas las direcciones. El relleno de rayos intenta minimizar el relleno apoyando solo la parte superior del objeto."
 
 msgctxt "support_pattern description"
 msgid "The pattern of the support structures of the print. The different options available result in sturdy or easy to remove support."
