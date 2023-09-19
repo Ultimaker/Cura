@@ -346,7 +346,7 @@ class CuraConan(ConanFile):
         vr.generate()
 
         self._generate_cura_version(os.path.join(self.source_folder, "cura"))
-        # self._generate_about_versions(os.path.join(self.source_folder, "resources","qml", "Dialogs"))
+        self._generate_about_versions(os.path.join(self.source_folder, "resources","qml", "Dialogs"))
 
         if not self.in_local_cache:
             # Copy CuraEngine.exe to bindirs of Virtual Python Environment
@@ -403,7 +403,7 @@ class CuraConan(ConanFile):
                 # FIXME: once m4, autoconf, automake are Conan V2 ready use self.win_bash and add gettext as base tool_requirement
                 cpp_info = self.dependencies["gettext"].cpp_info
                 pot = self.python_requires["translationextractor"].module.ExtractTranslations(self, cpp_info.bindirs[0])
-                # pot.generate()
+                pot.generate()
 
     def build(self):
         if self.options.devtools:
