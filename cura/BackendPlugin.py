@@ -73,12 +73,17 @@ class BackendPlugin(AdditionalSettingDefinitionsAppender, PluginObject):
         """
         if not self.usePlugin():
             return False
+        Logger.info(f"Starting backend_plugin [{self._plugin_id}] with command: {self._validatePluginCommand()}")
+        plugin_log_path = os.path.join(Resources.getDataStoragePath(), f"{self.getPluginId()}.log")
+        if os.path.exists(plugin_log_path):
+            try:
+                os.remove(plugin_log_path)
+            except:
+                pass  # removing is only done such that it doesn't grow out of proportions, if it fails once or twice that is okay
+        Logger.info(f"Logging plugin output to: {plugin_log_path}")
         try:
             # STDIN needs to be None because we provide no input, but communicate via a local socket instead.
             # The NUL device sometimes doesn't exist on some computers.
-            Logger.info(f"Starting backend_plugin [{self._plugin_id}] with command: {self._validatePluginCommand()}")
-            plugin_log_path = os.path.join(Resources.getDataStoragePath(), f"{self.getPluginId()}.log")
-            Logger.info(f"Logging plugin output to: {plugin_log_path}")
             with open(plugin_log_path, 'a') as f:
                 popen_kwargs = {
                     "stdin": None,
