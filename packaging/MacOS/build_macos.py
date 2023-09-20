@@ -22,7 +22,6 @@ def build_dmg(source_path: str, dist_path: str, filename: str, app_name: str) ->
                  "--eula", f"{source_path}/packaging/cura_license.txt",
                  "--background", f"{source_path}/packaging/MacOs/cura_background_dmg.png",
                  "--hdiutil-quiet",
-                 "--skip-jenkins",
                  f"{dist_path}/{filename}",
                  f"{dist_path}/{app_name}"]
 
