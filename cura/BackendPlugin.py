@@ -1,5 +1,6 @@
 # Copyright (c) 2023 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+import socket
 import subprocess
 from typing import Optional, List
 
@@ -41,6 +42,15 @@ class BackendPlugin(AdditionalSettingDefinitionsAppender, PluginObject):
 
     def getAddress(self) -> str:
         return self._plugin_address
+
+    def setAvailablePort(self) -> None:
+        """
+        Sets the port to a random available port.
+        """
+        sock = socket.socket()
+        sock.bind((self.getAddress(), 0))
+        port = sock.getsockname()[1]
+        self.setPort(port)
 
     def _validatePluginCommand(self) -> list[str]:
         """
