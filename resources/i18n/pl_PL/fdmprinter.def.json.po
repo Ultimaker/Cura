@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-06-08 16:32+0000\n"
+"POT-Creation-Date: 2023-09-12 17:04+0000\n"
 "PO-Revision-Date: 2019-11-15 15:34+0100\n"
 "Last-Translator: Mariusz Matłosz <matliks@gmail.com>\n"
 "Language-Team: Mariusz Matłosz <matliks@gmail.com>, reprapy.pl\n"
@@ -183,10 +183,6 @@ msgstr ""
 msgctxt "travel_retract_before_outer_wall description"
 msgid "Always retract when moving to start an outer wall."
 msgstr "Zawsze cofaj podczas przemieszczania się do początku zewnętrznej ściany."
-
-msgctxt "hole_xy_offset description"
-msgid "Amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes."
-msgstr ""
 
 msgctxt "xy_offset description"
 msgid "Amount of offset applied to all polygons in each layer. Positive values can compensate for too big holes; negative values can compensate for too small holes."
@@ -784,6 +780,14 @@ msgctxt "support_xy_distance description"
 msgid "Distance of the support structure from the print in the X/Y directions."
 msgstr "Odległość podpory od wydruku w kierunkach X/Y."
 
+msgctxt "meshfix_fluid_motion_shift_distance description"
+msgid "Distance points are shifted to smooth the path"
+msgstr ""
+
+msgctxt "meshfix_fluid_motion_small_distance description"
+msgid "Distance points are shifted to smooth the path"
+msgstr ""
+
 msgctxt "min_infill_area description"
 msgid "Don't generate areas of infill smaller than this (use skin instead)."
 msgstr "Nie generuj obszarów wypełnienia mniejszych niż to (zamiast tego używaj skóry)."
@@ -831,6 +835,10 @@ msgstr "Włącz Podpory Stożkowe"
 msgctxt "draft_shield_enabled label"
 msgid "Enable Draft Shield"
 msgstr "Włącz Osłonę Przeciwwiatrową"
+
+msgctxt "meshfix_fluid_motion_enabled label"
+msgid "Enable Fluid Motion"
+msgstr ""
 
 msgctxt "ironing_enabled label"
 msgid "Enable Ironing"
@@ -891,6 +899,10 @@ msgstr ""
 msgctxt "ooze_shield_enabled description"
 msgid "Enable exterior ooze shield. This will create a shell around the model which is likely to wipe a second nozzle if it's at the same height as the first nozzle."
 msgstr "Włączyć zewnętrzną osłonę. Powstanie powłoka wokół modelu, która będzie czyściła drugą dyszę, jeśli jest na tej samej wysokości, co pierwsza dysza."
+
+msgctxt "small_skin_on_surface description"
+msgid "Enable small (up to 'Small Top/Bottom Width') regions on the topmost skinned layer (exposed to air) to be filled with walls instead of the default pattern."
+msgstr ""
 
 msgctxt "jerk_enabled description"
 msgid "Enables adjusting the jerk of print head when the velocity in the X or Y axis changes. Increasing the jerk can reduce printing time at the cost of print quality."
@@ -1103,6 +1115,18 @@ msgstr "Ustawienie przepływu na liniach ścianek."
 msgctxt "material_flow description"
 msgid "Flow compensation: the amount of material extruded is multiplied by this value."
 msgstr "Kompensacja przepływu: ilość ekstrudowanego materiału jest mnożona przez tę wartość."
+
+msgctxt "meshfix_fluid_motion_angle label"
+msgid "Fluid Motion Angle"
+msgstr ""
+
+msgctxt "meshfix_fluid_motion_shift_distance label"
+msgid "Fluid Motion Shift Distance"
+msgstr ""
+
+msgctxt "meshfix_fluid_motion_small_distance label"
+msgid "Fluid Motion Small Distance"
+msgstr ""
 
 msgctxt "material_flush_purge_length label"
 msgid "Flush Purge Length"
@@ -1391,6 +1415,10 @@ msgstr ""
 msgctxt "bridge_skin_support_threshold description"
 msgid "If a skin region is supported for less than this percentage of its area, print it using the bridge settings. Otherwise it is printed using the normal skin settings."
 msgstr "Jeśli obszar skóry jest podpierany w mniejszym procencie jego powierzchni, drukuj to według ustawień mostu. W przeciwnym wypadku użyj normalnych ustawień skóry."
+
+msgctxt "meshfix_fluid_motion_angle description"
+msgid "If a toolpath-segment deviates more than this angle from the general motion it is smoothed."
+msgstr ""
 
 msgctxt "bridge_enable_more_layers description"
 msgid "If enabled, the second and third layers above the air are printed using the following settings. Otherwise, those layers are printed using the normal settings."
@@ -3029,6 +3057,10 @@ msgctxt "cool_min_temperature label"
 msgid "Small Layer Printing Temperature"
 msgstr "Końcowa Temp. Druku"
 
+msgctxt "small_skin_on_surface label"
+msgid "Small Top/Bottom On Surface"
+msgstr ""
+
 msgctxt "small_skin_width label"
 msgid "Small Top/Bottom Width"
 msgstr ""
@@ -3042,7 +3074,7 @@ msgid "Small features will be printed at this percentage of their normal print s
 msgstr "Małe obiekty zostaną wydrukowane z zadanym procentem ich normalnej prędkości drukowania. Wolniejsze drukowanie może poprawić przyczepność i dokładność."
 
 msgctxt "small_skin_width description"
-msgid "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions."
+msgid "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions. Off for the topmost (air-exposed) layer by default (see 'Small Top/Bottom On Surface')."
 msgstr ""
 
 msgctxt "brim_smart_ordering label"
@@ -4973,6 +5005,10 @@ msgctxt "support_interface_skip_height description"
 msgid "When checking where there's model above and below the support, take steps of the given height. Lower values will slice slower, while higher values may cause normal support to be printed in some places where there should have been support interface."
 msgstr "Sprawdzając, czy model znajduje się powyżej czy poniżej podpory, wykonaj stopnie o danej wysokości. Niższe wartości będą cięte wolniej, podczas gdy wyższe wartości mogą powodować drukowanie zwykłej podpory w niektórych miejscach, w których powinno istnieć połączenie."
 
+msgctxt "meshfix_fluid_motion_enabled description"
+msgid "When enabled tool paths are corrected for printers with smooth motion planners. Small movements that deviate from the general tool path direction are smoothed to improve fluid motions."
+msgstr ""
+
 msgctxt "infill_enable_travel_optimization description"
 msgid "When enabled, the order in which the infill lines are printed is optimized to reduce the distance travelled. The reduction in travel time achieved very much depends on the model being sliced, infill pattern, density, etc. Note that, for some models that have many small areas of infill, the time to slice the model may be greatly increased."
 msgstr "Kiedy włączone, kolejność drukowania linii wypełnienia jest optymalizowana tak, aby zredukować odległości ruchów jałowych. Osiągnięta redukcja czasu ruchów jałowych zależy od ciętego modelu, wzory wypełnienia, gęstości itd. Zauważ, że dla niektórych modeli, które mają małe obszary wypełnienia, czas ciecia modelu może się bardzo wydłużyć."
@@ -4991,6 +5027,10 @@ msgstr ""
 
 msgctxt "hole_xy_offset_max_diameter description"
 msgid "When greater than zero, the Hole Horizontal Expansion is gradually applied on small holes (small holes are expanded more). When set to zero the Hole Horizontal Expansion will be applied to all holes. Holes larger than the Hole Horizontal Expansion Max Diameter are not expanded."
+msgstr ""
+
+msgctxt "hole_xy_offset description"
+msgid "When greater than zero, the Hole Horizontal Expansion is the amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes. When this setting is enabled it can be further tuned with Hole Horizontal Expansion Max Diameter."
 msgstr ""
 
 msgctxt "bridge_skin_material_flow description"

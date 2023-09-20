@@ -56,7 +56,8 @@ class ThreeMFReader(MeshReader):
     def emptyFileHintSet(self) -> bool:
         return self._empty_project
 
-    def _createMatrixFromTransformationString(self, transformation: str) -> Matrix:
+    @staticmethod
+    def _createMatrixFromTransformationString(transformation: str) -> Matrix:
         if transformation == "":
             return Matrix()
 
@@ -90,7 +91,8 @@ class ThreeMFReader(MeshReader):
 
         return temp_mat
 
-    def _convertSavitarNodeToUMNode(self, savitar_node: Savitar.SceneNode, file_name: str = "") -> Optional[SceneNode]:
+    @staticmethod
+    def _convertSavitarNodeToUMNode(savitar_node: Savitar.SceneNode, file_name: str = "") -> Optional[SceneNode]:
         """Convenience function that converts a SceneNode object (as obtained from libSavitar) to a scene node.
 
         :returns: Scene node.
@@ -119,7 +121,7 @@ class ThreeMFReader(MeshReader):
             pass
         um_node.setName(node_name)
         um_node.setId(node_id)
-        transformation = self._createMatrixFromTransformationString(savitar_node.getTransformation())
+        transformation = ThreeMFReader._createMatrixFromTransformationString(savitar_node.getTransformation())
         um_node.setTransformation(transformation)
         mesh_builder = MeshBuilder()
 
@@ -138,7 +140,7 @@ class ThreeMFReader(MeshReader):
             um_node.setMeshData(mesh_data)
 
         for child in savitar_node.getChildren():
-            child_node = self._convertSavitarNodeToUMNode(child)
+            child_node = ThreeMFReader._convertSavitarNodeToUMNode(child)
             if child_node:
                 um_node.addChild(child_node)
 
@@ -214,7 +216,7 @@ class ThreeMFReader(MeshReader):
                 CuraApplication.getInstance().getController().getScene().setMetaDataEntry(key, value)
 
             for node in scene_3mf.getSceneNodes():
-                um_node = self._convertSavitarNodeToUMNode(node, file_name)
+                um_node = ThreeMFReader._convertSavitarNodeToUMNode(node, file_name)
                 if um_node is None:
                     continue
 
@@ -300,8 +302,23 @@ class ThreeMFReader(MeshReader):
         if unit is None:
             unit = "millimeter"
         elif unit not in conversion_to_mm:
-            Logger.log("w", "Unrecognised unit {unit} used. Assuming mm instead.".format(unit = unit))
+            Logger.log("w", "Unrecognised unit {unit} used. Assuming mm instead.".format(unit=unit))
             unit = "millimeter"
 
         scale = conversion_to_mm[unit]
         return Vector(scale, scale, scale)
+
+    @staticmethod
+    def stringToSceneNodes(scene_string: str) -> List[SceneNode]:
+        parser = Savitar.ThreeMFParser()
+        scene = parser.parse(scene_string)
+
+        # Convert the scene to scene nodes
+        nodes = []
+        for savitar_node in scene.getSceneNodes():
+            scene_node = ThreeMFReader._convertSavitarNodeToUMNode(savitar_node, "file_name")
+            if scene_node is None:
+                continue
+            nodes.append(scene_node)
+
+        return nodes

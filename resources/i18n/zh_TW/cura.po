@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-04 11:54+0000\n"
+"POT-Creation-Date: 2023-09-12 17:10+0200\n"
 "PO-Revision-Date: 2022-01-02 19:59+0800\n"
 "Last-Translator: Valen Chang  <carf17771@gmail.com>\n"
 "Language-Team: Valen Chang <carf17771@gmail.com>\n"
@@ -154,12 +154,6 @@ msgstr ""
 msgctxt "@heading"
 msgid "-- incomplete --"
 msgstr ""
-
-#, python-brace-format
-msgctxt "info:{0} gets replaced by a number of printers"
-msgid "... and {0} other"
-msgid_plural "... and {0} others"
-msgstr[0] "… 和 {0} 其他"
 
 msgctxt "@action:label"
 msgid "1mm Transmittance (%)"
@@ -563,8 +557,8 @@ msgid "Arrange All Models"
 msgstr "排列所有模型"
 
 msgctxt "@action:inmenu menubar:edit"
-msgid "Arrange Selection"
-msgstr "排列所選模型"
+msgid "Arrange All Models in a grid"
+msgstr ""
 
 msgctxt "@label:button"
 msgid "Ask a question"
@@ -633,10 +627,6 @@ msgstr "備份"
 msgctxt "@action:label"
 msgid "Base (mm)"
 msgstr "底板 (mm)"
-
-msgctxt "@tooltip:button"
-msgid "Become a 3D printing expert with UltiMaker e-learning."
-msgstr "使用UltiMaker e-learning成為一位3D列印專家."
 
 msgctxt "@action:inmenu menubar:view"
 msgid "Bottom View"
@@ -981,6 +971,10 @@ msgctxt "@action:menu"
 msgid "Copy all changed values to all extruders"
 msgstr "複製所有改變的設定值到所有擠出機"
 
+msgctxt "@action:inmenu menubar:edit"
+msgid "Copy to clipboard"
+msgstr ""
+
 msgctxt "@action:menu"
 msgid "Copy value to all extruders"
 msgstr "將設定值複製到所有擠出機"
@@ -1039,6 +1033,27 @@ msgstr "無法儲存到行動裝置 {0}：{1}"
 msgctxt "@info:text"
 msgid "Could not upload the data to the printer."
 msgstr "雲端服務未上傳資料到印表機。"
+
+#, python-brace-format
+msgctxt "@info:plugin_failed"
+msgid ""
+"Couldn't start EnginePlugin: {self._plugin_id}\n"
+"No permission to execute process."
+msgstr ""
+
+#, python-brace-format
+msgctxt "@info:plugin_failed"
+msgid ""
+"Couldn't start EnginePlugin: {self._plugin_id}\n"
+"Operating system is blocking it (antivirus?)"
+msgstr ""
+
+#, python-brace-format
+msgctxt "@info:plugin_failed"
+msgid ""
+"Couldn't start EnginePlugin: {self._plugin_id}\n"
+"Resource is temporarily unavailable"
+msgstr ""
 
 msgctxt "@title:window"
 msgid "Crash Report"
@@ -1149,6 +1164,14 @@ msgctxt "name"
 msgid "CuraEngine Backend"
 msgstr "Cura 引擎後台"
 
+msgctxt "description"
+msgid "CuraEngine plugin for gradually smoothing the flow to limit high-flow jumps"
+msgstr ""
+
+msgctxt "name"
+msgid "CuraEngineGradualFlow"
+msgstr ""
+
 msgctxt "@label"
 msgid "Currency:"
 msgstr "貨幣："
@@ -1192,6 +1215,10 @@ msgstr "自訂列印參數"
 msgctxt "@label:header"
 msgid "Custom profiles"
 msgstr "自訂列印參數"
+
+msgctxt "@action:inmenu menubar:edit"
+msgid "Cut"
+msgstr ""
 
 msgctxt "@item:inlistbox"
 msgid "Cutting mesh"
@@ -1424,8 +1451,8 @@ msgid "Enable Extruder"
 msgstr "啟用擠出機"
 
 msgctxt "@label"
-msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards."
-msgstr "允許列印邊緣或木筏。這將在你的物件周圍或下方添加一個容易切斷的平面區域。"
+msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards. Disabling it results in a skirt around object by default."
+msgstr ""
 
 msgctxt "@label"
 msgid "Enabled"
@@ -1442,6 +1469,10 @@ msgstr "結束 G-code"
 msgctxt "@label"
 msgid "End-to-end solution for fused filament 3D printing."
 msgstr "熔絲 3D 列印技術的的端對端解決方案。"
+
+msgctxt "@info:title"
+msgid "EnginePlugin"
+msgstr ""
 
 msgctxt "@label"
 msgid "Engineering"
@@ -1466,10 +1497,6 @@ msgstr "錯誤"
 msgctxt "@title:groupbox"
 msgid "Error traceback"
 msgstr "錯誤追溯"
-
-msgctxt "@error:zip"
-msgid "Error writing 3mf file."
-msgstr "寫入 3mf 檔案發生錯誤。"
 
 msgctxt "@label"
 msgid "Estimated time left"
@@ -1843,6 +1870,10 @@ msgctxt "@label Description for application component"
 msgid "Graphical user interface"
 msgstr "圖形用戶介面"
 
+msgctxt "@label"
+msgid "Grid Placement"
+msgstr ""
+
 #, python-brace-format
 msgctxt "@label"
 msgid "Group #{group_nr}"
@@ -1875,10 +1906,6 @@ msgstr "高度 (mm)"
 msgctxt "@label"
 msgid "Helpers"
 msgstr "輔助結構"
-
-msgctxt "@label"
-msgid "Hex"
-msgstr ""
 
 msgctxt "@label"
 msgid "Hide all connected printers"
@@ -2024,10 +2051,6 @@ msgctxt "@button"
 msgid "Install"
 msgstr ""
 
-msgctxt "@action:button"
-msgid "Install Materials"
-msgstr ""
-
 msgctxt "@header"
 msgid "Install Materials"
 msgstr ""
@@ -2036,16 +2059,28 @@ msgctxt "@window:title"
 msgid "Install Package"
 msgstr "安裝套件"
 
+msgctxt "@action:button"
+msgid "Install Packages"
+msgstr ""
+
+msgctxt "@header"
+msgid "Install Packages"
+msgstr ""
+
 msgctxt "@header"
 msgid "Install Plugins"
 msgstr ""
 
-msgctxt "@title"
-msgid "Install missing Materials"
+msgctxt "@action:button"
+msgid "Install missing packages"
 msgstr ""
 
-msgctxt "@action:button"
-msgid "Install missing material"
+msgctxt "@title"
+msgid "Install missing packages"
+msgstr ""
+
+msgctxt "@label"
+msgid "Install missing packages from project file."
 msgstr ""
 
 msgctxt "@button"
@@ -2183,6 +2218,10 @@ msgstr ""
 
 msgctxt "@button"
 msgid "Learn more about adding printers to Cura"
+msgstr ""
+
+msgctxt "@label"
+msgid "Learn more about project packages."
 msgstr ""
 
 msgctxt "@action:inmenu menubar:view"
@@ -2409,10 +2448,6 @@ msgctxt "@label"
 msgid "Material estimation"
 msgstr "線材估計"
 
-msgctxt "@info:title"
-msgid "Material profiles not installed"
-msgstr ""
-
 msgctxt "@title:header"
 msgid "Material profiles successfully synced with the following printers:"
 msgstr "線材設定檔成功同步至下述的印表機內:"
@@ -2514,6 +2549,10 @@ msgid "Multiply Selected Model"
 msgid_plural "Multiply Selected Models"
 msgstr[0] "複製所選模型"
 
+msgctxt "@info"
+msgid "Multiply selected item and place them in a grid of build plate."
+msgstr ""
+
 msgctxt "@info:status"
 msgid "Multiplying and placing objects"
 msgstr "正在複製並放置模型"
@@ -2576,6 +2615,10 @@ msgstr "下一步"
 msgctxt "@button"
 msgid "Next"
 msgstr "下一步"
+
+msgctxt "@info:title"
+msgid "Nightly build"
+msgstr ""
 
 msgctxt "@info"
 msgid "No"
@@ -2854,6 +2897,10 @@ msgstr ""
 msgctxt "@info:status"
 msgid "Parsing G-code"
 msgstr "正在解析 G-code"
+
+msgctxt "@action:inmenu menubar:edit"
+msgid "Paste from clipboard"
+msgstr ""
 
 msgctxt "@label"
 msgid "Pause"
@@ -3470,6 +3517,10 @@ msgctxt "@button"
 msgid "Refresh List"
 msgstr "重新載入清單"
 
+msgctxt "@button"
+msgid "Refreshing..."
+msgstr ""
+
 msgctxt "@label"
 msgid "Release Notes"
 msgstr "發佈通知"
@@ -3921,6 +3972,10 @@ msgctxt "@option:check"
 msgid "Show summary dialog when saving project"
 msgstr "儲存專案時顯示摘要對話框"
 
+msgctxt "@tooltip:button"
+msgid "Show your support for Cura with a donation."
+msgstr ""
+
 msgctxt "@button"
 msgid "Sign Out"
 msgstr "登出"
@@ -4019,6 +4074,14 @@ msgstr ""
 "\n"
 "點擊以顯這些設定。"
 
+msgctxt "@info:status"
+msgid "Some of the packages used in the project file are currently not installed in Cura, this might produce undesirable print results. We highly recommend installing the all required packages from the Marketplace."
+msgstr ""
+
+msgctxt "@info:title"
+msgid "Some required packages are not installed"
+msgstr ""
+
 msgctxt "@info %1 is the name of a profile"
 msgid "Some setting-values defined in <b>%1</b> were overridden."
 msgstr ""
@@ -4052,6 +4115,14 @@ msgstr "出了些問題..."
 msgctxt "@label:listbox"
 msgid "Speed"
 msgstr "速度"
+
+msgctxt "@action:inmenu"
+msgid "Sponsor Cura"
+msgstr ""
+
+msgctxt "@label:button"
+msgid "Sponsor Cura"
+msgstr ""
 
 msgctxt "@option:radio"
 msgid "Stable and Beta releases"
@@ -4341,14 +4412,6 @@ msgctxt "@label:label Ultimaker Marketplace is a brand name, don't translate"
 msgid "The material package associated with the Cura project could not be found on the Ultimaker Marketplace. Use the partial material profile definition stored in the Cura project file at your own risk."
 msgstr ""
 
-msgctxt "@label"
-msgid "The material used in this project is currently not installed in Cura.<br/>Install the material profile and reopen the project."
-msgstr ""
-
-msgctxt "@info:status"
-msgid "The material used in this project relies on some material definitions not available in Cura, this might produce undesirable print results. We highly recommend installing the full material package from the Marketplace."
-msgstr ""
-
 msgctxt "@info:tooltip"
 msgid "The maximum distance of each pixel from \"Base.\""
 msgstr "每個像素與底板的最大距離。"
@@ -4360,10 +4423,6 @@ msgstr "新的線材直徑設定為 %1 mm，這與目前的擠出機不相容。
 msgctxt "@tooltip"
 msgid "The nozzle inserted in this extruder."
 msgstr "該擠出機所使用的噴頭。"
-
-msgctxt "@error:zip"
-msgid "The operating system does not allow saving a project file to this location or with this file name."
-msgstr "操作系統不允許將專案檔案儲存到此位置或儲存為此檔名。"
 
 msgctxt "@label"
 msgid ""
@@ -4379,6 +4438,10 @@ msgstr ""
 msgctxt "@info:tooltip"
 msgid "The percentage of light penetrating a print with a thickness of 1 millimeter. Lowering this value increases the contrast in dark regions and decreases the contrast in light regions of the image."
 msgstr "光線穿透 1mm 厚度列印件的百分比。降低此值可增加暗部的對比度，並降低亮部的對比度。"
+
+msgctxt "@label:label Ultimaker Marketplace is a brand name, don't translate"
+msgid "The plugin associated with the Cura project could not be found on the Ultimaker Marketplace. As the plugin may be required to slice the project it might not be possible to correctly slice the file."
+msgstr ""
 
 msgctxt "@info:title"
 msgid "The print job was successfully submitted"
@@ -4531,6 +4594,10 @@ msgid "This profile uses the defaults specified by the printer, so it has no set
 msgstr "此列印參數使用印表機指定的預設值，因此在下面的清單中沒有此設定項。"
 
 msgctxt "@label"
+msgid "This project contains materials or plugins that are currently not installed in Cura.<br/>Install the missing packages and reopen the project."
+msgstr ""
+
+msgctxt "@label"
 msgid ""
 "This setting has a value that is different from the profile.\n"
 "\n"
@@ -4570,6 +4637,10 @@ msgstr "此設定未被使用，因為受它影響的設定都被覆寫了。"
 msgctxt "@label"
 msgid "This setting is resolved from conflicting extruder-specific values:"
 msgstr "此設定是透過解決擠出機設定值衝突獲得："
+
+msgctxt "@info:warning"
+msgid "This version is not intended for production use. If you encounter any issues, please report them on our GitHub page, mentioning the full version {self.getVersion()}"
+msgstr ""
 
 msgctxt "@label"
 msgid "Time estimation"
@@ -4740,6 +4811,18 @@ msgstr "無法新增列印參數。"
 msgctxt "@info:status"
 msgid "Unable to find a location within the build volume for all objects"
 msgstr "無法在列印範圍內放下全部物件"
+
+#, python-brace-format
+msgctxt "@info:plugin_failed"
+msgid "Unable to find local EnginePlugin server executable for: {self._plugin_id}"
+msgstr ""
+
+#, python-brace-format
+msgctxt "@info:plugin_failed"
+msgid ""
+"Unable to kill running EnginePlugin: {self._plugin_id}\n"
+"Access is denied."
+msgstr ""
 
 msgctxt "@info"
 msgid "Unable to reach the UltiMaker account server."
@@ -4989,6 +5072,10 @@ msgctxt "description"
 msgid "Upgrades configurations from Cura 5.3 to Cura 5.4."
 msgstr ""
 
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.4 to Cura 5.5."
+msgstr ""
+
 msgctxt "@action:button"
 msgid "Upload custom Firmware"
 msgstr "上傳自訂韌體"
@@ -5119,6 +5206,10 @@ msgstr "升級版本 5.2 到 5.3"
 
 msgctxt "name"
 msgid "Version Upgrade 5.3 to 5.4"
+msgstr ""
+
+msgctxt "name"
+msgid "Version Upgrade 5.4 to 5.5"
 msgstr ""
 
 msgctxt "@button"
@@ -5555,6 +5646,12 @@ msgstr "下載外掛 {} 失敗"
 #~ msgid "- Store your UltiMaker Cura settings in the cloud for use anywhere"
 #~ msgstr "- 將你的 UltiMaker Cura 設定儲存在雲端以便隨處使用"
 
+#, python-brace-format
+#~ msgctxt "info:{0} gets replaced by a number of printers"
+#~ msgid "... and {0} other"
+#~ msgid_plural "... and {0} others"
+#~ msgstr[0] "… 和 {0} 其他"
+
 #~ msgctxt "@label"
 #~ msgid "0%"
 #~ msgstr "0%"
@@ -5797,6 +5894,10 @@ msgstr "下載外掛 {} 失敗"
 #~ msgid "Arrange All Models To All Build Plates"
 #~ msgstr "將所有模型排列到所有列印平台上"
 
+#~ msgctxt "@action:inmenu menubar:edit"
+#~ msgid "Arrange Selection"
+#~ msgstr "排列所選模型"
+
 #~ msgctxt "@action:button"
 #~ msgid "Arrange current build plate"
 #~ msgstr "擺放到目前的列印平台"
@@ -5860,6 +5961,10 @@ msgstr "下載外掛 {} 失敗"
 #~ msgctxt "@action:button"
 #~ msgid "Back"
 #~ msgstr "返回"
+
+#~ msgctxt "@tooltip:button"
+#~ msgid "Become a 3D printing expert with UltiMaker e-learning."
+#~ msgstr "使用UltiMaker e-learning成為一位3D列印專家."
 
 #~ msgctxt "@label"
 #~ msgid "Bed Temperature: %1/%2°C"
@@ -6391,6 +6496,10 @@ msgstr "下載外掛 {} 失敗"
 #~ msgstr "啟用漸層"
 
 #~ msgctxt "@label"
+#~ msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards."
+#~ msgstr "允許列印邊緣或木筏。這將在你的物件周圍或下方添加一個容易切斷的平面區域。"
+
+#~ msgctxt "@label"
 #~ msgid "End G-code"
 #~ msgstr "結束 G-code"
 
@@ -6413,6 +6522,10 @@ msgstr "下載外掛 {} 失敗"
 #~ msgctxt "@info:status"
 #~ msgid "Error while starting %s!"
 #~ msgstr "啟動 %s 時發生錯誤！"
+
+#~ msgctxt "@error:zip"
+#~ msgid "Error writing 3mf file."
+#~ msgstr "寫入 3mf 檔案發生錯誤。"
 
 #~ msgctxt "@info:status"
 #~ msgid "Errors appeared while opening your SolidWorks file!             Please check, whether it is possible to open your file in SolidWorks itself without any problems as well!"
@@ -7949,6 +8062,10 @@ msgstr "下載外掛 {} 失敗"
 #~ msgctxt "@tooltip"
 #~ msgid "The nominal diameter of filament supported by the printer. The exact diameter will be overridden by the material and/or the profile."
 #~ msgstr "印表機所支援的耗材直徑。實際列印的耗材直徑由耗材和/或列印參數提供。"
+
+#~ msgctxt "@error:zip"
+#~ msgid "The operating system does not allow saving a project file to this location or with this file name."
+#~ msgstr "操作系統不允許將專案檔案儲存到此位置或儲存為此檔名。"
 
 #~ msgctxt "@info:status"
 #~ msgid "The print job '{job_name}' was finished."
