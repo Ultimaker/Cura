@@ -311,7 +311,7 @@ class CuraConan(ConanFile):
         self.requires("curaengine/(latest)@ultimaker/stable")
         self.requires("pysavitar/5.3.0")
         self.requires("pynest2d/5.3.0")
-        self.requires("curaengine_plugin_gradual_flow/(latest)@ultimaker/testing")
+        self.requires("curaengine_plugin_gradual_flow/(latest)@ultimaker/cura_11038")  # FIXME: use latest after merge
         self.requires("uranium/(latest)@ultimaker/stable")
         self.requires("cura_binary_data/(latest)@ultimaker/stable")
         self.requires("cpython/3.10.4")
@@ -358,6 +358,7 @@ class CuraConan(ConanFile):
             rmdir(self,str(self.source_path.joinpath("plugins", "CuraEngineGradualFlow")))
             curaengine_plugin_gradual_flow = self.dependencies["curaengine_plugin_gradual_flow"].cpp_info
             copy(self, "*", curaengine_plugin_gradual_flow.resdirs[0], str(self.source_path.joinpath("plugins", "CuraEngineGradualFlow")), keep_path = True)
+            copy(self, "*", curaengine_plugin_gradual_flow.bindirs[0], self.source_folder, keep_path = False)
             copy(self, "bundled_*.json", curaengine_plugin_gradual_flow.resdirs[1], str(self.source_path.joinpath("resources", "bundled_packages")), keep_path = False)
 
         # Copy resources of cura_binary_data
