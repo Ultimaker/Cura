@@ -1,6 +1,7 @@
 # Copyright (c) 2023 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import socket
+import os
 import subprocess
 from typing import Optional, List
 
@@ -10,6 +11,7 @@ from UM.Settings.AdditionalSettingDefinitionAppender import AdditionalSettingDef
 from UM.PluginObject import PluginObject
 from UM.i18n import i18nCatalog
 from UM.Platform import Platform
+from UM.Resources import Resources
 
 
 class BackendPlugin(AdditionalSettingDefinitionsAppender, PluginObject):
@@ -75,10 +77,17 @@ class BackendPlugin(AdditionalSettingDefinitionsAppender, PluginObject):
             # STDIN needs to be None because we provide no input, but communicate via a local socket instead.
             # The NUL device sometimes doesn't exist on some computers.
             Logger.info(f"Starting backend_plugin [{self._plugin_id}] with command: {self._validatePluginCommand()}")
-            popen_kwargs = {"stdin": None }
-            if Platform.isWindows():
-                popen_kwargs["creationflags"] = subprocess.CREATE_NO_WINDOW
-            self._process = subprocess.Popen(self._validatePluginCommand(), **popen_kwargs)
+            plugin_log_path = os.path.join(Resources.getDataStoragePath(), f"{self.getPluginId()}.log")
+            Logger.info(f"Logging plugin output to: {plugin_log_path}")
+            with open(plugin_log_path, 'a') as f:
+                popen_kwargs = {
+                    "stdin": None,
+                    "stdout": f,  # Redirect output to file
+                    "stderr": subprocess.STDOUT,  # Combine stderr and stdout
+                }
+                if Platform.isWindows():
+                    popen_kwargs["creationflags"] = subprocess.CREATE_NO_WINDOW
+                self._process = subprocess.Popen(self._validatePluginCommand(), **popen_kwargs)
             self._is_running = True
             return True
         except PermissionError:
