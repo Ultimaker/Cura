@@ -98,25 +98,7 @@ class BridgeTemperatureAdjustment(Script):
         self._instance.setProperty("resume_temperature", "value", str(print_temperature))
         self._instance.setProperty("bridge_temperature", "value", str(print_temperature - 10))
 
-    # If AddCoolingProfile is ahead of BridgeTempAdjust then notify the user.
-        scripts_list = Application.getInstance().getGlobalContainerStack().getMetaDataEntry("post_processing_scripts")
-        for script_str in scripts_list.split("\n"):
-            if "BridgeTemperatureAdjustment" in script_str:
-                break
-            if "AddCoolingProfile" in script_str:
-                Message(title = "Bridge Temp Adjust:", text = "The post processor exited because it must run ahead of Advanced Cooling Fan Control.").show()
-                return
-
     def execute(self, data: List[str]) -> List[str]:
-        # If AddCoolingProfile is ahead of BridgeTempAdjust then don't run.
-        scripts_list = Application.getInstance().getGlobalContainerStack().getMetaDataEntry("post_processing_scripts")
-        for script_str in scripts_list.split("\n"):
-            if "BridgeTemperatureAdjustment" in script_str:
-                break
-            if "AddCoolingProfile" in script_str:
-                Message(title = "Bridge Temp Adjust:", text = "The post processor exited because it must run ahead of Advanced Cooling Fan Control.").show()
-                return data
-
         # If bridge settings are disabled then exit.
         if not bool(Application.getInstance().getGlobalContainerStack().getProperty("bridge_settings_enabled", "value")):
             data[0] += ";  Wait for Bridge Temperature Change - did not run - Bridge settings are not enabled\n"
@@ -260,7 +242,7 @@ class BridgeTemperatureAdjustment(Script):
                         previous_e = current_e
 
                 # Reverse the park and wait code to resume the print-------------------------
-                if line.startswith(feature_type) and lines[index+1].startswith(";BRIDGE"):
+                if line.startswith(feature_type) and (lines[index+1].startswith(";BRIDGE") or lines[index+2].startswith(";BRIDGE")):
                     if wait_cmd == "M104 S":
                         lines.insert(index+2,wait_cmd + str(bridge_temp))
                         next_start = index+3
