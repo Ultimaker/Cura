@@ -3071,7 +3071,7 @@ msgctxt "small_feature_speed_factor description"
 msgid "Small features will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
 msgstr "Drobné části budou vytištěny v procentech jejich normální rychlosti tisku. Pomalejší tisk může pomoci s přilnavostí a přesností."
 
-
+msgctxt "small_skin_width description"
 msgid "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions. Off for the topmost (air-exposed) layer by default (see 'Small Top/Bottom On Surface')."
 msgstr ""
 
