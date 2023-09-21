@@ -20,7 +20,6 @@ class Directory(Linter):
     def checkForDotInDirName(self) -> Iterator[Diagnostic]:
         """ Check if there is a dot in the directory name, MacOS has trouble signing and notarizing otherwise """
         if any("." in p for p in self._file.parent.parts):
-            print("bghkgh")
             yield Diagnostic(
                 file = self._file,
                 diagnostic_name = "diagnostic-resources-macos-app-directory-name",
