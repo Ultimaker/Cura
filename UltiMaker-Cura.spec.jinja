@@ -207,7 +207,7 @@ class UMBUNDLE(BUNDLE):
                         pass
             else:
                 if typ == 'DATA':
-                    if any([p.startswith(".") for p in inm.parent.parts if inm.parent.is_dir()]) or inm.suffix == '.so':
+                    if any(["." in p for p in inm.parent.parts if inm.parent.is_dir()]) or inm.suffix == '.so':
                         # Skip info dist egg and some not needed folders in tcl and tk, since they all contain dots in their files
                         logger.warning(f"Skipping DATA file {inm}")
                         continue
