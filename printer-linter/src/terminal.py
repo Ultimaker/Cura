@@ -71,12 +71,16 @@ def main() -> None:
 
 def diagnoseIssuesWithFile(file: Path, settings: dict) -> List[Diagnostic]:
     """ For file, runs all diagnostic checks in settings and returns a list of diagnostics """
-    linter = factory.getLinter(file, settings)
+    linters = factory.getLinter(file, settings)
 
-    if not linter:
+    if not linters:
         return []
 
-    return list(filter(lambda d: d is not None, linter.check()))
+    linter_results = []
+    for linter in linters:
+        linter_results.extend(list(filter(lambda d: d is not None, linter.check())))
+
+    return linter_results
 
 
 def applyFixesToFile(file, settings, full_body_check) -> None:
