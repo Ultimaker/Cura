@@ -144,7 +144,7 @@ jobs:
           p12-password: ${{ secrets.MACOS_CERT_PASSPHRASE }}
 
       - name: Remove private Artifactory
-        run: conan remote remove cura-conan-private
+        run: conan remote remove cura-conan-private || true
 
       - name: Get Conan configuration
         run: |
