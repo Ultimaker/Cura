@@ -143,6 +143,9 @@ jobs:
           p12-file-base64: ${{ secrets.MACOS_CERT_INSTALLER_P12 }}
           p12-password: ${{ secrets.MACOS_CERT_PASSPHRASE }}
 
+      - name: Remove private Artifactory
+        run: conan remote remove cura-conan-private
+
       - name: Get Conan configuration
         run: |
           conan config install https://github.com/Ultimaker/conan-config.git
