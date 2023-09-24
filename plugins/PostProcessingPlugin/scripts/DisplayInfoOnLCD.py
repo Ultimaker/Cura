@@ -37,7 +37,7 @@ import datetime
 from UM.Message import Message
 
 class DisplayInfoOnLCD(Script):
-        
+
     def getSettingDataString(self):
         return """{
             "name": "Display Info on LCD",
@@ -200,7 +200,7 @@ class DisplayInfoOnLCD(Script):
                 message_str = self.message_to_user(self.getSettingValueByKey("speed_factor") / 100)
                 Message(title = "Display Info on LCD - Estimated Finish Time", text = message_str[0] + "\n\n" + message_str[1] + "\n" + message_str[2] + "\n" + message_str[3]).show()
             return data
-    
+
     # Display Progress (from 'Show Progress' and 'Display Progress on LCD')---------------------------------------
         elif display_option == "display_progress":
         # get settings
@@ -218,16 +218,21 @@ class DisplayInfoOnLCD(Script):
             for line in lines:
                 if ";TIME:" in line:
                     tindex = lines.index(line)
-                    print_time = int(line.split(":")[1])
-                    print_time = print_time*speed_factor
+                    cura_time = int(line.split(":")[1])
+                    print_time = cura_time*speed_factor
                     hhh = print_time/3600
                     hr = round(hhh // 1)
                     mmm = round((hhh % 1) * 60)
+                    orig_hhh = cura_time/3600
+                    orig_hr = round(orig_hhh // 1)
+                    orig_mmm = round((orig_hhh % 1) * 60)
                     if add_m118_line: lines.insert(tindex+1,"M118 Adjusted Print Time " + str(hr) + "hr " + str(mmm) + "min")
                     lines.insert(tindex+1,"M117 ET " + str(hr) + "hr " + str(mmm) + "min")
+                    # This line goes in to convert seconds to hours and minutes
+                    lines.insert(tindex+1, f";Cura Time:  {orig_hr}hr {orig_mmm}min")
                     data[0] = "\n".join(lines)
-                    data[len(data)-1] += "M117 Orig Est " + str(hr) + "hr " + str(mmm) + "min\n"
-                    if add_m118_line: data[len(data)-1] += "M118 Orig Est w/FudgeFactor at " + str(speed_factor * 100) + "% was " + str(hr) + "hr " + str(mmm) + "min\n"
+                    data[len(data)-1] += "M117 Orig Cura Est " + str(orig_hr) + "hr " + str(orig_mmm) + "min\n"
+                    if add_m118_line: data[len(data)-1] += "M118 Est w/FudgeFactor  " + str(speed_factor * 100) + "% was " + str(hr) + "hr " + str(mmm) + "min\n"
             if not display_total_layers or not display_remaining_time:
                 base_display_text = "layer "
             else:
@@ -347,7 +352,7 @@ class DisplayInfoOnLCD(Script):
                 message_str = self.message_to_user(speed_factor)
                 Message(title = "Display Info on LCD - Estimated Finish Time", text = message_str[0] + "\n\n" + message_str[1] + "\n" + message_str[2] + "\n" + message_str[3]).show()
         return data
-    
+
     def message_to_user(self, speed_factor: float):
         # Message the user of the projected finish time of the print (figuring a 10 minute delay from end-of-slice to start-of-print
         print_time = Application.getInstance().getPrintInformation().currentPrintTime.getDisplayString(DurationFormat.Format.ISO8601)
@@ -369,9 +374,9 @@ class DisplayInfoOnLCD(Script):
         adjusted_print_time = print_seconds * speed_factor
         #Break down the adjusted seconds back into hh:mm:ss
         adj_hr = int(adjusted_print_time/3600)
-        print_seconds = adjusted_print_time - (adj_hr * 3600)        
+        print_seconds = adjusted_print_time - (adj_hr * 3600)
         adj_min = int(print_seconds) / 60
-        adj_sec = int(print_seconds - (adj_min * 60))        
+        adj_sec = int(print_seconds - (adj_min * 60))
         #Get the print time to add to the start time
         time_change = datetime.timedelta(hours=adj_hr, minutes=adj_min, seconds=adj_sec)
         new_time = date_and_time + time_change
