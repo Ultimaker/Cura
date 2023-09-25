@@ -62,7 +62,7 @@ Item
         var affected_by_list = ""
         for (var i in affected_by)
         {
-            if(affected_by[i].label != "")
+            if((affected_by[i].label != "") && (! affected_by_list.includes("<li>%1</li>\n".arg(affected_by[i].label))))
             {
                 affected_by_list += "<li>%1</li>\n".arg(affected_by[i].label)
             }
@@ -71,7 +71,7 @@ Item
         var affects_list = ""
         for (var i in affects)
         {
-            if(affects[i].label != "")
+            if((affects[i].label != "") && (! affects_list.includes("<li>%1</li>\n".arg(affects[i].label))))
             {
                 affects_list += "<li>%1</li>\n".arg(affects[i].label)
             }
