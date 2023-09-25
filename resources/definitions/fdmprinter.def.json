@@ -1162,7 +1162,8 @@
                     "default_value": false,
                     "settable_per_mesh": true
                 },
-                "group_outer_walls": {
+                "group_outer_walls":
+                {
                     "label": "Group Outer Walls",
                     "description": "When enabled outer walls of the same island are printed in-sequence. When enabled the this limits the amount of flow changes, while disabling reduces the amount of travels",
                     "type": "bool",
