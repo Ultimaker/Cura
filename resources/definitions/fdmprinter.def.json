@@ -2453,7 +2453,7 @@
                 "material_print_temperature_layer_0":
                 {
                     "label": "Printing Temperature Initial Layer",
-                    "description": "The temperature used for printing the first layer. Set at 0 to disable special handling of the initial layer.",
+                    "description": "The temperature used for printing the first layer.",
                     "unit": "\u00b0C",
                     "type": "float",
                     "default_value": 215,
