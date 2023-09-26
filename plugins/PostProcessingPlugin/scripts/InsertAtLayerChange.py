@@ -98,50 +98,53 @@ class InsertAtLayerChange(Script):
                 mycode = re.sub(",", "\n",mycode)
             gcode_to_add = mycode + "\n"
     #Get the insertion frequency
-        if when_to_insert == "every_layer":
-            freq = 1
-        if when_to_insert == "every_2nd":
-            freq = 2
-        if when_to_insert == "every_3rd":
-            freq = 3
-        if when_to_insert == "every_5th":
-            freq = 5
-        if when_to_insert == "every_10th":
-            freq = 10
-        if when_to_insert == "every_25th":
-            freq = 25
-        if when_to_insert == "every_50th":
-            freq = 50
-        if when_to_insert == "every_100th":
-            freq = 100
-        if when_to_insert == "once_only":
-            the_search_layer = int(self.getSettingValueByKey("single_end_layer"))-1
+        match when_to_insert:
+            case "every_layer":
+                freq = 1
+            case "every_2nd":
+                freq = 2
+            case "every_3rd":
+                freq = 3
+            case "every_5th":
+                freq = 5
+            case "every_10th":
+                freq = 10
+            case "every_25th":
+                freq = 25
+            case "every_50th":
+                freq = 50
+            case "every_100th":
+                freq = 100
+            case "once_only":
+                the_search_layer = int(self.getSettingValueByKey("single_end_layer"))-1
+            case _:
+                the_search_layer = int(self.getSettingValueByKey("single_end_layer"))-1
+                raise Exception("Error.  Insert changed to Once Only.")
 
 #Single insertion
-        index = 0
+        index = -1
         if when_to_insert == "once_only":
-            for layer in data:
+            for index, layer in enumerate(data):
+                index += 1
                 lines = layer.split("\n")
-                for line in lines:
+                for l_index, line in enumerate(lines):
                     if ";LAYER:" in line:
                         layer_number = int(line.split(":")[1])
                         if layer_number == int(the_search_layer):
-                            index = data.index(layer)
                             lines.insert(1,gcode_to_add[0:-1])
                             data[index] = "\n".join(lines)
                             break
 #Multiple insertions
         if when_to_insert != "once_only":
-            for layer in data:
+            for index, layer in enumerate(data):
                 lines = layer.split("\n")
-                for line in lines:
+                for l_index, line in enumerate(lines):
                     if ";LAYER:" in line:
                         layer_number = int(line.split(":")[1])
                         if layer_number >= int(the_start_layer)-1 and layer_number <= int(the_end_layer)-1:
-                            index = data.index(layer)
                             real_num = layer_number - int(the_start_layer)
                             if int(real_num / freq) - (real_num / freq) == 0:
                                 lines.insert(1,gcode_to_add[0:-1])
                                 data[index] = "\n".join(lines)
-                                break        
+                                break
         return data

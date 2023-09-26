@@ -127,38 +127,49 @@ class TimeLapse(Script):
         is_retracted = False
         gcode_to_append = ""
         if park_print_head:
-            gcode_to_append += self.putValue(G=1, F=trav_speed,
-                                             X=x_park, Y=y_park) + " ;Park print head\n"
+            gcode_to_append += self.putValue(G=1, F=trav_speed, X=x_park, Y=y_park) + " ;Park print head\n"
         gcode_to_append += self.putValue(M=400) + "         ;Wait for moves to finish\n"
         gcode_to_append += trigger_command + "         ;Snap Photo\n"
         gcode_to_append += self.putValue(G=4, P=pause_length) + "      ;Wait for camera\n"
-        if when_to_insert == "every_layer":
-            step_freq = 1
-        if when_to_insert == "every_2nd":
-            step_freq = 2
-        if when_to_insert == "every_3rd":
-            step_freq = 3
-        if when_to_insert == "every_5th":
-            step_freq = 5
-        if when_to_insert == "every_10th":
-            step_freq = 10
-        if when_to_insert == "every_25th":
-            step_freq = 25
-        if when_to_insert == "every_50th":
-            step_freq = 50
-        if when_to_insert == "every_100th":
-            step_freq = 100
+
         # Use the step_freq to index through the layers----------------------------------------
         for num in range(2,len(data)-1,step_freq):
             layer = data[num]
-            try:                
+            try:
+        gcode_to_append += self.putValue(M=400) + "          ;Wait for moves to finish\n"
+        gcode_to_append += trigger_command + "          ;Snap Photo\n"
+        gcode_to_append += self.putValue(G=4, P=pause_length) + "      ;Wait for camera\n"
+        match when_to_insert:
+            case "every_layer":
+                step_freq = 1
+            case "every_2nd":
+                step_freq = 2
+            case "every_3rd":
+                step_freq = 3
+            case "every_5th":
+                step_freq = 5
+            case "every_10th":
+                step_freq = 10
+            case "every_25th":
+                step_freq = 25
+            case "every_50th":
+                step_freq = 50
+            case "every_100th":
+                step_freq = 100
+            case _:
+                step_freq = 1
+
+        # Use the step_freq to index through the layers----------------------------------------
+        for num in range(2,len(data)-1,step_freq):
+            layer = data[num]
+            try:
                 # Track X,Y,Z location.--------------------------------------------------------
                 for line in layer.split("\n"):
                     if self.getValue(line, "G") in {0, 1}:
                         last_x = self.getValue(line, "X", last_x)
                         last_y = self.getValue(line, "Y", last_y)
                         last_z = self.getValue(line, "Z", last_z)
-                #Track the E location so that if there is already a retraction we don't double dip.        
+                #Track the E location so that if there is already a retraction we don't double dip.
                         if rel_cmd == 82:
                             if " E" in line:
                                 last_e = line.split("E")[1]
@@ -180,15 +191,15 @@ class TimeLapse(Script):
                 for line in lines:
                     if ";LAYER:" in line:
                         if retract and not is_retracted: # Retract unless already retracted
-                            layer += self.putValue(";  TimeLapse Begin\n")
+                            layer += self.putValue(";TYPE:CUSTOM  TimeLapse Begin\n")
                             layer += self.putValue(M=83) + "          ;Extrude Relative\n"
                             layer += self.putValue(G=1, E=-retract_dist, F=retract_speed) + " ;Retract filament\n"
                         else:
-                            layer += self.putValue(";  TimeLapse Begin\n")
+                            layer += self.putValue(";TYPE:CUSTOM  TimeLapse Begin\n")
                         if zhop != 0:
                             layer += self.putValue(G=1, Z=last_z+zhop, F=speed_z) + " ;Z-Hop\n"
                         layer += gcode_to_append
-                        layer += self.putValue(G=0, F=trav_speed, X=last_x, Y=last_y) + " ;Restore position \n"
+                        layer += self.putValue(G=0, F=trav_speed, X=last_x, Y=last_y) + " ;Restore XY position \n"
                         if zhop != 0:
                             layer += self.putValue(G=0, F=speed_z, Z=last_z) + "  ;Restore Z position \n"
                         if retract and not is_retracted:
@@ -198,5 +209,5 @@ class TimeLapse(Script):
                         data[num] = layer
                         break
             except:
-                all
+                pass
         return data
