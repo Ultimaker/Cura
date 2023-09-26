@@ -8129,7 +8129,7 @@
                 "group_outer_walls":
                 {
                     "label": "Group Outer Walls",
-                    "description": "When enabled outer walls of different islands are printed in-sequence. When enabled the this limits the amount of flow changes, while disabling reduces the amount of travels",
+                    "description": "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped.",
                     "type": "bool",
                     "default_value": true,
                     "settable_per_mesh": true
