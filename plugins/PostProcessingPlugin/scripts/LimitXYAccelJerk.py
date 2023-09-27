@@ -36,9 +36,10 @@ class LimitXYAccelJerk(Script):
             self._instance.setProperty("jerk_cmd", "value", "reprap_flavor")
         else:
             self._instance.setProperty("jerk_cmd", "value", "marlin_flavor")
+        firmware_flavor = str(mycura.getProperty("machine_gcode_flavor", "value"))
 
         # Warn the user if the printer is an Ultimaker-------------------------
-        if "Ultimaker" in machine_name or "Griffon" in str(mycura.getProperty("machine_gcode_flavor", "value")):
+        if "Ultimaker" in machine_name or "UltiGCode" in firmware_flavor or "Griffin" in firmware_flavor:
             Message(text = "<NOTICE> [Limit the X-Y Accel/Jerk] DID NOT RUN because Ultimaker printers don't have sliding beds.").show()
 
         # Warn the user if the printer is multi-extruder------------------
@@ -278,7 +279,7 @@ class LimitXYAccelJerk(Script):
                     lines.insert(len(lines)-2,m205_jerk_old)
                     data[end_index-1] = "\n".join(lines)
                 except:
-                    all
+                    pass
             else:
                 data[len(data)-1] = m201_limit_old + "\n" + m205_jerk_old + "\n" + data[len(data)-1]
             return data
