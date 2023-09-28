@@ -8,7 +8,7 @@
         "author": "Stereotech",
         "manufacturer": "Stereotech",
         "file_formats": "text/x-gcode",
-        "platform": "Modul_3D_OBJ.obj",
+        "platform": "stereotech_3d_modul_v5.obj",
         "first_start_actions": [],
         "has_materials": true,
         "machine_extruder_trains": { "0": "stereotech_v5_extruder_main" },
