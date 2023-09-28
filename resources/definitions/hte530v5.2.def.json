@@ -1,0 +1,157 @@
+{
+  "version": 2,
+  "name": "Stereotech Hybrid 530 V5.2",
+  "inherits": "steprinter530_v5.2",
+  "metadata": {
+    "author": "Stereotech",
+    "manufacturer": "Stereotech",
+    "visible": true,
+    "file_formats": "text/x-gcode",
+    "platform": "Modul_3D_OBJ.obj",
+    "platform_texture": "StereotechSte320backplate.png",
+    "has_materials": true,
+    "machine_extruder_trains": {
+      "0": "stereotech_v5_extruder_main",
+      "1": "stereotech_v5_extruder_second"
+    },
+    "platform_offset": [
+      0,
+      0,
+      0
+    ],
+    "first_start_actions": [],
+    "supported_actions": []
+  },
+  "overrides": {
+    "gantry_height": {
+      "value": "60"
+    },
+    "machine_acceleration": {
+      "default_value": 1000
+    },
+    "machine_center_is_zero": {
+      "default_value": false
+    },
+    "machine_depth": {
+      "default_value": 300.3
+    },
+    "machine_disallowed_areas": {
+      "default_value": [
+        [
+          [
+            -157.5,
+            150
+          ],
+          [
+            -157.5,
+            -150
+          ],
+          [
+            -152.5,
+            -150
+          ],
+          [
+            -152.5,
+            150
+          ]
+        ],
+        [
+          [
+            -157.5,
+            -150
+          ],
+          [
+            -122.5,
+            -150
+          ],
+          [
+            -122.5,
+            -147
+          ],
+          [
+            -157.5,
+            -147
+          ]
+        ],
+        [
+          [
+            50,
+            -150
+          ],
+          [
+            157.5,
+            -150
+          ],
+          [
+            157.5,
+            -147
+          ],
+          [
+            50,
+            -147
+          ]
+        ]
+      ],
+      "value": "[[[-157.5, 150],[ -157.5, -150],[ -152.5, -150],[-152.5, 150]],[[-157.5,-150],[  -122.5,  -150],[  -122.5,  -147],[  -157.5,  -147]],[  [    50,    -150  ],  [    157.5,    -150  ],  [    157.5,    -147  ],  [    50,    -147  ]]] if resolveOrValue('machine_shape') == 'rectangular' else []"
+    },
+    "machine_end_gcode": {
+      "default_value": "{prefix_end_gcode}\nEND"
+    },
+    "machine_gcode_flavor": {
+      "default_value": "RepRap (Marlin/Sprinter)"
+    },
+    "machine_head_with_fans_polygon": {
+      "default_value": [
+        [
+          -60,
+          -61
+        ],
+        [
+          -60,
+          15
+        ],
+        [
+          78,
+          15
+        ],
+        [
+          78,
+          -61
+        ]
+      ]
+    },
+    "machine_heated_bed": {
+      "default_value": true
+    },
+    "machine_height": {
+      "default_value": 300
+    },
+    "machine_max_feedrate_x": {
+        "default_value": 150
+    },
+    "machine_max_feedrate_y": {
+        "default_value": 150
+    },
+    "machine_max_feedrate_z": {
+        "default_value": 25
+    },
+    "machine_name": {
+      "default_value": "Stereotech Hybrid 530 V5.2"
+    },
+    "machine_start_gcode": {
+      "default_value": "START\nT0\nG1 F200 E15 ;extrude 15 mm of feed stock\nG1 F200 E13.5 ;make retraction\nG92 E0 ;zero the extruded length again\n{coordinate_system};Move to the first coordinate system"
+    },
+    "machine_use_extruder_offset_to_offset_coords": {
+      "default_value": true
+    },
+    "machine_width": {
+      "default_value": 315
+    },
+    "material_bed_temperature": {
+      "minimum_value": "0"
+    },
+    "machine_extruder_count": {
+      "default_value": 2
+    }
+  }
+}
