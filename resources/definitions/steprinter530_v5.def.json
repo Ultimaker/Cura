@@ -1,80 +1,41 @@
 {
-  "version": 2,
-  "name": "STE Printer 530 V5",
-  "inherits": "steprinter_v5",
-  "metadata": {
-    "author": "Stereotech",
-    "manufacturer": "Stereotech LLC.",
-    "visible": false
-  },
-  "overrides": {
-    "machine_width": {
-      "default_value": 315
+    "version": 2,
+    "name": "STE Printer 530 V5",
+    "inherits": "steprinter_v5",
+    "metadata":
+    {
+        "visible": false,
+        "author": "Stereotech",
+        "manufacturer": "Stereotech LLC."
     },
-    "machine_height": {
-      "default_value": 300
-    },
-    "machine_depth": {
-      "default_value": 300.3
-    },
-    "machine_disallowed_areas": {
-      "default_value": [
-        [
-          [
-            -157.5,
-            150
-          ],
-          [
-            -157.5,
-            -150
-          ],
-          [
-            -152.5,
-            -150
-          ],
-          [
-            -152.5,
-            150
-          ]
-        ],
-        [
-          [
-            -157.5,
-            -150
-          ],
-          [
-            -122.5,
-            -150
-          ],
-          [
-            -122.5,
-            -147
-          ],
-          [
-            -157.5,
-            -147
-          ]
-        ],
-        [
-          [
-            50,
-            -150
-          ],
-          [
-            157.5,
-            -150
-          ],
-          [
-            157.5,
-            -147
-          ],
-          [
-            50,
-            -147
-          ]
-        ]
-      ],
-      "value": "[[[-157.5, 150],[ -157.5, -150],[ -152.5, -150],[-152.5, 150]],[[-157.5,-150],[  -122.5,  -150],[  -122.5,  -147],[  -157.5,  -147]],[  [    50,    -150  ],  [    157.5,    -150  ],  [    157.5,    -147  ],  [    50,    -147  ]]] if resolveOrValue('machine_shape') == 'rectangular' else []"
+    "overrides":
+    {
+        "machine_depth": { "default_value": 300.3 },
+        "machine_disallowed_areas":
+        {
+            "default_value": [
+                [
+                    [-157.5, 150],
+                    [-157.5, -150],
+                    [-152.5, -150],
+                    [-152.5, 150]
+                ],
+                [
+                    [-157.5, -150],
+                    [-122.5, -150],
+                    [-122.5, -147],
+                    [-157.5, -147]
+                ],
+                [
+                    [50, -150],
+                    [157.5, -150],
+                    [157.5, -147],
+                    [50, -147]
+                ]
+            ],
+            "value": "[[[-157.5, 150],[-157.5, -150],[-152.5, -150],[-152.5, 150]],[[-157.5, -150],[-122.5, -150],[-122.5, -147],[-157.5, -147]],[  [50, -150],  [157.5, -150],  [157.5, -147],  [50, -147]]] if resolveOrValue('machine_shape') == 'rectangular' else []"
+        },
+        "machine_height": { "default_value": 300 },
+        "machine_width": { "default_value": 315 }
     }
-  }
 }

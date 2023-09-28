@@ -1,46 +1,29 @@
 {
-    "id": "stereotech_v5_extruder_main",
     "version": 2,
     "name": "Main HFE Extruder",
     "inherits": "fdmextruder",
-    "metadata": {
+    "id": "stereotech_v5_extruder_main",
+    "metadata":
+    {
         "machine": "hfe530v5",
         "position": "0"
     },
-    "overrides": {
-        "extruder_nr": {
+    "overrides":
+    {
+        "extruder_nr":
+        {
             "default_value": 0,
             "maximum_value": "1"
         },
-        "machine_nozzle_offset_x": {
-            "default_value": 0.0
-        },
-        "machine_nozzle_offset_y": {
-            "default_value": 0.0
-        },
-        "machine_nozzle_size": {
-            "default_value": 0.4
-        },
-        "material_diameter": {
-            "default_value": 1.75
-        },
-        "machine_extruder_start_pos_abs": {
-            "default_value": true
-        },
-        "machine_extruder_start_pos_x": {
-            "value": 0
-        },
-        "machine_extruder_start_pos_y": {
-            "value": 0
-        },
-        "machine_extruder_end_pos_abs": {
-            "default_value": false
-        },
-        "machine_extruder_end_pos_x": {
-            "value": 0
-        },
-        "machine_extruder_end_pos_y": {
-            "value": 0
-        }
+        "machine_extruder_end_pos_abs": { "default_value": false },
+        "machine_extruder_end_pos_x": { "value": 0 },
+        "machine_extruder_end_pos_y": { "value": 0 },
+        "machine_extruder_start_pos_abs": { "default_value": true },
+        "machine_extruder_start_pos_x": { "value": 0 },
+        "machine_extruder_start_pos_y": { "value": 0 },
+        "machine_nozzle_offset_x": { "default_value": 0.0 },
+        "machine_nozzle_offset_y": { "default_value": 0.0 },
+        "machine_nozzle_size": { "default_value": 0.4 },
+        "material_diameter": { "default_value": 1.75 }
     }
 }
