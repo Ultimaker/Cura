@@ -43,6 +43,7 @@ RecommendedSettingSection
 
             settingControl: Cura.SingleSettingComboBox
             {
+                id:support
                 width: parent.width
                 settingName: "support_structure"
             }
@@ -60,6 +61,7 @@ RecommendedSettingSection
             settingControl: Cura.SingleSettingExtruderSelectorBar
             {
                 extruderSettingName: "support_extruder_nr"
+                onSelectedIndexChanged: support.forceUpdateSettings()
             }
         },
         RecommendedSettingItem

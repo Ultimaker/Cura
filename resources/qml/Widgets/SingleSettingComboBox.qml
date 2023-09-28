@@ -87,6 +87,11 @@ Cura.ComboBox {
         }
 
     }
+    function forceUpdateSettings()
+    {
+        comboboxModel.updateModel();
+        propertyProvider.setPropertyValue("value", comboboxModel.get(currentIndex).code , skip_resolve =true)
+    }
 
     function updateSetting(value)
     {
