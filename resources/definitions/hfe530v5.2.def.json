@@ -26,10 +26,7 @@
         "machine_acceleration": { "default_value": 1000 },
         "machine_center_is_zero": { "default_value": false },
         "machine_depth": { "default_value": 300.3 },
-        "machine_disallowed_areas":
-        {
-            "value": "[[[-157.5, 150],[-157.5, -150],[-152.5, -150],[-152.5, 150]],[[-157.5, -150],[-122.5, -150],[-122.5, -147],[-157.5, -147]],[  [50, -150],  [157.5, -150],  [157.5, -147],  [50, -147]]] if resolveOrValue('machine_shape') == 'rectangular' else []"
-        },
+        "machine_disallowed_areas": { "value": "[[[-157.5, 150],[-157.5, -150],[-152.5, -150],[-152.5, 150]],[[-157.5, -150],[-122.5, -150],[-122.5, -147],[-157.5, -147]],[  [50, -150],  [157.5, -150],  [157.5, -147],  [50, -147]]] if resolveOrValue('machine_shape') == 'rectangular' else []" },
         "machine_end_gcode": { "default_value": "{prefix_end_gcode}\nEND" },
         "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
         "machine_head_with_fans_polygon":
