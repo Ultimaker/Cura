@@ -8,10 +8,16 @@
         "author": "Stereotech",
         "manufacturer": "Stereotech",
         "file_formats": "text/x-gcode",
-        "platform": "Modul_3D.stl",
+        "platform": "Modul_3D_OBJ.obj",
         "first_start_actions": [],
         "has_materials": true,
         "machine_extruder_trains": { "0": "stereotech_v5_extruder_main" },
+        "platform_offset": [
+            0,
+            0,
+            0
+        ],
+        "platform_texture": "StereotechSte320backplate.png",
         "supported_actions": []
     },
     "overrides":
@@ -22,26 +28,6 @@
         "machine_depth": { "default_value": 300.3 },
         "machine_disallowed_areas":
         {
-            "default_value": [
-                [
-                    [-157.5, 150],
-                    [-157.5, -150],
-                    [-152.5, -150],
-                    [-152.5, 150]
-                ],
-                [
-                    [-157.5, -150],
-                    [-122.5, -150],
-                    [-122.5, -147],
-                    [-157.5, -147]
-                ],
-                [
-                    [50, -150],
-                    [157.5, -150],
-                    [157.5, -147],
-                    [50, -147]
-                ]
-            ],
             "value": "[[[-157.5, 150],[-157.5, -150],[-152.5, -150],[-152.5, 150]],[[-157.5, -150],[-122.5, -150],[-122.5, -147],[-157.5, -147]],[  [50, -150],  [157.5, -150],  [157.5, -147],  [50, -147]]] if resolveOrValue('machine_shape') == 'rectangular' else []"
         },
         "machine_end_gcode": { "default_value": "{prefix_end_gcode}\nEND" },

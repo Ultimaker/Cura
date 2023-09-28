@@ -50,8 +50,7 @@
         "material_standby_temperature": { "minimum_value": "0" },
         "relative_extrusion":
         {
-            "enabled": false,
-            "value": false
+            "enabled": false
         },
         "retraction_amount": { "default_value": 3 },
         "switch_extruder_retraction_amount": { "value": "4" }

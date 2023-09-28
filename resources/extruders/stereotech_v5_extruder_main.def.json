@@ -1,11 +1,10 @@
 {
     "version": 2,
-    "name": "Main HFE Extruder",
+    "name": "Main Extruder",
     "inherits": "fdmextruder",
-    "id": "stereotech_v5_extruder_main",
     "metadata":
     {
-        "machine": "hfe530v5",
+        "machine": "hte530v5",
         "position": "0"
     },
     "overrides":

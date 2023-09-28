@@ -2,7 +2,6 @@
     "version": 2,
     "name": "Extruder 2",
     "inherits": "fdmextruder",
-    "id": "stereotech_v5_hte_extruder_second",
     "metadata":
     {
         "machine": "hte530v5",
