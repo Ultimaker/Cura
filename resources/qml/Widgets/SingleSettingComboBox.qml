@@ -89,8 +89,9 @@ Cura.ComboBox {
     }
     function forceUpdateSettings()
     {
+        updateAllExtruders = false
         comboboxModel.updateModel();
-        propertyProvider.setPropertyValue("value", comboboxModel.get(currentIndex).code , skip_resolve =true)
+        propertyProvider.setPropertyValueForce("value", comboboxModel.get(currentIndex).code)
     }
 
     function updateSetting(value)
@@ -101,7 +102,7 @@ Cura.ComboBox {
         }
         else
         {
-            propertyProvider.setPropertyValue("value", value)
+            propertyProvider.setPropertyValueForce("value", value)
         }
     }
 }

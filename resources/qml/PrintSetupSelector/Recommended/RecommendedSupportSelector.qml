@@ -23,6 +23,7 @@ RecommendedSettingSection
     function onEnableSectionChanged(state)
     {
         supportEnabled.setPropertyValue("value", state)
+        support.updateAllExtruders = true
     }
 
     property UM.SettingPropertyProvider supportEnabled: UM.SettingPropertyProvider
