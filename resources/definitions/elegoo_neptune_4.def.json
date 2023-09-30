@@ -24,13 +24,12 @@
         "machine_head_with_fans_polygon":
         {
             "value": [
-                [-55, 30],
-                [55, 30],
-                [55, -35],
-                [-55, -35]
+                [-40, 50],
+                [-40, -30],
+                [40, 50],
+                [40, -30]
             ]
         },
-        "gantry_height": { "value": 6 },
         
         "retraction_amount": { "default_value": 0.5 },
         "retraction_speed": { "default_value": 45 },
