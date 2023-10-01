@@ -5,8 +5,7 @@
     "metadata":
     {
         "visible": true,
-        "author": "mastercaution",
-        "machine_extruder_trains": { "0": "elegoo_neptune4_extruder_0" }
+        "author": "mastercaution"
     },
     "overrides":
     {
