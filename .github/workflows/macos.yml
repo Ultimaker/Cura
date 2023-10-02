@@ -143,6 +143,9 @@ jobs:
           p12-file-base64: ${{ secrets.MACOS_CERT_INSTALLER_P12 }}
           p12-password: ${{ secrets.MACOS_CERT_PASSPHRASE }}
 
+      - name: Remove private Artifactory
+        run: conan remote remove cura-conan-private || true
+
       - name: Get Conan configuration
         run: |
           conan config install https://github.com/Ultimaker/conan-config.git
@@ -155,7 +158,7 @@ jobs:
         run: conan install $CURA_CONAN_VERSION ${{ inputs.conan_args }} --build=missing --update -if cura_inst -g VirtualPythonEnv -o cura:enterprise=$ENTERPRISE -o cura:staging=$STAGING --json "cura_inst/conan_install_info.json"
 
       - name: Upload the Package(s)
-        if: always()
+        if: ${{ inputs.operating_system != 'self-hosted' }}
         run: |
           conan upload "*" -r cura --all -c
 
