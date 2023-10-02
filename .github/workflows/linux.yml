@@ -257,6 +257,14 @@ jobs:
             dist/${{ steps.filename.outputs.INSTALLER_FILENAME }}.AppImage
           retention-days: 5
 
+      - name: Upload the asc
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ steps.filename.outputs.INSTALLER_FILENAME }}-asc
+          path: |
+            dist/${{ steps.filename.outputs.INSTALLER_FILENAME }}.AppImage.asc
+          retention-days: 5
+
       - name: Write the run info
         shell: python
         run: |
