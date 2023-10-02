@@ -38,7 +38,7 @@ def build_appimage(dist_path, version, appimage_filename):
     """
     generate_appimage_builder_config(dist_path, version, appimage_filename)
     create_appimage()
-    sign_appimage(dist_path, appimage_filename)
+    sign_appimage(appimage_filename)
 
 
 def generate_appimage_builder_config(dist_path, version, appimage_filename):
@@ -85,7 +85,7 @@ def create_appimage():
         raise RuntimeError(f"The AppImageTool command returned non-zero: {result}")
 
 
-def sign_appimage(dist_path, appimage_filename):
+def sign_appimage(appimage_filename):
     command = ["gpg", "--yes", "--armor", "--detach-sig", appimage_filename]
     result = subprocess.call(command)
     if result != 0:
