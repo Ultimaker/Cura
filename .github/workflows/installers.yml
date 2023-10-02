@@ -168,14 +168,22 @@ jobs:
         with:
           name: ${{ steps.filename.outputs.LINUX }}-AppImage
           path: installers
+          
+      - name: Download linux installer jobs asc artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: ${{ steps.filename.outputs.LINUX }}-asc
+          path: installers
 
       - name: Rename Linux installer to nightlies
         run: |
           mv installers/${{ steps.filename.outputs.LINUX }}.AppImage installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-linux-X64.AppImage
+          mv installers/${{ steps.filename.outputs.LINUX }}.AppImage.asc installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-linux-X64.AppImage.asc
 
       - name: Update nightly release for Linux
         run: |
           gh release upload nightly installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-linux-X64.AppImage --clobber
+          gh release upload nightly installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-linux-X64.AppImage.asc  --clobber
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
