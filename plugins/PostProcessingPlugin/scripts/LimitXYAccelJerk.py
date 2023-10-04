@@ -8,6 +8,7 @@
 # This post is intended for printers with moving beds (bed slingers) so UltiMaker printers are excluded.
 # When setting an accel limit on multi-extruder printers ALL extruders are effected.
 # This post does not distinguish between Print Accel and Travel Accel.  The limit is the limit for all regardless.  Example: Skin Accel = 1000 and Outer Wall accel = 500.  If the limit is set to 300 then both Skin and Outer Wall will be Accel = 300.
+# 9/15/2023 added support for RepRap M566 command for Jerk in mm/min
 
 from ..Script import Script
 from cura.CuraApplication import CuraApplication
@@ -15,7 +16,7 @@ import re
 from UM.Message import Message
 
 class LimitXYAccelJerk(Script):
-        
+
     def initialize(self) -> None:
         super().initialize()
         # Get the Accel and Jerk and set the values in the setting boxes--
@@ -31,15 +32,20 @@ class LimitXYAccelJerk(Script):
         self._instance.setProperty("y_jerk", "value", jerk_print_old)
         ext_count = int(mycura.getProperty("machine_extruder_count", "value"))
         machine_name = str(mycura.getProperty("machine_name", "value"))
-                
+        if str(mycura.getProperty("machine_gcode_flavor", "value")) == "RepRap (RepRap)":
+            self._instance.setProperty("jerk_cmd", "value", "reprap_flavor")
+        else:
+            self._instance.setProperty("jerk_cmd", "value", "marlin_flavor")
+        firmware_flavor = str(mycura.getProperty("machine_gcode_flavor", "value"))
+
         # Warn the user if the printer is an Ultimaker-------------------------
-        if "Ultimaker" in machine_name:
+        if "Ultimaker" in machine_name or "UltiGCode" in firmware_flavor or "Griffin" in firmware_flavor:
             Message(text = "<NOTICE> [Limit the X-Y Accel/Jerk] DID NOT RUN because Ultimaker printers don't have sliding beds.").show()
-        
+
         # Warn the user if the printer is multi-extruder------------------
         if ext_count > 1:
             Message(text = "<NOTICE> 'Limit the X-Y Accel/Jerk': The post processor treats all extruders the same.  If you have multiple extruders they will all be subject to the same Accel and Jerk limits imposed.  If you have different Travel and Print Accel they will also be subject to the same limits.  If that is not acceptable then you should not use this Post Processor.").show()
- 
+
     def getSettingDataString(self):
             return """{
             "name": "Limit the X-Y Accel/Jerk (all extruders equal)",
@@ -85,6 +91,17 @@ class LimitXYAccelJerk(Script):
                     "type": "bool",
                     "enabled": true,
                     "default_value": false
+                },
+                "jerk_cmd":
+                {
+                    "label": "G-Code Jerk Command",
+                    "description": "Marlin uses M205.  RepRap might use M566.",
+                    "type": "enum",
+                    "options": {
+                        "marlin_flavor": "M205",
+                        "reprap_flavor": "M566"},
+                    "default_value": "marlin_flavor",
+                    "enabled":  "jerk_enable"
                 },
                 "x_jerk":
                 {
@@ -152,19 +169,19 @@ class LimitXYAccelJerk(Script):
         extruder = mycura.extruderList
         machine_name = str(mycura.getProperty("machine_name", "value"))
         print_sequence = str(mycura.getProperty("print_sequence", "value"))
-        
+
         # Exit if 'one_at_a_time' is enabled-------------------------
         if print_sequence == "one_at_a_time":
             Message(text = "<NOTICE> [Limit the X-Y Accel/Jerk]  DID NOT RUN.  This post processor is not compatible with 'One-at-a-Time' mode.").show()
             data[0] += ";  [LimitXYAccelJerk] DID NOT RUN because Cura is set to 'One-at-a-Time' mode.\n"
             return data
-                
+
         # Exit if the printer is an Ultimaker-------------------------
         if "Ultimaker" in machine_name:
             Message(text = "<NOTICE> [Limit the X-Y Accel/Jerk]  DID NOT RUN.  This post processor is for bed slinger printers only.").show()
             data[0] += ";  [LimitXYAccelJerk] DID NOT RUN because the printer doesn't have a sliding bed.\n"
             return data
-            
+
         type_of_change = str(self.getSettingValueByKey("type_of_change"))
         accel_print_enabled = bool(extruder[0].getProperty("acceleration_enabled", "value"))
         accel_travel_enabled = bool(extruder[0].getProperty("acceleration_travel_enabled", "value"))
@@ -174,7 +191,6 @@ class LimitXYAccelJerk(Script):
         jerk_travel_enabled = str(extruder[0].getProperty("jerk_travel_enabled", "value"))
         jerk_print_old = extruder[0].getProperty("jerk_print", "value")
         jerk_travel_old = extruder[0].getProperty("jerk_travel", "value")
-        
         if int(accel_print) >= int(accel_travel):
             accel_old = accel_print
         else:
@@ -188,23 +204,30 @@ class LimitXYAccelJerk(Script):
         #Set the new Accel values----------------------------------------------------------
         x_accel = str(self.getSettingValueByKey("x_accel_limit"))
         y_accel = str(self.getSettingValueByKey("y_accel_limit"))
-        x_jerk = int(self.getSettingValueByKey("x_jerk"))  
+        x_jerk = int(self.getSettingValueByKey("x_jerk"))
         y_jerk = int(self.getSettingValueByKey("y_jerk"))
-        
+        if str(self.getSettingValueByKey("jerk_cmd")) == "reprap_flavor":
+            jerk_cmd = "M566"
+            x_jerk *= 60
+            y_jerk *= 60
+            jerk_old *= 60
+        else:
+            jerk_cmd = "M205"
+
         # Put the strings together-------------------------------------------
-        m201_limit_new = "M201 X" + x_accel + " Y" + y_accel
-        m201_limit_old = "M201 X" + str(round(accel_old)) + " Y" + str(round(accel_old))
+        m201_limit_new = f"M201 X{x_accel} Y{y_accel}"
+        m201_limit_old = f"M201 X{round(accel_old)} Y{round(accel_old)}"
         if x_jerk == 0:
             m205_jerk_pattern = "Y(\d*)"
-            m205_jerk_new = "Y" + str(y_jerk)
+            m205_jerk_new = f"Y{y_jerk}"
         if y_jerk == 0:
             m205_jerk_pattern = "X(\d*)"
-            m205_jerk_new = "X" + str(x_jerk)
+            m205_jerk_new = f"X{x_jerk}"
         if x_jerk != 0 and y_jerk != 0:
-            m205_jerk_pattern = "M205 X(\d*) Y(\d*)"
-            m205_jerk_new = "M205 X" + str(x_jerk) + " Y" + str(y_jerk)
-        m205_jerk_old = "M205 X" + str(jerk_old) + " Y" + str(jerk_old)
-        type_of_change = self.getSettingValueByKey("type_of_change") 
+            m205_jerk_pattern = jerk_cmd + " X(\d*) Y(\d*)"
+            m205_jerk_new = jerk_cmd + f" X{x_jerk} Y{y_jerk}"
+        m205_jerk_old = jerk_cmd + f" X{jerk_old} Y{jerk_old}"
+        type_of_change = self.getSettingValueByKey("type_of_change")
         
         #Get the indexes of the start and end layers----------------------------------------
         if type_of_change == 'immediate_change':
@@ -226,7 +249,7 @@ class LimitXYAccelJerk(Script):
                         end_index = num
                         break
                 except:
-                    end_index = len(data)-2      
+                    end_index = len(data)-2
 
         #Add Accel limit and new Jerk at start layer-----------------------------------------------------
         if type_of_change == "immediate_change":
@@ -239,13 +262,13 @@ class LimitXYAccelJerk(Script):
                         lines.insert(index+2,m205_jerk_new)
                     data[start_index] = "\n".join(lines)
                     break
-            
-            #Alter any existing jerk lines.  Accel lines can be ignored-----------------------------------  
+
+            #Alter any existing jerk lines.  Accel lines can be ignored-----------------------------------
             for num in range(start_index,end_index,1):
                 layer = data[num]
                 lines = layer.split("\n")
                 for index, line in enumerate(lines):
-                    if line.startswith("M205"):
+                    if line.startswith("M205") or line.startswith("M566"):
                         lines[index] = re.sub(m205_jerk_pattern, m205_jerk_new, line)
                 data[num] = "\n".join(lines)
             if end_layer != -1:
@@ -259,8 +282,8 @@ class LimitXYAccelJerk(Script):
                     pass
             else:
                 data[len(data)-1] = m201_limit_old + "\n" + m205_jerk_old + "\n" + data[len(data)-1]
-            return data        
-        
+            return data
+
         elif type_of_change == "gradual_change":
             layer_spread = end_index - start_index
             if accel_old >= int(x_accel):
@@ -269,9 +292,9 @@ class LimitXYAccelJerk(Script):
                 x_accel_hyst = round((int(x_accel) - accel_old) / layer_spread)
             if accel_old >= int(y_accel):
                 y_accel_hyst = round((accel_old - int(y_accel)) / layer_spread)
-            else:                
+            else:
                 y_accel_hyst = round((int(y_accel) - accel_old) / layer_spread)
-            
+
             if accel_old >= int(x_accel):
                 x_accel_start = round(round((accel_old - x_accel_hyst)/25)*25)
             else:
@@ -298,7 +321,7 @@ class LimitXYAccelJerk(Script):
                     x_accel_start -= x_accel_hyst
                     if x_accel_start < int(x_accel): x_accel_start = int(x_accel)
                 else:
-                    x_accel_start += x_accel_hyst                
+                    x_accel_start += x_accel_hyst
                     if x_accel_start > int(x_accel): x_accel_start = int(x_accel)
                 if accel_old >= int(y_accel):
                     y_accel_start -= y_accel_hyst
@@ -312,14 +335,14 @@ class LimitXYAccelJerk(Script):
                         lines.insert(index+1, m201_limit_new)
                         continue
                 data[num] = "\n".join(lines)
-            
+
             #Alter any existing jerk lines.  Accel lines can be ignored---------------
             if self.getSettingValueByKey("jerk_enable"):
                 for num in range(start_index,len(data)-1,1):
                     layer = data[num]
                     lines = layer.split("\n")
                     for index, line in enumerate(lines):
-                        if line.startswith("M205"):
+                        if line.startswith("M205") or line.startswith("M566"):
                             lines[index] = re.sub(m205_jerk_pattern, m205_jerk_new, line)
                     data[num] = "\n".join(lines)
                 data[len(data)-1] = m201_limit_old + "\n" + m205_jerk_old + "\n" + data[len(data)-1]
