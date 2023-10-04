@@ -1,4 +1,4 @@
-// Copyright (c) 2022 UltiMaker
+// Copyright (c) 2023 UltiMaker
 // Cura is released under the terms of the LGPLv3 or higher.
 
 pragma Singleton
@@ -6,7 +6,7 @@ pragma Singleton
 import QtQuick 2.10
 import QtQuick.Controls 2.4
 import UM 1.1 as UM
-import Cura 1.0 as Cura
+import Cura 1.5 as Cura
 
 Item
 {
@@ -41,7 +41,7 @@ Item
     property alias deleteAll: deleteAllAction
     property alias reloadAll: reloadAllAction
     property alias arrangeAll: arrangeAllAction
-    property alias arrangeSelection: arrangeSelectionAction
+    property alias arrangeAllGrid: arrangeAllGridAction
     property alias resetAllTranslation: resetAllTranslationAction
     property alias resetAll: resetAllAction
 
@@ -60,6 +60,7 @@ Item
     property alias showProfileFolder: showProfileFolderAction
     property alias documentation: documentationAction
     property alias showTroubleshooting: showTroubleShootingAction
+    property alias openSponsershipPage: openSponsershipPageAction
     property alias reportBug: reportBugAction
     property alias whatsNew: whatsNewAction
     property alias about: aboutAction
@@ -71,6 +72,15 @@ Item
 
     property alias browsePackages: browsePackagesAction
 
+    property alias paste: pasteAction
+    property alias copy: copyAction
+    property alias cut: cutAction
+
+    readonly property bool copy_paste_enabled: {
+        const all_enabled_packages = CuraApplication.getPackageManager().allEnabledPackages;
+        return all_enabled_packages.includes("3MFReader") && all_enabled_packages.includes("3MFWriter");
+    }
+
     UM.I18nCatalog{id: catalog; name: "cura"}
 
 
@@ -79,6 +89,13 @@ Item
         id: showTroubleShootingAction
         onTriggered: Qt.openUrlExternally("https://ultimaker.com/en/troubleshooting?utm_source=cura&utm_medium=software&utm_campaign=dropdown-troubleshooting")
         text: catalog.i18nc("@action:inmenu", "Show Online Troubleshooting")
+    }
+
+    Action
+    {
+        id: openSponsershipPageAction
+        onTriggered: Qt.openUrlExternally("https://ultimaker.com/software/ultimaker-cura/sponsor/")
+        text: catalog.i18nc("@action:inmenu", "Sponsor Cura")
     }
 
     Action
@@ -311,6 +328,33 @@ Item
 
     Action
     {
+        id: copyAction
+        text: catalog.i18nc("@action:inmenu menubar:edit", "Copy to clipboard")
+        onTriggered: CuraActions.copy()
+        enabled: UM.Controller.toolsEnabled && UM.Selection.hasSelection && copy_paste_enabled
+        shortcut: StandardKey.Copy
+    }
+
+    Action
+    {
+        id: pasteAction
+        text: catalog.i18nc("@action:inmenu menubar:edit", "Paste from clipboard")
+        onTriggered: CuraActions.paste()
+        enabled: UM.Controller.toolsEnabled && copy_paste_enabled
+        shortcut: StandardKey.Paste
+    }
+
+    Action
+    {
+        id: cutAction
+        text: catalog.i18nc("@action:inmenu menubar:edit", "Cut")
+        onTriggered: CuraActions.cut()
+        enabled: UM.Controller.toolsEnabled && UM.Selection.hasSelection && copy_paste_enabled
+        shortcut: StandardKey.Cut
+    }
+
+    Action
+    {
         id: multiplySelectionAction
         text: catalog.i18nc("@action:inmenu menubar:edit", "Multiply Selected")
         enabled: UM.Controller.toolsEnabled && UM.Selection.hasSelection
@@ -418,9 +462,10 @@ Item
 
     Action
     {
-        id: arrangeSelectionAction
-        text: catalog.i18nc("@action:inmenu menubar:edit","Arrange Selection")
-        onTriggered: Printer.arrangeSelection()
+        id: arrangeAllGridAction
+        text: catalog.i18nc("@action:inmenu menubar:edit","Arrange All Models in a grid")
+        onTriggered: Printer.arrangeAllInGrid()
+        shortcut: "Shift+Ctrl+R"
     }
 
     Action

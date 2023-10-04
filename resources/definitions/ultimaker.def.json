@@ -43,8 +43,9 @@
         "cool_min_speed": { "value": "round(speed_wall_0 * 3 / 4) if cool_lift_head else round(speed_wall_0 / 5)" },
         "cool_min_temperature": { "value": "max([material_final_print_temperature, material_initial_print_temperature, material_print_temperature - 15])" },
         "gradual_support_infill_step_height": { "value": "4 * layer_height" },
-        "gradual_support_infill_steps": { "value": "2 if support_interface_enable else 0" },
+        "gradual_support_infill_steps": { "value": "2 if support_interface_enable and support_structure != 'tree' else 0" },
         "infill_material_flow": { "value": "(1.95-infill_sparse_density / 100 if infill_sparse_density > 95 else 1) * material_flow" },
+        "infill_overlap": { "value": "0 if infill_sparse_density > 80 else 10" },
         "inset_direction": { "value": "'outside_in'" },
         "jerk_infill": { "minimum_value_warning": 20 },
         "jerk_prime_tower": { "minimum_value_warning": 20 },
@@ -69,10 +70,16 @@
         "machine_max_feedrate_e": { "default_value": 45 },
         "material_bed_temperature":
         {
-            "maximum_value_warning": "125",
+            "maximum_value": "140",
+            "maximum_value_warning": "120",
             "minimum_value": "0"
         },
-        "material_bed_temperature_layer_0": { "maximum_value_warning": "125" },
+        "material_bed_temperature_layer_0":
+        {
+            "maximum_value": "140",
+            "maximum_value_warning": "120",
+            "minimum_value": "0"
+        },
         "material_print_temperature": { "minimum_value": "0" },
         "material_standby_temperature":
         {
@@ -104,8 +111,9 @@
         "skin_angles": { "value": "[] if infill_pattern not in ['cross', 'cross_3d'] else [20, 110]" },
         "skin_edge_support_thickness": { "value": "4 * layer_height if infill_sparse_density < 30 else 0" },
         "skin_material_flow": { "value": "0.95 * material_flow" },
-        "skin_material_flow_layer_0": { "value": "0.9 * material_flow_layer_0" },
+        "skin_material_flow_layer_0": { "value": "95" },
         "skin_monotonic": { "value": "roofing_layer_count == 0" },
+        "skin_overlap": { "value": "20" },
         "speed_equalize_flow_width_factor": { "value": "110.0" },
         "speed_layer_0": { "value": "min(30, layer_height / layer_height_0 * speed_wall_0)" },
         "speed_slowdown_layers": { "value": 1 },

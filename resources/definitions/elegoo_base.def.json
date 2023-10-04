@@ -9,28 +9,17 @@
         "file_formats": "text/x-gcode",
         "platform": "elegoo_platform.3mf",
         "exclude_materials": [
-            "generic_nylon_175",
             "generic_nylon",
-            "generic_hips_175",
             "generic_hips",
-            "generic_gffcpe",
-            "generic_bvoh_175",
-            "generic_ccfpe",
-            "generic_cffcpe",
-            "generic_cpe_plus",
-            "generic_cpe_175",
+            "generic_bvoh",
             "generic_cpe",
-            "generic_tpu",
-            "generic_pp",
             "generic_pc",
-            "generic_pc_175",
-            "generic_pvc",
             "generic_pva",
-            "generic_pva_175",
-            "generic_pvc_175",
-            "generic_pp"
+            "generic_pvc"
         ],
         "has_machine_quality": true,
+        "has_materials": true,
+        "has_variants": true,
         "machine_extruder_trains": { "0": "elegoo_extruder_0" },
         "platform_offset": [
             -2.2,
@@ -38,7 +27,9 @@
             -31
         ],
         "preferred_material": "generic_pla_175",
-        "preferred_quality_type": "fine"
+        "preferred_quality_type": "Elegoo_layer_020",
+        "preferred_variant_name": "0.40mm_Elegoo_Nozzle",
+        "variants_name": "Nozzle Size"
     },
     "overrides":
     {
@@ -78,7 +69,7 @@
         "material_print_temperature_layer_0": { "value": "210 if material_print_temperature < 210 else material_print_temperature" },
         "min_infill_area": { "value": "5" },
         "minimum_interface_area": { "default_value": 10 },
-        "minimum_support_area": { "default_value": 3 },
+        "minimum_support_area": { "value": "3 if support_structure == 'normal' else 0" },
         "optimize_wall_printing_order": { "default_value": true },
         "prime_tower_brim_enable": { "default_value": true },
         "prime_tower_min_volume": { "value": "(layer_height) * (prime_tower_size / 2)**2 * 3 * 0.5 " },
@@ -114,11 +105,7 @@
         "support_angle": { "value": "45 if speed_print > 99.9 else 50" },
         "support_bottom_offset": { "value": "-0.4" },
         "support_brim_enable": { "value": "support_structure == 'normal' or support_structure == 'tree'" },
-        "support_brim_width":
-        {
-            "default_value": 3,
-            "value": "6 if support_structure == 'tree' else line_width * initial_layer_line_width_factor * 0.02 "
-        },
+        "support_brim_width": { "value": "6 if support_structure == 'tree' else line_width * initial_layer_line_width_factor * 0.02 " },
         "support_infill_angles": { "default_value": "[65]" },
         "support_interface_density": { "default_value": 33.333 },
         "support_interface_pattern": { "default_value": "lines" },
@@ -134,6 +121,6 @@
         "z_seam_corner": { "default_value": "z_seam_corner_weighted" },
         "z_seam_position": { "default_value": "left" },
         "z_seam_type": { "default_value": "back" },
-        "zig_zaggify_infill": { "value": "infill_pattern == 'cross' or infill_pattern == 'cross_3d' or infill_sparse_density < 30 " }
+        "zig_zaggify_infill": { "value": "resolveOrValue('infill_pattern') == 'cross' or resolveOrValue('infill_pattern') == 'cross_3d' or resolveOrValue('infill_sparse_density') < 30 " }
     }
 }

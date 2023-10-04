@@ -1,3 +1,16 @@
+urls:
+    default:
+        cloud_api_root: "https://api.ultimaker.com"
+        cloud_account_api_root: "https://account.ultimaker.com"
+        marketplace_root: "https://marketplace.ultimaker.com"
+        digital_factory_url: "https://digitalfactory.ultimaker.com"
+        cura_latest_url: "https://software.ultimaker.com/latest.json"
+    staging:
+        cloud_api_root: "https://api-staging.ultimaker.com"
+        cloud_account_api_root: "https://account-staging.ultimaker.com"
+        marketplace_root: "https://marketplace-staging.ultimaker.com"
+        digital_factory_url: "https://digitalfactory-staging.ultimaker.com"
+        cura_latest_url: "https://software.ultimaker.com/latest.json"
 pyinstaller:
     runinfo:
         entrypoint: "cura_app.py"
@@ -6,14 +19,22 @@ pyinstaller:
             package: "cura"
             src: "plugins"
             dst: "share/cura/plugins"
+        curaengine_gradual_flow_plugin:
+            package: "curaengine_plugin_gradual_flow"
+            src: "res/plugins/CuraEngineGradualFlow"
+            dst: "share/cura/plugins/CuraEngineGradualFlow"
+        curaengine_gradual_flow_plugin_bundled:
+            package: "curaengine_plugin_gradual_flow"
+            src: "res/bundled_packages"
+            dst: "share/cura/resources/bundled_packages"
         cura_resources:
             package: "cura"
             src: "resources"
             dst: "share/cura/resources"
         cura_private_data:
             package: "cura_private_data"
-            src: "resources"
-            dst: "share/cura/resources"
+            src: "res"
+            dst: "share/cura"
             internal: true
         uranium_plugins:
             package: "uranium"
@@ -41,7 +62,7 @@ pyinstaller:
             dst: "share/windows"
         fdm_materials:
             package: "fdm_materials"
-            src: "materials"
+            src: "res/resources/materials"
             dst: "share/cura/resources/materials"
         tcl:
             package: "tcl"
@@ -57,6 +78,11 @@ pyinstaller:
             src: "bin"
             dst: "."
             binary: "CuraEngine"
+        curaengine_gradual_flow_plugin_service:
+            package: "curaengine_plugin_gradual_flow"
+            src: "bin"
+            dst: "."
+            binary: "curaengine_plugin_gradual_flow"
     hiddenimports:
         - "pySavitar"
         - "pyArcus"
