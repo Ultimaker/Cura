@@ -2453,7 +2453,7 @@
                 "material_print_temperature_layer_0":
                 {
                     "label": "Printing Temperature Initial Layer",
-                    "description": "The temperature used for printing the first layer. Set at 0 to disable special handling of the initial layer.",
+                    "description": "The temperature used for printing the first layer.",
                     "unit": "\u00b0C",
                     "type": "float",
                     "default_value": 215,
@@ -4580,6 +4580,7 @@
                     },
                     "enabled": "support_enable",
                     "default_value": "normal",
+                    "resolve": "extruderValue(support_extruder_nr, 'support_structure')",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
@@ -8124,6 +8125,14 @@
                     "resolve": "max(extruderValues('raft_base_wall_count'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
+                },
+                "group_outer_walls":
+                {
+                    "label": "Group Outer Walls",
+                    "description": "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped.",
+                    "type": "bool",
+                    "default_value": true,
+                    "settable_per_mesh": true
                 }
             }
         },

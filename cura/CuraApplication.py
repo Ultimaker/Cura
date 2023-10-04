@@ -50,6 +50,7 @@ from UM.Settings.Validator import Validator
 from UM.View.SelectionPass import SelectionPass  # For typing.
 from UM.Workspace.WorkspaceReader import WorkspaceReader
 from UM.i18n import i18nCatalog
+from UM.Version import Version
 from cura import ApplicationMetadata
 from cura.API import CuraAPI
 from cura.API.Account import Account
@@ -205,6 +206,8 @@ class CuraApplication(QtApplication):
         self._simple_mode_settings_manager = None
         self._cura_scene_controller = None
         self._machine_error_checker = None
+
+        self._backend_plugins: List[BackendPlugin] = []
 
         self._machine_settings_manager = MachineSettingsManager(self, parent = self)
         self._material_management_model = None
@@ -616,6 +619,16 @@ class CuraApplication(QtApplication):
 
     def _onEngineCreated(self):
         self._qml_engine.addImageProvider("print_job_preview", PrintJobPreviewImageProvider.PrintJobPreviewImageProvider())
+        version = Version(self.getVersion())
+        if hasattr(sys, "frozen") and version.hasPostFix() and "beta" not in version.getPostfixType():
+            self._qml_engine.rootObjects()[0].setTitle(f"{ApplicationMetadata.CuraAppDisplayName} {ApplicationMetadata.CuraVersion}")
+            message = Message(
+                self._i18n_catalog.i18nc("@info:warning",
+                                         f"This version is not intended for production use. If you encounter any issues, please report them on our GitHub page, mentioning the full version {self.getVersion()}"),
+                lifetime = 0,
+                title = self._i18n_catalog.i18nc("@info:title", "Nightly build"),
+                message_type = Message.MessageType.WARNING)
+            message.show()
 
     @pyqtProperty(bool)
     def needToShowUserAgreement(self) -> bool:
@@ -799,6 +812,7 @@ class CuraApplication(QtApplication):
 
         self._plugin_registry.addType("profile_reader", self._addProfileReader)
         self._plugin_registry.addType("profile_writer", self._addProfileWriter)
+        self._plugin_registry.addType("backend_plugin", self._addBackendPlugin)
 
         if Platform.isLinux():
             lib_suffixes = {"", "64", "32", "x32"}  # A few common ones on different distributions.
@@ -1753,6 +1767,13 @@ class CuraApplication(QtApplication):
 
     def _addProfileWriter(self, profile_writer):
         pass
+
+    def _addBackendPlugin(self, backend_plugin: "BackendPlugin") -> None:
+        self._container_registry.addAdditionalSettingDefinitionsAppender(backend_plugin)
+        self._backend_plugins.append(backend_plugin)
+
+    def getBackendPlugins(self) -> List["BackendPlugin"]:
+        return self._backend_plugins
 
     @pyqtSlot("QSize")
     def setMinimumWindowSize(self, size):

@@ -44,7 +44,7 @@ Popup
                 },
                 {
                     displayName: catalog.i18nc("@label:button", "Print jobs"),
-                    thumbnail: UM.Theme.getIcon("FoodBeverages"),
+                    thumbnail: UM.Theme.getIcon("Nozzle"),
                     description: catalog.i18nc("@tooltip:button", "Monitor print jobs and reprint from your print history."),
                     link: "https://digitalfactory.ultimaker.com/app/print-jobs?utm_source=cura&utm_medium=software&utm_campaign=switcher-digital-factory-printjobs",
                     permissionsRequired: ["digital-factory.print-job.read"]
