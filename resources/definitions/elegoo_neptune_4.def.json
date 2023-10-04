@@ -1,0 +1,116 @@
+{
+    "version": 2,
+    "name": "ELEGOO NEPTUNE 4",
+    "inherits": "elegoo_base",
+    "metadata":
+    {
+        "visible": true,
+        "author": "mastercaution"
+    },
+    "overrides":
+    {
+        "acceleration_enabled": { "value": true },
+        "acceleration_layer_0": { "value": 3000 },
+        "acceleration_print": { "value": 3000 },
+        "acceleration_travel": { "value": 5000 },
+        "cool_fan_full_layer": { "value": 2 },
+        "infill_line_width":
+        {
+            "default_value": 0.45,
+            "value": "line_width + 0.05"
+        },
+        "infill_overlap": { "value": "0 if infill_sparse_density < 40.01 and infill_pattern != 'concentric' else -5" },
+        "initial_layer_line_width_factor": { "value": "100.0 if resolveOrValue('adhesion_type') == 'raft' else 125 if line_width < 0.5 else 110" },
+        "machine_acceleration": { "value": 3000 },
+        "machine_depth": { "default_value": 230 },
+        "machine_end_gcode": { "default_value": "G91 ;Relative positionning\nG1 E-2 F2700 ;Retract a bit\nG1 E-2 Z0.2 F2400 ;Retract and raise Z\nG1 X5 Y5 F3000 ;Wipe out\nG1 Z2 ;Raise Z more\nG90 ;Absolute positionning\nG1 X0 Y{machine_depth} ;Present print\nM106 S0 ;Turn-off fan\nM104 S0 ;Turn-off hotend\nM140 S0 ;Turn-off bed\nM84 X Y E ;Disable all steppers but Z" },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_head_with_fans_polygon":
+        {
+            "value": [
+                [-40, 50],
+                [-40, -30],
+                [40, 50],
+                [40, -30]
+            ]
+        },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 270 },
+        "machine_max_acceleration_e": { "value": 5000 },
+        "machine_max_acceleration_x": { "value": 5000 },
+        "machine_max_acceleration_y": { "value": 5000 },
+        "machine_name": { "default_value": "ELEGOO NEPTUNE 4" },
+        "machine_nozzle_cool_down_speed": { "value": 0.75 },
+        "machine_nozzle_heat_up_speed": { "value": 1.6 },
+        "machine_start_gcode": { "default_value": "G28 ;home\nG92 E0 ;Reset Extruder\nG1 Z4.0 F3000 ;Move Z Axis up\nG92 E0 ;Reset Extruder\nG1 X1.1 Y20 Z0.28 F5000.0 ;Move to start position\nG1 X1.1 Y80.0 Z0.28 F1500.0 E10 ;Draw the first line\nG1 X1.4 Y80.0 Z0.28 F5000.0 ;Move to side a little\nG1 X1.4 Y20 Z0.28 F1500.0 E20 ;Draw the second line\nG92 E0 ;Reset Extruder\nG1 Z2.0 F3000 ;Move Z Axis up" },
+        "machine_width": { "default_value": 235 },
+        "retraction_amount": { "default_value": 0.5 },
+        "retraction_count_max": { "value": 80 },
+        "retraction_speed": { "default_value": 45 },
+        "skirt_brim_speed":
+        {
+            "maximum_value_warning": "500",
+            "value": "speed_print_layer_0"
+        },
+        "speed_infill":
+        {
+            "maximum_value_warning": "500",
+            "value": "speed_print"
+        },
+        "speed_layer_0":
+        {
+            "default_value": 60,
+            "maximum_value_warning": "500",
+            "value": 60
+        },
+        "speed_prime_tower": { "maximum_value_warning": "500" },
+        "speed_print":
+        {
+            "default_value": 250,
+            "maximum_value_warning": "500"
+        },
+        "speed_print_layer_0": { "maximum_value_warning": "500" },
+        "speed_roofing": { "maximum_value_warning": "500" },
+        "speed_support": { "maximum_value_warning": "500" },
+        "speed_support_bottom": { "maximum_value_warning": "500" },
+        "speed_support_infill": { "maximum_value_warning": "500" },
+        "speed_support_interface": { "maximum_value_warning": "500" },
+        "speed_support_roof": { "maximum_value_warning": "500" },
+        "speed_topbottom":
+        {
+            "default_value": 125,
+            "maximum_value_warning": "500",
+            "value": "speed_wall"
+        },
+        "speed_travel":
+        {
+            "default_value": 250,
+            "maximum_value_warning": "500",
+            "value": "speed_print"
+        },
+        "speed_travel_layer_0":
+        {
+            "default_value": 200,
+            "maximum_value_warning": "500",
+            "value": "speed_layer_0*2"
+        },
+        "speed_wall":
+        {
+            "default_value": 125,
+            "maximum_value_warning": "500",
+            "value": "speed_print / 2"
+        },
+        "speed_wall_0":
+        {
+            "default_value": 125,
+            "maximum_value_warning": "500",
+            "value": "speed_wall"
+        },
+        "speed_wall_x":
+        {
+            "default_value": 200,
+            "maximum_value_warning": "500",
+            "value": "speed_wall + (speed_wall / 2)"
+        }
+    }
+}

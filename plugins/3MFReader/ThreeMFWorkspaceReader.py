@@ -1095,7 +1095,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 if global_stack.getProperty(key, "settable_per_extruder"):
                     values_to_set_for_extruders[key] = value
                 else:
-                    global_stack.definitionChanges.setProperty(key, "value", value)
+                    if not self._settingIsFromMissingPackage(key, value):
+                        global_stack.definitionChanges.setProperty(key, "value", value)
 
         for position, extruder_stack in extruder_stack_dict.items():
             if position not in self._machine_info.extruder_info_dict:
@@ -1109,7 +1110,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 extruder_stack.definitionChanges.setProperty(key, "value", value)
             if parser is not None:
                 for key, value in parser["values"].items():
-                    extruder_stack.definitionChanges.setProperty(key, "value", value)
+                    if not self._settingIsFromMissingPackage(key, value):
+                        extruder_stack.definitionChanges.setProperty(key, "value", value)
 
     def _applyUserChanges(self, global_stack, extruder_stack_dict):
         values_to_set_for_extruder_0 = {}
@@ -1119,7 +1121,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 if global_stack.getProperty(key, "settable_per_extruder"):
                     values_to_set_for_extruder_0[key] = value
                 else:
-                    global_stack.userChanges.setProperty(key, "value", value)
+                    if not self._settingIsFromMissingPackage(key, value):
+                        global_stack.userChanges.setProperty(key, "value", value)
 
         for position, extruder_stack in extruder_stack_dict.items():
             if position not in self._machine_info.extruder_info_dict:
@@ -1133,7 +1136,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         extruder_stack.userChanges.setProperty(key, "value", value)
                 if parser is not None:
                     for key, value in parser["values"].items():
-                        extruder_stack.userChanges.setProperty(key, "value", value)
+                        if not self._settingIsFromMissingPackage(key, value):
+                            extruder_stack.userChanges.setProperty(key, "value", value)
 
     def _applyVariants(self, global_stack, extruder_stack_dict):
         machine_node = ContainerTree.getInstance().machines[global_stack.definition.getId()]
@@ -1207,6 +1211,15 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         for key, value in self._machine_info.metadata_dict.items():
             if key not in _ignored_machine_network_metadata:
                 global_stack.setMetaDataEntry(key, value)
+
+    def _settingIsFromMissingPackage(self, key, value):
+        # Check if the key and value pair is from the missing package
+        for package in self._dialog.missingPackages:
+            if value.startswith("PLUGIN::"):
+                if (package['id'] + "@" + package['package_version']) in value:
+                    Logger.log("w", f"Ignoring {key} value {value} from missing package")
+                    return True
+        return False
 
     def _updateActiveMachine(self, global_stack):
         # Actually change the active machine.
@@ -1327,3 +1340,4 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 missing_packages.append(package)
 
         return missing_packages
+

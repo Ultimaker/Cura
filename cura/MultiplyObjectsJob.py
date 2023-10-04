@@ -14,17 +14,19 @@ from UM.Operations.TranslateOperation import TranslateOperation
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
 from UM.i18n import i18nCatalog
-from cura.Arranging.Nest2DArrange import arrange, createGroupOperationForArrange
+from cura.Arranging.GridArrange import GridArrange
+from cura.Arranging.Nest2DArrange import Nest2DArrange
 
 i18n_catalog = i18nCatalog("cura")
 
 
 class MultiplyObjectsJob(Job):
-    def __init__(self, objects, count, min_offset = 8):
+    def __init__(self, objects, count: int, min_offset: int = 8 ,* , grid_arrange: bool = False):
         super().__init__()
         self._objects = objects
-        self._count = count
-        self._min_offset = min_offset
+        self._count: int = count
+        self._min_offset: int = min_offset
+        self._grid_arrange: bool = grid_arrange
 
     def run(self) -> None:
         status_message = Message(i18n_catalog.i18nc("@info:status", "Multiplying and placing objects"), lifetime = 0,
@@ -39,7 +41,7 @@ class MultiplyObjectsJob(Job):
 
         root = scene.getRoot()
 
-        processed_nodes = []  # type: List[SceneNode]
+        processed_nodes: List[SceneNode] = []
         nodes = []
 
         fixed_nodes = []
@@ -76,12 +78,12 @@ class MultiplyObjectsJob(Job):
         found_solution_for_all = True
         group_operation = GroupedOperation()
         if nodes:
-            group_operation, not_fit_count = createGroupOperationForArrange(nodes,
-                                                                            Application.getInstance().getBuildVolume(),
-                                                                            fixed_nodes,
-                                                                            factor = 10000,
-                                                                            add_new_nodes_in_scene = True)
-            found_solution_for_all = not_fit_count == 0
+            if self._grid_arrange:
+                arranger = GridArrange(nodes, Application.getInstance().getBuildVolume(), fixed_nodes)
+            else:
+                arranger = Nest2DArrange(nodes, Application.getInstance().getBuildVolume(), fixed_nodes, factor=1000)
+
+            group_operation, not_fit_count = arranger.createGroupOperationForArrange(add_new_nodes_in_scene=True)
 
         if nodes_to_add_without_arrange:
             for nested_node in nodes_to_add_without_arrange:
