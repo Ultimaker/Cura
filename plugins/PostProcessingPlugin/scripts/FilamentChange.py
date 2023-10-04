@@ -1,5 +1,5 @@
-# Copyright (c) 2021 Ultimaker B.V.
-# The PostProcessingPlugin is released under the terms of the AGPLv3 or higher.
+# Copyright (c) 2023 Ultimaker B.V.
+# The PostProcessingPlugin is released under the terms of the LGPLv3 or higher.
 
 # Modification 06.09.2020
 # add checkbox, now you can choose and use configuration from the firmware itself.
@@ -199,7 +199,7 @@ class FilamentChange(Script):
         if enable_before_macro:
             color_change = color_change + before_macro + "\n"
 
-        color_change = color_change + "M600\n"
+        color_change = color_change + "M600"
 
         if not firmware_config:
             if initial_retract is not None and initial_retract > 0.:
@@ -213,12 +213,14 @@ class FilamentChange(Script):
 
             if x_pos is not None:
                 color_change = color_change + (" X%.2f" % x_pos)
-                
+
             if y_pos is not None:
                 color_change = color_change + (" Y%.2f" % y_pos)
-                
+
             if z_pos is not None and z_pos > 0.:
                 color_change = color_change + (" Z%.2f" % z_pos)
+
+        color_change = color_change + "\n"
 
         if enable_after_macro:
             color_change = color_change + after_macro + "\n"
