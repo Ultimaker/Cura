@@ -1,0 +1,87 @@
+name: update-translations
+
+on:
+  push:
+    paths:
+      - 'plugins/**'
+      - 'resources/**'
+      - 'cura/**'
+      - 'icons/**'
+      - 'tests/**'
+      - 'packaging/**'
+      - '.github/workflows/conan-*.yml'
+      - '.github/workflows/notify.yml'
+      - '.github/workflows/requirements-conan-package.txt'
+      - 'requirements*.txt'
+      - 'conanfile.py'
+      - 'conandata.yml'
+      - 'GitVersion.yml'
+      - '*.jinja'
+    branches:
+      - '[1-9].[0-9]'
+      - '[1-9].[0-9][0-9]'
+    tags:
+      - '[1-9].[0-9].[0-9]*'
+      - '[1-9].[0-9].[0-9]'
+      - '[1-9].[0-9][0-9].[0-9]*'
+
+jobs:
+  update-translations:
+    name: Update translations
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Cache Conan data
+        id: cache-conan
+        uses: actions/cache@v3
+        with:
+          path: ~/.conan
+          key: ${{ runner.os }}-conan
+
+      - name: Setup Python and pip
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11.x
+          cache: pip
+          cache-dependency-path: .github/workflows/requirements-conan-package.txt
+
+      - name: Install Python requirements for runner
+        run: pip install -r .github/workflows/requirements-conan-package.txt
+
+      # NOTE: Due to what are probably github issues, we have to remove the cache and reconfigure before the rest.
+      #       This is maybe because grub caches the disk it uses last time, which is recreated each time.
+      - name: Install Linux system requirements
+        if: ${{ runner.os == 'Linux' }}
+        run: |
+          sudo rm /var/cache/debconf/config.dat
+          sudo dpkg --configure -a
+          sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+          sudo apt update
+          sudo apt upgrade
+          sudo apt install efibootmgr build-essential checkinstall libegl-dev zlib1g-dev libssl-dev ninja-build autoconf libx11-dev libx11-xcb-dev libfontenc-dev libice-dev libsm-dev libxau-dev libxaw7-dev libxcomposite-dev libxcursor-dev libxdamage-dev libxdmcp-dev libxext-dev libxfixes-dev libxi-dev libxinerama-dev libxkbfile-dev libxmu-dev libxmuu-dev libxpm-dev libxrandr-dev libxrender-dev libxres-dev libxss-dev libxt-dev libxtst-dev libxv-dev libxvmc-dev libxxf86vm-dev xtrans-dev libxcb-render0-dev libxcb-render-util0-dev libxcb-xkb-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev libxcb-randr0-dev libxcb-shape0-dev libxcb-sync-dev libxcb-xfixes0-dev libxcb-xinerama0-dev xkb-data libxcb-dri3-dev uuid-dev libxcb-util-dev libxkbcommon-x11-dev pkg-config flex bison g++-12 gcc-12 -y
+
+      - name: Install GCC-13
+        run: |
+          sudo apt install g++-13 gcc-13 -y
+          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 13
+          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 13
+
+      - name: Create the default Conan profile
+        run: conan profile new default --detect --force
+
+      - name: Get Conan configuration
+        run: |
+          conan config install https://github.com/Ultimaker/conan-config.git
+          conan config install https://github.com/Ultimaker/conan-config.git -a "-b runner/${{ runner.os }}/${{ runner.arch }}"
+
+      - name: generate the files using Conan install
+        run: conan install . --build=missing --update -o cura:devtools=True
+
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          file_pattern: resources/i18n/*.po resources/i18n/*.pot
+          status_options: --untracked-files=no
+          commit_message: update translations

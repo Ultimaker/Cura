@@ -1,0 +1,72 @@
+{
+    "version": 2,
+    "name": "Sovol-SV06 Plus",
+    "inherits": "sovol_base_planetary",
+    "metadata":
+    {
+        "visible": true,
+        "author": "ashokvarma.com",
+        "quality_definition": "sovol_base_planetary"
+    },
+    "overrides":
+    {
+        "acceleration_wall": { "value": "acceleration_print / 4" },
+        "bottom_layers": { "value": 4 },
+        "coasting_enable": { "value": true },
+        "fill_outline_gaps": { "value": true },
+        "gantry_height": { "value": 35 },
+        "infill_overlap": { "value": 10.0 },
+        "infill_pattern": { "value": "'gyroid'" },
+        "infill_wipe_dist": { "value": 0.1 },
+        "jerk_travel": { "value": "jerk_print" },
+        "machine_depth": { "default_value": 300 },
+        "machine_end_gcode": { "default_value": "G91 ;Relative positioning\nG1 E-2 F2700 ;Retract a bit\nG1 E-2 Z0.2 F2400 ;Retract and raise Z\nG1 X0 Y220 F3000 ;Wipe out\nG1 Z10 ;Raise Z more\nG90 ;Absolute positionning\n\nG1 X0 Y{machine_depth} ;Present print\nM106 S0 ;Turn-off fan\nM104 S0 ;Turn-off hotend\nM140 S0 ;Turn-off bed\n\nM84 X Y E ;Disable all steppers but Z\n" },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [-44, 16],
+                [-44, -60],
+                [44, -60],
+                [44, 16]
+            ]
+        },
+        "machine_height": { "default_value": 340 },
+        "machine_max_feedrate_z": { "value": 20 },
+        "machine_name": { "default_value": "SV06 Plus" },
+        "machine_start_gcode": { "default_value": "G28 ;Home\n\nM420 S1;\nG92 E0 ;Reset Extruder\nG1 Z2.0 F3000 ;Move Z Axis up\nG1 X10.1 Y20 Z0.28 F5000.0 ;Move to start position\nG1 X10.1 Y200.0 Z0.28 F1500.0 E15 ;Draw the first line\nG1 X10.4 Y200.0 Z0.28 F5000.0 ;Move to side a little\nG1 X10.4 Y20 Z0.28 F1500.0 E30 ;Draw the second line\nG92 E0 ;Reset Extruder\nG1 Z2.0 F3000 ;Move Z Axis up\n" },
+        "machine_width": { "default_value": 300 },
+        "raft_margin": { "value": 5 },
+        "retract_at_layer_change": { "value": false },
+        "retraction_extra_prime_amount": { "value": 0 },
+        "retraction_hop": { "value": 0 },
+        "roofing_layer_count": { "value": 1 },
+        "skin_preshrink": { "value": 0.8 },
+        "skirt_gap":
+        {
+            "minimum_value_warning": "0",
+            "value": 0
+        },
+        "skirt_line_count": { "value": 2 },
+        "speed_layer_0": { "value": "speed_print * 2 / 5" },
+        "speed_print": { "value": 150.0 },
+        "speed_topbottom": { "value": "speed_print * 2 / 5" },
+        "speed_travel": { "value": "speed_print * 4 / 3" },
+        "speed_wall": { "value": "speed_print * 2 / 5" },
+        "speed_wall_0": { "value": "speed_wall - 10" },
+        "speed_wall_x": { "value": "speed_wall" },
+        "speed_z_hop": { "value": "machine_max_feedrate_z" },
+        "support_angle": { "value": 70 },
+        "support_brim_enable": { "value": true },
+        "support_conical_angle": { "value": 70 },
+        "support_conical_enabled": { "value": true },
+        "support_conical_min_width": { "value": 20 },
+        "support_infill_rate": { "value": 10 },
+        "support_interface_enable": { "value": true },
+        "support_skip_some_zags": { "value": true },
+        "support_skip_zag_per_mm": { "value": 40 },
+        "support_z_distance": { "value": 0.25 },
+        "top_bottom_pattern": { "value": "'zigzag'" },
+        "wall_0_wipe_dist": { "value": 0.4 },
+        "z_seam_relative": { "value": true }
+    }
+}

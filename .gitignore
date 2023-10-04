@@ -31,6 +31,7 @@ LC_MESSAGES
 .directory
 .idea
 cura.desktop
+*.bak
 
 # Eclipse+PyDev
 .project
@@ -100,3 +101,8 @@ graph_info.json
 Ultimaker-Cura.spec
 .run/
 /printer-linter/src/printerlinter.egg-info/
+/resources/qml/Dialogs/AboutDialogVersionsList.qml
+/plugins/CuraEngineGradualFlow
+/resources/bundled_packages/bundled_*.json
+curaengine_plugin_gradual_flow
+curaengine_plugin_gradual_flow.exe

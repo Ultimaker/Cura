@@ -1,5 +1,6 @@
 #  Copyright (c) 2021-2022 Ultimaker B.V.
 #  Cura is released under the terms of the LGPLv3 or higher.
+import os
 
 import numpy
 from string import Formatter
@@ -300,6 +301,23 @@ class StartSliceJob(Job):
         # Build messages for extruder stacks
         for extruder_stack in global_stack.extruderList:
             self._buildExtruderMessage(extruder_stack)
+
+        for plugin in CuraApplication.getInstance().getBackendPlugins():
+            if not plugin.usePlugin():
+                continue
+            for slot in plugin.getSupportedSlots():
+                # Right now we just send the message for every slot that we support. A single plugin can support
+                # multiple slots
+                # In the future the frontend will need to decide what slots that a plugin actually supports should
+                # also be used. For instance, if you have two plugins and each of them support a_generate and b_generate
+                # only one of each can actually be used (eg; plugin 1 does both, plugin 1 does a_generate and 2 does
+                # b_generate, etc).
+                plugin_message = self._slice_message.addRepeatedMessage("engine_plugins")
+                plugin_message.id = slot
+                plugin_message.address = plugin.getAddress()
+                plugin_message.port = plugin.getPort()
+                plugin_message.plugin_name = plugin.getPluginId()
+                plugin_message.plugin_version = plugin.getVersion()
 
         for group in filtered_object_groups:
             group_message = self._slice_message.addRepeatedMessage("object_lists")

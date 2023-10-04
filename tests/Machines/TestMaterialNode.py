@@ -47,7 +47,7 @@ def getInstanceContainerSideEffect(*args, **kwargs):
 def container_registry():
     result = MagicMock()
     result.findInstanceContainersMetadata = MagicMock(side_effect=getInstanceContainerSideEffect)
-    result.findContainersMetadata = MagicMock(return_value = [{"base_file": "material_1", "material": "test_material_type", "GUID": "omg zomg"}])
+    result.findContainersMetadata = MagicMock(return_value = [{"base_file": "material_1", "material": "test_material_type", "GUID": "omg zomg", "brand": "test_brand"}])
     return result
 
 
