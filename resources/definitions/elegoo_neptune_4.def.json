@@ -9,7 +9,6 @@
     },
     "overrides":
     {
-        "acceleration_enabled": { "value": true },
         "acceleration_layer_0": { "value": 3000 },
         "acceleration_print": { "value": 3000 },
         "acceleration_travel": { "value": 5000 },
@@ -47,11 +46,7 @@
         "retraction_amount": { "default_value": 0.5 },
         "retraction_count_max": { "value": 80 },
         "retraction_speed": { "default_value": 45 },
-        "skirt_brim_speed":
-        {
-            "maximum_value_warning": "500",
-            "value": "speed_print_layer_0"
-        },
+        "skirt_brim_speed": { "maximum_value_warning": "500" },
         "speed_infill":
         {
             "maximum_value_warning": "500",
