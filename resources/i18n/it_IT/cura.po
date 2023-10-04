@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-06 14:20+0000\n"
+"POT-Creation-Date: 2023-09-20 14:03+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -156,13 +156,6 @@ msgstr ""
 msgctxt "@heading"
 msgid "-- incomplete --"
 msgstr "-- incompleto --"
-
-#, python-brace-format
-msgctxt "info:{0} gets replaced by a number of printers"
-msgid "... and {0} other"
-msgid_plural "... and {0} others"
-msgstr[0] "... e {0} altra"
-msgstr[1] "... e altre {0}"
 
 msgctxt "@action:label"
 msgid "1mm Transmittance (%)"
@@ -567,8 +560,8 @@ msgid "Arrange All Models"
 msgstr "Sistema tutti i modelli"
 
 msgctxt "@action:inmenu menubar:edit"
-msgid "Arrange Selection"
-msgstr "Sistema selezione"
+msgid "Arrange All Models in a grid"
+msgstr ""
 
 msgctxt "@label:button"
 msgid "Ask a question"
@@ -637,10 +630,6 @@ msgstr "Backup"
 msgctxt "@action:label"
 msgid "Base (mm)"
 msgstr "Base (mm)"
-
-msgctxt "@tooltip:button"
-msgid "Become a 3D printing expert with UltiMaker e-learning."
-msgstr "Diventa un esperto di stampa 3D con e-learning UltiMaker."
 
 msgctxt "@action:inmenu menubar:view"
 msgid "Bottom View"
@@ -985,6 +974,10 @@ msgctxt "@action:menu"
 msgid "Copy all changed values to all extruders"
 msgstr "Copia tutti i valori modificati su tutti gli estrusori"
 
+msgctxt "@action:inmenu menubar:edit"
+msgid "Copy to clipboard"
+msgstr ""
+
 msgctxt "@action:menu"
 msgid "Copy value to all extruders"
 msgstr "Copia valore su tutti gli estrusori"
@@ -1043,6 +1036,27 @@ msgstr "Impossibile salvare su unità rimovibile {0}: {1}"
 msgctxt "@info:text"
 msgid "Could not upload the data to the printer."
 msgstr "Impossibile caricare i dati sulla stampante."
+
+#, python-brace-format
+msgctxt "@info:plugin_failed"
+msgid ""
+"Couldn't start EnginePlugin: {self._plugin_id}\n"
+"No permission to execute process."
+msgstr ""
+
+#, python-brace-format
+msgctxt "@info:plugin_failed"
+msgid ""
+"Couldn't start EnginePlugin: {self._plugin_id}\n"
+"Operating system is blocking it (antivirus?)"
+msgstr ""
+
+#, python-brace-format
+msgctxt "@info:plugin_failed"
+msgid ""
+"Couldn't start EnginePlugin: {self._plugin_id}\n"
+"Resource is temporarily unavailable"
+msgstr ""
 
 msgctxt "@title:window"
 msgid "Crash Report"
@@ -1153,6 +1167,14 @@ msgctxt "name"
 msgid "CuraEngine Backend"
 msgstr "Back-end CuraEngine"
 
+msgctxt "description"
+msgid "CuraEngine plugin for gradually smoothing the flow to limit high-flow jumps"
+msgstr ""
+
+msgctxt "name"
+msgid "CuraEngineGradualFlow"
+msgstr ""
+
 msgctxt "@label"
 msgid "Currency:"
 msgstr "Valuta:"
@@ -1196,6 +1218,10 @@ msgstr "Profili personalizzati"
 msgctxt "@label:header"
 msgid "Custom profiles"
 msgstr "Profili personalizzati"
+
+msgctxt "@action:inmenu menubar:edit"
+msgid "Cut"
+msgstr ""
 
 msgctxt "@item:inlistbox"
 msgid "Cutting mesh"
@@ -1428,8 +1454,8 @@ msgid "Enable Extruder"
 msgstr "Abilita estrusore"
 
 msgctxt "@label"
-msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards."
-msgstr "Abilita stampa di brim o raft. Questa funzione aggiunge un’area piana attorno o sotto l’oggetto, facile da tagliare successivamente."
+msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards. Disabling it results in a skirt around object by default."
+msgstr ""
 
 msgctxt "@label"
 msgid "Enabled"
@@ -1446,6 +1472,10 @@ msgstr "Codice G fine"
 msgctxt "@label"
 msgid "End-to-end solution for fused filament 3D printing."
 msgstr "Soluzione end-to-end per la stampa 3D con filamento fuso."
+
+msgctxt "@info:title"
+msgid "EnginePlugin"
+msgstr ""
 
 msgctxt "@label"
 msgid "Engineering"
@@ -1470,10 +1500,6 @@ msgstr "Errore"
 msgctxt "@title:groupbox"
 msgid "Error traceback"
 msgstr "Analisi errori"
-
-msgctxt "@error:zip"
-msgid "Error writing 3mf file."
-msgstr "Errore scrittura file 3MF."
 
 msgctxt "@label"
 msgid "Estimated time left"
@@ -1847,6 +1873,10 @@ msgctxt "@label Description for application component"
 msgid "Graphical user interface"
 msgstr "Interfaccia grafica utente"
 
+msgctxt "@label"
+msgid "Grid Placement"
+msgstr ""
+
 #, python-brace-format
 msgctxt "@label"
 msgid "Group #{group_nr}"
@@ -1879,10 +1909,6 @@ msgstr "Altezza (mm)"
 msgctxt "@label"
 msgid "Helpers"
 msgstr "Helper"
-
-msgctxt "@label"
-msgid "Hex"
-msgstr "Esagonale"
 
 msgctxt "@label"
 msgid "Hide all connected printers"
@@ -2028,10 +2054,6 @@ msgctxt "@button"
 msgid "Install"
 msgstr "Installazione"
 
-msgctxt "@action:button"
-msgid "Install Materials"
-msgstr "Installa materiali"
-
 msgctxt "@header"
 msgid "Install Materials"
 msgstr "Installa materiali"
@@ -2040,17 +2062,29 @@ msgctxt "@window:title"
 msgid "Install Package"
 msgstr "Installa il pacchetto"
 
+msgctxt "@action:button"
+msgid "Install Packages"
+msgstr ""
+
+msgctxt "@header"
+msgid "Install Packages"
+msgstr ""
+
 msgctxt "@header"
 msgid "Install Plugins"
 msgstr "Installa plugin"
 
-msgctxt "@title"
-msgid "Install missing Materials"
-msgstr "Installa materiali mancanti"
-
 msgctxt "@action:button"
-msgid "Install missing material"
-msgstr "Installa materiale mancante"
+msgid "Install missing packages"
+msgstr ""
+
+msgctxt "@title"
+msgid "Install missing packages"
+msgstr ""
+
+msgctxt "@label"
+msgid "Install missing packages from project file."
+msgstr ""
 
 msgctxt "@button"
 msgid "Install pending updates"
@@ -2187,6 +2221,10 @@ msgstr "Ulteriori informazioni sui profili di stampa di Cura"
 msgctxt "@button"
 msgid "Learn more about adding printers to Cura"
 msgstr "Scopri di più sull'aggiunta di stampanti a Cura"
+
+msgctxt "@label"
+msgid "Learn more about project packages."
+msgstr ""
 
 msgctxt "@action:inmenu menubar:view"
 msgid "Left Side View"
@@ -2412,10 +2450,6 @@ msgctxt "@label"
 msgid "Material estimation"
 msgstr "Stima del materiale"
 
-msgctxt "@info:title"
-msgid "Material profiles not installed"
-msgstr "Profili del materiale non installati"
-
 msgctxt "@title:header"
 msgid "Material profiles successfully synced with the following printers:"
 msgstr "I profili del materiale sono stati sincronizzati correttamente con le stampanti seguenti:"
@@ -2518,6 +2552,10 @@ msgid_plural "Multiply Selected Models"
 msgstr[0] "Moltiplica modello selezionato"
 msgstr[1] "Moltiplica modelli selezionati"
 
+msgctxt "@info"
+msgid "Multiply selected item and place them in a grid of build plate."
+msgstr ""
+
 msgctxt "@info:status"
 msgid "Multiplying and placing objects"
 msgstr "Moltiplicazione e collocazione degli oggetti"
@@ -2581,6 +2619,10 @@ msgstr "Avanti"
 msgctxt "@button"
 msgid "Next"
 msgstr "Avanti"
+
+msgctxt "@info:title"
+msgid "Nightly build"
+msgstr ""
 
 msgctxt "@info"
 msgid "No"
@@ -2860,6 +2902,10 @@ msgstr "Pacchetto applicazioni Python"
 msgctxt "@info:status"
 msgid "Parsing G-code"
 msgstr "Parsing codice G"
+
+msgctxt "@action:inmenu menubar:edit"
+msgid "Paste from clipboard"
+msgstr ""
 
 msgctxt "@label"
 msgid "Pause"
@@ -3478,6 +3524,10 @@ msgctxt "@button"
 msgid "Refresh List"
 msgstr "Aggiorna elenco"
 
+msgctxt "@button"
+msgid "Refreshing..."
+msgstr ""
+
 msgctxt "@label"
 msgid "Release Notes"
 msgstr "Note sulla versione"
@@ -3929,6 +3979,10 @@ msgctxt "@option:check"
 msgid "Show summary dialog when saving project"
 msgstr "Visualizza una finestra di riepilogo quando si salva un progetto"
 
+msgctxt "@tooltip:button"
+msgid "Show your support for Cura with a donation."
+msgstr ""
+
 msgctxt "@button"
 msgid "Sign Out"
 msgstr "Esci"
@@ -4027,6 +4081,14 @@ msgstr ""
 "\n"
 "Fare clic per rendere visibili queste impostazioni."
 
+msgctxt "@info:status"
+msgid "Some of the packages used in the project file are currently not installed in Cura, this might produce undesirable print results. We highly recommend installing the all required packages from the Marketplace."
+msgstr ""
+
+msgctxt "@info:title"
+msgid "Some required packages are not installed"
+msgstr ""
+
 msgctxt "@info %1 is the name of a profile"
 msgid "Some setting-values defined in <b>%1</b> were overridden."
 msgstr ""
@@ -4060,6 +4122,14 @@ msgstr "Si è verificato un errore..."
 msgctxt "@label:listbox"
 msgid "Speed"
 msgstr "Velocità"
+
+msgctxt "@action:inmenu"
+msgid "Sponsor Cura"
+msgstr ""
+
+msgctxt "@label:button"
+msgid "Sponsor Cura"
+msgstr ""
 
 msgctxt "@option:radio"
 msgid "Stable and Beta releases"
@@ -4351,14 +4421,6 @@ msgctxt "@label:label Ultimaker Marketplace is a brand name, don't translate"
 msgid "The material package associated with the Cura project could not be found on the Ultimaker Marketplace. Use the partial material profile definition stored in the Cura project file at your own risk."
 msgstr "Il pacchetto di materiali associato al progetto Cura non è stato trovato su UltiMaker Marketplace. Utilizza la definizione parziale del profilo del materiale memorizzata nel file di progetto Cura a tuo rischio."
 
-msgctxt "@label"
-msgid "The material used in this project is currently not installed in Cura.<br/>Install the material profile and reopen the project."
-msgstr "Il materiale utilizzato in questo progetto non è attualmente installato in Cura.<br/>Installa il profilo del materiale e riapri il progetto."
-
-msgctxt "@info:status"
-msgid "The material used in this project relies on some material definitions not available in Cura, this might produce undesirable print results. We highly recommend installing the full material package from the Marketplace."
-msgstr "Il materiale utilizzato in questo progetto si basa su alcune definizioni di materiale non disponibili in Cura; ciò potrebbe produrre risultati di stampa indesiderati. Si consiglia vivamente di installare il pacchetto completo di materiali dal Marketplace."
-
 msgctxt "@info:tooltip"
 msgid "The maximum distance of each pixel from \"Base.\""
 msgstr "La distanza massima di ciascun pixel da \"Base.\""
@@ -4370,10 +4432,6 @@ msgstr "Il nuovo diametro del filamento impostato a %1 mm non è compatibile con
 msgctxt "@tooltip"
 msgid "The nozzle inserted in this extruder."
 msgstr "L’ugello inserito in questo estrusore."
-
-msgctxt "@error:zip"
-msgid "The operating system does not allow saving a project file to this location or with this file name."
-msgstr "Il sistema operativo non consente di salvare un file di progetto in questa posizione o con questo nome file."
 
 msgctxt "@label"
 msgid ""
@@ -4396,6 +4454,10 @@ msgstr ""
 msgctxt "@info:tooltip"
 msgid "The percentage of light penetrating a print with a thickness of 1 millimeter. Lowering this value increases the contrast in dark regions and decreases the contrast in light regions of the image."
 msgstr "Percentuale di luce che penetra una stampa dello spessore di 1 millimetro. Se questo valore si riduce, il contrasto nelle aree scure dell'immagine aumenta, mentre il contrasto nelle aree chiare dell'immagine diminuisce."
+
+msgctxt "@label:label Ultimaker Marketplace is a brand name, don't translate"
+msgid "The plugin associated with the Cura project could not be found on the Ultimaker Marketplace. As the plugin may be required to slice the project it might not be possible to correctly slice the file."
+msgstr ""
 
 msgctxt "@info:title"
 msgid "The print job was successfully submitted"
@@ -4549,6 +4611,10 @@ msgid "This profile uses the defaults specified by the printer, so it has no set
 msgstr "Questo profilo utilizza le impostazioni predefinite dalla stampante, perciò non ci sono impostazioni/esclusioni nell’elenco riportato di seguito."
 
 msgctxt "@label"
+msgid "This project contains materials or plugins that are currently not installed in Cura.<br/>Install the missing packages and reopen the project."
+msgstr ""
+
+msgctxt "@label"
 msgid ""
 "This setting has a value that is different from the profile.\n"
 "\n"
@@ -4589,6 +4655,10 @@ msgstr "Questa impostazione non è utilizzata perché tutte le impostazioni che 
 msgctxt "@label"
 msgid "This setting is resolved from conflicting extruder-specific values:"
 msgstr "Questa impostazione viene risolta dai valori in conflitto specifici dell'estrusore:"
+
+msgctxt "@info:warning"
+msgid "This version is not intended for production use. If you encounter any issues, please report them on our GitHub page, mentioning the full version {self.getVersion()}"
+msgstr ""
 
 msgctxt "@label"
 msgid "Time estimation"
@@ -4759,6 +4829,18 @@ msgstr "Impossibile aggiungere il profilo."
 msgctxt "@info:status"
 msgid "Unable to find a location within the build volume for all objects"
 msgstr "Impossibile individuare una posizione nel volume di stampa per tutti gli oggetti"
+
+#, python-brace-format
+msgctxt "@info:plugin_failed"
+msgid "Unable to find local EnginePlugin server executable for: {self._plugin_id}"
+msgstr ""
+
+#, python-brace-format
+msgctxt "@info:plugin_failed"
+msgid ""
+"Unable to kill running EnginePlugin: {self._plugin_id}\n"
+"Access is denied."
+msgstr ""
 
 msgctxt "@info"
 msgid "Unable to reach the UltiMaker account server."
@@ -5008,6 +5090,10 @@ msgctxt "description"
 msgid "Upgrades configurations from Cura 5.3 to Cura 5.4."
 msgstr ""
 
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.4 to Cura 5.5."
+msgstr ""
+
 msgctxt "@action:button"
 msgid "Upload custom Firmware"
 msgstr "Carica il firmware personalizzato"
@@ -5138,6 +5224,10 @@ msgstr "Aggiornamento della versione da 5.2 a 5.3"
 
 msgctxt "name"
 msgid "Version Upgrade 5.3 to 5.4"
+msgstr ""
+
+msgctxt "name"
+msgid "Version Upgrade 5.4 to 5.5"
 msgstr ""
 
 msgctxt "@button"
@@ -5454,10 +5544,65 @@ msgctxt "@info:generic"
 msgid "{} plugins failed to download"
 msgstr "Impossibile scaricare i plugin {}"
 
+#, python-brace-format
+#~ msgctxt "info:{0} gets replaced by a number of printers"
+#~ msgid "... and {0} other"
+#~ msgid_plural "... and {0} others"
+#~ msgstr[0] "... e {0} altra"
+#~ msgstr[1] "... e altre {0}"
+
+#~ msgctxt "@action:inmenu menubar:edit"
+#~ msgid "Arrange Selection"
+#~ msgstr "Sistema selezione"
+
+#~ msgctxt "@tooltip:button"
+#~ msgid "Become a 3D printing expert with UltiMaker e-learning."
+#~ msgstr "Diventa un esperto di stampa 3D con e-learning UltiMaker."
+
 #~ msgctxt "@info:status"
 #~ msgid "Cura does not accurately display layers when Wire Printing is enabled."
 #~ msgstr "Cura non visualizza in modo accurato i layer se la funzione Wire Printing è abilitata."
 
+#~ msgctxt "@label"
+#~ msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards."
+#~ msgstr "Abilita stampa di brim o raft. Questa funzione aggiunge un’area piana attorno o sotto l’oggetto, facile da tagliare successivamente."
+
+#~ msgctxt "@error:zip"
+#~ msgid "Error writing 3mf file."
+#~ msgstr "Errore scrittura file 3MF."
+
+#~ msgctxt "@label"
+#~ msgid "Hex"
+#~ msgstr "Esagonale"
+
+#~ msgctxt "@action:button"
+#~ msgid "Install Materials"
+#~ msgstr "Installa materiali"
+
+#~ msgctxt "@title"
+#~ msgid "Install missing Materials"
+#~ msgstr "Installa materiali mancanti"
+
+#~ msgctxt "@action:button"
+#~ msgid "Install missing material"
+#~ msgstr "Installa materiale mancante"
+
+#~ msgctxt "@info:title"
+#~ msgid "Material profiles not installed"
+#~ msgstr "Profili del materiale non installati"
+
 #~ msgctxt "@info:title"
 #~ msgid "Simulation View"
 #~ msgstr "Vista simulazione"
+
+#~ msgctxt "@label"
+#~ msgid "The material used in this project is currently not installed in Cura.<br/>Install the material profile and reopen the project."
+#~ msgstr "Il materiale utilizzato in questo progetto non è attualmente installato in Cura.<br/>Installa il profilo del materiale e riapri il progetto."
+
+#~ msgctxt "@info:status"
+#~ msgid "The material used in this project relies on some material definitions not available in Cura, this might produce undesirable print results. We highly recommend installing the full material package from the Marketplace."
+#~ msgstr "Il materiale utilizzato in questo progetto si basa su alcune definizioni di materiale non disponibili in Cura; ciò potrebbe produrre risultati di stampa indesiderati. Si consiglia vivamente di installare il pacchetto completo di materiali dal Marketplace."
+
+#~ msgctxt "@error:zip"
+#~ msgid "The operating system does not allow saving a project file to this location or with this file name."
+#~ msgstr "Il sistema operativo non consente di salvare un file di progetto in questa posizione o con questo nome file."
