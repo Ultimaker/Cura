@@ -90,6 +90,9 @@ class CuraFormulaFunctions:
             if isinstance(value, SettingFunction):
                 value = value(extruder, context = context)
 
+            if isinstance(value, str):
+                value = value.lower()
+
             result.append(value)
 
         if not result:
