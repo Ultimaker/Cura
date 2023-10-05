@@ -3067,7 +3067,7 @@ msgstr "폴리곤 패킹 라이브러리, Prusa Research 개발"
 
 msgctxt "@item:inmenu"
 msgid "Post Processing"
-msgstr "후 처리"
+msgstr "후처리"
 
 msgctxt "name"
 msgid "Post Processing"

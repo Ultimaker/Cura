@@ -466,7 +466,7 @@ msgstr "최소한의 서포트가 필요하도록 프린팅 된 모델의 형상
 
 msgctxt "support_structure description"
 msgid "Chooses between the techniques available to generate support. \"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. \"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
-msgstr "서포트를 생성하는 데 사용할 수 있는 기술 중 하나를 선택합니다. '표준' 서포트는 오버행(경사면) 파트 바로 아래에 서포트 구조물을 생성하고 해당 영역을 바로 아래로 떨어뜨립니다. '트리' 서포트는 모델을 지지하는 브랜치 끝에서 오버행(경사면) 영역을 향해 브랜치를 만들고 빌드 플레이트에서 모델을 지지할 수 있도록 모델을 브랜치로 최대한 감쌉니다."
+msgstr "서포트를 생성하는 데 사용할 수 있는 기술 중 하나를 선택합니다. '표준' 서포트는 오버행 파트 바로 아래에 서포트 구조물을 생성하고 해당 영역을 바로 아래로 떨어뜨립니다. '트리' 서포트는 모델을 지지하는 브랜치 끝에서 오버행 영역을 향해 브랜치를 만들고 빌드 플레이트에서 모델을 지지할 수 있도록 모델을 브랜치로 최대한 감쌉니다."
 
 msgctxt "coasting_speed label"
 msgid "Coasting Speed"
@@ -486,7 +486,7 @@ msgstr "빗질 모드"
 
 msgctxt "retraction_combing description"
 msgid "Combing keeps the nozzle within already printed areas when traveling. This results in slightly longer travel moves but reduces the need for retractions. If combing is off, the material will retract and the nozzle moves in a straight line to the next point. It is also possible to avoid combing over top/bottom skin areas or to only comb within the infill."
-msgstr "빗질을 하면 이동 시 노즐이 이미 인쇄된 영역 내에 유지됩니다. 이로 인해 이동 이동이 약간 길어지지만 후퇴의 필요성은 줄어듭니다. 빗질이 꺼지면 재료가 후퇴하고 노즐이 직선으로 다음 지점으로 이동합니다. 피부 위/아래 부위를 빗는 것을 피하거나 충전재 내에서만 빗는 것도 가능합니다."
+msgstr "빗질을 하면 이동 시 노즐이 이미 인쇄된 영역 내에 유지됩니다. 이로 인해 이동 이동이 약간 길어지지만 리트렉트의 필요성은 줄어듭니다. 빗질이 꺼지면 재료가 리트렉트하고 노즐이 직선으로 다음 지점으로 이동합니다. 피부 위/아래 부위를 빗는 것을 피하거나 충전재 내에서만 빗는 것도 가능합니다."
 
 msgctxt "command_line_settings label"
 msgid "Command Line Settings"
@@ -686,7 +686,7 @@ msgstr "브리지가 출력되는 중에 브리지를 감지하고 인쇄 속도
 
 msgctxt "inset_direction description"
 msgid "Determines the order in which walls are printed. Printing outer walls earlier helps with dimensional accuracy, as faults from inner walls cannot propagate to the outside. However printing them later allows them to stack better when overhangs are printed. When there is an uneven amount of total innner walls, the 'center last line' is always printed last."
-msgstr "벽이 프린팅되는 순서를 정의합니다. 외벽을 먼저 프린팅하면 내벽의 오류가 외부로 전파될 수 없으므로 치수 정확도가 향상됩니다. 그러나 나중에 프린팅하면 오버행(경사면)이 프린트팅 될 때 더 잘 쌓일 수 있습니다. 전체 내벽의 총량이 불균일할 경우, '가운데 마지막 선'이 항상 마지막에 인쇄됩니다."
+msgstr "벽이 프린팅되는 순서를 정의합니다. 외벽을 먼저 프린팅하면 내벽의 오류가 외부로 전파될 수 없으므로 치수 정확도가 향상됩니다. 그러나 나중에 프린팅하면 오버행이 프린트팅 될 때 더 잘 쌓일 수 있습니다. 전체 내벽의 총량이 불균일할 경우, '가운데 마지막 선'이 항상 마지막에 인쇄됩니다."
 
 msgctxt "infill_mesh_order description"
 msgid "Determines the priority of this mesh when considering multiple overlapping infill meshes. Areas where multiple infill meshes overlap will take on the settings of the mesh with the highest rank. An infill mesh with a higher rank will modify the infill of infill meshes with lower rank and normal meshes."
@@ -1342,7 +1342,7 @@ msgstr "가열 시 파단되기 전까지 필라멘트가 늘어날 수 있는 �
 
 msgctxt "material_anti_ooze_retracted_position description"
 msgid "How far the material needs to be retracted before it stops oozing."
-msgstr "흐름이 멈추기 전에 소재가 후퇴해야 하는 거리입니다."
+msgstr "흐름이 멈추기 전에 소재가 리트렉트해야 하는 거리입니다."
 
 msgctxt "flow_rate_extrusion_offset_factor description"
 msgid "How far to move the filament in order to compensate for changes in flow rate, as a percentage of how far the filament would move in one second of extrusion."
@@ -1350,15 +1350,15 @@ msgstr "압출 속도 변화를 보상하기 위해 필라멘트를 이동하는
 
 msgctxt "material_break_retracted_position description"
 msgid "How far to retract the filament in order to break it cleanly."
-msgstr "필라멘트가 깔끔하게 파단되기 위해 후퇴해야 하는 거리입니다."
+msgstr "필라멘트가 깔끔하게 파단되기 위해 리트렉트해야 하는 거리입니다."
 
 msgctxt "material_break_preparation_speed description"
 msgid "How fast the filament needs to be retracted just before breaking it off in a retraction."
-msgstr "리트렉션 시 파단되기 직전까지 필라멘트가 후퇴해야 하는 속도입니다."
+msgstr "리트렉션 시 파단되기 직전까지 필라멘트가 리트렉트해야 하는 속도입니다."
 
 msgctxt "material_anti_ooze_retraction_speed description"
 msgid "How fast the material needs to be retracted during a filament switch to prevent oozing."
-msgstr "흐름을 방지하기 위해 필라멘트 스위치 중 소재가 후퇴해야 하는 속도입니다."
+msgstr "흐름을 방지하기 위해 필라멘트 스위치 중 소재가 리트렉트해야 하는 속도입니다."
 
 msgctxt "material_end_of_filament_purge_speed description"
 msgid "How fast to prime the material after replacing an empty spool with a fresh spool of the same material."
@@ -2298,7 +2298,7 @@ msgstr "노즐 전환 프라임 속도"
 
 msgctxt "switch_extruder_retraction_speed label"
 msgid "Nozzle Switch Retract Speed"
-msgstr "노즐 전환 후퇴 속도"
+msgstr "노즐 전환 리트렉트 속도"
 
 msgctxt "switch_extruder_retraction_amount label"
 msgid "Nozzle Switch Retraction Distance"
@@ -3778,7 +3778,7 @@ msgstr "브러시 전체에 헤드를 앞뒤로 이동하는 거리입니다."
 
 msgctxt "lightning_infill_prune_angle description"
 msgid "The endpoints of infill lines are shortened to save on material. This setting is the angle of overhang of the endpoints of these lines."
-msgstr "내부채움 선의 종점이 재료를 절약하기 위해 단축됩니다. 이 설정은 해당 선의 종점에 대한 오버행(경사면)의 각도입니다."
+msgstr "내부채움 선의 종점이 재료를 절약하기 위해 단축됩니다. 이 설정은 해당 선의 종점에 대한 오버행의 각도입니다."
 
 msgctxt "material_extrusion_cool_down_speed description"
 msgid "The extra speed by which the nozzle cools while extruding. The same value is used to signify the heat up speed lost when heating up while extruding."
@@ -3958,7 +3958,7 @@ msgstr ""
 
 msgctxt "lightning_infill_straightening_angle description"
 msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
-msgstr "내부채움 선이 인쇄 시간을 절약하기 위해 정리됩니다. 이는 내부채움 선 길이 전체에 허용되는 오버행(경사면)의 최대 각도입니다."
+msgstr "내부채움 선이 인쇄 시간을 절약하기 위해 정리됩니다. 이는 내부채움 선 길이 전체에 허용되는 오버행의 최대 각도입니다."
 
 msgctxt "infill_offset_x description"
 msgid "The infill pattern is moved this distance along the X axis."
@@ -4270,15 +4270,15 @@ msgstr "서포트 충진물을 둘러싸는 벽의 개수. 벽을 추가하면 �
 
 msgctxt "support_bottom_wall_count description"
 msgid "The number of walls with which to surround support interface floor. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "서포트 인터페이스 바닥을 둘러쌀 벽의 수입니다. 벽을 추가하면 서포트 프린트를 더 안정적으로 만들고 오버행(경사면)을 더 잘 지원할 수 있지만, 프린트 시간과 사용되는 재료가 늘어납니다."
+msgstr "서포트 인터페이스 바닥을 둘러쌀 벽의 수입니다. 벽을 추가하면 서포트 프린트를 더 안정적으로 만들고 오버행을 더 잘 지원할 수 있지만, 프린트 시간과 사용되는 재료가 늘어납니다."
 
 msgctxt "support_roof_wall_count description"
 msgid "The number of walls with which to surround support interface roof. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "서포트 인터페이스 지붕을 둘러쌀 벽의 수입니다. 벽을 추가하면 서포트 프린트를 더 안정적으로 만들고 오버행(경사면)을 더 잘 지원할 수 있지만, 프린트 시간과 사용되는 재료가 늘어납니다."
+msgstr "서포트 인터페이스 지붕을 둘러쌀 벽의 수입니다. 벽을 추가하면 서포트 프린트를 더 안정적으로 만들고 오버행을 더 잘 지원할 수 있지만, 프린트 시간과 사용되는 재료가 늘어납니다."
 
 msgctxt "support_interface_wall_count description"
 msgid "The number of walls with which to surround support interface. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "서포트 인터페이스를 둘러쌀 벽의 수입니다. 벽을 추가하면 서포트 프린트를 더 안정적으로 만들고 오버행(경사면)을 더 잘 지원할 수 있지만, 프린트 시간과 사용되는 재료가 늘어납니다."
+msgstr "서포트 인터페이스를 둘러쌀 벽의 수입니다. 벽을 추가하면 서포트 프린트를 더 안정적으로 만들고 오버행을 더 잘 지원할 수 있지만, 프린트 시간과 사용되는 재료가 늘어납니다."
 
 msgctxt "wall_distribution_count description"
 msgid "The number of walls, counted from the center, over which the variation needs to be spread. Lower values mean that the outer walls don't change in width."
@@ -4502,7 +4502,7 @@ msgstr "상단 표면을 통과하는 속도."
 
 msgctxt "material_break_speed description"
 msgid "The speed at which to retract the filament in order to break it cleanly."
-msgstr "필라멘트가 깔끔하게 파단되기 위해 후퇴해야 하는 속도입니다."
+msgstr "필라멘트를 깨끗하게 끊기 위해 필라멘트를 집어넣는 속도."
 
 msgctxt "speed_roofing description"
 msgid "The speed at which top surface skin layers are printed."
@@ -4986,7 +4986,7 @@ msgstr "벽"
 
 msgctxt "wall_overhang_angle description"
 msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either."
-msgstr "이 각도보다 놓은 오버행(경사면)의 벽은 오버행 벽 설정을 사용해 인쇄됩니다. 값이 90이면 오버행(경사면)으로 처리되는 벽이 없습니다. 서포트로 지지되는 오버행(경사면)도 오버행(경사면)으로 처리되지 않습니다."
+msgstr "이 각도보다 놓은 오버행의 벽은 오버행 벽 설정을 사용해 인쇄됩니다. 값이 90이면 오버행으로 처리되는 벽이 없습니다. 서포트로 지지되는 오버행도 오버행으로 처리되지 않습니다."
 
 msgctxt "support_interface_skip_height description"
 msgid "When checking where there's model above and below the support, take steps of the given height. Lower values will slice slower, while higher values may cause normal support to be printed in some places where there should have been support interface."
@@ -5010,7 +5010,7 @@ msgstr "활성화 된 경우 z 솔기 좌표는 각 부품의 중심을 기준�
 
 msgctxt "retraction_combing_max_distance description"
 msgid "When greater than zero, combing travel moves that are longer than this distance will use retraction. If set to zero, there is no maximum and combing moves will not use retraction."
-msgstr "0보다 큰 경우 이 거리보다 긴 빗질 이동 이동은 후퇴를 사용합니다. 0으로 설정하면 최대값이 없으며 빗질 동작은 후퇴를 사용하지 않습니다."
+msgstr "0보다 큰 경우 이 거리보다 긴 빗질 이동 이동은 리트렉트를 사용합니다. 0으로 설정하면 최대값이 없으며 빗질 동작은 리트렉트를 사용하지 않습니다."
 
 msgctxt "hole_xy_offset_max_diameter description"
 msgid "When greater than zero, the Hole Horizontal Expansion is gradually applied on small holes (small holes are expanded more). When set to zero the Hole Horizontal Expansion will be applied to all holes. Holes larger than the Hole Horizontal Expansion Max Diameter are not expanded."
@@ -5254,7 +5254,7 @@ msgstr "닦기 리트렉션 초기 속도"
 
 msgctxt "wipe_retraction_retract_speed label"
 msgid "Wipe Retraction Retract Speed"
-msgstr "닦기 리트렉션 후퇴 속도"
+msgstr "닦기 리트렉션 리트렉트 속도"
 
 msgctxt "wipe_retraction_speed label"
 msgid "Wipe Retraction Speed"
