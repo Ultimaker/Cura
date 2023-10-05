@@ -1751,7 +1751,7 @@ msgstr "첫 번째로 사용 가능"
 
 msgctxt "@label:listbox"
 msgid "Flow"
-msgstr "유량"
+msgstr "공급량"
 
 msgctxt "@text In the UI this is followed by a list of steps the user needs to take."
 msgid "Follow the following steps to load the new material profiles to your printer."
