@@ -96,5 +96,6 @@ Item
         containerStackId: "global"
         watchedProperties: [ "enabled" ]
         key: definition ? definition.key : ""
+        removeUnusedValue: false
     }
 }
