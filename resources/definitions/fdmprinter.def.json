@@ -2862,7 +2862,8 @@
                                     "limit_to_extruder": "wall_x_extruder_nr",
                                     "settable_per_mesh": true
                                 },
-                                "wall_0_material_flow_roofing": {
+                                "wall_0_material_flow_roofing":
+                                {
                                     "label": "Top Surface Outer Wall Flow",
                                     "description": "Flow compensation on the top surface outermost wall line.",
                                     "unit": "%",
@@ -2875,7 +2876,8 @@
                                     "limit_to_extruder": "wall_0_extruder_nr",
                                     "settable_per_mesh": true
                                 },
-                                "wall_x_material_flow_roofing": {
+                                "wall_x_material_flow_roofing":
+                                {
                                     "label": "Top Surface Inner Wall(s) Flow",
                                     "description": "Flow compensation on top surface wall lines for all wall lines except the outermost one.",
                                     "unit": "%",
@@ -3193,7 +3195,8 @@
                                     "limit_to_extruder": "wall_x_extruder_nr",
                                     "settable_per_mesh": true
                                 },
-                                "speed_wall_0_roofing": {
+                                "speed_wall_0_roofing":
+                                {
                                     "label": "Top Surface Outer Wall Speed",
                                     "description": "The speed at which the top surface outermost walls are printed.",
                                     "unit": "mm/s",
@@ -3206,7 +3209,8 @@
                                     "limit_to_extruder": "wall_0_extruder_nr",
                                     "settable_per_mesh": true
                                 },
-                                "speed_wall_x_roofing": {
+                                "speed_wall_x_roofing":
+                                {
                                     "label": "Top Surface Inner Wall Speed",
                                     "description": "The speed at which the top surface inner walls are printed.",
                                     "unit": "mm/s",
@@ -3562,7 +3566,8 @@
                                     "limit_to_extruder": "wall_x_extruder_nr",
                                     "settable_per_mesh": true
                                 },
-                                "acceleration_wall_0_roofing": {
+                                "acceleration_wall_0_roofing":
+                                {
                                     "label": "Top Surface Outer Wall Acceleration",
                                     "description": "The acceleration with which the top surface outermost walls are printed.",
                                     "unit": "mm/s\u00b2",
@@ -3576,7 +3581,8 @@
                                     "limit_to_extruder": "wall_0_extruder_nr",
                                     "settable_per_mesh": true
                                 },
-                                "acceleration_wall_x_roofing": {
+                                "acceleration_wall_x_roofing":
+                                {
                                     "label": "Top Surface Inner Wall Acceleration",
                                     "description": "The acceleration with which the top surface inner walls are printed.",
                                     "unit": "mm/s\u00b2",
@@ -3889,7 +3895,8 @@
                                     "limit_to_extruder": "wall_x_extruder_nr",
                                     "settable_per_mesh": true
                                 },
-                                "jerk_wall_0_roofing": {
+                                "jerk_wall_0_roofing":
+                                {
                                     "label": "Top Surface Outer Wall Jerk",
                                     "description": "The maximum instantaneous velocity change with which the top surface outermost walls are printed.",
                                     "unit": "mm/s",
@@ -3902,7 +3909,8 @@
                                     "limit_to_extruder": "wall_0_extruder_nr",
                                     "settable_per_mesh": true
                                 },
-                                "jerk_wall_x_roofing": {
+                                "jerk_wall_x_roofing":
+                                {
                                     "label": "Top Surface Inner Wall Jerk",
                                     "description": "The maximum instantaneous velocity change with which the top surface inner walls are printed.",
                                     "unit": "mm/s",
