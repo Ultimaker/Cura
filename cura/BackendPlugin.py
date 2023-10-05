@@ -16,9 +16,10 @@ from UM.Resources import Resources
 
 class BackendPlugin(AdditionalSettingDefinitionsAppender, PluginObject):
     catalog = i18nCatalog("cura")
+    settings_catalog = i18nCatalog("fdmprinter.def.json")
 
     def __init__(self) -> None:
-        super().__init__()
+        super().__init__(self.settings_catalog)
         self.__port: int = 0
         self._plugin_address: str = "127.0.0.1"
         self._plugin_command: Optional[List[str]] = None
