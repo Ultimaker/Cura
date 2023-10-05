@@ -7,7 +7,7 @@ from typing import Optional, List
 
 from UM.Logger import Logger
 from UM.Message import Message
-from UM.Settings.AdditionalSettingDefinitionAppender import AdditionalSettingDefinitionsAppender
+from UM.Settings.AdditionalSettingDefinitionsAppender import AdditionalSettingDefinitionsAppender
 from UM.PluginObject import PluginObject
 from UM.i18n import i18nCatalog
 from UM.Platform import Platform
