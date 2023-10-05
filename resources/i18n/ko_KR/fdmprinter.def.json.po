@@ -102,11 +102,11 @@ msgstr "접착 성항"
 
 msgctxt "skin_overlap description"
 msgid "Adjust the amount of overlap between the walls and (the endpoints of) the skin-centerlines, as a percentage of the line widths of the skin lines and the innermost wall. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any percentage over 50% may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall."
-msgstr "벽과 스킨-센터선(종점) 사이의 겹침 양을 스킨 선과 가장 안쪽 벽의 선 폭 비율로 조정하십시오. 약간의 겹침으로 벽이 스킨에 확실하게 연결될 수 있습니다. 동일한 스킨 및 벽 선-폭을 고려할 때 비율이 50%가 넘는다면, 그 지점에서 스킨-익스트루더의 노즐 위치가 이미 벽 중앙을 지나 도달할 수 있기 때문에 이미 스킨이 벽을 지나치고 있을 수 있습니다."
+msgstr "벽과 스킨-센터선 사이의 겹침 양을 스킨 선과 가장 안쪽 벽의 선 폭 비율로 조정하십시오. 약간의 겹침으로 벽이 스킨에 확실하게 연결될 수 있습니다. 동일한 스킨 및 벽 선-폭을 고려할 때 비율이 50%가 넘는다면, 그 지점에서 스킨-익스트루더의 노즐 위치가 이미 벽 중앙을 지나 도달할 수 있기 때문에 이미 스킨이 벽을 지나치고 있을 수 있습니다."
 
 msgctxt "skin_overlap_mm description"
 msgid "Adjust the amount of overlap between the walls and (the endpoints of) the skin-centerlines. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any value over half the width of the wall may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall."
-msgstr "벽과 스킨-센터선(종점) 사이의 겹침 양을 조정하십시오. 약간의 겹침으로 벽이 스킨에 확실하게 연결될 수 있습니다. 동일한 스킨 및 벽 선-폭을 고려할 때 값이 벽 폭의 절반을 넘는다면, 그 지점에서 스킨-익스트루더의 노즐 위치가 이미 벽 중앙을 지나 도달할 수 있기 때문에 이미 스킨이 벽을 지나치고 있을 수 있습니다."
+msgstr "벽과 스킨-센터선 사이의 겹침 양을 조정하십시오. 약간의 겹침으로 벽이 스킨에 확실하게 연결될 수 있습니다. 동일한 스킨 및 벽 선-폭을 고려할 때 값이 벽 폭의 절반을 넘는다면, 그 지점에서 스킨-익스트루더의 노즐 위치가 이미 벽 중앙을 지나 도달할 수 있기 때문에 이미 스킨이 벽을 지나치고 있을 수 있습니다."
 
 msgctxt "infill_sparse_density description"
 msgid "Adjusts the density of infill of the print."
@@ -5018,7 +5018,7 @@ msgstr "0보다 큰 값으로 설정하면 구멍 수평 확장이 작은 구멍
 
 msgctxt "hole_xy_offset description"
 msgid "When greater than zero, the Hole Horizontal Expansion is the amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes. When this setting is enabled it can be further tuned with Hole Horizontal Expansion Max Diameter."
-msgstr "0보다 큰 경우 구멍 수평 확장은 각 레이어의 모든 구멍에 적용되는 오프셋 양입니다. 양수 값은 구멍 크기를 늘리고, 음수 값은 구멍 크기를 줄입니다. 이 설정이 활성화되면 구멍 수평 확장 최대 직경을 통해 추가로 조정할 수 있습니다."
+msgstr "0보다 큰 경우 구멍 수평 확장은 각 레이어의 모든 구멍에 적용되는 옵셋 양입니다. 양수 값은 구멍 크기를 늘리고, 음수 값은 구멍 크기를 줄입니다. 이 설정이 활성화되면 구멍 수평 확장 최대 직경을 통해 추가로 조정할 수 있습니다."
 
 msgctxt "bridge_skin_material_flow description"
 msgid "When printing bridge skin regions, the amount of material extruded is multiplied by this value."
@@ -5427,7 +5427,7 @@ msgstr "이 값보다 긴 이동 이동의 경우 자재 흐름이 경로 목표
 
 #~ msgctxt "hole_xy_offset description"
 #~ msgid "Amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes."
-#~ msgstr "각 레이어의 모든 구멍에 적용된 오프셋의 양. 양수 값은 구멍 크기를 증가시키며, 음수 값은 구멍 크기를 줄입니다."
+#~ msgstr "각 레이어의 모든 구멍에 적용된 옵셋의 양. 양수 값은 구멍 크기를 증가시키며, 음수 값은 구멍 크기를 줄입니다."
 
 #~ msgctxt "wireframe_strategy option compensate"
 #~ msgid "Compensate"

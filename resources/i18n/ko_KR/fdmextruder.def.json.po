@@ -162,7 +162,7 @@ msgstr "익스트루더를 끌 때 끝 위치의 x 좌표."
 
 msgctxt "machine_nozzle_offset_x description"
 msgid "The x-coordinate of the offset of the nozzle."
-msgstr "노즐 오프셋의 x 좌표."
+msgstr "노즐 옵셋의 x 좌표."
 
 msgctxt "machine_extruder_start_pos_x description"
 msgid "The x-coordinate of the starting position when turning the extruder on."
@@ -174,7 +174,7 @@ msgstr "익스트루더를 끌 때 종료 위치의 y 좌표."
 
 msgctxt "machine_nozzle_offset_y description"
 msgid "The y-coordinate of the offset of the nozzle."
-msgstr "노즐 오프셋의 y 좌표."
+msgstr "노즐 옵셋의 y 좌표."
 
 msgctxt "machine_extruder_start_pos_y description"
 msgid "The y-coordinate of the starting position when turning the extruder on."
