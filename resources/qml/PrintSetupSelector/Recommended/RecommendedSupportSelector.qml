@@ -23,7 +23,6 @@ RecommendedSettingSection
     function onEnableSectionChanged(state)
     {
         supportEnabled.setPropertyValue("value", state)
-        support.updateAllExtruders = true
     }
 
     property UM.SettingPropertyProvider supportEnabled: UM.SettingPropertyProvider
@@ -47,6 +46,7 @@ RecommendedSettingSection
                 id:support
                 width: parent.width
                 settingName: "support_structure"
+                propertyRemoveUnusedValue: false
             }
         },
         RecommendedSettingItem
