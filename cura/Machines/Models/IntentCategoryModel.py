@@ -39,7 +39,9 @@ class IntentCategoryModel(ListModel):
         """
         if len(cls._translations) == 0:
             cls._translations["default"] = {
-                "name": catalog.i18nc("@label", "Balanced")
+                "name": catalog.i18nc("@label", "Balanced"),
+                "description": catalog.i18nc("@text",
+                                             "The balanced profile, is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy.")
             }
             cls._translations["visual"] = {
                 "name": catalog.i18nc("@label", "Visual"),
