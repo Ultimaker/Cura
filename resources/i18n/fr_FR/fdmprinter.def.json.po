@@ -934,7 +934,7 @@ msgstr "Arrière gauche"
 
 msgctxt "z_seam_position option back"
 msgid "Back"
-msgstr "Précédent"
+msgstr "Arrière"
 
 msgctxt "z_seam_position option backright"
 msgid "Back Right"
