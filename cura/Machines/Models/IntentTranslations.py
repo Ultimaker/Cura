@@ -8,7 +8,7 @@ catalog = i18nCatalog("cura")
 
 intent_translations = collections.OrderedDict()  # type: collections.OrderedDict[str, Dict[str, Optional[str]]]
 intent_translations["default"] = {
-    "name": catalog.i18nc("@label", "Default")
+    "name": catalog.i18nc("@label", "Balanced")
 }
 intent_translations["visual"] = {
     "name": catalog.i18nc("@label", "Visual"),

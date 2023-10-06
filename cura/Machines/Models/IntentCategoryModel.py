@@ -39,7 +39,7 @@ class IntentCategoryModel(ListModel):
         """
         if len(cls._translations) == 0:
             cls._translations["default"] = {
-                "name": catalog.i18nc("@label", "Default")
+                "name": catalog.i18nc("@label", "Balanced")
             }
             cls._translations["visual"] = {
                 "name": catalog.i18nc("@label", "Visual"),
