@@ -250,14 +250,14 @@ msgid ""
 "<p>Find out how to ensure the best possible print quality and reliability.</p>\n"
 "<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
 msgstr ""
-"<p>하나 이상의 3D 모델이 모델 크기 및 재료 구성으로 인해 최적의 상태로 인쇄되지 않을 수 있습니다.</p>\n"
+"<p>하나 이상의 3D 모델이 모델 크기 및 재료 구성으로 인해 최적의 상태로 출력되지 않을 수 있습니다.</p>\n"
 "<p>{model_names}</p>\n"
-"<p>인쇄 품질 및 안정성을 최고로 높이는 방법을 알아보십시오.</p>\n"
-"<p><a href=\"https://ultimaker.com/3D-model-assistant\">인쇄 품질 가이드 보기</a></p>"
+"<p>출력 품질 및 안정성을 최고로 높이는 방법을 알아보십시오.</p>\n"
+"<p><a href=\"https://ultimaker.com/3D-model-assistant\">출력 품질 가이드 보기</a></p>"
 
 msgctxt "@label"
 msgid "A USB print is in progress, closing Cura will stop this print. Are you sure?"
-msgstr "USB 인쇄가 진행 중입니다. Cura를 닫으면 인쇄도 중단됩니다. 계속하시겠습니까?"
+msgstr "USB 출력이 진행 중입니다. Cura를 닫으면 출력도 중단됩니다. 계속하시겠습니까?"
 
 msgctxt "info:status"
 msgid "A cloud connection is not available for a printer"
@@ -282,11 +282,11 @@ msgstr "중단"
 
 msgctxt "@label"
 msgid "Abort Print"
-msgstr "프린팅 중단"
+msgstr "출력 중단"
 
 msgctxt "@window:title"
 msgid "Abort print"
-msgstr "프린팅 중단"
+msgstr "출력 중단"
 
 msgctxt "@label:status"
 msgid "Aborted"
@@ -431,7 +431,7 @@ msgstr "출력물의 내부채움을 조절합니다."
 
 msgctxt "support_type description"
 msgid "Adjusts the placement of the support structures. The placement can be set to touching build plate or everywhere. When set to everywhere the support structures will also be printed on the model."
-msgstr "서포트 구조의 배치를 조정합니다. 배치는 빌드 플레이트 또는 모든 곳을 터치하도록 설정할 수 있습니다. 모든 곳에 설정하면 모델에 서포트 구조가 프린팅됩니다."
+msgstr "서포트 구조의 배치를 조정합니다. 배치는 베드 또는 모든 곳을 터치하도록 설정할 수 있습니다. 모든 곳에 설정하면 모델에 서포트 구조가 출력됩니다."
 
 msgctxt "@label Header for list of settings."
 msgid "Affected By"
@@ -508,7 +508,7 @@ msgstr "익스트루더 옵셋을 G코드에 적용"
 
 msgctxt "@info:title"
 msgid "Are you ready for cloud printing?"
-msgstr "클라우드 프린팅이 준비되었습니까?"
+msgstr "클라우드 출력이 준비되었습니까?"
 
 msgctxt "@label %1 is the name of a print job."
 msgid "Are you sure you want to abort %1?"
@@ -516,7 +516,7 @@ msgstr "%1(을)를 정말로 중지하시겠습니까?"
 
 msgctxt "@label"
 msgid "Are you sure you want to abort the print?"
-msgstr "프린팅를 중단 하시겠습니까?"
+msgstr "출력를 중단 하시겠습니까?"
 
 msgctxt "@label %1 is the name of a print job."
 msgid "Are you sure you want to delete %1?"
@@ -541,7 +541,7 @@ msgstr "일시적으로 {printer_name}을(를) 제거하시겠습니까?"
 
 msgctxt "@info:question"
 msgid "Are you sure you want to start a new project? This will clear the build plate and any unsaved settings."
-msgstr "새 프로젝트를 시작 하시겠습니까? 빌드 플레이트 및 저장하지 않은 설정이 지워집니다."
+msgstr "새 프로젝트를 시작 하시겠습니까? 베드 및 저장하지 않은 설정이 지워집니다."
 
 msgctxt "@label (%1 is object name)"
 msgid "Are you sure you wish to remove %1? This cannot be undone!"
@@ -574,7 +574,7 @@ msgstr "Cura가 시작되는 날마다 자동으로 백업을 생성하십시오
 
 msgctxt "@option:check"
 msgid "Automatically drop models to the build plate"
-msgstr "모델을 빌드 플레이트에 자동으로 놓기"
+msgstr "모델을 베드에 자동으로 놓기"
 
 msgctxt "@action:button"
 msgid "Automatically upgrade Firmware"
@@ -638,7 +638,7 @@ msgstr "상표"
 
 msgctxt "@title"
 msgid "Build Plate Leveling"
-msgstr "빌드 플레이트 레벨링"
+msgstr "베드 레벨링"
 
 msgctxt "@info:title"
 msgid "Build Volume"
@@ -646,11 +646,11 @@ msgstr "출력물 크기"
 
 msgctxt "@label"
 msgid "Build plate"
-msgstr "빌드 플레이트"
+msgstr "베드"
 
 msgctxt "@label"
 msgid "Build plate shape"
-msgstr "빌드 플레이트 모양"
+msgstr "베드 모양"
 
 msgctxt "@label"
 msgid "Bundled Materials"
@@ -784,7 +784,7 @@ msgstr "펌웨어 업데이트를 확인합니다."
 
 msgctxt "description"
 msgid "Checks models and print configuration for possible printing issues and give suggestions."
-msgstr "가능한 프린팅 문제를 위해 모델 및 인쇄 구성을 확인하고 제안합니다."
+msgstr "가능한 출력 문제를 위해 모델 및 출력 구성을 확인하고 제안합니다."
 
 msgctxt "@label"
 msgid ""
@@ -798,7 +798,7 @@ msgstr ""
 "\n"
 "'표준' 서포트는 오버행(경사면) 파트 바로 아래에 서포트 구조물을 생성하고 해당 영역을 바로 아래로 떨어뜨립니다. \n"
 "\n"
-"'트리' 서포트는 모델을 지지하는 브랜치 끝에서 오버행(경사면) 영역을 향해 브랜치를 만들고 빌드 플레이트에서 모델을 지지할 수 있도록 모델을 브랜치로 최대한 감쌉니다."
+"'트리' 서포트는 모델을 지지하는 브랜치 끝에서 오버행(경사면) 영역을 향해 브랜치를 만들고 베드에서 모델을 지지할 수 있도록 모델을 브랜치로 최대한 감쌉니다."
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "Clear Build Plate"
@@ -806,7 +806,7 @@ msgstr "베드 비우기"
 
 msgctxt "@option:check"
 msgid "Clear buildplate before loading model into the single instance"
-msgstr "모델을 단일 인스턴스로 로드하기 전에 빌드 플레이트 지우기"
+msgstr "모델을 단일 인스턴스로 로드하기 전에 베드 지우기"
 
 msgctxt "@text"
 msgid "Click the export material archive button."
@@ -1084,7 +1084,7 @@ msgstr "UltiMaker 계정 무료 생성"
 
 msgctxt "@info:tooltip"
 msgid "Create a volume in which supports are not printed."
-msgstr "서포트가 프린팅되지 않는 볼륨을 만듭니다."
+msgstr "서포트가 출력되지 않는 볼륨을 만듭니다."
 
 msgctxt "@action:ComboBox Save settings in a new profile"
 msgid "Create new"
@@ -1108,7 +1108,7 @@ msgstr "Digital Library에서 프린트 프로젝트를 생성하십시오."
 
 msgctxt "description"
 msgid "Creates an eraser mesh to block the printing of support in certain places"
-msgstr "특정 장소에서 서포트 프린팅을 막는 지우개 메시를 만듭니다"
+msgstr "특정 장소에서 서포트 출력을 막는 지우개 메시를 만듭니다"
 
 msgctxt "@info:backup_status"
 msgid "Creating your backup..."
@@ -1305,7 +1305,7 @@ msgstr "선택 항목 삭제"
 
 msgctxt "@window:title"
 msgid "Delete print job"
-msgstr "인쇄 작업 삭제"
+msgstr "출력 작업 삭제"
 
 msgctxt "@label"
 msgid "Density"
@@ -1463,7 +1463,7 @@ msgstr "익스트루더 사용"
 
 msgctxt "@label"
 msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards. Disabling it results in a skirt around object by default."
-msgstr "브림이나 라프트 인쇄를 활성화합니다. 이렇게 하면 나중에 자르기 쉬운 평평한 영역이 개체 주변이나 아래에 추가됩니다. 비활성화하면 기본적으로 개체 주변에 스커트가 생깁니다."
+msgstr "브림이나 라프트 출력를 활성화합니다. 이렇게 하면 나중에 자르기 쉬운 평평한 영역이 개체 주변이나 아래에 추가됩니다. 비활성화하면 기본적으로 개체 주변에 스커트가 생깁니다."
 
 msgctxt "@label"
 msgid "Enabled"
@@ -1471,7 +1471,7 @@ msgstr "실행됨"
 
 msgctxt "description"
 msgid "Enables ability to generate printable geometry from 2D image files."
-msgstr "2D 이미지 파일에서 프린팅 가능한 지오메트리를 생성 할 수 있습니다."
+msgstr "2D 이미지 파일에서 출력 가능한 지오메트리를 생성 할 수 있습니다."
 
 msgctxt "@title:label"
 msgid "End G-code"
@@ -1479,7 +1479,7 @@ msgstr "종료 G코드"
 
 msgctxt "@label"
 msgid "End-to-end solution for fused filament 3D printing."
-msgstr "3D 프린팅을 위한 엔드 투 엔트 솔루션."
+msgstr "3D 출력을 위한 엔드 투 엔트 솔루션."
 
 msgctxt "@info:title"
 msgid "EnginePlugin"
@@ -1747,7 +1747,7 @@ msgstr "펌웨어 버전"
 
 msgctxt "@label"
 msgid "First available"
-msgstr "첫 번째로 사용 가능"
+msgstr "첫번째로 사용 가능"
 
 msgctxt "@label:listbox"
 msgid "Flow"
@@ -1771,7 +1771,7 @@ msgstr "폰트"
 
 msgctxt "@label"
 msgid "For every position; insert a piece of paper under the nozzle and adjust the print build plate height. The print build plate height is right when the paper is slightly gripped by the tip of the nozzle."
-msgstr "모든 자리에; 노즐 아래에 종이 한 장을 넣고 프린팅 빌드 플레이트 높이를 조정하십시오. 빌드플레이드의 높이는 종이의 끝 부분이 노즐의 끝부분으로 살짝 닿을 때의 높이입니다."
+msgstr "모든 자리에; 노즐 아래에 종이 한 장을 넣고 출력 베드 높이를 조정하십시오. 빌드플레이드의 높이는 종이의 끝 부분이 노즐의 끝부분으로 살짝 닿을 때의 높이입니다."
 
 msgctxt "@info:tooltip"
 msgid "For lithophanes a simple logarithmic model for translucency is available. For height maps the pixel values correspond to heights linearly."
@@ -1855,7 +1855,7 @@ msgstr "일반"
 
 msgctxt "@label"
 msgid "Generate structures to support parts of the model which have overhangs. Without these structures, these parts would collapse during printing."
-msgstr "오버행이 있는 모델 서포트를 생성합니다. 이러한 구조가 없으면 이러한 부분이 프린팅 중에 붕괴됩니다."
+msgstr "오버행이 있는 모델 서포트를 생성합니다. 이러한 구조가 없으면 이러한 부분이 출력 중에 붕괴됩니다."
 
 msgctxt "@label Description for development tool"
 msgid "Generating Windows installers"
@@ -1892,15 +1892,15 @@ msgstr "그룹 #{group_nr}"
 
 msgctxt "@tooltip of pre-heat"
 msgid "Heat the bed in advance before printing. You can continue adjusting your print while it is heating, and you won't have to wait for the bed to heat up when you're ready to print."
-msgstr "프린팅하기 전에 베드를 미리 가열하십시오. 가열되는 동안 계속해서 프린팅물을 조정할 수 있으며, 프린팅 준비가 되면 베드가 가열 될 때까지 기다릴 필요가 없습니다."
+msgstr "출력하기 전에 베드를 미리 가열하십시오. 가열되는 동안 계속해서 출력물을 조정할 수 있으며, 출력 준비가 되면 베드가 가열 될 때까지 기다릴 필요가 없습니다."
 
 msgctxt "@tooltip of pre-heat"
 msgid "Heat the hotend in advance before printing. You can continue adjusting your print while it is heating, and you won't have to wait for the hotend to heat up when you're ready to print."
-msgstr "프린팅하기 전에 노즐을 미리 가열하십시오. 가열되는 동안 계속해서 프린팅물을 조정할 수 있으며, 프린팅 준비가 되면 노즐이 가열 될 때까지 기다릴 필요가 없습니다."
+msgstr "출력하기 전에 노즐을 미리 가열하십시오. 가열되는 동안 계속해서 출력물을 조정할 수 있으며, 출력 준비가 되면 노즐이 가열 될 때까지 기다릴 필요가 없습니다."
 
 msgctxt "@label"
 msgid "Heated Build Plate (official kit or self-built)"
-msgstr "히팅 빌드 플레이트 (공식 키트 또는 자체 조립식)"
+msgstr "히팅 베드 (공식 키트 또는 자체 조립식)"
 
 msgctxt "@label"
 msgid "Heated bed"
@@ -1932,7 +1932,7 @@ msgstr "경고 기호를 사용해 모델에서 누락되거나 관계 없는 �
 
 msgctxt "@info:tooltip"
 msgid "Highlight unsupported areas of the model in red. Without support these areas will not print properly."
-msgstr "지원되지 않는 모델 영역을 빨간색으로 강조 표시하십시오. 서포트가 없으면 이 영역이 제대로 프린팅되지 않습니다."
+msgstr "지원되지 않는 모델 영역을 빨간색으로 강조 표시하십시오. 서포트가 없으면 이 영역이 제대로 출력되지 않습니다."
 
 msgctxt "@button"
 msgid "How to load new material profiles to my printer"
@@ -1956,7 +1956,7 @@ msgstr "Cura에 새 UltiMaker 프린터를 추가하려는 경우"
 
 msgctxt "@label"
 msgid "If your printer is not listed, read the <a href='%1'>network printing troubleshooting guide</a>"
-msgstr "프린터가 목록에 없으면 네트워크 프린팅 문제 해결 가이드를 읽어보십시오"
+msgstr "프린터가 목록에 없으면 네트워크 출력 문제 해결 가이드를 읽어보십시오"
 
 msgctxt "name"
 msgid "Image Reader"
@@ -2136,7 +2136,7 @@ msgstr "카메라 줌의 방향을 반전시키기."
 
 msgctxt "@label"
 msgid "Is printed as support."
-msgstr "지원으로 프린팅됩니다."
+msgstr "서포트로 출력됩니다."
 
 msgctxt "@text"
 msgid "It seems like you don't have any compatible printers connected to Digital Factory. Make sure your printer is connected and it's running the latest firmware."
@@ -2252,7 +2252,7 @@ msgstr "개발자에게 문제를 알려주십시오."
 
 msgctxt "@action"
 msgid "Level build plate"
-msgstr "레벨 빌드 플레이트"
+msgstr "레벨 베드"
 
 msgctxt "@item:inlistbox"
 msgid "Lighter is higher"
@@ -2288,7 +2288,7 @@ msgstr "로딩중"
 
 msgctxt "@action:warning"
 msgid "Loading a project will clear all models on the build plate."
-msgstr "프로젝트를 로드하면 빌드 플레이트의 모든 모델이 지워집니다."
+msgstr "프로젝트를 로드하면 베드의 모든 모델이 지워집니다."
 
 msgctxt "@label"
 msgid "Loading available configurations from the printer..."
@@ -2536,7 +2536,7 @@ msgstr "익명 데이터 수집에 대한 추가 정보"
 
 msgctxt "@window:title"
 msgid "Move print job to top"
-msgstr "인쇄 작업을 맨 위로 이동"
+msgstr "출력 작업을 맨 위로 이동"
 
 msgctxt "@action:button"
 msgid "Move to Next Position"
@@ -2561,7 +2561,7 @@ msgstr[0] "선택한 모델 복"
 
 msgctxt "@info"
 msgid "Multiply selected item and place them in a grid of build plate."
-msgstr "선택한 항목을 곱하여 빌드 플레이트 그리드에 배치합니다."
+msgstr "선택한 항목을 곱하여 베드 그리드에 배치합니다."
 
 msgctxt "@info:status"
 msgid "Multiplying and placing objects"
@@ -2881,7 +2881,7 @@ msgstr "무시하기"
 
 msgctxt "@label"
 msgid "Override will use the specified settings with the existing printer configuration. This may result in a failed print."
-msgstr "무시하기는 기존 프린터 구성과 함께 지정된 설정을 사용하게 됩니다. 이는 인쇄 실패로 이어질 수 있습니다."
+msgstr "무시하기는 기존 프린터 구성과 함께 지정된 설정을 사용하게 됩니다. 이는 출력 실패로 이어질 수 있습니다."
 
 msgctxt "@label %1 is the number of settings it overrides."
 msgid "Overrides %1 setting."
@@ -3128,16 +3128,16 @@ msgstr "프린트"
 msgctxt "@label"
 msgid "Print Selected Model With:"
 msgid_plural "Print Selected Models With:"
-msgstr[0] "선택된 모델 프린팅 :"
+msgstr[0] "선택된 모델 출력 :"
 
 msgctxt "@label %1 is filled in with the name of an extruder"
 msgid "Print Selected Model with %1"
 msgid_plural "Print Selected Models with %1"
-msgstr[0] "선택한 모델을 %1로 프린팅하십시오"
+msgstr[0] "선택한 모델을 %1로 출력하십시오"
 
 msgctxt "@label"
 msgid "Print as support"
-msgstr "서포터로 프린팅"
+msgstr "서포트로 출력"
 
 msgctxt "@info:title"
 msgid "Print error"
@@ -3157,47 +3157,47 @@ msgstr "출력 작업이 프린터에 성공적으로 보내졌습니다."
 
 msgctxt "@label"
 msgid "Print jobs"
-msgstr "인쇄 작업"
+msgstr "출력 작업"
 
 msgctxt "@label:button"
 msgid "Print jobs"
-msgstr "인쇄 작업"
+msgstr "출력 작업"
 
 msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Print over network"
-msgstr "네트워크를 통해 프린팅"
+msgstr "네트워크를 통해 출력"
 
 msgctxt "@properties:tooltip"
 msgid "Print over network"
-msgstr "네트워크를 통해 프린팅"
+msgstr "네트워크를 통해 출력"
 
 msgctxt "@title:window"
 msgid "Print over network"
-msgstr "네트워크를 통해 프린팅"
+msgstr "네트워크를 통해 출력"
 
 msgctxt "@label"
 msgid "Print settings"
-msgstr "프린팅 설정"
+msgstr "출력 설정"
 
 msgctxt "@label shown when we load a Gcode file"
 msgid "Print setup disabled. G-code file can not be modified."
-msgstr "인쇄 설정 비활성화됨. G코드 파일을 수정할 수 없습니다."
+msgstr "출력 설정 비활성화됨. G코드 파일을 수정할 수 없습니다."
 
 msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Print via USB"
-msgstr "USB를 통해 프린팅"
+msgstr "USB를 통해 출력"
 
 msgctxt "@info:tooltip"
 msgid "Print via USB"
-msgstr "USB를 통해 프린팅"
+msgstr "USB를 통해 출력"
 
 msgctxt "@action:button"
 msgid "Print via cloud"
-msgstr "Cloud를 통해 프린팅"
+msgstr "Cloud를 통해 출력"
 
 msgctxt "@properties:tooltip"
 msgid "Print via cloud"
-msgstr "Cloud를 통해 프린팅"
+msgstr "Cloud를 통해 출력"
 
 msgctxt "@action:label"
 msgid "Print with"
@@ -3261,15 +3261,15 @@ msgstr "프린트헤드 설정"
 
 msgctxt "@label:status"
 msgid "Printing"
-msgstr "프린팅"
+msgstr "출력"
 
 msgctxt "@label"
 msgid "Printing Time"
-msgstr "프린팅 시간"
+msgstr "출력 시간"
 
 msgctxt "@label:MonitorStatus"
 msgid "Printing..."
-msgstr "프린팅..."
+msgstr "출력..."
 
 msgctxt "@label"
 msgid "Privacy"
@@ -3671,7 +3671,7 @@ msgstr "Cura 프로젝트 저장하기"
 
 msgctxt "@option"
 msgid "Save Cura project and print file"
-msgstr "Cura 프로젝트 저장하고 파일 프린팅하기"
+msgstr "Cura 프로젝트 저장하고 파일 출력하기"
 
 msgctxt "@title:window"
 msgid "Save Custom Profile"
@@ -3806,7 +3806,7 @@ msgstr "보고서 전송"
 
 msgctxt "@info:status"
 msgid "Sending Print Job"
-msgstr "인쇄 작업 전송"
+msgstr "출력 작업 전송"
 
 msgctxt "@info:title"
 msgid "Sending materials to printer"
@@ -3882,7 +3882,7 @@ msgstr "닫힌 위치에서 Cura를 열어야 합니까?"
 
 msgctxt "@info:tooltip"
 msgid "Should a prefix based on the printer name be added to the print job name automatically?"
-msgstr "프린터 이름에 기반한 접두어가 프린팅 작업 이름에 자동으로 추가되어야합니까?"
+msgstr "프린터 이름에 기반한 접두어가 출력 작업 이름에 자동으로 추가되어야합니까?"
 
 msgctxt "@info:tooltip"
 msgid "Should a summary be shown when saving a project file?"
@@ -3910,7 +3910,7 @@ msgstr "모델을 로드한 후에 선택해야 합니까?"
 
 msgctxt "@info:tooltip"
 msgid "Should models on the platform be moved down to touch the build plate?"
-msgstr "모델을 빌드 플레이트에 닿도록 아래로 움직여야합니까?"
+msgstr "모델을 베드에 닿도록 아래로 움직여야합니까?"
 
 msgctxt "@info:tooltip"
 msgid "Should models on the platform be moved so that they no longer intersect?"
@@ -3922,7 +3922,7 @@ msgstr "데스크톱 또는 외부 애플리케이션의 파일을 동일한 Cur
 
 msgctxt "@info:tooltip"
 msgid "Should the build plate be cleared before loading a new model in the single instance of Cura?"
-msgstr "Cura의 단일 인스턴스에서 새 모델을 로드하기 전에 빌드 플레이트를 지워야 합니까?"
+msgstr "Cura의 단일 인스턴스에서 새 모델을 로드하기 전에 베드를 지워야 합니까?"
 
 msgctxt "@info:tooltip"
 msgid "Should the default zoom behavior of cura be inverted?"
@@ -4084,7 +4084,7 @@ msgstr ""
 
 msgctxt "@info:status"
 msgid "Some of the packages used in the project file are currently not installed in Cura, this might produce undesirable print results. We highly recommend installing the all required packages from the Marketplace."
-msgstr "프로젝트 파일에 사용된 패키지 중 일부는 현재 Cura에 설치되어 있지 않으며 이로 인해 바람직하지 않은 인쇄 결과가 발생할 수 있습니다. Marketplace에서 필요한 모든 패키지를 설치하는 것이 좋습니다."
+msgstr "프로젝트 파일에 사용된 패키지 중 일부는 현재 Cura에 설치되어 있지 않으며 이로 인해 바람직하지 않은 출력 결과가 발생할 수 있습니다. Marketplace에서 필요한 모든 패키지를 설치하는 것이 좋습니다."
 
 msgctxt "@info:title"
 msgid "Some required packages are not installed"
@@ -4303,7 +4303,7 @@ msgstr "이미지에 적용할 스무딩의 정도."
 
 msgctxt "@text"
 msgid "The annealing profile requires post-processing in an oven after the print is finished. This profile retains the dimensional accuracy of the printed part after annealing and improves strength, stiffness, and thermal resistance."
-msgstr "어닐링 프로파일은 인쇄가 완료된 후 오븐에서 후처리가 필요합니다. 이 프로파일은 어닐링 후 인쇄된 부품의 치수 정확도를 유지하고 강도, 강성 및 내열성을 향상시킵니다."
+msgstr "어닐링 프로파일은 출력이 완료된 후 오븐에서 후처리가 필요합니다. 이 프로파일은 어닐링 후 출력된 부품의 치수 정확도를 유지하고 강도, 강성 및 내열성을 향상시킵니다."
 
 msgctxt "@label"
 msgid "The assigned printer, %1, requires the following configuration change:"
@@ -4316,11 +4316,11 @@ msgstr "백업이 최대 파일 크기를 초과했습니다."
 
 msgctxt "@info:tooltip"
 msgid "The base height from the build plate in millimeters."
-msgstr "밀리미터 단위의 빌드 플레이트에서 기저부 높이."
+msgstr "밀리미터 단위의 베드에서 기저부 높이."
 
 msgctxt "@info:status"
 msgid "The build volume height has been reduced due to the value of the \"Print Sequence\" setting to prevent the gantry from colliding with printed models."
-msgstr "\"프린팅 순서\"설정 값으로 인해 갠트리가 프린팅 된 모델과 충돌하지 않도록 출력물 높이가 줄어 들었습니다."
+msgstr "\"출력 순서\"설정 값으로 인해 갠트리가 출력 된 모델과 충돌하지 않도록 출력물 높이가 줄어 들었습니다."
 
 msgctxt "@status"
 msgid "The cloud connection is currently unavailable. Please check your internet connection."
@@ -4336,7 +4336,7 @@ msgstr "클라우드 프린터가 오프라인 상태입니다. 프린터가 켜
 
 msgctxt "@tooltip"
 msgid "The colour of the material in this extruder."
-msgstr "이 익스트루더의 재료 색."
+msgstr "이 익스트루더의 재료 색상."
 
 msgctxt "@tooltip"
 msgid "The configuration of this extruder is not allowed, and prohibits slicing."
@@ -4356,19 +4356,19 @@ msgstr "이 익스트루더의 현재 온도."
 
 msgctxt "@info:tooltip"
 msgid "The depth in millimeters on the build plate"
-msgstr "빌드 플레이트의 깊이 (밀리미터)"
+msgstr "베드의 깊이 (밀리미터)"
 
 msgctxt "@text"
 msgid "The draft profile is designed to print initial prototypes and concept validation with the intent of significant print time reduction."
-msgstr "초안 프로필은 인쇄 시간을 상당히 줄이려는 의도로 초기 프로토타입과 컨셉트 확인을 인쇄하도록 설계되었습니다."
+msgstr "초안 프로필은 출력 시간을 상당히 줄이려는 의도로 초기 프로토타입과 컨셉트 확인을 출력하도록 설계되었습니다."
 
 msgctxt "@text"
 msgid "The engineering profile is designed to print functional prototypes and end-use parts with the intent of better accuracy and for closer tolerances."
-msgstr "엔지니어링 프로필은 정확도를 개선하고 허용 오차를 좁히려는 의도로 기능 프로토타입 및 최종 사용 부품을 인쇄하도록 설계되었습니다."
+msgstr "엔지니어링 프로필은 정확도를 개선하고 허용 오차를 좁히려는 의도로 기능 프로토타입 및 최종 사용 부품을 출력하도록 설계되었습니다."
 
 msgctxt "@label"
 msgid "The extruder train to use for printing the support. This is used in multi-extrusion."
-msgstr "서포트 프린팅에 사용할 익스트루더. 이것은 다중 압출에 사용됩니다."
+msgstr "서포트 출력에 사용할 익스트루더. 이것은 다중 압출에 사용됩니다."
 
 #, python-brace-format
 msgctxt "@label Don't translate the XML tag <filename>!"
@@ -4516,11 +4516,11 @@ msgstr "노즐을 예열하기 위한 온도."
 
 msgctxt "@text"
 msgid "The visual profile is designed to print visual prototypes and models with the intent of high visual and surface quality."
-msgstr "시각적 프로필은 높은 시각적 및 표면 품질의 의도를 지니고 시각적 프로토타입과 모델을 인쇄하기 위해 설계되었습니다."
+msgstr "시각적 프로필은 높은 시각적 및 표면 품질의 의도를 지니고 시각적 프로토타입과 모델을 출력하기 위해 설계되었습니다."
 
 msgctxt "@info:tooltip"
 msgid "The width in millimeters on the build plate"
-msgstr "빌드 플레이트의 폭 (밀리미터)"
+msgstr "베드의 폭 (밀리미터)"
 
 msgctxt "@label: Please keep the asterix, it's to indicate that a restart is needed."
 msgid "Theme*:"
@@ -4532,7 +4532,7 @@ msgstr "쓸 수있는 파일 형식이 없습니다!"
 
 msgctxt "@label"
 msgid "There are no print jobs in the queue. Slice and send a job to add one."
-msgstr "대기열에 프린팅 작업이 없습니다. 작업을 추가하려면 슬라이스하여 전송하십시오."
+msgstr "대기열에 출력 작업이 없습니다. 작업을 추가하려면 슬라이스하여 전송하십시오."
 
 msgctxt "@tooltip"
 msgid "There are no profiles matching the configuration of this extruder."
@@ -4676,11 +4676,11 @@ msgstr "연결을 설정하려면 {website_link}에 방문하십시오."
 
 msgctxt "@label"
 msgid "To make sure your prints will come out great, you can now adjust your buildplate. When you click 'Move to Next Position' the nozzle will move to the different positions that can be adjusted."
-msgstr "프린팅이 잘 되도록 빌드 플레이트를 조정할 수 있습니다. '다음 위치로 이동'을 클릭하면 노즐이 조정할 수있는 다른 위치로 이동합니다."
+msgstr "출력이 잘 되도록 베드를 조정할 수 있습니다. '다음 위치로 이동'을 클릭하면 노즐이 조정할 수있는 다른 위치로 이동합니다."
 
 msgctxt "@label"
 msgid "To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer."
-msgstr "네트워크를 통해 프린터로 직접 프린팅하려면 네트워크 케이블을 사용하거나 프린터를 WIFI 네트워크에 연결하여 프린터가 네트워크에 연결되어 있는지 확인하십시오. Cura를 프린터에 연결하지 않은 경우에도 USB 드라이브를 사용하여 G코드 파일을 프린터로 전송할 수 있습니다."
+msgstr "네트워크를 통해 프린터로 직접 출력하려면 네트워크 케이블을 사용하거나 프린터를 WIFI 네트워크에 연결하여 프린터가 네트워크에 연결되어 있는지 확인하십시오. Cura를 프린터에 연결하지 않은 경우에도 USB 드라이브를 사용하여 G코드 파일을 프린터로 전송할 수 있습니다."
 
 #, python-brace-format
 msgctxt "@message {printer_name} is replaced with the name of the printer"
@@ -4705,7 +4705,7 @@ msgstr "위에서 보기"
 
 msgctxt "@label"
 msgid "Total print time"
-msgstr "총 인쇄 시간"
+msgstr "총 출력 시간"
 
 msgctxt "@action:tooltip"
 msgid "Track the print in Ultimaker Digital Factory"
@@ -4765,11 +4765,11 @@ msgstr "UFP 작성자"
 
 msgctxt "@item:inmenu"
 msgid "USB printing"
-msgstr "USB 프린팅"
+msgstr "USB 출력"
 
 msgctxt "name"
 msgid "USB printing"
-msgstr "USB 프린팅"
+msgstr "USB 출력"
 
 msgctxt "@button"
 msgid "UltiMaker Account"
@@ -4781,7 +4781,7 @@ msgstr "UltiMaker 인증된 재료"
 
 msgctxt "@text:window"
 msgid "UltiMaker Cura collects anonymous data in order to improve the print quality and user experience. Below is an example of all the data that is shared:"
-msgstr "UltiMaker Cura는 인쇄 품질과 사용자 경험을 개선하기 위해 익명 데이터를 수집합니다. 공유되는 모든 데이터의 예는 다음과 같습니다:"
+msgstr "UltiMaker Cura는 출력 품질과 사용자 경험을 개선하기 위해 익명 데이터를 수집합니다. 공유되는 모든 데이터의 예는 다음과 같습니다:"
 
 msgctxt "@item:inlistbox"
 msgid "UltiMaker Format Package"
@@ -5552,11 +5552,11 @@ msgstr "{}개의 플러그인을 다운로드하지 못했습니다"
 
 #~ msgctxt "@tooltip:button"
 #~ msgid "Become a 3D printing expert with UltiMaker e-learning."
-#~ msgstr "UltiMaker e-러닝을 통해 3D 프린팅 전문가로 거듭나십시오."
+#~ msgstr "UltiMaker e-러닝을 통해 3D 출력 전문가로 거듭나십시오."
 
 #~ msgctxt "@info:status"
 #~ msgid "Cura does not accurately display layers when Wire Printing is enabled."
-#~ msgstr "와이어 프린팅이 활성화되어 있을 때 Cura는 레이어를 정확하게 표시하지 않습니다."
+#~ msgstr "와이어 출력이 활성화되어 있을 때 Cura는 레이어를 정확하게 표시하지 않습니다."
 
 #~ msgctxt "@label"
 #~ msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards."

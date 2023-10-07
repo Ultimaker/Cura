@@ -22,7 +22,7 @@ msgstr "사용 된 필라멘트의 직경을 조정합니다. 이 값을 사용 
 
 msgctxt "platform_adhesion label"
 msgid "Build Plate Adhesion"
-msgstr "빌드 플레이트 접착"
+msgstr "베드 접착"
 
 msgctxt "material_diameter label"
 msgid "Diameter"
@@ -66,7 +66,7 @@ msgstr "익스트루더 프라임 Z 위치"
 
 msgctxt "machine_extruder_cooling_fan_number label"
 msgid "Extruder Print Cooling Fan"
-msgstr "익스트루더 프린팅 냉각 팬"
+msgstr "익스트루더 출력 냉각 팬"
 
 msgctxt "machine_extruder_start_code label"
 msgid "Extruder Start G-Code"
@@ -130,19 +130,19 @@ msgstr "이 익스트루더로 전환 시 실행할 G코드를 시작하십시�
 
 msgctxt "extruder_prime_pos_x description"
 msgid "The X coordinate of the position where the nozzle primes at the start of printing."
-msgstr "프린팅이 시작될 때 노즐이 시작하는 위치의 X 좌표."
+msgstr "출력이 시작될 때 노즐이 시작하는 위치의 X 좌표."
 
 msgctxt "extruder_prime_pos_y description"
 msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
-msgstr "프린팅이 시작될 때 노즐이 시작하는 위치의 Y 좌표."
+msgstr "출력이 시작될 때 노즐이 시작하는 위치의 Y 좌표."
 
 msgctxt "extruder_prime_pos_z description"
 msgid "The Z coordinate of the position where the nozzle primes at the start of printing."
-msgstr "프린팅이 시작될 때 노즐이 시작하는 위치의 Z 좌표입니다."
+msgstr "출력이 시작될 때 노즐이 시작하는 위치의 Z 좌표입니다."
 
 msgctxt "extruder_nr description"
 msgid "The extruder train used for printing. This is used in multi-extrusion."
-msgstr "프린팅에 사용되는 익스트루더 트레인. 이것은 다중 압출에 사용됩니다."
+msgstr "출력에 사용되는 익스트루더 트레인. 이것은 다중 압출에 사용됩니다."
 
 msgctxt "machine_nozzle_size description"
 msgid "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size."
@@ -154,7 +154,7 @@ msgstr "\"AA 0.4\"및 \"BB 0.8\"과 같은 익스트루더 트레인의 노즐 I
 
 msgctxt "machine_extruder_cooling_fan_number description"
 msgid "The number of the print cooling fan associated with this extruder. Only change this from the default value of 0 when you have a different print cooling fan for each extruder."
-msgstr "이 익스트루더와 관련된 프린팅 냉각 팬의 개수. 각 익스트루더마다 다른 프린팅 냉각 팬이 있을 때만 기본값 0에서 변경하십시오."
+msgstr "이 익스트루더와 관련된 출력 냉각 팬의 개수. 각 익스트루더마다 다른 출력 냉각 팬이 있을 때만 기본값 0에서 변경하십시오."
 
 msgctxt "machine_extruder_end_pos_x description"
 msgid "The x-coordinate of the ending position when turning the extruder off."
