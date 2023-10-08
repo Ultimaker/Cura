@@ -2350,15 +2350,15 @@ msgstr "끔"
 
 msgctxt "mesh_position_x description"
 msgid "Offset applied to the object in the x direction."
-msgstr "x 방향으로 객체에 적용된 옵셋입니다"
+msgstr "x 방향으로 개체에 적용된 옵셋입니다."
 
 msgctxt "mesh_position_y description"
 msgid "Offset applied to the object in the y direction."
-msgstr "y 방향으로 객체에 적용된 옵셋입니다"
+msgstr "y 방향으로 개체에 적용된 옵셋입니다."
 
 msgctxt "mesh_position_z description"
 msgid "Offset applied to the object in the z direction. With this you can perform what was used to be called 'Object Sink'."
-msgstr "z 방향으로 객체에 적용된 옵셋입니다. 이것을 사용하여 '오프젝트 싱크'라고 불렀던 것을 수행 할 수 있습니다"
+msgstr "z 방향으로 개체에 적용된 옵셋입니다. 이것을 사용하여 '오프젝트 싱크'라고 불렀던 것을 수행 할 수 있습니다."
 
 msgctxt "machine_use_extruder_offset_to_offset_coords label"
 msgid "Offset with Extruder"
@@ -4294,7 +4294,7 @@ msgstr "노즐 끝의 외경."
 
 msgctxt "infill_pattern description"
 msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the ceiling of the object."
-msgstr "프린트 내부채움 재료의 패턴입니다. 선형과 지그재그형 내부채움이 서로 다른 레이어에서 방향을 바꾸므로 재료비가 절감됩니다. 격자, 삼각형, 트라이 헥사곤 (tri-hexagon), 큐빅, 옥텟 (octet), 쿼터 큐빅, 크로스, 동심원 패턴이 레이어마다 완전히 프린트됩니다. 자이로이드 (Gyroid), 큐빅, 쿼터 큐빅, 옥텟 (octet) 내부채움이 레이어마다 변경되므로 각 방향으로 힘이 더 균등하게 분산됩니다. 라이트닝 내부채움이 객체의 천장만 서포트하여 내부채움을 최소화합니다."
+msgstr "프린트 내부채움 재료의 패턴입니다. 선형과 지그재그형 내부채움이 서로 다른 레이어에서 방향을 바꾸므로 재료비가 절감됩니다. 격자, 삼각형, 트라이 헥사곤 (tri-hexagon), 큐빅, 옥텟 (octet), 쿼터 큐빅, 크로스, 동심원 패턴이 레이어마다 완전히 프린트됩니다. 자이로이드 (Gyroid), 큐빅, 쿼터 큐빅, 옥텟 (octet) 내부채움이 레이어마다 변경되므로 각 방향으로 힘이 더 균등하게 분산됩니다. 라이트닝 내부채움이 개체의 천장만 서포트하여 내부채움을 최소화합니다."
 
 msgctxt "support_pattern description"
 msgid "The pattern of the support structures of the print. The different options available result in sturdy or easy to remove support."
@@ -4738,7 +4738,7 @@ msgstr "상단 두께"
 
 msgctxt "max_skin_angle_for_expansion description"
 msgid "Top and/or bottom surfaces of your object with an angle larger than this setting, won't have their top/bottom skin expanded. This avoids expanding the narrow skin areas that are created when the model surface has a near vertical slope. An angle of 0° is horizontal and will cause no skin to be expanded, while an angle of 90° is vertical and will cause all skin to be expanded."
-msgstr "이 설정보다 큰 각도로 객체의 상단 및 또는 하단 표면은 위쪽/아래쪽 스킨이 확장되지 않습니다. 이렇게하면 모델 표면이 수직 경사가 거의 없을 때 생성되는 좁은 스킨 영역을 확장하지 않아도됩니다. 0°의 각도는 수평이며 스킨의 확장을 유발하지 않고, 90°의 각도는 수직이며 모든 스킨의 확장을 유발합니다."
+msgstr "이 설정보다 큰 각도로 개체의 상단 및 또는 하단 표면은 위쪽/아래쪽 스킨이 확장되지 않습니다. 이렇게하면 모델 표면이 수직 경사가 거의 없을 때 생성되는 좁은 스킨 영역을 확장하지 않아도됩니다. 0°의 각도는 수평이며 스킨의 확장을 유발하지 않고, 90°의 각도는 수직이며 모든 스킨의 확장을 유발합니다."
 
 msgctxt "top_bottom description"
 msgid "Top/Bottom"
@@ -5098,7 +5098,7 @@ msgstr "기기의 빌드 볼륨 온도 안정화 할수있는지 여부입니다
 
 msgctxt "center_object description"
 msgid "Whether to center the object on the middle of the build platform (0,0), instead of using the coordinate system in which the object was saved."
-msgstr "객체가 저장된 좌표계를 사용하는 대신 빌드 플랫폼 중간 (0,0)를 중심으로 할지 여부."
+msgstr "개체가 저장된 좌표계를 사용하는 대신 빌드 플랫폼 중간 (0,0)를 중심으로 할지 여부."
 
 msgctxt "machine_nozzle_temp_enabled description"
 msgid "Whether to control temperature from Cura. Turn this off to control nozzle temperature from outside of Cura."
