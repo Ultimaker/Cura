@@ -14,7 +14,7 @@ msgstr ""
 
 msgctxt "platform_adhesion description"
 msgid "Adhesion"
-msgstr "접착"
+msgstr "안착"
 
 msgctxt "material_diameter description"
 msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
@@ -22,7 +22,7 @@ msgstr "사용 된 필라멘트의 직경을 조정합니다. 이 값을 사용 
 
 msgctxt "platform_adhesion label"
 msgid "Build Plate Adhesion"
-msgstr "베드 접착"
+msgstr "베드 안착"
 
 msgctxt "material_diameter label"
 msgid "Diameter"

@@ -419,11 +419,11 @@ msgstr "주소"
 
 msgctxt "@label"
 msgid "Adhesion"
-msgstr "접착"
+msgstr "안착"
 
 msgctxt "@label"
 msgid "Adhesion Information"
-msgstr "접착 정보"
+msgstr "안착 정보"
 
 msgctxt "@label"
 msgid "Adjusts the density of infill of the print."
@@ -1819,7 +1819,7 @@ msgstr "G코드 작성자"
 
 msgctxt "@label"
 msgid "G-code flavor"
-msgstr "G코드 유형"
+msgstr "G코드 호환"
 
 msgctxt "@label Description for application component"
 msgid "G-code generator"

@@ -14,11 +14,11 @@ msgstr ""
 
 msgctxt "ironing_inset description"
 msgid "A distance to keep from the edges of the model. Ironing all the way to the edge of the mesh may result in a jagged edge on your print."
-msgstr "모델 브림에서 떨어서포트 않는 거리. 메시 브림까지 다림질하면 출력물의 브림가 고르지 않을 수 있습니다."
+msgstr "모델의 가장자리로부터 유지해야 할 거리입니다. 메시 가장자리까지 다림질하면 출력물의 가장자리가 들쭉날쭉해질 수 있습니다."
 
 msgctxt "material_no_load_move_factor description"
 msgid "A factor indicating how much the filament gets compressed between the feeder and the nozzle chamber, used to determine how far to move the material for a filament switch."
-msgstr "피더와 노즐 챔버 사이에 필라멘트가 압축되는 양을 나타내는 요소, 필라멘트 전환을 위해 재료를 움직이는 범위를 결정하는 데 사용됨."
+msgstr "피더와 노즐 챔버 사이에서 필라멘트가 얼마나 압축되는지 나타내는 요소로, 필라멘트 스위치를 위해 재료를 얼마나 멀리 이동할지 결정하는 데 사용됩니다."
 
 msgctxt "roofing_angles description"
 msgid "A list of integer line directions to use when the top surface skin layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees)."
@@ -94,11 +94,11 @@ msgstr ""
 
 msgctxt "platform_adhesion description"
 msgid "Adhesion"
-msgstr "접착"
+msgstr "안착"
 
 msgctxt "material_adhesion_tendency label"
 msgid "Adhesion Tendency"
-msgstr "접착 성항"
+msgstr "안착 성항"
 
 msgctxt "skin_overlap description"
 msgid "Adjust the amount of overlap between the walls and (the endpoints of) the skin-centerlines, as a percentage of the line widths of the skin lines and the innermost wall. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any percentage over 50% may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall."
@@ -458,7 +458,7 @@ msgstr "빌드 볼륨 온도"
 
 msgctxt "center_object label"
 msgid "Center Object"
-msgstr "객체 가운데로"
+msgstr "개체 가운데로"
 
 msgctxt "conical_overhang_enabled description"
 msgid "Change the geometry of the printed model such that minimal support is required. Steep overhangs will become shallow overhangs. Overhanging areas will drop down to become more vertical."
@@ -2406,7 +2406,7 @@ msgstr "벽면 출력 순서 명령 최적화"
 
 msgctxt "optimize_wall_printing_order description"
 msgid "Optimize the order in which walls are printed so as to reduce the number of retractions and the distance travelled. Most parts will benefit from this being enabled but some may actually take longer so please compare the print time estimates with and without optimization. First layer is not optimized when choosing brim as build plate adhesion type."
-msgstr "수축 및 이동 거리를 줄이도록 벽이 출력되는 순서를 최적화합니다. 대부분의 부품은 이 기능을 사용하면 도움이 되지만 실제로는 시간이 오래 걸릴 수 있으므로, 최적화 여부와 관계없이 출력 시간을 비교하십시오. 베드 접착 유형을 Brim으로 선택하는 경우 첫번째 층이 최적화되지 않습니다."
+msgstr "수축 및 이동 거리를 줄이도록 벽이 출력되는 순서를 최적화합니다. 대부분의 부품은 이 기능을 사용하면 도움이 되지만 실제로는 시간이 오래 걸릴 수 있으므로, 최적화 여부와 관계없이 출력 시간을 비교하십시오. 베드 안착 유형을 Brim으로 선택하는 경우 첫번째 층이 최적화되지 않습니다."
 
 msgctxt "machine_nozzle_tip_outer_diameter label"
 msgid "Outer Nozzle Diameter"
@@ -2534,7 +2534,7 @@ msgstr "프라임 타워 Y 위치"
 
 msgctxt "prime_tower_brim_enable description"
 msgid "Prime-towers might need the extra adhesion afforded by a brim even if the model doesn't. Presently can't be used with the 'Raft' adhesion-type."
-msgstr "프라임 타워는 모델이 제공하지 않더라도 브림이 제공하는 추가 접착이 필요할 수 있습니다. 현재 '라프트' 접착 유형을 사용할 수 없습니다."
+msgstr "프라임 타워는 모델이 제공하지 않더라도 브림이 제공하는 추가 접착이 필요할 수 있습니다. 현재 '라프트' 안착 유형을 사용할 수 없습니다."
 
 msgctxt "acceleration_print label"
 msgid "Print Acceleration"
@@ -3110,7 +3110,7 @@ msgstr "속도"
 
 msgctxt "wipe_hop_speed description"
 msgid "Speed to move the z-axis during the hop."
-msgstr "홉 중에 z축을 이동하는 속도입니다."
+msgstr "올리기 중에 z축을 이동하는 속도입니다."
 
 msgctxt "magic_spiralize label"
 msgid "Spiralize Outer Contour"
@@ -4522,7 +4522,7 @@ msgstr "코스팅시 이동 속도. 압출 경로의 속도에 상대적입니�
 
 msgctxt "speed_layer_0 description"
 msgid "The speed for the initial layer. A lower value is advised to improve adhesion to the build plate. Does not affect the build plate adhesion structures themselves, like brim and raft."
-msgstr "초기 레이어의 속도입니다. 베드에 대한 접착력을 향상시키려면 낮은 값을 권장합니다. 브림과 라프트 같은 베드 접착 구조 자체에 영향을 미치지 않습니다."
+msgstr "초기 레이어의 속도입니다. 베드에 대한 접착력을 향상시키려면 낮은 값을 권장합니다. 브림과 라프트 같은 베드 안착 구조 자체에 영향을 미치지 않습니다."
 
 msgctxt "speed_print_layer_0 description"
 msgid "The speed of printing for the initial layer. A lower value is advised to improve adhesion to the build plate."
@@ -5214,7 +5214,7 @@ msgstr "브러시 닦기 X 위치"
 
 msgctxt "wipe_hop_speed label"
 msgid "Wipe Hop Speed"
-msgstr "닦기 홉 속도"
+msgstr "닦기 Z 올리기 속도"
 
 msgctxt "prime_tower_wipe_enabled label"
 msgid "Wipe Inactive Nozzle on Prime Tower"
@@ -5262,11 +5262,11 @@ msgstr "닦기 리트렉션 속도"
 
 msgctxt "wipe_hop_enable label"
 msgid "Wipe Z Hop"
-msgstr "닦기 Z 홉"
+msgstr "닦기 Z 올리기"
 
 msgctxt "wipe_hop_amount label"
 msgid "Wipe Z Hop Height"
-msgstr "닦기 Z 홉 높이"
+msgstr "닦기 Z 올리기 높이"
 
 msgctxt "retraction_combing option infill"
 msgid "Within Infill"
@@ -5298,27 +5298,27 @@ msgstr "+ 방향 Z 엔드 스톱"
 
 msgctxt "retraction_hop_after_extruder_switch label"
 msgid "Z Hop After Extruder Switch"
-msgstr "익스트루더 스위치 후 Z 홉"
+msgstr "익스트루더 스위치 후 Z 올리기"
 
 msgctxt "retraction_hop_after_extruder_switch_height label"
 msgid "Z Hop After Extruder Switch Height"
-msgstr "익스트루더 스위치 높이 후 Z 홉"
+msgstr "익스트루더 스위치 높이 후 Z 올리기"
 
 msgctxt "retraction_hop label"
 msgid "Z Hop Height"
-msgstr "Z 홉 높이"
+msgstr "Z 올리기 높이"
 
 msgctxt "retraction_hop_only_when_collides label"
 msgid "Z Hop Only Over Printed Parts"
-msgstr "출력 된 부분에만 Z 홉"
+msgstr "출력 된 부분에만 Z 올리기"
 
 msgctxt "speed_z_hop label"
 msgid "Z Hop Speed"
-msgstr "Z 홉 속도"
+msgstr "Z 올리기 속도"
 
 msgctxt "retraction_hop_enabled label"
 msgid "Z Hop When Retracted"
-msgstr "리트렉션시 Z 홉"
+msgstr "리트렉션시 Z 올리기"
 
 msgctxt "z_seam_type label"
 msgid "Z Seam Alignment"
