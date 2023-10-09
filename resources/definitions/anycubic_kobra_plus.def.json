@@ -1,0 +1,29 @@
+{
+    "version": 2,
+    "name": "Anycubic Kobra Plus",
+    "inherits": "fdmprinter",
+    "metadata":
+    {
+        "visible": true,
+        "author": "Jordon Brooks",
+        "manufacturer": "Anycubic",
+        "file_formats": "text/x-gcode",
+        "has_machine_quality": true,
+        "has_materials": true,
+        "machine_extruder_trains": { "0": "anycubic_kobra_plus_extruder_0" },
+        "preferred_material": "generic_pla",
+        "preferred_quality_type": "normal",
+        "quality_definition": "anycubic_kobra_plus"
+    },
+    "overrides":
+    {
+        "machine_depth": { "default_value": 302 },
+        "machine_end_gcode": { "default_value": "M104 S0\nM140 S0\n;Retract the filament\nG92 E1\nG1 E-1 F300\nG28 X0 Y0\nM84\nM355 S0; led off" },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 352 },
+        "machine_name": { "default_value": "Anycubic Kobra Plus" },
+        "machine_start_gcode": { "default_value": "G28 ;Home\nG1 Z15.0 F6000 ;Move the platform down 15mm\n;Prime the extruder\nG92 E0\nM355 S1; Turn LED on\n; Add Custom purge lines\nG1 Z2.0 F3000 ; Move Z Axis up little to prevent scratching of Heat Bed\nG1 X1.0 Y30 Z0.3 F5000.0 ; Move to start position\nG1 X1.0 Y100.0 Z0.3 F1500.0 E15 ; Draw the first line\nG1 X1.3 Y100.0 Z0.3 F5000.0 ; Move to side a little\nG1 X1.3 Y30 Z0.3 F1500.0 E30 ; Draw the second line\nG92 E0 ; Reset Extruder\nG1 E-2 F500 ; Retract a little \nG1 X50 F500 ; wipe away from the filament line\nG1 X100 F9000 ; Quickly wipe away from the filament line\nG1 Z5.0 F3000 ; Move Z Axis up little to prevent scratching of Heat Bed\n; End custom purge lines" },
+        "machine_width": { "default_value": 302 }
+    }
+}

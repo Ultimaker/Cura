@@ -1,8 +1,9 @@
 #  Copyright (c) 2015-2022 Ultimaker B.V.
 #  Cura is released under the terms of the LGPLv3 or higher.
 import json
+import re
 
-from typing import Optional, cast, List, Dict
+from typing import Optional, cast, List, Dict, Pattern, Set
 
 from UM.Mesh.MeshWriter import MeshWriter
 from UM.Math.Vector import Vector
@@ -17,6 +18,7 @@ from UM.Settings.EmptyInstanceContainer import EmptyInstanceContainer
 
 from cura.CuraApplication import CuraApplication
 from cura.CuraPackageManager import CuraPackageManager
+from cura.Settings import CuraContainerStack
 from cura.Utils.Threading import call_on_qt_thread
 from cura.Snapshot import Snapshot
 
@@ -55,11 +57,12 @@ class ThreeMFWriter(MeshWriter):
             "cura": "http://software.ultimaker.com/xml/cura/3mf/2015/10"
         }
 
-        self._unit_matrix_string = self._convertMatrixToString(Matrix())
+        self._unit_matrix_string = ThreeMFWriter._convertMatrixToString(Matrix())
         self._archive: Optional[zipfile.ZipFile] = None
         self._store_archive = False
 
-    def _convertMatrixToString(self, matrix):
+    @staticmethod
+    def _convertMatrixToString(matrix):
         result = ""
         result += str(matrix._data[0, 0]) + " "
         result += str(matrix._data[1, 0]) + " "
@@ -83,7 +86,8 @@ class ThreeMFWriter(MeshWriter):
         """
         self._store_archive = store_archive
 
-    def _convertUMNodeToSavitarNode(self, um_node, transformation = Matrix()):
+    @staticmethod
+    def _convertUMNodeToSavitarNode(um_node, transformation=Matrix()):
         """Convenience function that converts an Uranium SceneNode object to a SavitarSceneNode
 
         :returns: Uranium Scene node.
@@ -100,7 +104,7 @@ class ThreeMFWriter(MeshWriter):
 
         node_matrix = um_node.getLocalTransformation()
 
-        matrix_string = self._convertMatrixToString(node_matrix.preMultiply(transformation))
+        matrix_string = ThreeMFWriter._convertMatrixToString(node_matrix.preMultiply(transformation))
 
         savitar_node.setTransformation(matrix_string)
         mesh_data = um_node.getMeshData()
@@ -133,7 +137,7 @@ class ThreeMFWriter(MeshWriter):
             # only save the nodes on the active build plate
             if child_node.callDecoration("getBuildPlateNumber") != active_build_plate_nr:
                 continue
-            savitar_child_node = self._convertUMNodeToSavitarNode(child_node)
+            savitar_child_node = ThreeMFWriter._convertUMNodeToSavitarNode(child_node)
             if savitar_child_node is not None:
                 savitar_node.addChild(savitar_child_node)
 
@@ -175,13 +179,15 @@ class ThreeMFWriter(MeshWriter):
                 archive.writestr(thumbnail_file, thumbnail_buffer.data())
 
                 # Add PNG to content types file
-                thumbnail_type = ET.SubElement(content_types, "Default", Extension = "png", ContentType = "image/png")
+                thumbnail_type = ET.SubElement(content_types, "Default", Extension="png", ContentType="image/png")
                 # Add thumbnail relation to _rels/.rels file
-                thumbnail_relation_element = ET.SubElement(relations_element, "Relationship", Target = "/" + THUMBNAIL_PATH, Id = "rel1", Type = "http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail")
+                thumbnail_relation_element = ET.SubElement(relations_element, "Relationship",
+                                                           Target="/" + THUMBNAIL_PATH, Id="rel1",
+                                                           Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail")
 
             # Write material metadata
-            material_metadata = self._getMaterialPackageMetadata()
-            self._storeMetadataJson({"packages": material_metadata}, archive, PACKAGE_METADATA_PATH)
+            packages_metadata = self._getMaterialPackageMetadata() + self._getPluginPackageMetadata()
+            self._storeMetadataJson({"packages": packages_metadata}, archive, PACKAGE_METADATA_PATH)
 
             savitar_scene = Savitar.Scene()
 
@@ -221,7 +227,7 @@ class ThreeMFWriter(MeshWriter):
             for node in nodes:
                 if node == root_node:
                     for root_child in node.getChildren():
-                        savitar_node = self._convertUMNodeToSavitarNode(root_child, transformation_matrix)
+                        savitar_node = ThreeMFWriter._convertUMNodeToSavitarNode(root_child, transformation_matrix)
                         if savitar_node:
                             savitar_scene.addSceneNode(savitar_node)
                 else:
@@ -235,9 +241,9 @@ class ThreeMFWriter(MeshWriter):
             archive.writestr(model_file, scene_string)
             archive.writestr(content_types_file, b'<?xml version="1.0" encoding="UTF-8"?> \n' + ET.tostring(content_types))
             archive.writestr(relations_file, b'<?xml version="1.0" encoding="UTF-8"?> \n' + ET.tostring(relations_element))
-        except Exception as e:
+        except Exception as error:
             Logger.logException("e", "Error writing zip file")
-            self.setInformation(catalog.i18nc("@error:zip", "Error writing 3mf file."))
+            self.setInformation(str(error))
             return False
         finally:
             if not self._store_archive:
@@ -253,7 +259,64 @@ class ThreeMFWriter(MeshWriter):
         metadata_file = zipfile.ZipInfo(path)
         # We have to set the compress type of each file as well (it doesn't keep the type of the entire archive)
         metadata_file.compress_type = zipfile.ZIP_DEFLATED
-        archive.writestr(metadata_file, json.dumps(metadata, separators=(", ", ": "), indent=4, skipkeys=True, ensure_ascii=False))
+        archive.writestr(metadata_file,
+                         json.dumps(metadata, separators=(", ", ": "), indent=4, skipkeys=True, ensure_ascii=False))
+
+    @staticmethod
+    def _getPluginPackageMetadata() -> List[Dict[str, str]]:
+        """Get metadata for all backend plugins that are used in the project.
+
+        :return: List of material metadata dictionaries.
+        """
+
+        backend_plugin_enum_value_regex = re.compile(
+            r"PLUGIN::(?P<plugin_id>\w+)@(?P<version>\d+.\d+.\d+)::(?P<value>\w+)")
+        # This regex parses enum values to find if they contain custom
+        # backend engine values. These custom enum values are in the format
+        #      PLUGIN::<plugin_id>@<version>::<value>
+        # where
+        #  - plugin_id is the id of the plugin
+        #  - version is in the semver format
+        #  - value is the value of the enum
+
+        plugin_ids = set()
+
+        def addPluginIdsInStack(stack: CuraContainerStack) -> None:
+            for key in stack.getAllKeys():
+                value = str(stack.getProperty(key, "value"))
+                for plugin_id, _version, _value in backend_plugin_enum_value_regex.findall(value):
+                    plugin_ids.add(plugin_id)
+
+        # Go through all stacks and find all the plugin id contained in the project
+        global_stack = CuraApplication.getInstance().getMachineManager().activeMachine
+        addPluginIdsInStack(global_stack)
+
+        for container in global_stack.getContainers():
+            addPluginIdsInStack(container)
+
+        for extruder_stack in global_stack.extruderList:
+            addPluginIdsInStack(extruder_stack)
+
+            for container in extruder_stack.getContainers():
+                addPluginIdsInStack(container)
+
+        metadata = {}
+
+        package_manager = cast(CuraPackageManager, CuraApplication.getInstance().getPackageManager())
+        for plugin_id in plugin_ids:
+            package_data = package_manager.getInstalledPackageInfo(plugin_id)
+
+            metadata[plugin_id] = {
+                "id": plugin_id,
+                "display_name": package_data.get("display_name") if package_data.get("display_name") else "",
+                "package_version": package_data.get("package_version") if package_data.get("package_version") else "",
+                "sdk_version_semver": package_data.get("sdk_version_semver") if package_data.get(
+                    "sdk_version_semver") else "",
+                "type": "plugin",
+            }
+
+        # Storing in a dict and fetching values to avoid duplicates
+        return list(metadata.values())
 
     @staticmethod
     def _getMaterialPackageMetadata() -> List[Dict[str, str]]:
@@ -278,7 +341,8 @@ class ThreeMFWriter(MeshWriter):
                 # Don't export bundled materials
                 continue
 
-            package_id = package_manager.getMaterialFilePackageId(extruder.material.getFileName(), extruder.material.getMetaDataEntry("GUID"))
+            package_id = package_manager.getMaterialFilePackageId(extruder.material.getFileName(),
+                                                                  extruder.material.getMetaDataEntry("GUID"))
             package_data = package_manager.getInstalledPackageInfo(package_id)
 
             # We failed to find the package for this material
@@ -286,10 +350,14 @@ class ThreeMFWriter(MeshWriter):
                 Logger.info(f"Could not find package for material in extruder {extruder.id}, skipping.")
                 continue
 
-            material_metadata = {"id": package_id,
-                                 "display_name": package_data.get("display_name") if package_data.get("display_name") else "",
-                                 "package_version": package_data.get("package_version") if package_data.get("package_version") else "",
-                                 "sdk_version_semver": package_data.get("sdk_version_semver") if package_data.get("sdk_version_semver") else ""}
+            material_metadata = {
+                "id": package_id,
+                "display_name": package_data.get("display_name") if package_data.get("display_name") else "",
+                "package_version": package_data.get("package_version") if package_data.get("package_version") else "",
+                "sdk_version_semver": package_data.get("sdk_version_semver") if package_data.get(
+                    "sdk_version_semver") else "",
+                "type": "material",
+            }
 
             metadata[package_id] = material_metadata
 
@@ -303,9 +371,19 @@ class ThreeMFWriter(MeshWriter):
             Logger.log("w", "Can't create snapshot when renderer not initialized.")
             return None
         try:
-            snapshot = Snapshot.snapshot(width = 300, height = 300)
+            snapshot = Snapshot.snapshot(width=300, height=300)
         except:
             Logger.logException("w", "Failed to create snapshot image")
             return None
 
         return snapshot
+
+    @staticmethod
+    def sceneNodesToString(scene_nodes: [SceneNode]) -> str:
+        savitar_scene = Savitar.Scene()
+        for scene_node in scene_nodes:
+            savitar_node = ThreeMFWriter._convertUMNodeToSavitarNode(scene_node)
+            savitar_scene.addSceneNode(savitar_node)
+        parser = Savitar.ThreeMFParser()
+        scene_string = parser.sceneToString(savitar_scene)
+        return scene_string

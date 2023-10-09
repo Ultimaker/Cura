@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-06-08 16:32+0000\n"
+"POT-Creation-Date: 2023-09-12 17:04+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -62,7 +62,7 @@ msgstr "Uma peça totalmente fechada dentro de outra peça pode gerar uma aba ex
 
 msgctxt "support_tree_branch_reach_limit description"
 msgid "A recomendation to how far branches can move from the points they support. Branches can violate this value to reach their destination (buildplate or a flat part of the model). Lowering this value will make the support more sturdy, but increase the amount of branches (and because of that material usage/print time) "
-msgstr ""
+msgstr "Uma recomendação sobre qual a distância que os ramos podem percorrer a partir dos pontos que apoiam. Os ramos podem desrespeitar este valor, para alcançar o seu destino (placa de construção ou uma parte do modelo). Reduzir esse valor pode tornar o suporte mais resistente, contudo vai aumentar a quantidade de ramos (e, por conseguinte, também o uso de mais material e tempo de impressão)"
 
 msgctxt "extruder_prime_pos_abs label"
 msgid "Absolute Extruder Prime Position"
@@ -118,7 +118,7 @@ msgstr "Ajusta a densidade dos tectos e pisos da estrutura de suporte. Um valor 
 
 msgctxt "support_tree_top_rate description"
 msgid "Adjusts the density of the support structure used to generate the tips of the branches. A higher value results in better overhangs, but the supports are harder to remove. Use Support Roof for very high values or ensure support density is similarly high at the top."
-msgstr ""
+msgstr "Ajusta a densidade da estrutura de suporte usada para gerar as pontas dos ramos. Um valor mais alto resulta em melhor saliências, mas os suportes são mais difíceis de remover. Use um Teto de Suporte se os valores forem muito altos ou certificar-se de que a densidade dos suportes é igualmente elevada no topo."
 
 msgctxt "support_infill_rate description"
 msgid "Adjusts the density of the support structure. A higher value results in better overhangs, but the supports are harder to remove."
@@ -179,10 +179,6 @@ msgstr "Ferramenta ativa escrever sempre"
 msgctxt "travel_retract_before_outer_wall description"
 msgid "Always retract when moving to start an outer wall."
 msgstr "Retrair sempre quando se vai começar uma parede exterior."
-
-msgctxt "hole_xy_offset description"
-msgid "Amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes."
-msgstr "Quantidade de desvio aplicado a todos os buracos em cada camada. Valores positivos aumentam o tamanho dos buracos; valores negativos reduzem o tamanho dos buracos."
 
 msgctxt "xy_offset description"
 msgid "Amount of offset applied to all polygons in each layer. Positive values can compensate for too big holes; negative values can compensate for too small holes."
@@ -266,7 +262,7 @@ msgstr "Ambos"
 
 msgctxt "support_interface_priority option nothing"
 msgid "Both overlap"
-msgstr ""
+msgstr "Ambas se sobrepõem"
 
 msgctxt "bottom_layers label"
 msgid "Bottom Layers"
@@ -290,15 +286,15 @@ msgstr "Espessura Inferior"
 
 msgctxt "support_tree_top_rate label"
 msgid "Branch Density"
-msgstr ""
+msgstr "Densidade dos Ramos"
 
 msgctxt "support_tree_branch_diameter label"
 msgid "Branch Diameter"
-msgstr ""
+msgstr "Diâmetro do Ramo"
 
 msgctxt "support_tree_branch_diameter_angle label"
 msgid "Branch Diameter Angle"
-msgstr ""
+msgstr "Ângulo dos Ramos"
 
 msgctxt "material_break_preparation_retracted_position label"
 msgid "Break Preparation Retracted Position"
@@ -710,11 +706,11 @@ msgstr "Diâmetro"
 
 msgctxt "support_tree_max_diameter_increase_by_merges_when_support_to_model label"
 msgid "Diameter Increase To Model"
-msgstr ""
+msgstr "Aumento do Diâmetro Apoio no Modelo"
 
 msgctxt "support_tree_bp_diameter description"
 msgid "Diameter every branch tries to achieve when reaching the buildplate. Improves bed adhesion."
-msgstr ""
+msgstr "Diâmetro que cada ramo tenta atingir quando chega à placa de construção. Melhora a adesão à base."
 
 msgctxt "adhesion_type description"
 msgid "Different options that help to improve both priming your extrusion and adhesion to the build plate. Brim adds a single layer flat area around the base of your model to prevent warping. Raft adds a thick grid with a roof below the model. Skirt is a line printed around the model, but not connected to the model."
@@ -780,6 +776,14 @@ msgctxt "support_xy_distance description"
 msgid "Distance of the support structure from the print in the X/Y directions."
 msgstr "A distância entre a estrutura de suporte e a impressão nas direções X/Y."
 
+msgctxt "meshfix_fluid_motion_shift_distance description"
+msgid "Distance points are shifted to smooth the path"
+msgstr ""
+
+msgctxt "meshfix_fluid_motion_small_distance description"
+msgid "Distance points are shifted to smooth the path"
+msgstr ""
+
 msgctxt "min_infill_area description"
 msgid "Don't generate areas of infill smaller than this (use skin instead)."
 msgstr "Não criar áreas de enchimento mais pequenas do que este valor (em vez disso, utiliza o revestimento)."
@@ -827,6 +831,10 @@ msgstr "Ativar suporte cónico"
 msgctxt "draft_shield_enabled label"
 msgid "Enable Draft Shield"
 msgstr "Barreira contra correntes de ar"
+
+msgctxt "meshfix_fluid_motion_enabled label"
+msgid "Enable Fluid Motion"
+msgstr ""
 
 msgctxt "ironing_enabled label"
 msgid "Enable Ironing"
@@ -888,6 +896,10 @@ msgctxt "ooze_shield_enabled description"
 msgid "Enable exterior ooze shield. This will create a shell around the model which is likely to wipe a second nozzle if it's at the same height as the first nozzle."
 msgstr "Ativa a proteção exterior contra escorrimentos. Isto irá criar um invólucro em torno do modelo que deverá limpar um segundo nozzle, caso este se encontre à mesma altura que o primeiro nozzle."
 
+msgctxt "small_skin_on_surface description"
+msgid "Enable small (up to 'Small Top/Bottom Width') regions on the topmost skinned layer (exposed to air) to be filled with walls instead of the default pattern."
+msgstr ""
+
 msgctxt "jerk_enabled description"
 msgid "Enables adjusting the jerk of print head when the velocity in the X or Y axis changes. Increasing the jerk can reduce printing time at the cost of print quality."
 msgstr "Permite ajustar o jerk da cabeça de impressão quando a velocidade nos eixos X ou Y muda. Aumentar o jerk pode reduzir o tempo de impressão em detrimento da qualidade de impressão."
@@ -926,7 +938,7 @@ msgstr "Exclusivo"
 
 msgctxt "experimental label"
 msgid "Experimental"
-msgstr ""
+msgstr "Experimental"
 
 msgctxt "z_seam_corner option z_seam_corner_outer"
 msgid "Expose Seam"
@@ -1099,6 +1111,18 @@ msgstr "Compensação de fluxo nas linhas de parede."
 msgctxt "material_flow description"
 msgid "Flow compensation: the amount of material extruded is multiplied by this value."
 msgstr "Compensação de fluxo: a quantidade de material extrudido é multiplicada por este valor."
+
+msgctxt "meshfix_fluid_motion_angle label"
+msgid "Fluid Motion Angle"
+msgstr ""
+
+msgctxt "meshfix_fluid_motion_shift_distance label"
+msgid "Fluid Motion Shift Distance"
+msgstr ""
+
+msgctxt "meshfix_fluid_motion_small_distance label"
+msgid "Fluid Motion Small Distance"
+msgstr ""
 
 msgctxt "material_flush_purge_length label"
 msgid "Flush Purge Length"
@@ -1298,7 +1322,7 @@ msgstr "Expansão horizontal de buraco"
 
 msgctxt "hole_xy_offset_max_diameter label"
 msgid "Hole Horizontal Expansion Max Diameter"
-msgstr ""
+msgstr "Diâmetro máximo da Expansão Horizontal de Buraco"
 
 msgctxt "small_hole_max_size description"
 msgid "Holes and part outlines with a diameter smaller than this will be printed using Small Feature Speed."
@@ -1378,15 +1402,19 @@ msgstr "Até que ponto se assume que o filamento de cada extrusora foi retraído
 
 msgctxt "support_interface_priority description"
 msgid "How support interface and support will interact when they overlap. Currently only implemented for support roof."
-msgstr ""
+msgstr "Como a interface de suporte e a estrutura de suporte interagem quando se sobrepõem. Atualmente implementado apenas para o teto de suporte."
 
 msgctxt "support_tree_min_height_to_model description"
 msgid "How tall a branch has to be if it is placed on the model. Prevents small blobs of support. This setting is ignored when a branch is supporting a support roof."
-msgstr ""
+msgstr "A altura mínima que um ramo deve ter quando apoiado no modelo. Evita pequenas bolhas de suporte. Esta definição é ignorada quando um ramo está a suportar um teto do suporte."
 
 msgctxt "bridge_skin_support_threshold description"
 msgid "If a skin region is supported for less than this percentage of its area, print it using the bridge settings. Otherwise it is printed using the normal skin settings."
 msgstr "Se uma região de revestimento for suportada por menos do que esta percentagem da sua área, imprima-a utilizando as definições de Bridge. Caso contrário, será impressa utilizando as definições de revestimento normais."
+
+msgctxt "meshfix_fluid_motion_angle description"
+msgid "If a toolpath-segment deviates more than this angle from the general motion it is smoothed."
+msgstr ""
 
 msgctxt "bridge_enable_more_layers description"
 msgid "If enabled, the second and third layers above the air are printed using the following settings. Otherwise, those layers are printed using the normal settings."
@@ -1530,7 +1558,7 @@ msgstr "Fluxo inferior da camada inicial"
 
 msgctxt "support_tree_bp_diameter label"
 msgid "Initial Layer Diameter"
-msgstr ""
+msgstr "Diâmetro da Camada Inicial"
 
 msgctxt "material_flow_layer_0 label"
 msgid "Initial Layer Flow"
@@ -1634,11 +1662,11 @@ msgstr "De dentro para fora"
 
 msgctxt "support_interface_priority option interface_lines_overwrite_support_area"
 msgid "Interface lines preferred"
-msgstr ""
+msgstr "Linhas de interface preferidas"
 
 msgctxt "support_interface_priority option interface_area_overwrite_support_area"
 msgid "Interface preferred"
-msgstr ""
+msgstr "Interface preferida"
 
 msgctxt "interlocking_beam_layer_count label"
 msgid "Interlocking Beam Layer Count"
@@ -1698,7 +1726,7 @@ msgstr "O Centro é a Origem"
 
 msgctxt "material_is_support_material label"
 msgid "Is support material"
-msgstr ""
+msgstr "É um material de suporte"
 
 msgctxt "material_crystallinity description"
 msgid "Is this material the type that breaks off cleanly when heated (crystalline), or is it the type that produces long intertwined polymer chains (non-crystalline)?"
@@ -1706,7 +1734,7 @@ msgstr "Este tipo de material é daquele que se separa de forma regular quando a
 
 msgctxt "material_is_support_material description"
 msgid "Is this material typically used as a support material during printing."
-msgstr ""
+msgstr "Este material é utilizado como material de suporte durante a impressão."
 
 msgctxt "magic_fuzzy_skin_outside_only description"
 msgid "Jitter only the parts' outlines and not the parts' holes."
@@ -1774,11 +1802,11 @@ msgstr "Ângulo de suporte de enchimento relâmpago"
 
 msgctxt "support_tree_limit_branch_reach label"
 msgid "Limit Branch Reach"
-msgstr ""
+msgstr "Limitar o Alcance dos Ramos"
 
 msgctxt "support_tree_limit_branch_reach description"
 msgid "Limit how far each branch should travel from the point it supports. This can make the support more sturdy, but will increase the amount of branches (and because of that material usage/print time)"
-msgstr ""
+msgstr "Limita a distância que cada ramo deve percorrer a partir do ponto que apoia. Isto pode tornar o suporte mais resistente, contudo vai aumentar a quantidade de ramos (e, por conseguinte, também o uso de mais material e tempo de impressão)"
 
 msgctxt "cutting_mesh description"
 msgid "Limit the volume of this mesh to within other meshes. You can use this to make certain areas of one mesh print with different settings and with a whole different extruder."
@@ -1930,7 +1958,7 @@ msgstr "Aceleração Z Máxima"
 
 msgctxt "support_tree_angle label"
 msgid "Maximum Branch Angle"
-msgstr ""
+msgstr "Ângulo Máximo dos Ramos"
 
 msgctxt "meshfix_maximum_deviation label"
 msgid "Maximum Deviation"
@@ -2086,7 +2114,7 @@ msgstr "Velocidade Mínima de Alimentação"
 
 msgctxt "support_tree_min_height_to_model label"
 msgid "Minimum Height To Model"
-msgstr ""
+msgstr "Altura Mínima ao Modelo"
 
 msgctxt "min_infill_area label"
 msgid "Minimum Infill Area"
@@ -2338,11 +2366,11 @@ msgstr "Desviar com extrusor"
 
 msgctxt "support_tree_rest_preference option buildplate"
 msgid "On buildplate when possible"
-msgstr ""
+msgstr "Na placa de construção quando possível"
 
 msgctxt "support_tree_rest_preference option graceful"
 msgid "On model if required"
-msgstr ""
+msgstr "No modelo, se necessário"
 
 msgctxt "print_sequence option one_at_a_time"
 msgid "One at a Time"
@@ -2370,7 +2398,7 @@ msgstr "Distância da proteção contra escorrimentos"
 
 msgctxt "support_tree_branch_reach_limit label"
 msgid "Optimal Branch Range"
-msgstr ""
+msgstr "Alcance dos Ramos Ideal"
 
 msgctxt "optimize_wall_printing_order label"
 msgid "Optimize Wall Printing Order"
@@ -2458,7 +2486,7 @@ msgstr "Os polígonos em camadas seccionadas que apresentem uma circunferência 
 
 msgctxt "support_tree_angle_slow label"
 msgid "Preferred Branch Angle"
-msgstr ""
+msgstr "Ângulo dos Ramos preferido"
 
 msgctxt "wall_transition_filter_deviation description"
 msgid "Prevent transitioning back and forth between one extra wall and one less. This margin extends the range of line widths which follow to [Minimum Wall Line Width - Margin, 2 * Minimum Wall Line Width + Margin]. Increasing this margin reduces the number of transitions, which reduces the number of extrusion starts/stops and travel time. However, large line width variation can lead to under- or overextrusion problems."
@@ -2578,7 +2606,7 @@ msgstr "Temperatura Impressão Camada Inicial"
 
 msgctxt "skirt_height description"
 msgid "Printing the innermost skirt line with multiple layers makes it easy to remove the skirt."
-msgstr ""
+msgstr "Imprimir a linha do contorno mais interior com múltiplas camadas facilita a remoção do contorno."
 
 msgctxt "alternate_extra_perimeter description"
 msgid "Prints an extra wall at every other layer. This way infill gets caught between these extra walls, resulting in stronger prints."
@@ -2818,7 +2846,7 @@ msgstr "Substitui a parte mais exterior do padrão superior/inferior por um núm
 
 msgctxt "support_tree_rest_preference label"
 msgid "Rest Preference"
-msgstr ""
+msgstr "Preferência de Apoio"
 
 msgctxt "travel_retract_before_outer_wall label"
 msgid "Retract Before Outer Wall"
@@ -2966,7 +2994,7 @@ msgstr "Distância Contorno"
 
 msgctxt "skirt_height label"
 msgid "Skirt Height"
-msgstr ""
+msgstr "Altura do contorno"
 
 msgctxt "skirt_line_count label"
 msgid "Skirt Line Count"
@@ -3024,9 +3052,13 @@ msgctxt "cool_min_temperature label"
 msgid "Small Layer Printing Temperature"
 msgstr "Temperatura de impressão de camada pequena"
 
+msgctxt "small_skin_on_surface label"
+msgid "Small Top/Bottom On Surface"
+msgstr ""
+
 msgctxt "small_skin_width label"
 msgid "Small Top/Bottom Width"
-msgstr ""
+msgstr "Largura Mínima Superior/Inferior"
 
 msgctxt "small_feature_speed_factor_0 description"
 msgid "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
@@ -3037,12 +3069,12 @@ msgid "Small features will be printed at this percentage of their normal print s
 msgstr "Os elementos pequenos serão impressos a esta percentagem da respetiva velocidade de impressão normal. Uma impressão mais lenta pode ajudar em termos de aderência e precisão."
 
 msgctxt "small_skin_width description"
-msgid "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions."
+msgid "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions. Off for the topmost (air-exposed) layer by default (see 'Small Top/Bottom On Surface')."
 msgstr ""
 
 msgctxt "brim_smart_ordering label"
 msgid "Smart Brim"
-msgstr ""
+msgstr "Aba Inteligente"
 
 msgctxt "z_seam_corner option z_seam_corner_weighted"
 msgid "Smart Hiding"
@@ -3282,7 +3314,7 @@ msgstr "Padrão da interface de suporte"
 
 msgctxt "support_interface_priority label"
 msgid "Support Interface Priority"
-msgstr ""
+msgstr "Prioridade da Interface e Suporte"
 
 msgctxt "support_interface_skip_height label"
 msgid "Support Interface Resolution"
@@ -3422,11 +3454,11 @@ msgstr "Distância Z de suporte"
 
 msgctxt "support_interface_priority option support_lines_overwrite_interface_area"
 msgid "Support lines preferred"
-msgstr ""
+msgstr "Tipo de linhas de suporte preferidas"
 
 msgctxt "support_interface_priority option support_area_overwrite_interface_area"
 msgid "Support preferred"
-msgstr ""
+msgstr "Estrutura suporte preferida"
 
 msgctxt "support_supported_skin_fan_speed label"
 msgid "Supported Skin Fan Speed"
@@ -3454,7 +3486,7 @@ msgstr "Energia da superfície."
 
 msgctxt "brim_smart_ordering description"
 msgid "Swap print order of the innermost and second innermost brim lines. This improves brim removal."
-msgstr ""
+msgstr "Trocar a ordem de impressão da linha mais interior e da segunda linha mais interior da aba. Isto permite facilitar a remoção da aba."
 
 msgctxt "alternate_carve_order description"
 msgid "Switch to which mesh intersecting volumes will belong with every layer, so that the overlapping meshes become interwoven. Turning this setting off will cause one of the meshes to obtain all of the volume in the overlap, while it is removed from the other meshes."
@@ -3678,7 +3710,7 @@ msgstr "O diâmetro dos ramos mais finos dos suportes tipo árvore. Ramos mais g
 
 msgctxt "support_tree_tip_diameter description"
 msgid "The diameter of the top of the tip of the branches of tree support."
-msgstr ""
+msgstr "O diâmetro do topo da ponta dos ramos do suporte de árvore."
 
 msgctxt "machine_feeder_wheel_diameter description"
 msgid "The diameter of the wheel that drives the material in the feeder."
@@ -3998,7 +4030,7 @@ msgstr "O ângulo máximo das saliências após se terem tornado imprimíveis. C
 
 msgctxt "support_tree_angle description"
 msgid "The maximum angle of the branches while they grow around the model. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
-msgstr ""
+msgstr "O ângulo máximo dos ramos enquanto estes crescem ao redor do modelo. Utilize um ângulo menor para os tornar mais verticais e mais estáveis. Use um ângulo maior para poderem ter um maior alcance."
 
 msgctxt "conical_overhang_hole_size description"
 msgid "The maximum area of a hole in the base of the model before it's removed by Make Overhang Printable.  Holes smaller than this will be retained.  A value of 0 mm² will fill all holes in the models base."
@@ -4174,7 +4206,7 @@ msgstr "O volume mínimo para cada camada da torre de preparação para preparar
 
 msgctxt "support_tree_max_diameter_increase_by_merges_when_support_to_model description"
 msgid "The most the diameter of a branch that has to connect to the model may increase by merging with branches that could reach the buildplate. Increasing this reduces print time, but increases the area of support that rests on model"
-msgstr ""
+msgstr "O diâmetro máximo que um ramo, que tem de se apoiar no modelo, pode ter ao unir-se com os ramos que podem alcançar a placa de construção. Aumentar este valor reduz o tempo de impressão, mas aumenta a área de suporte que assenta no modelo"
 
 msgctxt "machine_name description"
 msgid "The name of your 3D printer model."
@@ -4302,11 +4334,11 @@ msgstr "A posição próxima do local onde a impressão de cada parte de uma cam
 
 msgctxt "support_tree_angle_slow description"
 msgid "The preferred angle of the branches, when they do not have to avoid the model. Use a lower angle to make them more vertical and more stable. Use a higher angle for branches to merge faster."
-msgstr ""
+msgstr "O ângulo preferido dos ramos, quando estes não têm de evitar o modelo. Utilize um ângulo menor para os tornar mais verticais e mais estáveis. Utilize um ângulo maior para que os ramos se unam mais rapidamente."
 
 msgctxt "support_tree_rest_preference description"
 msgid "The preferred placement of the support structures. If structures can't be placed at the preferred location, they will be place elsewhere, even if that means placing them on the model."
-msgstr ""
+msgstr "O posicionamento preferencial das estruturas de suporte. Se as estruturas não puderem ser posicionadas no local preferido, serão posicionadas noutro local, mesmo que isso signifique assentá-las sobre parte do modelo."
 
 msgctxt "jerk_layer_0 description"
 msgid "The print maximum instantaneous velocity change for the initial layer."
@@ -4638,7 +4670,7 @@ msgstr "Isto irá criar uma parede em torno do modelo, que retém o ar (quente) 
 
 msgctxt "support_tree_tip_diameter label"
 msgid "Tip Diameter"
-msgstr ""
+msgstr "Diâmetro da Ponta do Ramo"
 
 msgctxt "material_shrinkage_percentage_xy description"
 msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor in the XY-direction (horizontally)."
@@ -4822,11 +4854,11 @@ msgstr "Triângulos"
 
 msgctxt "support_tree_max_diameter label"
 msgid "Trunk Diameter"
-msgstr ""
+msgstr "Diâmetro do Tronco"
 
 msgctxt "machine_gcode_flavor option UltiGCode"
 msgid "Ultimaker 2"
-msgstr "Ultimaker 2"
+msgstr "Ultimaker 2"
 
 msgctxt "meshfix_union_all label"
 msgid "Union Overlapping Volumes"
@@ -4960,6 +4992,10 @@ msgctxt "support_interface_skip_height description"
 msgid "When checking where there's model above and below the support, take steps of the given height. Lower values will slice slower, while higher values may cause normal support to be printed in some places where there should have been support interface."
 msgstr "Ao verificar os locais onde existe modelo por cima e por baixo do suporte, tome as medidas necessárias de acordo com a altura determinada. Os valores mais reduzidos irão seccionar mais lentamente, enquanto os valores mais elevados podem fazer com que o suporte normal seja impresso em alguns locais onde deveria existir uma interface de suporte."
 
+msgctxt "meshfix_fluid_motion_enabled description"
+msgid "When enabled tool paths are corrected for printers with smooth motion planners. Small movements that deviate from the general tool path direction are smoothed to improve fluid motions."
+msgstr ""
+
 msgctxt "infill_enable_travel_optimization description"
 msgid "When enabled, the order in which the infill lines are printed is optimized to reduce the distance travelled. The reduction in travel time achieved very much depends on the model being sliced, infill pattern, density, etc. Note that, for some models that have many small areas of infill, the time to slice the model may be greatly increased."
 msgstr "Quando activado, a ordem, pela qual as linhas de enchimento são impressas, é optimizada para poder reduzir a distância percorrida. A redução do tempo total de deslocação depende de muitos factores tais como, o modelo que está a ser seccionado, o padrão de enchimento, a densidade, etc. Ter em atenção que para modelos que tenham muitas áreas pequenas de enchimento, o tempo de seccionamento pode aumentar consideravelmente."
@@ -4978,6 +5014,10 @@ msgstr "Os movimentos de deslocação de Combing com uma distância maior que es
 
 msgctxt "hole_xy_offset_max_diameter description"
 msgid "When greater than zero, the Hole Horizontal Expansion is gradually applied on small holes (small holes are expanded more). When set to zero the Hole Horizontal Expansion will be applied to all holes. Holes larger than the Hole Horizontal Expansion Max Diameter are not expanded."
+msgstr "Quando este valor for superior a zero, a Expansão Horizontal de Buraco é aplicada de forma progressiva nos buracos pequenos (os buracos pequenos serão mais expandidos). Com um valor de zero, a Expansão Horizontal de Buraco será aplicada a todos os buracos. Os buracos maiores que o Diâmetro Máximo de Expansão Horizontal de Buraco não serão expandidos."
+
+msgctxt "hole_xy_offset description"
+msgid "When greater than zero, the Hole Horizontal Expansion is the amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes. When this setting is enabled it can be further tuned with Hole Horizontal Expansion Max Diameter."
 msgstr ""
 
 msgctxt "bridge_skin_material_flow description"
@@ -5344,6 +5384,57 @@ msgctxt "travel description"
 msgid "travel"
 msgstr "deslocação"
 
+
+
+
+### Settings added by bundled engine backend plugins. Add this manually for now. Should be removed whenever we handle it better.
+
+msgctxt "gradual_flow_enabled label"
+msgid "Gradual flow enabled"
+msgstr ""
+
+msgctxt "gradual_flow_enabled description"
+msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
+msgstr ""
+
+msgctxt "max_flow_acceleration label"
+msgid "Gradual flow max acceleration"
+msgstr ""
+
+msgctxt "max_flow_acceleration description"
+msgid "Maximum acceleration for gradual flow changes"
+msgstr ""
+
+msgctxt "layer_0_max_flow_acceleration label"
+msgid "Initial layer max flow acceleration"
+msgstr ""
+
+msgctxt "layer_0_max_flow_acceleration description"
+msgid "Minimum speed for gradual flow changes for the first layer"
+msgstr ""
+
+msgctxt "gradual_flow_discretisation_step_size label"
+msgid "Gradual flow discretisation step size"
+msgstr ""
+
+msgctxt "gradual_flow_discretisation_step_size description"
+msgid "Duration of each step in the gradual flow change"
+msgstr ""
+
+msgctxt "reset_flow_duration label"
+msgid "Reset flow duration"
+msgstr ""
+
+msgctxt "reset_flow_duration description"
+msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
+msgstr ""
+
+
+
+#~ msgctxt "hole_xy_offset description"
+#~ msgid "Amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes."
+#~ msgstr "Quantidade de desvio aplicado a todos os buracos em cada camada. Valores positivos aumentam o tamanho dos buracos; valores negativos reduzem o tamanho dos buracos."
+
 #~ msgctxt "material_flow_dependent_temperature label"
 #~ msgid "Auto Temperature"
 #~ msgstr "Temperatura Automática"
@@ -5435,6 +5526,10 @@ msgstr "deslocação"
 #~ msgctxt "wireframe_strategy option retract"
 #~ msgid "Retract"
 #~ msgstr "Retrair"
+
+#~ msgctxt "small_skin_width description"
+#~ msgid "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions."
+#~ msgstr "As regiões superiores/inferiores mais pequenas são preenchidas com paredes em vez do padrão superior/inferior predefinido. Isto ajuda a evitar movimentos bruscos."
 
 #~ msgctxt "wireframe_printspeed description"
 #~ msgid "Speed at which the nozzle moves when extruding material. Only applies to Wire Printing."

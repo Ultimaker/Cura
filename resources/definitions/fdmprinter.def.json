@@ -1289,7 +1289,7 @@
                 "hole_xy_offset":
                 {
                     "label": "Hole Horizontal Expansion",
-                    "description": "Amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes.",
+                    "description": "When greater than zero, the Hole Horizontal Expansion is the amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes. When this setting is enabled it can be further tuned with Hole Horizontal Expansion Max Diameter.",
                     "unit": "mm",
                     "type": "float",
                     "minimum_value_warning": "-1",
@@ -1664,17 +1664,27 @@
                 "small_skin_width":
                 {
                     "label": "Small Top/Bottom Width",
-                    "description": "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions.",
-                    "value": "0",
-                    "default_value": 0,
+                    "description": "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions. Off for the topmost (air-exposed) layer by default (see 'Small Top/Bottom On Surface').",
+                    "value": "skin_line_width * 2",
+                    "default_value": 1,
                     "minimum_value": "0",
-                    "maximum_value_warning": "skin_line_width * 10",
+                    "maximum_value_warning": "skin_line_width * 3",
                     "type": "float",
-                    "enabled": false,
+                    "enabled": "(top_layers > 0 or bottom_layers > 0) and top_bottom_pattern != 'concentric'",
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true,
-                    "unit": "mm",
-                    "comment": "Disabled for 5.4.x, as we're worried about micro-segments in the infill. Also disabled in the engine, so forcing this > 0 will not do anything at the moment."
+                    "unit": "mm"
+                },
+                "small_skin_on_surface":
+                {
+                    "label": "Small Top/Bottom On Surface",
+                    "description": "Enable small (up to 'Small Top/Bottom Width') regions on the topmost skinned layer (exposed to air) to be filled with walls instead of the default pattern.",
+                    "value": "False",
+                    "default_value": false,
+                    "type": "bool",
+                    "enabled": "small_skin_width > 0 and top_layers > 0",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true
                 },
                 "skin_no_small_gaps_heuristic":
                 {
@@ -2443,7 +2453,7 @@
                 "material_print_temperature_layer_0":
                 {
                     "label": "Printing Temperature Initial Layer",
-                    "description": "The temperature used for printing the first layer. Set at 0 to disable special handling of the initial layer.",
+                    "description": "The temperature used for printing the first layer.",
                     "unit": "\u00b0C",
                     "type": "float",
                     "default_value": 215,
@@ -4490,7 +4500,7 @@
                     "type": "extruder",
                     "default_value": "0",
                     "enabled": "(support_enable or support_meshes_present) and extruders_enabled_count > 1",
-                    "value": "int(defaultExtruderPosition())",
+                    "value": "int(anyExtruderWithMaterial('material_is_support_material'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "children":
@@ -4570,6 +4580,7 @@
                     },
                     "enabled": "support_enable",
                     "default_value": "normal",
+                    "resolve": "extruderValue(support_extruder_nr, 'support_structure')",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
@@ -5504,7 +5515,9 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.0,
-                    "maximum_value": "extruderValue(support_extruder_nr, 'support_offset')",
+                    "maximum_value": "extruderValue(support_extruder_nr, 'support_offset') if support_structure == 'normal' else None",
+                    "minimum_value_warning": "-1 * machine_nozzle_size",
+                    "maximum_value_warning": "10 * machine_nozzle_size",
                     "limit_to_extruder": "support_interface_extruder_nr",
                     "enabled": "support_interface_enable and (support_enable or support_meshes_present)",
                     "settable_per_mesh": false,
@@ -5519,7 +5532,9 @@
                             "type": "float",
                             "default_value": 0.0,
                             "value": "extruderValue(support_roof_extruder_nr, 'support_interface_offset')",
-                            "maximum_value": "extruderValue(support_extruder_nr, 'support_offset')",
+                            "maximum_value": "extruderValue(support_extruder_nr, 'support_offset') if support_structure == 'normal' else None",
+                            "minimum_value_warning": "-1 * machine_nozzle_size",
+                            "maximum_value_warning": "10 * machine_nozzle_size",
                             "limit_to_extruder": "support_roof_extruder_nr",
                             "enabled": "support_roof_enable and (support_enable or support_meshes_present)",
                             "settable_per_mesh": false,
@@ -5533,7 +5548,9 @@
                             "type": "float",
                             "default_value": 0.0,
                             "value": "extruderValue(support_bottom_extruder_nr, 'support_interface_offset')",
-                            "maximum_value": "extruderValue(support_extruder_nr, 'support_offset')",
+                            "maximum_value": "extruderValue(support_extruder_nr, 'support_offset') if support_structure == 'normal' else None",
+                            "minimum_value_warning": "-1 * machine_nozzle_size",
+                            "maximum_value_warning": "10 * machine_nozzle_size",
                             "limit_to_extruder": "support_bottom_extruder_nr",
                             "enabled": "support_bottom_enable and (support_enable or support_meshes_present)",
                             "settable_per_mesh": false,
@@ -5921,7 +5938,7 @@
                     "maximum_value_warning": "skirt_brim_line_width",
                     "enabled": "resolveOrValue('adhesion_type') == 'brim'",
                     "limit_to_extruder": "skirt_brim_extruder_nr",
-                    "settable_per_mesh": true,
+                    "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
                 "brim_replaces_support":
@@ -6805,6 +6822,48 @@
                     "minimum_value_warning": "500",
                     "maximum_value_warning": "100000",
                     "settable_per_mesh": true
+                },
+                "meshfix_fluid_motion_enabled":
+                {
+                    "label": "Enable Fluid Motion",
+                    "description": "When enabled tool paths are corrected for printers with smooth motion planners. Small movements that deviate from the general tool path direction are smoothed to improve fluid motions.",
+                    "type": "bool",
+                    "default_value": true
+                },
+                "meshfix_fluid_motion_shift_distance":
+                {
+                    "label": "Fluid Motion Shift Distance",
+                    "description": "Distance points are shifted to smooth the path",
+                    "enabled": "meshfix_fluid_motion_enabled",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 0.1,
+                    "minimum_value": "0.01",
+                    "maximum_value": "1"
+                },
+                "meshfix_fluid_motion_small_distance":
+                {
+                    "label": "Fluid Motion Small Distance",
+                    "description": "Distance points are shifted to smooth the path",
+                    "enabled": "meshfix_fluid_motion_enabled",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 0.01,
+                    "minimum_value": "0.01",
+                    "maximum_value": "0.1"
+                },
+                "meshfix_fluid_motion_angle":
+                {
+                    "label": "Fluid Motion Angle",
+                    "description": "If a toolpath-segment deviates more than this angle from the general motion it is smoothed.",
+                    "enabled": "meshfix_fluid_motion_enabled",
+                    "type": "float",
+                    "unit": "\u00b0",
+                    "default_value": 15,
+                    "maximum_value": "90",
+                    "minimum_value": "0",
+                    "minimum_value_warning": "1",
+                    "maximum_value_warning": "35"
                 }
             }
         },
@@ -8066,6 +8125,14 @@
                     "resolve": "max(extruderValues('raft_base_wall_count'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
+                },
+                "group_outer_walls":
+                {
+                    "label": "Group Outer Walls",
+                    "description": "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped.",
+                    "type": "bool",
+                    "default_value": true,
+                    "settable_per_mesh": true
                 }
             }
         },

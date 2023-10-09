@@ -203,6 +203,9 @@ class BuildVolume(SceneNode):
         if shape:
             self._shape = shape
 
+    def getShape(self) -> str:
+        return self._shape
+
     def getDiagonalSize(self) -> float:
         """Get the length of the 3D diagonal through the build volume.
 
