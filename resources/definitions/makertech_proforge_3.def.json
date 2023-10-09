@@ -1,0 +1,75 @@
+{
+    "version": 2,
+	"inherits": "makertech_base",
+	"name": "Proforge 3",
+    "metadata": {
+
+		"author": "Makertech",
+		"visible": true,
+        "file_formats": "text/x-gcode",
+		"quality_definition": "makertech_base",
+
+        "platform": "proforge3_platform.stl",
+        "platform_offset": [ 0, -10.48, 4]
+
+		
+    },
+    "overrides": {
+	    "machine_name": { "default_value": "Proforge 3" },
+		"machine_heated_bed": { "default_value": true },
+        "gantry_height": { "default_value": 80 },
+		"machine_head_with_fans_polygon": { "default_value": [ [ -80, 42 ],[ -80, -28 ],[ 80, 42 ],[ 80, -28 ] ] },
+        "machine_height": { "default_value": 300 },
+        "machine_depth": { "default_value": 300 },
+        "machine_width": { "default_value": 300 },
+		
+		
+		"speed_equalize_flow_enabled": { "default_value": true },
+
+		"acceleration_enabled": { "default_value": true },
+		"acceleration_print": { "value": 2000 },
+		"acceleration_wall": { "value": 700 },
+		"acceleration_wall_0": { "value": 600 },
+		"acceleration_wall_x": { "value": 800 },
+		"acceleration_travel": { "value": 2000 },
+		"acceleration_layer_0": { "value": 750 },
+		
+		"jerk_enabled": { "default_value": true },
+		"jerk_print": { "default_value": 10 },
+		"jerk_wall": { "value": 6 },
+		"jerk_wall_0": { "value": 6 },
+		"jerk_wall_x": { "value": 8 },
+		"jerk_travel": { "value": 10 },
+		"jerk_layer_0": { "value": 6 },
+		
+		"retraction_speed": { "maximum_value_warning": "120" },
+		"retraction_retract_speed": { "maximum_value_warning": "120" },
+		"retraction_prime_speed": { "maximum_value_warning": "120" },
+		
+		"switch_extruder_retraction_amount": { "value": 12 },
+		"switch_extruder_retraction_speeds": 
+				{ 
+					"default_value": 100,
+					"maximum_value_warning": "120"
+				},	
+		"switch_extruder_retraction_speed": { "maximum_value_warning": "120" },
+		"switch_extruder_prime_speed": {"maximum_value_warning": "120" },
+		"retraction_hop_after_extruder_switch_height": { "default_value": 0 },
+
+		"bridge_settings_enabled": { "value": false },
+		"coasting_enable": { "default_value": false },
+		
+		"prime_tower_size": { "default_value": 30 },
+		"prime_tower_brim_enable": { "default_value": true },
+		
+		
+
+        "machine_start_gcode": {
+		            "default_value": ";----------Proforge 3 Start G-code---------- \nM24 ;start SD print \nM190 S{material_bed_temperature_layer_0} ;wait for bed temp \nM420 S1 ;Invoke Bed Mesh \nG28 ;Home \nG29 L0 ;Load Mesh \nG29 J ;Probe tilt \nG1 F8000 X10 Y3 ;Move hotend to bottom left corner \nG1 Z{layer_height_0} ;Set to first layer height \nM82 ;absolute extrusion mode \nG92 E0 ;Zero Extruder \nG1 F1500 X290 E16 ;Prime Hotend \n; ----------Proforge 3 Start G-code----------"
+        },
+        "machine_end_gcode": {
+            "default_value": "G91 ;Relative postioning\nG1 Z5 F600 ;Raise Hotend\nG90 ;Absolute postioning\nG1 X300 Y300 F5000 ;Move tool carriage to top right\nM104 S0 ;Hotend off\nM140 S0 ;Bed off\nM84 ;Motors off"
+        }
+		
+		}
+}
