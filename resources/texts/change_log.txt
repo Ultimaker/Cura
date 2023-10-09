@@ -72,7 +72,9 @@
 - Removed the option to change the Brim Distance in the per object setting untilit is fixed
 - Fixed a slicing crash if the skirt was larger than the buildplate
 - Fixed a crash that would be caused when rotating a model only a little
+- If support interface is disabled, you can no longer change those settings
 - Ints would be truncated instead of rounded in the engine, contributed by @onitake
+- Fixed a non-raw RegEx pattern string removing a depreciation warning contributed by @cgobat
 
 * Printer definitions, profiles and materials: 
 - For MacOS users these printers are supported again: Elegoo, Strateo3D, Uni, ZAV
