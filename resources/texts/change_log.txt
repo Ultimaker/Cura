@@ -17,7 +17,7 @@
 - Group Outer Walls  will bundle types of walls in the same layer reducing travels, thanks to the contribution by @Arcari55
 
 *Updates on supported OSses
-- Introduced Max OSX builds for ARM64 (M1 support), next to our existing X64 builds. With major contributions from @TheSin
+- Introduced Mac OSX builds for ARM64 (M1 support), next to our existing X64 builds. With major contributions from @TheSin
 - Introduced a single Linux build removing the need to have a different modern and regular Linux build. 
 
 *Setting improvements for Ultimaker Printers
