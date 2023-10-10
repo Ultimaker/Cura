@@ -364,7 +364,7 @@ UM.Dialog
                 UM.Label
                 {
                     id: warningText
-                    text: catalog.i18nc("@label", "The material used in this project is currently not installed in Cura.<br/>Install the material profile and reopen the project.")
+                    text: catalog.i18nc("@label", "This project contains materials or plugins that are currently not installed in Cura.<br/>Install the missing packages and reopen the project.")
                 }
             }
 
@@ -404,7 +404,7 @@ UM.Dialog
         Cura.PrimaryButton
         {
             visible: warning
-            text: catalog.i18nc("@action:button", "Install missing material")
+            text: catalog.i18nc("@action:button", "Install missing packages")
             onClicked: manager.installMissingPackages()
         }
     ]

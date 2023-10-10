@@ -39,7 +39,7 @@ Flickable
         padding: UM.Theme.getSize("default_margin").width
         spacing: UM.Theme.getSize("default_margin").height
 
-        width: recommendedPrintSetup.width - 2 * padding - (scroll.visible ? scroll.width : 0)
+        width: recommendedPrintSetup.width - 2 * padding - UM.Theme.getSize("thin_margin").width
 
         // TODO
         property real firstColumnWidth: Math.round(width / 3)
@@ -111,7 +111,6 @@ Flickable
                     anchors.right: parent.right
                     text: catalog.i18nc("@button", "Show Custom")
                     textFont: UM.Theme.getFont("medium_bold")
-                    outlineColor: "transparent"
                     onClicked: onModeChanged()
                 }
             }

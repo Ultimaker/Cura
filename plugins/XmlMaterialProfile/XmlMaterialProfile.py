@@ -910,6 +910,9 @@ class XmlMaterialProfile(InstanceContainer):
         base_metadata["properties"] = property_values
         base_metadata["definition"] = "fdmprinter"
 
+        # Certain materials are loaded but should not be visible / selectable to the user.
+        base_metadata["visible"] = not base_metadata.get("abstract_color", False)
+
         compatible_entries = data.iterfind("./um:settings/um:setting[@key='hardware compatible']", cls.__namespaces)
         try:
             common_compatibility = cls._parseCompatibleValue(next(compatible_entries).text) # type: ignore
