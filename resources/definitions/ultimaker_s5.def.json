@@ -38,6 +38,7 @@
             -10
         ],
         "platform_texture": "UltimakerS5backplate.png",
+        "preferred_material": "ultimaker_pla_blue",
         "preferred_quality_type": "draft",
         "preferred_variant_buildplate_name": "Glass",
         "preferred_variant_name": "AA 0.4",
