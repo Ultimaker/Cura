@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
 "POT-Creation-Date: 2023-09-12 17:04+0000\n"
-"PO-Revision-Date: 2023-10-05 23:44+0900\n"
+"PO-Revision-Date: 2023-10-11 09:00+0900\n"
 "Last-Translator: crwusiz <crwusiz@naver.com>\n"
 "Language-Team: LANGUAGE\n"
 "Language: ko_KR\n"
@@ -2378,7 +2378,7 @@ msgstr "한번에 하나씩"
 
 msgctxt "retraction_hop_only_when_collides description"
 msgid "Only perform a Z Hop when moving over printed parts which cannot be avoided by horizontal motion by Avoid Printed Parts when Traveling."
-msgstr "이동 시, 수평 이동으로 피할 수없는 출력물 위로 이동할 때만 Z 홉을 수행하십시오."
+msgstr "이동 시, 수평 이동으로 피할 수없는 출력물 위로 이동할 때만 Z 올리기를 수행하십시오."
 
 msgctxt "ironing_only_highest_layer description"
 msgid "Only perform ironing on the very last layer of the mesh. This saves time if the lower layers don't need a smooth surface finish."
@@ -3906,15 +3906,15 @@ msgstr "노즐의 끝과 프린트 헤드의 가장 낮은 부분 사이의 높�
 
 msgctxt "retraction_hop_after_extruder_switch_height description"
 msgid "The height difference when performing a Z Hop after extruder switch."
-msgstr "익스트루더 스위치 후 Z 홉을 수행할 때의 높이 차이."
+msgstr "익스트루더 스위치 후 Z 올리기를 수행할 때의 높이 차이."
 
 msgctxt "retraction_hop description"
 msgid "The height difference when performing a Z Hop."
-msgstr "Z 홉을 수행 할 때의 높이 차이."
+msgstr "Z 올리기를 수행 할 때의 높이 차이."
 
 msgctxt "wipe_hop_amount description"
 msgid "The height difference when performing a Z Hop."
-msgstr "Z 홉을 수행할 때의 높이 차이."
+msgstr "Z 올리기를 수행할 때의 높이 차이."
 
 msgctxt "layer_height description"
 msgid "The height of each layer in mm. Higher values produce faster prints in lower resolution, lower values produce slower prints in higher resolution."
@@ -4490,7 +4490,7 @@ msgstr "상단 라프트 레이어가 출력되는 속도입니다. 이 노즐�
 
 msgctxt "speed_z_hop description"
 msgid "The speed at which the vertical Z movement is made for Z Hops. This is typically lower than the print speed since the build plate or machine's gantry is harder to move."
-msgstr "Z 홉을 위해 수직 Z 이동이 이루어지는 속도입니다. 베드 또는 장치의 갠트리를 움직이기가 더 어렵기 때문에 프린트 속도보다 낮은 것이 일반적입니다."
+msgstr "Z 올리기를 위해 수직 Z 이동이 이루어지는 속도입니다. 베드 또는 장치의 갠트리를 움직이기가 더 어렵기 때문에 프린트 속도보다 낮은 것이 일반적입니다."
 
 msgctxt "speed_wall description"
 msgid "The speed at which the walls are printed."
