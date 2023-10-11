@@ -95,7 +95,7 @@ jobs:
       enterprise: ${{ github.event.inputs.enterprise == 'true' }}
       staging: ${{ github.event.inputs.staging == 'true' }}
       architecture: X64
-      operating_system: macos-11.0
+      operating_system: macos-12.0
     secrets: inherit
 
   macos-arm-installer:
