@@ -3046,7 +3046,6 @@ msgctxt "small_hole_max_size label"
 msgid "Small Hole Max Size"
 msgstr ""
 
-#, fuzzy
 msgctxt "cool_min_temperature label"
 msgid "Small Layer Printing Temperature"
 msgstr "Tulostuslämpötila lopussa"
@@ -3163,7 +3162,6 @@ msgctxt "support_bottom_distance label"
 msgid "Support Bottom Distance"
 msgstr "Tuen alaosan etäisyys"
 
-#, fuzzy
 msgctxt "support_bottom_wall_count label"
 msgid "Support Bottom Wall Line Count"
 msgstr "Tukilohkolinjaluku"
@@ -3328,7 +3326,6 @@ msgctxt "support_interface_height label"
 msgid "Support Interface Thickness"
 msgstr "Tukiliittymän paksuus"
 
-#, fuzzy
 msgctxt "support_interface_wall_count label"
 msgid "Support Interface Wall Line Count"
 msgstr "Tukiliittymän linjan leveys"
@@ -3413,7 +3410,6 @@ msgctxt "support_roof_height label"
 msgid "Support Roof Thickness"
 msgstr "Tukikaton paksuus"
 
-#, fuzzy
 msgctxt "support_roof_wall_count label"
 msgid "Support Roof Wall Line Count"
 msgstr "Tukikaton linjaleveys"
@@ -3754,7 +3750,6 @@ msgctxt "brim_width description"
 msgid "The distance from the model to the outermost brim line. A larger brim enhances adhesion to the build plate, but also reduces the effective print area."
 msgstr "Etäisyys mallista ulommaiseen reunuslinjaan. Suurempi reunus parantaa kiinnitystä alustaan, mutta rajoittaa tehokasta tulostusaluetta."
 
-#, fuzzy
 msgctxt "interlocking_boundary_avoidance description"
 msgid "The distance from the outside of a model where interlocking structures will not be generated, measured in cells."
 msgstr "Suuttimen kärjestä mitattu etäisyys, jonka päähän tulostuslanka asetetaan säilytykseen, kun suulaketta ei enää käytetä."
@@ -4625,7 +4620,6 @@ msgctxt "support_brim_width description"
 msgid "The width of the brim to print underneath the support. A larger brim enhances adhesion to the build plate, at the cost of some extra material."
 msgstr ""
 
-#, fuzzy
 msgctxt "interlocking_beam_width description"
 msgid "The width of the interlocking structure beams."
 msgstr "Esitäyttötornin leveys."
