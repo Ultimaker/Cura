@@ -84,7 +84,7 @@ class GcodeStartEndFormatter(Formatter):
             container_stack = ExtruderManager.getInstance().getExtruderStack(extruder_nr)
 
         setting_function = SettingFunction(expression)
-        value = setting_function(container_stack)
+        value = setting_function(container_stack, additional_variables=kwargs[str(extruder_nr)])
 
         return value
 
@@ -423,10 +423,17 @@ class StartSliceJob(Job):
         :param value: A piece of g-code to replace tokens in.
         :param default_extruder_nr: Stack nr to use when no stack nr is specified, defaults to the global stack
         """
+        if not self._all_extruders_settings:
+            self._cacheAllExtruderSettings()
+
         try:
             # any setting can be used as a token
             fmt = GcodeStartEndFormatter(default_extruder_nr = default_extruder_nr)
-            return str(fmt.format(value))
+            if self._all_extruders_settings is None:
+                return ""
+            settings = self._all_extruders_settings.copy()
+            settings["default_extruder_nr"] = default_extruder_nr
+            return str(fmt.format(value, **settings))
         except:
             Logger.logException("w", "Unable to do token replacement on start/end g-code")
             return str(value)
