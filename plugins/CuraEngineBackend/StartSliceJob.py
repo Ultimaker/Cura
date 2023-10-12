@@ -1,4 +1,4 @@
-#  Copyright (c) 2021-2022 Ultimaker B.V.
+#  Copyright (c) 2023 UltiMaker
 #  Cura is released under the terms of the LGPLv3 or higher.
 import os
 
@@ -24,6 +24,7 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.Scene import Scene #For typing.
 from UM.Settings.Validator import ValidatorState
 from UM.Settings.SettingRelation import RelationType
+from UM.Settings.SettingFunction import SettingFunction
 
 from cura.CuraApplication import CuraApplication
 from cura.Scene.CuraSceneNode import CuraSceneNode
@@ -46,44 +47,44 @@ class StartJobResult(IntEnum):
 
 
 class GcodeStartEndFormatter(Formatter):
-    """Formatter class that handles token expansion in start/end gcode"""
+    # Formatter class that handles token expansion in start/end gcode
+    # Example of a start/end gcode string:
+    # ```
+    # M104 S{material_print_temperature_layer_0, 0} ;pre-heat
+    # M140 S{material_bed_temperature_layer_0} ;heat bed
+    # M204 P{acceleration_print, 0} T{acceleration_travel, 0}
+    # M205 X{jerk_print, 0}
+    # ```
+    # Any expression between curly braces will be evaluated and replaced with the result, using the
+    # context of the provided default extruder. If no default extruder is provided, the global stack
+    # will be used. Alternatively, if the expression is formatted as "{[expression], [extruder_nr]}",
+    # then the expression will be evaluated with the extruder stack of the specified extruder_nr.
+
+    _extruder_regex = re.compile(r"^\s*(?P<expression>.*)\s*,\s*(?P<extruder_nr>\d+)\s*$")
 
     def __init__(self, default_extruder_nr: int = -1) -> None:
         super().__init__()
         self._default_extruder_nr = default_extruder_nr
 
-    def get_value(self, key: str, args: str, kwargs: dict) -> str: #type: ignore # [CodeStyle: get_value is an overridden function from the Formatter class]
-        # The kwargs dictionary contains a dictionary for each stack (with a string of the extruder_nr as their key),
-        # and a default_extruder_nr to use when no extruder_nr is specified
-
+    def get_value(self, expression: str, args: str, kwargs: dict) -> str:
         extruder_nr = self._default_extruder_nr
 
-        key_fragments = [fragment.strip() for fragment in key.split(",")]
-        if len(key_fragments) == 2:
-            try:
-                extruder_nr = int(key_fragments[1])
-            except ValueError:
-                try:
-                    extruder_nr = int(kwargs["-1"][key_fragments[1]]) # get extruder_nr values from the global stack #TODO: How can you ever provide the '-1' kwarg?
-                except (KeyError, ValueError):
-                    # either the key does not exist, or the value is not an int
-                    Logger.log("w", "Unable to determine stack nr '%s' for key '%s' in start/end g-code, using global stack", key_fragments[1], key_fragments[0])
-        elif len(key_fragments) != 1:
-            Logger.log("w", "Incorrectly formatted placeholder '%s' in start/end g-code", key)
-            return "{" + key + "}"
+        # The settings may specify a specific extruder to use. This is done by
+        # formatting the expression as "{expression}, {extruder_nr}". If the
+        # expression is formatted like this, we extract the extruder_nr and use
+        # it to get the value from the correct extruder stack.
+        match = self._extruder_regex.match(expression)
+        if match:
+            expression = match.group("expression")
+            extruder_nr = int(match.group("extruder_nr"))
 
-        key = key_fragments[0]
+        if extruder_nr == -1:
+            container_stack = CuraApplication.getInstance().getGlobalContainerStack()
+        else:
+            container_stack = ExtruderManager.getInstance().getExtruderStack(extruder_nr)
 
-        default_value_str = "{" + key + "}"
-        value = default_value_str
-        # "-1" is global stack, and if the setting value exists in the global stack, use it as the fallback value.
-        if key in kwargs["-1"]:
-            value = kwargs["-1"][key]
-        if str(extruder_nr) in kwargs and key in kwargs[str(extruder_nr)]:
-            value = kwargs[str(extruder_nr)][key]
-
-        if value == default_value_str:
-            Logger.log("w", "Unable to replace '%s' placeholder in start/end g-code", key)
+        setting_function = SettingFunction(expression)
+        value = setting_function(container_stack)
 
         return value
 
@@ -422,17 +423,10 @@ class StartSliceJob(Job):
         :param value: A piece of g-code to replace tokens in.
         :param default_extruder_nr: Stack nr to use when no stack nr is specified, defaults to the global stack
         """
-        if not self._all_extruders_settings:
-            self._cacheAllExtruderSettings()
-
         try:
             # any setting can be used as a token
             fmt = GcodeStartEndFormatter(default_extruder_nr = default_extruder_nr)
-            if self._all_extruders_settings is None:
-                return ""
-            settings = self._all_extruders_settings.copy()
-            settings["default_extruder_nr"] = default_extruder_nr
-            return str(fmt.format(value, **settings))
+            return str(fmt.format(value))
         except:
             Logger.logException("w", "Unable to do token replacement on start/end g-code")
             return str(value)
