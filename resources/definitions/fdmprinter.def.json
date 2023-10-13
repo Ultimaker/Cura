@@ -6698,6 +6698,7 @@
                 },
                 "prime_tower_base_height":
                 {
+                    "value": "resolveOrValue('layer_height')",
                     "label": "Prime Tower Base Height",
                     "description": "The height of the prime tower base.",
                     "type": "float",
