@@ -3053,7 +3053,6 @@ msgctxt "small_hole_max_size label"
 msgid "Small Hole Max Size"
 msgstr "Kis lyuk maximális mérete"
 
-#, fuzzy
 msgctxt "cool_min_temperature label"
 msgid "Small Layer Printing Temperature"
 msgstr "Befejező nyomtatási hőmérséklet"
@@ -3170,7 +3169,6 @@ msgctxt "support_bottom_distance label"
 msgid "Support Bottom Distance"
 msgstr "Támasz alsó távolság"
 
-#, fuzzy
 msgctxt "support_bottom_wall_count label"
 msgid "Support Bottom Wall Line Count"
 msgstr "Támasz falak száma"
@@ -3335,7 +3333,6 @@ msgctxt "support_interface_height label"
 msgid "Support Interface Thickness"
 msgstr "Interfész vastagság"
 
-#, fuzzy
 msgctxt "support_interface_wall_count label"
 msgid "Support Interface Wall Line Count"
 msgstr "Támasz falak száma"
@@ -3420,7 +3417,6 @@ msgctxt "support_roof_height label"
 msgid "Support Roof Thickness"
 msgstr "Felső interfész vastagság"
 
-#, fuzzy
 msgctxt "support_roof_wall_count label"
 msgid "Support Roof Wall Line Count"
 msgstr "Támasz falak száma"
@@ -3761,7 +3757,6 @@ msgctxt "brim_width description"
 msgid "The distance from the model to the outermost brim line. A larger brim enhances adhesion to the build plate, but also reduces the effective print area."
 msgstr "Az a szélesség, amilyen széles lesz a Perem, a nyomtatott tárgy szélétől számítva. A nagyobb perem nagyobb tapadást fog eredményeznim viszont csökkenti az effektív használható nyomtatási területet."
 
-#, fuzzy
 msgctxt "interlocking_boundary_avoidance description"
 msgid "The distance from the outside of a model where interlocking structures will not be generated, measured in cells."
 msgstr "Ez a távolság a fúvóka végétől mért távolság, ameddig a nyomtatószálat vissza szükséges húzni, ha nem használjuk az adott extrudert."
@@ -4278,17 +4273,14 @@ msgctxt "support_wall_count description"
 msgid "The number of walls with which to surround support infill. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
 msgstr "Azoknak a falaknak a száma, amellyel a támogatást körül lehet venni. A fal hozzáadása megbízhatóbbá teszi a nyomtatást és jobban támaszthatja a túlnyúlásokat, de növeli a nyomtatási időt és a felhasznált anyagot."
 
-#, fuzzy
 msgctxt "support_bottom_wall_count description"
 msgid "The number of walls with which to surround support interface floor. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
 msgstr "Azoknak a falaknak a száma, amellyel a támogatást körül lehet venni. A fal hozzáadása megbízhatóbbá teszi a nyomtatást és jobban támaszthatja a túlnyúlásokat, de növeli a nyomtatási időt és a felhasznált anyagot."
 
-#, fuzzy
 msgctxt "support_roof_wall_count description"
 msgid "The number of walls with which to surround support interface roof. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
 msgstr "Azoknak a falaknak a száma, amellyel a támogatást körül lehet venni. A fal hozzáadása megbízhatóbbá teszi a nyomtatást és jobban támaszthatja a túlnyúlásokat, de növeli a nyomtatási időt és a felhasznált anyagot."
 
-#, fuzzy
 msgctxt "support_interface_wall_count description"
 msgid "The number of walls with which to surround support interface. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
 msgstr "Azoknak a falaknak a száma, amellyel a támogatást körül lehet venni. A fal hozzáadása megbízhatóbbá teszi a nyomtatást és jobban támaszthatja a túlnyúlásokat, de növeli a nyomtatási időt és a felhasznált anyagot."
@@ -4637,7 +4629,6 @@ msgctxt "support_brim_width description"
 msgid "The width of the brim to print underneath the support. A larger brim enhances adhesion to the build plate, at the cost of some extra material."
 msgstr "A támasz alá nyomtatandó perem szélessége. A nagyobb peremek javítják a tálcához való tapadást, viszon extra anyagfelhasználást is jelent."
 
-#, fuzzy
 msgctxt "interlocking_beam_width description"
 msgid "The width of the interlocking structure beams."
 msgstr "Az előtorony szélessége."
