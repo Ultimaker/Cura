@@ -863,6 +863,7 @@ class BuildVolume(SceneNode):
             prime_tower_brim_enable = self._global_container_stack.getProperty("prime_tower_brim_enable", "value")
             prime_tower_base_size = self._global_container_stack.getProperty("prime_tower_base_size", "value")
             prime_tower_base_height = self._global_container_stack.getProperty("prime_tower_base_height", "value")
+            adhesion_type = self._global_container_stack.getProperty("adhesion_type", "value")
 
             if not self._global_container_stack.getProperty("machine_center_is_zero", "value"):
                 prime_tower_x = prime_tower_x - machine_width / 2 #Offset by half machine_width and _depth to put the origin in the front-left.
@@ -872,7 +873,7 @@ class BuildVolume(SceneNode):
             delta_x = -radius
             delta_y = -radius
 
-            if prime_tower_brim_enable and prime_tower_base_size > 0 and prime_tower_base_height > 0:
+            if prime_tower_base_size > 0 and ((prime_tower_brim_enable and prime_tower_base_height > 0) or adhesion_type == "raft"):
                 radius += prime_tower_base_size
 
             prime_tower_area = Polygon.approximatedCircle(radius, num_segments = 32)
