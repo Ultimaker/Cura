@@ -813,7 +813,7 @@ class BuildVolume(SceneNode):
             prime_tower_areas = self._computeDisallowedAreasPrinted(used_extruders)
             for extruder_id in prime_tower_areas:
                 for area_index, prime_tower_area in enumerate(prime_tower_areas[extruder_id]):
-                    for area in result_areas[extruder_id]:
+                    for area in result_areas_no_brim[extruder_id]:
                         if prime_tower_area.intersectsPolygon(area) is not None:
                             prime_tower_collision = True
                             break
