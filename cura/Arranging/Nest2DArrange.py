@@ -6,6 +6,7 @@ from pynest2d import Point, Box, Item, NfpConfig, nest
 from typing import List, TYPE_CHECKING, Optional, Tuple
 
 from UM.Application import Application
+from UM.Decorators import deprecated
 from UM.Logger import Logger
 from UM.Math.Matrix import Matrix
 from UM.Math.Polygon import Polygon
@@ -124,7 +125,7 @@ class Nest2DArrange(Arranger):
 
         return found_solution_for_all, node_items
 
-    def createGroupOperationForArrange(self, *, add_new_nodes_in_scene: bool = False) -> Tuple[GroupedOperation, int]:
+    def createGroupOperationForArrange(self, add_new_nodes_in_scene: bool = False) -> Tuple[GroupedOperation, int]:
         scene_root = Application.getInstance().getController().getScene().getRoot()
         found_solution_for_all, node_items = self.findNodePlacement()
 
@@ -149,3 +150,30 @@ class Nest2DArrange(Arranger):
                 not_fit_count += 1
 
         return grouped_operation, not_fit_count
+
+
+@deprecated("Use the Nest2DArrange class instead")
+def findNodePlacement(nodes_to_arrange: List["SceneNode"], build_volume: "BuildVolume",
+                      fixed_nodes: Optional[List["SceneNode"]] = None, factor=10000) -> Tuple[bool, List[Item]]:
+    arranger = Nest2DArrange(nodes_to_arrange, build_volume, fixed_nodes, factor=factor)
+    return arranger.findNodePlacement()
+
+
+@deprecated("Use the Nest2DArrange class instead")
+def createGroupOperationForArrange(nodes_to_arrange: List["SceneNode"],
+                                   build_volume: "BuildVolume",
+                                   fixed_nodes: Optional[List["SceneNode"]] = None,
+                                   factor=10000,
+                                   add_new_nodes_in_scene: bool = False) -> Tuple[GroupedOperation, int]:
+    arranger = Nest2DArrange(nodes_to_arrange, build_volume, fixed_nodes, factor=factor)
+    return arranger.createGroupOperationForArrange(add_new_nodes_in_scene=add_new_nodes_in_scene)
+
+
+@deprecated("Use the Nest2DArrange class instead")
+def arrange(nodes_to_arrange: List["SceneNode"],
+            build_volume: "BuildVolume",
+            fixed_nodes: Optional[List["SceneNode"]] = None,
+            factor=10000,
+            add_new_nodes_in_scene: bool = False) -> bool:
+    arranger = Nest2DArrange(nodes_to_arrange, build_volume, fixed_nodes, factor=factor)
+    return arranger.arrange(add_new_nodes_in_scene=add_new_nodes_in_scene)

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-06-08 16:32+0000\n"
+"POT-Creation-Date: 2023-09-12 17:04+0000\n"
 "PO-Revision-Date: 2020-03-24 09:43+0100\n"
 "Last-Translator: Nagy Attila <vokroot@gmail.com>\n"
 "Language-Team: AT-VLOG\n"
@@ -184,10 +184,6 @@ msgstr ""
 msgctxt "travel_retract_before_outer_wall description"
 msgid "Always retract when moving to start an outer wall."
 msgstr "Minden esetben, mikor a külső fal nyomtatása fog történni, a pozicionáláskor szál visszahúzás fog történni."
-
-msgctxt "hole_xy_offset description"
-msgid "Amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes."
-msgstr ""
 
 msgctxt "xy_offset description"
 msgid "Amount of offset applied to all polygons in each layer. Positive values can compensate for too big holes; negative values can compensate for too small holes."
@@ -785,6 +781,14 @@ msgctxt "support_xy_distance description"
 msgid "Distance of the support structure from the print in the X/Y directions."
 msgstr "A támasz szerkezete és a nyomtatvány közötti távolság X/Y irányban."
 
+msgctxt "meshfix_fluid_motion_shift_distance description"
+msgid "Distance points are shifted to smooth the path"
+msgstr ""
+
+msgctxt "meshfix_fluid_motion_small_distance description"
+msgid "Distance points are shifted to smooth the path"
+msgstr ""
+
 msgctxt "min_infill_area description"
 msgid "Don't generate areas of infill smaller than this (use skin instead)."
 msgstr "Az ettől kisebb területekre nem generál kitöltést."
@@ -832,6 +836,10 @@ msgstr "Kúpos támasz engedélyezése"
 msgctxt "draft_shield_enabled label"
 msgid "Enable Draft Shield"
 msgstr "Huzatpajzs engedélyezése"
+
+msgctxt "meshfix_fluid_motion_enabled label"
+msgid "Enable Fluid Motion"
+msgstr ""
 
 msgctxt "ironing_enabled label"
 msgid "Enable Ironing"
@@ -892,6 +900,10 @@ msgstr ""
 msgctxt "ooze_shield_enabled description"
 msgid "Enable exterior ooze shield. This will create a shell around the model which is likely to wipe a second nozzle if it's at the same height as the first nozzle."
 msgstr "Engedélyezi a szivárgáspajzsot. Ez létrehoz egy héjat a modell körül, úgy, hogy az nem ér a modellhez, azonban a fej visszaálláskor, az esetlegesen fúvókából kicsöppenő anyagmaradványokat 'letörli' ebben a héjban."
+
+msgctxt "small_skin_on_surface description"
+msgid "Enable small (up to 'Small Top/Bottom Width') regions on the topmost skinned layer (exposed to air) to be filled with walls instead of the default pattern."
+msgstr ""
 
 msgctxt "jerk_enabled description"
 msgid "Enables adjusting the jerk of print head when the velocity in the X or Y axis changes. Increasing the jerk can reduce printing time at the cost of print quality."
@@ -1104,6 +1116,18 @@ msgstr "Áramláskompenzálás a fal vonalak nyomtatásánál."
 msgctxt "material_flow description"
 msgid "Flow compensation: the amount of material extruded is multiplied by this value."
 msgstr "Áramláskompenzáció: az extrudált anyag mennyiségét megszorozzuk ezzel az értékkel."
+
+msgctxt "meshfix_fluid_motion_angle label"
+msgid "Fluid Motion Angle"
+msgstr ""
+
+msgctxt "meshfix_fluid_motion_shift_distance label"
+msgid "Fluid Motion Shift Distance"
+msgstr ""
+
+msgctxt "meshfix_fluid_motion_small_distance label"
+msgid "Fluid Motion Small Distance"
+msgstr ""
 
 msgctxt "material_flush_purge_length label"
 msgid "Flush Purge Length"
@@ -1392,6 +1416,10 @@ msgstr ""
 msgctxt "bridge_skin_support_threshold description"
 msgid "If a skin region is supported for less than this percentage of its area, print it using the bridge settings. Otherwise it is printed using the normal skin settings."
 msgstr "Ha a felületi régió területe kevesebb, mint ez a megadott százalékos érték, nyomtassa a híd beállításokkal, egyébként normál felületi beállításokkal nyomtasson."
+
+msgctxt "meshfix_fluid_motion_angle description"
+msgid "If a toolpath-segment deviates more than this angle from the general motion it is smoothed."
+msgstr ""
 
 msgctxt "bridge_enable_more_layers description"
 msgid "If enabled, the second and third layers above the air are printed using the following settings. Otherwise, those layers are printed using the normal settings."
@@ -3025,10 +3053,13 @@ msgctxt "small_hole_max_size label"
 msgid "Small Hole Max Size"
 msgstr "Kis lyuk maximális mérete"
 
-#, fuzzy
 msgctxt "cool_min_temperature label"
 msgid "Small Layer Printing Temperature"
 msgstr "Befejező nyomtatási hőmérséklet"
+
+msgctxt "small_skin_on_surface label"
+msgid "Small Top/Bottom On Surface"
+msgstr ""
 
 msgctxt "small_skin_width label"
 msgid "Small Top/Bottom Width"
@@ -3043,7 +3074,7 @@ msgid "Small features will be printed at this percentage of their normal print s
 msgstr ""
 
 msgctxt "small_skin_width description"
-msgid "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions."
+msgid "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions. Off for the topmost (air-exposed) layer by default (see 'Small Top/Bottom On Surface')."
 msgstr ""
 
 msgctxt "brim_smart_ordering label"
@@ -3138,7 +3169,6 @@ msgctxt "support_bottom_distance label"
 msgid "Support Bottom Distance"
 msgstr "Támasz alsó távolság"
 
-#, fuzzy
 msgctxt "support_bottom_wall_count label"
 msgid "Support Bottom Wall Line Count"
 msgstr "Támasz falak száma"
@@ -3303,7 +3333,6 @@ msgctxt "support_interface_height label"
 msgid "Support Interface Thickness"
 msgstr "Interfész vastagság"
 
-#, fuzzy
 msgctxt "support_interface_wall_count label"
 msgid "Support Interface Wall Line Count"
 msgstr "Támasz falak száma"
@@ -3388,7 +3417,6 @@ msgctxt "support_roof_height label"
 msgid "Support Roof Thickness"
 msgstr "Felső interfész vastagság"
 
-#, fuzzy
 msgctxt "support_roof_wall_count label"
 msgid "Support Roof Wall Line Count"
 msgstr "Támasz falak száma"
@@ -3729,7 +3757,6 @@ msgctxt "brim_width description"
 msgid "The distance from the model to the outermost brim line. A larger brim enhances adhesion to the build plate, but also reduces the effective print area."
 msgstr "Az a szélesség, amilyen széles lesz a Perem, a nyomtatott tárgy szélétől számítva. A nagyobb perem nagyobb tapadást fog eredményeznim viszont csökkenti az effektív használható nyomtatási területet."
 
-#, fuzzy
 msgctxt "interlocking_boundary_avoidance description"
 msgid "The distance from the outside of a model where interlocking structures will not be generated, measured in cells."
 msgstr "Ez a távolság a fúvóka végétől mért távolság, ameddig a nyomtatószálat vissza szükséges húzni, ha nem használjuk az adott extrudert."
@@ -4246,17 +4273,14 @@ msgctxt "support_wall_count description"
 msgid "The number of walls with which to surround support infill. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
 msgstr "Azoknak a falaknak a száma, amellyel a támogatást körül lehet venni. A fal hozzáadása megbízhatóbbá teszi a nyomtatást és jobban támaszthatja a túlnyúlásokat, de növeli a nyomtatási időt és a felhasznált anyagot."
 
-#, fuzzy
 msgctxt "support_bottom_wall_count description"
 msgid "The number of walls with which to surround support interface floor. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
 msgstr "Azoknak a falaknak a száma, amellyel a támogatást körül lehet venni. A fal hozzáadása megbízhatóbbá teszi a nyomtatást és jobban támaszthatja a túlnyúlásokat, de növeli a nyomtatási időt és a felhasznált anyagot."
 
-#, fuzzy
 msgctxt "support_roof_wall_count description"
 msgid "The number of walls with which to surround support interface roof. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
 msgstr "Azoknak a falaknak a száma, amellyel a támogatást körül lehet venni. A fal hozzáadása megbízhatóbbá teszi a nyomtatást és jobban támaszthatja a túlnyúlásokat, de növeli a nyomtatási időt és a felhasznált anyagot."
 
-#, fuzzy
 msgctxt "support_interface_wall_count description"
 msgid "The number of walls with which to surround support interface. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
 msgstr "Azoknak a falaknak a száma, amellyel a támogatást körül lehet venni. A fal hozzáadása megbízhatóbbá teszi a nyomtatást és jobban támaszthatja a túlnyúlásokat, de növeli a nyomtatási időt és a felhasznált anyagot."
@@ -4605,7 +4629,6 @@ msgctxt "support_brim_width description"
 msgid "The width of the brim to print underneath the support. A larger brim enhances adhesion to the build plate, at the cost of some extra material."
 msgstr "A támasz alá nyomtatandó perem szélessége. A nagyobb peremek javítják a tálcához való tapadást, viszon extra anyagfelhasználást is jelent."
 
-#, fuzzy
 msgctxt "interlocking_beam_width description"
 msgid "The width of the interlocking structure beams."
 msgstr "Az előtorony szélessége."
@@ -4974,6 +4997,10 @@ msgctxt "support_interface_skip_height description"
 msgid "When checking where there's model above and below the support, take steps of the given height. Lower values will slice slower, while higher values may cause normal support to be printed in some places where there should have been support interface."
 msgstr "Amikor a szeletelő ellenőrzi, hogy hol tart a támasz a modell alatt vagy fölött, szükség esetén a megadott magasságú lépéseket teszi meg. Az alacsonyabb értékek lassabb szeleteést okoznak, míg a magasabb érték a normál támasz kinyomtatását eredményezhetik olyan helyeken, ahol támasz interfészt kellene nyomtatni."
 
+msgctxt "meshfix_fluid_motion_enabled description"
+msgid "When enabled tool paths are corrected for printers with smooth motion planners. Small movements that deviate from the general tool path direction are smoothed to improve fluid motions."
+msgstr ""
+
 msgctxt "infill_enable_travel_optimization description"
 msgid "When enabled, the order in which the infill lines are printed is optimized to reduce the distance travelled. The reduction in travel time achieved very much depends on the model being sliced, infill pattern, density, etc. Note that, for some models that have many small areas of infill, the time to slice the model may be greatly increased."
 msgstr "Ha engedélyezve van, a kitöltési sorok nyomtatási sorrendje optimalizálódik a megtett távolság csökkentése érdekében. Az elért utazási idő csökkentése nagymértékben függ a szeletelt modelltől, a kitöltési mintától, a sűrűségtől stb. Vegye figyelembe, hogy egyes modellek esetében, amelyeknek sok kis kitöltési területe van, a modell szeletelésének ideje jelentősen megnőhet."
@@ -4992,6 +5019,10 @@ msgstr ""
 
 msgctxt "hole_xy_offset_max_diameter description"
 msgid "When greater than zero, the Hole Horizontal Expansion is gradually applied on small holes (small holes are expanded more). When set to zero the Hole Horizontal Expansion will be applied to all holes. Holes larger than the Hole Horizontal Expansion Max Diameter are not expanded."
+msgstr ""
+
+msgctxt "hole_xy_offset description"
+msgid "When greater than zero, the Hole Horizontal Expansion is the amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes. When this setting is enabled it can be further tuned with Hole Horizontal Expansion Max Diameter."
 msgstr ""
 
 msgctxt "bridge_skin_material_flow description"
@@ -5357,6 +5388,53 @@ msgstr "Cikcakk"
 msgctxt "travel description"
 msgid "travel"
 msgstr "fej átpozícionálás"
+
+
+
+
+### Settings added by bundled engine backend plugins. Add this manually for now. Should be removed whenever we handle it better.
+
+msgctxt "gradual_flow_enabled label"
+msgid "Gradual flow enabled"
+msgstr ""
+
+msgctxt "gradual_flow_enabled description"
+msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
+msgstr ""
+
+msgctxt "max_flow_acceleration label"
+msgid "Gradual flow max acceleration"
+msgstr ""
+
+msgctxt "max_flow_acceleration description"
+msgid "Maximum acceleration for gradual flow changes"
+msgstr ""
+
+msgctxt "layer_0_max_flow_acceleration label"
+msgid "Initial layer max flow acceleration"
+msgstr ""
+
+msgctxt "layer_0_max_flow_acceleration description"
+msgid "Minimum speed for gradual flow changes for the first layer"
+msgstr ""
+
+msgctxt "gradual_flow_discretisation_step_size label"
+msgid "Gradual flow discretisation step size"
+msgstr ""
+
+msgctxt "gradual_flow_discretisation_step_size description"
+msgid "Duration of each step in the gradual flow change"
+msgstr ""
+
+msgctxt "reset_flow_duration label"
+msgid "Reset flow duration"
+msgstr ""
+
+msgctxt "reset_flow_duration description"
+msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
+msgstr ""
+
+
 
 #~ msgctxt "machine_head_polygon description"
 #~ msgid "A 2D silhouette of the print head (fan caps excluded)."

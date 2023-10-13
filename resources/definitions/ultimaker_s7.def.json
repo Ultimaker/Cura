@@ -32,6 +32,7 @@
             0
         ],
         "platform_texture": "UltimakerS7backplate.png",
+        "preferred_material": "ultimaker_pla_blue",
         "preferred_variant_name": "AA 0.4",
         "quality_definition": "ultimaker_s5",
         "supported_actions": [ "DiscoverUM3Action" ],
