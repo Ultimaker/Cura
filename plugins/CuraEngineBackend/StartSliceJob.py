@@ -62,11 +62,13 @@ class GcodeStartEndFormatter(Formatter):
 
     _extruder_regex = re.compile(r"^\s*(?P<expression>.*)\s*,\s*(?P<extruder_nr>\d+)\s*$")
 
-    def __init__(self, default_extruder_nr: int = -1) -> None:
+    def __init__(self, default_extruder_nr: int = -1, *,
+                 additional_per_extruder_settings: Optional[Dict[str, Dict[str, any]]] = None) -> None:
         super().__init__()
-        self._default_extruder_nr = default_extruder_nr
+        self._default_extruder_nr: int = default_extruder_nr
+        self._additional_per_extruder_settings: Optional[Dict[str, Dict[str, any]]] = additional_per_extruder_settings
 
-    def get_value(self, expression: str, args: str, kwargs: dict) -> str:
+    def get_value(self, expression: str, args: [str], kwargs: dict) -> str:
         extruder_nr = self._default_extruder_nr
 
         # The settings may specify a specific extruder to use. This is done by
@@ -78,13 +80,27 @@ class GcodeStartEndFormatter(Formatter):
             expression = match.group("expression")
             extruder_nr = int(match.group("extruder_nr"))
 
+        if self._additional_per_extruder_settings is not None and str(
+                extruder_nr) in self._additional_per_extruder_settings:
+            additional_variables = self._additional_per_extruder_settings[str(extruder_nr)]
+        else:
+            additional_variables = dict()
+
+        # Add the arguments and keyword arguments to the additional settings. These
+        # are currently _not_ used, but they are added for consistency with the
+        # base Formatter class.
+        for key, value in enumerate(args):
+            additional_variables[key] = value
+        for key, value in kwargs.items():
+            additional_variables[key] = value
+
         if extruder_nr == -1:
             container_stack = CuraApplication.getInstance().getGlobalContainerStack()
         else:
             container_stack = ExtruderManager.getInstance().getExtruderStack(extruder_nr)
 
         setting_function = SettingFunction(expression)
-        value = setting_function(container_stack, additional_variables=kwargs[str(extruder_nr)])
+        value = setting_function(container_stack, additional_variables=additional_variables)
 
         return value
 
@@ -427,13 +443,14 @@ class StartSliceJob(Job):
             self._cacheAllExtruderSettings()
 
         try:
-            # any setting can be used as a token
-            fmt = GcodeStartEndFormatter(default_extruder_nr = default_extruder_nr)
-            if self._all_extruders_settings is None:
-                return ""
-            settings = self._all_extruders_settings.copy()
-            settings["default_extruder_nr"] = default_extruder_nr
-            return str(fmt.format(value, **settings))
+            # Get "replacement-keys" for the extruders. In the formatter the settings stack is used to get the
+            # replacement values for the setting-keys. However, the values for `material_id`, `material_type`,
+            # etc are not in the settings stack.
+            additional_per_extruder_settings = self._all_extruders_settings.copy()
+            additional_per_extruder_settings["default_extruder_nr"] = default_extruder_nr
+            fmt = GcodeStartEndFormatter(default_extruder_nr=default_extruder_nr,
+                                         additional_per_extruder_settings=additional_per_extruder_settings)
+            return str(fmt.format(value))
         except:
             Logger.logException("w", "Unable to do token replacement on start/end g-code")
             return str(value)
