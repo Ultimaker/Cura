@@ -188,11 +188,10 @@ class ThreeMFReader(MeshReader):
                 child_node = um_node.getChildren()[0]
                 # Move all the meshes of children so that toolhandles are shown in the correct place.
                 if child_node.getMeshData():
-                    print("child name: ", child_node.getId())
                     extents = child_node.getMeshData().getExtents()
-                    m = Matrix()
-                    m.translate(-extents.center)
-                    child_node.setMeshData(child_node.getMeshData().getTransformed(m))
+                    move_matrix = Matrix()
+                    move_matrix.translate(-extents.center)
+                    child_node.setMeshData(child_node.getMeshData().getTransformed(move_matrix))
                     child_node.translate(extents.center)
                 parent_transformation = um_node.getLocalTransformation()
                 child_transformation = child_node.getLocalTransformation()
