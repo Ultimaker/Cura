@@ -89,7 +89,7 @@ msgid ""
 "Add extra walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\n"
 "This feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right."
 msgstr ""
-"내부채움 영역 주변에 여분의 벽을 추가합니다. 이러한 벽은 상단/하단 스킨 선이 늘어지는 것을 줄여줄 수 있습니다. 일부 여분 재료를 사용해도 같은 품질을 유지하는 데 필요한 필요한 상단/하단 스킨 층이 감소한다는 의미입니다.\n"
+"내부채움 영역 주변에 여분의 벽을 추가합니다. 이러한 벽은 상/하단 스킨 선이 늘어지는 것을 줄여줄 수 있습니다. 일부 여분 재료를 사용해도 같은 품질을 유지하는 데 필요한 필요한 상/하단 스킨 층이 감소한다는 의미입니다.\n"
 "이 기능을 올바르게 구성하는 경우 내부채움 다각형 연결과 함께 사용해 이동 또는 리트렉션없이 모든 내부채움을 단일 오버행 경로에 연결할 수 있습니다."
 
 msgctxt "platform_adhesion description"
@@ -162,11 +162,11 @@ msgstr "대체 메쉬 제거"
 
 msgctxt "material_alternate_walls label"
 msgid "Alternate Wall Directions"
-msgstr "벽 방향 대체"
+msgstr "대체 벽 방향"
 
 msgctxt "material_alternate_walls description"
 msgid "Alternate wall directions every other layer and inset. Useful for materials that can build up stress, like for metal printing."
-msgstr "다른 레이어마다 벽 방향을 대체하고 삽입합니다. 금속 출력의 경우와 같이 응력을 증강시킬 수 있는 재료에 유용."
+msgstr "다른 레이어마다 벽 방향을 대체하고 삽입합니다. 금속 출력의 경우와 같이 응력을 증강시킬 수 있는 재료에 유용합니다."
 
 msgctxt "machine_buildplate_type option aluminum"
 msgid "Aluminum"
@@ -186,7 +186,7 @@ msgstr "각 레이어의 모든 다각형에 적용된 옵셋의 양입니다. �
 
 msgctxt "xy_offset_layer_0 description"
 msgid "Amount of offset applied to all polygons in the first layer. A negative value can compensate for squishing of the first layer known as \"elephant's foot\"."
-msgstr "첫번째 레이어의 모든 다각형에 적용된 옵셋의 양입니다. 음수 값은 \"elephant's foot\"이라고 알려진 현상을 보완 할 수 있습니다."
+msgstr "첫번째 레이어의 모든 다각형에 적용된 옵셋의 양입니다. 음수 값은 \"코끼리 발\"이라고 알려진 현상을 보완 할 수 있습니다."
 
 msgctxt "support_offset description"
 msgid "Amount of offset applied to all support polygons in each layer. Positive values can smooth out the support areas and result in more sturdy support."
@@ -206,7 +206,7 @@ msgstr "서포트 인터페이스 영역에 적용되는 옵셋 양."
 
 msgctxt "wipe_retraction_amount description"
 msgid "Amount to retract the filament so it does not ooze during the wipe sequence."
-msgstr "필라멘트를 리트렉션하는 양으로 버리기 하는 순서 동안 새어 나오지 않습니다."
+msgstr "닦는 과정 중에 필라멘트가 흘러나오지 않도록 필라멘트를 리트랙션하는 양입니다."
 
 msgctxt "sub_div_rad_add description"
 msgid "An addition to the radius from the center of each cube to check for the boundary of the model, as to decide whether this cube should be subdivided. Larger values lead to a thicker shell of small cubes near the boundary of the model."
@@ -254,7 +254,7 @@ msgstr "후면 오른쪽"
 
 msgctxt "machine_gcode_flavor option BFB"
 msgid "Bits from Bytes"
-msgstr "Bits from Bytes"
+msgstr "바이트에서 비트"
 
 msgctxt "magic_mesh_surface_mode option both"
 msgid "Both"
@@ -270,7 +270,7 @@ msgstr "바닥 레이어"
 
 msgctxt "top_bottom_pattern_0 label"
 msgid "Bottom Pattern Initial Layer"
-msgstr "바닥 패턴 초기 레이어"
+msgstr "초기 레이어 바닥 패턴"
 
 msgctxt "bottom_skin_expand_distance label"
 msgid "Bottom Skin Expand Distance"
@@ -330,7 +330,7 @@ msgstr "브리지 팬 속도"
 
 msgctxt "bridge_enable_more_layers label"
 msgid "Bridge Has Multiple Layers"
-msgstr "여러 개의 레이어가있는 브리지"
+msgstr "여러 개의 레이어가 있는 브리지"
 
 msgctxt "bridge_skin_density_2 label"
 msgid "Bridge Second Skin Density"
@@ -426,15 +426,15 @@ msgstr "브림 너비"
 
 msgctxt "platform_adhesion label"
 msgid "Build Plate Adhesion"
-msgstr "베드 부착"
+msgstr "베드 안착"
 
 msgctxt "adhesion_extruder_nr label"
 msgid "Build Plate Adhesion Extruder"
-msgstr "베드 고정 익스트루더"
+msgstr "베드 안착 익스트루더"
 
 msgctxt "adhesion_type label"
 msgid "Build Plate Adhesion Type"
-msgstr "베드 고정 유형"
+msgstr "베드 안착 유형"
 
 msgctxt "machine_buildplate_type label"
 msgid "Build Plate Material"
@@ -454,7 +454,7 @@ msgstr "초기 레이어의 베드 온도"
 
 msgctxt "build_volume_temperature label"
 msgid "Build Volume Temperature"
-msgstr "빌드 용량 온도"
+msgstr "빌드 볼륨 온도"
 
 msgctxt "center_object label"
 msgid "Center Object"
@@ -554,11 +554,11 @@ msgstr "지그재그 서포트 연결"
 
 msgctxt "connect_skin_polygons label"
 msgid "Connect Top/Bottom Polygons"
-msgstr "상단/하단 다각형 연결"
+msgstr "상/하단 다각형 연결"
 
 msgctxt "connect_infill_polygons description"
 msgid "Connect infill paths where they run next to each other. For infill patterns which consist of several closed polygons, enabling this setting greatly reduces the travel time."
-msgstr "스킨 경로가 나란히 이어지는 내부채움 경로를 연결합니다. 여러 개의 폐다각형으로 구성되는 내부채움 패턴의 경우 이 설정을 사용하면 이동 시간이 크게 감소합니다."
+msgstr "스킨 경로가 나란히 이어지는 내부채움 경로를 연결합니다. 여러 개의 닫힌 다각형으로 구성되는 내부채움 패턴의 경우 이 설정을 사용하면 이동 시간이 크게 감소합니다."
 
 msgctxt "support_connect_zigzags description"
 msgid "Connect the ZigZags. This will increase the strength of the zig zag support structure."
@@ -574,7 +574,7 @@ msgstr "내벽의 형태를 따라가는 선을 사용하여 내부채움 패턴
 
 msgctxt "connect_skin_polygons description"
 msgid "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happen midway over infill this feature can reduce the top surface quality."
-msgstr "스킨 경로가 나란히 이어지는 상단/하단 스킨 경로를 연결합니다. 동심원 패턴의 경우 이 설정을 사용하면 이동 시간이 크게 감소하지만, 내부채움의 중간에 연결될 수 있기 때문에 이 기능은 상단 표면 품질을 저하시킬 수 있습니다."
+msgstr "스킨 경로가 나란히 이어지는 상/하단 스킨 경로를 연결합니다. 동심원 패턴의 경우 이 설정을 사용하면 이동 시간이 크게 감소하지만, 내부채움의 중간에 연결될 수 있기 때문에 이 기능은 상단 표면 품질을 저하시킬 수 있습니다."
 
 msgctxt "z_seam_corner description"
 msgid "Control whether corners on the model outline influence the position of the seam. None means that corners have no influence on the seam position. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner. Smart Hiding allows both inside and outside corners, but chooses inside corners more frequently, if appropriate."
@@ -614,11 +614,11 @@ msgstr "십자 3D 포켓 크기"
 
 msgctxt "cross_support_density_image label"
 msgid "Cross Fill Density Image for Support"
-msgstr "서포트에 대한 교차 충진 밀도 이미지"
+msgstr "서포트에 대한 교차 내부채움 밀도 이미지"
 
 msgctxt "cross_infill_density_image label"
 msgid "Cross Infill Density Image"
-msgstr "교차 충진 밀도 이미지"
+msgstr "교차 내부채움 밀도 이미지"
 
 msgctxt "material_crystallinity label"
 msgid "Crystalline Material"
@@ -642,7 +642,7 @@ msgstr "메쉬 절단"
 
 msgctxt "material_flow_temp_graph description"
 msgid "Data linking material flow (in mm3 per second) to temperature (degrees Celsius)."
-msgstr "재료 공급 데이터 (mm3 / 초) - 온도 (섭씨)."
+msgstr "재료 공급 데이터 (mm3/초) - 온도 (섭씨)."
 
 msgctxt "machine_acceleration label"
 msgid "Default Acceleration"
@@ -898,7 +898,7 @@ msgstr "누출 쉴드를 활성화. 이렇게하면 첫번째 노즐과 동일�
 
 msgctxt "small_skin_on_surface description"
 msgid "Enable small (up to 'Small Top/Bottom Width') regions on the topmost skinned layer (exposed to air) to be filled with walls instead of the default pattern."
-msgstr "공기에 노출된 최상위 스킨 레이어의 작은(최대 '작은 상단/하단 너비') 영역을 기본 패턴 대신 벽으로 채울 수 있도록 합니다."
+msgstr "공기에 노출된 최상위 스킨 레이어의 작은(최대 '작은 상/하단 너비') 영역을 기본 패턴 대신 벽으로 채울 수 있도록 합니다."
 
 msgctxt "jerk_enabled description"
 msgid "Enables adjusting the jerk of print head when the velocity in the X or Y axis changes. Increasing the jerk can reduce printing time at the cost of print quality."
@@ -910,7 +910,7 @@ msgstr "프린트 헤드 가속도를 활성화 합니다. 가속도를 높이�
 
 msgctxt "cool_fan_enabled description"
 msgid "Enables the print cooling fans while printing. The fans improve print quality on layers with short layer times and bridging / overhangs."
-msgstr "출력 중에 냉각 팬을 활성화합니다. 팬은 짧은 레이어 시간 및 브리지 / 오버행으로 레이어의 출력 품질을 향상시킵니다."
+msgstr "출력 중에 냉각 팬을 활성화합니다. 팬은 짧은 레이어 시간 및 브리지/오버행으로 레이어의 출력 품질을 향상시킵니다."
 
 msgctxt "machine_end_gcode label"
 msgid "End G-code"
@@ -1002,7 +1002,7 @@ msgstr "팬 속도 무시"
 
 msgctxt "small_feature_max_length description"
 msgid "Feature outlines that are shorter than this length will be printed using Small Feature Speed."
-msgstr "이 수치보다 길이가 짧은 피처 윤곽은 소형 피처 속도 기능을 이용해 프린트합니다."
+msgstr "이 수치보다 길이가 작은 기능 윤곽은 작은 기능 속도를 이용해 프린트합니다."
 
 msgctxt "experimental description"
 msgid "Features that haven't completely been fleshed out yet."
@@ -1046,7 +1046,7 @@ msgstr "재료 공급 온도 그래프"
 
 msgctxt "material_flow_layer_0 description"
 msgid "Flow compensation for the first layer: the amount of material extruded on the initial layer is multiplied by this value."
-msgstr "첫번째 레이어에 대한 압출량 보상: 압출 된 재료의 양에 이 값을 곱합니다."
+msgstr "초기 레이어에 대한 압출량 보상: 압출 된 재료의 양에 이 값을 곱합니다."
 
 msgctxt "skin_material_flow_layer_0 description"
 msgid "Flow compensation on bottom lines of the first layer"
@@ -1094,7 +1094,7 @@ msgstr "가장 외측 벽 선의 압출 보상입니다."
 
 msgctxt "skin_material_flow description"
 msgid "Flow compensation on top/bottom lines."
-msgstr "상단/하단 선의 압출 보상입니다."
+msgstr "상/하단 선의 압출 보상입니다."
 
 msgctxt "wall_x_material_flow_layer_0 description"
 msgid "Flow compensation on wall lines for all wall lines except the outermost one, but only for the first layer"
@@ -1290,7 +1290,7 @@ msgstr "자이로이드"
 
 msgctxt "machine_heated_build_volume label"
 msgid "Has Build Volume Temperature Stabilization"
-msgstr "빌드 용량 안정화 온도"
+msgstr "빌드 볼륨 안정화 온도"
 
 msgctxt "machine_heated_bed label"
 msgid "Has Heated Build Plate"
@@ -1326,7 +1326,7 @@ msgstr "구멍 수평 확장 최대 직경"
 
 msgctxt "small_hole_max_size description"
 msgid "Holes and part outlines with a diameter smaller than this will be printed using Small Feature Speed."
-msgstr "이 수치보다 직경이 작은 구멍 및 부품 윤곽은 소형 피처 속도 기능을 이용해 프린트합니다."
+msgstr "이 수치보다 직경이 작은 구멍 및 부품 윤곽은 작은 기능 속도 기능을 이용해 프린트합니다."
 
 msgctxt "xy_offset label"
 msgid "Horizontal Expansion"
@@ -1438,7 +1438,7 @@ msgstr "베드 온도 포함"
 
 msgctxt "material_print_temp_prepend label"
 msgid "Include Material Temperatures"
-msgstr "재료의 온도 포함하기"
+msgstr "재료의 온도 포함"
 
 msgctxt "slicing_tolerance option inclusive"
 msgid "Inclusive"
@@ -2218,7 +2218,7 @@ msgstr "단면 상단 표면 순서"
 
 msgctxt "skin_monotonic label"
 msgid "Monotonic Top/Bottom Order"
-msgstr "단면 상단/하단 순서"
+msgstr "단면 상/하단 순서"
 
 msgctxt "skirt_line_count description"
 msgid "Multiple skirt lines help to prime your extrusion better for small models. Setting this to 0 will disable the skirt."
@@ -2230,7 +2230,7 @@ msgstr "첫번째 레이어의 선 폭 승수입니다. 이것을 늘리면 베�
 
 msgctxt "material_no_load_move_factor label"
 msgid "No Load Move Factor"
-msgstr "로드 이동 요인 없음"
+msgstr "무부하 이동계수"
 
 msgctxt "skin_no_small_gaps_heuristic label"
 msgid "No Skin in Z Gaps"
@@ -2462,7 +2462,7 @@ msgstr "오버행된 벽은 정상적인 출력 속도의 이 비율로 출력�
 
 msgctxt "wipe_pause description"
 msgid "Pause after the unretract."
-msgstr "리트랙트를 실행 취소한 후 일시 정지합니다."
+msgstr "리트랙트 실행을 취소한 후 일시 정지합니다."
 
 msgctxt "bridge_fan_speed description"
 msgid "Percentage fan speed to use when printing bridge walls and skin."
@@ -2602,7 +2602,7 @@ msgstr "출력 온도"
 
 msgctxt "material_print_temperature_layer_0 label"
 msgid "Printing Temperature Initial Layer"
-msgstr "첫번째 레이어의 출력 온도"
+msgstr "초기 레이어의 출력 온도"
 
 msgctxt "skirt_height description"
 msgid "Printing the innermost skirt line with multiple layers makes it easy to remove the skirt."
@@ -2842,7 +2842,7 @@ msgstr "반복"
 
 msgctxt "skin_outline_count description"
 msgid "Replaces the outermost part of the top/bottom pattern with a number of concentric lines. Using one or two lines improves roofs that start on infill material."
-msgstr "위쪽/아래쪽 패턴의 가장 바깥 쪽 부분을 여러 동심 선으로 바꿉니다. 하나 또는 두 개의 선을 사용하면 내부채움 재료로 시작하는 지붕면이 향상됩니다."
+msgstr "상/하단 패턴의 가장 바깥 쪽 부분을 여러 동심 선으로 바꿉니다. 하나 또는 두 개의 선을 사용하면 내부채움 재료로 시작하는 지붕면이 향상됩니다."
 
 msgctxt "support_tree_rest_preference label"
 msgid "Rest Preference"
@@ -2930,7 +2930,7 @@ msgstr "Cura 프론트 엔드에서 Cura Engine이 호출되지 않은 경우에
 
 msgctxt "machine_extruders_shared_nozzle_initial_retraction label"
 msgid "Shared Nozzle Initial Retraction"
-msgstr "공유된 노즐 초기 수축"
+msgstr "공유된 노즐의 초기 리트랙션"
 
 msgctxt "z_seam_type option sharpest_corner"
 msgid "Sharpest Corner"
@@ -3034,27 +3034,27 @@ msgstr "슬라이싱 허용 오차"
 
 msgctxt "small_feature_speed_factor_0 label"
 msgid "Small Feature Initial Layer Speed"
-msgstr "소형 피처 초기 레이어 속도"
+msgstr "작은 기능 초기 레이어 속도"
 
 msgctxt "small_feature_max_length label"
 msgid "Small Feature Max Length"
-msgstr "소형 피처 최대 길이"
+msgstr "작은 기능 최대 길이"
 
 msgctxt "small_feature_speed_factor label"
 msgid "Small Feature Speed"
-msgstr "소형 피처 속도"
+msgstr "작은 기능 속도"
 
 msgctxt "small_hole_max_size label"
 msgid "Small Hole Max Size"
-msgstr "소형 구멍 최대 크기"
+msgstr "작은 구멍 최대 크기"
 
 msgctxt "cool_min_temperature label"
 msgid "Small Layer Printing Temperature"
-msgstr "소형 레이어 출력 온도"
+msgstr "작은 레이어 출력 온도"
 
 msgctxt "small_skin_on_surface label"
 msgid "Small Top/Bottom On Surface"
-msgstr "표면의 작은 상/하단"
+msgstr "작은 상/하단 표면"
 
 msgctxt "small_skin_width label"
 msgid "Small Top/Bottom Width"
@@ -3062,15 +3062,15 @@ msgstr "작은 상/하단 너비"
 
 msgctxt "small_feature_speed_factor_0 description"
 msgid "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
-msgstr "첫번째 레이어의 소형 피처는 정상적인 프린트 속도의 이 비율로 출력됩니다. 프린트 속도가 느리면 부착과 정확도가 개선됩니다."
+msgstr "첫번째 레이어의 작은 기능는 정상적인 프린트 속도의 이 비율로 출력됩니다. 프린트 속도가 느리면 부착과 정확도가 개선됩니다."
 
 msgctxt "small_feature_speed_factor description"
 msgid "Small features will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
-msgstr "소형 피처는 정상적인 프린트 속도의 이 비율로 출력됩니다. 프린트 속도가 느리면 부착과 정확도가 개선됩니다."
+msgstr "작은 기능는 정상적인 프린트 속도의 이 비율로 출력됩니다. 프린트 속도가 느리면 부착과 정확도가 개선됩니다."
 
 msgctxt "small_skin_width description"
 msgid "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions. Off for the topmost (air-exposed) layer by default (see 'Small Top/Bottom On Surface')."
-msgstr "작은 상단/하단 영역은 기본 상단/하단 패턴 대신 벽으로 채워집니다. 이는 갑작스러운 움직임을 방지하는 데 도움이 됩니다. 기본적으로 최상층(공기에 노출된) 레이어는 꺼져 있습니다('표면의 작은 상단/하단' 참조)."
+msgstr "작은 상/하단 영역은 기본 상/하단 패턴 대신 벽으로 채워집니다. 이는 갑작스러운 움직임을 방지하는 데 도움이 됩니다. 기본적으로 최상층 레이어는 꺼져 있습니다('표면의 작은 상/하단' 참조)."
 
 msgctxt "brim_smart_ordering label"
 msgid "Smart Brim"
@@ -3562,7 +3562,7 @@ msgstr "기본 라프트 레이어가 출력되는 가속도입니다."
 
 msgctxt "acceleration_support_bottom description"
 msgid "The acceleration with which the floors of support are printed. Printing them at lower acceleration can improve adhesion of support on top of your model."
-msgstr "지면의 가속도가 출력됩니다. 보다 낮은 가속도로 출력하면 모델 상단에 서포트력을 향상시킬 수 있습니다."
+msgstr "지면의 가속도가 출력됩니다. 보다 낮은 가속도로 출력하면 모델 상단에 서포트 접착력을 향상시킬 수 있습니다."
 
 msgctxt "acceleration_support_infill description"
 msgid "The acceleration with which the infill of support is printed."
@@ -3614,7 +3614,7 @@ msgstr "상단 표면 스킨 층이 출력되는 가속도."
 
 msgctxt "acceleration_topbottom description"
 msgid "The acceleration with which top/bottom layers are printed."
-msgstr "위/아래쪽 레이어가 출력되는 가속도입니다."
+msgstr "상/하단 레이어가 출력되는 가속도입니다."
 
 msgctxt "acceleration_travel description"
 msgid "The acceleration with which travel moves are made."
@@ -3734,7 +3734,7 @@ msgstr "이동 중 출력물을 피할 때 노즐과 이미 출력 된 부분 �
 
 msgctxt "raft_base_line_spacing description"
 msgid "The distance between the raft lines for the base raft layer. Wide spacing makes for easy removal of the raft from the build plate."
-msgstr "기본 라프트 층에 대한 라프트 사이의 거리. 넓은 간격으로 베드에서 라프트를 쉽게 제거 할 수 있습니다."
+msgstr "기본 라프트 층에 대한 라프트 사이의 거리. 넓은 간격으로 베드에서 라프트를 쉽게 제거할 수 있습니다."
 
 msgctxt "raft_interface_line_spacing description"
 msgid "The distance between the raft lines for the middle raft layer. The spacing of the middle should be quite wide, while being dense enough to support the top raft layers."
@@ -3938,7 +3938,7 @@ msgstr "연동 구조의 빔 높이로, 레이어 수로 측정됩니다. 레이
 
 msgctxt "layer_height_0 description"
 msgid "The height of the initial layer in mm. A thicker initial layer makes adhesion to the build plate easier."
-msgstr "첫번째 레이어의 높이 (mm)입니다. 첫번째 레이어를 두껍게하면 베드에 쉽게 부착됩니다."
+msgstr "초기 레이어의 높이 (mm)입니다. 초기 레이어를 두껍게하면 베드에 쉽게 부착됩니다."
 
 msgctxt "support_bottom_stair_step_height description"
 msgid "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures. Set to zero to turn off the stair-like behaviour."
@@ -3990,15 +3990,15 @@ msgstr "상단 라프트 레이어가 출력 될 때의 저크입니다."
 
 msgctxt "bottom_skin_preshrink description"
 msgid "The largest width of bottom skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing bottom skin at slanted surfaces in the model."
-msgstr "제거 할 바닥 스킨 영역의 최대 너비. 이 값보다 작은 모든 스킨 영역은 사라집니다. 이렇게하면 모델의 경사면에서 밑면 스킨을 출력하는 데 소요되는 시간과 재료의 양을 제한하는 데 도움이됩니다."
+msgstr "제거할 바닥 스킨 영역의 최대 너비. 이 값보다 작은 모든 스킨 영역은 사라집니다. 이렇게하면 모델의 경사면에서 밑면 스킨을 출력하는 데 소요되는 시간과 재료의 양을 제한하는 데 도움이됩니다."
 
 msgctxt "skin_preshrink description"
 msgid "The largest width of skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top/bottom skin at slanted surfaces in the model."
-msgstr "제거 할 외부스킨 영역의 가장 큰 너비. 이 값보다 작은 모든 스킨 영역은 사라집니다. 이렇게하면 모델의 경사면에서 위쪽 / 아래쪽 스킨을 출력하는 데 소요되는 시간과 재료의 양을 제한하는 데 도움이 됩니다."
+msgstr "제거할 외부스킨 영역의 가장 큰 너비. 이 값보다 작은 모든 스킨 영역은 사라집니다. 이렇게하면 모델의 경사면에서 상/하단 스킨을 출력하는 데 소요되는 시간과 재료의 양을 제한하는 데 도움이 됩니다."
 
 msgctxt "top_skin_preshrink description"
 msgid "The largest width of top skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top skin at slanted surfaces in the model."
-msgstr "제거 할 상단 스킨 영역의 가장 큰 너비. 이 값보다 작은 모든 스킨 영역은 사라집니다. 이렇게 하면 모델의 경사면에서 상단 스킨을 출력하는 데 소요되는 시간과 재료의 양을 제한하는 데 도움이됩니다."
+msgstr "제거할 상단 스킨 영역의 가장 큰 너비. 이 값보다 작은 모든 스킨 영역은 사라집니다. 이렇게 하면 모델의 경사면에서 상단 스킨을 출력하는 데 소요되는 시간과 재료의 양을 제한하는 데 도움이됩니다."
 
 msgctxt "cool_fan_full_layer description"
 msgid "The layer at which the fans spin on regular fan speed. If regular fan speed at height is set, this value is calculated and rounded to a whole number."
@@ -4054,7 +4054,7 @@ msgstr "직선에서 중간 점을 제거할 때 허용되는 최대 압출 영�
 
 msgctxt "jerk_print_layer_0 description"
 msgid "The maximum instantaneous velocity change during the printing of the initial layer."
-msgstr "초기 층의 출력 중 최대 순간 속도 변화."
+msgstr "초기 레이어 출력 중 최대 순간 속도 변화."
 
 msgctxt "jerk_print description"
 msgid "The maximum instantaneous velocity change of the print head."
@@ -4114,7 +4114,7 @@ msgstr "상단 표면 스킨 층이 출력되는 최대 순간 속도 변화."
 
 msgctxt "jerk_topbottom description"
 msgid "The maximum instantaneous velocity change with which top/bottom layers are printed."
-msgstr "상단 / 하단 레이어가 출력되는 최대 순간 속도 변화."
+msgstr "상/하단 레이어가 출력되는 최대 순간 속도 변화."
 
 msgctxt "jerk_travel description"
 msgid "The maximum instantaneous velocity change with which travel moves are made."
@@ -4298,7 +4298,7 @@ msgstr "프린트 내부채움 재료의 패턴입니다. 선형과 지그재그
 
 msgctxt "support_pattern description"
 msgid "The pattern of the support structures of the print. The different options available result in sturdy or easy to remove support."
-msgstr "서포트 구조의 패턴. 사용 가능한 여러 가지 옵션을 사용하면 튼튼하고 쉽게 제거 할 수 있습니다."
+msgstr "서포트 구조의 패턴. 사용 가능한 여러 가지 옵션을 사용하면 튼튼하고 쉽게 제거할 수 있습니다."
 
 msgctxt "roofing_pattern description"
 msgid "The pattern of the top most layers."
@@ -4342,7 +4342,7 @@ msgstr "서포트 구조물의 기본 배치입니다. 구조물을 원하는 �
 
 msgctxt "jerk_layer_0 description"
 msgid "The print maximum instantaneous velocity change for the initial layer."
-msgstr "초기 레이어의 출력 최대 순간 속도 변화."
+msgstr "초기 레이어 출력 최대 순간 속도 변화."
 
 msgctxt "machine_shape description"
 msgid "The shape of the build plate without taking unprintable areas into account."
@@ -4530,7 +4530,7 @@ msgstr "초기 레이어의 출력 속도입니다. 베드에 대한 접착력�
 
 msgctxt "speed_travel_layer_0 description"
 msgid "The speed of travel moves in the initial layer. A lower value is advised to prevent pulling previously printed parts away from the build plate. The value of this setting can automatically be calculated from the ratio between the Travel Speed and the Print Speed."
-msgstr "이동 속도는 초기 레이어에서 이동합니다. 이전에 출력 된 부품을 베드에서 떨어지는 것을 방지하려면 더 낮은 값을 권합니다. 이 설정의 값은 이동 속도와 출력 속도 사이의 비율로부터 자동으로 계산 될 수 있습니다."
+msgstr "초기 레이어의 이독 속도입니다. 이전에 출력 된 부품을 베드에서 떨어지는 것을 방지하려면 더 낮은 값을 권합니다. 이 설정의 값은 이동 속도와 출력 속도 사이의 비율로부터 자동으로 계산 될 수 있습니다."
 
 msgctxt "material_break_temperature description"
 msgid "The temperature at which the filament is broken for a clean break."
@@ -4594,7 +4594,7 @@ msgstr "출력물의 상단 레이어의 두께. 이 값을 레이어 높이로 
 
 msgctxt "top_bottom_thickness description"
 msgid "The thickness of the top/bottom layers in the print. This value divided by the layer height defines the number of top/bottom layers."
-msgstr "출력물의 상단/하단 레이어의 두께. 이 값을 레이어 높이로 나눈 값은 위쪽/아래쪽 레이어의 수 입니다."
+msgstr "출력물의 상/하단 레이어의 두께. 이 값을 레이어 높이로 나눈 값은 위쪽/아래쪽 레이어의 수 입니다."
 
 msgctxt "wall_thickness description"
 msgid "The thickness of the walls in the horizontal direction. This value divided by the wall line width defines the number of walls."
@@ -4822,7 +4822,7 @@ msgstr "이동 속도"
 
 msgctxt "magic_mesh_surface_mode description"
 msgid "Treat the model as a surface only, a volume, or volumes with loose surfaces. The normal print mode only prints enclosed volumes. \"Surface\" prints a single wall tracing the mesh surface with no infill and no top/bottom skin. \"Both\" prints enclosed volumes like normal and any remaining polygons as surfaces."
-msgstr "모델을 표면만, 볼륨 또는 느슨한 표면이있는 볼륨으로 취급합니다. 일반 출력 모드는 볼륨만 출력합니다. \"표면\"은 아무런 내부채움없이 상단 / 하단 스킨없이 메쉬 표면을 추적하는 단일 벽을 출력합니다. \"둘 다\"는 정상 및 나머지 폴리곤과 같은 닫힌 볼륨을 서피스로 출력합니다."
+msgstr "모델을 표면만, 볼륨 또는 느슨한 표면이있는 볼륨으로 취급합니다. 일반 출력 모드는 볼륨만 출력합니다. \"표면\"은 아무런 내부채움없이 상/하단 스킨없이 메쉬 표면을 추적하는 단일 벽을 출력합니다. \"둘 다\"는 정상 및 나머지 폴리곤과 같은 닫힌 볼륨을 서피스로 출력합니다."
 
 msgctxt "support_structure option tree"
 msgid "Tree"
@@ -5505,7 +5505,7 @@ msgstr "이 값보다 긴 이동의 경우 자재 압출이 경로 목표 압출
 
 #~ msgctxt "small_skin_width description"
 #~ msgid "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions."
-#~ msgstr "작은 상단/하단 영역은 기본 상단/하단 패턴 대신 벽으로 채워집니다. 이렇게 하면 갑작스러운 움직임을 방지하는 데 도움이 됩니다."
+#~ msgstr "작은 상/하단 영역은 기본 상/하단 패턴 대신 벽으로 채워집니다. 이렇게 하면 갑작스러운 움직임을 방지하는 데 도움이 됩니다."
 
 #~ msgctxt "wireframe_printspeed description"
 #~ msgid "Speed at which the nozzle moves when extruding material. Only applies to Wire Printing."
