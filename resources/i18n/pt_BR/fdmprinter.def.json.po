@@ -3053,7 +3053,6 @@ msgctxt "small_hole_max_size label"
 msgid "Small Hole Max Size"
 msgstr "Tamanho Máximo de Furos Pequenos"
 
-#, fuzzy
 msgctxt "cool_min_temperature label"
 msgid "Small Layer Printing Temperature"
 msgstr "Temperatura de Impressão Final"
@@ -3170,7 +3169,6 @@ msgctxt "support_bottom_distance label"
 msgid "Support Bottom Distance"
 msgstr "Distância Inferior do Suporte"
 
-#, fuzzy
 msgctxt "support_bottom_wall_count label"
 msgid "Support Bottom Wall Line Count"
 msgstr "Contagem de Linhas de Parede de Suporte"
@@ -3335,7 +3333,6 @@ msgctxt "support_interface_height label"
 msgid "Support Interface Thickness"
 msgstr "Espessura da Interface de Suporte"
 
-#, fuzzy
 msgctxt "support_interface_wall_count label"
 msgid "Support Interface Wall Line Count"
 msgstr "Contagem de Linhas de Parede de Suporte"
@@ -3420,7 +3417,6 @@ msgctxt "support_roof_height label"
 msgid "Support Roof Thickness"
 msgstr "Espessura do Topo do Suporte"
 
-#, fuzzy
 msgctxt "support_roof_wall_count label"
 msgid "Support Roof Wall Line Count"
 msgstr "Contagem de Linhas de Parede de Suporte"
@@ -3761,7 +3757,6 @@ msgctxt "brim_width description"
 msgid "The distance from the model to the outermost brim line. A larger brim enhances adhesion to the build plate, but also reduces the effective print area."
 msgstr "A distância do modelo à linha mais externa do brim. Um brim mais largo aumenta a aderência à mesa, mas também reduz a área efetiva de impressão."
 
-#, fuzzy
 msgctxt "interlocking_boundary_avoidance description"
 msgid "The distance from the outside of a model where interlocking structures will not be generated, measured in cells."
 msgstr "Distância da ponta do bico onde 'estacionar' o filamento quando seu extrusor não estiver sendo usado."
@@ -4278,17 +4273,14 @@ msgctxt "support_wall_count description"
 msgid "The number of walls with which to surround support infill. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
 msgstr "O número de paredes com as quais contornar o preenchimento de suporte. Adicionar uma parede pode tornar a impressão de suporte mais confiável e apoiar seções pendentes melhor, mas aumenta tempo de impressão e material usado."
 
-#, fuzzy
 msgctxt "support_bottom_wall_count description"
 msgid "The number of walls with which to surround support interface floor. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
 msgstr "O número de paredes com as quais contornar o preenchimento de suporte. Adicionar uma parede pode tornar a impressão de suporte mais confiável e apoiar seções pendentes melhor, mas aumenta tempo de impressão e material usado."
 
-#, fuzzy
 msgctxt "support_roof_wall_count description"
 msgid "The number of walls with which to surround support interface roof. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
 msgstr "O número de paredes com as quais contornar o preenchimento de suporte. Adicionar uma parede pode tornar a impressão de suporte mais confiável e apoiar seções pendentes melhor, mas aumenta tempo de impressão e material usado."
 
-#, fuzzy
 msgctxt "support_interface_wall_count description"
 msgid "The number of walls with which to surround support interface. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
 msgstr "O número de paredes com as quais contornar o preenchimento de suporte. Adicionar uma parede pode tornar a impressão de suporte mais confiável e apoiar seções pendentes melhor, mas aumenta tempo de impressão e material usado."
@@ -4637,7 +4629,6 @@ msgctxt "support_brim_width description"
 msgid "The width of the brim to print underneath the support. A larger brim enhances adhesion to the build plate, at the cost of some extra material."
 msgstr "A largura do brim a ser impresso sob o suporte. Um brim mais largo melhora a aderência à mesa de impressão, ao custo de material extra."
 
-#, fuzzy
 msgctxt "interlocking_beam_width description"
 msgid "The width of the interlocking structure beams."
 msgstr "A largura da torre de purga."
@@ -5397,6 +5388,53 @@ msgstr "Ziguezague"
 msgctxt "travel description"
 msgid "travel"
 msgstr "percurso"
+
+
+
+
+### Settings added by bundled engine backend plugins. Add this manually for now. Should be removed whenever we handle it better.
+
+msgctxt "gradual_flow_enabled label"
+msgid "Gradual flow enabled"
+msgstr ""
+
+msgctxt "gradual_flow_enabled description"
+msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
+msgstr ""
+
+msgctxt "max_flow_acceleration label"
+msgid "Gradual flow max acceleration"
+msgstr ""
+
+msgctxt "max_flow_acceleration description"
+msgid "Maximum acceleration for gradual flow changes"
+msgstr ""
+
+msgctxt "layer_0_max_flow_acceleration label"
+msgid "Initial layer max flow acceleration"
+msgstr ""
+
+msgctxt "layer_0_max_flow_acceleration description"
+msgid "Minimum speed for gradual flow changes for the first layer"
+msgstr ""
+
+msgctxt "gradual_flow_discretisation_step_size label"
+msgid "Gradual flow discretisation step size"
+msgstr ""
+
+msgctxt "gradual_flow_discretisation_step_size description"
+msgid "Duration of each step in the gradual flow change"
+msgstr ""
+
+msgctxt "reset_flow_duration label"
+msgid "Reset flow duration"
+msgstr ""
+
+msgctxt "reset_flow_duration description"
+msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
+msgstr ""
+
+
 
 #~ msgctxt "machine_head_polygon description"
 #~ msgid "A 2D silhouette of the print head (fan caps excluded)."
@@ -6614,7 +6652,6 @@ msgstr "percurso"
 #~ msgid "WP Upward Printing Speed"
 #~ msgstr "Velocidade de Impressão Ascendente da IA"
 
-#, fuzzy
 #~ msgctxt "material_bed_temp_wait label"
 #~ msgid "Wait for build plate heatup"
 #~ msgstr "Aguardar o aquecimento do bico"

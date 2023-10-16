@@ -104,3 +104,5 @@ Ultimaker-Cura.spec
 /resources/qml/Dialogs/AboutDialogVersionsList.qml
 /plugins/CuraEngineGradualFlow
 /resources/bundled_packages/bundled_*.json
+curaengine_plugin_gradual_flow
+curaengine_plugin_gradual_flow.exe

@@ -3053,7 +3053,6 @@ msgctxt "small_hole_max_size label"
 msgid "Small Hole Max Size"
 msgstr "細部模式最大直徑"
 
-#, fuzzy
 msgctxt "cool_min_temperature label"
 msgid "Small Layer Printing Temperature"
 msgstr "最終列印溫度"
@@ -3170,7 +3169,6 @@ msgctxt "support_bottom_distance label"
 msgid "Support Bottom Distance"
 msgstr "支撐底部間距"
 
-#, fuzzy
 msgctxt "support_bottom_wall_count label"
 msgid "Support Bottom Wall Line Count"
 msgstr "支撐牆壁線條數量"
@@ -3335,7 +3333,6 @@ msgctxt "support_interface_height label"
 msgid "Support Interface Thickness"
 msgstr "支撐介面厚度"
 
-#, fuzzy
 msgctxt "support_interface_wall_count label"
 msgid "Support Interface Wall Line Count"
 msgstr "支撐牆壁線條數量"
@@ -3420,7 +3417,6 @@ msgctxt "support_roof_height label"
 msgid "Support Roof Thickness"
 msgstr "支撐頂板厚度"
 
-#, fuzzy
 msgctxt "support_roof_wall_count label"
 msgid "Support Roof Wall Line Count"
 msgstr "支撐牆壁線條數量"
@@ -3761,7 +3757,6 @@ msgctxt "brim_width description"
 msgid "The distance from the model to the outermost brim line. A larger brim enhances adhesion to the build plate, but also reduces the effective print area."
 msgstr "模型到最外側邊緣線的距離。較大的邊緣可增强與列印平台的附著，但也會減少有效列印區域。"
 
-#, fuzzy
 msgctxt "interlocking_boundary_avoidance description"
 msgid "The distance from the outside of a model where interlocking structures will not be generated, measured in cells."
 msgstr "與噴頭尖端的距離，當不再使用擠出機時會將耗材停放在此區域。"
@@ -4278,17 +4273,14 @@ msgctxt "support_wall_count description"
 msgid "The number of walls with which to surround support infill. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
 msgstr "支撐填充的牆壁數。增加牆壁能讓支撐填充更加可靠並能更佳的支撐突出部分，但會增長列印時間和使用的線材。"
 
-#, fuzzy
 msgctxt "support_bottom_wall_count description"
 msgid "The number of walls with which to surround support interface floor. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
 msgstr "支撐填充的牆壁數。增加牆壁能讓支撐填充更加可靠並能更佳的支撐突出部分，但會增長列印時間和使用的線材。"
 
-#, fuzzy
 msgctxt "support_roof_wall_count description"
 msgid "The number of walls with which to surround support interface roof. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
 msgstr "支撐填充的牆壁數。增加牆壁能讓支撐填充更加可靠並能更佳的支撐突出部分，但會增長列印時間和使用的線材。"
 
-#, fuzzy
 msgctxt "support_interface_wall_count description"
 msgid "The number of walls with which to surround support interface. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
 msgstr "支撐填充的牆壁數。增加牆壁能讓支撐填充更加可靠並能更佳的支撐突出部分，但會增長列印時間和使用的線材。"
@@ -4637,7 +4629,6 @@ msgctxt "support_brim_width description"
 msgid "The width of the brim to print underneath the support. A larger brim enhances adhesion to the build plate, at the cost of some extra material."
 msgstr "列印在支撐下面邊緣的寬度。較大的邊緣會加強對列印平台的附著力，但會需要一些額外的線材。"
 
-#, fuzzy
 msgctxt "interlocking_beam_width description"
 msgid "The width of the interlocking structure beams."
 msgstr "換料塔的寬度。"
@@ -5397,6 +5388,51 @@ msgstr "鋸齒狀"
 msgctxt "travel description"
 msgid "travel"
 msgstr "空跑"
+
+
+
+### Settings added by bundled engine backend plugins. Add this manually for now. Should be removed whenever we handle it better.
+
+msgctxt "gradual_flow_enabled label"
+msgid "Gradual flow enabled"
+msgstr ""
+
+msgctxt "gradual_flow_enabled description"
+msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
+msgstr ""
+
+msgctxt "max_flow_acceleration label"
+msgid "Gradual flow max acceleration"
+msgstr ""
+
+msgctxt "max_flow_acceleration description"
+msgid "Maximum acceleration for gradual flow changes"
+msgstr ""
+
+msgctxt "layer_0_max_flow_acceleration label"
+msgid "Initial layer max flow acceleration"
+msgstr ""
+
+msgctxt "layer_0_max_flow_acceleration description"
+msgid "Minimum speed for gradual flow changes for the first layer"
+msgstr ""
+
+msgctxt "gradual_flow_discretisation_step_size label"
+msgid "Gradual flow discretisation step size"
+msgstr ""
+
+msgctxt "gradual_flow_discretisation_step_size description"
+msgid "Duration of each step in the gradual flow change"
+msgstr ""
+
+msgctxt "reset_flow_duration label"
+msgid "Reset flow duration"
+msgstr ""
+
+msgctxt "reset_flow_duration description"
+msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
+msgstr ""
+
 
 #~ msgctxt "machine_head_polygon description"
 #~ msgid "A 2D silhouette of the print head (fan caps excluded)."

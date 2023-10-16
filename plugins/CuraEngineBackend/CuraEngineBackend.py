@@ -83,7 +83,6 @@ class CuraEngineBackend(QObject, Backend):
             os.path.join(CuraApplication.getInstallPrefix(), "bin"),
             os.path.dirname(os.path.abspath(sys.executable)),
         ]
-        self._last_backend_plugin_port = self._port + 1000
         for path in search_path:
             engine_path = os.path.join(path, executable_name)
             if os.path.isfile(engine_path):
@@ -205,8 +204,7 @@ class CuraEngineBackend(QObject, Backend):
         for backend_plugin in backend_plugins:
             # Set the port to prevent plugins from using the same one.
             if backend_plugin.getPort() < 1:
-                backend_plugin.setPort(self._last_backend_plugin_port)
-                self._last_backend_plugin_port += 1
+                backend_plugin.setAvailablePort()
             backend_plugin.start()
 
     def stopPlugins(self) -> None:

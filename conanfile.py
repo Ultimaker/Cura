@@ -48,7 +48,7 @@ class CuraConan(ConanFile):
 
     def set_version(self):
         if not self.version:
-            self.version = "5.5.0-alpha"
+            self.version = "5.6.0-alpha"
 
     @property
     def _pycharm_targets(self):
@@ -305,7 +305,7 @@ class CuraConan(ConanFile):
 
     def requirements(self):
         self.requires("boost/1.82.0")
-        self.requires("curaengine_grpc_definitions/latest@ultimaker/testing")
+        self.requires("curaengine_grpc_definitions/(latest)@ultimaker/testing")
         self.requires("zlib/1.2.13")
         self.requires("pyarcus/5.3.0")
         self.requires("curaengine/(latest)@ultimaker/testing")
@@ -357,10 +357,8 @@ class CuraConan(ConanFile):
             # Copy the external plugins that we want to bundle with Cura
             rmdir(self,str(self.source_path.joinpath("plugins", "CuraEngineGradualFlow")))
             curaengine_plugin_gradual_flow = self.dependencies["curaengine_plugin_gradual_flow"].cpp_info
-            copy(self, "*.py", curaengine_plugin_gradual_flow.resdirs[0], str(self.source_path.joinpath("plugins", "CuraEngineGradualFlow")), keep_path = True)
-            ext = ".exe" if self.settings.os == "Windows" else ""
-            copy(self, f"curaengine_plugin_gradual_flow{ext}", curaengine_plugin_gradual_flow.resdirs[0], str(self.source_path.joinpath("plugins", "CuraEngineGradualFlow")), keep_path = True)
-            copy(self, "*.json", curaengine_plugin_gradual_flow.resdirs[0], str(self.source_path.joinpath("plugins", "CuraEngineGradualFlow")), keep_path = True)
+            copy(self, "*", curaengine_plugin_gradual_flow.resdirs[0], str(self.source_path.joinpath("plugins", "CuraEngineGradualFlow")), keep_path = True)
+            copy(self, "*", curaengine_plugin_gradual_flow.bindirs[0], self.source_folder, keep_path = False)
             copy(self, "bundled_*.json", curaengine_plugin_gradual_flow.resdirs[1], str(self.source_path.joinpath("resources", "bundled_packages")), keep_path = False)
 
         # Copy resources of cura_binary_data
@@ -400,10 +398,10 @@ class CuraConan(ConanFile):
                 vb = VirtualBuildEnv(self)
                 vb.generate()
 
-                # FIXME: once m4, autoconf, automake are Conan V2 ready use self.win_bash and add gettext as base tool_requirement
-                cpp_info = self.dependencies["gettext"].cpp_info
-                pot = self.python_requires["translationextractor"].module.ExtractTranslations(self, cpp_info.bindirs[0])
-                pot.generate()
+                # # FIXME: once m4, autoconf, automake are Conan V2 ready use self.win_bash and add gettext as base tool_requirement
+                # cpp_info = self.dependencies["gettext"].cpp_info
+                # pot = self.python_requires["translationextractor"].module.ExtractTranslations(self, cpp_info.bindirs[0])
+                # pot.generate()
 
     def build(self):
         if self.options.devtools:
