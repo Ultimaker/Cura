@@ -5291,3 +5291,78 @@ msgstr "Générateur de G-Code compressé"
 msgctxt "description"
 msgid "Provides support for exporting Cura profiles."
 msgstr "Fournit la prise en charge de l'exportation de profils Cura."
+
+msgctxt "@info:title"
+msgid "Error"
+msgstr "Erreur"
+
+msgctxt "@action:button"
+msgid "Cancel"
+msgstr "Annuler"
+
+msgctxt "@title:tab"
+msgid "Settings"
+msgstr "Paramètres"
+
+#, python-brace-format
+msgctxt "@label Don't translate the XML tag <filename>!"
+msgid "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?"
+msgstr "Le fichier <filename>{0}</filename> existe déjà. Êtes-vous sûr de vouloir le remplacer?"
+
+msgctxt "@action:button"
+msgid "Learn more"
+msgstr "En savoir plus"
+
+msgctxt "@title:tab"
+msgid "General"
+msgstr "Général"
+
+msgctxt "@label (%1 is object name)"
+msgid "Are you sure you wish to remove %1? This cannot be undone!"
+msgstr "Êtes-vous sûr de vouloir supprimer l'objet %1 ? Vous ne pourrez pas revenir en arrière !"
+
+msgctxt "@label"
+msgid "Type"
+msgstr ""
+
+msgctxt "@info:title"
+msgid "Saving"
+msgstr "Enregistrement"
+
+msgctxt "@title:window"
+msgid "File Already Exists"
+msgstr "Le fichier existe déjà"
+
+#, python-brace-format
+msgctxt "@item:inlistbox"
+msgid "All Supported Types ({0})"
+msgstr "Tous les types supportés ({0})"
+
+#, python-brace-format
+msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
+msgid "Could not save to <filename>{0}</filename>: <message>{1}</message>"
+msgstr "Impossible d'enregistrer <filename>{0}</filename> : <message>{1}</message>"
+
+msgctxt "@action:button"
+msgid "OK"
+msgstr "OK"
+
+msgctxt "@info:title"
+msgid "Warning"
+msgstr "Avertissement"
+
+msgctxt "@title:tab"
+msgid "Printers"
+msgstr "Imprimantes"
+
+msgctxt "@info:title"
+msgid "File Saved"
+msgstr "Fichier enregistré"
+
+msgctxt "@title:window"
+msgid "Confirm Remove"
+msgstr "Confirmer la suppression"
+
+msgctxt "@item:inlistbox"
+msgid "All Files (*)"
+msgstr "Tous les fichiers (*)"

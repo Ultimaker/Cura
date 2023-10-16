@@ -5331,3 +5331,79 @@ msgstr "Flowduur resetten"
 msgctxt "reset_flow_duration description"
 msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
 msgstr "Voor elke verplaatsing die langer is dan deze waarde, wordt de materiaalflow teruggezet op de doelflow van de paden."
+
+msgctxt "extruder_prime_pos_z label"
+msgid "Extruder Prime Z Position"
+msgstr "Z-positie voor Primen Extruder"
+
+msgctxt "platform_adhesion description"
+msgid "Adhesion"
+msgstr "Hechting"
+
+msgctxt "support_type description"
+msgid "Adjusts the placement of the support structures. The placement can be set to touching build plate or everywhere. When set to everywhere the support structures will also be printed on the model."
+msgstr "Past de plaatsing van de supportstructuur aan. De plaatsing kan worden ingesteld op Platform aanraken of Overal. Wanneer deze optie ingesteld is op Overal, worden de supportstructuren ook op het model geprint."
+
+msgctxt "material_is_support_material description"
+msgid "Is this material typically used as a support material during printing."
+msgstr "Wordt dit materiaal meestal gebruikt als support materiaal tijdens het printen."
+
+msgctxt "machine_nozzle_size label"
+msgid "Nozzle Diameter"
+msgstr "Nozzlediameter"
+
+msgctxt "machine_nozzle_id description"
+msgid "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\"."
+msgstr "De nozzle-ID voor een extruder train, bijvoorbeeld \"AA 0.4\" en \"BB 0.8\"."
+
+msgctxt "extruder_prime_pos_x description"
+msgid "The X coordinate of the position where the nozzle primes at the start of printing."
+msgstr "De X-coördinaat van de positie waar filament in de nozzle wordt geprimed aan het begin van het printen."
+
+msgctxt "material_diameter label"
+msgid "Diameter"
+msgstr "Diameter"
+
+msgctxt "extruder_prime_pos_x label"
+msgid "Extruder Prime X Position"
+msgstr "X-positie voor Primen Extruder"
+
+msgctxt "material_diameter description"
+msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
+msgstr "Bepaalt de diameter van het gebruikte filament. Pas deze waarde aan de diameter van het gebruikte filament aan."
+
+msgctxt "machine_nozzle_size description"
+msgid "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size."
+msgstr "De binnendiameter van de nozzle. Verander deze instelling wanneer u een nozzle gebruikt die geen standaard formaat heeft."
+
+msgctxt "machine_settings description"
+msgid "Machine specific settings"
+msgstr "Instellingen van de machine"
+
+msgctxt "extruder_prime_pos_y label"
+msgid "Extruder Prime Y Position"
+msgstr "Y-positie voor Primen Extruder"
+
+msgctxt "extruder_prime_pos_z description"
+msgid "The Z coordinate of the position where the nozzle primes at the start of printing."
+msgstr "De Z-coördinaat van de positie waar filament in de nozzle wordt teruggeduwd aan het begin van het printen."
+
+msgctxt "extruder_prime_pos_y description"
+msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
+msgstr "De Y-coördinaat van de positie waar filament in de nozzle wordt geprimed aan het begin van het printen."
+
+msgctxt "material label"
+msgid "Material"
+msgstr "Materiaal"
+
+msgctxt "machine_nozzle_id label"
+msgid "Nozzle ID"
+msgstr "Nozzle-ID"
+
+msgctxt "platform_adhesion label"
+msgid "Build Plate Adhesion"
+msgstr "Hechting aan Platform"
+
+msgctxt "machine_settings label"
+msgid "Machine"
+msgstr "Machine"

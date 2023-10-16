@@ -5331,3 +5331,79 @@ msgstr "重置流量持续时间"
 msgctxt "reset_flow_duration description"
 msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
 msgstr "对于任何超过此值的行程移动，材料流量将重置为路径目标流量"
+
+msgctxt "extruder_prime_pos_z label"
+msgid "Extruder Prime Z Position"
+msgstr "挤出机初始 Z 轴位置"
+
+msgctxt "platform_adhesion description"
+msgid "Adhesion"
+msgstr "附着"
+
+msgctxt "support_type description"
+msgid "Adjusts the placement of the support structures. The placement can be set to touching build plate or everywhere. When set to everywhere the support structures will also be printed on the model."
+msgstr "调整支撑结构的放置。 放置可以设置为支撑打印平台或全部支撑。 当设置为全部支撑时，支撑结构也将在模型上打印。"
+
+msgctxt "material description"
+msgid "Material"
+msgstr "材料"
+
+msgctxt "machine_nozzle_size label"
+msgid "Nozzle Diameter"
+msgstr "喷嘴直径"
+
+msgctxt "machine_nozzle_id description"
+msgid "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\"."
+msgstr "挤出机组的喷嘴 ID，比如\"AA 0.4\"和\"BB 0.8\"。"
+
+msgctxt "extruder_prime_pos_x description"
+msgid "The X coordinate of the position where the nozzle primes at the start of printing."
+msgstr "打印开始时，喷头在 X 轴上初始位置。"
+
+msgctxt "material_diameter label"
+msgid "Diameter"
+msgstr "直径"
+
+msgctxt "extruder_prime_pos_x label"
+msgid "Extruder Prime X Position"
+msgstr "挤出机 X 轴坐标"
+
+msgctxt "material_diameter description"
+msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
+msgstr "调整所用耗材的直径。 将此值与所用耗材的直径匹配。"
+
+msgctxt "machine_nozzle_size description"
+msgid "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size."
+msgstr "喷嘴内径，在使用非标准喷嘴尺寸时需更改此设置。"
+
+msgctxt "machine_settings description"
+msgid "Machine specific settings"
+msgstr "﻿机器详细设置"
+
+msgctxt "extruder_prime_pos_y label"
+msgid "Extruder Prime Y Position"
+msgstr "挤出机 Y 轴起始位置"
+
+msgctxt "extruder_prime_pos_z description"
+msgid "The Z coordinate of the position where the nozzle primes at the start of printing."
+msgstr "打印开始时，喷头在 Z 轴坐标上的起始位置."
+
+msgctxt "extruder_prime_pos_y description"
+msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
+msgstr "打印开始时，喷头在 Y 轴坐标上初始位置。"
+
+msgctxt "material label"
+msgid "Material"
+msgstr "材料"
+
+msgctxt "machine_nozzle_id label"
+msgid "Nozzle ID"
+msgstr "喷嘴 ID"
+
+msgctxt "platform_adhesion label"
+msgid "Build Plate Adhesion"
+msgstr "打印平台附着"
+
+msgctxt "machine_settings label"
+msgid "Machine"
+msgstr "﻿机器"

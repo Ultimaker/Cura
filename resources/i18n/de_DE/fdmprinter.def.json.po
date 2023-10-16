@@ -5331,3 +5331,79 @@ msgstr "Flussdauer zurücksetzen"
 msgctxt "reset_flow_duration description"
 msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
 msgstr "Bei jeder Fahrtbewegung, die diesen Wert überschreitet, wird der Materialfluss auf den Sollwert des Flusses für den Weg zurückgesetzt"
+
+msgctxt "extruder_prime_pos_z label"
+msgid "Extruder Prime Z Position"
+msgstr "Z-Position Extruder-Einzug"
+
+msgctxt "platform_adhesion description"
+msgid "Adhesion"
+msgstr "Haftung"
+
+msgctxt "support_type description"
+msgid "Adjusts the placement of the support structures. The placement can be set to touching build plate or everywhere. When set to everywhere the support structures will also be printed on the model."
+msgstr "Es werden Stützstrukturen platziert. Die Platzierung kann auf „Druckbett berühren“ oder „Überall“ eingestellt werden. Wenn „Überall“ eingestellt wird, werden die Stützstrukturen auch auf dem Modell gedruckt."
+
+msgctxt "material_is_support_material description"
+msgid "Is this material typically used as a support material during printing."
+msgstr "Wird dieses Material normalerweise während des Druckvorgangs als Stützmaterial verwendet?"
+
+msgctxt "machine_nozzle_size label"
+msgid "Nozzle Diameter"
+msgstr "Düsendurchmesser"
+
+msgctxt "machine_nozzle_id description"
+msgid "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\"."
+msgstr "Der Düsen-ID für eine Extruder-Einheit, z. B. „AA 0,4“ und „BB 0,8“."
+
+msgctxt "extruder_prime_pos_x description"
+msgid "The X coordinate of the position where the nozzle primes at the start of printing."
+msgstr "Die X-Koordinate der Position, an der die Düse am Druckbeginn einzieht."
+
+msgctxt "material_diameter label"
+msgid "Diameter"
+msgstr "Durchmesser"
+
+msgctxt "extruder_prime_pos_x label"
+msgid "Extruder Prime X Position"
+msgstr "X-Position Extruder-Einzug"
+
+msgctxt "material_diameter description"
+msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
+msgstr "Der Durchmesser des verwendeten Filaments wird angepasst. Stellen Sie hier den Durchmesser des verwendeten Filaments ein."
+
+msgctxt "machine_nozzle_size description"
+msgid "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size."
+msgstr "Der Innendurchmesser der Düse. Verwenden Sie diese Einstellung, wenn Sie eine Düse einer Nicht-Standardgröße verwenden."
+
+msgctxt "machine_settings description"
+msgid "Machine specific settings"
+msgstr "Gerätespezifische Einstellungen"
+
+msgctxt "extruder_prime_pos_y label"
+msgid "Extruder Prime Y Position"
+msgstr "Y-Position Extruder-Einzug"
+
+msgctxt "extruder_prime_pos_z description"
+msgid "The Z coordinate of the position where the nozzle primes at the start of printing."
+msgstr "Die Z-Koordinate der Position, an der die Düse am Druckbeginn einzieht."
+
+msgctxt "extruder_prime_pos_y description"
+msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
+msgstr "Die Y-Koordinate der Position, an der die Düse am Druckbeginn einzieht."
+
+msgctxt "material label"
+msgid "Material"
+msgstr "Material"
+
+msgctxt "machine_nozzle_id label"
+msgid "Nozzle ID"
+msgstr "Düsen-ID"
+
+msgctxt "platform_adhesion label"
+msgid "Build Plate Adhesion"
+msgstr "Druckplattenhaftung"
+
+msgctxt "machine_settings label"
+msgid "Machine"
+msgstr "Gerät"

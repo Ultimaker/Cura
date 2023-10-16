@@ -5331,3 +5331,75 @@ msgstr "흐름 지속 시간 재설정"
 msgctxt "reset_flow_duration description"
 msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
 msgstr "이 값보다 긴 이동에 대해서는 재료 흐름이 경로 목표 흐름으로 재설정됩니다"
+
+msgctxt "extruder_prime_pos_z label"
+msgid "Extruder Prime Z Position"
+msgstr "익스트루더 프라임 Z 포지션"
+
+msgctxt "platform_adhesion description"
+msgid "Adhesion"
+msgstr "부착"
+
+msgctxt "support_type description"
+msgid "Adjusts the placement of the support structures. The placement can be set to touching build plate or everywhere. When set to everywhere the support structures will also be printed on the model."
+msgstr "서포트 구조의 배치를 조정합니다. 배치는 빌드 플레이트 또는 모든 곳을 터치하도록 설정할 수 있습니다. 모든 곳에 설정하면 모델에 서포트 구조가 프린팅됩니다."
+
+msgctxt "material description"
+msgid "Material"
+msgstr "재료"
+
+msgctxt "machine_nozzle_size label"
+msgid "Nozzle Diameter"
+msgstr "노즐 지름"
+
+msgctxt "machine_nozzle_id description"
+msgid "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\"."
+msgstr "\"AA 0.4\"및 \"BB 0.8\"과 같은 익스트루더의 노즐 ID."
+
+msgctxt "extruder_prime_pos_x description"
+msgid "The X coordinate of the position where the nozzle primes at the start of printing."
+msgstr "프린팅이 시작될 때 노즐의 X 좌표입니다."
+
+msgctxt "material_diameter label"
+msgid "Diameter"
+msgstr "직경"
+
+msgctxt "extruder_prime_pos_x label"
+msgid "Extruder Prime X Position"
+msgstr "익스트루더 프라임 X 위치"
+
+msgctxt "material_diameter description"
+msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
+msgstr "사용 된 필라멘트의 직경을 조정합니다. 이 값을 사용될 필라멘트의 직경과 일치시킵니다."
+
+msgctxt "machine_nozzle_size description"
+msgid "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size."
+msgstr "노즐의 내경. 비표준 노즐 크기를 사용할 때 이 설정을 변경하십시오."
+
+msgctxt "extruder_prime_pos_y label"
+msgid "Extruder Prime Y Position"
+msgstr "익스트루더 프라임 Y 위치"
+
+msgctxt "extruder_prime_pos_z description"
+msgid "The Z coordinate of the position where the nozzle primes at the start of printing."
+msgstr "프린팅가 시작될 때 노즐 위치의 Z 좌표입니다."
+
+msgctxt "extruder_prime_pos_y description"
+msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
+msgstr "프린팅이 시작될 때 노즐의 Y 좌표입니다."
+
+msgctxt "material label"
+msgid "Material"
+msgstr "재료"
+
+msgctxt "machine_nozzle_id label"
+msgid "Nozzle ID"
+msgstr "노즐 ID"
+
+msgctxt "platform_adhesion label"
+msgid "Build Plate Adhesion"
+msgstr "빌드 플레이트 부착"
+
+msgctxt "machine_settings label"
+msgid "Machine"
+msgstr "기기"
