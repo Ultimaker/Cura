@@ -233,7 +233,8 @@ class ThreeMFReader(MeshReader):
                 if mesh_data is not None:
                     extents = mesh_data.getExtents()
                     if extents is not None:
-                        center_vector = Vector(extents.center.x, extents.center.y, extents.center.z)
+                        # We use a different coordinate space, so flip Z and Y
+                        center_vector = Vector(extents.center.x, extents.center.z, extents.center.y)
                         transform_matrix.setByTranslation(center_vector)
                 transform_matrix.multiply(um_node.getLocalTransformation())
                 um_node.setTransformation(transform_matrix)
