@@ -134,7 +134,7 @@ class DisplayInfoOnLCD(Script):
                 "countdown_to_pause":
                 {
                     "label": "Countdown to Pauses",
-                    "description": "Instead of layer number and remaining print time the LCD will show 'layers remaining before pause' and 'Est Time to Pause' (ETP).",
+                    "description": "When enabled - DisplayInfoOnLCD must run AFTER all PauseAtHeight and Filament Change scripts.  Instead of layer number and remaining print time the LCD will show 'layers remaining before pause/filament change and the time to pause/filament change' (TP).",
                     "type": "bool",
                     "default_value": false,
                     "enabled": "display_option == 'display_progress'"
@@ -163,7 +163,7 @@ class DisplayInfoOnLCD(Script):
     def execute(self, data):
         display_option = self.getSettingValueByKey("display_option")
         add_m118_line = self.getSettingValueByKey("add_m118_line")
-
+    
     # This is Display Filename and Layer on LCD---------------------------------------------------------
         if display_option == "filename_layer":
             max_layer = 0
@@ -229,17 +229,33 @@ class DisplayInfoOnLCD(Script):
                 if line.startswith(";TIME:"):
                     tindex = lines.index(line)
                     cura_time = int(line.split(":")[1])
-                    print_time = cura_time*speed_factor
+                    print_time = cura_time * speed_factor
                     hhh = print_time/3600
                     hr = round(hhh // 1)
                     mmm = round((hhh % 1) * 60)
                     orig_hhh = cura_time/3600
                     orig_hr = round(orig_hhh // 1)
-                    orig_mmm = round((orig_hhh % 1) * 60)
-                    if add_m118_line: lines.insert(tindex+1,"M118 Adjusted Print Time " + str(hr) + "hr " + str(mmm) + "min")
-                    lines.insert(tindex+1,"M117 ET " + str(hr) + "hr " + str(mmm) + "min")
+                    orig_min = int((cura_time - (orig_hr * 3600))/60) # Not rounded up
+                    orig_mmm = round((orig_hhh % 1) * 60) # Rounded up
+                    orig_sec = round(cura_time - orig_hr * 3600 - orig_min * 60)
+                    if add_m118_line: lines.insert(tindex + 3,"M118 Adjusted Print Time " + str(hr) + "hr " + str(mmm) + "min")
+                    lines.insert(tindex + 3,"M117 ET " + str(hr) + "hr " + str(mmm) + "min")
+                    # If Countdown to pause is enabled then count the pauses and/or filament changes
+                    pause_str = ""
+                    if bool(self.getSettingValueByKey("countdown_to_pause")):
+                        pause_count = 0
+                        filament_change_count = 0
+                        for num in range(2,len(data) - 1, 1):
+                            if "PauseAtHeight.py" in data[num]:
+                                pause_count += 1
+                            if "M600" in data[num]:
+                                filament_change_count += 1
+                        if pause_count > 0:
+                            pause_str = f" with {pause_count} pause(s)"
+                        if filament_change_count > 0:
+                            pause_str += f" and {filament_change_count} filament change(s)"
                     # This line goes in to convert seconds to hours and minutes
-                    lines.insert(tindex+1, f";Cura Time:  {orig_hr}hr {orig_mmm}min")
+                    lines.insert(tindex + 3, f";Cura Time Estimate:  {cura_time}sec = {orig_hr}hr {orig_min}min {orig_sec}sec {pause_str}")
                     data[0] = "\n".join(lines)
                     data[len(data)-1] += "M117 Orig Cura Est " + str(orig_hr) + "hr " + str(orig_mmm) + "min\n"
                     if add_m118_line: data[len(data)-1] += "M118 Est w/FudgeFactor  " + str(speed_factor * 100) + "% was " + str(hr) + "hr " + str(mmm) + "min\n"
@@ -328,7 +344,7 @@ class DisplayInfoOnLCD(Script):
                         if line.startswith(";TIME_ELAPSED:"):
                             this_time = (float(line.split(":")[1]))*speed_factor
                             time_list.append(str(this_time))
-                            if "PauseAtHeight.py" in layer:
+                            if "PauseAtHeight.py" in layer or "M600" in layer:
                                 for qnum in range(num - 1, pause_index, -1):
                                     time_list[qnum] = str(float(this_time) - float(time_list[qnum])) + "P"
                                 pause_index = num-1
