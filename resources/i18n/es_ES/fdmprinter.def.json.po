@@ -1444,6 +1444,10 @@ msgctxt "infill_pattern label"
 msgid "Infill Pattern"
 msgstr "Patrón de relleno"
 
+msgctxt "infill_pattern description"
+msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the ceiling of the object."
+msgstr "Patrón del material de relleno de la impresión. El método de llenado en línea y en zigzag cambia de dirección en capas alternas para reducir los costes de material. Los patrones de rejilla, triángulo, trihexágono, cubo, octaédrico, cubo bitruncado, transversal y concéntrico se imprimen en todas las capas por completo. Los rellenos de giroide, cúbico, cúbico bitruncado y octaédrico se alternan en cada capa para lograr una distribución más uniforme de la fuerza en todas las direcciones. El relleno de rayos intenta minimizar el relleno apoyando solo la parte superior del objeto."
+
 msgctxt "infill_pattern option grid"
 msgid "Grid"
 msgstr "Rejilla"
