@@ -5407,3 +5407,75 @@ msgstr "ビルドプレート密着性"
 msgctxt "machine_settings label"
 msgid "Machine"
 msgstr "プリンター"
+
+msgctxt "group_outer_walls label"
+msgid "Group Outer Walls"
+msgstr "外壁をグループ化"
+
+msgctxt "group_outer_walls description"
+msgid "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped."
+msgstr "同じレイヤー内の異なる島の外壁は順次印刷されます。有効にすると、壁は1つの種類ずつ印刷されるため、フローの変化量が制限されます。無効にすると、同じ島の壁がグループ化されるため、島間の移動回数が減少します。"
+
+msgctxt "wall_0_material_flow_roofing label"
+msgid "Top Surface Outer Wall Flow"
+msgstr "上面最外壁の流れ"
+
+msgctxt "wall_0_material_flow_roofing description"
+msgid "Flow compensation on the top surface outermost wall line."
+msgstr "最外の壁ラインにおける流量補正。"
+
+msgctxt "wall_x_material_flow_roofing label"
+msgid "Top Surface Inner Wall(s) Flow"
+msgstr "上面内壁の流れ"
+
+msgctxt "wall_x_material_flow_roofing description"
+msgid "Flow compensation on top surface wall lines for all wall lines except the outermost one."
+msgstr "最外のラインを除く、全ての壁ラインにおけるトップサーフェス壁ラインのフロー補正"
+
+msgctxt "speed_wall_0_roofing label"
+msgid "Top Surface Outer Wall Speed"
+msgstr "上面の最外壁速度"
+
+msgctxt "speed_wall_0_roofing description"
+msgid "The speed at which the top surface outermost wall is printed."
+msgstr "上面の最外壁が印刷される速度"
+
+msgctxt "speed_wall_x_roofing label"
+msgid "Top Surface Inner Wall Speed"
+msgstr "上面内壁速度"
+
+msgctxt "speed_wall_x_roofing description"
+msgid "The speed at which the top surface inner walls are printed."
+msgstr "上面内壁が印刷される速度"
+
+msgctxt "acceleration_wall_0_roofing label"
+msgid "Top Surface Outer Wall Acceleration"
+msgstr "上面外壁加速度"
+
+msgctxt "acceleration_wall_0_roofing description"
+msgid "The acceleration with which the top surface outermost walls are printed."
+msgstr "上面の最外壁が印刷される際の加速度"
+
+msgctxt "acceleration_wall_x_roofing label"
+msgid "Top Surface Inner Wall Acceleration"
+msgstr "上面内壁加速度"
+
+msgctxt "acceleration_wall_x_roofing description"
+msgid "The acceleration with which the top surface inner walls are printed."
+msgstr "上面内壁が印刷される際の加速度"
+
+msgctxt "jerk_wall_0_roofing label"
+msgid "Top Surface Outer Wall Jerk"
+msgstr "上面内壁の最大瞬間速度変化"
+
+msgctxt "jerk_wall_0_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface outermost walls are printed."
+msgstr "上面内壁が印刷される際の最大瞬間速度変化。"
+
+msgctxt "jerk_wall_x_roofing label"
+msgid "Top Surface Inner Wall Jerk"
+msgstr "上面最外壁の最大瞬間速度変化"
+
+msgctxt "jerk_wall_x_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface inner walls are printed."
+msgstr "上面最外壁が印刷される際の最大瞬間速度変化。"

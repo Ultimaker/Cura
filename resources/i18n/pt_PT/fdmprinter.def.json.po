@@ -5407,3 +5407,75 @@ msgstr "Aderência"
 msgctxt "machine_settings label"
 msgid "Machine"
 msgstr "Máquina"
+
+msgctxt "group_outer_walls label"
+msgid "Group Outer Walls"
+msgstr "Agrupar as paredes externas"
+
+msgctxt "group_outer_walls description"
+msgid "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped."
+msgstr "As paredes externas de diferentes ilhas na mesma camada são impressas em sequência. Quando habilitado, a quantidade de mudanças no fluxo é limitada porque as paredes são impressas um tipo de cada vez; quando desabilitado, o número de deslocamentos entre ilhas é reduzido porque as paredes nas mesmas ilhas são agrupadas."
+
+msgctxt "wall_0_material_flow_roofing label"
+msgid "Top Surface Outer Wall Flow"
+msgstr "Fluxo da parede mais externa da superfície superior"
+
+msgctxt "wall_0_material_flow_roofing description"
+msgid "Flow compensation on the top surface outermost wall line."
+msgstr "Compensação de fluxo na linha da parede mais externa da superfície superior."
+
+msgctxt "wall_x_material_flow_roofing label"
+msgid "Top Surface Inner Wall(s) Flow"
+msgstr "Fluxo da parede interna da superfície superior"
+
+msgctxt "wall_x_material_flow_roofing description"
+msgid "Flow compensation on top surface wall lines for all wall lines except the outermost one."
+msgstr "Compensação de fluxo nas linhas de parede da superfície superior para todas as linhas de parede, exceto a mais externa."
+
+msgctxt "speed_wall_0_roofing label"
+msgid "Top Surface Outer Wall Speed"
+msgstr "Velocidade da parede mais externa da superfície superior"
+
+msgctxt "speed_wall_0_roofing description"
+msgid "The speed at which the top surface outermost wall is printed."
+msgstr "A velocidade com que as paredes mais externas da superfície superior são impressas."
+
+msgctxt "speed_wall_x_roofing label"
+msgid "Top Surface Inner Wall Speed"
+msgstr "Velocidade da parede interna da superfície superior"
+
+msgctxt "speed_wall_x_roofing description"
+msgid "The speed at which the top surface inner walls are printed."
+msgstr "A velocidade com que as paredes internas da superfície superior são impressas."
+
+msgctxt "acceleration_wall_0_roofing label"
+msgid "Top Surface Outer Wall Acceleration"
+msgstr "Aceleração da parede externa da superfície superior"
+
+msgctxt "acceleration_wall_0_roofing description"
+msgid "The acceleration with which the top surface outermost walls are printed."
+msgstr "A aceleração com a qual as paredes mais externas da superfície superior são impressas."
+
+msgctxt "acceleration_wall_x_roofing label"
+msgid "Top Surface Inner Wall Acceleration"
+msgstr "Aceleração da parede interna da superfície superior"
+
+msgctxt "acceleration_wall_x_roofing description"
+msgid "The acceleration with which the top surface inner walls are printed."
+msgstr "A aceleração com a qual as paredes internas da superfície superior são impressas."
+
+msgctxt "jerk_wall_0_roofing label"
+msgid "Top Surface Outer Wall Jerk"
+msgstr "Jerk das Paredes Interiores da Superfície Superior"
+
+msgctxt "jerk_wall_0_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface outermost walls are printed."
+msgstr "A mudança máxima de velocidade instantânea com a qual as paredes internas da superfície superior são impressas."
+
+msgctxt "jerk_wall_x_roofing label"
+msgid "Top Surface Inner Wall Jerk"
+msgstr "Jerk da Parede Exterior da Superfície Superior"
+
+msgctxt "jerk_wall_x_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface inner walls are printed."
+msgstr "A mudança máxima de velocidade instantânea com a qual as paredes mais externas da superfície superior são impressas."

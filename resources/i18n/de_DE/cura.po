@@ -5366,3 +5366,11 @@ msgstr "Entfernen bestätigen"
 msgctxt "@item:inlistbox"
 msgid "All Files (*)"
 msgstr "Alle Dateien (*)"
+
+msgctxt "@label"
+msgid "Ausgewogen"
+msgstr ""
+
+msgctxt "@text"
+msgid "Das ausgewogene Profil ist darauf ausgelegt, einen Kompromiss zwischen Produktivität, Oberflächenqualität, mechanischen Eigenschaften und Maßgenauigkeit zu erzielen."
+msgstr ""

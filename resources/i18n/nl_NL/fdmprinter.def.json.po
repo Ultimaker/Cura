@@ -5344,10 +5344,6 @@ msgctxt "support_type description"
 msgid "Adjusts the placement of the support structures. The placement can be set to touching build plate or everywhere. When set to everywhere the support structures will also be printed on the model."
 msgstr "Past de plaatsing van de supportstructuur aan. De plaatsing kan worden ingesteld op Platform aanraken of Overal. Wanneer deze optie ingesteld is op Overal, worden de supportstructuren ook op het model geprint."
 
-msgctxt "material_is_support_material description"
-msgid "Is this material typically used as a support material during printing."
-msgstr "Wordt dit materiaal meestal gebruikt als support materiaal tijdens het printen."
-
 msgctxt "machine_nozzle_size label"
 msgid "Nozzle Diameter"
 msgstr "Nozzlediameter"
@@ -5407,3 +5403,75 @@ msgstr "Hechting aan Platform"
 msgctxt "machine_settings label"
 msgid "Machine"
 msgstr "Machine"
+
+msgctxt "group_outer_walls label"
+msgid "Group Outer Walls"
+msgstr "Groepeer de buitenwanden"
+
+msgctxt "group_outer_walls description"
+msgid "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped."
+msgstr "Buitenwanden van verschillende eilanden in dezelfde laag worden achtereenvolgens geprint. Wanneer ingeschakeld, wordt de hoeveelheid stroomveranderingen beperkt omdat wanden één type tegelijk worden geprint. Wanneer uitgeschakeld, wordt het aantal verplaatsingen tussen eilanden verminderd omdat wanden op dezelfde eilanden worden gegroepeerd."
+
+msgctxt "wall_0_material_flow_roofing label"
+msgid "Top Surface Outer Wall Flow"
+msgstr "Stroom van de buitenste wand van het bovenoppervlak"
+
+msgctxt "wall_0_material_flow_roofing description"
+msgid "Flow compensation on the top surface outermost wall line."
+msgstr "Stroomcompensatie op de buitenste wand van het bovenoppervlak."
+
+msgctxt "wall_x_material_flow_roofing label"
+msgid "Top Surface Inner Wall(s) Flow"
+msgstr "Stroom van de binnenste wand(en) van het bovenoppervlak"
+
+msgctxt "wall_x_material_flow_roofing description"
+msgid "Flow compensation on top surface wall lines for all wall lines except the outermost one."
+msgstr "Stroomcompensatie op de wandlijnen van het bovenoppervlak voor alle muurlijnen behalve de buitenste."
+
+msgctxt "speed_wall_0_roofing label"
+msgid "Top Surface Outer Wall Speed"
+msgstr "Snelheid van de buitenste wand van het bovenoppervlak"
+
+msgctxt "speed_wall_0_roofing description"
+msgid "The speed at which the top surface outermost wall is printed."
+msgstr "De snelheid waarmee de buitenste wanden van het bovenoppervlak worden geprint."
+
+msgctxt "speed_wall_x_roofing label"
+msgid "Top Surface Inner Wall Speed"
+msgstr "Snelheid van de binnenste wand van het bovenoppervlak"
+
+msgctxt "speed_wall_x_roofing description"
+msgid "The speed at which the top surface inner walls are printed."
+msgstr "De snelheid waarmee de binnenwanden van het bovenoppervlak worden geprint."
+
+msgctxt "acceleration_wall_0_roofing label"
+msgid "Top Surface Outer Wall Acceleration"
+msgstr "Versnelling van de buitenste wand op bovenlaag"
+
+msgctxt "acceleration_wall_0_roofing description"
+msgid "The acceleration with which the top surface outermost walls are printed."
+msgstr "De versnelling waarmee de buitenste muren van het bovenoppervlak worden geprint."
+
+msgctxt "acceleration_wall_x_roofing label"
+msgid "Top Surface Inner Wall Acceleration"
+msgstr "Versnelling van de binnenwand op bovenlaag"
+
+msgctxt "acceleration_wall_x_roofing description"
+msgid "The acceleration with which the top surface inner walls are printed."
+msgstr "De versnelling waarmee de binnenwanden van het bovenoppervlak worden geprint."
+
+msgctxt "jerk_wall_0_roofing label"
+msgid "Top Surface Outer Wall Jerk"
+msgstr "Schok van de binnenste muur van het bovenoppervlak"
+
+msgctxt "jerk_wall_0_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface outermost walls are printed."
+msgstr "De maximale plotselinge snelheidsverandering waarmee de binnenste muren van het bovenoppervlak worden geprint."
+
+msgctxt "jerk_wall_x_roofing label"
+msgid "Top Surface Inner Wall Jerk"
+msgstr "Schok van de buitenste muur van het bovenoppervlak"
+
+msgctxt "jerk_wall_x_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface inner walls are printed."
+msgstr "De maximale plotselinge snelheidsverandering waarmee de buitenste muren van het bovenoppervlak worden geprint."

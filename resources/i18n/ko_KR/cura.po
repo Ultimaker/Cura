@@ -5353,3 +5353,11 @@ msgstr "제거 확인"
 msgctxt "@item:inlistbox"
 msgid "All Files (*)"
 msgstr "모든 파일 (*)"
+
+msgctxt "@label"
+msgid "Balanced"
+msgstr "균형"
+
+msgctxt "@text"
+msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
+msgstr "균형 프로파일은 생산성, 표면 품질, 기계적 특성 및 치수 정확도 사이의 균형을 찾기 위해 설계되었습니다."

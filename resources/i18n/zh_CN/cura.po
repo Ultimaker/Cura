@@ -5353,3 +5353,11 @@ msgstr "确认删除"
 msgctxt "@item:inlistbox"
 msgid "All Files (*)"
 msgstr "所有文件 (*)"
+
+msgctxt "@label"
+msgid "Balanced"
+msgstr "平衡"
+
+msgctxt "@text"
+msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
+msgstr "平衡配置旨在在生產力、表面質量、機械性能和尺寸精度之間取得平衡。"

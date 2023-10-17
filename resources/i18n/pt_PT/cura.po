@@ -5366,3 +5366,11 @@ msgstr "Confirmar Remoção"
 msgctxt "@item:inlistbox"
 msgid "All Files (*)"
 msgstr "Todos os Ficheiros (*)"
+
+msgctxt "@label"
+msgid "Balanced"
+msgstr "Equilibrado"
+
+msgctxt "@text"
+msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
+msgstr "O perfil equilibrado é projetado para encontrar um equilíbrio entre a produtividade, a qualidade da superfície, as propriedades mecânicas e a precisão dimensional."

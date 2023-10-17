@@ -5349,3 +5349,11 @@ msgstr "モデルを取り除きました"
 msgctxt "@item:inlistbox"
 msgid "All Files (*)"
 msgstr "全てのファイル"
+
+msgctxt "@label"
+msgid "Balanced"
+msgstr "バランス"
+
+msgctxt "@text"
+msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
+msgstr "バランスのとれたプロファイルは、生産性、表面品質、機械的特性、寸法精度のバランスを取るために設計されています。"

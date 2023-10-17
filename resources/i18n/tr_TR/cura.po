@@ -5366,3 +5366,11 @@ msgstr "Kaldırmayı Onayla"
 msgctxt "@item:inlistbox"
 msgid "All Files (*)"
 msgstr "Tüm Dosyalar (*)"
+
+msgctxt "@label"
+msgid "Balanced"
+msgstr "Dengeli"
+
+msgctxt "@text"
+msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
+msgstr "Dengeli profil, verimlilik, yüzey kalitesi, mekanik özellikler ve boyutsal doğruluk arasında bir denge kurmayı amaçlar."

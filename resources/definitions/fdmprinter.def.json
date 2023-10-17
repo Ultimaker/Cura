@@ -3198,7 +3198,7 @@
                                 "speed_wall_0_roofing":
                                 {
                                     "label": "Top Surface Outer Wall Speed",
-                                    "description": "The speed at which the top surface outermost walls are printed.",
+                                    "description": "The speed at which the top surface outermost wall is printed.",
                                     "unit": "mm/s",
                                     "type": "float",
                                     "minimum_value": "0.1",

@@ -5407,3 +5407,75 @@ msgstr "Yapı Levhası Yapıştırması"
 msgctxt "machine_settings label"
 msgid "Machine"
 msgstr "Makine"
+
+msgctxt "group_outer_walls label"
+msgid "Group Outer Walls"
+msgstr "Dış Duvarları Grupla"
+
+msgctxt "group_outer_walls description"
+msgid "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped."
+msgstr "Aynı katman içindeki farklı adalardaki dış duvarlar sırayla basılır. Etkinleştirildiğinde, akış değişiklik miktarı duvarlar tür türüne basıldığı için sınırlıdır, devre dışı bırakıldığında ise aynı adalardaki duvarlar gruplandığı için adalar arasındaki seyahat sayısı azalır."
+
+msgctxt "wall_0_material_flow_roofing label"
+msgid "Top Surface Outer Wall Flow"
+msgstr "Üst Yüzeyin En Dış Duvar Akışı"
+
+msgctxt "wall_0_material_flow_roofing description"
+msgid "Flow compensation on the top surface outermost wall line."
+msgstr "Üst Yüzeyin En Dış Duvar Hattında Akış Telafisi."
+
+msgctxt "wall_x_material_flow_roofing label"
+msgid "Top Surface Inner Wall(s) Flow"
+msgstr "Üst Yüzey İç Duvar Akışı"
+
+msgctxt "wall_x_material_flow_roofing description"
+msgid "Flow compensation on top surface wall lines for all wall lines except the outermost one."
+msgstr "Tüm duvar hatları için dıştaki hariç üst yüzey duvar hatlarında akış telafi."
+
+msgctxt "speed_wall_0_roofing label"
+msgid "Top Surface Outer Wall Speed"
+msgstr "Üst Yüzeyin En Dış Duvar Hızı"
+
+msgctxt "speed_wall_0_roofing description"
+msgid "The speed at which the top surface outermost wall is printed."
+msgstr "Üst Yüzeyin En Dış Duvarlarının Hangi Hızda Basıldığı."
+
+msgctxt "speed_wall_x_roofing label"
+msgid "Top Surface Inner Wall Speed"
+msgstr "Üst Yüzey İç Duvar Hızı"
+
+msgctxt "speed_wall_x_roofing description"
+msgid "The speed at which the top surface inner walls are printed."
+msgstr "Üst Yüzey İç Duvarların Hangi Hızda Basıldığı."
+
+msgctxt "acceleration_wall_0_roofing label"
+msgid "Top Surface Outer Wall Acceleration"
+msgstr "Üst Yüzey Dış Duvar Hızlanması"
+
+msgctxt "acceleration_wall_0_roofing description"
+msgid "The acceleration with which the top surface outermost walls are printed."
+msgstr "Üst Yüzeyin En Dış Duvarlarının Hangi Hızda Basıldığı."
+
+msgctxt "acceleration_wall_x_roofing label"
+msgid "Top Surface Inner Wall Acceleration"
+msgstr "Üst Yüzey İç Duvar Hızlanması"
+
+msgctxt "acceleration_wall_x_roofing description"
+msgid "The acceleration with which the top surface inner walls are printed."
+msgstr "Üst yüzey iç duvarlarının hangi hızla basıldığı."
+
+msgctxt "jerk_wall_0_roofing label"
+msgid "Top Surface Outer Wall Jerk"
+msgstr "Üst Yüzeyin İç Duvar Darbesi"
+
+msgctxt "jerk_wall_0_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface outermost walls are printed."
+msgstr "Üst Yüzeyin İç Duvarlarının Basıldığı Anki Maksimum Hız Değişikliği."
+
+msgctxt "jerk_wall_x_roofing label"
+msgid "Top Surface Inner Wall Jerk"
+msgstr "Üst Yüzeyin En Dış Duvar Darbesi"
+
+msgctxt "jerk_wall_x_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface inner walls are printed."
+msgstr "Üst Yüzeyin En Dış Duvarlarının Basıldığı Anki Maksimum Hız Değişikliği."
