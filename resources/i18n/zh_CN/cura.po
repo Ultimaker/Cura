@@ -3884,7 +3884,7 @@ msgstr "草稿配置文件用于打印初始原型和概念验证，可大大缩
 
 msgctxt "@text"
 msgid "The engineering profile is designed to print functional prototypes and end-use parts with the intent of better accuracy and for closer tolerances."
-msgstr "工程配置文件用于打印功能性原型和最终用途部件，可提高准确性和减小公差。"
+msgstr "工程參数是设计來打印較高精度和較小公差的功能性原型和实际使用零件。"
 
 msgctxt "@label"
 msgid "The extruder train to use for printing the support. This is used in multi-extrusion."
@@ -5360,4 +5360,4 @@ msgstr "平衡"
 
 msgctxt "@text"
 msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
-msgstr "平衡配置旨在在生產力、表面質量、機械性能和尺寸精度之間取得平衡。"
+msgstr "平衡配置旨在在生产力、表面质量、机械性能和尺寸精度之間取得平衡。"
