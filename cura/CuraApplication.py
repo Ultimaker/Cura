@@ -5,6 +5,7 @@ import os
 import sys
 import tempfile
 import time
+import platform
 from typing import cast, TYPE_CHECKING, Optional, Callable, List, Any, Dict
 
 import numpy
@@ -494,6 +495,36 @@ class CuraApplication(QtApplication):
     def startSplashWindowPhase(self) -> None:
         """Runs preparations that needs to be done before the starting process."""
 
+        self.setRequiredPlugins([
+            # Misc.:
+            "ConsoleLogger",  # You want to be able to read the log if something goes wrong.
+            "CuraEngineBackend",  # Cura is useless without this one since you can't slice.
+            "FileLogger",  # You want to be able to read the log if something goes wrong.
+            "XmlMaterialProfile",  # Cura crashes without this one.
+            "Marketplace",
+            # This contains the interface to enable/disable plug-ins, so if you disable it you can't enable it back.
+            "PrepareStage",  # Cura is useless without this one since you can't load models.
+            "PreviewStage",  # This shows the list of the plugin views that are installed in Cura.
+            "MonitorStage",  # Major part of Cura's functionality.
+            "LocalFileOutputDevice",  # Major part of Cura's functionality.
+            "LocalContainerProvider",  # Cura is useless without any profiles or setting definitions.
+
+            # Views:
+            "SimpleView",  # Dependency of SolidView.
+            "SolidView",  # Displays models. Cura is useless without it.
+
+            # Readers & Writers:
+            "GCodeWriter",  # Cura is useless if it can't write its output.
+            "STLReader",  # Most common model format, so disabling this makes Cura 90% useless.
+            "3MFWriter",  # Required for writing project files.
+
+            # Tools:
+            "CameraTool",  # Needed to see the scene. Cura is useless without it.
+            "SelectionTool",  # Dependency of the rest of the tools.
+            "TranslateTool",  # You'll need this for almost every print.
+        ])
+        # Plugins need to be set here, since in the super the check is done if they are actually loaded.
+
         super().startSplashWindowPhase()
 
         if not self.getIsHeadLess():
@@ -502,33 +533,7 @@ class CuraApplication(QtApplication):
             except FileNotFoundError:
                 Logger.log("w", "Unable to find the window icon.")
 
-        self.setRequiredPlugins([
-            # Misc.:
-            "ConsoleLogger", #You want to be able to read the log if something goes wrong.
-            "CuraEngineBackend", #Cura is useless without this one since you can't slice.
-            "FileLogger", #You want to be able to read the log if something goes wrong.
-            "XmlMaterialProfile", #Cura crashes without this one.
-            "Marketplace", #This contains the interface to enable/disable plug-ins, so if you disable it you can't enable it back.
-            "PrepareStage", #Cura is useless without this one since you can't load models.
-            "PreviewStage", #This shows the list of the plugin views that are installed in Cura.
-            "MonitorStage", #Major part of Cura's functionality.
-            "LocalFileOutputDevice", #Major part of Cura's functionality.
-            "LocalContainerProvider", #Cura is useless without any profiles or setting definitions.
 
-            # Views:
-            "SimpleView", #Dependency of SolidView.
-            "SolidView", #Displays models. Cura is useless without it.
-
-            # Readers & Writers:
-            "GCodeWriter", #Cura is useless if it can't write its output.
-            "STLReader", #Most common model format, so disabling this makes Cura 90% useless.
-            "3MFWriter", #Required for writing project files.
-
-            # Tools:
-            "CameraTool", #Needed to see the scene. Cura is useless without it.
-            "SelectionTool", #Dependency of the rest of the tools.
-            "TranslateTool", #You'll need this for almost every print.
-        ])
         self._i18n_catalog = i18nCatalog("cura")
 
         self._update_platform_activity_timer = QTimer()
@@ -828,6 +833,8 @@ class CuraApplication(QtApplication):
     def run(self):
         super().run()
 
+        self._log_hardware_info()
+
         if len(ApplicationMetadata.DEPENDENCY_INFO) > 0:
             Logger.debug("Using Conan managed dependencies: " + ", ".join(
                 [dep["recipe"]["id"] for dep in ApplicationMetadata.DEPENDENCY_INFO["installed"] if dep["recipe"]["version"] != "latest"]))
@@ -900,6 +907,14 @@ class CuraApplication(QtApplication):
         self._auto_save.initialize()
 
         self.exec()
+
+    def _log_hardware_info(self):
+        hardware_info = platform.uname()
+        Logger.info(f"System: {hardware_info.system}")
+        Logger.info(f"Release: {hardware_info.release}")
+        Logger.info(f"Version: {hardware_info.version}")
+        Logger.info(f"Processor name: {hardware_info.processor}")
+        Logger.info(f"CPU Cores: {os.cpu_count()}")
 
     def __setUpSingleInstanceServer(self):
         if self._use_single_instance:

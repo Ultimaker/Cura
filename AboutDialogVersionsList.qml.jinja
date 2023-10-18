@@ -1,0 +1,61 @@
+import QtQuick 2.2
+import QtQuick.Controls 2.9
+
+import UM 1.6 as UM
+import Cura 1.5 as Cura
+
+
+ListView
+{
+    id: projectBuildInfoList
+    visible: false
+    anchors.top: creditsNotes.bottom
+    anchors.topMargin: UM.Theme.getSize("default_margin").height
+    width: parent.width
+    height: base.height - y - (2 * UM.Theme.getSize("default_margin").height + closeButton.height)
+
+    ScrollBar.vertical: UM.ScrollBar
+    {
+        id: projectBuildInfoListScrollBar
+    }
+
+    delegate: Row
+    {
+        spacing: UM.Theme.getSize("narrow_margin").width
+        UM.Label
+        {
+            text: (model.name)
+            width: (projectBuildInfoList.width* 0.4) | 0
+            elide: Text.ElideRight
+        }
+        UM.Label
+        {
+            text: (model.version)
+            width: (projectBuildInfoList.width *0.6) | 0
+            elide: Text.ElideRight
+        }
+
+    }
+    model: ListModel
+    {
+        id: developerInfo
+    }
+    Component.onCompleted:
+    {
+        var conan_installs = {{ conan_installs }};
+        var python_installs = {{ python_installs }};
+        developerInfo.append({ name : "<H1>Conan Installs</H1>", version : '' });
+        for (var n in conan_installs)
+        {
+            developerInfo.append({ name : conan_installs[n][0], version : conan_installs[n][1] });
+        }
+        developerInfo.append({ name : '', version : '' });
+        developerInfo.append({ name : "<H1>Python Installs</H1>", version : '' });
+        for (var n in python_installs)
+        {
+            developerInfo.append({ name : python_installs[n][0], version : python_installs[n][1] });
+        }
+
+    }
+}
+

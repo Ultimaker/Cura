@@ -628,7 +628,7 @@ UM.MainWindow
         //: File open dialog title
         title: catalog.i18nc("@title:window","Open file(s)")
         modality: Qt.WindowModal
-        fileMode: FileDialog.FileMode.ExistingFile
+        fileMode: FileDialog.FileMode.OpenFiles
         nameFilters: UM.MeshFileHandler.supportedReadFileTypes;
         currentFolder: CuraApplication.getDefaultPath("dialog_load_path")
         onAccepted:

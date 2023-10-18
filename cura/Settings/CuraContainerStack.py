@@ -359,7 +359,7 @@ class CuraContainerStack(ContainerStack):
         return self.definition
 
     @classmethod
-    def _findInstanceContainerDefinitionId(cls, machine_definition: DefinitionContainerInterface) -> str:
+    def findInstanceContainerDefinitionId(cls, machine_definition: DefinitionContainerInterface) -> str:
         """Find the ID that should be used when searching for instance containers for a specified definition.
 
         This handles the situation where the definition specifies we should use a different definition when
@@ -379,7 +379,7 @@ class CuraContainerStack(ContainerStack):
             Logger.log("w", "Unable to find parent definition {parent} for machine {machine}", parent = quality_definition, machine = machine_definition.id) #type: ignore
             return machine_definition.id #type: ignore
 
-        return cls._findInstanceContainerDefinitionId(definitions[0])
+        return cls.findInstanceContainerDefinitionId(definitions[0])
 
     def getExtruderPositionValueWithDefault(self, key):
         """getProperty for extruder positions, with translation from -1 to default extruder number"""
