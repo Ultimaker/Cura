@@ -5278,3 +5278,86 @@ msgstr "압축 된 G 코드 작성기"
 msgctxt "description"
 msgid "Provides support for exporting Cura profiles."
 msgstr "Cura 프로파일 내보내기 지원을 제공합니다."
+
+msgctxt "@info:title"
+msgid "Error"
+msgstr "오류"
+
+msgctxt "@action:button"
+msgid "Cancel"
+msgstr "취소"
+
+msgctxt "@title:tab"
+msgid "Settings"
+msgstr "설정"
+
+#, python-brace-format
+msgctxt "@label Don't translate the XML tag <filename>!"
+msgid "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?"
+msgstr "파일 <filename>{0}</filename>이 이미 있습니다. 덮어 쓰시겠습니까?"
+
+msgctxt "@action:button"
+msgid "Learn more"
+msgstr "자세히 알아보기"
+
+msgctxt "@title:tab"
+msgid "General"
+msgstr "일반"
+
+msgctxt "@label (%1 is object name)"
+msgid "Are you sure you wish to remove %1? This cannot be undone!"
+msgstr "%1을 제거 하시겠습니까? 이것은 취소 할 수 없습니다!"
+
+msgctxt "@label"
+msgid "Type"
+msgstr "유형"
+
+msgctxt "@info:title"
+msgid "Saving"
+msgstr "저장"
+
+msgctxt "@title:window"
+msgid "File Already Exists"
+msgstr "파일이 이미 있습니다"
+
+#, python-brace-format
+msgctxt "@item:inlistbox"
+msgid "All Supported Types ({0})"
+msgstr "지원되는 모든 유형 ({0})"
+
+#, python-brace-format
+msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
+msgid "Could not save to <filename>{0}</filename>: <message>{1}</message>"
+msgstr "<filename>{0}</filename>: <message>{1}</message> 에 저장할 수 없습니다"
+
+msgctxt "@action:button"
+msgid "OK"
+msgstr "확인"
+
+msgctxt "@info:title"
+msgid "Warning"
+msgstr "경고"
+
+msgctxt "@title:tab"
+msgid "Printers"
+msgstr "프린터"
+
+msgctxt "@info:title"
+msgid "File Saved"
+msgstr "파일이 저장됨"
+
+msgctxt "@title:window"
+msgid "Confirm Remove"
+msgstr "제거 확인"
+
+msgctxt "@item:inlistbox"
+msgid "All Files (*)"
+msgstr "모든 파일 (*)"
+
+msgctxt "@label"
+msgid "Balanced"
+msgstr "균형"
+
+msgctxt "@text"
+msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
+msgstr "균형 프로파일은 생산성, 표면 품질, 기계적 특성 및 치수 정확도 사이의 균형을 찾기 위해 설계되었습니다."

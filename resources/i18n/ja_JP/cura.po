@@ -5278,3 +5278,82 @@ msgstr "圧縮G-codeライター"
 msgctxt "description"
 msgid "Provides support for exporting Cura profiles."
 msgstr "Curaプロファイルを書き出すためのサポートを供給する。"
+
+msgctxt "@info:title"
+msgid "Error"
+msgstr "エラー"
+
+msgctxt "@action:button"
+msgid "Cancel"
+msgstr "キャンセル"
+
+msgctxt "@title:tab"
+msgid "Settings"
+msgstr "設定"
+
+#, python-brace-format
+msgctxt "@label Don't translate the XML tag <filename>!"
+msgid "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?"
+msgstr "<filename>{0}</filename> は既に存在します。ファイルを上書きしますか？"
+
+msgctxt "@action:button"
+msgid "Learn more"
+msgstr "詳しく見る"
+
+msgctxt "@title:tab"
+msgid "General"
+msgstr "一般"
+
+msgctxt "@label (%1 is object name)"
+msgid "Are you sure you wish to remove %1? This cannot be undone!"
+msgstr "%1を取り外しますか？この作業はやり直しが効きません！"
+
+msgctxt "@label"
+msgid "Type"
+msgstr "タイプ"
+
+msgctxt "@info:title"
+msgid "Saving"
+msgstr "保存中"
+
+msgctxt "@title:window"
+msgid "File Already Exists"
+msgstr "すでに存在するファイルです"
+
+#, python-brace-format
+msgctxt "@item:inlistbox"
+msgid "All Supported Types ({0})"
+msgstr "すべてのサポートのタイプ ({0})"
+
+#, python-brace-format
+msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
+msgid "Could not save to <filename>{0}</filename>: <message>{1}</message>"
+msgstr "<filename>{0}</filename>を保存できませんでした: <message>{1}</message>"
+
+msgctxt "@info:title"
+msgid "Warning"
+msgstr "警告"
+
+msgctxt "@title:tab"
+msgid "Printers"
+msgstr "プリンター"
+
+msgctxt "@info:title"
+msgid "File Saved"
+msgstr "ファイル保存"
+
+msgctxt "@title:window"
+msgid "Confirm Remove"
+msgstr "モデルを取り除きました"
+
+msgctxt "@item:inlistbox"
+msgid "All Files (*)"
+msgstr "全てのファイル"
+
+msgctxt "@label"
+msgid "Balanced"
+msgstr "バランス"
+
+msgctxt "@text"
+msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
+msgstr "バランスのとれたプロファイルは、生産性、表面品質、機械的特性、寸法精度のバランスを取るために設計されています。"

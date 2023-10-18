@@ -5561,6 +5561,14 @@ msgctxt "@info:generic"
 msgid "{} plugins failed to download"
 msgstr "Nepovedlo se stáhnout {} zásuvných modulů"
 
+msgctxt "@label"
+msgid "Balanced"
+msgstr "Vyvážený"
+
+msgctxt "@text"
+msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
+msgstr "Vyvážený profil je navržen tak, aby dosáhl rovnováhy mezi produktivitou, kvalitou povrchu, mechanickými vlastnostmi a rozměrnou přesností."
+
 #, python-brace-format
 #~ msgctxt "info:{0} gets replaced by a number of printers"
 #~ msgid "... and {0} other"
