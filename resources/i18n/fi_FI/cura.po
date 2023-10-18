@@ -5508,8 +5508,8 @@ msgid "Balanced"
 msgstr "Tasapainotettu"
 
 msgctxt "@text"
-msgid "Tasapainotettu profiili on suunniteltu tasapainottamaan tuottavuutta, pinnanlaatua, mekaanisia ominaisuuksia ja dimensionaalista tarkkuutta."
-msgstr ""
+msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
+msgstr "Tasapainotettu profiili on suunniteltu tasapainottamaan tuottavuutta, pinnanlaatua, mekaanisia ominaisuuksia ja dimensionaalista tarkkuutta."
 
 #~ msgctxt "@action:inmenu menubar:edit"
 #~ msgid "Arrange Selection"

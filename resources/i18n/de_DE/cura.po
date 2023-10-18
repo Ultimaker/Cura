@@ -5368,9 +5368,9 @@ msgid "All Files (*)"
 msgstr "Alle Dateien (*)"
 
 msgctxt "@label"
-msgid "Ausgewogen"
-msgstr ""
+msgid "Balanced"
+msgstr "Ausgewogen"
 
 msgctxt "@text"
-msgid "Das ausgewogene Profil ist darauf ausgelegt, einen Kompromiss zwischen Produktivität, Oberflächenqualität, mechanischen Eigenschaften und Maßgenauigkeit zu erzielen."
-msgstr ""
+msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
+msgstr "Das ausgewogene Profil ist darauf ausgelegt, einen Kompromiss zwischen Produktivität, Oberflächenqualität, mechanischen Eigenschaften und Maßgenauigkeit zu erzielen."

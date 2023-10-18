@@ -5368,5 +5368,5 @@ msgid "Balanced"
 msgstr "Bilanciato"
 
 msgctxt "@text"
-msgid "Il profilo equilibrato è progettato per trovare un equilibrio tra produttività, qualità superficiale, proprietà meccaniche e precisione dimensionale."
-msgstr ""
+msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
+msgstr "Il profilo equilibrato è progettato per trovare un equilibrio tra produttività, qualità superficiale, proprietà meccaniche e precisione dimensionale."

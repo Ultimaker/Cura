@@ -5323,7 +5323,7 @@ msgstr "Êtes-vous sûr de vouloir supprimer l'objet %1 ? Vous ne pourrez pas re
 
 msgctxt "@label"
 msgid "Type"
-msgstr ""
+msgstr "Type"
 
 msgctxt "@info:title"
 msgid "Saving"
