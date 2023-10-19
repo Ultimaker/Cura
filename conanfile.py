@@ -137,18 +137,21 @@ class CuraConan(ConanFile):
             return "'x86_64'"
         return "None"
 
-    def _generate_about_versions(self, location):
-        with open(os.path.join(self.recipe_folder, "AboutDialogVersionsList.qml.jinja"), "r") as f:
-            cura_version_py = Template(f.read())
+    def _conan_installs(self):
+        conan_installs = {}
 
-        conan_installs = []
-        python_installs = []
+        # list of conan installs
+        for dependency in self.dependencies.host.values():
+            conan_installs[dependency.ref.name] = {
+                "version": dependency.ref.version,
+                "revision": dependency.ref.revision
+            }
+        return conan_installs
 
-        # list  of conan installs
-        for _, dependency in self.dependencies.host.items():
-            conan_installs.append([dependency.ref.name,dependency.ref.version])
+    def _python_installs(self):
+        python_installs = {}
 
-        #list of python installs
+        # list of python installs
         outer = '"' if self.settings.os == "Windows" else "'"
         inner = "'" if self.settings.os == "Windows" else '"'
         python_ins_cmd = f"python -c {outer}import pkg_resources; print({inner};{inner}.join([(s.key+{inner},{inner}+ s.version) for s in pkg_resources.working_set])){outer}"
@@ -157,16 +160,12 @@ class CuraConan(ConanFile):
         self.run(python_ins_cmd, run_environment= True, env = "conanrun",  output=buffer)
 
         packages = str(buffer.getvalue()).split("-----------------\n")
-        package = packages[1].strip('\r\n').split(";")
-        for pack in package:
-            python_installs.append(pack.split(","))
+        packages = packages[1].strip('\r\n').split(";")
+        for package in packages:
+            name, version = package.split(",")
+            python_installs[name] = {"version": version}
 
-        with open(os.path.join(location, "AboutDialogVersionsList.qml"), "w") as f:
-            f.write(cura_version_py.render(
-                conan_installs = conan_installs,
-                python_installs = python_installs
-            ))
-
+        return python_installs
 
     def _generate_cura_version(self, location):
         with open(os.path.join(self.recipe_folder, "CuraVersion.py.jinja"), "r") as f:
@@ -192,89 +191,9 @@ class CuraConan(ConanFile):
                 cura_cloud_account_api_root = self.conan_data["urls"][self._urls]["cloud_account_api_root"],
                 cura_marketplace_root = self.conan_data["urls"][self._urls]["marketplace_root"],
                 cura_digital_factory_url = self.conan_data["urls"][self._urls]["digital_factory_url"],
-                cura_latest_url = self.conan_data["urls"][self._urls]["cura_latest_url"]))
-
-    def _generate_pyinstaller_spec(self, location, entrypoint_location, icon_path, entitlements_file):
-        pyinstaller_metadata = self.conan_data["pyinstaller"]
-        datas = [(str(self._base_dir.joinpath("conan_install_info.json")), ".")]
-        for data in pyinstaller_metadata["datas"].values():
-            if not self.options.internal and data.get("internal", False):
-                continue
-
-            if "package" in data:  # get the paths from conan package
-                if data["package"] == self.name:
-                    if self.in_local_cache:
-                        src_path = os.path.join(self.package_folder, data["src"])
-                    else:
-                        src_path = os.path.join(self.source_folder, data["src"])
-                else:
-                    src_path = os.path.join(self.deps_cpp_info[data["package"]].rootpath, data["src"])
-            elif "root" in data:  # get the paths relative from the install folder
-                src_path = os.path.join(self.install_folder, data["root"], data["src"])
-            else:
-                continue
-            if Path(src_path).exists():
-                datas.append((str(src_path), data["dst"]))
-
-        binaries = []
-        for binary in pyinstaller_metadata["binaries"].values():
-            if "package" in binary:  # get the paths from conan package
-                src_path = os.path.join(self.deps_cpp_info[binary["package"]].rootpath, binary["src"])
-            elif "root" in binary:  # get the paths relative from the sourcefolder
-                src_path = str(self.source_path.joinpath(binary["root"], binary["src"]))
-                if self.settings.os == "Windows":
-                    src_path = src_path.replace("\\", "\\\\")
-            else:
-                continue
-            if not Path(src_path).exists():
-                self.output.warning(f"Source path for binary {binary['binary']} does not exist")
-                continue
-
-            for bin in Path(src_path).glob(binary["binary"] + "*[.exe|.dll|.so|.dylib|.so.]*"):
-                binaries.append((str(bin), binary["dst"]))
-            for bin in Path(src_path).glob(binary["binary"]):
-                binaries.append((str(bin), binary["dst"]))
-
-        # Make sure all Conan dependencies which are shared are added to the binary list for pyinstaller
-        for _, dependency in self.dependencies.host.items():
-            for bin_paths in dependency.cpp_info.bindirs:
-                binaries.extend([(f"{p}", ".") for p in Path(bin_paths).glob("**/*.dll")])
-            for lib_paths in dependency.cpp_info.libdirs:
-                binaries.extend([(f"{p}", ".") for p in Path(lib_paths).glob("**/*.so*")])
-                binaries.extend([(f"{p}", ".") for p in Path(lib_paths).glob("**/*.dylib*")])
-
-        # Copy dynamic libs from lib path
-        binaries.extend([(f"{p}", ".") for p in Path(self._base_dir.joinpath("lib")).glob("**/*.dylib*")])
-        binaries.extend([(f"{p}", ".") for p in Path(self._base_dir.joinpath("lib")).glob("**/*.so*")])
-
-        # Collect all dll's from PyQt6 and place them in the root
-        binaries.extend([(f"{p}", ".") for p in Path(self._site_packages, "PyQt6", "Qt6").glob("**/*.dll")])
-
-        with open(os.path.join(self.recipe_folder, "UltiMaker-Cura.spec.jinja"), "r") as f:
-            pyinstaller = Template(f.read())
-
-        version = self.conf_info.get("user.cura:version", default = self.version, check_type = str)
-        cura_version = Version(version)
-
-        with open(os.path.join(location, "UltiMaker-Cura.spec"), "w") as f:
-            f.write(pyinstaller.render(
-                name = str(self.options.display_name).replace(" ", "-"),
-                display_name = self._app_name,
-                entrypoint = entrypoint_location,
-                datas = datas,
-                binaries = binaries,
-                venv_script_path = str(self._script_dir),
-                hiddenimports = pyinstaller_metadata["hiddenimports"],
-                collect_all = pyinstaller_metadata["collect_all"],
-                icon = icon_path,
-                entitlements_file = entitlements_file,
-                osx_bundle_identifier = "'nl.ultimaker.cura'" if self.settings.os == "Macos" else "None",
-                upx = str(self.settings.os == "Windows"),
-                strip = False,  # This should be possible on Linux and MacOS but, it can also cause issues on some distributions. Safest is to disable it for now
-                target_arch = self._pyinstaller_spec_arch,
-                macos = self.settings.os == "Macos",
-                version = f"'{version}'",
-                short_version = f"'{cura_version.major}.{cura_version.minor}.{cura_version.patch}'",
+                cura_latest_url=self.conan_data["urls"][self._urls]["cura_latest_url"],
+                conan_installs=self._conan_installs(),
+                python_installs=self._python_installs(),
             ))
 
     def export_sources(self):
@@ -346,7 +265,6 @@ class CuraConan(ConanFile):
         vr.generate()
 
         self._generate_cura_version(os.path.join(self.source_folder, "cura"))
-        self._generate_about_versions(os.path.join(self.source_folder, "resources","qml", "Dialogs"))
 
         if not self.in_local_cache:
             # Copy CuraEngine.exe to bindirs of Virtual Python Environment
@@ -387,12 +305,6 @@ class CuraConan(ConanFile):
             copy(self, "*", cura_private_data.resdirs[0], str(self._share_dir.joinpath("cura")))
 
         if self.options.devtools:
-            entitlements_file = "'{}'".format(os.path.join(self.source_folder, "packaging", "MacOS", "cura.entitlements"))
-            self._generate_pyinstaller_spec(location = self.generators_folder,
-                                            entrypoint_location = "'{}'".format(os.path.join(self.source_folder, self.conan_data["pyinstaller"]["runinfo"]["entrypoint"])).replace("\\", "\\\\"),
-                                            icon_path = "'{}'".format(os.path.join(self.source_folder, "packaging", self.conan_data["pyinstaller"]["icon"][str(self.settings.os)])).replace("\\", "\\\\"),
-                                            entitlements_file = entitlements_file if self.settings.os == "Macos" else "None")
-
             # Update the po and pot files
             if self.settings.os != "Windows" or self.conf.get("tools.microsoft.bash:path", check_type=str):
                 vb = VirtualBuildEnv(self)
@@ -451,13 +363,6 @@ echo "CURA_APP_NAME={{ cura_app_name }}" >> ${{ env_prefix }}GITHUB_ENV
         save(self, os.path.join(self._script_dir, f"activate_github_actions_version_env{ext}"), activate_github_actions_version_env)
 
         self._generate_cura_version(os.path.join(self._site_packages, "cura"))
-        self._generate_about_versions(str(self._share_dir.joinpath("cura", "resources", "qml", "Dialogs")))
-
-        entitlements_file = "'{}'".format(Path(self.cpp_info.res_paths[2], "MacOS", "cura.entitlements"))
-        self._generate_pyinstaller_spec(location = self._base_dir,
-                                        entrypoint_location = "'{}'".format(os.path.join(self.package_folder, self.cpp_info.bindirs[0], self.conan_data["pyinstaller"]["runinfo"]["entrypoint"])).replace("\\", "\\\\"),
-                                        icon_path = "'{}'".format(os.path.join(self.package_folder, self.cpp_info.resdirs[2], self.conan_data["pyinstaller"]["icon"][str(self.settings.os)])).replace("\\", "\\\\"),
-                                        entitlements_file = entitlements_file if self.settings.os == "Macos" else "None")
 
     def package(self):
         copy(self, "cura_app.py", src = self.source_folder, dst = os.path.join(self.package_folder, self.cpp.package.bindirs[0]))
