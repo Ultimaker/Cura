@@ -81,7 +81,6 @@ class Nest2DArrange(Arranger):
         ], numpy.float32))
 
         disallowed_areas = self._build_volume.getDisallowedAreas()
-        num_disallowed_areas_added = 0
         for area in disallowed_areas:
             converted_points = []
 
@@ -96,7 +95,6 @@ class Nest2DArrange(Arranger):
                 disallowed_area = Item(converted_points)
                 disallowed_area.markAsDisallowedAreaInBin(0)
                 node_items.append(disallowed_area)
-                num_disallowed_areas_added += 1
 
         for node in self._fixed_nodes:
             converted_points = []
@@ -109,7 +107,6 @@ class Nest2DArrange(Arranger):
                 item = Item(converted_points)
                 item.markAsFixedInBin(0)
                 node_items.append(item)
-                num_disallowed_areas_added += 1
 
         config = NfpConfig()
         config.accuracy = 1.0
