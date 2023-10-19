@@ -108,18 +108,24 @@ class Nest2DArrange(Arranger):
                 item.markAsFixedInBin(0)
                 node_items.append(item)
 
-        config = NfpConfig()
-        config.accuracy = 1.0
-        config.alignment = NfpConfig.Alignment.CENTER
-        if self._lock_rotation:
-            config.rotations = [0.0]
+        tried_strategies = [NfpConfig.Alignment.CENTER] * 3 + [NfpConfig.Alignment.BOTTOM_LEFT] * 3
+        found_solution_for_all = False
+        while not found_solution_for_all and len(tried_strategies) > 0:
+            config = NfpConfig()
+            config.accuracy = 1.0
+            config.alignment = NfpConfig.Alignment.CENTER
+            config.starting_point = tried_strategies[0]
+            tried_strategies = tried_strategies[1:]
 
-        num_bins = nest(node_items, build_plate_bounding_box, spacing, config)
+            if self._lock_rotation:
+                config.rotations = [0.0]
 
-        # Strip the fixed items (previously placed) and the disallowed areas from the results again.
-        node_items = list(filter(lambda item: not item.isFixed(), node_items))
+            num_bins = nest(node_items, build_plate_bounding_box, spacing, config)
 
-        found_solution_for_all = num_bins == 1
+            # Strip the fixed items (previously placed) and the disallowed areas from the results again.
+            node_items = list(filter(lambda item: not item.isFixed(), node_items))
+
+            found_solution_for_all = num_bins == 1
 
         return found_solution_for_all, node_items
 
