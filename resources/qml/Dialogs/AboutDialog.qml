@@ -63,7 +63,7 @@ UM.Dialog
     // Reusable component to display a dependency
     readonly property Component dependency_row: RowLayout
     {
-        spacing: UM.Theme.getSize("narrow_margin").width
+        spacing: UM.Theme.getSize("default_margin").width
 
         UM.Label
         {
@@ -76,7 +76,7 @@ UM.Dialog
             }
             visible: text !== ""
             Layout.fillWidth: true
-            Layout.preferredWidth: 2
+            Layout.preferredWidth: 1
             onLinkActivated: Qt.openUrlExternally(url)
         }
 
@@ -85,7 +85,7 @@ UM.Dialog
             text: description
             visible: text !== ""
             Layout.fillWidth: true
-            Layout.preferredWidth: 3
+            Layout.preferredWidth: 2
         }
 
         UM.Label
@@ -93,7 +93,7 @@ UM.Dialog
             text: license
             visible: text !== ""
             Layout.fillWidth: true
-            Layout.preferredWidth: 2
+            Layout.preferredWidth: 1
         }
 
         UM.Label
@@ -101,7 +101,7 @@ UM.Dialog
             text: version
             visible: text !== ""
             Layout.fillWidth: true
-            Layout.preferredWidth: 2
+            Layout.preferredWidth: 1
         }
     }
 
@@ -117,7 +117,7 @@ UM.Dialog
         Column
         {
             id: content
-            spacing: UM.Theme.getSize("narrow_margin").width
+            spacing: UM.Theme.getSize("default_margin").height
             width: parent.width
 
             UM.Label
@@ -251,6 +251,7 @@ UM.Dialog
             {
                 width: parent.width
                 visible: !showDefaultDependencies
+
                 Repeater
                 {
                     delegate: Loader
