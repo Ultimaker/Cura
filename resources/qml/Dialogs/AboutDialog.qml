@@ -68,7 +68,7 @@ UM.Dialog
         UM.Label
         {
             text: {
-                if (typeof(url) !== "undefined" && url !== "") {
+                if (url !== "") {
                     return `<a href="${url}">${name}</a>`;
                 } else {
                     return name;
@@ -151,6 +151,7 @@ UM.Dialog
                         property string description: model.description
                         property string license: model.license
                         property string url: model.url
+                        property string version: ""
                     }
 
                     model: ListModel
@@ -232,6 +233,9 @@ UM.Dialog
                         width: parent.width
                         property string name: modelData.name
                         property string version: modelData.version
+                        property string license: ""
+                        property string url: ""
+                        property string description: ""
                     }
                 }
             }
@@ -255,6 +259,9 @@ UM.Dialog
                         width: parent.width
                         property string name: modelData.name
                         property string version: modelData.version
+                        property string license: ""
+                        property string url: ""
+                        property string description: ""
                     }
                     width: parent.width
                     model: Object
