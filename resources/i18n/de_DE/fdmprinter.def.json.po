@@ -3878,7 +3878,7 @@ msgstr "Ist ein Teil vollständig von einem anderen Teil eingeschlossen, wird be
 
 msgctxt "brim_smart_ordering label"
 msgid "Smart Brim"
-msgstr "Intelligente Krempe"
+msgstr "Intelligente Brim"
 
 msgctxt "brim_smart_ordering description"
 msgid "Swap print order of the innermost and second innermost brim lines. This improves brim removal."
