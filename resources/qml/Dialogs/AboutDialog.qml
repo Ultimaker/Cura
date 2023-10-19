@@ -10,6 +10,8 @@ import Cura 1.6 as Cura
 
 UM.Dialog
 {
+    readonly property UM.I18nCatalog catalog: UM.I18nCatalog { name: "cura" }
+
     id: base
 
     title: catalog.i18nc("@title:window The argument is the application name.", "About %1").arg(CuraApplication.applicationDisplayName)
@@ -39,8 +41,6 @@ UM.Dialog
             fillMode: Image.PreserveAspectFit
 
             anchors.centerIn: parent
-
-            UM.I18nCatalog{ id: catalog; name: "cura" }
         }
 
         UM.Label
@@ -69,7 +69,7 @@ UM.Dialog
         {
             text: {
                 if (typeof(url) !== "undefined" && url !== "") {
-                    return "<a href=\"" + url + "\">" + name + "</a>";
+                    return `<a href="${url}">${name}</a>`;
                 } else {
                     return name;
                 }
@@ -78,7 +78,6 @@ UM.Dialog
             Layout.fillWidth: true
             Layout.preferredWidth: 2
             onLinkActivated: Qt.openUrlExternally(url)
-            elide: Text.ElideRight
         }
 
         UM.Label
@@ -87,7 +86,6 @@ UM.Dialog
             visible: text !== ""
             Layout.fillWidth: true
             Layout.preferredWidth: 3
-            elide: Text.ElideRight
         }
 
         UM.Label
@@ -96,7 +94,6 @@ UM.Dialog
             visible: text !== ""
             Layout.fillWidth: true
             Layout.preferredWidth: 2
-            elide: Text.ElideRight
         }
 
         UM.Label
@@ -105,7 +102,6 @@ UM.Dialog
             visible: text !== ""
             Layout.fillWidth: true
             Layout.preferredWidth: 2
-            elide: Text.ElideRight
         }
     }
 
@@ -147,7 +143,8 @@ UM.Dialog
                 {
                     width: parent.width
 
-                    delegate: Loader {
+                    delegate: Loader
+                    {
                         sourceComponent: dependency_row
                         width: parent.width
                         property string name: model.name
@@ -226,8 +223,11 @@ UM.Dialog
                 Repeater
                 {
                     width: parent.width
-                    model: Object.entries(CuraApplication.conanInstalls).map(function (item) { return { name: item[0], version: item[1].version } })
-                    delegate: Loader {
+                    model: Object
+                        .entries(CuraApplication.conanInstalls)
+                        .map(([name, { version }]) => ({ name, version }))
+                    delegate: Loader
+                    {
                         sourceComponent: dependency_row
                         width: parent.width
                         property string name: modelData.name
@@ -249,14 +249,17 @@ UM.Dialog
                 visible: !showDefaultDependencies
                 Repeater
                 {
-                    delegate: Loader {
+                    delegate: Loader
+                    {
                         sourceComponent: dependency_row
                         width: parent.width
                         property string name: modelData.name
                         property string version: modelData.version
                     }
                     width: parent.width
-                    model: Object.entries(CuraApplication.pythonInstalls).map(function (item) { return { name: item[0], version: item[1].version } })
+                    model: Object
+                        .entries(CuraApplication.pythonInstalls)
+                        .map(([name, { version }]) => ({ name, version }))
                 }
             }
         }
@@ -264,7 +267,6 @@ UM.Dialog
 
     rightButtons: Cura.TertiaryButton
     {
-        //: Close about dialog button
         id: closeButton
         text: catalog.i18nc("@action:button", "Close")
         onClicked: reject()
