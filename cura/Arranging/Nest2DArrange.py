@@ -49,8 +49,9 @@ class Nest2DArrange(Arranger):
     def findNodePlacement(self) -> Tuple[bool, List[Item]]:
         spacing = int(1.5 * self._factor)  # 1.5mm spacing.
 
-        machine_width = self._build_volume.getWidth()
-        machine_depth = self._build_volume.getDepth()
+        edge_disallowed_size = self._build_volume.getEdgeDisallowedSize()
+        machine_width = self._build_volume.getWidth() - (edge_disallowed_size * 2)
+        machine_depth = self._build_volume.getDepth() - (edge_disallowed_size * 2)
         build_plate_bounding_box = Box(int(machine_width * self._factor), int(machine_depth * self._factor))
 
         if self._fixed_nodes is None:
@@ -112,7 +113,7 @@ class Nest2DArrange(Arranger):
 
         config = NfpConfig()
         config.accuracy = 1.0
-        config.alignment = NfpConfig.Alignment.DONT_ALIGN
+        config.alignment = NfpConfig.Alignment.CENTER
         if self._lock_rotation:
             config.rotations = [0.0]
 
