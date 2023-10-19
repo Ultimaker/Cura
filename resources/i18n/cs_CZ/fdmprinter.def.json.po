@@ -5466,43 +5466,43 @@ msgstr "Maximální okamžitá změna rychlosti, jakou jsou tisknuty nejvíce vn
 
 msgctxt "gradual_flow_enabled label"
 msgid "Gradual flow enabled"
-msgstr ""
+msgstr "Postupné změny průtoku povoleny"
 
 msgctxt "gradual_flow_enabled description"
 msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
-msgstr ""
+msgstr "Povolit postupné změny průtoku. Když je povoleno, průtok se postupně zvyšuje / snižuje na cílový průtok. Toto je užitečné pro tiskárny s Bowdenovou trubicí, kde se průtok okamžitě nezmění, když se spustí / zastaví extrudér."
 
 msgctxt "max_flow_acceleration label"
 msgid "Gradual flow max acceleration"
-msgstr ""
+msgstr "Maximální zrychlení postupných změn průtoku"
 
 msgctxt "max_flow_acceleration description"
 msgid "Maximum acceleration for gradual flow changes"
-msgstr ""
+msgstr "Maximální zrychlení pro postupné změny průtoku"
 
 msgctxt "layer_0_max_flow_acceleration label"
 msgid "Initial layer max flow acceleration"
-msgstr ""
+msgstr "Maximální zrychlení průtoku pro první vrstvu"
 
 msgctxt "layer_0_max_flow_acceleration description"
 msgid "Minimum speed for gradual flow changes for the first layer"
-msgstr ""
+msgstr "Minimální rychlost pro postupné změny průtoku pro první vrstvu"
 
 msgctxt "gradual_flow_discretisation_step_size label"
 msgid "Gradual flow discretisation step size"
-msgstr ""
+msgstr "Velikost kroku diskretizace postupné změny průtoku"
 
 msgctxt "gradual_flow_discretisation_step_size description"
 msgid "Duration of each step in the gradual flow change"
-msgstr ""
+msgstr "Doba trvání každého kroku v postupné změně průtoku"
 
 msgctxt "reset_flow_duration label"
 msgid "Reset flow duration"
-msgstr ""
+msgstr "Doba trvání resetování průtoku"
 
 msgctxt "reset_flow_duration description"
 msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
-msgstr ""
+msgstr "Pro jakýkoli pohyb delší než tato hodnota se materiálový průtok resetuje na cílový průtok dráhy"
 
 
 

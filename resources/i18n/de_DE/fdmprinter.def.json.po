@@ -3870,7 +3870,7 @@ msgstr "Brim nur an der Außenseite des Modells drucken. Damit reduziert sich di
 
 msgctxt "brim_inside_margin label"
 msgid "Brim Inside Avoid Margin"
-msgstr "Abstand zur Vermeidung des inneren Brim-Elements"
+msgstr "Abstand zur Vermeidung des inneren Brims"
 
 msgctxt "brim_inside_margin description"
 msgid "A part fully enclosed inside another part can generate an outer brim that touches the inside of the other part. This removes all brim within this distance from internal holes."
@@ -3878,7 +3878,7 @@ msgstr "Ist ein Teil vollständig von einem anderen Teil eingeschlossen, wird be
 
 msgctxt "brim_smart_ordering label"
 msgid "Smart Brim"
-msgstr "Kleine obere bzw. untere Bereiche werden mit Wänden anstelle des oberen bzw. unteren Standardmusters gefüllt. Dies hilft, ruckartige Bewegungen zu vermeiden."
+msgstr "Intelligente Krempe"
 
 msgctxt "brim_smart_ordering description"
 msgid "Swap print order of the innermost and second innermost brim lines. This improves brim removal."
