@@ -77,6 +77,7 @@ UM.Dialog
             visible: text !== ""
             Layout.fillWidth: true
             Layout.preferredWidth: 2
+            onLinkActivated: Qt.openUrlExternally(url)
             elide: Text.ElideRight
         }
 
