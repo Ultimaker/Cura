@@ -9,4 +9,7 @@ import QtQuick.Dialogs
 // due for deprication, use Qt Color Dialog instead
 ColorDialog
 {
+    id: root
+
+    property alias color: root.selectedColor
 }
