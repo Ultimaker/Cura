@@ -1,6 +1,8 @@
-# Copyright (c) 2021 Ultimaker B.V.
+# Copyright (c) 2023 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 import numpy
+
+from typing import Optional
 
 from PyQt6 import QtCore
 from PyQt6.QtCore import QCoreApplication
@@ -10,11 +12,13 @@ from UM.Logger import Logger
 from cura.PreviewPass import PreviewPass
 
 from UM.Application import Application
+from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Math.Matrix import Matrix
 from UM.Math.Vector import Vector
 from UM.Scene.Camera import Camera
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
-
+from UM.Scene.SceneNode import SceneNode
+from UM.Qt.QtRenderer import QtRenderer
 
 class Snapshot:
     @staticmethod
@@ -31,6 +35,88 @@ class Snapshot:
         max_y, max_x, max_a_ = numpy.amax(nonzero_pixels, axis=1)  # type: ignore
 
         return min_x, max_x, min_y, max_y
+
+    @staticmethod
+    def isometric_snapshot(width: int = 300, height: int = 300, *, root: Optional[SceneNode] = None) -> Optional[
+        QImage]:
+        """Create an isometric snapshot of the scene."""
+
+        root = Application.getInstance().getController().getScene().getRoot() if root is None else root
+
+        # the direction the camera is looking at to create the isometric view
+        iso_view_dir = Vector(-1, -1, -1).normalized()
+
+        bounds = Snapshot.node_bounds(root)
+        if bounds is None:
+            Logger.log("w", "There appears to be nothing to render")
+            return None
+
+        camera = Camera("snapshot")
+
+        # find local x and y directional vectors of the camera
+        s = iso_view_dir.cross(Vector.Unit_Y).normalized()
+        u = s.cross(iso_view_dir).normalized()
+
+        # find extreme screen space coords of the scene
+        x_points = [p.dot(s) for p in bounds.points]
+        y_points = [p.dot(u) for p in bounds.points]
+        min_x = min(x_points)
+        max_x = max(x_points)
+        min_y = min(y_points)
+        max_y = max(y_points)
+        camera_width = max_x - min_x
+        camera_height = max_y - min_y
+
+        if camera_width == 0 or camera_height == 0:
+            Logger.log("w", "There appears to be nothing to render")
+            return None
+
+        # increase either width or height to match the aspect ratio of the image
+        if camera_width / camera_height > width / height:
+            camera_height = camera_width * height / width
+        else:
+            camera_width = camera_height * width / height
+
+        # Configure camera for isometric view
+        ortho_matrix = Matrix()
+        ortho_matrix.setOrtho(
+            -camera_width / 2,
+            camera_width / 2,
+            -camera_height / 2,
+            camera_height / 2,
+            -10000,
+            10000
+        )
+        camera.setPerspective(False)
+        camera.setProjectionMatrix(ortho_matrix)
+        camera.setPosition(bounds.center)
+        camera.lookAt(bounds.center + iso_view_dir)
+
+        # Render the scene
+        renderer = QtRenderer()
+        render_pass = PreviewPass(width, height)
+        renderer.setViewportSize(width, height)
+        renderer.setWindowSize(width, height)
+        render_pass.setCamera(camera)
+        renderer.addRenderPass(render_pass)
+        renderer.beginRendering()
+        renderer.render()
+
+        return render_pass.getOutput()
+
+    @staticmethod
+    def node_bounds(root_node: SceneNode) -> Optional[AxisAlignedBox]:
+        axis_aligned_box = None
+        for node in DepthFirstIterator(root_node):
+            if not getattr(node, "_outside_buildarea", False):
+                if node.callDecoration(
+                        "isSliceable") and node.getMeshData() and node.isVisible() and not node.callDecoration(
+                        "isNonThumbnailVisibleMesh"):
+                    if axis_aligned_box is None:
+                        axis_aligned_box = node.getBoundingBox()
+                    else:
+                        axis_aligned_box = axis_aligned_box + node.getBoundingBox()
+        return axis_aligned_box
 
     @staticmethod
     def snapshot(width = 300, height = 300):
