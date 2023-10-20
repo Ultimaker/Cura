@@ -108,14 +108,14 @@ class Nest2DArrange(Arranger):
                 item.markAsFixedInBin(0)
                 node_items.append(item)
 
-        tried_strategies = [NfpConfig.Alignment.CENTER] * 3 + [NfpConfig.Alignment.BOTTOM_LEFT] * 3
+        strategies = [NfpConfig.Alignment.CENTER] * 3 + [NfpConfig.Alignment.BOTTOM_LEFT] * 3
         found_solution_for_all = False
-        while not found_solution_for_all and len(tried_strategies) > 0:
+        while not found_solution_for_all and len(strategies) > 0:
             config = NfpConfig()
             config.accuracy = 1.0
             config.alignment = NfpConfig.Alignment.CENTER
-            config.starting_point = tried_strategies[0]
-            tried_strategies = tried_strategies[1:]
+            config.starting_point = strategies[0]
+            strategies = strategies[1:]
 
             if self._lock_rotation:
                 config.rotations = [0.0]
