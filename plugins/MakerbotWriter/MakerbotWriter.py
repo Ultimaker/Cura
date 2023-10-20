@@ -154,7 +154,7 @@ class MakerbotWriter(MeshWriter):
             if bounds is None:
                 bounds = node_bounds
             else:
-                bounds += node_bounds
+                bounds = bounds + node_bounds
 
         if bounds is not None:
             meta["bounding_box"] = {
