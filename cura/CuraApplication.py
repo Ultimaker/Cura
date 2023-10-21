@@ -589,6 +589,7 @@ class CuraApplication(QtApplication):
 
         preferences.addPreference("view/invert_zoom", False)
         preferences.addPreference("view/filter_current_build_plate", False)
+        preferences.addPreference("view/navigation_style", "cura")
         preferences.addPreference("cura/sidebar_collapsed", False)
 
         preferences.addPreference("cura/favorite_materials", "")
