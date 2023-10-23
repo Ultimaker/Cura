@@ -48,12 +48,10 @@ AppDir:
         main
     include:
       - xdg-desktop-portal-kde:amd64
-    exclude:
-      - hicolor-icon-theme
-      - adwaita-icon-theme
-      - humanity-icon-theme
+    exclude: []
   files:
-    include: []
+    include:
+      - usr/share/icons/hicolor/*
     exclude:
     - usr/share/man
     - usr/share/doc/*/README.*
@@ -67,6 +65,9 @@ AppDir:
       QT_PLUGIN_PATH: "$APPDIR/qt/plugins"
       QML2_IMPORT_PATH: "$APPDIR/qt/qml"
       QT_QPA_PLATFORMTHEME: xdgdesktopportal
+      XDG_DATA_HOME: "$APPDIR/usr/share"
+    path_mappings:
+      - /usr/share:$APPDIR/usr/share
   test:
     fedora-30:
       image: appimagecrafters/tests-env:fedora-30
