@@ -90,7 +90,7 @@ env:
 
 jobs:
   cura-installer-create:
-    runs-on: ${{ inputs.operating_system }}
+    runs-on: [${{ inputs.operating_system }}, ${{ inputs.architecture }}]
 
     outputs:
       INSTALLER_FILENAME: ${{ steps.filename.outputs.INSTALLER_FILENAME }}
