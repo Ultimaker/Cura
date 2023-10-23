@@ -37,11 +37,10 @@ class Snapshot:
         return min_x, max_x, min_y, max_y
 
     @staticmethod
-    def isometric_snapshot(width: int = 300, height: int = 300, *, root: Optional[SceneNode] = None) -> Optional[
-        QImage]:
+    def isometric_snapshot(width: int = 300, height: int = 300) -> Optional[QImage]:
         """Create an isometric snapshot of the scene."""
 
-        root = Application.getInstance().getController().getScene().getRoot() if root is None else root
+        root = Application.getInstance().getController().getScene().getRoot()
 
         # the direction the camera is looking at to create the isometric view
         iso_view_dir = Vector(-1, -1, -1).normalized()
