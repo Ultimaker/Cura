@@ -47,19 +47,26 @@ AppDir:
     - sourceline: deb https://packagecloud.io/slacktechnologies/slack/debian/ jessie
         main
     include:
-      - xdg-desktop-portal-kde:amd64
-    exclude:
+      - xdg-desktop-portal-kde
+      - libgtk-3-0
+      - librsvg2-2
+      - librsvg2-common
+      - libgdk-pixbuf2.0-0
+      - libgdk-pixbuf2.0-bin
+      - libgdk-pixbuf2.0-common
+      - imagemagick
+      - shared-mime-info
+      - gnome-icon-theme-symbolic
       - hicolor-icon-theme
-      - adwaita-icon-theme
-      - humanity-icon-theme
+    exclude: []
   files:
     include: []
     exclude:
-    - usr/share/man
-    - usr/share/doc/*/README.*
-    - usr/share/doc/*/changelog.*
-    - usr/share/doc/*/NEWS.*
-    - usr/share/doc/*/TODO.*
+      - usr/share/man
+      - usr/share/doc/*/README.*
+      - usr/share/doc/*/changelog.*
+      - usr/share/doc/*/NEWS.*
+      - usr/share/doc/*/TODO.*
   runtime:
     env:
       APPDIR_LIBRARY_PATH: "$APPDIR/usr/lib/x86_64-linux-gnu:$APPDIR/lib/x86_64-linux-gnu:$APPDIR/usr/lib:$APPDIR/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders"
@@ -67,6 +74,10 @@ AppDir:
       QT_PLUGIN_PATH: "$APPDIR/qt/plugins"
       QML2_IMPORT_PATH: "$APPDIR/qt/qml"
       QT_QPA_PLATFORMTHEME: xdgdesktopportal
+      GDK_PIXBUF_MODULEDIR: $APPDIR/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
+      GDK_PIXBUF_MODULE_FILE: $APPDIR/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders.cache
+    path_mappings:
+      - /usr/share:$APPDIR/usr/share
   test:
     fedora-30:
       image: appimagecrafters/tests-env:fedora-30
