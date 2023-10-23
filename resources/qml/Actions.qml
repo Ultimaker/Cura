@@ -496,6 +496,13 @@ Item
 
     Action
     {
+        id: arrangeSelectionAction
+        text: catalog.i18nc("@action:inmenu menubar:edit", "Arrange Selection")
+        onTriggered: Printer.arrangeSelection()
+    }
+
+    Action
+    {
         id: newProjectAction
         text: catalog.i18nc("@action:inmenu menubar:file","&New Project...")
         shortcut: StandardKey.New
