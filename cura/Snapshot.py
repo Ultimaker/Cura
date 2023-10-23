@@ -140,14 +140,7 @@ class Snapshot:
         camera = Camera("snapshot", root)
 
         # determine zoom and look at
-        bbox = None
-        for node in DepthFirstIterator(root):
-            if not getattr(node, "_outside_buildarea", False):
-                if node.callDecoration("isSliceable") and node.getMeshData() and node.isVisible() and not node.callDecoration("isNonThumbnailVisibleMesh"):
-                    if bbox is None:
-                        bbox = node.getBoundingBox()
-                    else:
-                        bbox = bbox + node.getBoundingBox()
+        bbox = Snapshot.node_bounds(root)
         # If there is no bounding box, it means that there is no model in the buildplate
         if bbox is None:
             Logger.log("w", "Unable to create snapshot as we seem to have an empty buildplate")
