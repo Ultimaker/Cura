@@ -38,7 +38,8 @@ on:
         default: 'macos-11'
         type: choice
         options:
-          - self-hosted
+          - self-hosted-X64
+          - self-hosted-ARM64
           - macos-11
           - macos-12
   workflow_call:
@@ -90,7 +91,7 @@ env:
 
 jobs:
   cura-installer-create:
-    runs-on: [${{ inputs.operating_system }}, ${{ inputs.architecture }}]
+    runs-on: ${{ inputs.operating_system }}
 
     outputs:
       INSTALLER_FILENAME: ${{ steps.filename.outputs.INSTALLER_FILENAME }}
