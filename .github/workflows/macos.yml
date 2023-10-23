@@ -27,7 +27,7 @@ on:
       architecture:
         description: 'Architecture'
         required: true
-        default: 'X64'
+        default: 'ARM64'
         type: choice
         options:
           - X64
@@ -35,7 +35,7 @@ on:
       operating_system:
         description: 'OS'
         required: true
-        default: 'macos-11'
+        default: 'self-hosted-ARM64'
         type: choice
         options:
           - self-hosted-X64
@@ -67,12 +67,12 @@ on:
       architecture:
         description: 'Architecture'
         required: true
-        default: 'X64'
+        default: 'ARM64'
         type: string
       operating_system:
         description: 'OS'
         required: true
-        default: 'macos-11'
+        default: 'self-hosted-ARM64'
         type: string
 
 env:
