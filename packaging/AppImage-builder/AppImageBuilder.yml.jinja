@@ -48,6 +48,7 @@ AppDir:
         main
     include:
       - xdg-desktop-portal-kde
+      - glibc-source
       - libgtk-3-0
       - librsvg2-2
       - librsvg2-common
@@ -69,7 +70,8 @@ AppDir:
       - usr/share/doc/*/TODO.*
   runtime:
     env:
-      APPDIR_LIBRARY_PATH: "$APPDIR/usr/lib/x86_64-linux-gnu:$APPDIR/lib/x86_64-linux-gnu:$APPDIR/usr/lib:$APPDIR/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders"
+      APPDIR_LIBRARY_PATH: "$APPDIR:$APPDIR/runtime/compat/:$APPDIR/usr/lib/x86_64-linux-gnu:$APPDIR/lib/x86_64-linux-gnu:$APPDIR/usr/lib:$APPDIR/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders"
+      LD_LIBRARY_PATH: "$APPDIR:$APPDIR/runtime/compat/:$APPDIR/usr/lib/x86_64-linux-gnu:$APPDIR/lib/x86_64-linux-gnu:$APPDIR/usr/lib:$APPDIR/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders"
       PYTHONPATH: "$APPDIR"
       QT_PLUGIN_PATH: "$APPDIR/qt/plugins"
       QML2_IMPORT_PATH: "$APPDIR/qt/qml"
