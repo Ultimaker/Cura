@@ -27,7 +27,7 @@ on:
       architecture:
         description: 'Architecture'
         required: true
-        default: 'X64'
+        default: 'ARM64'
         type: choice
         options:
           - X64
@@ -35,10 +35,11 @@ on:
       operating_system:
         description: 'OS'
         required: true
-        default: 'macos-11'
+        default: 'self-hosted-ARM64'
         type: choice
         options:
-          - self-hosted
+          - self-hosted-X64
+          - self-hosted-ARM64
           - macos-11
           - macos-12
   workflow_call:
@@ -66,12 +67,12 @@ on:
       architecture:
         description: 'Architecture'
         required: true
-        default: 'X64'
+        default: 'ARM64'
         type: string
       operating_system:
         description: 'OS'
         required: true
-        default: 'macos-11'
+        default: 'self-hosted-ARM64'
         type: string
 
 env:
@@ -102,7 +103,7 @@ jobs:
       - name: Setup Python and pip
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10.x'
+          python-version: '3.11.x'
           cache: 'pip'
           cache-dependency-path: .github/workflows/requirements-conan-package.txt
 
