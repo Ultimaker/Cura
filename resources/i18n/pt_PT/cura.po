@@ -5291,3 +5291,86 @@ msgstr "Gravador de G-code comprimido"
 msgctxt "description"
 msgid "Provides support for exporting Cura profiles."
 msgstr "Possibilita a exportação de perfis do Cura."
+
+msgctxt "@info:title"
+msgid "Error"
+msgstr "Erro"
+
+msgctxt "@action:button"
+msgid "Cancel"
+msgstr "Cancelar"
+
+msgctxt "@title:tab"
+msgid "Settings"
+msgstr "Definições"
+
+#, python-brace-format
+msgctxt "@label Don't translate the XML tag <filename>!"
+msgid "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?"
+msgstr "O ficheiro <filename>{0}</filename> já existe. Tem a certeza de que deseja substituí-lo?"
+
+msgctxt "@action:button"
+msgid "Learn more"
+msgstr "Saber mais"
+
+msgctxt "@title:tab"
+msgid "General"
+msgstr "Geral"
+
+msgctxt "@label (%1 is object name)"
+msgid "Are you sure you wish to remove %1? This cannot be undone!"
+msgstr "Tem a certeza de que deseja remover o perfil %1? Não é possível desfazer esta ação!"
+
+msgctxt "@label"
+msgid "Type"
+msgstr "Tipo"
+
+msgctxt "@info:title"
+msgid "Saving"
+msgstr "A Guardar"
+
+msgctxt "@title:window"
+msgid "File Already Exists"
+msgstr "O Ficheiro Já Existe"
+
+#, python-brace-format
+msgctxt "@item:inlistbox"
+msgid "All Supported Types ({0})"
+msgstr "Todos os Formatos Suportados ({0})"
+
+#, python-brace-format
+msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
+msgid "Could not save to <filename>{0}</filename>: <message>{1}</message>"
+msgstr "Não foi possível guardar em <filename>{0}</filename>: <message>{1}</message>"
+
+msgctxt "@action:button"
+msgid "OK"
+msgstr "OK"
+
+msgctxt "@info:title"
+msgid "Warning"
+msgstr "Aviso"
+
+msgctxt "@title:tab"
+msgid "Printers"
+msgstr "Impressoras"
+
+msgctxt "@info:title"
+msgid "File Saved"
+msgstr "Ficheiro Guardado"
+
+msgctxt "@title:window"
+msgid "Confirm Remove"
+msgstr "Confirmar Remoção"
+
+msgctxt "@item:inlistbox"
+msgid "All Files (*)"
+msgstr "Todos os Ficheiros (*)"
+
+msgctxt "@label"
+msgid "Balanced"
+msgstr "Equilibrado"
+
+msgctxt "@text"
+msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
+msgstr "O perfil equilibrado é projetado para encontrar um equilíbrio entre a produtividade, a qualidade da superfície, as propriedades mecânicas e a precisão dimensional."

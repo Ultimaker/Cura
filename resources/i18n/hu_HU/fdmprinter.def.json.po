@@ -5389,6 +5389,78 @@ msgctxt "travel description"
 msgid "travel"
 msgstr "fej átpozícionálás"
 
+msgctxt "group_outer_walls label"
+msgid "Group Outer Walls"
+msgstr "Külső falak csoportosítása"
+
+msgctxt "group_outer_walls description"
+msgid "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped."
+msgstr "Az azonos rétegben lévő különböző szigetek külső falait sorban nyomtatják. Amikor engedélyezve van, korlátozódik az áramlás változásainak mértéke, mert a falak típusonként nyomtathatók ki. Amikor letiltva van, az utazások számát a szigetek között csökkenti, mert ugyanazon szigeteken lévő falak csoportosítva vannak."
+
+msgctxt "wall_0_material_flow_roofing label"
+msgid "Top Surface Outer Wall Flow"
+msgstr "A felső felület legkülső falának áramlása"
+
+msgctxt "wall_0_material_flow_roofing description"
+msgid "Flow compensation on the top surface outermost wall line."
+msgstr "Áramlási kompenzáció a felső felület legkülső falvonalán."
+
+msgctxt "wall_x_material_flow_roofing label"
+msgid "Top Surface Inner Wall(s) Flow"
+msgstr "A felső felület belső falainak áramlása"
+
+msgctxt "wall_x_material_flow_roofing description"
+msgid "Flow compensation on top surface wall lines for all wall lines except the outermost one."
+msgstr "Áramlás kompenzáció a felső felület falvonalain az összes falvonal kivételével a legkülsőn."
+
+msgctxt "speed_wall_0_roofing label"
+msgid "Top Surface Outer Wall Speed"
+msgstr "A felső felület legkülső falának sebessége"
+
+msgctxt "speed_wall_0_roofing description"
+msgid "The speed at which the top surface outermost wall is printed."
+msgstr "Az a sebesség, amellyel a felső felület legkülső falai kinyomtatnak."
+
+msgctxt "speed_wall_x_roofing label"
+msgid "Top Surface Inner Wall Speed"
+msgstr "A felső felület belső falának sebessége"
+
+msgctxt "speed_wall_x_roofing description"
+msgid "The speed at which the top surface inner walls are printed."
+msgstr "Az a sebesség, amellyel a felső felület belső falai kinyomtatnak."
+
+msgctxt "acceleration_wall_0_roofing label"
+msgid "Top Surface Outer Wall Acceleration"
+msgstr "A felső felület külső falának gyorsulása"
+
+msgctxt "acceleration_wall_0_roofing description"
+msgid "The acceleration with which the top surface outermost walls are printed."
+msgstr "Az a gyorsulás, amellyel a felső felület legkülső falai kinyomtatnak."
+
+msgctxt "acceleration_wall_x_roofing label"
+msgid "Top Surface Inner Wall Acceleration"
+msgstr "A felső felület belső falának gyorsulása"
+
+msgctxt "acceleration_wall_x_roofing description"
+msgid "The acceleration with which the top surface inner walls are printed."
+msgstr "Az a gyorsulás, amellyel a felső felület belső falai kinyomtatnak."
+
+msgctxt "jerk_wall_0_roofing label"
+msgid "Top Surface Outer Wall Jerk"
+msgstr "A felső felület belső falának hirtelen gyorsulása"
+
+msgctxt "jerk_wall_0_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface outermost walls are printed."
+msgstr "A legnagyobb pillanatnyi sebességváltozás, amellyel a felső felület belső falai kinyomtatnak."
+
+msgctxt "jerk_wall_x_roofing label"
+msgid "Top Surface Inner Wall Jerk"
+msgstr "A felső felület legkülső falának hirtelen gyorsulása"
+
+msgctxt "jerk_wall_x_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface inner walls are printed."
+msgstr "A legnagyobb pillanatnyi sebességváltozás, amellyel a felső felület legkülső falai kinyomtatnak."
+
 
 
 

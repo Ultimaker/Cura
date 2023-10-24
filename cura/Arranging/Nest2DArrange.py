@@ -49,8 +49,9 @@ class Nest2DArrange(Arranger):
     def findNodePlacement(self) -> Tuple[bool, List[Item]]:
         spacing = int(1.5 * self._factor)  # 1.5mm spacing.
 
-        machine_width = self._build_volume.getWidth()
-        machine_depth = self._build_volume.getDepth()
+        edge_disallowed_size = self._build_volume.getEdgeDisallowedSize()
+        machine_width = self._build_volume.getWidth() - (edge_disallowed_size * 2)
+        machine_depth = self._build_volume.getDepth() - (edge_disallowed_size * 2)
         build_plate_bounding_box = Box(int(machine_width * self._factor), int(machine_depth * self._factor))
 
         if self._fixed_nodes is None:
@@ -80,7 +81,6 @@ class Nest2DArrange(Arranger):
         ], numpy.float32))
 
         disallowed_areas = self._build_volume.getDisallowedAreas()
-        num_disallowed_areas_added = 0
         for area in disallowed_areas:
             converted_points = []
 
@@ -95,7 +95,6 @@ class Nest2DArrange(Arranger):
                 disallowed_area = Item(converted_points)
                 disallowed_area.markAsDisallowedAreaInBin(0)
                 node_items.append(disallowed_area)
-                num_disallowed_areas_added += 1
 
         for node in self._fixed_nodes:
             converted_points = []
@@ -108,20 +107,25 @@ class Nest2DArrange(Arranger):
                 item = Item(converted_points)
                 item.markAsFixedInBin(0)
                 node_items.append(item)
-                num_disallowed_areas_added += 1
 
-        config = NfpConfig()
-        config.accuracy = 1.0
-        config.alignment = NfpConfig.Alignment.DONT_ALIGN
-        if self._lock_rotation:
-            config.rotations = [0.0]
+        strategies = [NfpConfig.Alignment.CENTER] * 3 + [NfpConfig.Alignment.BOTTOM_LEFT] * 3
+        found_solution_for_all = False
+        while not found_solution_for_all and len(strategies) > 0:
+            config = NfpConfig()
+            config.accuracy = 1.0
+            config.alignment = NfpConfig.Alignment.CENTER
+            config.starting_point = strategies[0]
+            strategies = strategies[1:]
 
-        num_bins = nest(node_items, build_plate_bounding_box, spacing, config)
+            if self._lock_rotation:
+                config.rotations = [0.0]
 
-        # Strip the fixed items (previously placed) and the disallowed areas from the results again.
-        node_items = list(filter(lambda item: not item.isFixed(), node_items))
+            num_bins = nest(node_items, build_plate_bounding_box, spacing, config)
 
-        found_solution_for_all = num_bins == 1
+            # Strip the fixed items (previously placed) and the disallowed areas from the results again.
+            node_items = list(filter(lambda item: not item.isFixed(), node_items))
+
+            found_solution_for_all = num_bins == 1
 
         return found_solution_for_all, node_items
 

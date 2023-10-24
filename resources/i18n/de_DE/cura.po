@@ -5291,3 +5291,86 @@ msgstr "Writer für komprimierten G-Code"
 msgctxt "description"
 msgid "Provides support for exporting Cura profiles."
 msgstr "Ermöglicht das Exportieren von Cura-Profilen."
+
+msgctxt "@info:title"
+msgid "Error"
+msgstr "Fehler"
+
+msgctxt "@action:button"
+msgid "Cancel"
+msgstr "Abbrechen"
+
+msgctxt "@title:tab"
+msgid "Settings"
+msgstr "Einstellungen"
+
+#, python-brace-format
+msgctxt "@label Don't translate the XML tag <filename>!"
+msgid "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?"
+msgstr "Die Datei <filename>{0}</filename> ist bereits vorhanden. Soll die Datei wirklich überschrieben werden?"
+
+msgctxt "@action:button"
+msgid "Learn more"
+msgstr "Mehr erfahren"
+
+msgctxt "@title:tab"
+msgid "General"
+msgstr "Allgemein"
+
+msgctxt "@label (%1 is object name)"
+msgid "Are you sure you wish to remove %1? This cannot be undone!"
+msgstr "Möchten Sie %1 wirklich entfernen? Dies kann nicht rückgängig gemacht werden!"
+
+msgctxt "@label"
+msgid "Type"
+msgstr "Typ"
+
+msgctxt "@info:title"
+msgid "Saving"
+msgstr "Wird gespeichert"
+
+msgctxt "@title:window"
+msgid "File Already Exists"
+msgstr "Datei bereits vorhanden"
+
+#, python-brace-format
+msgctxt "@item:inlistbox"
+msgid "All Supported Types ({0})"
+msgstr "Alle unterstützten Typen ({0})"
+
+#, python-brace-format
+msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
+msgid "Could not save to <filename>{0}</filename>: <message>{1}</message>"
+msgstr "Konnte nicht als <filename>{0}</filename> gespeichert werden: <message>{1}</message>"
+
+msgctxt "@action:button"
+msgid "OK"
+msgstr "OK"
+
+msgctxt "@info:title"
+msgid "Warning"
+msgstr "Warnhinweis"
+
+msgctxt "@title:tab"
+msgid "Printers"
+msgstr "Drucker"
+
+msgctxt "@info:title"
+msgid "File Saved"
+msgstr "Datei wurde gespeichert"
+
+msgctxt "@title:window"
+msgid "Confirm Remove"
+msgstr "Entfernen bestätigen"
+
+msgctxt "@item:inlistbox"
+msgid "All Files (*)"
+msgstr "Alle Dateien (*)"
+
+msgctxt "@label"
+msgid "Balanced"
+msgstr "Ausgewogen"
+
+msgctxt "@text"
+msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
+msgstr "Das ausgewogene Profil ist darauf ausgelegt, einen Kompromiss zwischen Produktivität, Oberflächenqualität, mechanischen Eigenschaften und Maßgenauigkeit zu erzielen."

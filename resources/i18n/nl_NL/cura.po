@@ -5291,3 +5291,86 @@ msgstr "Schrijver voor gecomprimeerde G-code"
 msgctxt "description"
 msgid "Provides support for exporting Cura profiles."
 msgstr "Biedt ondersteuning voor het exporteren van Cura-profielen."
+
+msgctxt "@info:title"
+msgid "Error"
+msgstr "Fout"
+
+msgctxt "@action:button"
+msgid "Cancel"
+msgstr "Annuleren"
+
+msgctxt "@title:tab"
+msgid "Settings"
+msgstr "Instellingen"
+
+#, python-brace-format
+msgctxt "@label Don't translate the XML tag <filename>!"
+msgid "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?"
+msgstr "Het bestand <filename>{0}</filename> bestaat al. Weet u zeker dat u dit bestand wilt overschrijven?"
+
+msgctxt "@action:button"
+msgid "Learn more"
+msgstr "Meer informatie"
+
+msgctxt "@title:tab"
+msgid "General"
+msgstr "Algemeen"
+
+msgctxt "@label (%1 is object name)"
+msgid "Are you sure you wish to remove %1? This cannot be undone!"
+msgstr "Weet u zeker dat u %1 wilt verwijderen? Deze bewerking kan niet ongedaan worden gemaakt!"
+
+msgctxt "@label"
+msgid "Type"
+msgstr "Type"
+
+msgctxt "@info:title"
+msgid "Saving"
+msgstr "Opslaan"
+
+msgctxt "@title:window"
+msgid "File Already Exists"
+msgstr "Het Bestand Bestaat Al"
+
+#, python-brace-format
+msgctxt "@item:inlistbox"
+msgid "All Supported Types ({0})"
+msgstr "Alle Ondersteunde Typen ({0})"
+
+#, python-brace-format
+msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
+msgid "Could not save to <filename>{0}</filename>: <message>{1}</message>"
+msgstr "Kan niet opslaan als <filename>{0}</filename>: <message>{1}</message>"
+
+msgctxt "@action:button"
+msgid "OK"
+msgstr "OK"
+
+msgctxt "@info:title"
+msgid "Warning"
+msgstr "Waarschuwing"
+
+msgctxt "@title:tab"
+msgid "Printers"
+msgstr "Printers"
+
+msgctxt "@info:title"
+msgid "File Saved"
+msgstr "Bestand opgeslagen"
+
+msgctxt "@title:window"
+msgid "Confirm Remove"
+msgstr "Verwijderen Bevestigen"
+
+msgctxt "@item:inlistbox"
+msgid "All Files (*)"
+msgstr "Alle Bestanden (*)"
+
+msgctxt "@label"
+msgid "Balanced"
+msgstr "Gebalanceerd"
+
+msgctxt "@text"
+msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
+msgstr "Het gebalanceerde profiel is ontworpen om een balans te vinden tussen productiviteit, oppervlaktekwaliteit, mechanische eigenschappen en dimensionale nauwkeurigheid."
