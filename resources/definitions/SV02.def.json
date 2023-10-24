@@ -60,8 +60,6 @@
         "material_diameter": { "default_value": 1.75 },
         "material_initial_print_temperature": { "value": "material_print_temperature" },
         "prime_tower_min_volume": { "value": "((resolveOrValue('layer_height'))/2" },
-        "prime_tower_position_x": { "value": "240" },
-        "prime_tower_position_y": { "value": "190" },
         "prime_tower_size": { "value": "30" },
         "prime_tower_wipe_enabled": { "default_value": true },
         "retraction_amount": { "default_value": 5 },
