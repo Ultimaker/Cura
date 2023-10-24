@@ -6714,7 +6714,7 @@
                 {
                     "label": "Prime Tower Base Curve Magnitude",
                     "description": "The magnitude factor used for the curve of the prime tower foot.",
-                    "type": "int",
+                    "type": "float",
                     "enabled": "resolveOrValue('prime_tower_enable') and (resolveOrValue('prime_tower_brim_enable') or resolveOrValue('adhesion_type') == 'raft')",
                     "default_value": 4,
                     "minimum_value": "0",
