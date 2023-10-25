@@ -17,8 +17,6 @@
         "machine_depth": { "default_value": 300 },
         "machine_height": { "default_value": 320 },
         "machine_name": { "default_value": "LNL3D D3 Vulcan" },
-        "machine_width": { "default_value": 295 },
-        "prime_tower_position_x": { "value": "155" },
-        "prime_tower_position_y": { "value": "155" }
+        "machine_width": { "default_value": 295 }
     }
 }

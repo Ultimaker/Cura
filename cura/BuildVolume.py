@@ -813,7 +813,7 @@ class BuildVolume(SceneNode):
             prime_tower_areas = self._computeDisallowedAreasPrinted(used_extruders)
             for extruder_id in prime_tower_areas:
                 for area_index, prime_tower_area in enumerate(prime_tower_areas[extruder_id]):
-                    for area in result_areas[extruder_id]:
+                    for area in result_areas_no_brim[extruder_id]:
                         if prime_tower_area.intersectsPolygon(area) is not None:
                             prime_tower_collision = True
                             break
@@ -860,13 +860,24 @@ class BuildVolume(SceneNode):
             machine_depth = self._global_container_stack.getProperty("machine_depth", "value")
             prime_tower_x = self._global_container_stack.getProperty("prime_tower_position_x", "value")
             prime_tower_y = - self._global_container_stack.getProperty("prime_tower_position_y", "value")
+            prime_tower_brim_enable = self._global_container_stack.getProperty("prime_tower_brim_enable", "value")
+            prime_tower_base_size = self._global_container_stack.getProperty("prime_tower_base_size", "value")
+            prime_tower_base_height = self._global_container_stack.getProperty("prime_tower_base_height", "value")
+            adhesion_type = self._global_container_stack.getProperty("adhesion_type", "value")
+
             if not self._global_container_stack.getProperty("machine_center_is_zero", "value"):
                 prime_tower_x = prime_tower_x - machine_width / 2 #Offset by half machine_width and _depth to put the origin in the front-left.
                 prime_tower_y = prime_tower_y + machine_depth / 2
 
             radius = prime_tower_size / 2
-            prime_tower_area = Polygon.approximatedCircle(radius, num_segments = 24)
-            prime_tower_area = prime_tower_area.translate(prime_tower_x - radius, prime_tower_y - radius)
+            delta_x = -radius
+            delta_y = -radius
+
+            if prime_tower_base_size > 0 and ((prime_tower_brim_enable and prime_tower_base_height > 0) or adhesion_type == "raft"):
+                radius += prime_tower_base_size
+
+            prime_tower_area = Polygon.approximatedCircle(radius, num_segments = 32)
+            prime_tower_area = prime_tower_area.translate(prime_tower_x + delta_x, prime_tower_y + delta_y)
 
             prime_tower_area = prime_tower_area.getMinkowskiHull(Polygon.approximatedCircle(0))
             for extruder in used_extruders:
@@ -1171,7 +1182,7 @@ class BuildVolume(SceneNode):
     _raft_settings = ["adhesion_type", "raft_base_thickness", "raft_interface_layers", "raft_interface_thickness", "raft_surface_layers", "raft_surface_thickness", "raft_airgap", "layer_0_z_overlap"]
     _extra_z_settings = ["retraction_hop_enabled", "retraction_hop"]
     _prime_settings = ["extruder_prime_pos_x", "extruder_prime_pos_y", "prime_blob_enable"]
-    _tower_settings = ["prime_tower_enable", "prime_tower_size", "prime_tower_position_x", "prime_tower_position_y", "prime_tower_brim_enable"]
+    _tower_settings = ["prime_tower_enable", "prime_tower_size", "prime_tower_position_x", "prime_tower_position_y", "prime_tower_brim_enable", "prime_tower_base_size", "prime_tower_base_height"]
     _ooze_shield_settings = ["ooze_shield_enabled", "ooze_shield_dist"]
     _distance_settings = ["infill_wipe_dist", "travel_avoid_distance", "support_offset", "support_enable", "travel_avoid_other_parts", "travel_avoid_supports", "wall_line_count", "wall_line_width_0", "wall_line_width_x"]
     _extruder_settings = ["support_enable", "support_bottom_enable", "support_roof_enable", "support_infill_extruder_nr", "support_extruder_nr_layer_0", "support_bottom_extruder_nr", "support_roof_extruder_nr", "brim_line_count", "skirt_brim_extruder_nr", "raft_base_extruder_nr", "raft_interface_extruder_nr", "raft_surface_extruder_nr", "adhesion_type"] #Settings that can affect which extruders are used.
