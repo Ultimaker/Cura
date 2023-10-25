@@ -61,7 +61,7 @@ class MakerbotWriter(MeshWriter):
             Logger.warning("Can't create snapshot when renderer not initialized.")
             return
         try:
-            snapshot = Snapshot.snapshot(width, height)
+            snapshot = Snapshot.isometric_snapshot(width, height)
         except:
             Logger.logException("w", "Failed to create snapshot image")
             return
