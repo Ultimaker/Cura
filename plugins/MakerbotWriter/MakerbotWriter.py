@@ -170,8 +170,9 @@ class MakerbotWriter(MeshWriter):
         meta["build_plane_temperature"] = material_bed_temperature
 
         print_information = application.getPrintInformation()
-        meta["commanded_duration_s"] = print_information.currentPrintTime.seconds
-        meta["duration_s"] = print_information.currentPrintTime.seconds
+
+        meta["commanded_duration_s"] = int(print_information.currentPrintTime)
+        meta["duration_s"] = int(print_information.currentPrintTime)
 
         material_lengths = list(map(meter_to_millimeter, print_information.materialLengths))
         meta["extrusion_distance_mm"] = material_lengths[0]
@@ -202,7 +203,7 @@ class MakerbotWriter(MeshWriter):
 
         meta["preferences"] = dict()
         for node in nodes:
-            bound = node.getBoundingBox()
+            bounds = node.getBoundingBox()
             meta["preferences"][str(node.getName())] = {
                 "machineBounds": [bounds.right, bounds.back, bounds.left, bounds.front] if bounds is not None else None,
                 "printMode": CuraApplication.getInstance().getIntentManager().currentIntentCategory,
