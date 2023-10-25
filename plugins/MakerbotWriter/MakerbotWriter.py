@@ -167,7 +167,10 @@ class MakerbotWriter(MeshWriter):
             }
 
         material_bed_temperature = global_stack.getProperty("material_bed_temperature", "value")
-        meta["build_plane_temperature"] = material_bed_temperature
+        meta["platform_temperature"] = material_bed_temperature
+
+        build_volume_temperature = global_stack.getProperty("build_volume_temperature", "value")
+        meta["build_plane_temperature"] = build_volume_temperature
 
         print_information = application.getPrintInformation()
 
