@@ -34,7 +34,7 @@ class CloudClusterResponse(BaseModel):
         self.host_version = host_version
         self.host_internal_ip = host_internal_ip
         self.friendly_name = friendly_name
-        self.printer_type = printer_type
+        self.printer_type = self.getPrinterTypeIfMakerBot(printer_type)
         self.printer_count = printer_count
         self.capabilities = capabilities if capabilities is not None else []
         super().__init__(**kwargs)
@@ -51,3 +51,13 @@ class CloudClusterResponse(BaseModel):
         :return: A human-readable representation of the data in this object.
         """
         return str({k: v for k, v in self.__dict__.items() if k in {"cluster_id", "host_guid", "host_name", "status", "is_online", "host_version", "host_internal_ip", "friendly_name", "printer_type", "printer_count", "capabilities"}})
+
+    def getPrinterTypeIfMakerBot(printer_type):
+        method_printer_type = {
+            "fire_e": "ultimaker_method",
+            "lava_f": "ultimaker_methodx",
+            "magma_10": "ultimaker_methodxl"
+        }
+        if printer_type in method_printer_type:
+            return method_printer_type[printer_type]
+        return printer_type
