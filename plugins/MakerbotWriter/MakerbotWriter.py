@@ -21,6 +21,8 @@ from cura.Snapshot import Snapshot
 from cura.Utils.Threading import call_on_qt_thread
 from cura.CuraVersion import ConanInstalls
 
+from .GCodeToMakerbot import convert
+
 catalog = i18nCatalog("cura")
 
 
@@ -93,7 +95,7 @@ class MakerbotWriter(MeshWriter):
         gcode_text_io = StringIO()
         success = gcode_writer.write(gcode_text_io, None)
 
-        # TODO convert gcode_text_io to json
+        json_toolpaths = convert(gcode_text_io.getvalue())
 
         # Writing the g-code failed. Then I can also not write the gzipped g-code.
         if not success:
@@ -117,6 +119,7 @@ class MakerbotWriter(MeshWriter):
         try:
             with ZipFile(stream, "w", compression=ZIP_DEFLATED) as zip_stream:
                 zip_stream.writestr("meta.json", json.dumps(metadata, indent=4))
+                zip_stream.writestr("print.jsontoolpath", json_toolpaths)
                 for png_file in png_files:
                     file, data = png_file["file"], png_file["data"]
                     zip_stream.writestr(file, data)
