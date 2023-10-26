@@ -5388,6 +5388,78 @@ msgctxt "travel description"
 msgid "travel"
 msgstr "ruch jałowy"
 
+msgctxt "group_outer_walls label"
+msgid "Group Outer Walls"
+msgstr "Grupuj ściany zewnętrzne"
+
+msgctxt "group_outer_walls description"
+msgid "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped."
+msgstr "Zewnętrzne ściany różnych wysp w tej samej warstwie są drukowane sekwencyjnie. Gdy jest włączone, ilość zmian przepływu jest ograniczona, ponieważ ściany są drukowane po jednym rodzaju na raz. Gdy jest wyłączone, liczba podróży między wyspami jest zmniejszana, ponieważ ściany na tych samych wyspach są grupowane."
+
+msgctxt "wall_0_material_flow_roofing label"
+msgid "Top Surface Outer Wall Flow"
+msgstr "Przepływ na najbardziej zewnętrznej linii górnej powierzchni"
+
+msgctxt "wall_0_material_flow_roofing description"
+msgid "Flow compensation on the top surface outermost wall line."
+msgstr "Kompensacja przepływu na najbardziej zewnętrznej linii górnej powierzchni."
+
+msgctxt "wall_x_material_flow_roofing label"
+msgid "Top Surface Inner Wall(s) Flow"
+msgstr "Przepływ wewnętrznej ściany(ach) górnej powierzchni"
+
+msgctxt "wall_x_material_flow_roofing description"
+msgid "Flow compensation on top surface wall lines for all wall lines except the outermost one."
+msgstr "Kompensacja przepływu na liniach ściany na powierzchni górnej dla wszystkich linii ściany, z wyjątkiem najbardziej zewnętrznej."
+
+msgctxt "speed_wall_0_roofing label"
+msgid "Top Surface Outer Wall Speed"
+msgstr "Prędkość najbardziej zewnętrznych ścian górnej powierzchni"
+
+msgctxt "speed_wall_0_roofing description"
+msgid "The speed at which the top surface outermost wall is printed."
+msgstr "Prędkość drukowania najbardziej zewnętrznych ścian górnej powierzchni."
+
+msgctxt "speed_wall_x_roofing label"
+msgid "Top Surface Inner Wall Speed"
+msgstr "Prędkość wewnętrznej powierzchni górnej ściany"
+
+msgctxt "speed_wall_x_roofing description"
+msgid "The speed at which the top surface inner walls are printed."
+msgstr "Prędkość drukowania wewnętrznych ścian górnej powierzchni."
+
+msgctxt "acceleration_wall_0_roofing label"
+msgid "Top Surface Outer Wall Acceleration"
+msgstr "Przyspieszenie zewnętrznej powierzchni górnej ściany"
+
+msgctxt "acceleration_wall_0_roofing description"
+msgid "The acceleration with which the top surface outermost walls are printed."
+msgstr "Przyspieszenie, z jakim są drukowane najbardziej zewnętrzne ściany górnej powierzchni."
+
+msgctxt "acceleration_wall_x_roofing label"
+msgid "Top Surface Inner Wall Acceleration"
+msgstr "Przyspieszenie wewnętrznej powierzchni górnej ściany"
+
+msgctxt "acceleration_wall_x_roofing description"
+msgid "The acceleration with which the top surface inner walls are printed."
+msgstr "Przyspieszenie, z jakim są drukowane wewnętrzne ścianki górnej powierzchni."
+
+msgctxt "jerk_wall_0_roofing label"
+msgid "Top Surface Outer Wall Jerk"
+msgstr "Szarpnięcie na wewnętrznych ścianach górnej powierzchni"
+
+msgctxt "jerk_wall_0_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface outermost walls are printed."
+msgstr "Maksymalna chwilowa zmiana prędkości, z jaką drukowane są wewnętrzne ściany górnej powierzchni."
+
+msgctxt "jerk_wall_x_roofing label"
+msgid "Top Surface Inner Wall Jerk"
+msgstr "Szarpnięcie na najbardziej zewnętrznych ścianach górnej powierzchni"
+
+msgctxt "jerk_wall_x_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface inner walls are printed."
+msgstr "Maksymalna chwilowa zmiana prędkości, z jaką drukowane są najbardziej zewnętrzne ściany górnej powierzchni."
+
 
 
 ### Settings added by bundled engine backend plugins. Add this manually for now. Should be removed whenever we handle it better.

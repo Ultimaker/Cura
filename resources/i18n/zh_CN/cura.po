@@ -3884,7 +3884,7 @@ msgstr "草稿配置文件用于打印初始原型和概念验证，可大大缩
 
 msgctxt "@text"
 msgid "The engineering profile is designed to print functional prototypes and end-use parts with the intent of better accuracy and for closer tolerances."
-msgstr "工程配置文件用于打印功能性原型和最终用途部件，可提高准确性和减小公差。"
+msgstr "工程參数是设计來打印較高精度和較小公差的功能性原型和实际使用零件。"
 
 msgctxt "@label"
 msgid "The extruder train to use for printing the support. This is used in multi-extrusion."
@@ -5278,3 +5278,86 @@ msgstr "压缩 G-code 写入器"
 msgctxt "description"
 msgid "Provides support for exporting Cura profiles."
 msgstr "提供了对导出 Cura 配置文件的支持。"
+
+msgctxt "@info:title"
+msgid "Error"
+msgstr "错误"
+
+msgctxt "@action:button"
+msgid "Cancel"
+msgstr "取消"
+
+msgctxt "@title:tab"
+msgid "Settings"
+msgstr "设置"
+
+#, python-brace-format
+msgctxt "@label Don't translate the XML tag <filename>!"
+msgid "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?"
+msgstr "文件 <filename>{0}</filename> 已存在。您确定要覆盖它吗？"
+
+msgctxt "@action:button"
+msgid "Learn more"
+msgstr "详细了解"
+
+msgctxt "@title:tab"
+msgid "General"
+msgstr "基本"
+
+msgctxt "@label (%1 is object name)"
+msgid "Are you sure you wish to remove %1? This cannot be undone!"
+msgstr "您确认要删除 %1？该操作无法恢复！"
+
+msgctxt "@label"
+msgid "Type"
+msgstr "类型"
+
+msgctxt "@info:title"
+msgid "Saving"
+msgstr "正在保存"
+
+msgctxt "@title:window"
+msgid "File Already Exists"
+msgstr "文件已存在"
+
+#, python-brace-format
+msgctxt "@item:inlistbox"
+msgid "All Supported Types ({0})"
+msgstr "所有支持的文件类型 ({0})"
+
+#, python-brace-format
+msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
+msgid "Could not save to <filename>{0}</filename>: <message>{1}</message>"
+msgstr "无法保存到 <filename>{0}</filename>：<message>{1}</message>"
+
+msgctxt "@action:button"
+msgid "OK"
+msgstr "确定"
+
+msgctxt "@info:title"
+msgid "Warning"
+msgstr "警告"
+
+msgctxt "@title:tab"
+msgid "Printers"
+msgstr "打印机"
+
+msgctxt "@info:title"
+msgid "File Saved"
+msgstr "文件已保存"
+
+msgctxt "@title:window"
+msgid "Confirm Remove"
+msgstr "确认删除"
+
+msgctxt "@item:inlistbox"
+msgid "All Files (*)"
+msgstr "所有文件 (*)"
+
+msgctxt "@label"
+msgid "Balanced"
+msgstr "平衡"
+
+msgctxt "@text"
+msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
+msgstr "平衡配置旨在在生产力、表面质量、机械性能和尺寸精度之間取得平衡。"
