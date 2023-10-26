@@ -192,6 +192,7 @@ class CuraConan(ConanFile):
         self.options["pyarcus"].shared = True
         self.options["pysavitar"].shared = True
         self.options["pynest2d"].shared = True
+        self.options["dulcificum"].shared = True
         self.options["cpython"].shared = True
         self.options["boost"].header_only = True
         if self.settings.os == "Linux":
@@ -204,9 +205,11 @@ class CuraConan(ConanFile):
 
     def requirements(self):
         self.requires("boost/1.82.0")
+        self.requires("fmt/9.0.0")
         self.requires("curaengine_grpc_definitions/(latest)@ultimaker/testing")
         self.requires("zlib/1.2.13")
         self.requires("pyarcus/5.3.0")
+        self.requires("dulcificum/(latest)@ultimaker/cura_10561")
         self.requires("curaengine/(latest)@ultimaker/testing")
         self.requires("pysavitar/5.3.0")
         self.requires("pynest2d/5.3.0")

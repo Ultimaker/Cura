@@ -5,6 +5,7 @@ from io import StringIO, BufferedIOBase
 import json
 from typing import cast, List, Optional, Dict
 from zipfile import BadZipFile, ZipFile, ZIP_DEFLATED
+import pyDulcificum as du
 
 from PyQt6.QtCore import QBuffer
 
@@ -29,6 +30,7 @@ class MakerbotWriter(MeshWriter):
 
     def __init__(self) -> None:
         super().__init__(add_to_recent_files=False)
+        Logger.info(f"Using PyDulcificum: {du.__version__}")
 
     _PNG_FORMATS = [
         {"prefix": "isometric_thumbnail", "width": 120, "height": 120},
