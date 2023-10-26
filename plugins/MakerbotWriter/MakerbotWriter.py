@@ -54,6 +54,21 @@ class MakerbotWriter(MeshWriter):
         "1A": "mk14",
         "2A": "mk14_s",
     }
+    _MATERIAL_MAP = {
+        '2780b345-577b-4a24-a2c5-12e6aad3e690': 'abs',
+        '88c8919c-6a09-471a-b7b6-e801263d862d': 'abs-wss1',
+        '416eead4-0d8e-4f0b-8bfc-a91a519befa5': 'asa',
+        '85bbae0e-938d-46fb-989f-c9b3689dc4f0': 'nylon-cf',
+        '283d439a-3490-4481-920c-c51d8cdecf9c': 'nylon',
+        '62414577-94d1-490d-b1e4-7ef3ec40db02': 'pc',
+        '69386c85-5b6c-421a-bec5-aeb1fb33f060': 'pet',  # PETG
+        '0ff92885-617b-4144-a03c-9989872454bc': 'pla',
+        'a4255da2-cb2a-4042-be49-4a83957a2f9a': 'pva',
+        'a140ef8f-4f26-4e73-abe0-cfc29d6d1024': 'wss1',
+        '77873465-83a9-4283-bc44-4e542b8eb3eb': 'sr30',
+        '96fca5d9-0371-4516-9e96-8e8182677f3c': 'im-pla',
+        '19baa6a9-94ff-478b-b4a1-8157b74358d2': 'tpu',
+    }
 
     # must be called from the main thread because of OpenGL
     @staticmethod
@@ -188,7 +203,13 @@ class MakerbotWriter(MeshWriter):
 
         meta["uuid"] = print_information.slice_uuid
 
-        materials = [extruder.material.getMetaData().get("material") for extruder in extruders]
+        materials = []
+        for extruder in extruders:
+            guid = extruder.material.getMetaData().get("GUID")
+            material_name = extruder.material.getMetaData().get("material")
+            material = self._MATERIAL_MAP.get(guid, material_name)
+            materials.append(material)
+
         meta["material"] = materials[0]
         meta["materials"] = materials
 
