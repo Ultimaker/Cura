@@ -311,7 +311,7 @@ class CuraConan(ConanFile):
         self.requires("curaengine/(latest)@ultimaker/testing")
         self.requires("pysavitar/5.3.0")
         self.requires("pynest2d/5.3.0")
-        self.requires("curaengine_plugin_gradual_flow/(latest)@ultimaker/stable")
+        self.requires("curaengine_plugin_gradual_flow/0.1.0")
         self.requires("uranium/(latest)@ultimaker/testing")
         self.requires("cura_binary_data/(latest)@ultimaker/testing")
         self.requires("cpython/3.10.4")
