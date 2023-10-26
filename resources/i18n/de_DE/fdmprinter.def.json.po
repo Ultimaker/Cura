@@ -3870,7 +3870,7 @@ msgstr "Brim nur an der Außenseite des Modells drucken. Damit reduziert sich di
 
 msgctxt "brim_inside_margin label"
 msgid "Brim Inside Avoid Margin"
-msgstr "Abstand zur Vermeidung des inneren Brim-Elements"
+msgstr "Abstand zur Vermeidung des inneren Brims"
 
 msgctxt "brim_inside_margin description"
 msgid "A part fully enclosed inside another part can generate an outer brim that touches the inside of the other part. This removes all brim within this distance from internal holes."
@@ -3878,7 +3878,7 @@ msgstr "Ist ein Teil vollständig von einem anderen Teil eingeschlossen, wird be
 
 msgctxt "brim_smart_ordering label"
 msgid "Smart Brim"
-msgstr "Kleine obere bzw. untere Bereiche werden mit Wänden anstelle des oberen bzw. unteren Standardmusters gefüllt. Dies hilft, ruckartige Bewegungen zu vermeiden."
+msgstr "Intelligente Brim"
 
 msgctxt "brim_smart_ordering description"
 msgid "Swap print order of the innermost and second innermost brim lines. This improves brim removal."
@@ -5331,3 +5331,147 @@ msgstr "Flussdauer zurücksetzen"
 msgctxt "reset_flow_duration description"
 msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
 msgstr "Bei jeder Fahrtbewegung, die diesen Wert überschreitet, wird der Materialfluss auf den Sollwert des Flusses für den Weg zurückgesetzt"
+
+msgctxt "extruder_prime_pos_z label"
+msgid "Extruder Prime Z Position"
+msgstr "Z-Position Extruder-Einzug"
+
+msgctxt "platform_adhesion description"
+msgid "Adhesion"
+msgstr "Haftung"
+
+msgctxt "support_type description"
+msgid "Adjusts the placement of the support structures. The placement can be set to touching build plate or everywhere. When set to everywhere the support structures will also be printed on the model."
+msgstr "Es werden Stützstrukturen platziert. Die Platzierung kann auf „Druckbett berühren“ oder „Überall“ eingestellt werden. Wenn „Überall“ eingestellt wird, werden die Stützstrukturen auch auf dem Modell gedruckt."
+
+msgctxt "machine_nozzle_size label"
+msgid "Nozzle Diameter"
+msgstr "Düsendurchmesser"
+
+msgctxt "machine_nozzle_id description"
+msgid "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\"."
+msgstr "Der Düsen-ID für eine Extruder-Einheit, z. B. „AA 0,4“ und „BB 0,8“."
+
+msgctxt "extruder_prime_pos_x description"
+msgid "The X coordinate of the position where the nozzle primes at the start of printing."
+msgstr "Die X-Koordinate der Position, an der die Düse am Druckbeginn einzieht."
+
+msgctxt "material_diameter label"
+msgid "Diameter"
+msgstr "Durchmesser"
+
+msgctxt "extruder_prime_pos_x label"
+msgid "Extruder Prime X Position"
+msgstr "X-Position Extruder-Einzug"
+
+msgctxt "material_diameter description"
+msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
+msgstr "Der Durchmesser des verwendeten Filaments wird angepasst. Stellen Sie hier den Durchmesser des verwendeten Filaments ein."
+
+msgctxt "machine_nozzle_size description"
+msgid "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size."
+msgstr "Der Innendurchmesser der Düse. Verwenden Sie diese Einstellung, wenn Sie eine Düse einer Nicht-Standardgröße verwenden."
+
+msgctxt "machine_settings description"
+msgid "Machine specific settings"
+msgstr "Gerätespezifische Einstellungen"
+
+msgctxt "extruder_prime_pos_y label"
+msgid "Extruder Prime Y Position"
+msgstr "Y-Position Extruder-Einzug"
+
+msgctxt "extruder_prime_pos_z description"
+msgid "The Z coordinate of the position where the nozzle primes at the start of printing."
+msgstr "Die Z-Koordinate der Position, an der die Düse am Druckbeginn einzieht."
+
+msgctxt "extruder_prime_pos_y description"
+msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
+msgstr "Die Y-Koordinate der Position, an der die Düse am Druckbeginn einzieht."
+
+msgctxt "material label"
+msgid "Material"
+msgstr "Material"
+
+msgctxt "machine_nozzle_id label"
+msgid "Nozzle ID"
+msgstr "Düsen-ID"
+
+msgctxt "platform_adhesion label"
+msgid "Build Plate Adhesion"
+msgstr "Druckplattenhaftung"
+
+msgctxt "machine_settings label"
+msgid "Machine"
+msgstr "Gerät"
+
+msgctxt "group_outer_walls label"
+msgid "Group Outer Walls"
+msgstr "Äußere Wände gruppieren"
+
+msgctxt "group_outer_walls description"
+msgid "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped."
+msgstr "Die äußeren Wände verschiedener Inseln in derselben Schicht werden nacheinander gedruckt. Wenn aktiviert, wird die Menge der Flussänderungen begrenzt, da die Wände nacheinander gedruckt werden, wenn deaktiviert, wird die Anzahl der Fahrten zwischen den Inseln reduziert, da die Wände auf den gleichen Inseln gruppiert sind."
+
+msgctxt "wall_0_material_flow_roofing label"
+msgid "Top Surface Outer Wall Flow"
+msgstr "Fluss der äußersten Oberflächenwand"
+
+msgctxt "wall_0_material_flow_roofing description"
+msgid "Flow compensation on the top surface outermost wall line."
+msgstr "Flussausgleich an der äußersten Wandlinie der Oberfläche."
+
+msgctxt "wall_x_material_flow_roofing label"
+msgid "Top Surface Inner Wall(s) Flow"
+msgstr "Fluss der inneren Oberflächenwand(en)"
+
+msgctxt "wall_x_material_flow_roofing description"
+msgid "Flow compensation on top surface wall lines for all wall lines except the outermost one."
+msgstr "Flussausgleich auf den Wandlinien der Oberfläche für alle Wandlinien außer der äußersten."
+
+msgctxt "speed_wall_0_roofing label"
+msgid "Top Surface Outer Wall Speed"
+msgstr "Geschwindigkeit der äußeren Oberfläche der Wand"
+
+msgctxt "speed_wall_0_roofing description"
+msgid "The speed at which the top surface outermost wall is printed."
+msgstr "Die Geschwindigkeit, mit der die äußersten Wände der Oberfläche gedruckt werden."
+
+msgctxt "speed_wall_x_roofing label"
+msgid "Top Surface Inner Wall Speed"
+msgstr "Geschwindigkeit der inneren Oberfläche der Wand"
+
+msgctxt "speed_wall_x_roofing description"
+msgid "The speed at which the top surface inner walls are printed."
+msgstr "Die Geschwindigkeit, mit der die inneren Wände der Oberfläche gedruckt werden."
+
+msgctxt "acceleration_wall_0_roofing label"
+msgid "Top Surface Outer Wall Acceleration"
+msgstr "Beschleunigung der äußeren Oberfläche der Wand"
+
+msgctxt "acceleration_wall_0_roofing description"
+msgid "The acceleration with which the top surface outermost walls are printed."
+msgstr "Die Beschleunigung, mit der die äußersten Wände der Oberfläche gedruckt werden."
+
+msgctxt "acceleration_wall_x_roofing label"
+msgid "Top Surface Inner Wall Acceleration"
+msgstr "Beschleunigung der inneren Oberfläche der Wand"
+
+msgctxt "acceleration_wall_x_roofing description"
+msgid "The acceleration with which the top surface inner walls are printed."
+msgstr "Die Beschleunigung, mit der die inneren Wände der Oberfläche gedruckt werden."
+
+msgctxt "jerk_wall_0_roofing label"
+msgid "Top Surface Outer Wall Jerk"
+msgstr "Ruck der inneren Oberflächenwand"
+
+msgctxt "jerk_wall_0_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface outermost walls are printed."
+msgstr "Die maximale instantane Geschwindigkeitsänderung, mit der die inneren Oberflächenwände gedruckt werden."
+
+msgctxt "jerk_wall_x_roofing label"
+msgid "Top Surface Inner Wall Jerk"
+msgstr "Ruck der äußersten Oberflächenwand"
+
+msgctxt "jerk_wall_x_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface inner walls are printed."
+msgstr "Die maximale instantane Geschwindigkeitsänderung, mit der die äußersten Oberflächenwände gedruckt werden."

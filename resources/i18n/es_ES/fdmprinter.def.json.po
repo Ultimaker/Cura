@@ -380,6 +380,14 @@ msgctxt "machine_max_feedrate_x label"
 msgid "Maximum Speed X"
 msgstr "Velocidad máxima sobre el eje X"
 
+msgctxt "lightning_infill_support_angle description"
+msgid "Determines when a lightning infill layer has to support anything above it. Measured in the angle given the thickness of a layer."
+msgstr "Determina cuándo una capa de relleno de rayos tiene que soportar algo por encima de ella. Medido en el ángulo dado el espesor de una capa."
+
+msgctxt "lightning_infill_overhang_angle description"
+msgid "Determines when a lightning infill layer has to support the model above it. Measured in the angle given the thickness."
+msgstr "Determina cuándo una capa de relleno de rayos tiene que soportar el modelo que está por encima. Medido en el ángulo dado el espesor."
+
 msgctxt "machine_max_feedrate_x description"
 msgid "The maximum speed for the motor of the X-direction."
 msgstr "Velocidad máxima del motor de la dirección X."
@@ -1438,7 +1446,7 @@ msgstr "Patrón de relleno"
 
 msgctxt "infill_pattern description"
 msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the ceiling of the object."
-msgstr "Patrón del material de relleno de la impresión. El método de llenado en línea y en zigzag cambia de dirección en capas alternas para reducir los costes de material. Los patrones de rejilla, triángulo, trihexágono, cubo, octaédrico, cubo bitruncado, transversal y concéntrico se imprimen en todas las capas por completo. Los rellenos de giroide, cúbico, cúbico bitruncado y octaédrico se alternan en cada capa para lograr una distribución más uniforme de la fuerza en todas las direcciones. El relleno de iluminación intenta minimizar el relleno apoyando solo la parte superior del objeto."
+msgstr "Patrón del material de relleno de la impresión. El método de llenado en línea y en zigzag cambia de dirección en capas alternas para reducir los costes de material. Los patrones de rejilla, triángulo, trihexágono, cubo, octaédrico, cubo bitruncado, transversal y concéntrico se imprimen en todas las capas por completo. Los rellenos de giroide, cúbico, cúbico bitruncado y octaédrico se alternan en cada capa para lograr una distribución más uniforme de la fuerza en todas las direcciones. El relleno de rayos intenta minimizar el relleno apoyando solo la parte superior del objeto."
 
 msgctxt "infill_pattern option grid"
 msgid "Grid"
@@ -1494,7 +1502,23 @@ msgstr "Giroide"
 
 msgctxt "infill_pattern option lightning"
 msgid "Lightning"
-msgstr "Iluminación"
+msgstr "Rayos"
+
+msgctxt "lightning_infill_overhang_angle label"
+msgid "Lightning Infill Overhang Angle"
+msgstr "Ángulo del voladizo de relleno de rayos"
+
+msgctxt "lightning_infill_prune_angle label"
+msgid "Lightning Infill Prune Angle"
+msgstr "Ángulo de recorte de relleno de rayos"
+
+msgctxt "lightning_infill_straightening_angle label"
+msgid "Lightning Infill Straightening Angle"
+msgstr "Ángulo de enderezamiento de rayos"
+
+msgctxt "lightning_infill_support_angle label"
+msgid "Lightning Infill Support Angle"
+msgstr "Ángulo de sujeción de relleno de rayos"
 
 msgctxt "zig_zaggify_infill label"
 msgid "Connect Infill Lines"
@@ -1664,33 +1688,9 @@ msgctxt "skin_edge_support_layers description"
 msgid "The number of infill layers that supports skin edges."
 msgstr "El número de capas de relleno que soportan los bordes del forro."
 
-msgctxt "lightning_infill_support_angle label"
-msgid "Lightning Infill Support Angle"
-msgstr "Ángulo de sujeción de relleno de iluminación"
-
-msgctxt "lightning_infill_support_angle description"
-msgid "Determines when a lightning infill layer has to support anything above it. Measured in the angle given the thickness of a layer."
-msgstr "Determina cuándo una capa de iluminación tiene que soportar algo por encima de ella. Medido en el ángulo dado el espesor de una capa."
-
-msgctxt "lightning_infill_overhang_angle label"
-msgid "Lightning Infill Overhang Angle"
-msgstr "Ángulo del voladizo de relleno de iluminación"
-
-msgctxt "lightning_infill_overhang_angle description"
-msgid "Determines when a lightning infill layer has to support the model above it. Measured in the angle given the thickness."
-msgstr "Determina cuándo una capa de relleno de iluminación tiene que soportar el modelo que está por encima. Medido en el ángulo dado el espesor."
-
-msgctxt "lightning_infill_prune_angle label"
-msgid "Lightning Infill Prune Angle"
-msgstr "Ángulo de recorte de relleno de iluminación"
-
 msgctxt "lightning_infill_prune_angle description"
 msgid "The endpoints of infill lines are shortened to save on material. This setting is the angle of overhang of the endpoints of these lines."
 msgstr "Los extremos de las líneas de relleno se acortan para ahorrar material. Esta configuración es el ángulo de voladizo de los extremos de estas líneas."
-
-msgctxt "lightning_infill_straightening_angle label"
-msgid "Lightning Infill Straightening Angle"
-msgstr "Ángulo de enderezamiento de iluminación"
 
 msgctxt "lightning_infill_straightening_angle description"
 msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
@@ -5331,3 +5331,151 @@ msgstr "Restablecer duración del flujo"
 msgctxt "reset_flow_duration description"
 msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
 msgstr "Para cualquier movimiento de desplazamiento superior a este valor, el flujo de material se restablece con el flujo objetivo de las trayectorias"
+
+msgctxt "extruder_prime_pos_z label"
+msgid "Extruder Prime Z Position"
+msgstr "Posición de preparación del extrusor sobre el eje Z"
+
+msgctxt "platform_adhesion description"
+msgid "Adhesion"
+msgstr "Adherencia"
+
+msgctxt "support_type description"
+msgid "Adjusts the placement of the support structures. The placement can be set to touching build plate or everywhere. When set to everywhere the support structures will also be printed on the model."
+msgstr "Ajusta la colocación de las estructuras del soporte. La colocación se puede establecer tocando la placa de impresión o en todas partes. Cuando se establece en todas partes, las estructuras del soporte también se imprimirán en el modelo."
+
+msgctxt "material description"
+msgid "Material"
+msgstr "Material"
+
+msgctxt "machine_nozzle_size label"
+msgid "Nozzle Diameter"
+msgstr "Diámetro de la tobera"
+
+msgctxt "machine_nozzle_id description"
+msgid "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\"."
+msgstr "Id. de la tobera de un tren extrusor, como \"AA 0.4\" y \"BB 0.8\"."
+
+msgctxt "extruder_prime_pos_x description"
+msgid "The X coordinate of the position where the nozzle primes at the start of printing."
+msgstr "Coordenada X de la posición en la que la tobera se coloca al inicio de la impresión."
+
+msgctxt "material_diameter label"
+msgid "Diameter"
+msgstr "Diámetro"
+
+msgctxt "extruder_prime_pos_x label"
+msgid "Extruder Prime X Position"
+msgstr "Posición de preparación del extrusor sobre el eje X"
+
+msgctxt "material_diameter description"
+msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
+msgstr "Ajusta el diámetro del filamento utilizado. Este valor debe coincidir con el diámetro del filamento utilizado."
+
+msgctxt "machine_nozzle_size description"
+msgid "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size."
+msgstr "Diámetro interior de la tobera. Cambie este ajuste cuando utilice un tamaño de tobera no estándar."
+
+msgctxt "machine_settings description"
+msgid "Machine specific settings"
+msgstr "Ajustes específicos de la máquina"
+
+msgctxt "extruder_prime_pos_y label"
+msgid "Extruder Prime Y Position"
+msgstr "Posición de preparación del extrusor sobre el eje Y"
+
+msgctxt "extruder_prime_pos_z description"
+msgid "The Z coordinate of the position where the nozzle primes at the start of printing."
+msgstr "Coordenada Z de la posición en la que la tobera queda preparada al inicio de la impresión."
+
+msgctxt "extruder_prime_pos_y description"
+msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
+msgstr "Coordenada Y de la posición en la que la tobera se coloca al inicio de la impresión."
+
+msgctxt "material label"
+msgid "Material"
+msgstr "Material"
+
+msgctxt "machine_nozzle_id label"
+msgid "Nozzle ID"
+msgstr "Id. de la tobera"
+
+msgctxt "platform_adhesion label"
+msgid "Build Plate Adhesion"
+msgstr "Adherencia de la placa de impresión"
+
+msgctxt "machine_settings label"
+msgid "Machine"
+msgstr "Máquina"
+
+msgctxt "group_outer_walls label"
+msgid "Group Outer Walls"
+msgstr "Agrupar las paredes exteriores"
+
+msgctxt "group_outer_walls description"
+msgid "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped."
+msgstr "Las paredes exteriores de diferentes islas en la misma capa se imprimen en secuencia. Cuando está habilitado, la cantidad de cambios de flujo se limita porque las paredes se imprimen de a una a la vez; cuando está deshabilitado, se reduce el número de desplazamientos entre islas porque las paredes en las mismas islas se agrupan."
+
+msgctxt "wall_0_material_flow_roofing label"
+msgid "Top Surface Outer Wall Flow"
+msgstr "Flujo de la pared exterior de la superficie superior"
+
+msgctxt "wall_0_material_flow_roofing description"
+msgid "Flow compensation on the top surface outermost wall line."
+msgstr "Compensación de flujo en la línea de la pared exterior más externa de la superficie superior."
+
+msgctxt "wall_x_material_flow_roofing label"
+msgid "Top Surface Inner Wall(s) Flow"
+msgstr "Flujo de la pared interior de la superficie superior"
+
+msgctxt "wall_x_material_flow_roofing description"
+msgid "Flow compensation on top surface wall lines for all wall lines except the outermost one."
+msgstr "Compensación de flujo en las líneas de pared de la superficie superior para todas las líneas de pared excepto la más externa."
+
+msgctxt "speed_wall_0_roofing label"
+msgid "Top Surface Outer Wall Speed"
+msgstr "Velocidad de la pared externa de la superficie superior"
+
+msgctxt "speed_wall_0_roofing description"
+msgid "The speed at which the top surface outermost wall is printed."
+msgstr "La velocidad con la que se imprimen las paredes más externas de la superficie superior."
+
+msgctxt "speed_wall_x_roofing label"
+msgid "Top Surface Inner Wall Speed"
+msgstr "Velocidad de la pared interna de la superficie superior"
+
+msgctxt "speed_wall_x_roofing description"
+msgid "The speed at which the top surface inner walls are printed."
+msgstr "La velocidad a la que se imprimen las paredes internas de la superficie superior."
+
+msgctxt "acceleration_wall_0_roofing label"
+msgid "Top Surface Outer Wall Acceleration"
+msgstr "Aceleración de la superficie externa superior de la pared"
+
+msgctxt "acceleration_wall_0_roofing description"
+msgid "The acceleration with which the top surface outermost walls are printed."
+msgstr "La aceleración con la que se imprimen las paredes más externas de la superficie superior."
+
+msgctxt "acceleration_wall_x_roofing label"
+msgid "Top Surface Inner Wall Acceleration"
+msgstr "Aceleración de la superficie interna superior de la pared"
+
+msgctxt "acceleration_wall_x_roofing description"
+msgid "The acceleration with which the top surface inner walls are printed."
+msgstr "La aceleración con la que se imprimen las paredes internas de la superficie superior."
+
+msgctxt "jerk_wall_0_roofing label"
+msgid "Top Surface Outer Wall Jerk"
+msgstr "Sacudida de la pared interior de la superficie superior"
+
+msgctxt "jerk_wall_0_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface outermost walls are printed."
+msgstr "El cambio máximo de velocidad instantánea con el que se imprimen las paredes interiores de la superficie superior."
+
+msgctxt "jerk_wall_x_roofing label"
+msgid "Top Surface Inner Wall Jerk"
+msgstr "Sacudida de la pared exterior más externa de la superficie superior"
+
+msgctxt "jerk_wall_x_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface inner walls are printed."
+msgstr "El cambio máximo de velocidad instantánea con el que se imprimen las paredes exteriores más externas de la superficie superior."

@@ -118,8 +118,9 @@ class GridArrange(Arranger):
 
     def _findOptimalGridOffset(self):
         if len(self._fixed_nodes) == 0:
-            self._offset_x = 0
-            self._offset_y = 0
+            edge_disallowed_size = self._build_volume.getEdgeDisallowedSize()
+            self._offset_x = edge_disallowed_size
+            self._offset_y = edge_disallowed_size
             return
 
         if len(self._fixed_nodes) == 1:

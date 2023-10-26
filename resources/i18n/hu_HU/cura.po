@@ -5517,6 +5517,14 @@ msgctxt "@info:generic"
 msgid "{} plugins failed to download"
 msgstr ""
 
+msgctxt "@label"
+msgid "Balanced"
+msgstr "Kiegyensúlyozott"
+
+msgctxt "@text"
+msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
+msgstr "Az egyensúlyozott profil a termelékenység, felületminőség, mechanikai tulajdonságok és méret pontoság közötti egyensúly elérését célozza meg."
+
 #~ msgctxt "@action:inmenu menubar:edit"
 #~ msgid "Arrange Selection"
 #~ msgstr "Kijelöltek rendezése"

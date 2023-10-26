@@ -111,8 +111,6 @@
         "minimum_polygon_circumference": { "value": "0.2" },
         "optimize_wall_printing_order": { "value": "True" },
         "prime_tower_enable": { "value": "True" },
-        "prime_tower_position_x": { "value": "270" },
-        "prime_tower_position_y": { "value": "270" },
         "retraction_amount": { "value": "1" },
         "retraction_combing": { "value": "'noskin'" },
         "retraction_combing_max_distance": { "value": "10" },
