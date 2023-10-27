@@ -5317,3 +5317,86 @@ msgstr "Средство записи сжатого G-кода"
 msgctxt "description"
 msgid "Provides support for exporting Cura profiles."
 msgstr "Предоставляет поддержку для экспорта профилей Cura."
+
+msgctxt "@info:title"
+msgid "Error"
+msgstr "Ошибка"
+
+msgctxt "@action:button"
+msgid "Cancel"
+msgstr "Отмена"
+
+msgctxt "@title:tab"
+msgid "Settings"
+msgstr "Параметры"
+
+#, python-brace-format
+msgctxt "@label Don't translate the XML tag <filename>!"
+msgid "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?"
+msgstr "Файл <filename>{0}</filename> уже существует. Вы уверены, что желаете перезаписать его?"
+
+msgctxt "@action:button"
+msgid "Learn more"
+msgstr "Узнать больше"
+
+msgctxt "@title:tab"
+msgid "General"
+msgstr "Общее"
+
+msgctxt "@label (%1 is object name)"
+msgid "Are you sure you wish to remove %1? This cannot be undone!"
+msgstr "Вы уверены, что желаете удалить %1? Это нельзя будет отменить!"
+
+msgctxt "@label"
+msgid "Type"
+msgstr "Тип"
+
+msgctxt "@info:title"
+msgid "Saving"
+msgstr "Сохранение"
+
+msgctxt "@title:window"
+msgid "File Already Exists"
+msgstr "Файл уже существует"
+
+#, python-brace-format
+msgctxt "@item:inlistbox"
+msgid "All Supported Types ({0})"
+msgstr "Все поддерживаемые типы ({0})"
+
+#, python-brace-format
+msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
+msgid "Could not save to <filename>{0}</filename>: <message>{1}</message>"
+msgstr "Не могу записать <filename>{0}</filename>: <message>{1}</message>"
+
+msgctxt "@action:button"
+msgid "OK"
+msgstr "OK"
+
+msgctxt "@info:title"
+msgid "Warning"
+msgstr "Внимание"
+
+msgctxt "@title:tab"
+msgid "Printers"
+msgstr "Принтеры"
+
+msgctxt "@info:title"
+msgid "File Saved"
+msgstr "Файл сохранён"
+
+msgctxt "@title:window"
+msgid "Confirm Remove"
+msgstr "Подтвердите удаление"
+
+msgctxt "@item:inlistbox"
+msgid "All Files (*)"
+msgstr "Все файлы (*)"
+
+msgctxt "@label"
+msgid "Balanced"
+msgstr "Сбалансированный"
+
+msgctxt "@text"
+msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
+msgstr "Сбалансированный профиль разработан для достижения баланса между производительностью, качеством поверхности, механическими характеристиками и размерной точностью."

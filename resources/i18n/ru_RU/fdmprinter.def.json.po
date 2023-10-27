@@ -5331,3 +5331,152 @@ msgstr "Сбросить продолжительность потока"
 msgctxt "reset_flow_duration description"
 msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
 msgstr "Для любого перемещения, превышающего это значение, поток материала сбрасывается до целевого потока пути"
+
+msgctxt "extruder_prime_pos_z label"
+msgid "Extruder Prime Z Position"
+msgstr "Z координата начала печати"
+
+
+msgctxt "platform_adhesion description"
+msgid "Adhesion"
+msgstr "Прилипание"
+
+msgctxt "support_type description"
+msgid "Adjusts the placement of the support structures. The placement can be set to touching build plate or everywhere. When set to everywhere the support structures will also be printed on the model."
+msgstr "Настраивает размещение структур поддержки. Размещение может быть выбрано с касанием стола или везде. Для последнего случая структуры поддержки печатаются даже на самой модели."
+
+msgctxt "material description"
+msgid "Material"
+msgstr "Материал"
+
+msgctxt "machine_nozzle_size label"
+msgid "Nozzle Diameter"
+msgstr "Диаметр сопла"
+
+msgctxt "machine_nozzle_id description"
+msgid "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\"."
+msgstr "Идентификатор сопла для экструдера, например \"AA 0.4\" и \"BB 0.8\"."
+
+msgctxt "extruder_prime_pos_x description"
+msgid "The X coordinate of the position where the nozzle primes at the start of printing."
+msgstr "X координата позиции, в которой сопло начинает печать."
+
+msgctxt "material_diameter label"
+msgid "Diameter"
+msgstr "Диаметр"
+
+msgctxt "extruder_prime_pos_x label"
+msgid "Extruder Prime X Position"
+msgstr "Начальная X позиция экструдера"
+
+msgctxt "material_diameter description"
+msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
+msgstr "Укажите диаметр используемой нити."
+
+msgctxt "machine_nozzle_size description"
+msgid "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size."
+msgstr "Внутренний диаметр сопла. Измените этот параметр при использовании сопла нестандартного размера."
+
+msgctxt "machine_settings description"
+msgid "Machine specific settings"
+msgstr "Параметры, относящиеся к принтеру"
+
+msgctxt "extruder_prime_pos_y label"
+msgid "Extruder Prime Y Position"
+msgstr "Начальная Y позиция экструдера"
+
+msgctxt "extruder_prime_pos_z description"
+msgid "The Z coordinate of the position where the nozzle primes at the start of printing."
+msgstr "Позиция кончика сопла на оси Z при старте печати."
+
+msgctxt "extruder_prime_pos_y description"
+msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
+msgstr "Y координата позиции, в которой сопло начинает печать."
+
+msgctxt "material label"
+msgid "Material"
+msgstr "Материал"
+
+msgctxt "machine_nozzle_id label"
+msgid "Nozzle ID"
+msgstr "Идентификатор сопла"
+
+msgctxt "platform_adhesion label"
+msgid "Build Plate Adhesion"
+msgstr "Тип прилипания к столу"
+
+msgctxt "machine_settings label"
+msgid "Machine"
+msgstr "Принтер"
+
+msgctxt "group_outer_walls label"
+msgid "Group Outer Walls"
+msgstr "Группировать внешние стены"
+
+msgctxt "group_outer_walls description"
+msgid "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped."
+msgstr "Внешние стены разных островов в одном слое печатаются последовательно. При включении количество изменений потока ограничено, поскольку стены печатаются один тип за раз, при отключении количество перемещений между островами уменьшается, потому что стены на одних и тех же островах группируются."
+
+msgctxt "wall_0_material_flow_roofing label"
+msgid "Top Surface Outer Wall Flow"
+msgstr "Поток на самой внешней линии верхней поверхности"
+
+msgctxt "wall_0_material_flow_roofing description"
+msgid "Flow compensation on the top surface outermost wall line."
+msgstr "Компенсация потока на самой внешней линии верхней поверхности."
+
+msgctxt "wall_x_material_flow_roofing label"
+msgid "Top Surface Inner Wall(s) Flow"
+msgstr "Поток внутренней стены верхней поверхности"
+
+msgctxt "wall_x_material_flow_roofing description"
+msgid "Flow compensation on top surface wall lines for all wall lines except the outermost one."
+msgstr "Компенсация потока на линиях стены верхней поверхности для всех линий стены, кроме самой внешней."
+
+msgctxt "speed_wall_0_roofing label"
+msgid "Top Surface Outer Wall Speed"
+msgstr "Скорость самых внешних стен верхней поверхности"
+
+msgctxt "speed_wall_0_roofing description"
+msgid "The speed at which the top surface outermost wall is printed."
+msgstr "Скорость печати самых внешних стен верхней поверхности."
+
+msgctxt "speed_wall_x_roofing label"
+msgid "Top Surface Inner Wall Speed"
+msgstr "Скорость внутренней поверхности верхней стены"
+
+msgctxt "speed_wall_x_roofing description"
+msgid "The speed at which the top surface inner walls are printed."
+msgstr "Скорость, с которой печатаются внутренние стены верхней поверхности."
+
+msgctxt "acceleration_wall_0_roofing label"
+msgid "Top Surface Outer Wall Acceleration"
+msgstr "Ускорение внешней поверхности верхней стены"
+
+msgctxt "acceleration_wall_0_roofing description"
+msgid "The acceleration with which the top surface outermost walls are printed."
+msgstr "Ускорение, с которым печатаются самые внешние стены верхней поверхности."
+
+msgctxt "acceleration_wall_x_roofing label"
+msgid "Top Surface Inner Wall Acceleration"
+msgstr "Ускорение внутренней поверхности верхней стены"
+
+msgctxt "acceleration_wall_x_roofing description"
+msgid "The acceleration with which the top surface inner walls are printed."
+msgstr "Ускорение, с которым печатаются внутренние стены верхней поверхности."
+
+msgctxt "jerk_wall_0_roofing label"
+msgid "Top Surface Outer Wall Jerk"
+msgstr "Рывок внутренних стен верхней поверхности"
+
+msgctxt "jerk_wall_0_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface outermost walls are printed."
+msgstr "Максимальное мгновенное изменение скорости, с которым печатаются внутренние стены верхней поверхности."
+
+msgctxt "jerk_wall_x_roofing label"
+msgid "Top Surface Inner Wall Jerk"
+msgstr "Рывок внешних стен верхней поверхности"
+
+msgctxt "jerk_wall_x_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface inner walls are printed."
+msgstr "Максимальное мгновенное изменение скорости, с которым печатаются самые внешние стены верхней поверхности."

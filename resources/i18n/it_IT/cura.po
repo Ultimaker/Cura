@@ -5291,3 +5291,82 @@ msgstr "Writer codice G compresso"
 msgctxt "description"
 msgid "Provides support for exporting Cura profiles."
 msgstr "Fornisce supporto per l'esportazione dei profili Cura."
+
+msgctxt "@info:title"
+msgid "Error"
+msgstr "Errore"
+
+msgctxt "@action:button"
+msgid "Cancel"
+msgstr "Annulla"
+
+msgctxt "@title:tab"
+msgid "Settings"
+msgstr "Impostazioni"
+
+#, python-brace-format
+msgctxt "@label Don't translate the XML tag <filename>!"
+msgid "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?"
+msgstr "Il file <filename>{0}</filename> esiste già. Sei sicuro di volerlo sovrascrivere?"
+
+msgctxt "@action:button"
+msgid "Learn more"
+msgstr "Ulteriori informazioni"
+
+msgctxt "@title:tab"
+msgid "General"
+msgstr "Generale"
+
+msgctxt "@label (%1 is object name)"
+msgid "Are you sure you wish to remove %1? This cannot be undone!"
+msgstr "Sei sicuro di voler rimuovere %1? Questa operazione non può essere annullata!"
+
+msgctxt "@label"
+msgid "Type"
+msgstr "Tipo"
+
+msgctxt "@info:title"
+msgid "Saving"
+msgstr "Salvataggio in corso"
+
+msgctxt "@title:window"
+msgid "File Already Exists"
+msgstr "Il file esiste già"
+
+#, python-brace-format
+msgctxt "@item:inlistbox"
+msgid "All Supported Types ({0})"
+msgstr "Tutti i tipi supportati ({0})"
+
+#, python-brace-format
+msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
+msgid "Could not save to <filename>{0}</filename>: <message>{1}</message>"
+msgstr "Impossibile salvare <filename>{0}</filename>: <message>{1}</message>"
+
+msgctxt "@info:title"
+msgid "Warning"
+msgstr "Avvertenza"
+
+msgctxt "@title:tab"
+msgid "Printers"
+msgstr "Stampanti"
+
+msgctxt "@info:title"
+msgid "File Saved"
+msgstr "File salvato"
+
+msgctxt "@title:window"
+msgid "Confirm Remove"
+msgstr "Conferma rimozione"
+
+msgctxt "@item:inlistbox"
+msgid "All Files (*)"
+msgstr "Tutti i file (*)"
+
+msgctxt "@label"
+msgid "Balanced"
+msgstr "Bilanciato"
+
+msgctxt "@text"
+msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
+msgstr "Il profilo equilibrato è progettato per trovare un equilibrio tra produttività, qualità superficiale, proprietà meccaniche e precisione dimensionale."

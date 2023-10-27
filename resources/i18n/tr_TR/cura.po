@@ -5291,3 +5291,86 @@ msgstr "Sıkıştırılmış G-code Yazıcısı"
 msgctxt "description"
 msgid "Provides support for exporting Cura profiles."
 msgstr "Cura profillerinin dışa aktarılması için destek sağlar."
+
+msgctxt "@info:title"
+msgid "Error"
+msgstr "Hata"
+
+msgctxt "@action:button"
+msgid "Cancel"
+msgstr "İptal Et"
+
+msgctxt "@title:tab"
+msgid "Settings"
+msgstr "Ayarlar"
+
+#, python-brace-format
+msgctxt "@label Don't translate the XML tag <filename>!"
+msgid "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?"
+msgstr "Dosya <filename>{0}</filename> zaten mevcut. Üstüne yazmak istediğinizden emin misiniz?"
+
+msgctxt "@action:button"
+msgid "Learn more"
+msgstr "Daha fazla bilgi edinin"
+
+msgctxt "@title:tab"
+msgid "General"
+msgstr "Genel"
+
+msgctxt "@label (%1 is object name)"
+msgid "Are you sure you wish to remove %1? This cannot be undone!"
+msgstr "%1’i kaldırmak istediğinizden emin misiniz? Bu eylem geri alınamaz!"
+
+msgctxt "@label"
+msgid "Type"
+msgstr "Tür"
+
+msgctxt "@info:title"
+msgid "Saving"
+msgstr "Kaydediliyor"
+
+msgctxt "@title:window"
+msgid "File Already Exists"
+msgstr "Dosya Zaten Mevcut"
+
+#, python-brace-format
+msgctxt "@item:inlistbox"
+msgid "All Supported Types ({0})"
+msgstr "Tüm desteklenen türler ({0})"
+
+#, python-brace-format
+msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
+msgid "Could not save to <filename>{0}</filename>: <message>{1}</message>"
+msgstr "<filename>{0}</filename> dosyasına kaydedilemedi: <message>{1}</message>"
+
+msgctxt "@action:button"
+msgid "OK"
+msgstr "Tamam"
+
+msgctxt "@info:title"
+msgid "Warning"
+msgstr "Uyarı"
+
+msgctxt "@title:tab"
+msgid "Printers"
+msgstr "Yazıcılar"
+
+msgctxt "@info:title"
+msgid "File Saved"
+msgstr "Dosya Kaydedildi"
+
+msgctxt "@title:window"
+msgid "Confirm Remove"
+msgstr "Kaldırmayı Onayla"
+
+msgctxt "@item:inlistbox"
+msgid "All Files (*)"
+msgstr "Tüm Dosyalar (*)"
+
+msgctxt "@label"
+msgid "Balanced"
+msgstr "Dengeli"
+
+msgctxt "@text"
+msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
+msgstr "Dengeli profil, verimlilik, yüzey kalitesi, mekanik özellikler ve boyutsal doğruluk arasında bir denge kurmayı amaçlar."
