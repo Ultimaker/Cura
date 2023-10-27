@@ -115,7 +115,7 @@ class MakerbotWriter(MeshWriter):
             self.setInformation(gcode_writer.getInformation())
             return False
 
-        json_toolpaths = du.gcode_2_miracle_jtp(gcode_text_io.getvalue())
+        json_toolpaths = convert(gcode_text_io.getvalue())
         metadata = self._getMeta(nodes)
 
         png_files = []
@@ -234,6 +234,8 @@ class MakerbotWriter(MeshWriter):
                 "machineBounds": [bounds.right, bounds.back, bounds.left, bounds.front] if bounds is not None else None,
                 "printMode": CuraApplication.getInstance().getIntentManager().currentIntentCategory,
             }
+
+        meta["miracle_config"] = {"gaggles": {str(node.getName()): {} for node in nodes}}
 
         cura_engine_info = ConanInstalls.get("curaengine", {"version": "unknown", "revision": "unknown"})
         meta["curaengine_version"] = cura_engine_info["version"]
