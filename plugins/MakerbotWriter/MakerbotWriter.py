@@ -110,14 +110,14 @@ class MakerbotWriter(MeshWriter):
         gcode_text_io = StringIO()
         success = gcode_writer.write(gcode_text_io, None)
 
-        json_toolpaths = convert(gcode_text_io.getvalue())
+        json_toolpaths, metadata = convert(gcode_text_io.getvalue())
 
         # Writing the g-code failed. Then I can also not write the gzipped g-code.
         if not success:
             self.setInformation(gcode_writer.getInformation())
             return False
 
-        metadata = self._getMeta(nodes)
+        metadata.update(self._getMeta(nodes))
 
         png_files = []
         for png_format in self._PNG_FORMATS:
@@ -251,13 +251,6 @@ class MakerbotWriter(MeshWriter):
                 continue
             meta[f"{name}_version"] = package_info["version"]
             meta[f"{name}_commit_hash"] = package_info["revision"]
-
-        # TODO add the following instructions
-        # num_tool_changes
-        # num_z_layers
-        # num_z_transitions
-        # platform_temperature
-        # total_commands
 
         return meta
 

@@ -196,7 +196,14 @@ def delay(seconds: float, tags: Optional[List[str]] = None) -> Dict[str, Any]:
                         "tags": tags}}
 
 
-def convert(gcode: str) -> str:
+def _incrementOrStartCount(metadata: Dict, key: str) -> None:
+    if key in metadata:
+        metadata[key] = metadata[key] + 1
+    else:
+        metadata[key] = 1
+
+
+def convert(gcode: str) -> Tuple[str, Dict]:
     """
     The prime tower middle x,y position is used to heatup the print heads during a print head switch
     Convert a given gcode text string into:
@@ -204,6 +211,9 @@ def convert(gcode: str) -> str:
      - a meta data dictionary
      - a file name for the generated output commands
     """
+    metadata = {}
+    metadata["platform_temperature"] = 0  # FIXME! Always 0 for Methods. Those just have a build-volume temp.
+
     commands: List[Dict[str, Any]] = []
     section: List[Union[Dict[str, Any], str]] = []  # List of commands
     tool_nr = 0  # Current active toolhead 0 or 1
@@ -243,8 +253,10 @@ def convert(gcode: str) -> str:
 
     # Logger.log("i","Converting ufp to makerbot format")
     for line in gcode.splitlines():  # split gcode lines and loop through them
+        _incrementOrStartCount(metadata, "total_commands")
         if line.startswith(';'):  # Line is a comment, extract info
             if line.startswith(";LAYER:"):  # Track the layer number
+                _incrementOrStartCount(metadata, "num_z_layers")
                 layer_nr = int(line.split(';LAYER:')[1].strip())
             elif line.startswith(";TYPE:"):  # Track the line type, = end of a layer section
                 line_type = line[6:].strip()
@@ -314,6 +326,8 @@ def convert(gcode: str) -> str:
         elif line.startswith('G0 ') or line.startswith('G1 '):  # Move
             # Logger.log("i", line)
             pos, speed, a, b, tags = analyse_move(line, pos, speed, last_pos, tool_nr, layer_nr, line_type)
+            if last_pos[2] != pos[2]:
+                _incrementOrStartCount(metadata, "num_z_transitions")
             last_pos = pos.copy()
             curr_high_pos = max(curr_high_pos, pos[2])
             curr_low_pos = min(curr_low_pos, pos[2])
@@ -341,6 +355,7 @@ def convert(gcode: str) -> str:
                     Toggle object cooling in for the activated print head
                     Set fan duty cycle back to normal value (thus not 100%)
                 """
+                _incrementOrStartCount(metadata, "num_tool_changes")
                 index = int(line[1:].strip())
                 if tool_nr != index:
                     tool_nr = index  # New active tool
@@ -431,7 +446,7 @@ def convert(gcode: str) -> str:
     else:
         pass
 
-    return result
+    return result, metadata
 
 
 def analyse_move(line: str, pos, speed, last_pos, tool_nr, layer_nr, line_type) -> Tuple[
