@@ -6722,6 +6722,22 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
+                "prime_tower_raft_base_line_spacing":
+                {
+                    "label": "Prime Tower Raft Line Spacing",
+                    "description": "The distance between the raft lines for the unique prime tower raft layer. Wide spacing makes for easy removal of the raft from the build plate.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 1.6,
+                    "value": "raft_base_line_spacing",
+                    "minimum_value": "0",
+                    "minimum_value_warning": "raft_base_line_width",
+                    "maximum_value_warning": "100",
+                    "enabled": "resolveOrValue('prime_tower_enable') and resolveOrValue('adhesion_type') == 'raft'",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "limit_to_extruder": "raft_base_extruder_nr"
+                },
                 "ooze_shield_enabled":
                 {
                     "label": "Enable Ooze Shield",
