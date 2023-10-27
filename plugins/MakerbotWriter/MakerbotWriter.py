@@ -237,24 +237,18 @@ class MakerbotWriter(MeshWriter):
 
         meta["miracle_config"] = {"gaggles": {str(node.getName()): {} for node in nodes}}
 
-        meta["purge_routins"] = [
-            [
-                ["move", [54, 9, 0, 0, 0], 100, [False, False, False, True, True]],
-                ["purge_move", [72, 9, 0, 100, 0], 3, [False, False, False, True, True]],
-                ["move", [63, 0, 0, 0, 0], 30, [False, False, False, True, True]]
-            ], [
-                ["move", [54, 9, 0, 0, 0], 100, [False, False, False, True, True]],
-                ["purge_move", [72, 9, 0, 0, 100], 1, [False, False, False, True, True]],
-                ["move", [63, 0, 0, 0, 0], 30, [False, False, False, True, True]]
-            ]
-        ]
-
         cura_engine_info = ConanInstalls.get("curaengine", {"version": "unknown", "revision": "unknown"})
         meta["curaengine_version"] = cura_engine_info["version"]
         meta["curaengine_commit_hash"] = cura_engine_info["revision"]
 
+        dulcificum_info = ConanInstalls.get("dulcificum", {"version": "unknown", "revision": "unknown"})
+        meta["dulcificum_version"] = dulcificum_info["version"]
+        meta["dulcificum_commit_hash"] = dulcificum_info["revision"]
+
         meta["makerbot_writer_version"] = self.getVersion()
         # meta["makerbot_writer_commit_hash"] = self.getRevision()
+
+        meta["pyDulcificum"] = du.__version__
 
         for name, package_info in ConanInstalls.items():
             if not name.startswith("curaengine_ "):
