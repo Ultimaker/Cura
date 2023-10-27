@@ -499,7 +499,7 @@ def add_section_gcode(section: List[str], low_pos: float, high_pos: float, secti
     section.insert(0, f"; Upper Position {high_pos};")
     section.insert(0, f"; Lower Position {low_pos};")
     section.insert(0, f"; Material 0;")
-    section.insert(0, f"; Layer Section {section_nr} (1951);")
+    section.insert(0, f"; Layer Section {section_nr} ({section_nr});")  # TODO: Find out with these '()' numbers really mean, assume they maybe need to be unique.
     section.insert(0, "; Update Progress;")
     return result + '\n' + '\n'.join(section)
 
@@ -521,6 +521,6 @@ def add_section_json(section: List[Dict[str, Any]], tool_nr: int, section_nr: in
     section.insert(0, comment(f"Upper Position {high_pos}"))
     section.insert(0, comment(f"Lower Position {low_pos}"))  # Todo better fall back if position is unknown
     section.insert(0, comment(f"Material {tool_nr}"))
-    section.insert(0, comment(f"Layer Section {section_nr} (1951)"))  # Todo found out with these numbers really mean
+    section.insert(0, comment(f"Layer Section {section_nr} ({section_nr})"))  # TODO: Find out with these '()' numbers really mean, assume they maybe need to be unique.
 
     return section
