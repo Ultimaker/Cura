@@ -115,7 +115,7 @@ class MakerbotWriter(MeshWriter):
             self.setInformation(gcode_writer.getInformation())
             return False
 
-        json_toolpaths = convert(gcode_text_io.getvalue())
+        json_toolpaths = du.gcode_2_miracle_jtp(gcode_text_io.getvalue())
         metadata = self._getMeta(nodes)
 
         png_files = []
@@ -236,6 +236,18 @@ class MakerbotWriter(MeshWriter):
             }
 
         meta["miracle_config"] = {"gaggles": {str(node.getName()): {} for node in nodes}}
+
+        meta["purge_routins"] = [
+            [
+                ["move", [54, 9, 0, 0, 0], 100, [False, False, False, True, True]],
+                ["purge_move", [72, 9, 0, 100, 0], 3, [False, False, False, True, True]],
+                ["move", [63, 0, 0, 0, 0], 30, [False, False, False, True, True]]
+            ], [
+                ["move", [54, 9, 0, 0, 0], 100, [False, False, False, True, True]],
+                ["purge_move", [72, 9, 0, 0, 100], 1, [False, False, False, True, True]],
+                ["move", [63, 0, 0, 0, 0], 30, [False, False, False, True, True]]
+            ]
+        ]
 
         cura_engine_info = ConanInstalls.get("curaengine", {"version": "unknown", "revision": "unknown"})
         meta["curaengine_version"] = cura_engine_info["version"]
