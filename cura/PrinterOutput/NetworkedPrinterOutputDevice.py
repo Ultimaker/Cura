@@ -415,9 +415,9 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
 
     @pyqtProperty(str, constant = True)
     def printerType(self) -> str:
-        return self.getPrinterType(self._properties.get(b"printer_type", b"Unknown").decode("utf-8"))
+        return self.getPrinterTypeIfMakerBot(self._properties.get(b"printer_type", b"Unknown").decode("utf-8"))
 
-    def getPrinterTypeIfMakerBot(printer_type):
+    def getPrinterTypeIfMakerBot(self, printer_type):
         method_printer_type = {
             "fire_e": "ultimaker_method",
             "lava_f": "ultimaker_methodx",

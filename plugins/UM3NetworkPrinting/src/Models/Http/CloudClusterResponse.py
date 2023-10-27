@@ -52,7 +52,7 @@ class CloudClusterResponse(BaseModel):
         """
         return str({k: v for k, v in self.__dict__.items() if k in {"cluster_id", "host_guid", "host_name", "status", "is_online", "host_version", "host_internal_ip", "friendly_name", "printer_type", "printer_count", "capabilities"}})
 
-    def getPrinterTypeIfMakerBot(printer_type):
+    def getPrinterTypeIfMakerBot(self, printer_type):
         method_printer_type = {
             "fire_e": "ultimaker_method",
             "lava_f": "ultimaker_methodx",
