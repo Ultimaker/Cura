@@ -56,6 +56,9 @@ class CuraFormulaFunctions:
         if isinstance(value, SettingFunction):
             value = value(extruder_stack, context = context)
 
+        if isinstance(value, str):
+            value = value.lower()
+
         return value
 
     def _getActiveExtruders(self, context: Optional["PropertyEvaluationContext"] = None) -> List[str]:

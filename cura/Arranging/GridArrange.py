@@ -80,7 +80,7 @@ class GridArrange(Arranger):
 
         self._allowed_grid_idx = self._build_plate_grid_ids.difference(self._fixed_nodes_grid_ids)
 
-    def createGroupOperationForArrange(self, *, add_new_nodes_in_scene: bool = False) -> Tuple[GroupedOperation, int]:
+    def createGroupOperationForArrange(self, add_new_nodes_in_scene: bool = False) -> Tuple[GroupedOperation, int]:
         # Find the sequence in which items are placed
         coord_build_plate_center_x = self._build_volume_bounding_box.width * 0.5 + self._build_volume_bounding_box.left
         coord_build_plate_center_y = self._build_volume_bounding_box.depth * 0.5 + self._build_volume_bounding_box.back
@@ -118,8 +118,9 @@ class GridArrange(Arranger):
 
     def _findOptimalGridOffset(self):
         if len(self._fixed_nodes) == 0:
-            self._offset_x = 0
-            self._offset_y = 0
+            edge_disallowed_size = self._build_volume.getEdgeDisallowedSize()
+            self._offset_x = edge_disallowed_size
+            self._offset_y = edge_disallowed_size
             return
 
         if len(self._fixed_nodes) == 1:

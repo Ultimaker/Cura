@@ -5387,6 +5387,78 @@ msgctxt "travel description"
 msgid "travel"
 msgstr "cestování"
 
+msgctxt "group_outer_walls label"
+msgid "Group Outer Walls"
+msgstr "Seskupit vnější stěny"
+
+msgctxt "group_outer_walls description"
+msgid "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped."
+msgstr "Venkovní stěny různých ostrovů ve stejné vrstvě jsou tisknuty postupně. Když je povoleno, množství změn proudu je omezeno, protože stěny jsou tisknuty po jednom typu najednou, když je zakázáno, počet cest mezi ostrovy se snižuje, protože stěny na stejných ostrovech jsou seskupeny."
+
+msgctxt "wall_0_material_flow_roofing label"
+msgid "Top Surface Outer Wall Flow"
+msgstr "Tok nejvíce vnější stěnové linky horní plochy"
+
+msgctxt "wall_0_material_flow_roofing description"
+msgid "Flow compensation on the top surface outermost wall line."
+msgstr "Kompensace toku na nejvíce vnější stěnové lince horní plochy."
+
+msgctxt "wall_x_material_flow_roofing label"
+msgid "Top Surface Inner Wall(s) Flow"
+msgstr "Tok vnitřní stěny horní plochy"
+
+msgctxt "wall_x_material_flow_roofing description"
+msgid "Flow compensation on top surface wall lines for all wall lines except the outermost one."
+msgstr "Kompensace toku na horní stěnové linky pro všechny stěnové linky kromě nejvnější."
+
+msgctxt "speed_wall_0_roofing label"
+msgid "Top Surface Outer Wall Speed"
+msgstr "Rychlost nejvíce vnější stěny horní plochy"
+
+msgctxt "speed_wall_0_roofing description"
+msgid "The speed at which the top surface outermost wall is printed."
+msgstr "Rychlost, kterou jsou tisknuty nejvíce vnější stěny horní plochy."
+
+msgctxt "speed_wall_x_roofing label"
+msgid "Top Surface Inner Wall Speed"
+msgstr "Rychlost vnitřní stěny horní plochy"
+
+msgctxt "speed_wall_x_roofing description"
+msgid "The speed at which the top surface inner walls are printed."
+msgstr "Rychlost, kterou jsou tisknuty vnitřní stěny horní plochy."
+
+msgctxt "acceleration_wall_0_roofing label"
+msgid "Top Surface Outer Wall Acceleration"
+msgstr "Zrychlení vnější stěny horní plochy"
+
+msgctxt "acceleration_wall_0_roofing description"
+msgid "The acceleration with which the top surface outermost walls are printed."
+msgstr "Zrychlení, kterým jsou tisknuty nejvíce vnější stěny horní plochy."
+
+msgctxt "acceleration_wall_x_roofing label"
+msgid "Top Surface Inner Wall Acceleration"
+msgstr "Zrychlení vnitřní stěny horní plochy"
+
+msgctxt "acceleration_wall_x_roofing description"
+msgid "The acceleration with which the top surface inner walls are printed."
+msgstr "Zrychlení, kterým jsou tisknuty vnitřní stěny horní plochy."
+
+msgctxt "jerk_wall_0_roofing label"
+msgid "Top Surface Outer Wall Jerk"
+msgstr "Rychlá změna nejvíce vnitřní stěny horní plochy"
+
+msgctxt "jerk_wall_0_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface outermost walls are printed."
+msgstr "Maximální okamžitá změna rychlosti, jakou jsou tisknuty nejvíce vnitřní stěny horní plochy."
+
+msgctxt "jerk_wall_x_roofing label"
+msgid "Top Surface Inner Wall Jerk"
+msgstr "Rychlá změna nejvíce vnější stěny horní plochy"
+
+msgctxt "jerk_wall_x_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface inner walls are printed."
+msgstr "Maximální okamžitá změna rychlosti, jakou jsou tisknuty nejvíce vnější stěny horní plochy."
+
 
 
 
@@ -5394,43 +5466,43 @@ msgstr "cestování"
 
 msgctxt "gradual_flow_enabled label"
 msgid "Gradual flow enabled"
-msgstr ""
+msgstr "Postupné změny průtoku povoleny"
 
 msgctxt "gradual_flow_enabled description"
 msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
-msgstr ""
+msgstr "Povolit postupné změny průtoku. Když je povoleno, průtok se postupně zvyšuje / snižuje na cílový průtok. Toto je užitečné pro tiskárny s Bowdenovou trubicí, kde se průtok okamžitě nezmění, když se spustí / zastaví extrudér."
 
 msgctxt "max_flow_acceleration label"
 msgid "Gradual flow max acceleration"
-msgstr ""
+msgstr "Maximální zrychlení postupných změn průtoku"
 
 msgctxt "max_flow_acceleration description"
 msgid "Maximum acceleration for gradual flow changes"
-msgstr ""
+msgstr "Maximální zrychlení pro postupné změny průtoku"
 
 msgctxt "layer_0_max_flow_acceleration label"
 msgid "Initial layer max flow acceleration"
-msgstr ""
+msgstr "Maximální zrychlení průtoku pro první vrstvu"
 
 msgctxt "layer_0_max_flow_acceleration description"
 msgid "Minimum speed for gradual flow changes for the first layer"
-msgstr ""
+msgstr "Minimální rychlost pro postupné změny průtoku pro první vrstvu"
 
 msgctxt "gradual_flow_discretisation_step_size label"
 msgid "Gradual flow discretisation step size"
-msgstr ""
+msgstr "Velikost kroku diskretizace postupné změny průtoku"
 
 msgctxt "gradual_flow_discretisation_step_size description"
 msgid "Duration of each step in the gradual flow change"
-msgstr ""
+msgstr "Doba trvání každého kroku v postupné změně průtoku"
 
 msgctxt "reset_flow_duration label"
 msgid "Reset flow duration"
-msgstr ""
+msgstr "Doba trvání resetování průtoku"
 
 msgctxt "reset_flow_duration description"
 msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
-msgstr ""
+msgstr "Pro jakýkoli pohyb delší než tato hodnota se materiálový průtok resetuje na cílový průtok dráhy"
 
 
 
