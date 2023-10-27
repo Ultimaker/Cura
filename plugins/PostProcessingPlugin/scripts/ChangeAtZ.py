@@ -1,7 +1,7 @@
 # ChangeAtZ script - Change printing parameters at a given height
 # This script is the successor of the TweakAtZ plugin for legacy Cura.
 # It contains code from the TweakAtZ plugin V1.0-V4.x and from the ExampleScript by Jaime van Kessel, Ultimaker B.V.
-# It runs with the PostProcessingPlugin which is released under the terms of the AGPLv3 or higher.
+# It runs with the PostProcessingPlugin which is released under the terms of the LGPLv3 or higher.
 # This script is licensed under the Creative Commons - Attribution - Share Alike (CC BY-SA) terms
 
 # Authors of the ChangeAtZ plugin / script:

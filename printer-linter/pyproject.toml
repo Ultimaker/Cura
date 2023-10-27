@@ -1,7 +1,7 @@
 [project]
 name = "printerlinter"
 description = "Cura UltiMaker printer linting tool"
-version = "0.1.0"
+version = "0.1.1"
 authors = [
     { name = "UltiMaker", email = "cura@ultimaker.com" }
 ]
