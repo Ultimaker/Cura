@@ -218,7 +218,7 @@ class CuraConan(ConanFile):
         self.requires("cura_binary_data/(latest)@ultimaker/testing")
         self.requires("cpython/3.10.4")
         if self.options.internal:
-            self.requires("cura_private_data/(latest)@ultimaker/cura_10561")
+            self.requires("cura_private_data/(latest)@internal/cura_10561")
             self.requires("fdm_materials/(latest)@internal/testing")
         else:
             self.requires("fdm_materials/(latest)@ultimaker/testing")
@@ -288,6 +288,12 @@ class CuraConan(ConanFile):
             copy(self, "*", cura_private_data.resdirs[0], str(self._share_dir.joinpath("cura")))
 
         if self.options.devtools:
+            entitlements_file = "'{}'".format(os.path.join(self.source_folder, "packaging", "MacOS", "cura.entitlements"))
+            self._generate_pyinstaller_spec(location = self.generators_folder,
+                                            entrypoint_location = "'{}'".format(os.path.join(self.source_folder, self.conan_data["pyinstaller"]["runinfo"]["entrypoint"])).replace("\\", "\\\\"),
+                                            icon_path = "'{}'".format(os.path.join(self.source_folder, "packaging", self.conan_data["pyinstaller"]["icon"][str(self.settings.os)])).replace("\\", "\\\\"),
+                                            entitlements_file = entitlements_file if self.settings.os == "Macos" else "None")
+
             # Update the po and pot files
             if self.settings.os != "Windows" or self.conf.get("tools.microsoft.bash:path", check_type=str):
                 vb = VirtualBuildEnv(self)
@@ -346,6 +352,12 @@ echo "CURA_APP_NAME={{ cura_app_name }}" >> ${{ env_prefix }}GITHUB_ENV
         save(self, os.path.join(self._script_dir, f"activate_github_actions_version_env{ext}"), activate_github_actions_version_env)
 
         self._generate_cura_version(os.path.join(self._site_packages, "cura"))
+
+        entitlements_file = "'{}'".format(Path(self.cpp_info.res_paths[2], "MacOS", "cura.entitlements"))
+        self._generate_pyinstaller_spec(location = self._base_dir,
+                                        entrypoint_location = "'{}'".format(os.path.join(self.package_folder, self.cpp_info.bindirs[0], self.conan_data["pyinstaller"]["runinfo"]["entrypoint"])).replace("\\", "\\\\"),
+                                        icon_path = "'{}'".format(os.path.join(self.package_folder, self.cpp_info.resdirs[2], self.conan_data["pyinstaller"]["icon"][str(self.settings.os)])).replace("\\", "\\\\"),
+                                        entitlements_file = entitlements_file if self.settings.os == "Macos" else "None")
 
     def package(self):
         copy(self, "cura_app.py", src = self.source_folder, dst = os.path.join(self.package_folder, self.cpp.package.bindirs[0]))

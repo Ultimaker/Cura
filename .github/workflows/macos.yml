@@ -158,8 +158,12 @@ jobs:
       - name: Create the Packages (Bash)
         run: conan install $CURA_CONAN_VERSION ${{ inputs.conan_args }} --build=missing --update -if cura_inst -g VirtualPythonEnv -o cura:enterprise=$ENTERPRISE -o cura:staging=$STAGING"
 
+      - name: Remove internal packages before uploading
+        run: |
+          conan remove "*@internal/*" -f || true
+          conan remove "cura_private_data*" -f || true
+
       - name: Upload the Package(s)
-        if: ${{ inputs.operating_system != 'self-hosted' }}
         run: |
           conan upload "*" -r cura --all -c
 

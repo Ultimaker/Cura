@@ -106,16 +106,8 @@ jobs:
             $HOME/.conan/conan_download_cache
           key: conan-${{ runner.os }}-${{ runner.arch }}-installer-cache
 
-      - name: Hack needed specifically for ubuntu-22.04 from mid-Feb 2023 onwards
-        if: ${{ startsWith(inputs.operating_system, 'ubuntu-22.04') }}
-        run: sudo apt remove libodbc2 libodbcinst2 unixodbc-common -y
-
-      # NOTE: Due to what are probably github issues, we have to remove the cache and reconfigure before the rest.
-      #       This is maybe because grub caches the disk it uses last time, which is recreated each time.
       - name: Install Linux system requirements
         run: |
-          sudo rm /var/cache/debconf/config.dat
-          sudo dpkg --configure -a
           sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
           sudo apt update
           sudo apt upgrade
@@ -156,6 +148,11 @@ jobs:
 
       - name: Create the Packages (Bash)
         run: conan install $CURA_CONAN_VERSION ${{ inputs.conan_args }} --build=missing --update -if cura_inst -g VirtualPythonEnv -o cura:enterprise=$ENTERPRISE -o cura:staging=$STAGING
+
+      - name: Remove internal packages before uploading
+        run: |
+          conan remove "*@internal/*" -f || true
+          conan remove "cura_private_data*" -f || true
 
       - name: Upload the Package(s)
         if: always()
