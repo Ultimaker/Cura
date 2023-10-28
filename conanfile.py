@@ -316,7 +316,7 @@ class CuraConan(ConanFile):
         self.requires("cura_binary_data/(latest)@ultimaker/testing")
         self.requires("cpython/3.10.4")
         if self.options.internal:
-            self.requires("cura_private_data/(latest)@ultimaker/testing")
+            self.requires("cura_private_data/(latest)@internal/testing")
             self.requires("fdm_materials/(latest)@internal/testing")
         else:
             self.requires("fdm_materials/(latest)@ultimaker/testing")
