@@ -124,6 +124,11 @@ jobs:
       - name: Create the Packages (Powershell)
         run: conan install $Env:CURA_CONAN_VERSION ${{ inputs.conan_args }} --build=missing --update -if cura_inst -g VirtualPythonEnv -o cura:enterprise=$Env:ENTERPRISE -o cura:staging=$Env:STAGING --json "cura_inst/conan_install_info.json"
 
+      - name: Remove internal packages before uploading
+        run: |
+          conan remove "*@internal/*" -f || true
+          conan remove "cura_private_data*" -f || true
+
       - name: Upload the Package(s)
         if: always()
         run: |
