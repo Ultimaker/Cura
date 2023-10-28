@@ -196,14 +196,12 @@ jobs:
               f.write(content)
               f.writelines(f"INSTALLER_FILENAME={installer_filename}\n")
 
-      - name: Summarize the used Conan dependencies
+      - name: Summarize the used dependencies
         shell: python
         run: |
           import os
-          import json
-          from pathlib import Path
           
-          from cura.CuraVersion import ConanInstalls
+          from cura.CuraVersion import ConanInstalls, PythonInstalls
           
           summary_env = os.environ["GITHUB_STEP_SUMMARY"]
           content = ""
@@ -215,27 +213,11 @@ jobs:
               f.write(content)
               f.writelines("# ${{ steps.filename.outputs.INSTALLER_FILENAME }}\n")
               f.writelines("## Conan packages:\n")
-              for dep_name, dep_info in ConanDependencies.items():
+              for dep_name, dep_info in ConanInstalls.items():
                   f.writelines(f"`{dep_name} {dep_info['version']} {dep_info['revision']}`\n")
 
-      - name: Summarize the used Python modules
-        shell: python
-        run: |
-          import os
-          import pkg_resources
-
-          from cura.CuraVersion import ConanDependencies
-
-          summary_env = os.environ["GITHUB_STEP_SUMMARY"]
-          content = ""
-          if os.path.exists(summary_env):
-              with open(summary_env, "r") as f:
-                  content = f.read()
-          
-          with open(summary_env, "w") as f:
-              f.write(content)
               f.writelines("## Python modules:\n")
-              for dep_name, dep_info in ConanDependencies.items():
+              for dep_name, dep_info in PythonInstalls.items():
                   f.writelines(f"`{dep_name} {dep_info['version']}`\n")
 
       - name: Create the Linux AppImage (Bash)
