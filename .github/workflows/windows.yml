@@ -187,7 +187,7 @@ jobs:
               f.writelines("# ${{ steps.filename.outputs.INSTALLER_FILENAME }}\n")
               f.writelines("## Conan packages:\n")
               for dep_name, dep_info in ConanDependencies.items():
-                  f.writelines(f"`{dep_name} {dep_info["version"]} {dep_info["revision"]}`\n")
+                  f.writelines(f"`{dep_name} {dep_info['version']} {dep_info['revision']}`\n")
 
       - name: Summarize the used Python modules
         shell: python
@@ -207,7 +207,7 @@ jobs:
               f.write(content)
               f.writelines("## Python modules:\n")
               for dep_name, dep_info in ConanDependencies.items():
-                  f.writelines(f"`{dep_name} {dep_info["version"]}`\n")
+                  f.writelines(f"`{dep_name} {dep_info['version']}`\n")
 
       - name: Create PFX certificate from BASE64_PFX_CONTENT secret
         id: create-pfx
