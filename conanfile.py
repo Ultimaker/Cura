@@ -281,7 +281,7 @@ class CuraConan(ConanFile):
         self.options["pyarcus"].shared = True
         self.options["pysavitar"].shared = True
         self.options["pynest2d"].shared = True
-        self.options["dulcificum"].shared = True
+        self.options["dulcificum"].shared = self.settings.os != "Windows"
         self.options["cpython"].shared = True
         self.options["boost"].header_only = True
         if self.settings.os == "Linux":
