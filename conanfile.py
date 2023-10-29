@@ -34,7 +34,8 @@ class CuraConan(ConanFile):
         "cloud_api_version": "ANY",
         "display_name": "ANY",  # TODO: should this be an option??
         "cura_debug_mode": [True, False],  # FIXME: Use profiles
-        "internal": [True, False]
+        "internal": [True, False],
+        "enable_i18n": [True, False],
     }
     default_options = {
         "enterprise": "False",
@@ -44,6 +45,7 @@ class CuraConan(ConanFile):
         "display_name": "UltiMaker Cura",
         "cura_debug_mode": False,  # Not yet implemented
         "internal": False,
+        "enable_i18n": False,
     }
 
     def set_version(self):
@@ -271,6 +273,10 @@ class CuraConan(ConanFile):
         copy(self, "requirements-ultimaker.txt", self.recipe_folder, self.export_sources_folder)
         copy(self, "cura_app.py", self.recipe_folder, self.export_sources_folder)
 
+    def config_options(self):
+        if self.settings.os == "Windows" and not self.conf.get("tools.microsoft.bash:path", check_type=str):
+            del self.options.enable_i18n
+
     def configure(self):
         self.options["pyarcus"].shared = True
         self.options["pysavitar"].shared = True
@@ -307,10 +313,8 @@ class CuraConan(ConanFile):
             self.requires("fdm_materials/(latest)@ultimaker/testing")
 
     def build_requirements(self):
-        if self.options.devtools:
-            if self.settings.os != "Windows" or self.conf.get("tools.microsoft.bash:path", check_type = str):
-                # FIXME: once m4, autoconf, automake are Conan V2 ready use self.win_bash and add gettext as base tool_requirement
-                self.tool_requires("gettext/0.21@ultimaker/testing", force_host_context = True)
+        if self.options.get_safe("enable_i18n", False):
+            self.tool_requires("gettext/0.21@ultimaker/testing", force_host_context = True)
 
     def layout(self):
         self.folders.source = "."
@@ -377,26 +381,24 @@ class CuraConan(ConanFile):
                                             icon_path = "'{}'".format(os.path.join(self.source_folder, "packaging", self.conan_data["pyinstaller"]["icon"][str(self.settings.os)])).replace("\\", "\\\\"),
                                             entitlements_file = entitlements_file if self.settings.os == "Macos" else "None")
 
+        if self.options.get_safe("enable_i18n", False):
             # Update the po and pot files
-            if self.settings.os != "Windows" or self.conf.get("tools.microsoft.bash:path", check_type=str):
-                vb = VirtualBuildEnv(self)
-                vb.generate()
+            vb = VirtualBuildEnv(self)
+            vb.generate()
 
-                # # FIXME: once m4, autoconf, automake are Conan V2 ready use self.win_bash and add gettext as base tool_requirement
-                cpp_info = self.dependencies["gettext"].cpp_info
-                pot = self.python_requires["translationextractor"].module.ExtractTranslations(self, cpp_info.bindirs[0])
-                pot.generate()
+            # # FIXME: once m4, autoconf, automake are Conan V2 ready use self.win_bash and add gettext as base tool_requirement
+            cpp_info = self.dependencies["gettext"].cpp_info
+            pot = self.python_requires["translationextractor"].module.ExtractTranslations(self, cpp_info.bindirs[0])
+            pot.generate()
 
     def build(self):
-        if self.options.devtools:
-            if self.settings.os != "Windows" or self.conf.get("tools.microsoft.bash:path", check_type = str):
-                # FIXME: once m4, autoconf, automake are Conan V2 ready use self.win_bash and add gettext as base tool_requirement
-                for po_file in self.source_path.joinpath("resources", "i18n").glob("**/*.po"):
-                    mo_file = Path(self.build_folder, po_file.with_suffix('.mo').relative_to(self.source_path))
-                    mo_file = mo_file.parent.joinpath("LC_MESSAGES", mo_file.name)
-                    mkdir(self, str(unix_path(self, Path(mo_file).parent)))
-                    cpp_info = self.dependencies["gettext"].cpp_info
-                    self.run(f"{cpp_info.bindirs[0]}/msgfmt {po_file} -o {mo_file} -f", env="conanbuild", ignore_errors=True)
+        if self.options.get_safe("enable_i18n", False):
+            for po_file in self.source_path.joinpath("resources", "i18n").glob("**/*.po"):
+                mo_file = Path(self.build_folder, po_file.with_suffix('.mo').relative_to(self.source_path))
+                mo_file = mo_file.parent.joinpath("LC_MESSAGES", mo_file.name)
+                mkdir(self, str(unix_path(self, Path(mo_file).parent)))
+                cpp_info = self.dependencies["gettext"].cpp_info
+                self.run(f"{cpp_info.bindirs[0]}/msgfmt {po_file} -o {mo_file} -f", env="conanbuild", ignore_errors=True)
 
     def deploy(self):
         copy(self, "*", os.path.join(self.package_folder, self.cpp.package.resdirs[2]), os.path.join(self.install_folder, "packaging"), keep_path = True)
