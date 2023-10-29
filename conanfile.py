@@ -67,6 +67,8 @@ class CuraConan(ConanFile):
         self._cura_env = Environment()
         self._cura_env.define("QML2_IMPORT_PATH", str(self._site_packages.joinpath("PyQt6", "Qt6", "qml")))
         self._cura_env.define("QT_PLUGIN_PATH", str(self._site_packages.joinpath("PyQt6", "Qt6", "plugins")))
+        if not self.in_local_cache:
+            self._cura_env.define(  "CURA_DATA_ROOT", str(self._share_dir.joinpath("cura")))
 
         if self.settings.os == "Linux":
             self._cura_env.define("QT_QPA_FONTDIR", "/usr/share/fonts")

@@ -6,6 +6,7 @@ import sys
 import tempfile
 import time
 import platform
+from pathlib import Path
 from typing import cast, TYPE_CHECKING, Optional, Callable, List, Any, Dict
 
 import numpy
@@ -366,6 +367,10 @@ class CuraApplication(QtApplication):
 
         Resources.addSecureSearchPath(os.path.join(self._app_install_dir, "share", "cura", "resources"))
         if not hasattr(sys, "frozen"):
+            cura_data_root = os.environ.get('CURA_DATA_ROOT', None)
+            if cura_data_root:
+                Resources.addSearchPath(str(Path(cura_data_root).joinpath("resources")))
+
             Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "resources"))
 
             # local Conan cache
