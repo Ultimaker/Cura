@@ -254,7 +254,7 @@ class MakerbotWriter(MeshWriter):
         meta["dulcificum_commit_hash"] = dulcificum_info["revision"]
 
         meta["makerbot_writer_version"] = self.getVersion()
-        meta["pyDulcificum"] = du.__version__
+        meta["pyDulcificum_version"] = du.__version__
 
         # Add engine plugin information to the metadata
         for name, package_info in ConanInstalls.items():
