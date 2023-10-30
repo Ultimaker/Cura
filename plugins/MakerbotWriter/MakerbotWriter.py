@@ -202,7 +202,7 @@ class MakerbotWriter(MeshWriter):
         meta["commanded_duration_s"] = int(print_information.currentPrintTime)
         meta["duration_s"] = int(print_information.currentPrintTime)
 
-        material_lengths = list(map(meter_to_millimeter, print_information.materialLengths))
+        material_lengths = list(map(meterToMillimeter, print_information.materialLengths))
         meta["extrusion_distance_mm"] = material_lengths[0]
         meta["extrusion_distances_mm"] = material_lengths
 
@@ -273,6 +273,6 @@ class MakerbotWriter(MeshWriter):
         return meta
 
 
-def meter_to_millimeter(value: float) -> float:
+def meterToMillimeter(value: float) -> float:
     """Converts a value in meters to millimeters."""
     return value * 1000.0
