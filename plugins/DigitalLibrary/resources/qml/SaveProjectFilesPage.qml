@@ -213,7 +213,8 @@ Item
         valueRole: "value"
 
         model: [
-            { text: catalog.i18nc("@option", "Save Cura project and print file"), key: "3mf_ufp", value: ["3mf", "ufp"] },
+            { text: catalog.i18nc("@option", "Save Cura project and .ufp print file"), key: "3mf_ufp", value: ["3mf", "ufp"] },
+            { text: catalog.i18nc("@option", "Save Cura project and .makerbot print file"), key: "3mf_makerbot", value: ["3mf", "makerbot"] },
             { text: catalog.i18nc("@option", "Save Cura project"), key: "3mf", value: ["3mf"] },
         ]
     }
