@@ -53,12 +53,12 @@ class Snapshot:
         camera = Camera("snapshot")
 
         # find local x and y directional vectors of the camera
-        s = iso_view_dir.cross(Vector.Unit_Y).normalized()
-        u = s.cross(iso_view_dir).normalized()
+        tangent_space_x_direction = iso_view_dir.cross(Vector.Unit_Y).normalized()
+        tangent_space_y_direction = tangent_space_x_direction.cross(iso_view_dir).normalized()
 
         # find extreme screen space coords of the scene
-        x_points = [p.dot(s) for p in bounds.points]
-        y_points = [p.dot(u) for p in bounds.points]
+        x_points = [p.dot(tangent_space_x_direction) for p in bounds.points]
+        y_points = [p.dot(tangent_space_y_direction) for p in bounds.points]
         min_x = min(x_points)
         max_x = max(x_points)
         min_y = min(y_points)
