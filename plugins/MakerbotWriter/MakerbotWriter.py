@@ -92,7 +92,7 @@ class MakerbotWriter(MeshWriter):
             return
 
         thumbnail_buffer = QBuffer()
-        thumbnail_buffer.open(QBuffer.OpenModeFlag.ReadWrite)
+        thumbnail_buffer.open(QBuffer.OpenModeFlag.WriteOnly)
 
         snapshot.save(thumbnail_buffer, "PNG")
 
