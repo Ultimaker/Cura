@@ -106,8 +106,8 @@ class MeshFormatHandler:
         if "application/x-ufp" not in machine_file_formats and Version(firmware_version) >= Version("4.4"):
             machine_file_formats = ["application/x-ufp"] + machine_file_formats
 
-        # Exception for makerbot firmware version >=2.500: makerbot is supported
-        elif "application/x-makerbot" not in machine_file_formats:
+        # Exception for makerbot firmware version >=2.700: makerbot is supported
+        elif "application/x-makerbot" not in machine_file_formats and Version(firmware_version >= Version("2.700")):
             machine_file_formats = ["application/x-makerbot"] + machine_file_formats
 
         # Take the intersection between file_formats and machine_file_formats.

@@ -58,7 +58,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
     # The minimum version of firmware that support print job actions over cloud.
     PRINT_JOB_ACTIONS_MIN_VERSION = Version("5.2.12")
-    PRINT_JOB_ACTIONS_MIN_VERSION_METHOD = Version("2.500")
+    PRINT_JOB_ACTIONS_MIN_VERSION_METHOD = Version("2.700")
 
     # Notify can only use signals that are defined by the class that they are in, not inherited ones.
     # Therefore, we create a private signal used to trigger the printersChanged signal.
