@@ -12,6 +12,7 @@ from PyQt6.QtCore import QBuffer
 from UM.Logger import Logger
 from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Mesh.MeshWriter import MeshWriter
+from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
 from UM.PluginRegistry import PluginRegistry
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
@@ -31,6 +32,13 @@ class MakerbotWriter(MeshWriter):
     def __init__(self) -> None:
         super().__init__(add_to_recent_files=False)
         Logger.info(f"Using PyDulcificum: {du.__version__}")
+        MimeTypeDatabase.addMimeType(
+            MimeType(
+                name="application/x-makerbot",
+                comment="Makerbot Toolpath Package",
+                suffixes=["makerbot"]
+            )
+        )
 
     _PNG_FORMATS = [
         {"prefix": "isometric_thumbnail", "width": 120, "height": 120},
