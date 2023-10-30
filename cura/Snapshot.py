@@ -45,7 +45,7 @@ class Snapshot:
         # the direction the camera is looking at to create the isometric view
         iso_view_dir = Vector(-1, -1, -1).normalized()
 
-        bounds = Snapshot.node_bounds(root)
+        bounds = Snapshot.nodeBounds(root)
         if bounds is None:
             Logger.log("w", "There appears to be nothing to render")
             return None
@@ -104,7 +104,7 @@ class Snapshot:
         return render_pass.getOutput()
 
     @staticmethod
-    def node_bounds(root_node: SceneNode) -> Optional[AxisAlignedBox]:
+    def nodeBounds(root_node: SceneNode) -> Optional[AxisAlignedBox]:
         axis_aligned_box = None
         for node in DepthFirstIterator(root_node):
             if not getattr(node, "_outside_buildarea", False):
@@ -140,7 +140,7 @@ class Snapshot:
         camera = Camera("snapshot", root)
 
         # determine zoom and look at
-        bbox = Snapshot.node_bounds(root)
+        bbox = Snapshot.nodeBounds(root)
         # If there is no bounding box, it means that there is no model in the buildplate
         if bbox is None:
             Logger.log("w", "Unable to create snapshot as we seem to have an empty buildplate")
