@@ -37,7 +37,7 @@ class Snapshot:
         return min_x, max_x, min_y, max_y
 
     @staticmethod
-    def isometric_snapshot(width: int = 300, height: int = 300) -> Optional[QImage]:
+    def isometricSnapshot(width: int = 300, height: int = 300) -> Optional[QImage]:
         """Create an isometric snapshot of the scene."""
 
         root = Application.getInstance().getController().getScene().getRoot()
