@@ -169,7 +169,7 @@ class MakerbotWriter(MeshWriter):
 
         meta = dict()
 
-        meta["bot_type"] = MakerbotWriter._PRINT_NAME_MAP.get((name := global_stack.name), name)
+        meta["bot_type"] = MakerbotWriter._PRINT_NAME_MAP.get((name := global_stack.definition.name), name)
 
         bounds: Optional[AxisAlignedBox] = None
         for node in nodes:
