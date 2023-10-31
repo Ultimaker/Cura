@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-20 14:03+0000\n"
+"POT-Creation-Date: 2023-10-31 19:13+0100\n"
 "PO-Revision-Date: 2023-09-03 18:15+0200\n"
 "Last-Translator: Miroslav Šustek <sustmidown@centrum.cz>\n"
 "Language-Team: DenyCZ <www.github.com/DenyCZ>\n"
@@ -566,6 +566,10 @@ msgctxt "@action:inmenu menubar:edit"
 msgid "Arrange All Models in a grid"
 msgstr ""
 
+msgctxt "@action:inmenu menubar:edit"
+msgid "Arrange Selection"
+msgstr "Uspořádat selekci"
+
 msgctxt "@label:button"
 msgid "Ask a question"
 msgstr "Položit otázku"
@@ -629,6 +633,10 @@ msgstr "Zálohovat a synchronizovat vaše nastavení Cura."
 msgctxt "@info:title"
 msgid "Backups"
 msgstr "Zálohy"
+
+msgctxt "@label"
+msgid "Balanced"
+msgstr "Vyvážený"
 
 msgctxt "@action:label"
 msgid "Base (mm)"
@@ -1019,6 +1027,10 @@ msgctxt "@info:error"
 msgid "Could not interpret the server's response."
 msgstr "Nelze přečíst odpověď serveru."
 
+msgctxt "@error:load"
+msgid "Could not load GCodeWriter plugin. Try to re-enable the plugin."
+msgstr ""
+
 msgctxt "@info:error"
 msgid "Could not reach Marketplace."
 msgstr "Nelze se připojit k Obchodu."
@@ -1260,10 +1272,6 @@ msgid "Decline and remove from account"
 msgstr "Odmítnout a odstranit z účtu"
 
 msgctxt "@info:No intent profile selected"
-msgid "Default"
-msgstr "Výchozí"
-
-msgctxt "@label"
 msgid "Default"
 msgstr "Výchozí"
 
@@ -2353,6 +2361,22 @@ msgstr "Ujistěte se, že jsou všechny vaše tiskárny zapnuté a připojené k
 msgctxt "@info:generic"
 msgid "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."
 msgstr "Před odesláním souboru se ujistěte, že je g-kód vhodný pro vaši tiskárnu a konfiguraci tiskárny. Reprezentace g-kódu nemusí být přesná."
+
+msgctxt "@item:inlistbox"
+msgid "Makerbot Printfile"
+msgstr ""
+
+msgctxt "name"
+msgid "Makerbot Printfile Writer"
+msgstr ""
+
+msgctxt "@error"
+msgid "MakerbotWriter could not save to the designated path."
+msgstr ""
+
+msgctxt "@error:not supported"
+msgid "MakerbotWriter does not support text mode."
+msgstr ""
 
 msgctxt "@action:inmenu"
 msgid "Manage Materials..."
@@ -3445,6 +3469,10 @@ msgid "Provides support for writing 3MF files."
 msgstr "Poskytuje podporu pro psaní souborů 3MF."
 
 msgctxt "description"
+msgid "Provides support for writing MakerBot Format Packages."
+msgstr ""
+
+msgctxt "description"
 msgid "Provides support for writing Ultimaker Format Packages."
 msgstr "Poskytuje podporu pro psaní balíčků formátu UltiMaker."
 
@@ -4327,6 +4355,10 @@ msgstr[2] "Přiřazená tiskárna %1 vyžaduje následující změnu konfigurace
 msgctxt "@error:file_size"
 msgid "The backup exceeds the maximum file size."
 msgstr "Záloha překračuje maximální povolenou velikost soubor."
+
+msgctxt "@text"
+msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
+msgstr "Vyvážený profil je navržen tak, aby dosáhl rovnováhy mezi produktivitou, kvalitou povrchu, mechanickými vlastnostmi a rozměrnou přesností."
 
 msgctxt "@info:tooltip"
 msgid "The base height from the build plate in millimeters."
@@ -5561,14 +5593,6 @@ msgctxt "@info:generic"
 msgid "{} plugins failed to download"
 msgstr "Nepovedlo se stáhnout {} zásuvných modulů"
 
-msgctxt "@label"
-msgid "Balanced"
-msgstr "Vyvážený"
-
-msgctxt "@text"
-msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
-msgstr "Vyvážený profil je navržen tak, aby dosáhl rovnováhy mezi produktivitou, kvalitou povrchu, mechanickými vlastnostmi a rozměrnou přesností."
-
 #, python-brace-format
 #~ msgctxt "info:{0} gets replaced by a number of printers"
 #~ msgid "... and {0} other"
@@ -5577,10 +5601,6 @@ msgstr "Vyvážený profil je navržen tak, aby dosáhl rovnováhy mezi produkti
 #~ msgstr[1] "... a {0} další"
 #~ msgstr[2] "... a {0} dalších"
 
-#~ msgctxt "@action:inmenu menubar:edit"
-#~ msgid "Arrange Selection"
-#~ msgstr "Uspořádat selekci"
-
 #~ msgctxt "@tooltip:button"
 #~ msgid "Become a 3D printing expert with UltiMaker e-learning."
 #~ msgstr "Staňte se expertem na 3D tisk díky UltiMaker e-learningu."
@@ -5588,6 +5608,10 @@ msgstr "Vyvážený profil je navržen tak, aby dosáhl rovnováhy mezi produkti
 #~ msgctxt "@info:status"
 #~ msgid "Cura does not accurately display layers when Wire Printing is enabled."
 #~ msgstr "Když je aktivován síťový tisk, Cura přesně nezobrazuje vrstvy."
+
+#~ msgctxt "@label"
+#~ msgid "Default"
+#~ msgstr "Výchozí"
 
 #~ msgctxt "@label"
 #~ msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards."
