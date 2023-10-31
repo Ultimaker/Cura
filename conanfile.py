@@ -48,7 +48,7 @@ class CuraConan(ConanFile):
 
     def set_version(self):
         if not self.version:
-            self.version = "5.5.0-beta.1"
+            self.version = "5.6.0-alpha"
 
     @property
     def _pycharm_targets(self):
@@ -305,18 +305,18 @@ class CuraConan(ConanFile):
 
     def requirements(self):
         self.requires("boost/1.82.0")
-        self.requires("curaengine_grpc_definitions/latest@ultimaker/testing")
+        self.requires("curaengine_grpc_definitions/(latest)@ultimaker/testing")
         self.requires("zlib/1.2.13")
         self.requires("pyarcus/5.3.0")
         self.requires("curaengine/(latest)@ultimaker/testing")
         self.requires("pysavitar/5.3.0")
         self.requires("pynest2d/5.3.0")
-        self.requires("curaengine_plugin_gradual_flow/(latest)@ultimaker/testing")
+        self.requires("curaengine_plugin_gradual_flow/0.1.0")
         self.requires("uranium/(latest)@ultimaker/testing")
         self.requires("cura_binary_data/(latest)@ultimaker/testing")
         self.requires("cpython/3.10.4")
         if self.options.internal:
-            self.requires("cura_private_data/(latest)@ultimaker/testing")
+            self.requires("cura_private_data/(latest)@internal/testing")
             self.requires("fdm_materials/(latest)@internal/testing")
         else:
             self.requires("fdm_materials/(latest)@ultimaker/testing")
@@ -398,10 +398,10 @@ class CuraConan(ConanFile):
                 vb = VirtualBuildEnv(self)
                 vb.generate()
 
-                # FIXME: once m4, autoconf, automake are Conan V2 ready use self.win_bash and add gettext as base tool_requirement
-                cpp_info = self.dependencies["gettext"].cpp_info
-                pot = self.python_requires["translationextractor"].module.ExtractTranslations(self, cpp_info.bindirs[0])
-                pot.generate()
+                # # FIXME: once m4, autoconf, automake are Conan V2 ready use self.win_bash and add gettext as base tool_requirement
+                # cpp_info = self.dependencies["gettext"].cpp_info
+                # pot = self.python_requires["translationextractor"].module.ExtractTranslations(self, cpp_info.bindirs[0])
+                # pot.generate()
 
     def build(self):
         if self.options.devtools:

@@ -186,6 +186,13 @@ class ThreeMFReader(MeshReader):
             if len(um_node.getAllChildren()) == 1:
                 # We don't want groups of one, so move the node up one "level"
                 child_node = um_node.getChildren()[0]
+                # Move all the meshes of children so that toolhandles are shown in the correct place.
+                if child_node.getMeshData():
+                    extents = child_node.getMeshData().getExtents()
+                    move_matrix = Matrix()
+                    move_matrix.translate(-extents.center)
+                    child_node.setMeshData(child_node.getMeshData().getTransformed(move_matrix))
+                    child_node.translate(extents.center)
                 parent_transformation = um_node.getLocalTransformation()
                 child_transformation = child_node.getLocalTransformation()
                 child_node.setTransformation(parent_transformation.multiply(child_transformation))
@@ -226,7 +233,8 @@ class ThreeMFReader(MeshReader):
                 if mesh_data is not None:
                     extents = mesh_data.getExtents()
                     if extents is not None:
-                        center_vector = Vector(extents.center.x, extents.center.y, extents.center.z)
+                        # We use a different coordinate space, so flip Z and Y
+                        center_vector = Vector(extents.center.x, extents.center.z, extents.center.y)
                         transform_matrix.setByTranslation(center_vector)
                 transform_matrix.multiply(um_node.getLocalTransformation())
                 um_node.setTransformation(transform_matrix)

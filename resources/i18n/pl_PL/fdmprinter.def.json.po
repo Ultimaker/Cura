@@ -3052,7 +3052,6 @@ msgctxt "small_hole_max_size label"
 msgid "Small Hole Max Size"
 msgstr "Maksymalny rozmiar małych otworów"
 
-#, fuzzy
 msgctxt "cool_min_temperature label"
 msgid "Small Layer Printing Temperature"
 msgstr "Końcowa Temp. Druku"
@@ -3169,7 +3168,6 @@ msgctxt "support_bottom_distance label"
 msgid "Support Bottom Distance"
 msgstr "Odległ. na Dole Podpory"
 
-#, fuzzy
 msgctxt "support_bottom_wall_count label"
 msgid "Support Bottom Wall Line Count"
 msgstr "Ilość Ścianek Podpory"
@@ -3334,7 +3332,6 @@ msgctxt "support_interface_height label"
 msgid "Support Interface Thickness"
 msgstr "Grubość Połączenia Podpory"
 
-#, fuzzy
 msgctxt "support_interface_wall_count label"
 msgid "Support Interface Wall Line Count"
 msgstr "Ilość Ścianek Podpory"
@@ -3419,7 +3416,6 @@ msgctxt "support_roof_height label"
 msgid "Support Roof Thickness"
 msgstr "Grubość Dachu Podpory"
 
-#, fuzzy
 msgctxt "support_roof_wall_count label"
 msgid "Support Roof Wall Line Count"
 msgstr "Ilość Ścianek Podpory"
@@ -3760,7 +3756,6 @@ msgctxt "brim_width description"
 msgid "The distance from the model to the outermost brim line. A larger brim enhances adhesion to the build plate, but also reduces the effective print area."
 msgstr "Odległość od modelu do najbardziej wysuniętej na zewnątrz linii obrysu. Większy obrys zwiększa adhezję do stołu, ale również zmniejsza efektywny obszar wydruku."
 
-#, fuzzy
 msgctxt "interlocking_boundary_avoidance description"
 msgid "The distance from the outside of a model where interlocking structures will not be generated, measured in cells."
 msgstr "Odległość od końcówki dyszy, gdzie parkować głowicę gdy nie jest używana."
@@ -4277,17 +4272,14 @@ msgctxt "support_wall_count description"
 msgid "The number of walls with which to surround support infill. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
 msgstr "Liczba ścianek otaczających wypełnienie podpory. Dodanie ścianki może sprawić, że podpory będą drukowane solidniej i będą mogły lepiej podpierać nawisy, ale wydłuży to czas druku i zwiększy ilość użytego materiału."
 
-#, fuzzy
 msgctxt "support_bottom_wall_count description"
 msgid "The number of walls with which to surround support interface floor. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
 msgstr "Liczba ścianek otaczających wypełnienie podpory. Dodanie ścianki może sprawić, że podpory będą drukowane solidniej i będą mogły lepiej podpierać nawisy, ale wydłuży to czas druku i zwiększy ilość użytego materiału."
 
-#, fuzzy
 msgctxt "support_roof_wall_count description"
 msgid "The number of walls with which to surround support interface roof. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
 msgstr "Liczba ścianek otaczających wypełnienie podpory. Dodanie ścianki może sprawić, że podpory będą drukowane solidniej i będą mogły lepiej podpierać nawisy, ale wydłuży to czas druku i zwiększy ilość użytego materiału."
 
-#, fuzzy
 msgctxt "support_interface_wall_count description"
 msgid "The number of walls with which to surround support interface. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
 msgstr "Liczba ścianek otaczających wypełnienie podpory. Dodanie ścianki może sprawić, że podpory będą drukowane solidniej i będą mogły lepiej podpierać nawisy, ale wydłuży to czas druku i zwiększy ilość użytego materiału."
@@ -4636,7 +4628,6 @@ msgctxt "support_brim_width description"
 msgid "The width of the brim to print underneath the support. A larger brim enhances adhesion to the build plate, at the cost of some extra material."
 msgstr "Szerokość obrysu, który ma być wydrukowany pod podporami. Szerszy obrys to większa przyczepność do stołu, kosztem zużytego materiału."
 
-#, fuzzy
 msgctxt "interlocking_beam_width description"
 msgid "The width of the interlocking structure beams."
 msgstr "Szerokość wieży czyszczącej."
@@ -5396,6 +5387,78 @@ msgstr "Zygzak"
 msgctxt "travel description"
 msgid "travel"
 msgstr "ruch jałowy"
+
+msgctxt "group_outer_walls label"
+msgid "Group Outer Walls"
+msgstr "Grupuj ściany zewnętrzne"
+
+msgctxt "group_outer_walls description"
+msgid "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped."
+msgstr "Zewnętrzne ściany różnych wysp w tej samej warstwie są drukowane sekwencyjnie. Gdy jest włączone, ilość zmian przepływu jest ograniczona, ponieważ ściany są drukowane po jednym rodzaju na raz. Gdy jest wyłączone, liczba podróży między wyspami jest zmniejszana, ponieważ ściany na tych samych wyspach są grupowane."
+
+msgctxt "wall_0_material_flow_roofing label"
+msgid "Top Surface Outer Wall Flow"
+msgstr "Przepływ na najbardziej zewnętrznej linii górnej powierzchni"
+
+msgctxt "wall_0_material_flow_roofing description"
+msgid "Flow compensation on the top surface outermost wall line."
+msgstr "Kompensacja przepływu na najbardziej zewnętrznej linii górnej powierzchni."
+
+msgctxt "wall_x_material_flow_roofing label"
+msgid "Top Surface Inner Wall(s) Flow"
+msgstr "Przepływ wewnętrznej ściany(ach) górnej powierzchni"
+
+msgctxt "wall_x_material_flow_roofing description"
+msgid "Flow compensation on top surface wall lines for all wall lines except the outermost one."
+msgstr "Kompensacja przepływu na liniach ściany na powierzchni górnej dla wszystkich linii ściany, z wyjątkiem najbardziej zewnętrznej."
+
+msgctxt "speed_wall_0_roofing label"
+msgid "Top Surface Outer Wall Speed"
+msgstr "Prędkość najbardziej zewnętrznych ścian górnej powierzchni"
+
+msgctxt "speed_wall_0_roofing description"
+msgid "The speed at which the top surface outermost wall is printed."
+msgstr "Prędkość drukowania najbardziej zewnętrznych ścian górnej powierzchni."
+
+msgctxt "speed_wall_x_roofing label"
+msgid "Top Surface Inner Wall Speed"
+msgstr "Prędkość wewnętrznej powierzchni górnej ściany"
+
+msgctxt "speed_wall_x_roofing description"
+msgid "The speed at which the top surface inner walls are printed."
+msgstr "Prędkość drukowania wewnętrznych ścian górnej powierzchni."
+
+msgctxt "acceleration_wall_0_roofing label"
+msgid "Top Surface Outer Wall Acceleration"
+msgstr "Przyspieszenie zewnętrznej powierzchni górnej ściany"
+
+msgctxt "acceleration_wall_0_roofing description"
+msgid "The acceleration with which the top surface outermost walls are printed."
+msgstr "Przyspieszenie, z jakim są drukowane najbardziej zewnętrzne ściany górnej powierzchni."
+
+msgctxt "acceleration_wall_x_roofing label"
+msgid "Top Surface Inner Wall Acceleration"
+msgstr "Przyspieszenie wewnętrznej powierzchni górnej ściany"
+
+msgctxt "acceleration_wall_x_roofing description"
+msgid "The acceleration with which the top surface inner walls are printed."
+msgstr "Przyspieszenie, z jakim są drukowane wewnętrzne ścianki górnej powierzchni."
+
+msgctxt "jerk_wall_0_roofing label"
+msgid "Top Surface Outer Wall Jerk"
+msgstr "Szarpnięcie na wewnętrznych ścianach górnej powierzchni"
+
+msgctxt "jerk_wall_0_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface outermost walls are printed."
+msgstr "Maksymalna chwilowa zmiana prędkości, z jaką drukowane są wewnętrzne ściany górnej powierzchni."
+
+msgctxt "jerk_wall_x_roofing label"
+msgid "Top Surface Inner Wall Jerk"
+msgstr "Szarpnięcie na najbardziej zewnętrznych ścianach górnej powierzchni"
+
+msgctxt "jerk_wall_x_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface inner walls are printed."
+msgstr "Maksymalna chwilowa zmiana prędkości, z jaką drukowane są najbardziej zewnętrzne ściany górnej powierzchni."
 
 
 

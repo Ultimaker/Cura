@@ -3053,7 +3053,6 @@ msgctxt "small_hole_max_size label"
 msgid "Small Hole Max Size"
 msgstr "Kis lyuk maximális mérete"
 
-#, fuzzy
 msgctxt "cool_min_temperature label"
 msgid "Small Layer Printing Temperature"
 msgstr "Befejező nyomtatási hőmérséklet"
@@ -3170,7 +3169,6 @@ msgctxt "support_bottom_distance label"
 msgid "Support Bottom Distance"
 msgstr "Támasz alsó távolság"
 
-#, fuzzy
 msgctxt "support_bottom_wall_count label"
 msgid "Support Bottom Wall Line Count"
 msgstr "Támasz falak száma"
@@ -3335,7 +3333,6 @@ msgctxt "support_interface_height label"
 msgid "Support Interface Thickness"
 msgstr "Interfész vastagság"
 
-#, fuzzy
 msgctxt "support_interface_wall_count label"
 msgid "Support Interface Wall Line Count"
 msgstr "Támasz falak száma"
@@ -3420,7 +3417,6 @@ msgctxt "support_roof_height label"
 msgid "Support Roof Thickness"
 msgstr "Felső interfész vastagság"
 
-#, fuzzy
 msgctxt "support_roof_wall_count label"
 msgid "Support Roof Wall Line Count"
 msgstr "Támasz falak száma"
@@ -3761,7 +3757,6 @@ msgctxt "brim_width description"
 msgid "The distance from the model to the outermost brim line. A larger brim enhances adhesion to the build plate, but also reduces the effective print area."
 msgstr "Az a szélesség, amilyen széles lesz a Perem, a nyomtatott tárgy szélétől számítva. A nagyobb perem nagyobb tapadást fog eredményeznim viszont csökkenti az effektív használható nyomtatási területet."
 
-#, fuzzy
 msgctxt "interlocking_boundary_avoidance description"
 msgid "The distance from the outside of a model where interlocking structures will not be generated, measured in cells."
 msgstr "Ez a távolság a fúvóka végétől mért távolság, ameddig a nyomtatószálat vissza szükséges húzni, ha nem használjuk az adott extrudert."
@@ -4278,17 +4273,14 @@ msgctxt "support_wall_count description"
 msgid "The number of walls with which to surround support infill. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
 msgstr "Azoknak a falaknak a száma, amellyel a támogatást körül lehet venni. A fal hozzáadása megbízhatóbbá teszi a nyomtatást és jobban támaszthatja a túlnyúlásokat, de növeli a nyomtatási időt és a felhasznált anyagot."
 
-#, fuzzy
 msgctxt "support_bottom_wall_count description"
 msgid "The number of walls with which to surround support interface floor. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
 msgstr "Azoknak a falaknak a száma, amellyel a támogatást körül lehet venni. A fal hozzáadása megbízhatóbbá teszi a nyomtatást és jobban támaszthatja a túlnyúlásokat, de növeli a nyomtatási időt és a felhasznált anyagot."
 
-#, fuzzy
 msgctxt "support_roof_wall_count description"
 msgid "The number of walls with which to surround support interface roof. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
 msgstr "Azoknak a falaknak a száma, amellyel a támogatást körül lehet venni. A fal hozzáadása megbízhatóbbá teszi a nyomtatást és jobban támaszthatja a túlnyúlásokat, de növeli a nyomtatási időt és a felhasznált anyagot."
 
-#, fuzzy
 msgctxt "support_interface_wall_count description"
 msgid "The number of walls with which to surround support interface. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
 msgstr "Azoknak a falaknak a száma, amellyel a támogatást körül lehet venni. A fal hozzáadása megbízhatóbbá teszi a nyomtatást és jobban támaszthatja a túlnyúlásokat, de növeli a nyomtatási időt és a felhasznált anyagot."
@@ -4637,7 +4629,6 @@ msgctxt "support_brim_width description"
 msgid "The width of the brim to print underneath the support. A larger brim enhances adhesion to the build plate, at the cost of some extra material."
 msgstr "A támasz alá nyomtatandó perem szélessége. A nagyobb peremek javítják a tálcához való tapadást, viszon extra anyagfelhasználást is jelent."
 
-#, fuzzy
 msgctxt "interlocking_beam_width description"
 msgid "The width of the interlocking structure beams."
 msgstr "Az előtorony szélessége."
@@ -5397,6 +5388,78 @@ msgstr "Cikcakk"
 msgctxt "travel description"
 msgid "travel"
 msgstr "fej átpozícionálás"
+
+msgctxt "group_outer_walls label"
+msgid "Group Outer Walls"
+msgstr "Külső falak csoportosítása"
+
+msgctxt "group_outer_walls description"
+msgid "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped."
+msgstr "Az azonos rétegben lévő különböző szigetek külső falait sorban nyomtatják. Amikor engedélyezve van, korlátozódik az áramlás változásainak mértéke, mert a falak típusonként nyomtathatók ki. Amikor letiltva van, az utazások számát a szigetek között csökkenti, mert ugyanazon szigeteken lévő falak csoportosítva vannak."
+
+msgctxt "wall_0_material_flow_roofing label"
+msgid "Top Surface Outer Wall Flow"
+msgstr "A felső felület legkülső falának áramlása"
+
+msgctxt "wall_0_material_flow_roofing description"
+msgid "Flow compensation on the top surface outermost wall line."
+msgstr "Áramlási kompenzáció a felső felület legkülső falvonalán."
+
+msgctxt "wall_x_material_flow_roofing label"
+msgid "Top Surface Inner Wall(s) Flow"
+msgstr "A felső felület belső falainak áramlása"
+
+msgctxt "wall_x_material_flow_roofing description"
+msgid "Flow compensation on top surface wall lines for all wall lines except the outermost one."
+msgstr "Áramlás kompenzáció a felső felület falvonalain az összes falvonal kivételével a legkülsőn."
+
+msgctxt "speed_wall_0_roofing label"
+msgid "Top Surface Outer Wall Speed"
+msgstr "A felső felület legkülső falának sebessége"
+
+msgctxt "speed_wall_0_roofing description"
+msgid "The speed at which the top surface outermost wall is printed."
+msgstr "Az a sebesség, amellyel a felső felület legkülső falai kinyomtatnak."
+
+msgctxt "speed_wall_x_roofing label"
+msgid "Top Surface Inner Wall Speed"
+msgstr "A felső felület belső falának sebessége"
+
+msgctxt "speed_wall_x_roofing description"
+msgid "The speed at which the top surface inner walls are printed."
+msgstr "Az a sebesség, amellyel a felső felület belső falai kinyomtatnak."
+
+msgctxt "acceleration_wall_0_roofing label"
+msgid "Top Surface Outer Wall Acceleration"
+msgstr "A felső felület külső falának gyorsulása"
+
+msgctxt "acceleration_wall_0_roofing description"
+msgid "The acceleration with which the top surface outermost walls are printed."
+msgstr "Az a gyorsulás, amellyel a felső felület legkülső falai kinyomtatnak."
+
+msgctxt "acceleration_wall_x_roofing label"
+msgid "Top Surface Inner Wall Acceleration"
+msgstr "A felső felület belső falának gyorsulása"
+
+msgctxt "acceleration_wall_x_roofing description"
+msgid "The acceleration with which the top surface inner walls are printed."
+msgstr "Az a gyorsulás, amellyel a felső felület belső falai kinyomtatnak."
+
+msgctxt "jerk_wall_0_roofing label"
+msgid "Top Surface Outer Wall Jerk"
+msgstr "A felső felület belső falának hirtelen gyorsulása"
+
+msgctxt "jerk_wall_0_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface outermost walls are printed."
+msgstr "A legnagyobb pillanatnyi sebességváltozás, amellyel a felső felület belső falai kinyomtatnak."
+
+msgctxt "jerk_wall_x_roofing label"
+msgid "Top Surface Inner Wall Jerk"
+msgstr "A felső felület legkülső falának hirtelen gyorsulása"
+
+msgctxt "jerk_wall_x_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface inner walls are printed."
+msgstr "A legnagyobb pillanatnyi sebességváltozás, amellyel a felső felület legkülső falai kinyomtatnak."
 
 
 
