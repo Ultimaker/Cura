@@ -77,7 +77,7 @@ class MakerbotWriter(MeshWriter):
                      "9f52c514-bb53-46a6-8c0c-d507cd6ee742": "abs",
                      "0f9a2a91-f9d6-4b6b-bd9b-a120a29391be": "abs",
                      "d3e972f2-68c0-4d2f-8cfd-91028dfc3381": "abs",
-                     "495a0ce5-9daf-4a16-b7b2-06856d82394d": "abs-cf",
+                     "495a0ce5-9daf-4a16-b7b2-06856d82394d": "abs-cf10",
                      "cb76bd6e-91fd-480c-a191-12301712ec77": "abs-wss1",
                      "a017777e-3f37-4d89-a96c-dc71219aac77": "abs-wss1",
                      "4d96000d-66de-4d54-a580-91827dcfd28f": "abs-wss1",
