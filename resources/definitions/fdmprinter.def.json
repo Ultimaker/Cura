@@ -6146,7 +6146,7 @@
                 "layer_0_z_overlap":
                 {
                     "label": "Initial Layer Z Overlap",
-                    "description": "Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount.",
+                    "description": "Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount.\nIt may be noted that sometimes the second layer is printed below initial layer because of this setting. This is intended behavior",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.22,
