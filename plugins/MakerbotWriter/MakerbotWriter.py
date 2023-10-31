@@ -129,7 +129,7 @@ class MakerbotWriter(MeshWriter):
             self.setInformation(catalog.i18nc("@error:not supported", "MakerbotWriter does not support text mode."))
             return False
 
-        # The GCodeWriter plugin is bundled, so it must at least exist. (What happens if people disable that plugin?)
+        # The GCodeWriter plugin is always available since it is in the "required" list of plugins.
         gcode_writer = PluginRegistry.getInstance().getPluginObject("GCodeWriter")
 
         if gcode_writer is None:
