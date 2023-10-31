@@ -35,7 +35,7 @@ class CloudClusterResponse(BaseModel):
         self.host_version = host_version
         self.host_internal_ip = host_internal_ip
         self.friendly_name = friendly_name
-        self.printer_type = NetworkedPrinterOutputDevice.getPrinterTypeIfMakerBot(printer_type)
+        self.printer_type = NetworkedPrinterOutputDevice.applyPrinterTypeMapping(printer_type)
         self.printer_count = printer_count
         self.capabilities = capabilities if capabilities is not None else []
         super().__init__(**kwargs)
