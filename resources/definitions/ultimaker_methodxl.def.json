@@ -1,0 +1,43 @@
+{
+    "version": 2,
+    "name": "Makerbot Method XL",
+    "inherits": "ultimaker_methodx",
+    "metadata":
+    {
+        "visible": true,
+        "author": "Ultimaker",
+        "manufacturer": "Ultimaker B.V.",
+        "file_formats": "application/x-makerbot",
+        "platform": "ultimaker_method_xl_platform.stl",
+        "has_machine_materials": true,
+        "has_machine_quality": true,
+        "has_materials": true,
+        "has_variants": true,
+        "machine_extruder_trains":
+        {
+            "0": "ultimaker_methodxl_extruder_left",
+            "1": "ultimaker_methodxl_extruder_right"
+        },
+        "platform_offset": [
+            0,
+            0,
+            0
+        ],
+        "platform_texture": "MakerbotMethod.png",
+        "preferred_quality_type": "draft",
+        "supports_network_connection": true,
+        "supports_usb_connection": false,
+        "variants_name": "Extruder",
+        "weight": -1
+    },
+    "overrides":
+    {
+        "machine_depth": { "default_value": 305 },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 317 },
+        "machine_name": { "default_value": "Makerbot Method XL" },
+        "machine_width": { "default_value": 305 },
+        "material_shrinkage_percentage_z": { "resolve": "sum(extruderValues(\"material_shrinkage_percentage_z\")) / len(extruderValues(\"material_shrinkage_percentage_z\"))" },
+        "speed_travel": { "value": 500 }
+    }
+}
