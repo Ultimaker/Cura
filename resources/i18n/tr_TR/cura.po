@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-20 15:53+0200\n"
+"POT-Creation-Date: 2023-10-31 19:13+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,6 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
+#, python-format
 msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm."
 msgid "%(width).1f x %(depth).1f x %(height).1f mm"
 msgstr "%(width).1f x %(depth).1f x %(height).1f mm"
@@ -137,8 +138,14 @@ msgid "*You will need to restart the application for these changes to have effec
 msgstr "*Bu değişikliklerin etkili olması için uygulamayı yeniden başlatmanız gerekecektir."
 
 msgctxt "@text"
-msgid "- Add material profiles and plug-ins from the Marketplace\n- Back-up and sync your material profiles and plug-ins\n- Share ideas and get help from 48,000+ users in the UltiMaker community"
-msgstr "- Marketplace'den malzeme profilleri ve eklentiler ekleyin\n- Malzeme profillerinizi ve eklentilerinizi yedekleyin ve senkronize edin\n- UltiMaker topluluğunda fikirlerinizi paylaşın ve 48.000'den fazla kullanıcıdan yardım alın"
+msgid ""
+"- Add material profiles and plug-ins from the Marketplace\n"
+"- Back-up and sync your material profiles and plug-ins\n"
+"- Share ideas and get help from 48,000+ users in the UltiMaker community"
+msgstr ""
+"- Marketplace'den malzeme profilleri ve eklentiler ekleyin\n"
+"- Malzeme profillerinizi ve eklentilerinizi yedekleyin ve senkronize edin\n"
+"- UltiMaker topluluğunda fikirlerinizi paylaşın ve 48.000'den fazla kullanıcıdan yardım alın"
 
 msgctxt "@heading"
 msgid "-- incomplete --"
@@ -164,6 +171,14 @@ msgctxt "@item:inlistbox"
 msgid "3MF File"
 msgstr "3MF Dosyası"
 
+msgctxt "name"
+msgid "3MF Reader"
+msgstr "3MF Okuyucu"
+
+msgctxt "name"
+msgid "3MF Writer"
+msgstr "3MF Yazıcı"
+
 msgctxt "@error:zip"
 msgid "3MF Writer plug-in is corrupt."
 msgstr "3MF Writer eklentisi bozuk."
@@ -184,29 +199,57 @@ msgctxt "@label %i will be replaced with a profile name"
 msgid "<b>Only user changed settings will be saved in the custom profile.</b><br/>For materials that support it, the new custom profile will inherit properties from <b>%1</b>."
 msgstr "<b>Özel profilde yalnızca kullanıcı tarafından değiştirilen ayarlar kaydedilir.</b><br/>Yeni özel profil, bunu destekleyen malzemeler için <b>%1</b>adresindeki özellikleri devralır."
 
+#, python-brace-format
 msgctxt "@label OpenGL renderer"
 msgid "<li>OpenGL Renderer: {renderer}</li>"
 msgstr "<li>OpenGL Oluşturucusu: {renderer}</li>"
 
+#, python-brace-format
 msgctxt "@label OpenGL vendor"
 msgid "<li>OpenGL Vendor: {vendor}</li>"
 msgstr "<li>OpenGL Satıcısı: {vendor}</li>"
 
+#, python-brace-format
 msgctxt "@label OpenGL version"
 msgid "<li>OpenGL Version: {version}</li>"
 msgstr "<li>OpenGL Sürümü: {version}</li>"
 
 msgctxt "@label crash message"
-msgid "<p><b>A fatal error has occurred in Cura. Please send us this Crash Report to fix the problem</p></b>\n            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n        "
-msgstr "<p><b>Cura’da onarılamaz bir hata oluştu. Lütfen sorunu çözmek için bize Çökme Raporunu gönderin</p></b>\n            <p>Sunucularımıza otomatik olarak bir hata raporu yüklemek için lütfen &quot;Rapor gönder&quot; düğmesini kullanın</p>\n        "
+msgid ""
+"<p><b>A fatal error has occurred in Cura. Please send us this Crash Report to fix the problem</p></b>\n"
+"            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n"
+"        "
+msgstr ""
+"<p><b>Cura’da onarılamaz bir hata oluştu. Lütfen sorunu çözmek için bize Çökme Raporunu gönderin</p></b>\n"
+"            <p>Sunucularımıza otomatik olarak bir hata raporu yüklemek için lütfen &quot;Rapor gönder&quot; düğmesini kullanın</p>\n"
+"        "
 
 msgctxt "@label crash message"
-msgid "<p><b>Oops, UltiMaker Cura has encountered something that doesn't seem right.</p></b>\n                    <p>We encountered an unrecoverable error during start up. It was possibly caused by some incorrect configuration files. We suggest to backup and reset your configuration.</p>\n                    <p>Backups can be found in the configuration folder.</p>\n                    <p>Please send us this Crash Report to fix the problem.</p>\n                "
-msgstr "<p><b>Ultimaker Cura doğru görünmeyen bir şeyle karşılaştı.</p></b>\n                    <p>Başlatma esnasında kurtarılamaz bir hata ile karşılaştık. Muhtemelen bazı hatalı yapılandırma dosyalarından kaynaklanıyordu. Yapılandırmanızı yedekleyip sıfırlamanızı öneriyoruz.</p>\n                    <p>Yedekler yapılandırma klasöründe bulunabilir.</p>\n                    <p>Sorunu düzeltmek için lütfen bu Çökme Raporunu bize gönderin.</p>\n                "
+msgid ""
+"<p><b>Oops, UltiMaker Cura has encountered something that doesn't seem right.</p></b>\n"
+"                    <p>We encountered an unrecoverable error during start up. It was possibly caused by some incorrect configuration files. We suggest to backup and reset your configuration.</p>\n"
+"                    <p>Backups can be found in the configuration folder.</p>\n"
+"                    <p>Please send us this Crash Report to fix the problem.</p>\n"
+"                "
+msgstr ""
+"<p><b>Ultimaker Cura doğru görünmeyen bir şeyle karşılaştı.</p></b>\n"
+"                    <p>Başlatma esnasında kurtarılamaz bir hata ile karşılaştık. Muhtemelen bazı hatalı yapılandırma dosyalarından kaynaklanıyordu. Yapılandırmanızı yedekleyip sıfırlamanızı öneriyoruz.</p>\n"
+"                    <p>Yedekler yapılandırma klasöründe bulunabilir.</p>\n"
+"                    <p>Sorunu düzeltmek için lütfen bu Çökme Raporunu bize gönderin.</p>\n"
+"                "
 
+#, python-brace-format
 msgctxt "@info:status"
-msgid "<p>One or more 3D models may not print optimally due to the model size and material configuration:</p>\n<p>{model_names}</p>\n<p>Find out how to ensure the best possible print quality and reliability.</p>\n<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
-msgstr "<p>Model boyutu ve model yapılandırması nedeniyle bir veya daha fazla 3D model optimum yazdırılamayabilir:</p>\n<p>{model_names}</p>\n<p>En iyi kalite ve güvenilirliği nasıl elde edeceğinizi öğrenin.</p>\n<p><a href=\"https://ultimaker.com/3D-model-assistant\">Yazdırma kalitesi kılavuzunu görüntüleyin</a></p>"
+msgid ""
+"<p>One or more 3D models may not print optimally due to the model size and material configuration:</p>\n"
+"<p>{model_names}</p>\n"
+"<p>Find out how to ensure the best possible print quality and reliability.</p>\n"
+"<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
+msgstr ""
+"<p>Model boyutu ve model yapılandırması nedeniyle bir veya daha fazla 3D model optimum yazdırılamayabilir:</p>\n"
+"<p>{model_names}</p>\n"
+"<p>En iyi kalite ve güvenilirliği nasıl elde edeceğinizi öğrenin.</p>\n"
+"<p><a href=\"https://ultimaker.com/3D-model-assistant\">Yazdırma kalitesi kılavuzunu görüntüleyin</a></p>"
 
 msgctxt "@label"
 msgid "A USB print is in progress, closing Cura will stop this print. Are you sure?"
@@ -225,6 +268,10 @@ msgstr "Devam eden bir baskı var. Cura, önceki baskı tamamlanmadan USB aracı
 msgctxt "@item:inlistbox"
 msgid "AMF File"
 msgstr "AMF Dosyası"
+
+msgctxt "name"
+msgid "AMF Reader"
+msgstr "AMF Okuyucu"
 
 msgctxt "@label"
 msgid "Abort"
@@ -261,6 +308,10 @@ msgstr "Hakkında..."
 msgctxt "@button"
 msgid "Accept"
 msgstr "Kabul et"
+
+msgctxt "description"
+msgid "Accepts G-Code and sends them to a printer. Plugin can also update firmware."
+msgstr "G-Code’ları kabul eder ve bir yazıcıya gönderir. Eklenti aynı zamanda üretici sürümünü güncelleyebilir."
 
 msgctxt "@label"
 msgid "Account synced"
@@ -354,6 +405,7 @@ msgctxt "@button"
 msgid "Add printer manually"
 msgstr "Yazıcıyı manuel olarak ekle"
 
+#, python-brace-format
 msgctxt "info:status Filled in with printer name and printer model."
 msgid "Adding printer {name} ({model}) from your account"
 msgstr "{name} yazıcısı ({model}) hesabınızdan ekleniyor"
@@ -390,9 +442,22 @@ msgctxt "@button"
 msgid "Agree"
 msgstr "Kabul ediyorum"
 
+msgctxt "@item:inlistbox"
+msgid "All Files (*)"
+msgstr "Tüm Dosyalar (*)"
+
+#, python-brace-format
+msgctxt "@item:inlistbox"
+msgid "All Supported Types ({0})"
+msgstr "Tüm desteklenen türler ({0})"
+
 msgctxt "@text:window"
 msgid "Allow sending anonymous data"
 msgstr "Anonim veri gönderilmesine izin ver"
+
+msgctxt "description"
+msgid "Allows loading and displaying G-code files."
+msgstr "G-code dosyalarının yüklenmesine ve görüntülenmesine olanak tanır."
 
 msgctxt "@option:discardOrKeep"
 msgid "Always ask me this"
@@ -466,6 +531,7 @@ msgctxt "@label %1 is the name of a print job."
 msgid "Are you sure you want to move %1 to the top of the queue?"
 msgstr "%1 öğesini kuyruğun en üstüne taşımak ister misiniz?"
 
+#, python-brace-format
 msgctxt "@message {printer_name} is replaced with the name of the printer"
 msgid "Are you sure you want to remove {printer_name} temporarily?"
 msgstr "{printer_name} yazıcısını geçici olarak kaldırmak istediğinizden emin misiniz?"
@@ -474,6 +540,11 @@ msgctxt "@info:question"
 msgid "Are you sure you want to start a new project? This will clear the build plate and any unsaved settings."
 msgstr "Yeni bir proje başlatmak istediğinizden emin misiniz? Bu işlem yapı levhasını ve kaydedilmemiş tüm ayarları silecektir."
 
+msgctxt "@label (%1 is object name)"
+msgid "Are you sure you wish to remove %1? This cannot be undone!"
+msgstr "%1’i kaldırmak istediğinizden emin misiniz? Bu eylem geri alınamaz!"
+
+#, python-brace-format
 msgctxt "@label {0} is the name of a printer that's about to be deleted."
 msgid "Are you sure you wish to remove {0}? This cannot be undone!"
 msgstr "{0} yazıcısını kaldırmak istediğinizden emin misiniz? Bu işlem geri alınamaz!"
@@ -485,6 +556,10 @@ msgstr "Tüm Modelleri Düzenle"
 msgctxt "@action:inmenu menubar:edit"
 msgid "Arrange All Models in a grid"
 msgstr "Tüm Modelleri bir ızgarada düzenleyin"
+
+msgctxt "@action:inmenu menubar:edit"
+msgid "Arrange Selection"
+msgstr ""
 
 msgctxt "@label:button"
 msgid "Ask a question"
@@ -534,6 +609,10 @@ msgctxt "@action:button"
 msgid "Backup and Reset Configuration"
 msgstr "Yapılandırmayı Yedekle ve Sıfırla"
 
+msgctxt "description"
+msgid "Backup and restore your configuration."
+msgstr "Yapılandırmanızı yedekleyin ve geri yükleyin."
+
 msgctxt "@text"
 msgid "Backup and sync your material settings and plugins"
 msgstr "Malzeme ayarlarınızı ve eklentilerinizi yedekleyin ve senkronize edin"
@@ -545,6 +624,10 @@ msgstr "Cura ayarlarınızı yedekleyin ve senkronize edin."
 msgctxt "@info:title"
 msgid "Backups"
 msgstr "Yedeklemeler"
+
+msgctxt "@label"
+msgid "Balanced"
+msgstr "Dengeli"
 
 msgctxt "@action:label"
 msgid "Base (mm)"
@@ -622,10 +705,12 @@ msgctxt "@label"
 msgid "Can't connect to your UltiMaker printer?"
 msgstr "UltiMaker yazıcınıza bağlanamıyor musunuz?"
 
+#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Can't import profile from <filename>{0}</filename> before a printer is added."
 msgstr "Yazıcı eklenmeden önce profil, <filename>{0}</filename> dosyasından içe aktarılamaz."
 
+#, python-brace-format
 msgctxt "@info:status"
 msgid "Can't open any other file if G-code is loading. Skipped importing {0}"
 msgstr "G-code yüklenirken başka bir dosya açılamaz. {0} içe aktarma atlandı"
@@ -633,6 +718,10 @@ msgstr "G-code yüklenirken başka bir dosya açılamaz. {0} içe aktarma atland
 msgctxt "@info:error"
 msgid "Can't write to UFP file:"
 msgstr "UFP dosyasına yazamıyor:"
+
+msgctxt "@action:button"
+msgid "Cancel"
+msgstr "İptal Et"
 
 msgctxt "@button"
 msgid "Cancel"
@@ -694,8 +783,21 @@ msgctxt "@label"
 msgid "Checking..."
 msgstr "Kontrol ediliyor..."
 
+msgctxt "description"
+msgid "Checks for firmware updates."
+msgstr "Bellenim güncellemelerini denetler."
+
+msgctxt "description"
+msgid "Checks models and print configuration for possible printing issues and give suggestions."
+msgstr "Olası yazdırma sorunlarına karşı modelleri ve yazdırma yapılandırmasını kontrol eder ve öneriler verir."
+
 msgctxt "@label"
-msgid "Chooses between the techniques available to generate support. \n\n\"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. \n\n\"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
+msgid ""
+"Chooses between the techniques available to generate support. \n"
+"\n"
+"\"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. \n"
+"\n"
+"\"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
 msgstr "Destek oluşturmak için kullanılabilir teknikler arasından seçim yapar. \"Normal\" destek, çıkıntılı parçaların hemen altında bir destek yapısı oluşturur ve bu alanları dümdüz aşağı indirir. \"Ağaç\"destek, çıkıntılı alanlara doğru dallar oluşturur ve bu dalların uçlarıyla model desteklenir; dallar modelin etrafına sarılarak yapı plakasından olabildiğince destek alır."
 
 msgctxt "@action:inmenu menubar:edit"
@@ -774,6 +876,14 @@ msgctxt "@item:inlistbox"
 msgid "Compressed G-code File"
 msgstr "Sıkıştırılmış G-code Dosyası"
 
+msgctxt "name"
+msgid "Compressed G-code Reader"
+msgstr "Sıkıştırılmış G-code Okuyucusu"
+
+msgctxt "name"
+msgid "Compressed G-code Writer"
+msgstr "Sıkıştırılmış G-code Yazıcısı"
+
 msgctxt "@title:window"
 msgid "Configuration Changes"
 msgstr "Yapılandırma Değişiklikleri"
@@ -810,6 +920,10 @@ msgctxt "@title:window"
 msgid "Confirm Diameter Change"
 msgstr "Çap Değişikliğini Onayla"
 
+msgctxt "@title:window"
+msgid "Confirm Remove"
+msgstr "Kaldırmayı Onayla"
+
 msgctxt "@action:button"
 msgid "Connect"
 msgstr "Bağlan"
@@ -841,6 +955,10 @@ msgstr "USB ile bağlı"
 msgctxt "@info:status"
 msgid "Connected via cloud"
 msgstr "Bulut üzerinden bağlı"
+
+msgctxt "description"
+msgid "Connects to the Digital Library, allowing Cura to open files from and save files to the Digital Library."
+msgstr "Digital Library'ye bağlanarak Cura'nın Digital Library'deki dosyaları açmasına ve kaydetmesine olanak tanır."
 
 msgctxt "@tooltip:button"
 msgid "Consult the UltiMaker Community."
@@ -882,6 +1000,7 @@ msgctxt "@info:backup_failed"
 msgid "Could not create archive from user data directory: {}"
 msgstr "Kullanıcı veri dizininden arşiv oluşturulamadı: {}"
 
+#, python-brace-format
 msgctxt "@info:status Don't translate the tag {device}!"
 msgid "Could not find a file name when trying to write to {device}."
 msgstr "{device} üzerine yazmaya çalışırken dosya adı bulunamadı."
@@ -893,6 +1012,10 @@ msgstr "Malzeme <filename>%1</filename> dosyasına içe aktarılamadı: <message
 msgctxt "@info:error"
 msgid "Could not interpret the server's response."
 msgstr "Sunucunun yanıtı yorumlanamadı."
+
+msgctxt "@error:load"
+msgid "Could not load GCodeWriter plugin. Try to re-enable the plugin."
+msgstr ""
 
 msgctxt "@info:error"
 msgid "Could not reach Marketplace."
@@ -906,6 +1029,12 @@ msgctxt "@message:text"
 msgid "Could not save material archive to {}:"
 msgstr "Malzeme arşivi {} konumuna kaydedilemedi:"
 
+#, python-brace-format
+msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
+msgid "Could not save to <filename>{0}</filename>: <message>{1}</message>"
+msgstr "<filename>{0}</filename> dosyasına kaydedilemedi: <message>{1}</message>"
+
+#, python-brace-format
 msgctxt "@info:status"
 msgid "Could not save to removable drive {0}: {1}"
 msgstr "Çıkarılabilir aygıta {0} kaydedilemedi: {1}"
@@ -914,17 +1043,32 @@ msgctxt "@info:text"
 msgid "Could not upload the data to the printer."
 msgstr "Veri yazıcıya yüklenemedi."
 
+#, python-brace-format
 msgctxt "@info:plugin_failed"
-msgid "Couldn't start EnginePlugin: {self._plugin_id}\nNo permission to execute process."
-msgstr "EnginePlugin başlatılamadı: {self._plugin_id}\nİşlem yürütme izni yok."
+msgid ""
+"Couldn't start EnginePlugin: {self._plugin_id}\n"
+"No permission to execute process."
+msgstr ""
+"EnginePlugin başlatılamadı: {self._plugin_id}\n"
+"İşlem yürütme izni yok."
 
+#, python-brace-format
 msgctxt "@info:plugin_failed"
-msgid "Couldn't start EnginePlugin: {self._plugin_id}\nOperating system is blocking it (antivirus?)"
-msgstr "EnginePlugin başlatılamadı: {self._plugin_id}\nİşletim sistemi tarafından engelleniyor (antivirüs?)"
+msgid ""
+"Couldn't start EnginePlugin: {self._plugin_id}\n"
+"Operating system is blocking it (antivirus?)"
+msgstr ""
+"EnginePlugin başlatılamadı: {self._plugin_id}\n"
+"İşletim sistemi tarafından engelleniyor (antivirüs?)"
 
+#, python-brace-format
 msgctxt "@info:plugin_failed"
-msgid "Couldn't start EnginePlugin: {self._plugin_id}\nResource is temporarily unavailable"
-msgstr "EnginePlugin başlatılamadı: {self._plugin_id}\nKaynak geçici olarak kullanılamıyor"
+msgid ""
+"Couldn't start EnginePlugin: {self._plugin_id}\n"
+"Resource is temporarily unavailable"
+msgstr ""
+"EnginePlugin başlatılamadı: {self._plugin_id}\n"
+"Kaynak geçici olarak kullanılamıyor"
 
 msgctxt "@title:window"
 msgid "Crash Report"
@@ -966,6 +1110,10 @@ msgctxt "@tooltip:button"
 msgid "Create print projects in Digital Library."
 msgstr "Digital Library'de baskı projeleri oluşturun."
 
+msgctxt "description"
+msgid "Creates an eraser mesh to block the printing of support in certain places"
+msgstr "Belirli yerlerde desteğin yazdırılmasını engellemek için bir silici yüzey oluşturur"
+
 msgctxt "@info:backup_status"
 msgid "Creating your backup..."
 msgstr "Yedeklemeniz oluşturuluyor..."
@@ -978,9 +1126,21 @@ msgctxt "@title:window"
 msgid "Cura Backups"
 msgstr "Cura Yedeklemeleri"
 
+msgctxt "name"
+msgid "Cura Backups"
+msgstr "Cura Yedeklemeleri"
+
 msgctxt "@item:inlistbox"
 msgid "Cura Profile"
 msgstr "Cura Profili"
+
+msgctxt "name"
+msgid "Cura Profile Reader"
+msgstr "Cura Profil Okuyucu"
+
+msgctxt "name"
+msgid "Cura Profile Writer"
+msgstr "Cura Profili Yazıcı"
 
 msgctxt "@item:inlistbox"
 msgid "Cura Project 3MF file"
@@ -994,13 +1154,18 @@ msgctxt "@title:window"
 msgid "Cura can't start"
 msgstr "Cura başlatılamıyor"
 
+#, python-brace-format
 msgctxt "@info:status"
 msgid "Cura has detected material profiles that were not yet installed on the host printer of group {0}."
 msgstr "Cura, henüz {0} grubunun ana yazıcısına yüklenmemiş malzeme profilleri tespit etti."
 
 msgctxt "@info:credit"
-msgid "Cura is developed by UltiMaker in cooperation with the community.\nCura proudly uses the following open source projects:"
-msgstr "Cura, topluluk iş birliği ile UltiMaker tarafından geliştirilmiştir.\nCura aşağıdaki açık kaynak projelerini gururla kullanmaktadır:"
+msgid ""
+"Cura is developed by UltiMaker in cooperation with the community.\n"
+"Cura proudly uses the following open source projects:"
+msgstr ""
+"Cura, topluluk iş birliği ile UltiMaker tarafından geliştirilmiştir.\n"
+"Cura aşağıdaki açık kaynak projelerini gururla kullanmaktadır:"
 
 msgctxt "@label"
 msgid "Cura language"
@@ -1009,6 +1174,18 @@ msgstr "Cura dili"
 msgctxt "@label Cura version number"
 msgid "Cura version"
 msgstr "Cura sürümü"
+
+msgctxt "name"
+msgid "CuraEngine Backend"
+msgstr "CuraEngine Arka Uç"
+
+msgctxt "description"
+msgid "CuraEngine plugin for gradually smoothing the flow to limit high-flow jumps"
+msgstr "Yüksek akışlı sıçramaları sınırlamak amacıyla akışı kademeli olarak düzelten CuraEngine eklentisi"
+
+msgctxt "name"
+msgid "CuraEngineGradualFlow"
+msgstr "CuraEngineGradualFlow"
 
 msgctxt "@label"
 msgid "Currency:"
@@ -1087,10 +1264,6 @@ msgid "Decline and remove from account"
 msgstr "Reddet ve hesaptan kaldır"
 
 msgctxt "@info:No intent profile selected"
-msgid "Default"
-msgstr "Varsayılan"
-
-msgctxt "@label"
 msgid "Default"
 msgstr "Varsayılan"
 
@@ -1266,10 +1439,12 @@ msgctxt "@action:button"
 msgid "Eject"
 msgstr "Çıkar"
 
+#, python-brace-format
 msgctxt "@action"
 msgid "Eject removable device {0}"
 msgstr "Çıkarılabilir aygıtı çıkar {0}"
 
+#, python-brace-format
 msgctxt "@info:status"
 msgid "Ejected {0}. You can now safely remove the drive."
 msgstr "Çıkarıldı {0}. Şimdi sürücüyü güvenle kaldırabilirsiniz."
@@ -1293,6 +1468,10 @@ msgstr "Kenarlık veya radye yazdırmayı etkinleştirin. Bu, nesnenizin etrafı
 msgctxt "@label"
 msgid "Enabled"
 msgstr "Etkin"
+
+msgctxt "description"
+msgid "Enables ability to generate printable geometry from 2D image files."
+msgstr "2D resim dosyasından yazdırılabilir geometri oluşturulmasını sağlar."
 
 msgctxt "@title:label"
 msgid "End G-code"
@@ -1321,6 +1500,10 @@ msgstr "Ağdaki yazıcınızın IP adresini girin."
 msgctxt "@text"
 msgid "Enter your printer's IP address."
 msgstr "Yazıcınızın IP adresini girin."
+
+msgctxt "@info:title"
+msgid "Error"
+msgstr "Hata"
 
 msgctxt "@title:groupbox"
 msgid "Error traceback"
@@ -1366,6 +1549,7 @@ msgctxt "@info:title"
 msgid "Export succeeded"
 msgstr "Dışa aktarma başarılı"
 
+#, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Exported profile to <filename>{0}</filename>"
 msgstr "Profil <filename>{0}</filename> dosyasına aktarıldı"
@@ -1373,6 +1557,10 @@ msgstr "Profil <filename>{0}</filename> dosyasına aktarıldı"
 msgctxt "@tooltip:button"
 msgid "Extend UltiMaker Cura with plugins and material profiles."
 msgstr "UltiMaker Cura'yı eklentilerle ve malzeme profilleriyle genişletin."
+
+msgctxt "description"
+msgid "Extension that allows for user created scripts for post processing"
+msgstr "Kullanıcının oluşturduğu komut dosyalarına son işleme için izin veren uzantı"
 
 msgctxt "@label"
 msgid "Extruder"
@@ -1410,6 +1598,7 @@ msgctxt "@text:error"
 msgid "Failed to create archive of materials to sync with printers."
 msgstr "Yazıcılarla senkronize edilecek malzeme arşivi oluşturulamadı."
 
+#, python-brace-format
 msgctxt "@info:status"
 msgid "Failed to eject {0}. Another program may be using the drive."
 msgstr "Çıkarma işlemi başarısız oldu {0}. Başka bir program sürücüyü kullanıyor olabilir."
@@ -1418,22 +1607,27 @@ msgctxt "@info:status Don't translate the XML tags <filename> and <message>!"
 msgid "Failed to export material to <filename>%1</filename>: <message>%2</message>"
 msgstr "Malzemenin <filename>%1</filename> dosyasına dışa aktarımı başarısız oldu: <message>%2</message>"
 
+#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Failed to export profile to <filename>{0}</filename>: <message>{1}</message>"
 msgstr "Profilin <filename>{0}</filename> dosyasına aktarımı başarısız oldu: <message>{1}</message>"
 
+#, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Failed to export profile to <filename>{0}</filename>: Writer plugin reported failure."
 msgstr "Profilin <filename>{0}</filename> dosyasına aktarımı başarısız oldu: Yazıcı eklentisinde rapor edilen hata."
 
+#, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
 msgstr "<filename>{0}</filename> dosyasından profil içe aktarımı başarısız oldu:"
 
+#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
 msgstr "<filename>{0}</filename> dosyasından profil içe aktarımı başarısız oldu:"
 
+#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>: {1}"
 msgstr "<filename>{0}</filename> dosyasından profil içe aktarımı başarısız oldu: {1}"
@@ -1466,6 +1660,15 @@ msgctxt "@label"
 msgid "Filament weight"
 msgstr "Filaman ağırlığı"
 
+msgctxt "@title:window"
+msgid "File Already Exists"
+msgstr "Dosya Zaten Mevcut"
+
+msgctxt "@info:title"
+msgid "File Saved"
+msgstr "Dosya Kaydedildi"
+
+#, python-brace-format
 msgctxt "@info:status"
 msgid "File {0} does not contain any valid profile."
 msgstr "Dosya {0} geçerli bir profil içermemekte."
@@ -1497,6 +1700,14 @@ msgstr "%1 bitiş tarihi: %2"
 msgctxt "@title:window"
 msgid "Firmware Update"
 msgstr "Aygıt Yazılımı Güncellemesi"
+
+msgctxt "name"
+msgid "Firmware Update Checker"
+msgstr "Bellenim Güncelleme Denetleyicisi"
+
+msgctxt "name"
+msgid "Firmware Updater"
+msgstr "Aygıt Yazılımı Güncelleyici"
 
 msgctxt "@label"
 msgid "Firmware can not be updated because the connection with the printer does not support upgrading firmware."
@@ -1594,6 +1805,18 @@ msgctxt "@item:inlistbox"
 msgid "G-code File"
 msgstr "G-code dosyası"
 
+msgctxt "name"
+msgid "G-code Profile Reader"
+msgstr "G-code Profil Okuyucu"
+
+msgctxt "name"
+msgid "G-code Reader"
+msgstr "G-code Okuyucu"
+
+msgctxt "name"
+msgid "G-code Writer"
+msgstr "G-code Yazıcı"
+
 msgctxt "@label"
 msgid "G-code flavor"
 msgstr "G-code türü"
@@ -1625,6 +1848,10 @@ msgstr "GUI çerçeve bağlantıları"
 msgctxt "@label"
 msgid "Gantry Height"
 msgstr "Portal Yüksekliği"
+
+msgctxt "@title:tab"
+msgid "General"
+msgstr "Genel"
 
 msgctxt "@label"
 msgid "Generate structures to support parts of the model which have overhangs. Without these structures, these parts would collapse during printing."
@@ -1658,6 +1885,7 @@ msgctxt "@label"
 msgid "Grid Placement"
 msgstr "Izgara Yerleşimi"
 
+#, python-brace-format
 msgctxt "@label"
 msgid "Group #{group_nr}"
 msgstr "Grup #{group_nr}"
@@ -1729,6 +1957,10 @@ msgstr "Cura’ya yeni bir UltiMaker yazıcı eklemeye çalışıyorsanız"
 msgctxt "@label"
 msgid "If your printer is not listed, read the <a href='%1'>network printing troubleshooting guide</a>"
 msgstr "Yazıcınız listede yoksa <a href='%1'>ağ yazdırma sorun giderme kılavuzunu</a> okuyun"
+
+msgctxt "name"
+msgid "Image Reader"
+msgstr "Resim Okuyucu"
 
 msgctxt "@action:button"
 msgid "Import"
@@ -1978,6 +2210,10 @@ msgctxt "@action"
 msgid "Learn more"
 msgstr "Daha fazla bilgi edinin"
 
+msgctxt "@action:button"
+msgid "Learn more"
+msgstr "Daha fazla bilgi edinin"
+
 msgctxt "@button"
 msgid "Learn more"
 msgstr "Daha fazla bilgi edinin"
@@ -2005,6 +2241,10 @@ msgstr "Sol Taraftan Görünüm"
 msgctxt "@info:tooltip"
 msgid "Left View"
 msgstr "Sol görünüm"
+
+msgctxt "name"
+msgid "Legacy Cura Profile Reader"
+msgstr "Eski Cura Profil Okuyucu"
 
 msgctxt "@tooltip:button"
 msgid "Let developers know that something is going wrong."
@@ -2086,6 +2326,10 @@ msgctxt "@title:groupbox"
 msgid "Logs"
 msgstr "Günlükler"
 
+msgctxt "description"
+msgid "Logs certain events so that they can be used by the crash reporter"
+msgstr "Çökme raporlayıcının kullanabilmesi için belirli olayları günlüğe kaydeder"
+
 msgctxt "@label:MonitorStatus"
 msgid "Lost connection with the printer"
 msgstr "Yazıcı bağlantısı koptu"
@@ -2093,6 +2337,10 @@ msgstr "Yazıcı bağlantısı koptu"
 msgctxt "@action"
 msgid "Machine Settings"
 msgstr "Makine Ayarları"
+
+msgctxt "name"
+msgid "Machine Settings Action"
+msgstr "Makine Ayarları eylemi"
 
 msgctxt "@backuplist:label"
 msgid "Machines"
@@ -2105,6 +2353,22 @@ msgstr "Tüm yazıcılarınızın AÇIK ve Digitial Factory'ye bağlı olduğund
 msgctxt "@info:generic"
 msgid "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."
 msgstr "Dosya göndermeden önce g-code’un yazıcınız ve yazıcı yapılandırmanız için uygun olduğundan emin olun. G-code temsili doğru olmayabilir."
+
+msgctxt "@item:inlistbox"
+msgid "Makerbot Printfile"
+msgstr ""
+
+msgctxt "name"
+msgid "Makerbot Printfile Writer"
+msgstr ""
+
+msgctxt "@error"
+msgid "MakerbotWriter could not save to the designated path."
+msgstr ""
+
+msgctxt "@error:not supported"
+msgid "MakerbotWriter does not support text mode."
+msgstr ""
 
 msgctxt "@action:inmenu"
 msgid "Manage Materials..."
@@ -2154,6 +2418,14 @@ msgctxt "@text"
 msgid "Manage your UltiMaker Cura plugins and material profiles here. Make sure to keep your plugins up to date and backup your setup regularly."
 msgstr "UltiMaker Cura eklentilerinizi ve malzeme profillerini burada yönetin. Eklentilerinizi güncel tuttuğunuzdan ve ayarınızı düzenli olarak yedeklediğinizden emin olun."
 
+msgctxt "description"
+msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
+msgstr "Uygulamanın uzantılarını yönetir ve Ultimaker web sitesinden uzantıların incelenmesini sağlar."
+
+msgctxt "description"
+msgid "Manages network connections to UltiMaker networked printers."
+msgstr "UltiMaker ağındaki yazıcılar için ağ bağlantılarını yönetir."
+
 msgctxt "@label"
 msgid "Manufacturer"
 msgstr "Üretici"
@@ -2163,6 +2435,10 @@ msgid "Marketplace"
 msgstr "Mağaza"
 
 msgctxt "@label"
+msgid "Marketplace"
+msgstr "Mağaza"
+
+msgctxt "name"
 msgid "Marketplace"
 msgstr "Mağaza"
 
@@ -2181,6 +2457,10 @@ msgstr "Malzeme"
 msgctxt "@label:listbox"
 msgid "Material Color"
 msgstr "Malzeme Rengi"
+
+msgctxt "name"
+msgid "Material Profiles"
+msgstr "Malzeme Profilleri"
 
 msgctxt "@label"
 msgid "Material Type"
@@ -2226,6 +2506,10 @@ msgctxt "@action:label"
 msgid "Mode"
 msgstr "Mod"
 
+msgctxt "name"
+msgid "Model Checker"
+msgstr "Model Kontrol Edici"
+
 msgctxt "@info:title"
 msgid "Model Errors"
 msgstr "Model hataları"
@@ -2241,6 +2525,10 @@ msgstr "Çakışma ayarlarını değiştir"
 msgctxt "@item:inmenu"
 msgid "Monitor"
 msgstr "Görüntüle"
+
+msgctxt "name"
+msgid "Monitor Stage"
+msgstr "Görüntüleme Aşaması"
 
 msgctxt "@action:button"
 msgid "Monitor print"
@@ -2316,6 +2604,7 @@ msgctxt "@info:title"
 msgid "Network error"
 msgstr "Ağ hatası"
 
+#, python-format
 msgctxt "@info:title The %s gets replaced with the printer name."
 msgid "New %s stable firmware available"
 msgstr "Yeni %s istikrarlı donanım yazılımı yayınlandı"
@@ -2328,6 +2617,7 @@ msgctxt "@label"
 msgid "New UltiMaker printers can be connected to Digital Factory and monitored remotely."
 msgstr "Yeni UltiMaker yazıcılar Digital Factory’ye bağlanabilir ve uzaktan izlenebilir."
 
+#, python-brace-format
 msgctxt "@info Don't translate {machine_name}, since it gets replaced by a printer name!"
 msgid "New features or bug-fixes may be available for your {machine_name}! If you haven't done so already, it is recommended to update the firmware on your printer to version {latest_version}."
 msgstr "{machine_name} cihazınız için yeni özellikler veya hata düzeltmeleri mevcut olabilir! Henüz son sürüme geçmediyseniz yazıcınızın donanım yazılımını {latest_version} sürümüne güncellemeniz önerilir."
@@ -2374,6 +2664,7 @@ msgctxt "@label"
 msgid "No cost estimation available"
 msgstr "Maliyet tahmini yok"
 
+#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "No custom profile to import in file <filename>{0}</filename>"
 msgstr "<filename>{0}</filename> dosyasında içe aktarılabilecek özel profil yok"
@@ -2482,6 +2773,10 @@ msgctxt "@label"
 msgid "Number of Extruders"
 msgstr "Ekstrüder Sayısı"
 
+msgctxt "@action:button"
+msgid "OK"
+msgstr "Tamam"
+
 msgctxt "@label"
 msgid "OS language"
 msgstr "İşletim sistemi dili"
@@ -2502,6 +2797,7 @@ msgctxt "@label"
 msgid "Only Show Top Layers"
 msgstr "Yalnızca Üst Katmanları Göster"
 
+#, python-brace-format
 msgctxt "@info:status"
 msgid "Only one G-code file can be loaded at a time. Skipped importing {0}"
 msgstr "Aynı anda yalnızca bir G-code dosyası yüklenebilir. {0} içe aktarma atlandı"
@@ -2635,7 +2931,6 @@ msgctxt "@action:inmenu menubar:edit"
 msgid "Paste from clipboard"
 msgstr "Panodan yapıştır"
 
-#. @Lokalise Translation Team Is this a verb?
 msgctxt "@label"
 msgid "Pause"
 msgstr "Duraklat"
@@ -2659,6 +2954,10 @@ msgstr "Duraklatılıyor..."
 msgctxt "@label"
 msgid "Per Model Settings"
 msgstr "Model Başına Ayarlar"
+
+msgctxt "name"
+msgid "Per Model Settings Tool"
+msgstr "Model Başına Ayarlar Aracı"
 
 msgid "Perspective"
 msgstr "Perspektif"
@@ -2696,8 +2995,16 @@ msgid "Please give the required permissions when authorizing this application."
 msgstr "Lütfen bu başvuruya yetki verirken gerekli izinleri verin."
 
 msgctxt "@info"
-msgid "Please make sure your printer has a connection:\n- Check if the printer is turned on.\n- Check if the printer is connected to the network.\n- Check if you are signed in to discover cloud-connected printers."
-msgstr "Lütfen yazıcınızda bağlantı olduğundan emin olun:\n- Yazıcının açık olup olmadığını kontrol edin.\n- Yazıcının ağa bağlı olup olmadığını kontrol edin.\n- Buluta bağlı yazıcıları keşfetmek için giriş yapıp yapmadığınızı kontrol edin."
+msgid ""
+"Please make sure your printer has a connection:\n"
+"- Check if the printer is turned on.\n"
+"- Check if the printer is connected to the network.\n"
+"- Check if you are signed in to discover cloud-connected printers."
+msgstr ""
+"Lütfen yazıcınızda bağlantı olduğundan emin olun:\n"
+"- Yazıcının açık olup olmadığını kontrol edin.\n"
+"- Yazıcının ağa bağlı olup olmadığını kontrol edin.\n"
+"- Buluta bağlı yazıcıları keşfetmek için giriş yapıp yapmadığınızı kontrol edin."
 
 msgctxt "@text"
 msgid "Please name your printer"
@@ -2711,6 +3018,10 @@ msgctxt "@info"
 msgid "Please provide a name for this profile."
 msgstr "Bu profil için lütfen bir ad girin."
 
+msgctxt "@info"
+msgid "Please provide a new name."
+msgstr ""
+
 msgctxt "@text"
 msgid "Please read and agree with the plugin licence."
 msgstr "Eklenti lisansını okuyun ve kabul edin."
@@ -2720,8 +3031,16 @@ msgid "Please remove the print"
 msgstr "Lütfen yazıcıyı çıkarın"
 
 msgctxt "@info:status"
-msgid "Please review settings and check if your models:\n- Fit within the build volume\n- Are assigned to an enabled extruder\n- Are not all set as modifier meshes"
-msgstr "Lütfen ayarları gözden geçirin ve modellerinizi şu durumlara karşı kontrol edin:\n- Yapı hacmine sığma\n- Etkin bir ekstrüdere atanma\n- Değiştirici kafesler olarak ayarlanmama"
+msgid ""
+"Please review settings and check if your models:\n"
+"- Fit within the build volume\n"
+"- Are assigned to an enabled extruder\n"
+"- Are not all set as modifier meshes"
+msgstr ""
+"Lütfen ayarları gözden geçirin ve modellerinizi şu durumlara karşı kontrol edin:\n"
+"- Yapı hacmine sığma\n"
+"- Etkin bir ekstrüdere atanma\n"
+"- Değiştirici kafesler olarak ayarlanmama"
 
 msgctxt "@label"
 msgid "Please select any upgrades made to this UltiMaker Original"
@@ -2771,6 +3090,10 @@ msgctxt "@item:inmenu"
 msgid "Post Processing"
 msgstr "Son İşleme"
 
+msgctxt "name"
+msgid "Post Processing"
+msgstr "Son İşleme"
+
 msgctxt "@title:window"
 msgid "Post Processing Plugin"
 msgstr "Son İşleme Uzantısı"
@@ -2786,6 +3109,10 @@ msgstr "Ön ısıtma"
 msgctxt "@item:inmenu"
 msgid "Prepare"
 msgstr "Hazırla"
+
+msgctxt "name"
+msgid "Prepare Stage"
+msgstr "Hazırlık Aşaması"
 
 msgctxt "@label:MonitorStatus"
 msgid "Preparing..."
@@ -2806,6 +3133,10 @@ msgstr "Önizleme"
 msgctxt "@item:inmenu"
 msgid "Preview"
 msgstr "Önizleme"
+
+msgctxt "name"
+msgid "Preview Stage"
+msgstr "Öz İzleme Aşaması"
 
 msgctxt "@tooltip"
 msgid "Prime Tower"
@@ -2935,6 +3266,10 @@ msgctxt "@info:tooltip"
 msgid "Printer settings will be updated to match the settings saved with the project."
 msgstr "Yazıcı ayarları, projeyle birlikte kaydedilen ayarlarla eşleşecek şekilde güncellenir."
 
+msgctxt "@title:tab"
+msgid "Printers"
+msgstr "Yazıcılar"
+
 msgctxt "info:status"
 msgid "Printers added from Digital Factory:"
 msgstr "Digital Factory'den eklenen yazıcılar:"
@@ -2995,6 +3330,7 @@ msgctxt "@title:column"
 msgid "Profile settings"
 msgstr "Profil ayarları"
 
+#, python-brace-format
 msgctxt "@info:status"
 msgid "Profile {0} has an unknown file type or is corrupted."
 msgstr "Profil {0} öğesinde bilinmeyen bir dosya türü var veya profil bozuk."
@@ -3019,18 +3355,22 @@ msgctxt "@label Description for application dependency"
 msgid "Programming language"
 msgstr "Programlama dili"
 
+#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> contains an unknown machine type <message>{1}</message>. Cannot import the machine. Models will be imported instead."
 msgstr "Proje dosyası <filename>{0}</filename> bilinmeyen bir makine tipi içeriyor: <message>{1}</message>. Makine alınamıyor. Bunun yerine modeller alınacak."
 
+#, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>."
 msgstr "Proje dosyası <filename>{0}</filename> bozuk: <message>{1}</message>."
 
+#, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
 msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura."
 msgstr "<filename>{0}</filename> proje dosyası, Ultimaker Cura'nın bu sürümünde bilinmeyen profiller kullanılarak yapılmış."
 
+#, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is suddenly inaccessible: <message>{1}</message>."
 msgstr "<filename>{0}</filename> proje dosyası aniden erişilemez oldu: <message>{1}</message>."
@@ -3038,6 +3378,106 @@ msgstr "<filename>{0}</filename> proje dosyası aniden erişilemez oldu: <messag
 msgctxt "@label"
 msgid "Properties"
 msgstr "Özellikler"
+
+msgctxt "description"
+msgid "Provides a machine actions for updating firmware."
+msgstr "Aygıt yazılımını güncellemeye yönelik makine eylemleri sağlar."
+
+msgctxt "description"
+msgid "Provides a monitor stage in Cura."
+msgstr "Cura’da görüntüleme aşaması sunar."
+
+msgctxt "description"
+msgid "Provides a normal solid mesh view."
+msgstr "Normal gerçek bir ağ görünümü sağlar."
+
+msgctxt "description"
+msgid "Provides a prepare stage in Cura."
+msgstr "Cura’da hazırlık aşaması sunar."
+
+msgctxt "description"
+msgid "Provides a preview stage in Cura."
+msgstr "Cura’da ön izleme aşaması sunar."
+
+msgctxt "description"
+msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc.)."
+msgstr "Makine ayarlarının değiştirilmesini sağlar (yapı hacmi, nozül boyutu vb.)"
+
+msgctxt "description"
+msgid "Provides capabilities to read and write XML-based material profiles."
+msgstr "XML tabanlı malzeme profillerini okuma ve yazma olanağı sağlar."
+
+msgctxt "description"
+msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
+msgstr "Ultimaker makineleri için makine eylemleri sunar (yatak dengeleme sihirbazı, yükseltme seçme vb.)"
+
+msgctxt "description"
+msgid "Provides removable drive hotplugging and writing support."
+msgstr "Çıkarılabilir sürücünün takılıp çıkarılmasını ve yazma desteği sağlar."
+
+msgctxt "description"
+msgid "Provides support for exporting Cura profiles."
+msgstr "Cura profillerinin dışa aktarılması için destek sağlar."
+
+msgctxt "description"
+msgid "Provides support for importing Cura profiles."
+msgstr "Cura profillerinin içe aktarılması için destek sağlar."
+
+msgctxt "description"
+msgid "Provides support for importing profiles from g-code files."
+msgstr "G-code dosyalarından profilleri içe aktarmak için destek sağlar."
+
+msgctxt "description"
+msgid "Provides support for importing profiles from legacy Cura versions."
+msgstr "Eski Cura sürümlerinden profilleri içe aktarmak için destek sağlar."
+
+msgctxt "description"
+msgid "Provides support for reading 3MF files."
+msgstr "3MF dosyalarının okunması için destek sağlar."
+
+msgctxt "description"
+msgid "Provides support for reading AMF files."
+msgstr "AMF dosyalarının okunması için destek sağlar."
+
+msgctxt "description"
+msgid "Provides support for reading Ultimaker Format Packages."
+msgstr "Ultimaker Biçim Paketlerinin okunması için destek sağlar."
+
+msgctxt "description"
+msgid "Provides support for reading X3D files."
+msgstr "X3D dosyalarının okunması için destek sağlar."
+
+msgctxt "description"
+msgid "Provides support for reading model files."
+msgstr "Model dosyalarını okuma desteği sağlar."
+
+msgctxt "description"
+msgid "Provides support for writing 3MF files."
+msgstr "3MF dosyalarının yazılması için destek sağlar."
+
+msgctxt "description"
+msgid "Provides support for writing MakerBot Format Packages."
+msgstr ""
+
+msgctxt "description"
+msgid "Provides support for writing Ultimaker Format Packages."
+msgstr "Ultimaker Biçim Paketleri yazmak için destek sağlar."
+
+msgctxt "description"
+msgid "Provides the Per Model Settings."
+msgstr "Model Başına Ayarları sağlar."
+
+msgctxt "description"
+msgid "Provides the X-Ray view."
+msgstr "Röntgen Görüntüsü sağlar."
+
+msgctxt "description"
+msgid "Provides the link to the CuraEngine slicing backend."
+msgstr "CuraEngine arka dilimleme ucuna bağlantı sağlar."
+
+msgctxt "description"
+msgid "Provides the preview of sliced layerdata."
+msgstr "Dilimlenen katman verilerinin önizlemesini sağlar."
 
 msgctxt "@label"
 msgid "PyQt version"
@@ -3059,6 +3499,7 @@ msgctxt "@label"
 msgid "Qt version"
 msgstr "Qt Sürümü"
 
+#, python-brace-format
 msgctxt "@info:status"
 msgid "Quality type '{0}' is not compatible with the current active machine definition '{1}'."
 msgstr "'{0}' kalite tipi, mevcut aktif makine tanımı '{1}' ile uyumlu değil."
@@ -3074,6 +3515,10 @@ msgstr "Kuyrukta"
 msgctxt "@info:button, %1 is the application name"
 msgid "Quit %1"
 msgstr "%1 uygulamasından çık"
+
+msgctxt "description"
+msgid "Reads g-code from a compressed archive."
+msgstr "Bir sıkıştırılmış arşivden g-code okur."
 
 msgctxt "@button"
 msgid "Recommended"
@@ -3127,6 +3572,10 @@ msgctxt "@item:intext"
 msgid "Removable Drive"
 msgstr "Çıkarılabilir Sürücü"
 
+msgctxt "name"
+msgid "Removable Drive Output Device Plugin"
+msgstr "Çıkarılabilir Sürücü Çıkış Cihazı Eklentisi"
+
 msgctxt "@action:button"
 msgid "Remove"
 msgstr "Kaldır"
@@ -3142,6 +3591,10 @@ msgstr "Yazıcılar kaldırılsın mı?"
 msgctxt "@action:button"
 msgid "Rename"
 msgstr "Yeniden adlandır"
+
+msgctxt "@title:window"
+msgid "Rename"
+msgstr ""
 
 msgctxt "@title:window"
 msgid "Rename Profile"
@@ -3279,14 +3732,21 @@ msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Save to Removable Drive"
 msgstr "Çıkarılabilir Sürücüye Kaydet"
 
+#, python-brace-format
 msgctxt "@item:inlistbox"
 msgid "Save to Removable Drive {0}"
 msgstr "Çıkarılabilir Sürücüye Kaydediliyor {0}"
 
+#, python-brace-format
 msgctxt "@info:status"
 msgid "Saved to Removable Drive {0} as {1}"
 msgstr "Çıkarılabilir Sürücüye {0}, {1} olarak kaydedildi"
 
+msgctxt "@info:title"
+msgid "Saving"
+msgstr "Kaydediliyor"
+
+#, python-brace-format
 msgctxt "@info:progress Don't translate the XML tags <filename>!"
 msgid "Saving to Removable Drive <filename>{0}</filename>"
 msgstr "Çıkarılabilir Sürücü <filename>{0}</filename> Üzerine Kaydediliyor"
@@ -3379,6 +3839,10 @@ msgctxt "@info:title"
 msgid "Sending materials to printer"
 msgstr "Malzemeler yazıcıya gönderiliyor"
 
+msgctxt "name"
+msgid "Sentry Logger"
+msgstr "Nöbetçi Günlükçü"
+
 msgctxt "@label Description for application dependency"
 msgid "Serial communication library"
 msgstr "Seri iletişim kitaplığı"
@@ -3408,6 +3872,10 @@ msgid "Setting visibility"
 msgstr "Görünürlük ayarı"
 
 msgctxt "@label"
+msgid "Settings"
+msgstr "Ayarlar"
+
+msgctxt "@title:tab"
 msgid "Settings"
 msgstr "Ayarlar"
 
@@ -3571,6 +4039,10 @@ msgctxt "@label"
 msgid "Sign in to the UltiMaker platform"
 msgstr "UltiMaker platformuna giriş yapın"
 
+msgctxt "name"
+msgid "Simulation View"
+msgstr "Simülasyon Görünümü"
+
 msgctxt "@tooltip"
 msgid "Skin"
 msgstr "Yüzey Alanı"
@@ -3599,6 +4071,10 @@ msgctxt "@info:tooltip"
 msgid "Slice automatically when changing settings."
 msgstr "Ayarlar değiştirilirken otomatik olarak dilimle."
 
+msgctxt "name"
+msgid "Slice info"
+msgstr "Dilim bilgisi"
+
 msgctxt "@message:title"
 msgid "Slicing failed"
 msgstr "Dilimleme başarısız"
@@ -3615,13 +4091,23 @@ msgctxt "@action:label"
 msgid "Smoothing"
 msgstr "Düzeltme"
 
+msgctxt "name"
+msgid "Solid View"
+msgstr "Gerçek Görünüm"
+
 msgctxt "@item:inmenu"
 msgid "Solid view"
 msgstr "Gerçek görünüm"
 
 msgctxt "@label"
-msgid "Some hidden settings use values different from their normal calculated value.\n\nClick to make these settings visible."
-msgstr "Gizlenen bazı ayarlar normal hesaplanan değerden farklı değerler kullanır.\n\nBu ayarları görmek için tıklayın."
+msgid ""
+"Some hidden settings use values different from their normal calculated value.\n"
+"\n"
+"Click to make these settings visible."
+msgstr ""
+"Gizlenen bazı ayarlar normal hesaplanan değerden farklı değerler kullanır.\n"
+"\n"
+"Bu ayarları görmek için tıklayın."
 
 msgctxt "@info:status"
 msgid "Some of the packages used in the project file are currently not installed in Cura, this might produce undesirable print results. We highly recommend installing the all required packages from the Marketplace."
@@ -3636,8 +4122,14 @@ msgid "Some setting-values defined in <b>%1</b> were overridden."
 msgstr "<b>1</b> kapsamında tanımlanan bazı ayar değerleri geçersiz kılındı."
 
 msgctxt "@tooltip"
-msgid "Some setting/override values are different from the values stored in the profile.\n\nClick to open the profile manager."
-msgstr "Bazı ayar/geçersiz kılma değerleri profilinizde saklanan değerlerden farklıdır.\n\nProfil yöneticisini açmak için tıklayın."
+msgid ""
+"Some setting/override values are different from the values stored in the profile.\n"
+"\n"
+"Click to open the profile manager."
+msgstr ""
+"Bazı ayar/geçersiz kılma değerleri profilinizde saklanan değerlerden farklıdır.\n"
+"\n"
+"Profil yöneticisini açmak için tıklayın."
 
 msgctxt "@action:label"
 msgid "Some settings from current profile were overwritten."
@@ -3663,8 +4155,6 @@ msgctxt "@action:inmenu"
 msgid "Sponsor Cura"
 msgstr "Cura'ya Sponsor Olun"
 
-#. @Lokalise Translation Team "Sponsor" as "refer" ?
-#. @Lokalise Translation Team "Sponsor" as "refer" ?
 msgctxt "@label:button"
 msgid "Sponsor Cura"
 msgstr "Cura'ya Sponsor Olun"
@@ -3709,6 +4199,10 @@ msgctxt "@label"
 msgid "Strength"
 msgstr "Sağlamlık"
 
+msgctxt "description"
+msgid "Submits anonymous slice info. Can be disabled through preferences."
+msgstr "Anonim dilim bilgisi gönderir. Tercihlerden devre dışı bırakılabilir."
+
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Successfully exported material to <filename>%1</filename>"
 msgstr "Malzeme <filename>%1</filename> dosyasına başarıyla dışa aktarıldı"
@@ -3717,6 +4211,7 @@ msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Successfully imported material <filename>%1</filename>"
 msgstr "Malzeme <filename>%1</filename> dosyasına başarıyla içe aktarıldı"
 
+#, python-brace-format
 msgctxt "@info:status"
 msgid "Successfully imported profile {0}."
 msgstr "{0} profili başarıyla içe aktarıldı."
@@ -3736,6 +4231,10 @@ msgstr "Destek"
 msgctxt "@label"
 msgid "Support Blocker"
 msgstr "Destek Engelleyici"
+
+msgctxt "name"
+msgid "Support Eraser"
+msgstr "Destek Silici"
 
 msgctxt "@tooltip"
 msgid "Support Infill"
@@ -3843,6 +4342,10 @@ msgctxt "@error:file_size"
 msgid "The backup exceeds the maximum file size."
 msgstr "Yedekleme maksimum dosya boyutunu aşıyor."
 
+msgctxt "@text"
+msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
+msgstr "Dengeli profil, verimlilik, yüzey kalitesi, mekanik özellikler ve boyutsal doğruluk arasında bir denge kurmayı amaçlar."
+
 msgctxt "@info:tooltip"
 msgid "The base height from the build plate in millimeters."
 msgstr "Tabanın yapı levhasından milimetre cinsinden yüksekliği."
@@ -3898,6 +4401,11 @@ msgstr "Mühendislik profili, daha yüksek doğruluk ve daha yakın toleranslar 
 msgctxt "@label"
 msgid "The extruder train to use for printing the support. This is used in multi-extrusion."
 msgstr "Destek için kullanılacak ekstruder Çoklu ekstrüzyon işlemi için kullanılır."
+
+#, python-brace-format
+msgctxt "@label Don't translate the XML tag <filename>!"
+msgid "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?"
+msgstr "Dosya <filename>{0}</filename> zaten mevcut. Üstüne yazmak istediğinizden emin misiniz?"
 
 msgctxt "@label"
 msgid "The firmware shipping with new printers works, but new versions tend to have more features and improvements."
@@ -3958,8 +4466,22 @@ msgid "The nozzle inserted in this extruder."
 msgstr "Bu ekstrudere takılan nozül."
 
 msgctxt "@label"
-msgid "The pattern of the infill material of the print:\n\nFor quick prints of non functional model choose line, zig zag or lightning infill.\n\nFor functional part not subjected to a lot of stress we recommend grid or triangle or tri hexagon.\n\nFor functional 3D prints which require high strength in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
-msgstr "Baskı dolgu malzemesinin deseni:\n\nİşlevsel olmayan modellerin hızlı baskıları için çizgi, zikzak veya aydınlatma dolgusunu seçin.\n\nÇok fazla strese maruz kalmayan işlevsel parçalar için ızgara veya üçgen veya üç altıgen öneriyoruz.\n\nBirden fazla yönde yüksek sağlamlık gerektiren işlevsel 3D baskılar için kübik, kübik alt bölüm, çeyrek kübik, sekizli ve dönel kullanın."
+msgid ""
+"The pattern of the infill material of the print:\n"
+"\n"
+"For quick prints of non functional model choose line, zig zag or lightning infill.\n"
+"\n"
+"For functional part not subjected to a lot of stress we recommend grid or triangle or tri hexagon.\n"
+"\n"
+"For functional 3D prints which require high strength in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
+msgstr ""
+"Baskı dolgu malzemesinin deseni:\n"
+"\n"
+"İşlevsel olmayan modellerin hızlı baskıları için çizgi, zikzak veya aydınlatma dolgusunu seçin.\n"
+"\n"
+"Çok fazla strese maruz kalmayan işlevsel parçalar için ızgara veya üçgen veya üç altıgen öneriyoruz.\n"
+"\n"
+"Birden fazla yönde yüksek sağlamlık gerektiren işlevsel 3D baskılar için kübik, kübik alt bölüm, çeyrek kübik, sekizli ve dönel kullanın."
 
 msgctxt "@info:tooltip"
 msgid "The percentage of light penetrating a print with a thickness of 1 millimeter. Lowering this value increases the contrast in dark regions and decreases the contrast in light regions of the image."
@@ -4111,6 +4633,7 @@ msgctxt "@label"
 msgid "This printer is the host for a group of %1 printers."
 msgstr "Bu yazıcı, %1 yazıcı grubunun ana makinesidir."
 
+#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "This profile <filename>{0}</filename> contains incorrect data, could not import it."
 msgstr "Bu <filename>{0}</filename> profili yanlış veri içeriyor, içeri aktarılamadı."
@@ -4124,8 +4647,14 @@ msgid "This project contains materials or plugins that are currently not install
 msgstr "Bu proje şu anda Cura'da yüklü olmayan materyal veya eklentiler içeriyor.<br/>Eksik paketleri kurun ve projeyi yeniden açın."
 
 msgctxt "@label"
-msgid "This setting has a value that is different from the profile.\n\nClick to restore the value of the profile."
-msgstr "Bu ayarın değeri profilden farklıdır.\n\nProfil değerini yenilemek için tıklayın."
+msgid ""
+"This setting has a value that is different from the profile.\n"
+"\n"
+"Click to restore the value of the profile."
+msgstr ""
+"Bu ayarın değeri profilden farklıdır.\n"
+"\n"
+"Profil değerini yenilemek için tıklayın."
 
 msgctxt "@item:tooltip"
 msgid "This setting has been hidden by the active machine and will not be visible."
@@ -4142,8 +4671,14 @@ msgid "This setting is always shared between all extruders. Changing it here wil
 msgstr "Bu ayar her zaman, tüm ekstrüderler arasında paylaşılır. Buradan değiştirildiğinde tüm ekstrüderler için değer değiştirir."
 
 msgctxt "@label"
-msgid "This setting is normally calculated, but it currently has an absolute value set.\n\nClick to restore the calculated value."
-msgstr "Bu ayar normal olarak yapılır ama şu anda mutlak değer ayarı var.\n\nHesaplanan değeri yenilemek için tıklayın."
+msgid ""
+"This setting is normally calculated, but it currently has an absolute value set.\n"
+"\n"
+"Click to restore the calculated value."
+msgstr ""
+"Bu ayar normal olarak yapılır ama şu anda mutlak değer ayarı var.\n"
+"\n"
+"Hesaplanan değeri yenilemek için tıklayın."
 
 msgctxt "@label"
 msgid "This setting is not used because all the settings that it influences are overridden."
@@ -4169,6 +4704,7 @@ msgctxt "@text"
 msgid "To automatically sync the material profiles with all your printers connected to Digital Factory you need to be signed in in Cura."
 msgstr "Malzeme profillerini Digital Factory'ye bağlı tüm yazıcılarınızla otomatik olarak senkronize etmek için Cura'da oturum açmanız gerekir."
 
+#, python-brace-format
 msgctxt "info:status"
 msgid "To establish a connection, please visit the {website_link}"
 msgstr "Bağlantı kurmak için lütfen {website_link} adresini ziyaret edin"
@@ -4181,6 +4717,7 @@ msgctxt "@label"
 msgid "To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer."
 msgstr "Yazıcınıza ağ üzerinden doğrudan baskı göndermek için lütfen yazıcınızın ağ kablosuyla ağa bağlı olduğundan veya yazıcınızı WiFi ağınıza bağladığınızdan emin olun. Yazıcınız ile Cura'ya bağlanamıyorsanız g-code dosyalarını yazıcınıza aktarmak için USB sürücüsü kullanabilirsiniz."
 
+#, python-brace-format
 msgctxt "@message {printer_name} is replaced with the name of the printer"
 msgid "To remove {printer_name} permanently, visit {digital_factory_link}"
 msgstr "{printer_name} yazıcısını kalıcı olarak kaldırmak için {digital_factory_link} adresini ziyaret edin"
@@ -4229,6 +4766,10 @@ msgctxt "@info:backup_failed"
 msgid "Tried to restore a Cura backup without having proper data or meta data."
 msgstr "Uygun veri veya meta veri olmadan Cura yedeği geri yüklenmeye çalışıldı."
 
+msgctxt "name"
+msgid "Trimesh Reader"
+msgstr "Trimesh Okuyucu"
+
 msgctxt "@button"
 msgid "Troubleshooting"
 msgstr "Sorun giderme"
@@ -4245,7 +4786,23 @@ msgctxt "@action:label"
 msgid "Type"
 msgstr "Tür"
 
+msgctxt "@label"
+msgid "Type"
+msgstr "Tür"
+
+msgctxt "name"
+msgid "UFP Reader"
+msgstr "UFP Okuyucu"
+
+msgctxt "name"
+msgid "UFP Writer"
+msgstr "UPF Yazıcı"
+
 msgctxt "@item:inmenu"
+msgid "USB printing"
+msgstr "USB yazdırma"
+
+msgctxt "name"
 msgid "USB printing"
 msgstr "USB yazdırma"
 
@@ -4265,6 +4822,10 @@ msgctxt "@item:inlistbox"
 msgid "UltiMaker Format Package"
 msgstr "UltiMaker Biçim Paketi"
 
+msgctxt "name"
+msgid "UltiMaker Network Connection"
+msgstr "Ultimaker Ağ Bağlantısı"
+
 msgctxt "@info"
 msgid "UltiMaker Verified Package"
 msgstr "UltiMaker Tarafından Doğrulanmış Paket"
@@ -4272,6 +4833,10 @@ msgstr "UltiMaker Tarafından Doğrulanmış Paket"
 msgctxt "@info"
 msgid "UltiMaker Verified Plug-in"
 msgstr "UltiMaker Tarafından Doğrulanmış Eklenti"
+
+msgctxt "name"
+msgid "UltiMaker machine actions"
+msgstr "Ultimaker makine eylemleri"
 
 msgctxt "@button"
 msgid "UltiMaker printer"
@@ -4285,6 +4850,10 @@ msgctxt "info:name"
 msgid "Ultimaker Digital Factory"
 msgstr "Ultimaker Digital Factory"
 
+msgctxt "name"
+msgid "Ultimaker Digital Library"
+msgstr "Ultimaker Digital Library"
+
 msgctxt "@info:status"
 msgid "Unable to add the profile."
 msgstr "Profil eklenemiyor."
@@ -4293,13 +4862,19 @@ msgctxt "@info:status"
 msgid "Unable to find a location within the build volume for all objects"
 msgstr "Yapılan hacim içinde tüm nesneler için konum bulunamadı"
 
+#, python-brace-format
 msgctxt "@info:plugin_failed"
 msgid "Unable to find local EnginePlugin server executable for: {self._plugin_id}"
 msgstr "{self._plugin_id} için yürütülebilir yerel EnginePlugin sunucusu bulunamıyor"
 
+#, python-brace-format
 msgctxt "@info:plugin_failed"
-msgid "Unable to kill running EnginePlugin: {self._plugin_id}\nAccess is denied."
-msgstr "Çalışan EnginePlugin sonlandırılamıyor: {self._plugin_id}\nErişim reddedildi."
+msgid ""
+"Unable to kill running EnginePlugin: {self._plugin_id}\n"
+"Access is denied."
+msgstr ""
+"Çalışan EnginePlugin sonlandırılamıyor: {self._plugin_id}\n"
+"Erişim reddedildi."
 
 msgctxt "@info"
 msgid "Unable to reach the UltiMaker account server."
@@ -4321,10 +4896,12 @@ msgctxt "@info:status"
 msgid "Unable to slice because the prime tower or prime position(s) are invalid."
 msgstr "İlk direk veya ilk konum(lar) geçersiz olduğu için dilimlenemiyor."
 
+#, python-format
 msgctxt "@info:status"
 msgid "Unable to slice because there are objects associated with disabled Extruder %s."
 msgstr "Etkisizleştirilmiş Extruder %s ile ilgili nesneler olduğundan dilimleme yapılamıyor."
 
+#, python-brace-format
 msgctxt "@info:status"
 msgid "Unable to slice due to some per-model settings. The following settings have errors on one or more models: {error_labels}"
 msgstr "Modele özgü ayarlar nedeniyle dilimlenemedi. Şu ayarlar bir veya daha fazla modelde hataya yol açıyor: {error_labels}"
@@ -4333,6 +4910,7 @@ msgctxt "@info:status"
 msgid "Unable to slice with the current material as it is incompatible with the selected machine or configuration."
 msgstr "Mevcut malzeme, seçilen makine veya yapılandırma ile uyumlu olmadığından mevcut malzeme ile dilimlenemedi."
 
+#, python-brace-format
 msgctxt "@info:status"
 msgid "Unable to slice with the current settings. The following settings have errors: {0}"
 msgstr "Geçerli ayarlarla dilimlenemiyor. Şu ayarlarda hata var: {0}"
@@ -4381,6 +4959,7 @@ msgctxt "@label:property"
 msgid "Unknown Package"
 msgstr "Bilinmeyen Paket"
 
+#, python-brace-format
 msgctxt "@error:send"
 msgid "Unknown error code when uploading print job: {0}"
 msgstr "Baskı işi yüklenirken bilinmeyen hata kodu: {0}"
@@ -4445,6 +5024,110 @@ msgctxt "@button"
 msgid "Updating..."
 msgstr "Güncelleniyor..."
 
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.1 to Cura 2.2."
+msgstr "Yapılandırmaları Cura 2.1’den Cura 2.2’ye yükseltir."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.2 to Cura 2.4."
+msgstr "Yapılandırmaları Cura 2.2’den Cura 2.4’e yükseltir."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.5 to Cura 2.6."
+msgstr "Yapılandırmaları Cura 2.5’ten Cura 2.6’ya yükseltir."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.6 to Cura 2.7."
+msgstr "Yapılandırmaları Cura 2.6’dan Cura 2.7’ye yükseltir."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.7 to Cura 3.0."
+msgstr "Yapılandırmaları Cura 2.7’den Cura 3.0’a yükseltir."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.0 to Cura 3.1."
+msgstr "Yapılandırmaları Cura 3.0'dan Cura 3.1'e yükseltir."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.2 to Cura 3.3."
+msgstr "Yapılandırmaları Cura 3.2’ten Cura 3.3’ya yükseltir."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.3 to Cura 3.4."
+msgstr "Yapılandırmaları Cura 3.3’ten Cura 3.4’ya yükseltir."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.4 to Cura 3.5."
+msgstr "Yapılandırmaları Cura 3.4’ten Cura 3.5’e yükseltir."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.5 to Cura 4.0."
+msgstr "Yapılandırmaları Cura 3.5’ten Cura 4.0’a yükseltir."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.0 to Cura 4.1."
+msgstr "Yapılandırmaları Cura 4.0’dan Cura 4.1’e yükseltir."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.1 to Cura 4.2."
+msgstr "Yapılandırmaları Cura 4.1'den Cura 4.2'ye yükseltir."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.11 to Cura 4.12."
+msgstr "Yapılandırmaları Cura 4.11'den Cura 4.12'ye yükseltir."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.13 to Cura 5.0."
+msgstr "Yapılandırmaları Cura 4.13'ten Cura 5.0'a yükseltir."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.2 to Cura 4.3."
+msgstr "Yapılandırmaları Cura 4.2'den Cura 4.3'e yükseltir."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.3 to Cura 4.4."
+msgstr "Yapılandırmaları Cura 4.3'ten Cura 4.4'e yükseltir."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.4 to Cura 4.5."
+msgstr "Yapılandırmaları Cura 4.4'ten Cura 4.5'e yükseltir."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.5 to Cura 4.6."
+msgstr "Yapılandırmaları Cura 4.5'ten Cura 4.6'ya yükseltir."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.6.0 to Cura 4.6.2."
+msgstr "Yapılandırmaları Cura 4.6.0'dan Cura 4.6.2'ye yükseltir."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.6.2 to Cura 4.7."
+msgstr "Yapılandırmaları Cura 4.6.2'den Cura 4.7'ye yükseltir."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.7 to Cura 4.8."
+msgstr "Yapılandırmaları Cura 4.7'den Cura 4.8'e yükseltir."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.8 to Cura 4.9."
+msgstr "Yapılandırmaları Cura 4.8'den Cura 4.9'a yükseltir."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.9 to Cura 4.10."
+msgstr "Yapılandırmaları Cura 4.9'dan Cura 4.10'a yükseltir."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.2 to Cura 5.3."
+msgstr "Yapılandırmaları Cura 5.2'dan Cura 5.3'a yükseltir."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.3 to Cura 5.4."
+msgstr "Cura 5.3'ten Cura 5.4'e yükseltme yapılandırmaları"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.4 to Cura 5.5."
+msgstr "Cura 5.4'ten Cura 5.5'e yükseltme yapılandırmaları"
+
 msgctxt "@action:button"
 msgid "Upload custom Firmware"
 msgstr "Özel Aygıt Yazılımı Yükle"
@@ -4476,6 +5159,110 @@ msgstr "Kullanım işlevleri, bir resim yükleyici dâhil"
 msgctxt "@label Description for application dependency"
 msgid "Utility library, including Voronoi generation"
 msgstr "Kullanım kütüphanesi, Voronoi oluşturma dâhil"
+
+msgctxt "name"
+msgid "Version Upgrade 2.1 to 2.2"
+msgstr "2.1’den 2.2’ye Sürüm Yükseltme"
+
+msgctxt "name"
+msgid "Version Upgrade 2.2 to 2.4"
+msgstr "2.2’den 2.4’e Sürüm Yükseltme"
+
+msgctxt "name"
+msgid "Version Upgrade 2.5 to 2.6"
+msgstr "2.5’ten 2.6’ya Sürüm Yükseltme"
+
+msgctxt "name"
+msgid "Version Upgrade 2.6 to 2.7"
+msgstr "2.6’dan 2.7’ye Sürüm Yükseltme"
+
+msgctxt "name"
+msgid "Version Upgrade 2.7 to 3.0"
+msgstr "2.7’den 3.0’a Sürüm Yükseltme"
+
+msgctxt "name"
+msgid "Version Upgrade 3.0 to 3.1"
+msgstr "3.0'dan 3.1'e Sürüm Yükseltme"
+
+msgctxt "name"
+msgid "Version Upgrade 3.2 to 3.3"
+msgstr "3.2'dan 3.3'e Sürüm Yükseltme"
+
+msgctxt "name"
+msgid "Version Upgrade 3.3 to 3.4"
+msgstr "3.3'dan 3.4'e Sürüm Yükseltme"
+
+msgctxt "name"
+msgid "Version Upgrade 3.4 to 3.5"
+msgstr "3.4’ten 3.5’e Sürüm Yükseltme"
+
+msgctxt "name"
+msgid "Version Upgrade 3.5 to 4.0"
+msgstr "3.5’ten 4.0’a Sürüm Yükseltme"
+
+msgctxt "name"
+msgid "Version Upgrade 4.0 to 4.1"
+msgstr "4.0’dan 4.1’e Sürüm Yükseltme"
+
+msgctxt "name"
+msgid "Version Upgrade 4.1 to 4.2"
+msgstr "Sürüm 4.1'den 4.2'ye Yükseltme"
+
+msgctxt "name"
+msgid "Version Upgrade 4.11 to 4.12"
+msgstr "4.11'den 4.12'ye Sürüm Yükseltme"
+
+msgctxt "name"
+msgid "Version Upgrade 4.13 to 5.0"
+msgstr "4.13'ten 5.0'a Sürüm Yükseltme"
+
+msgctxt "name"
+msgid "Version Upgrade 4.2 to 4.3"
+msgstr "4.2'den 4.3'e Sürüm Yükseltme"
+
+msgctxt "name"
+msgid "Version Upgrade 4.3 to 4.4"
+msgstr "4.3'ten 4.4'e Sürüm Yükseltme"
+
+msgctxt "name"
+msgid "Version Upgrade 4.4 to 4.5"
+msgstr "4.4'ten 4.5'e Sürüm Yükseltme"
+
+msgctxt "name"
+msgid "Version Upgrade 4.5 to 4.6"
+msgstr "4.5'ten 4.6'ya Sürüm Yükseltme"
+
+msgctxt "name"
+msgid "Version Upgrade 4.6.0 to 4.6.2"
+msgstr "4.6.0'dan 4.6.2'ye Sürüm Yükseltme"
+
+msgctxt "name"
+msgid "Version Upgrade 4.6.2 to 4.7"
+msgstr "4.6.2'den 4.7'ye Sürüm Yükseltme"
+
+msgctxt "name"
+msgid "Version Upgrade 4.7 to 4.8"
+msgstr "4.7'den 4.8'e Sürüm Yükseltme"
+
+msgctxt "name"
+msgid "Version Upgrade 4.8 to 4.9"
+msgstr "4.8'den 4.9'a Sürüm Yükseltme"
+
+msgctxt "name"
+msgid "Version Upgrade 4.9 to 4.10"
+msgstr "4.9'dan 4.10'a Sürüm Yükseltme"
+
+msgctxt "name"
+msgid "Version Upgrade 5.2 to 5.3"
+msgstr "5.2'dan 5.3'a Sürüm Yükseltme"
+
+msgctxt "name"
+msgid "Version Upgrade 5.3 to 5.4"
+msgstr "5.3'ten 5.4'e Sürüm Yükseltme"
+
+msgctxt "name"
+msgid "Version Upgrade 5.4 to 5.5"
+msgstr "5.4'ten 5.5'e Sürüm Yükseltme"
 
 msgctxt "@button"
 msgid "View printers in Digital Factory"
@@ -4525,6 +5312,11 @@ msgctxt "@button"
 msgid "Want more?"
 msgstr "Daha fazla seçenek görüntülemek ister misiniz?"
 
+msgctxt "@info:title"
+msgid "Warning"
+msgstr "Uyarı"
+
+#, python-brace-format
 msgctxt "@info:status"
 msgid "Warning: The profile is not visible because its quality type '{0}' is not available for the current configuration. Switch to a material/nozzle combination that can use this quality type."
 msgstr "Uyarı: Profilin '{0}' kalite tipi, mevcut yapılandırma için kullanılabilir olmadığından profil görünür değil. Bu kalite tipini kullanabilen malzeme/nozül kombinasyonuna geçiş yapın."
@@ -4585,6 +5377,14 @@ msgctxt "@action:label"
 msgid "Width (mm)"
 msgstr "Genişlik (mm)"
 
+msgctxt "description"
+msgid "Writes g-code to a compressed archive."
+msgstr "G-code’u bir sıkıştırılmış arşive yazar."
+
+msgctxt "description"
+msgid "Writes g-code to a file."
+msgstr "G-code’u bir dosyaya yazar."
+
 msgctxt "@label"
 msgid "X (Width)"
 msgstr "X (Genişlik)"
@@ -4597,6 +5397,10 @@ msgctxt "@label"
 msgid "X min"
 msgstr "X min"
 
+msgctxt "name"
+msgid "X-Ray View"
+msgstr "Röntgen Görüntüsü"
+
 msgctxt "@item:inlistbox"
 msgid "X-Ray view"
 msgstr "Röntgen Görüntüsü"
@@ -4608,6 +5412,10 @@ msgstr "X/Y"
 msgctxt "@item:inlistbox"
 msgid "X3D File"
 msgstr "X3D Dosyası"
+
+msgctxt "name"
+msgid "X3D Reader"
+msgstr "X3D Okuyucu"
 
 msgctxt "@label"
 msgid "Y (Depth)"
@@ -4626,19 +5434,33 @@ msgid "Yes"
 msgstr "Evet"
 
 msgctxt "@label"
-msgid "You are about to remove all printers from Cura. This action cannot be undone.\nAre you sure you want to continue?"
-msgstr "Tüm yazıcıları Cura'dan kaldırmak üzeresiniz. Bu işlem geri alınamaz.\nDevam etmek istediğinizden emin misiniz?"
+msgid ""
+"You are about to remove all printers from Cura. This action cannot be undone.\n"
+"Are you sure you want to continue?"
+msgstr ""
+"Tüm yazıcıları Cura'dan kaldırmak üzeresiniz. Bu işlem geri alınamaz.\n"
+"Devam etmek istediğinizden emin misiniz?"
 
+#, python-brace-format
 msgctxt "@label"
-msgid "You are about to remove {0} printer from Cura. This action cannot be undone.\nAre you sure you want to continue?"
-msgid_plural "You are about to remove {0} printers from Cura. This action cannot be undone.\nAre you sure you want to continue?"
-msgstr[0] "{0} yazıcıyı Cura'dan kaldırmak üzeresiniz. Bu işlem geri alınamaz.\nDevam etmek istediğinizden emin misiniz?"
-msgstr[1] "{0} yazıcıyı Cura'dan kaldırmak üzeresiniz. Bu işlem geri alınamaz.\nDevam etmek istediğinizden emin misiniz?"
+msgid ""
+"You are about to remove {0} printer from Cura. This action cannot be undone.\n"
+"Are you sure you want to continue?"
+msgid_plural ""
+"You are about to remove {0} printers from Cura. This action cannot be undone.\n"
+"Are you sure you want to continue?"
+msgstr[0] ""
+"{0} yazıcıyı Cura'dan kaldırmak üzeresiniz. Bu işlem geri alınamaz.\n"
+"Devam etmek istediğinizden emin misiniz?"
+msgstr[1] ""
+"{0} yazıcıyı Cura'dan kaldırmak üzeresiniz. Bu işlem geri alınamaz.\n"
+"Devam etmek istediğinizden emin misiniz?"
 
 msgctxt "@info:status"
 msgid "You are attempting to connect to a printer that is not running UltiMaker Connect. Please update the printer to the latest firmware."
 msgstr "Ultimaker Connect çalıştırmayan bir yazıcıya bağlanmaya çalışıyorsunuz. Lütfen yazıcının donanım yazılımını son sürüme güncelleyin."
 
+#, python-brace-format
 msgctxt "@info:status"
 msgid "You are attempting to connect to {0} but it is not the host of a group. You can visit the web page to configure it as a group host."
 msgstr "{0} ile bağlantı kurmayı deniyorsunuz ancak cihaz bir grubun ana makinesi değil. Bu cihazı grup ana makinesi olarak yapılandırmak için web sayfasını ziyaret edebilirsiniz."
@@ -4649,7 +5471,10 @@ msgstr "Şu anda yedeklemeniz yok. Oluşturmak için “Şimdi Yedekle” düğm
 
 msgctxt "@text:window, %1 is a profile name"
 msgid "You have customized some profile settings. Would you like to Keep these changed settings after switching profiles? Alternatively, you can discard the changes to load the defaults from '%1'."
-msgstr "Bazı profil ayarlarını özelleştirdiniz.\nProfiller arasında geçiş yapıldıktan sonra bu değişiklikleri tutmak ister misiniz?\nAlternatif olarak, '%1' üzerinden varsayılanları yüklemek için değişiklikleri silebilirsiniz."
+msgstr ""
+"Bazı profil ayarlarını özelleştirdiniz.\n"
+"Profiller arasında geçiş yapıldıktan sonra bu değişiklikleri tutmak ister misiniz?\n"
+"Alternatif olarak, '%1' üzerinden varsayılanları yüklemek için değişiklikleri silebilirsiniz."
 
 msgctxt "@label"
 msgid "You need to accept the license to install the package"
@@ -4679,9 +5504,14 @@ msgctxt "@info"
 msgid "Your new printer will automatically appear in Cura"
 msgstr "Yeni yazıcınız Cura’da otomatik olarak görünecektir"
 
+#, python-brace-format
 msgctxt "@info:status"
-msgid "Your printer <b>{printer_name}</b> could be connected via cloud.\n Manage your print queue and monitor your prints from anywhere connecting your printer to Digital Factory"
-msgstr "<b>{printer_name}</b> adlı yazıcınız bulut aracılığıyla bağlanamadı.\n Baskı kuyruğunuzu yönetin ve yazıcınızı Digital Factory'ye bağlayarak baskılarınızı dilediğiniz yerden takip edin"
+msgid ""
+"Your printer <b>{printer_name}</b> could be connected via cloud.\n"
+" Manage your print queue and monitor your prints from anywhere connecting your printer to Digital Factory"
+msgstr ""
+"<b>{printer_name}</b> adlı yazıcınız bulut aracılığıyla bağlanamadı.\n"
+" Baskı kuyruğunuzu yönetin ve yazıcınızı Digital Factory'ye bağlayarak baskılarınızı dilediğiniz yerden takip edin"
 
 msgctxt "@label"
 msgid "Z"
@@ -4739,6 +5569,7 @@ msgctxt "@label"
 msgid "version: %1"
 msgstr "sürüm: %1"
 
+#, python-brace-format
 msgctxt "@message {printer_name} is replaced with the name of the printer"
 msgid "{printer_name} will be removed until the next account sync."
 msgstr "{printer_name} yazıcısı bir sonraki hesap senkronizasyonuna kadar kaldırılacak."
@@ -4747,630 +5578,9 @@ msgctxt "@info:generic"
 msgid "{} plugins failed to download"
 msgstr "{} eklenti indirilemedi"
 
-msgid "Provides support for exporting Cura profiles."
-msgstr "Cura profillerinin dışa aktarımı için destek sağlar."
-
-msgctxt "name"
-msgid "Cura Profile Writer"
-msgstr "Cura Profili Yazıcı"
-
-msgctxt "description"
-msgid "Submits anonymous slice info. Can be disabled through preferences."
-msgstr "Anonim dilim bilgisi gönderir. Tercihlerden devre dışı bırakılabilir."
-
-msgctxt "name"
-msgid "Slice info"
-msgstr "Dilim bilgisi"
-
-msgctxt "description"
-msgid "Provides support for importing profiles from legacy Cura versions."
-msgstr "Eski Cura sürümlerinden profilleri içe aktarmak için destek sağlar."
-
-msgctxt "name"
-msgid "Legacy Cura Profile Reader"
-msgstr "Eski Cura Profil Okuyucu"
-
-msgctxt "description"
-msgid "Provides support for reading X3D files."
-msgstr "X3D dosyalarının okunması için destek sağlar."
-
-msgctxt "name"
-msgid "X3D Reader"
-msgstr "X3D Okuyucu"
-
-msgctxt "description"
-msgid "Provides support for writing Ultimaker Format Packages."
-msgstr "Ultimaker Biçim Paketleri yazmak için destek sağlar."
-
-msgctxt "name"
-msgid "UFP Writer"
-msgstr "UPF Yazıcı"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.5 to Cura 4.0."
-msgstr "Yapılandırmaları Cura 3.5’ten Cura 4.0’a yükseltir."
-
-msgctxt "name"
-msgid "Version Upgrade 3.5 to 4.0"
-msgstr "3.5’ten 4.0’a Sürüm Yükseltme"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.1 to Cura 4.2."
-msgstr "Yapılandırmaları Cura 4.1'den Cura 4.2'ye yükseltir."
-
-msgctxt "name"
-msgid "Version Upgrade 4.1 to 4.2"
-msgstr "Sürüm 4.1'den 4.2'ye Yükseltme"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.7 to Cura 4.8."
-msgstr "Yapılandırmaları Cura 4.7'den Cura 4.8'e yükseltir."
-
-msgctxt "name"
-msgid "Version Upgrade 4.7 to 4.8"
-msgstr "4.7'den 4.8'e Sürüm Yükseltme"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.9 to Cura 4.10."
-msgstr "Yapılandırmaları Cura 4.9'dan Cura 4.10'a yükseltir."
-
-msgctxt "name"
-msgid "Version Upgrade 4.9 to 4.10"
-msgstr "4.9'dan 4.10'a Sürüm Yükseltme"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.2 to Cura 3.3."
-msgstr "Yapılandırmaları Cura 3.2’ten Cura 3.3’ya yükseltir."
-
-msgctxt "name"
-msgid "Version Upgrade 3.2 to 3.3"
-msgstr "3.2'dan 3.3'e Sürüm Yükseltme"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.7 to Cura 3.0."
-msgstr "Yapılandırmaları Cura 2.7’den Cura 3.0’a yükseltir."
-
-msgctxt "name"
-msgid "Version Upgrade 2.7 to 3.0"
-msgstr "2.7’den 3.0’a Sürüm Yükseltme"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.11 to Cura 4.12."
-msgstr "Yapılandırmaları Cura 4.11'den Cura 4.12'ye yükseltir."
-
-msgctxt "name"
-msgid "Version Upgrade 4.11 to 4.12"
-msgstr "4.11'den 4.12'ye Sürüm Yükseltme"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.6 to Cura 2.7."
-msgstr "Yapılandırmaları Cura 2.6’dan Cura 2.7’ye yükseltir."
-
-msgctxt "name"
-msgid "Version Upgrade 2.6 to 2.7"
-msgstr "2.6’dan 2.7’ye Sürüm Yükseltme"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.8 to Cura 4.9."
-msgstr "Yapılandırmaları Cura 4.8'den Cura 4.9'a yükseltir."
-
-msgctxt "name"
-msgid "Version Upgrade 4.8 to 4.9"
-msgstr "4.8'den 4.9'a Sürüm Yükseltme"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.3 to Cura 4.4."
-msgstr "Yapılandırmaları Cura 4.3'ten Cura 4.4'e yükseltir."
-
-msgctxt "name"
-msgid "Version Upgrade 4.3 to 4.4"
-msgstr "4.3'ten 4.4'e Sürüm Yükseltme"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.3 to Cura 3.4."
-msgstr "Yapılandırmaları Cura 3.3’ten Cura 3.4’ya yükseltir."
-
-msgctxt "name"
-msgid "Version Upgrade 3.3 to 3.4"
-msgstr "3.3'dan 3.4'e Sürüm Yükseltme"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.4 to Cura 4.5."
-msgstr "Yapılandırmaları Cura 4.4'ten Cura 4.5'e yükseltir."
-
-msgctxt "name"
-msgid "Version Upgrade 4.4 to 4.5"
-msgstr "4.4'ten 4.5'e Sürüm Yükseltme"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.5 to Cura 2.6."
-msgstr "Yapılandırmaları Cura 2.5’ten Cura 2.6’ya yükseltir."
-
-msgctxt "name"
-msgid "Version Upgrade 2.5 to 2.6"
-msgstr "2.5’ten 2.6’ya Sürüm Yükseltme"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.1 to Cura 2.2."
-msgstr "Yapılandırmaları Cura 2.1’den Cura 2.2’ye yükseltir."
-
-msgctxt "name"
-msgid "Version Upgrade 2.1 to 2.2"
-msgstr "2.1’den 2.2’ye Sürüm Yükseltme"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.2 to Cura 4.3."
-msgstr "Yapılandırmaları Cura 4.2'den Cura 4.3'e yükseltir."
-
-msgctxt "name"
-msgid "Version Upgrade 4.2 to 4.3"
-msgstr "4.2'den 4.3'e Sürüm Yükseltme"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 5.2 to Cura 5.3."
-msgstr "Yapılandırmaları Cura 5.2'dan Cura 5.3'a yükseltir."
-
-msgctxt "name"
-msgid "Version Upgrade 5.2 to 5.3"
-msgstr "5.2'dan 5.3'a Sürüm Yükseltme"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.0 to Cura 4.1."
-msgstr "Yapılandırmaları Cura 4.0’dan Cura 4.1’e yükseltir."
-
-msgctxt "name"
-msgid "Version Upgrade 4.0 to 4.1"
-msgstr "4.0’dan 4.1’e Sürüm Yükseltme"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.2 to Cura 2.4."
-msgstr "Yapılandırmaları Cura 2.2’den Cura 2.4’e yükseltir."
-
-msgctxt "name"
-msgid "Version Upgrade 2.2 to 2.4"
-msgstr "2.2’den 2.4’e Sürüm Yükseltme"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.4 to Cura 3.5."
-msgstr "Yapılandırmaları Cura 3.4’ten Cura 3.5’e yükseltir."
-
-msgctxt "name"
-msgid "Version Upgrade 3.4 to 3.5"
-msgstr "3.4’ten 3.5’e Sürüm Yükseltme"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.13 to Cura 5.0."
-msgstr "Yapılandırmaları Cura 4.13'ten Cura 5.0'a yükseltir."
-
-msgctxt "name"
-msgid "Version Upgrade 4.13 to 5.0"
-msgstr "4.13'ten 5.0'a Sürüm Yükseltme"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 5.4 to Cura 5.5."
-msgstr "Cura 5.4'ten Cura 5.5'e yükseltme yapılandırmaları"
-
-msgctxt "name"
-msgid "Version Upgrade 5.4 to 5.5"
-msgstr "5.4'ten 5.5'e Sürüm Yükseltme"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.5 to Cura 4.6."
-msgstr "Yapılandırmaları Cura 4.5'ten Cura 4.6'ya yükseltir."
-
-msgctxt "name"
-msgid "Version Upgrade 4.5 to 4.6"
-msgstr "4.5'ten 4.6'ya Sürüm Yükseltme"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.0 to Cura 3.1."
-msgstr "Yapılandırmaları Cura 3.0'dan Cura 3.1'e yükseltir."
-
-msgctxt "name"
-msgid "Version Upgrade 3.0 to 3.1"
-msgstr "3.0'dan 3.1'e Sürüm Yükseltme"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.6.0 to Cura 4.6.2."
-msgstr "Yapılandırmaları Cura 4.6.0'dan Cura 4.6.2'ye yükseltir."
-
-msgctxt "name"
-msgid "Version Upgrade 4.6.0 to 4.6.2"
-msgstr "4.6.0'dan 4.6.2'ye Sürüm Yükseltme"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.6.2 to Cura 4.7."
-msgstr "Yapılandırmaları Cura 4.6.2'den Cura 4.7'ye yükseltir."
-
-msgctxt "name"
-msgid "Version Upgrade 4.6.2 to 4.7"
-msgstr "4.6.2'den 4.7'ye Sürüm Yükseltme"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 5.3 to Cura 5.4."
-msgstr "Cura 5.3'ten Cura 5.4'e yükseltme yapılandırmaları"
-
-msgctxt "name"
-msgid "Version Upgrade 5.3 to 5.4"
-msgstr "5.3'ten 5.4'e Sürüm Yükseltme"
-
-msgctxt "description"
-msgid "Extension that allows for user created scripts for post processing"
-msgstr "Kullanıcının oluşturduğu komut dosyalarına son işleme için izin veren uzantı"
-
-msgctxt "name"
-msgid "Post Processing"
-msgstr "Son İşleme"
-
-msgctxt "description"
-msgid "Provides the preview of sliced layerdata."
-msgstr "Dilimlenen katman verilerinin önizlemesini sağlar."
-
-msgctxt "name"
-msgid "Simulation View"
-msgstr "Simülasyon Görünümü"
-
-msgctxt "description"
-msgid "Provides support for importing Cura profiles."
-msgstr "Cura profillerinin içe aktarılması için destek sağlar."
-
-msgctxt "name"
-msgid "Cura Profile Reader"
-msgstr "Cura Profil Okuyucu"
-
-msgctxt "description"
-msgid "Provides the Per Model Settings."
-msgstr "Model Başına Ayarları sağlar."
-
-msgctxt "name"
-msgid "Per Model Settings Tool"
-msgstr "Model Başına Ayarlar Aracı"
-
-msgctxt "description"
-msgid "Provides a preview stage in Cura."
-msgstr "Cura’da ön izleme aşaması sunar."
-
-msgctxt "name"
-msgid "Preview Stage"
-msgstr "Öz İzleme Aşaması"
-
-msgctxt "description"
-msgid "Creates an eraser mesh to block the printing of support in certain places"
-msgstr "Belirli yerlerde desteğin yazdırılmasını engellemek için bir silici yüzey oluşturur"
-
-msgctxt "name"
-msgid "Support Eraser"
-msgstr "Destek Silici"
-
-msgctxt "description"
-msgid "Allows loading and displaying G-code files."
-msgstr "G-code dosyalarının yüklenmesine ve görüntülenmesine olanak tanır."
-
-msgctxt "name"
-msgid "G-code Reader"
-msgstr "G-code Okuyucu"
-
-msgctxt "description"
-msgid "Backup and restore your configuration."
-msgstr "Yapılandırmanızı yedekleyin ve geri yükleyin."
-
-msgctxt "name"
-msgid "Cura Backups"
-msgstr "Cura Yedeklemeleri"
-
-msgctxt "description"
-msgid "Provides removable drive hotplugging and writing support."
-msgstr "Çıkarılabilir sürücünün takılıp çıkarılmasını ve yazma desteği sağlar."
-
-msgctxt "name"
-msgid "Removable Drive Output Device Plugin"
-msgstr "Çıkarılabilir Sürücü Çıkış Cihazı Eklentisi"
-
-#. Shall I keep CuraEngine together and untranslated? Until further notice I will keep it as is.
-#. Same question.
-#. +1
-#. +1
-msgctxt "description"
-msgid "CuraEngine plugin for gradually smoothing the flow to limit high-flow jumps"
-msgstr "Yüksek akışlı sıçramaları sınırlamak amacıyla akışı kademeli olarak düzelten CuraEngine eklentisi"
-
-#. @Lokalise Translation Team Is this translatable?
-#. +1
-msgctxt "name"
-msgid "CuraEngineGradualFlow"
-msgstr "CuraEngineGradualFlow"
-
-msgctxt "description"
-msgid "Provides capabilities to read and write XML-based material profiles."
-msgstr "XML tabanlı malzeme profillerini okuma ve yazma olanağı sağlar."
-
-msgctxt "name"
-msgid "Material Profiles"
-msgstr "Malzeme Profilleri"
-
-msgctxt "description"
-msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
-msgstr "Ultimaker makineleri için makine eylemleri sunar (yatak dengeleme sihirbazı, yükseltme seçme vb.)"
-
-msgctxt "name"
-msgid "UltiMaker machine actions"
-msgstr "Ultimaker makine eylemleri"
-
-msgctxt "description"
-msgid "Provides the X-Ray view."
-msgstr "Röntgen Görüntüsü sağlar."
-
-msgctxt "name"
-msgid "X-Ray View"
-msgstr "Röntgen Görüntüsü"
-
-msgctxt "description"
-msgid "Manages network connections to UltiMaker networked printers."
-msgstr "UltiMaker ağındaki yazıcılar için ağ bağlantılarını yönetir."
-
-msgctxt "name"
-msgid "UltiMaker Network Connection"
-msgstr "Ultimaker Ağ Bağlantısı"
-
-msgctxt "description"
-msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc.)."
-msgstr "Makine ayarlarının değiştirilmesini sağlar (yapı hacmi, nozül boyutu vb.)"
-
-msgctxt "name"
-msgid "Machine Settings Action"
-msgstr "Makine Ayarları eylemi"
-
-msgctxt "description"
-msgid "Provides support for reading model files."
-msgstr "Model dosyalarını okuma desteği sağlar."
-
-msgctxt "name"
-msgid "Trimesh Reader"
-msgstr "Trimesh Okuyucu"
-
-msgctxt "description"
-msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
-msgstr "Uygulamanın uzantılarını yönetir ve Ultimaker web sitesinden uzantıların incelenmesini sağlar."
-
-msgctxt "name"
-msgid "Marketplace"
-msgstr "Mağaza"
-
-msgctxt "description"
-msgid "Provides a monitor stage in Cura."
-msgstr "Cura’da görüntüleme aşaması sunar."
-
-msgctxt "name"
-msgid "Monitor Stage"
-msgstr "Görüntüleme Aşaması"
-
-msgctxt "description"
-msgid "Enables ability to generate printable geometry from 2D image files."
-msgstr "2D resim dosyasından yazdırılabilir geometri oluşturulmasını sağlar."
-
-msgctxt "name"
-msgid "Image Reader"
-msgstr "Resim Okuyucu"
-
-msgctxt "description"
-msgid "Provides a machine actions for updating firmware."
-msgstr "Aygıt yazılımını güncellemeye yönelik makine eylemleri sağlar."
-
-msgctxt "name"
-msgid "Firmware Updater"
-msgstr "Aygıt Yazılımı Güncelleyici"
-
-msgctxt "description"
-msgid "Provides the link to the CuraEngine slicing backend."
-msgstr "CuraEngine arka dilimleme ucuna bağlantı sağlar."
-
-msgctxt "name"
-msgid "CuraEngine Backend"
-msgstr "CuraEngine Arka Uç"
-
-msgctxt "description"
-msgid "Provides a prepare stage in Cura."
-msgstr "Cura’da hazırlık aşaması sunar."
-
-msgctxt "name"
-msgid "Prepare Stage"
-msgstr "Hazırlık Aşaması"
-
-msgctxt "description"
-msgid "Connects to the Digital Library, allowing Cura to open files from and save files to the Digital Library."
-msgstr "Digital Library'ye bağlanarak Cura'nın Digital Library'deki dosyaları açmasına ve kaydetmesine olanak tanır."
-
-msgctxt "name"
-msgid "Ultimaker Digital Library"
-msgstr "Ultimaker Digital Library"
-
-msgctxt "description"
-msgid "Checks for firmware updates."
-msgstr "Bellenim güncellemelerini denetler."
-
-msgctxt "name"
-msgid "Firmware Update Checker"
-msgstr "Bellenim Güncelleme Denetleyicisi"
-
-msgctxt "description"
-msgid "Writes g-code to a file."
-msgstr "G-code’u bir dosyaya yazar."
-
-msgctxt "name"
-msgid "G-code Writer"
-msgstr "G-code Yazıcı"
-
-msgctxt "description"
-msgid "Checks models and print configuration for possible printing issues and give suggestions."
-msgstr "Olası yazdırma sorunlarına karşı modelleri ve yazdırma yapılandırmasını kontrol eder ve öneriler verir."
-
-msgctxt "name"
-msgid "Model Checker"
-msgstr "Model Kontrol Edici"
-
-msgctxt "description"
-msgid "Provides support for reading 3MF files."
-msgstr "3MF dosyalarının okunması için destek sağlar."
-
-msgctxt "name"
-msgid "3MF Reader"
-msgstr "3MF Okuyucu"
-
-msgctxt "description"
-msgid "Accepts G-Code and sends them to a printer. Plugin can also update firmware."
-msgstr "G-Code’ları kabul eder ve bir yazıcıya gönderir. Eklenti aynı zamanda üretici sürümünü güncelleyebilir."
-
-msgctxt "name"
-msgid "USB printing"
-msgstr "USB yazdırma"
-
-msgctxt "description"
-msgid "Provides support for reading AMF files."
-msgstr "AMF dosyalarının okunması için destek sağlar."
-
-msgctxt "name"
-msgid "AMF Reader"
-msgstr "AMF Okuyucu"
-
-msgctxt "description"
-msgid "Provides support for importing profiles from g-code files."
-msgstr "G-code dosyalarından profilleri içe aktarmak için destek sağlar."
-
-msgctxt "name"
-msgid "G-code Profile Reader"
-msgstr "G-code Profil Okuyucu"
-
-msgctxt "description"
-msgid "Provides a normal solid mesh view."
-msgstr "Normal gerçek bir ağ görünümü sağlar."
-
-msgctxt "name"
-msgid "Solid View"
-msgstr "Gerçek Görünüm"
-
-msgctxt "description"
-msgid "Logs certain events so that they can be used by the crash reporter"
-msgstr "Çökme raporlayıcının kullanabilmesi için belirli olayları günlüğe kaydeder"
-
-msgctxt "name"
-msgid "Sentry Logger"
-msgstr "Nöbetçi Günlükçü"
-
-msgctxt "description"
-msgid "Reads g-code from a compressed archive."
-msgstr "Bir sıkıştırılmış arşivden g-code okur."
-
-msgctxt "name"
-msgid "Compressed G-code Reader"
-msgstr "Sıkıştırılmış G-code Okuyucusu"
-
-msgctxt "description"
-msgid "Provides support for reading Ultimaker Format Packages."
-msgstr "Ultimaker Biçim Paketlerinin okunması için destek sağlar."
-
-msgctxt "name"
-msgid "UFP Reader"
-msgstr "UFP Okuyucu"
-
-msgctxt "description"
-msgid "Provides support for writing 3MF files."
-msgstr "3MF dosyalarının yazılması için destek sağlar."
-
-msgctxt "name"
-msgid "3MF Writer"
-msgstr "3MF Yazıcı"
-
-msgctxt "description"
-msgid "Writes g-code to a compressed archive."
-msgstr "G-code’u bir sıkıştırılmış arşive yazar."
-
-msgctxt "name"
-msgid "Compressed G-code Writer"
-msgstr "Sıkıştırılmış G-code Yazıcısı"
-
-msgctxt "description"
-msgid "Provides support for exporting Cura profiles."
-msgstr "Cura profillerinin dışa aktarılması için destek sağlar."
-
-msgctxt "@info:title"
-msgid "Error"
-msgstr "Hata"
-
-msgctxt "@action:button"
-msgid "Cancel"
-msgstr "İptal Et"
-
-msgctxt "@title:tab"
-msgid "Settings"
-msgstr "Ayarlar"
-
-#, python-brace-format
-msgctxt "@label Don't translate the XML tag <filename>!"
-msgid "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?"
-msgstr "Dosya <filename>{0}</filename> zaten mevcut. Üstüne yazmak istediğinizden emin misiniz?"
-
-msgctxt "@action:button"
-msgid "Learn more"
-msgstr "Daha fazla bilgi edinin"
-
-msgctxt "@title:tab"
-msgid "General"
-msgstr "Genel"
-
-msgctxt "@label (%1 is object name)"
-msgid "Are you sure you wish to remove %1? This cannot be undone!"
-msgstr "%1’i kaldırmak istediğinizden emin misiniz? Bu eylem geri alınamaz!"
-
-msgctxt "@label"
-msgid "Type"
-msgstr "Tür"
-
-msgctxt "@info:title"
-msgid "Saving"
-msgstr "Kaydediliyor"
-
-msgctxt "@title:window"
-msgid "File Already Exists"
-msgstr "Dosya Zaten Mevcut"
-
-#, python-brace-format
-msgctxt "@item:inlistbox"
-msgid "All Supported Types ({0})"
-msgstr "Tüm desteklenen türler ({0})"
-
-#, python-brace-format
-msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
-msgid "Could not save to <filename>{0}</filename>: <message>{1}</message>"
-msgstr "<filename>{0}</filename> dosyasına kaydedilemedi: <message>{1}</message>"
-
-msgctxt "@action:button"
-msgid "OK"
-msgstr "Tamam"
-
-msgctxt "@info:title"
-msgid "Warning"
-msgstr "Uyarı"
-
-msgctxt "@title:tab"
-msgid "Printers"
-msgstr "Yazıcılar"
-
-msgctxt "@info:title"
-msgid "File Saved"
-msgstr "Dosya Kaydedildi"
-
-msgctxt "@title:window"
-msgid "Confirm Remove"
-msgstr "Kaldırmayı Onayla"
-
-msgctxt "@item:inlistbox"
-msgid "All Files (*)"
-msgstr "Tüm Dosyalar (*)"
-
-msgctxt "@label"
-msgid "Balanced"
-msgstr "Dengeli"
-
-msgctxt "@text"
-msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
-msgstr "Dengeli profil, verimlilik, yüzey kalitesi, mekanik özellikler ve boyutsal doğruluk arasında bir denge kurmayı amaçlar."
+#~ msgctxt "@label"
+#~ msgid "Default"
+#~ msgstr "Varsayılan"
+
+#~ msgid "Provides support for exporting Cura profiles."
+#~ msgstr "Cura profillerinin dışa aktarımı için destek sağlar."

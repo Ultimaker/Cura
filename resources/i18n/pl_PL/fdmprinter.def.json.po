@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-09-12 17:04+0000\n"
+"POT-Creation-Date: 2023-10-31 19:13+0000\n"
 "PO-Revision-Date: 2019-11-15 15:34+0100\n"
 "Last-Translator: Mariusz Matłosz <matliks@gmail.com>\n"
 "Language-Team: Mariusz Matłosz <matliks@gmail.com>, reprapy.pl\n"
@@ -745,16 +745,16 @@ msgid "Distance between the printed support structure lines. This setting is cal
 msgstr "Odległość między drukowanymi liniami struktury podpory. To ustawienie jest obliczane przez gęstość podpory."
 
 msgctxt "support_bottom_distance description"
-msgid "Distance from the print to the bottom of the support."
-msgstr "Odległość od wydruku do dolnej części podpory."
+msgid "Distance from the print to the bottom of the support. Note that this is rounded up to the next layer height."
+msgstr ""
 
 msgctxt "support_top_distance description"
 msgid "Distance from the top of the support to the print."
 msgstr "Odległość od wierzchołka podpory do wydruku."
 
 msgctxt "support_z_distance description"
-msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. This value is rounded up to a multiple of the layer height."
-msgstr "Odległość od góry/dołu podpory do wydruku. Ta luka zapewnia luz, aby usunąć wsporniki po wydrukowaniu modelu. Ta wartość jest zaokrąglana do wielokrotności wysokości warstwy."
+msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. The topmost support layer below the model might be a fraction of regular layers."
+msgstr ""
 
 msgctxt "infill_wipe_dist description"
 msgid "Distance of a travel move inserted after every infill line, to make the infill stick to the walls better. This option is similar to infill overlap, but without extrusion and only on one end of the infill line."
@@ -1096,6 +1096,14 @@ msgctxt "wall_0_material_flow description"
 msgid "Flow compensation on the outermost wall line."
 msgstr "Ustawienie przepływu na liniach ścianek zewnętrznych."
 
+msgctxt "wall_0_material_flow_roofing description"
+msgid "Flow compensation on the top surface outermost wall line."
+msgstr "Kompensacja przepływu na najbardziej zewnętrznej linii górnej powierzchni."
+
+msgctxt "wall_x_material_flow_roofing description"
+msgid "Flow compensation on top surface wall lines for all wall lines except the outermost one."
+msgstr "Kompensacja przepływu na liniach ściany na powierzchni górnej dla wszystkich linii ściany, z wyjątkiem najbardziej zewnętrznej."
+
 msgctxt "skin_material_flow description"
 msgid "Flow compensation on top/bottom lines."
 msgstr "Ustawienie przepływu na warstwie górnej i dolnej."
@@ -1283,6 +1291,10 @@ msgstr "Kratka"
 msgctxt "machine_gcode_flavor option Griffin"
 msgid "Griffin"
 msgstr "Griffin"
+
+msgctxt "group_outer_walls label"
+msgid "Group Outer Walls"
+msgstr "Grupuj ściany zewnętrzne"
 
 msgctxt "infill_pattern option gyroid"
 msgid "Gyroid"
@@ -2448,6 +2460,10 @@ msgctxt "wall_0_wipe_dist label"
 msgid "Outer Wall Wipe Distance"
 msgstr "Długość Czyszczenia Zew. Ściana"
 
+msgctxt "group_outer_walls description"
+msgid "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped."
+msgstr "Zewnętrzne ściany różnych wysp w tej samej warstwie są drukowane sekwencyjnie. Gdy jest włączone, ilość zmian przepływu jest ograniczona, ponieważ ściany są drukowane po jednym rodzaju na raz. Gdy jest wyłączone, liczba podróży między wyspami jest zmniejszana, ponieważ ściany na tych samych wyspach są grupowane."
+
 msgctxt "inset_direction option outside_in"
 msgid "Outside To Inside"
 msgstr ""
@@ -2501,8 +2517,20 @@ msgid "Prime Tower Acceleration"
 msgstr "Przyspieszenie Wieży Czyszczącej"
 
 msgctxt "prime_tower_brim_enable label"
-msgid "Prime Tower Brim"
-msgstr "Obrys wieży czyszczącej"
+msgid "Prime Tower Base"
+msgstr ""
+
+msgctxt "prime_tower_base_curve_magnitude label"
+msgid "Prime Tower Base Curve Magnitude"
+msgstr ""
+
+msgctxt "prime_tower_base_height label"
+msgid "Prime Tower Base Height"
+msgstr ""
+
+msgctxt "prime_tower_base_size label"
+msgid "Prime Tower Base Size"
+msgstr ""
 
 msgctxt "prime_tower_flow label"
 msgid "Prime Tower Flow"
@@ -2519,6 +2547,10 @@ msgstr "Szerokość Linii Wieży Czyszczczenia"
 msgctxt "prime_tower_min_volume label"
 msgid "Prime Tower Minimum Volume"
 msgstr "Min. Objętość Wieży Czyszczącej"
+
+msgctxt "prime_tower_raft_base_line_spacing label"
+msgid "Prime Tower Raft Line Spacing"
+msgstr ""
 
 msgctxt "prime_tower_size label"
 msgid "Prime Tower Size"
@@ -2537,8 +2569,8 @@ msgid "Prime Tower Y Position"
 msgstr "Pozycja Wieży Czyszcz. Y"
 
 msgctxt "prime_tower_brim_enable description"
-msgid "Prime-towers might need the extra adhesion afforded by a brim even if the model doesn't. Presently can't be used with the 'Raft' adhesion-type."
-msgstr "Wieże czyszczące mogą potrzebować dodatkowej adhezji zapewnionej przez obrys, nawet jeśli model nie potrzebuje. Nie można używać z typem przyczepności „tratwa”."
+msgid "Prime-towers might need the extra adhesion afforded by a brim or raft, even if the model doesn't."
+msgstr ""
 
 msgctxt "acceleration_print label"
 msgid "Print Acceleration"
@@ -3608,6 +3640,14 @@ msgctxt "raft_surface_acceleration description"
 msgid "The acceleration with which the top raft layers are printed."
 msgstr "Przyspieszenie, z jakim drukowane są górne warstwy tratwy."
 
+msgctxt "acceleration_wall_x_roofing description"
+msgid "The acceleration with which the top surface inner walls are printed."
+msgstr "Przyspieszenie, z jakim są drukowane wewnętrzne ścianki górnej powierzchni."
+
+msgctxt "acceleration_wall_0_roofing description"
+msgid "The acceleration with which the top surface outermost walls are printed."
+msgstr "Przyspieszenie, z jakim są drukowane najbardziej zewnętrzne ściany górnej powierzchni."
+
 msgctxt "acceleration_wall description"
 msgid "The acceleration with which the walls are printed."
 msgstr "Przyspieszenie, z jakim drukowane są ściany."
@@ -3747,6 +3787,10 @@ msgstr "Odległość między liniami na środkowej warstwie tratwy. Odległość
 msgctxt "raft_surface_line_spacing description"
 msgid "The distance between the raft lines for the top raft layers. The spacing should be equal to the line width, so that the surface is solid."
 msgstr "Odległość między liniami na górnej warstwie tratwy. Rozstaw powinien być równy szerokości linii, tak że powierzchnia jest pełna."
+
+msgctxt "prime_tower_raft_base_line_spacing description"
+msgid "The distance between the raft lines for the unique prime tower raft layer. Wide spacing makes for easy removal of the raft from the build plate."
+msgstr ""
 
 msgctxt "interlocking_depth description"
 msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
@@ -3944,6 +3988,10 @@ msgctxt "layer_height_0 description"
 msgid "The height of the initial layer in mm. A thicker initial layer makes adhesion to the build plate easier."
 msgstr "Wysokość początkowej warstwy w mm. Grubsza początkowa warstwa powoduje lepszą przyczepność do stołu."
 
+msgctxt "prime_tower_base_height description"
+msgid "The height of the prime tower base."
+msgstr ""
+
 msgctxt "support_bottom_stair_step_height description"
 msgid "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures. Set to zero to turn off the stair-like behaviour."
 msgstr "Wysokość stopni w schodkowym dole podpory spoczywającej na modelu. Niska wartość utrudnia usunięcie podpory, ale zbyt duża wartość może prowadzić do niestabilnej podpory. Ustaw na zero, aby wyłączyć zachowanie schodkowe."
@@ -4015,6 +4063,10 @@ msgstr "Czas warstwy, który ustala próg pomiędzy regularną prędkością wen
 msgctxt "retraction_amount description"
 msgid "The length of material retracted during a retraction move."
 msgstr "Długość materiału wycofanego podczas retrakcji."
+
+msgctxt "prime_tower_base_curve_magnitude description"
+msgid "The magnitude factor used for the curve of the prime tower foot."
+msgstr ""
 
 msgctxt "machine_buildplate_type description"
 msgid "The material of the build plate installed on the printer."
@@ -4107,6 +4159,14 @@ msgstr "Maksymalna zmiana prędkości chwilowej z jaką drukowane są obwódka i
 msgctxt "jerk_support description"
 msgid "The maximum instantaneous velocity change with which the support structure is printed."
 msgstr "Maksymalna zmiana prędkości chwilowej z jaką drukowane są podpory."
+
+msgctxt "jerk_wall_x_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface inner walls are printed."
+msgstr "Maksymalna chwilowa zmiana prędkości, z jaką drukowane są najbardziej zewnętrzne ściany górnej powierzchni."
+
+msgctxt "jerk_wall_0_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface outermost walls are printed."
+msgstr "Maksymalna chwilowa zmiana prędkości, z jaką drukowane są wewnętrzne ściany górnej powierzchni."
 
 msgctxt "jerk_wall description"
 msgid "The maximum instantaneous velocity change with which the walls are printed."
@@ -4492,6 +4552,14 @@ msgctxt "raft_surface_speed description"
 msgid "The speed at which the top raft layers are printed. These should be printed a bit slower, so that the nozzle can slowly smooth out adjacent surface lines."
 msgstr "Prędkość, w jaką są drukowane górne warstwy tratwy. Powinny być drukowane nieco wolniej, dzięki czemu dysza może powoli wypolerować sąsiednie linie powierzchni."
 
+msgctxt "speed_wall_x_roofing description"
+msgid "The speed at which the top surface inner walls are printed."
+msgstr "Prędkość drukowania wewnętrznych ścian górnej powierzchni."
+
+msgctxt "speed_wall_0_roofing description"
+msgid "The speed at which the top surface outermost wall is printed."
+msgstr "Prędkość drukowania najbardziej zewnętrznych ścian górnej powierzchni."
+
 msgctxt "speed_z_hop description"
 msgid "The speed at which the vertical Z movement is made for Z Hops. This is typically lower than the print speed since the build plate or machine's gantry is harder to move."
 msgstr "Szybkość, z jaką wykonuje się pionowy ruch skoku Z. Jest to zwykle mniej niż prędkość drukowania, ponieważ trudniej się porusza stołem drukarki."
@@ -4553,8 +4621,8 @@ msgid "The temperature to which to already start cooling down just before the en
 msgstr "Temperatura, od której zaczyna się chłodzenie tuż przed końcem drukowania."
 
 msgctxt "material_print_temperature_layer_0 description"
-msgid "The temperature used for printing the first layer. Set at 0 to disable special handling of the initial layer."
-msgstr "Temperatura stosowana do drukowania pierwszej warstwy. Ustaw wartość 0, aby wyłączyć szczególną obsługę początkowej warstwy."
+msgid "The temperature used for printing the first layer."
+msgstr ""
 
 msgctxt "material_print_temperature description"
 msgid "The temperature used for printing."
@@ -4632,6 +4700,10 @@ msgctxt "interlocking_beam_width description"
 msgid "The width of the interlocking structure beams."
 msgstr "Szerokość wieży czyszczącej."
 
+msgctxt "prime_tower_base_size description"
+msgid "The width of the prime tower base."
+msgstr ""
+
 msgctxt "prime_tower_size description"
 msgid "The width of the prime tower."
 msgstr "Szerokość wieży czyszczącej."
@@ -4699,6 +4771,38 @@ msgstr "Odległość Rozsz. Górnej Skóry"
 msgctxt "top_skin_preshrink label"
 msgid "Top Skin Removal Width"
 msgstr "Szer. Usuwania Górnej Skóry"
+
+msgctxt "acceleration_wall_x_roofing label"
+msgid "Top Surface Inner Wall Acceleration"
+msgstr "Przyspieszenie wewnętrznej powierzchni górnej ściany"
+
+msgctxt "jerk_wall_x_roofing label"
+msgid "Top Surface Inner Wall Jerk"
+msgstr "Szarpnięcie na najbardziej zewnętrznych ścianach górnej powierzchni"
+
+msgctxt "speed_wall_x_roofing label"
+msgid "Top Surface Inner Wall Speed"
+msgstr "Prędkość wewnętrznej powierzchni górnej ściany"
+
+msgctxt "wall_x_material_flow_roofing label"
+msgid "Top Surface Inner Wall(s) Flow"
+msgstr "Przepływ wewnętrznej ściany(ach) górnej powierzchni"
+
+msgctxt "acceleration_wall_0_roofing label"
+msgid "Top Surface Outer Wall Acceleration"
+msgstr "Przyspieszenie zewnętrznej powierzchni górnej ściany"
+
+msgctxt "wall_0_material_flow_roofing label"
+msgid "Top Surface Outer Wall Flow"
+msgstr "Przepływ na najbardziej zewnętrznej linii górnej powierzchni"
+
+msgctxt "jerk_wall_0_roofing label"
+msgid "Top Surface Outer Wall Jerk"
+msgstr "Szarpnięcie na wewnętrznych ścianach górnej powierzchni"
+
+msgctxt "speed_wall_0_roofing label"
+msgid "Top Surface Outer Wall Speed"
+msgstr "Prędkość najbardziej zewnętrznych ścian górnej powierzchni"
 
 msgctxt "acceleration_roofing label"
 msgid "Top Surface Skin Acceleration"
@@ -5388,124 +5492,6 @@ msgctxt "travel description"
 msgid "travel"
 msgstr "ruch jałowy"
 
-msgctxt "group_outer_walls label"
-msgid "Group Outer Walls"
-msgstr "Grupuj ściany zewnętrzne"
-
-msgctxt "group_outer_walls description"
-msgid "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped."
-msgstr "Zewnętrzne ściany różnych wysp w tej samej warstwie są drukowane sekwencyjnie. Gdy jest włączone, ilość zmian przepływu jest ograniczona, ponieważ ściany są drukowane po jednym rodzaju na raz. Gdy jest wyłączone, liczba podróży między wyspami jest zmniejszana, ponieważ ściany na tych samych wyspach są grupowane."
-
-msgctxt "wall_0_material_flow_roofing label"
-msgid "Top Surface Outer Wall Flow"
-msgstr "Przepływ na najbardziej zewnętrznej linii górnej powierzchni"
-
-msgctxt "wall_0_material_flow_roofing description"
-msgid "Flow compensation on the top surface outermost wall line."
-msgstr "Kompensacja przepływu na najbardziej zewnętrznej linii górnej powierzchni."
-
-msgctxt "wall_x_material_flow_roofing label"
-msgid "Top Surface Inner Wall(s) Flow"
-msgstr "Przepływ wewnętrznej ściany(ach) górnej powierzchni"
-
-msgctxt "wall_x_material_flow_roofing description"
-msgid "Flow compensation on top surface wall lines for all wall lines except the outermost one."
-msgstr "Kompensacja przepływu na liniach ściany na powierzchni górnej dla wszystkich linii ściany, z wyjątkiem najbardziej zewnętrznej."
-
-msgctxt "speed_wall_0_roofing label"
-msgid "Top Surface Outer Wall Speed"
-msgstr "Prędkość najbardziej zewnętrznych ścian górnej powierzchni"
-
-msgctxt "speed_wall_0_roofing description"
-msgid "The speed at which the top surface outermost wall is printed."
-msgstr "Prędkość drukowania najbardziej zewnętrznych ścian górnej powierzchni."
-
-msgctxt "speed_wall_x_roofing label"
-msgid "Top Surface Inner Wall Speed"
-msgstr "Prędkość wewnętrznej powierzchni górnej ściany"
-
-msgctxt "speed_wall_x_roofing description"
-msgid "The speed at which the top surface inner walls are printed."
-msgstr "Prędkość drukowania wewnętrznych ścian górnej powierzchni."
-
-msgctxt "acceleration_wall_0_roofing label"
-msgid "Top Surface Outer Wall Acceleration"
-msgstr "Przyspieszenie zewnętrznej powierzchni górnej ściany"
-
-msgctxt "acceleration_wall_0_roofing description"
-msgid "The acceleration with which the top surface outermost walls are printed."
-msgstr "Przyspieszenie, z jakim są drukowane najbardziej zewnętrzne ściany górnej powierzchni."
-
-msgctxt "acceleration_wall_x_roofing label"
-msgid "Top Surface Inner Wall Acceleration"
-msgstr "Przyspieszenie wewnętrznej powierzchni górnej ściany"
-
-msgctxt "acceleration_wall_x_roofing description"
-msgid "The acceleration with which the top surface inner walls are printed."
-msgstr "Przyspieszenie, z jakim są drukowane wewnętrzne ścianki górnej powierzchni."
-
-msgctxt "jerk_wall_0_roofing label"
-msgid "Top Surface Outer Wall Jerk"
-msgstr "Szarpnięcie na wewnętrznych ścianach górnej powierzchni"
-
-msgctxt "jerk_wall_0_roofing description"
-msgid "The maximum instantaneous velocity change with which the top surface outermost walls are printed."
-msgstr "Maksymalna chwilowa zmiana prędkości, z jaką drukowane są wewnętrzne ściany górnej powierzchni."
-
-msgctxt "jerk_wall_x_roofing label"
-msgid "Top Surface Inner Wall Jerk"
-msgstr "Szarpnięcie na najbardziej zewnętrznych ścianach górnej powierzchni"
-
-msgctxt "jerk_wall_x_roofing description"
-msgid "The maximum instantaneous velocity change with which the top surface inner walls are printed."
-msgstr "Maksymalna chwilowa zmiana prędkości, z jaką drukowane są najbardziej zewnętrzne ściany górnej powierzchni."
-
-
-
-### Settings added by bundled engine backend plugins. Add this manually for now. Should be removed whenever we handle it better.
-
-msgctxt "gradual_flow_enabled label"
-msgid "Gradual flow enabled"
-msgstr ""
-
-msgctxt "gradual_flow_enabled description"
-msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
-msgstr ""
-
-msgctxt "max_flow_acceleration label"
-msgid "Gradual flow max acceleration"
-msgstr ""
-
-msgctxt "max_flow_acceleration description"
-msgid "Maximum acceleration for gradual flow changes"
-msgstr ""
-
-msgctxt "layer_0_max_flow_acceleration label"
-msgid "Initial layer max flow acceleration"
-msgstr ""
-
-msgctxt "layer_0_max_flow_acceleration description"
-msgid "Minimum speed for gradual flow changes for the first layer"
-msgstr ""
-
-msgctxt "gradual_flow_discretisation_step_size label"
-msgid "Gradual flow discretisation step size"
-msgstr ""
-
-msgctxt "gradual_flow_discretisation_step_size description"
-msgid "Duration of each step in the gradual flow change"
-msgstr ""
-
-msgctxt "reset_flow_duration label"
-msgid "Reset flow duration"
-msgstr ""
-
-msgctxt "reset_flow_duration description"
-msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
-msgstr ""
-
-
-
 #~ msgctxt "machine_head_polygon description"
 #~ msgid "A 2D silhouette of the print head (fan caps excluded)."
 #~ msgstr "Sylwetka 2D głowicy drukującej (bez nasadki wentylatora)."
@@ -5685,6 +5671,14 @@ msgstr ""
 #~ msgctxt "wireframe_nozzle_clearance description"
 #~ msgid "Distance between the nozzle and horizontally downward lines. Larger clearance results in diagonally downward lines with a less steep angle, which in turn results in less upward connections with the next layer. Only applies to Wire Printing."
 #~ msgstr "Odległość między dyszą a liniami skierowanymi w dół. Większe prześwity powodują ukośne linie skierowanie w dół o mniej stromym kącie, co z kolei skutkuje mniejszymi połączeniami z następną warstwą. Dotyczy tylko Drukowania Drutu."
+
+#~ msgctxt "support_bottom_distance description"
+#~ msgid "Distance from the print to the bottom of the support."
+#~ msgstr "Odległość od wydruku do dolnej części podpory."
+
+#~ msgctxt "support_z_distance description"
+#~ msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. This value is rounded up to a multiple of the layer height."
+#~ msgstr "Odległość od góry/dołu podpory do wydruku. Ta luka zapewnia luz, aby usunąć wsporniki po wydrukowaniu modelu. Ta wartość jest zaokrąglana do wielokrotności wysokości warstwy."
 
 #~ msgctxt "wireframe_up_half_speed description"
 #~ msgid ""
@@ -6062,6 +6056,10 @@ msgstr ""
 #~ msgid "Prefer Retract"
 #~ msgstr "Preferuj Retrakcję"
 
+#~ msgctxt "prime_tower_brim_enable label"
+#~ msgid "Prime Tower Brim"
+#~ msgstr "Obrys wieży czyszczącej"
+
 #~ msgctxt "prime_tower_purge_volume label"
 #~ msgid "Prime Tower Purge Volume"
 #~ msgstr "Pole Czyszczące Wieży Czyszcz."
@@ -6069,6 +6067,10 @@ msgstr ""
 #~ msgctxt "prime_tower_wall_thickness label"
 #~ msgid "Prime Tower Thickness"
 #~ msgstr "Grubość Wieży Czyszcz."
+
+#~ msgctxt "prime_tower_brim_enable description"
+#~ msgid "Prime-towers might need the extra adhesion afforded by a brim even if the model doesn't. Presently can't be used with the 'Raft' adhesion-type."
+#~ msgstr "Wieże czyszczące mogą potrzebować dodatkowej adhezji zapewnionej przez obrys, nawet jeśli model nie potrzebuje. Nie można używać z typem przyczepności „tratwa”."
 
 #~ msgctxt "wireframe_enabled description"
 #~ msgid "Print only the outside surface with a sparse webbed structure, printing 'in thin air'. This is realized by horizontally printing the contours of the model at given Z intervals which are connected via upward and diagonally downward lines."
@@ -6361,6 +6363,10 @@ msgstr ""
 #~ msgctxt "build_volume_temperature description"
 #~ msgid "The temperature used for build volume. If this is 0, the build volume temperature will not be adjusted."
 #~ msgstr "Temperatura stosowana dla obszaru roboczego. Jeżeli jest ustawione 0, temperatura nie będzie ustawiona."
+
+#~ msgctxt "material_print_temperature_layer_0 description"
+#~ msgid "The temperature used for printing the first layer. Set at 0 to disable special handling of the initial layer."
+#~ msgstr "Temperatura stosowana do drukowania pierwszej warstwy. Ustaw wartość 0, aby wyłączyć szczególną obsługę początkowej warstwy."
 
 #~ msgctxt "material_bed_temperature_layer_0 description"
 #~ msgid "The temperature used for the heated build plate at the first layer."
