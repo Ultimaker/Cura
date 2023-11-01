@@ -208,7 +208,8 @@ Item
         anchors.rightMargin: UM.Theme.getSize("thin_margin").height
 
         enabled: UM.Backend.state == UM.Backend.Done
-        currentIndex: UM.Backend.state == UM.Backend.Done ? 0 : 1
+        currentIndex: UM.Backend.state == UM.Backend.Done ? dfFilenameTextfield.text.startsWith("MM")? 1 : 0 : 2
+
         textRole: "text"
         valueRole: "value"
 
