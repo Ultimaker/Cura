@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-20 14:03+0000\n"
+"POT-Creation-Date: 2023-10-31 19:13+0100\n"
 "PO-Revision-Date: 2020-03-24 09:36+0100\n"
 "Last-Translator: Nagy Attila <vokroot@gmail.com>\n"
 "Language-Team: ATI-SZOFT\n"
@@ -560,6 +560,10 @@ msgctxt "@action:inmenu menubar:edit"
 msgid "Arrange All Models in a grid"
 msgstr ""
 
+msgctxt "@action:inmenu menubar:edit"
+msgid "Arrange Selection"
+msgstr "Kijelöltek rendezése"
+
 msgctxt "@label:button"
 msgid "Ask a question"
 msgstr ""
@@ -623,6 +627,10 @@ msgstr "A Cura beállítások biztonsági mentése és szinkronizálása."
 msgctxt "@info:title"
 msgid "Backups"
 msgstr "Biztonsági mentések"
+
+msgctxt "@label"
+msgid "Balanced"
+msgstr "Kiegyensúlyozott"
 
 msgctxt "@action:label"
 msgid "Base (mm)"
@@ -1008,6 +1016,10 @@ msgctxt "@info:error"
 msgid "Could not interpret the server's response."
 msgstr ""
 
+msgctxt "@error:load"
+msgid "Could not load GCodeWriter plugin. Try to re-enable the plugin."
+msgstr ""
+
 msgctxt "@info:error"
 msgid "Could not reach Marketplace."
 msgstr ""
@@ -1247,10 +1259,6 @@ msgid "Decline and remove from account"
 msgstr ""
 
 msgctxt "@info:No intent profile selected"
-msgid "Default"
-msgstr ""
-
-msgctxt "@label"
 msgid "Default"
 msgstr ""
 
@@ -2341,6 +2349,22 @@ msgctxt "@info:generic"
 msgid "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."
 msgstr "Győződj meg róla, hogy a G-kód igazodik a nyomtatódhoz és beállításaihoz, mielőtt elküldöd a fájlt. A G-kód ábrázolása nem biztos, hogy pontos."
 
+msgctxt "@item:inlistbox"
+msgid "Makerbot Printfile"
+msgstr ""
+
+msgctxt "name"
+msgid "Makerbot Printfile Writer"
+msgstr ""
+
+msgctxt "@error"
+msgid "MakerbotWriter could not save to the designated path."
+msgstr ""
+
+msgctxt "@error:not supported"
+msgid "MakerbotWriter does not support text mode."
+msgstr ""
+
 msgctxt "@action:inmenu"
 msgid "Manage Materials..."
 msgstr "Anyagok kezelése..."
@@ -3423,6 +3447,10 @@ msgid "Provides support for writing 3MF files."
 msgstr "Támogatást nyújt a 3MF fájlok írásához."
 
 msgctxt "description"
+msgid "Provides support for writing MakerBot Format Packages."
+msgstr ""
+
+msgctxt "description"
 msgid "Provides support for writing Ultimaker Format Packages."
 msgstr ""
 
@@ -4304,6 +4332,10 @@ msgstr[1] "A hozzárendelt nyomtatóhoz, %1, a következő konfigurációs vált
 msgctxt "@error:file_size"
 msgid "The backup exceeds the maximum file size."
 msgstr ""
+
+msgctxt "@text"
+msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
+msgstr "Az egyensúlyozott profil a termelékenység, felületminőség, mechanikai tulajdonságok és méret pontoság közötti egyensúly elérését célozza meg."
 
 msgctxt "@info:tooltip"
 msgid "The base height from the build plate in millimeters."
@@ -5516,18 +5548,6 @@ msgstr ""
 msgctxt "@info:generic"
 msgid "{} plugins failed to download"
 msgstr ""
-
-msgctxt "@label"
-msgid "Balanced"
-msgstr "Kiegyensúlyozott"
-
-msgctxt "@text"
-msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
-msgstr "Az egyensúlyozott profil a termelékenység, felületminőség, mechanikai tulajdonságok és méret pontoság közötti egyensúly elérését célozza meg."
-
-#~ msgctxt "@action:inmenu menubar:edit"
-#~ msgid "Arrange Selection"
-#~ msgstr "Kijelöltek rendezése"
 
 #~ msgctxt "@label"
 #~ msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards."
