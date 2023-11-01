@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-09-12 17:04+0000\n"
+"POT-Creation-Date: 2023-10-31 19:13+0000\n"
 "PO-Revision-Date: 2023-02-16 20:35+0100\n"
 "Last-Translator: Miroslav Šustek <sustmidown@centrum.cz>\n"
 "Language-Team: DenyCZ <www.github.com/DenyCZ>\n"
@@ -746,16 +746,16 @@ msgid "Distance between the printed support structure lines. This setting is cal
 msgstr "Vzdálenost mezi tištěnými liniemi podpůrné struktury. Toto nastavení se vypočítá podle hustoty podpory."
 
 msgctxt "support_bottom_distance description"
-msgid "Distance from the print to the bottom of the support."
-msgstr "Vzdálenost od tisku ke spodní části podpěry."
+msgid "Distance from the print to the bottom of the support. Note that this is rounded up to the next layer height."
+msgstr ""
 
 msgctxt "support_top_distance description"
 msgid "Distance from the top of the support to the print."
 msgstr "Vzdálenost od horní strany podpory k tisku."
 
 msgctxt "support_z_distance description"
-msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. This value is rounded up to a multiple of the layer height."
-msgstr "Vzdálenost od horní / dolní nosné struktury k tisku. Tato mezera poskytuje vůli pro odstranění podpěr po vytištění modelu. Tato hodnota je zaokrouhlena nahoru na násobek výšky vrstvy."
+msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. The topmost support layer below the model might be a fraction of regular layers."
+msgstr ""
 
 msgctxt "infill_wipe_dist description"
 msgid "Distance of a travel move inserted after every infill line, to make the infill stick to the walls better. This option is similar to infill overlap, but without extrusion and only on one end of the infill line."
@@ -1097,6 +1097,14 @@ msgctxt "wall_0_material_flow description"
 msgid "Flow compensation on the outermost wall line."
 msgstr "Kompenzace průtoku na vnější linii stěny."
 
+msgctxt "wall_0_material_flow_roofing description"
+msgid "Flow compensation on the top surface outermost wall line."
+msgstr "Kompensace toku na nejvíce vnější stěnové lince horní plochy."
+
+msgctxt "wall_x_material_flow_roofing description"
+msgid "Flow compensation on top surface wall lines for all wall lines except the outermost one."
+msgstr "Kompensace toku na horní stěnové linky pro všechny stěnové linky kromě nejvnější."
+
 msgctxt "skin_material_flow description"
 msgid "Flow compensation on top/bottom lines."
 msgstr "Kompenzace průtoku na horních / dolních řádcích."
@@ -1282,6 +1290,10 @@ msgstr "Mřížka"
 msgctxt "machine_gcode_flavor option Griffin"
 msgid "Griffin"
 msgstr "Griffin"
+
+msgctxt "group_outer_walls label"
+msgid "Group Outer Walls"
+msgstr "Seskupit vnější stěny"
 
 msgctxt "infill_pattern option gyroid"
 msgid "Gyroid"
@@ -2447,6 +2459,10 @@ msgctxt "wall_0_wipe_dist label"
 msgid "Outer Wall Wipe Distance"
 msgstr "Vzdálenost stírání vnější stěny"
 
+msgctxt "group_outer_walls description"
+msgid "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped."
+msgstr "Venkovní stěny různých ostrovů ve stejné vrstvě jsou tisknuty postupně. Když je povoleno, množství změn proudu je omezeno, protože stěny jsou tisknuty po jednom typu najednou, když je zakázáno, počet cest mezi ostrovy se snižuje, protože stěny na stejných ostrovech jsou seskupeny."
+
 msgctxt "inset_direction option outside_in"
 msgid "Outside To Inside"
 msgstr "Zvenku dovnitř"
@@ -2500,8 +2516,20 @@ msgid "Prime Tower Acceleration"
 msgstr "Akcelerace tisku hlavní věže"
 
 msgctxt "prime_tower_brim_enable label"
-msgid "Prime Tower Brim"
-msgstr "Límec hlavní věže"
+msgid "Prime Tower Base"
+msgstr ""
+
+msgctxt "prime_tower_base_curve_magnitude label"
+msgid "Prime Tower Base Curve Magnitude"
+msgstr ""
+
+msgctxt "prime_tower_base_height label"
+msgid "Prime Tower Base Height"
+msgstr ""
+
+msgctxt "prime_tower_base_size label"
+msgid "Prime Tower Base Size"
+msgstr ""
 
 msgctxt "prime_tower_flow label"
 msgid "Prime Tower Flow"
@@ -2518,6 +2546,10 @@ msgstr "Šířka čáry primární věže"
 msgctxt "prime_tower_min_volume label"
 msgid "Prime Tower Minimum Volume"
 msgstr "Minimální objem hlavní věže"
+
+msgctxt "prime_tower_raft_base_line_spacing label"
+msgid "Prime Tower Raft Line Spacing"
+msgstr ""
 
 msgctxt "prime_tower_size label"
 msgid "Prime Tower Size"
@@ -2536,8 +2568,8 @@ msgid "Prime Tower Y Position"
 msgstr "Pozice Y hlavní věže"
 
 msgctxt "prime_tower_brim_enable description"
-msgid "Prime-towers might need the extra adhesion afforded by a brim even if the model doesn't. Presently can't be used with the 'Raft' adhesion-type."
-msgstr "Hlavní věže mohou potřebovat zvláštní přilnavost, kterou poskytuje límec, i když to model neumožňuje. V současnosti nelze použít s adhezním typem „Raft“."
+msgid "Prime-towers might need the extra adhesion afforded by a brim or raft, even if the model doesn't."
+msgstr ""
 
 msgctxt "acceleration_print label"
 msgid "Print Acceleration"
@@ -3607,6 +3639,14 @@ msgctxt "raft_surface_acceleration description"
 msgid "The acceleration with which the top raft layers are printed."
 msgstr "Zrychlení, s nímž se tiskne horní vrstvy raftu."
 
+msgctxt "acceleration_wall_x_roofing description"
+msgid "The acceleration with which the top surface inner walls are printed."
+msgstr "Zrychlení, kterým jsou tisknuty vnitřní stěny horní plochy."
+
+msgctxt "acceleration_wall_0_roofing description"
+msgid "The acceleration with which the top surface outermost walls are printed."
+msgstr "Zrychlení, kterým jsou tisknuty nejvíce vnější stěny horní plochy."
+
 msgctxt "acceleration_wall description"
 msgid "The acceleration with which the walls are printed."
 msgstr "Zrychlení, kterým jsou stěny potištěny."
@@ -3746,6 +3786,10 @@ msgstr "Vzdálenost mezi liniemi raftů pro střední vrstvu raftů. Vzdálenost
 msgctxt "raft_surface_line_spacing description"
 msgid "The distance between the raft lines for the top raft layers. The spacing should be equal to the line width, so that the surface is solid."
 msgstr "Vzdálenost mezi liniemi raftů pro horní vrstvy raftů. Rozestup by měl být roven šířce čáry, takže povrch je pevný."
+
+msgctxt "prime_tower_raft_base_line_spacing description"
+msgid "The distance between the raft lines for the unique prime tower raft layer. Wide spacing makes for easy removal of the raft from the build plate."
+msgstr ""
 
 msgctxt "interlocking_depth description"
 msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
@@ -3943,6 +3987,10 @@ msgctxt "layer_height_0 description"
 msgid "The height of the initial layer in mm. A thicker initial layer makes adhesion to the build plate easier."
 msgstr "Výška počáteční vrstvy v mm. Silnější počáteční vrstva usnadňuje přilnavost k montážní desce."
 
+msgctxt "prime_tower_base_height description"
+msgid "The height of the prime tower base."
+msgstr ""
+
 msgctxt "support_bottom_stair_step_height description"
 msgid "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures. Set to zero to turn off the stair-like behaviour."
 msgstr "Výška stupňů schodišťového dna podpory spočívá na modelu. Nízká hodnota ztěžuje odstranění podpory, ale příliš vysoké hodnoty mohou vést k nestabilním podpůrným strukturám. Nastavením na nulu vypnete chování podobné schodišti."
@@ -4014,6 +4062,10 @@ msgstr "Čas vrstvy, který nastavuje práh mezi normální rychlostí ventilát
 msgctxt "retraction_amount description"
 msgid "The length of material retracted during a retraction move."
 msgstr "Délka materiálu zasunutého během pohybu zasunutí."
+
+msgctxt "prime_tower_base_curve_magnitude description"
+msgid "The magnitude factor used for the curve of the prime tower foot."
+msgstr ""
 
 msgctxt "machine_buildplate_type description"
 msgid "The material of the build plate installed on the printer."
@@ -4106,6 +4158,14 @@ msgstr "Maximální okamžitá změna rychlosti, se kterou jsou okraj a límec v
 msgctxt "jerk_support description"
 msgid "The maximum instantaneous velocity change with which the support structure is printed."
 msgstr "Maximální okamžitá změna rychlosti, se kterou se tiskne nosná struktura."
+
+msgctxt "jerk_wall_x_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface inner walls are printed."
+msgstr "Maximální okamžitá změna rychlosti, jakou jsou tisknuty nejvíce vnější stěny horní plochy."
+
+msgctxt "jerk_wall_0_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface outermost walls are printed."
+msgstr "Maximální okamžitá změna rychlosti, jakou jsou tisknuty nejvíce vnitřní stěny horní plochy."
 
 msgctxt "jerk_wall description"
 msgid "The maximum instantaneous velocity change with which the walls are printed."
@@ -4491,6 +4551,14 @@ msgctxt "raft_surface_speed description"
 msgid "The speed at which the top raft layers are printed. These should be printed a bit slower, so that the nozzle can slowly smooth out adjacent surface lines."
 msgstr "Rychlost tisku horních vrstev raftu. Ty by měly být vytištěny trochu pomaleji, aby tryska mohla pomalu vyhlazovat sousední povrchové linie."
 
+msgctxt "speed_wall_x_roofing description"
+msgid "The speed at which the top surface inner walls are printed."
+msgstr "Rychlost, kterou jsou tisknuty vnitřní stěny horní plochy."
+
+msgctxt "speed_wall_0_roofing description"
+msgid "The speed at which the top surface outermost wall is printed."
+msgstr "Rychlost, kterou jsou tisknuty nejvíce vnější stěny horní plochy."
+
 msgctxt "speed_z_hop description"
 msgid "The speed at which the vertical Z movement is made for Z Hops. This is typically lower than the print speed since the build plate or machine's gantry is harder to move."
 msgstr "Rychlost, při které se svislý pohyb Z provádí pro Z Hopy. To je obvykle nižší než rychlost tisku, protože stavba talíře nebo portálového zařízení je obtížnější se pohybovat."
@@ -4552,8 +4620,8 @@ msgid "The temperature to which to already start cooling down just before the en
 msgstr "Teplota, na kterou se má začít ochlazovat těsně před koncem tisku."
 
 msgctxt "material_print_temperature_layer_0 description"
-msgid "The temperature used for printing the first layer. Set at 0 to disable special handling of the initial layer."
-msgstr "Teplota, která se používá pro tisk první vrstvy."
+msgid "The temperature used for printing the first layer."
+msgstr ""
 
 msgctxt "material_print_temperature description"
 msgid "The temperature used for printing."
@@ -4631,6 +4699,10 @@ msgctxt "interlocking_beam_width description"
 msgid "The width of the interlocking structure beams."
 msgstr "Šířka paprsků vzájemného propletení."
 
+msgctxt "prime_tower_base_size description"
+msgid "The width of the prime tower base."
+msgstr ""
+
 msgctxt "prime_tower_size description"
 msgid "The width of the prime tower."
 msgstr "Šířka hlavní věže."
@@ -4698,6 +4770,38 @@ msgstr "Horní vzdálenost rozšíření povrchu"
 msgctxt "top_skin_preshrink label"
 msgid "Top Skin Removal Width"
 msgstr "Horní šířka odstranění povrchu"
+
+msgctxt "acceleration_wall_x_roofing label"
+msgid "Top Surface Inner Wall Acceleration"
+msgstr "Zrychlení vnitřní stěny horní plochy"
+
+msgctxt "jerk_wall_x_roofing label"
+msgid "Top Surface Inner Wall Jerk"
+msgstr "Rychlá změna nejvíce vnější stěny horní plochy"
+
+msgctxt "speed_wall_x_roofing label"
+msgid "Top Surface Inner Wall Speed"
+msgstr "Rychlost vnitřní stěny horní plochy"
+
+msgctxt "wall_x_material_flow_roofing label"
+msgid "Top Surface Inner Wall(s) Flow"
+msgstr "Tok vnitřní stěny horní plochy"
+
+msgctxt "acceleration_wall_0_roofing label"
+msgid "Top Surface Outer Wall Acceleration"
+msgstr "Zrychlení vnější stěny horní plochy"
+
+msgctxt "wall_0_material_flow_roofing label"
+msgid "Top Surface Outer Wall Flow"
+msgstr "Tok nejvíce vnější stěnové linky horní plochy"
+
+msgctxt "jerk_wall_0_roofing label"
+msgid "Top Surface Outer Wall Jerk"
+msgstr "Rychlá změna nejvíce vnitřní stěny horní plochy"
+
+msgctxt "speed_wall_0_roofing label"
+msgid "Top Surface Outer Wall Speed"
+msgstr "Rychlost nejvíce vnější stěny horní plochy"
 
 msgctxt "acceleration_roofing label"
 msgid "Top Surface Skin Acceleration"
@@ -5387,125 +5491,6 @@ msgctxt "travel description"
 msgid "travel"
 msgstr "cestování"
 
-msgctxt "group_outer_walls label"
-msgid "Group Outer Walls"
-msgstr "Seskupit vnější stěny"
-
-msgctxt "group_outer_walls description"
-msgid "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped."
-msgstr "Venkovní stěny různých ostrovů ve stejné vrstvě jsou tisknuty postupně. Když je povoleno, množství změn proudu je omezeno, protože stěny jsou tisknuty po jednom typu najednou, když je zakázáno, počet cest mezi ostrovy se snižuje, protože stěny na stejných ostrovech jsou seskupeny."
-
-msgctxt "wall_0_material_flow_roofing label"
-msgid "Top Surface Outer Wall Flow"
-msgstr "Tok nejvíce vnější stěnové linky horní plochy"
-
-msgctxt "wall_0_material_flow_roofing description"
-msgid "Flow compensation on the top surface outermost wall line."
-msgstr "Kompensace toku na nejvíce vnější stěnové lince horní plochy."
-
-msgctxt "wall_x_material_flow_roofing label"
-msgid "Top Surface Inner Wall(s) Flow"
-msgstr "Tok vnitřní stěny horní plochy"
-
-msgctxt "wall_x_material_flow_roofing description"
-msgid "Flow compensation on top surface wall lines for all wall lines except the outermost one."
-msgstr "Kompensace toku na horní stěnové linky pro všechny stěnové linky kromě nejvnější."
-
-msgctxt "speed_wall_0_roofing label"
-msgid "Top Surface Outer Wall Speed"
-msgstr "Rychlost nejvíce vnější stěny horní plochy"
-
-msgctxt "speed_wall_0_roofing description"
-msgid "The speed at which the top surface outermost wall is printed."
-msgstr "Rychlost, kterou jsou tisknuty nejvíce vnější stěny horní plochy."
-
-msgctxt "speed_wall_x_roofing label"
-msgid "Top Surface Inner Wall Speed"
-msgstr "Rychlost vnitřní stěny horní plochy"
-
-msgctxt "speed_wall_x_roofing description"
-msgid "The speed at which the top surface inner walls are printed."
-msgstr "Rychlost, kterou jsou tisknuty vnitřní stěny horní plochy."
-
-msgctxt "acceleration_wall_0_roofing label"
-msgid "Top Surface Outer Wall Acceleration"
-msgstr "Zrychlení vnější stěny horní plochy"
-
-msgctxt "acceleration_wall_0_roofing description"
-msgid "The acceleration with which the top surface outermost walls are printed."
-msgstr "Zrychlení, kterým jsou tisknuty nejvíce vnější stěny horní plochy."
-
-msgctxt "acceleration_wall_x_roofing label"
-msgid "Top Surface Inner Wall Acceleration"
-msgstr "Zrychlení vnitřní stěny horní plochy"
-
-msgctxt "acceleration_wall_x_roofing description"
-msgid "The acceleration with which the top surface inner walls are printed."
-msgstr "Zrychlení, kterým jsou tisknuty vnitřní stěny horní plochy."
-
-msgctxt "jerk_wall_0_roofing label"
-msgid "Top Surface Outer Wall Jerk"
-msgstr "Rychlá změna nejvíce vnitřní stěny horní plochy"
-
-msgctxt "jerk_wall_0_roofing description"
-msgid "The maximum instantaneous velocity change with which the top surface outermost walls are printed."
-msgstr "Maximální okamžitá změna rychlosti, jakou jsou tisknuty nejvíce vnitřní stěny horní plochy."
-
-msgctxt "jerk_wall_x_roofing label"
-msgid "Top Surface Inner Wall Jerk"
-msgstr "Rychlá změna nejvíce vnější stěny horní plochy"
-
-msgctxt "jerk_wall_x_roofing description"
-msgid "The maximum instantaneous velocity change with which the top surface inner walls are printed."
-msgstr "Maximální okamžitá změna rychlosti, jakou jsou tisknuty nejvíce vnější stěny horní plochy."
-
-
-
-
-### Settings added by bundled engine backend plugins. Add this manually for now. Should be removed whenever we handle it better.
-
-msgctxt "gradual_flow_enabled label"
-msgid "Gradual flow enabled"
-msgstr "Postupné změny průtoku povoleny"
-
-msgctxt "gradual_flow_enabled description"
-msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
-msgstr "Povolit postupné změny průtoku. Když je povoleno, průtok se postupně zvyšuje / snižuje na cílový průtok. Toto je užitečné pro tiskárny s Bowdenovou trubicí, kde se průtok okamžitě nezmění, když se spustí / zastaví extrudér."
-
-msgctxt "max_flow_acceleration label"
-msgid "Gradual flow max acceleration"
-msgstr "Maximální zrychlení postupných změn průtoku"
-
-msgctxt "max_flow_acceleration description"
-msgid "Maximum acceleration for gradual flow changes"
-msgstr "Maximální zrychlení pro postupné změny průtoku"
-
-msgctxt "layer_0_max_flow_acceleration label"
-msgid "Initial layer max flow acceleration"
-msgstr "Maximální zrychlení průtoku pro první vrstvu"
-
-msgctxt "layer_0_max_flow_acceleration description"
-msgid "Minimum speed for gradual flow changes for the first layer"
-msgstr "Minimální rychlost pro postupné změny průtoku pro první vrstvu"
-
-msgctxt "gradual_flow_discretisation_step_size label"
-msgid "Gradual flow discretisation step size"
-msgstr "Velikost kroku diskretizace postupné změny průtoku"
-
-msgctxt "gradual_flow_discretisation_step_size description"
-msgid "Duration of each step in the gradual flow change"
-msgstr "Doba trvání každého kroku v postupné změně průtoku"
-
-msgctxt "reset_flow_duration label"
-msgid "Reset flow duration"
-msgstr "Doba trvání resetování průtoku"
-
-msgctxt "reset_flow_duration description"
-msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
-msgstr "Pro jakýkoli pohyb delší než tato hodnota se materiálový průtok resetuje na cílový průtok dráhy"
-
-
-
 #~ msgctxt "machine_head_with_fans_polygon description"
 #~ msgid "A 2D silhouette of the print head (fan caps included)."
 #~ msgstr "2D silueta tiskové hlavy (včetně krytů ventilátoru)."
@@ -5602,6 +5587,14 @@ msgstr "Pro jakýkoli pohyb delší než tato hodnota se materiálový průtok r
 #~ msgid "Distance between the nozzle and horizontally downward lines. Larger clearance results in diagonally downward lines with a less steep angle, which in turn results in less upward connections with the next layer. Only applies to Wire Printing."
 #~ msgstr "Vzdálenost mezi tryskou a vodorovnými liniemi dolů. Větší vůle vede k diagonálně dolů směřujícím liniím s menším strmým úhlem, což zase vede k menšímu spojení nahoru s další vrstvou. Platí pouze pro drátový tisk."
 
+#~ msgctxt "support_bottom_distance description"
+#~ msgid "Distance from the print to the bottom of the support."
+#~ msgstr "Vzdálenost od tisku ke spodní části podpěry."
+
+#~ msgctxt "support_z_distance description"
+#~ msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. This value is rounded up to a multiple of the layer height."
+#~ msgstr "Vzdálenost od horní / dolní nosné struktury k tisku. Tato mezera poskytuje vůli pro odstranění podpěr po vytištění modelu. Tato hodnota je zaokrouhlena nahoru na násobek výšky vrstvy."
+
 #~ msgctxt "wireframe_up_half_speed description"
 #~ msgid ""
 #~ "Distance of an upward move which is extruded with half speed.\n"
@@ -5621,6 +5614,14 @@ msgstr "Pro jakýkoli pohyb delší než tato hodnota se materiálový průtok r
 #~ msgctxt "wireframe_drag_along description"
 #~ msgid "Distance with which the material of an upward extrusion is dragged along with the diagonally downward extrusion. This distance is compensated for. Only applies to Wire Printing."
 #~ msgstr "Vzdálenost, se kterou je materiál vytlačování směrem vzhůru tažen spolu s diagonálně směrem dolů vytlačováním. Tato vzdálenost je kompenzována. Platí pouze pro drátový tisk."
+
+#~ msgctxt "gradual_flow_discretisation_step_size description"
+#~ msgid "Duration of each step in the gradual flow change"
+#~ msgstr "Doba trvání každého kroku v postupné změně průtoku"
+
+#~ msgctxt "gradual_flow_enabled description"
+#~ msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
+#~ msgstr "Povolit postupné změny průtoku. Když je povoleno, průtok se postupně zvyšuje / snižuje na cílový průtok. Toto je užitečné pro tiskárny s Bowdenovou trubicí, kde se průtok okamžitě nezmění, když se spustí / zastaví extrudér."
 
 #~ msgctxt "material_end_of_filament_purge_length label"
 #~ msgid "End Of Filament Purge Length"
@@ -5670,6 +5671,10 @@ msgstr "Pro jakýkoli pohyb delší než tato hodnota se materiálový průtok r
 #~ msgid "Flow compensation: the amount of material extruded is multiplied by this value. Only applies to Wire Printing."
 #~ msgstr "Kompenzace toku: množství vytlačovaného materiálu se vynásobí touto hodnotou. Platí pouze pro drátový tisk."
 
+#~ msgctxt "reset_flow_duration description"
+#~ msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
+#~ msgstr "Pro jakýkoli pohyb delší než tato hodnota se materiálový průtok resetuje na cílový průtok dráhy"
+
 #~ msgctxt "material_guid description"
 #~ msgid "GUID of the material. This is set automatically. "
 #~ msgstr "GUID materiálu. Toto je nastaveno automaticky. "
@@ -5677,6 +5682,19 @@ msgstr "Pro jakýkoli pohyb delší než tato hodnota se materiálový průtok r
 #~ msgctxt "support_tree_enable description"
 #~ msgid "Generate a tree-like support with branches that support your print. This may reduce material usage and print time, but greatly increases slicing time."
 #~ msgstr "Vygenerujte stromovou podporu s větvemi, které podporují váš tisk. To může snížit spotřebu materiálu a dobu tisku, ale výrazně prodlužuje dobu slicování."
+
+#~ msgctxt "gradual_flow_discretisation_step_size label"
+#~ msgid "Gradual flow discretisation step size"
+#~ msgstr "Velikost kroku diskretizace postupné změny průtoku"
+
+# ## Settings added by bundled engine backend plugins. Add this manually for now. Should be removed whenever we handle it better.
+#~ msgctxt "gradual_flow_enabled label"
+#~ msgid "Gradual flow enabled"
+#~ msgstr "Postupné změny průtoku povoleny"
+
+#~ msgctxt "max_flow_acceleration label"
+#~ msgid "Gradual flow max acceleration"
+#~ msgstr "Maximální zrychlení postupných změn průtoku"
 
 #~ msgctxt "support_tree_branch_distance description"
 #~ msgid "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove."
@@ -5697,6 +5715,10 @@ msgstr "Pro jakýkoli pohyb delší než tato hodnota se materiálový průtok r
 #~ msgctxt "infill_mesh_order label"
 #~ msgid "Infill Mesh Order"
 #~ msgstr "Pořadí sítě výplně"
+
+#~ msgctxt "layer_0_max_flow_acceleration label"
+#~ msgid "Initial layer max flow acceleration"
+#~ msgstr "Maximální zrychlení průtoku pro první vrstvu"
 
 #~ msgctxt "wireframe_strategy option knot"
 #~ msgid "Knot"
@@ -5738,6 +5760,10 @@ msgstr "Pro jakýkoli pohyb delší než tato hodnota se materiálový průtok r
 #~ msgid "Maximum Speed for Flow Equalization"
 #~ msgstr "Maximální rychlost pro vyrovnávání průtoku"
 
+#~ msgctxt "max_flow_acceleration description"
+#~ msgid "Maximum acceleration for gradual flow changes"
+#~ msgstr "Maximální zrychlení pro postupné změny průtoku"
+
 #~ msgctxt "speed_equalize_flow_max description"
 #~ msgid "Maximum print speed when adjusting the print speed in order to equalize flow."
 #~ msgstr "Maximální rychlost tisku při úpravě rychlosti tisku za účelem vyrovnání toku."
@@ -5749,6 +5775,10 @@ msgstr "Pro jakýkoli pohyb delší než tato hodnota se materiálový průtok r
 #~ msgctxt "wall_min_flow description"
 #~ msgid "Minimum allowed percentage flow for a wall line. The wall overlap compensation reduces a wall's flow when it lies close to an existing wall. Walls whose flow is less than this value will be replaced with a travel move. When using this setting, you must enable the wall overlap compensation and print the outer wall before inner walls."
 #~ msgstr "Minimální povolený procentuální průtok pro linii stěny. Kompenzace překrytí stěny snižuje průtok stěny, když leží blízko ke stávající zdi. Stěny, jejichž průtok je menší než tato hodnota, budou nahrazeny pohybem. Při použití tohoto nastavení musíte povolit kompenzaci překrytí stěny a vnější stěnu vytisknout před vnitřními stěnami."
+
+#~ msgctxt "layer_0_max_flow_acceleration description"
+#~ msgid "Minimum speed for gradual flow changes for the first layer"
+#~ msgstr "Minimální rychlost pro postupné změny průtoku pro první vrstvu"
 
 #~ msgctxt "fill_perimeter_gaps option nowhere"
 #~ msgid "Nowhere"
@@ -5770,6 +5800,14 @@ msgstr "Pro jakýkoli pohyb delší než tato hodnota se materiálový průtok r
 #~ msgid "Prefer Retract"
 #~ msgstr "Preferovat retrakci"
 
+#~ msgctxt "prime_tower_brim_enable label"
+#~ msgid "Prime Tower Brim"
+#~ msgstr "Límec hlavní věže"
+
+#~ msgctxt "prime_tower_brim_enable description"
+#~ msgid "Prime-towers might need the extra adhesion afforded by a brim even if the model doesn't. Presently can't be used with the 'Raft' adhesion-type."
+#~ msgstr "Hlavní věže mohou potřebovat zvláštní přilnavost, kterou poskytuje límec, i když to model neumožňuje. V současnosti nelze použít s adhezním typem „Raft“."
+
 #~ msgctxt "wireframe_enabled description"
 #~ msgid "Print only the outside surface with a sparse webbed structure, printing 'in thin air'. This is realized by horizontally printing the contours of the model at given Z intervals which are connected via upward and diagonally downward lines."
 #~ msgstr "Tiskněte pouze vnější povrch s řídkou strukturou struktury a tiskněte „na vzduchu“. To je realizováno horizontálním tiskem kontur modelu v daných intervalech Z, které jsou spojeny pomocí linií nahoru a diagonálně dolů."
@@ -5785,6 +5823,10 @@ msgstr "Pro jakýkoli pohyb delší než tato hodnota se materiálový průtok r
 #~ msgctxt "outer_inset_first description"
 #~ msgid "Prints walls in order of outside to inside when enabled. This can help improve dimensional accuracy in X and Y when using a high viscosity plastic like ABS; however it can decrease outer surface print quality, especially on overhangs."
 #~ msgstr "Když je povoleno, tiskne stěny v pořadí od vnějšku dovnitř. To může pomoci zlepšit rozměrovou přesnost v X a Y při použití plastu s vysokou viskozitou, jako je ABS; může však snížit kvalitu tisku vnějšího povrchu, zejména na převisy."
+
+#~ msgctxt "reset_flow_duration label"
+#~ msgid "Reset flow duration"
+#~ msgstr "Doba trvání resetování průtoku"
 
 #~ msgctxt "support_tree_collision_resolution description"
 #~ msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
@@ -5933,6 +5975,10 @@ msgstr "Pro jakýkoli pohyb delší než tato hodnota se materiálový průtok r
 #~ msgctxt "speed_layer_0 description"
 #~ msgid "The speed for the initial layer. A lower value is advised to improve adhesion to the build plate."
 #~ msgstr "Rychlost počáteční vrstvy. Doporučuje se nižší hodnota pro zlepšení přilnavosti k montážní desce."
+
+#~ msgctxt "material_print_temperature_layer_0 description"
+#~ msgid "The temperature used for printing the first layer. Set at 0 to disable special handling of the initial layer."
+#~ msgstr "Teplota, která se používá pro tisk první vrstvy."
 
 #~ msgctxt "material_bed_temperature_layer_0 description"
 #~ msgid "The temperature used for the heated build plate at the first layer."

@@ -5130,7 +5130,7 @@
                 "support_z_distance":
                 {
                     "label": "Support Z Distance",
-                    "description": "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. This value is rounded up to a multiple of the layer height.",
+                    "description": "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. The topmost support layer below the model might be a fraction of regular layers.",
                     "unit": "mm",
                     "type": "float",
                     "minimum_value": "0",
@@ -5158,7 +5158,7 @@
                         "support_bottom_distance":
                         {
                             "label": "Support Bottom Distance",
-                            "description": "Distance from the print to the bottom of the support.",
+                            "description": "Distance from the print to the bottom of the support. Note that this is rounded up to the next layer height.",
                             "unit": "mm",
                             "minimum_value": "0",
                             "maximum_value_warning": "machine_nozzle_size",
@@ -6721,6 +6721,22 @@
                     "maximum_value": "10",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
+                },
+                "prime_tower_raft_base_line_spacing":
+                {
+                    "label": "Prime Tower Raft Line Spacing",
+                    "description": "The distance between the raft lines for the unique prime tower raft layer. Wide spacing makes for easy removal of the raft from the build plate.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 1.6,
+                    "value": "raft_base_line_spacing",
+                    "minimum_value": "0",
+                    "minimum_value_warning": "raft_base_line_width",
+                    "maximum_value_warning": "100",
+                    "enabled": "resolveOrValue('prime_tower_enable') and resolveOrValue('adhesion_type') == 'raft'",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "limit_to_extruder": "raft_base_extruder_nr"
                 },
                 "ooze_shield_enabled":
                 {
