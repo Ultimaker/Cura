@@ -31,21 +31,23 @@ on:
         type: boolean
 
   schedule:
-    # Daily at 4:15 CET (main-branch) and 9:15 CET (release-branch)
-    - cron: '15 2 * * *'
-    - cron: '15 8 * * *'
+    # Daily at 4:15 CET (main-branch) and 5:15 CET (release-branch)
+    - cron: '15 3 * * *'
+    - cron: '15 4 * * *'
 
 env:
-  CURA_CONAN_VERSION: ${{ inputs.cura_conan_version || 'cura/latest@ultimaker/testing' }}
   CONAN_ARGS: ${{ inputs.conan_args || '' }}
   ENTERPRISE: ${{ inputs.enterprise || false }}
   STAGING: ${{ inputs.staging || false }}
+  LATEST_RELEASE: '5.6'
+  LATEST_RELEASE_SCHEDULE_HOUR: 4
 
 jobs:
   default-values:
     runs-on: ubuntu-latest
     outputs:
       cura_conan_version: ${{ steps.default.outputs.cura_conan_version  }}
+      release_tag: ${{ steps.default.outputs.release_tag  }}
 
     steps:
     - name: Output default values
@@ -54,17 +56,15 @@ jobs:
       run: |
         import os
         import datetime
-        cura_conan_version = "cura/latest@ultimaker/testing"
-        release_tag = "nightly"
-  
-        # Get current UTC time
-        now = datetime.datetime.utcnow()
-  
-        # Check if current hour is 8 and it is a schedule event
-        if "${{ github.event_name }}" == "schedule" and now.hour == 8:
-            cura_conan_version = "cura/latest@ultimaker/stable"
-            release_tag = "nightly-5.6"
-  
+        
+        if "${{ github.event_name }}" != "schedule":
+            cura_conan_version = "${{ github.event.inputs.cura_conan_version }}"
+        else:
+            now = datetime.datetime.now()
+            cura_conan_version = "cura/latest@ultimaker/stable" if now.hour == int(os.environ['LATEST_RELEASE_SCHEDULE_HOUR']) else "cura/latest@ultimaker/testing"
+        
+        release_tag = f"nightly-{os.environ['LATEST_RELEASE']}" if "/stable" in cura_conan_version else "nightly"
+
         # Set cura_conan_version environment variable
         output_env = os.environ["GITHUB_OUTPUT"]
         content = ""
