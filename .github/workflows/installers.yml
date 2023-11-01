@@ -60,8 +60,8 @@ jobs:
         # Get current UTC time
         now = datetime.datetime.utcnow()
   
-        # Check if current hour is 8
-        if now.hour == 8:
+        # Check if current hour is 8 and it is a schedule event
+        if "${{ github.event_name }}" == "schedule" and now.hour == 8:
             cura_conan_version = "cura/latest@ultimaker/stable"
             release_tag = "nightly-5.6"
   
