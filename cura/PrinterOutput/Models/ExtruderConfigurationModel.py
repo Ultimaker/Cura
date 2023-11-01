@@ -40,8 +40,21 @@ class ExtruderConfigurationModel(QObject):
 
     def setHotendID(self, hotend_id: Optional[str]) -> None:
         if self._hotend_id != hotend_id:
-            self._hotend_id = hotend_id
+            self._hotend_id = ExtruderConfigurationModel.applyNameMappingHotend(hotend_id)
             self.extruderConfigurationChanged.emit()
+
+    @staticmethod
+    def applyNameMappingHotend(hotendId) -> str:
+        _EXTRUDER_NAME_MAP = {
+            "mk14_hot":"1XA",
+            "mk14_hot_s":"2XA",
+            "mk14_c":"1C",
+            "mk14":"1A",
+            "mk14_s":"2A"
+        }
+        if hotendId in _EXTRUDER_NAME_MAP:
+            return _EXTRUDER_NAME_MAP[hotendId]
+        return hotendId
 
     @pyqtProperty(str, fset = setHotendID, notify = extruderConfigurationChanged)
     def hotendID(self) -> Optional[str]:
