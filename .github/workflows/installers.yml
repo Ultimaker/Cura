@@ -31,20 +31,23 @@ on:
         type: boolean
 
   schedule:
-    # Daily at 5:15 CET
+    # Daily at 4:15 CET (main-branch) and 5:15 CET (release-branch)
     - cron: '15 3 * * *'
+    - cron: '15 4 * * *'
 
 env:
-  CURA_CONAN_VERSION: ${{ inputs.cura_conan_version || 'cura/latest@ultimaker/testing' }}
   CONAN_ARGS: ${{ inputs.conan_args || '' }}
   ENTERPRISE: ${{ inputs.enterprise || false }}
   STAGING: ${{ inputs.staging || false }}
+  LATEST_RELEASE: '5.6'
+  LATEST_RELEASE_SCHEDULE_HOUR: 4
 
 jobs:
-  default-values:
+  default_values:
     runs-on: ubuntu-latest
     outputs:
       cura_conan_version: ${{ steps.default.outputs.cura_conan_version  }}
+      release_tag: ${{ steps.default.outputs.release_tag  }}
 
     steps:
     - name: Output default values
@@ -52,7 +55,17 @@ jobs:
       shell: python
       run: |
         import os
-        cura_conan_version = "cura/latest@ultimaker/testing" if "${{ github.event.inputs.cura_conan_version }}" == "" else "${{ github.event.inputs.cura_conan_version }}" 
+        import datetime
+        
+        if "${{ github.event_name }}" != "schedule":
+            cura_conan_version = "${{ github.event.inputs.cura_conan_version }}"
+        else:
+            now = datetime.datetime.now()
+            cura_conan_version = "cura/latest@ultimaker/stable" if now.hour == int(os.environ['LATEST_RELEASE_SCHEDULE_HOUR']) else "cura/latest@ultimaker/testing"
+        
+        release_tag = f"nightly-{os.environ['LATEST_RELEASE']}" if "/stable" in cura_conan_version else "nightly"
+
+        # Set cura_conan_version environment variable
         output_env = os.environ["GITHUB_OUTPUT"]
         content = ""
         if os.path.exists(output_env):
@@ -61,12 +74,24 @@ jobs:
         with open(output_env, "w") as f:
             f.write(content)
             f.writelines(f"cura_conan_version={cura_conan_version}\n")
+            f.writelines(f"release_tag={release_tag}\n")
+
+        summary_env = os.environ["GITHUB_STEP_SUMMARY"]
+        content = ""
+        if os.path.exists(summary_env):
+            with open(summary_env, "r") as f:
+                content = f.read()
+        
+        with open(summary_env, "w") as f:
+            f.write(content)
+            f.writelines(f"# cura_conan_version = {cura_conan_version}\n")
+            f.writelines(f"# release_tag = {release_tag}\n")
 
   windows-installer:
     uses: ./.github/workflows/windows.yml
-    needs: [ default-values ]
+    needs: [ default_values ]
     with:
-      cura_conan_version: ${{ needs.default-values.outputs.cura_conan_version }}
+      cura_conan_version: ${{ needs.default_values.outputs.cura_conan_version }}
       conan_args: ${{ github.event.inputs.conan_args }}
       enterprise: ${{ github.event.inputs.enterprise == 'true' }}
       staging: ${{ github.event.inputs.staging == 'true' }}
@@ -76,9 +101,9 @@ jobs:
 
   linux-installer:
     uses: ./.github/workflows/linux.yml
-    needs: [ default-values ]
+    needs: [ default_values ]
     with:
-      cura_conan_version: ${{ needs.default-values.outputs.cura_conan_version }}
+      cura_conan_version: ${{ needs.default_values.outputs.cura_conan_version }}
       conan_args: ${{ github.event.inputs.conan_args }}
       enterprise: ${{ github.event.inputs.enterprise == 'true' }}
       staging: ${{ github.event.inputs.staging == 'true' }}
@@ -88,33 +113,33 @@ jobs:
 
   macos-installer:
     uses: ./.github/workflows/macos.yml
-    needs: [ default-values ]
+    needs: [ default_values ]
     with:
-      cura_conan_version: ${{ needs.default-values.outputs.cura_conan_version }}
+      cura_conan_version: ${{ needs.default_values.outputs.cura_conan_version }}
       conan_args: ${{ github.event.inputs.conan_args }}
       enterprise: ${{ github.event.inputs.enterprise == 'true' }}
       staging: ${{ github.event.inputs.staging == 'true' }}
       architecture: X64
-      operating_system: macos-12
+      operating_system: self-hosted-X64
     secrets: inherit
 
   macos-arm-installer:
     uses: ./.github/workflows/macos.yml
-    needs: [ default-values ]
+    needs: [ default_values ]
     with:
-      cura_conan_version: ${{ needs.default-values.outputs.cura_conan_version }}
+      cura_conan_version: ${{ needs.default_values.outputs.cura_conan_version }}
       conan_args: ${{ github.event.inputs.conan_args }}
       enterprise: ${{ github.event.inputs.enterprise == 'true' }}
       staging: ${{ github.event.inputs.staging == 'true' }}
       architecture: ARM64
-      operating_system: self-hosted
+      operating_system: self-hosted-ARM64
     secrets: inherit
 
   # Run and update nightly release when the nightly input is set to true or if the schedule is triggered
   update-nightly-release:
     if: ${{ inputs.nightly || github.event_name == 'schedule' }}
     runs-on: ubuntu-latest
-    needs: [ windows-installer, linux-installer, macos-installer, macos-arm-installer ]
+    needs: [ default_values, windows-installer, linux-installer, macos-installer, macos-arm-installer ]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -182,8 +207,8 @@ jobs:
 
       - name: Update nightly release for Linux
         run: |
-          gh release upload nightly installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-linux-X64.AppImage --clobber
-          gh release upload nightly installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-linux-X64.AppImage.asc  --clobber
+          gh release upload ${{ needs.default_values.outputs.release_tag }} installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-linux-X64.AppImage --clobber
+          gh release upload ${{ needs.default_values.outputs.release_tag }} installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-linux-X64.AppImage.asc  --clobber
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -206,8 +231,8 @@ jobs:
 
       - name: Update nightly release for Windows
         run: |
-          gh release upload nightly installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-win64-X64.msi --clobber
-          gh release upload nightly installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-win64-X64.exe --clobber
+          gh release upload ${{ needs.default_values.outputs.release_tag }} installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-win64-X64.msi --clobber
+          gh release upload ${{ needs.default_values.outputs.release_tag }} installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-win64-X64.exe --clobber
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -230,8 +255,8 @@ jobs:
 
       - name: Update nightly release for MacOS (X64)
         run: |
-          gh release upload nightly installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-macos-X64.dmg --clobber
-          gh release upload nightly installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-macos-X64.pkg --clobber
+          gh release upload ${{ needs.default_values.outputs.release_tag }} installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-macos-X64.dmg --clobber
+          gh release upload ${{ needs.default_values.outputs.release_tag }} installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-macos-X64.pkg --clobber
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -254,14 +279,31 @@ jobs:
 
       - name: Update nightly release for MacOS (ARM-64)
         run: |
-          gh release upload nightly installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-macos-ARM64.dmg --clobber
-          gh release upload nightly installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-macos-ARM64.pkg --clobber
+          gh release upload ${{ needs.default_values.outputs.release_tag }} installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-macos-ARM64.dmg --clobber
+          gh release upload ${{ needs.default_values.outputs.release_tag }} installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-macos-ARM64.pkg --clobber
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: create the release notes
+        run: |
+          import os
+          import datetime
+          from jinja2 import Template
+          
+          with open(".github/workflows/release-notes.md.jinja", "r") as f:
+              release_notes = Template(f.read())
+          
+          current_nightly_beta = "${{ needs.default_values.outputs.release_tag }}".split("nightly-")[-1]
+          with open("release-notes.md", "w") as f:
+              f.write(release_notes.render(
+                timestamp=${{ steps.filename.outputs.NIGHTLY_TIME }},
+                branch="" if ${{ needs.default_values.outputs.release_tag == 'nightly' }} else current_nightly_beta,
+                branch_specific="" if os.getenv("GITHUB_REF") == "refs/heads/main" else f"?branch={current_nightly_beta}",
+              ))
 
       - name: Update nightly release description (with date)
         if: always()
         run: |
-          gh release edit nightly --title "${{ steps.filename.outputs.NIGHTLY_NAME }}" --notes "Nightly release created on: ${{ steps.filename.outputs.NIGHTLY_TIME }}"
+          gh release edit ${{ needs.default_values.outputs.release_tag }} --title "${{ steps.filename.outputs.NIGHTLY_NAME }}" --notes-file release-notes.md
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

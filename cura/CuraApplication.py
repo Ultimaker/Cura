@@ -6,6 +6,7 @@ import sys
 import tempfile
 import time
 import platform
+from pathlib import Path
 from typing import cast, TYPE_CHECKING, Optional, Callable, List, Any, Dict
 
 import numpy
@@ -269,6 +270,9 @@ class CuraApplication(QtApplication):
         CentralFileStorage.setIsEnterprise(ApplicationMetadata.IsEnterpriseVersion)
         Resources.setIsEnterprise(ApplicationMetadata.IsEnterpriseVersion)
 
+        self._conan_installs = ApplicationMetadata.CONAN_INSTALLS
+        self._python_installs = ApplicationMetadata.PYTHON_INSTALLS
+
     @pyqtProperty(str, constant=True)
     def ultimakerCloudApiRootUrl(self) -> str:
         return UltimakerCloudConstants.CuraCloudAPIRoot
@@ -363,6 +367,10 @@ class CuraApplication(QtApplication):
 
         Resources.addSecureSearchPath(os.path.join(self._app_install_dir, "share", "cura", "resources"))
         if not hasattr(sys, "frozen"):
+            cura_data_root = os.environ.get('CURA_DATA_ROOT', None)
+            if cura_data_root:
+                Resources.addSearchPath(str(Path(cura_data_root).joinpath("resources")))
+
             Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "resources"))
 
             # local Conan cache
@@ -851,11 +859,8 @@ class CuraApplication(QtApplication):
 
         self._log_hardware_info()
 
-        if len(ApplicationMetadata.DEPENDENCY_INFO) > 0:
-            Logger.debug("Using Conan managed dependencies: " + ", ".join(
-                [dep["recipe"]["id"] for dep in ApplicationMetadata.DEPENDENCY_INFO["installed"] if dep["recipe"]["version"] != "latest"]))
-        else:
-            Logger.warning("Could not find conan_install_info.json")
+        Logger.debug("Using conan dependencies: {}", str(self.conanInstalls))
+        Logger.debug("Using python dependencies: {}", str(self.pythonInstalls))
 
         Logger.log("i", "Initializing machine error checker")
         self._machine_error_checker = MachineErrorChecker(self)
@@ -2147,3 +2152,11 @@ class CuraApplication(QtApplication):
     @pyqtProperty(bool, constant=True)
     def isEnterprise(self) -> bool:
         return ApplicationMetadata.IsEnterpriseVersion
+
+    @pyqtProperty("QVariant", constant=True)
+    def conanInstalls(self) -> Dict[str, Dict[str, str]]:
+        return self._conan_installs
+
+    @pyqtProperty("QVariant", constant=True)
+    def pythonInstalls(self) -> Dict[str, Dict[str, str]]:
+        return self._python_installs
