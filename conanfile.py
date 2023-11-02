@@ -152,6 +152,25 @@ class CuraConan(ConanFile):
             }
         return conan_installs
 
+    def _python_installs(self):
+        python_installs = {}
+
+        # list of python installs
+        outer = '"' if self.settings.os == "Windows" else "'"
+        inner = "'" if self.settings.os == "Windows" else '"'
+        python_ins_cmd = f"python -c {outer}import pkg_resources; print({inner};{inner}.join([(s.key+{inner},{inner}+ s.version) for s in pkg_resources.working_set])){outer}"
+        from six import StringIO
+        buffer = StringIO()
+        self.run(python_ins_cmd, run_environment= True, env = "conanrun",  output=buffer)
+
+        packages = str(buffer.getvalue()).split("-----------------\n")
+        packages = packages[1].strip('\r\n').split(";")
+        for package in packages:
+            name, version = package.split(",")
+            python_installs[name] = {"version": version}
+
+        return python_installs
+
     def _generate_cura_version(self, location):
         with open(os.path.join(self.recipe_folder, "CuraVersion.py.jinja"), "r") as f:
             cura_version_py = Template(f.read())
@@ -178,6 +197,7 @@ class CuraConan(ConanFile):
                 cura_digital_factory_url = self.conan_data["urls"][self._urls]["digital_factory_url"],
                 cura_latest_url=self.conan_data["urls"][self._urls]["cura_latest_url"],
                 conan_installs=self._conan_installs(),
+                python_installs=self._python_installs(),
             ))
 
     def _generate_pyinstaller_spec(self, location, entrypoint_location, icon_path, entitlements_file):
