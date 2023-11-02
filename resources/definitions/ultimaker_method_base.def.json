@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "Makerbot Method Base Profile",
+    "name": "MakerBot Method Base Profile",
     "inherits": "ultimaker",
     "metadata":
     {
