@@ -284,14 +284,18 @@ class CuraStackBuilder:
         abstract_machines = registry.findContainerStacks(id = abstract_machine_id)
         if abstract_machines:
             return cast(GlobalStack, abstract_machines[0])
+
         definitions = registry.findDefinitionContainers(id=definition_id)
 
         name = ""
-
         if definitions:
             name = definitions[0].getName()
+
         stack = cls.createMachine(abstract_machine_id, definition_id, show_warning_message=False)
         if not stack:
+            return None
+
+        if not stack.getMetaDataEntry("visible", True):
             return None
 
         stack.setName(name)
