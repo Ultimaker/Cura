@@ -222,8 +222,14 @@ class WorkspaceDialog(QObject):
         return self._intent_name
 
     def setIntentName(self, intent_name: str) -> None:
+        intent_name = intent_name.title()
         if self._intent_name != intent_name:
-            self._intent_name = intent_name
+            if intent_name == "":
+                self._intent_name = "Balanced"
+            elif intent_name == "Quick":
+                self._intent_name = "Draft"
+            else:
+                self._intent_name = intent_name
             self.intentNameChanged.emit()
 
     @pyqtProperty(str, notify=activeModeChanged)
