@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-09-12 17:04+0000\n"
+"POT-Creation-Date: 2023-10-31 19:13+0000\n"
 "PO-Revision-Date: 2020-03-24 09:43+0100\n"
 "Last-Translator: Nagy Attila <vokroot@gmail.com>\n"
 "Language-Team: AT-VLOG\n"
@@ -746,16 +746,16 @@ msgid "Distance between the printed support structure lines. This setting is cal
 msgstr "A támaszok belső szerkezetében lévő vonalak távolsága.Ez egy számított érték a támasz sűrűségből."
 
 msgctxt "support_bottom_distance description"
-msgid "Distance from the print to the bottom of the support."
-msgstr "A támasz alja és az alatta lévő nyomtatvány közötti távolság."
+msgid "Distance from the print to the bottom of the support. Note that this is rounded up to the next layer height."
+msgstr ""
 
 msgctxt "support_top_distance description"
 msgid "Distance from the top of the support to the print."
 msgstr "A támasz teteje és a fölé épített nyomtatvány közötti távolság."
 
 msgctxt "support_z_distance description"
-msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. This value is rounded up to a multiple of the layer height."
-msgstr "A támaszok struktúrájának alsó/felső részének távolsága a nyomtatott tárgytól.Ez a rés szabadon marad, így segíti a támaszok eltávolítását a nyomtatás után.Ez az érték a rétegmagasság többszörösére lesz kerekítve."
+msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. The topmost support layer below the model might be a fraction of regular layers."
+msgstr ""
 
 msgctxt "infill_wipe_dist description"
 msgid "Distance of a travel move inserted after every infill line, to make the infill stick to the walls better. This option is similar to infill overlap, but without extrusion and only on one end of the infill line."
@@ -1097,6 +1097,14 @@ msgctxt "wall_0_material_flow description"
 msgid "Flow compensation on the outermost wall line."
 msgstr "Áramláskompenzálás a külső falvonalak nyomtatásánál."
 
+msgctxt "wall_0_material_flow_roofing description"
+msgid "Flow compensation on the top surface outermost wall line."
+msgstr "Áramlási kompenzáció a felső felület legkülső falvonalán."
+
+msgctxt "wall_x_material_flow_roofing description"
+msgid "Flow compensation on top surface wall lines for all wall lines except the outermost one."
+msgstr "Áramlás kompenzáció a felső felület falvonalain az összes falvonal kivételével a legkülsőn."
+
 msgctxt "skin_material_flow description"
 msgid "Flow compensation on top/bottom lines."
 msgstr "Áramláskompenzálás az alsó/felső rétegek nyomtatásánál."
@@ -1284,6 +1292,10 @@ msgstr "Rács"
 msgctxt "machine_gcode_flavor option Griffin"
 msgid "Griffin"
 msgstr "Griffin"
+
+msgctxt "group_outer_walls label"
+msgid "Group Outer Walls"
+msgstr "Külső falak csoportosítása"
 
 msgctxt "infill_pattern option gyroid"
 msgid "Gyroid"
@@ -2449,6 +2461,10 @@ msgctxt "wall_0_wipe_dist label"
 msgid "Outer Wall Wipe Distance"
 msgstr "Külső fal tisztítási távolság"
 
+msgctxt "group_outer_walls description"
+msgid "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped."
+msgstr "Az azonos rétegben lévő különböző szigetek külső falait sorban nyomtatják. Amikor engedélyezve van, korlátozódik az áramlás változásainak mértéke, mert a falak típusonként nyomtathatók ki. Amikor letiltva van, az utazások számát a szigetek között csökkenti, mert ugyanazon szigeteken lévő falak csoportosítva vannak."
+
 msgctxt "inset_direction option outside_in"
 msgid "Outside To Inside"
 msgstr ""
@@ -2502,8 +2518,20 @@ msgid "Prime Tower Acceleration"
 msgstr "Előtorony gyorsulás"
 
 msgctxt "prime_tower_brim_enable label"
-msgid "Prime Tower Brim"
-msgstr "Előtorony perem"
+msgid "Prime Tower Base"
+msgstr ""
+
+msgctxt "prime_tower_base_curve_magnitude label"
+msgid "Prime Tower Base Curve Magnitude"
+msgstr ""
+
+msgctxt "prime_tower_base_height label"
+msgid "Prime Tower Base Height"
+msgstr ""
+
+msgctxt "prime_tower_base_size label"
+msgid "Prime Tower Base Size"
+msgstr ""
 
 msgctxt "prime_tower_flow label"
 msgid "Prime Tower Flow"
@@ -2520,6 +2548,10 @@ msgstr "Előtorony vonalszélesség"
 msgctxt "prime_tower_min_volume label"
 msgid "Prime Tower Minimum Volume"
 msgstr "Előtorony minimális térfogat"
+
+msgctxt "prime_tower_raft_base_line_spacing label"
+msgid "Prime Tower Raft Line Spacing"
+msgstr ""
 
 msgctxt "prime_tower_size label"
 msgid "Prime Tower Size"
@@ -2538,8 +2570,8 @@ msgid "Prime Tower Y Position"
 msgstr "Előtorony Y helyzet"
 
 msgctxt "prime_tower_brim_enable description"
-msgid "Prime-towers might need the extra adhesion afforded by a brim even if the model doesn't. Presently can't be used with the 'Raft' adhesion-type."
-msgstr "Előfordulhat, hogy az előtornyokhoz szükség van a peremek által biztosított extra tapadásra, még akkor is, ha a modell nem rendelkezik peremmel. Jelenleg nem használható a tutaj 'Raft' mint tapadástípus ehhez a művelethez."
+msgid "Prime-towers might need the extra adhesion afforded by a brim or raft, even if the model doesn't."
+msgstr ""
 
 msgctxt "acceleration_print label"
 msgid "Print Acceleration"
@@ -3053,7 +3085,6 @@ msgctxt "small_hole_max_size label"
 msgid "Small Hole Max Size"
 msgstr "Kis lyuk maximális mérete"
 
-#, fuzzy
 msgctxt "cool_min_temperature label"
 msgid "Small Layer Printing Temperature"
 msgstr "Befejező nyomtatási hőmérséklet"
@@ -3170,7 +3201,6 @@ msgctxt "support_bottom_distance label"
 msgid "Support Bottom Distance"
 msgstr "Támasz alsó távolság"
 
-#, fuzzy
 msgctxt "support_bottom_wall_count label"
 msgid "Support Bottom Wall Line Count"
 msgstr "Támasz falak száma"
@@ -3335,7 +3365,6 @@ msgctxt "support_interface_height label"
 msgid "Support Interface Thickness"
 msgstr "Interfész vastagság"
 
-#, fuzzy
 msgctxt "support_interface_wall_count label"
 msgid "Support Interface Wall Line Count"
 msgstr "Támasz falak száma"
@@ -3420,7 +3449,6 @@ msgctxt "support_roof_height label"
 msgid "Support Roof Thickness"
 msgstr "Felső interfész vastagság"
 
-#, fuzzy
 msgctxt "support_roof_wall_count label"
 msgid "Support Roof Wall Line Count"
 msgstr "Támasz falak száma"
@@ -3613,6 +3641,14 @@ msgctxt "raft_surface_acceleration description"
 msgid "The acceleration with which the top raft layers are printed."
 msgstr "A tutajfedél nyomtatásához kapcsolódó gyorsulási érték."
 
+msgctxt "acceleration_wall_x_roofing description"
+msgid "The acceleration with which the top surface inner walls are printed."
+msgstr "Az a gyorsulás, amellyel a felső felület belső falai kinyomtatnak."
+
+msgctxt "acceleration_wall_0_roofing description"
+msgid "The acceleration with which the top surface outermost walls are printed."
+msgstr "Az a gyorsulás, amellyel a felső felület legkülső falai kinyomtatnak."
+
 msgctxt "acceleration_wall description"
 msgid "The acceleration with which the walls are printed."
 msgstr "A falak nyomtatása alatt használt gyorsulás."
@@ -3753,6 +3789,10 @@ msgctxt "raft_surface_line_spacing description"
 msgid "The distance between the raft lines for the top raft layers. The spacing should be equal to the line width, so that the surface is solid."
 msgstr "A tutajvonalak közötti távolság a felső tutajrétegeknél. A távolságnak meg kell egyeznie a vonalszélességgel, hogy a felület tömör legyen."
 
+msgctxt "prime_tower_raft_base_line_spacing description"
+msgid "The distance between the raft lines for the unique prime tower raft layer. Wide spacing makes for easy removal of the raft from the build plate."
+msgstr ""
+
 msgctxt "interlocking_depth description"
 msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
 msgstr ""
@@ -3761,7 +3801,6 @@ msgctxt "brim_width description"
 msgid "The distance from the model to the outermost brim line. A larger brim enhances adhesion to the build plate, but also reduces the effective print area."
 msgstr "Az a szélesség, amilyen széles lesz a Perem, a nyomtatott tárgy szélétől számítva. A nagyobb perem nagyobb tapadást fog eredményeznim viszont csökkenti az effektív használható nyomtatási területet."
 
-#, fuzzy
 msgctxt "interlocking_boundary_avoidance description"
 msgid "The distance from the outside of a model where interlocking structures will not be generated, measured in cells."
 msgstr "Ez a távolság a fúvóka végétől mért távolság, ameddig a nyomtatószálat vissza szükséges húzni, ha nem használjuk az adott extrudert."
@@ -3950,6 +3989,10 @@ msgctxt "layer_height_0 description"
 msgid "The height of the initial layer in mm. A thicker initial layer makes adhesion to the build plate easier."
 msgstr "A kezdő réteg magassága mm-ben. A vastagabb kezdőréteg megkönnyíti a tapadást a tárgyasztalhoz."
 
+msgctxt "prime_tower_base_height description"
+msgid "The height of the prime tower base."
+msgstr ""
+
 msgctxt "support_bottom_stair_step_height description"
 msgid "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures. Set to zero to turn off the stair-like behaviour."
 msgstr "A támasz lépcsőinek magassága azona a részen, ahol a modellen támaszkodik.Ha az érték alacsony, a támasz eltávolítása nehéz lehet, viszont a túl magas érték instabillá teheti a támaszt. Ha az érték 0, akkor kikapcsolja a lépcsőt."
@@ -4021,6 +4064,10 @@ msgstr "Az a rétegidő, amely beállítja a küszöbértéket a szokásos venti
 msgctxt "retraction_amount description"
 msgid "The length of material retracted during a retraction move."
 msgstr "A visszahúzott anyag hossza visszahúzáskor."
+
+msgctxt "prime_tower_base_curve_magnitude description"
+msgid "The magnitude factor used for the curve of the prime tower foot."
+msgstr ""
 
 msgctxt "machine_buildplate_type description"
 msgid "The material of the build plate installed on the printer."
@@ -4113,6 +4160,14 @@ msgstr "A maximális pillanatnyi sebességváltozás változtatása a szoknya é
 msgctxt "jerk_support description"
 msgid "The maximum instantaneous velocity change with which the support structure is printed."
 msgstr "A maximális pillanatnyi sebességváltozás változtatása a támaszok nyomtatása alatt."
+
+msgctxt "jerk_wall_x_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface inner walls are printed."
+msgstr "A legnagyobb pillanatnyi sebességváltozás, amellyel a felső felület legkülső falai kinyomtatnak."
+
+msgctxt "jerk_wall_0_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface outermost walls are printed."
+msgstr "A legnagyobb pillanatnyi sebességváltozás, amellyel a felső felület belső falai kinyomtatnak."
 
 msgctxt "jerk_wall description"
 msgid "The maximum instantaneous velocity change with which the walls are printed."
@@ -4278,17 +4333,14 @@ msgctxt "support_wall_count description"
 msgid "The number of walls with which to surround support infill. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
 msgstr "Azoknak a falaknak a száma, amellyel a támogatást körül lehet venni. A fal hozzáadása megbízhatóbbá teszi a nyomtatást és jobban támaszthatja a túlnyúlásokat, de növeli a nyomtatási időt és a felhasznált anyagot."
 
-#, fuzzy
 msgctxt "support_bottom_wall_count description"
 msgid "The number of walls with which to surround support interface floor. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
 msgstr "Azoknak a falaknak a száma, amellyel a támogatást körül lehet venni. A fal hozzáadása megbízhatóbbá teszi a nyomtatást és jobban támaszthatja a túlnyúlásokat, de növeli a nyomtatási időt és a felhasznált anyagot."
 
-#, fuzzy
 msgctxt "support_roof_wall_count description"
 msgid "The number of walls with which to surround support interface roof. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
 msgstr "Azoknak a falaknak a száma, amellyel a támogatást körül lehet venni. A fal hozzáadása megbízhatóbbá teszi a nyomtatást és jobban támaszthatja a túlnyúlásokat, de növeli a nyomtatási időt és a felhasznált anyagot."
 
-#, fuzzy
 msgctxt "support_interface_wall_count description"
 msgid "The number of walls with which to surround support interface. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
 msgstr "Azoknak a falaknak a száma, amellyel a támogatást körül lehet venni. A fal hozzáadása megbízhatóbbá teszi a nyomtatást és jobban támaszthatja a túlnyúlásokat, de növeli a nyomtatási időt és a felhasznált anyagot."
@@ -4501,6 +4553,14 @@ msgctxt "raft_surface_speed description"
 msgid "The speed at which the top raft layers are printed. These should be printed a bit slower, so that the nozzle can slowly smooth out adjacent surface lines."
 msgstr "A tutaj felső rétegeinek nyomtatási sebessége. Ezeket kissé lassabban kell nyomtatni, hogy a fúvóka lassan kiegyenlítse a szomszédos felszíni vonalakat."
 
+msgctxt "speed_wall_x_roofing description"
+msgid "The speed at which the top surface inner walls are printed."
+msgstr "Az a sebesség, amellyel a felső felület belső falai kinyomtatnak."
+
+msgctxt "speed_wall_0_roofing description"
+msgid "The speed at which the top surface outermost wall is printed."
+msgstr "Az a sebesség, amellyel a felső felület legkülső falai kinyomtatnak."
+
 msgctxt "speed_z_hop description"
 msgid "The speed at which the vertical Z movement is made for Z Hops. This is typically lower than the print speed since the build plate or machine's gantry is harder to move."
 msgstr "A Z tengely emelési sebessége. Ez általában alaxcsonyabb, mint a nyomtatási sebesség, mivel a tárgyasztal, vagy az X keresztszánt nehezebb mozgatni."
@@ -4562,8 +4622,8 @@ msgid "The temperature to which to already start cooling down just before the en
 msgstr "Az a hőmérséklet, ahová a fejnek vissza kell hűlnie a nyomtatás befejezése előtt."
 
 msgctxt "material_print_temperature_layer_0 description"
-msgid "The temperature used for printing the first layer. Set at 0 to disable special handling of the initial layer."
-msgstr "Az a hőmérséklet, amin az első réteg nyomtatása fog történni. Ha az érték 0, akkor nem kezeli külön a kezdő réteg hőmérsékleti beállítását."
+msgid "The temperature used for printing the first layer."
+msgstr ""
 
 msgctxt "material_print_temperature description"
 msgid "The temperature used for printing."
@@ -4637,10 +4697,13 @@ msgctxt "support_brim_width description"
 msgid "The width of the brim to print underneath the support. A larger brim enhances adhesion to the build plate, at the cost of some extra material."
 msgstr "A támasz alá nyomtatandó perem szélessége. A nagyobb peremek javítják a tálcához való tapadást, viszon extra anyagfelhasználást is jelent."
 
-#, fuzzy
 msgctxt "interlocking_beam_width description"
 msgid "The width of the interlocking structure beams."
 msgstr "Az előtorony szélessége."
+
+msgctxt "prime_tower_base_size description"
+msgid "The width of the prime tower base."
+msgstr ""
 
 msgctxt "prime_tower_size description"
 msgid "The width of the prime tower."
@@ -4709,6 +4772,38 @@ msgstr "Felső kéreg bővítési távolság"
 msgctxt "top_skin_preshrink label"
 msgid "Top Skin Removal Width"
 msgstr "Felső kéreg eltávolítási szélesség"
+
+msgctxt "acceleration_wall_x_roofing label"
+msgid "Top Surface Inner Wall Acceleration"
+msgstr "A felső felület belső falának gyorsulása"
+
+msgctxt "jerk_wall_x_roofing label"
+msgid "Top Surface Inner Wall Jerk"
+msgstr "A felső felület legkülső falának hirtelen gyorsulása"
+
+msgctxt "speed_wall_x_roofing label"
+msgid "Top Surface Inner Wall Speed"
+msgstr "A felső felület belső falának sebessége"
+
+msgctxt "wall_x_material_flow_roofing label"
+msgid "Top Surface Inner Wall(s) Flow"
+msgstr "A felső felület belső falainak áramlása"
+
+msgctxt "acceleration_wall_0_roofing label"
+msgid "Top Surface Outer Wall Acceleration"
+msgstr "A felső felület külső falának gyorsulása"
+
+msgctxt "wall_0_material_flow_roofing label"
+msgid "Top Surface Outer Wall Flow"
+msgstr "A felső felület legkülső falának áramlása"
+
+msgctxt "jerk_wall_0_roofing label"
+msgid "Top Surface Outer Wall Jerk"
+msgstr "A felső felület belső falának hirtelen gyorsulása"
+
+msgctxt "speed_wall_0_roofing label"
+msgid "Top Surface Outer Wall Speed"
+msgstr "A felső felület legkülső falának sebessége"
 
 msgctxt "acceleration_roofing label"
 msgid "Top Surface Skin Acceleration"
@@ -5398,53 +5493,6 @@ msgctxt "travel description"
 msgid "travel"
 msgstr "fej átpozícionálás"
 
-
-
-
-### Settings added by bundled engine backend plugins. Add this manually for now. Should be removed whenever we handle it better.
-
-msgctxt "gradual_flow_enabled label"
-msgid "Gradual flow enabled"
-msgstr ""
-
-msgctxt "gradual_flow_enabled description"
-msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
-msgstr ""
-
-msgctxt "max_flow_acceleration label"
-msgid "Gradual flow max acceleration"
-msgstr ""
-
-msgctxt "max_flow_acceleration description"
-msgid "Maximum acceleration for gradual flow changes"
-msgstr ""
-
-msgctxt "layer_0_max_flow_acceleration label"
-msgid "Initial layer max flow acceleration"
-msgstr ""
-
-msgctxt "layer_0_max_flow_acceleration description"
-msgid "Minimum speed for gradual flow changes for the first layer"
-msgstr ""
-
-msgctxt "gradual_flow_discretisation_step_size label"
-msgid "Gradual flow discretisation step size"
-msgstr ""
-
-msgctxt "gradual_flow_discretisation_step_size description"
-msgid "Duration of each step in the gradual flow change"
-msgstr ""
-
-msgctxt "reset_flow_duration label"
-msgid "Reset flow duration"
-msgstr ""
-
-msgctxt "reset_flow_duration description"
-msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
-msgstr ""
-
-
-
 #~ msgctxt "machine_head_polygon description"
 #~ msgid "A 2D silhouette of the print head (fan caps excluded)."
 #~ msgstr "A nyomtatófej 2D -s árnyéka (ventillátor nélkül)."
@@ -5536,6 +5584,14 @@ msgstr ""
 #~ msgctxt "wireframe_nozzle_clearance description"
 #~ msgid "Distance between the nozzle and horizontally downward lines. Larger clearance results in diagonally downward lines with a less steep angle, which in turn results in less upward connections with the next layer. Only applies to Wire Printing."
 #~ msgstr "A fúvóka és a vízszintesen lefelé mutató vonalak közötti távolság. A nagyobb hézag átlósan lefelé mutató vonalakat eredményez, kevésbé meredek szöggel, ami viszont kevésbé felfelé irányuló kapcsolatokat eredményez a következő réteggel. Csak a huzalnyomásra vonatkozik."
+
+#~ msgctxt "support_bottom_distance description"
+#~ msgid "Distance from the print to the bottom of the support."
+#~ msgstr "A támasz alja és az alatta lévő nyomtatvány közötti távolság."
+
+#~ msgctxt "support_z_distance description"
+#~ msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. This value is rounded up to a multiple of the layer height."
+#~ msgstr "A támaszok struktúrájának alsó/felső részének távolsága a nyomtatott tárgytól.Ez a rés szabadon marad, így segíti a támaszok eltávolítását a nyomtatás után.Ez az érték a rétegmagasság többszörösére lesz kerekítve."
 
 #~ msgctxt "wireframe_up_half_speed description"
 #~ msgid ""
@@ -5703,6 +5759,14 @@ msgstr ""
 #~ msgid "Prefer Retract"
 #~ msgstr "Visszahúzás preferálása"
 
+#~ msgctxt "prime_tower_brim_enable label"
+#~ msgid "Prime Tower Brim"
+#~ msgstr "Előtorony perem"
+
+#~ msgctxt "prime_tower_brim_enable description"
+#~ msgid "Prime-towers might need the extra adhesion afforded by a brim even if the model doesn't. Presently can't be used with the 'Raft' adhesion-type."
+#~ msgstr "Előfordulhat, hogy az előtornyokhoz szükség van a peremek által biztosított extra tapadásra, még akkor is, ha a modell nem rendelkezik peremmel. Jelenleg nem használható a tutaj 'Raft' mint tapadástípus ehhez a művelethez."
+
 #~ msgctxt "wireframe_enabled description"
 #~ msgid "Print only the outside surface with a sparse webbed structure, printing 'in thin air'. This is realized by horizontally printing the contours of the model at given Z intervals which are connected via upward and diagonally downward lines."
 #~ msgstr "Csak a külső felületet nyomtatja, egy ritkás hevederezett szerkezettel, a levegőben. Ez úgy valósul meg, hogy a modell kontúrjai vízszintesen kinyomtatásra kerülnek meghatározott Z intervallumban, amiket felfelé, és átlósan lefelé egyenesen összeköt."
@@ -5862,6 +5926,10 @@ msgstr ""
 #~ msgctxt "speed_layer_0 description"
 #~ msgid "The speed for the initial layer. A lower value is advised to improve adhesion to the build plate."
 #~ msgstr "A kezdő réteg sebessége. Az alacsonyabb érték segít növelni a tapadást a tárgyasztalhoz."
+
+#~ msgctxt "material_print_temperature_layer_0 description"
+#~ msgid "The temperature used for printing the first layer. Set at 0 to disable special handling of the initial layer."
+#~ msgstr "Az a hőmérséklet, amin az első réteg nyomtatása fog történni. Ha az érték 0, akkor nem kezeli külön a kezdő réteg hőmérsékleti beállítását."
 
 #~ msgctxt "material_bed_temperature_layer_0 description"
 #~ msgid "The temperature used for the heated build plate at the first layer."

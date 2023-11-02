@@ -1,0 +1,88 @@
+{
+    "version": 2,
+    "name": "Makerbot Method X",
+    "inherits": "ultimaker_method_base",
+    "metadata":
+    {
+        "visible": true,
+        "author": "Ultimaker",
+        "manufacturer": "Ultimaker B.V.",
+        "file_formats": "application/x-makerbot",
+        "platform": "ultimaker_method_platform.stl",
+        "exclude_materials": [
+            "dsm_",
+            "Essentium_",
+            "imade3d_",
+            "chromatik_",
+            "3D-Fuel_",
+            "bestfilament_",
+            "emotiontech_",
+            "eryone_",
+            "eSUN_",
+            "Extrudr_",
+            "fabtotum_",
+            "fdplast_",
+            "filo3d_",
+            "generic_asa_175",
+            "generic_abs_175",
+            "generic_bvoh_175",
+            "generic_petg_175",
+            "generic_pla_175",
+            "generic_tough_pla_175",
+            "generic_pva_175",
+            "generic_cffpa_175",
+            "generic_cpe_175",
+            "generic_nylon_175",
+            "generic_hips_175",
+            "generic_pc_175",
+            "ultimaker_sr30_175",
+            "generic_tpu_175",
+            "goofoo_",
+            "ideagen3D_",
+            "imade3d_",
+            "innofill_",
+            "layer_one_",
+            "leapfrog_",
+            "polyflex_pla",
+            "polymax_pla",
+            "polyplus_pla",
+            "polywood_pla",
+            "redd_",
+            "tizyx_",
+            "verbatim_",
+            "Vertex_",
+            "volumic_",
+            "xyzprinting_",
+            "zyyx_pro_",
+            "octofiber_",
+            "fiberlogy_"
+        ],
+        "has_machine_materials": true,
+        "has_machine_quality": true,
+        "has_materials": true,
+        "has_variants": true,
+        "machine_extruder_trains":
+        {
+            "0": "ultimaker_methodx_extruder_left",
+            "1": "ultimaker_methodx_extruder_right"
+        },
+        "platform_offset": [
+            0,
+            0,
+            0
+        ],
+        "platform_texture": "MakerbotMethod.png",
+        "preferred_material": "ultimaker_absr_175",
+        "preferred_quality_type": "draft",
+        "preferred_variant_name": "1XA",
+        "supports_network_connection": true,
+        "supports_usb_connection": false,
+        "variant_definition": "ultimaker_methodx",
+        "variants_name": "Extruder",
+        "weight": -1
+    },
+    "overrides":
+    {
+        "machine_name": { "default_value": "Makerbot Method X" }
+    }
+}

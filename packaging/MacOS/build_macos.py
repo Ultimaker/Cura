@@ -87,15 +87,16 @@ def notarize_file(dist_path: str, filename: str) -> None:
     """ Notarize a file. This takes 5+ minutes, there is indication that this step is successful."""
     notarize_user = os.environ.get("MAC_NOTARIZE_USER")
     notarize_password = os.environ.get("MAC_NOTARIZE_PASS")
-    altool_executable = os.environ.get("ALTOOL_EXECUTABLE", "altool")
+    notarize_team = os.environ.get("MACOS_CERT_USER")
+    notary_executable = os.environ.get("NOTARY_TOOL_EXECUTABLE", "notarytool")
 
     notarize_arguments = [
-        "xcrun", altool_executable,
-        "--notarize-app",
-        "--primary-bundle-id", ULTIMAKER_CURA_DOMAIN,
-        "--username", notarize_user,
+        "xcrun", notary_executable,
+        "submit",
+        "--apple-id", notarize_user,
         "--password", notarize_password,
-        "--file", Path(dist_path, filename)
+        "--team-id", notarize_team,
+        Path(dist_path, filename)
     ]
 
     subprocess.run(notarize_arguments)

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-09-12 17:04+0000\n"
+"POT-Creation-Date: 2023-10-31 19:13+0000\n"
 "PO-Revision-Date: 2022-07-15 11:17+0200\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: Finnish\n"
@@ -743,16 +743,16 @@ msgid "Distance between the printed support structure lines. This setting is cal
 msgstr "Tulostettujen tukirakenteiden linjojen välinen etäisyys. Tämä asetus lasketaan tuen tiheyden perusteella."
 
 msgctxt "support_bottom_distance description"
-msgid "Distance from the print to the bottom of the support."
-msgstr "Etäisyys tulosteesta tuen alaosaan."
+msgid "Distance from the print to the bottom of the support. Note that this is rounded up to the next layer height."
+msgstr ""
 
 msgctxt "support_top_distance description"
 msgid "Distance from the top of the support to the print."
 msgstr "Etäisyys tuen yläosasta tulosteeseen."
 
 msgctxt "support_z_distance description"
-msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. This value is rounded up to a multiple of the layer height."
-msgstr "Tukirakenteen etäisyys tulosteesta ylä-/alasuunnassa. Tämä rako sallii tukien poistamisen mallin tulostuksen jälkeen. Tämä arvo pyöristetään ylöspäin kerroksen korkeuden kerrannaiseksi."
+msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. The topmost support layer below the model might be a fraction of regular layers."
+msgstr ""
 
 msgctxt "infill_wipe_dist description"
 msgid "Distance of a travel move inserted after every infill line, to make the infill stick to the walls better. This option is similar to infill overlap, but without extrusion and only on one end of the infill line."
@@ -1094,6 +1094,14 @@ msgctxt "wall_0_material_flow description"
 msgid "Flow compensation on the outermost wall line."
 msgstr ""
 
+msgctxt "wall_0_material_flow_roofing description"
+msgid "Flow compensation on the top surface outermost wall line."
+msgstr "Virtauksen kompensointi yläpinnan uloimman seinän linjalla."
+
+msgctxt "wall_x_material_flow_roofing description"
+msgid "Flow compensation on top surface wall lines for all wall lines except the outermost one."
+msgstr "Virtauksen kompensointi yläpinnan seinälinjoilla kaikille seinälinjoille paitsi uloimman linjalle."
+
 msgctxt "skin_material_flow description"
 msgid "Flow compensation on top/bottom lines."
 msgstr ""
@@ -1277,6 +1285,10 @@ msgstr "Ristikko"
 msgctxt "machine_gcode_flavor option Griffin"
 msgid "Griffin"
 msgstr "Griffin"
+
+msgctxt "group_outer_walls label"
+msgid "Group Outer Walls"
+msgstr "Ryhmittele ulkoseinät"
 
 msgctxt "infill_pattern option gyroid"
 msgid "Gyroid"
@@ -2442,6 +2454,10 @@ msgctxt "wall_0_wipe_dist label"
 msgid "Outer Wall Wipe Distance"
 msgstr "Ulkoseinämän täyttöliikkeen etäisyys"
 
+msgctxt "group_outer_walls description"
+msgid "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped."
+msgstr "Samaan kerrokseen kuuluvat eri saarten ulkoseinät tulostetaan peräkkäin. Kun toiminto on käytössä, virtauksen muutosten määrä on rajoitettu, koska seinät tulostetaan yksi kerrallaan. Kun toiminto on pois päältä, matkojen määrä saarten välillä vähenee, koska saman saaren seinät ryhmitellään."
+
 msgctxt "inset_direction option outside_in"
 msgid "Outside To Inside"
 msgstr ""
@@ -2495,7 +2511,19 @@ msgid "Prime Tower Acceleration"
 msgstr "Esitäyttötornin kiihtyvyys"
 
 msgctxt "prime_tower_brim_enable label"
-msgid "Prime Tower Brim"
+msgid "Prime Tower Base"
+msgstr ""
+
+msgctxt "prime_tower_base_curve_magnitude label"
+msgid "Prime Tower Base Curve Magnitude"
+msgstr ""
+
+msgctxt "prime_tower_base_height label"
+msgid "Prime Tower Base Height"
+msgstr ""
+
+msgctxt "prime_tower_base_size label"
+msgid "Prime Tower Base Size"
 msgstr ""
 
 msgctxt "prime_tower_flow label"
@@ -2514,6 +2542,10 @@ msgctxt "prime_tower_min_volume label"
 msgid "Prime Tower Minimum Volume"
 msgstr "Esitäyttötornin minimiainemäärä"
 
+msgctxt "prime_tower_raft_base_line_spacing label"
+msgid "Prime Tower Raft Line Spacing"
+msgstr ""
+
 msgctxt "prime_tower_size label"
 msgid "Prime Tower Size"
 msgstr "Esitäyttötornin koko"
@@ -2531,7 +2563,7 @@ msgid "Prime Tower Y Position"
 msgstr "Esitäyttötornin Y-sijainti"
 
 msgctxt "prime_tower_brim_enable description"
-msgid "Prime-towers might need the extra adhesion afforded by a brim even if the model doesn't. Presently can't be used with the 'Raft' adhesion-type."
+msgid "Prime-towers might need the extra adhesion afforded by a brim or raft, even if the model doesn't."
 msgstr ""
 
 msgctxt "acceleration_print label"
@@ -3046,7 +3078,6 @@ msgctxt "small_hole_max_size label"
 msgid "Small Hole Max Size"
 msgstr ""
 
-#, fuzzy
 msgctxt "cool_min_temperature label"
 msgid "Small Layer Printing Temperature"
 msgstr "Tulostuslämpötila lopussa"
@@ -3163,7 +3194,6 @@ msgctxt "support_bottom_distance label"
 msgid "Support Bottom Distance"
 msgstr "Tuen alaosan etäisyys"
 
-#, fuzzy
 msgctxt "support_bottom_wall_count label"
 msgid "Support Bottom Wall Line Count"
 msgstr "Tukilohkolinjaluku"
@@ -3328,7 +3358,6 @@ msgctxt "support_interface_height label"
 msgid "Support Interface Thickness"
 msgstr "Tukiliittymän paksuus"
 
-#, fuzzy
 msgctxt "support_interface_wall_count label"
 msgid "Support Interface Wall Line Count"
 msgstr "Tukiliittymän linjan leveys"
@@ -3413,7 +3442,6 @@ msgctxt "support_roof_height label"
 msgid "Support Roof Thickness"
 msgstr "Tukikaton paksuus"
 
-#, fuzzy
 msgctxt "support_roof_wall_count label"
 msgid "Support Roof Wall Line Count"
 msgstr "Tukikaton linjaleveys"
@@ -3606,6 +3634,14 @@ msgctxt "raft_surface_acceleration description"
 msgid "The acceleration with which the top raft layers are printed."
 msgstr "Kiihtyvyys, jolla pohjaristikon pintakerrokset tulostetaan."
 
+msgctxt "acceleration_wall_x_roofing description"
+msgid "The acceleration with which the top surface inner walls are printed."
+msgstr "Yläpinnan sisäseinien tulostamisen kiihtyvyys."
+
+msgctxt "acceleration_wall_0_roofing description"
+msgid "The acceleration with which the top surface outermost walls are printed."
+msgstr "Yläpinnan uloimpien seinien tulostamisen kiihtyvyys."
+
 msgctxt "acceleration_wall description"
 msgid "The acceleration with which the walls are printed."
 msgstr "Kiihtyvyys, jolla seinämät tulostetaan."
@@ -3746,6 +3782,10 @@ msgctxt "raft_surface_line_spacing description"
 msgid "The distance between the raft lines for the top raft layers. The spacing should be equal to the line width, so that the surface is solid."
 msgstr "Pohjaristikon pintakerrosten linjojen välinen etäisyys. Linjajaon tulisi olla sama kuin linjaleveys, jotta pinta on kiinteä."
 
+msgctxt "prime_tower_raft_base_line_spacing description"
+msgid "The distance between the raft lines for the unique prime tower raft layer. Wide spacing makes for easy removal of the raft from the build plate."
+msgstr ""
+
 msgctxt "interlocking_depth description"
 msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
 msgstr ""
@@ -3754,7 +3794,6 @@ msgctxt "brim_width description"
 msgid "The distance from the model to the outermost brim line. A larger brim enhances adhesion to the build plate, but also reduces the effective print area."
 msgstr "Etäisyys mallista ulommaiseen reunuslinjaan. Suurempi reunus parantaa kiinnitystä alustaan, mutta rajoittaa tehokasta tulostusaluetta."
 
-#, fuzzy
 msgctxt "interlocking_boundary_avoidance description"
 msgid "The distance from the outside of a model where interlocking structures will not be generated, measured in cells."
 msgstr "Suuttimen kärjestä mitattu etäisyys, jonka päähän tulostuslanka asetetaan säilytykseen, kun suulaketta ei enää käytetä."
@@ -3943,6 +3982,10 @@ msgctxt "layer_height_0 description"
 msgid "The height of the initial layer in mm. A thicker initial layer makes adhesion to the build plate easier."
 msgstr "Alkukerroksen korkeus milleinä. Paksumpi alkukerros helpottaa alustaan kiinnittymistä."
 
+msgctxt "prime_tower_base_height description"
+msgid "The height of the prime tower base."
+msgstr ""
+
 msgctxt "support_bottom_stair_step_height description"
 msgid "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures. Set to zero to turn off the stair-like behaviour."
 msgstr "Mallin päällä olevan porrasmaisen tuen pohjan portaiden korkeus. Matala arvo tekee tuesta vaikeamman poistaa, mutta liian korkeat arvot voivat johtaa epävakaisiin tukirakenteisiin. Poista porrasmainen ominaisuus käytöstä valitsemalla asetukseksi nolla."
@@ -4012,6 +4055,10 @@ msgstr "Kerrosaika, joka määrittää tuulettimen normaalin nopeuden ja maksimi
 msgctxt "retraction_amount description"
 msgid "The length of material retracted during a retraction move."
 msgstr "Takaisinvedon yhteydessä sisään vedettävän materiaalin pituus."
+
+msgctxt "prime_tower_base_curve_magnitude description"
+msgid "The magnitude factor used for the curve of the prime tower foot."
+msgstr ""
 
 msgctxt "machine_buildplate_type description"
 msgid "The material of the build plate installed on the printer."
@@ -4104,6 +4151,14 @@ msgstr "Helman ja reunuksen tulostuksen nopeuden hetkellinen maksimimuutos."
 msgctxt "jerk_support description"
 msgid "The maximum instantaneous velocity change with which the support structure is printed."
 msgstr "Tukirakenteen tulostuksen nopeuden hetkellinen maksimimuutos."
+
+msgctxt "jerk_wall_x_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface inner walls are printed."
+msgstr "Yläpinnan uloimman seinän tulostuksessa tapahtuva suurin välitön nopeuden muutos."
+
+msgctxt "jerk_wall_0_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface outermost walls are printed."
+msgstr "Yläpinnan sisäseinien tulostuksessa tapahtuva suurin välitön nopeuden muutos."
 
 msgctxt "jerk_wall description"
 msgid "The maximum instantaneous velocity change with which the walls are printed."
@@ -4489,6 +4544,14 @@ msgctxt "raft_surface_speed description"
 msgid "The speed at which the top raft layers are printed. These should be printed a bit slower, so that the nozzle can slowly smooth out adjacent surface lines."
 msgstr "Nopeus, jolla pohjaristikon pintakerrokset tulostetaan. Nämä tulisi tulostaa hieman hitaammin, jotta suutin voi hitaasti tasoittaa vierekkäisiä pintalinjoja."
 
+msgctxt "speed_wall_x_roofing description"
+msgid "The speed at which the top surface inner walls are printed."
+msgstr "Yläpinnan sisäseinien tulostusnopeus."
+
+msgctxt "speed_wall_0_roofing description"
+msgid "The speed at which the top surface outermost wall is printed."
+msgstr "Yläpinnan uloimpien seinien tulostusnopeus."
+
 msgctxt "speed_z_hop description"
 msgid "The speed at which the vertical Z movement is made for Z Hops. This is typically lower than the print speed since the build plate or machine's gantry is harder to move."
 msgstr ""
@@ -4550,8 +4613,8 @@ msgid "The temperature to which to already start cooling down just before the en
 msgstr "Lämpötila, johon jäähdytetään jo ennen tulostuksen loppumista."
 
 msgctxt "material_print_temperature_layer_0 description"
-msgid "The temperature used for printing the first layer. Set at 0 to disable special handling of the initial layer."
-msgstr "Ensimmäisen kerroksen tulostuksessa käytettävä lämpötila. Aseta arvoon 0, jos et halua käyttää alkukerroksen erikoiskäsittelyä."
+msgid "The temperature used for printing the first layer."
+msgstr ""
 
 msgctxt "material_print_temperature description"
 msgid "The temperature used for printing."
@@ -4625,10 +4688,13 @@ msgctxt "support_brim_width description"
 msgid "The width of the brim to print underneath the support. A larger brim enhances adhesion to the build plate, at the cost of some extra material."
 msgstr ""
 
-#, fuzzy
 msgctxt "interlocking_beam_width description"
 msgid "The width of the interlocking structure beams."
 msgstr "Esitäyttötornin leveys."
+
+msgctxt "prime_tower_base_size description"
+msgid "The width of the prime tower base."
+msgstr ""
 
 msgctxt "prime_tower_size description"
 msgid "The width of the prime tower."
@@ -4697,6 +4763,38 @@ msgstr "Yläpintakalvon laajennuksen etäisyys"
 msgctxt "top_skin_preshrink label"
 msgid "Top Skin Removal Width"
 msgstr "Yläpintakalvon poistoleveys"
+
+msgctxt "acceleration_wall_x_roofing label"
+msgid "Top Surface Inner Wall Acceleration"
+msgstr "Yläpinnan sisäseinän kiihtyvyys"
+
+msgctxt "jerk_wall_x_roofing label"
+msgid "Top Surface Inner Wall Jerk"
+msgstr "Yläpinnan uloimman seinän nykäys"
+
+msgctxt "speed_wall_x_roofing label"
+msgid "Top Surface Inner Wall Speed"
+msgstr "Yläpinnan sisäseinän nopeus"
+
+msgctxt "wall_x_material_flow_roofing label"
+msgid "Top Surface Inner Wall(s) Flow"
+msgstr "Yläpinnan sisäseinän virtaus"
+
+msgctxt "acceleration_wall_0_roofing label"
+msgid "Top Surface Outer Wall Acceleration"
+msgstr "Yläpinnan ulkoseinän kiihtyvyys"
+
+msgctxt "wall_0_material_flow_roofing label"
+msgid "Top Surface Outer Wall Flow"
+msgstr "Yläpinnan uloimman seinän virtaus"
+
+msgctxt "jerk_wall_0_roofing label"
+msgid "Top Surface Outer Wall Jerk"
+msgstr "Yläpinnan sisäseinän nykäys"
+
+msgctxt "speed_wall_0_roofing label"
+msgid "Top Surface Outer Wall Speed"
+msgstr ""
 
 msgctxt "acceleration_roofing label"
 msgid "Top Surface Skin Acceleration"
@@ -5386,52 +5484,6 @@ msgctxt "travel description"
 msgid "travel"
 msgstr "siirtoliike"
 
-
-
-### Settings added by bundled engine backend plugins. Add this manually for now. Should be removed whenever we handle it better.
-
-msgctxt "gradual_flow_enabled label"
-msgid "Gradual flow enabled"
-msgstr ""
-
-msgctxt "gradual_flow_enabled description"
-msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
-msgstr ""
-
-msgctxt "max_flow_acceleration label"
-msgid "Gradual flow max acceleration"
-msgstr ""
-
-msgctxt "max_flow_acceleration description"
-msgid "Maximum acceleration for gradual flow changes"
-msgstr ""
-
-msgctxt "layer_0_max_flow_acceleration label"
-msgid "Initial layer max flow acceleration"
-msgstr ""
-
-msgctxt "layer_0_max_flow_acceleration description"
-msgid "Minimum speed for gradual flow changes for the first layer"
-msgstr ""
-
-msgctxt "gradual_flow_discretisation_step_size label"
-msgid "Gradual flow discretisation step size"
-msgstr ""
-
-msgctxt "gradual_flow_discretisation_step_size description"
-msgid "Duration of each step in the gradual flow change"
-msgstr ""
-
-msgctxt "reset_flow_duration label"
-msgid "Reset flow duration"
-msgstr ""
-
-msgctxt "reset_flow_duration description"
-msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
-msgstr ""
-
-
-
 #~ msgctxt "machine_head_polygon description"
 #~ msgid "A 2D silhouette of the print head (fan caps excluded)."
 #~ msgstr "2D-siluetti tulostuspäästä (tuulettimen kannattimet pois lukien)"
@@ -5600,9 +5652,17 @@ msgstr ""
 #~ msgid "Distance between the printed support interface lines. This setting is calculated by the Support Interface Density, but can be adjusted separately."
 #~ msgstr "Tulostettujen tukiliittymän linjojen välinen etäisyys. Tämä asetus lasketaan tukiliittymän tiheysarvosta, mutta sitä voidaan säätää erikseen."
 
+#~ msgctxt "support_bottom_distance description"
+#~ msgid "Distance from the print to the bottom of the support."
+#~ msgstr "Etäisyys tulosteesta tuen alaosaan."
+
 #~ msgctxt "support_z_distance description"
 #~ msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. This value is rounded down to a multiple of the layer height."
 #~ msgstr "Tukirakenteen etäisyys tulosteesta ylä-/alasuunnassa. Tämä rako sallii tukien poistamisen mallin tulostuksen jälkeen. Tämä arvo pyöristetään alaspäin kerroksen korkeuden kerrannaiseksi."
+
+#~ msgctxt "support_z_distance description"
+#~ msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. This value is rounded up to a multiple of the layer height."
+#~ msgstr "Tukirakenteen etäisyys tulosteesta ylä-/alasuunnassa. Tämä rako sallii tukien poistamisen mallin tulostuksen jälkeen. Tämä arvo pyöristetään ylöspäin kerroksen korkeuden kerrannaiseksi."
 
 #~ msgctxt "wireframe_up_half_speed description"
 #~ msgid ""
@@ -6160,6 +6220,10 @@ msgstr ""
 #~ msgid "The speed for the initial layer. A lower value is advised to improve adhesion to the build plate."
 #~ msgstr "Alkukerroksen nopeus. Alhaisempi arvo on suositeltava, jotta tarttuvuus alustaan on parempi."
 
+#~ msgctxt "material_print_temperature_layer_0 description"
+#~ msgid "The temperature used for printing the first layer. Set at 0 to disable special handling of the initial layer."
+#~ msgstr "Ensimmäisen kerroksen tulostuksessa käytettävä lämpötila. Aseta arvoon 0, jos et halua käyttää alkukerroksen erikoiskäsittelyä."
+
 #~ msgctxt "material_print_temperature description"
 #~ msgid "The temperature used for printing. Set at 0 to pre-heat the printer manually."
 #~ msgstr "Tulostuksessa käytettävä lämpötila. Aseta arvoon 0 esilämmittääksesi tulostimen manuaalisesti."
@@ -6339,6 +6403,10 @@ msgstr ""
 #~ msgctxt "wireframe_enabled label"
 #~ msgid "Wire Printing"
 #~ msgstr "Rautalankatulostus"
+
+#~ msgctxt "speed_wall_0_roofing label"
+#~ msgid "Yläpinnan uloimman seinän nopeus"
+#~ msgstr "Vitesse d'impression de la paroi externe de la surface supérieure"
 
 #~ msgctxt "z_offset_taper_layers label"
 #~ msgid "Z Offset Taper Layers"

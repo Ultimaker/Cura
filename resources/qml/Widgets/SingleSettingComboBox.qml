@@ -15,6 +15,7 @@ import Cura 1.7 as Cura
 Cura.ComboBox {
     textRole: "text"
     property alias settingName: propertyProvider.key
+    property alias propertyRemoveUnusedValue: propertyProvider.removeUnusedValue
 
     // If true, all extruders will have "settingName" property updated.
     // The displayed value will be read from the extruder with index "defaultExtruderIndex" instead of the machine.
@@ -86,6 +87,10 @@ Cura.ComboBox {
             updateSetting(comboboxModel.get(currentIndex).code)
         }
 
+    }
+    function forceUpdateSettings()
+    {
+        comboboxModel.updateModel();
     }
 
     function updateSetting(value)

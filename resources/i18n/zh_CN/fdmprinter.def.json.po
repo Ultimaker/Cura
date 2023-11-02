@@ -1,16 +1,16 @@
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Uranium json setting files\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-09-12 17:04+0000\n"
+"POT-Creation-Date: 2023-10-31 19:13+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE\n"
-"Language: \n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 msgctxt "ironing_inset description"
 msgid "A distance to keep from the edges of the model. Ironing all the way to the edge of the mesh may result in a jagged edge on your print."
@@ -741,16 +741,16 @@ msgid "Distance between the printed support structure lines. This setting is cal
 msgstr "已打印支撑结构走线之间的距离。 该设置通过支撑密度计算。"
 
 msgctxt "support_bottom_distance description"
-msgid "Distance from the print to the bottom of the support."
-msgstr "从打印品到支撑底部的距离。"
+msgid "Distance from the print to the bottom of the support. Note that this is rounded up to the next layer height."
+msgstr ""
 
 msgctxt "support_top_distance description"
 msgid "Distance from the top of the support to the print."
 msgstr "从支撑顶部到打印品的距离。"
 
 msgctxt "support_z_distance description"
-msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. This value is rounded up to a multiple of the layer height."
-msgstr "支撑结构顶部/底部到打印品之间的距离。 该间隙提供了在模型打印完成后移除支撑的空隙。 该值舍入为层高的倍数。"
+msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. The topmost support layer below the model might be a fraction of regular layers."
+msgstr ""
 
 msgctxt "infill_wipe_dist description"
 msgid "Distance of a travel move inserted after every infill line, to make the infill stick to the walls better. This option is similar to infill overlap, but without extrusion and only on one end of the infill line."
@@ -778,11 +778,11 @@ msgstr "支撑结构在 X/Y 方向距打印品的距离。"
 
 msgctxt "meshfix_fluid_motion_shift_distance description"
 msgid "Distance points are shifted to smooth the path"
-msgstr ""
+msgstr "移动距离点，使路径平滑"
 
 msgctxt "meshfix_fluid_motion_small_distance description"
 msgid "Distance points are shifted to smooth the path"
-msgstr ""
+msgstr "移动距离点，使路径平滑"
 
 msgctxt "min_infill_area description"
 msgid "Don't generate areas of infill smaller than this (use skin instead)."
@@ -834,7 +834,7 @@ msgstr "启用防风罩"
 
 msgctxt "meshfix_fluid_motion_enabled label"
 msgid "Enable Fluid Motion"
-msgstr ""
+msgstr "启用流体运动"
 
 msgctxt "ironing_enabled label"
 msgid "Enable Ironing"
@@ -898,7 +898,7 @@ msgstr "启用外部渗出罩。 这将在模型周围创建一个外壳，如�
 
 msgctxt "small_skin_on_surface description"
 msgid "Enable small (up to 'Small Top/Bottom Width') regions on the topmost skinned layer (exposed to air) to be filled with walls instead of the default pattern."
-msgstr ""
+msgstr "使最顶层蒙皮图层（暴露在空气中）的小区域（最多“小顶部/底部宽度”）用墙壁填充，而不是默认图案。"
 
 msgctxt "jerk_enabled description"
 msgid "Enables adjusting the jerk of print head when the velocity in the X or Y axis changes. Increasing the jerk can reduce printing time at the cost of print quality."
@@ -934,7 +934,7 @@ msgstr "全部支撑"
 
 msgctxt "slicing_tolerance option exclusive"
 msgid "Exclusive"
-msgstr ""
+msgstr "不包含"
 
 msgctxt "experimental label"
 msgid "Experimental"
@@ -1092,6 +1092,14 @@ msgctxt "wall_0_material_flow description"
 msgid "Flow compensation on the outermost wall line."
 msgstr "最外壁走线的流量补偿。"
 
+msgctxt "wall_0_material_flow_roofing description"
+msgid "Flow compensation on the top surface outermost wall line."
+msgstr ""
+
+msgctxt "wall_x_material_flow_roofing description"
+msgid "Flow compensation on top surface wall lines for all wall lines except the outermost one."
+msgstr ""
+
 msgctxt "skin_material_flow description"
 msgid "Flow compensation on top/bottom lines."
 msgstr "顶部/底部走线的流量补偿。"
@@ -1114,15 +1122,15 @@ msgstr "流量补偿：挤出的材料量乘以此值。"
 
 msgctxt "meshfix_fluid_motion_angle label"
 msgid "Fluid Motion Angle"
-msgstr ""
+msgstr "流体运动角"
 
 msgctxt "meshfix_fluid_motion_shift_distance label"
 msgid "Fluid Motion Shift Distance"
-msgstr ""
+msgstr "流体运动移动距离"
 
 msgctxt "meshfix_fluid_motion_small_distance label"
 msgid "Fluid Motion Small Distance"
-msgstr ""
+msgstr "流体运动小距离"
 
 msgctxt "material_flush_purge_length label"
 msgid "Flush Purge Length"
@@ -1280,6 +1288,10 @@ msgctxt "machine_gcode_flavor option Griffin"
 msgid "Griffin"
 msgstr "Griffin"
 
+msgctxt "group_outer_walls label"
+msgid "Group Outer Walls"
+msgstr ""
+
 msgctxt "infill_pattern option gyroid"
 msgid "Gyroid"
 msgstr "螺旋二十四面体"
@@ -1414,7 +1426,7 @@ msgstr "如果受支撑的表面区域小于整个区域的这一百分比，则
 
 msgctxt "meshfix_fluid_motion_angle description"
 msgid "If a toolpath-segment deviates more than this angle from the general motion it is smoothed."
-msgstr ""
+msgstr "如果刀具路径段偏离一般运动的角度大于这个角度，使路径平滑。"
 
 msgctxt "bridge_enable_more_layers description"
 msgid "If enabled, the second and third layers above the air are printed using the following settings. Otherwise, those layers are printed using the normal settings."
@@ -1442,7 +1454,7 @@ msgstr "包含材料温度"
 
 msgctxt "slicing_tolerance option inclusive"
 msgid "Inclusive"
-msgstr ""
+msgstr "包含"
 
 msgctxt "infill description"
 msgid "Infill"
@@ -2444,6 +2456,10 @@ msgctxt "wall_0_wipe_dist label"
 msgid "Outer Wall Wipe Distance"
 msgstr "外壁擦嘴长度"
 
+msgctxt "group_outer_walls description"
+msgid "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped."
+msgstr ""
+
 msgctxt "inset_direction option outside_in"
 msgid "Outside To Inside"
 msgstr "从外到内"
@@ -2497,8 +2513,20 @@ msgid "Prime Tower Acceleration"
 msgstr "装填塔加速度"
 
 msgctxt "prime_tower_brim_enable label"
-msgid "Prime Tower Brim"
-msgstr "装填塔 Brim"
+msgid "Prime Tower Base"
+msgstr ""
+
+msgctxt "prime_tower_base_curve_magnitude label"
+msgid "Prime Tower Base Curve Magnitude"
+msgstr ""
+
+msgctxt "prime_tower_base_height label"
+msgid "Prime Tower Base Height"
+msgstr ""
+
+msgctxt "prime_tower_base_size label"
+msgid "Prime Tower Base Size"
+msgstr ""
 
 msgctxt "prime_tower_flow label"
 msgid "Prime Tower Flow"
@@ -2515,6 +2543,10 @@ msgstr "装填塔走线宽度"
 msgctxt "prime_tower_min_volume label"
 msgid "Prime Tower Minimum Volume"
 msgstr "装填塔最小体积"
+
+msgctxt "prime_tower_raft_base_line_spacing label"
+msgid "Prime Tower Raft Line Spacing"
+msgstr ""
 
 msgctxt "prime_tower_size label"
 msgid "Prime Tower Size"
@@ -2533,8 +2565,8 @@ msgid "Prime Tower Y Position"
 msgstr "装填塔 Y 位置"
 
 msgctxt "prime_tower_brim_enable description"
-msgid "Prime-towers might need the extra adhesion afforded by a brim even if the model doesn't. Presently can't be used with the 'Raft' adhesion-type."
-msgstr "装填塔可能需要 Brim 提供额外附着力，无论模型是否需要。目前不可与 'Raft' 附着类型配合使用。"
+msgid "Prime-towers might need the extra adhesion afforded by a brim or raft, even if the model doesn't."
+msgstr ""
 
 msgctxt "acceleration_print label"
 msgid "Print Acceleration"
@@ -3054,7 +3086,7 @@ msgstr "小型层打印温度"
 
 msgctxt "small_skin_on_surface label"
 msgid "Small Top/Bottom On Surface"
-msgstr ""
+msgstr "表面顶部/底部小区域"
 
 msgctxt "small_skin_width label"
 msgid "Small Top/Bottom Width"
@@ -3070,7 +3102,7 @@ msgstr "微小特征将按正常打印速度的百分比进行打印。缓慢打
 
 msgctxt "small_skin_width description"
 msgid "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions. Off for the topmost (air-exposed) layer by default (see 'Small Top/Bottom On Surface')."
-msgstr ""
+msgstr "顶部/底部小区域用墙壁填充，而不是默认顶部/底部图案。这有助于避免剧烈运动。最顶层（暴露在空气中）默认关闭此选项（见“表面顶部/底部小区域”）。"
 
 msgctxt "brim_smart_ordering label"
 msgid "Smart Brim"
@@ -3604,6 +3636,14 @@ msgctxt "raft_surface_acceleration description"
 msgid "The acceleration with which the top raft layers are printed."
 msgstr "打印顶部 Raft 层的加速度。"
 
+msgctxt "acceleration_wall_x_roofing description"
+msgid "The acceleration with which the top surface inner walls are printed."
+msgstr ""
+
+msgctxt "acceleration_wall_0_roofing description"
+msgid "The acceleration with which the top surface outermost walls are printed."
+msgstr ""
+
 msgctxt "acceleration_wall description"
 msgid "The acceleration with which the walls are printed."
 msgstr "打印壁的加速度。"
@@ -3743,6 +3783,10 @@ msgstr "中间 Raft 层的 Raft 走线之间的距离。 中间的间距应足�
 msgctxt "raft_surface_line_spacing description"
 msgid "The distance between the raft lines for the top raft layers. The spacing should be equal to the line width, so that the surface is solid."
 msgstr "顶部 Raft 层的 Raft 走线之间的距离。 间距应等于走线宽度，以便打造坚固表面。"
+
+msgctxt "prime_tower_raft_base_line_spacing description"
+msgid "The distance between the raft lines for the unique prime tower raft layer. Wide spacing makes for easy removal of the raft from the build plate."
+msgstr ""
 
 msgctxt "interlocking_depth description"
 msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
@@ -3940,6 +3984,10 @@ msgctxt "layer_height_0 description"
 msgid "The height of the initial layer in mm. A thicker initial layer makes adhesion to the build plate easier."
 msgstr "起始层高（以毫米为单位）。起始层越厚，与打印平台的粘着越轻松。"
 
+msgctxt "prime_tower_base_height description"
+msgid "The height of the prime tower base."
+msgstr ""
+
 msgctxt "support_bottom_stair_step_height description"
 msgid "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures. Set to zero to turn off the stair-like behaviour."
 msgstr "停留在模型上的支撑阶梯状底部的步阶高度。 较低的值会使支撑更难于移除，但过高的值可能导致不稳定的支撑结构。 设为零可以关闭阶梯状行为。"
@@ -4011,6 +4059,10 @@ msgstr "设定正常风扇速度和最大风扇速度之间阈值的层时间。
 msgctxt "retraction_amount description"
 msgid "The length of material retracted during a retraction move."
 msgstr "回抽移动期间回抽的材料长度。"
+
+msgctxt "prime_tower_base_curve_magnitude description"
+msgid "The magnitude factor used for the curve of the prime tower foot."
+msgstr ""
 
 msgctxt "machine_buildplate_type description"
 msgid "The material of the build plate installed on the printer."
@@ -4103,6 +4155,14 @@ msgstr "打印 skirt 和 brim 时的最大瞬时速度变化。"
 msgctxt "jerk_support description"
 msgid "The maximum instantaneous velocity change with which the support structure is printed."
 msgstr "打印支撑结构时的最大瞬时速度变化。"
+
+msgctxt "jerk_wall_x_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface inner walls are printed."
+msgstr ""
+
+msgctxt "jerk_wall_0_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface outermost walls are printed."
+msgstr ""
 
 msgctxt "jerk_wall description"
 msgid "The maximum instantaneous velocity change with which the walls are printed."
@@ -4488,6 +4548,14 @@ msgctxt "raft_surface_speed description"
 msgid "The speed at which the top raft layers are printed. These should be printed a bit slower, so that the nozzle can slowly smooth out adjacent surface lines."
 msgstr "打印顶部 Raft 层的速度。 这些层应以较慢的速度打印，以便喷嘴缓慢地整平临近的表面走线。"
 
+msgctxt "speed_wall_x_roofing description"
+msgid "The speed at which the top surface inner walls are printed."
+msgstr ""
+
+msgctxt "speed_wall_0_roofing description"
+msgid "The speed at which the top surface outermost wall is printed."
+msgstr ""
+
 msgctxt "speed_z_hop description"
 msgid "The speed at which the vertical Z movement is made for Z Hops. This is typically lower than the print speed since the build plate or machine's gantry is harder to move."
 msgstr "Z 垂直移动实现抬升的速度。一般小于打印速度，因为打印平台或打印机的十字轴较难移动。"
@@ -4549,8 +4617,8 @@ msgid "The temperature to which to already start cooling down just before the en
 msgstr "打印结束前开始冷却的温度。"
 
 msgctxt "material_print_temperature_layer_0 description"
-msgid "The temperature used for printing the first layer. Set at 0 to disable special handling of the initial layer."
-msgstr "用于打印第一层的温度。 设为 0 即禁用对起始层的特别处理。"
+msgid "The temperature used for printing the first layer."
+msgstr ""
 
 msgctxt "material_print_temperature description"
 msgid "The temperature used for printing."
@@ -4628,6 +4696,10 @@ msgctxt "interlocking_beam_width description"
 msgid "The width of the interlocking structure beams."
 msgstr "互锁结构梁的宽度。"
 
+msgctxt "prime_tower_base_size description"
+msgid "The width of the prime tower base."
+msgstr ""
+
 msgctxt "prime_tower_size description"
 msgid "The width of the prime tower."
 msgstr "装填塔的宽度。"
@@ -4695,6 +4767,38 @@ msgstr "顶部皮肤扩展距离"
 msgctxt "top_skin_preshrink label"
 msgid "Top Skin Removal Width"
 msgstr "顶部皮肤移除宽度"
+
+msgctxt "acceleration_wall_x_roofing label"
+msgid "Top Surface Inner Wall Acceleration"
+msgstr ""
+
+msgctxt "jerk_wall_x_roofing label"
+msgid "Top Surface Inner Wall Jerk"
+msgstr ""
+
+msgctxt "speed_wall_x_roofing label"
+msgid "Top Surface Inner Wall Speed"
+msgstr ""
+
+msgctxt "wall_x_material_flow_roofing label"
+msgid "Top Surface Inner Wall(s) Flow"
+msgstr ""
+
+msgctxt "acceleration_wall_0_roofing label"
+msgid "Top Surface Outer Wall Acceleration"
+msgstr ""
+
+msgctxt "wall_0_material_flow_roofing label"
+msgid "Top Surface Outer Wall Flow"
+msgstr ""
+
+msgctxt "jerk_wall_0_roofing label"
+msgid "Top Surface Outer Wall Jerk"
+msgstr ""
+
+msgctxt "speed_wall_0_roofing label"
+msgid "Top Surface Outer Wall Speed"
+msgstr ""
 
 msgctxt "acceleration_roofing label"
 msgid "Top Surface Skin Acceleration"
@@ -4994,7 +5098,7 @@ msgstr "在检查支撑上方或下方是否有模型时，采用指定高度的
 
 msgctxt "meshfix_fluid_motion_enabled description"
 msgid "When enabled tool paths are corrected for printers with smooth motion planners. Small movements that deviate from the general tool path direction are smoothed to improve fluid motions."
-msgstr ""
+msgstr "当启用时，对具有平滑运动规划器的打印机进行刀具路径校正。对偏离一般刀具轨迹方向的小运动进行平滑，改善流体运动。"
 
 msgctxt "infill_enable_travel_optimization description"
 msgid "When enabled, the order in which the infill lines are printed is optimized to reduce the distance travelled. The reduction in travel time achieved very much depends on the model being sliced, infill pattern, density, etc. Note that, for some models that have many small areas of infill, the time to slice the model may be greatly increased."
@@ -5018,7 +5122,7 @@ msgstr "大于零时，孔洞水平扩展会逐渐适应小孔洞（小孔洞可
 
 msgctxt "hole_xy_offset description"
 msgid "When greater than zero, the Hole Horizontal Expansion is the amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes. When this setting is enabled it can be further tuned with Hole Horizontal Expansion Max Diameter."
-msgstr ""
+msgstr "当大于零时，“孔水平膨胀”是应用于每层所有孔的偏移量。正值会增加孔的大小，负值会减少孔的大小。当此设置启用时，可以使用“孔水平膨胀最大直径”进一步细化。"
 
 msgctxt "bridge_skin_material_flow description"
 msgid "When printing bridge skin regions, the amount of material extruded is multiplied by this value."
@@ -5384,300 +5488,62 @@ msgctxt "travel description"
 msgid "travel"
 msgstr "空驶"
 
-
-
-### Settings added by bundled engine backend plugins. Add this manually for now. Should be removed whenever we handle it better.
-
-msgctxt "gradual_flow_enabled label"
-msgid "Gradual flow enabled"
-msgstr ""
-
-msgctxt "gradual_flow_enabled description"
-msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
-msgstr ""
-
-msgctxt "max_flow_acceleration label"
-msgid "Gradual flow max acceleration"
-msgstr ""
-
-msgctxt "max_flow_acceleration description"
-msgid "Maximum acceleration for gradual flow changes"
-msgstr ""
-
-msgctxt "layer_0_max_flow_acceleration label"
-msgid "Initial layer max flow acceleration"
-msgstr ""
-
-msgctxt "layer_0_max_flow_acceleration description"
-msgid "Minimum speed for gradual flow changes for the first layer"
-msgstr ""
-
-msgctxt "gradual_flow_discretisation_step_size label"
-msgid "Gradual flow discretisation step size"
-msgstr ""
-
-msgctxt "gradual_flow_discretisation_step_size description"
-msgid "Duration of each step in the gradual flow change"
-msgstr ""
-
-msgctxt "reset_flow_duration label"
-msgid "Reset flow duration"
-msgstr ""
-
-msgctxt "reset_flow_duration description"
-msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
-msgstr ""
-
-
-
-#~ msgctxt "hole_xy_offset description"
-#~ msgid "Amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes."
-#~ msgstr "应用到每一层中所有孔洞的偏移量。正数值可以补偿过大的孔洞，负数值可以补偿过小的孔洞。"
-
-#~ msgctxt "wireframe_strategy option compensate"
-#~ msgid "Compensate"
-#~ msgstr "补偿"
-
-#~ msgctxt "wireframe_top_jump description"
-#~ msgid "Creates a small knot at the top of an upward line, so that the consecutive horizontal layer has a better chance to connect to it. Only applies to Wire Printing."
-#~ msgstr "在上行走线的顶部创建一个小纽结，使连续的水平层有更好的机会与其连接。 仅应用于单线打印。"
-
-#~ msgctxt "wireframe_bottom_delay description"
-#~ msgid "Delay time after a downward move. Only applies to Wire Printing."
-#~ msgstr "向下移动后的延迟时间。 仅应用于单线打印。"
-
-#~ msgctxt "wireframe_top_delay description"
-#~ msgid "Delay time after an upward move, so that the upward line can harden. Only applies to Wire Printing."
-#~ msgstr "向上移动后的延迟时间，以便上行走线硬化。 仅应用于单线打印。"
-
-#~ msgctxt "wireframe_flat_delay description"
-#~ msgid "Delay time between two horizontal segments. Introducing such a delay can cause better adhesion to previous layers at the connection points, while too long delays cause sagging. Only applies to Wire Printing."
-#~ msgstr "两个水平部分之间的延迟时间。 引入这样的延迟可以在连接点处与先前的层产生更好的附着，而太长的延迟会引起下垂。 仅应用于单线打印。"
-
-#~ msgctxt "wireframe_nozzle_clearance description"
-#~ msgid "Distance between the nozzle and horizontally downward lines. Larger clearance results in diagonally downward lines with a less steep angle, which in turn results in less upward connections with the next layer. Only applies to Wire Printing."
-#~ msgstr "喷嘴和水平下行线之间的距离。 较大的间隙会让斜下行线角度较平缓，进而使第二层的上行连接较少。 仅应用于单线打印。"
-
-#~ msgctxt "wireframe_up_half_speed description"
-#~ msgid ""
-#~ "Distance of an upward move which is extruded with half speed.\n"
-#~ "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-#~ msgstr ""
-#~ "以半速挤出的上行移动的距离。\n"
-#~ "这会与之前的层产生更好的附着，而不会将这些层中的材料过度加热。 仅应用于单线打印。"
-
-#~ msgctxt "wireframe_fall_down description"
-#~ msgid "Distance with which the material falls down after an upward extrusion. This distance is compensated for. Only applies to Wire Printing."
-#~ msgstr "材料在向上挤出后倒塌的距离。 将对此距离进行补偿。 仅应用于单线打印。"
-
-#~ msgctxt "wireframe_drag_along description"
-#~ msgid "Distance with which the material of an upward extrusion is dragged along with the diagonally downward extrusion. This distance is compensated for. Only applies to Wire Printing."
-#~ msgstr "向上挤出材料与斜向下挤出一起拖动的距离。 将对此距离进行补偿。 仅应用于单线打印。"
-
-#~ msgctxt "wireframe_flow_connection description"
-#~ msgid "Flow compensation when going up or down. Only applies to Wire Printing."
-#~ msgstr "向上或向下时的流量补偿。 仅应用于单线打印。"
-
-#~ msgctxt "wireframe_flow_flat description"
-#~ msgid "Flow compensation when printing flat lines. Only applies to Wire Printing."
-#~ msgstr "打印平面走线时的流量补偿。 仅应用于单线打印。"
-
-#~ msgctxt "wireframe_flow description"
-#~ msgid "Flow compensation: the amount of material extruded is multiplied by this value. Only applies to Wire Printing."
-#~ msgstr "流量补偿：挤出的材料量乘以此值。 仅应用于单线打印。"
-
-#~ msgctxt "support_tree_branch_distance description"
-#~ msgid "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove."
-#~ msgstr "在支撑模型时，分支之间需要多大的间距。缩小这一间距会使树形支撑与模型之间有更多接触点，带来更好的悬垂，但会使支撑更难以拆除。"
-
-#~ msgctxt "wireframe_strategy option knot"
-#~ msgid "Knot"
-#~ msgstr "纽结"
-
-#~ msgctxt "wireframe_straight_before_down description"
-#~ msgid "Percentage of a diagonally downward line which is covered by a horizontal line piece. This can prevent sagging of the top most point of upward lines. Only applies to Wire Printing."
-#~ msgstr "水平走线部分所覆盖的斜下行走线的百分比。 这可以防止上行线最顶端点下垂。 仅应用于单线打印。"
-
-#~ msgctxt "wireframe_enabled description"
-#~ msgid "Print only the outside surface with a sparse webbed structure, printing 'in thin air'. This is realized by horizontally printing the contours of the model at given Z intervals which are connected via upward and diagonally downward lines."
-#~ msgstr "只打印一个具有稀疏网状结构的外表面，在“稀薄的空气中”打印。 这是通过在给定的 Z 间隔水平打印模型的轮廓来实现的，这些间隔通过上行线和下行斜线连接。"
-
-#~ msgctxt "support_tree_collision_resolution description"
-#~ msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
-#~ msgstr "用于计算碰撞的分辨率，目的在于避免碰撞模型。将此设置得较低将产生更准确且通常较少失败的树，但是会大幅增加切片时间。"
-
-#~ msgctxt "wireframe_strategy option retract"
-#~ msgid "Retract"
-#~ msgstr "回抽"
-
-#~ msgctxt "small_skin_width description"
-#~ msgid "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions."
-#~ msgstr "顶层/底层区域较小时，用墙体填充，而不是默认的顶层/底层图案。这样可以避免抖动。"
-
-#~ msgctxt "wireframe_printspeed description"
-#~ msgid "Speed at which the nozzle moves when extruding material. Only applies to Wire Printing."
-#~ msgstr "挤出材料时喷嘴移动的速度。 仅应用于单线打印。"
-
-#~ msgctxt "wireframe_printspeed_down description"
-#~ msgid "Speed of printing a line diagonally downward. Only applies to Wire Printing."
-#~ msgstr "打印下行斜线的速度。 仅应用于单线打印。"
-
-#~ msgctxt "wireframe_printspeed_up description"
-#~ msgid "Speed of printing a line upward 'in thin air'. Only applies to Wire Printing."
-#~ msgstr "“在稀薄空气中”向上打印走线的速度。 仅应用于单线打印。"
-
-#~ msgctxt "wireframe_printspeed_bottom description"
-#~ msgid "Speed of printing the first layer, which is the only layer touching the build platform. Only applies to Wire Printing."
-#~ msgstr "打印第一层的速度，该层是唯一接触打印平台的层。 仅应用于单线打印。"
-
-#~ msgctxt "wireframe_printspeed_flat description"
-#~ msgid "Speed of printing the horizontal contours of the model. Only applies to Wire Printing."
-#~ msgstr "打印模型水平轮廓的速度。 仅应用于单线打印。"
-
-#~ msgctxt "wireframe_strategy description"
-#~ msgid "Strategy for making sure two consecutive layers connect at each connection point. Retraction lets the upward lines harden in the right position, but may cause filament grinding. A knot can be made at the end of an upward line to heighten the chance of connecting to it and to let the line cool; however, it may require slow printing speeds. Another strategy is to compensate for the sagging of the top of an upward line; however, the lines won't always fall down as predicted."
-#~ msgstr "用于确定两个连续层在每个连接点连接的策略。 回抽可让上行走线在正确的位置硬化，但可能导致耗材磨损。 可以在上行走线的尾端进行打结以便提高与其连接的几率，并让走线冷却；但这会需要较慢的打印速度。 另一种策略是补偿上行走线顶部的下垂；然而，线条不会总是如预期的那样下降。"
-
-#~ msgctxt "support_tree_angle description"
-#~ msgid "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
-#~ msgstr "分支的角度。使用较小的角度可增加垂直度和稳定性。使用较大的角度可支撑更大范围。"
-
-#~ msgctxt "wireframe_roof_inset description"
-#~ msgid "The distance covered when making a connection from a roof outline inward. Only applies to Wire Printing."
-#~ msgstr "在从顶板轮廓向内进行连接时所覆盖的距离。 仅应用于单线打印。"
-
-#~ msgctxt "wireframe_roof_drag_along description"
-#~ msgid "The distance of the end piece of an inward line which gets dragged along when going back to the outer outline of the roof. This distance is compensated for. Only applies to Wire Printing."
-#~ msgstr "向内线的端部在返回至顶板外部轮廓时被拖行的距离。 将对此距离进行补偿。 仅应用于单线打印。"
-
-#~ msgctxt "wireframe_roof_fall_down description"
-#~ msgid "The distance which horizontal roof lines printed 'in thin air' fall down when being printed. This distance is compensated for. Only applies to Wire Printing."
-#~ msgstr "打印时，在“稀薄空气中”打印的水平顶板走线倒塌的距离。 将对此距离进行补偿。 仅应用于单线打印。"
-
-#~ msgctxt "wireframe_height description"
-#~ msgid "The height of the upward and diagonally downward lines between two horizontal parts. This determines the overall density of the net structure. Only applies to Wire Printing."
-#~ msgstr "两个水平部分之间上行线和下行斜线的高度。 这决定网结构的整体密度。 仅应用于单线打印。"
-
-#~ msgctxt "wireframe_roof_outer_delay description"
-#~ msgid "Time spent at the outer perimeters of hole which is to become a roof. Longer times can ensure a better connection. Only applies to Wire Printing."
-#~ msgstr "在成为顶板的孔的外围花费的时间。 较长的时间可确保更好的连接。 仅应用于单线打印。"
-
-#~ msgctxt "support_tree_angle label"
-#~ msgid "Tree Support Branch Angle"
-#~ msgstr "树形支撑分支角度"
-
-#~ msgctxt "support_tree_branch_diameter label"
-#~ msgid "Tree Support Branch Diameter"
-#~ msgstr "树形支撑分支直径"
-
-#~ msgctxt "support_tree_branch_diameter_angle label"
-#~ msgid "Tree Support Branch Diameter Angle"
-#~ msgstr "树形支撑分支直径角度"
-
-#~ msgctxt "support_tree_branch_distance label"
-#~ msgid "Tree Support Branch Distance"
-#~ msgstr "树形支撑分支间距"
-
-#~ msgctxt "support_tree_collision_resolution label"
-#~ msgid "Tree Support Collision Resolution"
-#~ msgstr "树形支撑碰撞分辨率"
-
-#~ msgctxt "support_tree_max_diameter label"
-#~ msgid "Tree Support Trunk Diameter"
-#~ msgstr "树形支撑主干直径"
-
-#~ msgctxt "wireframe_bottom_delay label"
-#~ msgid "WP Bottom Delay"
-#~ msgstr "WP 底部延迟"
-
-#~ msgctxt "wireframe_printspeed_bottom label"
-#~ msgid "WP Bottom Printing Speed"
-#~ msgstr "WP 底部打印速度"
-
-#~ msgctxt "wireframe_flow_connection label"
-#~ msgid "WP Connection Flow"
-#~ msgstr "WP 连接流量"
-
-#~ msgctxt "wireframe_height label"
-#~ msgid "WP Connection Height"
-#~ msgstr "WP 连接高度"
-
-#~ msgctxt "wireframe_printspeed_down label"
-#~ msgid "WP Downward Printing Speed"
-#~ msgstr "WP 下降打印速度"
-
-#~ msgctxt "wireframe_drag_along label"
-#~ msgid "WP Drag Along"
-#~ msgstr "WP 拖行"
-
-#~ msgctxt "wireframe_up_half_speed label"
-#~ msgid "WP Ease Upward"
-#~ msgstr "WP 轻松上行"
-
-#~ msgctxt "wireframe_fall_down label"
-#~ msgid "WP Fall Down"
-#~ msgstr "WP 倒塌"
-
-#~ msgctxt "wireframe_flat_delay label"
-#~ msgid "WP Flat Delay"
-#~ msgstr "WP 平面延迟"
-
-#~ msgctxt "wireframe_flow_flat label"
-#~ msgid "WP Flat Flow"
-#~ msgstr "WP 平面流量"
-
-#~ msgctxt "wireframe_flow label"
-#~ msgid "WP Flow"
-#~ msgstr "WP 打印流量"
-
-#~ msgctxt "wireframe_printspeed_flat label"
-#~ msgid "WP Horizontal Printing Speed"
-#~ msgstr "WP 水平打印速度"
-
-#~ msgctxt "wireframe_top_jump label"
-#~ msgid "WP Knot Size"
-#~ msgstr "WP 纽结大小"
-
-#~ msgctxt "wireframe_nozzle_clearance label"
-#~ msgid "WP Nozzle Clearance"
-#~ msgstr "WP 喷嘴间隙"
-
-#~ msgctxt "wireframe_roof_drag_along label"
-#~ msgid "WP Roof Drag Along"
-#~ msgstr "WP 顶板拖行"
-
-#~ msgctxt "wireframe_roof_fall_down label"
-#~ msgid "WP Roof Fall Down"
-#~ msgstr "WP 顶板倒塌"
-
-#~ msgctxt "wireframe_roof_inset label"
-#~ msgid "WP Roof Inset Distance"
-#~ msgstr "WP 顶板嵌入距离"
-
-#~ msgctxt "wireframe_roof_outer_delay label"
-#~ msgid "WP Roof Outer Delay"
-#~ msgstr "WP 顶板外部延迟"
-
-#~ msgctxt "wireframe_printspeed label"
-#~ msgid "WP Speed"
-#~ msgstr "WP 速度"
-
-#~ msgctxt "wireframe_straight_before_down label"
-#~ msgid "WP Straighten Downward Lines"
-#~ msgstr "WP 拉直下行走线"
-
-#~ msgctxt "wireframe_strategy label"
-#~ msgid "WP Strategy"
-#~ msgstr "WP 使用策略"
-
-#~ msgctxt "wireframe_top_delay label"
-#~ msgid "WP Top Delay"
-#~ msgstr "WP 顶部延迟"
-
-#~ msgctxt "wireframe_printspeed_up label"
-#~ msgid "WP Upward Printing Speed"
-#~ msgstr "WP 上升打印速度"
-
-#~ msgctxt "wireframe_enabled label"
-#~ msgid "Wire Printing"
-#~ msgstr "单线打印（以下简称 WP）"
+#~ msgctxt "support_bottom_distance description"
+#~ msgid "Distance from the print to the bottom of the support."
+#~ msgstr "从打印品到支撑底部的距离。"
+
+#~ msgctxt "support_z_distance description"
+#~ msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. This value is rounded up to a multiple of the layer height."
+#~ msgstr "支撑结构顶部/底部到打印品之间的距离。 该间隙提供了在模型打印完成后移除支撑的空隙。 该值舍入为层高的倍数。"
+
+#~ msgctxt "gradual_flow_discretisation_step_size description"
+#~ msgid "Duration of each step in the gradual flow change"
+#~ msgstr "渐变流量每一步的持续时间"
+
+#~ msgctxt "gradual_flow_enabled description"
+#~ msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
+#~ msgstr "启用渐变流量。当启用时，流量逐渐增加/降低到目标流量。这对于有鲍登管的打印机很有用，当挤出机电机启动/停止时，流量不会立即改变。"
+
+#~ msgctxt "reset_flow_duration description"
+#~ msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
+#~ msgstr "对于任何超过此值的行程移动，材料流量将重置为路径目标流量"
+
+#~ msgctxt "gradual_flow_discretisation_step_size label"
+#~ msgid "Gradual flow discretisation step size"
+#~ msgstr "渐变流量离散步长"
+
+#~ msgctxt "gradual_flow_enabled label"
+#~ msgid "Gradual flow enabled"
+#~ msgstr "渐变流量已启用"
+
+#~ msgctxt "max_flow_acceleration label"
+#~ msgid "Gradual flow max acceleration"
+#~ msgstr "渐变流量最大加速度"
+
+#~ msgctxt "layer_0_max_flow_acceleration label"
+#~ msgid "Initial layer max flow acceleration"
+#~ msgstr "初始层最大流量加速度"
+
+#~ msgctxt "max_flow_acceleration description"
+#~ msgid "Maximum acceleration for gradual flow changes"
+#~ msgstr "渐变流量的最大加速度"
+
+#~ msgctxt "layer_0_max_flow_acceleration description"
+#~ msgid "Minimum speed for gradual flow changes for the first layer"
+#~ msgstr "第一层渐变流量的最小速度"
+
+#~ msgctxt "prime_tower_brim_enable label"
+#~ msgid "Prime Tower Brim"
+#~ msgstr "装填塔 Brim"
+
+#~ msgctxt "prime_tower_brim_enable description"
+#~ msgid "Prime-towers might need the extra adhesion afforded by a brim even if the model doesn't. Presently can't be used with the 'Raft' adhesion-type."
+#~ msgstr "装填塔可能需要 Brim 提供额外附着力，无论模型是否需要。目前不可与 'Raft' 附着类型配合使用。"
+
+#~ msgctxt "reset_flow_duration label"
+#~ msgid "Reset flow duration"
+#~ msgstr "重置流量持续时间"
+
+#~ msgctxt "material_print_temperature_layer_0 description"
+#~ msgid "The temperature used for printing the first layer. Set at 0 to disable special handling of the initial layer."
+#~ msgstr "用于打印第一层的温度。 设为 0 即禁用对起始层的特别处理。"
