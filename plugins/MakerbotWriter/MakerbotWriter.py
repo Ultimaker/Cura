@@ -113,16 +113,18 @@ class MakerbotWriter(MeshWriter):
             return
         try:
             snapshot = Snapshot.isometricSnapshot(width, height)
+
+            thumbnail_buffer = QBuffer()
+            thumbnail_buffer.open(QBuffer.OpenModeFlag.WriteOnly)
+
+            snapshot.save(thumbnail_buffer, "PNG")
+
+            return thumbnail_buffer
+
         except:
             Logger.logException("w", "Failed to create snapshot image")
-            return
 
-        thumbnail_buffer = QBuffer()
-        thumbnail_buffer.open(QBuffer.OpenModeFlag.WriteOnly)
-
-        snapshot.save(thumbnail_buffer, "PNG")
-
-        return thumbnail_buffer
+        return None
 
     def write(self, stream: BufferedIOBase, nodes: List[SceneNode], mode=MeshWriter.OutputMode.BinaryMode) -> bool:
         if mode != MeshWriter.OutputMode.BinaryMode:
