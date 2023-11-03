@@ -1,8 +1,6 @@
 # Copyright (c) 2023 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from pkg_resources import working_set
-
 CuraAppName = "{{ cura_app_name }}"
 CuraAppDisplayName = "{{ cura_app_display_name  }}"
 CuraVersion = "{{ cura_version }}"
@@ -16,4 +14,4 @@ CuraDigitalFactoryURL = "{{ cura_digital_factory_url }}"
 CuraLatestURL = "{{ cura_latest_url }}"
 
 ConanInstalls = {{ conan_installs }}
-PythonInstalls = {package.key: {'version': package.version} for package in working_set}
+PythonInstalls = {{ python_installs }}
