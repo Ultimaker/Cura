@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "Makerbot Method X",
+    "name": "MakerBot Method X",
     "inherits": "ultimaker_method_base",
     "metadata":
     {
