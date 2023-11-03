@@ -13,5 +13,10 @@
     "DUAL600": "strateo3d",
     "IDEX420": "strateo3d_IDEX420",
     "IDEX420 Duplicate": "strateo3d_IDEX420_duplicate",
-    "IDEX420 Mirror": "strateo3d_IDEX420_mirror"
+    "IDEX420 Mirror": "strateo3d_IDEX420_mirror",
+    "Makerbot Method": "ultimaker_method",
+    "Makerbot Method X": "ultimaker_methodx",
+    "Makerbot Method XL": "ultimaker_methodxl",
+    "Makerbot Sketch": "ultimaker_sketch",
+    "Makerbot Sketch Large": "ultimaker_sketch_large"
 }
