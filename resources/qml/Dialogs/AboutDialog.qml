@@ -109,9 +109,10 @@ UM.Dialog
 
     Flickable
     {
+        id: scroll
         anchors.fill: parent
         ScrollBar.vertical: UM.ScrollBar {
-            visible: contentHeight > height
+            visible: scroll.contentHeight > height
         }
         contentHeight: content.height
         clip: true
