@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import cast, TYPE_CHECKING, Optional, Callable, List, Any, Dict
 
 import numpy
-from PyQt6.QtCore import QObject, QTimer, QUrl, pyqtSignal, pyqtProperty, QEvent, pyqtEnum, QCoreApplication
+from PyQt6.QtCore import QObject, QTimer, QUrl, QUrlQuery, pyqtSignal, pyqtProperty, QEvent, pyqtEnum, QCoreApplication
 from PyQt6.QtGui import QColor, QIcon
 from PyQt6.QtQml import qmlRegisterUncreatableType, qmlRegisterUncreatableMetaObject, qmlRegisterSingletonType, qmlRegisterType
 from PyQt6.QtWidgets import QMessageBox
@@ -249,6 +249,7 @@ class CuraApplication(QtApplication):
         self._additional_components = {}  # Components to add to certain areas in the interface
 
         self._open_file_queue = []  # A list of files to open (after the application has started)
+        self._open_url_queue = []  # A list of urls to open (after the application has started)
 
         self._update_platform_activity_timer = None
 
@@ -946,6 +947,8 @@ class CuraApplication(QtApplication):
             self.callLater(self._openFile, file_name)
         for file_name in self._open_file_queue:  # Open all the files that were queued up while plug-ins were loading.
             self.callLater(self._openFile, file_name)
+        for url in self._open_url_queue:
+            self.callLater(self._openUrl, url)
 
     initializationFinished = pyqtSignal()
     showAddPrintersUncancellableDialog = pyqtSignal()  # Used to show the add printers dialog with a greyed background
@@ -1155,9 +1158,15 @@ class CuraApplication(QtApplication):
 
         if event.type() == QEvent.Type.FileOpen:
             if self._plugins_loaded:
-                self._openFile(event.file())
+                if event.file():
+                    self._openFile(event.file())
+                if event.url():
+                    self._openUrl(event.url())
             else:
-                self._open_file_queue.append(event.file())
+                if event.file():
+                    self._open_file_queue.append(event.file())
+                if event.url():
+                    self._open_url_queue.append(event.url())
 
         if int(event.type()) == 20:  # 'QEvent.Type.Quit' enum isn't there, even though it should be according to docs.
             # Once we're at this point, everything should have been flushed already (past OnExitCallbackManager).
@@ -1764,8 +1773,16 @@ class CuraApplication(QtApplication):
         job._node.setMeshData(mesh_data)
 
     def _openFile(self, filename):
-        Logger.log("i", "Open file request %s", filename)
         self.readLocalFile(QUrl.fromLocalFile(filename))
+
+    def _openUrl(self, url: QUrl) -> None:
+        match url.scheme():
+            case "prusaslicer":
+                query = QUrlQuery(url.query())
+                stl_url = QUrl(query.queryItemValue("file", options=QUrl.ComponentFormattingOption.FullyDecoded))
+                Logger.log("i", "Opening PrusaSlicer file: {}".format(stl_url.toString()))
+            case "cura":
+                Logger.log("i", "Opening Cura file: {}".format(url.toString()))
 
     def _addProfileReader(self, profile_reader):
         # TODO: Add the profile reader to the list of plug-ins that can be used when importing profiles.
