@@ -291,14 +291,14 @@ jobs:
           import datetime
           from jinja2 import Template
           
-          with open(".github/workflows/release-notes.md.jinja", "r") as f:
+          with open(".github/workflows/release_notes.md.jinja", "r") as f:
               release_notes = Template(f.read())
           
           current_nightly_beta = "${{ needs.default_values.outputs.release_tag }}".split("nightly-")[-1]
           with open("release-notes.md", "w") as f:
               f.write(release_notes.render(
-                timestamp=${{ steps.filename.outputs.NIGHTLY_TIME }},
-                branch="" if ${{ needs.default_values.outputs.release_tag == 'nightly' }} else current_nightly_beta,
+                timestamp="${{ steps.filename.outputs.NIGHTLY_TIME }}",
+                branch="" if ${{ needs.default-values.outputs.release_tag == 'nightly' }} else current_nightly_beta,
                 branch_specific="" if os.getenv("GITHUB_REF") == "refs/heads/main" else f"?branch={current_nightly_beta}",
               ))
 
