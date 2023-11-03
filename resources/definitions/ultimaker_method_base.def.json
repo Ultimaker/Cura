@@ -1,11 +1,11 @@
 {
     "version": 2,
-    "name": "MakerBot Method Base Profile",
+    "name": "UltiMaker Method Base Profile",
     "inherits": "ultimaker",
     "metadata":
     {
         "visible": false,
-        "author": "Ultimaker",
+        "author": "UltiMaker",
         "manufacturer": "Ultimaker B.V.",
         "file_formats": "application/x-makerbot",
         "platform": "ultimaker_method_platform.stl",
