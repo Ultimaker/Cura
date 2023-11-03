@@ -329,7 +329,7 @@
         "machine_heated_build_volume": { "default_value": true },
         "machine_height": { "default_value": 196 },
         "machine_min_cool_heat_time_window": { "value": 15 },
-        "machine_name": { "default_value": "Makerbot Method" },
+        "machine_name": { "default_value": "UltiMaker Method" },
         "machine_nozzle_cool_down_speed": { "value": 0.8 },
         "machine_nozzle_heat_up_speed": { "value": 3.5 },
         "machine_start_gcode": { "default_value": "" },
