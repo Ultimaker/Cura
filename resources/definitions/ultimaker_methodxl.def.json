@@ -32,94 +32,41 @@
     },
     "overrides":
     {
-        "machine_depth": {
-            "default_value": 320
+        "machine_depth": { "default_value": 320 },
+        "machine_disallowed_areas":
+        {
+            "default_value": [
+                [
+                    [-204, -160],
+                    [204, -160],
+                    [204, -152.5],
+                    [-204, -152.5]
+                ],
+                [
+                    [-204, 160],
+                    [204, 160],
+                    [204, 152.5],
+                    [-204, 152.5]
+                ],
+                [
+                    [-205, -160],
+                    [-152.5, -160],
+                    [-152.5, 160],
+                    [-205, 160]
+                ],
+                [
+                    [152.5, -160],
+                    [205, -160],
+                    [205, 160],
+                    [152.5, 160]
+                ]
+            ]
         },
         "machine_heated_bed": { "default_value": true },
         "machine_height": { "default_value": 317 },
         "machine_name": { "default_value": "Makerbot Method XL" },
-        "machine_width": {
-            "default_value": 410
-        },
+        "machine_width": { "default_value": 410 },
         "material_shrinkage_percentage_z": { "resolve": "sum(extruderValues(\"material_shrinkage_percentage_z\")) / len(extruderValues(\"material_shrinkage_percentage_z\"))" },
-        "speed_travel": {
-            "value": 500
-        },
-        "machine_disallowed_areas": {
-            "default_value": [
-                [
-                    [
-                        -204,
-                        -160
-                    ],
-                    [
-                        204,
-                        -160
-                    ],
-                    [
-                        204,
-                        -152.5
-                    ],
-                    [
-                        -204,
-                        -152.5
-                    ]
-                ],
-                [
-                    [
-                        -204,
-                        160
-                    ],
-                    [
-                        204,
-                        160
-                    ],
-                    [
-                        204,
-                        152.5
-                    ],
-                    [
-                        -204,
-                        152.5
-                    ]
-                ],
-                [
-                    [
-                        -205,
-                        -160
-                    ],
-                    [
-                        -152.5,
-                        -160
-                    ],
-                    [
-                        -152.5,
-                        160
-                    ],
-                    [
-                        -205,
-                        160
-                    ]
-                ],
-                [
-                    [
-                        152.5,
-                        -160
-                    ],
-                    [
-                        205,
-                        -160
-                    ],
-                    [
-                        205,
-                        160
-                    ],
-                    [
-                        152.5,
-                        160
-                    ]
-                ]
-            ]
-        }
+        "speed_travel": { "value": 500 }
     }
 }
