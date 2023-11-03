@@ -1,11 +1,11 @@
 {
     "version": 2,
-    "name": "Ultimaker S7",
+    "name": "UltiMaker S7",
     "inherits": "ultimaker_s5",
     "metadata":
     {
         "visible": true,
-        "author": "Ultimaker",
+        "author": "UltiMaker",
         "manufacturer": "Ultimaker B.V.",
         "file_formats": "application/x-ufp;text/x-gcode",
         "platform": "ultimaker_s7_platform.obj",
