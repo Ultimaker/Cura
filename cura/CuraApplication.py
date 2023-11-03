@@ -1764,6 +1764,7 @@ class CuraApplication(QtApplication):
         job._node.setMeshData(mesh_data)
 
     def _openFile(self, filename):
+        Logger.log("i", "Open file request %s", filename)
         self.readLocalFile(QUrl.fromLocalFile(filename))
 
     def _addProfileReader(self, profile_reader):
