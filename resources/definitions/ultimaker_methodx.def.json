@@ -69,7 +69,7 @@
         "platform_offset": [
             0,
             0,
-            0
+            16
         ],
         "platform_texture": "MakerbotMethod.png",
         "preferred_material": "ultimaker_absr_175",
@@ -83,6 +83,93 @@
     },
     "overrides":
     {
-        "machine_name": { "default_value": "Makerbot Method X" }
+        "machine_depth": {
+            "default_value": 236.48
+        },
+        "machine_width": {
+            "default_value": 283.3
+        },
+        "machine_height": {
+            "default_value": 196
+        },
+        "machine_name": {
+            "default_value": "Makerbot Method X"
+        },
+        "machine_disallowed_areas": {
+            "default_value": [
+                [
+                    [
+                        -141.65,
+                        -118.11
+                    ],
+                    [
+                        141.65,
+                        -118.11
+                    ],
+                    [
+                        141.65,
+                        -79
+                    ],
+                    [
+                        -141.65,
+                        -79
+                    ]
+                ],
+                [
+                    [
+                        -141.65,
+                        118.37
+                    ],
+                    [
+                        141.65,
+                        118.37
+                    ],
+                    [
+                        141.65,
+                        111
+                    ],
+                    [
+                        -141.65,
+                        111
+                    ]
+                ],
+                [
+                    [
+                        -141.65,
+                        -118.11
+                    ],
+                    [
+                        -75,
+                        -118.11
+                    ],
+                    [
+                        -75,
+                        118.37
+                    ],
+                    [
+                        -141.65,
+                        118.37
+                    ]
+                ],
+                [
+                    [
+                        75,
+                        -118.11
+                    ],
+                    [
+                        141.65,
+                        -118.11
+                    ],
+                    [
+                        141.65,
+                        118.37
+                    ],
+                    [
+                        75,
+                        118.37
+                    ]
+                ]
+            ]
+        }
     }
 }
