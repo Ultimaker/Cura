@@ -298,7 +298,7 @@ jobs:
           with open("release-notes.md", "w") as f:
               f.write(release_notes.render(
                 timestamp="${{ steps.filename.outputs.NIGHTLY_TIME }}",
-                branch="" if ${{ needs.default-values.outputs.release_tag == 'nightly' }} else current_nightly_beta,
+                branch="" if "${{ needs.default-values.outputs.release_tag == 'nightly' }}" == 'true' else current_nightly_beta,
                 branch_specific="" if os.getenv("GITHUB_REF") == "refs/heads/main" else f"?branch={current_nightly_beta}",
               ))
 

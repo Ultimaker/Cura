@@ -1,3 +1,25 @@
+[5.6]
+
+* New features and improvements:
+- Introduced the MethodX and MethodXL printers with it's materials and the option to write to .makerbot
+- Prime tower base settings increase the stability of large prime towers; You can tune the Size, Height, and Slope to increase your prime tower sturdiness
+- Introduced the setting for Raft Line Spacing, but for the primetower
+- The Start and End gcodes now accept variables and math including the variables
+- Updated the Support Z Distance to allow for more different values, no longer only multiple layerheights
+
+* Bug fixes:
+- Fixed a crash for some linux users when trying to open the file menu
+
+* Printer definitions, profiles and materials:
+- Introduced Ender 3 V3 SE, contributed by @dim1triy
+
+* Community translations:
+- Updated Spanish translation for Lightning infill, contributed by @Pelochus
+
+* Known Issue
+- The predicted printing time for dual extrusion printjobs on the Method are deviating from the actual printing time. Printjobs will take longer than predicted for now. 
+
+
 [5.5]
 
 * Engine Plugins
