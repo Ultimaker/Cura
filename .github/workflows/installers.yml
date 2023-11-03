@@ -274,6 +274,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: create the release notes
+        shell: python
         run: |
           import os
           import datetime
