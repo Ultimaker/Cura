@@ -37,15 +37,24 @@ class Snapshot:
         return min_x, max_x, min_y, max_y
 
     @staticmethod
-    def isometricSnapshot(width: int = 300, height: int = 300) -> Optional[QImage]:
-        """Create an isometric snapshot of the scene."""
+    def isometricSnapshot(width: int = 300, height: int = 300, *, node: Optional[SceneNode] = None) -> Optional[QImage]:
+        """
+        Create an isometric snapshot of the scene.
 
-        root = Application.getInstance().getController().getScene().getRoot()
+        :param width: width of the aspect ratio default 300
+        :param height: height of the aspect ratio default 300
+        :param node: node of the scene default is the root of the scene
+        :return: None when there is no model on the build plate otherwise it will return an image
+
+        """
+
+        if node is None:
+            root = Application.getInstance().getController().getScene().getRoot()
 
         # the direction the camera is looking at to create the isometric view
         iso_view_dir = Vector(-1, -1, -1).normalized()
 
-        bounds = Snapshot.nodeBounds(root)
+        bounds = Snapshot.nodeBounds(node)
         if bounds is None:
             Logger.log("w", "There appears to be nothing to render")
             return None
@@ -93,7 +102,7 @@ class Snapshot:
 
         # Render the scene
         renderer = QtRenderer()
-        render_pass = PreviewPass(width, height)
+        render_pass = PreviewPass(width, height, root=node)
         renderer.setViewportSize(width, height)
         renderer.setWindowSize(width, height)
         render_pass.setCamera(camera)
