@@ -156,9 +156,7 @@ class CuraConan(ConanFile):
         python_installs = {}
 
         # list of python installs
-        outer = '"' if self.settings.os == "Windows" else "'"
-        inner = "'" if self.settings.os == "Windows" else '"'
-        python_ins_cmd = f"python -c {outer}import pkg_resources; print({inner};{inner}.join([(s.key+{inner},{inner}+ s.version) for s in pkg_resources.working_set])){outer}"
+        python_ins_cmd = f"python -c \"import pkg_resources; print(';'.join([(s.key+','+ s.version) for s in pkg_resources.working_set]))\""
         from six import StringIO
         buffer = StringIO()
         self.run(python_ins_cmd, run_environment= True, env = "conanrun",  output=buffer)
