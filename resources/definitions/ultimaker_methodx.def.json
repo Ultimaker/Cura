@@ -83,8 +83,6 @@
     },
     "overrides":
     {
-        "machine_name": {
-            "default_value": "UltiMaker Method X"
-        }
+        "machine_name": { "default_value": "UltiMaker Method X" }
     }
 }

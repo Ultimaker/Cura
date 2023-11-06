@@ -32,15 +32,11 @@
     },
     "overrides":
     {
-        "machine_depth": {
-            "default_value": 305
-        },
+        "machine_depth": { "default_value": 305 },
         "machine_heated_bed": { "default_value": true },
         "machine_height": { "default_value": 317 },
         "machine_name": { "default_value": "UltiMaker Method XL" },
-        "machine_width": {
-            "default_value": 305
-        },
+        "machine_width": { "default_value": 305 },
         "material_shrinkage_percentage_z": { "resolve": "sum(extruderValues(\"material_shrinkage_percentage_z\")) / len(extruderValues(\"material_shrinkage_percentage_z\"))" },
         "speed_travel": { "value": 500 }
     }
