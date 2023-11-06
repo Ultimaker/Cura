@@ -14,9 +14,9 @@
     "IDEX420": "strateo3d_IDEX420",
     "IDEX420 Duplicate": "strateo3d_IDEX420_duplicate",
     "IDEX420 Mirror": "strateo3d_IDEX420_mirror",
-    "Makerbot Method": "ultimaker_method",
-    "Makerbot Method X": "ultimaker_methodx",
-    "Makerbot Method XL": "ultimaker_methodxl",
-    "Makerbot Sketch": "ultimaker_sketch",
-    "Makerbot Sketch Large": "ultimaker_sketch_large"
+    "UltiMaker Method": "ultimaker_method",
+    "UltiMaker Method X": "ultimaker_methodx",
+    "UltiMaker Method XL": "ultimaker_methodxl",
+    "UltiMaker Sketch": "ultimaker_sketch",
+    "UltiMaker Sketch Large": "ultimaker_sketch_large"
 }
