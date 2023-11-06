@@ -7839,7 +7839,7 @@
                     "type": "float",
                     "minimum_value": "5",
                     "minimum_value_warning": "50",
-                    "maximum_value_warning": "150",
+                    "maximum_value_warning": "250",
                     "enabled": "bridge_settings_enabled",
                     "settable_per_mesh": true
                 },
@@ -7866,7 +7866,7 @@
                     "type": "float",
                     "minimum_value": "5",
                     "minimum_value_warning": "50",
-                    "maximum_value_warning": "150",
+                    "maximum_value_warning": "250",
                     "enabled": "bridge_settings_enabled",
                     "settable_per_mesh": true
                 },
