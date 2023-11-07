@@ -23,7 +23,6 @@
     {
         "gantry_height": { "value": "270" },
         "layer_height": { "value": 0.2 },
-        "line_width": { "value": "machine_nozzle_size" },
         "machine_name": { "default_value": "CoLiDo DIY 3.0 T" },
         "machine_width": { "default_value": 235 },
         "machine_depth": { "default_value": 235 },

@@ -22,7 +22,6 @@
     "overrides":
     {
         "gantry_height": { "value": "27" },
-        "line_width": { "value": "machine_nozzle_size" },
         "machine_name": { "default_value": "CoLiDo 280" },
         "machine_width": { "default_value": 280 },
         "machine_depth": { "default_value": 200 },

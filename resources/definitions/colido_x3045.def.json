@@ -27,7 +27,6 @@
         "gantry_height": { "value": "17.8" },
         "layer_height": { "value": 0.15 },
         "layer_height_0": { "value": "max(0.2, layer_height)" },
-        "line_width": { "value": "machine_nozzle_size" },
         "machine_name": { "default_value": "CoLiDo X3045" },
         "machine_width": { "default_value": 305 },
         "machine_depth": { "default_value": 305 },

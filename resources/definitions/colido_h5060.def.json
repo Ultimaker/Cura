@@ -25,7 +25,6 @@
         "gantry_height": { "value": "27" },
         "layer_height": { "value": 0.2 },
         "layer_height_0": { "value": "round(layer_height * 1.5, 2)" },
-        "line_width": { "value": "machine_nozzle_size" },
         "machine_name": { "default_value": "CoLiDo H5060" },
         "machine_width": { "default_value": 500 },
         "machine_depth": { "default_value": 500 },
