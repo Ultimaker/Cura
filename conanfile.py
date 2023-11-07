@@ -1,4 +1,5 @@
 import os
+import re
 from pathlib import Path
 
 from jinja2 import Template
@@ -153,21 +154,31 @@ class CuraConan(ConanFile):
         return conan_installs
 
     def _python_installs(self):
-        python_installs = {}
+        python_installs = { ("libcharon", "main") }  # Cheating a to keep the regex match simple (currently our only git installed pip requirement is libcharon)
+        py_req_matcher = re.compile(r"^(\S.*)==(.*?)[ \\;]", re.M)
 
-        # list of python installs
-        python_ins_cmd = f"python -c \"import pkg_resources; print(';'.join([(s.key+','+ s.version) for s in pkg_resources.working_set]))\""
-        from six import StringIO
-        buffer = StringIO()
-        self.run(python_ins_cmd, run_environment= True, env = "conanrun",  output=buffer)
+        # Get Cura her own Python installed modules (for requirements.txt and requirements-dev.txt)
+        for req in self.requirements_txts:
+            with open(os.path.join(self.source_path, req), "r") as f:
+                python_installs.update(py_req_matcher.match(f.read()))
 
-        packages = str(buffer.getvalue()).split("-----------------\n")
-        packages = packages[1].strip('\r\n').split(";")
-        for package in packages:
-            name, version = package.split(",")
-            python_installs[name] = {"version": version}
+        # Get Cura deps requirements.txt (currently only Uranium, we're also not interrested in the requirements-dev.txt for these since these are only used when setting them up as standalone projects
+        for dep_name in reversed(self.deps_user_info):
+            dep_user_info = self.deps_user_info[dep_name]
+            if len(dep_user_info.vars) == 0:
+                continue
+            pip_req_paths = [self.deps_cpp_info[dep_name].res_paths[i] for i, req_path in
+                             enumerate(self.deps_cpp_info[dep_name].resdirs) if req_path.endswith("pip_requirements")]
+            if len(pip_req_paths) != 1:
+                continue
+            pip_req_base_path = Path(pip_req_paths[0])
+            if hasattr(dep_user_info, "pip_requirements"):
+                req_txt = pip_req_base_path.joinpath(dep_user_info.pip_requirements)
+                if req_txt.exists():
+                    with open(req_txt, "r") as f:
+                        python_installs.update(py_req_matcher.match(f.read()))
 
-        return python_installs
+        return dict(python_installs)
 
     def _generate_cura_version(self, location):
         with open(os.path.join(self.recipe_folder, "CuraVersion.py.jinja"), "r") as f:
