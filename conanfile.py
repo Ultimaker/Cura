@@ -159,7 +159,7 @@ class CuraConan(ConanFile):
 
         # Get Cura her own Python installed modules (for requirements.txt and requirements-dev.txt)
         for req in self.requirements_txts:
-            with open(os.path.join(self.source_path, req), "r") as f:
+            with open(os.path.join(self.source_folder, req), "r") as f:
                 req_matches = py_req_matcher.match(f.read())
                 if req_matches:
                     python_installs = python_installs.update(req_matches)
