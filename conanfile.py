@@ -160,7 +160,9 @@ class CuraConan(ConanFile):
         # Get Cura her own Python installed modules (for requirements.txt and requirements-dev.txt)
         for req in self.requirements_txts:
             with open(os.path.join(self.source_path, req), "r") as f:
-                python_installs.update(py_req_matcher.match(f.read()))
+                req_matches = py_req_matcher.match(f.read())
+                if req_matches:
+                    python_installs.update(req_matches)
 
         # Get Cura deps requirements.txt (currently only Uranium, we're also not interrested in the requirements-dev.txt for these since these are only used when setting them up as standalone projects
         for dep_name in reversed(self.deps_user_info):
@@ -176,7 +178,9 @@ class CuraConan(ConanFile):
                 req_txt = pip_req_base_path.joinpath(dep_user_info.pip_requirements)
                 if req_txt.exists():
                     with open(req_txt, "r") as f:
-                        python_installs.update(py_req_matcher.match(f.read()))
+                        dep_req_matches = py_req_matcher.match(f.read())
+                        if dep_req_matches:
+                            python_installs.update(dep_req_matches)
 
         return dict(python_installs)
 
