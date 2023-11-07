@@ -1,5 +1,6 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+import math
 import numpy
 
 from typing import Optional, cast
@@ -185,6 +186,11 @@ class LayerPolygon:
     @property
     def types(self):
         return self._types
+
+    @property
+    def lineLengths(self):
+        return [math.sqrt(sum((b - a) ** 2 for a, b in zip(self._data[i], self._data[i + 1])))
+                for i in range(len(self._data) - 1)]
 
     @property
     def data(self):

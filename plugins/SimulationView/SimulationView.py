@@ -400,6 +400,9 @@ class SimulationView(CuraView):
     def getMaxFeedrate(self) -> float:
         return self._max_feedrate
 
+    def getSimulationTime(self) -> list:
+        return [length / feedrate for length, feedrate in zip(self._visible_lengths, self._current_feedrates)]
+
     def getMinThickness(self) -> float:
         if abs(self._min_thickness - sys.float_info.max) < 10: # Some lenience due to floating point rounding.
             return 0.0 # If it's still max-float, there are no measurements. Use 0 then.
@@ -524,8 +527,10 @@ class SimulationView(CuraView):
                     visible_indicies_with_extrusion = numpy.where(numpy.isin(polyline.types, visible_line_types_with_extrusion))[0]
                     if visible_indices.size == 0:  # No items to take maximum or minimum of.
                         continue
+                    self._visible_lengths = numpy.take(polyline.lineLengths, visible_indices)
                     visible_feedrates = numpy.take(polyline.lineFeedrates, visible_indices)
                     visible_feedrates_with_extrusion = numpy.take(polyline.lineFeedrates, visible_indicies_with_extrusion)
+                    self._current_feedrates = visible_feedrates
                     visible_linewidths = numpy.take(polyline.lineWidths, visible_indices)
                     visible_linewidths_with_extrusion = numpy.take(polyline.lineWidths, visible_indicies_with_extrusion)
                     visible_thicknesses = numpy.take(polyline.lineThicknesses, visible_indices)
