@@ -230,6 +230,10 @@ class WorkspaceDialog(QObject):
                 self._intent_name = intent_name.title()
             self.intentNameChanged.emit()
 
+        if not self._intent_name:
+            self._intent_name = intent_translations["default"]["name"]
+            self.intentNameChanged.emit()
+
     @pyqtProperty(str, notify=activeModeChanged)
     def activeMode(self) -> str:
         return self._active_mode
