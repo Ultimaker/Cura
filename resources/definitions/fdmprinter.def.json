@@ -1396,7 +1396,6 @@
                 {
                     "label": "Z Seam Relative",
                     "description": "When enabled, the z seam coordinates are relative to each part's centre. When disabled, the coordinates define an absolute position on the build plate.",
-                    "unit": "mm",
                     "type": "bool",
                     "default_value": false,
                     "enabled": "z_seam_type == 'back'",
