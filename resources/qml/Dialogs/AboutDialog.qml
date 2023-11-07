@@ -38,6 +38,8 @@ UM.Dialog
             width: Math.floor(base.width * 0.85)
             height: Math.floor(width * UM.Theme.getSize("logo").height / UM.Theme.getSize("logo").width)
             source: UM.Theme.getImage("logo")
+            sourceSize.width: width
+            sourceSize.height: height
             fillMode: Image.PreserveAspectFit
 
             anchors.centerIn: parent
@@ -107,9 +109,10 @@ UM.Dialog
 
     Flickable
     {
+        id: scroll
         anchors.fill: parent
         ScrollBar.vertical: UM.ScrollBar {
-            visible: contentHeight > height
+            visible: scroll.contentHeight > height
         }
         contentHeight: content.height
         clip: true

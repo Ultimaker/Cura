@@ -606,7 +606,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._dialog.setNumVisibleSettings(num_visible_settings)
         self._dialog.setQualityName(quality_name)
         self._dialog.setQualityType(quality_type)
-        self._dialog.setIntentName(intent_name)
+        self._dialog.setIntentName(intent_category)
         self._dialog.setNumSettingsOverriddenByQualityChanges(num_settings_overridden_by_quality_changes)
         self._dialog.setNumUserSettings(num_user_settings)
         self._dialog.setActiveMode(active_mode)

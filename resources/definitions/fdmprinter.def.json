@@ -1396,7 +1396,6 @@
                 {
                     "label": "Z Seam Relative",
                     "description": "When enabled, the z seam coordinates are relative to each part's centre. When disabled, the coordinates define an absolute position on the build plate.",
-                    "unit": "mm",
                     "type": "bool",
                     "default_value": false,
                     "enabled": "z_seam_type == 'back'",
@@ -7839,7 +7838,7 @@
                     "type": "float",
                     "minimum_value": "5",
                     "minimum_value_warning": "50",
-                    "maximum_value_warning": "150",
+                    "maximum_value_warning": "250",
                     "enabled": "bridge_settings_enabled",
                     "settable_per_mesh": true
                 },
@@ -7866,7 +7865,7 @@
                     "type": "float",
                     "minimum_value": "5",
                     "minimum_value_warning": "50",
-                    "maximum_value_warning": "150",
+                    "maximum_value_warning": "250",
                     "enabled": "bridge_settings_enabled",
                     "settable_per_mesh": true
                 },

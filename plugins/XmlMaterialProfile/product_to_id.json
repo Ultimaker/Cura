@@ -13,5 +13,10 @@
     "DUAL600": "strateo3d",
     "IDEX420": "strateo3d_IDEX420",
     "IDEX420 Duplicate": "strateo3d_IDEX420_duplicate",
-    "IDEX420 Mirror": "strateo3d_IDEX420_mirror"
+    "IDEX420 Mirror": "strateo3d_IDEX420_mirror",
+    "UltiMaker Method": "ultimaker_method",
+    "UltiMaker Method X": "ultimaker_methodx",
+    "UltiMaker Method XL": "ultimaker_methodxl",
+    "UltiMaker Sketch": "ultimaker_sketch",
+    "UltiMaker Sketch Large": "ultimaker_sketch_large"
 }
