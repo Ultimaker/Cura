@@ -742,7 +742,7 @@ msgstr "Der Abstand zwischen den gedruckten Stützstrukturlinien. Diese Einstell
 
 msgctxt "support_bottom_distance description"
 msgid "Distance from the print to the bottom of the support. Note that this is rounded up to the next layer height."
-msgstr ""
+msgstr "Abstand vom Druck zum Boden der Stütze. Beachten Sie, dass dies auf die nächste Schichthöhe aufgerundet wird."
 
 msgctxt "support_top_distance description"
 msgid "Distance from the top of the support to the print."
@@ -750,7 +750,7 @@ msgstr "Der Abstand von der Oberseite der Stützstruktur zum gedruckten Objekt."
 
 msgctxt "support_z_distance description"
 msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. The topmost support layer below the model might be a fraction of regular layers."
-msgstr ""
+msgstr "Abstand von der Ober-/Unterseite der Stützstruktur zum Druck. Diese Lücke ermöglicht es, die Stützen nach dem Drucken des Modells zu entfernen. Die oberste Stützschicht unter dem Modell könnte ein Bruchteil der normalen Schichten sein."
 
 msgctxt "infill_wipe_dist description"
 msgid "Distance of a travel move inserted after every infill line, to make the infill stick to the walls better. This option is similar to infill overlap, but without extrusion and only on one end of the infill line."
@@ -1938,7 +1938,7 @@ msgstr "Marlin (Volumetrisch)"
 
 msgctxt "material description"
 msgid "Material"
-msgstr ""
+msgstr "Material"
 
 msgctxt "material label"
 msgid "Material"
@@ -2514,19 +2514,19 @@ msgstr "Beschleunigung Einzugsturm"
 
 msgctxt "prime_tower_brim_enable label"
 msgid "Prime Tower Base"
-msgstr ""
+msgstr "Grundfläche des Prime-Turms"
 
 msgctxt "prime_tower_base_curve_magnitude label"
 msgid "Prime Tower Base Curve Magnitude"
-msgstr ""
+msgstr "Krümmungsstärke der Prime-Turm-Basis"
 
 msgctxt "prime_tower_base_height label"
 msgid "Prime Tower Base Height"
-msgstr ""
+msgstr "Höhe der Prime-Turm-Basis"
 
 msgctxt "prime_tower_base_size label"
 msgid "Prime Tower Base Size"
-msgstr ""
+msgstr "Größe der Prime-Turm-Basis"
 
 msgctxt "prime_tower_flow label"
 msgid "Prime Tower Flow"
@@ -2546,7 +2546,7 @@ msgstr "Mindestvolumen Einzugsturm"
 
 msgctxt "prime_tower_raft_base_line_spacing label"
 msgid "Prime Tower Raft Line Spacing"
-msgstr ""
+msgstr "Linienabstand des Prime-Turm-Floßes"
 
 msgctxt "prime_tower_size label"
 msgid "Prime Tower Size"
@@ -2566,7 +2566,7 @@ msgstr "Y-Position des Einzugsturms"
 
 msgctxt "prime_tower_brim_enable description"
 msgid "Prime-towers might need the extra adhesion afforded by a brim or raft, even if the model doesn't."
-msgstr ""
+msgstr "Prime-Türme benötigen möglicherweise die zusätzliche Haftung durch einen Rand oder ein Floß, selbst wenn das Modell dies nicht tut."
 
 msgctxt "acceleration_print label"
 msgid "Print Acceleration"
@@ -3786,7 +3786,7 @@ msgstr "Der Abstand zwischen den Raft-Linien der Raft-Oberflächenschichten. Der
 
 msgctxt "prime_tower_raft_base_line_spacing description"
 msgid "The distance between the raft lines for the unique prime tower raft layer. Wide spacing makes for easy removal of the raft from the build plate."
-msgstr ""
+msgstr "Der Abstand zwischen den Floßlinien für die einzigartige Prime-Turm-Floßschicht. Ein großer Abstand erleichtert das Entfernen des Floßes von der Bauplatte."
 
 msgctxt "interlocking_depth description"
 msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
@@ -3986,7 +3986,7 @@ msgstr "Die Dicke der ersten Schicht in mm. Eine dicke erste Schicht erleichtert
 
 msgctxt "prime_tower_base_height description"
 msgid "The height of the prime tower base."
-msgstr ""
+msgstr "Die Höhe der Prime-Turm-Basis."
 
 msgctxt "support_bottom_stair_step_height description"
 msgid "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures. Set to zero to turn off the stair-like behaviour."
@@ -4062,7 +4062,7 @@ msgstr "Die Länge des Materials, das während der Einzugsbewegung eingezogen wi
 
 msgctxt "prime_tower_base_curve_magnitude description"
 msgid "The magnitude factor used for the curve of the prime tower foot."
-msgstr ""
+msgstr "Der Größenfaktor, der für die Kurve des Prime-Turm-Fußes verwendet wird."
 
 msgctxt "machine_buildplate_type description"
 msgid "The material of the build plate installed on the printer."
@@ -4618,7 +4618,7 @@ msgstr "Die Temperatur, bei der das Abkühlen bereits beginnen kann, bevor der D
 
 msgctxt "material_print_temperature_layer_0 description"
 msgid "The temperature used for printing the first layer."
-msgstr ""
+msgstr "Die Temperatur, die für den Druck der ersten Schicht verwendet wird."
 
 msgctxt "material_print_temperature description"
 msgid "The temperature used for printing."
@@ -4698,7 +4698,7 @@ msgstr "Die Breite der Balken in der ineinandergreifenden Struktur."
 
 msgctxt "prime_tower_base_size description"
 msgid "The width of the prime tower base."
-msgstr ""
+msgstr "Die Breite der Prime-Turm-Basis."
 
 msgctxt "prime_tower_size description"
 msgid "The width of the prime tower."

@@ -742,7 +742,7 @@ msgstr "已打印支撑结构走线之间的距离。 该设置通过支撑密�
 
 msgctxt "support_bottom_distance description"
 msgid "Distance from the print to the bottom of the support. Note that this is rounded up to the next layer height."
-msgstr ""
+msgstr "从打印物到支撑底部的距离。注意这个会上调到下一个层高。"
 
 msgctxt "support_top_distance description"
 msgid "Distance from the top of the support to the print."
@@ -750,7 +750,7 @@ msgstr "从支撑顶部到打印品的距离。"
 
 msgctxt "support_z_distance description"
 msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. The topmost support layer below the model might be a fraction of regular layers."
-msgstr ""
+msgstr "支撑结构顶部/底部到打印物的距离。这个间隙提供了清除模型打印后支撑的空间。模型下方的最顶层支撑层可能是常规层的一小部分。"
 
 msgctxt "infill_wipe_dist description"
 msgid "Distance of a travel move inserted after every infill line, to make the infill stick to the walls better. This option is similar to infill overlap, but without extrusion and only on one end of the infill line."
@@ -2514,19 +2514,19 @@ msgstr "装填塔加速度"
 
 msgctxt "prime_tower_brim_enable label"
 msgid "Prime Tower Base"
-msgstr ""
+msgstr "底漆塔座"
 
 msgctxt "prime_tower_base_curve_magnitude label"
 msgid "Prime Tower Base Curve Magnitude"
-msgstr ""
+msgstr "底漆塔座曲率大小"
 
 msgctxt "prime_tower_base_height label"
 msgid "Prime Tower Base Height"
-msgstr ""
+msgstr "底漆塔座高度"
 
 msgctxt "prime_tower_base_size label"
 msgid "Prime Tower Base Size"
-msgstr ""
+msgstr "底漆塔座尺寸"
 
 msgctxt "prime_tower_flow label"
 msgid "Prime Tower Flow"
@@ -2546,7 +2546,7 @@ msgstr "装填塔最小体积"
 
 msgctxt "prime_tower_raft_base_line_spacing label"
 msgid "Prime Tower Raft Line Spacing"
-msgstr ""
+msgstr "底漆塔筏线间距"
 
 msgctxt "prime_tower_size label"
 msgid "Prime Tower Size"
@@ -2566,7 +2566,7 @@ msgstr "装填塔 Y 位置"
 
 msgctxt "prime_tower_brim_enable description"
 msgid "Prime-towers might need the extra adhesion afforded by a brim or raft, even if the model doesn't."
-msgstr ""
+msgstr "即使模型不需要，底漆塔也可能需要边缘或筏的额外粘附力。"
 
 msgctxt "acceleration_print label"
 msgid "Print Acceleration"
@@ -3786,7 +3786,7 @@ msgstr "顶部 Raft 层的 Raft 走线之间的距离。 间距应等于走线�
 
 msgctxt "prime_tower_raft_base_line_spacing description"
 msgid "The distance between the raft lines for the unique prime tower raft layer. Wide spacing makes for easy removal of the raft from the build plate."
-msgstr ""
+msgstr "底漆塔独有的筏层之间筏线的距离。宽间距可以轻松地将筏从打印板上移除。"
 
 msgctxt "interlocking_depth description"
 msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
@@ -3986,7 +3986,7 @@ msgstr "起始层高（以毫米为单位）。起始层越厚，与打印平台
 
 msgctxt "prime_tower_base_height description"
 msgid "The height of the prime tower base."
-msgstr ""
+msgstr "底漆塔座的高度。"
 
 msgctxt "support_bottom_stair_step_height description"
 msgid "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures. Set to zero to turn off the stair-like behaviour."
@@ -4062,7 +4062,7 @@ msgstr "回抽移动期间回抽的材料长度。"
 
 msgctxt "prime_tower_base_curve_magnitude description"
 msgid "The magnitude factor used for the curve of the prime tower foot."
-msgstr ""
+msgstr "用于底漆塔脚曲线的幅度因子。"
 
 msgctxt "machine_buildplate_type description"
 msgid "The material of the build plate installed on the printer."
@@ -4618,7 +4618,7 @@ msgstr "打印结束前开始冷却的温度。"
 
 msgctxt "material_print_temperature_layer_0 description"
 msgid "The temperature used for printing the first layer."
-msgstr ""
+msgstr "打印第一层时使用的温度。"
 
 msgctxt "material_print_temperature description"
 msgid "The temperature used for printing."
@@ -4698,7 +4698,7 @@ msgstr "互锁结构梁的宽度。"
 
 msgctxt "prime_tower_base_size description"
 msgid "The width of the prime tower base."
-msgstr ""
+msgstr "底漆塔座的宽度。"
 
 msgctxt "prime_tower_size description"
 msgid "The width of the prime tower."

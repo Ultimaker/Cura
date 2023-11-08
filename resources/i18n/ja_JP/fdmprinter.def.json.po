@@ -742,7 +742,7 @@ msgstr "印刷されたサポート材の間隔。この設定は、サポート
 
 msgctxt "support_bottom_distance description"
 msgid "Distance from the print to the bottom of the support. Note that this is rounded up to the next layer height."
-msgstr ""
+msgstr "プリントからサポートの底までの距離。これは次のレイヤーの高さに切り上げられることに注意してください。"
 
 msgctxt "support_top_distance description"
 msgid "Distance from the top of the support to the print."
@@ -750,7 +750,7 @@ msgstr "サポートの上部から印刷物までの距離。"
 
 msgctxt "support_z_distance description"
 msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. The topmost support layer below the model might be a fraction of regular layers."
-msgstr ""
+msgstr "サポート構造の上部/下部からプリントまでの距離です。このギャップは、モデル印刷後にサポートを取り除くためのクリアランスを提供します。モデルの下にある最上層のサポート層は、通常のレイヤーの一部分かもしれません。"
 
 msgctxt "infill_wipe_dist description"
 msgid "Distance of a travel move inserted after every infill line, to make the infill stick to the walls better. This option is similar to infill overlap, but without extrusion and only on one end of the infill line."
@@ -2514,19 +2514,19 @@ msgstr "プライムタワー加速度"
 
 msgctxt "prime_tower_brim_enable label"
 msgid "Prime Tower Base"
-msgstr ""
+msgstr "プライムタワーベース"
 
 msgctxt "prime_tower_base_curve_magnitude label"
 msgid "Prime Tower Base Curve Magnitude"
-msgstr ""
+msgstr "プライムタワーベースカーブの大きさ"
 
 msgctxt "prime_tower_base_height label"
 msgid "Prime Tower Base Height"
-msgstr ""
+msgstr "プライムタワーベースの高さ"
 
 msgctxt "prime_tower_base_size label"
 msgid "Prime Tower Base Size"
-msgstr ""
+msgstr "プライムタワーベースのサイズ"
 
 msgctxt "prime_tower_flow label"
 msgid "Prime Tower Flow"
@@ -2546,7 +2546,7 @@ msgstr "プライムタワー最小容積"
 
 msgctxt "prime_tower_raft_base_line_spacing label"
 msgid "Prime Tower Raft Line Spacing"
-msgstr ""
+msgstr "プライムタワーラフトライン間隔"
 
 msgctxt "prime_tower_size label"
 msgid "Prime Tower Size"
@@ -2566,7 +2566,7 @@ msgstr "プライムタワーY位置"
 
 msgctxt "prime_tower_brim_enable description"
 msgid "Prime-towers might need the extra adhesion afforded by a brim or raft, even if the model doesn't."
-msgstr ""
+msgstr "プライムタワーはモデルでは不要でも、ブリムやラフトによる追加の接着が必要かもしれません。"
 
 msgctxt "acceleration_print label"
 msgid "Print Acceleration"
@@ -3790,7 +3790,7 @@ msgstr "上のラフト層とラフト線の間の距離。間隔は線の幅と
 
 msgctxt "prime_tower_raft_base_line_spacing description"
 msgid "The distance between the raft lines for the unique prime tower raft layer. Wide spacing makes for easy removal of the raft from the build plate."
-msgstr ""
+msgstr "プライムタワーラフト層の独自のラフトライン間の距離です。間隔が広いと、ラフトをビルドプレートから簡単に取り除くことができます。"
 
 msgctxt "interlocking_depth description"
 msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
@@ -3990,7 +3990,7 @@ msgstr "初期レイヤーの高さ（mm）。厚い初期層はビルドプレ�
 
 msgctxt "prime_tower_base_height description"
 msgid "The height of the prime tower base."
-msgstr ""
+msgstr "プライムタワーベースの高さです。"
 
 msgctxt "support_bottom_stair_step_height description"
 msgid "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures. Set to zero to turn off the stair-like behaviour."
@@ -4066,7 +4066,7 @@ msgstr "引き戻されるマテリアルの長さ。"
 
 msgctxt "prime_tower_base_curve_magnitude description"
 msgid "The magnitude factor used for the curve of the prime tower foot."
-msgstr ""
+msgstr "プライムタワーの足のカーブに使用される倍率係数です。"
 
 msgctxt "machine_buildplate_type description"
 msgid "The material of the build plate installed on the printer."
@@ -4622,7 +4622,7 @@ msgstr "印刷終了直前に冷却を開始する温度。"
 
 msgctxt "material_print_temperature_layer_0 description"
 msgid "The temperature used for printing the first layer."
-msgstr ""
+msgstr "最初の層を印刷するために使用される温度です。"
 
 msgctxt "material_print_temperature description"
 msgid "The temperature used for printing."
@@ -4702,7 +4702,7 @@ msgstr "インターロック構造ビームの幅。"
 
 msgctxt "prime_tower_base_size description"
 msgid "The width of the prime tower base."
-msgstr ""
+msgstr "プライムタワーベースの幅です。"
 
 msgctxt "prime_tower_size description"
 msgid "The width of the prime tower."
