@@ -403,7 +403,7 @@ class SimulationView(CuraView):
         return self._max_feedrate
 
     def getSimulationTime(self) -> list:
-        return [length / feedrate for length, feedrate in zip(self._visible_lengths[self._current_layer_num], self._current_feedrates[self._current_layer_num])]
+        return self._visible_lengths[self._current_layer_num] / self._current_feedrates[self._current_layer_num]
 
     def getMinThickness(self) -> float:
         if abs(self._min_thickness - sys.float_info.max) < 10: # Some lenience due to floating point rounding.

@@ -189,8 +189,8 @@ class LayerPolygon:
 
     @property
     def lineLengths(self):
-        return [math.sqrt(sum((b - a) ** 2 for a, b in zip(self._data[i], self._data[i + 1])))
-                for i in range(len(self._data) - 1)]
+        data_array = numpy.array(self._data)
+        return numpy.linalg.norm(data_array[1:] - data_array[:-1], axis=1)
 
     @property
     def data(self):

@@ -136,7 +136,7 @@ Item
     Timer
     {
         id: simulationTimer
-        interval: parseFloat(UM.SimulationView.getSimulationTime[pathNumber]).toFixed(2) //10  //dont change
+        interval: parseFloat(UM.SimulationView.getSimulationTime[pathNumber]).toFixed(2)
         running: false
         repeat: true
         property int pathNumber : 0
