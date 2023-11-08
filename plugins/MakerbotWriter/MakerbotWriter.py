@@ -51,9 +51,9 @@ class MakerbotWriter(MeshWriter):
     ]
     _META_VERSION = "3.0.0"
     _PRINT_NAME_MAP = {
-        "Makerbot Method": "fire_e",
-        "Makerbot Method X": "lava_f",
-        "Makerbot Method XL": "magma_10",
+        "UltiMaker Method": "fire_e",
+        "UltiMaker Method X": "lava_f",
+        "UltiMaker Method XL": "magma_10",
     }
     _EXTRUDER_NAME_MAP = {
         "1XA": "mk14_hot",
