@@ -489,20 +489,21 @@ class BuildVolume(SceneNode):
         if not self._disallowed_areas:
             return None
 
+        bounding_box = Polygon(numpy.array([[min_w, min_d], [min_w, max_d], [max_w, max_d], [max_w, min_d]], numpy.float32))
+
         mb = MeshBuilder()
         color = self._disallowed_area_color
         for polygon in self._disallowed_areas:
-            points = polygon.getPoints()
-            if len(points) == 0:
+            intersection = polygon.intersectionConvexHulls(bounding_box)
+
+            points = intersection.getPoints()[::-1]
+            if len(points) < 3:
                 continue
 
-            first = Vector(self._clamp(points[0][0], min_w, max_w), disallowed_area_height,
-                           self._clamp(points[0][1], min_d, max_d))
-            previous_point = Vector(self._clamp(points[0][0], min_w, max_w), disallowed_area_height,
-                                    self._clamp(points[0][1], min_d, max_d))
-            for point in points:
-                new_point = Vector(self._clamp(point[0], min_w, max_w), disallowed_area_height,
-                                   self._clamp(point[1], min_d, max_d))
+            first = Vector(points[0][0], disallowed_area_height, points[0][1])
+            previous_point = Vector(points[1][0], disallowed_area_height, points[1][1])
+            for point in points[2:]:
+                new_point = Vector(point[0], disallowed_area_height, point[1])
                 mb.addFace(first, previous_point, new_point, color=color)
                 previous_point = new_point
 
