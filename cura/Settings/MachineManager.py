@@ -1700,6 +1700,16 @@ class MachineManager(QObject):
             else:  # No intent had the correct category.
                 extruder.intent = empty_intent_container
 
+    @pyqtSlot()
+    def resetIntents(self) -> None:
+        """Reset the intent category of the current printer.
+        """
+        global_stack = self._application.getGlobalContainerStack()
+        if global_stack is None:
+            return
+        for extruder in global_stack.extruderList:
+            extruder.intent = empty_intent_container
+
     def activeQualityGroup(self) -> Optional["QualityGroup"]:
         """Get the currently activated quality group.
 

@@ -6,6 +6,7 @@ import sys
 import tempfile
 import time
 import platform
+from pathlib import Path
 from typing import cast, TYPE_CHECKING, Optional, Callable, List, Any, Dict
 
 import numpy
@@ -269,6 +270,9 @@ class CuraApplication(QtApplication):
         CentralFileStorage.setIsEnterprise(ApplicationMetadata.IsEnterpriseVersion)
         Resources.setIsEnterprise(ApplicationMetadata.IsEnterpriseVersion)
 
+        self._conan_installs = ApplicationMetadata.CONAN_INSTALLS
+        self._python_installs = ApplicationMetadata.PYTHON_INSTALLS
+
     @pyqtProperty(str, constant=True)
     def ultimakerCloudApiRootUrl(self) -> str:
         return UltimakerCloudConstants.CuraCloudAPIRoot
@@ -363,6 +367,10 @@ class CuraApplication(QtApplication):
 
         Resources.addSecureSearchPath(os.path.join(self._app_install_dir, "share", "cura", "resources"))
         if not hasattr(sys, "frozen"):
+            cura_data_root = os.environ.get('CURA_DATA_ROOT', None)
+            if cura_data_root:
+                Resources.addSearchPath(str(Path(cura_data_root).joinpath("resources")))
+
             Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "resources"))
 
             # local Conan cache
@@ -851,11 +859,8 @@ class CuraApplication(QtApplication):
 
         self._log_hardware_info()
 
-        if len(ApplicationMetadata.DEPENDENCY_INFO) > 0:
-            Logger.debug("Using Conan managed dependencies: " + ", ".join(
-                [dep["recipe"]["id"] for dep in ApplicationMetadata.DEPENDENCY_INFO["installed"] if dep["recipe"]["version"] != "latest"]))
-        else:
-            Logger.warning("Could not find conan_install_info.json")
+        Logger.debug("Using conan dependencies: {}", str(self.conanInstalls))
+        Logger.debug("Using python dependencies: {}", str(self.pythonInstalls))
 
         Logger.log("i", "Initializing machine error checker")
         self._machine_error_checker = MachineErrorChecker(self)
@@ -1550,15 +1555,14 @@ class CuraApplication(QtApplication):
                     Logger.log("w", "Unable to reload data because we don't have a filename.")
 
         for file_name, nodes in objects_in_filename.items():
-            for node in nodes:
-                file_path = os.path.normpath(os.path.dirname(file_name))
-                job = ReadMeshJob(file_name, add_to_recent_files = file_path != tempfile.gettempdir())  # Don't add temp files to the recent files list
-                job._node = node  # type: ignore
-                job.finished.connect(self._reloadMeshFinished)
-                if has_merged_nodes:
-                    job.finished.connect(self.updateOriginOfMergedMeshes)
-
-                job.start()
+            file_path = os.path.normpath(os.path.dirname(file_name))
+            job = ReadMeshJob(file_name,
+                              add_to_recent_files=file_path != tempfile.gettempdir())  # Don't add temp files to the recent files list
+            job._nodes = nodes  # type: ignore
+            job.finished.connect(self._reloadMeshFinished)
+            if has_merged_nodes:
+                job.finished.connect(self.updateOriginOfMergedMeshes)
+            job.start()
 
     @pyqtSlot("QStringList")
     def setExpandedCategories(self, categories: List[str]) -> None:
@@ -1730,9 +1734,10 @@ class CuraApplication(QtApplication):
 
     def _reloadMeshFinished(self, job) -> None:
         """
-        Function called whenever a ReadMeshJob finishes in the background. It reloads a specific node object in the
+        Function called when ReadMeshJob finishes reloading a file in the background, then update node objects in the
         scene from its source file. The function gets all the nodes that exist in the file through the job result, and
-        then finds the scene node that it wants to refresh by its object id. Each job refreshes only one node.
+        then finds the scene nodes that need to be refreshed by their name. Each job refreshes all nodes of a file.
+        Nodes that are not present in the updated file are kept in the scene.
 
         :param job: The :py:class:`Uranium.UM.ReadMeshJob.ReadMeshJob` running in the background that reads all the
         meshes in a file
@@ -1742,21 +1747,37 @@ class CuraApplication(QtApplication):
         if len(job_result) == 0:
             Logger.log("e", "Reloading the mesh failed.")
             return
-        object_found = False
-        mesh_data = None
+        renamed_nodes = {} # type: Dict[str, int]
         # Find the node to be refreshed based on its id
         for job_result_node in job_result:
-            if job_result_node.getId() == job._node.getId():
-                mesh_data = job_result_node.getMeshData()
-                object_found = True
-                break
-        if not object_found:
-            Logger.warning("The object with id {} no longer exists! Keeping the old version in the scene.".format(job_result_node.getId()))
-            return
-        if not mesh_data:
-            Logger.log("w", "Could not find a mesh in reloaded node.")
-            return
-        job._node.setMeshData(mesh_data)
+            mesh_data = job_result_node.getMeshData()
+            if not mesh_data:
+                Logger.log("w", "Could not find a mesh in reloaded node.")
+                continue
+
+            # Solves issues with object naming
+            result_node_name = job_result_node.getName()
+            if not result_node_name:
+                result_node_name = os.path.basename(mesh_data.getFileName())
+            if result_node_name in renamed_nodes:  # objects may get renamed by ObjectsModel._renameNodes() when loaded
+                renamed_nodes[result_node_name] += 1
+                result_node_name = "{0}({1})".format(result_node_name, renamed_nodes[result_node_name])
+            else:
+                renamed_nodes[job_result_node.getName()] = 0
+
+            # Find the matching scene node to replace
+            scene_node = None
+            for replaced_node in job._nodes:
+                if replaced_node.getName() == result_node_name:
+                    scene_node = replaced_node
+                    break
+
+            if scene_node:
+                scene_node.setMeshData(mesh_data)
+            else:
+                # Current node is a new one in the file, or it's name has changed
+                # TODO: Load this mesh into the scene. Also alter the "_reloadJobFinished" action in UM.Scene
+                Logger.log("w", "Could not find matching node for object '{0}' in the scene.".format(result_node_name))
 
     def _openFile(self, filename):
         self.readLocalFile(QUrl.fromLocalFile(filename))
@@ -1943,7 +1964,8 @@ class CuraApplication(QtApplication):
                     node.scale(original_node.getScale())
 
             node.setSelectable(True)
-            node.setName(os.path.basename(file_name))
+            if not node.getName():
+                node.setName(os.path.basename(file_name))
             self.getBuildVolume().checkBoundsAndUpdate(node)
 
             is_non_sliceable = "." + file_extension in self._non_sliceable_extensions
@@ -2130,3 +2152,11 @@ class CuraApplication(QtApplication):
     @pyqtProperty(bool, constant=True)
     def isEnterprise(self) -> bool:
         return ApplicationMetadata.IsEnterpriseVersion
+
+    @pyqtProperty("QVariant", constant=True)
+    def conanInstalls(self) -> Dict[str, Dict[str, str]]:
+        return self._conan_installs
+
+    @pyqtProperty("QVariant", constant=True)
+    def pythonInstalls(self) -> Dict[str, Dict[str, str]]:
+        return self._python_installs
