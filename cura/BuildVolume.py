@@ -494,7 +494,7 @@ class BuildVolume(SceneNode):
         mb = MeshBuilder()
         color = self._disallowed_area_color
         for polygon in self._disallowed_areas:
-            intersection = polygon.intersection(bounding_box)
+            intersection = polygon.intersectionConvexHulls(bounding_box)
             points = numpy.fliplr(intersection.getPoints())
             if len(points) < 3:
                 continue
