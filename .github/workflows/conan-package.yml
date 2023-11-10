@@ -119,7 +119,7 @@ jobs:
           conan config install https://github.com/Ultimaker/conan-config.git -a "-b runner/${{ runner.os }}/${{ runner.arch }}"
 
       - name: Create the Packages
-        run: conan create . ${{ needs.conan-recipe-version.outputs.recipe_id_full }} --build=missing --update -o ${{ needs.conan-recipe-version.outputs.project_name }}:devtools=True -c tools.build:skip_test=True
+        run: conan create . ${{ needs.conan-recipe-version.outputs.recipe_id_full }} --build=missing --update -o ${{ needs.conan-recipe-version.outputs.project_name }}:devtools=True -o ${{ needs.conan-recipe-version.outputs.project_name }}:enable_i18n=True -c tools.build:skip_test=True
 
       - name: Create the latest alias
         if: always()
