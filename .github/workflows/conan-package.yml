@@ -63,7 +63,7 @@ jobs:
     permissions:
       contents: read
 
-    uses: ultimaker/cura/.github/workflows/conan-recipe-version.yml@main
+    uses: ultimaker/cura-workflows/.github/workflows/conan-recipe-version.yml@CURA-10831
     with:
       project_name: cura
 
