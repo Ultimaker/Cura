@@ -319,6 +319,10 @@ class CuraConan(ConanFile):
             self.requires(req)
         for req in self.conan_data["requirements_internal"]:
             self.requires(req)
+        self.requires("cpython/3.10.4")
+        self.requires("boost/1.82.0")
+        self.requires("fmt/9.0.0")
+        self.requires("zlib/1.2.13")
 
     def build_requirements(self):
         if self.options.get_safe("enable_i18n", False):
