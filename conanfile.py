@@ -318,6 +318,8 @@ class CuraConan(ConanFile):
                 continue
             self.requires(req)
         for req in self.conan_data["requirements_internal"]:
+            if not self.options.internal and "fdm_materials" in req:
+                continue
             self.requires(req)
         self.requires("cpython/3.10.4")
         self.requires("boost/1.82.0")
@@ -495,6 +497,7 @@ echo "CURA_APP_NAME={{ cura_app_name }}" >> ${{ env_prefix }}GITHUB_ENV
         del self.info.options.cloud_api_version
         del self.info.options.display_name
         del self.info.options.cura_debug_mode
+        self.options.rm_safe("i18n")
 
         # TODO: Use the hash of requirements.txt and requirements-ultimaker.txt, Because changing these will actually result in a different
         #  Cura. This is needed because the requirements.txt aren't managed by Conan and therefor not resolved in the package_id. This isn't
