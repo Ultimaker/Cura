@@ -65,7 +65,7 @@
                 "machine_extruder_end_code_duration":
                 {
                     "default_value": 0,
-                    "description": "Duration it takes to execute the end g-code when switching away from this extruder.",
+                    "description": "The time it takes to execute the end g-code, when switching away from this extruder.",
                     "label": "Extruder End G-Code Duration",
                     "minimum_value": "0",
                     "settable_globally": false,
@@ -123,7 +123,7 @@
                 "machine_extruder_start_code_duration":
                 {
                     "default_value": 0,
-                    "description": "Duration it takes to execute the start g-code to when switching away from this extruder.",
+                    "description": "The time it'll take to execute the start g-code, when switching to this extruder.",
                     "label": "Extruder Start G-Code Duration",
                     "minimum_value": "0",
                     "settable_globally": false,
