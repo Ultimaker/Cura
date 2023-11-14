@@ -2514,19 +2514,19 @@ msgstr "Acceleratie Primepijler"
 
 msgctxt "prime_tower_brim_enable label"
 msgid "Prime Tower Base"
-msgstr "Basis van de Prime Tower"
+msgstr "Basis van de Primepijler"
 
 msgctxt "prime_tower_base_curve_magnitude label"
 msgid "Prime Tower Base Curve Magnitude"
-msgstr "Krachtmagnitude van de basiscurve van de Prime Tower"
+msgstr "Krachtmagnitude van de basiscurve van de Primepijler"
 
 msgctxt "prime_tower_base_height label"
 msgid "Prime Tower Base Height"
-msgstr "Hoogte van de basis van de Prime Tower"
+msgstr "Hoogte van de basis van de Primepijler"
 
 msgctxt "prime_tower_base_size label"
 msgid "Prime Tower Base Size"
-msgstr "Grootte van de basis van de Prime Tower"
+msgstr "Grootte van de basis van de Primepijler"
 
 msgctxt "prime_tower_flow label"
 msgid "Prime Tower Flow"
@@ -2546,7 +2546,7 @@ msgstr "Minimumvolume primepijler"
 
 msgctxt "prime_tower_raft_base_line_spacing label"
 msgid "Prime Tower Raft Line Spacing"
-msgstr "Lijnafstand van het vlot van de Prime Tower"
+msgstr "Lijnafstand van het vlot van de Primepijler"
 
 msgctxt "prime_tower_size label"
 msgid "Prime Tower Size"
