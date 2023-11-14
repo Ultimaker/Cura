@@ -1259,7 +1259,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 available_intent_category_list = IntentManager.getInstance().currentAvailableIntentCategories()
                 if self._intent_category_to_apply is not None and self._intent_category_to_apply in available_intent_category_list:
                     machine_manager.setIntentByCategory(self._intent_category_to_apply)
-
+                else:
+                    # if no intent is provided, reset to the default (balanced) intent
+                    machine_manager.resetIntents()
         # Notify everything/one that is to notify about changes.
         global_stack.containersChanged.emit(global_stack.getTop())
 

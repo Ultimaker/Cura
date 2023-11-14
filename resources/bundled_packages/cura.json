@@ -305,6 +305,23 @@
             }
         }
     },
+    "MakerbotWriter": {
+        "package_info": {
+            "package_id": "MakerbotWriter",
+            "package_type": "plugin",
+            "display_name": "Makerbot Printfile Writer",
+            "description": "Provides support for writing MakerBot Format Packages.",
+            "package_version": "1.0.1",
+            "sdk_version": "8.5.0",
+            "website": "https://ultimaker.com",
+            "author": {
+                "author_id": "UltimakerPackages",
+                "display_name": "UltiMaker",
+                "email": "plugins@ultimaker.com",
+                "website": "https://ultimaker.com"
+            }
+        }
+    },
     "ModelChecker": {
         "package_info": {
             "package_id": "ModelChecker",

@@ -86,6 +86,7 @@ pyinstaller:
     hiddenimports:
         - "pySavitar"
         - "pyArcus"
+        - "pyDulcificum"
         - "pynest2d"
         - "PyQt6"
         - "PyQt6.QtNetwork"

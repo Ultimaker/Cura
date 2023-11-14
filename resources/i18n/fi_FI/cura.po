@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-20 14:03+0000\n"
+"POT-Creation-Date: 2023-10-31 19:13+0100\n"
 "PO-Revision-Date: 2022-07-15 10:53+0200\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: Finnish\n"
@@ -548,6 +548,10 @@ msgctxt "@action:inmenu menubar:edit"
 msgid "Arrange All Models in a grid"
 msgstr ""
 
+msgctxt "@action:inmenu menubar:edit"
+msgid "Arrange Selection"
+msgstr "Järjestä valinta"
+
 msgctxt "@label:button"
 msgid "Ask a question"
 msgstr ""
@@ -611,6 +615,10 @@ msgstr ""
 msgctxt "@info:title"
 msgid "Backups"
 msgstr ""
+
+msgctxt "@label"
+msgid "Balanced"
+msgstr "Tasapainotettu"
 
 msgctxt "@action:label"
 msgid "Base (mm)"
@@ -996,6 +1004,10 @@ msgctxt "@info:error"
 msgid "Could not interpret the server's response."
 msgstr ""
 
+msgctxt "@error:load"
+msgid "Could not load GCodeWriter plugin. Try to re-enable the plugin."
+msgstr ""
+
 msgctxt "@info:error"
 msgid "Could not reach Marketplace."
 msgstr ""
@@ -1237,10 +1249,6 @@ msgid "Decline and remove from account"
 msgstr ""
 
 msgctxt "@info:No intent profile selected"
-msgid "Default"
-msgstr ""
-
-msgctxt "@label"
 msgid "Default"
 msgstr ""
 
@@ -2331,6 +2339,22 @@ msgctxt "@info:generic"
 msgid "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."
 msgstr "Varmista, että G-code on tulostimelle ja sen tulostusasetuksille soveltuva, ennen kuin lähetät tiedoston siihen. G-coden esitys ei välttämättä ole tarkka."
 
+msgctxt "@item:inlistbox"
+msgid "Makerbot Printfile"
+msgstr ""
+
+msgctxt "name"
+msgid "Makerbot Printfile Writer"
+msgstr ""
+
+msgctxt "@error"
+msgid "MakerbotWriter could not save to the designated path."
+msgstr ""
+
+msgctxt "@error:not supported"
+msgid "MakerbotWriter does not support text mode."
+msgstr ""
+
 msgctxt "@action:inmenu"
 msgid "Manage Materials..."
 msgstr "Hallitse materiaaleja..."
@@ -3409,6 +3433,10 @@ msgid "Provides support for writing 3MF files."
 msgstr "Tukee 3MF-tiedostojen kirjoittamista."
 
 msgctxt "description"
+msgid "Provides support for writing MakerBot Format Packages."
+msgstr ""
+
+msgctxt "description"
 msgid "Provides support for writing Ultimaker Format Packages."
 msgstr ""
 
@@ -4290,6 +4318,10 @@ msgstr[1] ""
 msgctxt "@error:file_size"
 msgid "The backup exceeds the maximum file size."
 msgstr ""
+
+msgctxt "@text"
+msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
+msgstr "Tasapainotettu profiili on suunniteltu tasapainottamaan tuottavuutta, pinnanlaatua, mekaanisia ominaisuuksia ja dimensionaalista tarkkuutta."
 
 msgctxt "@info:tooltip"
 msgid "The base height from the build plate in millimeters."
@@ -5502,10 +5534,6 @@ msgstr ""
 msgctxt "@info:generic"
 msgid "{} plugins failed to download"
 msgstr ""
-
-#~ msgctxt "@action:inmenu menubar:edit"
-#~ msgid "Arrange Selection"
-#~ msgstr "Järjestä valinta"
 
 #~ msgctxt "@label"
 #~ msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards."
