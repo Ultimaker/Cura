@@ -458,7 +458,7 @@ msgstr "Температура для объема печати"
 
 msgctxt "prime_tower_brim_enable description"
 msgid "By enabling this setting, your prime-tower will get a brim, even if the model doesn't. If you want a sturdier base for a high tower, you can increase the base height."
-msgstr ""
+msgstr "Активируя эту настройку, ваша башня подготовки получит бортик, даже если модель его не требует. Если вам нужна более устойчивая основа для высокой башни, вы можете увеличить высоту основания."
 
 msgctxt "center_object label"
 msgid "Center Object"
@@ -2530,7 +2530,7 @@ msgstr "Размер основания башни подготовки"
 
 msgctxt "prime_tower_base_curve_magnitude label"
 msgid "Prime Tower Base Slope"
-msgstr ""
+msgstr "Наклон основания башни подготовки"
 
 msgctxt "prime_tower_flow label"
 msgid "Prime Tower Flow"
@@ -3986,7 +3986,7 @@ msgstr "Высота первого слоя в миллиметрах. Боле
 
 msgctxt "prime_tower_base_height description"
 msgid "The height of the prime tower base. Increasing this value will result in a more sturdy prime tower because the base will be wider. If this setting is too low, the prime tower will not have a sturdy base."
-msgstr ""
+msgstr "Высота основания башни подготовки. Увеличение этого значения приведет к созданию более устойчивой башни подготовки, так как основание будет шире. Если это значение слишком низкое, основание башни подготовки не будет достаточно устойчивым."
 
 msgctxt "support_bottom_stair_step_height description"
 msgid "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures. Set to zero to turn off the stair-like behaviour."
@@ -4062,7 +4062,7 @@ msgstr "Длина нити материала, которая будет изв
 
 msgctxt "prime_tower_base_curve_magnitude description"
 msgid "The magnitude factor used for the slope of the prime tower base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
-msgstr ""
+msgstr "Множитель, используемый для наклона основания башни подготовки. Если увеличить это значение, основание станет более узким. Если уменьшить - основание станет толще."
 
 msgctxt "machine_buildplate_type description"
 msgid "The material of the build plate installed on the printer."
@@ -4698,7 +4698,7 @@ msgstr "Ширина балок взаимосвязанной конструк�
 
 msgctxt "prime_tower_base_size description"
 msgid "The width of the prime tower brim/base. A larger base enhances adhesion to the build plate, but also reduces the effective print area."
-msgstr ""
+msgstr "Ширина бортика/основания башни подготовки. Большее основание улучшает адгезию к платформе для печати, но также уменьшает эффективную площадь печати."
 
 msgctxt "prime_tower_size description"
 msgid "The width of the prime tower."

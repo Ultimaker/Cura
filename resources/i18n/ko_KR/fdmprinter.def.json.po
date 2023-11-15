@@ -458,7 +458,7 @@ msgstr "빌드 볼륨 온도"
 
 msgctxt "prime_tower_brim_enable description"
 msgid "By enabling this setting, your prime-tower will get a brim, even if the model doesn't. If you want a sturdier base for a high tower, you can increase the base height."
-msgstr ""
+msgstr "이 설정을 활성화하면 모델에 브림이 없더라도 프라임 타워에는 브림이 생성됩니다. 높은 타워의 튼튼한 베이스가 필요하다면 베이스 높이를 늘릴 수 있습니다."
 
 msgctxt "center_object label"
 msgid "Center Object"
@@ -2530,7 +2530,7 @@ msgstr "프라임 타워 베이스 크기"
 
 msgctxt "prime_tower_base_curve_magnitude label"
 msgid "Prime Tower Base Slope"
-msgstr ""
+msgstr "프라임 타워 베이스 경사"
 
 msgctxt "prime_tower_flow label"
 msgid "Prime Tower Flow"
@@ -3986,7 +3986,7 @@ msgstr "첫번째 레이어의 높이 (mm)입니다. 첫번째 레이어를 두�
 
 msgctxt "prime_tower_base_height description"
 msgid "The height of the prime tower base. Increasing this value will result in a more sturdy prime tower because the base will be wider. If this setting is too low, the prime tower will not have a sturdy base."
-msgstr ""
+msgstr "프라임 타워 베이스의 높이입니다. 이 값을 늘리면 베이스가 넓어져 프라임 타워가 더 튼튼해집니다. 이 설정이 너무 낮으면 프라임 타워에 튼튼한 베이스가 형성되지 않습니다."
 
 msgctxt "support_bottom_stair_step_height description"
 msgid "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures. Set to zero to turn off the stair-like behaviour."
@@ -4062,7 +4062,7 @@ msgstr "리트렉션 이동 중에 수축 된 재료의 길이입니다."
 
 msgctxt "prime_tower_base_curve_magnitude description"
 msgid "The magnitude factor used for the slope of the prime tower base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
-msgstr ""
+msgstr "프라임 타워 베이스의 경사에 사용되는 크기 계수입니다. 이 값을 늘리면 베이스가 더 얇아집니다. 줄이면 베이스가 더 두꺼워집니다."
 
 msgctxt "machine_buildplate_type description"
 msgid "The material of the build plate installed on the printer."
@@ -4698,7 +4698,7 @@ msgstr "연동 구조 빔의 너비입니다."
 
 msgctxt "prime_tower_base_size description"
 msgid "The width of the prime tower brim/base. A larger base enhances adhesion to the build plate, but also reduces the effective print area."
-msgstr ""
+msgstr "프라임 타워 브림/베이스의 폭입니다. 베이스가 크면 빌드 플레이트에 대한 접착력이 향상되지만, 실제 인쇄 영역은 줄어듭니다."
 
 msgctxt "prime_tower_size description"
 msgid "The width of the prime tower."

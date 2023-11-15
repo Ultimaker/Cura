@@ -458,7 +458,7 @@ msgstr "打印体积温度"
 
 msgctxt "prime_tower_brim_enable description"
 msgid "By enabling this setting, your prime-tower will get a brim, even if the model doesn't. If you want a sturdier base for a high tower, you can increase the base height."
-msgstr ""
+msgstr "启用此设置将为您的 prime tower 添加一个边缘，即使您的模型中原本没有。如果您希望高塔有更坚固的基座，可以增加底座高度。"
 
 msgctxt "center_object label"
 msgid "Center Object"
@@ -2530,7 +2530,7 @@ msgstr "底漆塔座尺寸"
 
 msgctxt "prime_tower_base_curve_magnitude label"
 msgid "Prime Tower Base Slope"
-msgstr ""
+msgstr "Prime Tower 底座斜度"
 
 msgctxt "prime_tower_flow label"
 msgid "Prime Tower Flow"
@@ -3986,7 +3986,7 @@ msgstr "起始层高（以毫米为单位）。起始层越厚，与打印平台
 
 msgctxt "prime_tower_base_height description"
 msgid "The height of the prime tower base. Increasing this value will result in a more sturdy prime tower because the base will be wider. If this setting is too low, the prime tower will not have a sturdy base."
-msgstr ""
+msgstr "Prime tower 底座的高度。增加这个值将使 prime tower 更加坚固，因为底座会更宽。如果这个设置过低，prime tower 将没有坚固的底座。"
 
 msgctxt "support_bottom_stair_step_height description"
 msgid "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures. Set to zero to turn off the stair-like behaviour."
@@ -4062,7 +4062,7 @@ msgstr "回抽移动期间回抽的材料长度。"
 
 msgctxt "prime_tower_base_curve_magnitude description"
 msgid "The magnitude factor used for the slope of the prime tower base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
-msgstr ""
+msgstr "用于 prime tower 底座斜度的幅度因子。如果您增加这个值，底座会变得更细。如果减小它，底座会变得更厚。"
 
 msgctxt "machine_buildplate_type description"
 msgid "The material of the build plate installed on the printer."
@@ -4698,7 +4698,7 @@ msgstr "互锁结构梁的宽度。"
 
 msgctxt "prime_tower_base_size description"
 msgid "The width of the prime tower brim/base. A larger base enhances adhesion to the build plate, but also reduces the effective print area."
-msgstr ""
+msgstr "Prime tower 边缘/底座的宽度。更大的底座可以增强对打印板的粘附力，但也会减少有效打印区域。"
 
 msgctxt "prime_tower_size description"
 msgid "The width of the prime tower."

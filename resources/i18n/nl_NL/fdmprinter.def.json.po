@@ -458,7 +458,7 @@ msgstr "Temperatuur werkvolume"
 
 msgctxt "prime_tower_brim_enable description"
 msgid "By enabling this setting, your prime-tower will get a brim, even if the model doesn't. If you want a sturdier base for a high tower, you can increase the base height."
-msgstr ""
+msgstr "Door deze instelling in te schakelen, krijgt uw prime toren een brim, zelfs als het model dat niet heeft. Als u een stevigere basis wilt voor een hoge toren, kunt u de basis hoogte verhogen."
 
 msgctxt "center_object label"
 msgid "Center Object"
@@ -2530,7 +2530,7 @@ msgstr "Grootte van de basis van de Primepijler"
 
 msgctxt "prime_tower_base_curve_magnitude label"
 msgid "Prime Tower Base Slope"
-msgstr ""
+msgstr "Basis hellingshoek van de Prime Toren"
 
 msgctxt "prime_tower_flow label"
 msgid "Prime Tower Flow"
@@ -3986,7 +3986,7 @@ msgstr "De hoogte van de eerste laag in mm. Met een dikkere eerste laag hecht he
 
 msgctxt "prime_tower_base_height description"
 msgid "The height of the prime tower base. Increasing this value will result in a more sturdy prime tower because the base will be wider. If this setting is too low, the prime tower will not have a sturdy base."
-msgstr ""
+msgstr "De hoogte van de basis van de prime toren. Het verhogen van deze waarde resulteert in een stevigere prime toren omdat de basis breder zal zijn. Als deze instelling te laag is, zal de prime toren geen stevige basis hebben."
 
 msgctxt "support_bottom_stair_step_height description"
 msgid "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures. Set to zero to turn off the stair-like behaviour."
@@ -4062,7 +4062,7 @@ msgstr "De lengte waarover het materiaal wordt ingetrokken tijdens een intrekbew
 
 msgctxt "prime_tower_base_curve_magnitude description"
 msgid "The magnitude factor used for the slope of the prime tower base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
-msgstr ""
+msgstr "De groottefactor die gebruikt wordt voor de helling van de basis van de prime toren. Als u deze waarde verhoogt, wordt de basis slanker. Als u het verlaagt, wordt de basis dikker."
 
 msgctxt "machine_buildplate_type description"
 msgid "The material of the build plate installed on the printer."
@@ -4698,7 +4698,7 @@ msgstr "De breedte van de in elkaar grijpende structuurbalken."
 
 msgctxt "prime_tower_base_size description"
 msgid "The width of the prime tower brim/base. A larger base enhances adhesion to the build plate, but also reduces the effective print area."
-msgstr ""
+msgstr "De breedte van de brim/basis van de prime toren. Een grotere basis verbetert de hechting aan het bouwplateau, maar vermindert ook het effectieve printgebied."
 
 msgctxt "prime_tower_size description"
 msgid "The width of the prime tower."

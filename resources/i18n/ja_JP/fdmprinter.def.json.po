@@ -458,7 +458,7 @@ msgstr "造形温度"
 
 msgctxt "prime_tower_brim_enable description"
 msgid "By enabling this setting, your prime-tower will get a brim, even if the model doesn't. If you want a sturdier base for a high tower, you can increase the base height."
-msgstr ""
+msgstr "この設定を有効にすると、モデルにはない場合でもプライムタワーにブリムが付きます。高いタワーのためにより頑丈なベースが必要な場合は、ベースの高さを増やすことができます。"
 
 msgctxt "center_object label"
 msgid "Center Object"
@@ -2530,7 +2530,7 @@ msgstr "プライムタワーベースのサイズ"
 
 msgctxt "prime_tower_base_curve_magnitude label"
 msgid "Prime Tower Base Slope"
-msgstr ""
+msgstr "プライムタワーベースの傾斜"
 
 msgctxt "prime_tower_flow label"
 msgid "Prime Tower Flow"
@@ -3990,7 +3990,7 @@ msgstr "初期レイヤーの高さ（mm）。厚い初期層はビルドプレ�
 
 msgctxt "prime_tower_base_height description"
 msgid "The height of the prime tower base. Increasing this value will result in a more sturdy prime tower because the base will be wider. If this setting is too low, the prime tower will not have a sturdy base."
-msgstr ""
+msgstr "プライムタワーベースの高さです。この値を増やすと、ベースが広くなるためプライムタワーがより頑丈になります。この設定が低すぎると、プライムタワーは頑丈なベースを持たなくなります。"
 
 msgctxt "support_bottom_stair_step_height description"
 msgid "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures. Set to zero to turn off the stair-like behaviour."
@@ -4066,7 +4066,7 @@ msgstr "引き戻されるマテリアルの長さ。"
 
 msgctxt "prime_tower_base_curve_magnitude description"
 msgid "The magnitude factor used for the slope of the prime tower base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
-msgstr ""
+msgstr "プライムタワーベースの傾斜に使用される倍率係数です。この値を増やすと、ベースが細くなります。減らすと、ベースが厚くなります。"
 
 msgctxt "machine_buildplate_type description"
 msgid "The material of the build plate installed on the printer."
@@ -4702,7 +4702,7 @@ msgstr "インターロック構造ビームの幅。"
 
 msgctxt "prime_tower_base_size description"
 msgid "The width of the prime tower brim/base. A larger base enhances adhesion to the build plate, but also reduces the effective print area."
-msgstr ""
+msgstr "プライムタワーブリム/ベースの幅。ベースを大きくするとビルドプレートへの接着が強化されますが、有効な印刷エリアも減少します。"
 
 msgctxt "prime_tower_size description"
 msgid "The width of the prime tower."

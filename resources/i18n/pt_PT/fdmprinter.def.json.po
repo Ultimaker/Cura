@@ -458,7 +458,7 @@ msgstr "Temperatura do volume de construção"
 
 msgctxt "prime_tower_brim_enable description"
 msgid "By enabling this setting, your prime-tower will get a brim, even if the model doesn't. If you want a sturdier base for a high tower, you can increase the base height."
-msgstr ""
+msgstr "Ao ativar esta configuração, sua torre de primagem terá uma aba, mesmo que o modelo não tenha. Se você deseja uma base mais robusta para uma torre alta, pode aumentar a altura da base."
 
 msgctxt "center_object label"
 msgid "Center Object"
@@ -2530,7 +2530,7 @@ msgstr "Tamanho da Base da Torre de Primagem"
 
 msgctxt "prime_tower_base_curve_magnitude label"
 msgid "Prime Tower Base Slope"
-msgstr ""
+msgstr "Inclinação da Base da Torre de Primagem"
 
 msgctxt "prime_tower_flow label"
 msgid "Prime Tower Flow"
@@ -3986,7 +3986,7 @@ msgstr "A espessura da camada inicial em milímetros. Uma camada inicial mais es
 
 msgctxt "prime_tower_base_height description"
 msgid "The height of the prime tower base. Increasing this value will result in a more sturdy prime tower because the base will be wider. If this setting is too low, the prime tower will not have a sturdy base."
-msgstr ""
+msgstr "A altura da base da torre de primagem. Aumentar esse valor resultará em uma torre de primagem mais robusta, pois a base será mais larga. Se esta configuração for muito baixa, a torre de primagem não terá uma base sólida."
 
 msgctxt "support_bottom_stair_step_height description"
 msgid "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures. Set to zero to turn off the stair-like behaviour."
@@ -4062,7 +4062,7 @@ msgstr "O comprimento do material retraído durante um movimento de retração."
 
 msgctxt "prime_tower_base_curve_magnitude description"
 msgid "The magnitude factor used for the slope of the prime tower base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
-msgstr ""
+msgstr "O fator de magnitude usado para a inclinação da base da torre de primagem. Se você aumentar este valor, a base ficará mais fina. Se diminuir, a base ficará mais espessa."
 
 msgctxt "machine_buildplate_type description"
 msgid "The material of the build plate installed on the printer."
@@ -4698,7 +4698,7 @@ msgstr "A largura das vigas da estrutura de interligação."
 
 msgctxt "prime_tower_base_size description"
 msgid "The width of the prime tower brim/base. A larger base enhances adhesion to the build plate, but also reduces the effective print area."
-msgstr ""
+msgstr "A largura da aba/base da torre de primagem. Uma base maior melhora a aderência à placa de construção, mas também reduz a área efetiva de impressão."
 
 msgctxt "prime_tower_size description"
 msgid "The width of the prime tower."
