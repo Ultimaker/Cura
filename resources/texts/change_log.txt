@@ -1,10 +1,10 @@
 [5.6]
 
 * New features and improvements:
-- Introduced the MethodX and MethodXL printers with it's materials and the option to write to .makerbot
+- Introduced the MethodX and MethodXL printers with their materials and the option to write to .makerbot
 - Prime tower base settings increase the stability of large prime towers; You can tune the Size, Height, and Slope to increase your prime tower sturdiness
 - Introduced the setting for Raft Line Spacing, but for the primetower
-- The Start and End gcodes now accept variables and math including the variables
+- The Start and End gcodes now accept variables, and math including those variables
 - Updated the Support Z Distance to allow for more different values, no longer only multiple layerheights
 
 * Bug fixes:
