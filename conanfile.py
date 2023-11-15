@@ -50,7 +50,7 @@ class CuraConan(ConanFile):
 
     def set_version(self):
         if not self.version:
-            self.version = "5.6.0-beta.1"
+            self.version = "5.6.0-beta.2"
 
     @property
     def _pycharm_targets(self):
