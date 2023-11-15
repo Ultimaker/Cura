@@ -420,7 +420,7 @@
         "switch_extruder_retraction_speeds": { "value": "retraction_speed" },
         "top_bottom_thickness": { "value": "5*layer_height" },
         "travel_avoid_distance": { "value": "3 if extruders_enabled_count > 1 else machine_nozzle_tip_outer_diameter / 2 * 1.5" },
-        "travel_avoid_supports": { "value": true },
+        "travel_avoid_other_parts": { "value": false },
         "wall_0_inset": { "value": 0 },
         "wall_0_material_flow": { "value": "material_flow" },
         "wall_0_wipe_dist": { "value": 0 },
