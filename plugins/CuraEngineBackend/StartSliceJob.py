@@ -6,7 +6,7 @@ import numpy
 from string import Formatter
 from enum import IntEnum
 import time
-from typing import Any, cast, Dict, List, Optional, Set
+from typing import Any, cast, Dict, List, Optional, Set, Tuple
 import re
 import pyArcus as Arcus  # For typing.
 from PyQt6.QtCore import QCoreApplication
@@ -67,6 +67,14 @@ class GcodeStartEndFormatter(Formatter):
         super().__init__()
         self._default_extruder_nr: int = default_extruder_nr
         self._additional_per_extruder_settings: Optional[Dict[str, Dict[str, any]]] = additional_per_extruder_settings
+
+    def get_field(self, field_name, args: [str], kwargs: dict) -> Tuple[str, str]:
+        # get_field method parses all fields in the format-string and parses them individually to the get_value method.
+        # e.g. for a string "Hello {foo.bar}" would the complete field "foo.bar" would be passed to get_field, and then
+        # the individual parts "foo" and "bar" would be passed to get_value. This poses a problem for us, because  want
+        # to parse the entire field as a single expression. To solve this, we override the get_field method and return
+        # the entire field as the expression.
+        return self.get_value(field_name, args, kwargs), field_name
 
     def get_value(self, expression: str, args: [str], kwargs: dict) -> str:
 
