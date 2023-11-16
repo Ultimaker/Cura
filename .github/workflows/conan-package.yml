@@ -1,27 +1,6 @@
----
 name: conan-package
 
-# Exports the recipe, sources and binaries for Mac, Windows and Linux and upload these to the server such that these can
-# be used downstream.
-#
-# It should run on pushes against main or CURA-* branches, but it will only create the binaries for main and release branches
-
 on:
-  workflow_dispatch:
-    inputs:
-      create_binaries_windows:
-        required: true
-        default: false
-        description: 'create binaries Windows'
-      create_binaries_linux:
-        required: true
-        default: false
-        description: 'create binaries Linux'
-      create_binaries_macos:
-        required: true
-        default: false
-        description: 'create binaries Macos'
-
   push:
     paths:
       - 'plugins/**'
