@@ -317,10 +317,11 @@ class CuraConan(ConanFile):
             if self.options.internal and "fdm_materials" in req:
                 continue
             self.requires(req)
-        for req in self.conan_data["requirements_internal"]:
-            if not self.options.internal and "fdm_materials" in req:
-                continue
-            self.requires(req)
+        if self.options.internal:
+            for req in self.conan_data["requirements_internal"]:
+                if "fdm_materials" in req:
+                    continue
+                self.requires(req)
         self.requires("cpython/3.10.4")
         self.requires("boost/1.82.0")
         self.requires("fmt/9.0.0")
