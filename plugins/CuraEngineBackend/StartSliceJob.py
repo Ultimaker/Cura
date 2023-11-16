@@ -69,6 +69,14 @@ class GcodeStartEndFormatter(Formatter):
         self._additional_per_extruder_settings: Optional[Dict[str, Dict[str, any]]] = additional_per_extruder_settings
 
     def get_value(self, expression: str, args: [str], kwargs: dict) -> str:
+
+        # The following variables are not settings, but only become available after slicing.
+        # when these variables are encountered, we return them as-is. They are replaced later
+        # when the actual values are known.
+        post_slice_data_variables = ["filament_cost", "print_time", "filament_amount", "filament_weight", "jobname"]
+        if expression in post_slice_data_variables:
+            return f"{{{expression}}}"
+
         extruder_nr = self._default_extruder_nr
 
         # The settings may specify a specific extruder to use. This is done by
@@ -101,6 +109,9 @@ class GcodeStartEndFormatter(Formatter):
 
         setting_function = SettingFunction(expression)
         value = setting_function(container_stack, additional_variables=additional_variables)
+
+        print("value", value)
+        print("expression", expression)
 
         return value
 
