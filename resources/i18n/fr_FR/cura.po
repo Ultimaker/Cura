@@ -556,7 +556,7 @@ msgstr "Organiser tous les modèles sur une grille"
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "Arrange Selection"
-msgstr ""
+msgstr "Organiser la sélection"
 
 msgctxt "@label:button"
 msgid "Ask a question"
@@ -1012,7 +1012,7 @@ msgstr "Impossible d'interpréter la réponse du serveur."
 
 msgctxt "@error:load"
 msgid "Could not load GCodeWriter plugin. Try to re-enable the plugin."
-msgstr ""
+msgstr "Impossible de charger le plugin GCodeWriter. Essayez de réactiver le plugin."
 
 msgctxt "@info:error"
 msgid "Could not reach Marketplace."
@@ -2353,19 +2353,19 @@ msgstr "Assurez-vous que le g-code est adapté à votre imprimante et à la conf
 
 msgctxt "@item:inlistbox"
 msgid "Makerbot Printfile"
-msgstr ""
+msgstr "Fichier d'impression Makerbot"
 
 msgctxt "name"
 msgid "Makerbot Printfile Writer"
-msgstr ""
+msgstr "Écrivain de fichier d'impression Makerbot"
 
 msgctxt "@error"
 msgid "MakerbotWriter could not save to the designated path."
-msgstr ""
+msgstr "MakerbotWriter n'a pas pu sauvegarder dans le chemin désigné."
 
 msgctxt "@error:not supported"
 msgid "MakerbotWriter does not support text mode."
-msgstr ""
+msgstr "MakerbotWriter ne prend pas en charge le mode texte."
 
 msgctxt "@action:inmenu"
 msgid "Manage Materials..."
@@ -3017,7 +3017,7 @@ msgstr "Veuillez fournir un nom pour ce profil."
 
 msgctxt "@info"
 msgid "Please provide a new name."
-msgstr ""
+msgstr "Veuillez fournir un nouveau nom."
 
 msgctxt "@text"
 msgid "Please read and agree with the plugin licence."
@@ -3454,7 +3454,7 @@ msgstr "Permet l'écriture de fichiers 3MF."
 
 msgctxt "description"
 msgid "Provides support for writing MakerBot Format Packages."
-msgstr ""
+msgstr "Fournit un support pour l'écriture de paquets de format MakerBot."
 
 msgctxt "description"
 msgid "Provides support for writing Ultimaker Format Packages."
@@ -3591,7 +3591,7 @@ msgstr "Renommer"
 
 msgctxt "@title:window"
 msgid "Rename"
-msgstr ""
+msgstr "Renommer"
 
 msgctxt "@title:window"
 msgid "Rename Profile"
