@@ -18,10 +18,11 @@ class UltimakerCloudScope(DefaultUserAgentScope):
     Also add the user agent headers (see DefaultUserAgentScope).
     """
 
-    def __init__(self, application: "CuraApplication"):
+    def __init__(self, application: "CuraApplication", token_prefix: str = ''):
         super().__init__(application)
         api = application.getCuraAPI()
         self._account = api.account  # type: Account
+        self._token_prefix = token_prefix
 
     def requestHook(self, request: QNetworkRequest):
         super().requestHook(request)
@@ -31,6 +32,6 @@ class UltimakerCloudScope(DefaultUserAgentScope):
             return
 
         header_dict = {
-            "Authorization": "Bearer {}".format(token)
+            "Authorization": "Bearer {}{}".format(self._token_prefix, token)
         }
         self.addHeaders(request, header_dict)

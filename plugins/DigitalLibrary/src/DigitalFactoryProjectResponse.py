@@ -4,7 +4,7 @@
 from datetime import datetime
 from typing import Optional, List, Dict, Any
 
-from .BaseModel import BaseModel
+from cura.UltimakerCloud.BaseModel import BaseModel
 from .DigitalFactoryFileResponse import DIGITAL_FACTORY_RESPONSE_DATETIME_FORMAT
 
 from UM.i18n import i18nCatalog

@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 # Model that represents the request to upload a file to a DF Library project
-from .BaseModel import BaseModel
+from cura.UltimakerCloud.BaseModel import BaseModel
 
 
 class DFLibraryFileUploadRequest(BaseModel):

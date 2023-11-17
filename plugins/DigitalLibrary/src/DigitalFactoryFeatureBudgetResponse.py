@@ -1,7 +1,7 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from .BaseModel import BaseModel
+from cura.UltimakerCloud.BaseModel import BaseModel
 from typing import Optional
 
 

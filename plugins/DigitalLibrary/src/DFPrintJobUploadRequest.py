@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import Optional
 
-from .BaseModel import BaseModel
+from cura.UltimakerCloud.BaseModel import BaseModel
 
 
 # Model that represents the request to upload a print job to the cloud

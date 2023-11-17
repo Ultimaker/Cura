@@ -3,7 +3,7 @@
 from datetime import datetime
 from typing import Optional
 
-from .BaseModel import BaseModel
+from cura.UltimakerCloud.BaseModel import BaseModel
 
 DIGITAL_FACTORY_RESPONSE_DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S.%fZ"
 
