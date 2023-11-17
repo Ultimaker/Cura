@@ -118,8 +118,6 @@ class GcodeStartEndFormatter(Formatter):
         setting_function = SettingFunction(expression)
         value = setting_function(container_stack, additional_variables=additional_variables)
 
-        print("value", value)
-        print("expression", expression)
 
         return value
 
