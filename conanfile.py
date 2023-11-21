@@ -306,6 +306,8 @@ class CuraConan(ConanFile):
         self.options["boost"].header_only = True
         if self.settings.os == "Linux":
             self.options["curaengine_grpc_definitions"].shared = True
+        if self.conf.get("user.curaengine:sentry_url", "", check_type = str) != "":
+            self.options["curaengine"].enable_sentry = True
 
     def validate(self):
         version = self.conf_info.get("user.cura:version", default = self.version, check_type = str)
