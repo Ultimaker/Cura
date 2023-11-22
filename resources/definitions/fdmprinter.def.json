@@ -76,6 +76,13 @@
                     "type": "str",
                     "enabled": false
                 },
+                "material_type": {
+                    "label": "Material Type",
+                    "description": "The type of material used.",
+                    "default_value": "",
+                    "type": "str",
+                    "enabled": false
+                },
                 "material_diameter":
                 {
                     "label": "Diameter",
