@@ -47,7 +47,7 @@
         "infill_material_flow": { "value": "(1.95-infill_sparse_density / 100 if infill_sparse_density > 95 else 1) * material_flow" },
         "infill_overlap": { "value": "0 if infill_sparse_density > 80 else 10" },
         "inset_direction": { "value": "'outside_in'" },
-        "interlocking_enable": { "resolve": "(extruders_enabled_count > 1) and not any(extruderValues('material_is_support_material')) and extruderValue(0, 'default_material_print_temperature') != extruderValue(1, 'default_material_print_temperature')" },
+        "interlocking_enable": { "resolve": "(extruders_enabled_count > 1) and not any(extruderValues('material_is_support_material')) and extruderValue(0, 'material_type') != extruderValue(1, 'material_type')" },
         "jerk_infill": { "minimum_value_warning": 20 },
         "jerk_prime_tower": { "minimum_value_warning": 20 },
         "jerk_print":
