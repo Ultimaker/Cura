@@ -29,7 +29,6 @@
     },
     "overrides":
     {
-        
         "acceleration_print": { "default_value": 1000 },
         "acceleration_travel": { "value": 1000 },
         "adhesion_type": { "default_value": "brim" },
