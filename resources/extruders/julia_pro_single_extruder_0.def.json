@@ -1,0 +1,21 @@
+{
+    "id": "julia_pro_single_extruder_0",
+    "version": 2,
+    "name": "Extruder",
+    "inherits": "fdmextruder",
+    "metadata": {
+        "machine": "julia_pro_single",
+        "position": "0"
+    },
+
+    "overrides": {
+        "extruder_nr": {
+            "default_value": 0
+        },
+        "machine_nozzle_offset_x": { "default_value": 0.0 },
+        "machine_nozzle_offset_y": { "default_value": 0.0 },
+        "material_diameter": { "default_value": 1.75 },
+        "machine_extruder_start_code": {"default_value":";WIPE\nG91\nG1 X -20 F3000\nG1 X40\nG1 X-20\nG90\n"},
+        "machine_extruder_end_code": {"default_value":";WIPE\nG91\nG1 X -20 F3000\nG1 X40\nG1 X-20\nG90\n"}
+    }
+}

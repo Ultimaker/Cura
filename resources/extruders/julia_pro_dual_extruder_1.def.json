@@ -1,0 +1,29 @@
+{
+    "id": "julia_pro_dual_extruder_1",
+    "version": 2,
+    "name": "Extruder 1",
+    "inherits": "fdmextruder",
+    "metadata": {
+        "machine": "julia_pro_dual",
+        "position": "1"
+    },
+
+    "overrides": {
+        "extruder_nr": {
+            "default_value": 1,
+            "maximum_value": "1"
+        },
+        "machine_nozzle_offset_x": { "default_value": 0.0 },
+        "machine_nozzle_offset_y": { "default_value": 0.0 },
+        "material_diameter": { "default_value": 1.75 },
+        "machine_extruder_start_code": {"default_value":";WIPE\nG91\nG1 Z-0.5\nG1 X -20 F3000\nG1 X40\nG1 X-20\nG1 Z0.5\nG90\n"},
+        "machine_extruder_end_code": {"default_value":";WIPE\nG91\nG1 Z-0.5\nG1 X -20 F3000\nG1 X40\nG1 X-20\nG1 Z0.5\nG90\n"},
+        "machine_extruder_start_pos_abs": { "default_value": true },
+        "machine_extruder_start_pos_x": { "value": "prime_tower_position_x - 10 " },
+        "machine_extruder_start_pos_y": { "value": "prime_tower_position_y + 10" },
+        "machine_extruder_end_pos_abs": { "default_value": true },
+        "machine_extruder_end_pos_x": { "value": "prime_tower_position_x - 10" },
+        "machine_extruder_end_pos_y": { "value": "prime_tower_position_y + 10" }
+
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "id": "twin_dragon_600_extruder_0",
+    "version": 2,
+    "name": "Extruder 0",
+    "inherits": "fdmextruder",
+    "metadata": {
+        "machine": "twin_dragon_600",
+        "position": "0"
+    },
+
+    "overrides": {
+        "extruder_nr": {
+            "default_value": 0,
+            "maximum_value": "1"
+        },
+        "machine_nozzle_offset_x": { "default_value": 0.0 },
+        "machine_nozzle_offset_y": { "default_value": 0.0 },
+        "material_diameter": { "default_value": 1.75 },
+        "machine_extruder_start_code": {"default_value":"M105\nM109 S{material_initial_print_temperature, 0}\nG92 E-{switch_extruder_retraction_amount}\nG1 E0 F1000 ;Restore E position\nG1 E{purge_distance} F20;defaultpurge\nG92 E0\nG4 S3\nG1 E-{switch_extruder_retraction_amount} F1000\nG92 E0\n;switch_extruder_retraction_amount:{switch_extruder_retraction_amount}\n;endTC\nG91\nG1 X20 F3000\nG1 X -20 \nG1 X20\nG1 X -20\nG90"},
+        "machine_extruder_start_pos_abs": { "default_value": true },
+        "machine_extruder_start_pos_x": { "default_value": 0.0 },
+        "machine_extruder_start_pos_y": { "default_value": 0.0 },
+        "machine_extruder_end_code": { "default_value": "" },
+        "machine_extruder_end_pos_abs": { "default_value": true },
+        "machine_extruder_end_pos_x": { "default_value": 0.0 },
+        "machine_extruder_end_pos_y": { "default_value": 0.0 },
+        "extruder_prime_pos_x": { "default_value": 0.0 }
+    }
+}
