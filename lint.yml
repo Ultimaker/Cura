@@ -1,0 +1,55 @@
+name: Lint
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  lint:
+    runs-on:
+ 
+ubuntu-latest
+
+
+    
+steps:
+
+      
+-
+ 
+uses:
+ 
+actions/checkout@v3
+
+      
+-
+ 
+name:
+ 
+Setup
+ 
+Node.js
+
+        
+uses:
+ 
+actions/setup-node@v3
+
+        
+with:
+
+          
+node-version:
+ 
+'16'
+
+
+      
+-
+ 
+name: Install eslint
+        run: npm install eslint
+
+      - name: Run eslint
+        run: eslint .
