@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 5.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-31 19:13+0100\n"
-"PO-Revision-Date: 2023-10-23 05:56+0200\n"
+"PO-Revision-Date: 2023-11-19 19:51+0100\n"
 "Last-Translator: Cláudio Sampaio <patola@gmail.com>\n"
 "Language-Team: Cláudio Sampaio <patola@gmail.com>\n"
 "Language: pt_BR\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Poedit 3.4.1\n"
 
 #, python-format
 msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm."
@@ -633,7 +633,7 @@ msgstr "Backups"
 
 msgctxt "@label"
 msgid "Balanced"
-msgstr ""
+msgstr "Equilibrado"
 
 msgctxt "@action:label"
 msgid "Base (mm)"
@@ -1026,7 +1026,7 @@ msgstr "Não foi possível interpretar a resposta de servidor."
 
 msgctxt "@error:load"
 msgid "Could not load GCodeWriter plugin. Try to re-enable the plugin."
-msgstr ""
+msgstr "Não foi possível carregar o plugin GCodeWriter. Tente reabilitar o plugin."
 
 msgctxt "@info:error"
 msgid "Could not reach Marketplace."
@@ -2003,7 +2003,7 @@ msgstr "Para monitorar sua impressão pelo Cura, por favor conecte a impressora.
 
 msgctxt "@label"
 msgid "In order to start using Cura you will need to configure a printer."
-msgstr "Para poder iniciar o uso do Cura você precisará configurar uma impressora:"
+msgstr "Para poder iniciar o uso do Cura você precisará configurar uma impressora."
 
 msgctxt "@button"
 msgid "In order to use the package you will need to restart Cura"
@@ -2367,19 +2367,19 @@ msgstr "Certifique que o g-code é adequado para sua impressora e configuração
 
 msgctxt "@item:inlistbox"
 msgid "Makerbot Printfile"
-msgstr ""
+msgstr "Makerbot Printfile"
 
 msgctxt "name"
 msgid "Makerbot Printfile Writer"
-msgstr ""
+msgstr "Gerador de Makerbot Printfile"
 
 msgctxt "@error"
 msgid "MakerbotWriter could not save to the designated path."
-msgstr ""
+msgstr "MakerbotWriter não conseguiu salvar no caminho designado."
 
 msgctxt "@error:not supported"
 msgid "MakerbotWriter does not support text mode."
-msgstr ""
+msgstr "MakerbotWriter não suporta modo texto."
 
 msgctxt "@action:inmenu"
 msgid "Manage Materials..."
@@ -3468,7 +3468,7 @@ msgstr "Provê suporte à escrita de arquivos 3MF."
 
 msgctxt "description"
 msgid "Provides support for writing MakerBot Format Packages."
-msgstr ""
+msgstr "Provê suporte à escrita de Pacotes de Formato MakerBot."
 
 msgctxt "description"
 msgid "Provides support for writing Ultimaker Format Packages."
@@ -4355,7 +4355,7 @@ msgstr "O backup excede o tamanho máximo de arquivo."
 
 msgctxt "@text"
 msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
-msgstr ""
+msgstr "O perfil equilibrado é projetado para conseguir um equilíbrio entre produtividade, qualidade de superfície, propriedades mecânicas e acuidade dimensional."
 
 msgctxt "@info:tooltip"
 msgid "The base height from the build plate in millimeters."
