@@ -237,6 +237,8 @@ class AddCuraSettings(Script):
                 setting_data += ";  Filament Amount: " + str(round(filament_amt[num],2)) + "m\n"
                 setting_data += ";  Filament Weight: " + str(round(filament_wt[num],2)) + "gm\n"
                 setting_data += ";  Filament Cost: " + currency_symbol + "{:.2f}".format(filament_cost[num]) + "\n"
+            setting_data += ";Keep Models Apart: " + str(Application.getInstance().getPreferences().getValue("physics/automatic_push_free")) + "\n"
+            setting_data += ";Drop Models to Build Plate: " + str(Application.getInstance().getPreferences().getValue("physics/automatic_drop_down")) + "\n"
 
         #Machine Settings-------------------------------------------------------
         if bool(self.getSettingValueByKey("machine_set")) or all_or_some == "all_settings":
