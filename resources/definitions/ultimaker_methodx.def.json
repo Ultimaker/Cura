@@ -8,8 +8,8 @@
         "author": "UltiMaker",
         "manufacturer": "Ultimaker B.V.",
         "file_formats": "application/x-makerbot",
-        "bot_id": "lava_f",
         "platform": "ultimaker_method_platform.stl",
+        "bot_id": "lava_f",
         "exclude_materials": [
             "dsm_",
             "Essentium_",
