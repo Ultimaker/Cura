@@ -53,6 +53,10 @@ class CuraConan(ConanFile):
             self.version = "5.6.0-beta.2"
 
     @property
+    def _i18n_options(self):
+        return self.conf.get("user.i18n:options", default = {"extract": True, "build": True}, check_type = dict)
+
+    @property
     def _pycharm_targets(self):
         return self.conan_data["pycharm_targets"]
 
@@ -407,7 +411,7 @@ class CuraConan(ConanFile):
                 entitlements_file=entitlements_file if self.settings.os == "Macos" else "None"
             )
 
-        if self.options.get_safe("enable_i18n", False):
+        if self.options.get_safe("enable_i18n", False) and self._i18n_options["extract"]:
             # Update the po and pot files
             vb = VirtualBuildEnv(self)
             vb.generate()
@@ -418,7 +422,7 @@ class CuraConan(ConanFile):
             pot.generate()
 
     def build(self):
-        if self.options.get_safe("enable_i18n", False):
+        if self.options.get_safe("enable_i18n", False) and self._i18n_options["build"]:
             for po_file in self.source_path.joinpath("resources", "i18n").glob("**/*.po"):
                 mo_file = Path(self.build_folder, po_file.with_suffix('.mo').relative_to(self.source_path))
                 mo_file = mo_file.parent.joinpath("LC_MESSAGES", mo_file.name)
