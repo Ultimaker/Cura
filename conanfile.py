@@ -261,7 +261,7 @@ class CuraConan(ConanFile):
         with open(os.path.join(self.recipe_folder, "UltiMaker-Cura.spec.jinja"), "r") as f:
             pyinstaller = Template(f.read())
 
-        version = self.conf_info.get("user.cura:version", default = self.version, check_type = str)
+        version = self.conf.get("user.cura:version", default = self.version, check_type = str)
         cura_version = Version(version)
 
         with open(os.path.join(location, "UltiMaker-Cura.spec"), "w") as f:
@@ -312,7 +312,7 @@ class CuraConan(ConanFile):
             self.options["curaengine_grpc_definitions"].shared = True
 
     def validate(self):
-        version = self.conf_info.get("user.cura:version", default = self.version, check_type = str)
+        version = self.conf.get("user.cura:version", default = self.version, check_type = str)
         if version and Version(version) <= Version("4"):
             raise ConanInvalidConfiguration("Only versions 5+ are support")
 
@@ -446,7 +446,7 @@ class CuraConan(ConanFile):
         copy(self, "*", uranium.libdirs[0], str(self._site_packages.joinpath("UM")), keep_path = True)
 
         # Generate the GitHub Action version info Environment
-        version = self.conf_info.get("user.cura:version", default = self.version, check_type = str)
+        version = self.conf.get("user.cura:version", default = self.version, check_type = str)
         cura_version = Version(version)
         env_prefix = "Env:" if self.settings.os == "Windows" else ""
         activate_github_actions_version_env = Template(r"""echo "CURA_VERSION_MAJOR={{ cura_version_major }}" >> ${{ env_prefix }}GITHUB_ENV
