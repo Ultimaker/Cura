@@ -6595,15 +6595,15 @@
             {
                 "prime_tower_mode":
                 {
-                    "label": "Prime Tower Mode",
-                    "description": "Print a tower next to the print which serves to prime the material after each nozzle switch.",
+                    "label": "Prime Tower",
+                    "description": "<html>Print a tower next to the model, which serves to prime the material after each nozzle switch.<ul><li><b>None:</b> do not generate a prime tower</li><li><b>Bucket:</b> generate a solid prime bucket in which secondary materials are primed</li><li><b>Sparse bucket:</b> generate a prime bucket while trying to waste as less material as possible</li><li><b>Sparse:</b> generate a prime tower as sparse as possible. This will save time and filament, but is only possible if the used materials adhere to each other.</li></ul></html>",
                     "type": "enum",
                     "options":
                     {
                         "none": "None",
-                        "default": "Default",
-                        "optimized": "Optimized",
-                        "optimized_consistent": "Optimized consistent"
+                        "default": "Bucket",
+                        "optimized_consistent": "Sparse bucket",
+                        "optimized": "Sparse"
                     },
                     "default_value": "default",
                     "enabled": "extruders_enabled_count > 1",
