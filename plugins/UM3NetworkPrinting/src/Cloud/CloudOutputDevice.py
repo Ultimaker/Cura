@@ -213,7 +213,12 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
             return
 
         # Export the scene to the correct file type.
-        job = ExportFileJob(file_handler=file_handler, nodes=nodes, firmware_version=self.firmwareVersion)
+        job = ExportFileJob(
+            file_handler=file_handler,
+            nodes=nodes,
+            firmware_version=self.firmwareVersion,
+            print_type=self.printerType,
+        )
         job.finished.connect(self._onPrintJobCreated)
         job.start()
 
