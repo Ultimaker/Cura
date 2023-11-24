@@ -58,7 +58,6 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
     # The minimum version of firmware that support print job actions over cloud.
     PRINT_JOB_ACTIONS_MIN_VERSION = Version("5.2.12")
-    PRINT_JOB_ACTIONS_MIN_VERSION_METHOD = Version("2.700")
 
     # Notify can only use signals that are defined by the class that they are in, not inherited ones.
     # Therefore, we create a private signal used to trigger the printersChanged signal.
@@ -320,18 +319,28 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         self.writeError.emit()
 
     @pyqtProperty(bool, notify=_cloudClusterPrintersChanged)
+    def isMethod(self) -> bool:
+        """Whether the printer that this output device represents is a Method series printer."""
+
+        if not self._printers:
+            return False
+
+        [printer, *_] = self._printers
+        return printer.pinterType in ("ultimaker_methodx", "ultimaker_methodxl")
+
+    @pyqtProperty(bool, notify=_cloudClusterPrintersChanged)
     def supportsPrintJobActions(self) -> bool:
         """Whether the printer that this output device represents supports print job actions via the cloud."""
 
         if not self._printers:
             return False
+
+        if self.isMethod:
+            return True
+
         version_number = self.printers[0].firmwareVersion.split(".")
-        if len(version_number)> 2:
-            firmware_version = Version([version_number[0], version_number[1], version_number[2]])
-            return firmware_version >= self.PRINT_JOB_ACTIONS_MIN_VERSION
-        else:
-            firmware_version = Version([version_number[0], version_number[1]])
-            return firmware_version >= self.PRINT_JOB_ACTIONS_MIN_VERSION_METHOD
+        firmware_version = Version([version_number[0], version_number[1], version_number[2]])
+        return firmware_version >= self.PRINT_JOB_ACTIONS_MIN_VERSION
 
 
     @pyqtProperty(bool, constant = True)
