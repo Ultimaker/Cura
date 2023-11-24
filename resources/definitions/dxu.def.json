@@ -134,7 +134,6 @@
         "prime_tower_position_x": { "value": "200" },
         "retraction_amount": { "default_value": 6.5 },
         "retraction_speed": { "default_value": 25 },
-        "speed_support": { "value": "speed_wall_0" },
         "speed_wall_x": { "value": "speed_wall" },
         "switch_extruder_prime_speed":
         {
