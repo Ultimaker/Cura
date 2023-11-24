@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-10-31 19:13+0000\n"
+"POT-Creation-Date: 2023-11-15 12:26+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -456,6 +456,10 @@ msgctxt "build_volume_temperature label"
 msgid "Build Volume Temperature"
 msgstr "빌드 볼륨 온도"
 
+msgctxt "prime_tower_brim_enable description"
+msgid "By enabling this setting, your prime-tower will get a brim, even if the model doesn't. If you want a sturdier base for a high tower, you can increase the base height."
+msgstr "이 설정을 활성화하면 모델에 브림이 없더라도 프라임 타워에는 브림이 생성됩니다. 높은 타워의 튼튼한 베이스가 필요하다면 베이스 높이를 늘릴 수 있습니다."
+
 msgctxt "center_object label"
 msgid "Center Object"
 msgstr "가운데 객체"
@@ -742,7 +746,7 @@ msgstr "프린팅 된 서포트 구조 선 사이의 거리. 이 설정은 서�
 
 msgctxt "support_bottom_distance description"
 msgid "Distance from the print to the bottom of the support. Note that this is rounded up to the next layer height."
-msgstr ""
+msgstr "프린트에서 서포트 바닥까지의 거리입니다. 이는 다음 레이어 높이로 반올림됩니다."
 
 msgctxt "support_top_distance description"
 msgid "Distance from the top of the support to the print."
@@ -750,7 +754,7 @@ msgstr "서포트 상단에서 프린팅까지의 거리."
 
 msgctxt "support_z_distance description"
 msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. The topmost support layer below the model might be a fraction of regular layers."
-msgstr ""
+msgstr "서포트 구조물의 상단/하단에서 프린트까지의 거리입니다. 이 공간은 모델이 인쇄된 후 서포트를 제거할 수 있도록 여유를 제공합니다. 모델 아래 최상위 서포트 레이어는 정규 레이어의 일부일 수 있습니다."
 
 msgctxt "infill_wipe_dist description"
 msgid "Distance of a travel move inserted after every infill line, to make the infill stick to the walls better. This option is similar to infill overlap, but without extrusion and only on one end of the infill line."
@@ -2514,19 +2518,19 @@ msgstr "프라임 타워 가속"
 
 msgctxt "prime_tower_brim_enable label"
 msgid "Prime Tower Base"
-msgstr ""
-
-msgctxt "prime_tower_base_curve_magnitude label"
-msgid "Prime Tower Base Curve Magnitude"
-msgstr ""
+msgstr "프라임 타워 베이스"
 
 msgctxt "prime_tower_base_height label"
 msgid "Prime Tower Base Height"
-msgstr ""
+msgstr "프라임 타워 베이스 높이"
 
 msgctxt "prime_tower_base_size label"
 msgid "Prime Tower Base Size"
-msgstr ""
+msgstr "프라임 타워 베이스 크기"
+
+msgctxt "prime_tower_base_curve_magnitude label"
+msgid "Prime Tower Base Slope"
+msgstr "프라임 타워 베이스 경사"
 
 msgctxt "prime_tower_flow label"
 msgid "Prime Tower Flow"
@@ -2546,7 +2550,7 @@ msgstr "프라임 타워 최소 볼륨"
 
 msgctxt "prime_tower_raft_base_line_spacing label"
 msgid "Prime Tower Raft Line Spacing"
-msgstr ""
+msgstr "프라임 타워 래프트 선 간격"
 
 msgctxt "prime_tower_size label"
 msgid "Prime Tower Size"
@@ -2563,10 +2567,6 @@ msgstr "프라임 타워 X 위치"
 msgctxt "prime_tower_position_y label"
 msgid "Prime Tower Y Position"
 msgstr "프라임 타워 Y 위치"
-
-msgctxt "prime_tower_brim_enable description"
-msgid "Prime-towers might need the extra adhesion afforded by a brim or raft, even if the model doesn't."
-msgstr ""
 
 msgctxt "acceleration_print label"
 msgid "Print Acceleration"
@@ -3786,7 +3786,7 @@ msgstr "상단 래프트 레이어에 대한 래프트 사이의 거리. 간격�
 
 msgctxt "prime_tower_raft_base_line_spacing description"
 msgid "The distance between the raft lines for the unique prime tower raft layer. Wide spacing makes for easy removal of the raft from the build plate."
-msgstr ""
+msgstr "독특한 프라임 타워 래프트 레이어를 위한 래프트 라인 간 거리입니다. 간격이 넓을수록 빌드 플레이트에서 래프트를 쉽게 제거할 수 있습니다."
 
 msgctxt "interlocking_depth description"
 msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
@@ -3985,8 +3985,8 @@ msgid "The height of the initial layer in mm. A thicker initial layer makes adhe
 msgstr "첫번째 레이어의 높이 (mm)입니다. 첫번째 레이어를 두껍게하면 빌드 플레이트에 쉽게 부착됩니다."
 
 msgctxt "prime_tower_base_height description"
-msgid "The height of the prime tower base."
-msgstr ""
+msgid "The height of the prime tower base. Increasing this value will result in a more sturdy prime tower because the base will be wider. If this setting is too low, the prime tower will not have a sturdy base."
+msgstr "프라임 타워 베이스의 높이입니다. 이 값을 늘리면 베이스가 넓어져 프라임 타워가 더 튼튼해집니다. 이 설정이 너무 낮으면 프라임 타워에 튼튼한 베이스가 형성되지 않습니다."
 
 msgctxt "support_bottom_stair_step_height description"
 msgid "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures. Set to zero to turn off the stair-like behaviour."
@@ -4061,8 +4061,8 @@ msgid "The length of material retracted during a retraction move."
 msgstr "리트렉션 이동 중에 수축 된 재료의 길이입니다."
 
 msgctxt "prime_tower_base_curve_magnitude description"
-msgid "The magnitude factor used for the curve of the prime tower foot."
-msgstr ""
+msgid "The magnitude factor used for the slope of the prime tower base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
+msgstr "프라임 타워 베이스의 경사에 사용되는 크기 계수입니다. 이 값을 늘리면 베이스가 더 얇아집니다. 줄이면 베이스가 더 두꺼워집니다."
 
 msgctxt "machine_buildplate_type description"
 msgid "The material of the build plate installed on the printer."
@@ -4618,7 +4618,7 @@ msgstr "프린팅 종료 직전에 냉각이 시작될 온도입니다."
 
 msgctxt "material_print_temperature_layer_0 description"
 msgid "The temperature used for printing the first layer."
-msgstr ""
+msgstr "첫 레이어 인쇄에 사용되는 온도입니다."
 
 msgctxt "material_print_temperature description"
 msgid "The temperature used for printing."
@@ -4697,8 +4697,8 @@ msgid "The width of the interlocking structure beams."
 msgstr "연동 구조 빔의 너비입니다."
 
 msgctxt "prime_tower_base_size description"
-msgid "The width of the prime tower base."
-msgstr ""
+msgid "The width of the prime tower brim/base. A larger base enhances adhesion to the build plate, but also reduces the effective print area."
+msgstr "프라임 타워 브림/베이스의 폭입니다. 베이스가 크면 빌드 플레이트에 대한 접착력이 향상되지만, 실제 인쇄 영역은 줄어듭니다."
 
 msgctxt "prime_tower_size description"
 msgid "The width of the prime tower."
@@ -5532,6 +5532,10 @@ msgstr "이동"
 #~ msgid "Minimum speed for gradual flow changes for the first layer"
 #~ msgstr "첫 번째 레이어의 점진적인 흐름 변화를 위한 최소 속도"
 
+#~ msgctxt "prime_tower_base_curve_magnitude label"
+#~ msgid "Prime Tower Base Curve Magnitude"
+#~ msgstr "프라임 타워 베이스 커브 크기"
+
 #~ msgctxt "prime_tower_brim_enable label"
 #~ msgid "Prime Tower Brim"
 #~ msgstr "프라임 타워 브림"
@@ -5540,10 +5544,26 @@ msgstr "이동"
 #~ msgid "Prime-towers might need the extra adhesion afforded by a brim even if the model doesn't. Presently can't be used with the 'Raft' adhesion-type."
 #~ msgstr "프라임 타워는 모델이 제공하지 않더라도 브림이 제공하는 추가 접착이 필요할 수 있습니다. 현재 '래프트' 접착 유형을 사용할 수 없습니다."
 
+#~ msgctxt "prime_tower_brim_enable description"
+#~ msgid "Prime-towers might need the extra adhesion afforded by a brim or raft, even if the model doesn't."
+#~ msgstr "모델이 필요하지 않더라도 프라임 타워는 브림이나 래프트에 의한 추가 접착이 필요할 수 있습니다."
+
 #~ msgctxt "reset_flow_duration label"
 #~ msgid "Reset flow duration"
 #~ msgstr "흐름 지속 시간 재설정"
 
+#~ msgctxt "prime_tower_base_height description"
+#~ msgid "The height of the prime tower base."
+#~ msgstr "프라임 타워 베이스의 높이입니다."
+
+#~ msgctxt "prime_tower_base_curve_magnitude description"
+#~ msgid "The magnitude factor used for the curve of the prime tower foot."
+#~ msgstr "프라임 타워 발의 곡선을 위한 크기 계수입니다."
+
 #~ msgctxt "material_print_temperature_layer_0 description"
 #~ msgid "The temperature used for printing the first layer. Set at 0 to disable special handling of the initial layer."
 #~ msgstr "첫 번째 레이어에 프린팅에 사용되는 온도입니다. 초기 레이어의 특수 처리를 사용하지 않으려면 0으로 설정합니다."
+
+#~ msgctxt "prime_tower_base_size description"
+#~ msgid "The width of the prime tower base."
+#~ msgstr "프라임 타워 베이스의 폭입니다."

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-10-31 19:13+0000\n"
+"POT-Creation-Date: 2023-11-15 12:26+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -456,6 +456,10 @@ msgctxt "build_volume_temperature label"
 msgid "Build Volume Temperature"
 msgstr "Yapı Disk Bölümü Sıcaklığı"
 
+msgctxt "prime_tower_brim_enable description"
+msgid "By enabling this setting, your prime-tower will get a brim, even if the model doesn't. If you want a sturdier base for a high tower, you can increase the base height."
+msgstr "Bu ayarı etkinleştirmeniz, modelinizde olmasa bile prime tower'ınıza bir brim kazandırır. Eğer yüksek bir kule için daha sağlam bir taban istiyorsanız, taban yüksekliğini artırabilirsiniz."
+
 msgctxt "center_object label"
 msgid "Center Object"
 msgstr "Nesneyi ortalayın"
@@ -742,7 +746,7 @@ msgstr "Yazdırılan destek yapısı hatları arasındaki mesafe. Bu ayar, deste
 
 msgctxt "support_bottom_distance description"
 msgid "Distance from the print to the bottom of the support. Note that this is rounded up to the next layer height."
-msgstr ""
+msgstr "Baskıdan desteğin altına kadar olan mesafe. Bunun bir sonraki katman yüksekliğine yuvarlandığını unutmayın."
 
 msgctxt "support_top_distance description"
 msgid "Distance from the top of the support to the print."
@@ -750,7 +754,7 @@ msgstr "Yazdırılıcak desteğin üstüne olan mesafe."
 
 msgctxt "support_z_distance description"
 msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. The topmost support layer below the model might be a fraction of regular layers."
-msgstr ""
+msgstr "Desteğin üstü/altı ile baskı arasındaki mesafe. Bu boşluk, model basıldıktan sonra desteklerin kolayca çıkarılabilmesini sağlar. Modelin altındaki en üst destek katmanı, düzenli katmanların bir kısmı olabilir."
 
 msgctxt "infill_wipe_dist description"
 msgid "Distance of a travel move inserted after every infill line, to make the infill stick to the walls better. This option is similar to infill overlap, but without extrusion and only on one end of the infill line."
@@ -2514,19 +2518,19 @@ msgstr "İlk Direk İvmesi"
 
 msgctxt "prime_tower_brim_enable label"
 msgid "Prime Tower Base"
-msgstr ""
-
-msgctxt "prime_tower_base_curve_magnitude label"
-msgid "Prime Tower Base Curve Magnitude"
-msgstr ""
+msgstr "Başlangıç Kulesi Tabanı"
 
 msgctxt "prime_tower_base_height label"
 msgid "Prime Tower Base Height"
-msgstr ""
+msgstr "Başlangıç Kulesi Taban Yüksekliği"
 
 msgctxt "prime_tower_base_size label"
 msgid "Prime Tower Base Size"
-msgstr ""
+msgstr "Başlangıç Kulesi Taban Boyutu"
+
+msgctxt "prime_tower_base_curve_magnitude label"
+msgid "Prime Tower Base Slope"
+msgstr "Prime Tower Taban Eğimi"
 
 msgctxt "prime_tower_flow label"
 msgid "Prime Tower Flow"
@@ -2546,7 +2550,7 @@ msgstr "İlk Direğin Minimum Hacmi"
 
 msgctxt "prime_tower_raft_base_line_spacing label"
 msgid "Prime Tower Raft Line Spacing"
-msgstr ""
+msgstr "Başlangıç Kulesi Salı İzi Aralığı"
 
 msgctxt "prime_tower_size label"
 msgid "Prime Tower Size"
@@ -2563,10 +2567,6 @@ msgstr "İlk Direk X Konumu"
 msgctxt "prime_tower_position_y label"
 msgid "Prime Tower Y Position"
 msgstr "İlk Direk Y Konumu"
-
-msgctxt "prime_tower_brim_enable description"
-msgid "Prime-towers might need the extra adhesion afforded by a brim or raft, even if the model doesn't."
-msgstr ""
 
 msgctxt "acceleration_print label"
 msgid "Print Acceleration"
@@ -3786,7 +3786,7 @@ msgstr "Üst radye katmanları için radye hatları arasındaki mesafe. Yüzeyin
 
 msgctxt "prime_tower_raft_base_line_spacing description"
 msgid "The distance between the raft lines for the unique prime tower raft layer. Wide spacing makes for easy removal of the raft from the build plate."
-msgstr ""
+msgstr "Tek başlangıç kulesi sal katmanı için sal izleri arasındaki mesafe. Geniş aralıklar, salın yapıştırma tablasından kolay çıkarılmasını sağlar."
 
 msgctxt "interlocking_depth description"
 msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
@@ -3985,8 +3985,8 @@ msgid "The height of the initial layer in mm. A thicker initial layer makes adhe
 msgstr "İlk katmanın milimetre cinsinden yüksekliği. Kalın ilk katmanlar yapı levhasına yapışmayı kolaylaştırır."
 
 msgctxt "prime_tower_base_height description"
-msgid "The height of the prime tower base."
-msgstr ""
+msgid "The height of the prime tower base. Increasing this value will result in a more sturdy prime tower because the base will be wider. If this setting is too low, the prime tower will not have a sturdy base."
+msgstr "Prime tower tabanının yüksekliği. Bu değeri artırmak, taban daha geniş olacağı için daha sağlam bir prime tower oluşturur. Eğer bu ayar çok düşükse, prime tower sağlam bir tabana sahip olmayacaktır."
 
 msgctxt "support_bottom_stair_step_height description"
 msgid "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures. Set to zero to turn off the stair-like behaviour."
@@ -4061,8 +4061,8 @@ msgid "The length of material retracted during a retraction move."
 msgstr "Geri çekme hareketi sırasında geri çekilen malzemenin uzunluğu."
 
 msgctxt "prime_tower_base_curve_magnitude description"
-msgid "The magnitude factor used for the curve of the prime tower foot."
-msgstr ""
+msgid "The magnitude factor used for the slope of the prime tower base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
+msgstr "Prime tower tabanının eğiminde kullanılan büyüklük faktörü. Bu değeri artırırsanız, taban daha ince hale gelir. Azaltırsanız, taban daha kalın olur."
 
 msgctxt "machine_buildplate_type description"
 msgid "The material of the build plate installed on the printer."
@@ -4618,7 +4618,7 @@ msgstr "Yazdırma bitmeden hemen önce soğuma işleminin başladığı sıcakl�
 
 msgctxt "material_print_temperature_layer_0 description"
 msgid "The temperature used for printing the first layer."
-msgstr ""
+msgstr "İlk katmanın basımında kullanılan sıcaklık."
 
 msgctxt "material_print_temperature description"
 msgid "The temperature used for printing."
@@ -4697,8 +4697,8 @@ msgid "The width of the interlocking structure beams."
 msgstr "İç içe geçen yapı kirişlerinin genişliği."
 
 msgctxt "prime_tower_base_size description"
-msgid "The width of the prime tower base."
-msgstr ""
+msgid "The width of the prime tower brim/base. A larger base enhances adhesion to the build plate, but also reduces the effective print area."
+msgstr "Prime tower brim/tabanının genişliği. Daha büyük bir taban yapışmayı artırır, ancak etkili baskı alanını da azaltır."
 
 msgctxt "prime_tower_size description"
 msgid "The width of the prime tower."
@@ -5532,6 +5532,10 @@ msgstr "hareket"
 #~ msgid "Minimum speed for gradual flow changes for the first layer"
 #~ msgstr "İlk katmandaki kademeli akış değişiklikleri için minimum hız"
 
+#~ msgctxt "prime_tower_base_curve_magnitude label"
+#~ msgid "Prime Tower Base Curve Magnitude"
+#~ msgstr "Başlangıç Kulesi Taban Eğim Büyüklüğü"
+
 #~ msgctxt "prime_tower_brim_enable label"
 #~ msgid "Prime Tower Brim"
 #~ msgstr "Astarlama Direği Kenarı"
@@ -5540,10 +5544,26 @@ msgstr "hareket"
 #~ msgid "Prime-towers might need the extra adhesion afforded by a brim even if the model doesn't. Presently can't be used with the 'Raft' adhesion-type."
 #~ msgstr "Model ihtiyaç duymasa da astarlama direkleri bir kenarın sağladığı ekstra yapışkanlığa ihtiyaç duyabilir. Şu anda \"radye\" yapışma tipi ile birlikte kullanılamamaktadır."
 
+#~ msgctxt "prime_tower_brim_enable description"
+#~ msgid "Prime-towers might need the extra adhesion afforded by a brim or raft, even if the model doesn't."
+#~ msgstr "Baskı modeli gerektirmese bile, başlangıç kuleleri modelin ekstra yapışmasını sağlamak için bir kenarlık veya sal gerektirebilir."
+
 #~ msgctxt "reset_flow_duration label"
 #~ msgid "Reset flow duration"
 #~ msgstr "Akış süresini sıfırla"
 
+#~ msgctxt "prime_tower_base_height description"
+#~ msgid "The height of the prime tower base."
+#~ msgstr "Başlangıç kulesi tabanının yüksekliği."
+
+#~ msgctxt "prime_tower_base_curve_magnitude description"
+#~ msgid "The magnitude factor used for the curve of the prime tower foot."
+#~ msgstr "Başlangıç kulesi ayağının eğrisi için kullanılan büyüklük faktörü."
+
 #~ msgctxt "material_print_temperature_layer_0 description"
 #~ msgid "The temperature used for printing the first layer. Set at 0 to disable special handling of the initial layer."
 #~ msgstr "İlk katmanı yazdırmak için kullanılan sıcaklık. İlk katmanın özel kullanımını devre dışı bırakmak için 0’a ayarlayın."
+
+#~ msgctxt "prime_tower_base_size description"
+#~ msgid "The width of the prime tower base."
+#~ msgstr "Başlangıç kulesi tabanının genişliği."

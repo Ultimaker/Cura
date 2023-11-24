@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.0\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-10-31 19:13+0000\n"
-"PO-Revision-Date: 2023-10-23 06:17+0200\n"
+"POT-Creation-Date: 2023-11-15 12:26+0000\n"
+"PO-Revision-Date: 2023-11-22 17:17+0100\n"
 "Last-Translator: Cláudio Sampaio <patola@gmail.com>\n"
 "Language-Team: Cláudio Sampaio <patola@gmail.com>\n"
 "Language: pt_BR\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Poedit 3.4.1\n"
 
 msgctxt "ironing_inset description"
 msgid "A distance to keep from the edges of the model. Ironing all the way to the edge of the mesh may result in a jagged edge on your print."
@@ -67,7 +67,7 @@ msgstr "Uma peça completamente contida em outra peça pode gerar um brim extern
 
 msgctxt "support_tree_branch_reach_limit description"
 msgid "A recomendation to how far branches can move from the points they support. Branches can violate this value to reach their destination (buildplate or a flat part of the model). Lowering this value will make the support more sturdy, but increase the amount of branches (and because of that material usage/print time) "
-msgstr "Uma recomendação de quão distante galhos podem se mover dos pontos que eles suportam. Os galhos podem violar este valor para alcançar seu destino (plataforma de impressão ou parte chata do modelo). Abaixar este valor pode fazer o suporte ficar mais estável, mas aumentará o número de galhos (e por causa disso, ambos o uso de material e o tempo de impressão)"
+msgstr "Uma recomendação de quão distante galhos podem se mover dos pontos que eles suportam. Os galhos podem violar este valor para alcançar seu destino (plataforma de impressão ou parte chata do modelo). Abaixar este valor pode fazer o suporte ficar mais estável, mas aumentará o número de galhos (e por causa disso, ambos o uso de material e o tempo de impressão) "
 
 msgctxt "extruder_prime_pos_abs label"
 msgid "Absolute Extruder Prime Position"
@@ -461,6 +461,10 @@ msgctxt "build_volume_temperature label"
 msgid "Build Volume Temperature"
 msgstr "Temperatura do Volume de Impressão"
 
+msgctxt "prime_tower_brim_enable description"
+msgid "By enabling this setting, your prime-tower will get a brim, even if the model doesn't. If you want a sturdier base for a high tower, you can increase the base height."
+msgstr "Ao habilitar este ajuste sua torre de purga ganhará um brim, mesmo que o modelo não tenha. Se você quiser uma base mais firme para uma torre alta, pode aumentar a altura."
+
 msgctxt "center_object label"
 msgid "Center Object"
 msgstr "Centralizar Objeto"
@@ -747,7 +751,7 @@ msgstr "Distância entre as linhas impressas da estrutura de suporte. Este ajust
 
 msgctxt "support_bottom_distance description"
 msgid "Distance from the print to the bottom of the support. Note that this is rounded up to the next layer height."
-msgstr ""
+msgstr "Distância da impressão até a base do suporte. Note que o valor é arredondado pra cima para a próxima altura de camada."
 
 msgctxt "support_top_distance description"
 msgid "Distance from the top of the support to the print."
@@ -755,7 +759,7 @@ msgstr "Distância do topo do suporte à impressão."
 
 msgctxt "support_z_distance description"
 msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. The topmost support layer below the model might be a fraction of regular layers."
-msgstr ""
+msgstr "Distância da base ou topo do suporte à impressão. Esta lacuna provê uma folga pra remover os suporte depois da impressão do modelo. A camada de suporte superior abaixo do modelo pode ser uma fração de camadas regulares."
 
 msgctxt "infill_wipe_dist description"
 msgid "Distance of a travel move inserted after every infill line, to make the infill stick to the walls better. This option is similar to infill overlap, but without extrusion and only on one end of the infill line."
@@ -1099,11 +1103,11 @@ msgstr "Compensação de fluxo no filete de parede mais externo."
 
 msgctxt "wall_0_material_flow_roofing description"
 msgid "Flow compensation on the top surface outermost wall line."
-msgstr ""
+msgstr "Compensação de fluxo no filete de parede externo de superfície do topo."
 
 msgctxt "wall_x_material_flow_roofing description"
 msgid "Flow compensation on top surface wall lines for all wall lines except the outermost one."
-msgstr ""
+msgstr "Compensação de fluxo nos files de parede de superfície do topo excetuando o mais externo."
 
 msgctxt "skin_material_flow description"
 msgid "Flow compensation on top/bottom lines."
@@ -1295,7 +1299,7 @@ msgstr "Griffin"
 
 msgctxt "group_outer_walls label"
 msgid "Group Outer Walls"
-msgstr ""
+msgstr "Agrupar Paredes Externas"
 
 msgctxt "infill_pattern option gyroid"
 msgid "Gyroid"
@@ -2463,7 +2467,7 @@ msgstr "Distância de Varredura da Parede Externa"
 
 msgctxt "group_outer_walls description"
 msgid "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped."
-msgstr ""
+msgstr "Paredes externas de ilhas diferentes na mesma camada são impressas em sequência. Quando habilitado, as mudanças de fluxo são limitadas porque as paredes são impressas um tipo a cada vez; quando desabilitado, o número de percursos entre as ilhas é reduzido porque as paredes nas mesmas ilhas são agrupadas."
 
 msgctxt "inset_direction option outside_in"
 msgid "Outside To Inside"
@@ -2519,19 +2523,19 @@ msgstr "Aceleração da Torre de Purga"
 
 msgctxt "prime_tower_brim_enable label"
 msgid "Prime Tower Base"
-msgstr ""
-
-msgctxt "prime_tower_base_curve_magnitude label"
-msgid "Prime Tower Base Curve Magnitude"
-msgstr ""
+msgstr "Base da Torre de Purga"
 
 msgctxt "prime_tower_base_height label"
 msgid "Prime Tower Base Height"
-msgstr ""
+msgstr "Altura da Base da Torre de Purga"
 
 msgctxt "prime_tower_base_size label"
 msgid "Prime Tower Base Size"
-msgstr ""
+msgstr "Tamanho da Base da Torre de Purga"
+
+msgctxt "prime_tower_base_curve_magnitude label"
+msgid "Prime Tower Base Slope"
+msgstr "Inclinação da Base da Torre de Purga"
 
 msgctxt "prime_tower_flow label"
 msgid "Prime Tower Flow"
@@ -2551,7 +2555,7 @@ msgstr "Volume Mínimo da Torre de Purga"
 
 msgctxt "prime_tower_raft_base_line_spacing label"
 msgid "Prime Tower Raft Line Spacing"
-msgstr ""
+msgstr "Espaçamento do Filete de Raft da Torre de Purga"
 
 msgctxt "prime_tower_size label"
 msgid "Prime Tower Size"
@@ -2568,10 +2572,6 @@ msgstr "Posição X da Torre de Purga"
 msgctxt "prime_tower_position_y label"
 msgid "Prime Tower Y Position"
 msgstr "Posição Y da Torre de Purga"
-
-msgctxt "prime_tower_brim_enable description"
-msgid "Prime-towers might need the extra adhesion afforded by a brim or raft, even if the model doesn't."
-msgstr ""
 
 msgctxt "acceleration_print label"
 msgid "Print Acceleration"
@@ -3647,11 +3647,11 @@ msgstr "A aceleração com que as camadas superiores do raft são impressas."
 
 msgctxt "acceleration_wall_x_roofing description"
 msgid "The acceleration with which the top surface inner walls are printed."
-msgstr ""
+msgstr "A aceleração com que as paredes internas da superfície superior são impressas."
 
 msgctxt "acceleration_wall_0_roofing description"
 msgid "The acceleration with which the top surface outermost walls are printed."
-msgstr ""
+msgstr "A aceleração com que as paredes externas da superfície superior são impressas."
 
 msgctxt "acceleration_wall description"
 msgid "The acceleration with which the walls are printed."
@@ -3795,7 +3795,7 @@ msgstr "Distância entre as linhas do raft para as camadas superiores. O espaça
 
 msgctxt "prime_tower_raft_base_line_spacing description"
 msgid "The distance between the raft lines for the unique prime tower raft layer. Wide spacing makes for easy removal of the raft from the build plate."
-msgstr ""
+msgstr "A distância entre os filetes do raft para a camada única de raft de torre de purga. Espaçamento alto permite remoção fácil do raft da plataforma de impressão."
 
 msgctxt "interlocking_depth description"
 msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
@@ -3995,8 +3995,8 @@ msgid "The height of the initial layer in mm. A thicker initial layer makes adhe
 msgstr "A altura da camada inicial em mm. Uma camada inicial mais espessa faz a aderência à mesa de impressão ser maior."
 
 msgctxt "prime_tower_base_height description"
-msgid "The height of the prime tower base."
-msgstr ""
+msgid "The height of the prime tower base. Increasing this value will result in a more sturdy prime tower because the base will be wider. If this setting is too low, the prime tower will not have a sturdy base."
+msgstr "A altura da base da torre de purga. Aumentar este valor resultará em uma torre de purga mais firme porque a base se tornará mais larga. Se o ajuste for muito baixo, a torre de purga não terá uma base firme."
 
 msgctxt "support_bottom_stair_step_height description"
 msgid "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures. Set to zero to turn off the stair-like behaviour."
@@ -4071,8 +4071,8 @@ msgid "The length of material retracted during a retraction move."
 msgstr "O comprimento de filamento retornado durante uma retração."
 
 msgctxt "prime_tower_base_curve_magnitude description"
-msgid "The magnitude factor used for the curve of the prime tower foot."
-msgstr ""
+msgid "The magnitude factor used for the slope of the prime tower base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
+msgstr "O fator de magnitude usado para a inclinação da base da torre de purga. Se você aumentar este valor, a base se tornará mais fina. Se você diminuí-lo, ela se tornará mais grossa."
 
 msgctxt "machine_buildplate_type description"
 msgid "The material of the build plate installed on the printer."
@@ -4168,11 +4168,11 @@ msgstr "A máxima mudança de velocidade instantânea em uma direção com que a
 
 msgctxt "jerk_wall_x_roofing description"
 msgid "The maximum instantaneous velocity change with which the top surface inner walls are printed."
-msgstr ""
+msgstr "A mudança máxima de velocidade instantânea com que as paredes internas da superfície superior são impressas."
 
 msgctxt "jerk_wall_0_roofing description"
 msgid "The maximum instantaneous velocity change with which the top surface outermost walls are printed."
-msgstr ""
+msgstr "A mudança máxima de velocidade instantânea com que as paredes mais externas da superfície superior são impressas."
 
 msgctxt "jerk_wall description"
 msgid "The maximum instantaneous velocity change with which the walls are printed."
@@ -4563,11 +4563,11 @@ msgstr "A velocidade em que as camadas superiores do raft são impressas. Elas d
 
 msgctxt "speed_wall_x_roofing description"
 msgid "The speed at which the top surface inner walls are printed."
-msgstr ""
+msgstr "A velocidade com que as paredes internas da superfície superior são impressas."
 
 msgctxt "speed_wall_0_roofing description"
 msgid "The speed at which the top surface outermost wall is printed."
-msgstr ""
+msgstr "A velocidade com que a parede mais externa da superfície superior é impressa."
 
 msgctxt "speed_z_hop description"
 msgid "The speed at which the vertical Z movement is made for Z Hops. This is typically lower than the print speed since the build plate or machine's gantry is harder to move."
@@ -4631,7 +4631,7 @@ msgstr "A temperatura para a qual se deve começar a esfriar pouco antes do fim 
 
 msgctxt "material_print_temperature_layer_0 description"
 msgid "The temperature used for printing the first layer."
-msgstr ""
+msgstr "A temperatura usada para imprimir a primeira camada."
 
 msgctxt "material_print_temperature description"
 msgid "The temperature used for printing."
@@ -4711,8 +4711,8 @@ msgid "The width of the interlocking structure beams."
 msgstr "A largura da torre de purga."
 
 msgctxt "prime_tower_base_size description"
-msgid "The width of the prime tower base."
-msgstr ""
+msgid "The width of the prime tower brim/base. A larger base enhances adhesion to the build plate, but also reduces the effective print area."
+msgstr "A largura da base ou brim da torre de purga. Uma base maior melhora a aderência à mesa mas também reduz a área efetiva de impressão."
 
 msgctxt "prime_tower_size description"
 msgid "The width of the prime tower."
@@ -4784,35 +4784,35 @@ msgstr "Largura de Remoção do Contorno Superior"
 
 msgctxt "acceleration_wall_x_roofing label"
 msgid "Top Surface Inner Wall Acceleration"
-msgstr ""
+msgstr "Aceleração da Parede Interna da Superfície Superior"
 
 msgctxt "jerk_wall_x_roofing label"
 msgid "Top Surface Inner Wall Jerk"
-msgstr ""
+msgstr "Jerk da Parede Interna da Superfície Superior"
 
 msgctxt "speed_wall_x_roofing label"
 msgid "Top Surface Inner Wall Speed"
-msgstr ""
+msgstr "Velocidade da Parede Interna da Superfície Superior"
 
 msgctxt "wall_x_material_flow_roofing label"
 msgid "Top Surface Inner Wall(s) Flow"
-msgstr ""
+msgstr "Fluxo das Paredes Internas da Superfície Superior"
 
 msgctxt "acceleration_wall_0_roofing label"
 msgid "Top Surface Outer Wall Acceleration"
-msgstr ""
+msgstr "Aceleração da Parede Externa da Superfície Superior"
 
 msgctxt "wall_0_material_flow_roofing label"
 msgid "Top Surface Outer Wall Flow"
-msgstr ""
+msgstr "Fluxo da Parede Externa da Superfície Superior"
 
 msgctxt "jerk_wall_0_roofing label"
 msgid "Top Surface Outer Wall Jerk"
-msgstr ""
+msgstr "Jerk da Parede Externa da Superfície Superior"
 
 msgctxt "speed_wall_0_roofing label"
 msgid "Top Surface Outer Wall Speed"
-msgstr ""
+msgstr "Velocidade da Parede Externa da Superfície Superior"
 
 msgctxt "acceleration_roofing label"
 msgid "Top Surface Skin Acceleration"
@@ -5136,7 +5136,7 @@ msgstr "Quando maior que zero, a Expansão Horizontal de Furo é gradualmente ap
 
 msgctxt "hole_xy_offset description"
 msgid "When greater than zero, the Hole Horizontal Expansion is the amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes. When this setting is enabled it can be further tuned with Hole Horizontal Expansion Max Diameter."
-msgstr "Quando maior que zero, a Expansão Original do Furo designa a distância de compensação aplicada a todos os furos em cada camada. Valores positivos aumentam os tamanhos dos furos, valores negativos reduzem os tamanhos dos furos. Quando este ajuste é habilitado, ele pode ser ainda aprimorado com o ajuste 'Diâmetro Máximo da Expansão Horizontal de Furo':"
+msgstr "Quando maior que zero, a Expansão Original do Furo designa a distância de compensação aplicada a todos os furos em cada camada. Valores positivos aumentam os tamanhos dos furos, valores negativos reduzem os tamanhos dos furos. Quando este ajuste é habilitado, ele pode ser ainda aprimorado com o ajuste 'Diâmetro Máximo da Expansão Horizontal de Furo'."
 
 msgctxt "bridge_skin_material_flow description"
 msgid "When printing bridge skin regions, the amount of material extruded is multiplied by this value."
