@@ -25,7 +25,7 @@ class CuraConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
 
     # FIXME: Remove specific branch once merged to main
-    python_requires = "translationextractor/[>=2.1.1]@ultimaker/stable"
+    python_requires = "translationextractor/[>=2.2.0]@ultimaker/stable"
 
     options = {
         "enterprise": ["True", "False", "true", "false"],  # Workaround for GH Action passing boolean as lowercase string
