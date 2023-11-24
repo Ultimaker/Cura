@@ -1,16 +1,16 @@
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Uranium json setting files\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-06-08 16:32+0000\n"
+"POT-Creation-Date: 2023-11-15 12:26+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE\n"
-"Language: \n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: tr_TR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 msgctxt "ironing_inset description"
 msgid "A distance to keep from the edges of the model. Ironing all the way to the edge of the mesh may result in a jagged edge on your print."
@@ -62,7 +62,7 @@ msgstr "Bir başka parçanın içine tamamen kapatılmış bir parça, diğer pa
 
 msgctxt "support_tree_branch_reach_limit description"
 msgid "A recomendation to how far branches can move from the points they support. Branches can violate this value to reach their destination (buildplate or a flat part of the model). Lowering this value will make the support more sturdy, but increase the amount of branches (and because of that material usage/print time) "
-msgstr ""
+msgstr "Dalların destekledikleri noktalardan ne kadar uzağa hareket edebileceğine dair bir tavsiye. Dallar hedeflerine (yapı levhası veya modelin düz bir parçası) ulaşmak için bu değeri ihlal edebilir. Bu değeri düşürmek, desteği daha sağlam hale getirecek, ancak dal miktarını (ve bu nedenle, malzeme kullanımı/baskı süresini) artıracaktır"
 
 msgctxt "extruder_prime_pos_abs label"
 msgid "Absolute Extruder Prime Position"
@@ -118,7 +118,7 @@ msgstr "Destek yapısının çatılarının ve zeminlerinin yoğunluğunu ayarla
 
 msgctxt "support_tree_top_rate description"
 msgid "Adjusts the density of the support structure used to generate the tips of the branches. A higher value results in better overhangs, but the supports are harder to remove. Use Support Roof for very high values or ensure support density is similarly high at the top."
-msgstr ""
+msgstr "Dalların uçlarını oluşturmak için kullanılan destek yapısının yoğunluğunu ayarlar. Daha yüksek bir değer daha iyi çıkıntılar sağlar, ancak desteklerin çıkarılması daha zordur. Çok yüksek değerler için Destek Çatısı’nı kullanın veya destek yoğunluğunun en üstte benzer şekilde yüksek olmasını sağlayın."
 
 msgctxt "support_infill_rate description"
 msgid "Adjusts the density of the support structure. A higher value results in better overhangs, but the supports are harder to remove."
@@ -179,10 +179,6 @@ msgstr "Her Zaman Aktif Aracı Yaz"
 msgctxt "travel_retract_before_outer_wall description"
 msgid "Always retract when moving to start an outer wall."
 msgstr "Dış duvar başlatmaya giderken her zaman geri çeker."
-
-msgctxt "hole_xy_offset description"
-msgid "Amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes."
-msgstr "Her bir katmandaki tüm deliklere uygulanan ofset miktarıdır. Pozitif değerler deliklerin boyutunu artırırken, negatif değerler deliklerin boyutunu düşürür."
 
 msgctxt "xy_offset description"
 msgid "Amount of offset applied to all polygons in each layer. Positive values can compensate for too big holes; negative values can compensate for too small holes."
@@ -266,7 +262,7 @@ msgstr "Her İkisi"
 
 msgctxt "support_interface_priority option nothing"
 msgid "Both overlap"
-msgstr ""
+msgstr "Her ikisi de çakışıyor"
 
 msgctxt "bottom_layers label"
 msgid "Bottom Layers"
@@ -290,15 +286,15 @@ msgstr "Alt Kalınlık"
 
 msgctxt "support_tree_top_rate label"
 msgid "Branch Density"
-msgstr ""
+msgstr "Dal Yoğunluğu"
 
 msgctxt "support_tree_branch_diameter label"
 msgid "Branch Diameter"
-msgstr ""
+msgstr "Dal Çapı"
 
 msgctxt "support_tree_branch_diameter_angle label"
 msgid "Branch Diameter Angle"
-msgstr ""
+msgstr "Dal Çapı Açısı"
 
 msgctxt "material_break_preparation_retracted_position label"
 msgid "Break Preparation Retracted Position"
@@ -459,6 +455,10 @@ msgstr "İlk Katman Yapı Levhası Sıcaklığı"
 msgctxt "build_volume_temperature label"
 msgid "Build Volume Temperature"
 msgstr "Yapı Disk Bölümü Sıcaklığı"
+
+msgctxt "prime_tower_brim_enable description"
+msgid "By enabling this setting, your prime-tower will get a brim, even if the model doesn't. If you want a sturdier base for a high tower, you can increase the base height."
+msgstr "Bu ayarı etkinleştirmeniz, modelinizde olmasa bile prime tower'ınıza bir brim kazandırır. Eğer yüksek bir kule için daha sağlam bir taban istiyorsanız, taban yüksekliğini artırabilirsiniz."
 
 msgctxt "center_object label"
 msgid "Center Object"
@@ -710,11 +710,11 @@ msgstr "Çap"
 
 msgctxt "support_tree_max_diameter_increase_by_merges_when_support_to_model label"
 msgid "Diameter Increase To Model"
-msgstr ""
+msgstr "Modele Göre Çap Artışı"
 
 msgctxt "support_tree_bp_diameter description"
 msgid "Diameter every branch tries to achieve when reaching the buildplate. Improves bed adhesion."
-msgstr ""
+msgstr "Her dalın yapı levhasına ulaşırken elde etmeye çalıştığı çap. Yatak yapışmasını geliştirir."
 
 msgctxt "adhesion_type description"
 msgid "Different options that help to improve both priming your extrusion and adhesion to the build plate. Brim adds a single layer flat area around the base of your model to prevent warping. Raft adds a thick grid with a roof below the model. Skirt is a line printed around the model, but not connected to the model."
@@ -745,16 +745,16 @@ msgid "Distance between the printed support structure lines. This setting is cal
 msgstr "Yazdırılan destek yapısı hatları arasındaki mesafe. Bu ayar, destek yoğunluğu ile hesaplanır."
 
 msgctxt "support_bottom_distance description"
-msgid "Distance from the print to the bottom of the support."
-msgstr "Baskıdan desteğin altına olan mesafe."
+msgid "Distance from the print to the bottom of the support. Note that this is rounded up to the next layer height."
+msgstr "Baskıdan desteğin altına kadar olan mesafe. Bunun bir sonraki katman yüksekliğine yuvarlandığını unutmayın."
 
 msgctxt "support_top_distance description"
 msgid "Distance from the top of the support to the print."
 msgstr "Yazdırılıcak desteğin üstüne olan mesafe."
 
 msgctxt "support_z_distance description"
-msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. This value is rounded up to a multiple of the layer height."
-msgstr "Destek yapısının üst/alt kısmından baskıya olan mesafe. Bu boşluk, model yazdırıldıktan sonra desteklerin sökülmesi için açıklık sağlar. Bu değer, katman yüksekliğinin iki katına kadar yuvarlanır."
+msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. The topmost support layer below the model might be a fraction of regular layers."
+msgstr "Desteğin üstü/altı ile baskı arasındaki mesafe. Bu boşluk, model basıldıktan sonra desteklerin kolayca çıkarılabilmesini sağlar. Modelin altındaki en üst destek katmanı, düzenli katmanların bir kısmı olabilir."
 
 msgctxt "infill_wipe_dist description"
 msgid "Distance of a travel move inserted after every infill line, to make the infill stick to the walls better. This option is similar to infill overlap, but without extrusion and only on one end of the infill line."
@@ -779,6 +779,14 @@ msgstr "Destek yapısının X/Y yönlerindeki çıkıntıya mesafesi."
 msgctxt "support_xy_distance description"
 msgid "Distance of the support structure from the print in the X/Y directions."
 msgstr "Destek yapısının X/Y yönlerindeki baskıya mesafesi."
+
+msgctxt "meshfix_fluid_motion_shift_distance description"
+msgid "Distance points are shifted to smooth the path"
+msgstr "Yolu düzeltmek için mesafe noktaları kaydırılır"
+
+msgctxt "meshfix_fluid_motion_small_distance description"
+msgid "Distance points are shifted to smooth the path"
+msgstr "Yolu düzeltmek için mesafe noktaları kaydırılır"
 
 msgctxt "min_infill_area description"
 msgid "Don't generate areas of infill smaller than this (use skin instead)."
@@ -827,6 +835,10 @@ msgstr "Konik Desteği Etkinleştir"
 msgctxt "draft_shield_enabled label"
 msgid "Enable Draft Shield"
 msgstr "Cereyan Kalkanını Etkinleştir"
+
+msgctxt "meshfix_fluid_motion_enabled label"
+msgid "Enable Fluid Motion"
+msgstr "Akışkan Hareketini Etkinleştir"
 
 msgctxt "ironing_enabled label"
 msgid "Enable Ironing"
@@ -887,6 +899,10 @@ msgstr "Hareket Salınımını Etkinleştir"
 msgctxt "ooze_shield_enabled description"
 msgid "Enable exterior ooze shield. This will create a shell around the model which is likely to wipe a second nozzle if it's at the same height as the first nozzle."
 msgstr "Dış sızdırma kalkanını etkinleştirir. Modelin etrafında, ilk nozül ile aynı yükseklikte olması halinde ikinci bir nozülü temizleyebilecek olan bir kalkan oluşturacaktır."
+
+msgctxt "small_skin_on_surface description"
+msgid "Enable small (up to 'Small Top/Bottom Width') regions on the topmost skinned layer (exposed to air) to be filled with walls instead of the default pattern."
+msgstr "En üstteki yüzey alanı katmanındaki (havaya maruz kalan) küçük (\"Küçük Üst/Alt Genişliği\"ne kadar) bölgeleri varsayılan desen yerine duvarlarla dolduran ayarı etkinleştirin."
 
 msgctxt "jerk_enabled description"
 msgid "Enables adjusting the jerk of print head when the velocity in the X or Y axis changes. Increasing the jerk can reduce printing time at the cost of print quality."
@@ -1080,6 +1096,14 @@ msgctxt "wall_0_material_flow description"
 msgid "Flow compensation on the outermost wall line."
 msgstr "En dıştaki duvar hattının akış telafisidir."
 
+msgctxt "wall_0_material_flow_roofing description"
+msgid "Flow compensation on the top surface outermost wall line."
+msgstr "Üst Yüzeyin En Dış Duvar Hattında Akış Telafisi."
+
+msgctxt "wall_x_material_flow_roofing description"
+msgid "Flow compensation on top surface wall lines for all wall lines except the outermost one."
+msgstr "Tüm duvar hatları için dıştaki hariç üst yüzey duvar hatlarında akış telafi."
+
 msgctxt "skin_material_flow description"
 msgid "Flow compensation on top/bottom lines."
 msgstr "Üst/alt hatların akış telafisidir."
@@ -1099,6 +1123,18 @@ msgstr "Duvar hatlarının akış telafisidir."
 msgctxt "material_flow description"
 msgid "Flow compensation: the amount of material extruded is multiplied by this value."
 msgstr "Akış dengeleme: sıkıştırılan malzeme miktarı bu değerle çoğaltılır."
+
+msgctxt "meshfix_fluid_motion_angle label"
+msgid "Fluid Motion Angle"
+msgstr "Akışkan Hareket Açısı"
+
+msgctxt "meshfix_fluid_motion_shift_distance label"
+msgid "Fluid Motion Shift Distance"
+msgstr "Akışkan Hareketi Kaydırma Mesafesi"
+
+msgctxt "meshfix_fluid_motion_small_distance label"
+msgid "Fluid Motion Small Distance"
+msgstr "Akışkan Hareketi Küçük Mesafe"
 
 msgctxt "material_flush_purge_length label"
 msgid "Flush Purge Length"
@@ -1256,6 +1292,10 @@ msgctxt "machine_gcode_flavor option Griffin"
 msgid "Griffin"
 msgstr "Griffin"
 
+msgctxt "group_outer_walls label"
+msgid "Group Outer Walls"
+msgstr "Dış Duvarları Grupla"
+
 msgctxt "infill_pattern option gyroid"
 msgid "Gyroid"
 msgstr "Gyroid"
@@ -1298,7 +1338,7 @@ msgstr "Delik Yatay Büyüme"
 
 msgctxt "hole_xy_offset_max_diameter label"
 msgid "Hole Horizontal Expansion Max Diameter"
-msgstr ""
+msgstr "Delik Yatay Büyüme Maksimum Çapı"
 
 msgctxt "small_hole_max_size description"
 msgid "Holes and part outlines with a diameter smaller than this will be printed using Small Feature Speed."
@@ -1378,15 +1418,19 @@ msgstr "Printer-start gcode betiğinin tamamlanmasında her bir ekstrüder filam
 
 msgctxt "support_interface_priority description"
 msgid "How support interface and support will interact when they overlap. Currently only implemented for support roof."
-msgstr ""
+msgstr "Destek arayüzü ve destek çakıştıklarında nasıl etkileşime girerler? Şu anda sadece destek çatısı için uygulanmaktadır."
 
 msgctxt "support_tree_min_height_to_model description"
 msgid "How tall a branch has to be if it is placed on the model. Prevents small blobs of support. This setting is ignored when a branch is supporting a support roof."
-msgstr ""
+msgstr "Model üzerine yerleştirilmesi gereken bir dalın ne kadar uzun olması gerektiği. Küçük destek lekelerini önler. Bir dalın bir destek çatısını desteklemesi durumunda bu ayar göz ardı edilir."
 
 msgctxt "bridge_skin_support_threshold description"
 msgid "If a skin region is supported for less than this percentage of its area, print it using the bridge settings. Otherwise it is printed using the normal skin settings."
 msgstr "Eğer bir yüzey alanı bölgesi, alanının bu yüzdeden daha azı için destekleniyorsa, köprü ayarlarını kullanarak yazdırın. Aksi halde normal yüzey alanı ayarları kullanılarak yazdırılır."
+
+msgctxt "meshfix_fluid_motion_angle description"
+msgid "If a toolpath-segment deviates more than this angle from the general motion it is smoothed."
+msgstr "Bir takım yolu parçası, genel harekete göre bu açıdan daha fazla bir sapma gösterirse düzeltilir."
 
 msgctxt "bridge_enable_more_layers description"
 msgid "If enabled, the second and third layers above the air are printed using the following settings. Otherwise, those layers are printed using the normal settings."
@@ -1530,7 +1574,7 @@ msgstr "İlk Katman Alt Akışı"
 
 msgctxt "support_tree_bp_diameter label"
 msgid "Initial Layer Diameter"
-msgstr ""
+msgstr "İlk Katman Çapı"
 
 msgctxt "material_flow_layer_0 label"
 msgid "Initial Layer Flow"
@@ -1634,11 +1678,11 @@ msgstr "İçten Dışa"
 
 msgctxt "support_interface_priority option interface_lines_overwrite_support_area"
 msgid "Interface lines preferred"
-msgstr ""
+msgstr "Tercih edilen arayüz hatları"
 
 msgctxt "support_interface_priority option interface_area_overwrite_support_area"
 msgid "Interface preferred"
-msgstr ""
+msgstr "Tercih edilen arayüz"
 
 msgctxt "interlocking_beam_layer_count label"
 msgid "Interlocking Beam Layer Count"
@@ -1698,7 +1742,7 @@ msgstr "Merkez Nokta"
 
 msgctxt "material_is_support_material label"
 msgid "Is support material"
-msgstr ""
+msgstr "Destek malzemesi mi"
 
 msgctxt "material_crystallinity description"
 msgid "Is this material the type that breaks off cleanly when heated (crystalline), or is it the type that produces long intertwined polymer chains (non-crystalline)?"
@@ -1706,7 +1750,7 @@ msgstr "Bu malzeme ısıtıldığında temiz bir şekilde parçalanan tür de mi
 
 msgctxt "material_is_support_material description"
 msgid "Is this material typically used as a support material during printing."
-msgstr ""
+msgstr "Bu malzeme genellikle baskı sırasında destek malzemesi olarak mı kullanılır"
 
 msgctxt "magic_fuzzy_skin_outside_only description"
 msgid "Jitter only the parts' outlines and not the parts' holes."
@@ -1774,11 +1818,11 @@ msgstr "Yıldırım Dolgu Destek Açısı"
 
 msgctxt "support_tree_limit_branch_reach label"
 msgid "Limit Branch Reach"
-msgstr ""
+msgstr "Dal Erişimini Sınırla"
 
 msgctxt "support_tree_limit_branch_reach description"
 msgid "Limit how far each branch should travel from the point it supports. This can make the support more sturdy, but will increase the amount of branches (and because of that material usage/print time)"
-msgstr ""
+msgstr "Her dalın desteklediği noktadan ne kadar uzağa gitmesi gerektiğini sınırlayın. Bu sınırlama, desteği daha sağlam hale getirebilir, ancak dalların miktarını (ve bu nedenle, malzeme kullanımı/baskı süresini) artıracaktır"
 
 msgctxt "cutting_mesh description"
 msgid "Limit the volume of this mesh to within other meshes. You can use this to make certain areas of one mesh print with different settings and with a whole different extruder."
@@ -1930,7 +1974,7 @@ msgstr "Maksimum Z İvmesi"
 
 msgctxt "support_tree_angle label"
 msgid "Maximum Branch Angle"
-msgstr ""
+msgstr "Maksimum Dal Açısı"
 
 msgctxt "meshfix_maximum_deviation label"
 msgid "Maximum Deviation"
@@ -2086,7 +2130,7 @@ msgstr "Minimum Besleme Hızı"
 
 msgctxt "support_tree_min_height_to_model label"
 msgid "Minimum Height To Model"
-msgstr ""
+msgstr "Modele Göre Minimum Yükseklik"
 
 msgctxt "min_infill_area label"
 msgid "Minimum Infill Area"
@@ -2338,11 +2382,11 @@ msgstr "Ekstruder Ofseti"
 
 msgctxt "support_tree_rest_preference option buildplate"
 msgid "On buildplate when possible"
-msgstr ""
+msgstr "Mümkün olduğunda yapı levhası üzerinde"
 
 msgctxt "support_tree_rest_preference option graceful"
 msgid "On model if required"
-msgstr ""
+msgstr "Gerektiğinde model üzerinde"
 
 msgctxt "print_sequence option one_at_a_time"
 msgid "One at a Time"
@@ -2370,7 +2414,7 @@ msgstr "Sızdırma Kalkanı Mesafesi"
 
 msgctxt "support_tree_branch_reach_limit label"
 msgid "Optimal Branch Range"
-msgstr ""
+msgstr "Optimum Dal Aralığı"
 
 msgctxt "optimize_wall_printing_order label"
 msgid "Optimize Wall Printing Order"
@@ -2416,6 +2460,10 @@ msgctxt "wall_0_wipe_dist label"
 msgid "Outer Wall Wipe Distance"
 msgstr "Dış Duvar Sürme Mesafesi"
 
+msgctxt "group_outer_walls description"
+msgid "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped."
+msgstr "Aynı katman içindeki farklı adalardaki dış duvarlar sırayla basılır. Etkinleştirildiğinde, akış değişiklik miktarı duvarlar tür türüne basıldığı için sınırlıdır, devre dışı bırakıldığında ise aynı adalardaki duvarlar gruplandığı için adalar arasındaki seyahat sayısı azalır."
+
 msgctxt "inset_direction option outside_in"
 msgid "Outside To Inside"
 msgstr "Dıştan İçe"
@@ -2458,7 +2506,7 @@ msgstr "Bu miktardan daha kısa çevre uzunluğuna sahip dilimlenmiş katmanlard
 
 msgctxt "support_tree_angle_slow label"
 msgid "Preferred Branch Angle"
-msgstr ""
+msgstr "Tercih Edilen Dal Açısı"
 
 msgctxt "wall_transition_filter_deviation description"
 msgid "Prevent transitioning back and forth between one extra wall and one less. This margin extends the range of line widths which follow to [Minimum Wall Line Width - Margin, 2 * Minimum Wall Line Width + Margin]. Increasing this margin reduces the number of transitions, which reduces the number of extrusion starts/stops and travel time. However, large line width variation can lead to under- or overextrusion problems."
@@ -2469,8 +2517,20 @@ msgid "Prime Tower Acceleration"
 msgstr "İlk Direk İvmesi"
 
 msgctxt "prime_tower_brim_enable label"
-msgid "Prime Tower Brim"
-msgstr "Astarlama Direği Kenarı"
+msgid "Prime Tower Base"
+msgstr "Başlangıç Kulesi Tabanı"
+
+msgctxt "prime_tower_base_height label"
+msgid "Prime Tower Base Height"
+msgstr "Başlangıç Kulesi Taban Yüksekliği"
+
+msgctxt "prime_tower_base_size label"
+msgid "Prime Tower Base Size"
+msgstr "Başlangıç Kulesi Taban Boyutu"
+
+msgctxt "prime_tower_base_curve_magnitude label"
+msgid "Prime Tower Base Slope"
+msgstr "Prime Tower Taban Eğimi"
 
 msgctxt "prime_tower_flow label"
 msgid "Prime Tower Flow"
@@ -2488,6 +2548,10 @@ msgctxt "prime_tower_min_volume label"
 msgid "Prime Tower Minimum Volume"
 msgstr "İlk Direğin Minimum Hacmi"
 
+msgctxt "prime_tower_raft_base_line_spacing label"
+msgid "Prime Tower Raft Line Spacing"
+msgstr "Başlangıç Kulesi Salı İzi Aralığı"
+
 msgctxt "prime_tower_size label"
 msgid "Prime Tower Size"
 msgstr "İlk Direk Boyutu"
@@ -2503,10 +2567,6 @@ msgstr "İlk Direk X Konumu"
 msgctxt "prime_tower_position_y label"
 msgid "Prime Tower Y Position"
 msgstr "İlk Direk Y Konumu"
-
-msgctxt "prime_tower_brim_enable description"
-msgid "Prime-towers might need the extra adhesion afforded by a brim even if the model doesn't. Presently can't be used with the 'Raft' adhesion-type."
-msgstr "Model ihtiyaç duymasa da astarlama direkleri bir kenarın sağladığı ekstra yapışkanlığa ihtiyaç duyabilir. Şu anda \"radye\" yapışma tipi ile birlikte kullanılamamaktadır."
 
 msgctxt "acceleration_print label"
 msgid "Print Acceleration"
@@ -2578,7 +2638,7 @@ msgstr "İlk Katman Yazdırma Sıcaklığı"
 
 msgctxt "skirt_height description"
 msgid "Printing the innermost skirt line with multiple layers makes it easy to remove the skirt."
-msgstr ""
+msgstr "En içteki etek çizgisinin birden fazla katmanla yazdırılması, eteğin çıkarılmasını kolaylaştırır."
 
 msgctxt "alternate_extra_perimeter description"
 msgid "Prints an extra wall at every other layer. This way infill gets caught between these extra walls, resulting in stronger prints."
@@ -2818,7 +2878,7 @@ msgstr "Üst/alt şeklin en dıştaki parçasını eş merkezli hatlar ile deği
 
 msgctxt "support_tree_rest_preference label"
 msgid "Rest Preference"
-msgstr ""
+msgstr "Yerleştirme Tercihi"
 
 msgctxt "travel_retract_before_outer_wall label"
 msgid "Retract Before Outer Wall"
@@ -2966,7 +3026,7 @@ msgstr "Etek Mesafesi"
 
 msgctxt "skirt_height label"
 msgid "Skirt Height"
-msgstr ""
+msgstr "Etek Yüksekliği"
 
 msgctxt "skirt_line_count label"
 msgid "Skirt Line Count"
@@ -3024,9 +3084,13 @@ msgctxt "cool_min_temperature label"
 msgid "Small Layer Printing Temperature"
 msgstr "Küçük Katman Yazdırma Sıcaklığı"
 
+msgctxt "small_skin_on_surface label"
+msgid "Small Top/Bottom On Surface"
+msgstr "Yüzeyde Küçük Üst/Alt"
+
 msgctxt "small_skin_width label"
 msgid "Small Top/Bottom Width"
-msgstr ""
+msgstr "Küçük Üst/​Alt Genişlik"
 
 msgctxt "small_feature_speed_factor_0 description"
 msgid "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
@@ -3037,12 +3101,12 @@ msgid "Small features will be printed at this percentage of their normal print s
 msgstr "Küçük özellikler normal baskı hızının bu yüzdesinde basılacaktır. Daha yavaş baskı, yapışma ve doğruluğu artırmaya yardımcı olabilir."
 
 msgctxt "small_skin_width description"
-msgid "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions."
-msgstr ""
+msgid "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions. Off for the topmost (air-exposed) layer by default (see 'Small Top/Bottom On Surface')."
+msgstr "Küçük üst/alt bölgeler, varsayılan üst/alt deseni yerine duvarlarla doldurulur. Bu, sarsıntılı hareketleri önlemeye yardımcı olur. Varsayılan ayarda, en üstteki (havaya maruz kalan) katman için kapalıdır (bkz. 'Yüzeyde Küçük Üst/Alt')."
 
 msgctxt "brim_smart_ordering label"
 msgid "Smart Brim"
-msgstr ""
+msgstr "Akıllı Kenar"
 
 msgctxt "z_seam_corner option z_seam_corner_weighted"
 msgid "Smart Hiding"
@@ -3282,7 +3346,7 @@ msgstr "Destek Arayüzü Şekli"
 
 msgctxt "support_interface_priority label"
 msgid "Support Interface Priority"
-msgstr ""
+msgstr "Destek Arayüzü Önceliği"
 
 msgctxt "support_interface_skip_height label"
 msgid "Support Interface Resolution"
@@ -3422,11 +3486,11 @@ msgstr "Destek Z Mesafesi"
 
 msgctxt "support_interface_priority option support_lines_overwrite_interface_area"
 msgid "Support lines preferred"
-msgstr ""
+msgstr "Tercih edilen destek hatları"
 
 msgctxt "support_interface_priority option support_area_overwrite_interface_area"
 msgid "Support preferred"
-msgstr ""
+msgstr "Tercih edilen destek"
 
 msgctxt "support_supported_skin_fan_speed label"
 msgid "Supported Skin Fan Speed"
@@ -3454,7 +3518,7 @@ msgstr "Yüzey enerjisi."
 
 msgctxt "brim_smart_ordering description"
 msgid "Swap print order of the innermost and second innermost brim lines. This improves brim removal."
-msgstr ""
+msgstr "En içteki ve ikinci en içteki kenar çizgilerinin baskı sırasını değiştirin. Bu, kenarın çıkarılmasını kolaylaştırır."
 
 msgctxt "alternate_carve_order description"
 msgid "Switch to which mesh intersecting volumes will belong with every layer, so that the overlapping meshes become interwoven. Turning this setting off will cause one of the meshes to obtain all of the volume in the overlap, while it is removed from the other meshes."
@@ -3572,6 +3636,14 @@ msgctxt "raft_surface_acceleration description"
 msgid "The acceleration with which the top raft layers are printed."
 msgstr "Üst radye katmanların yazdırıldığı ivme."
 
+msgctxt "acceleration_wall_x_roofing description"
+msgid "The acceleration with which the top surface inner walls are printed."
+msgstr "Üst yüzey iç duvarlarının hangi hızla basıldığı."
+
+msgctxt "acceleration_wall_0_roofing description"
+msgid "The acceleration with which the top surface outermost walls are printed."
+msgstr "Üst Yüzeyin En Dış Duvarlarının Hangi Hızda Basıldığı."
+
 msgctxt "acceleration_wall description"
 msgid "The acceleration with which the walls are printed."
 msgstr "Duvarların yazdırıldığı ivme."
@@ -3678,7 +3750,7 @@ msgstr "Ağaç desteğin en ince dallarının çapı. Daha kalın dallar daha da
 
 msgctxt "support_tree_tip_diameter description"
 msgid "The diameter of the top of the tip of the branches of tree support."
-msgstr ""
+msgstr "Ağaç desteğinin dallarının ucunun en üstteki çapı."
 
 msgctxt "machine_feeder_wheel_diameter description"
 msgid "The diameter of the wheel that drives the material in the feeder."
@@ -3711,6 +3783,10 @@ msgstr "Radyenin orta katmanı için radye hatları arasındaki mesafe. Ortadaki
 msgctxt "raft_surface_line_spacing description"
 msgid "The distance between the raft lines for the top raft layers. The spacing should be equal to the line width, so that the surface is solid."
 msgstr "Üst radye katmanları için radye hatları arasındaki mesafe. Yüzeyin katı olabilmesi için aralık hat genişliğine eşit olmalıdır."
+
+msgctxt "prime_tower_raft_base_line_spacing description"
+msgid "The distance between the raft lines for the unique prime tower raft layer. Wide spacing makes for easy removal of the raft from the build plate."
+msgstr "Tek başlangıç kulesi sal katmanı için sal izleri arasındaki mesafe. Geniş aralıklar, salın yapıştırma tablasından kolay çıkarılmasını sağlar."
 
 msgctxt "interlocking_depth description"
 msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
@@ -3908,6 +3984,10 @@ msgctxt "layer_height_0 description"
 msgid "The height of the initial layer in mm. A thicker initial layer makes adhesion to the build plate easier."
 msgstr "İlk katmanın milimetre cinsinden yüksekliği. Kalın ilk katmanlar yapı levhasına yapışmayı kolaylaştırır."
 
+msgctxt "prime_tower_base_height description"
+msgid "The height of the prime tower base. Increasing this value will result in a more sturdy prime tower because the base will be wider. If this setting is too low, the prime tower will not have a sturdy base."
+msgstr "Prime tower tabanının yüksekliği. Bu değeri artırmak, taban daha geniş olacağı için daha sağlam bir prime tower oluşturur. Eğer bu ayar çok düşükse, prime tower sağlam bir tabana sahip olmayacaktır."
+
 msgctxt "support_bottom_stair_step_height description"
 msgid "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures. Set to zero to turn off the stair-like behaviour."
 msgstr "Modelin üzerinde sabit duran desteğin merdiven benzeri alt kısmının basamak yüksekliği. Daha düşük bir değer desteğin hareket ettirilmesini zorlaştırırken, daha yüksek bir değer kararsız destek yapılarına yol açabilir. Merdiven benzeri davranışı kapatmak için sıfır değerine ayarlayın."
@@ -3980,6 +4060,10 @@ msgctxt "retraction_amount description"
 msgid "The length of material retracted during a retraction move."
 msgstr "Geri çekme hareketi sırasında geri çekilen malzemenin uzunluğu."
 
+msgctxt "prime_tower_base_curve_magnitude description"
+msgid "The magnitude factor used for the slope of the prime tower base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
+msgstr "Prime tower tabanının eğiminde kullanılan büyüklük faktörü. Bu değeri artırırsanız, taban daha ince hale gelir. Azaltırsanız, taban daha kalın olur."
+
 msgctxt "machine_buildplate_type description"
 msgid "The material of the build plate installed on the printer."
 msgstr "Yazıcıya takılı yapı levhasının malzemesi."
@@ -3998,7 +4082,7 @@ msgstr "Yazdırılabilir yapıldıktan sonra çıkıntıların en büyük açıs
 
 msgctxt "support_tree_angle description"
 msgid "The maximum angle of the branches while they grow around the model. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
-msgstr ""
+msgstr "Dalların modelin etrafında büyürken aldıkları maksimum açı. Daha dikey ve daha dengeli hale getirmek için daha düşük bir açı kullanın. Daha fazla erişim için daha yüksek bir açı kullanın."
 
 msgctxt "conical_overhang_hole_size description"
 msgid "The maximum area of a hole in the base of the model before it's removed by Make Overhang Printable.  Holes smaller than this will be retained.  A value of 0 mm² will fill all holes in the models base."
@@ -4071,6 +4155,14 @@ msgstr "Etek ve kenarların yazdırıldığı maksimum anlık hız değişimi."
 msgctxt "jerk_support description"
 msgid "The maximum instantaneous velocity change with which the support structure is printed."
 msgstr "Destek yapısının yazdırıldığı maksimum anlık hız değişimi."
+
+msgctxt "jerk_wall_x_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface inner walls are printed."
+msgstr "Üst Yüzeyin En Dış Duvarlarının Basıldığı Anki Maksimum Hız Değişikliği."
+
+msgctxt "jerk_wall_0_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface outermost walls are printed."
+msgstr "Üst Yüzeyin İç Duvarlarının Basıldığı Anki Maksimum Hız Değişikliği."
 
 msgctxt "jerk_wall description"
 msgid "The maximum instantaneous velocity change with which the walls are printed."
@@ -4174,7 +4266,7 @@ msgstr "Yeterince malzeme temizlemek için ilk direğin her bir katmanı için m
 
 msgctxt "support_tree_max_diameter_increase_by_merges_when_support_to_model description"
 msgid "The most the diameter of a branch that has to connect to the model may increase by merging with branches that could reach the buildplate. Increasing this reduces print time, but increases the area of support that rests on model"
-msgstr ""
+msgstr "Modele bağlanması gereken dalın çapının, yapı levhasına erişebilecek dallarla birleşerek en fazla ne kadar artabileceği. Bunu artırmak baskı süresini azaltır, ancak modele dayanan destek alanını artırır"
 
 msgctxt "machine_name description"
 msgid "The name of your 3D printer model."
@@ -4302,11 +4394,11 @@ msgstr "Bir katmandaki her kısmın basılmaya başlanacağı yere yakın konum.
 
 msgctxt "support_tree_angle_slow description"
 msgid "The preferred angle of the branches, when they do not have to avoid the model. Use a lower angle to make them more vertical and more stable. Use a higher angle for branches to merge faster."
-msgstr ""
+msgstr "Modelden kaçınmak zorunda olmadıklarında dalların tercih edilen açısı. Daha dikey ve daha dengeli hale getirmek için daha düşük bir açı kullanın. Dalların daha hızlı birleşmesi için daha yüksek bir açı kullanın."
 
 msgctxt "support_tree_rest_preference description"
 msgid "The preferred placement of the support structures. If structures can't be placed at the preferred location, they will be place elsewhere, even if that means placing them on the model."
-msgstr ""
+msgstr "Destek yapılarının tercih edilen yerleşimi. Yapılar tercih edilen yere yerleştirilemiyorsa başka bir yere yerleştirilecektir. Bu, onları modelin üzerine yerleştirmek anlamına da gelebilir."
 
 msgctxt "jerk_layer_0 description"
 msgid "The print maximum instantaneous velocity change for the initial layer."
@@ -4456,6 +4548,14 @@ msgctxt "raft_surface_speed description"
 msgid "The speed at which the top raft layers are printed. These should be printed a bit slower, so that the nozzle can slowly smooth out adjacent surface lines."
 msgstr "Radye katmanlarının yazdırıldığı hız. Nozülün bitişik yüzey hatlarını yavaşça düzeltebilmesi için, bu kısımlar biraz daha yavaş yazdırılmalıdır."
 
+msgctxt "speed_wall_x_roofing description"
+msgid "The speed at which the top surface inner walls are printed."
+msgstr "Üst Yüzey İç Duvarların Hangi Hızda Basıldığı."
+
+msgctxt "speed_wall_0_roofing description"
+msgid "The speed at which the top surface outermost wall is printed."
+msgstr "Üst Yüzeyin En Dış Duvarlarının Hangi Hızda Basıldığı."
+
 msgctxt "speed_z_hop description"
 msgid "The speed at which the vertical Z movement is made for Z Hops. This is typically lower than the print speed since the build plate or machine's gantry is harder to move."
 msgstr "Z Atlamaları için yapılan dikey Z hareketinin gerçekleştirileceği hızdır. Yapı plakasının veya makine tezgahının hareket etmesi daha zor olduğundan genelde baskı hızından daha düşüktür."
@@ -4517,8 +4617,8 @@ msgid "The temperature to which to already start cooling down just before the en
 msgstr "Yazdırma bitmeden hemen önce soğuma işleminin başladığı sıcaklık."
 
 msgctxt "material_print_temperature_layer_0 description"
-msgid "The temperature used for printing the first layer. Set at 0 to disable special handling of the initial layer."
-msgstr "İlk katmanı yazdırmak için kullanılan sıcaklık. İlk katmanın özel kullanımını devre dışı bırakmak için 0’a ayarlayın."
+msgid "The temperature used for printing the first layer."
+msgstr "İlk katmanın basımında kullanılan sıcaklık."
 
 msgctxt "material_print_temperature description"
 msgid "The temperature used for printing."
@@ -4596,6 +4696,10 @@ msgctxt "interlocking_beam_width description"
 msgid "The width of the interlocking structure beams."
 msgstr "İç içe geçen yapı kirişlerinin genişliği."
 
+msgctxt "prime_tower_base_size description"
+msgid "The width of the prime tower brim/base. A larger base enhances adhesion to the build plate, but also reduces the effective print area."
+msgstr "Prime tower brim/tabanının genişliği. Daha büyük bir taban yapışmayı artırır, ancak etkili baskı alanını da azaltır."
+
 msgctxt "prime_tower_size description"
 msgid "The width of the prime tower."
 msgstr "İlk Direk Genişliği."
@@ -4638,7 +4742,7 @@ msgstr "Modelin etrafında (sıcak) hava ve kalkanlara dışarıdaki hava akım�
 
 msgctxt "support_tree_tip_diameter label"
 msgid "Tip Diameter"
-msgstr ""
+msgstr "Uç Çapı"
 
 msgctxt "material_shrinkage_percentage_xy description"
 msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor in the XY-direction (horizontally)."
@@ -4663,6 +4767,38 @@ msgstr "Üst Yüzey Genişleme Mesafesi"
 msgctxt "top_skin_preshrink label"
 msgid "Top Skin Removal Width"
 msgstr "Üst Yüzey Kaldırma Genişliği"
+
+msgctxt "acceleration_wall_x_roofing label"
+msgid "Top Surface Inner Wall Acceleration"
+msgstr "Üst Yüzey İç Duvar Hızlanması"
+
+msgctxt "jerk_wall_x_roofing label"
+msgid "Top Surface Inner Wall Jerk"
+msgstr "Üst Yüzeyin En Dış Duvar Darbesi"
+
+msgctxt "speed_wall_x_roofing label"
+msgid "Top Surface Inner Wall Speed"
+msgstr "Üst Yüzey İç Duvar Hızı"
+
+msgctxt "wall_x_material_flow_roofing label"
+msgid "Top Surface Inner Wall(s) Flow"
+msgstr "Üst Yüzey İç Duvar Akışı"
+
+msgctxt "acceleration_wall_0_roofing label"
+msgid "Top Surface Outer Wall Acceleration"
+msgstr "Üst Yüzey Dış Duvar Hızlanması"
+
+msgctxt "wall_0_material_flow_roofing label"
+msgid "Top Surface Outer Wall Flow"
+msgstr "Üst Yüzeyin En Dış Duvar Akışı"
+
+msgctxt "jerk_wall_0_roofing label"
+msgid "Top Surface Outer Wall Jerk"
+msgstr "Üst Yüzeyin İç Duvar Darbesi"
+
+msgctxt "speed_wall_0_roofing label"
+msgid "Top Surface Outer Wall Speed"
+msgstr "Üst Yüzeyin En Dış Duvar Hızı"
 
 msgctxt "acceleration_roofing label"
 msgid "Top Surface Skin Acceleration"
@@ -4822,7 +4958,7 @@ msgstr "Üçgenler"
 
 msgctxt "support_tree_max_diameter label"
 msgid "Trunk Diameter"
-msgstr ""
+msgstr "Gövde Çapı"
 
 msgctxt "machine_gcode_flavor option UltiGCode"
 msgid "Ultimaker 2"
@@ -4960,6 +5096,10 @@ msgctxt "support_interface_skip_height description"
 msgid "When checking where there's model above and below the support, take steps of the given height. Lower values will slice slower, while higher values may cause normal support to be printed in some places where there should have been support interface."
 msgstr "Desteğin üstünde ve altında model bulunduğunda, kontrol sırasında verilen yükseklikte adımlar uygulayın. Daha yüksek değerler, destek arayüzü olması gereken yerlerde yazdırılacak normal destek oluştururken daha düşük değerler daha yavaş dilimler."
 
+msgctxt "meshfix_fluid_motion_enabled description"
+msgid "When enabled tool paths are corrected for printers with smooth motion planners. Small movements that deviate from the general tool path direction are smoothed to improve fluid motions."
+msgstr "Bu ayar etkinleştirildiğinde, düzgün hareket planlayıcıları olan yazıcılar için takım yolları düzeltilir. Genel takım yolu yönünden sapan küçük hareketler, akışkan hareketlerini iyileştirmek için düzeltilir."
+
 msgctxt "infill_enable_travel_optimization description"
 msgid "When enabled, the order in which the infill lines are printed is optimized to reduce the distance travelled. The reduction in travel time achieved very much depends on the model being sliced, infill pattern, density, etc. Note that, for some models that have many small areas of infill, the time to slice the model may be greatly increased."
 msgstr "Aktifleştirildiğinde, dolgu hatlarının baskı düzeni, hareketi azaltmak için optimize edilir. Elde edilen hareket zamanındaki azalma dilimlenen modele, dolgu şekline ve yoğunluğuna vs. bağlıdır. Birçok ufak dolgu bölgesine sahip bazı modeller için modelin dilimlenme süresi önemli ölçüde artabilir."
@@ -4978,7 +5118,11 @@ msgstr "Sıfırdan büyük olduğunda, bu mesafeden daha uzun tarama mesafelerin
 
 msgctxt "hole_xy_offset_max_diameter description"
 msgid "When greater than zero, the Hole Horizontal Expansion is gradually applied on small holes (small holes are expanded more). When set to zero the Hole Horizontal Expansion will be applied to all holes. Holes larger than the Hole Horizontal Expansion Max Diameter are not expanded."
-msgstr ""
+msgstr "Sıfırdan büyük olduğunda, Delik Yatay Büyüme küçük deliklere kademeli olarak uygulanır (küçük delikler daha fazla büyütülür). Sıfır olarak ayarlandığında Delik Yatay Büyüme tüm deliklere uygulanacaktır. Delik Yatay Büyüme Maksimum Çapı’ndan daha büyük delikler genişletilmez."
+
+msgctxt "hole_xy_offset description"
+msgid "When greater than zero, the Hole Horizontal Expansion is the amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes. When this setting is enabled it can be further tuned with Hole Horizontal Expansion Max Diameter."
+msgstr "Delik Yatay Genişlemesi, sıfırdan büyük olmak koşuluyla, her katmandaki tüm deliklere uygulanan ofset miktarıdır. Pozitif değerlerde delikler büyür, negatif değerlerde ise küçülür. Bu ayar etkinleştirildiğinde, Delik Yatay Genişleme Maksimum Çapı ile daha detaylı bir ayarlama yapılabilir."
 
 msgctxt "bridge_skin_material_flow description"
 msgid "When printing bridge skin regions, the amount of material extruded is multiplied by this value."
@@ -5344,246 +5488,82 @@ msgctxt "travel description"
 msgid "travel"
 msgstr "hareket"
 
-#~ msgctxt "wireframe_strategy option compensate"
-#~ msgid "Compensate"
-#~ msgstr "Dengele"
+#~ msgctxt "support_bottom_distance description"
+#~ msgid "Distance from the print to the bottom of the support."
+#~ msgstr "Baskıdan desteğin altına olan mesafe."
 
-#~ msgctxt "wireframe_top_jump description"
-#~ msgid "Creates a small knot at the top of an upward line, so that the consecutive horizontal layer has a better chance to connect to it. Only applies to Wire Printing."
-#~ msgstr "Ardından gelen yatay katmanın daha iyi bir bağlanma şansının olması için, yukarı doğru çıkan hattın ucunda küçük bir düğüm oluşturulur. Sadece kablo yazdırmaya uygulanır."
+#~ msgctxt "support_z_distance description"
+#~ msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. This value is rounded up to a multiple of the layer height."
+#~ msgstr "Destek yapısının üst/alt kısmından baskıya olan mesafe. Bu boşluk, model yazdırıldıktan sonra desteklerin sökülmesi için açıklık sağlar. Bu değer, katman yüksekliğinin iki katına kadar yuvarlanır."
 
-#~ msgctxt "wireframe_bottom_delay description"
-#~ msgid "Delay time after a downward move. Only applies to Wire Printing."
-#~ msgstr "Aşağı doğru hareketten sonraki bekleme süresi. Sadece kablo yazdırmaya uygulanır."
+#~ msgctxt "gradual_flow_discretisation_step_size description"
+#~ msgid "Duration of each step in the gradual flow change"
+#~ msgstr "Kademeli akış değişimindeki her adımın süresi"
 
-#~ msgctxt "wireframe_top_delay description"
-#~ msgid "Delay time after an upward move, so that the upward line can harden. Only applies to Wire Printing."
-#~ msgstr "Yukarı hattın sertleşmesi için, yukarıya doğru hareketten sonraki gecikme süresi. Sadece kablo yazdırmaya uygulanır."
+#~ msgctxt "gradual_flow_enabled description"
+#~ msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
+#~ msgstr "Kademeli akış değişikliklerini etkinleştir. Bu ayar etkinleştirildiğinde, akış, hedef akışa doğru kademeli olarak artırılır/azaltılır. Bu, ekstruder motoru çalıştırıldığında/durdurulduğunda akışın hemen değişmediği, bowden tüplü yazıcılar için kullanışlı bir özelliktir."
 
-#~ msgctxt "wireframe_flat_delay description"
-#~ msgid "Delay time between two horizontal segments. Introducing such a delay can cause better adhesion to previous layers at the connection points, while too long delays cause sagging. Only applies to Wire Printing."
-#~ msgstr "İki yatay dilim arasındaki gecikme süresi. Haha uzun gecikmeler düşüşe neden olduğu halde, bu tür bir gecikme uygulamak bağlantı noktalarındaki önceki katmanlara daha iyi yapışma sağlayabilir. Sadece kablo yazdırmaya uygulanır."
+#~ msgctxt "reset_flow_duration description"
+#~ msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
+#~ msgstr "Bu değerden daha uzun herhangi bir hareket için, malzeme akışı hedef akışına sıfırlanır"
 
-#~ msgctxt "wireframe_nozzle_clearance description"
-#~ msgid "Distance between the nozzle and horizontally downward lines. Larger clearance results in diagonally downward lines with a less steep angle, which in turn results in less upward connections with the next layer. Only applies to Wire Printing."
-#~ msgstr "Nozül ve aşağı yöndeki hatlar arasındaki mesafe. Daha büyük açıklık, dik açısı daha küçük çapraz şekilde aşağı yöndeki hatların oluşmasına neden olur, dolayısıyla bu durum bir sonraki katman ile yukarı yönde daha az bağlantıya yol açar. Sadece kablo yazdırmaya uygulanır."
+#~ msgctxt "gradual_flow_discretisation_step_size label"
+#~ msgid "Gradual flow discretisation step size"
+#~ msgstr "Kademeli akış ayrıştırma adım boyutu"
 
-#~ msgctxt "wireframe_up_half_speed description"
-#~ msgid ""
-#~ "Distance of an upward move which is extruded with half speed.\n"
-#~ "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-#~ msgstr ""
-#~ "Yarı hızda sıkıştırılmış yukarı doğru hareket mesafesi.\n"
-#~ "Bu katmanlarda malzemeyi çok fazla ısıtmayarak önceki katmanlarda daha iyi yapışma sağlayabilir. Sadece kablo yazdırmaya uygulanır."
+#~ msgctxt "gradual_flow_enabled label"
+#~ msgid "Gradual flow enabled"
+#~ msgstr "Kademeli akış etkin"
 
-#~ msgctxt "wireframe_fall_down description"
-#~ msgid "Distance with which the material falls down after an upward extrusion. This distance is compensated for. Only applies to Wire Printing."
-#~ msgstr "Malzemenin yukarı doğru ekstrüzyondan sonra aşağı inme mesafesi. Mesafe telafi edilir. Sadece kablo yazdırmaya uygulanır."
+#~ msgctxt "max_flow_acceleration label"
+#~ msgid "Gradual flow max acceleration"
+#~ msgstr "Kademeli akış maksimum ivme"
 
-#~ msgctxt "wireframe_drag_along description"
-#~ msgid "Distance with which the material of an upward extrusion is dragged along with the diagonally downward extrusion. This distance is compensated for. Only applies to Wire Printing."
-#~ msgstr "Yukarı yönlü ekstrüzyon materyalinin çapraz şekilde aşağı yönlü ekstrüzyona sürüklendiği mesafe. Mesafe telafi edilir. Sadece kablo yazdırmaya uygulanır."
+#~ msgctxt "layer_0_max_flow_acceleration label"
+#~ msgid "Initial layer max flow acceleration"
+#~ msgstr "İlk katman maksimum akış ivmesi"
 
-#~ msgctxt "wireframe_flow_connection description"
-#~ msgid "Flow compensation when going up or down. Only applies to Wire Printing."
-#~ msgstr "Yukarı veya aşağı yönde hareket ederken akış dengelenmesi. Sadece kablo yazdırmaya uygulanır."
+#~ msgctxt "max_flow_acceleration description"
+#~ msgid "Maximum acceleration for gradual flow changes"
+#~ msgstr "Kademeli akış değişiklikleri için maksimum ivme"
 
-#~ msgctxt "wireframe_flow_flat description"
-#~ msgid "Flow compensation when printing flat lines. Only applies to Wire Printing."
-#~ msgstr "Düz hatlar yazdırılırken akış dengelenmesi. Sadece kablo yazdırmaya uygulanır."
+#~ msgctxt "layer_0_max_flow_acceleration description"
+#~ msgid "Minimum speed for gradual flow changes for the first layer"
+#~ msgstr "İlk katmandaki kademeli akış değişiklikleri için minimum hız"
 
-#~ msgctxt "wireframe_flow description"
-#~ msgid "Flow compensation: the amount of material extruded is multiplied by this value. Only applies to Wire Printing."
-#~ msgstr "Akış dengeleme: sıkıştırılan malzeme miktarı bu değerle çoğaltılır. Sadece kablo yazdırmaya uygulanır."
+#~ msgctxt "prime_tower_base_curve_magnitude label"
+#~ msgid "Prime Tower Base Curve Magnitude"
+#~ msgstr "Başlangıç Kulesi Taban Eğim Büyüklüğü"
 
-#~ msgctxt "support_tree_branch_distance description"
-#~ msgid "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove."
-#~ msgstr "Dalların modele temas ettiklerinde birbirlerine ne kadar uzaklıkta olacakları. Bu mesafenin kısa yapılması ağaç desteğin modele daha fazla noktada temas etmesini sağlayarak daha iyi bir sarkma sunacaktır ancak desteğin sökülmesini de daha güç hale getirecektir."
+#~ msgctxt "prime_tower_brim_enable label"
+#~ msgid "Prime Tower Brim"
+#~ msgstr "Astarlama Direği Kenarı"
 
-#~ msgctxt "wireframe_strategy option knot"
-#~ msgid "Knot"
-#~ msgstr "Düğüm"
+#~ msgctxt "prime_tower_brim_enable description"
+#~ msgid "Prime-towers might need the extra adhesion afforded by a brim even if the model doesn't. Presently can't be used with the 'Raft' adhesion-type."
+#~ msgstr "Model ihtiyaç duymasa da astarlama direkleri bir kenarın sağladığı ekstra yapışkanlığa ihtiyaç duyabilir. Şu anda \"radye\" yapışma tipi ile birlikte kullanılamamaktadır."
 
-#~ msgctxt "wireframe_straight_before_down description"
-#~ msgid "Percentage of a diagonally downward line which is covered by a horizontal line piece. This can prevent sagging of the top most point of upward lines. Only applies to Wire Printing."
-#~ msgstr "Yatay hat parçasıyla kaplanan çapraz şekilde aşağı yöndeki hat yüzdesi. Bu, yukarı yöndeki hatların en baştaki noktasının düşmesini engelleyebilir. Sadece kablo yazdırmaya uygulanır."
+#~ msgctxt "prime_tower_brim_enable description"
+#~ msgid "Prime-towers might need the extra adhesion afforded by a brim or raft, even if the model doesn't."
+#~ msgstr "Baskı modeli gerektirmese bile, başlangıç kuleleri modelin ekstra yapışmasını sağlamak için bir kenarlık veya sal gerektirebilir."
 
-#~ msgctxt "wireframe_enabled description"
-#~ msgid "Print only the outside surface with a sparse webbed structure, printing 'in thin air'. This is realized by horizontally printing the contours of the model at given Z intervals which are connected via upward and diagonally downward lines."
-#~ msgstr "“Belli belirsiz” yazdıran seyrek gövdeli bir yapı ile sadece dış yüzeyi yazdırın. Bu işlem, yukarı ve çapraz olarak aşağı yöndeki hatlar ile bağlı olan verilen Z aralıklarındaki modelin çevresini yatay olarak yazdırarak gerçekleştirilir."
+#~ msgctxt "reset_flow_duration label"
+#~ msgid "Reset flow duration"
+#~ msgstr "Akış süresini sıfırla"
 
-#~ msgctxt "support_tree_collision_resolution description"
-#~ msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
-#~ msgstr "Modele çarpmamak adına çarpışmaları hesaplamak için çözünürlük. Buna düşük bir değerin verilmesi daha az hata çıkaran daha isabetli ağaçların üretilmesini sağlar ancak dilimleme süresini önemli ölçüde artırır."
+#~ msgctxt "prime_tower_base_height description"
+#~ msgid "The height of the prime tower base."
+#~ msgstr "Başlangıç kulesi tabanının yüksekliği."
 
-#~ msgctxt "wireframe_strategy option retract"
-#~ msgid "Retract"
-#~ msgstr "Geri Çek"
+#~ msgctxt "prime_tower_base_curve_magnitude description"
+#~ msgid "The magnitude factor used for the curve of the prime tower foot."
+#~ msgstr "Başlangıç kulesi ayağının eğrisi için kullanılan büyüklük faktörü."
 
-#~ msgctxt "wireframe_printspeed description"
-#~ msgid "Speed at which the nozzle moves when extruding material. Only applies to Wire Printing."
-#~ msgstr "Malzemeleri sıkarken nozül hareketlerinin hızı. Sadece kablo yazdırmaya uygulanır."
+#~ msgctxt "material_print_temperature_layer_0 description"
+#~ msgid "The temperature used for printing the first layer. Set at 0 to disable special handling of the initial layer."
+#~ msgstr "İlk katmanı yazdırmak için kullanılan sıcaklık. İlk katmanın özel kullanımını devre dışı bırakmak için 0’a ayarlayın."
 
-#~ msgctxt "wireframe_printspeed_down description"
-#~ msgid "Speed of printing a line diagonally downward. Only applies to Wire Printing."
-#~ msgstr "Çapraz şekilde aşağı doğru bir hat yazdırma hızı. Sadece kablo yazdırmaya uygulanır."
-
-#~ msgctxt "wireframe_printspeed_up description"
-#~ msgid "Speed of printing a line upward 'in thin air'. Only applies to Wire Printing."
-#~ msgstr "“Belli belirsiz” yukarı doğru bir hat yazdırma hızı. Sadece kablo yazdırmaya uygulanır."
-
-#~ msgctxt "wireframe_printspeed_bottom description"
-#~ msgid "Speed of printing the first layer, which is the only layer touching the build platform. Only applies to Wire Printing."
-#~ msgstr "Yapı platformuna değen tek katman olan ilk katmanın yazdırılma hızı. Sadece kablo yazdırmaya uygulanır."
-
-#~ msgctxt "wireframe_printspeed_flat description"
-#~ msgid "Speed of printing the horizontal contours of the model. Only applies to Wire Printing."
-#~ msgstr "Modelin yatay dış çevresini yazdırma hızı. Sadece kablo yazdırmaya uygulanır."
-
-#~ msgctxt "wireframe_strategy description"
-#~ msgid "Strategy for making sure two consecutive layers connect at each connection point. Retraction lets the upward lines harden in the right position, but may cause filament grinding. A knot can be made at the end of an upward line to heighten the chance of connecting to it and to let the line cool; however, it may require slow printing speeds. Another strategy is to compensate for the sagging of the top of an upward line; however, the lines won't always fall down as predicted."
-#~ msgstr "Art arda gelen iki katmanın her bir bağlantı noktasına bağlı olduğundan emin olma stratejisi. Geri çekme yukarı yöndeki hatların doğru konumda sertleşmesini sağlar ancak filaman aşınmasına neden olabilir. Düğüme bağlanma şansını artırmak ve hattın soğumasını sağlamak için yukarı yöndeki hattın ucunda bir düğüm oluşturulabilir, fakat bu işlem daha yavaş yazdırma hızı gerektirir. Başka bir strateji de yukarı yöndeki hat ucunun düşmesini dengelemektir, ancak hatlar her zaman beklenildiği gibi düşmez."
-
-#~ msgctxt "support_tree_angle description"
-#~ msgid "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
-#~ msgstr "Dalların açısı. Daha dikey ve daha stabil olmaları için daha düşük bir açı kullanın. Daha fazla erişim için daha yüksek bir açı kullanın."
-
-#~ msgctxt "wireframe_roof_inset description"
-#~ msgid "The distance covered when making a connection from a roof outline inward. Only applies to Wire Printing."
-#~ msgstr "İçerideki ana tavan hattından bağlantı yaparken kapatılan mesafe. Sadece kablo yazdırmaya uygulanır."
-
-#~ msgctxt "wireframe_roof_drag_along description"
-#~ msgid "The distance of the end piece of an inward line which gets dragged along when going back to the outer outline of the roof. This distance is compensated for. Only applies to Wire Printing."
-#~ msgstr "Tavanın ana dış kısmına geri gelirken sürüklenen iç kısımdaki bir hattın son parçasının mesafesi. Mesafe telafi edilir. Sadece kablo yazdırmaya uygulanır."
-
-#~ msgctxt "wireframe_roof_fall_down description"
-#~ msgid "The distance which horizontal roof lines printed 'in thin air' fall down when being printed. This distance is compensated for. Only applies to Wire Printing."
-#~ msgstr "“Belli belirsiz” yazdırılan yatay tavan hatlarının yazdırıldıklarındaki düşme mesafesi. Mesafe telafi edilir. Sadece kablo yazdırmaya uygulanır."
-
-#~ msgctxt "wireframe_height description"
-#~ msgid "The height of the upward and diagonally downward lines between two horizontal parts. This determines the overall density of the net structure. Only applies to Wire Printing."
-#~ msgstr "İki yatay bölüm arasındaki yukarı ve çapraz olarak aşağı yöndeki hatların yüksekliği. Net yapının genel yoğunluğunu belirler. Sadece kablo yazdırmaya uygulanır."
-
-#~ msgctxt "wireframe_roof_outer_delay description"
-#~ msgid "Time spent at the outer perimeters of hole which is to become a roof. Longer times can ensure a better connection. Only applies to Wire Printing."
-#~ msgstr "Tavanı oluşturacak dış çevresel uzunluklara harcanan zaman. Sürenin daha uzun olması daha iyi bir bağlantı sağlayabilir. Sadece kablo yazdırmaya uygulanır."
-
-#~ msgctxt "support_tree_angle label"
-#~ msgid "Tree Support Branch Angle"
-#~ msgstr "Ağaç Destek Dal Açısı"
-
-#~ msgctxt "support_tree_branch_diameter label"
-#~ msgid "Tree Support Branch Diameter"
-#~ msgstr "Ağaç Destek Dalının Çapı"
-
-#~ msgctxt "support_tree_branch_diameter_angle label"
-#~ msgid "Tree Support Branch Diameter Angle"
-#~ msgstr "Ağaç Destek Dalının Çap Açısı"
-
-#~ msgctxt "support_tree_branch_distance label"
-#~ msgid "Tree Support Branch Distance"
-#~ msgstr "Ağaç Destek Dal Mesafesi"
-
-#~ msgctxt "support_tree_collision_resolution label"
-#~ msgid "Tree Support Collision Resolution"
-#~ msgstr "Ağaç Destek Çarpışma Çözünürlüğü"
-
-#~ msgctxt "support_tree_max_diameter label"
-#~ msgid "Tree Support Trunk Diameter"
-#~ msgstr "Ağaç Desteği Gövde Çapı"
-
-#~ msgctxt "wireframe_bottom_delay label"
-#~ msgid "WP Bottom Delay"
-#~ msgstr "WP Alt Gecikme"
-
-#~ msgctxt "wireframe_printspeed_bottom label"
-#~ msgid "WP Bottom Printing Speed"
-#~ msgstr "WP Alt Yazdırma Hızı"
-
-#~ msgctxt "wireframe_flow_connection label"
-#~ msgid "WP Connection Flow"
-#~ msgstr "WP Bağlantı Akışı"
-
-#~ msgctxt "wireframe_height label"
-#~ msgid "WP Connection Height"
-#~ msgstr "WP Bağlantı Yüksekliği"
-
-#~ msgctxt "wireframe_printspeed_down label"
-#~ msgid "WP Downward Printing Speed"
-#~ msgstr "WP Aşağı Doğru Yazdırma Hızı"
-
-#~ msgctxt "wireframe_drag_along label"
-#~ msgid "WP Drag Along"
-#~ msgstr "WP Sürüklenme"
-
-#~ msgctxt "wireframe_up_half_speed label"
-#~ msgid "WP Ease Upward"
-#~ msgstr "WP Kolay Yukarı Çıkma"
-
-#~ msgctxt "wireframe_fall_down label"
-#~ msgid "WP Fall Down"
-#~ msgstr "WP Aşağı İnme"
-
-#~ msgctxt "wireframe_flat_delay label"
-#~ msgid "WP Flat Delay"
-#~ msgstr "WP Düz Gecikme"
-
-#~ msgctxt "wireframe_flow_flat label"
-#~ msgid "WP Flat Flow"
-#~ msgstr "WP Düz Akışı"
-
-#~ msgctxt "wireframe_flow label"
-#~ msgid "WP Flow"
-#~ msgstr "WP Akışı"
-
-#~ msgctxt "wireframe_printspeed_flat label"
-#~ msgid "WP Horizontal Printing Speed"
-#~ msgstr "WP Yatay Yazdırma Hızı"
-
-#~ msgctxt "wireframe_top_jump label"
-#~ msgid "WP Knot Size"
-#~ msgstr "WP Düğüm Boyutu"
-
-#~ msgctxt "wireframe_nozzle_clearance label"
-#~ msgid "WP Nozzle Clearance"
-#~ msgstr "WP Nozül Açıklığı"
-
-#~ msgctxt "wireframe_roof_drag_along label"
-#~ msgid "WP Roof Drag Along"
-#~ msgstr "WP Tavandan Sürüklenme"
-
-#~ msgctxt "wireframe_roof_fall_down label"
-#~ msgid "WP Roof Fall Down"
-#~ msgstr "WP Tavandan Aşağı İnme"
-
-#~ msgctxt "wireframe_roof_inset label"
-#~ msgid "WP Roof Inset Distance"
-#~ msgstr "WP Tavan İlave Mesafesi"
-
-#~ msgctxt "wireframe_roof_outer_delay label"
-#~ msgid "WP Roof Outer Delay"
-#~ msgstr "WP Tavan Dış Gecikmesi"
-
-#~ msgctxt "wireframe_printspeed label"
-#~ msgid "WP Speed"
-#~ msgstr "WP Hızı"
-
-#~ msgctxt "wireframe_straight_before_down label"
-#~ msgid "WP Straighten Downward Lines"
-#~ msgstr "WP Aşağı Yöndeki Hatları Güçlendirme"
-
-#~ msgctxt "wireframe_strategy label"
-#~ msgid "WP Strategy"
-#~ msgstr "WP Stratejisi"
-
-#~ msgctxt "wireframe_top_delay label"
-#~ msgid "WP Top Delay"
-#~ msgstr "WP Üst Gecikme"
-
-#~ msgctxt "wireframe_printspeed_up label"
-#~ msgid "WP Upward Printing Speed"
-#~ msgstr "WP Yukarı Doğru Yazdırma Hızı"
-
-#~ msgctxt "wireframe_enabled label"
-#~ msgid "Wire Printing"
-#~ msgstr "Kablo Yazdırma"
+#~ msgctxt "prime_tower_base_size description"
+#~ msgid "The width of the prime tower base."
+#~ msgstr "Başlangıç kulesi tabanının genişliği."

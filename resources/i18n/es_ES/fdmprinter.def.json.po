@@ -1,16 +1,16 @@
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Uranium json setting files\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-06-08 16:32+0000\n"
+"POT-Creation-Date: 2023-11-15 12:26+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE\n"
-"Language: \n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: es_ES\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 msgctxt "ironing_inset description"
 msgid "A distance to keep from the edges of the model. Ironing all the way to the edge of the mesh may result in a jagged edge on your print."
@@ -62,7 +62,7 @@ msgstr "Una pieza completamente encerrada dentro de otra puede generar un borde 
 
 msgctxt "support_tree_branch_reach_limit description"
 msgid "A recomendation to how far branches can move from the points they support. Branches can violate this value to reach their destination (buildplate or a flat part of the model). Lowering this value will make the support more sturdy, but increase the amount of branches (and because of that material usage/print time) "
-msgstr ""
+msgstr "Una recomendación de la distancia a la que pueden situarse las ramas de los puntos que sostienen. Las ramas pueden infringir este valor para llegar a su destino (placa de impresión o una pieza plana del modelo). Reducir este valor hará que el soporte sea más resistente, pero aumentará la cantidad de ramas (y, con ello, el uso de material y el tiempo de impresión)"
 
 msgctxt "extruder_prime_pos_abs label"
 msgid "Absolute Extruder Prime Position"
@@ -118,7 +118,7 @@ msgstr "Ajusta la densidad de los techos y suelos de la estructura de soporte. U
 
 msgctxt "support_tree_top_rate description"
 msgid "Adjusts the density of the support structure used to generate the tips of the branches. A higher value results in better overhangs, but the supports are harder to remove. Use Support Roof for very high values or ensure support density is similarly high at the top."
-msgstr ""
+msgstr "Ajusta la densidad de la estructura de soporte utilizada para generar las puntas de las ramas. Un valor más alto da como resultado mejores voladizos, pero los soportes son más difíciles de eliminar. Utilice el techo de soporte para valores muy altos o asegúrese de que la densidad del soporte sea igual de alta en la parte superior."
 
 msgctxt "support_infill_rate description"
 msgid "Adjusts the density of the support structure. A higher value results in better overhangs, but the supports are harder to remove."
@@ -179,10 +179,6 @@ msgstr "Escriba siempre la herramienta activa"
 msgctxt "travel_retract_before_outer_wall description"
 msgid "Always retract when moving to start an outer wall."
 msgstr "Retraer siempre al desplazarse para empezar una pared exterior."
-
-msgctxt "hole_xy_offset description"
-msgid "Amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes."
-msgstr "Cantidad de desplazamiento aplicado a todos los orificios en cada capa. Los valores positivos aumentan el tamaño de los orificios y los valores negativos reducen el tamaño de los mismos."
 
 msgctxt "xy_offset description"
 msgid "Amount of offset applied to all polygons in each layer. Positive values can compensate for too big holes; negative values can compensate for too small holes."
@@ -266,7 +262,7 @@ msgstr "Ambos"
 
 msgctxt "support_interface_priority option nothing"
 msgid "Both overlap"
-msgstr ""
+msgstr "Ambos se solapan"
 
 msgctxt "bottom_layers label"
 msgid "Bottom Layers"
@@ -290,15 +286,15 @@ msgstr "Grosor inferior"
 
 msgctxt "support_tree_top_rate label"
 msgid "Branch Density"
-msgstr ""
+msgstr "Densidad de la rama"
 
 msgctxt "support_tree_branch_diameter label"
 msgid "Branch Diameter"
-msgstr ""
+msgstr "Diámetro de la rama"
 
 msgctxt "support_tree_branch_diameter_angle label"
 msgid "Branch Diameter Angle"
-msgstr ""
+msgstr "Ángulo del diámetro de la rama"
 
 msgctxt "material_break_preparation_retracted_position label"
 msgid "Break Preparation Retracted Position"
@@ -459,6 +455,10 @@ msgstr "Temperatura de la placa de impresión en la capa inicial"
 msgctxt "build_volume_temperature label"
 msgid "Build Volume Temperature"
 msgstr "Temperatura de volumen de impresión"
+
+msgctxt "prime_tower_brim_enable description"
+msgid "By enabling this setting, your prime-tower will get a brim, even if the model doesn't. If you want a sturdier base for a high tower, you can increase the base height."
+msgstr "Al habilitar esta configuración, tu torre de cebado tendrá un borde, incluso si el modelo no lo tiene. Si quieres una base más robusta para una torre alta, puedes aumentar la altura de la base."
 
 msgctxt "center_object label"
 msgid "Center Object"
@@ -698,11 +698,11 @@ msgstr "Determina la prioridad de esta malla al tener en cuenta varias mallas de
 
 msgctxt "lightning_infill_support_angle description"
 msgid "Determines when a lightning infill layer has to support anything above it. Measured in the angle given the thickness of a layer."
-msgstr "Determina cuándo una capa de iluminación tiene que soportar algo por encima de ella. Medido en el ángulo dado el espesor de una capa."
+msgstr "Determina cuándo una capa de relleno de rayos tiene que soportar algo por encima de ella. Medido en el ángulo dado el espesor de una capa."
 
 msgctxt "lightning_infill_overhang_angle description"
 msgid "Determines when a lightning infill layer has to support the model above it. Measured in the angle given the thickness."
-msgstr "Determina cuándo una capa de relleno de iluminación tiene que soportar el modelo que está por encima. Medido en el ángulo dado el espesor."
+msgstr "Determina cuándo una capa de relleno de rayos tiene que soportar el modelo que está por encima. Medido en el ángulo dado el espesor."
 
 msgctxt "material_diameter label"
 msgid "Diameter"
@@ -710,11 +710,11 @@ msgstr "Diámetro"
 
 msgctxt "support_tree_max_diameter_increase_by_merges_when_support_to_model label"
 msgid "Diameter Increase To Model"
-msgstr ""
+msgstr "Aumento del diámetro para el modelo"
 
 msgctxt "support_tree_bp_diameter description"
 msgid "Diameter every branch tries to achieve when reaching the buildplate. Improves bed adhesion."
-msgstr ""
+msgstr "Diámetro que cada rama trata de alcanzar al llegar a la placa de impresión. Mejora la adherencia a la plataforma."
 
 msgctxt "adhesion_type description"
 msgid "Different options that help to improve both priming your extrusion and adhesion to the build plate. Brim adds a single layer flat area around the base of your model to prevent warping. Raft adds a thick grid with a roof below the model. Skirt is a line printed around the model, but not connected to the model."
@@ -745,16 +745,16 @@ msgid "Distance between the printed support structure lines. This setting is cal
 msgstr "Distancia entre las líneas de estructuras del soporte impresas. Este ajuste se calcula por la densidad del soporte."
 
 msgctxt "support_bottom_distance description"
-msgid "Distance from the print to the bottom of the support."
-msgstr "Distancia desde la parte inferior del soporte a la impresión."
+msgid "Distance from the print to the bottom of the support. Note that this is rounded up to the next layer height."
+msgstr "Distancia de la impresión hasta la parte inferior del soporte. Ten en cuenta que esto se redondea al siguiente altura de capa."
 
 msgctxt "support_top_distance description"
 msgid "Distance from the top of the support to the print."
 msgstr "Distancia desde la parte superior del soporte a la impresión."
 
 msgctxt "support_z_distance description"
-msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. This value is rounded up to a multiple of the layer height."
-msgstr "Distancia desde la parte superior/inferior de la estructura de soporte a la impresión. Este hueco ofrece holgura para retirar los soportes tras imprimir el modelo. Este valor se redondea hacia el múltiplo de la altura de la capa."
+msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. The topmost support layer below the model might be a fraction of regular layers."
+msgstr "Distancia desde la parte superior/inferior de la estructura de soporte hasta la impresión. Este espacio proporciona la holgura necesaria para remover los soportes después de imprimir el modelo. La capa de soporte más cercana al modelo podría ser una fracción de las capas regulares."
 
 msgctxt "infill_wipe_dist description"
 msgid "Distance of a travel move inserted after every infill line, to make the infill stick to the walls better. This option is similar to infill overlap, but without extrusion and only on one end of the infill line."
@@ -779,6 +779,14 @@ msgstr "Distancia de la estructura de soporte desde el voladizo en las direccion
 msgctxt "support_xy_distance description"
 msgid "Distance of the support structure from the print in the X/Y directions."
 msgstr "Distancia de la estructura del soporte desde la impresión en las direcciones X/Y."
+
+msgctxt "meshfix_fluid_motion_shift_distance description"
+msgid "Distance points are shifted to smooth the path"
+msgstr "Los puntos de distancia se desplazan para suavizar la trayectoria"
+
+msgctxt "meshfix_fluid_motion_small_distance description"
+msgid "Distance points are shifted to smooth the path"
+msgstr "Los puntos de distancia se desplazan para suavizar la trayectoria"
 
 msgctxt "min_infill_area description"
 msgid "Don't generate areas of infill smaller than this (use skin instead)."
@@ -827,6 +835,10 @@ msgstr "Activar soporte cónico"
 msgctxt "draft_shield_enabled label"
 msgid "Enable Draft Shield"
 msgstr "Habilitar parabrisas"
+
+msgctxt "meshfix_fluid_motion_enabled label"
+msgid "Enable Fluid Motion"
+msgstr "Activar movimiento fluido"
 
 msgctxt "ironing_enabled label"
 msgid "Enable Ironing"
@@ -887,6 +899,10 @@ msgstr "Activar impulso de desplazamiento"
 msgctxt "ooze_shield_enabled description"
 msgid "Enable exterior ooze shield. This will create a shell around the model which is likely to wipe a second nozzle if it's at the same height as the first nozzle."
 msgstr "Activar la placa de rezumado exterior. Esto crea un perímetro alrededor del modelo que suele limpiar una segunda tobera si se encuentra a la misma altura que la primera."
+
+msgctxt "small_skin_on_surface description"
+msgid "Enable small (up to 'Small Top/Bottom Width') regions on the topmost skinned layer (exposed to air) to be filled with walls instead of the default pattern."
+msgstr "Permite que las zonas pequeñas (hasta \"Ancho superior/inferior pequeño\") de la capa más superficial (expuestas al aire) se rellenen con paredes en lugar de con el patrón predeterminado."
 
 msgctxt "jerk_enabled description"
 msgid "Enables adjusting the jerk of print head when the velocity in the X or Y axis changes. Increasing the jerk can reduce printing time at the cost of print quality."
@@ -1080,6 +1096,14 @@ msgctxt "wall_0_material_flow description"
 msgid "Flow compensation on the outermost wall line."
 msgstr "Compensación de flujo en la línea de pared más externa."
 
+msgctxt "wall_0_material_flow_roofing description"
+msgid "Flow compensation on the top surface outermost wall line."
+msgstr "Compensación de flujo en la línea de la pared exterior más externa de la superficie superior."
+
+msgctxt "wall_x_material_flow_roofing description"
+msgid "Flow compensation on top surface wall lines for all wall lines except the outermost one."
+msgstr "Compensación de flujo en las líneas de pared de la superficie superior para todas las líneas de pared excepto la más externa."
+
 msgctxt "skin_material_flow description"
 msgid "Flow compensation on top/bottom lines."
 msgstr "Compensación de flujo en las líneas superiores o inferiores."
@@ -1099,6 +1123,18 @@ msgstr "Compensación de flujo en líneas de pared."
 msgctxt "material_flow description"
 msgid "Flow compensation: the amount of material extruded is multiplied by this value."
 msgstr "Compensación de flujo: la cantidad de material extruido se multiplica por este valor."
+
+msgctxt "meshfix_fluid_motion_angle label"
+msgid "Fluid Motion Angle"
+msgstr "Ángulo de movimiento fluido"
+
+msgctxt "meshfix_fluid_motion_shift_distance label"
+msgid "Fluid Motion Shift Distance"
+msgstr "Cambio de distancia del movimiento fluido"
+
+msgctxt "meshfix_fluid_motion_small_distance label"
+msgid "Fluid Motion Small Distance"
+msgstr "Pequeña distancia del movimiento fluido"
 
 msgctxt "material_flush_purge_length label"
 msgid "Flush Purge Length"
@@ -1256,6 +1292,10 @@ msgctxt "machine_gcode_flavor option Griffin"
 msgid "Griffin"
 msgstr "Griffin"
 
+msgctxt "group_outer_walls label"
+msgid "Group Outer Walls"
+msgstr "Agrupar las paredes exteriores"
+
 msgctxt "infill_pattern option gyroid"
 msgid "Gyroid"
 msgstr "Giroide"
@@ -1298,7 +1338,7 @@ msgstr "Expansión horizontal de orificios"
 
 msgctxt "hole_xy_offset_max_diameter label"
 msgid "Hole Horizontal Expansion Max Diameter"
-msgstr ""
+msgstr "Diámetro máximo de la expansión horizontal de los orificios"
 
 msgctxt "small_hole_max_size description"
 msgid "Holes and part outlines with a diameter smaller than this will be printed using Small Feature Speed."
@@ -1378,15 +1418,19 @@ msgstr "La cantidad de filamento de cada extrusor que se supone que se ha retira
 
 msgctxt "support_interface_priority description"
 msgid "How support interface and support will interact when they overlap. Currently only implemented for support roof."
-msgstr ""
+msgstr "Cómo interactuarán la interfaz y el soporte en caso de superposición. Actualmente, solo implantado para techos de soporte."
 
 msgctxt "support_tree_min_height_to_model description"
 msgid "How tall a branch has to be if it is placed on the model. Prevents small blobs of support. This setting is ignored when a branch is supporting a support roof."
-msgstr ""
+msgstr "Qué altura debe tener una rama si se coloca sobre el modelo. Evita la formación de pequeñas gotas de soporte. Esta configuración se ignora cuando una rama está aguantando un techo de soporte."
 
 msgctxt "bridge_skin_support_threshold description"
 msgid "If a skin region is supported for less than this percentage of its area, print it using the bridge settings. Otherwise it is printed using the normal skin settings."
 msgstr "Si un área de forro es compatible con un porcentaje inferior de su área, se imprime utilizando los ajustes de puente. De lo contrario, se imprimirá utilizando los ajustes de forro habituales."
+
+msgctxt "meshfix_fluid_motion_angle description"
+msgid "If a toolpath-segment deviates more than this angle from the general motion it is smoothed."
+msgstr "Si un segmento de la trayectoria de la herramienta se desvía más de este ángulo del movimiento general, se suaviza."
 
 msgctxt "bridge_enable_more_layers description"
 msgid "If enabled, the second and third layers above the air are printed using the following settings. Otherwise, those layers are printed using the normal settings."
@@ -1530,7 +1574,7 @@ msgstr "Flujo inferior de la capa inicial"
 
 msgctxt "support_tree_bp_diameter label"
 msgid "Initial Layer Diameter"
-msgstr ""
+msgstr "Diámetro de la capa inicial"
 
 msgctxt "material_flow_layer_0 label"
 msgid "Initial Layer Flow"
@@ -1634,11 +1678,11 @@ msgstr "Del interior al exterior"
 
 msgctxt "support_interface_priority option interface_lines_overwrite_support_area"
 msgid "Interface lines preferred"
-msgstr ""
+msgstr "Líneas de interfaz preferidas"
 
 msgctxt "support_interface_priority option interface_area_overwrite_support_area"
 msgid "Interface preferred"
-msgstr ""
+msgstr "Interfaz preferida"
 
 msgctxt "interlocking_beam_layer_count label"
 msgid "Interlocking Beam Layer Count"
@@ -1698,7 +1742,7 @@ msgstr "El origen está centrado"
 
 msgctxt "material_is_support_material label"
 msgid "Is support material"
-msgstr ""
+msgstr "Es material de soporte"
 
 msgctxt "material_crystallinity description"
 msgid "Is this material the type that breaks off cleanly when heated (crystalline), or is it the type that produces long intertwined polymer chains (non-crystalline)?"
@@ -1706,7 +1750,7 @@ msgstr "¿Es este el tipo de material que se desprende limpiamente cuando se cal
 
 msgctxt "material_is_support_material description"
 msgid "Is this material typically used as a support material during printing."
-msgstr ""
+msgstr "Este material se utiliza normalmente como material de soporte durante la impresión."
 
 msgctxt "magic_fuzzy_skin_outside_only description"
 msgid "Jitter only the parts' outlines and not the parts' holes."
@@ -1754,31 +1798,31 @@ msgstr "Levantar el cabezal"
 
 msgctxt "infill_pattern option lightning"
 msgid "Lightning"
-msgstr "Iluminación"
+msgstr "Rayos"
 
 msgctxt "lightning_infill_overhang_angle label"
 msgid "Lightning Infill Overhang Angle"
-msgstr "Ángulo del voladizo de relleno de iluminación"
+msgstr "Ángulo del voladizo de relleno de rayos"
 
 msgctxt "lightning_infill_prune_angle label"
 msgid "Lightning Infill Prune Angle"
-msgstr "Ángulo de recorte de relleno de iluminación"
+msgstr "Ángulo de recorte de relleno de rayos"
 
 msgctxt "lightning_infill_straightening_angle label"
 msgid "Lightning Infill Straightening Angle"
-msgstr "Ángulo de enderezamiento de iluminación"
+msgstr "Ángulo de enderezamiento de rayos"
 
 msgctxt "lightning_infill_support_angle label"
 msgid "Lightning Infill Support Angle"
-msgstr "Ángulo de sujeción de relleno de iluminación"
+msgstr "Ángulo de sujeción de relleno de rayos"
 
 msgctxt "support_tree_limit_branch_reach label"
 msgid "Limit Branch Reach"
-msgstr ""
+msgstr "Alcance límite de la rama"
 
 msgctxt "support_tree_limit_branch_reach description"
 msgid "Limit how far each branch should travel from the point it supports. This can make the support more sturdy, but will increase the amount of branches (and because of that material usage/print time)"
-msgstr ""
+msgstr "Limite la distancia que debe recorrer cada rama desde el punto que soporta. Esto puede hacer que el soporte sea más resistente, pero aumentará la cantidad de ramas (y, con ello, el uso de material y el tiempo de impresión)"
 
 msgctxt "cutting_mesh description"
 msgid "Limit the volume of this mesh to within other meshes. You can use this to make certain areas of one mesh print with different settings and with a whole different extruder."
@@ -1930,7 +1974,7 @@ msgstr "Aceleración máxima de Z"
 
 msgctxt "support_tree_angle label"
 msgid "Maximum Branch Angle"
-msgstr ""
+msgstr "Ángulo máximo de la rama"
 
 msgctxt "meshfix_maximum_deviation label"
 msgid "Maximum Deviation"
@@ -2086,7 +2130,7 @@ msgstr "Velocidad de alimentación mínima"
 
 msgctxt "support_tree_min_height_to_model label"
 msgid "Minimum Height To Model"
-msgstr ""
+msgstr "Altura mínima para el modelo"
 
 msgctxt "min_infill_area label"
 msgid "Minimum Infill Area"
@@ -2338,11 +2382,11 @@ msgstr "Desplazamiento con extrusor"
 
 msgctxt "support_tree_rest_preference option buildplate"
 msgid "On buildplate when possible"
-msgstr ""
+msgstr "En la placa de impresión, cuando sea posible"
 
 msgctxt "support_tree_rest_preference option graceful"
 msgid "On model if required"
-msgstr ""
+msgstr "Sobre el modelo, en caso de que sea necesario"
 
 msgctxt "print_sequence option one_at_a_time"
 msgid "One at a Time"
@@ -2370,7 +2414,7 @@ msgstr "Distancia de la placa de rezumado"
 
 msgctxt "support_tree_branch_reach_limit label"
 msgid "Optimal Branch Range"
-msgstr ""
+msgstr "Espaciado óptimo de ramas"
 
 msgctxt "optimize_wall_printing_order label"
 msgid "Optimize Wall Printing Order"
@@ -2416,6 +2460,10 @@ msgctxt "wall_0_wipe_dist label"
 msgid "Outer Wall Wipe Distance"
 msgstr "Distancia de pasada de la pared exterior"
 
+msgctxt "group_outer_walls description"
+msgid "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped."
+msgstr "Las paredes exteriores de diferentes islas en la misma capa se imprimen en secuencia. Cuando está habilitado, la cantidad de cambios de flujo se limita porque las paredes se imprimen de a una a la vez; cuando está deshabilitado, se reduce el número de desplazamientos entre islas porque las paredes en las mismas islas se agrupan."
+
 msgctxt "inset_direction option outside_in"
 msgid "Outside To Inside"
 msgstr "Del exterior al interior"
@@ -2458,7 +2506,7 @@ msgstr "Se filtran los polígonos en capas segmentadas que tienen una circunfere
 
 msgctxt "support_tree_angle_slow label"
 msgid "Preferred Branch Angle"
-msgstr ""
+msgstr "Ángulo de rama preferido"
 
 msgctxt "wall_transition_filter_deviation description"
 msgid "Prevent transitioning back and forth between one extra wall and one less. This margin extends the range of line widths which follow to [Minimum Wall Line Width - Margin, 2 * Minimum Wall Line Width + Margin]. Increasing this margin reduces the number of transitions, which reduces the number of extrusion starts/stops and travel time. However, large line width variation can lead to under- or overextrusion problems."
@@ -2469,8 +2517,20 @@ msgid "Prime Tower Acceleration"
 msgstr "Aceleración de la torre auxiliar"
 
 msgctxt "prime_tower_brim_enable label"
-msgid "Prime Tower Brim"
-msgstr "Borde de la torre auxiliar"
+msgid "Prime Tower Base"
+msgstr "Base de la torre de cebado"
+
+msgctxt "prime_tower_base_height label"
+msgid "Prime Tower Base Height"
+msgstr "Altura de la base de la torre de cebado"
+
+msgctxt "prime_tower_base_size label"
+msgid "Prime Tower Base Size"
+msgstr "Tamaño de la base de la torre de cebado"
+
+msgctxt "prime_tower_base_curve_magnitude label"
+msgid "Prime Tower Base Slope"
+msgstr "Pendiente de la Base de la Torre de Cebado"
 
 msgctxt "prime_tower_flow label"
 msgid "Prime Tower Flow"
@@ -2488,6 +2548,10 @@ msgctxt "prime_tower_min_volume label"
 msgid "Prime Tower Minimum Volume"
 msgstr "Volumen mínimo de la torre auxiliar"
 
+msgctxt "prime_tower_raft_base_line_spacing label"
+msgid "Prime Tower Raft Line Spacing"
+msgstr "Espaciado de las líneas del raft de la torre de cebado"
+
 msgctxt "prime_tower_size label"
 msgid "Prime Tower Size"
 msgstr "Tamaño de la torre auxiliar"
@@ -2503,10 +2567,6 @@ msgstr "Posición de la torre auxiliar sobre el eje X"
 msgctxt "prime_tower_position_y label"
 msgid "Prime Tower Y Position"
 msgstr "Posición de la torre auxiliar sobre el eje Y"
-
-msgctxt "prime_tower_brim_enable description"
-msgid "Prime-towers might need the extra adhesion afforded by a brim even if the model doesn't. Presently can't be used with the 'Raft' adhesion-type."
-msgstr "Puede que las torres auxiliares necesiten la adherencia adicional que proporciona un borde, aunque no sea requisito del modelo. Actualmente, no se puede usar con el tipo de adherencia «balsa»."
 
 msgctxt "acceleration_print label"
 msgid "Print Acceleration"
@@ -2578,7 +2638,7 @@ msgstr "Temperatura de impresión de la capa inicial"
 
 msgctxt "skirt_height description"
 msgid "Printing the innermost skirt line with multiple layers makes it easy to remove the skirt."
-msgstr ""
+msgstr "La impresión de la línea más interna de la falda con varias capas facilita su eliminación."
 
 msgctxt "alternate_extra_perimeter description"
 msgid "Prints an extra wall at every other layer. This way infill gets caught between these extra walls, resulting in stronger prints."
@@ -2818,7 +2878,7 @@ msgstr "Reemplaza la parte más externa del patrón superior/inferior con un nú
 
 msgctxt "support_tree_rest_preference label"
 msgid "Rest Preference"
-msgstr ""
+msgstr "Preferencia de apoyo"
 
 msgctxt "travel_retract_before_outer_wall label"
 msgid "Retract Before Outer Wall"
@@ -2966,7 +3026,7 @@ msgstr "Distancia de falda"
 
 msgctxt "skirt_height label"
 msgid "Skirt Height"
-msgstr ""
+msgstr "Altura de la falda"
 
 msgctxt "skirt_line_count label"
 msgid "Skirt Line Count"
@@ -3024,9 +3084,13 @@ msgctxt "cool_min_temperature label"
 msgid "Small Layer Printing Temperature"
 msgstr "Temperatura de impresión de capas pequeñas"
 
+msgctxt "small_skin_on_surface label"
+msgid "Small Top/Bottom On Surface"
+msgstr "Zonas pequeñas superiores/inferiores en superficie"
+
 msgctxt "small_skin_width label"
 msgid "Small Top/Bottom Width"
-msgstr ""
+msgstr "Anchura superior/​inferior pequeña"
 
 msgctxt "small_feature_speed_factor_0 description"
 msgid "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
@@ -3037,12 +3101,12 @@ msgid "Small features will be printed at this percentage of their normal print s
 msgstr "Las pequeñas partes se imprimirán a este porcentaje de su velocidad de impresión normal. Una impresión más lenta puede mejorar la adhesión y la precisión."
 
 msgctxt "small_skin_width description"
-msgid "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions."
-msgstr ""
+msgid "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions. Off for the topmost (air-exposed) layer by default (see 'Small Top/Bottom On Surface')."
+msgstr "Las zonas pequeñas superiores/inferiores se rellenan con paredes en lugar de con el patrón predeterminado superior/inferior. Esto ayuda a evitar movimientos bruscos. Está desactivado para la capa superior (expuesta al aire) por defecto. (Consulte: \"Zonas pequeñas superiores/inferiores en superficie\")."
 
 msgctxt "brim_smart_ordering label"
 msgid "Smart Brim"
-msgstr ""
+msgstr "Borde inteligente"
 
 msgctxt "z_seam_corner option z_seam_corner_weighted"
 msgid "Smart Hiding"
@@ -3282,7 +3346,7 @@ msgstr "Patrón de la interfaz de soporte"
 
 msgctxt "support_interface_priority label"
 msgid "Support Interface Priority"
-msgstr ""
+msgstr "Prioridad de la interfaz de soporte"
 
 msgctxt "support_interface_skip_height label"
 msgid "Support Interface Resolution"
@@ -3422,11 +3486,11 @@ msgstr "Distancia en Z del soporte"
 
 msgctxt "support_interface_priority option support_lines_overwrite_interface_area"
 msgid "Support lines preferred"
-msgstr ""
+msgstr "Líneas de soporte preferidas"
 
 msgctxt "support_interface_priority option support_area_overwrite_interface_area"
 msgid "Support preferred"
-msgstr ""
+msgstr "Soporte preferido"
 
 msgctxt "support_supported_skin_fan_speed label"
 msgid "Supported Skin Fan Speed"
@@ -3454,7 +3518,7 @@ msgstr "Energía de la superficie."
 
 msgctxt "brim_smart_ordering description"
 msgid "Swap print order of the innermost and second innermost brim lines. This improves brim removal."
-msgstr ""
+msgstr "Intercambie el orden de impresión de las líneas más internas y del segundo borde más interno. De ese modo se mejora la eliminación del borde."
 
 msgctxt "alternate_carve_order description"
 msgid "Switch to which mesh intersecting volumes will belong with every layer, so that the overlapping meshes become interwoven. Turning this setting off will cause one of the meshes to obtain all of the volume in the overlap, while it is removed from the other meshes."
@@ -3572,6 +3636,14 @@ msgctxt "raft_surface_acceleration description"
 msgid "The acceleration with which the top raft layers are printed."
 msgstr "Aceleración a la que se imprimen las capas superiores de la balsa."
 
+msgctxt "acceleration_wall_x_roofing description"
+msgid "The acceleration with which the top surface inner walls are printed."
+msgstr "La aceleración con la que se imprimen las paredes internas de la superficie superior."
+
+msgctxt "acceleration_wall_0_roofing description"
+msgid "The acceleration with which the top surface outermost walls are printed."
+msgstr "La aceleración con la que se imprimen las paredes más externas de la superficie superior."
+
 msgctxt "acceleration_wall description"
 msgid "The acceleration with which the walls are printed."
 msgstr "Aceleración a la que se imprimen las paredes."
@@ -3678,7 +3750,7 @@ msgstr "El diámetro de las ramas más finas del soporte en árbol. Cuanto más 
 
 msgctxt "support_tree_tip_diameter description"
 msgid "The diameter of the top of the tip of the branches of tree support."
-msgstr ""
+msgstr "El diámetro de la parte superior de la punta de las ramas de soporte en árbol."
 
 msgctxt "machine_feeder_wheel_diameter description"
 msgid "The diameter of the wheel that drives the material in the feeder."
@@ -3711,6 +3783,10 @@ msgstr "Distancia entre las líneas de la balsa para la capa intermedia de la ba
 msgctxt "raft_surface_line_spacing description"
 msgid "The distance between the raft lines for the top raft layers. The spacing should be equal to the line width, so that the surface is solid."
 msgstr "Distancia entre las líneas de la balsa para las capas superiores de la balsa. La separación debe ser igual a la ancho de línea para producir una superficie sólida."
+
+msgctxt "prime_tower_raft_base_line_spacing description"
+msgid "The distance between the raft lines for the unique prime tower raft layer. Wide spacing makes for easy removal of the raft from the build plate."
+msgstr "La distancia entre las líneas del raft para la capa única del raft de la torre de cebado. Un espaciado amplio facilita la eliminación del raft de la placa de construcción."
 
 msgctxt "interlocking_depth description"
 msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
@@ -3908,6 +3984,10 @@ msgctxt "layer_height_0 description"
 msgid "The height of the initial layer in mm. A thicker initial layer makes adhesion to the build plate easier."
 msgstr "Altura de capa inicial en mm. Una capa inicial más gruesa se adhiere a la placa de impresión con mayor facilidad."
 
+msgctxt "prime_tower_base_height description"
+msgid "The height of the prime tower base. Increasing this value will result in a more sturdy prime tower because the base will be wider. If this setting is too low, the prime tower will not have a sturdy base."
+msgstr "La altura de la base de la torre de cebado. Aumentar este valor resultará en una torre de cebado más robusta porque la base será más ancha. Si esta configuración es demasiado baja, la torre de cebado no tendrá una base resistente."
+
 msgctxt "support_bottom_stair_step_height description"
 msgid "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures. Set to zero to turn off the stair-like behaviour."
 msgstr "Altura de los escalones de la parte inferior de la escalera del soporte que descansa sobre el modelo. Un valor más bajo hace que el soporte sea difícil de retirar pero valores demasiado altos pueden producir estructuras del soporte inestables. Configúrelo en cero para desactivar el comportamiento de escalera."
@@ -3980,6 +4060,10 @@ msgctxt "retraction_amount description"
 msgid "The length of material retracted during a retraction move."
 msgstr "Longitud del material retraído durante un movimiento de retracción."
 
+msgctxt "prime_tower_base_curve_magnitude description"
+msgid "The magnitude factor used for the slope of the prime tower base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
+msgstr "El factor de magnitud utilizado para la pendiente de la base de la torre de cebado. Si aumentas este valor, la base se volverá más delgada. Si lo disminuyes, la base se volverá más gruesa."
+
 msgctxt "machine_buildplate_type description"
 msgid "The material of the build plate installed on the printer."
 msgstr "Material de la placa de impresión colocado en la impresora."
@@ -3998,7 +4082,7 @@ msgstr "Ángulo máximo de los voladizos una vez que se han hecho imprimibles. U
 
 msgctxt "support_tree_angle description"
 msgid "The maximum angle of the branches while they grow around the model. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
-msgstr ""
+msgstr "El ángulo máximo de las ramas mientras crecen alrededor del modelo. Utilice un ángulo más pequeño para hacerlas más verticales y más estables. Utilice un ángulo mayor para abarcar más."
 
 msgctxt "conical_overhang_hole_size description"
 msgid "The maximum area of a hole in the base of the model before it's removed by Make Overhang Printable.  Holes smaller than this will be retained.  A value of 0 mm² will fill all holes in the models base."
@@ -4071,6 +4155,14 @@ msgstr "Cambio en la velocidad instantánea máxima a la que se imprimen la falt
 msgctxt "jerk_support description"
 msgid "The maximum instantaneous velocity change with which the support structure is printed."
 msgstr "Cambio en la velocidad instantánea máxima a la que se imprime la estructura de soporte."
+
+msgctxt "jerk_wall_x_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface inner walls are printed."
+msgstr "El cambio máximo de velocidad instantánea con el que se imprimen las paredes exteriores más externas de la superficie superior."
+
+msgctxt "jerk_wall_0_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface outermost walls are printed."
+msgstr "El cambio máximo de velocidad instantánea con el que se imprimen las paredes interiores de la superficie superior."
 
 msgctxt "jerk_wall description"
 msgid "The maximum instantaneous velocity change with which the walls are printed."
@@ -4174,7 +4266,7 @@ msgstr "El volumen mínimo de cada capa de la torre auxiliar que permite purgar 
 
 msgctxt "support_tree_max_diameter_increase_by_merges_when_support_to_model description"
 msgid "The most the diameter of a branch that has to connect to the model may increase by merging with branches that could reach the buildplate. Increasing this reduces print time, but increases the area of support that rests on model"
-msgstr ""
+msgstr "El diámetro máximo de una rama que debe conectarse al modelo puede aumentar al fusionarse con ramas que podrían llegar a la placa de impresión. Al aumentarlo, se reduce el tiempo de impresión, pero el área de soporte que descansa sobre el modelo aumenta"
 
 msgctxt "machine_name description"
 msgid "The name of your 3D printer model."
@@ -4262,7 +4354,7 @@ msgstr "Diámetro exterior de la punta de la tobera."
 
 msgctxt "infill_pattern description"
 msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the ceiling of the object."
-msgstr "Patrón del material de relleno de la impresión. El método de llenado en línea y en zigzag cambia de dirección en capas alternas para reducir los costes de material. Los patrones de rejilla, triángulo, trihexágono, cubo, octaédrico, cubo bitruncado, transversal y concéntrico se imprimen en todas las capas por completo. Los rellenos de giroide, cúbico, cúbico bitruncado y octaédrico se alternan en cada capa para lograr una distribución más uniforme de la fuerza en todas las direcciones. El relleno de iluminación intenta minimizar el relleno apoyando solo la parte superior del objeto."
+msgstr "Patrón del material de relleno de la impresión. El método de llenado en línea y en zigzag cambia de dirección en capas alternas para reducir los costes de material. Los patrones de rejilla, triángulo, trihexágono, cubo, octaédrico, cubo bitruncado, transversal y concéntrico se imprimen en todas las capas por completo. Los rellenos de giroide, cúbico, cúbico bitruncado y octaédrico se alternan en cada capa para lograr una distribución más uniforme de la fuerza en todas las direcciones. El relleno de rayos intenta minimizar el relleno apoyando solo la parte superior del objeto."
 
 msgctxt "support_pattern description"
 msgid "The pattern of the support structures of the print. The different options available result in sturdy or easy to remove support."
@@ -4302,11 +4394,11 @@ msgstr "La posición cerca de donde comenzará la impresión de cada parte de un
 
 msgctxt "support_tree_angle_slow description"
 msgid "The preferred angle of the branches, when they do not have to avoid the model. Use a lower angle to make them more vertical and more stable. Use a higher angle for branches to merge faster."
-msgstr ""
+msgstr "El ángulo para las ramas de preferencia cuando no tienen que evitar el modelo. Utilice un ángulo más pequeño para hacerlas más verticales y más estables. Utilice un ángulo mayor para que las ramas se fusionen más rápido."
 
 msgctxt "support_tree_rest_preference description"
 msgid "The preferred placement of the support structures. If structures can't be placed at the preferred location, they will be place elsewhere, even if that means placing them on the model."
-msgstr ""
+msgstr "La colocación preferida para las estructuras de soporte. Si las estructuras no se pueden poner en la colocación preferida, se pondrán en otro lugar, incluso si eso significa situarlas sobre el modelo."
 
 msgctxt "jerk_layer_0 description"
 msgid "The print maximum instantaneous velocity change for the initial layer."
@@ -4456,6 +4548,14 @@ msgctxt "raft_surface_speed description"
 msgid "The speed at which the top raft layers are printed. These should be printed a bit slower, so that the nozzle can slowly smooth out adjacent surface lines."
 msgstr "Velocidad a la que se imprimen las capas superiores de la balsa. Estas deben imprimirse un poco más lento para permitir que la tobera pueda suavizar lentamente las líneas superficiales adyacentes."
 
+msgctxt "speed_wall_x_roofing description"
+msgid "The speed at which the top surface inner walls are printed."
+msgstr "La velocidad a la que se imprimen las paredes internas de la superficie superior."
+
+msgctxt "speed_wall_0_roofing description"
+msgid "The speed at which the top surface outermost wall is printed."
+msgstr "La velocidad con la que se imprimen las paredes más externas de la superficie superior."
+
 msgctxt "speed_z_hop description"
 msgid "The speed at which the vertical Z movement is made for Z Hops. This is typically lower than the print speed since the build plate or machine's gantry is harder to move."
 msgstr "Velocidad a la que se realiza el movimiento vertical en la dirección Z para los saltos en Z. Suele ser inferior a la velocidad de impresión porque la placa de impresión o el puente de la máquina es más difícil de desplazar."
@@ -4517,8 +4617,8 @@ msgid "The temperature to which to already start cooling down just before the en
 msgstr "La temperatura a la que se puede empezar a enfriar justo antes de finalizar la impresión."
 
 msgctxt "material_print_temperature_layer_0 description"
-msgid "The temperature used for printing the first layer. Set at 0 to disable special handling of the initial layer."
-msgstr "Temperatura que se usa para imprimir la primera capa. Se ajusta a 0 para desactivar la manipulación especial de la capa inicial."
+msgid "The temperature used for printing the first layer."
+msgstr "La temperatura utilizada para imprimir la primera capa."
 
 msgctxt "material_print_temperature description"
 msgid "The temperature used for printing."
@@ -4596,6 +4696,10 @@ msgctxt "interlocking_beam_width description"
 msgid "The width of the interlocking structure beams."
 msgstr "El ancho de los haces de la estructura entrelazada."
 
+msgctxt "prime_tower_base_size description"
+msgid "The width of the prime tower brim/base. A larger base enhances adhesion to the build plate, but also reduces the effective print area."
+msgstr "El ancho del borde/base de la torre de cebado. Una base más grande mejora la adhesión a la placa de construcción, pero también reduce el área efectiva de impresión."
+
 msgctxt "prime_tower_size description"
 msgid "The width of the prime tower."
 msgstr "Anchura de la torre auxiliar."
@@ -4638,7 +4742,7 @@ msgstr "Esto creará una pared alrededor del modelo que atrapa el aire (caliente
 
 msgctxt "support_tree_tip_diameter label"
 msgid "Tip Diameter"
-msgstr ""
+msgstr "Diámetro de la punta"
 
 msgctxt "material_shrinkage_percentage_xy description"
 msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor in the XY-direction (horizontally)."
@@ -4663,6 +4767,38 @@ msgstr "Distancia de expansión del forro superior"
 msgctxt "top_skin_preshrink label"
 msgid "Top Skin Removal Width"
 msgstr "Anchura de retirada del forro superior"
+
+msgctxt "acceleration_wall_x_roofing label"
+msgid "Top Surface Inner Wall Acceleration"
+msgstr "Aceleración de la superficie interna superior de la pared"
+
+msgctxt "jerk_wall_x_roofing label"
+msgid "Top Surface Inner Wall Jerk"
+msgstr "Sacudida de la pared exterior más externa de la superficie superior"
+
+msgctxt "speed_wall_x_roofing label"
+msgid "Top Surface Inner Wall Speed"
+msgstr "Velocidad de la pared interna de la superficie superior"
+
+msgctxt "wall_x_material_flow_roofing label"
+msgid "Top Surface Inner Wall(s) Flow"
+msgstr "Flujo de la pared interior de la superficie superior"
+
+msgctxt "acceleration_wall_0_roofing label"
+msgid "Top Surface Outer Wall Acceleration"
+msgstr "Aceleración de la superficie externa superior de la pared"
+
+msgctxt "wall_0_material_flow_roofing label"
+msgid "Top Surface Outer Wall Flow"
+msgstr "Flujo de la pared exterior de la superficie superior"
+
+msgctxt "jerk_wall_0_roofing label"
+msgid "Top Surface Outer Wall Jerk"
+msgstr "Sacudida de la pared interior de la superficie superior"
+
+msgctxt "speed_wall_0_roofing label"
+msgid "Top Surface Outer Wall Speed"
+msgstr "Velocidad de la pared externa de la superficie superior"
 
 msgctxt "acceleration_roofing label"
 msgid "Top Surface Skin Acceleration"
@@ -4822,7 +4958,7 @@ msgstr "Triángulos"
 
 msgctxt "support_tree_max_diameter label"
 msgid "Trunk Diameter"
-msgstr ""
+msgstr "Diámetro del tronco"
 
 msgctxt "machine_gcode_flavor option UltiGCode"
 msgid "Ultimaker 2"
@@ -4960,6 +5096,10 @@ msgctxt "support_interface_skip_height description"
 msgid "When checking where there's model above and below the support, take steps of the given height. Lower values will slice slower, while higher values may cause normal support to be printed in some places where there should have been support interface."
 msgstr "A la hora de comprobar si existe un modelo por encima y por debajo del soporte, tome las medidas de la altura determinada. Reducir los valores hará que se segmente más despacio, mientras que valores más altos pueden provocar que el soporte normal se imprima en lugares en los que debería haber una interfaz de soporte."
 
+msgctxt "meshfix_fluid_motion_enabled description"
+msgid "When enabled tool paths are corrected for printers with smooth motion planners. Small movements that deviate from the general tool path direction are smoothed to improve fluid motions."
+msgstr "Cuando está activado, las trayectorias de las herramientas se corrigen para impresoras con planificadores de movimiento suave. Los pequeños movimientos que se desvían de la dirección general de la trayectoria de la herramienta se suavizan para mejorar los movimientos fluidos."
+
 msgctxt "infill_enable_travel_optimization description"
 msgid "When enabled, the order in which the infill lines are printed is optimized to reduce the distance travelled. The reduction in travel time achieved very much depends on the model being sliced, infill pattern, density, etc. Note that, for some models that have many small areas of infill, the time to slice the model may be greatly increased."
 msgstr "Cuando está habilitado, se optimiza el orden en el que se imprimen las líneas de relleno para reducir la distancia de desplazamiento. La reducción del tiempo de desplazamiento obtenido depende en gran parte del modelo que se está fragmentando, el patrón de relleno, la densidad, etc. Tenga en cuenta que, para algunos modelos que tienen pequeñas áreas de relleno, el tiempo para fragmentar el modelo se puede aumentar en gran medida."
@@ -4978,7 +5118,11 @@ msgstr "Si es mayor que cero, los movimientos de desplazamiento de peinada que s
 
 msgctxt "hole_xy_offset_max_diameter description"
 msgid "When greater than zero, the Hole Horizontal Expansion is gradually applied on small holes (small holes are expanded more). When set to zero the Hole Horizontal Expansion will be applied to all holes. Holes larger than the Hole Horizontal Expansion Max Diameter are not expanded."
-msgstr ""
+msgstr "Cuando es mayor que cero, la expansión horizontal de los orificios se aplica gradualmente en orificios pequeños (los orificios pequeños se expanden más). Cuando se establezca en cero, la expansión horizontal de los orificios se aplicará a todos ellos. Los orificios mayores que el diámetro máximo de expansión horizontal de los orificios no se expanden."
+
+msgctxt "hole_xy_offset description"
+msgid "When greater than zero, the Hole Horizontal Expansion is the amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes. When this setting is enabled it can be further tuned with Hole Horizontal Expansion Max Diameter."
+msgstr "Cuando es mayor que cero, la Expansión horizontal de agujeros es la cantidad de desplazamiento aplicada a todos los agujeros de cada capa. Los valores positivos aumentan el tamaño de los agujeros y los negativos lo reducen. Cuando esta configuración está activada, se puede ajustar aún más con el Diámetro máximo de expansión horizontal de agujeros."
 
 msgctxt "bridge_skin_material_flow description"
 msgid "When printing bridge skin regions, the amount of material extruded is multiplied by this value."
@@ -5344,246 +5488,82 @@ msgctxt "travel description"
 msgid "travel"
 msgstr "desplazamiento"
 
-#~ msgctxt "wireframe_strategy option compensate"
-#~ msgid "Compensate"
-#~ msgstr "Compensar"
+#~ msgctxt "support_bottom_distance description"
+#~ msgid "Distance from the print to the bottom of the support."
+#~ msgstr "Distancia desde la parte inferior del soporte a la impresión."
 
-#~ msgctxt "wireframe_top_jump description"
-#~ msgid "Creates a small knot at the top of an upward line, so that the consecutive horizontal layer has a better chance to connect to it. Only applies to Wire Printing."
-#~ msgstr "Crea un pequeño nudo en la parte superior de una línea ascendente, de modo que la siguiente capa horizontal tendrá mayor probabilidad de conectarse a la misma. Solo se aplica a la impresión de alambre."
+#~ msgctxt "support_z_distance description"
+#~ msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. This value is rounded up to a multiple of the layer height."
+#~ msgstr "Distancia desde la parte superior/inferior de la estructura de soporte a la impresión. Este hueco ofrece holgura para retirar los soportes tras imprimir el modelo. Este valor se redondea hacia el múltiplo de la altura de la capa."
 
-#~ msgctxt "wireframe_bottom_delay description"
-#~ msgid "Delay time after a downward move. Only applies to Wire Printing."
-#~ msgstr "Tiempo de retardo después de un movimiento descendente. Solo se aplica a la impresión de alambre."
+#~ msgctxt "gradual_flow_discretisation_step_size description"
+#~ msgid "Duration of each step in the gradual flow change"
+#~ msgstr "Duración de cada paso en el cambio de flujo gradual"
 
-#~ msgctxt "wireframe_top_delay description"
-#~ msgid "Delay time after an upward move, so that the upward line can harden. Only applies to Wire Printing."
-#~ msgstr "Tiempo de retardo después de un movimiento ascendente, para que la línea ascendente pueda endurecerse. Solo se aplica a la impresión de alambre."
+#~ msgctxt "gradual_flow_enabled description"
+#~ msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
+#~ msgstr "Activar cambios graduales de flujo. Cuando está activado, el flujo aumenta/disminuye gradualmente hasta el flujo objetivo. Esto es útil para impresoras con un tubo bowden donde el flujo no cambia inmediatamente cuando el motor del extrusor se enciende/apaga."
 
-#~ msgctxt "wireframe_flat_delay description"
-#~ msgid "Delay time between two horizontal segments. Introducing such a delay can cause better adhesion to previous layers at the connection points, while too long delays cause sagging. Only applies to Wire Printing."
-#~ msgstr "Tiempo de retardo entre dos segmentos horizontales. La introducción de este retardo puede causar una mejor adherencia a las capas anteriores en los puntos de conexión, mientras que los retardos demasiado prolongados causan combados. Solo se aplica a la impresión de alambre."
+#~ msgctxt "reset_flow_duration description"
+#~ msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
+#~ msgstr "Para cualquier movimiento de desplazamiento superior a este valor, el flujo de material se restablece con el flujo objetivo de las trayectorias"
 
-#~ msgctxt "wireframe_nozzle_clearance description"
-#~ msgid "Distance between the nozzle and horizontally downward lines. Larger clearance results in diagonally downward lines with a less steep angle, which in turn results in less upward connections with the next layer. Only applies to Wire Printing."
-#~ msgstr "Distancia entre la tobera y líneas descendentes en horizontal. Cuanto mayor sea la holgura, menos pronunciado será el ángulo de las líneas descendentes en diagonal, lo que a su vez se traduce en menos conexiones ascendentes con la siguiente capa. Solo se aplica a la impresión de alambre."
+#~ msgctxt "gradual_flow_discretisation_step_size label"
+#~ msgid "Gradual flow discretisation step size"
+#~ msgstr "Tamaño del paso de discretización del flujo gradual"
 
-#~ msgctxt "wireframe_up_half_speed description"
-#~ msgid ""
-#~ "Distance of an upward move which is extruded with half speed.\n"
-#~ "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-#~ msgstr ""
-#~ "Distancia de un movimiento ascendente que se extrude a media velocidad.\n"
-#~ "Esto puede causar una mejor adherencia a las capas anteriores, aunque no calienta demasiado el material en esas capas. Solo se aplica a la impresión de alambre."
+#~ msgctxt "gradual_flow_enabled label"
+#~ msgid "Gradual flow enabled"
+#~ msgstr "Flujo gradual activado"
 
-#~ msgctxt "wireframe_fall_down description"
-#~ msgid "Distance with which the material falls down after an upward extrusion. This distance is compensated for. Only applies to Wire Printing."
-#~ msgstr "Distancia a la que cae el material después de una extrusión ascendente. Esta distancia se compensa. Solo se aplica a la impresión de alambre."
+#~ msgctxt "max_flow_acceleration label"
+#~ msgid "Gradual flow max acceleration"
+#~ msgstr "Aceleración máxima del flujo gradual"
 
-#~ msgctxt "wireframe_drag_along description"
-#~ msgid "Distance with which the material of an upward extrusion is dragged along with the diagonally downward extrusion. This distance is compensated for. Only applies to Wire Printing."
-#~ msgstr "Distancia a la que el material de una extrusión ascendente se arrastra junto con la extrusión descendente en diagonal. Esta distancia se compensa. Solo se aplica a la impresión de alambre."
+#~ msgctxt "layer_0_max_flow_acceleration label"
+#~ msgid "Initial layer max flow acceleration"
+#~ msgstr "Aceleración máxima del flujo de la capa inicial"
 
-#~ msgctxt "wireframe_flow_connection description"
-#~ msgid "Flow compensation when going up or down. Only applies to Wire Printing."
-#~ msgstr "Compensación de flujo cuando se va hacia arriba o hacia abajo. Solo se aplica a la impresión de alambre."
+#~ msgctxt "max_flow_acceleration description"
+#~ msgid "Maximum acceleration for gradual flow changes"
+#~ msgstr "Aceleración máxima para los cambios de flujo graduales"
 
-#~ msgctxt "wireframe_flow_flat description"
-#~ msgid "Flow compensation when printing flat lines. Only applies to Wire Printing."
-#~ msgstr "Compensación de flujo al imprimir líneas planas. Solo se aplica a la impresión de alambre."
+#~ msgctxt "layer_0_max_flow_acceleration description"
+#~ msgid "Minimum speed for gradual flow changes for the first layer"
+#~ msgstr "Velocidad mínima para los cambios de flujo graduales de la primera capa"
 
-#~ msgctxt "wireframe_flow description"
-#~ msgid "Flow compensation: the amount of material extruded is multiplied by this value. Only applies to Wire Printing."
-#~ msgstr "Compensación de flujo: la cantidad de material extruido se multiplica por este valor. Solo se aplica a la impresión de alambre."
+#~ msgctxt "prime_tower_base_curve_magnitude label"
+#~ msgid "Prime Tower Base Curve Magnitude"
+#~ msgstr "Magnitud de la curva de la base de la torre de cebado"
 
-#~ msgctxt "support_tree_branch_distance description"
-#~ msgid "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove."
-#~ msgstr "Qué separación deben tener las ramas cuando tocan el modelo. Reducir esta distancia ocasionará que el soporte en árbol toque el modelo en más puntos, produciendo mejor cobertura pero dificultando la tarea de retirar el soporte."
+#~ msgctxt "prime_tower_brim_enable label"
+#~ msgid "Prime Tower Brim"
+#~ msgstr "Borde de la torre auxiliar"
 
-#~ msgctxt "wireframe_strategy option knot"
-#~ msgid "Knot"
-#~ msgstr "Nudo"
+#~ msgctxt "prime_tower_brim_enable description"
+#~ msgid "Prime-towers might need the extra adhesion afforded by a brim even if the model doesn't. Presently can't be used with the 'Raft' adhesion-type."
+#~ msgstr "Puede que las torres auxiliares necesiten la adherencia adicional que proporciona un borde, aunque no sea requisito del modelo. Actualmente, no se puede usar con el tipo de adherencia «balsa»."
 
-#~ msgctxt "wireframe_straight_before_down description"
-#~ msgid "Percentage of a diagonally downward line which is covered by a horizontal line piece. This can prevent sagging of the top most point of upward lines. Only applies to Wire Printing."
-#~ msgstr "Porcentaje de una línea descendente en diagonal que está cubierta por un trozo de línea horizontal. Esto puede evitar el combado del punto de nivel superior de las líneas ascendentes. Solo se aplica a la impresión de alambre."
+#~ msgctxt "prime_tower_brim_enable description"
+#~ msgid "Prime-towers might need the extra adhesion afforded by a brim or raft, even if the model doesn't."
+#~ msgstr "Las torres de cebado pueden necesitar la adhesión extra que proporciona un borde o raft, incluso si el modelo no lo necesita."
 
-#~ msgctxt "wireframe_enabled description"
-#~ msgid "Print only the outside surface with a sparse webbed structure, printing 'in thin air'. This is realized by horizontally printing the contours of the model at given Z intervals which are connected via upward and diagonally downward lines."
-#~ msgstr "Imprime solo la superficie exterior con una estructura reticulada poco densa, imprimiendo 'en el aire'. Esto se realiza mediante la impresión horizontal de los contornos del modelo a intervalos Z dados que están conectados a través de líneas ascendentes y descendentes en diagonal."
+#~ msgctxt "reset_flow_duration label"
+#~ msgid "Reset flow duration"
+#~ msgstr "Restablecer duración del flujo"
 
-#~ msgctxt "support_tree_collision_resolution description"
-#~ msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
-#~ msgstr "Resolución para computar colisiones para evitar golpear el modelo. Establecer un ajuste bajo producirá árboles más precisos que producen fallos con menor frecuencia, pero aumenta significativamente el tiempo de fragmentación."
+#~ msgctxt "prime_tower_base_height description"
+#~ msgid "The height of the prime tower base."
+#~ msgstr "La altura de la base de la torre de cebado."
 
-#~ msgctxt "wireframe_strategy option retract"
-#~ msgid "Retract"
-#~ msgstr "Retraer"
+#~ msgctxt "prime_tower_base_curve_magnitude description"
+#~ msgid "The magnitude factor used for the curve of the prime tower foot."
+#~ msgstr "El factor de magnitud utilizado para la curva del pie de la torre de cebado."
 
-#~ msgctxt "wireframe_printspeed description"
-#~ msgid "Speed at which the nozzle moves when extruding material. Only applies to Wire Printing."
-#~ msgstr "Velocidad a la que la tobera se desplaza durante la extrusión de material. Solo se aplica a la impresión de alambre."
+#~ msgctxt "material_print_temperature_layer_0 description"
+#~ msgid "The temperature used for printing the first layer. Set at 0 to disable special handling of the initial layer."
+#~ msgstr "Temperatura que se usa para imprimir la primera capa. Se ajusta a 0 para desactivar la manipulación especial de la capa inicial."
 
-#~ msgctxt "wireframe_printspeed_down description"
-#~ msgid "Speed of printing a line diagonally downward. Only applies to Wire Printing."
-#~ msgstr "Velocidad de impresión de una línea descendente en diagonal 'en el aire'. Solo se aplica a la impresión de alambre."
-
-#~ msgctxt "wireframe_printspeed_up description"
-#~ msgid "Speed of printing a line upward 'in thin air'. Only applies to Wire Printing."
-#~ msgstr "Velocidad de impresión de una línea ascendente 'en el aire'. Solo se aplica a la impresión de alambre."
-
-#~ msgctxt "wireframe_printspeed_bottom description"
-#~ msgid "Speed of printing the first layer, which is the only layer touching the build platform. Only applies to Wire Printing."
-#~ msgstr "Velocidad de impresión de la primera capa, que es la única capa que toca la plataforma de impresión. Solo se aplica a la impresión de alambre."
-
-#~ msgctxt "wireframe_printspeed_flat description"
-#~ msgid "Speed of printing the horizontal contours of the model. Only applies to Wire Printing."
-#~ msgstr "Velocidad de impresión de los contornos horizontales del modelo. Solo se aplica a la impresión de alambre."
-
-#~ msgctxt "wireframe_strategy description"
-#~ msgid "Strategy for making sure two consecutive layers connect at each connection point. Retraction lets the upward lines harden in the right position, but may cause filament grinding. A knot can be made at the end of an upward line to heighten the chance of connecting to it and to let the line cool; however, it may require slow printing speeds. Another strategy is to compensate for the sagging of the top of an upward line; however, the lines won't always fall down as predicted."
-#~ msgstr "Estrategia para asegurarse de que dos capas consecutivas conecten en cada punto de conexión. La retracción permite que las líneas ascendentes se endurezcan en la posición correcta, pero pueden hacer que filamento se desmenuce. Se puede realizar un nudo al final de una línea ascendente para aumentar la posibilidad de conexión a la misma y dejar que la línea se enfríe; sin embargo, esto puede requerir velocidades de impresión lentas. Otra estrategia consiste en compensar el combado de la parte superior de una línea ascendente; sin embargo, las líneas no siempre caen como se espera."
-
-#~ msgctxt "support_tree_angle description"
-#~ msgid "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
-#~ msgstr "El ángulo de las ramas. Utilice un ángulo inferior para que sean más verticales y estables. Utilice un ángulo superior para poder tener más alcance."
-
-#~ msgctxt "wireframe_roof_inset description"
-#~ msgid "The distance covered when making a connection from a roof outline inward. Only applies to Wire Printing."
-#~ msgstr "Distancia cubierta al hacer una conexión desde un contorno del techo hacia el interior. Solo se aplica a la impresión de alambre."
-
-#~ msgctxt "wireframe_roof_drag_along description"
-#~ msgid "The distance of the end piece of an inward line which gets dragged along when going back to the outer outline of the roof. This distance is compensated for. Only applies to Wire Printing."
-#~ msgstr "La distancia del trozo final de una línea entrante que se arrastra al volver al contorno exterior del techo. Esta distancia se compensa. Solo se aplica a la impresión de alambre."
-
-#~ msgctxt "wireframe_roof_fall_down description"
-#~ msgid "The distance which horizontal roof lines printed 'in thin air' fall down when being printed. This distance is compensated for. Only applies to Wire Printing."
-#~ msgstr "Distancia a la que las líneas horizontales del techo impresas 'en el aire' caen mientras se imprime. Esta distancia se compensa. Solo se aplica a la impresión de alambre."
-
-#~ msgctxt "wireframe_height description"
-#~ msgid "The height of the upward and diagonally downward lines between two horizontal parts. This determines the overall density of the net structure. Only applies to Wire Printing."
-#~ msgstr "Altura de las líneas ascendentes y descendentes en diagonal entre dos partes horizontales. Esto determina la densidad global de la estructura reticulada. Solo se aplica a la Impresión de Alambre."
-
-#~ msgctxt "wireframe_roof_outer_delay description"
-#~ msgid "Time spent at the outer perimeters of hole which is to become a roof. Longer times can ensure a better connection. Only applies to Wire Printing."
-#~ msgstr "El tiempo empleado en los perímetros exteriores del agujero que se convertirá en un techo. Cuanto mayor sea el tiempo, mejor será la conexión. Solo se aplica a la impresión de alambre."
-
-#~ msgctxt "support_tree_angle label"
-#~ msgid "Tree Support Branch Angle"
-#~ msgstr "Ángulo de las ramas del soporte en árbol"
-
-#~ msgctxt "support_tree_branch_diameter label"
-#~ msgid "Tree Support Branch Diameter"
-#~ msgstr "Diámetro de las ramas del soporte en árbol"
-
-#~ msgctxt "support_tree_branch_diameter_angle label"
-#~ msgid "Tree Support Branch Diameter Angle"
-#~ msgstr "Ángulo de diámetro de las ramas del soporte en árbol"
-
-#~ msgctxt "support_tree_branch_distance label"
-#~ msgid "Tree Support Branch Distance"
-#~ msgstr "Distancia de las ramas del soporte en árbol"
-
-#~ msgctxt "support_tree_collision_resolution label"
-#~ msgid "Tree Support Collision Resolution"
-#~ msgstr "Resolución de colisión del soporte en árbol"
-
-#~ msgctxt "support_tree_max_diameter label"
-#~ msgid "Tree Support Trunk Diameter"
-#~ msgstr "Diámetro del tronco del soporte en árbol"
-
-#~ msgctxt "wireframe_bottom_delay label"
-#~ msgid "WP Bottom Delay"
-#~ msgstr "Retardo inferior en IA"
-
-#~ msgctxt "wireframe_printspeed_bottom label"
-#~ msgid "WP Bottom Printing Speed"
-#~ msgstr "Velocidad de impresión de la parte inferior en IA"
-
-#~ msgctxt "wireframe_flow_connection label"
-#~ msgid "WP Connection Flow"
-#~ msgstr "Flujo de conexión en IA"
-
-#~ msgctxt "wireframe_height label"
-#~ msgid "WP Connection Height"
-#~ msgstr "Altura de conexión en IA"
-
-#~ msgctxt "wireframe_printspeed_down label"
-#~ msgid "WP Downward Printing Speed"
-#~ msgstr "Velocidad de impresión descendente en IA"
-
-#~ msgctxt "wireframe_drag_along label"
-#~ msgid "WP Drag Along"
-#~ msgstr "Arrastre en IA"
-
-#~ msgctxt "wireframe_up_half_speed label"
-#~ msgid "WP Ease Upward"
-#~ msgstr "Facilidad de ascenso en IA"
-
-#~ msgctxt "wireframe_fall_down label"
-#~ msgid "WP Fall Down"
-#~ msgstr "Caída en IA"
-
-#~ msgctxt "wireframe_flat_delay label"
-#~ msgid "WP Flat Delay"
-#~ msgstr "Retardo plano en IA"
-
-#~ msgctxt "wireframe_flow_flat label"
-#~ msgid "WP Flat Flow"
-#~ msgstr "Flujo plano en IA"
-
-#~ msgctxt "wireframe_flow label"
-#~ msgid "WP Flow"
-#~ msgstr "Flujo en IA"
-
-#~ msgctxt "wireframe_printspeed_flat label"
-#~ msgid "WP Horizontal Printing Speed"
-#~ msgstr "Velocidad de impresión horizontal en IA"
-
-#~ msgctxt "wireframe_top_jump label"
-#~ msgid "WP Knot Size"
-#~ msgstr "Tamaño de nudo de IA"
-
-#~ msgctxt "wireframe_nozzle_clearance label"
-#~ msgid "WP Nozzle Clearance"
-#~ msgstr "Holgura de la tobera en IA"
-
-#~ msgctxt "wireframe_roof_drag_along label"
-#~ msgid "WP Roof Drag Along"
-#~ msgstr "Arrastre del techo en IA"
-
-#~ msgctxt "wireframe_roof_fall_down label"
-#~ msgid "WP Roof Fall Down"
-#~ msgstr "Caída del techo en IA"
-
-#~ msgctxt "wireframe_roof_inset label"
-#~ msgid "WP Roof Inset Distance"
-#~ msgstr "Distancia a la inserción del techo en IA"
-
-#~ msgctxt "wireframe_roof_outer_delay label"
-#~ msgid "WP Roof Outer Delay"
-#~ msgstr "Retardo exterior del techo en IA"
-
-#~ msgctxt "wireframe_printspeed label"
-#~ msgid "WP Speed"
-#~ msgstr "Velocidad de IA"
-
-#~ msgctxt "wireframe_straight_before_down label"
-#~ msgid "WP Straighten Downward Lines"
-#~ msgstr "Enderezar líneas descendentes en IA"
-
-#~ msgctxt "wireframe_strategy label"
-#~ msgid "WP Strategy"
-#~ msgstr "Estrategia en IA"
-
-#~ msgctxt "wireframe_top_delay label"
-#~ msgid "WP Top Delay"
-#~ msgstr "Retardo superior en IA"
-
-#~ msgctxt "wireframe_printspeed_up label"
-#~ msgid "WP Upward Printing Speed"
-#~ msgstr "Velocidad de impresión ascendente en IA"
-
-#~ msgctxt "wireframe_enabled label"
-#~ msgid "Wire Printing"
-#~ msgstr "Impresión de alambre"
+#~ msgctxt "prime_tower_base_size description"
+#~ msgid "The width of the prime tower base."
+#~ msgstr "El ancho de la base de la torre de cebado."

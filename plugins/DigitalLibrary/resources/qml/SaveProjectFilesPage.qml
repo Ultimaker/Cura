@@ -208,12 +208,14 @@ Item
         anchors.rightMargin: UM.Theme.getSize("thin_margin").height
 
         enabled: UM.Backend.state == UM.Backend.Done
-        currentIndex: UM.Backend.state == UM.Backend.Done ? 0 : 1
+        currentIndex: UM.Backend.state == UM.Backend.Done ? dfFilenameTextfield.text.startsWith("MM")? 1 : 0 : 2
+
         textRole: "text"
         valueRole: "value"
 
         model: [
-            { text: catalog.i18nc("@option", "Save Cura project and print file"), key: "3mf_ufp", value: ["3mf", "ufp"] },
+            { text: catalog.i18nc("@option", "Save Cura project and .ufp print file"), key: "3mf_ufp", value: ["3mf", "ufp"] },
+            { text: catalog.i18nc("@option", "Save Cura project and .makerbot print file"), key: "3mf_makerbot", value: ["3mf", "makerbot"] },
             { text: catalog.i18nc("@option", "Save Cura project"), key: "3mf", value: ["3mf"] },
         ]
     }

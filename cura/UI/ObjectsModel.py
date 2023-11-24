@@ -69,7 +69,7 @@ class ObjectsModel(ListModel):
         self._group_name_template = catalog.i18nc("@label", "Group #{group_nr}")
         self._group_name_prefix = self._group_name_template.split("#")[0]
 
-        self._naming_regex = re.compile("^(.+)\(([0-9]+)\)$")
+        self._naming_regex = re.compile(r"^(.+)\(([0-9]+)\)$")
 
     def setActiveBuildPlate(self, nr: int) -> None:
         if self._build_plate_number != nr:
