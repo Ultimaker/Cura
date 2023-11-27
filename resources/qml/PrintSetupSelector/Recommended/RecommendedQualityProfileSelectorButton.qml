@@ -84,6 +84,7 @@ Rectangle
                 visible: icon === "" && custom_icon === ""
                 border.width: UM.Theme.getSize("thick_lining").width
                 border.color: UM.Theme.getColor("text")
+                color: "transparent"
 
                 UM.Label
                 {
