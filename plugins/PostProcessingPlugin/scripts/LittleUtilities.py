@@ -421,7 +421,7 @@ class LittleUtilities(Script):
                     "default_value": 900,
                     "minimum_value": 4,
                     "unit": "mm²  ",
-                    "enabled": "disable_ABL"
+                    "enabled": "disable_abl"
                 },
                 "final_z":
                 {
