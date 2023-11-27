@@ -61,6 +61,7 @@ class MakerbotWriter(MeshWriter):
         "1C": "mk14_c",
         "1A": "mk14",
         "2A": "mk14_s",
+        "LABS": "mk14_e",
     }
     _MATERIAL_MAP = {"2780b345-577b-4a24-a2c5-12e6aad3e690": "abs",
                      "88c8919c-6a09-471a-b7b6-e801263d862d": "abs-wss1",

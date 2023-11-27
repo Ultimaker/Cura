@@ -2,7 +2,7 @@
 # Copyright (C) 2022 UltiMaker.
 # This file is distributed under the same license as the Cura package.
 # Ultimaker <plugins@ultimaker.com>, 2022.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.0\n"
