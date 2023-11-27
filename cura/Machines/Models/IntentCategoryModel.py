@@ -61,6 +61,11 @@ class IntentCategoryModel(ListModel):
                                              "The annealing profile requires post-processing in an oven after the print is finished. This profile retains the dimensional accuracy of the printed part after annealing and improves strength, stiffness, and thermal resistance.")
 
             }
+            cls._translations["solid"] = {
+                "name": catalog.i18nc("@label", "Solid"),
+                "description": catalog.i18nc("@text",
+                                             "A highly dense and strong part but at a slower print time. Great for functional parts.")
+            }
         return cls._translations
 
     def __init__(self, intent_category: str) -> None:
