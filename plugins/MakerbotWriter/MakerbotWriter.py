@@ -273,23 +273,29 @@ class MakerbotWriter(MeshWriter):
 
         meta["miracle_config"] = {"gaggles": {str(node.getName()): {} for node in nodes}}
 
+        version_info = dict()
         cura_engine_info = ConanInstalls.get("curaengine", {"version": "unknown", "revision": "unknown"})
-        meta["curaengine_version"] = cura_engine_info["version"]
-        meta["curaengine_commit_hash"] = cura_engine_info["revision"]
+        version_info["curaengine_version"] = cura_engine_info["version"]
+        version_info["curaengine_commit_hash"] = cura_engine_info["revision"]
 
         dulcificum_info = ConanInstalls.get("dulcificum", {"version": "unknown", "revision": "unknown"})
-        meta["dulcificum_version"] = dulcificum_info["version"]
-        meta["dulcificum_commit_hash"] = dulcificum_info["revision"]
+        version_info["dulcificum_version"] = dulcificum_info["version"]
+        version_info["dulcificum_commit_hash"] = dulcificum_info["revision"]
 
-        meta["makerbot_writer_version"] = self.getVersion()
-        meta["pyDulcificum_version"] = du.__version__
+        version_info["makerbot_writer_version"] = self.getVersion()
+        version_info["pyDulcificum_version"] = du.__version__
 
         # Add engine plugin information to the metadata
         for name, package_info in ConanInstalls.items():
             if not name.startswith("curaengine_"):
                 continue
-            meta[f"{name}_version"] = package_info["version"]
-            meta[f"{name}_commit_hash"] = package_info["revision"]
+            version_info[f"{name}_version"] = package_info["version"]
+            version_info[f"{name}_commit_hash"] = package_info["revision"]
+
+        # Add version info to the main metadata, but also to "miracle_config"
+        # so that it shows up in analytics
+        meta["miracle_config"].update(version_info)
+        meta.update(version_info)
 
         # TODO add the following instructions
         # num_tool_changes

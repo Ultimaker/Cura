@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-10-31 19:13+0000\n"
+"POT-Creation-Date: 2023-11-15 12:26+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -456,6 +456,10 @@ msgctxt "build_volume_temperature label"
 msgid "Build Volume Temperature"
 msgstr "打印体积温度"
 
+msgctxt "prime_tower_brim_enable description"
+msgid "By enabling this setting, your prime-tower will get a brim, even if the model doesn't. If you want a sturdier base for a high tower, you can increase the base height."
+msgstr "启用此设置将为您的 prime tower 添加一个边缘，即使您的模型中原本没有。如果您希望高塔有更坚固的基座，可以增加底座高度。"
+
 msgctxt "center_object label"
 msgid "Center Object"
 msgstr "中心点"
@@ -742,7 +746,7 @@ msgstr "已打印支撑结构走线之间的距离。 该设置通过支撑密�
 
 msgctxt "support_bottom_distance description"
 msgid "Distance from the print to the bottom of the support. Note that this is rounded up to the next layer height."
-msgstr ""
+msgstr "从打印物到支撑底部的距离。注意这个会上调到下一个层高。"
 
 msgctxt "support_top_distance description"
 msgid "Distance from the top of the support to the print."
@@ -750,7 +754,7 @@ msgstr "从支撑顶部到打印品的距离。"
 
 msgctxt "support_z_distance description"
 msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. The topmost support layer below the model might be a fraction of regular layers."
-msgstr ""
+msgstr "支撑结构顶部/底部到打印物的距离。这个间隙提供了清除模型打印后支撑的空间。模型下方的最顶层支撑层可能是常规层的一小部分。"
 
 msgctxt "infill_wipe_dist description"
 msgid "Distance of a travel move inserted after every infill line, to make the infill stick to the walls better. This option is similar to infill overlap, but without extrusion and only on one end of the infill line."
@@ -2514,19 +2518,19 @@ msgstr "装填塔加速度"
 
 msgctxt "prime_tower_brim_enable label"
 msgid "Prime Tower Base"
-msgstr ""
-
-msgctxt "prime_tower_base_curve_magnitude label"
-msgid "Prime Tower Base Curve Magnitude"
-msgstr ""
+msgstr "底漆塔座"
 
 msgctxt "prime_tower_base_height label"
 msgid "Prime Tower Base Height"
-msgstr ""
+msgstr "底漆塔座高度"
 
 msgctxt "prime_tower_base_size label"
 msgid "Prime Tower Base Size"
-msgstr ""
+msgstr "底漆塔座尺寸"
+
+msgctxt "prime_tower_base_curve_magnitude label"
+msgid "Prime Tower Base Slope"
+msgstr "Prime Tower 底座斜度"
 
 msgctxt "prime_tower_flow label"
 msgid "Prime Tower Flow"
@@ -2546,7 +2550,7 @@ msgstr "装填塔最小体积"
 
 msgctxt "prime_tower_raft_base_line_spacing label"
 msgid "Prime Tower Raft Line Spacing"
-msgstr ""
+msgstr "底漆塔筏线间距"
 
 msgctxt "prime_tower_size label"
 msgid "Prime Tower Size"
@@ -2563,10 +2567,6 @@ msgstr "装填塔 X 位置"
 msgctxt "prime_tower_position_y label"
 msgid "Prime Tower Y Position"
 msgstr "装填塔 Y 位置"
-
-msgctxt "prime_tower_brim_enable description"
-msgid "Prime-towers might need the extra adhesion afforded by a brim or raft, even if the model doesn't."
-msgstr ""
 
 msgctxt "acceleration_print label"
 msgid "Print Acceleration"
@@ -3786,7 +3786,7 @@ msgstr "顶部 Raft 层的 Raft 走线之间的距离。 间距应等于走线�
 
 msgctxt "prime_tower_raft_base_line_spacing description"
 msgid "The distance between the raft lines for the unique prime tower raft layer. Wide spacing makes for easy removal of the raft from the build plate."
-msgstr ""
+msgstr "底漆塔独有的筏层之间筏线的距离。宽间距可以轻松地将筏从打印板上移除。"
 
 msgctxt "interlocking_depth description"
 msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
@@ -3985,8 +3985,8 @@ msgid "The height of the initial layer in mm. A thicker initial layer makes adhe
 msgstr "起始层高（以毫米为单位）。起始层越厚，与打印平台的粘着越轻松。"
 
 msgctxt "prime_tower_base_height description"
-msgid "The height of the prime tower base."
-msgstr ""
+msgid "The height of the prime tower base. Increasing this value will result in a more sturdy prime tower because the base will be wider. If this setting is too low, the prime tower will not have a sturdy base."
+msgstr "Prime tower 底座的高度。增加这个值将使 prime tower 更加坚固，因为底座会更宽。如果这个设置过低，prime tower 将没有坚固的底座。"
 
 msgctxt "support_bottom_stair_step_height description"
 msgid "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures. Set to zero to turn off the stair-like behaviour."
@@ -4061,8 +4061,8 @@ msgid "The length of material retracted during a retraction move."
 msgstr "回抽移动期间回抽的材料长度。"
 
 msgctxt "prime_tower_base_curve_magnitude description"
-msgid "The magnitude factor used for the curve of the prime tower foot."
-msgstr ""
+msgid "The magnitude factor used for the slope of the prime tower base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
+msgstr "用于 prime tower 底座斜度的幅度因子。如果您增加这个值，底座会变得更细。如果减小它，底座会变得更厚。"
 
 msgctxt "machine_buildplate_type description"
 msgid "The material of the build plate installed on the printer."
@@ -4618,7 +4618,7 @@ msgstr "打印结束前开始冷却的温度。"
 
 msgctxt "material_print_temperature_layer_0 description"
 msgid "The temperature used for printing the first layer."
-msgstr ""
+msgstr "打印第一层时使用的温度。"
 
 msgctxt "material_print_temperature description"
 msgid "The temperature used for printing."
@@ -4697,8 +4697,8 @@ msgid "The width of the interlocking structure beams."
 msgstr "互锁结构梁的宽度。"
 
 msgctxt "prime_tower_base_size description"
-msgid "The width of the prime tower base."
-msgstr ""
+msgid "The width of the prime tower brim/base. A larger base enhances adhesion to the build plate, but also reduces the effective print area."
+msgstr "Prime tower 边缘/底座的宽度。更大的底座可以增强对打印板的粘附力，但也会减少有效打印区域。"
 
 msgctxt "prime_tower_size description"
 msgid "The width of the prime tower."
@@ -5532,6 +5532,10 @@ msgstr "空驶"
 #~ msgid "Minimum speed for gradual flow changes for the first layer"
 #~ msgstr "第一层渐变流量的最小速度"
 
+#~ msgctxt "prime_tower_base_curve_magnitude label"
+#~ msgid "Prime Tower Base Curve Magnitude"
+#~ msgstr "底漆塔座曲率大小"
+
 #~ msgctxt "prime_tower_brim_enable label"
 #~ msgid "Prime Tower Brim"
 #~ msgstr "装填塔 Brim"
@@ -5540,10 +5544,26 @@ msgstr "空驶"
 #~ msgid "Prime-towers might need the extra adhesion afforded by a brim even if the model doesn't. Presently can't be used with the 'Raft' adhesion-type."
 #~ msgstr "装填塔可能需要 Brim 提供额外附着力，无论模型是否需要。目前不可与 'Raft' 附着类型配合使用。"
 
+#~ msgctxt "prime_tower_brim_enable description"
+#~ msgid "Prime-towers might need the extra adhesion afforded by a brim or raft, even if the model doesn't."
+#~ msgstr "即使模型不需要，底漆塔也可能需要边缘或筏的额外粘附力。"
+
 #~ msgctxt "reset_flow_duration label"
 #~ msgid "Reset flow duration"
 #~ msgstr "重置流量持续时间"
 
+#~ msgctxt "prime_tower_base_height description"
+#~ msgid "The height of the prime tower base."
+#~ msgstr "底漆塔座的高度。"
+
+#~ msgctxt "prime_tower_base_curve_magnitude description"
+#~ msgid "The magnitude factor used for the curve of the prime tower foot."
+#~ msgstr "用于底漆塔脚曲线的幅度因子。"
+
 #~ msgctxt "material_print_temperature_layer_0 description"
 #~ msgid "The temperature used for printing the first layer. Set at 0 to disable special handling of the initial layer."
 #~ msgstr "用于打印第一层的温度。 设为 0 即禁用对起始层的特别处理。"
+
+#~ msgctxt "prime_tower_base_size description"
+#~ msgid "The width of the prime tower base."
+#~ msgstr "底漆塔座的宽度。"

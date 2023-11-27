@@ -2602,7 +2602,7 @@
                     "maximum_value_warning": "120",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
-                    "resolve": "sum(extruderValues(\"material_shrinkage_percentage\")) / len(extruderValues(\"material_shrinkage_percentage\"))",
+                    "resolve": "max(extruderValues(\"material_shrinkage_percentage\")) if any(extruderValues('material_is_support_material')) else sum(extruderValues(\"material_shrinkage_percentage\")) / len(extruderValues(\"material_shrinkage_percentage\"))",
                     "children":
                     {
                         "material_shrinkage_percentage_xy":
@@ -2618,7 +2618,7 @@
                             "maximum_value_warning": "120",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false,
-                            "resolve": "sum(extruderValues(\"material_shrinkage_percentage_xy\")) / len(extruderValues(\"material_shrinkage_percentage_xy\"))",
+                            "resolve": "max(extruderValues(\"material_shrinkage_percentage\")) if any(extruderValues('material_is_support_material')) else sum(extruderValues(\"material_shrinkage_percentage_xy\")) / len(extruderValues(\"material_shrinkage_percentage_xy\"))",
                             "value": "material_shrinkage_percentage"
                         },
                         "material_shrinkage_percentage_z":
@@ -2634,7 +2634,7 @@
                             "maximum_value_warning": "120",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false,
-                            "resolve": "sum(extruderValues(\"material_shrinkage_percentage_z\")) / len(extruderValues(\"material_shrinkage_percentage_z\"))",
+                            "resolve": "max(extruderValues(\"material_shrinkage_percentage_z\")) if any(extruderValues('material_is_support_material')) else sum(extruderValues(\"material_shrinkage_percentage_z\")) / len(extruderValues(\"material_shrinkage_percentage_z\"))",
                             "value": "material_shrinkage_percentage"
                         }
                     }
@@ -6145,7 +6145,7 @@
                 "layer_0_z_overlap":
                 {
                     "label": "Initial Layer Z Overlap",
-                    "description": "Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount.",
+                    "description": "Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount.\nIt may be noted that sometimes the second layer is printed below initial layer because of this setting. This is intended behavior",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.22,

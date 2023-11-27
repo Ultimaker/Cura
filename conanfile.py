@@ -391,10 +391,16 @@ class CuraConan(ConanFile):
 
         if self.options.devtools:
             entitlements_file = "'{}'".format(os.path.join(self.source_folder, "packaging", "MacOS", "cura.entitlements"))
-            self._generate_pyinstaller_spec(location = self.generators_folder,
-                                            entrypoint_location = "'{}'".format(os.path.join(self.source_folder, self.conan_data["pyinstaller"]["runinfo"]["entrypoint"])).replace("\\", "\\\\"),
-                                            icon_path = "'{}'".format(os.path.join(self.source_folder, "packaging", self.conan_data["pyinstaller"]["icon"][str(self.settings.os)])).replace("\\", "\\\\"),
-                                            entitlements_file = entitlements_file if self.settings.os == "Macos" else "None")
+            self._generate_pyinstaller_spec(
+                location=self.generators_folder,
+                entrypoint_location="'{}'".format(
+                    os.path.join(self.source_folder, self.conan_data["pyinstaller"]["runinfo"]["entrypoint"])).replace(
+                    "\\", "\\\\"),
+                icon_path="'{}'".format(os.path.join(self.source_folder, "packaging",
+                                                     self.conan_data["pyinstaller"]["icon"][
+                                                         str(self.settings.os)])).replace("\\", "\\\\"),
+                entitlements_file=entitlements_file if self.settings.os == "Macos" else "None"
+            )
 
         if self.options.get_safe("enable_i18n", False):
             # Update the po and pot files

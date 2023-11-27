@@ -556,7 +556,7 @@ msgstr "排列网格中的所有模型"
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "Arrange Selection"
-msgstr ""
+msgstr "排列选择"
 
 msgctxt "@label:button"
 msgid "Ask a question"
@@ -1012,7 +1012,7 @@ msgstr "无法解释服务器的响应。"
 
 msgctxt "@error:load"
 msgid "Could not load GCodeWriter plugin. Try to re-enable the plugin."
-msgstr ""
+msgstr "无法加载 GCodeWriter 插件。尝试重新启用插件。"
 
 msgctxt "@info:error"
 msgid "Could not reach Marketplace."
@@ -2353,19 +2353,19 @@ msgstr "发送文件之前，请确保 G-code 适用于当前打印机和打印�
 
 msgctxt "@item:inlistbox"
 msgid "Makerbot Printfile"
-msgstr ""
+msgstr "Makerbot 打印文件"
 
 msgctxt "name"
 msgid "Makerbot Printfile Writer"
-msgstr ""
+msgstr "Makerbot 打印文件编写器"
 
 msgctxt "@error"
 msgid "MakerbotWriter could not save to the designated path."
-msgstr ""
+msgstr "MakerbotWriter 无法保存至指定路径。"
 
 msgctxt "@error:not supported"
 msgid "MakerbotWriter does not support text mode."
-msgstr ""
+msgstr "MakerbotWriter 不支持文本模式。"
 
 msgctxt "@action:inmenu"
 msgid "Manage Materials..."
@@ -3014,7 +3014,7 @@ msgstr "请为此配置文件提供名称。"
 
 msgctxt "@info"
 msgid "Please provide a new name."
-msgstr ""
+msgstr "请提供一个新名称。"
 
 msgctxt "@text"
 msgid "Please read and agree with the plugin licence."
@@ -3449,7 +3449,7 @@ msgstr "提供对写入 3MF 文件的支持。"
 
 msgctxt "description"
 msgid "Provides support for writing MakerBot Format Packages."
-msgstr ""
+msgstr "提供对写入 MakerBot 格式包的支持。"
 
 msgctxt "description"
 msgid "Provides support for writing Ultimaker Format Packages."
@@ -3586,7 +3586,7 @@ msgstr "重命名"
 
 msgctxt "@title:window"
 msgid "Rename"
-msgstr ""
+msgstr "重命名"
 
 msgctxt "@title:window"
 msgid "Rename Profile"

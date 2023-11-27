@@ -139,6 +139,34 @@ Item
                 decimals: 0
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
+
+            Cura.NumericTextFieldWithUnit
+            {
+                id: extruderStartCodeDurationFieldId
+                containerStackId: base.extruderStackId
+                settingKey: "machine_extruder_start_code_duration"
+                settingStoreIndex: propertyStoreIndex
+                labelText: catalog.i18nc("@label", "Extruder Start G-code duration")
+                labelFont: base.labelFont
+                labelWidth: base.labelWidth
+                controlWidth: base.controlWidth
+                unitText: catalog.i18nc("@label", "s")
+                forceUpdateOnChangeFunction: forceUpdateFunction
+            }
+
+            Cura.NumericTextFieldWithUnit
+            {
+                id: extruderEndCodeDurationFieldId
+                containerStackId: base.extruderStackId
+                settingKey: "machine_extruder_end_code_duration"
+                settingStoreIndex: propertyStoreIndex
+                labelText: catalog.i18nc("@label", "Extruder End G-code duration")
+                labelFont: base.labelFont
+                labelWidth: base.labelWidth
+                controlWidth: base.controlWidth
+                unitText: catalog.i18nc("@label", "s")
+                forceUpdateOnChangeFunction: forceUpdateFunction
+            }
         }
     }
 
