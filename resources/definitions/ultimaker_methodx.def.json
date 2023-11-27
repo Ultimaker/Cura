@@ -9,7 +9,7 @@
         "manufacturer": "Ultimaker B.V.",
         "file_formats": "application/x-makerbot",
         "platform": "ultimaker_method_platform.stl",
-        "bot_id": "lava_f",
+        "bot_machine_id": "lava_f",
         "exclude_materials": [
             "dsm_",
             "Essentium_",
