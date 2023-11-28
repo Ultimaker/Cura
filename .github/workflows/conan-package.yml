@@ -118,6 +118,9 @@ jobs:
           conan config install https://github.com/Ultimaker/conan-config.git
           conan config install https://github.com/Ultimaker/conan-config.git -a "-b runner/${{ runner.os }}/${{ runner.arch }}"
 
+      - name: Set GH service account for remote cura-conan-dev
+        run: conan user -p ${{ secrets.CONAN_GH_RUNNER_PASS }} -r cura-conan-dev ${{ secrets.CONAN_GH_RUNNER_USER }}
+
       - name: Create the Packages
         run: conan create . ${{ needs.conan-recipe-version.outputs.recipe_id_full }} --build=missing --update -o ${{ needs.conan-recipe-version.outputs.project_name }}:devtools=True -o ${{ needs.conan-recipe-version.outputs.project_name }}:enable_i18n=True -c tools.build:skip_test=True
 
@@ -129,7 +132,9 @@ jobs:
         if: always()
         run: |
           conan upload ${{ needs.conan-recipe-version.outputs.recipe_id_full }} -r cura --all -c
+          conan upload ${{ needs.conan-recipe-version.outputs.recipe_id_full }} -r cura-conan-dev --all -c
           conan upload ${{ needs.conan-recipe-version.outputs.recipe_id_latest }} -r cura -c
+          conan upload ${{ needs.conan-recipe-version.outputs.recipe_id_latest }} -r cura-conan-dev -c
 
   notify-create:
     if: ${{ always() && (github.event_name == 'push' && (github.ref_name == 'main' || github.ref_name == 'master' || needs.conan-recipe-version.outputs.is_release_branch == 'true')) }}
