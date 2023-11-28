@@ -12,7 +12,7 @@
 
 [![Badge Test]][Test]   
 [![Badge Conan]][Conan]   
-![Badge Downloads]
+[![Badge Downloads]][Downloads]
 <br>
 <br>
 
@@ -67,6 +67,7 @@
 [Issues]: https://github.com/Ultimaker/Cura/issues
 [Conan]: https://github.com/Ultimaker/Cura/actions/workflows/conan-package.yml
 [Test]: https://github.com/Ultimaker/Cura/actions/workflows/unit-test.yml
+[Downloads]: https://github.com/Ultimaker/Cura/releases/latest
 
 [License]: LICENSE
 [Report]: docs/Report.md
