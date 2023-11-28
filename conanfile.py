@@ -338,7 +338,7 @@ class CuraConan(ConanFile):
 
     def build_requirements(self):
         if self.options.get_safe("enable_i18n", False):
-            self.tool_requires("gettext/0.21@ultimaker/testing", force_host_context = True)
+            self.tool_requires("gettext/0.21", force_host_context = True)
 
     def layout(self):
         self.folders.source = "."
