@@ -12,11 +12,11 @@
 
 * Bugs resolved since the Beta Release
 - Introduced Balanced and Solid profiles for 1C cores to UltiMaker Method X and Method XL
-- Improved self-support for UltiMaker MethodX and MethodXL printers so the second extruder will not be used
+- Improved self-support for UltiMaker MethodX and MethodXL printers so the support extruder will not be used
 - The prime tower is now always enabled when the second extruder is used for the MethodX and MethodXL printers
 - Updated the default prime tower position so it doesn't prevent slicing for some printers
-- The raft was affected by non-uniform scaling in Z only
-- Slice information attributes were not available through start-end code formulas
+- Fixed an issue where raft layers were partially printed
+- Slice information template variables were not available through start-end code formulas
 - Resolved an issue with 100% support roof for tree support, contributed by @ThomasRahm 
 
 * Printer definitions, profiles and materials:
