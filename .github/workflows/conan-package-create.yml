@@ -145,8 +145,8 @@ jobs:
 
       - name: Set GH service account for remote cura-conan-dev
         run: |
-          conan user -p ${{ secrets.CONAN_GH_RUNNER_PASS }} -r cura-conan-dev ${{ secrets.CONAN_GH_RUNNER_USER }}
-          conan user -p ${{ secrets.CONAN_GH_RUNNER_PASS }} -r cura-private-conan-dev ${{ secrets.CONAN_GH_RUNNER_USER }}
+          conan user -p ${{ secrets.CONAN_GH_RUNNER_PASS }} -r cura-conan-dev "${{ secrets.CONAN_GH_RUNNER_USER }}"
+          conan user -p ${{ secrets.CONAN_GH_RUNNER_PASS }} -r cura-private-conan-dev "${{ secrets.CONAN_GH_RUNNER_USER }}"
 
       - name: Create the Packages
         run: conan install ${{ inputs.recipe_id_full }} --build=missing --update -c tools.build:skip_test=True
