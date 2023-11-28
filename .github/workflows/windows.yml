@@ -118,9 +118,6 @@ jobs:
           conan config install https://github.com/Ultimaker/conan-config.git
           conan config install https://github.com/Ultimaker/conan-config.git -a "-b runner/${{ runner.os }}/${{ runner.arch }}"
 
-      - name: Set GH service account for remote cura-conan-dev
-        run: conan user -p ${{ secrets.CONAN_GH_RUNNER_PASS }} -r cura-conan-dev "${{ secrets.CONAN_GH_RUNNER_USER }}"
-
       - name: Use Conan download cache (Powershell)
         run: conan config set storage.download_cache="C:\Users\runneradmin\.conan\conan_download_cache"
 

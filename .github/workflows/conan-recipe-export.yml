@@ -80,14 +80,10 @@ jobs:
           conan config install https://github.com/Ultimaker/conan-config.git -a "-b runner/${{ runner.os }}/${{ runner.arch }}"
 
       - name: Add Cura private Artifactory remote
-        run: |
-          conan remote add cura-private https://ultimaker.jfrog.io/artifactory/api/conan/cura-private True
-          conan remote add cura-private-conan-dev https://cura.jfrog.io/artifactory/api/conan/cura-private-conan-dev True
+        run: conan remote add cura-private-conan-dev https://cura.jfrog.io/artifactory/api/conan/cura-private-conan-dev True
 
       - name: Set GH service account for remote cura-conan-dev
-        run: |
-          conan user -p ${{ secrets.CONAN_GH_RUNNER_PASS }} -r cura-conan-dev "${{ secrets.CONAN_GH_RUNNER_USER }}"
-          conan user -p ${{ secrets.CONAN_GH_RUNNER_PASS }} -r cura-private-conan-dev "${{ secrets.CONAN_GH_RUNNER_USER }}"
+        run: conan user -p ${{ secrets.CONAN_GH_RUNNER_PASS }} -r cura-private-conan-dev "${{ secrets.CONAN_GH_RUNNER_USER }}"
 
       - name: Export the Package (binaries)
         if: ${{ inputs.conan_export_binaries }}
@@ -105,14 +101,10 @@ jobs:
         if: ${{ always() && inputs.conan_upload_community }}
         run: |
           conan upload ${{ inputs.recipe_id_full }} -r cura --all -c
-          conan upload ${{ inputs.recipe_id_full }} -r cura-conan-dev --all -c
           conan upload ${{ inputs.recipe_id_latest }} -r cura -c
-          conan upload ${{ inputs.recipe_id_latest }} -r cura-conan-dev -c
 
       - name: Upload the Package(s) to the private Artifactory
         if: ${{ always() && ! inputs.conan_upload_community }}
         run: |
-          conan upload ${{ inputs.recipe_id_full }} -r cura-private --all -c
           conan upload ${{ inputs.recipe_id_full }} -r cura-private-conan-dev --all -c
-          conan upload ${{ inputs.recipe_id_latest }} -r cura-private -c
           conan upload ${{ inputs.recipe_id_latest }} -r cura-private-conan-dev -c
