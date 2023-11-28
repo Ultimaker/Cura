@@ -4219,7 +4219,7 @@ msgstr "Résumé - Projet Cura"
 
 msgctxt "@label"
 msgid "Support"
-msgstr "Assistance"
+msgstr "Support"
 
 msgctxt "@tooltip"
 msgid "Support"
